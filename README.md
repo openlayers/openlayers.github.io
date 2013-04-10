@@ -2,8 +2,8 @@
 
 ## Building the site
 
-Requires that you have [NodeJS](http://nodejs.org/) and
-[Git](http://git-scm.com/) installed.
+Requires that you have [Git](http://git-scm.com/), [NodeJS](http://nodejs.org/),
+and Grunt (`npm install -g grunt-cli`) installed.
 
     $ git clone https://github.com/openlayers/openlayers.github.io.git
     $ cd openlayers.github.io
