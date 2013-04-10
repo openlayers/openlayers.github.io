@@ -1,5 +1,5 @@
 {
-  "name": "openlayers.github.io",
+  "name": "openlayers-website",
   "version": "0.0.1",
   "description": "Website for OpenLayers 3",
   "repository": {
@@ -11,7 +11,6 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-connect": "~0.2.0",
     "grunt-jsdoc": "~0.3.0",
     "q": "~0.9.2"
   }
