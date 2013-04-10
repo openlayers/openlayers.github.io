@@ -1,4 +1,16 @@
-openlayers.github.com
-=====================
+# OpenLayers Website
 
-OpenLayers Organization Pages
+## Building the site
+
+Requires that you have [NodeJS](http://nodejs.org/) and
+[Git](http://git-scm.com/) installed.
+
+    $ git clone https://github.com/openlayers/openlayers.github.io.git
+    $ cd openlayers.github.io
+    $ npm install
+    $ grunt
+
+Currently this just builds API docs files for the master branch and puts
+everything in `build/doc`.  Next it will build API docs for multiple branches
+as well as prose docs.
+
