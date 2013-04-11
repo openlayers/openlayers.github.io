@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     jsdoc: {
       src: ['build/repo/src/*'],
       options: {
-        configuration: 'build/repo/doc/conf.json',
+        configure: 'build/repo/doc/conf.json',
         destination: 'build/doc'
       }
     },
