@@ -47,11 +47,22 @@ function clone(git, repo, dir) {
   return spawn(git, ['clone', repo, dir]);
 }
 
-// check out a git commit
+// check out a branch
 function checkout(git, branch, dir) {
   return spawn(git, ['checkout', branch, '-f'], dir);
 }
 
+// fetch from a remote
+function fetch(git, remote, dir) {
+  return spawn(git, ['fetch', remote], dir);
+}
+
+// reset to match remote/branch
+function reset(git, remote, branch, dir) {
+  return spawn(git, ['reset', '--hard', remote + '/' + branch], dir);
+}
+
+// clean up unversioned files
 function clean(git, dir) {
   return spawn(git, ['clean', '-f', '-d'], dir);
 }
@@ -67,6 +78,7 @@ module.exports = function(grunt) {
       branch: 'master'
     });
     branch = branch || options.branch;
+
     if (!options.repo) {
       return done(new Error('Missing "repo" property in checkout options.'));
     }
@@ -74,6 +86,7 @@ module.exports = function(grunt) {
       return done(new Error('Missing "dir" property in checkout options.'));
     }
 
+    var remote = 'origin';
     grunt.log.writeln('Cloning ' + options.repo + ' into ' + options.dir);
     clone(options.git, options.repo, options.dir).
         then(function() {
@@ -83,6 +96,14 @@ module.exports = function(grunt) {
         then(function() {
           grunt.log.writeln('Cleaning ' + branch);
           return clean(options.git, options.dir);
+        }).
+        then(function() {
+          grunt.log.writeln('Fetching from ' + remote);
+          return fetch(options.git, remote, options.dir);
+        }).
+        then(function() {
+          grunt.log.writeln('Resetting to ' + remote + '/' + branch);
+          return reset(options.git, remote, branch, options.dir);
         }).
         then(function() {
           done();
