@@ -1,3 +1,6 @@
+
+
+/** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
   grunt.initConfig({
@@ -15,7 +18,9 @@ module.exports = function(grunt) {
       }
     },
     clean: {
-      build: 'build'
+      repo: 'build/repo',
+      doc: 'build/doc',
+      all: 'build'
     }
   });
 
