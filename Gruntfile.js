@@ -10,12 +10,8 @@ module.exports = function(grunt) {
         dir: 'build/repo'
       }
     },
-    jsdoc: {
-      src: ['build/repo/src/*'],
-      options: {
-        configure: 'build/repo/doc/conf.json',
-        destination: 'build/doc'
-      }
+    buildpy: {
+      options: {cwd: 'build/repo'}
     },
     clean: {
       repo: 'build/repo',
@@ -25,11 +21,10 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.loadTasks('tasks');
 
-  grunt.registerTask('default', ['checkout:master', 'jsdoc']);
+  grunt.registerTask('default', ['checkout:master', 'buildpy']);
 
 };
 
