@@ -24,7 +24,8 @@ module.exports = function(grunt) {
 
   grunt.loadTasks('tasks');
 
-  grunt.registerTask('default', ['checkout:master', 'buildpy']);
+  grunt.registerTask('default', ['checkout:master', 'buildpy:host-examples',
+      'buildpy:doc']);
 
 };
 
