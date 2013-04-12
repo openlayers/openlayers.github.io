@@ -3,7 +3,7 @@
 ## Building the site
 
 Requires that you have [Git](http://git-scm.com/), [NodeJS](http://nodejs.org/),
-and Grunt (`npm install -g grunt-cli`) installed.  Currently, building the website also requires all the ol3 [development dependencies](https://github.com/openlayers/ol3/wiki/Developer-Guide#development-dependencies) as well.
+and Grunt (`npm install -g grunt-cli`) installed.  Currently, building the website also requires all the ol3 [development dependencies](https://github.com/openlayers/ol3/wiki/Developer-Guide#development-dependencies) as well. The `JAVA_HOME` environment variable needs to be set and properly configured, i.e. pointing to the root of the Java installation.
 
     $ git clone https://github.com/openlayers/openlayers.github.io.git
     $ cd openlayers.github.io
