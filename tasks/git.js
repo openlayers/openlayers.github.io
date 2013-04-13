@@ -84,7 +84,7 @@ function rm(git, files, dir) {
 
 // commit
 function commit(git, message, dir) {
-  return spawn(git, ['commit', '-m', message], dir);
+  return spawn(git, ['commit', '--allow-empty', '-m', message], dir);
 }
 
 // push a branch
