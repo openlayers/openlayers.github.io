@@ -22,13 +22,11 @@ module.exports = function(grunt) {
     },
     rm: {
       options: {
-        repo: 'git@github.com/openlayers/openlayers.github.io.git',
         dir: './'
       }
     },
     publish: {
       options: {
-        repo: 'git@github.com/openlayers/openlayers.github.io.git',
         dir: './'
       }
     },
