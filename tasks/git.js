@@ -163,6 +163,10 @@ module.exports = function(grunt) {
           return spawn(git, ['diff-index', '--quiet', 'HEAD'], dir);
         }).
         then(function() {
+          grunt.log.writeln('Nothing changed in ' + files +
+              ' since last commit.');
+          done();
+        }, function() {
           grunt.log.writeln('Committing');
           commit(options.git, options.message, options.dir).
               then(function() {
@@ -180,10 +184,6 @@ module.exports = function(grunt) {
               }, function(progress) {
                 grunt.verbose.writeln(progress);
               });
-        }, function() {
-          grunt.log.writeln('Nothing changed in ' + files +
-              ' since last commit.');
-          done();
         }, function(progress) {
           grunt.verbose.writeln(progress);
         });
