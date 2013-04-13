@@ -13,19 +13,28 @@ module.exports = function(grunt) {
     buildpy: {
       options: {cwd: 'build/repo'}
     },
+    rename: {
+      main: {
+        files: [
+            {src: ['build/repo/build/gh-pages'], dest: 'en'}
+        ]
+      }
+    },
     clean: {
       repo: 'build/repo',
       doc: 'build/doc',
-      all: 'build'
+      en: 'en',
+      all: ['build', 'en']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-rename');
 
   grunt.loadTasks('tasks');
 
   grunt.registerTask('default', ['checkout:master', 'buildpy:host-examples',
-      'buildpy:doc']);
+      'buildpy:doc', 'clean:en', 'rename:main']);
 
 };
 
