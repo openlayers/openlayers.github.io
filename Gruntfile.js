@@ -20,6 +20,12 @@ module.exports = function(grunt) {
         ]
       }
     },
+    rm: {
+      options: {
+        repo: 'git@github.com/openlayers/openlayers.github.io.git',
+        dir: './'
+      }
+    },
     publish: {
       options: {
         repo: 'git@github.com/openlayers/openlayers.github.io.git',
@@ -29,8 +35,7 @@ module.exports = function(grunt) {
     clean: {
       repo: 'build/repo',
       doc: 'build/doc',
-      en: 'en',
-      all: ['build', 'en']
+      all: 'build'
     }
   });
 
@@ -40,7 +45,7 @@ module.exports = function(grunt) {
   grunt.loadTasks('tasks');
 
   grunt.registerTask('default', ['checkout:master', 'buildpy:host-examples',
-      'buildpy:doc', 'clean:en', 'rename:main', 'publish:master:en']);
+      'buildpy:doc', 'rm:en', 'rename:main', 'publish:en']);
 
 };
 
