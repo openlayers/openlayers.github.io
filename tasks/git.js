@@ -52,9 +52,9 @@ function checkout(git, branch, dir) {
   return spawn(git, ['checkout', branch, '-f'], dir);
 }
 
-// fetch from a remote
-function fetch(git, remote, dir) {
-  return spawn(git, ['fetch', remote], dir);
+// pull from a remote
+function pull(git, remote, branch, dir) {
+  return spawn(git, ['pull', remote, branch], dir);
 }
 
 // reset to match remote/branch
@@ -124,8 +124,8 @@ module.exports = function(grunt) {
           return clean(options.git, options.dir);
         }).
         then(function() {
-          grunt.log.writeln('Fetching from ' + remote);
-          return fetch(options.git, remote, options.dir);
+          grunt.log.writeln('Pulling from ' + remote);
+          return pull(options.git, remote, branch, options.dir);
         }).
         then(function() {
           grunt.log.writeln('Resetting to ' + remote + '/' + branch);
