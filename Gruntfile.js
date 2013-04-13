@@ -40,7 +40,7 @@ module.exports = function(grunt) {
   grunt.loadTasks('tasks');
 
   grunt.registerTask('default', ['checkout:master', 'buildpy:host-examples',
-      'buildpy:doc', 'clean:en', 'rename:main']);
+      'buildpy:doc', 'clean:en', 'rename:main', 'publish:master:en']);
 
 };
 
