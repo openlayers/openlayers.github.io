@@ -84,7 +84,7 @@ function commit(git, message, dir) {
 
 // push a branch
 function push(git, branch, remote, dir) {
-  return spawn(git, ['push', remote, master], dir);
+  return spawn(git, ['push', remote, branch], dir);
 }
 
 
