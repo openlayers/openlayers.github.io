@@ -152,9 +152,6 @@ module.exports = function(grunt) {
           'This is an auto-generated commit.'
     });
 
-    if (!options.repo) {
-      return done(new Error('Missing "repo" property in publish options.'));
-    }
     if (!options.dir) {
       return done(new Error('Missing "dir" property in publish options.'));
     }
@@ -202,9 +199,6 @@ module.exports = function(grunt) {
       branch: 'master'
     });
 
-    if (!options.repo) {
-      return done(new Error('Missing "repo" property in publish options.'));
-    }
     if (!options.dir) {
       return done(new Error('Missing "dir" property in publish options.'));
     }
