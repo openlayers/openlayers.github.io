@@ -20,6 +20,12 @@ module.exports = function(grunt) {
         ]
       }
     },
+    publish: {
+      options: {
+        repo: 'git@github.com/openlayers/openlayers.github.io.git',
+        dir: './'
+      }
+    },
     clean: {
       repo: 'build/repo',
       doc: 'build/doc',
