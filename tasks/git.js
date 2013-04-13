@@ -163,21 +163,30 @@ module.exports = function(grunt) {
     grunt.log.writeln('Adding ' + files);
     add(options.git, files, options.dir).
         then(function() {
+          return spawn(git, ['diff-index', '--quiet', 'HEAD'], dir);
+        }).
+        then(function() {
           grunt.log.writeln('Committing');
-          return commit(options.git, options.message, options.dir);
-        }).
-        then(function() {
-          grunt.log.writeln('Rebasing from ' + remote);
-          return rebase(options.git, remote, options.dir);
-        }).
-        then(function() {
-          grunt.log.writeln('Pushing to ' + remote);
-          return push(options.git, remote, options.dir);
-        }).
-        then(function() {
+          commit(options.git, options.message, options.dir).
+              then(function() {
+                grunt.log.writeln('Rebasing from ' + remote);
+                return rebase(options.git, remote, options.dir);
+              }).
+              then(function() {
+                grunt.log.writeln('Pushing to ' + remote);
+                return push(options.git, remote, options.dir);
+              }).
+              then(function() {
+                done();
+              }, function(error) {
+                done(error);
+              }, function(progress) {
+                grunt.verbose.writeln(progress);
+              });
+        }, function() {
+          grunt.log.writeln('Nothing changed in ' + files +
+              ' since last commit.');
           done();
-        }, function(error) {
-          done(error);
         }, function(progress) {
           grunt.verbose.writeln(progress);
         });
