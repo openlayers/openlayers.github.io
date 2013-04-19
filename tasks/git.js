@@ -169,7 +169,9 @@ module.exports = function(grunt) {
     grunt.log.writeln('Adding ' + files);
     add(options.git, files, options.dir).
         then(function() {
-          return spawn(git, ['diff-index', '--quiet', 'HEAD'], dir);
+          grunt.log.writeln('Checking for changes in ' + files);
+          return spawn(options.git, ['diff-index', '--quiet', 'HEAD', files],
+              options.dir);
         }).
         then(function() {
           grunt.log.writeln('Nothing changed in ' + files +
