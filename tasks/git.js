@@ -63,8 +63,8 @@ function pull(git, remote, branch, dir) {
 }
 
 // reset to match remote/branch
-function reset(git, remote, branch, dir) {
-  return spawn(git, ['reset', '--hard', remote + '/' + branch], dir);
+function reset(git, branch, dir) {
+  return spawn(git, ['reset', '--hard', branch], dir);
 }
 
 // clean up unversioned files
@@ -137,8 +137,8 @@ module.exports = function(grunt) {
           return pull(options.git, remote, branch, options.dir);
         }).
         then(function() {
-          grunt.log.writeln('Resetting to ' + remote + '/' + branch);
-          return reset(options.git, remote, branch, options.dir);
+          grunt.log.writeln('Resetting to ' + branch);
+          return reset(options.git, branch, options.dir);
         }).
         then(function() {
           done();
