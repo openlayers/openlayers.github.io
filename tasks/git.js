@@ -84,7 +84,7 @@ function add(git, files, dir) {
 
 // remove files
 function rm(git, files, dir) {
-  return spawn(git, ['rm', '-r', '-f', files], dir);
+  return spawn(git, ['rm', '--ignore-unmatch', '-r', '-f', files], dir);
 }
 
 // commit

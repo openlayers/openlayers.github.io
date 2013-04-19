@@ -14,9 +14,9 @@ module.exports = function(grunt) {
       options: {cwd: 'build/repo'}
     },
     rename: {
-      main: {
+      master: {
         files: [
-            {src: ['build/repo/build/gh-pages'], dest: 'en'}
+            {src: ['build/repo/build/gh-pages/master'], dest: 'en/master'}
         ]
       }
     },
@@ -42,8 +42,8 @@ module.exports = function(grunt) {
 
   grunt.loadTasks('tasks');
 
-  grunt.registerTask('default', ['checkout:r3.0.0-alpha.1', 'buildpy:host-examples',
-      'buildpy:doc', 'rm:en', 'rename:main', 'publish:en']);
+  grunt.registerTask('default', ['checkout:master', 'buildpy:host-examples',
+      'buildpy:doc', 'rm:en/master', 'rename:master', 'publish:en']);
 
 };
 
