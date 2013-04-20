@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <head>
   <title>OpenLayers 3</title>
-  <link rel="stylesheet" href="en/r3.0.0-alpha.1/resources/bootstrap/css/bootstrap.min.css" type="text/css">
-  <link rel="stylesheet" href="en/r3.0.0-alpha.1/resources/layout.css" type="text/css">
-  <link rel="stylesheet" href="en/r3.0.0-alpha.1/resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+  <link rel="stylesheet" href="en/master/resources/bootstrap/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="en/master/resources/layout.css" type="text/css">
+  <link rel="stylesheet" href="en/master/resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
 </head>
 <body>
 
@@ -25,14 +25,14 @@
   <div class="row-fluid">
     <h1><img width="50" height="50" src="resources/openlayers.png"> ol3 - Next Generation Web Mapping</h1>
     <p>OpenLayers brings geospatial data to any modern desktop or mobile web browser. ol3 is a complete rewrite, featuring WebGL and 3D. Like <a href="http://openlayers.org/">OpenLayers 2</a>, it supports a huge variety of data formats and layer types. But unlike OpenLayers 2, it is built from scratch relying on latest browser technologies like HTML5, WebGL and CSS3.</p>
-    <h2>Getting Started with OpenLayers 3 alpha 1</h2>
+    <h2>Getting Started with OpenLayers 3 alpha</h2>
     <p>ol3 is still under heavy development, with many features missing. But the development team wants to give early adopters a sneak preview by releasing an early alpha.</p>
     <ul>
-      <li>Browse the <a href="en/r3.0.0-alpha.1/examples/">examples</a>, and see how to create a <a href="en/r3.0.0-alpha.1/examples/simple.html">simple</a> map.</li>
-      <li>Explore the <a href="en/r3.0.0-alpha.1/apidoc">API documentation</a>. This is in an early stage. It shows the API already, but events are not yet documented, and introductory prose documentation needs to be added to classes and factories.</li>
+      <li>Browse the <a href="en/master/examples/">examples</a>, and see how to create a <a href="en/master/examples/simple.html">simple</a> map.</li>
+      <li>Explore the <a href="en/master/apidoc">API documentation</a>. This is in an early stage. It shows the API already, but events are not yet documented, and introductory prose documentation needs to be added to classes and factories.</li>
       <li>Start creating your own maps by simply including ol3 css and JavaScript in your web page:
-        <pre>&lt;link rel="stylesheet" href="http://ol3js.org/en/r3.0.0-alpha.1/build/ol.css" type="text/css"&gt;
-&lt;script src="http://ol3js.org/en/r3.0.0-alpha.1/build/ol.js"&gt;&lt;/script&gt;</pre>
+        <pre id="snippet">&lt;link rel="stylesheet" href="http://ol3js.org/en/master/build/ol.css" type="text/css"&gt;
+&lt;script src="http://ol3js.org/en/master/build/ol.js"&gt;&lt;/script&gt;</pre>
       </li>
       <li>Consider <a href="https://github.com/openlayers/ol3/blob/master/CONTRIBUTING.md">contributing</a> to ol3.</li>
     </ul>
@@ -42,6 +42,43 @@
       <li>Join the <a href="https://groups.google.com/forum/#!forum/ol3-dev">ol3-dev mailing list</a> to follow development related discussions.</li>
     </ul>
   </div>
+  <hr>
+  <footer></footer>
   </div>
-  <script src="en/r3.0.0-alpha.1/resources/social-links.js" type="text/javascript"></script>
+  <script src="en/master/resources/social-links.js" type="text/javascript"></script>
+  
+  <script>
+    var release = 'master';
+    var module = {};
+    function setRelease(config) {
+      var links = document.getElementsByTagName('a');
+      for (var i = links.length - 1; i >= 0; --i) {
+        links[i].href = links[i].href.replace(
+            'en/' + release + '/', 'en/' + config.currentRelease + '/');
+      }
+      var snippet = document.getElementById('snippet');
+      snippet.innerHTML = snippet.innerHTML.replace(
+          new RegExp(release, 'g'), config.currentRelease);
+      var versionHint = document.getElementsByTagName('footer')[0];
+      versionHint.innerHTML = 'Showing information for OpenLayers ' +
+          config.currentRelease + '. Switch to <a id="switcher" href="#">' +
+          release + '</a>.';
+      document.getElementById('switcher').onclick = function() {
+        setRelease({currentRelease: this.innerHTML});
+      };
+      release = config.currentRelease;
+    }
+  </script>
+
+  <!-- get currentRelease from Gruntfile.js -->
+  <script src="Gruntfile.js"></script>
+  <script>
+    module.exports({
+      initConfig: setRelease,
+      loadNpmTasks: function() {},
+      loadTasks: function() {},
+      registerTask: function() {},
+      config: function() {}
+    });
+  </script>
 </body>
