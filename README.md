@@ -11,6 +11,8 @@ and Grunt (`npm install -g grunt-cli`) installed.  Currently, building the websi
     $ grunt
 
 Currently this just builds API docs and examples for the master branch and puts
-everything in `en`.  Next it will build API docs for multiple branches
-as well as prose docs. Note: The `en` folder is auto-generated.
+everything in `en/master`.  Next it will build prose docs. Note: The contents of the `en` folder are auto-generated.
 
+To build the site for the latest release, update the `currentRelease` property in `Gruntfile.js` to the tag of the latest release. When done, commit and push changes to `Grunfile.js` and run
+
+    $ grunt release
