@@ -3,8 +3,9 @@
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
+  var currentRelease = 'r3.0.0-alpha.1';
+
   grunt.initConfig({
-    currentRelease: 'r3.0.0-alpha.1',
     checkout: {
       options: {
         repo: 'git://github.com/openlayers/ol3.git',
@@ -23,7 +24,7 @@ module.exports = function(grunt) {
       release: {
         files: [{
           src: ['build/repo/build/gh-pages/HEAD'],
-          dest: 'en/<%= currentRelease %>'
+          dest: 'en/' + currentRelease
         }]
       }
     },
@@ -54,10 +55,10 @@ module.exports = function(grunt) {
     'buildpy:doc', 'rm:en/master', 'rename:master', 'publish:en/master']);
 
   grunt.registerTask('release', [
-    'checkout:' + grunt.config('currentRelease'),
+    'checkout:' + currentRelease,
     'buildpy:host-examples', 'buildpy:doc',
-    'rm:en/' + grunt.config('currentRelease'),
-    'rename:release', 'publish:en/' + grunt.config('currentRelease')]);
+    'rm:en/' + currentRelease,
+    'rename:release', 'publish:en/' + currentRelease]);
 
 };
 
