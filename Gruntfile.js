@@ -3,6 +3,8 @@
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
+  var currentRelease = 'r3.0.0-alpha.1';
+
   grunt.initConfig({
     checkout: {
       options: {
@@ -21,6 +23,14 @@ module.exports = function(grunt) {
     rm: {
       options: {
         dir: './'
+      }
+    },
+    script: {
+      options: {
+        builds: 'en',
+        selected: currentRelease,
+        src: 'templates/index.tpl.js',
+        dest: 'index.js'
       }
     },
     publish: {
@@ -55,6 +65,7 @@ module.exports = function(grunt) {
       'buildpy:doc',
       'rm:en/' + branch,
       'move:en/' + branch,
+      'script',
       'publish:en/' + branch]);
   });
 

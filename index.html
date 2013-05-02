@@ -49,7 +49,6 @@
   
   <script>
     var release = 'master';
-    var module = {};
     function setRelease(config) {
       var links = document.getElementsByTagName('a');
       for (var i = links.length - 1; i >= 0; --i) {
@@ -70,15 +69,16 @@
     }
   </script>
 
-  <!-- get currentRelease from Gruntfile.js -->
-  <script src="Gruntfile.js"></script>
+  <!-- get list of builds from index.js -->
+  <script src="index.js"></script>
+
   <script>
-    module.exports({
-      initConfig: setRelease,
-      loadNpmTasks: function() {},
-      loadTasks: function() {},
-      registerTask: function() {},
-      config: function() {}
-    });
+  for (var i = 0, ii = builds.length; i < ii; ++i) {
+    if (builds[i].selected) {
+      setRelease({currentRelease: builds[i].name});
+      break;
+    }
+  }
   </script>
+
 </body>
