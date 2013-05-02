@@ -162,12 +162,6 @@ ol.Object.prototype.bindTo =
 
 /**
  * @param {string} key Key.
- */
-ol.Object.prototype.changed = goog.nullFunction;
-
-
-/**
- * @param {string} key Key.
  * @return {*} Value.
  */
 ol.Object.prototype.get = function(key) {
@@ -230,13 +224,26 @@ ol.Object.prototype.notifyInternal_ = function(key) {
 
 
 /**
- * @param {string} type The event type.
+ * @param {string|Array.<string>} type The event type or array of event types.
  * @param {Function} listener The listener function.
  * @param {Object=} opt_scope Object is whose scope to call
  *     the listener.
+ * @return {?number} Unique key for the listener.
  */
 ol.Object.prototype.on = function(type, listener, opt_scope) {
-  goog.events.listen(this, type, listener, false, opt_scope);
+  return goog.events.listen(this, type, listener, false, opt_scope);
+};
+
+
+/**
+ * @param {string|Array.<string>} type The event type or array of event types.
+ * @param {Function} listener The listener function.
+ * @param {Object=} opt_scope Object is whose scope to call
+ *     the listener.
+ * @return {?number} Unique key for the listener.
+ */
+ol.Object.prototype.once = function(type, listener, opt_scope) {
+  return goog.events.listenOnce(this, type, listener, false, opt_scope);
 };
 
 
@@ -304,13 +311,21 @@ ol.Object.prototype.unbind = function(key) {
 
 
 /**
- * @param {string} type The event type.
+ * @param {string|Array.<string>} type The event type or array of event types.
  * @param {Function} listener The listener function.
  * @param {Object=} opt_scope Object is whose scope to call
  *     the listener.
  */
 ol.Object.prototype.un = function(type, listener, opt_scope) {
   goog.events.unlisten(this, type, listener, false, opt_scope);
+};
+
+
+/**
+ * @param {?number} key Key.
+ */
+ol.Object.prototype.unByKey = function(key) {
+  goog.events.unlistenByKey(key);
 };
 
 

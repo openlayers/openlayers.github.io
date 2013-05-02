@@ -22,7 +22,6 @@ goog.require('ol.renderer.dom.Layer');
  */
 ol.renderer.dom.ImageLayer = function(mapRenderer, imageLayer) {
   var target = goog.dom.createElement(goog.dom.TagName.DIV);
-  target.className = 'ol-layer-image';
   target.style.position = 'absolute';
 
   goog.base(this, mapRenderer, imageLayer, target);
@@ -105,6 +104,10 @@ ol.renderer.dom.ImageLayer.prototype.renderFrame =
         0);
     if (image != this.image_) {
       var imageElement = image.getImageElement(this);
+      // Bootstrap sets the style max-width: 100% for all images, which breaks
+      // prevents the image from being displayed in FireFox.  Workaround by
+      // overriding the max-width style.
+      imageElement.style.maxWidth = 'none';
       imageElement.style.position = 'absolute';
       goog.dom.removeChildren(this.target);
       goog.dom.appendChild(this.target, imageElement);

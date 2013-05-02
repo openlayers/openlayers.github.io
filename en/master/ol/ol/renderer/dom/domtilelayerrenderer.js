@@ -33,7 +33,6 @@ goog.require('ol.tilegrid.TileGrid');
 ol.renderer.dom.TileLayer = function(mapRenderer, tileLayer) {
 
   var target = goog.dom.createElement(goog.dom.TagName.DIV);
-  target.className = 'ol-layer-tile';
   target.style.position = 'absolute';
 
   goog.base(this, mapRenderer, tileLayer, target);
@@ -117,7 +116,7 @@ ol.renderer.dom.TileLayer.prototype.renderFrame =
       tilesToDrawByZ, getTileIfLoaded);
 
   var allTilesLoaded = true;
-  var tmpExtent = ol.extent.createEmptyExtent();
+  var tmpExtent = ol.extent.createEmpty();
   var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
   var childTileRange, fullyLoaded, tile, tileState, x, y;
   for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
@@ -316,6 +315,10 @@ ol.renderer.dom.TileLayerZ_.prototype.addTile = function(tile) {
   var tileSize = this.tileGrid_.getTileSize(tileCoord.z);
   var image = tile.getImage(this);
   var style = image.style;
+  // Bootstrap sets the style max-width: 100% for all images, which breaks
+  // prevents the tile from being displayed in FireFox.  Workaround by
+  // overriding the max-width style.
+  style.maxWidth = 'none';
   style.position = 'absolute';
   style.left =
       ((tileCoord.x - this.tileCoordOrigin_.x) * tileSize.width) + 'px';

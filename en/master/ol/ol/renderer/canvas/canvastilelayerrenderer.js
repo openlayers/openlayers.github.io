@@ -271,7 +271,7 @@ ol.renderer.canvas.TileLayer.prototype.renderFrame =
       tilesToDrawByZ, getTileIfLoaded);
 
   var allTilesLoaded = true;
-  var tmpExtent = ol.extent.createEmptyExtent();
+  var tmpExtent = ol.extent.createEmpty();
   var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
   var childTileRange, fullyLoaded, tile, tileState, x, y;
   for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
@@ -279,10 +279,10 @@ ol.renderer.canvas.TileLayer.prototype.renderFrame =
 
       tile = tileSource.getTile(z, x, y, projection);
       tileState = tile.getState();
-      if (tileState == ol.TileState.LOADED || tileState == ol.TileState.EMPTY) {
+      if (tileState == ol.TileState.LOADED ||
+          tileState == ol.TileState.EMPTY ||
+          tileState == ol.TileState.ERROR) {
         tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
-        continue;
-      } else if (tileState == ol.TileState.ERROR) {
         continue;
       }
 
@@ -335,7 +335,9 @@ ol.renderer.canvas.TileLayer.prototype.renderFrame =
           x = tileSize.width * (tile.tileCoord.x - canvasTileRange.minX);
           y = tileSize.height * (canvasTileRange.maxY - tile.tileCoord.y);
           tileState = tile.getState();
-          if (tileState == ol.TileState.EMPTY || !opaque) {
+          if (tileState == ol.TileState.EMPTY ||
+              tileState == ol.TileState.ERROR ||
+              !opaque) {
             context.clearRect(x, y, tileSize.width, tileSize.height);
           }
           if (tileState == ol.TileState.LOADED) {

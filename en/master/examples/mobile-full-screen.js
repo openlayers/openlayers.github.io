@@ -21,7 +21,7 @@ var geolocation = new ol.Geolocation({
   tracking: true
 });
 geolocation.bindTo('projection', view);
-geolocation.on('position_changed', function() {
+geolocation.once('position_changed', function() {
   view.setCenter(geolocation.getPosition());
   view.setResolution(2.388657133911758);
 });

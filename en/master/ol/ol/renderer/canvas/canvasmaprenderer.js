@@ -108,13 +108,7 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
 
   var context = this.context_;
   context.setTransform(1, 0, 0, 1, 0, 0);
-  var backgroundColor = frameState.backgroundColor;
-  context.fillStyle = 'rgb(' +
-      backgroundColor.r.toFixed(0) + ',' +
-      backgroundColor.g.toFixed(0) + ',' +
-      backgroundColor.b.toFixed(0) + ')';
-  context.globalAlpha = 1;
-  context.fillRect(0, 0, size.width, size.height);
+  context.clearRect(0, 0, size.width, size.height);
 
   this.calculateMatrices2D(frameState);
 
@@ -134,16 +128,28 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
     image = layerRenderer.getImage();
     if (!goog.isNull(image)) {
       transform = layerRenderer.getTransform();
-      context.setTransform(
-          goog.vec.Mat4.getElement(transform, 0, 0),
-          goog.vec.Mat4.getElement(transform, 1, 0),
-          goog.vec.Mat4.getElement(transform, 0, 1),
-          goog.vec.Mat4.getElement(transform, 1, 1),
-          goog.vec.Mat4.getElement(transform, 0, 3),
-          goog.vec.Mat4.getElement(transform, 1, 3));
-
       context.globalAlpha = layerState.opacity;
-      context.drawImage(image, 0, 0);
+
+      // for performance reasons, context.setTransform is only used
+      // when the view is rotated. see http://jsperf.com/canvas-transform
+      if (frameState.view2DState.rotation == 0) {
+        var dx = goog.vec.Mat4.getElement(transform, 0, 3);
+        var dy = goog.vec.Mat4.getElement(transform, 1, 3);
+        var dw = image.width * goog.vec.Mat4.getElement(transform, 0, 0);
+        var dh = image.height * goog.vec.Mat4.getElement(transform, 1, 1);
+        context.drawImage(image, 0, 0, image.width, image.height,
+            dx, dy, dw, dh);
+      } else {
+        context.setTransform(
+            goog.vec.Mat4.getElement(transform, 0, 0),
+            goog.vec.Mat4.getElement(transform, 1, 0),
+            goog.vec.Mat4.getElement(transform, 0, 1),
+            goog.vec.Mat4.getElement(transform, 1, 1),
+            goog.vec.Mat4.getElement(transform, 0, 3),
+            goog.vec.Mat4.getElement(transform, 1, 3));
+
+        context.drawImage(image, 0, 0);
+      }
     }
 
   }

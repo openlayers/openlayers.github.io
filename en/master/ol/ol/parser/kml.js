@@ -3,6 +3,7 @@ goog.require('goog.array');
 goog.require('goog.async.Deferred');
 goog.require('goog.async.DeferredList');
 goog.require('goog.date');
+goog.require('goog.dispose');
 goog.require('goog.dom.xml');
 goog.require('goog.events');
 goog.require('goog.net.EventType');
@@ -21,6 +22,7 @@ goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
 goog.require('ol.geom.SharedVertices');
 goog.require('ol.parser.AsyncObjectFeatureParser');
+goog.require('ol.parser.AsyncStringFeatureParser');
 goog.require('ol.parser.DomFeatureParser');
 goog.require('ol.parser.ReadFeaturesOptions');
 goog.require('ol.parser.StringFeatureParser');
@@ -32,21 +34,13 @@ goog.require('ol.style.Polygon');
 goog.require('ol.style.PolygonLiteral');
 
 
-/**
- * @typedef {{extractAttributes: (boolean|undefined),
- *            extractStyles: (boolean|undefined),
- *            dimension: (number|undefined),
- *            maxDepth: (number|undefined)}}
- */
-ol.parser.KMLOptions;
-
-
 
 /**
  * @constructor
  * @implements {ol.parser.DomFeatureParser}
  * @implements {ol.parser.StringFeatureParser}
  * @implements {ol.parser.AsyncObjectFeatureParser}
+ * @implements {ol.parser.AsyncStringFeatureParser}
  * @param {ol.parser.KMLOptions=} opt_options Optional configuration object.
  * @extends {ol.parser.XML}
  */
@@ -819,6 +813,19 @@ ol.parser.KML.prototype.readFeaturesFromObjectAsync =
 
 
 /**
+ * @param {string} str KML document.
+ * @param {function(Array.<ol.Feature>)} callback Callback which is called
+ * after parsing.
+ * @param {ol.parser.ReadFeaturesOptions=} opt_options Feature reading options.
+ */
+ol.parser.KML.prototype.readFeaturesFromStringAsync =
+    function(str, callback, opt_options) {
+  this.readFeaturesOptions_ = opt_options;
+  this.read(str, callback);
+};
+
+
+/**
  * Parse a KML document provided as a string.
  * @param {string} str KML document.
  * @param {ol.parser.ReadFeaturesOptions=} opt_options Reader options.
@@ -875,7 +882,7 @@ ol.parser.KML.prototype.parseLinks = function(deferreds, obj, done) {
         goog.events.listen(xhr, goog.net.EventType.COMPLETE, function(e) {
           if (e.target.isSuccess()) {
             var data = e.target.getResponseXml();
-            e.target.dispose();
+            goog.dispose(e.target);
             if (data && data.nodeType == 9) {
               data = data.documentElement;
             }

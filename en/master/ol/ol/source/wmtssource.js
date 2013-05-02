@@ -73,27 +73,32 @@ ol.source.WMTS = function(options) {
    * @return {ol.TileUrlFunctionType} Tile URL function.
    */
   function createFromWMTSTemplate(template) {
-    return function(tileCoord) {
-      if (goog.isNull(tileCoord)) {
-        return undefined;
-      } else {
-        var localContext = {
-          'TileMatrix': tileGrid.getMatrixId(tileCoord.z),
-          'TileCol': tileCoord.x,
-          'TileRow': tileCoord.y
-        };
-        if (requestEncoding != ol.source.WMTSRequestEncoding.KVP) {
-          goog.object.extend(localContext, context);
-        }
-        var url = template;
-        for (var key in localContext) {
-          // FIXME: should we filter properties with hasOwnProperty?
-          url = url.replace('{' + key + '}', localContext[key])
-              .replace('%7B' + key + '%7D', localContext[key]);
-        }
-        return url;
-      }
-    };
+    return (
+        /**
+         * @param {ol.TileCoord} tileCoord Tile coordinate.
+         * @return {string|undefined} Tile URL.
+         */
+        function(tileCoord) {
+          if (goog.isNull(tileCoord)) {
+            return undefined;
+          } else {
+            var localContext = {
+              'TileMatrix': tileGrid.getMatrixId(tileCoord.z),
+              'TileCol': tileCoord.x,
+              'TileRow': tileCoord.y
+            };
+            if (requestEncoding != ol.source.WMTSRequestEncoding.KVP) {
+              goog.object.extend(localContext, context);
+            }
+            var url = template;
+            for (var key in localContext) {
+              // FIXME: should we filter properties with hasOwnProperty?
+              url = url.replace('{' + key + '}', localContext[key])
+                  .replace('%7B' + key + '%7D', localContext[key]);
+            }
+            return url;
+          }
+        });
   }
 
   var tileUrlFunction = ol.TileUrlFunction.nullTileUrlFunction;
@@ -114,7 +119,7 @@ ol.source.WMTS = function(options) {
         }));
   }
 
-  var tmpExtent = ol.extent.createEmptyExtent();
+  var tmpExtent = ol.extent.createEmpty();
   var tmpTileCoord = new ol.TileCoord(0, 0, 0);
   tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(
       function(tileCoord, projection) {
