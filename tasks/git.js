@@ -157,7 +157,7 @@ module.exports = function(grunt) {
     var options = this.options({
       git: 'git',
       branch: 'master',
-      message: 'Updating files\n\n' +
+      message: 'Updating ' + files + '\n\n' +
           'This is an auto-generated commit.'
     });
 
