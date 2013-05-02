@@ -3,8 +3,6 @@
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
-  var currentRelease = 'r3.0.0-alpha.1';
-
   grunt.initConfig({
     checkout: {
       options: {
@@ -15,17 +13,9 @@ module.exports = function(grunt) {
     buildpy: {
       options: {cwd: 'build/repo'}
     },
-    rename: {
-      master: {
-        files: [
-          {src: ['build/repo/build/gh-pages/master'], dest: 'en/master'}
-        ]
-      },
-      release: {
-        files: [{
-          src: ['build/repo/build/gh-pages/HEAD'],
-          dest: 'en/' + currentRelease
-        }]
+    move: {
+      options: {
+        src: 'build/repo/build/gh-pages/HEAD'
       }
     },
     rm: {
@@ -46,19 +36,29 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-rename');
 
   grunt.loadTasks('tasks');
 
-  grunt.registerTask('default', [
-    'checkout:master', 'buildpy:host-examples',
-    'buildpy:doc', 'rm:en/master', 'rename:master', 'publish:en/master']);
+  /**
+   * The deploy task will build the site resources for a particular git
+   * tree-ish.  A fetch of all heads and tags will be run first, so you
+   * typically specify something like origin/master or r3.4.5-beta.1 for the
+   * treeish.  This *doesn't* do any merging before building, so you don't want
+   * to simply specify the name of a local branch (whose head may not be the
+   * same as a tracked branch for some remote).
+   */
+  grunt.registerTask('deploy', 'Build a tree-ish', function(treeish) {
+    var branch = treeish.split('/').pop(); // may not always be a local branch
+    grunt.task.run([
+      'checkout:' + treeish,
+      'buildpy:host-examples',
+      'buildpy:doc',
+      'rm:en/' + branch,
+      'move:en/' + branch,
+      'publish:en/' + branch]);
+  });
 
-  grunt.registerTask('release', [
-    'checkout:' + currentRelease,
-    'buildpy:host-examples', 'buildpy:doc',
-    'rm:en/' + currentRelease,
-    'rename:release', 'publish:en/' + currentRelease]);
+  grunt.registerTask('default', 'deploy:origin/master');
 
 };
 
