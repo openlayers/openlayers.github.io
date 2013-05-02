@@ -17,13 +17,13 @@ module.exports = function(grunt) {
     rename: {
       master: {
         files: [
-            {src: ['build/repo/build/gh-pages/master'], dest: 'en/master'}
+          {src: ['build/repo/build/gh-pages/master'], dest: 'en/master'}
         ]
       },
       release: {
         files: [{
-            src: ['build/repo/build/gh-pages/HEAD'],
-            dest: 'en/<%= currentRelease %>'
+          src: ['build/repo/build/gh-pages/HEAD'],
+          dest: 'en/<%= currentRelease %>'
         }]
       }
     },
@@ -49,13 +49,15 @@ module.exports = function(grunt) {
 
   grunt.loadTasks('tasks');
 
-  grunt.registerTask('default', ['checkout:master', 'buildpy:host-examples',
-      'buildpy:doc', 'rm:en/master', 'rename:master', 'publish:en/master']);
+  grunt.registerTask('default', [
+    'checkout:master', 'buildpy:host-examples',
+    'buildpy:doc', 'rm:en/master', 'rename:master', 'publish:en/master']);
 
-  grunt.registerTask('release', ['checkout:' + grunt.config('currentRelease'),
-      'buildpy:host-examples', 'buildpy:doc',
-      'rm:en/' + grunt.config('currentRelease'),
-      'rename:release', 'publish:en/' + grunt.config('currentRelease')]);
+  grunt.registerTask('release', [
+    'checkout:' + grunt.config('currentRelease'),
+    'buildpy:host-examples', 'buildpy:doc',
+    'rm:en/' + grunt.config('currentRelease'),
+    'rename:release', 'publish:en/' + grunt.config('currentRelease')]);
 
 };
 

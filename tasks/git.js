@@ -98,7 +98,6 @@ function push(git, remote, dir) {
 }
 
 
-
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
   grunt.registerTask('checkout', 'Check out with git.', function(branch) {
@@ -150,8 +149,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('publish', 'Publish (commit, push) with git.',
-      function(files) {
+  grunt.registerTask('publish', 'Publish with git.', function(files) {
     var done = this.async();
 
     var options = this.options({
@@ -201,8 +199,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('rm', 'Remove files with git.',
-      function(files) {
+  grunt.registerTask('rm', 'Remove files with git.', function(files) {
     var done = this.async();
 
     var options = this.options({
