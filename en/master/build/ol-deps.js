@@ -9,7 +9,7 @@ goog.addDependency('../../../ol/ol/collection.js', ['ol.Collection', 'ol.Collect
 goog.addDependency('../../../ol/ol/color.js', ['ol.Color'], ['goog.color', 'goog.math']);
 goog.addDependency('../../../ol/ol/constraints.js', ['ol.Constraints'], ['ol.ResolutionConstraintType', 'ol.RotationConstraintType']);
 goog.addDependency('../../../ol/ol/control/attributioncontrol.js', ['ol.control.Attribution'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.object', 'goog.style', 'ol.Attribution', 'ol.FrameState', 'ol.TileRange', 'ol.control.Control', 'ol.css', 'ol.source.Source']);
-goog.addDependency('../../../ol/ol/control/control.js', ['ol.control.Control', 'ol.control.ControlOptions'], ['goog.Disposable', 'goog.array', 'goog.dom', 'goog.events', 'ol.MapEventType']);
+goog.addDependency('../../../ol/ol/control/control.js', ['ol.control.Control'], ['goog.Disposable', 'goog.array', 'goog.dom', 'goog.events', 'ol.MapEventType']);
 goog.addDependency('../../../ol/ol/control/controldefaults.js', ['ol.control.defaults'], ['goog.array', 'ol.control.Attribution', 'ol.control.Logo', 'ol.control.Zoom']);
 goog.addDependency('../../../ol/ol/control/dragboxcontrol.js', ['ol.control.DragBox'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.style', 'ol.Coordinate', 'ol.MapBrowserEvent', 'ol.MapBrowserEvent.EventType', 'ol.Pixel', 'ol.Size', 'ol.control.Control']);
 goog.addDependency('../../../ol/ol/control/fullscreencontrol.js', ['ol.control.FullScreen'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.dom.classes', 'goog.dom.fullscreen', 'goog.dom.fullscreen.EventType', 'goog.events', 'goog.events.EventType', 'ol.control.Control', 'ol.css']);
@@ -33,7 +33,7 @@ goog.addDependency('../../../ol/ol/filter/filter.js', ['ol.filter.Filter'], ['ol
 goog.addDependency('../../../ol/ol/filter/geometryfilter.js', ['ol.filter.Geometry', 'ol.filter.GeometryType'], ['ol.filter.Filter', 'ol.geom.GeometryType']);
 goog.addDependency('../../../ol/ol/filter/logicalfilter.js', ['ol.filter.Logical', 'ol.filter.LogicalOperator', 'ol.filter.and', 'ol.filter.not', 'ol.filter.or'], ['goog.asserts', 'ol.filter.Filter']);
 goog.addDependency('../../../ol/ol/framestate.js', ['ol.FrameState', 'ol.PostRenderFunction', 'ol.PreRenderFunction'], ['goog.vec.Mat4', 'ol.Attribution', 'ol.Extent', 'ol.Size', 'ol.TileQueue', 'ol.TileRange', 'ol.View2DState', 'ol.layer.Layer', 'ol.layer.LayerState']);
-goog.addDependency('../../../ol/ol/geolocation.js', ['ol.Geolocation', 'ol.GeolocationProperty'], ['goog.events', 'goog.functions', 'goog.math', 'ol.Coordinate', 'ol.Object', 'ol.Projection', 'ol.projection']);
+goog.addDependency('../../../ol/ol/geolocation.js', ['ol.Geolocation', 'ol.GeolocationProperty'], ['goog.events', 'goog.math', 'ol.Coordinate', 'ol.Object', 'ol.Projection', 'ol.projection']);
 goog.addDependency('../../../ol/ol/geom/abstractcollection.js', ['ol.geom.AbstractCollection'], ['ol.geom.Geometry']);
 goog.addDependency('../../../ol/ol/geom/base.js', ['ol.geom.Vertex', 'ol.geom.VertexArray'], ['ol.coordinate']);
 goog.addDependency('../../../ol/ol/geom/geometry.js', ['ol.geom.Geometry', 'ol.geom.GeometryType'], ['ol.Extent', 'ol.geom.SharedVertices']);
@@ -78,11 +78,15 @@ goog.addDependency('../../../ol/ol/mapbrowserevent.js', ['ol.MapBrowserEvent', '
 goog.addDependency('../../../ol/ol/mapevent.js', ['ol.MapEvent', 'ol.MapEventType'], ['goog.events.Event', 'ol.FrameState']);
 goog.addDependency('../../../ol/ol/math.js', ['ol.math'], ['goog.asserts']);
 goog.addDependency('../../../ol/ol/object.js', ['ol.Object', 'ol.ObjectEventType'], ['goog.array', 'goog.events', 'goog.events.EventTarget', 'goog.object']);
+goog.addDependency('../../../ol/ol/ol.js', ['ol'], []);
 goog.addDependency('../../../ol/ol/overlay.js', ['ol.Overlay', 'ol.OverlayPositioning', 'ol.OverlayProperty'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.style', 'ol.Coordinate', 'ol.Map', 'ol.MapEventType', 'ol.Object']);
 goog.addDependency('../../../ol/ol/parser/featureparser.js', ['ol.parser.AsyncObjectFeatureParser', 'ol.parser.AsyncStringFeatureParser', 'ol.parser.DomFeatureParser', 'ol.parser.ObjectFeatureParser', 'ol.parser.ReadFeaturesOptions', 'ol.parser.StringFeatureParser'], ['ol.Feature']);
 goog.addDependency('../../../ol/ol/parser/geojson.js', ['ol.parser.GeoJSON'], ['goog.asserts', 'ol.Feature', 'ol.geom.Geometry', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.geom.SharedVertices', 'ol.parser.Parser', 'ol.parser.ReadFeaturesOptions', 'ol.parser.StringFeatureParser']);
 goog.addDependency('../../../ol/ol/parser/kml.js', ['ol.parser.KML'], ['goog.array', 'goog.async.Deferred', 'goog.async.DeferredList', 'goog.date', 'goog.dispose', 'goog.dom.xml', 'goog.events', 'goog.net.EventType', 'goog.net.XhrIo', 'goog.object', 'goog.string', 'ol.Feature', 'ol.geom.AbstractCollection', 'ol.geom.GeometryCollection', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.geom.SharedVertices', 'ol.parser.AsyncObjectFeatureParser', 'ol.parser.AsyncStringFeatureParser', 'ol.parser.DomFeatureParser', 'ol.parser.ReadFeaturesOptions', 'ol.parser.StringFeatureParser', 'ol.parser.XML', 'ol.style.Icon', 'ol.style.Line', 'ol.style.LineLiteral', 'ol.style.Polygon', 'ol.style.PolygonLiteral']);
 goog.addDependency('../../../ol/ol/parser/ogc/exceptionreport.js', ['ol.parser.ogc.ExceptionReport'], ['goog.dom.xml', 'ol.parser.XML']);
+goog.addDependency('../../../ol/ol/parser/ogc/gml.js', ['ol.parser.ogc.GML'], ['goog.array', 'goog.dom.xml', 'goog.object', 'ol.Feature', 'ol.geom.Geometry', 'ol.geom.GeometryCollection', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.LinearRing', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.parser.StringFeatureParser', 'ol.parser.XML']);
+goog.addDependency('../../../ol/ol/parser/ogc/gml_v2.js', ['ol.parser.ogc.GML_v2'], ['goog.array', 'goog.object', 'ol.parser.ogc.GML']);
+goog.addDependency('../../../ol/ol/parser/ogc/gml_v3.js', ['ol.parser.ogc.GML_v3'], ['goog.dom.xml', 'goog.object', 'ol.geom.GeometryType', 'ol.parser.ogc.GML']);
 goog.addDependency('../../../ol/ol/parser/ogc/owscommon_v1.js', ['ol.parser.ogc.OWSCommon_v1'], ['ol.parser.XML']);
 goog.addDependency('../../../ol/ol/parser/ogc/owscommon_v1_1_0.js', ['ol.parser.ogc.OWSCommon_v1_1_0'], ['goog.object', 'ol.parser.ogc.OWSCommon_v1']);
 goog.addDependency('../../../ol/ol/parser/ogc/versioned.js', ['ol.parser.ogc.Versioned'], ['goog.dom.xml', 'ol.parser.ogc.ExceptionReport']);
@@ -98,7 +102,7 @@ goog.addDependency('../../../ol/ol/parser/ogc/wmtscapabilities.js', ['ol.parser.
 goog.addDependency('../../../ol/ol/parser/ogc/wmtscapabilities_v1_0_0.js', ['ol.parser.ogc.WMTSCapabilities_v1_0_0'], ['goog.dom.xml', 'ol.coordinate', 'ol.parser.XML', 'ol.parser.ogc.OWSCommon_v1_1_0', 'ol.projection']);
 goog.addDependency('../../../ol/ol/parser/parser.js', ['ol.parser.Parser'], []);
 goog.addDependency('../../../ol/ol/parser/polyline.js', ['ol.parser.polyline'], []);
-goog.addDependency('../../../ol/ol/parser/xml.js', ['ol.parser.XML'], ['ol.parser.Parser']);
+goog.addDependency('../../../ol/ol/parser/xml.js', ['ol.parser.XML'], ['goog.dom.xml', 'ol.parser.Parser']);
 goog.addDependency('../../../ol/ol/pixel.js', ['ol.Pixel'], ['goog.math.Coordinate']);
 goog.addDependency('../../../ol/ol/projection/common.js', ['ol.projection.addCommonProjections'], ['ol.projection', 'ol.projection.EPSG3857', 'ol.projection.EPSG4326']);
 goog.addDependency('../../../ol/ol/projection/epsg3857projection.js', ['ol.projection.EPSG3857'], ['goog.array', 'goog.asserts', 'ol.Projection', 'ol.ProjectionUnits', 'ol.math', 'ol.projection']);

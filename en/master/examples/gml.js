@@ -22,28 +22,14 @@ var map = new ol.Map({
   renderer: ol.RendererHint.CANVAS,
   target: 'map',
   view: new ol.View2D({
-    center: [0, 0],
-    zoom: 1
+    center: [-10997171.194994785, 5206335.565590534],
+    zoom: 4
   })
 });
 
-map.on('mousemove', function(evt) {
-  map.getFeatureInfo({
-    pixel: evt.getPixel(),
-    layers: [vector],
-    success: function(features) {
-      var info = [];
-      for (var i = 0, ii = features.length; i < ii; ++i) {
-        info.push(features[i].get('name'));
-      }
-      document.getElementById('info').innerHTML = info.join(', ') || '&nbsp;';
-    }
-  });
-});
+var gml = new ol.parser.ogc.GML_v3({axisOrientation: 'neu'});
 
-
-var geojson = new ol.parser.GeoJSON();
-var url = 'data/countries.json';
+var url = 'data/gml/topp-states-wfs.xml';
 var xhr = new XMLHttpRequest();
 xhr.open('GET', url, true);
 
@@ -55,7 +41,7 @@ xhr.onload = function() {
   if (xhr.status == 200) {
     // this is silly to have to tell the layer the destination projection
     var projection = map.getView().getProjection();
-    vector.parseFeatures(xhr.responseText, geojson, projection);
+    vector.parseFeatures(xhr.responseText, gml, projection);
   }
 };
 xhr.send();

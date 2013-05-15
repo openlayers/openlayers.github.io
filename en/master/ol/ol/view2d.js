@@ -1,5 +1,4 @@
 // FIXME getView3D has not return type
-// FIXME remove getExtent?
 
 goog.provide('ol.View2D');
 goog.provide('ol.View2DProperty');
@@ -167,10 +166,12 @@ goog.exportProperty(
 
 
 /**
+ * Calculate the extent for the given size in pixels, the current
+ * resolution and the current center.
  * @param {ol.Size} size Box pixel size.
  * @return {ol.Extent} Extent.
  */
-ol.View2D.prototype.getExtent = function(size) {
+ol.View2D.prototype.calculateExtent = function(size) {
   goog.asserts.assert(this.isDef());
   var center = this.getCenter();
   var resolution = this.getResolution();
@@ -178,7 +179,7 @@ ol.View2D.prototype.getExtent = function(size) {
   var maxX = center[0] + resolution * size.width / 2;
   var minY = center[1] - resolution * size.height / 2;
   var maxY = center[1] + resolution * size.height / 2;
-  return [minX, maxX, minY, maxX];
+  return [minX, maxX, minY, maxY];
 };
 
 
