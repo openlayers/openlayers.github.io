@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 
+
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
@@ -23,11 +24,11 @@ module.exports = function(grunt) {
         return {name: build, selected: build === options.selected};
       });
 
-      fs.readFile(options.src, {encoding: 'utf8'}, function(err, str) {
+      fs.readFile(options.src, function(err, data) {
         if (err) {
           return done(err);
         }
-        str = str.replace('{{ builds }}', JSON.stringify(builds));
+        var str = String(str).replace('{{ builds }}', JSON.stringify(builds));
         fs.writeFile(options.dest, str, done);
       });
     });
