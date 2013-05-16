@@ -24077,21 +24077,12 @@ goog.require("ol.style.LineLiteral");
 goog.require("ol.style.Polygon");
 goog.require("ol.style.PolygonLiteral");
 ol.parser.KML = function(opt_options) {
-  if(goog.isDef(opt_options)) {
-    goog.object.extend(this, opt_options)
-  }
-  if(!goog.isDef(this.extractAttributes)) {
-    this.extractAttributes = true
-  }
-  if(!goog.isDef(this.extractStyles)) {
-    this.extractStyles = false
-  }
-  if(!goog.isDef(this.dimension)) {
-    this.dimension = 3
-  }
-  if(!goog.isDef(this.maxDepth)) {
-    this.maxDepth = 0
-  }
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  this.extractAttributes = goog.isDef(options.extractAttributes) ? options.extractAttributes : true;
+  this.extractStyles = goog.isDef(options.extractStyles) ? options.extractStyles : false;
+  this.dimension = goog.isDef(options.dimension) ? options.dimension : 3;
+  this.maxDepth = goog.isDef(options.maxDepth) ? options.maxDepth : 0;
+  this.trackAttributes = goog.isDef(options.trackAttributes) ? options.trackAttributes : null;
   this.defaultNamespaceURI = "http://www.opengis.net/kml/2.2";
   this.readers = {"http://www.opengis.net/kml/2.2":{"kml":function(node, obj) {
     if(!goog.isDef(obj.features)) {
