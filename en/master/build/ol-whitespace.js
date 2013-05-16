@@ -16837,7 +16837,15 @@ ol.renderer.canvas.VectorRenderer = function(canvas, transform, opt_offset, opt_
   goog.vec.Mat4.multVec3NoTranslate(transform, vec, vec);
   this.inverseScale_ = 1 / Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1]);
   this.context_ = context;
-  this.iconLoadedCallback_ = opt_iconLoadedCallback
+  this.iconLoadedCallback_ = opt_iconLoadedCallback;
+  this.symbolSizes_ = {};
+  this.maxSymbolSize_ = [0, 0]
+};
+ol.renderer.canvas.VectorRenderer.prototype.getSymbolSizes = function() {
+  return this.symbolSizes_
+};
+ol.renderer.canvas.VectorRenderer.prototype.getMaxSymbolSize = function() {
+  return this.maxSymbolSize_
 };
 ol.renderer.canvas.VectorRenderer.prototype.renderFeaturesByGeometryType = function(type, features, symbolizer) {
   var deferred = false;
@@ -16866,7 +16874,7 @@ ol.renderer.canvas.VectorRenderer.prototype.renderFeaturesByGeometryType = funct
   return deferred
 };
 ol.renderer.canvas.VectorRenderer.prototype.renderLineStringFeatures_ = function(features, symbolizer) {
-  var context = this.context_, i, ii, geometry, components, j, jj, line, dim, k, kk, x, y;
+  var context = this.context_, i, ii, feature, id, currentSize, geometry, components, j, jj, line, dim, k, kk, x, y;
   context.globalAlpha = symbolizer.opacity;
   context.strokeStyle = symbolizer.strokeColor;
   context.lineWidth = symbolizer.strokeWidth * this.inverseScale_;
@@ -16874,7 +16882,13 @@ ol.renderer.canvas.VectorRenderer.prototype.renderLineStringFeatures_ = function
   context.lineJoin = "round";
   context.beginPath();
   for(i = 0, ii = features.length;i < ii;++i) {
-    geometry = features[i].getGeometry();
+    feature = features[i];
+    id = goog.getUid(feature);
+    currentSize = goog.isDef(this.symbolSizes_[id]) ? this.symbolSizes_[id] : [0];
+    currentSize[0] = Math.max(currentSize[0], context.lineWidth);
+    this.symbolSizes_[id] = currentSize;
+    this.maxSymbolSize_ = [Math.max(currentSize[0], this.maxSymbolSize_[0]), Math.max(currentSize[0], this.maxSymbolSize_[1])];
+    geometry = feature.getGeometry();
     if(geometry instanceof ol.geom.LineString) {
       components = [geometry]
     }else {
@@ -16898,7 +16912,7 @@ ol.renderer.canvas.VectorRenderer.prototype.renderLineStringFeatures_ = function
   context.stroke()
 };
 ol.renderer.canvas.VectorRenderer.prototype.renderPointFeatures_ = function(features, symbolizer) {
-  var context = this.context_, content, alpha, i, ii, geometry, components, j, jj, point, vec;
+  var context = this.context_, content, alpha, i, ii, feature, id, size, geometry, components, j, jj, point, vec;
   if(symbolizer instanceof ol.style.ShapeLiteral) {
     content = ol.renderer.canvas.VectorRenderer.renderShape(symbolizer);
     alpha = 1
@@ -16919,7 +16933,12 @@ ol.renderer.canvas.VectorRenderer.prototype.renderPointFeatures_ = function(feat
   context.setTransform(1, 0, 0, 1, -midWidth, -midHeight);
   context.globalAlpha = alpha;
   for(i = 0, ii = features.length;i < ii;++i) {
-    geometry = features[i].getGeometry();
+    feature = features[i];
+    id = goog.getUid(feature);
+    size = this.symbolSizes_[id];
+    this.symbolSizes_[id] = goog.isDef(size) ? [Math.max(size[0], content.width * this.inverseScale_), Math.max(size[1], content.height * this.inverseScale_)] : [content.width * this.inverseScale_, content.height * this.inverseScale_];
+    this.maxSymbolSize_ = [Math.max(this.maxSymbolSize_[0], this.symbolSizes_[id][0]), Math.max(this.maxSymbolSize_[1], this.symbolSizes_[id][1])];
+    geometry = feature.getGeometry();
     if(geometry instanceof ol.geom.Point) {
       components = [geometry]
     }else {
@@ -17130,32 +17149,54 @@ ol.renderer.canvas.VectorLayer.prototype.getTransform = function() {
   return this.transform_
 };
 ol.renderer.canvas.VectorLayer.prototype.getFeatureInfoForPixel = function(pixel, success) {
-  var minPixel = new ol.Pixel(pixel.x - 1, pixel.y - 1);
-  var maxPixel = new ol.Pixel(pixel.x + 1, pixel.y + 1);
   var map = this.getMap();
-  var locationMin = map.getCoordinateFromPixel(minPixel);
-  var locationMax = map.getCoordinateFromPixel(maxPixel);
-  var locationBbox = ol.extent.boundingExtent([locationMin, locationMax]);
-  var filter = new ol.filter.Extent(locationBbox);
-  var candidates = this.getLayer().getFeatures(filter);
-  var location = map.getCoordinateFromPixel(pixel);
-  var tolerance = map.getView().getView2D().getResolution() * 3;
   var result = [];
-  var candidate, geom;
-  for(var i = 0, ii = candidates.length;i < ii;++i) {
-    candidate = candidates[i];
-    geom = candidate.getGeometry();
-    if(goog.isFunction(geom.containsCoordinate)) {
-      if(geom.containsCoordinate(location)) {
-        result.push(candidate)
-      }
-    }else {
-      if(goog.isFunction(geom.distanceFromCoordinate)) {
-        if(geom.distanceFromCoordinate(location) < tolerance) {
-          result.push(candidate)
+  var location = map.getCoordinateFromPixel(pixel);
+  var tileCoord = this.tileGrid_.getTileCoordForCoordAndResolution(location, this.getMap().getView().getView2D().getResolution());
+  var key = tileCoord.toString();
+  if(this.tileCache_.containsKey(key)) {
+    var cachedTile = this.tileCache_.get(key);
+    var symbolSizes = cachedTile[1];
+    var maxSymbolSize = cachedTile[2];
+    var halfMaxWidth = maxSymbolSize[0] / 2;
+    var halfMaxHeight = maxSymbolSize[1] / 2;
+    var locationMin = [location[0] - halfMaxWidth, location[1] - halfMaxHeight];
+    var locationMax = [location[0] + halfMaxWidth, location[1] + halfMaxHeight];
+    var locationBbox = ol.extent.boundingExtent([locationMin, locationMax]);
+    var filter = new ol.filter.Extent(locationBbox);
+    var candidates = this.getLayer().getFeatures(filter);
+    var candidate, geom, type, symbolBounds, symbolSize, halfWidth, halfHeight, coordinates, j;
+    for(var i = 0, ii = candidates.length;i < ii;++i) {
+      candidate = candidates[i];
+      geom = candidate.getGeometry();
+      type = geom.getType();
+      if(type === ol.geom.GeometryType.POINT || type === ol.geom.GeometryType.MULTIPOINT) {
+        symbolSize = symbolSizes[goog.getUid(candidate)];
+        halfWidth = symbolSize[0] / 2;
+        halfHeight = symbolSize[1] / 2;
+        symbolBounds = ol.extent.boundingExtent([[location[0] - halfWidth, location[1] - halfHeight], [location[0] + halfWidth, location[1] + halfHeight]]);
+        coordinates = geom.getCoordinates();
+        if(!goog.isArray(coordinates[0])) {
+          coordinates = [coordinates]
+        }
+        for(j = coordinates.length - 1;j >= 0;--j) {
+          if(ol.extent.containsCoordinate(symbolBounds, coordinates[j])) {
+            result.push(candidate);
+            break
+          }
         }
       }else {
-        result.push(candidate)
+        if(goog.isFunction(geom.containsCoordinate)) {
+          if(geom.containsCoordinate(location)) {
+            result.push(candidate)
+          }
+        }else {
+          if(goog.isFunction(geom.distanceFromCoordinate)) {
+            if(2 * geom.distanceFromCoordinate(location) <= symbolSizes[goog.getUid(candidate)][0]) {
+              result.push(candidate)
+            }
+          }
+        }
       }
     }
   }
@@ -17252,14 +17293,15 @@ ol.renderer.canvas.VectorLayer.prototype.renderFrame = function(frameState, laye
   if(!deferred) {
     goog.object.extend(tilesToRender, tilesOnSketchCanvas)
   }
+  var symbolSizes = sketchCanvasRenderer.getSymbolSizes(), maxSymbolSize = sketchCanvasRenderer.getMaxSymbolSize();
   for(key in tilesToRender) {
     tileCoord = tilesToRender[key];
     if(this.tileCache_.containsKey(key)) {
-      tile = this.tileCache_.get(key)
+      tile = this.tileCache_.get(key)[0]
     }else {
       tile = this.tileArchetype_.cloneNode(false);
       tile.getContext("2d").drawImage(sketchCanvas, (tileRange.minX - tileCoord.x) * tileSize.width, (tileCoord.y - tileRange.maxY) * tileSize.height);
-      this.tileCache_.set(key, tile)
+      this.tileCache_.set(key, [tile, symbolSizes, maxSymbolSize])
     }
     finalContext.drawImage(tile, tileSize.width * (tileCoord.x - tileRange.minX), tileSize.height * (tileRange.maxY - tileCoord.y))
   }
