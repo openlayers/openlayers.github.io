@@ -14639,7 +14639,7 @@ goog.require("ol.interaction.TouchZoom");
 ol.interaction.defaults = function(opt_options, opt_interactions) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   var interactions = new ol.Collection;
-  var kinetic = new ol.Kinetic(-0.005, 0.05, 100);
+  var kinetic = new ol.Kinetic(-0.0050, 0.05, 100);
   var altShiftDragRotate = goog.isDef(options.altShiftDragRotate) ? options.altShiftDragRotate : true;
   if(altShiftDragRotate) {
     interactions.push(new ol.interaction.DragRotate)
@@ -24483,7 +24483,7 @@ ol.parser.KML = function(opt_options) {
   }, "Document":function(options) {
     var node = this.createElementNS("Document");
     for(var key in options) {
-      if(options.hasOwnProperty(key) && typeof options[key] === "string") {
+      if(options.hasOwnProperty(key) && goog.isString(options[key])) {
         var child = this.createElementNS(key);
         child.appendChild(this.createTextNode(options[key]));
         node.appendChild(child)
@@ -24711,12 +24711,17 @@ ol.parser.KML.prototype.parseLinks = function(deferreds, obj, done) {
         var me = this;
         goog.events.listen(xhr, goog.net.EventType.COMPLETE, function(e) {
           if(e.target.isSuccess()) {
-            var data = e.target.getResponseXml();
-            goog.dispose(e.target);
-            if(data && data.nodeType == 9) {
-              data = data.documentElement
+            var data = e.target.getResponseXml() || e.target.getResponseText();
+            if(goog.isString(data)) {
+              data = goog.dom.xml.loadXml(data)
             }
-            me.readNode(data, obj);
+            goog.dispose(e.target);
+            if(data) {
+              if(data.nodeType == 9) {
+                data = data.documentElement
+              }
+              me.readNode(data, obj)
+            }
             me.parseLinks(deferreds, obj, done);
             this.callback(data)
           }
@@ -24732,7 +24737,7 @@ ol.parser.KML.prototype.parseLinks = function(deferreds, obj, done) {
   }
 };
 ol.parser.KML.prototype.read = function(data, opt_callback) {
-  if(typeof data == "string") {
+  if(goog.isString(data)) {
     data = goog.dom.xml.loadXml(data)
   }
   if(data && data.nodeType == 9) {
