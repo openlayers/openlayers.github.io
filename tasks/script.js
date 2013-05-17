@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         if (err) {
           return done(err);
         }
-        var str = String(str).replace('{{ builds }}', JSON.stringify(builds));
+        var str = String(data).replace('{{ builds }}', JSON.stringify(builds));
         fs.writeFile(options.dest, str, done);
       });
     });
