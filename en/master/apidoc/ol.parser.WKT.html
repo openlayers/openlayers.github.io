@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.layer.ImageLayer</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.parser.WKT</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.layer.ImageLayer</a>
+      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.parser.WKT</a>
       <ul class="nav pull-right">
         <li><iframe class="github-watch-button" src="http://ghbtns.com/github-btn.html?user=openlayers&repo=ol3&type=watch&count=true"
 allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></iframe></li>
@@ -41,9 +41,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.layer.html">.layer</a>.</span>
-    
-    ol.layer.ImageLayer
+    ol.parser.WKT
     </h2>
     
 </header>  
@@ -55,12 +53,99 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
         
 <dt>
-    <h4 class="name" id="ImageLayer"><span class="type-signature"></span>new ImageLayer</h4>
+    <h4 class="name" id="WKT"><span class="type-signature"></span>new WKT</h4>
     
     
 </dt>
 <dd>
     
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>wkt.js, line 21</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="ol.parser.Parser.html">ol.parser.Parser</a></li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="read"><span class="type-signature"></span>read</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Parse a WKT string.</p>
+    </div>
     
 
     
@@ -93,13 +178,13 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>str</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.layer.html#LayerOptions">ol.layer.LayerOptions</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -109,7 +194,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
             
             
             
-            <td class="description last"><p>Layer options.</p></td>
+            <td class="description last"><p>WKT string.</p></td>
         </tr>
 	
 	
@@ -139,7 +224,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagelayer.js, line 13</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>wkt.js, line 333</li></ul></dd>
 	
     
     
@@ -155,25 +240,169 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Parsed geometry.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
+        
+            
+<dt>
+    <h4 class="name" id="write"><span class="type-signature"></span>write</h4>
     
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Write out a geometry as a WKT string.</p>
     </div>
     
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>geom</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The geometry to encode.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>wkt.js, line 343</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
     
     
     
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>WKT for the geometry.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
-    
-    
-    
-    
+</dd>
+
+        </dl>
     
     
     

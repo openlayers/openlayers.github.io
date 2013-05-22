@@ -84,9 +84,9 @@ goog.addDependency('../../../ol/ol/parser/featureparser.js', ['ol.parser.AsyncOb
 goog.addDependency('../../../ol/ol/parser/geojson.js', ['ol.parser.GeoJSON'], ['goog.asserts', 'ol.Feature', 'ol.geom.Geometry', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.geom.SharedVertices', 'ol.parser.Parser', 'ol.parser.ReadFeaturesOptions', 'ol.parser.StringFeatureParser']);
 goog.addDependency('../../../ol/ol/parser/kml.js', ['ol.parser.KML'], ['goog.array', 'goog.async.Deferred', 'goog.async.DeferredList', 'goog.date', 'goog.dispose', 'goog.dom.xml', 'goog.events', 'goog.net.EventType', 'goog.net.XhrIo', 'goog.object', 'goog.string', 'ol.Feature', 'ol.geom.AbstractCollection', 'ol.geom.GeometryCollection', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.geom.SharedVertices', 'ol.parser.AsyncObjectFeatureParser', 'ol.parser.AsyncStringFeatureParser', 'ol.parser.DomFeatureParser', 'ol.parser.ReadFeaturesOptions', 'ol.parser.StringFeatureParser', 'ol.parser.XML', 'ol.style.Icon', 'ol.style.Line', 'ol.style.LineLiteral', 'ol.style.Polygon', 'ol.style.PolygonLiteral']);
 goog.addDependency('../../../ol/ol/parser/ogc/exceptionreport.js', ['ol.parser.ogc.ExceptionReport'], ['goog.dom.xml', 'ol.parser.XML']);
-goog.addDependency('../../../ol/ol/parser/ogc/gml.js', ['ol.parser.ogc.GML'], ['goog.array', 'goog.dom.xml', 'goog.object', 'ol.Feature', 'ol.geom.Geometry', 'ol.geom.GeometryCollection', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.LinearRing', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.parser.StringFeatureParser', 'ol.parser.XML']);
+goog.addDependency('../../../ol/ol/parser/ogc/gml.js', ['ol.parser.ogc.GML'], ['goog.array', 'goog.dom.xml', 'ol.Feature', 'ol.geom.Geometry', 'ol.geom.GeometryCollection', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.LinearRing', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.parser.StringFeatureParser', 'ol.parser.XML']);
 goog.addDependency('../../../ol/ol/parser/ogc/gml_v2.js', ['ol.parser.ogc.GML_v2'], ['goog.array', 'goog.object', 'ol.parser.ogc.GML']);
-goog.addDependency('../../../ol/ol/parser/ogc/gml_v3.js', ['ol.parser.ogc.GML_v3'], ['goog.dom.xml', 'goog.object', 'ol.geom.GeometryType', 'ol.parser.ogc.GML']);
+goog.addDependency('../../../ol/ol/parser/ogc/gml_v3.js', ['ol.parser.ogc.GML_v3'], ['goog.array', 'goog.object', 'ol.geom.GeometryType', 'ol.parser.ogc.GML']);
 goog.addDependency('../../../ol/ol/parser/ogc/owscommon_v1.js', ['ol.parser.ogc.OWSCommon_v1'], ['ol.parser.XML']);
 goog.addDependency('../../../ol/ol/parser/ogc/owscommon_v1_1_0.js', ['ol.parser.ogc.OWSCommon_v1_1_0'], ['goog.object', 'ol.parser.ogc.OWSCommon_v1']);
 goog.addDependency('../../../ol/ol/parser/ogc/versioned.js', ['ol.parser.ogc.Versioned'], ['goog.dom.xml', 'ol.parser.ogc.ExceptionReport']);
@@ -102,6 +102,7 @@ goog.addDependency('../../../ol/ol/parser/ogc/wmtscapabilities.js', ['ol.parser.
 goog.addDependency('../../../ol/ol/parser/ogc/wmtscapabilities_v1_0_0.js', ['ol.parser.ogc.WMTSCapabilities_v1_0_0'], ['goog.dom.xml', 'ol.coordinate', 'ol.parser.XML', 'ol.parser.ogc.OWSCommon_v1_1_0', 'ol.projection']);
 goog.addDependency('../../../ol/ol/parser/parser.js', ['ol.parser.Parser'], []);
 goog.addDependency('../../../ol/ol/parser/polyline.js', ['ol.parser.polyline'], []);
+goog.addDependency('../../../ol/ol/parser/wkt.js', ['ol.parser.WKT'], ['goog.array', 'goog.string', 'ol.geom.Geometry', 'ol.geom.GeometryCollection', 'ol.geom.LineString', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.parser.Parser']);
 goog.addDependency('../../../ol/ol/parser/xml.js', ['ol.parser.XML'], ['goog.dom.xml', 'ol.parser.Parser']);
 goog.addDependency('../../../ol/ol/pixel.js', ['ol.Pixel'], ['goog.math.Coordinate']);
 goog.addDependency('../../../ol/ol/projection/common.js', ['ol.projection.addCommonProjections'], ['ol.projection', 'ol.projection.EPSG3857', 'ol.projection.EPSG4326']);
@@ -157,7 +158,7 @@ goog.addDependency('../../../ol/ol/structs/buffer.js', ['ol.structs.Buffer'], ['
 goog.addDependency('../../../ol/ol/structs/integerset.js', ['ol.structs.IntegerSet'], ['goog.asserts']);
 goog.addDependency('../../../ol/ol/structs/lrucache.js', ['ol.structs.LRUCache'], ['goog.asserts', 'goog.object']);
 goog.addDependency('../../../ol/ol/structs/priorityqueue.js', ['ol.structs.PriorityQueue'], ['goog.asserts', 'goog.object']);
-goog.addDependency('../../../ol/ol/structs/rtree.js', ['ol.structs.RTree'], ['goog.object', 'ol.extent']);
+goog.addDependency('../../../ol/ol/structs/rtree.js', ['ol.structs.RTree'], ['goog.array', 'ol.extent']);
 goog.addDependency('../../../ol/ol/style/icon.js', ['ol.style.Icon', 'ol.style.IconLiteral', 'ol.style.IconType'], ['goog.asserts', 'ol.Expression', 'ol.ExpressionLiteral', 'ol.style.Point', 'ol.style.PointLiteral']);
 goog.addDependency('../../../ol/ol/style/line.js', ['ol.style.Line', 'ol.style.LineLiteral'], ['goog.asserts', 'ol.Expression', 'ol.ExpressionLiteral', 'ol.style.Symbolizer', 'ol.style.SymbolizerLiteral']);
 goog.addDependency('../../../ol/ol/style/point.js', ['ol.style.Point', 'ol.style.PointLiteral'], ['ol.style.Symbolizer', 'ol.style.SymbolizerLiteral']);
