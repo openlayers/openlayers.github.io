@@ -1,15 +1,15 @@
 // FIXME handle geolocation not supported
-// FIXME handle geolocation errors
 
 goog.provide('ol.Geolocation');
 goog.provide('ol.GeolocationProperty');
 
 goog.require('goog.events');
+goog.require('goog.events.EventType');
 goog.require('goog.math');
 goog.require('ol.Coordinate');
 goog.require('ol.Object');
 goog.require('ol.Projection');
-goog.require('ol.projection');
+goog.require('ol.proj');
 
 
 /**
@@ -51,7 +51,7 @@ ol.Geolocation = function(opt_options) {
    * @private
    * @type {ol.TransformFunction}
    */
-  this.transform_ = ol.projection.identityTransform;
+  this.transform_ = ol.proj.identityTransform;
 
   /**
    * @private
@@ -60,14 +60,14 @@ ol.Geolocation = function(opt_options) {
   this.watchId_ = undefined;
 
   goog.events.listen(
-      this, ol.Object.getChangedEventType(ol.GeolocationProperty.PROJECTION),
+      this, ol.Object.getChangeEventType(ol.GeolocationProperty.PROJECTION),
       this.handleProjectionChanged_, false, this);
   goog.events.listen(
-      this, ol.Object.getChangedEventType(ol.GeolocationProperty.TRACKING),
+      this, ol.Object.getChangeEventType(ol.GeolocationProperty.TRACKING),
       this.handleTrackingChanged_, false, this);
 
   if (goog.isDef(options.projection)) {
-    this.setProjection(ol.projection.get(options.projection));
+    this.setProjection(ol.proj.get(options.projection));
   }
   if (goog.isDef(options.trackingOptions)) {
     this.setTrackingOptions(options.trackingOptions);
@@ -95,8 +95,8 @@ ol.Geolocation.prototype.disposeInternal = function() {
 ol.Geolocation.prototype.handleProjectionChanged_ = function() {
   var projection = this.getProjection();
   if (goog.isDefAndNotNull(projection)) {
-    this.transform_ = ol.projection.getTransformFromProjections(
-        ol.projection.get('EPSG:4326'), projection);
+    this.transform_ = ol.proj.getTransformFromProjections(
+        ol.proj.get('EPSG:4326'), projection);
     if (!goog.isNull(this.position_)) {
       this.set(
           ol.GeolocationProperty.POSITION, this.transform_(this.position_));
@@ -163,6 +163,8 @@ ol.Geolocation.prototype.positionChange_ = function(position) {
  * @param {GeolocationPositionError} error error object.
  */
 ol.Geolocation.prototype.positionError_ = function(error) {
+  error.type = goog.events.EventType.ERROR;
+  this.dispatchEvent(error);
 };
 
 

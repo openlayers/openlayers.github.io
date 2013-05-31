@@ -56,8 +56,8 @@ goog.require('ol.control.defaults');
 goog.require('ol.extent');
 goog.require('ol.interaction.defaults');
 goog.require('ol.layer.Layer');
-goog.require('ol.projection');
-goog.require('ol.projection.addCommonProjections');
+goog.require('ol.proj');
+goog.require('ol.proj.addCommonProjections');
 goog.require('ol.renderer.Map');
 goog.require('ol.renderer.canvas.Map');
 goog.require('ol.renderer.canvas.SUPPORTED');
@@ -307,13 +307,13 @@ ol.Map = function(options) {
    */
   this.layersListenerKeys_ = null;
 
-  goog.events.listen(this, ol.Object.getChangedEventType(ol.MapProperty.LAYERS),
+  goog.events.listen(this, ol.Object.getChangeEventType(ol.MapProperty.LAYERS),
       this.handleLayersChanged_, false, this);
-  goog.events.listen(this, ol.Object.getChangedEventType(ol.MapProperty.VIEW),
+  goog.events.listen(this, ol.Object.getChangeEventType(ol.MapProperty.VIEW),
       this.handleViewChanged_, false, this);
-  goog.events.listen(this, ol.Object.getChangedEventType(ol.MapProperty.SIZE),
+  goog.events.listen(this, ol.Object.getChangeEventType(ol.MapProperty.SIZE),
       this.handleSizeChanged_, false, this);
-  goog.events.listen(this, ol.Object.getChangedEventType(ol.MapProperty.TARGET),
+  goog.events.listen(this, ol.Object.getChangeEventType(ol.MapProperty.TARGET),
       this.handleTargetChanged_, false, this);
 
   // setValues will trigger the rendering of the map if the map
@@ -421,7 +421,7 @@ ol.Map.prototype.getCoordinateFromPixel = function(pixel) {
   if (goog.isNull(frameState)) {
     return null;
   } else {
-    var vec2 = [pixel.x, pixel.y];
+    var vec2 = pixel.slice();
     return ol.vec.Mat4.multVec2(frameState.pixelToCoordinateMatrix, vec2, vec2);
   }
 };
@@ -470,8 +470,7 @@ ol.Map.prototype.getPixelFromCoordinate = function(coordinate) {
     return null;
   } else {
     var vec2 = coordinate.slice(0, 2);
-    ol.vec.Mat4.multVec2(frameState.coordinateToPixelMatrix, vec2, vec2);
-    return new ol.Pixel(vec2[0], vec2[1]);
+    return ol.vec.Mat4.multVec2(frameState.coordinateToPixelMatrix, vec2, vec2);
   }
 };
 
@@ -727,7 +726,7 @@ ol.Map.prototype.handleViewChanged_ = function() {
   var view = this.getView();
   if (goog.isDefAndNotNull(view)) {
     this.viewPropertyListenerKey_ = goog.events.listen(
-        view, ol.ObjectEventType.CHANGED,
+        view, ol.ObjectEventType.CHANGE,
         this.handleViewPropertyChanged_, false, this);
   }
   this.render();
@@ -792,7 +791,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
 
   var i, ii, view2DState;
 
-  if (this.freezeRenderingCount_ != 0) {
+  if (this.freezeRenderingCount_ !== 0) {
     return;
   }
 
@@ -1078,7 +1077,7 @@ ol.RendererHints.createFromQueryData = function(opt_queryData) {
 };
 
 
-ol.projection.addCommonProjections();
+ol.proj.addCommonProjections();
 
 
 if (goog.DEBUG) {

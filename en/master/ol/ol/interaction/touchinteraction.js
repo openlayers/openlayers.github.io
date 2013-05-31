@@ -52,7 +52,7 @@ ol.interaction.Touch.centroid = function(touches) {
     clientX += touches[i].clientX;
     clientY += touches[i].clientY;
   }
-  return new ol.Pixel(clientX / length, clientY / length);
+  return [clientX / length, clientY / length];
 };
 
 
@@ -106,7 +106,6 @@ ol.interaction.Touch.prototype.handleTouchStart = goog.functions.FALSE;
  */
 ol.interaction.Touch.prototype.handleMapBrowserEvent =
     function(mapBrowserEvent) {
-  var browserEvent = mapBrowserEvent.browserEvent.getBrowserEvent();
   this.updateTrackedTouches_(mapBrowserEvent);
   if (this.handled_) {
     if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.TOUCHMOVE) {

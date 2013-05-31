@@ -14,7 +14,7 @@ goog.require('ol.Pixel');
 goog.require('ol.Projection');
 goog.require('ol.TransformFunction');
 goog.require('ol.control.Control');
-goog.require('ol.projection');
+goog.require('ol.proj');
 
 
 
@@ -44,7 +44,7 @@ ol.control.MousePosition = function(opt_options) {
    * @private
    * @type {ol.Projection}
    */
-  this.projection_ = ol.projection.get(options.projection);
+  this.projection_ = ol.proj.get(options.projection);
 
   /**
    * @private
@@ -75,7 +75,7 @@ ol.control.MousePosition = function(opt_options) {
    * @private
    * @type {ol.TransformFunction}
    */
-  this.transform_ = ol.projection.identityTransform;
+  this.transform_ = ol.proj.identityTransform;
 
   /**
    * @private
@@ -115,9 +115,8 @@ ol.control.MousePosition.prototype.handleMouseMove = function(browserEvent) {
   var map = this.getMap();
   var eventPosition = goog.style.getRelativePosition(
       browserEvent, map.getViewport());
-  var pixel = new ol.Pixel(eventPosition.x, eventPosition.y);
-  this.updateHTML_(pixel);
-  this.lastMouseMovePixel_ = pixel;
+  this.lastMouseMovePixel_ = [eventPosition.x, eventPosition.y];
+  this.updateHTML_(this.lastMouseMovePixel_);
 };
 
 
@@ -157,10 +156,10 @@ ol.control.MousePosition.prototype.updateHTML_ = function(pixel) {
   if (!goog.isNull(pixel)) {
     if (this.renderedProjection_ != this.mapProjection_) {
       if (!goog.isNull(this.projection_)) {
-        this.transform_ = ol.projection.getTransformFromProjections(
+        this.transform_ = ol.proj.getTransformFromProjections(
             this.mapProjection_, this.projection_);
       } else {
-        this.transform_ = ol.projection.identityTransform;
+        this.transform_ = ol.proj.identityTransform;
       }
       this.renderedProjection_ = this.mapProjection_;
     }

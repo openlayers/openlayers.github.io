@@ -15,7 +15,7 @@ var map = new ol.Map({
   renderers: ol.RendererHints.createFromQueryData(),
   target: 'map',
   view: new ol.View2D({
-    center: ol.projection.transform(
+    center: ol.proj.transform(
         [-0.1275, 51.507222], 'EPSG:4326', 'EPSG:3857'),
     zoom: 10
   })

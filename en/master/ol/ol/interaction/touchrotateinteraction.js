@@ -73,8 +73,6 @@ ol.interaction.TouchRotate.prototype.handleTouchMove =
 
   var touch0 = this.targetTouches[0];
   var touch1 = this.targetTouches[1];
-  var dx = touch0.clientX - touch1.clientX;
-  var dy = touch0.clientY - touch1.clientY;
 
   // angle between touches
   var angle = Math.atan2(
@@ -99,8 +97,8 @@ ol.interaction.TouchRotate.prototype.handleTouchMove =
   //     touch0,touch1 and previousTouch0,previousTouch1
   var viewportPosition = goog.style.getClientPosition(map.getViewport());
   var centroid = ol.interaction.Touch.centroid(this.targetTouches);
-  centroid.x -= viewportPosition.x;
-  centroid.y -= viewportPosition.y;
+  centroid[0] -= viewportPosition[0];
+  centroid[1] -= viewportPosition[1];
   this.anchor_ = map.getCoordinateFromPixel(centroid);
 
   // rotate

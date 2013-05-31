@@ -51,6 +51,8 @@ ol.parser.KML = function(opt_options) {
       options.extractAttributes : true;
   this.extractStyles = goog.isDef(options.extractStyles) ?
       options.extractStyles : false;
+  this.schemaLocation = 'http://www.opengis.net/kml/2.2 ' +
+      'http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd';
   // TODO re-evaluate once shared structures support 3D
   this.dimension = goog.isDef(options.dimension) ? options.dimension : 3;
   this.maxDepth = goog.isDef(options.maxDepth) ? options.maxDepth : 0;
@@ -102,6 +104,7 @@ ol.parser.KML = function(opt_options) {
       'Placemark': function(node, obj) {
         var container = {properties: {}};
         var sharedVertices, callback;
+        var id = node.getAttribute('id');
         this.readChildNodes(node, container);
         if (goog.isDef(container.track)) {
           var track = container.track, j, jj;
@@ -123,6 +126,9 @@ ol.parser.KML = function(opt_options) {
               container.properties['altitude'] = track.points[i].coordinates[2];
             }
             var feature = new ol.Feature(container.properties);
+            if (!goog.isNull(id)) {
+              feature.setFeatureId(id);
+            }
             var geom = track.points[i];
             if (geom) {
               sharedVertices = undefined;
@@ -148,6 +154,9 @@ ol.parser.KML = function(opt_options) {
             }
           }
           feature = new ol.Feature(container.properties);
+          if (!goog.isNull(id)) {
+            feature.setFeatureId(id);
+          }
           if (container.geometry) {
             sharedVertices = undefined;
             if (this.readFeaturesOptions_) {
@@ -557,7 +566,6 @@ ol.parser.KML = function(opt_options) {
     'http://www.opengis.net/kml/2.2': {
       'kml': function(options) {
         var node = this.createElementNS('kml');
-        node.setAttribute('xmlns', this.defaultNamespaceURI);
         this.writeNode('Document', options, null, node);
         return node;
       },
@@ -679,6 +687,10 @@ ol.parser.KML = function(opt_options) {
       },
       '_feature': function(feature) {
         var node = this.createElementNS('Placemark');
+        var fid = feature.getFeatureId();
+        if (goog.isDef(fid)) {
+          node.setAttribute('id', fid);
+        }
         this.writeNode('name', feature, null, node);
         this.writeNode('description', feature, null, node);
         var literals = feature.getSymbolizerLiterals();
@@ -1046,5 +1058,8 @@ ol.parser.KML.prototype.createGeometry_ = function(container,
  */
 ol.parser.KML.prototype.write = function(obj) {
   var root = this.writeNode('kml', obj);
-  return goog.dom.xml.serialize(root);
+  this.setAttributeNS(
+      root, 'http://www.w3.org/2001/XMLSchema-instance',
+      'xsi:schemaLocation', this.schemaLocation);
+  return this.serialize(root);
 };

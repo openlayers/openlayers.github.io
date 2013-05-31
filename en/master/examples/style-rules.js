@@ -33,7 +33,7 @@ var style = new ol.style.Style({rules: [
 var vector = new ol.layer.Vector({
   style: style,
   source: new ol.source.Vector({
-    projection: ol.projection.get('EPSG:3857')
+    projection: ol.proj.get('EPSG:3857')
   })
 });
 
@@ -100,7 +100,7 @@ vector.parseFeatures({
       'coordinates': [[10000000, -10000000], [-10000000, -10000000]]
     }
   }]
-}, new ol.parser.GeoJSON(), ol.projection.get('EPSG:3857'));
+}, new ol.parser.GeoJSON(), ol.proj.get('EPSG:3857'));
 
 
 var map = new ol.Map({

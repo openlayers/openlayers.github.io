@@ -4,7 +4,7 @@ var raster = new ol.layer.TileLayer({
 
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
-    projection: ol.projection.get('EPSG:4326')
+    projection: ol.proj.get('EPSG:4326')
   }),
   style: new ol.style.Style({rules: [
     new ol.style.Rule({
@@ -27,14 +27,14 @@ var map = new ol.Map({
   })
 });
 
-map.on('mousemove', function(evt) {
+map.on(['click', 'mousemove'], function(evt) {
   map.getFeatureInfo({
     pixel: evt.getPixel(),
     layers: [vector],
     success: function(features) {
       var info = [];
       for (var i = 0, ii = features.length; i < ii; ++i) {
-        info.push(features[i].get('name'));
+        info.push(features[i].getFeatureId() + ': ' + features[i].get('name'));
       }
       document.getElementById('info').innerHTML = info.join(', ') || '&nbsp;';
     }

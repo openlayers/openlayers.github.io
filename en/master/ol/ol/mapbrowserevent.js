@@ -82,7 +82,7 @@ ol.MapBrowserEvent.prototype.getPixel = function() {
   if (goog.isNull(this.pixel_)) {
     var eventPosition = goog.style.getRelativePosition(
         this.browserEvent, this.map.getViewport());
-    this.pixel_ = new ol.Pixel(eventPosition.x, eventPosition.y);
+    this.pixel_ = [eventPosition.x, eventPosition.y];
   }
   return this.pixel_;
 };
@@ -209,7 +209,7 @@ ol.MapBrowserEventHandler.prototype.click_ = function(browserEvent) {
   if (!this.dragged_) {
     var newEvent;
     var type = browserEvent.type;
-    if (this.timestamp_ == 0 || type == goog.events.EventType.DBLCLICK) {
+    if (this.timestamp_ === 0 || type == goog.events.EventType.DBLCLICK) {
       newEvent = new ol.MapBrowserEvent(
           ol.MapBrowserEvent.EventType.DBLCLICK, this.map_, browserEvent);
       this.dispatchEvent(newEvent);
