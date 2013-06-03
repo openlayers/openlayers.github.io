@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.tilegrid.XYZ</title>
+    <title>OpenLayers 3 API Documentation - Namespace: ol.geom</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.tilegrid.XYZ</a>
+      <a class="brand" href="./">OpenLayers 3 API Documentation - Namespace: ol.geom</a>
       <ul class="nav pull-right">
         <li><iframe class="github-watch-button" src="http://ghbtns.com/github-btn.html?user=openlayers&repo=ol3&type=watch&count=true"
 allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></iframe></li>
@@ -41,9 +41,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.tilegrid.html">.tilegrid</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.tilegrid.XYZ
+    ol.geom
     </h2>
     
 </header>  
@@ -54,70 +54,8 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
     
         
-<dt>
-    <h4 class="name" id="XYZ"><span class="type-signature"></span>new XYZ</h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.tilegrid.html#XYZOptions">ol.tilegrid.XYZOptions</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>XYZ options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
+        
 <dl class="details">
     
         
@@ -139,7 +77,361 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>xyztilegrid.js, line 17</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geom.jsdoc, line 1</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Classes</h3>
+        
+        <dl>
+            <dt><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></dt>
+            <dd></dd>
+        
+            <dt><a href="ol.geom.LineString.html">ol.geom.LineString</a></dt>
+            <dd></dd>
+        
+            <dt><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></dt>
+            <dd></dd>
+        
+            <dt><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></dt>
+            <dd></dd>
+        
+            <dt><a href="ol.geom.MultiPolygon.html">ol.geom.MultiPolygon</a></dt>
+            <dd></dd>
+        
+            <dt><a href="ol.geom.Point.html">ol.geom.Point</a></dt>
+            <dd></dd>
+        
+            <dt><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></dt>
+            <dd></dd>
+        
+            <dt><a href="ol.geom.SharedVertices.html">ol.geom.SharedVertices</a></dt>
+            <dd></dd>
+        </dl>
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt class="">
+    <h4 class="name" id="GeometryType"><span class="type-signature">&lt;static> </span>GeometryType<span class="type-signature"> :string</span></h4>
+    
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Geometry types.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>POINT</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    point
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>LINESTRING</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    linestring
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>LINEARRING</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    linearring
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>POLYGON</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    polygon
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>MULTIPOINT</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    multipoint
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>MULTILINESTRING</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    multilinestring
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>MULTIPOLYGON</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    multipolygon
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>GEOMETRYCOLLECTION</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+                <td class="default">
+                
+                    geometrycollection
+                
+                </td>
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>geometry.js, line 64</li></ul></dd>
 	
     
     
@@ -151,33 +443,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 
     
     
-    
-    
-    
-    
-    
-    
 </dd>
 
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        </dl>
     
     
     
