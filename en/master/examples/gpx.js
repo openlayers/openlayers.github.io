@@ -5,7 +5,14 @@ var raster = new ol.layer.TileLayer({
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
     projection: ol.proj.get('EPSG:4326')
-  })
+  }),
+  transformFeatureInfo: function(features) {
+    var info = [];
+    for (var i = 0, ii = features.length; i < ii; ++i) {
+      info.push(features[i].get('name') + ': ' + features[i].get('type'));
+    }
+    return info.join(', ');
+  }
 });
 
 var map = new ol.Map({
@@ -22,12 +29,8 @@ map.on(['click', 'mousemove'], function(evt) {
   map.getFeatureInfo({
     pixel: evt.getPixel(),
     layers: [vector],
-    success: function(features) {
-      var info = [];
-      for (var i = 0, ii = features.length; i < ii; ++i) {
-        info.push(features[i].get('name') + ': ' + features[i].get('type'));
-      }
-      document.getElementById('info').innerHTML = info.join(', ') || '&nbsp;';
+    success: function(featureInfo) {
+      document.getElementById('info').innerHTML = featureInfo[0] || '&nbsp;';
     }
   });
 });

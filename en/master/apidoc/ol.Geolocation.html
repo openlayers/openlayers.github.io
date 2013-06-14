@@ -62,6 +62,22 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Helper class for providing HTML5 Geolocation capabilities.
+HTML5 Geolocation is used to locate a user's position.</p>
+
+<p>Example:</p>
+
+<pre><code>var geolocation = new ol.Geolocation();
+// take the projection to use from the map's view
+geolocation.bindTo('projection', map.getView());
+// listen to changes in position
+geolocation.on('change:position', function(evt) {
+  window.console.log(geolocation.getPosition());
+});
+</code></pre>
+    </div>
+    
 
     
     
@@ -149,7 +165,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 37</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 51</li></ul></dd>
 	
     
     
@@ -194,11 +210,65 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
         <dl>
             
 <dt class="">
+    <h4 class="name" id="SUPPORTED"><span class="type-signature">&lt;static, constant> </span>SUPPORTED<span class="type-signature"> :boolean</span></h4>
+    
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Is HTML5 geolocation supported in the current browser?</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 146</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
     <h4 class="name" id="setValues"><span class="type-signature"></span>setValues<span class="type-signature"></span></h4>
     
     
 </dt>
 <dd class="">
+    
+    <div class="description">
+        <p>Sets a collection of key-value pairs.</p>
+    </div>
     
     
     
@@ -228,7 +298,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 293</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 304</li></ul></dd>
 	
     
     
@@ -257,6 +327,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Binds a View to a Model.</p>
+    </div>
     
 
     
@@ -439,7 +513,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 145</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 147</li></ul></dd>
 	
     
     
@@ -468,6 +542,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Gets a value.</p>
+    </div>
     
 
     
@@ -551,7 +629,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 167</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 170</li></ul></dd>
 	
     
     
@@ -604,7 +682,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
     
     <div class="description">
-        <p>The accuracy of the position in meters.</p>
+        <p>Get the accuracy of the position in meters.</p>
     </div>
     
 
@@ -636,7 +714,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 175</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 189</li></ul></dd>
 	
     
     
@@ -656,7 +734,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
             
 <div class="param-desc">
-    <p>accuracy.</p>
+    <p>accuracy in meters.</p>
 </div>
 
 
@@ -691,6 +769,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Get the altitude associated with the position.</p>
+    </div>
+    
 
     
     
@@ -720,7 +802,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 188</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 203</li></ul></dd>
 	
     
     
@@ -740,7 +822,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
             
 <div class="param-desc">
-    <p>Altitude.</p>
+    <p>The altitude in meters above the mean sea level.</p>
 </div>
 
 
@@ -775,6 +857,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Get the altitude accuracy of the position.</p>
+    </div>
+    
 
     
     
@@ -804,7 +890,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 201</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 217</li></ul></dd>
 	
     
     
@@ -859,6 +945,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Get the heading as radians clockwise from North.</p>
+    </div>
+    
 
     
     
@@ -888,7 +978,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 214</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 231</li></ul></dd>
 	
     
     
@@ -944,7 +1034,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
     
     <div class="description">
-        <p>The position of the device.</p>
+        <p>Get the position of the device.</p>
     </div>
     
 
@@ -976,7 +1066,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 228</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 245</li></ul></dd>
 	
     
     
@@ -1031,6 +1121,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Get the projection associated with the position.</p>
+    </div>
+    
 
     
     
@@ -1060,7 +1154,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 241</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 259</li></ul></dd>
 	
     
     
@@ -1115,6 +1209,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Get the speed in meters per second.</p>
+    </div>
+    
 
     
     
@@ -1144,7 +1242,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 254</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 273</li></ul></dd>
 	
     
     
@@ -1199,6 +1297,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Are we tracking the user's position?</p>
+    </div>
+    
 
     
     
@@ -1228,7 +1330,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 267</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 287</li></ul></dd>
 	
     
     
@@ -1283,6 +1385,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 <dd>
     
     
+    <div class="description">
+        <p>Get the tracking options.</p>
+    </div>
+    
 
     
     
@@ -1312,7 +1418,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 280</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 301</li></ul></dd>
 	
     
     
@@ -1366,6 +1472,12 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Notify all observers of a change on this property. This notifies both
+objects that are bound to the object's property as well as the object
+that it is bound to.</p>
+    </div>
     
 
     
@@ -1449,7 +1561,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 202</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 208</li></ul></dd>
 	
     
     
@@ -1478,6 +1590,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Listen for a certain type of event.</p>
+    </div>
     
 
     
@@ -1633,7 +1749,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 233</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 240</li></ul></dd>
 	
     
     
@@ -1684,6 +1800,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Listen once for a certain type of event.</p>
+    </div>
     
 
     
@@ -1839,7 +1959,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 245</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 253</li></ul></dd>
 	
     
     
@@ -1890,6 +2010,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Sets a value.</p>
+    </div>
     
 
     
@@ -1996,7 +2120,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 254</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 263</li></ul></dd>
 	
     
     
@@ -2025,6 +2149,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Sets a collection of key-value pairs.</p>
+    </div>
     
 
     
@@ -2108,7 +2236,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 276</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 286</li></ul></dd>
 	
     
     
@@ -2137,6 +2265,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Set the projection to use for transforming the coordinates.</p>
+    </div>
     
 
     
@@ -2215,7 +2347,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 293</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 315</li></ul></dd>
 	
     
     
@@ -2244,6 +2376,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Enable/disable tracking.</p>
+    </div>
     
 
     
@@ -2322,7 +2458,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 305</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 328</li></ul></dd>
 	
     
     
@@ -2351,6 +2487,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Set the tracking options.</p>
+    </div>
     
 
     
@@ -2429,7 +2569,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 317</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geolocation.js, line 341</li></ul></dd>
 	
     
     
@@ -2458,6 +2598,10 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Unlisten for a certain type of event.</p>
+    </div>
     
 
     
@@ -2613,7 +2757,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 319</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 333</li></ul></dd>
 	
     
     
@@ -2642,6 +2786,11 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Removes a binding. Unbinding will set the unbound property to the current
+    value. The object will not be notified, as the value has not changed.</p>
+    </div>
     
 
     
@@ -2725,7 +2874,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 299</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 312</li></ul></dd>
 	
     
     
@@ -2793,7 +2942,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 335</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 351</li></ul></dd>
 	
     
     
@@ -2822,6 +2971,11 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Removes an event listener which was added with listen() by the key returned
+    by on().</p>
+    </div>
     
 
     
@@ -2915,7 +3069,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>object.js, line 327</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 343</li></ul></dd>
 	
     
     
@@ -2951,7 +3105,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ol.Attribution.html">ol.Attribution</a></li><li><a href="ol.Collection.html">ol.Collection</a></li><li><a href="ol.Expression.html">ol.Expression</a></li><li><a href="ol.Feature.html">ol.Feature</a></li><li><a href="ol.Geolocation.html">ol.Geolocation</a></li><li><a href="ol.Map.html">ol.Map</a></li><li><a href="ol.MapEvent.html">ol.MapEvent</a></li><li><a href="ol.Object.html">ol.Object</a></li><li><a href="ol.Overlay.html">ol.Overlay</a></li><li><a href="ol.Projection.html">ol.Projection</a></li><li><a href="ol.View2D.html">ol.View2D</a></li><li><a href="ol.control.Attribution.html">ol.control.Attribution</a></li><li><a href="ol.control.Control.html">ol.control.Control</a></li><li><a href="ol.control.FullScreen.html">ol.control.FullScreen</a></li><li><a href="ol.control.Logo.html">ol.control.Logo</a></li><li><a href="ol.control.MousePosition.html">ol.control.MousePosition</a></li><li><a href="ol.control.ScaleLine.html">ol.control.ScaleLine</a></li><li><a href="ol.control.Zoom.html">ol.control.Zoom</a></li><li><a href="ol.control.ZoomSlider.html">ol.control.ZoomSlider</a></li><li><a href="ol.dom.Input.html">ol.dom.Input</a></li><li><a href="ol.filter.Filter.html">ol.filter.Filter</a></li><li><a href="ol.filter.Geometry.html">ol.filter.Geometry</a></li><li><a href="ol.filter.Logical.html">ol.filter.Logical</a></li><li><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></li><li><a href="ol.geom.LineString.html">ol.geom.LineString</a></li><li><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></li><li><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></li><li><a href="ol.geom.MultiPolygon.html">ol.geom.MultiPolygon</a></li><li><a href="ol.geom.Point.html">ol.geom.Point</a></li><li><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></li><li><a href="ol.geom.SharedVertices.html">ol.geom.SharedVertices</a></li><li><a href="ol.interaction.DragRotateAndZoom.html">ol.interaction.DragRotateAndZoom</a></li><li><a href="ol.layer.ImageLayer.html">ol.layer.ImageLayer</a></li><li><a href="ol.layer.TileLayer.html">ol.layer.TileLayer</a></li><li><a href="ol.layer.Vector.html">ol.layer.Vector</a></li><li><a href="ol.parser.GPX.html">ol.parser.GPX</a></li><li><a href="ol.parser.GeoJSON.html">ol.parser.GeoJSON</a></li><li><a href="ol.parser.KML.html">ol.parser.KML</a></li><li><a href="ol.parser.Parser.html">ol.parser.Parser</a></li><li><a href="ol.parser.WKT.html">ol.parser.WKT</a></li><li><a href="ol.parser.ogc.GML_v2.html">ol.parser.ogc.GML_v2</a></li><li><a href="ol.parser.ogc.GML_v3.html">ol.parser.ogc.GML_v3</a></li><li><a href="ol.parser.ogc.WMSCapabilities.html">ol.parser.ogc.WMSCapabilities</a></li><li><a href="ol.parser.ogc.WMTSCapabilities.html">ol.parser.ogc.WMTSCapabilities</a></li><li><a href="ol.source.BingMaps.html">ol.source.BingMaps</a></li><li><a href="ol.source.DebugTileSource.html">ol.source.DebugTileSource</a></li><li><a href="ol.source.MapQuestOSM.html">ol.source.MapQuestOSM</a></li><li><a href="ol.source.MapQuestOpenAerial.html">ol.source.MapQuestOpenAerial</a></li><li><a href="ol.source.OSM.html">ol.source.OSM</a></li><li><a href="ol.source.SingleImageWMS.html">ol.source.SingleImageWMS</a></li><li><a href="ol.source.Stamen.html">ol.source.Stamen</a></li><li><a href="ol.source.StaticImage.html">ol.source.StaticImage</a></li><li><a href="ol.source.TileJSON.html">ol.source.TileJSON</a></li><li><a href="ol.source.TiledWMS.html">ol.source.TiledWMS</a></li><li><a href="ol.source.Vector.html">ol.source.Vector</a></li><li><a href="ol.source.WMTS.html">ol.source.WMTS</a></li><li><a href="ol.style.Icon.html">ol.style.Icon</a></li><li><a href="ol.style.Line.html">ol.style.Line</a></li><li><a href="ol.style.Polygon.html">ol.style.Polygon</a></li><li><a href="ol.style.Rule.html">ol.style.Rule</a></li><li><a href="ol.style.Shape.html">ol.style.Shape</a></li><li><a href="ol.style.Style.html">ol.style.Style</a></li><li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li><li><a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a></li><li><a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a></li></ul><h3>Namespaces</h3><ul><li><a href="ol.html">ol</a></li><li><a href="ol.animation.html">ol.animation</a></li><li><a href="ol.control.html">ol.control</a></li><li><a href="ol.geom.html">ol.geom</a></li><li><a href="ol.layer.html">ol.layer</a></li><li><a href="ol.parser.html">ol.parser</a></li><li><a href="ol.proj.html">ol.proj</a></li><li><a href="ol.source.html">ol.source</a></li><li><a href="ol.style.html">ol.style</a></li><li><a href="ol.tilegrid.html">ol.tilegrid</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ol3.html">OpenLayers 3 Architecture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Meters per unit lookup table.">Meters per unit lookup table.</a></li><li><a href="global.html#grid">grid</a></li><li>{boolean}</li><li>{number}</li><li>{string}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ol.Attribution.html">ol.Attribution</a></li><li><a href="ol.Collection.html">ol.Collection</a></li><li><a href="ol.DeviceOrientation.html">ol.DeviceOrientation</a></li><li><a href="ol.Expression.html">ol.Expression</a></li><li><a href="ol.Feature.html">ol.Feature</a></li><li><a href="ol.Geolocation.html">ol.Geolocation</a></li><li><a href="ol.Map.html">ol.Map</a></li><li><a href="ol.MapEvent.html">ol.MapEvent</a></li><li><a href="ol.Object.html">ol.Object</a></li><li><a href="ol.Overlay.html">ol.Overlay</a></li><li><a href="ol.Projection.html">ol.Projection</a></li><li><a href="ol.View2D.html">ol.View2D</a></li><li><a href="ol.control.Attribution.html">ol.control.Attribution</a></li><li><a href="ol.control.Control.html">ol.control.Control</a></li><li><a href="ol.control.FullScreen.html">ol.control.FullScreen</a></li><li><a href="ol.control.Logo.html">ol.control.Logo</a></li><li><a href="ol.control.MousePosition.html">ol.control.MousePosition</a></li><li><a href="ol.control.ScaleLine.html">ol.control.ScaleLine</a></li><li><a href="ol.control.Zoom.html">ol.control.Zoom</a></li><li><a href="ol.control.ZoomSlider.html">ol.control.ZoomSlider</a></li><li><a href="ol.dom.Input.html">ol.dom.Input</a></li><li><a href="ol.filter.Filter.html">ol.filter.Filter</a></li><li><a href="ol.filter.Geometry.html">ol.filter.Geometry</a></li><li><a href="ol.filter.Logical.html">ol.filter.Logical</a></li><li><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></li><li><a href="ol.geom.LineString.html">ol.geom.LineString</a></li><li><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></li><li><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></li><li><a href="ol.geom.MultiPolygon.html">ol.geom.MultiPolygon</a></li><li><a href="ol.geom.Point.html">ol.geom.Point</a></li><li><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></li><li><a href="ol.geom.SharedVertices.html">ol.geom.SharedVertices</a></li><li><a href="ol.interaction.DragRotateAndZoom.html">ol.interaction.DragRotateAndZoom</a></li><li><a href="ol.layer.ImageLayer.html">ol.layer.ImageLayer</a></li><li><a href="ol.layer.TileLayer.html">ol.layer.TileLayer</a></li><li><a href="ol.layer.Vector.html">ol.layer.Vector</a></li><li><a href="ol.parser.GPX.html">ol.parser.GPX</a></li><li><a href="ol.parser.GeoJSON.html">ol.parser.GeoJSON</a></li><li><a href="ol.parser.KML.html">ol.parser.KML</a></li><li><a href="ol.parser.Parser.html">ol.parser.Parser</a></li><li><a href="ol.parser.WKT.html">ol.parser.WKT</a></li><li><a href="ol.parser.ogc.GML_v2.html">ol.parser.ogc.GML_v2</a></li><li><a href="ol.parser.ogc.GML_v3.html">ol.parser.ogc.GML_v3</a></li><li><a href="ol.parser.ogc.WMSCapabilities.html">ol.parser.ogc.WMSCapabilities</a></li><li><a href="ol.parser.ogc.WMTSCapabilities.html">ol.parser.ogc.WMTSCapabilities</a></li><li><a href="ol.source.BingMaps.html">ol.source.BingMaps</a></li><li><a href="ol.source.DebugTileSource.html">ol.source.DebugTileSource</a></li><li><a href="ol.source.MapQuestOSM.html">ol.source.MapQuestOSM</a></li><li><a href="ol.source.MapQuestOpenAerial.html">ol.source.MapQuestOpenAerial</a></li><li><a href="ol.source.OSM.html">ol.source.OSM</a></li><li><a href="ol.source.SingleImageWMS.html">ol.source.SingleImageWMS</a></li><li><a href="ol.source.Stamen.html">ol.source.Stamen</a></li><li><a href="ol.source.StaticImage.html">ol.source.StaticImage</a></li><li><a href="ol.source.TileJSON.html">ol.source.TileJSON</a></li><li><a href="ol.source.TiledWMS.html">ol.source.TiledWMS</a></li><li><a href="ol.source.Vector.html">ol.source.Vector</a></li><li><a href="ol.source.WMTS.html">ol.source.WMTS</a></li><li><a href="ol.style.Icon.html">ol.style.Icon</a></li><li><a href="ol.style.Line.html">ol.style.Line</a></li><li><a href="ol.style.Polygon.html">ol.style.Polygon</a></li><li><a href="ol.style.Rule.html">ol.style.Rule</a></li><li><a href="ol.style.Shape.html">ol.style.Shape</a></li><li><a href="ol.style.Style.html">ol.style.Style</a></li><li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li><li><a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a></li><li><a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a></li></ul><h3>Namespaces</h3><ul><li><a href="ol.html">ol</a></li><li><a href="ol.animation.html">ol.animation</a></li><li><a href="ol.control.html">ol.control</a></li><li><a href="ol.filter.html">ol.filter</a></li><li><a href="ol.geom.html">ol.geom</a></li><li><a href="ol.layer.html">ol.layer</a></li><li><a href="ol.parser.html">ol.parser</a></li><li><a href="ol.proj.html">ol.proj</a></li><li><a href="ol.source.html">ol.source</a></li><li><a href="ol.style.html">ol.style</a></li><li><a href="ol.tilegrid.html">ol.tilegrid</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ol3.html">OpenLayers 3 Architecture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Meters per unit lookup table.">Meters per unit lookup table.</a></li><li><a href="global.html#grid">grid</a></li><li>{boolean}</li><li>{number}</li><li>{string}</li></ul>
 </nav>
 
 <br clear="both">

@@ -193,17 +193,31 @@ ol.renderer.canvas.VectorLayer.prototype.getTransform = function() {
 
 /**
  * @param {ol.Pixel} pixel Pixel coordinate relative to the map viewport.
- * @param {function(Array.<ol.Feature|string>)} success Callback for
- *     successful queries. The passed argument is the resulting feature
- *     information.  Layers that are able to provide attribute data will put
- *     ol.Feature instances, other layers will put a string which can either
- *     be plain text or markup.
+ * @param {function(string, ol.layer.Layer)} success Callback for
+ *     successful queries. The passed arguments are the resulting feature
+ *     information and the layer.
  */
 ol.renderer.canvas.VectorLayer.prototype.getFeatureInfoForPixel =
+    function(pixel, success) {
+  var callback = function(features, layer) {
+    success(layer.getTransformFeatureInfo()(features), layer);
+  };
+  this.getFeaturesForPixel(pixel, callback);
+};
+
+
+/**
+ * @param {ol.Pixel} pixel Pixel coordinate relative to the map viewport.
+ * @param {function(Array.<ol.Feature>, ol.layer.Layer)} success Callback for
+ *     successful queries. The passed arguments are the resulting features
+ *     and the layer.
+ */
+ol.renderer.canvas.VectorLayer.prototype.getFeaturesForPixel =
     function(pixel, success) {
   var map = this.getMap();
   var result = [];
 
+  var layer = this.getLayer();
   var location = map.getCoordinateFromPixel(pixel);
   var tileCoord = this.tileGrid_.getTileCoordForCoordAndResolution(
       location, this.getMap().getView().getView2D().getResolution());
@@ -218,7 +232,7 @@ ol.renderer.canvas.VectorLayer.prototype.getFeatureInfoForPixel =
     var locationMax = [location[0] + halfMaxWidth, location[1] + halfMaxHeight];
     var locationBbox = ol.extent.boundingExtent([locationMin, locationMax]);
     var filter = new ol.filter.Extent(locationBbox);
-    var candidates = this.getLayer().getFeatures(filter);
+    var candidates = layer.getFeatures(filter);
 
     var candidate, geom, type, symbolBounds, symbolSize, halfWidth, halfHeight,
         coordinates, j;
@@ -261,7 +275,7 @@ ol.renderer.canvas.VectorLayer.prototype.getFeatureInfoForPixel =
       }
     }
   }
-  goog.global.setTimeout(function() { success(result); }, 0);
+  goog.global.setTimeout(function() { success(result, layer); }, 0);
 };
 
 
@@ -295,7 +309,7 @@ ol.renderer.canvas.VectorLayer.prototype.renderFrame =
     // lazy tile grid creation to match the view projection
     tileGrid = ol.tilegrid.createForProjection(
         view2DState.projection,
-        22, // should be no harm in going big here - ideally, it would be ∞
+        20, // should be no harm in going big here - ideally, it would be ∞
         [512, 512]);
     this.tileGrid_ = tileGrid;
   }
@@ -372,7 +386,7 @@ ol.renderer.canvas.VectorLayer.prototype.renderFrame =
   sketchCanvas.height = sketchHeight;
 
   var sketchCanvasRenderer = new ol.renderer.canvas.VectorRenderer(
-      sketchCanvas, sketchTransform, undefined, this.requestMapRenderFrame_);
+      sketchCanvas, sketchTransform, this.requestMapRenderFrame_);
 
   // clear/resize final canvas
   var finalCanvas = this.canvas_;

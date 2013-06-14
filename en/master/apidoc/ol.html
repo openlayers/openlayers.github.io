@@ -106,6 +106,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
             <dt><a href="ol.Collection.html">ol.Collection</a></dt>
             <dd></dd>
         
+            <dt><a href="ol.DeviceOrientation.html">ol.DeviceOrientation</a></dt>
+            <dd></dd>
+        
             <dt><a href="ol.Expression.html">ol.Expression</a></dt>
             <dd></dd>
         
@@ -143,6 +146,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
             <dd></dd>
         
             <dt><a href="namespaces.html#ol.control"><a href="ol.control.html">ol.control</a></a></dt>
+            <dd></dd>
+        
+            <dt><a href="namespaces.html#ol.filter"><a href="ol.filter.html">ol.filter</a></a></dt>
             <dd></dd>
         
             <dt><a href="namespaces.html#ol.geom"><a href="ol.geom.html">ol.geom</a></a></dt>
@@ -806,6 +812,106 @@ linter complains with:</p>
         
             
 <dt class="">
+    <h4 class="name" id="DeviceOrientationOptions">DeviceOrientationOptions</h4>
+    
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>tracking</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tracking.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 1</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
     <h4 class="name" id="GeolocationOptions">GeolocationOptions</h4>
     
     
@@ -938,7 +1044,7 @@ linter complains with:</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 1</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 3</li></ul></dd>
 	
     
     
@@ -956,6 +1062,185 @@ linter complains with:</p>
             
 <dt class="">
     <h4 class="name" id="GetFeatureInfoOptions">GetFeatureInfoOptions</h4>
+    
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>pixel</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.Pixel</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Pixel coordinate relative to the map viewport.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>layers</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="ol.layer.Layer.html">ol.layer.Layer</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Layers to restrict the
+    query to. All map layers will be queried if not provided.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>success</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Callback for
+    successful queries. The passed argument is the resulting feature
+    information for each layer, with array indices being the same as in the
+    passed <code>layers</code> array or in the layer collection as returned from
+    <code>ol.Map#getLayers()</code> if no <code>layers</code> were provided.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Callback for unsuccessful
+    queries. Note that queries with no matching features trigger the success
+    callback, not the error callback.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 5</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="GetFeaturesOptions">GetFeaturesOptions</h4>
     
     
 </dt>
@@ -1058,11 +1343,11 @@ linter complains with:</p>
             
             
             
-            <td class="description last"><p>Callback for
-    successful queries. The passed argument is the resulting feature
-    information.  Layers that are able to provide attribute data will put
-    ol.Feature instances, other layers will put a string which can either
-    be plain text or markup.</p></td>
+            <td class="description last"><p>Callback
+    for successful queries. The passed argument is the resulting features for
+    each layer, with array indices being the same as in the passed <code>layers</code>
+    array or in the layer collection as returned from <code>ol.Map#getLayers()</code> if
+    no layers were provided.</p></td>
         </tr>
 	
 	
@@ -1089,7 +1374,8 @@ linter complains with:</p>
             
             
             <td class="description last"><p>Callback for unsuccessful
-    queries.</p></td>
+    queries. Note that queries with no matching features trigger the success
+    callback, not the error callback.</p></td>
         </tr>
 	
 	
@@ -1116,7 +1402,7 @@ linter complains with:</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 3</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 7</li></ul></dd>
 	
     
     
@@ -1384,7 +1670,7 @@ linter complains with:</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 5</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 9</li></ul></dd>
 	
     
     
@@ -1567,7 +1853,7 @@ linter complains with:</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 7</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 11</li></ul></dd>
 	
     
     
@@ -1718,7 +2004,7 @@ linter complains with:</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 9</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 13</li></ul></dd>
 	
     
     
@@ -1969,7 +2255,7 @@ linter complains with:</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 11</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 15</li></ul></dd>
 	
     
     
@@ -2334,7 +2620,7 @@ linter complains with:</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 13</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 17</li></ul></dd>
 	
     
     
@@ -2362,7 +2648,7 @@ linter complains with:</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ol.Attribution.html">ol.Attribution</a></li><li><a href="ol.Collection.html">ol.Collection</a></li><li><a href="ol.Expression.html">ol.Expression</a></li><li><a href="ol.Feature.html">ol.Feature</a></li><li><a href="ol.Geolocation.html">ol.Geolocation</a></li><li><a href="ol.Map.html">ol.Map</a></li><li><a href="ol.MapEvent.html">ol.MapEvent</a></li><li><a href="ol.Object.html">ol.Object</a></li><li><a href="ol.Overlay.html">ol.Overlay</a></li><li><a href="ol.Projection.html">ol.Projection</a></li><li><a href="ol.View2D.html">ol.View2D</a></li><li><a href="ol.control.Attribution.html">ol.control.Attribution</a></li><li><a href="ol.control.Control.html">ol.control.Control</a></li><li><a href="ol.control.FullScreen.html">ol.control.FullScreen</a></li><li><a href="ol.control.Logo.html">ol.control.Logo</a></li><li><a href="ol.control.MousePosition.html">ol.control.MousePosition</a></li><li><a href="ol.control.ScaleLine.html">ol.control.ScaleLine</a></li><li><a href="ol.control.Zoom.html">ol.control.Zoom</a></li><li><a href="ol.control.ZoomSlider.html">ol.control.ZoomSlider</a></li><li><a href="ol.dom.Input.html">ol.dom.Input</a></li><li><a href="ol.filter.Filter.html">ol.filter.Filter</a></li><li><a href="ol.filter.Geometry.html">ol.filter.Geometry</a></li><li><a href="ol.filter.Logical.html">ol.filter.Logical</a></li><li><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></li><li><a href="ol.geom.LineString.html">ol.geom.LineString</a></li><li><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></li><li><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></li><li><a href="ol.geom.MultiPolygon.html">ol.geom.MultiPolygon</a></li><li><a href="ol.geom.Point.html">ol.geom.Point</a></li><li><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></li><li><a href="ol.geom.SharedVertices.html">ol.geom.SharedVertices</a></li><li><a href="ol.interaction.DragRotateAndZoom.html">ol.interaction.DragRotateAndZoom</a></li><li><a href="ol.layer.ImageLayer.html">ol.layer.ImageLayer</a></li><li><a href="ol.layer.TileLayer.html">ol.layer.TileLayer</a></li><li><a href="ol.layer.Vector.html">ol.layer.Vector</a></li><li><a href="ol.parser.GPX.html">ol.parser.GPX</a></li><li><a href="ol.parser.GeoJSON.html">ol.parser.GeoJSON</a></li><li><a href="ol.parser.KML.html">ol.parser.KML</a></li><li><a href="ol.parser.Parser.html">ol.parser.Parser</a></li><li><a href="ol.parser.WKT.html">ol.parser.WKT</a></li><li><a href="ol.parser.ogc.GML_v2.html">ol.parser.ogc.GML_v2</a></li><li><a href="ol.parser.ogc.GML_v3.html">ol.parser.ogc.GML_v3</a></li><li><a href="ol.parser.ogc.WMSCapabilities.html">ol.parser.ogc.WMSCapabilities</a></li><li><a href="ol.parser.ogc.WMTSCapabilities.html">ol.parser.ogc.WMTSCapabilities</a></li><li><a href="ol.source.BingMaps.html">ol.source.BingMaps</a></li><li><a href="ol.source.DebugTileSource.html">ol.source.DebugTileSource</a></li><li><a href="ol.source.MapQuestOSM.html">ol.source.MapQuestOSM</a></li><li><a href="ol.source.MapQuestOpenAerial.html">ol.source.MapQuestOpenAerial</a></li><li><a href="ol.source.OSM.html">ol.source.OSM</a></li><li><a href="ol.source.SingleImageWMS.html">ol.source.SingleImageWMS</a></li><li><a href="ol.source.Stamen.html">ol.source.Stamen</a></li><li><a href="ol.source.StaticImage.html">ol.source.StaticImage</a></li><li><a href="ol.source.TileJSON.html">ol.source.TileJSON</a></li><li><a href="ol.source.TiledWMS.html">ol.source.TiledWMS</a></li><li><a href="ol.source.Vector.html">ol.source.Vector</a></li><li><a href="ol.source.WMTS.html">ol.source.WMTS</a></li><li><a href="ol.style.Icon.html">ol.style.Icon</a></li><li><a href="ol.style.Line.html">ol.style.Line</a></li><li><a href="ol.style.Polygon.html">ol.style.Polygon</a></li><li><a href="ol.style.Rule.html">ol.style.Rule</a></li><li><a href="ol.style.Shape.html">ol.style.Shape</a></li><li><a href="ol.style.Style.html">ol.style.Style</a></li><li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li><li><a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a></li><li><a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a></li></ul><h3>Namespaces</h3><ul><li><a href="ol.html">ol</a></li><li><a href="ol.animation.html">ol.animation</a></li><li><a href="ol.control.html">ol.control</a></li><li><a href="ol.geom.html">ol.geom</a></li><li><a href="ol.layer.html">ol.layer</a></li><li><a href="ol.parser.html">ol.parser</a></li><li><a href="ol.proj.html">ol.proj</a></li><li><a href="ol.source.html">ol.source</a></li><li><a href="ol.style.html">ol.style</a></li><li><a href="ol.tilegrid.html">ol.tilegrid</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ol3.html">OpenLayers 3 Architecture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Meters per unit lookup table.">Meters per unit lookup table.</a></li><li><a href="global.html#grid">grid</a></li><li>{boolean}</li><li>{number}</li><li>{string}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ol.Attribution.html">ol.Attribution</a></li><li><a href="ol.Collection.html">ol.Collection</a></li><li><a href="ol.DeviceOrientation.html">ol.DeviceOrientation</a></li><li><a href="ol.Expression.html">ol.Expression</a></li><li><a href="ol.Feature.html">ol.Feature</a></li><li><a href="ol.Geolocation.html">ol.Geolocation</a></li><li><a href="ol.Map.html">ol.Map</a></li><li><a href="ol.MapEvent.html">ol.MapEvent</a></li><li><a href="ol.Object.html">ol.Object</a></li><li><a href="ol.Overlay.html">ol.Overlay</a></li><li><a href="ol.Projection.html">ol.Projection</a></li><li><a href="ol.View2D.html">ol.View2D</a></li><li><a href="ol.control.Attribution.html">ol.control.Attribution</a></li><li><a href="ol.control.Control.html">ol.control.Control</a></li><li><a href="ol.control.FullScreen.html">ol.control.FullScreen</a></li><li><a href="ol.control.Logo.html">ol.control.Logo</a></li><li><a href="ol.control.MousePosition.html">ol.control.MousePosition</a></li><li><a href="ol.control.ScaleLine.html">ol.control.ScaleLine</a></li><li><a href="ol.control.Zoom.html">ol.control.Zoom</a></li><li><a href="ol.control.ZoomSlider.html">ol.control.ZoomSlider</a></li><li><a href="ol.dom.Input.html">ol.dom.Input</a></li><li><a href="ol.filter.Filter.html">ol.filter.Filter</a></li><li><a href="ol.filter.Geometry.html">ol.filter.Geometry</a></li><li><a href="ol.filter.Logical.html">ol.filter.Logical</a></li><li><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></li><li><a href="ol.geom.LineString.html">ol.geom.LineString</a></li><li><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></li><li><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></li><li><a href="ol.geom.MultiPolygon.html">ol.geom.MultiPolygon</a></li><li><a href="ol.geom.Point.html">ol.geom.Point</a></li><li><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></li><li><a href="ol.geom.SharedVertices.html">ol.geom.SharedVertices</a></li><li><a href="ol.interaction.DragRotateAndZoom.html">ol.interaction.DragRotateAndZoom</a></li><li><a href="ol.layer.ImageLayer.html">ol.layer.ImageLayer</a></li><li><a href="ol.layer.TileLayer.html">ol.layer.TileLayer</a></li><li><a href="ol.layer.Vector.html">ol.layer.Vector</a></li><li><a href="ol.parser.GPX.html">ol.parser.GPX</a></li><li><a href="ol.parser.GeoJSON.html">ol.parser.GeoJSON</a></li><li><a href="ol.parser.KML.html">ol.parser.KML</a></li><li><a href="ol.parser.Parser.html">ol.parser.Parser</a></li><li><a href="ol.parser.WKT.html">ol.parser.WKT</a></li><li><a href="ol.parser.ogc.GML_v2.html">ol.parser.ogc.GML_v2</a></li><li><a href="ol.parser.ogc.GML_v3.html">ol.parser.ogc.GML_v3</a></li><li><a href="ol.parser.ogc.WMSCapabilities.html">ol.parser.ogc.WMSCapabilities</a></li><li><a href="ol.parser.ogc.WMTSCapabilities.html">ol.parser.ogc.WMTSCapabilities</a></li><li><a href="ol.source.BingMaps.html">ol.source.BingMaps</a></li><li><a href="ol.source.DebugTileSource.html">ol.source.DebugTileSource</a></li><li><a href="ol.source.MapQuestOSM.html">ol.source.MapQuestOSM</a></li><li><a href="ol.source.MapQuestOpenAerial.html">ol.source.MapQuestOpenAerial</a></li><li><a href="ol.source.OSM.html">ol.source.OSM</a></li><li><a href="ol.source.SingleImageWMS.html">ol.source.SingleImageWMS</a></li><li><a href="ol.source.Stamen.html">ol.source.Stamen</a></li><li><a href="ol.source.StaticImage.html">ol.source.StaticImage</a></li><li><a href="ol.source.TileJSON.html">ol.source.TileJSON</a></li><li><a href="ol.source.TiledWMS.html">ol.source.TiledWMS</a></li><li><a href="ol.source.Vector.html">ol.source.Vector</a></li><li><a href="ol.source.WMTS.html">ol.source.WMTS</a></li><li><a href="ol.style.Icon.html">ol.style.Icon</a></li><li><a href="ol.style.Line.html">ol.style.Line</a></li><li><a href="ol.style.Polygon.html">ol.style.Polygon</a></li><li><a href="ol.style.Rule.html">ol.style.Rule</a></li><li><a href="ol.style.Shape.html">ol.style.Shape</a></li><li><a href="ol.style.Style.html">ol.style.Style</a></li><li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li><li><a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a></li><li><a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a></li></ul><h3>Namespaces</h3><ul><li><a href="ol.html">ol</a></li><li><a href="ol.animation.html">ol.animation</a></li><li><a href="ol.control.html">ol.control</a></li><li><a href="ol.filter.html">ol.filter</a></li><li><a href="ol.geom.html">ol.geom</a></li><li><a href="ol.layer.html">ol.layer</a></li><li><a href="ol.parser.html">ol.parser</a></li><li><a href="ol.proj.html">ol.proj</a></li><li><a href="ol.source.html">ol.source</a></li><li><a href="ol.style.html">ol.style</a></li><li><a href="ol.tilegrid.html">ol.tilegrid</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ol3.html">OpenLayers 3 Architecture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Meters per unit lookup table.">Meters per unit lookup table.</a></li><li><a href="global.html#grid">grid</a></li><li>{boolean}</li><li>{number}</li><li>{string}</li></ul>
 </nav>
 
 <br clear="both">
