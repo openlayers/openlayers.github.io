@@ -1,3 +1,4 @@
+var path = require('path');
 
 
 /** @param {Object} grunt Grunt. */
@@ -5,47 +6,49 @@ module.exports = function(grunt) {
 
   var currentRelease = 'r3.0.0-alpha.1';
 
+  var build = path.join('.grunt', 'openlayers-website');
+  var dist = path.join(build, 'dist');
+  var repo = path.join(build, 'repo');
+
   grunt.initConfig({
     checkout: {
       options: {
         repo: 'git://github.com/openlayers/ol3.git',
-        dir: 'build/repo'
+        dir: repo
       }
     },
     buildpy: {
-      options: {cwd: 'build/repo'}
+      options: {cwd: repo}
     },
     move: {
       options: {
-        src: 'build/repo/build/gh-pages/HEAD'
-      }
-    },
-    rm: {
-      options: {
-        dir: './'
+        src: path.join(repo, 'build', 'gh-pages', 'HEAD')
       }
     },
     script: {
       options: {
-        builds: 'en',
+        builds: path.join(dist, 'en'),
         selected: currentRelease,
         src: 'templates/index.tpl.js',
-        dest: 'index.js'
+        dest: path.join(dist, 'index.js')
       }
     },
-    publish: {
+    'gh-pages': {
       options: {
-        dir: './'
-      }
+        branch: 'master',
+        base: dist
+      },
+      src: ['**/*']
     },
     clean: {
-      repo: 'build/repo',
-      doc: 'build/doc',
-      all: 'build'
+      dist: dist,
+      repo: repo,
+      all: build
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-gh-pages');
 
   grunt.loadTasks('tasks');
 
@@ -59,17 +62,21 @@ module.exports = function(grunt) {
    */
   grunt.registerTask('deploy', 'Build a tree-ish', function(treeish) {
     var branch = treeish.split('/').pop(); // may not always be a local branch
+
+    // configure gh-pages task to only remove en/<branch> before adding all
+    grunt.option('grunt-gh-pages-only', path.join('en', branch));
+
     grunt.task.run([
       'checkout:' + treeish,
       'buildpy:host-examples',
       'buildpy:doc',
-      'rm:en/' + branch,
-      'move:en/' + branch,
+      'clean:dist',
+      'move:' + path.join(dist, 'en', branch),
       'script',
-      'publish:en/' + branch]);
+      'gh-pages'
+    ]);
   });
 
   grunt.registerTask('default', 'deploy:origin/master');
 
 };
-

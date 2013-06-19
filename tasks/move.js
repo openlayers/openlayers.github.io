@@ -1,4 +1,6 @@
 var fs = require('fs');
+var path = require('path');
+
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
@@ -15,6 +17,7 @@ module.exports = function(grunt) {
     if (fs.existsSync(dest)) {
       return done(new Error('The "dest" must be a non-existent directory'));
     }
+    grunt.file.mkdir(path.dirname(dest));
 
     fs.rename(src, dest, done);
   });
