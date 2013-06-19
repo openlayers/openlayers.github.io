@@ -1,4 +1,4 @@
-# OpenLayers Website
+# OpenLayers Website Build Utilities
 
 ## Updating the site with changes from master
 
