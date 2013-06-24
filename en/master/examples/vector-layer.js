@@ -13,6 +13,19 @@ var vector = new ol.layer.Vector({
           strokeColor: '#bada55'
         })
       ]
+    }),
+    new ol.style.Rule({
+      filter: new ol.filter.Filter(function() {
+        return map.getView().getResolution() < 5000;
+      }),
+      symbolizers: [
+        new ol.style.Text({
+          color: '#bada55',
+          text: new ol.Expression('name'),
+          fontFamily: 'Calibri,sans-serif',
+          fontSize: 12
+        })
+      ]
     })
   ]}),
   transformFeatureInfo: function(features) {

@@ -20,7 +20,7 @@ var resetHue = document.getElementById('reset-hue');
 var decreaseHue = document.getElementById('decrease-hue');
 
 function setResetHueButtonHTML() {
-  resetHue.innerHTML = 'Hue (' + layer.getHue() + ')';
+  resetHue.innerHTML = 'Hue (' + layer.getHue().toFixed(2) + ')';
 }
 setResetHueButtonHTML();
 
@@ -42,7 +42,8 @@ var resetSaturation = document.getElementById('reset-saturation');
 var decreaseSaturation = document.getElementById('decrease-saturation');
 
 function setResetSaturationButtonHTML() {
-  resetSaturation.innerHTML = 'Saturation (' + layer.getSaturation() + ')';
+  resetSaturation.innerHTML = 'Saturation (' +
+      layer.getSaturation().toFixed(2) + ')';
 }
 setResetSaturationButtonHTML();
 
@@ -55,6 +56,6 @@ resetSaturation.addEventListener('click', function() {
   setResetSaturationButtonHTML();
 }, false);
 decreaseSaturation.addEventListener('click', function() {
-  layer.setSaturation(layer.getSaturation() - 0.25);
+  layer.setSaturation(Math.max(layer.getSaturation() - 0.25, 0));
   setResetSaturationButtonHTML();
 }, false);

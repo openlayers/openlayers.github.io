@@ -1,4 +1,4 @@
-var control = new ol.control.MousePosition({
+var mousePositionControl = new ol.control.MousePosition({
   coordinateFormat: ol.coordinate.createStringXY(4),
   projection: 'EPSG:4326',
   // comment the following two lines to have the mouse position
@@ -9,7 +9,7 @@ var control = new ol.control.MousePosition({
 });
 
 var map = new ol.Map({
-  controls: ol.control.defaults({}, [control]),
+  controls: ol.control.defaults({}, [mousePositionControl]),
   layers: [
     new ol.layer.TileLayer({
       source: new ol.source.OSM()
@@ -23,6 +23,13 @@ var map = new ol.Map({
   })
 });
 
-document.getElementById('projection').addEventListener('change', function() {
-  control.setProjection(this.value);
-}, false);
+var projectionSelect = new ol.dom.Input(document.getElementById('projection'));
+projectionSelect.on('change:value', function() {
+  mousePositionControl.setProjection(ol.proj.get(projectionSelect.getValue()));
+});
+
+var precisionInput = new ol.dom.Input(document.getElementById('precision'));
+precisionInput.on('change:value', function() {
+  var format = ol.coordinate.createStringXY(precisionInput.getValue());
+  mousePositionControl.setCoordinateFormat(format);
+});

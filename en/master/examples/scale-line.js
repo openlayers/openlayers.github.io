@@ -1,8 +1,8 @@
+var scaleLineControl = new ol.control.ScaleLine();
+
 var map = new ol.Map({
   controls: ol.control.defaults({}, [
-    new ol.control.ScaleLine({
-      units: ol.control.ScaleLineUnits.IMPERIAL
-    })
+    scaleLineControl
   ]),
   layers: [
     new ol.layer.TileLayer({
@@ -16,3 +16,7 @@ var map = new ol.Map({
     zoom: 2
   })
 });
+
+
+var unitsSelect = new ol.dom.Input(document.getElementById('units'));
+unitsSelect.bindTo('value', scaleLineControl, 'units');
