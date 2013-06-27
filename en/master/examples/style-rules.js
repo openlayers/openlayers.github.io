@@ -1,20 +1,16 @@
 var style = new ol.style.Style({rules: [
   new ol.style.Rule({
-    filter: new ol.filter.Filter(function(feature) {
-      return feature.get('where') == 'outer';
-    }),
+    filter: 'where == "outer"',
     symbolizers: [
       new ol.style.Line({
-        strokeColor: new ol.Expression('color'),
+        strokeColor: ol.expr.parse('color'),
         strokeWidth: 4,
         opacity: 1
       })
     ]
   }),
   new ol.style.Rule({
-    filter: new ol.filter.Filter(function(feature) {
-      return feature.get('where') == 'inner';
-    }),
+    filter: 'where == "inner"',
     symbolizers: [
       new ol.style.Line({
         strokeColor: '#013',
@@ -22,14 +18,14 @@ var style = new ol.style.Style({rules: [
         opacity: 1
       }),
       new ol.style.Line({
-        strokeColor: new ol.Expression('color'),
+        strokeColor: ol.expr.parse('color'),
         strokeWidth: 2,
         opacity: 1
       })
     ]
   }),
   new ol.style.Rule({
-    filter: new ol.filter.Geometry(ol.geom.GeometryType.POINT),
+    filter: 'geometryType("point")',
     symbolizers: [
       new ol.style.Shape({
         size: 40,
@@ -37,7 +33,7 @@ var style = new ol.style.Style({rules: [
       }),
       new ol.style.Text({
         color: '#bada55',
-        text: new ol.Expression('label'),
+        text: ol.expr.parse('label'),
         fontFamily: 'Calibri,sans-serif',
         fontSize: 14
       })

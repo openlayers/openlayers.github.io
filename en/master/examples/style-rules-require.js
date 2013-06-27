@@ -1,11 +1,8 @@
-goog.require('ol.Expression');
 goog.require('ol.Map');
 goog.require('ol.RendererHint');
 goog.require('ol.View2D');
 goog.require('ol.control.defaults');
-goog.require('ol.filter.Filter');
-goog.require('ol.filter.Geometry');
-goog.require('ol.geom.GeometryType');
+goog.require('ol.expr');
 goog.require('ol.layer.Vector');
 goog.require('ol.parser.GeoJSON');
 goog.require('ol.proj');
