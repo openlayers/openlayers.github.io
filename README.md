@@ -28,3 +28,7 @@ Note that if you want to deploy a branch on the `origin` remote, you should use 
     $ grunt deploy:origin/master
 
 This is the default task (deploying `origin/master`), so this is the same as running `grunt` with no args.
+
+## Updating the current release
+
+The latest release is specified in the `Gruntfile.js` as `currentRelease` (this will not always be the case).  Before deploying the site for a newly created tag, update the `Gruntfile.js` with the name of the release tag.  Then run `grunt deploy:foo` as described above (where `foo` is the name of the release tag).
