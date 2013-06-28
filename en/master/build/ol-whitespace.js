@@ -14694,7 +14694,7 @@ goog.require("ol.interaction.TouchZoom");
 ol.interaction.defaults = function(opt_options, opt_interactions) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   var interactions = new ol.Collection;
-  var kinetic = new ol.Kinetic(-0.005, 0.05, 100);
+  var kinetic = new ol.Kinetic(-0.0050, 0.05, 100);
   var altShiftDragRotate = goog.isDef(options.altShiftDragRotate) ? options.altShiftDragRotate : true;
   if(altShiftDragRotate) {
     interactions.push(new ol.interaction.DragRotate)
