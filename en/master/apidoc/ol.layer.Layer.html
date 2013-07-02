@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.dom.Input</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.layer.Layer</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.dom.Input</a>
+      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.layer.Layer</a>
       <ul class="nav pull-right">
         <li><iframe class="github-watch-button" src="http://ghbtns.com/github-btn.html?user=openlayers&repo=ol3&type=watch&count=true"
 allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></iframe></li>
@@ -41,7 +41,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
 <header>
     <h2>
-    ol.dom.Input
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.layer.html">.layer</a>.</span>
+    
+    ol.layer.Layer
     </h2>
     
 </header>  
@@ -53,20 +55,12 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
         
 <dt>
-    <h4 class="name" id="Input"><span class="type-signature"></span>new Input</h4>
+    <h4 class="name" id="Layer"><span class="type-signature"></span>new Layer</h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Helper class for binding HTML input to an ol.Object</p>
-<p>Example:</p>
-<pre><code>// bind a checkbox with id 'visible' to a layer's visibility
-var visible = new ol.dom.Input(document.getElementById('visible'));
-visible.bindTo('checked', layer, 'visible');</code></pre>
-    </div>
     
 
     
@@ -99,13 +93,13 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
 	
         <tr>
             
-                <td class="name"><code>target</code></td>
+                <td class="name"><code>options</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Element</span>
+<span class="param-type"><a href="ol.layer.html#LayerOptions">ol.layer.LayerOptions</a></span>
 
 
             
@@ -115,7 +109,7 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
             
             
             
-            <td class="description last"><p>Target element.</p></td>
+            <td class="description last"><p>Layer options.</p></td>
         </tr>
 	
 	
@@ -145,7 +139,7 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>input.js, line 32</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 44</li></ul></dd>
 	
     
     
@@ -604,16 +598,12 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
         
             
 <dt>
-    <h4 class="name" id="getChecked"><span class="type-signature"></span>getChecked</h4>
+    <h4 class="name" id="getBrightness"><span class="type-signature"></span>getBrightness</h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>If the input is a checkbox, return whether or not the checbox is checked.</p>
-    </div>
     
 
     
@@ -644,7 +634,7 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>input.js, line 58</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 86</li></ul></dd>
 	
     
     
@@ -664,7 +654,7 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
     
             
 <div class="param-desc">
-    <p>checked.</p>
+    <p>Brightness.</p>
 </div>
 
 
@@ -675,10 +665,7 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
 	</dt>
 	<dd>
 		
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">number</span>
 
 
 	</dd>
@@ -692,16 +679,12 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
         
             
 <dt>
-    <h4 class="name" id="getValue"><span class="type-signature"></span>getValue</h4>
+    <h4 class="name" id="getContrast"><span class="type-signature"></span>getContrast</h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Get the value of the input.</p>
-    </div>
     
 
     
@@ -732,7 +715,7 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>input.js, line 71</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 98</li></ul></dd>
 	
     
     
@@ -752,7 +735,7 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
     
             
 <div class="param-desc">
-    <p>input value.</p>
+    <p>Contrast.</p>
 </div>
 
 
@@ -763,10 +746,331 @@ visible.bindTo('checked', layer, 'visible');</code></pre>
 	</dt>
 	<dd>
 		
-<span class="param-type">string</span>
-|
+<span class="param-type">number</span>
 
-<span class="param-type">undefined</span>
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getHue"><span class="type-signature"></span>getHue</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 110</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Hue.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getOpacity"><span class="type-signature"></span>getOpacity</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 145</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Opacity.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getSaturation"><span class="type-signature"></span>getSaturation</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 157</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Saturation.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getVisible"><span class="type-signature"></span>getVisible</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 177</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Visible.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
 
 
 	</dd>
@@ -1457,7 +1761,7 @@ that it is bound to.</p>
         
             
 <dt>
-    <h4 class="name" id="setChecked"><span class="type-signature"></span>setChecked</h4>
+    <h4 class="name" id="setBrightness"><span class="type-signature"></span>setBrightness</h4>
     
     
 </dt>
@@ -1465,7 +1769,18 @@ that it is bound to.</p>
     
     
     <div class="description">
-        <p>Set whether or not a checkbox is checked.</p>
+        <p>Adjust the layer brightness.  A value of -1 will render the layer completely
+black.  A value of 0 will leave the brightness unchanged.  A value of 1 will
+render the layer completely white.  Other values are linear multipliers on
+the effect (values are clamped between -1 and 1).</p>
+<p>The filter effects draft [1] says the brightness function is supposed to
+render 0 black, 1 unchanged, and all other values as a linear multiplier.</p>
+<p>The current WebKit implementation clamps values between -1 (black) and 1
+(white) [2].  There is a bug open to change the filter effect spec [3].</p>
+<p>TODO: revisit this if the spec is still unmodified before we release</p>
+<p>[1] <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html">https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html</a>
+[2] <a href="https://github.com/WebKit/webkit/commit/8f4765e569">https://github.com/WebKit/webkit/commit/8f4765e569</a>
+[3] <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647">https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647</a></p>
     </div>
     
 
@@ -1499,13 +1814,13 @@ that it is bound to.</p>
 	
         <tr>
             
-                <td class="name"><code>checked</code></td>
+                <td class="name"><code>brightness</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">number</span>
 
 
             
@@ -1515,7 +1830,7 @@ that it is bound to.</p>
             
             
             
-            <td class="description last"><p>Checked.</p></td>
+            <td class="description last"><p>Brightness.</p></td>
         </tr>
 	
 	
@@ -1545,7 +1860,339 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>input.js, line 97</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 222</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setContrast"><span class="type-signature"></span>setContrast</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Adjust the layer contrast.  A value of 0 will render the layer completely
+grey.  A value of 1 will leave the contrast unchanged.  Other values are
+linear multipliers on the effect (and values over 1 are permitted).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>contrast</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Contrast.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 238</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setHue"><span class="type-signature"></span>setHue</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Apply a hue-rotation to the layer.  A value of 0 will leave the hue
+unchanged.  Other values are radians around the color circle.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>hue</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Hue.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 252</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setOpacity"><span class="type-signature"></span>setOpacity</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>opacity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Opacity.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 264</li></ul></dd>
 	
     
     
@@ -1684,7 +2331,7 @@ that it is bound to.</p>
         
             
 <dt>
-    <h4 class="name" id="setValue"><span class="type-signature"></span>setValue</h4>
+    <h4 class="name" id="setSaturation"><span class="type-signature"></span>setSaturation</h4>
     
     
 </dt>
@@ -1692,7 +2339,10 @@ that it is bound to.</p>
     
     
     <div class="description">
-        <p>Sets the value of the input.</p>
+        <p>Adjust layer saturation.  A value of 0 will render the layer completely
+unsaturated.  A value of 1 will leave the saturation unchanged.  Other
+values are linear multipliers of the effect (and values over 1 are
+permitted).</p>
     </div>
     
 
@@ -1726,13 +2376,13 @@ that it is bound to.</p>
 	
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>saturation</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
             
@@ -1742,7 +2392,7 @@ that it is bound to.</p>
             
             
             
-            <td class="description last"><p>Value.</p></td>
+            <td class="description last"><p>Saturation.</p></td>
         </tr>
 	
 	
@@ -1772,7 +2422,114 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>input.js, line 84</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 281</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setVisible"><span class="type-signature"></span>setVisible</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>visible</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Visible.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 293</li></ul></dd>
 	
     
     

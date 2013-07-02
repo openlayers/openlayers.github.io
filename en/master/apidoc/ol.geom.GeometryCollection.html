@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.tilegrid.XYZ</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.geom.GeometryCollection</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.tilegrid.XYZ</a>
+      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.geom.GeometryCollection</a>
       <ul class="nav pull-right">
         <li><iframe class="github-watch-button" src="http://ghbtns.com/github-btn.html?user=openlayers&repo=ol3&type=watch&count=true"
 allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></iframe></li>
@@ -41,9 +41,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.tilegrid.html">.tilegrid</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.geom.html">.geom</a>.</span>
     
-    ol.tilegrid.XYZ
+    ol.geom.GeometryCollection
     </h2>
     
 </header>  
@@ -55,12 +55,17 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
         
 <dt>
-    <h4 class="name" id="XYZ"><span class="type-signature"></span>new XYZ</h4>
+    <h4 class="name" id="GeometryCollection"><span class="type-signature"></span>new GeometryCollection</h4>
     
     
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>A mixed collection of geometries.  Used one of the fixed type multi-part
+constructors for collections of the same type.</p>
+    </div>
     
 
     
@@ -93,13 +98,13 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>geometries</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.tilegrid.html#XYZOptions">ol.tilegrid.XYZOptions</a></span>
+<span class="param-type">Array.&lt;<a href="ol.geom.Geometry.html">ol.geom.Geometry</a>></span>
 
 
             
@@ -109,7 +114,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
             
             
             
-            <td class="description last"><p>XYZ options.</p></td>
+            <td class="description last"><p>Array of geometries.</p></td>
         </tr>
 	
 	
@@ -139,7 +144,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>xyztilegrid.js, line 17</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>geometrycollection.js, line 18</li></ul></dd>
 	
     
     
@@ -163,11 +168,6 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li>
-        </ul>
     
     
     
@@ -179,97 +179,6 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
     
     
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <h4 class="name" id="getResolutions"><span class="type-signature"></span>getResolutions</h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.tilegrid.TileGrid.html#getResolutions">ol.tilegrid.TileGrid#getResolutions</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>tilegrid.js, line 183</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Resolutions.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;number></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        </dl>
     
     
     

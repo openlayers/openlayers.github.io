@@ -15,6 +15,17 @@ var map = new ol.Map({
 var geolocation = new ol.Geolocation();
 geolocation.bindTo('projection', map.getView());
 
+var track = new ol.dom.Input(document.getElementById('track'));
+track.bindTo('checked', geolocation, 'tracking');
+
+geolocation.on('change', function() {
+  $('#accuracy').text(geolocation.getAccuracy() + ' [m]');
+  $('#altitude').text(geolocation.getAltitude() + ' [m]');
+  $('#altitudeAccuracy').text(geolocation.getAltitudeAccuracy() + ' [m]');
+  $('#heading').text(geolocation.getHeading() + ' [rad]');
+  $('#speed').text(geolocation.getSpeed() + ' [m/s]');
+});
+
 var marker = new ol.Overlay({
   map: map,
   element: /** @type {Element} */ ($('<i/>').addClass('icon-flag').get(0))
@@ -31,9 +42,4 @@ geolocation.on('error', function(error) {
   var info = document.getElementById('info');
   info.innerHTML = error.message;
   info.style.display = '';
-});
-
-
-$('#locate').click(function() {
-  geolocation.setTracking(true);
 });
