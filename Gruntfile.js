@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     },
     move: {
       options: {
-        src: path.join(repo, 'build', 'gh-pages', 'HEAD')
+        src: path.join(repo, 'build', 'hosted', 'HEAD')
       }
     },
     script: {
