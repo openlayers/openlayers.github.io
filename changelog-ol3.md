@@ -1,3 +1,30 @@
+## Changes since 2013-06-29 (between r3.0.0-alpha.2 and r3.0.0-alpha.3)
+
+ * Add ol.View2D#getZoom (#858)
+ * Better View2D docs (#857)
+ * Zoomslider cannot be added to a map with no target (#855)
+ * No need for build/gh-pages (#854)
+ * Remove references to gh-pages from build.py and developer guide (#853)
+ * Example Page not working (#849)
+ * Update geolocation example to display all the properties (#848)
+ * API doc update. (#847)
+ * Bing Maps culture option don't have any effect (#846)
+ * Brightness not working when initialize layer (#845)
+ * Example updates (#842)
+ * Add ol.control.Zoom#zoomByDelta function (#840)
+ * Delete gh-pages branch (#839)
+ * Add ol.View2D.prototype.setZoom (#835)
+ * Remove ol.MapBrowserEvent#stopOtherInteractions (#833)
+ * Tile has a child if z < maxZoom (#823)
+ * Consistent winding order for polygon rings (#809)
+ * Write support for ol.parser.GeoJSON (#732)
+ * GeoJSON Format (#605)
+ * Minor jsdoc fix (#411)
+ * Export fixes (#339)
+ * Add Geolocation example (#315)
+ * gh-pages target is slow (#135)
+ * Support minZoom for XYZ source  (#49)
+
 ## Changes since 2013-04-18 (between r3.0.0-alpha.1 and r3.0.0-alpha.2)
 
  * Fix wmts-ign example when hosted (take 2) (#841)
@@ -100,5 +127,3 @@
  * Accurate hit detection (#710)
  * GML parser. (#709)
  * The compilation of ol.js produces a warning (#708)
-
-
