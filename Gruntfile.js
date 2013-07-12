@@ -4,7 +4,7 @@ var path = require('path');
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
-  var currentRelease = 'r3.0.0-alpha.2';
+  var currentRelease = 'r3.0.0-alpha.3';
 
   var build = path.join('.grunt', 'openlayers-website');
   var dist = path.join(build, 'dist');
