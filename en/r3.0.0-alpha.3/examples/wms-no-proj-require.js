@@ -1,0 +1,10 @@
+goog.require('ol.Attribution');
+goog.require('ol.Map');
+goog.require('ol.Projection');
+goog.require('ol.ProjectionUnits');
+goog.require('ol.RendererHints');
+goog.require('ol.View2D');
+goog.require('ol.layer.ImageLayer');
+goog.require('ol.layer.TileLayer');
+goog.require('ol.source.SingleImageWMS');
+goog.require('ol.source.TiledWMS');
