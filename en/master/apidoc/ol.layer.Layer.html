@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.control.MousePosition</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.layer.Layer</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.control.MousePosition</a>
+      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.layer.Layer</a>
       <ul class="nav pull-right">
         <li><iframe class="github-watch-button" src="http://ghbtns.com/github-btn.html?user=openlayers&repo=ol3&type=watch&count=true"
 allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></iframe></li>
@@ -41,9 +41,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.control.html">.control</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.layer.html">.layer</a>.</span>
     
-    ol.control.MousePosition
+    ol.layer.Layer
     </h2>
     
 </header>  
@@ -55,28 +55,12 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
         
 <dt>
-    <h4 class="name" id="MousePosition"><span class="type-signature"></span>new MousePosition</h4>
+    <h4 class="name" id="Layer"><span class="type-signature"></span>new Layer</h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Create a new control to show the position of the mouse in the map's
-projection (or any other supplied projection). By default the control is
-shown in the top right corner of the map but this can be changed by using
-a css selector .ol-mouse-position.</p>
-
-<p>Example:</p>
-
-<pre><code>var map = new ol.Map({
-  controls: ol.control.defaults({}, [
-    new ol.control.MousePosition({projection: ol.proj.get('EPSG:4326')})
-  ]),
-  ...
-</code></pre>
-    </div>
     
 
     
@@ -97,8 +81,6 @@ a css selector .ol-mouse-position.</p>
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -117,25 +99,17 @@ a css selector .ol-mouse-position.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.control.html#MousePositionOptions">ol.control.MousePositionOptions</a></span>
+<span class="param-type"><a href="ol.layer.html#LayerOptions">ol.layer.LayerOptions</a></span>
 
 
             
             </td>
             
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last">(Optional) <p>Mouse position options.</p></td>
+            <td class="description last"><p>Layer options.</p></td>
         </tr>
 	
 	
@@ -165,7 +139,7 @@ a css selector .ol-mouse-position.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>mousepositioncontrol.js, line 49</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 44</li></ul></dd>
 	
     
     
@@ -192,7 +166,7 @@ a css selector .ol-mouse-position.</p>
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="ol.control.Control.html">ol.control.Control</a></li>
+            <li><a href="ol.Object.html">ol.Object</a></li>
         </ul>
     
     
@@ -232,7 +206,7 @@ a css selector .ol-mouse-position.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#setValues">ol.control.Control#setValues</a>
+		<a href="ol.Object.html#setValues">ol.Object#setValues</a>
 	</li></dd>
 	
 	
@@ -447,7 +421,7 @@ a css selector .ol-mouse-position.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#bindTo">ol.control.Control#bindTo</a>
+		<a href="ol.Object.html#bindTo">ol.Object#bindTo</a>
 	</li></dd>
 	
 	
@@ -563,7 +537,7 @@ a css selector .ol-mouse-position.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#get">ol.control.Control#get</a>
+		<a href="ol.Object.html#get">ol.Object#get</a>
 	</li></dd>
 	
 	
@@ -624,7 +598,7 @@ a css selector .ol-mouse-position.</p>
         
             
 <dt>
-    <h4 class="name" id="getCoordinateFormat"><span class="type-signature"></span>getCoordinateFormat</h4>
+    <h4 class="name" id="getBrightness"><span class="type-signature"></span>getBrightness</h4>
     
     
 </dt>
@@ -660,7 +634,7 @@ a css selector .ol-mouse-position.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>mousepositioncontrol.js, line 140</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 86</li></ul></dd>
 	
     
     
@@ -680,7 +654,7 @@ a css selector .ol-mouse-position.</p>
     
             
 <div class="param-desc">
-    <p>projection.</p>
+    <p>Brightness.</p>
 </div>
 
 
@@ -691,10 +665,7 @@ a css selector .ol-mouse-position.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">ol.CoordinateFormatType</span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">number</span>
 
 
 	</dd>
@@ -708,16 +679,12 @@ a css selector .ol-mouse-position.</p>
         
             
 <dt>
-    <h4 class="name" id="getMap"><span class="type-signature"></span>getMap</h4>
+    <h4 class="name" id="getContrast"><span class="type-signature"></span>getContrast</h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Get the map associated with this control.</p>
-    </div>
     
 
     
@@ -735,11 +702,6 @@ a css selector .ol-mouse-position.</p>
 	
 
 	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#getMap">ol.control.Control#getMap</a>
-	</li></dd>
-	
 	
 	
 	
@@ -753,7 +715,7 @@ a css selector .ol-mouse-position.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>control.js, line 69</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 98</li></ul></dd>
 	
     
     
@@ -773,7 +735,7 @@ a css selector .ol-mouse-position.</p>
     
             
 <div class="param-desc">
-    <p>Map.</p>
+    <p>Contrast.</p>
 </div>
 
 
@@ -784,7 +746,7 @@ a css selector .ol-mouse-position.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+<span class="param-type">number</span>
 
 
 	</dd>
@@ -798,7 +760,7 @@ a css selector .ol-mouse-position.</p>
         
             
 <dt>
-    <h4 class="name" id="getProjection"><span class="type-signature"></span>getProjection</h4>
+    <h4 class="name" id="getHue"><span class="type-signature"></span>getHue</h4>
     
     
 </dt>
@@ -834,7 +796,7 @@ a css selector .ol-mouse-position.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>mousepositioncontrol.js, line 153</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 110</li></ul></dd>
 	
     
     
@@ -854,7 +816,7 @@ a css selector .ol-mouse-position.</p>
     
             
 <div class="param-desc">
-    <p>projection.</p>
+    <p>Hue.</p>
 </div>
 
 
@@ -865,10 +827,7 @@ a css selector .ol-mouse-position.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.Projection.html">ol.Projection</a></span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">number</span>
 
 
 	</dd>
@@ -882,72 +841,18 @@ a css selector .ol-mouse-position.</p>
         
             
 <dt>
-    <h4 class="name" id="handleMapPostrender"><span class="type-signature"></span>handleMapPostrender</h4>
+    <h4 class="name" id="getOpacity"><span class="type-signature"></span>getOpacity</h4>
     
     
 </dt>
 <dd>
     
     
-    <div class="description">
-        <p>Function called on each map render. Executes in a requestAnimationFrame
-callback. Can be implemented in sub-classes to re-render the control's
-UI.</p>
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>mapEvent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.MapEvent.html">ol.MapEvent</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Map event.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -958,11 +863,6 @@ UI.</p>
 	
 	
 
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#handleMapPostrender">ol.control.Control#handleMapPostrender</a>
-	</li></dd>
 	
 	
 	
@@ -977,7 +877,7 @@ UI.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>control.js, line 80</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 145</li></ul></dd>
 	
     
     
@@ -993,6 +893,190 @@ UI.</p>
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Opacity.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getSaturation"><span class="type-signature"></span>getSaturation</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 157</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Saturation.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getVisible"><span class="type-signature"></span>getVisible</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 177</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Visible.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1079,7 +1163,7 @@ that it is bound to.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#notify">ol.control.Control#notify</a>
+		<a href="ol.Object.html#notify">ol.Object#notify</a>
 	</li></dd>
 	
 	
@@ -1267,7 +1351,7 @@ that it is bound to.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#on">ol.control.Control#on</a>
+		<a href="ol.Object.html#on">ol.Object#on</a>
 	</li></dd>
 	
 	
@@ -1477,7 +1561,7 @@ that it is bound to.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#once">ol.control.Control#once</a>
+		<a href="ol.Object.html#once">ol.Object#once</a>
 	</li></dd>
 	
 	
@@ -1638,7 +1722,7 @@ that it is bound to.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#set">ol.control.Control#set</a>
+		<a href="ol.Object.html#set">ol.Object#set</a>
 	</li></dd>
 	
 	
@@ -1677,114 +1761,7 @@ that it is bound to.</p>
         
             
 <dt>
-    <h4 class="name" id="setCoordinateFormat"><span class="type-signature"></span>setCoordinateFormat</h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>format</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ol.CoordinateFormatType</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Coordinate format.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>mousepositioncontrol.js, line 206</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setMap"><span class="type-signature"></span>setMap</h4>
+    <h4 class="name" id="setBrightness"><span class="type-signature"></span>setBrightness</h4>
     
     
 </dt>
@@ -1792,9 +1769,22 @@ that it is bound to.</p>
     
     
     <div class="description">
-        <p>Remove the control from its current map and attach it to the new map.
-Subclasses may set up event handlers to get notified about changes to
-the map here.</p>
+        <p>Adjust the layer brightness.  A value of -1 will render the layer completely
+black.  A value of 0 will leave the brightness unchanged.  A value of 1 will
+render the layer completely white.  Other values are linear multipliers on
+the effect (values are clamped between -1 and 1).</p>
+
+<p>The filter effects draft [1] says the brightness function is supposed to
+render 0 black, 1 unchanged, and all other values as a linear multiplier.</p>
+
+<p>The current WebKit implementation clamps values between -1 (black) and 1
+(white) [2].  There is a bug open to change the filter effect spec [3].</p>
+
+<p>TODO: revisit this if the spec is still unmodified before we release</p>
+
+<p>[1] <a href='https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html'>https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html</a>
+[2] <a href='https://github.com/WebKit/webkit/commit/8f4765e569'>https://github.com/WebKit/webkit/commit/8f4765e569</a>
+[3] <a href='https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647'>https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647</a></p>
     </div>
     
 
@@ -1828,13 +1818,13 @@ the map here.</p>
 	
         <tr>
             
-                <td class="name"><code>map</code></td>
+                <td class="name"><code>brightness</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+<span class="param-type">number</span>
 
 
             
@@ -1844,7 +1834,7 @@ the map here.</p>
             
             
             
-            <td class="description last"><p>Map.</p></td>
+            <td class="description last"><p>Brightness.</p></td>
         </tr>
 	
 	
@@ -1861,10 +1851,118 @@ the map here.</p>
 	
 
 	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#setMap">ol.control.Control#setMap</a>
-	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 222</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setContrast"><span class="type-signature"></span>setContrast</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Adjust the layer contrast.  A value of 0 will render the layer completely
+grey.  A value of 1 will leave the contrast unchanged.  Other values are
+linear multipliers on the effect (and values over 1 are permitted).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>contrast</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Contrast.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
 	
 	
 	
@@ -1879,7 +1977,226 @@ the map here.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>control.js, line 89</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 238</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setHue"><span class="type-signature"></span>setHue</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Apply a hue-rotation to the layer.  A value of 0 will leave the hue
+unchanged.  Other values are radians around the color circle.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>hue</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Hue.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 252</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setOpacity"><span class="type-signature"></span>setOpacity</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>opacity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Opacity.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 264</li></ul></dd>
 	
     
     
@@ -1979,7 +2296,7 @@ the map here.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#setOptions">ol.control.Control#setOptions</a>
+		<a href="ol.Object.html#setOptions">ol.Object#setOptions</a>
 	</li></dd>
 	
 	
@@ -2018,7 +2335,121 @@ the map here.</p>
         
             
 <dt>
-    <h4 class="name" id="setProjection"><span class="type-signature"></span>setProjection</h4>
+    <h4 class="name" id="setSaturation"><span class="type-signature"></span>setSaturation</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Adjust layer saturation.  A value of 0 will render the layer completely
+unsaturated.  A value of 1 will leave the saturation unchanged.  Other
+values are linear multipliers of the effect (and values over 1 are
+permitted).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>saturation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Saturation.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 281</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setVisible"><span class="type-signature"></span>setVisible</h4>
     
     
 </dt>
@@ -2056,13 +2487,13 @@ the map here.</p>
 	
         <tr>
             
-                <td class="name"><code>projection</code></td>
+                <td class="name"><code>visible</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.Projection.html">ol.Projection</a></span>
+<span class="param-type">boolean</span>
 
 
             
@@ -2072,7 +2503,7 @@ the map here.</p>
             
             
             
-            <td class="description last"><p>Projection.</p></td>
+            <td class="description last"><p>Visible.</p></td>
         </tr>
 	
 	
@@ -2102,7 +2533,7 @@ the map here.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>mousepositioncontrol.js, line 218</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 293</li></ul></dd>
 	
     
     
@@ -2274,7 +2705,7 @@ the map here.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#un">ol.control.Control#un</a>
+		<a href="ol.Object.html#un">ol.Object#un</a>
 	</li></dd>
 	
 	
@@ -2391,7 +2822,7 @@ the map here.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#unbind">ol.control.Control#unbind</a>
+		<a href="ol.Object.html#unbind">ol.Object#unbind</a>
 	</li></dd>
 	
 	
@@ -2459,7 +2890,7 @@ the map here.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#unbindAll">ol.control.Control#unbindAll</a>
+		<a href="ol.Object.html#unbindAll">ol.Object#unbindAll</a>
 	</li></dd>
 	
 	
@@ -2586,7 +3017,7 @@ the map here.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.control.Control.html#unByKey">ol.control.Control#unByKey</a>
+		<a href="ol.Object.html#unByKey">ol.Object#unByKey</a>
 	</li></dd>
 	
 	

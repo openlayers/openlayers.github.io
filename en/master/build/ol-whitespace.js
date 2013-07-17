@@ -4880,17 +4880,6 @@ goog.provide("ol.ResolutionConstraintType");
 goog.require("goog.math");
 goog.require("ol.array");
 ol.ResolutionConstraintType;
-ol.ResolutionConstraint.createContinuous = function(power, maxResolution, opt_minResolution) {
-  var minResolution = opt_minResolution || 0;
-  return function(resolution, delta, direction) {
-    if(goog.isDef(resolution)) {
-      resolution /= Math.pow(power, delta);
-      return goog.math.clamp(resolution, minResolution, maxResolution)
-    }else {
-      return undefined
-    }
-  }
-};
 ol.ResolutionConstraint.createSnapToResolutions = function(resolutions) {
   return function(resolution, delta, direction) {
     if(goog.isDef(resolution)) {
@@ -13275,7 +13264,6 @@ ol.MapBrowserEvent = function(type, map, browserEvent, opt_frameState) {
   goog.base(this, type, map, opt_frameState);
   this.browserEvent = browserEvent;
   this.coordinate_ = null;
-  this.otherInteractionsStopped = false;
   this.pixel_ = null
 };
 goog.inherits(ol.MapBrowserEvent, ol.MapEvent);
@@ -13299,9 +13287,6 @@ ol.MapBrowserEvent.prototype.isMouseActionButton = function() {
 ol.MapBrowserEvent.prototype.preventDefault = function() {
   goog.base(this, "preventDefault");
   this.browserEvent.preventDefault()
-};
-ol.MapBrowserEvent.prototype.stopOtherInteractions = function() {
-  this.otherInteractionsStopped = true
 };
 ol.MapBrowserEvent.prototype.stopPropagation = function() {
   goog.base(this, "stopPropagation");
@@ -13440,17 +13425,17 @@ ol.View2D = function(opt_options) {
   var values = {};
   values[ol.View2DProperty.CENTER] = goog.isDef(options.center) ? options.center : null;
   values[ol.View2DProperty.PROJECTION] = ol.proj.createProjection(options.projection, "EPSG:3857");
-  var parts = ol.View2D.createResolutionConstraint_(options);
-  this.maxResolution_ = parts[1];
-  this.minResolution_ = parts[2];
-  var resolutionConstraint = parts[0];
+  var resolutionConstraintInfo = ol.View2D.createResolutionConstraint_(options);
+  this.maxResolution_ = resolutionConstraintInfo.maxResolution;
+  this.minResolution_ = resolutionConstraintInfo.minResolution;
+  var resolutionConstraint = resolutionConstraintInfo.constraint;
   var rotationConstraint = ol.View2D.createRotationConstraint_(options);
   this.constraints_ = new ol.Constraints(resolutionConstraint, rotationConstraint);
   if(goog.isDef(options.resolution)) {
     values[ol.View2DProperty.RESOLUTION] = options.resolution
   }else {
     if(goog.isDef(options.zoom)) {
-      values[ol.View2DProperty.RESOLUTION] = resolutionConstraint(this.maxResolution_, options.zoom)
+      values[ol.View2DProperty.RESOLUTION] = this.constrainResolution(this.maxResolution_, options.zoom)
     }
   }
   values[ol.View2DProperty.ROTATION] = goog.isDef(options.rotation) ? options.rotation : 0;
@@ -13553,6 +13538,22 @@ ol.View2D.prototype.getView2DState = function() {
 };
 ol.View2D.prototype.getView3D = function() {
 };
+ol.View2D.prototype.getZoom = function() {
+  var zoom;
+  var resolution = this.getResolution();
+  if(goog.isDef(resolution)) {
+    var res, z = 0;
+    do {
+      res = this.constrainResolution(this.maxResolution_, z);
+      if(res == resolution) {
+        zoom = z;
+        break
+      }
+      ++z
+    }while(res > this.minResolution_)
+  }
+  return zoom
+};
 ol.View2D.prototype.fitExtent = function(extent, size) {
   this.setCenter(ol.extent.getCenter(extent));
   var resolution = this.getResolutionForExtent(extent, size);
@@ -13578,6 +13579,10 @@ ol.View2D.prototype.setRotation = function(rotation) {
   this.set(ol.View2DProperty.ROTATION, rotation)
 };
 goog.exportProperty(ol.View2D.prototype, "setRotation", ol.View2D.prototype.setRotation);
+ol.View2D.prototype.setZoom = function(zoom) {
+  var resolution = this.constrainResolution(this.maxResolution_, zoom, 0);
+  this.setResolution(resolution)
+};
 ol.View2D.createResolutionConstraint_ = function(options) {
   var resolutionConstraint;
   var maxResolution;
@@ -13606,7 +13611,7 @@ ol.View2D.createResolutionConstraint_ = function(options) {
     minResolution = maxResolution / Math.pow(zoomFactor, maxZoom);
     resolutionConstraint = ol.ResolutionConstraint.createSnapToPower(zoomFactor, maxResolution, maxZoom)
   }
-  return[resolutionConstraint, maxResolution, minResolution]
+  return{constraint:resolutionConstraint, maxResolution:maxResolution, minResolution:minResolution}
 };
 ol.View2D.createRotationConstraint_ = function(options) {
   return ol.RotationConstraint.createSnapToZero()
@@ -13833,38 +13838,26 @@ ol.control.ZOOM_DURATION = 250;
 ol.control.Zoom = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   var className = goog.isDef(options.className) ? options.className : "ol-zoom";
+  var delta = goog.isDef(options.delta) ? options.delta : 1;
   var inElement = goog.dom.createDom(goog.dom.TagName.A, {"href":"#zoomIn", "class":className + "-in"});
-  goog.events.listen(inElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.handleIn_, false, this);
+  goog.events.listen(inElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.partial(ol.control.Zoom.prototype.zoomByDelta_, delta), false, this);
   var outElement = goog.dom.createDom(goog.dom.TagName.A, {"href":"#zoomOut", "class":className + "-out"});
-  goog.events.listen(outElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.handleOut_, false, this);
+  goog.events.listen(outElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.partial(ol.control.Zoom.prototype.zoomByDelta_, -delta), false, this);
   var cssClasses = className + " " + ol.css.CLASS_UNSELECTABLE;
   var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, inElement, outElement);
-  goog.base(this, {element:element, map:options.map, target:options.target});
-  this.delta_ = goog.isDef(options.delta) ? options.delta : 1
+  goog.base(this, {element:element, map:options.map, target:options.target})
 };
 goog.inherits(ol.control.Zoom, ol.control.Control);
-ol.control.Zoom.prototype.handleIn_ = function(browserEvent) {
-  browserEvent.preventDefault();
-  var map = this.getMap();
-  map.requestRenderFrame();
-  var view = map.getView().getView2D();
-  var currentResolution = view.getResolution();
-  if(goog.isDef(currentResolution)) {
-    map.addPreRenderFunction(ol.animation.zoom({resolution:currentResolution, duration:ol.control.ZOOM_DURATION, easing:ol.easing.easeOut}))
-  }
-  var resolution = view.constrainResolution(currentResolution, this.delta_);
-  view.setResolution(resolution)
-};
-ol.control.Zoom.prototype.handleOut_ = function(browserEvent) {
+ol.control.Zoom.prototype.zoomByDelta_ = function(delta, browserEvent) {
   browserEvent.preventDefault();
   var map = this.getMap();
   var view = map.getView().getView2D();
   var currentResolution = view.getResolution();
   if(goog.isDef(currentResolution)) {
-    map.addPreRenderFunction(ol.animation.zoom({resolution:currentResolution, duration:ol.control.ZOOM_DURATION, easing:ol.easing.easeOut}))
+    map.addPreRenderFunction(ol.animation.zoom({resolution:currentResolution, duration:ol.control.ZOOM_DURATION, easing:ol.easing.easeOut}));
+    var newResolution = view.constrainResolution(currentResolution, delta);
+    view.setResolution(newResolution)
   }
-  var resolution = view.constrainResolution(currentResolution, -this.delta_);
-  view.setResolution(resolution)
 };
 goog.provide("ol.control.defaults");
 goog.require("ol.Collection");
@@ -13978,6 +13971,7 @@ ol.interaction.DoubleClickZoom = function(opt_options) {
 };
 goog.inherits(ol.interaction.DoubleClickZoom, ol.interaction.Interaction);
 ol.interaction.DoubleClickZoom.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
+  var stopEvent = false;
   var browserEvent = mapBrowserEvent.browserEvent;
   if(mapBrowserEvent.type == ol.MapBrowserEvent.EventType.DBLCLICK && mapBrowserEvent.isMouseActionButton()) {
     var map = mapBrowserEvent.map;
@@ -13986,8 +13980,9 @@ ol.interaction.DoubleClickZoom.prototype.handleMapBrowserEvent = function(mapBro
     var view = map.getView().getView2D();
     ol.interaction.Interaction.zoomByDelta(map, view, delta, anchor, ol.interaction.DOUBLECLICKZOOM_ANIMATION_DURATION);
     mapBrowserEvent.preventDefault();
-    mapBrowserEvent.stopOtherInteractions()
+    stopEvent = true
   }
+  return!stopEvent
 };
 goog.provide("ol.interaction.ConditionType");
 goog.provide("ol.interaction.condition");
@@ -14036,8 +14031,9 @@ ol.interaction.Drag.prototype.handleDown = goog.nullFunction;
 ol.interaction.Drag.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
   var map = mapBrowserEvent.map;
   if(!map.isDef()) {
-    return
+    return true
   }
+  var stopEvent = false;
   var view = map.getView();
   var browserEvent = mapBrowserEvent.browserEvent;
   if(mapBrowserEvent.type == ol.MapBrowserEvent.EventType.DOWN) {
@@ -14075,10 +14071,11 @@ ol.interaction.Drag.prototype.handleMapBrowserEvent = function(mapBrowserEvent) 
         view.setHint(ol.ViewHint.INTERACTING, 1);
         this.dragging_ = true;
         mapBrowserEvent.preventDefault();
-        mapBrowserEvent.stopOtherInteractions()
+        stopEvent = true
       }
     }
   }
+  return!stopEvent
 };
 goog.provide("ol.interaction.DragPan");
 goog.require("goog.asserts");
@@ -14294,6 +14291,7 @@ ol.interaction.KeyboardPan = function(opt_options) {
 };
 goog.inherits(ol.interaction.KeyboardPan, ol.interaction.Interaction);
 ol.interaction.KeyboardPan.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
+  var stopEvent = false;
   if(mapBrowserEvent.type == goog.events.KeyHandler.EventType.KEY) {
     var keyEvent = mapBrowserEvent.browserEvent;
     var keyCode = keyEvent.keyCode;
@@ -14321,9 +14319,10 @@ ol.interaction.KeyboardPan.prototype.handleMapBrowserEvent = function(mapBrowser
       ol.coordinate.rotate(delta, view2DState.rotation);
       ol.interaction.Interaction.pan(map, view, delta, ol.interaction.KEYBOARD_PAN_DURATION);
       mapBrowserEvent.preventDefault();
-      mapBrowserEvent.stopOtherInteractions()
+      stopEvent = true
     }
   }
+  return!stopEvent
 };
 goog.provide("ol.interaction.KeyboardZoom");
 goog.require("goog.asserts");
@@ -14340,6 +14339,7 @@ ol.interaction.KeyboardZoom = function(opt_options) {
 };
 goog.inherits(ol.interaction.KeyboardZoom, ol.interaction.Interaction);
 ol.interaction.KeyboardZoom.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
+  var stopEvent = false;
   if(mapBrowserEvent.type == goog.events.KeyHandler.EventType.KEY) {
     var keyEvent = mapBrowserEvent.browserEvent;
     var charCode = keyEvent.charCode;
@@ -14350,9 +14350,10 @@ ol.interaction.KeyboardZoom.prototype.handleMapBrowserEvent = function(mapBrowse
       var view = map.getView().getView2D();
       ol.interaction.Interaction.zoomByDelta(map, view, delta, undefined, ol.interaction.KEYBOARD_ZOOM_DURATION);
       mapBrowserEvent.preventDefault();
-      mapBrowserEvent.stopOtherInteractions()
+      stopEvent = true
     }
   }
+  return!stopEvent
 };
 goog.provide("ol.interaction.MouseWheelZoom");
 goog.require("goog.asserts");
@@ -14373,6 +14374,7 @@ ol.interaction.MouseWheelZoom = function() {
 };
 goog.inherits(ol.interaction.MouseWheelZoom, ol.interaction.Interaction);
 ol.interaction.MouseWheelZoom.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
+  var stopEvent = false;
   if(mapBrowserEvent.type == goog.events.MouseWheelHandler.EventType.MOUSEWHEEL) {
     var map = mapBrowserEvent.map;
     var mouseWheelEvent = mapBrowserEvent.browserEvent;
@@ -14387,8 +14389,9 @@ ol.interaction.MouseWheelZoom.prototype.handleMapBrowserEvent = function(mapBrow
     goog.global.clearTimeout(this.timeoutId_);
     this.timeoutId_ = goog.global.setTimeout(goog.bind(this.doZoom_, this, map), timeLeft);
     mapBrowserEvent.preventDefault();
-    mapBrowserEvent.stopOtherInteractions()
+    stopEvent = true
   }
+  return!stopEvent
 };
 ol.interaction.MouseWheelZoom.prototype.doZoom_ = function(map) {
   var maxDelta = ol.interaction.MOUSEWHEELZOOM_MAXDELTA;
@@ -14464,6 +14467,7 @@ ol.interaction.Touch.prototype.handleMapBrowserEvent = function(mapBrowserEvent)
     }
     this.handled_ = handled
   }
+  return true
 };
 goog.provide("ol.interaction.TouchPan");
 goog.require("goog.asserts");
@@ -16749,6 +16753,41 @@ ol.style.Text.prototype.createLiteral = function(opt_feature) {
   goog.asserts.assertNumber(opacity, "opacity must be a number");
   return new ol.style.TextLiteral({color:color, fontFamily:fontFamily, fontSize:fontSize, text:text, opacity:opacity})
 };
+ol.style.Text.prototype.getColor = function() {
+  return this.color_
+};
+ol.style.Text.prototype.getFontFamily = function() {
+  return this.fontFamily_
+};
+ol.style.Text.prototype.getFontSize = function() {
+  return this.fontSize_
+};
+ol.style.Text.prototype.getOpacity = function() {
+  return this.opacity_
+};
+ol.style.Text.prototype.getText = function() {
+  return this.text_
+};
+ol.style.Text.prototype.setColor = function(color) {
+  goog.asserts.assertInstanceof(color, ol.expr.Expression);
+  this.color_ = color
+};
+ol.style.Text.prototype.setFontFamily = function(fontFamily) {
+  goog.asserts.assertInstanceof(fontFamily, ol.expr.Expression);
+  this.fontFamily_ = fontFamily
+};
+ol.style.Text.prototype.setFontSize = function(fontSize) {
+  goog.asserts.assertInstanceof(fontSize, ol.expr.Expression);
+  this.fontSize_ = fontSize
+};
+ol.style.Text.prototype.setOpacity = function(opacity) {
+  goog.asserts.assertInstanceof(opacity, ol.expr.Expression);
+  this.opacity_ = opacity
+};
+ol.style.Text.prototype.setText = function(text) {
+  goog.asserts.assertInstanceof(text, ol.expr.Expression);
+  this.text_ = text
+};
 ol.style.TextDefaults = new ol.style.TextLiteral({color:"#000", fontFamily:"sans-serif", fontSize:10, text:"", opacity:1});
 goog.provide("ol.layer.Vector");
 goog.require("goog.array");
@@ -17683,6 +17722,23 @@ ol.geom.LinearRing = function(coordinates, opt_shared) {
   goog.base(this, coordinates, opt_shared)
 };
 goog.inherits(ol.geom.LinearRing, ol.geom.LineString);
+ol.geom.LinearRing.isClockwise = function(coordinates) {
+  var length = coordinates.length;
+  var edge = 0;
+  var last = coordinates[length - 1];
+  var x1 = last[0];
+  var y1 = last[1];
+  var x2, y2, coord;
+  for(var i = 0;i < length;++i) {
+    coord = coordinates[i];
+    x2 = coord[0];
+    y2 = coord[1];
+    edge += (x2 - x1) * (y2 + y1);
+    x1 = x2;
+    y1 = y2
+  }
+  return edge > 0
+};
 ol.geom.LinearRing.prototype.getType = function() {
   return ol.geom.GeometryType.LINEARRING
 };
@@ -17722,8 +17778,19 @@ ol.geom.Polygon = function(coordinates, opt_shared) {
   this.vertices = vertices;
   var numRings = coordinates.length;
   this.rings = new Array(numRings);
+  var ringCoords;
   for(var i = 0;i < numRings;++i) {
-    this.rings[i] = new ol.geom.LinearRing(coordinates[i], vertices)
+    ringCoords = coordinates[i];
+    if(i === 0) {
+      if(!ol.geom.LinearRing.isClockwise(ringCoords)) {
+        ringCoords.reverse()
+      }
+    }else {
+      if(ol.geom.LinearRing.isClockwise(ringCoords)) {
+        ringCoords.reverse()
+      }
+    }
+    this.rings[i] = new ol.geom.LinearRing(ringCoords, vertices)
   }
   this.dimension = vertices.getDimension();
   goog.asserts.assert(this.dimension >= 2)
@@ -17833,7 +17900,7 @@ ol.style.IconLiteral = function(options) {
 };
 goog.inherits(ol.style.IconLiteral, ol.style.PointLiteral);
 ol.style.IconLiteral.prototype.equals = function(iconLiteral) {
-  return this.url == iconLiteral.type && this.width == iconLiteral.width && this.height == iconLiteral.height && this.opacity == iconLiteral.opacity && this.rotation == iconLiteral.rotation
+  return this.url == iconLiteral.url && this.width == iconLiteral.width && this.height == iconLiteral.height && this.opacity == iconLiteral.opacity && this.rotation == iconLiteral.rotation
 };
 ol.style.Icon = function(options) {
   goog.asserts.assert(options.url, "url must be set");
@@ -17862,6 +17929,41 @@ ol.style.Icon.prototype.createLiteral = function(opt_feature) {
   var rotation = ol.expr.evaluateFeature(this.rotation_, opt_feature);
   goog.asserts.assertNumber(rotation, "rotation must be a number");
   return new ol.style.IconLiteral({url:url, width:width, height:height, opacity:opacity, rotation:rotation})
+};
+ol.style.Icon.prototype.getHeight = function() {
+  return this.height_
+};
+ol.style.Icon.prototype.getOpacity = function() {
+  return this.opacity_
+};
+ol.style.Icon.prototype.getRotation = function() {
+  return this.rotation_
+};
+ol.style.Icon.prototype.getUrl = function() {
+  return this.url_
+};
+ol.style.Icon.prototype.getWidth = function() {
+  return this.width_
+};
+ol.style.Icon.prototype.setHeight = function(height) {
+  goog.asserts.assertInstanceof(height, ol.expr.Expression);
+  this.height_ = height
+};
+ol.style.Icon.prototype.setOpacity = function(opacity) {
+  goog.asserts.assertInstanceof(opacity, ol.expr.Expression);
+  this.opacity_ = opacity
+};
+ol.style.Icon.prototype.setRotation = function(rotation) {
+  goog.asserts.assertInstanceof(rotation, ol.expr.Expression);
+  this.rotation_ = rotation
+};
+ol.style.Icon.prototype.setUrl = function(url) {
+  goog.asserts.assertInstanceof(url, ol.expr.Expression);
+  this.url_ = url
+};
+ol.style.Icon.prototype.setWidth = function(width) {
+  goog.asserts.assertInstanceof(width, ol.expr.Expression);
+  this.width_ = width
 };
 ol.style.IconDefaults = new ol.style.IconLiteral({url:"#", opacity:1, rotation:0});
 goog.provide("ol.style.Line");
@@ -17901,6 +18003,27 @@ ol.style.Line.prototype.createLiteral = function(opt_feature) {
   var opacity = ol.expr.evaluateFeature(this.opacity_, opt_feature);
   goog.asserts.assertNumber(opacity, "opacity must be a number");
   return new ol.style.LineLiteral({strokeColor:strokeColor, strokeWidth:strokeWidth, opacity:opacity})
+};
+ol.style.Line.prototype.getStrokeColor = function() {
+  return this.strokeColor_
+};
+ol.style.Line.prototype.getStrokeWidth = function() {
+  return this.strokeWidth_
+};
+ol.style.Line.prototype.getOpacity = function() {
+  return this.opacity_
+};
+ol.style.Line.prototype.setStrokeColor = function(strokeColor) {
+  goog.asserts.assertInstanceof(strokeColor, ol.expr.Expression);
+  this.strokeColor_ = strokeColor
+};
+ol.style.Line.prototype.setStrokeWidth = function(strokeWidth) {
+  goog.asserts.assertInstanceof(strokeWidth, ol.expr.Expression);
+  this.strokeWidth_ = strokeWidth
+};
+ol.style.Line.prototype.setOpacity = function(opacity) {
+  goog.asserts.assertInstanceof(opacity, ol.expr.Expression);
+  this.opacity_ = opacity
 };
 ol.style.LineDefaults = new ol.style.LineLiteral({strokeColor:"#696969", strokeWidth:1.5, opacity:0.75});
 goog.provide("ol.style.Polygon");
@@ -17976,6 +18099,34 @@ ol.style.Polygon.prototype.createLiteral = function(opt_feature) {
   var opacity = ol.expr.evaluateFeature(this.opacity_, opt_feature);
   goog.asserts.assertNumber(opacity, "opacity must be a number");
   return new ol.style.PolygonLiteral({fillColor:fillColor, strokeColor:strokeColor, strokeWidth:strokeWidth, opacity:opacity})
+};
+ol.style.Polygon.prototype.getFillColor = function() {
+  return this.fillColor_
+};
+ol.style.Polygon.prototype.getOpacity = function() {
+  return this.opacity_
+};
+ol.style.Polygon.prototype.getStrokeColor = function() {
+  return this.strokeColor_
+};
+ol.style.Polygon.prototype.getStrokeWidth = function() {
+  return this.strokeWidth_
+};
+ol.style.Polygon.prototype.setFillColor = function(fillColor) {
+  goog.asserts.assertInstanceof(fillColor, ol.expr.Expression);
+  this.fillColor_ = fillColor
+};
+ol.style.Polygon.prototype.setOpacity = function(opacity) {
+  goog.asserts.assertInstanceof(opacity, ol.expr.Expression);
+  this.opacity_ = opacity
+};
+ol.style.Polygon.prototype.setStrokeColor = function(strokeColor) {
+  goog.asserts.assertInstanceof(strokeColor, ol.expr.Expression);
+  this.strokeColor_ = strokeColor
+};
+ol.style.Polygon.prototype.setStrokeWidth = function(strokeWidth) {
+  goog.asserts.assertInstanceof(strokeWidth, ol.expr.Expression);
+  this.strokeWidth_ = strokeWidth
 };
 ol.style.PolygonDefaults = new ol.style.PolygonLiteral({fillColor:"#ffffff", strokeColor:"#696969", strokeWidth:1.5, opacity:0.75});
 goog.provide("ol.style.Shape");
@@ -18058,6 +18209,47 @@ ol.style.Shape.prototype.createLiteral = function(opt_feature) {
   var opacity = ol.expr.evaluateFeature(this.opacity_, opt_feature);
   goog.asserts.assertNumber(opacity, "opacity must be a number");
   return new ol.style.ShapeLiteral({type:this.type_, size:size, fillColor:fillColor, strokeColor:strokeColor, strokeWidth:strokeWidth, opacity:opacity})
+};
+ol.style.Shape.prototype.getFillColor = function() {
+  return this.fillColor_
+};
+ol.style.Shape.prototype.getOpacity = function() {
+  return this.opacity_
+};
+ol.style.Shape.prototype.getSize = function() {
+  return this.size_
+};
+ol.style.Shape.prototype.getStrokeColor = function() {
+  return this.strokeColor_
+};
+ol.style.Shape.prototype.getStrokeWidth = function() {
+  return this.strokeWidth_
+};
+ol.style.Shape.prototype.getType = function() {
+  return this.type_
+};
+ol.style.Shape.prototype.setFillColor = function(fillColor) {
+  goog.asserts.assertInstanceof(fillColor, ol.expr.Expression);
+  this.fillColor_ = fillColor
+};
+ol.style.Shape.prototype.setOpacity = function(opacity) {
+  goog.asserts.assertInstanceof(opacity, ol.expr.Expression);
+  this.opacity_ = opacity
+};
+ol.style.Shape.prototype.setSize = function(size) {
+  goog.asserts.assertInstanceof(size, ol.expr.Expression);
+  this.size_ = size
+};
+ol.style.Shape.prototype.setStrokeColor = function(strokeColor) {
+  goog.asserts.assertInstanceof(strokeColor, ol.expr.Expression);
+  this.strokeColor_ = strokeColor
+};
+ol.style.Shape.prototype.setStrokeWidth = function(strokeWidth) {
+  goog.asserts.assertInstanceof(strokeWidth, ol.expr.Expression);
+  this.strokeWidth_ = strokeWidth
+};
+ol.style.Shape.prototype.setType = function(type) {
+  this.type_ = type
 };
 ol.style.ShapeDefaults = new ol.style.ShapeLiteral({type:ol.style.ShapeType.CIRCLE, size:5, fillColor:"#ffffff", strokeColor:"#696969", strokeWidth:1.5, opacity:0.75});
 goog.provide("ol.renderer.canvas.VectorRenderer");
@@ -21451,8 +21643,8 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
   if(this.dispatchEvent(mapBrowserEvent) !== false) {
     for(i = interactionsArray.length - 1;i >= 0;i--) {
       var interaction = interactionsArray[i];
-      interaction.handleMapBrowserEvent(mapBrowserEvent);
-      if(mapBrowserEvent.otherInteractionsStopped) {
+      var cont = interaction.handleMapBrowserEvent(mapBrowserEvent);
+      if(!cont) {
         break
       }
     }
@@ -22843,6 +23035,7 @@ ol.control.ZoomSlider = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   this.currentResolution_ = undefined;
   this.direction_ = ol.control.ZoomSlider.direction.VERTICAL;
+  this.sliderInitialized_ = false;
   this.draggerListenerKeys_ = null;
   var className = goog.isDef(options.className) ? options.className : "ol-zoomslider";
   var sliderCssCls = className + " " + ol.css.CLASS_UNSELECTABLE;
@@ -22856,11 +23049,8 @@ goog.inherits(ol.control.ZoomSlider, ol.control.Control);
 ol.control.ZoomSlider.direction = {VERTICAL:0, HORIZONTAL:1};
 ol.control.ZoomSlider.prototype.setMap = function(map) {
   goog.base(this, "setMap", map);
-  this.initSlider_();
-  var resolution = map.getView().getView2D().getResolution();
-  if(goog.isDef(resolution)) {
-    this.currentResolution_ = resolution;
-    this.positionThumbForResolution_(resolution)
+  if(!goog.isNull(map)) {
+    map.render()
   }
 };
 ol.control.ZoomSlider.prototype.initSlider_ = function() {
@@ -22873,9 +23063,17 @@ ol.control.ZoomSlider.prototype.initSlider_ = function() {
     this.direction_ = ol.control.ZoomSlider.direction.VERTICAL;
     limits = new goog.math.Rect(0, 0, 0, h)
   }
-  this.dragger_.setLimits(limits)
+  this.dragger_.setLimits(limits);
+  this.sliderInitialized_ = true
 };
 ol.control.ZoomSlider.prototype.handleMapPostrender = function(mapEvent) {
+  if(goog.isNull(mapEvent.frameState)) {
+    return
+  }
+  goog.asserts.assert(goog.isDefAndNotNull(mapEvent.frameState.view2DState));
+  if(!this.sliderInitialized_) {
+    this.initSlider_()
+  }
   var res = mapEvent.frameState.view2DState.resolution;
   if(res !== this.currentResolution_) {
     this.currentResolution_ = res;
@@ -27724,9 +27922,9 @@ ol.parser.ogc.GML_v2 = function(opt_options) {
   }, "Polygon":function(geometry) {
     var node = this.createElementNS("gml:Polygon");
     var coordinates = geometry.getCoordinates();
-    this.writeNode("outerBoundaryIs", coordinates[0], null, node);
+    this.writeNode("outerBoundaryIs", coordinates[0].reverse(), null, node);
     for(var i = 1;i < coordinates.length;++i) {
-      this.writeNode("innerBoundaryIs", coordinates[i], null, node)
+      this.writeNode("innerBoundaryIs", coordinates[i].reverse(), null, node)
     }
     return node
   }, "outerBoundaryIs":function(ring) {
@@ -27998,17 +28196,17 @@ ol.parser.ogc.GML_v3 = function(opt_options) {
     var node = this.createElementNS("gml:PolygonPatch");
     node.setAttribute("interpolation", "planar");
     var coordinates = geometry.getCoordinates();
-    this.writeNode("exterior", coordinates[0], null, node);
+    this.writeNode("exterior", coordinates[0].reverse(), null, node);
     for(var i = 1, len = coordinates.length;i < len;++i) {
-      this.writeNode("interior", coordinates[i], null, node)
+      this.writeNode("interior", coordinates[i].reverse(), null, node)
     }
     return node
   }, "Polygon":function(geometry) {
     var node = this.createElementNS("gml:Polygon");
     var coordinates = geometry.getCoordinates();
-    this.writeNode("exterior", coordinates[0], null, node);
+    this.writeNode("exterior", coordinates[0].reverse(), null, node);
     for(var i = 1, len = coordinates.length;i < len;++i) {
-      this.writeNode("interior", coordinates[i], null, node)
+      this.writeNode("interior", coordinates[i].reverse(), null, node)
     }
     return node
   }, "exterior":function(ring) {
@@ -29548,7 +29746,7 @@ ol.tilegrid.XYZ.prototype.createTileCoordTransform = function(opt_options) {
   if(goog.isDef(options.extent)) {
     tileRangeByZ = new Array(maxZ + 1);
     var z;
-    for(z = 0;z < maxZ;++z) {
+    for(z = 0;z <= maxZ;++z) {
       if(z < minZ) {
         tileRangeByZ[z] = null
       }else {
