@@ -9,7 +9,8 @@ ol.expr.register('resolution', function() {
 
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
-    projection: ol.proj.get('EPSG:4326')
+    parser: new ol.parser.GeoJSON(),
+    url: 'data/countries.geojson'
   }),
   style: new ol.style.Style({rules: [
     new ol.style.Rule({
@@ -56,22 +57,3 @@ map.on(['click', 'mousemove'], function(evt) {
     }
   });
 });
-
-
-var geojson = new ol.parser.GeoJSON();
-var url = 'data/countries.geojson';
-var xhr = new XMLHttpRequest();
-xhr.open('GET', url, true);
-
-
-/**
- * onload handler for the XHR request.
- */
-xhr.onload = function() {
-  if (xhr.status == 200) {
-    // this is silly to have to tell the layer the destination projection
-    var projection = map.getView().getProjection();
-    vector.parseFeatures(xhr.responseText, geojson, projection);
-  }
-};
-xhr.send();

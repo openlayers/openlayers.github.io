@@ -4,7 +4,8 @@ var raster = new ol.layer.TileLayer({
 
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
-    projection: ol.proj.get('EPSG:4326')
+    parser: new ol.parser.ogc.GML_v3({axisOrientation: 'neu'}),
+    url: 'data/gml/topp-states-wfs.xml'
   }),
   style: new ol.style.Style({rules: [
     new ol.style.Rule({
@@ -26,22 +27,3 @@ var map = new ol.Map({
     zoom: 4
   })
 });
-
-var gml = new ol.parser.ogc.GML_v3({axisOrientation: 'neu'});
-
-var url = 'data/gml/topp-states-wfs.xml';
-var xhr = new XMLHttpRequest();
-xhr.open('GET', url, true);
-
-
-/**
- * onload handler for the XHR request.
- */
-xhr.onload = function() {
-  if (xhr.status == 200) {
-    // this is silly to have to tell the layer the destination projection
-    var projection = map.getView().getProjection();
-    vector.parseFeatures(xhr.responseText, gml, projection);
-  }
-};
-xhr.send();
