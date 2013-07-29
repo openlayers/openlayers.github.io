@@ -97,15 +97,6 @@ goog.testing.TestRunner.prototype.strict_ = true;
  * @param {goog.testing.TestCase} testCase The test case to initialize with.
  */
 goog.testing.TestRunner.prototype.initialize = function(testCase) {
-  if (!this.logEl_) {
-    var el = document.getElementById('closureTestRunnerLog');
-    if (el == null) {
-      el = document.createElement('div');
-      document.body.appendChild(el);
-    }
-    this.logEl_ = el;
-  }
-
   if (this.testCase && this.testCase.running) {
     throw Error('The test runner is already waiting for a test to complete');
   }
@@ -194,7 +185,7 @@ goog.testing.TestRunner.prototype.logError = function(msg) {
  * @param {Error} ex Exception.
  */
 goog.testing.TestRunner.prototype.logTestFailure = function(ex) {
-  var testName = /** @type {string} */ goog.testing.TestCase.currentTestName;
+  var testName = /** @type {string} */ (goog.testing.TestCase.currentTestName);
   if (this.testCase) {
     this.testCase.logError(testName, ex);
   } else {
@@ -277,15 +268,19 @@ goog.testing.TestRunner.prototype.onComplete_ = function() {
     log += '\n' + this.errors.join('\n');
   }
 
-  // Remove all children from the log element.
-  var logEl = this.logEl_;
-  while (logEl.firstChild) {
-    logEl.removeChild(logEl.firstChild);
+  if (!this.logEl_) {
+    var el = document.getElementById('closureTestRunnerLog');
+    if (el == null) {
+      el = document.createElement('div');
+      document.body.appendChild(el);
+    }
+    this.logEl_ = el;
   }
 
   // Highlight the page to indicate the overall outcome.
   this.writeLog(log);
 
+  // TODO(user): Make this work with multiple test cases (b/8603638).
   var runAgainLink = document.createElement('a');
   runAgainLink.style.display = 'block';
   runAgainLink.style.fontSize = 'small';
@@ -295,7 +290,7 @@ goog.testing.TestRunner.prototype.onComplete_ = function() {
     return false;
   }, this);
   runAgainLink.innerHTML = 'Run again without reloading';
-  logEl.appendChild(runAgainLink);
+  this.logEl_.appendChild(runAgainLink);
 };
 
 

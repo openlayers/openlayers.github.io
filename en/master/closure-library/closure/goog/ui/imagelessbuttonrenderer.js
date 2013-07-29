@@ -29,7 +29,7 @@ goog.provide('goog.ui.ImagelessButtonRenderer');
 
 goog.require('goog.dom.classes');
 goog.require('goog.ui.Button');
-goog.require('goog.ui.ControlContent');
+goog.require('goog.ui.Component');
 goog.require('goog.ui.CustomButtonRenderer');
 goog.require('goog.ui.INLINE_BLOCK_CLASSNAME');
 goog.require('goog.ui.registry');
@@ -88,7 +88,7 @@ goog.ui.ImagelessButtonRenderer.prototype.createDom;
 /** @override */
 goog.ui.ImagelessButtonRenderer.prototype.getContentElement = function(
     element) {
-  return (/** @type {Element} */ element && element.firstChild &&
+  return /** @type {Element} */ (element && element.firstChild &&
       element.firstChild.firstChild &&
       element.firstChild.firstChild.firstChild.lastChild);
 };

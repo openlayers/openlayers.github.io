@@ -17,11 +17,6 @@
  * simulates a bidirectional socket over HTTP. It is the basis of the
  * Gmail Chat IM connections to the server.
  *
- * See http://wiki/Main/BrowserChannel
- * This doesn't yet completely comform to the design document as we've done
- * some renaming and cleanup in the design document that hasn't yet been
- * implemented in the protocol.
- *
  * Typical usage will look like
  *  var handler = [handler object];
  *  var channel = new BrowserChannel(clientVersion);
@@ -49,22 +44,20 @@ goog.provide('goog.net.BrowserChannel.TimingEvent');
 goog.require('goog.Uri');
 goog.require('goog.array');
 goog.require('goog.asserts');
-goog.require('goog.debug.Logger');
 goog.require('goog.debug.TextFormatter');
 goog.require('goog.events.Event');
 goog.require('goog.events.EventTarget');
 goog.require('goog.json');
 goog.require('goog.json.EvalJsonProcessor');
+goog.require('goog.log');
 goog.require('goog.net.BrowserTestChannel');
 goog.require('goog.net.ChannelDebug');
 goog.require('goog.net.ChannelRequest');
-goog.require('goog.net.ChannelRequest.Error');
 goog.require('goog.net.XhrIo');
 goog.require('goog.net.tmpnetwork');
 goog.require('goog.string');
 goog.require('goog.structs');
 goog.require('goog.structs.CircularBuffer');
-goog.require('goog.userAgent');
 
 
 
@@ -73,9 +66,14 @@ goog.require('goog.userAgent');
  *
  * @param {string=} opt_clientVersion An application-specific version number
  *        that is sent to the server when connected.
+ * @param {Array.<string>=} opt_firstTestResults Previously determined results
+ *        of the first browser channel test.
+ * @param {boolean=} opt_secondTestResults Previously determined results
+ *        of the second browser channel test.
  * @constructor
  */
-goog.net.BrowserChannel = function(opt_clientVersion) {
+goog.net.BrowserChannel = function(opt_clientVersion, opt_firstTestResults,
+    opt_secondTestResults) {
   /**
    * The application specific version that is passed to the server.
    * @type {?string}
@@ -121,6 +119,22 @@ goog.net.BrowserChannel = function(opt_clientVersion) {
    * @private
    */
   this.parser_ = new goog.json.EvalJsonProcessor(null, true);
+
+  /**
+   * An array of results for the first browser channel test call.
+   * @type {Array.<string>}
+   * @private
+   */
+  this.firstTestResults_ = opt_firstTestResults || null;
+
+  /**
+   * The results of the second browser channel test. True implies the
+   * connection is buffered, False means unbuffered, null means that
+   * the results are not available.
+   * @private
+   */
+  this.secondTestResults_ = goog.isDefAndNotNull(opt_secondTestResults) ?
+      opt_secondTestResults : null;
 };
 
 
@@ -398,6 +412,33 @@ goog.net.BrowserChannel.prototype.forwardChannelMaxRetries_ = 2;
  * @private
  */
 goog.net.BrowserChannel.prototype.forwardChannelRequestTimeoutMs_ = 20 * 1000;
+
+
+/**
+ * A throttle time in ms for readystatechange events for the backchannel.
+ * Useful for throttling when ready state is INTERACTIVE (partial data).
+ *
+ * This throttle is useful if the server sends large data chunks down the
+ * backchannel.  It prevents examining XHR partial data on every
+ * readystate change event.  This is useful because large chunks can
+ * trigger hundreds of readystatechange events, each of which takes ~5ms
+ * or so to handle, in turn making the UI unresponsive for a significant period.
+ *
+ * If set to zero no throttle is used.
+ * @type {number}
+ * @private
+ */
+goog.net.BrowserChannel.prototype.readyStateChangeThrottleMs_ = 0;
+
+
+/**
+ * Whether cross origin requests are supported for the browser channel.
+ *
+ * See {@link goog.net.XhrIo#setWithCredentials}.
+ * @type {boolean}
+ * @private
+ */
+goog.net.BrowserChannel.prototype.supportsCrossDomainXhrs_ = false;
 
 
 /**
@@ -1028,6 +1069,37 @@ goog.net.BrowserChannel.prototype.setExtraHeaders = function(extraHeaders) {
 
 
 /**
+ * Sets the throttle for handling onreadystatechange events for the request.
+ *
+ * @param {number} throttle The throttle in ms.  A value of zero indicates
+ *     no throttle.
+ */
+goog.net.BrowserChannel.prototype.setReadyStateChangeThrottle = function(
+    throttle) {
+  this.readyStateChangeThrottleMs_ = throttle;
+};
+
+
+/**
+ * Sets whether cross origin requests are supported for the browser channel.
+ *
+ * Setting this allows the creation of requests to secondary domains and
+ * sends XHRs with the CORS withCredentials bit set to true.
+ *
+ * In order for cross-origin requests to work, the server will also need to set
+ * CORS response headers as per:
+ * https://developer.mozilla.org/en-US/docs/HTTP_access_control
+ *
+ * See {@link goog.net.XhrIo#setWithCredentials}.
+ * @param {boolean} supportCrossDomain Whether cross domain XHRs are supported.
+ */
+goog.net.BrowserChannel.prototype.setSupportsCrossDomainXhrs = function(
+    supportCrossDomain) {
+  this.supportsCrossDomainXhrs_ = supportCrossDomain;
+};
+
+
+/**
  * Returns the handler used for channel callback events.
  *
  * @return {goog.net.BrowserChannel.Handler} The handler.
@@ -1620,6 +1692,8 @@ goog.net.BrowserChannel.prototype.startBackChannel_ = function() {
       'rpc',
       this.backChannelAttemptId_);
   this.backChannelRequest_.setExtraHeaders(this.extraHeaders_);
+  this.backChannelRequest_.setReadyStateChangeThrottle(
+      this.readyStateChangeThrottleMs_);
   var uri = this.backChannelUri_.clone();
   uri.setParameterValue('RID', 'rpc');
   uri.setParameterValue('SID', this.sid_);
@@ -1745,7 +1819,7 @@ goog.net.BrowserChannel.prototype.onRequestData =
     if (!goog.string.isEmpty(responseText)) {
       var response = this.parser_.parse(responseText);
       goog.asserts.assert(goog.isArray(response));
-      this.onInput_(/** @type {Array} */ (response));
+      this.onInput_(/** @type {!Array} */ (response));
     }
   }
 };
@@ -2024,11 +2098,10 @@ goog.net.BrowserChannel.prototype.setRetryDelay = function(baseDelayMs,
 
 /**
  * Processes the data returned by the server.
- * @param {Array} respArray The response array returned by the server.
+ * @param {!Array.<!Array>} respArray The response array returned by the server.
  * @private
  */
 goog.net.BrowserChannel.prototype.onInput_ = function(respArray) {
-  // respArray is an array of arrays
   var batch = this.handler_ && this.handler_.channelHandleMultipleArrays ?
       [] : null;
   for (var i = 0; i < respArray.length; i++) {
@@ -2059,7 +2132,7 @@ goog.net.BrowserChannel.prototype.onInput_ = function(respArray) {
       }
     } else if (this.state_ == goog.net.BrowserChannel.State.OPENED) {
       if (nextArray[0] == 'stop') {
-        if (batch && batch.length) {
+        if (batch && !goog.array.isEmpty(batch)) {
           this.handler_.channelHandleMultipleArrays(this, batch);
           batch.length = 0;
         }
@@ -2082,7 +2155,7 @@ goog.net.BrowserChannel.prototype.onInput_ = function(respArray) {
       this.backChannelRetryCount_ = 0;
     }
   }
-  if (batch && batch.length) {
+  if (batch && !goog.array.isEmpty(batch)) {
     this.handler_.channelHandleMultipleArrays(this, batch);
   }
 };
@@ -2217,6 +2290,26 @@ goog.net.BrowserChannel.prototype.getForwardChannelUri =
 
 
 /**
+ * Gets the results for the first browser channel test
+ * @return {Array.<string>} The results.
+ */
+goog.net.BrowserChannel.prototype.getFirstTestResults =
+    function() {
+  return this.firstTestResults_;
+};
+
+
+/**
+ * Gets the results for the second browser channel test
+ * @return {?boolean} The results. True -> buffered connection,
+ *      False -> unbuffered, null -> unknown.
+ */
+goog.net.BrowserChannel.prototype.getSecondTestResults = function() {
+  return this.secondTestResults_;
+};
+
+
+/**
  * Gets the Uri used for the connection that receives data from the server.
  * @param {?string} hostPrefix The host prefix.
  * @param {string} path The path on the host.
@@ -2282,17 +2375,19 @@ goog.net.BrowserChannel.prototype.createDataUri =
 /**
  * Called when BC needs to create an XhrIo object.  Override in a subclass if
  * you need to customize the behavior, for example to enable the creation of
- * XHR's capable of calling a secondary domain.
+ * XHR's capable of calling a secondary domain. Will also allow calling
+ * a secondary domain if withCredentials (CORS) is enabled.
  * @param {?string} hostPrefix The host prefix, if we need an XhrIo object
  *     capable of calling a secondary domain.
  * @return {!goog.net.XhrIo} A new XhrIo object.
  */
 goog.net.BrowserChannel.prototype.createXhrIo = function(hostPrefix) {
-  if (hostPrefix) {
-    throw new Error('Can\'t create secondary domain capable XhrIo object.');
-  } else {
-    return new goog.net.XhrIo();
+  if (hostPrefix && !this.supportsCrossDomainXhrs_) {
+    throw Error('Can\'t create secondary domain capable XhrIo object.');
   }
+  var xhr = new goog.net.XhrIo();
+  xhr.setWithCredentials(this.supportsCrossDomainXhrs_);
+  return xhr;
 };
 
 
@@ -2397,22 +2492,27 @@ goog.net.BrowserChannel.notifyTimingEvent = function(size, rtt, retries) {
  * a host prefix. This allows us to work around browser per-domain
  * connection limits.
  *
- * Currently, we only use secondary domains when using Trident's ActiveXObject,
- * because it supports cross-domain requests out of the box. Even if we wanted
- * to use secondary domains on Gecko/Webkit, they wouldn't work due to
- * security restrictions on cross-origin XHRs. Note that in IE10 we no longer
- * use ActiveX since it's not supported in Metro mode and IE10 supports XHR
- * streaming.
+ * Currently, we  use secondary domains when using Trident's ActiveXObject,
+ * because it supports cross-domain requests out of the box.  Note that in IE10
+ * we no longer use ActiveX since it's not supported in Metro mode and IE10
+ * supports XHR streaming.
  *
- * If you need to use secondary domains on other browsers, you'll need
- * to override this method in a subclass, and make sure that those browsers
- * use some messaging mechanism that works cross-domain.
+ * If you need to use secondary domains on other browsers and IE10,
+ * you have two choices:
+ *     1) If you only care about browsers that support CORS
+ *        (https://developer.mozilla.org/en-US/docs/HTTP_access_control), you
+ *        can use {@link #setSupportsCrossDomainXhrs} and set the appropriate
+ *        CORS response headers on the server.
+ *     2) Or, override this method in a subclass, and make sure that those
+ *        browsers use some messaging mechanism that works cross-domain (e.g
+ *        iframes and window.postMessage).
  *
  * @return {boolean} Whether to use secondary domains.
  * @see http://code.google.com/p/closure-library/issues/detail?id=339
  */
 goog.net.BrowserChannel.prototype.shouldUseSecondaryDomains = function() {
-  return !goog.net.ChannelRequest.supportsXhrStreaming();
+  return this.supportsCrossDomainXhrs_ ||
+      !goog.net.ChannelRequest.supportsXhrStreaming();
 };
 
 
@@ -2468,18 +2568,18 @@ goog.net.BrowserChannel.LogSaver.setEnabled = function(enable) {
   }
 
   var fn = goog.net.BrowserChannel.LogSaver.addLogRecord;
-  var logger = goog.debug.Logger.getLogger('goog.net');
+  var logger = goog.log.getLogger('goog.net');
   if (enable) {
-    logger.addHandler(fn);
+    goog.log.addHandler(logger, fn);
   } else {
-    logger.removeHandler(fn);
+    goog.log.removeHandler(logger, fn);
   }
 };
 
 
 /**
  * Adds a log record.
- * @param {goog.debug.LogRecord} logRecord the LogRecord.
+ * @param {goog.log.LogRecord} logRecord the LogRecord.
  */
 goog.net.BrowserChannel.LogSaver.addLogRecord = function(logRecord) {
   goog.net.BrowserChannel.LogSaver.buffer_.add(
@@ -2506,7 +2606,7 @@ goog.net.BrowserChannel.LogSaver.clearBuffer = function() {
 
 
 /**
- * Interface for the browser channel handler
+ * Abstract base class for the browser channel handler
  * @constructor
  */
 goog.net.BrowserChannel.Handler = function() {
@@ -2516,7 +2616,7 @@ goog.net.BrowserChannel.Handler = function() {
 /**
  * Callback handler for when a batch of response arrays is received from the
  * server.
- * @type {Function}
+ * @type {?function(!goog.net.BrowserChannel, !Array.<!Array>)}
  */
 goog.net.BrowserChannel.Handler.prototype.channelHandleMultipleArrays = null;
 

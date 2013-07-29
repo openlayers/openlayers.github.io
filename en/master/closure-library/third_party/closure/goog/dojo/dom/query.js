@@ -64,6 +64,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *        future queries using the same selector evaluate against the DOM branch
  *        too.
  *    5.) matched nodes are pruned to ensure they are unique
+ * @deprecated This is an all-software query selector. When developing for
+ *     recent browsers, use document.querySelector. See information at
+ *     http://caniuse.com/queryselector and
+ *     https://developer.mozilla.org/en-US/docs/DOM/Document.querySelector .
  */
 
 goog.provide('goog.dom.query');
@@ -189,6 +193,10 @@ goog.require('goog.userAgent');
    * @param {(string|Node)=} opt_root A Node (or node id) to scope the search
    *     from (optional).
    * @return { {length: number} } The elements that matched the query.
+   *
+   * @deprecated This is an all-software query selector. Use
+   *     document.querySelector. See
+   *     https://developer.mozilla.org/en-US/docs/DOM/Document.querySelector .
    */
 goog.dom.query = (function() {
   ////////////////////////////////////////////////////////////////////////
@@ -1258,7 +1266,7 @@ goog.dom.query = (function() {
   var qsaAvail = (
     !!goog.dom.getDocument()[qsa] &&
     // see #5832
-    (!goog.userAgent.WEBKIT || goog.userAgent.isVersion('526'))
+    (!goog.userAgent.WEBKIT || goog.userAgent.isVersionOrHigher('526'))
   );
 
   /** @param {boolean=} opt_forceDOM */
@@ -1307,7 +1315,7 @@ goog.dom.query = (function() {
       //    need to tighten up browser rules on ':contains' and '|=' to
       //    figure out which aren't good
       (query.indexOf(':contains') == -1) &&
-      (query.indexOf('|=') == -1)
+      (query.indexOf('|=') == -1) // some browsers don't understand it
     );
 
     // TODO:

@@ -25,14 +25,12 @@
 goog.provide('goog.ui.Textarea');
 goog.provide('goog.ui.Textarea.EventType');
 
-goog.require('goog.Timer');
+goog.require('goog.dom');
 goog.require('goog.events.EventType');
-goog.require('goog.events.KeyCodes');
 goog.require('goog.style');
 goog.require('goog.ui.Control');
 goog.require('goog.ui.TextareaRenderer');
 goog.require('goog.userAgent');
-goog.require('goog.userAgent.product');
 
 
 
@@ -42,7 +40,7 @@ goog.require('goog.userAgent.product');
  * @param {string} content Text to set as the textarea's value.
  * @param {goog.ui.TextareaRenderer=} opt_renderer Renderer used to render or
  *     decorate the textarea. Defaults to {@link goog.ui.TextareaRenderer}.
- * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM hepler, used for
+ * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper, used for
  *     document interaction.
  * @constructor
  * @extends {goog.ui.Control}
@@ -505,7 +503,7 @@ goog.ui.Textarea.prototype.grow_ = function(opt_e) {
 
 
 /**
- * Resizes the texarea to shrink to fit its contents. The way this works is
+ * Resizes the textarea to shrink to fit its contents. The way this works is
  * by increasing the padding of the textarea by 1px (it's important here that
  * we're in box-sizing: border-box mode). If the size of the textarea grows,
  * then the box is filled up to the padding box with text.
@@ -516,12 +514,6 @@ goog.ui.Textarea.prototype.shrink_ = function() {
   var textarea = this.getElement();
   if (!this.isResizing_) {
     this.isResizing_ = true;
-    var isEmpty = false;
-    if (!textarea.value) {
-      // Prevents height from becoming 0.
-      textarea.value = ' ';
-      isEmpty = true;
-    }
     var scrollHeight = textarea.scrollHeight;
     if (!scrollHeight) {
       this.setHeightToEstimate_();
@@ -549,9 +541,6 @@ goog.ui.Textarea.prototype.shrink_ = function() {
         }
         textarea.style.paddingBottom = paddingBox.bottom + 'px';
       }
-    }
-    if (isEmpty) {
-      textarea.value = '';
     }
     this.isResizing_ = false;
   }

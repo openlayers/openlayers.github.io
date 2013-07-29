@@ -65,14 +65,17 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     <div class="description">
         <p>Helper class for providing HTML5 Geolocation capabilities.
 HTML5 Geolocation is used to locate a user's position.</p>
+
 <p>Example:</p>
+
 <pre><code>var geolocation = new ol.Geolocation();
 // take the projection to use from the map's view
 geolocation.bindTo('projection', map.getView());
 // listen to changes in position
 geolocation.on('change:position', function(evt) {
   window.console.log(geolocation.getPosition());
-});</code></pre>
+});
+</code></pre>
     </div>
     
 
@@ -1719,7 +1722,7 @@ that it is bound to.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">number</span>
+<span class="param-type">goog.events.Key</span>
 
 
 	</dd>
@@ -1929,7 +1932,7 @@ that it is bound to.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">number</span>
+<span class="param-type">goog.events.Key</span>
 
 
 	</dd>

@@ -20,11 +20,16 @@
 
 goog.provide('goog.ui.PaletteRenderer');
 
+goog.require('goog.a11y.aria');
+goog.require('goog.a11y.aria.Role');
+goog.require('goog.a11y.aria.State');
 goog.require('goog.array');
 goog.require('goog.dom');
+goog.require('goog.dom.NodeIterator');
 goog.require('goog.dom.NodeType');
-goog.require('goog.dom.a11y');
+goog.require('goog.dom.TagName');
 goog.require('goog.dom.classes');
+goog.require('goog.iter');
 goog.require('goog.style');
 goog.require('goog.ui.ControlRenderer');
 goog.require('goog.userAgent');
@@ -86,10 +91,12 @@ goog.ui.PaletteRenderer.CSS_CLASS = goog.getCssName('goog-palette');
  */
 goog.ui.PaletteRenderer.prototype.createDom = function(palette) {
   var classNames = this.getClassNames(palette);
-  return palette.getDomHelper().createDom(
-      'div', classNames ? classNames.join(' ') : null,
+  var element = palette.getDomHelper().createDom(
+      goog.dom.TagName.DIV, classNames ? classNames.join(' ') : null,
       this.createGrid(/** @type {Array.<Node>} */(palette.getContent()),
           palette.getSize(), palette.getDomHelper()));
+  goog.a11y.aria.setRole(element, goog.a11y.aria.Role.GRID);
+  return element;
 };
 
 
@@ -126,13 +133,12 @@ goog.ui.PaletteRenderer.prototype.createGrid = function(items, size, dom) {
  * @return {Element} Palette table element.
  */
 goog.ui.PaletteRenderer.prototype.createTable = function(rows, dom) {
-  var table = dom.createDom('table',
+  var table = dom.createDom(goog.dom.TagName.TABLE,
       goog.getCssName(this.getCssClass(), 'table'),
-      dom.createDom('tbody', goog.getCssName(this.getCssClass(), 'body'),
-          rows));
+      dom.createDom(goog.dom.TagName.TBODY,
+          goog.getCssName(this.getCssClass(), 'body'), rows));
   table.cellSpacing = 0;
   table.cellPadding = 0;
-  goog.dom.a11y.setRole(table, 'grid');
   return table;
 };
 
@@ -144,7 +150,10 @@ goog.ui.PaletteRenderer.prototype.createTable = function(rows, dom) {
  * @return {Element} Row element.
  */
 goog.ui.PaletteRenderer.prototype.createRow = function(cells, dom) {
-  return dom.createDom('tr', goog.getCssName(this.getCssClass(), 'row'), cells);
+  var row = dom.createDom(goog.dom.TagName.TR,
+      goog.getCssName(this.getCssClass(), 'row'), cells);
+  goog.a11y.aria.setRole(row, goog.a11y.aria.Role.ROW);
+  return row;
 };
 
 
@@ -156,14 +165,42 @@ goog.ui.PaletteRenderer.prototype.createRow = function(cells, dom) {
  * @return {Element} Cell element.
  */
 goog.ui.PaletteRenderer.prototype.createCell = function(node, dom) {
-  var cell = dom.createDom('td', {
+  var cell = dom.createDom(goog.dom.TagName.TD, {
     'class': goog.getCssName(this.getCssClass(), 'cell'),
     // Cells must have an ID, for accessibility, so we generate one here.
     'id': goog.getCssName(this.getCssClass(), 'cell-') +
         goog.ui.PaletteRenderer.cellId_++
   }, node);
-  goog.dom.a11y.setRole(cell, 'gridcell');
+  goog.a11y.aria.setRole(cell, goog.a11y.aria.Role.GRIDCELL);
+
+  if (!goog.dom.getTextContent(cell) && !goog.a11y.aria.getLabel(cell)) {
+    var ariaLabelForCell = this.findAriaLabelForCell_(cell);
+    if (ariaLabelForCell) {
+      goog.a11y.aria.setLabel(cell, ariaLabelForCell);
+    }
+  }
   return cell;
+};
+
+
+/**
+ * Descends the DOM and tries to find an aria label for a grid cell
+ * from the first child with a label or title.
+ * @param {!Element} cell The cell.
+ * @return {string} The label to use.
+ * @private
+ */
+goog.ui.PaletteRenderer.prototype.findAriaLabelForCell_ = function(cell) {
+  var iter = new goog.dom.NodeIterator(cell);
+  var label = '';
+  var node;
+  while (!label && (node = goog.iter.nextOrValue(iter, null))) {
+    if (node.nodeType == goog.dom.NodeType.ELEMENT) {
+      label = goog.a11y.aria.getLabel(/** @type {!Element} */ (node)) ||
+          node.title;
+    }
+  }
+  return label;
 };
 
 
@@ -207,8 +244,8 @@ goog.ui.PaletteRenderer.prototype.decorate = function(palette, element) {
 goog.ui.PaletteRenderer.prototype.setContent = function(element, content) {
   var items = /** @type {Array.<Node>} */ (content);
   if (element) {
-    var tbody = goog.dom.getElementsByTagNameAndClass(
-        'tbody', goog.getCssName(this.getCssClass(), 'body'), element)[0];
+    var tbody = goog.dom.getElementsByTagNameAndClass(goog.dom.TagName.TBODY,
+        goog.getCssName(this.getCssClass(), 'body'), element)[0];
     if (tbody) {
       var index = 0;
       goog.array.forEach(tbody.rows, function(row) {
@@ -262,7 +299,7 @@ goog.ui.PaletteRenderer.prototype.setContent = function(element, content) {
 goog.ui.PaletteRenderer.prototype.getContainingItem = function(palette, node) {
   var root = palette.getElement();
   while (node && node.nodeType == goog.dom.NodeType.ELEMENT && node != root) {
-    if (node.tagName == 'TD' && goog.dom.classes.has(
+    if (node.tagName == goog.dom.TagName.TD && goog.dom.classes.has(
         /** @type {Element} */ (node),
         goog.getCssName(this.getCssClass(), 'cell'))) {
       return node.firstChild;
@@ -286,14 +323,23 @@ goog.ui.PaletteRenderer.prototype.highlightCell = function(palette,
                                                            node,
                                                            highlight) {
   if (node) {
-    var cell = /** @type {Element} */ (node.parentNode);
+    var cell = this.getCellForItem(node);
     goog.dom.classes.enable(cell,
         goog.getCssName(this.getCssClass(), 'cell-hover'), highlight);
     // See http://www.w3.org/TR/2006/WD-aria-state-20061220/#activedescendent
     // for an explanation of the activedescendent.
-    var table = /** @type {Element} */ (palette.getElement().firstChild);
-    goog.dom.a11y.setState(table, 'activedescendent', cell.id);
+    goog.a11y.aria.setState(palette.getElementStrict(),
+        goog.a11y.aria.State.ACTIVEDESCENDANT, cell.id);
   }
+};
+
+
+/**
+ * @param {Node} node Item whose cell is to be returned.
+ * @return {Element} The grid cell for the palette item.
+ */
+goog.ui.PaletteRenderer.prototype.getCellForItem = function(node) {
+  return /** @type {Element} */ (node ? node.parentNode : null);
 };
 
 

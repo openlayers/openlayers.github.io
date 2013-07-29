@@ -21,13 +21,14 @@
 goog.provide('goog.debug.ErrorReporter');
 goog.provide('goog.debug.ErrorReporter.ExceptionEvent');
 
+goog.require('goog.asserts');
 goog.require('goog.debug');
 goog.require('goog.debug.ErrorHandler');
-goog.require('goog.debug.Logger');
 goog.require('goog.debug.entryPointRegistry');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.events.EventTarget');
+goog.require('goog.log');
 goog.require('goog.net.XhrIo');
 goog.require('goog.object');
 goog.require('goog.string');
@@ -54,12 +55,27 @@ goog.require('goog.userAgent');
  */
 goog.debug.ErrorReporter = function(
     handlerUrl, opt_contextProvider, opt_noAutoProtect) {
+  goog.base(this);
+
   /**
    * Context provider, if one was provided.
    * @type {?function(!Error, !Object.<string, string>)}
    * @private
    */
   this.contextProvider_ = opt_contextProvider || null;
+
+  /**
+   * The string prefix of any optional context parameters logged with the error.
+   * @private {string}
+   */
+  this.contextPrefix_ = 'context.';
+
+  /**
+   * The number of bytes after which the ErrorReporter truncates the POST body.
+   * If null, the ErrorReporter won't truncate the body.
+   * @private {?number}
+   */
+  this.truncationLimit_ = null;
 
   /**
    * XHR sender.
@@ -138,11 +154,11 @@ goog.debug.ErrorReporter.prototype.extraHeaders_;
 /**
  * Logging object.
  *
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  * @private
  */
 goog.debug.ErrorReporter.logger_ =
-    goog.debug.Logger.getLogger('goog.debug.ErrorReporter');
+    goog.log.getLogger('goog.debug.ErrorReporter');
 
 
 /**
@@ -257,7 +273,7 @@ goog.debug.ErrorReporter.prototype.setup_ = function() {
  */
 goog.debug.ErrorReporter.prototype.handleException = function(e,
     opt_context) {
-  var error = (/** @type {!Error} */ goog.debug.normalizeErrorObject(e));
+  var error = /** @type {!Error} */ (goog.debug.normalizeErrorObject(e));
 
   // Construct the context, possibly from the one provided in the argument, and
   // pass it to the context provider if there is one.
@@ -266,12 +282,14 @@ goog.debug.ErrorReporter.prototype.handleException = function(e,
     try {
       this.contextProvider_(error, context);
     } catch (err) {
-      goog.debug.ErrorReporter.logger_.severe('Context provider threw an ' +
-          'exception: ' + err.message);
+      goog.log.error(goog.debug.ErrorReporter.logger_,
+          'Context provider threw an exception: ' + err.message);
     }
   }
-  this.sendErrorReport(error.message, error.fileName, error.lineNumber,
-      error.stack, context);
+  // Truncate message to a reasonable length, since it will be sent in the URL.
+  var message = error.message.substring(0, 2000);
+  this.sendErrorReport(message, error.fileName, error.lineNumber, error.stack,
+      context);
 
   try {
     this.dispatchEvent(
@@ -305,12 +323,17 @@ goog.debug.ErrorReporter.prototype.sendErrorReport =
     // Copy context into query data map
     if (opt_context) {
       for (var entry in opt_context) {
-        queryMap['context.' + entry] = opt_context[entry];
+        queryMap[this.contextPrefix_ + entry] = opt_context[entry];
       }
     }
 
     // Copy query data map into request.
     var queryData = goog.uri.utils.buildQueryDataFromMap(queryMap);
+
+    // Truncate if truncationLimit set.
+    if (goog.isNumber(this.truncationLimit_)) {
+      queryData = queryData.substring(0, this.truncationLimit_);
+    }
 
     // Send the request with the contents of the error.
     this.xhrSender_(requestUrl, 'POST', queryData, this.extraHeaders_);
@@ -321,8 +344,28 @@ goog.debug.ErrorReporter.prototype.sendErrorReport =
         'line:', line, '\n',
         'error:', message, '\n',
         'trace:', opt_trace);
-    goog.debug.ErrorReporter.logger_.info(logMessage);
+    goog.log.info(goog.debug.ErrorReporter.logger_, logMessage);
   }
+};
+
+
+/**
+ * @param {string} prefix The prefix to appear prepended to all context
+ *     variables in the error report body.
+ */
+goog.debug.ErrorReporter.prototype.setContextPrefix = function(prefix) {
+  this.contextPrefix_ = prefix;
+};
+
+
+/**
+ * @param {?number} limit Size in bytes to begin truncating POST body.  Set to
+ *     null to prevent truncation.  The limit must be >= 0.
+ */
+goog.debug.ErrorReporter.prototype.setTruncationLimit = function(limit) {
+  goog.asserts.assert(!goog.isNumber(limit) || limit >= 0,
+      'Body limit must be valid number >= 0 or null');
+  this.truncationLimit_ = limit;
 };
 
 

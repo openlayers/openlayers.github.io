@@ -39,6 +39,7 @@ goog.require('goog.net.xpc.Transport');
 goog.require('goog.reflect');
 
 
+
 /**
  * NIX method transport.
  *
@@ -153,7 +154,7 @@ goog.net.xpc.NixTransport.isNixSupported = function() {
     window.opener = /** @type {Window} */ ({});
     isSupported = goog.reflect.canAccessProperty(window, 'opener');
     window.opener = oldOpener;
-  } catch(e) { }
+  } catch (e) { }
   return isSupported;
 };
 
@@ -165,6 +166,7 @@ goog.net.xpc.NixTransport.isNixSupported = function() {
  * Note that this method can be called multiple times, as
  * it internally checks whether the work is necessary before
  * proceeding.
+ * @param {Window} listenWindow The window containing the affected page.
  * @private
  */
 goog.net.xpc.NixTransport.conductGlobalSetup_ = function(listenWindow) {
@@ -174,86 +176,86 @@ goog.net.xpc.NixTransport.conductGlobalSetup_ = function(listenWindow) {
 
   // Inject the VBScript code needed.
   var vbscript =
-    // We create a class to act as a wrapper for
-    // a Javascript call, to prevent a break in of
-    // the context.
-    'Class ' + goog.net.xpc.NixTransport.NIX_WRAPPER + '\n ' +
+      // We create a class to act as a wrapper for
+      // a Javascript call, to prevent a break in of
+      // the context.
+      'Class ' + goog.net.xpc.NixTransport.NIX_WRAPPER + '\n ' +
 
-    // An internal member for keeping track of the
-    // transport for which this wrapper exists.
-    'Private m_Transport\n' +
+      // An internal member for keeping track of the
+      // transport for which this wrapper exists.
+      'Private m_Transport\n' +
 
-    // An internal member for keeping track of the
-    // auth token associated with the context that
-    // created this wrapper. Used for validation
-    // purposes.
-    'Private m_Auth\n' +
+      // An internal member for keeping track of the
+      // auth token associated with the context that
+      // created this wrapper. Used for validation
+      // purposes.
+      'Private m_Auth\n' +
 
-    // Method for internally setting the value
-    // of the m_Transport property. We have the
-    // isEmpty check to prevent the transport
-    // from being overridden with an illicit
-    // object by a malicious party.
-    'Public Sub SetTransport(transport)\n' +
-    'If isEmpty(m_Transport) Then\n' +
-    'Set m_Transport = transport\n' +
-    'End If\n' +
-    'End Sub\n' +
+      // Method for internally setting the value
+      // of the m_Transport property. We have the
+      // isEmpty check to prevent the transport
+      // from being overridden with an illicit
+      // object by a malicious party.
+      'Public Sub SetTransport(transport)\n' +
+      'If isEmpty(m_Transport) Then\n' +
+      'Set m_Transport = transport\n' +
+      'End If\n' +
+      'End Sub\n' +
 
-    // Method for internally setting the value
-    // of the m_Auth property. We have the
-    // isEmpty check to prevent the transport
-    // from being overridden with an illicit
-    // object by a malicious party.
-    'Public Sub SetAuth(auth)\n' +
-    'If isEmpty(m_Auth) Then\n' +
-    'm_Auth = auth\n' +
-    'End If\n' +
-    'End Sub\n' +
+      // Method for internally setting the value
+      // of the m_Auth property. We have the
+      // isEmpty check to prevent the transport
+      // from being overridden with an illicit
+      // object by a malicious party.
+      'Public Sub SetAuth(auth)\n' +
+      'If isEmpty(m_Auth) Then\n' +
+      'm_Auth = auth\n' +
+      'End If\n' +
+      'End Sub\n' +
 
-    // Returns the auth token to the gadget, so it can
-    // confirm a match before initiating the connection
-    'Public Function GetAuthToken()\n ' +
-    'GetAuthToken = m_Auth\n' +
-    'End Function\n' +
+      // Returns the auth token to the gadget, so it can
+      // confirm a match before initiating the connection
+      'Public Function GetAuthToken()\n ' +
+      'GetAuthToken = m_Auth\n' +
+      'End Function\n' +
 
-    // A wrapper method which causes a
-    // message to be sent to the other context.
-    'Public Sub SendMessage(service, payload)\n ' +
-    'Call m_Transport.' +
-    goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE + '(service, payload)\n' +
-    'End Sub\n' +
+      // A wrapper method which causes a
+      // message to be sent to the other context.
+      'Public Sub SendMessage(service, payload)\n ' +
+      'Call m_Transport.' +
+      goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE + '(service, payload)\n' +
+      'End Sub\n' +
 
-    // Method for setting up the inner->outer
-    // channel.
-    'Public Sub CreateChannel(channel)\n ' +
-    'Call m_Transport.' +
-    goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL + '(channel)\n' +
-    'End Sub\n' +
+      // Method for setting up the inner->outer
+      // channel.
+      'Public Sub CreateChannel(channel)\n ' +
+      'Call m_Transport.' +
+      goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL + '(channel)\n' +
+      'End Sub\n' +
 
-    // An empty field with a unique identifier to
-    // prevent the code from confusing this wrapper
-    // with a run-of-the-mill value found in window.opener.
-    'Public Sub ' + goog.net.xpc.NixTransport.NIX_ID_FIELD + '()\n ' +
-    'End Sub\n' +
-    'End Class\n ' +
+      // An empty field with a unique identifier to
+      // prevent the code from confusing this wrapper
+      // with a run-of-the-mill value found in window.opener.
+      'Public Sub ' + goog.net.xpc.NixTransport.NIX_ID_FIELD + '()\n ' +
+      'End Sub\n' +
+      'End Class\n ' +
 
-    // Function to get a reference to the wrapper.
-    'Function ' +
-    goog.net.xpc.NixTransport.NIX_GET_WRAPPER + '(transport, auth)\n' +
-    'Dim wrap\n' +
-    'Set wrap = New ' + goog.net.xpc.NixTransport.NIX_WRAPPER + '\n' +
-    'wrap.SetTransport transport\n' +
-    'wrap.SetAuth auth\n' +
-    'Set ' + goog.net.xpc.NixTransport.NIX_GET_WRAPPER + ' = wrap\n' +
-    'End Function';
+      // Function to get a reference to the wrapper.
+      'Function ' +
+      goog.net.xpc.NixTransport.NIX_GET_WRAPPER + '(transport, auth)\n' +
+      'Dim wrap\n' +
+      'Set wrap = New ' + goog.net.xpc.NixTransport.NIX_WRAPPER + '\n' +
+      'wrap.SetTransport transport\n' +
+      'wrap.SetAuth auth\n' +
+      'Set ' + goog.net.xpc.NixTransport.NIX_GET_WRAPPER + ' = wrap\n' +
+      'End Function';
 
   try {
     listenWindow.execScript(vbscript, 'vbscript');
     listenWindow['nix_setup_complete'] = true;
   }
   catch (e) {
-    goog.net.xpc.logger.severe(
+    goog.log.error(goog.net.xpc.logger,
         'exception caught while attempting global setup: ' + e);
   }
 };
@@ -266,7 +268,7 @@ goog.net.xpc.NixTransport.conductGlobalSetup_ = function(listenWindow) {
  * @override
  */
 goog.net.xpc.NixTransport.prototype.transportType =
-   goog.net.xpc.TransportTypes.NIX;
+    goog.net.xpc.TransportTypes.NIX;
 
 
 /**
@@ -321,18 +323,18 @@ goog.net.xpc.NixTransport.prototype.attemptOuterSetup_ = function() {
 
   // Get shortcut to iframe-element that contains the inner
   // page.
-  var innerFrame = this.channel_.iframeElement_;
+  var innerFrame = this.channel_.getIframeElement();
 
   try {
     // Attempt to place the NIX wrapper object into the inner
     // frame's opener property.
-    innerFrame.contentWindow.opener =
-      this.getWindow()[goog.net.xpc.NixTransport.NIX_GET_WRAPPER]
-        (this, this.authToken_);
+    var theWindow = this.getWindow();
+    var getWrapper = theWindow[goog.net.xpc.NixTransport.NIX_GET_WRAPPER];
+    innerFrame.contentWindow.opener = getWrapper(this, this.authToken_);
     this.localSetupCompleted_ = true;
   }
   catch (e) {
-    goog.net.xpc.logger.severe(
+    goog.log.error(goog.net.xpc.logger,
         'exception caught while attempting setup: ' + e);
   }
 
@@ -372,15 +374,16 @@ goog.net.xpc.NixTransport.prototype.attemptInnerSetup_ = function() {
       var remoteAuthToken = this.nixChannel_['GetAuthToken']();
 
       if (remoteAuthToken != this.remoteAuthToken_) {
-        goog.net.xpc.logger.severe('Invalid auth token from other party');
+        goog.log.error(goog.net.xpc.logger,
+            'Invalid auth token from other party');
         return;
       }
 
       // Complete the construction of the channel by sending our own
       // wrapper to the container via the channel they gave us.
-      this.nixChannel_['CreateChannel'](
-        this.getWindow()[goog.net.xpc.NixTransport.NIX_GET_WRAPPER](this,
-                                                          this.authToken_));
+      var theWindow = this.getWindow();
+      var getWrapper = theWindow[goog.net.xpc.NixTransport.NIX_GET_WRAPPER];
+      this.nixChannel_['CreateChannel'](getWrapper(this, this.authToken_));
 
       this.localSetupCompleted_ = true;
 
@@ -389,7 +392,7 @@ goog.net.xpc.NixTransport.prototype.attemptInnerSetup_ = function() {
     }
   }
   catch (e) {
-    goog.net.xpc.logger.severe(
+    goog.log.error(goog.net.xpc.logger,
         'exception caught while attempting setup: ' + e);
     return;
   }
@@ -410,25 +413,26 @@ goog.net.xpc.NixTransport.prototype.attemptInnerSetup_ = function() {
  * @private
  */
 goog.net.xpc.NixTransport.prototype.createChannel_ = function(channel) {
-   // Verify that the channel is in fact a NIX wrapper.
-   if (typeof channel != 'unknown' ||
-       !(goog.net.xpc.NixTransport.NIX_ID_FIELD in channel)) {
-     goog.net.xpc.logger.severe('Invalid NIX channel given to createChannel_');
-   }
+  // Verify that the channel is in fact a NIX wrapper.
+  if (typeof channel != 'unknown' ||
+      !(goog.net.xpc.NixTransport.NIX_ID_FIELD in channel)) {
+    goog.log.error(goog.net.xpc.logger,
+        'Invalid NIX channel given to createChannel_');
+  }
 
-   this.nixChannel_ = channel;
+  this.nixChannel_ = channel;
 
-   // Ensure that the NIX channel given to use is valid.
-   var remoteAuthToken = this.nixChannel_['GetAuthToken']();
+  // Ensure that the NIX channel given to use is valid.
+  var remoteAuthToken = this.nixChannel_['GetAuthToken']();
 
-   if (remoteAuthToken != this.remoteAuthToken_) {
-     goog.net.xpc.logger.severe('Invalid auth token from other party');
-     return;
-   }
+  if (remoteAuthToken != this.remoteAuthToken_) {
+    goog.log.error(goog.net.xpc.logger, 'Invalid auth token from other party');
+    return;
+  }
 
-   // Indicate to the CrossPageChannel that the channel is setup
-   // and ready to use.
-   this.channel_.notifyConnected();
+  // Indicate to the CrossPageChannel that the channel is setup
+  // and ready to use.
+  this.channel_.notifyConnected();
 };
 
 
@@ -444,7 +448,7 @@ goog.net.xpc.NixTransport.prototype.handleMessage_ =
     function(serviceName, payload) {
   /** @this {goog.net.xpc.NixTransport} */
   var deliveryHandler = function() {
-    this.channel_.safeDeliver(serviceName, payload);
+    this.channel_.xpcDeliver(serviceName, payload);
   };
   this.getWindow().setTimeout(goog.bind(deliveryHandler, this), 1);
 };
@@ -460,7 +464,7 @@ goog.net.xpc.NixTransport.prototype.handleMessage_ =
 goog.net.xpc.NixTransport.prototype.send = function(service, payload) {
   // Verify that the NIX channel we have is valid.
   if (typeof(this.nixChannel_) !== 'unknown') {
-    goog.net.xpc.logger.severe('NIX channel not connected');
+    goog.log.error(goog.net.xpc.logger, 'NIX channel not connected');
   }
 
   // Send the message via the NIX wrapper object.

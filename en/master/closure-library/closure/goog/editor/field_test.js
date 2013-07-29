@@ -22,22 +22,26 @@
  * @author gboyer@google.com (Garrett Boyer)
  */
 
+/** @suppress {extraProvide} */
 goog.provide('goog.editor.field_test');
 
+goog.require('goog.dom');
 goog.require('goog.dom.Range');
+goog.require('goog.editor.BrowserFeature');
 goog.require('goog.editor.Field');
 goog.require('goog.editor.Plugin');
-goog.require('goog.editor.Command');
+goog.require('goog.editor.range');
 goog.require('goog.events');
+goog.require('goog.events.BrowserEvent');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.functions');
 goog.require('goog.testing.LooseMock');
 goog.require('goog.testing.MockClock');
 goog.require('goog.testing.dom');
 goog.require('goog.testing.events');
+goog.require('goog.testing.events.Event');
 goog.require('goog.testing.recordFunction');
 goog.require('goog.userAgent');
-goog.require('goog.userAgent.product');
 goog.setTestOnly('Tests for goog.editor.*Field');
 
 
@@ -61,7 +65,7 @@ function tearDown() {
   // it is lame. It manifests its lameness by throwing an exception.
   // Kudos to XT for helping me to figure this out.
   try {
-    goog.events.removeAll();
+    goog.events.removeAllNativeListeners();
   } catch (e) {}
 }
 
@@ -206,9 +210,10 @@ function testDisposed_PluginAutoDispose() {
 
 var STRING_KEY = String.fromCharCode(goog.events.KeyCodes.A).toLowerCase();
 
+
 /**
  * @return {goog.events.Event} Returns an event for a keyboard shortcut
- * for the letter 'a'
+ * for the letter 'a'.
  */
 function getBrowserEvent() {
   var e = new goog.events.BrowserEvent();
@@ -550,7 +555,7 @@ function testPluginExecCommand() {
   plugin.execCommand = function(command, arg) {
     passedCommand = command;
     passedArg = arg;
-  }
+  };
 
   var editableField = new FieldConstructor('testField');
   editableField.registerPlugin(plugin);
@@ -840,7 +845,7 @@ function testSelectionChangeOnMouseUp() {
   assertEquals('Second selection change should fire immediately', 2,
       selectionChanges.getCallCount());
   assertEquals('Plugin should have handled second selection change immediately',
-       2,  plugin.handleSelectionChange.getCallCount());
+      2, plugin.handleSelectionChange.getCallCount());
   var args = plugin.handleSelectionChange.getLastCall().getArguments();
   assertTrue('Plugin should not have received data from extra firing',
       args.length == 0 ||
@@ -999,7 +1004,8 @@ function doTestPlaceCursorAtStart(opt_html, opt_parentId) {
   var startNode = opt_parentId ?
       editableField.getEditableDomHelper().getElement(opt_parentId).firstChild :
       textNode ? textNode : editableField.getElement();
-  if (goog.userAgent.WEBKIT && !goog.userAgent.isVersion('528')) {
+  if (goog.userAgent.WEBKIT &&
+      !goog.userAgent.isVersionOrHigher('528')) {
     // Safari 3 seems to normalize the selection to the shallowest endpoint (in
     // this case the editable element) in all cases tested below. This is OK
     // because when you start typing it magically inserts the text at the
@@ -1011,6 +1017,45 @@ function doTestPlaceCursorAtStart(opt_html, opt_parentId) {
       startNode, range.getStartNode());
   assertEquals('The range should start at the beginning of the node',
       0, range.getStartOffset());
+}
+
+
+/**
+ * Verify that restoreSavedRange() restores the range and sets the focus.
+ */
+function testRestoreSavedRange() {
+  var editableField = new FieldConstructor('testField', document);
+  editableField.makeEditable();
+
+
+  // Create another node to take the focus later.
+  var doc = goog.dom.getOwnerDocument(editableField.getElement());
+  var otherElem = doc.createElement('div');
+  otherElem.tabIndex = '1';  // Make it focusable.
+  editableField.getElement().parentNode.appendChild(otherElem);
+
+  // Initially place selection not at the start of the editable field.
+  var textNode = editableField.getElement().firstChild;
+  var range = goog.dom.Range.createFromNodes(textNode, 1, textNode, 2);
+  range.select();
+  var savedRange = goog.editor.range.saveUsingNormalizedCarets(range);
+
+  // Change range to be a simple cursor at start, and move focus away.
+  editableField.placeCursorAtStart();
+  otherElem.focus();
+
+  editableField.restoreSavedRange(savedRange);
+
+  // Verify that we have focus and the range is restored.
+  assertEquals('Field should be focused',
+      editableField.getElement(),
+      goog.dom.getActiveElement(doc));
+  var newRange = editableField.getRange();
+  assertEquals('Range startNode', textNode, newRange.getStartNode());
+  assertEquals('Range startOffset', 1, newRange.getStartOffset());
+  assertEquals('Range endNode', textNode, newRange.getEndNode());
+  assertEquals('Range endOffset', 2, newRange.getEndOffset());
+
 }
 
 
@@ -1039,7 +1084,7 @@ function testPlaceCursorAtStartNonImportantTextNode() {
  *     is expected to be placed. If omitted, will expect cursor to be placed in
  *     the first child of the field element (or, if the field has no content, in
  *     the field element itself).
- * @param {number=} The offset to expect for the end position.
+ * @param {number=} opt_offset The offset to expect for the end position.
  */
 function doTestPlaceCursorAtEnd(opt_html, opt_parentId, opt_offset) {
   var editableField = new FieldConstructor('testField', document);
@@ -1062,8 +1107,10 @@ function doTestPlaceCursorAtEnd(opt_html, opt_parentId, opt_offset) {
 
   // We check whether getAttribute exist because textNode may be an actual
   // TextNode, which does not have getAttribute.
-  if (textNode && textNode.getAttribute &&
-      textNode.getAttribute('_moz_editor_bogus_node')) {
+
+  var hasBogusNode = textNode && textNode.getAttribute &&
+                     textNode.getAttribute('_moz_editor_bogus_node');
+  if (hasBogusNode) {
     // At least in FF >= 6, assigning '' to innerHTML of a contentEditable
     // element will results in textNode being modified into:
     // <br _moz_editor_bogus_node="TRUE" _moz_dirty=""> instead of nulling
@@ -1079,8 +1126,13 @@ function doTestPlaceCursorAtEnd(opt_html, opt_parentId, opt_offset) {
   var offset = goog.isDefAndNotNull(opt_offset) ?
       opt_offset :
       textNode ? endNode.nodeValue.length : endNode.childNodes.length - 1;
-  assertEquals('The range should end at the ending of the node',
-      offset, range.getEndOffset());
+  if (hasBogusNode) {
+    assertEquals('The range should end at the ending of the bogus node ' +
+                 'added by FF', offset + 1, range.getEndOffset());
+  } else {
+    assertEquals('The range should end at the ending of the node',
+        offset, range.getEndOffset());
+  }
 }
 
 
@@ -1157,4 +1209,70 @@ function testDispatchDelayedChange() {
   editableField.delayedChangeTimer_.start();
   editableField.dispatchDelayedChange_();
   assertFalse(editableField.delayedChangeTimer_.isActive());
+}
+
+
+function testHandleWindowLevelMouseUp() {
+  var editableField = new FieldConstructor('testField', document);
+  if (editableField.usesIframe()) {
+    // Only run this test if the editor does not use an iframe.
+    return;
+  }
+  editableField.setUseWindowMouseUp(true);
+  editableField.makeEditable();
+  var selectionHasFired = false;
+  goog.events.listenOnce(
+      editableField, goog.editor.Field.EventType.SELECTIONCHANGE,
+      function(e) {
+        selectionHasFired = true;
+      });
+  var editableElement = editableField.getElement();
+  var otherElement = goog.dom.createDom('div');
+  goog.dom.insertSiblingAfter(otherElement, document.body.lastChild);
+
+  goog.testing.events.fireMouseDownEvent(editableElement);
+  assertFalse(selectionHasFired);
+  goog.testing.events.fireMouseUpEvent(otherElement);
+  assertTrue(selectionHasFired);
+}
+
+function testNoHandleWindowLevelMouseUp() {
+  var editableField = new FieldConstructor('testField', document);
+  editableField.setUseWindowMouseUp(false);
+  editableField.makeEditable();
+  var selectionHasFired = false;
+  goog.events.listenOnce(
+      editableField, goog.editor.Field.EventType.SELECTIONCHANGE,
+      function(e) {
+        selectionHasFired = true;
+      });
+  var editableElement = editableField.getElement();
+  var otherElement = goog.dom.createDom('div');
+  goog.dom.insertSiblingAfter(otherElement, document.body.lastChild);
+
+  goog.testing.events.fireMouseDownEvent(editableElement);
+  assertFalse(selectionHasFired);
+  goog.testing.events.fireMouseUpEvent(otherElement);
+  assertFalse(selectionHasFired);
+}
+
+function testIsGeneratingKey() {
+  var regularKeyEvent = new goog.events.BrowserEvent();
+  regularKeyEvent.charCode = goog.events.KeyCodes.A;
+
+  var ctrlKeyEvent = new goog.events.BrowserEvent();
+  ctrlKeyEvent.ctrlKey = true;
+  ctrlKeyEvent.metaKey = true;
+  ctrlKeyEvent.charCode = goog.events.KeyCodes.A;
+
+  var imeKeyEvent = new goog.events.BrowserEvent();
+  imeKeyEvent.keyCode = 229; // indicates from an IME - see KEYS_CAUSING_CHANGES
+
+  assertTrue(goog.editor.Field.isGeneratingKey_(regularKeyEvent, true));
+  assertFalse(goog.editor.Field.isGeneratingKey_(ctrlKeyEvent, true));
+  if (goog.userAgent.WINDOWS && !goog.userAgent.GECKO) {
+    assertTrue(goog.editor.Field.isGeneratingKey_(imeKeyEvent, false));
+  } else {
+    assertFalse(goog.editor.Field.isGeneratingKey_(imeKeyEvent, false));
+  }
 }

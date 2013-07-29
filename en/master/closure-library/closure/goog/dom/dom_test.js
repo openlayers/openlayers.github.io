@@ -16,13 +16,16 @@
  * @fileoverview Shared code for dom_test.html and dom_quirks_test.html.
  */
 
+/** @suppress {extraProvide} */
 goog.provide('goog.dom.dom_test');
 
 goog.require('goog.dom');
+goog.require('goog.dom.BrowserFeature');
 goog.require('goog.dom.DomHelper');
 goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
 goog.require('goog.object');
+goog.require('goog.string.Unicode');
 goog.require('goog.testing.asserts');
 goog.require('goog.userAgent');
 goog.require('goog.userAgent.product');
@@ -233,22 +236,23 @@ function testGetDocumentHeightInIframe() {
 }
 
 function testCreateDom() {
-  var el = goog.dom.$dom('div',
+  var el = goog.dom.createDom('div',
       {
         style: 'border: 1px solid black; width: 50%; background-color: #EEE;',
         onclick: "alert('woo')"
       },
-      goog.dom.$dom('p', {style: 'font: normal 12px arial; color: red; '},
-                    'Para 1'),
-      goog.dom.$dom('p', {style: 'font: bold 18px garamond; color: blue; '},
-                    'Para 2'),
-      goog.dom.$dom('p', {style: 'font: normal 24px monospace; color: green'},
-                    'Para 3 ',
-                    goog.dom.$dom('a', {
-                      name: 'link', href: 'http://bbc.co.uk'
-                    },
-                    'has a link'),
-                    ', how cool is this?'));
+      goog.dom.createDom(
+          'p', {style: 'font: normal 12px arial; color: red; '}, 'Para 1'),
+      goog.dom.createDom(
+          'p', {style: 'font: bold 18px garamond; color: blue; '}, 'Para 2'),
+      goog.dom.createDom(
+          'p', {style: 'font: normal 24px monospace; color: green'},
+          'Para 3 ',
+          goog.dom.createDom('a', {
+            name: 'link', href: 'http://bbc.co.uk'
+          },
+          'has a link'),
+          ', how cool is this?'));
 
   assertEquals('Tagname should be a DIV', 'DIV', el.tagName);
   assertEquals('Style width should be 50%', '50%', el.style.width);
@@ -256,31 +260,31 @@ function testCreateDom() {
   assertEquals('second child .innerHTML', 'Para 2',
                el.childNodes[1].innerHTML);
 
-  assertEquals(goog.dom.$dom, goog.dom.createDom);
+  assertEquals(goog.dom.createDom, goog.dom.createDom);
 }
 
 function testCreateDomNoChildren() {
   var el;
 
   // Test unspecified children.
-  el = goog.dom.$dom('div');
+  el = goog.dom.createDom('div');
   assertNull('firstChild should be null', el.firstChild);
 
   // Test null children.
-  el = goog.dom.$dom('div', null, null);
+  el = goog.dom.createDom('div', null, null);
   assertNull('firstChild should be null', el.firstChild);
 
   // Test empty array of children.
-  el = goog.dom.$dom('div', null, []);
+  el = goog.dom.createDom('div', null, []);
   assertNull('firstChild should be null', el.firstChild);
 }
 
 function testCreateDomAcceptsArray() {
   var items = [
-    goog.dom.$dom('li', {}, 'Item 1'),
-    goog.dom.$dom('li', {}, 'Item 2')
+    goog.dom.createDom('li', {}, 'Item 1'),
+    goog.dom.createDom('li', {}, 'Item 2')
   ];
-  var ul = goog.dom.$dom('ul', {}, items);
+  var ul = goog.dom.createDom('ul', {}, items);
   assertEquals('List should have two children', 2, ul.childNodes.length);
   assertEquals('First child should be an LI tag',
       'LI', ul.firstChild.tagName);
@@ -292,14 +296,14 @@ function testCreateDomStringArg() {
   var el;
 
   // Test string arg.
-  el = goog.dom.$dom('div', null, 'Hello');
+  el = goog.dom.createDom('div', null, 'Hello');
   assertEquals('firstChild should be a text node', goog.dom.NodeType.TEXT,
       el.firstChild.nodeType);
   assertEquals('firstChild should have node value "Hello"', 'Hello',
       el.firstChild.nodeValue);
 
   // Test text node arg.
-  el = goog.dom.$dom('div', null, goog.dom.createTextNode('World'));
+  el = goog.dom.createDom('div', null, goog.dom.createTextNode('World'));
   assertEquals('firstChild should be a text node', goog.dom.NodeType.TEXT,
       el.firstChild.nodeType);
   assertEquals('firstChild should have node value "World"', 'World',
@@ -308,25 +312,24 @@ function testCreateDomStringArg() {
 
 function testCreateDomNodeListArg() {
   var el;
-  var emptyElem = goog.dom.$dom('div');
-  var simpleElem = goog.dom.$dom('div', null, 'Hello, world!');
-  var complexElem = goog.dom.$dom('div', null, 'Hello, ',
-                                  goog.dom.$dom('b', null, 'world'),
-      goog.dom.createTextNode('!'));
+  var emptyElem = goog.dom.createDom('div');
+  var simpleElem = goog.dom.createDom('div', null, 'Hello, world!');
+  var complexElem = goog.dom.createDom('div', null, 'Hello, ',
+      goog.dom.createDom('b', null, 'world'), goog.dom.createTextNode('!'));
 
   // Test empty node list.
-  el = goog.dom.$dom('div', null, emptyElem.childNodes);
+  el = goog.dom.createDom('div', null, emptyElem.childNodes);
   assertNull('emptyElem.firstChild should be null', emptyElem.firstChild);
   assertNull('firstChild should be null', el.firstChild);
 
   // Test simple node list.
-  el = goog.dom.$dom('div', null, simpleElem.childNodes);
+  el = goog.dom.createDom('div', null, simpleElem.childNodes);
   assertNull('simpleElem.firstChild should be null', simpleElem.firstChild);
   assertEquals('firstChild should be a text node with value "Hello, world!"',
       'Hello, world!', el.firstChild.nodeValue);
 
   // Test complex node list.
-  el = goog.dom.$dom('div', null, complexElem.childNodes);
+  el = goog.dom.createDom('div', null, complexElem.childNodes);
   assertNull('complexElem.firstChild should be null', complexElem.firstChild);
   assertEquals('Element should have 3 child nodes', 3, el.childNodes.length);
   assertEquals('childNodes[0] should be a text node with value "Hello, "',
@@ -359,7 +362,7 @@ function testContains() {
   assertTrue('Document should contain BODY', goog.dom.contains(
       document, document.body));
 
-  var d = goog.dom.$dom('p', null, 'A paragraph');
+  var d = goog.dom.createDom('p', null, 'A paragraph');
   var t = d.firstChild;
   assertTrue('Same element', goog.dom.contains(d, d));
   assertTrue('Same text', goog.dom.contains(t, t));
@@ -374,12 +377,12 @@ function testContains() {
 }
 
 function testCreateDomWithClassName() {
-  var el = goog.dom.$dom('div', 'cls');
+  var el = goog.dom.createDom('div', 'cls');
   assertNull('firstChild should be null', el.firstChild);
   assertEquals('Tagname should be a DIV', 'DIV', el.tagName);
   assertEquals('ClassName should be cls', 'cls', el.className);
 
-  el = goog.dom.$dom('div', '');
+  el = goog.dom.createDom('div', '');
   assertEquals('ClassName should be empty', '', el.className);
 }
 
@@ -654,9 +657,9 @@ function testGetFirstElementChild() {
   // Test with an undefined firstElementChild attribute.
   var b2 = $('b2');
   var mockP2 = {
-      childNodes: [b1, b2],
-      firstChild: b1,
-      firstElementChild: undefined
+    childNodes: [b1, b2],
+    firstChild: b1,
+    firstElementChild: undefined
   };
 
   b1 = goog.dom.getFirstElementChild(mockP2);
@@ -676,9 +679,9 @@ function testGetLastElementChild() {
   // Test with an undefined lastElementChild attribute.
   var b1 = $('b1');
   var mockP2 = {
-      childNodes: [b1, b2],
-      lastChild: b2,
-      lastElementChild: undefined
+    childNodes: [b1, b2],
+    lastChild: b2,
+    lastElementChild: undefined
   };
 
   b2 = goog.dom.getLastElementChild(mockP2);
@@ -697,8 +700,8 @@ function testGetNextElementSibling() {
 
   // Test with an undefined nextElementSibling attribute.
   var mockB1 = {
-      nextSibling: b2,
-      nextElementSibling: undefined
+    nextSibling: b2,
+    nextElementSibling: undefined
   };
 
   b2 = goog.dom.getNextElementSibling(mockB1);
@@ -717,8 +720,8 @@ function testGetPreviousElementSibling() {
 
   // Test with an undefined previousElementSibling attribute.
   var mockB2 = {
-      previousSibling: b1,
-      previousElementSibling: undefined
+    previousSibling: b1,
+    previousElementSibling: undefined
   };
 
   b1 = goog.dom.getPreviousElementSibling(mockB2);
@@ -745,8 +748,8 @@ function testGetChildren() {
 
   // Test with an undefined children attribute.
   var mockP2 = {
-      childNodes: [b1, b2],
-      children: undefined
+    childNodes: [b1, b2],
+    children: undefined
   };
 
   children = goog.dom.getChildren(mockP2);
@@ -911,7 +914,7 @@ function testIsFocusableTabIndex() {
 
   // WebKit on Mac doesn't support focusable DIVs until version 526 and later.
   if (!goog.userAgent.WEBKIT || !goog.userAgent.MAC ||
-      goog.userAgent.isVersion('526')) {
+      goog.userAgent.isVersionOrHigher('526')) {
     assertTrue('isFocusableTabIndex() must be true for tab index 0',
         goog.dom.isFocusableTabIndex(goog.dom.getElement('tabIndex0')));
     assertTrue('isFocusableTabIndex() must be true for tab index 1',
@@ -924,7 +927,7 @@ function testIsFocusableTabIndex() {
 function testSetFocusableTabIndex() {
   // WebKit on Mac doesn't support focusable DIVs until version 526 and later.
   if (!goog.userAgent.WEBKIT || !goog.userAgent.MAC ||
-      goog.userAgent.isVersion('526')) {
+      goog.userAgent.isVersionOrHigher('526')) {
     // Test enabling focusable tab index.
     goog.dom.setFocusableTabIndex(goog.dom.getElement('noTabIndex'), true);
     assertTrue('isFocusableTabIndex() must be true after enabling tab index',
@@ -1272,7 +1275,7 @@ function testHtmlToDocumentFragment() {
   var script = goog.dom.htmlToDocumentFragment('<script></script>');
   assertEquals('SCRIPT', script.tagName);
 
-  if (goog.userAgent.IE && !goog.userAgent.isDocumentMode(9)) {
+  if (goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher(9)) {
     // Removing an Element from a DOM tree in IE sets its parentNode to a new
     // DocumentFragment. Bizarre!
     assertEquals(goog.dom.NodeType.DOCUMENT_FRAGMENT,
@@ -1328,6 +1331,8 @@ function testGetDocumentScrollOfFixedViewport() {
   // iOS and perhaps other environments don't actually support scrolling.
   // Instead, you view the document's fixed layout through a screen viewport.
   // We need getDocumentScroll to handle this case though.
+  // In case of IE10 though, we do want to use scrollLeft/scrollTop
+  // because the rest of the positioning is done off the scrolled away origin.
   var fakeDocumentScrollElement = {scrollLeft: 0, scrollTop: 0};
   var fakeDocument = {
     defaultView: {pageXOffset: 100, pageYOffset: 100},
@@ -1336,8 +1341,13 @@ function testGetDocumentScrollOfFixedViewport() {
   };
   var dh = goog.dom.getDomHelper(document);
   dh.setDocument(fakeDocument);
-  assertEquals(100, dh.getDocumentScroll().x);
-  assertEquals(100, dh.getDocumentScroll().y);
+  if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher(10)) {
+    assertEquals(0, dh.getDocumentScroll().x);
+    assertEquals(0, dh.getDocumentScroll().y);
+  } else {
+    assertEquals(100, dh.getDocumentScroll().x);
+    assertEquals(100, dh.getDocumentScroll().y);
+  }
 }
 
 function testActiveElementIE() {
@@ -1375,7 +1385,33 @@ function testParentElement() {
   var detachedEl = goog.dom.createDom('div');
   var detachedHasNoParent = goog.dom.getParentElement(detachedEl);
   assertNull(detachedHasNoParent);
+
+  if (goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9')) {
+    // svg is not supported in IE8 and below.
+    return;
+  }
+
+  var svg = $('testSvg');
+  assertNotNull(svg);
+  var rect = $('testRect');
+  assertNotNull(rect);
+  var g = $('testG');
+  assertNotNull(g);
+
+  if (goog.userAgent.IE && goog.userAgent.isVersionOrHigher('9')) {
+    // test to make sure IE9 is returning undefined for .parentElement
+    assertUndefined(g.parentElement);
+    assertUndefined(rect.parentElement);
+    assertUndefined(svg.parentElement);
+  }
+  var shouldBeG = goog.dom.getParentElement(rect);
+  assertEquals(g, shouldBeG);
+  var shouldBeSvg = goog.dom.getParentElement(g);
+  assertEquals(svg, shouldBeSvg);
+  var shouldBeBody = goog.dom.getParentElement(svg);
+  assertEquals(bodyEl, shouldBeBody);
 }
+
 
 /**
  * @return {boolean} Returns true if the userAgent is IE8 or higher.

@@ -22,7 +22,7 @@
 goog.provide('goog.messaging.RespondingChannel');
 
 goog.require('goog.Disposable');
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('goog.messaging.MessageChannel'); // interface
 goog.require('goog.messaging.MultiChannel');
 goog.require('goog.messaging.MultiChannel.VirtualChannel');
@@ -120,11 +120,11 @@ goog.messaging.RespondingChannel.prototype.nextSignatureIndex_ = 0;
 
 /**
  * Logger object for goog.messaging.RespondingChannel.
- * @type {goog.debug.Logger}
+ * @type {goog.log.Logger}
  * @private
  */
 goog.messaging.RespondingChannel.prototype.logger_ =
-    goog.debug.Logger.getLogger('goog.messaging.RespondingChannel');
+    goog.log.getLogger('goog.messaging.RespondingChannel');
 
 
 /**
@@ -141,6 +141,8 @@ goog.messaging.RespondingChannel.prototype.getNextSignature_ = function() {
 goog.messaging.RespondingChannel.prototype.disposeInternal = function() {
   goog.dispose(this.messageChannel_);
   delete this.messageChannel_;
+  // Note: this.publicChannel_ and this.privateChannel_ get disposed by
+  //     this.messageChannel_
   delete this.publicChannel_;
   delete this.privateChannel_;
 };
@@ -184,12 +186,12 @@ goog.messaging.RespondingChannel.prototype.callbackServiceHandler_ = function(
   var result = message['data'];
 
   if (signature in this.sigCallbackMap_) {
-    var callback = /** @type {function(Object)} */ this.sigCallbackMap_[
-        signature];
+    var callback = /** @type {function(Object)} */ (this.sigCallbackMap_[
+        signature]);
     callback(result);
     delete this.sigCallbackMap_[signature];
   } else {
-    this.logger_.warning('Received signature is invalid');
+    goog.log.warning(this.logger_, 'Received signature is invalid');
   }
 };
 
@@ -224,8 +226,11 @@ goog.messaging.RespondingChannel.prototype.callbackProxy_ = function(
   var resultMessage = {};
   resultMessage['data'] = callback(message['data']);
   resultMessage['signature'] = message['signature'];
-
-  this.privateChannel_.send(
-      goog.messaging.RespondingChannel.CALLBACK_SERVICE_,
-      resultMessage);
+  // The callback invoked above may have disposed the channel so check if it
+  // exists.
+  if (this.privateChannel_) {
+    this.privateChannel_.send(
+        goog.messaging.RespondingChannel.CALLBACK_SERVICE_,
+        resultMessage);
+  }
 };

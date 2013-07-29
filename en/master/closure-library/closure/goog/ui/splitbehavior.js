@@ -22,19 +22,13 @@ goog.provide('goog.ui.SplitBehavior');
 goog.provide('goog.ui.SplitBehavior.DefaultHandlers');
 
 goog.require('goog.Disposable');
-goog.require('goog.array');
 goog.require('goog.dispose');
 goog.require('goog.dom');
-goog.require('goog.dom.DomHelper');
+goog.require('goog.dom.NodeType');
 goog.require('goog.dom.classes');
-goog.require('goog.events');
 goog.require('goog.events.EventHandler');
-goog.require('goog.events.EventType');
-goog.require('goog.string');
 goog.require('goog.ui.ButtonSide');
 goog.require('goog.ui.Component');
-goog.require('goog.ui.Component.Error');
-goog.require('goog.ui.INLINE_BLOCK_CLASSNAME');
 goog.require('goog.ui.decorate');
 goog.require('goog.ui.registry');
 
@@ -139,16 +133,16 @@ goog.ui.SplitBehavior.CSS_CLASS = goog.getCssName('goog-split-behavior');
 goog.ui.SplitBehavior.DefaultHandlers = {
   NONE: goog.nullFunction,
   CAPTION: function(targetControl, e) {
-    var item = (/** @type {goog.ui.MenuItem} */e.target);
+    var item = /** @type {goog.ui.MenuItem} */ (e.target);
     var value = (/** @type {string} */((item && item.getValue()) || ''));
-    var button = (/** @type {goog.ui.Button} */targetControl);
+    var button = /** @type {goog.ui.Button} */ (targetControl);
     button.setCaption && button.setCaption(value);
     button.setValue && button.setValue(value);
   },
   VALUE: function(targetControl, e) {
-    var item = (/** @type {goog.ui.MenuItem} */e.target);
+    var item = /** @type {goog.ui.MenuItem} */ (e.target);
     var value = (/** @type {string} */(item && item.getValue()) || '');
-    var button = (/** @type {goog.ui.Button} */targetControl);
+    var button = /** @type {goog.ui.Button} */ (targetControl);
     button.setValue && button.setValue(value);
   }
 };
@@ -313,9 +307,9 @@ goog.ui.SplitBehavior.prototype.decorateChildren_ = function(
     var child = childNodes[i];
     if (child.nodeType == goog.dom.NodeType.ELEMENT) {
       if (!this.first_) {
-        this.first_ = (/** @type {goog.ui.Control} */ goog.ui.decorate(child));
+        this.first_ = /** @type {goog.ui.Control} */ (goog.ui.decorate(child));
       } else if (!this.second_) {
-        this.second_ = (/** @type {goog.ui.Control} */ goog.ui.decorate(child));
+        this.second_ = /** @type {goog.ui.Control} */ (goog.ui.decorate(child));
         finished = true;
       }
     }

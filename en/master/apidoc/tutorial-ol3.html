@@ -43,7 +43,8 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
 
 <article>
     <h1>CLASS HIERARCHY</h1>
-<pre><code>goog.math.Coordinate  // Simple 2D point
+
+<div class="highlight"><pre lang="">goog.math.Coordinate  // Simple 2D point
 |
 +- TileCoord
 
@@ -101,9 +102,12 @@ goog.events.EventTarget
 |
 |  +- TileQueue
 |
-+- Tile</code></pre>
++- Tile
+</pre></div>
+
 <h2>Layer renderer hierarchy</h2>
-<pre><code>goog.events.EventTarget
+
+<div class="highlight"><pre lang="">goog.events.EventTarget
 |
 +- MVCObject
    |
@@ -131,22 +135,29 @@ goog.events.EventTarget
       |  |  |
       |  |  +- VMLHTMLVectorLayerRenderer
       |  |
-      |  +- WebGLVectorLayerRenderer</code></pre>
+      |  +- WebGLVectorLayerRenderer
+</pre></div>
+
 <h1>OBJECT PROPERTIES AND METHODS</h1>
+
 <p>Notation:</p>
+
 <ul>
 <li><code>property type</code>  property with type, trailing ? indicates unsure, getters and setters are assumed to exist.</li>
 <li><code>f(args) -> type</code>  function taking args returning type.</li>
 <li><code>f(args) -> type = something</code>  f is a trivial wrapper around something.</li>
 <li><code>fires 'x'</code>  fires events of type 'x'.</li>
 </ul>
+
 <p>Principles:</p>
+
 <ul>
 <li>All non-trivial objects inherit from <code>MVCObject</code>.</li>
 <li>All non-trivial collections are either <code>MVCArrays</code> or a child class thereof.</li>
 <li>Resolutions are <code>Array.<number></code>, infinitely scalable resources (e.g. vectore layers) have resolutions == null.</li>
 </ul>
-<pre><code>MVCObject
+
+<div class="highlight"><pre lang="">MVCObject
   as Google Maps MVCObject
   freeze()
   unfreeze()
@@ -230,11 +241,15 @@ Renderer
    target HTMLDivElement
    map Map
    camera Camera
-   getCapabilities() -> Array.<string>  // maybe ?</code></pre>
+   getCapabilities() -> Array.<string>  // maybe ?
+</pre></div>
+
 <p>Questions:</p>
+
 <ul>
 <li>Store tile layer extent in TileLayer or in TileGrid?  (not clear)</li>
 </ul>
+
 <p>Two concepts: tile coordinate system range and and available data extent.
 TileGrid extent is range (or validity extent) of the tile coordinate system.
 TileLayer extent is the available data extent. A particular TileGrid may range
@@ -242,26 +257,35 @@ from 0,0 to 10,10. My cache may conform to that grid but I may only have tiles
 ranging from 2,2 to 8,8. When you need to wrap multiple worlds, you pay
 attention to the TileGrid extent. When you need to decide whether or not to
 bother requesting a tile, you pay attention to the TileLayer extent.</p>
+
 <ul>
-<li>Who determines &quot;best&quot; resolution?  (static function?)</li>
+<li>Who determines "best" resolution?  (static function?)</li>
 </ul>
+
 <p>Todo: if tile layer extent stored in TileLayer rather than TileGrid then extent
 will occasionally need to be passed to TileGrid functions for cropping.</p>
+
 <h1>DESIGN ASSERTIONS</h1>
+
 <p>Map</p>
+
 <ul>
 <li>A map has a renderer (the map renderer).</li>
 <li>A map has a camera.</li>
 <li>Multiple maps can share the same camera.</li>
 <li>A map has a layer list.</li>
 </ul>
+
 <p>Layer </p>
+
 <ul>
 <li>A layer can have multiple projections (the supported projections).</li>
 <li>A layer advertizes the projections it supports.</li>
 <li>A layer returns no data if asked data for an unsupported projection.</li>
 </ul>
+
 <p>LayerRendererOptions</p>
+
 <ul>
 <li>A layer renderer options object stores view-related states for a layer.</li>
 <li>Options include visibility, opacity, saturation, hue, etc.</li>
@@ -269,19 +293,25 @@ will occasionally need to be passed to TileGrid functions for cropping.</p>
 <li>Multiple layer renderer options can share the same layer.</li>
 <li>In other words a layer can be viewed in different manners.</li>
 </ul>
+
 <p>Renderer</p>
+
 <ul>
 <li>The map renderer responds to events.</li>
 <li>The map renderer receives events from the camera.</li>
 <li>The map renderer creates layer renderers.</li>
 </ul>
+
 <p>Control</p>
+
 <ul>
 <li>A control may listen to map events.</li>
 <li>A control may listen to camera events.</li>
 <li>A map navigation control acts on the camera.</li>
 </ul>
+
 <p>MVC</p>
+
 <ul>
 <li>Types can be described in MVC terms.</li>
 <li>Models don't know what rendering means.</li>

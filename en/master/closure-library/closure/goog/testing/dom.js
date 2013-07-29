@@ -157,7 +157,7 @@ goog.testing.dom.checkUserAgents_ = function(userAgents) {
 /**
  * Map function that converts end tags to a specific object.
  * @param {Node} node The node to map.
- * @param {Object} ignore Always undefined.
+ * @param {undefined} ignore Always undefined.
  * @param {goog.dom.TagIterator} iterator The iterator.
  * @return {Node|Object} The resulting iteration item.
  * @private
@@ -280,7 +280,9 @@ goog.testing.dom.assertHtmlContentsMatch = function(htmlPattern, actual,
   //
   // The collapsible variable tracks whether we should collapse the whitespace
   // in the next Text node we encounter.
-  var IE_TEXT_COLLAPSE = goog.userAgent.IE && !goog.userAgent.isVersion('9');
+  var IE_TEXT_COLLAPSE =
+      goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('9');
+
   var collapsible = true;
 
   var number = 0;

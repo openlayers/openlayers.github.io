@@ -36,7 +36,9 @@ goog.require('goog.disposable.IDisposable');
  */
 goog.Disposable = function() {
   if (goog.Disposable.MONITORING_MODE != goog.Disposable.MonitoringMode.OFF) {
-    this.creationStack = new Error().stack;
+    if (goog.Disposable.INCLUDE_STACK_ON_CREATION) {
+      this.creationStack = new Error().stack;
+    }
     goog.Disposable.instances_[goog.getUid(this)] = this;
   }
 };
@@ -73,7 +75,14 @@ goog.Disposable.MonitoringMode = {
  *     performance and memory usage. If switched off, the monitoring code
  *     compiles down to 0 bytes.
  */
-goog.Disposable.MONITORING_MODE = 0;
+goog.define('goog.Disposable.MONITORING_MODE', 0);
+
+
+/**
+ * @define {boolean} Whether to attach creation stack to each created disposable
+ *     instance; This is only relevant for when MonitoringMode != OFF.
+ */
+goog.define('goog.Disposable.INCLUDE_STACK_ON_CREATION', true);
 
 
 /**
@@ -114,14 +123,6 @@ goog.Disposable.clearUndisposedObjects = function() {
  * @private
  */
 goog.Disposable.prototype.disposed_ = false;
-
-
-/**
- * Disposables that should be disposed when this object is disposed.
- * @type {Array.<goog.disposable.IDisposable>}
- * @private
- */
-goog.Disposable.prototype.dependentDisposables_;
 
 
 /**
@@ -193,18 +194,16 @@ goog.Disposable.prototype.dispose = function() {
  *     this object is disposed.
  */
 goog.Disposable.prototype.registerDisposable = function(disposable) {
-  if (!this.dependentDisposables_) {
-    this.dependentDisposables_ = [];
-  }
-  this.dependentDisposables_.push(disposable);
+  this.addOnDisposeCallback(goog.partial(goog.dispose, disposable));
 };
 
 
 /**
  * Invokes a callback function when this object is disposed. Callbacks are
  * invoked in the order in which they were added.
- * @param {!Function} callback The callback function.
- * @param {Object=} opt_scope An optional scope to call the callback in.
+ * @param {function(this:T):?} callback The callback function.
+ * @param {T=} opt_scope An optional scope to call the callback in.
+ * @template T
  */
 goog.Disposable.prototype.addOnDisposeCallback = function(callback, opt_scope) {
   if (!this.onDisposeCallbacks_) {
@@ -241,9 +240,6 @@ goog.Disposable.prototype.addOnDisposeCallback = function(callback, opt_scope) {
  * @protected
  */
 goog.Disposable.prototype.disposeInternal = function() {
-  if (this.dependentDisposables_) {
-    goog.disposeAll.apply(null, this.dependentDisposables_);
-  }
   if (this.onDisposeCallbacks_) {
     while (this.onDisposeCallbacks_.length) {
       this.onDisposeCallbacks_.shift()();

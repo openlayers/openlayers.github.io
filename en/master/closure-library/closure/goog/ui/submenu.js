@@ -30,9 +30,6 @@ goog.require('goog.positioning.AnchoredViewportPosition');
 goog.require('goog.positioning.Corner');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
-goog.require('goog.ui.Component.EventType');
-goog.require('goog.ui.Component.State');
-goog.require('goog.ui.ControlContent');
 goog.require('goog.ui.Menu');
 goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.SubMenuRenderer');
@@ -62,12 +59,10 @@ goog.inherits(goog.ui.SubMenu, goog.ui.MenuItem);
 
 
 /**
- * The delay before opening the sub menu in milliseconds.  (This number is
- * arbitrary, it would be good to get some user studies or a designer to play
- * with some numbers).
+ * The delay before opening the sub menu in milliseconds.
  * @type {number}
  */
-goog.ui.SubMenu.MENU_DELAY_MS = 350;
+goog.ui.SubMenu.MENU_DELAY_MS = 218;
 
 
 /**
@@ -330,10 +325,10 @@ goog.ui.SubMenu.prototype.handleKeyEvent = function(e) {
  * Listens to the sub menus items and ensures that this menu item is selected
  * while dismissing the others.  This handles the case when the user mouses
  * over other items on their way to the sub menu.
- * @param {goog.events.Event} e Highlight event to handle.
+ * @param {goog.events.Event} e Enter event to handle.
  * @private
  */
-goog.ui.SubMenu.prototype.onChildHighlight_ = function(e) {
+goog.ui.SubMenu.prototype.onChildEnter_ = function(e) {
   if (this.subMenu_.getParent() == this) {
     this.clearTimers();
     this.getParentEventTarget().setHighlighted(this);
@@ -423,7 +418,7 @@ goog.ui.SubMenu.prototype.setSubMenuVisible_ = function(visible) {
     // We must position after the menu is visible, otherwise positioning logic
     // breaks in RTL.
     if (visible) {
-      this.positionSubMenu_();
+      this.positionSubMenu();
     }
   }
 };
@@ -439,8 +434,8 @@ goog.ui.SubMenu.prototype.setSubMenuVisible_ = function(visible) {
 goog.ui.SubMenu.prototype.setMenuListenersEnabled_ = function(menu, attach) {
   var handler = this.getHandler();
   var method = attach ? handler.listen : handler.unlisten;
-  method.call(handler, menu, goog.ui.Component.EventType.HIGHLIGHT,
-      this.onChildHighlight_);
+  method.call(handler, menu, goog.ui.Component.EventType.ENTER,
+      this.onChildEnter_);
 };
 
 
@@ -477,10 +472,11 @@ goog.ui.SubMenu.prototype.isAlignedToEnd = function() {
 
 
 /**
- * Positions the submenu.
- * @private
+ * Positions the submenu. This method should be called if the sub menu is
+ * opened and the menu element's size changes (e.g., when adding/removing items
+ * to an opened sub menu).
  */
-goog.ui.SubMenu.prototype.positionSubMenu_ = function() {
+goog.ui.SubMenu.prototype.positionSubMenu = function() {
   var position = new goog.positioning.AnchoredViewportPosition(
       this.getElement(), this.isAlignedToEnd() ?
       goog.positioning.Corner.TOP_END : goog.positioning.Corner.TOP_START,
@@ -491,7 +487,7 @@ goog.ui.SubMenu.prototype.positionSubMenu_ = function() {
   var el = subMenu.getElement();
   if (!subMenu.isVisible()) {
     el.style.visibility = 'hidden';
-    goog.style.showElement(el, true);
+    goog.style.setElementShown(el, true);
   }
 
   position.reposition(
@@ -499,7 +495,7 @@ goog.ui.SubMenu.prototype.positionSubMenu_ = function() {
       goog.positioning.Corner.TOP_START : goog.positioning.Corner.TOP_END);
 
   if (!subMenu.isVisible()) {
-    goog.style.showElement(el, false);
+    goog.style.setElementShown(el, false);
     el.style.visibility = 'visible';
   }
 };

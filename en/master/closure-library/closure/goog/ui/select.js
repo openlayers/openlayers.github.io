@@ -23,13 +23,11 @@
 
 goog.provide('goog.ui.Select');
 
-goog.require('goog.dom.a11y');
-goog.require('goog.dom.a11y.Role');
-goog.require('goog.dom.a11y.State');
+goog.require('goog.a11y.aria.Role');
 goog.require('goog.events.EventType');
-goog.require('goog.ui.Component.EventType');
-goog.require('goog.ui.ControlContent');
+goog.require('goog.ui.Component');
 goog.require('goog.ui.MenuButton');
+goog.require('goog.ui.MenuItem');
 goog.require('goog.ui.SelectionModel');
 goog.require('goog.ui.registry');
 
@@ -56,7 +54,6 @@ goog.require('goog.ui.registry');
 goog.ui.Select = function(caption, opt_menu, opt_renderer, opt_domHelper) {
   goog.ui.MenuButton.call(this, caption, opt_menu, opt_renderer, opt_domHelper);
   this.setDefaultCaption(caption);
-  this.setPreferredAriaRole(goog.dom.a11y.Role.LISTBOX);
 };
 goog.inherits(goog.ui.Select, goog.ui.MenuButton);
 
@@ -82,9 +79,6 @@ goog.ui.Select.prototype.enterDocument = function() {
   goog.ui.Select.superClass_.enterDocument.call(this);
   this.updateCaption();
   this.listenToSelectionModelEvents_();
-  // Need to set HASPOPUP to false since it's set to true in the parent class.
-  goog.dom.a11y.setState(this.getElement(),
-      goog.dom.a11y.State.HASPOPUP, 'false');
 };
 
 
@@ -411,7 +405,7 @@ goog.ui.Select.prototype.updateCaption = function() {
  */
 goog.ui.Select.prototype.setCorrectAriaRole_ = function(item) {
   item.setPreferredAriaRole(item instanceof goog.ui.MenuItem ?
-      goog.dom.a11y.Role.OPTION : goog.dom.a11y.Role.SEPARATOR);
+      goog.a11y.aria.Role.OPTION : goog.a11y.aria.Role.SEPARATOR);
 };
 
 

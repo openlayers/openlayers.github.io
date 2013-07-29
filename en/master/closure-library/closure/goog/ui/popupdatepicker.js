@@ -27,9 +27,8 @@ goog.require('goog.positioning.Corner');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.DatePicker');
-goog.require('goog.ui.DatePicker.Events');
 goog.require('goog.ui.Popup');
-goog.require('goog.ui.PopupBase.EventType');
+goog.require('goog.ui.PopupBase');
 
 
 
@@ -103,7 +102,7 @@ goog.ui.PopupDatePicker.prototype.enterDocument = function() {
     var el = this.getElement();
     // Make it initially invisible
     el.style.visibility = 'hidden';
-    goog.style.showElement(el, false);
+    goog.style.setElementShown(el, false);
     this.datePicker_.decorate(el);
   }
   this.getHandler().listen(this.datePicker_, goog.ui.DatePicker.Events.CHANGE,

@@ -18,6 +18,7 @@
  */
 goog.provide('goog.ui.CookieEditor');
 
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
 goog.require('goog.events.EventType');
@@ -164,9 +165,9 @@ goog.ui.CookieEditor.prototype.handleUpdate_ = function(e) {
     }
     if (goog.net.cookies.isValidValue(value)) {
       goog.net.cookies.set(this.cookieKey_, value);
-      goog.style.showElement(this.valueWarningElem_, false);
+      goog.style.setElementShown(this.valueWarningElem_, false);
     } else {
-      goog.style.showElement(this.valueWarningElem_, true);
+      goog.style.setElementShown(this.valueWarningElem_, true);
     }
   }
 };
