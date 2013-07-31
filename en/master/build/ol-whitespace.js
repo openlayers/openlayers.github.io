@@ -521,7 +521,7 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["ol", "ol.Att
 "ol.expr.Expression", "ol.expr.Identifier", "ol.expr.Lexer", "ol.expr.Literal", "ol.expr.Logical", "ol.expr.LogicalOp", "ol.expr.Math", "ol.expr.MathOp", "ol.expr.Member", "ol.expr.Not", "ol.expr.Parser", "ol.expr.Token", "ol.expr.TokenType", "ol.expr.UnexpectedToken", "ol.expr.functions", "ol.extent", "ol.geom.AbstractCollection", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", "ol.geom.MultiPoint", 
 "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SharedVertices", "ol.geom.Vertex", "ol.geom.VertexArray", "ol.geom2", "ol.geom2.LineString", "ol.geom2.LineStringCollection", "ol.geom2.Point", "ol.geom2.PointCollection", "ol.interaction.ConditionType", "ol.interaction.DoubleClickZoom", "ol.interaction.Drag", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", "ol.interaction.Interaction", "ol.interaction.KeyboardPan", 
 "ol.interaction.KeyboardZoom", "ol.interaction.MouseWheelZoom", "ol.interaction.Touch", "ol.interaction.TouchPan", "ol.interaction.TouchRotate", "ol.interaction.TouchZoom", "ol.interaction.condition", "ol.interaction.defaults", "ol.layer.ImageLayer", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.TileLayer", "ol.layer.Vector", "ol.layer.VectorLayer2", "ol.math", "ol.parser.AsyncObjectFeatureParser", "ol.parser.AsyncStringFeatureParser", "ol.parser.DomFeatureParser", 
-"ol.parser.GPX", "ol.parser.GeoJSON", "ol.parser.KML", "ol.parser.ObjectFeatureParser", "ol.parser.Parser", "ol.parser.ReadFeaturesOptions", "ol.parser.StringFeatureParser", "ol.parser.WKT", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.GML", "ol.parser.ogc.GML_v2", "ol.parser.ogc.GML_v3", "ol.parser.ogc.OWSCommon_v1", "ol.parser.ogc.OWSCommon_v1_1_0", "ol.parser.ogc.Versioned", "ol.parser.ogc.WMSCapabilities", "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", 
+"ol.parser.GPX", "ol.parser.GeoJSON", "ol.parser.KML", "ol.parser.ObjectFeatureParser", "ol.parser.Parser", "ol.parser.ReadFeaturesOptions", "ol.parser.StringFeatureParser", "ol.parser.TopoJSON", "ol.parser.WKT", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.GML", "ol.parser.ogc.GML_v2", "ol.parser.ogc.GML_v3", "ol.parser.ogc.OWSCommon_v1", "ol.parser.ogc.OWSCommon_v1_1_0", "ol.parser.ogc.Versioned", "ol.parser.ogc.WMSCapabilities", "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", 
 "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", "ol.parser.ogc.WMSCapabilities_v1_3_0", "ol.parser.ogc.WMTSCapabilities", "ol.parser.ogc.WMTSCapabilities_v1_0_0", "ol.parser.polyline", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", "ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.addCommonProjections", "ol.renderer.Layer", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", 
 "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.SUPPORTED", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.renderer.canvas.VectorRenderer", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.Map", "ol.renderer.dom.SUPPORTED", "ol.renderer.dom.TileLayer", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.Map", "ol.renderer.webgl.SUPPORTED", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.VectorLayer2", 
 "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", "ol.renderer.webgl.vectorlayer2.shader.LineStringCollection", "ol.renderer.webgl.vectorlayer2.shader.PointCollection", "ol.size", "ol.source.BingMaps", "ol.source.DebugTileSource", "ol.source.ImageSource", "ol.source.ImageTileSource", "ol.source.MapQuestOSM", "ol.source.MapQuestOpenAerial", "ol.source.OSM", "ol.source.SingleImageWMS", "ol.source.Source", "ol.source.Stamen", "ol.source.StaticImage", 
@@ -577,7 +577,7 @@ goog.addDependency("../src/ol/geom/multilinestring.js", ["ol.geom.MultiLineStrin
 goog.addDependency("../src/ol/geom/multipoint.js", ["ol.geom.MultiPoint"], ["goog.asserts", "ol.geom.AbstractCollection", "ol.geom.GeometryType", "ol.geom.Point", "ol.geom.SharedVertices", "ol.geom.VertexArray"]);
 goog.addDependency("../src/ol/geom/multipolygon.js", ["ol.geom.MultiPolygon"], ["goog.asserts", "ol.geom.AbstractCollection", "ol.geom.GeometryType", "ol.geom.Polygon", "ol.geom.SharedVertices", "ol.geom.VertexArray"]);
 goog.addDependency("../src/ol/geom/point.js", ["ol.geom.Point"], ["goog.asserts", "ol.geom.Geometry", "ol.geom.GeometryType", "ol.geom.SharedVertices", "ol.geom.Vertex"]);
-goog.addDependency("../src/ol/geom/polygon.js", ["ol.geom.Polygon"], ["goog.asserts", "ol.geom.Geometry", "ol.geom.GeometryType", "ol.geom.LinearRing", "ol.geom.SharedVertices", "ol.geom.VertexArray"]);
+goog.addDependency("../src/ol/geom/polygon.js", ["ol.geom.Polygon"], ["goog.asserts", "ol.extent", "ol.geom.Geometry", "ol.geom.GeometryType", "ol.geom.LinearRing", "ol.geom.SharedVertices", "ol.geom.VertexArray"]);
 goog.addDependency("../src/ol/geom/sharedvertices.js", ["ol.geom.SharedVertices"], ["goog.asserts", "ol.geom.Vertex", "ol.geom.VertexArray"]);
 goog.addDependency("../src/ol/geom2/geom2.js", ["ol.geom2"], ["goog.asserts", "ol.Extent"]);
 goog.addDependency("../src/ol/geom2/linestringcollection.js", ["ol.geom2.LineString", "ol.geom2.LineStringCollection"], ["goog.array", "goog.asserts", "goog.object", "ol.geom2", "ol.structs.Buffer"]);
@@ -643,6 +643,7 @@ goog.addDependency("../src/ol/parser/ogc/wmtscapabilities.js", ["ol.parser.ogc.W
 goog.addDependency("../src/ol/parser/ogc/wmtscapabilities_v1_0_0.js", ["ol.parser.ogc.WMTSCapabilities_v1_0_0"], ["goog.dom.xml", "ol.coordinate", "ol.parser.XML", "ol.parser.ogc.OWSCommon_v1_1_0", "ol.proj"]);
 goog.addDependency("../src/ol/parser/parser.js", ["ol.parser.Parser"], []);
 goog.addDependency("../src/ol/parser/polyline.js", ["ol.parser.polyline"], []);
+goog.addDependency("../src/ol/parser/topojson.js", ["ol.parser.TopoJSON"], ["ol.Feature", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.Vertex", "ol.geom.VertexArray", "ol.parser.Parser", "ol.parser.ReadFeaturesOptions", "ol.parser.StringFeatureParser"]);
 goog.addDependency("../src/ol/parser/wkt.js", ["ol.parser.WKT"], ["goog.array", "goog.string", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.parser.Parser"]);
 goog.addDependency("../src/ol/parser/xml.js", ["ol.parser.XML"], ["goog.dom.xml", "ol.parser.Parser"]);
 goog.addDependency("../src/ol/pixel.js", ["ol.Pixel"], []);
@@ -657,7 +658,7 @@ goog.addDependency("../src/ol/renderer/canvas/canvasmaprenderer.js", ["ol.render
 goog.addDependency("../src/ol/renderer/canvas/canvasrenderer.js", ["ol.renderer.canvas.SUPPORTED"], ["ol.canvas"]);
 goog.addDependency("../src/ol/renderer/canvas/canvastilelayerrenderer.js", ["ol.renderer.canvas.TileLayer"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.object", "goog.vec.Mat4", "ol.Size", "ol.Tile", "ol.TileCoord", "ol.TileRange", "ol.TileState", "ol.extent", "ol.layer.TileLayer", "ol.renderer.Map", "ol.renderer.canvas.Layer"]);
 goog.addDependency("../src/ol/renderer/canvas/canvasvectorlayerrenderer.js", ["ol.renderer.canvas.VectorLayer"], ["goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.object", "goog.vec.Mat4", "ol.Pixel", "ol.TileCache", "ol.TileCoord", "ol.TileRange", "ol.ViewHint", "ol.extent", "ol.geom.GeometryType", "ol.layer.Vector", "ol.renderer.canvas.Layer", "ol.renderer.canvas.VectorRenderer", "ol.tilegrid.TileGrid"]);
-goog.addDependency("../src/ol/renderer/canvas/canvasvectorrenderer.js", ["ol.renderer.canvas.VectorRenderer"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.Feature", "ol.extent", "ol.geom.AbstractCollection", "ol.geom.Geometry", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.style.IconLiteral", "ol.style.LineLiteral", "ol.style.PointLiteral", 
+goog.addDependency("../src/ol/renderer/canvas/canvasvectorrenderer.js", ["ol.renderer.canvas.VectorRenderer"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.Feature", "ol.geom.AbstractCollection", "ol.geom.Geometry", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.style.IconLiteral", "ol.style.LineLiteral", "ol.style.PointLiteral", 
 "ol.style.PolygonLiteral", "ol.style.ShapeLiteral", "ol.style.ShapeType", "ol.style.SymbolizerLiteral", "ol.style.TextLiteral"]);
 goog.addDependency("../src/ol/renderer/dom/domimagelayerrenderer.js", ["ol.renderer.dom.ImageLayer"], ["goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.Image", "ol.ImageState", "ol.ViewHint", "ol.dom", "ol.layer.ImageLayer", "ol.renderer.dom.Layer"]);
 goog.addDependency("../src/ol/renderer/dom/domlayerrenderer.js", ["ol.renderer.dom.Layer"], ["goog.dom", "ol.layer.Layer", "ol.renderer.Layer"]);
@@ -19384,6 +19385,7 @@ ol.geom.LinearRing.prototype.containsCoordinate = function(coordinate) {
 };
 goog.provide("ol.geom.Polygon");
 goog.require("goog.asserts");
+goog.require("ol.extent");
 goog.require("ol.geom.Geometry");
 goog.require("ol.geom.GeometryType");
 goog.require("ol.geom.LinearRing");
@@ -19397,6 +19399,7 @@ ol.geom.Polygon = function(coordinates, opt_shared) {
     dimension = coordinates[0][0].length;
     vertices = new ol.geom.SharedVertices({dimension:dimension})
   }
+  this.labelPoint_ = null;
   this.vertices = vertices;
   var numRings = coordinates.length;
   this.rings = new Array(numRings);
@@ -19445,6 +19448,32 @@ ol.geom.Polygon.prototype.containsCoordinate = function(coordinate) {
     }
   }
   return containsCoordinate
+};
+ol.geom.Polygon.prototype.getInteriorPoint = function() {
+  if(goog.isNull(this.labelPoint_)) {
+    var center = ol.extent.getCenter(this.getBounds()), resultY = center[1], vertices = this.rings[0].getCoordinates(), intersections = [], maxLength = 0, i, vertex1, vertex2, x, segmentLength, resultX;
+    for(i = vertices.length - 1;i >= 1;--i) {
+      vertex1 = vertices[i];
+      vertex2 = vertices[i - 1];
+      if(vertex1[1] >= resultY && vertex2[1] <= resultY || vertex1[1] <= resultY && vertex2[1] >= resultY) {
+        x = (resultY - vertex1[1]) / (vertex2[1] - vertex1[1]) * (vertex2[0] - vertex1[0]) + vertex1[0];
+        intersections.push(x)
+      }
+    }
+    intersections.sort();
+    for(i = intersections.length - 1;i >= 1;--i) {
+      segmentLength = Math.abs(intersections[i] - intersections[i - 1]);
+      if(segmentLength > maxLength) {
+        x = (intersections[i] + intersections[i - 1]) / 2;
+        if(this.containsCoordinate([x, resultY])) {
+          maxLength = segmentLength;
+          resultX = x
+        }
+      }
+    }
+    this.labelPoint_ = [resultX, resultY]
+  }
+  return this.labelPoint_
 };
 goog.provide("ol.geom.MultiPolygon");
 goog.require("goog.asserts");
@@ -19882,7 +19911,6 @@ goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("goog.vec.Mat4");
 goog.require("ol.Feature");
-goog.require("ol.extent");
 goog.require("ol.geom.AbstractCollection");
 goog.require("ol.geom.Geometry");
 goog.require("ol.geom.GeometryType");
@@ -20146,7 +20174,7 @@ ol.renderer.canvas.VectorRenderer.getLabelVectors = function(geometry) {
     return[[geometry.get(0), geometry.get(1), 0]]
   }
   if(type == ol.geom.GeometryType.POLYGON) {
-    var coordinates = ol.extent.getCenter(geometry.getBounds());
+    var coordinates = geometry.getInteriorPoint();
     return[[coordinates[0], coordinates[1], 0]]
   }
   throw new Error("Label rendering not implemented for geometry type: " + type);
@@ -28298,6 +28326,225 @@ ol.parser.KML.prototype.write = function(obj) {
   this.setAttributeNS(root, "http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation", this.schemaLocation);
   return this.serialize(root)
 };
+goog.provide("ol.parser.TopoJSON");
+goog.require("ol.Feature");
+goog.require("ol.geom.GeometryType");
+goog.require("ol.geom.LineString");
+goog.require("ol.geom.MultiLineString");
+goog.require("ol.geom.MultiPoint");
+goog.require("ol.geom.MultiPolygon");
+goog.require("ol.geom.Point");
+goog.require("ol.geom.Polygon");
+goog.require("ol.geom.Vertex");
+goog.require("ol.geom.VertexArray");
+goog.require("ol.parser.Parser");
+goog.require("ol.parser.ReadFeaturesOptions");
+goog.require("ol.parser.StringFeatureParser");
+ol.parser.TopoJSON = function() {
+  this.feature_ = new ol.Feature
+};
+goog.inherits(ol.parser.TopoJSON, ol.parser.Parser);
+goog.addSingletonGetter(ol.parser.TopoJSON);
+ol.parser.TopoJSON.prototype.concatenateArcs_ = function(indices, arcs) {
+  var coordinates = [];
+  var index, arc;
+  for(var i = 0, ii = indices.length;i < ii;++i) {
+    index = indices[i];
+    if(i > 0) {
+      coordinates.pop()
+    }
+    if(index >= 0) {
+      arc = arcs[index]
+    }else {
+      arc = arcs[~index].slice().reverse()
+    }
+    coordinates.push.apply(coordinates, arc)
+  }
+  return coordinates
+};
+ol.parser.TopoJSON.prototype.read = function(str) {
+  var topology = (JSON.parse(str));
+  return this.readFeaturesFromObject(topology)
+};
+ol.parser.TopoJSON.prototype.readFeaturesFromString = function(str, opt_options) {
+  var topology = (JSON.parse(str));
+  if(topology.type !== "Topology") {
+    throw new Error('Not a "Topology" type object');
+  }
+  return this.readFeaturesFromTopology_(topology, opt_options)
+};
+ol.parser.TopoJSON.prototype.readFeaturesFromObject = function(topology, opt_options) {
+  if(topology.type !== "Topology") {
+    throw new Error('Not a "Topology" type object');
+  }
+  return this.readFeaturesFromTopology_(topology, opt_options)
+};
+ol.parser.TopoJSON.prototype.readFeatureFromGeometry_ = function(object, arcs, scale, translate, opt_options) {
+  var geometry;
+  var type = object.type;
+  if(type === "Point") {
+    geometry = this.readPoint_((object), scale, translate, opt_options)
+  }else {
+    if(type === "LineString") {
+      geometry = this.readLineString_((object), arcs, opt_options)
+    }else {
+      if(type === "Polygon") {
+        geometry = this.readPolygon_((object), arcs, opt_options)
+      }else {
+        if(type === "MultiPoint") {
+          geometry = this.readMultiPoint_((object), scale, translate, opt_options)
+        }else {
+          if(type === "MultiLineString") {
+            geometry = this.readMultiLineString_((object), arcs, opt_options)
+          }else {
+            if(type === "MultiPolygon") {
+              geometry = this.readMultiPolygon_((object), arcs, opt_options)
+            }else {
+              throw new Error("Unsupported geometry type: " + type);
+            }
+          }
+        }
+      }
+    }
+  }
+  var feature = new ol.Feature;
+  feature.setGeometry(geometry);
+  if(goog.isDef(object.id)) {
+    feature.setFeatureId(String(object.id))
+  }
+  return feature
+};
+ol.parser.TopoJSON.prototype.readFeaturesFromGeometryCollection_ = function(collection, arcs, scale, translate, opt_options) {
+  var geometries = collection.geometries;
+  var num = geometries.length;
+  var features = new Array(num);
+  for(var i = 0;i < num;++i) {
+    features[i] = this.readFeatureFromGeometry_(geometries[i], arcs, scale, translate, opt_options)
+  }
+  return features
+};
+ol.parser.TopoJSON.prototype.readFeaturesFromTopology_ = function(topology, opt_options) {
+  var transform = topology.transform;
+  var scale = transform.scale;
+  var translate = transform.translate;
+  var arcs = topology.arcs;
+  this.transformArcs_(arcs, scale, translate);
+  var objects = topology.objects;
+  var features = [];
+  for(var key in objects) {
+    if(objects[key].type === "GeometryCollection") {
+      features.push.apply(features, this.readFeaturesFromGeometryCollection_((objects[key]), arcs, scale, translate, opt_options))
+    }else {
+      features.push(this.readFeatureFromGeometry_((objects[key]), arcs, scale, translate, opt_options))
+    }
+  }
+  return features
+};
+ol.parser.TopoJSON.prototype.readLineString_ = function(object, arcs, opt_options) {
+  var coordinates = this.concatenateArcs_(object.arcs, arcs);
+  var callback = opt_options && opt_options.callback;
+  var sharedVertices;
+  if(callback) {
+    sharedVertices = callback(this.feature_, ol.geom.GeometryType.LINESTRING)
+  }
+  return new ol.geom.LineString(coordinates, sharedVertices)
+};
+ol.parser.TopoJSON.prototype.readMultiLineString_ = function(object, arcs, opt_options) {
+  var array = object.arcs;
+  var num = array.length;
+  var coordinates = new Array(num);
+  for(var i = 0;i < num;++i) {
+    coordinates[i] = this.concatenateArcs_(array[i], arcs)
+  }
+  var callback = opt_options && opt_options.callback;
+  var sharedVertices;
+  if(callback) {
+    sharedVertices = callback(this.feature_, ol.geom.GeometryType.MULTILINESTRING)
+  }
+  return new ol.geom.MultiLineString(coordinates, sharedVertices)
+};
+ol.parser.TopoJSON.prototype.readMultiPoint_ = function(object, scale, translate, opt_options) {
+  var coordinates = object.coordinates;
+  for(var i = 0, ii = coordinates.length;i < ii;++i) {
+    this.transformVertex_(coordinates[i], scale, translate)
+  }
+  var callback = opt_options && opt_options.callback;
+  var sharedVertices;
+  if(callback) {
+    sharedVertices = callback(this.feature_, ol.geom.GeometryType.MULTIPOINT)
+  }
+  return new ol.geom.MultiPoint(coordinates, sharedVertices)
+};
+ol.parser.TopoJSON.prototype.readMultiPolygon_ = function(object, arcs, opt_options) {
+  var array = object.arcs;
+  var numPolys = array.length;
+  var coordinates = new Array(numPolys);
+  var polyArray, numRings, ringCoords, j;
+  for(var i = 0;i < numPolys;++i) {
+    polyArray = array[i];
+    numRings = polyArray.length;
+    ringCoords = new Array(numRings);
+    for(j = 0;j < numRings;++j) {
+      ringCoords[j] = this.concatenateArcs_(polyArray[j], arcs)
+    }
+    coordinates[i] = ringCoords
+  }
+  var callback = opt_options && opt_options.callback;
+  var sharedVertices;
+  if(callback) {
+    sharedVertices = callback(this.feature_, ol.geom.GeometryType.MULTIPOLYGON)
+  }
+  return new ol.geom.MultiPolygon(coordinates, sharedVertices)
+};
+ol.parser.TopoJSON.prototype.readPoint_ = function(object, scale, translate, opt_options) {
+  var coordinates = object.coordinates;
+  this.transformVertex_(coordinates, scale, translate);
+  var callback = opt_options && opt_options.callback;
+  var sharedVertices;
+  if(callback) {
+    sharedVertices = callback(this.feature_, ol.geom.GeometryType.POINT)
+  }
+  return new ol.geom.Point(coordinates, sharedVertices)
+};
+ol.parser.TopoJSON.prototype.readPolygon_ = function(object, arcs, opt_options) {
+  var array = object.arcs;
+  var num = array.length;
+  var coordinates = new Array(num);
+  for(var i = 0;i < num;++i) {
+    coordinates[i] = this.concatenateArcs_(array[i], arcs)
+  }
+  var callback = opt_options && opt_options.callback;
+  var sharedVertices;
+  if(callback) {
+    sharedVertices = callback(this.feature_, ol.geom.GeometryType.POLYGON)
+  }
+  return new ol.geom.Polygon(coordinates, sharedVertices)
+};
+ol.parser.TopoJSON.prototype.transformArcs_ = function(arcs, scale, translate) {
+  for(var i = 0, ii = arcs.length;i < ii;++i) {
+    this.transformArc_(arcs[i], scale, translate)
+  }
+};
+ol.parser.TopoJSON.prototype.transformArc_ = function(arc, scale, translate) {
+  var x = 0;
+  var y = 0;
+  var vertex;
+  for(var i = 0, ii = arc.length;i < ii;++i) {
+    vertex = arc[i];
+    x += vertex[0];
+    y += vertex[1];
+    vertex[0] = x;
+    vertex[1] = y;
+    this.transformVertex_(vertex, scale, translate)
+  }
+};
+ol.parser.TopoJSON.prototype.transformVertex_ = function(vertex, scale, translate) {
+  vertex[0] = vertex[0] * scale[0] + translate[0];
+  vertex[1] = vertex[1] * scale[1] + translate[1]
+};
+ol.parser.TopoJSON.read = function(str) {
+  return ol.parser.TopoJSON.getInstance().read(str)
+};
 goog.provide("ol.parser.WKT");
 goog.require("goog.array");
 goog.require("goog.string");
@@ -31674,6 +31921,7 @@ goog.require("ol.parser.ObjectFeatureParser");
 goog.require("ol.parser.Parser");
 goog.require("ol.parser.ReadFeaturesOptions");
 goog.require("ol.parser.StringFeatureParser");
+goog.require("ol.parser.TopoJSON");
 goog.require("ol.parser.WKT");
 goog.require("ol.parser.XML");
 goog.require("ol.parser.ogc.ExceptionReport");
