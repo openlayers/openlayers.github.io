@@ -16,6 +16,7 @@
     "grunt-cli": "0.1.9"
   },
   "scripts": {
-    "deploy": "grunt"
+    "deploy": "grunt",
+    "post-install": "bower install"
   }
 }
