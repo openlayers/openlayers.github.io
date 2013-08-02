@@ -1,0 +1,78 @@
+body {
+  font-family: 'Quattrocento Sans', sans-serif;
+  font-size: 16px;
+  padding-top: 50px;
+}
+
+.navbar {
+  background-color: #319FD3;
+  color: white;
+}
+.navbar-toggle {
+  background-color: white;
+}
+.navbar-brand {
+  color: white;
+  font-weight: bold;
+  font-size: 170%;
+}
+.navbar-nav>li>a {
+  color: white;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: 'Quattrocento Sans', sans-serif;
+  font-weight: 700;
+}
+h1.topic {
+  font-size: 110%;
+  color: #bbb;
+  text-transform: uppercase;
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+a {
+  color: #428bca;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #2a6496;
+  text-decoration: none;
+}
+
+a.big-link {
+  display: inline-block;
+  color: inherit;
+}
+a.big-link:hover,
+a.big-link:focus {
+  color: #2a6496;
+}
+
+blockquote.plain {
+  border: none;
+}
+
+footer {
+  background-color: #319FD3;
+  color: white;
+  margin-top: 40px;
+  padding: 10px;
+  text-align: center;
+}
+footer a {
+  color: white;
+}
