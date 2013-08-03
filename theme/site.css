@@ -19,6 +19,14 @@ body {
 .navbar-nav>li>a {
   color: white;
 }
+.navbar-brand:hover,
+.navbar-brand:focus,
+.navbar-nav>li>a:hover,
+.navbar-nav>li>a:focus,
+footer a:hover,
+footer a:focus {
+  color: #C7F023;
+}
 
 h1,
 h2,
@@ -47,6 +55,12 @@ a {
   color: #428bca;
   text-decoration: none;
 }
+a {
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
 a:hover,
 a:focus {
   color: #2a6496;
@@ -54,12 +68,21 @@ a:focus {
 }
 
 a.big-link {
-  display: inline-block;
+  padding: 0 10px;
+  margin: 5px 0;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  display: block;
   color: inherit;
+}
+a.big-link h3 {
+  margin-top: 10px;
 }
 a.big-link:hover,
 a.big-link:focus {
+  border-color: #eee;
   color: #2a6496;
+  background-color: #f8f8f8;
 }
 
 blockquote.plain {
