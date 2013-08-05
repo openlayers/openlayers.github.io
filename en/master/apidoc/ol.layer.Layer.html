@@ -1795,14 +1795,18 @@ that it is bound to.</p>
 black.  A value of 0 will leave the brightness unchanged.  A value of 1 will
 render the layer completely white.  Other values are linear multipliers on
 the effect (values are clamped between -1 and 1).</p>
+
 <p>The filter effects draft [1] says the brightness function is supposed to
 render 0 black, 1 unchanged, and all other values as a linear multiplier.</p>
+
 <p>The current WebKit implementation clamps values between -1 (black) and 1
 (white) [2].  There is a bug open to change the filter effect spec [3].</p>
+
 <p>TODO: revisit this if the spec is still unmodified before we release</p>
-<p>[1] <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html">https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html</a>
-[2] <a href="https://github.com/WebKit/webkit/commit/8f4765e569">https://github.com/WebKit/webkit/commit/8f4765e569</a>
-[3] <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647">https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647</a></p>
+
+<p>[1] <a href='https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html'>https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html</a>
+[2] <a href='https://github.com/WebKit/webkit/commit/8f4765e569'>https://github.com/WebKit/webkit/commit/8f4765e569</a>
+[3] <a href='https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647'>https://www.w3.org/Bugs/Public/show_bug.cgi?id=15647</a></p>
     </div>
     
 

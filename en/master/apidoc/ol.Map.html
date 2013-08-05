@@ -48,6 +48,7 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
         <div class="class-description"><p>The map is the core component of OpenLayers. In its minimal configuration it
 needs a view, one or more layers, and a target container:</p>
+
 <pre><code>var map = new ol.Map({
   view: new ol.View2D({
     center: [0, 0],
@@ -59,7 +60,9 @@ needs a view, one or more layers, and a target container:</p>
     })
   ],
   target: 'map'
-});</code></pre>
+});
+</code></pre>
+
 <p>The above snippet creates a map with a MapQuest OSM layer on a 2D view and
 renders it to a DOM element with the id 'map'.</p></div>
     
