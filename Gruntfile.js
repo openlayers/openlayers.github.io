@@ -34,9 +34,67 @@ module.exports = function(grunt) {
       dist: dist,
       repo: repo,
       all: build
+    },
+    // new stuff
+    less: {
+      all: {
+        options: {
+          compress: true
+        },
+        files: [{
+          src: 'src/theme/site.less',
+          dest: path.join(build, 'theme', 'site.css')
+        }]
+      }
+    },
+    copy: {
+      all: {
+        files: [{
+          expand: true,
+          src: 'theme/img/**/*',
+          dest: build
+        }, {
+          // TODO: uglify all js together
+          expand: true,
+          src: 'bower_components/jquery/jquery.min.js'
+          dest: build
+        }, {
+          // TODO: uglify all js together
+          expand: true,
+          src: 'bower_components/bootstrap/dist/js/bootstrap.min.js'
+          dest: build
+        }]
+      }
+    },
+    assemble: {
+      options: {
+        layoutdir: 'src/layouts'
+      },
+      pages: {
+        files: [{
+          expand: true,
+          cwd: 'src/pages',
+          src: '**/*',
+          dest: path.join(build)
+        }]
+      }
+    },
+    watch: {
+      less: {
+        files: 'src/theme/**/*.less',
+        tasks: ['less']
+      },
+      pages: {
+        files: 'src/pages/**/*',
+        tasks: ['assemble:pages']
+      }
     }
   });
 
+  grunt.loadNpmTasks('assemble');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-gh-pages');
 
@@ -66,6 +124,10 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('default', 'deploy:origin/master');
+  grunt.registerTask('build', 'Build the website',
+      ['less', 'copy', 'assemble']);
+
+  // grunt.registerTask('default', 'deploy:origin/master');
+  grunt.registerTask('default', 'build');
 
 };
