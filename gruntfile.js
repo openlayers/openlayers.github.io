@@ -43,15 +43,15 @@ module.exports = function(grunt) {
           compress: true
         },
         files: [{
-          src: 'src/theme/site.less',
-          dest: path.join(assets, 'theme/site.css')
+          expand: true,
+          cwd: 'src',
+          src: 'theme/**/*.less',
+          dest: assets,
+          ext: '.css'
         }]
       }
     },
     uglify: {
-      options: {
-
-      },
       all: {
         files: [{
           src: ['bower_components/jquery/jquery.js', 'bower_components/bootstrap/dist/js/bootstrap.js'],

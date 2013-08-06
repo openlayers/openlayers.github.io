@@ -4,41 +4,10 @@
     <title>OpenLayers 3 - {{ title }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://ol3js.org/en/master/build/ol.css" type="text/css">
     <link href='assets/theme/site.css' rel='stylesheet' type='text/css'>
-    <style>
-      #map {
-        position: relative;
-        height: 120px;
-      }
-      #logo img {
-        height: 10px;
-      }
-      #tagline {
-        padding-left: 25%;
-        margin-bottom: 10px;
-      }
-      #tagline p {
-        font-size: 200%;
-        font-style: italic;
-      }
-      #news {
-        clear: both;
-        border: 1px solid #eee;
-        background-color: #f8f8f8;
-        border-radius: 2px;
-        padding: 10px;
-        margin: 0 15px;
-        width: 95%;
-      }
-      #news h1 {
-        margin: 0;
-      }
-      img.thumb {
-        float: right;
-        margin-left: 10px;
-      }
-    </style>
+    {{#each head}}
+      {{{ this }}}
+    {{/each}}
   </head>
   <body>
     <div class='navbar navbar-fixed-top'>
