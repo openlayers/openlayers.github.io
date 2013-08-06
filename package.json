@@ -18,10 +18,15 @@
     "grunt-contrib-less": "0.6.4",
     "assemble": "0.4.3",
     "grunt-contrib-watch": "0.5.1",
-    "grunt-contrib-copy": "0.4.1"
+    "grunt-contrib-copy": "0.4.1",
+    "grunt-contrib-uglify": "0.2.2",
+    "grunt-contrib-connect": "0.3.0",
+    "grunt-concurrent": "0.3.0"
   },
   "scripts": {
-    "deploy": "grunt",
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "start": "grunt start",
+    "build": "grunt build",
+    "deploy": "grunt"
   }
 }
