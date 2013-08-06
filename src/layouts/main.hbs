@@ -3,11 +3,9 @@
   <head>
     <title>OpenLayers 3 - {{ title }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link href='bower_components/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet' media='screen'>
     <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
-    <link href='bower_components/font-awesome/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="http://ol3js.org/en/master/build/ol.css" type="text/css">
-    <link href='theme/site.css' rel='stylesheet' type='text/css'>
+    <link href='assets/theme/site.css' rel='stylesheet' type='text/css'>
     <style>
       #map {
         position: relative;
@@ -62,119 +60,10 @@
         </div>
       </div>
     </div>
-    <div id='map'></div>
-    <div class='container'>
-      <blockquote id='tagline' class='pull-right plain'>
-        <p>A high-performance, feature-packed library for all your mapping needs.</p>
-      </blockquote>
-      <div class='row'>
-        <div id='news' class='col-12'>
-          <h1 class='topic'><i class='icon-rss'></i> Latest</h1>
-          <p>We're hard at work toward a final release of 3.0.0 (shooting for early September).  In the meantime, we're churning out regular alhpa releases to mark our progress.  OpenLayers <a href='https://github.com/openlayers/ol3/releases/tag/r3.0.0-alpha.4'>r3.0.0-alpha4</a> is the lastest.  Read more about it on <a href='http://openlayers.org/blog/2013/07/29/openlayers-r3-0-0-alpha-4/'>the blog</a>.</p>
-        </div>
-      </div>
-      <div class='row'>
-        <h1 class='topic col-12'>Features</h1>
-      </div>
-      <div class='row'>
-        <div class='col-sm-6'>
-          <h3>Tiled Layers</h3>
-          <img src='theme/img/tiled-layers.png' class='thumb'>
-          <p>Pull tiles from OSM, Bing, MapBox, Stamen, MapQuest, and any other XYZ source you can find.  OGC mapping services and untiled layers also supported.</p>
-        </div>
-        <div class='col-sm-6'>
-          <h3>Vector Layers</h3>
-          <img src='theme/img/vector-layers.png' class='thumb'>
-          <p>Render vector data from GeoJSON, TopoJSON, KML, GML, and a growing number of other formats.</p>
-        </div>
-      </div>
-      <div class='row'>
-        <div class='col-sm-6'>
-          <h3>Fast &amp; Mobile Ready</h3>
-          <img src='theme/img/timeline.png' class='thumb'>
-          <p>Mobile support out of the box.  Build lightweight custom profiles with just the components you need.</p>
-        </div>
-        <div class='col-sm-6'>
-          <h3>Cutting Edge &amp; Easy to Customize</h3>
-          <img src='theme/img/popup.png' class='thumb'>
-          <p>Map rendering leverages WebGL, Canvas 2D, and all the latest greatness from HTML5.  Style your map controls with straight-forward CSS.</p>
-        </div>
-      </div>
-      <div class='row'>
-        <h1 class='topic col-12'>Learn More</h1>
-      </div>
-      <div class='row'>
-        <div class='col-sm-6'>
-          <a href='#' class='big-link'>
-            <h3><i class='icon-ok'></i> Quick Start</h3>
-            <p>Seen enough already?  Go here to get started.</p>
-          </a>
-        </div>
-        <div class='col-sm-6'>
-          <a href='https://github.com/openlayers/ol3/releases' class='big-link'>
-            <h3><i class='icon-download'></i> Download</h3>
-            <p>Get the latest release or dig through the archives.</p>
-          </a>
-        </div>
-      </div>
-      <div class='row'>
-        <div class='col-sm-6'>
-          <a href='#' class='big-link'>
-            <h3><i class='icon-book'></i> Tutorials</h3>
-            <p>Spend time learning the basics and graduate up to advanced mapping techniques.</p>
-          </a>
-        </div>
-        <div class='col-sm-6'>
-          <a href='#' class='big-link'>
-            <h3><i class='icon-sitemap'></i> API Docs</h3>
-            <p>Browse through the API docs for details on code usage.</p>
-          </a>
-        </div>
-      </div>
-      <div class='row'>
-        <h1 class='topic col-12'>Get Involved</h1>
-      </div>
-      <div class='row'>
-        <div class='col-sm-4'>
-          <a href='https://github.com/openlayers/ol3' class='big-link'>
-            <h3><i class="icon-code-fork"></i> Fork the repo</h3>
-          </a>
-        </div>
-        <div class='col-sm-4'>
-          <a href='https://github.com/openlayers/ol3/issues' class='big-link'>
-            <h3><i class="icon-bug"></i> Open a ticket</h3>
-          </a>
-        </div>
-        <div class='col-sm-4'>
-          <a href='https://groups.google.com/d/forum/ol3-dev' class='big-link'>
-            <h3><i class="icon-envelope"></i> Join the discussion</h3>
-          </a>
-        </div>
-      </div>
-    </div>
+    {{> body }}
     <footer>
       Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>.
     </footer>
-    <script src='bower_components/jquery/jquery.min.js'></script>
-    <script src='bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
-    <script src='http://ol3js.org/en/master/build/ol.js'></script>
-    <script>
-      var map = new ol.Map({
-        target: 'map',
-        renderer: ol.RendererHint.CANVAS,
-        view: new ol.View2D({
-          center: [0, 6500000],
-          zoom: 2
-        }),
-        layers: [
-          new ol.layer.TileLayer({
-            source: new ol.source.Stamen({
-              layer: 'watercolor'
-            })
-          })
-        ],
-        controls: []
-      });
-    </script>
+    <script src='assets/js/main.js'></script>
   </body>
 </html>

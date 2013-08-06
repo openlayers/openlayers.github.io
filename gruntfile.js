@@ -6,6 +6,7 @@ module.exports = function(grunt) {
 
   var build = path.join('.grunt', 'openlayers-website');
   var dist = path.join(build, 'dist');
+  var assets = path.join(dist, 'assets');
   var repo = path.join(build, 'repo');
 
   grunt.initConfig({
@@ -43,7 +44,18 @@ module.exports = function(grunt) {
         },
         files: [{
           src: 'src/theme/site.less',
-          dest: path.join(build, 'theme', 'site.css')
+          dest: path.join(assets, 'theme/site.css')
+        }]
+      }
+    },
+    uglify: {
+      options: {
+
+      },
+      all: {
+        files: [{
+          src: ['bower_components/jquery/jquery.js', 'bower_components/bootstrap/dist/js/bootstrap.js'],
+          dest: path.join(assets, 'js/main.js')
         }]
       }
     },
@@ -51,18 +63,14 @@ module.exports = function(grunt) {
       all: {
         files: [{
           expand: true,
+          cwd: 'src',
           src: 'theme/img/**/*',
-          dest: build
+          dest: assets
         }, {
-          // TODO: uglify all js together
           expand: true,
-          src: 'bower_components/jquery/jquery.min.js'
-          dest: build
-        }, {
-          // TODO: uglify all js together
-          expand: true,
-          src: 'bower_components/bootstrap/dist/js/bootstrap.min.js'
-          dest: build
+          cwd: 'bower_components/font-awesome',
+          src: 'font/**/*',
+          dest: assets
         }]
       }
     },
@@ -75,9 +83,16 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/pages',
           src: '**/*',
-          dest: path.join(build)
+          dest: dist
         }]
       }
+    },
+    connect: {
+      options: {
+        base: dist,
+        keepalive: true
+      },
+      server: {}
     },
     watch: {
       less: {
@@ -88,15 +103,26 @@ module.exports = function(grunt) {
         files: 'src/pages/**/*',
         tasks: ['assemble:pages']
       }
+    },
+    concurrent: {
+      options: {
+        logConcurrentOutput: true
+      },
+      target: {
+        tasks: ['connect', 'watch']
+      }
     }
   });
 
-  grunt.loadNpmTasks('assemble');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('assemble');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.loadTasks('tasks');
 
@@ -124,8 +150,12 @@ module.exports = function(grunt) {
     ]);
   });
 
+
   grunt.registerTask('build', 'Build the website',
-      ['less', 'copy', 'assemble']);
+      ['less', 'uglify', 'copy', 'assemble']);
+
+  grunt.registerTask('start', 'Start the dev server',
+      ['build', 'concurrent']);
 
   // grunt.registerTask('default', 'deploy:origin/master');
   grunt.registerTask('default', 'build');
