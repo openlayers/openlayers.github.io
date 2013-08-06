@@ -95,13 +95,17 @@ module.exports = function(grunt) {
       server: {}
     },
     watch: {
-      less: {
-        files: 'src/theme/**/*.less',
-        tasks: ['less']
+      layouts: {
+        files: 'src/layouts/**/*',
+        tasks: ['assemble:pages']
       },
       pages: {
         files: 'src/pages/**/*',
         tasks: ['assemble:pages']
+      },
+      theme: {
+        files: 'src/theme/**/*.less',
+        tasks: ['less']
       }
     },
     concurrent: {
