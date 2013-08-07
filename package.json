@@ -21,7 +21,8 @@
     "grunt-contrib-copy": "0.4.1",
     "grunt-contrib-uglify": "0.2.2",
     "grunt-contrib-connect": "0.3.0",
-    "grunt-concurrent": "0.3.0"
+    "grunt-concurrent": "0.3.0",
+    "grunt-openlayers": "0.2.0"
   },
   "scripts": {
     "postinstall": "bower install",
