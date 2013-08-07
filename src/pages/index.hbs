@@ -2,7 +2,7 @@
 title: 'Welcome'
 layout: main.hbs
 head:
- - <link rel="stylesheet" href="http://ol3js.org/en/master/build/ol.css" type="text/css">
+ - <link rel="stylesheet" href="en/<%= current %>/build/ol.css" type="text/css">
  - <link rel="stylesheet" href="assets/theme/index.css" type="text/css">
 ---
 
@@ -69,7 +69,7 @@ head:
       </a>
     </div>
     <div class='col-sm-6'>
-      <a href='#' class='big-link'>
+      <a href='en/{{ current }}/apidoc' class='big-link'>
         <h3><i class='icon-sitemap'></i> API Docs</h3>
         <p>Browse through the API docs for details on code usage.</p>
       </a>
@@ -96,7 +96,7 @@ head:
     </div>
   </div>
 </div>
-<script src='http://ol3js.org/en/master/build/ol.js'></script>
+<script src='en/{{ current }}/build/ol.js'></script>
 <script>
   var map = new ol.Map({
     target: 'map',

@@ -4,7 +4,7 @@
     <title>OpenLayers 3 - {{ title }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
-    <link href='assets/theme/site.css' rel='stylesheet' type='text/css'>
+    <link href='{{ assets }}/theme/site.css' rel='stylesheet' type='text/css'>
     {{#each head}}
       {{{ this }}}
     {{/each}}
@@ -22,8 +22,8 @@
         <!-- menu items that get hidden below 768px width -->
         <div class='nav-collapse collapse navbar-responsive-collapse'>
           <ul class='nav navbar-nav pull-right'>
-            <li><a href='en/master/docs'>Docs</a></li>
-            <li><a href='en/master/apidocs'>API</a></li>
+            <li><a href='en/{{ current }}/apidoc'>Docs</a></li><!-- TODO: link to doc root instead of API docs -->
+            <li><a href='en/{{ current }}/examples'>Examples</a></li>
             <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
           </ul>
         </div>
@@ -33,6 +33,6 @@
     <footer>
       Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>.
     </footer>
-    <script src='assets/js/main.js'></script>
+    <script src='{{ assets }}/js/main.js'></script>
   </body>
 </html>

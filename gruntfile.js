@@ -1,6 +1,13 @@
 var path = require('path');
 
 
+/**
+ * Branch/tag name for the current release (e.g. 'master' or 'r3.2.1').
+ * @type {string}
+ */
+var current = 'master';
+
+
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
@@ -54,7 +61,10 @@ module.exports = function(grunt) {
     uglify: {
       all: {
         files: [{
-          src: ['bower_components/jquery/jquery.js', 'bower_components/bootstrap/dist/js/bootstrap.js'],
+          src: [
+            'bower_components/jquery/jquery.js',
+            'bower_components/bootstrap/dist/js/bootstrap.js'
+          ],
           dest: path.join(assets, 'js/main.js')
         }]
       }
@@ -76,7 +86,9 @@ module.exports = function(grunt) {
     },
     assemble: {
       options: {
-        layoutdir: 'src/layouts'
+        layoutdir: 'src/layouts',
+        assets: assets,
+        current: current
       },
       pages: {
         files: [{
@@ -139,25 +151,38 @@ module.exports = function(grunt) {
    * to simply specify the name of a local branch (whose head may not be the
    * same as a tracked branch for some remote).
    */
-  grunt.registerTask('deploy', 'Build a tree-ish', function(treeish) {
-    var branch = treeish.split('/').pop(); // may not always be a local branch
+  grunt.registerTask('docetc', 'Build docs for a tree-ish', function() {
+    var treeish = grunt.option('treeish');
+    if (!treeish) {
+      grunt.fatal(new Error('Missing "treeish" option.'));
+    }
 
-    // configure gh-pages task to only remove en/<branch> before adding all
-    grunt.option('grunt-gh-pages-only', path.join('en', branch));
+    var branch = treeish.split('/').pop(); // may not always be a local branch
 
     grunt.task.run([
       'checkout:' + treeish,
       'buildpy:host-examples',
       'buildpy:doc',
       'clean:dist',
-      'move:' + path.join(dist, 'en', branch),
-      'gh-pages'
+      'move:' + path.join(dist, 'en', branch)
     ]);
   });
 
-
   grunt.registerTask('build', 'Build the website',
-      ['less', 'uglify', 'copy', 'assemble']);
+      ['docetc', 'less', 'uglify', 'copy', 'assemble']);
+
+
+  grunt.registerTask('deploy', 'Deploy the site', function() {
+    var treeish = grunt.option('treeish');
+    if (!treeish) {
+      grunt.fatal(new Error('Missing "treeish" option.'));
+    }
+    var branch = treeish.split('/').pop(); // may not always be a local branch
+
+    grunt.option('grunt-gh-pages-only', path.join('en', branch));
+    grunt.task.run(['build', 'gh-pages']);
+  });
+
 
   grunt.registerTask('start', 'Start the dev server',
       ['build', 'concurrent']);
