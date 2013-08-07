@@ -112,9 +112,19 @@
 /**
  * Here begins the OpenLayers style.  There are more sophisticated ways to
  * override Bootstrap defaults with mixins, but for now we just keep it easy.
+ *
+ * Colors here from this scheme: http://colorschemedesigner.com/#3l21Tw0w0w0w0
  */
-@primary: #319FD3;
-@secondary: #e9c669;
+@primary1: #03899C;
+@primary2: #1F6B75;
+@primary3: #015965;
+@primary4: #36BBCE;
+@primary5: #5FC0CE;
+@complimentary1: #FF7A00;
+@complimentary2: #BF7530;
+@complimentary3: #A65000;
+@complimentary4: #FF9C40;
+@complimentary5: #FFB673;
 
 body {
   font-family: 'Quattrocento Sans', sans-serif;
@@ -123,7 +133,7 @@ body {
 }
 
 .navbar {
-  background-color: @primary;
+  background-color: @primary2;
   color: white;
 }
 .navbar-toggle {
@@ -133,6 +143,13 @@ body {
   color: white;
   font-weight: bold;
   font-size: 170%;
+  padding: 5px 0;
+  max-width: 250px;
+}
+.navbar-brand img {
+  height: 40px;
+  vertical-align: middle;
+  margin-right: 5px;
 }
 .navbar-nav>li>a {
   color: white;
@@ -143,7 +160,7 @@ body {
 .navbar-nav>li>a:focus,
 footer a:hover,
 footer a:focus {
-  color: @secondary;
+  color: @complimentary1;
 }
 
 h1,
@@ -170,7 +187,7 @@ h1.topic {
 }
 
 a {
-  color: @primary;
+  color: @primary1;
   text-decoration: none;
 }
 a {
@@ -178,7 +195,7 @@ a {
 }
 a:hover,
 a:focus {
-  color: @secondary;
+  color: @complimentary1;
   text-decoration: none;
 }
 
@@ -196,7 +213,7 @@ a.big-link h3 {
 a.big-link:hover,
 a.big-link:focus {
   border-color: #eee;
-  color: @primary;
+  color: @primary1;
   background-color: #f8f8f8;
 }
 
@@ -205,7 +222,7 @@ blockquote.plain {
 }
 
 footer {
-  background-color: @primary;
+  background-color: @primary1;
   color: white;
   margin-top: 40px;
   padding: 10px;
