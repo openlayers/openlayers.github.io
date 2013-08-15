@@ -1,8 +1,8 @@
 goog.provide('ol.layer.Vector');
+goog.provide('ol.layer.VectorLayerEventType');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
-goog.require('goog.events.EventType');
 goog.require('goog.object');
 goog.require('ol.Feature');
 goog.require('ol.expr');
@@ -221,10 +221,18 @@ ol.layer.FeatureCache.prototype.remove = function(feature) {
 
 
 /**
- * TODO: Create a VectorLayerEvent with ADD and REMOVE event types
+ * @enum {string}
+ */
+ol.layer.VectorLayerEventType = {
+  ADD: 'add',
+  REMOVE: 'remove'
+};
+
+
+/**
  * @typedef {{extent: (ol.Extent|undefined),
  *            features: (Array.<ol.Feature>|undefined),
- *            type: goog.events.EventType}}
+ *            type: ol.layer.VectorLayerEventType}}
  */
 ol.layer.VectorLayerEventObject;
 
@@ -304,7 +312,7 @@ ol.layer.Vector.prototype.addFeatures = function(features) {
   this.dispatchEvent(/** @type {ol.layer.VectorLayerEventObject} */ ({
     extent: extent,
     features: features,
-    type: goog.events.EventType.CHANGE
+    type: ol.layer.VectorLayerEventType.ADD
   }));
 };
 
@@ -423,8 +431,6 @@ ol.layer.Vector.prototype.groupFeaturesBySymbolizerLiteral =
  *     one projection.
  */
 ol.layer.Vector.prototype.parseFeatures = function(data, parser, projection) {
-  var features;
-
   var lookup = {};
   lookup[ol.geom.GeometryType.POINT] = this.pointVertices_;
   lookup[ol.geom.GeometryType.LINESTRING] = this.lineVertices_;
@@ -437,8 +443,12 @@ ol.layer.Vector.prototype.parseFeatures = function(data, parser, projection) {
     return lookup[type];
   };
 
-  var addFeatures = function(features) {
+  var addFeatures = function(data) {
+    var features = data.features;
     var sourceProjection = this.getSource().getProjection();
+    if (goog.isNull(sourceProjection)) {
+      sourceProjection = data.metadata.projection;
+    }
     var transform = ol.proj.getTransform(sourceProjection, projection);
 
     transform(
@@ -459,26 +469,28 @@ ol.layer.Vector.prototype.parseFeatures = function(data, parser, projection) {
     this.addFeatures(features);
   };
 
-  var options = {callback: callback};
+  var options = {callback: callback}, result;
   if (goog.isString(data)) {
     if (goog.isFunction(parser.readFeaturesFromStringAsync)) {
       parser.readFeaturesFromStringAsync(data, goog.bind(addFeatures, this),
           options);
     } else {
-      goog.asserts.assert(goog.isFunction(parser.readFeaturesFromString),
-          'Expected a parser with readFeaturesFromString method.');
-      features = parser.readFeaturesFromString(data, options);
-      addFeatures.call(this, features);
+      goog.asserts.assert(
+          goog.isFunction(parser.readFeaturesFromString),
+          'Expected parser with a readFeaturesFromString method.');
+      result = parser.readFeaturesFromString(data, options);
+      addFeatures.call(this, result);
     }
   } else if (goog.isObject(data)) {
     if (goog.isFunction(parser.readFeaturesFromObjectAsync)) {
       parser.readFeaturesFromObjectAsync(data, goog.bind(addFeatures, this),
           options);
     } else {
-      goog.asserts.assert(goog.isFunction(parser.readFeaturesFromObject),
-          'Expected a parser with a readFeaturesFromObject method.');
-      features = parser.readFeaturesFromObject(data, options);
-      addFeatures.call(this, features);
+      goog.asserts.assert(
+          goog.isFunction(parser.readFeaturesFromObject),
+          'Expected parser with a readFeaturesFromObject method.');
+      result = parser.readFeaturesFromObject(data, options);
+      addFeatures.call(this, result);
     }
   } else {
     // TODO: parse more data types
@@ -513,7 +525,7 @@ ol.layer.Vector.prototype.removeFeatures = function(features) {
   this.dispatchEvent(/** @type {ol.layer.VectorLayerEventObject} */ ({
     extent: extent,
     features: features,
-    type: goog.events.EventType.CHANGE
+    type: ol.layer.VectorLayerEventType.REMOVE
   }));
 };
 

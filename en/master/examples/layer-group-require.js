@@ -1,0 +1,9 @@
+goog.require('ol.Map');
+goog.require('ol.RendererHints');
+goog.require('ol.View2D');
+goog.require('ol.dom.Input');
+goog.require('ol.layer.LayerGroup');
+goog.require('ol.layer.TileLayer');
+goog.require('ol.proj');
+goog.require('ol.source.MapQuestOpenAerial');
+goog.require('ol.source.TileJSON');

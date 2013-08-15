@@ -16,7 +16,10 @@ var vector = new ol.layer.Vector({
     new ol.style.Rule({
       symbolizers: [
         new ol.style.Polygon({
-          strokeColor: '#bada55'
+          strokeColor: '#319FD3',
+          strokeOpacity: 1,
+          fillColor: '#ffffff',
+          fillOpacity: 0.6
         })
       ]
     }),
@@ -24,18 +27,14 @@ var vector = new ol.layer.Vector({
       filter: 'resolution() < 5000',
       symbolizers: [
         new ol.style.Text({
-          color: '#bada55',
+          color: '#000000',
           text: ol.expr.parse('name'),
           fontFamily: 'Calibri,sans-serif',
           fontSize: 12
         })
       ]
     })
-  ]}),
-  transformFeatureInfo: function(features) {
-    return features.length > 0 ?
-        features[0].getFeatureId() + ': ' + features[0].get('name') : '&nbsp;';
-  }
+  ]})
 });
 
 var map = new ol.Map({
@@ -49,11 +48,14 @@ var map = new ol.Map({
 });
 
 map.on(['click', 'mousemove'], function(evt) {
-  map.getFeatureInfo({
+  map.getFeatures({
     pixel: evt.getPixel(),
     layers: [vector],
-    success: function(featureInfo) {
-      document.getElementById('info').innerHTML = featureInfo[0];
+    success: function(featuresByLayer) {
+      var features = featuresByLayer[0];
+      document.getElementById('info').innerHTML = features.length > 0 ?
+          features[0].getFeatureId() + ': ' + features[0].get('name') :
+          '&nbsp;';
     }
   });
 });
