@@ -4,7 +4,7 @@ var view = new ol.View2D({
 });
 
 var map = new ol.Map({
-  controls: ol.control.defaults({}, [
+  controls: ol.control.defaults().extend([
     new ol.control.FullScreen()
   ]),
   layers: [

@@ -1,7 +1,7 @@
 var scaleLineControl = new ol.control.ScaleLine();
 
 var map = new ol.Map({
-  controls: ol.control.defaults({}, [
+  controls: ol.control.defaults().extend([
     scaleLineControl
   ]),
   layers: [

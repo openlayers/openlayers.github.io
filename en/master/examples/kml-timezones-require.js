@@ -7,6 +7,6 @@ goog.require('ol.layer.Vector');
 goog.require('ol.parser.KML');
 goog.require('ol.source.Stamen');
 goog.require('ol.source.Vector');
-goog.require('ol.style.Polygon');
-goog.require('ol.style.Rule');
+goog.require('ol.style.Fill');
+goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');

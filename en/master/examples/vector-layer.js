@@ -15,11 +15,13 @@ var vector = new ol.layer.Vector({
   style: new ol.style.Style({rules: [
     new ol.style.Rule({
       symbolizers: [
-        new ol.style.Polygon({
-          strokeColor: '#319FD3',
-          strokeOpacity: 1,
-          fillColor: '#ffffff',
-          fillOpacity: 0.6
+        new ol.style.Fill({
+          color: '#ffffff',
+          opacity: 0.6
+        }),
+        new ol.style.Stroke({
+          color: '#319FD3',
+          opacity: 1
         })
       ]
     }),

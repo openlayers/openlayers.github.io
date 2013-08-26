@@ -10,15 +10,14 @@ var vector = new ol.layer.Vector({
     parser: new ol.parser.GeoJSON(),
     url: 'data/countries.geojson'
   }),
-  style: new ol.style.Style({rules: [
-    new ol.style.Rule({
-      symbolizers: [
-        new ol.style.Polygon({
-          strokeColor: '#bada55'
-        })
-      ]
-    })
-  ]}),
+  style: new ol.style.Style({
+    symbolizers: [
+      new ol.style.Stroke({
+        color: '#33cc66',
+        width: 2
+      })
+    ]
+  }),
   transformFeatureInfo: function(features) {
     return features.length > 0 ?
         features[0].getFeatureId() + ': ' + features[0].get('name') : '&nbsp;';
