@@ -20019,11 +20019,13 @@ ol.style.IconLiteral = function(options) {
   this.width = options.width;
   this.height = options.height;
   this.opacity = options.opacity;
-  this.rotation = options.rotation
+  this.rotation = options.rotation;
+  this.xOffset = options.xOffset;
+  this.yOffset = options.yOffset
 };
 goog.inherits(ol.style.IconLiteral, ol.style.PointLiteral);
 ol.style.IconLiteral.prototype.equals = function(iconLiteral) {
-  return this.url == iconLiteral.url && this.width == iconLiteral.width && this.height == iconLiteral.height && this.opacity == iconLiteral.opacity && this.rotation == iconLiteral.rotation
+  return this.url == iconLiteral.url && this.width == iconLiteral.width && this.height == iconLiteral.height && this.opacity == iconLiteral.opacity && this.rotation == iconLiteral.rotation && this.xOffset == iconLiteral.xOffset && this.yOffset == iconLiteral.yOffset
 };
 goog.provide("ol.renderer.canvas.VectorRenderer");
 goog.require("goog.asserts");
@@ -20059,10 +20061,14 @@ ol.renderer.canvas.VectorRenderer = function(canvas, transform, opt_iconLoadedCa
   this.context_ = context;
   this.iconLoadedCallback_ = opt_iconLoadedCallback;
   this.symbolSizes_ = {};
+  this.symbolOffsets_ = {};
   this.maxSymbolSize_ = [0, 0]
 };
 ol.renderer.canvas.VectorRenderer.prototype.getSymbolSizes = function() {
   return this.symbolSizes_
+};
+ol.renderer.canvas.VectorRenderer.prototype.getSymbolOffsets = function() {
+  return this.symbolOffsets_
 };
 ol.renderer.canvas.VectorRenderer.prototype.getMaxSymbolSize = function() {
   return this.maxSymbolSize_
@@ -20138,13 +20144,17 @@ ol.renderer.canvas.VectorRenderer.prototype.renderLineStringFeatures_ = function
 };
 ol.renderer.canvas.VectorRenderer.prototype.renderPointFeatures_ = function(features, symbolizer) {
   var context = this.context_, content, alpha, i, ii, feature, id, size, geometry, components, j, jj, point, vec;
+  var xOffset = 0;
+  var yOffset = 0;
   if(symbolizer instanceof ol.style.ShapeLiteral) {
     content = ol.renderer.canvas.VectorRenderer.renderShape(symbolizer);
     alpha = 1
   }else {
     if(symbolizer instanceof ol.style.IconLiteral) {
       content = ol.renderer.canvas.VectorRenderer.renderIcon(symbolizer, this.iconLoadedCallback_);
-      alpha = symbolizer.opacity
+      alpha = symbolizer.opacity;
+      xOffset = symbolizer.xOffset;
+      yOffset = symbolizer.yOffset
     }else {
       throw new Error("Unsupported symbolizer: " + symbolizer);
     }
@@ -20156,6 +20166,8 @@ ol.renderer.canvas.VectorRenderer.prototype.renderPointFeatures_ = function(feat
   var midHeight = content.height / 2;
   var contentWidth = content.width * this.inverseScale_;
   var contentHeight = content.height * this.inverseScale_;
+  var contentXOffset = xOffset * this.inverseScale_;
+  var contentYOffset = yOffset * this.inverseScale_;
   context.save();
   context.setTransform(1, 0, 0, 1, -midWidth, -midHeight);
   context.globalAlpha = alpha;
@@ -20164,7 +20176,8 @@ ol.renderer.canvas.VectorRenderer.prototype.renderPointFeatures_ = function(feat
     id = goog.getUid(feature);
     size = this.symbolSizes_[id];
     this.symbolSizes_[id] = goog.isDef(size) ? [Math.max(size[0], contentWidth), Math.max(size[1], contentHeight)] : [contentWidth, contentHeight];
-    this.maxSymbolSize_ = [Math.max(this.maxSymbolSize_[0], this.symbolSizes_[id][0]), Math.max(this.maxSymbolSize_[1], this.symbolSizes_[id][1])];
+    this.symbolOffsets_[id] = [xOffset * this.inverseScale_, yOffset * this.inverseScale_];
+    this.maxSymbolSize_ = [Math.max(this.maxSymbolSize_[0], this.symbolSizes_[id][0] + 2 * Math.abs(contentXOffset)), Math.max(this.maxSymbolSize_[1], this.symbolSizes_[id][1] + 2 * Math.abs(contentYOffset))];
     geometry = feature.getGeometry();
     if(geometry instanceof ol.geom.Point) {
       components = [geometry]
@@ -20176,7 +20189,7 @@ ol.renderer.canvas.VectorRenderer.prototype.renderPointFeatures_ = function(feat
       point = components[j];
       vec = [point.get(0), point.get(1), 0];
       goog.vec.Mat4.multVec3(this.transform_, vec, vec);
-      context.drawImage(content, vec[0], vec[1], content.width, content.height)
+      context.drawImage(content, vec[0] + xOffset, vec[1] + yOffset, content.width, content.height)
     }
   }
   context.restore();
@@ -20457,6 +20470,7 @@ ol.renderer.canvas.VectorLayer.prototype.getFeaturesForPixel = function(pixel, s
     var cachedTile = this.tileCache_.get(key);
     var symbolSizes = cachedTile[1];
     var maxSymbolSize = cachedTile[2];
+    var symbolOffsets = cachedTile[3];
     var halfMaxWidth = maxSymbolSize[0] / 2;
     var halfMaxHeight = maxSymbolSize[1] / 2;
     var locationMin = [location[0] - halfMaxWidth, location[1] - halfMaxHeight];
@@ -20471,16 +20485,18 @@ ol.renderer.canvas.VectorLayer.prototype.getFeaturesForPixel = function(pixel, s
       }
       return
     }
-    var candidate, geom, type, symbolBounds, symbolSize, halfWidth, halfHeight, coordinates, j;
+    var candidate, geom, type, symbolBounds, symbolSize, symbolOffset, halfWidth, halfHeight, uid, coordinates, j;
     for(var id in candidates) {
       candidate = candidates[id];
       geom = candidate.getGeometry();
       type = geom.getType();
       if(type === ol.geom.GeometryType.POINT || type === ol.geom.GeometryType.MULTIPOINT) {
-        symbolSize = symbolSizes[goog.getUid(candidate)];
+        uid = goog.getUid(candidate);
+        symbolSize = symbolSizes[uid];
+        symbolOffset = symbolOffsets[uid];
         halfWidth = symbolSize[0] / 2;
         halfHeight = symbolSize[1] / 2;
-        symbolBounds = ol.extent.boundingExtent([[location[0] - halfWidth, location[1] - halfHeight], [location[0] + halfWidth, location[1] + halfHeight]]);
+        symbolBounds = ol.extent.boundingExtent([[location[0] - halfWidth - symbolOffset[0], location[1] - halfHeight + symbolOffset[1]], [location[0] + halfWidth - symbolOffset[0], location[1] + halfHeight + symbolOffset[1]]]);
         coordinates = geom.getCoordinates();
         if(!goog.isArray(coordinates[0])) {
           coordinates = [coordinates]
@@ -20624,7 +20640,7 @@ ol.renderer.canvas.VectorLayer.prototype.renderFrame = function(frameState, laye
   if(!deferred) {
     goog.object.extend(tilesToRender, tilesOnSketchCanvas)
   }
-  var symbolSizes = sketchCanvasRenderer.getSymbolSizes(), maxSymbolSize = sketchCanvasRenderer.getMaxSymbolSize();
+  var symbolSizes = sketchCanvasRenderer.getSymbolSizes(), maxSymbolSize = sketchCanvasRenderer.getMaxSymbolSize(), symbolOffsets = sketchCanvasRenderer.getSymbolOffsets();
   for(key in tilesToRender) {
     tileCoord = tilesToRender[key];
     if(this.tileCache_.containsKey(key)) {
@@ -20632,7 +20648,7 @@ ol.renderer.canvas.VectorLayer.prototype.renderFrame = function(frameState, laye
     }else {
       tile = (this.tileArchetype_.cloneNode(false));
       tile.getContext("2d").drawImage(sketchCanvas, (tileRange.minX - tileCoord.x) * tileSize[0], (tileCoord.y - tileRange.maxY) * tileSize[1]);
-      this.tileCache_.set(key, [tile, symbolSizes, maxSymbolSize])
+      this.tileCache_.set(key, [tile, symbolSizes, maxSymbolSize, symbolOffsets])
     }
     finalContext.drawImage(tile, tileSize[0] * (tileCoord.x - tileRange.minX), tileSize[1] * (tileRange.maxY - tileCoord.y))
   }
@@ -25782,7 +25798,7 @@ ol.parser.GeoJSON.prototype.parseAsFeatureCollection_ = function(json, opt_optio
     }
   }
   var projection = "EPSG:4326";
-  if(goog.isDef(json.crs)) {
+  if(goog.isDefAndNotNull(json.crs)) {
     var crs = json.crs;
     if(crs.type === "name") {
       projection = crs.properties.name
@@ -27688,7 +27704,9 @@ ol.style.Icon = function(options) {
   this.width_ = !goog.isDef(options.width) ? null : options.width instanceof ol.expr.Expression ? options.width : new ol.expr.Literal(options.width);
   this.height_ = !goog.isDef(options.height) ? null : options.height instanceof ol.expr.Expression ? options.height : new ol.expr.Literal(options.height);
   this.opacity_ = !goog.isDef(options.opacity) ? new ol.expr.Literal(ol.style.IconDefaults.opacity) : options.opacity instanceof ol.expr.Expression ? options.opacity : new ol.expr.Literal(options.opacity);
-  this.rotation_ = !goog.isDef(options.rotation) ? new ol.expr.Literal(ol.style.IconDefaults.rotation) : options.rotation instanceof ol.expr.Expression ? options.rotation : new ol.expr.Literal(options.rotation)
+  this.rotation_ = !goog.isDef(options.rotation) ? new ol.expr.Literal(ol.style.IconDefaults.rotation) : options.rotation instanceof ol.expr.Expression ? options.rotation : new ol.expr.Literal(options.rotation);
+  this.xOffset_ = !goog.isDef(options.xOffset) ? new ol.expr.Literal(ol.style.IconDefaults.xOffset) : options.xOffset instanceof ol.expr.Expression ? options.xOffset : new ol.expr.Literal(options.xOffset);
+  this.yOffset_ = !goog.isDef(options.yOffset) ? new ol.expr.Literal(ol.style.IconDefaults.yOffset) : options.yOffset instanceof ol.expr.Expression ? options.yOffset : new ol.expr.Literal(options.yOffset)
 };
 ol.style.Icon.prototype.createLiteral = function(featureOrType) {
   var feature, type;
@@ -27718,7 +27736,11 @@ ol.style.Icon.prototype.createLiteral = function(featureOrType) {
     goog.asserts.assert(!isNaN(opacity), "opacity must be a number");
     var rotation = Number(ol.expr.evaluateFeature(this.rotation_, feature));
     goog.asserts.assert(!isNaN(rotation), "rotation must be a number");
-    literal = new ol.style.IconLiteral({url:url, width:width, height:height, opacity:opacity, rotation:rotation})
+    var xOffset = Number(ol.expr.evaluateFeature(this.xOffset_, feature));
+    goog.asserts.assert(!isNaN(xOffset), "xOffset must be a number");
+    var yOffset = Number(ol.expr.evaluateFeature(this.yOffset_, feature));
+    goog.asserts.assert(!isNaN(yOffset), "yOffset must be a number");
+    literal = new ol.style.IconLiteral({url:url, width:width, height:height, opacity:opacity, rotation:rotation, xOffset:xOffset, yOffset:yOffset})
   }
   return literal
 };
@@ -27736,6 +27758,12 @@ ol.style.Icon.prototype.getUrl = function() {
 };
 ol.style.Icon.prototype.getWidth = function() {
   return this.width_
+};
+ol.style.Icon.prototype.getXOffset = function() {
+  return this.xOffset_
+};
+ol.style.Icon.prototype.getYOffset = function() {
+  return this.yOffset_
 };
 ol.style.Icon.prototype.setHeight = function(height) {
   goog.asserts.assertInstanceof(height, ol.expr.Expression);
@@ -27757,7 +27785,15 @@ ol.style.Icon.prototype.setWidth = function(width) {
   goog.asserts.assertInstanceof(width, ol.expr.Expression);
   this.width_ = width
 };
-ol.style.IconDefaults = {opacity:1, rotation:0};
+ol.style.Icon.prototype.setXOffset = function(xOffset) {
+  goog.asserts.assertInstanceof(xOffset, ol.expr.Expression);
+  this.xOffset_ = xOffset
+};
+ol.style.Icon.prototype.setYOffset = function(yOffset) {
+  goog.asserts.assertInstanceof(yOffset, ol.expr.Expression);
+  this.yOffset_ = yOffset
+};
+ol.style.IconDefaults = {opacity:1, rotation:0, xOffset:0, yOffset:0};
 goog.provide("ol.parser.KML");
 goog.require("goog.array");
 goog.require("goog.async.Deferred");
