@@ -4718,9 +4718,12 @@ goog.require("ol.Object");
 ol.CollectionEventType = {ADD:"add", REMOVE:"remove"};
 ol.CollectionEvent = function(type, opt_elem, opt_target) {
   goog.base(this, type, opt_target);
-  this.elem = opt_elem
+  this.elem_ = opt_elem
 };
 goog.inherits(ol.CollectionEvent, goog.events.Event);
+ol.CollectionEvent.prototype.getElement = function() {
+  return this.elem_
+};
 ol.CollectionProperty = {LENGTH:"length"};
 ol.Collection = function(opt_array) {
   goog.base(this);
@@ -15734,12 +15737,12 @@ ol.layer.LayerGroup.prototype.handleLayersChanged_ = function(event) {
   this.dispatchChangeEvent()
 };
 ol.layer.LayerGroup.prototype.handleLayersAdd_ = function(collectionEvent) {
-  var layer = (collectionEvent.elem);
+  var layer = (collectionEvent.getElement());
   this.listenerKeys_[goog.getUid(layer).toString()] = goog.events.listen(layer, goog.events.EventType.CHANGE, this.handleLayerChange, false, this);
   this.dispatchChangeEvent()
 };
 ol.layer.LayerGroup.prototype.handleLayersRemove_ = function(collectionEvent) {
-  var layer = (collectionEvent.elem);
+  var layer = (collectionEvent.getElement());
   var key = goog.getUid(layer).toString();
   goog.events.unlistenByKey(this.listenerKeys_[key]);
   delete this.listenerKeys_[key];
