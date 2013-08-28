@@ -19003,7 +19003,7 @@ ol.layer.FeatureCache.prototype.remove = function(feature) {
 ol.layer.VectorLayerEventType = {ADD:"add", REMOVE:"remove"};
 ol.layer.VectorLayerEventObject;
 ol.layer.Vector = function(options) {
-  goog.base(this, {opacity:options.opacity, source:options.source, visible:options.visible});
+  goog.base(this, (options));
   this.style_ = goog.isDef(options.style) ? options.style : null;
   this.featureCache_ = new ol.layer.FeatureCache;
   this.transformFeatureInfo_ = goog.isDef(options.transformFeatureInfo) ? options.transformFeatureInfo : ol.layer.Vector.uidTransformFeatureInfo;
