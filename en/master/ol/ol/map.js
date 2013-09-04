@@ -265,6 +265,12 @@ ol.Map = function(options) {
   this.interactions_ = optionsInternal.interactions;
 
   /**
+   * @type {ol.Collection}
+   * @private
+   */
+  this.overlays_ = optionsInternal.overlays;
+
+  /**
    * @type {ol.renderer.Map}
    * @private
    */
@@ -334,6 +340,14 @@ ol.Map = function(options) {
         control.setMap(this);
       }, this);
 
+  this.overlays_.forEach(
+      /**
+       * @param {ol.Overlay} overlay Overlay.
+       */
+      function(overlay) {
+        overlay.setMap(this);
+      }, this);
+
 };
 goog.inherits(ol.Map, ol.Object);
 
@@ -362,26 +376,26 @@ ol.Map.prototype.addLayer = function(layer) {
 
 
 /**
- * Add a prerender function. This can be used for attaching animations to
- * be performed before setting the map's center.
- * @param {ol.PreRenderFunction} preRenderFunction Pre-render function.
+ * Add the given overlay to the map.
+ * @param {ol.Overlay} overlay Overlay.
  */
-ol.Map.prototype.addPreRenderFunction = function(preRenderFunction) {
-  this.requestRenderFrame();
-  this.preRenderFunctions_.push(preRenderFunction);
+ol.Map.prototype.addOverlay = function(overlay) {
+  var overlays = this.getOverlays();
+  goog.asserts.assert(goog.isDef(overlays));
+  overlays.push(overlay);
+  overlay.setMap(this);
 };
 
 
 /**
- * Add prerender functions. This can be used for attaching animations to
- * be performed before setting the map's center.
- * @param {Array.<ol.PreRenderFunction>} preRenderFunctions
- *     Pre-render functions.
+ * Add functions to be called before rendering. This can be used for attaching
+ * animations before updating the map's view.  The {@link ol.animation}
+ * namespace provides several static methods for creating prerender functions.
+ * @param {...ol.PreRenderFunction} var_args Any number of pre-render functions.
  */
-ol.Map.prototype.addPreRenderFunctions = function(preRenderFunctions) {
+ol.Map.prototype.beforeRender = function(var_args) {
   this.requestRenderFrame();
-  Array.prototype.push.apply(
-      this.preRenderFunctions_, preRenderFunctions);
+  Array.prototype.push.apply(this.preRenderFunctions_, arguments);
 };
 
 
@@ -455,6 +469,14 @@ ol.Map.prototype.getCoordinateFromPixel = function(pixel) {
  */
 ol.Map.prototype.getControls = function() {
   return this.controls_;
+};
+
+
+/**
+ * @return {ol.Collection} Overlays.
+ */
+ol.Map.prototype.getOverlays = function() {
+  return this.overlays_;
 };
 
 
@@ -617,11 +639,6 @@ ol.Map.prototype.handleBrowserEvent = function(browserEvent, opt_type) {
   var type = opt_type || browserEvent.type;
   var mapBrowserEvent = new ol.MapBrowserEvent(type, this, browserEvent);
   this.handleMapBrowserEvent(mapBrowserEvent);
-  if (type == goog.events.EventType.MOUSEOUT) {
-    this.focus_ = null;
-  } else {
-    this.focus_ = mapBrowserEvent.getCoordinate();
-  }
 };
 
 
@@ -633,6 +650,11 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
     // With no view defined, we cannot translate pixels into geographical
     // coordinates so interactions cannot be used.
     return;
+  }
+  if (mapBrowserEvent.type == goog.events.EventType.MOUSEOUT) {
+    this.focus_ = null;
+  } else {
+    this.focus_ = mapBrowserEvent.getCoordinate();
   }
   mapBrowserEvent.frameState = this.frameState_;
   var interactions = this.getInteractions();
@@ -854,6 +876,23 @@ ol.Map.prototype.removeLayer = function(layer) {
 
 
 /**
+ * Remove the given overlay from the map.
+ * @param {ol.Overlay} overlay Overlay.
+ * @return {ol.Overlay|undefined} The removed overlay of undefined
+ *     if the overlay was not found.
+ */
+ol.Map.prototype.removeOverlay = function(overlay) {
+  var overlays = this.getOverlays();
+  goog.asserts.assert(goog.isDef(overlays));
+  if (goog.isDef(overlays.remove(overlay))) {
+    overlay.setMap(null);
+    return overlay;
+  }
+  return undefined;
+};
+
+
+/**
  * @param {number} time Time.
  * @private
  */
@@ -1041,6 +1080,7 @@ ol.Map.prototype.withFrozenRendering = function(f, opt_obj) {
 /**
  * @typedef {{controls: ol.Collection,
  *            interactions: ol.Collection,
+ *            overlays: ol.Collection,
  *            rendererConstructor:
  *                function(new: ol.renderer.Map, Element, ol.Map),
  *            values: Object.<string, *>}}
@@ -1122,9 +1162,22 @@ ol.Map.createOptionsInternal = function(options) {
   var interactions = goog.isDef(options.interactions) ?
       options.interactions : ol.interaction.defaults();
 
+  var overlays;
+  if (goog.isDef(options.overlays)) {
+    if (goog.isArray(options.overlays)) {
+      overlays = new ol.Collection(goog.array.clone(options.overlays));
+    } else {
+      goog.asserts.assertInstanceof(options.overlays, ol.Collection);
+      overlays = options.overlays;
+    }
+  } else {
+    overlays = new ol.Collection();
+  }
+
   return {
     controls: controls,
     interactions: interactions,
+    overlays: overlays,
     rendererConstructor: rendererConstructor,
     values: values
   };

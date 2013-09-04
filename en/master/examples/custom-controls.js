@@ -40,7 +40,6 @@ app.RotateNorthControl = function(opt_options) {
 
   ol.control.Control.call(this, {
     element: element,
-    map: options.map,
     target: options.target
   });
 

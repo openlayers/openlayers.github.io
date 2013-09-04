@@ -291,7 +291,7 @@ renders it to a DOM element with the id 'map'.</p></div>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 345</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 359</li></ul></dd>
 	
     
     
@@ -402,7 +402,7 @@ renders it to a DOM element with the id 'map'.</p></div>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 357</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 371</li></ul></dd>
 	
     
     
@@ -425,7 +425,7 @@ renders it to a DOM element with the id 'map'.</p></div>
         
             
 <dt>
-    <h4 class="name" id="addPreRenderFunction"><span class="type-signature"></span>addPreRenderFunction</h4>
+    <h4 class="name" id="addOverlay"><span class="type-signature"></span>addOverlay</h4>
     
     
 </dt>
@@ -433,8 +433,7 @@ renders it to a DOM element with the id 'map'.</p></div>
     
     
     <div class="description">
-        <p>Add a prerender function. This can be used for attaching animations to
-be performed before setting the map's center.</p>
+        <p>Add the given overlay to the map.</p>
     </div>
     
 
@@ -468,7 +467,120 @@ be performed before setting the map's center.</p>
 	
         <tr>
             
-                <td class="name"><code>preRenderFunction</code></td>
+                <td class="name"><code>overlay</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Overlay.html">ol.Overlay</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Overlay.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 382</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="beforeRender"><span class="type-signature"></span>beforeRender</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Add functions to be called before rendering. This can be used for attaching
+animations before updating the map's view.  The <a href="ol.animation.html">ol.animation</a>
+namespace provides several static methods for creating prerender functions.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>var_args</code></td>
             
             
             <td class="type">
@@ -484,7 +596,7 @@ be performed before setting the map's center.</p>
             
             
             
-            <td class="description last"><p>Pre-render function.</p></td>
+            <td class="description last"><p>Any number of pre-render functions.</p></td>
         </tr>
 	
 	
@@ -514,119 +626,7 @@ be performed before setting the map's center.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 369</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="addPreRenderFunctions"><span class="type-signature"></span>addPreRenderFunctions</h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Add prerender functions. This can be used for attaching animations to
-be performed before setting the map's center.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>preRenderFunctions</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;ol.PreRenderFunction></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Pre-render functions.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 381</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 396</li></ul></dd>
 	
     
     
@@ -1002,6 +1002,87 @@ be performed before setting the map's center.</p>
         
             
 <dt>
+    <h4 class="name" id="getControls"><span class="type-signature"></span>getControls</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 470</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Controls.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="getFeatureInfo"><span class="type-signature"></span>getFeatureInfo</h4>
     
     
@@ -1090,7 +1171,7 @@ be performed before setting the map's center.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 466</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 488</li></ul></dd>
 	
     
     
@@ -1201,7 +1282,7 @@ be performed before setting the map's center.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 479</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 501</li></ul></dd>
 	
     
     
@@ -1265,7 +1346,7 @@ Interactions are used for e.g. pan, zoom and rotate.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 492</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 514</li></ul></dd>
 	
     
     
@@ -1350,7 +1431,7 @@ Interactions are used for e.g. pan, zoom and rotate.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 501</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 523</li></ul></dd>
 	
     
     
@@ -1435,7 +1516,7 @@ Interactions are used for e.g. pan, zoom and rotate.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 515</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 537</li></ul></dd>
 	
     
     
@@ -1456,6 +1537,87 @@ Interactions are used for e.g. pan, zoom and rotate.</p>
             
 <div class="param-desc">
     <p>Layers.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getOverlays"><span class="type-signature"></span>getOverlays</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 478</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Overlays.</p>
 </div>
 
 
@@ -1520,7 +1682,7 @@ Interactions are used for e.g. pan, zoom and rotate.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 420</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 434</li></ul></dd>
 	
     
     
@@ -1605,7 +1767,7 @@ Interactions are used for e.g. pan, zoom and rotate.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 539</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 561</li></ul></dd>
 	
     
     
@@ -1693,7 +1855,7 @@ Interactions are used for e.g. pan, zoom and rotate.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 429</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 443</li></ul></dd>
 	
     
     
@@ -1782,7 +1944,7 @@ view manages properties such as center and resolution.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 553</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 575</li></ul></dd>
 	
     
     
@@ -2453,7 +2615,7 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 832</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 854</li></ul></dd>
 	
     
     
@@ -2590,7 +2752,7 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 849</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 871</li></ul></dd>
 	
     
     
@@ -2623,6 +2785,143 @@ that it is bound to.</p>
 	<dd>
 		
 <span class="param-type"><a href="ol.layer.LayerBase.html">ol.layer.LayerBase</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="removeOverlay"><span class="type-signature"></span>removeOverlay</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Remove the given overlay from the map.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>overlay</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Overlay.html">ol.Overlay</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Overlay.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 884</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The removed overlay of undefined
+    if the overlay was not found.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.Overlay.html">ol.Overlay</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -2866,7 +3165,7 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 949</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 988</li></ul></dd>
 	
     
     
@@ -2980,7 +3279,7 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 962</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 1001</li></ul></dd>
 	
     
     
@@ -3097,7 +3396,7 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 975</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 1014</li></ul></dd>
 	
     
     
@@ -3324,7 +3623,7 @@ that it is bound to.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 991</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 1030</li></ul></dd>
 	
     
     
@@ -3888,7 +4187,7 @@ third-party code changes the size of the map viewport.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>map.js, line 1015</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>map.js, line 1054</li></ul></dd>
 	
     
     
@@ -3924,7 +4223,7 @@ third-party code changes the size of the map viewport.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ol.Attribution.html">ol.Attribution</a></li><li><a href="ol.Collection.html">ol.Collection</a></li><li><a href="ol.DeviceOrientation.html">ol.DeviceOrientation</a></li><li><a href="ol.Feature.html">ol.Feature</a></li><li><a href="ol.Geolocation.html">ol.Geolocation</a></li><li><a href="ol.Map.html">ol.Map</a></li><li><a href="ol.MapEvent.html">ol.MapEvent</a></li><li><a href="ol.Object.html">ol.Object</a></li><li><a href="ol.Overlay.html">ol.Overlay</a></li><li><a href="ol.Projection.html">ol.Projection</a></li><li><a href="ol.View2D.html">ol.View2D</a></li><li><a href="ol.control.Attribution.html">ol.control.Attribution</a></li><li><a href="ol.control.Control.html">ol.control.Control</a></li><li><a href="ol.control.FullScreen.html">ol.control.FullScreen</a></li><li><a href="ol.control.Logo.html">ol.control.Logo</a></li><li><a href="ol.control.MousePosition.html">ol.control.MousePosition</a></li><li><a href="ol.control.ScaleLine.html">ol.control.ScaleLine</a></li><li><a href="ol.control.Zoom.html">ol.control.Zoom</a></li><li><a href="ol.control.ZoomSlider.html">ol.control.ZoomSlider</a></li><li><a href="ol.control.ZoomToExtent.html">ol.control.ZoomToExtent</a></li><li><a href="ol.dom.Input.html">ol.dom.Input</a></li><li><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></li><li><a href="ol.geom.LineString.html">ol.geom.LineString</a></li><li><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></li><li><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></li><li><a href="ol.geom.MultiPolygon.html">ol.geom.MultiPolygon</a></li><li><a href="ol.geom.Point.html">ol.geom.Point</a></li><li><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></li><li><a href="ol.geom.SharedVertices.html">ol.geom.SharedVertices</a></li><li><a href="ol.geom2.LineStringCollection.html">ol.geom2.LineStringCollection</a></li><li><a href="ol.geom2.PointCollection.html">ol.geom2.PointCollection</a></li><li><a href="ol.interaction.DragRotateAndZoom.html">ol.interaction.DragRotateAndZoom</a></li><li><a href="ol.layer.ImageLayer.html">ol.layer.ImageLayer</a></li><li><a href="ol.layer.Layer.html">ol.layer.Layer</a></li><li><a href="ol.layer.LayerGroup.html">ol.layer.LayerGroup</a></li><li><a href="ol.layer.TileLayer.html">ol.layer.TileLayer</a></li><li><a href="ol.layer.Vector.html">ol.layer.Vector</a></li><li><a href="ol.layer.VectorLayer2.html">ol.layer.VectorLayer2</a></li><li><a href="ol.parser.GPX.html">ol.parser.GPX</a></li><li><a href="ol.parser.GeoJSON.html">ol.parser.GeoJSON</a></li><li><a href="ol.parser.KML.html">ol.parser.KML</a></li><li><a href="ol.parser.TopoJSON.html">ol.parser.TopoJSON</a></li><li><a href="ol.parser.WKT.html">ol.parser.WKT</a></li><li><a href="ol.parser.ogc.GML_v2.html">ol.parser.ogc.GML_v2</a></li><li><a href="ol.parser.ogc.GML_v3.html">ol.parser.ogc.GML_v3</a></li><li><a href="ol.parser.ogc.WMSCapabilities.html">ol.parser.ogc.WMSCapabilities</a></li><li><a href="ol.parser.ogc.WMTSCapabilities.html">ol.parser.ogc.WMTSCapabilities</a></li><li><a href="ol.source.BingMaps.html">ol.source.BingMaps</a></li><li><a href="ol.source.DebugTileSource.html">ol.source.DebugTileSource</a></li><li><a href="ol.source.MapQuestOSM.html">ol.source.MapQuestOSM</a></li><li><a href="ol.source.MapQuestOpenAerial.html">ol.source.MapQuestOpenAerial</a></li><li><a href="ol.source.OSM.html">ol.source.OSM</a></li><li><a href="ol.source.SingleImageWMS.html">ol.source.SingleImageWMS</a></li><li><a href="ol.source.Stamen.html">ol.source.Stamen</a></li><li><a href="ol.source.StaticImage.html">ol.source.StaticImage</a></li><li><a href="ol.source.TileJSON.html">ol.source.TileJSON</a></li><li><a href="ol.source.TileSource.html">ol.source.TileSource</a></li><li><a href="ol.source.TiledWMS.html">ol.source.TiledWMS</a></li><li><a href="ol.source.Vector.html">ol.source.Vector</a></li><li><a href="ol.source.VectorSource2.html">ol.source.VectorSource2</a></li><li><a href="ol.source.WMTS.html">ol.source.WMTS</a></li><li><a href="ol.structs.Buffer.html">ol.structs.Buffer</a></li><li><a href="ol.style.Fill.html">ol.style.Fill</a></li><li><a href="ol.style.Icon.html">ol.style.Icon</a></li><li><a href="ol.style.Rule.html">ol.style.Rule</a></li><li><a href="ol.style.Shape.html">ol.style.Shape</a></li><li><a href="ol.style.Stroke.html">ol.style.Stroke</a></li><li><a href="ol.style.Style.html">ol.style.Style</a></li><li><a href="ol.style.Text.html">ol.style.Text</a></li><li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li><li><a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a></li><li><a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a></li></ul><h3>Namespaces</h3><ul><li><a href="ol.html">ol</a></li><li><a href="ol.animation.html">ol.animation</a></li><li><a href="ol.control.html">ol.control</a></li><li><a href="ol.expr.html">ol.expr</a></li><li><a href="ol.geom.html">ol.geom</a></li><li><a href="ol.layer.html">ol.layer</a></li><li><a href="ol.parser.html">ol.parser</a></li><li><a href="ol.proj.html">ol.proj</a></li><li><a href="ol.source.html">ol.source</a></li><li><a href="ol.style.html">ol.style</a></li><li><a href="ol.tilegrid.html">ol.tilegrid</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ol3.html">OpenLayers 3 Architecture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Meters per unit lookup table.">Meters per unit lookup table.</a></li><li><a href="global.html#grid">grid</a></li><li>{boolean}</li><li>{number}</li><li>{string}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="ol.Attribution.html">ol.Attribution</a></li><li><a href="ol.Collection.html">ol.Collection</a></li><li><a href="ol.DeviceOrientation.html">ol.DeviceOrientation</a></li><li><a href="ol.Feature.html">ol.Feature</a></li><li><a href="ol.Geolocation.html">ol.Geolocation</a></li><li><a href="ol.Map.html">ol.Map</a></li><li><a href="ol.Object.html">ol.Object</a></li><li><a href="ol.Overlay.html">ol.Overlay</a></li><li><a href="ol.Projection.html">ol.Projection</a></li><li><a href="ol.View2D.html">ol.View2D</a></li><li><a href="ol.control.Attribution.html">ol.control.Attribution</a></li><li><a href="ol.control.Control.html">ol.control.Control</a></li><li><a href="ol.control.FullScreen.html">ol.control.FullScreen</a></li><li><a href="ol.control.Logo.html">ol.control.Logo</a></li><li><a href="ol.control.MousePosition.html">ol.control.MousePosition</a></li><li><a href="ol.control.ScaleLine.html">ol.control.ScaleLine</a></li><li><a href="ol.control.Zoom.html">ol.control.Zoom</a></li><li><a href="ol.control.ZoomSlider.html">ol.control.ZoomSlider</a></li><li><a href="ol.control.ZoomToExtent.html">ol.control.ZoomToExtent</a></li><li><a href="ol.dom.Input.html">ol.dom.Input</a></li><li><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></li><li><a href="ol.geom.LineString.html">ol.geom.LineString</a></li><li><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></li><li><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></li><li><a href="ol.geom.MultiPolygon.html">ol.geom.MultiPolygon</a></li><li><a href="ol.geom.Point.html">ol.geom.Point</a></li><li><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></li><li><a href="ol.geom.SharedVertices.html">ol.geom.SharedVertices</a></li><li><a href="ol.geom2.LineStringCollection.html">ol.geom2.LineStringCollection</a></li><li><a href="ol.geom2.PointCollection.html">ol.geom2.PointCollection</a></li><li><a href="ol.interaction.DragRotateAndZoom.html">ol.interaction.DragRotateAndZoom</a></li><li><a href="ol.interaction.Select.html">ol.interaction.Select</a></li><li><a href="ol.layer.ImageLayer.html">ol.layer.ImageLayer</a></li><li><a href="ol.layer.Layer.html">ol.layer.Layer</a></li><li><a href="ol.layer.LayerGroup.html">ol.layer.LayerGroup</a></li><li><a href="ol.layer.TileLayer.html">ol.layer.TileLayer</a></li><li><a href="ol.layer.Vector.html">ol.layer.Vector</a></li><li><a href="ol.layer.VectorLayer2.html">ol.layer.VectorLayer2</a></li><li><a href="ol.parser.GPX.html">ol.parser.GPX</a></li><li><a href="ol.parser.GeoJSON.html">ol.parser.GeoJSON</a></li><li><a href="ol.parser.KML.html">ol.parser.KML</a></li><li><a href="ol.parser.TopoJSON.html">ol.parser.TopoJSON</a></li><li><a href="ol.parser.WKT.html">ol.parser.WKT</a></li><li><a href="ol.parser.ogc.GML_v2.html">ol.parser.ogc.GML_v2</a></li><li><a href="ol.parser.ogc.GML_v3.html">ol.parser.ogc.GML_v3</a></li><li><a href="ol.parser.ogc.WMSCapabilities.html">ol.parser.ogc.WMSCapabilities</a></li><li><a href="ol.parser.ogc.WMTSCapabilities.html">ol.parser.ogc.WMTSCapabilities</a></li><li><a href="ol.source.BingMaps.html">ol.source.BingMaps</a></li><li><a href="ol.source.DebugTileSource.html">ol.source.DebugTileSource</a></li><li><a href="ol.source.MapQuestOSM.html">ol.source.MapQuestOSM</a></li><li><a href="ol.source.MapQuestOpenAerial.html">ol.source.MapQuestOpenAerial</a></li><li><a href="ol.source.OSM.html">ol.source.OSM</a></li><li><a href="ol.source.SingleImageWMS.html">ol.source.SingleImageWMS</a></li><li><a href="ol.source.Stamen.html">ol.source.Stamen</a></li><li><a href="ol.source.StaticImage.html">ol.source.StaticImage</a></li><li><a href="ol.source.TileJSON.html">ol.source.TileJSON</a></li><li><a href="ol.source.TileSource.html">ol.source.TileSource</a></li><li><a href="ol.source.TiledWMS.html">ol.source.TiledWMS</a></li><li><a href="ol.source.Vector.html">ol.source.Vector</a></li><li><a href="ol.source.VectorSource2.html">ol.source.VectorSource2</a></li><li><a href="ol.source.WMTS.html">ol.source.WMTS</a></li><li><a href="ol.style.Fill.html">ol.style.Fill</a></li><li><a href="ol.style.Icon.html">ol.style.Icon</a></li><li><a href="ol.style.Rule.html">ol.style.Rule</a></li><li><a href="ol.style.Shape.html">ol.style.Shape</a></li><li><a href="ol.style.Stroke.html">ol.style.Stroke</a></li><li><a href="ol.style.Style.html">ol.style.Style</a></li><li><a href="ol.style.Text.html">ol.style.Text</a></li><li><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></li><li><a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a></li><li><a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a></li></ul><h3>Namespaces</h3><ul><li><a href="ol.html">ol</a></li><li><a href="ol.animation.html">ol.animation</a></li><li><a href="ol.control.html">ol.control</a></li><li><a href="ol.expr.html">ol.expr</a></li><li><a href="ol.geom.html">ol.geom</a></li><li><a href="ol.layer.html">ol.layer</a></li><li><a href="ol.parser.html">ol.parser</a></li><li><a href="ol.proj.html">ol.proj</a></li><li><a href="ol.source.html">ol.source</a></li><li><a href="ol.style.html">ol.style</a></li><li><a href="ol.tilegrid.html">ol.tilegrid</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ol3.html">OpenLayers 3 Architecture</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Meters per unit lookup table.">Meters per unit lookup table.</a></li><li><a href="global.html#grid">grid</a></li><li>{boolean}</li><li>{number}</li><li>{string}</li></ul>
 </nav>
 
 <br clear="both">
