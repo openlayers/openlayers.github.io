@@ -438,10 +438,11 @@ ol.Map.prototype.getRenderer = function() {
 
 /**
  * Get the element in which this map is rendered.
- * @return {Element|undefined} Target.
+ * @return {Element|string|undefined} Target.
  */
 ol.Map.prototype.getTarget = function() {
-  return /** @type {Element|undefined} */ (this.get(ol.MapProperty.TARGET));
+  return /** @type {Element|string|undefined} */ (
+      this.get(ol.MapProperty.TARGET));
 };
 goog.exportProperty(
     ol.Map.prototype,
@@ -651,7 +652,8 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
     // coordinates so interactions cannot be used.
     return;
   }
-  if (mapBrowserEvent.type == goog.events.EventType.MOUSEOUT) {
+  if (mapBrowserEvent.type == goog.events.EventType.MOUSEOUT ||
+      mapBrowserEvent.type == goog.events.EventType.TOUCHEND) {
     this.focus_ = null;
   } else {
     this.focus_ = mapBrowserEvent.getCoordinate();
@@ -730,15 +732,23 @@ ol.Map.prototype.handleSizeChanged_ = function() {
  * @private
  */
 ol.Map.prototype.handleTargetChanged_ = function() {
-  // target may be undefined, null or an Element. If it's not
-  // an Element we remove the viewport from the DOM. If it's
-  // an Element we append the viewport element to it.
+  // target may be undefined, null, a string or an Element.
+  // If it's a string we convert it to an Element before proceeding.
+  // If it's not now an Element we remove the viewport from the DOM.
+  // If it's an Element we append the viewport element to it.
+
   var target = this.getTarget();
-  if (!goog.dom.isElement(target)) {
+
+  /**
+   * @type {Element}
+   */
+  var targetElement = goog.isDef(target) ?
+      goog.dom.getElement(target) : null;
+
+  if (goog.isNull(targetElement)) {
     goog.dom.removeNode(this.viewport_);
   } else {
-    goog.asserts.assert(goog.isDefAndNotNull(target));
-    goog.dom.appendChild(target, this.viewport_);
+    goog.dom.appendChild(targetElement, this.viewport_);
   }
   this.updateSize();
   // updateSize calls setSize, so no need to call this.render
@@ -1012,9 +1022,6 @@ goog.exportProperty(
  * @param {Element|string|undefined} target Target.
  */
 ol.Map.prototype.setTarget = function(target) {
-  if (goog.isDef(target)) {
-    target = goog.dom.getElement(target);
-  }
   this.set(ol.MapProperty.TARGET, target);
 };
 goog.exportProperty(
@@ -1053,11 +1060,18 @@ ol.Map.prototype.unfreezeRendering = function() {
  */
 ol.Map.prototype.updateSize = function() {
   var target = this.getTarget();
-  if (goog.isDef(target)) {
-    var size = goog.style.getSize(target);
-    this.setSize([size.width, size.height]);
-  } else {
+
+  /**
+   * @type {Element}
+   */
+  var targetElement = goog.isDef(target) ?
+      goog.dom.getElement(target) : null;
+
+  if (goog.isNull(targetElement)) {
     this.setSize(undefined);
+  } else {
+    var size = goog.style.getSize(targetElement);
+    this.setSize([size.width, size.height]);
   }
 };
 
