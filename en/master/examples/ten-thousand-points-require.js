@@ -9,3 +9,4 @@ goog.require('ol.layer.TileLayer');
 goog.require('ol.layer.VectorLayer2');
 goog.require('ol.source.OSM');
 goog.require('ol.source.VectorSource2');
+goog.require('ol.webgl.SUPPORTED');

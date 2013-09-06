@@ -12,18 +12,24 @@ var domMap = new ol.Map({
   })
 });
 
-
-var webglMap = new ol.Map({
-  renderer: ol.RendererHint.WEBGL,
-  target: 'webglMap'
-});
-webglMap.bindTo('layers', domMap);
-webglMap.bindTo('view', domMap);
-
+if (ol.webgl.SUPPORTED) {
+  var webglMap = new ol.Map({
+    renderer: ol.RendererHint.WEBGL,
+    target: 'webglMap'
+  });
+  webglMap.bindTo('layergroup', domMap);
+  webglMap.bindTo('view', domMap);
+} else {
+  var info = document.getElementById('no-webgl');
+  /**
+   * display error message
+   */
+  info.style.display = '';
+}
 
 var canvasMap = new ol.Map({
   renderer: ol.RendererHint.CANVAS,
   target: 'canvasMap'
 });
-canvasMap.bindTo('layers', domMap);
+canvasMap.bindTo('layergroup', domMap);
 canvasMap.bindTo('view', domMap);
