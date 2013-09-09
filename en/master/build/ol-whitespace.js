@@ -5547,6 +5547,11 @@ ol.DeviceOrientation.prototype.orientationChange_ = function(browserEvent) {
     this.set(ol.DeviceOrientationProperty.ALPHA, alpha);
     if(goog.isBoolean(event.absolute) && event.absolute) {
       this.set(ol.DeviceOrientationProperty.HEADING, alpha)
+    }else {
+      if(goog.isDefAndNotNull(event.webkitCompassHeading) && goog.isDefAndNotNull(event.webkitCompassAccuracy) && event.webkitCompassAccuracy != -1) {
+        var heading = goog.math.toRadians(event.webkitCompassHeading);
+        this.set(ol.DeviceOrientationProperty.HEADING, heading)
+      }
     }
   }
   if(goog.isDefAndNotNull(event.beta)) {
