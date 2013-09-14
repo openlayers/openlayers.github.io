@@ -7,7 +7,7 @@ head:
 ---
 
 <div id='map'></div>
-<div class='container'>
+<div id='overmap' class='container'>
   <blockquote id='tagline' class='pull-right plain'>
     <p>A high-performance, feature-packed library for all your mapping needs.</p>
   </blockquote>
@@ -97,6 +97,7 @@ head:
   </div>
 </div>
 <script src='en/{{ current }}/build/ol.js'></script>
+<script src='http://codeorigin.jquery.com/jquery-1.10.2.min.js' type='text/javascript'></script>
 <script>
   var map = new ol.Map({
     target: 'map',
@@ -106,7 +107,7 @@ head:
       zoom: 2
     }),
     layers: [
-      new ol.layer.TileLayer({
+      new ol.layer.Tile({
         source: new ol.source.Stamen({
           layer: 'watercolor'
         })
@@ -114,4 +115,12 @@ head:
     ],
     controls: []
   });
+
+  $('body').one('click', '#map', function(e) {
+      $(this).animate({
+          height: '+=400'
+        }, 200, function() { map.updateSize(); });
+      e.stopPropagation();
+    });
+
 </script>
