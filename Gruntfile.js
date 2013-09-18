@@ -13,7 +13,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     checkout: {
       options: {
-        repo: 'git://github.com/openlayers/ol3.git',
+        repo: 'https://github.com/openlayers/ol3.git',
         dir: repo
       }
     },
