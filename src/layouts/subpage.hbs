@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OpenLayers 3 - {{ title }}</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+  <link href='{{ assets }}/theme/offcanvas.css' rel='stylesheet' type='text/css'>
+  <link href='{{ assets }}/theme/site.css' rel='stylesheet' type='text/css'>
+  <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+  {{#each head}}
+  {{{ this }}}
+  {{/each}}
+</head>
+<body>  <!-- This template has a side menu -->
+
+  <div class='navbar navbar-fixed-top'>
+    <div class='container'>
+      <a href='/' class='navbar-brand'><img src='{{ assets }}/theme/img/logo.png'>&nbsp;OpenLayers 3</a>
+      <!-- button that shows up below 768px width -->
+      <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+      </button>
+      <!-- menu items that get hidden below 768px width -->
+      <div class='nav-collapse collapse navbar-responsive-collapse'>
+        <ul class='nav navbar-nav pull-right'>
+          <li><a href='en/{{ current }}/apidoc'>Docs</a></li><!-- TODO: link to doc root instead of API docs -->
+          <li><a href='en/{{ current }}/examples'>Examples</a></li>
+          <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container subpage-main">
+
+    <!-- Row including Side Menu -->
+    <div class="row row-offcanvas row-offcanvas-left">
+      {{> body }}
+
+      <!-- Side Menu -->
+      <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <div class="well sidebar-nav">
+          <ul class="nav">
+            <li>Quick Start</li>
+            <li class="active"><a href="quick_start.html#firstmap">Creating Your First Map</a></li>
+            <li><a href="quick_start.html#overlaywms">Adding an Overlay WMS</a></li>
+            <li><a href="quick_start.html#addmarker">Adding Vector Markers</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- END Row including Side Menu -->
+  </div>
+
+  <footer>
+    Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>.
+  </footer>
+  <script src='{{ assets }}/js/main.js'></script>
+  <script>
+  $(document).ready(function() {
+    $('[data-toggle=offcanvas]').click(function() {
+      $('.row-offcanvas').toggleClass('active');
+    });
+  });
+  </script>
+</body>
+</html>
+
+
+

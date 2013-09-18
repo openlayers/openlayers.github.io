@@ -7,9 +7,13 @@ head:
 ---
 
 <div id='map'></div>
-<div id='overmap' class='container'>
+<div id='attribution'>
+  <p type="link">Attribution <i class="icon-angle-right"></i></p>
+  <p class="tile-info">Map tiles by <a target="_top" href="http://stamen.com">Stamen Design</a>, under <a target="_top" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>.</p>
+</div>
+<div class='container'>
   <blockquote id='tagline' class='pull-right plain'>
-    <p>A high-performance, feature-packed library for all your mapping needs.</p>
+    <p>A high-performance, feature-packed JS library for all your mapping needs.</p>
   </blockquote>
   <div class='row'>
     <div id='news' class='col-12'>
@@ -17,6 +21,65 @@ head:
       <p>We're hard at work toward a final release of 3.0.0 (shooting for early September).  In the meantime, we're churning out regular alhpa releases to mark our progress.  OpenLayers <a href='https://github.com/openlayers/ol3/releases/tag/r3.0.0-alpha.4'>r3.0.0-alpha4</a> is the lastest.  Read more about it on <a href='http://openlayers.org/blog/2013/07/29/openlayers-r3-0-0-alpha-4/'>the blog</a>.</p>
     </div>
   </div>
+</div>
+<div class='container'>
+    <div class='row'>
+      <h1 class='topic col-12'>Learn More</h1>
+    </div>
+    <div class='row'>
+      <div class='col-sm-6'>
+        <a href='quick_start.html' class='big-link'>
+          <h3><i class='icon-ok'></i> Quick Start</h3>
+          <p>Seen enough already?  Go here to get started.</p>
+        </a>
+      </div>
+      <div class='col-sm-6'>
+        <a href='https://github.com/openlayers/ol3/releases' class='big-link'>
+          <h3><i class='icon-download'></i> Download</h3>
+          <p>Get the latest release or dig through the archives.</p>
+        </a>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-sm-6'>
+        <a href='tutorials.html' class='big-link'>
+          <h3><i class='icon-book'></i> Tutorials</h3>
+          <p>Spend time learning the basics and graduate up to advanced mapping techniques.</p>
+        </a>
+      </div>
+      <div class='col-sm-6'>
+        <a href='en/{{ current }}/apidoc' class='big-link'>
+          <h3><i class='icon-sitemap'></i> API Docs</h3>
+          <p>Browse through the API docs for details on code usage.</p>
+        </a>
+      </div>
+    </div>
+</div>
+<section class="grayBack">
+  <div class='container'>
+    <div class='row'>
+      <h1 class='topic col-12'>Get Involved</h1>
+    </div>
+    <div class='row'>
+      <div class='col-sm-4'>
+        <a href='https://github.com/openlayers/ol3' class='big-link'>
+          <h3><i class="icon-code-fork"></i> Fork the repo</h3>
+        </a>
+      </div>
+      <div class='col-sm-4'>
+        <a href='https://github.com/openlayers/ol3/issues' class='big-link'>
+          <h3><i class="icon-bug"></i> Open a ticket</h3>
+        </a>
+      </div>
+      <div class='col-sm-4'>
+        <a href='https://groups.google.com/d/forum/ol3-dev' class='big-link'>
+          <h3><i class="icon-envelope"></i> Join the discussion</h3>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class='container'>
   <div class='row'>
     <h1 class='topic col-12'>Features</h1>
   </div>
@@ -44,56 +107,6 @@ head:
       <p>Map rendering leverages WebGL, Canvas 2D, and all the latest greatness from HTML5.  Style your map controls with straight-forward CSS.</p>
     </div>
   </div>
-  <div class='row'>
-    <h1 class='topic col-12'>Learn More</h1>
-  </div>
-  <div class='row'>
-    <div class='col-sm-6'>
-      <a href='#' class='big-link'>
-        <h3><i class='icon-ok'></i> Quick Start</h3>
-        <p>Seen enough already?  Go here to get started.</p>
-      </a>
-    </div>
-    <div class='col-sm-6'>
-      <a href='https://github.com/openlayers/ol3/releases' class='big-link'>
-        <h3><i class='icon-download'></i> Download</h3>
-        <p>Get the latest release or dig through the archives.</p>
-      </a>
-    </div>
-  </div>
-  <div class='row'>
-    <div class='col-sm-6'>
-      <a href='#' class='big-link'>
-        <h3><i class='icon-book'></i> Tutorials</h3>
-        <p>Spend time learning the basics and graduate up to advanced mapping techniques.</p>
-      </a>
-    </div>
-    <div class='col-sm-6'>
-      <a href='en/{{ current }}/apidoc' class='big-link'>
-        <h3><i class='icon-sitemap'></i> API Docs</h3>
-        <p>Browse through the API docs for details on code usage.</p>
-      </a>
-    </div>
-  </div>
-  <div class='row'>
-    <h1 class='topic col-12'>Get Involved</h1>
-  </div>
-  <div class='row'>
-    <div class='col-sm-4'>
-      <a href='https://github.com/openlayers/ol3' class='big-link'>
-        <h3><i class="icon-code-fork"></i> Fork the repo</h3>
-      </a>
-    </div>
-    <div class='col-sm-4'>
-      <a href='https://github.com/openlayers/ol3/issues' class='big-link'>
-        <h3><i class="icon-bug"></i> Open a ticket</h3>
-      </a>
-    </div>
-    <div class='col-sm-4'>
-      <a href='https://groups.google.com/d/forum/ol3-dev' class='big-link'>
-        <h3><i class="icon-envelope"></i> Join the discussion</h3>
-      </a>
-    </div>
   </div>
 </div>
 <script src='en/{{ current }}/build/ol.js'></script>
@@ -116,11 +129,15 @@ head:
     controls: []
   });
 
-  $('body').one('click', '#map', function(e) {
+  $('#map').one('click', function(e) {
       $(this).animate({
-          height: '+=400'
-        }, 200, function() { map.updateSize(); });
+          height: '+=280'
+        }, 50, function() { map.updateSize(); });
       e.stopPropagation();
     });
 
+  $('#attribution').one('click', function (e) {
+      $(this).children().toggle();
+     e.stopPropagation();
+  })
 </script>

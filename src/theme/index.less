@@ -1,10 +1,30 @@
+.rounded-corners (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
 #map {
   position: relative;
   height: 120px;
 }
+#attribution {
+  .rounded-corners(0);
+  display: inline-block;
+  font-size: .8em;
+  margin: 5px 5px 0 5px;
+  color: #999;
+
+  .tile-info {
+    display: none;
+  }
+}
 #tagline {
   padding-left: 25%;
   margin-bottom: 10px;
+  margin-top: -4%;
 }
 #tagline p {
   font-size: 200%;
@@ -26,3 +46,28 @@ img.thumb {
   float: right;
   margin-left: 10px;
 }
+
+.grayBack {
+  background-color: #f3f3f3;
+  margin: 20px 0 10px;
+  padding: 10px 0 30px;
+  h1 {
+    color: darken(#ccc, 15%);
+
+    &.topic {
+      margin-bottom: 10px !important;
+    }
+  }
+
+  a.big-link {
+  border: 0 !important;
+  outline: 0;
+  }
+  a.big-link{
+    &:hover, &:focus {
+      border-color: transparent !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
