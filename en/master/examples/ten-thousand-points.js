@@ -42,11 +42,11 @@ if (!ol.webgl.SUPPORTED) {
       })
     ]),
     layers: [
-      new ol.layer.TileLayer({
+      new ol.layer.Tile({
         source: new ol.source.OSM()
       }),
-      new ol.layer.VectorLayer2({
-        source: new ol.source.VectorSource2({
+      new ol.layer.Vector2({
+        source: new ol.source.Vector2({
           lineStringCollections: [lineStringCollection],
           projection: 'EPSG:3857',
           pointCollections: [pointCollection]

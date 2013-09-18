@@ -1,6 +1,6 @@
 var domMap = new ol.Map({
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.MapQuestOpenAerial()
     })
   ],

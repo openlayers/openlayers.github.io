@@ -1,4 +1,4 @@
-var layer = new ol.layer.TileLayer({
+var layer = new ol.layer.Tile({
   source: new ol.source.MapQuestOpenAerial()
 });
 

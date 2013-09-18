@@ -1,12 +1,12 @@
 var layers = [
-  new ol.layer.TileLayer({
+  new ol.layer.Tile({
     source: new ol.source.MapQuestOpenAerial()
   }),
-  new ol.layer.TileLayer({
-    source: new ol.source.TiledWMS({
+  new ol.layer.Tile({
+    source: new ol.source.TileWMS({
       url: 'http://demo.opengeo.org/geoserver/wms',
       params: {'LAYERS': 'topp:states', 'TILED': true},
-      extent: [-13884991, -7455066, 2870341, 6338219]
+      extent: [-13884991, 2870341, -7455066, 6338219]
     })
   })
 ];

@@ -1,10 +1,10 @@
 var map = new ol.Map({
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.OSM()
     }),
-    new ol.layer.TileLayer({
-      source: new ol.source.DebugTileSource({
+    new ol.layer.Tile({
+      source: new ol.source.TileDebug({
         projection: 'EPSG:3857',
         tileGrid: new ol.tilegrid.XYZ({
           maxZoom: 22

@@ -1,12 +1,12 @@
 var projection = ol.proj.configureProj4jsProjection({
   code: 'EPSG:21781',
-  extent: [485869.5728, 837076.5648, 76443.1884, 299941.7864]
+  extent: [485869.5728, 76443.1884, 837076.5648, 299941.7864]
 });
 
-var extent = [420000, 900000, 30000, 350000];
+var extent = [420000, 30000, 900000, 350000];
 var layers = [
-  new ol.layer.TileLayer({
-    source: new ol.source.TiledWMS({
+  new ol.layer.Tile({
+    source: new ol.source.TileWMS({
       url: 'http://wms.geo.admin.ch/',
       crossOrigin: 'anonymous',
       attributions: [new ol.Attribution({
@@ -22,8 +22,8 @@ var layers = [
       extent: extent
     })
   }),
-  new ol.layer.TileLayer({
-    source: new ol.source.TiledWMS({
+  new ol.layer.Tile({
+    source: new ol.source.TileWMS({
       url: 'http://wms.geo.admin.ch/',
       crossOrigin: 'anonymous',
       attributions: [new ol.Attribution({

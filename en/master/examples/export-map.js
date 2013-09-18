@@ -1,6 +1,6 @@
 var map = new ol.Map({
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.OSM()
     })
   ],
@@ -13,11 +13,20 @@ var map = new ol.Map({
 });
 
 var exportJPEGElement = document.getElementById('export-jpeg');
-exportJPEGElement.addEventListener('click', function(e) {
-  e.target.href = map.getRenderer().getCanvas().toDataURL('image/jpeg');
-}, false);
-
 var exportPNGElement = document.getElementById('export-png');
-exportPNGElement.addEventListener('click', function(e) {
-  e.target.href = map.getRenderer().getCanvas().toDataURL('image/png');
-}, false);
+
+if ('download' in exportJPEGElement && 'download' in exportPNGElement) {
+  exportJPEGElement.addEventListener('click', function(e) {
+    e.target.href = map.getRenderer().getCanvas().toDataURL('image/jpeg');
+  }, false);
+
+  exportPNGElement.addEventListener('click', function(e) {
+    e.target.href = map.getRenderer().getCanvas().toDataURL('image/png');
+  }, false);
+} else {
+  var info = document.getElementById('no-download');
+  /**
+   * display error message
+   */
+  info.style.display = '';
+}

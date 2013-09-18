@@ -3,7 +3,7 @@ var map = new ol.Map({
     new ol.interaction.DragRotateAndZoom()
   ]),
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.MapQuestOpenAerial()
     })
   ],

@@ -1,5 +1,5 @@
-var wms = new ol.layer.TileLayer({
-  source: new ol.source.TiledWMS({
+var wms = new ol.layer.Tile({
+  source: new ol.source.TileWMS({
     url: 'http://demo.opengeo.org/geoserver/wms',
     params: {'LAYERS': 'ne:ne'}
   })

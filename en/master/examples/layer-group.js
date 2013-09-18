@@ -1,17 +1,17 @@
 var map = new ol.Map({
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.MapQuestOpenAerial()
-    }), new ol.layer.LayerGroup({
+    }), new ol.layer.Group({
       layers: [
-        new ol.layer.TileLayer({
+        new ol.layer.Tile({
           source: new ol.source.TileJSON({
             url: 'http://api.tiles.mapbox.com/v3/' +
                 'mapbox.20110804-hoa-foodinsecurity-3month.jsonp',
             crossOrigin: 'anonymous'
           })
         }),
-        new ol.layer.TileLayer({
+        new ol.layer.Tile({
           source: new ol.source.TileJSON({
             url: 'http://api.tiles.mapbox.com/v3/' +
                 'mapbox.world-borders-light.jsonp',
@@ -41,7 +41,7 @@ function bindInputs(layerid, layer) {
 }
 map.getLayers().forEach(function(layer, i) {
   bindInputs('#layer' + i, layer);
-  if (layer instanceof ol.layer.LayerGroup) {
+  if (layer instanceof ol.layer.Group) {
     layer.getLayers().forEach(function(sublayer, j) {
       bindInputs('#layer' + i + j, sublayer);
     });

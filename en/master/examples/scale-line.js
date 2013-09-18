@@ -5,7 +5,7 @@ var map = new ol.Map({
     scaleLineControl
   ]),
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.OSM()
     })
   ],

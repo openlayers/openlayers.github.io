@@ -19,11 +19,11 @@ xhr.onload = function() {
     capabilities = parser.read(xhr.responseXML);
     map = new ol.Map({
       layers: [
-        new ol.layer.TileLayer({
+        new ol.layer.Tile({
           source: new ol.source.WMTS(ol.source.WMTS.optionsFromCapabilities(
               capabilities, 'fmzk'))
         }),
-        new ol.layer.TileLayer({
+        new ol.layer.Tile({
           source: new ol.source.WMTS(ol.source.WMTS.optionsFromCapabilities(
               capabilities, 'beschriftung'))
         })

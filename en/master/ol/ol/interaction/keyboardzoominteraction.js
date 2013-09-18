@@ -4,7 +4,6 @@ goog.provide('ol.interaction.KeyboardZoom');
 
 goog.require('goog.asserts');
 goog.require('goog.events.KeyHandler.EventType');
-goog.require('goog.functions');
 goog.require('ol.interaction.ConditionType');
 goog.require('ol.interaction.Interaction');
 goog.require('ol.interaction.condition');
@@ -33,8 +32,7 @@ ol.interaction.KeyboardZoom = function(opt_options) {
    * @type {ol.interaction.ConditionType}
    */
   this.condition_ = goog.isDef(options.condition) ? options.condition :
-      goog.functions.and(ol.interaction.condition.noModifierKeys,
-          ol.interaction.condition.targetNotEditable);
+          ol.interaction.condition.targetNotEditable;
 
   /**
    * @private
@@ -56,7 +54,7 @@ ol.interaction.KeyboardZoom.prototype.handleMapBrowserEvent =
     var keyEvent = /** @type {goog.events.KeyEvent} */
         (mapBrowserEvent.browserEvent);
     var charCode = keyEvent.charCode;
-    if (this.condition_(keyEvent) &&
+    if (this.condition_(mapBrowserEvent) &&
         (charCode == '+'.charCodeAt(0) || charCode == '-'.charCodeAt(0))) {
       var map = mapBrowserEvent.map;
       var delta = (charCode == '+'.charCodeAt(0)) ? this.delta_ : -this.delta_;

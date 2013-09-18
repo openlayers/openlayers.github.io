@@ -61,13 +61,14 @@ xhr.onload = function() {
       sourceOptions.attributions = [attribution];
       sourceOptions.logo = layerLogos[i];
       source = new ol.source.WMTS(sourceOptions);
-      layer = new ol.layer.TileLayer({source: source});
+      layer = new ol.layer.Tile({source: source});
       map.addLayer(layer);
     }
 
     var view = new ol.View2D();
-    view.fitExtent([257596.65942095537, 262082.55751844167,
-      6250898.984085131, 6251854.446938695], map.getSize());
+    view.fitExtent([
+      257596.65942095537, 6250898.984085131,
+      262082.55751844167, 6251854.446938695], map.getSize());
     map.setView(view);
   }
 };

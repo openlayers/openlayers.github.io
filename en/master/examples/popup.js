@@ -30,7 +30,7 @@ var overlay = new ol.Overlay({
  */
 var map = new ol.Map({
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.TileJSON({
         url: 'http://api.tiles.mapbox.com/v3/' +
             'mapbox.natural-earth-hypso-bathy.jsonp',

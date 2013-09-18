@@ -53,17 +53,17 @@ goog.require('ol.ViewHint');
 goog.require('ol.control');
 goog.require('ol.extent');
 goog.require('ol.interaction');
-goog.require('ol.layer.LayerBase');
-goog.require('ol.layer.LayerGroup');
+goog.require('ol.layer.Base');
+goog.require('ol.layer.Group');
 goog.require('ol.proj');
 goog.require('ol.proj.common');
 goog.require('ol.renderer.Map');
+goog.require('ol.renderer.canvas');
 goog.require('ol.renderer.canvas.Map');
-goog.require('ol.renderer.canvas.SUPPORTED');
+goog.require('ol.renderer.dom');
 goog.require('ol.renderer.dom.Map');
-goog.require('ol.renderer.dom.SUPPORTED');
+goog.require('ol.renderer.webgl');
 goog.require('ol.renderer.webgl.Map');
-goog.require('ol.renderer.webgl.SUPPORTED');
 goog.require('ol.structs.PriorityQueue');
 goog.require('ol.vec.Mat4');
 
@@ -129,7 +129,7 @@ ol.MapProperty = {
  *         zoom: 1
  *       }),
  *       layers: [
- *         new ol.layer.TileLayer({
+ *         new ol.layer.Tile({
  *           source: new ol.source.MapQuestOSM()
  *         })
  *       ],
@@ -240,11 +240,14 @@ ol.Map = function(options) {
       this.handleMapBrowserEvent, false, this);
   this.registerDisposable(mapBrowserEventHandler);
 
-  // FIXME we probably shouldn't listen on document...
-  var keyHandler = new goog.events.KeyHandler(goog.global.document);
-  goog.events.listen(keyHandler, goog.events.KeyHandler.EventType.KEY,
+  /**
+   * @private
+   * @type {goog.events.KeyHandler}
+   */
+  this.keyHandler_ = new goog.events.KeyHandler();
+  goog.events.listen(this.keyHandler_, goog.events.KeyHandler.EventType.KEY,
       this.handleBrowserEvent, false, this);
-  this.registerDisposable(keyHandler);
+  this.registerDisposable(this.keyHandler_);
 
   var mouseWheelHandler = new goog.events.MouseWheelHandler(this.viewport_);
   goog.events.listen(mouseWheelHandler,
@@ -366,7 +369,7 @@ ol.Map.prototype.addControl = function(control) {
 
 /**
  * Adds the given layer to the top of this map.
- * @param {ol.layer.LayerBase} layer Layer.
+ * @param {ol.layer.Base} layer Layer.
  */
 ol.Map.prototype.addLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
@@ -519,10 +522,10 @@ ol.Map.prototype.getInteractions = function() {
 
 /**
  * Get the layergroup associated with this map.
- * @return {ol.layer.LayerGroup} LayerGroup.
+ * @return {ol.layer.Group} LayerGroup.
  */
 ol.Map.prototype.getLayerGroup = function() {
-  return /** @type {ol.layer.LayerGroup} */ (
+  return /** @type {ol.layer.Group} */ (
       this.get(ol.MapProperty.LAYERGROUP));
 };
 goog.exportProperty(
@@ -745,11 +748,19 @@ ol.Map.prototype.handleTargetChanged_ = function() {
   var targetElement = goog.isDef(target) ?
       goog.dom.getElement(target) : null;
 
+  this.keyHandler_.detach();
+
   if (goog.isNull(targetElement)) {
     goog.dom.removeNode(this.viewport_);
   } else {
     goog.dom.appendChild(targetElement, this.viewport_);
+
+    // The key handler is attached to the user-provided target. So the key
+    // handler will only trigger events when the target element is focused
+    // (requiring that the target element has a tabindex attribute).
+    this.keyHandler_.attach(targetElement);
   }
+
   this.updateSize();
   // updateSize calls setSize, so no need to call this.render
   // ourselves here.
@@ -874,14 +885,14 @@ ol.Map.prototype.removeControl = function(control) {
 
 /**
  * Removes the given layer from the map.
- * @param {ol.layer.LayerBase} layer Layer.
- * @return {ol.layer.LayerBase|undefined} The removed layer or undefined if the
+ * @param {ol.layer.Base} layer Layer.
+ * @return {ol.layer.Base|undefined} The removed layer or undefined if the
  *     layer was not found.
  */
 ol.Map.prototype.removeLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
   goog.asserts.assert(goog.isDef(layers));
-  return /** @type {ol.layer.LayerBase|undefined} */ (layers.remove(layer));
+  return /** @type {ol.layer.Base|undefined} */ (layers.remove(layer));
 };
 
 
@@ -979,6 +990,15 @@ ol.Map.prototype.renderFrame_ = function(time) {
     }
     Array.prototype.push.apply(
         this.postRenderFunctions_, frameState.postRenderFunctions);
+
+    var idle = this.preRenderFunctions_.length == 0 &&
+        !frameState.animate &&
+        !frameState.viewHints[ol.ViewHint.ANIMATING] &&
+        !frameState.viewHints[ol.ViewHint.INTERACTING];
+
+    if (idle) {
+      this.dispatchEvent(new ol.MapEvent(ol.MapEventType.MOVEEND, this));
+    }
   }
 
   this.dispatchEvent(
@@ -993,7 +1013,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
 
 /**
  * Sets the layergroup of this map.
- * @param {ol.layer.LayerGroup} layerGroup Layergroup.
+ * @param {ol.layer.Group} layerGroup Layergroup.
  */
 ol.Map.prototype.setLayerGroup = function(layerGroup) {
   this.set(ol.MapProperty.LAYERGROUP, layerGroup);
@@ -1113,8 +1133,8 @@ ol.Map.createOptionsInternal = function(options) {
    */
   var values = {};
 
-  var layerGroup = (options.layers instanceof ol.layer.LayerGroup) ?
-      options.layers : new ol.layer.LayerGroup({layers: options.layers});
+  var layerGroup = (options.layers instanceof ol.layer.Group) ?
+      options.layers : new ol.layer.Group({layers: options.layers});
   values[ol.MapProperty.LAYERGROUP] = layerGroup;
 
   values[ol.MapProperty.TARGET] = options.target;

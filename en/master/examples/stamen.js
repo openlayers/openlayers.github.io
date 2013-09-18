@@ -1,11 +1,11 @@
 var map = new ol.Map({
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.Stamen({
         layer: 'watercolor'
       })
     }),
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       source: new ol.source.Stamen({
         layer: 'terrain-labels'
       })

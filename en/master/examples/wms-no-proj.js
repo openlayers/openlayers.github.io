@@ -1,6 +1,6 @@
 var layers = [
-  new ol.layer.TileLayer({
-    source: new ol.source.TiledWMS({
+  new ol.layer.Tile({
+    source: new ol.source.TileWMS({
       attributions: [new ol.Attribution({
         html: '&copy; ' +
             '<a href="http://www.geo.admin.ch/internet/geoportal/' +
@@ -15,8 +15,8 @@ var layers = [
       url: 'http://wms.geo.admin.ch/'
     })
   }),
-  new ol.layer.ImageLayer({
-    source: new ol.source.SingleImageWMS({
+  new ol.layer.Image({
+    source: new ol.source.ImageWMS({
       attributions: [new ol.Attribution({
         html: '&copy; ' +
             '<a href="http://www.geo.admin.ch/internet/geoportal/' +
@@ -33,9 +33,9 @@ var layers = [
 // A minimal projection object is configured with only the SRS code and the map
 // units. No client side coordinate transforms are possible with such a
 // projection object.
-var projection = new ol.Projection({
+var projection = new ol.proj.Projection({
   code: 'EPSG:21781',
-  units: ol.ProjectionUnits.METERS
+  units: ol.proj.Units.METERS
 });
 
 var map = new ol.Map({

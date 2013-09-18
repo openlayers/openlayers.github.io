@@ -13,7 +13,7 @@ var view = new ol.View2D({
 
 var map = new ol.Map({
   layers: [
-    new ol.layer.TileLayer({
+    new ol.layer.Tile({
       preload: 4,
       source: new ol.source.OSM()
     })

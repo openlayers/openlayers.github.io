@@ -1,5 +1,5 @@
-var raster = new ol.layer.TileLayer({
-  source: new ol.source.TiledWMS({
+var raster = new ol.layer.Tile({
+  source: new ol.source.TileWMS({
     url: 'http://vmap0.tiles.osgeo.org/wms/vmap0',
     crossOrigin: null,
     params: {

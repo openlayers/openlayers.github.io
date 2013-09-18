@@ -1,7 +1,7 @@
 var styles = ['Road', 'Aerial', 'AerialWithLabels'];
 var layers = [];
 for (var i = 0; i < styles.length; ++i) {
-  layers.push(new ol.layer.TileLayer({
+  layers.push(new ol.layer.Tile({
     visible: false,
     preload: Infinity,
     source: new ol.source.BingMaps({

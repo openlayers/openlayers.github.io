@@ -22,7 +22,7 @@ var vector = new ol.layer.Vector({
   style: style
 });
 
-var raster = new ol.layer.TileLayer({
+var raster = new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: 'toner'
   })
