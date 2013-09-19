@@ -20839,7 +20839,6 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
     this.canvasSize_ = size
   }
   var context = this.context_;
-  context.setTransform(1, 0, 0, 1, 0, 0);
   context.clearRect(0, 0, size[0], size[1]);
   this.calculateMatrices2D(frameState);
   var layerStates = frameState.layerStates;
@@ -20865,7 +20864,8 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
         context.drawImage(image, 0, 0, image.width, image.height, dx, dy, dw, dh)
       }else {
         context.setTransform(goog.vec.Mat4.getElement(transform, 0, 0), goog.vec.Mat4.getElement(transform, 1, 0), goog.vec.Mat4.getElement(transform, 0, 1), goog.vec.Mat4.getElement(transform, 1, 1), goog.vec.Mat4.getElement(transform, 0, 3), goog.vec.Mat4.getElement(transform, 1, 3));
-        context.drawImage(image, 0, 0)
+        context.drawImage(image, 0, 0);
+        context.setTransform(1, 0, 0, 1, 0, 0)
       }
     }
   }
