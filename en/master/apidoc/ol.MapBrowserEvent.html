@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.interaction.DragRotateAndZoom</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.MapBrowserEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.interaction.DragRotateAndZoom</a>
+      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.MapBrowserEvent</a>
       <ul class="nav pull-right">
         <li><iframe class="github-watch-button" src="http://ghbtns.com/github-btn.html?user=openlayers&repo=ol3&type=watch&count=true"
 allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></iframe></li>
@@ -41,9 +41,9 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.interaction.DragRotateAndZoom
+    ol.MapBrowserEvent
     </h2>
     
 </header>  
@@ -55,19 +55,12 @@ allowtransparency="true" frameborder="0" scrolling="0" height="20" width="90"></
     
         
 <dt>
-    <h4 class="name" id="DragRotateAndZoom"><span class="type-signature"></span>new DragRotateAndZoom</h4>
+    <h4 class="name" id="MapBrowserEvent"><span class="type-signature"></span>new MapBrowserEvent</h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Allows the user to zoom and rotate the map by clicking and dragging
-on the map.  By default, this interaction is limited to when the shift
-key is held down.</p>
-<p>This interaction is not included in the default interactions.</p>
-    </div>
     
 
     
@@ -102,13 +95,100 @@ key is held down.</p>
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.interaction.html#DragRotateAndZoomOptions">ol.interaction.DragRotateAndZoomOptions</a></span>
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Event type.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Map.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>browserEvent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">goog.events.BrowserEvent</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Browser event.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>frameState</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.FrameState</span>
 
 
             
@@ -121,12 +201,14 @@ key is held down.</p>
                 
                     
                 
+                    &lt;nullable><br>
+                
                 </td>
             
             
             
             
-            <td class="description last">(Optional) <p>Options.</p></td>
+            <td class="description last">(Optional) <p>Frame state.</p></td>
         </tr>
 	
 	
@@ -156,7 +238,7 @@ key is held down.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>dragrotateandzoominteraction.js, line 30</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 27</li></ul></dd>
 	
     
     
@@ -191,6 +273,176 @@ key is held down.</p>
     
     
     
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="getCoordinate"><span class="type-signature"></span>getCoordinate</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 55</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Coordinate.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getPixel"><span class="type-signature"></span>getPixel</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get pixel offset of the event from the top-left corner of the map viewport.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 67</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Pixel offset.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">ol.Pixel</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        </dl>
     
     
     
