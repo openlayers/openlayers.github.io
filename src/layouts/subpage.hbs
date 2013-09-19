@@ -36,17 +36,87 @@
   <div class="container subpage-main">
 
     <!-- Row including Side Menu -->
-    <div class="row row-offcanvas row-offcanvas-left">
+    <div class="row row-offcanvas row-offcanvas-right">
       {{> body }}
 
-      <!-- Side Menu -->
+
+      <!-- Fixed Side Menu -->
       <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
         <div class="well sidebar-nav">
           <ul class="nav">
-            <li>Quick Start</li>
-            <li class="active"><a href="quick_start.html#firstmap">Creating Your First Map</a></li>
-            <li><a href="quick_start.html#overlaywms">Adding an Overlay WMS</a></li>
-            <li><a href="quick_start.html#addmarker">Adding Vector Markers</a></li>
+            <li><h4 class="text-center topic"><a href="tutorials.html">Tutorials</a></h4></li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#quick">Quick Start</a>
+              <div class="list-group collapse" id="quick">
+                <a href="quick_start.html#firstmap" class="list-group-item">Create a Map</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">Add a Layer</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">Add a Marker</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#layers">Layers</a>
+              <div class="list-group collapse" id="layers">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#controls">Controls</a>
+              <div class="list-group collapse" id="controls">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#formats">Formats</a>
+              <div class="list-group collapse" id="formats">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#overlays">Overlays</a>
+              <div class="list-group collapse" id="overlays">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#styling">Styling</a>
+              <div class="list-group collapse" id="styling">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#projections">Projections</a>
+              <div class="list-group collapse" id="projections">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#mobile">Mobile Browsing</a>
+              <div class="list-group collapse" id="mobile">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#remote">Requesting Remote Data</a>
+              <div class="list-group collapse" id="remote">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
@@ -63,7 +133,6 @@
     $('[data-toggle=offcanvas]').click(function() {
       $('.row-offcanvas').toggleClass('active');
     });
-  });
   </script>
 </body>
 </html>

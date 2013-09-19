@@ -1,5 +1,6 @@
 
 @light-yellow: #fdfff5;
+@teal-green: #1f6b75;
 
 /*
  * Off Canvas - http://getbootstrap.com/examples/offcanvas
@@ -44,6 +45,22 @@
 * Additions to OffCanvas
 *
 */
+#sidebar {
+  position: fixed;
+  margin-left: 70%;
+  overflow-y: scroll;
+  height: 85%;
+
+  .list-group {
+    background-color: transparent;
+    border: 0;
+    .list-group-item {
+      border: 0;
+      margin-left: 20px;
+      color: #666;
+    }
+  }
+}
 
 .subpage-main {
   margin-top: 20px !important;
@@ -72,6 +89,9 @@ color: #aaa;
 text-transform: uppercase;
 margin-top: 10px;
 margin-bottom: 10px;
+a {
+  color: #aaa;
+  }
 }
 
 .indent {
@@ -116,4 +136,22 @@ margin-left: 5%;
     }
   }
 }
+
+.btn-green {
+  background-color: @teal-green;
+  color: #fff;
+
+  &:hover {
+    background-color: lighten(@teal-green, 10%);
+    color: #ccc;
+  }
+}
+
+.tutorial {
+  padding-top: 30px;
+}
+
+.img-placeholder {
+    padding: 20px 20px 20px 0;
+  }
 
