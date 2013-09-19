@@ -3008,7 +3008,7 @@ ol.TileCoord.createOrUpdate = function(z, x, y, tileCoord) {
   }
 };
 ol.TileCoord.getKeyZXY = function(z, x, y) {
-  return[z, x, y].join("/")
+  return z + "/" + x + "/" + y
 };
 ol.TileCoord.prototype.hash = function() {
   return(this.x << this.z) + this.y
@@ -16114,9 +16114,7 @@ ol.source.Tile.prototype.findLoadedTiles = function(loadedTilesByZ, getTileIfLoa
   }
   return fullyCovered
 };
-ol.source.Tile.prototype.getKeyZXY = function(z, x, y) {
-  return ol.TileCoord.getKeyZXY(z, x, y)
-};
+ol.source.Tile.prototype.getKeyZXY = ol.TileCoord.getKeyZXY;
 ol.source.Tile.prototype.getOpaque = function() {
   return this.opaque_
 };
