@@ -2,49 +2,49 @@
 @light-yellow: #fdfff5;
 @teal-green: #1f6b75;
 
-/*
- * Off Canvas - http://getbootstrap.com/examples/offcanvas
- * --------------------------------------------------
- */
 @media screen and (max-width: 768px) {
   .row-offcanvas {
+    margin-top: 20px;
     position: relative;
     -webkit-transition: all 0.25s ease-out;
     -moz-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out;
   }
-
   .row-offcanvas-right
   .sidebar-offcanvas {
-    right: -50%; /* 6 columns */
-  }
-
-  .row-offcanvas-left
-  .sidebar-offcanvas {
-    left: -50%; /* 6 columns */
+    right: -85%; 
   }
 
   .row-offcanvas-right.active {
-    right: 50%; /* 6 columns */
+    right: 85%; 
   }
-
-  .row-offcanvas-left.active {
-    left: 50%; /* 6 columns */
-  }
-
   .sidebar-offcanvas {
-    position: absolute;
+    position: fixed;
     top: 0;
-    width: 50%; /* 6 columns */
+    width: 85%; 
   }
 }
 
+#tutorials-btn {
+  display: none;
 
-/*
-*
-* Additions to OffCanvas
-*
-*/
+  @media screen and (max-width: 768px) { 
+    display: block;
+    position: absolute;
+    margin: 10px 10px;
+    right: 0;
+  }
+  .btn-back {
+    display: none;
+  }
+  .btn-text {
+    display: none;
+  }
+  .active {
+    display: inline !important;
+  }
+}
+
 #sidebar {
   position: fixed;
   margin-left: 70%;
@@ -60,10 +60,16 @@
       color: #666;
     }
   }
+
+  @media screen and (max-width: 768px) { 
+    position: absolute;
+    margin-left: 185%;
+    top: 20px;
+  }
 }
 
 .subpage-main {
-  margin-top: 20px !important;
+  margin: 20px 10px 10px 20px !important;
 }
 
 .page-topic {
@@ -105,29 +111,22 @@ margin-left: 5%;
     margin: 0 10px;
 
     pre {
-      margin: 0 0 0 30px;
       background-color: @light-yellow;
-      border-width: 1px;
-      border-color: #ddd;
-      border-radius: 4px 4px 0 0;
-      border-style: solid;
-      box-shadow: none;
+      border: 1px solid #ddd;
       border-bottom-width: 0px;
+      border-radius: 4px 4px 0 0;
+      box-shadow: none;
+      margin: 0 0 0 30px;
       padding: 15px;
       width: 90%;
     }
 
     .highlight {
-      margin-left: 30px;
-      margin-right: 0;
-      border-width: 1px;
-      border-radius: 0;
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;;
-      padding: 9px 14px;
-      margin-bottom: 14px;
-      background-color: #f7f7f9;
+      background-color: #e9e9e9;
       border: 1px solid #e1e1e8;
+      border-radius: 0 0 4px 4px;
+      margin: 0 0 14px 30px;
+      padding: 9px 14px;
       width: 90%;
     }
 

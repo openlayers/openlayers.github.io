@@ -32,13 +32,21 @@
       </div>
     </div>
   </div>
-
+  <div class="row pull-right">
+   <div class="visible-xs" id="tutorials-btn">
+      <button class="btn btn-green btn-xs"type="button" data-toggle="offcanvas">
+        <span class="btn-text active">Tutorials List &nbsp; <i class="icon-arrow-right"></i></span>
+        <span class="btn-back">< Back</span>
+      </button>
+    </div>
+  </div>
   <div class="container subpage-main">
 
     <!-- Row including Side Menu -->
-    <div class="row row-offcanvas row-offcanvas-right">
-      {{> body }}
 
+    <div class="row row-offcanvas row-offcanvas-right"> 
+
+      {{> body }}
 
       <!-- Fixed Side Menu -->
       <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
@@ -130,9 +138,20 @@
   <script src='{{ assets }}/js/main.js'></script>
   <script>
   $(document).ready(function() {
+
     $('[data-toggle=offcanvas]').click(function() {
       $('.row-offcanvas').toggleClass('active');
+      $('.btn-back').toggleClass('active');
+      $('.btn-text').toggleClass('active');
     });
+
+    
+    $('.list-group-item').click(function() {
+      $('.row-offcanvas').toggleClass('active');
+      $('.btn-back').toggleClass('active');
+      $('.btn-text').toggleClass('active');
+    });
+  });
   </script>
 </body>
 </html>
