@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OpenLayers 3 - {{ title }}</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+  <link href='{{ assets }}/theme/offcanvas.css' rel='stylesheet' type='text/css'>
+  <link href='{{ assets }}/theme/site.css' rel='stylesheet' type='text/css'>
+  <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+  {{#each head}}
+  {{{ this }}}
+  {{/each}}
+</head>
+<body>  <!-- This template has a side menu -->
+
+  <div class='navbar navbar-fixed-top'>
+    <div class='container'>
+      <a href='/' class='navbar-brand'><img src='{{ assets }}/theme/img/logo.png'>&nbsp;OpenLayers 3</a>
+      <!-- button that shows up below 768px width -->
+      <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+      </button>
+      <!-- menu items that get hidden below 768px width -->
+      <div class='nav-collapse collapse navbar-responsive-collapse'>
+        <ul class='nav navbar-nav pull-right'>
+          <li><a href='en/{{ current }}/apidoc'>Docs</a></li><!-- TODO: link to doc root instead of API docs -->
+          <li><a href='en/{{ current }}/examples'>Examples</a></li>
+          <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row pull-right">
+   <div class="visible-xs" id="tutorials-btn">
+      <button class="btn btn-green btn-xs"type="button" data-toggle="offcanvas">
+        <span class="btn-text active">Tutorials List &nbsp; <i class="icon-arrow-right"></i></span>
+        <span class="btn-back">< Back</span>
+      </button>
+    </div>
+  </div>
+  <div class="container subpage-main">
+
+    <!-- Row including Side Menu -->
+
+    <div class="row row-offcanvas row-offcanvas-right"> 
+
+      {{> body }}
+
+      <!-- Fixed Side Menu -->
+      <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+        <div class="well sidebar-nav">
+          <ul class="nav">
+            <li><h4 class="text-center topic"><a href="tutorials.html">Tutorials</a></h4></li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#quick">Quick Start</a>
+              <div class="list-group collapse" id="quick">
+                <a href="quick_start.html#firstmap" class="list-group-item">Create a Map</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">Add a Layer</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">Add a Marker</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#layers">Layers</a>
+              <div class="list-group collapse" id="layers">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#controls">Controls</a>
+              <div class="list-group collapse" id="controls">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#formats">Formats</a>
+              <div class="list-group collapse" id="formats">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#overlays">Overlays</a>
+              <div class="list-group collapse" id="overlays">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#styling">Styling</a>
+              <div class="list-group collapse" id="styling">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#projections">Projections</a>
+              <div class="list-group collapse" id="projections">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#mobile">Mobile Browsing</a>
+              <div class="list-group collapse" id="mobile">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+            <li>
+              <a type="button" data-toggle="collapse" data-target="#remote">Requesting Remote Data</a>
+              <div class="list-group collapse" id="remote">
+                <a href="quick_start.html#firstmap" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addlayer" class="list-group-item">TBA</a>
+                <a href="quick_start.html#addmarker" class="list-group-item">TBA</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- END Row including Side Menu -->
+  </div>
+
+  <footer>
+    Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>.
+  </footer>
+  <script src='{{ assets }}/js/main.js'></script>
+  <script>
+  $(document).ready(function() {
+
+    $('[data-toggle=offcanvas]').click(function() {
+      $('.row-offcanvas').toggleClass('active');
+      $('.btn-back').toggleClass('active');
+      $('.btn-text').toggleClass('active');
+    });
+
+    
+    $('.list-group-item').click(function() {
+      $('.row-offcanvas').toggleClass('active');
+      $('.btn-back').toggleClass('active');
+      $('.btn-text').toggleClass('active');
+    });
+  });
+  </script>
+</body>
+</html>
+
+
+

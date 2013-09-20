@@ -1,0 +1,156 @@
+---
+title: 'Quick'
+layout: subpage.hbs
+head:
+ - <link rel="stylesheet" href="en/<%= current %>/build/ol.css" type="text/css">
+ - <link rel="stylesheet" href="assets/theme/index.css" type="text/css">
+---
+
+<div class="col-xs-6 col-sm-9">
+  <h1 class="page-topic">Quick Start</h1>
+  <a name="firstmap"></a>
+
+  <div class="well partial-85">
+    <h4 class="topic">OpenLayers Examples</h4>
+    <p class="indent">Sometimes the quickest way to work out how OpenLayers works is to look at <a href="/en/master/examples/"><strong>examples</strong></a>.</p>
+  </div>
+
+  <div class="instructions">
+    <h3>Creating Your First Map</h3>
+    <p>The OpenLayers API has two concepts which are important to understand in order to build your first map: ‘Map’, and ‘Layer’. An OpenLayers Map stores information about the default projection, extents, units, and so on of the map. Inside the map, data is displayed via ‘Layer’s. A Layer is a data source – information about how OpenLayers should request data and display it.</p>
+    <div class='step'>
+      <h4>Step 1. Create HTML to hold the Map</h4>
+      <div class='step-content'>
+        <p>OpenLayers supports putting a map inside of any block level element – this means that it can be used to put a map in almost any HTML element on your page.</p>
+        <p>Also include a script tag which includes the OpenLayers library to the page.</p>
+        <pre>&lt;html&gt;<br/>&nbsp;&lt;head&gt;<br/>&nbsp;&nbsp;&lt;title&gt;OpenLayers&nbsp;Example&lt;/title&gt;<br/>&nbsp;&nbsp;&lt;script&nbsp;src=&quot;http://localhost/openlayers/OpenLayers.js&quot;&gt;&lt;/script&gt;<br/>&nbsp;&lt;/head&gt;<br/>&nbsp;&lt;body&gt;<br/>&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;width:100%;&nbsp;height:100%&quot;&nbsp;id=&quot;map&quot;&gt;&lt;/div&gt;<br/>&nbsp;&lt;/body&gt;<br/>&lt;/html&gt;</pre>
+        <div class="highlight">
+          Step 1. Create HTML to hold the Map
+        </div>
+      </div>
+    </div>
+    <div class='step'>
+      <h4>Step 2. Creating the Map Viewer</h4>
+      <div class='step-content'>
+        <p>The OpenLayers.Map constructor requires one argument: an HTML Element, or the ID of an HTML element. This is the element in which the map will be placed. Add the following line to a <strong>&lt;script&gt; &lt;/script&gt;</strong> tag:</p>
+        <pre>var map = new OpenLayers.Map('map');</pre>
+        <div class="highlight">
+          Step 2. Creating the Map Viewer
+        </div>
+      </div>
+    </div>
+    <div class='step'>
+      <h4>Step 3. Add a Layer to the Map</h4>
+      <div class='step-content'>
+        <p>The next step to creating a viewer is to add a layer to the Map. OpenLayers supports many different data sources, from WMS to Yahoo! Maps to WorldWind. In this example, the WMS layer is used. The WMS layer is an example provided by MetaCarta.</p>
+        <pre>var&nbsp;wms&nbsp;=&nbsp;new&nbsp;OpenLayers.Layer.WMS(<br/>&nbsp;&nbsp;&quot;OpenLayers&nbsp;WMS&quot;,<br/>&nbsp;&nbsp;&quot;http://vmap0.tiles.osgeo.org/wms/vmap0&quot;,<br/>&nbsp;&nbsp;{'layers':'basic'}&nbsp;);<br/><br/>map.addLayer(wms);</pre>
+        <div class="highlight">
+          Step 3. Add a Layer to the Map
+        </div>
+        <p>The first parameter in this constructor is the name of the layer, which is used for some display purposes. The second argument is the URL of the WMS server. The third argument is an object containing the parameterss to be appended to the WMS request.</p>
+      </div>
+    </div>
+    <div class='step'>
+      <h4>Step 4. Center and Zoom Label</h4>
+      <div class='step-content'>
+        <p>Finally, in order to display the map, you must set a center and zoom level. In order to zoom to fit the map into the window, you can use the zoomToMaxExtent function, which will zoom as close as possible while still fitting the full extents within the window.</p>
+        <pre>map.zoomToMaxExtent();</pre>
+        <div class="highlight">
+          Step 4. Center and Zoom Label
+        </div>
+      </div>
+    </div>
+    <div class='step'>
+      <h4>5. Putting It All Togehter</h4>
+      <div class='step-content'>
+        <p>The following pre block puts all the pieces together to create an OpenLayers viewer.</p>
+        <pre>&lt;html&gt;<br/>&lt;head&gt;<br/>&nbsp;&nbsp;&lt;title&gt;OpenLayers&nbsp;Example&lt;/title&gt;<br/>&nbsp;&nbsp;&lt;script&nbsp;src=&quot;http://openlayers.org/api/OpenLayers.js&quot;&gt;&lt;/script&gt;<br/>&lt;/head&gt;<br/>&lt;body&gt;<br/>&nbsp;&nbsp;&lt;div&nbsp;style=&quot;width:100%;&nbsp;height:100%&quot;&nbsp;id=&quot;map&quot;&gt;&lt;/div&gt;<br/>&nbsp;&nbsp;&nbsp;&lt;script&nbsp;defer=&quot;defer&quot;&nbsp;type=&quot;text/javascript&quot;&gt;<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;map&nbsp;=&nbsp;new&nbsp;OpenLayers.Map('map');<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;wms&nbsp;=&nbsp;new&nbsp;OpenLayers.Layer.WMS(&nbsp;&quot;OpenLayers&nbsp;WMS&quot;,<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;http://vmap0.tiles.osgeo.org/wms/vmap0&quot;,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{layers:&nbsp;'basic'}&nbsp;);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.addLayer(wms);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.zoomToMaxExtent();<br/>&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;<br/></pre>
+        <div class="highlight">
+          Full HTML and Javascript for a simple WMS browser.
+        </div>
+      </div>
+    </div>
+  </div><!-- End First Map Instructions -->
+
+  <a name="addlayer"></a>
+
+  <div class="instructions">
+    <h3>Adding an Overlay WMS</h3>
+    <p>WMS layers have the capability to be overlaid on top of other WMS layers in the same projection. There are several ways to mark a layer as an overlay, rather than a base layer. With WMS, the best way to do this is by setting the ‘transparent’ parameter to ‘true’. The example here uses a political borders WMS to demonstrate overlaying a transparent WMS.</p>
+    <div class='step'>
+      <div class='step-content'>
+        <pre>var dm_wms = new OpenLayers.Layer.WMS(
+"Canadian Data",
+"http://www2.dmsolutions.ca/cgi-bin/mswms_gmap",
+{
+    layers: "bathymetry,land_fn,park,drain_fn,drainage," +
+            "prov_bound,fedlimit,rail,road,popplace",
+    transparent: "true",
+    format: "image/png"
+},
+{isBaseLayer: false}
+);
+map.addLayer(dm_wms);</pre>
+        <div class="highlight">
+          How to add a transparent WMS overlay to your map.
+        </div>
+        <p>Using the transparent: ‘true’ parameter sets two flags automatically:</p>
+        <ul>
+          <li><strong>format parameter.</strong> The format option of the WMS layer is set to image/png if the browser supports transparent PNG images. (This is all browsers except for Internet Explorer 6.) In Internet Explorer 6, this will instead be set to image/gif.</li>
+          <li><strong>isBaseLayer option.</strong> The isBaseLayer option controls whether the layer can be displayed at the same time as other layers. This option defaults to false for the WMS layer, but setting transparent to true changes it to true by default.</li>
+        </ul>
+        <p>Putting this code together with our earlier example, we get the following:</p>
+        <pre>&lt;html&gt;<br/>&lt;head&gt;<br/>&nbsp;&nbsp;&nbsp;&lt;title&gt;OpenLayers&nbsp;Example&lt;/title&gt;<br/>&nbsp;&nbsp;&nbsp;&lt;script&nbsp;src=&quot;http://openlayers.org/api/OpenLayers.js&quot;&gt;&lt;/script&gt;<br/>&lt;/head&gt;<br/>&lt;body&gt;<br/>&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;width:100%;&nbsp;height:100%&quot;&nbsp;id=&quot;map&quot;&gt;&lt;/div&gt;<br/>&nbsp;&nbsp;&nbsp;&lt;script&nbsp;defer=&quot;defer&quot;&nbsp;type=&quot;text/javascript&quot;&gt;<br/>
+    var map = new OpenLayers.Map('map');
+    var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+        "http://vmap0.tiles.osgeo.org/wms/vmap0", 
+        {layers: 'basic'} );
+    var dm_wms = new OpenLayers.Layer.WMS(
+        "Canadian Data",
+        "http://www2.dmsolutions.ca/cgi-bin/mswms_gmap",
+        {
+          layers: "bathymetry,land_fn,park,drain_fn,drainage," +
+                  "prov_bound,fedlimit,rail,road,popplace",
+          transparent: "true",
+          format: "image/png"
+        },
+        {isBaseLayer: false}
+    );
+    map.addLayers([wms, dm_wms]);
+    map.zoomToMaxExtent();
+
+&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;</pre>
+        <div class="highlight">
+        How to add a transparent WMS overlay to your map.
+        </div>
+        <p>One thing to note here is that we have used addLayers on the map object to add both layers at the same time. This allows us to save a line of code in this case, and may be useful in other cases when you need to add multiple layers to the map at the same time.</p>
+      </div>
+    </div>
+  </div><!-- End WMS Overlay Instructions -->
+
+  <a name="addmarker"></a>
+
+  <div class="instructions">
+    <h3>Adding a Vector Marker to the Map</h3>
+    <div class='step'>
+      <div class='step-content'>
+        <p>To add a single marker at a latitude and longitude to the map, you can use a Vector Layer to add an overlay.</p>
+        <pre>var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+var feature = new OpenLayers.Feature.Vector(
+new OpenLayers.Geometry.Point(-71, 42),
+{some:'data'},
+{externalGraphic: 'img/marker.png', graphicHeight: 21, graphicWidth: 16});
+vectorLayer.addFeatures(feature);
+map.addLayer(vectorLayer);</pre>
+        <div class="highlight">
+          Create a Vector Layer, Add Markers and Add it to the Map
+        </div>
+      </div>
+      <p>This is a simple demonstration – more information is available on overlays, how to interact with them, and how to control and style them via the <a href="#">Styling</a> and <a href="#">Overlays</a> documentation.</p>
+    </div>
+  </div><!-- End Add Marker Instructions -->
+
+</div>
+
+
+
