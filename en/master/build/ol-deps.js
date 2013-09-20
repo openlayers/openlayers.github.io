@@ -52,7 +52,7 @@ goog.addDependency('../../../ol/ol/geom2/geom2.js', ['ol.geom2'], ['goog.asserts
 goog.addDependency('../../../ol/ol/geom2/linestringcollection.js', ['ol.geom2.LineString', 'ol.geom2.LineStringCollection'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.geom2', 'ol.structs.Buffer']);
 goog.addDependency('../../../ol/ol/geom2/pointcollection.js', ['ol.geom2.Point', 'ol.geom2.PointCollection'], ['goog.asserts', 'ol.Extent', 'ol.geom2', 'ol.structs.Buffer']);
 goog.addDependency('../../../ol/ol/image.js', ['ol.Image', 'ol.ImageState'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.object', 'ol.Attribution', 'ol.Extent']);
-goog.addDependency('../../../ol/ol/imagetile.js', ['ol.ImageTile'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.Tile', 'ol.TileCoord', 'ol.TileState']);
+goog.addDependency('../../../ol/ol/imagetile.js', ['ol.ImageTile'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.Tile', 'ol.TileCoord', 'ol.TileLoadFunctionType', 'ol.TileState']);
 goog.addDependency('../../../ol/ol/imageurlfunction.js', ['ol.ImageUrlFunction', 'ol.ImageUrlFunctionType'], ['ol.Size']);
 goog.addDependency('../../../ol/ol/interaction/condition.js', ['ol.interaction.ConditionType', 'ol.interaction.condition'], ['goog.dom.TagName', 'goog.events.EventType', 'goog.functions']);
 goog.addDependency('../../../ol/ol/interaction/doubleclickzoominteraction.js', ['ol.interaction.DoubleClickZoom'], ['goog.asserts', 'ol.MapBrowserEvent', 'ol.MapBrowserEvent.EventType', 'ol.interaction.Interaction']);
@@ -164,7 +164,7 @@ goog.addDependency('../../../ol/ol/source/mapquestsource.js', ['ol.source.MapQue
 goog.addDependency('../../../ol/ol/source/osmsource.js', ['ol.source.OSM'], ['ol.Attribution', 'ol.source.XYZ']);
 goog.addDependency('../../../ol/ol/source/source.js', ['ol.source.Source'], ['goog.events.EventTarget', 'goog.events.EventType', 'goog.functions', 'ol.Attribution', 'ol.Extent', 'ol.proj']);
 goog.addDependency('../../../ol/ol/source/stamensource.js', ['ol.source.Stamen'], ['goog.asserts', 'ol.Attribution', 'ol.source.OSM', 'ol.source.XYZ']);
-goog.addDependency('../../../ol/ol/source/tileimagesource.js', ['ol.source.TileImage'], ['goog.asserts', 'ol.Attribution', 'ol.Extent', 'ol.ImageTile', 'ol.Tile', 'ol.TileCache', 'ol.TileCoord', 'ol.TileState', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.source.Tile', 'ol.tilegrid.TileGrid']);
+goog.addDependency('../../../ol/ol/source/tileimagesource.js', ['ol.source.TileImage'], ['goog.asserts', 'ol.Attribution', 'ol.Extent', 'ol.ImageTile', 'ol.Tile', 'ol.TileCache', 'ol.TileCoord', 'ol.TileLoadFunctionType', 'ol.TileState', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.source.Tile', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/source/tilejsonsource.js', ['ol.source.TileJSON', 'ol.tilejson'], ['goog.asserts', 'goog.net.jsloader', 'ol.Attribution', 'ol.TileRange', 'ol.TileUrlFunction', 'ol.extent', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.XYZ']);
 goog.addDependency('../../../ol/ol/source/tilesource.js', ['ol.source.Tile', 'ol.source.TileOptions'], ['goog.functions', 'ol.Attribution', 'ol.Extent', 'ol.Tile', 'ol.TileCoord', 'ol.TileRange', 'ol.source.Source', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/source/tilewmssource.js', ['ol.source.TileWMS'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.object', 'ol.TileCoord', 'ol.TileUrlFunction', 'ol.extent', 'ol.source.FeatureInfoSource', 'ol.source.TileImage', 'ol.source.wms']);
@@ -199,10 +199,11 @@ goog.addDependency('../../../ol/ol/style/textliteral.js', ['ol.style.TextLiteral
 goog.addDependency('../../../ol/ol/style/textsymbolizer.js', ['ol.style.Text'], ['goog.asserts', 'ol.Feature', 'ol.expr', 'ol.expr.Expression', 'ol.expr.Literal', 'ol.style.Symbolizer', 'ol.style.TextLiteral']);
 goog.addDependency('../../../ol/ol/tile.js', ['ol.Tile', 'ol.TileState'], ['goog.events', 'goog.events.EventTarget', 'goog.events.EventType', 'ol.TileCoord']);
 goog.addDependency('../../../ol/ol/tilecache.js', ['ol.TileCache'], ['goog.asserts', 'ol.Tile', 'ol.TileCoord', 'ol.TileRange', 'ol.structs.LRUCache']);
-goog.addDependency('../../../ol/ol/tilecoord.js', ['ol.TileCoord'], ['goog.array']);
+goog.addDependency('../../../ol/ol/tilecoord.js', ['ol.TileCoord'], ['goog.array', 'goog.asserts']);
 goog.addDependency('../../../ol/ol/tilegrid/tilegrid.js', ['ol.tilegrid.TileGrid'], ['goog.array', 'goog.asserts', 'ol.Coordinate', 'ol.Size', 'ol.TileCoord', 'ol.TileRange', 'ol.array', 'ol.extent', 'ol.proj.Projection', 'ol.proj.Units']);
 goog.addDependency('../../../ol/ol/tilegrid/wmtstilegrid.js', ['ol.tilegrid.WMTS'], ['goog.array', 'goog.asserts', 'ol.proj', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/tilegrid/xyztilegrid.js', ['ol.tilegrid.XYZ'], ['goog.math', 'ol.TileCoord', 'ol.TileRange', 'ol.proj', 'ol.proj.EPSG3857', 'ol.tilegrid.TileGrid']);
+goog.addDependency('../../../ol/ol/tileloadfunction.js', ['ol.TileLoadFunctionType'], []);
 goog.addDependency('../../../ol/ol/tilequeue.js', ['ol.TilePriorityFunction', 'ol.TileQueue'], ['goog.events', 'goog.events.EventType', 'ol.Coordinate', 'ol.Tile', 'ol.structs.PriorityQueue']);
 goog.addDependency('../../../ol/ol/tilerange.js', ['ol.TileRange'], ['goog.asserts', 'ol.Size', 'ol.TileCoord']);
 goog.addDependency('../../../ol/ol/tileurlfunction.js', ['ol.TileUrlFunction', 'ol.TileUrlFunctionType'], ['goog.array', 'goog.math', 'ol.TileCoord', 'ol.extent']);
