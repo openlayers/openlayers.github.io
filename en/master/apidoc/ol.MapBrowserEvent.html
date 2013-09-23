@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.Kinetic</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.MapBrowserEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -21,7 +21,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.Kinetic</a>
+      <a class="brand" href="./">OpenLayers 3 API Documentation - Class: ol.MapBrowserEvent</a>
     </div>
   </div>
 </div>
@@ -37,7 +37,7 @@
     <h2>
         <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.Kinetic
+    ol.MapBrowserEvent
     </h2>
     
 </header>  
@@ -49,7 +49,7 @@
     
         
 <dt>
-    <h4 class="name" id="Kinetic"><span class="type-signature"></span>new Kinetic</h4>
+    <h4 class="name" id="MapBrowserEvent"><span class="type-signature"></span>new MapBrowserEvent</h4>
     
     
 </dt>
@@ -75,6 +75,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -87,70 +89,120 @@
 	
         <tr>
             
-                <td class="name"><code>decay</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Rate of decay (must be negative).</p></td>
+            
+            <td class="description last"><p>Event type.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>minVelocity</code></td>
+                <td class="name"><code>map</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Minimum velocity (pixels/millisecond).</p></td>
+            
+            <td class="description last"><p>Map.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>delay</code></td>
+                <td class="name"><code>browserEvent</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">goog.events.BrowserEvent</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Delay to consider to calculate the kinetic
-    initial values (milliseconds).</p></td>
+            
+            <td class="description last"><p>Browser event.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>frameState</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.FrameState</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">(Optional) <p>Frame state.</p></td>
         </tr>
 	
 	
@@ -180,7 +232,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>kinetic.js, line 17</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 27</li></ul></dd>
 	
     
     
@@ -215,6 +267,176 @@
     
     
     
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="getCoordinate"><span class="type-signature"></span>getCoordinate</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 55</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Coordinate.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getPixel"><span class="type-signature"></span>getPixel</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get pixel offset of the event from the top-left corner of the map viewport.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 67</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Pixel offset.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">ol.Pixel</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        </dl>
     
     
     
