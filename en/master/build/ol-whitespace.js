@@ -21361,7 +21361,7 @@ goog.provide("ol.webgl");
 goog.provide("ol.webgl.WebGLContextEventType");
 goog.require("goog.dom");
 goog.require("goog.dom.TagName");
-ol.webgl.CONTEXT_IDS_ = ["webgl", "webgl-experimental", "webkit-3d", "moz-webgl"];
+ol.webgl.CONTEXT_IDS_ = ["experimental-webgl", "webgl", "webkit-3d", "moz-webgl"];
 ol.webgl.WebGLContextEventType = {LOST:"webglcontextlost", RESTORED:"webglcontextrestored"};
 ol.webgl.getContext = function(canvas, opt_attributes) {
   var context, i, ii = ol.webgl.CONTEXT_IDS_.length;
