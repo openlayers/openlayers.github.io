@@ -69,7 +69,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'checkout:' + treeish,
       'buildpy:host-examples',
-      'buildpy:doc',
+      'buildpy:apidoc',
       'clean:dist',
       'move:' + path.join(dist, 'en', branch),
       'script',
