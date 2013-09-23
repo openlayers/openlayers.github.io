@@ -5947,7 +5947,7 @@ ol.Feature.prototype.getAttributes = function() {
   }
   return attributes
 };
-ol.Feature.prototype.getFeatureId = function() {
+ol.Feature.prototype.getId = function() {
   return this.featureId_
 };
 ol.Feature.prototype.getGeometry = function() {
@@ -5962,7 +5962,7 @@ ol.Feature.prototype.set = function(key, value) {
   }
   goog.base(this, "set", key, value)
 };
-ol.Feature.prototype.setFeatureId = function(featureId) {
+ol.Feature.prototype.setId = function(featureId) {
   this.featureId_ = featureId
 };
 ol.Feature.prototype.setGeometry = function(geometry) {
@@ -17365,7 +17365,7 @@ ol.expr.lib[ol.expr.functions.EXTENT] = function(minX, minY, maxX, maxY, opt_pro
 };
 ol.expr.lib[ol.expr.functions.FID] = function(var_args) {
   var matches = false;
-  var id = this.getFeatureId();
+  var id = this.getId();
   if(goog.isDef(id)) {
     for(var i = 0, ii = arguments.length;i < ii;++i) {
       if(arguments[i] === id) {
@@ -25463,7 +25463,7 @@ ol.interaction.Select.prototype.select = function(map, featuresByLayer, layers, 
         if(!(featureId in oldFeatureMap)) {
           clone = new ol.Feature(feature.getAttributes());
           clone.setGeometry(feature.getGeometry().clone());
-          clone.setFeatureId(feature.getFeatureId());
+          clone.setId(feature.getId());
           clone.setSymbolizers(feature.getSymbolizers());
           clone.renderIntent = ol.layer.VectorLayerRenderIntent.SELECTED;
           featureMap[featureId] = clone;
@@ -26098,7 +26098,7 @@ ol.parser.GeoJSON.prototype.parseFeature_ = function(json, opt_options) {
   var geomJson = json.geometry, geometry = null, options = opt_options || {};
   var feature = new ol.Feature(json.properties);
   if(goog.isDef(json.id)) {
-    feature.setFeatureId(json.id)
+    feature.setId(json.id)
   }
   if(geomJson) {
     var type = geomJson.type;
@@ -28181,7 +28181,7 @@ ol.parser.KML = function(opt_options) {
         }
         var feature = new ol.Feature(container.properties);
         if(!goog.isNull(id)) {
-          feature.setFeatureId(id)
+          feature.setId(id)
         }
         var geom = track.points[i];
         if(geom) {
@@ -28209,7 +28209,7 @@ ol.parser.KML = function(opt_options) {
         }
         feature = new ol.Feature(container.properties);
         if(!goog.isNull(id)) {
-          feature.setFeatureId(id)
+          feature.setId(id)
         }
         if(container.geometry) {
           sharedVertices = undefined;
@@ -28641,7 +28641,7 @@ ol.parser.KML = function(opt_options) {
     return node
   }, "_feature":function(feature) {
     var node = this.createElementNS("Placemark");
-    var fid = feature.getFeatureId();
+    var fid = feature.getId();
     if(goog.isDef(fid)) {
       node.setAttribute("id", fid)
     }
@@ -28988,7 +28988,7 @@ ol.parser.TopoJSON.prototype.readFeatureFromGeometry_ = function(object, arcs, s
   var feature = new ol.Feature;
   feature.setGeometry(geometry);
   if(goog.isDef(object.id)) {
-    feature.setFeatureId(String(object.id))
+    feature.setId(String(object.id))
   }
   return feature
 };
@@ -30016,7 +30016,7 @@ ol.parser.ogc.GML = function(opt_options) {
     }
     var fid = node.getAttribute("fid") || this.getAttributeNS(node, this.defaultNamespaceURI, "id");
     if(!goog.isNull(fid)) {
-      feature.setFeatureId(fid)
+      feature.setId(fid)
     }
     obj.features.push(feature)
   }, "_geometry":function(node, obj) {
@@ -30086,7 +30086,7 @@ ol.parser.ogc.GML = function(opt_options) {
   }}};
   this.featureNSWiters_ = {"_typeName":function(feature) {
     var node = this.createElementNS("feature:" + this.featureType, this.featureNS);
-    var fid = feature.getFeatureId();
+    var fid = feature.getId();
     if(goog.isDef(fid)) {
       this.setAttributeNS(node, this.defaultNamespaceURI, "fid", fid)
     }
