@@ -1,3 +1,12 @@
+.transition (@transition) {
+  -webkit-transition: @transition;
+  -moz-transition: @transition;
+  -ms-transition: @transition;
+  -o-transition: @transition;
+  transition: @transition;
+}
+
+
 #map {
   position: relative;
   height: 120px;
@@ -25,4 +34,15 @@
 img.thumb {
   float: right;
   margin-left: 10px;
+}
+
+/* ol customizations */
+
+.ol-overlaycontainer {
+  opacity: 0;
+  .transition(opacity 300ms ease);
+}
+/* not done with :hover because the overlay blocks events and has no height */
+.over .ol-overlaycontainer {
+  opacity: 1;
 }

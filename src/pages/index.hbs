@@ -111,7 +111,14 @@ head:
           layer: 'watercolor'
         })
       })
-    ],
-    controls: []
+    ]
   });
+
+  var container = document.getElementById('map');
+  container.onmouseover = function() {
+    container.className = 'over';
+  };
+  container.onmouseout = function() {
+    container.className = '';
+  };
 </script>
