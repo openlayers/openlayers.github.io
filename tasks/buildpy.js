@@ -1,16 +1,22 @@
 var cp = require('child_process');
 
 
-/** @param {Object} grunt Grunt. */
+/**
+ * This exports a "buildpy" task that simply calls build.py with the supplied
+ * arguments.  The `cwd` option may be used to specify the parent directory of
+ * the build.py script.
+ */
+
+
+/** @param {Object} grunt Grunt DSL object. */
 module.exports = function(grunt) {
-  grunt.registerTask('buildpy', 'Run build.py.', function() {
-    var args = Array.prototype.slice.call(arguments);
+  grunt.registerMultiTask('buildpy', 'Run build.py.', function() {
+    var args = this.data.args;
     var done = this.async();
 
-    var options = this.options({});
-    if (!options.cwd) {
-      return done(new Error('Missing "cwd" property in buildpy options.'));
-    }
+    var options = this.options({
+      cwd: process.cwd()
+    });
 
     var py = cp.spawn('python', ['build.py'].concat(args), {cwd: options.cwd});
 
