@@ -2,39 +2,77 @@ var path = require('path');
 
 
 /**
- * Branch/tag name for the current release (e.g. 'master' or 'r3.2.1').
- * @type {string}
+ * The latest release.  Links to examples, doc, etc. will be prefixed by this
+ * value.  Examples: r3.0.0-beta.1 or master.
+ * @type {String}
  */
-var current = 'master';
+var latest = 'master';
 
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
-  var build = path.join('.grunt', 'openlayers-website');
-  var dist = path.join(build, 'dist');
-  var assets = path.join(dist, 'assets');
-  var repo = path.join(build, 'repo');
+  var treeish = grunt.option('treeish');
+  if (!treeish) {
+    grunt.fatal(new Error('Missing "treeish" option.'));
+  }
+
+  var branch = treeish.split('/').pop(); // may not always be a local branch
+
+  // file patterns (these take / on win and *nix)
+  var build = '.grunt/openlayers-website';
+  var dist = build + '/dist';
+  var assets = dist + '/assets';
+  var repo = build + '/repo';
 
   grunt.initConfig({
     checkout: {
       options: {
-        repo: 'https://github.com/openlayers/ol3.git',
+        repo: 'git://github.com/openlayers/ol3.git',
+        treeish: treeish,
         dir: repo
       }
     },
     buildpy: {
-      options: {cwd: repo}
+      options: {cwd: repo},
+      apidoc: {
+        args: ['apidoc']
+      },
+      examples: {
+        args: ['host-examples']
+      }
     },
     move: {
-      options: {
-        src: path.join(repo, 'build', 'hosted', 'HEAD')
+      apidoc: {
+        src: repo + '/build/hosted/HEAD/apidoc',
+        dest: dist + '/en/' + branch + '/apidoc'
+      },
+      build: {
+        src: repo + '/build/hosted/HEAD/build',
+        dest: dist + '/en/' + branch + '/build'
+      },
+      closure: {
+        src: repo + '/build/hosted/HEAD/closure-library',
+        dest: dist + '/en/' + branch + '/closure-library'
+      },
+      ol: {
+        src: repo + '/build/hosted/HEAD/ol',
+        dest: dist + '/en/' + branch + '/ol'
+      },
+      examples: {
+        src: repo + '/build/hosted/HEAD/examples',
+        dest: dist + '/en/' + branch + '/examples'
+      },
+      resources: {
+        src: repo + '/build/hosted/HEAD/resources',
+        dest: dist + '/en/' + branch + '/resources'
       }
     },
     'gh-pages': {
       options: {
         branch: 'master',
-        base: dist
+        base: dist,
+        only: branch
       },
       src: ['**/*']
     },
@@ -65,7 +103,7 @@ module.exports = function(grunt) {
             'bower_components/jquery/jquery.js',
             'bower_components/bootstrap/dist/js/bootstrap.js'
           ],
-          dest: path.join(assets, 'js/main.js')
+          dest: assets + '/js/main.js'
         }]
       }
     },
@@ -74,12 +112,12 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'src',
-          src: 'theme/img/**/*',
+          src: 'theme/img/**/*.*',
           dest: assets
         }, {
           expand: true,
           cwd: 'bower_components/font-awesome',
-          src: 'font/**/*',
+          src: 'font/**/*.*',
           dest: assets
         }]
       }
@@ -88,14 +126,22 @@ module.exports = function(grunt) {
       options: {
         layoutdir: 'src/layouts',
         assets: assets,
-        current: current
+        latest: latest
       },
       pages: {
         files: [{
           expand: true,
           cwd: 'src/pages',
-          src: '**/*',
+          src: '**/*.*',
           dest: dist
+        }]
+      },
+      doc: {
+        files: [{
+          expand: true,
+          cwd: repo,
+          src: 'doc/**/*.*',
+          dest: dist + '/en/' + branch
         }]
       }
     },
@@ -109,7 +155,7 @@ module.exports = function(grunt) {
     watch: {
       layouts: {
         files: 'src/layouts/**/*',
-        tasks: ['assemble:pages']
+        tasks: ['assemble']
       },
       pages: {
         files: 'src/pages/**/*',
@@ -130,56 +176,24 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-gh-pages');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('assemble');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-openlayers');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-gh-pages');
 
   grunt.loadTasks('tasks');
 
-  /**
-   * The deploy task will build the site resources for a particular git
-   * tree-ish.  A fetch of all heads and tags will be run first, so you
-   * typically specify something like origin/master or r3.4.5-beta.1 for the
-   * treeish.  This *doesn't* do any merging before building, so you don't want
-   * to simply specify the name of a local branch (whose head may not be the
-   * same as a tracked branch for some remote).
-   */
-  grunt.registerTask('docetc', 'Build docs for a tree-ish', function() {
-    var treeish = grunt.option('treeish');
-    if (!treeish) {
-      grunt.fatal(new Error('Missing "treeish" option.'));
-    }
-
-    var branch = treeish.split('/').pop(); // may not always be a local branch
-
-    grunt.task.run([
-      'checkout:' + treeish,
-      'buildpy:host-examples',
-      'buildpy:apidoc',
-      'clean:dist',
-      'move:' + path.join(dist, 'en', branch)
-    ]);
-  });
-
-  grunt.registerTask('build', 'Build the website',
-      ['docetc', 'less', 'uglify', 'copy', 'assemble']);
+  grunt.registerTask('build', 'Build the website', [
+    'checkout', 'buildpy:examples', 'buildpy:apidoc', 'clean:dist',
+    'move', 'less', 'uglify', 'copy', 'assemble']);
 
 
   grunt.registerTask('deploy', 'Deploy the site', function() {
-    var treeish = grunt.option('treeish');
-    if (!treeish) {
-      grunt.fatal(new Error('Missing "treeish" option.'));
-    }
-    var branch = treeish.split('/').pop(); // may not always be a local branch
-
-    grunt.option('grunt-gh-pages-only', path.join('en', branch));
     grunt.task.run(['build', 'gh-pages']);
   });
 
@@ -187,7 +201,6 @@ module.exports = function(grunt) {
   grunt.registerTask('start', 'Start the dev server',
       ['build', 'concurrent']);
 
-  // grunt.registerTask('default', 'deploy:origin/master');
   grunt.registerTask('default', 'build');
 
 };

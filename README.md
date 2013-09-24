@@ -39,6 +39,6 @@ After building the site, this starts a file watcher that rebuilds pages/css on c
 
     $ grunt start --treeish r3.2.1
 
-## Updating the current release
+## Updating the latest release
 
-The latest release is specified in the `gruntfile.js` as `current` (this will not always be the case).  Before deploying the site for a newly created tag, update the `gruntfile.js` with the name of the release tag.  Then run `grunt deploy --treeish r3.2.1` as described above (with the name of the release tag).
+The latest release is specified in the `gruntfile.js` as `latest`.  Before deploying the site for a newly created tag, update the `gruntfile.js` with the name of the release tag.  Then run `grunt deploy --treeish r3.2.1` as described above (with the name of the release tag).

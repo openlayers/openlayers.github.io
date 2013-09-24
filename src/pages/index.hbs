@@ -2,8 +2,8 @@
 title: 'Welcome'
 layout: main.hbs
 head:
- - <link rel="stylesheet" href="en/<%= current %>/build/ol.css" type="text/css">
- - <link rel="stylesheet" href="assets/theme/index.css" type="text/css">
+ - <link rel="stylesheet" href="en/<%= latest %>/build/ol.css" type="text/css">
+ - <link rel="stylesheet" href="<%= assets %>/theme/index.css" type="text/css">
 ---
 
 <div id='map'></div>
@@ -23,24 +23,24 @@ head:
   <div class='row'>
     <div class='col-sm-6'>
       <h3>Tiled Layers</h3>
-      <img src='assets/theme/img/tiled-layers.png' class='thumb'>
+      <img src='{{ assets }}/theme/img/tiled-layers.png' class='thumb'>
       <p>Pull tiles from OSM, Bing, MapBox, Stamen, MapQuest, and any other XYZ source you can find.  OGC mapping services and untiled layers also supported.</p>
     </div>
     <div class='col-sm-6'>
       <h3>Vector Layers</h3>
-      <img src='assets/theme/img/vector-layers.png' class='thumb'>
+      <img src='{{ assets }}/theme/img/vector-layers.png' class='thumb'>
       <p>Render vector data from GeoJSON, TopoJSON, KML, GML, and a growing number of other formats.</p>
     </div>
   </div>
   <div class='row'>
     <div class='col-sm-6'>
       <h3>Fast &amp; Mobile Ready</h3>
-      <img src='assets/theme/img/timeline.png' class='thumb'>
+      <img src='{{ assets }}/theme/img/timeline.png' class='thumb'>
       <p>Mobile support out of the box.  Build lightweight custom profiles with just the components you need.</p>
     </div>
     <div class='col-sm-6'>
       <h3>Cutting Edge &amp; Easy to Customize</h3>
-      <img src='assets/theme/img/popup.png' class='thumb'>
+      <img src='{{ assets }}/theme/img/popup.png' class='thumb'>
       <p>Map rendering leverages WebGL, Canvas 2D, and all the latest greatness from HTML5.  Style your map controls with straight-forward CSS.</p>
     </div>
   </div>
@@ -49,7 +49,7 @@ head:
   </div>
   <div class='row'>
     <div class='col-sm-6'>
-      <a href='#' class='big-link'>
+      <a href='en/{{ latest }}/doc/quickstart.html' class='big-link'>
         <h3><i class='icon-ok'></i> Quick Start</h3>
         <p>Seen enough already?  Go here to get started.</p>
       </a>
@@ -63,13 +63,13 @@ head:
   </div>
   <div class='row'>
     <div class='col-sm-6'>
-      <a href='#' class='big-link'>
+      <a href='en/{{ latest }}/doc/tutorials' class='big-link'>
         <h3><i class='icon-book'></i> Tutorials</h3>
         <p>Spend time learning the basics and graduate up to advanced mapping techniques.</p>
       </a>
     </div>
     <div class='col-sm-6'>
-      <a href='en/{{ current }}/apidoc' class='big-link'>
+      <a href='en/{{ latest }}/apidoc' class='big-link'>
         <h3><i class='icon-sitemap'></i> API Docs</h3>
         <p>Browse through the API docs for details on code usage.</p>
       </a>
@@ -96,7 +96,7 @@ head:
     </div>
   </div>
 </div>
-<script src='en/{{ current }}/build/ol.js'></script>
+<script src='en/{{ latest }}/build/ol.js'></script>
 <script>
   var map = new ol.Map({
     target: 'map',
