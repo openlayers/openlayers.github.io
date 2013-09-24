@@ -57,12 +57,12 @@ function clean(git, dir) {
 
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
-  grunt.registerTask('checkout', 'Check out with git.', function(treeish) {
+  grunt.registerTask('checkout', 'Check out with git.', function() {
     var done = this.async();
 
     var options = this.options({git: 'git'});
 
-    if (!treeish) {
+    if (!options.treeish) {
       return done(new Error('Missing "treeish" argument to checkout.'));
     }
     if (!options.repo) {
@@ -89,8 +89,8 @@ module.exports = function(grunt) {
           return clean(options.git, options.dir);
         }).
         then(function() {
-          grunt.log.writeln('Checking out ' + treeish);
-          return checkout(options.git, treeish, options.dir);
+          grunt.log.writeln('Checking out ' + options.treeish);
+          return checkout(options.git, options.treeish, options.dir);
         }).
         then(function() {
           done();

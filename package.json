@@ -11,11 +11,22 @@
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-contrib-clean": "0.4.0",
-    "grunt-gh-pages": "0.6.0",
+    "grunt-gh-pages": "0.7.3",
     "q": "0.9.2",
-    "grunt-cli": "0.1.9"
+    "grunt-cli": "0.1.9",
+    "bower": "1.2.6",
+    "grunt-contrib-less": "0.6.4",
+    "assemble": "0.4.7",
+    "grunt-contrib-watch": "0.5.1",
+    "grunt-contrib-copy": "0.4.1",
+    "grunt-contrib-uglify": "0.2.2",
+    "grunt-contrib-connect": "0.3.0",
+    "grunt-concurrent": "0.3.0"
   },
   "scripts": {
-    "deploy": "grunt"
+    "postinstall": "bower install",
+    "start": "grunt start --treeish 'origin/master'",
+    "build": "grunt build --treeish 'origin/master'",
+    "deploy": "grunt deploy --treeish 'origin/master'"
   }
 }

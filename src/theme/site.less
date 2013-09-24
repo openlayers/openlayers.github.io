@@ -1,0 +1,363 @@
+/*!
+ * OpenLayers 3 Theme
+ * Includes bits of the following:
+ *
+ ********************************************************************************
+ * Bootstrap v3.0.0
+ *
+ * Copyright 2013 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ ********************************************************************************
+ * Font Awesome 3.2.1
+ * the iconic font designed for Bootstrap
+ * ------------------------------------------------------------------------------
+ * The full suite of pictographic icons, examples, and documentation can be
+ * found at http://fontawesome.io.  Stay up to date on Twitter at
+ * http://twitter.com/fontawesome.
+ *
+ * License
+ * ------------------------------------------------------------------------------
+ * - The Font Awesome font is licensed under SIL OFL 1.1 -
+ *   http://scripts.sil.org/OFL
+ * - Font Awesome CSS, LESS, and SASS files are licensed under MIT License -
+ *   http://opensource.org/licenses/mit-license.html
+ * - Font Awesome documentation licensed under CC BY 3.0 -
+ *   http://creativecommons.org/licenses/by/3.0/
+ * - Attribution is no longer required in Font Awesome 3.0, but much appreciated:
+ *   "Font Awesome by Dave Gandy - http://fontawesome.io"
+ *
+ * Author - Dave Gandy
+ * ------------------------------------------------------------------------------
+ * Email: dave@fontawesome.io
+ * Twitter: http://twitter.com/byscuits
+ * Work: Lead Product Designer @ Kyruus - http://kyruus.com
+ */
+
+
+/**
+ * Bootstrap Imports
+ * Uncomment modules that are needed.
+ */
+
+// Core variables and mixins
+@import "../../bower_components/bootstrap/less/variables.less";
+@import "../../bower_components/bootstrap/less/mixins.less";
+
+// Reset
+@import "../../bower_components/bootstrap/less/normalize.less";
+@import "../../bower_components/bootstrap/less/print.less";
+
+// Core CSS
+@import "../../bower_components/bootstrap/less/scaffolding.less";
+@import "../../bower_components/bootstrap/less/type.less";
+@import "../../bower_components/bootstrap/less/code.less";
+@import "../../bower_components/bootstrap/less/grid.less";
+
+@import "../../bower_components/bootstrap/less/tables.less";
+@import "../../bower_components/bootstrap/less/forms.less";
+@import "../../bower_components/bootstrap/less/buttons.less";
+
+// Components: common
+@import "../../bower_components/bootstrap/less/component-animations.less";
+@import "../../bower_components/bootstrap/less/dropdowns.less";
+@import "../../bower_components/bootstrap/less/list-group.less";
+@import "../../bower_components/bootstrap/less/panels.less";
+@import "../../bower_components/bootstrap/less/wells.less";
+@import "../../bower_components/bootstrap/less/close.less";
+
+// Components: Nav
+@import "../../bower_components/bootstrap/less/navs.less";
+@import "../../bower_components/bootstrap/less/navbar.less";
+@import "../../bower_components/bootstrap/less/button-groups.less";
+@import "../../bower_components/bootstrap/less/breadcrumbs.less";
+@import "../../bower_components/bootstrap/less/pagination.less";
+@import "../../bower_components/bootstrap/less/pager.less";
+
+// Components: Popovers
+// @import "../../bower_components/bootstrap/less/modals.less";
+// @import "../../bower_components/bootstrap/less/tooltip.less";
+// @import "../../bower_components/bootstrap/less/popovers.less";
+
+// Components: Misc
+// @import "../../bower_components/bootstrap/less/alerts.less";
+// @import "../../bower_components/bootstrap/less/thumbnails.less";
+// @import "../../bower_components/bootstrap/less/media.less";
+// @import "../../bower_components/bootstrap/less/labels.less";
+// @import "../../bower_components/bootstrap/less/badges.less";
+// @import "../../bower_components/bootstrap/less/progress-bars.less";
+// @import "../../bower_components/bootstrap/less/accordion.less";
+// @import "../../bower_components/bootstrap/less/carousel.less";
+// @import "../../bower_components/bootstrap/less/jumbotron.less";
+
+// Utility classes
+@import "../../bower_components/bootstrap/less/utilities.less"; // Has to be last to override when necessary
+@import "../../bower_components/bootstrap/less/responsive-utilities.less";
+
+
+/**
+ * Font-Awesome Imports
+ * Uncomment modules that are needed.
+ */
+@import "../../bower_components/font-awesome/less/variables.less";
+@import "../../bower_components/font-awesome/less/mixins.less";
+@import "../../bower_components/font-awesome/less/path.less";
+@import "../../bower_components/font-awesome/less/core.less";
+@import "../../bower_components/font-awesome/less/bootstrap.less";
+@import "../../bower_components/font-awesome/less/extras.less";
+@import "../../bower_components/font-awesome/less/icons.less";
+
+
+/**
+ * Here begins the OpenLayers style.  There are more sophisticated ways to
+ * override Bootstrap defaults with mixins, but for now we just keep it easy.
+ *
+ * Colors here from this scheme: http://colorschemedesigner.com/#3l21Tw0w0w0w0
+ */
+@primary1: #03899C;
+@primary2: #1F6B75;
+@primary3: #015965;
+@primary4: #36BBCE;
+@primary5: #5FC0CE;
+@complimentary1: #FF7A00;
+@complimentary2: #BF7530;
+@complimentary3: #A65000;
+@complimentary4: #FF9C40;
+@complimentary5: #FFB673;
+
+body {
+  font-family: 'Quattrocento Sans', sans-serif;
+  font-size: 16px;
+  padding-top: 50px;
+}
+
+.navbar {
+  background-color: @primary2;
+  color: white;
+}
+.navbar-toggle {
+  background-color: white;
+}
+.navbar-brand {
+  color: white;
+  font-weight: bold;
+  font-size: 170%;
+  padding: 5px 0;
+  max-width: 250px;
+}
+.navbar-brand img {
+  height: 40px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.navbar-nav>li>a {
+  color: white;
+}
+.navbar-brand:hover,
+.navbar-brand:focus,
+.navbar-nav>li>a:hover,
+.navbar-nav>li>a:focus,
+footer a:hover,
+footer a:focus {
+  color: @complimentary1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: 'Quattrocento Sans', sans-serif;
+  font-weight: 700;
+}
+h1.topic {
+  font-size: 110%;
+  color: #bbb;
+  text-transform: uppercase;
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+a {
+  color: @primary1;
+  text-decoration: none;
+}
+a {
+  .transition(all 0.2s); // bootstrap mixin
+}
+a:hover,
+a:focus {
+  color: @complimentary1;
+  text-decoration: none;
+}
+
+a.big-link {
+  padding: 0 10px;
+  margin: 5px 0;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  display: block;
+  color: inherit;
+}
+a.big-link h3 {
+  margin-top: 10px;
+}
+a.big-link:hover,
+a.big-link:focus {
+  border-color: #eee;
+  color: @primary1;
+  background-color: #f8f8f8;
+}
+
+blockquote.plain {
+  border: none;
+}
+
+footer {
+  background-color: @primary1;
+  color: white;
+  margin-top: 40px;
+  padding: 10px;
+  text-align: center;
+}
+footer a {
+  color: white;
+}
+
+/* Style for code blocks parsed with highlight.js */
+
+/*
+
+Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmail.com>
+
+*/
+
+pre code {
+  color: #657b83;
+}
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .javadoc {
+  color: #998;
+  font-style: italic
+}
+
+pre .keyword,
+pre .css .rule .keyword,
+pre .winutils,
+pre .javascript .title,
+pre .nginx .title,
+pre .subst,
+pre .request,
+pre .status {
+  color: #333;
+  font-weight: bold
+}
+
+pre .number,
+pre .hexcolor,
+pre .ruby .constant {
+  color: #099;
+}
+
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula {
+  color: #d14
+}
+
+pre .title,
+pre .id,
+pre .coffeescript .params,
+pre .scss .preprocessor {
+  color: #900;
+  font-weight: bold
+}
+
+pre .javascript .title,
+pre .lisp .title,
+pre .clojure .title,
+pre .subst {
+  font-weight: normal
+}
+
+pre .class .title,
+pre .haskell .type,
+pre .vhdl .literal,
+pre .tex .command {
+  color: #458;
+  font-weight: bold
+}
+
+pre .tag,
+pre .tag .title,
+pre .rules .property,
+pre .django .tag .keyword {
+  color: #000080;
+  font-weight: normal
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body {
+  color: #008080
+}
+
+pre .regexp {
+  color: #009926
+}
+
+pre .class {
+  color: #458;
+  font-weight: bold
+}
+
+pre .symbol,
+pre .ruby .symbol .string,
+pre .lisp .keyword,
+pre .tex .special,
+pre .prompt {
+  color: #990073
+}
+
+pre .built_in,
+pre .lisp .title,
+pre .clojure .built_in {
+  color: #0086b3
+}
+
+pre .preprocessor,
+pre .pi,
+pre .doctype,
+pre .shebang,
+pre .cdata {
+  color: #999;
+  font-weight: bold
+}
+
+pre .deletion {
+  background: #fdd
+}
+
+pre .addition {
+  background: #dfd
+}
+
+pre .diff .change {
+  background: #0086b3
+}
+
+pre .chunk {
+  color: #aaa
+}
