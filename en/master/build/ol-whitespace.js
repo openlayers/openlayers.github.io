@@ -531,8 +531,8 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["ol", "ol.Att
 goog.addDependency("../build/src/internal/src/types.js", ["ol.AttributionOptions", "ol.DeviceOrientationOptions", "ol.GeolocationOptions", "ol.GetFeatureInfoOptions", "ol.GetFeaturesOptions", "ol.MapOptions", "ol.OverlayOptions", "ol.Proj4jsProjectionOptions", "ol.ProjectionOptions", "ol.View2DOptions", "ol.animation.BounceOptions", "ol.animation.PanOptions", "ol.animation.RotateOptions", "ol.animation.ZoomOptions", "ol.control.AttributionOptions", "ol.control.ControlOptions", "ol.control.DefaultsOptions", 
 "ol.control.FullScreenOptions", "ol.control.LogoOptions", "ol.control.MousePositionOptions", "ol.control.ScaleLineOptions", "ol.control.ZoomOptions", "ol.control.ZoomSliderOptions", "ol.control.ZoomToExtentOptions", "ol.interaction.DefaultsOptions", "ol.interaction.DoubleClickZoomOptions", "ol.interaction.DragPanOptions", "ol.interaction.DragRotateAndZoomOptions", "ol.interaction.DragRotateOptions", "ol.interaction.DragZoomOptions", "ol.interaction.KeyboardPanOptions", "ol.interaction.KeyboardZoomOptions", 
 "ol.interaction.SelectOptions", "ol.interaction.TouchPanOptions", "ol.interaction.TouchRotateOptions", "ol.layer.BaseOptions", "ol.layer.GroupOptions", "ol.layer.LayerOptions", "ol.layer.TileOptions", "ol.layer.VectorLayerOptions", "ol.parser.GMLOptions", "ol.parser.GMLReadOptions", "ol.parser.GMLWriteOptions", "ol.parser.GPXOptions", "ol.parser.GPXWriteOptions", "ol.parser.KMLOptions", "ol.source.BingMapsOptions", "ol.source.ImageStaticOptions", "ol.source.ImageWMSOptions", "ol.source.OSMOptions", 
-"ol.source.SourceOptions", "ol.source.StamenOptions", "ol.source.TileDebugOptions", "ol.source.TileJSONOptions", "ol.source.TileWMSOptions", "ol.source.Vector2Options", "ol.source.VectorOptions", "ol.source.WMSGetFeatureInfoOptions", "ol.source.WMTSOptions", "ol.source.XYZOptions", "ol.style.FillOptions", "ol.style.IconOptions", "ol.style.RuleOptions", "ol.style.ShapeOptions", "ol.style.StrokeOptions", "ol.style.StyleOptions", "ol.style.TextOptions", "ol.tilegrid.TileGridOptions", "ol.tilegrid.WMTSOptions", 
-"ol.tilegrid.XYZOptions"], []);
+"ol.source.StamenOptions", "ol.source.TileDebugOptions", "ol.source.TileJSONOptions", "ol.source.TileWMSOptions", "ol.source.Vector2Options", "ol.source.VectorOptions", "ol.source.WMSGetFeatureInfoOptions", "ol.source.WMTSOptions", "ol.source.XYZOptions", "ol.style.FillOptions", "ol.style.IconOptions", "ol.style.RuleOptions", "ol.style.ShapeOptions", "ol.style.StrokeOptions", "ol.style.StyleOptions", "ol.style.TextOptions", "ol.tilegrid.TileGridOptions", "ol.tilegrid.WMTSOptions", "ol.tilegrid.XYZOptions"], 
+[]);
 goog.addDependency("../src/ol/animation.js", ["ol.animation"], ["ol.PreRenderFunction", "ol.ViewHint", "ol.easing"]);
 goog.addDependency("../src/ol/array.js", ["ol.array"], ["goog.array", "goog.asserts"]);
 goog.addDependency("../src/ol/attribution.js", ["ol.Attribution"], ["ol.TileRange"]);
@@ -7276,8 +7276,8 @@ ol.layer.Base = function(options) {
   values.maxResolution = goog.isDef(values.maxResolution) ? values.maxResolution : Infinity;
   values.minResolution = goog.isDef(values.minResolution) ? values.minResolution : 0;
   this.setValues(values);
-  goog.events.listen(this, [ol.Object.getChangeEventType(ol.layer.LayerProperty.BRIGHTNESS), ol.Object.getChangeEventType(ol.layer.LayerProperty.CONTRAST), ol.Object.getChangeEventType(ol.layer.LayerProperty.HUE), ol.Object.getChangeEventType(ol.layer.LayerProperty.OPACITY), ol.Object.getChangeEventType(ol.layer.LayerProperty.SATURATION), ol.Object.getChangeEventType(ol.layer.LayerProperty.MAX_RESOLUTION), ol.Object.getChangeEventType(ol.layer.LayerProperty.MIN_RESOLUTION), goog.events.EventType.LOAD], 
-  this.handleLayerChange, false, this);
+  goog.events.listen(this, [ol.Object.getChangeEventType(ol.layer.LayerProperty.BRIGHTNESS), ol.Object.getChangeEventType(ol.layer.LayerProperty.CONTRAST), ol.Object.getChangeEventType(ol.layer.LayerProperty.HUE), ol.Object.getChangeEventType(ol.layer.LayerProperty.OPACITY), ol.Object.getChangeEventType(ol.layer.LayerProperty.SATURATION), ol.Object.getChangeEventType(ol.layer.LayerProperty.MAX_RESOLUTION), ol.Object.getChangeEventType(ol.layer.LayerProperty.MIN_RESOLUTION)], this.handleLayerChange, 
+  false, this);
   goog.events.listen(this, ol.Object.getChangeEventType(ol.layer.LayerProperty.VISIBLE), this.handleLayerVisibleChange, false, this)
 };
 goog.inherits(ol.layer.Base, ol.Object);
@@ -7858,6 +7858,7 @@ goog.require("goog.functions");
 goog.require("ol.Attribution");
 goog.require("ol.Extent");
 goog.require("ol.proj");
+ol.source.SourceOptions;
 ol.source.Source = function(options) {
   goog.base(this);
   this.projection_ = ol.proj.get(options.projection);
@@ -7870,10 +7871,6 @@ goog.inherits(ol.source.Source, goog.events.EventTarget);
 ol.source.Source.prototype.dispatchChangeEvent = function() {
   ++this.revision_;
   this.dispatchEvent(goog.events.EventType.CHANGE)
-};
-ol.source.Source.prototype.dispatchLoadEvent = function() {
-  ++this.revision_;
-  this.dispatchEvent(goog.events.EventType.LOAD)
 };
 ol.source.Source.prototype.getAttributions = function() {
   return this.attributions_
@@ -7916,15 +7913,9 @@ ol.layer.Layer = function(options) {
   delete baseOptions.source;
   goog.base(this, baseOptions);
   this.source_ = options.source;
-  goog.events.listen(this.source_, goog.events.EventType.CHANGE, this.handleSourceChange_, false, this);
-  if(!this.source_.isReady()) {
-    goog.events.listenOnce(this.source_, goog.events.EventType.LOAD, this.handleSourceLoad_, false, this)
-  }
+  goog.events.listen(this.source_, goog.events.EventType.CHANGE, this.handleSourceChange_, false, this)
 };
 goog.inherits(ol.layer.Layer, ol.layer.Base);
-ol.layer.Layer.prototype.dispatchLoadEvent_ = function() {
-  this.dispatchEvent(goog.events.EventType.LOAD)
-};
 ol.layer.Layer.prototype.getLayersArray = function(opt_array) {
   var array = goog.isDef(opt_array) ? opt_array : [];
   array.push(this);
@@ -7942,9 +7933,6 @@ ol.layer.Layer.prototype.getSource = function() {
 };
 ol.layer.Layer.prototype.handleSourceChange_ = function() {
   this.dispatchChangeEvent()
-};
-ol.layer.Layer.prototype.handleSourceLoad_ = function() {
-  this.dispatchLoadEvent_()
 };
 ol.layer.Layer.prototype.isReady = function() {
   return this.getSource().isReady()
@@ -32657,7 +32645,7 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse = function(response) 
   this.setAttributions(attributions);
   this.setLogo(brandLogoUri);
   this.ready_ = true;
-  this.dispatchLoadEvent()
+  this.dispatchChangeEvent()
 };
 ol.source.BingMaps.prototype.isReady = function() {
   return this.ready_
@@ -32991,7 +32979,7 @@ ol.source.TileJSON.prototype.handleTileJSONResponse = function() {
     this.setAttributions([new ol.Attribution({html:tileJSON.attribution, tileRanges:tileRanges})])
   }
   this.ready_ = true;
-  this.dispatchLoadEvent()
+  this.dispatchChangeEvent()
 };
 ol.source.TileJSON.prototype.isReady = function() {
   return this.ready_
@@ -33704,7 +33692,6 @@ goog.provide("ol.source.BingMapsOptions");
 goog.provide("ol.source.ImageStaticOptions");
 goog.provide("ol.source.ImageWMSOptions");
 goog.provide("ol.source.OSMOptions");
-goog.provide("ol.source.SourceOptions");
 goog.provide("ol.source.StamenOptions");
 goog.provide("ol.source.TileDebugOptions");
 goog.provide("ol.source.TileJSONOptions");
@@ -33774,7 +33761,6 @@ ol.source.BingMapsOptions;
 ol.source.ImageStaticOptions;
 ol.source.ImageWMSOptions;
 ol.source.OSMOptions;
-ol.source.SourceOptions;
 ol.source.StamenOptions;
 ol.source.TileDebugOptions;
 ol.source.TileJSONOptions;
