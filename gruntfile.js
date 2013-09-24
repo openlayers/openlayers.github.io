@@ -42,6 +42,11 @@ module.exports = function(grunt) {
         args: ['host-examples']
       }
     },
+    clean: {
+      dist: dist,
+      repo: repo,
+      all: build
+    },
     move: {
       apidoc: {
         src: repo + '/build/hosted/HEAD/apidoc',
@@ -68,20 +73,6 @@ module.exports = function(grunt) {
         dest: dist + '/en/' + branch + '/resources'
       }
     },
-    'gh-pages': {
-      options: {
-        branch: 'master',
-        base: dist,
-        only: branch
-      },
-      src: ['**/*']
-    },
-    clean: {
-      dist: dist,
-      repo: repo,
-      all: build
-    },
-    // new stuff
     less: {
       all: {
         options: {
@@ -173,6 +164,14 @@ module.exports = function(grunt) {
       target: {
         tasks: ['connect', 'watch']
       }
+    },
+    'gh-pages': {
+      options: {
+        branch: 'master',
+        base: dist,
+        only: branch
+      },
+      src: ['**/*']
     }
   });
 
