@@ -169,7 +169,7 @@ module.exports = function(grunt) {
       options: {
         branch: 'master',
         base: dist,
-        only: branch
+        only: 'en/' + branch
       },
       src: ['**/*']
     }
