@@ -20,8 +20,8 @@
         <!-- menu items that get hidden below 768px width -->
         <div class='nav-collapse collapse navbar-responsive-collapse'>
           <ul class='nav navbar-nav pull-right'>
-            <li><a href='/en/master/doc'>Docs</a></li>
-            <li><a href='/en/master/examples'>Examples</a></li>
+            <li><a href='/en/v3.0.0-beta.1/doc'>Docs</a></li>
+            <li><a href='/en/v3.0.0-beta.1/examples'>Examples</a></li>
             <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
           </ul>
         </div>
@@ -36,14 +36,14 @@
 <pre><code class="language-xml"><span class="doctype">&lt;!doctype html&gt;</span>
 <span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"http://ol3js.org/en/master/build/ol.css"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"http://ol3js.org/en/v3.0.0-beta.1/build/ol.css"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
       <span class="class">.map</span> <span class="rules">{
         <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px;</span></span>
         <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%;</span></span>
       <span class="rule">}</span></span>
     </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://ol3js.org/en/master/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://ol3js.org/en/v3.0.0-beta.1/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
     <span class="tag">&lt;<span class="title">title</span>&gt;</span>OpenLayers 3 example<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
   <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
   <span class="tag">&lt;<span class="title">body</span>&gt;</span>
@@ -73,7 +73,7 @@
 <li>JavaScript to create a simple map</li>
 </ol>
 <h3>Include OpenLayers</h3>
-<pre><code class="language-xml">  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://ol3js.org/en/master/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
+<pre><code class="language-xml">  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://ol3js.org/en/v3.0.0-beta.1/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
 <p>The first part is to include the JavaScript library. For the purpose of this tutorial, here we simply point to the ol3js.org website to get the whole library. In a production environment, we would build a custom version of the library including only the module needed for our application.</p>
 <h3><code>&lt;div&gt;</code> to contain the map</h3>
 <pre><code class="language-xml">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"map"</span> <span class="attribute">class</span>=<span class="value">"map"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre>
@@ -107,7 +107,7 @@
         source: <span class="keyword">new</span> ol.source.MapQuestOpenAerial()
       })
     ]</code></pre>
-<p>Layers in OpenLayers 3 are defined with a type (Image, Tile or Vector) which contains a source. The source is the protocol used to get the map tiles. You can consult the list of <a href="/en/master/apidoc/ol.source.html">available layer sources here</a></p>
+<p>Layers in OpenLayers 3 are defined with a type (Image, Tile or Vector) which contains a source. The source is the protocol used to get the map tiles. You can consult the list of <a href="/en/v3.0.0-beta.1/apidoc/ol.source.html">available layer sources here</a></p>
 <p>The next part of the <code>Map</code> object is the <code>View</code>. The view allow to specify the center, resolution, and rotation of the map. Right now, only <code>View2D</code> is supported, but other views should be available at some point. The simplest way to define a view is to define a center point and a zoom level. Note that zoom level 0 is zoomed out.</p>
 <pre><code class="language-js">    view: <span class="keyword">new</span> ol.View2D({
       center: ol.proj.transform([<span class="number">37.41</span>, <span class="number">8.82</span>], <span class="string">'EPSG:4326'</span>, <span class="string">'EPSG:3857'</span>),
