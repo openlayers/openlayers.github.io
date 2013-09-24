@@ -11,7 +11,7 @@
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-contrib-clean": "0.4.0",
-    "grunt-gh-pages": "0.7.0",
+    "grunt-gh-pages": "0.7.3",
     "q": "0.9.2",
     "grunt-cli": "0.1.9",
     "bower": "1.2.6",

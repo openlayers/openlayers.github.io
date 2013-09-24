@@ -197,9 +197,11 @@ module.exports = function(grunt) {
     grunt.task.run(['build', 'gh-pages']);
   });
 
-
   grunt.registerTask('start', 'Start the dev server',
       ['build', 'concurrent']);
+
+  grunt.registerTask('serve', 'Start the dev server without build.py first',
+      ['concurrent']);
 
   grunt.registerTask('default', 'build');
 
