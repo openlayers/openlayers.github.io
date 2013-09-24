@@ -17,11 +17,11 @@ Note that the `build` branch of this repository is the default branch.  The buil
 
 To build the site for a specific branch, you need to have Grunt installed (`npm install -g grunt-cli`).
 
-The `grunt deploy` task takes the name of a "treeish" as an option.  This can be a tag (e.g. `r3.4.5-beta.1`) or a qualified branch name (e.g. `origin/foo`).
+The `grunt deploy` task takes the name of a "treeish" as an option.  This can be a tag (e.g. `v3.4.5-beta.1`) or a qualified branch name (e.g. `origin/foo`).
 
 To build the site for a tag (or any commit really), provide a treeish option to the `deploy` task.  E.g.
 
-    $ grunt deploy --treeish r3.4.5-beta.1
+    $ grunt deploy --treeish v3.4.5-beta.1
 
 Note that if you want to deploy a branch on the `origin` remote, you should use `origin/<branch-name>` syntax to refer to it.  E.g.
 
@@ -37,8 +37,8 @@ If you are making changes to the site templates or pages, you can run the `start
 
 After building the site, this starts a file watcher that rebuilds pages/css on changes.  If you are targeting something besides `origin/master`, run the `grunt start` tast with the `treeish` option as described above.
 
-    $ grunt start --treeish r3.2.1
+    $ grunt start --treeish v3.2.1
 
 ## Updating the latest release
 
-The latest release is specified in the `gruntfile.js` as `latest`.  Before deploying the site for a newly created tag, update the `gruntfile.js` with the name of the release tag.  Then run `grunt deploy --treeish r3.2.1` as described above (with the name of the release tag).
+The latest release is specified in the `gruntfile.js` as `latest`.  Before deploying the site for a newly created tag, update the `gruntfile.js` with the name of the release tag.  Then run `grunt deploy --treeish v3.2.1` as described above (with the name of the release tag).

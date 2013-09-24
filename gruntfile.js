@@ -3,10 +3,10 @@ var path = require('path');
 
 /**
  * The latest release.  Links to examples, doc, etc. will be prefixed by this
- * value.  Examples: r3.0.0-beta.1 or master.
+ * value.  Examples: v3.0.0-beta.1 or master.
  * @type {String}
  */
-var latest = 'master';
+var latest = 'v3.0.0-beta.1';
 
 
 /** @param {Object} grunt Grunt. */
