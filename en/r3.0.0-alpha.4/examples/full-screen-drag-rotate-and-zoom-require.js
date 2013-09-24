@@ -1,9 +1,0 @@
-goog.require('ol.Map');
-goog.require('ol.RendererHint');
-goog.require('ol.View2D');
-goog.require('ol.control.FullScreen');
-goog.require('ol.control.defaults');
-goog.require('ol.interaction.DragRotateAndZoom');
-goog.require('ol.interaction.defaults');
-goog.require('ol.layer.TileLayer');
-goog.require('ol.source.BingMaps');
