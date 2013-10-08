@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.parser.ogc.WMSCapabilities</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.MapBrowserEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -35,7 +35,9 @@
     
 <header>
     <h2>
-    ol.parser.ogc.WMSCapabilities
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
+    
+    ol.MapBrowserEvent
     </h2>
     
 </header>  
@@ -47,7 +49,7 @@
     
         
 <dt>
-    <h4 class="name" id="WMSCapabilities"><span class="type-signature"></span>new WMSCapabilities</h4>
+    <h4 class="name" id="MapBrowserEvent"><span class="type-signature"></span>new MapBrowserEvent</h4>
     
     
 </dt>
@@ -87,13 +89,100 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Event type.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Map.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>browserEvent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">goog.events.BrowserEvent</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Browser event.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>frameState</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.FrameState</span>
 
 
             
@@ -106,12 +195,14 @@
                 
                     
                 
+                    &lt;nullable><br>
+                
                 </td>
             
             
             
             
-            <td class="description last">(Optional) <p>Options which will be set on this object.</p></td>
+            <td class="description last">(Optional) <p>Frame state.</p></td>
         </tr>
 	
 	
@@ -141,7 +232,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>wmscapabilitiesparser.js, line 47</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 27</li></ul></dd>
 	
     
     
@@ -176,6 +267,176 @@
     
     
     
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="getCoordinate"><span class="type-signature"></span>getCoordinate</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 55</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Coordinate.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getPixel"><span class="type-signature"></span>getPixel</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get pixel offset of the event from the top-left corner of the map viewport.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 67</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Pixel offset.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">ol.Pixel</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        </dl>
     
     
     

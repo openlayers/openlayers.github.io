@@ -50,7 +50,8 @@ var map = new ol.Map({
 var element = document.getElementById('popup');
 
 var popup = new ol.Overlay({
-  element: element
+  element: element,
+  positioning: ol.OverlayPositioning.BOTTOM_CENTER
 });
 map.addOverlay(popup);
 

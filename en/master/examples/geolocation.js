@@ -27,7 +27,8 @@ geolocation.on('change', function() {
 });
 
 var marker = new ol.Overlay({
-  element: /** @type {Element} */ ($('<i/>').addClass('icon-flag').get(0))
+  element: /** @type {Element} */ ($('<i/>').addClass('icon-flag').get(0)),
+  positioning: ol.OverlayPositioning.BOTTOM_LEFT
 });
 map.addOverlay(marker);
 // bind the marker position to the device location.
