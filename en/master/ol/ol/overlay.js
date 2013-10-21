@@ -62,6 +62,12 @@ ol.Overlay = function(options) {
 
   /**
    * @private
+   * @type {boolean}
+   */
+  this.stopEvent_ = goog.isDef(options.stopEvent) ? options.stopEvent : false;
+
+  /**
+   * @private
    * @type {Element}
    */
   this.element_ = goog.dom.createElement(goog.dom.TagName.DIV);
@@ -202,8 +208,10 @@ ol.Overlay.prototype.handleMapChanged = function() {
     this.mapPostrenderListenerKey_ = goog.events.listen(map,
         ol.MapEventType.POSTRENDER, this.handleMapPostrender, false, this);
     this.updatePixelPosition_();
-    goog.dom.append(
-        /** @type {!Node} */ (map.getOverlayContainer()), this.element_);
+    goog.dom.append(/** @type {!Node} */ (
+        this.stopEvent_ ? map.getOverlayContainerStopEvent() :
+                          map.getOverlayContainer()),
+        this.element_);
   }
 };
 
@@ -272,11 +280,16 @@ goog.exportProperty(
 
 
 /**
+ * Set the positioning for this overlay.
  * @param {ol.OverlayPositioning|undefined} positioning Positioning.
  */
 ol.Overlay.prototype.setPositioning = function(positioning) {
   this.set(ol.OverlayProperty.POSITIONING, positioning);
 };
+goog.exportProperty(
+    ol.Overlay.prototype,
+    'setPositioning',
+    ol.Overlay.prototype.setPositioning);
 
 
 /**

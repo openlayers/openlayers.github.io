@@ -45,7 +45,7 @@ var panToLondon = document.getElementById('pan-to-london');
 panToLondon.addEventListener('click', function() {
   var pan = ol.animation.pan({
     duration: 2000,
-    source: view.getCenter()
+    source: /** @type {ol.Coordinate} */ (view.getCenter())
   });
   map.beforeRender(pan);
   view.setCenter(london);
@@ -56,7 +56,7 @@ elasticToMoscow.addEventListener('click', function() {
   var pan = ol.animation.pan({
     duration: 2000,
     easing: ol.easing.elastic,
-    source: view.getCenter()
+    source: /** @type {ol.Coordinate} */ (view.getCenter())
   });
   map.beforeRender(pan);
   view.setCenter(moscow);
@@ -67,7 +67,7 @@ bounceToIstanbul.addEventListener('click', function() {
   var pan = ol.animation.pan({
     duration: 2000,
     easing: ol.easing.bounce,
-    source: view.getCenter()
+    source: /** @type {ol.Coordinate} */ (view.getCenter())
   });
   map.beforeRender(pan);
   view.setCenter(istanbul);
@@ -79,7 +79,7 @@ spinToRome.addEventListener('click', function() {
   var start = +new Date();
   var pan = ol.animation.pan({
     duration: duration,
-    source: view.getCenter(),
+    source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
   var rotate = ol.animation.rotate({
@@ -97,7 +97,7 @@ flyToBern.addEventListener('click', function() {
   var start = +new Date();
   var pan = ol.animation.pan({
     duration: duration,
-    source: view.getCenter(),
+    source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
   var bounce = ol.animation.bounce({
@@ -115,7 +115,7 @@ spiralToMadrid.addEventListener('click', function() {
   var start = +new Date();
   var pan = ol.animation.pan({
     duration: duration,
-    source: view.getCenter(),
+    source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
   var bounce = ol.animation.bounce({

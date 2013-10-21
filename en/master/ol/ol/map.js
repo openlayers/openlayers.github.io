@@ -225,13 +225,23 @@ ol.Map = function(options) {
    */
   this.overlayContainer_ = goog.dom.createDom(goog.dom.TagName.DIV,
       'ol-overlaycontainer');
-  goog.events.listen(this.overlayContainer_, [
+  goog.dom.appendChild(this.viewport_, this.overlayContainer_);
+
+  /**
+   * @private
+   * @type {Element}
+   */
+  this.overlayContainerStopEvent_ = goog.dom.createDom(goog.dom.TagName.DIV,
+      'ol-overlaycontainer-stopevent');
+  goog.events.listen(this.overlayContainerStopEvent_, [
     goog.events.EventType.CLICK,
     goog.events.EventType.DBLCLICK,
     ol.BrowserFeature.HAS_TOUCH ?
-        goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEDOWN
+        goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEDOWN,
+    ol.BrowserFeature.HAS_TOUCH ?
+        goog.events.EventType.TOUCHEND : goog.events.EventType.MOUSEUP
   ], goog.events.Event.stopPropagation);
-  goog.dom.appendChild(this.viewport_, this.overlayContainer_);
+  goog.dom.appendChild(this.viewport_, this.overlayContainerStopEvent_);
 
   var mapBrowserEventHandler = new ol.MapBrowserEventHandler(this);
   goog.events.listen(mapBrowserEventHandler,
@@ -423,6 +433,41 @@ ol.Map.prototype.freezeRendering = function() {
 
 
 /**
+ * Returns the map pixel position for a a browser event.
+ * @param {Event} event Event.
+ * @return {ol.Coordinate} Coordinate.
+ */
+ol.Map.prototype.getEventCoordinate = function(event) {
+  return this.getCoordinateFromPixel(this.getEventPixel(event));
+};
+
+
+/**
+ * Returns the geographical coordinate for a browser event.
+ * @param {Event} event Event.
+ * @return {ol.Pixel} Pixel.
+ */
+ol.Map.prototype.getEventPixel = function(event) {
+  // goog.style.getRelativePosition is based on event.targetTouches,
+  // but touchend and touchcancel events have no targetTouches when
+  // the last finger is removed from the screen.
+  // So we ourselves compute the position of touch events.
+  // See https://code.google.com/p/closure-library/issues/detail?id=588
+  if (goog.isDef(event.changedTouches)) {
+    var touch = event.changedTouches.item(0);
+    var viewportPosition = goog.style.getClientPosition(this.viewport_);
+    return [
+      touch.clientX - viewportPosition.x,
+      touch.clientY - viewportPosition.y
+    ];
+  } else {
+    var eventPosition = goog.style.getRelativePosition(event, this.viewport_);
+    return [eventPosition.x, eventPosition.y];
+  }
+};
+
+
+/**
  * Get the map's renderer.
  * @return {ol.renderer.Map} Renderer.
  */
@@ -591,11 +636,21 @@ ol.Map.prototype.getViewport = function() {
 
 /**
  * @return {Element} The map's overlay container. Elements added to this
- * container won't let mousedown and touchstart events through to the map, so
- * clicks and gestures on an overlay don't trigger any MapBrowserEvent.
+ * container will let mousedown and touchstart events through to the map, so
+ * clicks and gestures on an overlay will trigger MapBrowserEvent events.
  */
 ol.Map.prototype.getOverlayContainer = function() {
   return this.overlayContainer_;
+};
+
+
+/**
+ * @return {Element} The map's overlay container. Elements added to this
+ * container won't let mousedown and touchstart events through to the map, so
+ * clicks and gestures on an overlay don't trigger any MapBrowserEvent.
+ */
+ol.Map.prototype.getOverlayContainerStopEvent = function() {
+  return this.overlayContainerStopEvent_;
 };
 
 
@@ -651,12 +706,7 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
     // coordinates so interactions cannot be used.
     return;
   }
-  if (mapBrowserEvent.type == goog.events.EventType.MOUSEOUT ||
-      mapBrowserEvent.type == goog.events.EventType.TOUCHEND) {
-    this.focus_ = null;
-  } else {
-    this.focus_ = mapBrowserEvent.getCoordinate();
-  }
+  this.focus_ = mapBrowserEvent.getCoordinate();
   mapBrowserEvent.frameState = this.frameState_;
   var interactions = this.getInteractions();
   var interactionsArray = /** @type {Array.<ol.interaction.Interaction>} */
@@ -694,14 +744,15 @@ ol.Map.prototype.handlePostRender = function() {
   if (!tileQueue.isEmpty()) {
     var maxTotalLoading = 16;
     var maxNewLoads = maxTotalLoading;
+    var tileSourceCount = 0;
     if (!goog.isNull(frameState)) {
       var hints = frameState.viewHints;
       if (hints[ol.ViewHint.ANIMATING] || hints[ol.ViewHint.INTERACTING]) {
         maxTotalLoading = 8;
         maxNewLoads = 2;
       }
+      tileSourceCount = goog.object.getCount(frameState.wantedTiles);
     }
-    var tileSourceCount = goog.object.getCount(frameState.wantedTiles);
     maxTotalLoading *= tileSourceCount;
     maxNewLoads *= tileSourceCount;
     if (tileQueue.getTilesLoading() < maxTotalLoading) {
