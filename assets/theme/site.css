@@ -903,7 +903,8 @@ a .icon-rotate-90:before,a .icon-rotate-180:before,a .icon-rotate-270:before,a .
 .icon-renren:before{content:"\f18b"}
 body{font-family:'Quattrocento Sans',sans-serif;font-size:16px;padding-top:50px}
 .navbar{background-color:#1f6b75;color:white}
-.navbar-toggle{background-color:white}
+.navbar-toggle{background-color:transparent}
+.navbar-toggle .icon-bar{background-color:white}
 .navbar-brand{color:white;font-weight:bold;font-size:170%;padding:5px 0;max-width:250px}
 .navbar-brand img{height:40px;vertical-align:middle;margin-right:5px}
 .navbar-nav>li>a{color:white}

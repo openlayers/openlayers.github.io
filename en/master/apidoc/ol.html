@@ -2620,7 +2620,7 @@ returns the output array.</p>
             
             <td class="description last"><p>The initial center for the view.
     The coordinate system for the center is specified with the <code>projection</code>
-    option.</p></td>
+    option. Default is null.</p></td>
         </tr>
 	
 	
@@ -2646,7 +2646,8 @@ returns the output array.</p>
             
             
             
-            <td class="description last"><p>The extent to constraint the center to.</p></td>
+            <td class="description last"><p>The extent that constrains the center,
+    in other words, center cannot be set outside this extent. Default is none</p></td>
         </tr>
 	
 	
@@ -2756,7 +2757,8 @@ returns the output array.</p>
             
             
             <td class="description last"><p>The initial resolution for the view.
-    The units are <code>projection</code> units per pixel (e.g. meters per pixel).</p></td>
+    The units are <code>projection</code> units per pixel (e.g. meters per pixel).
+    An alternative to setting this is to set <code>zoom</code>.</p></td>
         </tr>
 	
 	
@@ -2811,7 +2813,7 @@ returns the output array.</p>
             
             
             <td class="description last"><p>The initial rotation for the view
-    in radians (positive rotation clockwise).</p></td>
+    in radians (positive rotation clockwise). Default is 0.</p></td>
         </tr>
 	
 	
@@ -2837,8 +2839,9 @@ returns the output array.</p>
             
             
             
-            <td class="description last"><p>Zoom level used to calculate the initial
-    resolution for the view. The initial resolution is determined using the
+            <td class="description last"><p>Only used if <code>resolution</code> is not defined.
+    Zoom level used to calculate the initial resolution for the view.
+    The initial resolution is determined using the
     <code>ol.View2D#constrainResolution</code> method.</p></td>
         </tr>
 	
@@ -2866,7 +2869,7 @@ returns the output array.</p>
             
             
             <td class="description last"><p>The zoom factor used to determine the
-    resolution constraint. It is together with <code>maxResolution</code> and <code>maxZoom</code>.
+    resolution constraint. Used together with <code>maxResolution</code> and <code>maxZoom</code>.
     Default is 2.</p></td>
         </tr>
 	

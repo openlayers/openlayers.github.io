@@ -4,5 +4,5 @@
 #news{clear:both;border:1px solid #eee;background-color:#f8f8f8;border-radius:2px;padding:10px 10px 5px;margin:0 15px;width:95%}
 #news h1{margin:0}
 img.thumb{float:right;margin-left:10px}
-.ol-overlaycontainer{opacity:0;-webkit-transition:opacity 300ms ease;-moz-transition:opacity 300ms ease;-ms-transition:opacity 300ms ease;-o-transition:opacity 300ms ease;transition:opacity 300ms ease}
-.over .ol-overlaycontainer{opacity:1}
+.ol-overlaycontainer-stopevent{opacity:0;-webkit-transition:opacity 300ms ease;-moz-transition:opacity 300ms ease;-ms-transition:opacity 300ms ease;-o-transition:opacity 300ms ease;transition:opacity 300ms ease}
+.over .ol-overlaycontainer-stopevent{opacity:1}
