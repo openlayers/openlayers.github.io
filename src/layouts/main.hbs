@@ -10,25 +10,28 @@
     {{/each}}
   </head>
   <body>
-    <div class='navbar navbar-fixed-top'>
+    <header class='navbar navbar-fixed-top'>
       <div class='container'>
-        <a href='/' class='navbar-brand'><img src='{{ assets }}/theme/img/logo.png'>&nbsp;OpenLayers 3</a>
+
         <!-- button that shows up below 768px width -->
         <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
           <span class='icon-bar'></span>
           <span class='icon-bar'></span>
           <span class='icon-bar'></span>
         </button>
+
+        <a href='/' class='navbar-brand'><img src='{{ assets }}/theme/img/logo.png'>&nbsp;OpenLayers 3</a>
+
         <!-- menu items that get hidden below 768px width -->
-        <div class='nav-collapse collapse navbar-responsive-collapse'>
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
           <ul class='nav navbar-nav pull-right'>
             <li><a href='/en/{{ latest }}/doc'>Docs</a></li>
             <li><a href='/en/{{ latest }}/examples'>Examples</a></li>
             <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
           </ul>
-        </div>
+        </nav>
       </div>
-    </div>
+    </header>
     {{> body }}
     <footer>
       Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>.
