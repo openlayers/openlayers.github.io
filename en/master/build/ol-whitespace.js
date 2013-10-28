@@ -26037,7 +26037,7 @@ ol.Map = function(options) {
   this.overlayContainer_ = goog.dom.createDom(goog.dom.TagName.DIV, "ol-overlaycontainer");
   goog.dom.appendChild(this.viewport_, this.overlayContainer_);
   this.overlayContainerStopEvent_ = goog.dom.createDom(goog.dom.TagName.DIV, "ol-overlaycontainer-stopevent");
-  goog.events.listen(this.overlayContainerStopEvent_, [goog.events.EventType.CLICK, goog.events.EventType.DBLCLICK, ol.BrowserFeature.HAS_TOUCH ? goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEDOWN, ol.BrowserFeature.HAS_TOUCH ? goog.events.EventType.TOUCHEND : goog.events.EventType.MOUSEUP], goog.events.Event.stopPropagation);
+  goog.events.listen(this.overlayContainerStopEvent_, [goog.events.EventType.CLICK, goog.events.EventType.DBLCLICK, goog.events.EventType.MOUSEDOWN, goog.events.EventType.MOUSEUP, goog.events.EventType.TOUCHSTART, goog.events.EventType.TOUCHEND, goog.events.EventType.MSPOINTERDOWN, goog.events.EventType.MSPOINTERUP], goog.events.Event.stopPropagation);
   goog.dom.appendChild(this.viewport_, this.overlayContainerStopEvent_);
   var mapBrowserEventHandler = new ol.MapBrowserEventHandler(this);
   goog.events.listen(mapBrowserEventHandler, goog.object.getValues(ol.MapBrowserEvent.EventType), this.handleMapBrowserEvent, false, this);
