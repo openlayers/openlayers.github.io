@@ -21857,7 +21857,7 @@ ol.renderer.canvas.ImageLayer = function(mapRenderer, imageLayer) {
 };
 goog.inherits(ol.renderer.canvas.ImageLayer, ol.renderer.canvas.Layer);
 ol.renderer.canvas.ImageLayer.prototype.getImage = function() {
-  return goog.isNull(this.image_) ? null : this.image_.getImageElement(this)
+  return goog.isNull(this.image_) ? null : this.image_.getImageElement()
 };
 ol.renderer.canvas.ImageLayer.prototype.getImageLayer = function() {
   return(this.getLayer())
@@ -25072,7 +25072,7 @@ ol.renderer.webgl.ImageLayer = function(mapRenderer, imageLayer) {
 };
 goog.inherits(ol.renderer.webgl.ImageLayer, ol.renderer.webgl.Layer);
 ol.renderer.webgl.ImageLayer.prototype.createTexture_ = function(image) {
-  var imageElement = image.getImageElement(this);
+  var imageElement = image.getImageElement();
   var gl = this.getWebGLMapRenderer().getGL();
   var texture = gl.createTexture();
   gl.bindTexture(goog.webgl.TEXTURE_2D, texture);
