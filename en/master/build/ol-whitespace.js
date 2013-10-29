@@ -8001,15 +8001,22 @@ ol.coordinate.add = function(coordinate, delta) {
   coordinate[1] += delta[1];
   return coordinate
 };
-ol.coordinate.createStringXY = function(opt_precision) {
+ol.coordinate.createStringXY = function(opt_fractionDigits) {
   return function(coordinate) {
-    return ol.coordinate.toStringXY(coordinate, opt_precision)
+    return ol.coordinate.toStringXY(coordinate, opt_fractionDigits)
   }
 };
 ol.coordinate.degreesToStringHDMS_ = function(degrees, hemispheres) {
   var normalizedDegrees = goog.math.modulo(degrees + 180, 360) - 180;
   var x = Math.abs(Math.round(3600 * normalizedDegrees));
   return Math.floor(x / 3600) + "\u00b0 " + Math.floor(x / 60 % 60) + "\u2032 " + Math.floor(x % 60) + "\u2033 " + hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0)
+};
+ol.coordinate.format = function(coordinate, template, opt_fractionDigits) {
+  if(goog.isDef(coordinate)) {
+    return template.replace("{x}", coordinate[0].toFixed(opt_fractionDigits)).replace("{y}", coordinate[1].toFixed(opt_fractionDigits))
+  }else {
+    return""
+  }
 };
 ol.coordinate.rotate = function(coordinate, angle) {
   var cosAngle = Math.cos(angle);
@@ -8037,13 +8044,8 @@ ol.coordinate.toStringHDMS = function(coordinate) {
     return""
   }
 };
-ol.coordinate.toStringXY = function(coordinate, opt_precision) {
-  if(goog.isDef(coordinate)) {
-    var precision = opt_precision || 0;
-    return coordinate[0].toFixed(precision) + ", " + coordinate[1].toFixed(precision)
-  }else {
-    return""
-  }
+ol.coordinate.toStringXY = function(coordinate, opt_fractionDigits) {
+  return ol.coordinate.format(coordinate, "{x}, {y}", opt_fractionDigits)
 };
 ol.coordinate.fromProjectedArray = function(array, axis) {
   var firstAxis = axis.charAt(0);
