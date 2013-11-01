@@ -57,6 +57,12 @@ ol.OverlayPositioning = {
  * @extends {ol.Object}
  * @param {ol.OverlayOptions} options Overlay options.
  * @todo stability experimental
+ * @todo observable element {Element} the Element containing the overlay
+ * @todo observable map {ol.Map} the map that the overlay is part of
+ * @todo observable position {ol.Coordinate} the spatial point that the overlay
+ *       is anchored at
+ * @todo observable positioning {ol.OverlayPositioning} how the overlay is
+ *       positioned relative to its point on the map
  */
 ol.Overlay = function(options) {
 
@@ -66,7 +72,14 @@ ol.Overlay = function(options) {
    * @private
    * @type {boolean}
    */
-  this.stopEvent_ = goog.isDef(options.stopEvent) ? options.stopEvent : false;
+  this.insertFirst_ = goog.isDef(options.insertFirst) ?
+      options.insertFirst : true;
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.stopEvent_ = goog.isDef(options.stopEvent) ? options.stopEvent : true;
 
   /**
    * @private
@@ -214,10 +227,14 @@ ol.Overlay.prototype.handleMapChanged = function() {
     this.mapPostrenderListenerKey_ = goog.events.listen(map,
         ol.MapEventType.POSTRENDER, this.handleMapPostrender, false, this);
     this.updatePixelPosition_();
-    goog.dom.append(/** @type {!Node} */ (
-        this.stopEvent_ ? map.getOverlayContainerStopEvent() :
-                          map.getOverlayContainer()),
-        this.element_);
+    var container = this.stopEvent_ ?
+        map.getOverlayContainerStopEvent() : map.getOverlayContainer();
+    if (this.insertFirst_) {
+      goog.dom.insertChildAt(/** @type {!Element} */ (
+          container), this.element_, 0);
+    } else {
+      goog.dom.append(/** @type {!Node} */ (container), this.element_);
+    }
   }
 };
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.parser.WKT</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.MapBrowserEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -35,9 +35,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.parser.html">.parser</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.parser.WKT
+    ol.MapBrowserEvent
     </h2>
     
 </header>  
@@ -49,7 +49,7 @@
     
         
 <dt>
-    <h4 class="name" id="WKT"><span class="type-signature"></span>new WKT</h4>
+    <h4 class="name" id="MapBrowserEvent"><span class="type-signature"></span>new MapBrowserEvent</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -66,6 +66,153 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Event type.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Map.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>browserEvent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">goog.events.BrowserEvent</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Browser event.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>frameState</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.FrameState</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">(Optional) <p>Frame state.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -90,7 +237,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>wktparser.js, line 22</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 27</li></ul></dd>
 	
     
     
@@ -133,10 +280,10 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="read"><span class="type-signature">&lt;static> </span>read</h4>
+    <h4 class="name" id="getCoordinate"><span class="type-signature"></span>getCoordinate</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -145,63 +292,11 @@
 <dd>
     
     
-    <div class="description">
-        <p>Parse a WKT string.</p>
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>str</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>WKT string.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -226,7 +321,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>wktparser.js, line 359</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 56</li></ul></dd>
 	
     
     
@@ -246,7 +341,7 @@
     
             
 <div class="param-desc">
-    <p>Parsed geometry.</p>
+    <p>Coordinate.</p>
 </div>
 
 
@@ -257,10 +352,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
 
 
 	</dd>
@@ -274,10 +366,10 @@
         
             
 <dt>
-    <h4 class="name" id="write"><span class="type-signature">&lt;static> </span>write</h4>
+    <h4 class="name" id="getPixel"><span class="type-signature"></span>getPixel</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -287,7 +379,7 @@
     
     
     <div class="description">
-        <p>Write out a geometry as a WKT string.</p>
+        <p>Get pixel offset of the event from the top-left corner of the map viewport.</p>
     </div>
     
 
@@ -295,54 +387,6 @@
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>geom</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>The geometry to encode.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -367,7 +411,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>wktparser.js, line 369</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 70</li></ul></dd>
 	
     
     
@@ -387,7 +431,7 @@
     
             
 <div class="param-desc">
-    <p>WKT for the geometry.</p>
+    <p>Pixel offset.</p>
 </div>
 
 
@@ -398,286 +442,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type">string</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="read"><span class="type-signature"></span>read</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Parse a WKT string.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>str</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>WKT string.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>wktparser.js, line 339</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Parsed geometry.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="write"><span class="type-signature"></span>write</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Write out a geometry as a WKT string.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>geom</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>The geometry to encode.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>wktparser.js, line 349</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>WKT for the geometry.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">string</span>
+<span class="param-type">ol.Pixel</span>
 
 
 	</dd>
