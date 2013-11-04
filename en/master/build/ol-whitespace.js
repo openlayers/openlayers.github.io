@@ -16701,6 +16701,7 @@ ol.MapBrowserEventHandler = function(map) {
   this.touchstartListenerKey_ = null;
   this.down_ = null;
   var element = this.map_.getViewport();
+  this.relayedListenerKeys_ = [goog.events.listen(element, goog.events.EventType.MOUSEMOVE, this.relayEvent_, false, this), goog.events.listen(element, goog.events.EventType.CLICK, this.relayEvent_, false, this)];
   this.mousedownListenerKey_ = goog.events.listen(element, goog.events.EventType.MOUSEDOWN, this.handleMouseDown_, false, this);
   this.pointerdownListenerKey_ = goog.events.listen(element, goog.events.EventType.MSPOINTERDOWN, this.handlePointerDown_, false, this);
   this.touchstartListenerKey_ = goog.events.listen(element, goog.events.EventType.TOUCHSTART, this.handleTouchStart_, false, this)
@@ -16819,6 +16820,10 @@ ol.MapBrowserEventHandler.prototype.handleTouchEnd_ = function(browserEvent) {
   }
 };
 ol.MapBrowserEventHandler.prototype.disposeInternal = function() {
+  if(!goog.isNull(this.relayedListenerKeys_)) {
+    goog.array.forEach(this.relayedListenerKeys_, goog.events.unlistenByKey);
+    this.relayedListenerKeys_ = null
+  }
   if(!goog.isNull(this.mousedownListenerKey_)) {
     goog.events.unlistenByKey(this.mousedownListenerKey_);
     this.mousedownListenerKey_ = null
@@ -16837,7 +16842,10 @@ ol.MapBrowserEventHandler.prototype.disposeInternal = function() {
   }
   goog.base(this, "disposeInternal")
 };
-ol.MapBrowserEvent.EventType = {DBLCLICK:goog.events.EventType.DBLCLICK, DOWN:"down", DRAGSTART:"dragstart", DRAG:"drag", DRAGEND:"dragend", SINGLECLICK:"singleclick", TOUCHSTART:goog.events.EventType.TOUCHSTART, TOUCHMOVE:goog.events.EventType.TOUCHMOVE, TOUCHEND:goog.events.EventType.TOUCHEND};
+ol.MapBrowserEventHandler.prototype.relayEvent_ = function(browserEvent) {
+  this.dispatchEvent(new ol.MapBrowserEvent(browserEvent.type, this.map_, browserEvent))
+};
+ol.MapBrowserEvent.EventType = {CLICK:goog.events.EventType.CLICK, DBLCLICK:goog.events.EventType.DBLCLICK, MOUSEMOVE:goog.events.EventType.MOUSEMOVE, DOWN:"down", DRAGSTART:"dragstart", DRAG:"drag", DRAGEND:"dragend", SINGLECLICK:"singleclick", TOUCHSTART:goog.events.EventType.TOUCHSTART, TOUCHMOVE:goog.events.EventType.TOUCHMOVE, TOUCHEND:goog.events.EventType.TOUCHEND};
 goog.provide("ol.View2D");
 goog.provide("ol.View2DProperty");
 goog.require("goog.asserts");
@@ -17335,8 +17343,15 @@ goog.require("ol.MapBrowserEvent");
 goog.require("ol.animation");
 goog.require("ol.easing");
 ol.interaction.Interaction = function() {
+  this.map_ = null
+};
+ol.interaction.Interaction.prototype.getMap = function() {
+  return this.map_
 };
 ol.interaction.Interaction.prototype.handleMapBrowserEvent = goog.abstractMethod;
+ol.interaction.Interaction.prototype.setMap = function(map) {
+  this.map_ = map
+};
 ol.interaction.Interaction.pan = function(map, view, delta, opt_duration) {
   var currentCenter = view.getCenter();
   if(goog.isDef(currentCenter)) {
@@ -26100,6 +26115,9 @@ ol.Map = function(options) {
   this.controls_.forEach(function(control) {
     control.setMap(this)
   }, this);
+  this.interactions_.forEach(function(interaction) {
+    interaction.setMap(this)
+  }, this);
   this.overlays_.forEach(function(overlay) {
     overlay.setMap(this)
   }, this)
@@ -26110,6 +26128,12 @@ ol.Map.prototype.addControl = function(control) {
   goog.asserts.assert(goog.isDef(controls));
   controls.push(control);
   control.setMap(this)
+};
+ol.Map.prototype.addInteraction = function(interaction) {
+  var interactions = this.getInteractions();
+  goog.asserts.assert(goog.isDef(interactions));
+  interactions.push(interaction);
+  interaction.setMap(this)
 };
 ol.Map.prototype.addLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
@@ -26359,6 +26383,16 @@ ol.Map.prototype.removeControl = function(control) {
   }
   return undefined
 };
+ol.Map.prototype.removeInteraction = function(interaction) {
+  var removed;
+  var interactions = this.getInteractions();
+  goog.asserts.assert(goog.isDef(interactions));
+  if(goog.isDef(interactions.remove(interaction))) {
+    interaction.setMap(null);
+    removed = interaction
+  }
+  return removed
+};
 ol.Map.prototype.removeLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
   goog.asserts.assert(goog.isDef(layers));
@@ -26518,7 +26552,17 @@ ol.Map.createOptionsInternal = function(options) {
   }else {
     controls = ol.control.defaults()
   }
-  var interactions = goog.isDef(options.interactions) ? options.interactions : ol.interaction.defaults();
+  var interactions;
+  if(goog.isDef(options.interactions)) {
+    if(goog.isArray(options.interactions)) {
+      interactions = new ol.Collection(goog.array.clone(options.interactions))
+    }else {
+      goog.asserts.assertInstanceof(options.interactions, ol.Collection);
+      interactions = options.interactions
+    }
+  }else {
+    interactions = ol.interaction.defaults()
+  }
   var overlays;
   if(goog.isDef(options.overlays)) {
     if(goog.isArray(options.overlays)) {

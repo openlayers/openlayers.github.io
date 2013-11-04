@@ -356,6 +356,14 @@ ol.Map = function(options) {
         control.setMap(this);
       }, this);
 
+  this.interactions_.forEach(
+      /**
+       * @param {ol.interaction.Interaction} interaction Interaction.
+       */
+      function(interaction) {
+        interaction.setMap(this);
+      }, this);
+
   this.overlays_.forEach(
       /**
        * @param {ol.Overlay} overlay Overlay.
@@ -378,6 +386,18 @@ ol.Map.prototype.addControl = function(control) {
   goog.asserts.assert(goog.isDef(controls));
   controls.push(control);
   control.setMap(this);
+};
+
+
+/**
+ * Add the given interaction to the map.
+ * @param {ol.interaction.Interaction} interaction Interaction to add.
+ */
+ol.Map.prototype.addInteraction = function(interaction) {
+  var interactions = this.getInteractions();
+  goog.asserts.assert(goog.isDef(interactions));
+  interactions.push(interaction);
+  interaction.setMap(this);
 };
 
 
@@ -494,7 +514,9 @@ ol.Map.prototype.getRenderer = function() {
 
 
 /**
- * Get the element in which this map is rendered.
+ * Get the target in which this map is rendered.
+ * Note that this returns what is entered as an option or in setTarget:
+ * if that was an element, it returns an element; if a string, it returns that.
  * @return {Element|string|undefined} Target.
  * @todo stability experimental
  */
@@ -960,6 +982,24 @@ ol.Map.prototype.removeControl = function(control) {
 
 
 /**
+ * Remove the given interaction from the map.
+ * @param {ol.interaction.Interaction} interaction Interaction to remove.
+ * @return {ol.interaction.Interaction|undefined} The removed interaction (or
+ *     undefined if the interaction was not found).
+ */
+ol.Map.prototype.removeInteraction = function(interaction) {
+  var removed;
+  var interactions = this.getInteractions();
+  goog.asserts.assert(goog.isDef(interactions));
+  if (goog.isDef(interactions.remove(interaction))) {
+    interaction.setMap(null);
+    removed = interaction;
+  }
+  return removed;
+};
+
+
+/**
  * Removes the given layer from the map.
  * @param {ol.layer.Base} layer Layer.
  * @return {ol.layer.Base|undefined} The removed layer or undefined if the
@@ -1274,8 +1314,17 @@ ol.Map.createOptionsInternal = function(options) {
     controls = ol.control.defaults();
   }
 
-  var interactions = goog.isDef(options.interactions) ?
-      options.interactions : ol.interaction.defaults();
+  var interactions;
+  if (goog.isDef(options.interactions)) {
+    if (goog.isArray(options.interactions)) {
+      interactions = new ol.Collection(goog.array.clone(options.interactions));
+    } else {
+      goog.asserts.assertInstanceof(options.interactions, ol.Collection);
+      interactions = options.interactions;
+    }
+  } else {
+    interactions = ol.interaction.defaults();
+  }
 
   var overlays;
   if (goog.isDef(options.overlays)) {
