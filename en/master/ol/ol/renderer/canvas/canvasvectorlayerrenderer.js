@@ -275,7 +275,8 @@ ol.renderer.canvas.VectorLayer.prototype.getFeaturesForPixel =
         halfWidth, halfHeight, uid, coordinates, j;
     for (var id in candidates) {
       candidate = candidates[id];
-      if (candidate.renderIntent == ol.layer.VectorLayerRenderIntent.HIDDEN) {
+      if (candidate.getRenderIntent() ==
+          ol.layer.VectorLayerRenderIntent.HIDDEN) {
         continue;
       }
       geom = candidate.getGeometry();
@@ -329,7 +330,9 @@ ol.renderer.canvas.VectorLayer.prototype.getFeaturesForPixel =
  * @private
  */
 ol.renderer.canvas.VectorLayer.prototype.handleLayerChange_ = function(event) {
-  this.expireTiles_(event.extents);
+  if (goog.isDef(this.renderedResolution_)) {
+    this.expireTiles_(event.extents);
+  }
   this.requestMapRenderFrame_();
 };
 

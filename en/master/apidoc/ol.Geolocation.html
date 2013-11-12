@@ -264,7 +264,7 @@ geolocation.on('change:position', function(evt) {
       
       </td>
       <td class="setter">no</td>
-      <td class="event"><code>change:altitudeAccuracy</code></td>
+      <td class="event"><code>change:altitudeaccuracy</code></td>
       <td class="description last">the accuracy of the
       altitude measurement</td>
     </tr>
@@ -365,7 +365,7 @@ geolocation.on('change:position', function(evt) {
       
       </td>
       <td class="setter">yes</td>
-      <td class="event"><code>change:trackingOptions</code></td>
+      <td class="event"><code>change:trackingoptions</code></td>
       <td class="description last">PositionOptions as defined by the
       HTML5 Geolocation spec at http://dev.w3.org/geo/api/spec-source.html</td>
     </tr>
@@ -3192,8 +3192,8 @@ tracking options.</p></td>
     
     
     <div class="description">
-        <p>Removes an event listener which was added with listen() by the key returned
-    by on().</p>
+        <p>Removes an event listener which was added with <code>listen()</code> by the key returned
+by <code>on()</code> or <code>once()</code>.</p>
     </div>
     
 
@@ -3215,8 +3215,6 @@ tracking options.</p></td>
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -3235,20 +3233,12 @@ tracking options.</p></td>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">goog.events.Key</span>
 
 
             
             </td>
             
-            
-                <td class="attributes">
-                
-                    
-                
-                    &lt;nullable><br>
-                
-                </td>
             
             
             
