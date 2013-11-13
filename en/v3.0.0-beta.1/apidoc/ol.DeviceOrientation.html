@@ -58,16 +58,20 @@
     
     <div class="description">
         <p>The ol.DeviceOrientation class provides access to DeviceOrientation
-information and events, see the <a href="http://dev.w3.org/geo/api/spec-source-orientation">HTML 5 DeviceOrientation Specification</a> for more details.</p>
+information and events, see the [HTML 5 DeviceOrientation Specification](
+<a href='http://dev.w3.org/geo/api/spec-source-orientation'>http://dev.w3.org/geo/api/spec-source-orientation</a>) for more details.</p>
+
 <p>Many new computers, and especially mobile phones
 and tablets, provide hardware support for device orientation. Web
 developers targetting mobile devices will be especially interested in this
 class.</p>
+
 <p>Device orientation data are relative to a common starting point. For mobile
 devices, the starting point is to lay your phone face up on a table with the
 top of the phone pointing north. This represents the zero state. All
 angles are then relative to this state. For computers, it is the same except
 the screen is open at 90 degrees.</p>
+
 <p>Device orientation is reported as three angles - <code>alpha</code>, <code>beta</code>, and
 <code>gamma</code> - relative to the starting position along the three planar axes X, Y
 and Z. The X axis runs from the left edge to the right edge through the
@@ -76,6 +80,7 @@ of the device through the middle. The Z axis runs from the back to the front
 through the middle. In the starting position, the X axis points to the
 right, the Y axis points away from you and the Z axis points straight up
 from the device lying flat.</p>
+
 <p>The three angles representing the device orientation are relative to the
 three axes. <code>alpha</code> indicates how much the device has been rotated around the
 Z axis, which is commonly interpreted as the compass heading (see note
@@ -83,11 +88,13 @@ below). <code>beta</code> indicates how much the device has been rotated around 
 axis, or how much it is tilted from front to back.  <code>gamma</code> indicates how
 much the device has been rotated around the Y axis, or how much it is tilted
 from left to right.</p>
+
 <p>For most browsers, the <code>alpha</code> value returns the compass heading so if the
 device points north, it will be 0.  With Safari on iOS, the 0 value of
 <code>alpha</code> is calculated from when device orientation was first requested.
 ol.DeviceOrientation provides the <code>heading</code> property which normalizes this
 behavior across all browsers for you.</p>
+
 <p>It is important to note that the HTML 5 DeviceOrientation specification
 indicates that <code>alpha</code>, <code>beta</code> and <code>gamma</code> are in degrees while the
 equivalent properties in ol.DeviceOrientation are in radians for consistency

@@ -60,14 +60,17 @@
         <p>Helper class for providing HTML5 Geolocation capabilities.
 The <a href="http://dev.w3.org/geo/api/spec-source.html">Geolocation API</a>
 is used to locate a user's position.</p>
+
 <p>Example:</p>
+
 <pre><code>var geolocation = new ol.Geolocation();
 // take the projection to use from the map's view
 geolocation.bindTo('projection', map.getView());
 // listen to changes in position
 geolocation.on('change:position', function(evt) {
   window.console.log(geolocation.getPosition());
-});</code></pre>
+});
+</code></pre>
     </div>
     
 

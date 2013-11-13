@@ -49,12 +49,14 @@
     
         
             <div class="description"><p>The {ol.animation} static methods are designed to be used with the <a href="ol.Map.html#beforeRender">ol.Map#beforeRender</a> method.  For example:</p>
+
 <pre><code>var map = new ol.Map({ ... });
 var zoom = ol.animation.zoom({
   resolution: map.getView().getResolution()
 });
 map.beforeRender(zoom);
-map.getView().setResolution(map.getView().getResolution() * 2);</code></pre></div>
+map.getView().setResolution(map.getView().getResolution() * 2);
+</code></pre></div>
         
         
         
