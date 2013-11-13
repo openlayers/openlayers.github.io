@@ -33,8 +33,8 @@
     
 
 <div class='container'>
-<h1 id="quick-start">Quick Start</h1>
-<h2 id="put-a-map-on-a-page">Put a map on a page</h2>
+<h1>Quick Start</h1>
+<h2>Put a map on a page</h2>
 <p>Below you&#39;ll find a complete working example.  Create a new file, copy in the contents below, and open in a browser:</p>
 <pre><code class="language-xml"><span class="doctype">&lt;!doctype html&gt;</span>
 <span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>&gt;</span>
@@ -42,8 +42,8 @@
     <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"http://ol3js.org/en/master/build/ol.css"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
       <span class="class">.map</span> <span class="rules">{
-        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px</span></span>;
-        <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+        <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px;</span></span>
+        <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%;</span></span>
       <span class="rule">}</span></span>
     </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
     <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://ol3js.org/en/master/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
@@ -68,25 +68,25 @@
     </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
   <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">html</span>&gt;</span></code></pre>
-<h2 id="understanding-what-is-going-on">Understanding what is going on</h2>
+<h2>Understanding what is going on</h2>
 <p>To include a map a web page you will need 3 things:</p>
 <ol>
 <li>Include OpenLayers</li>
 <li><code>&lt;div&gt;</code> map container</li>
 <li>JavaScript to create a simple map</li>
 </ol>
-<h3 id="include-openlayers">Include OpenLayers</h3>
+<h3>Include OpenLayers</h3>
 <pre><code class="language-xml">  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://ol3js.org/en/master/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
 <p>The first part is to include the JavaScript library. For the purpose of this tutorial, here we simply point to the ol3js.org website to get the whole library. In a production environment, we would build a custom version of the library including only the module needed for our application.</p>
-<h3 id="-div-to-contain-the-map"><code>&lt;div&gt;</code> to contain the map</h3>
+<h3><code>&lt;div&gt;</code> to contain the map</h3>
 <pre><code class="language-xml">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"map"</span> <span class="attribute">class</span>=<span class="value">"map"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre>
 <p>The map in the application is contained in a <a href="http://en.wikipedia.org/wiki/Span_and_div"><code>&lt;div&gt;</code> HTML element</a>. Through this <code>&lt;div&gt;</code> the map properties like width, height and border can be controlled through CSS. Here&#39;s the CSS element used to make the map 400 pixels high and as wide as the browser window.</p>
 <pre><code class="language-xml">  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
     <span class="class">.map</span> <span class="rules">{
-      <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px</span></span>; <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+      <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px;</span></span> <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%;</span></span>
     <span class="rule">}</span></span>
   </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></code></pre>
-<h3 id="javascript-to-create-a-simple-map">JavaScript to create a simple map</h3>
+<h3>JavaScript to create a simple map</h3>
 <pre><code class="language-js">  <span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
     target: <span class="string">'map'</span>,
     layers: [
