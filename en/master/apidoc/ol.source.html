@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../resources/layout.css" type="text/css">
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+    <link type="text/css" rel="stylesheet" href="styles/ol.css">
 </head>
 
 <body>
@@ -364,7 +365,7 @@ same origin as the application script.</p></td>
             
             
             
-            <td class="description last"><p>Culture.</p></td>
+            <td class="description last"><p>Culture code. Default is <code>en-us</code>.</p></td>
         </tr>
 	
 	
@@ -1306,7 +1307,9 @@ same origin as the application script.</p></td>
             
             
             
-            <td class="description last"><p>URL.</p></td>
+            <td class="description last"><p>URL template. Must include <code>{x}</code>, <code>{y}</code>,
+    and <code>{z}</code> placeholders. Default is
+    <code>http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png</code>.</p></td>
         </tr>
 	
 	
@@ -1539,7 +1542,8 @@ same origin as the application script.</p></td>
             
             
             
-            <td class="description last"><p>URL.</p></td>
+            <td class="description last"><p>URL template. Must include <code>{x}</code>, <code>{y}</code>,
+    and <code>{z}</code> placeholders.</p></td>
         </tr>
 	
 	
@@ -1852,7 +1856,7 @@ same origin as the application script.</p></td>
             
             
             
-            <td class="description last"><p>URL.</p></td>
+            <td class="description last"><p>URL to the TileJSON file.</p></td>
         </tr>
 	
 	
@@ -3359,7 +3363,7 @@ same origin as the application script.</p></td>
             
             
             
-            <td class="description last"><p>Projection.</p></td>
+            <td class="description last"><p>Projection. Default is <code>EPSG:3857</code>.</p></td>
         </tr>
 	
 	
