@@ -26,7 +26,6 @@ xhr.onload = function() {
       target: 'map',
       view: new ol.View2D({
         center: [1823849, 6143760],
-        projection: 'EPSG:3857',
         zoom: 11
       })
     });

@@ -100,7 +100,6 @@ ol.interaction.Modify = function(opt_options) {
    */
   this.dragSegments_ = null;
 
-  this.interactingHint = 0;
 };
 goog.inherits(ol.interaction.Modify, ol.interaction.Drag);
 
@@ -156,8 +155,9 @@ ol.interaction.Modify.prototype.setMap = function(map) {
  * @private
  */
 ol.interaction.Modify.prototype.handleLayerAdded_ = function(evt) {
-  goog.asserts.assertInstanceof(evt.getElement, ol.layer.Layer);
-  this.addLayer_(evt.getElement);
+  var layer = evt.getElement();
+  goog.asserts.assertInstanceof(layer, ol.layer.Layer);
+  this.addLayer_(layer);
 };
 
 
@@ -182,8 +182,9 @@ ol.interaction.Modify.prototype.addLayer_ = function(layer) {
  * @private
  */
 ol.interaction.Modify.prototype.handleLayerRemoved_ = function(evt) {
-  goog.asserts.assertInstanceof(evt.getElement, ol.layer.Layer);
-  this.removeLayer_(evt.getElement());
+  var layer = evt.getElement();
+  goog.asserts.assertInstanceof(layer, ol.layer.Layer);
+  this.removeLayer_(layer);
 };
 
 
@@ -336,9 +337,9 @@ ol.interaction.Modify.prototype.createOrUpdateVertexFeature_ =
 ol.interaction.Modify.prototype.handleDragStart = function(evt) {
   this.dragSegments_ = [];
   var vertexFeature = this.vertexFeature_;
-  var renderIntent = vertexFeature.getRenderIntent();
-  if (goog.isDef(vertexFeature) &&
-      renderIntent != ol.layer.VectorLayerRenderIntent.HIDDEN) {
+  if (!goog.isNull(vertexFeature) && vertexFeature.getRenderIntent() !=
+      ol.layer.VectorLayerRenderIntent.HIDDEN) {
+    var renderIntent = vertexFeature.getRenderIntent();
     var insertVertices = [];
     var vertex = vertexFeature.getGeometry().getCoordinates();
     var vertexExtent = ol.extent.boundingExtent([vertex]);
