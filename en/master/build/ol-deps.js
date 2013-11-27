@@ -39,7 +39,7 @@ goog.addDependency('../../../ol/ol/control/logocontrol.js', ['ol.control.Logo'],
 goog.addDependency('../../../ol/ol/control/mousepositioncontrol.js', ['ol.control.MousePosition'], ['goog.array', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'goog.style', 'ol.CoordinateFormatType', 'ol.Object', 'ol.Pixel', 'ol.TransformFunction', 'ol.control.Control', 'ol.proj', 'ol.proj.Projection']);
 goog.addDependency('../../../ol/ol/control/scalelinecontrol.js', ['ol.control.ScaleLine', 'ol.control.ScaleLineProperty', 'ol.control.ScaleLineUnits'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.math', 'goog.style', 'ol.Object', 'ol.TransformFunction', 'ol.View2DState', 'ol.control.Control', 'ol.css', 'ol.proj', 'ol.proj.Units', 'ol.sphere.NORMAL']);
 goog.addDependency('../../../ol/ol/control/zoomcontrol.js', ['ol.control.Zoom'], ['goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'ol.animation', 'ol.control.Control', 'ol.css', 'ol.easing']);
-goog.addDependency('../../../ol/ol/control/zoomslidercontrol.js', ['ol.control.ZoomSlider'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'goog.fx.Dragger', 'goog.fx.Dragger.EventType', 'goog.math', 'goog.math.Rect', 'goog.style', 'ol.animation', 'ol.control.Control', 'ol.css', 'ol.easing']);
+goog.addDependency('../../../ol/ol/control/zoomslidercontrol.js', ['ol.control.ZoomSlider'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.Event', 'goog.events.EventType', 'goog.fx.Dragger', 'goog.fx.Dragger.EventType', 'goog.math', 'goog.math.Rect', 'goog.style', 'ol.animation', 'ol.control.Control', 'ol.css', 'ol.easing']);
 goog.addDependency('../../../ol/ol/control/zoomtoextentcontrol.js', ['ol.control.ZoomToExtent'], ['goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'ol.control.Control', 'ol.css']);
 goog.addDependency('../../../ol/ol/coordinate.js', ['ol.Coordinate', 'ol.CoordinateArray', 'ol.CoordinateFormatType', 'ol.coordinate'], ['goog.math']);
 goog.addDependency('../../../ol/ol/css.js', ['ol.css'], []);
@@ -122,7 +122,14 @@ goog.addDependency('../../../ol/ol/parser/ogc/gmlparser_v2.js', ['ol.parser.ogc.
 goog.addDependency('../../../ol/ol/parser/ogc/gmlparser_v3.js', ['ol.parser.ogc.GML_v3'], ['goog.array', 'goog.functions', 'goog.object', 'ol.geom.GeometryType', 'ol.parser.ogc.GML']);
 goog.addDependency('../../../ol/ol/parser/ogc/owscommonparser_v1.js', ['ol.parser.ogc.OWSCommon_v1'], ['ol.parser.XML']);
 goog.addDependency('../../../ol/ol/parser/ogc/owscommonparser_v1_1_0.js', ['ol.parser.ogc.OWSCommon_v1_1_0'], ['goog.object', 'ol.parser.ogc.OWSCommon_v1']);
+goog.addDependency('../../../ol/ol/parser/ogc/sldparser.js', ['ol.parser.ogc.SLD'], ['ol.parser.ogc.SLD_v1_0_0', 'ol.parser.ogc.Versioned']);
+goog.addDependency('../../../ol/ol/parser/ogc/sldparser_v1.js', ['ol.parser.ogc.SLD_v1'], ['goog.asserts', 'goog.dom.xml', 'goog.object', 'ol.expr.Literal', 'ol.parser.XML', 'ol.parser.ogc.Filter_v1_0_0', 'ol.style.Fill', 'ol.style.Icon', 'ol.style.Rule', 'ol.style.Shape', 'ol.style.Stroke', 'ol.style.Style', 'ol.style.Text']);
+goog.addDependency('../../../ol/ol/parser/ogc/sldparser_v1_0_0.js', ['ol.parser.ogc.SLD_v1_0_0'], ['ol.parser.ogc.SLD_v1']);
 goog.addDependency('../../../ol/ol/parser/ogc/versionedparser.js', ['ol.parser.ogc.Versioned'], ['goog.dom.xml', 'ol.parser.ogc.ExceptionReport']);
+goog.addDependency('../../../ol/ol/parser/ogc/wfsparser.js', ['ol.parser.ogc.WFS'], ['ol.parser.ogc.Versioned', 'ol.parser.ogc.WFS_v1_0_0', 'ol.parser.ogc.WFS_v1_1_0']);
+goog.addDependency('../../../ol/ol/parser/ogc/wfsparser_v1.js', ['ol.parser.ogc.WFS_v1'], ['goog.dom.xml', 'ol.parser.XML']);
+goog.addDependency('../../../ol/ol/parser/ogc/wfsparser_v1_0_0.js', ['ol.parser.ogc.WFS_v1_0_0'], ['goog.array', 'goog.functions', 'goog.object', 'ol.parser.ogc.Filter_v1_0_0', 'ol.parser.ogc.WFS_v1']);
+goog.addDependency('../../../ol/ol/parser/ogc/wfsparser_v1_1_0.js', ['ol.parser.ogc.WFS_v1_1_0'], ['goog.asserts', 'goog.functions', 'goog.object', 'ol.expr.Identifier', 'ol.parser.ogc.Filter_v1_1_0', 'ol.parser.ogc.WFS_v1']);
 goog.addDependency('../../../ol/ol/parser/ogc/wmscapabilitiesparser.js', ['ol.parser.ogc.WMSCapabilities'], ['ol.parser.ogc.Versioned', 'ol.parser.ogc.WMSCapabilities_v1_0_0', 'ol.parser.ogc.WMSCapabilities_v1_1_0', 'ol.parser.ogc.WMSCapabilities_v1_1_1', 'ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC', 'ol.parser.ogc.WMSCapabilities_v1_3_0']);
 goog.addDependency('../../../ol/ol/parser/ogc/wmscapabilitiesparser_v1.js', ['ol.parser.ogc.WMSCapabilities_v1'], ['goog.dom.xml', 'goog.object', 'ol.parser.XML']);
 goog.addDependency('../../../ol/ol/parser/ogc/wmscapabilitiesparser_v1_0_0.js', ['ol.parser.ogc.WMSCapabilities_v1_0_0'], ['goog.object', 'goog.string', 'ol.parser.ogc.WMSCapabilities_v1_1_0']);
@@ -184,7 +191,7 @@ goog.addDependency('../../../ol/ol/source/tilejsonsource.js', ['ol.source.TileJS
 goog.addDependency('../../../ol/ol/source/tilesource.js', ['ol.source.Tile', 'ol.source.TileOptions'], ['goog.functions', 'ol.Attribution', 'ol.Extent', 'ol.Tile', 'ol.TileCoord', 'ol.TileRange', 'ol.source.Source', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/source/tilewmssource.js', ['ol.source.TileWMS'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.object', 'ol.TileCoord', 'ol.TileUrlFunction', 'ol.extent', 'ol.source.FeatureInfoSource', 'ol.source.TileImage', 'ol.source.wms']);
 goog.addDependency('../../../ol/ol/source/vectorsource.js', ['ol.source.Vector'], ['goog.asserts', 'goog.net.XhrIo', 'ol.source.Source']);
-goog.addDependency('../../../ol/ol/source/wmssource.js', ['ol.source.WMSGetFeatureInfoMethod', 'ol.source.wms'], ['goog.net.XhrIo', 'goog.object', 'goog.uri.utils']);
+goog.addDependency('../../../ol/ol/source/wmssource.js', ['ol.source.WMSGetFeatureInfoMethod', 'ol.source.wms'], ['goog.Uri', 'goog.net.XhrIo', 'goog.object', 'goog.uri.utils']);
 goog.addDependency('../../../ol/ol/source/wmtssource.js', ['ol.source.WMTS', 'ol.source.WMTSRequestEncoding'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.object', 'goog.uri.utils', 'ol.TileCoord', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.extent', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.WMTS']);
 goog.addDependency('../../../ol/ol/source/xyzsource.js', ['ol.source.XYZ'], ['ol.Attribution', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.XYZ']);
 goog.addDependency('../../../ol/ol/sphere/normal.js', ['ol.sphere.NORMAL'], ['ol.Sphere']);
@@ -194,6 +201,7 @@ goog.addDependency('../../../ol/ol/structs/buffer.js', ['ol.structs.Buffer'], ['
 goog.addDependency('../../../ol/ol/structs/integerset.js', ['ol.structs.IntegerSet'], ['goog.asserts']);
 goog.addDependency('../../../ol/ol/structs/lrucache.js', ['ol.structs.LRUCache'], ['goog.asserts', 'goog.object']);
 goog.addDependency('../../../ol/ol/structs/priorityqueue.js', ['ol.structs.PriorityQueue'], ['goog.asserts', 'goog.object']);
+goog.addDependency('../../../ol/ol/structs/rbush.js', ['ol.structs.RBush'], ['goog.array', 'goog.asserts', 'ol.extent']);
 goog.addDependency('../../../ol/ol/structs/rtree.js', ['ol.structs.RTree'], ['goog.array', 'ol.extent']);
 goog.addDependency('../../../ol/ol/style/fillsymbolizer.js', ['ol.style.Fill'], ['goog.asserts', 'ol.Feature', 'ol.expr', 'ol.expr.Expression', 'ol.expr.Literal', 'ol.geom.GeometryType', 'ol.style.PolygonLiteral', 'ol.style.Symbolizer']);
 goog.addDependency('../../../ol/ol/style/iconliteral.js', ['ol.style.IconLiteral'], ['goog.asserts', 'ol.style.PointLiteral']);
