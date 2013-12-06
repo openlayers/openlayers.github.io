@@ -4,22 +4,6 @@ var raster = new ol.layer.Tile({
   })
 });
 
-var data = {
-  type: 'FeatureCollection',
-  features: [{
-    type: 'Feature',
-    properties: {
-      name: 'Null Island',
-      population: 4000,
-      rainfall: 500
-    },
-    geometry: {
-      type: 'Point',
-      coordinates: [0, 0]
-    }
-  }]
-};
-
 var style = new ol.style.Style({
   symbolizers: [
     new ol.style.Icon({
@@ -31,8 +15,14 @@ var style = new ol.style.Style({
 
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
-    parser: new ol.parser.GeoJSON(),
-    data: data
+    features: [
+      new ol.Feature({
+        name: 'Null Island',
+        population: 4000,
+        rainfall: 500,
+        geometry: new ol.geom.Point([0, 0])
+      })
+    ]
   }),
   style: style
 });

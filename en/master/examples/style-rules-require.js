@@ -1,11 +1,12 @@
+goog.require('ol.Feature');
 goog.require('ol.Map');
 goog.require('ol.RendererHint');
 goog.require('ol.View2D');
 goog.require('ol.control');
 goog.require('ol.expr');
+goog.require('ol.geom.LineString');
+goog.require('ol.geom.Point');
 goog.require('ol.layer.Vector');
-goog.require('ol.parser.GeoJSON');
-goog.require('ol.proj');
 goog.require('ol.source.Vector');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Rule');
