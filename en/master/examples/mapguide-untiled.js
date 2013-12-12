@@ -19,6 +19,7 @@ var map = new ol.Map({
           MAPDEFINITION: mdf,
           FORMAT: 'PNG'
         },
+        ratio: 2,
         extent: bounds
       })
     })
