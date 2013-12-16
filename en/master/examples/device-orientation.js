@@ -1,3 +1,7 @@
+var view = new ol.View2D({
+  center: [0, 0],
+  zoom: 2
+});
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
@@ -6,22 +10,20 @@ var map = new ol.Map({
   ],
   renderers: ol.RendererHints.createFromQueryData(),
   target: 'map',
-  view: new ol.View2D({
-    center: [0, 0],
-    zoom: 2
-  })
+  view: view
 });
-var view = map.getView();
 
 var deviceOrientation = new ol.DeviceOrientation();
 var track = new ol.dom.Input(document.getElementById('track'));
 track.bindTo('checked', deviceOrientation, 'tracking');
 
-deviceOrientation.on('change', function(event) {
-  document.getElementById('alpha').innerHTML = event.target.getAlpha();
-  document.getElementById('beta').innerHTML = event.target.getBeta();
-  document.getElementById('gamma').innerHTML = event.target.getGamma();
-  document.getElementById('heading').innerHTML = event.target.getHeading();
+deviceOrientation.on('propertychange', function(event) {
+  // event.getKey() is the changed property name
+  var key = event.getKey();
+  var element = document.getElementById(key);
+  if (element) {
+    element.innerHTML = deviceOrientation.get(key);
+  }
 });
 
 // tilt the map
