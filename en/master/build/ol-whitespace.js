@@ -20293,6 +20293,9 @@ ol.structs.RBush.prototype.getAllInExtent = function(extent) {
   });
   return values
 };
+ol.structs.RBush.prototype.getExtent = function(opt_extent) {
+  return ol.extent.returnOrUpdate(this.root_.extent, opt_extent)
+};
 ol.structs.RBush.prototype.getKey_ = function(value) {
   goog.asserts.assert(goog.isObject(value));
   return goog.getUid(value) + ""
@@ -20342,8 +20345,9 @@ ol.structs.RBush.prototype.remove_ = function(extent, value) {
   var index = 0;
   var path = [node];
   var indexes = [0];
-  var child, children, i, ii;
+  var childrenDone, child, children, i, ii;
   while(path.length > 0) {
+    childrenDone = false;
     goog.asserts.assert(node.height > 0);
     if(node.height == 1) {
       children = node.children;
@@ -20355,8 +20359,7 @@ ol.structs.RBush.prototype.remove_ = function(extent, value) {
           return
         }
       }
-      node = path.pop();
-      index = indexes.pop()
+      childrenDone = true
     }else {
       if(index < node.children.length) {
         child = node.children[index];
@@ -20369,8 +20372,16 @@ ol.structs.RBush.prototype.remove_ = function(extent, value) {
           ++index
         }
       }else {
-        node = path.pop();
-        index = indexes.pop()
+        childrenDone = true
+      }
+    }
+    if(childrenDone) {
+      var lastPathIndex = path.length - 1;
+      node = path[lastPathIndex];
+      index = ++indexes[lastPathIndex];
+      if(index > node.children.length) {
+        path.pop();
+        indexes.pop()
       }
     }
   }
@@ -37101,6 +37112,7 @@ ol.source.MapGuide = function(options) {
     imageUrlFunction = ol.ImageUrlFunction.nullImageUrlFunction
   }
   goog.base(this, {extent:options.extent, projection:options.projection, resolutions:options.resolutions, imageUrlFunction:imageUrlFunction});
+  this.displayDpi_ = goog.isDef(options.displayDpi) ? options.displayDpi : 96;
   this.metersPerUnit_ = goog.isDef(options.metersPerUnit) ? options.metersPerUnit : 1;
   this.ratio_ = goog.isDef(options.ratio) ? options.ratio : 1;
   this.useOverlay_ = goog.isDef(options.useOverlay) ? options.useOverlay : false;
@@ -37123,23 +37135,22 @@ ol.source.MapGuide.prototype.getImage = function(extent, resolution, projection)
   this.image_ = this.createImage(extent, resolution, size, projection);
   return this.image_
 };
-ol.source.MapGuide.prototype.getScale = function(extent, size) {
-  var mcsW = extent[2] - extent[0];
-  var mcsH = extent[3] - extent[1];
+ol.source.MapGuide.getScale = function(extent, size, metersPerUnit, dpi) {
+  var mcsW = ol.extent.getWidth(extent);
+  var mcsH = ol.extent.getHeight(extent);
   var devW = size[0];
   var devH = size[1];
-  var dpi = 96;
-  var mpu = this.metersPerUnit_;
   var mpp = 0.0254 / dpi;
   if(devH * mcsW > devW * mcsH) {
-    return mcsW * mpu / (devW * mpp)
+    return mcsW * metersPerUnit / (devW * mpp)
   }else {
-    return mcsH * mpu / (devH * mpp)
+    return mcsH * metersPerUnit / (devH * mpp)
   }
 };
 ol.source.MapGuide.prototype.getUrl = function(baseUrl, params, extent, size, projection) {
-  var scale = this.getScale(extent, size);
-  var baseParams = {"OPERATION":this.useOverlay_ ? "GETDYNAMICMAPOVERLAYIMAGE" : "GETMAPIMAGE", "VERSION":"2.0.0", "LOCALE":"en", "CLIENTAGENT":"ol.source.MapGuide source", "CLIP":"1", "SETDISPLAYDPI":96, "SETDISPLAYWIDTH":Math.round(size[0]), "SETDISPLAYHEIGHT":Math.round(size[1]), "SETVIEWSCALE":scale, "SETVIEWCENTERX":(extent[0] + extent[2]) / 2, "SETVIEWCENTERY":(extent[1] + extent[3]) / 2};
+  var scale = ol.source.MapGuide.getScale(extent, size, this.metersPerUnit_, this.displayDpi_);
+  var center = ol.extent.getCenter(extent);
+  var baseParams = {"OPERATION":this.useOverlay_ ? "GETDYNAMICMAPOVERLAYIMAGE" : "GETMAPIMAGE", "VERSION":"2.0.0", "LOCALE":"en", "CLIENTAGENT":"ol.source.MapGuide source", "CLIP":"1", "SETDISPLAYDPI":this.displayDpi_, "SETDISPLAYWIDTH":Math.round(size[0]), "SETDISPLAYHEIGHT":Math.round(size[1]), "SETVIEWSCALE":scale, "SETVIEWCENTERX":center[0], "SETVIEWCENTERY":center[1]};
   goog.object.extend(baseParams, params);
   return goog.uri.utils.appendParamsFromMap(baseUrl, baseParams)
 };
