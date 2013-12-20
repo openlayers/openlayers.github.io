@@ -198,7 +198,7 @@ goog.addDependency('../../../ol/ol/structs/buffer.js', ['ol.structs.Buffer'], ['
 goog.addDependency('../../../ol/ol/structs/integerset.js', ['ol.structs.IntegerSet'], ['goog.asserts']);
 goog.addDependency('../../../ol/ol/structs/lrucache.js', ['ol.structs.LRUCache'], ['goog.asserts', 'goog.object']);
 goog.addDependency('../../../ol/ol/structs/priorityqueue.js', ['ol.structs.PriorityQueue'], ['goog.asserts', 'goog.object']);
-goog.addDependency('../../../ol/ol/structs/rbush.js', ['ol.structs.RBush'], ['goog.array', 'goog.asserts', 'ol.extent']);
+goog.addDependency('../../../ol/ol/structs/rbush.js', ['ol.structs.RBush'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.extent']);
 goog.addDependency('../../../ol/ol/style/fillsymbolizer.js', ['ol.style.Fill'], ['goog.asserts', 'ol.Feature', 'ol.expr', 'ol.expr.Expression', 'ol.expr.Literal', 'ol.geom.GeometryType', 'ol.style.PolygonLiteral', 'ol.style.Symbolizer']);
 goog.addDependency('../../../ol/ol/style/iconliteral.js', ['ol.style.IconLiteral'], ['goog.asserts', 'ol.style.PointLiteral']);
 goog.addDependency('../../../ol/ol/style/iconsymbolizer.js', ['ol.style.Icon'], ['goog.asserts', 'ol.Feature', 'ol.expr', 'ol.expr.Expression', 'ol.expr.Literal', 'ol.geom.GeometryType', 'ol.style.IconLiteral', 'ol.style.Point']);

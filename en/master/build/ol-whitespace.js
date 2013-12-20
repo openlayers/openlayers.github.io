@@ -733,7 +733,7 @@ goog.addDependency("../src/ol/structs/buffer.js", ["ol.structs.Buffer"], ["goog.
 goog.addDependency("../src/ol/structs/integerset.js", ["ol.structs.IntegerSet"], ["goog.asserts"]);
 goog.addDependency("../src/ol/structs/lrucache.js", ["ol.structs.LRUCache"], ["goog.asserts", "goog.object"]);
 goog.addDependency("../src/ol/structs/priorityqueue.js", ["ol.structs.PriorityQueue"], ["goog.asserts", "goog.object"]);
-goog.addDependency("../src/ol/structs/rbush.js", ["ol.structs.RBush"], ["goog.array", "goog.asserts", "ol.extent"]);
+goog.addDependency("../src/ol/structs/rbush.js", ["ol.structs.RBush"], ["goog.array", "goog.asserts", "goog.object", "ol.extent"]);
 goog.addDependency("../src/ol/style/fillsymbolizer.js", ["ol.style.Fill"], ["goog.asserts", "ol.Feature", "ol.expr", "ol.expr.Expression", "ol.expr.Literal", "ol.geom.GeometryType", "ol.style.PolygonLiteral", "ol.style.Symbolizer"]);
 goog.addDependency("../src/ol/style/iconliteral.js", ["ol.style.IconLiteral"], ["goog.asserts", "ol.style.PointLiteral"]);
 goog.addDependency("../src/ol/style/iconsymbolizer.js", ["ol.style.Icon"], ["goog.asserts", "ol.Feature", "ol.expr", "ol.expr.Expression", "ol.expr.Literal", "ol.geom.GeometryType", "ol.style.IconLiteral", "ol.style.Point"]);
@@ -17071,7 +17071,9 @@ ol.MapBrowserEventHandler.prototype.handleTouchStart_ = function(browserEvent) {
   this.dispatchEvent(newEvent);
   this.down_ = browserEvent;
   this.dragged_ = false;
-  this.dragListenerKeys_ = [goog.events.listen(goog.global.document, goog.events.EventType.TOUCHMOVE, this.handleTouchMove_, false, this), goog.events.listen(goog.global.document, goog.events.EventType.TOUCHEND, this.handleTouchEnd_, false, this)];
+  if(goog.isNull(this.dragListenerKeys_)) {
+    this.dragListenerKeys_ = [goog.events.listen(goog.global.document, goog.events.EventType.TOUCHMOVE, this.handleTouchMove_, false, this), goog.events.listen(goog.global.document, goog.events.EventType.TOUCHEND, this.handleTouchEnd_, false, this)]
+  }
   browserEvent.preventDefault()
 };
 ol.MapBrowserEventHandler.prototype.handleTouchMove_ = function(browserEvent) {
@@ -17083,7 +17085,10 @@ ol.MapBrowserEventHandler.prototype.handleTouchMove_ = function(browserEvent) {
 ol.MapBrowserEventHandler.prototype.handleTouchEnd_ = function(browserEvent) {
   var newEvent = new ol.MapBrowserEvent(ol.MapBrowserEvent.EventType.TOUCHEND, this.map_, browserEvent);
   this.dispatchEvent(newEvent);
-  goog.array.forEach(this.dragListenerKeys_, goog.events.unlistenByKey);
+  if(browserEvent.getBrowserEvent().targetTouches.length === 0) {
+    goog.array.forEach(this.dragListenerKeys_, goog.events.unlistenByKey);
+    this.dragListenerKeys_ = null
+  }
   if(!this.dragged_) {
     goog.asserts.assert(!goog.isNull(this.down_));
     this.emulateClick_(this.down_)
@@ -17274,10 +17279,12 @@ ol.View2D.prototype.getZoom = function() {
   return zoom
 };
 ol.View2D.prototype.fitExtent = function(extent, size) {
-  this.setCenter(ol.extent.getCenter(extent));
-  var resolution = this.getResolutionForExtent(extent, size);
-  resolution = this.constrainResolution(resolution, 0, 0);
-  this.setResolution(resolution)
+  if(!ol.extent.isEmpty(extent)) {
+    this.setCenter(ol.extent.getCenter(extent));
+    var resolution = this.getResolutionForExtent(extent, size);
+    resolution = this.constrainResolution(resolution, 0, 0);
+    this.setResolution(resolution)
+  }
 };
 ol.View2D.prototype.isDef = function() {
   return goog.isDefAndNotNull(this.getCenter()) && goog.isDef(this.getResolution())
@@ -20050,6 +20057,7 @@ goog.debug.entryPointRegistry.register(function(transformer) {
 goog.provide("ol.structs.RBush");
 goog.require("goog.array");
 goog.require("goog.asserts");
+goog.require("goog.object");
 goog.require("ol.extent");
 ol.structs.RBushNode = function(extent, height, children, value) {
   if(height === 0) {
@@ -20207,7 +20215,8 @@ ol.structs.RBush.prototype.clear = function() {
   node.extent = ol.extent.createOrUpdateEmpty(this.root_.extent);
   node.height = 1;
   node.children.length = 0;
-  node.value = null
+  node.value = null;
+  goog.object.clear(this.valueExtent_)
 };
 ol.structs.RBush.prototype.condense_ = function(path) {
   var i;
