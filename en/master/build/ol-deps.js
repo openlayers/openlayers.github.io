@@ -191,6 +191,7 @@ goog.addDependency('../../../ol/ol/source/vectorsource.js', ['ol.source.FeatureC
 goog.addDependency('../../../ol/ol/source/wmssource.js', ['ol.source.WMSGetFeatureInfoMethod', 'ol.source.wms'], ['goog.Uri', 'goog.net.XhrIo', 'goog.object', 'goog.uri.utils']);
 goog.addDependency('../../../ol/ol/source/wmtssource.js', ['ol.source.WMTS', 'ol.source.WMTSRequestEncoding'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.object', 'goog.uri.utils', 'ol.TileCoord', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.extent', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.WMTS']);
 goog.addDependency('../../../ol/ol/source/xyzsource.js', ['ol.source.XYZ'], ['ol.Attribution', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.XYZ']);
+goog.addDependency('../../../ol/ol/source/zoomifysource.js', ['ol.source.Zoomify'], ['goog.array', 'goog.dom', 'goog.dom.TagName', 'ol.ImageTile', 'ol.TileCoord', 'ol.TileState', 'ol.TileUrlFunction', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.Zoomify']);
 goog.addDependency('../../../ol/ol/sphere/normal.js', ['ol.sphere.NORMAL'], ['ol.Sphere']);
 goog.addDependency('../../../ol/ol/sphere/sphere.js', ['ol.Sphere'], ['goog.math']);
 goog.addDependency('../../../ol/ol/sphere/wgs84sphere.js', ['ol.sphere.WGS84'], ['ol.Sphere']);
@@ -221,6 +222,7 @@ goog.addDependency('../../../ol/ol/tilecoord.js', ['ol.TileCoord'], ['goog.array
 goog.addDependency('../../../ol/ol/tilegrid/tilegrid.js', ['ol.tilegrid.TileGrid'], ['goog.array', 'goog.asserts', 'ol.Coordinate', 'ol.Size', 'ol.TileCoord', 'ol.TileRange', 'ol.array', 'ol.extent', 'ol.proj.Projection', 'ol.proj.Units']);
 goog.addDependency('../../../ol/ol/tilegrid/wmtstilegrid.js', ['ol.tilegrid.WMTS'], ['goog.array', 'goog.asserts', 'ol.proj', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/tilegrid/xyztilegrid.js', ['ol.tilegrid.XYZ'], ['goog.math', 'ol.TileCoord', 'ol.TileRange', 'ol.proj', 'ol.proj.EPSG3857', 'ol.tilegrid.TileGrid']);
+goog.addDependency('../../../ol/ol/tilegrid/zoomifytilegrid.js', ['ol.tilegrid.Zoomify'], ['goog.math', 'ol.TileCoord', 'ol.proj', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/tileloadfunction.js', ['ol.TileLoadFunctionType'], []);
 goog.addDependency('../../../ol/ol/tilequeue.js', ['ol.TilePriorityFunction', 'ol.TileQueue'], ['goog.events', 'goog.events.EventType', 'ol.Coordinate', 'ol.Tile', 'ol.structs.PriorityQueue']);
 goog.addDependency('../../../ol/ol/tilerange.js', ['ol.TileRange'], ['goog.asserts', 'ol.Size', 'ol.TileCoord']);

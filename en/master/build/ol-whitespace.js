@@ -527,8 +527,9 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["libtess", "l
 "ol.parser.ogc.WFS_v1_1_0", "ol.parser.ogc.WMSCapabilities", "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", "ol.parser.ogc.WMSCapabilities_v1_3_0", "ol.parser.ogc.WMTSCapabilities", "ol.parser.ogc.WMTSCapabilities_v1_0_0", "ol.parser.polyline", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", 
 "ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.renderer.Layer", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.Vector", "ol.renderer.canvas.VectorLayer", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.Map", "ol.renderer.dom.TileLayer", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", 
 "ol.renderer.webgl.Map", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", "ol.size", "ol.source.BingMaps", "ol.source.FeatureCache", "ol.source.FeatureInfoSource", "ol.source.Image", "ol.source.ImageStatic", "ol.source.ImageWMS", "ol.source.MapGuide", "ol.source.MapQuestOSM", "ol.source.MapQuestOpenAerial", "ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", 
-"ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.Vector", "ol.source.VectorEventType", "ol.source.VectorLoadState", "ol.source.WMSGetFeatureInfoMethod", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.wms", "ol.sphere.NORMAL", "ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style", "ol.style.Fill", "ol.style.Icon", 
-"ol.style.IconLiteral", "ol.style.LineLiteral", "ol.style.Literal", "ol.style.Point", "ol.style.PointLiteral", "ol.style.PolygonLiteral", "ol.style.Rule", "ol.style.Shape", "ol.style.ShapeLiteral", "ol.style.ShapeType", "ol.style.Stroke", "ol.style.StrokeDefaults", "ol.style.Style", "ol.style.Symbolizer", "ol.style.Text", "ol.style.TextLiteral", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", "ol.webgl.WebGLContextEventType", "ol.webgl.shader"]);
+"ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.Vector", "ol.source.VectorEventType", "ol.source.VectorLoadState", "ol.source.WMSGetFeatureInfoMethod", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.sphere.NORMAL", "ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style", 
+"ol.style.Fill", "ol.style.Icon", "ol.style.IconLiteral", "ol.style.LineLiteral", "ol.style.Literal", "ol.style.Point", "ol.style.PointLiteral", "ol.style.PolygonLiteral", "ol.style.Rule", "ol.style.Shape", "ol.style.ShapeLiteral", "ol.style.ShapeType", "ol.style.Stroke", "ol.style.StrokeDefaults", "ol.style.Style", "ol.style.Symbolizer", "ol.style.Text", "ol.style.TextLiteral", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", 
+"ol.webgl.WebGLContextEventType", "ol.webgl.shader"]);
 goog.addDependency("../src/libtess.js/dict/Dict.js", ["libtess.Dict"], ["libtess", "libtess.DictNode"]);
 goog.addDependency("../src/libtess.js/dict/DictNode.js", ["libtess.DictNode"], ["libtess"]);
 goog.addDependency("../src/libtess.js/geom.js", ["libtess.geom"], ["libtess"]);
@@ -726,6 +727,7 @@ goog.addDependency("../src/ol/source/vectorsource.js", ["ol.source.FeatureCache"
 goog.addDependency("../src/ol/source/wmssource.js", ["ol.source.WMSGetFeatureInfoMethod", "ol.source.wms"], ["goog.Uri", "goog.net.XhrIo", "goog.object", "goog.uri.utils"]);
 goog.addDependency("../src/ol/source/wmtssource.js", ["ol.source.WMTS", "ol.source.WMTSRequestEncoding"], ["goog.array", "goog.asserts", "goog.math", "goog.object", "goog.uri.utils", "ol.TileCoord", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.extent", "ol.proj", "ol.source.TileImage", "ol.tilegrid.WMTS"]);
 goog.addDependency("../src/ol/source/xyzsource.js", ["ol.source.XYZ"], ["ol.Attribution", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.proj", "ol.source.TileImage", "ol.tilegrid.XYZ"]);
+goog.addDependency("../src/ol/source/zoomifysource.js", ["ol.source.Zoomify"], ["goog.array", "goog.dom", "goog.dom.TagName", "ol.ImageTile", "ol.TileCoord", "ol.TileState", "ol.TileUrlFunction", "ol.proj", "ol.source.TileImage", "ol.tilegrid.Zoomify"]);
 goog.addDependency("../src/ol/sphere/normal.js", ["ol.sphere.NORMAL"], ["ol.Sphere"]);
 goog.addDependency("../src/ol/sphere/sphere.js", ["ol.Sphere"], ["goog.math"]);
 goog.addDependency("../src/ol/sphere/wgs84sphere.js", ["ol.sphere.WGS84"], ["ol.Sphere"]);
@@ -756,6 +758,7 @@ goog.addDependency("../src/ol/tilecoord.js", ["ol.TileCoord"], ["goog.array", "g
 goog.addDependency("../src/ol/tilegrid/tilegrid.js", ["ol.tilegrid.TileGrid"], ["goog.array", "goog.asserts", "ol.Coordinate", "ol.Size", "ol.TileCoord", "ol.TileRange", "ol.array", "ol.extent", "ol.proj.Projection", "ol.proj.Units"]);
 goog.addDependency("../src/ol/tilegrid/wmtstilegrid.js", ["ol.tilegrid.WMTS"], ["goog.array", "goog.asserts", "ol.proj", "ol.tilegrid.TileGrid"]);
 goog.addDependency("../src/ol/tilegrid/xyztilegrid.js", ["ol.tilegrid.XYZ"], ["goog.math", "ol.TileCoord", "ol.TileRange", "ol.proj", "ol.proj.EPSG3857", "ol.tilegrid.TileGrid"]);
+goog.addDependency("../src/ol/tilegrid/zoomifytilegrid.js", ["ol.tilegrid.Zoomify"], ["goog.math", "ol.TileCoord", "ol.proj", "ol.tilegrid.TileGrid"]);
 goog.addDependency("../src/ol/tileloadfunction.js", ["ol.TileLoadFunctionType"], []);
 goog.addDependency("../src/ol/tilequeue.js", ["ol.TilePriorityFunction", "ol.TileQueue"], ["goog.events", "goog.events.EventType", "ol.Coordinate", "ol.Tile", "ol.structs.PriorityQueue"]);
 goog.addDependency("../src/ol/tilerange.js", ["ol.TileRange"], ["goog.asserts", "ol.Size", "ol.TileCoord"]);
@@ -11351,7 +11354,7 @@ goog.require("ol.sphere.NORMAL");
 ol.ENABLE_PROJ4JS = true;
 ol.HAVE_PROJ4JS = ol.ENABLE_PROJ4JS && typeof Proj4js == "object";
 ol.proj.ProjectionLike;
-ol.proj.Units = {DEGREES:"degrees", FEET:"ft", METERS:"m"};
+ol.proj.Units = {DEGREES:"degrees", FEET:"ft", METERS:"m", PIXELS:"pixels"};
 ol.METERS_PER_UNIT = {};
 ol.METERS_PER_UNIT[ol.proj.Units.DEGREES] = 2 * Math.PI * ol.sphere.NORMAL.radius / 360;
 ol.METERS_PER_UNIT[ol.proj.Units.FEET] = 0.3048;
@@ -20334,7 +20337,7 @@ ol.structs.RBush.prototype.getExtent = function(opt_extent) {
 };
 ol.structs.RBush.prototype.getKey_ = function(value) {
   goog.asserts.assert(goog.isObject(value));
-  return goog.getUid(value) + ""
+  return goog.getUid(value).toString()
 };
 ol.structs.RBush.prototype.insert = function(extent, value) {
   if(goog.DEBUG && this.readers_) {
@@ -20342,8 +20345,7 @@ ol.structs.RBush.prototype.insert = function(extent, value) {
   }
   var key = this.getKey_(value);
   goog.asserts.assert(!this.valueExtent_.hasOwnProperty(key));
-  this.insert_(extent, value, this.root_.height - 1);
-  this.valueExtent_[key] = ol.extent.clone(extent)
+  this.insert_(extent, value, this.root_.height - 1)
 };
 ol.structs.RBush.prototype.insert_ = function(extent, value, level) {
   var path = [this.root_];
@@ -20361,6 +20363,8 @@ ol.structs.RBush.prototype.insert_ = function(extent, value, level) {
   for(;i >= 0;--i) {
     ol.extent.extend(path[i].extent, extent)
   }
+  var key = this.getKey_(value);
+  this.valueExtent_[key] = ol.extent.clone(extent);
   return node
 };
 ol.structs.RBush.prototype.isEmpty = function() {
@@ -26457,7 +26461,7 @@ ol.Map.prototype.updateSize = function() {
   if(goog.isNull(targetElement)) {
     this.setSize(undefined)
   }else {
-    var size = goog.style.getSize(targetElement);
+    var size = goog.style.getContentBoxSize(targetElement);
     this.setSize([size.width, size.height])
   }
 };
@@ -26745,7 +26749,7 @@ ol.TileUrlFunction.createFromTemplate = function(template) {
     if(goog.isNull(tileCoord)) {
       return undefined
     }else {
-      return template.replace("{z}", "" + tileCoord.z).replace("{x}", "" + tileCoord.x).replace("{y}", "" + tileCoord.y)
+      return template.replace("{z}", tileCoord.z.toString()).replace("{x}", tileCoord.x.toString()).replace("{y}", tileCoord.y.toString())
     }
   }
 };
@@ -36750,42 +36754,43 @@ ol.source.TileImageOptions;
 ol.source.TileImage = function(options) {
   goog.base(this, {attributions:options.attributions, extent:options.extent, logo:options.logo, opaque:options.opaque, projection:options.projection, tileGrid:options.tileGrid});
   this.tileUrlFunction = goog.isDef(options.tileUrlFunction) ? options.tileUrlFunction : ol.TileUrlFunction.nullTileUrlFunction;
-  this.crossOrigin_ = goog.isDef(options.crossOrigin) ? options.crossOrigin : null;
-  this.tileCache_ = new ol.TileCache;
-  this.tileLoadFunction_ = goog.isDef(options.tileLoadFunction) ? options.tileLoadFunction : ol.source.TileImage.defaultTileLoadFunction
+  this.crossOrigin = goog.isDef(options.crossOrigin) ? options.crossOrigin : null;
+  this.tileCache = new ol.TileCache;
+  this.tileLoadFunction = goog.isDef(options.tileLoadFunction) ? options.tileLoadFunction : ol.source.TileImage.defaultTileLoadFunction;
+  this.tileClass = goog.isDef(options.tileClass) ? options.tileClass : ol.ImageTile
 };
 goog.inherits(ol.source.TileImage, ol.source.Tile);
 ol.source.TileImage.defaultTileLoadFunction = function(imageTile, src) {
   imageTile.getImage().src = src
 };
 ol.source.TileImage.prototype.canExpireCache = function() {
-  return this.tileCache_.canExpireCache()
+  return this.tileCache.canExpireCache()
 };
 ol.source.TileImage.prototype.expireCache = function(usedTiles) {
-  this.tileCache_.expireCache(usedTiles)
+  this.tileCache.expireCache(usedTiles)
 };
 ol.source.TileImage.prototype.getTile = function(z, x, y, projection) {
   var tileCoordKey = this.getKeyZXY(z, x, y);
-  if(this.tileCache_.containsKey(tileCoordKey)) {
-    return(this.tileCache_.get(tileCoordKey))
+  if(this.tileCache.containsKey(tileCoordKey)) {
+    return(this.tileCache.get(tileCoordKey))
   }else {
     goog.asserts.assert(projection);
     var tileCoord = new ol.TileCoord(z, x, y);
     var tileUrl = this.tileUrlFunction(tileCoord, projection);
-    var tile = new ol.ImageTile(tileCoord, goog.isDef(tileUrl) ? ol.TileState.IDLE : ol.TileState.EMPTY, goog.isDef(tileUrl) ? tileUrl : "", this.crossOrigin_, this.tileLoadFunction_);
-    this.tileCache_.set(tileCoordKey, tile);
+    var tile = new this.tileClass(tileCoord, goog.isDef(tileUrl) ? ol.TileState.IDLE : ol.TileState.EMPTY, goog.isDef(tileUrl) ? tileUrl : "", this.crossOrigin, this.tileLoadFunction);
+    this.tileCache.set(tileCoordKey, tile);
     return tile
   }
 };
 ol.source.TileImage.prototype.setTileUrlFunction = function(tileUrlFunction) {
-  this.tileCache_.clear();
+  this.tileCache.clear();
   this.tileUrlFunction = tileUrlFunction;
   this.dispatchChangeEvent()
 };
 ol.source.TileImage.prototype.useTile = function(z, x, y) {
   var tileCoordKey = this.getKeyZXY(z, x, y);
-  if(this.tileCache_.containsKey(tileCoordKey)) {
-    this.tileCache_.get(tileCoordKey)
+  if(this.tileCache.containsKey(tileCoordKey)) {
+    this.tileCache.get(tileCoordKey)
   }
 };
 goog.provide("ol.tilegrid.XYZ");
@@ -37647,6 +37652,140 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, layer) {
   }
   return{urls:urls, layer:layer, matrixSet:matrixSet, format:format, projection:projection, requestEncoding:requestEncoding, tileGrid:tileGrid, style:style, dimensions:dimensions}
 };
+goog.provide("ol.tilegrid.Zoomify");
+goog.require("goog.math");
+goog.require("ol.TileCoord");
+goog.require("ol.proj");
+goog.require("ol.tilegrid.TileGrid");
+ol.tilegrid.Zoomify = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : options;
+  goog.base(this, {origin:[0, 0], resolutions:options.resolutions})
+};
+goog.inherits(ol.tilegrid.Zoomify, ol.tilegrid.TileGrid);
+ol.tilegrid.Zoomify.prototype.createTileCoordTransform = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  var minZ = this.minZoom;
+  var maxZ = this.maxZoom;
+  var tmpTileCoord = new ol.TileCoord(0, 0, 0);
+  var tileRangeByZ = null;
+  if(goog.isDef(options.extent)) {
+    tileRangeByZ = new Array(maxZ + 1);
+    var z;
+    for(z = 0;z <= maxZ;++z) {
+      if(z < minZ) {
+        tileRangeByZ[z] = null
+      }else {
+        tileRangeByZ[z] = this.getTileRangeForExtentAndZ(options.extent, z)
+      }
+    }
+  }
+  return function(tileCoord, projection, opt_tileCoord) {
+    var z = tileCoord.z;
+    if(z < minZ || maxZ < z) {
+      return null
+    }
+    var n = Math.pow(2, z);
+    var x = tileCoord.x;
+    if(x < 0 || n <= x) {
+      return null
+    }
+    var y = tileCoord.y;
+    if(y < -n || -1 < y) {
+      return null
+    }
+    if(!goog.isNull(tileRangeByZ)) {
+      tmpTileCoord.z = z;
+      tmpTileCoord.x = x;
+      tmpTileCoord.y = -y - 1;
+      if(!tileRangeByZ[z].contains(tmpTileCoord)) {
+        return null
+      }
+    }
+    if(goog.isDef(opt_tileCoord)) {
+      opt_tileCoord.z = z;
+      opt_tileCoord.x = x;
+      opt_tileCoord.y = -y - 1;
+      return opt_tileCoord
+    }else {
+      return new ol.TileCoord(z, x, -y - 1)
+    }
+  }
+};
+goog.provide("ol.source.Zoomify");
+goog.require("goog.array");
+goog.require("goog.dom");
+goog.require("goog.dom.TagName");
+goog.require("ol.ImageTile");
+goog.require("ol.TileCoord");
+goog.require("ol.TileState");
+goog.require("ol.TileUrlFunction");
+goog.require("ol.proj");
+goog.require("ol.source.TileImage");
+goog.require("ol.tilegrid.Zoomify");
+ol.source.Zoomify = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  var size = options.size;
+  var imageWidth = size[0];
+  var imageHeight = size[1];
+  var tierSizeInTiles = [];
+  var tileSize = ol.DEFAULT_TILE_SIZE;
+  while(imageWidth > tileSize || imageHeight > tileSize) {
+    tierSizeInTiles.push([Math.ceil(imageWidth / tileSize), Math.ceil(imageHeight / tileSize)]);
+    tileSize += tileSize
+  }
+  tierSizeInTiles.push([1, 1]);
+  tierSizeInTiles.reverse();
+  var resolutions = [1];
+  var tileCountUpToTier = [0];
+  var i, ii;
+  for(i = 1, ii = tierSizeInTiles.length;i < ii;i++) {
+    resolutions.push(1 << i);
+    tileCountUpToTier.push(tierSizeInTiles[i - 1][0] * tierSizeInTiles[i - 1][1] + tileCountUpToTier[i - 1])
+  }
+  resolutions.reverse();
+  var tileGrid = new ol.tilegrid.Zoomify({resolutions:resolutions});
+  var url = options.url;
+  var tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(tileGrid.createTileCoordTransform({extent:[0, 0, size[0], size[1]]}), function(tileCoord, projection) {
+    if(goog.isNull(tileCoord)) {
+      return undefined
+    }else {
+      var tileIndex = tileCoord.x + tileCoord.y * tierSizeInTiles[tileCoord.z][0] + tileCountUpToTier[tileCoord.z];
+      var tileGroup = tileIndex / ol.DEFAULT_TILE_SIZE | 0;
+      return url + "TileGroup" + tileGroup + "/" + tileCoord.z + "-" + tileCoord.x + "-" + tileCoord.y + ".jpg"
+    }
+  });
+  goog.base(this, {attributions:options.attributions, crossOrigin:options.crossOrigin, logo:options.logo, tileClass:ol.source.ZoomifyTile_, tileGrid:tileGrid, tileUrlFunction:tileUrlFunction})
+};
+goog.inherits(ol.source.Zoomify, ol.source.TileImage);
+ol.source.ZoomifyTile_ = function(tileCoord, state, src, crossOrigin, tileLoadFunction) {
+  goog.base(this, tileCoord, state, src, crossOrigin, tileLoadFunction);
+  this.zoomifyImageByContext_ = {}
+};
+goog.inherits(ol.source.ZoomifyTile_, ol.ImageTile);
+ol.source.ZoomifyTile_.prototype.getImage = function(opt_context) {
+  var key = goog.isDef(opt_context) ? goog.getUid(opt_context).toString() : "";
+  if(key in this.zoomifyImageByContext_) {
+    return this.zoomifyImageByContext_[key]
+  }else {
+    var image = goog.base(this, "getImage", opt_context);
+    if(this.state == ol.TileState.LOADED) {
+      if(image.width == ol.DEFAULT_TILE_SIZE && image.height == ol.DEFAULT_TILE_SIZE) {
+        this.zoomifyImageByContext_[key] = image;
+        return image
+      }else {
+        var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
+        canvas.width = ol.DEFAULT_TILE_SIZE;
+        canvas.height = ol.DEFAULT_TILE_SIZE;
+        var context = (canvas.getContext("2d"));
+        context.drawImage(image, 0, 0);
+        this.zoomifyImageByContext_[key] = canvas;
+        return canvas
+      }
+    }else {
+      return image
+    }
+  }
+};
 goog.provide("ol.sphere.WGS84");
 goog.require("ol.Sphere");
 ol.sphere.WGS84 = new ol.Sphere(6378137);
@@ -37928,6 +38067,7 @@ goog.require("ol.source.WMSGetFeatureInfoMethod");
 goog.require("ol.source.WMTS");
 goog.require("ol.source.WMTSRequestEncoding");
 goog.require("ol.source.XYZ");
+goog.require("ol.source.Zoomify");
 goog.require("ol.source.wms");
 goog.require("ol.sphere.NORMAL");
 goog.require("ol.sphere.WGS84");
@@ -37958,6 +38098,7 @@ goog.require("ol.style.TextLiteral");
 goog.require("ol.tilegrid.TileGrid");
 goog.require("ol.tilegrid.WMTS");
 goog.require("ol.tilegrid.XYZ");
+goog.require("ol.tilegrid.Zoomify");
 goog.require("ol.tilejson");
 goog.require("ol.vec.Mat4");
 goog.require("ol.webgl");
