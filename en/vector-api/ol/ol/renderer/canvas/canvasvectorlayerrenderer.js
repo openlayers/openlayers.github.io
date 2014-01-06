@@ -6,6 +6,7 @@ goog.require('goog.events.EventType');
 goog.require('goog.functions');
 goog.require('ol.ViewHint');
 goog.require('ol.extent');
+goog.require('ol.feature');
 goog.require('ol.layer.Vector');
 goog.require('ol.render.canvas.ReplayGroup');
 goog.require('ol.renderer.canvas.Layer');
@@ -29,6 +30,12 @@ ol.renderer.canvas.VectorLayer = function(mapRenderer, vectorLayer) {
    * @type {boolean}
    */
   this.dirty_ = false;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.frameStateExtent_ = ol.extent.createEmpty();
 
   /**
    * @private
@@ -96,14 +103,14 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel =
   if (goog.isNull(this.replayGroup_)) {
     return undefined;
   } else {
-    goog.asserts.assert(!ol.extent.isEmpty(this.renderedExtent_));
+    goog.asserts.assert(!ol.extent.isEmpty(this.frameStateExtent_));
     goog.asserts.assert(!isNaN(this.renderedResolution_));
     goog.asserts.assert(!isNaN(this.renderedRotation_));
     var coordinate = this.getMap().getCoordinateFromPixel(pixel);
     var layer = this.getLayer();
     var renderGeometryFunction = this.getRenderGeometryFunction_();
     goog.asserts.assert(goog.isFunction(renderGeometryFunction));
-    return this.replayGroup_.forEachGeometryAtCoordinate(this.renderedExtent_,
+    return this.replayGroup_.forEachGeometryAtCoordinate(this.frameStateExtent_,
         this.renderedResolution_, this.renderedRotation_, coordinate,
         renderGeometryFunction,
         /**
@@ -174,6 +181,8 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
   var frameStateResolution = frameState.view2DState.resolution;
   var pixelRatio = frameState.devicePixelRatio;
 
+  this.frameStateExtent_ = frameStateExtent;
+
   if (!this.dirty_ &&
       this.renderedResolution_ == frameStateResolution &&
       this.renderedRevision_ == vectorSource.getRevision() &&
@@ -197,7 +206,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
 
   var styleFunction = vectorLayer.getStyleFunction();
   if (!goog.isDef(styleFunction)) {
-    styleFunction = ol.layer.Vector.defaultStyleFunction;
+    styleFunction = ol.feature.defaultStyleFunction;
   }
   var tolerance = frameStateResolution / (2 * pixelRatio);
   var replayGroup = new ol.render.canvas.ReplayGroup(pixelRatio, tolerance);
@@ -226,7 +235,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
  * @param {ol.Feature} feature Feature.
  * @param {number} resolution Resolution.
  * @param {number} pixelRatio Pixel ratio.
- * @param {ol.style.StyleFunction} styleFunction Style function.
+ * @param {ol.feature.StyleFunction} styleFunction Style function.
  * @param {ol.render.canvas.ReplayGroup} replayGroup Replay group.
  * @return {boolean} `true` if an image is loading.
  */
