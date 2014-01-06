@@ -160,7 +160,7 @@ ol.render.canvas.Replay.prototype.beginGeometry = function(geometry) {
 /**
  * @private
  * @param {CanvasRenderingContext2D} context Context.
- * @param {goog.vec.Mat4.AnyType} transform Transform.
+ * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {function(ol.geom.Geometry): boolean} renderGeometryFunction Render
  *     geometry function.
  * @param {Array.<*>} instructions Instructions array.
@@ -305,7 +305,7 @@ ol.render.canvas.Replay.prototype.replay_ =
 
 /**
  * @param {CanvasRenderingContext2D} context Context.
- * @param {goog.vec.Mat4.AnyType} transform Transform.
+ * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {function(ol.geom.Geometry): boolean} renderGeometryFunction Render
  *     geometry function.
  * @return {T|undefined} Callback result.
@@ -321,7 +321,7 @@ ol.render.canvas.Replay.prototype.replay =
 
 /**
  * @param {CanvasRenderingContext2D} context Context.
- * @param {goog.vec.Mat4.AnyType} transform Transform.
+ * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {function(ol.geom.Geometry): boolean} renderGeometryFunction Render
  *     geometry function.
  * @param {function(ol.geom.Geometry, Object): T=} opt_geometryCallback
@@ -1202,7 +1202,7 @@ ol.render.canvas.ReplayGroup = function(pixelRatio, tolerance) {
    * @type {Object.<string,
    *        Object.<ol.render.ReplayType, ol.render.canvas.Replay>>}
    */
-  this.replayesByZIndex_ = {};
+  this.replaysByZIndex_ = {};
 
   /**
    * @type {HTMLCanvasElement}
@@ -1231,7 +1231,7 @@ ol.render.canvas.ReplayGroup = function(pixelRatio, tolerance) {
 /**
  * @param {CanvasRenderingContext2D} context Context.
  * @param {ol.Extent} extent Extent.
- * @param {goog.vec.Mat4.AnyType} transform Transform.
+ * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {function(ol.geom.Geometry): boolean} renderGeometryFunction Render
  *     geometry function.
  * @return {T|undefined} Callback result.
@@ -1240,7 +1240,7 @@ ol.render.canvas.ReplayGroup = function(pixelRatio, tolerance) {
 ol.render.canvas.ReplayGroup.prototype.replay = function(context, extent,
     transform, renderGeometryFunction) {
   /** @type {Array.<number>} */
-  var zs = goog.array.map(goog.object.getKeys(this.replayesByZIndex_), Number);
+  var zs = goog.array.map(goog.object.getKeys(this.replaysByZIndex_), Number);
   goog.array.sort(zs);
   return this.replay_(
       zs, context, extent, transform, renderGeometryFunction);
@@ -1252,7 +1252,7 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(context, extent,
  * @param {Array.<number>} zs Z-indices array.
  * @param {CanvasRenderingContext2D} context Context.
  * @param {ol.Extent} extent Extent.
- * @param {goog.vec.Mat4.AnyType} transform Transform.
+ * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {function(ol.geom.Geometry): boolean} renderGeometryFunction Render
  *     geometry function.
  * @param {function(ol.geom.Geometry, Object): T} geometryCallback Geometry
@@ -1263,11 +1263,11 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(context, extent,
 ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ =
     function(zs, context, extent, transform, renderGeometryFunction,
         geometryCallback) {
-  var i, ii, replayes, replayType, replay, result;
+  var i, ii, replays, replayType, replay, result;
   for (i = 0, ii = zs.length; i < ii; ++i) {
-    replayes = this.replayesByZIndex_[zs[i].toString()];
-    for (replayType in replayes) {
-      replay = replayes[replayType];
+    replays = this.replaysByZIndex_[zs[i].toString()];
+    for (replayType in replays) {
+      replay = replays[replayType];
       if (ol.extent.intersects(extent, replay.getExtent())) {
         result = replay.replayHitDetection(
             context, transform, renderGeometryFunction, geometryCallback);
@@ -1286,7 +1286,7 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ =
  * @param {Array.<number>} zs Z-indices array.
  * @param {CanvasRenderingContext2D} context Context.
  * @param {ol.Extent} extent Extent.
- * @param {goog.vec.Mat4.AnyType} transform Transform.
+ * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {function(ol.geom.Geometry): boolean} renderGeometryFunction Render
  *     geometry function.
  * @return {T|undefined} Callback result.
@@ -1294,11 +1294,11 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ =
  */
 ol.render.canvas.ReplayGroup.prototype.replay_ =
     function(zs, context, extent, transform, renderGeometryFunction) {
-  var i, ii, replayes, replayType, replay, result;
+  var i, ii, replays, replayType, replay, result;
   for (i = 0, ii = zs.length; i < ii; ++i) {
-    replayes = this.replayesByZIndex_[zs[i].toString()];
-    for (replayType in replayes) {
-      replay = replayes[replayType];
+    replays = this.replaysByZIndex_[zs[i].toString()];
+    for (replayType in replays) {
+      replay = replays[replayType];
       if (ol.extent.intersects(extent, replay.getExtent())) {
         result = replay.replay(
             context, transform, renderGeometryFunction);
@@ -1333,7 +1333,7 @@ ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtCoordinate = function(
       -coordinate[0], -coordinate[1]);
 
   /** @type {Array.<number>} */
-  var zs = goog.array.map(goog.object.getKeys(this.replayesByZIndex_), Number);
+  var zs = goog.array.map(goog.object.getKeys(this.replaysByZIndex_), Number);
   goog.array.sort(zs, function(a, b) { return b - a; });
 
   var context = this.hitDetectionContext_;
@@ -1364,11 +1364,11 @@ ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtCoordinate = function(
  */
 ol.render.canvas.ReplayGroup.prototype.finish = function() {
   var zKey;
-  for (zKey in this.replayesByZIndex_) {
-    var replayes = this.replayesByZIndex_[zKey];
+  for (zKey in this.replaysByZIndex_) {
+    var replays = this.replaysByZIndex_[zKey];
     var replayKey;
-    for (replayKey in replayes) {
-      replayes[replayKey].finish();
+    for (replayKey in replays) {
+      replays[replayKey].finish();
     }
   }
 };
@@ -1380,17 +1380,17 @@ ol.render.canvas.ReplayGroup.prototype.finish = function() {
 ol.render.canvas.ReplayGroup.prototype.getReplay =
     function(zIndex, replayType) {
   var zIndexKey = goog.isDef(zIndex) ? zIndex.toString() : '0';
-  var replayes = this.replayesByZIndex_[zIndexKey];
-  if (!goog.isDef(replayes)) {
-    replayes = {};
-    this.replayesByZIndex_[zIndexKey] = replayes;
+  var replays = this.replaysByZIndex_[zIndexKey];
+  if (!goog.isDef(replays)) {
+    replays = {};
+    this.replaysByZIndex_[zIndexKey] = replays;
   }
-  var replay = replayes[replayType];
+  var replay = replays[replayType];
   if (!goog.isDef(replay)) {
     var constructor = ol.render.canvas.BATCH_CONSTRUCTORS_[replayType];
     goog.asserts.assert(goog.isDef(constructor));
     replay = new constructor(this.pixelRatio_, this.tolerance_);
-    replayes[replayType] = replay;
+    replays[replayType] = replay;
   }
   return replay;
 };
@@ -1400,7 +1400,7 @@ ol.render.canvas.ReplayGroup.prototype.getReplay =
  * @inheritDoc
  */
 ol.render.canvas.ReplayGroup.prototype.isEmpty = function() {
-  return goog.object.isEmpty(this.replayesByZIndex_);
+  return goog.object.isEmpty(this.replaysByZIndex_);
 };
 
 

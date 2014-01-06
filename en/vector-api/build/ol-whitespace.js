@@ -631,7 +631,7 @@ goog.addDependency("../src/ol/layer/layer.js", ["ol.layer.Layer"], ["goog.assert
 goog.addDependency("../src/ol/layer/layerbase.js", ["ol.layer.Base", "ol.layer.LayerProperty", "ol.layer.LayerState"], ["goog.events", "goog.events.EventType", "goog.math", "goog.object", "ol.Object", "ol.source.State"]);
 goog.addDependency("../src/ol/layer/layergroup.js", ["ol.layer.Group"], ["goog.array", "goog.asserts", "goog.events", "goog.events.EventType", "goog.math", "goog.object", "ol.Collection", "ol.CollectionEvent", "ol.CollectionEventType", "ol.Object", "ol.ObjectEventType", "ol.layer.Base", "ol.source.State"]);
 goog.addDependency("../src/ol/layer/tilelayer.js", ["ol.layer.Tile"], ["ol.layer.Layer"]);
-goog.addDependency("../src/ol/layer/vectorlayer.js", ["ol.layer.Vector"], ["ol.feature", "ol.layer.Layer", "ol.source.Vector"]);
+goog.addDependency("../src/ol/layer/vectorlayer.js", ["ol.layer.Vector"], ["ol.feature", "ol.layer.Layer"]);
 goog.addDependency("../src/ol/map.js", ["ol.Map", "ol.MapProperty", "ol.RendererHint", "ol.RendererHints"], ["goog.Uri.QueryData", "goog.array", "goog.asserts", "goog.async.AnimationDelay", "goog.async.nextTick", "goog.debug.Console", "goog.dom", "goog.dom.TagName", "goog.dom.ViewportSizeMonitor", "goog.events", "goog.events.BrowserEvent", "goog.events.Event", "goog.events.EventType", "goog.events.KeyHandler", "goog.events.KeyHandler.EventType", "goog.events.MouseWheelHandler", "goog.events.MouseWheelHandler.EventType", 
 "goog.log", "goog.log.Level", "goog.object", "goog.style", "goog.vec.Mat4", "ol.BrowserFeature", "ol.Collection", "ol.FrameState", "ol.IView", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler", "ol.MapEvent", "ol.MapEventType", "ol.Object", "ol.ObjectEvent", "ol.ObjectEventType", "ol.Pixel", "ol.PostRenderFunction", "ol.PreRenderFunction", "ol.Size", "ol.Tile", "ol.TileQueue", "ol.View", "ol.View2D", "ol.ViewHint", "ol.control", "ol.extent", "ol.interaction", "ol.layer.Base", 
 "ol.layer.Group", "ol.proj", "ol.proj.common", "ol.renderer.Map", "ol.renderer.canvas.Map", "ol.renderer.dom.Map", "ol.renderer.webgl.Map", "ol.structs.PriorityQueue", "ol.vec.Mat4"]);
@@ -674,7 +674,7 @@ goog.addDependency("../src/ol/renderer/canvas/canvasimagelayerrenderer.js", ["ol
 goog.addDependency("../src/ol/renderer/canvas/canvaslayerrenderer.js", ["ol.renderer.canvas.Layer"], ["goog.vec.Mat4", "ol.layer.Layer", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Layer", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/canvas/canvasmaprenderer.js", ["ol.renderer.canvas.Map"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.style", "goog.vec.Mat4", "ol.css", "ol.layer.Image", "ol.layer.Tile", "ol.layer.Vector", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.source.State", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/canvas/canvastilelayerrenderer.js", ["ol.renderer.canvas.TileLayer"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.object", "goog.vec.Mat4", "ol.Size", "ol.Tile", "ol.TileCoord", "ol.TileRange", "ol.TileState", "ol.extent", "ol.layer.Tile", "ol.renderer.Map", "ol.renderer.canvas.Layer", "ol.source.Tile", "ol.vec.Mat4"]);
-goog.addDependency("../src/ol/renderer/canvas/canvasvectorlayerrenderer.js", ["ol.renderer.canvas.VectorLayer"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.functions", "ol.ViewHint", "ol.extent", "ol.feature", "ol.layer.Vector", "ol.render.canvas.ReplayGroup", "ol.renderer.canvas.Layer", "ol.renderer.vector", "ol.style.ImageState"]);
+goog.addDependency("../src/ol/renderer/canvas/canvasvectorlayerrenderer.js", ["ol.renderer.canvas.VectorLayer"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.functions", "ol.ViewHint", "ol.extent", "ol.feature", "ol.layer.Vector", "ol.render.canvas.ReplayGroup", "ol.renderer.canvas.Layer", "ol.renderer.vector", "ol.source.Vector", "ol.style.ImageState"]);
 goog.addDependency("../src/ol/renderer/dom/domimagelayerrenderer.js", ["ol.renderer.dom.ImageLayer"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.Image", "ol.ImageState", "ol.ViewHint", "ol.dom", "ol.layer.Image", "ol.renderer.dom.Layer", "ol.source.Image", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/dom/domlayerrenderer.js", ["ol.renderer.dom.Layer"], ["goog.dom", "ol.layer.Layer", "ol.renderer.Layer"]);
 goog.addDependency("../src/ol/renderer/dom/dommaprenderer.js", ["ol.renderer.dom.Map"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.style", "ol.css", "ol.layer.Image", "ol.layer.Tile", "ol.renderer.Map", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.TileLayer", "ol.source.State"]);
@@ -20714,580 +20714,9 @@ ol.layer.Tile.prototype.setPreload = function(preload) {
   this.set(ol.layer.TileProperty.PRELOAD, preload)
 };
 goog.exportProperty(ol.layer.Tile.prototype, "setPreload", ol.layer.Tile.prototype.setPreload);
-goog.provide("ol.structs.RBush");
-goog.require("goog.array");
-goog.require("goog.asserts");
-goog.require("goog.object");
-goog.require("ol.extent");
-ol.structs.RBushNode = function(extent, height, children, value) {
-  if(height === 0) {
-    goog.asserts.assert(goog.isNull(children));
-    goog.asserts.assert(!goog.isNull(value))
-  }else {
-    goog.asserts.assert(!goog.isNull(children));
-    goog.asserts.assert(goog.isNull(value))
-  }
-  this.extent = extent;
-  this.height = height;
-  this.children = children;
-  this.value = value
-};
-ol.structs.RBushNode.compareMinX = function(node1, node2) {
-  return node1.extent[0] - node2.extent[0]
-};
-ol.structs.RBushNode.compareMinY = function(node1, node2) {
-  return node1.extent[1] - node2.extent[1]
-};
-ol.structs.RBushNode.prototype.assertValid = function(maxEntries) {
-  if(this.height === 0) {
-    goog.asserts.assert(goog.isNull(this.children));
-    goog.asserts.assert(!goog.isNull(this.value))
-  }else {
-    goog.asserts.assert(!goog.isNull(this.children));
-    goog.asserts.assert(goog.isNull(this.value));
-    goog.asserts.assert(this.children.length <= maxEntries);
-    var i, ii;
-    for(i = 0, ii = this.children.length;i < ii;++i) {
-      var child = this.children[i];
-      goog.asserts.assert(ol.extent.containsExtent(this.extent, child.extent));
-      child.assertValid(maxEntries)
-    }
-  }
-};
-ol.structs.RBushNode.prototype.getChildrenExtent = function(start, stop, opt_extent) {
-  goog.asserts.assert(!this.isLeaf());
-  var children = this.children;
-  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
-  var i;
-  for(i = start;i < stop;++i) {
-    ol.extent.extend(extent, children[i].extent)
-  }
-  return extent
-};
-ol.structs.RBushNode.prototype.updateExtent = function() {
-  goog.asserts.assert(!this.isLeaf());
-  var extent = ol.extent.createOrUpdateEmpty(this.extent);
-  var children = this.children;
-  var i, ii;
-  for(i = 0, ii = children.length;i < ii;++i) {
-    ol.extent.extend(extent, children[i].extent)
-  }
-};
-ol.structs.RBushNode.prototype.isLeaf = function() {
-  return goog.isNull(this.children)
-};
-ol.structs.RBush = function(opt_maxEntries) {
-  this.maxEntries_ = Math.max(4, goog.isDef(opt_maxEntries) ? opt_maxEntries : 9);
-  this.minEntries_ = Math.max(2, Math.ceil(0.4 * this.maxEntries_));
-  this.root_ = new ol.structs.RBushNode(ol.extent.createEmpty(), 1, [], null);
-  this.valueExtent_ = {};
-  if(goog.DEBUG) {
-    this.readers_ = 0
-  }
-};
-ol.structs.RBush.prototype.allDistMargin_ = function(node, compare) {
-  var children = node.children;
-  var m = this.minEntries_;
-  var M = children.length;
-  var i;
-  goog.array.sort(children, compare);
-  var leftExtent = node.getChildrenExtent(0, m);
-  var rightExtent = node.getChildrenExtent(M - m, M);
-  var margin = ol.extent.getMargin(leftExtent) + ol.extent.getMargin(rightExtent);
-  for(i = m;i < M - m;++i) {
-    ol.extent.extend(leftExtent, children[i].extent);
-    margin += ol.extent.getMargin(leftExtent)
-  }
-  for(i = M - m - 1;i >= m;--i) {
-    ol.extent.extend(rightExtent, children[i].extent);
-    margin += ol.extent.getMargin(rightExtent)
-  }
-  return margin
-};
-ol.structs.RBush.prototype.assertValid = function() {
-  this.root_.assertValid(this.maxEntries_)
-};
-ol.structs.RBush.prototype.chooseSplitAxis_ = function(node) {
-  var xMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinX);
-  var yMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinY);
-  if(xMargin < yMargin) {
-    goog.array.sort(node.children, ol.structs.RBushNode.compareMinX)
-  }
-};
-ol.structs.RBush.prototype.chooseSplitIndex_ = function(node) {
-  var children = node.children;
-  var m = this.minEntries_;
-  var M = children.length;
-  var minOverlap = Infinity;
-  var minArea = Infinity;
-  var extent1 = ol.extent.createEmpty();
-  var extent2 = ol.extent.createEmpty();
-  var index = 0;
-  var i;
-  for(i = m;i <= M - m;++i) {
-    extent1 = node.getChildrenExtent(0, i, extent1);
-    extent2 = node.getChildrenExtent(i, M, extent2);
-    var overlap = ol.extent.getIntersectionArea(extent1, extent2);
-    var area = ol.extent.getArea(extent1) + ol.extent.getArea(extent2);
-    if(overlap < minOverlap) {
-      minOverlap = overlap;
-      minArea = Math.min(area, minArea);
-      index = i
-    }else {
-      if(overlap == minOverlap && area < minArea) {
-        minArea = area;
-        index = i
-      }
-    }
-  }
-  return index
-};
-ol.structs.RBush.prototype.chooseSubtree_ = function(extent, node, level, path) {
-  while(!node.isLeaf() && path.length - 1 != level) {
-    var minArea = Infinity;
-    var minEnlargement = Infinity;
-    var children = node.children;
-    var bestChild = null;
-    var i, ii;
-    for(i = 0, ii = children.length;i < ii;++i) {
-      var child = children[i];
-      var area = ol.extent.getArea(child.extent);
-      var enlargement = ol.extent.getEnlargedArea(child.extent, extent) - area;
-      if(enlargement < minEnlargement) {
-        minEnlargement = enlargement;
-        minArea = Math.min(area, minArea);
-        bestChild = child
-      }else {
-        if(enlargement == minEnlargement && area < minArea) {
-          minArea = area;
-          bestChild = child
-        }
-      }
-    }
-    goog.asserts.assert(!goog.isNull(bestChild));
-    node = bestChild;
-    path.push(node)
-  }
-  return node
-};
-ol.structs.RBush.prototype.clear = function() {
-  var node = this.root_;
-  node.extent = ol.extent.createOrUpdateEmpty(this.root_.extent);
-  node.height = 1;
-  node.children.length = 0;
-  node.value = null;
-  goog.object.clear(this.valueExtent_)
-};
-ol.structs.RBush.prototype.condense_ = function(path) {
-  var i;
-  for(i = path.length - 1;i >= 0;--i) {
-    var node = path[i];
-    if(node.children.length === 0) {
-      if(i > 0) {
-        goog.array.remove(path[i - 1].children, node)
-      }else {
-        this.clear()
-      }
-    }else {
-      node.updateExtent()
-    }
-  }
-};
-ol.structs.RBush.prototype.forEach = function(callback, opt_obj) {
-  if(goog.DEBUG) {
-    ++this.readers_;
-    try {
-      return this.forEach_(this.root_, callback, opt_obj)
-    }finally {
-      --this.readers_
-    }
-  }else {
-    return this.forEach_(this.root_, callback, opt_obj)
-  }
-};
-ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_obj) {
-  goog.asserts.assert(!node.isLeaf());
-  var toVisit = [node];
-  var children, i, ii, result;
-  while(toVisit.length > 0) {
-    node = toVisit.pop();
-    children = node.children;
-    if(node.height == 1) {
-      for(i = 0, ii = children.length;i < ii;++i) {
-        result = callback.call(opt_obj, children[i].value);
-        if(result) {
-          return result
-        }
-      }
-    }else {
-      toVisit.push.apply(toVisit, children)
-    }
-  }
-};
-ol.structs.RBush.prototype.forEachInExtent = function(extent, callback, opt_obj) {
-  if(goog.DEBUG) {
-    ++this.readers_;
-    try {
-      return this.forEachInExtent_(extent, callback, opt_obj)
-    }finally {
-      --this.readers_
-    }
-  }else {
-    return this.forEachInExtent_(extent, callback, opt_obj)
-  }
-};
-ol.structs.RBush.prototype.forEachInExtent_ = function(extent, callback, opt_obj) {
-  var toVisit = [this.root_];
-  var result;
-  while(toVisit.length > 0) {
-    var node = toVisit.pop();
-    if(ol.extent.intersects(extent, node.extent)) {
-      if(node.isLeaf()) {
-        result = callback.call(opt_obj, node.value);
-        if(result) {
-          return result
-        }
-      }else {
-        if(ol.extent.containsExtent(extent, node.extent)) {
-          result = this.forEach_(node, callback, opt_obj);
-          if(result) {
-            return result
-          }
-        }else {
-          toVisit.push.apply(toVisit, node.children)
-        }
-      }
-    }
-  }
-  return undefined
-};
-ol.structs.RBush.prototype.forEachNode = function(callback, opt_obj) {
-  var toVisit = [this.root_];
-  while(toVisit.length > 0) {
-    var node = toVisit.pop();
-    var result = callback.call(opt_obj, node);
-    if(result) {
-      return result
-    }
-    if(!node.isLeaf()) {
-      toVisit.push.apply(toVisit, node.children)
-    }
-  }
-  return undefined
-};
-ol.structs.RBush.prototype.getAll = function() {
-  var values = [];
-  this.forEach(function(value) {
-    values.push(value)
-  });
-  return values
-};
-ol.structs.RBush.prototype.getAllInExtent = function(extent) {
-  var values = [];
-  this.forEachInExtent(extent, function(value) {
-    values.push(value)
-  });
-  return values
-};
-ol.structs.RBush.prototype.getExtent = function(opt_extent) {
-  return ol.extent.returnOrUpdate(this.root_.extent, opt_extent)
-};
-ol.structs.RBush.prototype.getKey_ = function(value) {
-  goog.asserts.assert(goog.isObject(value));
-  return goog.getUid(value).toString()
-};
-ol.structs.RBush.prototype.insert = function(extent, value) {
-  if(goog.DEBUG && this.readers_) {
-    throw new Error("cannot insert value while reading");
-  }
-  var key = this.getKey_(value);
-  goog.asserts.assert(!this.valueExtent_.hasOwnProperty(key));
-  this.insert_(extent, value, this.root_.height - 1)
-};
-ol.structs.RBush.prototype.insert_ = function(extent, value, level) {
-  var path = [this.root_];
-  var node = this.chooseSubtree_(extent, this.root_, level, path);
-  node.children.push(new ol.structs.RBushNode(extent, 0, null, value));
-  ol.extent.extend(node.extent, extent);
-  var i;
-  for(i = path.length - 1;i >= 0;--i) {
-    if(path[i].children.length > this.maxEntries_) {
-      this.split_(path, i)
-    }else {
-      break
-    }
-  }
-  for(;i >= 0;--i) {
-    ol.extent.extend(path[i].extent, extent)
-  }
-  var key = this.getKey_(value);
-  this.valueExtent_[key] = ol.extent.clone(extent);
-  return node
-};
-ol.structs.RBush.prototype.isEmpty = function() {
-  return this.root_.children.length === 0
-};
-ol.structs.RBush.prototype.remove = function(value) {
-  if(goog.DEBUG && this.readers_) {
-    throw new Error("cannot remove value while reading");
-  }
-  var key = this.getKey_(value);
-  goog.asserts.assert(this.valueExtent_.hasOwnProperty(key));
-  var extent = this.valueExtent_[key];
-  delete this.valueExtent_[key];
-  this.remove_(extent, value)
-};
-ol.structs.RBush.prototype.remove_ = function(extent, value) {
-  var node = this.root_;
-  var index = 0;
-  var path = [node];
-  var indexes = [0];
-  var childrenDone, child, children, i, ii;
-  while(path.length > 0) {
-    childrenDone = false;
-    goog.asserts.assert(node.height > 0);
-    if(node.height == 1) {
-      children = node.children;
-      for(i = 0, ii = children.length;i < ii;++i) {
-        child = children[i];
-        if(child.value === value) {
-          goog.array.removeAt(children, i);
-          this.condense_(path);
-          return
-        }
-      }
-      childrenDone = true
-    }else {
-      if(index < node.children.length) {
-        child = node.children[index];
-        if(ol.extent.containsExtent(child.extent, extent)) {
-          path.push(child);
-          indexes.push(index + 1);
-          node = child;
-          index = 0
-        }else {
-          ++index
-        }
-      }else {
-        childrenDone = true
-      }
-    }
-    if(childrenDone) {
-      var lastPathIndex = path.length - 1;
-      node = path[lastPathIndex];
-      index = ++indexes[lastPathIndex];
-      if(index > node.children.length) {
-        path.pop();
-        indexes.pop()
-      }
-    }
-  }
-};
-ol.structs.RBush.prototype.split_ = function(path, level) {
-  var node = path[level];
-  this.chooseSplitAxis_(node);
-  var splitIndex = this.chooseSplitIndex_(node);
-  var newChildren = node.children.splice(splitIndex);
-  var newNode = new ol.structs.RBushNode(ol.extent.createEmpty(), node.height, newChildren, null);
-  node.updateExtent();
-  newNode.updateExtent();
-  if(level) {
-    path[level - 1].children.push(newNode)
-  }else {
-    this.splitRoot_(node, newNode)
-  }
-};
-ol.structs.RBush.prototype.splitRoot_ = function(node1, node2) {
-  goog.asserts.assert(node1 === this.root_);
-  var height = node1.height + 1;
-  var extent = ol.extent.extend(node1.extent.slice(), node2.extent);
-  var children = [node1, node2];
-  this.root_ = new ol.structs.RBushNode(extent, height, children, null)
-};
-ol.structs.RBush.prototype.update = function(extent, value) {
-  if(goog.DEBUG && this.readers_) {
-    throw new Error("cannot update value while reading");
-  }
-  var key = this.getKey_(value);
-  var currentExtent = this.valueExtent_[key];
-  goog.asserts.assert(goog.isDef(currentExtent));
-  if(!ol.extent.equals(currentExtent, extent)) {
-    this.remove_(currentExtent, value);
-    this.insert_(extent, value, this.root_.height - 1);
-    ol.extent.clone(extent, currentExtent)
-  }
-};
-goog.provide("ol.source.Vector");
-goog.provide("ol.source.VectorEvent");
-goog.provide("ol.source.VectorEventType");
-goog.require("goog.array");
-goog.require("goog.asserts");
-goog.require("goog.events");
-goog.require("goog.events.Event");
-goog.require("goog.events.EventType");
-goog.require("goog.object");
-goog.require("ol.source.Source");
-goog.require("ol.structs.RBush");
-ol.source.VectorEventType = {ADDFEATURE:"addfeature", REMOVEFEATURE:"removefeature"};
-ol.source.Vector = function(opt_options) {
-  var options = goog.isDef(opt_options) ? opt_options : {};
-  goog.base(this, {attributions:options.attributions, extent:options.extent, logo:options.logo, projection:options.projection, state:options.state});
-  this.rBush_ = new ol.structs.RBush;
-  this.nullGeometryFeatures_ = {};
-  this.featureChangeKeys_ = {};
-  if(goog.isDef(options.features)) {
-    this.addFeaturesInternal(options.features)
-  }
-};
-goog.inherits(ol.source.Vector, ol.source.Source);
-ol.source.Vector.prototype.addFeature = function(feature) {
-  this.addFeatureInternal(feature);
-  this.dispatchChangeEvent()
-};
-ol.source.Vector.prototype.addFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature) + "";
-  goog.asserts.assert(!(featureKey in this.featureChangeKeys_));
-  this.featureChangeKeys_[featureKey] = goog.events.listen(feature, goog.events.EventType.CHANGE, this.handleFeatureChange_, false, this);
-  var geometry = feature.getGeometry();
-  if(goog.isNull(geometry)) {
-    this.nullGeometryFeatures_[goog.getUid(feature).toString()] = feature
-  }else {
-    var extent = geometry.getExtent();
-    this.rBush_.insert(extent, feature)
-  }
-  this.dispatchEvent(new ol.source.VectorEvent(ol.source.VectorEventType.ADDFEATURE, feature))
-};
-ol.source.Vector.prototype.addFeatures = function(features) {
-  this.addFeaturesInternal(features);
-  this.dispatchChangeEvent()
-};
-ol.source.Vector.prototype.addFeaturesInternal = function(features) {
-  var i, ii;
-  for(i = 0, ii = features.length;i < ii;++i) {
-    this.addFeatureInternal(features[i])
-  }
-};
-ol.source.Vector.prototype.clear = function() {
-  this.rBush_.forEach(this.removeFeatureInternal, this);
-  this.rBush_.clear();
-  goog.object.forEach(this.nullGeometryFeatures_, this.removeFeatureInternal, this);
-  goog.object.clear(this.nullGeometryFeatures_);
-  goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_));
-  this.dispatchChangeEvent()
-};
-ol.source.Vector.prototype.forEachFeature = function(f, opt_obj) {
-  return this.rBush_.forEach(f, opt_obj)
-};
-ol.source.Vector.prototype.forEachFeatureAtCoordinate = function(coordinate, f, opt_obj) {
-  var extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
-  return this.forEachFeatureInExtent(extent, function(feature) {
-    var geometry = feature.getGeometry();
-    goog.asserts.assert(!goog.isNull(geometry));
-    if(geometry.containsCoordinate(coordinate)) {
-      return f.call(opt_obj, feature)
-    }else {
-      return undefined
-    }
-  })
-};
-ol.source.Vector.prototype.forEachFeatureInExtent = function(extent, f, opt_obj) {
-  return this.rBush_.forEachInExtent(extent, f, opt_obj)
-};
-ol.source.Vector.prototype.getAllFeatures = function() {
-  var features = this.rBush_.getAll();
-  if(!goog.object.isEmpty(this.nullGeometryFeatures_)) {
-    goog.array.extend(features, goog.object.getValues(this.nullGeometryFeatures_))
-  }
-  return features
-};
-ol.source.Vector.prototype.getAllFeaturesAtCoordinate = function(coordinate) {
-  var features = [];
-  this.forEachFeatureAtCoordinate(coordinate, function(feature) {
-    features.push(feature)
-  });
-  return features
-};
-ol.source.Vector.prototype.getAllFeaturesInExtent = function(extent) {
-  return this.rBush_.getAllInExtent(extent)
-};
-ol.source.Vector.prototype.getClosestFeatureToCoordinate = function(coordinate) {
-  var x = coordinate[0];
-  var y = coordinate[1];
-  var closestFeature = null;
-  var closestPoint = [NaN, NaN];
-  var minSquaredDistance = Infinity;
-  var extent = [-Infinity, -Infinity, Infinity, Infinity];
-  this.rBush_.forEachInExtent(extent, function(feature) {
-    var geometry = feature.getGeometry();
-    goog.asserts.assert(!goog.isNull(geometry));
-    var previousMinSquaredDistance = minSquaredDistance;
-    minSquaredDistance = geometry.closestPointXY(x, y, closestPoint, minSquaredDistance);
-    if(minSquaredDistance < previousMinSquaredDistance) {
-      closestFeature = feature;
-      var minDistance = Math.sqrt(minSquaredDistance);
-      extent[0] = x - minDistance;
-      extent[1] = y - minDistance;
-      extent[2] = x + minDistance;
-      extent[3] = y + minDistance
-    }
-  });
-  return closestFeature
-};
-ol.source.Vector.prototype.getExtent = function() {
-  return this.rBush_.getExtent()
-};
-ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
-  var feature = (event.target);
-  var featureKey = goog.getUid(feature).toString();
-  var geometry = feature.getGeometry();
-  if(goog.isNull(geometry)) {
-    if(!(featureKey in this.nullGeometryFeatures_)) {
-      this.rBush_.remove(feature);
-      this.nullGeometryFeatures_[featureKey] = feature
-    }
-  }else {
-    var extent = geometry.getExtent();
-    if(featureKey in this.nullGeometryFeatures_) {
-      delete this.nullGeometryFeatures_[featureKey];
-      this.rBush_.insert(extent, feature)
-    }else {
-      this.rBush_.update(extent, feature)
-    }
-  }
-  this.dispatchChangeEvent()
-};
-ol.source.Vector.prototype.isEmpty = function() {
-  return this.rBush_.isEmpty() && goog.object.isEmpty(this.nullGeometryFeatures_)
-};
-ol.source.Vector.prototype.removeFeature = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
-  if(featureKey in this.nullGeometryFeatures_) {
-    delete this.nullGeometryFeatures_[featureKey]
-  }else {
-    this.rBush_.remove(feature)
-  }
-  this.removeFeatureInternal(feature);
-  this.dispatchChangeEvent()
-};
-ol.source.Vector.prototype.removeFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature) + "";
-  goog.asserts.assert(featureKey in this.featureChangeKeys_);
-  goog.events.unlistenByKey(this.featureChangeKeys_[featureKey]);
-  delete this.featureChangeKeys_[featureKey];
-  this.dispatchEvent(new ol.source.VectorEvent(ol.source.VectorEventType.REMOVEFEATURE, feature))
-};
-ol.source.VectorEvent = function(type, opt_feature) {
-  goog.base(this, type);
-  this.feature_ = opt_feature
-};
-goog.inherits(ol.source.VectorEvent, goog.events.Event);
-ol.source.VectorEvent.prototype.getFeature = function() {
-  return this.feature_
-};
 goog.provide("ol.layer.Vector");
 goog.require("ol.feature");
 goog.require("ol.layer.Layer");
-goog.require("ol.source.Vector");
 ol.layer.VectorProperty = {RENDER_GEOMETRY_FUNCTION:"renderGeometryFunction", STYLE_FUNCTION:"styleFunction"};
 ol.layer.Vector = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : ({});
@@ -21305,9 +20734,6 @@ ol.layer.Vector.prototype.getStyleFunction = function() {
   return(this.get(ol.layer.VectorProperty.STYLE_FUNCTION))
 };
 goog.exportProperty(ol.layer.Vector.prototype, "getStyleFunction", ol.layer.Vector.prototype.getStyleFunction);
-ol.layer.Vector.prototype.getVectorSource = function() {
-  return(this.getSource())
-};
 ol.layer.Vector.prototype.setRenderGeometryFunction = function(renderGeometryFunction) {
   this.set(ol.layer.VectorProperty.RENDER_GEOMETRY_FUNCTION, renderGeometryFunction)
 };
@@ -22644,7 +22070,7 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function() {
 ol.render.canvas.ReplayGroup = function(pixelRatio, tolerance) {
   this.pixelRatio_ = pixelRatio;
   this.tolerance_ = tolerance;
-  this.replayesByZIndex_ = {};
+  this.replaysByZIndex_ = {};
   var hitDetectionCanvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
   hitDetectionCanvas.width = 1;
   hitDetectionCanvas.height = 1;
@@ -22652,16 +22078,16 @@ ol.render.canvas.ReplayGroup = function(pixelRatio, tolerance) {
   this.hitDetectionTransform_ = goog.vec.Mat4.createNumber()
 };
 ol.render.canvas.ReplayGroup.prototype.replay = function(context, extent, transform, renderGeometryFunction) {
-  var zs = goog.array.map(goog.object.getKeys(this.replayesByZIndex_), Number);
+  var zs = goog.array.map(goog.object.getKeys(this.replaysByZIndex_), Number);
   goog.array.sort(zs);
   return this.replay_(zs, context, extent, transform, renderGeometryFunction)
 };
 ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ = function(zs, context, extent, transform, renderGeometryFunction, geometryCallback) {
-  var i, ii, replayes, replayType, replay, result;
+  var i, ii, replays, replayType, replay, result;
   for(i = 0, ii = zs.length;i < ii;++i) {
-    replayes = this.replayesByZIndex_[zs[i].toString()];
-    for(replayType in replayes) {
-      replay = replayes[replayType];
+    replays = this.replaysByZIndex_[zs[i].toString()];
+    for(replayType in replays) {
+      replay = replays[replayType];
       if(ol.extent.intersects(extent, replay.getExtent())) {
         result = replay.replayHitDetection(context, transform, renderGeometryFunction, geometryCallback);
         if(result) {
@@ -22673,11 +22099,11 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ = function(zs, contex
   return undefined
 };
 ol.render.canvas.ReplayGroup.prototype.replay_ = function(zs, context, extent, transform, renderGeometryFunction) {
-  var i, ii, replayes, replayType, replay, result;
+  var i, ii, replays, replayType, replay, result;
   for(i = 0, ii = zs.length;i < ii;++i) {
-    replayes = this.replayesByZIndex_[zs[i].toString()];
-    for(replayType in replayes) {
-      replay = replayes[replayType];
+    replays = this.replaysByZIndex_[zs[i].toString()];
+    for(replayType in replays) {
+      replay = replays[replayType];
       if(ol.extent.intersects(extent, replay.getExtent())) {
         result = replay.replay(context, transform, renderGeometryFunction);
         if(result) {
@@ -22691,7 +22117,7 @@ ol.render.canvas.ReplayGroup.prototype.replay_ = function(zs, context, extent, t
 ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtCoordinate = function(extent, resolution, rotation, coordinate, renderGeometryFunction, callback) {
   var transform = this.hitDetectionTransform_;
   ol.vec.Mat4.makeTransform2D(transform, 0.5, 0.5, 1 / resolution, -1 / resolution, -rotation, -coordinate[0], -coordinate[1]);
-  var zs = goog.array.map(goog.object.getKeys(this.replayesByZIndex_), Number);
+  var zs = goog.array.map(goog.object.getKeys(this.replaysByZIndex_), Number);
   goog.array.sort(zs, function(a, b) {
     return b - a
   });
@@ -22710,32 +22136,32 @@ ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtCoordinate = function(ex
 };
 ol.render.canvas.ReplayGroup.prototype.finish = function() {
   var zKey;
-  for(zKey in this.replayesByZIndex_) {
-    var replayes = this.replayesByZIndex_[zKey];
+  for(zKey in this.replaysByZIndex_) {
+    var replays = this.replaysByZIndex_[zKey];
     var replayKey;
-    for(replayKey in replayes) {
-      replayes[replayKey].finish()
+    for(replayKey in replays) {
+      replays[replayKey].finish()
     }
   }
 };
 ol.render.canvas.ReplayGroup.prototype.getReplay = function(zIndex, replayType) {
   var zIndexKey = goog.isDef(zIndex) ? zIndex.toString() : "0";
-  var replayes = this.replayesByZIndex_[zIndexKey];
-  if(!goog.isDef(replayes)) {
-    replayes = {};
-    this.replayesByZIndex_[zIndexKey] = replayes
+  var replays = this.replaysByZIndex_[zIndexKey];
+  if(!goog.isDef(replays)) {
+    replays = {};
+    this.replaysByZIndex_[zIndexKey] = replays
   }
-  var replay = replayes[replayType];
+  var replay = replays[replayType];
   if(!goog.isDef(replay)) {
     var constructor = ol.render.canvas.BATCH_CONSTRUCTORS_[replayType];
     goog.asserts.assert(goog.isDef(constructor));
     replay = new constructor(this.pixelRatio_, this.tolerance_);
-    replayes[replayType] = replay
+    replays[replayType] = replay
   }
   return replay
 };
 ol.render.canvas.ReplayGroup.prototype.isEmpty = function() {
-  return goog.object.isEmpty(this.replayesByZIndex_)
+  return goog.object.isEmpty(this.replaysByZIndex_)
 };
 ol.render.canvas.BATCH_CONSTRUCTORS_ = {"Image":ol.render.canvas.ImageReplay, "LineString":ol.render.canvas.LineStringReplay, "Polygon":ol.render.canvas.PolygonReplay};
 goog.provide("ol.geom.GeometryCollection");
@@ -23325,6 +22751,576 @@ ol.renderer.vector.renderPolygonGeometry_ = function(replayGroup, geometry, styl
   replay.drawPolygonGeometry(polygonGeometry, data)
 };
 ol.renderer.vector.GEOMETRY_RENDERERS_ = {"Point":ol.renderer.vector.renderPointGeometry_, "LineString":ol.renderer.vector.renderLineStringGeometry_, "Polygon":ol.renderer.vector.renderPolygonGeometry_, "MultiPoint":ol.renderer.vector.renderMultiPointGeometry_, "MultiLineString":ol.renderer.vector.renderMultiLineStringGeometry_, "MultiPolygon":ol.renderer.vector.renderMultiPolygonGeometry_, "GeometryCollection":ol.renderer.vector.renderGeometryCollectionGeometry_};
+goog.provide("ol.structs.RBush");
+goog.require("goog.array");
+goog.require("goog.asserts");
+goog.require("goog.object");
+goog.require("ol.extent");
+ol.structs.RBushNode = function(extent, height, children, value) {
+  if(height === 0) {
+    goog.asserts.assert(goog.isNull(children));
+    goog.asserts.assert(!goog.isNull(value))
+  }else {
+    goog.asserts.assert(!goog.isNull(children));
+    goog.asserts.assert(goog.isNull(value))
+  }
+  this.extent = extent;
+  this.height = height;
+  this.children = children;
+  this.value = value
+};
+ol.structs.RBushNode.compareMinX = function(node1, node2) {
+  return node1.extent[0] - node2.extent[0]
+};
+ol.structs.RBushNode.compareMinY = function(node1, node2) {
+  return node1.extent[1] - node2.extent[1]
+};
+ol.structs.RBushNode.prototype.assertValid = function(maxEntries) {
+  if(this.height === 0) {
+    goog.asserts.assert(goog.isNull(this.children));
+    goog.asserts.assert(!goog.isNull(this.value))
+  }else {
+    goog.asserts.assert(!goog.isNull(this.children));
+    goog.asserts.assert(goog.isNull(this.value));
+    goog.asserts.assert(this.children.length <= maxEntries);
+    var i, ii;
+    for(i = 0, ii = this.children.length;i < ii;++i) {
+      var child = this.children[i];
+      goog.asserts.assert(ol.extent.containsExtent(this.extent, child.extent));
+      child.assertValid(maxEntries)
+    }
+  }
+};
+ol.structs.RBushNode.prototype.getChildrenExtent = function(start, stop, opt_extent) {
+  goog.asserts.assert(!this.isLeaf());
+  var children = this.children;
+  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
+  var i;
+  for(i = start;i < stop;++i) {
+    ol.extent.extend(extent, children[i].extent)
+  }
+  return extent
+};
+ol.structs.RBushNode.prototype.updateExtent = function() {
+  goog.asserts.assert(!this.isLeaf());
+  var extent = ol.extent.createOrUpdateEmpty(this.extent);
+  var children = this.children;
+  var i, ii;
+  for(i = 0, ii = children.length;i < ii;++i) {
+    ol.extent.extend(extent, children[i].extent)
+  }
+};
+ol.structs.RBushNode.prototype.isLeaf = function() {
+  return goog.isNull(this.children)
+};
+ol.structs.RBush = function(opt_maxEntries) {
+  this.maxEntries_ = Math.max(4, goog.isDef(opt_maxEntries) ? opt_maxEntries : 9);
+  this.minEntries_ = Math.max(2, Math.ceil(0.4 * this.maxEntries_));
+  this.root_ = new ol.structs.RBushNode(ol.extent.createEmpty(), 1, [], null);
+  this.valueExtent_ = {};
+  if(goog.DEBUG) {
+    this.readers_ = 0
+  }
+};
+ol.structs.RBush.prototype.allDistMargin_ = function(node, compare) {
+  var children = node.children;
+  var m = this.minEntries_;
+  var M = children.length;
+  var i;
+  goog.array.sort(children, compare);
+  var leftExtent = node.getChildrenExtent(0, m);
+  var rightExtent = node.getChildrenExtent(M - m, M);
+  var margin = ol.extent.getMargin(leftExtent) + ol.extent.getMargin(rightExtent);
+  for(i = m;i < M - m;++i) {
+    ol.extent.extend(leftExtent, children[i].extent);
+    margin += ol.extent.getMargin(leftExtent)
+  }
+  for(i = M - m - 1;i >= m;--i) {
+    ol.extent.extend(rightExtent, children[i].extent);
+    margin += ol.extent.getMargin(rightExtent)
+  }
+  return margin
+};
+ol.structs.RBush.prototype.assertValid = function() {
+  this.root_.assertValid(this.maxEntries_)
+};
+ol.structs.RBush.prototype.chooseSplitAxis_ = function(node) {
+  var xMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinX);
+  var yMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinY);
+  if(xMargin < yMargin) {
+    goog.array.sort(node.children, ol.structs.RBushNode.compareMinX)
+  }
+};
+ol.structs.RBush.prototype.chooseSplitIndex_ = function(node) {
+  var children = node.children;
+  var m = this.minEntries_;
+  var M = children.length;
+  var minOverlap = Infinity;
+  var minArea = Infinity;
+  var extent1 = ol.extent.createEmpty();
+  var extent2 = ol.extent.createEmpty();
+  var index = 0;
+  var i;
+  for(i = m;i <= M - m;++i) {
+    extent1 = node.getChildrenExtent(0, i, extent1);
+    extent2 = node.getChildrenExtent(i, M, extent2);
+    var overlap = ol.extent.getIntersectionArea(extent1, extent2);
+    var area = ol.extent.getArea(extent1) + ol.extent.getArea(extent2);
+    if(overlap < minOverlap) {
+      minOverlap = overlap;
+      minArea = Math.min(area, minArea);
+      index = i
+    }else {
+      if(overlap == minOverlap && area < minArea) {
+        minArea = area;
+        index = i
+      }
+    }
+  }
+  return index
+};
+ol.structs.RBush.prototype.chooseSubtree_ = function(extent, node, level, path) {
+  while(!node.isLeaf() && path.length - 1 != level) {
+    var minArea = Infinity;
+    var minEnlargement = Infinity;
+    var children = node.children;
+    var bestChild = null;
+    var i, ii;
+    for(i = 0, ii = children.length;i < ii;++i) {
+      var child = children[i];
+      var area = ol.extent.getArea(child.extent);
+      var enlargement = ol.extent.getEnlargedArea(child.extent, extent) - area;
+      if(enlargement < minEnlargement) {
+        minEnlargement = enlargement;
+        minArea = Math.min(area, minArea);
+        bestChild = child
+      }else {
+        if(enlargement == minEnlargement && area < minArea) {
+          minArea = area;
+          bestChild = child
+        }
+      }
+    }
+    goog.asserts.assert(!goog.isNull(bestChild));
+    node = bestChild;
+    path.push(node)
+  }
+  return node
+};
+ol.structs.RBush.prototype.clear = function() {
+  var node = this.root_;
+  node.extent = ol.extent.createOrUpdateEmpty(this.root_.extent);
+  node.height = 1;
+  node.children.length = 0;
+  node.value = null;
+  goog.object.clear(this.valueExtent_)
+};
+ol.structs.RBush.prototype.condense_ = function(path) {
+  var i;
+  for(i = path.length - 1;i >= 0;--i) {
+    var node = path[i];
+    if(node.children.length === 0) {
+      if(i > 0) {
+        goog.array.remove(path[i - 1].children, node)
+      }else {
+        this.clear()
+      }
+    }else {
+      node.updateExtent()
+    }
+  }
+};
+ol.structs.RBush.prototype.forEach = function(callback, opt_obj) {
+  if(goog.DEBUG) {
+    ++this.readers_;
+    try {
+      return this.forEach_(this.root_, callback, opt_obj)
+    }finally {
+      --this.readers_
+    }
+  }else {
+    return this.forEach_(this.root_, callback, opt_obj)
+  }
+};
+ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_obj) {
+  goog.asserts.assert(!node.isLeaf());
+  var toVisit = [node];
+  var children, i, ii, result;
+  while(toVisit.length > 0) {
+    node = toVisit.pop();
+    children = node.children;
+    if(node.height == 1) {
+      for(i = 0, ii = children.length;i < ii;++i) {
+        result = callback.call(opt_obj, children[i].value);
+        if(result) {
+          return result
+        }
+      }
+    }else {
+      toVisit.push.apply(toVisit, children)
+    }
+  }
+};
+ol.structs.RBush.prototype.forEachInExtent = function(extent, callback, opt_obj) {
+  if(goog.DEBUG) {
+    ++this.readers_;
+    try {
+      return this.forEachInExtent_(extent, callback, opt_obj)
+    }finally {
+      --this.readers_
+    }
+  }else {
+    return this.forEachInExtent_(extent, callback, opt_obj)
+  }
+};
+ol.structs.RBush.prototype.forEachInExtent_ = function(extent, callback, opt_obj) {
+  var toVisit = [this.root_];
+  var result;
+  while(toVisit.length > 0) {
+    var node = toVisit.pop();
+    if(ol.extent.intersects(extent, node.extent)) {
+      if(node.isLeaf()) {
+        result = callback.call(opt_obj, node.value);
+        if(result) {
+          return result
+        }
+      }else {
+        if(ol.extent.containsExtent(extent, node.extent)) {
+          result = this.forEach_(node, callback, opt_obj);
+          if(result) {
+            return result
+          }
+        }else {
+          toVisit.push.apply(toVisit, node.children)
+        }
+      }
+    }
+  }
+  return undefined
+};
+ol.structs.RBush.prototype.forEachNode = function(callback, opt_obj) {
+  var toVisit = [this.root_];
+  while(toVisit.length > 0) {
+    var node = toVisit.pop();
+    var result = callback.call(opt_obj, node);
+    if(result) {
+      return result
+    }
+    if(!node.isLeaf()) {
+      toVisit.push.apply(toVisit, node.children)
+    }
+  }
+  return undefined
+};
+ol.structs.RBush.prototype.getAll = function() {
+  var values = [];
+  this.forEach(function(value) {
+    values.push(value)
+  });
+  return values
+};
+ol.structs.RBush.prototype.getAllInExtent = function(extent) {
+  var values = [];
+  this.forEachInExtent(extent, function(value) {
+    values.push(value)
+  });
+  return values
+};
+ol.structs.RBush.prototype.getExtent = function(opt_extent) {
+  return ol.extent.returnOrUpdate(this.root_.extent, opt_extent)
+};
+ol.structs.RBush.prototype.getKey_ = function(value) {
+  goog.asserts.assert(goog.isObject(value));
+  return goog.getUid(value).toString()
+};
+ol.structs.RBush.prototype.insert = function(extent, value) {
+  if(goog.DEBUG && this.readers_) {
+    throw new Error("cannot insert value while reading");
+  }
+  var key = this.getKey_(value);
+  goog.asserts.assert(!this.valueExtent_.hasOwnProperty(key));
+  this.insert_(extent, value, this.root_.height - 1)
+};
+ol.structs.RBush.prototype.insert_ = function(extent, value, level) {
+  var path = [this.root_];
+  var node = this.chooseSubtree_(extent, this.root_, level, path);
+  node.children.push(new ol.structs.RBushNode(extent, 0, null, value));
+  ol.extent.extend(node.extent, extent);
+  var i;
+  for(i = path.length - 1;i >= 0;--i) {
+    if(path[i].children.length > this.maxEntries_) {
+      this.split_(path, i)
+    }else {
+      break
+    }
+  }
+  for(;i >= 0;--i) {
+    ol.extent.extend(path[i].extent, extent)
+  }
+  var key = this.getKey_(value);
+  this.valueExtent_[key] = ol.extent.clone(extent);
+  return node
+};
+ol.structs.RBush.prototype.isEmpty = function() {
+  return this.root_.children.length === 0
+};
+ol.structs.RBush.prototype.remove = function(value) {
+  if(goog.DEBUG && this.readers_) {
+    throw new Error("cannot remove value while reading");
+  }
+  var key = this.getKey_(value);
+  goog.asserts.assert(this.valueExtent_.hasOwnProperty(key));
+  var extent = this.valueExtent_[key];
+  delete this.valueExtent_[key];
+  this.remove_(extent, value)
+};
+ol.structs.RBush.prototype.remove_ = function(extent, value) {
+  var node = this.root_;
+  var index = 0;
+  var path = [node];
+  var indexes = [0];
+  var childrenDone, child, children, i, ii;
+  while(path.length > 0) {
+    childrenDone = false;
+    goog.asserts.assert(node.height > 0);
+    if(node.height == 1) {
+      children = node.children;
+      for(i = 0, ii = children.length;i < ii;++i) {
+        child = children[i];
+        if(child.value === value) {
+          goog.array.removeAt(children, i);
+          this.condense_(path);
+          return
+        }
+      }
+      childrenDone = true
+    }else {
+      if(index < node.children.length) {
+        child = node.children[index];
+        if(ol.extent.containsExtent(child.extent, extent)) {
+          path.push(child);
+          indexes.push(index + 1);
+          node = child;
+          index = 0
+        }else {
+          ++index
+        }
+      }else {
+        childrenDone = true
+      }
+    }
+    if(childrenDone) {
+      var lastPathIndex = path.length - 1;
+      node = path[lastPathIndex];
+      index = ++indexes[lastPathIndex];
+      if(index > node.children.length) {
+        path.pop();
+        indexes.pop()
+      }
+    }
+  }
+};
+ol.structs.RBush.prototype.split_ = function(path, level) {
+  var node = path[level];
+  this.chooseSplitAxis_(node);
+  var splitIndex = this.chooseSplitIndex_(node);
+  var newChildren = node.children.splice(splitIndex);
+  var newNode = new ol.structs.RBushNode(ol.extent.createEmpty(), node.height, newChildren, null);
+  node.updateExtent();
+  newNode.updateExtent();
+  if(level) {
+    path[level - 1].children.push(newNode)
+  }else {
+    this.splitRoot_(node, newNode)
+  }
+};
+ol.structs.RBush.prototype.splitRoot_ = function(node1, node2) {
+  goog.asserts.assert(node1 === this.root_);
+  var height = node1.height + 1;
+  var extent = ol.extent.extend(node1.extent.slice(), node2.extent);
+  var children = [node1, node2];
+  this.root_ = new ol.structs.RBushNode(extent, height, children, null)
+};
+ol.structs.RBush.prototype.update = function(extent, value) {
+  if(goog.DEBUG && this.readers_) {
+    throw new Error("cannot update value while reading");
+  }
+  var key = this.getKey_(value);
+  var currentExtent = this.valueExtent_[key];
+  goog.asserts.assert(goog.isDef(currentExtent));
+  if(!ol.extent.equals(currentExtent, extent)) {
+    this.remove_(currentExtent, value);
+    this.insert_(extent, value, this.root_.height - 1);
+    ol.extent.clone(extent, currentExtent)
+  }
+};
+goog.provide("ol.source.Vector");
+goog.provide("ol.source.VectorEvent");
+goog.provide("ol.source.VectorEventType");
+goog.require("goog.array");
+goog.require("goog.asserts");
+goog.require("goog.events");
+goog.require("goog.events.Event");
+goog.require("goog.events.EventType");
+goog.require("goog.object");
+goog.require("ol.source.Source");
+goog.require("ol.structs.RBush");
+ol.source.VectorEventType = {ADDFEATURE:"addfeature", REMOVEFEATURE:"removefeature"};
+ol.source.Vector = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  goog.base(this, {attributions:options.attributions, extent:options.extent, logo:options.logo, projection:options.projection, state:options.state});
+  this.rBush_ = new ol.structs.RBush;
+  this.nullGeometryFeatures_ = {};
+  this.featureChangeKeys_ = {};
+  if(goog.isDef(options.features)) {
+    this.addFeaturesInternal(options.features)
+  }
+};
+goog.inherits(ol.source.Vector, ol.source.Source);
+ol.source.Vector.prototype.addFeature = function(feature) {
+  this.addFeatureInternal(feature);
+  this.dispatchChangeEvent()
+};
+ol.source.Vector.prototype.addFeatureInternal = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  goog.asserts.assert(!(featureKey in this.featureChangeKeys_));
+  this.featureChangeKeys_[featureKey] = goog.events.listen(feature, goog.events.EventType.CHANGE, this.handleFeatureChange_, false, this);
+  var geometry = feature.getGeometry();
+  if(goog.isNull(geometry)) {
+    this.nullGeometryFeatures_[goog.getUid(feature).toString()] = feature
+  }else {
+    var extent = geometry.getExtent();
+    this.rBush_.insert(extent, feature)
+  }
+  this.dispatchEvent(new ol.source.VectorEvent(ol.source.VectorEventType.ADDFEATURE, feature))
+};
+ol.source.Vector.prototype.addFeatures = function(features) {
+  this.addFeaturesInternal(features);
+  this.dispatchChangeEvent()
+};
+ol.source.Vector.prototype.addFeaturesInternal = function(features) {
+  var i, ii;
+  for(i = 0, ii = features.length;i < ii;++i) {
+    this.addFeatureInternal(features[i])
+  }
+};
+ol.source.Vector.prototype.clear = function() {
+  this.rBush_.forEach(this.removeFeatureInternal, this);
+  this.rBush_.clear();
+  goog.object.forEach(this.nullGeometryFeatures_, this.removeFeatureInternal, this);
+  goog.object.clear(this.nullGeometryFeatures_);
+  goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_));
+  this.dispatchChangeEvent()
+};
+ol.source.Vector.prototype.forEachFeature = function(f, opt_obj) {
+  return this.rBush_.forEach(f, opt_obj)
+};
+ol.source.Vector.prototype.forEachFeatureAtCoordinate = function(coordinate, f, opt_obj) {
+  var extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
+  return this.forEachFeatureInExtent(extent, function(feature) {
+    var geometry = feature.getGeometry();
+    goog.asserts.assert(!goog.isNull(geometry));
+    if(geometry.containsCoordinate(coordinate)) {
+      return f.call(opt_obj, feature)
+    }else {
+      return undefined
+    }
+  })
+};
+ol.source.Vector.prototype.forEachFeatureInExtent = function(extent, f, opt_obj) {
+  return this.rBush_.forEachInExtent(extent, f, opt_obj)
+};
+ol.source.Vector.prototype.getAllFeatures = function() {
+  var features = this.rBush_.getAll();
+  if(!goog.object.isEmpty(this.nullGeometryFeatures_)) {
+    goog.array.extend(features, goog.object.getValues(this.nullGeometryFeatures_))
+  }
+  return features
+};
+ol.source.Vector.prototype.getAllFeaturesAtCoordinate = function(coordinate) {
+  var features = [];
+  this.forEachFeatureAtCoordinate(coordinate, function(feature) {
+    features.push(feature)
+  });
+  return features
+};
+ol.source.Vector.prototype.getAllFeaturesInExtent = function(extent) {
+  return this.rBush_.getAllInExtent(extent)
+};
+ol.source.Vector.prototype.getClosestFeatureToCoordinate = function(coordinate) {
+  var x = coordinate[0];
+  var y = coordinate[1];
+  var closestFeature = null;
+  var closestPoint = [NaN, NaN];
+  var minSquaredDistance = Infinity;
+  var extent = [-Infinity, -Infinity, Infinity, Infinity];
+  this.rBush_.forEachInExtent(extent, function(feature) {
+    var geometry = feature.getGeometry();
+    goog.asserts.assert(!goog.isNull(geometry));
+    var previousMinSquaredDistance = minSquaredDistance;
+    minSquaredDistance = geometry.closestPointXY(x, y, closestPoint, minSquaredDistance);
+    if(minSquaredDistance < previousMinSquaredDistance) {
+      closestFeature = feature;
+      var minDistance = Math.sqrt(minSquaredDistance);
+      extent[0] = x - minDistance;
+      extent[1] = y - minDistance;
+      extent[2] = x + minDistance;
+      extent[3] = y + minDistance
+    }
+  });
+  return closestFeature
+};
+ol.source.Vector.prototype.getExtent = function() {
+  return this.rBush_.getExtent()
+};
+ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
+  var feature = (event.target);
+  var featureKey = goog.getUid(feature).toString();
+  var geometry = feature.getGeometry();
+  if(goog.isNull(geometry)) {
+    if(!(featureKey in this.nullGeometryFeatures_)) {
+      this.rBush_.remove(feature);
+      this.nullGeometryFeatures_[featureKey] = feature
+    }
+  }else {
+    var extent = geometry.getExtent();
+    if(featureKey in this.nullGeometryFeatures_) {
+      delete this.nullGeometryFeatures_[featureKey];
+      this.rBush_.insert(extent, feature)
+    }else {
+      this.rBush_.update(extent, feature)
+    }
+  }
+  this.dispatchChangeEvent()
+};
+ol.source.Vector.prototype.isEmpty = function() {
+  return this.rBush_.isEmpty() && goog.object.isEmpty(this.nullGeometryFeatures_)
+};
+ol.source.Vector.prototype.removeFeature = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  if(featureKey in this.nullGeometryFeatures_) {
+    delete this.nullGeometryFeatures_[featureKey]
+  }else {
+    this.rBush_.remove(feature)
+  }
+  this.removeFeatureInternal(feature);
+  this.dispatchChangeEvent()
+};
+ol.source.Vector.prototype.removeFeatureInternal = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  goog.asserts.assert(featureKey in this.featureChangeKeys_);
+  goog.events.unlistenByKey(this.featureChangeKeys_[featureKey]);
+  delete this.featureChangeKeys_[featureKey];
+  this.dispatchEvent(new ol.source.VectorEvent(ol.source.VectorEventType.REMOVEFEATURE, feature))
+};
+ol.source.VectorEvent = function(type, opt_feature) {
+  goog.base(this, type);
+  this.feature_ = opt_feature
+};
+goog.inherits(ol.source.VectorEvent, goog.events.Event);
+ol.source.VectorEvent.prototype.getFeature = function() {
+  return this.feature_
+};
 goog.provide("ol.renderer.canvas.VectorLayer");
 goog.require("goog.asserts");
 goog.require("goog.events");
@@ -23337,6 +23333,7 @@ goog.require("ol.layer.Vector");
 goog.require("ol.render.canvas.ReplayGroup");
 goog.require("ol.renderer.canvas.Layer");
 goog.require("ol.renderer.vector");
+goog.require("ol.source.Vector");
 goog.require("ol.style.ImageState");
 ol.renderer.canvas.VectorLayer = function(mapRenderer, vectorLayer) {
   goog.base(this, mapRenderer, vectorLayer);
@@ -23380,15 +23377,13 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel = function(pixel,
   }
 };
 ol.renderer.canvas.VectorLayer.prototype.getRenderGeometryFunction_ = function() {
-  var vectorLayer = this.getVectorLayer();
+  var vectorLayer = this.getLayer();
+  goog.asserts.assertInstanceof(vectorLayer, ol.layer.Vector);
   var renderGeometryFunction = vectorLayer.getRenderGeometryFunction();
   if(!goog.isDef(renderGeometryFunction)) {
     renderGeometryFunction = goog.functions.TRUE
   }
   return renderGeometryFunction
-};
-ol.renderer.canvas.VectorLayer.prototype.getVectorLayer = function() {
-  return(this.getLayer())
 };
 ol.renderer.canvas.VectorLayer.prototype.handleImageStyleChange_ = function(event) {
   var imageStyle = (event.target);
@@ -23400,8 +23395,10 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
   if(!this.dirty_ && (frameState.viewHints[ol.ViewHint.ANIMATING] || frameState.viewHints[ol.ViewHint.INTERACTING])) {
     return
   }
-  var vectorLayer = this.getVectorLayer();
-  var vectorSource = vectorLayer.getVectorSource();
+  var vectorLayer = this.getLayer();
+  goog.asserts.assertInstanceof(vectorLayer, ol.layer.Vector);
+  var vectorSource = vectorLayer.getSource();
+  goog.asserts.assertInstanceof(vectorSource, ol.source.Vector);
   var frameStateExtent = frameState.extent;
   var frameStateResolution = frameState.view2DState.resolution;
   var pixelRatio = frameState.devicePixelRatio;
@@ -29082,6 +29079,18 @@ ol.format.KML.readLineString_ = function(node, objectStack) {
     return undefined
   }
 };
+ol.format.KML.readLinearRing_ = function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
+  goog.asserts.assert(node.localName == "LinearRing");
+  var flatCoordinates = ol.format.KML.readFlatCoordinatesFromNode_(node, objectStack);
+  if(goog.isDef(flatCoordinates)) {
+    var polygon = new ol.geom.Polygon(null);
+    polygon.setFlatCoordinates(ol.geom.GeometryLayout.XYZ, flatCoordinates, [flatCoordinates.length]);
+    return polygon
+  }else {
+    return undefined
+  }
+};
 ol.format.KML.readMultiGeometry_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   goog.asserts.assert(node.localName == "MultiGeometry");
@@ -29348,13 +29357,13 @@ ol.format.KML.ICON_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_
 ol.format.KML.ICON_STYLE_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"Icon":ol.xml.makeObjectPropertySetter(ol.format.KML.readIcon_), "heading":ol.xml.makeObjectPropertySetter(ol.format.KML.readNumber_), "hotSpot":ol.xml.makeObjectPropertySetter(ol.format.KML.readVec2_), "scale":ol.xml.makeObjectPropertySetter(ol.format.KML.readscale_)});
 ol.format.KML.INNER_BOUNDARY_IS_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"LinearRing":ol.xml.makeReplacer(ol.format.KML.readFlatLinearRing_)});
 ol.format.KML.LINE_STYLE_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"color":ol.xml.makeObjectPropertySetter(ol.format.KML.readColor_), "width":ol.xml.makeObjectPropertySetter(ol.format.KML.readNumber_)});
-ol.format.KML.MULTI_GEOMETRY_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"LineString":ol.xml.makeArrayPusher(ol.format.KML.readLineString_), "MultiGeometry":ol.xml.makeArrayPusher(ol.format.KML.readMultiGeometry_), "Point":ol.xml.makeArrayPusher(ol.format.KML.readPoint_), "Polygon":ol.xml.makeArrayPusher(ol.format.KML.readPolygon_)});
+ol.format.KML.MULTI_GEOMETRY_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"LineString":ol.xml.makeArrayPusher(ol.format.KML.readLineString_), "LinearRing":ol.xml.makeArrayPusher(ol.format.KML.readLinearRing_), "MultiGeometry":ol.xml.makeArrayPusher(ol.format.KML.readMultiGeometry_), "Point":ol.xml.makeArrayPusher(ol.format.KML.readPoint_), "Polygon":ol.xml.makeArrayPusher(ol.format.KML.readPolygon_)});
 ol.format.KML.GX_MULTITRACK_GEOMETRY_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.GX_NAMESPACE_URIS_, {"Track":ol.xml.makeArrayPusher(ol.format.KML.readGxTrack_)});
 ol.format.KML.OUTER_BOUNDARY_IS_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"LinearRing":ol.xml.makeReplacer(ol.format.KML.readFlatLinearRing_)});
 ol.format.KML.PAIR_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"Style":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_), "key":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "styleUrl":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyleUrl_)});
-ol.format.KML.PLACEMARK_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"ExtendedData":ol.format.KML.ExtendedDataParser_, "MultiGeometry":ol.xml.makeObjectPropertySetter(ol.format.KML.readMultiGeometry_, "geometry"), "LineString":ol.xml.makeObjectPropertySetter(ol.format.KML.readLineString_, "geometry"), "Point":ol.xml.makeObjectPropertySetter(ol.format.KML.readPoint_, "geometry"), "Polygon":ol.xml.makeObjectPropertySetter(ol.format.KML.readPolygon_, "geometry"), "Style":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_), 
-"StyleMap":ol.format.KML.StyleMapParser_, "address":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "description":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "name":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "open":ol.xml.makeObjectPropertySetter(ol.format.KML.readBoolean_), "phoneNumber":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "styleUrl":ol.xml.makeObjectPropertySetter(ol.format.KML.readURI_), "visibility":ol.xml.makeObjectPropertySetter(ol.format.KML.readBoolean_)}, 
-ol.xml.makeParsersNS(ol.format.KML.GX_NAMESPACE_URIS_, {"MultiTrack":ol.xml.makeObjectPropertySetter(ol.format.KML.readGxMultiTrack_, "geometry")}));
+ol.format.KML.PLACEMARK_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"ExtendedData":ol.format.KML.ExtendedDataParser_, "MultiGeometry":ol.xml.makeObjectPropertySetter(ol.format.KML.readMultiGeometry_, "geometry"), "LineString":ol.xml.makeObjectPropertySetter(ol.format.KML.readLineString_, "geometry"), "LinearRing":ol.xml.makeObjectPropertySetter(ol.format.KML.readLinearRing_, "geometry"), "Point":ol.xml.makeObjectPropertySetter(ol.format.KML.readPoint_, "geometry"), "Polygon":ol.xml.makeObjectPropertySetter(ol.format.KML.readPolygon_, 
+"geometry"), "Style":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_), "StyleMap":ol.format.KML.StyleMapParser_, "address":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "description":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "name":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "open":ol.xml.makeObjectPropertySetter(ol.format.KML.readBoolean_), "phoneNumber":ol.xml.makeObjectPropertySetter(ol.format.KML.readString_), "styleUrl":ol.xml.makeObjectPropertySetter(ol.format.KML.readURI_), 
+"visibility":ol.xml.makeObjectPropertySetter(ol.format.KML.readBoolean_)}, ol.xml.makeParsersNS(ol.format.KML.GX_NAMESPACE_URIS_, {"MultiTrack":ol.xml.makeObjectPropertySetter(ol.format.KML.readGxMultiTrack_, "geometry")}));
 ol.format.KML.POLY_STYLE_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"color":ol.xml.makeObjectPropertySetter(ol.format.KML.readColor_), "fill":ol.xml.makeObjectPropertySetter(ol.format.KML.readBoolean_), "outline":ol.xml.makeObjectPropertySetter(ol.format.KML.readBoolean_)});
 ol.format.KML.SCHEMA_DATA_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"SimpleData":ol.format.KML.SimpleDataParser_});
 ol.format.KML.STYLE_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"IconStyle":ol.format.KML.IconStyleParser_, "LineStyle":ol.format.KML.LineStyleParser_, "PolyStyle":ol.format.KML.PolyStyleParser_});
