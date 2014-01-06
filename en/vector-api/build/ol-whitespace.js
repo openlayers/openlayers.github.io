@@ -687,7 +687,7 @@ goog.addDependency("../src/ol/renderer/webgl/webglmapcolorshader.js", ["ol.rende
 goog.addDependency("../src/ol/renderer/webgl/webglmapdefaultshader.js", ["ol.renderer.webgl.map.shader.Default"], ["ol.webgl.shader"]);
 goog.addDependency("../src/ol/renderer/webgl/webglmaprenderer.js", ["ol.renderer.webgl.Map"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.Event", "goog.log", "goog.log.Logger", "goog.object", "goog.style", "goog.webgl", "ol.FrameState", "ol.Tile", "ol.css", "ol.layer.Image", "ol.layer.Tile", "ol.render.Event", "ol.render.EventType", "ol.render.webgl.Immediate", "ol.renderer.Map", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.TileLayer", 
 "ol.source.State", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType"]);
-goog.addDependency("../src/ol/renderer/webgl/webgltilelayerrenderer.js", ["ol.renderer.webgl.TileLayer"], ["goog.array", "goog.asserts", "goog.object", "goog.vec.Vec4", "goog.webgl", "ol.Tile", "ol.TileRange", "ol.TileState", "ol.extent", "ol.layer.Tile", "ol.math", "ol.renderer.webgl.Layer", "ol.renderer.webgl.tilelayer.shader", "ol.source.Tile", "ol.structs.Buffer", "ol.vec.Mat4"]);
+goog.addDependency("../src/ol/renderer/webgl/webgltilelayerrenderer.js", ["ol.renderer.webgl.TileLayer"], ["goog.array", "goog.asserts", "goog.object", "goog.vec.Mat4", "goog.vec.Vec4", "goog.webgl", "ol.Tile", "ol.TileRange", "ol.TileState", "ol.extent", "ol.layer.Tile", "ol.math", "ol.renderer.webgl.Layer", "ol.renderer.webgl.tilelayer.shader", "ol.source.Tile", "ol.structs.Buffer"]);
 goog.addDependency("../src/ol/renderer/webgl/webgltilelayershader.js", ["ol.renderer.webgl.tilelayer.shader"], ["ol.webgl.shader"]);
 goog.addDependency("../src/ol/resolutionconstraint.js", ["ol.ResolutionConstraint", "ol.ResolutionConstraintType"], ["goog.math", "ol.array"]);
 goog.addDependency("../src/ol/rotationconstraint.js", ["ol.RotationConstraint", "ol.RotationConstraintType"], []);
@@ -25121,6 +25121,7 @@ goog.provide("ol.renderer.webgl.TileLayer");
 goog.require("goog.array");
 goog.require("goog.asserts");
 goog.require("goog.object");
+goog.require("goog.vec.Mat4");
 goog.require("goog.vec.Vec4");
 goog.require("goog.webgl");
 goog.require("ol.Tile");
@@ -25133,7 +25134,6 @@ goog.require("ol.renderer.webgl.Layer");
 goog.require("ol.renderer.webgl.tilelayer.shader");
 goog.require("ol.source.Tile");
 goog.require("ol.structs.Buffer");
-goog.require("ol.vec.Mat4");
 ol.renderer.webgl.TileLayer = function(mapRenderer, tileLayer) {
   goog.base(this, mapRenderer, tileLayer);
   this.fragmentShader_ = ol.renderer.webgl.tilelayer.shader.Fragment.getInstance();
@@ -25283,7 +25283,14 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   }, this);
   this.scheduleExpireCache(frameState, tileSource);
   this.updateLogos(frameState, tileSource);
-  ol.vec.Mat4.makeTransform2D(this.texCoordMatrix, (center[0] - framebufferExtent[0]) / (framebufferExtent[2] - framebufferExtent[0]), (center[1] - framebufferExtent[1]) / (framebufferExtent[3] - framebufferExtent[1]), frameState.size[0] * view2DState.resolution / (framebufferExtent[2] - framebufferExtent[0]), frameState.size[1] * view2DState.resolution / (framebufferExtent[3] - framebufferExtent[1]), view2DState.rotation, -0.5, -0.5)
+  var texCoordMatrix = this.texCoordMatrix;
+  goog.vec.Mat4.makeIdentity(texCoordMatrix);
+  goog.vec.Mat4.translate(texCoordMatrix, (center[0] - framebufferExtent[0]) / (framebufferExtent[2] - framebufferExtent[0]), (center[1] - framebufferExtent[1]) / (framebufferExtent[3] - framebufferExtent[1]), 0);
+  if(view2DState.rotation !== 0) {
+    goog.vec.Mat4.rotateZ(texCoordMatrix, view2DState.rotation)
+  }
+  goog.vec.Mat4.scale(texCoordMatrix, frameState.size[0] * view2DState.resolution / (framebufferExtent[2] - framebufferExtent[0]), frameState.size[1] * view2DState.resolution / (framebufferExtent[3] - framebufferExtent[1]), 1);
+  goog.vec.Mat4.translate(texCoordMatrix, -0.5, -0.5, 0)
 };
 goog.provide("ol.structs.LRUCache");
 goog.require("goog.asserts");
@@ -28742,14 +28749,12 @@ ol.xml.makeParsersNS = function(namespaceURIs, parsers, opt_parsersNS) {
 };
 ol.xml.parse = function(parsersNS, node, objectStack, opt_obj) {
   var n;
-  for(n = node.firstChild;!goog.isNull(n);n = n.nextSibling) {
-    if(n.nodeType == goog.dom.NodeType.ELEMENT) {
-      var parsers = parsersNS[n.namespaceURI];
-      if(goog.isDef(parsers)) {
-        var parser = parsers[n.localName];
-        if(goog.isDef(parser)) {
-          parser.call(opt_obj, n, objectStack)
-        }
+  for(n = node.firstElementChild;!goog.isNull(n);n = n.nextElementSibling) {
+    var parsers = parsersNS[n.namespaceURI];
+    if(goog.isDef(parsers)) {
+      var parser = parsers[n.localName];
+      if(goog.isDef(parser)) {
+        parser.call(opt_obj, n, objectStack)
       }
     }
   }
@@ -29488,12 +29493,10 @@ ol.format.KML.prototype.readFeaturesFromNode = function(node) {
       if(node.localName == "kml") {
         features = [];
         var n;
-        for(n = node.firstChild;!goog.isNull(n);n = n.nextSibling) {
-          if(n.nodeType == goog.dom.NodeType.ELEMENT) {
-            var fs = this.readFeaturesFromNode(n);
-            if(goog.isDef(fs)) {
-              goog.array.extend(features, fs)
-            }
+        for(n = node.firstElementChild;!goog.isNull(n);n = n.nextElementSibling) {
+          var fs = this.readFeaturesFromNode(n);
+          if(goog.isDef(fs)) {
+            goog.array.extend(features, fs)
           }
         }
         return features
@@ -29504,27 +29507,43 @@ ol.format.KML.prototype.readFeaturesFromNode = function(node) {
   }
 };
 ol.format.KML.prototype.readName = function(source) {
-  if(source instanceof Node) {
-    return this.readNameFromNode(source)
+  if(source instanceof Document) {
+    return this.readNameFromDocument(source)
   }else {
-    if(goog.isString(source)) {
-      var doc = goog.dom.xml.loadXml(source);
-      return this.readNameFromNode(doc)
+    if(source instanceof Node) {
+      return this.readNameFromNode(source)
     }else {
-      goog.asserts.fail();
-      return undefined
+      if(goog.isString(source)) {
+        var doc = goog.dom.xml.loadXml(source);
+        return this.readNameFromDocument(doc)
+      }else {
+        goog.asserts.fail();
+        return undefined
+      }
     }
   }
 };
+ol.format.KML.prototype.readNameFromDocument = function(doc) {
+  var n;
+  for(n = doc.firstChild;!goog.isNull(n);n = n.nextSibling) {
+    if(n.nodeType == goog.dom.NodeType.ELEMENT) {
+      var name = this.readNameFromNode(n);
+      if(goog.isDef(name)) {
+        return name
+      }
+    }
+  }
+  return undefined
+};
 ol.format.KML.prototype.readNameFromNode = function(node) {
   var n;
-  for(n = node.firstChild;!goog.isNull(n);n = n.nextSibling) {
-    if(n.nodeType == goog.dom.NodeType.ELEMENT && goog.array.indexOf(ol.format.KML.NAMESPACE_URIS_, n.namespaceURI) != -1 && n.localName == "name") {
+  for(n = node.firstElementChild;!goog.isNull(n);n = n.nextElementSibling) {
+    if(goog.array.indexOf(ol.format.KML.NAMESPACE_URIS_, n.namespaceURI) != -1 && n.localName == "name") {
       return ol.format.KML.readString_(n)
     }
   }
-  for(n = node.firstChild;!goog.isNull(n);n = n.nextSibling) {
-    if(n.nodeType == goog.dom.NodeType.ELEMENT && goog.array.indexOf(ol.format.KML.NAMESPACE_URIS_, n.namespaceURI) != -1 && (n.localName == "Document" || n.localName == "Folder" || n.localName == "Placemark" || n.localName == "kml")) {
+  for(n = node.firstElementChild;!goog.isNull(n);n = n.nextElementSibling) {
+    if(goog.array.indexOf(ol.format.KML.NAMESPACE_URIS_, n.namespaceURI) != -1 && (n.localName == "Document" || n.localName == "Folder" || n.localName == "Placemark" || n.localName == "kml")) {
       var name = this.readNameFromNode(n);
       if(goog.isDef(name)) {
         return name
