@@ -1,11 +1,3 @@
-var tracklogs = [
-  'data/igc/Clement-Latour.igc',
-  'data/igc/Damien-de-Baenst.igc',
-  'data/igc/Sylvain-Dhonneur.igc',
-  'data/igc/Tom-Payne.igc',
-  'data/igc/Ulrich-Prinz.igc'
-];
-
 var colors = {
   'Clement Latour': 'rgba(0, 0, 255, 0.7)',
   'Damien de Baesnt': 'rgba(0, 215, 255, 0.7)',
@@ -30,7 +22,15 @@ var styleFunction = function(feature, resolution) {
   return styleArray;
 };
 
-var vectorSource = new ol.source.Vector();
+var vectorSource = new ol.source.IGC({
+  urls: [
+    'data/igc/Clement-Latour.igc',
+    'data/igc/Damien-de-Baenst.igc',
+    'data/igc/Sylvain-Dhonneur.igc',
+    'data/igc/Tom-Payne.igc',
+    'data/igc/Ulrich-Prinz.igc'
+  ]
+});
 
 var map = new ol.Map({
   layers: [
@@ -58,18 +58,6 @@ var map = new ol.Map({
     zoom: 9
   })
 });
-
-
-var transform = ol.proj.getTransform('EPSG:4326', 'EPSG:3857');
-var i, ii;
-for (i = 0, ii = tracklogs.length; i < ii; ++i) {
-  $.get(tracklogs[i], function(data) {
-    var format = new ol.format.IGC();
-    var feature = format.readFeature(data);
-    feature.getGeometry().transform(transform);
-    vectorSource.addFeature(feature);
-  });
-}
 
 
 var point = null;
