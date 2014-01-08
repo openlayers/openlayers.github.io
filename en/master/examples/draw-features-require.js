@@ -5,7 +5,7 @@ goog.require('ol.interaction');
 goog.require('ol.interaction.Draw');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
-goog.require('ol.source.MapQuestOpenAerial');
+goog.require('ol.source.MapQuest');
 goog.require('ol.source.Vector');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Rule');

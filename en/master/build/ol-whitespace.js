@@ -526,10 +526,9 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["libtess", "l
 "ol.parser.TopoJSON", "ol.parser.WKT", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.Filter", "ol.parser.ogc.Filter_v1", "ol.parser.ogc.Filter_v1_0_0", "ol.parser.ogc.Filter_v1_1_0", "ol.parser.ogc.GML", "ol.parser.ogc.GML_v2", "ol.parser.ogc.GML_v3", "ol.parser.ogc.OWSCommon_v1", "ol.parser.ogc.OWSCommon_v1_1_0", "ol.parser.ogc.SLD", "ol.parser.ogc.SLD_v1", "ol.parser.ogc.SLD_v1_0_0", "ol.parser.ogc.Versioned", "ol.parser.ogc.WFS", "ol.parser.ogc.WFS_v1", "ol.parser.ogc.WFS_v1_0_0", 
 "ol.parser.ogc.WFS_v1_1_0", "ol.parser.ogc.WMSCapabilities", "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", "ol.parser.ogc.WMSCapabilities_v1_3_0", "ol.parser.ogc.WMTSCapabilities", "ol.parser.ogc.WMTSCapabilities_v1_0_0", "ol.parser.polyline", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", 
 "ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.renderer.Layer", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.Vector", "ol.renderer.canvas.VectorLayer", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.Map", "ol.renderer.dom.TileLayer", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", 
-"ol.renderer.webgl.Map", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", "ol.size", "ol.source.BingMaps", "ol.source.FeatureCache", "ol.source.FeatureInfoSource", "ol.source.Image", "ol.source.ImageStatic", "ol.source.ImageWMS", "ol.source.MapGuide", "ol.source.MapQuestOSM", "ol.source.MapQuestOpenAerial", "ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", 
-"ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.Vector", "ol.source.VectorEventType", "ol.source.VectorLoadState", "ol.source.WMSGetFeatureInfoMethod", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.sphere.NORMAL", "ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style", 
-"ol.style.Fill", "ol.style.Icon", "ol.style.IconLiteral", "ol.style.LineLiteral", "ol.style.Literal", "ol.style.Point", "ol.style.PointLiteral", "ol.style.PolygonLiteral", "ol.style.Rule", "ol.style.Shape", "ol.style.ShapeLiteral", "ol.style.ShapeType", "ol.style.Stroke", "ol.style.StrokeDefaults", "ol.style.Style", "ol.style.Symbolizer", "ol.style.Text", "ol.style.TextLiteral", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", 
-"ol.webgl.WebGLContextEventType", "ol.webgl.shader"]);
+"ol.renderer.webgl.Map", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", "ol.size", "ol.source.BingMaps", "ol.source.FeatureCache", "ol.source.FeatureInfoSource", "ol.source.Image", "ol.source.ImageStatic", "ol.source.ImageWMS", "ol.source.MapGuide", "ol.source.MapQuest", "ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", 
+"ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.Vector", "ol.source.VectorEventType", "ol.source.VectorLoadState", "ol.source.WMSGetFeatureInfoMethod", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.sphere.NORMAL", "ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style", "ol.style.Fill", "ol.style.Icon", "ol.style.IconLiteral", 
+"ol.style.LineLiteral", "ol.style.Literal", "ol.style.Point", "ol.style.PointLiteral", "ol.style.PolygonLiteral", "ol.style.Rule", "ol.style.Shape", "ol.style.ShapeLiteral", "ol.style.ShapeType", "ol.style.Stroke", "ol.style.StrokeDefaults", "ol.style.Style", "ol.style.Symbolizer", "ol.style.Text", "ol.style.TextLiteral", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", "ol.webgl.WebGLContextEventType", "ol.webgl.shader"]);
 goog.addDependency("../src/libtess.js/dict/Dict.js", ["libtess.Dict"], ["libtess", "libtess.DictNode"]);
 goog.addDependency("../src/libtess.js/dict/DictNode.js", ["libtess.DictNode"], ["libtess"]);
 goog.addDependency("../src/libtess.js/geom.js", ["libtess.geom"], ["libtess"]);
@@ -715,7 +714,7 @@ goog.addDependency("../src/ol/source/imagesource.js", ["ol.source.Image"], ["goo
 goog.addDependency("../src/ol/source/imagestaticsource.js", ["ol.source.ImageStatic"], ["ol.Image", "ol.ImageUrlFunctionType", "ol.extent", "ol.proj", "ol.source.Image"]);
 goog.addDependency("../src/ol/source/imagewmssource.js", ["ol.source.ImageWMS"], ["goog.asserts", "goog.object", "ol.Image", "ol.ImageUrlFunction", "ol.extent", "ol.source.FeatureInfoSource", "ol.source.Image", "ol.source.wms"]);
 goog.addDependency("../src/ol/source/mapguidesource.js", ["ol.source.MapGuide"], ["goog.object", "goog.uri.utils", "ol.ImageUrlFunction", "ol.extent", "ol.source.Image"]);
-goog.addDependency("../src/ol/source/mapquestsource.js", ["ol.source.MapQuestOSM", "ol.source.MapQuestOpenAerial"], ["ol.Attribution", "ol.source.OSM", "ol.source.XYZ"]);
+goog.addDependency("../src/ol/source/mapquestsource.js", ["ol.source.MapQuest"], ["goog.asserts", "ol.Attribution", "ol.source.OSM", "ol.source.XYZ"]);
 goog.addDependency("../src/ol/source/osmsource.js", ["ol.source.OSM"], ["ol.Attribution", "ol.source.XYZ"]);
 goog.addDependency("../src/ol/source/source.js", ["ol.source.Source", "ol.source.State"], ["goog.events.EventTarget", "goog.events.EventType", "ol.Attribution", "ol.Extent", "ol.proj"]);
 goog.addDependency("../src/ol/source/stamensource.js", ["ol.source.Stamen"], ["goog.asserts", "ol.Attribution", "ol.source.OSM", "ol.source.XYZ"]);
@@ -37172,23 +37171,21 @@ goog.inherits(ol.source.OSM, ol.source.XYZ);
 ol.source.OSM.DATA_ATTRIBUTION = new ol.Attribution({html:"Data \x26copy; " + '\x3ca href\x3d"http://www.openstreetmap.org/"\x3eOpenStreetMap\x3c/a\x3e ' + "contributors, " + '\x3ca href\x3d"http://www.openstreetmap.org/copyright"\x3eODbL\x3c/a\x3e'});
 ol.source.OSM.TILE_ATTRIBUTION = new ol.Attribution({html:"Tiles \x26copy; " + '\x3ca href\x3d"http://www.openstreetmap.org/"\x3eOpenStreetMap\x3c/a\x3e ' + "contributors, " + '\x3ca href\x3d"http://creativecommons.org/licenses/by-sa/2.0/"\x3eCC BY-SA\x3c/a\x3e'});
 ol.source.OSM.ATTRIBUTIONS = [ol.source.OSM.TILE_ATTRIBUTION, ol.source.OSM.DATA_ATTRIBUTION];
-goog.provide("ol.source.MapQuestOSM");
-goog.provide("ol.source.MapQuestOpenAerial");
+goog.provide("ol.source.MapQuest");
+goog.require("goog.asserts");
 goog.require("ol.Attribution");
 goog.require("ol.source.OSM");
 goog.require("ol.source.XYZ");
-ol.source.MapQuestOSM = function(opt_options) {
+ol.source.MapQuest = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
-  var attributions = [new ol.Attribution({html:"Tiles Courtesy of " + '\x3ca href\x3d"http://www.mapquest.com/" target\x3d"_blank"\x3eMapQuest\x3c/a\x3e'}), ol.source.OSM.DATA_ATTRIBUTION];
-  goog.base(this, {attributions:attributions, crossOrigin:"anonymous", logo:"http://developer.mapquest.com/content/osm/mq_logo.png", opaque:true, maxZoom:28, tileLoadFunction:options.tileLoadFunction, url:"http://otile{1-4}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg"})
+  goog.asserts.assert(options.layer in ol.source.MapQuestConfig);
+  var layerConfig = ol.source.MapQuestConfig[options.layer];
+  var url = "http://otile{1-4}.mqcdn.com/tiles/1.0.0/" + options.layer + "/{z}/{x}/{y}.jpg";
+  goog.base(this, {attributions:layerConfig.attributions, crossOrigin:"anonymous", logo:"http://developer.mapquest.com/content/osm/mq_logo.png", maxZoom:layerConfig.maxZoom, opaque:true, tileLoadFunction:options.tileLoadFunction, url:url})
 };
-goog.inherits(ol.source.MapQuestOSM, ol.source.XYZ);
-ol.source.MapQuestOpenAerial = function(opt_options) {
-  var options = goog.isDef(opt_options) ? opt_options : {};
-  var attributions = [new ol.Attribution({html:"Tiles Courtesy of " + '\x3ca href\x3d"http://www.mapquest.com/" target\x3d"_blank"\x3eMapQuest\x3c/a\x3e'}), new ol.Attribution({html:"Portions Courtesy NASA/JPL-Caltech and " + "U.S. Depart. of Agriculture, Farm Service Agency"})];
-  goog.base(this, {attributions:attributions, crossOrigin:"anonymous", logo:"http://developer.mapquest.com/content/osm/mq_logo.png", maxZoom:18, opaque:true, tileLoadFunction:options.tileLoadFunction, url:"http://oatile{1-4}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg"})
-};
-goog.inherits(ol.source.MapQuestOpenAerial, ol.source.XYZ);
+goog.inherits(ol.source.MapQuest, ol.source.XYZ);
+ol.source.MapQuest.TILE_ATTRIBUTION = new ol.Attribution({html:"Tiles Courtesy of " + '\x3ca href\x3d"http://www.mapquest.com/" target\x3d"_blank"\x3eMapQuest\x3c/a\x3e'});
+ol.source.MapQuestConfig = {"osm":{maxZoom:28, attributions:[ol.source.MapQuest.TILE_ATTRIBUTION, ol.source.OSM.DATA_ATTRIBUTION]}, "sat":{maxZoom:18, attributions:[ol.source.MapQuest.TILE_ATTRIBUTION, new ol.Attribution({html:"Portions Courtesy NASA/JPL-Caltech and " + "U.S. Depart. of Agriculture, Farm Service Agency"})]}, "hyb":{maxZoom:18, attributions:[ol.source.MapQuest.TILE_ATTRIBUTION, ol.source.OSM.DATA_ATTRIBUTION]}};
 goog.provide("ol.source.Stamen");
 goog.require("goog.asserts");
 goog.require("ol.Attribution");
@@ -38010,8 +38007,7 @@ goog.require("ol.source.Image");
 goog.require("ol.source.ImageStatic");
 goog.require("ol.source.ImageWMS");
 goog.require("ol.source.MapGuide");
-goog.require("ol.source.MapQuestOSM");
-goog.require("ol.source.MapQuestOpenAerial");
+goog.require("ol.source.MapQuest");
 goog.require("ol.source.OSM");
 goog.require("ol.source.Source");
 goog.require("ol.source.Stamen");
