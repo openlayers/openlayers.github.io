@@ -663,20 +663,19 @@ ol.render.canvas.ImageReplay.prototype.setImageStyle = function(imageStyle) {
   goog.asserts.assert(!goog.isNull(anchor));
   var size = imageStyle.getSize();
   goog.asserts.assert(!goog.isNull(size));
-  // FIXME pixel ratio
   var hitDetectionImage = imageStyle.getHitDetectionImage(1);
   goog.asserts.assert(!goog.isNull(hitDetectionImage));
   var image = imageStyle.getImage(1);
   goog.asserts.assert(!goog.isNull(image));
-  this.anchorX_ = anchor[0];
-  this.anchorY_ = anchor[1];
+  this.anchorX_ = anchor[0] * this.pixelRatio;
+  this.anchorY_ = anchor[1] * this.pixelRatio;
   this.hitDetectionImage_ = hitDetectionImage;
   this.image_ = image;
-  this.height_ = size[1];
+  this.height_ = size[1] * this.pixelRatio;
   this.rotation_ = imageStyle.getRotation();
   this.scale_ = imageStyle.getScale();
   this.snapToPixel_ = imageStyle.getSnapToPixel();
-  this.width_ = size[0];
+  this.width_ = size[0] * this.pixelRatio;
 };
 
 
@@ -1300,12 +1299,13 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ =
  */
 ol.render.canvas.ReplayGroup.prototype.replay_ =
     function(zs, context, extent, transform, renderGeometryFunction) {
-  var i, ii, replays, replayType, replay, result;
+  var i, ii, j, jj, replays, replayType, replay, result;
   for (i = 0, ii = zs.length; i < ii; ++i) {
     replays = this.replaysByZIndex_[zs[i].toString()];
-    for (replayType in replays) {
-      replay = replays[replayType];
-      if (ol.extent.intersects(extent, replay.getExtent())) {
+    for (j = 0, jj = ol.render.REPLAY_ORDER.length; j < jj; ++j) {
+      replay = replays[ol.render.REPLAY_ORDER[j]];
+      if (goog.isDef(replay) &&
+          ol.extent.intersects(extent, replay.getExtent())) {
         result = replay.replay(
             context, transform, renderGeometryFunction);
         if (result) {

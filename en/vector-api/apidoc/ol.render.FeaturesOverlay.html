@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.ImageStatic</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.render.FeaturesOverlay</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,7 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
-    
-    ol.source.ImageStatic
+    ol.render.FeaturesOverlay
     </h2>
     
 </header>  
@@ -50,10 +48,152 @@
     
         
 <dt>
-    <h4 class="name" id="ImageStatic"><span class="type-signature"></span>new ImageStatic</h4>
+    <h4 class="name" id="FeaturesOverlay"><span class="type-signature"></span>new FeaturesOverlay</h4>
     
     
-<div class="stability stability-experimental">Stability: experimental</div>
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="olx.render.html#FeaturesOverlayOptions">olx.render.FeaturesOverlayOptions</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Options.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>featuresoverlay.js, line 20</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="addFeature"><span class="type-signature"></span>addFeature</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
 
 
 
@@ -93,13 +233,13 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>feature</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.source.html#ImageStaticOptions">olx.source.ImageStaticOptions</a></span>
+<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
 
 
             
@@ -109,7 +249,7 @@
             
             
             
-            <td class="description last"><p>Options.</p></td>
+            <td class="description last"><p>Feature.</p></td>
         </tr>
 	
 	
@@ -139,7 +279,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagestaticsource.js, line 17</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>featuresoverlay.js, line 85</li></ul></dd>
 	
     
     
@@ -159,23 +299,541 @@
     
 </dd>
 
-    
-    </div>
-    
-    
-    
-    
+        
+            
+<dt>
+    <h4 class="name" id="getFeatures"><span class="type-signature"></span>getFeatures</h4>
     
     
+<div class="stability">Stability: not documented</div>
+
+
+
     
-    
-    
-    
+</dt>
+<dd>
     
     
 
     
     
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>featuresoverlay.js, line 93</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Features collection.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="removeFeature"><span class="type-signature"></span>removeFeature</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>feature</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Feature.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>featuresoverlay.js, line 160</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setFeatures"><span class="type-signature"></span>setFeatures</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>features</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Features collection.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>featuresoverlay.js, line 178</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setMap"><span class="type-signature"></span>setMap</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Map.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>featuresoverlay.js, line 215</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setStyleFunction"><span class="type-signature"></span>setStyleFunction</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>styleFunction</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.feature_.html#StyleFunction">ol.feature.StyleFunction</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Style function.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>featuresoverlay.js, line 234</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
     
     
     

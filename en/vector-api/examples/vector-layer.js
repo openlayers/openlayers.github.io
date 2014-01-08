@@ -32,9 +32,25 @@ var map = new ol.Map({
   })
 });
 
+var highlightStyleArray = [new ol.style.Style({
+  stroke: new ol.style.Stroke({
+    color: '#f00',
+    width: 1
+  }),
+  fill: new ol.style.Fill({
+    color: 'rgba(255,0,0,0.1)'
+  })
+})];
+
+var featuresOverlay = new ol.render.FeaturesOverlay({
+  map: map,
+  styleFunction: function(feature, resolution) {
+    return highlightStyleArray;
+  }
+});
+
 var highlight;
 var displayFeatureInfo = function(pixel) {
-  var oldHighlight = highlight;
 
   var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     return feature;
@@ -47,11 +63,16 @@ var displayFeatureInfo = function(pixel) {
     info.innerHTML = '&nbsp;';
   }
 
-  highlight = feature;
-
-  if (highlight !== oldHighlight) {
-    map.requestRenderFrame();
+  if (feature !== highlight) {
+    if (highlight) {
+      featuresOverlay.removeFeature(highlight);
+    }
+    if (feature) {
+      featuresOverlay.addFeature(feature);
+    }
+    highlight = feature;
   }
+
 };
 
 $(map.getViewport()).on('mousemove', function(evt) {
@@ -62,21 +83,4 @@ $(map.getViewport()).on('mousemove', function(evt) {
 map.on('singleclick', function(evt) {
   var pixel = evt.getPixel();
   displayFeatureInfo(pixel);
-});
-
-var highlightStyle = new ol.style.Style({
-  stroke: new ol.style.Stroke({
-    color: '#f00',
-    width: 1
-  }),
-  fill: new ol.style.Fill({
-    color: 'rgba(255,0,0,0.1)'
-  })
-});
-
-map.on('postcompose', function(evt) {
-  if (highlight) {
-    var render = evt.getRender();
-    render.drawFeature(highlight, highlightStyle);
-  }
 });

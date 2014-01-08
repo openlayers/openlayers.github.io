@@ -15,8 +15,11 @@ goog.require('ol.render.EventType');
 
 /**
  * @constructor
+ * @param {olx.render.FeaturesOverlayOptions=} opt_options Options.
  */
-ol.render.FeaturesOverlay = function() {
+ol.render.FeaturesOverlay = function(opt_options) {
+
+  var options = goog.isDef(opt_options) ? opt_options : options;
 
   /**
    * @private
@@ -54,6 +57,33 @@ ol.render.FeaturesOverlay = function() {
    */
   this.styleFunction_ = undefined;
 
+  if (goog.isDef(options.features)) {
+    if (goog.isArray(options.features)) {
+      this.setFeatures(new ol.Collection(goog.array.clone(options.features)));
+    } else {
+      goog.asserts.assertInstanceof(options.features, ol.Collection);
+      this.setFeatures(options.features);
+    }
+  } else {
+    this.setFeatures(new ol.Collection());
+  }
+
+  if (goog.isDef(options.styleFunction)) {
+    this.setStyleFunction(options.styleFunction);
+  }
+
+  if (goog.isDef(options.map)) {
+    this.setMap(options.map);
+  }
+
+};
+
+
+/**
+ * @param {ol.Feature} feature Feature.
+ */
+ol.render.FeaturesOverlay.prototype.addFeature = function(feature) {
+  this.features_.push(feature);
 };
 
 
@@ -121,6 +151,14 @@ ol.render.FeaturesOverlay.prototype.handleMapPostCompose_ = function(event) {
       render.drawFeature(feature, styles[i]);
     }
   }, this);
+};
+
+
+/**
+ * @param {ol.Feature} feature Feature.
+ */
+ol.render.FeaturesOverlay.prototype.removeFeature = function(feature) {
+  this.features_.remove(feature);
 };
 
 

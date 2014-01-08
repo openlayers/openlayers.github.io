@@ -526,7 +526,8 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["libtess", "l
 "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.render.Box", "ol.render.Event", "ol.render.EventType", "ol.render.FeaturesOverlay", "ol.render.IRender", "ol.render.IReplayGroup", "ol.render.canvas", "ol.render.canvas.Immediate", "ol.render.canvas.ReplayGroup", "ol.render.webgl.Immediate", "ol.renderer.Layer", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.renderer.dom.ImageLayer", 
 "ol.renderer.dom.Layer", "ol.renderer.dom.Map", "ol.renderer.dom.TileLayer", "ol.renderer.vector", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.Map", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", "ol.size", "ol.source.BingMaps", "ol.source.GeoJSON", "ol.source.IGC", "ol.source.Image", "ol.source.ImageStatic", "ol.source.ImageWMS", "ol.source.KML", "ol.source.MapGuide", 
 "ol.source.MapQuestOSM", "ol.source.MapQuestOpenAerial", "ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.Vector", "ol.source.VectorEvent", "ol.source.VectorEventType", "ol.source.VectorFile", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.source.wms.ServerType", "ol.sphere.NORMAL", 
-"ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style.Circle", "ol.style.Fill", "ol.style.Icon", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType", "ol.webgl.shader", "ol.xml"]);
+"ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style.Circle", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorUnits", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType", "ol.webgl.shader", 
+"ol.xml"]);
 goog.addDependency("../src/libtess.js/dict/Dict.js", ["libtess.Dict"], ["libtess", "libtess.DictNode"]);
 goog.addDependency("../src/libtess.js/dict/DictNode.js", ["libtess.DictNode"], ["libtess"]);
 goog.addDependency("../src/libtess.js/geom.js", ["libtess.geom"], ["libtess"]);
@@ -583,7 +584,8 @@ goog.addDependency("../src/ol/format/format.js", ["ol.format.Format", "ol.format
 goog.addDependency("../src/ol/format/geojsonformat.js", ["ol.format.GeoJSON"], ["goog.array", "goog.asserts", "goog.object", "ol.Feature", "ol.format.JSON", "ol.geom.GeometryCollection", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj"]);
 goog.addDependency("../src/ol/format/igcformat.js", ["ol.format.IGC", "ol.format.IGCZ"], ["goog.asserts", "goog.string", "goog.string.newlines", "ol.Feature", "ol.format.Text", "ol.geom.LineString", "ol.proj"]);
 goog.addDependency("../src/ol/format/jsonformat.js", ["ol.format.JSON"], ["goog.asserts", "goog.json", "ol.format.Format", "ol.format.FormatType"]);
-goog.addDependency("../src/ol/format/kmlformat.js", ["ol.format.KML"], ["goog.Uri", "goog.array", "goog.asserts", "goog.dom.NodeType", "goog.dom.xml", "goog.math", "goog.object", "goog.string", "ol.Feature", "ol.feature", "ol.format.XML", "ol.geom.GeometryCollection", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.style.Fill", "ol.style.Icon", "ol.style.Image", "ol.style.Stroke", "ol.style.Style", "ol.xml"]);
+goog.addDependency("../src/ol/format/kmlformat.js", ["ol.format.KML"], ["goog.Uri", "goog.array", "goog.asserts", "goog.dom.NodeType", "goog.dom.xml", "goog.math", "goog.object", "goog.string", "ol.Feature", "ol.feature", "ol.format.XML", "ol.geom.GeometryCollection", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorUnits", "ol.style.Image", "ol.style.Stroke", 
+"ol.style.Style", "ol.xml"]);
 goog.addDependency("../src/ol/format/polylineformat.js", ["ol.format.Polyline"], ["goog.asserts", "ol.Feature", "ol.format.Text", "ol.geom.LineString", "ol.geom.flat", "ol.proj"]);
 goog.addDependency("../src/ol/format/textformat.js", ["ol.format.Text"], ["goog.asserts", "ol.format.Format", "ol.format.FormatType"]);
 goog.addDependency("../src/ol/format/xmlformat.js", ["ol.format.XML"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "goog.dom.xml", "ol.format.Format", "ol.format.FormatType"]);
@@ -725,7 +727,7 @@ goog.addDependency("../src/ol/structs/priorityqueue.js", ["ol.structs.PriorityQu
 goog.addDependency("../src/ol/structs/rbush.js", ["ol.structs.RBush"], ["goog.array", "goog.asserts", "goog.object", "ol.extent"]);
 goog.addDependency("../src/ol/style/circlestyle.js", ["ol.style.Circle"], ["goog.dom", "goog.dom.TagName", "ol.color", "ol.render.canvas", "ol.style.Fill", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke"]);
 goog.addDependency("../src/ol/style/fillstyle.js", ["ol.style.Fill"], ["ol.color"]);
-goog.addDependency("../src/ol/style/iconstyle.js", ["ol.style.Icon"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "ol.style.Image", "ol.style.ImageState"]);
+goog.addDependency("../src/ol/style/iconstyle.js", ["ol.style.Icon", "ol.style.IconAnchorUnits"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "ol.style.Image", "ol.style.ImageState"]);
 goog.addDependency("../src/ol/style/imagestyle.js", ["ol.style.Image", "ol.style.ImageState"], ["goog.array", "goog.events", "goog.events.EventTarget", "goog.events.EventType"]);
 goog.addDependency("../src/ol/style/strokestyle.js", ["ol.style.Stroke"], ["ol.color"]);
 goog.addDependency("../src/ol/style/style.js", ["ol.style.Style"], ["ol.style.Fill", "ol.style.Image"]);
@@ -12412,9 +12414,9 @@ ol.geom.flat.linearRingArea = function(flatCoordinates, offset, end, stride) {
 };
 ol.geom.flat.linearRingContainsXY = function(flatCoordinates, offset, end, stride, x, y) {
   var contains = false;
-  var x1 = flatCoordinates[offset];
-  var y1 = flatCoordinates[offset + 1];
-  for(offset += stride;offset < end;offset += stride) {
+  var x1 = flatCoordinates[end - stride];
+  var y1 = flatCoordinates[end - stride + 1];
+  for(;offset < end;offset += stride) {
     var x2 = flatCoordinates[offset];
     var y2 = flatCoordinates[offset + 1];
     var intersect = y1 > y != y2 > y && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1;
@@ -21496,6 +21498,7 @@ goog.provide("ol.render.IReplayGroup");
 goog.require("goog.functions");
 goog.require("ol.render.IRender");
 ol.render.ReplayType = {IMAGE:"Image", LINE_STRING:"LineString", POLYGON:"Polygon"};
+ol.render.REPLAY_ORDER = [ol.render.ReplayType.POLYGON, ol.render.ReplayType.LINE_STRING, ol.render.ReplayType.IMAGE];
 ol.render.IReplayGroup = function() {
 };
 ol.render.IReplayGroup.prototype.finish = function() {
@@ -21824,15 +21827,15 @@ ol.render.canvas.ImageReplay.prototype.setImageStyle = function(imageStyle) {
   goog.asserts.assert(!goog.isNull(hitDetectionImage));
   var image = imageStyle.getImage(1);
   goog.asserts.assert(!goog.isNull(image));
-  this.anchorX_ = anchor[0];
-  this.anchorY_ = anchor[1];
+  this.anchorX_ = anchor[0] * this.pixelRatio;
+  this.anchorY_ = anchor[1] * this.pixelRatio;
   this.hitDetectionImage_ = hitDetectionImage;
   this.image_ = image;
-  this.height_ = size[1];
+  this.height_ = size[1] * this.pixelRatio;
   this.rotation_ = imageStyle.getRotation();
   this.scale_ = imageStyle.getScale();
   this.snapToPixel_ = imageStyle.getSnapToPixel();
-  this.width_ = size[0]
+  this.width_ = size[0] * this.pixelRatio
 };
 ol.render.canvas.LineStringReplay = function(pixelRatio, tolerance) {
   goog.base(this, pixelRatio, tolerance);
@@ -22135,12 +22138,12 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ = function(zs, contex
   return undefined
 };
 ol.render.canvas.ReplayGroup.prototype.replay_ = function(zs, context, extent, transform, renderGeometryFunction) {
-  var i, ii, replays, replayType, replay, result;
+  var i, ii, j, jj, replays, replayType, replay, result;
   for(i = 0, ii = zs.length;i < ii;++i) {
     replays = this.replaysByZIndex_[zs[i].toString()];
-    for(replayType in replays) {
-      replay = replays[replayType];
-      if(ol.extent.intersects(extent, replay.getExtent())) {
+    for(j = 0, jj = ol.render.REPLAY_ORDER.length;j < jj;++j) {
+      replay = replays[ol.render.REPLAY_ORDER[j]];
+      if(goog.isDef(replay) && ol.extent.intersects(extent, replay.getExtent())) {
         result = replay.replay(context, transform, renderGeometryFunction);
         if(result) {
           return result
@@ -28614,6 +28617,7 @@ ol.format.XML.prototype.writeGeometry = function(geometry) {
 };
 ol.format.XML.prototype.writeGeometryNode = goog.abstractMethod;
 goog.provide("ol.style.Icon");
+goog.provide("ol.style.IconAnchorUnits");
 goog.require("goog.array");
 goog.require("goog.asserts");
 goog.require("goog.dom");
@@ -28622,6 +28626,7 @@ goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("ol.style.Image");
 goog.require("ol.style.ImageState");
+ol.style.IconAnchorUnits = {FRACTION:"fraction", PIXELS:"pixels"};
 ol.style.Icon = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   this.hitDetectionImage_ = null;
@@ -28634,16 +28639,9 @@ ol.style.Icon = function(opt_options) {
   this.src_ = options.src;
   this.tainting_ = false;
   var size = goog.isDef(options.size) ? options.size : null;
-  var anchor;
-  if(goog.isDef(options.anchor)) {
-    anchor = options.anchor
-  }else {
-    if(!goog.isNull(size)) {
-      anchor = [size[0] / 2, size[1] / 2]
-    }else {
-      anchor = null
-    }
-  }
+  this.anchorXUnits_ = goog.isDef(options.anchorXUnits) ? options.anchorXUnits : ol.style.IconAnchorUnits.FRACTION;
+  this.anchorYUnits_ = goog.isDef(options.anchorYUnits) ? options.anchorYUnits : ol.style.IconAnchorUnits.FRACTION;
+  var anchor = goog.isDef(options.anchor) ? options.anchor : [0.5, 0.5];
   var rotation = goog.isDef(options.rotation) ? options.rotation : 0;
   var scale = goog.isDef(options.scale) ? options.scale : 1;
   goog.base(this, {anchor:anchor, imageState:ol.style.ImageState.IDLE, rotation:rotation, scale:scale, size:size, snapToPixel:undefined, subtractViewRotation:false})
@@ -28671,8 +28669,11 @@ ol.style.Icon.prototype.handleImageLoad_ = function() {
   if(goog.isNull(this.size)) {
     this.size = [this.image_.width, this.image_.height]
   }
-  if(goog.isNull(this.anchor)) {
-    this.anchor = [this.size[0] / 2, this.size[1] / 2]
+  if(this.anchorXUnits_ == ol.style.IconAnchorUnits.FRACTION) {
+    this.anchor[0] = this.size[0] * this.anchor[0]
+  }
+  if(this.anchorYUnits_ == ol.style.IconAnchorUnits.FRACTION) {
+    this.anchor[1] = this.size[1] * this.anchor[1]
   }
   this.unlistenImage_();
   this.determineTainting_();
@@ -28827,6 +28828,7 @@ goog.require("ol.geom.Polygon");
 goog.require("ol.proj");
 goog.require("ol.style.Fill");
 goog.require("ol.style.Icon");
+goog.require("ol.style.IconAnchorUnits");
 goog.require("ol.style.Image");
 goog.require("ol.style.Stroke");
 goog.require("ol.style.Style");
@@ -28862,12 +28864,15 @@ ol.format.KML.NAMESPACE_URIS_ = [null, "http://earth.google.com/kml/2.0", "http:
 ol.format.KML.DEFAULT_COLOR_ = [255, 255, 255, 1];
 ol.format.KML.DEFAULT_FILL_STYLE_ = new ol.style.Fill({color:ol.format.KML.DEFAULT_COLOR_});
 ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_ = [2, 20];
+ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS_ = ol.style.IconAnchorUnits.PIXELS;
+ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_Y_UNITS_ = ol.style.IconAnchorUnits.PIXELS;
 ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_ = [32, 32];
 ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_ = "https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png";
-ol.format.KML.DEFAULT_IMAGE_STYLE_ = new ol.style.Icon({anchor:ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_, crossOrigin:"anonymous", rotation:0, scale:1, size:ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_, src:ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_});
+ol.format.KML.DEFAULT_IMAGE_STYLE_ = new ol.style.Icon({anchor:ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_, anchorXUnits:ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS_, anchorYUnits:ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_Y_UNITS_, crossOrigin:"anonymous", rotation:0, scale:1, size:ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_, src:ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_});
 ol.format.KML.DEFAULT_STROKE_STYLE_ = new ol.style.Stroke({color:ol.format.KML.DEFAULT_COLOR_, width:1});
 ol.format.KML.DEFAULT_STYLE_ = new ol.style.Style({fill:ol.format.KML.DEFAULT_FILL_STYLE_, image:ol.format.KML.DEFAULT_IMAGE_STYLE_, text:null, stroke:ol.format.KML.DEFAULT_STROKE_STYLE_, zIndex:0});
 ol.format.KML.DEFAULT_STYLE_ARRAY_ = [ol.format.KML.DEFAULT_STYLE_];
+ol.format.KML.ICON_ANCHOR_UNITS_MAP_ = {"fraction":ol.style.IconAnchorUnits.FRACTION, "pixels":ol.style.IconAnchorUnits.PIXELS};
 ol.format.KML.defaultFeatureStyleFunction_ = function(resolution) {
   if(ol.KML_RESPECT_VISIBILITY) {
     var visibility = this.get("visibility");
@@ -28955,7 +28960,9 @@ ol.format.KML.readURI_ = function(node) {
   }
 };
 ol.format.KML.readVec2_ = function(node) {
-  return{x:parseFloat(node.getAttribute("x")), xunits:node.getAttribute("xunits"), y:parseFloat(node.getAttribute("y")), yunits:node.getAttribute("yunits")}
+  var xunits = node.getAttribute("xunits");
+  var yunits = node.getAttribute("yunits");
+  return{x:parseFloat(node.getAttribute("x")), xunits:ol.format.KML.ICON_ANCHOR_UNITS_MAP_[xunits], y:parseFloat(node.getAttribute("y")), yunits:ol.format.KML.ICON_ANCHOR_UNITS_MAP_[yunits]}
 };
 ol.format.KML.readscale_ = function(node) {
   var number = ol.format.KML.readNumber_(node);
@@ -28982,17 +28989,25 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
   }else {
     src = ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_
   }
-  var anchor;
+  var anchor, anchorXUnits, anchorYUnits;
   var hotSpot = (goog.object.get(object, "hotSpot"));
   if(goog.isDef(hotSpot)) {
-    goog.asserts.assert(hotSpot.xunits == "pixels");
-    goog.asserts.assert(hotSpot.yunits == "pixels");
-    anchor = [hotSpot.x, hotSpot.y]
+    anchor = [hotSpot.x, hotSpot.y];
+    anchorXUnits = hotSpot.xunits;
+    anchorYUnits = hotSpot.yunits
   }else {
     if(src === ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_) {
-      anchor = ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_
+      anchor = ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_;
+      anchorXUnits = ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS_;
+      anchorYUnits = ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_Y_UNITS_
     }else {
-      anchor = null
+      if(/^http:\/\/maps\.(?:google|gstatic)\.com\//.test(src)) {
+        anchor = [0.5, 1];
+        anchorXUnits = ol.style.IconAnchorUnits.FRACTION;
+        anchorYUnits = ol.style.IconAnchorUnits.FRACTION
+      }else {
+        anchor = null
+      }
     }
   }
   var rotation;
@@ -29009,7 +29024,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
   }else {
     size = null
   }
-  var imageStyle = new ol.style.Icon({anchor:anchor, crossOrigin:"anonymous", rotation:rotation, scale:scale, size:size, src:src});
+  var imageStyle = new ol.style.Icon({anchor:anchor, anchorXUnits:anchorXUnits, anchorYUnits:anchorYUnits, crossOrigin:"anonymous", rotation:rotation, scale:scale, size:size, src:src});
   goog.object.set(styleObject, "imageStyle", imageStyle)
 };
 ol.format.KML.LineStyleParser_ = function(node, objectStack) {
@@ -31488,13 +31503,33 @@ goog.require("ol.CollectionEventType");
 goog.require("ol.Feature");
 goog.require("ol.feature");
 goog.require("ol.render.EventType");
-ol.render.FeaturesOverlay = function() {
+ol.render.FeaturesOverlay = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : options;
   this.features_ = null;
   this.featuresListenerKeys_ = null;
   this.featureChangeListenerKeys_ = null;
   this.map_ = null;
   this.postComposeListenerKey_ = null;
-  this.styleFunction_ = undefined
+  this.styleFunction_ = undefined;
+  if(goog.isDef(options.features)) {
+    if(goog.isArray(options.features)) {
+      this.setFeatures(new ol.Collection(goog.array.clone(options.features)))
+    }else {
+      goog.asserts.assertInstanceof(options.features, ol.Collection);
+      this.setFeatures(options.features)
+    }
+  }else {
+    this.setFeatures(new ol.Collection)
+  }
+  if(goog.isDef(options.styleFunction)) {
+    this.setStyleFunction(options.styleFunction)
+  }
+  if(goog.isDef(options.map)) {
+    this.setMap(options.map)
+  }
+};
+ol.render.FeaturesOverlay.prototype.addFeature = function(feature) {
+  this.features_.push(feature)
 };
 ol.render.FeaturesOverlay.prototype.getFeatures = function() {
   return this.features_
@@ -31530,6 +31565,9 @@ ol.render.FeaturesOverlay.prototype.handleMapPostCompose_ = function(event) {
       render.drawFeature(feature, styles[i])
     }
   }, this)
+};
+ol.render.FeaturesOverlay.prototype.removeFeature = function(feature) {
+  this.features_.remove(feature)
 };
 ol.render.FeaturesOverlay.prototype.requestRenderFrame_ = function() {
   if(!goog.isNull(this.map_)) {
@@ -33879,6 +33917,7 @@ goog.require("ol.structs.RBush");
 goog.require("ol.style.Circle");
 goog.require("ol.style.Fill");
 goog.require("ol.style.Icon");
+goog.require("ol.style.IconAnchorUnits");
 goog.require("ol.style.Image");
 goog.require("ol.style.ImageState");
 goog.require("ol.style.Stroke");
