@@ -18648,7 +18648,6 @@ ol.layer.Group.prototype.getLayerStatesArray = function(opt_obj) {
     layerState.hue += ownLayerState.hue;
     layerState.opacity *= ownLayerState.opacity;
     layerState.saturation *= ownLayerState.saturation;
-    layerState.sourceState = this.getSourceState();
     layerState.visible = layerState.visible && ownLayerState.visible;
     layerState.maxResolution = Math.min(layerState.maxResolution, ownLayerState.maxResolution);
     layerState.minResolution = Math.max(layerState.minResolution, ownLayerState.minResolution)
@@ -18656,30 +18655,7 @@ ol.layer.Group.prototype.getLayerStatesArray = function(opt_obj) {
   return obj
 };
 ol.layer.Group.prototype.getSourceState = function() {
-  var layerSourceStates = [0, 0, 0];
-  var layers = this.getLayers().getArray();
-  var n = layers.length;
-  var i;
-  for(i = 0;i < n;++i) {
-    var layerSourceState = layers[i].getSourceState();
-    goog.asserts.assert(layerSourceState < layerSourceStates.length);
-    ++layerSourceStates[layerSourceState]
-  }
-  if(layerSourceStates[ol.source.State.READY]) {
-    return ol.source.State.READY
-  }else {
-    if(layerSourceStates[ol.source.State.LOADING]) {
-      return ol.source.State.LOADING
-    }else {
-      if(layerSourceStates[ol.source.State.ERROR]) {
-        goog.asserts.assert(layerSourceStates[ol.source.State.ERROR] == n);
-        return ol.source.State.ERROR
-      }else {
-        goog.asserts.assert(n === 0);
-        return ol.source.State.READY
-      }
-    }
-  }
+  return ol.source.State.READY
 };
 goog.provide("ol.math");
 goog.require("goog.asserts");
@@ -36854,14 +36830,7 @@ ol.tilegrid.XYZ.prototype.createTileCoordTransform = function(opt_options) {
         return null
       }
     }
-    if(goog.isDef(opt_tileCoord)) {
-      opt_tileCoord.z = z;
-      opt_tileCoord.x = x;
-      opt_tileCoord.y = -y - 1;
-      return opt_tileCoord
-    }else {
-      return new ol.TileCoord(z, x, -y - 1)
-    }
+    return ol.TileCoord.createOrUpdate(z, x, -y - 1, opt_tileCoord)
   }
 };
 ol.tilegrid.XYZ.prototype.getTileCoordChildTileRange = function(tileCoord, opt_tileRange) {
@@ -37701,14 +37670,7 @@ ol.tilegrid.Zoomify.prototype.createTileCoordTransform = function(opt_options) {
         return null
       }
     }
-    if(goog.isDef(opt_tileCoord)) {
-      opt_tileCoord.z = z;
-      opt_tileCoord.x = x;
-      opt_tileCoord.y = -y - 1;
-      return opt_tileCoord
-    }else {
-      return new ol.TileCoord(z, x, -y - 1)
-    }
+    return ol.TileCoord.createOrUpdate(z, x, -y - 1, opt_tileCoord)
   }
 };
 goog.provide("ol.source.Zoomify");
