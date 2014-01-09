@@ -5,7 +5,7 @@ goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
 goog.require('ol.render.FeaturesOverlay');
 goog.require('ol.source.GeoJSON');
-goog.require('ol.source.MapQuestOpenAerial');
+goog.require('ol.source.MapQuest');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');

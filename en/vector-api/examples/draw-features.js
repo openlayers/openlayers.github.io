@@ -1,5 +1,5 @@
 var raster = new ol.layer.Tile({
-  source: new ol.source.MapQuestOpenAerial()
+  source: new ol.source.MapQuest({layer: 'sat'})
 });
 
 var styleArray = [new ol.style.Style({

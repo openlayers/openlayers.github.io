@@ -1,6 +1,7 @@
 goog.require('ol.Map');
 goog.require('ol.RendererHints');
 goog.require('ol.View2D');
+goog.require('ol.layer.Group');
 goog.require('ol.layer.Tile');
 goog.require('ol.proj');
-goog.require('ol.source.MapQuestOSM');
+goog.require('ol.source.MapQuest');

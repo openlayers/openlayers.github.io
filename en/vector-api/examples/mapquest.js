@@ -1,14 +1,43 @@
+var layers = [
+  new ol.layer.Tile({
+    style: 'Road',
+    source: new ol.source.MapQuest({layer: 'osm'})
+  }),
+  new ol.layer.Tile({
+    style: 'Aerial',
+    visible: false,
+    source: new ol.source.MapQuest({layer: 'sat'})
+  }),
+  new ol.layer.Group({
+    style: 'AerialWithLabels',
+    visible: false,
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.MapQuest({layer: 'sat'})
+      }),
+      new ol.layer.Tile({
+        source: new ol.source.MapQuest({layer: 'hyb'})
+      })
+    ]
+  })
+];
+
 var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.MapQuestOSM()
-    })
-  ],
+  layers: layers,
   renderers: ol.RendererHints.createFromQueryData(),
   target: 'map',
   view: new ol.View2D({
     center: ol.proj.transform(
-        [139.6917, 35.689506], 'EPSG:4326', 'EPSG:3857'),
+        [-73.979378, 40.702222], 'EPSG:4326', 'EPSG:3857'),
     zoom: 9
   })
 });
+
+$('#layer-select').change(function() {
+  var style = $(this).find(':selected').val();
+  var i, ii;
+  for (i = 0, ii = layers.length; i < ii; ++i) {
+    layers[i].set('visible', (layers[i].get('style') == style));
+  }
+});
+$('#layer-select').trigger('change');
