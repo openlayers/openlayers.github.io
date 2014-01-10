@@ -7,7 +7,11 @@ goog.require('ol.Feature');
 goog.require('ol.Map');
 goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.LineString');
+goog.require('ol.geom.MultiLineString');
+goog.require('ol.geom.MultiPoint');
+goog.require('ol.geom.MultiPolygon');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
 goog.require('ol.interaction.Interaction');
@@ -127,7 +131,7 @@ ol.interaction.Draw.defaultStyleFunction = (function() {
   styles[ol.geom.GeometryType.POLYGON] = [
     new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(255, 255, 255, 0.5)'
+        color: [255, 255, 255, 0.5]
       })
     })
   ];
@@ -137,13 +141,13 @@ ol.interaction.Draw.defaultStyleFunction = (function() {
   styles[ol.geom.GeometryType.LINE_STRING] = [
     new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: 'white',
+        color: [255, 255, 255, 1],
         width: 5
       })
     }),
     new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: '#0099ff',
+        color: [0, 153, 255, 1],
         width: 3
       })
     })
@@ -156,10 +160,10 @@ ol.interaction.Draw.defaultStyleFunction = (function() {
       image: new ol.style.Circle({
         radius: 7,
         fill: new ol.style.Fill({
-          color: '#0099ff'
+          color: [0, 153, 255, 1]
         }),
         stroke: new ol.style.Stroke({
-          color: 'rgba(255, 255, 255, 0.75)',
+          color: [255, 255, 255, 0.75],
           width: 1.5
         })
       }),
@@ -395,7 +399,10 @@ ol.interaction.Draw.prototype.finishDrawing_ = function(event) {
   goog.asserts.assert(!goog.isNull(sketchFeature));
   var coordinates;
   var geometry = sketchFeature.getGeometry();
-  if (this.mode_ === ol.interaction.DrawMode.LINE_STRING) {
+  if (this.mode_ === ol.interaction.DrawMode.POINT) {
+    goog.asserts.assertInstanceof(geometry, ol.geom.Point);
+    coordinates = geometry.getCoordinates();
+  } else if (this.mode_ === ol.interaction.DrawMode.LINE_STRING) {
     goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
     coordinates = geometry.getCoordinates();
     // remove the redundant last point
@@ -407,6 +414,16 @@ ol.interaction.Draw.prototype.finishDrawing_ = function(event) {
     // force clockwise order for exterior ring
     sketchFeature.setGeometry(new ol.geom.Polygon(coordinates));
   }
+
+  // cast multi-part geometries
+  if (this.type_ === ol.geom.GeometryType.MULTI_POINT) {
+    sketchFeature.setGeometry(new ol.geom.MultiPoint([coordinates]));
+  } else if (this.type_ === ol.geom.GeometryType.MULTI_LINE_STRING) {
+    sketchFeature.setGeometry(new ol.geom.MultiLineString([coordinates]));
+  } else if (this.type_ === ol.geom.GeometryType.MULTI_POLYGON) {
+    sketchFeature.setGeometry(new ol.geom.MultiPolygon([coordinates]));
+  }
+
   if (this.layer_) {
     this.layer_.getSource().addFeature(sketchFeature);
   }

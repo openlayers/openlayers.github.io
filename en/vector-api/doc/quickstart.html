@@ -57,7 +57,7 @@
         target: <span class="string">'map'</span>,
         layers: [
           <span class="keyword">new</span> ol.layer.Tile({
-            source: <span class="keyword">new</span> ol.source.MapQuestOpenAerial()
+            source: <span class="keyword">new</span> ol.source.MapQuest({layer: <span class="string">'sat'</span>})
           })
         ],
         view: <span class="keyword">new</span> ol.View2D({
@@ -91,7 +91,7 @@
     target: <span class="string">'map'</span>,
     layers: [
       <span class="keyword">new</span> ol.layer.Tile({
-        source: <span class="keyword">new</span> ol.source.MapQuestOpenAerial()
+        source: <span class="keyword">new</span> ol.source.MapQuest({layer: <span class="string">'sat'</span>})
       })
     ],
     view: <span class="keyword">new</span> ol.View2D({
@@ -107,7 +107,7 @@
 <p>The <code>layers: [ ... ]</code> array is used to define the list of layers available in the map. The first and only layer right now is a tiled layer:</p>
 <pre><code class="language-js">    layers: [
       <span class="keyword">new</span> ol.layer.Tile({
-        source: <span class="keyword">new</span> ol.source.MapQuestOpenAerial()
+        source: <span class="keyword">new</span> ol.source.MapQuest({layer: <span class="string">'sat'</span>})
       })
     ]</code></pre>
 <p>Layers in OpenLayers 3 are defined with a type (Image, Tile or Vector) which contains a source. The source is the protocol used to get the map tiles. You can consult the list of <a href="/en/master/apidoc/ol.source.html">available layer sources here</a></p>
