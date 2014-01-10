@@ -26362,11 +26362,14 @@ ol.Map.prototype.renderFrame_ = function(time) {
   if(this.freezeRenderingCount_ !== 0) {
     return
   }
+  function hasArea(size) {
+    return size[0] > 0 && size[1] > 0
+  }
   var size = this.getSize();
   var view = this.getView();
   var view2D = goog.isDef(view) ? this.getView().getView2D() : undefined;
   var frameState = null;
-  if(goog.isDef(size) && goog.isDef(view2D) && view2D.isDef()) {
+  if(goog.isDef(size) && hasArea(size) && goog.isDef(view2D) && view2D.isDef()) {
     var viewHints = view.getHints();
     var obj = this.getLayerGroup().getLayerStatesArray();
     var layersArray = obj.layers;
