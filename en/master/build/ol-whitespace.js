@@ -17539,15 +17539,22 @@ ol.control.Logo.prototype.updateElement_ = function(frameState) {
       delete logoElements[logo]
     }
   }
-  var image, logoElement;
-  for(logo in logos) {
-    if(!(logo in logoElements)) {
+  var image, logoElement, logoKey;
+  for(logoKey in logos) {
+    if(!(logoKey in logoElements)) {
       image = new Image;
-      image.src = logo;
-      logoElement = goog.dom.createElement(goog.dom.TagName.LI);
-      logoElement.appendChild(image);
+      image.src = logoKey;
+      var logoValue = logos[logoKey];
+      var child;
+      if(logoValue === "") {
+        child = image
+      }else {
+        child = goog.dom.createDom(goog.dom.TagName.A, {"href":logoValue, "target":"_blank"});
+        child.appendChild(image)
+      }
+      logoElement = goog.dom.createDom(goog.dom.TagName.LI, undefined, child);
       goog.dom.appendChild(this.ulElement_, logoElement);
-      logoElements[logo] = logoElement
+      logoElements[logoKey] = logoElement
     }
   }
   var renderVisible = !goog.object.isEmpty(logos);
@@ -19062,7 +19069,7 @@ ol.renderer.Layer.prototype.updateAttributions = function(attributionsSet, attri
 ol.renderer.Layer.prototype.updateLogos = function(frameState, source) {
   var logo = source.getLogo();
   if(goog.isDef(logo)) {
-    frameState.logos[logo] = true
+    frameState.logos[logo] = ""
   }
 };
 ol.renderer.Layer.prototype.updateUsedTiles = function(usedTiles, tileSource, z, tileRange) {
@@ -25994,12 +26001,18 @@ goog.require("ol.renderer.dom.Map");
 goog.require("ol.renderer.webgl.Map");
 goog.require("ol.structs.PriorityQueue");
 goog.require("ol.vec.Mat4");
+ol.OL3_URL = "http://ol3js.org/";
+ol.OL3_LOGO_URL = "data:image/png;base64," + "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAA3NCSVQICAjb4U/gAAAACXBI" + "WXMAAAHGAAABxgEXwfpGAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAA" + "AhNQTFRF////AP//AICAgP//AFVVQECA////K1VVSbbbYL/fJ05idsTYJFtbbcjbJllmZszW" + "WMTOIFhoHlNiZszTa9DdUcHNHlNlV8XRIVdiasrUHlZjIVZjaMnVH1RlIFRkH1RkH1ZlasvY" + "asvXVsPQH1VkacnVa8vWIVZjIFRjVMPQa8rXIVVkXsXRsNveIFVkIFZlIVVj3eDeh6GmbMvX" + "H1ZkIFRka8rWbMvXIFVkIFVjIFVkbMvWH1VjbMvWIFVlbcvWIFVla8vVIFVkbMvWbMvVH1Vk" + 
+"bMvWIFVlbcvWIFVkbcvVbMvWjNPbIFVkU8LPwMzNIFVkbczWIFVkbsvWbMvXIFVkRnB8bcvW" + "2+TkW8XRIFVkIlZlJVloJlpoKlxrLl9tMmJwOWd0Omh1RXF8TneCT3iDUHiDU8LPVMLPVcLP" + "VcPQVsPPVsPQV8PQWMTQWsTQW8TQXMXSXsXRX4SNX8bSYMfTYcfTYsfTY8jUZcfSZsnUaIqT" + "acrVasrVa8jTa8rWbI2VbMvWbcvWdJObdcvUdszUd8vVeJaee87Yfc3WgJyjhqGnitDYjaar" + "ldPZnrK2oNbborW5o9bbo9fbpLa6q9ndrL3ArtndscDDutzfu8fJwN7gwt7gxc/QyuHhy+Hi" + "zeHi0NfX0+Pj19zb1+Tj2uXk29/e3uLg3+Lh3+bl4uXj4ufl4+fl5Ofl5ufl5ujm5+jmySDn" + "BAAAAFp0Uk5TAAECAgMEBAYHCA0NDg4UGRogIiMmKSssLzU7PkJJT1JTVFliY2hrdHZ3foSF" + 
+"hYeJjY2QkpugqbG1tre5w8zQ09XY3uXn6+zx8vT09vf4+Pj5+fr6/P39/f3+gz7SsAAAAVVJ" + "REFUOMtjYKA7EBDnwCPLrObS1BRiLoJLnte6CQy8FLHLCzs2QUG4FjZ5GbcmBDDjxJBXDWxC" + "Brb8aM4zbkIDzpLYnAcE9VXlJSWlZRU13koIeW57mGx5XjoMZEUqwxWYQaQbSzLSkYGfKFSe" + "0QMsX5WbjgY0YS4MBplemI4BdGBW+DQ11eZiymfqQuXZIjqwyadPNoSZ4L+0FVM6e+oGI6g8" + "a9iKNT3o8kVzNkzRg5lgl7p4wyRUL9Yt2jAxVh6mQCogae6GmflI8p0r13VFWTHBQ0rWPW7a" + "hgWVcPm+9cuLoyy4kCJDzCm6d8PSFoh0zvQNC5OjDJhQopPPJqph1doJBUD5tnkbZiUEqaCn" + "B3bTqLTFG1bPn71kw4b+GFdpLElKIzRxxgYgWNYc5SCENVHKeUaltHdXx0dZ8uBI1hJ2UUDg" + 
+"q82CM2MwKeibqAvSO7MCABq0wXEPiqWEAAAAAElFTkSuQmCC";
 ol.RendererHint = {CANVAS:"canvas", DOM:"dom", WEBGL:"webgl"};
 ol.DEFAULT_RENDERER_HINTS = [ol.RendererHint.WEBGL, ol.RendererHint.CANVAS, ol.RendererHint.DOM];
 ol.MapProperty = {LAYERGROUP:"layergroup", SIZE:"size", TARGET:"target", VIEW:"view"};
 ol.Map = function(options) {
   goog.base(this);
   var optionsInternal = ol.Map.createOptionsInternal(options);
+  this.ol3Logo_ = optionsInternal.ol3Logo;
   this.animationDelay_ = new goog.async.AnimationDelay(this.renderFrame_, undefined, this);
   this.registerDisposable(this.animationDelay_);
   this.coordinateToPixelMatrix_ = goog.vec.Mat4.createNumber();
@@ -26381,7 +26394,10 @@ ol.Map.prototype.renderFrame_ = function(time) {
       layerStates[goog.getUid(layer)] = layerStatesArray[i]
     }
     view2DState = view2D.getView2DState();
-    frameState = {animate:false, attributions:{}, coordinateToPixelMatrix:this.coordinateToPixelMatrix_, extent:null, focus:goog.isNull(this.focus_) ? view2DState.center : this.focus_, index:this.frameIndex_++, layersArray:layersArray, layerStates:layerStates, logos:{}, pixelToCoordinateMatrix:this.pixelToCoordinateMatrix_, postRenderFunctions:[], size:size, tileQueue:this.tileQueue_, time:time, usedTiles:{}, view2DState:view2DState, viewHints:viewHints, wantedTiles:{}}
+    frameState = {animate:false, attributions:{}, coordinateToPixelMatrix:this.coordinateToPixelMatrix_, extent:null, focus:goog.isNull(this.focus_) ? view2DState.center : this.focus_, index:this.frameIndex_++, layersArray:layersArray, layerStates:layerStates, logos:{}, pixelToCoordinateMatrix:this.pixelToCoordinateMatrix_, postRenderFunctions:[], size:size, tileQueue:this.tileQueue_, time:time, usedTiles:{}, view2DState:view2DState, viewHints:viewHints, wantedTiles:{}};
+    if(this.ol3Logo_) {
+      frameState.logos[ol.OL3_LOGO_URL] = ol.OL3_URL
+    }
   }
   var preRenderFunctions = this.preRenderFunctions_;
   var n = 0, preRenderFunction;
@@ -26454,6 +26470,7 @@ ol.Map.prototype.withFrozenRendering = function(f, opt_obj) {
 ol.MapOptionsInternal;
 ol.Map.createOptionsInternal = function(options) {
   var values = {};
+  var ol3Logo = goog.isDef(options.ol3Logo) ? options.ol3Logo : true;
   var layerGroup = options.layers instanceof ol.layer.Group ? options.layers : new ol.layer.Group({layers:options.layers});
   values[ol.MapProperty.LAYERGROUP] = layerGroup;
   values[ol.MapProperty.TARGET] = options.target;
@@ -26527,7 +26544,7 @@ ol.Map.createOptionsInternal = function(options) {
   }else {
     overlays = new ol.Collection
   }
-  return{controls:controls, interactions:interactions, overlays:overlays, rendererConstructor:rendererConstructor, values:values}
+  return{controls:controls, interactions:interactions, ol3Logo:ol3Logo, overlays:overlays, rendererConstructor:rendererConstructor, values:values}
 };
 ol.RendererHints.createFromQueryData = function(opt_queryData) {
   var query = goog.global.location.search.substring(1), queryData = goog.isDef(opt_queryData) ? opt_queryData : new goog.Uri.QueryData(query);
@@ -36897,31 +36914,33 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse = function(response) 
       }
     }
   })));
-  var transform = ol.proj.getTransformFromProjections(ol.proj.get("EPSG:4326"), this.getProjection());
-  var attributions = goog.array.map(resource.imageryProviders, function(imageryProvider) {
-    var html = imageryProvider.attribution;
-    var tileRanges = {};
-    goog.array.forEach(imageryProvider.coverageAreas, function(coverageArea) {
-      var minZ = coverageArea.zoomMin;
-      var maxZ = coverageArea.zoomMax;
-      var bbox = coverageArea.bbox;
-      var epsg4326Extent = [bbox[1], bbox[0], bbox[3], bbox[2]];
-      var extent = ol.extent.transform(epsg4326Extent, transform);
-      var tileRange, z, zKey;
-      for(z = minZ;z <= maxZ;++z) {
-        zKey = z.toString();
-        tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z);
-        if(zKey in tileRanges) {
-          tileRanges[zKey].push(tileRange)
-        }else {
-          tileRanges[zKey] = [tileRange]
+  if(resource.imageryProviders) {
+    var transform = ol.proj.getTransformFromProjections(ol.proj.get("EPSG:4326"), this.getProjection());
+    var attributions = goog.array.map(resource.imageryProviders, function(imageryProvider) {
+      var html = imageryProvider.attribution;
+      var tileRanges = {};
+      goog.array.forEach(imageryProvider.coverageAreas, function(coverageArea) {
+        var minZ = coverageArea.zoomMin;
+        var maxZ = coverageArea.zoomMax;
+        var bbox = coverageArea.bbox;
+        var epsg4326Extent = [bbox[1], bbox[0], bbox[3], bbox[2]];
+        var extent = ol.extent.transform(epsg4326Extent, transform);
+        var tileRange, z, zKey;
+        for(z = minZ;z <= maxZ;++z) {
+          zKey = z.toString();
+          tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z);
+          if(zKey in tileRanges) {
+            tileRanges[zKey].push(tileRange)
+          }else {
+            tileRanges[zKey] = [tileRange]
+          }
         }
-      }
+      });
+      return new ol.Attribution({html:html, tileRanges:tileRanges})
     });
-    return new ol.Attribution({html:html, tileRanges:tileRanges})
-  });
-  attributions.push(ol.source.BingMaps.TOS_ATTRIBUTION);
-  this.setAttributions(attributions);
+    attributions.push(ol.source.BingMaps.TOS_ATTRIBUTION);
+    this.setAttributions(attributions)
+  }
   this.setLogo(brandLogoUri);
   this.setState(ol.source.State.READY)
 };

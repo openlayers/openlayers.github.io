@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.ImageWMS</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.interaction.Interaction</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>
     
-    ol.source.ImageWMS
+    ol.interaction.Interaction
     </h2>
     
 </header>  
@@ -50,10 +50,10 @@
     
         
 <dt>
-    <h4 class="name" id="ImageWMS"><span class="type-signature"></span>new ImageWMS</h4>
+    <h4 class="name" id="Interaction"><span class="type-signature"></span>new Interaction</h4>
     
     
-<div class="stability stability-experimental">Stability: experimental</div>
+<div class="stability">Stability: not documented</div>
 
 
 
@@ -67,54 +67,6 @@
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="olx.source.html#ImageWMSOptions">olx.source.ImageWMSOptions</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -139,7 +91,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 21</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>interaction.js, line 18</li></ul></dd>
 	
     
     
@@ -162,6 +114,12 @@
     
     </div>
     
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="ol.Observable.html">ol.Observable</a></li>
+        </ul>
     
     
     
@@ -182,10 +140,10 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getParams"><span class="type-signature"></span>getParams</h4>
+    <h4 class="name" id="on"><span class="type-signature"></span>on</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -195,8 +153,7 @@
     
     
     <div class="description">
-        <p>Get the user-provided params, i.e. those passed to the constructor through
-the &quot;params&quot; option, and possibly updated using the updateParams method.</p>
+        <p>Listen for a certain type of event.</p>
     </div>
     
 
@@ -204,6 +161,126 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scope</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Object is whose scope to call
+    the listener.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -214,6 +291,11 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 	
 
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#on">ol.Observable#on</a>
+	</li></dd>
 	
 	
 	
@@ -228,7 +310,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 73</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 33</li></ul></dd>
 	
     
     
@@ -248,7 +330,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
     
             
 <div class="param-desc">
-    <p>Params.</p>
+    <p>Unique key for the listener.</p>
 </div>
 
 
@@ -259,7 +341,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	</dt>
 	<dd>
 		
-<span class="param-type">Object</span>
+<span class="param-type">goog.events.Key</span>
 
 
 	</dd>
@@ -273,10 +355,10 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
         
             
 <dt>
-    <h4 class="name" id="updateParams"><span class="type-signature"></span>updateParams</h4>
+    <h4 class="name" id="once"><span class="type-signature"></span>once</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -286,7 +368,415 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
     
     
     <div class="description">
-        <p>Update the user-provided params.</p>
+        <p>Listen once for a certain type of event.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scope</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Object is whose scope to call
+    the listener.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#once">ol.Observable#once</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 47</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Unique key for the listener.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">goog.events.Key</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="un"><span class="type-signature"></span>un</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Unlisten for a certain type of event.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scope</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Object is whose scope to call
+    the listener.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#un">ol.Observable#un</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 60</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unByKey"><span class="type-signature"></span>unByKey</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Removes an event listener using the key returned by <code>on()</code> or <code>once()</code>.</p>
     </div>
     
 
@@ -320,13 +810,13 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>key</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">goog.events.Key</span>
 
 
             
@@ -336,7 +826,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
             
             
             
-            <td class="description last"><p>Params.</p></td>
+            <td class="description last"><p>Key.</p></td>
         </tr>
 	
 	
@@ -353,6 +843,11 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#unByKey">ol.Observable#unByKey</a>
+	</li></dd>
+	
 	
 	
 	
@@ -366,7 +861,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 126</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 70</li></ul></dd>
 	
     
     
