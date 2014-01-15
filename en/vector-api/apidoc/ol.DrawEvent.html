@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.Kinetic</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.DrawEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -38,7 +38,7 @@
     <h2>
         <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.Kinetic
+    ol.DrawEvent
     </h2>
     
 </header>  
@@ -50,10 +50,10 @@
     
         
 <dt>
-    <h4 class="name" id="Kinetic"><span class="type-signature"></span>new Kinetic</h4>
+    <h4 class="name" id="DrawEvent"><span class="type-signature"></span>new DrawEvent</h4>
     
     
-<div class="stability stability-experimental">Stability: experimental</div>
+<div class="stability">Stability: not documented</div>
 
 
 
@@ -93,13 +93,13 @@
 	
         <tr>
             
-                <td class="name"><code>decay</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="ol.DrawEventType.html">ol.DrawEventType</a></span>
 
 
             
@@ -109,20 +109,20 @@
             
             
             
-            <td class="description last"><p>Rate of decay (must be negative).</p></td>
+            <td class="description last"><p>Type.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>minVelocity</code></td>
+                <td class="name"><code>feature</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
 
 
             
@@ -132,31 +132,7 @@
             
             
             
-            <td class="description last"><p>Minimum velocity (pixels/millisecond).</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>delay</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Delay to consider to calculate the kinetic
-    initial values (milliseconds).</p></td>
+            <td class="description last"><p>The feature drawn.</p></td>
         </tr>
 	
 	
@@ -186,7 +162,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>kinetic.js, line 19</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>drawinteraction.js, line 44</li></ul></dd>
 	
     
     
@@ -223,6 +199,96 @@
 
     
     
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="getFeature"><span class="type-signature"></span>getFeature</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>drawinteraction.js, line 61</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The feature drawn to which this event pertains.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        </dl>
     
     
     

@@ -1,6 +1,7 @@
 goog.provide('ol.renderer.vector');
 
 goog.require('goog.asserts');
+goog.require('ol.geom.Circle');
 goog.require('ol.geom.GeometryCollection');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.MultiLineString');
@@ -10,6 +11,29 @@ goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
 goog.require('ol.render.IReplayGroup');
 goog.require('ol.style.Style');
+
+
+/**
+ * @param {ol.render.IReplayGroup} replayGroup Replay group.
+ * @param {ol.geom.Geometry} geometry Geometry.
+ * @param {ol.style.Style} style Style.
+ * @param {Object} data Opaque data object.
+ * @private
+ */
+ol.renderer.vector.renderCircleGeometry_ =
+    function(replayGroup, geometry, style, data) {
+  var fillStyle = style.getFill();
+  var strokeStyle = style.getStroke();
+  if (goog.isNull(fillStyle) && goog.isNull(strokeStyle)) {
+    return;
+  }
+  goog.asserts.assertInstanceof(geometry, ol.geom.Circle);
+  var circleGeometry = /** @type {ol.geom.Circle} */ (geometry);
+  var replay = replayGroup.getReplay(
+      style.getZIndex(), ol.render.ReplayType.POLYGON);
+  replay.setFillStrokeStyle(fillStyle, strokeStyle);
+  replay.drawCircleGeometry(circleGeometry, data);
+};
 
 
 /**
@@ -43,9 +67,7 @@ ol.renderer.vector.renderFeature = function(
 ol.renderer.vector.renderGeometryCollectionGeometry_ =
     function(replayGroup, geometry, style, data) {
   goog.asserts.assertInstanceof(geometry, ol.geom.GeometryCollection);
-  var geometryCollectionGeometry = /** @type {ol.geom.GeometryCollection} */ (
-      geometry);
-  var geometries = geometryCollectionGeometry.getGeometriesArray();
+  var geometries = geometry.getGeometriesArray();
   var i, ii;
   for (i = 0, ii = geometries.length; i < ii; ++i) {
     var geometryRenderer =
@@ -70,11 +92,10 @@ ol.renderer.vector.renderLineStringGeometry_ =
     return;
   }
   goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
-  var lineStringGeometry = /** @type {ol.geom.LineString} */ (geometry);
   var replay = replayGroup.getReplay(
       style.getZIndex(), ol.render.ReplayType.LINE_STRING);
   replay.setFillStrokeStyle(null, strokeStyle);
-  replay.drawLineStringGeometry(lineStringGeometry, data);
+  replay.drawLineStringGeometry(geometry, data);
 };
 
 
@@ -92,12 +113,10 @@ ol.renderer.vector.renderMultiLineStringGeometry_ =
     return;
   }
   goog.asserts.assertInstanceof(geometry, ol.geom.MultiLineString);
-  var multiLineStringGeometry = /** @type {ol.geom.MultiLineString} */
-      (geometry);
   var replay = replayGroup.getReplay(
       style.getZIndex(), ol.render.ReplayType.LINE_STRING);
   replay.setFillStrokeStyle(null, strokeStyle);
-  replay.drawMultiLineStringGeometry(multiLineStringGeometry, data);
+  replay.drawMultiLineStringGeometry(geometry, data);
 };
 
 
@@ -116,12 +135,10 @@ ol.renderer.vector.renderMultiPolygonGeometry_ =
     return;
   }
   goog.asserts.assertInstanceof(geometry, ol.geom.MultiPolygon);
-  var multiPolygonGeometry = /** @type {ol.geom.MultiPolygon} */
-      (geometry);
   var replay = replayGroup.getReplay(
       style.getZIndex(), ol.render.ReplayType.POLYGON);
   replay.setFillStrokeStyle(fillStyle, strokeStyle);
-  replay.drawMultiPolygonGeometry(multiPolygonGeometry, data);
+  replay.drawMultiPolygonGeometry(geometry, data);
 };
 
 
@@ -139,11 +156,10 @@ ol.renderer.vector.renderPointGeometry_ =
     return;
   }
   goog.asserts.assertInstanceof(geometry, ol.geom.Point);
-  var pointGeometry = /** @type {ol.geom.Point} */ (geometry);
   var replay = replayGroup.getReplay(
       style.getZIndex(), ol.render.ReplayType.IMAGE);
   replay.setImageStyle(imageStyle);
-  replay.drawPointGeometry(pointGeometry, data);
+  replay.drawPointGeometry(geometry, data);
 };
 
 
@@ -161,11 +177,10 @@ ol.renderer.vector.renderMultiPointGeometry_ =
     return;
   }
   goog.asserts.assertInstanceof(geometry, ol.geom.MultiPoint);
-  var multiPointGeometry = /** @type {ol.geom.MultiPoint} */ (geometry);
   var replay = replayGroup.getReplay(
       style.getZIndex(), ol.render.ReplayType.IMAGE);
   replay.setImageStyle(imageStyle);
-  replay.drawMultiPointGeometry(multiPointGeometry, data);
+  replay.drawMultiPointGeometry(geometry, data);
 };
 
 
@@ -184,11 +199,10 @@ ol.renderer.vector.renderPolygonGeometry_ =
     return;
   }
   goog.asserts.assertInstanceof(geometry, ol.geom.Polygon);
-  var polygonGeometry = /** @type {ol.geom.Polygon} */ (geometry);
   var replay = replayGroup.getReplay(
       style.getZIndex(), ol.render.ReplayType.POLYGON);
   replay.setFillStrokeStyle(fillStyle, strokeStyle);
-  replay.drawPolygonGeometry(polygonGeometry, data);
+  replay.drawPolygonGeometry(geometry, data);
 };
 
 
@@ -206,5 +220,6 @@ ol.renderer.vector.GEOMETRY_RENDERERS_ = {
   'MultiPoint': ol.renderer.vector.renderMultiPointGeometry_,
   'MultiLineString': ol.renderer.vector.renderMultiLineStringGeometry_,
   'MultiPolygon': ol.renderer.vector.renderMultiPolygonGeometry_,
-  'GeometryCollection': ol.renderer.vector.renderGeometryCollectionGeometry_
+  'GeometryCollection': ol.renderer.vector.renderGeometryCollectionGeometry_,
+  'Circle': ol.renderer.vector.renderCircleGeometry_
 };

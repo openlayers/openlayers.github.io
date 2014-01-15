@@ -175,8 +175,8 @@ ol.Map = function(options) {
    * @private
    * @type {number}
    */
-  this.devicePixelRatio_ = goog.isDef(options.devicePixelRatio) ?
-      options.devicePixelRatio : ol.BrowserFeature.DEVICE_PIXEL_RATIO;
+  this.pixelRatio_ = goog.isDef(options.pixelRatio) ?
+      options.pixelRatio : ol.BrowserFeature.DEVICE_PIXEL_RATIO;
 
   /**
    * @private
@@ -498,9 +498,13 @@ ol.Map.prototype.disposeInternal = function() {
  */
 ol.Map.prototype.forEachFeatureAtPixel =
     function(pixel, callback, opt_obj, opt_layerFunction, opt_obj2) {
-  // FIXME this function should probably take an options object
+  if (goog.isNull(this.frameState_)) {
+    return;
+  }
+  var coordinate = this.getCoordinateFromPixel(pixel);
   return this.renderer_.forEachFeatureAtPixel(
-      pixel, callback, opt_obj, opt_layerFunction, opt_obj2);
+      coordinate, this.frameState_, callback, opt_obj,
+      opt_layerFunction, opt_obj2);
 };
 
 
@@ -1111,13 +1115,13 @@ ol.Map.prototype.renderFrame_ = function(time) {
       animate: false,
       attributions: {},
       coordinateToPixelMatrix: this.coordinateToPixelMatrix_,
-      devicePixelRatio: this.devicePixelRatio_,
       extent: null,
       focus: goog.isNull(this.focus_) ? view2DState.center : this.focus_,
       index: this.frameIndex_++,
       layersArray: layersArray,
       layerStates: layerStates,
       logos: {},
+      pixelRatio: this.pixelRatio_,
       pixelToCoordinateMatrix: this.pixelToCoordinateMatrix_,
       postRenderFunctions: [],
       size: size,

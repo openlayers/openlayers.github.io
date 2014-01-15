@@ -76,9 +76,9 @@ ol.renderer.webgl.Map = function(container, map) {
 
   /**
    * @private
-   * @type {ol.Size}
+   * @type {number}
    */
-  this.clipTileCanvasSize_ = [0, 0];
+  this.clipTileCanvasSize_ = 0;
 
   /**
    * @private
@@ -170,12 +170,10 @@ ol.renderer.webgl.Map = function(container, map) {
           this.tileTextureQueue_.reprioritize();
           var element = this.tileTextureQueue_.dequeue();
           var tile = /** @type {ol.Tile} */ (element[0]);
-          var tileWidth = /** @type {number} */ (element[3]);
-          var tileHeight = /** @type {number} */ (element[4]);
-          var tileGutter = /** @type {number} */ (element[5]);
-          this.bindTileTexture(tile,
-              tileWidth, tileHeight, tileGutter,
-              goog.webgl.LINEAR, goog.webgl.LINEAR);
+          var tileSize = /** @type {number} */ (element[3]);
+          var tileGutter = /** @type {number} */ (element[4]);
+          this.bindTileTexture(
+              tile, tileSize, tileGutter, goog.webgl.LINEAR, goog.webgl.LINEAR);
         }
       }, this);
 
@@ -193,14 +191,13 @@ goog.inherits(ol.renderer.webgl.Map, ol.renderer.Map);
 
 /**
  * @param {ol.Tile} tile Tile.
- * @param {number} tileWidth Tile width.
- * @param {number} tileHeight Tile height.
+ * @param {number} tileSize Tile size.
  * @param {number} tileGutter Tile gutter.
  * @param {number} magFilter Mag filter.
  * @param {number} minFilter Min filter.
  */
 ol.renderer.webgl.Map.prototype.bindTileTexture =
-    function(tile, tileWidth, tileHeight, tileGutter, magFilter, minFilter) {
+    function(tile, tileSize, tileGutter, magFilter, minFilter) {
   var gl = this.getGL();
   var tileKey = tile.getKey();
   if (this.textureCache_.containsKey(tileKey)) {
@@ -222,19 +219,16 @@ ol.renderer.webgl.Map.prototype.bindTileTexture =
     gl.bindTexture(goog.webgl.TEXTURE_2D, texture);
     if (tileGutter > 0) {
       var clipTileCanvas = this.clipTileCanvas_;
-      var clipTileCanvasSize = this.clipTileCanvasSize_;
       var clipTileContext = this.clipTileContext_;
-      if (clipTileCanvasSize[0] != tileWidth ||
-          clipTileCanvasSize[1] != tileHeight) {
-        clipTileCanvas.width = tileWidth;
-        clipTileCanvas.height = tileHeight;
-        clipTileCanvasSize[0] = tileWidth;
-        clipTileCanvasSize[1] = tileHeight;
+      if (this.clipTileCanvasSize_ != tileSize) {
+        clipTileCanvas.width = tileSize;
+        clipTileCanvas.height = tileSize;
+        this.clipTileCanvasSize_ = tileSize;
       } else {
-        clipTileContext.clearRect(0, 0, tileWidth, tileHeight);
+        clipTileContext.clearRect(0, 0, tileSize, tileSize);
       }
       clipTileContext.drawImage(tile.getImage(), tileGutter, tileGutter,
-          tileWidth, tileHeight, 0, 0, tileWidth, tileHeight);
+          tileSize, tileSize, 0, 0, tileSize, tileSize);
       gl.texImage2D(goog.webgl.TEXTURE_2D, 0,
           goog.webgl.RGBA, goog.webgl.RGBA,
           goog.webgl.UNSIGNED_BYTE, clipTileCanvas);
@@ -285,8 +279,7 @@ ol.renderer.webgl.Map.prototype.dispatchComposeEvent_ =
   var map = this.getMap();
   if (map.hasListener(type)) {
     var context = this.getContext();
-    var render = new ol.render.webgl.Immediate(context,
-        frameState.devicePixelRatio);
+    var render = new ol.render.webgl.Immediate(context, frameState.pixelRatio);
     var composeEvent = new ol.render.Event(
         type, map, render, frameState, null, context);
     map.dispatchEvent(composeEvent);

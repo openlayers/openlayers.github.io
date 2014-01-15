@@ -44,6 +44,28 @@ goog.inherits(ol.renderer.canvas.ImageLayer, ol.renderer.canvas.Layer);
 /**
  * @inheritDoc
  */
+ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel =
+    function(coordinate, frameState, callback, opt_obj) {
+  var layer = this.getLayer();
+  var source = layer.getSource();
+  goog.asserts.assertInstanceof(source, ol.source.Image);
+  var extent = frameState.extent;
+  var resolution = frameState.view2DState.resolution;
+  var rotation = frameState.view2DState.rotation;
+  return source.forEachFeatureAtPixel(extent, resolution, rotation, coordinate,
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @return {?} Callback result.
+       */
+      function(feature) {
+        return callback.call(opt_obj, feature, this);
+      });
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.renderer.canvas.ImageLayer.prototype.getImage = function() {
   return goog.isNull(this.image_) ?
       null : this.image_.getImageElement();
@@ -64,7 +86,7 @@ ol.renderer.canvas.ImageLayer.prototype.getImageTransform = function() {
 ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
     function(frameState, layerState) {
 
-  var devicePixelRatio = frameState.devicePixelRatio;
+  var pixelRatio = frameState.pixelRatio;
   var view2DState = frameState.view2DState;
   var viewCenter = view2DState.center;
   var viewResolution = view2DState.resolution;
@@ -79,8 +101,8 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
   var hints = frameState.viewHints;
 
   if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING]) {
-    image = imageSource.getImage(frameState.extent, viewResolution,
-        devicePixelRatio, view2DState.projection);
+    image = imageSource.getImage(
+        frameState.extent, viewResolution, pixelRatio, view2DState.projection);
     if (!goog.isNull(image)) {
       var imageState = image.getState();
       if (imageState == ol.ImageState.IDLE) {
@@ -98,11 +120,11 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
     var imageExtent = image.getExtent();
     var imageResolution = image.getResolution();
     var imagePixelRatio = image.getPixelRatio();
-    var scale = devicePixelRatio * imageResolution /
+    var scale = pixelRatio * imageResolution /
         (viewResolution * imagePixelRatio);
     ol.vec.Mat4.makeTransform2D(this.imageTransform_,
-        devicePixelRatio * frameState.size[0] / 2,
-        devicePixelRatio * frameState.size[1] / 2,
+        pixelRatio * frameState.size[0] / 2,
+        pixelRatio * frameState.size[1] / 2,
         scale, scale,
         viewRotation,
         imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolution,

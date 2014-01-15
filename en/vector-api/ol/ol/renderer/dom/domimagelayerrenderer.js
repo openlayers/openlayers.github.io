@@ -49,6 +49,28 @@ goog.inherits(ol.renderer.dom.ImageLayer, ol.renderer.dom.Layer);
 /**
  * @inheritDoc
  */
+ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel =
+    function(coordinate, frameState, callback, opt_obj) {
+  var layer = this.getLayer();
+  var source = layer.getSource();
+  goog.asserts.assertInstanceof(source, ol.source.Image);
+  var extent = frameState.extent;
+  var resolution = frameState.view2DState.resolution;
+  var rotation = frameState.view2DState.rotation;
+  return source.forEachFeatureAtPixel(extent, resolution, rotation, coordinate,
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @return {?} Callback result.
+       */
+      function(feature) {
+        return callback.call(opt_obj, feature, this);
+      });
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.renderer.dom.ImageLayer.prototype.prepareFrame =
     function(frameState, layerState) {
 
@@ -67,7 +89,7 @@ ol.renderer.dom.ImageLayer.prototype.prepareFrame =
 
   if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING]) {
     var image_ = imageSource.getImage(frameState.extent, viewResolution,
-        frameState.devicePixelRatio, view2DState.projection);
+        frameState.pixelRatio, view2DState.projection);
     if (!goog.isNull(image_)) {
       var imageState = image_.getState();
       if (imageState == ol.ImageState.IDLE) {

@@ -57,6 +57,15 @@ var styles = {
         color: 'magenta'
       })
     })
+  })],
+  'Circle': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'red',
+      width: 2
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(255,0,0,0.2)'
+    })
   })]
 };
 
@@ -149,6 +158,8 @@ var vectorSource = new ol.source.GeoJSON(
         ]
       }
     }));
+
+vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
 
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
