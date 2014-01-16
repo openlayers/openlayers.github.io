@@ -6,7 +6,7 @@ var projection = ol.proj.configureProj4jsProjection({
 var extent = [420000, 30000, 900000, 350000];
 var layers = [
   new ol.layer.Tile({
-    source: new ol.source.TileWMS({
+    source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
       url: 'http://wms.geo.admin.ch/',
       crossOrigin: 'anonymous',
       attributions: [new ol.Attribution({
@@ -19,11 +19,12 @@ var layers = [
         'LAYERS': 'ch.swisstopo.pixelkarte-farbe-pk1000.noscale',
         'FORMAT': 'image/jpeg'
       },
-      extent: extent
-    })
+      extent: extent,
+      serverType: 'mapserver'
+    }))
   }),
   new ol.layer.Tile({
-    source: new ol.source.TileWMS({
+    source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
       url: 'http://wms.geo.admin.ch/',
       crossOrigin: 'anonymous',
       attributions: [new ol.Attribution({
@@ -33,8 +34,9 @@ var layers = [
             'National parks / geo.admin.ch</a>'
       })],
       params: {'LAYERS': 'ch.bafu.schutzgebiete-paerke_nationaler_bedeutung'},
-      extent: extent
-    })
+      extent: extent,
+      serverType: 'mapserver'
+    }))
   })
 ];
 

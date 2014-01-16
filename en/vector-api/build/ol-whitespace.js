@@ -520,12 +520,12 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["libtess", "l
 "ol.ImageCanvas", "ol.ImageState", "ol.ImageTile", "ol.ImageUrlFunction", "ol.ImageUrlFunctionType", "ol.Kinetic", "ol.Map", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler", "ol.MapEvent", "ol.MapEventType", "ol.MapProperty", "ol.Object", "ol.ObjectEvent", "ol.ObjectEventType", "ol.Observable", "ol.Overlay", "ol.OverlayPositioning", "ol.OverlayProperty", "ol.Pixel", "ol.PostRenderFunction", "ol.PreRenderFunction", "ol.RendererHint", "ol.RendererHints", "ol.ResolutionConstraint", 
 "ol.ResolutionConstraintType", "ol.RotationConstraint", "ol.RotationConstraintType", "ol.Size", "ol.Sphere", "ol.Tile", "ol.TileCache", "ol.TileCoord", "ol.TileLoadFunctionType", "ol.TilePriorityFunction", "ol.TileQueue", "ol.TileRange", "ol.TileState", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.TransformFunction", "ol.View", "ol.View2D", "ol.View2DProperty", "ol.View2DState", "ol.ViewHint", "ol.animation", "ol.array", "ol.color", "ol.color.Matrix", "ol.control", "ol.control.Attribution", 
 "ol.control.Control", "ol.control.FullScreen", "ol.control.Logo", "ol.control.MousePosition", "ol.control.ScaleLine", "ol.control.ScaleLineProperty", "ol.control.ScaleLineUnits", "ol.control.Zoom", "ol.control.ZoomSlider", "ol.control.ZoomToExtent", "ol.coordinate", "ol.css", "ol.dom", "ol.dom.BrowserFeature", "ol.dom.Input", "ol.dom.InputProperty", "ol.easing", "ol.ellipsoid.BESSEL1841", "ol.ellipsoid.WGS84", "ol.events.ConditionType", "ol.events.condition", "ol.extent", "ol.feature", "ol.format.Format", 
-"ol.format.FormatType", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.JSON", "ol.format.KML", "ol.format.Polyline", "ol.format.Text", "ol.format.XML", "ol.geom.Circle", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify", "ol.interaction", 
-"ol.interaction.DoubleClickZoom", "ol.interaction.Drag", "ol.interaction.DragAndDrop", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", "ol.interaction.Draw", "ol.interaction.Interaction", "ol.interaction.KeyboardPan", "ol.interaction.KeyboardZoom", "ol.interaction.MouseWheelZoom", "ol.interaction.Touch", "ol.interaction.TouchPan", "ol.interaction.TouchRotate", "ol.interaction.TouchZoom", "ol.layer.Base", 
-"ol.layer.Group", "ol.layer.Image", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.Tile", "ol.layer.Vector", "ol.math", "ol.parser.Parser", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.Versioned", "ol.parser.ogc.WMSCapabilities", "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", 
+"ol.format.FormatType", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.JSON", "ol.format.KML", "ol.format.Polyline", "ol.format.Text", "ol.format.TopoJSON", "ol.format.XML", "ol.geom.Circle", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify", 
+"ol.interaction", "ol.interaction.DoubleClickZoom", "ol.interaction.Drag", "ol.interaction.DragAndDrop", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", "ol.interaction.Draw", "ol.interaction.Interaction", "ol.interaction.KeyboardPan", "ol.interaction.KeyboardZoom", "ol.interaction.MouseWheelZoom", "ol.interaction.Touch", "ol.interaction.TouchPan", "ol.interaction.TouchRotate", "ol.interaction.TouchZoom", 
+"ol.layer.Base", "ol.layer.Group", "ol.layer.Image", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.Tile", "ol.layer.Vector", "ol.math", "ol.parser.Parser", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.Versioned", "ol.parser.ogc.WMSCapabilities", "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", 
 "ol.parser.ogc.WMSCapabilities_v1_3_0", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", "ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.render.Box", "ol.render.Event", "ol.render.EventType", "ol.render.FeaturesOverlay", "ol.render.IRender", "ol.render.IReplayGroup", "ol.render.canvas", "ol.render.canvas.Immediate", "ol.render.canvas.ReplayGroup", "ol.render.webgl.Immediate", "ol.renderer.Layer", "ol.renderer.Map", 
 "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.Map", "ol.renderer.dom.TileLayer", "ol.renderer.vector", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.Map", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", 
-"ol.size", "ol.source.BingMaps", "ol.source.GeoJSON", "ol.source.IGC", "ol.source.Image", "ol.source.ImageCanvas", "ol.source.ImageStatic", "ol.source.ImageVector", "ol.source.ImageWMS", "ol.source.KML", "ol.source.MapGuide", "ol.source.MapQuest", "ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.Vector", "ol.source.VectorEvent", 
+"ol.size", "ol.source.BingMaps", "ol.source.GeoJSON", "ol.source.IGC", "ol.source.Image", "ol.source.ImageCanvas", "ol.source.ImageStatic", "ol.source.ImageVector", "ol.source.ImageWMS", "ol.source.KML", "ol.source.MapGuide", "ol.source.MapQuest", "ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.TopoJSON", "ol.source.Vector", "ol.source.VectorEvent", 
 "ol.source.VectorEventType", "ol.source.VectorFile", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.source.wms.ServerType", "ol.sphere.NORMAL", "ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style.Circle", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorUnits", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", 
 "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType", "ol.webgl.shader", "ol.xml"]);
 goog.addDependency("../src/libtess.js/dict/Dict.js", ["libtess.Dict"], ["libtess", "libtess.DictNode"]);
@@ -589,6 +589,7 @@ goog.addDependency("../src/ol/format/kmlformat.js", ["ol.format.KML"], ["goog.Ur
 "ol.style.Stroke", "ol.style.Style", "ol.xml"]);
 goog.addDependency("../src/ol/format/polylineformat.js", ["ol.format.Polyline"], ["goog.asserts", "ol.Feature", "ol.format.Text", "ol.geom.LineString", "ol.geom.flat", "ol.proj"]);
 goog.addDependency("../src/ol/format/textformat.js", ["ol.format.Text"], ["goog.asserts", "ol.format.Format", "ol.format.FormatType"]);
+goog.addDependency("../src/ol/format/topojsonformat.js", ["ol.format.TopoJSON"], ["goog.array", "goog.asserts", "goog.object", "ol.Feature", "ol.format.JSON", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj"]);
 goog.addDependency("../src/ol/format/xmlformat.js", ["ol.format.XML"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "goog.dom.xml", "ol.format.Format", "ol.format.FormatType"]);
 goog.addDependency("../src/ol/framestate.js", ["ol.FrameState", "ol.PostRenderFunction", "ol.PreRenderFunction"], ["goog.vec.Mat4", "ol.Attribution", "ol.Extent", "ol.Size", "ol.TileQueue", "ol.TileRange", "ol.View2DState", "ol.layer.Layer", "ol.layer.LayerState"]);
 goog.addDependency("../src/ol/geolocation.js", ["ol.Geolocation", "ol.GeolocationProperty"], ["goog.events", "goog.events.EventType", "goog.math", "ol.BrowserFeature", "ol.Coordinate", "ol.Object", "ol.proj"]);
@@ -718,7 +719,8 @@ goog.addDependency("../src/ol/source/stamensource.js", ["ol.source.Stamen"], ["g
 goog.addDependency("../src/ol/source/tileimagesource.js", ["ol.source.TileImage"], ["goog.asserts", "ol.Attribution", "ol.Extent", "ol.ImageTile", "ol.Tile", "ol.TileCache", "ol.TileCoord", "ol.TileLoadFunctionType", "ol.TileState", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.source.Tile", "ol.tilegrid.TileGrid"]);
 goog.addDependency("../src/ol/source/tilejsonsource.js", ["ol.source.TileJSON", "ol.tilejson"], ["goog.asserts", "goog.net.jsloader", "ol.Attribution", "ol.TileRange", "ol.TileUrlFunction", "ol.extent", "ol.proj", "ol.source.State", "ol.source.TileImage", "ol.tilegrid.XYZ"]);
 goog.addDependency("../src/ol/source/tilesource.js", ["ol.source.Tile", "ol.source.TileOptions"], ["goog.functions", "ol.Attribution", "ol.Extent", "ol.Tile", "ol.TileCoord", "ol.TileRange", "ol.source.Source", "ol.tilegrid.TileGrid"]);
-goog.addDependency("../src/ol/source/tilewmssource.js", ["ol.source.TileWMS"], ["goog.array", "goog.math", "goog.object", "goog.string", "goog.uri.utils", "ol.TileCoord", "ol.TileUrlFunction", "ol.extent", "ol.source.TileImage", "ol.source.wms"]);
+goog.addDependency("../src/ol/source/tilewmssource.js", ["ol.source.TileWMS"], ["goog.array", "goog.asserts", "goog.math", "goog.object", "goog.string", "goog.uri.utils", "ol.TileCoord", "ol.TileUrlFunction", "ol.extent", "ol.source.TileImage", "ol.source.wms", "ol.source.wms.ServerType"]);
+goog.addDependency("../src/ol/source/topojsonsource.js", ["ol.source.TopoJSON"], ["ol.format.TopoJSON", "ol.source.VectorFile"]);
 goog.addDependency("../src/ol/source/vectorfilesource.js", ["ol.source.VectorFile"], ["goog.asserts", "goog.dom.xml", "goog.net.XhrIo", "ol.format.FormatType", "ol.proj", "ol.source.State", "ol.source.Vector"]);
 goog.addDependency("../src/ol/source/vectorsource.js", ["ol.source.Vector", "ol.source.VectorEvent", "ol.source.VectorEventType"], ["goog.array", "goog.asserts", "goog.events", "goog.events.Event", "goog.events.EventType", "goog.object", "ol.source.Source", "ol.structs.RBush"]);
 goog.addDependency("../src/ol/source/wmssource.js", ["ol.source.wms", "ol.source.wms.ServerType"], []);
@@ -8521,14 +8523,14 @@ ol.Observable = function() {
   goog.base(this)
 };
 goog.inherits(ol.Observable, goog.events.EventTarget);
-ol.Observable.prototype.on = function(type, listener, opt_scope) {
-  return goog.events.listen(this, type, listener, false, opt_scope)
+ol.Observable.prototype.on = function(type, listener, opt_this) {
+  return goog.events.listen(this, type, listener, false, opt_this)
 };
-ol.Observable.prototype.once = function(type, listener, opt_scope) {
-  return goog.events.listenOnce(this, type, listener, false, opt_scope)
+ol.Observable.prototype.once = function(type, listener, opt_this) {
+  return goog.events.listenOnce(this, type, listener, false, opt_this)
 };
-ol.Observable.prototype.un = function(type, listener, opt_scope) {
-  goog.events.unlisten(this, type, listener, false, opt_scope)
+ol.Observable.prototype.un = function(type, listener, opt_this) {
+  goog.events.unlisten(this, type, listener, false, opt_this)
 };
 ol.Observable.prototype.unByKey = function(key) {
   goog.events.unlistenByKey(key)
@@ -8770,8 +8772,8 @@ ol.Collection.prototype.extend = function(arr) {
   }
   return this
 };
-ol.Collection.prototype.forEach = function(f, opt_obj) {
-  goog.array.forEach(this.array_, f, opt_obj)
+ol.Collection.prototype.forEach = function(f, opt_this) {
+  goog.array.forEach(this.array_, f, opt_this)
 };
 ol.Collection.prototype.getArray = function() {
   return this.array_
@@ -19988,11 +19990,11 @@ ol.tilegrid.TileGrid = function(options) {
 };
 ol.tilegrid.TileGrid.tmpTileCoord_ = new ol.TileCoord(0, 0, 0);
 ol.tilegrid.TileGrid.prototype.createTileCoordTransform = goog.abstractMethod;
-ol.tilegrid.TileGrid.prototype.forEachTileCoordParentTileRange = function(tileCoord, callback, opt_obj, opt_tileRange, opt_extent) {
+ol.tilegrid.TileGrid.prototype.forEachTileCoordParentTileRange = function(tileCoord, callback, opt_this, opt_tileRange, opt_extent) {
   var tileCoordExtent = this.getTileCoordExtent(tileCoord, opt_extent);
   var z = tileCoord.z - 1;
   while(z >= this.minZoom) {
-    if(callback.call(opt_obj, z, this.getTileRangeForExtentAndZ(tileCoordExtent, z, opt_tileRange))) {
+    if(callback.call(opt_this, z, this.getTileRangeForExtentAndZ(tileCoordExtent, z, opt_tileRange))) {
       return true
     }
     --z
@@ -20181,6 +20183,17 @@ ol.source.Tile.prototype.getTile = goog.abstractMethod;
 ol.source.Tile.prototype.getTileGrid = function() {
   return this.tileGrid
 };
+ol.source.Tile.prototype.getTileGridForProjection = function(projection) {
+  if(goog.isNull(this.tileGrid)) {
+    return ol.tilegrid.getForProjection(projection)
+  }else {
+    return this.tileGrid
+  }
+};
+ol.source.Tile.prototype.getTilePixelSize = function(z, pixelRatio, projection) {
+  var tileGrid = this.getTileGridForProjection(projection);
+  return tileGrid.getTileSize(z)
+};
 ol.source.Tile.prototype.useTile = goog.nullFunction;
 goog.provide("ol.renderer.Layer");
 goog.require("goog.Disposable");
@@ -20261,16 +20274,16 @@ ol.renderer.Layer.prototype.updateUsedTiles = function(usedTiles, tileSource, z,
     usedTiles[tileSourceKey][zKey] = tileRange
   }
 };
-ol.renderer.Layer.prototype.createGetTileIfLoadedFunction = function(isLoadedFunction, tileSource, projection) {
+ol.renderer.Layer.prototype.createGetTileIfLoadedFunction = function(isLoadedFunction, tileSource, pixelRatio, projection) {
   return function(z, x, y) {
-    var tile = tileSource.getTile(z, x, y, projection);
+    var tile = tileSource.getTile(z, x, y, pixelRatio, projection);
     return isLoadedFunction(tile) ? tile : null
   }
 };
 ol.renderer.Layer.prototype.snapCenterToPixel = function(center, resolution, size) {
   return[resolution * (Math.round(center[0] / resolution) + size[0] % 2 / 2), resolution * (Math.round(center[1] / resolution) + size[1] % 2 / 2)]
 };
-ol.renderer.Layer.prototype.manageTilePyramid = function(frameState, tileSource, tileGrid, projection, extent, currentZ, preload, opt_tileCallback, opt_obj) {
+ol.renderer.Layer.prototype.manageTilePyramid = function(frameState, tileSource, tileGrid, pixelRatio, projection, extent, currentZ, preload, opt_tileCallback, opt_this) {
   var tileSourceKey = goog.getUid(tileSource).toString();
   if(!(tileSourceKey in frameState.wantedTiles)) {
     frameState.wantedTiles[tileSourceKey] = {}
@@ -20285,7 +20298,7 @@ ol.renderer.Layer.prototype.manageTilePyramid = function(frameState, tileSource,
     for(x = tileRange.minX;x <= tileRange.maxX;++x) {
       for(y = tileRange.minY;y <= tileRange.maxY;++y) {
         if(currentZ - z <= preload) {
-          tile = tileSource.getTile(z, x, y, projection);
+          tile = tileSource.getTile(z, x, y, pixelRatio, projection);
           if(tile.getState() == ol.TileState.IDLE) {
             wantedTiles[tile.tileCoord.toString()] = true;
             if(!tileQueue.isKeyQueued(tile.getKey())) {
@@ -20293,7 +20306,7 @@ ol.renderer.Layer.prototype.manageTilePyramid = function(frameState, tileSource,
             }
           }
           if(goog.isDef(opt_tileCallback)) {
-            opt_tileCallback.call(opt_obj, tile)
+            opt_tileCallback.call(opt_this, tile)
           }
         }else {
           tileSource.useTile(z, x, y)
@@ -20991,7 +21004,7 @@ ol.renderer.canvas.ImageLayer = function(mapRenderer, imageLayer) {
   this.imageTransform_ = goog.vec.Mat4.createNumber()
 };
 goog.inherits(ol.renderer.canvas.ImageLayer, ol.renderer.canvas.Layer);
-ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_obj) {
+ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_this) {
   var layer = this.getLayer();
   var source = layer.getSource();
   goog.asserts.assertInstanceof(source, ol.source.Image);
@@ -20999,7 +21012,7 @@ ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel = function(coordin
   var resolution = frameState.view2DState.resolution;
   var rotation = frameState.view2DState.rotation;
   return source.forEachFeatureAtPixel(extent, resolution, rotation, coordinate, function(feature) {
-    return callback.call(opt_obj, feature, this)
+    return callback.call(opt_this, feature, this)
   })
 };
 ol.renderer.canvas.ImageLayer.prototype.getImage = function() {
@@ -21081,20 +21094,20 @@ ol.renderer.canvas.TileLayer.prototype.getImageTransform = function() {
   return this.imageTransform_
 };
 ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layerState) {
+  var pixelRatio = frameState.pixelRatio;
   var view2DState = frameState.view2DState;
   var projection = view2DState.projection;
   var tileLayer = this.getLayer();
   goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
   var tileSource = tileLayer.getSource();
   goog.asserts.assertInstanceof(tileSource, ol.source.Tile);
-  var tileGrid = tileSource.getTileGrid();
-  if(goog.isNull(tileGrid)) {
-    tileGrid = ol.tilegrid.getForProjection(projection)
-  }
+  var tileGrid = tileSource.getTileGridForProjection(projection);
   var tileGutter = tileSource.getGutter();
   var z = tileGrid.getZForResolution(view2DState.resolution);
-  var tileSize = tileGrid.getTileSize(z);
+  var tilePixelSize = tileSource.getTilePixelSize(z, frameState.pixelRatio, projection);
+  var tilePixelRatio = tilePixelSize / tileGrid.getTileSize(z);
   var tileResolution = tileGrid.getResolution(z);
+  var tilePixelResolution = tileResolution / tilePixelRatio;
   var center = view2DState.center;
   var extent;
   if(tileResolution == view2DState.resolution) {
@@ -21104,8 +21117,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
     extent = frameState.extent
   }
   var tileRange = tileGrid.getTileRangeForExtentAndResolution(extent, tileResolution);
-  var canvasWidth = tileSize * tileRange.getWidth();
-  var canvasHeight = tileSize * tileRange.getHeight();
+  var canvasWidth = tilePixelSize * tileRange.getWidth();
+  var canvasHeight = tilePixelSize * tileRange.getHeight();
   var canvas, context;
   if(goog.isNull(this.canvas_)) {
     goog.asserts.assert(goog.isNull(this.canvasSize_));
@@ -21138,8 +21151,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
   }
   var canvasTileRange, canvasTileRangeWidth, minX, minY;
   if(goog.isNull(this.renderedCanvasTileRange_)) {
-    canvasTileRangeWidth = canvasWidth / tileSize;
-    var canvasTileRangeHeight = canvasHeight / tileSize;
+    canvasTileRangeWidth = canvasWidth / tilePixelSize;
+    var canvasTileRangeHeight = canvasHeight / tilePixelSize;
     minX = tileRange.minX - Math.floor((canvasTileRangeWidth - tileRange.getWidth()) / 2);
     minY = tileRange.minY - Math.floor((canvasTileRangeHeight - tileRange.getHeight()) / 2);
     this.renderedCanvasZ_ = z;
@@ -21156,14 +21169,14 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
   var tilesToClear = [];
   var getTileIfLoaded = this.createGetTileIfLoadedFunction(function(tile) {
     return!goog.isNull(tile) && tile.getState() == ol.TileState.LOADED
-  }, tileSource, projection);
+  }, tileSource, pixelRatio, projection);
   var findLoadedTiles = goog.bind(tileSource.findLoadedTiles, tileSource, tilesToDrawByZ, getTileIfLoaded);
   var tmpExtent = ol.extent.createEmpty();
   var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
   var childTileRange, fullyLoaded, tile, tileState, x, y;
   for(x = tileRange.minX;x <= tileRange.maxX;++x) {
     for(y = tileRange.minY;y <= tileRange.maxY;++y) {
-      tile = tileSource.getTile(z, x, y, projection);
+      tile = tileSource.getTile(z, x, y, pixelRatio, projection);
       tileState = tile.getState();
       if(tileState == ol.TileState.LOADED || tileState == ol.TileState.EMPTY || tileState == ol.TileState.ERROR) {
         tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
@@ -21182,9 +21195,9 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
   var i, ii;
   for(i = 0, ii = tilesToClear.length;i < ii;++i) {
     tile = tilesToClear[i];
-    x = tileSize * (tile.tileCoord.x - canvasTileRange.minX);
-    y = tileSize * (canvasTileRange.maxY - tile.tileCoord.y);
-    context.clearRect(x, y, tileSize, tileSize)
+    x = tilePixelSize * (tile.tileCoord.x - canvasTileRange.minX);
+    y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord.y);
+    context.clearRect(x, y, tilePixelSize, tilePixelSize)
   }
   var zs = goog.array.map(goog.object.getKeys(tilesToDrawByZ), Number);
   goog.array.sort(zs);
@@ -21195,21 +21208,21 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
   var height, width;
   for(i = 0, ii = zs.length;i < ii;++i) {
     currentZ = zs[i];
-    tileSize = tileGrid.getTileSize(currentZ);
+    tilePixelSize = tileSource.getTilePixelSize(currentZ, pixelRatio, projection);
     tilesToDraw = tilesToDrawByZ[currentZ];
     if(currentZ == z) {
       for(tileCoordKey in tilesToDraw) {
         tile = tilesToDraw[tileCoordKey];
         index = (tile.tileCoord.y - canvasTileRange.minY) * canvasTileRangeWidth + (tile.tileCoord.x - canvasTileRange.minX);
         if(this.renderedTiles_[index] != tile) {
-          x = tileSize * (tile.tileCoord.x - canvasTileRange.minX);
-          y = tileSize * (canvasTileRange.maxY - tile.tileCoord.y);
+          x = tilePixelSize * (tile.tileCoord.x - canvasTileRange.minX);
+          y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord.y);
           tileState = tile.getState();
           if(tileState == ol.TileState.EMPTY || tileState == ol.TileState.ERROR || !opaque) {
-            context.clearRect(x, y, tileSize, tileSize)
+            context.clearRect(x, y, tilePixelSize, tilePixelSize)
           }
           if(tileState == ol.TileState.LOADED) {
-            context.drawImage(tile.getImage(), tileGutter, tileGutter, tileSize, tileSize, x, y, tileSize, tileSize)
+            context.drawImage(tile.getImage(), tileGutter, tileGutter, tilePixelSize, tilePixelSize, x, y, tilePixelSize, tilePixelSize)
           }
           this.renderedTiles_[index] = tile
         }
@@ -21219,16 +21232,16 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
       for(tileCoordKey in tilesToDraw) {
         tile = tilesToDraw[tileCoordKey];
         tileExtent = tileGrid.getTileCoordExtent(tile.tileCoord, tmpExtent);
-        x = (tileExtent[0] - origin[0]) / tileResolution;
-        y = (origin[1] - tileExtent[3]) / tileResolution;
-        width = scale * tileSize;
-        height = scale * tileSize;
+        x = (tileExtent[0] - origin[0]) / tilePixelResolution;
+        y = (origin[1] - tileExtent[3]) / tilePixelResolution;
+        width = scale * tilePixelSize;
+        height = scale * tilePixelSize;
         tileState = tile.getState();
         if(tileState == ol.TileState.EMPTY || !opaque) {
           context.clearRect(x, y, width, height)
         }
         if(tileState == ol.TileState.LOADED) {
-          context.drawImage(tile.getImage(), tileGutter, tileGutter, tileSize, tileSize, x, y, width, height)
+          context.drawImage(tile.getImage(), tileGutter, tileGutter, tilePixelSize, tilePixelSize, x, y, width, height)
         }
         interimTileRange = tileGrid.getTileRangeForExtentAndZ(tileExtent, z, tmpTileRange);
         minX = Math.max(interimTileRange.minX, canvasTileRange.minX);
@@ -21245,11 +21258,10 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
     }
   }
   this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
-  this.manageTilePyramid(frameState, tileSource, tileGrid, projection, extent, z, tileLayer.getPreload());
+  this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio, projection, extent, z, tileLayer.getPreload());
   this.scheduleExpireCache(frameState, tileSource);
   this.updateLogos(frameState, tileSource);
-  var pixelRatio = frameState.pixelRatio;
-  ol.vec.Mat4.makeTransform2D(this.imageTransform_, pixelRatio * frameState.size[0] / 2, pixelRatio * frameState.size[1] / 2, pixelRatio * tileResolution / view2DState.resolution, pixelRatio * tileResolution / view2DState.resolution, view2DState.rotation, (origin[0] - center[0]) / tileResolution, (center[1] - origin[1]) / tileResolution)
+  ol.vec.Mat4.makeTransform2D(this.imageTransform_, pixelRatio * frameState.size[0] / 2, pixelRatio * frameState.size[1] / 2, pixelRatio * tilePixelResolution / view2DState.resolution, pixelRatio * tilePixelResolution / view2DState.resolution, view2DState.rotation, (origin[0] - center[0]) / tilePixelResolution, (center[1] - origin[1]) / tilePixelResolution)
 };
 goog.provide("ol.render.IReplayGroup");
 goog.require("goog.functions");
@@ -22892,19 +22904,19 @@ ol.structs.RBush.prototype.condense_ = function(path) {
     }
   }
 };
-ol.structs.RBush.prototype.forEach = function(callback, opt_obj) {
+ol.structs.RBush.prototype.forEach = function(callback, opt_this) {
   if(goog.DEBUG) {
     ++this.readers_;
     try {
-      return this.forEach_(this.root_, callback, opt_obj)
+      return this.forEach_(this.root_, callback, opt_this)
     }finally {
       --this.readers_
     }
   }else {
-    return this.forEach_(this.root_, callback, opt_obj)
+    return this.forEach_(this.root_, callback, opt_this)
   }
 };
-ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_obj) {
+ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_this) {
   goog.asserts.assert(!node.isLeaf());
   var toVisit = [node];
   var children, i, ii, result;
@@ -22913,7 +22925,7 @@ ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_obj) {
     children = node.children;
     if(node.height == 1) {
       for(i = 0, ii = children.length;i < ii;++i) {
-        result = callback.call(opt_obj, children[i].value);
+        result = callback.call(opt_this, children[i].value);
         if(result) {
           return result
         }
@@ -22923,32 +22935,32 @@ ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_obj) {
     }
   }
 };
-ol.structs.RBush.prototype.forEachInExtent = function(extent, callback, opt_obj) {
+ol.structs.RBush.prototype.forEachInExtent = function(extent, callback, opt_this) {
   if(goog.DEBUG) {
     ++this.readers_;
     try {
-      return this.forEachInExtent_(extent, callback, opt_obj)
+      return this.forEachInExtent_(extent, callback, opt_this)
     }finally {
       --this.readers_
     }
   }else {
-    return this.forEachInExtent_(extent, callback, opt_obj)
+    return this.forEachInExtent_(extent, callback, opt_this)
   }
 };
-ol.structs.RBush.prototype.forEachInExtent_ = function(extent, callback, opt_obj) {
+ol.structs.RBush.prototype.forEachInExtent_ = function(extent, callback, opt_this) {
   var toVisit = [this.root_];
   var result;
   while(toVisit.length > 0) {
     var node = toVisit.pop();
     if(ol.extent.intersects(extent, node.extent)) {
       if(node.isLeaf()) {
-        result = callback.call(opt_obj, node.value);
+        result = callback.call(opt_this, node.value);
         if(result) {
           return result
         }
       }else {
         if(ol.extent.containsExtent(extent, node.extent)) {
-          result = this.forEach_(node, callback, opt_obj);
+          result = this.forEach_(node, callback, opt_this);
           if(result) {
             return result
           }
@@ -22960,11 +22972,11 @@ ol.structs.RBush.prototype.forEachInExtent_ = function(extent, callback, opt_obj
   }
   return undefined
 };
-ol.structs.RBush.prototype.forEachNode = function(callback, opt_obj) {
+ol.structs.RBush.prototype.forEachNode = function(callback, opt_this) {
   var toVisit = [this.root_];
   while(toVisit.length > 0) {
     var node = toVisit.pop();
-    var result = callback.call(opt_obj, node);
+    var result = callback.call(opt_this, node);
     if(result) {
       return result
     }
@@ -23174,23 +23186,23 @@ ol.source.Vector.prototype.clear = function() {
   goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_));
   this.dispatchChangeEvent()
 };
-ol.source.Vector.prototype.forEachFeature = function(f, opt_obj) {
-  return this.rBush_.forEach(f, opt_obj)
+ol.source.Vector.prototype.forEachFeature = function(f, opt_this) {
+  return this.rBush_.forEach(f, opt_this)
 };
-ol.source.Vector.prototype.forEachFeatureAtCoordinate = function(coordinate, f, opt_obj) {
+ol.source.Vector.prototype.forEachFeatureAtCoordinate = function(coordinate, f, opt_this) {
   var extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
   return this.forEachFeatureInExtent(extent, function(feature) {
     var geometry = feature.getGeometry();
     goog.asserts.assert(!goog.isNull(geometry));
     if(geometry.containsCoordinate(coordinate)) {
-      return f.call(opt_obj, feature)
+      return f.call(opt_this, feature)
     }else {
       return undefined
     }
   })
 };
-ol.source.Vector.prototype.forEachFeatureInExtent = function(extent, f, opt_obj) {
-  return this.rBush_.forEachInExtent(extent, f, opt_obj)
+ol.source.Vector.prototype.forEachFeatureInExtent = function(extent, f, opt_this) {
+  return this.rBush_.forEachInExtent(extent, f, opt_this)
 };
 ol.source.Vector.prototype.getAllFeatures = function() {
   var features = this.rBush_.getAll();
@@ -23318,7 +23330,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
   }
   this.dispatchPostComposeEvent(context, frameState, transform)
 };
-ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_obj) {
+ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_this) {
   if(goog.isNull(this.replayGroup_)) {
     return undefined
   }else {
@@ -23331,7 +23343,7 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel = function(coordi
     return this.replayGroup_.forEachGeometryAtPixel(extent, resolution, rotation, coordinate, renderGeometryFunction, function(geometry, data) {
       var feature = (data);
       goog.asserts.assert(goog.isDef(feature));
-      return callback.call(opt_obj, feature, layer)
+      return callback.call(opt_this, feature, layer)
     })
   }
 };
@@ -23609,7 +23621,7 @@ ol.renderer.dom.ImageLayer = function(mapRenderer, imageLayer) {
   this.transform_ = goog.vec.Mat4.createNumberIdentity()
 };
 goog.inherits(ol.renderer.dom.ImageLayer, ol.renderer.dom.Layer);
-ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_obj) {
+ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_this) {
   var layer = this.getLayer();
   var source = layer.getSource();
   goog.asserts.assertInstanceof(source, ol.source.Image);
@@ -23617,7 +23629,7 @@ ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel = function(coordinate
   var resolution = frameState.view2DState.resolution;
   var rotation = frameState.view2DState.rotation;
   return source.forEachFeatureAtPixel(extent, resolution, rotation, coordinate, function(feature) {
-    return callback.call(opt_obj, feature, this)
+    return callback.call(opt_this, feature, this)
   })
 };
 ol.renderer.dom.ImageLayer.prototype.prepareFrame = function(frameState, layerState) {
@@ -23708,16 +23720,14 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame = function(frameState, layerSta
     }
     return
   }
+  var pixelRatio = frameState.pixelRatio;
   var view2DState = frameState.view2DState;
   var projection = view2DState.projection;
   var tileLayer = this.getLayer();
   goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
   var tileSource = tileLayer.getSource();
   goog.asserts.assertInstanceof(tileSource, ol.source.Tile);
-  var tileGrid = tileSource.getTileGrid();
-  if(goog.isNull(tileGrid)) {
-    tileGrid = ol.tilegrid.getForProjection(projection)
-  }
+  var tileGrid = tileSource.getTileGridForProjection(projection);
   var tileGutter = tileSource.getGutter();
   var z = tileGrid.getZForResolution(view2DState.resolution);
   var tileResolution = tileGrid.getResolution(z);
@@ -23734,14 +23744,14 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame = function(frameState, layerSta
   tilesToDrawByZ[z] = {};
   var getTileIfLoaded = this.createGetTileIfLoadedFunction(function(tile) {
     return!goog.isNull(tile) && tile.getState() == ol.TileState.LOADED
-  }, tileSource, projection);
+  }, tileSource, pixelRatio, projection);
   var findLoadedTiles = goog.bind(tileSource.findLoadedTiles, tileSource, tilesToDrawByZ, getTileIfLoaded);
   var tmpExtent = ol.extent.createEmpty();
   var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
   var childTileRange, fullyLoaded, tile, tileState, x, y;
   for(x = tileRange.minX;x <= tileRange.maxX;++x) {
     for(y = tileRange.minY;y <= tileRange.maxY;++y) {
-      tile = tileSource.getTile(z, x, y, projection);
+      tile = tileSource.getTile(z, x, y, pixelRatio, projection);
       tileState = tile.getState();
       if(tileState == ol.TileState.LOADED) {
         tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
@@ -23830,7 +23840,7 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame = function(frameState, layerSta
     this.renderedVisible_ = true
   }
   this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
-  this.manageTilePyramid(frameState, tileSource, tileGrid, projection, extent, z, tileLayer.getPreload());
+  this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio, projection, extent, z, tileLayer.getPreload());
   this.scheduleExpireCache(frameState, tileSource);
   this.updateLogos(frameState, tileSource)
 };
@@ -23867,8 +23877,12 @@ ol.renderer.dom.TileLayerZ_.prototype.addTile = function(tile, tileGutter) {
     imageStyle.position = "absolute";
     imageStyle.left = -tileGutter + "px";
     imageStyle.top = -tileGutter + "px";
+    imageStyle.width = tileSize + 2 * tileGutter + "px";
+    imageStyle.height = tileSize + 2 * tileGutter + "px";
     goog.dom.appendChild(tileElement, image)
   }else {
+    imageStyle.width = tileSize + "px";
+    imageStyle.height = tileSize + "px";
     tileElement = image;
     tileElementStyle = imageStyle
   }
@@ -24586,30 +24600,30 @@ ol.structs.IntegerSet.prototype.findRange = function(minSize) {
   }
   return bestIndex
 };
-ol.structs.IntegerSet.prototype.forEachRange = function(f, opt_obj) {
+ol.structs.IntegerSet.prototype.forEachRange = function(f, opt_this) {
   var arr = this.arr_;
   var n = arr.length;
   var i;
   for(i = 0;i < n;i += 2) {
-    f.call(opt_obj, arr[i], arr[i + 1])
+    f.call(opt_this, arr[i], arr[i + 1])
   }
 };
-ol.structs.IntegerSet.prototype.forEachRangeInverted = function(start, stop, f, opt_obj) {
+ol.structs.IntegerSet.prototype.forEachRangeInverted = function(start, stop, f, opt_this) {
   goog.asserts.assert(start < stop);
   var arr = this.arr_;
   var n = arr.length;
   if(n === 0) {
-    f.call(opt_obj, start, stop)
+    f.call(opt_this, start, stop)
   }else {
     if(start < arr[0]) {
-      f.call(opt_obj, start, arr[0])
+      f.call(opt_this, start, arr[0])
     }
     var i;
     for(i = 1;i < n - 1;i += 2) {
-      f.call(opt_obj, arr[i], arr[i + 1])
+      f.call(opt_this, arr[i], arr[i + 1])
     }
     if(arr[n - 1] < stop) {
-      f.call(opt_obj, arr[n - 1], stop)
+      f.call(opt_this, arr[n - 1], stop)
     }
   }
 };
@@ -24774,9 +24788,9 @@ ol.structs.Buffer.prototype.addDirtySet = function(dirtySet) {
   goog.asserts.assert(!goog.array.contains(this.dirtySets_, dirtySet));
   this.dirtySets_.push(dirtySet)
 };
-ol.structs.Buffer.prototype.forEachRange = function(f, opt_obj) {
+ol.structs.Buffer.prototype.forEachRange = function(f, opt_this) {
   if(this.arr_.length !== 0) {
-    this.freeSet_.forEachRangeInverted(0, this.arr_.length, f, opt_obj)
+    this.freeSet_.forEachRangeInverted(0, this.arr_.length, f, opt_this)
   }
 };
 ol.structs.Buffer.prototype.getArray = function() {
@@ -25007,7 +25021,7 @@ ol.renderer.webgl.ImageLayer.prototype.createTexture_ = function(image) {
   gl.texParameteri(goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_MAG_FILTER, goog.webgl.LINEAR);
   return texture
 };
-ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_obj) {
+ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel = function(coordinate, frameState, callback, opt_this) {
   var layer = this.getLayer();
   var source = layer.getSource();
   goog.asserts.assertInstanceof(source, ol.source.Image);
@@ -25015,7 +25029,7 @@ ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel = function(coordina
   var resolution = frameState.view2DState.resolution;
   var rotation = frameState.view2DState.rotation;
   return source.forEachFeatureAtPixel(extent, resolution, rotation, coordinate, function(feature) {
-    return callback.call(opt_obj, feature, this)
+    return callback.call(opt_this, feature, this)
   })
 };
 ol.renderer.webgl.ImageLayer.prototype.prepareFrame = function(frameState, layerState) {
@@ -25150,13 +25164,12 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
   var tileSource = tileLayer.getSource();
   goog.asserts.assertInstanceof(tileSource, ol.source.Tile);
-  var tileGrid = tileSource.getTileGrid();
-  if(goog.isNull(tileGrid)) {
-    tileGrid = ol.tilegrid.getForProjection(projection)
-  }
+  var tileGrid = tileSource.getTileGridForProjection(projection);
   var z = tileGrid.getZForResolution(view2DState.resolution);
   var tileResolution = tileGrid.getResolution(z);
-  var tileSize = tileGrid.getTileSize(z);
+  var tilePixelSize = tileSource.getTilePixelSize(z, frameState.pixelRatio, projection);
+  var pixelRatio = tilePixelSize / tileGrid.getTileSize(z);
+  var tilePixelResolution = tileResolution / pixelRatio;
   var tileGutter = tileSource.getGutter();
   var center = view2DState.center;
   var extent;
@@ -25172,12 +25185,12 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
     framebufferExtent = this.renderedFramebufferExtent_
   }else {
     var tileRangeSize = tileRange.getSize();
-    var maxDimension = Math.max(tileRangeSize[0] * tileSize, tileRangeSize[1] * tileSize);
+    var maxDimension = Math.max(tileRangeSize[0] * tilePixelSize, tileRangeSize[1] * tilePixelSize);
     var framebufferDimension = ol.math.roundUpToPowerOfTwo(maxDimension);
-    var framebufferExtentDimension = tileResolution * framebufferDimension;
+    var framebufferExtentDimension = tilePixelResolution * framebufferDimension;
     var origin = tileGrid.getOrigin(z);
-    var minX = origin[0] + tileRange.minX * tileSize * tileResolution;
-    var minY = origin[1] + tileRange.minY * tileSize * tileResolution;
+    var minX = origin[0] + tileRange.minX * tilePixelSize * tilePixelResolution;
+    var minY = origin[1] + tileRange.minY * tilePixelSize * tilePixelResolution;
     framebufferExtent = [minX, minY, minX + framebufferExtentDimension, minY + framebufferExtentDimension];
     this.bindFramebuffer(frameState, framebufferDimension);
     gl.viewport(0, 0, framebufferDimension, framebufferDimension);
@@ -25199,7 +25212,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
     tilesToDrawByZ[z] = {};
     var getTileIfLoaded = this.createGetTileIfLoadedFunction(function(tile) {
       return!goog.isNull(tile) && tile.getState() == ol.TileState.LOADED && mapRenderer.isTileTextureLoaded(tile)
-    }, tileSource, projection);
+    }, tileSource, pixelRatio, projection);
     var findLoadedTiles = goog.bind(tileSource.findLoadedTiles, tileSource, tilesToDrawByZ, getTileIfLoaded);
     var allTilesLoaded = true;
     var tmpExtent = ol.extent.createEmpty();
@@ -25207,7 +25220,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
     var childTileRange, fullyLoaded, tile, tileState, x, y;
     for(x = tileRange.minX;x <= tileRange.maxX;++x) {
       for(y = tileRange.minY;y <= tileRange.maxY;++y) {
-        tile = tileSource.getTile(z, x, y, projection);
+        tile = tileSource.getTile(z, x, y, pixelRatio, projection);
         tileState = tile.getState();
         if(tileState == ol.TileState.LOADED) {
           if(mapRenderer.isTileTextureLoaded(tile)) {
@@ -25244,7 +25257,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
         ty = 2 * (tileExtent[1] - framebufferExtent[1]) / framebufferExtentDimension - 1;
         goog.vec.Vec4.setFromValues(u_tileOffset, sx, sy, tx, ty);
         gl.uniform4fv(this.locations_.u_tileOffset, u_tileOffset);
-        mapRenderer.bindTileTexture(tile, tileSize, tileGutter, goog.webgl.LINEAR, goog.webgl.LINEAR);
+        mapRenderer.bindTileTexture(tile, tilePixelSize, tileGutter * pixelRatio, goog.webgl.LINEAR, goog.webgl.LINEAR);
         gl.drawArrays(goog.webgl.TRIANGLE_STRIP, 0, 4)
       }
     }
@@ -25261,9 +25274,9 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   }
   this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
   var tileTextureQueue = mapRenderer.getTileTextureQueue();
-  this.manageTilePyramid(frameState, tileSource, tileGrid, projection, extent, z, tileLayer.getPreload(), function(tile) {
+  this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio, projection, extent, z, tileLayer.getPreload(), function(tile) {
     if(tile.getState() == ol.TileState.LOADED && !mapRenderer.isTileTextureLoaded(tile) && !tileTextureQueue.isKeyQueued(tile.getKey())) {
-      tileTextureQueue.enqueue([tile, tileGrid.getTileCoordCenter(tile.tileCoord), tileGrid.getResolution(tile.tileCoord.z), tileSize, tileGutter])
+      tileTextureQueue.enqueue([tile, tileGrid.getTileCoordCenter(tile.tileCoord), tileGrid.getResolution(tile.tileCoord.z), tilePixelSize, tileGutter * pixelRatio])
     }
   }, this);
   this.scheduleExpireCache(frameState, tileSource);
@@ -25325,10 +25338,10 @@ ol.structs.LRUCache.prototype.clear = function() {
 ol.structs.LRUCache.prototype.containsKey = function(key) {
   return this.entries_.hasOwnProperty(key)
 };
-ol.structs.LRUCache.prototype.forEach = function(f, opt_obj) {
+ol.structs.LRUCache.prototype.forEach = function(f, opt_this) {
   var entry = this.oldest_;
   while(!goog.isNull(entry)) {
-    f.call(opt_obj, entry.value_, entry.key_, this);
+    f.call(opt_this, entry.value_, entry.key_, this);
     entry = entry.newer
   }
 };
@@ -25777,10 +25790,11 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
     layerState = frameState.layerStates[goog.getUid(layer)];
     layerRenderer.prepareFrame(frameState, layerState)
   }
-  var size = frameState.size;
-  if(this.canvas_.width != size[0] || this.canvas_.height != size[1]) {
-    this.canvas_.width = size[0];
-    this.canvas_.height = size[1]
+  var width = frameState.size[0] * frameState.pixelRatio;
+  var height = frameState.size[1] * frameState.pixelRatio;
+  if(this.canvas_.width != width || this.canvas_.height != height) {
+    this.canvas_.width = width;
+    this.canvas_.height = height
   }
   gl.bindFramebuffer(goog.webgl.FRAMEBUFFER, null);
   gl.clearColor(0, 0, 0, 0);
@@ -26325,10 +26339,10 @@ ol.Map.prototype.updateSize = function() {
     this.setSize([size.width, size.height])
   }
 };
-ol.Map.prototype.withFrozenRendering = function(f, opt_obj) {
+ol.Map.prototype.withFrozenRendering = function(f, opt_this) {
   this.freezeRendering();
   try {
-    f.call(opt_obj)
+    f.call(opt_this)
   }finally {
     this.unfreezeRendering()
   }
@@ -27430,7 +27444,7 @@ goog.require("ol.TileCoord");
 ol.TileUrlFunctionType;
 ol.TileCoordTransformType;
 ol.TileUrlFunction.createFromTemplate = function(template) {
-  return function(tileCoord, projection) {
+  return function(tileCoord, pixelRatio, projection) {
     if(goog.isNull(tileCoord)) {
       return undefined
     }else {
@@ -27445,25 +27459,25 @@ ol.TileUrlFunction.createFromTileUrlFunctions = function(tileUrlFunctions) {
   if(tileUrlFunctions.length === 1) {
     return tileUrlFunctions[0]
   }
-  return function(tileCoord, projection) {
+  return function(tileCoord, pixelRatio, projection) {
     if(goog.isNull(tileCoord)) {
       return undefined
     }else {
       var index = goog.math.modulo(tileCoord.hash(), tileUrlFunctions.length);
-      return tileUrlFunctions[index].call(this, tileCoord, projection)
+      return tileUrlFunctions[index].call(this, tileCoord, pixelRatio, projection)
     }
   }
 };
-ol.TileUrlFunction.nullTileUrlFunction = function(tileCoord, projection) {
+ol.TileUrlFunction.nullTileUrlFunction = function(tileCoord, pixelRatio, projection) {
   return undefined
 };
 ol.TileUrlFunction.withTileCoordTransform = function(transformFn, tileUrlFunction) {
   var tmpTileCoord = new ol.TileCoord(0, 0, 0);
-  return function(tileCoord, projection) {
+  return function(tileCoord, pixelRatio, projection) {
     if(goog.isNull(tileCoord)) {
       return undefined
     }else {
-      return tileUrlFunction.call(this, transformFn.call(this, tileCoord, projection, tmpTileCoord), projection)
+      return tileUrlFunction.call(this, transformFn.call(this, tileCoord, projection, tmpTileCoord), pixelRatio, projection)
     }
   }
 };
@@ -28568,7 +28582,6 @@ ol.format.Format.prototype.getExtensions = goog.abstractMethod;
 ol.format.Format.prototype.getType = goog.abstractMethod;
 ol.format.Format.prototype.readFeature = goog.abstractMethod;
 ol.format.Format.prototype.readFeatures = goog.abstractMethod;
-ol.format.Format.prototype.readFeaturesAsync = goog.abstractMethod;
 ol.format.Format.prototype.readGeometry = goog.abstractMethod;
 ol.format.Format.prototype.readProjection = goog.abstractMethod;
 ol.format.Format.prototype.writeFeature = goog.abstractMethod;
@@ -29464,9 +29477,9 @@ ol.xml.getAllTextContent_ = function(node, normalizeWhitespace, accumulator) {
   }
   return accumulator
 };
-ol.xml.makeArrayExtender = function(valueReader, opt_obj) {
+ol.xml.makeArrayExtender = function(valueReader, opt_this) {
   return function(node, objectStack) {
-    var value = valueReader.call(opt_obj, node, objectStack);
+    var value = valueReader.call(opt_this, node, objectStack);
     if(goog.isDef(value)) {
       goog.asserts.assert(goog.isArray(value));
       var array = (objectStack[objectStack.length - 1]);
@@ -29475,9 +29488,9 @@ ol.xml.makeArrayExtender = function(valueReader, opt_obj) {
     }
   }
 };
-ol.xml.makeArrayPusher = function(valueReader, opt_obj) {
+ol.xml.makeArrayPusher = function(valueReader, opt_this) {
   return function(node, objectStack) {
-    var value = valueReader.call(opt_obj, node, objectStack);
+    var value = valueReader.call(opt_this, node, objectStack);
     if(goog.isDef(value)) {
       var array = objectStack[objectStack.length - 1];
       goog.asserts.assert(goog.isArray(array));
@@ -29485,18 +29498,18 @@ ol.xml.makeArrayPusher = function(valueReader, opt_obj) {
     }
   }
 };
-ol.xml.makeReplacer = function(valueReader, opt_obj) {
+ol.xml.makeReplacer = function(valueReader, opt_this) {
   return function(node, objectStack) {
-    var value = valueReader.call(opt_obj, node, objectStack);
+    var value = valueReader.call(opt_this, node, objectStack);
     if(goog.isDef(value)) {
       objectStack[objectStack.length - 1] = value
     }
   }
 };
-ol.xml.makeObjectPropertySetter = function(valueReader, opt_property, opt_obj) {
+ol.xml.makeObjectPropertySetter = function(valueReader, opt_property, opt_this) {
   goog.asserts.assert(goog.isDef(valueReader));
   return function(node, objectStack) {
-    var value = valueReader.call(opt_obj, node, objectStack);
+    var value = valueReader.call(opt_this, node, objectStack);
     if(goog.isDef(value)) {
       var object = (objectStack[objectStack.length - 1]);
       var property = goog.isDef(opt_property) ? opt_property : node.localName;
@@ -29513,21 +29526,21 @@ ol.xml.makeParsersNS = function(namespaceURIs, parsers, opt_parsersNS) {
   }
   return parsersNS
 };
-ol.xml.parse = function(parsersNS, node, objectStack, opt_obj) {
+ol.xml.parse = function(parsersNS, node, objectStack, opt_this) {
   var n;
   for(n = node.firstElementChild;!goog.isNull(n);n = n.nextElementSibling) {
     var parsers = parsersNS[n.namespaceURI];
     if(goog.isDef(parsers)) {
       var parser = parsers[n.localName];
       if(goog.isDef(parser)) {
-        parser.call(opt_obj, n, objectStack)
+        parser.call(opt_this, n, objectStack)
       }
     }
   }
 };
-ol.xml.pushAndParse = function(object, parsersNS, node, objectStack, opt_obj) {
+ol.xml.pushAndParse = function(object, parsersNS, node, objectStack, opt_this) {
   objectStack.push(object);
-  ol.xml.parse(parsersNS, node, objectStack, opt_obj);
+  ol.xml.parse(parsersNS, node, objectStack, opt_this);
   return objectStack.pop()
 };
 goog.provide("ol.format.KML");
@@ -30533,6 +30546,191 @@ ol.format.Polyline.prototype.writeGeometryText = function(geometry) {
   var stride = geometry.getStride();
   return ol.format.Polyline.encodeFlatCoordinates(flatCoordinates, stride)
 };
+goog.provide("ol.format.TopoJSON");
+goog.require("goog.array");
+goog.require("goog.asserts");
+goog.require("goog.object");
+goog.require("ol.Feature");
+goog.require("ol.format.JSON");
+goog.require("ol.geom.LineString");
+goog.require("ol.geom.MultiLineString");
+goog.require("ol.geom.MultiPoint");
+goog.require("ol.geom.MultiPolygon");
+goog.require("ol.geom.Point");
+goog.require("ol.geom.Polygon");
+goog.require("ol.proj");
+ol.format.TopoJSON = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  goog.base(this);
+  this.defaultProjection_ = ol.proj.get(options.defaultProjection || "EPSG:4326")
+};
+goog.inherits(ol.format.TopoJSON, ol.format.JSON);
+ol.format.TopoJSON.EXTENSIONS_ = [".topojson"];
+ol.format.TopoJSON.concatenateArcs_ = function(indices, arcs) {
+  var coordinates = [];
+  var index, arc;
+  var i, ii;
+  var j, jj;
+  for(i = 0, ii = indices.length;i < ii;++i) {
+    index = indices[i];
+    if(i > 0) {
+      coordinates.pop()
+    }
+    if(index >= 0) {
+      arc = arcs[index]
+    }else {
+      arc = arcs[~index].slice().reverse()
+    }
+    coordinates.push.apply(coordinates, arc)
+  }
+  for(j = 0, jj = coordinates.length;j < jj;++j) {
+    coordinates[j] = coordinates[j].slice()
+  }
+  return coordinates
+};
+ol.format.TopoJSON.readPointGeometry_ = function(object, scale, translate) {
+  var coordinates = object.coordinates;
+  if(goog.isDef(scale) && goog.isDef(translate)) {
+    ol.format.TopoJSON.transformVertex_(coordinates, scale, translate)
+  }
+  return new ol.geom.Point(coordinates)
+};
+ol.format.TopoJSON.readMultiPointGeometry_ = function(object, scale, translate) {
+  var coordinates = object.coordinates;
+  var i, ii;
+  if(goog.isDef(scale) && goog.isDef(translate)) {
+    for(i = 0, ii = coordinates.length;i < ii;++i) {
+      ol.format.TopoJSON.transformVertex_(coordinates[i], scale, translate)
+    }
+  }
+  return new ol.geom.MultiPoint(coordinates)
+};
+ol.format.TopoJSON.readLineStringGeometry_ = function(object, arcs) {
+  var coordinates = ol.format.TopoJSON.concatenateArcs_(object.arcs, arcs);
+  return new ol.geom.LineString(goog.array.flatten(coordinates))
+};
+ol.format.TopoJSON.readMultiLineStringGeometry_ = function(object, arcs) {
+  var coordinates = [];
+  var i, ii;
+  for(i = 0, ii = object.arcs.length;i < ii;++i) {
+    coordinates[i] = ol.format.TopoJSON.concatenateArcs_(object.arcs[i], arcs)
+  }
+  return new ol.geom.MultiLineString(coordinates)
+};
+ol.format.TopoJSON.readPolygonGeometry_ = function(object, arcs) {
+  var coordinates = [];
+  var i, ii;
+  for(i = 0, ii = object.arcs.length;i < ii;++i) {
+    coordinates[i] = ol.format.TopoJSON.concatenateArcs_(object.arcs[i], arcs)
+  }
+  return new ol.geom.Polygon(coordinates)
+};
+ol.format.TopoJSON.readMultiPolygonGeometry_ = function(object, arcs) {
+  var coordinates = [];
+  var polyArray, ringCoords, j, jj;
+  var i, ii;
+  for(i = 0, ii = object.arcs.length;i < ii;++i) {
+    polyArray = object.arcs[i];
+    ringCoords = [];
+    for(j = 0, jj = polyArray.length;j < jj;++j) {
+      ringCoords[j] = ol.format.TopoJSON.concatenateArcs_(polyArray[j], arcs)
+    }
+    coordinates[i] = ringCoords
+  }
+  return new ol.geom.MultiPolygon(coordinates)
+};
+ol.format.TopoJSON.prototype.getExtensions = function() {
+  return ol.format.TopoJSON.EXTENSIONS_
+};
+ol.format.TopoJSON.readFeaturesFromGeometryCollection_ = function(collection, arcs, scale, translate) {
+  var geometries = collection.geometries;
+  var features = [];
+  var i, ii;
+  for(i = 0, ii = geometries.length;i < ii;++i) {
+    features[i] = ol.format.TopoJSON.readFeatureFromGeometry_(geometries[i], arcs, scale, translate)
+  }
+  return features
+};
+ol.format.TopoJSON.readFeatureFromGeometry_ = function(object, arcs, scale, translate) {
+  var geometry;
+  var type = object.type;
+  var geometryReader = ol.format.TopoJSON.GEOMETRY_READERS_[type];
+  goog.asserts.assert(goog.isDef(geometryReader));
+  if(type === "Point" || type === "MultiPoint") {
+    geometry = geometryReader(object, scale, translate)
+  }else {
+    geometry = geometryReader(object, arcs)
+  }
+  var feature = new ol.Feature;
+  feature.setGeometry(geometry);
+  if(goog.isDef(object.id)) {
+    feature.setId(object.id)
+  }
+  if(goog.isDef(object.properties)) {
+    feature.setValues(object.properties)
+  }
+  return feature
+};
+ol.format.TopoJSON.prototype.readFeaturesFromObject = function(object) {
+  if(object.type == "Topology") {
+    var topoJSONTopology = (object);
+    var transform, scale = null, translate = null;
+    if(goog.isDef(topoJSONTopology.transform)) {
+      transform = (topoJSONTopology.transform);
+      scale = transform.scale;
+      translate = transform.translate
+    }
+    var arcs = topoJSONTopology.arcs;
+    if(goog.isDef(transform)) {
+      ol.format.TopoJSON.transformArcs_(arcs, scale, translate)
+    }
+    var features = [];
+    var topoJSONFeatures = goog.object.getValues(topoJSONTopology.objects);
+    var i, ii;
+    var feature;
+    for(i = 0, ii = topoJSONFeatures.length;i < ii;++i) {
+      if(topoJSONFeatures[i].type === "GeometryCollection") {
+        feature = (topoJSONFeatures[i]);
+        features.push.apply(features, ol.format.TopoJSON.readFeaturesFromGeometryCollection_(feature, arcs, scale, translate))
+      }else {
+        feature = (topoJSONFeatures[i]);
+        features.push(ol.format.TopoJSON.readFeatureFromGeometry_(feature, arcs, scale, translate))
+      }
+    }
+    return features
+  }else {
+    goog.asserts.fail();
+    return[]
+  }
+};
+ol.format.TopoJSON.transformArcs_ = function(arcs, scale, translate) {
+  var i, ii;
+  for(i = 0, ii = arcs.length;i < ii;++i) {
+    ol.format.TopoJSON.transformArc_(arcs[i], scale, translate)
+  }
+};
+ol.format.TopoJSON.transformArc_ = function(arc, scale, translate) {
+  var x = 0;
+  var y = 0;
+  var vertex;
+  var i, ii;
+  for(i = 0, ii = arc.length;i < ii;++i) {
+    vertex = arc[i];
+    x += vertex[0];
+    y += vertex[1];
+    vertex[0] = x;
+    vertex[1] = y;
+    ol.format.TopoJSON.transformVertex_(vertex, scale, translate)
+  }
+};
+ol.format.TopoJSON.transformVertex_ = function(vertex, scale, translate) {
+  vertex[0] = vertex[0] * scale[0] + translate[0];
+  vertex[1] = vertex[1] * scale[1] + translate[1]
+};
+ol.format.TopoJSON.prototype.readProjection = function(object) {
+  return this.defaultProjection_
+};
+ol.format.TopoJSON.GEOMETRY_READERS_ = {"Point":ol.format.TopoJSON.readPointGeometry_, "LineString":ol.format.TopoJSON.readLineStringGeometry_, "Polygon":ol.format.TopoJSON.readPolygonGeometry_, "MultiPoint":ol.format.TopoJSON.readMultiPointGeometry_, "MultiLineString":ol.format.TopoJSON.readMultiLineStringGeometry_, "MultiPolygon":ol.format.TopoJSON.readMultiPolygonGeometry_};
 goog.provide("goog.events.FileDropHandler");
 goog.provide("goog.events.FileDropHandler.EventType");
 goog.require("goog.array");
@@ -32459,14 +32657,14 @@ ol.source.TileImage.prototype.canExpireCache = function() {
 ol.source.TileImage.prototype.expireCache = function(usedTiles) {
   this.tileCache.expireCache(usedTiles)
 };
-ol.source.TileImage.prototype.getTile = function(z, x, y, projection) {
+ol.source.TileImage.prototype.getTile = function(z, x, y, pixelRatio, projection) {
   var tileCoordKey = this.getKeyZXY(z, x, y);
   if(this.tileCache.containsKey(tileCoordKey)) {
     return(this.tileCache.get(tileCoordKey))
   }else {
     goog.asserts.assert(projection);
     var tileCoord = new ol.TileCoord(z, x, y);
-    var tileUrl = this.tileUrlFunction(tileCoord, projection);
+    var tileUrl = this.tileUrlFunction(tileCoord, pixelRatio, projection);
     var tile = new this.tileClass(tileCoord, goog.isDef(tileUrl) ? ol.TileState.IDLE : ol.TileState.EMPTY, goog.isDef(tileUrl) ? tileUrl : "", this.crossOrigin, this.tileLoadFunction);
     this.tileCache.set(tileCoordKey, tile);
     return tile
@@ -32554,13 +32752,13 @@ ol.tilegrid.XYZ.prototype.getTileCoordChildTileRange = function(tileCoord, opt_t
     return null
   }
 };
-ol.tilegrid.XYZ.prototype.forEachTileCoordParentTileRange = function(tileCoord, callback, opt_obj, opt_tileRange) {
+ol.tilegrid.XYZ.prototype.forEachTileCoordParentTileRange = function(tileCoord, callback, opt_this, opt_tileRange) {
   var tileRange = ol.TileRange.createOrUpdate(0, tileCoord.x, 0, tileCoord.y, opt_tileRange);
   var z;
   for(z = tileCoord.z - 1;z >= this.minZoom;--z) {
     tileRange.minX = tileRange.maxX >>= 1;
     tileRange.minY = tileRange.maxY >>= 1;
-    if(callback.call(opt_obj, z, tileRange)) {
+    if(callback.call(opt_this, z, tileRange)) {
       return true
     }
   }
@@ -32601,7 +32799,7 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse = function(response) 
   var culture = this.culture_;
   this.tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(tileGrid.createTileCoordTransform(), ol.TileUrlFunction.createFromTileUrlFunctions(goog.array.map(resource.imageUrlSubdomains, function(subdomain) {
     var imageUrl = resource.imageUrl.replace("{subdomain}", subdomain).replace("{culture}", culture);
-    return function(tileCoord, projection) {
+    return function(tileCoord, pixelRatio, projection) {
       goog.asserts.assert(ol.proj.equivalent(projection, this.getProjection()));
       if(goog.isNull(tileCoord)) {
         return undefined
@@ -33939,6 +34137,7 @@ ol.source.TileJSON.prototype.handleTileJSONResponse = function() {
 };
 goog.provide("ol.source.TileWMS");
 goog.require("goog.array");
+goog.require("goog.asserts");
 goog.require("goog.math");
 goog.require("goog.object");
 goog.require("goog.string");
@@ -33948,6 +34147,7 @@ goog.require("ol.TileUrlFunction");
 goog.require("ol.extent");
 goog.require("ol.source.TileImage");
 goog.require("ol.source.wms");
+goog.require("ol.source.wms.ServerType");
 ol.source.TileWMS = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   var params = goog.isDef(options.params) ? options.params : {};
@@ -33961,6 +34161,8 @@ ol.source.TileWMS = function(opt_options) {
   this.gutter_ = goog.isDef(options.gutter) ? options.gutter : 0;
   this.params_ = params;
   this.v13_ = true;
+  this.serverType_ = options.serverType;
+  this.hidpi_ = goog.isDef(options.hidpi) ? options.hidpi : true;
   this.coordKeyPrefix_ = "";
   this.resetCoordKeyPrefix_();
   this.tmpExtent_ = ol.extent.createEmpty();
@@ -33976,6 +34178,14 @@ ol.source.TileWMS.prototype.getKeyZXY = function(z, x, y) {
 ol.source.TileWMS.prototype.getParams = function() {
   return this.params_
 };
+ol.source.TileWMS.prototype.getTilePixelSize = function(z, pixelRatio, projection) {
+  var tileSize = goog.base(this, "getTilePixelSize", z, pixelRatio, projection);
+  if(pixelRatio == 1 || !this.hidpi_ || !goog.isDef(this.serverType_)) {
+    return tileSize
+  }else {
+    return tileSize * pixelRatio + 0.5 | 0
+  }
+};
 ol.source.TileWMS.prototype.resetCoordKeyPrefix_ = function() {
   var i = 0;
   var res = [];
@@ -33984,14 +34194,14 @@ ol.source.TileWMS.prototype.resetCoordKeyPrefix_ = function() {
   }
   this.coordKeyPrefix_ = res.join("/")
 };
-ol.source.TileWMS.prototype.tileUrlFunction_ = function(tileCoord, projection) {
+ol.source.TileWMS.prototype.tileUrlFunction_ = function(tileCoord, pixelRatio, projection) {
   var urls = this.urls_;
   if(!goog.isDef(urls) || goog.array.isEmpty(urls)) {
     return undefined
   }
   var tileGrid = this.getTileGrid();
   if(goog.isNull(tileGrid)) {
-    tileGrid = ol.tilegrid.getForProjection(projection)
+    tileGrid = this.getTileGridForProjection(projection)
   }
   if(tileGrid.getResolutions().length <= tileCoord.z) {
     return undefined
@@ -34000,19 +34210,40 @@ ol.source.TileWMS.prototype.tileUrlFunction_ = function(tileCoord, projection) {
   var params = {"SERVICE":"WMS", "VERSION":ol.source.wms.DEFAULT_VERSION, "REQUEST":"GetMap", "FORMAT":"image/png", "TRANSPARENT":true};
   goog.object.extend(params, this.params_);
   var tileResolution = tileGrid.getResolution(tileCoord.z);
+  if(pixelRatio != 1 && (!this.hidpi_ || !goog.isDef(this.serverType_))) {
+    pixelRatio = 1
+  }
   var tileSize = tileGrid.getTileSize(tileCoord.z);
   var gutter = this.gutter_;
-  if(gutter === 0) {
-    goog.object.set(params, "WIDTH", tileSize);
-    goog.object.set(params, "HEIGHT", tileSize)
-  }else {
-    goog.object.set(params, "WIDTH", tileSize + 2 * gutter);
-    goog.object.set(params, "HEIGHT", tileSize + 2 * gutter);
+  if(gutter !== 0) {
+    tileSize += 2 * gutter;
     tileExtent = ol.extent.buffer(tileExtent, tileResolution * gutter, this.tmpExtent_)
   }
+  if(pixelRatio != 1) {
+    tileSize = tileSize * pixelRatio + 0.5 | 0
+  }
+  goog.object.set(params, "WIDTH", tileSize);
+  goog.object.set(params, "HEIGHT", tileSize);
   params[this.v13_ ? "CRS" : "SRS"] = projection.getCode();
   if(!("STYLES" in this.params_)) {
     goog.object.set(params, "STYLES", new String(""))
+  }
+  if(pixelRatio != 1) {
+    switch(this.serverType_) {
+      case ol.source.wms.ServerType.GEOSERVER:
+        var dpi = 90 * pixelRatio + 0.5 | 0;
+        goog.object.set(params, "FORMAT_OPTIONS", "dpi:" + dpi);
+        break;
+      case ol.source.wms.ServerType.MAPSERVER:
+        goog.object.set(params, "MAP_RESOLUTION", 90 * pixelRatio);
+        break;
+      case ol.source.wms.ServerType.QGIS:
+        goog.object.set(params, "DPI", 90 * pixelRatio);
+        break;
+      default:
+        goog.asserts.fail();
+        break
+    }
   }
   var axisOrientation = projection.getAxisOrientation();
   var bbox;
@@ -34045,6 +34276,14 @@ ol.source.TileWMS.prototype.updateV13_ = function() {
   var version = goog.object.get(this.params_, "VERSION", ol.source.wms.DEFAULT_VERSION);
   this.v13_ = goog.string.compareVersions(version, "1.3") >= 0
 };
+goog.provide("ol.source.TopoJSON");
+goog.require("ol.format.TopoJSON");
+goog.require("ol.source.VectorFile");
+ol.source.TopoJSON = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  goog.base(this, {attributions:options.attributions, extent:options.extent, format:new ol.format.TopoJSON({defaultProjection:options.defaultProjection}), logo:options.logo, object:options.object, projection:options.projection, reprojectTo:options.reprojectTo, text:options.text, url:options.url})
+};
+goog.inherits(ol.source.TopoJSON, ol.source.VectorFile);
 goog.provide("ol.tilegrid.WMTS");
 goog.require("goog.array");
 goog.require("goog.asserts");
@@ -34122,7 +34361,7 @@ ol.source.WMTS = function(options) {
     template = requestEncoding == ol.source.WMTSRequestEncoding.KVP ? goog.uri.utils.appendParamsFromMap(template, context) : template.replace(/\{(\w+?)\}/g, function(m, p) {
       return p in context ? context[p] : m
     });
-    return function(tileCoord, projection) {
+    return function(tileCoord, pixelRatio, projection) {
       if(goog.isNull(tileCoord)) {
         return undefined
       }else {
@@ -34344,7 +34583,7 @@ ol.source.Zoomify = function(opt_options) {
   resolutions.reverse();
   var tileGrid = new ol.tilegrid.Zoomify({resolutions:resolutions});
   var url = options.url;
-  var tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(tileGrid.createTileCoordTransform({extent:[0, 0, size[0], size[1]]}), function(tileCoord, projection) {
+  var tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(tileGrid.createTileCoordTransform({extent:[0, 0, size[0], size[1]]}), function(tileCoord, pixelRatio, projection) {
     if(goog.isNull(tileCoord)) {
       return undefined
     }else {
@@ -34522,6 +34761,7 @@ goog.require("ol.format.JSON");
 goog.require("ol.format.KML");
 goog.require("ol.format.Polyline");
 goog.require("ol.format.Text");
+goog.require("ol.format.TopoJSON");
 goog.require("ol.format.XML");
 goog.require("ol.geom.Circle");
 goog.require("ol.geom.Geometry");
@@ -34638,6 +34878,7 @@ goog.require("ol.source.TileImage");
 goog.require("ol.source.TileJSON");
 goog.require("ol.source.TileOptions");
 goog.require("ol.source.TileWMS");
+goog.require("ol.source.TopoJSON");
 goog.require("ol.source.Vector");
 goog.require("ol.source.VectorEvent");
 goog.require("ol.source.VectorEventType");
