@@ -6,6 +6,7 @@ var layers = [
     source: new ol.source.ImageWMS({
       url: 'http://demo.opengeo.org/geoserver/wms',
       params: {'LAYERS': 'topp:states'},
+      serverType: /** @type {ol.source.wms.ServerType} */ ('geoserver'),
       extent: [-13884991, 2870341, -7455066, 6338219]
     })
   })

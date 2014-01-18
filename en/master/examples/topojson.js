@@ -4,24 +4,24 @@ var raster = new ol.layer.Tile({
   })
 });
 
+
 var vector = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'data/topojson/world-110m.json',
-    parser: new ol.parser.TopoJSON()
+  source: new ol.source.TopoJSON({
+    url: 'data/topojson/world-110m.json'
   }),
-  style: new ol.style.Style({
-    symbolizers: [
-      new ol.style.Fill({
-        color: '#BADA55',
-        opacity: 0.5
+  styleFunction: function(feature, resolution) {
+    var styleArray = [new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(255, 255, 255, 0.6)'
       }),
-      new ol.style.Stroke({
-        color: '#FFF',
-        opacity: 1,
-        width: 1.5
-      })
-    ]
-  })
+      stroke: new ol.style.Stroke({
+        color: '#319FD3',
+        width: 1
+      }),
+      zIndex: (feature.getGeometry().getType() !== 'MultiPolygon') ? 2 : 1
+    })];
+    return styleArray;
+  }
 });
 
 var map = new ol.Map({

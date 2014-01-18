@@ -1,0 +1,12 @@
+goog.require('ol.Map');
+goog.require('ol.RendererHint');
+goog.require('ol.View2D');
+goog.require('ol.layer.Image');
+goog.require('ol.layer.Tile');
+goog.require('ol.render.FeaturesOverlay');
+goog.require('ol.source.GeoJSON');
+goog.require('ol.source.ImageVector');
+goog.require('ol.source.MapQuest');
+goog.require('ol.style.Fill');
+goog.require('ol.style.Stroke');
+goog.require('ol.style.Style');
