@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.style.Circle</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.interaction.Interaction</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,7 +36,9 @@
     
 <header>
     <h2>
-    ol.style.Circle
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>
+    
+    ol.interaction.Interaction
     </h2>
     
 </header>  
@@ -48,7 +50,7 @@
     
         
 <dt>
-    <h4 class="name" id="Circle"><span class="type-signature"></span>new Circle</h4>
+    <h4 class="name" id="Interaction"><span class="type-signature"></span>new Interaction</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -59,6 +61,100 @@
 </dt>
 <dd>
     
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>interaction.js, line 18</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="ol.Observable.html">ol.Observable</a></li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="on"><span class="type-signature"></span>on</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Listen for a certain type of event.</p>
+    </div>
     
 
     
@@ -93,13 +189,74 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.style.html#CircleOptions">olx.style.CircleOptions</a></span>
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
 
 
             
@@ -117,7 +274,7 @@
             
             
             
-            <td class="description last"><p>Options.</p></td>
+            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
         </tr>
 	
 	
@@ -134,6 +291,11 @@
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#on">ol.Observable#on</a>
+	</li></dd>
+	
 	
 	
 	
@@ -147,7 +309,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>circlestyle.js, line 21</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 32</li></ul></dd>
 	
     
     
@@ -163,56 +325,175 @@
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Unique key for the listener.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">goog.events.Key</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
 
+        
+            
+<dt>
+    <h4 class="name" id="once"><span class="type-signature"></span>once</h4>
     
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Listen once for a certain type of event.</p>
     </div>
     
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="ol.style.Image.html">ol.style.Image</a></li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     
     
     
-        <h3 class="subsection-title">Methods</h3>
+    
+    
+        <h5>Parameters:</h5>
         
-        <dl>
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
             
-<dt>
-    <h4 class="name" id="getAnchor"><span class="type-signature"></span>getAnchor</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
 
 
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
 
-    
-</dt>
-<dd>
-    
-    
 
-    
-    
-    
-    
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -226,7 +507,7 @@
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.style.Image.html#getAnchor">ol.style.Image#getAnchor</a>
+		<a href="ol.Observable.html#once">ol.Observable#once</a>
 	</li></dd>
 	
 	
@@ -242,7 +523,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagestyle.js, line 100</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 45</li></ul></dd>
 	
     
     
@@ -262,7 +543,7 @@
     
             
 <div class="param-desc">
-    <p>Anchor.</p>
+    <p>Unique key for the listener.</p>
 </div>
 
 
@@ -273,7 +554,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type">Array.&lt;<a href="global.html#number">number</a>></span>
+<span class="param-type">goog.events.Key</span>
 
 
 	</dd>
@@ -287,10 +568,10 @@
         
             
 <dt>
-    <h4 class="name" id="getFill"><span class="type-signature"></span>getFill</h4>
+    <h4 class="name" id="un"><span class="type-signature"></span>un</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -299,183 +580,134 @@
 <dd>
     
     
+    <div class="description">
+        <p>Unlisten for a certain type of event.</p>
+    </div>
+    
 
     
     
     
     
     
-    
-    
-<dl class="details">
-    
+        <h5>Parameters:</h5>
         
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>circlestyle.js, line 69</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Fill style.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
+<table class="params">
+    <thead>
+	<tr>
 		
-<span class="param-type"><a href="ol.style.Fill.html">ol.style.Fill</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getRadius"><span class="type-signature"></span>getRadius</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>circlestyle.js, line 93</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Radius.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
+		<th>Name</th>
 		
-<span class="param-type"><a href="global.html#number">number</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
             
-<dt>
-    <h4 class="name" id="getRotation"><span class="type-signature"></span>getRotation</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
 
 
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
 
-    
-</dt>
-<dd>
-    
-    
 
-    
-    
-    
-    
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -489,7 +721,7 @@
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.style.Image.html#getRotation">ol.style.Image#getRotation</a>
+		<a href="ol.Observable.html#un">ol.Observable#un</a>
 	</li></dd>
 	
 	
@@ -505,7 +737,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagestyle.js, line 116</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 57</li></ul></dd>
 	
     
     
@@ -521,28 +753,6 @@
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Rotation.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="global.html#number">number</a></span>
-
-
-	</dd>
-</dl>
-
-        
     
     
 </dd>
@@ -550,10 +760,10 @@
         
             
 <dt>
-    <h4 class="name" id="getScale"><span class="type-signature"></span>getScale</h4>
+    <h4 class="name" id="unByKey"><span class="type-signature"></span>unByKey</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -562,11 +772,63 @@
 <dd>
     
     
+    <div class="description">
+        <p>Removes an event listener using the key returned by <code>on()</code> or <code>once()</code>.</p>
+    </div>
+    
 
     
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">goog.events.Key</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Key.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -580,7 +842,7 @@
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.style.Image.html#getScale">ol.style.Image#getScale</a>
+		<a href="ol.Observable.html#unByKey">ol.Observable#unByKey</a>
 	</li></dd>
 	
 	
@@ -596,7 +858,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagestyle.js, line 124</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 67</li></ul></dd>
 	
     
     
@@ -612,205 +874,6 @@
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Scale.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="global.html#number">number</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getSize"><span class="type-signature"></span>getSize</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.style.Image.html#getSize">ol.style.Image#getSize</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagestyle.js, line 132</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Size.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.html#Size">ol.Size</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getStroke"><span class="type-signature"></span>getStroke</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>circlestyle.js, line 101</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Stroke style.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.style.Stroke.html">ol.style.Stroke</a></span>
-
-
-	</dd>
-</dl>
-
-        
     
     
 </dd>
