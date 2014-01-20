@@ -68,7 +68,7 @@ goog.addDependency('../../../ol/ol/framestate.js', ['ol.FrameState', 'ol.PostRen
 goog.addDependency('../../../ol/ol/geolocation.js', ['ol.Geolocation', 'ol.GeolocationProperty'], ['goog.events', 'goog.events.EventType', 'goog.math', 'ol.BrowserFeature', 'ol.Coordinate', 'ol.Object', 'ol.proj']);
 goog.addDependency('../../../ol/ol/geom/circle.js', ['ol.geom.Circle'], ['goog.asserts', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.SimpleGeometry', 'ol.geom.flat']);
 goog.addDependency('../../../ol/ol/geom/closestgeom.js', ['ol.geom.closest'], ['goog.asserts', 'ol.geom.flat']);
-goog.addDependency('../../../ol/ol/geom/flatgeom.js', ['ol.geom.flat'], ['goog.array', 'goog.asserts', 'goog.vec.Mat4']);
+goog.addDependency('../../../ol/ol/geom/flatgeom.js', ['ol.geom.flat'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.vec.Mat4']);
 goog.addDependency('../../../ol/ol/geom/geometry.js', ['ol.geom.Geometry', 'ol.geom.GeometryType'], ['goog.asserts', 'goog.events.EventType', 'goog.functions', 'ol.Observable']);
 goog.addDependency('../../../ol/ol/geom/geometrycollection.js', ['ol.geom.GeometryCollection'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.extent', 'ol.geom.Geometry', 'ol.geom.GeometryType']);
 goog.addDependency('../../../ol/ol/geom/linearring.js', ['ol.geom.LinearRing'], ['ol.extent', 'ol.geom.GeometryType', 'ol.geom.SimpleGeometry', 'ol.geom.closest', 'ol.geom.flat', 'ol.geom.simplify']);
@@ -179,7 +179,7 @@ goog.addDependency('../../../ol/ol/source/imagecanvassource.js', ['ol.source.Ima
 goog.addDependency('../../../ol/ol/source/imagesource.js', ['ol.source.Image'], ['goog.array', 'goog.asserts', 'ol.Attribution', 'ol.Extent', 'ol.Image', 'ol.array', 'ol.source.Source']);
 goog.addDependency('../../../ol/ol/source/imagestaticsource.js', ['ol.source.ImageStatic'], ['ol.Image', 'ol.extent', 'ol.proj', 'ol.source.Image']);
 goog.addDependency('../../../ol/ol/source/imagevectorsource.js', ['ol.source.ImageVector'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'goog.vec.Mat4', 'ol.extent', 'ol.feature', 'ol.render.canvas.ReplayGroup', 'ol.renderer.vector', 'ol.source.ImageCanvas', 'ol.source.Vector', 'ol.style.ImageState', 'ol.vec.Mat4']);
-goog.addDependency('../../../ol/ol/source/imagewmssource.js', ['ol.source.ImageWMS'], ['goog.asserts', 'goog.object', 'goog.string', 'goog.uri.utils', 'ol.Image', 'ol.extent', 'ol.source.Image', 'ol.source.wms', 'ol.source.wms.ServerType']);
+goog.addDependency('../../../ol/ol/source/imagewmssource.js', ['ol.source.ImageWMS'], ['goog.asserts', 'goog.object', 'goog.string', 'goog.uri.utils', 'ol.Image', 'ol.extent', 'ol.proj', 'ol.source.Image', 'ol.source.wms', 'ol.source.wms.ServerType']);
 goog.addDependency('../../../ol/ol/source/kmlsource.js', ['ol.source.KML'], ['ol.format.KML', 'ol.source.VectorFile']);
 goog.addDependency('../../../ol/ol/source/mapguidesource.js', ['ol.source.MapGuide'], ['goog.object', 'goog.uri.utils', 'ol.Image', 'ol.ImageUrlFunction', 'ol.extent', 'ol.source.Image']);
 goog.addDependency('../../../ol/ol/source/mapquestsource.js', ['ol.source.MapQuest'], ['goog.asserts', 'ol.Attribution', 'ol.source.OSM', 'ol.source.XYZ']);
