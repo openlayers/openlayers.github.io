@@ -69,7 +69,7 @@ goog.addDependency('../../../ol/ol/geolocation.js', ['ol.Geolocation', 'ol.Geolo
 goog.addDependency('../../../ol/ol/geom/circle.js', ['ol.geom.Circle'], ['goog.asserts', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.SimpleGeometry', 'ol.geom.flat']);
 goog.addDependency('../../../ol/ol/geom/closestgeom.js', ['ol.geom.closest'], ['goog.asserts', 'ol.geom.flat']);
 goog.addDependency('../../../ol/ol/geom/flatgeom.js', ['ol.geom.flat'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.vec.Mat4']);
-goog.addDependency('../../../ol/ol/geom/geometry.js', ['ol.geom.Geometry', 'ol.geom.GeometryType'], ['goog.asserts', 'goog.events.EventType', 'goog.functions', 'ol.Observable']);
+goog.addDependency('../../../ol/ol/geom/geometry.js', ['ol.geom.Geometry', 'ol.geom.GeometryType'], ['goog.asserts', 'goog.functions', 'ol.Observable']);
 goog.addDependency('../../../ol/ol/geom/geometrycollection.js', ['ol.geom.GeometryCollection'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.extent', 'ol.geom.Geometry', 'ol.geom.GeometryType']);
 goog.addDependency('../../../ol/ol/geom/linearring.js', ['ol.geom.LinearRing'], ['ol.extent', 'ol.geom.GeometryType', 'ol.geom.SimpleGeometry', 'ol.geom.closest', 'ol.geom.flat', 'ol.geom.simplify']);
 goog.addDependency('../../../ol/ol/geom/linestring.js', ['ol.geom.LineString'], ['ol.extent', 'ol.geom.GeometryType', 'ol.geom.SimpleGeometry', 'ol.geom.closest', 'ol.geom.flat', 'ol.geom.simplify']);
@@ -109,7 +109,7 @@ goog.addDependency('../../../ol/ol/iview3d.js', ['ol.IView3D'], []);
 goog.addDependency('../../../ol/ol/kinetic.js', ['ol.Kinetic'], ['ol.Coordinate', 'ol.PreRenderFunction', 'ol.animation']);
 goog.addDependency('../../../ol/ol/layer/imagelayer.js', ['ol.layer.Image'], ['ol.layer.Layer']);
 goog.addDependency('../../../ol/ol/layer/layer.js', ['ol.layer.Layer'], ['goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.layer.Base', 'ol.source.Source']);
-goog.addDependency('../../../ol/ol/layer/layerbase.js', ['ol.layer.Base', 'ol.layer.LayerProperty', 'ol.layer.LayerState'], ['goog.events', 'goog.events.EventType', 'goog.math', 'goog.object', 'ol.Object', 'ol.source.State']);
+goog.addDependency('../../../ol/ol/layer/layerbase.js', ['ol.layer.Base', 'ol.layer.LayerProperty', 'ol.layer.LayerState'], ['goog.events', 'goog.math', 'goog.object', 'ol.Object', 'ol.source.State']);
 goog.addDependency('../../../ol/ol/layer/layergroup.js', ['ol.layer.Group'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.math', 'goog.object', 'ol.Collection', 'ol.CollectionEvent', 'ol.CollectionEventType', 'ol.Object', 'ol.ObjectEventType', 'ol.layer.Base', 'ol.source.State']);
 goog.addDependency('../../../ol/ol/layer/tilelayer.js', ['ol.layer.Tile'], ['ol.layer.Layer']);
 goog.addDependency('../../../ol/ol/layer/vectorlayer.js', ['ol.layer.Vector'], ['ol.feature', 'ol.layer.Layer']);
@@ -118,7 +118,7 @@ goog.addDependency('../../../ol/ol/mapbrowserevent.js', ['ol.MapBrowserEvent', '
 goog.addDependency('../../../ol/ol/mapevent.js', ['ol.MapEvent', 'ol.MapEventType'], ['goog.events.Event', 'ol.FrameState']);
 goog.addDependency('../../../ol/ol/math.js', ['ol.math'], ['goog.asserts']);
 goog.addDependency('../../../ol/ol/object.js', ['ol.Object', 'ol.ObjectEvent', 'ol.ObjectEventType'], ['goog.array', 'goog.events', 'goog.events.Event', 'goog.functions', 'goog.object', 'ol.Observable']);
-goog.addDependency('../../../ol/ol/observable.js', ['ol.Observable'], ['goog.events', 'goog.events.EventTarget']);
+goog.addDependency('../../../ol/ol/observable.js', ['ol.Observable'], ['goog.events', 'goog.events.EventTarget', 'goog.events.EventType']);
 goog.addDependency('../../../ol/ol/ol.js', ['ol'], []);
 goog.addDependency('../../../ol/ol/overlay.js', ['ol.Overlay', 'ol.OverlayPositioning', 'ol.OverlayProperty'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.style', 'ol.Coordinate', 'ol.Map', 'ol.MapEventType', 'ol.Object']);
 goog.addDependency('../../../ol/ol/parser/ogc/exceptionreportparser.js', ['ol.parser.ogc.ExceptionReport'], ['goog.dom.xml', 'ol.parser.XML']);

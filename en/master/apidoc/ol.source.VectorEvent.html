@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.ImageWMS</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.source.VectorEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -38,7 +38,7 @@
     <h2>
         <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
     
-    ol.source.ImageWMS
+    ol.source.VectorEvent
     </h2>
     
 </header>  
@@ -50,10 +50,10 @@
     
         
 <dt>
-    <h4 class="name" id="ImageWMS"><span class="type-signature"></span>new ImageWMS</h4>
+    <h4 class="name" id="VectorEvent"><span class="type-signature"></span>new VectorEvent</h4>
     
     
-<div class="stability stability-experimental">Stability: experimental</div>
+<div class="stability">Stability: not documented</div>
 
 
 
@@ -95,13 +95,42 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.source.html#ImageWMSOptions">olx.source.ImageWMSOptions</a></span>
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Type.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>feature</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
 
 
             
@@ -119,7 +148,7 @@
             
             
             
-            <td class="description last"><p>Options.</p></td>
+            <td class="description last"><p>Feature.</p></td>
         </tr>
 	
 	
@@ -149,7 +178,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 24</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 348</li></ul></dd>
 	
     
     
@@ -192,7 +221,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getGetFeatureInfoUrl"><span class="type-signature"></span>getGetFeatureInfoUrl</h4>
+    <h4 class="name" id="getFeature"><span class="type-signature"></span>getFeature</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -204,137 +233,11 @@
 <dd>
     
     
-    <div class="description">
-        <p>Return the GetFeatureInfo URL for the passed coordinate, resolution, and
-projection. Return <code>undefined</code> if the GetFeatureInfo URL cannot be
-constructed.</p>
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>coordinate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Coordinate.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>resolution</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#number">number</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Resolution.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>projection</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.proj.Projection.html">ol.proj.Projection</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Projection.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>GetFeatureInfo params. <code>INFO_FORMAT</code> at least should
-    be provided. If <code>QUERY_LAYERS</code> is not provided then the layers specified
-    in the <code>LAYERS</code> parameter will be used. <code>VERSION</code> should not be
-    specified here.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -359,7 +262,7 @@ constructed.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 127</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 365</li></ul></dd>
 	
     
     
@@ -379,7 +282,7 @@ constructed.</p>
     
             
 <div class="param-desc">
-    <p>GetFeatureInfo URL.</p>
+    <p>Feature.</p>
 </div>
 
 
@@ -390,7 +293,7 @@ constructed.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">string</span>
+<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -400,328 +303,6 @@ constructed.</p>
 </dl>
 
         
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getParams"><span class="type-signature"></span>getParams</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Get the user-provided params, i.e. those passed to the constructor through
-the &quot;params&quot; option, and possibly updated using the updateParams method.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 176</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Params.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Object</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setUrl"><span class="type-signature"></span>setUrl</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>url</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>URL.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 314</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="updateParams"><span class="type-signature"></span>updateParams</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Update the user-provided params.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Params.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 327</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
     
     
 </dd>
