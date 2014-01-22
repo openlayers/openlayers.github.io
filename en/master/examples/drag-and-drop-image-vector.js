@@ -84,7 +84,7 @@ var map = new ol.Map({
       })
     })
   ],
-  renderer: ol.RendererHint.CANVAS,
+  renderers: ol.RendererHints.createFromQueryData(),
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],
@@ -97,9 +97,11 @@ dragAndDropInteraction.on('addfeatures', function(event) {
     features: event.getFeatures(),
     projection: event.getProjection()
   });
-  map.getLayers().push(new ol.layer.Vector({
-    source: vectorSource,
-    styleFunction: styleFunction
+  map.getLayers().push(new ol.layer.Image({
+    source: new ol.source.ImageVector({
+      source: vectorSource,
+      styleFunction: styleFunction
+    })
   }));
   var view2D = map.getView().getView2D();
   view2D.fitExtent(vectorSource.getExtent(), map.getSize());
