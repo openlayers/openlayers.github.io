@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.OSM</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.interaction.Interaction</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>
     
-    ol.source.OSM
+    ol.interaction.Interaction
     </h2>
     
 </header>  
@@ -50,7 +50,97 @@
     
         
 <dt>
-    <h4 class="name" id="OSM"><span class="type-signature"></span>new OSM</h4>
+    <h4 class="name" id="Interaction"><span class="type-signature"></span>new Interaction</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>interaction.js, line 18</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="ol.Observable.html">ol.Observable</a></li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="on"><span class="type-signature"></span>on</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -61,6 +151,10 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Listen for a certain type of event.</p>
+    </div>
     
 
     
@@ -95,13 +189,74 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.source.html#OSMOptions">olx.source.OSMOptions</a></span>
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
 
 
             
@@ -119,7 +274,7 @@
             
             
             
-            <td class="description last"><p>Open Street Map options.</p></td>
+            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
         </tr>
 	
 	
@@ -136,6 +291,11 @@
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#on">ol.Observable#on</a>
+	</li></dd>
+	
 	
 	
 	
@@ -149,7 +309,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>osmsource.js, line 14</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 57</li></ul></dd>
 	
     
     
@@ -165,146 +325,36 @@
     
     
     
+    <h5>Returns:</h5>
     
-    
-</dd>
-
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="ol.source.XYZ.html">ol.source.XYZ</a></li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
             
-<dt class="">
-    <h4 class="name" id="DATA_ATTRIBUTION"><span class="type-signature">&lt;static, constant> </span>DATA_ATTRIBUTION<span class="type-signature"> :<a href="ol.Attribution.html">ol.Attribution</a></span></h4>
-    
-    
-<div class="stability">Stability: not documented</div>
+<div class="param-desc">
+    <p>Unique key for the listener.</p>
+</div>
 
 
 
-    
-</dt>
-<dd class="">
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">goog.events.Key</span>
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>osmsource.js, line 48</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
+
+	</dd>
 </dl>
 
+        
     
     
 </dd>
 
         
-            
-<dt class="">
-    <h4 class="name" id="TILE_ATTRIBUTION"><span class="type-signature">&lt;static, constant> </span>TILE_ATTRIBUTION<span class="type-signature"> :<a href="ol.Attribution.html">ol.Attribution</a></span></h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd class="">
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>osmsource.js, line 60</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
             
 <dt>
-    <h4 class="name" id="setUrl"><span class="type-signature"></span>setUrl</h4>
+    <h4 class="name" id="once"><span class="type-signature"></span>once</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -315,6 +365,416 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Listen once for a certain type of event.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#once">ol.Observable#once</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 70</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Unique key for the listener.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">goog.events.Key</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="un"><span class="type-signature"></span>un</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Unlisten for a certain type of event.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The event type or array of event types.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>listener</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The listener function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Observable.html#un">ol.Observable#un</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 82</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unByKey"><span class="type-signature"></span>unByKey</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Removes an event listener using the key returned by <code>on()</code> or <code>once()</code>.</p>
+    </div>
     
 
     
@@ -347,13 +807,13 @@
 	
         <tr>
             
-                <td class="name"><code>url</code></td>
+                <td class="name"><code>key</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">goog.events.Key</span>
 
 
             
@@ -363,7 +823,7 @@
             
             
             
-            <td class="description last"><p>URL.</p></td>
+            <td class="description last"><p>Key.</p></td>
         </tr>
 	
 	
@@ -382,7 +842,7 @@
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.XYZ.html#setUrl">ol.source.XYZ#setUrl</a>
+		<a href="ol.Observable.html#unByKey">ol.Observable#unByKey</a>
 	</li></dd>
 	
 	
@@ -398,7 +858,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>xyzsource.js, line 73</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 92</li></ul></dd>
 	
     
     

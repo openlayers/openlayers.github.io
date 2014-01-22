@@ -12544,6 +12544,27 @@ ol.geom.flat.linearRingsGetInteriorPoint = function(flatCoordinates, offset, end
   goog.asserts.assert(!isNaN(point[0]));
   return point
 };
+ol.geom.flat.linearRingsAreOriented = function(flatCoordinates, offset, ends, stride) {
+  var i, ii;
+  for(i = 0, ii = ends.length;i < ii;++i) {
+    var end = ends[i];
+    var isClockwise = ol.geom.flat.linearRingIsClockwise(flatCoordinates, offset, end, stride);
+    if(i === 0 ? !isClockwise : isClockwise) {
+      return false
+    }
+    offset = end
+  }
+  return true
+};
+ol.geom.flat.linearRingssAreOriented = function(flatCoordinates, offset, endss, stride) {
+  var i, ii;
+  for(i = 0, ii = endss.length;i < ii;++i) {
+    if(!ol.geom.flat.linearRingsAreOriented(flatCoordinates, offset, endss[i], stride)) {
+      return false
+    }
+  }
+  return true
+};
 ol.geom.flat.linearRingssArea = function(flatCoordinates, offset, endss, stride) {
   var area = 0;
   var i, ii;
@@ -13165,6 +13186,8 @@ ol.geom.Polygon = function(coordinates, opt_layout) {
   this.interiorPoint_ = null;
   this.maxDelta_ = -1;
   this.maxDeltaRevision_ = -1;
+  this.orientedRevision_ = -1;
+  this.orientedFlatCoordinates_ = null;
   this.setCoordinates(coordinates, opt_layout)
 };
 goog.inherits(ol.geom.Polygon, ol.geom.SimpleGeometry);
@@ -13184,10 +13207,10 @@ ol.geom.Polygon.prototype.closestPointXY = function(x, y, closestPoint, minSquar
   return ol.geom.closest.getsClosestPoint(this.flatCoordinates, 0, this.ends_, this.stride, this.maxDelta_, true, x, y, closestPoint, minSquaredDistance)
 };
 ol.geom.Polygon.prototype.containsXY = function(x, y) {
-  return ol.geom.flat.linearRingsContainsXY(this.flatCoordinates, 0, this.ends_, this.stride, x, y)
+  return ol.geom.flat.linearRingsContainsXY(this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride, x, y)
 };
 ol.geom.Polygon.prototype.getArea = function() {
-  return ol.geom.flat.linearRingsArea(this.flatCoordinates, 0, this.ends_, this.stride)
+  return ol.geom.flat.linearRingsArea(this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride)
 };
 ol.geom.Polygon.prototype.getCoordinates = function() {
   return ol.geom.flat.inflateCoordinatess(this.flatCoordinates, 0, this.ends_, this.stride)
@@ -13199,19 +13222,39 @@ ol.geom.Polygon.prototype.getInteriorPoint = function() {
   if(this.interiorPointRevision_ != this.getRevision()) {
     var extent = this.getExtent();
     var y = (extent[1] + extent[3]) / 2;
-    this.interiorPoint_ = ol.geom.flat.linearRingsGetInteriorPoint(this.flatCoordinates, 0, this.ends_, this.stride, y);
+    this.interiorPoint_ = ol.geom.flat.linearRingsGetInteriorPoint(this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride, y);
     this.interiorPointRevision_ = this.getRevision()
   }
   return this.interiorPoint_
 };
 ol.geom.Polygon.prototype.getLinearRings = function() {
+  var layout = this.layout;
+  var flatCoordinates = this.flatCoordinates;
+  var ends = this.ends_;
   var linearRings = [];
-  var coordinates = this.getCoordinates();
+  var offset = 0;
   var i, ii;
-  for(i = 0, ii = coordinates.length;i < ii;++i) {
-    linearRings.push(new ol.geom.LinearRing(coordinates[i]))
+  for(i = 0, ii = ends.length;i < ii;++i) {
+    var end = ends[i];
+    var linearRing = new ol.geom.LinearRing(null);
+    linearRing.setFlatCoordinates(layout, flatCoordinates.slice(offset, end));
+    linearRings.push(linearRing);
+    offset = end
   }
   return linearRings
+};
+ol.geom.Polygon.prototype.getOrientedFlatCoordinates = function() {
+  if(this.orientedRevision_ != this.getRevision()) {
+    var flatCoordinates = this.flatCoordinates;
+    if(ol.geom.flat.linearRingsAreOriented(flatCoordinates, 0, this.ends_, this.stride)) {
+      this.orientedFlatCoordinates_ = flatCoordinates
+    }else {
+      this.orientedFlatCoordinates_ = flatCoordinates.slice();
+      this.orientedFlatCoordinates_.length = ol.geom.flat.orientLinearRings(this.orientedFlatCoordinates_, 0, this.ends_, this.stride)
+    }
+    this.orientedRevision_ = this.getRevision()
+  }
+  return this.orientedFlatCoordinates_
 };
 ol.geom.Polygon.prototype.getSimplifiedGeometryInternal = function(squaredTolerance) {
   var simplifiedFlatCoordinates = [];
@@ -13234,7 +13277,6 @@ ol.geom.Polygon.prototype.setCoordinates = function(coordinates, opt_layout) {
     }
     var ends = ol.geom.flat.deflateCoordinatess(this.flatCoordinates, 0, coordinates, this.stride, this.ends_);
     this.flatCoordinates.length = ends.length === 0 ? 0 : ends[ends.length - 1];
-    ol.geom.flat.orientLinearRings(this.flatCoordinates, 0, this.ends_, this.stride);
     this.dispatchChangeEvent()
   }
 };
@@ -21807,7 +21849,7 @@ ol.render.canvas.PolygonReplay.prototype.drawPolygonGeometry = function(polygonG
     this.hitDetectionInstructions.push([ol.render.canvas.Instruction.SET_STROKE_STYLE, state.strokeStyle, state.lineWidth, state.lineCap, state.lineJoin, state.miterLimit, state.lineDash])
   }
   var ends = polygonGeometry.getEnds();
-  var flatCoordinates = polygonGeometry.getFlatCoordinates();
+  var flatCoordinates = polygonGeometry.getOrientedFlatCoordinates();
   var stride = polygonGeometry.getStride();
   this.drawFlatCoordinatess_(flatCoordinates, 0, ends, stride);
   this.endGeometry(polygonGeometry, data)
@@ -21831,7 +21873,7 @@ ol.render.canvas.PolygonReplay.prototype.drawMultiPolygonGeometry = function(mul
     this.hitDetectionInstructions.push([ol.render.canvas.Instruction.SET_STROKE_STYLE, state.strokeStyle, state.lineWidth, state.lineCap, state.lineJoin, state.miterLimit, state.lineDash])
   }
   var endss = multiPolygonGeometry.getEndss();
-  var flatCoordinates = multiPolygonGeometry.getFlatCoordinates();
+  var flatCoordinates = multiPolygonGeometry.getOrientedFlatCoordinates();
   var stride = multiPolygonGeometry.getStride();
   var offset = 0;
   var i, ii;
@@ -22545,6 +22587,8 @@ ol.geom.MultiPolygon = function(coordinates, opt_layout) {
   this.interiorPoints_ = null;
   this.maxDelta_ = -1;
   this.maxDeltaRevision_ = -1;
+  this.orientedRevision_ = -1;
+  this.orientedFlatCoordinates_ = null;
   this.setCoordinates(coordinates, opt_layout)
 };
 goog.inherits(ol.geom.MultiPolygon, ol.geom.SimpleGeometry);
@@ -22561,13 +22605,13 @@ ol.geom.MultiPolygon.prototype.closestPointXY = function(x, y, closestPoint, min
     this.maxDelta_ = Math.sqrt(ol.geom.closest.getssMaxSquaredDelta(this.flatCoordinates, 0, this.endss_, this.stride, 0));
     this.maxDeltaRevision_ = this.getRevision()
   }
-  return ol.geom.closest.getssClosestPoint(this.flatCoordinates, 0, this.endss_, this.stride, this.maxDelta_, true, x, y, closestPoint, minSquaredDistance)
+  return ol.geom.closest.getssClosestPoint(this.getOrientedFlatCoordinates(), 0, this.endss_, this.stride, this.maxDelta_, true, x, y, closestPoint, minSquaredDistance)
 };
 ol.geom.MultiPolygon.prototype.containsXY = function(x, y) {
-  return ol.geom.flat.linearRingssContainsXY(this.flatCoordinates, 0, this.endss_, this.stride, x, y)
+  return ol.geom.flat.linearRingssContainsXY(this.getOrientedFlatCoordinates(), 0, this.endss_, this.stride, x, y)
 };
 ol.geom.MultiPolygon.prototype.getArea = function() {
-  return ol.geom.flat.linearRingssArea(this.flatCoordinates, 0, this.endss_, this.stride)
+  return ol.geom.flat.linearRingssArea(this.getOrientedFlatCoordinates(), 0, this.endss_, this.stride)
 };
 ol.geom.MultiPolygon.prototype.getCoordinates = function() {
   return ol.geom.flat.inflateCoordinatesss(this.flatCoordinates, 0, this.endss_, this.stride)
@@ -22578,10 +22622,23 @@ ol.geom.MultiPolygon.prototype.getEndss = function() {
 ol.geom.MultiPolygon.prototype.getInteriorPoints = function() {
   if(this.interiorPointsRevision_ != this.getRevision()) {
     var ys = ol.geom.flat.linearRingssMidYs(this.flatCoordinates, 0, this.endss_, this.stride);
-    this.interiorPoints_ = ol.geom.flat.linearRingssGetInteriorPoints(this.flatCoordinates, 0, this.endss_, this.stride, ys);
+    this.interiorPoints_ = ol.geom.flat.linearRingssGetInteriorPoints(this.getOrientedFlatCoordinates(), 0, this.endss_, this.stride, ys);
     this.interiorPointsRevision_ = this.getRevision()
   }
   return this.interiorPoints_
+};
+ol.geom.MultiPolygon.prototype.getOrientedFlatCoordinates = function() {
+  if(this.orientedRevision_ != this.getRevision()) {
+    var flatCoordinates = this.flatCoordinates;
+    if(ol.geom.flat.linearRingssAreOriented(flatCoordinates, 0, this.endss_, this.stride)) {
+      this.orientedFlatCoordinates_ = flatCoordinates
+    }else {
+      this.orientedFlatCoordinates_ = flatCoordinates.slice();
+      this.orientedFlatCoordinates_.length = ol.geom.flat.orientLinearRingss(this.orientedFlatCoordinates_, 0, this.endss_, this.stride)
+    }
+    this.orientedRevision_ = this.getRevision()
+  }
+  return this.orientedFlatCoordinates_
 };
 ol.geom.MultiPolygon.prototype.getSimplifiedGeometryInternal = function(squaredTolerance) {
   var simplifiedFlatCoordinates = [];
@@ -22592,11 +22649,19 @@ ol.geom.MultiPolygon.prototype.getSimplifiedGeometryInternal = function(squaredT
   return simplifiedMultiPolygon
 };
 ol.geom.MultiPolygon.prototype.getPolygons = function() {
-  var coordinates = this.getCoordinates();
+  var layout = this.layout;
+  var flatCoordinates = this.flatCoordinates;
+  var endss = this.endss_;
   var polygons = [];
+  var offset = 0;
   var i, ii;
-  for(i = 0, ii = coordinates.length;i < ii;++i) {
-    polygons.push(new ol.geom.Polygon(coordinates[i]))
+  for(i = 0, ii = endss.length;i < ii;++i) {
+    var ends = endss[i];
+    var end = ends[ends.length - 1];
+    var polygon = new ol.geom.Polygon(null);
+    polygon.setFlatCoordinates(layout, flatCoordinates.slice(offset, end), ends.slice());
+    polygons.push(polygon);
+    offset = end
   }
   return polygons
 };
@@ -22614,7 +22679,6 @@ ol.geom.MultiPolygon.prototype.setCoordinates = function(coordinates, opt_layout
     var endss = ol.geom.flat.deflateCoordinatesss(this.flatCoordinates, 0, coordinates, this.stride, this.endss_);
     var lastEnds = endss[endss.length - 1];
     this.flatCoordinates.length = lastEnds.length === 0 ? 0 : lastEnds[lastEnds.length - 1];
-    ol.geom.flat.orientLinearRingss(this.flatCoordinates, 0, this.endss_, this.stride);
     this.dispatchChangeEvent()
   }
 };
