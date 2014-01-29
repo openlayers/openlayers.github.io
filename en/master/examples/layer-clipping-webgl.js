@@ -34,7 +34,7 @@ if (!ol.BrowserFeature.HAS_WEBGL) {
   ].join('');
 
   osm.on('precompose', function(event) {
-    var context = event.getGlContext();
+    var context = event.glContext;
 
     var gl = context.getGL();
     var program = gl.createProgram();
@@ -89,7 +89,7 @@ if (!ol.BrowserFeature.HAS_WEBGL) {
   });
 
   osm.on('postcompose', function(event) {
-    var context = event.getGlContext();
+    var context = event.glContext;
     var gl = context.getGL();
     gl.disable(gl.STENCIL_TEST);
   });

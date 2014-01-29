@@ -41,7 +41,7 @@ $(map.getViewport()).on('mousemove', function(evt) {
 
 // before rendering the layer, do some clipping
 imagery.on('precompose', function(event) {
-  var ctx = event.getContext();
+  var ctx = event.context;
   ctx.save();
   ctx.beginPath();
   if (mousePosition) {
@@ -56,6 +56,6 @@ imagery.on('precompose', function(event) {
 
 // after rendering the layer, restore the canvas context
 imagery.on('postcompose', function(event) {
-  var ctx = event.getContext();
+  var ctx = event.context;
   ctx.restore();
 });

@@ -82,8 +82,7 @@ $(map.getViewport()).on('mousemove', function(evt) {
 });
 
 map.on('singleclick', function(evt) {
-  var coordinate = evt.getCoordinate();
-  displaySnap(coordinate);
+  displaySnap(evt.coordinate);
 });
 
 var imageStyle = new ol.style.Circle({
@@ -99,7 +98,7 @@ var strokeStyle = new ol.style.Stroke({
   width: 3
 });
 map.on('postcompose', function(evt) {
-  var render = evt.getRender();
+  var render = evt.render;
   if (point !== null) {
     render.setImageStyle(imageStyle);
     render.drawPointGeometry(point);
