@@ -1211,7 +1211,14 @@
             
             
             
-            <td class="description last"><p>Canvas function.</p></td>
+            <td class="description last"><p>Canvas function. The function
+    returning the canvas element used by the source as an image. The arguments
+    passed to the function are: <code>{ol.Extent}</code> the image extent, <code>{number}</code> the
+    image resolution, <code>{number}</code> the device pixel ratio, <code>{ol.Size}</code> the image
+    size, and <code>{ol.proj.Projection}</code> the image projection. The canvas returned
+    by this function is cached by the source. If the value returned by the
+    function is later changed then <code>dispatchChangeEvent</code> should be called on
+    the source for the source to invalidate the current cached image.</p></td>
         </tr>
 	
 	

@@ -40,7 +40,7 @@ goog.addDependency('../../../ol/ol/control/mousepositioncontrol.js', ['ol.contro
 goog.addDependency('../../../ol/ol/control/scalelinecontrol.js', ['ol.control.ScaleLine', 'ol.control.ScaleLineProperty', 'ol.control.ScaleLineUnits'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.math', 'goog.style', 'ol.Object', 'ol.TransformFunction', 'ol.View2DState', 'ol.control.Control', 'ol.css', 'ol.proj', 'ol.proj.Units', 'ol.sphere.NORMAL']);
 goog.addDependency('../../../ol/ol/control/zoomcontrol.js', ['ol.control.Zoom'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'ol.View2D', 'ol.animation', 'ol.control.Control', 'ol.css', 'ol.easing']);
 goog.addDependency('../../../ol/ol/control/zoomslidercontrol.js', ['ol.control.ZoomSlider'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.Event', 'goog.events.EventType', 'goog.fx.Dragger', 'goog.fx.Dragger.EventType', 'goog.math', 'goog.math.Rect', 'goog.style', 'ol.animation', 'ol.control.Control', 'ol.css', 'ol.easing']);
-goog.addDependency('../../../ol/ol/control/zoomtoextentcontrol.js', ['ol.control.ZoomToExtent'], ['goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'ol.control.Control', 'ol.css']);
+goog.addDependency('../../../ol/ol/control/zoomtoextentcontrol.js', ['ol.control.ZoomToExtent'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'ol.control.Control', 'ol.css']);
 goog.addDependency('../../../ol/ol/coordinate.js', ['ol.Coordinate', 'ol.CoordinateArray', 'ol.CoordinateFormatType', 'ol.coordinate'], ['goog.math']);
 goog.addDependency('../../../ol/ol/css.js', ['ol.css'], []);
 goog.addDependency('../../../ol/ol/deviceorientation.js', ['ol.DeviceOrientation', 'ol.DeviceOrientationProperty'], ['goog.events', 'goog.math', 'ol.BrowserFeature', 'ol.Object']);
@@ -50,7 +50,7 @@ goog.addDependency('../../../ol/ol/easing.js', ['ol.easing'], ['goog.fx.easing']
 goog.addDependency('../../../ol/ol/ellipsoid/bessel1841ellipsoid.js', ['ol.ellipsoid.BESSEL1841'], ['ol.Ellipsoid']);
 goog.addDependency('../../../ol/ol/ellipsoid/ellipsoid.js', ['ol.Ellipsoid'], ['goog.math', 'ol.Coordinate']);
 goog.addDependency('../../../ol/ol/ellipsoid/wgs84ellipsoid.js', ['ol.ellipsoid.WGS84'], ['ol.Ellipsoid']);
-goog.addDependency('../../../ol/ol/events/condition.js', ['ol.events.ConditionType', 'ol.events.condition'], ['goog.dom.TagName', 'goog.functions', 'ol.MapBrowserEvent.EventType']);
+goog.addDependency('../../../ol/ol/events/condition.js', ['ol.events.ConditionType', 'ol.events.condition'], ['goog.asserts', 'goog.dom.TagName', 'goog.functions', 'ol.MapBrowserEvent.EventType']);
 goog.addDependency('../../../ol/ol/extent.js', ['ol.Extent', 'ol.extent'], ['goog.asserts', 'ol.Coordinate', 'ol.Size', 'ol.TransformFunction']);
 goog.addDependency('../../../ol/ol/feature.js', ['ol.Feature', 'ol.feature'], ['goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.functions', 'ol.Object', 'ol.geom.Geometry', 'ol.style.Style']);
 goog.addDependency('../../../ol/ol/format/format.js', ['ol.format.Format', 'ol.format.FormatType'], ['goog.functions']);

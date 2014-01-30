@@ -72,7 +72,7 @@ ol.geom.Circle.prototype.containsXY = function(x, y) {
   var dx = x - flatCoordinates[0];
   var dy = y - flatCoordinates[1];
   var r = flatCoordinates[this.stride] - flatCoordinates[0];
-  return dx * dx + dy * dy <= r;
+  return Math.sqrt(dx * dx + dy * dy) <= r;
 };
 
 
@@ -159,6 +159,7 @@ ol.geom.Circle.prototype.setCenterAndRadius =
     if (goog.isNull(this.flatCoordinates)) {
       this.flatCoordinates = [];
     }
+    /** @type {Array.<number>} */
     var flatCoordinates = this.flatCoordinates;
     var offset = ol.geom.flat.deflateCoordinate(
         flatCoordinates, 0, center, this.stride);
