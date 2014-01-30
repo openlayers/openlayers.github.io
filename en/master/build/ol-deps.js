@@ -139,7 +139,7 @@ goog.addDependency('../../../ol/ol/proj/chprojection.js', ['ol.proj.CH', 'ol.pro
 goog.addDependency('../../../ol/ol/proj/common.js', ['ol.proj.common'], ['ol.proj', 'ol.proj.EPSG3857', 'ol.proj.EPSG4326']);
 goog.addDependency('../../../ol/ol/proj/epsg3857projection.js', ['ol.proj.EPSG3857'], ['goog.array', 'goog.asserts', 'ol.math', 'ol.proj', 'ol.proj.Projection', 'ol.proj.Units']);
 goog.addDependency('../../../ol/ol/proj/epsg4326projection.js', ['ol.proj.EPSG4326'], ['ol.proj', 'ol.proj.Projection', 'ol.proj.Units']);
-goog.addDependency('../../../ol/ol/proj/proj.js', ['ol.proj', 'ol.proj.Projection', 'ol.proj.ProjectionLike', 'ol.proj.Units'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.Extent', 'ol.TransformFunction', 'ol.sphere.NORMAL']);
+goog.addDependency('../../../ol/ol/proj/proj.js', ['ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.ProjectionLike', 'ol.proj.Units'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.Extent', 'ol.TransformFunction', 'ol.sphere.NORMAL']);
 goog.addDependency('../../../ol/ol/render/box.js', ['ol.render.Box'], ['goog.Disposable', 'goog.array', 'goog.asserts', 'goog.events', 'ol.geom.Polygon', 'ol.render.EventType']);
 goog.addDependency('../../../ol/ol/render/canvas/canvas.js', ['ol.render.canvas'], ['ol.color']);
 goog.addDependency('../../../ol/ol/render/canvas/canvasimmediate.js', ['ol.render.canvas.Immediate'], ['goog.array', 'goog.asserts', 'goog.object', 'goog.vec.Mat4', 'ol.color', 'ol.extent', 'ol.render.IRender', 'ol.render.canvas', 'ol.style.Text', 'ol.vec.Mat4']);
@@ -216,7 +216,7 @@ goog.addDependency('../../../ol/ol/style/textstyle.js', ['ol.style.Text'], []);
 goog.addDependency('../../../ol/ol/tile.js', ['ol.Tile', 'ol.TileState'], ['goog.events', 'goog.events.EventTarget', 'goog.events.EventType', 'ol.TileCoord']);
 goog.addDependency('../../../ol/ol/tilecache.js', ['ol.TileCache'], ['goog.asserts', 'ol.Tile', 'ol.TileCoord', 'ol.TileRange', 'ol.structs.LRUCache']);
 goog.addDependency('../../../ol/ol/tilecoord.js', ['ol.TileCoord'], ['goog.array', 'goog.asserts']);
-goog.addDependency('../../../ol/ol/tilegrid/tilegrid.js', ['ol.tilegrid.TileGrid'], ['goog.array', 'goog.asserts', 'ol.Coordinate', 'ol.TileCoord', 'ol.TileRange', 'ol.array', 'ol.extent', 'ol.proj.Projection', 'ol.proj.Units']);
+goog.addDependency('../../../ol/ol/tilegrid/tilegrid.js', ['ol.tilegrid.TileGrid'], ['goog.array', 'goog.asserts', 'ol.Coordinate', 'ol.TileCoord', 'ol.TileRange', 'ol.array', 'ol.extent', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.Units']);
 goog.addDependency('../../../ol/ol/tilegrid/wmtstilegrid.js', ['ol.tilegrid.WMTS'], ['goog.array', 'goog.asserts', 'ol.proj', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/tilegrid/xyztilegrid.js', ['ol.tilegrid.XYZ'], ['goog.math', 'ol.TileCoord', 'ol.TileRange', 'ol.proj', 'ol.proj.EPSG3857', 'ol.tilegrid.TileGrid']);
 goog.addDependency('../../../ol/ol/tilegrid/zoomifytilegrid.js', ['ol.tilegrid.Zoomify'], ['goog.math', 'ol.TileCoord', 'ol.proj', 'ol.tilegrid.TileGrid']);
@@ -227,7 +227,7 @@ goog.addDependency('../../../ol/ol/tileurlfunction.js', ['ol.TileUrlFunction', '
 goog.addDependency('../../../ol/ol/transformfunction.js', ['ol.TransformFunction'], []);
 goog.addDependency('../../../ol/ol/vec/mat4.js', ['ol.vec.Mat4'], ['goog.vec.Mat4']);
 goog.addDependency('../../../ol/ol/view.js', ['ol.View', 'ol.ViewHint'], ['goog.array', 'goog.asserts', 'ol.IView', 'ol.Object']);
-goog.addDependency('../../../ol/ol/view2d.js', ['ol.View2D', 'ol.View2DProperty'], ['goog.asserts', 'ol.CenterConstraint', 'ol.Constraints', 'ol.IView2D', 'ol.IView3D', 'ol.ResolutionConstraint', 'ol.RotationConstraint', 'ol.RotationConstraintType', 'ol.Size', 'ol.View', 'ol.coordinate', 'ol.extent', 'ol.proj', 'ol.proj.Projection', 'ol.proj.Units']);
+goog.addDependency('../../../ol/ol/view2d.js', ['ol.View2D', 'ol.View2DProperty'], ['goog.asserts', 'ol.CenterConstraint', 'ol.Constraints', 'ol.IView2D', 'ol.IView3D', 'ol.ResolutionConstraint', 'ol.RotationConstraint', 'ol.RotationConstraintType', 'ol.Size', 'ol.View', 'ol.coordinate', 'ol.extent', 'ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.Units']);
 goog.addDependency('../../../ol/ol/webgl/context.js', ['ol.webgl.Context'], ['goog.asserts', 'goog.events', 'goog.log', 'goog.object', 'ol.structs.Buffer', 'ol.structs.IntegerSet', 'ol.webgl.WebGLContextEventType']);
 goog.addDependency('../../../ol/ol/webgl/shader.js', ['ol.webgl.shader'], ['goog.functions', 'goog.webgl', 'ol.webgl']);
 goog.addDependency('../../../ol/ol/webgl/webgl.js', ['ol.webgl', 'ol.webgl.WebGLContextEventType'], []);
