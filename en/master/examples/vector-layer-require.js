@@ -9,3 +9,4 @@ goog.require('ol.source.MapQuest');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');
+goog.require('ol.style.Text');

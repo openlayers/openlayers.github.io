@@ -68,7 +68,7 @@ goog.addDependency('../../../ol/ol/framestate.js', ['ol.FrameState', 'ol.PostRen
 goog.addDependency('../../../ol/ol/geolocation.js', ['ol.Geolocation', 'ol.GeolocationProperty'], ['goog.events', 'goog.events.EventType', 'goog.math', 'ol.BrowserFeature', 'ol.Coordinate', 'ol.Object', 'ol.proj']);
 goog.addDependency('../../../ol/ol/geom/circle.js', ['ol.geom.Circle'], ['goog.asserts', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.SimpleGeometry', 'ol.geom.flat']);
 goog.addDependency('../../../ol/ol/geom/closestgeom.js', ['ol.geom.closest'], ['goog.asserts', 'ol.geom.flat']);
-goog.addDependency('../../../ol/ol/geom/flatgeom.js', ['ol.geom.flat'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.vec.Mat4']);
+goog.addDependency('../../../ol/ol/geom/flatgeom.js', ['ol.geom.flat'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.vec.Mat4', 'ol.extent']);
 goog.addDependency('../../../ol/ol/geom/geometry.js', ['ol.geom.Geometry', 'ol.geom.GeometryType'], ['goog.asserts', 'goog.functions', 'ol.Observable']);
 goog.addDependency('../../../ol/ol/geom/geometrycollection.js', ['ol.geom.GeometryCollection'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.extent', 'ol.geom.Geometry', 'ol.geom.GeometryType']);
 goog.addDependency('../../../ol/ol/geom/linearring.js', ['ol.geom.LinearRing'], ['ol.extent', 'ol.geom.GeometryType', 'ol.geom.SimpleGeometry', 'ol.geom.closest', 'ol.geom.flat', 'ol.geom.simplify']);
@@ -142,7 +142,7 @@ goog.addDependency('../../../ol/ol/proj/epsg4326projection.js', ['ol.proj.EPSG43
 goog.addDependency('../../../ol/ol/proj/proj.js', ['ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.ProjectionLike', 'ol.proj.Units'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.Extent', 'ol.TransformFunction', 'ol.sphere.NORMAL']);
 goog.addDependency('../../../ol/ol/render/box.js', ['ol.render.Box'], ['goog.Disposable', 'goog.array', 'goog.asserts', 'goog.events', 'ol.geom.Polygon', 'ol.render.EventType']);
 goog.addDependency('../../../ol/ol/render/canvas/canvas.js', ['ol.render.canvas'], ['ol.color']);
-goog.addDependency('../../../ol/ol/render/canvas/canvasimmediate.js', ['ol.render.canvas.Immediate'], ['goog.array', 'goog.asserts', 'goog.object', 'goog.vec.Mat4', 'ol.color', 'ol.extent', 'ol.render.IRender', 'ol.render.canvas', 'ol.style.Text', 'ol.vec.Mat4']);
+goog.addDependency('../../../ol/ol/render/canvas/canvasimmediate.js', ['ol.render.canvas.Immediate'], ['goog.array', 'goog.asserts', 'goog.object', 'goog.vec.Mat4', 'ol.color', 'ol.extent', 'ol.geom.flat', 'ol.render.IRender', 'ol.render.canvas', 'ol.vec.Mat4']);
 goog.addDependency('../../../ol/ol/render/canvas/canvasreplay.js', ['ol.render.canvas.ReplayGroup'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.object', 'goog.vec.Mat4', 'ol.array', 'ol.color', 'ol.extent', 'ol.geom.flat', 'ol.geom.simplify', 'ol.render.IRender', 'ol.render.IReplayGroup', 'ol.render.canvas', 'ol.vec.Mat4']);
 goog.addDependency('../../../ol/ol/render/featuresoverlay.js', ['ol.render.FeaturesOverlay'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.Collection', 'ol.CollectionEventType', 'ol.Feature', 'ol.feature', 'ol.render.EventType']);
 goog.addDependency('../../../ol/ol/render/irender.js', ['ol.render.IRender'], []);
