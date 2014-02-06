@@ -660,6 +660,44 @@
 	
         <tr>
             
+                <td class="name"><code>keyboardEventTarget</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The element to listen to keyboard events on.
+    This determines when the <code>KeyboardPan</code> and <code>KeyboardZoom</code> interactions trigger. For example, if
+    this option is set to <code>document</code> the keyboard interactions will always trigger. If this option
+    is not specified, the element the library listens to keyboard events on is the map target (i.e.
+    the user-provided div for the map). If this is not <code>document</code> the target element needs to be
+    focused for key events to be emitted, requiring that the target element has a <code>tabindex</code>
+    attribute.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>layers</code></td>
             
             

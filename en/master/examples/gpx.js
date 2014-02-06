@@ -34,7 +34,7 @@ var style = {
 
 var vector = new ol.layer.Vector({
   source: new ol.source.GPX({
-    reprojectTo: 'EPSG:3857',
+    projection: 'EPSG:3857',
     url: 'data/gpx/fells_loop.gpx'
   }),
   styleFunction: function(feature, resolution) {

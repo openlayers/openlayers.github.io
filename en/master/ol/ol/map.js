@@ -286,6 +286,12 @@ ol.Map = function(options) {
 
   /**
    * @private
+   * @type {Element|Document}
+   */
+  this.keyboardEventTarget_ = optionsInternal.keyboardEventTarget;
+
+  /**
+   * @private
    * @type {goog.events.KeyHandler}
    */
   this.keyHandler_ = new goog.events.KeyHandler();
@@ -876,10 +882,9 @@ ol.Map.prototype.handleTargetChanged_ = function() {
   } else {
     goog.dom.appendChild(targetElement, this.viewport_);
 
-    // The key handler is attached to the user-provided target. So the key
-    // handler will only trigger events when the target element is focused
-    // (requiring that the target element has a tabindex attribute).
-    this.keyHandler_.attach(targetElement);
+    var keyboardEventTarget = goog.isNull(this.keyboardEventTarget_) ?
+        targetElement : this.keyboardEventTarget_;
+    this.keyHandler_.attach(keyboardEventTarget);
   }
 
   this.updateSize();
@@ -969,12 +974,27 @@ ol.Map.prototype.handleLayerGroupChanged_ = function() {
 
 
 /**
+ * Returns `true` if the map is defined, `false` otherwise. The map is defined
+ * if it is contained in `document`, visible, has non-zero height and width, and
+ * has a defined view.
  * @return {boolean} Is defined.
  */
 ol.Map.prototype.isDef = function() {
+  if (!goog.dom.contains(document, this.viewport_)) {
+    return false;
+  }
+  if (!goog.style.isElementShown(this.viewport_)) {
+    return false;
+  }
+  var size = this.getSize();
+  if (!goog.isDefAndNotNull(size) || size[0] <= 0 || size[1] <= 0) {
+    return false;
+  }
   var view = this.getView();
-  return goog.isDef(view) && view.isDef() &&
-      goog.isDefAndNotNull(this.getSize());
+  if (!goog.isDef(view) || !view.isDef()) {
+    return false;
+  }
+  return true;
 };
 
 
@@ -1297,6 +1317,7 @@ ol.Map.prototype.withFrozenRendering = function(f, opt_this) {
 /**
  * @typedef {{controls: ol.Collection,
  *            interactions: ol.Collection,
+ *            keyboardEventTarget: (Element|Document),
  *            ol3Logo: boolean,
  *            overlays: ol.Collection,
  *            rendererConstructor:
@@ -1311,6 +1332,18 @@ ol.MapOptionsInternal;
  * @return {ol.MapOptionsInternal} Internal map options.
  */
 ol.Map.createOptionsInternal = function(options) {
+
+  /**
+   * @type {Element|Document}
+   */
+  var keyboardEventTarget = null;
+  if (goog.isDef(options.keyboardEventTarget)) {
+    // cannot use goog.dom.getElement because its argument cannot be
+    // of type Document
+    keyboardEventTarget = goog.isString(options.keyboardEventTarget) ?
+        document.getElementById(options.keyboardEventTarget) :
+        options.keyboardEventTarget;
+  }
 
   /**
    * @type {Object.<string, *>}
@@ -1406,6 +1439,7 @@ ol.Map.createOptionsInternal = function(options) {
   return {
     controls: controls,
     interactions: interactions,
+    keyboardEventTarget: keyboardEventTarget,
     ol3Logo: ol3Logo,
     overlays: overlays,
     rendererConstructor: rendererConstructor,
