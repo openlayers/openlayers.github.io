@@ -39,7 +39,7 @@ var map = new ol.Map({
     }),
     vectorLayer
   ],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],
@@ -49,7 +49,7 @@ var map = new ol.Map({
 
 var highlightStyleCache = {};
 
-var featuresOverlay = new ol.render.FeaturesOverlay({
+var featureOverlay = new ol.FeatureOverlay({
   map: map,
   styleFunction: function(feature, resolution) {
     var text = resolution < 5000 ? feature.get('name') : '';
@@ -95,10 +95,10 @@ var displayFeatureInfo = function(pixel) {
 
   if (feature !== highlight) {
     if (highlight) {
-      featuresOverlay.removeFeature(highlight);
+      featureOverlay.removeFeature(highlight);
     }
     if (feature) {
-      featuresOverlay.addFeature(feature);
+      featureOverlay.addFeature(feature);
     }
     highlight = feature;
   }

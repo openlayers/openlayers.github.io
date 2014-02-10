@@ -21,7 +21,7 @@ var styleArray = [new ol.style.Style({
   })
 })];
 
-var colors = ['red', 'orange', 'yellow', 'blue', 'green', 'indigo', 'violet'];
+var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
 var depthStyle = [];
 for (i = 0, ii = colors.length; i < ii; ++i) {
   depthStyle[i] = new ol.style.Style({
@@ -84,7 +84,7 @@ var rtree = new ol.layer.Vector({
 
 var map = new ol.Map({
   layers: [vector, rtree],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],

@@ -9,7 +9,7 @@ var map = new ol.Map({
       source: new ol.source.OSM()
     })
   ],
-  renderers: ol.RendererHints.createFromQueryData(),
+  renderer: ol.RendererHints.createFromQueryData(),
   target: 'map',
   view: view
 });
@@ -30,7 +30,7 @@ geolocation.on('propertychange', function() {
 
 var marker = new ol.Overlay({
   element: /** @type {Element} */ ($('<i/>').addClass('icon-flag').get(0)),
-  positioning: ol.OverlayPositioning.BOTTOM_LEFT,
+  positioning: 'bottom-left',
   stopEvent: false
 });
 map.addOverlay(marker);

@@ -4,7 +4,7 @@ var domMap = new ol.Map({
       source: new ol.source.MapQuest({layer: 'sat'})
     })
   ],
-  renderer: ol.RendererHint.DOM,
+  renderer: 'dom',
   target: 'domMap',
   view: new ol.View2D({
     center: [0, 0],
@@ -14,7 +14,7 @@ var domMap = new ol.Map({
 
 if (ol.BrowserFeature.HAS_WEBGL) {
   var webglMap = new ol.Map({
-    renderer: ol.RendererHint.WEBGL,
+    renderer: 'webgl',
     target: 'webglMap'
   });
   webglMap.bindTo('layergroup', domMap);
@@ -28,7 +28,7 @@ if (ol.BrowserFeature.HAS_WEBGL) {
 }
 
 var canvasMap = new ol.Map({
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'canvasMap'
 });
 canvasMap.bindTo('layergroup', domMap);

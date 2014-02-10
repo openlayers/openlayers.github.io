@@ -34,7 +34,7 @@ var map = new ol.Map({
     openCycleMapLayer,
     openSeaMapLayer
   ],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     maxZoom: 18,

@@ -23,6 +23,7 @@ var styleFunction = function(feature, resolution) {
 };
 
 var vectorSource = new ol.source.IGC({
+  projection: 'EPSG:3857',
   urls: [
     'data/igc/Clement-Latour.igc',
     'data/igc/Damien-de-Baenst.igc',
@@ -51,7 +52,7 @@ var map = new ol.Map({
       styleFunction: styleFunction
     })
   ],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     center: [703365.7089403362, 5714629.865071137],
@@ -112,13 +113,13 @@ var strokeStyle = new ol.style.Stroke({
   width: 1
 });
 map.on('postcompose', function(evt) {
-  var render = evt.render;
+  var vectorContext = evt.vectorContext;
   if (point !== null) {
-    render.setImageStyle(imageStyle);
-    render.drawPointGeometry(point);
+    vectorContext.setImageStyle(imageStyle);
+    vectorContext.drawPointGeometry(point);
   }
   if (line !== null) {
-    render.setFillStrokeStyle(null, strokeStyle);
-    render.drawLineStringGeometry(line);
+    vectorContext.setFillStrokeStyle(null, strokeStyle);
+    vectorContext.drawLineStringGeometry(line);
   }
 });

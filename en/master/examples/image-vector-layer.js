@@ -25,7 +25,7 @@ var map = new ol.Map({
       })
     })
   ],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],
@@ -43,7 +43,7 @@ var highlightStyleArray = [new ol.style.Style({
   })
 })];
 
-var featuresOverlay = new ol.render.FeaturesOverlay({
+var featureOverlay = new ol.FeatureOverlay({
   map: map,
   styleFunction: function(feature, resolution) {
     return highlightStyleArray;
@@ -66,10 +66,10 @@ var displayFeatureInfo = function(pixel) {
 
   if (feature !== highlight) {
     if (highlight) {
-      featuresOverlay.removeFeature(highlight);
+      featureOverlay.removeFeature(highlight);
     }
     if (feature) {
-      featuresOverlay.addFeature(feature);
+      featureOverlay.addFeature(feature);
     }
     highlight = feature;
   }

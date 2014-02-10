@@ -14,7 +14,7 @@ var map = new ol.Map({
       })
     })
   ],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   view: new ol.View2D({
     center: ol.proj.transform([-121.1, 47.5], 'EPSG:4326', 'EPSG:3857'),
     zoom: 7

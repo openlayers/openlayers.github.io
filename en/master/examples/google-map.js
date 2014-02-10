@@ -41,7 +41,7 @@ google.maps.event.addListenerOnce(gmap, 'tilesloaded', function() {
     layers: [vector],
     interactions: ol.interaction.defaults({dragPan: false})
         .extend([new ol.interaction.DragPan({kinetic: false})]),
-    renderer: ol.RendererHint.CANVAS,
+    renderer: 'canvas',
     target: olmap,
     view: new ol.View2D({
       center: ol.proj.transform([center.lng(), center.lat()],

@@ -38,7 +38,7 @@ var vector = new ol.layer.Vector({
 
 var map = new ol.Map({
   layers: [raster, vector],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: document.getElementById('map'),
   view: new ol.View2D({
     center: [0, 0],
@@ -50,7 +50,7 @@ var element = document.getElementById('popup');
 
 var popup = new ol.Overlay({
   element: element,
-  positioning: ol.OverlayPositioning.BOTTOM_CENTER,
+  positioning: 'bottom-center',
   stopEvent: false
 });
 map.addOverlay(popup);

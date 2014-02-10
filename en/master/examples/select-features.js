@@ -22,14 +22,14 @@ var vector = new ol.layer.Vector({
     projection: 'EPSG:3857',
     url: 'data/geojson/countries.geojson'
   }),
-  styleFunction: function(feature, layer) {
+  styleFunction: function(feature, resolution) {
     return unselectedStyle;
   }
 });
 
 var select = new ol.interaction.Select({
-  featuresOverlay: new ol.render.FeaturesOverlay({
-    styleFunction: function(feature, layer) {
+  featureOverlay: new ol.FeatureOverlay({
+    styleFunction: function(feature, resolution) {
       return selectedStyle;
     }
   })
@@ -38,7 +38,7 @@ var select = new ol.interaction.Select({
 var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([select]),
   layers: [raster, vector],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],

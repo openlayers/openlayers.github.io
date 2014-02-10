@@ -12,7 +12,7 @@ var layers = [
   })
 ];
 var map = new ol.Map({
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   layers: layers,
   target: 'map',
   view: new ol.View2D({

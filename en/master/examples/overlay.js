@@ -4,7 +4,7 @@ var layer = new ol.layer.Tile({
 
 var map = new ol.Map({
   layers: [layer],
-  renderers: ol.RendererHints.createFromQueryData(),
+  renderer: ol.RendererHints.createFromQueryData(),
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],
@@ -17,7 +17,7 @@ var pos = ol.proj.transform([16.3725, 48.208889], 'EPSG:4326', 'EPSG:3857');
 // Vienna marker
 var marker = new ol.Overlay({
   position: pos,
-  positioning: ol.OverlayPositioning.CENTER_CENTER,
+  positioning: 'center-center',
   element: document.getElementById('marker'),
   stopEvent: false
 });

@@ -49,7 +49,7 @@ var view = new ol.View2D({
 
 var map = new ol.Map({
   layers: [vector],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: view
 });

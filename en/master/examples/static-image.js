@@ -3,7 +3,7 @@
 // map can use to properly display the layer.
 var pixelProjection = new ol.proj.Projection({
   code: 'pixel',
-  units: ol.proj.Units.PIXELS,
+  units: 'pixels',
   extent: [0, 0, 1024, 968]
 });
 
@@ -23,7 +23,7 @@ var map = new ol.Map({
       })
     })
   ],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     projection: pixelProjection,

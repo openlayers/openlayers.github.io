@@ -14,7 +14,7 @@ var map = new ol.Map({
     })
   ],
   // Use the canvas renderer because it's currently the fastest
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     center: [-33519607, 5616436],

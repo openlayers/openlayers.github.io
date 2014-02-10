@@ -17,7 +17,7 @@ var viewProjection = /** @type {ol.proj.Projection} */
 
 var map = new ol.Map({
   layers: [wmsLayer],
-  renderer: ol.RendererHint.CANVAS,
+  renderer: 'canvas',
   target: 'map',
   view: view
 });
