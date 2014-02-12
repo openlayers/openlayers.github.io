@@ -1,7 +1,8 @@
-var raster = new ol.layer.Tile({
-  source: new ol.source.TileJSON({
-    url: 'http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp'
-  })
+var iconFeature = new ol.Feature({
+  geometry: new ol.geom.Point([0, 0]),
+  name: 'Null Island',
+  population: 4000,
+  rainfall: 500
 });
 
 var styleArray = [new ol.style.Style({
@@ -13,31 +14,26 @@ var styleArray = [new ol.style.Style({
   }))
 })];
 
-var vector = new ol.layer.Vector({
-  source: new ol.source.GeoJSON(/** @type {olx.source.GeoJSONOptions} */ ({
-    object: {
-      'type': 'FeatureCollection',
-      'features': [{
-        'type': 'Feature',
-        'properties': {
-          'name': 'Null Island',
-          'population': 4000,
-          'rainfall': 500
-        },
-        'geometry': {
-          'type': 'Point',
-          'coordinates': [0, 0]
-        }
-      }]
-    }
-  })),
-  styleFunction: function(feature, resolution) {
-    return styleArray;
-  }
+iconFeature.setStyleFunction(function(resolution) {
+  return styleArray;
+});
+
+var vectorSource = new ol.source.Vector({
+  features: [iconFeature]
+});
+
+var vectorLayer = new ol.layer.Vector({
+  source: vectorSource
+});
+
+var rasterLayer = new ol.layer.Tile({
+  source: new ol.source.TileJSON({
+    url: 'http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp'
+  })
 });
 
 var map = new ol.Map({
-  layers: [raster, vector],
+  layers: [rasterLayer, vectorLayer],
   renderer: 'canvas',
   target: document.getElementById('map'),
   view: new ol.View2D({
