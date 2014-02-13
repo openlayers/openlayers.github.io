@@ -629,7 +629,7 @@ goog.addDependency("../src/ol/interaction/interaction.js", ["ol.interaction.Inte
 goog.addDependency("../src/ol/interaction/interactiondefaults.js", ["ol.interaction"], ["ol.Collection", "ol.Kinetic", "ol.interaction.DoubleClickZoom", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragZoom", "ol.interaction.KeyboardPan", "ol.interaction.KeyboardZoom", "ol.interaction.MouseWheelZoom", "ol.interaction.TouchPan", "ol.interaction.TouchRotate", "ol.interaction.TouchZoom"]);
 goog.addDependency("../src/ol/interaction/keyboardpaninteraction.js", ["ol.interaction.KeyboardPan"], ["goog.asserts", "goog.events.KeyCodes", "goog.events.KeyHandler.EventType", "goog.functions", "ol.View2D", "ol.coordinate", "ol.events.ConditionType", "ol.events.condition", "ol.interaction.Interaction"]);
 goog.addDependency("../src/ol/interaction/keyboardzoominteraction.js", ["ol.interaction.KeyboardZoom"], ["goog.asserts", "goog.events.KeyHandler.EventType", "ol.events.ConditionType", "ol.events.condition", "ol.interaction.Interaction"]);
-goog.addDependency("../src/ol/interaction/modifyinteraction.js", ["ol.interaction.Modify"], ["goog.array", "goog.asserts", "ol.Collection", "ol.CollectionEventType", "ol.Feature", "ol.FeatureOverlay", "ol.MapBrowserEvent.EventType", "ol.ViewHint", "ol.coordinate", "ol.extent", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.interaction.Drag", "ol.structs.RBush", "ol.style.Style"]);
+goog.addDependency("../src/ol/interaction/modifyinteraction.js", ["ol.interaction.Modify"], ["goog.array", "goog.asserts", "ol.Collection", "ol.CollectionEventType", "ol.Feature", "ol.FeatureOverlay", "ol.MapBrowserEvent.EventType", "ol.ViewHint", "ol.coordinate", "ol.extent", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.interaction.Drag", "ol.structs.RBush", "ol.style.Style"]);
 goog.addDependency("../src/ol/interaction/mousewheelzoominteraction.js", ["ol.interaction.MouseWheelZoom"], ["goog.asserts", "goog.events.MouseWheelEvent", "goog.events.MouseWheelHandler.EventType", "goog.math", "ol.Coordinate", "ol.interaction.Interaction"]);
 goog.addDependency("../src/ol/interaction/selectinteraction.js", ["ol.interaction.Select"], ["goog.array", "goog.functions", "ol.FeatureOverlay", "ol.events.condition", "ol.interaction.Interaction"]);
 goog.addDependency("../src/ol/interaction/touchinteraction.js", ["ol.interaction.Touch"], ["goog.asserts", "goog.functions", "goog.object", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.Pixel", "ol.ViewHint", "ol.interaction.Interaction"]);
@@ -32362,6 +32362,7 @@ goog.require("ol.MapBrowserEvent.EventType");
 goog.require("ol.ViewHint");
 goog.require("ol.coordinate");
 goog.require("ol.extent");
+goog.require("ol.geom.GeometryType");
 goog.require("ol.geom.LineString");
 goog.require("ol.geom.MultiLineString");
 goog.require("ol.geom.MultiPoint");
@@ -32414,9 +32415,9 @@ ol.interaction.Modify.prototype.writePointGeometry_ = function(feature, geometry
 ol.interaction.Modify.prototype.writeMultiPointGeometry_ = function(feature, geometry) {
   var points = geometry.getCoordinates();
   var coordinates, i, ii, segmentData;
-  for(i = 0, ii = points.length - 1;i < ii;++i) {
+  for(i = 0, ii = points.length;i < ii;++i) {
     coordinates = points[i];
-    segmentData = ({feature:feature, geometry:geometry, depth:[i], segment:[coordinates, coordinates], style:this.overlay_.getStyleFunction()});
+    segmentData = ({feature:feature, geometry:geometry, depth:[i], index:i, segment:[coordinates, coordinates], style:this.overlay_.getStyleFunction()});
     this.rBush_.insert(geometry.getExtent(), segmentData)
   }
 };
@@ -32546,34 +32547,31 @@ ol.interaction.Modify.prototype.handleDrag = function(evt) {
     var coordinates = geometry.getCoordinates();
     var segment = segmentData.segment;
     var index = dragSegment[1];
-    if(geometry instanceof ol.geom.Point) {
-      coordinates = vertex;
-      segment[0] = segment[1] = vertex
-    }else {
-      if(geometry instanceof ol.geom.MultiPoint) {
+    switch(geometry.getType()) {
+      case ol.geom.GeometryType.POINT:
+        coordinates = vertex;
+        segment[0] = segment[1] = vertex;
+        break;
+      case ol.geom.GeometryType.MULTI_POINT:
+        coordinates[segmentData.index] = vertex;
+        segment[0] = segment[1] = vertex;
+        break;
+      case ol.geom.GeometryType.LINE_STRING:
+        coordinates[segmentData.index + index] = vertex;
+        segment[index] = vertex;
+        break;
+      case ol.geom.GeometryType.MULTI_LINE_STRING:
         coordinates[depth[0]][segmentData.index + index] = vertex;
-        segment[0] = segment[1] = vertex
-      }else {
-        if(geometry instanceof ol.geom.LineString) {
-          coordinates[segmentData.index + index] = vertex;
-          segment[index] = vertex
-        }else {
-          if(geometry instanceof ol.geom.MultiLineString) {
-            coordinates[depth[0]][segmentData.index + index] = vertex;
-            segment[index] = vertex
-          }else {
-            if(geometry instanceof ol.geom.Polygon) {
-              coordinates[0][segmentData.index + index] = vertex;
-              segment[index] = vertex
-            }else {
-              if(geometry instanceof ol.geom.MultiPolygon) {
-                coordinates[depth[0]][0][segmentData.index + index] = vertex;
-                segment[index] = vertex
-              }
-            }
-          }
-        }
-      }
+        segment[index] = vertex;
+        break;
+      case ol.geom.GeometryType.POLYGON:
+        coordinates[0][segmentData.index + index] = vertex;
+        segment[index] = vertex;
+        break;
+      case ol.geom.GeometryType.MULTI_POLYGON:
+        coordinates[depth[0]][0][segmentData.index + index] = vertex;
+        segment[index] = vertex;
+        break
     }
     geometry.setCoordinates(coordinates);
     var newBounds = ol.extent.boundingExtent(segment);
@@ -32642,24 +32640,30 @@ ol.interaction.Modify.prototype.insertVertex_ = function(segmentData, vertex) {
   var geometry = segmentData.geometry;
   var depth = segmentData.depth;
   var index = segmentData.index;
-  geometry = (geometry);
-  var coordinates = geometry.getCoordinates();
-  if(geometry instanceof ol.geom.MultiPoint) {
-    coordinates[depth[0]] = coordinates
-  }else {
-    if(geometry instanceof ol.geom.MultiLineString) {
-      coordinates[depth[0]].splice(index + 1, 0, vertex)
-    }else {
-      if(geometry instanceof ol.geom.Polygon) {
-        coordinates[0].splice(index + 1, 0, vertex)
-      }else {
-        if(geometry instanceof ol.geom.MultiPolygon) {
-          coordinates[depth[0]][0].splice(index + 1, 0, vertex)
-        }else {
-          coordinates.splice(index + 1, 0, vertex)
-        }
-      }
-    }
+  var coordinates;
+  switch(geometry.getType()) {
+    case ol.geom.GeometryType.MULTI_LINE_STRING:
+      goog.asserts.assertInstanceof(geometry, ol.geom.MultiLineString);
+      coordinates = geometry.getCoordinates();
+      coordinates[depth[0]].splice(index + 1, 0, vertex);
+      break;
+    case ol.geom.GeometryType.POLYGON:
+      goog.asserts.assertInstanceof(geometry, ol.geom.Polygon);
+      coordinates = geometry.getCoordinates();
+      coordinates[0].splice(index + 1, 0, vertex);
+      break;
+    case ol.geom.GeometryType.MULTI_POLYGON:
+      goog.asserts.assertInstanceof(geometry, ol.geom.MultiPolygon);
+      coordinates = geometry.getCoordinates();
+      coordinates[depth[0]][0].splice(index + 1, 0, vertex);
+      break;
+    case ol.geom.GeometryType.LINE_STRING:
+      goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
+      coordinates = geometry.getCoordinates();
+      coordinates.splice(index + 1, 0, vertex);
+      break;
+    default:
+      return
   }
   geometry.setCoordinates(coordinates);
   var rTree = this.rBush_;
@@ -35423,7 +35427,7 @@ ol.source.OSM = function(opt_options) {
     attributions = ol.source.OSM.ATTRIBUTIONS
   }
   var crossOrigin = goog.isDef(options.crossOrigin) ? options.crossOrigin : "anonymous";
-  var url = goog.isDef(options.url) ? options.url : "http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var url = goog.isDef(options.url) ? options.url : "//{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   goog.base(this, {attributions:attributions, crossOrigin:crossOrigin, opaque:true, maxZoom:options.maxZoom, tileLoadFunction:options.tileLoadFunction, url:url})
 };
 goog.inherits(ol.source.OSM, ol.source.XYZ);
