@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Namespace: ol.layer</title>
+    <title>OpenLayers 3 API Documentation - Namespace: ol.BrowserFeature</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -38,7 +38,7 @@
     <h2>
         <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.layer
+    ol.BrowserFeature
     </h2>
     
 </header>  
@@ -72,7 +72,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>layer.jsdoc, line 1</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.jsdoc, line 1</li></ul></dd>
 	
     
     
@@ -94,30 +94,346 @@
     
     
     
-        <h3 class="subsection-title">Classes</h3>
-        
-        <dl>
-            <dt><a href="ol.layer.Group.html">ol.layer.Group</a></dt>
-            <dd></dd>
-        
-            <dt><a href="ol.layer.Image.html">ol.layer.Image</a></dt>
-            <dd></dd>
-        
-            <dt><a href="ol.layer.Layer.html">ol.layer.Layer</a></dt>
-            <dd></dd>
-        
-            <dt><a href="ol.layer.Tile.html">ol.layer.Tile</a></dt>
-            <dd></dd>
-        
-            <dt><a href="ol.layer.Vector.html">ol.layer.Vector</a></dt>
-            <dd></dd>
-        </dl>
-    
     
     
     
     
 
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt class="">
+    <h4 class="name" id="DEVICE_PIXEL_RATIO"><span class="type-signature">&lt;static, constant> </span>DEVICE_PIXEL_RATIO<span class="type-signature"> :<a href="global.html#number">number</a></span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>The ratio between physical pixels and device-independent pixels
+(dips) on the device (<code>window.devicePixelRatio</code>).</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 73</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="HAS_CANVAS"><span class="type-signature">&lt;static, constant> </span>HAS_CANVAS<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>True if browser supports Canvas.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 90</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="HAS_DEVICE_ORIENTATION"><span class="type-signature">&lt;static, constant> </span>HAS_DEVICE_ORIENTATION<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Indicates if DeviceOrientation is supported in the user's browser.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 123</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="HAS_GEOLOCATION"><span class="type-signature">&lt;static, constant> </span>HAS_GEOLOCATION<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Is HTML5 geolocation supported in the current browser?</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 142</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="HAS_TOUCH"><span class="type-signature">&lt;static, constant> </span>HAS_TOUCH<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>True if browser supports touch events.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 151</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="HAS_WEBGL"><span class="type-signature">&lt;static, constant> </span>HAS_WEBGL<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>True if browser supports WebGL.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 163</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
     
     
     

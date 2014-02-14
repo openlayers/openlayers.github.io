@@ -1,13 +1,3 @@
-var styleArray = [new ol.style.Style({
-  fill: new ol.style.Fill({
-    color: 'rgba(255, 255, 255, 0.6)'
-  }),
-  stroke: new ol.style.Stroke({
-    color: '#319FD3',
-    width: 1
-  })
-})];
-
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
@@ -19,9 +9,15 @@ var map = new ol.Map({
           projection: 'EPSG:3857',
           url: 'data/geojson/countries.geojson'
         }),
-        styleFunction: function(feature, resolution) {
-          return styleArray;
-        }
+        style: new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 255, 0.6)'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#319FD3',
+            width: 1
+          })
+        })
       })
     })
   ],
@@ -33,21 +29,17 @@ var map = new ol.Map({
   })
 });
 
-var highlightStyleArray = [new ol.style.Style({
-  stroke: new ol.style.Stroke({
-    color: '#f00',
-    width: 1
-  }),
-  fill: new ol.style.Fill({
-    color: 'rgba(255,0,0,0.1)'
-  })
-})];
-
 var featureOverlay = new ol.FeatureOverlay({
   map: map,
-  styleFunction: function(feature, resolution) {
-    return highlightStyleArray;
-  }
+  style: new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: '#f00',
+      width: 1
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(255,0,0,0.1)'
+    })
+  })
 });
 
 var highlight;

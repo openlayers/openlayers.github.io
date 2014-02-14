@@ -49,7 +49,7 @@ var map = new ol.Map({
     }),
     new ol.layer.Vector({
       source: vectorSource,
-      styleFunction: styleFunction
+      style: styleFunction
     })
   ],
   renderer: 'canvas',
