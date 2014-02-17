@@ -8,7 +8,7 @@ var map1 = new ol.Map({
       })
     })
   ],
-  renderer: ol.RendererHints.createFromQueryData(),
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map1',
   view: new ol.View2D({
     center: [-4808600, -2620936],
@@ -26,7 +26,7 @@ var map2 = new ol.Map({
       })
     })
   ],
-  renderer: ol.RendererHints.createFromQueryData(),
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map2'
 });
 map2.bindTo('view', map1);

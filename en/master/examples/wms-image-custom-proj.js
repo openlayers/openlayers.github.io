@@ -42,7 +42,7 @@ var layers = [
 
 var map = new ol.Map({
   layers: layers,
-  renderer: ol.RendererHints.createFromQueryData(),
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View2D({
     projection: projection,

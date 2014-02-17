@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.format.TopoJSON</title>
+    <title>OpenLayers 3 API Documentation - Namespace: olx.tilegrid</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,7 +36,9 @@
     
 <header>
     <h2>
-    ol.format.TopoJSON
+        <span class="ancestors"><a href="olx.html">olx</a>.</span>
+    
+    olx.tilegrid
     </h2>
     
 </header>  
@@ -47,85 +49,8 @@
     
     
         
-<dt>
-    <h4 class="name" id="TopoJSON"><span class="type-signature"></span>new TopoJSON</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="olx.format.html#TopoJSONOptions">olx.format.TopoJSONOptions</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
+        
 <dl class="details">
     
         
@@ -147,7 +72,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>topojsonformat.js, line 24</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>olx.jsdoc, line 21</li></ul></dd>
 	
     
     
@@ -157,16 +82,8 @@
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
+        
+        
     
     </div>
     
@@ -186,6 +103,675 @@
     
     
     
+    
+        <h3 class="subsection-title">TypeDefs</h3>
+        
+        <dl>
+            
+<dt class="">
+    <h4 class="name" id="TileGridOptions">TileGridOptions</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>minZoom</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#number">number</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Minimum zoom.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Origin.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>origins</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="ol.html#Coordinate">ol.Coordinate</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Origins.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>resolutions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Array.&lt;<a href="global.html#number">number</a>></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Resolutions.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>tileSize</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#number">number</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tile size.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>tileSizes</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#number">number</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tile sizes.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 161</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="WMTSOptions">WMTSOptions</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Origin.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>origins</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="ol.html#Coordinate">ol.Coordinate</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Origins.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>resolutions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Array.&lt;<a href="global.html#number">number</a>></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Resolutions.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrixIds</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>matrix IDs.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>tileSize</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#number">number</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tile size.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>tileSizes</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#number">number</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tile sizes.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 163</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="XYZOptions">XYZOptions</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>maxZoom</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#number">number</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Maximum zoom.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 165</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="ZoomifyOptions">ZoomifyOptions</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>resolutions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Array.&lt;<a href="global.html#number">number</a>></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Resolutions.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>objectliterals.jsdoc, line 167</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
     
     
     

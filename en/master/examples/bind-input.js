@@ -21,7 +21,7 @@ var view = new ol.View2D({
 
 var map = new ol.Map({
   layers: [layer],
-  renderer: ol.RendererHints.createFromQueryData(),
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
   view: view
 });

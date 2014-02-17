@@ -18,7 +18,7 @@ var map = new ol.Map({
       maxResolution: 20000
     })
   ],
-  renderer: ol.RendererHints.createFromQueryData(),
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View2D({
     center: [653600, 5723680],

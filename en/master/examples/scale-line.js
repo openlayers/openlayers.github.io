@@ -9,7 +9,7 @@ var map = new ol.Map({
       source: new ol.source.OSM()
     })
   ],
-  renderer: ol.RendererHints.createFromQueryData(),
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],

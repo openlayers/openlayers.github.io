@@ -41,7 +41,7 @@ var projection = new ol.proj.Projection({
 
 var map = new ol.Map({
   layers: layers,
-  renderer: ol.RendererHints.createFromQueryData(),
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View2D({
     center: [660000, 190000],
