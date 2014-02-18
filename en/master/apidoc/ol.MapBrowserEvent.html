@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.XYZ</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.MapBrowserEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.source.XYZ
+    ol.MapBrowserEvent
     </h2>
     
 </header>  
@@ -50,7 +50,7 @@
     
         
 <dt>
-    <h4 class="name" id="XYZ"><span class="type-signature"></span>new XYZ</h4>
+    <h4 class="name" id="MapBrowserEvent"><span class="type-signature"></span>new MapBrowserEvent</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -81,6 +81,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -93,23 +95,120 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>type</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.source.html#XYZOptions">olx.source.XYZOptions</a></span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>XYZ options.</p></td>
+            
+            <td class="description last"><p>Event type.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Map.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>browserEvent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">goog.events.BrowserEvent</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Browser event.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>frameState</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.FrameState</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Frame state.</p></td>
         </tr>
 	
 	
@@ -139,7 +238,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>xyzsource.js, line 18</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>mapbrowserevent.js, line 29</li></ul></dd>
 	
     
     
@@ -176,122 +275,6 @@
 
     
     
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <h4 class="name" id="setUrl"><span class="type-signature"></span>setUrl</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>url</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>URL.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>xyzsource.js, line 73</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        </dl>
     
     
     
