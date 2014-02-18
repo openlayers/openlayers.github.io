@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.Stamen</title>
+    <title>OpenLayers 3 API Documentation - Namespace: ol.feature</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.source.Stamen
+    ol.feature
     </h2>
     
 </header>  
@@ -49,75 +49,8 @@
     
     
         
-<dt>
-    <h4 class="name" id="Stamen"><span class="type-signature"></span>new Stamen</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="olx.source.html#StamenOptions">olx.source.StamenOptions</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Stamen options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
+        
 <dl class="details">
     
         
@@ -139,7 +72,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>stamensource.js, line 86</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.jsdoc, line 1</li></ul></dd>
 	
     
     
@@ -149,26 +82,12 @@
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
+        
+        
     
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="ol.source.XYZ.html">ol.source.XYZ</a></li>
-        </ul>
-    
     
     
     
@@ -183,12 +102,14 @@
     
     
     
-        <h3 class="subsection-title">Methods</h3>
+    
+    
+        <h3 class="subsection-title">TypeDefs</h3>
         
         <dl>
             
-<dt>
-    <h4 class="name" id="setUrl"><span class="type-signature"></span>setUrl</h4>
+<dt class="">
+    <h4 class="name" id="FeatureStyleFunction">FeatureStyleFunction</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -197,62 +118,14 @@
 
     
 </dt>
-<dd>
+<dd class="">
     
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>url</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>URL.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
+    <div class="description">
+        <p>A function that takes a <code>{number}</code> representing the view's resolution. It
+returns an Array of <a href="ol.style.Style.html">ol.style.Style</a>. This way individual features
+can be styled. The this keyword inside the function references the
+<a href="ol.Feature_.html">ol.Feature</a> to be styled.</p>
+    </div>
     
     
     
@@ -263,11 +136,6 @@
 	
 	
 
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.XYZ.html#setUrl">ol.source.XYZ#setUrl</a>
-	</li></dd>
 	
 	
 	
@@ -282,7 +150,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>xyzsource.js, line 73</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.js, line 212</li></ul></dd>
 	
     
     
@@ -294,17 +162,66 @@
 
     
     
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="StyleFunction">StyleFunction</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>A function that takes an <a href="ol.Feature_.html">ol.Feature</a> and a <code>{number}</code> representing
+the view's resolution. The function should return an array of
+<a href="ol.style.Style.html">ol.style.Style</a>. This way e.g. a vector layer can be styled.</p>
+    </div>
     
     
     
+<dl class="details">
     
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>feature.js, line 232</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
     
     
 </dd>
 
         </dl>
-    
-    
     
     
     
