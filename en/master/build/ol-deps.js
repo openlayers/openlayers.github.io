@@ -45,7 +45,7 @@ goog.addDependency('../../../ol/ol/coordinate.js', ['ol.Coordinate', 'ol.Coordin
 goog.addDependency('../../../ol/ol/css.js', ['ol.css'], []);
 goog.addDependency('../../../ol/ol/deviceorientation.js', ['ol.DeviceOrientation', 'ol.DeviceOrientationProperty'], ['goog.events', 'goog.math', 'ol.BrowserFeature', 'ol.Object']);
 goog.addDependency('../../../ol/ol/dom/dom.js', ['ol.dom', 'ol.dom.BrowserFeature'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.style', 'goog.userAgent', 'goog.vec.Mat4']);
-goog.addDependency('../../../ol/ol/dom/input.js', ['ol.dom.Input', 'ol.dom.InputProperty'], ['goog.events', 'goog.events.EventType', 'ol.Object']);
+goog.addDependency('../../../ol/ol/dom/input.js', ['ol.dom.Input', 'ol.dom.InputProperty'], ['goog.asserts', 'goog.events', 'goog.events.EventType', 'ol.Object']);
 goog.addDependency('../../../ol/ol/easing.js', ['ol.easing'], ['goog.fx.easing']);
 goog.addDependency('../../../ol/ol/ellipsoid/bessel1841ellipsoid.js', ['ol.ellipsoid.BESSEL1841'], ['ol.Ellipsoid']);
 goog.addDependency('../../../ol/ol/ellipsoid/ellipsoid.js', ['ol.Ellipsoid'], ['goog.math', 'ol.Coordinate']);

@@ -573,7 +573,7 @@ goog.addDependency("../src/ol/coordinate.js", ["ol.Coordinate", "ol.CoordinateAr
 goog.addDependency("../src/ol/css.js", ["ol.css"], []);
 goog.addDependency("../src/ol/deviceorientation.js", ["ol.DeviceOrientation", "ol.DeviceOrientationProperty"], ["goog.events", "goog.math", "ol.BrowserFeature", "ol.Object"]);
 goog.addDependency("../src/ol/dom/dom.js", ["ol.dom", "ol.dom.BrowserFeature"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.style", "goog.userAgent", "goog.vec.Mat4"]);
-goog.addDependency("../src/ol/dom/input.js", ["ol.dom.Input", "ol.dom.InputProperty"], ["goog.events", "goog.events.EventType", "ol.Object"]);
+goog.addDependency("../src/ol/dom/input.js", ["ol.dom.Input", "ol.dom.InputProperty"], ["goog.asserts", "goog.events", "goog.events.EventType", "ol.Object"]);
 goog.addDependency("../src/ol/easing.js", ["ol.easing"], ["goog.fx.easing"]);
 goog.addDependency("../src/ol/ellipsoid/bessel1841ellipsoid.js", ["ol.ellipsoid.BESSEL1841"], ["ol.Ellipsoid"]);
 goog.addDependency("../src/ol/ellipsoid/ellipsoid.js", ["ol.Ellipsoid"], ["goog.math", "ol.Coordinate"]);
@@ -8733,14 +8733,7 @@ ol.Object.prototype.set = function(key, value) {
 ol.Object.prototype.setValues = function(values) {
   var key;
   for(key in values) {
-    var value = values[key];
-    var setterName = ol.Object.getSetterName(key);
-    var setter = (goog.object.get(this, setterName));
-    if(goog.isDef(setter)) {
-      setter.call(this, value)
-    }else {
-      this.set(key, value)
-    }
+    this.set(key, values[key])
   }
 };
 ol.Object.prototype.unbind = function(key) {
@@ -14053,10 +14046,14 @@ goog.require("goog.array");
 ol.style.ImageState = {IDLE:0, LOADING:1, LOADED:2, ERROR:3};
 ol.style.ImageOptions;
 ol.style.Image = function(options) {
+  this.opacity_ = options.opacity;
   this.rotation_ = options.rotation;
   this.scale_ = options.scale;
   this.snapToPixel_ = options.snapToPixel;
   this.subtractViewRotation_ = options.subtractViewRotation
+};
+ol.style.Image.prototype.getOpacity = function() {
+  return this.opacity_
 };
 ol.style.Image.prototype.getRotation = function() {
   return this.rotation_
@@ -14118,7 +14115,7 @@ ol.Feature = function(opt_geometryOrValues) {
   this.id_ = undefined;
   this.geometryName_ = "geometry";
   this.style_ = null;
-  this.styleFunction_;
+  this.styleFunction_ = undefined;
   this.geometryChangeKey_ = null;
   goog.events.listen(this, ol.Object.getChangeEventType(this.geometryName_), this.handleGeometryChanged_, false, this);
   if(goog.isDefAndNotNull(opt_geometryOrValues)) {
@@ -20564,9 +20561,10 @@ ol.style.Icon = function(opt_options) {
   var crossOrigin = goog.isDef(options.crossOrigin) ? options.crossOrigin : null;
   this.iconImage_ = ol.style.IconImage_.get(options.src, crossOrigin);
   this.size_ = goog.isDef(options.size) ? options.size : null;
+  var opacity = goog.isDef(options.opacity) ? options.opacity : 1;
   var rotation = goog.isDef(options.rotation) ? options.rotation : 0;
   var scale = goog.isDef(options.scale) ? options.scale : 1;
-  goog.base(this, {rotation:rotation, scale:scale, snapToPixel:undefined, subtractViewRotation:false})
+  goog.base(this, {opacity:opacity, rotation:rotation, scale:scale, snapToPixel:undefined, subtractViewRotation:false})
 };
 goog.inherits(ol.style.Icon, ol.style.Image);
 ol.style.Icon.prototype.getAnchor = function() {
@@ -20903,7 +20901,7 @@ ol.layer.Vector = function(opt_options) {
   delete baseOptions.style;
   goog.base(this, baseOptions);
   this.style_ = null;
-  this.styleFunction_;
+  this.styleFunction_ = undefined;
   if(goog.isDef(options.style)) {
     this.setStyle(options.style)
   }
@@ -20970,6 +20968,7 @@ ol.render.canvas.Immediate = function(context, pixelRatio, extent, transform) {
   this.imageAnchorX_ = 0;
   this.imageAnchorY_ = 0;
   this.imageHeight_ = 0;
+  this.imageOpacity_ = 0;
   this.imageRotation_ = 0;
   this.imageScale_ = 0;
   this.imageSnapToPixel_ = false;
@@ -20992,6 +20991,10 @@ ol.render.canvas.Immediate.prototype.drawImages_ = function(flatCoordinates, off
   var pixelCoordinates = ol.geom.flat.transform2D(flatCoordinates, 2, this.transform_, this.pixelCoordinates_);
   var context = this.context_;
   var localTransform = this.tmpLocalTransform_;
+  var alpha = context.globalAlpha;
+  if(this.imageOpacity_ != 1) {
+    context.globalAlpha = alpha * this.imageOpacity_
+  }
   var i, ii;
   for(i = 0, ii = pixelCoordinates.length;i < ii;i += 2) {
     var x = pixelCoordinates[i] - this.imageAnchorX_;
@@ -21010,6 +21013,9 @@ ol.render.canvas.Immediate.prototype.drawImages_ = function(flatCoordinates, off
   }
   if(this.imageRotation_ !== 0 || this.imageScale_ != 1) {
     context.setTransform(1, 0, 0, 1, 0, 0)
+  }
+  if(this.imageOpacity_ != 1) {
+    context.globalAlpha = alpha
   }
 };
 ol.render.canvas.Immediate.prototype.drawText_ = function(flatCoordinates, offset, end, stride) {
@@ -21361,6 +21367,7 @@ ol.render.canvas.Immediate.prototype.setImageStyle = function(imageStyle) {
   }else {
     var imageAnchor = imageStyle.getAnchor();
     var imageImage = imageStyle.getImage(1);
+    var imageOpacity = imageStyle.getOpacity();
     var imageRotation = imageStyle.getRotation();
     var imageScale = imageStyle.getScale();
     var imageSize = imageStyle.getSize();
@@ -21372,6 +21379,7 @@ ol.render.canvas.Immediate.prototype.setImageStyle = function(imageStyle) {
     this.imageAnchorY_ = imageAnchor[1];
     this.imageHeight_ = imageSize[1];
     this.image_ = imageImage;
+    this.imageOpacity_ = goog.isDef(imageOpacity) ? imageOpacity : 1;
     this.imageRotation_ = goog.isDef(imageRotation) ? imageRotation : 0;
     this.imageScale_ = goog.isDef(imageScale) ? imageScale : 1;
     this.imageSnapToPixel_ = goog.isDef(imageSnapToPixel) ? imageSnapToPixel : false;
@@ -21896,10 +21904,11 @@ ol.render.canvas.Replay.prototype.replay_ = function(context, pixelRatio, transf
         var anchorX = (instruction[4]) * pixelRatio;
         var anchorY = (instruction[5]) * pixelRatio;
         var height = (instruction[6]) * pixelRatio;
-        var rotation = (instruction[7]);
-        var scale = (instruction[8]);
-        var snapToPixel = (instruction[9]);
-        var width = (instruction[10]) * pixelRatio;
+        var opacity = (instruction[7]);
+        var rotation = (instruction[8]);
+        var scale = (instruction[9]);
+        var snapToPixel = (instruction[10]);
+        var width = (instruction[11]) * pixelRatio;
         for(;d < dd;d += 2) {
           x = pixelCoordinates[d] - anchorX;
           y = pixelCoordinates[d + 1] - anchorY;
@@ -21913,7 +21922,14 @@ ol.render.canvas.Replay.prototype.replay_ = function(context, pixelRatio, transf
             ol.vec.Mat4.makeTransform2D(localTransform, centerX, centerY, scale, scale, rotation, -centerX, -centerY);
             context.setTransform(goog.vec.Mat4.getElement(localTransform, 0, 0), goog.vec.Mat4.getElement(localTransform, 1, 0), goog.vec.Mat4.getElement(localTransform, 0, 1), goog.vec.Mat4.getElement(localTransform, 1, 1), goog.vec.Mat4.getElement(localTransform, 0, 3), goog.vec.Mat4.getElement(localTransform, 1, 3))
           }
+          var alpha = context.globalAlpha;
+          if(opacity != 1) {
+            context.globalAlpha = alpha * opacity
+          }
           context.drawImage(image, x, y, width, height);
+          if(opacity != 1) {
+            context.globalAlpha = alpha
+          }
           if(scale != 1 || rotation !== 0) {
             context.setTransform(1, 0, 0, 1, 0, 0)
           }
@@ -22091,6 +22107,7 @@ ol.render.canvas.ImageReplay = function(tolerance) {
   this.anchorX_ = undefined;
   this.anchorY_ = undefined;
   this.height_ = undefined;
+  this.opacity_ = undefined;
   this.rotation_ = undefined;
   this.scale_ = undefined;
   this.snapToPixel_ = undefined;
@@ -22107,6 +22124,7 @@ ol.render.canvas.ImageReplay.prototype.drawPointGeometry = function(pointGeometr
   goog.asserts.assert(goog.isDef(this.anchorX_));
   goog.asserts.assert(goog.isDef(this.anchorY_));
   goog.asserts.assert(goog.isDef(this.height_));
+  goog.asserts.assert(goog.isDef(this.opacity_));
   goog.asserts.assert(goog.isDef(this.rotation_));
   goog.asserts.assert(goog.isDef(this.scale_));
   goog.asserts.assert(goog.isDef(this.width_));
@@ -22116,8 +22134,8 @@ ol.render.canvas.ImageReplay.prototype.drawPointGeometry = function(pointGeometr
   var stride = pointGeometry.getStride();
   var myBegin = this.coordinates.length;
   var myEnd = this.drawCoordinates_(flatCoordinates, 0, flatCoordinates.length, stride);
-  this.instructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.image_, this.anchorX_, this.anchorY_, this.height_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
-  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.hitDetectionImage_, this.anchorX_, this.anchorY_, this.height_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
+  this.instructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.image_, this.anchorX_, this.anchorY_, this.height_, this.opacity_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
+  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.hitDetectionImage_, this.anchorX_, this.anchorY_, this.height_, this.opacity_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
   this.endGeometry(pointGeometry, data)
 };
 ol.render.canvas.ImageReplay.prototype.drawMultiPointGeometry = function(multiPointGeometry, data) {
@@ -22127,6 +22145,7 @@ ol.render.canvas.ImageReplay.prototype.drawMultiPointGeometry = function(multiPo
   goog.asserts.assert(goog.isDef(this.anchorX_));
   goog.asserts.assert(goog.isDef(this.anchorY_));
   goog.asserts.assert(goog.isDef(this.height_));
+  goog.asserts.assert(goog.isDef(this.opacity_));
   goog.asserts.assert(goog.isDef(this.rotation_));
   goog.asserts.assert(goog.isDef(this.scale_));
   goog.asserts.assert(goog.isDef(this.width_));
@@ -22136,8 +22155,8 @@ ol.render.canvas.ImageReplay.prototype.drawMultiPointGeometry = function(multiPo
   var stride = multiPointGeometry.getStride();
   var myBegin = this.coordinates.length;
   var myEnd = this.drawCoordinates_(flatCoordinates, 0, flatCoordinates.length, stride);
-  this.instructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.image_, this.anchorX_, this.anchorY_, this.height_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
-  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.hitDetectionImage_, this.anchorX_, this.anchorY_, this.height_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
+  this.instructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.image_, this.anchorX_, this.anchorY_, this.height_, this.opacity_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
+  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.hitDetectionImage_, this.anchorX_, this.anchorY_, this.height_, this.opacity_, this.rotation_, this.scale_, this.snapToPixel_, this.width_]);
   this.endGeometry(multiPointGeometry, data)
 };
 ol.render.canvas.ImageReplay.prototype.finish = function() {
@@ -22148,6 +22167,7 @@ ol.render.canvas.ImageReplay.prototype.finish = function() {
   this.image_ = null;
   this.height_ = undefined;
   this.scale_ = undefined;
+  this.opacity_ = undefined;
   this.rotation_ = undefined;
   this.snapToPixel_ = undefined;
   this.width_ = undefined
@@ -22167,6 +22187,7 @@ ol.render.canvas.ImageReplay.prototype.setImageStyle = function(imageStyle) {
   this.hitDetectionImage_ = hitDetectionImage;
   this.image_ = image;
   this.height_ = size[1];
+  this.opacity_ = imageStyle.getOpacity();
   this.rotation_ = imageStyle.getRotation();
   this.scale_ = imageStyle.getScale();
   this.snapToPixel_ = imageStyle.getSnapToPixel();
@@ -27473,7 +27494,7 @@ ol.style.Circle = function(opt_options) {
   var size = this.render_();
   this.anchor_ = [size / 2, size / 2];
   this.size_ = [size, size];
-  goog.base(this, {rotation:0, scale:1, snapToPixel:undefined, subtractViewRotation:false})
+  goog.base(this, {opacity:1, rotation:0, scale:1, snapToPixel:undefined, subtractViewRotation:false})
 };
 goog.inherits(ol.style.Circle, ol.style.Image);
 ol.style.Circle.prototype.getAnchor = function() {
@@ -29460,14 +29481,15 @@ ol.control.ZoomToExtent.prototype.handleZoomToExtent_ = function(browserEvent) {
 };
 goog.provide("ol.dom.Input");
 goog.provide("ol.dom.InputProperty");
+goog.require("goog.asserts");
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("ol.Object");
 ol.dom.InputProperty = {VALUE:"value", CHECKED:"checked"};
 ol.dom.Input = function(target) {
   goog.base(this);
-  this.target_ = target;
-  goog.events.listen(this.target_, goog.events.EventType.CHANGE, this.handleInputChanged_, false, this);
+  this.target_ = (target);
+  goog.events.listen(this.target_, [goog.events.EventType.CHANGE, goog.events.EventType.INPUT], this.handleInputChanged_, false, this);
   goog.events.listen(this, ol.Object.getChangeEventType(ol.dom.InputProperty.VALUE), this.handleValueChanged_, false, this);
   goog.events.listen(this, ol.Object.getChangeEventType(ol.dom.InputProperty.CHECKED), this.handleCheckedChanged_, false, this)
 };
@@ -29488,7 +29510,8 @@ ol.dom.Input.prototype.setChecked = function(checked) {
   this.set(ol.dom.InputProperty.CHECKED, checked)
 };
 goog.exportProperty(ol.dom.Input.prototype, "setChecked", ol.dom.Input.prototype.setChecked);
-ol.dom.Input.prototype.handleInputChanged_ = function() {
+ol.dom.Input.prototype.handleInputChanged_ = function(browserEvent) {
+  goog.asserts.assert(browserEvent.currentTarget == this.target_);
   var target = this.target_;
   if(target.type === "checkbox" || target.type === "radio") {
     this.setChecked(target.checked)
@@ -29496,11 +29519,11 @@ ol.dom.Input.prototype.handleInputChanged_ = function() {
     this.setValue(target.value)
   }
 };
-ol.dom.Input.prototype.handleCheckedChanged_ = function() {
-  this.target_.checked = this.getChecked()
+ol.dom.Input.prototype.handleCheckedChanged_ = function(event) {
+  this.target_.checked = (this.getChecked())
 };
-ol.dom.Input.prototype.handleValueChanged_ = function() {
-  this.target_.value = this.getValue()
+ol.dom.Input.prototype.handleValueChanged_ = function(event) {
+  this.target_.value = (this.getValue())
 };
 goog.provide("ol.ellipsoid.BESSEL1841");
 goog.require("ol.Ellipsoid");
