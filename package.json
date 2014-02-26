@@ -25,8 +25,8 @@
   },
   "scripts": {
     "postinstall": "bower install",
-    "start": "grunt start --treeish 'origin/master'",
-    "build": "grunt build --treeish 'origin/master'",
-    "deploy": "grunt deploy --treeish 'origin/master'"
+    "start": "grunt start",
+    "build": "grunt build",
+    "deploy": "grunt deploy"
   }
 }
