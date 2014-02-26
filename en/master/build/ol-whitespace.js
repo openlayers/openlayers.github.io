@@ -11309,9 +11309,9 @@ goog.require("goog.object");
 goog.require("ol.layer.Base");
 goog.require("ol.source.Source");
 ol.layer.Layer = function(options) {
-  var baseOptions = (goog.object.clone(options));
+  var baseOptions = goog.object.clone(options);
   delete baseOptions.source;
-  goog.base(this, baseOptions);
+  goog.base(this, (baseOptions));
   this.source_ = options.source;
   goog.events.listen(this.source_, goog.events.EventType.CHANGE, this.handleSourceChange_, false, this)
 };
@@ -21053,9 +21053,9 @@ goog.require("ol.layer.Layer");
 ol.layer.VectorProperty = {RENDER_GEOMETRY_FUNCTIONS:"renderGeometryFunctions"};
 ol.layer.Vector = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : ({});
-  var baseOptions = (goog.object.clone(options));
+  var baseOptions = goog.object.clone(options);
   delete baseOptions.style;
-  goog.base(this, baseOptions);
+  goog.base(this, (baseOptions));
   this.style_ = null;
   this.styleFunction_ = undefined;
   if(goog.isDef(options.style)) {
