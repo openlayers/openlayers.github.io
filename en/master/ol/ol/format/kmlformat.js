@@ -29,6 +29,7 @@ goog.require('ol.geom.Polygon');
 goog.require('ol.proj');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Icon');
+goog.require('ol.style.IconAnchorOrigin');
 goog.require('ol.style.IconAnchorUnits');
 goog.require('ol.style.Image');
 goog.require('ol.style.Stroke');
@@ -473,7 +474,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
     anchorXUnits = ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_X_UNITS_;
     anchorYUnits = ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_Y_UNITS_;
   } else if (/^http:\/\/maps\.(?:google|gstatic)\.com\//.test(src)) {
-    anchor = [0.5, 1];
+    anchor = [0.5, 0];
     anchorXUnits = ol.style.IconAnchorUnits.FRACTION;
     anchorYUnits = ol.style.IconAnchorUnits.FRACTION;
   }
@@ -494,6 +495,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
 
   var imageStyle = new ol.style.Icon({
     anchor: anchor,
+    anchorOrigin: ol.style.IconAnchorOrigin.BOTTOM_LEFT,
     anchorXUnits: anchorXUnits,
     anchorYUnits: anchorYUnits,
     crossOrigin: 'anonymous', // FIXME should this be configurable?
@@ -775,10 +777,6 @@ ol.format.KML.readMultiGeometry_ = function(node, objectStack) {
     var layout;
     /** @type {Array.<number>} */
     var flatCoordinates;
-    /** @type {Array.<number>} */
-    var ends;
-    /** @type {Array.<Array.<number>>} */
-    var endss;
     if (type == ol.geom.GeometryType.POINT) {
       var point = geometries[0];
       goog.asserts.assertInstanceof(point, ol.geom.Point);
@@ -794,42 +792,12 @@ ol.format.KML.readMultiGeometry_ = function(node, objectStack) {
       multiPoint.setFlatCoordinates(layout, flatCoordinates);
       return multiPoint;
     } else if (type == ol.geom.GeometryType.LINE_STRING) {
-      var lineString = geometries[0];
-      goog.asserts.assertInstanceof(lineString, ol.geom.LineString);
-      layout = lineString.getLayout();
-      flatCoordinates = lineString.getFlatCoordinates();
-      ends = [flatCoordinates.length];
-      for (i = 1, ii = geometries.length; i < ii; ++i) {
-        geometry = geometries[i];
-        goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
-        goog.asserts.assert(geometry.getLayout() == layout);
-        goog.array.extend(flatCoordinates, geometry.getFlatCoordinates());
-        ends.push(flatCoordinates.length);
-      }
       var multiLineString = new ol.geom.MultiLineString(null);
-      multiLineString.setFlatCoordinates(layout, flatCoordinates, ends);
+      multiLineString.setLineStrings(geometries);
       return multiLineString;
     } else if (type == ol.geom.GeometryType.POLYGON) {
-      var polygon = geometries[0];
-      goog.asserts.assertInstanceof(polygon, ol.geom.Polygon);
-      layout = polygon.getLayout();
-      flatCoordinates = polygon.getFlatCoordinates();
-      endss = [polygon.getEnds()];
-      for (i = 1, ii = geometries.length; i < ii; ++i) {
-        geometry = geometries[i];
-        goog.asserts.assertInstanceof(geometry, ol.geom.Polygon);
-        goog.asserts.assert(geometry.getLayout() == layout);
-        var offset = flatCoordinates.length;
-        ends = geometry.getEnds();
-        var j, jj;
-        for (j = 0, jj = ends.length; j < jj; ++j) {
-          ends[j] += offset;
-        }
-        goog.array.extend(flatCoordinates, geometry.getFlatCoordinates());
-        endss.push(ends);
-      }
       var multiPolygon = new ol.geom.MultiPolygon(null);
-      multiPolygon.setFlatCoordinates(layout, flatCoordinates, endss);
+      multiPolygon.setPolygons(geometries);
       return multiPolygon;
     } else if (type == ol.geom.GeometryType.GEOMETRY_COLLECTION) {
       return new ol.geom.GeometryCollection(geometries);
