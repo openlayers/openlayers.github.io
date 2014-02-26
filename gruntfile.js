@@ -68,6 +68,10 @@ module.exports = function(grunt) {
         src: repo + '/build/hosted/HEAD/examples',
         dest: dist + '/en/' + branch + '/examples'
       },
+      css: {
+        src: repo + '/build/hosted/HEAD/css',
+        dest: dist + '/en/' + branch + '/css'
+      },
       resources: {
         src: repo + '/build/hosted/HEAD/resources',
         dest: dist + '/en/' + branch + '/resources'
