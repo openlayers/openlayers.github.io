@@ -12,10 +12,8 @@ var latest = 'master';
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
-  var treeish = grunt.option('treeish');
-  if (!treeish) {
-    grunt.fatal(new Error('Missing "treeish" option.'));
-  }
+  var treeish = grunt.option('treeish') ||
+      process.env.treeish || 'origin/master';
 
   var branch = treeish.split('/').pop(); // may not always be a local branch
 
