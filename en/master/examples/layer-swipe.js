@@ -36,5 +36,5 @@ bing.on('postcompose', function(event) {
 });
 
 swipe.addEventListener('input', function() {
-  map.requestRenderFrame();
+  map.render();
 }, false);

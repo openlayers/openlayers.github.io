@@ -88,7 +88,7 @@ var displaySnap = function(coordinate) {
       line.setCoordinates(coordinates);
     }
   }
-  map.requestRenderFrame();
+  map.render();
 };
 
 $(map.getViewport()).on('mousemove', function(evt) {

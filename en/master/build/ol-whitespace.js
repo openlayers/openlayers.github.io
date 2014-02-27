@@ -529,6 +529,7 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["libtess", "l
 "ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.TopoJSON", "ol.source.Vector", "ol.source.VectorEvent", "ol.source.VectorEventType", "ol.source.VectorFile", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.source.wms.ServerType", "ol.sphere.NORMAL", "ol.sphere.WGS84", 
 "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style.Circle", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorOrigin", "ol.style.IconAnchorUnits", "ol.style.IconImageCache", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType", 
 "ol.webgl.shader", "ol.xml"]);
+goog.addDependency("../src/googx/dom/fullscreen.js", ["googx.dom.fullscreen", "googx.dom.fullscreen.EventType"], ["goog.dom", "goog.userAgent"]);
 goog.addDependency("../src/libtess.js/dict/Dict.js", ["libtess.Dict"], ["libtess", "libtess.DictNode"]);
 goog.addDependency("../src/libtess.js/dict/DictNode.js", ["libtess.DictNode"], ["libtess"]);
 goog.addDependency("../src/libtess.js/geom.js", ["libtess.geom"], ["libtess"]);
@@ -554,7 +555,7 @@ goog.addDependency("../src/ol/animation.js", ["ol.animation"], ["ol.PreRenderFun
 goog.addDependency("../src/ol/array.js", ["ol.array"], ["goog.array", "goog.asserts"]);
 goog.addDependency("../src/ol/attribution.js", ["ol.Attribution"], ["ol.TileRange"]);
 goog.addDependency("../src/ol/binary.js", ["ol.binary.Buffer", "ol.binary.IReader"], ["goog.asserts", "goog.userAgent", "ol.BrowserFeature"]);
-goog.addDependency("../src/ol/browserfeature.js", ["ol.BrowserFeature"], ["goog.dom", "goog.dom.TagName", "goog.userAgent", "ol.webgl"]);
+goog.addDependency("../src/ol/browserfeature.js", ["ol.BrowserFeature"], ["goog.dom", "goog.dom.TagName", "goog.userAgent", "googx.dom.fullscreen", "ol.webgl"]);
 goog.addDependency("../src/ol/canvasfunction.js", ["ol.CanvasFunctionType"], []);
 goog.addDependency("../src/ol/centerconstraint.js", ["ol.CenterConstraint", "ol.CenterConstraintType"], ["goog.math"]);
 goog.addDependency("../src/ol/collection.js", ["ol.Collection", "ol.CollectionEvent", "ol.CollectionEventType"], ["goog.array", "goog.events.Event", "ol.Object"]);
@@ -564,7 +565,7 @@ goog.addDependency("../src/ol/constraints.js", ["ol.Constraints"], ["ol.CenterCo
 goog.addDependency("../src/ol/control/attributioncontrol.js", ["ol.control.Attribution"], ["goog.array", "goog.dom", "goog.dom.TagName", "goog.object", "goog.style", "ol.Attribution", "ol.FrameState", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/control.js", ["ol.control.Control"], ["goog.array", "goog.dom", "goog.events", "ol.MapEventType", "ol.Object"]);
 goog.addDependency("../src/ol/control/controldefaults.js", ["ol.control"], ["ol.Collection", "ol.control.Attribution", "ol.control.Logo", "ol.control.Zoom"]);
-goog.addDependency("../src/ol/control/fullscreencontrol.js", ["ol.control.FullScreen"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.dom.classes", "goog.dom.fullscreen", "goog.dom.fullscreen.EventType", "goog.events", "goog.events.EventType", "ol.control.Control", "ol.css"]);
+goog.addDependency("../src/ol/control/fullscreencontrol.js", ["ol.control.FullScreen"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.dom.classes", "goog.events", "goog.events.EventType", "googx.dom.fullscreen", "googx.dom.fullscreen.EventType", "ol.BrowserFeature", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/logocontrol.js", ["ol.control.Logo"], ["goog.dom", "goog.dom.TagName", "goog.object", "goog.style", "ol.FrameState", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/mousepositioncontrol.js", ["ol.control.MousePosition"], ["goog.array", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.style", "ol.CoordinateFormatType", "ol.Object", "ol.Pixel", "ol.TransformFunction", "ol.control.Control", "ol.proj", "ol.proj.Projection"]);
 goog.addDependency("../src/ol/control/scalelinecontrol.js", ["ol.control.ScaleLine", "ol.control.ScaleLineProperty", "ol.control.ScaleLineUnits"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.math", "goog.style", "ol.Object", "ol.TransformFunction", "ol.View2DState", "ol.control.Control", "ol.css", "ol.proj", "ol.proj.Units", "ol.sphere.NORMAL"]);
@@ -7286,6 +7287,80 @@ goog.dom.DomHelper.prototype.isNodeList = goog.dom.isNodeList;
 goog.dom.DomHelper.prototype.getAncestorByTagNameAndClass = goog.dom.getAncestorByTagNameAndClass;
 goog.dom.DomHelper.prototype.getAncestorByClass = goog.dom.getAncestorByClass;
 goog.dom.DomHelper.prototype.getAncestor = goog.dom.getAncestor;
+goog.provide("googx.dom.fullscreen");
+goog.provide("googx.dom.fullscreen.EventType");
+goog.require("goog.dom");
+goog.require("goog.userAgent");
+googx.dom.fullscreen.EventType = {CHANGE:function() {
+  if(goog.userAgent.WEBKIT) {
+    return"webkitfullscreenchange"
+  }
+  if(goog.userAgent.GECKO) {
+    return"mozfullscreenchange"
+  }
+  if(goog.userAgent.IE) {
+    return"MSFullscreenChange"
+  }
+  return"fullscreenchange"
+}()};
+googx.dom.fullscreen.isSupported = function(opt_domHelper) {
+  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
+  var body = doc.body;
+  return!!(body.webkitRequestFullscreen || body.mozRequestFullScreen && doc.mozFullScreenEnabled || body.msRequestFullscreen && doc.msFullscreenEnabled || body.requestFullscreen && doc.fullscreenEnabled)
+};
+googx.dom.fullscreen.requestFullScreen = function(element) {
+  if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen()
+  }else {
+    if(element.mozRequestFullScreen) {
+      element.mozRequestFullScreen()
+    }else {
+      if(element.msRequestFullscreen) {
+        element.msRequestFullscreen()
+      }else {
+        if(element.requestFullscreen) {
+          element.requestFullscreen()
+        }
+      }
+    }
+  }
+};
+googx.dom.fullscreen.requestFullScreenWithKeys = function(element) {
+  if(element.mozRequestFullScreenWithKeys) {
+    element.mozRequestFullScreenWithKeys()
+  }else {
+    if(element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen()
+    }else {
+      googx.dom.fullscreen.requestFullScreen(element)
+    }
+  }
+};
+googx.dom.fullscreen.exitFullScreen = function(opt_domHelper) {
+  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
+  if(doc.webkitCancelFullScreen) {
+    doc.webkitCancelFullScreen()
+  }else {
+    if(doc.mozCancelFullScreen) {
+      doc.mozCancelFullScreen()
+    }else {
+      if(doc.msExitFullscreen) {
+        doc.msExitFullscreen()
+      }else {
+        if(doc.exitFullscreen) {
+          doc.exitFullscreen()
+        }
+      }
+    }
+  }
+};
+googx.dom.fullscreen.isFullScreen = function(opt_domHelper) {
+  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
+  return!!(doc.webkitIsFullScreen || doc.mozFullScreen || doc.msFullscreenElement || doc.fullscreenElement)
+};
+googx.dom.fullscreen.getDocument_ = function(opt_domHelper) {
+  return opt_domHelper ? opt_domHelper.getDocument() : goog.dom.getDomHelper().getDocument()
+};
 goog.provide("ol.webgl");
 goog.provide("ol.webgl.WebGLContextEventType");
 ol.webgl.CONTEXT_IDS_ = ["experimental-webgl", "webgl", "webkit-3d", "moz-webgl"];
@@ -7307,6 +7382,7 @@ goog.provide("ol.BrowserFeature");
 goog.require("goog.dom");
 goog.require("goog.dom.TagName");
 goog.require("goog.userAgent");
+goog.require("googx.dom.fullscreen");
 goog.require("ol.webgl");
 ol.ASSUME_TOUCH = false;
 ol.ENABLE_CANVAS = true;
@@ -7341,6 +7417,7 @@ ol.BrowserFeature.HAS_CANVAS = ol.ENABLE_CANVAS && function() {
 }();
 ol.BrowserFeature.HAS_DEVICE_ORIENTATION = "DeviceOrientationEvent" in goog.global;
 ol.BrowserFeature.HAS_DOM = ol.ENABLE_DOM;
+ol.BrowserFeature.HAS_FULLSCREEN = googx.dom.fullscreen.isSupported();
 ol.BrowserFeature.HAS_GEOLOCATION = "geolocation" in goog.global.navigator;
 ol.BrowserFeature.HAS_TOUCH = ol.ASSUME_TOUCH || goog.global.document && "ontouchstart" in goog.global.document.documentElement || !!goog.global.navigator.msPointerEnabled;
 ol.BrowserFeature.HAS_WEBGL = ol.ENABLE_WEBGL && function() {
@@ -13419,14 +13496,14 @@ ol.render.Box.prototype.getGeometry = function() {
 };
 ol.render.Box.prototype.requestMapRenderFrame_ = function() {
   if(!goog.isNull(this.map_) && !goog.isNull(this.startPixel_) && !goog.isNull(this.endPixel_)) {
-    this.map_.requestRenderFrame()
+    this.map_.render()
   }
 };
 ol.render.Box.prototype.setMap = function(map) {
   if(!goog.isNull(this.postComposeListenerKey_)) {
     goog.events.unlistenByKey(this.postComposeListenerKey_);
     this.postComposeListenerKey_ = null;
-    this.map_.requestRenderFrame();
+    this.map_.render();
     this.map_ = null
   }
   this.map_ = map;
@@ -14416,13 +14493,13 @@ ol.FeatureOverlay.prototype.getFeatures = function() {
   return this.features_
 };
 ol.FeatureOverlay.prototype.handleFeatureChange_ = function() {
-  this.requestRenderFrame_()
+  this.render_()
 };
 ol.FeatureOverlay.prototype.handleFeaturesAdd_ = function(collectionEvent) {
   goog.asserts.assert(!goog.isNull(this.featureChangeListenerKeys_));
   var feature = (collectionEvent.element);
   this.featureChangeListenerKeys_[goog.getUid(feature).toString()] = goog.events.listen(feature, goog.events.EventType.CHANGE, this.handleFeatureChange_, false, this);
-  this.requestRenderFrame_()
+  this.render_()
 };
 ol.FeatureOverlay.prototype.handleFeaturesRemove_ = function(collectionEvent) {
   goog.asserts.assert(!goog.isNull(this.featureChangeListenerKeys_));
@@ -14430,7 +14507,7 @@ ol.FeatureOverlay.prototype.handleFeaturesRemove_ = function(collectionEvent) {
   var key = goog.getUid(feature).toString();
   goog.events.unlistenByKey(this.featureChangeListenerKeys_[key]);
   delete this.featureChangeListenerKeys_[key];
-  this.requestRenderFrame_()
+  this.render_()
 };
 ol.FeatureOverlay.prototype.handleMapPostCompose_ = function(event) {
   if(goog.isNull(this.features_) || !goog.isDef(this.styleFunction_)) {
@@ -14453,9 +14530,9 @@ ol.FeatureOverlay.prototype.handleMapPostCompose_ = function(event) {
 ol.FeatureOverlay.prototype.removeFeature = function(feature) {
   this.features_.remove(feature)
 };
-ol.FeatureOverlay.prototype.requestRenderFrame_ = function() {
+ol.FeatureOverlay.prototype.render_ = function() {
   if(!goog.isNull(this.map_)) {
-    this.map_.requestRenderFrame()
+    this.map_.render()
   }
 };
 ol.FeatureOverlay.prototype.setFeatures = function(features) {
@@ -14479,24 +14556,24 @@ ol.FeatureOverlay.prototype.setFeatures = function(features) {
       this.featureChangeListenerKeys_[goog.getUid(feature).toString()] = goog.events.listen(feature, goog.events.EventType.CHANGE, this.handleFeatureChange_, false, this)
     }
   }
-  this.requestRenderFrame_()
+  this.render_()
 };
 ol.FeatureOverlay.prototype.setMap = function(map) {
   if(!goog.isNull(this.postComposeListenerKey_)) {
     goog.events.unlistenByKey(this.postComposeListenerKey_);
     this.postComposeListenerKey_ = null
   }
-  this.requestRenderFrame_();
+  this.render_();
   this.map_ = map;
   if(!goog.isNull(map)) {
     this.postComposeListenerKey_ = goog.events.listen(map, ol.render.EventType.POSTCOMPOSE, this.handleMapPostCompose_, false, this);
-    map.requestRenderFrame()
+    map.render()
   }
 };
 ol.FeatureOverlay.prototype.setStyle = function(style) {
   this.style_ = style;
   this.styleFunction_ = ol.feature.createStyleFunction(style);
-  this.requestRenderFrame_()
+  this.render_()
 };
 ol.FeatureOverlay.prototype.getStyle = function() {
   return this.style_
@@ -19227,9 +19304,15 @@ ol.control.Zoom = function(opt_options) {
   var tTipZoomIn = goog.dom.createDom(goog.dom.TagName.SPAN, {"role":"tooltip"}, zoomInTipLabel);
   var inElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":className + "-in ol-has-tooltip", "name":"ZoomIn", "type":"button"}, tTipZoomIn, zoomInLabel);
   goog.events.listen(inElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.partial(ol.control.Zoom.prototype.zoomByDelta_, delta), false, this);
+  goog.events.listen(inElement, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
+    this.blur()
+  }, false);
   var tTipsZoomOut = goog.dom.createDom(goog.dom.TagName.SPAN, {"role":"tooltip", "type":"button"}, zoomOutTipLabel);
   var outElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":className + "-out  ol-has-tooltip", "name":"ZoomOut"}, tTipsZoomOut, zoomOutLabel);
   goog.events.listen(outElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.partial(ol.control.Zoom.prototype.zoomByDelta_, -delta), false, this);
+  goog.events.listen(outElement, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
+    this.blur()
+  }, false);
   var cssClasses = className + " " + ol.css.CLASS_UNSELECTABLE;
   var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, inElement, outElement);
   goog.base(this, {element:element, target:options.target});
@@ -19392,7 +19475,7 @@ ol.interaction.DragPan.prototype.handleDrag = function(mapBrowserEvent) {
   ol.coordinate.rotate(newCenter, view2DState.rotation);
   ol.coordinate.add(newCenter, this.startCenter);
   newCenter = view.constrainCenter(newCenter);
-  map.requestRenderFrame();
+  map.render();
   view.setCenter(newCenter)
 };
 ol.interaction.DragPan.prototype.handleDragEnd = function(mapBrowserEvent) {
@@ -19412,7 +19495,7 @@ ol.interaction.DragPan.prototype.handleDragEnd = function(mapBrowserEvent) {
     dest = view2D.constrainCenter(dest);
     view2D.setCenter(dest)
   }
-  map.requestRenderFrame()
+  map.render()
 };
 ol.interaction.DragPan.prototype.handleDragStart = function(mapBrowserEvent) {
   var browserEvent = mapBrowserEvent.browserEvent;
@@ -19423,7 +19506,7 @@ ol.interaction.DragPan.prototype.handleDragStart = function(mapBrowserEvent) {
     }
     var map = mapBrowserEvent.map;
     map.getView().setHint(ol.ViewHint.INTERACTING, 1);
-    map.requestRenderFrame();
+    map.render();
     return true
   }else {
     return false
@@ -19435,7 +19518,7 @@ ol.interaction.DragPan.prototype.handleDown = function(mapBrowserEvent) {
   goog.asserts.assertInstanceof(view, ol.View2D);
   goog.asserts.assert(!goog.isNull(mapBrowserEvent.frameState));
   if(!goog.isNull(this.kineticPreRenderFn_) && map.removePreRenderFunction(this.kineticPreRenderFn_)) {
-    map.requestRenderFrame();
+    map.render();
     view.setCenter(mapBrowserEvent.frameState.view2DState.center);
     this.kineticPreRenderFn_ = null
   }
@@ -19464,7 +19547,7 @@ ol.interaction.DragRotate.prototype.handleDrag = function(mapBrowserEvent) {
     var delta = theta - this.lastAngle_;
     var view = map.getView().getView2D();
     var view2DState = view.getView2DState();
-    map.requestRenderFrame();
+    map.render();
     ol.interaction.Interaction.rotateWithoutConstraints(map, view, view2DState.rotation - delta)
   }
   this.lastAngle_ = theta
@@ -19482,7 +19565,7 @@ ol.interaction.DragRotate.prototype.handleDragStart = function(mapBrowserEvent) 
   if(browserEvent.isMouseActionButton() && this.condition_(mapBrowserEvent)) {
     var map = mapBrowserEvent.map;
     map.getView().setHint(ol.ViewHint.INTERACTING, 1);
-    map.requestRenderFrame();
+    map.render();
     this.lastAngle_ = undefined;
     return true
   }else {
@@ -19586,7 +19669,7 @@ ol.interaction.KeyboardZoom.prototype.handleMapBrowserEvent = function(mapBrowse
     if(this.condition_(mapBrowserEvent) && (charCode == "+".charCodeAt(0) || charCode == "-".charCodeAt(0))) {
       var map = mapBrowserEvent.map;
       var delta = charCode == "+".charCodeAt(0) ? this.delta_ : -this.delta_;
-      map.requestRenderFrame();
+      map.render();
       var view = map.getView().getView2D();
       ol.interaction.Interaction.zoomByDelta(map, view, delta, undefined, this.duration_);
       mapBrowserEvent.preventDefault();
@@ -19638,7 +19721,7 @@ ol.interaction.MouseWheelZoom.prototype.doZoom_ = function(map) {
   var maxDelta = ol.interaction.MOUSEWHEELZOOM_MAXDELTA;
   var delta = goog.math.clamp(this.delta_, -maxDelta, maxDelta);
   var view = map.getView().getView2D();
-  map.requestRenderFrame();
+  map.render();
   ol.interaction.Interaction.zoomByDelta(map, view, -delta, this.lastAnchor_, this.duration_);
   this.delta_ = 0;
   this.lastAnchor_ = null;
@@ -19756,7 +19839,7 @@ ol.interaction.TouchPan.prototype.handleTouchMove = function(mapBrowserEvent) {
     ol.coordinate.rotate(center, view2DState.rotation);
     ol.coordinate.add(center, view2DState.center);
     center = view2D.constrainCenter(center);
-    map.requestRenderFrame();
+    map.render();
     view2D.setCenter(center)
   }
   this.lastCentroid = centroid
@@ -19778,7 +19861,7 @@ ol.interaction.TouchPan.prototype.handleTouchEnd = function(mapBrowserEvent) {
       dest = view2D.constrainCenter(dest);
       view2D.setCenter(dest)
     }
-    map.requestRenderFrame();
+    map.render();
     return false
   }else {
     this.lastCentroid = null;
@@ -19791,7 +19874,7 @@ ol.interaction.TouchPan.prototype.handleTouchStart = function(mapBrowserEvent) {
     var view2D = map.getView().getView2D();
     goog.asserts.assertInstanceof(view2D, ol.View2D);
     this.lastCentroid = null;
-    map.requestRenderFrame();
+    map.render();
     if(!goog.isNull(this.kineticPreRenderFn_) && map.removePreRenderFunction(this.kineticPreRenderFn_)) {
       view2D.setCenter(mapBrowserEvent.frameState.view2DState.center);
       this.kineticPreRenderFn_ = null
@@ -19846,7 +19929,7 @@ ol.interaction.TouchRotate.prototype.handleTouchMove = function(mapBrowserEvent)
   if(this.rotating_) {
     var view = map.getView().getView2D();
     var view2DState = view.getView2DState();
-    map.requestRenderFrame();
+    map.render();
     ol.interaction.Interaction.rotateWithoutConstraints(map, view, view2DState.rotation + rotationDelta, this.anchor_)
   }
 };
@@ -19870,7 +19953,7 @@ ol.interaction.TouchRotate.prototype.handleTouchStart = function(mapBrowserEvent
     this.lastAngle_ = undefined;
     this.rotating_ = false;
     this.rotationDelta_ = 0;
-    map.requestRenderFrame();
+    map.render();
     return true
   }else {
     return false
@@ -19914,7 +19997,7 @@ ol.interaction.TouchZoom.prototype.handleTouchMove = function(mapBrowserEvent) {
   centroid[0] -= viewportPosition.x;
   centroid[1] -= viewportPosition.y;
   this.anchor_ = map.getCoordinateFromPixel(centroid);
-  map.requestRenderFrame();
+  map.render();
   ol.interaction.Interaction.zoomWithoutConstraints(map, view, view2DState.resolution * scaleDelta, this.anchor_)
 };
 ol.interaction.TouchZoom.prototype.handleTouchEnd = function(mapBrowserEvent) {
@@ -19935,7 +20018,7 @@ ol.interaction.TouchZoom.prototype.handleTouchStart = function(mapBrowserEvent) 
     this.anchor_ = null;
     this.lastDistance_ = undefined;
     this.lastScaleDelta_ = 1;
-    map.requestRenderFrame();
+    map.render();
     return true
   }else {
     return false
@@ -27187,7 +27270,7 @@ ol.Map.prototype.addOverlay = function(overlay) {
   overlay.setMap(this)
 };
 ol.Map.prototype.beforeRender = function(var_args) {
-  this.requestRenderFrame();
+  this.render();
   Array.prototype.push.apply(this.preRenderFunctions_, arguments)
 };
 ol.Map.prototype.removePreRenderFunction = function(preRenderFunction) {
@@ -27371,7 +27454,7 @@ ol.Map.prototype.handleTargetChanged_ = function() {
   this.updateSize()
 };
 ol.Map.prototype.handleTileChange_ = function() {
-  this.requestRenderFrame()
+  this.render()
 };
 ol.Map.prototype.handleViewPropertyChanged_ = function() {
   this.render()
@@ -27426,7 +27509,10 @@ ol.Map.prototype.isDef = function() {
   }
   return true
 };
-ol.Map.prototype.render = function() {
+ol.Map.prototype.isRendered = function() {
+  return!goog.isNull(this.frameState_)
+};
+ol.Map.prototype.renderSync = function() {
   if(this.animationDelay_.isActive()) {
   }else {
     if(this.freezeRenderingCount_ === 0) {
@@ -27436,7 +27522,7 @@ ol.Map.prototype.render = function() {
     }
   }
 };
-ol.Map.prototype.requestRenderFrame = function() {
+ol.Map.prototype.render = function() {
   if(this.freezeRenderingCount_ === 0) {
     if(!this.animationDelay_.isActive()) {
       this.animationDelay_.start()
@@ -27524,7 +27610,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
   this.dirty_ = false;
   if(!goog.isNull(frameState)) {
     if(frameState.animate) {
-      this.requestRenderFrame()
+      this.render()
     }
     Array.prototype.push.apply(this.postRenderFunctions_, frameState.postRenderFunctions);
     var idle = this.preRenderFunctions_.length == 0 && !frameState.animate && !frameState.viewHints[ol.ViewHint.ANIMATING] && !frameState.viewHints[ol.ViewHint.INTERACTING];
@@ -28392,7 +28478,7 @@ goog.exportProperty(ol.Overlay.prototype, "setPositioning", ol.Overlay.prototype
 ol.Overlay.prototype.updatePixelPosition_ = function() {
   var map = this.getMap();
   var position = this.getPosition();
-  if(!goog.isDef(map) || !map.isDef() || !goog.isDef(position)) {
+  if(!goog.isDef(map) || !map.isRendered() || !goog.isDef(position)) {
     if(this.rendered_.visible) {
       goog.style.setElementShown(this.element_, false);
       this.rendered_.visible = false
@@ -28622,125 +28708,16 @@ ol.binary.ArrayReader.prototype.readByte = function() {
     return 0
   }
 };
-goog.provide("goog.userAgent.product");
-goog.require("goog.userAgent");
-goog.define("goog.userAgent.product.ASSUME_FIREFOX", false);
-goog.define("goog.userAgent.product.ASSUME_CAMINO", false);
-goog.define("goog.userAgent.product.ASSUME_IPHONE", false);
-goog.define("goog.userAgent.product.ASSUME_IPAD", false);
-goog.define("goog.userAgent.product.ASSUME_ANDROID", false);
-goog.define("goog.userAgent.product.ASSUME_CHROME", false);
-goog.define("goog.userAgent.product.ASSUME_SAFARI", false);
-goog.userAgent.product.PRODUCT_KNOWN_ = goog.userAgent.ASSUME_IE || goog.userAgent.ASSUME_OPERA || goog.userAgent.product.ASSUME_FIREFOX || goog.userAgent.product.ASSUME_CAMINO || goog.userAgent.product.ASSUME_IPHONE || goog.userAgent.product.ASSUME_IPAD || goog.userAgent.product.ASSUME_ANDROID || goog.userAgent.product.ASSUME_CHROME || goog.userAgent.product.ASSUME_SAFARI;
-goog.userAgent.product.init_ = function() {
-  goog.userAgent.product.detectedFirefox_ = false;
-  goog.userAgent.product.detectedCamino_ = false;
-  goog.userAgent.product.detectedIphone_ = false;
-  goog.userAgent.product.detectedIpad_ = false;
-  goog.userAgent.product.detectedAndroid_ = false;
-  goog.userAgent.product.detectedChrome_ = false;
-  goog.userAgent.product.detectedSafari_ = false;
-  var ua = goog.userAgent.getUserAgentString();
-  if(!ua) {
-    return
-  }
-  if(ua.indexOf("Firefox") != -1) {
-    goog.userAgent.product.detectedFirefox_ = true
-  }else {
-    if(ua.indexOf("Camino") != -1) {
-      goog.userAgent.product.detectedCamino_ = true
-    }else {
-      if(ua.indexOf("iPhone") != -1 || ua.indexOf("iPod") != -1) {
-        goog.userAgent.product.detectedIphone_ = true
-      }else {
-        if(ua.indexOf("iPad") != -1) {
-          goog.userAgent.product.detectedIpad_ = true
-        }else {
-          if(ua.indexOf("Android") != -1) {
-            goog.userAgent.product.detectedAndroid_ = true
-          }else {
-            if(ua.indexOf("Chrome") != -1) {
-              goog.userAgent.product.detectedChrome_ = true
-            }else {
-              if(ua.indexOf("Safari") != -1) {
-                goog.userAgent.product.detectedSafari_ = true
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-};
-if(!goog.userAgent.product.PRODUCT_KNOWN_) {
-  goog.userAgent.product.init_()
-}
-goog.userAgent.product.OPERA = goog.userAgent.OPERA;
-goog.userAgent.product.IE = goog.userAgent.IE;
-goog.userAgent.product.FIREFOX = goog.userAgent.product.PRODUCT_KNOWN_ ? goog.userAgent.product.ASSUME_FIREFOX : goog.userAgent.product.detectedFirefox_;
-goog.userAgent.product.CAMINO = goog.userAgent.product.PRODUCT_KNOWN_ ? goog.userAgent.product.ASSUME_CAMINO : goog.userAgent.product.detectedCamino_;
-goog.userAgent.product.IPHONE = goog.userAgent.product.PRODUCT_KNOWN_ ? goog.userAgent.product.ASSUME_IPHONE : goog.userAgent.product.detectedIphone_;
-goog.userAgent.product.IPAD = goog.userAgent.product.PRODUCT_KNOWN_ ? goog.userAgent.product.ASSUME_IPAD : goog.userAgent.product.detectedIpad_;
-goog.userAgent.product.ANDROID = goog.userAgent.product.PRODUCT_KNOWN_ ? goog.userAgent.product.ASSUME_ANDROID : goog.userAgent.product.detectedAndroid_;
-goog.userAgent.product.CHROME = goog.userAgent.product.PRODUCT_KNOWN_ ? goog.userAgent.product.ASSUME_CHROME : goog.userAgent.product.detectedChrome_;
-goog.userAgent.product.SAFARI = goog.userAgent.product.PRODUCT_KNOWN_ ? goog.userAgent.product.ASSUME_SAFARI : goog.userAgent.product.detectedSafari_;
-goog.provide("goog.dom.fullscreen");
-goog.provide("goog.dom.fullscreen.EventType");
-goog.require("goog.dom");
-goog.require("goog.userAgent");
-goog.require("goog.userAgent.product");
-goog.dom.fullscreen.EventType = {CHANGE:goog.userAgent.WEBKIT ? "webkitfullscreenchange" : "mozfullscreenchange"};
-goog.dom.fullscreen.isSupported = function(opt_domHelper) {
-  var doc = goog.dom.fullscreen.getDocument_(opt_domHelper);
-  var body = doc.body;
-  return!!body.webkitRequestFullScreen || !!body.mozRequestFullScreen && doc.mozFullScreenEnabled
-};
-goog.dom.fullscreen.requestFullScreen = function(element) {
-  if(element.webkitRequestFullScreen) {
-    element.webkitRequestFullScreen()
-  }else {
-    if(element.mozRequestFullScreen) {
-      element.mozRequestFullScreen()
-    }
-  }
-};
-goog.dom.fullscreen.requestFullScreenWithKeys = function(element) {
-  if(element.mozRequestFullScreenWithKeys) {
-    element.mozRequestFullScreenWithKeys()
-  }else {
-    if(element.webkitRequestFullScreen && element.ALLOW_KEYBOARD_INPUT && goog.userAgent.product.CHROME) {
-      element.webkitRequestFullScreen(element.ALLOW_KEYBOARD_INPUT)
-    }else {
-      goog.dom.fullscreen.requestFullScreen(element)
-    }
-  }
-};
-goog.dom.fullscreen.exitFullScreen = function(opt_domHelper) {
-  var doc = goog.dom.fullscreen.getDocument_(opt_domHelper);
-  if(doc.webkitCancelFullScreen) {
-    doc.webkitCancelFullScreen()
-  }else {
-    if(doc.mozCancelFullScreen) {
-      doc.mozCancelFullScreen()
-    }
-  }
-};
-goog.dom.fullscreen.isFullScreen = function(opt_domHelper) {
-  var doc = goog.dom.fullscreen.getDocument_(opt_domHelper);
-  return!!doc.webkitIsFullScreen || !!doc.mozFullScreen
-};
-goog.dom.fullscreen.getDocument_ = function(opt_domHelper) {
-  return opt_domHelper ? opt_domHelper.getDocument() : goog.dom.getDomHelper().getDocument()
-};
 goog.provide("ol.control.FullScreen");
 goog.require("goog.asserts");
 goog.require("goog.dom");
 goog.require("goog.dom.TagName");
 goog.require("goog.dom.classes");
-goog.require("goog.dom.fullscreen");
-goog.require("goog.dom.fullscreen.EventType");
 goog.require("goog.events");
 goog.require("goog.events.EventType");
+goog.require("googx.dom.fullscreen");
+goog.require("googx.dom.fullscreen.EventType");
+goog.require("ol.BrowserFeature");
 goog.require("ol.control.Control");
 goog.require("ol.css");
 ol.control.FullScreen = function(opt_options) {
@@ -28748,17 +28725,20 @@ ol.control.FullScreen = function(opt_options) {
   this.cssClassName_ = goog.isDef(options.className) ? options.className : "ol-full-screen";
   var tipLabel = goog.isDef(options.tipLabel) ? options.tipLabel : "Toggle full-screen";
   var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {"role":"tooltip"}, tipLabel);
-  var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":this.cssClassName_ + "-" + goog.dom.fullscreen.isFullScreen() + " ol-has-tooltip"});
+  var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":this.cssClassName_ + "-" + googx.dom.fullscreen.isFullScreen() + " ol-has-tooltip"});
   goog.dom.appendChild(button, tip);
   goog.events.listen(button, [goog.events.EventType.CLICK, goog.events.EventType.TOUCHEND], this.handleClick_, false, this);
-  goog.events.listen(goog.global.document, goog.dom.fullscreen.EventType.CHANGE, this.handleFullScreenChange_, false, this);
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, {"class":this.cssClassName_ + " " + ol.css.CLASS_UNSELECTABLE + " " + (!goog.dom.fullscreen.isSupported() ? ol.css.CLASS_UNSUPPORTED : "")}, button);
+  goog.events.listen(button, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
+    this.blur()
+  }, false);
+  goog.events.listen(goog.global.document, googx.dom.fullscreen.EventType.CHANGE, this.handleFullScreenChange_, false, this);
+  var element = goog.dom.createDom(goog.dom.TagName.DIV, {"class":this.cssClassName_ + " " + ol.css.CLASS_UNSELECTABLE + " " + (!ol.BrowserFeature.HAS_FULLSCREEN ? ol.css.CLASS_UNSUPPORTED : "")}, button);
   goog.base(this, {element:element, target:options.target});
   this.keys_ = goog.isDef(options.keys) ? options.keys : false
 };
 goog.inherits(ol.control.FullScreen, ol.control.Control);
 ol.control.FullScreen.prototype.handleClick_ = function(browserEvent) {
-  if(!goog.dom.fullscreen.isSupported()) {
+  if(!ol.BrowserFeature.HAS_FULLSCREEN) {
     return
   }
   browserEvent.preventDefault();
@@ -28766,17 +28746,17 @@ ol.control.FullScreen.prototype.handleClick_ = function(browserEvent) {
   if(goog.isNull(map)) {
     return
   }
-  if(goog.dom.fullscreen.isFullScreen()) {
-    goog.dom.fullscreen.exitFullScreen()
+  if(googx.dom.fullscreen.isFullScreen()) {
+    googx.dom.fullscreen.exitFullScreen()
   }else {
     var target = map.getTarget();
     goog.asserts.assert(goog.isDefAndNotNull(target));
     var element = goog.dom.getElement(target);
     goog.asserts.assert(goog.isDefAndNotNull(element));
     if(this.keys_) {
-      goog.dom.fullscreen.requestFullScreenWithKeys(element)
+      googx.dom.fullscreen.requestFullScreenWithKeys(element)
     }else {
-      goog.dom.fullscreen.requestFullScreen(element)
+      googx.dom.fullscreen.requestFullScreen(element)
     }
   }
 };
@@ -28785,7 +28765,7 @@ ol.control.FullScreen.prototype.handleFullScreenChange_ = function() {
   var closed = this.cssClassName_ + "-false";
   var anchor = goog.dom.getFirstElementChild(this.element);
   var map = this.getMap();
-  if(goog.dom.fullscreen.isFullScreen()) {
+  if(googx.dom.fullscreen.isFullScreen()) {
     goog.dom.classes.swap(anchor, closed, opened)
   }else {
     goog.dom.classes.swap(anchor, opened, closed)
@@ -29649,7 +29629,10 @@ ol.control.ZoomToExtent = function(opt_options) {
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":"ol-has-tooltip"});
   goog.dom.appendChild(button, tip);
   goog.dom.appendChild(element, button);
-  goog.events.listen(element, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.handleZoomToExtent_, false, this);
+  goog.events.listen(button, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.handleZoomToExtent_, false, this);
+  goog.events.listen(button, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
+    this.blur()
+  }, false);
   goog.base(this, {element:element, target:options.target})
 };
 goog.inherits(ol.control.ZoomToExtent, ol.control.Control);
@@ -33368,7 +33351,7 @@ ol.interaction.DragRotateAndZoom.prototype.handleDrag = function(mapBrowserEvent
   var magnitude = delta.magnitude();
   var view = map.getView().getView2D();
   var view2DState = view.getView2DState();
-  map.requestRenderFrame();
+  map.render();
   if(goog.isDef(this.lastAngle_)) {
     var angleDelta = theta - this.lastAngle_;
     ol.interaction.Interaction.rotateWithoutConstraints(map, view, view2DState.rotation - angleDelta)

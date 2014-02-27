@@ -39,7 +39,7 @@
 <pre><code class="language-xml"><span class="doctype">&lt;!doctype html&gt;</span>
 <span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"http://ol3js.org/en/master/build/ol.css"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"http://ol3js.org/en/master/css/ol.css"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
       <span class="class">.map</span> <span class="rules">{
         <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px</span></span>;
@@ -83,7 +83,8 @@
 <p>The map in the application is contained in a <a href="http://en.wikipedia.org/wiki/Span_and_div"><code>&lt;div&gt;</code> HTML element</a>. Through this <code>&lt;div&gt;</code> the map properties like width, height and border can be controlled through CSS. Here&#39;s the CSS element used to make the map 400 pixels high and as wide as the browser window.</p>
 <pre><code class="language-xml">  <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
     <span class="class">.map</span> <span class="rules">{
-      <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px</span></span>; <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+      <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px</span></span>;
+      <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%</span></span>;
     <span class="rule">}</span></span>
   </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></code></pre>
 <h3 id="javascript-to-create-a-simple-map">JavaScript to create a simple map</h3>
