@@ -555,7 +555,7 @@ goog.addDependency("../src/ol/animation.js", ["ol.animation"], ["ol.PreRenderFun
 goog.addDependency("../src/ol/array.js", ["ol.array"], ["goog.array", "goog.asserts"]);
 goog.addDependency("../src/ol/attribution.js", ["ol.Attribution"], ["ol.TileRange"]);
 goog.addDependency("../src/ol/binary.js", ["ol.binary.Buffer", "ol.binary.IReader"], ["goog.asserts", "goog.userAgent", "ol.BrowserFeature"]);
-goog.addDependency("../src/ol/browserfeature.js", ["ol.BrowserFeature"], ["goog.dom", "goog.dom.TagName", "goog.userAgent", "googx.dom.fullscreen", "ol.webgl"]);
+goog.addDependency("../src/ol/browserfeature.js", ["ol.BrowserFeature"], ["goog.dom", "goog.dom.TagName", "goog.userAgent", "ol.webgl"]);
 goog.addDependency("../src/ol/canvasfunction.js", ["ol.CanvasFunctionType"], []);
 goog.addDependency("../src/ol/centerconstraint.js", ["ol.CenterConstraint", "ol.CenterConstraintType"], ["goog.math"]);
 goog.addDependency("../src/ol/collection.js", ["ol.Collection", "ol.CollectionEvent", "ol.CollectionEventType"], ["goog.array", "goog.events.Event", "ol.Object"]);
@@ -565,7 +565,7 @@ goog.addDependency("../src/ol/constraints.js", ["ol.Constraints"], ["ol.CenterCo
 goog.addDependency("../src/ol/control/attributioncontrol.js", ["ol.control.Attribution"], ["goog.array", "goog.dom", "goog.dom.TagName", "goog.object", "goog.style", "ol.Attribution", "ol.FrameState", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/control.js", ["ol.control.Control"], ["goog.array", "goog.dom", "goog.events", "ol.MapEventType", "ol.Object"]);
 goog.addDependency("../src/ol/control/controldefaults.js", ["ol.control"], ["ol.Collection", "ol.control.Attribution", "ol.control.Logo", "ol.control.Zoom"]);
-goog.addDependency("../src/ol/control/fullscreencontrol.js", ["ol.control.FullScreen"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.dom.classes", "goog.events", "goog.events.EventType", "googx.dom.fullscreen", "googx.dom.fullscreen.EventType", "ol.BrowserFeature", "ol.control.Control", "ol.css"]);
+goog.addDependency("../src/ol/control/fullscreencontrol.js", ["ol.control.FullScreen"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.dom.classes", "goog.events", "goog.events.EventType", "googx.dom.fullscreen", "googx.dom.fullscreen.EventType", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/logocontrol.js", ["ol.control.Logo"], ["goog.dom", "goog.dom.TagName", "goog.object", "goog.style", "ol.FrameState", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/mousepositioncontrol.js", ["ol.control.MousePosition"], ["goog.array", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.style", "ol.CoordinateFormatType", "ol.Object", "ol.Pixel", "ol.TransformFunction", "ol.control.Control", "ol.proj", "ol.proj.Projection"]);
 goog.addDependency("../src/ol/control/scalelinecontrol.js", ["ol.control.ScaleLine", "ol.control.ScaleLineProperty", "ol.control.ScaleLineUnits"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.math", "goog.style", "ol.Object", "ol.TransformFunction", "ol.View2DState", "ol.control.Control", "ol.css", "ol.proj", "ol.proj.Units", "ol.sphere.NORMAL"]);
@@ -7287,80 +7287,6 @@ goog.dom.DomHelper.prototype.isNodeList = goog.dom.isNodeList;
 goog.dom.DomHelper.prototype.getAncestorByTagNameAndClass = goog.dom.getAncestorByTagNameAndClass;
 goog.dom.DomHelper.prototype.getAncestorByClass = goog.dom.getAncestorByClass;
 goog.dom.DomHelper.prototype.getAncestor = goog.dom.getAncestor;
-goog.provide("googx.dom.fullscreen");
-goog.provide("googx.dom.fullscreen.EventType");
-goog.require("goog.dom");
-goog.require("goog.userAgent");
-googx.dom.fullscreen.EventType = {CHANGE:function() {
-  if(goog.userAgent.WEBKIT) {
-    return"webkitfullscreenchange"
-  }
-  if(goog.userAgent.GECKO) {
-    return"mozfullscreenchange"
-  }
-  if(goog.userAgent.IE) {
-    return"MSFullscreenChange"
-  }
-  return"fullscreenchange"
-}()};
-googx.dom.fullscreen.isSupported = function(opt_domHelper) {
-  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
-  var body = doc.body;
-  return!!(body.webkitRequestFullscreen || body.mozRequestFullScreen && doc.mozFullScreenEnabled || body.msRequestFullscreen && doc.msFullscreenEnabled || body.requestFullscreen && doc.fullscreenEnabled)
-};
-googx.dom.fullscreen.requestFullScreen = function(element) {
-  if(element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen()
-  }else {
-    if(element.mozRequestFullScreen) {
-      element.mozRequestFullScreen()
-    }else {
-      if(element.msRequestFullscreen) {
-        element.msRequestFullscreen()
-      }else {
-        if(element.requestFullscreen) {
-          element.requestFullscreen()
-        }
-      }
-    }
-  }
-};
-googx.dom.fullscreen.requestFullScreenWithKeys = function(element) {
-  if(element.mozRequestFullScreenWithKeys) {
-    element.mozRequestFullScreenWithKeys()
-  }else {
-    if(element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen()
-    }else {
-      googx.dom.fullscreen.requestFullScreen(element)
-    }
-  }
-};
-googx.dom.fullscreen.exitFullScreen = function(opt_domHelper) {
-  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
-  if(doc.webkitCancelFullScreen) {
-    doc.webkitCancelFullScreen()
-  }else {
-    if(doc.mozCancelFullScreen) {
-      doc.mozCancelFullScreen()
-    }else {
-      if(doc.msExitFullscreen) {
-        doc.msExitFullscreen()
-      }else {
-        if(doc.exitFullscreen) {
-          doc.exitFullscreen()
-        }
-      }
-    }
-  }
-};
-googx.dom.fullscreen.isFullScreen = function(opt_domHelper) {
-  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
-  return!!(doc.webkitIsFullScreen || doc.mozFullScreen || doc.msFullscreenElement || doc.fullscreenElement)
-};
-googx.dom.fullscreen.getDocument_ = function(opt_domHelper) {
-  return opt_domHelper ? opt_domHelper.getDocument() : goog.dom.getDomHelper().getDocument()
-};
 goog.provide("ol.webgl");
 goog.provide("ol.webgl.WebGLContextEventType");
 ol.webgl.CONTEXT_IDS_ = ["experimental-webgl", "webgl", "webkit-3d", "moz-webgl"];
@@ -7382,7 +7308,6 @@ goog.provide("ol.BrowserFeature");
 goog.require("goog.dom");
 goog.require("goog.dom.TagName");
 goog.require("goog.userAgent");
-goog.require("googx.dom.fullscreen");
 goog.require("ol.webgl");
 ol.ASSUME_TOUCH = false;
 ol.ENABLE_CANVAS = true;
@@ -7417,7 +7342,6 @@ ol.BrowserFeature.HAS_CANVAS = ol.ENABLE_CANVAS && function() {
 }();
 ol.BrowserFeature.HAS_DEVICE_ORIENTATION = "DeviceOrientationEvent" in goog.global;
 ol.BrowserFeature.HAS_DOM = ol.ENABLE_DOM;
-ol.BrowserFeature.HAS_FULLSCREEN = googx.dom.fullscreen.isSupported();
 ol.BrowserFeature.HAS_GEOLOCATION = "geolocation" in goog.global.navigator;
 ol.BrowserFeature.HAS_TOUCH = ol.ASSUME_TOUCH || goog.global.document && "ontouchstart" in goog.global.document.documentElement || !!goog.global.navigator.msPointerEnabled;
 ol.BrowserFeature.HAS_WEBGL = ol.ENABLE_WEBGL && function() {
@@ -28708,6 +28632,80 @@ ol.binary.ArrayReader.prototype.readByte = function() {
     return 0
   }
 };
+goog.provide("googx.dom.fullscreen");
+goog.provide("googx.dom.fullscreen.EventType");
+goog.require("goog.dom");
+goog.require("goog.userAgent");
+googx.dom.fullscreen.EventType = {CHANGE:function() {
+  if(goog.userAgent.WEBKIT) {
+    return"webkitfullscreenchange"
+  }
+  if(goog.userAgent.GECKO) {
+    return"mozfullscreenchange"
+  }
+  if(goog.userAgent.IE) {
+    return"MSFullscreenChange"
+  }
+  return"fullscreenchange"
+}()};
+googx.dom.fullscreen.isSupported = function(opt_domHelper) {
+  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
+  var body = doc.body;
+  return!!(body.webkitRequestFullscreen || body.mozRequestFullScreen && doc.mozFullScreenEnabled || body.msRequestFullscreen && doc.msFullscreenEnabled || body.requestFullscreen && doc.fullscreenEnabled)
+};
+googx.dom.fullscreen.requestFullScreen = function(element) {
+  if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen()
+  }else {
+    if(element.mozRequestFullScreen) {
+      element.mozRequestFullScreen()
+    }else {
+      if(element.msRequestFullscreen) {
+        element.msRequestFullscreen()
+      }else {
+        if(element.requestFullscreen) {
+          element.requestFullscreen()
+        }
+      }
+    }
+  }
+};
+googx.dom.fullscreen.requestFullScreenWithKeys = function(element) {
+  if(element.mozRequestFullScreenWithKeys) {
+    element.mozRequestFullScreenWithKeys()
+  }else {
+    if(element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen()
+    }else {
+      googx.dom.fullscreen.requestFullScreen(element)
+    }
+  }
+};
+googx.dom.fullscreen.exitFullScreen = function(opt_domHelper) {
+  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
+  if(doc.webkitCancelFullScreen) {
+    doc.webkitCancelFullScreen()
+  }else {
+    if(doc.mozCancelFullScreen) {
+      doc.mozCancelFullScreen()
+    }else {
+      if(doc.msExitFullscreen) {
+        doc.msExitFullscreen()
+      }else {
+        if(doc.exitFullscreen) {
+          doc.exitFullscreen()
+        }
+      }
+    }
+  }
+};
+googx.dom.fullscreen.isFullScreen = function(opt_domHelper) {
+  var doc = googx.dom.fullscreen.getDocument_(opt_domHelper);
+  return!!(doc.webkitIsFullScreen || doc.mozFullScreen || doc.msFullscreenElement || doc.fullscreenElement)
+};
+googx.dom.fullscreen.getDocument_ = function(opt_domHelper) {
+  return opt_domHelper ? opt_domHelper.getDocument() : goog.dom.getDomHelper().getDocument()
+};
 goog.provide("ol.control.FullScreen");
 goog.require("goog.asserts");
 goog.require("goog.dom");
@@ -28717,7 +28715,6 @@ goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("googx.dom.fullscreen");
 goog.require("googx.dom.fullscreen.EventType");
-goog.require("ol.BrowserFeature");
 goog.require("ol.control.Control");
 goog.require("ol.css");
 ol.control.FullScreen = function(opt_options) {
@@ -28732,13 +28729,13 @@ ol.control.FullScreen = function(opt_options) {
     this.blur()
   }, false);
   goog.events.listen(goog.global.document, googx.dom.fullscreen.EventType.CHANGE, this.handleFullScreenChange_, false, this);
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, {"class":this.cssClassName_ + " " + ol.css.CLASS_UNSELECTABLE + " " + (!ol.BrowserFeature.HAS_FULLSCREEN ? ol.css.CLASS_UNSUPPORTED : "")}, button);
+  var element = goog.dom.createDom(goog.dom.TagName.DIV, {"class":this.cssClassName_ + " " + ol.css.CLASS_UNSELECTABLE + " " + (!googx.dom.fullscreen.isSupported() ? ol.css.CLASS_UNSUPPORTED : "")}, button);
   goog.base(this, {element:element, target:options.target});
   this.keys_ = goog.isDef(options.keys) ? options.keys : false
 };
 goog.inherits(ol.control.FullScreen, ol.control.Control);
 ol.control.FullScreen.prototype.handleClick_ = function(browserEvent) {
-  if(!ol.BrowserFeature.HAS_FULLSCREEN) {
+  if(!googx.dom.fullscreen.isSupported()) {
     return
   }
   browserEvent.preventDefault();

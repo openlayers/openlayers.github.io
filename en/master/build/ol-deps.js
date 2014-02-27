@@ -26,7 +26,7 @@ goog.addDependency('../../../ol/ol/animation.js', ['ol.animation'], ['ol.PreRend
 goog.addDependency('../../../ol/ol/array.js', ['ol.array'], ['goog.array', 'goog.asserts']);
 goog.addDependency('../../../ol/ol/attribution.js', ['ol.Attribution'], ['ol.TileRange']);
 goog.addDependency('../../../ol/ol/binary.js', ['ol.binary.Buffer', 'ol.binary.IReader'], ['goog.asserts', 'goog.userAgent', 'ol.BrowserFeature']);
-goog.addDependency('../../../ol/ol/browserfeature.js', ['ol.BrowserFeature'], ['goog.dom', 'goog.dom.TagName', 'goog.userAgent', 'googx.dom.fullscreen', 'ol.webgl']);
+goog.addDependency('../../../ol/ol/browserfeature.js', ['ol.BrowserFeature'], ['goog.dom', 'goog.dom.TagName', 'goog.userAgent', 'ol.webgl']);
 goog.addDependency('../../../ol/ol/canvasfunction.js', ['ol.CanvasFunctionType'], []);
 goog.addDependency('../../../ol/ol/centerconstraint.js', ['ol.CenterConstraint', 'ol.CenterConstraintType'], ['goog.math']);
 goog.addDependency('../../../ol/ol/collection.js', ['ol.Collection', 'ol.CollectionEvent', 'ol.CollectionEventType'], ['goog.array', 'goog.events.Event', 'ol.Object']);
@@ -36,7 +36,7 @@ goog.addDependency('../../../ol/ol/constraints.js', ['ol.Constraints'], ['ol.Cen
 goog.addDependency('../../../ol/ol/control/attributioncontrol.js', ['ol.control.Attribution'], ['goog.array', 'goog.dom', 'goog.dom.TagName', 'goog.object', 'goog.style', 'ol.Attribution', 'ol.FrameState', 'ol.control.Control', 'ol.css']);
 goog.addDependency('../../../ol/ol/control/control.js', ['ol.control.Control'], ['goog.array', 'goog.dom', 'goog.events', 'ol.MapEventType', 'ol.Object']);
 goog.addDependency('../../../ol/ol/control/controldefaults.js', ['ol.control'], ['ol.Collection', 'ol.control.Attribution', 'ol.control.Logo', 'ol.control.Zoom']);
-goog.addDependency('../../../ol/ol/control/fullscreencontrol.js', ['ol.control.FullScreen'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.dom.classes', 'goog.events', 'goog.events.EventType', 'googx.dom.fullscreen', 'googx.dom.fullscreen.EventType', 'ol.BrowserFeature', 'ol.control.Control', 'ol.css']);
+goog.addDependency('../../../ol/ol/control/fullscreencontrol.js', ['ol.control.FullScreen'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.dom.classes', 'goog.events', 'goog.events.EventType', 'googx.dom.fullscreen', 'googx.dom.fullscreen.EventType', 'ol.control.Control', 'ol.css']);
 goog.addDependency('../../../ol/ol/control/logocontrol.js', ['ol.control.Logo'], ['goog.dom', 'goog.dom.TagName', 'goog.object', 'goog.style', 'ol.FrameState', 'ol.control.Control', 'ol.css']);
 goog.addDependency('../../../ol/ol/control/mousepositioncontrol.js', ['ol.control.MousePosition'], ['goog.array', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'goog.style', 'ol.CoordinateFormatType', 'ol.Object', 'ol.Pixel', 'ol.TransformFunction', 'ol.control.Control', 'ol.proj', 'ol.proj.Projection']);
 goog.addDependency('../../../ol/ol/control/scalelinecontrol.js', ['ol.control.ScaleLine', 'ol.control.ScaleLineProperty', 'ol.control.ScaleLineUnits'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.math', 'goog.style', 'ol.Object', 'ol.TransformFunction', 'ol.View2DState', 'ol.control.Control', 'ol.css', 'ol.proj', 'ol.proj.Units', 'ol.sphere.NORMAL']);
