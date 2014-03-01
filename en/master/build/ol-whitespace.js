@@ -520,8 +520,8 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["libtess", "l
 "ol.Image", "ol.ImageBase", "ol.ImageCanvas", "ol.ImageState", "ol.ImageTile", "ol.ImageUrlFunction", "ol.ImageUrlFunctionType", "ol.Kinetic", "ol.Map", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler", "ol.MapEvent", "ol.MapEventType", "ol.MapProperty", "ol.Object", "ol.ObjectEvent", "ol.ObjectEventType", "ol.Observable", "ol.Overlay", "ol.OverlayPositioning", "ol.OverlayProperty", "ol.Pixel", "ol.PostRenderFunction", "ol.PreRenderFunction", "ol.RendererHint", "ol.ResolutionConstraint", 
 "ol.ResolutionConstraintType", "ol.RotationConstraint", "ol.RotationConstraintType", "ol.Size", "ol.Sphere", "ol.Tile", "ol.TileCache", "ol.TileCoord", "ol.TileLoadFunctionType", "ol.TilePriorityFunction", "ol.TileQueue", "ol.TileRange", "ol.TileState", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.TransformFunction", "ol.View", "ol.View2D", "ol.View2DProperty", "ol.View2DState", "ol.ViewHint", "ol.animation", "ol.array", "ol.binary.Buffer", "ol.binary.IReader", "ol.color", "ol.color.Matrix", 
 "ol.control", "ol.control.Attribution", "ol.control.Control", "ol.control.FullScreen", "ol.control.Logo", "ol.control.MousePosition", "ol.control.ScaleLine", "ol.control.ScaleLineProperty", "ol.control.ScaleLineUnits", "ol.control.Zoom", "ol.control.ZoomSlider", "ol.control.ZoomToExtent", "ol.coordinate", "ol.css", "ol.dom", "ol.dom.BrowserFeature", "ol.dom.Input", "ol.dom.InputProperty", "ol.easing", "ol.ellipsoid.BESSEL1841", "ol.ellipsoid.WGS84", "ol.events.ConditionType", "ol.events.condition", 
-"ol.extent", "ol.feature", "ol.format.Binary", "ol.format.Format", "ol.format.FormatType", "ol.format.GML", "ol.format.GPX", "ol.format.GPX.V1_1", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.JSON", "ol.format.KML", "ol.format.Polyline", "ol.format.Text", "ol.format.TopoJSON", "ol.format.XML", "ol.format.XSD", "ol.geom.Circle", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", "ol.geom.MultiPoint", 
-"ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify", "ol.interaction", "ol.interaction.DoubleClickZoom", "ol.interaction.Drag", "ol.interaction.DragAndDrop", "ol.interaction.DragAndDropEvent", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", "ol.interaction.Draw", "ol.interaction.Interaction", "ol.interaction.KeyboardPan", 
+"ol.extent", "ol.feature", "ol.format.BinaryFeature", "ol.format.Feature", "ol.format.FormatType", "ol.format.GML", "ol.format.GPX", "ol.format.GPX.V1_1", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.JSONFeature", "ol.format.KML", "ol.format.Polyline", "ol.format.TextFeature", "ol.format.TopoJSON", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.Circle", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", 
+"ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify", "ol.interaction", "ol.interaction.DoubleClickZoom", "ol.interaction.Drag", "ol.interaction.DragAndDrop", "ol.interaction.DragAndDropEvent", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", "ol.interaction.Draw", "ol.interaction.Interaction", "ol.interaction.KeyboardPan", 
 "ol.interaction.KeyboardZoom", "ol.interaction.Modify", "ol.interaction.MouseWheelZoom", "ol.interaction.Select", "ol.interaction.Touch", "ol.interaction.TouchPan", "ol.interaction.TouchRotate", "ol.interaction.TouchZoom", "ol.layer.Base", "ol.layer.Group", "ol.layer.Image", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.Tile", "ol.layer.Vector", "ol.math", "ol.parser.Parser", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.Versioned", "ol.parser.ogc.WMSCapabilities", 
 "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", "ol.parser.ogc.WMSCapabilities_v1_3_0", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", "ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.METERS_PER_UNIT", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.render.Box", 
 "ol.render.Event", "ol.render.EventType", "ol.render.IReplayGroup", "ol.render.IVectorContext", "ol.render.canvas", "ol.render.canvas.Immediate", "ol.render.canvas.ReplayGroup", "ol.render.webgl.Immediate", "ol.renderer.Layer", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.Map", "ol.renderer.dom.TileLayer", 
@@ -585,19 +585,20 @@ goog.addDependency("../src/ol/events/condition.js", ["ol.events.ConditionType", 
 goog.addDependency("../src/ol/extent.js", ["ol.Extent", "ol.extent"], ["goog.asserts", "ol.Coordinate", "ol.Size", "ol.TransformFunction"]);
 goog.addDependency("../src/ol/feature.js", ["ol.Feature", "ol.feature"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.functions", "ol.Object", "ol.geom.Geometry", "ol.style.Circle", "ol.style.Fill", "ol.style.Stroke", "ol.style.Style"]);
 goog.addDependency("../src/ol/featureoverlay.js", ["ol.FeatureOverlay"], ["goog.array", "goog.asserts", "goog.events", "goog.events.EventType", "goog.object", "ol.Collection", "ol.CollectionEventType", "ol.Feature", "ol.feature", "ol.render.EventType"]);
-goog.addDependency("../src/ol/format/binaryformat.js", ["ol.format.Binary"], ["goog.asserts", "ol.BrowserFeature", "ol.binary.Buffer", "ol.format.Format", "ol.format.FormatType", "ol.proj"]);
-goog.addDependency("../src/ol/format/format.js", ["ol.format.Format", "ol.format.FormatType"], ["goog.functions"]);
-goog.addDependency("../src/ol/format/geojsonformat.js", ["ol.format.GeoJSON"], ["goog.array", "goog.asserts", "goog.object", "ol.Feature", "ol.format.JSON", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj"]);
-goog.addDependency("../src/ol/format/gmlformat.js", ["ol.format.GML"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.NodeType", "goog.object", "goog.string", "ol.Feature", "ol.extent", "ol.format.XML", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.xml"]);
-goog.addDependency("../src/ol/format/gpxformat.js", ["ol.format.GPX", "ol.format.GPX.V1_1"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "goog.object", "ol.Feature", "ol.format.XML", "ol.format.XSD", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.Point", "ol.proj", "ol.xml"]);
-goog.addDependency("../src/ol/format/igcformat.js", ["ol.format.IGC", "ol.format.IGCZ"], ["goog.asserts", "goog.string", "goog.string.newlines", "ol.Feature", "ol.format.Text", "ol.geom.LineString", "ol.proj"]);
-goog.addDependency("../src/ol/format/jsonformat.js", ["ol.format.JSON"], ["goog.asserts", "goog.json", "ol.format.Format", "ol.format.FormatType"]);
-goog.addDependency("../src/ol/format/kmlformat.js", ["ol.format.KML"], ["goog.Uri", "goog.array", "goog.asserts", "goog.dom.NodeType", "goog.math", "goog.object", "goog.string", "ol.Feature", "ol.feature", "ol.format.XML", "ol.format.XSD", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorOrigin", "ol.style.IconAnchorUnits", 
-"ol.style.Image", "ol.style.Stroke", "ol.style.Style", "ol.xml"]);
-goog.addDependency("../src/ol/format/polylineformat.js", ["ol.format.Polyline"], ["goog.asserts", "ol.Feature", "ol.format.Text", "ol.geom.LineString", "ol.geom.flat", "ol.proj"]);
-goog.addDependency("../src/ol/format/textformat.js", ["ol.format.Text"], ["goog.asserts", "ol.format.Format", "ol.format.FormatType"]);
-goog.addDependency("../src/ol/format/topojsonformat.js", ["ol.format.TopoJSON"], ["goog.array", "goog.asserts", "goog.object", "ol.Feature", "ol.format.JSON", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj"]);
-goog.addDependency("../src/ol/format/xmlformat.js", ["ol.format.XML"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "ol.format.Format", "ol.format.FormatType", "ol.xml"]);
+goog.addDependency("../src/ol/format/binaryfeatureformat.js", ["ol.format.BinaryFeature"], ["goog.asserts", "ol.BrowserFeature", "ol.binary.Buffer", "ol.format.Feature", "ol.format.FormatType", "ol.proj"]);
+goog.addDependency("../src/ol/format/featureformat.js", ["ol.format.Feature"], ["goog.functions"]);
+goog.addDependency("../src/ol/format/format.js", ["ol.format.FormatType"], []);
+goog.addDependency("../src/ol/format/geojsonformat.js", ["ol.format.GeoJSON"], ["goog.array", "goog.asserts", "goog.object", "ol.Feature", "ol.format.JSONFeature", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj"]);
+goog.addDependency("../src/ol/format/gmlformat.js", ["ol.format.GML"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.NodeType", "goog.object", "goog.string", "ol.Feature", "ol.extent", "ol.format.XMLFeature", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.xml"]);
+goog.addDependency("../src/ol/format/gpxformat.js", ["ol.format.GPX", "ol.format.GPX.V1_1"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "goog.object", "ol.Feature", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.Point", "ol.proj", "ol.xml"]);
+goog.addDependency("../src/ol/format/igcformat.js", ["ol.format.IGC", "ol.format.IGCZ"], ["goog.asserts", "goog.string", "goog.string.newlines", "ol.Feature", "ol.format.TextFeature", "ol.geom.LineString", "ol.proj"]);
+goog.addDependency("../src/ol/format/jsonfeatureformat.js", ["ol.format.JSONFeature"], ["goog.asserts", "goog.json", "ol.format.Feature", "ol.format.FormatType"]);
+goog.addDependency("../src/ol/format/kmlformat.js", ["ol.format.KML"], ["goog.Uri", "goog.array", "goog.asserts", "goog.dom.NodeType", "goog.math", "goog.object", "goog.string", "ol.Feature", "ol.feature", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorOrigin", 
+"ol.style.IconAnchorUnits", "ol.style.Image", "ol.style.Stroke", "ol.style.Style", "ol.xml"]);
+goog.addDependency("../src/ol/format/polylineformat.js", ["ol.format.Polyline"], ["goog.asserts", "ol.Feature", "ol.format.TextFeature", "ol.geom.LineString", "ol.geom.flat", "ol.proj"]);
+goog.addDependency("../src/ol/format/textfeatureformat.js", ["ol.format.TextFeature"], ["goog.asserts", "ol.format.Feature", "ol.format.FormatType"]);
+goog.addDependency("../src/ol/format/topojsonformat.js", ["ol.format.TopoJSON"], ["goog.array", "goog.asserts", "goog.object", "ol.Feature", "ol.format.JSONFeature", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj"]);
+goog.addDependency("../src/ol/format/xmlfeatureformat.js", ["ol.format.XMLFeature"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "ol.format.Feature", "ol.format.FormatType", "ol.xml"]);
 goog.addDependency("../src/ol/format/xsdformat.js", ["ol.format.XSD"], ["goog.asserts", "goog.string", "ol.xml"]);
 goog.addDependency("../src/ol/framestate.js", ["ol.FrameState", "ol.PostRenderFunction", "ol.PreRenderFunction"], ["goog.vec.Mat4", "ol.Attribution", "ol.Extent", "ol.Size", "ol.TileQueue", "ol.TileRange", "ol.View2DState", "ol.layer.Layer", "ol.layer.LayerState"]);
 goog.addDependency("../src/ol/geolocation.js", ["ol.Geolocation", "ol.GeolocationProperty"], ["goog.events", "goog.events.EventType", "goog.math", "ol.BrowserFeature", "ol.Coordinate", "ol.Object", "ol.proj"]);
@@ -610,9 +611,9 @@ goog.addDependency("../src/ol/geom/linearring.js", ["ol.geom.LinearRing"], ["ol.
 goog.addDependency("../src/ol/geom/linestring.js", ["ol.geom.LineString"], ["ol.extent", "ol.geom.GeometryType", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify"]);
 goog.addDependency("../src/ol/geom/multilinestring.js", ["ol.geom.MultiLineString"], ["goog.array", "goog.asserts", "ol.extent", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify"]);
 goog.addDependency("../src/ol/geom/multipoint.js", ["ol.geom.MultiPoint"], ["ol.extent", "ol.geom.GeometryType", "ol.geom.Point", "ol.geom.SimpleGeometry", "ol.geom.flat"]);
-goog.addDependency("../src/ol/geom/multipolygon.js", ["ol.geom.MultiPolygon"], ["goog.array", "goog.asserts", "ol.extent", "ol.geom.GeometryType", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify"]);
+goog.addDependency("../src/ol/geom/multipolygon.js", ["ol.geom.MultiPolygon"], ["goog.array", "goog.asserts", "ol.extent", "ol.geom.GeometryType", "ol.geom.MultiPoint", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify"]);
 goog.addDependency("../src/ol/geom/point.js", ["ol.geom.Point"], ["goog.asserts", "ol.extent", "ol.geom.GeometryType", "ol.geom.SimpleGeometry", "ol.geom.flat"]);
-goog.addDependency("../src/ol/geom/polygon.js", ["ol.geom.Polygon"], ["ol.extent", "ol.geom.GeometryType", "ol.geom.LinearRing", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify"]);
+goog.addDependency("../src/ol/geom/polygon.js", ["ol.geom.Polygon"], ["ol.extent", "ol.geom.GeometryType", "ol.geom.LinearRing", "ol.geom.Point", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify"]);
 goog.addDependency("../src/ol/geom/simplegeometry.js", ["ol.geom.SimpleGeometry"], ["goog.asserts", "goog.functions", "goog.object", "ol.extent", "ol.geom.Geometry", "ol.geom.flat"]);
 goog.addDependency("../src/ol/geom/simplifygeom.js", ["ol.geom.simplify"], ["ol.geom.flat"]);
 goog.addDependency("../src/ol/image.js", ["ol.Image"], ["goog.array", "goog.asserts", "goog.events", "goog.events.EventType", "goog.object", "ol.ImageBase", "ol.ImageState"]);
@@ -12116,16 +12117,12 @@ ol.interaction.Interaction.rotateWithoutConstraints = function(map, view, rotati
         map.beforeRender(ol.animation.pan({source:currentCenter, duration:opt_duration, easing:ol.easing.easeOut}))
       }
     }
+    goog.asserts.assertInstanceof(view, ol.View2D);
     if(goog.isDefAndNotNull(opt_anchor)) {
       var center = view.calculateCenterRotate(rotation, opt_anchor);
-      map.withFrozenRendering(function() {
-        goog.asserts.assertInstanceof(view, ol.View2D);
-        view.setCenter(center);
-        view.setRotation(rotation)
-      })
-    }else {
-      view.setRotation(rotation)
+      view.setCenter(center)
     }
+    view.setRotation(rotation)
   }
 };
 ol.interaction.Interaction.zoom = function(map, view, resolution, opt_anchor, opt_duration, opt_direction) {
@@ -12150,16 +12147,12 @@ ol.interaction.Interaction.zoomWithoutConstraints = function(map, view, resoluti
         map.beforeRender(ol.animation.pan({source:currentCenter, duration:opt_duration, easing:ol.easing.easeOut}))
       }
     }
+    goog.asserts.assertInstanceof(view, ol.View2D);
     if(goog.isDefAndNotNull(opt_anchor)) {
       var center = view.calculateCenterZoom(resolution, opt_anchor);
-      map.withFrozenRendering(function() {
-        goog.asserts.assertInstanceof(view, ol.View2D);
-        view.setCenter(center);
-        view.setResolution(resolution)
-      })
-    }else {
-      view.setResolution(resolution)
+      view.setCenter(center)
     }
+    view.setResolution(resolution)
   }
 };
 goog.provide("ol.interaction.Drag");
@@ -12457,6 +12450,60 @@ ol.geom.flat.lineStringInterpolate = function(flatCoordinates, offset, end, stri
   }else {
     return[pointX, pointY]
   }
+};
+ol.geom.flat.lineStringCoordinateAtM = function(flatCoordinates, offset, end, stride, layout, m, extrapolate) {
+  if(layout != ol.geom.GeometryLayout.XYM && layout != ol.geom.GeometryLayout.XYZM || end == offset) {
+    return null
+  }
+  var coordinate;
+  if(m < flatCoordinates[offset + stride - 1]) {
+    if(extrapolate) {
+      coordinate = flatCoordinates.slice(offset, offset + stride);
+      coordinate[stride - 1] = m;
+      return coordinate
+    }else {
+      return null
+    }
+  }else {
+    if(flatCoordinates[end - 1] < m) {
+      if(extrapolate) {
+        coordinate = flatCoordinates.slice(end - stride, end);
+        coordinate[stride - 1] = m;
+        return coordinate
+      }else {
+        return null
+      }
+    }
+  }
+  if(m == flatCoordinates[offset + stride - 1]) {
+    return flatCoordinates.slice(offset, offset + stride)
+  }
+  var lo = offset / stride;
+  var hi = end / stride;
+  while(lo < hi) {
+    var mid = lo + hi >> 1;
+    if(m < flatCoordinates[(mid + 1) * stride - 1]) {
+      hi = mid
+    }else {
+      lo = mid + 1
+    }
+  }
+  var m0 = flatCoordinates[lo * stride - 1];
+  if(m == m0) {
+    return flatCoordinates.slice((lo - 1) * stride, (lo - 1) * stride + stride)
+  }
+  var m1 = flatCoordinates[(lo + 1) * stride - 1];
+  goog.asserts.assert(m0 < m);
+  goog.asserts.assert(m <= m1);
+  var t = (m - m0) / (m1 - m0);
+  coordinate = [];
+  var i;
+  for(i = 0;i < stride - 1;++i) {
+    coordinate.push((1 - t) * flatCoordinates[(lo - 1) * stride + i] + t * flatCoordinates[lo * stride + i])
+  }
+  coordinate.push(m);
+  goog.asserts.assert(coordinate.length == stride);
+  return coordinate
 };
 ol.geom.flat.lineStringLength = function(flatCoordinates, offset, end, stride) {
   var x1 = flatCoordinates[offset];
@@ -12791,8 +12838,14 @@ ol.geom.SimpleGeometry.prototype.getExtent = function(opt_extent) {
   goog.asserts.assert(goog.isDef(this.extent));
   return ol.extent.returnOrUpdate(this.extent, opt_extent)
 };
+ol.geom.SimpleGeometry.prototype.getFirstCoordinate = function() {
+  return this.flatCoordinates.slice(0, this.stride)
+};
 ol.geom.SimpleGeometry.prototype.getFlatCoordinates = function() {
   return this.flatCoordinates
+};
+ol.geom.SimpleGeometry.prototype.getLastCoordinate = function() {
+  return this.flatCoordinates.slice(this.flatCoordinates.length - this.stride)
 };
 ol.geom.SimpleGeometry.prototype.getLayout = function() {
   return this.layout
@@ -13218,10 +13271,72 @@ ol.geom.LinearRing.prototype.setFlatCoordinates = function(layout, flatCoordinat
   this.setFlatCoordinatesInternal(layout, flatCoordinates);
   this.dispatchChangeEvent()
 };
+goog.provide("ol.geom.Point");
+goog.require("goog.asserts");
+goog.require("ol.extent");
+goog.require("ol.geom.GeometryType");
+goog.require("ol.geom.SimpleGeometry");
+goog.require("ol.geom.flat");
+ol.geom.Point = function(coordinates, opt_layout) {
+  goog.base(this);
+  this.setCoordinates(coordinates, opt_layout)
+};
+goog.inherits(ol.geom.Point, ol.geom.SimpleGeometry);
+ol.geom.Point.prototype.clone = function() {
+  var point = new ol.geom.Point(null);
+  point.setFlatCoordinates(this.layout, this.flatCoordinates.slice());
+  return point
+};
+ol.geom.Point.prototype.closestPointXY = function(x, y, closestPoint, minSquaredDistance) {
+  var flatCoordinates = this.flatCoordinates;
+  var squaredDistance = ol.geom.flat.squaredDistance(x, y, flatCoordinates[0], flatCoordinates[1]);
+  if(squaredDistance < minSquaredDistance) {
+    var stride = this.stride;
+    var i;
+    for(i = 0;i < stride;++i) {
+      closestPoint[i] = flatCoordinates[i]
+    }
+    closestPoint.length = stride;
+    return squaredDistance
+  }else {
+    return minSquaredDistance
+  }
+};
+ol.geom.Point.prototype.getCoordinates = function() {
+  return this.flatCoordinates.slice()
+};
+ol.geom.Point.prototype.getExtent = function(opt_extent) {
+  if(this.extentRevision != this.getRevision()) {
+    this.extent = ol.extent.createOrUpdateFromCoordinate(this.flatCoordinates, this.extent);
+    this.extentRevision = this.getRevision()
+  }
+  goog.asserts.assert(goog.isDef(this.extent));
+  return ol.extent.returnOrUpdate(this.extent, opt_extent)
+};
+ol.geom.Point.prototype.getType = function() {
+  return ol.geom.GeometryType.POINT
+};
+ol.geom.Point.prototype.setCoordinates = function(coordinates, opt_layout) {
+  if(goog.isNull(coordinates)) {
+    this.setFlatCoordinates(ol.geom.GeometryLayout.XY, null)
+  }else {
+    this.setLayout(opt_layout, coordinates, 0);
+    if(goog.isNull(this.flatCoordinates)) {
+      this.flatCoordinates = []
+    }
+    this.flatCoordinates.length = ol.geom.flat.deflateCoordinate(this.flatCoordinates, 0, coordinates, this.stride);
+    this.dispatchChangeEvent()
+  }
+};
+ol.geom.Point.prototype.setFlatCoordinates = function(layout, flatCoordinates) {
+  this.setFlatCoordinatesInternal(layout, flatCoordinates);
+  this.dispatchChangeEvent()
+};
 goog.provide("ol.geom.Polygon");
 goog.require("ol.extent");
 goog.require("ol.geom.GeometryType");
 goog.require("ol.geom.LinearRing");
+goog.require("ol.geom.Point");
 goog.require("ol.geom.SimpleGeometry");
 goog.require("ol.geom.closest");
 goog.require("ol.geom.flat");
@@ -13272,6 +13387,9 @@ ol.geom.Polygon.prototype.getFlatInteriorPoint = function() {
     this.flatInteriorPointRevision_ = this.getRevision()
   }
   return this.flatInteriorPoint_
+};
+ol.geom.Polygon.prototype.getInteriorPoint = function() {
+  return new ol.geom.Point(this.getFlatInteriorPoint())
 };
 ol.geom.Polygon.prototype.getLinearRings = function() {
   var layout = this.layout;
@@ -20849,7 +20967,11 @@ ol.style.IconImage_.prototype.load = function() {
     goog.asserts.assert(goog.isNull(this.imageListenerKeys_));
     this.imageState_ = ol.style.ImageState.LOADING;
     this.imageListenerKeys_ = [goog.events.listenOnce(this.image_, goog.events.EventType.ERROR, this.handleImageError_, false, this), goog.events.listenOnce(this.image_, goog.events.EventType.LOAD, this.handleImageLoad_, false, this)];
-    this.image_.src = this.src_
+    try {
+      this.image_.src = this.src_
+    }catch(e) {
+      this.handleImageError_()
+    }
   }
 };
 ol.style.IconImage_.prototype.unlistenImage_ = function() {
@@ -23213,6 +23335,10 @@ ol.geom.LineString.prototype.closestPointXY = function(x, y, closestPoint, minSq
   }
   return ol.geom.closest.getClosestPoint(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, this.maxDelta_, false, x, y, closestPoint, minSquaredDistance)
 };
+ol.geom.LineString.prototype.getCoordinateAtM = function(m, opt_extrapolate) {
+  var extrapolate = goog.isDef(opt_extrapolate) ? opt_extrapolate : false;
+  return ol.geom.flat.lineStringCoordinateAtM(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, this.layout, m, extrapolate)
+};
 ol.geom.LineString.prototype.getCoordinates = function() {
   return ol.geom.flat.inflateCoordinates(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride)
 };
@@ -23361,67 +23487,6 @@ ol.geom.MultiLineString.prototype.setLineStrings = function(lineStrings) {
   }
   this.setFlatCoordinates(layout, flatCoordinates, ends)
 };
-goog.provide("ol.geom.Point");
-goog.require("goog.asserts");
-goog.require("ol.extent");
-goog.require("ol.geom.GeometryType");
-goog.require("ol.geom.SimpleGeometry");
-goog.require("ol.geom.flat");
-ol.geom.Point = function(coordinates, opt_layout) {
-  goog.base(this);
-  this.setCoordinates(coordinates, opt_layout)
-};
-goog.inherits(ol.geom.Point, ol.geom.SimpleGeometry);
-ol.geom.Point.prototype.clone = function() {
-  var point = new ol.geom.Point(null);
-  point.setFlatCoordinates(this.layout, this.flatCoordinates.slice());
-  return point
-};
-ol.geom.Point.prototype.closestPointXY = function(x, y, closestPoint, minSquaredDistance) {
-  var flatCoordinates = this.flatCoordinates;
-  var squaredDistance = ol.geom.flat.squaredDistance(x, y, flatCoordinates[0], flatCoordinates[1]);
-  if(squaredDistance < minSquaredDistance) {
-    var stride = this.stride;
-    var i;
-    for(i = 0;i < stride;++i) {
-      closestPoint[i] = flatCoordinates[i]
-    }
-    closestPoint.length = stride;
-    return squaredDistance
-  }else {
-    return minSquaredDistance
-  }
-};
-ol.geom.Point.prototype.getCoordinates = function() {
-  return this.flatCoordinates.slice()
-};
-ol.geom.Point.prototype.getExtent = function(opt_extent) {
-  if(this.extentRevision != this.getRevision()) {
-    this.extent = ol.extent.createOrUpdateFromCoordinate(this.flatCoordinates, this.extent);
-    this.extentRevision = this.getRevision()
-  }
-  goog.asserts.assert(goog.isDef(this.extent));
-  return ol.extent.returnOrUpdate(this.extent, opt_extent)
-};
-ol.geom.Point.prototype.getType = function() {
-  return ol.geom.GeometryType.POINT
-};
-ol.geom.Point.prototype.setCoordinates = function(coordinates, opt_layout) {
-  if(goog.isNull(coordinates)) {
-    this.setFlatCoordinates(ol.geom.GeometryLayout.XY, null)
-  }else {
-    this.setLayout(opt_layout, coordinates, 0);
-    if(goog.isNull(this.flatCoordinates)) {
-      this.flatCoordinates = []
-    }
-    this.flatCoordinates.length = ol.geom.flat.deflateCoordinate(this.flatCoordinates, 0, coordinates, this.stride);
-    this.dispatchChangeEvent()
-  }
-};
-ol.geom.Point.prototype.setFlatCoordinates = function(layout, flatCoordinates) {
-  this.setFlatCoordinatesInternal(layout, flatCoordinates);
-  this.dispatchChangeEvent()
-};
 goog.provide("ol.geom.MultiPoint");
 goog.require("ol.extent");
 goog.require("ol.geom.GeometryType");
@@ -23493,6 +23558,7 @@ goog.require("goog.array");
 goog.require("goog.asserts");
 goog.require("ol.extent");
 goog.require("ol.geom.GeometryType");
+goog.require("ol.geom.MultiPoint");
 goog.require("ol.geom.Polygon");
 goog.require("ol.geom.SimpleGeometry");
 goog.require("ol.geom.closest");
@@ -23544,6 +23610,11 @@ ol.geom.MultiPolygon.prototype.getFlatInteriorPoints = function() {
     this.flatInteriorPointsRevision_ = this.getRevision()
   }
   return this.flatInteriorPoints_
+};
+ol.geom.MultiPolygon.prototype.getInteriorPoints = function() {
+  var interiorPoints = new ol.geom.MultiPoint(null);
+  interiorPoints.setFlatCoordinates(ol.geom.GeometryLayout.XY, this.getFlatInteriorPoints().slice());
+  return interiorPoints
 };
 ol.geom.MultiPolygon.prototype.getOrientedFlatCoordinates = function() {
   if(this.orientedRevision_ != this.getRevision()) {
@@ -27114,8 +27185,6 @@ ol.Map = function(options) {
   this.pixelToCoordinateMatrix_ = goog.vec.Mat4.createNumber();
   this.frameIndex_ = 0;
   this.frameState_ = null;
-  this.freezeRenderingCount_ = 0;
-  this.dirty_ = false;
   this.viewPropertyListenerKey_ = null;
   this.layerGroupPropertyListenerKeys_ = null;
   this.viewport_ = goog.dom.createDom(goog.dom.TagName.DIV, "ol-viewport");
@@ -27213,9 +27282,6 @@ ol.Map.prototype.forEachFeatureAtPixel = function(pixel, callback, opt_this, opt
   var layerFilter = goog.isDef(opt_layerFilter) ? opt_layerFilter : goog.functions.TRUE;
   var thisArg2 = goog.isDef(opt_this2) ? opt_this2 : null;
   return this.renderer_.forEachFeatureAtPixel(coordinate, this.frameState_, callback, thisArg, layerFilter, thisArg2)
-};
-ol.Map.prototype.freezeRendering = function() {
-  ++this.freezeRenderingCount_
 };
 ol.Map.prototype.getEventCoordinate = function(event) {
   return this.getCoordinateFromPixel(this.getEventPixel(event))
@@ -27437,22 +27503,11 @@ ol.Map.prototype.isRendered = function() {
   return!goog.isNull(this.frameState_)
 };
 ol.Map.prototype.renderSync = function() {
-  if(this.animationDelay_.isActive()) {
-  }else {
-    if(this.freezeRenderingCount_ === 0) {
-      this.animationDelay_.fire()
-    }else {
-      this.dirty_ = true
-    }
-  }
+  this.animationDelay_.fire()
 };
 ol.Map.prototype.render = function() {
-  if(this.freezeRenderingCount_ === 0) {
-    if(!this.animationDelay_.isActive()) {
-      this.animationDelay_.start()
-    }
-  }else {
-    this.dirty_ = true
+  if(!this.animationDelay_.isActive()) {
+    this.animationDelay_.start()
   }
 };
 ol.Map.prototype.removeControl = function(control) {
@@ -27490,9 +27545,6 @@ ol.Map.prototype.removeOverlay = function(overlay) {
 };
 ol.Map.prototype.renderFrame_ = function(time) {
   var i, ii, view2DState;
-  if(this.freezeRenderingCount_ !== 0) {
-    return
-  }
   function hasArea(size) {
     return size[0] > 0 && size[1] > 0
   }
@@ -27531,7 +27583,6 @@ ol.Map.prototype.renderFrame_ = function(time) {
   }
   this.frameState_ = frameState;
   this.renderer_.renderFrame(frameState);
-  this.dirty_ = false;
   if(!goog.isNull(frameState)) {
     if(frameState.animate) {
       this.render()
@@ -27561,12 +27612,6 @@ ol.Map.prototype.setView = function(view) {
   this.set(ol.MapProperty.VIEW, view)
 };
 goog.exportProperty(ol.Map.prototype, "setView", ol.Map.prototype.setView);
-ol.Map.prototype.unfreezeRendering = function() {
-  goog.asserts.assert(this.freezeRenderingCount_ > 0);
-  if(--this.freezeRenderingCount_ === 0 && this.dirty_) {
-    this.animationDelay_.fire()
-  }
-};
 ol.Map.prototype.updateSize = function() {
   var target = this.getTarget();
   var targetElement = goog.isDef(target) ? goog.dom.getElement(target) : null;
@@ -27575,14 +27620,6 @@ ol.Map.prototype.updateSize = function() {
   }else {
     var size = goog.style.getContentBoxSize(targetElement);
     this.setSize([size.width, size.height])
-  }
-};
-ol.Map.prototype.withFrozenRendering = function(f, opt_this) {
-  this.freezeRendering();
-  try {
-    f.call(opt_this)
-  }finally {
-    this.unfreezeRendering()
   }
 };
 ol.MapOptionsInternal;
@@ -29694,33 +29731,33 @@ ol.ellipsoid.BESSEL1841 = new ol.Ellipsoid(6377397.155, 1 / 299.15281285);
 goog.provide("ol.ellipsoid.WGS84");
 goog.require("ol.Ellipsoid");
 ol.ellipsoid.WGS84 = new ol.Ellipsoid(6378137, 1 / 298.257223563);
-goog.provide("ol.format.Format");
-goog.provide("ol.format.FormatType");
+goog.provide("ol.format.Feature");
 goog.require("goog.functions");
-ol.format.FormatType = {BINARY:"binary", JSON:"json", TEXT:"text", XML:"xml"};
-ol.format.Format = function() {
+ol.format.Feature = function() {
 };
-ol.format.Format.prototype.getExtensions = goog.abstractMethod;
-ol.format.Format.prototype.getType = goog.abstractMethod;
-ol.format.Format.prototype.readFeature = goog.abstractMethod;
-ol.format.Format.prototype.readFeatures = goog.abstractMethod;
-ol.format.Format.prototype.readGeometry = goog.abstractMethod;
-ol.format.Format.prototype.readProjection = goog.abstractMethod;
-ol.format.Format.prototype.writeFeature = goog.abstractMethod;
-ol.format.Format.prototype.writeFeatures = goog.abstractMethod;
-ol.format.Format.prototype.writeGeometry = goog.abstractMethod;
-goog.provide("ol.format.Binary");
+ol.format.Feature.prototype.getExtensions = goog.abstractMethod;
+ol.format.Feature.prototype.getType = goog.abstractMethod;
+ol.format.Feature.prototype.readFeature = goog.abstractMethod;
+ol.format.Feature.prototype.readFeatures = goog.abstractMethod;
+ol.format.Feature.prototype.readGeometry = goog.abstractMethod;
+ol.format.Feature.prototype.readProjection = goog.abstractMethod;
+ol.format.Feature.prototype.writeFeature = goog.abstractMethod;
+ol.format.Feature.prototype.writeFeatures = goog.abstractMethod;
+ol.format.Feature.prototype.writeGeometry = goog.abstractMethod;
+goog.provide("ol.format.FormatType");
+ol.format.FormatType = {BINARY:"binary", JSON:"json", TEXT:"text", XML:"xml"};
+goog.provide("ol.format.BinaryFeature");
 goog.require("goog.asserts");
 goog.require("ol.BrowserFeature");
 goog.require("ol.binary.Buffer");
-goog.require("ol.format.Format");
+goog.require("ol.format.Feature");
 goog.require("ol.format.FormatType");
 goog.require("ol.proj");
-ol.format.Binary = function() {
+ol.format.BinaryFeature = function() {
   goog.base(this)
 };
-goog.inherits(ol.format.Binary, ol.format.Format);
-ol.format.Binary.getBuffer_ = function(source) {
+goog.inherits(ol.format.BinaryFeature, ol.format.Feature);
+ol.format.BinaryFeature.getBuffer_ = function(source) {
   if(ol.BrowserFeature.HAS_ARRAY_BUFFER && source instanceof ArrayBuffer) {
     return new ol.binary.Buffer(source)
   }else {
@@ -29732,25 +29769,25 @@ ol.format.Binary.getBuffer_ = function(source) {
     }
   }
 };
-ol.format.Binary.prototype.getType = function() {
+ol.format.BinaryFeature.prototype.getType = function() {
   return ol.format.FormatType.BINARY
 };
-ol.format.Binary.prototype.readFeature = function(source) {
-  return this.readFeatureFromBuffer(ol.format.Binary.getBuffer_(source))
+ol.format.BinaryFeature.prototype.readFeature = function(source) {
+  return this.readFeatureFromBuffer(ol.format.BinaryFeature.getBuffer_(source))
 };
-ol.format.Binary.prototype.readFeatures = function(source) {
-  return this.readFeaturesFromBuffer(ol.format.Binary.getBuffer_(source))
+ol.format.BinaryFeature.prototype.readFeatures = function(source) {
+  return this.readFeaturesFromBuffer(ol.format.BinaryFeature.getBuffer_(source))
 };
-ol.format.Binary.prototype.readFeatureFromBuffer = goog.abstractMethod;
-ol.format.Binary.prototype.readFeaturesFromBuffer = goog.abstractMethod;
-ol.format.Binary.prototype.readGeometry = function(source) {
-  return this.readGeometryFromBuffer(ol.format.Binary.getBuffer_(source))
+ol.format.BinaryFeature.prototype.readFeatureFromBuffer = goog.abstractMethod;
+ol.format.BinaryFeature.prototype.readFeaturesFromBuffer = goog.abstractMethod;
+ol.format.BinaryFeature.prototype.readGeometry = function(source) {
+  return this.readGeometryFromBuffer(ol.format.BinaryFeature.getBuffer_(source))
 };
-ol.format.Binary.prototype.readGeometryFromBuffer = goog.abstractMethod;
-ol.format.Binary.prototype.readProjection = function(source) {
-  return this.readProjectionFromBuffer(ol.format.Binary.getBuffer_(source))
+ol.format.BinaryFeature.prototype.readGeometryFromBuffer = goog.abstractMethod;
+ol.format.BinaryFeature.prototype.readProjection = function(source) {
+  return this.readProjectionFromBuffer(ol.format.BinaryFeature.getBuffer_(source))
 };
-ol.format.Binary.prototype.readProjectionFromBuffer = goog.abstractMethod;
+ol.format.BinaryFeature.prototype.readProjectionFromBuffer = goog.abstractMethod;
 goog.provide("goog.dom.xml");
 goog.require("goog.dom");
 goog.require("goog.dom.NodeType");
@@ -30109,21 +30146,21 @@ ol.xml.pushSerializeAndPop = function(object, serializersNS, nodeFactory, values
   ol.xml.serialize(serializersNS, nodeFactory, values, objectStack, opt_keys, opt_this);
   return objectStack.pop()
 };
-goog.provide("ol.format.XML");
+goog.provide("ol.format.XMLFeature");
 goog.require("goog.array");
 goog.require("goog.asserts");
 goog.require("goog.dom.NodeType");
-goog.require("ol.format.Format");
+goog.require("ol.format.Feature");
 goog.require("ol.format.FormatType");
 goog.require("ol.xml");
-ol.format.XML = function() {
+ol.format.XMLFeature = function() {
   goog.base(this)
 };
-goog.inherits(ol.format.XML, ol.format.Format);
-ol.format.XML.prototype.getType = function() {
+goog.inherits(ol.format.XMLFeature, ol.format.Feature);
+ol.format.XMLFeature.prototype.getType = function() {
   return ol.format.FormatType.XML
 };
-ol.format.XML.prototype.readFeature = function(source) {
+ol.format.XMLFeature.prototype.readFeature = function(source) {
   if(ol.xml.isDocument(source)) {
     return this.readFeatureFromDocument((source))
   }else {
@@ -30140,7 +30177,7 @@ ol.format.XML.prototype.readFeature = function(source) {
     }
   }
 };
-ol.format.XML.prototype.readFeatureFromDocument = function(doc) {
+ol.format.XMLFeature.prototype.readFeatureFromDocument = function(doc) {
   var features = this.readFeaturesFromDocument(doc);
   if(features.length > 0) {
     return features[0]
@@ -30148,8 +30185,8 @@ ol.format.XML.prototype.readFeatureFromDocument = function(doc) {
     return null
   }
 };
-ol.format.XML.prototype.readFeatureFromNode = goog.abstractMethod;
-ol.format.XML.prototype.readFeatures = function(source) {
+ol.format.XMLFeature.prototype.readFeatureFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readFeatures = function(source) {
   if(ol.xml.isDocument(source)) {
     return this.readFeaturesFromDocument((source))
   }else {
@@ -30166,7 +30203,7 @@ ol.format.XML.prototype.readFeatures = function(source) {
     }
   }
 };
-ol.format.XML.prototype.readFeaturesFromDocument = function(doc) {
+ol.format.XMLFeature.prototype.readFeaturesFromDocument = function(doc) {
   var features = [];
   var n;
   for(n = doc.firstChild;!goog.isNull(n);n = n.nextSibling) {
@@ -30176,8 +30213,8 @@ ol.format.XML.prototype.readFeaturesFromDocument = function(doc) {
   }
   return features
 };
-ol.format.XML.prototype.readFeaturesFromNode = goog.abstractMethod;
-ol.format.XML.prototype.readGeometry = function(source) {
+ol.format.XMLFeature.prototype.readFeaturesFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readGeometry = function(source) {
   if(ol.xml.isDocument(source)) {
     return this.readGeometryFromDocument((source))
   }else {
@@ -30194,9 +30231,9 @@ ol.format.XML.prototype.readGeometry = function(source) {
     }
   }
 };
-ol.format.XML.prototype.readGeometryFromDocument = goog.abstractMethod;
-ol.format.XML.prototype.readGeometryFromNode = goog.abstractMethod;
-ol.format.XML.prototype.readProjection = function(source) {
+ol.format.XMLFeature.prototype.readGeometryFromDocument = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readGeometryFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readProjection = function(source) {
   if(ol.xml.isDocument(source)) {
     return this.readProjectionFromDocument((source))
   }else {
@@ -30213,20 +30250,20 @@ ol.format.XML.prototype.readProjection = function(source) {
     }
   }
 };
-ol.format.XML.prototype.readProjectionFromDocument = goog.abstractMethod;
-ol.format.XML.prototype.readProjectionFromNode = goog.abstractMethod;
-ol.format.XML.prototype.writeFeature = function(feature) {
+ol.format.XMLFeature.prototype.readProjectionFromDocument = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readProjectionFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.writeFeature = function(feature) {
   return this.writeFeatureNode(feature)
 };
-ol.format.XML.prototype.writeFeatureNode = goog.abstractMethod;
-ol.format.XML.prototype.writeFeatures = function(features) {
+ol.format.XMLFeature.prototype.writeFeatureNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.writeFeatures = function(features) {
   return this.writeFeaturesNode(features)
 };
-ol.format.XML.prototype.writeFeaturesNode = goog.abstractMethod;
-ol.format.XML.prototype.writeGeometry = function(geometry) {
+ol.format.XMLFeature.prototype.writeFeaturesNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.writeGeometry = function(geometry) {
   return this.writeGeometryNode(geometry)
 };
-ol.format.XML.prototype.writeGeometryNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.writeGeometryNode = goog.abstractMethod;
 goog.provide("ol.format.GML");
 goog.require("goog.array");
 goog.require("goog.asserts");
@@ -30236,7 +30273,7 @@ goog.require("goog.object");
 goog.require("goog.string");
 goog.require("ol.Feature");
 goog.require("ol.extent");
-goog.require("ol.format.XML");
+goog.require("ol.format.XMLFeature");
 goog.require("ol.geom.LineString");
 goog.require("ol.geom.MultiLineString");
 goog.require("ol.geom.MultiPoint");
@@ -30251,7 +30288,7 @@ ol.format.GML = function(opt_options) {
   this.featureNS_ = options.featureNS;
   goog.base(this)
 };
-goog.inherits(ol.format.GML, ol.format.XML);
+goog.inherits(ol.format.GML, ol.format.XMLFeature);
 ol.format.GML.readFeatures_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   var localName = ol.xml.getLocalName(node);
@@ -30714,7 +30751,7 @@ goog.require("goog.asserts");
 goog.require("goog.dom.NodeType");
 goog.require("goog.object");
 goog.require("ol.Feature");
-goog.require("ol.format.XML");
+goog.require("ol.format.XMLFeature");
 goog.require("ol.format.XSD");
 goog.require("ol.geom.LineString");
 goog.require("ol.geom.MultiLineString");
@@ -30724,7 +30761,7 @@ goog.require("ol.xml");
 ol.format.GPX = function() {
   goog.base(this)
 };
-goog.inherits(ol.format.GPX, ol.format.XML);
+goog.inherits(ol.format.GPX, ol.format.XMLFeature);
 ol.format.GPX.NAMESPACE_URIS_ = [null, "http://www.topografix.com/GPX/1/0", "http://www.topografix.com/GPX/1/1"];
 ol.format.GPX.appendCoordinate_ = function(flatCoordinates, node, values) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
@@ -31114,16 +31151,16 @@ goog.json.Serializer.prototype.serializeObject_ = function(obj, sb) {
   }
   sb.push("}")
 };
-goog.provide("ol.format.JSON");
+goog.provide("ol.format.JSONFeature");
 goog.require("goog.asserts");
 goog.require("goog.json");
-goog.require("ol.format.Format");
+goog.require("ol.format.Feature");
 goog.require("ol.format.FormatType");
-ol.format.JSON = function() {
+ol.format.JSONFeature = function() {
   goog.base(this)
 };
-goog.inherits(ol.format.JSON, ol.format.Format);
-ol.format.JSON.prototype.getObject_ = function(source) {
+goog.inherits(ol.format.JSONFeature, ol.format.Feature);
+ol.format.JSONFeature.prototype.getObject_ = function(source) {
   if(goog.isObject(source)) {
     return source
   }else {
@@ -31136,43 +31173,43 @@ ol.format.JSON.prototype.getObject_ = function(source) {
     }
   }
 };
-ol.format.JSON.prototype.getType = function() {
+ol.format.JSONFeature.prototype.getType = function() {
   return ol.format.FormatType.JSON
 };
-ol.format.JSON.prototype.readFeature = function(source) {
+ol.format.JSONFeature.prototype.readFeature = function(source) {
   return this.readFeatureFromObject(this.getObject_(source))
 };
-ol.format.JSON.prototype.readFeatures = function(source) {
+ol.format.JSONFeature.prototype.readFeatures = function(source) {
   return this.readFeaturesFromObject(this.getObject_(source))
 };
-ol.format.JSON.prototype.readFeatureFromObject = goog.abstractMethod;
-ol.format.JSON.prototype.readFeaturesFromObject = goog.abstractMethod;
-ol.format.JSON.prototype.readGeometry = function(source) {
+ol.format.JSONFeature.prototype.readFeatureFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.readFeaturesFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.readGeometry = function(source) {
   return this.readGeometryFromObject(this.getObject_(source))
 };
-ol.format.JSON.prototype.readGeometryFromObject = goog.abstractMethod;
-ol.format.JSON.prototype.readProjection = function(source) {
+ol.format.JSONFeature.prototype.readGeometryFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.readProjection = function(source) {
   return this.readProjectionFromObject(this.getObject_(source))
 };
-ol.format.JSON.prototype.readProjectionFromObject = goog.abstractMethod;
-ol.format.JSON.prototype.writeFeature = function(feature) {
+ol.format.JSONFeature.prototype.readProjectionFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.writeFeature = function(feature) {
   return this.writeFeatureObject(feature)
 };
-ol.format.JSON.prototype.writeFeatureObject = goog.abstractMethod;
-ol.format.JSON.prototype.writeFeatures = function(features) {
+ol.format.JSONFeature.prototype.writeFeatureObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.writeFeatures = function(features) {
   return this.writeFeaturesObject(features)
 };
-ol.format.JSON.prototype.writeFeaturesObject = goog.abstractMethod;
-ol.format.JSON.prototype.writeGeometry = function(geometry) {
+ol.format.JSONFeature.prototype.writeFeaturesObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.writeGeometry = function(geometry) {
   return this.writeGeometryObject(geometry)
 };
-ol.format.JSON.prototype.writeGeometryObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.writeGeometryObject = goog.abstractMethod;
 goog.provide("ol.format.GeoJSON");
 goog.require("goog.array");
 goog.require("goog.asserts");
 goog.require("goog.object");
 goog.require("ol.Feature");
-goog.require("ol.format.JSON");
+goog.require("ol.format.JSONFeature");
 goog.require("ol.geom.GeometryCollection");
 goog.require("ol.geom.GeometryType");
 goog.require("ol.geom.LineString");
@@ -31187,7 +31224,7 @@ ol.format.GeoJSON = function(opt_options) {
   goog.base(this);
   this.defaultProjection_ = ol.proj.get(options.defaultProjection ? options.defaultProjection : "EPSG:4326")
 };
-goog.inherits(ol.format.GeoJSON, ol.format.JSON);
+goog.inherits(ol.format.GeoJSON, ol.format.JSONFeature);
 ol.format.GeoJSON.EXTENSIONS_ = [".geojson"];
 ol.format.GeoJSON.readGeometry_ = function(object) {
   if(goog.isNull(object)) {
@@ -31389,15 +31426,15 @@ goog.string.newlines.getLines = function(str) {
   }
   return lines
 };
-goog.provide("ol.format.Text");
+goog.provide("ol.format.TextFeature");
 goog.require("goog.asserts");
-goog.require("ol.format.Format");
+goog.require("ol.format.Feature");
 goog.require("ol.format.FormatType");
-ol.format.Text = function() {
+ol.format.TextFeature = function() {
   goog.base(this)
 };
-goog.inherits(ol.format.Text, ol.format.Format);
-ol.format.Text.prototype.getText_ = function(source) {
+goog.inherits(ol.format.TextFeature, ol.format.Feature);
+ol.format.TextFeature.prototype.getText_ = function(source) {
   if(goog.isString(source)) {
     return source
   }else {
@@ -31405,44 +31442,44 @@ ol.format.Text.prototype.getText_ = function(source) {
     return""
   }
 };
-ol.format.Text.prototype.getType = function() {
+ol.format.TextFeature.prototype.getType = function() {
   return ol.format.FormatType.TEXT
 };
-ol.format.Text.prototype.readFeature = function(source) {
+ol.format.TextFeature.prototype.readFeature = function(source) {
   return this.readFeatureFromText(this.getText_(source))
 };
-ol.format.Text.prototype.readFeatureFromText = goog.abstractMethod;
-ol.format.Text.prototype.readFeatures = function(source) {
+ol.format.TextFeature.prototype.readFeatureFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.readFeatures = function(source) {
   return this.readFeaturesFromText(this.getText_(source))
 };
-ol.format.Text.prototype.readFeaturesFromText = goog.abstractMethod;
-ol.format.Text.prototype.readGeometry = function(source) {
+ol.format.TextFeature.prototype.readFeaturesFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.readGeometry = function(source) {
   return this.readGeometryFromText(this.getText_(source))
 };
-ol.format.Text.prototype.readGeometryFromText = goog.abstractMethod;
-ol.format.Text.prototype.readProjection = function(source) {
+ol.format.TextFeature.prototype.readGeometryFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.readProjection = function(source) {
   return this.readProjectionFromText(this.getText_(source))
 };
-ol.format.Text.prototype.readProjectionFromText = goog.abstractMethod;
-ol.format.Text.prototype.writeFeature = function(feature) {
+ol.format.TextFeature.prototype.readProjectionFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.writeFeature = function(feature) {
   return this.writeFeatureText(feature)
 };
-ol.format.Text.prototype.writeFeatureText = goog.abstractMethod;
-ol.format.Text.prototype.writeFeatures = function(features) {
+ol.format.TextFeature.prototype.writeFeatureText = goog.abstractMethod;
+ol.format.TextFeature.prototype.writeFeatures = function(features) {
   return this.writeFeaturesText(features)
 };
-ol.format.Text.prototype.writeFeaturesText = goog.abstractMethod;
-ol.format.Text.prototype.writeGeometry = function(geometry) {
+ol.format.TextFeature.prototype.writeFeaturesText = goog.abstractMethod;
+ol.format.TextFeature.prototype.writeGeometry = function(geometry) {
   return this.writeGeometryText(geometry)
 };
-ol.format.Text.prototype.writeGeometryText = goog.abstractMethod;
+ol.format.TextFeature.prototype.writeGeometryText = goog.abstractMethod;
 goog.provide("ol.format.IGC");
 goog.provide("ol.format.IGCZ");
 goog.require("goog.asserts");
 goog.require("goog.string");
 goog.require("goog.string.newlines");
 goog.require("ol.Feature");
-goog.require("ol.format.Text");
+goog.require("ol.format.TextFeature");
 goog.require("ol.geom.LineString");
 goog.require("ol.proj");
 ol.format.IGCZ = {BAROMETRIC:"barometric", GPS:"gps", NONE:"none"};
@@ -31451,7 +31488,7 @@ ol.format.IGC = function(opt_options) {
   goog.base(this);
   this.altitudeMode_ = goog.isDef(options.altitudeMode) ? options.altitudeMode : ol.format.IGCZ.NONE
 };
-goog.inherits(ol.format.IGC, ol.format.Text);
+goog.inherits(ol.format.IGC, ol.format.TextFeature);
 ol.format.IGC.EXTENSIONS_ = [".igc"];
 ol.format.IGC.B_RECORD_RE_ = /^B(\d{2})(\d{2})(\d{2})(\d{2})(\d{5})([NS])(\d{3})(\d{5})([EW])([AV])(\d{5})(\d{5})/;
 ol.format.IGC.H_RECORD_RE_ = /^H.([A-Z]{3}).*?:(.*)/;
@@ -31548,7 +31585,7 @@ goog.require("goog.object");
 goog.require("goog.string");
 goog.require("ol.Feature");
 goog.require("ol.feature");
-goog.require("ol.format.XML");
+goog.require("ol.format.XMLFeature");
 goog.require("ol.format.XSD");
 goog.require("ol.geom.GeometryCollection");
 goog.require("ol.geom.GeometryType");
@@ -31602,7 +31639,7 @@ ol.format.KML = function(opt_options) {
     }
   }
 };
-goog.inherits(ol.format.KML, ol.format.XML);
+goog.inherits(ol.format.KML, ol.format.XMLFeature);
 ol.format.KML.EXTENSIONS_ = [".kml"];
 ol.format.KML.GX_NAMESPACE_URIS_ = ["http://www.google.com/kml/ext/2.2"];
 ol.format.KML.NAMESPACE_URIS_ = [null, "http://earth.google.com/kml/2.0", "http://earth.google.com/kml/2.1", "http://earth.google.com/kml/2.2", "http://www.opengis.net/kml/2.2"];
@@ -32305,14 +32342,14 @@ ol.format.KML.prototype.readProjectionFromNode = function(node) {
 goog.provide("ol.format.Polyline");
 goog.require("goog.asserts");
 goog.require("ol.Feature");
-goog.require("ol.format.Text");
+goog.require("ol.format.TextFeature");
 goog.require("ol.geom.LineString");
 goog.require("ol.geom.flat");
 goog.require("ol.proj");
 ol.format.Polyline = function() {
   goog.base(this)
 };
-goog.inherits(ol.format.Polyline, ol.format.Text);
+goog.inherits(ol.format.Polyline, ol.format.TextFeature);
 ol.format.Polyline.encodeFlatCoordinates = function(flatPoints, opt_dimension) {
   var dimension = goog.isDef(opt_dimension) ? opt_dimension : 2;
   return ol.format.Polyline.encodeDeltas(flatPoints, dimension)
@@ -32416,24 +32453,6 @@ ol.format.Polyline.decodeUnsignedIntegers = function(encoded) {
   }
   return numbers
 };
-ol.format.Polyline.encodeFloat = function(num, opt_factor) {
-  var factor = goog.isDef(opt_factor) ? opt_factor : 1E5;
-  num = Math.round(num * factor);
-  return ol.format.Polyline.encodeSignedInteger(num)
-};
-ol.format.Polyline.decodeFloat = function(encoded, opt_factor) {
-  var factor = goog.isDef(opt_factor) ? opt_factor : 1E5;
-  var result = ol.format.Polyline.decodeSignedInteger(encoded);
-  return result / factor
-};
-ol.format.Polyline.encodeSignedInteger = function(num) {
-  var signedNum = num < 0 ? ~(num << 1) : num << 1;
-  return ol.format.Polyline.encodeUnsignedInteger(signedNum)
-};
-ol.format.Polyline.decodeSignedInteger = function(encoded) {
-  var result = ol.format.Polyline.decodeUnsignedInteger(encoded);
-  return result & 1 ? ~(result >> 1) : result >> 1
-};
 ol.format.Polyline.encodeUnsignedInteger = function(num) {
   var value, encoded = "";
   while(num >= 32) {
@@ -32444,20 +32463,6 @@ ol.format.Polyline.encodeUnsignedInteger = function(num) {
   value = num + 63;
   encoded += String.fromCharCode(value);
   return encoded
-};
-ol.format.Polyline.decodeUnsignedInteger = function(encoded) {
-  var result = 0;
-  var shift = 0;
-  var i, ii;
-  for(i = 0, ii = encoded.length;i < ii;++i) {
-    var b = encoded.charCodeAt(i) - 63;
-    result |= (b & 31) << shift;
-    if(b < 32) {
-      break
-    }
-    shift += 5
-  }
-  return result
 };
 ol.format.Polyline.prototype.readFeatureFromText = function(text) {
   var geometry = this.readGeometryFromText(text);
@@ -32499,7 +32504,7 @@ goog.require("goog.array");
 goog.require("goog.asserts");
 goog.require("goog.object");
 goog.require("ol.Feature");
-goog.require("ol.format.JSON");
+goog.require("ol.format.JSONFeature");
 goog.require("ol.geom.LineString");
 goog.require("ol.geom.MultiLineString");
 goog.require("ol.geom.MultiPoint");
@@ -32512,7 +32517,7 @@ ol.format.TopoJSON = function(opt_options) {
   goog.base(this);
   this.defaultProjection_ = ol.proj.get(options.defaultProjection || "EPSG:4326")
 };
-goog.inherits(ol.format.TopoJSON, ol.format.JSON);
+goog.inherits(ol.format.TopoJSON, ol.format.JSONFeature);
 ol.format.TopoJSON.EXTENSIONS_ = [".topojson"];
 ol.format.TopoJSON.concatenateArcs_ = function(indices, arcs) {
   var coordinates = [];
@@ -33370,10 +33375,8 @@ ol.interaction.DragRotateAndZoom.prototype.handleDragEnd = function(mapBrowserEv
   var view2D = view.getView2D();
   var view2DState = view2D.getView2DState();
   var direction = this.lastScaleDelta_ - 1;
-  map.withFrozenRendering(function() {
-    ol.interaction.Interaction.rotate(map, view2D, view2DState.rotation);
-    ol.interaction.Interaction.zoom(map, view2D, view2DState.resolution, undefined, ol.interaction.DRAGROTATEANDZOOM_ANIMATION_DURATION, direction)
-  });
+  ol.interaction.Interaction.rotate(map, view2D, view2DState.rotation);
+  ol.interaction.Interaction.zoom(map, view2D, view2DState.resolution, undefined, ol.interaction.DRAGROTATEANDZOOM_ANIMATION_DURATION, direction);
   this.lastScaleDelta_ = 0;
   return true
 };
@@ -33770,35 +33773,33 @@ ol.interaction.Select.prototype.handleMapBrowserEvent = function(mapBrowserEvent
   var add = this.addCondition_(mapBrowserEvent);
   var map = mapBrowserEvent.map;
   var features = this.featureOverlay_.getFeatures();
-  map.withFrozenRendering(function() {
-    if(add) {
-      map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function(feature, layer) {
-        if(goog.array.indexOf(features.getArray(), feature) == -1) {
-          features.push(feature)
-        }
-      }, undefined, this.layerFilter_)
-    }else {
-      var feature = map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function(feature, layer) {
-        return feature
-      }, undefined, this.layerFilter_);
-      if(goog.isDef(feature)) {
-        if(features.getLength() == 1) {
-          if(features.getAt(0) !== feature) {
-            features.setAt(0, feature)
-          }
-        }else {
-          if(features.getLength() != 1) {
-            features.clear()
-          }
-          features.push(feature)
+  if(add) {
+    map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function(feature, layer) {
+      if(goog.array.indexOf(features.getArray(), feature) == -1) {
+        features.push(feature)
+      }
+    }, undefined, this.layerFilter_)
+  }else {
+    var feature = map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function(feature, layer) {
+      return feature
+    }, undefined, this.layerFilter_);
+    if(goog.isDef(feature)) {
+      if(features.getLength() == 1) {
+        if(features.getAt(0) !== feature) {
+          features.setAt(0, feature)
         }
       }else {
-        if(features.getLength() !== 0) {
+        if(features.getLength() != 1) {
           features.clear()
         }
+        features.push(feature)
+      }
+    }else {
+      if(features.getLength() !== 0) {
+        features.clear()
       }
     }
-  }, this);
+  }
   return false
 };
 ol.interaction.Select.prototype.setMap = function(map) {
@@ -37250,8 +37251,8 @@ goog.require("ol.events.ConditionType");
 goog.require("ol.events.condition");
 goog.require("ol.extent");
 goog.require("ol.feature");
-goog.require("ol.format.Binary");
-goog.require("ol.format.Format");
+goog.require("ol.format.BinaryFeature");
+goog.require("ol.format.Feature");
 goog.require("ol.format.FormatType");
 goog.require("ol.format.GML");
 goog.require("ol.format.GPX");
@@ -37259,12 +37260,12 @@ goog.require("ol.format.GPX.V1_1");
 goog.require("ol.format.GeoJSON");
 goog.require("ol.format.IGC");
 goog.require("ol.format.IGCZ");
-goog.require("ol.format.JSON");
+goog.require("ol.format.JSONFeature");
 goog.require("ol.format.KML");
 goog.require("ol.format.Polyline");
-goog.require("ol.format.Text");
+goog.require("ol.format.TextFeature");
 goog.require("ol.format.TopoJSON");
-goog.require("ol.format.XML");
+goog.require("ol.format.XMLFeature");
 goog.require("ol.format.XSD");
 goog.require("ol.geom.Circle");
 goog.require("ol.geom.Geometry");

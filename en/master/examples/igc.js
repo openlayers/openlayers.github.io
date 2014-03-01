@@ -33,6 +33,19 @@ var vectorSource = new ol.source.IGC({
   ]
 });
 
+var time = {
+  start: Infinity,
+  stop: -Infinity,
+  duration: 0
+};
+vectorSource.on('addfeature', function(event) {
+  var geometry = event.feature.getGeometry();
+  time.start = Math.min(time.start, geometry.getFirstCoordinate()[2]);
+  time.stop = Math.max(time.stop, geometry.getLastCoordinate()[2]);
+  time.duration = time.stop - time.start;
+});
+
+
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
@@ -122,4 +135,35 @@ map.on('postcompose', function(evt) {
     vectorContext.setFillStrokeStyle(null, strokeStyle);
     vectorContext.drawLineStringGeometry(line);
   }
+});
+
+var featureOverlay = new ol.FeatureOverlay({
+  map: map,
+  style: new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: 5,
+      fill: new ol.style.Fill({
+        color: 'rgba(255,0,0,0.9)'
+      }),
+      stroke: null
+    })
+  })
+});
+
+$('#time').on('input', function(event) {
+  var value = parseInt($(this).val(), 10) / 100;
+  var m = time.start + (time.duration * value);
+  vectorSource.forEachFeature(function(feature) {
+    var geometry = /** @type {ol.geom.LineString} */ (feature.getGeometry());
+    var coordinate = geometry.getCoordinateAtM(m, true);
+    var highlight = feature.get('highlight');
+    if (highlight == undefined) {
+      highlight = new ol.Feature(new ol.geom.Point(coordinate));
+      feature.set('highlight', highlight);
+      featureOverlay.addFeature(highlight);
+    } else {
+      highlight.getGeometry().setCoordinates(coordinate);
+    }
+  });
+  map.render();
 });
