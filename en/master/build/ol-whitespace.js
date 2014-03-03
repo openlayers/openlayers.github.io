@@ -520,15 +520,15 @@ goog.addDependency("../build/src/internal/src/requireall.js", [], ["libtess", "l
 "ol.Image", "ol.ImageBase", "ol.ImageCanvas", "ol.ImageState", "ol.ImageTile", "ol.ImageUrlFunction", "ol.ImageUrlFunctionType", "ol.Kinetic", "ol.Map", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler", "ol.MapEvent", "ol.MapEventType", "ol.MapProperty", "ol.Object", "ol.ObjectEvent", "ol.ObjectEventType", "ol.Observable", "ol.Overlay", "ol.OverlayPositioning", "ol.OverlayProperty", "ol.Pixel", "ol.PostRenderFunction", "ol.PreRenderFunction", "ol.RendererHint", "ol.ResolutionConstraint", 
 "ol.ResolutionConstraintType", "ol.RotationConstraint", "ol.RotationConstraintType", "ol.Size", "ol.Sphere", "ol.Tile", "ol.TileCache", "ol.TileCoord", "ol.TileLoadFunctionType", "ol.TilePriorityFunction", "ol.TileQueue", "ol.TileRange", "ol.TileState", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.TransformFunction", "ol.View", "ol.View2D", "ol.View2DProperty", "ol.View2DState", "ol.ViewHint", "ol.animation", "ol.array", "ol.binary.Buffer", "ol.binary.IReader", "ol.color", "ol.color.Matrix", 
 "ol.control", "ol.control.Attribution", "ol.control.Control", "ol.control.FullScreen", "ol.control.Logo", "ol.control.MousePosition", "ol.control.ScaleLine", "ol.control.ScaleLineProperty", "ol.control.ScaleLineUnits", "ol.control.Zoom", "ol.control.ZoomSlider", "ol.control.ZoomToExtent", "ol.coordinate", "ol.css", "ol.dom", "ol.dom.BrowserFeature", "ol.dom.Input", "ol.dom.InputProperty", "ol.easing", "ol.ellipsoid.BESSEL1841", "ol.ellipsoid.WGS84", "ol.events.ConditionType", "ol.events.condition", 
-"ol.extent", "ol.feature", "ol.format.BinaryFeature", "ol.format.Feature", "ol.format.FormatType", "ol.format.GML", "ol.format.GPX", "ol.format.GPX.V1_1", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.JSONFeature", "ol.format.KML", "ol.format.Polyline", "ol.format.TextFeature", "ol.format.TopoJSON", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.Circle", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", 
-"ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify", "ol.interaction", "ol.interaction.DoubleClickZoom", "ol.interaction.Drag", "ol.interaction.DragAndDrop", "ol.interaction.DragAndDropEvent", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", "ol.interaction.Draw", "ol.interaction.Interaction", "ol.interaction.KeyboardPan", 
-"ol.interaction.KeyboardZoom", "ol.interaction.Modify", "ol.interaction.MouseWheelZoom", "ol.interaction.Select", "ol.interaction.Touch", "ol.interaction.TouchPan", "ol.interaction.TouchRotate", "ol.interaction.TouchZoom", "ol.layer.Base", "ol.layer.Group", "ol.layer.Image", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.Tile", "ol.layer.Vector", "ol.math", "ol.parser.Parser", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.Versioned", "ol.parser.ogc.WMSCapabilities", 
-"ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", "ol.parser.ogc.WMSCapabilities_v1_3_0", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", "ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.METERS_PER_UNIT", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.render.Box", 
-"ol.render.Event", "ol.render.EventType", "ol.render.IReplayGroup", "ol.render.IVectorContext", "ol.render.canvas", "ol.render.canvas.Immediate", "ol.render.canvas.ReplayGroup", "ol.render.webgl.Immediate", "ol.renderer.Layer", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.Map", "ol.renderer.dom.TileLayer", 
-"ol.renderer.vector", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.Map", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", "ol.size", "ol.source.BingMaps", "ol.source.GPX", "ol.source.GeoJSON", "ol.source.IGC", "ol.source.Image", "ol.source.ImageCanvas", "ol.source.ImageStatic", "ol.source.ImageVector", "ol.source.ImageWMS", "ol.source.KML", "ol.source.MapGuide", "ol.source.MapQuest", 
-"ol.source.OSM", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.TopoJSON", "ol.source.Vector", "ol.source.VectorEvent", "ol.source.VectorEventType", "ol.source.VectorFile", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.source.wms.ServerType", "ol.sphere.NORMAL", "ol.sphere.WGS84", 
-"ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style.Circle", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorOrigin", "ol.style.IconAnchorUnits", "ol.style.IconImageCache", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", "ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType", 
-"ol.webgl.shader", "ol.xml"]);
+"ol.extent", "ol.feature", "ol.format.BinaryFeature", "ol.format.Feature", "ol.format.FormatType", "ol.format.GML", "ol.format.GPX", "ol.format.GPX.V1_1", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.JSONFeature", "ol.format.KML", "ol.format.OSMXML", "ol.format.Polyline", "ol.format.TextFeature", "ol.format.TopoJSON", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.Circle", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", 
+"ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.geom.closest", "ol.geom.flat", "ol.geom.simplify", "ol.interaction", "ol.interaction.DoubleClickZoom", "ol.interaction.Drag", "ol.interaction.DragAndDrop", "ol.interaction.DragAndDropEvent", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", "ol.interaction.Draw", "ol.interaction.Interaction", 
+"ol.interaction.KeyboardPan", "ol.interaction.KeyboardZoom", "ol.interaction.Modify", "ol.interaction.MouseWheelZoom", "ol.interaction.Select", "ol.interaction.Touch", "ol.interaction.TouchPan", "ol.interaction.TouchRotate", "ol.interaction.TouchZoom", "ol.layer.Base", "ol.layer.Group", "ol.layer.Image", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.Tile", "ol.layer.Vector", "ol.math", "ol.parser.Parser", "ol.parser.XML", "ol.parser.ogc.ExceptionReport", "ol.parser.ogc.Versioned", 
+"ol.parser.ogc.WMSCapabilities", "ol.parser.ogc.WMSCapabilities_v1", "ol.parser.ogc.WMSCapabilities_v1_0_0", "ol.parser.ogc.WMSCapabilities_v1_1", "ol.parser.ogc.WMSCapabilities_v1_1_0", "ol.parser.ogc.WMSCapabilities_v1_1_1", "ol.parser.ogc.WMSCapabilities_v1_1_1_WMSC", "ol.parser.ogc.WMSCapabilities_v1_3_0", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", "ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.METERS_PER_UNIT", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", 
+"ol.proj.common", "ol.render.Box", "ol.render.Event", "ol.render.EventType", "ol.render.IReplayGroup", "ol.render.IVectorContext", "ol.render.canvas", "ol.render.canvas.Immediate", "ol.render.canvas.ReplayGroup", "ol.render.webgl.Immediate", "ol.renderer.Layer", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.Map", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.Map", 
+"ol.renderer.dom.TileLayer", "ol.renderer.vector", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.Map", "ol.renderer.webgl.TileLayer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.renderer.webgl.tilelayer.shader", "ol.size", "ol.source.BingMaps", "ol.source.GPX", "ol.source.GeoJSON", "ol.source.IGC", "ol.source.Image", "ol.source.ImageCanvas", "ol.source.ImageStatic", "ol.source.ImageVector", "ol.source.ImageWMS", "ol.source.KML", 
+"ol.source.MapGuide", "ol.source.MapQuest", "ol.source.OSM", "ol.source.OSMXML", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileWMS", "ol.source.TopoJSON", "ol.source.Vector", "ol.source.VectorEvent", "ol.source.VectorEventType", "ol.source.VectorFile", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.source.wms", "ol.source.wms.ServerType", 
+"ol.sphere.NORMAL", "ol.sphere.WGS84", "ol.structs.Buffer", "ol.structs.IntegerSet", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.structs.RBush", "ol.style.Circle", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorOrigin", "ol.style.IconAnchorUnits", "ol.style.IconImageCache", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.vec.Mat4", 
+"ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType", "ol.webgl.shader", "ol.xml"]);
 goog.addDependency("../src/googx/dom/fullscreen.js", ["googx.dom.fullscreen", "googx.dom.fullscreen.EventType"], ["goog.dom", "goog.userAgent"]);
 goog.addDependency("../src/libtess.js/dict/Dict.js", ["libtess.Dict"], ["libtess", "libtess.DictNode"]);
 goog.addDependency("../src/libtess.js/dict/DictNode.js", ["libtess.DictNode"], ["libtess"]);
@@ -595,6 +595,7 @@ goog.addDependency("../src/ol/format/igcformat.js", ["ol.format.IGC", "ol.format
 goog.addDependency("../src/ol/format/jsonfeatureformat.js", ["ol.format.JSONFeature"], ["goog.asserts", "goog.json", "ol.format.Feature", "ol.format.FormatType"]);
 goog.addDependency("../src/ol/format/kmlformat.js", ["ol.format.KML"], ["goog.Uri", "goog.array", "goog.asserts", "goog.dom.NodeType", "goog.math", "goog.object", "goog.string", "ol.Feature", "ol.feature", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorOrigin", 
 "ol.style.IconAnchorUnits", "ol.style.Image", "ol.style.Stroke", "ol.style.Style", "ol.xml"]);
+goog.addDependency("../src/ol/format/osmxmlformat.js", ["ol.format.OSMXML"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "goog.object", "ol.Feature", "ol.format.XMLFeature", "ol.geom.LineString", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.xml"]);
 goog.addDependency("../src/ol/format/polylineformat.js", ["ol.format.Polyline"], ["goog.asserts", "ol.Feature", "ol.format.TextFeature", "ol.geom.LineString", "ol.geom.flat", "ol.proj"]);
 goog.addDependency("../src/ol/format/textfeatureformat.js", ["ol.format.TextFeature"], ["goog.asserts", "ol.format.Feature", "ol.format.FormatType"]);
 goog.addDependency("../src/ol/format/topojsonformat.js", ["ol.format.TopoJSON"], ["goog.array", "goog.asserts", "goog.object", "ol.Feature", "ol.format.JSONFeature", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj"]);
@@ -725,6 +726,7 @@ goog.addDependency("../src/ol/source/kmlsource.js", ["ol.source.KML"], ["ol.form
 goog.addDependency("../src/ol/source/mapguidesource.js", ["ol.source.MapGuide"], ["goog.object", "goog.uri.utils", "ol.Image", "ol.ImageUrlFunction", "ol.extent", "ol.source.Image"]);
 goog.addDependency("../src/ol/source/mapquestsource.js", ["ol.source.MapQuest"], ["goog.asserts", "ol.Attribution", "ol.source.OSM", "ol.source.XYZ"]);
 goog.addDependency("../src/ol/source/osmsource.js", ["ol.source.OSM"], ["ol.Attribution", "ol.source.XYZ"]);
+goog.addDependency("../src/ol/source/osmxmlsource.js", ["ol.source.OSMXML"], ["ol.format.OSMXML", "ol.source.VectorFile"]);
 goog.addDependency("../src/ol/source/source.js", ["ol.source.Source", "ol.source.State"], ["goog.events.EventType", "ol.Attribution", "ol.Extent", "ol.Observable", "ol.proj"]);
 goog.addDependency("../src/ol/source/stamensource.js", ["ol.source.Stamen"], ["goog.asserts", "ol.Attribution", "ol.source.OSM", "ol.source.XYZ"]);
 goog.addDependency("../src/ol/source/tileimagesource.js", ["ol.source.TileImage"], ["goog.asserts", "ol.Attribution", "ol.Extent", "ol.ImageTile", "ol.Tile", "ol.TileCache", "ol.TileCoord", "ol.TileLoadFunctionType", "ol.TileState", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.source.Tile", "ol.tilegrid.TileGrid"]);
@@ -12451,8 +12453,8 @@ ol.geom.flat.lineStringInterpolate = function(flatCoordinates, offset, end, stri
     return[pointX, pointY]
   }
 };
-ol.geom.flat.lineStringCoordinateAtM = function(flatCoordinates, offset, end, stride, layout, m, extrapolate) {
-  if(layout != ol.geom.GeometryLayout.XYM && layout != ol.geom.GeometryLayout.XYZM || end == offset) {
+ol.geom.flat.lineStringCoordinateAtM = function(flatCoordinates, offset, end, stride, m, extrapolate) {
+  if(end == offset) {
     return null
   }
   var coordinate;
@@ -12504,6 +12506,47 @@ ol.geom.flat.lineStringCoordinateAtM = function(flatCoordinates, offset, end, st
   coordinate.push(m);
   goog.asserts.assert(coordinate.length == stride);
   return coordinate
+};
+ol.geom.flat.lineStringsCoordinateAtM = function(flatCoordinates, offset, ends, stride, m, extrapolate, interpolate) {
+  if(interpolate) {
+    return ol.geom.flat.lineStringCoordinateAtM(flatCoordinates, offset, ends[ends.length - 1], stride, m, extrapolate)
+  }
+  var coordinate;
+  if(m < flatCoordinates[stride - 1]) {
+    if(extrapolate) {
+      coordinate = flatCoordinates.slice(0, stride);
+      coordinate[stride - 1] = m;
+      return coordinate
+    }else {
+      return null
+    }
+  }
+  if(flatCoordinates[flatCoordinates.length - 1] < m) {
+    if(extrapolate) {
+      coordinate = flatCoordinates.slice(flatCoordinates.length - stride);
+      coordinate[stride - 1] = m;
+      return coordinate
+    }else {
+      return null
+    }
+  }
+  var i, ii;
+  for(i = 0, ii = ends.length;i < ii;++i) {
+    var end = ends[i];
+    if(offset == end) {
+      continue
+    }
+    if(m < flatCoordinates[offset + stride - 1]) {
+      return null
+    }else {
+      if(m <= flatCoordinates[end - 1]) {
+        return ol.geom.flat.lineStringCoordinateAtM(flatCoordinates, offset, end, stride, m, false)
+      }
+    }
+    offset = end
+  }
+  goog.asserts.fail();
+  return null
 };
 ol.geom.flat.lineStringLength = function(flatCoordinates, offset, end, stride) {
   var x1 = flatCoordinates[offset];
@@ -13573,12 +13616,9 @@ ol.DRAG_BOX_HYSTERESIS_PIXELS_SQUARED = ol.DRAG_BOX_HYSTERESIS_PIXELS * ol.DRAG_
 ol.DragBoxEventType = {BOXSTART:"boxstart", BOXEND:"boxend"};
 ol.DragBoxEvent = function(type, coordinate) {
   goog.base(this, type);
-  this.coordinate_ = coordinate
+  this.coordinate = coordinate
 };
 goog.inherits(ol.DragBoxEvent, goog.events.Event);
-ol.DragBoxEvent.prototype.getCoordinate = function() {
-  return this.coordinate_
-};
 ol.interaction.DragBox = function(opt_options) {
   goog.base(this);
   var options = goog.isDef(opt_options) ? opt_options : {};
@@ -23336,8 +23376,11 @@ ol.geom.LineString.prototype.closestPointXY = function(x, y, closestPoint, minSq
   return ol.geom.closest.getClosestPoint(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, this.maxDelta_, false, x, y, closestPoint, minSquaredDistance)
 };
 ol.geom.LineString.prototype.getCoordinateAtM = function(m, opt_extrapolate) {
+  if(this.layout != ol.geom.GeometryLayout.XYM && this.layout != ol.geom.GeometryLayout.XYZM) {
+    return null
+  }
   var extrapolate = goog.isDef(opt_extrapolate) ? opt_extrapolate : false;
-  return ol.geom.flat.lineStringCoordinateAtM(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, this.layout, m, extrapolate)
+  return ol.geom.flat.lineStringCoordinateAtM(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride, m, extrapolate)
 };
 ol.geom.LineString.prototype.getCoordinates = function() {
   return ol.geom.flat.inflateCoordinates(this.flatCoordinates, 0, this.flatCoordinates.length, this.stride)
@@ -23410,6 +23453,14 @@ ol.geom.MultiLineString.prototype.closestPointXY = function(x, y, closestPoint, 
     this.maxDeltaRevision_ = this.getRevision()
   }
   return ol.geom.closest.getsClosestPoint(this.flatCoordinates, 0, this.ends_, this.stride, this.maxDelta_, false, x, y, closestPoint, minSquaredDistance)
+};
+ol.geom.MultiLineString.prototype.getCoordinateAtM = function(m, opt_extrapolate, opt_interpolate) {
+  if(this.layout != ol.geom.GeometryLayout.XYM && this.layout != ol.geom.GeometryLayout.XYZM || this.flatCoordinates.length === 0) {
+    return null
+  }
+  var extrapolate = goog.isDef(opt_extrapolate) ? opt_extrapolate : false;
+  var interpolate = goog.isDef(opt_interpolate) ? opt_interpolate : false;
+  return ol.geom.flat.lineStringsCoordinateAtM(this.flatCoordinates, 0, this.ends_, this.stride, m, extrapolate, interpolate)
 };
 ol.geom.MultiLineString.prototype.getCoordinates = function() {
   return ol.geom.flat.inflateCoordinatess(this.flatCoordinates, 0, this.ends_, this.stride)
@@ -31604,39 +31655,38 @@ goog.require("ol.style.Image");
 goog.require("ol.style.Stroke");
 goog.require("ol.style.Style");
 goog.require("ol.xml");
-ol.KML_RESPECT_VISIBILITY = false;
 ol.format.KMLVec2_;
 ol.format.KMLGxTrackObject_;
 ol.format.KML = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   goog.base(this);
   var defaultStyle = goog.isDef(options.defaultStyle) ? options.defaultStyle : ol.format.KML.DEFAULT_STYLE_ARRAY_;
-  this.defaultFeatureStyleFunction_ = function(resolution) {
-    if(ol.KML_RESPECT_VISIBILITY) {
-      var visibility = this.get("visibility");
-      if(goog.isDef(visibility) && !visibility) {
-        return null
-      }
-    }
-    return defaultStyle
-  };
   var sharedStyles = {};
-  this.sharedStyles_ = sharedStyles;
-  this.sharedStyleFeatureStyleFunction_ = function(resolution) {
-    if(ol.KML_RESPECT_VISIBILITY) {
-      var visibility = this.get("visibility");
-      if(goog.isDef(visibility) && !visibility) {
-        return null
+  var findStyle = function(styleValue) {
+    if(goog.isArray(styleValue)) {
+      return styleValue
+    }else {
+      if(goog.isString(styleValue)) {
+        if(!(styleValue in sharedStyles) && "#" + styleValue in sharedStyles) {
+          styleValue = "#" + styleValue
+        }
+        return findStyle(sharedStyles[styleValue])
+      }else {
+        return defaultStyle
       }
     }
-    var styleUrl = (this.get("styleUrl"));
-    goog.asserts.assert(goog.isDef(styleUrl));
-    var style = sharedStyles[styleUrl];
+  };
+  this.sharedStyles_ = sharedStyles;
+  this.featureStyleFunction_ = function(resolution) {
+    var style = (this.get("Style"));
     if(goog.isDef(style)) {
       return style
-    }else {
-      return null
     }
+    var styleUrl = (this.get("styleUrl"));
+    if(goog.isDef(styleUrl)) {
+      return findStyle(styleUrl)
+    }
+    return defaultStyle
   }
 };
 goog.inherits(ol.format.KML, ol.format.XMLFeature);
@@ -31655,18 +31705,6 @@ ol.format.KML.DEFAULT_STROKE_STYLE_ = new ol.style.Stroke({color:ol.format.KML.D
 ol.format.KML.DEFAULT_STYLE_ = new ol.style.Style({fill:ol.format.KML.DEFAULT_FILL_STYLE_, image:ol.format.KML.DEFAULT_IMAGE_STYLE_, text:null, stroke:ol.format.KML.DEFAULT_STROKE_STYLE_, zIndex:0});
 ol.format.KML.DEFAULT_STYLE_ARRAY_ = [ol.format.KML.DEFAULT_STYLE_];
 ol.format.KML.ICON_ANCHOR_UNITS_MAP_ = {"fraction":ol.style.IconAnchorUnits.FRACTION, "pixels":ol.style.IconAnchorUnits.PIXELS};
-ol.format.KML.makeFeatureStyleFunction_ = function(style) {
-  var styleArray = [style];
-  return function(resolution) {
-    if(ol.KML_RESPECT_VISIBILITY) {
-      var visibility = this.get("visibility");
-      if(goog.isDef(visibility) && !visibility) {
-        return null
-      }
-    }
-    return styleArray
-  }
-};
 ol.format.KML.readColor_ = function(node) {
   var s = ol.xml.getAllTextContent(node, false);
   var m = /^\s*#?\s*([0-9A-Fa-f]{8})\s*$/.exec(s);
@@ -31722,6 +31760,9 @@ ol.format.KML.readScale_ = function(node) {
   }else {
     return undefined
   }
+};
+ol.format.KML.readStyleMapValue_ = function(node, objectStack) {
+  return ol.xml.pushParseAndPop((undefined), ol.format.KML.STYLE_MAP_PARSERS_, node, objectStack)
 };
 ol.format.KML.IconStyleParser_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
@@ -32008,8 +32049,7 @@ ol.format.KML.readStyle_ = function(node, objectStack) {
   if(goog.isDef(outline) && !outline) {
     strokeStyle = null
   }
-  var style = new ol.style.Style({fill:fillStyle, image:imageStyle, stroke:strokeStyle, text:null, zIndex:undefined});
-  return style
+  return[new ol.style.Style({fill:fillStyle, image:imageStyle, stroke:strokeStyle, text:null, zIndex:undefined})]
 };
 ol.format.KML.DataParser_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
@@ -32038,14 +32078,32 @@ ol.format.KML.PairDataParser_ = function(node, objectStack) {
   }
   var key = (goog.object.get(pairObject, "key"));
   if(goog.isDef(key) && key == "normal") {
-    var featureObject = (objectStack[objectStack.length - 1]);
-    var Style = (goog.object.get(pairObject, "Style", null));
-    if(!goog.isNull(Style)) {
-      goog.object.set(featureObject, "Style", Style)
-    }
     var styleUrl = (goog.object.get(pairObject, "styleUrl"));
     if(goog.isDef(styleUrl)) {
-      goog.object.set(featureObject, "styleUrl", styleUrl)
+      objectStack[objectStack.length - 1] = styleUrl
+    }
+    var Style = (goog.object.get(pairObject, "Style"));
+    if(goog.isDef(Style)) {
+      objectStack[objectStack.length - 1] = Style
+    }
+  }
+};
+ol.format.KML.PlacemarkStyleMapParser_ = function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
+  goog.asserts.assert(node.localName == "StyleMap");
+  var styleMapValue = ol.format.KML.readStyleMapValue_(node, objectStack);
+  if(!goog.isDef(styleMapValue)) {
+    return
+  }
+  var placemarkObject = objectStack[objectStack.length - 1];
+  goog.asserts.assert(goog.isObject(placemarkObject));
+  if(goog.isArray(styleMapValue)) {
+    goog.object.set(placemarkObject, "Style", styleMapValue)
+  }else {
+    if(goog.isString(styleMapValue)) {
+      goog.object.set(placemarkObject, "styleUrl", styleMapValue)
+    }else {
+      goog.asserts.fail()
     }
   }
 };
@@ -32063,11 +32121,6 @@ ol.format.KML.SimpleDataParser_ = function(node, objectStack) {
     var featureObject = (objectStack[objectStack.length - 1]);
     goog.object.set(featureObject, name, data)
   }
-};
-ol.format.KML.StyleMapParser_ = function(node, objectStack) {
-  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
-  goog.asserts.assert(node.localName == "StyleMap");
-  ol.xml.parse(ol.format.KML.STYLE_MAP_PARSERS_, node, objectStack)
 };
 ol.format.KML.innerBoundaryIsParser_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
@@ -32126,7 +32179,7 @@ ol.format.KML.FLAT_LINEAR_RING_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAM
 ol.format.KML.FLAT_LINEAR_RINGS_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"innerBoundaryIs":ol.format.KML.innerBoundaryIsParser_, "outerBoundaryIs":ol.format.KML.outerBoundaryIsParser_});
 ol.format.KML.GX_TRACK_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"when":ol.format.KML.whenParser_}, ol.xml.makeParsersNS(ol.format.KML.GX_NAMESPACE_URIS_, {"coord":ol.format.KML.gxCoordParser_}));
 ol.format.KML.GEOMETRY_FLAT_COORDINATES_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"coordinates":ol.xml.makeReplacer(ol.format.KML.readFlatCoordinates_)});
-ol.format.KML.ICON_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"href":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString)});
+ol.format.KML.ICON_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"href":ol.xml.makeObjectPropertySetter(ol.format.KML.readURI_)});
 ol.format.KML.ICON_STYLE_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"Icon":ol.xml.makeObjectPropertySetter(ol.format.KML.readIcon_), "heading":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), "hotSpot":ol.xml.makeObjectPropertySetter(ol.format.KML.readVec2_), "scale":ol.xml.makeObjectPropertySetter(ol.format.KML.readScale_)});
 ol.format.KML.INNER_BOUNDARY_IS_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"LinearRing":ol.xml.makeReplacer(ol.format.KML.readFlatLinearRing_)});
 ol.format.KML.LINE_STYLE_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"color":ol.xml.makeObjectPropertySetter(ol.format.KML.readColor_), "width":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal)});
@@ -32135,7 +32188,7 @@ ol.format.KML.GX_MULTITRACK_GEOMETRY_PARSERS_ = ol.xml.makeParsersNS(ol.format.K
 ol.format.KML.OUTER_BOUNDARY_IS_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"LinearRing":ol.xml.makeReplacer(ol.format.KML.readFlatLinearRing_)});
 ol.format.KML.PAIR_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"Style":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_), "key":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "styleUrl":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyleUrl_)});
 ol.format.KML.PLACEMARK_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"ExtendedData":ol.format.KML.ExtendedDataParser_, "MultiGeometry":ol.xml.makeObjectPropertySetter(ol.format.KML.readMultiGeometry_, "geometry"), "LineString":ol.xml.makeObjectPropertySetter(ol.format.KML.readLineString_, "geometry"), "LinearRing":ol.xml.makeObjectPropertySetter(ol.format.KML.readLinearRing_, "geometry"), "Point":ol.xml.makeObjectPropertySetter(ol.format.KML.readPoint_, "geometry"), "Polygon":ol.xml.makeObjectPropertySetter(ol.format.KML.readPolygon_, 
-"geometry"), "Style":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_), "StyleMap":ol.format.KML.StyleMapParser_, "address":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "description":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "name":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "open":ol.xml.makeObjectPropertySetter(ol.format.XSD.readBoolean), "phoneNumber":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "styleUrl":ol.xml.makeObjectPropertySetter(ol.format.KML.readURI_), 
+"geometry"), "Style":ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_), "StyleMap":ol.format.KML.PlacemarkStyleMapParser_, "address":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "description":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "name":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "open":ol.xml.makeObjectPropertySetter(ol.format.XSD.readBoolean), "phoneNumber":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "styleUrl":ol.xml.makeObjectPropertySetter(ol.format.KML.readURI_), 
 "visibility":ol.xml.makeObjectPropertySetter(ol.format.XSD.readBoolean)}, ol.xml.makeParsersNS(ol.format.KML.GX_NAMESPACE_URIS_, {"MultiTrack":ol.xml.makeObjectPropertySetter(ol.format.KML.readGxMultiTrack_, "geometry"), "Track":ol.xml.makeObjectPropertySetter(ol.format.KML.readGxTrack_, "geometry")}));
 ol.format.KML.POLY_STYLE_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"color":ol.xml.makeObjectPropertySetter(ol.format.KML.readColor_), "fill":ol.xml.makeObjectPropertySetter(ol.format.XSD.readBoolean), "outline":ol.xml.makeObjectPropertySetter(ol.format.XSD.readBoolean)});
 ol.format.KML.SCHEMA_DATA_PARSERS_ = ol.xml.makeParsersNS(ol.format.KML.NAMESPACE_URIS_, {"SimpleData":ol.format.KML.SimpleDataParser_});
@@ -32163,26 +32216,13 @@ ol.format.KML.prototype.readPlacemark_ = function(node, objectStack) {
   if(!goog.isDef(object)) {
     return undefined
   }
-  var style = (goog.object.get(object, "Style", null));
-  goog.object.remove(object, "Style");
   var feature = new ol.Feature;
   var id = node.getAttribute("id");
   if(!goog.isNull(id)) {
     feature.setId(id)
   }
   feature.setValues(object);
-  var styleUrl = (goog.object.get(object, "styleUrl"));
-  var featureStyleFunction;
-  if(goog.isDef(styleUrl)) {
-    featureStyleFunction = this.sharedStyleFeatureStyleFunction_
-  }else {
-    if(goog.isNull(style)) {
-      featureStyleFunction = this.defaultFeatureStyleFunction_
-    }else {
-      featureStyleFunction = ol.format.KML.makeFeatureStyleFunction_(style)
-    }
-  }
-  feature.setStyle(featureStyleFunction);
+  feature.setStyle(this.featureStyleFunction_);
   return feature
 };
 ol.format.KML.prototype.readSharedStyle_ = function(node, objectStack) {
@@ -32198,7 +32238,7 @@ ol.format.KML.prototype.readSharedStyle_ = function(node, objectStack) {
       }else {
         styleUri = "#" + id
       }
-      this.sharedStyles_[styleUri] = [style]
+      this.sharedStyles_[styleUri] = style
     }
   }
 };
@@ -32206,33 +32246,20 @@ ol.format.KML.prototype.readSharedStyleMap_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   goog.asserts.assert(node.localName == "StyleMap");
   var id = node.getAttribute("id");
-  if(!goog.isNull(id)) {
-    var styleObject = ol.xml.pushParseAndPop(({}), ol.format.KML.STYLE_MAP_PARSERS_, node, objectStack);
-    if(!goog.isDef(styleObject)) {
-      return
-    }
-    var style = (goog.object.get(styleObject, "style", null));
-    var styleUri;
-    if(goog.isDefAndNotNull(node.baseURI)) {
-      styleUri = goog.Uri.resolve(node.baseURI, "#" + id).toString()
-    }else {
-      styleUri = "#" + id
-    }
-    if(!goog.isNull(style)) {
-      this.sharedStyles_[styleUri] = [style]
-    }
-    var styleUrl = (goog.object.get(styleObject, "styleUrl"));
-    if(goog.isDef(styleUrl)) {
-      var styleUrlUri;
-      if(goog.isDefAndNotNull(node.baseURI)) {
-        styleUrlUri = goog.Uri.resolve(node.baseURI, styleUrl).toString()
-      }else {
-        styleUrlUri = "#" + goog.string.trim(styleUrl).replace(/^#/, "")
-      }
-      goog.asserts.assert(styleUrlUri in this.sharedStyles_);
-      this.sharedStyles_[styleUri] = this.sharedStyles_[styleUrlUri]
-    }
+  if(goog.isNull(id)) {
+    return
   }
+  var styleMapValue = ol.format.KML.readStyleMapValue_(node, objectStack);
+  if(!goog.isDef(styleMapValue)) {
+    return
+  }
+  var styleUri;
+  if(goog.isDefAndNotNull(node.baseURI)) {
+    styleUri = goog.Uri.resolve(node.baseURI, "#" + id).toString()
+  }else {
+    styleUri = "#" + id
+  }
+  this.sharedStyles_[styleUri] = styleMapValue
 };
 ol.format.KML.prototype.readFeatureFromNode = function(node) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
@@ -32337,6 +32364,95 @@ ol.format.KML.prototype.readProjectionFromDocument = function(doc) {
   return ol.proj.get("EPSG:4326")
 };
 ol.format.KML.prototype.readProjectionFromNode = function(node) {
+  return ol.proj.get("EPSG:4326")
+};
+goog.provide("ol.format.OSMXML");
+goog.require("goog.array");
+goog.require("goog.asserts");
+goog.require("goog.dom.NodeType");
+goog.require("goog.object");
+goog.require("ol.Feature");
+goog.require("ol.format.XMLFeature");
+goog.require("ol.geom.LineString");
+goog.require("ol.geom.Point");
+goog.require("ol.geom.Polygon");
+goog.require("ol.proj");
+goog.require("ol.xml");
+ol.format.OSMXML = function() {
+  goog.base(this)
+};
+goog.inherits(ol.format.OSMXML, ol.format.XMLFeature);
+ol.format.OSMXML.EXTENSIONS_ = [".osm"];
+ol.format.OSMXML.prototype.getExtensions = function() {
+  return ol.format.OSMXML.EXTENSIONS_
+};
+ol.format.OSMXML.readNode_ = function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
+  goog.asserts.assert(node.localName == "node");
+  var state = (objectStack[objectStack.length - 1]);
+  var id = node.getAttribute("id");
+  var coordinates = ([parseFloat(node.getAttribute("lon")), parseFloat(node.getAttribute("lat"))]);
+  goog.object.set(state.nodes, id, coordinates);
+  var values = ol.xml.pushParseAndPop({tags:{}}, ol.format.OSMXML.NODE_PARSERS_, node, objectStack);
+  if(!goog.object.isEmpty(values.tags)) {
+    var geometry = new ol.geom.Point(coordinates);
+    var feature = new ol.Feature(geometry);
+    feature.setId(id);
+    feature.setValues(values.tags);
+    state.features.push(feature)
+  }
+};
+ol.format.OSMXML.readWay_ = function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
+  goog.asserts.assert(node.localName == "way");
+  var values = ol.xml.pushParseAndPop({ndrefs:[], tags:{}}, ol.format.OSMXML.WAY_PARSERS_, node, objectStack);
+  var state = (objectStack[objectStack.length - 1]);
+  var flatCoordinates = ([]);
+  for(var i = 0, ii = values.ndrefs.length;i < ii;i++) {
+    var point = goog.object.get(state.nodes, values.ndrefs[i]);
+    goog.array.extend(flatCoordinates, point)
+  }
+  if(values.ndrefs[0] == values.ndrefs[values.ndrefs.length - 1]) {
+    var geometry = new ol.geom.Polygon(null);
+    geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates, [flatCoordinates.length])
+  }else {
+    var geometry = new ol.geom.LineString(null);
+    geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates)
+  }
+  var feature = new ol.Feature(geometry);
+  feature.setValues(values.tags);
+  state.features.push(feature)
+};
+ol.format.OSMXML.readNd_ = function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
+  goog.asserts.assert(node.localName == "nd");
+  var values = (objectStack[objectStack.length - 1]);
+  values.ndrefs.push(node.getAttribute("ref"))
+};
+ol.format.OSMXML.readTag_ = function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
+  goog.asserts.assert(node.localName == "tag");
+  var values = (objectStack[objectStack.length - 1]);
+  goog.object.set(values.tags, node.getAttribute("k"), node.getAttribute("v"))
+};
+ol.format.OSMXML.NAMESPACE_URIS_ = [null];
+ol.format.OSMXML.WAY_PARSERS_ = ol.xml.makeParsersNS(ol.format.OSMXML.NAMESPACE_URIS_, {"nd":ol.format.OSMXML.readNd_, "tag":ol.format.OSMXML.readTag_});
+ol.format.OSMXML.PARSERS_ = ol.xml.makeParsersNS(ol.format.OSMXML.NAMESPACE_URIS_, {"node":ol.format.OSMXML.readNode_, "way":ol.format.OSMXML.readWay_});
+ol.format.OSMXML.NODE_PARSERS_ = ol.xml.makeParsersNS(ol.format.OSMXML.NAMESPACE_URIS_, {"tag":ol.format.OSMXML.readTag_});
+ol.format.OSMXML.prototype.readFeaturesFromNode = function(node) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
+  if(node.localName == "osm") {
+    var state = ol.xml.pushParseAndPop({nodes:{}, features:[]}, ol.format.OSMXML.PARSERS_, node, []);
+    if(goog.isDef(state.features)) {
+      return state.features
+    }
+  }
+  return[]
+};
+ol.format.OSMXML.prototype.readProjectionFromDocument = function(doc) {
+  return ol.proj.get("EPSG:4326")
+};
+ol.format.OSMXML.prototype.readProjectionFromNode = function(node) {
   return ol.proj.get("EPSG:4326")
 };
 goog.provide("ol.format.Polyline");
@@ -36405,6 +36521,14 @@ ol.source.MapQuest = function(opt_options) {
 goog.inherits(ol.source.MapQuest, ol.source.XYZ);
 ol.source.MapQuest.TILE_ATTRIBUTION = new ol.Attribution({html:"Tiles Courtesy of " + '\x3ca href\x3d"http://www.mapquest.com/" target\x3d"_blank"\x3eMapQuest\x3c/a\x3e'});
 ol.source.MapQuestConfig = {"osm":{maxZoom:28, attributions:[ol.source.MapQuest.TILE_ATTRIBUTION, ol.source.OSM.DATA_ATTRIBUTION]}, "sat":{maxZoom:18, attributions:[ol.source.MapQuest.TILE_ATTRIBUTION, new ol.Attribution({html:"Portions Courtesy NASA/JPL-Caltech and " + "U.S. Depart. of Agriculture, Farm Service Agency"})]}, "hyb":{maxZoom:18, attributions:[ol.source.MapQuest.TILE_ATTRIBUTION, ol.source.OSM.DATA_ATTRIBUTION]}};
+goog.provide("ol.source.OSMXML");
+goog.require("ol.format.OSMXML");
+goog.require("ol.source.VectorFile");
+ol.source.OSMXML = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  goog.base(this, {attributions:options.attributions, doc:options.doc, extent:options.extent, format:new ol.format.OSMXML, logo:options.logo, node:options.node, projection:options.projection, reprojectTo:options.reprojectTo, text:options.text, url:options.url})
+};
+goog.inherits(ol.source.OSMXML, ol.source.VectorFile);
 goog.provide("ol.source.Stamen");
 goog.require("goog.asserts");
 goog.require("ol.Attribution");
@@ -37262,6 +37386,7 @@ goog.require("ol.format.IGC");
 goog.require("ol.format.IGCZ");
 goog.require("ol.format.JSONFeature");
 goog.require("ol.format.KML");
+goog.require("ol.format.OSMXML");
 goog.require("ol.format.Polyline");
 goog.require("ol.format.TextFeature");
 goog.require("ol.format.TopoJSON");
@@ -37377,6 +37502,7 @@ goog.require("ol.source.KML");
 goog.require("ol.source.MapGuide");
 goog.require("ol.source.MapQuest");
 goog.require("ol.source.OSM");
+goog.require("ol.source.OSMXML");
 goog.require("ol.source.Source");
 goog.require("ol.source.Stamen");
 goog.require("ol.source.State");
