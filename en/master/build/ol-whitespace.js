@@ -13573,6 +13573,7 @@ ol.render.Box.prototype.handleMapPostCompose_ = function(event) {
   goog.asserts.assert(!goog.isNull(style));
   event.vectorContext.drawAsync(Infinity, function(render) {
     render.setFillStrokeStyle(style.getFill(), style.getStroke());
+    render.setTextStyle(style.getText());
     render.drawPolygonGeometry(geometry, null)
   })
 };
