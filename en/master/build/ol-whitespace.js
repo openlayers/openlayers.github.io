@@ -31794,7 +31794,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
       anchorYUnits = ol.format.KML.DEFAULT_IMAGE_STYLE_ANCHOR_Y_UNITS_
     }else {
       if(/^http:\/\/maps\.(?:google|gstatic)\.com\//.test(src)) {
-        anchor = [0.5, 0];
+        anchor = [0.5, 1];
         anchorXUnits = ol.style.IconAnchorUnits.FRACTION;
         anchorYUnits = ol.style.IconAnchorUnits.FRACTION
       }
@@ -31810,7 +31810,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
   if(src == ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_) {
     size = ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_
   }
-  var imageStyle = new ol.style.Icon({anchor:anchor, anchorOrigin:ol.style.IconAnchorOrigin.BOTTOM_LEFT, anchorXUnits:anchorXUnits, anchorYUnits:anchorYUnits, crossOrigin:"anonymous", rotation:rotation, scale:scale, size:size, src:src});
+  var imageStyle = new ol.style.Icon({anchor:anchor, anchorOrigin:ol.style.IconAnchorOrigin.TOP_LEFT, anchorXUnits:anchorXUnits, anchorYUnits:anchorYUnits, crossOrigin:"anonymous", rotation:rotation, scale:scale, size:size, src:src});
   goog.object.set(styleObject, "imageStyle", imageStyle)
 };
 ol.format.KML.LineStyleParser_ = function(node, objectStack) {
@@ -32405,6 +32405,7 @@ ol.format.OSMXML.readNode_ = function(node, objectStack) {
 ol.format.OSMXML.readWay_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   goog.asserts.assert(node.localName == "way");
+  var id = node.getAttribute("id");
   var values = ol.xml.pushParseAndPop({ndrefs:[], tags:{}}, ol.format.OSMXML.WAY_PARSERS_, node, objectStack);
   var state = (objectStack[objectStack.length - 1]);
   var flatCoordinates = ([]);
@@ -32412,14 +32413,16 @@ ol.format.OSMXML.readWay_ = function(node, objectStack) {
     var point = goog.object.get(state.nodes, values.ndrefs[i]);
     goog.array.extend(flatCoordinates, point)
   }
+  var geometry;
   if(values.ndrefs[0] == values.ndrefs[values.ndrefs.length - 1]) {
-    var geometry = new ol.geom.Polygon(null);
+    geometry = new ol.geom.Polygon(null);
     geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates, [flatCoordinates.length])
   }else {
-    var geometry = new ol.geom.LineString(null);
+    geometry = new ol.geom.LineString(null);
     geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates)
   }
   var feature = new ol.Feature(geometry);
+  feature.setId(id);
   feature.setValues(values.tags);
   state.features.push(feature)
 };
@@ -36034,11 +36037,11 @@ ol.source.VectorFile.prototype.handleXhrIo_ = function(event) {
       }
     }
     goog.dispose(xhrIo);
-    if(goog.isDef(source)) {
+    if(goog.isDefAndNotNull(source)) {
       this.readFeatures_(source)
     }else {
-      goog.asserts.fail();
-      this.setState(ol.source.State.ERROR)
+      this.setState(ol.source.State.ERROR);
+      goog.asserts.fail()
     }
   }else {
     this.setState(ol.source.State.ERROR)
@@ -36228,7 +36231,7 @@ ol.source.ImageVector.prototype.renderFeature_ = function(feature, resolution, p
 goog.provide("ol.source.wms");
 goog.provide("ol.source.wms.ServerType");
 ol.source.wms.DEFAULT_VERSION = "1.3.0";
-ol.source.wms.ServerType = {GEOSERVER:"geoserver", MAPSERVER:"mapserver", QGIS:"qgis"};
+ol.source.wms.ServerType = {CARMENTA_SERVER:"carmentaserver", GEOSERVER:"geoserver", MAPSERVER:"mapserver", QGIS:"qgis"};
 goog.provide("ol.source.ImageWMS");
 goog.require("goog.asserts");
 goog.require("goog.object");
@@ -36339,6 +36342,8 @@ ol.source.ImageWMS.prototype.getRequestUrl_ = function(extent, size, pixelRatio,
       case ol.source.wms.ServerType.MAPSERVER:
         goog.object.set(params, "MAP_RESOLUTION", 90 * pixelRatio);
         break;
+      case ol.source.wms.ServerType.CARMENTA_SERVER:
+      ;
       case ol.source.wms.ServerType.QGIS:
         goog.object.set(params, "DPI", 90 * pixelRatio);
         break;
@@ -36516,7 +36521,7 @@ ol.source.MapQuest = function(opt_options) {
   goog.asserts.assert(options.layer in ol.source.MapQuestConfig);
   var layerConfig = ol.source.MapQuestConfig[options.layer];
   var url = "//otile{1-4}.mqcdn.com/tiles/1.0.0/" + options.layer + "/{z}/{x}/{y}.jpg";
-  goog.base(this, {attributions:layerConfig.attributions, crossOrigin:"anonymous", logo:"http://developer.mapquest.com/content/osm/mq_logo.png", maxZoom:layerConfig.maxZoom, opaque:true, tileLoadFunction:options.tileLoadFunction, url:url})
+  goog.base(this, {attributions:layerConfig.attributions, crossOrigin:"anonymous", logo:"//developer.mapquest.com/content/osm/mq_logo.png", maxZoom:layerConfig.maxZoom, opaque:true, tileLoadFunction:options.tileLoadFunction, url:url})
 };
 goog.inherits(ol.source.MapQuest, ol.source.XYZ);
 ol.source.MapQuest.TILE_ATTRIBUTION = new ol.Attribution({html:"Tiles Courtesy of " + '\x3ca href\x3d"http://www.mapquest.com/" target\x3d"_blank"\x3eMapQuest\x3c/a\x3e'});
@@ -36756,6 +36761,8 @@ ol.source.TileWMS.prototype.getRequestUrl_ = function(tileCoord, tileSize, tileE
       case ol.source.wms.ServerType.MAPSERVER:
         goog.object.set(params, "MAP_RESOLUTION", 90 * pixelRatio);
         break;
+      case ol.source.wms.ServerType.CARMENTA_SERVER:
+      ;
       case ol.source.wms.ServerType.QGIS:
         goog.object.set(params, "DPI", 90 * pixelRatio);
         break;
