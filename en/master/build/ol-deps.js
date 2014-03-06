@@ -53,7 +53,7 @@ goog.addDependency('../../../ol/ol/ellipsoid/bessel1841ellipsoid.js', ['ol.ellip
 goog.addDependency('../../../ol/ol/ellipsoid/ellipsoid.js', ['ol.Ellipsoid'], ['goog.math', 'ol.Coordinate']);
 goog.addDependency('../../../ol/ol/ellipsoid/wgs84ellipsoid.js', ['ol.ellipsoid.WGS84'], ['ol.Ellipsoid']);
 goog.addDependency('../../../ol/ol/events/condition.js', ['ol.events.ConditionType', 'ol.events.condition'], ['goog.asserts', 'goog.dom.TagName', 'goog.functions', 'ol.MapBrowserEvent.EventType']);
-goog.addDependency('../../../ol/ol/extent.js', ['ol.Extent', 'ol.extent'], ['goog.asserts', 'ol.Coordinate', 'ol.Size', 'ol.TransformFunction']);
+goog.addDependency('../../../ol/ol/extent.js', ['ol.Extent', 'ol.extent', 'ol.extent.Relationship'], ['goog.asserts', 'goog.vec.Mat4', 'ol.Coordinate', 'ol.Size', 'ol.TransformFunction']);
 goog.addDependency('../../../ol/ol/feature.js', ['ol.Feature', 'ol.feature'], ['goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.functions', 'ol.Object', 'ol.geom.Geometry', 'ol.style.Circle', 'ol.style.Fill', 'ol.style.Stroke', 'ol.style.Style']);
 goog.addDependency('../../../ol/ol/featureoverlay.js', ['ol.FeatureOverlay'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.Collection', 'ol.CollectionEventType', 'ol.Feature', 'ol.feature', 'ol.render.EventType']);
 goog.addDependency('../../../ol/ol/format/binaryfeatureformat.js', ['ol.format.BinaryFeature'], ['goog.asserts', 'ol.BrowserFeature', 'ol.binary.Buffer', 'ol.format.Feature', 'ol.format.FormatType', 'ol.proj']);
@@ -152,7 +152,7 @@ goog.addDependency('../../../ol/ol/proj/proj.js', ['ol.proj', 'ol.proj.METERS_PE
 goog.addDependency('../../../ol/ol/render/box.js', ['ol.render.Box'], ['goog.Disposable', 'goog.array', 'goog.asserts', 'goog.events', 'ol.geom.Polygon', 'ol.render.EventType']);
 goog.addDependency('../../../ol/ol/render/canvas/canvas.js', ['ol.render.canvas'], ['ol.color']);
 goog.addDependency('../../../ol/ol/render/canvas/canvasimmediate.js', ['ol.render.canvas.Immediate'], ['goog.array', 'goog.asserts', 'goog.object', 'goog.vec.Mat4', 'ol.BrowserFeature', 'ol.color', 'ol.extent', 'ol.geom.flat', 'ol.render.IVectorContext', 'ol.render.canvas', 'ol.vec.Mat4']);
-goog.addDependency('../../../ol/ol/render/canvas/canvasreplay.js', ['ol.render.canvas.ReplayGroup'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.object', 'goog.vec.Mat4', 'ol.BrowserFeature', 'ol.array', 'ol.color', 'ol.extent', 'ol.geom.flat', 'ol.geom.simplify', 'ol.render.IReplayGroup', 'ol.render.IVectorContext', 'ol.render.canvas', 'ol.vec.Mat4']);
+goog.addDependency('../../../ol/ol/render/canvas/canvasreplay.js', ['ol.render.canvas.ReplayGroup'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.object', 'goog.vec.Mat4', 'ol.BrowserFeature', 'ol.array', 'ol.color', 'ol.extent', 'ol.extent.Relationship', 'ol.geom.flat', 'ol.geom.simplify', 'ol.render.IReplayGroup', 'ol.render.IVectorContext', 'ol.render.canvas', 'ol.vec.Mat4']);
 goog.addDependency('../../../ol/ol/render/ireplay.js', ['ol.render.IReplayGroup'], ['goog.functions', 'ol.render.IVectorContext']);
 goog.addDependency('../../../ol/ol/render/ivectorcontext.js', ['ol.render.IVectorContext'], []);
 goog.addDependency('../../../ol/ol/render/renderevent.js', ['ol.render.Event', 'ol.render.EventType'], ['goog.events.Event', 'ol.render.IVectorContext']);
