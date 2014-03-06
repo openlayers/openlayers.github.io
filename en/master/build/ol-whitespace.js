@@ -654,8 +654,8 @@ goog.addDependency("../src/ol/layer/layergroup.js", ["ol.layer.Group"], ["goog.a
 goog.addDependency("../src/ol/layer/tilelayer.js", ["ol.layer.Tile"], ["ol.layer.Layer"]);
 goog.addDependency("../src/ol/layer/vectorlayer.js", ["ol.layer.Vector"], ["goog.object", "ol.feature", "ol.layer.Layer"]);
 goog.addDependency("../src/ol/map.js", ["ol.Map", "ol.MapProperty", "ol.RendererHint"], ["goog.Uri.QueryData", "goog.array", "goog.asserts", "goog.async.AnimationDelay", "goog.async.nextTick", "goog.debug.Console", "goog.dom", "goog.dom.TagName", "goog.dom.ViewportSizeMonitor", "goog.events", "goog.events.BrowserEvent", "goog.events.Event", "goog.events.EventType", "goog.events.KeyHandler", "goog.events.KeyHandler.EventType", "goog.events.MouseWheelHandler", "goog.events.MouseWheelHandler.EventType", 
-"goog.log", "goog.log.Level", "goog.object", "goog.style", "goog.vec.Mat4", "ol.BrowserFeature", "ol.Collection", "ol.FrameState", "ol.IView", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler", "ol.MapEvent", "ol.MapEventType", "ol.Object", "ol.ObjectEvent", "ol.ObjectEventType", "ol.Pixel", "ol.PostRenderFunction", "ol.PreRenderFunction", "ol.Size", "ol.Tile", "ol.TileQueue", "ol.View", "ol.View2D", "ol.ViewHint", "ol.control", "ol.extent", "ol.interaction", "ol.layer.Base", 
-"ol.layer.Group", "ol.proj", "ol.proj.common", "ol.renderer.Map", "ol.renderer.canvas.Map", "ol.renderer.dom.Map", "ol.renderer.webgl.Map", "ol.structs.PriorityQueue", "ol.vec.Mat4"]);
+"goog.log", "goog.log.Level", "goog.object", "goog.style", "goog.vec.Mat4", "ol.BrowserFeature", "ol.Collection", "ol.CollectionEventType", "ol.FrameState", "ol.IView", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler", "ol.MapEvent", "ol.MapEventType", "ol.Object", "ol.ObjectEvent", "ol.ObjectEventType", "ol.Pixel", "ol.PostRenderFunction", "ol.PreRenderFunction", "ol.Size", "ol.Tile", "ol.TileQueue", "ol.View", "ol.View2D", "ol.ViewHint", "ol.control", "ol.extent", 
+"ol.interaction", "ol.layer.Base", "ol.layer.Group", "ol.proj", "ol.proj.common", "ol.renderer.Map", "ol.renderer.canvas.Map", "ol.renderer.dom.Map", "ol.renderer.webgl.Map", "ol.structs.PriorityQueue", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/mapbrowserevent.js", ["ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler"], ["goog.array", "goog.asserts", "goog.events", "goog.events.BrowserEvent", "goog.events.EventTarget", "goog.events.EventType", "goog.object", "ol.Coordinate", "ol.FrameState", "ol.MapEvent", "ol.Pixel"]);
 goog.addDependency("../src/ol/mapevent.js", ["ol.MapEvent", "ol.MapEventType"], ["goog.events.Event", "ol.FrameState"]);
 goog.addDependency("../src/ol/math.js", ["ol.math"], ["goog.asserts"]);
@@ -27186,6 +27186,7 @@ goog.require("goog.style");
 goog.require("goog.vec.Mat4");
 goog.require("ol.BrowserFeature");
 goog.require("ol.Collection");
+goog.require("ol.CollectionEventType");
 goog.require("ol.FrameState");
 goog.require("ol.IView");
 goog.require("ol.MapBrowserEvent");
@@ -27283,25 +27284,41 @@ ol.Map = function(options) {
   this.controls_.forEach(function(control) {
     control.setMap(this)
   }, this);
+  goog.events.listen(this.controls_, ol.CollectionEventType.ADD, function(event) {
+    event.element.setMap(this)
+  }, false, this);
+  goog.events.listen(this.controls_, ol.CollectionEventType.REMOVE, function(event) {
+    event.element.setMap(null)
+  }, false, this);
   this.interactions_.forEach(function(interaction) {
     interaction.setMap(this)
   }, this);
+  goog.events.listen(this.interactions_, ol.CollectionEventType.ADD, function(event) {
+    event.element.setMap(this)
+  }, false, this);
+  goog.events.listen(this.interactions_, ol.CollectionEventType.REMOVE, function(event) {
+    event.element.setMap(null)
+  }, false, this);
   this.overlays_.forEach(function(overlay) {
     overlay.setMap(this)
-  }, this)
+  }, this);
+  goog.events.listen(this.overlays_, ol.CollectionEventType.ADD, function(event) {
+    event.element.setMap(this)
+  }, false, this);
+  goog.events.listen(this.overlays_, ol.CollectionEventType.REMOVE, function(event) {
+    event.element.setMap(null)
+  }, false, this)
 };
 goog.inherits(ol.Map, ol.Object);
 ol.Map.prototype.addControl = function(control) {
   var controls = this.getControls();
   goog.asserts.assert(goog.isDef(controls));
-  controls.push(control);
-  control.setMap(this)
+  controls.push(control)
 };
 ol.Map.prototype.addInteraction = function(interaction) {
   var interactions = this.getInteractions();
   goog.asserts.assert(goog.isDef(interactions));
-  interactions.push(interaction);
-  interaction.setMap(this)
+  interactions.push(interaction)
 };
 ol.Map.prototype.addLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
@@ -27311,8 +27328,7 @@ ol.Map.prototype.addLayer = function(layer) {
 ol.Map.prototype.addOverlay = function(overlay) {
   var overlays = this.getOverlays();
   goog.asserts.assert(goog.isDef(overlays));
-  overlays.push(overlay);
-  overlay.setMap(this)
+  overlays.push(overlay)
 };
 ol.Map.prototype.beforeRender = function(var_args) {
   this.render();
@@ -27566,7 +27582,6 @@ ol.Map.prototype.removeControl = function(control) {
   var controls = this.getControls();
   goog.asserts.assert(goog.isDef(controls));
   if(goog.isDef(controls.remove(control))) {
-    control.setMap(null);
     return control
   }
   return undefined
@@ -27576,7 +27591,6 @@ ol.Map.prototype.removeInteraction = function(interaction) {
   var interactions = this.getInteractions();
   goog.asserts.assert(goog.isDef(interactions));
   if(goog.isDef(interactions.remove(interaction))) {
-    interaction.setMap(null);
     removed = interaction
   }
   return removed
@@ -27590,7 +27604,6 @@ ol.Map.prototype.removeOverlay = function(overlay) {
   var overlays = this.getOverlays();
   goog.asserts.assert(goog.isDef(overlays));
   if(goog.isDef(overlays.remove(overlay))) {
-    overlay.setMap(null);
     return overlay
   }
   return undefined
