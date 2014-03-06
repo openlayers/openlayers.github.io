@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.ImageWMS</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.layer.Heatmap</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.layer.html">.layer</a>.</span>
     
-    ol.source.ImageWMS
+    ol.layer.Heatmap
     </h2>
     
 </header>  
@@ -50,7 +50,7 @@
     
         
 <dt>
-    <h4 class="name" id="ImageWMS"><span class="type-signature"></span>new ImageWMS</h4>
+    <h4 class="name" id="Heatmap"><span class="type-signature"></span>new Heatmap</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -101,7 +101,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.source.html#ImageWMSOptions">olx.source.ImageWMSOptions</a></span>
+<span class="param-type"><a href="olx.layer.html#HeatmapOptions">olx.layer.HeatmapOptions</a></span>
 
 
             
@@ -149,7 +149,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 24</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>heatmaplayer.js, line 30</li></ul></dd>
 	
     
     
@@ -172,6 +172,12 @@
     
     </div>
     
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="ol.layer.Vector.html">ol.layer.Vector</a></li>
+        </ul>
     
     
     
@@ -192,7 +198,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getGetFeatureInfoUrl"><span class="type-signature"></span>getGetFeatureInfoUrl</h4>
+    <h4 class="name" id="getGradient"><span class="type-signature"></span>getGradient</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -204,137 +210,11 @@
 <dd>
     
     
-    <div class="description">
-        <p>Return the GetFeatureInfo URL for the passed coordinate, resolution, and
-projection. Return <code>undefined</code> if the GetFeatureInfo URL cannot be
-constructed.</p>
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>coordinate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Coordinate.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>resolution</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#number">number</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Resolution.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>projection</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.proj.Projection.html">ol.proj.Projection</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Projection.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>GetFeatureInfo params. <code>INFO_FORMAT</code> at least should
-    be provided. If <code>QUERY_LAYERS</code> is not provided then the layers specified
-    in the <code>LAYERS</code> parameter will be used. <code>VERSION</code> should not be
-    specified here.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -359,7 +239,7 @@ constructed.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 128</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>heatmaplayer.js, line 145</li></ul></dd>
 	
     
     
@@ -379,7 +259,7 @@ constructed.</p>
     
             
 <div class="param-desc">
-    <p>GetFeatureInfo URL.</p>
+    <p>Colors.</p>
 </div>
 
 
@@ -390,10 +270,7 @@ constructed.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">Array.&lt;string></span>
 
 
 	</dd>
@@ -407,10 +284,10 @@ constructed.</p>
         
             
 <dt>
-    <h4 class="name" id="getParams"><span class="type-signature"></span>getParams</h4>
+    <h4 class="name" id="getRenderGeometryFunctions"><span class="type-signature"></span>getRenderGeometryFunctions</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -418,11 +295,6 @@ constructed.</p>
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Get the user-provided params, i.e. those passed to the constructor through
-the &quot;params&quot; option, and possibly updated using the updateParams method.</p>
-    </div>
     
 
     
@@ -440,6 +312,11 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.layer.Vector.html#getRenderGeometryFunctions">ol.layer.Vector#getRenderGeometryFunctions</a>
+	</li></dd>
+	
 	
 	
 	
@@ -453,7 +330,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 177</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>vectorlayer.js, line 59</li></ul></dd>
 	
     
     
@@ -473,7 +350,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
     
             
 <div class="param-desc">
-    <p>Params.</p>
+    <p>Render geometry functions.</p>
 </div>
 
 
@@ -484,7 +361,10 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	</dt>
 	<dd>
 		
-<span class="param-type">Object</span>
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a></span>
+|
+
+<span class="param-type">undefined</span>
 
 
 	</dd>
@@ -498,7 +378,298 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
         
             
 <dt>
-    <h4 class="name" id="setUrl"><span class="type-signature"></span>setUrl</h4>
+    <h4 class="name" id="getSource"><span class="type-signature"></span>getSource</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.layer.Layer.html#getSource">ol.layer.Layer#getSource</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>layer.js, line 75</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Source.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.source.Source.html">ol.source.Source</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getStyle"><span class="type-signature"></span>getStyle</h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get the style for features.  This returns whatever was passed to the <code>style</code>
+option at construction or to the <code>setStyle</code> method.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.layer.Vector.html#getStyle">ol.layer.Vector#getStyle</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>vectorlayer.js, line 75</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Layer style.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.style.Style.html">ol.style.Style</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="ol.style.Style.html">ol.style.Style</a>></span>
+|
+
+<span class="param-type"><a href="ol.feature_.html#StyleFunction">ol.feature.StyleFunction</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getStyleFunction"><span class="type-signature"></span>getStyleFunction</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get the style function.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.layer.Vector.html#getStyleFunction">ol.layer.Vector#getStyleFunction</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>vectorlayer.js, line 85</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Layer style function.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.feature_.html#StyleFunction">ol.feature.StyleFunction</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setGradient"><span class="type-signature"></span>setGradient</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -541,16 +712,13 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
         <tr>
             
-                <td class="name"><code>url</code></td>
+                <td class="name"><code>colors</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -560,7 +728,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
             
             
             
-            <td class="description last"><p>URL.</p></td>
+            <td class="description last"><p>Gradient.</p></td>
         </tr>
 	
 	
@@ -590,7 +758,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 316</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>heatmaplayer.js, line 189</li></ul></dd>
 	
     
     
@@ -613,10 +781,131 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
         
             
 <dt>
-    <h4 class="name" id="updateParams"><span class="type-signature"></span>updateParams</h4>
+    <h4 class="name" id="setRenderGeometryFunctions"><span class="type-signature"></span>setRenderGeometryFunctions</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>renderGeometryFunctions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Render geometry
+    functions.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.layer.Vector.html#setRenderGeometryFunctions">ol.layer.Vector#setRenderGeometryFunctions</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>vectorlayer.js, line 95</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setStyle"><span class="type-signature"></span>setStyle</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -626,7 +915,9 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
     
     
     <div class="description">
-        <p>Update the user-provided params.</p>
+        <p>Set the style for features.  This can be a single style object, an array
+of styles, or a function that takes a feature and resolution and returns
+an array of styles.</p>
     </div>
     
 
@@ -660,13 +951,19 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>style</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="ol.style.Style.html">ol.style.Style</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="ol.style.Style.html">ol.style.Style</a>></span>
+|
+
+<span class="param-type"><a href="ol.feature_.html#StyleFunction">ol.feature.StyleFunction</a></span>
 
 
             
@@ -676,7 +973,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
             
             
             
-            <td class="description last"><p>Params.</p></td>
+            <td class="description last"><p>Layer style.</p></td>
         </tr>
 	
 	
@@ -693,6 +990,11 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.layer.Vector.html#setStyle">ol.layer.Vector#setStyle</a>
+	</li></dd>
+	
 	
 	
 	
@@ -706,7 +1008,7 @@ the &quot;params&quot; option, and possibly updated using the updateParams metho
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>imagewmssource.js, line 329</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>vectorlayer.js, line 114</li></ul></dd>
 	
     
     
