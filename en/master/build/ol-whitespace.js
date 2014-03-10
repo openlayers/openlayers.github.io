@@ -11934,6 +11934,63 @@ ol.View2D.prototype.fitExtent = function(extent, size) {
     this.setResolution(constrainedResolution)
   }
 };
+ol.View2D.prototype.fitGeometry = function(geometry, size, opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  var padding = goog.isDef(options.padding) ? options.padding : [0, 0, 0, 0];
+  var constrainResolution = goog.isDef(options.constrainResolution) ? options.constrainResolution : true;
+  var nearest = goog.isDef(options.nearest) ? options.nearest : false;
+  var minResolution = goog.isDef(options.minResolution) ? options.minResolution : 0;
+  var coords = geometry.getFlatCoordinates();
+  var rotation = this.getRotation();
+  goog.asserts.assert(goog.isDef(rotation));
+  var cosAngle = Math.cos(-rotation);
+  var sinAngle = Math.sin(-rotation);
+  var minRotX = +Infinity;
+  var minRotY = +Infinity;
+  var maxRotX = -Infinity;
+  var maxRotY = -Infinity;
+  var stride = geometry.getStride();
+  for(var i = 0, ii = coords.length;i < ii;i += stride) {
+    var rotX = coords[i] * cosAngle - coords[i + 1] * sinAngle;
+    var rotY = coords[i] * sinAngle + coords[i + 1] * cosAngle;
+    minRotX = Math.min(minRotX, rotX);
+    minRotY = Math.min(minRotY, rotY);
+    maxRotX = Math.max(maxRotX, rotX);
+    maxRotY = Math.max(maxRotY, rotY)
+  }
+  var resolution = this.getResolutionForExtent([minRotX, minRotY, maxRotX, maxRotY], [size[0] - padding[1] - padding[3], size[1] - padding[0] - padding[2]]);
+  resolution = isNaN(resolution) ? minResolution : Math.max(resolution, minResolution);
+  if(constrainResolution) {
+    var constrainedResolution = this.constrainResolution(resolution, 0, 0);
+    if(!nearest && constrainedResolution < resolution) {
+      constrainedResolution = this.constrainResolution(constrainedResolution, -1, 0)
+    }
+    resolution = constrainedResolution
+  }
+  this.setResolution(resolution);
+  sinAngle = -sinAngle;
+  var centerRotX = (minRotX + maxRotX) / 2;
+  var centerRotY = (minRotY + maxRotY) / 2;
+  centerRotX += (padding[1] - padding[3]) / 2 * resolution;
+  centerRotY += (padding[0] - padding[2]) / 2 * resolution;
+  var centerX = centerRotX * cosAngle - centerRotY * sinAngle;
+  var centerY = centerRotY * cosAngle + centerRotX * sinAngle;
+  this.setCenter([centerX, centerY])
+};
+ol.View2D.prototype.centerOn = function(coordinate, size, position) {
+  var rotation = this.getRotation();
+  var cosAngle = Math.cos(-rotation);
+  var sinAngle = Math.sin(-rotation);
+  var rotX = coordinate[0] * cosAngle - coordinate[1] * sinAngle;
+  var rotY = coordinate[1] * cosAngle + coordinate[0] * sinAngle;
+  var resolution = this.getResolution();
+  rotX += (size[0] / 2 - position[0]) * resolution;
+  rotY += (position[1] - size[1] / 2) * resolution;
+  sinAngle = -sinAngle;
+  var centerX = rotX * cosAngle - rotY * sinAngle;
+  var centerY = rotY * cosAngle + rotX * sinAngle;
+  this.setCenter([centerX, centerY])
+};
 ol.View2D.prototype.isDef = function() {
   return goog.isDefAndNotNull(this.getCenter()) && goog.isDef(this.getResolution())
 };
@@ -22521,6 +22578,7 @@ ol.render.canvas.Replay.prototype.reverseHitDetectionInstructions_ = function() 
       begin = i
     }else {
       if(type == ol.render.canvas.Instruction.BEGIN_GEOMETRY) {
+        instruction[2] = i + 1;
         goog.asserts.assert(begin >= 0);
         ol.array.reverseSubArray(this.hitDetectionInstructions, begin, i);
         begin = -1
