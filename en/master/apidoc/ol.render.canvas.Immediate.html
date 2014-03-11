@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.KML</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.render.canvas.Immediate</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
+        <span class="ancestors"><a href="ol.render.canvas.html">.canvas</a>.</span>
     
-    ol.source.KML
+    ol.render.canvas.Immediate
     </h2>
     
 </header>  
@@ -50,10 +50,10 @@
     
         
 <dt>
-    <h4 class="name" id="KML"><span class="type-signature"></span>new KML</h4>
+    <h4 class="name" id="Immediate"><span class="type-signature"></span>new Immediate</h4>
     
     
-<div class="stability stability-experimental">Stability: experimental</div>
+<div class="stability">Stability: not documented</div>
 
 
 
@@ -81,8 +81,6 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -95,31 +93,115 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>context</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.source.html#KMLOptions">olx.source.KMLOptions</a></span>
+<span class="param-type">CanvasRenderingContext2D</span>
 
 
             
             </td>
             
             
-                <td class="attributes">
+            
+            
+            
+            <td class="description last"><p>Context.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>pixelRatio</code></td>
+            
+            
+            <td class="type">
+            
                 
-                    &lt;optional><br>
+<span class="param-type"><a href="global.html#number">number</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Pixel ratio.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+            
+            <td class="type">
+            
                 
-                    
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Extent.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>transform</code></td>
+            
+            
+            <td class="type">
+            
                 
-                </td>
+<span class="param-type">goog.vec.Mat4.Number</span>
+
+
+            
+            </td>
             
             
             
             
-            <td class="description last"><p>Options.</p></td>
+            
+            <td class="description last"><p>Transform.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>viewRotation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#number">number</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>View rotation.</p></td>
         </tr>
 	
 	
@@ -149,7 +231,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>kmlsource.js, line 14</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 31</li></ul></dd>
 	
     
     
@@ -172,12 +254,6 @@
     
     </div>
     
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="ol.source.VectorFile.html">ol.source.VectorFile</a></li>
-        </ul>
     
     
     
@@ -198,1153 +274,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="addFeature"><span class="type-signature"></span>addFeature</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>feature</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Feature.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#addFeature">ol.source.Vector#addFeature</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 77</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="addFeatures"><span class="type-signature"></span>addFeatures</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>features</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Features.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#addFeatures">ol.source.Vector#addFeatures</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 109</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="dispatchChangeEvent"><span class="type-signature"></span>dispatchChangeEvent</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.Observable.html#dispatchChangeEvent">ol.Observable#dispatchChangeEvent</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 35</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="forEachFeature"><span class="type-signature"></span>forEachFeature</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>f</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Callback.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">T</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>f</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#forEachFeature">ol.source.Vector#forEachFeature</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 150</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">S</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="forEachFeatureInExtent"><span class="type-signature"></span>forEachFeatureInExtent</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Extent.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>f</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Callback.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">T</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>f</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#forEachFeatureInExtent">ol.source.Vector#forEachFeatureInExtent</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 186</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">S</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getClosestFeatureToCoordinate"><span class="type-signature"></span>getClosestFeatureToCoordinate</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>coordinate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Coordinate.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#getClosestFeatureToCoordinate">ol.source.Vector#getClosestFeatureToCoordinate</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 235</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Closest feature.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getExtent"><span class="type-signature"></span>getExtent</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#getExtent">ol.source.Vector#getExtent</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 281</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Extent.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getFeatures"><span class="type-signature"></span>getFeatures</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#getFeatures">ol.source.Vector#getFeatures</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 196</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Features.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getFeaturesAtCoordinate"><span class="type-signature"></span>getFeaturesAtCoordinate</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>coordinate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Coordinate.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#getFeaturesAtCoordinate">ol.source.Vector#getFeaturesAtCoordinate</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 211</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Features.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getState"><span class="type-signature"></span>getState</h4>
+    <h4 class="name" id="drawAsync"><span class="type-signature"></span>drawAsync</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -1356,99 +286,10 @@
 <dd>
     
     
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Source.html#getState">ol.source.Source#getState</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>source.js, line 135</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>State.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.source.html#State">ol.source.State</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="on"><span class="type-signature"></span>on</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
     <div class="description">
-        <p>Listen for a certain type of event.</p>
+        <p>Register a function to be called for rendering at a given zIndex.  The
+function will be called asynchronously.  The callback will receive a
+reference to <a href="ol.render.canvas.Immediate.html">ol.render.canvas.Immediate</a> context for drawing.</p>
     </div>
     
 
@@ -1470,8 +311,6 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -1484,39 +323,30 @@
 	
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>zIndex</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type"><a href="global.html#number">number</a></span>
 
 
             
             </td>
             
             
-                <td class="attributes">
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last"><p>The event type or array of event types.</p></td>
+            <td class="description last"><p>Z index.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>listener</code></td>
+                <td class="name"><code>callback</code></td>
             
             
             <td class="type">
@@ -1529,47 +359,10 @@
             </td>
             
             
-                <td class="attributes">
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last"><p>The listener function.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
+            <td class="description last"><p>Callback.</p></td>
         </tr>
 	
 	
@@ -1586,11 +379,6 @@
 	
 
 	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.Observable.html#on">ol.Observable#on</a>
-	</li></dd>
-	
 	
 	
 	
@@ -1604,7 +392,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 58</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 372</li></ul></dd>
 	
     
     
@@ -1620,28 +408,6 @@
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Unique key for the listener.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">goog.events.Key</span>
-
-
-	</dd>
-</dl>
-
-        
     
     
 </dd>
@@ -1649,7 +415,7 @@
         
             
 <dt>
-    <h4 class="name" id="once"><span class="type-signature"></span>once</h4>
+    <h4 class="name" id="drawCircleGeometry"><span class="type-signature"></span>drawCircleGeometry</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -1662,7 +428,8 @@
     
     
     <div class="description">
-        <p>Listen once for a certain type of event.</p>
+        <p>Render a circle geometry into the canvas.  Rendering is immediate and uses
+the current fill and stroke styles.</p>
     </div>
     
 
@@ -1684,8 +451,6 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -1698,68 +463,30 @@
 	
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>circleGeometry</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type"><a href="ol.geom.Circle.html">ol.geom.Circle</a></span>
 
 
             
             </td>
             
             
-                <td class="attributes">
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last"><p>The event type or array of event types.</p></td>
+            <td class="description last"><p>Circle geometry.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>listener</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The listener function.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
+                <td class="name"><code>data</code></td>
             
             
             <td class="type">
@@ -1772,18 +499,10 @@
             </td>
             
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
+            <td class="description last"><p>Opaque data object,</p></td>
         </tr>
 	
 	
@@ -1800,11 +519,6 @@
 	
 
 	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.Observable.html#once">ol.Observable#once</a>
-	</li></dd>
-	
 	
 	
 	
@@ -1818,7 +532,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 71</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 391</li></ul></dd>
 	
     
     
@@ -1834,28 +548,6 @@
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Unique key for the listener.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">goog.events.Key</span>
-
-
-	</dd>
-</dl>
-
-        
     
     
 </dd>
@@ -1863,7 +555,7 @@
         
             
 <dt>
-    <h4 class="name" id="removeFeature"><span class="type-signature"></span>removeFeature</h4>
+    <h4 class="name" id="drawFeature"><span class="type-signature"></span>drawFeature</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -1874,6 +566,14 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Render a feature into the canvas.  In order to respect the zIndex of the
+style this method draws asynchronously and thus <em>after</em> calls to
+drawXxxxGeometry have been finished, effectively drawing the feature
+<em>on top</em> of everything else.  You probably should be using
+<a href="ol.FeatureOverlay.html">ol.FeatureOverlay</a> instead of calling this method directly.</p>
+    </div>
     
 
     
@@ -1926,6 +626,29 @@
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Style.html">ol.style.Style</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Style.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -1938,11 +661,6 @@
 	
 	
 
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Vector.html#removeFeature">ol.source.Vector#removeFeature</a>
-	</li></dd>
 	
 	
 	
@@ -1957,7 +675,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 326</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 436</li></ul></dd>
 	
     
     
@@ -1980,7 +698,7 @@
         
             
 <dt>
-    <h4 class="name" id="un"><span class="type-signature"></span>un</h4>
+    <h4 class="name" id="drawLineStringGeometry"><span class="type-signature"></span>drawLineStringGeometry</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -1993,7 +711,8 @@
     
     
     <div class="description">
-        <p>Unlisten for a certain type of event.</p>
+        <p>Render a LineString into the canvas.  Rendering is immediate and uses
+the current style.</p>
     </div>
     
 
@@ -2015,8 +734,6 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -2029,68 +746,30 @@
 	
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>lineStringGeometry</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type"><a href="ol.geom.LineString.html">ol.geom.LineString</a></span>
 
 
             
             </td>
             
             
-                <td class="attributes">
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last"><p>The event type or array of event types.</p></td>
+            <td class="description last"><p>Line string geometry.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>listener</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The listener function.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
+                <td class="name"><code>data</code></td>
             
             
             <td class="type">
@@ -2103,18 +782,10 @@
             </td>
             
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
+            <td class="description last"><p>Opaque data object.</p></td>
         </tr>
 	
 	
@@ -2131,11 +802,6 @@
 	
 
 	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.Observable.html#un">ol.Observable#un</a>
-	</li></dd>
-	
 	
 	
 	
@@ -2149,7 +815,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 83</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 531</li></ul></dd>
 	
     
     
@@ -2172,7 +838,7 @@
         
             
 <dt>
-    <h4 class="name" id="unByKey"><span class="type-signature"></span>unByKey</h4>
+    <h4 class="name" id="drawMultiLineStringGeometry"><span class="type-signature"></span>drawMultiLineStringGeometry</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -2185,7 +851,8 @@
     
     
     <div class="description">
-        <p>Removes an event listener using the key returned by <code>on()</code> or <code>once()</code>.</p>
+        <p>Render a MultiLineString geometry into the canvas.  Rendering is immediate
+and uses the current style.</p>
     </div>
     
 
@@ -2219,13 +886,13 @@
 	
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>multiLineStringGeometry</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">goog.events.Key</span>
+<span class="param-type"><a href="ol.geom.MultiLineString.html">ol.geom.MultiLineString</a></span>
 
 
             
@@ -2235,7 +902,30 @@
             
             
             
-            <td class="description last"><p>Key.</p></td>
+            <td class="description last"><p>MultiLineString geometry.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Opaque data object.</p></td>
         </tr>
 	
 	
@@ -2252,10 +942,145 @@
 	
 
 	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.Observable.html#unByKey">ol.Observable#unByKey</a>
-	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 561</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="drawMultiPointGeometry"><span class="type-signature"></span>drawMultiPointGeometry</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Render a MultiPoint geometry  into the canvas.  Rendering is immediate and
+uses the current style.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>multiPointGeometry</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.geom.MultiPoint.html">ol.geom.MultiPoint</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>MultiPoint geometry.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Opaque data object.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
 	
 	
 	
@@ -2270,7 +1095,661 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 93</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 510</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="drawPointGeometry"><span class="type-signature"></span>drawPointGeometry</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Render a Point geometry into the canvas.  Rendering is immediate and uses
+the current style.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>pointGeometry</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.geom.Point.html">ol.geom.Point</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Point geometry.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Opaque data object.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 489</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="drawPolygonGeometry"><span class="type-signature"></span>drawPolygonGeometry</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Render a Polygon geometry into the canvas.  Rendering is immediate and uses
+the current style.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>polygonGeometry</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.geom.Polygon.html">ol.geom.Polygon</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Polygon geometry.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Opaque data object.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 597</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setFillStrokeStyle"><span class="type-signature"></span>setFillStrokeStyle</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set the fill and stroke style for subsequent draw operations.  To clear
+either fill or stroke styles, pass null for the appropriate parameter.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fillStyle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Fill.html">ol.style.Fill</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Fill style.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>strokeStyle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Stroke.html">ol.style.Stroke</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Stroke style.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 811</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setImageStyle"><span class="type-signature"></span>setImageStyle</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set the image style for subsequent draw operations.  Pass null to remove
+the image style.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>imageStyle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Image.html">ol.style.Image</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Image style.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 856</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setTextStyle"><span class="type-signature"></span>setTextStyle</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set the text style for subsequent draw operations.  Pass null to
+remove the text style.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>textStyle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Text.html">ol.style.Text</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Text style.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>canvasimmediate.js, line 895</li></ul></dd>
 	
     
     
