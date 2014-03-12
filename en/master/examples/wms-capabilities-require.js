@@ -1,1 +1,1 @@
-goog.require('ol.parser.ogc.WMSCapabilities');
+goog.require('ol.format.WMSCapabilities');

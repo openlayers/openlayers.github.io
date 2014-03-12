@@ -9,7 +9,7 @@ var map = new ol.Map({
       source: new ol.source.OSM()
     })
   ],
-  renderer: exampleNS.getRendererFromQueryString(),
+  renderer: 'canvas',
   target: 'map',
   view: view
 });
@@ -28,22 +28,23 @@ geolocation.on('propertychange', function() {
   $('#speed').text(geolocation.getSpeed() + ' [m/s]');
 });
 
-var marker = new ol.Overlay({
-  element: /** @type {Element} */ ($('<i/>').addClass('icon-flag').get(0)),
-  positioning: 'bottom-left',
-  stopEvent: false
-});
-map.addOverlay(marker);
-// bind the marker position to the device location.
-marker.bindTo('position', geolocation);
-
-geolocation.on('change:accuracy', function() {
-  $(marker.getElement()).tooltip({
-    title: this.getAccuracy() + 'm from this point'
-  });
-});
 geolocation.on('error', function(error) {
   var info = document.getElementById('info');
   info.innerHTML = error.message;
   info.style.display = '';
+});
+
+
+var accuracyFeature = new ol.Feature();
+accuracyFeature.bindTo('geometry', geolocation, 'accuracyGeometry');
+
+var positionFeature = new ol.Feature();
+positionFeature.bindTo('geometry', geolocation, 'position')
+    .transform(function() {}, function(coordinates) {
+      return coordinates ? new ol.geom.Point(coordinates) : null;
+    });
+
+var featuresOverlay = new ol.FeatureOverlay({
+  map: map,
+  features: [accuracyFeature, positionFeature]
 });
