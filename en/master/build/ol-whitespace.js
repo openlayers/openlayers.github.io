@@ -14119,14 +14119,15 @@ ol.Feature.prototype.setGeometryName = function(name) {
   this.handleGeometryChanged_()
 };
 ol.feature.FeatureStyleFunction;
-ol.feature.defaultFeatureStyleFunction = function() {
+ol.feature.defaultFeatureStyleFunction = function(resolution) {
   var fill = new ol.style.Fill({color:"rgba(255,255,255,0.4)"});
   var stroke = new ol.style.Stroke({color:"#3399CC", width:1.25});
   var styles = [new ol.style.Style({image:new ol.style.Circle({fill:fill, stroke:stroke, radius:5}), fill:fill, stroke:stroke})];
-  return function(resolution) {
+  ol.feature.defaultFeatureStyleFunction = (function(resolution) {
     return styles
-  }
-}();
+  });
+  return styles
+};
 ol.feature.StyleFunction;
 ol.feature.defaultStyleFunction = function(feature, resolution) {
   var featureStyleFunction = feature.getStyleFunction();
@@ -28840,6 +28841,8 @@ ol.Overlay = function(options) {
   goog.base(this);
   this.insertFirst_ = goog.isDef(options.insertFirst) ? options.insertFirst : true;
   this.stopEvent_ = goog.isDef(options.stopEvent) ? options.stopEvent : true;
+  this.offsetX_ = goog.isDef(options.offsetX) ? options.offsetX : 0;
+  this.offsetY_ = goog.isDef(options.offsetY) ? options.offsetY : 0;
   this.element_ = goog.dom.createElement(goog.dom.TagName.DIV);
   this.element_.style.position = "absolute";
   this.rendered_ = {bottom_:"", left_:"", right_:"", top_:"", visible:true};
@@ -28953,9 +28956,9 @@ ol.Overlay.prototype.updatePixelPosition_ = function() {
     if(this.rendered_.right_ !== "") {
       this.rendered_.right_ = style.right = ""
     }
-    var offsetX = 0;
+    var offsetX = -this.offsetX_;
     if(positioning == ol.OverlayPositioning.BOTTOM_CENTER || positioning == ol.OverlayPositioning.CENTER_CENTER || positioning == ol.OverlayPositioning.TOP_CENTER) {
-      offsetX = goog.style.getSize(this.element_).width / 2
+      offsetX += goog.style.getSize(this.element_).width / 2
     }
     var left = Math.round(pixel[0] - offsetX) + "px";
     if(this.rendered_.left_ != left) {
@@ -28974,9 +28977,9 @@ ol.Overlay.prototype.updatePixelPosition_ = function() {
     if(this.rendered_.bottom_ !== "") {
       this.rendered_.bottom_ = style.bottom = ""
     }
-    var offsetY = 0;
+    var offsetY = -this.offsetY_;
     if(positioning == ol.OverlayPositioning.CENTER_LEFT || positioning == ol.OverlayPositioning.CENTER_CENTER || positioning == ol.OverlayPositioning.CENTER_RIGHT) {
-      offsetY = goog.style.getSize(this.element_).height / 2
+      offsetY += goog.style.getSize(this.element_).height / 2
     }
     var top = Math.round(pixel[1] - offsetY) + "px";
     if(this.rendered_.top_ != top) {
@@ -31700,6 +31703,7 @@ ol.format.GPX.TRKPT_PARSERS_ = ol.xml.makeParsersNS(ol.format.GPX.NAMESPACE_URIS
 ol.format.GPX.WPT_PARSERS_ = ol.xml.makeParsersNS(ol.format.GPX.NAMESPACE_URIS_, {"ele":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), "time":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDateTime), "magvar":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), "geoidheight":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), "name":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "cmt":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "desc":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), 
 "src":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "link":ol.format.GPX.parseLink_, "sym":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "type":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "fix":ol.xml.makeObjectPropertySetter(ol.format.XSD.readString), "sat":ol.xml.makeObjectPropertySetter(ol.format.XSD.readNonNegativeInteger), "hdop":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), "vdop":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), 
 "pdop":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), "ageofdgpsdata":ol.xml.makeObjectPropertySetter(ol.format.XSD.readDecimal), "dgpsid":ol.xml.makeObjectPropertySetter(ol.format.XSD.readNonNegativeInteger)});
+ol.format.GPX.prototype.readFeature;
 ol.format.GPX.prototype.readFeatureFromNode = function(node) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   if(goog.array.indexOf(ol.format.GPX.NAMESPACE_URIS_, node.namespaceURI) == -1) {
@@ -31715,6 +31719,7 @@ ol.format.GPX.prototype.readFeatureFromNode = function(node) {
   }
   return feature
 };
+ol.format.GPX.prototype.readFeatures;
 ol.format.GPX.prototype.readFeaturesFromNode = function(node) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   if(goog.array.indexOf(ol.format.GPX.NAMESPACE_URIS_, node.namespaceURI) == -1) {
@@ -31730,6 +31735,7 @@ ol.format.GPX.prototype.readFeaturesFromNode = function(node) {
   }
   return[]
 };
+ol.format.GPX.prototype.readProjection;
 ol.format.GPX.prototype.readProjectionFromDocument = function(doc) {
   return ol.proj.get("EPSG:4326")
 };
@@ -31845,6 +31851,7 @@ ol.format.GPX.V1_1 = function() {
   goog.base(this)
 };
 goog.inherits(ol.format.GPX.V1_1, ol.format.GPX);
+ol.format.GPX.prototype.writeFeatures;
 ol.format.GPX.V1_1.prototype.writeFeaturesNode = function(features) {
   var gpx = ol.xml.createElementNS("http://www.topografix.com/GPX/1/1", "gpx");
   ol.xml.pushSerializeAndPop(({node:gpx}), ol.format.GPX.GPX_SERIALIZERS_, ol.format.GPX.GPX_NODE_FACTORY_, features, []);
@@ -32129,6 +32136,8 @@ ol.format.GeoJSON.GEOMETRY_WRITERS_ = {"Point":ol.format.GeoJSON.writePointGeome
 ol.format.GeoJSON.prototype.getExtensions = function() {
   return ol.format.GeoJSON.EXTENSIONS_
 };
+ol.format.GeoJSON.prototype.readFeature;
+ol.format.GeoJSON.prototype.readFeatures;
 ol.format.GeoJSON.prototype.readFeatureFromObject = function(object) {
   var geoJSONFeature = (object);
   goog.asserts.assert(geoJSONFeature.type == "Feature");
@@ -32162,6 +32171,7 @@ ol.format.GeoJSON.prototype.readFeaturesFromObject = function(object) {
     }
   }
 };
+ol.format.GeoJSON.prototype.readGeometry;
 ol.format.GeoJSON.prototype.readGeometryFromObject = function(object) {
   return ol.format.GeoJSON.readGeometry_((object))
 };
@@ -32183,6 +32193,7 @@ ol.format.GeoJSON.prototype.readProjection = function(object) {
     return this.defaultProjection_
   }
 };
+ol.format.GeoJSON.prototype.writeFeature;
 ol.format.GeoJSON.prototype.writeFeatureObject = function(feature) {
   var object = {"type":"Feature"};
   var id = feature.getId();
@@ -32200,6 +32211,7 @@ ol.format.GeoJSON.prototype.writeFeatureObject = function(feature) {
   }
   return object
 };
+ol.format.GeoJSON.prototype.writeFeatures;
 ol.format.GeoJSON.prototype.writeFeaturesObject = function(features) {
   var objects = [];
   var i, ii;
@@ -32319,6 +32331,7 @@ ol.format.IGC.HFDTE_RECORD_RE_ = /^HFDTE(\d{2})(\d{2})(\d{2})/;
 ol.format.IGC.prototype.getExtensions = function() {
   return ol.format.IGC.EXTENSIONS_
 };
+ol.format.IGC.prototype.readFeature;
 ol.format.IGC.prototype.readFeatureFromText = function(text) {
   var altitudeMode = this.altitudeMode_;
   var lines = goog.string.newlines.splitLines(text);
@@ -32387,6 +32400,7 @@ ol.format.IGC.prototype.readFeatureFromText = function(text) {
   feature.setValues(properties);
   return feature
 };
+ol.format.IGC.prototype.readFeatures;
 ol.format.IGC.prototype.readFeaturesFromText = function(text) {
   var feature = this.readFeatureFromText(text);
   if(!goog.isNull(feature)) {
@@ -32395,6 +32409,7 @@ ol.format.IGC.prototype.readFeaturesFromText = function(text) {
     return[]
   }
 };
+ol.format.IGC.prototype.readProjection;
 ol.format.IGC.prototype.readProjectionFromText = function(text) {
   return ol.proj.get("EPSG:4326")
 };
@@ -33033,6 +33048,7 @@ ol.format.KML.prototype.readSharedStyleMap_ = function(node, objectStack) {
   }
   this.sharedStyles_[styleUri] = styleMapValue
 };
+ol.format.KML.prototype.readFeature;
 ol.format.KML.prototype.readFeatureFromNode = function(node) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   if(goog.array.indexOf(ol.format.KML.NAMESPACE_URIS_, node.namespaceURI) == -1) {
@@ -33046,6 +33062,7 @@ ol.format.KML.prototype.readFeatureFromNode = function(node) {
     return null
   }
 };
+ol.format.KML.prototype.readFeatures;
 ol.format.KML.prototype.readFeaturesFromNode = function(node) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   if(goog.array.indexOf(ol.format.KML.NAMESPACE_URIS_, node.namespaceURI) == -1) {
@@ -33132,6 +33149,7 @@ ol.format.KML.prototype.readNameFromNode = function(node) {
   }
   return undefined
 };
+ol.format.KML.prototype.readProjection;
 ol.format.KML.prototype.readProjectionFromDocument = function(doc) {
   return ol.proj.get("EPSG:4326")
 };
@@ -33515,6 +33533,7 @@ ol.format.TopoJSON.readFeatureFromGeometry_ = function(object, arcs, scale, tran
   }
   return feature
 };
+ol.format.TopoJSON.prototype.readFeatures;
 ol.format.TopoJSON.prototype.readFeaturesFromObject = function(object) {
   if(object.type == "Topology") {
     var topoJSONTopology = (object);
@@ -34887,6 +34906,7 @@ ol.interaction.SegmentDataType;
 ol.interaction.Modify = function(options) {
   goog.base(this);
   this.vertexFeature_ = null;
+  this.vertexSegments_ = null;
   this.modifiable_ = false;
   this.lastPixel_ = null;
   this.rBush_ = null;
@@ -34956,23 +34976,28 @@ ol.interaction.Modify.prototype.writeMultiLineStringGeometry_ = function(feature
 };
 ol.interaction.Modify.prototype.writePolygonGeometry_ = function(feature, geometry) {
   var rings = geometry.getCoordinates();
-  var coordinates = rings[0];
-  var i, ii, segment, segmentData;
-  for(i = 0, ii = coordinates.length - 1;i < ii;++i) {
-    segment = coordinates.slice(i, i + 2);
-    segmentData = ({feature:feature, geometry:geometry, index:i, segment:segment});
-    this.rBush_.insert(ol.extent.boundingExtent(segment), segmentData)
-  }
-};
-ol.interaction.Modify.prototype.writeMultiPolygonGeometry_ = function(feature, geometry) {
-  var polygons = geometry.getCoordinates();
   var coordinates, i, ii, j, jj, segment, segmentData;
-  for(j = 0, jj = polygons.length;j < jj;++j) {
-    coordinates = polygons[j][0];
+  for(j = 0, jj = rings.length;j < jj;++j) {
+    coordinates = rings[j];
     for(i = 0, ii = coordinates.length - 1;i < ii;++i) {
       segment = coordinates.slice(i, i + 2);
       segmentData = ({feature:feature, geometry:geometry, depth:[j], index:i, segment:segment});
       this.rBush_.insert(ol.extent.boundingExtent(segment), segmentData)
+    }
+  }
+};
+ol.interaction.Modify.prototype.writeMultiPolygonGeometry_ = function(feature, geometry) {
+  var polygons = geometry.getCoordinates();
+  var coordinates, i, ii, j, jj, k, kk, rings, segment, segmentData;
+  for(k = 0, kk = polygons.length;k < kk;++k) {
+    rings = polygons[k];
+    for(j = 0, jj = rings.length;j < jj;++j) {
+      coordinates = rings[j];
+      for(i = 0, ii = coordinates.length - 1;i < ii;++i) {
+        segment = coordinates.slice(i, i + 2);
+        segmentData = ({feature:feature, geometry:geometry, depth:[j, k], index:i, segment:segment});
+        this.rBush_.insert(ol.extent.boundingExtent(segment), segmentData)
+      }
     }
   }
 };
@@ -35037,7 +35062,7 @@ ol.interaction.Modify.prototype.handleDragStart = function(evt) {
         if(ol.coordinate.equals(segment[1], vertex)) {
           this.dragSegments_.push([segmentDataMatch, 1])
         }else {
-          if(ol.coordinate.squaredDistanceToSegment(vertex, segment) === 0) {
+          if(goog.getUid(segment) in this.vertexSegments_) {
             insertVertices.push([segmentDataMatch, vertex])
           }
         }
@@ -35077,11 +35102,11 @@ ol.interaction.Modify.prototype.handleDrag = function(evt) {
         segment[index] = vertex;
         break;
       case ol.geom.GeometryType.POLYGON:
-        coordinates[0][segmentData.index + index] = vertex;
+        coordinates[depth[0]][segmentData.index + index] = vertex;
         segment[index] = vertex;
         break;
       case ol.geom.GeometryType.MULTI_POLYGON:
-        coordinates[depth[0]][0][segmentData.index + index] = vertex;
+        coordinates[depth[1]][depth[0]][segmentData.index + index] = vertex;
         segment[index] = vertex;
         break
     }
@@ -35124,19 +35149,31 @@ ol.interaction.Modify.prototype.handleMouseAtPixel_ = function(pixel, map) {
   if(nodes.length > 0) {
     nodes.sort(sortByDistance);
     var node = nodes[0];
-    var segment = node.segment;
-    var vertex = ol.coordinate.closestOnSegment(pixelCoordinate, segment);
+    var closestSegment = node.segment;
+    var vertex = ol.coordinate.closestOnSegment(pixelCoordinate, closestSegment);
     var vertexPixel = map.getPixelFromCoordinate(vertex);
     if(Math.sqrt(ol.coordinate.squaredDistance(pixel, vertexPixel)) <= this.pixelTolerance_) {
-      var pixel1 = map.getPixelFromCoordinate(segment[0]);
-      var pixel2 = map.getPixelFromCoordinate(segment[1]);
+      var pixel1 = map.getPixelFromCoordinate(closestSegment[0]);
+      var pixel2 = map.getPixelFromCoordinate(closestSegment[1]);
       var squaredDist1 = ol.coordinate.squaredDistance(vertexPixel, pixel1);
       var squaredDist2 = ol.coordinate.squaredDistance(vertexPixel, pixel2);
       var dist = Math.sqrt(Math.min(squaredDist1, squaredDist2));
       if(dist <= 10) {
-        vertex = squaredDist1 > squaredDist2 ? segment[1] : segment[0]
+        vertex = squaredDist1 > squaredDist2 ? closestSegment[1] : closestSegment[0]
       }
       this.createOrUpdateVertexFeature_(vertex);
+      var vertexSegments = {};
+      vertexSegments[goog.getUid(closestSegment)] = true;
+      var segment;
+      for(var i = 1, ii = nodes.length;i < ii;++i) {
+        segment = nodes[i].segment;
+        if(ol.coordinate.equals(closestSegment[0], segment[0]) && ol.coordinate.equals(closestSegment[1], segment[1]) || ol.coordinate.equals(closestSegment[0], segment[1]) && ol.coordinate.equals(closestSegment[1], segment[0])) {
+          vertexSegments[goog.getUid(segment)] = true
+        }else {
+          break
+        }
+      }
+      this.vertexSegments_ = vertexSegments;
       this.modifiable_ = true;
       return
     }
@@ -35162,12 +35199,12 @@ ol.interaction.Modify.prototype.insertVertex_ = function(segmentData, vertex) {
     case ol.geom.GeometryType.POLYGON:
       goog.asserts.assertInstanceof(geometry, ol.geom.Polygon);
       coordinates = geometry.getCoordinates();
-      coordinates[0].splice(index + 1, 0, vertex);
+      coordinates[depth[0]].splice(index + 1, 0, vertex);
       break;
     case ol.geom.GeometryType.MULTI_POLYGON:
       goog.asserts.assertInstanceof(geometry, ol.geom.MultiPolygon);
       coordinates = geometry.getCoordinates();
-      coordinates[depth[0]][0].splice(index + 1, 0, vertex);
+      coordinates[depth[1]][depth[0]].splice(index + 1, 0, vertex);
       break;
     case ol.geom.GeometryType.LINE_STRING:
       goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
@@ -35190,7 +35227,7 @@ ol.interaction.Modify.prototype.insertVertex_ = function(segmentData, vertex) {
   });
   for(var i = 0, ii = segmentDataMatches.length;i < ii;++i) {
     var segmentDataMatch = segmentDataMatches[i];
-    if(segmentDataMatch.geometry === geometry && segmentDataMatch.index > index) {
+    if(segmentDataMatch.geometry === geometry && (!goog.isDef(depth) || goog.array.equals(segmentDataMatch.depth, depth)) && segmentDataMatch.index > index) {
       ++segmentDataMatch.index
     }
   }
