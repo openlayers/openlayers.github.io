@@ -213,7 +213,7 @@ goog.addDependency('../../../ol/ol/source/vectorfilesource.js', ['ol.source.Vect
 goog.addDependency('../../../ol/ol/source/vectorsource.js', ['ol.source.Vector', 'ol.source.VectorEvent', 'ol.source.VectorEventType'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.Event', 'goog.events.EventType', 'goog.object', 'ol.ObjectEventType', 'ol.source.Source', 'ol.structs.RBush']);
 goog.addDependency('../../../ol/ol/source/wmssource.js', ['ol.source.wms', 'ol.source.wms.ServerType'], []);
 goog.addDependency('../../../ol/ol/source/wmtssource.js', ['ol.source.WMTS', 'ol.source.WMTSRequestEncoding'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.object', 'goog.uri.utils', 'ol.TileCoord', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.extent', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.WMTS']);
-goog.addDependency('../../../ol/ol/source/xyzsource.js', ['ol.source.XYZ'], ['ol.Attribution', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.XYZ']);
+goog.addDependency('../../../ol/ol/source/xyzsource.js', ['ol.source.XYZ'], ['ol.Attribution', 'ol.TileUrlFunction', 'ol.TileUrlFunctionType', 'ol.source.TileImage', 'ol.tilegrid.XYZ']);
 goog.addDependency('../../../ol/ol/source/zoomifysource.js', ['ol.source.Zoomify'], ['goog.array', 'goog.asserts', 'goog.dom', 'goog.dom.TagName', 'ol.ImageTile', 'ol.TileCoord', 'ol.TileState', 'ol.TileUrlFunction', 'ol.proj', 'ol.source.TileImage', 'ol.tilegrid.Zoomify']);
 goog.addDependency('../../../ol/ol/sphere/normal.js', ['ol.sphere.NORMAL'], ['ol.Sphere']);
 goog.addDependency('../../../ol/ol/sphere/sphere.js', ['ol.Sphere'], ['goog.array', 'goog.math', 'ol.geom.Polygon']);
