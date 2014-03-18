@@ -2374,9 +2374,9 @@
             
             
             <td class="description last"><p>A conditional
-    modifier (e.g. shift key) that determines if the selection is added to
-    the current selection. By default, a shift-click adds to the current
-    selection.</p></td>
+    modifier (e.g. alt key) that determines if the feature is added to
+    the current selection. By default, this is never.  Note that the default
+    toggle condition allows features to be added.</p></td>
         </tr>
 	
 	
@@ -2516,6 +2516,63 @@
             
             
             <td class="description last"><p>FeatureOverlay style.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>removeCondition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.events.ConditionType</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A conditional
+    modifier (e.g. alt key) that determines if the feature is removed from
+    the current selection. By default, this is never.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>toggleCondition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ol.events.ConditionType</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>A conditional
+    modifier (e.g. shift key) that determines if the selection is toggled in
+    the current selection. By default, a shift-click toggles the feature in
+    the current selection.</p></td>
         </tr>
 	
 	

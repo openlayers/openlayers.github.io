@@ -7355,7 +7355,7 @@ ol.BrowserFeature.HAS_CANVAS = ol.ENABLE_CANVAS && function() {
 ol.BrowserFeature.HAS_DEVICE_ORIENTATION = "DeviceOrientationEvent" in goog.global;
 ol.BrowserFeature.HAS_DOM = ol.ENABLE_DOM;
 ol.BrowserFeature.HAS_GEOLOCATION = "geolocation" in goog.global.navigator;
-ol.BrowserFeature.HAS_TOUCH = ol.ASSUME_TOUCH || goog.global.document && "ontouchstart" in goog.global.document.documentElement;
+ol.BrowserFeature.HAS_TOUCH = ol.ASSUME_TOUCH || "ontouchstart" in goog.global;
 ol.BrowserFeature.HAS_POINTER = "PointerEvent" in goog.global;
 ol.BrowserFeature.HAS_MSPOINTER = !!goog.global.navigator.msPointerEnabled;
 ol.BrowserFeature.HAS_WEBGL = ol.ENABLE_WEBGL && function() {
@@ -10020,6 +10020,7 @@ ol.events.condition.altShiftKeysOnly = function(mapBrowserEvent) {
   return browserEvent.altKey && !browserEvent.platformModifierKey && browserEvent.shiftKey
 };
 ol.events.condition.always = goog.functions.TRUE;
+ol.events.condition.never = goog.functions.FALSE;
 ol.events.condition.singleClick = function(mapBrowserEvent) {
   return mapBrowserEvent.type == ol.MapBrowserEvent.EventType.SINGLECLICK
 };
@@ -22598,9 +22599,11 @@ goog.require("ol.render.IVectorContext");
 goog.require("ol.render.canvas");
 goog.require("ol.vec.Mat4");
 ol.render.canvas.Instruction = {BEGIN_GEOMETRY:0, BEGIN_PATH:1, CIRCLE:2, CLOSE_PATH:3, DRAW_IMAGE:4, DRAW_TEXT:5, END_GEOMETRY:6, FILL:7, MOVE_TO_LINE_TO:8, SET_FILL_STYLE:9, SET_STROKE_STYLE:10, SET_TEXT_STYLE:11, STROKE:12};
-ol.render.canvas.Replay = function(tolerance, maxExtent) {
+ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
   this.tolerance = tolerance;
   this.maxExtent = maxExtent;
+  this.maxLineWidth = 0;
+  this.resolution = resolution;
   this.beginGeometryInstruction1_ = null;
   this.beginGeometryInstruction2_ = null;
   this.instructions = [];
@@ -22613,7 +22616,7 @@ ol.render.canvas.Replay = function(tolerance, maxExtent) {
 };
 ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinates, offset, end, stride, close) {
   var myEnd = this.coordinates.length;
-  var extent = this.maxExtent;
+  var extent = this.getBufferedMaxExtent();
   var lastCoord = [flatCoordinates[offset], flatCoordinates[offset + 1]];
   var nextCoord = [NaN, NaN];
   var skipped = true;
@@ -22914,14 +22917,17 @@ ol.render.canvas.Replay.prototype.endGeometry = function(geometry, data) {
   this.hitDetectionInstructions.push(endGeometryInstruction)
 };
 ol.render.canvas.Replay.prototype.finish = goog.nullFunction;
+ol.render.canvas.Replay.prototype.getBufferedMaxExtent = function() {
+  return this.maxExtent
+};
 ol.render.canvas.Replay.prototype.getExtent = function() {
   return this.extent_
 };
 ol.render.canvas.Replay.prototype.setFillStrokeStyle = goog.abstractMethod;
 ol.render.canvas.Replay.prototype.setImageStyle = goog.abstractMethod;
 ol.render.canvas.Replay.prototype.setTextStyle = goog.abstractMethod;
-ol.render.canvas.ImageReplay = function(tolerance, maxExtent) {
-  goog.base(this, tolerance, maxExtent);
+ol.render.canvas.ImageReplay = function(tolerance, maxExtent, resolution) {
+  goog.base(this, tolerance, maxExtent, resolution);
   this.hitDetectionImage_ = null;
   this.image_ = null;
   this.anchorX_ = undefined;
@@ -23018,8 +23024,8 @@ ol.render.canvas.ImageReplay.prototype.setImageStyle = function(imageStyle) {
   this.snapToPixel_ = imageStyle.getSnapToPixel();
   this.width_ = size[0]
 };
-ol.render.canvas.LineStringReplay = function(tolerance, maxExtent) {
-  goog.base(this, tolerance, maxExtent);
+ol.render.canvas.LineStringReplay = function(tolerance, maxExtent, resolution) {
+  goog.base(this, tolerance, maxExtent, resolution);
   this.state_ = {currentStrokeStyle:undefined, currentLineCap:undefined, currentLineDash:null, currentLineJoin:undefined, currentLineWidth:undefined, currentMiterLimit:undefined, lastStroke:0, strokeStyle:undefined, lineCap:undefined, lineDash:null, lineJoin:undefined, lineWidth:undefined, miterLimit:undefined}
 };
 goog.inherits(ol.render.canvas.LineStringReplay, ol.render.canvas.Replay);
@@ -23030,6 +23036,13 @@ ol.render.canvas.LineStringReplay.prototype.drawFlatCoordinates_ = function(flat
   this.instructions.push(moveToLineToInstruction);
   this.hitDetectionInstructions.push(moveToLineToInstruction);
   return end
+};
+ol.render.canvas.LineStringReplay.prototype.getBufferedMaxExtent = function() {
+  var extent = this.maxExtent;
+  if(this.maxLineWidth) {
+    extent = ol.extent.buffer(extent, this.resolution * (this.maxLineWidth + 1) / 2)
+  }
+  return extent
 };
 ol.render.canvas.LineStringReplay.prototype.setStrokeStyle_ = function() {
   var state = this.state_;
@@ -23124,10 +23137,11 @@ ol.render.canvas.LineStringReplay.prototype.setFillStrokeStyle = function(fillSt
   var strokeStyleWidth = strokeStyle.getWidth();
   this.state_.lineWidth = goog.isDef(strokeStyleWidth) ? strokeStyleWidth : ol.render.canvas.defaultLineWidth;
   var strokeStyleMiterLimit = strokeStyle.getMiterLimit();
-  this.state_.miterLimit = goog.isDef(strokeStyleMiterLimit) ? strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit
+  this.state_.miterLimit = goog.isDef(strokeStyleMiterLimit) ? strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit;
+  this.maxLineWidth = Math.max(this.maxLineWidth, this.state_.lineWidth)
 };
-ol.render.canvas.PolygonReplay = function(tolerance, maxExtent) {
-  goog.base(this, tolerance, maxExtent);
+ol.render.canvas.PolygonReplay = function(tolerance, maxExtent, resolution) {
+  goog.base(this, tolerance, maxExtent, resolution);
   this.state_ = {currentFillStyle:undefined, currentStrokeStyle:undefined, currentLineCap:undefined, currentLineDash:null, currentLineJoin:undefined, currentLineWidth:undefined, currentMiterLimit:undefined, fillStyle:undefined, strokeStyle:undefined, lineCap:undefined, lineDash:null, lineJoin:undefined, lineWidth:undefined, miterLimit:undefined}
 };
 goog.inherits(ol.render.canvas.PolygonReplay, ol.render.canvas.Replay);
@@ -23263,6 +23277,13 @@ ol.render.canvas.PolygonReplay.prototype.finish = function() {
     }
   }
 };
+ol.render.canvas.PolygonReplay.prototype.getBufferedMaxExtent = function() {
+  var extent = this.maxExtent;
+  if(this.maxLineWidth) {
+    extent = ol.extent.buffer(extent, this.resolution * (this.maxLineWidth + 1) / 2)
+  }
+  return extent
+};
 ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyle = function(fillStyle, strokeStyle) {
   goog.asserts.assert(!goog.isNull(this.state_));
   goog.asserts.assert(!goog.isNull(fillStyle) || !goog.isNull(strokeStyle));
@@ -23285,7 +23306,8 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyle = function(fillStyle
     var strokeStyleWidth = strokeStyle.getWidth();
     state.lineWidth = goog.isDef(strokeStyleWidth) ? strokeStyleWidth : ol.render.canvas.defaultLineWidth;
     var strokeStyleMiterLimit = strokeStyle.getMiterLimit();
-    state.miterLimit = goog.isDef(strokeStyleMiterLimit) ? strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit
+    state.miterLimit = goog.isDef(strokeStyleMiterLimit) ? strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit;
+    this.maxLineWidth = Math.max(this.maxLineWidth, state.lineWidth)
   }else {
     state.strokeStyle = undefined;
     state.lineCap = undefined;
@@ -23325,8 +23347,8 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function() {
     }
   }
 };
-ol.render.canvas.TextReplay = function(tolerance, maxExtent) {
-  goog.base(this, tolerance, maxExtent);
+ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution) {
+  goog.base(this, tolerance, maxExtent, resolution);
   this.replayFillState_ = null;
   this.replayStrokeState_ = null;
   this.replayTextState_ = null;
@@ -23482,9 +23504,10 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
     this.textScale_ = goog.isDef(textScale) ? textScale : 1
   }
 };
-ol.render.canvas.ReplayGroup = function(tolerance, maxExtent) {
+ol.render.canvas.ReplayGroup = function(tolerance, maxExtent, resolution) {
   this.tolerance_ = tolerance;
   this.maxExtent_ = maxExtent;
+  this.resolution_ = resolution;
   this.replaysByZIndex_ = {};
   var hitDetectionCanvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
   hitDetectionCanvas.width = 1;
@@ -23585,7 +23608,7 @@ ol.render.canvas.ReplayGroup.prototype.getReplay = function(zIndex, replayType) 
   if(!goog.isDef(replay)) {
     var Constructor = ol.render.canvas.BATCH_CONSTRUCTORS_[replayType];
     goog.asserts.assert(goog.isDef(Constructor));
-    replay = new Constructor(this.tolerance_, this.maxExtent_);
+    replay = new Constructor(this.tolerance_, this.maxExtent_, this.resolution_);
     replays[replayType] = replay
   }
   return replay
@@ -25450,7 +25473,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
     styleFunction = ol.feature.defaultStyleFunction
   }
   var tolerance = frameStateResolution / (2 * pixelRatio);
-  var replayGroup = new ol.render.canvas.ReplayGroup(tolerance, extent);
+  var replayGroup = new ol.render.canvas.ReplayGroup(tolerance, extent, frameStateResolution);
   vectorSource.forEachFeatureInExtent(extent, function(feature) {
     var dirty = this.renderFeature(feature, frameStateResolution, pixelRatio, styleFunction, replayGroup);
     this.dirty_ = this.dirty_ || dirty
@@ -35709,7 +35732,9 @@ goog.require("ol.interaction.Interaction");
 ol.interaction.Select = function(options) {
   goog.base(this);
   this.condition_ = goog.isDef(options.condition) ? options.condition : ol.events.condition.singleClick;
-  this.addCondition_ = goog.isDef(options.addCondition) ? options.addCondition : ol.events.condition.shiftKeyOnly;
+  this.addCondition_ = goog.isDef(options.addCondition) ? options.addCondition : ol.events.condition.never;
+  this.removeCondition_ = goog.isDef(options.removeCondition) ? options.removeCondition : ol.events.condition.never;
+  this.toggleCondition_ = goog.isDef(options.toggleCondition) ? options.toggleCondition : ol.events.condition.shiftKeyOnly;
   var layerFilter;
   if(goog.isDef(options.layerFilter)) {
     layerFilter = options.layerFilter
@@ -35742,15 +35767,12 @@ ol.interaction.Select.prototype.handleMapBrowserEvent = function(mapBrowserEvent
     return true
   }
   var add = this.addCondition_(mapBrowserEvent);
+  var remove = this.removeCondition_(mapBrowserEvent);
+  var toggle = this.toggleCondition_(mapBrowserEvent);
+  var set = !add && !remove && !toggle;
   var map = mapBrowserEvent.map;
   var features = this.featureOverlay_.getFeatures();
-  if(add) {
-    map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function(feature, layer) {
-      if(goog.array.indexOf(features.getArray(), feature) == -1) {
-        features.push(feature)
-      }
-    }, undefined, this.layerFilter_)
-  }else {
+  if(set) {
     var feature = map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function(feature, layer) {
       return feature
     }, undefined, this.layerFilter_);
@@ -35770,6 +35792,19 @@ ol.interaction.Select.prototype.handleMapBrowserEvent = function(mapBrowserEvent
         features.clear()
       }
     }
+  }else {
+    map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function(feature, layer) {
+      var index = goog.array.indexOf(features.getArray(), feature);
+      if(index == -1) {
+        if(add || toggle) {
+          features.push(feature)
+        }
+      }else {
+        if(remove || toggle) {
+          features.removeAt(index)
+        }
+      }
+    }, undefined, this.layerFilter_)
   }
   return false
 };
@@ -37353,7 +37388,7 @@ ol.source.ImageVector = function(options) {
 goog.inherits(ol.source.ImageVector, ol.source.ImageCanvas);
 ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resolution, pixelRatio, size, projection) {
   var tolerance = resolution / (2 * pixelRatio);
-  var replayGroup = new ol.render.canvas.ReplayGroup(tolerance, extent);
+  var replayGroup = new ol.render.canvas.ReplayGroup(tolerance, extent, resolution);
   var loading = false;
   this.source_.forEachFeatureInExtent(extent, function(feature) {
     loading = loading || this.renderFeature_(feature, resolution, pixelRatio, replayGroup)
