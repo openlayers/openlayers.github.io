@@ -151,7 +151,7 @@ goog.addDependency('../../../ol/ol/pointer/mssource.js', ['ol.pointer.MsSource']
 goog.addDependency('../../../ol/ol/pointer/nativesource.js', ['ol.pointer.NativeSource'], ['goog.object', 'ol.pointer.EventSource']);
 goog.addDependency('../../../ol/ol/pointer/pointerevent.js', ['ol.pointer.PointerEvent'], ['goog.events', 'goog.events.Event', 'goog.object']);
 goog.addDependency('../../../ol/ol/pointer/pointereventhandler.js', ['ol.pointer.PointerEventHandler'], ['goog.array', 'goog.events', 'goog.events.BrowserEvent', 'goog.events.Event', 'goog.events.EventTarget', 'ol.BrowserFeature', 'ol.pointer.MouseSource', 'ol.pointer.MsSource', 'ol.pointer.NativeSource', 'ol.pointer.PointerEvent', 'ol.pointer.TouchSource']);
-goog.addDependency('../../../ol/ol/pointer/touchsource.js', ['ol.pointer.TouchSource'], ['goog.array', 'goog.math.Coordinate', 'goog.object', 'ol.pointer.EventSource', 'ol.pointer.MouseSource']);
+goog.addDependency('../../../ol/ol/pointer/touchsource.js', ['ol.pointer.TouchSource'], ['goog.array', 'goog.object', 'ol.pointer.EventSource', 'ol.pointer.MouseSource']);
 goog.addDependency('../../../ol/ol/proj/chprojection.js', ['ol.proj.CH', 'ol.proj.EPSG2056', 'ol.proj.EPSG21781'], ['goog.asserts', 'goog.math', 'ol.ellipsoid.BESSEL1841', 'ol.proj', 'ol.proj.EPSG4326', 'ol.proj.Projection', 'ol.proj.Units']);
 goog.addDependency('../../../ol/ol/proj/common.js', ['ol.proj.common'], ['ol.proj', 'ol.proj.EPSG3857', 'ol.proj.EPSG4326']);
 goog.addDependency('../../../ol/ol/proj/epsg3857projection.js', ['ol.proj.EPSG3857'], ['goog.array', 'goog.asserts', 'ol.math', 'ol.proj', 'ol.proj.Projection', 'ol.proj.Units']);

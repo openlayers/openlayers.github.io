@@ -684,7 +684,7 @@ goog.addDependency("../src/ol/pointer/mssource.js", ["ol.pointer.MsSource"], ["g
 goog.addDependency("../src/ol/pointer/nativesource.js", ["ol.pointer.NativeSource"], ["goog.object", "ol.pointer.EventSource"]);
 goog.addDependency("../src/ol/pointer/pointerevent.js", ["ol.pointer.PointerEvent"], ["goog.events", "goog.events.Event", "goog.object"]);
 goog.addDependency("../src/ol/pointer/pointereventhandler.js", ["ol.pointer.PointerEventHandler"], ["goog.array", "goog.events", "goog.events.BrowserEvent", "goog.events.Event", "goog.events.EventTarget", "ol.BrowserFeature", "ol.pointer.MouseSource", "ol.pointer.MsSource", "ol.pointer.NativeSource", "ol.pointer.PointerEvent", "ol.pointer.TouchSource"]);
-goog.addDependency("../src/ol/pointer/touchsource.js", ["ol.pointer.TouchSource"], ["goog.array", "goog.math.Coordinate", "goog.object", "ol.pointer.EventSource", "ol.pointer.MouseSource"]);
+goog.addDependency("../src/ol/pointer/touchsource.js", ["ol.pointer.TouchSource"], ["goog.array", "goog.object", "ol.pointer.EventSource", "ol.pointer.MouseSource"]);
 goog.addDependency("../src/ol/proj/chprojection.js", ["ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781"], ["goog.asserts", "goog.math", "ol.ellipsoid.BESSEL1841", "ol.proj", "ol.proj.EPSG4326", "ol.proj.Projection", "ol.proj.Units"]);
 goog.addDependency("../src/ol/proj/common.js", ["ol.proj.common"], ["ol.proj", "ol.proj.EPSG3857", "ol.proj.EPSG4326"]);
 goog.addDependency("../src/ol/proj/epsg3857projection.js", ["ol.proj.EPSG3857"], ["goog.array", "goog.asserts", "ol.math", "ol.proj", "ol.proj.Projection", "ol.proj.Units"]);
@@ -9245,7 +9245,6 @@ goog.require("goog.object");
 ol.pointer.PointerEvent = function(type, browserEvent, opt_eventDict) {
   goog.base(this, type);
   this.browserEvent = browserEvent;
-  this.originalEvent = browserEvent.getBrowserEvent();
   var eventDict = goog.isDef(opt_eventDict) ? opt_eventDict : {};
   this.buttons = this.getButtons_(eventDict);
   this.pressure = this.getPressure_(eventDict, this.buttons);
@@ -9352,7 +9351,7 @@ ol.pointer.MouseSource.prototype.isEventSimulatedFromTouch_ = function(inEvent) 
   var lts = this.lastTouches;
   var x = inEvent.clientX, y = inEvent.clientY;
   for(var i = 0, l = lts.length, t;i < l && (t = lts[i]);i++) {
-    var dx = Math.abs(x - t.x), dy = Math.abs(y - t.y);
+    var dx = Math.abs(x - t[0]), dy = Math.abs(y - t[1]);
     if(dx <= ol.pointer.MouseSource.DEDUP_DIST && dy <= ol.pointer.MouseSource.DEDUP_DIST) {
       return true
     }
@@ -9508,7 +9507,6 @@ ol.pointer.NativeSource.prototype.gotPointerCapture = function(inEvent) {
 };
 goog.provide("ol.pointer.TouchSource");
 goog.require("goog.array");
-goog.require("goog.math.Coordinate");
 goog.require("goog.object");
 goog.require("ol.pointer.EventSource");
 goog.require("ol.pointer.MouseSource");
@@ -9519,11 +9517,7 @@ ol.pointer.TouchSource = function(dispatcher, mouseSource) {
   this.mouseSource = mouseSource;
   this.firstTouchId_ = undefined;
   this.clickCount_ = 0;
-  this.resetId_ = undefined;
-  this.resetClickCountHandler_ = goog.bind(function() {
-    this.clickCount_ = 0;
-    this.resetId_ = undefined
-  }, this)
+  this.resetId_ = undefined
 };
 goog.inherits(ol.pointer.TouchSource, ol.pointer.EventSource);
 ol.pointer.TouchSource.DEDUP_TIMEOUT = 2500;
@@ -9533,7 +9527,8 @@ ol.pointer.TouchSource.prototype.isPrimaryTouch_ = function(inTouch) {
   return this.firstTouchId_ === inTouch.identifier
 };
 ol.pointer.TouchSource.prototype.setPrimaryTouch_ = function(inTouch) {
-  if(goog.object.getCount(this.pointerMap) === 0 || goog.object.getCount(this.pointerMap) === 1 && goog.object.containsKey(this.pointerMap, ol.pointer.MouseSource.POINTER_ID.toString())) {
+  var count = goog.object.getCount(this.pointerMap);
+  if(count === 0 || count === 1 && goog.object.containsKey(this.pointerMap, ol.pointer.MouseSource.POINTER_ID.toString())) {
     this.firstTouchId_ = inTouch.identifier;
     this.cancelResetClickCount_()
   }
@@ -9546,6 +9541,10 @@ ol.pointer.TouchSource.prototype.removePrimaryPointer_ = function(inPointer) {
 };
 ol.pointer.TouchSource.prototype.resetClickCount_ = function() {
   this.resetId_ = goog.global.setTimeout(this.resetClickCountHandler_, ol.pointer.TouchSource.CLICK_COUNT_TIMEOUT)
+};
+ol.pointer.TouchSource.prototype.resetClickCountHandler_ = function() {
+  this.clickCount_ = 0;
+  this.resetId_ = undefined
 };
 ol.pointer.TouchSource.prototype.cancelResetClickCount_ = function() {
   if(goog.isDef(this.resetId_)) {
@@ -9674,7 +9673,7 @@ ol.pointer.TouchSource.prototype.dedupSynthMouse_ = function(inEvent) {
   var lts = this.mouseSource.lastTouches;
   var t = inEvent.getBrowserEvent().changedTouches[0];
   if(this.isPrimaryTouch_(t)) {
-    var lt = new goog.math.Coordinate(t.clientX, t.clientY);
+    var lt = ([t.clientX, t.clientY]);
     lts.push(lt);
     goog.global.setTimeout(function() {
       goog.array.remove(lts, lt)
@@ -12726,6 +12725,30 @@ ol.Sphere.prototype.haversineDistance = function(c1, c2) {
   var deltaLonBy2 = goog.math.toRadians(c2[0] - c1[0]) / 2;
   var a = Math.sin(deltaLatBy2) * Math.sin(deltaLatBy2) + Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) * Math.cos(lat1) * Math.cos(lat2);
   return 2 * this.radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+};
+ol.Sphere.prototype.interpolate = function(c1, c2, fraction) {
+  var lat1 = goog.math.toRadians(c1[1]);
+  var lon1 = goog.math.toRadians(c1[0]);
+  var lat2 = goog.math.toRadians(c2[1]);
+  var lon2 = goog.math.toRadians(c2[0]);
+  var cosLat1 = Math.cos(lat1);
+  var sinLat1 = Math.sin(lat1);
+  var cosLat2 = Math.cos(lat2);
+  var sinLat2 = Math.sin(lat2);
+  var cosDeltaLon = Math.cos(lon2 - lon1);
+  var d = sinLat1 * sinLat2 + cosLat1 * cosLat2 * cosDeltaLon;
+  if(1 <= d) {
+    return c2.slice()
+  }
+  d = fraction * Math.acos(d);
+  var cosD = Math.cos(d);
+  var sinD = Math.sin(d);
+  var y = Math.sin(lon2 - lon1) * cosLat2;
+  var x = cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosDeltaLon;
+  var theta = Math.atan2(y, x);
+  var lat = Math.asin(sinLat1 * cosD + cosLat1 * sinD * Math.cos(theta));
+  var lon = lon1 + Math.atan2(Math.sin(theta) * sinD * cosLat1, cosD - sinLat1 * Math.sin(lat));
+  return[goog.math.toDegrees(lon), goog.math.toDegrees(lat)]
 };
 ol.Sphere.prototype.initialBearing = function(c1, c2) {
   var lat1 = goog.math.toRadians(c1[1]);
@@ -31653,8 +31676,17 @@ ol.format.GML.readFlatCoordinatesFromNode_ = function(node, objectStack) {
   return(ol.xml.pushParseAndPop(null, ol.format.GML.GEOMETRY_FLAT_COORDINATES_PARSERS_, node, objectStack))
 };
 ol.format.GML.readFlatPos_ = function(node, objectStack) {
-  var s = ol.xml.getAllTextContent(node, false).replace(/^\s*|\s*$/g, "");
-  var flatCoordinates = goog.array.map(s.split(/\s+/), parseFloat);
+  var s = ol.xml.getAllTextContent(node, false);
+  var re = /^\s*([+\-]?\d*\.?\d+(?:e[+\-]?\d+)?)\s*/;
+  var flatCoordinates = [];
+  var m;
+  while(m = re.exec(s)) {
+    flatCoordinates.push(parseFloat(m[1]));
+    s = s.substr(m[0].length)
+  }
+  if(s !== "") {
+    return undefined
+  }
   var context = objectStack[0];
   goog.asserts.assert(goog.isObject(context));
   var containerSrs = goog.object.get(context, "srsName");
@@ -31664,7 +31696,13 @@ ol.format.GML.readFlatPos_ = function(node, objectStack) {
     axisOrientation = proj.getAxisOrientation()
   }
   if(axisOrientation === "neu") {
-    flatCoordinates = flatCoordinates.reverse()
+    var i, ii;
+    for(i = 0, ii = flatCoordinates.length;i < ii;i += 3) {
+      var y = flatCoordinates[i];
+      var x = flatCoordinates[i + 1];
+      flatCoordinates[i] = x;
+      flatCoordinates[i + 1] = y
+    }
   }
   var len = flatCoordinates.length;
   if(len == 2) {
@@ -35596,10 +35634,7 @@ ol.interaction.Modify.prototype.handlePointerDrag = function(evt) {
         break
     }
     geometry.setCoordinates(coordinates);
-    var newBounds = ol.extent.boundingExtent(segment);
-    this.createOrUpdateVertexFeature_(vertex);
-    this.rBush_.remove(segmentData);
-    this.rBush_.insert(newBounds, segmentData)
+    this.createOrUpdateVertexFeature_(vertex)
   }
 };
 ol.interaction.Modify.prototype.handlePointerUp = function(evt) {
