@@ -1,4 +1,5 @@
 var styleFunction = (function() {
+  /* jshint -W069 */
   var styles = {};
   var image = new ol.style.Circle({
     radius: 5,
@@ -43,6 +44,7 @@ var styleFunction = (function() {
   return function(feature, resolution) {
     return styles[feature.getGeometry().getType()] || styles['default'];
   };
+  /* jshint +W069 */
 })();
 
 var source = new ol.source.GeoJSON(
@@ -151,6 +153,7 @@ var layer = new ol.layer.Vector({
 });
 
 var overlayStyle = (function() {
+  /* jshint -W069 */
   var styles = {};
   styles['Polygon'] = [
     new ol.style.Style({
@@ -211,6 +214,7 @@ var overlayStyle = (function() {
   return function(feature, resolution) {
     return styles[feature.getGeometry().getType()];
   };
+  /* jshint +W069 */
 })();
 
 var select = new ol.interaction.Select({

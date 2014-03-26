@@ -9071,7 +9071,7 @@ ol.coordinate.closestOnSegment = function(coordinate, segment) {
   var y2 = end[1];
   var dx = x2 - x1;
   var dy = y2 - y1;
-  var along = dx == 0 && dy == 0 ? 0 : (dx * (x0 - x1) + dy * (y0 - y1)) / (dx * dx + dy * dy || 0);
+  var along = dx === 0 && dy === 0 ? 0 : (dx * (x0 - x1) + dy * (y0 - y1)) / (dx * dx + dy * dy || 0);
   var x, y;
   if(along <= 0) {
     x = x1;
@@ -9565,9 +9565,9 @@ ol.pointer.TouchSource.prototype.touchToPointer_ = function(browserEvent, inTouc
   e.detail = this.clickCount_;
   e.button = 0;
   e.buttons = 1;
-  e.width = inTouch["webkitRadiusX"] || inTouch["radiusX"] || 0;
-  e.height = inTouch["webkitRadiusY"] || inTouch["radiusY"] || 0;
-  e.pressure = inTouch["webkitForce"] || inTouch["force"] || 0.5;
+  e.width = inTouch.webkitRadiusX || inTouch.radiusX || 0;
+  e.height = inTouch.webkitRadiusY || inTouch.radiusY || 0;
+  e.pressure = inTouch.webkitForce || inTouch.force || 0.5;
   e.isPrimary = this.isPrimaryTouch_(inTouch);
   e.pointerType = ol.pointer.TouchSource.POINTER_TYPE;
   e.clientX = inTouch.clientX;
@@ -9954,7 +9954,7 @@ ol.MapBrowserEventHandler.prototype.isMouseActionButton_ = function(pointerEvent
   if(ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE) {
     return pointerEvent.button == 1
   }else {
-    return pointerEvent.button == 0
+    return pointerEvent.button === 0
   }
 };
 ol.MapBrowserEventHandler.prototype.handlePointerDown_ = function(pointerEvent) {
@@ -28545,7 +28545,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
       this.render()
     }
     Array.prototype.push.apply(this.postRenderFunctions_, frameState.postRenderFunctions);
-    var idle = this.preRenderFunctions_.length == 0 && !frameState.animate && !frameState.viewHints[ol.ViewHint.ANIMATING] && !frameState.viewHints[ol.ViewHint.INTERACTING];
+    var idle = this.preRenderFunctions_.length === 0 && !frameState.animate && !frameState.viewHints[ol.ViewHint.ANIMATING] && !frameState.viewHints[ol.ViewHint.INTERACTING];
     if(idle) {
       this.dispatchEvent(new ol.MapEvent(ol.MapEventType.MOVEEND, this))
     }
@@ -32035,9 +32035,10 @@ ol.format.GML.GEOMETRY_NODE_FACTORY_ = function(value, objectStack, opt_nodeName
   var multiCurve = goog.object.get(context, "multiCurve");
   var parentNode = objectStack[objectStack.length - 1].node;
   goog.asserts.assert(ol.xml.isNode(parentNode));
+  var nodeName;
   if(!goog.isArray(value)) {
     goog.asserts.assertInstanceof(value, ol.geom.Geometry);
-    var nodeName = value.getType();
+    nodeName = value.getType();
     if(nodeName === "MultiPolygon" && multiSurface === true) {
       nodeName = "MultiSurface"
     }else {
