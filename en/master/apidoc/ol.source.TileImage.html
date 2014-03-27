@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.geom.MultiPoint</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.source.TileImage</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.geom.html">.geom</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
     
-    ol.geom.MultiPoint
+    ol.source.TileImage
     </h2>
     
 </header>  
@@ -48,101 +48,8 @@
     
     
         
-<dt>
-    <h4 class="name" id="MultiPoint"><span class="type-signature"></span>new MultiPoint</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>coordinates</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.geom.html#RawMultiPoint">ol.geom.RawMultiPoint</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Coordinates.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>layout</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.geom.html#GeometryLayout">ol.geom.GeometryLayout</a></span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Layout.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
+        
 <dl class="details">
     
         
@@ -164,7 +71,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>multipoint.js, line 23</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>tileimagesource.js, line 43</li></ul></dd>
 	
     
     
@@ -174,16 +81,8 @@
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
+        
+        
     
     </div>
     
@@ -191,7 +90,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="ol.geom.SimpleGeometry.html">ol.geom.SimpleGeometry</a></li>
+            <li><a href="ol.source.Tile.html">ol.source.Tile</a></li>
         </ul>
     
     
@@ -208,183 +107,11 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt class="">
-    <h4 class="name" id="getType"><span class="type-signature"></span>getType<span class="type-signature"></span></h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd class="">
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.geom.Geometry.html#getType">ol.geom.Geometry#getType</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geometry.js, line 148</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
     
     
         <h3 class="subsection-title">Methods</h3>
         
         <dl>
-            
-<dt>
-    <h4 class="name" id="appendPoint"><span class="type-signature"></span>appendPoint</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>point</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.geom.Point.html">ol.geom.Point</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Point.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>multipoint.js, line 34</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
             
 <dt>
     <h4 class="name" id="dispatchChangeEvent"><span class="type-signature"></span>dispatchChangeEvent</h4>
@@ -469,271 +196,7 @@ notified of changes.</p>
         
             
 <dt>
-    <h4 class="name" id="getClosestPoint"><span class="type-signature"></span>getClosestPoint</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>point</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Point.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>closestPoint</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Closest point.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.geom.Geometry.html#getClosestPoint">ol.geom.Geometry#getClosestPoint</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>geometry.js, line 103</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Closest point.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getCoordinates"><span class="type-signature"></span>getCoordinates</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>multipoint.js, line 86</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Coordinates.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.geom.html#RawMultiPoint">ol.geom.RawMultiPoint</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getFirstCoordinate"><span class="type-signature"></span>getFirstCoordinate</h4>
+    <h4 class="name" id="getExtent"><span class="type-signature"></span>getExtent</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -763,7 +226,7 @@ notified of changes.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.geom.SimpleGeometry.html#getFirstCoordinate">ol.geom.SimpleGeometry#getFirstCoordinate</a>
+		<a href="ol.source.Source.html#getExtent">ol.source.Source#getExtent</a>
 	</li></dd>
 	
 	
@@ -779,7 +242,7 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>simplegeometry.js, line 105</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>source.js, line 105</li></ul></dd>
 	
     
     
@@ -799,7 +262,7 @@ notified of changes.</p>
     
             
 <div class="param-desc">
-    <p>First coordinate.</p>
+    <p>Extent.</p>
 </div>
 
 
@@ -810,7 +273,7 @@ notified of changes.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
 
 
 	</dd>
@@ -824,7 +287,7 @@ notified of changes.</p>
         
             
 <dt>
-    <h4 class="name" id="getLastCoordinate"><span class="type-signature"></span>getLastCoordinate</h4>
+    <h4 class="name" id="getState"><span class="type-signature"></span>getState</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -854,7 +317,7 @@ notified of changes.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.geom.SimpleGeometry.html#getLastCoordinate">ol.geom.SimpleGeometry#getLastCoordinate</a>
+		<a href="ol.source.Source.html#getState">ol.source.Source#getState</a>
 	</li></dd>
 	
 	
@@ -870,7 +333,7 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>simplegeometry.js, line 121</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>source.js, line 135</li></ul></dd>
 	
     
     
@@ -890,7 +353,7 @@ notified of changes.</p>
     
             
 <div class="param-desc">
-    <p>Last point.</p>
+    <p>State.</p>
 </div>
 
 
@@ -901,7 +364,7 @@ notified of changes.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+<span class="param-type"><a href="ol.source.html#State">ol.source.State</a></span>
 
 
 	</dd>
@@ -915,10 +378,10 @@ notified of changes.</p>
         
             
 <dt>
-    <h4 class="name" id="getLayout"><span class="type-signature"></span>getLayout</h4>
+    <h4 class="name" id="getTileGrid"><span class="type-signature"></span>getTileGrid</h4>
     
     
-<div class="stability stability-experimental">Stability: experimental</div>
+<div class="stability">Stability: not documented</div>
 
 
 
@@ -945,7 +408,7 @@ notified of changes.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.geom.SimpleGeometry.html#getLayout">ol.geom.SimpleGeometry#getLayout</a>
+		<a href="ol.source.Tile.html#getTileGrid">ol.source.Tile#getTileGrid</a>
 	</li></dd>
 	
 	
@@ -961,7 +424,7 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>simplegeometry.js, line 130</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>tilesource.js, line 157</li></ul></dd>
 	
     
     
@@ -981,7 +444,7 @@ notified of changes.</p>
     
             
 <div class="param-desc">
-    <p>Layout.</p>
+    <p>Tile grid.</p>
 </div>
 
 
@@ -992,227 +455,7 @@ notified of changes.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.geom.html#GeometryLayout">ol.geom.GeometryLayout</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getPoint"><span class="type-signature"></span>getPoint</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Index.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>multipoint.js, line 96</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Point.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.geom.Point.html">ol.geom.Point</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getPoints"><span class="type-signature"></span>getPoints</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>multipoint.js, line 114</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Points.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;<a href="ol.geom.Point.html">ol.geom.Point</a>></span>
+<span class="param-type"><a href="ol.tilegrid.TileGrid.html">ol.tilegrid.TileGrid</a></span>
 
 
 	</dd>
@@ -1647,157 +890,6 @@ notified of changes.</p>
 </dl>
 
         
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setCoordinates"><span class="type-signature"></span>setCoordinates</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>coordinates</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.geom.html#RawMultiPoint">ol.geom.RawMultiPoint</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Coordinates.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>layout</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.geom.html#GeometryLayout">ol.geom.GeometryLayout</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Layout.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>multipoint.js, line 143</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
     
     
 </dd>
