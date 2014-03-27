@@ -129,7 +129,7 @@ goog.addDependency('../../../ol/ol/iview.js', ['ol.IView'], ['ol.IView2D', 'ol.I
 goog.addDependency('../../../ol/ol/iview2d.js', ['ol.IView2D'], ['ol.Coordinate']);
 goog.addDependency('../../../ol/ol/iview3d.js', ['ol.IView3D'], []);
 goog.addDependency('../../../ol/ol/kinetic.js', ['ol.Kinetic'], ['ol.Coordinate', 'ol.PreRenderFunction', 'ol.animation']);
-goog.addDependency('../../../ol/ol/layer/heatmaplayer.js', ['ol.layer.Heatmap'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'ol.Object', 'ol.layer.Vector', 'ol.render.EventType', 'ol.style.Icon', 'ol.style.Style']);
+goog.addDependency('../../../ol/ol/layer/heatmaplayer.js', ['ol.layer.Heatmap'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.math', 'ol.Object', 'ol.layer.Vector', 'ol.render.EventType', 'ol.style.Icon', 'ol.style.Style']);
 goog.addDependency('../../../ol/ol/layer/imagelayer.js', ['ol.layer.Image'], ['ol.layer.Layer']);
 goog.addDependency('../../../ol/ol/layer/layer.js', ['ol.layer.Layer'], ['goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.layer.Base', 'ol.source.Source']);
 goog.addDependency('../../../ol/ol/layer/layerbase.js', ['ol.layer.Base', 'ol.layer.LayerProperty', 'ol.layer.LayerState'], ['goog.events', 'goog.math', 'goog.object', 'ol.Object', 'ol.source.State']);

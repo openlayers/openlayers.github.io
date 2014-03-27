@@ -14,7 +14,19 @@ var vector = new ol.layer.Vector({
   source: source
 });
 
-var select = new ol.interaction.Select({});
+var select = new ol.interaction.Select({
+  addCondition: ol.events.condition.shiftKeyOnly,
+  toggleCondition: ol.events.condition.always,
+  style: new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: '#3399CC',
+      width: 2.5
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(255,255,255,0.6)'
+    })
+  })
+});
 
 var modify = new ol.interaction.Modify({
   features: select.getFeatures()

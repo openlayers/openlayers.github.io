@@ -660,7 +660,7 @@ goog.addDependency("../src/ol/iview.js", ["ol.IView"], ["ol.IView2D", "ol.IView3
 goog.addDependency("../src/ol/iview2d.js", ["ol.IView2D"], ["ol.Coordinate"]);
 goog.addDependency("../src/ol/iview3d.js", ["ol.IView3D"], []);
 goog.addDependency("../src/ol/kinetic.js", ["ol.Kinetic"], ["ol.Coordinate", "ol.PreRenderFunction", "ol.animation"]);
-goog.addDependency("../src/ol/layer/heatmaplayer.js", ["ol.layer.Heatmap"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "ol.Object", "ol.layer.Vector", "ol.render.EventType", "ol.style.Icon", "ol.style.Style"]);
+goog.addDependency("../src/ol/layer/heatmaplayer.js", ["ol.layer.Heatmap"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.math", "ol.Object", "ol.layer.Vector", "ol.render.EventType", "ol.style.Icon", "ol.style.Style"]);
 goog.addDependency("../src/ol/layer/imagelayer.js", ["ol.layer.Image"], ["ol.layer.Layer"]);
 goog.addDependency("../src/ol/layer/layer.js", ["ol.layer.Layer"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.object", "ol.layer.Base", "ol.source.Source"]);
 goog.addDependency("../src/ol/layer/layerbase.js", ["ol.layer.Base", "ol.layer.LayerProperty", "ol.layer.LayerState"], ["goog.events", "goog.math", "goog.object", "ol.Object", "ol.source.State"]);
@@ -7329,6 +7329,7 @@ ol.ENABLE_TILE = true;
 ol.ENABLE_VECTOR = true;
 ol.ENABLE_WEBGL = true;
 ol.LEGACY_IE_SUPPORT = false;
+ol.IS_HTTPS = goog.global.location.protocol === "https:";
 ol.IS_LEGACY_IE = goog.userAgent.IE && !goog.userAgent.isVersionOrHigher("9.0") && goog.userAgent.VERSION !== "";
 ol.BrowserFeature.DEVICE_PIXEL_RATIO = goog.global.devicePixelRatio || 1;
 ol.BrowserFeature.HAS_ARRAY_BUFFER = "ArrayBuffer" in goog.global;
@@ -35867,6 +35868,7 @@ goog.require("goog.asserts");
 goog.require("goog.dom");
 goog.require("goog.dom.TagName");
 goog.require("goog.events");
+goog.require("goog.math");
 goog.require("ol.Object");
 goog.require("ol.layer.Vector");
 goog.require("ol.render.EventType");
@@ -35879,11 +35881,29 @@ ol.layer.Heatmap = function(opt_options) {
   this.gradient_ = null;
   goog.events.listen(this, ol.Object.getChangeEventType(ol.layer.HeatmapLayerProperty.GRADIENT), this.handleGradientChanged_, false, this);
   this.setGradient(goog.isDef(options.gradient) ? options.gradient : ol.layer.Heatmap.DEFAULT_GRADIENT);
-  var radius = goog.isDef(options.radius) ? options.radius : 8;
-  var blur = goog.isDef(options.blur) ? options.blur : 15;
-  var shadow = goog.isDef(options.shadow) ? options.shadow : 250;
-  var style = new ol.style.Style({image:ol.layer.Heatmap.createIcon_(radius, blur, shadow)});
-  this.setStyle(style);
+  var circle = ol.layer.Heatmap.createCircle_(goog.isDef(options.radius) ? options.radius : 8, goog.isDef(options.blur) ? options.blur : 15, goog.isDef(options.shadow) ? options.shadow : 250);
+  var styleCache = new Array(256);
+  var weight = goog.isDef(options.weight) ? options.weight : "weight";
+  var weightFunction;
+  if(goog.isString(weight)) {
+    weightFunction = function(feature) {
+      return feature.get(weight)
+    }
+  }else {
+    weightFunction = weight
+  }
+  goog.asserts.assert(goog.isFunction(weightFunction));
+  this.setStyle(function(feature, resolution) {
+    var weight = weightFunction(feature);
+    var opacity = goog.math.clamp(goog.isDef(weight) ? weight : 1, 0, 1);
+    var index = 255 * opacity | 0;
+    var style = styleCache[index];
+    if(!goog.isDef(style)) {
+      style = [new ol.style.Style({image:new ol.style.Icon({opacity:opacity, src:circle})})];
+      styleCache[index] = style
+    }
+    return style
+  });
   goog.events.listen(this, ol.render.EventType.RENDER, this.handleRender_, false, this)
 };
 goog.inherits(ol.layer.Heatmap, ol.layer.Vector);
@@ -35896,7 +35916,7 @@ ol.layer.Heatmap.createGradient_ = function(colors) {
   canvas.width = width;
   canvas.height = height;
   var gradient = context.createLinearGradient(0, 0, width, height);
-  var step = 1 / colors.length;
+  var step = 1 / (colors.length - 1);
   for(var i = 0, ii = colors.length;i < ii;++i) {
     gradient.addColorStop(i * step, colors[i])
   }
@@ -35904,7 +35924,7 @@ ol.layer.Heatmap.createGradient_ = function(colors) {
   context.fillRect(0, 0, width, height);
   return context.getImageData(0, 0, width, height).data
 };
-ol.layer.Heatmap.createIcon_ = function(radius, blur, shadow) {
+ol.layer.Heatmap.createCircle_ = function(radius, blur, shadow) {
   var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
   var context = canvas.getContext("2d");
   var halfSize = radius + blur + 1;
@@ -35916,7 +35936,7 @@ ol.layer.Heatmap.createIcon_ = function(radius, blur, shadow) {
   var center = halfSize - shadow;
   context.arc(center, center, radius, 0, Math.PI * 2, true);
   context.fill();
-  return new ol.style.Icon({src:canvas.toDataURL()})
+  return canvas.toDataURL()
 };
 ol.layer.Heatmap.prototype.getGradient = function() {
   return(this.get(ol.layer.HeatmapLayerProperty.GRADIENT))
@@ -36506,7 +36526,8 @@ goog.require("ol.tilegrid.XYZ");
 ol.source.BingMaps = function(options) {
   goog.base(this, {crossOrigin:"anonymous", opaque:true, projection:ol.proj.get("EPSG:3857"), state:ol.source.State.LOADING, tileLoadFunction:options.tileLoadFunction});
   this.culture_ = goog.isDef(options.culture) ? options.culture : "en-us";
-  var uri = new goog.Uri("//dev.virtualearth.net/REST/v1/Imagery/Metadata/" + options.imagerySet);
+  var protocol = ol.IS_HTTPS ? "https:" : "http:";
+  var uri = new goog.Uri(protocol + "//dev.virtualearth.net/REST/v1/Imagery/Metadata/" + options.imagerySet);
   var jsonp = new goog.net.Jsonp(uri, "jsonp");
   jsonp.send({"include":"ImageryProviders", "key":options.key}, goog.bind(this.handleImageryMetadataResponse, this))
 };
@@ -37766,7 +37787,8 @@ ol.source.OSM = function(opt_options) {
     attributions = ol.source.OSM.ATTRIBUTIONS
   }
   var crossOrigin = goog.isDef(options.crossOrigin) ? options.crossOrigin : "anonymous";
-  var url = goog.isDef(options.url) ? options.url : "//{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var protocol = ol.IS_HTTPS ? "https:" : "http:";
+  var url = goog.isDef(options.url) ? options.url : protocol + "//{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   goog.base(this, {attributions:attributions, crossOrigin:crossOrigin, opaque:true, maxZoom:options.maxZoom, tileLoadFunction:options.tileLoadFunction, url:url})
 };
 goog.inherits(ol.source.OSM, ol.source.XYZ);
@@ -37782,7 +37804,8 @@ ol.source.MapQuest = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   goog.asserts.assert(options.layer in ol.source.MapQuestConfig);
   var layerConfig = ol.source.MapQuestConfig[options.layer];
-  var url = "//otile{1-4}-s.mqcdn.com/tiles/1.0.0/" + options.layer + "/{z}/{x}/{y}.jpg";
+  var protocol = ol.IS_HTTPS ? "https:" : "http:";
+  var url = protocol + "//otile{1-4}-s.mqcdn.com/tiles/1.0.0/" + options.layer + "/{z}/{x}/{y}.jpg";
   goog.base(this, {attributions:layerConfig.attributions, crossOrigin:"anonymous", logo:"//developer.mapquest.com/content/osm/mq_logo.png", maxZoom:layerConfig.maxZoom, opaque:true, tileLoadFunction:options.tileLoadFunction, url:url})
 };
 goog.inherits(ol.source.MapQuest, ol.source.XYZ);
@@ -37811,7 +37834,8 @@ ol.source.Stamen = function(options) {
   var providerConfig = ol.source.StamenProviderConfig[provider];
   goog.asserts.assert(options.layer in ol.source.StamenLayerConfig);
   var layerConfig = ol.source.StamenLayerConfig[options.layer];
-  var url = goog.isDef(options.url) ? options.url : "//{a-d}.tile.stamen.com/" + options.layer + "/{z}/{x}/{y}." + layerConfig.extension;
+  var protocol = ol.IS_HTTPS ? "https:" : "http:";
+  var url = goog.isDef(options.url) ? options.url : protocol + "//{a-d}.tile.stamen.com/" + options.layer + "/{z}/{x}/{y}." + layerConfig.extension;
   goog.base(this, {attributions:ol.source.Stamen.ATTRIBUTIONS, crossOrigin:"anonymous", maxZoom:providerConfig.maxZoom, opaque:layerConfig.opaque, tileLoadFunction:options.tileLoadFunction, url:url})
 };
 goog.inherits(ol.source.Stamen, ol.source.XYZ);
