@@ -592,7 +592,7 @@ goog.addDependency("../src/ol/format/geojsonformat.js", ["ol.format.GeoJSON"], [
 goog.addDependency("../src/ol/format/gmlformat.js", ["ol.format.GML"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.NodeType", "goog.object", "goog.string", "ol.Feature", "ol.array", "ol.extent", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.Geometry", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.xml"]);
 goog.addDependency("../src/ol/format/gpxformat.js", ["ol.format.GPX", "ol.format.GPX.V1_1"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "goog.object", "ol.Feature", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.Point", "ol.proj", "ol.xml"]);
 goog.addDependency("../src/ol/format/igcformat.js", ["ol.format.IGC", "ol.format.IGCZ"], ["goog.asserts", "goog.string", "goog.string.newlines", "ol.Feature", "ol.format.TextFeature", "ol.geom.LineString", "ol.proj"]);
-goog.addDependency("../src/ol/format/jsonfeatureformat.js", ["ol.format.JSONFeature"], ["goog.asserts", "goog.json", "ol.format.Feature", "ol.format.FormatType"]);
+goog.addDependency("../src/ol/format/jsonfeatureformat.js", ["ol.format.JSONFeature"], ["goog.asserts", "goog.json", "ol.BrowserFeature", "ol.format.Feature", "ol.format.FormatType"]);
 goog.addDependency("../src/ol/format/kmlformat.js", ["ol.format.KML"], ["goog.Uri", "goog.array", "goog.asserts", "goog.dom.NodeType", "goog.math", "goog.object", "goog.string", "ol.Feature", "ol.array", "ol.feature", "ol.format.XMLFeature", "ol.format.XSD", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorOrigin", 
 "ol.style.IconAnchorUnits", "ol.style.Image", "ol.style.Stroke", "ol.style.Style", "ol.xml"]);
 goog.addDependency("../src/ol/format/osmxmlformat.js", ["ol.format.OSMXML"], ["goog.array", "goog.asserts", "goog.dom.NodeType", "goog.object", "ol.Feature", "ol.format.XMLFeature", "ol.geom.LineString", "ol.geom.Point", "ol.geom.Polygon", "ol.proj", "ol.xml"]);
@@ -7355,6 +7355,7 @@ ol.BrowserFeature.HAS_CANVAS = ol.ENABLE_CANVAS && function() {
 ol.BrowserFeature.HAS_DEVICE_ORIENTATION = "DeviceOrientationEvent" in goog.global;
 ol.BrowserFeature.HAS_DOM = ol.ENABLE_DOM;
 ol.BrowserFeature.HAS_GEOLOCATION = "geolocation" in goog.global.navigator;
+ol.BrowserFeature.HAS_JSON_PARSE = "JSON" in goog.global && "parse" in goog.global.JSON;
 ol.BrowserFeature.HAS_TOUCH = ol.ASSUME_TOUCH || "ontouchstart" in goog.global;
 ol.BrowserFeature.HAS_POINTER = "PointerEvent" in goog.global;
 ol.BrowserFeature.HAS_MSPOINTER = !!goog.global.navigator.msPointerEnabled;
@@ -32486,6 +32487,7 @@ goog.json.Serializer.prototype.serializeObject_ = function(obj, sb) {
 goog.provide("ol.format.JSONFeature");
 goog.require("goog.asserts");
 goog.require("goog.json");
+goog.require("ol.BrowserFeature");
 goog.require("ol.format.Feature");
 goog.require("ol.format.FormatType");
 ol.format.JSONFeature = function() {
@@ -32497,7 +32499,12 @@ ol.format.JSONFeature.prototype.getObject_ = function(source) {
     return source
   }else {
     if(goog.isString(source)) {
-      var object = goog.json.parse(source);
+      var object;
+      if(ol.BrowserFeature.HAS_JSON_PARSE) {
+        object = (JSON.parse(source))
+      }else {
+        object = goog.json.parse(source)
+      }
       return goog.isDef(object) ? object : null
     }else {
       goog.asserts.fail();
@@ -37274,7 +37281,7 @@ ol.source.VectorFile.prototype.handleXhrIo_ = function(event) {
       goog.asserts.assertInstanceof(source, ArrayBuffer)
     }else {
       if(type == ol.format.FormatType.JSON) {
-        source = xhrIo.getResponseJson()
+        source = xhrIo.getResponseText()
       }else {
         if(type == ol.format.FormatType.TEXT) {
           source = xhrIo.getResponseText()
