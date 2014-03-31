@@ -1,5 +1,4 @@
 var raster = new ol.layer.Tile({
-  style: 'Aerial',
   source: new ol.source.MapQuest({
     layer: 'sat'
   })
@@ -15,8 +14,6 @@ var vector = new ol.layer.Vector({
 });
 
 var select = new ol.interaction.Select({
-  addCondition: ol.events.condition.shiftKeyOnly,
-  toggleCondition: ol.events.condition.always,
   style: new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: '#3399CC',
