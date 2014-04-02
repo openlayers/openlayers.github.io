@@ -555,7 +555,7 @@ goog.addDependency("../src/ol/animation.js", ["ol.animation"], ["ol.PreRenderFun
 goog.addDependency("../src/ol/array.js", ["ol.array"], ["goog.array", "goog.asserts"]);
 goog.addDependency("../src/ol/attribution.js", ["ol.Attribution"], ["ol.TileRange"]);
 goog.addDependency("../src/ol/binary.js", ["ol.binary.Buffer", "ol.binary.IReader"], ["goog.asserts", "goog.userAgent", "ol.BrowserFeature"]);
-goog.addDependency("../src/ol/browserfeature.js", ["ol.BrowserFeature"], ["goog.dom", "goog.dom.TagName", "goog.userAgent", "ol.webgl"]);
+goog.addDependency("../src/ol/browserfeature.js", ["ol.BrowserFeature"], ["goog.dom", "goog.dom.TagName", "goog.userAgent", "ol.dom", "ol.webgl"]);
 goog.addDependency("../src/ol/canvasfunction.js", ["ol.CanvasFunctionType"], []);
 goog.addDependency("../src/ol/centerconstraint.js", ["ol.CenterConstraint", "ol.CenterConstraintType"], ["goog.math"]);
 goog.addDependency("../src/ol/collection.js", ["ol.Collection", "ol.CollectionEvent", "ol.CollectionEventType"], ["goog.array", "goog.events.Event", "ol.Object"]);
@@ -565,13 +565,13 @@ goog.addDependency("../src/ol/constraints.js", ["ol.Constraints"], ["ol.CenterCo
 goog.addDependency("../src/ol/control/attributioncontrol.js", ["ol.control.Attribution"], ["goog.array", "goog.dom", "goog.dom.TagName", "goog.object", "goog.style", "ol.Attribution", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/control.js", ["ol.control.Control"], ["goog.array", "goog.dom", "goog.events", "ol.MapEventType", "ol.Object"]);
 goog.addDependency("../src/ol/control/controldefaults.js", ["ol.control"], ["ol.Collection", "ol.control.Attribution", "ol.control.Logo", "ol.control.Zoom"]);
-goog.addDependency("../src/ol/control/fullscreencontrol.js", ["ol.control.FullScreen"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.dom.classes", "goog.events", "goog.events.EventType", "googx.dom.fullscreen", "googx.dom.fullscreen.EventType", "ol.control.Control", "ol.css"]);
+goog.addDependency("../src/ol/control/fullscreencontrol.js", ["ol.control.FullScreen"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.dom.classes", "goog.events", "goog.events.EventType", "googx.dom.fullscreen", "googx.dom.fullscreen.EventType", "ol.control.Control", "ol.css", "ol.pointer.PointerEventHandler"]);
 goog.addDependency("../src/ol/control/logocontrol.js", ["ol.control.Logo"], ["goog.dom", "goog.dom.TagName", "goog.object", "goog.style", "ol.control.Control", "ol.css"]);
 goog.addDependency("../src/ol/control/mousepositioncontrol.js", ["ol.control.MousePosition"], ["goog.array", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.style", "ol.CoordinateFormatType", "ol.Object", "ol.Pixel", "ol.TransformFunction", "ol.control.Control", "ol.proj", "ol.proj.Projection"]);
 goog.addDependency("../src/ol/control/scalelinecontrol.js", ["ol.control.ScaleLine", "ol.control.ScaleLineProperty", "ol.control.ScaleLineUnits"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.math", "goog.style", "ol.Object", "ol.TransformFunction", "ol.control.Control", "ol.css", "ol.proj", "ol.proj.Units", "ol.sphere.NORMAL"]);
-goog.addDependency("../src/ol/control/zoomcontrol.js", ["ol.control.Zoom"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "ol.View2D", "ol.animation", "ol.control.Control", "ol.css", "ol.easing"]);
+goog.addDependency("../src/ol/control/zoomcontrol.js", ["ol.control.Zoom"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "ol.View2D", "ol.animation", "ol.control.Control", "ol.css", "ol.easing", "ol.pointer.PointerEventHandler"]);
 goog.addDependency("../src/ol/control/zoomslidercontrol.js", ["ol.control.ZoomSlider"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.Event", "goog.events.EventType", "goog.fx.Dragger", "goog.fx.Dragger.EventType", "goog.math", "goog.math.Rect", "goog.style", "ol.animation", "ol.control.Control", "ol.css", "ol.easing"]);
-goog.addDependency("../src/ol/control/zoomtoextentcontrol.js", ["ol.control.ZoomToExtent"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "ol.control.Control", "ol.css"]);
+goog.addDependency("../src/ol/control/zoomtoextentcontrol.js", ["ol.control.ZoomToExtent"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "ol.control.Control", "ol.css", "ol.pointer.PointerEventHandler"]);
 goog.addDependency("../src/ol/coordinate.js", ["ol.Coordinate", "ol.CoordinateArray", "ol.CoordinateFormatType", "ol.coordinate"], ["goog.math"]);
 goog.addDependency("../src/ol/css.js", ["ol.css"], []);
 goog.addDependency("../src/ol/deviceorientation.js", ["ol.DeviceOrientation", "ol.DeviceOrientationProperty"], ["goog.events", "goog.math", "ol.BrowserFeature", "ol.Object"]);
@@ -659,7 +659,7 @@ goog.addDependency("../src/ol/iview.js", ["ol.IView"], ["ol.IView2D", "ol.IView3
 goog.addDependency("../src/ol/iview2d.js", ["ol.IView2D"], ["ol.Coordinate"]);
 goog.addDependency("../src/ol/iview3d.js", ["ol.IView3D"], []);
 goog.addDependency("../src/ol/kinetic.js", ["ol.Kinetic"], ["ol.Coordinate", "ol.PreRenderFunction", "ol.animation"]);
-goog.addDependency("../src/ol/layer/heatmaplayer.js", ["ol.layer.Heatmap"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.math", "ol.Object", "ol.layer.Vector", "ol.render.EventType", "ol.style.Icon", "ol.style.Style"]);
+goog.addDependency("../src/ol/layer/heatmaplayer.js", ["ol.layer.Heatmap"], ["goog.asserts", "goog.events", "goog.math", "ol.Object", "ol.dom", "ol.layer.Vector", "ol.render.EventType", "ol.style.Icon", "ol.style.Style"]);
 goog.addDependency("../src/ol/layer/imagelayer.js", ["ol.layer.Image"], ["ol.layer.Layer"]);
 goog.addDependency("../src/ol/layer/layer.js", ["ol.layer.Layer"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.object", "ol.layer.Base", "ol.source.Source"]);
 goog.addDependency("../src/ol/layer/layerbase.js", ["ol.layer.Base", "ol.layer.LayerProperty", "ol.layer.LayerState"], ["goog.events", "goog.math", "goog.object", "ol.Object", "ol.source.State"]);
@@ -692,7 +692,7 @@ goog.addDependency("../src/ol/proj/proj.js", ["ol.proj", "ol.proj.METERS_PER_UNI
 goog.addDependency("../src/ol/render/box.js", ["ol.render.Box"], ["goog.Disposable", "goog.array", "goog.asserts", "goog.events", "ol.geom.Polygon", "ol.render.EventType"]);
 goog.addDependency("../src/ol/render/canvas/canvas.js", ["ol.render.canvas"], ["ol.color"]);
 goog.addDependency("../src/ol/render/canvas/canvasimmediate.js", ["ol.render.canvas.Immediate"], ["goog.array", "goog.asserts", "goog.object", "goog.vec.Mat4", "ol.BrowserFeature", "ol.color", "ol.extent", "ol.geom.flat.transform", "ol.render.IVectorContext", "ol.render.canvas", "ol.vec.Mat4"]);
-goog.addDependency("../src/ol/render/canvas/canvasreplay.js", ["ol.render.canvas.Replay", "ol.render.canvas.ReplayGroup"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.object", "goog.vec.Mat4", "ol.BrowserFeature", "ol.array", "ol.color", "ol.extent", "ol.extent.Relationship", "ol.geom.flat.simplify", "ol.geom.flat.transform", "ol.render.IReplayGroup", "ol.render.IVectorContext", "ol.render.canvas", "ol.vec.Mat4"]);
+goog.addDependency("../src/ol/render/canvas/canvasreplay.js", ["ol.render.canvas.Replay", "ol.render.canvas.ReplayGroup"], ["goog.array", "goog.asserts", "goog.object", "goog.vec.Mat4", "ol.BrowserFeature", "ol.array", "ol.color", "ol.dom", "ol.extent", "ol.extent.Relationship", "ol.geom.flat.simplify", "ol.geom.flat.transform", "ol.render.IReplayGroup", "ol.render.IVectorContext", "ol.render.canvas", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/render/ireplay.js", ["ol.render.IReplayGroup"], ["goog.functions", "ol.render.IVectorContext"]);
 goog.addDependency("../src/ol/render/ivectorcontext.js", ["ol.render.IVectorContext"], []);
 goog.addDependency("../src/ol/render/renderevent.js", ["ol.render.Event", "ol.render.EventType"], ["goog.events.Event", "ol.render.IVectorContext"]);
@@ -700,9 +700,9 @@ goog.addDependency("../src/ol/render/vector.js", ["ol.renderer.vector"], ["goog.
 goog.addDependency("../src/ol/render/webgl/webglimmediate.js", ["ol.render.webgl.Immediate"], []);
 goog.addDependency("../src/ol/renderer/canvas/canvasimagelayerrenderer.js", ["ol.renderer.canvas.ImageLayer"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.ImageBase", "ol.ImageState", "ol.ViewHint", "ol.layer.Image", "ol.renderer.Map", "ol.renderer.canvas.Layer", "ol.source.Image", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/canvas/canvaslayerrenderer.js", ["ol.renderer.canvas.Layer"], ["goog.vec.Mat4", "ol.layer.Layer", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Layer", "ol.vec.Mat4"]);
-goog.addDependency("../src/ol/renderer/canvas/canvasmaprenderer.js", ["ol.renderer.canvas.Map"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.style", "goog.vec.Mat4", "ol.css", "ol.layer.Image", "ol.layer.Tile", "ol.layer.Vector", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.source.State", "ol.vec.Mat4"]);
-goog.addDependency("../src/ol/renderer/canvas/canvastilelayerrenderer.js", ["ol.renderer.canvas.TileLayer"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.object", "goog.vec.Mat4", "ol.Size", "ol.Tile", "ol.TileCoord", "ol.TileRange", "ol.TileState", "ol.extent", "ol.layer.Tile", "ol.renderer.Map", "ol.renderer.canvas.Layer", "ol.source.Tile", "ol.vec.Mat4"]);
-goog.addDependency("../src/ol/renderer/canvas/canvasvectorlayerrenderer.js", ["ol.renderer.canvas.VectorLayer"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "ol.ViewHint", "ol.extent", "ol.feature", "ol.layer.Vector", "ol.render.EventType", "ol.render.canvas.ReplayGroup", "ol.renderer.canvas.Layer", "ol.renderer.vector", "ol.source.Vector"]);
+goog.addDependency("../src/ol/renderer/canvas/canvasmaprenderer.js", ["ol.renderer.canvas.Map"], ["goog.asserts", "goog.dom", "goog.style", "goog.vec.Mat4", "ol.css", "ol.dom", "ol.layer.Image", "ol.layer.Tile", "ol.layer.Vector", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.source.State", "ol.vec.Mat4"]);
+goog.addDependency("../src/ol/renderer/canvas/canvastilelayerrenderer.js", ["ol.renderer.canvas.TileLayer"], ["goog.array", "goog.asserts", "goog.object", "goog.vec.Mat4", "ol.Size", "ol.Tile", "ol.TileCoord", "ol.TileRange", "ol.TileState", "ol.dom", "ol.extent", "ol.layer.Tile", "ol.renderer.Map", "ol.renderer.canvas.Layer", "ol.source.Tile", "ol.vec.Mat4"]);
+goog.addDependency("../src/ol/renderer/canvas/canvasvectorlayerrenderer.js", ["ol.renderer.canvas.VectorLayer"], ["goog.array", "goog.asserts", "goog.events", "ol.ViewHint", "ol.dom", "ol.extent", "ol.feature", "ol.layer.Vector", "ol.render.EventType", "ol.render.canvas.ReplayGroup", "ol.renderer.canvas.Layer", "ol.renderer.vector", "ol.source.Vector"]);
 goog.addDependency("../src/ol/renderer/dom/domimagelayerrenderer.js", ["ol.renderer.dom.ImageLayer"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.ImageBase", "ol.ImageState", "ol.ViewHint", "ol.dom", "ol.layer.Image", "ol.renderer.dom.Layer", "ol.source.Image", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/dom/domlayerrenderer.js", ["ol.renderer.dom.Layer"], ["goog.dom", "ol.layer.Layer", "ol.renderer.Layer"]);
 goog.addDependency("../src/ol/renderer/dom/dommaprenderer.js", ["ol.renderer.dom.Map"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.functions", "goog.style", "ol.css", "ol.layer.Image", "ol.layer.Tile", "ol.renderer.Map", "ol.renderer.dom.ImageLayer", "ol.renderer.dom.Layer", "ol.renderer.dom.TileLayer", "ol.source.State"]);
@@ -713,7 +713,7 @@ goog.addDependency("../src/ol/renderer/webgl/webglimagelayerrenderer.js", ["ol.r
 goog.addDependency("../src/ol/renderer/webgl/webgllayerrenderer.js", ["ol.renderer.webgl.Layer"], ["goog.vec.Mat4", "goog.webgl", "ol.color.Matrix", "ol.layer.Layer", "ol.render.Event", "ol.render.EventType", "ol.render.webgl.Immediate", "ol.renderer.Layer", "ol.renderer.webgl.map.shader.Color", "ol.renderer.webgl.map.shader.Default", "ol.structs.Buffer"]);
 goog.addDependency("../src/ol/renderer/webgl/webglmapcolorshader.js", ["ol.renderer.webgl.map.shader.Color"], ["ol.webgl.shader"]);
 goog.addDependency("../src/ol/renderer/webgl/webglmapdefaultshader.js", ["ol.renderer.webgl.map.shader.Default"], ["ol.webgl.shader"]);
-goog.addDependency("../src/ol/renderer/webgl/webglmaprenderer.js", ["ol.renderer.webgl.Map"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.Event", "goog.log", "goog.log.Logger", "goog.object", "goog.style", "goog.webgl", "ol.Tile", "ol.css", "ol.layer.Image", "ol.layer.Tile", "ol.render.Event", "ol.render.EventType", "ol.render.webgl.Immediate", "ol.renderer.Map", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.TileLayer", 
+goog.addDependency("../src/ol/renderer/webgl/webglmaprenderer.js", ["ol.renderer.webgl.Map"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.Event", "goog.log", "goog.log.Logger", "goog.object", "goog.style", "goog.webgl", "ol.Tile", "ol.css", "ol.dom", "ol.layer.Image", "ol.layer.Tile", "ol.render.Event", "ol.render.EventType", "ol.render.webgl.Immediate", "ol.renderer.Map", "ol.renderer.webgl.ImageLayer", "ol.renderer.webgl.Layer", "ol.renderer.webgl.TileLayer", 
 "ol.source.State", "ol.structs.LRUCache", "ol.structs.PriorityQueue", "ol.webgl", "ol.webgl.Context", "ol.webgl.WebGLContextEventType"]);
 goog.addDependency("../src/ol/renderer/webgl/webgltilelayerrenderer.js", ["ol.renderer.webgl.TileLayer"], ["goog.array", "goog.asserts", "goog.object", "goog.vec.Mat4", "goog.vec.Vec4", "goog.webgl", "ol.Tile", "ol.TileRange", "ol.TileState", "ol.extent", "ol.layer.Tile", "ol.math", "ol.renderer.webgl.Layer", "ol.renderer.webgl.tilelayer.shader", "ol.source.Tile", "ol.structs.Buffer"]);
 goog.addDependency("../src/ol/renderer/webgl/webgltilelayershader.js", ["ol.renderer.webgl.tilelayer.shader"], ["ol.webgl.shader"]);
@@ -721,14 +721,14 @@ goog.addDependency("../src/ol/resolutionconstraint.js", ["ol.ResolutionConstrain
 goog.addDependency("../src/ol/rotationconstraint.js", ["ol.RotationConstraint", "ol.RotationConstraintType"], ["goog.math"]);
 goog.addDependency("../src/ol/size.js", ["ol.Size", "ol.size"], []);
 goog.addDependency("../src/ol/source/bingmapssource.js", ["ol.source.BingMaps"], ["goog.Uri", "goog.array", "goog.asserts", "goog.net.Jsonp", "ol.Attribution", "ol.TileRange", "ol.TileUrlFunction", "ol.extent", "ol.proj", "ol.source.State", "ol.source.TileImage", "ol.tilegrid.XYZ"]);
-goog.addDependency("../src/ol/source/debugtilesource.js", ["ol.source.TileDebug"], ["goog.dom", "goog.dom.TagName", "ol.Tile", "ol.TileCache", "ol.TileCoord", "ol.TileState", "ol.source.Tile", "ol.tilegrid.TileGrid"]);
+goog.addDependency("../src/ol/source/debugtilesource.js", ["ol.source.TileDebug"], ["ol.Tile", "ol.TileCache", "ol.TileCoord", "ol.TileState", "ol.dom", "ol.source.Tile", "ol.tilegrid.TileGrid"]);
 goog.addDependency("../src/ol/source/geojsonsource.js", ["ol.source.GeoJSON"], ["ol.format.GeoJSON", "ol.source.VectorFile"]);
 goog.addDependency("../src/ol/source/gpxsource.js", ["ol.source.GPX"], ["ol.format.GPX", "ol.source.VectorFile"]);
 goog.addDependency("../src/ol/source/igcsource.js", ["ol.source.IGC"], ["ol.format.IGC", "ol.source.VectorFile"]);
 goog.addDependency("../src/ol/source/imagecanvassource.js", ["ol.source.ImageCanvas"], ["ol.CanvasFunctionType", "ol.ImageCanvas", "ol.extent", "ol.source.Image"]);
 goog.addDependency("../src/ol/source/imagesource.js", ["ol.source.Image"], ["goog.array", "goog.asserts", "ol.Attribution", "ol.Extent", "ol.Image", "ol.array", "ol.source.Source"]);
 goog.addDependency("../src/ol/source/imagestaticsource.js", ["ol.source.ImageStatic"], ["ol.Image", "ol.extent", "ol.proj", "ol.source.Image"]);
-goog.addDependency("../src/ol/source/imagevectorsource.js", ["ol.source.ImageVector"], ["goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.extent", "ol.feature", "ol.render.canvas.ReplayGroup", "ol.renderer.vector", "ol.source.ImageCanvas", "ol.source.Vector", "ol.vec.Mat4"]);
+goog.addDependency("../src/ol/source/imagevectorsource.js", ["ol.source.ImageVector"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.dom", "ol.extent", "ol.feature", "ol.render.canvas.ReplayGroup", "ol.renderer.vector", "ol.source.ImageCanvas", "ol.source.Vector", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/source/imagewmssource.js", ["ol.source.ImageWMS"], ["goog.asserts", "goog.object", "goog.string", "goog.uri.utils", "ol.Image", "ol.extent", "ol.proj", "ol.source.Image", "ol.source.wms", "ol.source.wms.ServerType"]);
 goog.addDependency("../src/ol/source/kmlsource.js", ["ol.source.KML"], ["ol.format.KML", "ol.source.VectorFile"]);
 goog.addDependency("../src/ol/source/mapguidesource.js", ["ol.source.MapGuide"], ["goog.object", "goog.uri.utils", "ol.Image", "ol.ImageUrlFunction", "ol.extent", "ol.source.Image"]);
@@ -747,7 +747,7 @@ goog.addDependency("../src/ol/source/vectorsource.js", ["ol.source.Vector", "ol.
 goog.addDependency("../src/ol/source/wmssource.js", ["ol.source.wms", "ol.source.wms.ServerType"], []);
 goog.addDependency("../src/ol/source/wmtssource.js", ["ol.source.WMTS", "ol.source.WMTSRequestEncoding"], ["goog.array", "goog.asserts", "goog.math", "goog.object", "goog.uri.utils", "ol.TileCoord", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.extent", "ol.proj", "ol.source.TileImage", "ol.tilegrid.WMTS"]);
 goog.addDependency("../src/ol/source/xyzsource.js", ["ol.source.XYZ"], ["ol.Attribution", "ol.TileUrlFunction", "ol.TileUrlFunctionType", "ol.source.TileImage", "ol.tilegrid.XYZ"]);
-goog.addDependency("../src/ol/source/zoomifysource.js", ["ol.source.Zoomify"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "ol.ImageTile", "ol.TileCoord", "ol.TileState", "ol.TileUrlFunction", "ol.proj", "ol.source.TileImage", "ol.tilegrid.Zoomify"]);
+goog.addDependency("../src/ol/source/zoomifysource.js", ["ol.source.Zoomify"], ["goog.array", "goog.asserts", "ol.ImageTile", "ol.TileCoord", "ol.TileState", "ol.TileUrlFunction", "ol.dom", "ol.proj", "ol.source.TileImage", "ol.tilegrid.Zoomify"]);
 goog.addDependency("../src/ol/sphere/normal.js", ["ol.sphere.NORMAL"], ["ol.Sphere"]);
 goog.addDependency("../src/ol/sphere/sphere.js", ["ol.Sphere"], ["goog.array", "goog.math", "ol.geom.Polygon"]);
 goog.addDependency("../src/ol/sphere/wgs84sphere.js", ["ol.sphere.WGS84"], ["ol.Sphere"]);
@@ -758,7 +758,7 @@ goog.addDependency("../src/ol/structs/priorityqueue.js", ["ol.structs.PriorityQu
 goog.addDependency("../src/ol/structs/rbush.js", ["ol.structs.RBush"], ["goog.array", "goog.asserts", "goog.object", "ol.extent"]);
 goog.addDependency("../src/ol/style/circlestyle.js", ["ol.style.Circle"], ["goog.dom", "goog.dom.TagName", "ol.color", "ol.render.canvas", "ol.style.Fill", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke"]);
 goog.addDependency("../src/ol/style/fillstyle.js", ["ol.style.Fill"], ["ol.color"]);
-goog.addDependency("../src/ol/style/iconstyle.js", ["ol.style.Icon", "ol.style.IconAnchorOrigin", "ol.style.IconAnchorUnits", "ol.style.IconImageCache"], ["goog.array", "goog.asserts", "goog.dom", "goog.dom.TagName", "goog.events", "goog.events.EventTarget", "goog.events.EventType", "ol.style.Image", "ol.style.ImageState"]);
+goog.addDependency("../src/ol/style/iconstyle.js", ["ol.style.Icon", "ol.style.IconAnchorOrigin", "ol.style.IconAnchorUnits", "ol.style.IconImageCache"], ["goog.array", "goog.asserts", "goog.events", "goog.events.EventTarget", "goog.events.EventType", "ol.dom", "ol.style.Image", "ol.style.ImageState"]);
 goog.addDependency("../src/ol/style/imagestyle.js", ["ol.style.Image", "ol.style.ImageState"], ["goog.array"]);
 goog.addDependency("../src/ol/style/strokestyle.js", ["ol.style.Stroke"], ["ol.color"]);
 goog.addDependency("../src/ol/style/style.js", ["ol.style.Style"], ["ol.style.Fill", "ol.style.Image"]);
@@ -7298,6 +7298,2423 @@ goog.dom.DomHelper.prototype.isNodeList = goog.dom.isNodeList;
 goog.dom.DomHelper.prototype.getAncestorByTagNameAndClass = goog.dom.getAncestorByTagNameAndClass;
 goog.dom.DomHelper.prototype.getAncestorByClass = goog.dom.getAncestorByClass;
 goog.dom.DomHelper.prototype.getAncestor = goog.dom.getAncestor;
+goog.provide("goog.dom.vendor");
+goog.require("goog.userAgent");
+goog.dom.vendor.getVendorJsPrefix = function() {
+  if(goog.userAgent.WEBKIT) {
+    return"Webkit"
+  }else {
+    if(goog.userAgent.GECKO) {
+      return"Moz"
+    }else {
+      if(goog.userAgent.IE) {
+        return"ms"
+      }else {
+        if(goog.userAgent.OPERA) {
+          return"O"
+        }
+      }
+    }
+  }
+  return null
+};
+goog.dom.vendor.getVendorPrefix = function() {
+  if(goog.userAgent.WEBKIT) {
+    return"-webkit"
+  }else {
+    if(goog.userAgent.GECKO) {
+      return"-moz"
+    }else {
+      if(goog.userAgent.IE) {
+        return"-ms"
+      }else {
+        if(goog.userAgent.OPERA) {
+          return"-o"
+        }
+      }
+    }
+  }
+  return null
+};
+goog.provide("goog.math.Box");
+goog.require("goog.math.Coordinate");
+goog.math.Box = function(top, right, bottom, left) {
+  this.top = top;
+  this.right = right;
+  this.bottom = bottom;
+  this.left = left
+};
+goog.math.Box.boundingBox = function(var_args) {
+  var box = new goog.math.Box(arguments[0].y, arguments[0].x, arguments[0].y, arguments[0].x);
+  for(var i = 1;i < arguments.length;i++) {
+    var coord = arguments[i];
+    box.top = Math.min(box.top, coord.y);
+    box.right = Math.max(box.right, coord.x);
+    box.bottom = Math.max(box.bottom, coord.y);
+    box.left = Math.min(box.left, coord.x)
+  }
+  return box
+};
+goog.math.Box.prototype.clone = function() {
+  return new goog.math.Box(this.top, this.right, this.bottom, this.left)
+};
+if(goog.DEBUG) {
+  goog.math.Box.prototype.toString = function() {
+    return"(" + this.top + "t, " + this.right + "r, " + this.bottom + "b, " + this.left + "l)"
+  }
+}
+goog.math.Box.prototype.contains = function(other) {
+  return goog.math.Box.contains(this, other)
+};
+goog.math.Box.prototype.expand = function(top, opt_right, opt_bottom, opt_left) {
+  if(goog.isObject(top)) {
+    this.top -= top.top;
+    this.right += top.right;
+    this.bottom += top.bottom;
+    this.left -= top.left
+  }else {
+    this.top -= top;
+    this.right += opt_right;
+    this.bottom += opt_bottom;
+    this.left -= opt_left
+  }
+  return this
+};
+goog.math.Box.prototype.expandToInclude = function(box) {
+  this.left = Math.min(this.left, box.left);
+  this.top = Math.min(this.top, box.top);
+  this.right = Math.max(this.right, box.right);
+  this.bottom = Math.max(this.bottom, box.bottom)
+};
+goog.math.Box.equals = function(a, b) {
+  if(a == b) {
+    return true
+  }
+  if(!a || !b) {
+    return false
+  }
+  return a.top == b.top && a.right == b.right && a.bottom == b.bottom && a.left == b.left
+};
+goog.math.Box.contains = function(box, other) {
+  if(!box || !other) {
+    return false
+  }
+  if(other instanceof goog.math.Box) {
+    return other.left >= box.left && other.right <= box.right && other.top >= box.top && other.bottom <= box.bottom
+  }
+  return other.x >= box.left && other.x <= box.right && other.y >= box.top && other.y <= box.bottom
+};
+goog.math.Box.relativePositionX = function(box, coord) {
+  if(coord.x < box.left) {
+    return coord.x - box.left
+  }else {
+    if(coord.x > box.right) {
+      return coord.x - box.right
+    }
+  }
+  return 0
+};
+goog.math.Box.relativePositionY = function(box, coord) {
+  if(coord.y < box.top) {
+    return coord.y - box.top
+  }else {
+    if(coord.y > box.bottom) {
+      return coord.y - box.bottom
+    }
+  }
+  return 0
+};
+goog.math.Box.distance = function(box, coord) {
+  var x = goog.math.Box.relativePositionX(box, coord);
+  var y = goog.math.Box.relativePositionY(box, coord);
+  return Math.sqrt(x * x + y * y)
+};
+goog.math.Box.intersects = function(a, b) {
+  return a.left <= b.right && b.left <= a.right && a.top <= b.bottom && b.top <= a.bottom
+};
+goog.math.Box.intersectsWithPadding = function(a, b, padding) {
+  return a.left <= b.right + padding && b.left <= a.right + padding && a.top <= b.bottom + padding && b.top <= a.bottom + padding
+};
+goog.math.Box.prototype.ceil = function() {
+  this.top = Math.ceil(this.top);
+  this.right = Math.ceil(this.right);
+  this.bottom = Math.ceil(this.bottom);
+  this.left = Math.ceil(this.left);
+  return this
+};
+goog.math.Box.prototype.floor = function() {
+  this.top = Math.floor(this.top);
+  this.right = Math.floor(this.right);
+  this.bottom = Math.floor(this.bottom);
+  this.left = Math.floor(this.left);
+  return this
+};
+goog.math.Box.prototype.round = function() {
+  this.top = Math.round(this.top);
+  this.right = Math.round(this.right);
+  this.bottom = Math.round(this.bottom);
+  this.left = Math.round(this.left);
+  return this
+};
+goog.math.Box.prototype.translate = function(tx, opt_ty) {
+  if(tx instanceof goog.math.Coordinate) {
+    this.left += tx.x;
+    this.right += tx.x;
+    this.top += tx.y;
+    this.bottom += tx.y
+  }else {
+    this.left += tx;
+    this.right += tx;
+    if(goog.isNumber(opt_ty)) {
+      this.top += opt_ty;
+      this.bottom += opt_ty
+    }
+  }
+  return this
+};
+goog.math.Box.prototype.scale = function(sx, opt_sy) {
+  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
+  this.left *= sx;
+  this.right *= sx;
+  this.top *= sy;
+  this.bottom *= sy;
+  return this
+};
+goog.provide("goog.math.Rect");
+goog.require("goog.math.Box");
+goog.require("goog.math.Coordinate");
+goog.require("goog.math.Size");
+goog.math.Rect = function(x, y, w, h) {
+  this.left = x;
+  this.top = y;
+  this.width = w;
+  this.height = h
+};
+goog.math.Rect.prototype.clone = function() {
+  return new goog.math.Rect(this.left, this.top, this.width, this.height)
+};
+goog.math.Rect.prototype.toBox = function() {
+  var right = this.left + this.width;
+  var bottom = this.top + this.height;
+  return new goog.math.Box(this.top, right, bottom, this.left)
+};
+goog.math.Rect.createFromBox = function(box) {
+  return new goog.math.Rect(box.left, box.top, box.right - box.left, box.bottom - box.top)
+};
+if(goog.DEBUG) {
+  goog.math.Rect.prototype.toString = function() {
+    return"(" + this.left + ", " + this.top + " - " + this.width + "w x " + this.height + "h)"
+  }
+}
+goog.math.Rect.equals = function(a, b) {
+  if(a == b) {
+    return true
+  }
+  if(!a || !b) {
+    return false
+  }
+  return a.left == b.left && a.width == b.width && a.top == b.top && a.height == b.height
+};
+goog.math.Rect.prototype.intersection = function(rect) {
+  var x0 = Math.max(this.left, rect.left);
+  var x1 = Math.min(this.left + this.width, rect.left + rect.width);
+  if(x0 <= x1) {
+    var y0 = Math.max(this.top, rect.top);
+    var y1 = Math.min(this.top + this.height, rect.top + rect.height);
+    if(y0 <= y1) {
+      this.left = x0;
+      this.top = y0;
+      this.width = x1 - x0;
+      this.height = y1 - y0;
+      return true
+    }
+  }
+  return false
+};
+goog.math.Rect.intersection = function(a, b) {
+  var x0 = Math.max(a.left, b.left);
+  var x1 = Math.min(a.left + a.width, b.left + b.width);
+  if(x0 <= x1) {
+    var y0 = Math.max(a.top, b.top);
+    var y1 = Math.min(a.top + a.height, b.top + b.height);
+    if(y0 <= y1) {
+      return new goog.math.Rect(x0, y0, x1 - x0, y1 - y0)
+    }
+  }
+  return null
+};
+goog.math.Rect.intersects = function(a, b) {
+  return a.left <= b.left + b.width && b.left <= a.left + a.width && a.top <= b.top + b.height && b.top <= a.top + a.height
+};
+goog.math.Rect.prototype.intersects = function(rect) {
+  return goog.math.Rect.intersects(this, rect)
+};
+goog.math.Rect.difference = function(a, b) {
+  var intersection = goog.math.Rect.intersection(a, b);
+  if(!intersection || !intersection.height || !intersection.width) {
+    return[a.clone()]
+  }
+  var result = [];
+  var top = a.top;
+  var height = a.height;
+  var ar = a.left + a.width;
+  var ab = a.top + a.height;
+  var br = b.left + b.width;
+  var bb = b.top + b.height;
+  if(b.top > a.top) {
+    result.push(new goog.math.Rect(a.left, a.top, a.width, b.top - a.top));
+    top = b.top;
+    height -= b.top - a.top
+  }
+  if(bb < ab) {
+    result.push(new goog.math.Rect(a.left, bb, a.width, ab - bb));
+    height = bb - top
+  }
+  if(b.left > a.left) {
+    result.push(new goog.math.Rect(a.left, top, b.left - a.left, height))
+  }
+  if(br < ar) {
+    result.push(new goog.math.Rect(br, top, ar - br, height))
+  }
+  return result
+};
+goog.math.Rect.prototype.difference = function(rect) {
+  return goog.math.Rect.difference(this, rect)
+};
+goog.math.Rect.prototype.boundingRect = function(rect) {
+  var right = Math.max(this.left + this.width, rect.left + rect.width);
+  var bottom = Math.max(this.top + this.height, rect.top + rect.height);
+  this.left = Math.min(this.left, rect.left);
+  this.top = Math.min(this.top, rect.top);
+  this.width = right - this.left;
+  this.height = bottom - this.top
+};
+goog.math.Rect.boundingRect = function(a, b) {
+  if(!a || !b) {
+    return null
+  }
+  var clone = a.clone();
+  clone.boundingRect(b);
+  return clone
+};
+goog.math.Rect.prototype.contains = function(another) {
+  if(another instanceof goog.math.Rect) {
+    return this.left <= another.left && this.left + this.width >= another.left + another.width && this.top <= another.top && this.top + this.height >= another.top + another.height
+  }else {
+    return another.x >= this.left && another.x <= this.left + this.width && another.y >= this.top && another.y <= this.top + this.height
+  }
+};
+goog.math.Rect.prototype.squaredDistance = function(point) {
+  var dx = point.x < this.left ? this.left - point.x : Math.max(point.x - (this.left + this.width), 0);
+  var dy = point.y < this.top ? this.top - point.y : Math.max(point.y - (this.top + this.height), 0);
+  return dx * dx + dy * dy
+};
+goog.math.Rect.prototype.distance = function(point) {
+  return Math.sqrt(this.squaredDistance(point))
+};
+goog.math.Rect.prototype.getSize = function() {
+  return new goog.math.Size(this.width, this.height)
+};
+goog.math.Rect.prototype.getTopLeft = function() {
+  return new goog.math.Coordinate(this.left, this.top)
+};
+goog.math.Rect.prototype.getCenter = function() {
+  return new goog.math.Coordinate(this.left + this.width / 2, this.top + this.height / 2)
+};
+goog.math.Rect.prototype.getBottomRight = function() {
+  return new goog.math.Coordinate(this.left + this.width, this.top + this.height)
+};
+goog.math.Rect.prototype.ceil = function() {
+  this.left = Math.ceil(this.left);
+  this.top = Math.ceil(this.top);
+  this.width = Math.ceil(this.width);
+  this.height = Math.ceil(this.height);
+  return this
+};
+goog.math.Rect.prototype.floor = function() {
+  this.left = Math.floor(this.left);
+  this.top = Math.floor(this.top);
+  this.width = Math.floor(this.width);
+  this.height = Math.floor(this.height);
+  return this
+};
+goog.math.Rect.prototype.round = function() {
+  this.left = Math.round(this.left);
+  this.top = Math.round(this.top);
+  this.width = Math.round(this.width);
+  this.height = Math.round(this.height);
+  return this
+};
+goog.math.Rect.prototype.translate = function(tx, opt_ty) {
+  if(tx instanceof goog.math.Coordinate) {
+    this.left += tx.x;
+    this.top += tx.y
+  }else {
+    this.left += tx;
+    if(goog.isNumber(opt_ty)) {
+      this.top += opt_ty
+    }
+  }
+  return this
+};
+goog.math.Rect.prototype.scale = function(sx, opt_sy) {
+  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
+  this.left *= sx;
+  this.width *= sx;
+  this.top *= sy;
+  this.height *= sy;
+  return this
+};
+goog.provide("goog.style");
+goog.require("goog.array");
+goog.require("goog.asserts");
+goog.require("goog.dom");
+goog.require("goog.dom.NodeType");
+goog.require("goog.dom.vendor");
+goog.require("goog.math.Box");
+goog.require("goog.math.Coordinate");
+goog.require("goog.math.Rect");
+goog.require("goog.math.Size");
+goog.require("goog.object");
+goog.require("goog.string");
+goog.require("goog.userAgent");
+goog.define("goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS", false);
+goog.style.setStyle = function(element, style, opt_value) {
+  if(goog.isString(style)) {
+    goog.style.setStyle_(element, opt_value, style)
+  }else {
+    goog.object.forEach(style, goog.partial(goog.style.setStyle_, element))
+  }
+};
+goog.style.setStyle_ = function(element, value, style) {
+  var propertyName = goog.style.getVendorJsStyleName_(element, style);
+  if(propertyName) {
+    element.style[propertyName] = value
+  }
+};
+goog.style.getVendorJsStyleName_ = function(element, style) {
+  var camelStyle = goog.string.toCamelCase(style);
+  if(element.style[camelStyle] === undefined) {
+    var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() + goog.string.toTitleCase(style);
+    if(element.style[prefixedStyle] !== undefined) {
+      return prefixedStyle
+    }
+  }
+  return camelStyle
+};
+goog.style.getVendorStyleName_ = function(element, style) {
+  var camelStyle = goog.string.toCamelCase(style);
+  if(element.style[camelStyle] === undefined) {
+    var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() + goog.string.toTitleCase(style);
+    if(element.style[prefixedStyle] !== undefined) {
+      return goog.dom.vendor.getVendorPrefix() + "-" + style
+    }
+  }
+  return style
+};
+goog.style.getStyle = function(element, property) {
+  var styleValue = element.style[goog.string.toCamelCase(property)];
+  if(typeof styleValue !== "undefined") {
+    return styleValue
+  }
+  return element.style[goog.style.getVendorJsStyleName_(element, property)] || ""
+};
+goog.style.getComputedStyle = function(element, property) {
+  var doc = goog.dom.getOwnerDocument(element);
+  if(doc.defaultView && doc.defaultView.getComputedStyle) {
+    var styles = doc.defaultView.getComputedStyle(element, null);
+    if(styles) {
+      return styles[property] || styles.getPropertyValue(property) || ""
+    }
+  }
+  return""
+};
+goog.style.getCascadedStyle = function(element, style) {
+  return element.currentStyle ? element.currentStyle[style] : null
+};
+goog.style.getStyle_ = function(element, style) {
+  return goog.style.getComputedStyle(element, style) || goog.style.getCascadedStyle(element, style) || element.style && element.style[style]
+};
+goog.style.getComputedPosition = function(element) {
+  return goog.style.getStyle_(element, "position")
+};
+goog.style.getBackgroundColor = function(element) {
+  return goog.style.getStyle_(element, "backgroundColor")
+};
+goog.style.getComputedOverflowX = function(element) {
+  return goog.style.getStyle_(element, "overflowX")
+};
+goog.style.getComputedOverflowY = function(element) {
+  return goog.style.getStyle_(element, "overflowY")
+};
+goog.style.getComputedZIndex = function(element) {
+  return goog.style.getStyle_(element, "zIndex")
+};
+goog.style.getComputedTextAlign = function(element) {
+  return goog.style.getStyle_(element, "textAlign")
+};
+goog.style.getComputedCursor = function(element) {
+  return goog.style.getStyle_(element, "cursor")
+};
+goog.style.setPosition = function(el, arg1, opt_arg2) {
+  var x, y;
+  var buggyGeckoSubPixelPos = goog.userAgent.GECKO && (goog.userAgent.MAC || goog.userAgent.X11) && goog.userAgent.isVersionOrHigher("1.9");
+  if(arg1 instanceof goog.math.Coordinate) {
+    x = arg1.x;
+    y = arg1.y
+  }else {
+    x = arg1;
+    y = opt_arg2
+  }
+  el.style.left = goog.style.getPixelStyleValue_((x), buggyGeckoSubPixelPos);
+  el.style.top = goog.style.getPixelStyleValue_((y), buggyGeckoSubPixelPos)
+};
+goog.style.getPosition = function(element) {
+  return new goog.math.Coordinate(element.offsetLeft, element.offsetTop)
+};
+goog.style.getClientViewportElement = function(opt_node) {
+  var doc;
+  if(opt_node) {
+    doc = goog.dom.getOwnerDocument(opt_node)
+  }else {
+    doc = goog.dom.getDocument()
+  }
+  if(goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher(9) && !goog.dom.getDomHelper(doc).isCss1CompatMode()) {
+    return doc.body
+  }
+  return doc.documentElement
+};
+goog.style.getViewportPageOffset = function(doc) {
+  var body = doc.body;
+  var documentElement = doc.documentElement;
+  var scrollLeft = body.scrollLeft || documentElement.scrollLeft;
+  var scrollTop = body.scrollTop || documentElement.scrollTop;
+  return new goog.math.Coordinate(scrollLeft, scrollTop)
+};
+goog.style.getBoundingClientRect_ = function(el) {
+  var rect;
+  try {
+    rect = el.getBoundingClientRect()
+  }catch(e) {
+    return{"left":0, "top":0, "right":0, "bottom":0}
+  }
+  if(goog.userAgent.IE) {
+    var doc = el.ownerDocument;
+    rect.left -= doc.documentElement.clientLeft + doc.body.clientLeft;
+    rect.top -= doc.documentElement.clientTop + doc.body.clientTop
+  }
+  return(rect)
+};
+goog.style.getOffsetParent = function(element) {
+  if(goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher(8)) {
+    return element.offsetParent
+  }
+  var doc = goog.dom.getOwnerDocument(element);
+  var positionStyle = goog.style.getStyle_(element, "position");
+  var skipStatic = positionStyle == "fixed" || positionStyle == "absolute";
+  for(var parent = element.parentNode;parent && parent != doc;parent = parent.parentNode) {
+    positionStyle = goog.style.getStyle_((parent), "position");
+    skipStatic = skipStatic && positionStyle == "static" && parent != doc.documentElement && parent != doc.body;
+    if(!skipStatic && (parent.scrollWidth > parent.clientWidth || parent.scrollHeight > parent.clientHeight || positionStyle == "fixed" || positionStyle == "absolute" || positionStyle == "relative")) {
+      return(parent)
+    }
+  }
+  return null
+};
+goog.style.getVisibleRectForElement = function(element) {
+  var visibleRect = new goog.math.Box(0, Infinity, Infinity, 0);
+  var dom = goog.dom.getDomHelper(element);
+  var body = dom.getDocument().body;
+  var documentElement = dom.getDocument().documentElement;
+  var scrollEl = dom.getDocumentScrollElement();
+  for(var el = element;el = goog.style.getOffsetParent(el);) {
+    if((!goog.userAgent.IE || el.clientWidth != 0) && (!goog.userAgent.WEBKIT || el.clientHeight != 0 || el != body) && el != body && el != documentElement && goog.style.getStyle_(el, "overflow") != "visible") {
+      var pos = goog.style.getPageOffset(el);
+      var client = goog.style.getClientLeftTop(el);
+      pos.x += client.x;
+      pos.y += client.y;
+      visibleRect.top = Math.max(visibleRect.top, pos.y);
+      visibleRect.right = Math.min(visibleRect.right, pos.x + el.clientWidth);
+      visibleRect.bottom = Math.min(visibleRect.bottom, pos.y + el.clientHeight);
+      visibleRect.left = Math.max(visibleRect.left, pos.x)
+    }
+  }
+  var scrollX = scrollEl.scrollLeft, scrollY = scrollEl.scrollTop;
+  visibleRect.left = Math.max(visibleRect.left, scrollX);
+  visibleRect.top = Math.max(visibleRect.top, scrollY);
+  var winSize = dom.getViewportSize();
+  visibleRect.right = Math.min(visibleRect.right, scrollX + winSize.width);
+  visibleRect.bottom = Math.min(visibleRect.bottom, scrollY + winSize.height);
+  return visibleRect.top >= 0 && visibleRect.left >= 0 && visibleRect.bottom > visibleRect.top && visibleRect.right > visibleRect.left ? visibleRect : null
+};
+goog.style.getContainerOffsetToScrollInto = function(element, container, opt_center) {
+  var elementPos = goog.style.getPageOffset(element);
+  var containerPos = goog.style.getPageOffset(container);
+  var containerBorder = goog.style.getBorderBox(container);
+  var relX = elementPos.x - containerPos.x - containerBorder.left;
+  var relY = elementPos.y - containerPos.y - containerBorder.top;
+  var spaceX = container.clientWidth - element.offsetWidth;
+  var spaceY = container.clientHeight - element.offsetHeight;
+  var scrollLeft = container.scrollLeft;
+  var scrollTop = container.scrollTop;
+  if(opt_center) {
+    scrollLeft += relX - spaceX / 2;
+    scrollTop += relY - spaceY / 2
+  }else {
+    scrollLeft += Math.min(relX, Math.max(relX - spaceX, 0));
+    scrollTop += Math.min(relY, Math.max(relY - spaceY, 0))
+  }
+  return new goog.math.Coordinate(scrollLeft, scrollTop)
+};
+goog.style.scrollIntoContainerView = function(element, container, opt_center) {
+  var offset = goog.style.getContainerOffsetToScrollInto(element, container, opt_center);
+  container.scrollLeft = offset.x;
+  container.scrollTop = offset.y
+};
+goog.style.getClientLeftTop = function(el) {
+  if(goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher("1.9")) {
+    var left = parseFloat(goog.style.getComputedStyle(el, "borderLeftWidth"));
+    if(goog.style.isRightToLeft(el)) {
+      var scrollbarWidth = el.offsetWidth - el.clientWidth - left - parseFloat(goog.style.getComputedStyle(el, "borderRightWidth"));
+      left += scrollbarWidth
+    }
+    return new goog.math.Coordinate(left, parseFloat(goog.style.getComputedStyle(el, "borderTopWidth")))
+  }
+  return new goog.math.Coordinate(el.clientLeft, el.clientTop)
+};
+goog.style.getPageOffset = function(el) {
+  var box, doc = goog.dom.getOwnerDocument(el);
+  var positionStyle = goog.style.getStyle_(el, "position");
+  goog.asserts.assertObject(el, "Parameter is required");
+  var BUGGY_GECKO_BOX_OBJECT = !goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS && goog.userAgent.GECKO && doc.getBoxObjectFor && !el.getBoundingClientRect && positionStyle == "absolute" && (box = doc.getBoxObjectFor(el)) && (box.screenX < 0 || box.screenY < 0);
+  var pos = new goog.math.Coordinate(0, 0);
+  var viewportElement = goog.style.getClientViewportElement(doc);
+  if(el == viewportElement) {
+    return pos
+  }
+  if(goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS || el.getBoundingClientRect) {
+    box = goog.style.getBoundingClientRect_(el);
+    var scrollCoord = goog.dom.getDomHelper(doc).getDocumentScroll();
+    pos.x = box.left + scrollCoord.x;
+    pos.y = box.top + scrollCoord.y
+  }else {
+    if(doc.getBoxObjectFor && !BUGGY_GECKO_BOX_OBJECT) {
+      box = doc.getBoxObjectFor(el);
+      var vpBox = doc.getBoxObjectFor(viewportElement);
+      pos.x = box.screenX - vpBox.screenX;
+      pos.y = box.screenY - vpBox.screenY
+    }else {
+      var parent = el;
+      do {
+        pos.x += parent.offsetLeft;
+        pos.y += parent.offsetTop;
+        if(parent != el) {
+          pos.x += parent.clientLeft || 0;
+          pos.y += parent.clientTop || 0
+        }
+        if(goog.userAgent.WEBKIT && goog.style.getComputedPosition(parent) == "fixed") {
+          pos.x += doc.body.scrollLeft;
+          pos.y += doc.body.scrollTop;
+          break
+        }
+        parent = parent.offsetParent
+      }while(parent && parent != el);
+      if(goog.userAgent.OPERA || goog.userAgent.WEBKIT && positionStyle == "absolute") {
+        pos.y -= doc.body.offsetTop
+      }
+      for(parent = el;(parent = goog.style.getOffsetParent(parent)) && parent != doc.body && parent != viewportElement;) {
+        pos.x -= parent.scrollLeft;
+        if(!goog.userAgent.OPERA || parent.tagName != "TR") {
+          pos.y -= parent.scrollTop
+        }
+      }
+    }
+  }
+  return pos
+};
+goog.style.getPageOffsetLeft = function(el) {
+  return goog.style.getPageOffset(el).x
+};
+goog.style.getPageOffsetTop = function(el) {
+  return goog.style.getPageOffset(el).y
+};
+goog.style.getFramedPageOffset = function(el, relativeWin) {
+  var position = new goog.math.Coordinate(0, 0);
+  var currentWin = goog.dom.getWindow(goog.dom.getOwnerDocument(el));
+  var currentEl = el;
+  do {
+    var offset = currentWin == relativeWin ? goog.style.getPageOffset(currentEl) : goog.style.getClientPositionForElement_(goog.asserts.assert(currentEl));
+    position.x += offset.x;
+    position.y += offset.y
+  }while(currentWin && currentWin != relativeWin && (currentEl = currentWin.frameElement) && (currentWin = currentWin.parent));
+  return position
+};
+goog.style.translateRectForAnotherFrame = function(rect, origBase, newBase) {
+  if(origBase.getDocument() != newBase.getDocument()) {
+    var body = origBase.getDocument().body;
+    var pos = goog.style.getFramedPageOffset(body, newBase.getWindow());
+    pos = goog.math.Coordinate.difference(pos, goog.style.getPageOffset(body));
+    if(goog.userAgent.IE && !origBase.isCss1CompatMode()) {
+      pos = goog.math.Coordinate.difference(pos, origBase.getDocumentScroll())
+    }
+    rect.left += pos.x;
+    rect.top += pos.y
+  }
+};
+goog.style.getRelativePosition = function(a, b) {
+  var ap = goog.style.getClientPosition(a);
+  var bp = goog.style.getClientPosition(b);
+  return new goog.math.Coordinate(ap.x - bp.x, ap.y - bp.y)
+};
+goog.style.getClientPositionForElement_ = function(el) {
+  var pos;
+  if(goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS || el.getBoundingClientRect) {
+    var box = goog.style.getBoundingClientRect_(el);
+    pos = new goog.math.Coordinate(box.left, box.top)
+  }else {
+    var scrollCoord = goog.dom.getDomHelper(el).getDocumentScroll();
+    var pageCoord = goog.style.getPageOffset(el);
+    pos = new goog.math.Coordinate(pageCoord.x - scrollCoord.x, pageCoord.y - scrollCoord.y)
+  }
+  if(goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher(12)) {
+    return goog.math.Coordinate.sum(pos, goog.style.getCssTranslation(el))
+  }else {
+    return pos
+  }
+};
+goog.style.getClientPosition = function(el) {
+  goog.asserts.assert(el);
+  if(el.nodeType == goog.dom.NodeType.ELEMENT) {
+    return goog.style.getClientPositionForElement_((el))
+  }else {
+    var isAbstractedEvent = goog.isFunction(el.getBrowserEvent);
+    var targetEvent = el;
+    if(el.targetTouches) {
+      targetEvent = el.targetTouches[0]
+    }else {
+      if(isAbstractedEvent && el.getBrowserEvent().targetTouches) {
+        targetEvent = el.getBrowserEvent().targetTouches[0]
+      }
+    }
+    return new goog.math.Coordinate(targetEvent.clientX, targetEvent.clientY)
+  }
+};
+goog.style.setPageOffset = function(el, x, opt_y) {
+  var cur = goog.style.getPageOffset(el);
+  if(x instanceof goog.math.Coordinate) {
+    opt_y = x.y;
+    x = x.x
+  }
+  var dx = x - cur.x;
+  var dy = opt_y - cur.y;
+  goog.style.setPosition(el, el.offsetLeft + dx, el.offsetTop + dy)
+};
+goog.style.setSize = function(element, w, opt_h) {
+  var h;
+  if(w instanceof goog.math.Size) {
+    h = w.height;
+    w = w.width
+  }else {
+    if(opt_h == undefined) {
+      throw Error("missing height argument");
+    }
+    h = opt_h
+  }
+  goog.style.setWidth(element, (w));
+  goog.style.setHeight(element, (h))
+};
+goog.style.getPixelStyleValue_ = function(value, round) {
+  if(typeof value == "number") {
+    value = (round ? Math.round(value) : value) + "px"
+  }
+  return value
+};
+goog.style.setHeight = function(element, height) {
+  element.style.height = goog.style.getPixelStyleValue_(height, true)
+};
+goog.style.setWidth = function(element, width) {
+  element.style.width = goog.style.getPixelStyleValue_(width, true)
+};
+goog.style.getSize = function(element) {
+  return goog.style.evaluateWithTemporaryDisplay_(goog.style.getSizeWithDisplay_, (element))
+};
+goog.style.evaluateWithTemporaryDisplay_ = function(fn, element) {
+  if(goog.style.getStyle_(element, "display") != "none") {
+    return fn(element)
+  }
+  var style = element.style;
+  var originalDisplay = style.display;
+  var originalVisibility = style.visibility;
+  var originalPosition = style.position;
+  style.visibility = "hidden";
+  style.position = "absolute";
+  style.display = "inline";
+  var retVal = fn(element);
+  style.display = originalDisplay;
+  style.position = originalPosition;
+  style.visibility = originalVisibility;
+  return retVal
+};
+goog.style.getSizeWithDisplay_ = function(element) {
+  var offsetWidth = element.offsetWidth;
+  var offsetHeight = element.offsetHeight;
+  var webkitOffsetsZero = goog.userAgent.WEBKIT && !offsetWidth && !offsetHeight;
+  if((!goog.isDef(offsetWidth) || webkitOffsetsZero) && element.getBoundingClientRect) {
+    var clientRect = goog.style.getBoundingClientRect_(element);
+    return new goog.math.Size(clientRect.right - clientRect.left, clientRect.bottom - clientRect.top)
+  }
+  return new goog.math.Size(offsetWidth, offsetHeight)
+};
+goog.style.getTransformedSize = function(element) {
+  if(!element.getBoundingClientRect) {
+    return null
+  }
+  var clientRect = goog.style.evaluateWithTemporaryDisplay_(goog.style.getBoundingClientRect_, element);
+  return new goog.math.Size(clientRect.right - clientRect.left, clientRect.bottom - clientRect.top)
+};
+goog.style.getBounds = function(element) {
+  var o = goog.style.getPageOffset(element);
+  var s = goog.style.getSize(element);
+  return new goog.math.Rect(o.x, o.y, s.width, s.height)
+};
+goog.style.toCamelCase = function(selector) {
+  return goog.string.toCamelCase(String(selector))
+};
+goog.style.toSelectorCase = function(selector) {
+  return goog.string.toSelectorCase(selector)
+};
+goog.style.getOpacity = function(el) {
+  var style = el.style;
+  var result = "";
+  if("opacity" in style) {
+    result = style.opacity
+  }else {
+    if("MozOpacity" in style) {
+      result = style.MozOpacity
+    }else {
+      if("filter" in style) {
+        var match = style.filter.match(/alpha\(opacity=([\d.]+)\)/);
+        if(match) {
+          result = String(match[1] / 100)
+        }
+      }
+    }
+  }
+  return result == "" ? result : Number(result)
+};
+goog.style.setOpacity = function(el, alpha) {
+  var style = el.style;
+  if("opacity" in style) {
+    style.opacity = alpha
+  }else {
+    if("MozOpacity" in style) {
+      style.MozOpacity = alpha
+    }else {
+      if("filter" in style) {
+        if(alpha === "") {
+          style.filter = ""
+        }else {
+          style.filter = "alpha(opacity\x3d" + alpha * 100 + ")"
+        }
+      }
+    }
+  }
+};
+goog.style.setTransparentBackgroundImage = function(el, src) {
+  var style = el.style;
+  if(goog.userAgent.IE && !goog.userAgent.isVersionOrHigher("8")) {
+    style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(" + 'src\x3d"' + src + '", sizingMethod\x3d"crop")'
+  }else {
+    style.backgroundImage = "url(" + src + ")";
+    style.backgroundPosition = "top left";
+    style.backgroundRepeat = "no-repeat"
+  }
+};
+goog.style.clearTransparentBackgroundImage = function(el) {
+  var style = el.style;
+  if("filter" in style) {
+    style.filter = ""
+  }else {
+    style.backgroundImage = "none"
+  }
+};
+goog.style.showElement = function(el, display) {
+  goog.style.setElementShown(el, display)
+};
+goog.style.setElementShown = function(el, isShown) {
+  el.style.display = isShown ? "" : "none"
+};
+goog.style.isElementShown = function(el) {
+  return el.style.display != "none"
+};
+goog.style.installStyles = function(stylesString, opt_node) {
+  var dh = goog.dom.getDomHelper(opt_node);
+  var styleSheet = null;
+  if(goog.userAgent.IE) {
+    styleSheet = dh.getDocument().createStyleSheet();
+    goog.style.setStyles(styleSheet, stylesString)
+  }else {
+    var head = dh.getElementsByTagNameAndClass("head")[0];
+    if(!head) {
+      var body = dh.getElementsByTagNameAndClass("body")[0];
+      head = dh.createDom("head");
+      body.parentNode.insertBefore(head, body)
+    }
+    styleSheet = dh.createDom("style");
+    goog.style.setStyles(styleSheet, stylesString);
+    dh.appendChild(head, styleSheet)
+  }
+  return styleSheet
+};
+goog.style.uninstallStyles = function(styleSheet) {
+  var node = styleSheet.ownerNode || styleSheet.owningElement || (styleSheet);
+  goog.dom.removeNode(node)
+};
+goog.style.setStyles = function(element, stylesString) {
+  if(goog.userAgent.IE) {
+    element.cssText = stylesString
+  }else {
+    element.innerHTML = stylesString
+  }
+};
+goog.style.setPreWrap = function(el) {
+  var style = el.style;
+  if(goog.userAgent.IE && !goog.userAgent.isVersionOrHigher("8")) {
+    style.whiteSpace = "pre";
+    style.wordWrap = "break-word"
+  }else {
+    if(goog.userAgent.GECKO) {
+      style.whiteSpace = "-moz-pre-wrap"
+    }else {
+      style.whiteSpace = "pre-wrap"
+    }
+  }
+};
+goog.style.setInlineBlock = function(el) {
+  var style = el.style;
+  style.position = "relative";
+  if(goog.userAgent.IE && !goog.userAgent.isVersionOrHigher("8")) {
+    style.zoom = "1";
+    style.display = "inline"
+  }else {
+    if(goog.userAgent.GECKO) {
+      style.display = goog.userAgent.isVersionOrHigher("1.9a") ? "inline-block" : "-moz-inline-box"
+    }else {
+      style.display = "inline-block"
+    }
+  }
+};
+goog.style.isRightToLeft = function(el) {
+  return"rtl" == goog.style.getStyle_(el, "direction")
+};
+goog.style.unselectableStyle_ = goog.userAgent.GECKO ? "MozUserSelect" : goog.userAgent.WEBKIT ? "WebkitUserSelect" : null;
+goog.style.isUnselectable = function(el) {
+  if(goog.style.unselectableStyle_) {
+    return el.style[goog.style.unselectableStyle_].toLowerCase() == "none"
+  }else {
+    if(goog.userAgent.IE || goog.userAgent.OPERA) {
+      return el.getAttribute("unselectable") == "on"
+    }
+  }
+  return false
+};
+goog.style.setUnselectable = function(el, unselectable, opt_noRecurse) {
+  var descendants = !opt_noRecurse ? el.getElementsByTagName("*") : null;
+  var name = goog.style.unselectableStyle_;
+  if(name) {
+    var value = unselectable ? "none" : "";
+    el.style[name] = value;
+    if(descendants) {
+      for(var i = 0, descendant;descendant = descendants[i];i++) {
+        descendant.style[name] = value
+      }
+    }
+  }else {
+    if(goog.userAgent.IE || goog.userAgent.OPERA) {
+      var value = unselectable ? "on" : "";
+      el.setAttribute("unselectable", value);
+      if(descendants) {
+        for(var i = 0, descendant;descendant = descendants[i];i++) {
+          descendant.setAttribute("unselectable", value)
+        }
+      }
+    }
+  }
+};
+goog.style.getBorderBoxSize = function(element) {
+  return new goog.math.Size(element.offsetWidth, element.offsetHeight)
+};
+goog.style.setBorderBoxSize = function(element, size) {
+  var doc = goog.dom.getOwnerDocument(element);
+  var isCss1CompatMode = goog.dom.getDomHelper(doc).isCss1CompatMode();
+  if(goog.userAgent.IE && (!isCss1CompatMode || !goog.userAgent.isVersionOrHigher("8"))) {
+    var style = element.style;
+    if(isCss1CompatMode) {
+      var paddingBox = goog.style.getPaddingBox(element);
+      var borderBox = goog.style.getBorderBox(element);
+      style.pixelWidth = size.width - borderBox.left - paddingBox.left - paddingBox.right - borderBox.right;
+      style.pixelHeight = size.height - borderBox.top - paddingBox.top - paddingBox.bottom - borderBox.bottom
+    }else {
+      style.pixelWidth = size.width;
+      style.pixelHeight = size.height
+    }
+  }else {
+    goog.style.setBoxSizingSize_(element, size, "border-box")
+  }
+};
+goog.style.getContentBoxSize = function(element) {
+  var doc = goog.dom.getOwnerDocument(element);
+  var ieCurrentStyle = goog.userAgent.IE && element.currentStyle;
+  if(ieCurrentStyle && goog.dom.getDomHelper(doc).isCss1CompatMode() && ieCurrentStyle.width != "auto" && ieCurrentStyle.height != "auto" && !ieCurrentStyle.boxSizing) {
+    var width = goog.style.getIePixelValue_(element, ieCurrentStyle.width, "width", "pixelWidth");
+    var height = goog.style.getIePixelValue_(element, ieCurrentStyle.height, "height", "pixelHeight");
+    return new goog.math.Size(width, height)
+  }else {
+    var borderBoxSize = goog.style.getBorderBoxSize(element);
+    var paddingBox = goog.style.getPaddingBox(element);
+    var borderBox = goog.style.getBorderBox(element);
+    return new goog.math.Size(borderBoxSize.width - borderBox.left - paddingBox.left - paddingBox.right - borderBox.right, borderBoxSize.height - borderBox.top - paddingBox.top - paddingBox.bottom - borderBox.bottom)
+  }
+};
+goog.style.setContentBoxSize = function(element, size) {
+  var doc = goog.dom.getOwnerDocument(element);
+  var isCss1CompatMode = goog.dom.getDomHelper(doc).isCss1CompatMode();
+  if(goog.userAgent.IE && (!isCss1CompatMode || !goog.userAgent.isVersionOrHigher("8"))) {
+    var style = element.style;
+    if(isCss1CompatMode) {
+      style.pixelWidth = size.width;
+      style.pixelHeight = size.height
+    }else {
+      var paddingBox = goog.style.getPaddingBox(element);
+      var borderBox = goog.style.getBorderBox(element);
+      style.pixelWidth = size.width + borderBox.left + paddingBox.left + paddingBox.right + borderBox.right;
+      style.pixelHeight = size.height + borderBox.top + paddingBox.top + paddingBox.bottom + borderBox.bottom
+    }
+  }else {
+    goog.style.setBoxSizingSize_(element, size, "content-box")
+  }
+};
+goog.style.setBoxSizingSize_ = function(element, size, boxSizing) {
+  var style = element.style;
+  if(goog.userAgent.GECKO) {
+    style.MozBoxSizing = boxSizing
+  }else {
+    if(goog.userAgent.WEBKIT) {
+      style.WebkitBoxSizing = boxSizing
+    }else {
+      style.boxSizing = boxSizing
+    }
+  }
+  style.width = Math.max(size.width, 0) + "px";
+  style.height = Math.max(size.height, 0) + "px"
+};
+goog.style.getIePixelValue_ = function(element, value, name, pixelName) {
+  if(/^\d+px?$/.test(value)) {
+    return parseInt(value, 10)
+  }else {
+    var oldStyleValue = element.style[name];
+    var oldRuntimeValue = element.runtimeStyle[name];
+    element.runtimeStyle[name] = element.currentStyle[name];
+    element.style[name] = value;
+    var pixelValue = element.style[pixelName];
+    element.style[name] = oldStyleValue;
+    element.runtimeStyle[name] = oldRuntimeValue;
+    return pixelValue
+  }
+};
+goog.style.getIePixelDistance_ = function(element, propName) {
+  var value = goog.style.getCascadedStyle(element, propName);
+  return value ? goog.style.getIePixelValue_(element, value, "left", "pixelLeft") : 0
+};
+goog.style.getBox_ = function(element, stylePrefix) {
+  if(goog.userAgent.IE) {
+    var left = goog.style.getIePixelDistance_(element, stylePrefix + "Left");
+    var right = goog.style.getIePixelDistance_(element, stylePrefix + "Right");
+    var top = goog.style.getIePixelDistance_(element, stylePrefix + "Top");
+    var bottom = goog.style.getIePixelDistance_(element, stylePrefix + "Bottom");
+    return new goog.math.Box(top, right, bottom, left)
+  }else {
+    var left = (goog.style.getComputedStyle(element, stylePrefix + "Left"));
+    var right = (goog.style.getComputedStyle(element, stylePrefix + "Right"));
+    var top = (goog.style.getComputedStyle(element, stylePrefix + "Top"));
+    var bottom = (goog.style.getComputedStyle(element, stylePrefix + "Bottom"));
+    return new goog.math.Box(parseFloat(top), parseFloat(right), parseFloat(bottom), parseFloat(left))
+  }
+};
+goog.style.getPaddingBox = function(element) {
+  return goog.style.getBox_(element, "padding")
+};
+goog.style.getMarginBox = function(element) {
+  return goog.style.getBox_(element, "margin")
+};
+goog.style.ieBorderWidthKeywords_ = {"thin":2, "medium":4, "thick":6};
+goog.style.getIePixelBorder_ = function(element, prop) {
+  if(goog.style.getCascadedStyle(element, prop + "Style") == "none") {
+    return 0
+  }
+  var width = goog.style.getCascadedStyle(element, prop + "Width");
+  if(width in goog.style.ieBorderWidthKeywords_) {
+    return goog.style.ieBorderWidthKeywords_[width]
+  }
+  return goog.style.getIePixelValue_(element, width, "left", "pixelLeft")
+};
+goog.style.getBorderBox = function(element) {
+  if(goog.userAgent.IE) {
+    var left = goog.style.getIePixelBorder_(element, "borderLeft");
+    var right = goog.style.getIePixelBorder_(element, "borderRight");
+    var top = goog.style.getIePixelBorder_(element, "borderTop");
+    var bottom = goog.style.getIePixelBorder_(element, "borderBottom");
+    return new goog.math.Box(top, right, bottom, left)
+  }else {
+    var left = (goog.style.getComputedStyle(element, "borderLeftWidth"));
+    var right = (goog.style.getComputedStyle(element, "borderRightWidth"));
+    var top = (goog.style.getComputedStyle(element, "borderTopWidth"));
+    var bottom = (goog.style.getComputedStyle(element, "borderBottomWidth"));
+    return new goog.math.Box(parseFloat(top), parseFloat(right), parseFloat(bottom), parseFloat(left))
+  }
+};
+goog.style.getFontFamily = function(el) {
+  var doc = goog.dom.getOwnerDocument(el);
+  var font = "";
+  if(doc.body.createTextRange) {
+    var range = doc.body.createTextRange();
+    range.moveToElementText(el);
+    try {
+      font = range.queryCommandValue("FontName")
+    }catch(e) {
+      font = ""
+    }
+  }
+  if(!font) {
+    font = goog.style.getStyle_(el, "fontFamily")
+  }
+  var fontsArray = font.split(",");
+  if(fontsArray.length > 1) {
+    font = fontsArray[0]
+  }
+  return goog.string.stripQuotes(font, "\"'")
+};
+goog.style.lengthUnitRegex_ = /[^\d]+$/;
+goog.style.getLengthUnits = function(value) {
+  var units = value.match(goog.style.lengthUnitRegex_);
+  return units && units[0] || null
+};
+goog.style.ABSOLUTE_CSS_LENGTH_UNITS_ = {"cm":1, "in":1, "mm":1, "pc":1, "pt":1};
+goog.style.CONVERTIBLE_RELATIVE_CSS_UNITS_ = {"em":1, "ex":1};
+goog.style.getFontSize = function(el) {
+  var fontSize = goog.style.getStyle_(el, "fontSize");
+  var sizeUnits = goog.style.getLengthUnits(fontSize);
+  if(fontSize && "px" == sizeUnits) {
+    return parseInt(fontSize, 10)
+  }
+  if(goog.userAgent.IE) {
+    if(sizeUnits in goog.style.ABSOLUTE_CSS_LENGTH_UNITS_) {
+      return goog.style.getIePixelValue_(el, fontSize, "left", "pixelLeft")
+    }else {
+      if(el.parentNode && el.parentNode.nodeType == goog.dom.NodeType.ELEMENT && sizeUnits in goog.style.CONVERTIBLE_RELATIVE_CSS_UNITS_) {
+        var parentElement = (el.parentNode);
+        var parentSize = goog.style.getStyle_(parentElement, "fontSize");
+        return goog.style.getIePixelValue_(parentElement, fontSize == parentSize ? "1em" : fontSize, "left", "pixelLeft")
+      }
+    }
+  }
+  var sizeElement = goog.dom.createDom("span", {"style":"visibility:hidden;position:absolute;" + "line-height:0;padding:0;margin:0;border:0;height:1em;"});
+  goog.dom.appendChild(el, sizeElement);
+  fontSize = sizeElement.offsetHeight;
+  goog.dom.removeNode(sizeElement);
+  return fontSize
+};
+goog.style.parseStyleAttribute = function(value) {
+  var result = {};
+  goog.array.forEach(value.split(/\s*;\s*/), function(pair) {
+    var keyValue = pair.split(/\s*:\s*/);
+    if(keyValue.length == 2) {
+      result[goog.string.toCamelCase(keyValue[0].toLowerCase())] = keyValue[1]
+    }
+  });
+  return result
+};
+goog.style.toStyleAttribute = function(obj) {
+  var buffer = [];
+  goog.object.forEach(obj, function(value, key) {
+    buffer.push(goog.string.toSelectorCase(key), ":", value, ";")
+  });
+  return buffer.join("")
+};
+goog.style.setFloat = function(el, value) {
+  el.style[goog.userAgent.IE ? "styleFloat" : "cssFloat"] = value
+};
+goog.style.getFloat = function(el) {
+  return el.style[goog.userAgent.IE ? "styleFloat" : "cssFloat"] || ""
+};
+goog.style.getScrollbarWidth = function(opt_className) {
+  var outerDiv = goog.dom.createElement("div");
+  if(opt_className) {
+    outerDiv.className = opt_className
+  }
+  outerDiv.style.cssText = "overflow:auto;" + "position:absolute;top:0;width:100px;height:100px";
+  var innerDiv = goog.dom.createElement("div");
+  goog.style.setSize(innerDiv, "200px", "200px");
+  outerDiv.appendChild(innerDiv);
+  goog.dom.appendChild(goog.dom.getDocument().body, outerDiv);
+  var width = outerDiv.offsetWidth - outerDiv.clientWidth;
+  goog.dom.removeNode(outerDiv);
+  return width
+};
+goog.style.MATRIX_TRANSLATION_REGEX_ = new RegExp("matrix\\([0-9\\.\\-]+, [0-9\\.\\-]+, " + "[0-9\\.\\-]+, [0-9\\.\\-]+, " + "([0-9\\.\\-]+)p?x?, ([0-9\\.\\-]+)p?x?\\)");
+goog.style.getCssTranslation = function(element) {
+  var property;
+  if(goog.userAgent.IE) {
+    property = "-ms-transform"
+  }else {
+    if(goog.userAgent.WEBKIT) {
+      property = "-webkit-transform"
+    }else {
+      if(goog.userAgent.OPERA) {
+        property = "-o-transform"
+      }else {
+        if(goog.userAgent.GECKO) {
+          property = "-moz-transform"
+        }
+      }
+    }
+  }
+  var transform;
+  if(property) {
+    transform = goog.style.getStyle_(element, property)
+  }
+  if(!transform) {
+    transform = goog.style.getStyle_(element, "transform")
+  }
+  if(!transform) {
+    return new goog.math.Coordinate(0, 0)
+  }
+  var matches = transform.match(goog.style.MATRIX_TRANSLATION_REGEX_);
+  if(!matches) {
+    return new goog.math.Coordinate(0, 0)
+  }
+  return new goog.math.Coordinate(parseFloat(matches[1]), parseFloat(matches[2]))
+};
+goog.provide("goog.vec.Float32Array");
+goog.vec.Float32Array = function(p0) {
+  this.length = (p0.length || p0);
+  for(var i = 0;i < this.length;i++) {
+    this[i] = p0[i] || 0
+  }
+};
+goog.vec.Float32Array.BYTES_PER_ELEMENT = 4;
+goog.vec.Float32Array.prototype.BYTES_PER_ELEMENT = 4;
+goog.vec.Float32Array.prototype.set = function(values, opt_offset) {
+  opt_offset = opt_offset || 0;
+  for(var i = 0;i < values.length && opt_offset + i < this.length;i++) {
+    this[opt_offset + i] = values[i]
+  }
+};
+goog.vec.Float32Array.prototype.toString = Array.prototype.join;
+if(typeof Float32Array == "undefined") {
+  goog.exportProperty(goog.vec.Float32Array, "BYTES_PER_ELEMENT", goog.vec.Float32Array.BYTES_PER_ELEMENT);
+  goog.exportProperty(goog.vec.Float32Array.prototype, "BYTES_PER_ELEMENT", goog.vec.Float32Array.prototype.BYTES_PER_ELEMENT);
+  goog.exportProperty(goog.vec.Float32Array.prototype, "set", goog.vec.Float32Array.prototype.set);
+  goog.exportProperty(goog.vec.Float32Array.prototype, "toString", goog.vec.Float32Array.prototype.toString);
+  goog.exportSymbol("Float32Array", goog.vec.Float32Array)
+}
+;goog.provide("goog.vec.Float64Array");
+goog.vec.Float64Array = function(p0) {
+  this.length = (p0.length || p0);
+  for(var i = 0;i < this.length;i++) {
+    this[i] = p0[i] || 0
+  }
+};
+goog.vec.Float64Array.BYTES_PER_ELEMENT = 8;
+goog.vec.Float64Array.prototype.BYTES_PER_ELEMENT = 8;
+goog.vec.Float64Array.prototype.set = function(values, opt_offset) {
+  opt_offset = opt_offset || 0;
+  for(var i = 0;i < values.length && opt_offset + i < this.length;i++) {
+    this[opt_offset + i] = values[i]
+  }
+};
+goog.vec.Float64Array.prototype.toString = Array.prototype.join;
+if(typeof Float64Array == "undefined") {
+  try {
+    goog.exportProperty(goog.vec.Float64Array, "BYTES_PER_ELEMENT", goog.vec.Float64Array.BYTES_PER_ELEMENT)
+  }catch(float64ArrayError) {
+  }
+  goog.exportProperty(goog.vec.Float64Array.prototype, "BYTES_PER_ELEMENT", goog.vec.Float64Array.prototype.BYTES_PER_ELEMENT);
+  goog.exportProperty(goog.vec.Float64Array.prototype, "set", goog.vec.Float64Array.prototype.set);
+  goog.exportProperty(goog.vec.Float64Array.prototype, "toString", goog.vec.Float64Array.prototype.toString);
+  goog.exportSymbol("Float64Array", goog.vec.Float64Array)
+}
+;goog.provide("goog.vec");
+goog.provide("goog.vec.AnyType");
+goog.provide("goog.vec.ArrayType");
+goog.provide("goog.vec.Float32");
+goog.provide("goog.vec.Float64");
+goog.provide("goog.vec.Number");
+goog.require("goog.vec.Float32Array");
+goog.require("goog.vec.Float64Array");
+goog.vec.Float32;
+goog.vec.Float64;
+goog.vec.Number;
+goog.vec.AnyType;
+goog.vec.ArrayType;
+goog.vec.EPSILON = 1E-6;
+goog.provide("goog.vec.Vec3");
+goog.require("goog.vec");
+goog.vec.Vec3.Float32;
+goog.vec.Vec3.Float64;
+goog.vec.Vec3.Number;
+goog.vec.Vec3.AnyType;
+goog.vec.Vec3.Type;
+goog.vec.Vec3.Vec3Like;
+goog.vec.Vec3.createFloat32 = function() {
+  return new Float32Array(3)
+};
+goog.vec.Vec3.createFloat64 = function() {
+  return new Float64Array(3)
+};
+goog.vec.Vec3.createNumber = function() {
+  var a = new Array(3);
+  goog.vec.Vec3.setFromValues(a, 0, 0, 0);
+  return a
+};
+goog.vec.Vec3.create = function() {
+  return new Float32Array(3)
+};
+goog.vec.Vec3.createFloat32FromArray = function(vec) {
+  var newVec = goog.vec.Vec3.createFloat32();
+  goog.vec.Vec3.setFromArray(newVec, vec);
+  return newVec
+};
+goog.vec.Vec3.createFloat32FromValues = function(v0, v1, v2) {
+  var a = goog.vec.Vec3.createFloat32();
+  goog.vec.Vec3.setFromValues(a, v0, v1, v2);
+  return a
+};
+goog.vec.Vec3.cloneFloat32 = goog.vec.Vec3.createFloat32FromArray;
+goog.vec.Vec3.createFloat64FromArray = function(vec) {
+  var newVec = goog.vec.Vec3.createFloat64();
+  goog.vec.Vec3.setFromArray(newVec, vec);
+  return newVec
+};
+goog.vec.Vec3.createFloat64FromValues = function(v0, v1, v2) {
+  var vec = goog.vec.Vec3.createFloat64();
+  goog.vec.Vec3.setFromValues(vec, v0, v1, v2);
+  return vec
+};
+goog.vec.Vec3.cloneFloat64 = goog.vec.Vec3.createFloat64FromArray;
+goog.vec.Vec3.createFromArray = function(vec) {
+  var newVec = goog.vec.Vec3.create();
+  goog.vec.Vec3.setFromArray(newVec, vec);
+  return newVec
+};
+goog.vec.Vec3.createFromValues = function(v0, v1, v2) {
+  var vec = goog.vec.Vec3.create();
+  goog.vec.Vec3.setFromValues(vec, v0, v1, v2);
+  return vec
+};
+goog.vec.Vec3.clone = function(vec) {
+  var newVec = goog.vec.Vec3.create();
+  goog.vec.Vec3.setFromArray(newVec, vec);
+  return newVec
+};
+goog.vec.Vec3.setFromValues = function(vec, v0, v1, v2) {
+  vec[0] = v0;
+  vec[1] = v1;
+  vec[2] = v2;
+  return vec
+};
+goog.vec.Vec3.setFromArray = function(vec, values) {
+  vec[0] = values[0];
+  vec[1] = values[1];
+  vec[2] = values[2];
+  return vec
+};
+goog.vec.Vec3.add = function(vec0, vec1, resultVec) {
+  resultVec[0] = vec0[0] + vec1[0];
+  resultVec[1] = vec0[1] + vec1[1];
+  resultVec[2] = vec0[2] + vec1[2];
+  return resultVec
+};
+goog.vec.Vec3.subtract = function(vec0, vec1, resultVec) {
+  resultVec[0] = vec0[0] - vec1[0];
+  resultVec[1] = vec0[1] - vec1[1];
+  resultVec[2] = vec0[2] - vec1[2];
+  return resultVec
+};
+goog.vec.Vec3.negate = function(vec0, resultVec) {
+  resultVec[0] = -vec0[0];
+  resultVec[1] = -vec0[1];
+  resultVec[2] = -vec0[2];
+  return resultVec
+};
+goog.vec.Vec3.scale = function(vec0, scalar, resultVec) {
+  resultVec[0] = vec0[0] * scalar;
+  resultVec[1] = vec0[1] * scalar;
+  resultVec[2] = vec0[2] * scalar;
+  return resultVec
+};
+goog.vec.Vec3.magnitudeSquared = function(vec0) {
+  var x = vec0[0], y = vec0[1], z = vec0[2];
+  return x * x + y * y + z * z
+};
+goog.vec.Vec3.magnitude = function(vec0) {
+  var x = vec0[0], y = vec0[1], z = vec0[2];
+  return Math.sqrt(x * x + y * y + z * z)
+};
+goog.vec.Vec3.normalize = function(vec0, resultVec) {
+  var ilen = 1 / goog.vec.Vec3.magnitude(vec0);
+  resultVec[0] = vec0[0] * ilen;
+  resultVec[1] = vec0[1] * ilen;
+  resultVec[2] = vec0[2] * ilen;
+  return resultVec
+};
+goog.vec.Vec3.dot = function(v0, v1) {
+  return v0[0] * v1[0] + v0[1] * v1[1] + v0[2] * v1[2]
+};
+goog.vec.Vec3.cross = function(v0, v1, resultVec) {
+  var x0 = v0[0], y0 = v0[1], z0 = v0[2];
+  var x1 = v1[0], y1 = v1[1], z1 = v1[2];
+  resultVec[0] = y0 * z1 - z0 * y1;
+  resultVec[1] = z0 * x1 - x0 * z1;
+  resultVec[2] = x0 * y1 - y0 * x1;
+  return resultVec
+};
+goog.vec.Vec3.distanceSquared = function(vec0, vec1) {
+  var x = vec0[0] - vec1[0];
+  var y = vec0[1] - vec1[1];
+  var z = vec0[2] - vec1[2];
+  return x * x + y * y + z * z
+};
+goog.vec.Vec3.distance = function(vec0, vec1) {
+  return Math.sqrt(goog.vec.Vec3.distanceSquared(vec0, vec1))
+};
+goog.vec.Vec3.direction = function(vec0, vec1, resultVec) {
+  var x = vec1[0] - vec0[0];
+  var y = vec1[1] - vec0[1];
+  var z = vec1[2] - vec0[2];
+  var d = Math.sqrt(x * x + y * y + z * z);
+  if(d) {
+    d = 1 / d;
+    resultVec[0] = x * d;
+    resultVec[1] = y * d;
+    resultVec[2] = z * d
+  }else {
+    resultVec[0] = resultVec[1] = resultVec[2] = 0
+  }
+  return resultVec
+};
+goog.vec.Vec3.lerp = function(v0, v1, f, resultVec) {
+  var x = v0[0], y = v0[1], z = v0[2];
+  resultVec[0] = (v1[0] - x) * f + x;
+  resultVec[1] = (v1[1] - y) * f + y;
+  resultVec[2] = (v1[2] - z) * f + z;
+  return resultVec
+};
+goog.vec.Vec3.equals = function(v0, v1) {
+  return v0.length == v1.length && v0[0] == v1[0] && v0[1] == v1[1] && v0[2] == v1[2]
+};
+goog.provide("goog.vec.Vec4");
+goog.require("goog.vec");
+goog.vec.Vec4.Float32;
+goog.vec.Vec4.Float64;
+goog.vec.Vec4.Number;
+goog.vec.Vec4.AnyType;
+goog.vec.Vec4.Type;
+goog.vec.Vec4.Vec4Like;
+goog.vec.Vec4.createFloat32 = function() {
+  return new Float32Array(4)
+};
+goog.vec.Vec4.createFloat64 = function() {
+  return new Float64Array(4)
+};
+goog.vec.Vec4.createNumber = function() {
+  var v = new Array(4);
+  goog.vec.Vec4.setFromValues(v, 0, 0, 0, 0);
+  return v
+};
+goog.vec.Vec4.create = function() {
+  return new Float32Array(4)
+};
+goog.vec.Vec4.createFromArray = function(vec) {
+  var newVec = goog.vec.Vec4.create();
+  goog.vec.Vec4.setFromArray(newVec, vec);
+  return newVec
+};
+goog.vec.Vec4.createFloat32FromArray = function(vec) {
+  var newVec = goog.vec.Vec4.createFloat32();
+  goog.vec.Vec4.setFromArray(newVec, vec);
+  return newVec
+};
+goog.vec.Vec4.createFloat32FromValues = function(v0, v1, v2, v3) {
+  var vec = goog.vec.Vec4.createFloat32();
+  goog.vec.Vec4.setFromValues(vec, v0, v1, v2, v3);
+  return vec
+};
+goog.vec.Vec4.cloneFloat32 = goog.vec.Vec4.createFloat32FromArray;
+goog.vec.Vec4.createFloat64FromArray = function(vec) {
+  var newVec = goog.vec.Vec4.createFloat64();
+  goog.vec.Vec4.setFromArray(newVec, vec);
+  return newVec
+};
+goog.vec.Vec4.createFloat64FromValues = function(v0, v1, v2, v3) {
+  var vec = goog.vec.Vec4.createFloat64();
+  goog.vec.Vec4.setFromValues(vec, v0, v1, v2, v3);
+  return vec
+};
+goog.vec.Vec4.cloneFloat64 = goog.vec.Vec4.createFloat64FromArray;
+goog.vec.Vec4.createFromValues = function(v0, v1, v2, v3) {
+  var vec = goog.vec.Vec4.create();
+  goog.vec.Vec4.setFromValues(vec, v0, v1, v2, v3);
+  return vec
+};
+goog.vec.Vec4.clone = goog.vec.Vec4.createFromArray;
+goog.vec.Vec4.setFromValues = function(vec, v0, v1, v2, v3) {
+  vec[0] = v0;
+  vec[1] = v1;
+  vec[2] = v2;
+  vec[3] = v3;
+  return vec
+};
+goog.vec.Vec4.setFromArray = function(vec, values) {
+  vec[0] = values[0];
+  vec[1] = values[1];
+  vec[2] = values[2];
+  vec[3] = values[3];
+  return vec
+};
+goog.vec.Vec4.add = function(vec0, vec1, resultVec) {
+  resultVec[0] = vec0[0] + vec1[0];
+  resultVec[1] = vec0[1] + vec1[1];
+  resultVec[2] = vec0[2] + vec1[2];
+  resultVec[3] = vec0[3] + vec1[3];
+  return resultVec
+};
+goog.vec.Vec4.subtract = function(vec0, vec1, resultVec) {
+  resultVec[0] = vec0[0] - vec1[0];
+  resultVec[1] = vec0[1] - vec1[1];
+  resultVec[2] = vec0[2] - vec1[2];
+  resultVec[3] = vec0[3] - vec1[3];
+  return resultVec
+};
+goog.vec.Vec4.negate = function(vec0, resultVec) {
+  resultVec[0] = -vec0[0];
+  resultVec[1] = -vec0[1];
+  resultVec[2] = -vec0[2];
+  resultVec[3] = -vec0[3];
+  return resultVec
+};
+goog.vec.Vec4.scale = function(vec0, scalar, resultVec) {
+  resultVec[0] = vec0[0] * scalar;
+  resultVec[1] = vec0[1] * scalar;
+  resultVec[2] = vec0[2] * scalar;
+  resultVec[3] = vec0[3] * scalar;
+  return resultVec
+};
+goog.vec.Vec4.magnitudeSquared = function(vec0) {
+  var x = vec0[0], y = vec0[1], z = vec0[2], w = vec0[3];
+  return x * x + y * y + z * z + w * w
+};
+goog.vec.Vec4.magnitude = function(vec0) {
+  var x = vec0[0], y = vec0[1], z = vec0[2], w = vec0[3];
+  return Math.sqrt(x * x + y * y + z * z + w * w)
+};
+goog.vec.Vec4.normalize = function(vec0, resultVec) {
+  var ilen = 1 / goog.vec.Vec4.magnitude(vec0);
+  resultVec[0] = vec0[0] * ilen;
+  resultVec[1] = vec0[1] * ilen;
+  resultVec[2] = vec0[2] * ilen;
+  resultVec[3] = vec0[3] * ilen;
+  return resultVec
+};
+goog.vec.Vec4.dot = function(v0, v1) {
+  return v0[0] * v1[0] + v0[1] * v1[1] + v0[2] * v1[2] + v0[3] * v1[3]
+};
+goog.vec.Vec4.lerp = function(v0, v1, f, resultVec) {
+  var x = v0[0], y = v0[1], z = v0[2], w = v0[3];
+  resultVec[0] = (v1[0] - x) * f + x;
+  resultVec[1] = (v1[1] - y) * f + y;
+  resultVec[2] = (v1[2] - z) * f + z;
+  resultVec[3] = (v1[3] - w) * f + w;
+  return resultVec
+};
+goog.vec.Vec4.equals = function(v0, v1) {
+  return v0.length == v1.length && v0[0] == v1[0] && v0[1] == v1[1] && v0[2] == v1[2] && v0[3] == v1[3]
+};
+goog.provide("goog.vec.Mat4");
+goog.require("goog.vec");
+goog.require("goog.vec.Vec3");
+goog.require("goog.vec.Vec4");
+goog.vec.Mat4.Float32;
+goog.vec.Mat4.Float64;
+goog.vec.Mat4.Number;
+goog.vec.Mat4.AnyType;
+goog.vec.Mat4.Type;
+goog.vec.Mat4.Mat4Like;
+goog.vec.Mat4.createFloat32 = function() {
+  return new Float32Array(16)
+};
+goog.vec.Mat4.createFloat64 = function() {
+  return new Float64Array(16)
+};
+goog.vec.Mat4.createNumber = function() {
+  var a = new Array(16);
+  goog.vec.Mat4.setFromValues(a, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  return a
+};
+goog.vec.Mat4.create = function() {
+  return goog.vec.Mat4.createFloat32()
+};
+goog.vec.Mat4.createFloat32Identity = function() {
+  var mat = goog.vec.Mat4.createFloat32();
+  mat[0] = mat[5] = mat[10] = mat[15] = 1;
+  return mat
+};
+goog.vec.Mat4.createFloat64Identity = function() {
+  var mat = goog.vec.Mat4.createFloat64();
+  mat[0] = mat[5] = mat[10] = mat[15] = 1;
+  return mat
+};
+goog.vec.Mat4.createNumberIdentity = function() {
+  var a = new Array(16);
+  goog.vec.Mat4.setFromValues(a, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  return a
+};
+goog.vec.Mat4.createIdentity = function() {
+  return goog.vec.Mat4.createFloat32Identity()
+};
+goog.vec.Mat4.createFloat32FromArray = function(matrix) {
+  var newMatrix = goog.vec.Mat4.createFloat32();
+  goog.vec.Mat4.setFromArray(newMatrix, matrix);
+  return newMatrix
+};
+goog.vec.Mat4.createFloat32FromValues = function(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
+  var newMatrix = goog.vec.Mat4.createFloat32();
+  goog.vec.Mat4.setFromValues(newMatrix, v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33);
+  return newMatrix
+};
+goog.vec.Mat4.cloneFloat32 = goog.vec.Mat4.createFloat32FromArray;
+goog.vec.Mat4.createFloat64FromArray = function(matrix) {
+  var newMatrix = goog.vec.Mat4.createFloat64();
+  goog.vec.Mat4.setFromArray(newMatrix, matrix);
+  return newMatrix
+};
+goog.vec.Mat4.createFloat64FromValues = function(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
+  var newMatrix = goog.vec.Mat4.createFloat64();
+  goog.vec.Mat4.setFromValues(newMatrix, v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33);
+  return newMatrix
+};
+goog.vec.Mat4.cloneFloat64 = goog.vec.Mat4.createFloat64FromArray;
+goog.vec.Mat4.createFromArray = function(matrix) {
+  var newMatrix = goog.vec.Mat4.createFloat32();
+  goog.vec.Mat4.setFromArray(newMatrix, matrix);
+  return newMatrix
+};
+goog.vec.Mat4.createFromValues = function(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
+  return goog.vec.Mat4.createFloat32FromValues(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33)
+};
+goog.vec.Mat4.clone = goog.vec.Mat4.createFromArray;
+goog.vec.Mat4.getElement = function(mat, row, column) {
+  return mat[row + column * 4]
+};
+goog.vec.Mat4.setElement = function(mat, row, column, value) {
+  mat[row + column * 4] = value;
+  return mat
+};
+goog.vec.Mat4.setFromValues = function(mat, v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
+  mat[0] = v00;
+  mat[1] = v10;
+  mat[2] = v20;
+  mat[3] = v30;
+  mat[4] = v01;
+  mat[5] = v11;
+  mat[6] = v21;
+  mat[7] = v31;
+  mat[8] = v02;
+  mat[9] = v12;
+  mat[10] = v22;
+  mat[11] = v32;
+  mat[12] = v03;
+  mat[13] = v13;
+  mat[14] = v23;
+  mat[15] = v33;
+  return mat
+};
+goog.vec.Mat4.setFromArray = function(mat, values) {
+  mat[0] = values[0];
+  mat[1] = values[1];
+  mat[2] = values[2];
+  mat[3] = values[3];
+  mat[4] = values[4];
+  mat[5] = values[5];
+  mat[6] = values[6];
+  mat[7] = values[7];
+  mat[8] = values[8];
+  mat[9] = values[9];
+  mat[10] = values[10];
+  mat[11] = values[11];
+  mat[12] = values[12];
+  mat[13] = values[13];
+  mat[14] = values[14];
+  mat[15] = values[15];
+  return mat
+};
+goog.vec.Mat4.setFromRowMajorArray = function(mat, values) {
+  mat[0] = values[0];
+  mat[1] = values[4];
+  mat[2] = values[8];
+  mat[3] = values[12];
+  mat[4] = values[1];
+  mat[5] = values[5];
+  mat[6] = values[9];
+  mat[7] = values[13];
+  mat[8] = values[2];
+  mat[9] = values[6];
+  mat[10] = values[10];
+  mat[11] = values[14];
+  mat[12] = values[3];
+  mat[13] = values[7];
+  mat[14] = values[11];
+  mat[15] = values[15];
+  return mat
+};
+goog.vec.Mat4.setDiagonalValues = function(mat, v00, v11, v22, v33) {
+  mat[0] = v00;
+  mat[5] = v11;
+  mat[10] = v22;
+  mat[15] = v33;
+  return mat
+};
+goog.vec.Mat4.setDiagonal = function(mat, vec) {
+  mat[0] = vec[0];
+  mat[5] = vec[1];
+  mat[10] = vec[2];
+  mat[15] = vec[3];
+  return mat
+};
+goog.vec.Mat4.getDiagonal = function(mat, vec, opt_diagonal) {
+  if(!opt_diagonal) {
+    vec[0] = mat[0];
+    vec[1] = mat[5];
+    vec[2] = mat[10];
+    vec[3] = mat[15]
+  }else {
+    var offset = opt_diagonal > 0 ? 4 * opt_diagonal : -opt_diagonal;
+    for(var i = 0;i < 4 - Math.abs(opt_diagonal);i++) {
+      vec[i] = mat[offset + 5 * i]
+    }
+  }
+  return vec
+};
+goog.vec.Mat4.setColumnValues = function(mat, column, v0, v1, v2, v3) {
+  var i = column * 4;
+  mat[i] = v0;
+  mat[i + 1] = v1;
+  mat[i + 2] = v2;
+  mat[i + 3] = v3;
+  return mat
+};
+goog.vec.Mat4.setColumn = function(mat, column, vec) {
+  var i = column * 4;
+  mat[i] = vec[0];
+  mat[i + 1] = vec[1];
+  mat[i + 2] = vec[2];
+  mat[i + 3] = vec[3];
+  return mat
+};
+goog.vec.Mat4.getColumn = function(mat, column, vec) {
+  var i = column * 4;
+  vec[0] = mat[i];
+  vec[1] = mat[i + 1];
+  vec[2] = mat[i + 2];
+  vec[3] = mat[i + 3];
+  return vec
+};
+goog.vec.Mat4.setColumns = function(mat, vec0, vec1, vec2, vec3) {
+  goog.vec.Mat4.setColumn(mat, 0, vec0);
+  goog.vec.Mat4.setColumn(mat, 1, vec1);
+  goog.vec.Mat4.setColumn(mat, 2, vec2);
+  goog.vec.Mat4.setColumn(mat, 3, vec3);
+  return mat
+};
+goog.vec.Mat4.getColumns = function(mat, vec0, vec1, vec2, vec3) {
+  goog.vec.Mat4.getColumn(mat, 0, vec0);
+  goog.vec.Mat4.getColumn(mat, 1, vec1);
+  goog.vec.Mat4.getColumn(mat, 2, vec2);
+  goog.vec.Mat4.getColumn(mat, 3, vec3)
+};
+goog.vec.Mat4.setRowValues = function(mat, row, v0, v1, v2, v3) {
+  mat[row] = v0;
+  mat[row + 4] = v1;
+  mat[row + 8] = v2;
+  mat[row + 12] = v3;
+  return mat
+};
+goog.vec.Mat4.setRow = function(mat, row, vec) {
+  mat[row] = vec[0];
+  mat[row + 4] = vec[1];
+  mat[row + 8] = vec[2];
+  mat[row + 12] = vec[3];
+  return mat
+};
+goog.vec.Mat4.getRow = function(mat, row, vec) {
+  vec[0] = mat[row];
+  vec[1] = mat[row + 4];
+  vec[2] = mat[row + 8];
+  vec[3] = mat[row + 12];
+  return vec
+};
+goog.vec.Mat4.setRows = function(mat, vec0, vec1, vec2, vec3) {
+  goog.vec.Mat4.setRow(mat, 0, vec0);
+  goog.vec.Mat4.setRow(mat, 1, vec1);
+  goog.vec.Mat4.setRow(mat, 2, vec2);
+  goog.vec.Mat4.setRow(mat, 3, vec3);
+  return mat
+};
+goog.vec.Mat4.getRows = function(mat, vec0, vec1, vec2, vec3) {
+  goog.vec.Mat4.getRow(mat, 0, vec0);
+  goog.vec.Mat4.getRow(mat, 1, vec1);
+  goog.vec.Mat4.getRow(mat, 2, vec2);
+  goog.vec.Mat4.getRow(mat, 3, vec3)
+};
+goog.vec.Mat4.makeZero = function(mat) {
+  mat[0] = 0;
+  mat[1] = 0;
+  mat[2] = 0;
+  mat[3] = 0;
+  mat[4] = 0;
+  mat[5] = 0;
+  mat[6] = 0;
+  mat[7] = 0;
+  mat[8] = 0;
+  mat[9] = 0;
+  mat[10] = 0;
+  mat[11] = 0;
+  mat[12] = 0;
+  mat[13] = 0;
+  mat[14] = 0;
+  mat[15] = 0;
+  return mat
+};
+goog.vec.Mat4.makeIdentity = function(mat) {
+  mat[0] = 1;
+  mat[1] = 0;
+  mat[2] = 0;
+  mat[3] = 0;
+  mat[4] = 0;
+  mat[5] = 1;
+  mat[6] = 0;
+  mat[7] = 0;
+  mat[8] = 0;
+  mat[9] = 0;
+  mat[10] = 1;
+  mat[11] = 0;
+  mat[12] = 0;
+  mat[13] = 0;
+  mat[14] = 0;
+  mat[15] = 1;
+  return mat
+};
+goog.vec.Mat4.addMat = function(mat0, mat1, resultMat) {
+  resultMat[0] = mat0[0] + mat1[0];
+  resultMat[1] = mat0[1] + mat1[1];
+  resultMat[2] = mat0[2] + mat1[2];
+  resultMat[3] = mat0[3] + mat1[3];
+  resultMat[4] = mat0[4] + mat1[4];
+  resultMat[5] = mat0[5] + mat1[5];
+  resultMat[6] = mat0[6] + mat1[6];
+  resultMat[7] = mat0[7] + mat1[7];
+  resultMat[8] = mat0[8] + mat1[8];
+  resultMat[9] = mat0[9] + mat1[9];
+  resultMat[10] = mat0[10] + mat1[10];
+  resultMat[11] = mat0[11] + mat1[11];
+  resultMat[12] = mat0[12] + mat1[12];
+  resultMat[13] = mat0[13] + mat1[13];
+  resultMat[14] = mat0[14] + mat1[14];
+  resultMat[15] = mat0[15] + mat1[15];
+  return resultMat
+};
+goog.vec.Mat4.subMat = function(mat0, mat1, resultMat) {
+  resultMat[0] = mat0[0] - mat1[0];
+  resultMat[1] = mat0[1] - mat1[1];
+  resultMat[2] = mat0[2] - mat1[2];
+  resultMat[3] = mat0[3] - mat1[3];
+  resultMat[4] = mat0[4] - mat1[4];
+  resultMat[5] = mat0[5] - mat1[5];
+  resultMat[6] = mat0[6] - mat1[6];
+  resultMat[7] = mat0[7] - mat1[7];
+  resultMat[8] = mat0[8] - mat1[8];
+  resultMat[9] = mat0[9] - mat1[9];
+  resultMat[10] = mat0[10] - mat1[10];
+  resultMat[11] = mat0[11] - mat1[11];
+  resultMat[12] = mat0[12] - mat1[12];
+  resultMat[13] = mat0[13] - mat1[13];
+  resultMat[14] = mat0[14] - mat1[14];
+  resultMat[15] = mat0[15] - mat1[15];
+  return resultMat
+};
+goog.vec.Mat4.multScalar = function(mat, scalar, resultMat) {
+  resultMat[0] = mat[0] * scalar;
+  resultMat[1] = mat[1] * scalar;
+  resultMat[2] = mat[2] * scalar;
+  resultMat[3] = mat[3] * scalar;
+  resultMat[4] = mat[4] * scalar;
+  resultMat[5] = mat[5] * scalar;
+  resultMat[6] = mat[6] * scalar;
+  resultMat[7] = mat[7] * scalar;
+  resultMat[8] = mat[8] * scalar;
+  resultMat[9] = mat[9] * scalar;
+  resultMat[10] = mat[10] * scalar;
+  resultMat[11] = mat[11] * scalar;
+  resultMat[12] = mat[12] * scalar;
+  resultMat[13] = mat[13] * scalar;
+  resultMat[14] = mat[14] * scalar;
+  resultMat[15] = mat[15] * scalar;
+  return resultMat
+};
+goog.vec.Mat4.multMat = function(mat0, mat1, resultMat) {
+  var a00 = mat0[0], a10 = mat0[1], a20 = mat0[2], a30 = mat0[3];
+  var a01 = mat0[4], a11 = mat0[5], a21 = mat0[6], a31 = mat0[7];
+  var a02 = mat0[8], a12 = mat0[9], a22 = mat0[10], a32 = mat0[11];
+  var a03 = mat0[12], a13 = mat0[13], a23 = mat0[14], a33 = mat0[15];
+  var b00 = mat1[0], b10 = mat1[1], b20 = mat1[2], b30 = mat1[3];
+  var b01 = mat1[4], b11 = mat1[5], b21 = mat1[6], b31 = mat1[7];
+  var b02 = mat1[8], b12 = mat1[9], b22 = mat1[10], b32 = mat1[11];
+  var b03 = mat1[12], b13 = mat1[13], b23 = mat1[14], b33 = mat1[15];
+  resultMat[0] = a00 * b00 + a01 * b10 + a02 * b20 + a03 * b30;
+  resultMat[1] = a10 * b00 + a11 * b10 + a12 * b20 + a13 * b30;
+  resultMat[2] = a20 * b00 + a21 * b10 + a22 * b20 + a23 * b30;
+  resultMat[3] = a30 * b00 + a31 * b10 + a32 * b20 + a33 * b30;
+  resultMat[4] = a00 * b01 + a01 * b11 + a02 * b21 + a03 * b31;
+  resultMat[5] = a10 * b01 + a11 * b11 + a12 * b21 + a13 * b31;
+  resultMat[6] = a20 * b01 + a21 * b11 + a22 * b21 + a23 * b31;
+  resultMat[7] = a30 * b01 + a31 * b11 + a32 * b21 + a33 * b31;
+  resultMat[8] = a00 * b02 + a01 * b12 + a02 * b22 + a03 * b32;
+  resultMat[9] = a10 * b02 + a11 * b12 + a12 * b22 + a13 * b32;
+  resultMat[10] = a20 * b02 + a21 * b12 + a22 * b22 + a23 * b32;
+  resultMat[11] = a30 * b02 + a31 * b12 + a32 * b22 + a33 * b32;
+  resultMat[12] = a00 * b03 + a01 * b13 + a02 * b23 + a03 * b33;
+  resultMat[13] = a10 * b03 + a11 * b13 + a12 * b23 + a13 * b33;
+  resultMat[14] = a20 * b03 + a21 * b13 + a22 * b23 + a23 * b33;
+  resultMat[15] = a30 * b03 + a31 * b13 + a32 * b23 + a33 * b33;
+  return resultMat
+};
+goog.vec.Mat4.transpose = function(mat, resultMat) {
+  if(resultMat == mat) {
+    var a10 = mat[1], a20 = mat[2], a30 = mat[3];
+    var a21 = mat[6], a31 = mat[7];
+    var a32 = mat[11];
+    resultMat[1] = mat[4];
+    resultMat[2] = mat[8];
+    resultMat[3] = mat[12];
+    resultMat[4] = a10;
+    resultMat[6] = mat[9];
+    resultMat[7] = mat[13];
+    resultMat[8] = a20;
+    resultMat[9] = a21;
+    resultMat[11] = mat[14];
+    resultMat[12] = a30;
+    resultMat[13] = a31;
+    resultMat[14] = a32
+  }else {
+    resultMat[0] = mat[0];
+    resultMat[1] = mat[4];
+    resultMat[2] = mat[8];
+    resultMat[3] = mat[12];
+    resultMat[4] = mat[1];
+    resultMat[5] = mat[5];
+    resultMat[6] = mat[9];
+    resultMat[7] = mat[13];
+    resultMat[8] = mat[2];
+    resultMat[9] = mat[6];
+    resultMat[10] = mat[10];
+    resultMat[11] = mat[14];
+    resultMat[12] = mat[3];
+    resultMat[13] = mat[7];
+    resultMat[14] = mat[11];
+    resultMat[15] = mat[15]
+  }
+  return resultMat
+};
+goog.vec.Mat4.determinant = function(mat) {
+  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
+  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
+  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
+  var m03 = mat[12], m13 = mat[13], m23 = mat[14], m33 = mat[15];
+  var a0 = m00 * m11 - m10 * m01;
+  var a1 = m00 * m21 - m20 * m01;
+  var a2 = m00 * m31 - m30 * m01;
+  var a3 = m10 * m21 - m20 * m11;
+  var a4 = m10 * m31 - m30 * m11;
+  var a5 = m20 * m31 - m30 * m21;
+  var b0 = m02 * m13 - m12 * m03;
+  var b1 = m02 * m23 - m22 * m03;
+  var b2 = m02 * m33 - m32 * m03;
+  var b3 = m12 * m23 - m22 * m13;
+  var b4 = m12 * m33 - m32 * m13;
+  var b5 = m22 * m33 - m32 * m23;
+  return a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0
+};
+goog.vec.Mat4.invert = function(mat, resultMat) {
+  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
+  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
+  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
+  var m03 = mat[12], m13 = mat[13], m23 = mat[14], m33 = mat[15];
+  var a0 = m00 * m11 - m10 * m01;
+  var a1 = m00 * m21 - m20 * m01;
+  var a2 = m00 * m31 - m30 * m01;
+  var a3 = m10 * m21 - m20 * m11;
+  var a4 = m10 * m31 - m30 * m11;
+  var a5 = m20 * m31 - m30 * m21;
+  var b0 = m02 * m13 - m12 * m03;
+  var b1 = m02 * m23 - m22 * m03;
+  var b2 = m02 * m33 - m32 * m03;
+  var b3 = m12 * m23 - m22 * m13;
+  var b4 = m12 * m33 - m32 * m13;
+  var b5 = m22 * m33 - m32 * m23;
+  var det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
+  if(det == 0) {
+    return false
+  }
+  var idet = 1 / det;
+  resultMat[0] = (m11 * b5 - m21 * b4 + m31 * b3) * idet;
+  resultMat[1] = (-m10 * b5 + m20 * b4 - m30 * b3) * idet;
+  resultMat[2] = (m13 * a5 - m23 * a4 + m33 * a3) * idet;
+  resultMat[3] = (-m12 * a5 + m22 * a4 - m32 * a3) * idet;
+  resultMat[4] = (-m01 * b5 + m21 * b2 - m31 * b1) * idet;
+  resultMat[5] = (m00 * b5 - m20 * b2 + m30 * b1) * idet;
+  resultMat[6] = (-m03 * a5 + m23 * a2 - m33 * a1) * idet;
+  resultMat[7] = (m02 * a5 - m22 * a2 + m32 * a1) * idet;
+  resultMat[8] = (m01 * b4 - m11 * b2 + m31 * b0) * idet;
+  resultMat[9] = (-m00 * b4 + m10 * b2 - m30 * b0) * idet;
+  resultMat[10] = (m03 * a4 - m13 * a2 + m33 * a0) * idet;
+  resultMat[11] = (-m02 * a4 + m12 * a2 - m32 * a0) * idet;
+  resultMat[12] = (-m01 * b3 + m11 * b1 - m21 * b0) * idet;
+  resultMat[13] = (m00 * b3 - m10 * b1 + m20 * b0) * idet;
+  resultMat[14] = (-m03 * a3 + m13 * a1 - m23 * a0) * idet;
+  resultMat[15] = (m02 * a3 - m12 * a1 + m22 * a0) * idet;
+  return true
+};
+goog.vec.Mat4.equals = function(mat0, mat1) {
+  return mat0.length == mat1.length && mat0[0] == mat1[0] && mat0[1] == mat1[1] && mat0[2] == mat1[2] && mat0[3] == mat1[3] && mat0[4] == mat1[4] && mat0[5] == mat1[5] && mat0[6] == mat1[6] && mat0[7] == mat1[7] && mat0[8] == mat1[8] && mat0[9] == mat1[9] && mat0[10] == mat1[10] && mat0[11] == mat1[11] && mat0[12] == mat1[12] && mat0[13] == mat1[13] && mat0[14] == mat1[14] && mat0[15] == mat1[15]
+};
+goog.vec.Mat4.multVec3 = function(mat, vec, resultVec) {
+  var x = vec[0], y = vec[1], z = vec[2];
+  resultVec[0] = x * mat[0] + y * mat[4] + z * mat[8] + mat[12];
+  resultVec[1] = x * mat[1] + y * mat[5] + z * mat[9] + mat[13];
+  resultVec[2] = x * mat[2] + y * mat[6] + z * mat[10] + mat[14];
+  return resultVec
+};
+goog.vec.Mat4.multVec3NoTranslate = function(mat, vec, resultVec) {
+  var x = vec[0], y = vec[1], z = vec[2];
+  resultVec[0] = x * mat[0] + y * mat[4] + z * mat[8];
+  resultVec[1] = x * mat[1] + y * mat[5] + z * mat[9];
+  resultVec[2] = x * mat[2] + y * mat[6] + z * mat[10];
+  return resultVec
+};
+goog.vec.Mat4.multVec3Projective = function(mat, vec, resultVec) {
+  var x = vec[0], y = vec[1], z = vec[2];
+  var invw = 1 / (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
+  resultVec[0] = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]) * invw;
+  resultVec[1] = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]) * invw;
+  resultVec[2] = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]) * invw;
+  return resultVec
+};
+goog.vec.Mat4.multVec4 = function(mat, vec, resultVec) {
+  var x = vec[0], y = vec[1], z = vec[2], w = vec[3];
+  resultVec[0] = x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12];
+  resultVec[1] = x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13];
+  resultVec[2] = x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14];
+  resultVec[3] = x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15];
+  return resultVec
+};
+goog.vec.Mat4.makeTranslate = function(mat, x, y, z) {
+  goog.vec.Mat4.makeIdentity(mat);
+  return goog.vec.Mat4.setColumnValues(mat, 3, x, y, z, 1)
+};
+goog.vec.Mat4.makeScale = function(mat, x, y, z) {
+  goog.vec.Mat4.makeIdentity(mat);
+  return goog.vec.Mat4.setDiagonalValues(mat, x, y, z, 1)
+};
+goog.vec.Mat4.makeRotate = function(mat, angle, ax, ay, az) {
+  var c = Math.cos(angle);
+  var d = 1 - c;
+  var s = Math.sin(angle);
+  return goog.vec.Mat4.setFromValues(mat, ax * ax * d + c, ax * ay * d + az * s, ax * az * d - ay * s, 0, ax * ay * d - az * s, ay * ay * d + c, ay * az * d + ax * s, 0, ax * az * d + ay * s, ay * az * d - ax * s, az * az * d + c, 0, 0, 0, 0, 1)
+};
+goog.vec.Mat4.makeRotateX = function(mat, angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return goog.vec.Mat4.setFromValues(mat, 1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1)
+};
+goog.vec.Mat4.makeRotateY = function(mat, angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return goog.vec.Mat4.setFromValues(mat, c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1)
+};
+goog.vec.Mat4.makeRotateZ = function(mat, angle) {
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  return goog.vec.Mat4.setFromValues(mat, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+};
+goog.vec.Mat4.makeFrustum = function(mat, left, right, bottom, top, near, far) {
+  var x = 2 * near / (right - left);
+  var y = 2 * near / (top - bottom);
+  var a = (right + left) / (right - left);
+  var b = (top + bottom) / (top - bottom);
+  var c = -(far + near) / (far - near);
+  var d = -(2 * far * near) / (far - near);
+  return goog.vec.Mat4.setFromValues(mat, x, 0, 0, 0, 0, y, 0, 0, a, b, c, -1, 0, 0, d, 0)
+};
+goog.vec.Mat4.makePerspective = function(mat, fovy, aspect, near, far) {
+  var angle = fovy / 2;
+  var dz = far - near;
+  var sinAngle = Math.sin(angle);
+  if(dz == 0 || sinAngle == 0 || aspect == 0) {
+    return mat
+  }
+  var cot = Math.cos(angle) / sinAngle;
+  return goog.vec.Mat4.setFromValues(mat, cot / aspect, 0, 0, 0, 0, cot, 0, 0, 0, 0, -(far + near) / dz, -1, 0, 0, -(2 * near * far) / dz, 0)
+};
+goog.vec.Mat4.makeOrtho = function(mat, left, right, bottom, top, near, far) {
+  var x = 2 / (right - left);
+  var y = 2 / (top - bottom);
+  var z = -2 / (far - near);
+  var a = -(right + left) / (right - left);
+  var b = -(top + bottom) / (top - bottom);
+  var c = -(far + near) / (far - near);
+  return goog.vec.Mat4.setFromValues(mat, x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, a, b, c, 1)
+};
+goog.vec.Mat4.makeLookAt = function(mat, eyePt, centerPt, worldUpVec) {
+  var fwdVec = goog.vec.Mat4.tmpVec4_[0];
+  goog.vec.Vec3.subtract(centerPt, eyePt, fwdVec);
+  goog.vec.Vec3.normalize(fwdVec, fwdVec);
+  fwdVec[3] = 0;
+  var sideVec = goog.vec.Mat4.tmpVec4_[1];
+  goog.vec.Vec3.cross(fwdVec, worldUpVec, sideVec);
+  goog.vec.Vec3.normalize(sideVec, sideVec);
+  sideVec[3] = 0;
+  var upVec = goog.vec.Mat4.tmpVec4_[2];
+  goog.vec.Vec3.cross(sideVec, fwdVec, upVec);
+  goog.vec.Vec3.normalize(upVec, upVec);
+  upVec[3] = 0;
+  goog.vec.Vec3.negate(fwdVec, fwdVec);
+  goog.vec.Mat4.setRow(mat, 0, sideVec);
+  goog.vec.Mat4.setRow(mat, 1, upVec);
+  goog.vec.Mat4.setRow(mat, 2, fwdVec);
+  goog.vec.Mat4.setRowValues(mat, 3, 0, 0, 0, 1);
+  goog.vec.Mat4.translate(mat, -eyePt[0], -eyePt[1], -eyePt[2]);
+  return mat
+};
+goog.vec.Mat4.toLookAt = function(mat, eyePt, fwdVec, worldUpVec) {
+  var matInverse = goog.vec.Mat4.tmpMat4_[0];
+  if(!goog.vec.Mat4.invert(mat, matInverse)) {
+    return false
+  }
+  if(eyePt) {
+    eyePt[0] = matInverse[12];
+    eyePt[1] = matInverse[13];
+    eyePt[2] = matInverse[14]
+  }
+  if(fwdVec || worldUpVec) {
+    if(!fwdVec) {
+      fwdVec = goog.vec.Mat4.tmpVec3_[0]
+    }
+    fwdVec[0] = -mat[2];
+    fwdVec[1] = -mat[6];
+    fwdVec[2] = -mat[10];
+    goog.vec.Vec3.normalize(fwdVec, fwdVec)
+  }
+  if(worldUpVec) {
+    var side = goog.vec.Mat4.tmpVec3_[1];
+    side[0] = mat[0];
+    side[1] = mat[4];
+    side[2] = mat[8];
+    goog.vec.Vec3.cross(side, fwdVec, worldUpVec);
+    goog.vec.Vec3.normalize(worldUpVec, worldUpVec)
+  }
+  return true
+};
+goog.vec.Mat4.makeEulerZXZ = function(mat, theta1, theta2, theta3) {
+  var c1 = Math.cos(theta1);
+  var s1 = Math.sin(theta1);
+  var c2 = Math.cos(theta2);
+  var s2 = Math.sin(theta2);
+  var c3 = Math.cos(theta3);
+  var s3 = Math.sin(theta3);
+  mat[0] = c1 * c3 - c2 * s1 * s3;
+  mat[1] = c2 * c1 * s3 + c3 * s1;
+  mat[2] = s3 * s2;
+  mat[3] = 0;
+  mat[4] = -c1 * s3 - c3 * c2 * s1;
+  mat[5] = c1 * c2 * c3 - s1 * s3;
+  mat[6] = c3 * s2;
+  mat[7] = 0;
+  mat[8] = s2 * s1;
+  mat[9] = -c1 * s2;
+  mat[10] = c2;
+  mat[11] = 0;
+  mat[12] = 0;
+  mat[13] = 0;
+  mat[14] = 0;
+  mat[15] = 1;
+  return mat
+};
+goog.vec.Mat4.toEulerZXZ = function(mat, euler, opt_theta2IsNegative) {
+  var sinTheta2 = Math.sqrt(mat[2] * mat[2] + mat[6] * mat[6]);
+  var signTheta2 = opt_theta2IsNegative ? -1 : 1;
+  if(sinTheta2 > goog.vec.EPSILON) {
+    euler[2] = Math.atan2(mat[2] * signTheta2, mat[6] * signTheta2);
+    euler[1] = Math.atan2(sinTheta2 * signTheta2, mat[10]);
+    euler[0] = Math.atan2(mat[8] * signTheta2, -mat[9] * signTheta2)
+  }else {
+    euler[0] = 0;
+    euler[1] = Math.atan2(sinTheta2 * signTheta2, mat[10]);
+    euler[2] = Math.atan2(mat[1], mat[0])
+  }
+  euler[0] = (euler[0] + Math.PI * 2) % (Math.PI * 2);
+  euler[2] = (euler[2] + Math.PI * 2) % (Math.PI * 2);
+  euler[1] = (euler[1] * signTheta2 + Math.PI * 2) % (Math.PI * 2) * signTheta2;
+  return euler
+};
+goog.vec.Mat4.translate = function(mat, x, y, z) {
+  return goog.vec.Mat4.setColumnValues(mat, 3, mat[0] * x + mat[4] * y + mat[8] * z + mat[12], mat[1] * x + mat[5] * y + mat[9] * z + mat[13], mat[2] * x + mat[6] * y + mat[10] * z + mat[14], mat[3] * x + mat[7] * y + mat[11] * z + mat[15])
+};
+goog.vec.Mat4.scale = function(mat, x, y, z) {
+  return goog.vec.Mat4.setFromValues(mat, mat[0] * x, mat[1] * x, mat[2] * x, mat[3] * x, mat[4] * y, mat[5] * y, mat[6] * y, mat[7] * y, mat[8] * z, mat[9] * z, mat[10] * z, mat[11] * z, mat[12], mat[13], mat[14], mat[15])
+};
+goog.vec.Mat4.rotate = function(mat, angle, x, y, z) {
+  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
+  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
+  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
+  var m03 = mat[12], m13 = mat[13], m23 = mat[14], m33 = mat[15];
+  var cosAngle = Math.cos(angle);
+  var sinAngle = Math.sin(angle);
+  var diffCosAngle = 1 - cosAngle;
+  var r00 = x * x * diffCosAngle + cosAngle;
+  var r10 = x * y * diffCosAngle + z * sinAngle;
+  var r20 = x * z * diffCosAngle - y * sinAngle;
+  var r01 = x * y * diffCosAngle - z * sinAngle;
+  var r11 = y * y * diffCosAngle + cosAngle;
+  var r21 = y * z * diffCosAngle + x * sinAngle;
+  var r02 = x * z * diffCosAngle + y * sinAngle;
+  var r12 = y * z * diffCosAngle - x * sinAngle;
+  var r22 = z * z * diffCosAngle + cosAngle;
+  return goog.vec.Mat4.setFromValues(mat, m00 * r00 + m01 * r10 + m02 * r20, m10 * r00 + m11 * r10 + m12 * r20, m20 * r00 + m21 * r10 + m22 * r20, m30 * r00 + m31 * r10 + m32 * r20, m00 * r01 + m01 * r11 + m02 * r21, m10 * r01 + m11 * r11 + m12 * r21, m20 * r01 + m21 * r11 + m22 * r21, m30 * r01 + m31 * r11 + m32 * r21, m00 * r02 + m01 * r12 + m02 * r22, m10 * r02 + m11 * r12 + m12 * r22, m20 * r02 + m21 * r12 + m22 * r22, m30 * r02 + m31 * r12 + m32 * r22, m03, m13, m23, m33)
+};
+goog.vec.Mat4.rotateX = function(mat, angle) {
+  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
+  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  mat[4] = m01 * c + m02 * s;
+  mat[5] = m11 * c + m12 * s;
+  mat[6] = m21 * c + m22 * s;
+  mat[7] = m31 * c + m32 * s;
+  mat[8] = m01 * -s + m02 * c;
+  mat[9] = m11 * -s + m12 * c;
+  mat[10] = m21 * -s + m22 * c;
+  mat[11] = m31 * -s + m32 * c;
+  return mat
+};
+goog.vec.Mat4.rotateY = function(mat, angle) {
+  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
+  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  mat[0] = m00 * c + m02 * -s;
+  mat[1] = m10 * c + m12 * -s;
+  mat[2] = m20 * c + m22 * -s;
+  mat[3] = m30 * c + m32 * -s;
+  mat[8] = m00 * s + m02 * c;
+  mat[9] = m10 * s + m12 * c;
+  mat[10] = m20 * s + m22 * c;
+  mat[11] = m30 * s + m32 * c;
+  return mat
+};
+goog.vec.Mat4.rotateZ = function(mat, angle) {
+  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
+  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
+  var c = Math.cos(angle);
+  var s = Math.sin(angle);
+  mat[0] = m00 * c + m01 * s;
+  mat[1] = m10 * c + m11 * s;
+  mat[2] = m20 * c + m21 * s;
+  mat[3] = m30 * c + m31 * s;
+  mat[4] = m00 * -s + m01 * c;
+  mat[5] = m10 * -s + m11 * c;
+  mat[6] = m20 * -s + m21 * c;
+  mat[7] = m30 * -s + m31 * c;
+  return mat
+};
+goog.vec.Mat4.getTranslation = function(mat, translation) {
+  translation[0] = mat[12];
+  translation[1] = mat[13];
+  translation[2] = mat[14];
+  return translation
+};
+goog.vec.Mat4.tmpVec3_ = [goog.vec.Vec3.createFloat64(), goog.vec.Vec3.createFloat64()];
+goog.vec.Mat4.tmpVec4_ = [goog.vec.Vec4.createFloat64(), goog.vec.Vec4.createFloat64(), goog.vec.Vec4.createFloat64()];
+goog.vec.Mat4.tmpMat4_ = [goog.vec.Mat4.createFloat64()];
+goog.provide("ol.dom");
+goog.provide("ol.dom.BrowserFeature");
+goog.require("goog.asserts");
+goog.require("goog.dom");
+goog.require("goog.dom.TagName");
+goog.require("goog.style");
+goog.require("goog.userAgent");
+goog.require("goog.vec.Mat4");
+ol.dom.createCanvasContext2D = function(opt_width, opt_height) {
+  var canvas = goog.dom.createElement(goog.dom.TagName.CANVAS);
+  if(goog.isDef(opt_width)) {
+    canvas.width = opt_width
+  }
+  if(goog.isDef(opt_height)) {
+    canvas.height = opt_height
+  }
+  return canvas.getContext("2d")
+};
+ol.dom.BrowserFeature = {USE_MS_MATRIX_TRANSFORM:ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE, USE_MS_ALPHA_FILTER:ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE};
+ol.dom.canUseCssTransform = function() {
+  var canUseCssTransform;
+  return function() {
+    if(!goog.isDef(canUseCssTransform)) {
+      goog.asserts.assert(!goog.isNull(document.body));
+      if(!goog.global.getComputedStyle) {
+        canUseCssTransform = false
+      }else {
+        var el = goog.dom.createElement(goog.dom.TagName.P), has2d, transforms = {"webkitTransform":"-webkit-transform", "OTransform":"-o-transform", "msTransform":"-ms-transform", "MozTransform":"-moz-transform", "transform":"transform"};
+        goog.dom.appendChild(document.body, el);
+        for(var t in transforms) {
+          if(t in el.style) {
+            el.style[t] = "translate(1px,1px)";
+            has2d = goog.global.getComputedStyle(el).getPropertyValue(transforms[t])
+          }
+        }
+        goog.dom.removeNode(el);
+        canUseCssTransform = has2d && has2d !== "none"
+      }
+    }
+    return canUseCssTransform
+  }
+}();
+ol.dom.canUseCssTransform3D = function() {
+  var canUseCssTransform3D;
+  return function() {
+    if(!goog.isDef(canUseCssTransform3D)) {
+      goog.asserts.assert(!goog.isNull(document.body));
+      if(!goog.global.getComputedStyle) {
+        canUseCssTransform3D = false
+      }else {
+        var el = goog.dom.createElement(goog.dom.TagName.P), has3d, transforms = {"webkitTransform":"-webkit-transform", "OTransform":"-o-transform", "msTransform":"-ms-transform", "MozTransform":"-moz-transform", "transform":"transform"};
+        goog.dom.appendChild(document.body, el);
+        for(var t in transforms) {
+          if(t in el.style) {
+            el.style[t] = "translate3d(1px,1px,1px)";
+            has3d = goog.global.getComputedStyle(el).getPropertyValue(transforms[t])
+          }
+        }
+        goog.dom.removeNode(el);
+        canUseCssTransform3D = has3d && has3d !== "none"
+      }
+    }
+    return canUseCssTransform3D
+  }
+}();
+ol.dom.setTransform = function(element, value) {
+  var style = element.style;
+  style.WebkitTransform = value;
+  style.MozTransform = value;
+  style.OTransform = value;
+  style.msTransform = value;
+  style.transform = value;
+  if(goog.userAgent.IE && !ol.IS_LEGACY_IE) {
+    element.style.transformOrigin = "0 0"
+  }
+};
+ol.dom.setOpacity = function(element, value) {
+  if(ol.dom.BrowserFeature.USE_MS_ALPHA_FILTER) {
+    var filter = element.currentStyle.filter;
+    var regex;
+    var alpha;
+    if(goog.userAgent.VERSION == "8.0") {
+      regex = /progid:DXImageTransform\.Microsoft\.Alpha\(.*?\)/i, alpha = "progid:DXImageTransform.Microsoft.Alpha(Opacity\x3d" + value * 100 + ")"
+    }else {
+      regex = /alpha\(.*?\)/i;
+      alpha = "alpha(opacity\x3d" + value * 100 + ")"
+    }
+    var newFilter = filter.replace(regex, alpha);
+    if(newFilter === filter) {
+      newFilter += " " + alpha
+    }
+    element.style.filter = newFilter;
+    if(element.currentStyle.zIndex === "auto") {
+      element.style.zIndex = 0
+    }
+  }else {
+    goog.style.setOpacity(element, value)
+  }
+};
+ol.dom.setIEMatrix_ = function(element, value) {
+  var filter = element.currentStyle.filter;
+  var newFilter = filter.replace(/progid:DXImageTransform.Microsoft.Matrix\(.*?\)/i, value);
+  if(newFilter === filter) {
+    newFilter = " " + value
+  }
+  element.style.filter = newFilter;
+  if(element.currentStyle.zIndex === "auto") {
+    element.style.zIndex = 0
+  }
+};
+ol.dom.transformElement2D = function(element, transform, opt_precision, opt_translationElement) {
+  var i;
+  if(ol.dom.canUseCssTransform3D()) {
+    var value3D;
+    if(goog.isDef(opt_precision)) {
+      var strings3D = new Array(16);
+      for(i = 0;i < 16;++i) {
+        strings3D[i] = transform[i].toFixed(opt_precision)
+      }
+      value3D = strings3D.join(",")
+    }else {
+      value3D = transform.join(",")
+    }
+    ol.dom.setTransform(element, "matrix3d(" + value3D + ")")
+  }else {
+    if(ol.dom.canUseCssTransform()) {
+      var transform2D = [goog.vec.Mat4.getElement(transform, 0, 0), goog.vec.Mat4.getElement(transform, 1, 0), goog.vec.Mat4.getElement(transform, 0, 1), goog.vec.Mat4.getElement(transform, 1, 1), goog.vec.Mat4.getElement(transform, 0, 3), goog.vec.Mat4.getElement(transform, 1, 3)];
+      var value2D;
+      if(goog.isDef(opt_precision)) {
+        var strings2D = new Array(6);
+        for(i = 0;i < 6;++i) {
+          strings2D[i] = transform2D[i].toFixed(opt_precision)
+        }
+        value2D = strings2D.join(",")
+      }else {
+        value2D = transform2D.join(",")
+      }
+      ol.dom.setTransform(element, "matrix(" + value2D + ")")
+    }else {
+      if(ol.dom.BrowserFeature.USE_MS_MATRIX_TRANSFORM) {
+        var m11 = goog.vec.Mat4.getElement(transform, 0, 0), m12 = goog.vec.Mat4.getElement(transform, 0, 1), m21 = goog.vec.Mat4.getElement(transform, 1, 0), m22 = goog.vec.Mat4.getElement(transform, 1, 1), dx = goog.vec.Mat4.getElement(transform, 0, 3), dy = goog.vec.Mat4.getElement(transform, 1, 3);
+        var s = "progid:DXImageTransform.Microsoft.Matrix(";
+        s += 'sizingMethod\x3d"auto expand"';
+        s += ",M11\x3d" + m11.toFixed(opt_precision || 20);
+        s += ",M12\x3d" + m12.toFixed(opt_precision || 20);
+        s += ",M21\x3d" + m21.toFixed(opt_precision || 20);
+        s += ",M22\x3d" + m22.toFixed(opt_precision || 20);
+        s += ")";
+        ol.dom.setIEMatrix_(element, s);
+        dx /= m11;
+        dy /= m22;
+        opt_translationElement.style.left = Math.round(dx) + "px";
+        opt_translationElement.style.top = Math.round(dy) + "px"
+      }else {
+        element.style.left = Math.round(goog.vec.Mat4.getElement(transform, 0, 3)) + "px";
+        element.style.top = Math.round(goog.vec.Mat4.getElement(transform, 1, 3)) + "px"
+      }
+    }
+  }
+};
 goog.provide("ol.webgl");
 goog.provide("ol.webgl.WebGLContextEventType");
 ol.webgl.CONTEXT_IDS_ = ["experimental-webgl", "webgl", "webkit-3d", "moz-webgl"];
@@ -7319,6 +9736,7 @@ goog.provide("ol.BrowserFeature");
 goog.require("goog.dom");
 goog.require("goog.dom.TagName");
 goog.require("goog.userAgent");
+goog.require("ol.dom");
 goog.require("ol.webgl");
 ol.ASSUME_TOUCH = false;
 ol.ENABLE_CANVAS = true;
@@ -7338,8 +9756,7 @@ ol.BrowserFeature.HAS_CANVAS = ol.ENABLE_CANVAS && function() {
     return false
   }
   try {
-    var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-    var context = (canvas.getContext("2d"));
+    var context = ol.dom.createCanvasContext2D();
     if(goog.isNull(context)) {
       return false
     }else {
@@ -10118,1066 +12535,6 @@ ol.View.prototype.setHint = function(hint, delta) {
   goog.asserts.assert(this.hints_[hint] >= 0);
   return this.hints_[hint]
 };
-goog.provide("goog.vec.Float32Array");
-goog.vec.Float32Array = function(p0) {
-  this.length = (p0.length || p0);
-  for(var i = 0;i < this.length;i++) {
-    this[i] = p0[i] || 0
-  }
-};
-goog.vec.Float32Array.BYTES_PER_ELEMENT = 4;
-goog.vec.Float32Array.prototype.BYTES_PER_ELEMENT = 4;
-goog.vec.Float32Array.prototype.set = function(values, opt_offset) {
-  opt_offset = opt_offset || 0;
-  for(var i = 0;i < values.length && opt_offset + i < this.length;i++) {
-    this[opt_offset + i] = values[i]
-  }
-};
-goog.vec.Float32Array.prototype.toString = Array.prototype.join;
-if(typeof Float32Array == "undefined") {
-  goog.exportProperty(goog.vec.Float32Array, "BYTES_PER_ELEMENT", goog.vec.Float32Array.BYTES_PER_ELEMENT);
-  goog.exportProperty(goog.vec.Float32Array.prototype, "BYTES_PER_ELEMENT", goog.vec.Float32Array.prototype.BYTES_PER_ELEMENT);
-  goog.exportProperty(goog.vec.Float32Array.prototype, "set", goog.vec.Float32Array.prototype.set);
-  goog.exportProperty(goog.vec.Float32Array.prototype, "toString", goog.vec.Float32Array.prototype.toString);
-  goog.exportSymbol("Float32Array", goog.vec.Float32Array)
-}
-;goog.provide("goog.vec.Float64Array");
-goog.vec.Float64Array = function(p0) {
-  this.length = (p0.length || p0);
-  for(var i = 0;i < this.length;i++) {
-    this[i] = p0[i] || 0
-  }
-};
-goog.vec.Float64Array.BYTES_PER_ELEMENT = 8;
-goog.vec.Float64Array.prototype.BYTES_PER_ELEMENT = 8;
-goog.vec.Float64Array.prototype.set = function(values, opt_offset) {
-  opt_offset = opt_offset || 0;
-  for(var i = 0;i < values.length && opt_offset + i < this.length;i++) {
-    this[opt_offset + i] = values[i]
-  }
-};
-goog.vec.Float64Array.prototype.toString = Array.prototype.join;
-if(typeof Float64Array == "undefined") {
-  try {
-    goog.exportProperty(goog.vec.Float64Array, "BYTES_PER_ELEMENT", goog.vec.Float64Array.BYTES_PER_ELEMENT)
-  }catch(float64ArrayError) {
-  }
-  goog.exportProperty(goog.vec.Float64Array.prototype, "BYTES_PER_ELEMENT", goog.vec.Float64Array.prototype.BYTES_PER_ELEMENT);
-  goog.exportProperty(goog.vec.Float64Array.prototype, "set", goog.vec.Float64Array.prototype.set);
-  goog.exportProperty(goog.vec.Float64Array.prototype, "toString", goog.vec.Float64Array.prototype.toString);
-  goog.exportSymbol("Float64Array", goog.vec.Float64Array)
-}
-;goog.provide("goog.vec");
-goog.provide("goog.vec.AnyType");
-goog.provide("goog.vec.ArrayType");
-goog.provide("goog.vec.Float32");
-goog.provide("goog.vec.Float64");
-goog.provide("goog.vec.Number");
-goog.require("goog.vec.Float32Array");
-goog.require("goog.vec.Float64Array");
-goog.vec.Float32;
-goog.vec.Float64;
-goog.vec.Number;
-goog.vec.AnyType;
-goog.vec.ArrayType;
-goog.vec.EPSILON = 1E-6;
-goog.provide("goog.vec.Vec3");
-goog.require("goog.vec");
-goog.vec.Vec3.Float32;
-goog.vec.Vec3.Float64;
-goog.vec.Vec3.Number;
-goog.vec.Vec3.AnyType;
-goog.vec.Vec3.Type;
-goog.vec.Vec3.Vec3Like;
-goog.vec.Vec3.createFloat32 = function() {
-  return new Float32Array(3)
-};
-goog.vec.Vec3.createFloat64 = function() {
-  return new Float64Array(3)
-};
-goog.vec.Vec3.createNumber = function() {
-  var a = new Array(3);
-  goog.vec.Vec3.setFromValues(a, 0, 0, 0);
-  return a
-};
-goog.vec.Vec3.create = function() {
-  return new Float32Array(3)
-};
-goog.vec.Vec3.createFloat32FromArray = function(vec) {
-  var newVec = goog.vec.Vec3.createFloat32();
-  goog.vec.Vec3.setFromArray(newVec, vec);
-  return newVec
-};
-goog.vec.Vec3.createFloat32FromValues = function(v0, v1, v2) {
-  var a = goog.vec.Vec3.createFloat32();
-  goog.vec.Vec3.setFromValues(a, v0, v1, v2);
-  return a
-};
-goog.vec.Vec3.cloneFloat32 = goog.vec.Vec3.createFloat32FromArray;
-goog.vec.Vec3.createFloat64FromArray = function(vec) {
-  var newVec = goog.vec.Vec3.createFloat64();
-  goog.vec.Vec3.setFromArray(newVec, vec);
-  return newVec
-};
-goog.vec.Vec3.createFloat64FromValues = function(v0, v1, v2) {
-  var vec = goog.vec.Vec3.createFloat64();
-  goog.vec.Vec3.setFromValues(vec, v0, v1, v2);
-  return vec
-};
-goog.vec.Vec3.cloneFloat64 = goog.vec.Vec3.createFloat64FromArray;
-goog.vec.Vec3.createFromArray = function(vec) {
-  var newVec = goog.vec.Vec3.create();
-  goog.vec.Vec3.setFromArray(newVec, vec);
-  return newVec
-};
-goog.vec.Vec3.createFromValues = function(v0, v1, v2) {
-  var vec = goog.vec.Vec3.create();
-  goog.vec.Vec3.setFromValues(vec, v0, v1, v2);
-  return vec
-};
-goog.vec.Vec3.clone = function(vec) {
-  var newVec = goog.vec.Vec3.create();
-  goog.vec.Vec3.setFromArray(newVec, vec);
-  return newVec
-};
-goog.vec.Vec3.setFromValues = function(vec, v0, v1, v2) {
-  vec[0] = v0;
-  vec[1] = v1;
-  vec[2] = v2;
-  return vec
-};
-goog.vec.Vec3.setFromArray = function(vec, values) {
-  vec[0] = values[0];
-  vec[1] = values[1];
-  vec[2] = values[2];
-  return vec
-};
-goog.vec.Vec3.add = function(vec0, vec1, resultVec) {
-  resultVec[0] = vec0[0] + vec1[0];
-  resultVec[1] = vec0[1] + vec1[1];
-  resultVec[2] = vec0[2] + vec1[2];
-  return resultVec
-};
-goog.vec.Vec3.subtract = function(vec0, vec1, resultVec) {
-  resultVec[0] = vec0[0] - vec1[0];
-  resultVec[1] = vec0[1] - vec1[1];
-  resultVec[2] = vec0[2] - vec1[2];
-  return resultVec
-};
-goog.vec.Vec3.negate = function(vec0, resultVec) {
-  resultVec[0] = -vec0[0];
-  resultVec[1] = -vec0[1];
-  resultVec[2] = -vec0[2];
-  return resultVec
-};
-goog.vec.Vec3.scale = function(vec0, scalar, resultVec) {
-  resultVec[0] = vec0[0] * scalar;
-  resultVec[1] = vec0[1] * scalar;
-  resultVec[2] = vec0[2] * scalar;
-  return resultVec
-};
-goog.vec.Vec3.magnitudeSquared = function(vec0) {
-  var x = vec0[0], y = vec0[1], z = vec0[2];
-  return x * x + y * y + z * z
-};
-goog.vec.Vec3.magnitude = function(vec0) {
-  var x = vec0[0], y = vec0[1], z = vec0[2];
-  return Math.sqrt(x * x + y * y + z * z)
-};
-goog.vec.Vec3.normalize = function(vec0, resultVec) {
-  var ilen = 1 / goog.vec.Vec3.magnitude(vec0);
-  resultVec[0] = vec0[0] * ilen;
-  resultVec[1] = vec0[1] * ilen;
-  resultVec[2] = vec0[2] * ilen;
-  return resultVec
-};
-goog.vec.Vec3.dot = function(v0, v1) {
-  return v0[0] * v1[0] + v0[1] * v1[1] + v0[2] * v1[2]
-};
-goog.vec.Vec3.cross = function(v0, v1, resultVec) {
-  var x0 = v0[0], y0 = v0[1], z0 = v0[2];
-  var x1 = v1[0], y1 = v1[1], z1 = v1[2];
-  resultVec[0] = y0 * z1 - z0 * y1;
-  resultVec[1] = z0 * x1 - x0 * z1;
-  resultVec[2] = x0 * y1 - y0 * x1;
-  return resultVec
-};
-goog.vec.Vec3.distanceSquared = function(vec0, vec1) {
-  var x = vec0[0] - vec1[0];
-  var y = vec0[1] - vec1[1];
-  var z = vec0[2] - vec1[2];
-  return x * x + y * y + z * z
-};
-goog.vec.Vec3.distance = function(vec0, vec1) {
-  return Math.sqrt(goog.vec.Vec3.distanceSquared(vec0, vec1))
-};
-goog.vec.Vec3.direction = function(vec0, vec1, resultVec) {
-  var x = vec1[0] - vec0[0];
-  var y = vec1[1] - vec0[1];
-  var z = vec1[2] - vec0[2];
-  var d = Math.sqrt(x * x + y * y + z * z);
-  if(d) {
-    d = 1 / d;
-    resultVec[0] = x * d;
-    resultVec[1] = y * d;
-    resultVec[2] = z * d
-  }else {
-    resultVec[0] = resultVec[1] = resultVec[2] = 0
-  }
-  return resultVec
-};
-goog.vec.Vec3.lerp = function(v0, v1, f, resultVec) {
-  var x = v0[0], y = v0[1], z = v0[2];
-  resultVec[0] = (v1[0] - x) * f + x;
-  resultVec[1] = (v1[1] - y) * f + y;
-  resultVec[2] = (v1[2] - z) * f + z;
-  return resultVec
-};
-goog.vec.Vec3.equals = function(v0, v1) {
-  return v0.length == v1.length && v0[0] == v1[0] && v0[1] == v1[1] && v0[2] == v1[2]
-};
-goog.provide("goog.vec.Vec4");
-goog.require("goog.vec");
-goog.vec.Vec4.Float32;
-goog.vec.Vec4.Float64;
-goog.vec.Vec4.Number;
-goog.vec.Vec4.AnyType;
-goog.vec.Vec4.Type;
-goog.vec.Vec4.Vec4Like;
-goog.vec.Vec4.createFloat32 = function() {
-  return new Float32Array(4)
-};
-goog.vec.Vec4.createFloat64 = function() {
-  return new Float64Array(4)
-};
-goog.vec.Vec4.createNumber = function() {
-  var v = new Array(4);
-  goog.vec.Vec4.setFromValues(v, 0, 0, 0, 0);
-  return v
-};
-goog.vec.Vec4.create = function() {
-  return new Float32Array(4)
-};
-goog.vec.Vec4.createFromArray = function(vec) {
-  var newVec = goog.vec.Vec4.create();
-  goog.vec.Vec4.setFromArray(newVec, vec);
-  return newVec
-};
-goog.vec.Vec4.createFloat32FromArray = function(vec) {
-  var newVec = goog.vec.Vec4.createFloat32();
-  goog.vec.Vec4.setFromArray(newVec, vec);
-  return newVec
-};
-goog.vec.Vec4.createFloat32FromValues = function(v0, v1, v2, v3) {
-  var vec = goog.vec.Vec4.createFloat32();
-  goog.vec.Vec4.setFromValues(vec, v0, v1, v2, v3);
-  return vec
-};
-goog.vec.Vec4.cloneFloat32 = goog.vec.Vec4.createFloat32FromArray;
-goog.vec.Vec4.createFloat64FromArray = function(vec) {
-  var newVec = goog.vec.Vec4.createFloat64();
-  goog.vec.Vec4.setFromArray(newVec, vec);
-  return newVec
-};
-goog.vec.Vec4.createFloat64FromValues = function(v0, v1, v2, v3) {
-  var vec = goog.vec.Vec4.createFloat64();
-  goog.vec.Vec4.setFromValues(vec, v0, v1, v2, v3);
-  return vec
-};
-goog.vec.Vec4.cloneFloat64 = goog.vec.Vec4.createFloat64FromArray;
-goog.vec.Vec4.createFromValues = function(v0, v1, v2, v3) {
-  var vec = goog.vec.Vec4.create();
-  goog.vec.Vec4.setFromValues(vec, v0, v1, v2, v3);
-  return vec
-};
-goog.vec.Vec4.clone = goog.vec.Vec4.createFromArray;
-goog.vec.Vec4.setFromValues = function(vec, v0, v1, v2, v3) {
-  vec[0] = v0;
-  vec[1] = v1;
-  vec[2] = v2;
-  vec[3] = v3;
-  return vec
-};
-goog.vec.Vec4.setFromArray = function(vec, values) {
-  vec[0] = values[0];
-  vec[1] = values[1];
-  vec[2] = values[2];
-  vec[3] = values[3];
-  return vec
-};
-goog.vec.Vec4.add = function(vec0, vec1, resultVec) {
-  resultVec[0] = vec0[0] + vec1[0];
-  resultVec[1] = vec0[1] + vec1[1];
-  resultVec[2] = vec0[2] + vec1[2];
-  resultVec[3] = vec0[3] + vec1[3];
-  return resultVec
-};
-goog.vec.Vec4.subtract = function(vec0, vec1, resultVec) {
-  resultVec[0] = vec0[0] - vec1[0];
-  resultVec[1] = vec0[1] - vec1[1];
-  resultVec[2] = vec0[2] - vec1[2];
-  resultVec[3] = vec0[3] - vec1[3];
-  return resultVec
-};
-goog.vec.Vec4.negate = function(vec0, resultVec) {
-  resultVec[0] = -vec0[0];
-  resultVec[1] = -vec0[1];
-  resultVec[2] = -vec0[2];
-  resultVec[3] = -vec0[3];
-  return resultVec
-};
-goog.vec.Vec4.scale = function(vec0, scalar, resultVec) {
-  resultVec[0] = vec0[0] * scalar;
-  resultVec[1] = vec0[1] * scalar;
-  resultVec[2] = vec0[2] * scalar;
-  resultVec[3] = vec0[3] * scalar;
-  return resultVec
-};
-goog.vec.Vec4.magnitudeSquared = function(vec0) {
-  var x = vec0[0], y = vec0[1], z = vec0[2], w = vec0[3];
-  return x * x + y * y + z * z + w * w
-};
-goog.vec.Vec4.magnitude = function(vec0) {
-  var x = vec0[0], y = vec0[1], z = vec0[2], w = vec0[3];
-  return Math.sqrt(x * x + y * y + z * z + w * w)
-};
-goog.vec.Vec4.normalize = function(vec0, resultVec) {
-  var ilen = 1 / goog.vec.Vec4.magnitude(vec0);
-  resultVec[0] = vec0[0] * ilen;
-  resultVec[1] = vec0[1] * ilen;
-  resultVec[2] = vec0[2] * ilen;
-  resultVec[3] = vec0[3] * ilen;
-  return resultVec
-};
-goog.vec.Vec4.dot = function(v0, v1) {
-  return v0[0] * v1[0] + v0[1] * v1[1] + v0[2] * v1[2] + v0[3] * v1[3]
-};
-goog.vec.Vec4.lerp = function(v0, v1, f, resultVec) {
-  var x = v0[0], y = v0[1], z = v0[2], w = v0[3];
-  resultVec[0] = (v1[0] - x) * f + x;
-  resultVec[1] = (v1[1] - y) * f + y;
-  resultVec[2] = (v1[2] - z) * f + z;
-  resultVec[3] = (v1[3] - w) * f + w;
-  return resultVec
-};
-goog.vec.Vec4.equals = function(v0, v1) {
-  return v0.length == v1.length && v0[0] == v1[0] && v0[1] == v1[1] && v0[2] == v1[2] && v0[3] == v1[3]
-};
-goog.provide("goog.vec.Mat4");
-goog.require("goog.vec");
-goog.require("goog.vec.Vec3");
-goog.require("goog.vec.Vec4");
-goog.vec.Mat4.Float32;
-goog.vec.Mat4.Float64;
-goog.vec.Mat4.Number;
-goog.vec.Mat4.AnyType;
-goog.vec.Mat4.Type;
-goog.vec.Mat4.Mat4Like;
-goog.vec.Mat4.createFloat32 = function() {
-  return new Float32Array(16)
-};
-goog.vec.Mat4.createFloat64 = function() {
-  return new Float64Array(16)
-};
-goog.vec.Mat4.createNumber = function() {
-  var a = new Array(16);
-  goog.vec.Mat4.setFromValues(a, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  return a
-};
-goog.vec.Mat4.create = function() {
-  return goog.vec.Mat4.createFloat32()
-};
-goog.vec.Mat4.createFloat32Identity = function() {
-  var mat = goog.vec.Mat4.createFloat32();
-  mat[0] = mat[5] = mat[10] = mat[15] = 1;
-  return mat
-};
-goog.vec.Mat4.createFloat64Identity = function() {
-  var mat = goog.vec.Mat4.createFloat64();
-  mat[0] = mat[5] = mat[10] = mat[15] = 1;
-  return mat
-};
-goog.vec.Mat4.createNumberIdentity = function() {
-  var a = new Array(16);
-  goog.vec.Mat4.setFromValues(a, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-  return a
-};
-goog.vec.Mat4.createIdentity = function() {
-  return goog.vec.Mat4.createFloat32Identity()
-};
-goog.vec.Mat4.createFloat32FromArray = function(matrix) {
-  var newMatrix = goog.vec.Mat4.createFloat32();
-  goog.vec.Mat4.setFromArray(newMatrix, matrix);
-  return newMatrix
-};
-goog.vec.Mat4.createFloat32FromValues = function(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
-  var newMatrix = goog.vec.Mat4.createFloat32();
-  goog.vec.Mat4.setFromValues(newMatrix, v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33);
-  return newMatrix
-};
-goog.vec.Mat4.cloneFloat32 = goog.vec.Mat4.createFloat32FromArray;
-goog.vec.Mat4.createFloat64FromArray = function(matrix) {
-  var newMatrix = goog.vec.Mat4.createFloat64();
-  goog.vec.Mat4.setFromArray(newMatrix, matrix);
-  return newMatrix
-};
-goog.vec.Mat4.createFloat64FromValues = function(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
-  var newMatrix = goog.vec.Mat4.createFloat64();
-  goog.vec.Mat4.setFromValues(newMatrix, v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33);
-  return newMatrix
-};
-goog.vec.Mat4.cloneFloat64 = goog.vec.Mat4.createFloat64FromArray;
-goog.vec.Mat4.createFromArray = function(matrix) {
-  var newMatrix = goog.vec.Mat4.createFloat32();
-  goog.vec.Mat4.setFromArray(newMatrix, matrix);
-  return newMatrix
-};
-goog.vec.Mat4.createFromValues = function(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
-  return goog.vec.Mat4.createFloat32FromValues(v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33)
-};
-goog.vec.Mat4.clone = goog.vec.Mat4.createFromArray;
-goog.vec.Mat4.getElement = function(mat, row, column) {
-  return mat[row + column * 4]
-};
-goog.vec.Mat4.setElement = function(mat, row, column, value) {
-  mat[row + column * 4] = value;
-  return mat
-};
-goog.vec.Mat4.setFromValues = function(mat, v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33) {
-  mat[0] = v00;
-  mat[1] = v10;
-  mat[2] = v20;
-  mat[3] = v30;
-  mat[4] = v01;
-  mat[5] = v11;
-  mat[6] = v21;
-  mat[7] = v31;
-  mat[8] = v02;
-  mat[9] = v12;
-  mat[10] = v22;
-  mat[11] = v32;
-  mat[12] = v03;
-  mat[13] = v13;
-  mat[14] = v23;
-  mat[15] = v33;
-  return mat
-};
-goog.vec.Mat4.setFromArray = function(mat, values) {
-  mat[0] = values[0];
-  mat[1] = values[1];
-  mat[2] = values[2];
-  mat[3] = values[3];
-  mat[4] = values[4];
-  mat[5] = values[5];
-  mat[6] = values[6];
-  mat[7] = values[7];
-  mat[8] = values[8];
-  mat[9] = values[9];
-  mat[10] = values[10];
-  mat[11] = values[11];
-  mat[12] = values[12];
-  mat[13] = values[13];
-  mat[14] = values[14];
-  mat[15] = values[15];
-  return mat
-};
-goog.vec.Mat4.setFromRowMajorArray = function(mat, values) {
-  mat[0] = values[0];
-  mat[1] = values[4];
-  mat[2] = values[8];
-  mat[3] = values[12];
-  mat[4] = values[1];
-  mat[5] = values[5];
-  mat[6] = values[9];
-  mat[7] = values[13];
-  mat[8] = values[2];
-  mat[9] = values[6];
-  mat[10] = values[10];
-  mat[11] = values[14];
-  mat[12] = values[3];
-  mat[13] = values[7];
-  mat[14] = values[11];
-  mat[15] = values[15];
-  return mat
-};
-goog.vec.Mat4.setDiagonalValues = function(mat, v00, v11, v22, v33) {
-  mat[0] = v00;
-  mat[5] = v11;
-  mat[10] = v22;
-  mat[15] = v33;
-  return mat
-};
-goog.vec.Mat4.setDiagonal = function(mat, vec) {
-  mat[0] = vec[0];
-  mat[5] = vec[1];
-  mat[10] = vec[2];
-  mat[15] = vec[3];
-  return mat
-};
-goog.vec.Mat4.getDiagonal = function(mat, vec, opt_diagonal) {
-  if(!opt_diagonal) {
-    vec[0] = mat[0];
-    vec[1] = mat[5];
-    vec[2] = mat[10];
-    vec[3] = mat[15]
-  }else {
-    var offset = opt_diagonal > 0 ? 4 * opt_diagonal : -opt_diagonal;
-    for(var i = 0;i < 4 - Math.abs(opt_diagonal);i++) {
-      vec[i] = mat[offset + 5 * i]
-    }
-  }
-  return vec
-};
-goog.vec.Mat4.setColumnValues = function(mat, column, v0, v1, v2, v3) {
-  var i = column * 4;
-  mat[i] = v0;
-  mat[i + 1] = v1;
-  mat[i + 2] = v2;
-  mat[i + 3] = v3;
-  return mat
-};
-goog.vec.Mat4.setColumn = function(mat, column, vec) {
-  var i = column * 4;
-  mat[i] = vec[0];
-  mat[i + 1] = vec[1];
-  mat[i + 2] = vec[2];
-  mat[i + 3] = vec[3];
-  return mat
-};
-goog.vec.Mat4.getColumn = function(mat, column, vec) {
-  var i = column * 4;
-  vec[0] = mat[i];
-  vec[1] = mat[i + 1];
-  vec[2] = mat[i + 2];
-  vec[3] = mat[i + 3];
-  return vec
-};
-goog.vec.Mat4.setColumns = function(mat, vec0, vec1, vec2, vec3) {
-  goog.vec.Mat4.setColumn(mat, 0, vec0);
-  goog.vec.Mat4.setColumn(mat, 1, vec1);
-  goog.vec.Mat4.setColumn(mat, 2, vec2);
-  goog.vec.Mat4.setColumn(mat, 3, vec3);
-  return mat
-};
-goog.vec.Mat4.getColumns = function(mat, vec0, vec1, vec2, vec3) {
-  goog.vec.Mat4.getColumn(mat, 0, vec0);
-  goog.vec.Mat4.getColumn(mat, 1, vec1);
-  goog.vec.Mat4.getColumn(mat, 2, vec2);
-  goog.vec.Mat4.getColumn(mat, 3, vec3)
-};
-goog.vec.Mat4.setRowValues = function(mat, row, v0, v1, v2, v3) {
-  mat[row] = v0;
-  mat[row + 4] = v1;
-  mat[row + 8] = v2;
-  mat[row + 12] = v3;
-  return mat
-};
-goog.vec.Mat4.setRow = function(mat, row, vec) {
-  mat[row] = vec[0];
-  mat[row + 4] = vec[1];
-  mat[row + 8] = vec[2];
-  mat[row + 12] = vec[3];
-  return mat
-};
-goog.vec.Mat4.getRow = function(mat, row, vec) {
-  vec[0] = mat[row];
-  vec[1] = mat[row + 4];
-  vec[2] = mat[row + 8];
-  vec[3] = mat[row + 12];
-  return vec
-};
-goog.vec.Mat4.setRows = function(mat, vec0, vec1, vec2, vec3) {
-  goog.vec.Mat4.setRow(mat, 0, vec0);
-  goog.vec.Mat4.setRow(mat, 1, vec1);
-  goog.vec.Mat4.setRow(mat, 2, vec2);
-  goog.vec.Mat4.setRow(mat, 3, vec3);
-  return mat
-};
-goog.vec.Mat4.getRows = function(mat, vec0, vec1, vec2, vec3) {
-  goog.vec.Mat4.getRow(mat, 0, vec0);
-  goog.vec.Mat4.getRow(mat, 1, vec1);
-  goog.vec.Mat4.getRow(mat, 2, vec2);
-  goog.vec.Mat4.getRow(mat, 3, vec3)
-};
-goog.vec.Mat4.makeZero = function(mat) {
-  mat[0] = 0;
-  mat[1] = 0;
-  mat[2] = 0;
-  mat[3] = 0;
-  mat[4] = 0;
-  mat[5] = 0;
-  mat[6] = 0;
-  mat[7] = 0;
-  mat[8] = 0;
-  mat[9] = 0;
-  mat[10] = 0;
-  mat[11] = 0;
-  mat[12] = 0;
-  mat[13] = 0;
-  mat[14] = 0;
-  mat[15] = 0;
-  return mat
-};
-goog.vec.Mat4.makeIdentity = function(mat) {
-  mat[0] = 1;
-  mat[1] = 0;
-  mat[2] = 0;
-  mat[3] = 0;
-  mat[4] = 0;
-  mat[5] = 1;
-  mat[6] = 0;
-  mat[7] = 0;
-  mat[8] = 0;
-  mat[9] = 0;
-  mat[10] = 1;
-  mat[11] = 0;
-  mat[12] = 0;
-  mat[13] = 0;
-  mat[14] = 0;
-  mat[15] = 1;
-  return mat
-};
-goog.vec.Mat4.addMat = function(mat0, mat1, resultMat) {
-  resultMat[0] = mat0[0] + mat1[0];
-  resultMat[1] = mat0[1] + mat1[1];
-  resultMat[2] = mat0[2] + mat1[2];
-  resultMat[3] = mat0[3] + mat1[3];
-  resultMat[4] = mat0[4] + mat1[4];
-  resultMat[5] = mat0[5] + mat1[5];
-  resultMat[6] = mat0[6] + mat1[6];
-  resultMat[7] = mat0[7] + mat1[7];
-  resultMat[8] = mat0[8] + mat1[8];
-  resultMat[9] = mat0[9] + mat1[9];
-  resultMat[10] = mat0[10] + mat1[10];
-  resultMat[11] = mat0[11] + mat1[11];
-  resultMat[12] = mat0[12] + mat1[12];
-  resultMat[13] = mat0[13] + mat1[13];
-  resultMat[14] = mat0[14] + mat1[14];
-  resultMat[15] = mat0[15] + mat1[15];
-  return resultMat
-};
-goog.vec.Mat4.subMat = function(mat0, mat1, resultMat) {
-  resultMat[0] = mat0[0] - mat1[0];
-  resultMat[1] = mat0[1] - mat1[1];
-  resultMat[2] = mat0[2] - mat1[2];
-  resultMat[3] = mat0[3] - mat1[3];
-  resultMat[4] = mat0[4] - mat1[4];
-  resultMat[5] = mat0[5] - mat1[5];
-  resultMat[6] = mat0[6] - mat1[6];
-  resultMat[7] = mat0[7] - mat1[7];
-  resultMat[8] = mat0[8] - mat1[8];
-  resultMat[9] = mat0[9] - mat1[9];
-  resultMat[10] = mat0[10] - mat1[10];
-  resultMat[11] = mat0[11] - mat1[11];
-  resultMat[12] = mat0[12] - mat1[12];
-  resultMat[13] = mat0[13] - mat1[13];
-  resultMat[14] = mat0[14] - mat1[14];
-  resultMat[15] = mat0[15] - mat1[15];
-  return resultMat
-};
-goog.vec.Mat4.multScalar = function(mat, scalar, resultMat) {
-  resultMat[0] = mat[0] * scalar;
-  resultMat[1] = mat[1] * scalar;
-  resultMat[2] = mat[2] * scalar;
-  resultMat[3] = mat[3] * scalar;
-  resultMat[4] = mat[4] * scalar;
-  resultMat[5] = mat[5] * scalar;
-  resultMat[6] = mat[6] * scalar;
-  resultMat[7] = mat[7] * scalar;
-  resultMat[8] = mat[8] * scalar;
-  resultMat[9] = mat[9] * scalar;
-  resultMat[10] = mat[10] * scalar;
-  resultMat[11] = mat[11] * scalar;
-  resultMat[12] = mat[12] * scalar;
-  resultMat[13] = mat[13] * scalar;
-  resultMat[14] = mat[14] * scalar;
-  resultMat[15] = mat[15] * scalar;
-  return resultMat
-};
-goog.vec.Mat4.multMat = function(mat0, mat1, resultMat) {
-  var a00 = mat0[0], a10 = mat0[1], a20 = mat0[2], a30 = mat0[3];
-  var a01 = mat0[4], a11 = mat0[5], a21 = mat0[6], a31 = mat0[7];
-  var a02 = mat0[8], a12 = mat0[9], a22 = mat0[10], a32 = mat0[11];
-  var a03 = mat0[12], a13 = mat0[13], a23 = mat0[14], a33 = mat0[15];
-  var b00 = mat1[0], b10 = mat1[1], b20 = mat1[2], b30 = mat1[3];
-  var b01 = mat1[4], b11 = mat1[5], b21 = mat1[6], b31 = mat1[7];
-  var b02 = mat1[8], b12 = mat1[9], b22 = mat1[10], b32 = mat1[11];
-  var b03 = mat1[12], b13 = mat1[13], b23 = mat1[14], b33 = mat1[15];
-  resultMat[0] = a00 * b00 + a01 * b10 + a02 * b20 + a03 * b30;
-  resultMat[1] = a10 * b00 + a11 * b10 + a12 * b20 + a13 * b30;
-  resultMat[2] = a20 * b00 + a21 * b10 + a22 * b20 + a23 * b30;
-  resultMat[3] = a30 * b00 + a31 * b10 + a32 * b20 + a33 * b30;
-  resultMat[4] = a00 * b01 + a01 * b11 + a02 * b21 + a03 * b31;
-  resultMat[5] = a10 * b01 + a11 * b11 + a12 * b21 + a13 * b31;
-  resultMat[6] = a20 * b01 + a21 * b11 + a22 * b21 + a23 * b31;
-  resultMat[7] = a30 * b01 + a31 * b11 + a32 * b21 + a33 * b31;
-  resultMat[8] = a00 * b02 + a01 * b12 + a02 * b22 + a03 * b32;
-  resultMat[9] = a10 * b02 + a11 * b12 + a12 * b22 + a13 * b32;
-  resultMat[10] = a20 * b02 + a21 * b12 + a22 * b22 + a23 * b32;
-  resultMat[11] = a30 * b02 + a31 * b12 + a32 * b22 + a33 * b32;
-  resultMat[12] = a00 * b03 + a01 * b13 + a02 * b23 + a03 * b33;
-  resultMat[13] = a10 * b03 + a11 * b13 + a12 * b23 + a13 * b33;
-  resultMat[14] = a20 * b03 + a21 * b13 + a22 * b23 + a23 * b33;
-  resultMat[15] = a30 * b03 + a31 * b13 + a32 * b23 + a33 * b33;
-  return resultMat
-};
-goog.vec.Mat4.transpose = function(mat, resultMat) {
-  if(resultMat == mat) {
-    var a10 = mat[1], a20 = mat[2], a30 = mat[3];
-    var a21 = mat[6], a31 = mat[7];
-    var a32 = mat[11];
-    resultMat[1] = mat[4];
-    resultMat[2] = mat[8];
-    resultMat[3] = mat[12];
-    resultMat[4] = a10;
-    resultMat[6] = mat[9];
-    resultMat[7] = mat[13];
-    resultMat[8] = a20;
-    resultMat[9] = a21;
-    resultMat[11] = mat[14];
-    resultMat[12] = a30;
-    resultMat[13] = a31;
-    resultMat[14] = a32
-  }else {
-    resultMat[0] = mat[0];
-    resultMat[1] = mat[4];
-    resultMat[2] = mat[8];
-    resultMat[3] = mat[12];
-    resultMat[4] = mat[1];
-    resultMat[5] = mat[5];
-    resultMat[6] = mat[9];
-    resultMat[7] = mat[13];
-    resultMat[8] = mat[2];
-    resultMat[9] = mat[6];
-    resultMat[10] = mat[10];
-    resultMat[11] = mat[14];
-    resultMat[12] = mat[3];
-    resultMat[13] = mat[7];
-    resultMat[14] = mat[11];
-    resultMat[15] = mat[15]
-  }
-  return resultMat
-};
-goog.vec.Mat4.determinant = function(mat) {
-  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
-  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
-  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
-  var m03 = mat[12], m13 = mat[13], m23 = mat[14], m33 = mat[15];
-  var a0 = m00 * m11 - m10 * m01;
-  var a1 = m00 * m21 - m20 * m01;
-  var a2 = m00 * m31 - m30 * m01;
-  var a3 = m10 * m21 - m20 * m11;
-  var a4 = m10 * m31 - m30 * m11;
-  var a5 = m20 * m31 - m30 * m21;
-  var b0 = m02 * m13 - m12 * m03;
-  var b1 = m02 * m23 - m22 * m03;
-  var b2 = m02 * m33 - m32 * m03;
-  var b3 = m12 * m23 - m22 * m13;
-  var b4 = m12 * m33 - m32 * m13;
-  var b5 = m22 * m33 - m32 * m23;
-  return a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0
-};
-goog.vec.Mat4.invert = function(mat, resultMat) {
-  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
-  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
-  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
-  var m03 = mat[12], m13 = mat[13], m23 = mat[14], m33 = mat[15];
-  var a0 = m00 * m11 - m10 * m01;
-  var a1 = m00 * m21 - m20 * m01;
-  var a2 = m00 * m31 - m30 * m01;
-  var a3 = m10 * m21 - m20 * m11;
-  var a4 = m10 * m31 - m30 * m11;
-  var a5 = m20 * m31 - m30 * m21;
-  var b0 = m02 * m13 - m12 * m03;
-  var b1 = m02 * m23 - m22 * m03;
-  var b2 = m02 * m33 - m32 * m03;
-  var b3 = m12 * m23 - m22 * m13;
-  var b4 = m12 * m33 - m32 * m13;
-  var b5 = m22 * m33 - m32 * m23;
-  var det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
-  if(det == 0) {
-    return false
-  }
-  var idet = 1 / det;
-  resultMat[0] = (m11 * b5 - m21 * b4 + m31 * b3) * idet;
-  resultMat[1] = (-m10 * b5 + m20 * b4 - m30 * b3) * idet;
-  resultMat[2] = (m13 * a5 - m23 * a4 + m33 * a3) * idet;
-  resultMat[3] = (-m12 * a5 + m22 * a4 - m32 * a3) * idet;
-  resultMat[4] = (-m01 * b5 + m21 * b2 - m31 * b1) * idet;
-  resultMat[5] = (m00 * b5 - m20 * b2 + m30 * b1) * idet;
-  resultMat[6] = (-m03 * a5 + m23 * a2 - m33 * a1) * idet;
-  resultMat[7] = (m02 * a5 - m22 * a2 + m32 * a1) * idet;
-  resultMat[8] = (m01 * b4 - m11 * b2 + m31 * b0) * idet;
-  resultMat[9] = (-m00 * b4 + m10 * b2 - m30 * b0) * idet;
-  resultMat[10] = (m03 * a4 - m13 * a2 + m33 * a0) * idet;
-  resultMat[11] = (-m02 * a4 + m12 * a2 - m32 * a0) * idet;
-  resultMat[12] = (-m01 * b3 + m11 * b1 - m21 * b0) * idet;
-  resultMat[13] = (m00 * b3 - m10 * b1 + m20 * b0) * idet;
-  resultMat[14] = (-m03 * a3 + m13 * a1 - m23 * a0) * idet;
-  resultMat[15] = (m02 * a3 - m12 * a1 + m22 * a0) * idet;
-  return true
-};
-goog.vec.Mat4.equals = function(mat0, mat1) {
-  return mat0.length == mat1.length && mat0[0] == mat1[0] && mat0[1] == mat1[1] && mat0[2] == mat1[2] && mat0[3] == mat1[3] && mat0[4] == mat1[4] && mat0[5] == mat1[5] && mat0[6] == mat1[6] && mat0[7] == mat1[7] && mat0[8] == mat1[8] && mat0[9] == mat1[9] && mat0[10] == mat1[10] && mat0[11] == mat1[11] && mat0[12] == mat1[12] && mat0[13] == mat1[13] && mat0[14] == mat1[14] && mat0[15] == mat1[15]
-};
-goog.vec.Mat4.multVec3 = function(mat, vec, resultVec) {
-  var x = vec[0], y = vec[1], z = vec[2];
-  resultVec[0] = x * mat[0] + y * mat[4] + z * mat[8] + mat[12];
-  resultVec[1] = x * mat[1] + y * mat[5] + z * mat[9] + mat[13];
-  resultVec[2] = x * mat[2] + y * mat[6] + z * mat[10] + mat[14];
-  return resultVec
-};
-goog.vec.Mat4.multVec3NoTranslate = function(mat, vec, resultVec) {
-  var x = vec[0], y = vec[1], z = vec[2];
-  resultVec[0] = x * mat[0] + y * mat[4] + z * mat[8];
-  resultVec[1] = x * mat[1] + y * mat[5] + z * mat[9];
-  resultVec[2] = x * mat[2] + y * mat[6] + z * mat[10];
-  return resultVec
-};
-goog.vec.Mat4.multVec3Projective = function(mat, vec, resultVec) {
-  var x = vec[0], y = vec[1], z = vec[2];
-  var invw = 1 / (x * mat[3] + y * mat[7] + z * mat[11] + mat[15]);
-  resultVec[0] = (x * mat[0] + y * mat[4] + z * mat[8] + mat[12]) * invw;
-  resultVec[1] = (x * mat[1] + y * mat[5] + z * mat[9] + mat[13]) * invw;
-  resultVec[2] = (x * mat[2] + y * mat[6] + z * mat[10] + mat[14]) * invw;
-  return resultVec
-};
-goog.vec.Mat4.multVec4 = function(mat, vec, resultVec) {
-  var x = vec[0], y = vec[1], z = vec[2], w = vec[3];
-  resultVec[0] = x * mat[0] + y * mat[4] + z * mat[8] + w * mat[12];
-  resultVec[1] = x * mat[1] + y * mat[5] + z * mat[9] + w * mat[13];
-  resultVec[2] = x * mat[2] + y * mat[6] + z * mat[10] + w * mat[14];
-  resultVec[3] = x * mat[3] + y * mat[7] + z * mat[11] + w * mat[15];
-  return resultVec
-};
-goog.vec.Mat4.makeTranslate = function(mat, x, y, z) {
-  goog.vec.Mat4.makeIdentity(mat);
-  return goog.vec.Mat4.setColumnValues(mat, 3, x, y, z, 1)
-};
-goog.vec.Mat4.makeScale = function(mat, x, y, z) {
-  goog.vec.Mat4.makeIdentity(mat);
-  return goog.vec.Mat4.setDiagonalValues(mat, x, y, z, 1)
-};
-goog.vec.Mat4.makeRotate = function(mat, angle, ax, ay, az) {
-  var c = Math.cos(angle);
-  var d = 1 - c;
-  var s = Math.sin(angle);
-  return goog.vec.Mat4.setFromValues(mat, ax * ax * d + c, ax * ay * d + az * s, ax * az * d - ay * s, 0, ax * ay * d - az * s, ay * ay * d + c, ay * az * d + ax * s, 0, ax * az * d + ay * s, ay * az * d - ax * s, az * az * d + c, 0, 0, 0, 0, 1)
-};
-goog.vec.Mat4.makeRotateX = function(mat, angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  return goog.vec.Mat4.setFromValues(mat, 1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1)
-};
-goog.vec.Mat4.makeRotateY = function(mat, angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  return goog.vec.Mat4.setFromValues(mat, c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1)
-};
-goog.vec.Mat4.makeRotateZ = function(mat, angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  return goog.vec.Mat4.setFromValues(mat, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
-};
-goog.vec.Mat4.makeFrustum = function(mat, left, right, bottom, top, near, far) {
-  var x = 2 * near / (right - left);
-  var y = 2 * near / (top - bottom);
-  var a = (right + left) / (right - left);
-  var b = (top + bottom) / (top - bottom);
-  var c = -(far + near) / (far - near);
-  var d = -(2 * far * near) / (far - near);
-  return goog.vec.Mat4.setFromValues(mat, x, 0, 0, 0, 0, y, 0, 0, a, b, c, -1, 0, 0, d, 0)
-};
-goog.vec.Mat4.makePerspective = function(mat, fovy, aspect, near, far) {
-  var angle = fovy / 2;
-  var dz = far - near;
-  var sinAngle = Math.sin(angle);
-  if(dz == 0 || sinAngle == 0 || aspect == 0) {
-    return mat
-  }
-  var cot = Math.cos(angle) / sinAngle;
-  return goog.vec.Mat4.setFromValues(mat, cot / aspect, 0, 0, 0, 0, cot, 0, 0, 0, 0, -(far + near) / dz, -1, 0, 0, -(2 * near * far) / dz, 0)
-};
-goog.vec.Mat4.makeOrtho = function(mat, left, right, bottom, top, near, far) {
-  var x = 2 / (right - left);
-  var y = 2 / (top - bottom);
-  var z = -2 / (far - near);
-  var a = -(right + left) / (right - left);
-  var b = -(top + bottom) / (top - bottom);
-  var c = -(far + near) / (far - near);
-  return goog.vec.Mat4.setFromValues(mat, x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, a, b, c, 1)
-};
-goog.vec.Mat4.makeLookAt = function(mat, eyePt, centerPt, worldUpVec) {
-  var fwdVec = goog.vec.Mat4.tmpVec4_[0];
-  goog.vec.Vec3.subtract(centerPt, eyePt, fwdVec);
-  goog.vec.Vec3.normalize(fwdVec, fwdVec);
-  fwdVec[3] = 0;
-  var sideVec = goog.vec.Mat4.tmpVec4_[1];
-  goog.vec.Vec3.cross(fwdVec, worldUpVec, sideVec);
-  goog.vec.Vec3.normalize(sideVec, sideVec);
-  sideVec[3] = 0;
-  var upVec = goog.vec.Mat4.tmpVec4_[2];
-  goog.vec.Vec3.cross(sideVec, fwdVec, upVec);
-  goog.vec.Vec3.normalize(upVec, upVec);
-  upVec[3] = 0;
-  goog.vec.Vec3.negate(fwdVec, fwdVec);
-  goog.vec.Mat4.setRow(mat, 0, sideVec);
-  goog.vec.Mat4.setRow(mat, 1, upVec);
-  goog.vec.Mat4.setRow(mat, 2, fwdVec);
-  goog.vec.Mat4.setRowValues(mat, 3, 0, 0, 0, 1);
-  goog.vec.Mat4.translate(mat, -eyePt[0], -eyePt[1], -eyePt[2]);
-  return mat
-};
-goog.vec.Mat4.toLookAt = function(mat, eyePt, fwdVec, worldUpVec) {
-  var matInverse = goog.vec.Mat4.tmpMat4_[0];
-  if(!goog.vec.Mat4.invert(mat, matInverse)) {
-    return false
-  }
-  if(eyePt) {
-    eyePt[0] = matInverse[12];
-    eyePt[1] = matInverse[13];
-    eyePt[2] = matInverse[14]
-  }
-  if(fwdVec || worldUpVec) {
-    if(!fwdVec) {
-      fwdVec = goog.vec.Mat4.tmpVec3_[0]
-    }
-    fwdVec[0] = -mat[2];
-    fwdVec[1] = -mat[6];
-    fwdVec[2] = -mat[10];
-    goog.vec.Vec3.normalize(fwdVec, fwdVec)
-  }
-  if(worldUpVec) {
-    var side = goog.vec.Mat4.tmpVec3_[1];
-    side[0] = mat[0];
-    side[1] = mat[4];
-    side[2] = mat[8];
-    goog.vec.Vec3.cross(side, fwdVec, worldUpVec);
-    goog.vec.Vec3.normalize(worldUpVec, worldUpVec)
-  }
-  return true
-};
-goog.vec.Mat4.makeEulerZXZ = function(mat, theta1, theta2, theta3) {
-  var c1 = Math.cos(theta1);
-  var s1 = Math.sin(theta1);
-  var c2 = Math.cos(theta2);
-  var s2 = Math.sin(theta2);
-  var c3 = Math.cos(theta3);
-  var s3 = Math.sin(theta3);
-  mat[0] = c1 * c3 - c2 * s1 * s3;
-  mat[1] = c2 * c1 * s3 + c3 * s1;
-  mat[2] = s3 * s2;
-  mat[3] = 0;
-  mat[4] = -c1 * s3 - c3 * c2 * s1;
-  mat[5] = c1 * c2 * c3 - s1 * s3;
-  mat[6] = c3 * s2;
-  mat[7] = 0;
-  mat[8] = s2 * s1;
-  mat[9] = -c1 * s2;
-  mat[10] = c2;
-  mat[11] = 0;
-  mat[12] = 0;
-  mat[13] = 0;
-  mat[14] = 0;
-  mat[15] = 1;
-  return mat
-};
-goog.vec.Mat4.toEulerZXZ = function(mat, euler, opt_theta2IsNegative) {
-  var sinTheta2 = Math.sqrt(mat[2] * mat[2] + mat[6] * mat[6]);
-  var signTheta2 = opt_theta2IsNegative ? -1 : 1;
-  if(sinTheta2 > goog.vec.EPSILON) {
-    euler[2] = Math.atan2(mat[2] * signTheta2, mat[6] * signTheta2);
-    euler[1] = Math.atan2(sinTheta2 * signTheta2, mat[10]);
-    euler[0] = Math.atan2(mat[8] * signTheta2, -mat[9] * signTheta2)
-  }else {
-    euler[0] = 0;
-    euler[1] = Math.atan2(sinTheta2 * signTheta2, mat[10]);
-    euler[2] = Math.atan2(mat[1], mat[0])
-  }
-  euler[0] = (euler[0] + Math.PI * 2) % (Math.PI * 2);
-  euler[2] = (euler[2] + Math.PI * 2) % (Math.PI * 2);
-  euler[1] = (euler[1] * signTheta2 + Math.PI * 2) % (Math.PI * 2) * signTheta2;
-  return euler
-};
-goog.vec.Mat4.translate = function(mat, x, y, z) {
-  return goog.vec.Mat4.setColumnValues(mat, 3, mat[0] * x + mat[4] * y + mat[8] * z + mat[12], mat[1] * x + mat[5] * y + mat[9] * z + mat[13], mat[2] * x + mat[6] * y + mat[10] * z + mat[14], mat[3] * x + mat[7] * y + mat[11] * z + mat[15])
-};
-goog.vec.Mat4.scale = function(mat, x, y, z) {
-  return goog.vec.Mat4.setFromValues(mat, mat[0] * x, mat[1] * x, mat[2] * x, mat[3] * x, mat[4] * y, mat[5] * y, mat[6] * y, mat[7] * y, mat[8] * z, mat[9] * z, mat[10] * z, mat[11] * z, mat[12], mat[13], mat[14], mat[15])
-};
-goog.vec.Mat4.rotate = function(mat, angle, x, y, z) {
-  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
-  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
-  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
-  var m03 = mat[12], m13 = mat[13], m23 = mat[14], m33 = mat[15];
-  var cosAngle = Math.cos(angle);
-  var sinAngle = Math.sin(angle);
-  var diffCosAngle = 1 - cosAngle;
-  var r00 = x * x * diffCosAngle + cosAngle;
-  var r10 = x * y * diffCosAngle + z * sinAngle;
-  var r20 = x * z * diffCosAngle - y * sinAngle;
-  var r01 = x * y * diffCosAngle - z * sinAngle;
-  var r11 = y * y * diffCosAngle + cosAngle;
-  var r21 = y * z * diffCosAngle + x * sinAngle;
-  var r02 = x * z * diffCosAngle + y * sinAngle;
-  var r12 = y * z * diffCosAngle - x * sinAngle;
-  var r22 = z * z * diffCosAngle + cosAngle;
-  return goog.vec.Mat4.setFromValues(mat, m00 * r00 + m01 * r10 + m02 * r20, m10 * r00 + m11 * r10 + m12 * r20, m20 * r00 + m21 * r10 + m22 * r20, m30 * r00 + m31 * r10 + m32 * r20, m00 * r01 + m01 * r11 + m02 * r21, m10 * r01 + m11 * r11 + m12 * r21, m20 * r01 + m21 * r11 + m22 * r21, m30 * r01 + m31 * r11 + m32 * r21, m00 * r02 + m01 * r12 + m02 * r22, m10 * r02 + m11 * r12 + m12 * r22, m20 * r02 + m21 * r12 + m22 * r22, m30 * r02 + m31 * r12 + m32 * r22, m03, m13, m23, m33)
-};
-goog.vec.Mat4.rotateX = function(mat, angle) {
-  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
-  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  mat[4] = m01 * c + m02 * s;
-  mat[5] = m11 * c + m12 * s;
-  mat[6] = m21 * c + m22 * s;
-  mat[7] = m31 * c + m32 * s;
-  mat[8] = m01 * -s + m02 * c;
-  mat[9] = m11 * -s + m12 * c;
-  mat[10] = m21 * -s + m22 * c;
-  mat[11] = m31 * -s + m32 * c;
-  return mat
-};
-goog.vec.Mat4.rotateY = function(mat, angle) {
-  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
-  var m02 = mat[8], m12 = mat[9], m22 = mat[10], m32 = mat[11];
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  mat[0] = m00 * c + m02 * -s;
-  mat[1] = m10 * c + m12 * -s;
-  mat[2] = m20 * c + m22 * -s;
-  mat[3] = m30 * c + m32 * -s;
-  mat[8] = m00 * s + m02 * c;
-  mat[9] = m10 * s + m12 * c;
-  mat[10] = m20 * s + m22 * c;
-  mat[11] = m30 * s + m32 * c;
-  return mat
-};
-goog.vec.Mat4.rotateZ = function(mat, angle) {
-  var m00 = mat[0], m10 = mat[1], m20 = mat[2], m30 = mat[3];
-  var m01 = mat[4], m11 = mat[5], m21 = mat[6], m31 = mat[7];
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  mat[0] = m00 * c + m01 * s;
-  mat[1] = m10 * c + m11 * s;
-  mat[2] = m20 * c + m21 * s;
-  mat[3] = m30 * c + m31 * s;
-  mat[4] = m00 * -s + m01 * c;
-  mat[5] = m10 * -s + m11 * c;
-  mat[6] = m20 * -s + m21 * c;
-  mat[7] = m30 * -s + m31 * c;
-  return mat
-};
-goog.vec.Mat4.getTranslation = function(mat, translation) {
-  translation[0] = mat[12];
-  translation[1] = mat[13];
-  translation[2] = mat[14];
-  return translation
-};
-goog.vec.Mat4.tmpVec3_ = [goog.vec.Vec3.createFloat64(), goog.vec.Vec3.createFloat64()];
-goog.vec.Mat4.tmpVec4_ = [goog.vec.Vec4.createFloat64(), goog.vec.Vec4.createFloat64(), goog.vec.Vec4.createFloat64()];
-goog.vec.Mat4.tmpMat4_ = [goog.vec.Mat4.createFloat64()];
 goog.provide("ol.TransformFunction");
 ol.TransformFunction;
 goog.provide("ol.Extent");
@@ -18065,1203 +19422,6 @@ goog.events.KeyEvent = function(keyCode, charCode, repeat, browserEvent) {
   this.repeat = repeat
 };
 goog.inherits(goog.events.KeyEvent, goog.events.BrowserEvent);
-goog.provide("goog.dom.vendor");
-goog.require("goog.userAgent");
-goog.dom.vendor.getVendorJsPrefix = function() {
-  if(goog.userAgent.WEBKIT) {
-    return"Webkit"
-  }else {
-    if(goog.userAgent.GECKO) {
-      return"Moz"
-    }else {
-      if(goog.userAgent.IE) {
-        return"ms"
-      }else {
-        if(goog.userAgent.OPERA) {
-          return"O"
-        }
-      }
-    }
-  }
-  return null
-};
-goog.dom.vendor.getVendorPrefix = function() {
-  if(goog.userAgent.WEBKIT) {
-    return"-webkit"
-  }else {
-    if(goog.userAgent.GECKO) {
-      return"-moz"
-    }else {
-      if(goog.userAgent.IE) {
-        return"-ms"
-      }else {
-        if(goog.userAgent.OPERA) {
-          return"-o"
-        }
-      }
-    }
-  }
-  return null
-};
-goog.provide("goog.math.Box");
-goog.require("goog.math.Coordinate");
-goog.math.Box = function(top, right, bottom, left) {
-  this.top = top;
-  this.right = right;
-  this.bottom = bottom;
-  this.left = left
-};
-goog.math.Box.boundingBox = function(var_args) {
-  var box = new goog.math.Box(arguments[0].y, arguments[0].x, arguments[0].y, arguments[0].x);
-  for(var i = 1;i < arguments.length;i++) {
-    var coord = arguments[i];
-    box.top = Math.min(box.top, coord.y);
-    box.right = Math.max(box.right, coord.x);
-    box.bottom = Math.max(box.bottom, coord.y);
-    box.left = Math.min(box.left, coord.x)
-  }
-  return box
-};
-goog.math.Box.prototype.clone = function() {
-  return new goog.math.Box(this.top, this.right, this.bottom, this.left)
-};
-if(goog.DEBUG) {
-  goog.math.Box.prototype.toString = function() {
-    return"(" + this.top + "t, " + this.right + "r, " + this.bottom + "b, " + this.left + "l)"
-  }
-}
-goog.math.Box.prototype.contains = function(other) {
-  return goog.math.Box.contains(this, other)
-};
-goog.math.Box.prototype.expand = function(top, opt_right, opt_bottom, opt_left) {
-  if(goog.isObject(top)) {
-    this.top -= top.top;
-    this.right += top.right;
-    this.bottom += top.bottom;
-    this.left -= top.left
-  }else {
-    this.top -= top;
-    this.right += opt_right;
-    this.bottom += opt_bottom;
-    this.left -= opt_left
-  }
-  return this
-};
-goog.math.Box.prototype.expandToInclude = function(box) {
-  this.left = Math.min(this.left, box.left);
-  this.top = Math.min(this.top, box.top);
-  this.right = Math.max(this.right, box.right);
-  this.bottom = Math.max(this.bottom, box.bottom)
-};
-goog.math.Box.equals = function(a, b) {
-  if(a == b) {
-    return true
-  }
-  if(!a || !b) {
-    return false
-  }
-  return a.top == b.top && a.right == b.right && a.bottom == b.bottom && a.left == b.left
-};
-goog.math.Box.contains = function(box, other) {
-  if(!box || !other) {
-    return false
-  }
-  if(other instanceof goog.math.Box) {
-    return other.left >= box.left && other.right <= box.right && other.top >= box.top && other.bottom <= box.bottom
-  }
-  return other.x >= box.left && other.x <= box.right && other.y >= box.top && other.y <= box.bottom
-};
-goog.math.Box.relativePositionX = function(box, coord) {
-  if(coord.x < box.left) {
-    return coord.x - box.left
-  }else {
-    if(coord.x > box.right) {
-      return coord.x - box.right
-    }
-  }
-  return 0
-};
-goog.math.Box.relativePositionY = function(box, coord) {
-  if(coord.y < box.top) {
-    return coord.y - box.top
-  }else {
-    if(coord.y > box.bottom) {
-      return coord.y - box.bottom
-    }
-  }
-  return 0
-};
-goog.math.Box.distance = function(box, coord) {
-  var x = goog.math.Box.relativePositionX(box, coord);
-  var y = goog.math.Box.relativePositionY(box, coord);
-  return Math.sqrt(x * x + y * y)
-};
-goog.math.Box.intersects = function(a, b) {
-  return a.left <= b.right && b.left <= a.right && a.top <= b.bottom && b.top <= a.bottom
-};
-goog.math.Box.intersectsWithPadding = function(a, b, padding) {
-  return a.left <= b.right + padding && b.left <= a.right + padding && a.top <= b.bottom + padding && b.top <= a.bottom + padding
-};
-goog.math.Box.prototype.ceil = function() {
-  this.top = Math.ceil(this.top);
-  this.right = Math.ceil(this.right);
-  this.bottom = Math.ceil(this.bottom);
-  this.left = Math.ceil(this.left);
-  return this
-};
-goog.math.Box.prototype.floor = function() {
-  this.top = Math.floor(this.top);
-  this.right = Math.floor(this.right);
-  this.bottom = Math.floor(this.bottom);
-  this.left = Math.floor(this.left);
-  return this
-};
-goog.math.Box.prototype.round = function() {
-  this.top = Math.round(this.top);
-  this.right = Math.round(this.right);
-  this.bottom = Math.round(this.bottom);
-  this.left = Math.round(this.left);
-  return this
-};
-goog.math.Box.prototype.translate = function(tx, opt_ty) {
-  if(tx instanceof goog.math.Coordinate) {
-    this.left += tx.x;
-    this.right += tx.x;
-    this.top += tx.y;
-    this.bottom += tx.y
-  }else {
-    this.left += tx;
-    this.right += tx;
-    if(goog.isNumber(opt_ty)) {
-      this.top += opt_ty;
-      this.bottom += opt_ty
-    }
-  }
-  return this
-};
-goog.math.Box.prototype.scale = function(sx, opt_sy) {
-  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
-  this.left *= sx;
-  this.right *= sx;
-  this.top *= sy;
-  this.bottom *= sy;
-  return this
-};
-goog.provide("goog.math.Rect");
-goog.require("goog.math.Box");
-goog.require("goog.math.Coordinate");
-goog.require("goog.math.Size");
-goog.math.Rect = function(x, y, w, h) {
-  this.left = x;
-  this.top = y;
-  this.width = w;
-  this.height = h
-};
-goog.math.Rect.prototype.clone = function() {
-  return new goog.math.Rect(this.left, this.top, this.width, this.height)
-};
-goog.math.Rect.prototype.toBox = function() {
-  var right = this.left + this.width;
-  var bottom = this.top + this.height;
-  return new goog.math.Box(this.top, right, bottom, this.left)
-};
-goog.math.Rect.createFromBox = function(box) {
-  return new goog.math.Rect(box.left, box.top, box.right - box.left, box.bottom - box.top)
-};
-if(goog.DEBUG) {
-  goog.math.Rect.prototype.toString = function() {
-    return"(" + this.left + ", " + this.top + " - " + this.width + "w x " + this.height + "h)"
-  }
-}
-goog.math.Rect.equals = function(a, b) {
-  if(a == b) {
-    return true
-  }
-  if(!a || !b) {
-    return false
-  }
-  return a.left == b.left && a.width == b.width && a.top == b.top && a.height == b.height
-};
-goog.math.Rect.prototype.intersection = function(rect) {
-  var x0 = Math.max(this.left, rect.left);
-  var x1 = Math.min(this.left + this.width, rect.left + rect.width);
-  if(x0 <= x1) {
-    var y0 = Math.max(this.top, rect.top);
-    var y1 = Math.min(this.top + this.height, rect.top + rect.height);
-    if(y0 <= y1) {
-      this.left = x0;
-      this.top = y0;
-      this.width = x1 - x0;
-      this.height = y1 - y0;
-      return true
-    }
-  }
-  return false
-};
-goog.math.Rect.intersection = function(a, b) {
-  var x0 = Math.max(a.left, b.left);
-  var x1 = Math.min(a.left + a.width, b.left + b.width);
-  if(x0 <= x1) {
-    var y0 = Math.max(a.top, b.top);
-    var y1 = Math.min(a.top + a.height, b.top + b.height);
-    if(y0 <= y1) {
-      return new goog.math.Rect(x0, y0, x1 - x0, y1 - y0)
-    }
-  }
-  return null
-};
-goog.math.Rect.intersects = function(a, b) {
-  return a.left <= b.left + b.width && b.left <= a.left + a.width && a.top <= b.top + b.height && b.top <= a.top + a.height
-};
-goog.math.Rect.prototype.intersects = function(rect) {
-  return goog.math.Rect.intersects(this, rect)
-};
-goog.math.Rect.difference = function(a, b) {
-  var intersection = goog.math.Rect.intersection(a, b);
-  if(!intersection || !intersection.height || !intersection.width) {
-    return[a.clone()]
-  }
-  var result = [];
-  var top = a.top;
-  var height = a.height;
-  var ar = a.left + a.width;
-  var ab = a.top + a.height;
-  var br = b.left + b.width;
-  var bb = b.top + b.height;
-  if(b.top > a.top) {
-    result.push(new goog.math.Rect(a.left, a.top, a.width, b.top - a.top));
-    top = b.top;
-    height -= b.top - a.top
-  }
-  if(bb < ab) {
-    result.push(new goog.math.Rect(a.left, bb, a.width, ab - bb));
-    height = bb - top
-  }
-  if(b.left > a.left) {
-    result.push(new goog.math.Rect(a.left, top, b.left - a.left, height))
-  }
-  if(br < ar) {
-    result.push(new goog.math.Rect(br, top, ar - br, height))
-  }
-  return result
-};
-goog.math.Rect.prototype.difference = function(rect) {
-  return goog.math.Rect.difference(this, rect)
-};
-goog.math.Rect.prototype.boundingRect = function(rect) {
-  var right = Math.max(this.left + this.width, rect.left + rect.width);
-  var bottom = Math.max(this.top + this.height, rect.top + rect.height);
-  this.left = Math.min(this.left, rect.left);
-  this.top = Math.min(this.top, rect.top);
-  this.width = right - this.left;
-  this.height = bottom - this.top
-};
-goog.math.Rect.boundingRect = function(a, b) {
-  if(!a || !b) {
-    return null
-  }
-  var clone = a.clone();
-  clone.boundingRect(b);
-  return clone
-};
-goog.math.Rect.prototype.contains = function(another) {
-  if(another instanceof goog.math.Rect) {
-    return this.left <= another.left && this.left + this.width >= another.left + another.width && this.top <= another.top && this.top + this.height >= another.top + another.height
-  }else {
-    return another.x >= this.left && another.x <= this.left + this.width && another.y >= this.top && another.y <= this.top + this.height
-  }
-};
-goog.math.Rect.prototype.squaredDistance = function(point) {
-  var dx = point.x < this.left ? this.left - point.x : Math.max(point.x - (this.left + this.width), 0);
-  var dy = point.y < this.top ? this.top - point.y : Math.max(point.y - (this.top + this.height), 0);
-  return dx * dx + dy * dy
-};
-goog.math.Rect.prototype.distance = function(point) {
-  return Math.sqrt(this.squaredDistance(point))
-};
-goog.math.Rect.prototype.getSize = function() {
-  return new goog.math.Size(this.width, this.height)
-};
-goog.math.Rect.prototype.getTopLeft = function() {
-  return new goog.math.Coordinate(this.left, this.top)
-};
-goog.math.Rect.prototype.getCenter = function() {
-  return new goog.math.Coordinate(this.left + this.width / 2, this.top + this.height / 2)
-};
-goog.math.Rect.prototype.getBottomRight = function() {
-  return new goog.math.Coordinate(this.left + this.width, this.top + this.height)
-};
-goog.math.Rect.prototype.ceil = function() {
-  this.left = Math.ceil(this.left);
-  this.top = Math.ceil(this.top);
-  this.width = Math.ceil(this.width);
-  this.height = Math.ceil(this.height);
-  return this
-};
-goog.math.Rect.prototype.floor = function() {
-  this.left = Math.floor(this.left);
-  this.top = Math.floor(this.top);
-  this.width = Math.floor(this.width);
-  this.height = Math.floor(this.height);
-  return this
-};
-goog.math.Rect.prototype.round = function() {
-  this.left = Math.round(this.left);
-  this.top = Math.round(this.top);
-  this.width = Math.round(this.width);
-  this.height = Math.round(this.height);
-  return this
-};
-goog.math.Rect.prototype.translate = function(tx, opt_ty) {
-  if(tx instanceof goog.math.Coordinate) {
-    this.left += tx.x;
-    this.top += tx.y
-  }else {
-    this.left += tx;
-    if(goog.isNumber(opt_ty)) {
-      this.top += opt_ty
-    }
-  }
-  return this
-};
-goog.math.Rect.prototype.scale = function(sx, opt_sy) {
-  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
-  this.left *= sx;
-  this.width *= sx;
-  this.top *= sy;
-  this.height *= sy;
-  return this
-};
-goog.provide("goog.style");
-goog.require("goog.array");
-goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.NodeType");
-goog.require("goog.dom.vendor");
-goog.require("goog.math.Box");
-goog.require("goog.math.Coordinate");
-goog.require("goog.math.Rect");
-goog.require("goog.math.Size");
-goog.require("goog.object");
-goog.require("goog.string");
-goog.require("goog.userAgent");
-goog.define("goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS", false);
-goog.style.setStyle = function(element, style, opt_value) {
-  if(goog.isString(style)) {
-    goog.style.setStyle_(element, opt_value, style)
-  }else {
-    goog.object.forEach(style, goog.partial(goog.style.setStyle_, element))
-  }
-};
-goog.style.setStyle_ = function(element, value, style) {
-  var propertyName = goog.style.getVendorJsStyleName_(element, style);
-  if(propertyName) {
-    element.style[propertyName] = value
-  }
-};
-goog.style.getVendorJsStyleName_ = function(element, style) {
-  var camelStyle = goog.string.toCamelCase(style);
-  if(element.style[camelStyle] === undefined) {
-    var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() + goog.string.toTitleCase(style);
-    if(element.style[prefixedStyle] !== undefined) {
-      return prefixedStyle
-    }
-  }
-  return camelStyle
-};
-goog.style.getVendorStyleName_ = function(element, style) {
-  var camelStyle = goog.string.toCamelCase(style);
-  if(element.style[camelStyle] === undefined) {
-    var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() + goog.string.toTitleCase(style);
-    if(element.style[prefixedStyle] !== undefined) {
-      return goog.dom.vendor.getVendorPrefix() + "-" + style
-    }
-  }
-  return style
-};
-goog.style.getStyle = function(element, property) {
-  var styleValue = element.style[goog.string.toCamelCase(property)];
-  if(typeof styleValue !== "undefined") {
-    return styleValue
-  }
-  return element.style[goog.style.getVendorJsStyleName_(element, property)] || ""
-};
-goog.style.getComputedStyle = function(element, property) {
-  var doc = goog.dom.getOwnerDocument(element);
-  if(doc.defaultView && doc.defaultView.getComputedStyle) {
-    var styles = doc.defaultView.getComputedStyle(element, null);
-    if(styles) {
-      return styles[property] || styles.getPropertyValue(property) || ""
-    }
-  }
-  return""
-};
-goog.style.getCascadedStyle = function(element, style) {
-  return element.currentStyle ? element.currentStyle[style] : null
-};
-goog.style.getStyle_ = function(element, style) {
-  return goog.style.getComputedStyle(element, style) || goog.style.getCascadedStyle(element, style) || element.style && element.style[style]
-};
-goog.style.getComputedPosition = function(element) {
-  return goog.style.getStyle_(element, "position")
-};
-goog.style.getBackgroundColor = function(element) {
-  return goog.style.getStyle_(element, "backgroundColor")
-};
-goog.style.getComputedOverflowX = function(element) {
-  return goog.style.getStyle_(element, "overflowX")
-};
-goog.style.getComputedOverflowY = function(element) {
-  return goog.style.getStyle_(element, "overflowY")
-};
-goog.style.getComputedZIndex = function(element) {
-  return goog.style.getStyle_(element, "zIndex")
-};
-goog.style.getComputedTextAlign = function(element) {
-  return goog.style.getStyle_(element, "textAlign")
-};
-goog.style.getComputedCursor = function(element) {
-  return goog.style.getStyle_(element, "cursor")
-};
-goog.style.setPosition = function(el, arg1, opt_arg2) {
-  var x, y;
-  var buggyGeckoSubPixelPos = goog.userAgent.GECKO && (goog.userAgent.MAC || goog.userAgent.X11) && goog.userAgent.isVersionOrHigher("1.9");
-  if(arg1 instanceof goog.math.Coordinate) {
-    x = arg1.x;
-    y = arg1.y
-  }else {
-    x = arg1;
-    y = opt_arg2
-  }
-  el.style.left = goog.style.getPixelStyleValue_((x), buggyGeckoSubPixelPos);
-  el.style.top = goog.style.getPixelStyleValue_((y), buggyGeckoSubPixelPos)
-};
-goog.style.getPosition = function(element) {
-  return new goog.math.Coordinate(element.offsetLeft, element.offsetTop)
-};
-goog.style.getClientViewportElement = function(opt_node) {
-  var doc;
-  if(opt_node) {
-    doc = goog.dom.getOwnerDocument(opt_node)
-  }else {
-    doc = goog.dom.getDocument()
-  }
-  if(goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher(9) && !goog.dom.getDomHelper(doc).isCss1CompatMode()) {
-    return doc.body
-  }
-  return doc.documentElement
-};
-goog.style.getViewportPageOffset = function(doc) {
-  var body = doc.body;
-  var documentElement = doc.documentElement;
-  var scrollLeft = body.scrollLeft || documentElement.scrollLeft;
-  var scrollTop = body.scrollTop || documentElement.scrollTop;
-  return new goog.math.Coordinate(scrollLeft, scrollTop)
-};
-goog.style.getBoundingClientRect_ = function(el) {
-  var rect;
-  try {
-    rect = el.getBoundingClientRect()
-  }catch(e) {
-    return{"left":0, "top":0, "right":0, "bottom":0}
-  }
-  if(goog.userAgent.IE) {
-    var doc = el.ownerDocument;
-    rect.left -= doc.documentElement.clientLeft + doc.body.clientLeft;
-    rect.top -= doc.documentElement.clientTop + doc.body.clientTop
-  }
-  return(rect)
-};
-goog.style.getOffsetParent = function(element) {
-  if(goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher(8)) {
-    return element.offsetParent
-  }
-  var doc = goog.dom.getOwnerDocument(element);
-  var positionStyle = goog.style.getStyle_(element, "position");
-  var skipStatic = positionStyle == "fixed" || positionStyle == "absolute";
-  for(var parent = element.parentNode;parent && parent != doc;parent = parent.parentNode) {
-    positionStyle = goog.style.getStyle_((parent), "position");
-    skipStatic = skipStatic && positionStyle == "static" && parent != doc.documentElement && parent != doc.body;
-    if(!skipStatic && (parent.scrollWidth > parent.clientWidth || parent.scrollHeight > parent.clientHeight || positionStyle == "fixed" || positionStyle == "absolute" || positionStyle == "relative")) {
-      return(parent)
-    }
-  }
-  return null
-};
-goog.style.getVisibleRectForElement = function(element) {
-  var visibleRect = new goog.math.Box(0, Infinity, Infinity, 0);
-  var dom = goog.dom.getDomHelper(element);
-  var body = dom.getDocument().body;
-  var documentElement = dom.getDocument().documentElement;
-  var scrollEl = dom.getDocumentScrollElement();
-  for(var el = element;el = goog.style.getOffsetParent(el);) {
-    if((!goog.userAgent.IE || el.clientWidth != 0) && (!goog.userAgent.WEBKIT || el.clientHeight != 0 || el != body) && el != body && el != documentElement && goog.style.getStyle_(el, "overflow") != "visible") {
-      var pos = goog.style.getPageOffset(el);
-      var client = goog.style.getClientLeftTop(el);
-      pos.x += client.x;
-      pos.y += client.y;
-      visibleRect.top = Math.max(visibleRect.top, pos.y);
-      visibleRect.right = Math.min(visibleRect.right, pos.x + el.clientWidth);
-      visibleRect.bottom = Math.min(visibleRect.bottom, pos.y + el.clientHeight);
-      visibleRect.left = Math.max(visibleRect.left, pos.x)
-    }
-  }
-  var scrollX = scrollEl.scrollLeft, scrollY = scrollEl.scrollTop;
-  visibleRect.left = Math.max(visibleRect.left, scrollX);
-  visibleRect.top = Math.max(visibleRect.top, scrollY);
-  var winSize = dom.getViewportSize();
-  visibleRect.right = Math.min(visibleRect.right, scrollX + winSize.width);
-  visibleRect.bottom = Math.min(visibleRect.bottom, scrollY + winSize.height);
-  return visibleRect.top >= 0 && visibleRect.left >= 0 && visibleRect.bottom > visibleRect.top && visibleRect.right > visibleRect.left ? visibleRect : null
-};
-goog.style.getContainerOffsetToScrollInto = function(element, container, opt_center) {
-  var elementPos = goog.style.getPageOffset(element);
-  var containerPos = goog.style.getPageOffset(container);
-  var containerBorder = goog.style.getBorderBox(container);
-  var relX = elementPos.x - containerPos.x - containerBorder.left;
-  var relY = elementPos.y - containerPos.y - containerBorder.top;
-  var spaceX = container.clientWidth - element.offsetWidth;
-  var spaceY = container.clientHeight - element.offsetHeight;
-  var scrollLeft = container.scrollLeft;
-  var scrollTop = container.scrollTop;
-  if(opt_center) {
-    scrollLeft += relX - spaceX / 2;
-    scrollTop += relY - spaceY / 2
-  }else {
-    scrollLeft += Math.min(relX, Math.max(relX - spaceX, 0));
-    scrollTop += Math.min(relY, Math.max(relY - spaceY, 0))
-  }
-  return new goog.math.Coordinate(scrollLeft, scrollTop)
-};
-goog.style.scrollIntoContainerView = function(element, container, opt_center) {
-  var offset = goog.style.getContainerOffsetToScrollInto(element, container, opt_center);
-  container.scrollLeft = offset.x;
-  container.scrollTop = offset.y
-};
-goog.style.getClientLeftTop = function(el) {
-  if(goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher("1.9")) {
-    var left = parseFloat(goog.style.getComputedStyle(el, "borderLeftWidth"));
-    if(goog.style.isRightToLeft(el)) {
-      var scrollbarWidth = el.offsetWidth - el.clientWidth - left - parseFloat(goog.style.getComputedStyle(el, "borderRightWidth"));
-      left += scrollbarWidth
-    }
-    return new goog.math.Coordinate(left, parseFloat(goog.style.getComputedStyle(el, "borderTopWidth")))
-  }
-  return new goog.math.Coordinate(el.clientLeft, el.clientTop)
-};
-goog.style.getPageOffset = function(el) {
-  var box, doc = goog.dom.getOwnerDocument(el);
-  var positionStyle = goog.style.getStyle_(el, "position");
-  goog.asserts.assertObject(el, "Parameter is required");
-  var BUGGY_GECKO_BOX_OBJECT = !goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS && goog.userAgent.GECKO && doc.getBoxObjectFor && !el.getBoundingClientRect && positionStyle == "absolute" && (box = doc.getBoxObjectFor(el)) && (box.screenX < 0 || box.screenY < 0);
-  var pos = new goog.math.Coordinate(0, 0);
-  var viewportElement = goog.style.getClientViewportElement(doc);
-  if(el == viewportElement) {
-    return pos
-  }
-  if(goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS || el.getBoundingClientRect) {
-    box = goog.style.getBoundingClientRect_(el);
-    var scrollCoord = goog.dom.getDomHelper(doc).getDocumentScroll();
-    pos.x = box.left + scrollCoord.x;
-    pos.y = box.top + scrollCoord.y
-  }else {
-    if(doc.getBoxObjectFor && !BUGGY_GECKO_BOX_OBJECT) {
-      box = doc.getBoxObjectFor(el);
-      var vpBox = doc.getBoxObjectFor(viewportElement);
-      pos.x = box.screenX - vpBox.screenX;
-      pos.y = box.screenY - vpBox.screenY
-    }else {
-      var parent = el;
-      do {
-        pos.x += parent.offsetLeft;
-        pos.y += parent.offsetTop;
-        if(parent != el) {
-          pos.x += parent.clientLeft || 0;
-          pos.y += parent.clientTop || 0
-        }
-        if(goog.userAgent.WEBKIT && goog.style.getComputedPosition(parent) == "fixed") {
-          pos.x += doc.body.scrollLeft;
-          pos.y += doc.body.scrollTop;
-          break
-        }
-        parent = parent.offsetParent
-      }while(parent && parent != el);
-      if(goog.userAgent.OPERA || goog.userAgent.WEBKIT && positionStyle == "absolute") {
-        pos.y -= doc.body.offsetTop
-      }
-      for(parent = el;(parent = goog.style.getOffsetParent(parent)) && parent != doc.body && parent != viewportElement;) {
-        pos.x -= parent.scrollLeft;
-        if(!goog.userAgent.OPERA || parent.tagName != "TR") {
-          pos.y -= parent.scrollTop
-        }
-      }
-    }
-  }
-  return pos
-};
-goog.style.getPageOffsetLeft = function(el) {
-  return goog.style.getPageOffset(el).x
-};
-goog.style.getPageOffsetTop = function(el) {
-  return goog.style.getPageOffset(el).y
-};
-goog.style.getFramedPageOffset = function(el, relativeWin) {
-  var position = new goog.math.Coordinate(0, 0);
-  var currentWin = goog.dom.getWindow(goog.dom.getOwnerDocument(el));
-  var currentEl = el;
-  do {
-    var offset = currentWin == relativeWin ? goog.style.getPageOffset(currentEl) : goog.style.getClientPositionForElement_(goog.asserts.assert(currentEl));
-    position.x += offset.x;
-    position.y += offset.y
-  }while(currentWin && currentWin != relativeWin && (currentEl = currentWin.frameElement) && (currentWin = currentWin.parent));
-  return position
-};
-goog.style.translateRectForAnotherFrame = function(rect, origBase, newBase) {
-  if(origBase.getDocument() != newBase.getDocument()) {
-    var body = origBase.getDocument().body;
-    var pos = goog.style.getFramedPageOffset(body, newBase.getWindow());
-    pos = goog.math.Coordinate.difference(pos, goog.style.getPageOffset(body));
-    if(goog.userAgent.IE && !origBase.isCss1CompatMode()) {
-      pos = goog.math.Coordinate.difference(pos, origBase.getDocumentScroll())
-    }
-    rect.left += pos.x;
-    rect.top += pos.y
-  }
-};
-goog.style.getRelativePosition = function(a, b) {
-  var ap = goog.style.getClientPosition(a);
-  var bp = goog.style.getClientPosition(b);
-  return new goog.math.Coordinate(ap.x - bp.x, ap.y - bp.y)
-};
-goog.style.getClientPositionForElement_ = function(el) {
-  var pos;
-  if(goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS || el.getBoundingClientRect) {
-    var box = goog.style.getBoundingClientRect_(el);
-    pos = new goog.math.Coordinate(box.left, box.top)
-  }else {
-    var scrollCoord = goog.dom.getDomHelper(el).getDocumentScroll();
-    var pageCoord = goog.style.getPageOffset(el);
-    pos = new goog.math.Coordinate(pageCoord.x - scrollCoord.x, pageCoord.y - scrollCoord.y)
-  }
-  if(goog.userAgent.GECKO && !goog.userAgent.isVersionOrHigher(12)) {
-    return goog.math.Coordinate.sum(pos, goog.style.getCssTranslation(el))
-  }else {
-    return pos
-  }
-};
-goog.style.getClientPosition = function(el) {
-  goog.asserts.assert(el);
-  if(el.nodeType == goog.dom.NodeType.ELEMENT) {
-    return goog.style.getClientPositionForElement_((el))
-  }else {
-    var isAbstractedEvent = goog.isFunction(el.getBrowserEvent);
-    var targetEvent = el;
-    if(el.targetTouches) {
-      targetEvent = el.targetTouches[0]
-    }else {
-      if(isAbstractedEvent && el.getBrowserEvent().targetTouches) {
-        targetEvent = el.getBrowserEvent().targetTouches[0]
-      }
-    }
-    return new goog.math.Coordinate(targetEvent.clientX, targetEvent.clientY)
-  }
-};
-goog.style.setPageOffset = function(el, x, opt_y) {
-  var cur = goog.style.getPageOffset(el);
-  if(x instanceof goog.math.Coordinate) {
-    opt_y = x.y;
-    x = x.x
-  }
-  var dx = x - cur.x;
-  var dy = opt_y - cur.y;
-  goog.style.setPosition(el, el.offsetLeft + dx, el.offsetTop + dy)
-};
-goog.style.setSize = function(element, w, opt_h) {
-  var h;
-  if(w instanceof goog.math.Size) {
-    h = w.height;
-    w = w.width
-  }else {
-    if(opt_h == undefined) {
-      throw Error("missing height argument");
-    }
-    h = opt_h
-  }
-  goog.style.setWidth(element, (w));
-  goog.style.setHeight(element, (h))
-};
-goog.style.getPixelStyleValue_ = function(value, round) {
-  if(typeof value == "number") {
-    value = (round ? Math.round(value) : value) + "px"
-  }
-  return value
-};
-goog.style.setHeight = function(element, height) {
-  element.style.height = goog.style.getPixelStyleValue_(height, true)
-};
-goog.style.setWidth = function(element, width) {
-  element.style.width = goog.style.getPixelStyleValue_(width, true)
-};
-goog.style.getSize = function(element) {
-  return goog.style.evaluateWithTemporaryDisplay_(goog.style.getSizeWithDisplay_, (element))
-};
-goog.style.evaluateWithTemporaryDisplay_ = function(fn, element) {
-  if(goog.style.getStyle_(element, "display") != "none") {
-    return fn(element)
-  }
-  var style = element.style;
-  var originalDisplay = style.display;
-  var originalVisibility = style.visibility;
-  var originalPosition = style.position;
-  style.visibility = "hidden";
-  style.position = "absolute";
-  style.display = "inline";
-  var retVal = fn(element);
-  style.display = originalDisplay;
-  style.position = originalPosition;
-  style.visibility = originalVisibility;
-  return retVal
-};
-goog.style.getSizeWithDisplay_ = function(element) {
-  var offsetWidth = element.offsetWidth;
-  var offsetHeight = element.offsetHeight;
-  var webkitOffsetsZero = goog.userAgent.WEBKIT && !offsetWidth && !offsetHeight;
-  if((!goog.isDef(offsetWidth) || webkitOffsetsZero) && element.getBoundingClientRect) {
-    var clientRect = goog.style.getBoundingClientRect_(element);
-    return new goog.math.Size(clientRect.right - clientRect.left, clientRect.bottom - clientRect.top)
-  }
-  return new goog.math.Size(offsetWidth, offsetHeight)
-};
-goog.style.getTransformedSize = function(element) {
-  if(!element.getBoundingClientRect) {
-    return null
-  }
-  var clientRect = goog.style.evaluateWithTemporaryDisplay_(goog.style.getBoundingClientRect_, element);
-  return new goog.math.Size(clientRect.right - clientRect.left, clientRect.bottom - clientRect.top)
-};
-goog.style.getBounds = function(element) {
-  var o = goog.style.getPageOffset(element);
-  var s = goog.style.getSize(element);
-  return new goog.math.Rect(o.x, o.y, s.width, s.height)
-};
-goog.style.toCamelCase = function(selector) {
-  return goog.string.toCamelCase(String(selector))
-};
-goog.style.toSelectorCase = function(selector) {
-  return goog.string.toSelectorCase(selector)
-};
-goog.style.getOpacity = function(el) {
-  var style = el.style;
-  var result = "";
-  if("opacity" in style) {
-    result = style.opacity
-  }else {
-    if("MozOpacity" in style) {
-      result = style.MozOpacity
-    }else {
-      if("filter" in style) {
-        var match = style.filter.match(/alpha\(opacity=([\d.]+)\)/);
-        if(match) {
-          result = String(match[1] / 100)
-        }
-      }
-    }
-  }
-  return result == "" ? result : Number(result)
-};
-goog.style.setOpacity = function(el, alpha) {
-  var style = el.style;
-  if("opacity" in style) {
-    style.opacity = alpha
-  }else {
-    if("MozOpacity" in style) {
-      style.MozOpacity = alpha
-    }else {
-      if("filter" in style) {
-        if(alpha === "") {
-          style.filter = ""
-        }else {
-          style.filter = "alpha(opacity\x3d" + alpha * 100 + ")"
-        }
-      }
-    }
-  }
-};
-goog.style.setTransparentBackgroundImage = function(el, src) {
-  var style = el.style;
-  if(goog.userAgent.IE && !goog.userAgent.isVersionOrHigher("8")) {
-    style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(" + 'src\x3d"' + src + '", sizingMethod\x3d"crop")'
-  }else {
-    style.backgroundImage = "url(" + src + ")";
-    style.backgroundPosition = "top left";
-    style.backgroundRepeat = "no-repeat"
-  }
-};
-goog.style.clearTransparentBackgroundImage = function(el) {
-  var style = el.style;
-  if("filter" in style) {
-    style.filter = ""
-  }else {
-    style.backgroundImage = "none"
-  }
-};
-goog.style.showElement = function(el, display) {
-  goog.style.setElementShown(el, display)
-};
-goog.style.setElementShown = function(el, isShown) {
-  el.style.display = isShown ? "" : "none"
-};
-goog.style.isElementShown = function(el) {
-  return el.style.display != "none"
-};
-goog.style.installStyles = function(stylesString, opt_node) {
-  var dh = goog.dom.getDomHelper(opt_node);
-  var styleSheet = null;
-  if(goog.userAgent.IE) {
-    styleSheet = dh.getDocument().createStyleSheet();
-    goog.style.setStyles(styleSheet, stylesString)
-  }else {
-    var head = dh.getElementsByTagNameAndClass("head")[0];
-    if(!head) {
-      var body = dh.getElementsByTagNameAndClass("body")[0];
-      head = dh.createDom("head");
-      body.parentNode.insertBefore(head, body)
-    }
-    styleSheet = dh.createDom("style");
-    goog.style.setStyles(styleSheet, stylesString);
-    dh.appendChild(head, styleSheet)
-  }
-  return styleSheet
-};
-goog.style.uninstallStyles = function(styleSheet) {
-  var node = styleSheet.ownerNode || styleSheet.owningElement || (styleSheet);
-  goog.dom.removeNode(node)
-};
-goog.style.setStyles = function(element, stylesString) {
-  if(goog.userAgent.IE) {
-    element.cssText = stylesString
-  }else {
-    element.innerHTML = stylesString
-  }
-};
-goog.style.setPreWrap = function(el) {
-  var style = el.style;
-  if(goog.userAgent.IE && !goog.userAgent.isVersionOrHigher("8")) {
-    style.whiteSpace = "pre";
-    style.wordWrap = "break-word"
-  }else {
-    if(goog.userAgent.GECKO) {
-      style.whiteSpace = "-moz-pre-wrap"
-    }else {
-      style.whiteSpace = "pre-wrap"
-    }
-  }
-};
-goog.style.setInlineBlock = function(el) {
-  var style = el.style;
-  style.position = "relative";
-  if(goog.userAgent.IE && !goog.userAgent.isVersionOrHigher("8")) {
-    style.zoom = "1";
-    style.display = "inline"
-  }else {
-    if(goog.userAgent.GECKO) {
-      style.display = goog.userAgent.isVersionOrHigher("1.9a") ? "inline-block" : "-moz-inline-box"
-    }else {
-      style.display = "inline-block"
-    }
-  }
-};
-goog.style.isRightToLeft = function(el) {
-  return"rtl" == goog.style.getStyle_(el, "direction")
-};
-goog.style.unselectableStyle_ = goog.userAgent.GECKO ? "MozUserSelect" : goog.userAgent.WEBKIT ? "WebkitUserSelect" : null;
-goog.style.isUnselectable = function(el) {
-  if(goog.style.unselectableStyle_) {
-    return el.style[goog.style.unselectableStyle_].toLowerCase() == "none"
-  }else {
-    if(goog.userAgent.IE || goog.userAgent.OPERA) {
-      return el.getAttribute("unselectable") == "on"
-    }
-  }
-  return false
-};
-goog.style.setUnselectable = function(el, unselectable, opt_noRecurse) {
-  var descendants = !opt_noRecurse ? el.getElementsByTagName("*") : null;
-  var name = goog.style.unselectableStyle_;
-  if(name) {
-    var value = unselectable ? "none" : "";
-    el.style[name] = value;
-    if(descendants) {
-      for(var i = 0, descendant;descendant = descendants[i];i++) {
-        descendant.style[name] = value
-      }
-    }
-  }else {
-    if(goog.userAgent.IE || goog.userAgent.OPERA) {
-      var value = unselectable ? "on" : "";
-      el.setAttribute("unselectable", value);
-      if(descendants) {
-        for(var i = 0, descendant;descendant = descendants[i];i++) {
-          descendant.setAttribute("unselectable", value)
-        }
-      }
-    }
-  }
-};
-goog.style.getBorderBoxSize = function(element) {
-  return new goog.math.Size(element.offsetWidth, element.offsetHeight)
-};
-goog.style.setBorderBoxSize = function(element, size) {
-  var doc = goog.dom.getOwnerDocument(element);
-  var isCss1CompatMode = goog.dom.getDomHelper(doc).isCss1CompatMode();
-  if(goog.userAgent.IE && (!isCss1CompatMode || !goog.userAgent.isVersionOrHigher("8"))) {
-    var style = element.style;
-    if(isCss1CompatMode) {
-      var paddingBox = goog.style.getPaddingBox(element);
-      var borderBox = goog.style.getBorderBox(element);
-      style.pixelWidth = size.width - borderBox.left - paddingBox.left - paddingBox.right - borderBox.right;
-      style.pixelHeight = size.height - borderBox.top - paddingBox.top - paddingBox.bottom - borderBox.bottom
-    }else {
-      style.pixelWidth = size.width;
-      style.pixelHeight = size.height
-    }
-  }else {
-    goog.style.setBoxSizingSize_(element, size, "border-box")
-  }
-};
-goog.style.getContentBoxSize = function(element) {
-  var doc = goog.dom.getOwnerDocument(element);
-  var ieCurrentStyle = goog.userAgent.IE && element.currentStyle;
-  if(ieCurrentStyle && goog.dom.getDomHelper(doc).isCss1CompatMode() && ieCurrentStyle.width != "auto" && ieCurrentStyle.height != "auto" && !ieCurrentStyle.boxSizing) {
-    var width = goog.style.getIePixelValue_(element, ieCurrentStyle.width, "width", "pixelWidth");
-    var height = goog.style.getIePixelValue_(element, ieCurrentStyle.height, "height", "pixelHeight");
-    return new goog.math.Size(width, height)
-  }else {
-    var borderBoxSize = goog.style.getBorderBoxSize(element);
-    var paddingBox = goog.style.getPaddingBox(element);
-    var borderBox = goog.style.getBorderBox(element);
-    return new goog.math.Size(borderBoxSize.width - borderBox.left - paddingBox.left - paddingBox.right - borderBox.right, borderBoxSize.height - borderBox.top - paddingBox.top - paddingBox.bottom - borderBox.bottom)
-  }
-};
-goog.style.setContentBoxSize = function(element, size) {
-  var doc = goog.dom.getOwnerDocument(element);
-  var isCss1CompatMode = goog.dom.getDomHelper(doc).isCss1CompatMode();
-  if(goog.userAgent.IE && (!isCss1CompatMode || !goog.userAgent.isVersionOrHigher("8"))) {
-    var style = element.style;
-    if(isCss1CompatMode) {
-      style.pixelWidth = size.width;
-      style.pixelHeight = size.height
-    }else {
-      var paddingBox = goog.style.getPaddingBox(element);
-      var borderBox = goog.style.getBorderBox(element);
-      style.pixelWidth = size.width + borderBox.left + paddingBox.left + paddingBox.right + borderBox.right;
-      style.pixelHeight = size.height + borderBox.top + paddingBox.top + paddingBox.bottom + borderBox.bottom
-    }
-  }else {
-    goog.style.setBoxSizingSize_(element, size, "content-box")
-  }
-};
-goog.style.setBoxSizingSize_ = function(element, size, boxSizing) {
-  var style = element.style;
-  if(goog.userAgent.GECKO) {
-    style.MozBoxSizing = boxSizing
-  }else {
-    if(goog.userAgent.WEBKIT) {
-      style.WebkitBoxSizing = boxSizing
-    }else {
-      style.boxSizing = boxSizing
-    }
-  }
-  style.width = Math.max(size.width, 0) + "px";
-  style.height = Math.max(size.height, 0) + "px"
-};
-goog.style.getIePixelValue_ = function(element, value, name, pixelName) {
-  if(/^\d+px?$/.test(value)) {
-    return parseInt(value, 10)
-  }else {
-    var oldStyleValue = element.style[name];
-    var oldRuntimeValue = element.runtimeStyle[name];
-    element.runtimeStyle[name] = element.currentStyle[name];
-    element.style[name] = value;
-    var pixelValue = element.style[pixelName];
-    element.style[name] = oldStyleValue;
-    element.runtimeStyle[name] = oldRuntimeValue;
-    return pixelValue
-  }
-};
-goog.style.getIePixelDistance_ = function(element, propName) {
-  var value = goog.style.getCascadedStyle(element, propName);
-  return value ? goog.style.getIePixelValue_(element, value, "left", "pixelLeft") : 0
-};
-goog.style.getBox_ = function(element, stylePrefix) {
-  if(goog.userAgent.IE) {
-    var left = goog.style.getIePixelDistance_(element, stylePrefix + "Left");
-    var right = goog.style.getIePixelDistance_(element, stylePrefix + "Right");
-    var top = goog.style.getIePixelDistance_(element, stylePrefix + "Top");
-    var bottom = goog.style.getIePixelDistance_(element, stylePrefix + "Bottom");
-    return new goog.math.Box(top, right, bottom, left)
-  }else {
-    var left = (goog.style.getComputedStyle(element, stylePrefix + "Left"));
-    var right = (goog.style.getComputedStyle(element, stylePrefix + "Right"));
-    var top = (goog.style.getComputedStyle(element, stylePrefix + "Top"));
-    var bottom = (goog.style.getComputedStyle(element, stylePrefix + "Bottom"));
-    return new goog.math.Box(parseFloat(top), parseFloat(right), parseFloat(bottom), parseFloat(left))
-  }
-};
-goog.style.getPaddingBox = function(element) {
-  return goog.style.getBox_(element, "padding")
-};
-goog.style.getMarginBox = function(element) {
-  return goog.style.getBox_(element, "margin")
-};
-goog.style.ieBorderWidthKeywords_ = {"thin":2, "medium":4, "thick":6};
-goog.style.getIePixelBorder_ = function(element, prop) {
-  if(goog.style.getCascadedStyle(element, prop + "Style") == "none") {
-    return 0
-  }
-  var width = goog.style.getCascadedStyle(element, prop + "Width");
-  if(width in goog.style.ieBorderWidthKeywords_) {
-    return goog.style.ieBorderWidthKeywords_[width]
-  }
-  return goog.style.getIePixelValue_(element, width, "left", "pixelLeft")
-};
-goog.style.getBorderBox = function(element) {
-  if(goog.userAgent.IE) {
-    var left = goog.style.getIePixelBorder_(element, "borderLeft");
-    var right = goog.style.getIePixelBorder_(element, "borderRight");
-    var top = goog.style.getIePixelBorder_(element, "borderTop");
-    var bottom = goog.style.getIePixelBorder_(element, "borderBottom");
-    return new goog.math.Box(top, right, bottom, left)
-  }else {
-    var left = (goog.style.getComputedStyle(element, "borderLeftWidth"));
-    var right = (goog.style.getComputedStyle(element, "borderRightWidth"));
-    var top = (goog.style.getComputedStyle(element, "borderTopWidth"));
-    var bottom = (goog.style.getComputedStyle(element, "borderBottomWidth"));
-    return new goog.math.Box(parseFloat(top), parseFloat(right), parseFloat(bottom), parseFloat(left))
-  }
-};
-goog.style.getFontFamily = function(el) {
-  var doc = goog.dom.getOwnerDocument(el);
-  var font = "";
-  if(doc.body.createTextRange) {
-    var range = doc.body.createTextRange();
-    range.moveToElementText(el);
-    try {
-      font = range.queryCommandValue("FontName")
-    }catch(e) {
-      font = ""
-    }
-  }
-  if(!font) {
-    font = goog.style.getStyle_(el, "fontFamily")
-  }
-  var fontsArray = font.split(",");
-  if(fontsArray.length > 1) {
-    font = fontsArray[0]
-  }
-  return goog.string.stripQuotes(font, "\"'")
-};
-goog.style.lengthUnitRegex_ = /[^\d]+$/;
-goog.style.getLengthUnits = function(value) {
-  var units = value.match(goog.style.lengthUnitRegex_);
-  return units && units[0] || null
-};
-goog.style.ABSOLUTE_CSS_LENGTH_UNITS_ = {"cm":1, "in":1, "mm":1, "pc":1, "pt":1};
-goog.style.CONVERTIBLE_RELATIVE_CSS_UNITS_ = {"em":1, "ex":1};
-goog.style.getFontSize = function(el) {
-  var fontSize = goog.style.getStyle_(el, "fontSize");
-  var sizeUnits = goog.style.getLengthUnits(fontSize);
-  if(fontSize && "px" == sizeUnits) {
-    return parseInt(fontSize, 10)
-  }
-  if(goog.userAgent.IE) {
-    if(sizeUnits in goog.style.ABSOLUTE_CSS_LENGTH_UNITS_) {
-      return goog.style.getIePixelValue_(el, fontSize, "left", "pixelLeft")
-    }else {
-      if(el.parentNode && el.parentNode.nodeType == goog.dom.NodeType.ELEMENT && sizeUnits in goog.style.CONVERTIBLE_RELATIVE_CSS_UNITS_) {
-        var parentElement = (el.parentNode);
-        var parentSize = goog.style.getStyle_(parentElement, "fontSize");
-        return goog.style.getIePixelValue_(parentElement, fontSize == parentSize ? "1em" : fontSize, "left", "pixelLeft")
-      }
-    }
-  }
-  var sizeElement = goog.dom.createDom("span", {"style":"visibility:hidden;position:absolute;" + "line-height:0;padding:0;margin:0;border:0;height:1em;"});
-  goog.dom.appendChild(el, sizeElement);
-  fontSize = sizeElement.offsetHeight;
-  goog.dom.removeNode(sizeElement);
-  return fontSize
-};
-goog.style.parseStyleAttribute = function(value) {
-  var result = {};
-  goog.array.forEach(value.split(/\s*;\s*/), function(pair) {
-    var keyValue = pair.split(/\s*:\s*/);
-    if(keyValue.length == 2) {
-      result[goog.string.toCamelCase(keyValue[0].toLowerCase())] = keyValue[1]
-    }
-  });
-  return result
-};
-goog.style.toStyleAttribute = function(obj) {
-  var buffer = [];
-  goog.object.forEach(obj, function(value, key) {
-    buffer.push(goog.string.toSelectorCase(key), ":", value, ";")
-  });
-  return buffer.join("")
-};
-goog.style.setFloat = function(el, value) {
-  el.style[goog.userAgent.IE ? "styleFloat" : "cssFloat"] = value
-};
-goog.style.getFloat = function(el) {
-  return el.style[goog.userAgent.IE ? "styleFloat" : "cssFloat"] || ""
-};
-goog.style.getScrollbarWidth = function(opt_className) {
-  var outerDiv = goog.dom.createElement("div");
-  if(opt_className) {
-    outerDiv.className = opt_className
-  }
-  outerDiv.style.cssText = "overflow:auto;" + "position:absolute;top:0;width:100px;height:100px";
-  var innerDiv = goog.dom.createElement("div");
-  goog.style.setSize(innerDiv, "200px", "200px");
-  outerDiv.appendChild(innerDiv);
-  goog.dom.appendChild(goog.dom.getDocument().body, outerDiv);
-  var width = outerDiv.offsetWidth - outerDiv.clientWidth;
-  goog.dom.removeNode(outerDiv);
-  return width
-};
-goog.style.MATRIX_TRANSLATION_REGEX_ = new RegExp("matrix\\([0-9\\.\\-]+, [0-9\\.\\-]+, " + "[0-9\\.\\-]+, [0-9\\.\\-]+, " + "([0-9\\.\\-]+)p?x?, ([0-9\\.\\-]+)p?x?\\)");
-goog.style.getCssTranslation = function(element) {
-  var property;
-  if(goog.userAgent.IE) {
-    property = "-ms-transform"
-  }else {
-    if(goog.userAgent.WEBKIT) {
-      property = "-webkit-transform"
-    }else {
-      if(goog.userAgent.OPERA) {
-        property = "-o-transform"
-      }else {
-        if(goog.userAgent.GECKO) {
-          property = "-moz-transform"
-        }
-      }
-    }
-  }
-  var transform;
-  if(property) {
-    transform = goog.style.getStyle_(element, property)
-  }
-  if(!transform) {
-    transform = goog.style.getStyle_(element, "transform")
-  }
-  if(!transform) {
-    return new goog.math.Coordinate(0, 0)
-  }
-  var matches = transform.match(goog.style.MATRIX_TRANSLATION_REGEX_);
-  if(!matches) {
-    return new goog.math.Coordinate(0, 0)
-  }
-  return new goog.math.Coordinate(parseFloat(matches[1]), parseFloat(matches[2]))
-};
 goog.provide("goog.events.MouseWheelEvent");
 goog.provide("goog.events.MouseWheelHandler");
 goog.provide("goog.events.MouseWheelHandler.EventType");
@@ -19838,6 +19998,7 @@ goog.require("ol.animation");
 goog.require("ol.control.Control");
 goog.require("ol.css");
 goog.require("ol.easing");
+goog.require("ol.pointer.PointerEventHandler");
 ol.control.Zoom = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   var className = goog.isDef(options.className) ? options.className : "ol-zoom";
@@ -19848,13 +20009,17 @@ ol.control.Zoom = function(opt_options) {
   var zoomOutTipLabel = goog.isDef(options.zoomOutTipLabel) ? options.zoomOutTipLabel : "Zoom out";
   var tTipZoomIn = goog.dom.createDom(goog.dom.TagName.SPAN, {"role":"tooltip"}, zoomInTipLabel);
   var inElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":className + "-in ol-has-tooltip", "name":"ZoomIn", "type":"button"}, tTipZoomIn, zoomInLabel);
-  goog.events.listen(inElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.partial(ol.control.Zoom.prototype.zoomByDelta_, delta), false, this);
+  var inElementHandler = new ol.pointer.PointerEventHandler(inElement);
+  this.registerDisposable(inElementHandler);
+  goog.events.listen(inElementHandler, ol.pointer.EventType.POINTERUP, goog.partial(ol.control.Zoom.prototype.zoomByDelta_, delta), false, this);
   goog.events.listen(inElement, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
     this.blur()
   }, false);
   var tTipsZoomOut = goog.dom.createDom(goog.dom.TagName.SPAN, {"role":"tooltip", "type":"button"}, zoomOutTipLabel);
   var outElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":className + "-out  ol-has-tooltip", "name":"ZoomOut"}, tTipsZoomOut, zoomOutLabel);
-  goog.events.listen(outElement, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], goog.partial(ol.control.Zoom.prototype.zoomByDelta_, -delta), false, this);
+  var outElementHandler = new ol.pointer.PointerEventHandler(outElement);
+  this.registerDisposable(outElementHandler);
+  goog.events.listen(outElementHandler, ol.pointer.EventType.POINTERUP, goog.partial(ol.control.Zoom.prototype.zoomByDelta_, -delta), false, this);
   goog.events.listen(outElement, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
     this.blur()
   }, false);
@@ -19864,8 +20029,8 @@ ol.control.Zoom = function(opt_options) {
   this.duration_ = goog.isDef(options.duration) ? options.duration : 250
 };
 goog.inherits(ol.control.Zoom, ol.control.Control);
-ol.control.Zoom.prototype.zoomByDelta_ = function(delta, browserEvent) {
-  browserEvent.preventDefault();
+ol.control.Zoom.prototype.zoomByDelta_ = function(delta, pointerEvent) {
+  pointerEvent.browserEvent.preventDefault();
   var map = this.getMap();
   var view = map.getView();
   goog.asserts.assert(goog.isDef(view));
@@ -21339,11 +21504,10 @@ goog.provide("ol.style.IconAnchorUnits");
 goog.provide("ol.style.IconImageCache");
 goog.require("goog.array");
 goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("goog.events");
 goog.require("goog.events.EventTarget");
 goog.require("goog.events.EventType");
+goog.require("ol.dom");
 goog.require("ol.style.Image");
 goog.require("ol.style.ImageState");
 ol.style.IconAnchorOrigin = {BOTTOM_LEFT:"bottom-left", BOTTOM_RIGHT:"bottom-right", TOP_LEFT:"top-left", TOP_RIGHT:"top-right"};
@@ -21443,10 +21607,7 @@ ol.style.IconImage_.get = function(src, crossOrigin) {
   return iconImage
 };
 ol.style.IconImage_.prototype.determineTainting_ = function() {
-  var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-  canvas.width = 1;
-  canvas.height = 1;
-  var context = (canvas.getContext("2d"));
+  var context = ol.dom.createCanvasContext2D(1, 1);
   context.drawImage(this.image_, 0, 0);
   try {
     context.getImageData(0, 0, 1, 1)
@@ -21478,14 +21639,11 @@ ol.style.IconImage_.prototype.getImageState = function() {
 ol.style.IconImage_.prototype.getHitDetectionImage = function(pixelRatio) {
   if(goog.isNull(this.hitDetectionImage_)) {
     if(this.tainting_) {
-      var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
       var width = this.size_[0];
       var height = this.size_[1];
-      canvas.width = width;
-      canvas.height = height;
-      var context = (canvas.getContext("2d"));
+      var context = ol.dom.createCanvasContext2D(width, height);
       context.fillRect(0, 0, width, height);
-      this.hitDetectionImage_ = canvas
+      this.hitDetectionImage_ = context.canvas
     }else {
       this.hitDetectionImage_ = this.image_
     }
@@ -22406,8 +22564,6 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
 goog.provide("ol.renderer.canvas.TileLayer");
 goog.require("goog.array");
 goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("goog.object");
 goog.require("goog.vec.Mat4");
 goog.require("ol.Size");
@@ -22415,6 +22571,7 @@ goog.require("ol.Tile");
 goog.require("ol.TileCoord");
 goog.require("ol.TileRange");
 goog.require("ol.TileState");
+goog.require("ol.dom");
 goog.require("ol.extent");
 goog.require("ol.layer.Tile");
 goog.require("ol.renderer.Map");
@@ -22469,11 +22626,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
     goog.asserts.assert(goog.isNull(this.canvasSize_));
     goog.asserts.assert(goog.isNull(this.context_));
     goog.asserts.assert(goog.isNull(this.renderedCanvasTileRange_));
-    canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-    context = (canvas.getContext("2d"));
-    this.canvas_ = canvas;
+    context = ol.dom.createCanvasContext2D(canvasWidth, canvasHeight);
+    this.canvas_ = context.canvas;
     this.canvasSize_ = [canvasWidth, canvasHeight];
     this.context_ = context
   }else {
@@ -22629,13 +22783,12 @@ goog.provide("ol.render.canvas.Replay");
 goog.provide("ol.render.canvas.ReplayGroup");
 goog.require("goog.array");
 goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("goog.object");
 goog.require("goog.vec.Mat4");
 goog.require("ol.BrowserFeature");
 goog.require("ol.array");
 goog.require("ol.color");
+goog.require("ol.dom");
 goog.require("ol.extent");
 goog.require("ol.extent.Relationship");
 goog.require("ol.geom.flat.simplify");
@@ -23557,10 +23710,7 @@ ol.render.canvas.ReplayGroup = function(tolerance, maxExtent, resolution) {
   this.maxExtent_ = maxExtent;
   this.resolution_ = resolution;
   this.replaysByZIndex_ = {};
-  var hitDetectionCanvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-  hitDetectionCanvas.width = 1;
-  hitDetectionCanvas.height = 1;
-  this.hitDetectionContext_ = (hitDetectionCanvas.getContext("2d"));
+  this.hitDetectionContext_ = ol.dom.createCanvasContext2D(1, 1);
   this.hitDetectionTransform_ = goog.vec.Mat4.createNumber()
 };
 ol.render.canvas.ReplayGroup.prototype.replay = function(context, extent, pixelRatio, transform, viewRotation, skippedFeaturesHash) {
@@ -24679,6 +24829,9 @@ goog.require("ol.geom.Polygon");
 goog.require("ol.render.IReplayGroup");
 goog.require("ol.style.ImageState");
 goog.require("ol.style.Style");
+ol.renderer.vector.defaultOrder = function(feature1, feature2) {
+  return goog.getUid(feature1) - goog.getUid(feature2)
+};
 ol.renderer.vector.renderCircleGeometry_ = function(replayGroup, geometry, style, data) {
   goog.asserts.assertInstanceof(geometry, ol.geom.Circle);
   var fillStyle = style.getFill();
@@ -25400,10 +25553,9 @@ goog.inherits(ol.source.VectorEvent, goog.events.Event);
 goog.provide("ol.renderer.canvas.VectorLayer");
 goog.require("goog.array");
 goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("goog.events");
 goog.require("ol.ViewHint");
+goog.require("ol.dom");
 goog.require("ol.extent");
 goog.require("ol.feature");
 goog.require("ol.layer.Vector");
@@ -25420,8 +25572,7 @@ ol.renderer.canvas.VectorLayer = function(mapRenderer, vectorLayer) {
   this.renderedExtent_ = ol.extent.createEmpty();
   this.renderedRenderOrder_ = null;
   this.replayGroup_ = null;
-  var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-  this.context_ = (canvas.getContext("2d"))
+  this.context_ = ol.dom.createCanvasContext2D()
 };
 goog.inherits(ol.renderer.canvas.VectorLayer, ol.renderer.canvas.Layer);
 ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, layerState, context) {
@@ -25481,9 +25632,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
   var vectorLayerRevision = vectorLayer.getRevision();
   var vectorLayerRenderOrder = vectorLayer.getRenderOrder();
   if(!goog.isDef(vectorLayerRenderOrder)) {
-    vectorLayerRenderOrder = function(feature1, feature2) {
-      return goog.getUid(feature1) - goog.getUid(feature2)
-    }
+    vectorLayerRenderOrder = ol.renderer.vector.defaultOrder
   }
   if(!this.dirty_ && this.renderedResolution_ == frameStateResolution && this.renderedRevision_ == vectorLayerRevision && this.renderedRenderOrder_ == vectorLayerRenderOrder && ol.extent.containsExtent(this.renderedExtent_, frameStateExtent)) {
     return
@@ -25509,7 +25658,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
     var dirty = this.renderFeature(feature, frameStateResolution, pixelRatio, styleFunction, replayGroup);
     this.dirty_ = this.dirty_ || dirty
   };
-  if(goog.isDef(vectorLayerRenderOrder)) {
+  if(!goog.isNull(vectorLayerRenderOrder)) {
     var features = vectorSource.getFeaturesInExtent(extent);
     goog.array.sort(features, vectorLayerRenderOrder);
     goog.array.forEach(features, renderFeature, this)
@@ -25537,10 +25686,10 @@ ol.renderer.canvas.VectorLayer.prototype.renderFeature = function(feature, resol
 goog.provide("ol.renderer.canvas.Map");
 goog.require("goog.asserts");
 goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("goog.style");
 goog.require("goog.vec.Mat4");
 goog.require("ol.css");
+goog.require("ol.dom");
 goog.require("ol.layer.Image");
 goog.require("ol.layer.Tile");
 goog.require("ol.layer.Vector");
@@ -25556,13 +25705,13 @@ goog.require("ol.source.State");
 goog.require("ol.vec.Mat4");
 ol.renderer.canvas.Map = function(container, map) {
   goog.base(this, container, map);
-  this.canvas_ = (goog.dom.createElement(goog.dom.TagName.CANVAS));
+  this.context_ = ol.dom.createCanvasContext2D();
+  this.canvas_ = this.context_.canvas;
   this.canvas_.style.width = "100%";
   this.canvas_.style.height = "100%";
   this.canvas_.className = ol.css.CLASS_UNSELECTABLE;
   goog.dom.insertChildAt(container, this.canvas_, 0);
   this.renderedVisible_ = true;
-  this.context_ = (this.canvas_.getContext("2d"));
   this.transform_ = goog.vec.Mat4.createNumber()
 };
 goog.inherits(ol.renderer.canvas.Map, ol.renderer.Map);
@@ -25641,156 +25790,6 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
   }
   this.scheduleRemoveUnusedLayerRenderers(frameState);
   this.scheduleExpireIconCache(frameState)
-};
-goog.provide("ol.dom");
-goog.provide("ol.dom.BrowserFeature");
-goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
-goog.require("goog.style");
-goog.require("goog.userAgent");
-goog.require("goog.vec.Mat4");
-ol.dom.BrowserFeature = {USE_MS_MATRIX_TRANSFORM:ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE, USE_MS_ALPHA_FILTER:ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE};
-ol.dom.canUseCssTransform = function() {
-  var canUseCssTransform;
-  return function() {
-    if(!goog.isDef(canUseCssTransform)) {
-      goog.asserts.assert(!goog.isNull(document.body));
-      if(!goog.global.getComputedStyle) {
-        canUseCssTransform = false
-      }else {
-        var el = goog.dom.createElement(goog.dom.TagName.P), has2d, transforms = {"webkitTransform":"-webkit-transform", "OTransform":"-o-transform", "msTransform":"-ms-transform", "MozTransform":"-moz-transform", "transform":"transform"};
-        goog.dom.appendChild(document.body, el);
-        for(var t in transforms) {
-          if(t in el.style) {
-            el.style[t] = "translate(1px,1px)";
-            has2d = goog.global.getComputedStyle(el).getPropertyValue(transforms[t])
-          }
-        }
-        goog.dom.removeNode(el);
-        canUseCssTransform = has2d && has2d !== "none"
-      }
-    }
-    return canUseCssTransform
-  }
-}();
-ol.dom.canUseCssTransform3D = function() {
-  var canUseCssTransform3D;
-  return function() {
-    if(!goog.isDef(canUseCssTransform3D)) {
-      goog.asserts.assert(!goog.isNull(document.body));
-      if(!goog.global.getComputedStyle) {
-        canUseCssTransform3D = false
-      }else {
-        var el = goog.dom.createElement(goog.dom.TagName.P), has3d, transforms = {"webkitTransform":"-webkit-transform", "OTransform":"-o-transform", "msTransform":"-ms-transform", "MozTransform":"-moz-transform", "transform":"transform"};
-        goog.dom.appendChild(document.body, el);
-        for(var t in transforms) {
-          if(t in el.style) {
-            el.style[t] = "translate3d(1px,1px,1px)";
-            has3d = goog.global.getComputedStyle(el).getPropertyValue(transforms[t])
-          }
-        }
-        goog.dom.removeNode(el);
-        canUseCssTransform3D = has3d && has3d !== "none"
-      }
-    }
-    return canUseCssTransform3D
-  }
-}();
-ol.dom.setTransform = function(element, value) {
-  var style = element.style;
-  style.WebkitTransform = value;
-  style.MozTransform = value;
-  style.OTransform = value;
-  style.msTransform = value;
-  style.transform = value;
-  if(goog.userAgent.IE && !ol.IS_LEGACY_IE) {
-    element.style.transformOrigin = "0 0"
-  }
-};
-ol.dom.setOpacity = function(element, value) {
-  if(ol.dom.BrowserFeature.USE_MS_ALPHA_FILTER) {
-    var filter = element.currentStyle.filter;
-    var regex;
-    var alpha;
-    if(goog.userAgent.VERSION == "8.0") {
-      regex = /progid:DXImageTransform\.Microsoft\.Alpha\(.*?\)/i, alpha = "progid:DXImageTransform.Microsoft.Alpha(Opacity\x3d" + value * 100 + ")"
-    }else {
-      regex = /alpha\(.*?\)/i;
-      alpha = "alpha(opacity\x3d" + value * 100 + ")"
-    }
-    var newFilter = filter.replace(regex, alpha);
-    if(newFilter === filter) {
-      newFilter += " " + alpha
-    }
-    element.style.filter = newFilter;
-    if(element.currentStyle.zIndex === "auto") {
-      element.style.zIndex = 0
-    }
-  }else {
-    goog.style.setOpacity(element, value)
-  }
-};
-ol.dom.setIEMatrix_ = function(element, value) {
-  var filter = element.currentStyle.filter;
-  var newFilter = filter.replace(/progid:DXImageTransform.Microsoft.Matrix\(.*?\)/i, value);
-  if(newFilter === filter) {
-    newFilter = " " + value
-  }
-  element.style.filter = newFilter;
-  if(element.currentStyle.zIndex === "auto") {
-    element.style.zIndex = 0
-  }
-};
-ol.dom.transformElement2D = function(element, transform, opt_precision, opt_translationElement) {
-  var i;
-  if(ol.dom.canUseCssTransform3D()) {
-    var value3D;
-    if(goog.isDef(opt_precision)) {
-      var strings3D = new Array(16);
-      for(i = 0;i < 16;++i) {
-        strings3D[i] = transform[i].toFixed(opt_precision)
-      }
-      value3D = strings3D.join(",")
-    }else {
-      value3D = transform.join(",")
-    }
-    ol.dom.setTransform(element, "matrix3d(" + value3D + ")")
-  }else {
-    if(ol.dom.canUseCssTransform()) {
-      var transform2D = [goog.vec.Mat4.getElement(transform, 0, 0), goog.vec.Mat4.getElement(transform, 1, 0), goog.vec.Mat4.getElement(transform, 0, 1), goog.vec.Mat4.getElement(transform, 1, 1), goog.vec.Mat4.getElement(transform, 0, 3), goog.vec.Mat4.getElement(transform, 1, 3)];
-      var value2D;
-      if(goog.isDef(opt_precision)) {
-        var strings2D = new Array(6);
-        for(i = 0;i < 6;++i) {
-          strings2D[i] = transform2D[i].toFixed(opt_precision)
-        }
-        value2D = strings2D.join(",")
-      }else {
-        value2D = transform2D.join(",")
-      }
-      ol.dom.setTransform(element, "matrix(" + value2D + ")")
-    }else {
-      if(ol.dom.BrowserFeature.USE_MS_MATRIX_TRANSFORM) {
-        var m11 = goog.vec.Mat4.getElement(transform, 0, 0), m12 = goog.vec.Mat4.getElement(transform, 0, 1), m21 = goog.vec.Mat4.getElement(transform, 1, 0), m22 = goog.vec.Mat4.getElement(transform, 1, 1), dx = goog.vec.Mat4.getElement(transform, 0, 3), dy = goog.vec.Mat4.getElement(transform, 1, 3);
-        var s = "progid:DXImageTransform.Microsoft.Matrix(";
-        s += 'sizingMethod\x3d"auto expand"';
-        s += ",M11\x3d" + m11.toFixed(opt_precision || 20);
-        s += ",M12\x3d" + m12.toFixed(opt_precision || 20);
-        s += ",M21\x3d" + m21.toFixed(opt_precision || 20);
-        s += ",M22\x3d" + m22.toFixed(opt_precision || 20);
-        s += ")";
-        ol.dom.setIEMatrix_(element, s);
-        dx /= m11;
-        dy /= m22;
-        opt_translationElement.style.left = Math.round(dx) + "px";
-        opt_translationElement.style.top = Math.round(dy) + "px"
-      }else {
-        element.style.left = Math.round(goog.vec.Mat4.getElement(transform, 0, 3)) + "px";
-        element.style.top = Math.round(goog.vec.Mat4.getElement(transform, 1, 3)) + "px"
-      }
-    }
-  }
 };
 goog.provide("ol.renderer.dom.Layer");
 goog.require("goog.dom");
@@ -27826,6 +27825,7 @@ goog.require("goog.style");
 goog.require("goog.webgl");
 goog.require("ol.Tile");
 goog.require("ol.css");
+goog.require("ol.dom");
 goog.require("ol.layer.Image");
 goog.require("ol.layer.Tile");
 goog.require("ol.render.Event");
@@ -27850,9 +27850,8 @@ ol.renderer.webgl.Map = function(container, map) {
   this.canvas_.style.height = "100%";
   this.canvas_.className = ol.css.CLASS_UNSELECTABLE;
   goog.dom.insertChildAt(container, this.canvas_, 0);
-  this.clipTileCanvas_ = (goog.dom.createElement(goog.dom.TagName.CANVAS));
   this.clipTileCanvasSize_ = 0;
-  this.clipTileContext_ = (this.clipTileCanvas_.getContext("2d"));
+  this.clipTileContext_ = ol.dom.createCanvasContext2D();
   this.renderedVisible_ = true;
   this.gl_ = ol.webgl.getContext(this.canvas_, {antialias:true, depth:false, failIfMajorPerformanceCaveat:true, preserveDrawingBuffer:false, stencil:true});
   goog.asserts.assert(!goog.isNull(this.gl_));
@@ -27902,7 +27901,7 @@ ol.renderer.webgl.Map.prototype.bindTileTexture = function(tile, tileSize, tileG
     var texture = gl.createTexture();
     gl.bindTexture(goog.webgl.TEXTURE_2D, texture);
     if(tileGutter > 0) {
-      var clipTileCanvas = this.clipTileCanvas_;
+      var clipTileCanvas = this.clipTileContext_.canvas;
       var clipTileContext = this.clipTileContext_;
       if(this.clipTileCanvasSize_ != tileSize) {
         clipTileCanvas.width = tileSize;
@@ -28170,7 +28169,7 @@ ol.Map = function(options) {
   this.overlayContainer_ = goog.dom.createDom(goog.dom.TagName.DIV, "ol-overlaycontainer");
   goog.dom.appendChild(this.viewport_, this.overlayContainer_);
   this.overlayContainerStopEvent_ = goog.dom.createDom(goog.dom.TagName.DIV, "ol-overlaycontainer-stopevent");
-  goog.events.listen(this.overlayContainerStopEvent_, [goog.events.EventType.CLICK, goog.events.EventType.DBLCLICK, goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART, goog.events.EventType.MSPOINTERDOWN, "pointerdown"], goog.events.Event.stopPropagation);
+  goog.events.listen(this.overlayContainerStopEvent_, [goog.events.EventType.CLICK, goog.events.EventType.DBLCLICK, goog.events.EventType.MOUSEDOWN, goog.events.EventType.TOUCHSTART, goog.events.EventType.MSPOINTERDOWN, ol.MapBrowserEvent.EventType.POINTERDOWN, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL], goog.events.Event.stopPropagation);
   goog.dom.appendChild(this.viewport_, this.overlayContainerStopEvent_);
   var mapBrowserEventHandler = new ol.MapBrowserEventHandler(this);
   goog.events.listen(mapBrowserEventHandler, goog.object.getValues(ol.MapBrowserEvent.EventType), this.handleMapBrowserEvent, false, this);
@@ -29763,6 +29762,7 @@ goog.require("googx.dom.fullscreen");
 goog.require("googx.dom.fullscreen.EventType");
 goog.require("ol.control.Control");
 goog.require("ol.css");
+goog.require("ol.pointer.PointerEventHandler");
 ol.control.FullScreen = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   this.cssClassName_ = goog.isDef(options.className) ? options.className : "ol-full-screen";
@@ -29770,7 +29770,9 @@ ol.control.FullScreen = function(opt_options) {
   var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {"role":"tooltip"}, tipLabel);
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":this.cssClassName_ + "-" + googx.dom.fullscreen.isFullScreen() + " ol-has-tooltip"});
   goog.dom.appendChild(button, tip);
-  goog.events.listen(button, [goog.events.EventType.CLICK, goog.events.EventType.TOUCHEND], this.handleClick_, false, this);
+  var buttonHandler = new ol.pointer.PointerEventHandler(button);
+  this.registerDisposable(buttonHandler);
+  goog.events.listen(buttonHandler, ol.pointer.EventType.POINTERUP, this.handleClick_, false, this);
   goog.events.listen(button, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
     this.blur()
   }, false);
@@ -29780,11 +29782,11 @@ ol.control.FullScreen = function(opt_options) {
   this.keys_ = goog.isDef(options.keys) ? options.keys : false
 };
 goog.inherits(ol.control.FullScreen, ol.control.Control);
-ol.control.FullScreen.prototype.handleClick_ = function(browserEvent) {
+ol.control.FullScreen.prototype.handleClick_ = function(pointerEvent) {
   if(!googx.dom.fullscreen.isSupported()) {
     return
   }
-  browserEvent.preventDefault();
+  pointerEvent.browserEvent.preventDefault();
   var map = this.getMap();
   if(goog.isNull(map)) {
     return
@@ -30661,6 +30663,7 @@ goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("ol.control.Control");
 goog.require("ol.css");
+goog.require("ol.pointer.PointerEventHandler");
 ol.control.ZoomToExtent = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
   this.extent_ = goog.isDef(options.extent) ? options.extent : null;
@@ -30671,15 +30674,17 @@ ol.control.ZoomToExtent = function(opt_options) {
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {"class":"ol-has-tooltip"});
   goog.dom.appendChild(button, tip);
   goog.dom.appendChild(element, button);
-  goog.events.listen(button, [goog.events.EventType.TOUCHEND, goog.events.EventType.CLICK], this.handleZoomToExtent_, false, this);
+  var buttonHandler = new ol.pointer.PointerEventHandler(button);
+  this.registerDisposable(buttonHandler);
+  goog.events.listen(buttonHandler, ol.pointer.EventType.POINTERUP, this.handleZoomToExtent_, false, this);
   goog.events.listen(button, [goog.events.EventType.MOUSEOUT, goog.events.EventType.FOCUSOUT], function() {
     this.blur()
   }, false);
   goog.base(this, {element:element, target:options.target})
 };
 goog.inherits(ol.control.ZoomToExtent, ol.control.Control);
-ol.control.ZoomToExtent.prototype.handleZoomToExtent_ = function(browserEvent) {
-  browserEvent.preventDefault();
+ol.control.ZoomToExtent.prototype.handleZoomToExtent_ = function(pointerEvent) {
+  pointerEvent.browserEvent.preventDefault();
   var map = this.getMap();
   var view = map.getView();
   goog.asserts.assert(goog.isDef(view));
@@ -35976,11 +35981,10 @@ ol.interaction.Select.getDefaultStyleFunction = function() {
 };
 goog.provide("ol.layer.Heatmap");
 goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("goog.events");
 goog.require("goog.math");
 goog.require("ol.Object");
+goog.require("ol.dom");
 goog.require("ol.layer.Vector");
 goog.require("ol.render.EventType");
 goog.require("ol.style.Icon");
@@ -36020,12 +36024,9 @@ ol.layer.Heatmap = function(opt_options) {
 goog.inherits(ol.layer.Heatmap, ol.layer.Vector);
 ol.layer.Heatmap.DEFAULT_GRADIENT = ["#00f", "#0ff", "#0f0", "#ff0", "#f00"];
 ol.layer.Heatmap.createGradient_ = function(colors) {
-  var canvas = goog.dom.createElement(goog.dom.TagName.CANVAS);
-  var context = canvas.getContext("2d");
   var width = 1;
   var height = 256;
-  canvas.width = width;
-  canvas.height = height;
+  var context = ol.dom.createCanvasContext2D(width, height);
   var gradient = context.createLinearGradient(0, 0, width, height);
   var step = 1 / (colors.length - 1);
   for(var i = 0, ii = colors.length;i < ii;++i) {
@@ -36036,10 +36037,9 @@ ol.layer.Heatmap.createGradient_ = function(colors) {
   return context.getImageData(0, 0, width, height).data
 };
 ol.layer.Heatmap.createCircle_ = function(radius, blur, shadow) {
-  var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-  var context = canvas.getContext("2d");
   var halfSize = radius + blur + 1;
-  canvas.width = canvas.height = halfSize * 2;
+  var size = 2 * halfSize;
+  var context = ol.dom.createCanvasContext2D(size, size);
   context.shadowOffsetX = context.shadowOffsetY = shadow;
   context.shadowBlur = blur;
   context.shadowColor = "#000";
@@ -36047,7 +36047,7 @@ ol.layer.Heatmap.createCircle_ = function(radius, blur, shadow) {
   var center = halfSize - shadow;
   context.arc(center, center, radius, 0, Math.PI * 2, true);
   context.fill();
-  return canvas.toDataURL()
+  return context.canvas.toDataURL()
 };
 ol.layer.Heatmap.prototype.getGradient = function() {
   return(this.get(ol.layer.HeatmapLayerProperty.GRADIENT))
@@ -37544,11 +37544,10 @@ ol.source.ImageStatic.prototype.getImage = function(extent, resolution, pixelRat
 };
 goog.provide("ol.source.ImageVector");
 goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 goog.require("goog.vec.Mat4");
+goog.require("ol.dom");
 goog.require("ol.extent");
 goog.require("ol.feature");
 goog.require("ol.render.canvas.ReplayGroup");
@@ -37560,8 +37559,7 @@ ol.source.ImageVector = function(options) {
   this.source_ = options.source;
   this.styleFunction_ = goog.isDef(options.style) ? ol.feature.createStyleFunction(options.style) : ol.feature.defaultStyleFunction;
   this.transform_ = goog.vec.Mat4.createNumber();
-  this.canvasElement_ = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-  this.canvasContext_ = (this.canvasElement_.getContext("2d"));
+  this.canvasContext_ = ol.dom.createCanvasContext2D();
   this.canvasSize_ = [0, 0];
   this.replayGroup_ = null;
   goog.base(this, {attributions:options.attributions, canvasFunction:goog.bind(this.canvasFunctionInternal_, this), extent:options.extent, logo:options.logo, projection:options.projection, ratio:options.ratio, resolutions:options.resolutions, state:this.source_.getState()});
@@ -37580,8 +37578,8 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resol
     return null
   }
   if(this.canvasSize_[0] != size[0] || this.canvasSize_[1] != size[1]) {
-    this.canvasElement_.width = size[0];
-    this.canvasElement_.height = size[1];
+    this.canvasContext_.canvas.width = size[0];
+    this.canvasContext_.canvas.height = size[1];
     this.canvasSize_[0] = size[0];
     this.canvasSize_[1] = size[1]
   }else {
@@ -37590,7 +37588,7 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resol
   var transform = this.getTransform_(ol.extent.getCenter(extent), resolution, pixelRatio, size);
   replayGroup.replay(this.canvasContext_, extent, pixelRatio, transform, 0, {});
   this.replayGroup_ = replayGroup;
-  return this.canvasElement_
+  return this.canvasContext_.canvas
 };
 ol.source.ImageVector.prototype.forEachFeatureAtPixel = function(extent, resolution, rotation, coordinate, callback) {
   if(goog.isNull(this.replayGroup_)) {
@@ -37952,12 +37950,11 @@ ol.source.Stamen = function(options) {
 goog.inherits(ol.source.Stamen, ol.source.XYZ);
 ol.source.Stamen.ATTRIBUTIONS = [new ol.Attribution({html:'Map tiles by \x3ca href\x3d"http://stamen.com/"\x3eStamen Design\x3c/a\x3e, ' + 'under \x3ca href\x3d"http://creativecommons.org/licenses/by/3.0/"\x3eCC BY' + " 3.0\x3c/a\x3e."}), ol.source.OSM.DATA_ATTRIBUTION];
 goog.provide("ol.source.TileDebug");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("ol.Tile");
 goog.require("ol.TileCache");
 goog.require("ol.TileCoord");
 goog.require("ol.TileState");
+goog.require("ol.dom");
 goog.require("ol.source.Tile");
 goog.require("ol.tilegrid.TileGrid");
 ol.DebugTile_ = function(tileCoord, tileGrid) {
@@ -37973,10 +37970,7 @@ ol.DebugTile_.prototype.getImage = function(opt_context) {
     return this.canvasByContext_[key]
   }else {
     var tileSize = this.tileSize_;
-    var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-    canvas.width = tileSize;
-    canvas.height = tileSize;
-    var context = (canvas.getContext("2d"));
+    var context = ol.dom.createCanvasContext2D(tileSize, tileSize);
     context.strokeStyle = "black";
     context.strokeRect(0.5, 0.5, tileSize + 0.5, tileSize + 0.5);
     context.fillStyle = "black";
@@ -37984,8 +37978,8 @@ ol.DebugTile_.prototype.getImage = function(opt_context) {
     context.textBaseline = "middle";
     context.font = "24px sans-serif";
     context.fillText(this.tileCoord_.toString(), tileSize / 2, tileSize / 2);
-    this.canvasByContext_[key] = canvas;
-    return canvas
+    this.canvasByContext_[key] = context.canvas;
+    return context.canvas
   }
 };
 ol.source.TileDebug = function(options) {
@@ -38522,12 +38516,11 @@ ol.tilegrid.Zoomify.prototype.createTileCoordTransform = function(opt_options) {
 goog.provide("ol.source.Zoomify");
 goog.require("goog.array");
 goog.require("goog.asserts");
-goog.require("goog.dom");
-goog.require("goog.dom.TagName");
 goog.require("ol.ImageTile");
 goog.require("ol.TileCoord");
 goog.require("ol.TileState");
 goog.require("ol.TileUrlFunction");
+goog.require("ol.dom");
 goog.require("ol.proj");
 goog.require("ol.source.TileImage");
 goog.require("ol.tilegrid.Zoomify");
@@ -38590,23 +38583,21 @@ ol.source.ZoomifyTile_ = function(tileCoord, state, src, crossOrigin, tileLoadFu
 };
 goog.inherits(ol.source.ZoomifyTile_, ol.ImageTile);
 ol.source.ZoomifyTile_.prototype.getImage = function(opt_context) {
+  var tileSize = ol.DEFAULT_TILE_SIZE;
   var key = goog.isDef(opt_context) ? goog.getUid(opt_context).toString() : "";
   if(key in this.zoomifyImageByContext_) {
     return this.zoomifyImageByContext_[key]
   }else {
     var image = goog.base(this, "getImage", opt_context);
     if(this.state == ol.TileState.LOADED) {
-      if(image.width == ol.DEFAULT_TILE_SIZE && image.height == ol.DEFAULT_TILE_SIZE) {
+      if(image.width == tileSize && image.height == tileSize) {
         this.zoomifyImageByContext_[key] = image;
         return image
       }else {
-        var canvas = (goog.dom.createElement(goog.dom.TagName.CANVAS));
-        canvas.width = ol.DEFAULT_TILE_SIZE;
-        canvas.height = ol.DEFAULT_TILE_SIZE;
-        var context = (canvas.getContext("2d"));
+        var context = ol.dom.createCanvasContext2D(tileSize, tileSize);
         context.drawImage(image, 0, 0);
-        this.zoomifyImageByContext_[key] = canvas;
-        return canvas
+        this.zoomifyImageByContext_[key] = context.canvas;
+        return context.canvas
       }
     }else {
       return image

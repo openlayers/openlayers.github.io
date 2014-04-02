@@ -2,10 +2,9 @@ goog.provide('ol.renderer.canvas.VectorLayer');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
-goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('ol.ViewHint');
+goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.feature');
 goog.require('ol.layer.Vector');
@@ -64,17 +63,10 @@ ol.renderer.canvas.VectorLayer = function(mapRenderer, vectorLayer) {
   this.replayGroup_ = null;
 
   /**
-   * @type {HTMLCanvasElement}
-   */
-  var canvas = /** @type {HTMLCanvasElement} */
-      (goog.dom.createElement(goog.dom.TagName.CANVAS));
-
-  /**
    * @private
    * @type {CanvasRenderingContext2D}
    */
-  this.context_ = /** @type {CanvasRenderingContext2D} */
-      (canvas.getContext('2d'));
+  this.context_ = ol.dom.createCanvasContext2D();
 
 };
 goog.inherits(ol.renderer.canvas.VectorLayer, ol.renderer.canvas.Layer);
@@ -183,15 +175,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
   var vectorLayerRevision = vectorLayer.getRevision();
   var vectorLayerRenderOrder = vectorLayer.getRenderOrder();
   if (!goog.isDef(vectorLayerRenderOrder)) {
-    vectorLayerRenderOrder =
-        /**
-         * @param {ol.Feature} feature1 Feature 1.
-         * @param {ol.Feature} feature2 Feature 2.
-         * @return {number} Order.
-         */
-        function(feature1, feature2) {
-      return goog.getUid(feature1) - goog.getUid(feature2);
-    };
+    vectorLayerRenderOrder = ol.renderer.vector.defaultOrder;
   }
 
   if (!this.dirty_ &&
@@ -234,7 +218,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
         feature, frameStateResolution, pixelRatio, styleFunction, replayGroup);
     this.dirty_ = this.dirty_ || dirty;
   };
-  if (goog.isDef(vectorLayerRenderOrder)) {
+  if (!goog.isNull(vectorLayerRenderOrder)) {
     var features = vectorSource.getFeaturesInExtent(extent);
     goog.array.sort(features, vectorLayerRenderOrder);
     goog.array.forEach(features, renderFeature, this);
