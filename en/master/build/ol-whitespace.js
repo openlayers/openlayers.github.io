@@ -36019,6 +36019,7 @@ ol.layer.Heatmap = function(opt_options) {
     }
     return style
   });
+  this.setRenderOrder(null);
   goog.events.listen(this, ol.render.EventType.RENDER, this.handleRender_, false, this)
 };
 goog.inherits(ol.layer.Heatmap, ol.layer.Vector);
