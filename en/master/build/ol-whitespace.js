@@ -699,7 +699,7 @@ goog.addDependency("../src/ol/render/renderevent.js", ["ol.render.Event", "ol.re
 goog.addDependency("../src/ol/render/vector.js", ["ol.renderer.vector"], ["goog.asserts", "ol.geom.Circle", "ol.geom.GeometryCollection", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.render.IReplayGroup", "ol.style.ImageState", "ol.style.Style"]);
 goog.addDependency("../src/ol/render/webgl/webglimmediate.js", ["ol.render.webgl.Immediate"], []);
 goog.addDependency("../src/ol/renderer/canvas/canvasimagelayerrenderer.js", ["ol.renderer.canvas.ImageLayer"], ["goog.asserts", "goog.events", "goog.events.EventType", "goog.vec.Mat4", "ol.ImageBase", "ol.ImageState", "ol.ViewHint", "ol.layer.Image", "ol.renderer.Map", "ol.renderer.canvas.Layer", "ol.source.Image", "ol.vec.Mat4"]);
-goog.addDependency("../src/ol/renderer/canvas/canvaslayerrenderer.js", ["ol.renderer.canvas.Layer"], ["goog.vec.Mat4", "ol.layer.Layer", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Layer", "ol.vec.Mat4"]);
+goog.addDependency("../src/ol/renderer/canvas/canvaslayerrenderer.js", ["ol.renderer.canvas.Layer"], ["goog.array", "goog.vec.Mat4", "ol.layer.Layer", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Layer", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/canvas/canvasmaprenderer.js", ["ol.renderer.canvas.Map"], ["goog.asserts", "goog.dom", "goog.style", "goog.vec.Mat4", "ol.css", "ol.dom", "ol.layer.Image", "ol.layer.Tile", "ol.layer.Vector", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.renderer.Map", "ol.renderer.canvas.ImageLayer", "ol.renderer.canvas.Layer", "ol.renderer.canvas.TileLayer", "ol.renderer.canvas.VectorLayer", "ol.source.State", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/canvas/canvastilelayerrenderer.js", ["ol.renderer.canvas.TileLayer"], ["goog.array", "goog.asserts", "goog.object", "goog.vec.Mat4", "ol.Size", "ol.Tile", "ol.TileCoord", "ol.TileRange", "ol.TileState", "ol.dom", "ol.extent", "ol.layer.Tile", "ol.renderer.Map", "ol.renderer.canvas.Layer", "ol.source.Tile", "ol.vec.Mat4"]);
 goog.addDependency("../src/ol/renderer/canvas/canvasvectorlayerrenderer.js", ["ol.renderer.canvas.VectorLayer"], ["goog.array", "goog.asserts", "goog.events", "ol.ViewHint", "ol.dom", "ol.extent", "ol.feature", "ol.layer.Vector", "ol.render.EventType", "ol.render.canvas.ReplayGroup", "ol.renderer.canvas.Layer", "ol.renderer.vector", "ol.source.Vector"]);
@@ -12329,10 +12329,13 @@ ol.MapBrowserEventHandler.prototype.emulateClickLegacyIE_ = function(browserEven
   this.emulateClick_(pointerEvent)
 };
 ol.MapBrowserEventHandler.prototype.emulateClick_ = function(pointerEvent) {
+  var newEvent;
+  newEvent = new ol.MapBrowserPointerEvent(ol.MapBrowserEvent.EventType.CLICK, this.map_, pointerEvent);
+  this.dispatchEvent(newEvent);
   if(this.clickTimeoutId_ !== 0) {
     goog.global.clearTimeout(this.clickTimeoutId_);
     this.clickTimeoutId_ = 0;
-    var newEvent = new ol.MapBrowserPointerEvent(ol.MapBrowserEvent.EventType.DBLCLICK, this.map_, pointerEvent);
+    newEvent = new ol.MapBrowserPointerEvent(ol.MapBrowserEvent.EventType.DBLCLICK, this.map_, pointerEvent);
     this.dispatchEvent(newEvent)
   }else {
     this.clickTimeoutId_ = goog.global.setTimeout(goog.bind(function() {
@@ -12426,7 +12429,7 @@ ol.MapBrowserEventHandler.prototype.disposeInternal = function() {
   }
   goog.base(this, "disposeInternal")
 };
-ol.MapBrowserEvent.EventType = {SINGLECLICK:"singleclick", DBLCLICK:goog.events.EventType.DBLCLICK, POINTERDRAG:"pointerdrag", POINTERMOVE:"pointermove", POINTERDOWN:"pointerdown", POINTERUP:"pointerup", POINTEROVER:"pointerover", POINTEROUT:"pointerout", POINTERENTER:"pointerenter", POINTERLEAVE:"pointerleave", POINTERCANCEL:"pointercancel"};
+ol.MapBrowserEvent.EventType = {SINGLECLICK:"singleclick", CLICK:goog.events.EventType.CLICK, DBLCLICK:goog.events.EventType.DBLCLICK, POINTERDRAG:"pointerdrag", POINTERMOVE:"pointermove", POINTERDOWN:"pointerdown", POINTERUP:"pointerup", POINTEROVER:"pointerover", POINTEROUT:"pointerout", POINTERENTER:"pointerenter", POINTERLEAVE:"pointerleave", POINTERCANCEL:"pointercancel"};
 goog.provide("ol.events.ConditionType");
 goog.provide("ol.events.condition");
 goog.require("goog.asserts");
@@ -22402,6 +22405,7 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function(textStyle) {
 ol.render.canvas.Immediate.GEOMETRY_RENDERES_ = {"Point":ol.render.canvas.Immediate.prototype.drawPointGeometry, "LineString":ol.render.canvas.Immediate.prototype.drawLineStringGeometry, "Polygon":ol.render.canvas.Immediate.prototype.drawPolygonGeometry, "MultiPoint":ol.render.canvas.Immediate.prototype.drawMultiPointGeometry, "MultiLineString":ol.render.canvas.Immediate.prototype.drawMultiLineStringGeometry, "MultiPolygon":ol.render.canvas.Immediate.prototype.drawMultiPolygonGeometry, "GeometryCollection":ol.render.canvas.Immediate.prototype.drawGeometryCollectionGeometry, 
 "Circle":ol.render.canvas.Immediate.prototype.drawCircleGeometry};
 goog.provide("ol.renderer.canvas.Layer");
+goog.require("goog.array");
 goog.require("goog.vec.Mat4");
 goog.require("ol.layer.Layer");
 goog.require("ol.render.Event");
@@ -22460,6 +22464,27 @@ ol.renderer.canvas.Layer.prototype.getTransform = function(frameState) {
   var pixelRatio = frameState.pixelRatio;
   return ol.vec.Mat4.makeTransform2D(this.transform_, pixelRatio * frameState.size[0] / 2, pixelRatio * frameState.size[1] / 2, pixelRatio / view2DState.resolution, -pixelRatio / view2DState.resolution, -view2DState.rotation, -view2DState.center[0], -view2DState.center[1])
 };
+ol.renderer.canvas.Layer.testCanvasSize = function() {
+  var testImageData = null;
+  return function(context, size) {
+    var x = size[0] - 1;
+    var y = size[1] - 1;
+    var originalImageData = context.getImageData(x, y, 1, 1);
+    if(goog.isNull(testImageData)) {
+      testImageData = context.createImageData(1, 1);
+      var data = testImageData.data;
+      data[0] = 42;
+      data[1] = 84;
+      data[2] = 126;
+      data[3] = 255
+    }
+    context.putImageData(testImageData, x, y);
+    var result = context.getImageData(x, y, 1, 1);
+    var good = goog.array.equals(testImageData.data, result.data);
+    context.putImageData(originalImageData, x, y);
+    return good
+  }
+}();
 goog.provide("ol.source.Image");
 goog.require("goog.array");
 goog.require("goog.asserts");
@@ -22582,6 +22607,7 @@ ol.renderer.canvas.TileLayer = function(mapRenderer, tileLayer) {
   goog.base(this, mapRenderer, tileLayer);
   this.canvas_ = null;
   this.canvasSize_ = null;
+  this.canvasTooBig_ = false;
   this.context_ = null;
   this.imageTransform_ = goog.vec.Mat4.createNumber();
   this.renderedCanvasZ_ = NaN;
@@ -22629,16 +22655,18 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
     context = ol.dom.createCanvasContext2D(canvasWidth, canvasHeight);
     this.canvas_ = context.canvas;
     this.canvasSize_ = [canvasWidth, canvasHeight];
-    this.context_ = context
+    this.context_ = context;
+    this.canvasTooBig_ = !ol.renderer.canvas.Layer.testCanvasSize(context, this.canvasSize_)
   }else {
     goog.asserts.assert(!goog.isNull(this.canvasSize_));
     goog.asserts.assert(!goog.isNull(this.context_));
     canvas = this.canvas_;
     context = this.context_;
-    if(this.canvasSize_[0] < canvasWidth || this.canvasSize_[1] < canvasHeight) {
+    if(this.canvasSize_[0] < canvasWidth || this.canvasSize_[1] < canvasHeight || this.canvasTooBig_ && (this.canvasSize_[0] > canvasWidth || this.canvasSize_[1] > canvasHeight)) {
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
       this.canvasSize_ = [canvasWidth, canvasHeight];
+      this.canvasTooBig_ = !ol.renderer.canvas.Layer.testCanvasSize(context, this.canvasSize_);
       this.renderedCanvasTileRange_ = null
     }else {
       canvasWidth = this.canvasSize_[0];
