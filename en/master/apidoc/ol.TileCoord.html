@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.interaction.DragZoom</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.TileCoord</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.interaction.DragZoom
+    ol.TileCoord
     </h2>
     
 </header>  
@@ -48,11 +48,70 @@
     
     
         
+        
+        
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>tilecoord.js, line 26</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
 <dt>
-    <h4 class="name" id="DragZoom"><span class="type-signature"></span>new DragZoom</h4>
+    <h4 class="name" id="getZXY"><span class="type-signature"></span>getZXY</h4>
     
     
-<div class="stability stability-experimental">Stability: experimental</div>
+<div class="stability">Stability: not documented</div>
 
 
 
@@ -60,12 +119,6 @@
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Allows the user to zoom the map by clicking and dragging on the map,
-normally combined with an <a href="ol.events.condition.html">ol.events.condition</a> that limits
-it to when the shift key is held down.</p>
-    </div>
     
 
     
@@ -100,13 +153,13 @@ it to when the shift key is held down.</p>
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>result</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.interaction.html#DragZoomOptions">olx.interaction.DragZoomOptions</a></span>
+<span class="param-type">Array.&lt;number>=</span>
 
 
             
@@ -124,7 +177,7 @@ it to when the shift key is held down.</p>
             
             
             
-            <td class="description last"><p>Options.</p></td>
+            <td class="description last"><p>Optional array to reuse.</p></td>
         </tr>
 	
 	
@@ -154,108 +207,7 @@ it to when the shift key is held down.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>dragzoominteraction.js, line 28</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="ol.interaction.DragBox.html">ol.interaction.DragBox</a></li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <h4 class="name" id="getGeometry"><span class="type-signature"></span>getGeometry</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Returns geometry of last drawn box.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	<dt class="inherited-from">Inherited From:</dt>
-	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.interaction.DragBox.html#getGeometry">ol.interaction.DragBox#getGeometry</a>
-	</li></dd>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>dragboxinteraction.js, line 138</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>tilecoord.js, line 122</li></ul></dd>
 	
     
     
@@ -275,7 +227,7 @@ it to when the shift key is held down.</p>
     
             
 <div class="param-desc">
-    <p>Geometry.</p>
+    <p>Array of z, x, y.</p>
 </div>
 
 
@@ -286,7 +238,7 @@ it to when the shift key is held down.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
+<span class="param-type">Array.&lt;number></span>
 
 
 	</dd>

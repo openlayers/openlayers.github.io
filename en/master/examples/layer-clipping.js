@@ -4,7 +4,6 @@ var osm = new ol.layer.Tile({
 
 var map = new ol.Map({
   layers: [osm],
-  renderer: 'canvas',
   target: 'map',
   view: new ol.View2D({
     center: [0, 0],

@@ -28,7 +28,6 @@ if (ol.BrowserFeature.HAS_WEBGL) {
 }
 
 var canvasMap = new ol.Map({
-  renderer: 'canvas',
   target: 'canvasMap'
 });
 canvasMap.bindTo('layergroup', domMap);

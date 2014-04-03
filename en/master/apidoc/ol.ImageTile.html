@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.interaction.DragZoom</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.ImageTile</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.interaction.DragZoom
+    ol.ImageTile
     </h2>
     
 </header>  
@@ -48,91 +48,8 @@
     
     
         
-<dt>
-    <h4 class="name" id="DragZoom"><span class="type-signature"></span>new DragZoom</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Allows the user to zoom the map by clicking and dragging on the map,
-normally combined with an <a href="ol.events.condition.html">ol.events.condition</a> that limits
-it to when the shift key is held down.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
         
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="olx.interaction.html#DragZoomOptions">olx.interaction.DragZoomOptions</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
+        
 <dl class="details">
     
         
@@ -154,7 +71,7 @@ it to when the shift key is held down.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>dragzoominteraction.js, line 28</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>imagetile.js, line 25</li></ul></dd>
 	
     
     
@@ -164,16 +81,8 @@ it to when the shift key is held down.</p>
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
+        
+        
     
     </div>
     
@@ -181,7 +90,7 @@ it to when the shift key is held down.</p>
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="ol.interaction.DragBox.html">ol.interaction.DragBox</a></li>
+            <li><a href="ol.Tile.html">ol.Tile</a></li>
         </ul>
     
     
@@ -205,10 +114,10 @@ it to when the shift key is held down.</p>
         <dl>
             
 <dt>
-    <h4 class="name" id="getGeometry"><span class="type-signature"></span>getGeometry</h4>
+    <h4 class="name" id="getTileCoord"><span class="type-signature"></span>getTileCoord</h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
@@ -216,10 +125,6 @@ it to when the shift key is held down.</p>
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Returns geometry of last drawn box.</p>
-    </div>
     
 
     
@@ -239,7 +144,7 @@ it to when the shift key is held down.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.interaction.DragBox.html#getGeometry">ol.interaction.DragBox#getGeometry</a>
+		<a href="ol.Tile.html#getTileCoord">ol.Tile#getTileCoord</a>
 	</li></dd>
 	
 	
@@ -255,7 +160,7 @@ it to when the shift key is held down.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>dragboxinteraction.js, line 138</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>tile.js, line 77</li></ul></dd>
 	
     
     
@@ -274,10 +179,6 @@ it to when the shift key is held down.</p>
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    <p>Geometry.</p>
-</div>
-
 
 
 <dl>
@@ -286,7 +187,7 @@ it to when the shift key is held down.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
+<span class="param-type"><a href="ol.TileCoord.html">ol.TileCoord</a></span>
 
 
 	</dd>

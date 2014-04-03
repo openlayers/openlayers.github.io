@@ -36,7 +36,6 @@ var map = new ol.Map({
     }),
     vectorLayer
   ],
-  renderer: 'canvas',
   target: 'map',
   view: view
 });
