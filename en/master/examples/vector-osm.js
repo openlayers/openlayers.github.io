@@ -72,9 +72,21 @@ var styles = {
   }
 };
 
-var vectorSource = new ol.source.OSMXML({
-  projection: 'EPSG:3857',
-  url: 'data/osm/map.osm'
+var vectorSource = new ol.source.ServerVector({
+  format: new ol.format.OSMXML(),
+  loader: function(extent, resolution, projection) {
+    var transform = ol.proj.getTransform(projection, 'EPSG:4326');
+    var epsg4326Extent = transform(extent, []);
+    var url = 'http://overpass-api.de/api/xapi?map?bbox=' +
+        epsg4326Extent.join(',');
+    $.ajax(url).then(function(response) {
+      vectorSource.addFeatures(vectorSource.readFeatures(response));
+    });
+  },
+  strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
+    maxZoom: 19
+  })),
+  projection: 'EPSG:3857'
 });
 
 var vector = new ol.layer.Vector({
@@ -106,6 +118,7 @@ var map = new ol.Map({
   target: document.getElementById('map'),
   view: new ol.View2D({
     center: [739218, 5906096],
+    maxZoom: 19,
     zoom: 17
   })
 });
