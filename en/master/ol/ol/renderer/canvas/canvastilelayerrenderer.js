@@ -210,7 +210,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
     this.canvasSize_ = [canvasWidth, canvasHeight];
     this.context_ = context;
     this.canvasTooBig_ =
-        !ol.renderer.canvas.Layer.testCanvasSize(context, this.canvasSize_);
+        !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
   } else {
     goog.asserts.assert(!goog.isNull(this.canvasSize_));
     goog.asserts.assert(!goog.isNull(this.context_));
@@ -220,12 +220,13 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
         this.canvasSize_[1] < canvasHeight ||
         (this.canvasTooBig_ && (this.canvasSize_[0] > canvasWidth ||
         this.canvasSize_[1] > canvasHeight))) {
-      // Canvas is too small or too big, resize it
+      // Canvas is too small, resize it. We never shrink the canvas, unless
+      // we know that the current canvas size exceeds the maximum size
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
       this.canvasSize_ = [canvasWidth, canvasHeight];
       this.canvasTooBig_ =
-          !ol.renderer.canvas.Layer.testCanvasSize(context, this.canvasSize_);
+          !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
       this.renderedCanvasTileRange_ = null;
     } else {
       canvasWidth = this.canvasSize_[0];
