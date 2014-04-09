@@ -31,6 +31,11 @@ module.exports = function(grunt) {
         dir: repo
       }
     },
+    install: {
+      options: {
+        dir: repo
+      }
+    },
     buildpy: {
       options: {cwd: repo},
       apidoc: {
@@ -190,7 +195,7 @@ module.exports = function(grunt) {
   grunt.loadTasks('tasks');
 
   grunt.registerTask('build', 'Build the website', [
-    'checkout', 'buildpy:examples', 'buildpy:apidoc', 'clean:dist',
+    'checkout', 'install', 'buildpy:examples', 'buildpy:apidoc', 'clean:dist',
     'move', 'less', 'uglify', 'copy', 'assemble']);
 
 
