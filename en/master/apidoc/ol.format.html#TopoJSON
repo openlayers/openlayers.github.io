@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.format.IGC</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.format.TopoJSON</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,7 +36,7 @@
     
 <header>
     <h2>
-    ol.format.IGC
+    ol.format.TopoJSON
     </h2>
     
 </header>  
@@ -47,7 +47,7 @@
     
         
 <dt>
-    <h4 class="name" id="IGC"><span class="type-signature"></span>new IGC</h4>
+    <h4 class="name" id="TopoJSON"><span class="type-signature"></span>new TopoJSON</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -98,7 +98,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.format.html#IGCOptions">olx.format.IGCOptions</a></span>
+<span class="param-type"><a href="olx.format.html#TopoJSONOptions">olx.format.TopoJSONOptions</a></span>
 
 
             
@@ -146,7 +146,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 30</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>topojsonformat.js, line 24</li></ul></dd>
 	
     
     
@@ -173,7 +173,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li>ol.format.TextFeature</li>
+            <li>ol.format.JSONFeature</li>
         </ul>
     
     
@@ -197,156 +197,6 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="readFeature"><span class="type-signature"></span>readFeature</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Read the feature from the IGC source.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ArrayBuffer</span>
-|
-
-<span class="param-type">Document</span>
-|
-
-<span class="param-type">Node</span>
-|
-
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Source.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 95</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Feature.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.html#Feature">ol.Feature</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
     <h4 class="name" id="readFeatures"><span class="type-signature"></span>readFeatures</h4>
     
     
@@ -360,8 +210,7 @@
     
     
     <div class="description">
-        <p>Read the feature from the source. As IGC sources contain a single
-feature, this will return the feature in an array.</p>
+        <p>Read all features from a TopoJSON source.</p>
     </div>
     
 
@@ -453,7 +302,7 @@ feature, this will return the feature in an array.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 177</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>topojsonformat.js, line 275</li></ul></dd>
 	
     
     
@@ -511,7 +360,7 @@ feature, this will return the feature in an array.</p>
     
     
     <div class="description">
-        <p>Read the projection from the IGC source.</p>
+        <p>Read the projection from a TopoJSON source.</p>
     </div>
     
 
@@ -545,7 +394,7 @@ feature, this will return the feature in an array.</p>
 	
         <tr>
             
-                <td class="name"><code>source</code></td>
+                <td class="name"><code>object</code></td>
             
             
             <td class="type">
@@ -603,7 +452,7 @@ feature, this will return the feature in an array.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 200</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>topojsonformat.js, line 384</li></ul></dd>
 	
     
     

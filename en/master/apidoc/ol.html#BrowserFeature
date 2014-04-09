@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.format.IGC</title>
+    <title>OpenLayers 3 API Documentation - Namespace: ol.BrowserFeature</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,7 +36,9 @@
     
 <header>
     <h2>
-    ol.format.IGC
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
+    
+    ol.BrowserFeature
     </h2>
     
 </header>  
@@ -46,8 +48,65 @@
     
     
         
-<dt>
-    <h4 class="name" id="IGC"><span class="type-signature"></span>new IGC</h4>
+        
+        
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.jsdoc, line 1</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt class="">
+    <h4 class="name" id="DEVICE_PIXEL_RATIO"><span class="type-signature">&lt;static, constant> </span>DEVICE_PIXEL_RATIO<span class="type-signature"> :number</span></h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -56,228 +115,12 @@
 
     
 </dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="olx.format.html#IGCOptions">olx.format.IGCOptions</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 30</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>ol.format.TextFeature</li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <h4 class="name" id="readFeature"><span class="type-signature"></span>readFeature</h4>
-    
-    
-<div class="stability">Stability: not documented</div>
-
-
-
-    
-</dt>
-<dd>
-    
+<dd class="">
     
     <div class="description">
-        <p>Read the feature from the IGC source.</p>
+        <p>The ratio between physical pixels and device-independent pixels
+(dips) on the device (<code>window.devicePixelRatio</code>).</p>
     </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ArrayBuffer</span>
-|
-
-<span class="param-type">Document</span>
-|
-
-<span class="param-type">Node</span>
-|
-
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Source.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -302,7 +145,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 95</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 82</li></ul></dd>
 	
     
     
@@ -312,123 +155,27 @@
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Feature.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.html#Feature">ol.Feature</a></span>
-
-
-	</dd>
-</dl>
-
-        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="readFeatures"><span class="type-signature"></span>readFeatures</h4>
+<dt class="">
+    <h4 class="name" id="HAS_CANVAS"><span class="type-signature">&lt;static, constant> </span>HAS_CANVAS<span class="type-signature"> :boolean</span></h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
     
 </dt>
-<dd>
-    
+<dd class="">
     
     <div class="description">
-        <p>Read the feature from the source. As IGC sources contain a single
-feature, this will return the feature in an array.</p>
+        <p>True if browser supports Canvas.</p>
     </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ArrayBuffer</span>
-|
-
-<span class="param-type">Document</span>
-|
-
-<span class="param-type">Node</span>
-|
-
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Source.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -453,7 +200,7 @@ feature, this will return the feature in an array.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 177</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 108</li></ul></dd>
 	
     
     
@@ -463,122 +210,27 @@ feature, this will return the feature in an array.</p>
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Features.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;<a href="ol.html#Feature">ol.Feature</a>></span>
-
-
-	</dd>
-</dl>
-
-        
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="readProjection"><span class="type-signature"></span>readProjection</h4>
+<dt class="">
+    <h4 class="name" id="HAS_DEVICE_ORIENTATION"><span class="type-signature">&lt;static, constant> </span>HAS_DEVICE_ORIENTATION<span class="type-signature"> :boolean</span></h4>
     
     
-<div class="stability">Stability: not documented</div>
+<div class="stability stability-experimental">Stability: experimental</div>
 
 
 
     
 </dt>
-<dd>
-    
+<dd class="">
     
     <div class="description">
-        <p>Read the projection from the IGC source.</p>
+        <p>Indicates if DeviceOrientation is supported in the user's browser.</p>
     </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ArrayBuffer</span>
-|
-
-<span class="param-type">Document</span>
-|
-
-<span class="param-type">Node</span>
-|
-
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Source.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -603,7 +255,7 @@ feature, this will return the feature in an array.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 200</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 138</li></ul></dd>
 	
     
     
@@ -615,37 +267,176 @@ feature, this will return the feature in an array.</p>
 
     
     
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Projection.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.proj.Projection.html">ol.proj.Projection</a></span>
-
-
-	</dd>
-</dl>
+</dd>
 
         
+            
+<dt class="">
+    <h4 class="name" id="HAS_GEOLOCATION"><span class="type-signature">&lt;static, constant> </span>HAS_GEOLOCATION<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Is HTML5 geolocation supported in the current browser?</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 157</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="HAS_TOUCH"><span class="type-signature">&lt;static, constant> </span>HAS_TOUCH<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>True if browser supports touch events.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 175</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <h4 class="name" id="HAS_WEBGL"><span class="type-signature">&lt;static, constant> </span>HAS_WEBGL<span class="type-signature"> :boolean</span></h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>True if browser supports WebGL.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>browserfeature.js, line 203</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
     
     
 </dd>
 
         </dl>
+    
+    
     
     
     

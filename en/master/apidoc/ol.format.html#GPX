@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.format.IGC</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.format.GPX</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,7 +36,7 @@
     
 <header>
     <h2>
-    ol.format.IGC
+    ol.format.GPX
     </h2>
     
 </header>  
@@ -47,7 +47,7 @@
     
         
 <dt>
-    <h4 class="name" id="IGC"><span class="type-signature"></span>new IGC</h4>
+    <h4 class="name" id="GPX"><span class="type-signature"></span>new GPX</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -64,64 +64,6 @@
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="olx.format.html#IGCOptions">olx.format.IGCOptions</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -146,7 +88,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 30</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>gpxformat.js, line 24</li></ul></dd>
 	
     
     
@@ -173,7 +115,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li>ol.format.TextFeature</li>
+            <li>ol.format.XMLFeature</li>
         </ul>
     
     
@@ -189,6 +131,65 @@
 
     
 
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt class="">
+    <h4 class="name" id="readProjection"><span class="type-signature"></span>readProjection<span class="type-signature"></span></h4>
+    
+    
+<div class="stability">Stability: not documented</div>
+
+
+
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Read the projection from a GPX source.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>gpxformat.js, line 436</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
     
     
     
@@ -210,7 +211,7 @@
     
     
     <div class="description">
-        <p>Read the feature from the IGC source.</p>
+        <p>Read the first feature from a GPX source.</p>
     </div>
     
 
@@ -302,7 +303,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 95</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>gpxformat.js, line 373</li></ul></dd>
 	
     
     
@@ -360,8 +361,7 @@
     
     
     <div class="description">
-        <p>Read the feature from the source. As IGC sources contain a single
-feature, this will return the feature in an array.</p>
+        <p>Read all features from a GPX source.</p>
     </div>
     
 
@@ -453,7 +453,7 @@ feature, this will return the feature in an array.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 177</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>gpxformat.js, line 404</li></ul></dd>
 	
     
     
@@ -498,7 +498,7 @@ feature, this will return the feature in an array.</p>
         
             
 <dt>
-    <h4 class="name" id="readProjection"><span class="type-signature"></span>readProjection</h4>
+    <h4 class="name" id="writeFeatures"><span class="type-signature"></span>writeFeatures</h4>
     
     
 <div class="stability">Stability: not documented</div>
@@ -511,7 +511,7 @@ feature, this will return the feature in an array.</p>
     
     
     <div class="description">
-        <p>Read the projection from the IGC source.</p>
+        <p>Encode an array of features in the GPX format.</p>
     </div>
     
 
@@ -545,25 +545,13 @@ feature, this will return the feature in an array.</p>
 	
         <tr>
             
-                <td class="name"><code>source</code></td>
+                <td class="name"><code>features</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">ArrayBuffer</span>
-|
-
-<span class="param-type">Document</span>
-|
-
-<span class="param-type">Node</span>
-|
-
-<span class="param-type">Object</span>
-|
-
-<span class="param-type">string</span>
+<span class="param-type">Array.&lt;<a href="ol.html#Feature">ol.Feature</a>></span>
 
 
             
@@ -573,7 +561,7 @@ feature, this will return the feature in an array.</p>
             
             
             
-            <td class="description last"><p>Source.</p></td>
+            <td class="description last"><p>Features.</p></td>
         </tr>
 	
 	
@@ -603,7 +591,7 @@ feature, this will return the feature in an array.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>igcformat.js, line 200</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>gpxformat.js, line 811</li></ul></dd>
 	
     
     
@@ -623,7 +611,7 @@ feature, this will return the feature in an array.</p>
     
             
 <div class="param-desc">
-    <p>Projection.</p>
+    <p>Result.</p>
 </div>
 
 
@@ -634,7 +622,16 @@ feature, this will return the feature in an array.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.proj.Projection.html">ol.proj.Projection</a></span>
+<span class="param-type">ArrayBuffer</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
 
 
 	</dd>

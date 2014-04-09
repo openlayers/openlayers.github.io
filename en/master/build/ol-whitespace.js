@@ -640,9 +640,9 @@ goog.addDependency("../src/ol/imagetile.js", ["ol.ImageTile"], ["goog.array", "g
 goog.addDependency("../src/ol/imageurlfunction.js", ["ol.ImageUrlFunction", "ol.ImageUrlFunctionType"], ["ol.Size"]);
 goog.addDependency("../src/ol/interaction/doubleclickzoominteraction.js", ["ol.interaction.DoubleClickZoom"], ["goog.asserts", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.interaction.Interaction"]);
 goog.addDependency("../src/ol/interaction/draganddropinteraction.js", ["ol.interaction.DragAndDrop", "ol.interaction.DragAndDropEvent"], ["goog.array", "goog.asserts", "goog.events", "goog.events.Event", "goog.events.FileDropHandler", "goog.events.FileDropHandler.EventType", "goog.fs.FileReader", "goog.functions", "ol.interaction.Interaction", "ol.proj"]);
-goog.addDependency("../src/ol/interaction/dragboxinteraction.js", ["ol.DragBoxEvent", "ol.interaction.DragBox"], ["goog.asserts", "goog.events.Event", "ol.events.ConditionType", "ol.events.condition", "ol.interaction.Pointer", "ol.render.Box"]);
+goog.addDependency("../src/ol/interaction/dragboxinteraction.js", ["ol.DragBoxEvent", "ol.interaction.DragBox"], ["goog.asserts", "goog.events.Event", "goog.functions", "ol.events.ConditionType", "ol.events.condition", "ol.interaction.Pointer", "ol.render.Box"]);
 goog.addDependency("../src/ol/interaction/dragpaninteraction.js", ["ol.interaction.DragPan"], ["goog.asserts", "ol.Kinetic", "ol.Pixel", "ol.PreRenderFunction", "ol.View2D", "ol.ViewHint", "ol.coordinate", "ol.events.condition", "ol.interaction.Pointer"]);
-goog.addDependency("../src/ol/interaction/dragrotateandzoominteraction.js", ["ol.interaction.DragRotateAndZoom"], ["goog.asserts", "goog.math.Vec2", "ol.ViewHint", "ol.events.ConditionType", "ol.events.condition", "ol.interaction.Interaction", "ol.interaction.Pointer"]);
+goog.addDependency("../src/ol/interaction/dragrotateandzoominteraction.js", ["ol.interaction.DragRotateAndZoom"], ["goog.asserts", "goog.functions", "goog.math.Vec2", "ol.ViewHint", "ol.events.ConditionType", "ol.events.condition", "ol.interaction.Interaction", "ol.interaction.Pointer"]);
 goog.addDependency("../src/ol/interaction/dragrotateinteraction.js", ["ol.interaction.DragRotate"], ["goog.asserts", "ol.ViewHint", "ol.events.ConditionType", "ol.events.condition", "ol.interaction.Interaction", "ol.interaction.Pointer"]);
 goog.addDependency("../src/ol/interaction/dragzoominteraction.js", ["ol.interaction.DragZoom"], ["goog.asserts", "ol.events.condition", "ol.extent", "ol.interaction.DragBox", "ol.interaction.Interaction", "ol.style.Stroke", "ol.style.Style"]);
 goog.addDependency("../src/ol/interaction/drawinteraction.js", ["ol.DrawEvent", "ol.interaction.Draw"], ["goog.asserts", "goog.events.Event", "ol.Collection", "ol.Coordinate", "ol.Feature", "ol.FeatureOverlay", "ol.Map", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.feature", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.interaction.Pointer", "ol.source.Vector"]);
@@ -11738,6 +11738,9 @@ ol.pointer.PointerEvent.prototype.getPressure_ = function(eventDict, buttons) {
   }
   return pressure
 };
+ol.pointer.PointerEvent.createMouseEvent = function(inType, inDict) {
+  return new MouseEvent(inType, inDict)
+};
 ol.pointer.PointerEvent.HAS_BUTTONS = false;
 (function() {
   try {
@@ -11746,9 +11749,6 @@ ol.pointer.PointerEvent.HAS_BUTTONS = false;
   }catch(e) {
   }
 })();
-ol.pointer.PointerEvent.createMouseEvent = function(inType, inDict) {
-  return new MouseEvent(inType, inDict)
-};
 goog.provide("ol.pointer.EventSource");
 goog.require("goog.events.BrowserEvent");
 goog.require("goog.object");
@@ -14491,7 +14491,7 @@ goog.require("ol.proj.Units");
 ol.View2DProperty = {CENTER:"center", PROJECTION:"projection", RESOLUTION:"resolution", ROTATION:"rotation"};
 ol.View2D = function(opt_options) {
   goog.base(this);
-  var options = opt_options || {};
+  var options = goog.isDef(opt_options) ? opt_options : {};
   var values = {};
   values[ol.View2DProperty.CENTER] = goog.isDef(options.center) ? options.center : null;
   values[ol.View2DProperty.PROJECTION] = ol.proj.createProjection(options.projection, "EPSG:3857");
@@ -15207,6 +15207,7 @@ goog.provide("ol.DragBoxEvent");
 goog.provide("ol.interaction.DragBox");
 goog.require("goog.asserts");
 goog.require("goog.events.Event");
+goog.require("goog.functions");
 goog.require("ol.events.ConditionType");
 goog.require("ol.events.condition");
 goog.require("ol.interaction.Pointer");
@@ -15266,6 +15267,7 @@ ol.interaction.DragBox.prototype.handlePointerDown = function(mapBrowserEvent) {
     return false
   }
 };
+ol.interaction.DragBox.prototype.shouldStopEvent = goog.functions.identity;
 goog.provide("goog.color.names");
 goog.color.names = {"aliceblue":"#f0f8ff", "antiquewhite":"#faebd7", "aqua":"#00ffff", "aquamarine":"#7fffd4", "azure":"#f0ffff", "beige":"#f5f5dc", "bisque":"#ffe4c4", "black":"#000000", "blanchedalmond":"#ffebcd", "blue":"#0000ff", "blueviolet":"#8a2be2", "brown":"#a52a2a", "burlywood":"#deb887", "cadetblue":"#5f9ea0", "chartreuse":"#7fff00", "chocolate":"#d2691e", "coral":"#ff7f50", "cornflowerblue":"#6495ed", "cornsilk":"#fff8dc", "crimson":"#dc143c", "cyan":"#00ffff", "darkblue":"#00008b", "darkcyan":"#008b8b", 
 "darkgoldenrod":"#b8860b", "darkgray":"#a9a9a9", "darkgreen":"#006400", "darkgrey":"#a9a9a9", "darkkhaki":"#bdb76b", "darkmagenta":"#8b008b", "darkolivegreen":"#556b2f", "darkorange":"#ff8c00", "darkorchid":"#9932cc", "darkred":"#8b0000", "darksalmon":"#e9967a", "darkseagreen":"#8fbc8f", "darkslateblue":"#483d8b", "darkslategray":"#2f4f4f", "darkslategrey":"#2f4f4f", "darkturquoise":"#00ced1", "darkviolet":"#9400d3", "deeppink":"#ff1493", "deepskyblue":"#00bfff", "dimgray":"#696969", "dimgrey":"#696969", 
@@ -29995,7 +29997,7 @@ goog.require("ol.sphere.NORMAL");
 ol.control.ScaleLineProperty = {UNITS:"units"};
 ol.control.ScaleLineUnits = {DEGREES:"degrees", IMPERIAL:"imperial", NAUTICAL:"nautical", METRIC:"metric", US:"us"};
 ol.control.ScaleLine = function(opt_options) {
-  var options = opt_options || {};
+  var options = goog.isDef(opt_options) ? opt_options : {};
   var className = goog.isDef(options.className) ? options.className : "ol-scale-line";
   this.innerElement_ = goog.dom.createDom(goog.dom.TagName.DIV, {"class":className + "-inner"});
   this.element_ = goog.dom.createDom(goog.dom.TagName.DIV, {"class":className + " " + ol.css.CLASS_UNSELECTABLE}, this.innerElement_);
@@ -35559,6 +35561,7 @@ goog.math.Vec2.lerp = function(a, b, x) {
 };
 goog.provide("ol.interaction.DragRotateAndZoom");
 goog.require("goog.asserts");
+goog.require("goog.functions");
 goog.require("goog.math.Vec2");
 goog.require("ol.ViewHint");
 goog.require("ol.events.ConditionType");
@@ -35630,9 +35633,7 @@ ol.interaction.DragRotateAndZoom.prototype.handlePointerDown = function(mapBrows
     return false
   }
 };
-ol.interaction.DragRotateAndZoom.prototype.shouldStopEvent = function(hasHandledEvent) {
-  return hasHandledEvent
-};
+ol.interaction.DragRotateAndZoom.prototype.shouldStopEvent = goog.functions.identity;
 goog.provide("ol.interaction.Modify");
 goog.require("goog.array");
 goog.require("goog.asserts");
@@ -36060,9 +36061,7 @@ ol.interaction.Modify.prototype.removeVertex_ = function() {
   }
   return deleted
 };
-ol.interaction.Modify.prototype.shouldStopEvent = function(handled) {
-  return handled
-};
+ol.interaction.Modify.prototype.shouldStopEvent = goog.functions.identity;
 ol.interaction.Modify.prototype.updateSegmentIndices_ = function(geometry, index, depth, delta) {
   this.rBush_.forEachInExtent(geometry.getExtent(), function(segmentDataMatch) {
     if(segmentDataMatch.geometry === geometry && (!goog.isDef(depth) || goog.array.equals(segmentDataMatch.depth, depth)) && segmentDataMatch.index > index) {
@@ -38709,7 +38708,7 @@ ol.source.WMTSRequestEncoding = {KVP:"KVP", REST:"REST"};
 ol.source.WMTS = function(options) {
   var version = goog.isDef(options.version) ? options.version : "1.0.0";
   var format = goog.isDef(options.format) ? options.format : "image/jpeg";
-  this.dimensions_ = options.dimensions || {};
+  this.dimensions_ = goog.isDef(options.dimensions) ? options.dimensions : {};
   this.coordKeyPrefix_ = "";
   this.resetCoordKeyPrefix_();
   var requestEncoding = goog.isDef(options.requestEncoding) ? options.requestEncoding : ol.source.WMTSRequestEncoding.KVP;
@@ -38718,6 +38717,7 @@ ol.source.WMTS = function(options) {
   if(requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
     goog.object.extend(context, {"Service":"WMTS", "Request":"GetTile", "Version":version, "Format":format})
   }
+  var dimensions = this.dimensions_;
   function createFromWMTSTemplate(template) {
     template = requestEncoding == ol.source.WMTSRequestEncoding.KVP ? goog.uri.utils.appendParamsFromMap(template, context) : template.replace(/\{(\w+?)\}/g, function(m, p) {
       return p in context ? context[p] : m
@@ -38727,7 +38727,7 @@ ol.source.WMTS = function(options) {
         return undefined
       }else {
         var localContext = {"TileMatrix":tileGrid.getMatrixId(tileCoord.z), "TileCol":tileCoord.x, "TileRow":tileCoord.y};
-        goog.object.extend(localContext, this.dimensions_);
+        goog.object.extend(localContext, dimensions);
         var url = template;
         if(requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
           url = goog.uri.utils.appendParamsFromMap(url, localContext)
@@ -38751,7 +38751,6 @@ ol.source.WMTS = function(options) {
   var tmpExtent = ol.extent.createEmpty();
   var tmpTileCoord = new ol.TileCoord(0, 0, 0);
   tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(function(tileCoord, projection, opt_tileCoord) {
-    var tileGrid = this.getTileGrid();
     goog.asserts.assert(!goog.isNull(tileGrid));
     if(tileGrid.getResolutions().length <= tileCoord.z) {
       return null
