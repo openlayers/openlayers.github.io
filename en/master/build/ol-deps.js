@@ -22,7 +22,7 @@ goog.addDependency('../../../ol/libtess.js/render/FaceCount.js', ['libtess.FaceC
 goog.addDependency('../../../ol/libtess.js/sweep.js', ['libtess.sweep'], ['libtess', 'libtess.ActiveRegion', 'libtess.Dict', 'libtess.GluVertex', 'libtess.PriorityQ', 'libtess.geom', 'libtess.mesh']);
 goog.addDependency('../../../ol/libtess.js/sweep/ActiveRegion.js', ['libtess.ActiveRegion'], ['libtess.DictNode']);
 goog.addDependency('../../../ol/libtess.js/tessmono.js', ['libtess.tessmono'], ['libtess', 'libtess.geom', 'libtess.mesh']);
-goog.addDependency('../../../ol/ol/animation.js', ['ol.animation'], ['ol.PreRenderFunction', 'ol.ViewHint', 'ol.easing']);
+goog.addDependency('../../../ol/ol/animation.js', ['ol.animation'], ['ol.PreRenderFunction', 'ol.ViewHint', 'ol.coordinate', 'ol.easing']);
 goog.addDependency('../../../ol/ol/array.js', ['ol.array'], ['goog.array', 'goog.asserts']);
 goog.addDependency('../../../ol/ol/attribution.js', ['ol.Attribution'], ['ol.TileRange']);
 goog.addDependency('../../../ol/ol/binary.js', ['ol.binary.Buffer', 'ol.binary.IReader'], ['goog.asserts', 'goog.userAgent', 'ol.BrowserFeature']);

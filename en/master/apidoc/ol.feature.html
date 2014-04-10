@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.Observable</title>
+    <title>OpenLayers 3 API Documentation - Namespace: ol.feature</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -38,7 +38,7 @@
     <h2>
         <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    ol.Observable
+    ol.feature
     </h2>
     
 </header>  
@@ -48,33 +48,8 @@
     
     
         
-<dt>
-    <h4 class="name" id="Observable"><span class="type-signature"></span>new Observable</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>An event target providing convenient methods for listener registration
-and unregistration. A generic <code>change</code> event is always available through
-<a href="ol.Observable.html#dispatchChangeEvent">ol.Observable#dispatchChangeEvent</a>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
+        
+        
 <dl class="details">
     
         
@@ -96,7 +71,7 @@ and unregistration. A generic <code>change</code> event is always available thro
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 19</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.jsdoc, line 1</li></ul></dd>
 	
     
     
@@ -106,26 +81,12 @@ and unregistration. A generic <code>change</code> event is always available thro
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
+        
+        
     
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>goog.events.EventTarget</li>
-        </ul>
-    
     
     
     
@@ -142,12 +103,14 @@ and unregistration. A generic <code>change</code> event is always available thro
     
     
     
-        <h3 class="subsection-title">Methods</h3>
+    
+    
+        <h3 class="subsection-title">TypeDefs</h3>
         
         <dl>
             
-<dt>
-    <h4 class="name" id="dispatchChangeEvent"><span class="type-signature"></span>dispatchChangeEvent</h4>
+<dt class="">
+    <h4 class="name" id="FeatureStyleFunction">FeatureStyleFunction</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -156,19 +119,14 @@ and unregistration. A generic <code>change</code> event is always available thro
 
     
 </dt>
-<dd>
-    
+<dd class="">
     
     <div class="description">
-        <p>Dispatches a <code>change</code> event. Register a listener for this event to get
-notified of changes.</p>
+        <p>A function that takes a <code>{number}</code> representing the view's resolution. It
+returns an Array of <a href="ol.style.Style.html">ol.style.Style</a>. This way individual features
+can be styled. The this keyword inside the function references the
+<a href="ol.html#Feature">ol.Feature</a> to be styled.</p>
     </div>
-    
-
-    
-    
-    
-    
     
     
     
@@ -193,7 +151,7 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 39</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.js, line 215</li></ul></dd>
 	
     
     
@@ -203,28 +161,14 @@ notified of changes.</p>
 	
 </dl>
 
-    
-    
-    <h5>Fires:</h5>
-    <ul>
-        
-<li>
-    event:change
-</li>
-    </ul>
-    
-    
-    
-    
-    
     
     
 </dd>
 
         
             
-<dt>
-    <h4 class="name" id="on"><span class="type-signature"></span>on</h4>
+<dt class="">
+    <h4 class="name" id="StyleFunction">StyleFunction</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -233,137 +177,13 @@ notified of changes.</p>
 
     
 </dt>
-<dd>
-    
+<dd class="">
     
     <div class="description">
-        <p>Listen for a certain type of event.</p>
+        <p>A function that takes an <a href="ol.html#Feature">ol.Feature</a> and a <code>{number}</code> representing
+the view's resolution. The function should return an array of
+<a href="ol.style.Style.html">ol.style.Style</a>. This way e.g. a vector layer can be styled.</p>
     </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The event type or array of event types.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>listener</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The listener function.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -388,7 +208,7 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 62</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.js, line 265</li></ul></dd>
 	
     
     
@@ -398,553 +218,11 @@ notified of changes.</p>
 	
 </dl>
 
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Unique key for the listener.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">goog.events.Key</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="once"><span class="type-signature"></span>once</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Listen once for a certain type of event.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The event type or array of event types.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>listener</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The listener function.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 75</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Unique key for the listener.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">goog.events.Key</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="un"><span class="type-signature"></span>un</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Unlisten for a certain type of event.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The event type or array of event types.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>listener</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The listener function.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>listener</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 87</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="unByKey"><span class="type-signature"></span>unByKey</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Removes an event listener using the key returned by <code>on()</code> or <code>once()</code>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">goog.events.Key</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Key.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 97</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
     
     
 </dd>
 
         </dl>
-    
-    
     
     
     

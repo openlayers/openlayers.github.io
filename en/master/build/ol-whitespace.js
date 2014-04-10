@@ -551,7 +551,7 @@ goog.addDependency("../src/libtess.js/render/FaceCount.js", ["libtess.FaceCount"
 goog.addDependency("../src/libtess.js/sweep.js", ["libtess.sweep"], ["libtess", "libtess.ActiveRegion", "libtess.Dict", "libtess.GluVertex", "libtess.PriorityQ", "libtess.geom", "libtess.mesh"]);
 goog.addDependency("../src/libtess.js/sweep/ActiveRegion.js", ["libtess.ActiveRegion"], ["libtess.DictNode"]);
 goog.addDependency("../src/libtess.js/tessmono.js", ["libtess.tessmono"], ["libtess", "libtess.geom", "libtess.mesh"]);
-goog.addDependency("../src/ol/animation.js", ["ol.animation"], ["ol.PreRenderFunction", "ol.ViewHint", "ol.easing"]);
+goog.addDependency("../src/ol/animation.js", ["ol.animation"], ["ol.PreRenderFunction", "ol.ViewHint", "ol.coordinate", "ol.easing"]);
 goog.addDependency("../src/ol/array.js", ["ol.array"], ["goog.array", "goog.asserts"]);
 goog.addDependency("../src/ol/attribution.js", ["ol.Attribution"], ["ol.TileRange"]);
 goog.addDependency("../src/ol/binary.js", ["ol.binary.Buffer", "ol.binary.IReader"], ["goog.asserts", "goog.userAgent", "ol.BrowserFeature"]);
@@ -11553,6 +11553,11 @@ ol.coordinate.scale = function(coordinate, s) {
   coordinate[1] *= s;
   return coordinate
 };
+ol.coordinate.sub = function(coordinate, delta) {
+  coordinate[0] -= delta[0];
+  coordinate[1] -= delta[1];
+  return coordinate
+};
 ol.coordinate.squaredDistance = function(coord1, coord2) {
   var dx = coord1[0] - coord2[0];
   var dy = coord1[1] - coord2[1];
@@ -14699,6 +14704,13 @@ ol.View2D.prototype.centerOn = function(coordinate, size, position) {
 ol.View2D.prototype.isDef = function() {
   return goog.isDefAndNotNull(this.getCenter()) && goog.isDef(this.getResolution())
 };
+ol.View2D.prototype.rotate = function(rotation, opt_anchor) {
+  if(goog.isDef(opt_anchor)) {
+    var center = this.calculateCenterRotate(rotation, opt_anchor);
+    this.setCenter(center)
+  }
+  this.setRotation(rotation)
+};
 ol.View2D.prototype.setCenter = function(center) {
   this.set(ol.View2DProperty.CENTER, center)
 };
@@ -14833,6 +14845,7 @@ ol.easing.upAndDown = function(t) {
 goog.provide("ol.animation");
 goog.require("ol.PreRenderFunction");
 goog.require("ol.ViewHint");
+goog.require("ol.coordinate");
 goog.require("ol.easing");
 ol.animation.bounce = function(options) {
   var resolution = options.resolution;
@@ -14887,10 +14900,11 @@ ol.animation.pan = function(options) {
   }
 };
 ol.animation.rotate = function(options) {
-  var sourceRotation = options.rotation;
+  var sourceRotation = goog.isDef(options.rotation) ? options.rotation : 0;
   var start = goog.isDef(options.start) ? options.start : goog.now();
   var duration = goog.isDef(options.duration) ? options.duration : 1E3;
   var easing = goog.isDef(options.easing) ? options.easing : ol.easing.inAndOut;
+  var anchor = goog.isDef(options.anchor) ? options.anchor : null;
   return function(map, frameState) {
     if(frameState.time < start) {
       frameState.animate = true;
@@ -14899,9 +14913,15 @@ ol.animation.rotate = function(options) {
     }else {
       if(frameState.time < start + duration) {
         var delta = 1 - easing((frameState.time - start) / duration);
-        var deltaRotation = sourceRotation - frameState.view2DState.rotation;
+        var deltaRotation = (sourceRotation - frameState.view2DState.rotation) * delta;
         frameState.animate = true;
-        frameState.view2DState.rotation += delta * deltaRotation;
+        frameState.view2DState.rotation += deltaRotation;
+        if(!goog.isNull(anchor)) {
+          var center = frameState.view2DState.center;
+          ol.coordinate.sub(center, anchor);
+          ol.coordinate.rotate(center, deltaRotation);
+          ol.coordinate.add(center, anchor)
+        }
         frameState.viewHints[ol.ViewHint.ANIMATING] += 1;
         return true
       }else {
@@ -14981,11 +15001,7 @@ ol.interaction.Interaction.rotateWithoutConstraints = function(map, view, rotati
       }
     }
     goog.asserts.assertInstanceof(view, ol.View2D);
-    if(goog.isDefAndNotNull(opt_anchor)) {
-      var center = view.calculateCenterRotate(rotation, opt_anchor);
-      view.setCenter(center)
-    }
-    view.setRotation(rotation)
+    view.rotate(rotation, opt_anchor)
   }
 };
 ol.interaction.Interaction.zoom = function(map, view, resolution, opt_anchor, opt_duration, opt_direction) {
