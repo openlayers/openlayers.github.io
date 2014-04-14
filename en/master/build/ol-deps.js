@@ -125,7 +125,7 @@ goog.addDependency('../../../ol/ol/interaction/mousewheelzoominteraction.js', ['
 goog.addDependency('../../../ol/ol/interaction/pinchrotateinteraction.js', ['ol.interaction.PinchRotate'], ['goog.asserts', 'goog.style', 'ol.Coordinate', 'ol.ViewHint', 'ol.interaction.Interaction', 'ol.interaction.Pointer']);
 goog.addDependency('../../../ol/ol/interaction/pinchzoominteraction.js', ['ol.interaction.PinchZoom'], ['goog.asserts', 'goog.style', 'ol.Coordinate', 'ol.ViewHint', 'ol.interaction.Interaction', 'ol.interaction.Pointer']);
 goog.addDependency('../../../ol/ol/interaction/pointerinteraction.js', ['ol.interaction.Pointer'], ['goog.asserts', 'goog.functions', 'goog.object', 'ol.MapBrowserEvent', 'ol.MapBrowserEvent.EventType', 'ol.MapBrowserPointerEvent', 'ol.Pixel', 'ol.interaction.Interaction']);
-goog.addDependency('../../../ol/ol/interaction/selectinteraction.js', ['ol.interaction.Select'], ['goog.array', 'goog.functions', 'ol.Feature', 'ol.FeatureOverlay', 'ol.events.condition', 'ol.feature', 'ol.geom.GeometryType', 'ol.interaction.Interaction']);
+goog.addDependency('../../../ol/ol/interaction/selectinteraction.js', ['ol.interaction.Select'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.functions', 'ol.CollectionEventType', 'ol.Feature', 'ol.FeatureOverlay', 'ol.events.condition', 'ol.feature', 'ol.geom.GeometryType', 'ol.interaction.Interaction']);
 goog.addDependency('../../../ol/ol/iview.js', ['ol.IView'], ['ol.IView2D', 'ol.IView3D']);
 goog.addDependency('../../../ol/ol/iview2d.js', ['ol.IView2D'], ['ol.Coordinate']);
 goog.addDependency('../../../ol/ol/iview3d.js', ['ol.IView3D'], []);
