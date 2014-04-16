@@ -38035,6 +38035,9 @@ ol.source.ImageWMS.prototype.getRequestUrl_ = function(extent, size, pixelRatio,
   goog.object.set(params, "BBOX", bbox.join(","));
   return goog.uri.utils.appendParamsFromMap(this.url_, params)
 };
+ol.source.ImageWMS.prototype.getUrl = function() {
+  return this.url_
+};
 ol.source.ImageWMS.prototype.setUrl = function(url) {
   if(url != this.url_) {
     this.url_ = url;
@@ -38622,6 +38625,9 @@ ol.source.TileWMS.prototype.getTilePixelSize = function(z, pixelRatio, projectio
   }else {
     return tileSize * pixelRatio + 0.5 | 0
   }
+};
+ol.source.TileWMS.prototype.getUrls = function() {
+  return this.urls_
 };
 ol.source.TileWMS.prototype.resetCoordKeyPrefix_ = function() {
   var i = 0;
