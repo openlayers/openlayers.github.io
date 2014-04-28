@@ -70,7 +70,7 @@ goog.addDependency('../../../ol/ol/format/owsformat.js', ['ol.format.OWS'], ['go
 goog.addDependency('../../../ol/ol/format/polylineformat.js', ['ol.format.Polyline'], ['goog.asserts', 'ol.Feature', 'ol.format.TextFeature', 'ol.geom.LineString', 'ol.geom.flat.inflate', 'ol.proj']);
 goog.addDependency('../../../ol/ol/format/textfeatureformat.js', ['ol.format.TextFeature'], ['goog.asserts', 'ol.format.Feature', 'ol.format.FormatType']);
 goog.addDependency('../../../ol/ol/format/topojsonformat.js', ['ol.format.TopoJSON'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.Feature', 'ol.format.JSONFeature', 'ol.geom.LineString', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.proj']);
-goog.addDependency('../../../ol/ol/format/wfsformat.js', ['ol.format.WFS'], ['goog.asserts', 'goog.dom.NodeType', 'goog.object', 'ol.format.GML', 'ol.format.XMLFeature', 'ol.format.XSD', 'ol.geom.Geometry', 'ol.xml']);
+goog.addDependency('../../../ol/ol/format/wfsformat.js', ['ol.format.WFS'], ['goog.asserts', 'goog.dom.NodeType', 'goog.object', 'ol.format.GML', 'ol.format.XMLFeature', 'ol.format.XSD', 'ol.geom.Geometry', 'ol.proj', 'ol.xml']);
 goog.addDependency('../../../ol/ol/format/wmscapabilitiesformat.js', ['ol.format.WMSCapabilities'], ['goog.array', 'goog.asserts', 'goog.dom.NodeType', 'goog.object', 'goog.string', 'ol.format.XLink', 'ol.format.XML', 'ol.format.XSD', 'ol.xml']);
 goog.addDependency('../../../ol/ol/format/xlinkformat.js', ['ol.format.XLink'], []);
 goog.addDependency('../../../ol/ol/format/xmlfeatureformat.js', ['ol.format.XMLFeature'], ['goog.array', 'goog.asserts', 'goog.dom.NodeType', 'ol.format.Feature', 'ol.format.FormatType', 'ol.xml']);

@@ -75,7 +75,7 @@ ol.interaction.Select = function(opt_options) {
          * @return {boolean} Include.
          */
         function(layer) {
-      return goog.array.indexOf(layers, layer) != -1;
+      return goog.array.contains(layers, layer);
     };
   } else {
     layerFilter = goog.functions.TRUE;
@@ -184,16 +184,12 @@ ol.interaction.Select.prototype.setMap = function(map) {
   var currentMap = this.getMap();
   var selectedFeatures = this.featureOverlay_.getFeatures();
   if (!goog.isNull(currentMap)) {
-    selectedFeatures.forEach(function(feature) {
-      currentMap.getSkippedFeatures().remove(feature);
-    });
+    selectedFeatures.forEach(currentMap.unskipFeature, currentMap);
   }
   goog.base(this, 'setMap', map);
   this.featureOverlay_.setMap(map);
   if (!goog.isNull(map)) {
-    selectedFeatures.forEach(function(feature) {
-      map.getSkippedFeatures().push(feature);
-    });
+    selectedFeatures.forEach(map.skipFeature, map);
   }
 };
 
@@ -223,7 +219,7 @@ ol.interaction.Select.prototype.addFeature_ = function(evt) {
   var map = this.getMap();
   goog.asserts.assertInstanceof(feature, ol.Feature);
   if (!goog.isNull(map)) {
-    map.getSkippedFeatures().push(feature);
+    map.skipFeature(feature);
   }
 };
 
@@ -237,6 +233,6 @@ ol.interaction.Select.prototype.removeFeature_ = function(evt) {
   var map = this.getMap();
   goog.asserts.assertInstanceof(feature, ol.Feature);
   if (!goog.isNull(map)) {
-    map.getSkippedFeatures().remove(feature);
+    map.unskipFeature(feature);
   }
 };
