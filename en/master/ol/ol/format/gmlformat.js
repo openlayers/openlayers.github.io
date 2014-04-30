@@ -29,7 +29,6 @@ goog.require('ol.xml');
  * @param {olx.format.GMLOptions=} opt_options
  *     Optional configuration object.
  * @extends {ol.format.XMLFeature}
- * @todo stability experimental
  */
 ol.format.GML = function(opt_options) {
   var options = /** @type {olx.format.GMLOptions} */
@@ -119,10 +118,12 @@ ol.format.GML.readFeatures_ = function(node, objectStack) {
   if (localName == 'FeatureCollection') {
     features = ol.xml.pushParseAndPop(null,
         ol.format.GML.FEATURE_COLLECTION_PARSERS, node, objectStack);
-  } else if (localName == 'featureMembers') {
+  } else if (localName == 'featureMembers' || localName == 'featureMember') {
     var parsers = {};
     var parsersNS = {};
-    parsers[featureType] = ol.xml.makeArrayPusher(ol.format.GML.readFeature_);
+    parsers[featureType] = (localName == 'featureMembers') ?
+        ol.xml.makeArrayPusher(ol.format.GML.readFeature_) :
+        ol.xml.makeReplacer(ol.format.GML.readFeature_);
     parsersNS[goog.object.get(context, 'featureNS')] = parsers;
     features = ol.xml.pushParseAndPop([], parsersNS, node, objectStack);
   }
@@ -138,6 +139,7 @@ ol.format.GML.readFeatures_ = function(node, objectStack) {
  */
 ol.format.GML.FEATURE_COLLECTION_PARSERS = {
   'http://www.opengis.net/gml': {
+    'featureMember': ol.xml.makeArrayPusher(ol.format.GML.readFeatures_),
     'featureMembers': ol.xml.makeReplacer(ol.format.GML.readFeatures_)
   }
 };
