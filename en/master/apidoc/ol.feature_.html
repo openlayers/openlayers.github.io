@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: oli.MapBrowserEvent</title>
+    <title>OpenLayers 3 API Documentation - Namespace: ol.feature</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="oli.html">oli</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>
     
-    oli.MapBrowserEvent
+    ol.feature
     </h2>
     
 </header>  
@@ -71,7 +71,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>oli.js, line 155</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.jsdoc, line 1</li></ul></dd>
 	
     
     
@@ -101,12 +101,16 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+    
+    
+    
+    
+        <h3 class="subsection-title">TypeDefs</h3>
         
         <dl>
             
 <dt class="">
-    <h4 class="name" id="coordinate"><span class="type-signature"></span>coordinate<span class="type-signature"> :<a href="ol.html#Coordinate">ol.Coordinate</a></span></h4>
+    <h4 class="name" id="FeatureStyleFunction">FeatureStyleFunction</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -116,6 +120,13 @@
     
 </dt>
 <dd class="">
+    
+    <div class="description">
+        <p>A function that takes a <code>{number}</code> representing the view's resolution. It
+returns an Array of <a href="ol.style.Style.html">ol.style.Style</a>. This way individual features
+can be styled. The this keyword inside the function references the
+<a href="ol.Feature.html">ol.Feature</a> to be styled.</p>
+    </div>
     
     
     
@@ -140,7 +151,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>oli.js, line 162</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.js, line 216</li></ul></dd>
 	
     
     
@@ -157,7 +168,7 @@
         
             
 <dt class="">
-    <h4 class="name" id="originalEvent"><span class="type-signature"></span>originalEvent<span class="type-signature"> :Event</span></h4>
+    <h4 class="name" id="StyleFunction">StyleFunction</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -167,6 +178,12 @@
     
 </dt>
 <dd class="">
+    
+    <div class="description">
+        <p>A function that takes an <a href="ol.Feature.html">ol.Feature</a> and a <code>{number}</code> representing
+the view's resolution. The function should return an array of
+<a href="ol.style.Style.html">ol.style.Style</a>. This way e.g. a vector layer can be styled.</p>
+    </div>
     
     
     
@@ -191,58 +208,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>oli.js, line 169</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt class="">
-    <h4 class="name" id="pixel"><span class="type-signature"></span>pixel<span class="type-signature"> :ol.Pixel</span></h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd class="">
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>oli.js, line 176</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>feature.js, line 265</li></ul></dd>
 	
     
     
@@ -257,10 +223,6 @@
 </dd>
 
         </dl>
-    
-    
-    
-    
     
     
     

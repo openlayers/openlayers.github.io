@@ -70,6 +70,7 @@ ol.style.Circle = function(opt_options) {
 
   goog.base(this, {
     opacity: 1,
+    origin: [0, 0],
     rotateWithView: false,
     rotation: 0,
     scale: 1,
@@ -192,6 +193,9 @@ ol.style.Circle.prototype.render_ = function() {
 
   canvas.height = size;
   canvas.width = size;
+
+  // canvas.width and height are rounded to the closest integer
+  size = canvas.width;
 
   var context = /** @type {CanvasRenderingContext2D} */
       (canvas.getContext('2d'));

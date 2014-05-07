@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Class: ol.source.Vector</title>
+    <title>OpenLayers 3 API Documentation - Class: ol.control.Rotate</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -36,9 +36,9 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.control.html">.control</a>.</span>
     
-    ol.source.Vector
+    ol.control.Rotate
     </h2>
     
 </header>  
@@ -49,7 +49,7 @@
     
         
 <dt>
-    <h4 class="name" id="Vector"><span class="type-signature"></span>new Vector</h4>
+    <h4 class="name" id="Rotate"><span class="type-signature"></span>new Rotate</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -60,6 +60,11 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Create a new control with a button, to reset rotation to 0.
+To style this control use css selector <code>.ol-rotate</code>.</p>
+    </div>
     
 
     
@@ -100,7 +105,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.source.html#VectorOptions">olx.source.VectorOptions</a></span>
+<span class="param-type">olx.control.RotateOptions</span>
 
 
             
@@ -118,7 +123,7 @@
             
             
             
-            <td class="description last"><p>Vector source options.</p>
+            <td class="description last"><p>Rotate options.</p>
                 <h6>Properties</h6>
                 
 
@@ -144,85 +149,7 @@
 	
         <tr>
             
-                <td class="name"><code>attributions</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="ol.Attribution.html">ol.Attribution</a>></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Attributions.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Extent.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>features</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Features.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>logo</code></td>
+                <td class="name"><code>className</code></td>
             
             
             <td class="type">
@@ -241,45 +168,19 @@
             
             
             
-            <td class="description last"><p>Logo.</p></td>
+            <td class="description last"><p>CSS class name. Default is <code>ol-rotate</code>.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>projection</code></td>
+                <td class="name"><code>label</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.proj.html#ProjectionLike">ol.proj.ProjectionLike</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Projection.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ol.source.State</span>
-|
-
 <span class="param-type">string</span>
 |
 
@@ -293,7 +194,111 @@
             
             
             
-            <td class="description last"><p>State.</p></td>
+            <td class="description last"><p>Text label to use for the rotate button. Default is <code>⇧</code></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>tipLabel</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Text label to use for the rotate tip. Default is <code>Reset rotation</code></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Animation duration in milliseconds. Default is <code>250</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>autoHide</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Hide the control when rotation is 0. Default is <code>true</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Target.</p></td>
         </tr>
 	
 	
@@ -329,7 +334,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 48</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>rotatecontrol.js, line 27</li></ul></dd>
 	
     
     
@@ -340,14 +345,6 @@
 </dl>
 
     
-    
-    <h5>Fires:</h5>
-    <ul>
-        
-<li>
-    <a href="ol.source.VectorEvent.html">ol.source.VectorEvent</a> ol.source.event:VectorEvent
-</li>
-    </ul>
     
     
     
@@ -364,7 +361,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="ol.source.Source.html">ol.source.Source</a>
+            <li><a href="ol.control.Control.html">ol.control.Control</a>
               </li>
         </ul>
     
@@ -389,7 +386,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="addFeature"><span class="type-signature"></span>addFeature</h4>
+    <h4 class="name" id="bindTo"><span class="type-signature"></span>bindTo</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -400,6 +397,29 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>The bindTo method allows you to set up a two-way binding between a
+<code>source</code> and <code>target</code> object. The method returns an
+ol.ObjectAccessor with a transform method that lets you transform
+values on the way from the source to the target and on the way back.</p>
+<p>For example, if you had two map views (sourceView and targetView)
+and you wanted the target view to have double the resolution of the
+source view, you could transform the resolution on the way to and
+from the target with the following:</p>
+<pre><code>sourceView.bindTo('resolution', targetView)
+  .transform(
+    function(sourceResolution) {
+      // from sourceView.resolution to targetView.resolution
+      return 2 * sourceResolution;
+    },
+    function(targetResolution) {
+      // from targetView.resolution to sourceView.resolution
+      return targetResolution / 2;
+    }
+  );
+</code></pre>
+    </div>
     
 
     
@@ -420,6 +440,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -432,23 +454,89 @@
 	
         <tr>
             
-                <td class="name"><code>feature</code></td>
+                <td class="name"><code>key</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
             
+                <td class="attributes">
+                
+                    
+                
+                </td>
             
             
             
-            <td class="description last"><p>Feature.</p></td>
+            
+            <td class="description last"><p>Key name.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Object.html">ol.Object</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Target.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>targetKey</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Target key.</p></td>
         </tr>
 	
 	
@@ -465,6 +553,11 @@
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#bindTo">ol.Object#bindTo</a>
+	</li></dd>
+	
 	
 	
 	
@@ -478,7 +571,7 @@
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 90</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 247</li></ul></dd>
 	
     
     
@@ -494,118 +587,24 @@
     
     
     
+    <h5>Returns:</h5>
     
-    
-</dd>
-
-        
             
-<dt>
-    <h4 class="name" id="addFeatures"><span class="type-signature"></span>addFeatures</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
 
 
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
 		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>features</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
+<span class="param-type">ol.ObjectAccessor</span>
 
 
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Features.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 128</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
+	</dd>
 </dl>
 
-    
-    
-    
-    
-    
-    
+        
     
     
 </dd>
@@ -695,7 +694,7 @@ notified of changes.</p>
         
             
 <dt>
-    <h4 class="name" id="forEachFeature"><span class="type-signature"></span>forEachFeature</h4>
+    <h4 class="name" id="get"><span class="type-signature"></span>get</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -707,378 +706,9 @@ notified of changes.</p>
 <dd>
     
     
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>f</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Callback.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">T</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>f</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 169</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">S</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="forEachFeatureInExtent"><span class="type-signature"></span>forEachFeatureInExtent</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Extent.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>f</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Callback.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>this</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">T</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The object to use as <code>this</code> in <code>f</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 204</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">S</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getClosestFeatureToCoordinate"><span class="type-signature"></span>getClosestFeatureToCoordinate</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
+    <div class="description">
+        <p>Gets a value.</p>
+    </div>
     
 
     
@@ -1111,13 +741,13 @@ notified of changes.</p>
 	
         <tr>
             
-                <td class="name"><code>coordinate</code></td>
+                <td class="name"><code>key</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -1127,7 +757,7 @@ notified of changes.</p>
             
             
             
-            <td class="description last"><p>Coordinate.</p></td>
+            <td class="description last"><p>Key name.</p></td>
         </tr>
 	
 	
@@ -1144,6 +774,11 @@ notified of changes.</p>
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#get">ol.Object#get</a>
+	</li></dd>
+	
 	
 	
 	
@@ -1157,7 +792,7 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 266</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 304</li></ul></dd>
 	
     
     
@@ -1177,7 +812,7 @@ notified of changes.</p>
     
             
 <div class="param-desc">
-    <p>Closest feature.</p>
+    <p>Value.</p>
 </div>
 
 
@@ -1188,7 +823,7 @@ notified of changes.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
+<span class="param-type">*</span>
 
 
 	</dd>
@@ -1202,7 +837,7 @@ notified of changes.</p>
         
             
 <dt>
-    <h4 class="name" id="getExtent"><span class="type-signature"></span>getExtent</h4>
+    <h4 class="name" id="getKeys"><span class="type-signature"></span>getKeys</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -1214,311 +849,9 @@ notified of changes.</p>
 <dd>
     
     
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 312</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Extent.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getFeatures"><span class="type-signature"></span>getFeatures</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 228</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Features.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getFeaturesAtCoordinate"><span class="type-signature"></span>getFeaturesAtCoordinate</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>coordinate</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Coordinate.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 243</li></ul></dd>
-	
-    
-    
-	
-	
-	
-	
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Features.</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Array.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getState"><span class="type-signature"></span>getState</h4>
-    
-    
-<div class="stability stability-experimental">Stability: experimental</div>
-
-
-
-    
-</dt>
-<dd>
-    
+    <div class="description">
+        <p>Get a list of object property names.</p>
+    </div>
     
 
     
@@ -1538,7 +871,7 @@ notified of changes.</p>
 	
 	<dt class="inherited-from">Inherited From:</dt>
 	<dd class="inherited-from"><ul class="dummy"><li>
-		<a href="ol.source.Source.html#getState">ol.source.Source#getState</a>
+		<a href="ol.Object.html#getKeys">ol.Object#getKeys</a>
 	</li></dd>
 	
 	
@@ -1554,7 +887,7 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>source.js, line 134</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 332</li></ul></dd>
 	
     
     
@@ -1574,7 +907,7 @@ notified of changes.</p>
     
             
 <div class="param-desc">
-    <p>State.</p>
+    <p>List of property names.</p>
 </div>
 
 
@@ -1585,13 +918,326 @@ notified of changes.</p>
 	</dt>
 	<dd>
 		
-<span class="param-type">ol.source.State</span>
+<span class="param-type">Array.&lt;string></span>
 
 
 	</dd>
 </dl>
 
         
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getMap"><span class="type-signature"></span>getMap</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get the map associated with this control.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.control.Control.html#getMap">ol.control.Control#getMap</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>control.js, line 68</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Map.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getProperties"><span class="type-signature"></span>getProperties</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get an object of all property names and values.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#getProperties">ol.Object#getProperties</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 364</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Object.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object.&lt;string, *></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="notify"><span class="type-signature"></span>notify</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Notify all observers of a change on this property. This notifies both
+objects that are bound to the object's property as well as the object
+that it is bound to.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Key name.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#notify">ol.Object#notify</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 384</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
     
     
 </dd>
@@ -2027,7 +1673,7 @@ notified of changes.</p>
         
             
 <dt>
-    <h4 class="name" id="removeFeature"><span class="type-signature"></span>removeFeature</h4>
+    <h4 class="name" id="set"><span class="type-signature"></span>set</h4>
     
     
 <div class="stability stability-experimental">Stability: experimental</div>
@@ -2038,6 +1684,10 @@ notified of changes.</p>
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Sets a value.</p>
+    </div>
     
 
     
@@ -2070,13 +1720,13 @@ notified of changes.</p>
 	
         <tr>
             
-                <td class="name"><code>feature</code></td>
+                <td class="name"><code>key</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -2086,7 +1736,30 @@ notified of changes.</p>
             
             
             
-            <td class="description last"><p>Feature.</p></td>
+            <td class="description last"><p>Key name.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Value.</p></td>
         </tr>
 	
 	
@@ -2103,6 +1776,11 @@ notified of changes.</p>
 	
 
 	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#set">ol.Object#set</a>
+	</li></dd>
+	
 	
 	
 	
@@ -2116,7 +1794,251 @@ notified of changes.</p>
 	
 	
 	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source"><ul class="dummy"><li>vectorsource.js, line 364</li></ul></dd>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 415</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setMap"><span class="type-signature"></span>setMap</h4>
+    
+    
+<div class="stability stability-stable">Stability: stable</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Remove the control from its current map and attach it to the new map.
+Subclasses may set up event handlers to get notified about changes to
+the map here.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Map.html">ol.Map</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Map.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.control.Control.html#setMap">ol.control.Control#setMap</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>control.js, line 89</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setValues"><span class="type-signature"></span>setValues</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Sets a collection of key-value pairs.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Values.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#setValues">ol.Object#setValues</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 444</li></ul></dd>
 	
     
     
@@ -2309,6 +2231,201 @@ notified of changes.</p>
 	
 	<dt class="tag-source">Source:</dt>
 	<dd class="tag-source"><ul class="dummy"><li>observable.js, line 86</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unbind"><span class="type-signature"></span>unbind</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Removes a binding. Unbinding will set the unbound property to the current
+    value. The object will not be notified, as the value has not changed.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Key name.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#unbind">ol.Object#unbind</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 458</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="unbindAll"><span class="type-signature"></span>unbindAll</h4>
+    
+    
+<div class="stability stability-experimental">Stability: experimental</div>
+
+
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Removes all bindings.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	<dt class="inherited-from">Inherited From:</dt>
+	<dd class="inherited-from"><ul class="dummy"><li>
+		<a href="ol.Object.html#unbindAll">ol.Object#unbindAll</a>
+	</li></dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>object.js, line 482</li></ul></dd>
 	
     
     

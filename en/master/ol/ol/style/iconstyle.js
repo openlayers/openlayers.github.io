@@ -54,6 +54,12 @@ ol.style.Icon = function(opt_options) {
 
   /**
    * @private
+   * @type {Array.<number>}
+   */
+  this.normalizedAnchor_ = null;
+
+  /**
+   * @private
    * @type {ol.style.IconAnchorOrigin}
    */
   this.anchorOrigin_ = goog.isDef(options.anchorOrigin) ?
@@ -97,6 +103,12 @@ ol.style.Icon = function(opt_options) {
   var opacity = goog.isDef(options.opacity) ? options.opacity : 1;
 
   /**
+   * @private
+   * @type {Array.<number>}
+   */
+  var origin = goog.isDef(options.origin) ? options.origin : [0, 0];
+
+  /**
    * @type {boolean}
    */
   var rotateWithView = goog.isDef(options.rotateWithView) ?
@@ -114,6 +126,7 @@ ol.style.Icon = function(opt_options) {
 
   goog.base(this, {
     opacity: opacity,
+    origin: origin,
     rotation: rotation,
     scale: scale,
     snapToPixel: undefined,
@@ -129,6 +142,9 @@ goog.inherits(ol.style.Icon, ol.style.Image);
  * @todo api
  */
 ol.style.Icon.prototype.getAnchor = function() {
+  if (!goog.isNull(this.normalizedAnchor_)) {
+    return this.normalizedAnchor_;
+  }
   var anchor = this.anchor_;
   var size = this.getSize();
   if (this.anchorXUnits_ == ol.style.IconAnchorUnits.FRACTION ||
@@ -161,7 +177,8 @@ ol.style.Icon.prototype.getAnchor = function() {
       anchor[1] = -anchor[1] + size[1];
     }
   }
-  return anchor;
+  this.normalizedAnchor_ = anchor;
+  return this.normalizedAnchor_;
 };
 
 

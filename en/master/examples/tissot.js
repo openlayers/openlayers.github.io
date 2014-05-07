@@ -29,7 +29,7 @@ var map = new ol.Map({
 var radius = 800000;
 for (var x = -180; x < 180; x += 30) {
   for (var y = -90; y < 90; y += 30) {
-    var geometry = ol.sphere.WGS84.circle([x, y], radius, 64);
-    vectorSource.addFeature(new ol.Feature(geometry));
+    var circle = ol.geom.Polygon.circular(ol.sphere.WGS84, [x, y], radius, 64);
+    vectorSource.addFeature(new ol.Feature(circle));
   }
 }
