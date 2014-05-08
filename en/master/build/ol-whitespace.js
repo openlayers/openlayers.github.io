@@ -13471,7 +13471,8 @@ ol.style.Circle = function(opt_options) {
   var size = this.render_();
   this.anchor_ = [size / 2, size / 2];
   this.size_ = [size, size];
-  goog.base(this, {opacity:1, origin:[0, 0], rotateWithView:false, rotation:0, scale:1, snapToPixel:undefined})
+  var snapToPixel = goog.isDef(options.snapToPixel) ? options.snapToPixel : true;
+  goog.base(this, {opacity:1, origin:[0, 0], rotateWithView:false, rotation:0, scale:1, snapToPixel:snapToPixel})
 };
 goog.inherits(ol.style.Circle, ol.style.Image);
 ol.style.Circle.prototype.getAnchor = function() {
@@ -19161,7 +19162,8 @@ ol.style.Icon = function(opt_options) {
   var rotateWithView = goog.isDef(options.rotateWithView) ? options.rotateWithView : false;
   var rotation = goog.isDef(options.rotation) ? options.rotation : 0;
   var scale = goog.isDef(options.scale) ? options.scale : 1;
-  goog.base(this, {opacity:opacity, origin:origin, rotation:rotation, scale:scale, snapToPixel:undefined, rotateWithView:rotateWithView})
+  var snapToPixel = goog.isDef(options.snapToPixel) ? options.snapToPixel : true;
+  goog.base(this, {opacity:opacity, origin:origin, rotation:rotation, scale:scale, snapToPixel:snapToPixel, rotateWithView:rotateWithView})
 };
 goog.inherits(ol.style.Icon, ol.style.Image);
 ol.style.Icon.prototype.getAnchor = function() {
@@ -19982,13 +19984,8 @@ ol.render.canvas.Immediate.prototype.setImageStyle = function(imageStyle) {
   }else {
     var imageAnchor = imageStyle.getAnchor();
     var imageImage = imageStyle.getImage(1);
-    var imageOpacity = imageStyle.getOpacity();
     var imageOrigin = imageStyle.getOrigin();
-    var imageRotateWithView = imageStyle.getRotateWithView();
-    var imageRotation = imageStyle.getRotation();
-    var imageScale = imageStyle.getScale();
     var imageSize = imageStyle.getSize();
-    var imageSnapToPixel = imageStyle.getSnapToPixel();
     goog.asserts.assert(!goog.isNull(imageAnchor));
     goog.asserts.assert(!goog.isNull(imageImage));
     goog.asserts.assert(!goog.isNull(imageOrigin));
@@ -19997,13 +19994,13 @@ ol.render.canvas.Immediate.prototype.setImageStyle = function(imageStyle) {
     this.imageAnchorY_ = imageAnchor[1];
     this.imageHeight_ = imageSize[1];
     this.image_ = imageImage;
-    this.imageOpacity_ = goog.isDef(imageOpacity) ? imageOpacity : 1;
+    this.imageOpacity_ = imageStyle.getOpacity();
     this.imageOriginX_ = imageOrigin[0];
     this.imageOriginY_ = imageOrigin[1];
-    this.imageRotateWithView_ = goog.isDef(imageRotateWithView) ? imageRotateWithView : false;
-    this.imageRotation_ = goog.isDef(imageRotation) ? imageRotation : 0;
-    this.imageScale_ = goog.isDef(imageScale) ? imageScale : 1;
-    this.imageSnapToPixel_ = goog.isDef(imageSnapToPixel) ? imageSnapToPixel : false;
+    this.imageRotateWithView_ = imageStyle.getRotateWithView();
+    this.imageRotation_ = imageStyle.getRotation();
+    this.imageScale_ = imageStyle.getScale();
+    this.imageSnapToPixel_ = imageStyle.getSnapToPixel();
     this.imageWidth_ = imageSize[0]
   }
 };
@@ -36478,6 +36475,7 @@ goog.exportSymbol("ol.BrowserFeature.HAS_CANVAS", ol.BrowserFeature.HAS_CANVAS);
 goog.exportSymbol("ol.BrowserFeature.HAS_DEVICE_ORIENTATION", ol.BrowserFeature.HAS_DEVICE_ORIENTATION);
 goog.exportSymbol("ol.BrowserFeature.HAS_GEOLOCATION", ol.BrowserFeature.HAS_GEOLOCATION);
 goog.exportSymbol("ol.BrowserFeature.HAS_TOUCH", ol.BrowserFeature.HAS_TOUCH);
+goog.exportSymbol("ol.BrowserFeature.HAS_WEBGL", ol.BrowserFeature.HAS_WEBGL);
 goog.exportSymbol("ol.Collection", ol.Collection);
 goog.exportProperty(ol.Collection.prototype, "bindTo", ol.Collection.prototype.bindTo);
 goog.exportProperty(ol.Collection.prototype, "clear", ol.Collection.prototype.clear);
