@@ -20595,7 +20595,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(context, pixelRatio, transf
         var image = (instruction[3]);
         var anchorX = (instruction[4]) * pixelRatio;
         var anchorY = (instruction[5]) * pixelRatio;
-        var height = (instruction[6]) * pixelRatio;
+        var height = (instruction[6]);
         var opacity = (instruction[7]);
         var originX = (instruction[8]);
         var originY = (instruction[9]);
@@ -20603,7 +20603,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(context, pixelRatio, transf
         var rotation = (instruction[11]);
         var scale = (instruction[12]);
         var snapToPixel = (instruction[13]);
-        var width = (instruction[14]) * pixelRatio;
+        var width = (instruction[14]);
         if(rotateWithView) {
           rotation += viewRotation
         }
@@ -20624,7 +20624,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(context, pixelRatio, transf
           if(opacity != 1) {
             context.globalAlpha = alpha * opacity
           }
-          context.drawImage(image, originX, originY, width, height, x, y, width, height);
+          context.drawImage(image, originX, originY, width, height, x, y, width * pixelRatio, height * pixelRatio);
           if(opacity != 1) {
             context.globalAlpha = alpha
           }
