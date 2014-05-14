@@ -25865,6 +25865,7 @@ ol.Map = function(options) {
   this.pixelToCoordinateMatrix_ = goog.vec.Mat4.createNumber();
   this.frameIndex_ = 0;
   this.frameState_ = null;
+  this.previousExtent_ = null;
   this.viewPropertyListenerKey_ = null;
   this.layerGroupPropertyListenerKeys_ = null;
   this.viewport_ = goog.dom.createDom(goog.dom.TagName.DIV, "ol-viewport");
@@ -26278,9 +26279,10 @@ ol.Map.prototype.renderFrame_ = function(time) {
       this.render()
     }
     Array.prototype.push.apply(this.postRenderFunctions_, frameState.postRenderFunctions);
-    var idle = this.preRenderFunctions_.length === 0 && !frameState.animate && !frameState.viewHints[ol.ViewHint.ANIMATING] && !frameState.viewHints[ol.ViewHint.INTERACTING];
+    var idle = this.preRenderFunctions_.length === 0 && !frameState.viewHints[ol.ViewHint.ANIMATING] && !frameState.viewHints[ol.ViewHint.INTERACTING] && (!this.previousExtent_ || !ol.extent.equals(frameState.extent, this.previousExtent_));
     if(idle) {
-      this.dispatchEvent(new ol.MapEvent(ol.MapEventType.MOVEEND, this))
+      this.dispatchEvent(new ol.MapEvent(ol.MapEventType.MOVEEND, this, frameState));
+      this.previousExtent_ = ol.extent.clone(frameState.extent)
     }
   }
   this.dispatchEvent(new ol.MapEvent(ol.MapEventType.POSTRENDER, this, frameState));
@@ -37643,6 +37645,7 @@ goog.exportProperty(ol.source.GPX.prototype, "getFeaturesAtCoordinate", ol.sourc
 goog.exportProperty(ol.source.GPX.prototype, "getState", ol.source.GPX.prototype.getState);
 goog.exportProperty(ol.source.GPX.prototype, "on", ol.source.GPX.prototype.on);
 goog.exportProperty(ol.source.GPX.prototype, "once", ol.source.GPX.prototype.once);
+goog.exportProperty(ol.source.GPX.prototype, "readFeatures", ol.source.GPX.prototype.readFeatures);
 goog.exportProperty(ol.source.GPX.prototype, "removeFeature", ol.source.GPX.prototype.removeFeature);
 goog.exportProperty(ol.source.GPX.prototype, "un", ol.source.GPX.prototype.un);
 goog.exportProperty(ol.source.GPX.prototype, "unByKey", ol.source.GPX.prototype.unByKey);
@@ -37659,6 +37662,7 @@ goog.exportProperty(ol.source.GeoJSON.prototype, "getFeaturesAtCoordinate", ol.s
 goog.exportProperty(ol.source.GeoJSON.prototype, "getState", ol.source.GeoJSON.prototype.getState);
 goog.exportProperty(ol.source.GeoJSON.prototype, "on", ol.source.GeoJSON.prototype.on);
 goog.exportProperty(ol.source.GeoJSON.prototype, "once", ol.source.GeoJSON.prototype.once);
+goog.exportProperty(ol.source.GeoJSON.prototype, "readFeatures", ol.source.GeoJSON.prototype.readFeatures);
 goog.exportProperty(ol.source.GeoJSON.prototype, "removeFeature", ol.source.GeoJSON.prototype.removeFeature);
 goog.exportProperty(ol.source.GeoJSON.prototype, "un", ol.source.GeoJSON.prototype.un);
 goog.exportProperty(ol.source.GeoJSON.prototype, "unByKey", ol.source.GeoJSON.prototype.unByKey);
@@ -37675,6 +37679,7 @@ goog.exportProperty(ol.source.IGC.prototype, "getFeaturesAtCoordinate", ol.sourc
 goog.exportProperty(ol.source.IGC.prototype, "getState", ol.source.IGC.prototype.getState);
 goog.exportProperty(ol.source.IGC.prototype, "on", ol.source.IGC.prototype.on);
 goog.exportProperty(ol.source.IGC.prototype, "once", ol.source.IGC.prototype.once);
+goog.exportProperty(ol.source.IGC.prototype, "readFeatures", ol.source.IGC.prototype.readFeatures);
 goog.exportProperty(ol.source.IGC.prototype, "removeFeature", ol.source.IGC.prototype.removeFeature);
 goog.exportProperty(ol.source.IGC.prototype, "un", ol.source.IGC.prototype.un);
 goog.exportProperty(ol.source.IGC.prototype, "unByKey", ol.source.IGC.prototype.unByKey);
@@ -37731,6 +37736,7 @@ goog.exportProperty(ol.source.KML.prototype, "getFeaturesAtCoordinate", ol.sourc
 goog.exportProperty(ol.source.KML.prototype, "getState", ol.source.KML.prototype.getState);
 goog.exportProperty(ol.source.KML.prototype, "on", ol.source.KML.prototype.on);
 goog.exportProperty(ol.source.KML.prototype, "once", ol.source.KML.prototype.once);
+goog.exportProperty(ol.source.KML.prototype, "readFeatures", ol.source.KML.prototype.readFeatures);
 goog.exportProperty(ol.source.KML.prototype, "removeFeature", ol.source.KML.prototype.removeFeature);
 goog.exportProperty(ol.source.KML.prototype, "un", ol.source.KML.prototype.un);
 goog.exportProperty(ol.source.KML.prototype, "unByKey", ol.source.KML.prototype.unByKey);
@@ -37774,6 +37780,7 @@ goog.exportProperty(ol.source.OSMXML.prototype, "getFeaturesAtCoordinate", ol.so
 goog.exportProperty(ol.source.OSMXML.prototype, "getState", ol.source.OSMXML.prototype.getState);
 goog.exportProperty(ol.source.OSMXML.prototype, "on", ol.source.OSMXML.prototype.on);
 goog.exportProperty(ol.source.OSMXML.prototype, "once", ol.source.OSMXML.prototype.once);
+goog.exportProperty(ol.source.OSMXML.prototype, "readFeatures", ol.source.OSMXML.prototype.readFeatures);
 goog.exportProperty(ol.source.OSMXML.prototype, "removeFeature", ol.source.OSMXML.prototype.removeFeature);
 goog.exportProperty(ol.source.OSMXML.prototype, "un", ol.source.OSMXML.prototype.un);
 goog.exportProperty(ol.source.OSMXML.prototype, "unByKey", ol.source.OSMXML.prototype.unByKey);
@@ -37822,6 +37829,7 @@ goog.exportProperty(ol.source.StaticVector.prototype, "getFeaturesAtCoordinate",
 goog.exportProperty(ol.source.StaticVector.prototype, "getState", ol.source.StaticVector.prototype.getState);
 goog.exportProperty(ol.source.StaticVector.prototype, "on", ol.source.StaticVector.prototype.on);
 goog.exportProperty(ol.source.StaticVector.prototype, "once", ol.source.StaticVector.prototype.once);
+goog.exportProperty(ol.source.StaticVector.prototype, "readFeatures", ol.source.StaticVector.prototype.readFeatures);
 goog.exportProperty(ol.source.StaticVector.prototype, "removeFeature", ol.source.StaticVector.prototype.removeFeature);
 goog.exportProperty(ol.source.StaticVector.prototype, "un", ol.source.StaticVector.prototype.un);
 goog.exportProperty(ol.source.StaticVector.prototype, "unByKey", ol.source.StaticVector.prototype.unByKey);
@@ -37863,6 +37871,7 @@ goog.exportProperty(ol.source.TileVector.prototype, "getFeaturesAtCoordinate", o
 goog.exportProperty(ol.source.TileVector.prototype, "getState", ol.source.TileVector.prototype.getState);
 goog.exportProperty(ol.source.TileVector.prototype, "on", ol.source.TileVector.prototype.on);
 goog.exportProperty(ol.source.TileVector.prototype, "once", ol.source.TileVector.prototype.once);
+goog.exportProperty(ol.source.TileVector.prototype, "readFeatures", ol.source.TileVector.prototype.readFeatures);
 goog.exportProperty(ol.source.TileVector.prototype, "un", ol.source.TileVector.prototype.un);
 goog.exportProperty(ol.source.TileVector.prototype, "unByKey", ol.source.TileVector.prototype.unByKey);
 goog.exportSymbol("ol.source.TileWMS", ol.source.TileWMS);
@@ -37890,6 +37899,7 @@ goog.exportProperty(ol.source.TopoJSON.prototype, "getFeaturesAtCoordinate", ol.
 goog.exportProperty(ol.source.TopoJSON.prototype, "getState", ol.source.TopoJSON.prototype.getState);
 goog.exportProperty(ol.source.TopoJSON.prototype, "on", ol.source.TopoJSON.prototype.on);
 goog.exportProperty(ol.source.TopoJSON.prototype, "once", ol.source.TopoJSON.prototype.once);
+goog.exportProperty(ol.source.TopoJSON.prototype, "readFeatures", ol.source.TopoJSON.prototype.readFeatures);
 goog.exportProperty(ol.source.TopoJSON.prototype, "removeFeature", ol.source.TopoJSON.prototype.removeFeature);
 goog.exportProperty(ol.source.TopoJSON.prototype, "un", ol.source.TopoJSON.prototype.un);
 goog.exportProperty(ol.source.TopoJSON.prototype, "unByKey", ol.source.TopoJSON.prototype.unByKey);
