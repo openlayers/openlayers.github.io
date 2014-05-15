@@ -8138,9 +8138,7 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a>.</span>
-    
-    Map
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>Map
     </h2>
     
         <div class="class-description"><p>The map is the core component of OpenLayers. In its minimal configuration it
@@ -8152,7 +8150,7 @@ needs a view, one or more layers, and a target container:</p>
   }),
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.MapQuestOSM()
+      source: new ol.source.MapQuest({layer: 'osm'})
     })
   ],
   target: 'map'
@@ -8172,13 +8170,13 @@ renders it to a DOM element with the id <code>map</code>.</p></div>
     <div class="nameContainer">
         
         <h4 class="name" id="Map">
+            new ol.Map<span class="signature">(options)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            new ol.Map<span class="signature">(options)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line164">line 164</a>
@@ -8186,7 +8184,6 @@ renders it to a DOM element with the id <code>map</code>.</p></div>
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -8657,29 +8654,27 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
     <h5>Fires:</h5>
     <ul>
         <li>
-            
-<span class="stability experimental">experimental</span>
-
-
             <code><a href="ol.ObjectEvent.html#event:beforepropertychange">beforepropertychange</a></code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
               
             
+             -
             
-            - Triggered before a property is changed.
+<span class="stability experimental">experimental</span>
+
+
+            Triggered before a property is changed.
             
         </li>
     
         <li>
-            
             <code>change</code>
             
             
         </li>
     
         <li>
-            
             <code>change:layergroup</code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
@@ -8689,7 +8684,6 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
         </li>
     
         <li>
-            
             <code>change:size</code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
@@ -8699,7 +8693,6 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
         </li>
     
         <li>
-            
             <code>change:target</code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
@@ -8709,7 +8702,6 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
         </li>
     
         <li>
-            
             <code>change:view</code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
@@ -8719,85 +8711,81 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
         </li>
     
         <li>
-            
-<span class="stability experimental">experimental</span>
-
-
             <code><a href="ol.MapBrowserEvent.html#event:click">click</a></code>
             
                 (<a href="ol.MapBrowserEvent.html">ol.MapBrowserEvent</a>)
               
             
-            
-            - A click with no dragging. A double click will fire two of this.
-            
-        </li>
-    
-        <li>
+             -
             
 <span class="stability experimental">experimental</span>
 
 
+            A click with no dragging. A double click will fire two of this.
+            
+        </li>
+    
+        <li>
             <code><a href="ol.MapBrowserEvent.html#event:dblclick">dblclick</a></code>
             
                 (<a href="ol.MapBrowserEvent.html">ol.MapBrowserEvent</a>)
               
             
-            
-            - A true double click, with no dragging.
-            
-        </li>
-    
-        <li>
+             -
             
 <span class="stability experimental">experimental</span>
 
 
+            A true double click, with no dragging.
+            
+        </li>
+    
+        <li>
             <code><a href="ol.MapEvent.html#event:moveend">moveend</a></code>
             
                 (<a href="ol.MapEvent.html">ol.MapEvent</a>)
               
             
-            
-            - Triggered after the map is moved.
-            
-        </li>
-    
-        <li>
+             -
             
 <span class="stability experimental">experimental</span>
 
 
+            Triggered after the map is moved.
+            
+        </li>
+    
+        <li>
             <code><a href="ol.MapBrowserEvent.html#event:pointerdrag">pointerdrag</a></code>
             
                 (<a href="ol.MapBrowserEvent.html">ol.MapBrowserEvent</a>)
               
             
-            
-            - Triggered when a pointer is dragged.
-            
-        </li>
-    
-        <li>
+             -
             
 <span class="stability experimental">experimental</span>
 
 
+            Triggered when a pointer is dragged.
+            
+        </li>
+    
+        <li>
             <code><a href="ol.MapBrowserEvent.html#event:pointermove">pointermove</a></code>
             
                 (<a href="ol.MapBrowserEvent.html">ol.MapBrowserEvent</a>)
               
             
-            
-            - Triggered when a pointer is moved.
-            
-        </li>
-    
-        <li>
+             -
             
 <span class="stability experimental">experimental</span>
 
 
+            Triggered when a pointer is moved.
+            
+        </li>
+    
+        <li>
             <code><a href="ol.render.Event.html#event:postcompose">postcompose</a></code>
             
                 (<a href="ol.render.Event.html">ol.render.Event</a>)
@@ -8807,25 +8795,21 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
         </li>
     
         <li>
-            
-<span class="stability experimental">experimental</span>
-
-
             <code><a href="ol.MapEvent.html#event:postrender">postrender</a></code>
             
                 (<a href="ol.MapEvent.html">ol.MapEvent</a>)
               
             
-            
-            - Triggered after a map frame is rendered.
-            
-        </li>
-    
-        <li>
+             -
             
 <span class="stability experimental">experimental</span>
 
 
+            Triggered after a map frame is rendered.
+            
+        </li>
+    
+        <li>
             <code><a href="ol.render.Event.html#event:precompose">precompose</a></code>
             
                 (<a href="ol.render.Event.html">ol.render.Event</a>)
@@ -8835,25 +8819,21 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
         </li>
     
         <li>
-            
-<span class="stability experimental">experimental</span>
-
-
             <code><a href="ol.ObjectEvent.html#event:propertychange">propertychange</a></code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
               
             
-            
-            - Triggered when a property is changed.
-            
-        </li>
-    
-        <li>
+             -
             
 <span class="stability experimental">experimental</span>
 
 
+            Triggered when a property is changed.
+            
+        </li>
+    
+        <li>
             <code><a href="ol.render.Event.html#event:render">render</a></code>
             
                 (<a href="ol.render.Event.html">ol.render.Event</a>)
@@ -8863,17 +8843,17 @@ emitted, requiring that the target element has a <code>tabindex</code> attribute
         </li>
     
         <li>
-            
-<span class="stability experimental">experimental</span>
-
-
             <code><a href="ol.MapBrowserEvent.html#event:singleclick">singleclick</a></code>
             
                 (<a href="ol.MapBrowserEvent.html">ol.MapBrowserEvent</a>)
               
             
+             -
             
-            - A true single click with no dragging and no double click. Note that this
+<span class="stability experimental">experimental</span>
+
+
+            A true single click with no dragging and no double click. Note that this
 event is delayed by 250 ms to ensure that it is not a double click.
             
         </li>
@@ -9023,13 +9003,13 @@ event is delayed by 250 ms to ensure that it is not a double click.
     <div class="nameContainer">
         
         <h4 class="name" id="addControl">
+            addControl<span class="signature">(control)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            addControl<span class="signature">(control)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line472">line 472</a>
@@ -9037,7 +9017,6 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -9152,13 +9131,13 @@ event is delayed by 250 ms to ensure that it is not a double click.
     <div class="nameContainer">
         
         <h4 class="name" id="addInteraction">
+            addInteraction<span class="signature">(interaction)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            addInteraction<span class="signature">(interaction)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line484">line 484</a>
@@ -9166,7 +9145,6 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -9281,13 +9259,13 @@ event is delayed by 250 ms to ensure that it is not a double click.
     <div class="nameContainer">
         
         <h4 class="name" id="addLayer">
+            addLayer<span class="signature">(layer)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            addLayer<span class="signature">(layer)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line496">line 496</a>
@@ -9295,7 +9273,6 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -9410,13 +9387,13 @@ event is delayed by 250 ms to ensure that it is not a double click.
     <div class="nameContainer">
         
         <h4 class="name" id="addOverlay">
+            addOverlay<span class="signature">(overlay)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            addOverlay<span class="signature">(overlay)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line508">line 508</a>
@@ -9424,7 +9401,6 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -9539,13 +9515,13 @@ event is delayed by 250 ms to ensure that it is not a double click.
     <div class="nameContainer">
         
         <h4 class="name" id="beforeRender">
+            beforeRender<span class="signature">(var_args)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            beforeRender<span class="signature">(var_args)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line522">line 522</a>
@@ -9553,7 +9529,6 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -9670,15 +9645,15 @@ namespace provides several static methods for creating prerender functions.</p>
     <div class="nameContainer inherited">
         
         <h4 class="name" id="bindTo">
-<span class="stability experimental">experimental</span>
-
-
+            bindTo<span class="signature">(key, target, <span class="optional">opt_targetKey</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ol.ObjectAccessor}</span>
             
                 <span class="inherited"><a href="ol.Object.html#bindTo">inherited</a></span>
             
-            bindTo<span class="signature">(key, target, <span class="optional">opt_targetKey</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{ol.ObjectAccessor}</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line247">line 247</a>
@@ -9686,7 +9661,6 @@ namespace provides several static methods for creating prerender functions.</p>
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -9918,15 +9892,15 @@ from the target with the following:</p>
     <div class="nameContainer inherited">
         
         <h4 class="name" id="dispatchChangeEvent">
-<span class="stability experimental">experimental</span>
-
-
+            dispatchChangeEvent<span class="signature">()</span>
             
                 <span class="inherited"><a href="ol.Observable.html#dispatchChangeEvent">inherited</a></span>
             
-            dispatchChangeEvent<span class="signature">()</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line39">line 39</a>
@@ -9934,7 +9908,6 @@ from the target with the following:</p>
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -9984,7 +9957,6 @@ notified of changes.</p>
     <h5>Fires:</h5>
     <ul>
         <li>
-            
             <code>change</code>
             
             
@@ -10009,13 +9981,13 @@ notified of changes.</p>
     <div class="nameContainer">
         
         <h4 class="name" id="forEachFeatureAtPixel">
+            forEachFeatureAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_this</span>, opt_layerFilter, <span class="optional">opt_this2</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{T|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            forEachFeatureAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_this</span>, opt_layerFilter, <span class="optional">opt_this2</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{T|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line561">line 561</a>
@@ -10023,7 +9995,6 @@ notified of changes.</p>
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -10320,15 +10291,15 @@ Callback result.
     <div class="nameContainer inherited">
         
         <h4 class="name" id="get">
-<span class="stability experimental">experimental</span>
-
-
+            get<span class="signature">(key)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
             
                 <span class="inherited"><a href="ol.Object.html#get">inherited</a></span>
             
-            get<span class="signature">(key)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line304">line 304</a>
@@ -10336,7 +10307,6 @@ Callback result.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -10460,13 +10430,13 @@ Value.
     <div class="nameContainer">
         
         <h4 class="name" id="getControls">
+            getControls<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getControls<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line653">line 653</a>
@@ -10474,7 +10444,6 @@ Value.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -10543,13 +10512,13 @@ Controls.
     <div class="nameContainer">
         
         <h4 class="name" id="getCoordinateFromPixel">
+            getCoordinateFromPixel<span class="signature">(pixel)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Coordinate">ol.Coordinate</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getCoordinateFromPixel<span class="signature">(pixel)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Coordinate">ol.Coordinate</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line638">line 638</a>
@@ -10557,7 +10526,6 @@ Controls.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -10677,13 +10645,13 @@ Coordinate.
     <div class="nameContainer">
         
         <h4 class="name" id="getEventCoordinate">
+            getEventCoordinate<span class="signature">(event)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Coordinate">ol.Coordinate</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getEventCoordinate<span class="signature">(event)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Coordinate">ol.Coordinate</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line583">line 583</a>
@@ -10691,7 +10659,6 @@ Coordinate.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -10815,13 +10782,13 @@ Coordinate.
     <div class="nameContainer">
         
         <h4 class="name" id="getEventPixel">
+            getEventPixel<span class="signature">(event)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Pixel">ol.Pixel</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getEventPixel<span class="signature">(event)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Pixel">ol.Pixel</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line594">line 594</a>
@@ -10829,7 +10796,6 @@ Coordinate.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -10953,13 +10919,13 @@ Pixel.
     <div class="nameContainer">
         
         <h4 class="name" id="getInteractions">
+            getInteractions<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getInteractions<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line676">line 676</a>
@@ -10967,7 +10933,6 @@ Pixel.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11043,15 +11008,15 @@ associated with the map.</p>
     <div class="nameContainer inherited">
         
         <h4 class="name" id="getKeys">
-<span class="stability experimental">experimental</span>
-
-
+            getKeys<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
             
                 <span class="inherited"><a href="ol.Object.html#getKeys">inherited</a></span>
             
-            getKeys<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line332">line 332</a>
@@ -11059,7 +11024,6 @@ associated with the map.</p>
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11132,13 +11096,13 @@ List of property names.
     <div class="nameContainer">
         
         <h4 class="name" id="getLayerGroup">
+            getLayerGroup<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.layer.Group.html">ol.layer.Group</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getLayerGroup<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.layer.Group.html">ol.layer.Group</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line687">line 687</a>
@@ -11146,7 +11110,6 @@ List of property names.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11219,13 +11182,13 @@ A layer group containing the layers in this map.
     <div class="nameContainer">
         
         <h4 class="name" id="getLayers">
+            getLayers<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getLayers<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line702">line 702</a>
@@ -11233,7 +11196,6 @@ A layer group containing the layers in this map.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11306,13 +11268,13 @@ Layers.
     <div class="nameContainer">
         
         <h4 class="name" id="getOverlays">
+            getOverlays<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getOverlays<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line662">line 662</a>
@@ -11320,7 +11282,6 @@ Layers.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11389,13 +11350,13 @@ Overlays.
     <div class="nameContainer">
         
         <h4 class="name" id="getPixelFromCoordinate">
+            getPixelFromCoordinate<span class="signature">(coordinate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Pixel">ol.Pixel</a>}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getPixelFromCoordinate<span class="signature">(coordinate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Pixel">ol.Pixel</a>}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line717">line 717</a>
@@ -11403,7 +11364,6 @@ Overlays.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11523,15 +11483,15 @@ Pixel.
     <div class="nameContainer inherited">
         
         <h4 class="name" id="getProperties">
-<span class="stability experimental">experimental</span>
-
-
+            getProperties<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object.&lt;string, *>}</span>
             
                 <span class="inherited"><a href="ol.Object.html#getProperties">inherited</a></span>
             
-            getProperties<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object.&lt;string, *>}</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line364">line 364</a>
@@ -11539,7 +11499,6 @@ Pixel.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11612,13 +11571,13 @@ Object.
     <div class="nameContainer">
         
         <h4 class="name" id="getSize">
+            getSize<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Size">ol.Size</a>|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getSize<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#Size">ol.Size</a>|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line734">line 734</a>
@@ -11626,7 +11585,6 @@ Object.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11699,13 +11657,13 @@ The size in pixels of the map in the DOM.
     <div class="nameContainer">
         
         <h4 class="name" id="getTarget">
+            getTarget<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Element|string|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getTarget<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Element|string|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line623">line 623</a>
@@ -11713,7 +11671,6 @@ The size in pixels of the map in the DOM.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11789,13 +11746,13 @@ The Element or id of the Element that the
     <div class="nameContainer">
         
         <h4 class="name" id="getView">
+            getView<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.IView.html">ol.IView</a>|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getView<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.IView.html">ol.IView</a>|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line750">line 750</a>
@@ -11803,7 +11760,6 @@ The Element or id of the Element that the
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11877,13 +11833,13 @@ The view that controls this map.
     <div class="nameContainer">
         
         <h4 class="name" id="getViewport">
+            getViewport<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Element}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            getViewport<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Element}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line763">line 763</a>
@@ -11891,7 +11847,6 @@ The view that controls this map.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -11960,15 +11915,15 @@ Viewport.
     <div class="nameContainer inherited">
         
         <h4 class="name" id="notify">
-<span class="stability experimental">experimental</span>
-
-
+            notify<span class="signature">(key)</span>
             
                 <span class="inherited"><a href="ol.Object.html#notify">inherited</a></span>
             
-            notify<span class="signature">(key)</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line384">line 384</a>
@@ -11976,7 +11931,6 @@ Viewport.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -12093,15 +12047,15 @@ that it is bound to.</p>
     <div class="nameContainer inherited">
         
         <h4 class="name" id="on">
-<span class="stability experimental">experimental</span>
-
-
+            on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#on">inherited</a></span>
             
-            on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line61">line 61</a>
@@ -12109,7 +12063,6 @@ that it is bound to.</p>
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -12329,15 +12282,15 @@ Unique key for the listener.
     <div class="nameContainer inherited">
         
         <h4 class="name" id="once">
-<span class="stability experimental">experimental</span>
-
-
+            once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#once">inherited</a></span>
             
-            once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line74">line 74</a>
@@ -12345,7 +12298,6 @@ Unique key for the listener.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -12565,13 +12517,13 @@ Unique key for the listener.
     <div class="nameContainer">
         
         <h4 class="name" id="removeControl">
+            removeControl<span class="signature">(control)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.control.Control.html">ol.control.Control</a>|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            removeControl<span class="signature">(control)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.control.Control.html">ol.control.Control</a>|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1096">line 1096</a>
@@ -12579,7 +12531,6 @@ Unique key for the listener.
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -12704,13 +12655,13 @@ The removed control of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="removeInteraction">
+            removeInteraction<span class="signature">(interaction)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.interaction.Interaction.html">ol.interaction.Interaction</a>|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            removeInteraction<span class="signature">(interaction)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.interaction.Interaction.html">ol.interaction.Interaction</a>|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1113">line 1113</a>
@@ -12718,7 +12669,6 @@ The removed control of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -12843,13 +12793,13 @@ The removed interaction (or
     <div class="nameContainer">
         
         <h4 class="name" id="removeLayer">
+            removeLayer<span class="signature">(layer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.layer.Base.html">ol.layer.Base</a>|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            removeLayer<span class="signature">(layer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.layer.Base.html">ol.layer.Base</a>|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1131">line 1131</a>
@@ -12857,7 +12807,6 @@ The removed interaction (or
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -12982,13 +12931,13 @@ The removed layer or undefined if the
     <div class="nameContainer">
         
         <h4 class="name" id="removeOverlay">
+            removeOverlay<span class="signature">(overlay)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Overlay.html">ol.Overlay</a>|undefined}</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            removeOverlay<span class="signature">(overlay)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Overlay.html">ol.Overlay</a>|undefined}</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1145">line 1145</a>
@@ -12996,7 +12945,6 @@ The removed layer or undefined if the
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13121,13 +13069,13 @@ The removed overlay of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="render">
+            render<span class="signature">()</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            render<span class="signature">()</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1082">line 1082</a>
@@ -13135,7 +13083,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13199,13 +13146,13 @@ The removed overlay of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="renderSync">
+            renderSync<span class="signature">()</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            renderSync<span class="signature">()</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1073">line 1073</a>
@@ -13213,7 +13160,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13277,15 +13223,15 @@ The removed overlay of undefined
     <div class="nameContainer inherited">
         
         <h4 class="name" id="set">
-<span class="stability experimental">experimental</span>
-
-
+            set<span class="signature">(key, value)</span>
             
                 <span class="inherited"><a href="ol.Object.html#set">inherited</a></span>
             
-            set<span class="signature">(key, value)</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line415">line 415</a>
@@ -13293,7 +13239,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13435,13 +13380,13 @@ The removed overlay of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="setLayerGroup">
+            setLayerGroup<span class="signature">(layerGroup)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            setLayerGroup<span class="signature">(layerGroup)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1272">line 1272</a>
@@ -13449,7 +13394,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13565,13 +13509,13 @@ The removed overlay of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="setSize">
+            setSize<span class="signature">(size)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            setSize<span class="signature">(size)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1287">line 1287</a>
@@ -13579,7 +13523,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13697,13 +13640,13 @@ The removed overlay of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="setTarget">
+            setTarget<span class="signature">(target)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            setTarget<span class="signature">(target)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1303">line 1303</a>
@@ -13711,7 +13654,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13833,15 +13775,15 @@ The removed overlay of undefined
     <div class="nameContainer inherited">
         
         <h4 class="name" id="setValues">
-<span class="stability experimental">experimental</span>
-
-
+            setValues<span class="signature">(values)</span>
             
                 <span class="inherited"><a href="ol.Object.html#setValues">inherited</a></span>
             
-            setValues<span class="signature">(values)</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line444">line 444</a>
@@ -13849,7 +13791,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -13964,13 +13905,13 @@ The removed overlay of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="setView">
+            setView<span class="signature">(view)</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            setView<span class="signature">(view)</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1318">line 1318</a>
@@ -13978,7 +13919,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -14093,15 +14033,15 @@ The removed overlay of undefined
     <div class="nameContainer inherited">
         
         <h4 class="name" id="un">
-<span class="stability experimental">experimental</span>
-
-
+            un<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#un">inherited</a></span>
             
-            un<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line86">line 86</a>
@@ -14109,7 +14049,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -14320,15 +14259,15 @@ The removed overlay of undefined
     <div class="nameContainer inherited">
         
         <h4 class="name" id="unbind">
-<span class="stability experimental">experimental</span>
-
-
+            unbind<span class="signature">(key)</span>
             
                 <span class="inherited"><a href="ol.Object.html#unbind">inherited</a></span>
             
-            unbind<span class="signature">(key)</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line458">line 458</a>
@@ -14336,7 +14275,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -14452,15 +14390,15 @@ The removed overlay of undefined
     <div class="nameContainer inherited">
         
         <h4 class="name" id="unbindAll">
-<span class="stability experimental">experimental</span>
-
-
+            unbindAll<span class="signature">()</span>
             
                 <span class="inherited"><a href="ol.Object.html#unbindAll">inherited</a></span>
             
-            unbindAll<span class="signature">()</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line482">line 482</a>
@@ -14468,7 +14406,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -14532,15 +14469,15 @@ The removed overlay of undefined
     <div class="nameContainer inherited">
         
         <h4 class="name" id="unByKey">
-<span class="stability experimental">experimental</span>
-
-
+            unByKey<span class="signature">(key)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#unByKey">inherited</a></span>
             
-            unByKey<span class="signature">(key)</span>
+            
+<span class="stability experimental">experimental</span>
+
+
         </h4>
-    
         
         <div class="tag-source">
             <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line96">line 96</a>
@@ -14548,7 +14485,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -14663,13 +14599,13 @@ The removed overlay of undefined
     <div class="nameContainer">
         
         <h4 class="name" id="updateSize">
+            updateSize<span class="signature">()</span>
+            
+            
 <span class="stability experimental">experimental</span>
 
 
-            
-            updateSize<span class="signature">()</span>
         </h4>
-    
         
         <div class="tag-source">
             <a href="map.js.html">src/ol/map.js</a>, <a href="map.js.html#line1342">line 1342</a>
@@ -14677,7 +14613,6 @@ The removed overlay of undefined
         
         
     </div>
-
     
 </dt>
 <dd>
@@ -14751,7 +14686,7 @@ third-party code changes the size of the map viewport.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed May 14 2014 15:04:47 GMT-0600 (MDT)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Thu May 15 2014 09:19:17 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
