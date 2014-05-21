@@ -194,6 +194,46 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.coordinate">
+            <span class="title">
+                <a href="ol.coordinate.html">ol.coordinate</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.coordinate.add"><a href="ol.coordinate.html#add">add</a></li>
+            
+                <li data-name="ol.coordinate.createStringXY"><a href="ol.coordinate.html#createStringXY">createStringXY</a></li>
+            
+                <li data-name="ol.coordinate.format"><a href="ol.coordinate.html#format">format</a></li>
+            
+                <li data-name="ol.coordinate.fromProjectedArray"><a href="ol.coordinate.html#fromProjectedArray">fromProjectedArray</a></li>
+            
+                <li data-name="ol.coordinate.rotate"><a href="ol.coordinate.html#rotate">rotate</a></li>
+            
+                <li data-name="ol.coordinate.toStringHDMS"><a href="ol.coordinate.html#toStringHDMS">toStringHDMS</a></li>
+            
+                <li data-name="ol.coordinate.toStringXY"><a href="ol.coordinate.html#toStringXY">toStringXY</a></li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.events">
             <span class="title">
                 <a href="ol.events.html">ol.events</a>
@@ -10368,10 +10408,50 @@ outside this extent. Default is <code>undefined</code>.</p></td>
             
             
             <td class="description last"><p>The maximum resolution used to determine the resolution constraint. It is
-used together with <code>maxZoom</code> and <code>zoomFactor</code>. If unspecified it is
-calculated in such a way that the projection's validity extent fits in a
-256x256 px tile. If the projection is Spherical Mercator (the default) then
-<code>maxResolution</code> defaults to <code>40075016.68557849 / 256 = 156543.03392804097</code>.</p></td>
+used together with <code>minResolution</code> (or <code>maxZoom</code>) and <code>zoomFactor</code>. If
+unspecified it is calculated in such a way that the projection's validity
+extent fits in a 256x256 px tile. If the projection is Spherical Mercator
+(the default) then <code>maxResolution</code> defaults to <code>40075016.68557849 / 256 =
+156543.03392804097</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minResolution</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The minimum resolution used to determine the resolution constraint.  It is
+used together with <code>maxResolution</code> (or <code>minZoom</code>) and <code>zoomFactor</code>.  If
+unspecified it is calculated assuming 29 zoom levels (with a factor of 2).
+If the projection is Spherical Mercator (the default) then <code>minResolution</code>
+defaults to <code>40075016.68557849 / 256 / Math.pow(2, 28) =
+0.0005831682455839253</code>.</p></td>
         </tr>
 	
 	
@@ -10406,7 +10486,46 @@ calculated in such a way that the projection's validity extent fits in a
             
             
             <td class="description last"><p>The maximum zoom level used to determine the resolution constraint. It is
-used together with <code>maxResolution</code> and <code>zoomFactor</code>. Default is <code>28</code>.</p></td>
+used together with <code>minZoom</code> (or <code>maxResolution</code>) and <code>zoomFactor</code>. Default
+is <code>28</code>.  Note that if <code>minResolution</code> is also provided, it is given
+precedence over <code>maxZoom</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minZoom</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The minimum zoom level used to determine the resolution constraint. It is
+used together with <code>maxZoom</code> (or <code>minResolution</code>) and <code>zoomFactor</code>. Default
+is <code>0</code>. Note that if <code>maxResolution</code> is also provided, it is given
+precedence over <code>minZoom</code>.</p></td>
         </tr>
 	
 	
@@ -10507,7 +10626,8 @@ neither this nor <code>zoom</code> are defined.</p></td>
             
             
             <td class="description last"><p>Resolutions to determine the resolution constraint. If set the
-<code>maxResolution</code>, <code>maxZoom</code> and <code>zoomFactor</code> options are ignored.</p></td>
+<code>maxResolution</code>, <code>minResolution</code>, <code>minZoom</code>, <code>maxZoom</code>, and <code>zoomFactor</code>
+options are ignored.</p></td>
         </tr>
 	
 	
@@ -10612,8 +10732,7 @@ the <code>ol.View2D#constrainResolution</code> method.</p></td>
             
             
             
-            <td class="description last"><p>The zoom factor used to determine the resolution constraint. Used together
-with <code>maxResolution</code> and <code>maxZoom</code>. Default is <code>2</code>.</p></td>
+            <td class="description last"><p>The zoom factor used to determine the resolution constraint.  Default is <code>2</code>.</p></td>
         </tr>
 	
 	
@@ -10660,7 +10779,7 @@ with <code>maxResolution</code> and <code>maxZoom</code>. Default is <code>2</co
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Fri May 16 2014 10:05:25 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed May 21 2014 09:13:08 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

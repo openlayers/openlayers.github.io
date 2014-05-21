@@ -2505,6 +2505,7 @@ goog.provide("ol");
 ol.ASSUME_TOUCH = false;
 ol.BUFFER_REPLACE_UNUSED_ENTRIES_WITH_NANS = goog.DEBUG;
 ol.DEFAULT_MAX_ZOOM = 42;
+ol.DEFAULT_MIN_ZOOM = 0;
 ol.DEFAULT_TILE_CACHE_HIGH_WATER_MARK = 2048;
 ol.DEFAULT_TILE_SIZE = 256;
 ol.DEFAULT_WMS_VERSION = "1.3.0";
@@ -8883,9 +8884,9 @@ ol.coordinate.rotate = function(coordinate, angle) {
   coordinate[1] = y;
   return coordinate
 };
-ol.coordinate.scale = function(coordinate, s) {
-  coordinate[0] *= s;
-  coordinate[1] *= s;
+ol.coordinate.scale = function(coordinate, scale) {
+  coordinate[0] *= scale;
+  coordinate[1] *= scale;
   return coordinate
 };
 ol.coordinate.sub = function(coordinate, delta) {
@@ -10895,6 +10896,7 @@ ol.View2D = function(opt_options) {
   var resolutionConstraintInfo = ol.View2D.createResolutionConstraint_(options);
   this.maxResolution_ = resolutionConstraintInfo.maxResolution;
   this.minResolution_ = resolutionConstraintInfo.minResolution;
+  this.minZoom_ = resolutionConstraintInfo.minZoom;
   var centerConstraint = ol.View2D.createCenterConstraint_(options);
   var resolutionConstraint = resolutionConstraintInfo.constraint;
   var rotationConstraint = ol.View2D.createRotationConstraint_(options);
@@ -10903,7 +10905,7 @@ ol.View2D = function(opt_options) {
     values[ol.View2DProperty.RESOLUTION] = options.resolution
   }else {
     if(goog.isDef(options.zoom)) {
-      values[ol.View2DProperty.RESOLUTION] = this.constrainResolution(this.maxResolution_, options.zoom)
+      values[ol.View2DProperty.RESOLUTION] = this.constrainResolution(this.maxResolution_, options.zoom - this.minZoom_)
     }
   }
   values[ol.View2DProperty.ROTATION] = goog.isDef(options.rotation) ? options.rotation : 0;
@@ -11010,20 +11012,20 @@ ol.View2D.prototype.getView2DState = function() {
 ol.View2D.prototype.getView3D = function() {
 };
 ol.View2D.prototype.getZoom = function() {
-  var zoom;
+  var offset;
   var resolution = this.getResolution();
   if(goog.isDef(resolution)) {
     var res, z = 0;
     do {
       res = this.constrainResolution(this.maxResolution_, z);
       if(res == resolution) {
-        zoom = z;
+        offset = z;
         break
       }
       ++z
     }while(res > this.minResolution_)
   }
-  return zoom
+  return goog.isDef(offset) ? this.minZoom_ + offset : offset
 };
 ol.View2D.prototype.fitExtent = function(extent, size) {
   if(!ol.extent.isEmpty(extent)) {
@@ -11120,7 +11122,7 @@ ol.View2D.prototype.setRotation = function(rotation) {
 };
 goog.exportProperty(ol.View2D.prototype, "setRotation", ol.View2D.prototype.setRotation);
 ol.View2D.prototype.setZoom = function(zoom) {
-  var resolution = this.constrainResolution(this.maxResolution_, zoom, 0);
+  var resolution = this.constrainResolution(this.maxResolution_, zoom - this.minZoom_, 0);
   this.setResolution(resolution)
 };
 ol.View2D.createCenterConstraint_ = function(options) {
@@ -11134,31 +11136,45 @@ ol.View2D.createResolutionConstraint_ = function(options) {
   var resolutionConstraint;
   var maxResolution;
   var minResolution;
+  var defaultMaxZoom = 28;
+  var defaultZoomFactor = 2;
+  var minZoom = goog.isDef(options.minZoom) ? options.minZoom : ol.DEFAULT_MIN_ZOOM;
+  var maxZoom = goog.isDef(options.maxZoom) ? options.maxZoom : defaultMaxZoom;
+  var zoomFactor = goog.isDef(options.zoomFactor) ? options.zoomFactor : defaultZoomFactor;
   if(goog.isDef(options.resolutions)) {
     var resolutions = options.resolutions;
     maxResolution = resolutions[0];
     minResolution = resolutions[resolutions.length - 1];
     resolutionConstraint = ol.ResolutionConstraint.createSnapToResolutions(resolutions)
   }else {
+    var projection = options.projection;
+    var extent = ol.proj.createProjection(projection, "EPSG:3857").getExtent();
+    var size = goog.isNull(extent) ? 360 * ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] / ol.proj.METERS_PER_UNIT[projection.getUnits()] : Math.max(ol.extent.getWidth(extent), ol.extent.getHeight(extent));
+    var defaultMaxResolution = size / ol.DEFAULT_TILE_SIZE / Math.pow(defaultZoomFactor, ol.DEFAULT_MIN_ZOOM);
+    var defaultMinResolution = defaultMaxResolution / Math.pow(defaultZoomFactor, defaultMaxZoom - ol.DEFAULT_MIN_ZOOM);
     maxResolution = options.maxResolution;
-    if(!goog.isDef(maxResolution)) {
-      var projection = options.projection;
-      var projectionExtent = ol.proj.createProjection(projection, "EPSG:3857").getExtent();
-      var size = goog.isNull(projectionExtent) ? 360 * ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] / ol.proj.METERS_PER_UNIT[projection.getUnits()] : Math.max(projectionExtent[2] - projectionExtent[0], projectionExtent[3] - projectionExtent[1]);
-      maxResolution = size / ol.DEFAULT_TILE_SIZE
+    if(goog.isDef(maxResolution)) {
+      minZoom = 0
+    }else {
+      maxResolution = defaultMaxResolution / Math.pow(zoomFactor, minZoom)
     }
-    var maxZoom = options.maxZoom;
-    if(!goog.isDef(maxZoom)) {
-      maxZoom = 28
+    minResolution = options.minResolution;
+    if(!goog.isDef(minResolution)) {
+      if(goog.isDef(options.maxZoom)) {
+        if(goog.isDef(options.maxResolution)) {
+          minResolution = maxResolution / Math.pow(zoomFactor, maxZoom)
+        }else {
+          minResolution = defaultMaxResolution / Math.pow(zoomFactor, maxZoom)
+        }
+      }else {
+        minResolution = defaultMinResolution
+      }
     }
-    var zoomFactor = options.zoomFactor;
-    if(!goog.isDef(zoomFactor)) {
-      zoomFactor = 2
-    }
-    minResolution = maxResolution / Math.pow(zoomFactor, maxZoom);
-    resolutionConstraint = ol.ResolutionConstraint.createSnapToPower(zoomFactor, maxResolution, maxZoom)
+    maxZoom = minZoom + Math.floor(Math.log(maxResolution / minResolution) / Math.log(zoomFactor));
+    minResolution = maxResolution / Math.pow(zoomFactor, maxZoom - minZoom);
+    resolutionConstraint = ol.ResolutionConstraint.createSnapToPower(zoomFactor, maxResolution, maxZoom - minZoom)
   }
-  return{constraint:resolutionConstraint, maxResolution:maxResolution, minResolution:minResolution}
+  return{constraint:resolutionConstraint, maxResolution:maxResolution, minResolution:minResolution, minZoom:minZoom}
 };
 ol.View2D.createRotationConstraint_ = function(options) {
   var enableRotation = goog.isDef(options.enableRotation) ? options.enableRotation : true;
