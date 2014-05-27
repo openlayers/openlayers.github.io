@@ -56,7 +56,7 @@ goog.addDependency('../../../ol/ol/ellipsoid/wgs84ellipsoid.js', ['ol.ellipsoid.
 goog.addDependency('../../../ol/ol/events/condition.js', ['ol.events.ConditionType', 'ol.events.condition'], ['goog.asserts', 'goog.dom.TagName', 'goog.functions', 'ol.MapBrowserEvent.EventType', 'ol.MapBrowserPointerEvent']);
 goog.addDependency('../../../ol/ol/extent.js', ['ol.Extent', 'ol.extent', 'ol.extent.Relationship'], ['goog.asserts', 'goog.vec.Mat4', 'ol.Coordinate', 'ol.Size', 'ol.TransformFunction']);
 goog.addDependency('../../../ol/ol/feature.js', ['ol.Feature', 'ol.feature'], ['goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.functions', 'ol.Object', 'ol.geom.Geometry', 'ol.geom.GeometryType', 'ol.style.Circle', 'ol.style.Fill', 'ol.style.Stroke', 'ol.style.Style']);
-goog.addDependency('../../../ol/ol/featureoverlay.js', ['ol.FeatureOverlay'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.Collection', 'ol.CollectionEventType', 'ol.Feature', 'ol.feature', 'ol.render.EventType']);
+goog.addDependency('../../../ol/ol/featureoverlay.js', ['ol.FeatureOverlay'], ['goog.array', 'goog.asserts', 'goog.events', 'goog.events.EventType', 'goog.object', 'ol.Collection', 'ol.CollectionEventType', 'ol.Feature', 'ol.feature', 'ol.render.EventType', 'ol.style.ImageState']);
 goog.addDependency('../../../ol/ol/format/binaryfeatureformat.js', ['ol.format.BinaryFeature'], ['goog.asserts', 'ol.BrowserFeature', 'ol.binary.Buffer', 'ol.format.Feature', 'ol.format.FormatType', 'ol.proj']);
 goog.addDependency('../../../ol/ol/format/featureformat.js', ['ol.format.Feature'], ['goog.functions']);
 goog.addDependency('../../../ol/ol/format/format.js', ['ol.format.FormatType'], []);
