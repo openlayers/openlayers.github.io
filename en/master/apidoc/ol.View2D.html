@@ -2363,6 +2363,8 @@
             
                 <li data-name="ol.format.GML#readFeatures"><a href="ol.format.GML.html#readFeatures">readFeatures</a></li>
             
+                <li data-name="ol.format.GML#writeFeatures"><a href="ol.format.GML.html#writeFeatures">writeFeatures</a></li>
+            
             </ul>
             <ul class="fires itemMembers">
             
@@ -2379,10 +2381,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.format.GPX#readProjection"><a href="ol.format.GPX.html#readProjection">readProjection</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -2394,6 +2392,8 @@
                 <li data-name="ol.format.GPX#readFeature"><a href="ol.format.GPX.html#readFeature">readFeature</a></li>
             
                 <li data-name="ol.format.GPX#readFeatures"><a href="ol.format.GPX.html#readFeatures">readFeatures</a></li>
+            
+                <li data-name="ol.format.GPX#readProjection"><a href="ol.format.GPX.html#readProjection">readProjection</a></li>
             
                 <li data-name="ol.format.GPX#writeFeatures"><a href="ol.format.GPX.html#writeFeatures">writeFeatures</a></li>
             
@@ -5341,6 +5341,10 @@
             </span>
             <ul class="members itemMembers">
             
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.ObjectEvent#key"><a href="ol.ObjectEvent.html#key">key</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -7855,6 +7859,8 @@
             
                 <li data-name="ol.View2D#getResolution"><a href="ol.View2D.html#getResolution">getResolution</a></li>
             
+                <li data-name="ol.View2D#getResolutionForExtent"><a href="ol.View2D.html#getResolutionForExtent">getResolutionForExtent</a></li>
+            
                 <li data-name="ol.View2D#getRotation"><a href="ol.View2D.html#getRotation">getRotation</a></li>
             
                 <li data-name="ol.View2D#getView2D"><a href="ol.View2D.html#getView2D">getView2D</a></li>
@@ -8881,7 +8887,7 @@ the <code>ol.View2D#constrainResolution</code> method.</p></td>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line246">line 246</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line247">line 247</a>
         </div>
         
         
@@ -9230,7 +9236,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line520">line 520</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line523">line 523</a>
         </div>
         
         
@@ -10022,7 +10028,7 @@ Constrained rotation.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line431">line 431</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line434">line 434</a>
         </div>
         
         
@@ -10171,7 +10177,7 @@ Constrained rotation.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line453">line 453</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line456">line 456</a>
         </div>
         
         
@@ -10512,7 +10518,7 @@ top, right, bottom and left padding. Default is <code>[0, 0, 0, 0]</code>.</p></
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line303">line 303</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line304">line 304</a>
         </div>
         
         
@@ -10729,7 +10735,7 @@ The center of the view.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line331">line 331</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line332">line 332</a>
         </div>
         
         
@@ -10899,7 +10905,7 @@ The projection of the view.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line363">line 363</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line364">line 364</a>
         </div>
         
         
@@ -11057,6 +11063,165 @@ The resolution of the view.
 <dt>
     <div class="nameContainer">
         
+        <h4 class="name" id="getResolutionForExtent">
+            getResolutionForExtent<span class="signature">(extent, size)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line297">line 297</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get the resolution for a provided extent (in map units) and size (in pixels).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Extent.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Size">ol.Size</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Box pixel size.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The resolution at which the provided extent will render at
+    the given size.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
         <h4 class="name" id="getRotation">
             getRotation<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number|undefined}</span>
             
@@ -11067,7 +11232,7 @@ The resolution of the view.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line331">line 331</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line334">line 334</a>
         </div>
         
         
@@ -11149,7 +11314,7 @@ The rotation of the view.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line369">line 369</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line372">line 372</a>
         </div>
         
         
@@ -11231,7 +11396,7 @@ View2D.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line405">line 405</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line408">line 408</a>
         </div>
         
         
@@ -11320,7 +11485,7 @@ Zoom.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line383">line 383</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line384">line 384</a>
         </div>
         
         
@@ -11856,7 +12021,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line555">line 555</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line558">line 558</a>
         </div>
         
         
@@ -12019,7 +12184,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line414">line 414</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line415">line 415</a>
         </div>
         
         
@@ -12168,7 +12333,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line570">line 570</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line573">line 573</a>
         </div>
         
         
@@ -12302,7 +12467,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line586">line 586</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line589">line 589</a>
         </div>
         
         
@@ -12437,7 +12602,7 @@ Warning! This code is not yet implemented. Function should not be used.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line601">line 601</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line604">line 604</a>
         </div>
         
         
@@ -12571,7 +12736,7 @@ Warning! This code is not yet implemented. Function should not be used.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line616">line 616</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line619">line 619</a>
         </div>
         
         
@@ -12707,7 +12872,7 @@ Warning! This code is not yet implemented. Function should not be used.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line443">line 443</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line444">line 444</a>
         </div>
         
         
@@ -12831,7 +12996,7 @@ Warning! This code is not yet implemented. Function should not be used.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line630">line 630</a>
+            <a href="view2d.js.html">src/ol/view2d.js</a>, <a href="view2d.js.html#line633">line 633</a>
         </div>
         
         
@@ -13153,7 +13318,7 @@ Warning! This code is not yet implemented. Function should not be used.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line457">line 457</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line458">line 458</a>
         </div>
         
         
@@ -13280,7 +13445,7 @@ Warning! This code is not yet implemented. Function should not be used.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line481">line 481</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line482">line 482</a>
         </div>
         
         
@@ -13483,7 +13648,7 @@ Warning! This code is not yet implemented. Function should not be used.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed May 28 2014 13:46:18 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Mon Jun 02 2014 11:33:28 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

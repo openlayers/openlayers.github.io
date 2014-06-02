@@ -2363,6 +2363,8 @@
             
                 <li data-name="ol.format.GML#readFeatures"><a href="ol.format.GML.html#readFeatures">readFeatures</a></li>
             
+                <li data-name="ol.format.GML#writeFeatures"><a href="ol.format.GML.html#writeFeatures">writeFeatures</a></li>
+            
             </ul>
             <ul class="fires itemMembers">
             
@@ -2379,10 +2381,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.format.GPX#readProjection"><a href="ol.format.GPX.html#readProjection">readProjection</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -2394,6 +2392,8 @@
                 <li data-name="ol.format.GPX#readFeature"><a href="ol.format.GPX.html#readFeature">readFeature</a></li>
             
                 <li data-name="ol.format.GPX#readFeatures"><a href="ol.format.GPX.html#readFeatures">readFeatures</a></li>
+            
+                <li data-name="ol.format.GPX#readProjection"><a href="ol.format.GPX.html#readProjection">readProjection</a></li>
             
                 <li data-name="ol.format.GPX#writeFeatures"><a href="ol.format.GPX.html#writeFeatures">writeFeatures</a></li>
             
@@ -5341,6 +5341,10 @@
             </span>
             <ul class="members itemMembers">
             
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.ObjectEvent#key"><a href="ol.ObjectEvent.html#key">key</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -7855,6 +7859,8 @@
             
                 <li data-name="ol.View2D#getResolution"><a href="ol.View2D.html#getResolution">getResolution</a></li>
             
+                <li data-name="ol.View2D#getResolutionForExtent"><a href="ol.View2D.html#getResolutionForExtent">getResolutionForExtent</a></li>
+            
                 <li data-name="ol.View2D#getRotation"><a href="ol.View2D.html#getRotation">getRotation</a></li>
             
                 <li data-name="ol.View2D#getView2D"><a href="ol.View2D.html#getView2D">getView2D</a></li>
@@ -8038,10 +8044,32 @@ ol.style.Icon = function(opt_options) {
       goog.isDef(options.crossOrigin) ? options.crossOrigin : null;
 
   /**
+   * @type {Image}
+   */
+  var image = goog.isDef(options.img) ? options.img : null;
+
+  /**
+   * @type {string|undefined}
+   */
+  var src = options.src;
+
+  if ((!goog.isDef(src) || src.length === 0) &amp;&amp; !goog.isNull(image)) {
+    src = image.src;
+  }
+  goog.asserts.assert(goog.isDef(src) &amp;&amp; src.length > 0);
+
+  /**
+   * @type {ol.style.ImageState}
+   */
+  var imageState = goog.isDef(options.src) ?
+      ol.style.ImageState.IDLE : ol.style.ImageState.LOADED;
+
+  /**
    * @private
    * @type {ol.style.IconImage_}
    */
-  this.iconImage_ = ol.style.IconImage_.get(options.src, crossOrigin);
+  this.iconImage_ = ol.style.IconImage_.get(
+      image, src, crossOrigin, imageState);
 
   /**
    * @private
@@ -8212,12 +8240,14 @@ ol.style.Icon.prototype.unlistenImageChange = function(listener, thisArg) {
 
 /**
  * @constructor
- * @param {string} src Src.
+ * @param {Image} image Image.
+ * @param {string|undefined} src Src.
  * @param {?string} crossOrigin Cross origin.
+ * @param {ol.style.ImageState} imageState Image state.
  * @extends {goog.events.EventTarget}
  * @private
  */
-ol.style.IconImage_ = function(src, crossOrigin) {
+ol.style.IconImage_ = function(image, src, crossOrigin, imageState) {
 
   goog.base(this);
 
@@ -8231,7 +8261,7 @@ ol.style.IconImage_ = function(src, crossOrigin) {
    * @private
    * @type {Image}
    */
-  this.image_ = new Image();
+  this.image_ = goog.isNull(image) ? new Image() : image;
 
   if (!goog.isNull(crossOrigin)) {
     this.image_.crossOrigin = crossOrigin;
@@ -8247,7 +8277,7 @@ ol.style.IconImage_ = function(src, crossOrigin) {
    * @private
    * @type {ol.style.ImageState}
    */
-  this.imageState_ = ol.style.ImageState.IDLE;
+  this.imageState_ = imageState;
 
   /**
    * @private
@@ -8257,7 +8287,7 @@ ol.style.IconImage_ = function(src, crossOrigin) {
 
   /**
    * @private
-   * @type {string}
+   * @type {string|undefined}
    */
   this.src_ = src;
 
@@ -8272,15 +8302,17 @@ goog.inherits(ol.style.IconImage_, goog.events.EventTarget);
 
 
 /**
+ * @param {Image} image Image.
  * @param {string} src Src.
  * @param {?string} crossOrigin Cross origin.
+ * @param {ol.style.ImageState} imageState Image state.
  * @return {ol.style.IconImage_} Icon image.
  */
-ol.style.IconImage_.get = function(src, crossOrigin) {
+ol.style.IconImage_.get = function(image, src, crossOrigin, imageState) {
   var iconImageCache = ol.style.IconImageCache.getInstance();
   var iconImage = iconImageCache.get(src, crossOrigin);
   if (goog.isNull(iconImage)) {
-    iconImage = new ol.style.IconImage_(src, crossOrigin);
+    iconImage = new ol.style.IconImage_(image, src, crossOrigin, imageState);
     iconImageCache.set(src, crossOrigin, iconImage);
   }
   return iconImage;
@@ -8515,7 +8547,7 @@ ol.style.IconImageCache.prototype.set = function(src, crossOrigin, iconImage) {
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed May 28 2014 13:46:06 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Mon Jun 02 2014 11:33:15 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
