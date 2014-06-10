@@ -12,6 +12,9 @@ goog.require('ol.style.Stroke');
 
 
 /**
+ * @classdesc
+ * Set circle style for vector features.
+ *
  * @constructor
  * @param {olx.style.CircleOptions=} opt_options Options.
  * @extends {ol.style.Image}
@@ -39,6 +42,12 @@ ol.style.Circle = function(opt_options) {
    * @type {ol.style.Fill}
    */
   this.fill_ = goog.isDef(options.fill) ? options.fill : null;
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.origin_ = [0, 0];
 
   /**
    * @private
@@ -74,7 +83,6 @@ ol.style.Circle = function(opt_options) {
 
   goog.base(this, {
     opacity: 1,
-    origin: [0, 0],
     rotateWithView: false,
     rotation: 0,
     scale: 1,
@@ -125,6 +133,15 @@ ol.style.Circle.prototype.getImage = function(pixelRatio) {
  */
 ol.style.Circle.prototype.getImageState = function() {
   return ol.style.ImageState.LOADED;
+};
+
+
+/**
+ * @inheritDoc
+ * @todo api
+ */
+ol.style.Circle.prototype.getOrigin = function() {
+  return this.origin_;
 };
 
 

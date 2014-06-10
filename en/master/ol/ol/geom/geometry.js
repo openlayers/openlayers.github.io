@@ -44,6 +44,9 @@ ol.geom.GeometryLayout = {
 
 
 /**
+ * @classdesc
+ * Abstract base class for vector geometries.
+ *
  * @constructor
  * @extends {ol.Observable}
  * @fires change Triggered when the geometry changes.
@@ -196,7 +199,7 @@ ol.geom.RawPoint;
 
 
 /**
- * Array representation of a linsetring.
+ * Array representation of a linestring.
  * @typedef {Array.<ol.Coordinate>}
  * @todo api
  */

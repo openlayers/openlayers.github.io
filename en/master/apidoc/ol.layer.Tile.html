@@ -68,7 +68,7 @@
             
                 <li data-name="ol.PreRenderFunction"><a href="ol.html#PreRenderFunction">PreRenderFunction</a></li>
             
-                <li data-name="ol.RendererHint"><a href="ol.html#RendererHint">RendererHint</a></li>
+                <li data-name="ol.RendererType"><a href="ol.html#RendererType">RendererType</a></li>
             
                 <li data-name="ol.Size"><a href="ol.html#Size">Size</a></li>
             
@@ -1225,8 +1225,6 @@
             
                 <li data-name="ol.Collection#getArray"><a href="ol.Collection.html#getArray">getArray</a></li>
             
-                <li data-name="ol.Collection#getAt"><a href="ol.Collection.html#getAt">getAt</a></li>
-            
                 <li data-name="ol.Collection#getKeys"><a href="ol.Collection.html#getKeys">getKeys</a></li>
             
                 <li data-name="ol.Collection#getLength"><a href="ol.Collection.html#getLength">getLength</a></li>
@@ -1234,6 +1232,8 @@
                 <li data-name="ol.Collection#getProperties"><a href="ol.Collection.html#getProperties">getProperties</a></li>
             
                 <li data-name="ol.Collection#insertAt"><a href="ol.Collection.html#insertAt">insertAt</a></li>
+            
+                <li data-name="ol.Collection#item"><a href="ol.Collection.html#item">item</a></li>
             
                 <li data-name="ol.Collection#notify"><a href="ol.Collection.html#notify">notify</a></li>
             
@@ -5207,6 +5207,10 @@
             
                 <li data-name="ol.MapBrowserEvent#coordinate"><a href="ol.MapBrowserEvent.html#coordinate">coordinate</a></li>
             
+                <li data-name="ol.MapBrowserEvent#frameState"><a href="ol.MapBrowserEvent.html#frameState">frameState</a></li>
+            
+                <li data-name="ol.MapBrowserEvent#map"><a href="ol.MapBrowserEvent.html#map">map</a></li>
+            
                 <li data-name="ol.MapBrowserEvent#originalEvent"><a href="ol.MapBrowserEvent.html#originalEvent">originalEvent</a></li>
             
                 <li data-name="ol.MapBrowserEvent#pixel"><a href="ol.MapBrowserEvent.html#pixel">pixel</a></li>
@@ -5254,6 +5258,12 @@
                 
             </span>
             <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.MapEvent#frameState"><a href="ol.MapEvent.html#frameState">frameState</a></li>
+            
+                <li data-name="ol.MapEvent#map"><a href="ol.MapEvent.html#map">map</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -5797,9 +5807,17 @@
             
                 <li data-name="ol.source.BingMaps#getTileGrid"><a href="ol.source.BingMaps.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.BingMaps#getTileLoadFunction"><a href="ol.source.BingMaps.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.BingMaps#getTileUrlFunction"><a href="ol.source.BingMaps.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.BingMaps#on"><a href="ol.source.BingMaps.html#on">on</a></li>
             
                 <li data-name="ol.source.BingMaps#once"><a href="ol.source.BingMaps.html#once">once</a></li>
+            
+                <li data-name="ol.source.BingMaps#setTileLoadFunction"><a href="ol.source.BingMaps.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.BingMaps#setTileUrlFunction"><a href="ol.source.BingMaps.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.BingMaps#un"><a href="ol.source.BingMaps.html#un">un</a></li>
             
@@ -5846,6 +5864,8 @@
                 <li data-name="ol.source.FormatVector#getClosestFeatureToCoordinate"><a href="ol.source.FormatVector.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.FormatVector#getExtent"><a href="ol.source.FormatVector.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.FormatVector#getFeatureById"><a href="ol.source.FormatVector.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.FormatVector#getFeatures"><a href="ol.source.FormatVector.html#getFeatures">getFeatures</a></li>
             
@@ -5911,6 +5931,8 @@
             
                 <li data-name="ol.source.GeoJSON#getExtent"><a href="ol.source.GeoJSON.html#getExtent">getExtent</a></li>
             
+                <li data-name="ol.source.GeoJSON#getFeatureById"><a href="ol.source.GeoJSON.html#getFeatureById">getFeatureById</a></li>
+            
                 <li data-name="ol.source.GeoJSON#getFeatures"><a href="ol.source.GeoJSON.html#getFeatures">getFeatures</a></li>
             
                 <li data-name="ol.source.GeoJSON#getFeaturesAtCoordinate"><a href="ol.source.GeoJSON.html#getFeaturesAtCoordinate">getFeaturesAtCoordinate</a></li>
@@ -5975,6 +5997,8 @@
             
                 <li data-name="ol.source.GPX#getExtent"><a href="ol.source.GPX.html#getExtent">getExtent</a></li>
             
+                <li data-name="ol.source.GPX#getFeatureById"><a href="ol.source.GPX.html#getFeatureById">getFeatureById</a></li>
+            
                 <li data-name="ol.source.GPX#getFeatures"><a href="ol.source.GPX.html#getFeatures">getFeatures</a></li>
             
                 <li data-name="ol.source.GPX#getFeaturesAtCoordinate"><a href="ol.source.GPX.html#getFeaturesAtCoordinate">getFeaturesAtCoordinate</a></li>
@@ -6038,6 +6062,8 @@
                 <li data-name="ol.source.IGC#getClosestFeatureToCoordinate"><a href="ol.source.IGC.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.IGC#getExtent"><a href="ol.source.IGC.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.IGC#getFeatureById"><a href="ol.source.IGC.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.IGC#getFeatures"><a href="ol.source.IGC.html#getFeatures">getFeatures</a></li>
             
@@ -6315,6 +6341,8 @@
             
                 <li data-name="ol.source.KML#getExtent"><a href="ol.source.KML.html#getExtent">getExtent</a></li>
             
+                <li data-name="ol.source.KML#getFeatureById"><a href="ol.source.KML.html#getFeatureById">getFeatureById</a></li>
+            
                 <li data-name="ol.source.KML#getFeatures"><a href="ol.source.KML.html#getFeatures">getFeatures</a></li>
             
                 <li data-name="ol.source.KML#getFeaturesAtCoordinate"><a href="ol.source.KML.html#getFeaturesAtCoordinate">getFeaturesAtCoordinate</a></li>
@@ -6411,9 +6439,17 @@
             
                 <li data-name="ol.source.MapQuest#getTileGrid"><a href="ol.source.MapQuest.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.MapQuest#getTileLoadFunction"><a href="ol.source.MapQuest.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.MapQuest#getTileUrlFunction"><a href="ol.source.MapQuest.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.MapQuest#on"><a href="ol.source.MapQuest.html#on">on</a></li>
             
                 <li data-name="ol.source.MapQuest#once"><a href="ol.source.MapQuest.html#once">once</a></li>
+            
+                <li data-name="ol.source.MapQuest#setTileLoadFunction"><a href="ol.source.MapQuest.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.MapQuest#setTileUrlFunction"><a href="ol.source.MapQuest.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.MapQuest#setUrl"><a href="ol.source.MapQuest.html#setUrl">setUrl</a></li>
             
@@ -6461,9 +6497,17 @@
             
                 <li data-name="ol.source.OSM#getTileGrid"><a href="ol.source.OSM.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.OSM#getTileLoadFunction"><a href="ol.source.OSM.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.OSM#getTileUrlFunction"><a href="ol.source.OSM.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.OSM#on"><a href="ol.source.OSM.html#on">on</a></li>
             
                 <li data-name="ol.source.OSM#once"><a href="ol.source.OSM.html#once">once</a></li>
+            
+                <li data-name="ol.source.OSM#setTileLoadFunction"><a href="ol.source.OSM.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.OSM#setTileUrlFunction"><a href="ol.source.OSM.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.OSM#setUrl"><a href="ol.source.OSM.html#setUrl">setUrl</a></li>
             
@@ -6512,6 +6556,8 @@
                 <li data-name="ol.source.OSMXML#getClosestFeatureToCoordinate"><a href="ol.source.OSMXML.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.OSMXML#getExtent"><a href="ol.source.OSMXML.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.OSMXML#getFeatureById"><a href="ol.source.OSMXML.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.OSMXML#getFeatures"><a href="ol.source.OSMXML.html#getFeatures">getFeatures</a></li>
             
@@ -6576,6 +6622,8 @@
                 <li data-name="ol.source.ServerVector#getClosestFeatureToCoordinate"><a href="ol.source.ServerVector.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.ServerVector#getExtent"><a href="ol.source.ServerVector.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.ServerVector#getFeatureById"><a href="ol.source.ServerVector.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.ServerVector#getFeatures"><a href="ol.source.ServerVector.html#getFeatures">getFeatures</a></li>
             
@@ -6673,9 +6721,17 @@
             
                 <li data-name="ol.source.Stamen#getTileGrid"><a href="ol.source.Stamen.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.Stamen#getTileLoadFunction"><a href="ol.source.Stamen.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.Stamen#getTileUrlFunction"><a href="ol.source.Stamen.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.Stamen#on"><a href="ol.source.Stamen.html#on">on</a></li>
             
                 <li data-name="ol.source.Stamen#once"><a href="ol.source.Stamen.html#once">once</a></li>
+            
+                <li data-name="ol.source.Stamen#setTileLoadFunction"><a href="ol.source.Stamen.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.Stamen#setTileUrlFunction"><a href="ol.source.Stamen.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.Stamen#setUrl"><a href="ol.source.Stamen.html#setUrl">setUrl</a></li>
             
@@ -6724,6 +6780,8 @@
                 <li data-name="ol.source.StaticVector#getClosestFeatureToCoordinate"><a href="ol.source.StaticVector.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.StaticVector#getExtent"><a href="ol.source.StaticVector.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.StaticVector#getFeatureById"><a href="ol.source.StaticVector.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.StaticVector#getFeatures"><a href="ol.source.StaticVector.html#getFeatures">getFeatures</a></li>
             
@@ -6865,9 +6923,17 @@
             
                 <li data-name="ol.source.TileImage#getTileGrid"><a href="ol.source.TileImage.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.TileImage#getTileLoadFunction"><a href="ol.source.TileImage.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.TileImage#getTileUrlFunction"><a href="ol.source.TileImage.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.TileImage#on"><a href="ol.source.TileImage.html#on">on</a></li>
             
                 <li data-name="ol.source.TileImage#once"><a href="ol.source.TileImage.html#once">once</a></li>
+            
+                <li data-name="ol.source.TileImage#setTileLoadFunction"><a href="ol.source.TileImage.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.TileImage#setTileUrlFunction"><a href="ol.source.TileImage.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.TileImage#un"><a href="ol.source.TileImage.html#un">un</a></li>
             
@@ -6907,9 +6973,17 @@
             
                 <li data-name="ol.source.TileJSON#getTileGrid"><a href="ol.source.TileJSON.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.TileJSON#getTileLoadFunction"><a href="ol.source.TileJSON.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.TileJSON#getTileUrlFunction"><a href="ol.source.TileJSON.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.TileJSON#on"><a href="ol.source.TileJSON.html#on">on</a></li>
             
                 <li data-name="ol.source.TileJSON#once"><a href="ol.source.TileJSON.html#once">once</a></li>
+            
+                <li data-name="ol.source.TileJSON#setTileLoadFunction"><a href="ol.source.TileJSON.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.TileJSON#setTileUrlFunction"><a href="ol.source.TileJSON.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.TileJSON#un"><a href="ol.source.TileJSON.html#un">un</a></li>
             
@@ -6956,6 +7030,8 @@
                 <li data-name="ol.source.TileVector#getClosestFeatureToCoordinate"><a href="ol.source.TileVector.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.TileVector#getExtent"><a href="ol.source.TileVector.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.TileVector#getFeatureById"><a href="ol.source.TileVector.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.TileVector#getFeatures"><a href="ol.source.TileVector.html#getFeatures">getFeatures</a></li>
             
@@ -7017,11 +7093,19 @@
             
                 <li data-name="ol.source.TileWMS#getTileGrid"><a href="ol.source.TileWMS.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.TileWMS#getTileLoadFunction"><a href="ol.source.TileWMS.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.TileWMS#getTileUrlFunction"><a href="ol.source.TileWMS.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.TileWMS#getUrls"><a href="ol.source.TileWMS.html#getUrls">getUrls</a></li>
             
                 <li data-name="ol.source.TileWMS#on"><a href="ol.source.TileWMS.html#on">on</a></li>
             
                 <li data-name="ol.source.TileWMS#once"><a href="ol.source.TileWMS.html#once">once</a></li>
+            
+                <li data-name="ol.source.TileWMS#setTileLoadFunction"><a href="ol.source.TileWMS.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.TileWMS#setTileUrlFunction"><a href="ol.source.TileWMS.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.TileWMS#un"><a href="ol.source.TileWMS.html#un">un</a></li>
             
@@ -7070,6 +7154,8 @@
                 <li data-name="ol.source.TopoJSON#getClosestFeatureToCoordinate"><a href="ol.source.TopoJSON.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.TopoJSON#getExtent"><a href="ol.source.TopoJSON.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.TopoJSON#getFeatureById"><a href="ol.source.TopoJSON.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.TopoJSON#getFeatures"><a href="ol.source.TopoJSON.html#getFeatures">getFeatures</a></li>
             
@@ -7134,6 +7220,8 @@
                 <li data-name="ol.source.Vector#getClosestFeatureToCoordinate"><a href="ol.source.Vector.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a></li>
             
                 <li data-name="ol.source.Vector#getExtent"><a href="ol.source.Vector.html#getExtent">getExtent</a></li>
+            
+                <li data-name="ol.source.Vector#getFeatureById"><a href="ol.source.Vector.html#getFeatureById">getFeatureById</a></li>
             
                 <li data-name="ol.source.Vector#getFeatures"><a href="ol.source.Vector.html#getFeatures">getFeatures</a></li>
             
@@ -7225,9 +7313,17 @@
             
                 <li data-name="ol.source.WMTS#getTileGrid"><a href="ol.source.WMTS.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.WMTS#getTileLoadFunction"><a href="ol.source.WMTS.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.WMTS#getTileUrlFunction"><a href="ol.source.WMTS.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.WMTS#on"><a href="ol.source.WMTS.html#on">on</a></li>
             
                 <li data-name="ol.source.WMTS#once"><a href="ol.source.WMTS.html#once">once</a></li>
+            
+                <li data-name="ol.source.WMTS#setTileLoadFunction"><a href="ol.source.WMTS.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.WMTS#setTileUrlFunction"><a href="ol.source.WMTS.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.WMTS#un"><a href="ol.source.WMTS.html#un">un</a></li>
             
@@ -7269,9 +7365,17 @@
             
                 <li data-name="ol.source.XYZ#getTileGrid"><a href="ol.source.XYZ.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.XYZ#getTileLoadFunction"><a href="ol.source.XYZ.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.XYZ#getTileUrlFunction"><a href="ol.source.XYZ.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.XYZ#on"><a href="ol.source.XYZ.html#on">on</a></li>
             
                 <li data-name="ol.source.XYZ#once"><a href="ol.source.XYZ.html#once">once</a></li>
+            
+                <li data-name="ol.source.XYZ#setTileLoadFunction"><a href="ol.source.XYZ.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.XYZ#setTileUrlFunction"><a href="ol.source.XYZ.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.XYZ#setUrl"><a href="ol.source.XYZ.html#setUrl">setUrl</a></li>
             
@@ -7313,9 +7417,17 @@
             
                 <li data-name="ol.source.Zoomify#getTileGrid"><a href="ol.source.Zoomify.html#getTileGrid">getTileGrid</a></li>
             
+                <li data-name="ol.source.Zoomify#getTileLoadFunction"><a href="ol.source.Zoomify.html#getTileLoadFunction">getTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.Zoomify#getTileUrlFunction"><a href="ol.source.Zoomify.html#getTileUrlFunction">getTileUrlFunction</a></li>
+            
                 <li data-name="ol.source.Zoomify#on"><a href="ol.source.Zoomify.html#on">on</a></li>
             
                 <li data-name="ol.source.Zoomify#once"><a href="ol.source.Zoomify.html#once">once</a></li>
+            
+                <li data-name="ol.source.Zoomify#setTileLoadFunction"><a href="ol.source.Zoomify.html#setTileLoadFunction">setTileLoadFunction</a></li>
+            
+                <li data-name="ol.source.Zoomify#setTileUrlFunction"><a href="ol.source.Zoomify.html#setTileUrlFunction">setTileUrlFunction</a></li>
             
                 <li data-name="ol.source.Zoomify#un"><a href="ol.source.Zoomify.html#un">un</a></li>
             
@@ -7354,6 +7466,8 @@
                 <li data-name="ol.style.Circle#getFill"><a href="ol.style.Circle.html#getFill">getFill</a></li>
             
                 <li data-name="ol.style.Circle#getImage"><a href="ol.style.Circle.html#getImage">getImage</a></li>
+            
+                <li data-name="ol.style.Circle#getOrigin"><a href="ol.style.Circle.html#getOrigin">getOrigin</a></li>
             
                 <li data-name="ol.style.Circle#getRadius"><a href="ol.style.Circle.html#getRadius">getRadius</a></li>
             
@@ -7418,6 +7532,8 @@
                 <li data-name="ol.style.Icon#getAnchor"><a href="ol.style.Icon.html#getAnchor">getAnchor</a></li>
             
                 <li data-name="ol.style.Icon#getImage"><a href="ol.style.Icon.html#getImage">getImage</a></li>
+            
+                <li data-name="ol.style.Icon#getOrigin"><a href="ol.style.Icon.html#getOrigin">getOrigin</a></li>
             
                 <li data-name="ol.style.Icon#getRotation"><a href="ol.style.Icon.html#getRotation">getRotation</a></li>
             
@@ -7963,6 +8079,9 @@
         <span class="ancestors"><a href="ol.html">ol</a><a href="ol.layer.html">.layer</a>.</span>Tile
     </h2>
     
+        <div class="class-description"><p>For layer sources that provide pre-rendered, tiled images in grids that are
+organized by zoom levels for specific resolutions.</p></div>
+    
 </header>  
 
 <article>
@@ -7984,7 +8103,7 @@
         </h4>
         
         <div class="tag-source">
-            <a href="tilelayer.js.html">src/ol/layer/tilelayer.js</a>, <a href="tilelayer.js.html#line23">line 23</a>
+            <a href="tilelayer.js.html">src/ol/layer/tilelayer.js</a>, <a href="tilelayer.js.html#line27">line 27</a>
         </div>
         
         
@@ -8918,7 +9037,7 @@
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line247">line 247</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line257">line 257</a>
         </div>
         
         
@@ -9135,7 +9254,7 @@ from the target with the following:</p>
         </h4>
         
         <div class="tag-source">
-            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line38">line 38</a>
+            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line41">line 41</a>
         </div>
         
         
@@ -9227,7 +9346,7 @@ from the target with the following:</p>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line304">line 304</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line314">line 314</a>
         </div>
         
         
@@ -9362,7 +9481,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line84">line 84</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line86">line 86</a>
         </div>
         
         
@@ -9446,7 +9565,7 @@ The brightness of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line99">line 99</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line101">line 101</a>
         </div>
         
         
@@ -9530,7 +9649,7 @@ The contrast of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line114">line 114</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line116">line 116</a>
         </div>
         
         
@@ -9614,7 +9733,7 @@ The hue of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line332">line 332</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line342">line 342</a>
         </div>
         
         
@@ -9702,7 +9821,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line172">line 172</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line174">line 174</a>
         </div>
         
         
@@ -9786,7 +9905,7 @@ The maximum resolution of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line187">line 187</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line189">line 189</a>
         </div>
         
         
@@ -9870,7 +9989,7 @@ The minimum resolution of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line202">line 202</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line204">line 204</a>
         </div>
         
         
@@ -9954,7 +10073,7 @@ The opacity of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line364">line 364</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line374">line 374</a>
         </div>
         
         
@@ -10042,7 +10161,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line217">line 217</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line219">line 219</a>
         </div>
         
         
@@ -10126,7 +10245,7 @@ The saturation of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="layer.js.html">src/ol/layer/layer.js</a>, <a href="layer.js.html#line78">line 78</a>
+            <a href="layer.js.html">src/ol/layer/layer.js</a>, <a href="layer.js.html#line83">line 83</a>
         </div>
         
         
@@ -10210,7 +10329,7 @@ Source.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line238">line 238</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line240">line 240</a>
         </div>
         
         
@@ -10294,7 +10413,7 @@ The visiblity of the layer.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line384">line 384</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line394">line 394</a>
         </div>
         
         
@@ -10422,7 +10541,7 @@ that it is bound to.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line60">line 60</a>
+            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line63">line 63</a>
         </div>
         
         
@@ -10627,7 +10746,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line73">line 73</a>
+            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line76">line 76</a>
         </div>
         
         
@@ -10832,7 +10951,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line415">line 415</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line425">line 425</a>
         </div>
         
         
@@ -10983,7 +11102,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line270">line 270</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line272">line 272</a>
         </div>
         
         
@@ -11130,7 +11249,7 @@ render 0 black, 1 unchanged, and all other values as a linear multiplier.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line288">line 288</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line290">line 290</a>
         </div>
         
         
@@ -11268,7 +11387,7 @@ linear multipliers on the effect (and values over 1 are permitted).</p>
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line304">line 304</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line306">line 306</a>
         </div>
         
         
@@ -11405,7 +11524,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line318">line 318</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line320">line 320</a>
         </div>
         
         
@@ -11537,7 +11656,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line332">line 332</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line334">line 334</a>
         </div>
         
         
@@ -11669,7 +11788,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line346">line 346</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line348">line 348</a>
         </div>
         
         
@@ -11801,7 +11920,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line365">line 365</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line367">line 367</a>
         </div>
         
         
@@ -11940,7 +12059,7 @@ permitted).</p>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line444">line 444</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line454">line 454</a>
         </div>
         
         
@@ -12066,7 +12185,7 @@ permitted).</p>
         </h4>
         
         <div class="tag-source">
-            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line379">line 379</a>
+            <a href="layerbase.js.html">src/ol/layer/layerbase.js</a>, <a href="layerbase.js.html#line381">line 381</a>
         </div>
         
         
@@ -12198,7 +12317,7 @@ permitted).</p>
         </h4>
         
         <div class="tag-source">
-            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line85">line 85</a>
+            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line88">line 88</a>
         </div>
         
         
@@ -12394,7 +12513,7 @@ permitted).</p>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line458">line 458</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line468">line 468</a>
         </div>
         
         
@@ -12521,7 +12640,7 @@ permitted).</p>
         </h4>
         
         <div class="tag-source">
-            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line482">line 482</a>
+            <a href="object.js.html">src/ol/object.js</a>, <a href="object.js.html#line492">line 492</a>
         </div>
         
         
@@ -12600,7 +12719,7 @@ permitted).</p>
         </h4>
         
         <div class="tag-source">
-            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line95">line 95</a>
+            <a href="observable.js.html">src/ol/observable.js</a>, <a href="observable.js.html#line98">line 98</a>
         </div>
         
         
@@ -12724,7 +12843,7 @@ permitted).</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Mon Jun 02 2014 11:33:23 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Tue Jun 10 2014 09:16:41 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

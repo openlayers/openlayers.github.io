@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Source: src/ol/format/geojsonformat.js</title>
+    <title>OpenLayers 3 API Documentation - Source: src/ol/renderer/maprenderer.js</title>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <script src="scripts/jquery.min.js"> </script>
@@ -8067,527 +8067,264 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="geojsonformat.js.html">Source: src/ol/format/geojsonformat.js</h1>
+        <h1 class="page-title" data-filename="maprenderer.js.html">Source: src/ol/renderer/maprenderer.js</h1>
         
 
 
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>// FIXME coordinate order
-// FIXME reprojection
+            <pre class="prettyprint source"><code>goog.provide('ol.RendererType');
+goog.provide('ol.renderer.Map');
 
-goog.provide('ol.format.GeoJSON');
-
-goog.require('goog.array');
+goog.require('goog.Disposable');
 goog.require('goog.asserts');
+goog.require('goog.dispose');
 goog.require('goog.object');
-goog.require('ol.Feature');
-goog.require('ol.format.JSONFeature');
-goog.require('ol.geom.GeometryCollection');
-goog.require('ol.geom.GeometryType');
-goog.require('ol.geom.LineString');
-goog.require('ol.geom.MultiLineString');
-goog.require('ol.geom.MultiPoint');
-goog.require('ol.geom.MultiPolygon');
-goog.require('ol.geom.Point');
-goog.require('ol.geom.Polygon');
-goog.require('ol.proj');
+goog.require('goog.vec.Mat4');
+goog.require('ol.layer.Layer');
+goog.require('ol.renderer.Layer');
+goog.require('ol.style.IconImageCache');
+goog.require('ol.vec.Mat4');
+
+
+/**
+ * Available renderers: `'canvas'`, `'dom'` or `'webgl'`.
+ * @enum {string}
+ * @todo api
+ */
+ol.RendererType = {
+  CANVAS: 'canvas',
+  DOM: 'dom',
+  WEBGL: 'webgl'
+};
 
 
 
 /**
- * @classdesc
- * Feature format for reading and writing data in the GeoJSON format.
- *
  * @constructor
- * @extends {ol.format.JSONFeature}
- * @param {olx.format.GeoJSONOptions=} opt_options Options.
- * @todo api
+ * @extends {goog.Disposable}
+ * @param {Element} container Container.
+ * @param {ol.Map} map Map.
+ * @suppress {checkStructDictInheritance}
+ * @struct
  */
-ol.format.GeoJSON = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
+ol.renderer.Map = function(container, map) {
 
   goog.base(this);
 
   /**
    * @private
-   * @type {ol.proj.Projection}
+   * @type {ol.Map}
    */
-  this.defaultProjection_ = ol.proj.get(options.defaultProjection ?
-      options.defaultProjection : 'EPSG:4326');
-
+  this.map_ = map;
 
   /**
-   * Name of the geometry attribute for features.
-   * @type {string|undefined}
    * @private
+   * @type {Object.&lt;string, ol.renderer.Layer>}
    */
-  this.geometryName_ = options.geometryName;
+  this.layerRenderers_ = {};
 
 };
-goog.inherits(ol.format.GeoJSON, ol.format.JSONFeature);
+goog.inherits(ol.renderer.Map, goog.Disposable);
 
 
 /**
- * @const
- * @type {Array.&lt;string>}
- * @private
+ * @param {olx.FrameState} frameState FrameState.
+ * @protected
  */
-ol.format.GeoJSON.EXTENSIONS_ = ['.geojson'];
-
-
-/**
- * @param {GeoJSONObject} object Object.
- * @private
- * @return {ol.geom.Geometry} Geometry.
- */
-ol.format.GeoJSON.readGeometry_ = function(object) {
-  if (goog.isNull(object)) {
-    return null;
-  }
-  var geometryReader = ol.format.GeoJSON.GEOMETRY_READERS_[object.type];
-  goog.asserts.assert(goog.isDef(geometryReader));
-  return geometryReader(object);
+ol.renderer.Map.prototype.calculateMatrices2D = function(frameState) {
+  var view2DState = frameState.view2DState;
+  var coordinateToPixelMatrix = frameState.coordinateToPixelMatrix;
+  goog.asserts.assert(!goog.isNull(coordinateToPixelMatrix));
+  ol.vec.Mat4.makeTransform2D(coordinateToPixelMatrix,
+      frameState.size[0] / 2, frameState.size[1] / 2,
+      1 / view2DState.resolution, -1 / view2DState.resolution,
+      -view2DState.rotation,
+      -view2DState.center[0], -view2DState.center[1]);
+  var inverted = goog.vec.Mat4.invert(
+      coordinateToPixelMatrix, frameState.pixelToCoordinateMatrix);
+  goog.asserts.assert(inverted);
 };
 
 
 /**
- * @param {GeoJSONGeometryCollection} object Object.
- * @private
- * @return {ol.geom.GeometryCollection} Geometry collection.
+ * @param {ol.layer.Layer} layer Layer.
+ * @protected
+ * @return {ol.renderer.Layer} layerRenderer Layer renderer.
  */
-ol.format.GeoJSON.readGeometryCollectionGeometry_ = function(object) {
-  goog.asserts.assert(object.type == 'GeometryCollection');
-  var geometries = goog.array.map(
-      object.geometries, ol.format.GeoJSON.readGeometry_);
-  return new ol.geom.GeometryCollection(geometries);
-};
-
-
-/**
- * @param {GeoJSONGeometry} object Object.
- * @private
- * @return {ol.geom.Point} Point.
- */
-ol.format.GeoJSON.readPointGeometry_ = function(object) {
-  goog.asserts.assert(object.type == 'Point');
-  return new ol.geom.Point(object.coordinates);
-};
-
-
-/**
- * @param {GeoJSONGeometry} object Object.
- * @private
- * @return {ol.geom.LineString} LineString.
- */
-ol.format.GeoJSON.readLineStringGeometry_ = function(object) {
-  goog.asserts.assert(object.type == 'LineString');
-  return new ol.geom.LineString(object.coordinates);
-};
-
-
-/**
- * @param {GeoJSONGeometry} object Object.
- * @private
- * @return {ol.geom.MultiLineString} MultiLineString.
- */
-ol.format.GeoJSON.readMultiLineStringGeometry_ = function(object) {
-  goog.asserts.assert(object.type == 'MultiLineString');
-  return new ol.geom.MultiLineString(object.coordinates);
-};
-
-
-/**
- * @param {GeoJSONGeometry} object Object.
- * @private
- * @return {ol.geom.MultiPoint} MultiPoint.
- */
-ol.format.GeoJSON.readMultiPointGeometry_ = function(object) {
-  goog.asserts.assert(object.type == 'MultiPoint');
-  return new ol.geom.MultiPoint(object.coordinates);
-};
-
-
-/**
- * @param {GeoJSONGeometry} object Object.
- * @private
- * @return {ol.geom.MultiPolygon} MultiPolygon.
- */
-ol.format.GeoJSON.readMultiPolygonGeometry_ = function(object) {
-  goog.asserts.assert(object.type == 'MultiPolygon');
-  return new ol.geom.MultiPolygon(object.coordinates);
-};
-
-
-/**
- * @param {GeoJSONGeometry} object Object.
- * @private
- * @return {ol.geom.Polygon} Polygon.
- */
-ol.format.GeoJSON.readPolygonGeometry_ = function(object) {
-  goog.asserts.assert(object.type == 'Polygon');
-  return new ol.geom.Polygon(object.coordinates);
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONObject} GeoJSON geometry.
- */
-ol.format.GeoJSON.writeGeometry_ = function(geometry) {
-  var geometryWriter = ol.format.GeoJSON.GEOMETRY_WRITERS_[geometry.getType()];
-  goog.asserts.assert(goog.isDef(geometryWriter));
-  return geometryWriter(geometry);
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometryCollection} Empty GeoJSON geometry collection.
- */
-ol.format.GeoJSON.writeEmptyGeometryCollectionGeometry_ = function(geometry) {
-  return /** @type {GeoJSONGeometryCollection} */ ({
-    'type': 'GeometryCollection',
-    'geometries': []
-  });
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometryCollection} GeoJSON geometry collection.
- */
-ol.format.GeoJSON.writeGeometryCollectionGeometry_ = function(geometry) {
-  goog.asserts.assertInstanceof(geometry, ol.geom.GeometryCollection);
-  var geometries = goog.array.map(
-      geometry.getGeometriesArray(), ol.format.GeoJSON.writeGeometry_);
-  return /** @type {GeoJSONGeometryCollection} */ ({
-    'type': 'GeometryCollection',
-    'geometries': geometries
-  });
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometry} GeoJSON geometry.
- */
-ol.format.GeoJSON.writeLineStringGeometry_ = function(geometry) {
-  goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
-  return /** @type {GeoJSONGeometry} */ ({
-    'type': 'LineString',
-    'coordinates': geometry.getCoordinates()
-  });
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometry} GeoJSON geometry.
- */
-ol.format.GeoJSON.writeMultiLineStringGeometry_ = function(geometry) {
-  goog.asserts.assertInstanceof(geometry, ol.geom.MultiLineString);
-  goog.asserts.assert(
-      geometry.getType() == ol.geom.GeometryType.MULTI_LINE_STRING);
-  return /** @type {GeoJSONGeometry} */ ({
-    'type': 'MultiLineString',
-    'coordinates': geometry.getCoordinates()
-  });
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometry} GeoJSON geometry.
- */
-ol.format.GeoJSON.writeMultiPointGeometry_ = function(geometry) {
-  goog.asserts.assertInstanceof(geometry, ol.geom.MultiPoint);
-  return /** @type {GeoJSONGeometry} */ ({
-    'type': 'MultiPoint',
-    'coordinates': geometry.getCoordinates()
-  });
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometry} GeoJSON geometry.
- */
-ol.format.GeoJSON.writeMultiPolygonGeometry_ = function(geometry) {
-  goog.asserts.assertInstanceof(geometry, ol.geom.MultiPolygon);
-  return /** @type {GeoJSONGeometry} */ ({
-    'type': 'MultiPolygon',
-    'coordinates': geometry.getCoordinates()
-  });
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometry} GeoJSON geometry.
- */
-ol.format.GeoJSON.writePointGeometry_ = function(geometry) {
-  goog.asserts.assertInstanceof(geometry, ol.geom.Point);
-  return /** @type {GeoJSONGeometry} */ ({
-    'type': 'Point',
-    'coordinates': geometry.getCoordinates()
-  });
-};
-
-
-/**
- * @param {ol.geom.Geometry} geometry Geometry.
- * @private
- * @return {GeoJSONGeometry} GeoJSON geometry.
- */
-ol.format.GeoJSON.writePolygonGeometry_ = function(geometry) {
-  goog.asserts.assertInstanceof(geometry, ol.geom.Polygon);
-  return /** @type {GeoJSONGeometry} */ ({
-    'type': 'Polygon',
-    'coordinates': geometry.getCoordinates()
-  });
-};
-
-
-/**
- * @const
- * @private
- * @type {Object.&lt;string, function(GeoJSONObject): ol.geom.Geometry>}
- */
-ol.format.GeoJSON.GEOMETRY_READERS_ = {
-  'Point': ol.format.GeoJSON.readPointGeometry_,
-  'LineString': ol.format.GeoJSON.readLineStringGeometry_,
-  'Polygon': ol.format.GeoJSON.readPolygonGeometry_,
-  'MultiPoint': ol.format.GeoJSON.readMultiPointGeometry_,
-  'MultiLineString': ol.format.GeoJSON.readMultiLineStringGeometry_,
-  'MultiPolygon': ol.format.GeoJSON.readMultiPolygonGeometry_,
-  'GeometryCollection': ol.format.GeoJSON.readGeometryCollectionGeometry_
-};
-
-
-/**
- * @const
- * @private
- * @type {Object.&lt;string, function(ol.geom.Geometry): GeoJSONObject>}
- */
-ol.format.GeoJSON.GEOMETRY_WRITERS_ = {
-  'Point': ol.format.GeoJSON.writePointGeometry_,
-  'LineString': ol.format.GeoJSON.writeLineStringGeometry_,
-  'Polygon': ol.format.GeoJSON.writePolygonGeometry_,
-  'MultiPoint': ol.format.GeoJSON.writeMultiPointGeometry_,
-  'MultiLineString': ol.format.GeoJSON.writeMultiLineStringGeometry_,
-  'MultiPolygon': ol.format.GeoJSON.writeMultiPolygonGeometry_,
-  'GeometryCollection': ol.format.GeoJSON.writeGeometryCollectionGeometry_,
-  'Circle': ol.format.GeoJSON.writeEmptyGeometryCollectionGeometry_
+ol.renderer.Map.prototype.createLayerRenderer = function(layer) {
+  return new ol.renderer.Layer(this, layer);
 };
 
 
 /**
  * @inheritDoc
  */
-ol.format.GeoJSON.prototype.getExtensions = function() {
-  return ol.format.GeoJSON.EXTENSIONS_;
+ol.renderer.Map.prototype.disposeInternal = function() {
+  goog.object.forEach(this.layerRenderers_, function(layerRenderer) {
+    goog.dispose(layerRenderer);
+  });
+  goog.base(this, 'disposeInternal');
 };
 
 
 /**
- * Read a feature from a GeoJSON Feature source.  This method will throw
- * an error if used with a FeatureCollection source.
- *
- * @function
- * @param {ArrayBuffer|Document|Node|Object|string} source Source.
- * @return {ol.Feature} Feature.
- * @todo api
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {olx.FrameState} frameState FrameState.
+ * @param {function(this: S, ol.Feature, ol.layer.Layer): T} callback Feature
+ *     callback.
+ * @param {S} thisArg Value to use as `this` when executing `callback`.
+ * @param {function(this: U, ol.layer.Layer): boolean} layerFilter Layer filter
+ *     function, only layers which are visible and for which this function
+ *     returns `true` will be tested for features.  By default, all visible
+ *     layers will be tested.
+ * @param {U} thisArg2 Value to use as `this` when executing `layerFilter`.
+ * @return {T|undefined} Callback result.
+ * @template S,T,U
  */
-ol.format.GeoJSON.prototype.readFeature;
-
-
-/**
- * Read all features from a GeoJSON source.  Works with both Feature and
- * FeatureCollection sources.
- *
- * @function
- * @param {ArrayBuffer|Document|Node|Object|string} source Source.
- * @return {Array.&lt;ol.Feature>} Features.
- * @todo api
- */
-ol.format.GeoJSON.prototype.readFeatures;
-
-
-/**
- * @inheritDoc
- */
-ol.format.GeoJSON.prototype.readFeatureFromObject = function(object) {
-  var geoJSONFeature = /** @type {GeoJSONFeature} */ (object);
-  goog.asserts.assert(geoJSONFeature.type == 'Feature');
-  var geometry = ol.format.GeoJSON.readGeometry_(geoJSONFeature.geometry);
-  var feature = new ol.Feature();
-  if (goog.isDef(this.geometryName_)) {
-    feature.setGeometryName(this.geometryName_);
-  }
-  feature.setGeometry(geometry);
-  if (goog.isDef(geoJSONFeature.id)) {
-    feature.setId(geoJSONFeature.id);
-  }
-  if (goog.isDef(geoJSONFeature.properties)) {
-    feature.setValues(geoJSONFeature.properties);
-  }
-  return feature;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.format.GeoJSON.prototype.readFeaturesFromObject = function(object) {
-  var geoJSONObject = /** @type {GeoJSONObject} */ (object);
-  if (geoJSONObject.type == 'Feature') {
-    return [this.readFeatureFromObject(object)];
-  } else if (geoJSONObject.type == 'FeatureCollection') {
-    var geoJSONFeatureCollection = /** @type {GeoJSONFeatureCollection} */
-        (object);
-    /** @type {Array.&lt;ol.Feature>} */
-    var features = [];
-    var geoJSONFeatures = geoJSONFeatureCollection.features;
-    var i, ii;
-    for (i = 0, ii = geoJSONFeatures.length; i &lt; ii; ++i) {
-      features.push(this.readFeatureFromObject(geoJSONFeatures[i]));
+ol.renderer.Map.prototype.forEachFeatureAtPixel =
+    function(coordinate, frameState, callback, thisArg,
+        layerFilter, thisArg2) {
+  var layerStates = this.map_.getLayerGroup().getLayerStatesArray();
+  var numLayers = layerStates.length;
+  var viewResolution = frameState.view2DState.resolution;
+  var i;
+  for (i = numLayers - 1; i >= 0; --i) {
+    var layerState = layerStates[i];
+    var layer = layerState.layer;
+    if (ol.layer.Layer.visibleAtResolution(layerState, viewResolution) &amp;&amp;
+        layerFilter.call(thisArg2, layer)) {
+      var layerRenderer = this.getLayerRenderer(layer);
+      var result = layerRenderer.forEachFeatureAtPixel(
+          coordinate, frameState, callback, thisArg);
+      if (result) {
+        return result;
+      }
     }
-    return features;
+  }
+  return undefined;
+};
+
+
+/**
+ * @param {ol.layer.Layer} layer Layer.
+ * @protected
+ * @return {ol.renderer.Layer} Layer renderer.
+ */
+ol.renderer.Map.prototype.getLayerRenderer = function(layer) {
+  var layerKey = goog.getUid(layer).toString();
+  if (layerKey in this.layerRenderers_) {
+    return this.layerRenderers_[layerKey];
   } else {
-    goog.asserts.fail();
-    return [];
+    var layerRenderer = this.createLayerRenderer(layer);
+    this.layerRenderers_[layerKey] = layerRenderer;
+    return layerRenderer;
   }
 };
 
 
 /**
- * Read a geometry from a GeoJSON source.
- *
- * @function
- * @param {ArrayBuffer|Document|Node|Object|string} source Source.
- * @return {ol.geom.Geometry} Geometry.
- * @todo api
+ * @param {string} layerKey Layer key.
+ * @protected
+ * @return {ol.renderer.Layer} Layer renderer.
  */
-ol.format.GeoJSON.prototype.readGeometry;
-
-
-/**
- * @inheritDoc
- */
-ol.format.GeoJSON.prototype.readGeometryFromObject = function(object) {
-  return ol.format.GeoJSON.readGeometry_(
-      /** @type {GeoJSONGeometry} */ (object));
+ol.renderer.Map.prototype.getLayerRendererByKey = function(layerKey) {
+  goog.asserts.assert(layerKey in this.layerRenderers_);
+  return this.layerRenderers_[layerKey];
 };
 
 
 /**
- * Read the projection from the GeoJSON source file.
- *
- * @param {ArrayBuffer|Document|Node|Object|string} object Source.
- * @return {ol.proj.Projection} Projection.
- * @todo api
+ * @protected
+ * @return {Object.&lt;number, ol.renderer.Layer>} Layer renderers.
  */
-ol.format.GeoJSON.prototype.readProjection = function(object) {
-  var geoJSONObject = /** @type {GeoJSONObject} */ (object);
-  var crs = geoJSONObject.crs;
-  if (goog.isDefAndNotNull(crs)) {
-    if (crs.type == 'name') {
-      return ol.proj.get(crs.properties.name);
-    } else if (crs.type == 'EPSG') {
-      // 'EPSG' is not part of the GeoJSON specification, but is generated by
-      // GeoServer.
-      // TODO: remove this when http://jira.codehaus.org/browse/GEOS-5996
-      // is fixed and widely deployed.
-      return ol.proj.get('EPSG:' + crs.properties.code);
-    } else {
-      goog.asserts.fail();
-      return null;
+ol.renderer.Map.prototype.getLayerRenderers = function() {
+  return this.layerRenderers_;
+};
+
+
+/**
+ * @return {ol.Map} Map.
+ */
+ol.renderer.Map.prototype.getMap = function() {
+  return this.map_;
+};
+
+
+/**
+ * @return {string} Type
+ */
+ol.renderer.Map.prototype.getType = goog.abstractMethod;
+
+
+/**
+ * @param {string} layerKey Layer key.
+ * @return {ol.renderer.Layer} Layer renderer.
+ * @private
+ */
+ol.renderer.Map.prototype.removeLayerRendererByKey_ = function(layerKey) {
+  goog.asserts.assert(layerKey in this.layerRenderers_);
+  var layerRenderer = this.layerRenderers_[layerKey];
+  delete this.layerRenderers_[layerKey];
+  return layerRenderer;
+};
+
+
+/**
+ * Render.
+ * @param {?olx.FrameState} frameState Frame state.
+ */
+ol.renderer.Map.prototype.renderFrame = goog.nullFunction;
+
+
+/**
+ * @param {ol.Map} map Map.
+ * @param {olx.FrameState} frameState Frame state.
+ * @private
+ */
+ol.renderer.Map.prototype.removeUnusedLayerRenderers_ =
+    function(map, frameState) {
+  var layerKey;
+  for (layerKey in this.layerRenderers_) {
+    if (goog.isNull(frameState) || !(layerKey in frameState.layerStates)) {
+      goog.dispose(this.removeLayerRendererByKey_(layerKey));
     }
-  } else {
-    return this.defaultProjection_;
   }
 };
 
 
 /**
- * Encode a feature as a GeoJSON Feature object.
- *
- * @function
- * @param {ol.Feature} feature Feature.
- * @return {ArrayBuffer|Node|Object|string} Result.
- * @todo api
+ * @param {olx.FrameState} frameState Frame state.
+ * @protected
  */
-ol.format.GeoJSON.prototype.writeFeature;
-
-
-/**
- * @inheritDoc
- */
-ol.format.GeoJSON.prototype.writeFeatureObject = function(feature) {
-  var object = {
-    'type': 'Feature'
-  };
-  var id = feature.getId();
-  if (goog.isDefAndNotNull(id)) {
-    goog.object.set(object, 'id', id);
-  }
-  var geometry = feature.getGeometry();
-  if (goog.isDefAndNotNull(geometry)) {
-    goog.object.set(
-        object, 'geometry', ol.format.GeoJSON.writeGeometry_(geometry));
-  }
-  var properties = feature.getProperties();
-  goog.object.remove(properties, 'geometry');
-  if (!goog.object.isEmpty(properties)) {
-    goog.object.set(object, 'properties', properties);
-  }
-  return object;
+ol.renderer.Map.prototype.scheduleExpireIconCache = function(frameState) {
+  frameState.postRenderFunctions.push(
+      /**
+       * @param {ol.Map} map Map.
+       * @param {olx.FrameState} frameState Frame state.
+       */
+      function(map, frameState) {
+        ol.style.IconImageCache.getInstance().expire();
+      });
 };
 
 
 /**
- * Encode an array of features as GeoJSON.
- *
- * @function
- * @param {Array.&lt;ol.Feature>} features Features.
- * @return {ArrayBuffer|Node|Object|string} Result.
- * @todo api
+ * @param {!olx.FrameState} frameState Frame state.
+ * @protected
  */
-ol.format.GeoJSON.prototype.writeFeatures;
-
-
-/**
- * @inheritDoc
- */
-ol.format.GeoJSON.prototype.writeFeaturesObject = function(features) {
-  var objects = [];
-  var i, ii;
-  for (i = 0, ii = features.length; i &lt; ii; ++i) {
-    objects.push(this.writeFeatureObject(features[i]));
+ol.renderer.Map.prototype.scheduleRemoveUnusedLayerRenderers =
+    function(frameState) {
+  var layerKey;
+  for (layerKey in this.layerRenderers_) {
+    if (!(layerKey in frameState.layerStates)) {
+      frameState.postRenderFunctions.push(
+          goog.bind(this.removeUnusedLayerRenderers_, this));
+      return;
+    }
   }
-  return /** @type {GeoJSONFeatureCollection} */ ({
-    'type': 'FeatureCollection',
-    'features': objects
-  });
 };
-
-
-/**
- * @inheritDoc
- */
-ol.format.GeoJSON.prototype.writeGeometryObject =
-    ol.format.GeoJSON.writeGeometry_;
 </code></pre>
         </article>
     </section>
@@ -8597,7 +8334,7 @@ ol.format.GeoJSON.prototype.writeGeometryObject =
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Tue Jun 10 2014 09:16:27 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Tue Jun 10 2014 09:16:32 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

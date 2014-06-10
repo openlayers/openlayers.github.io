@@ -13,6 +13,9 @@ goog.require('ol.xml');
 
 
 /**
+ * @classdesc
+ * Feature format for reading and writing data in the WFS format.
+ *
  * @constructor
  * @param {olx.format.WFSOptions=} opt_options
  *     Optional configuration object.
@@ -52,6 +55,13 @@ goog.inherits(ol.format.WFS, ol.format.XMLFeature);
  * @type {string}
  */
 ol.format.WFS.featurePrefix = 'feature';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.format.WFS.xmlns = 'http://www.w3.org/2000/xmlns/';
 
 
 /**
@@ -377,7 +387,8 @@ ol.format.WFS.writeDelete_ = function(node, feature, objectStack) {
       ol.format.WFS.featurePrefix;
   var featureNS = goog.object.get(context, 'featureNS');
   node.setAttribute('typeName', featurePrefix + ':' + featureType);
-  node.setAttribute('xmlns:' + featurePrefix, featureNS);
+  ol.xml.setAttributeNS(node, ol.format.WFS.xmlns, 'xmlns:' + featurePrefix,
+      featureNS);
   var fid = feature.getId();
   if (goog.isDef(fid)) {
     ol.format.WFS.writeOgcFidFilter_(node, fid, objectStack);
@@ -400,7 +411,8 @@ ol.format.WFS.writeUpdate_ = function(node, feature, objectStack) {
       ol.format.WFS.featurePrefix;
   var featureNS = goog.object.get(context, 'featureNS');
   node.setAttribute('typeName', featurePrefix + ':' + featureType);
-  node.setAttribute('xmlns:' + featurePrefix, featureNS);
+  ol.xml.setAttributeNS(node, ol.format.WFS.xmlns, 'xmlns:' + featurePrefix,
+      featureNS);
   var fid = feature.getId();
   if (goog.isDef(fid)) {
     var keys = feature.getKeys();
@@ -497,7 +509,8 @@ ol.format.WFS.writeQuery_ = function(node, featureType, objectStack) {
     node.setAttribute('srsName', srsName);
   }
   if (goog.isDef(featureNS)) {
-    node.setAttribute('xmlns:' + featurePrefix, featureNS);
+    ol.xml.setAttributeNS(node, ol.format.WFS.xmlns, 'xmlns:' + featurePrefix,
+        featureNS);
   }
   var item = goog.object.clone(context);
   item.node = node;

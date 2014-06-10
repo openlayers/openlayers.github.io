@@ -42,6 +42,7 @@ goog.require('ol.ObjectEventType');
 goog.require('ol.Pixel');
 goog.require('ol.PostRenderFunction');
 goog.require('ol.PreRenderFunction');
+goog.require('ol.RendererType');
 goog.require('ol.Size');
 goog.require('ol.Tile');
 goog.require('ol.TileQueue');
@@ -99,24 +100,12 @@ ol.OL3_LOGO_URL = 'data:image/png;base64,' +
 
 
 /**
- * Available renderers: `'canvas'`, `'dom'` or `'webgl'`.
- * @enum {string}
- * @todo api
+ * @type {Array.<ol.RendererType>}
  */
-ol.RendererHint = {
-  CANVAS: 'canvas',
-  DOM: 'dom',
-  WEBGL: 'webgl'
-};
-
-
-/**
- * @type {Array.<ol.RendererHint>}
- */
-ol.DEFAULT_RENDERER_HINTS = [
-  ol.RendererHint.CANVAS,
-  ol.RendererHint.WEBGL,
-  ol.RendererHint.DOM
+ol.DEFAULT_RENDERER_TYPES = [
+  ol.RendererType.CANVAS,
+  ol.RendererType.WEBGL,
+  ol.RendererType.DOM
 ];
 
 
@@ -133,7 +122,7 @@ ol.MapProperty = {
 
 
 /**
- * @class
+ * @classdesc
  * The map is the core component of OpenLayers. In its minimal configuration it
  * needs a view, one or more layers, and a target container:
  *
@@ -727,6 +716,15 @@ ol.Map.prototype.getPixelFromCoordinate = function(coordinate) {
 
 
 /**
+ * Get the map renderer.
+ * @return {ol.renderer.Map} Renderer
+ */
+ol.Map.prototype.getRenderer = function() {
+  return this.renderer_;
+};
+
+
+/**
  * Get the size of this map.
  * @return {ol.Size|undefined} The size in pixels of the map in the DOM.
  * @todo observable
@@ -1068,7 +1066,7 @@ ol.Map.prototype.isRendered = function() {
 
 
 /**
- * Render.
+ * Requests an immediate render in a synchronous manner.
  * @todo api
  */
 ol.Map.prototype.renderSync = function() {
@@ -1077,7 +1075,8 @@ ol.Map.prototype.renderSync = function() {
 
 
 /**
- * Request that renderFrame_ be called some time in the future.
+ * Requests a render frame; rendering will effectively occur at the next browser
+ * animation frame.
  * @todo api
  */
 ol.Map.prototype.render = function() {
@@ -1422,36 +1421,36 @@ ol.Map.createOptionsInternal = function(options) {
   var rendererConstructor = ol.renderer.Map;
 
   /**
-   * @type {Array.<ol.RendererHint>}
+   * @type {Array.<ol.RendererType>}
    */
-  var rendererHints;
+  var rendererTypes;
   if (goog.isDef(options.renderer)) {
     if (goog.isArray(options.renderer)) {
-      rendererHints = options.renderer;
+      rendererTypes = options.renderer;
     } else if (goog.isString(options.renderer)) {
-      rendererHints = [options.renderer];
+      rendererTypes = [options.renderer];
     } else {
       goog.asserts.fail('Incorrect format for renderer option');
     }
   } else {
-    rendererHints = ol.DEFAULT_RENDERER_HINTS;
+    rendererTypes = ol.DEFAULT_RENDERER_TYPES;
   }
 
   var i, ii;
-  for (i = 0, ii = rendererHints.length; i < ii; ++i) {
-    /** @type {ol.RendererHint} */
-    var rendererHint = rendererHints[i];
-    if (ol.ENABLE_CANVAS && rendererHint == ol.RendererHint.CANVAS) {
+  for (i = 0, ii = rendererTypes.length; i < ii; ++i) {
+    /** @type {ol.RendererType} */
+    var rendererType = rendererTypes[i];
+    if (ol.ENABLE_CANVAS && rendererType == ol.RendererType.CANVAS) {
       if (ol.BrowserFeature.HAS_CANVAS) {
         rendererConstructor = ol.renderer.canvas.Map;
         break;
       }
-    } else if (ol.ENABLE_DOM && rendererHint == ol.RendererHint.DOM) {
+    } else if (ol.ENABLE_DOM && rendererType == ol.RendererType.DOM) {
       if (ol.BrowserFeature.HAS_DOM) {
         rendererConstructor = ol.renderer.dom.Map;
         break;
       }
-    } else if (ol.ENABLE_WEBGL && rendererHint == ol.RendererHint.WEBGL) {
+    } else if (ol.ENABLE_WEBGL && rendererType == ol.RendererType.WEBGL) {
       if (ol.BrowserFeature.HAS_WEBGL) {
         rendererConstructor = ol.renderer.webgl.Map;
         break;
