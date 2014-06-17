@@ -517,12 +517,12 @@ goog.scope = function(fn) {
 };
 goog.addDependency("../build/exports.js", [], ["ol", "ol.Attribution", "ol.BrowserFeature", "ol.Collection", "ol.CollectionEvent", "ol.CollectionEventType", "ol.Coordinate", "ol.CoordinateArray", "ol.CoordinateFormatType", "ol.DeviceOrientation", "ol.DeviceOrientationProperty", "ol.DragBoxEvent", "ol.DrawEvent", "ol.Extent", "ol.Feature", "ol.FeatureOverlay", "ol.Geolocation", "ol.GeolocationProperty", "ol.ImageTile", "ol.Kinetic", "ol.Map", "ol.MapBrowserEvent", "ol.MapBrowserEvent.EventType", "ol.MapBrowserEventHandler", 
 "ol.MapBrowserPointerEvent", "ol.MapEvent", "ol.MapEventType", "ol.MapProperty", "ol.Object", "ol.ObjectEvent", "ol.ObjectEventType", "ol.Observable", "ol.Overlay", "ol.OverlayPositioning", "ol.OverlayProperty", "ol.Tile", "ol.TileCoord", "ol.TileState", "ol.View2D", "ol.View2DProperty", "ol.animation", "ol.color", "ol.control", "ol.control.Attribution", "ol.control.Control", "ol.control.FullScreen", "ol.control.Logo", "ol.control.MousePosition", "ol.control.Rotate", "ol.control.ScaleLine", "ol.control.ScaleLineProperty", 
-"ol.control.ScaleLineUnits", "ol.control.Zoom", "ol.control.ZoomSlider", "ol.control.ZoomToExtent", "ol.coordinate", "ol.dom.Input", "ol.dom.InputProperty", "ol.easing", "ol.events.ConditionType", "ol.events.condition", "ol.extent", "ol.extent.Relationship", "ol.feature", "ol.format.GML", "ol.format.GPX", "ol.format.GPX.V1_1", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.KML", "ol.format.OSMXML", "ol.format.TopoJSON", "ol.format.WFS", "ol.format.WMSCapabilities", "ol.geom.Circle", 
-"ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.interaction", "ol.interaction.DoubleClickZoom", "ol.interaction.DragAndDrop", "ol.interaction.DragAndDropEvent", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", "ol.interaction.DragZoom", 
-"ol.interaction.Draw", "ol.interaction.KeyboardPan", "ol.interaction.KeyboardZoom", "ol.interaction.Modify", "ol.interaction.MouseWheelZoom", "ol.interaction.PinchRotate", "ol.interaction.PinchZoom", "ol.interaction.Select", "ol.layer.Base", "ol.layer.Group", "ol.layer.Heatmap", "ol.layer.Image", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.Tile", "ol.layer.Vector", "ol.loadingstrategy", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", "ol.proj.EPSG3857", 
-"ol.proj.EPSG4326", "ol.proj.METERS_PER_UNIT", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.source.BingMaps", "ol.source.FormatVector", "ol.source.GPX", "ol.source.GeoJSON", "ol.source.IGC", "ol.source.ImageCanvas", "ol.source.ImageStatic", "ol.source.ImageVector", "ol.source.ImageWMS", "ol.source.KML", "ol.source.MapGuide", "ol.source.MapQuest", "ol.source.OSM", "ol.source.OSMXML", "ol.source.ServerVector", 
-"ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.StaticVector", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileVector", "ol.source.TileWMS", "ol.source.TopoJSON", "ol.source.Vector", "ol.source.VectorEvent", "ol.source.VectorEventType", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.sphere.WGS84", "ol.style.Circle", "ol.style.Fill", "ol.style.Icon", "ol.style.IconAnchorUnits", 
-"ol.style.IconImageCache", "ol.style.IconOrigin", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.webgl.Context"]);
+"ol.control.ScaleLineUnits", "ol.control.Zoom", "ol.control.ZoomSlider", "ol.control.ZoomToExtent", "ol.coordinate", "ol.dom.Input", "ol.dom.InputProperty", "ol.easing", "ol.events.ConditionType", "ol.events.condition", "ol.extent", "ol.extent.Relationship", "ol.feature", "ol.format.GML", "ol.format.GPX", "ol.format.GPX.V1_1", "ol.format.GeoJSON", "ol.format.IGC", "ol.format.IGCZ", "ol.format.KML", "ol.format.OSMXML", "ol.format.Polyline", "ol.format.TopoJSON", "ol.format.WFS", "ol.format.WMSCapabilities", 
+"ol.geom.Circle", "ol.geom.Geometry", "ol.geom.GeometryCollection", "ol.geom.GeometryType", "ol.geom.LineString", "ol.geom.LinearRing", "ol.geom.MultiLineString", "ol.geom.MultiPoint", "ol.geom.MultiPolygon", "ol.geom.Point", "ol.geom.Polygon", "ol.geom.SimpleGeometry", "ol.interaction", "ol.interaction.DoubleClickZoom", "ol.interaction.DragAndDrop", "ol.interaction.DragAndDropEvent", "ol.interaction.DragBox", "ol.interaction.DragPan", "ol.interaction.DragRotate", "ol.interaction.DragRotateAndZoom", 
+"ol.interaction.DragZoom", "ol.interaction.Draw", "ol.interaction.KeyboardPan", "ol.interaction.KeyboardZoom", "ol.interaction.Modify", "ol.interaction.MouseWheelZoom", "ol.interaction.PinchRotate", "ol.interaction.PinchZoom", "ol.interaction.Select", "ol.layer.Base", "ol.layer.Group", "ol.layer.Heatmap", "ol.layer.Image", "ol.layer.Layer", "ol.layer.LayerProperty", "ol.layer.LayerState", "ol.layer.Tile", "ol.layer.Vector", "ol.loadingstrategy", "ol.proj", "ol.proj.CH", "ol.proj.EPSG2056", "ol.proj.EPSG21781", 
+"ol.proj.EPSG3857", "ol.proj.EPSG4326", "ol.proj.METERS_PER_UNIT", "ol.proj.Projection", "ol.proj.ProjectionLike", "ol.proj.Units", "ol.proj.common", "ol.render.Event", "ol.render.EventType", "ol.render.canvas.Immediate", "ol.source.BingMaps", "ol.source.FormatVector", "ol.source.GPX", "ol.source.GeoJSON", "ol.source.IGC", "ol.source.ImageCanvas", "ol.source.ImageStatic", "ol.source.ImageVector", "ol.source.ImageWMS", "ol.source.KML", "ol.source.MapGuide", "ol.source.MapQuest", "ol.source.OSM", "ol.source.OSMXML", 
+"ol.source.ServerVector", "ol.source.Source", "ol.source.Stamen", "ol.source.State", "ol.source.StaticVector", "ol.source.Tile", "ol.source.TileDebug", "ol.source.TileImage", "ol.source.TileJSON", "ol.source.TileOptions", "ol.source.TileVector", "ol.source.TileWMS", "ol.source.TopoJSON", "ol.source.Vector", "ol.source.VectorEvent", "ol.source.VectorEventType", "ol.source.WMTS", "ol.source.WMTSRequestEncoding", "ol.source.XYZ", "ol.source.Zoomify", "ol.sphere.WGS84", "ol.style.Circle", "ol.style.Fill", 
+"ol.style.Icon", "ol.style.IconAnchorUnits", "ol.style.IconImageCache", "ol.style.IconOrigin", "ol.style.Image", "ol.style.ImageState", "ol.style.Stroke", "ol.style.Style", "ol.style.Text", "ol.tilegrid.TileGrid", "ol.tilegrid.WMTS", "ol.tilegrid.XYZ", "ol.tilegrid.Zoomify", "ol.tilejson", "ol.webgl.Context"]);
 goog.addDependency("../src/googx/dom/fullscreen.js", ["googx.dom.fullscreen", "googx.dom.fullscreen.EventType"], ["goog.dom", "goog.userAgent"]);
 goog.addDependency("../src/libtess.js/dict/Dict.js", ["libtess.Dict"], ["libtess", "libtess.DictNode"]);
 goog.addDependency("../src/libtess.js/dict/DictNode.js", ["libtess.DictNode"], ["libtess"]);
@@ -31372,6 +31372,165 @@ ol.format.OSMXML.prototype.readProjectionFromDocument = function(doc) {
 ol.format.OSMXML.prototype.readProjectionFromNode = function(node) {
   return ol.proj.get("EPSG:4326")
 };
+goog.provide("ol.format.Polyline");
+goog.require("goog.asserts");
+goog.require("ol.Feature");
+goog.require("ol.format.TextFeature");
+goog.require("ol.geom.LineString");
+goog.require("ol.geom.flat.inflate");
+goog.require("ol.proj");
+ol.format.Polyline = function(opt_options) {
+  var options = goog.isDef(opt_options) ? opt_options : {};
+  goog.base(this);
+  this.factor_ = goog.isDef(options.factor) ? options.factor : 1E5
+};
+goog.inherits(ol.format.Polyline, ol.format.TextFeature);
+ol.format.Polyline.encodeDeltas = function(numbers, stride, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1E5;
+  var d;
+  var lastNumbers = new Array(stride);
+  for(d = 0;d < stride;++d) {
+    lastNumbers[d] = 0
+  }
+  var i, ii;
+  for(i = 0, ii = numbers.length;i < ii;) {
+    for(d = 0;d < stride;++d, ++i) {
+      var num = numbers[i];
+      var delta = num - lastNumbers[d];
+      lastNumbers[d] = num;
+      numbers[i] = delta
+    }
+  }
+  return ol.format.Polyline.encodeFloats(numbers, factor)
+};
+ol.format.Polyline.decodeDeltas = function(encoded, stride, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1E5;
+  var d;
+  var lastNumbers = new Array(stride);
+  for(d = 0;d < stride;++d) {
+    lastNumbers[d] = 0
+  }
+  var numbers = ol.format.Polyline.decodeFloats(encoded, factor);
+  var i, ii;
+  for(i = 0, ii = numbers.length;i < ii;) {
+    for(d = 0;d < stride;++d, ++i) {
+      lastNumbers[d] += numbers[i];
+      numbers[i] = lastNumbers[d]
+    }
+  }
+  return numbers
+};
+ol.format.Polyline.encodeFloats = function(numbers, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1E5;
+  var i, ii;
+  for(i = 0, ii = numbers.length;i < ii;++i) {
+    numbers[i] = Math.round(numbers[i] * factor)
+  }
+  return ol.format.Polyline.encodeSignedIntegers(numbers)
+};
+ol.format.Polyline.decodeFloats = function(encoded, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1E5;
+  var numbers = ol.format.Polyline.decodeSignedIntegers(encoded);
+  var i, ii;
+  for(i = 0, ii = numbers.length;i < ii;++i) {
+    numbers[i] /= factor
+  }
+  return numbers
+};
+ol.format.Polyline.encodeSignedIntegers = function(numbers) {
+  var i, ii;
+  for(i = 0, ii = numbers.length;i < ii;++i) {
+    var num = numbers[i];
+    numbers[i] = num < 0 ? ~(num << 1) : num << 1
+  }
+  return ol.format.Polyline.encodeUnsignedIntegers(numbers)
+};
+ol.format.Polyline.decodeSignedIntegers = function(encoded) {
+  var numbers = ol.format.Polyline.decodeUnsignedIntegers(encoded);
+  var i, ii;
+  for(i = 0, ii = numbers.length;i < ii;++i) {
+    var num = numbers[i];
+    numbers[i] = num & 1 ? ~(num >> 1) : num >> 1
+  }
+  return numbers
+};
+ol.format.Polyline.encodeUnsignedIntegers = function(numbers) {
+  var encoded = "";
+  var i, ii;
+  for(i = 0, ii = numbers.length;i < ii;++i) {
+    encoded += ol.format.Polyline.encodeUnsignedInteger(numbers[i])
+  }
+  return encoded
+};
+ol.format.Polyline.decodeUnsignedIntegers = function(encoded) {
+  var numbers = [];
+  var current = 0;
+  var shift = 0;
+  var i, ii;
+  for(i = 0, ii = encoded.length;i < ii;++i) {
+    var b = encoded.charCodeAt(i) - 63;
+    current |= (b & 31) << shift;
+    if(b < 32) {
+      numbers.push(current);
+      current = 0;
+      shift = 0
+    }else {
+      shift += 5
+    }
+  }
+  return numbers
+};
+ol.format.Polyline.encodeUnsignedInteger = function(num) {
+  var value, encoded = "";
+  while(num >= 32) {
+    value = (32 | num & 31) + 63;
+    encoded += String.fromCharCode(value);
+    num >>= 5
+  }
+  value = num + 63;
+  encoded += String.fromCharCode(value);
+  return encoded
+};
+ol.format.Polyline.prototype.readFeature;
+ol.format.Polyline.prototype.readFeatureFromText = function(text) {
+  var geometry = this.readGeometryFromText(text);
+  return new ol.Feature(geometry)
+};
+ol.format.Polyline.prototype.readFeatures;
+ol.format.Polyline.prototype.readFeaturesFromText = function(text) {
+  var feature = this.readFeatureFromText(text);
+  return[feature]
+};
+ol.format.Polyline.prototype.readGeometry;
+ol.format.Polyline.prototype.readGeometryFromText = function(text) {
+  var flatCoordinates = ol.format.Polyline.decodeDeltas(text, 2, this.factor_);
+  var coordinates = ol.geom.flat.inflate.coordinates(flatCoordinates, 0, flatCoordinates.length, 2);
+  return new ol.geom.LineString(coordinates)
+};
+ol.format.Polyline.prototype.readProjection;
+ol.format.Polyline.prototype.readProjectionFromText = function(text) {
+  return ol.proj.get("EPSG:4326")
+};
+ol.format.Polyline.prototype.writeFeatureText = function(feature) {
+  var geometry = feature.getGeometry();
+  if(goog.isDefAndNotNull(geometry)) {
+    return this.writeGeometryText(geometry)
+  }else {
+    goog.asserts.fail();
+    return""
+  }
+};
+ol.format.Polyline.prototype.writeFeaturesText = function(features) {
+  goog.asserts.assert(features.length == 1);
+  return this.writeFeatureText(features[0])
+};
+ol.format.Polyline.prototype.writeGeometry;
+ol.format.Polyline.prototype.writeGeometryText = function(geometry) {
+  goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
+  var flatCoordinates = geometry.getFlatCoordinates();
+  var stride = geometry.getStride();
+  return ol.format.Polyline.encodeDeltas(flatCoordinates, stride, this.factor_)
+};
 goog.provide("ol.format.TopoJSON");
 goog.require("goog.asserts");
 goog.require("goog.object");
@@ -36587,6 +36746,7 @@ goog.require("ol.format.IGC");
 goog.require("ol.format.IGCZ");
 goog.require("ol.format.KML");
 goog.require("ol.format.OSMXML");
+goog.require("ol.format.Polyline");
 goog.require("ol.format.TopoJSON");
 goog.require("ol.format.WFS");
 goog.require("ol.format.WMSCapabilities");
@@ -37316,6 +37476,16 @@ goog.exportProperty(ol.format.KML.prototype, "readProjection", ol.format.KML.pro
 goog.exportSymbol("ol.format.OSMXML", ol.format.OSMXML);
 goog.exportProperty(ol.format.OSMXML.prototype, "readFeatures", ol.format.OSMXML.prototype.readFeatures);
 goog.exportProperty(ol.format.OSMXML.prototype, "readProjection", ol.format.OSMXML.prototype.readProjection);
+goog.exportSymbol("ol.format.Polyline", ol.format.Polyline);
+goog.exportProperty(ol.format.Polyline.prototype, "readFeature", ol.format.Polyline.prototype.readFeature);
+goog.exportProperty(ol.format.Polyline.prototype, "readFeatures", ol.format.Polyline.prototype.readFeatures);
+goog.exportProperty(ol.format.Polyline.prototype, "readGeometry", ol.format.Polyline.prototype.readGeometry);
+goog.exportProperty(ol.format.Polyline.prototype, "readProjection", ol.format.Polyline.prototype.readProjection);
+goog.exportProperty(ol.format.Polyline.prototype, "writeGeometry", ol.format.Polyline.prototype.writeGeometry);
+goog.exportSymbol("ol.format.Polyline.decodeDeltas", ol.format.Polyline.decodeDeltas);
+goog.exportSymbol("ol.format.Polyline.decodeFloats", ol.format.Polyline.decodeFloats);
+goog.exportSymbol("ol.format.Polyline.encodeDeltas", ol.format.Polyline.encodeDeltas);
+goog.exportSymbol("ol.format.Polyline.encodeFloats", ol.format.Polyline.encodeFloats);
 goog.exportSymbol("ol.format.TopoJSON", ol.format.TopoJSON);
 goog.exportProperty(ol.format.TopoJSON.prototype, "readFeatures", ol.format.TopoJSON.prototype.readFeatures);
 goog.exportProperty(ol.format.TopoJSON.prototype, "readProjection", ol.format.TopoJSON.prototype.readProjection);

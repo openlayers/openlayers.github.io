@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Source: src/ol/source/igcsource.js</title>
+    <title>OpenLayers 3 API Documentation - Class: Polyline</title>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <script src="scripts/jquery.min.js"> </script>
@@ -7545,56 +7545,1689 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="igcsource.js.html">Source: src/ol/source/igcsource.js</h1>
+        <h1 class="page-title" data-filename="ol.format.Polyline.html">Class: Polyline</h1>
         
 
 
+
+<section>
     
-    <section>
-        <article>
-            <pre class="prettyprint source"><code>goog.provide('ol.source.IGC');
+<header>
+    <h2>Polyline
+    </h2>
+    
+</header>  
 
-goog.require('ol.format.IGC');
-goog.require('ol.source.StaticVector');
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="Polyline">
+            new ol.format.Polyline<span class="signature">(<span class="optional">opt_options</span>)</span>
+            
+            
+<span class="stability experimental">experimental</span>
 
 
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line19">line 19</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
 
-/**
- * @classdesc
- * Static vector source in IGC format
- *
- * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.IGCOptions=} opt_options Options.
- * @todo api
- */
-ol.source.IGC = function(opt_options) {
+    
+    
+    
+    
+    
+    
+        
 
-  var options = goog.isDef(opt_options) ? opt_options : {};
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            
+            
+            <td colspan=2 class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>Optional configuration object.</p>
+                
 
-  goog.base(this, {
-    format: new ol.format.IGC({
-      altitudeMode: options.altitudeMode
-    }),
-    projection: options.projection,
-    text: options.text,
-    url: options.url,
-    urls: options.urls
-  });
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>The factor by which the coordinates values will be scaled.
+Default is <code>1e5</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
-};
-goog.inherits(ol.source.IGC, ol.source.StaticVector);
-</code></pre>
-        </article>
-    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="ol.format.TextFeature.html">ol.format.TextFeature</a></li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="decodeDeltas">
+            <span class="type-signature static">static</span>ol.format.Polyline.decodeDeltas<span class="signature">(encoded, stride, <span class="optional">opt_factor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;number>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line82">line 82</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Decode a list of n-dimensional points from an encoded string</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>encoded</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                    
+              
+                    
+                
+                <p>An encoded string.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>stride</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                    
+              
+                    
+                
+                <p>The number of dimension of the points in the
+    encoded string.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>The factor by which the resulting numbers will
+    be divided. Default is <code>1e5</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+A list of n-dimensional points.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="decodeFloats">
+            <span class="type-signature static">static</span>ol.format.Polyline.decodeFloats<span class="signature">(encoded, <span class="optional">opt_factor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;number>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line139">line 139</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Decode a list of floating point numbers from an encoded string</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>encoded</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                    
+              
+                    
+                
+                <p>An encoded string.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>The factor by which the result will be divided.
+    Default is <code>1e5</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+A list of floating point numbers.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="encodeDeltas">
+            <span class="type-signature static">static</span>ol.format.Polyline.encodeDeltas<span class="signature">(numbers, stride, <span class="optional">opt_factor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line47">line 47</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Encode a list of n-dimensional points and return an encoded string</p>
+<p>Attention: This function will modify the passed array!</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>numbers</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                    
+              
+                    
+                
+                <p>A list of n-dimensional points.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>stride</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                    
+              
+                    
+                
+                <p>The number of dimension of the points in the list.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>The factor by which the numbers will be
+    multiplied. The remaining decimal places will get rounded away.
+    Default is <code>1e5</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The encoded string.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="encodeFloats">
+            <span class="type-signature static">static</span>ol.format.Polyline.encodeFloats<span class="signature">(numbers, <span class="optional">opt_factor</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line119">line 119</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Encode a list of floating point numbers and return an encoded string</p>
+<p>Attention: This function will modify the passed array!</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>numbers</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                    
+              
+                    
+                
+                <p>A list of floating point numbers.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>The factor by which the numbers will be
+    multiplied. The remaining decimal places will get rounded away.
+    Default is <code>1e5</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The encoded string.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="readFeature">
+            readFeature<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Feature.html">ol.Feature</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line254">line 254</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Read the feature from the Polyline source.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ArrayBuffer</span>
+|
+
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Feature.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="readFeatures">
+            readFeatures<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;<a href="ol.Feature.html">ol.Feature</a>>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line275">line 275</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Read the feature from the source. As Polyline sources contain a single
+feature, this will return the feature in an array.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ArrayBuffer</span>
+|
+
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Features.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="readGeometry">
+            readGeometry<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.geom.Geometry.html">ol.geom.Geometry</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line295">line 295</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Read the geometry from the source.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ArrayBuffer</span>
+|
+
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Geometry.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="readProjection">
+            readProjection<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.proj.Projection.html">ol.proj.Projection</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line317">line 317</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Read the projection from a Polyline source.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ArrayBuffer</span>
+|
+
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Projection.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        
+        <h4 class="name" id="writeGeometry">
+            writeGeometry<span class="signature">(geometry)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="polylineformat.js.html">src/ol/format/polylineformat.js</a>, <a href="polylineformat.js.html#line359">line 359</a>
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Write a single geometry in Polyline format.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>geometry</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Geometry.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Geometry.
+<br />
+
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
 
 
 
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Tue Jun 17 2014 17:42:46 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Tue Jun 17 2014 17:43:03 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Documentation - Source: src/ol/source/igcsource.js</title>
+    <title>OpenLayers 3 API Documentation - Source: src/ol/format/polylineformat.js</title>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <script src="scripts/jquery.min.js"> </script>
@@ -7545,46 +7545,383 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="igcsource.js.html">Source: src/ol/source/igcsource.js</h1>
+        <h1 class="page-title" data-filename="polylineformat.js.html">Source: src/ol/format/polylineformat.js</h1>
         
 
 
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>goog.provide('ol.source.IGC');
+            <pre class="prettyprint source"><code>goog.provide('ol.format.Polyline');
 
-goog.require('ol.format.IGC');
-goog.require('ol.source.StaticVector');
+goog.require('goog.asserts');
+goog.require('ol.Feature');
+goog.require('ol.format.TextFeature');
+goog.require('ol.geom.LineString');
+goog.require('ol.geom.flat.inflate');
+goog.require('ol.proj');
 
 
 
 /**
- * @classdesc
- * Static vector source in IGC format
- *
  * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.IGCOptions=} opt_options Options.
+ * @extends {ol.format.TextFeature}
+ * @param {olx.format.PolylineOptions=} opt_options
+ *     Optional configuration object.
  * @todo api
  */
-ol.source.IGC = function(opt_options) {
+ol.format.Polyline = function(opt_options) {
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
-  goog.base(this, {
-    format: new ol.format.IGC({
-      altitudeMode: options.altitudeMode
-    }),
-    projection: options.projection,
-    text: options.text,
-    url: options.url,
-    urls: options.urls
-  });
+  goog.base(this);
 
+  /**
+   * @private
+   * @type {number}
+   */
+  this.factor_ = goog.isDef(options.factor) ? options.factor : 1e5;
 };
-goog.inherits(ol.source.IGC, ol.source.StaticVector);
+goog.inherits(ol.format.Polyline, ol.format.TextFeature);
+
+
+/**
+ * Encode a list of n-dimensional points and return an encoded string
+ *
+ * Attention: This function will modify the passed array!
+ *
+ * @param {Array.&lt;number>} numbers A list of n-dimensional points.
+ * @param {number} stride The number of dimension of the points in the list.
+ * @param {number=} opt_factor The factor by which the numbers will be
+ *     multiplied. The remaining decimal places will get rounded away.
+ *     Default is `1e5`.
+ * @return {string} The encoded string.
+ * @todo api
+ */
+ol.format.Polyline.encodeDeltas = function(numbers, stride, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1e5;
+  var d;
+
+  var lastNumbers = new Array(stride);
+  for (d = 0; d &lt; stride; ++d) {
+    lastNumbers[d] = 0;
+  }
+
+  var i, ii;
+  for (i = 0, ii = numbers.length; i &lt; ii;) {
+    for (d = 0; d &lt; stride; ++d, ++i) {
+      var num = numbers[i];
+      var delta = num - lastNumbers[d];
+      lastNumbers[d] = num;
+
+      numbers[i] = delta;
+    }
+  }
+
+  return ol.format.Polyline.encodeFloats(numbers, factor);
+};
+
+
+/**
+ * Decode a list of n-dimensional points from an encoded string
+ *
+ * @param {string} encoded An encoded string.
+ * @param {number} stride The number of dimension of the points in the
+ *     encoded string.
+ * @param {number=} opt_factor The factor by which the resulting numbers will
+ *     be divided. Default is `1e5`.
+ * @return {Array.&lt;number>} A list of n-dimensional points.
+ * @todo api
+ */
+ol.format.Polyline.decodeDeltas = function(encoded, stride, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1e5;
+  var d;
+
+  /** @type {Array.&lt;number>} */
+  var lastNumbers = new Array(stride);
+  for (d = 0; d &lt; stride; ++d) {
+    lastNumbers[d] = 0;
+  }
+
+  var numbers = ol.format.Polyline.decodeFloats(encoded, factor);
+
+  var i, ii;
+  for (i = 0, ii = numbers.length; i &lt; ii;) {
+    for (d = 0; d &lt; stride; ++d, ++i) {
+      lastNumbers[d] += numbers[i];
+
+      numbers[i] = lastNumbers[d];
+    }
+  }
+
+  return numbers;
+};
+
+
+/**
+ * Encode a list of floating point numbers and return an encoded string
+ *
+ * Attention: This function will modify the passed array!
+ *
+ * @param {Array.&lt;number>} numbers A list of floating point numbers.
+ * @param {number=} opt_factor The factor by which the numbers will be
+ *     multiplied. The remaining decimal places will get rounded away.
+ *     Default is `1e5`.
+ * @return {string} The encoded string.
+ * @todo api
+ */
+ol.format.Polyline.encodeFloats = function(numbers, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1e5;
+  var i, ii;
+  for (i = 0, ii = numbers.length; i &lt; ii; ++i) {
+    numbers[i] = Math.round(numbers[i] * factor);
+  }
+
+  return ol.format.Polyline.encodeSignedIntegers(numbers);
+};
+
+
+/**
+ * Decode a list of floating point numbers from an encoded string
+ *
+ * @param {string} encoded An encoded string.
+ * @param {number=} opt_factor The factor by which the result will be divided.
+ *     Default is `1e5`.
+ * @return {Array.&lt;number>} A list of floating point numbers.
+ * @todo api
+ */
+ol.format.Polyline.decodeFloats = function(encoded, opt_factor) {
+  var factor = goog.isDef(opt_factor) ? opt_factor : 1e5;
+  var numbers = ol.format.Polyline.decodeSignedIntegers(encoded);
+  var i, ii;
+  for (i = 0, ii = numbers.length; i &lt; ii; ++i) {
+    numbers[i] /= factor;
+  }
+  return numbers;
+};
+
+
+/**
+ * Encode a list of signed integers and return an encoded string
+ *
+ * Attention: This function will modify the passed array!
+ *
+ * @param {Array.&lt;number>} numbers A list of signed integers.
+ * @return {string} The encoded string.
+ */
+ol.format.Polyline.encodeSignedIntegers = function(numbers) {
+  var i, ii;
+  for (i = 0, ii = numbers.length; i &lt; ii; ++i) {
+    var num = numbers[i];
+    numbers[i] = (num &lt; 0) ? ~(num &lt;&lt; 1) : (num &lt;&lt; 1);
+  }
+  return ol.format.Polyline.encodeUnsignedIntegers(numbers);
+};
+
+
+/**
+ * Decode a list of signed integers from an encoded string
+ *
+ * @param {string} encoded An encoded string.
+ * @return {Array.&lt;number>} A list of signed integers.
+ */
+ol.format.Polyline.decodeSignedIntegers = function(encoded) {
+  var numbers = ol.format.Polyline.decodeUnsignedIntegers(encoded);
+  var i, ii;
+  for (i = 0, ii = numbers.length; i &lt; ii; ++i) {
+    var num = numbers[i];
+    numbers[i] = (num &amp; 1) ? ~(num >> 1) : (num >> 1);
+  }
+  return numbers;
+};
+
+
+/**
+ * Encode a list of unsigned integers and return an encoded string
+ *
+ * @param {Array.&lt;number>} numbers A list of unsigned integers.
+ * @return {string} The encoded string.
+ */
+ol.format.Polyline.encodeUnsignedIntegers = function(numbers) {
+  var encoded = '';
+  var i, ii;
+  for (i = 0, ii = numbers.length; i &lt; ii; ++i) {
+    encoded += ol.format.Polyline.encodeUnsignedInteger(numbers[i]);
+  }
+  return encoded;
+};
+
+
+/**
+ * Decode a list of unsigned integers from an encoded string
+ *
+ * @param {string} encoded An encoded string.
+ * @return {Array.&lt;number>} A list of unsigned integers.
+ */
+ol.format.Polyline.decodeUnsignedIntegers = function(encoded) {
+  var numbers = [];
+  var current = 0;
+  var shift = 0;
+  var i, ii;
+  for (i = 0, ii = encoded.length; i &lt; ii; ++i) {
+    var b = encoded.charCodeAt(i) - 63;
+    current |= (b &amp; 0x1f) &lt;&lt; shift;
+    if (b &lt; 0x20) {
+      numbers.push(current);
+      current = 0;
+      shift = 0;
+    } else {
+      shift += 5;
+    }
+  }
+  return numbers;
+};
+
+
+/**
+ * Encode one single unsigned integer and return an encoded string
+ *
+ * @param {number} num Unsigned integer that should be encoded.
+ * @return {string} The encoded string.
+ */
+ol.format.Polyline.encodeUnsignedInteger = function(num) {
+  var value, encoded = '';
+  while (num >= 0x20) {
+    value = (0x20 | (num &amp; 0x1f)) + 63;
+    encoded += String.fromCharCode(value);
+    num >>= 5;
+  }
+  value = num + 63;
+  encoded += String.fromCharCode(value);
+  return encoded;
+};
+
+
+/**
+ * Read the feature from the Polyline source.
+ *
+ * @function
+ * @param {ArrayBuffer|Document|Node|Object|string} source Source.
+ * @return {ol.Feature} Feature.
+ * @todo api
+ */
+ol.format.Polyline.prototype.readFeature;
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.Polyline.prototype.readFeatureFromText = function(text) {
+  var geometry = this.readGeometryFromText(text);
+  return new ol.Feature(geometry);
+};
+
+
+/**
+ * Read the feature from the source. As Polyline sources contain a single
+ * feature, this will return the feature in an array.
+ *
+ * @function
+ * @param {ArrayBuffer|Document|Node|Object|string} source Source.
+ * @return {Array.&lt;ol.Feature>} Features.
+ * @todo api
+ */
+ol.format.Polyline.prototype.readFeatures;
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.Polyline.prototype.readFeaturesFromText = function(text) {
+  var feature = this.readFeatureFromText(text);
+  return [feature];
+};
+
+
+/**
+ * Read the geometry from the source.
+ *
+ * @function
+ * @param {ArrayBuffer|Document|Node|Object|string} source Source.
+ * @return {ol.geom.Geometry} Geometry.
+ * @todo api
+ */
+ol.format.Polyline.prototype.readGeometry;
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.Polyline.prototype.readGeometryFromText = function(text) {
+  var flatCoordinates = ol.format.Polyline.decodeDeltas(text, 2, this.factor_);
+  var coordinates = ol.geom.flat.inflate.coordinates(
+      flatCoordinates, 0, flatCoordinates.length, 2);
+  return new ol.geom.LineString(coordinates);
+};
+
+
+/**
+ * Read the projection from a Polyline source.
+ *
+ * @function
+ * @param {ArrayBuffer|Document|Node|Object|string} source Source.
+ * @return {ol.proj.Projection} Projection.
+ * @todo api
+ */
+ol.format.Polyline.prototype.readProjection;
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.Polyline.prototype.readProjectionFromText = function(text) {
+  return ol.proj.get('EPSG:4326');
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.Polyline.prototype.writeFeatureText = function(feature) {
+  var geometry = feature.getGeometry();
+  if (goog.isDefAndNotNull(geometry)) {
+    return this.writeGeometryText(geometry);
+  } else {
+    goog.asserts.fail();
+    return '';
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.Polyline.prototype.writeFeaturesText = function(features) {
+  goog.asserts.assert(features.length == 1);
+  return this.writeFeatureText(features[0]);
+};
+
+
+/**
+ * Write a single geometry in Polyline format.
+ *
+ * @function
+ * @param {ol.geom.Geometry} geometry Geometry.
+ * @return {string} Geometry.
+ * @todo api
+ */
+ol.format.Polyline.prototype.writeGeometry;
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.Polyline.prototype.writeGeometryText = function(geometry) {
+  goog.asserts.assertInstanceof(geometry, ol.geom.LineString);
+  var flatCoordinates = geometry.getFlatCoordinates();
+  var stride = geometry.getStride();
+  return ol.format.Polyline.encodeDeltas(flatCoordinates, stride, this.factor_);
+};
 </code></pre>
         </article>
     </section>
@@ -7594,7 +7931,7 @@ goog.inherits(ol.source.IGC, ol.source.StaticVector);
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Tue Jun 17 2014 17:42:46 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Tue Jun 17 2014 17:42:30 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
