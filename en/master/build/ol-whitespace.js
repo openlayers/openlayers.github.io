@@ -33042,10 +33042,7 @@ ol.interaction.Modify.prototype.handlePointerDown = function(evt) {
     var geometry = (vertexFeature.getGeometry());
     var vertex = geometry.getCoordinates();
     var vertexExtent = ol.extent.boundingExtent([vertex]);
-    var segmentDataMatches = [];
-    this.rBush_.forEachInExtent(vertexExtent, function(segmentData) {
-      segmentDataMatches.push(segmentData)
-    });
+    var segmentDataMatches = this.rBush_.getInExtent(vertexExtent);
     var distinctFeatures = {};
     for(var i = 0, ii = segmentDataMatches.length;i < ii;++i) {
       var segmentDataMatch = segmentDataMatches[i];
