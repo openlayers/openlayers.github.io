@@ -17670,6 +17670,7 @@ ol.source.TileOptions;
 ol.source.Tile = function(options) {
   goog.base(this, {attributions:options.attributions, extent:options.extent, logo:options.logo, projection:options.projection});
   this.opaque_ = goog.isDef(options.opaque) ? options.opaque : false;
+  this.tilePixelRatio_ = goog.isDef(options.tilePixelRatio) ? options.tilePixelRatio : 1;
   this.tileGrid = goog.isDef(options.tileGrid) ? options.tileGrid : null
 };
 goog.inherits(ol.source.Tile, ol.source.Source);
@@ -17720,7 +17721,7 @@ ol.source.Tile.prototype.getTileGridForProjection = function(projection) {
 };
 ol.source.Tile.prototype.getTilePixelSize = function(z, pixelRatio, projection) {
   var tileGrid = this.getTileGridForProjection(projection);
-  return tileGrid.getTileSize(z)
+  return tileGrid.getTileSize(z) * this.tilePixelRatio_
 };
 ol.source.Tile.prototype.useTile = goog.nullFunction;
 goog.provide("ol.renderer.Layer");
@@ -23139,13 +23140,13 @@ ol.structs.RBush.prototype.splitRoot_ = function(node1, node2) {
   this.root_ = new ol.structs.RBushNode(extent, height, children, null)
 };
 ol.structs.RBush.prototype.update = function(extent, value) {
-  if(goog.DEBUG && this.readers_) {
-    throw new Error("cannot update value while reading");
-  }
   var key = this.getKey_(value);
   var currentExtent = this.valueExtent_[key];
   goog.asserts.assert(goog.isDef(currentExtent));
   if(!ol.extent.equals(currentExtent, extent)) {
+    if(goog.DEBUG && this.readers_) {
+      throw new Error("cannot update extent while reading");
+    }
     var removed = this.remove_(currentExtent, value);
     goog.asserts.assert(removed);
     this.insert_(extent, value, this.root_.height - 1);
@@ -34313,7 +34314,7 @@ goog.require("ol.TileUrlFunction");
 goog.require("ol.TileUrlFunctionType");
 goog.require("ol.source.Tile");
 ol.source.TileImage = function(options) {
-  goog.base(this, {attributions:options.attributions, extent:options.extent, logo:options.logo, opaque:options.opaque, projection:options.projection, tileGrid:options.tileGrid});
+  goog.base(this, {attributions:options.attributions, extent:options.extent, logo:options.logo, opaque:options.opaque, projection:options.projection, tileGrid:options.tileGrid, tilePixelRatio:options.tilePixelRatio});
   this.tileUrlFunction = goog.isDef(options.tileUrlFunction) ? options.tileUrlFunction : ol.TileUrlFunction.nullTileUrlFunction;
   this.crossOrigin = goog.isDef(options.crossOrigin) ? options.crossOrigin : null;
   this.tileCache = new ol.TileCache;
@@ -36403,7 +36404,7 @@ ol.source.WMTS = function(options) {
     }
     return new ol.TileCoord(tileCoord.z, x, y)
   }, tileUrlFunction);
-  goog.base(this, {attributions:options.attributions, crossOrigin:options.crossOrigin, extent:options.extent, logo:options.logo, projection:options.projection, tileGrid:tileGrid, tileLoadFunction:options.tileLoadFunction, tileUrlFunction:tileUrlFunction})
+  goog.base(this, {attributions:options.attributions, crossOrigin:options.crossOrigin, extent:options.extent, logo:options.logo, projection:options.projection, tileGrid:tileGrid, tileLoadFunction:options.tileLoadFunction, tilePixelRatio:options.tilePixelRatio, tileUrlFunction:tileUrlFunction})
 };
 goog.inherits(ol.source.WMTS, ol.source.TileImage);
 ol.source.WMTS.prototype.getDimensions = function() {
@@ -38029,9 +38030,7 @@ goog.exportSymbol("ol.proj.common.add", ol.proj.common.add);
 goog.exportSymbol("ol.proj.configureProj4jsProjection", ol.proj.configureProj4jsProjection);
 goog.exportSymbol("ol.proj.get", ol.proj.get);
 goog.exportSymbol("ol.proj.getTransform", ol.proj.getTransform);
-goog.exportSymbol("ol.proj.getTransformFromProjections", ol.proj.getTransformFromProjections);
 goog.exportSymbol("ol.proj.transform", ol.proj.transform);
-goog.exportSymbol("ol.proj.transformWithProjections", ol.proj.transformWithProjections);
 goog.exportProperty(ol.render.Event.prototype, "context", ol.render.Event.prototype.context);
 goog.exportProperty(ol.render.Event.prototype, "frameState", ol.render.Event.prototype.frameState);
 goog.exportProperty(ol.render.Event.prototype, "glContext", ol.render.Event.prototype.glContext);
@@ -38049,10 +38048,12 @@ goog.exportProperty(ol.render.canvas.Immediate.prototype, "setFillStrokeStyle", 
 goog.exportProperty(ol.render.canvas.Immediate.prototype, "setImageStyle", ol.render.canvas.Immediate.prototype.setImageStyle);
 goog.exportProperty(ol.render.canvas.Immediate.prototype, "setTextStyle", ol.render.canvas.Immediate.prototype.setTextStyle);
 goog.exportSymbol("ol.source.BingMaps", ol.source.BingMaps);
+goog.exportProperty(ol.source.BingMaps.prototype, "getTileGrid", ol.source.BingMaps.prototype.getTileGrid);
 goog.exportProperty(ol.source.BingMaps.prototype, "getTileLoadFunction", ol.source.BingMaps.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.BingMaps.prototype, "getTileUrlFunction", ol.source.BingMaps.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.BingMaps.prototype, "setTileLoadFunction", ol.source.BingMaps.prototype.setTileLoadFunction);
 goog.exportProperty(ol.source.BingMaps.prototype, "setTileUrlFunction", ol.source.BingMaps.prototype.setTileUrlFunction);
+goog.exportSymbol("ol.source.BingMaps.TOS_ATTRIBUTION", ol.source.BingMaps.TOS_ATTRIBUTION);
 goog.exportSymbol("ol.source.BingMaps.TOS_ATTRIBUTION", ol.source.BingMaps.TOS_ATTRIBUTION);
 goog.exportProperty(ol.source.FormatVector.prototype, "readFeatures", ol.source.FormatVector.prototype.readFeatures);
 goog.exportSymbol("ol.source.GPX", ol.source.GPX);
@@ -38081,16 +38082,22 @@ goog.exportSymbol("ol.source.KML", ol.source.KML);
 goog.exportProperty(ol.source.KML.prototype, "readFeatures", ol.source.KML.prototype.readFeatures);
 goog.exportSymbol("ol.source.MapGuide", ol.source.MapGuide);
 goog.exportSymbol("ol.source.MapQuest", ol.source.MapQuest);
+goog.exportProperty(ol.source.MapQuest.prototype, "getTileGrid", ol.source.MapQuest.prototype.getTileGrid);
 goog.exportProperty(ol.source.MapQuest.prototype, "getTileLoadFunction", ol.source.MapQuest.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.MapQuest.prototype, "getTileUrlFunction", ol.source.MapQuest.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.MapQuest.prototype, "setTileLoadFunction", ol.source.MapQuest.prototype.setTileLoadFunction);
 goog.exportProperty(ol.source.MapQuest.prototype, "setUrl", ol.source.MapQuest.prototype.setUrl);
+goog.exportProperty(ol.source.MapQuest.prototype, "setUrl", ol.source.MapQuest.prototype.setUrl);
 goog.exportSymbol("ol.source.OSM", ol.source.OSM);
+goog.exportProperty(ol.source.OSM.prototype, "getTileGrid", ol.source.OSM.prototype.getTileGrid);
 goog.exportProperty(ol.source.OSM.prototype, "getTileLoadFunction", ol.source.OSM.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.OSM.prototype, "getTileUrlFunction", ol.source.OSM.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.OSM.prototype, "setTileLoadFunction", ol.source.OSM.prototype.setTileLoadFunction);
 goog.exportProperty(ol.source.OSM.prototype, "setUrl", ol.source.OSM.prototype.setUrl);
+goog.exportProperty(ol.source.OSM.prototype, "setUrl", ol.source.OSM.prototype.setUrl);
 goog.exportSymbol("ol.source.OSM.DATA_ATTRIBUTION", ol.source.OSM.DATA_ATTRIBUTION);
+goog.exportSymbol("ol.source.OSM.DATA_ATTRIBUTION", ol.source.OSM.DATA_ATTRIBUTION);
+goog.exportSymbol("ol.source.OSM.TILE_ATTRIBUTION", ol.source.OSM.TILE_ATTRIBUTION);
 goog.exportSymbol("ol.source.OSM.TILE_ATTRIBUTION", ol.source.OSM.TILE_ATTRIBUTION);
 goog.exportSymbol("ol.source.OSMXML", ol.source.OSMXML);
 goog.exportProperty(ol.source.OSMXML.prototype, "readFeatures", ol.source.OSMXML.prototype.readFeatures);
@@ -38103,9 +38110,11 @@ goog.exportProperty(ol.source.Source.prototype, "once", ol.source.Source.prototy
 goog.exportProperty(ol.source.Source.prototype, "un", ol.source.Source.prototype.un);
 goog.exportProperty(ol.source.Source.prototype, "unByKey", ol.source.Source.prototype.unByKey);
 goog.exportSymbol("ol.source.Stamen", ol.source.Stamen);
+goog.exportProperty(ol.source.Stamen.prototype, "getTileGrid", ol.source.Stamen.prototype.getTileGrid);
 goog.exportProperty(ol.source.Stamen.prototype, "getTileLoadFunction", ol.source.Stamen.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.Stamen.prototype, "getTileUrlFunction", ol.source.Stamen.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.Stamen.prototype, "setTileLoadFunction", ol.source.Stamen.prototype.setTileLoadFunction);
+goog.exportProperty(ol.source.Stamen.prototype, "setUrl", ol.source.Stamen.prototype.setUrl);
 goog.exportProperty(ol.source.Stamen.prototype, "setUrl", ol.source.Stamen.prototype.setUrl);
 goog.exportSymbol("ol.source.StaticVector", ol.source.StaticVector);
 goog.exportProperty(ol.source.StaticVector.prototype, "readFeatures", ol.source.StaticVector.prototype.readFeatures);
@@ -38118,11 +38127,13 @@ goog.exportProperty(ol.source.Tile.prototype, "un", ol.source.Tile.prototype.un)
 goog.exportProperty(ol.source.Tile.prototype, "unByKey", ol.source.Tile.prototype.unByKey);
 goog.exportSymbol("ol.source.TileDebug", ol.source.TileDebug);
 goog.exportSymbol("ol.source.TileImage", ol.source.TileImage);
+goog.exportProperty(ol.source.TileImage.prototype, "getTileGrid", ol.source.TileImage.prototype.getTileGrid);
 goog.exportProperty(ol.source.TileImage.prototype, "getTileLoadFunction", ol.source.TileImage.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.TileImage.prototype, "getTileUrlFunction", ol.source.TileImage.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.TileImage.prototype, "setTileLoadFunction", ol.source.TileImage.prototype.setTileLoadFunction);
 goog.exportProperty(ol.source.TileImage.prototype, "setTileUrlFunction", ol.source.TileImage.prototype.setTileUrlFunction);
 goog.exportSymbol("ol.source.TileJSON", ol.source.TileJSON);
+goog.exportProperty(ol.source.TileJSON.prototype, "getTileGrid", ol.source.TileJSON.prototype.getTileGrid);
 goog.exportProperty(ol.source.TileJSON.prototype, "getTileLoadFunction", ol.source.TileJSON.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.TileJSON.prototype, "getTileUrlFunction", ol.source.TileJSON.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.TileJSON.prototype, "setTileLoadFunction", ol.source.TileJSON.prototype.setTileLoadFunction);
@@ -38131,12 +38142,17 @@ goog.exportSymbol("ol.source.TileVector", ol.source.TileVector);
 goog.exportProperty(ol.source.TileVector.prototype, "readFeatures", ol.source.TileVector.prototype.readFeatures);
 goog.exportSymbol("ol.source.TileWMS", ol.source.TileWMS);
 goog.exportProperty(ol.source.TileWMS.prototype, "getGetFeatureInfoUrl", ol.source.TileWMS.prototype.getGetFeatureInfoUrl);
+goog.exportProperty(ol.source.TileWMS.prototype, "getGetFeatureInfoUrl", ol.source.TileWMS.prototype.getGetFeatureInfoUrl);
 goog.exportProperty(ol.source.TileWMS.prototype, "getParams", ol.source.TileWMS.prototype.getParams);
+goog.exportProperty(ol.source.TileWMS.prototype, "getParams", ol.source.TileWMS.prototype.getParams);
+goog.exportProperty(ol.source.TileWMS.prototype, "getTileGrid", ol.source.TileWMS.prototype.getTileGrid);
 goog.exportProperty(ol.source.TileWMS.prototype, "getTileLoadFunction", ol.source.TileWMS.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.TileWMS.prototype, "getTileUrlFunction", ol.source.TileWMS.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.TileWMS.prototype, "getUrls", ol.source.TileWMS.prototype.getUrls);
+goog.exportProperty(ol.source.TileWMS.prototype, "getUrls", ol.source.TileWMS.prototype.getUrls);
 goog.exportProperty(ol.source.TileWMS.prototype, "setTileLoadFunction", ol.source.TileWMS.prototype.setTileLoadFunction);
 goog.exportProperty(ol.source.TileWMS.prototype, "setTileUrlFunction", ol.source.TileWMS.prototype.setTileUrlFunction);
+goog.exportProperty(ol.source.TileWMS.prototype, "updateParams", ol.source.TileWMS.prototype.updateParams);
 goog.exportProperty(ol.source.TileWMS.prototype, "updateParams", ol.source.TileWMS.prototype.updateParams);
 goog.exportSymbol("ol.source.TopoJSON", ol.source.TopoJSON);
 goog.exportProperty(ol.source.TopoJSON.prototype, "readFeatures", ol.source.TopoJSON.prototype.readFeatures);
@@ -38154,6 +38170,7 @@ goog.exportProperty(ol.source.Vector.prototype, "removeFeature", ol.source.Vecto
 goog.exportProperty(ol.source.VectorEvent.prototype, "feature", ol.source.VectorEvent.prototype.feature);
 goog.exportSymbol("ol.source.WMTS", ol.source.WMTS);
 goog.exportProperty(ol.source.WMTS.prototype, "getDimensions", ol.source.WMTS.prototype.getDimensions);
+goog.exportProperty(ol.source.WMTS.prototype, "getTileGrid", ol.source.WMTS.prototype.getTileGrid);
 goog.exportProperty(ol.source.WMTS.prototype, "getTileLoadFunction", ol.source.WMTS.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.WMTS.prototype, "getTileUrlFunction", ol.source.WMTS.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.WMTS.prototype, "setTileLoadFunction", ol.source.WMTS.prototype.setTileLoadFunction);
@@ -38161,11 +38178,14 @@ goog.exportProperty(ol.source.WMTS.prototype, "setTileUrlFunction", ol.source.WM
 goog.exportProperty(ol.source.WMTS.prototype, "updateDimensions", ol.source.WMTS.prototype.updateDimensions);
 goog.exportSymbol("ol.source.WMTS.optionsFromCapabilities", ol.source.WMTS.optionsFromCapabilities);
 goog.exportSymbol("ol.source.XYZ", ol.source.XYZ);
+goog.exportProperty(ol.source.XYZ.prototype, "getTileGrid", ol.source.XYZ.prototype.getTileGrid);
 goog.exportProperty(ol.source.XYZ.prototype, "getTileLoadFunction", ol.source.XYZ.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.XYZ.prototype, "getTileUrlFunction", ol.source.XYZ.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.XYZ.prototype, "setTileLoadFunction", ol.source.XYZ.prototype.setTileLoadFunction);
 goog.exportProperty(ol.source.XYZ.prototype, "setUrl", ol.source.XYZ.prototype.setUrl);
+goog.exportProperty(ol.source.XYZ.prototype, "setUrl", ol.source.XYZ.prototype.setUrl);
 goog.exportSymbol("ol.source.Zoomify", ol.source.Zoomify);
+goog.exportProperty(ol.source.Zoomify.prototype, "getTileGrid", ol.source.Zoomify.prototype.getTileGrid);
 goog.exportProperty(ol.source.Zoomify.prototype, "getTileLoadFunction", ol.source.Zoomify.prototype.getTileLoadFunction);
 goog.exportProperty(ol.source.Zoomify.prototype, "getTileUrlFunction", ol.source.Zoomify.prototype.getTileUrlFunction);
 goog.exportProperty(ol.source.Zoomify.prototype, "setTileLoadFunction", ol.source.Zoomify.prototype.setTileLoadFunction);
