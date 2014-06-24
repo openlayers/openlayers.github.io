@@ -8398,8 +8398,9 @@
             
             
             
-            <td class="description last"><p>A conditional modifier (i.e. Shift key) that determines if the interaction is
-active or not, default is always.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+Default is <a href="ol.events.condition.html#always"><code>ol.events.condition.always</code></a>.</p></td>
         </tr>
 	
 	
@@ -8648,8 +8649,9 @@ active or not, default is always.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (i.e. Shift key) that determines if the interaction is
-active or not, default is shify key.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+Default is <a href="ol.events.condition.html#shiftKeyOnly"><code>ol.events.condition.shiftKeyOnly</code></a>.</p></td>
         </tr>
 	
 	
@@ -8759,8 +8761,9 @@ active or not, default is shify key.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (i.e. Shift key) that determines if the interaction is
-active or not, default is both shift and alt keys.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+Default is <a href="ol.events.condition.html#altShiftKeysOnly"><code>ol.events.condition.altShiftKeysOnly</code></a>.</p></td>
         </tr>
 	
 	
@@ -8870,8 +8873,9 @@ active or not, default is both shift and alt keys.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (i.e. Shift key) that determines if the interaction is
-active or not, default is shift key.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+Default is <a href="ol.events.condition.html#shiftKeyOnly"><code>ol.events.condition.shiftKeyOnly</code></a>.</p></td>
         </tr>
 	
 	
@@ -9251,9 +9255,9 @@ active or not, default is shift key.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (e.g. shift key) that determines if the interaction is
-active (i.e. a click adds a vertex) or not. By default, a click with no modifier
-keys adds a vertex.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+By default <a href="ol.events.condition.html#noModifierKeys"><code>ol.events.condition.noModifierKeys</code></a> adds a vertex.</p></td>
         </tr>
 	
 	
@@ -9363,8 +9367,10 @@ keys adds a vertex.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (i.e. Shift key) that determines if the interaction is
-active or not, default is no modifiers.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+Default is <a href="ol.events.condition.html#noModifierKeys"><code>ol.events.condition.noModifierKeys</code></a> and
+<a href="ol.events.condition.html#targetNotEditable"><code>ol.events.condition.targetNotEditable</code></a>.</p></td>
         </tr>
 	
 	
@@ -9542,8 +9548,9 @@ active or not, default is no modifiers.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (i.e. Shift key) that determines if the interaction is
-active or not, default is no modifiers.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+Default is <a href="ol.events.condition.html#targetNotEditable"><code>ol.events.condition.targetNotEditable</code></a>.</p></td>
         </tr>
 	
 	
@@ -9687,8 +9694,10 @@ active or not, default is no modifiers.</p></td>
             
             
             
-            <td class="description last"><p>Condition that determines which event results in a vertex deletion. Default
-is a <code>singleclick</code> event with no modifier keys.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+By default, <a href="ol.events.condition.html#singleClick"><code>ol.events.condition.singleClick</code></a> with
+<a href="ol.events.condition.html#noModifierKeys"><code>ol.events.condition.noModifierKeys</code></a> results in a vertex deletion.</p></td>
         </tr>
 	
 	
@@ -10232,9 +10241,10 @@ vertex for editing. Default is 10 pixels.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (e.g. alt key) that determines if the feature is added
-to the current selection. By default, this is never. Note that the default
-toggle condition allows features to be added.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+By default, this is <a href="ol.events.condition.html#never"><code>ol.events.condition.never</code></a>, though note that the
+default toggle condition allows features to be added.</p></td>
         </tr>
 	
 	
@@ -10268,9 +10278,9 @@ toggle condition allows features to be added.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (e.g. shift key) that determines if the interaction is
-active (i.e. selection occurs) or not. By default, a click with no modifier
-keys toggles the selection.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+By default, <a href="ol.events.condition.html#singleClick"><code>ol.events.condition.singleClick</code></a> toggles the selection.</p></td>
         </tr>
 	
 	
@@ -10380,8 +10390,9 @@ absent, all visible layers will be considered selectable.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (e.g. alt key) that determines if the feature is
-removed from the current selection. By default, this is never.</p></td>
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+By default, this is <a href="ol.events.condition.html#never"><code>ol.events.condition.never</code></a>.</p></td>
         </tr>
 	
 	
@@ -10415,8 +10426,9 @@ removed from the current selection. By default, this is never.</p></td>
             
             
             
-            <td class="description last"><p>A conditional modifier (e.g. shift key) that determines if the selection is
-toggled in the current selection. By default, a shift-click toggles the
+            <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
+to indicate whether that event should be handled.
+By default, <a href="ol.events.condition.html#shiftKeyOnly"><code>ol.events.condition.shiftKeyOnly</code></a> toggles the
 feature in the current selection.</p></td>
         </tr>
 	
@@ -10464,7 +10476,7 @@ feature in the current selection.</p></td>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Thu Jun 19 2014 16:22:33 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Tue Jun 24 2014 13:31:04 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
