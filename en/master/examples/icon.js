@@ -34,7 +34,7 @@ var rasterLayer = new ol.layer.Tile({
 var map = new ol.Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById('map'),
-  view: new ol.View2D({
+  view: new ol.View({
     center: [0, 0],
     zoom: 3
   })

@@ -35,7 +35,7 @@ var map = new ol.Map({
     openSeaMapLayer
   ],
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     maxZoom: 18,
     center: [-244780.24508882355, 5986452.183179816],
     zoom: 15

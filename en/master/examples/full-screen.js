@@ -1,4 +1,4 @@
-var view = new ol.View2D({
+var view = new ol.View({
   center: [-9101767, 2822912],
   zoom: 14
 });

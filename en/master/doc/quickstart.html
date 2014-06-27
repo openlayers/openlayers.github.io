@@ -60,7 +60,7 @@
             source: <span class="keyword">new</span> ol.source.MapQuest({layer: <span class="string">'sat'</span>})
           })
         ],
-        view: <span class="keyword">new</span> ol.View2D({
+        view: <span class="keyword">new</span> ol.View({
           center: ol.proj.transform([<span class="number">37.41</span>, <span class="number">8.82</span>], <span class="string">'EPSG:4326'</span>, <span class="string">'EPSG:3857'</span>),
           zoom: <span class="number">4</span>
         })
@@ -95,7 +95,7 @@
         source: <span class="keyword">new</span> ol.source.MapQuest({layer: <span class="string">'sat'</span>})
       })
     ],
-    view: <span class="keyword">new</span> ol.View2D({
+    view: <span class="keyword">new</span> ol.View({
       center: ol.proj.transform([<span class="number">37.41</span>, <span class="number">8.82</span>], <span class="string">'EPSG:4326'</span>, <span class="string">'EPSG:3857'</span>),
       zoom: <span class="number">4</span>
     })
@@ -112,8 +112,8 @@
       })
     ]</code></pre>
 <p>Layers in OpenLayers 3 are defined with a type (Image, Tile or Vector) which contains a source. The source is the protocol used to get the map tiles. You can consult the list of <a href="/en/master/apidoc/ol.source.html">available layer sources here</a></p>
-<p>The next part of the <code>Map</code> object is the <code>View</code>. The view allow to specify the center, resolution, and rotation of the map. Right now, only <code>View2D</code> is supported, but other views should be available at some point. The simplest way to define a view is to define a center point and a zoom level. Note that zoom level 0 is zoomed out.</p>
-<pre><code class="language-js">    view: <span class="keyword">new</span> ol.View2D({
+<p>The next part of the <code>Map</code> object is the <code>View</code>. The view allow to specify the center, resolution, and rotation of the map. The simplest way to define a view is to define a center point and a zoom level.  Note that zoom level 0 is zoomed out.</p>
+<pre><code class="language-js">    view: <span class="keyword">new</span> ol.View({
       center: ol.proj.transform([<span class="number">37.41</span>, <span class="number">8.82</span>], <span class="string">'EPSG:4326'</span>, <span class="string">'EPSG:3857'</span>),
       zoom: <span class="number">4</span>
     })</code></pre>

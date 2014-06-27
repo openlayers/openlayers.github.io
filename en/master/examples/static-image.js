@@ -24,7 +24,7 @@ var map = new ol.Map({
     })
   ],
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     projection: pixelProjection,
     center: ol.extent.getCenter(pixelProjection.getExtent()),
     zoom: 2

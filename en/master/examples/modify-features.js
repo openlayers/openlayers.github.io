@@ -21,7 +21,7 @@ var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([select, modify]),
   layers: [raster, vector],
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     center: [0, 0],
     zoom: 2
   })

@@ -41,12 +41,12 @@
   <span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({target: <span class="string">'map'</span>});
 </span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
 <h2 id="view">View</h2>
-<p><code>ol.Map</code> is not responsible for things like center, zoom level and projection of the map. Instead, these are properties of an <code>ol.View</code> instance - typically an <code>ol.View2D</code> for 2D maps. The reason for this abstraction is the idea of instantly switching e.g. between a 2D and a tilted 3D view, without the need to maintain two copies of the <code>layers</code>.</p>
-<pre><code class="language-js">  map.setView(<span class="keyword">new</span> ol.View2D({
+<p><code>ol.Map</code> is not responsible for things like center, zoom level and projection of the map. Instead, these are properties of an <code>ol.View</code> instance.</p>
+<pre><code class="language-js">  map.setView(<span class="keyword">new</span> ol.View({
     center: [<span class="number">0</span>, <span class="number">0</span>],
     zoom: <span class="number">2</span>
   }));</code></pre>
-<p>An <code>ol.View2D</code> also has a <code>projection</code>. The projection determines the coordinate system of the <code>center</code> and the units for map resolution calculations. If not specified (like in the above snippet), the default projection is Spherical Mercator (EPSG:3857), with meters as map units.</p>
+<p>An <code>ol.View</code> also has a <code>projection</code>. The projection determines the coordinate system of the <code>center</code> and the units for map resolution calculations. If not specified (like in the above snippet), the default projection is Spherical Mercator (EPSG:3857), with meters as map units.</p>
 <p>The <code>zoom</code> option is a convenient way to specify the map resolution. The available zoom levels are determined by <code>maxZoom</code> (default: 28), <code>zoomFactor</code> (default: 2) and <code>maxResolution</code> (default is calculated in such a way that the projection&#39;s validity extent fits in a 256x256 pixel tile). Starting at zoom level 0 with a resolution of <code>maxResolution</code> units per pixel, subsequent zoom levels are calculated by dividing the previous zoom level&#39;s resolution by <code>zoomFactor</code>, until zoom level <code>maxZoom</code> is reached.</p>
 <h2 id="source">Source</h2>
 <p>To get remote data for a layer, OpenLayers 3 uses <code>ol.source.Source</code> subclasses. These are available for free and commercial map tile services like OpenStreetMap or Bing, for OGC sources like WMS or WMTS, and for vector data in formats like GeoJSON or KML.</p>
@@ -66,7 +66,7 @@
     layers: [
       <span class="keyword">new</span> ol.layer.Tile({source: <span class="keyword">new</span> ol.source.OSM()})
     ],
-    view: <span class="keyword">new</span> ol.View2D({
+    view: <span class="keyword">new</span> ol.View({
       center: [<span class="number">0</span>, <span class="number">0</span>],
       zoom: <span class="number">2</span>
     }),

@@ -7,7 +7,7 @@ var imagery = new ol.layer.Tile({
 var map = new ol.Map({
   layers: [imagery],
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     center: ol.proj.transform([-120, 50], 'EPSG:4326', 'EPSG:3857'),
     zoom: 6
   })

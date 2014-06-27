@@ -1,5 +1,5 @@
 // creating the view
-var view = new ol.View2D({
+var view = new ol.View({
   center: ol.proj.transform([5.8713, 45.6452], 'EPSG:4326', 'EPSG:3857'),
   zoom: 19
 });
@@ -125,7 +125,7 @@ map.beforeRender(function(map, frameState) {
     previousM = m;
     // interpolate position along positions LineString
     var c = positions.getCoordinateAtM(m, true);
-    var view = frameState.view2DState;
+    var view = frameState.viewState;
     if (c) {
       view.center = getCenterWithHeading(c, -c[2], view.resolution);
       view.rotation = -c[2];

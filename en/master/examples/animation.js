@@ -32,7 +32,7 @@ var rome = ol.proj.transform([12.5, 41.9], 'EPSG:4326', 'EPSG:3857');
 var bern = ol.proj.transform([7.4458, 46.95], 'EPSG:4326', 'EPSG:3857');
 var madrid = ol.proj.transform([-3.683333, 40.4], 'EPSG:4326', 'EPSG:3857');
 
-var view = new ol.View2D({
+var view = new ol.View({
   // the view's initial state
   center: istanbul,
   zoom: 6

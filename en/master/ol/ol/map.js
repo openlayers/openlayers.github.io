@@ -30,7 +30,6 @@ goog.require('goog.vec.Mat4');
 goog.require('ol.BrowserFeature');
 goog.require('ol.Collection');
 goog.require('ol.CollectionEventType');
-goog.require('ol.IView');
 goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.MapBrowserEventHandler');
@@ -47,7 +46,6 @@ goog.require('ol.Size');
 goog.require('ol.Tile');
 goog.require('ol.TileQueue');
 goog.require('ol.View');
-goog.require('ol.View2D');
 goog.require('ol.ViewHint');
 goog.require('ol.control');
 goog.require('ol.extent');
@@ -127,7 +125,7 @@ ol.MapProperty = {
  * needs a view, one or more layers, and a target container:
  *
  *     var map = new ol.Map({
- *       view: new ol.View2D({
+ *       view: new ol.View({
  *         center: [0, 0],
  *         zoom: 1
  *       }),
@@ -535,16 +533,24 @@ ol.Map.prototype.disposeInternal = function() {
 
 
 /**
+ * Detect features that intersect a pixel on the viewport, and execute a
+ * callback with each intersecting feature. Layers included in the detection can
+ * be configured through `opt_layerFilter`. Feature overlays will always be
+ * included in the detection.
  * @param {ol.Pixel} pixel Pixel.
  * @param {function(this: S, ol.Feature, ol.layer.Layer): T} callback Feature
- *     callback.
+ *     callback. If the detected feature is not on a layer, but on a
+ *     {@link ol.FeatureOverlay}, then the 2nd argument to this function will
+ *     be `null`. To stop detection, callback functions can return a truthy
+ *     value.
  * @param {S=} opt_this Value to use as `this` when executing `callback`.
  * @param {function(this: U, ol.layer.Layer): boolean=} opt_layerFilter Layer
  *     filter function, only layers which are visible and for which this
- *     function returns `true` will be tested for features.  By default, all
- *     visible layers will be tested.
+ *     function returns `true` will be tested for features. By default, all
+ *     visible layers will be tested. Feature overlays will always be tested.
  * @param {U=} opt_this2 Value to use as `this` when executing `layerFilter`.
- * @return {T|undefined} Callback result.
+ * @return {T|undefined} Callback result, i.e. the return value of last
+ * callback execution, or the first truthy callback return value.
  * @template S,T,U
  * @todo api stable
  */
@@ -740,14 +746,14 @@ goog.exportProperty(
 
 
 /**
- * Get the view associated with this map. This can be a 2D or 3D view. A 2D
- * view manages properties such as center and resolution.
- * @return {ol.IView|undefined} The view that controls this map.
+ * Get the view associated with this map. A view manages properties such as
+ * center and resolution.
+ * @return {ol.View|undefined} The view that controls this map.
  * @todo observable
  * @todo api stable
  */
 ol.Map.prototype.getView = function() {
-  return /** @type {ol.IView} */ (this.get(ol.MapProperty.VIEW));
+  return /** @type {ol.View} */ (this.get(ol.MapProperty.VIEW));
 };
 goog.exportProperty(
     ol.Map.prototype,
@@ -1158,7 +1164,7 @@ ol.Map.prototype.removeOverlay = function(overlay) {
  */
 ol.Map.prototype.renderFrame_ = function(time) {
 
-  var i, ii, view2DState;
+  var i, ii, viewState;
 
   /**
    * Check whether a size has non-zero width and height.  Note that this
@@ -1176,24 +1182,23 @@ ol.Map.prototype.renderFrame_ = function(time) {
 
   var size = this.getSize();
   var view = this.getView();
-  var view2D = goog.isDef(view) ? this.getView().getView2D() : undefined;
   /** @type {?olx.FrameState} */
   var frameState = null;
   if (goog.isDef(size) && hasArea(size) &&
-      goog.isDef(view2D) && view2D.isDef()) {
+      goog.isDef(view) && view.isDef()) {
     var viewHints = view.getHints();
     var layerStatesArray = this.getLayerGroup().getLayerStatesArray();
     var layerStates = {};
     for (i = 0, ii = layerStatesArray.length; i < ii; ++i) {
       layerStates[goog.getUid(layerStatesArray[i].layer)] = layerStatesArray[i];
     }
-    view2DState = view2D.getView2DState();
+    viewState = view.getState();
     frameState = /** @type {olx.FrameState} */ ({
       animate: false,
       attributions: {},
       coordinateToPixelMatrix: this.coordinateToPixelMatrix_,
       extent: null,
-      focus: goog.isNull(this.focus_) ? view2DState.center : this.focus_,
+      focus: goog.isNull(this.focus_) ? viewState.center : this.focus_,
       index: this.frameIndex_++,
       layerStates: layerStates,
       layerStatesArray: layerStatesArray,
@@ -1206,7 +1211,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
       tileQueue: this.tileQueue_,
       time: time,
       usedTiles: {},
-      view2DState: view2DState,
+      viewState: viewState,
       viewHints: viewHints,
       wantedTiles: {}
     });
@@ -1226,9 +1231,8 @@ ol.Map.prototype.renderFrame_ = function(time) {
   preRenderFunctions.length = n;
 
   if (!goog.isNull(frameState)) {
-    // FIXME works for View2D only
-    frameState.extent = ol.extent.getForView2DAndSize(view2DState.center,
-        view2DState.resolution, view2DState.rotation, frameState.size);
+    frameState.extent = ol.extent.getForViewAndSize(viewState.center,
+        viewState.resolution, viewState.rotation, frameState.size);
   }
 
   this.frameState_ = frameState;
@@ -1311,7 +1315,7 @@ goog.exportProperty(
 
 /**
  * Set the view for this map.
- * @param {ol.IView} view The view that controls this map.
+ * @param {ol.View} view The view that controls this map.
  * @todo observable
  * @todo api stable
  */
@@ -1413,7 +1417,7 @@ ol.Map.createOptionsInternal = function(options) {
   values[ol.MapProperty.TARGET] = options.target;
 
   values[ol.MapProperty.VIEW] = goog.isDef(options.view) ?
-      options.view : new ol.View2D();
+      options.view : new ol.View();
 
   /**
    * @type {function(new: ol.renderer.Map, Element, ol.Map)}

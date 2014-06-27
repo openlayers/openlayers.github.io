@@ -116,7 +116,7 @@ var raster = new ol.layer.Tile({
 var map = new ol.Map({
   layers: [raster, vector],
   target: document.getElementById('map'),
-  view: new ol.View2D({
+  view: new ol.View({
     center: [739218, 5906096],
     maxZoom: 19,
     zoom: 17

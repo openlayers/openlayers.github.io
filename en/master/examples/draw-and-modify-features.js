@@ -5,7 +5,7 @@ var raster = new ol.layer.Tile({
 var map = new ol.Map({
   layers: [raster],
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     center: [-11000000, 4600000],
     zoom: 4
   })

@@ -25,7 +25,7 @@ if (!ol.BrowserFeature.HAS_WEBGL) {
     layers: [layer],
     renderer: 'webgl',
     target: 'map',
-    view: new ol.View2D({
+    view: new ol.View({
       center: ol.proj.transform([-9.375, 51.483333], 'EPSG:4326', 'EPSG:3857'),
       zoom: 15
     })

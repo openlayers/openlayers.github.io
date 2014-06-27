@@ -10,7 +10,7 @@ var map1 = new ol.Map({
   ],
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map1',
-  view: new ol.View2D({
+  view: new ol.View({
     center: [-4808600, -2620936],
     zoom: 8
   })

@@ -45,7 +45,7 @@ var vector = new ol.layer.Vector({
 var map = new ol.Map({
   layers: [raster, vector],
   target: document.getElementById('map'),
-  view: new ol.View2D({
+  view: new ol.View({
     center: [-7916041.528716288, 5228379.045749711],
     zoom: 12
   })

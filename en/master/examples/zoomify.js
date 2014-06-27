@@ -35,7 +35,7 @@ var map = new ol.Map({
   ],
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     projection: proj,
     center: imgCenter,
     zoom: 0

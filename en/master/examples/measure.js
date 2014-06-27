@@ -60,7 +60,7 @@ var mouseMoveHandler = function(evt) {
 var map = new ol.Map({
   layers: [raster, vector],
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     center: [-11000000, 4600000],
     zoom: 15
   })

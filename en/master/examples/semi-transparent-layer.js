@@ -12,7 +12,7 @@ var map = new ol.Map({
   ],
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     center: ol.proj.transform([-77.93255, 37.9555], 'EPSG:4326', 'EPSG:3857'),
     zoom: 5
   })

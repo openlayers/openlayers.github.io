@@ -1,5 +1,5 @@
 goog.require('ol.Map');
-goog.require('ol.View2D');
+goog.require('ol.View');
 goog.require('ol.format.TopoJSON');
 goog.require('ol.layer.Vector');
 goog.require('ol.proj');

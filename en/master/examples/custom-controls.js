@@ -28,7 +28,7 @@ app.RotateNorthControl = function(opt_options) {
   var handleRotateNorth = function(e) {
     // prevent #rotate-north anchor from getting appended to the url
     e.preventDefault();
-    this_.getMap().getView().getView2D().setRotation(0);
+    this_.getMap().getView().setRotation(0);
   };
 
   anchor.addEventListener('click', handleRotateNorth, false);
@@ -63,7 +63,7 @@ var map = new ol.Map({
   ],
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
-  view: new ol.View2D({
+  view: new ol.View({
     center: [0, 0],
     zoom: 2,
     rotation: 1

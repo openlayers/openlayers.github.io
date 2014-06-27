@@ -1,5 +1,5 @@
 var projection = ol.proj.get('EPSG:3857');
-var view = new ol.View2D({
+var view = new ol.View({
   center: [0, 0],
   projection: projection,
   extent: projection.getExtent(),

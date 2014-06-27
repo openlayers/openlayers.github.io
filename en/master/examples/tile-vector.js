@@ -66,7 +66,7 @@ var map = new ol.Map({
   layers: [waterLayer, roadLayer],
   renderer: 'canvas',
   target: document.getElementById('map'),
-  view: new ol.View2D({
+  view: new ol.View({
     center: ol.proj.transform([-74.0064, 40.7142], 'EPSG:4326', 'EPSG:3857'),
     maxZoom: 19,
     zoom: 14
