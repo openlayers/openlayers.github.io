@@ -43,7 +43,6 @@ goog.require('ol.PostRenderFunction');
 goog.require('ol.PreRenderFunction');
 goog.require('ol.RendererType');
 goog.require('ol.Size');
-goog.require('ol.Tile');
 goog.require('ol.TileQueue');
 goog.require('ol.View');
 goog.require('ol.ViewHint');
@@ -369,9 +368,9 @@ ol.Map = function(options) {
   goog.events.listen(this, ol.Object.getChangeEventType(ol.MapProperty.TARGET),
       this.handleTargetChanged_, false, this);
 
-  // setValues will trigger the rendering of the map if the map
+  // setProperties will trigger the rendering of the map if the map
   // is "defined" already.
-  this.setValues(optionsInternal.values);
+  this.setProperties(optionsInternal.values);
 
   this.controls_.forEach(
       /**
