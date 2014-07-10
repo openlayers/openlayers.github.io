@@ -37,13 +37,17 @@ goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
+goog.require('goog.dom.safe');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.events.EventType');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.fx.Dragger');
+goog.require('goog.html.SafeHtml');
+goog.require('goog.html.legacyconversions');
 goog.require('goog.math.Rect');
+goog.require('goog.string');
 goog.require('goog.structs');
 goog.require('goog.structs.Map');
 goog.require('goog.style');
@@ -76,6 +80,7 @@ goog.require('goog.userAgent');
  * @constructor
  * @param {string=} opt_class CSS class name for the dialog element, also used
  *     as a class name prefix for related elements; defaults to modal-dialog.
+ *     This should be a single, valid CSS class name.
  * @param {boolean=} opt_useIframeMask Work around windowed controls z-index
  *     issue by using an iframe instead of a div for bg element.
  * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper; see {@link
@@ -96,6 +101,22 @@ goog.ui.Dialog = function(opt_class, opt_useIframeMask, opt_domHelper) {
   this.buttons_ = goog.ui.Dialog.ButtonSet.createOkCancel();
 };
 goog.inherits(goog.ui.Dialog, goog.ui.ModalPopup);
+
+
+/**
+ * @define {boolean} Whether goog.ui.Dialog permits use of its potentially
+ * unsafe API, subject to global defines
+ * goog.html.legacyconversions.ALLOW_LEGACY_CONVERSIONS and
+ * goog.html.legacyconversions.ALLOW_LEGACY_CONVERSION_OVERRIDES.
+ *
+ * For details of intended use, see the fileoverview of
+ * goog.html.legacyconversions.
+ *
+ * @see goog.html.legacyconversions.ALLOW_LEGACY_CONVERSIONS
+ * @see goog.html.legacyconversions.ALLOW_LEGACY_CONVERSION_OVERRIDES
+ * @see goog.ui.Dialog#setContent
+ */
+goog.define('goog.ui.Dialog.ALLOW_UNSAFE_API', false);
 
 
 /**
@@ -156,10 +177,10 @@ goog.ui.Dialog.prototype.title_ = '';
 
 /**
  * Dialog's content (HTML).
- * @type {string}
+ * @type {goog.html.SafeHtml}
  * @private
  */
-goog.ui.Dialog.prototype.content_ = '';
+goog.ui.Dialog.prototype.content_ = null;
 
 
 /**
@@ -263,21 +284,49 @@ goog.ui.Dialog.prototype.getTitle = function() {
 
 /**
  * Allows arbitrary HTML to be set in the content element.
+ * TODO(user): Deprecate in favor of setSafeHtmlContent, once developer docs on
+ * using goog.html.SafeHtml are in place.
  * @param {string} html Content HTML.
  */
 goog.ui.Dialog.prototype.setContent = function(html) {
+  this.setSafeHtmlContent(goog.html.legacyconversions.safeHtmlFromString(
+      html, goog.ui.Dialog.ALLOW_UNSAFE_API));
+};
+
+
+/**
+ * Allows arbitrary HTML to be set in the content element.
+ * @param {!goog.html.SafeHtml} html Content HTML.
+ */
+goog.ui.Dialog.prototype.setSafeHtmlContent = function(html) {
   this.content_ = html;
   if (this.contentEl_) {
-    this.contentEl_.innerHTML = html;
+    goog.dom.safe.setInnerHtml(this.contentEl_, html);
   }
 };
 
 
 /**
- * Gets the content HTML of the content element.
+ * Gets the content HTML of the content element as a plain string.
+ *
+ * Note that this method returns the HTML markup that was previously set via
+ * setContent(). In particular, the HTML returned by this method does not
+ * reflect any changes to the content element's DOM that were made my means
+ * other than setContent().
+ *
  * @return {string} Content HTML.
  */
 goog.ui.Dialog.prototype.getContent = function() {
+  return this.content_ != null ?
+      goog.html.SafeHtml.unwrap(this.content_) : '';
+};
+
+
+/**
+ * Gets the content HTML of the content element.
+ * @return {goog.html.SafeHtml} Content HTML.
+ */
+goog.ui.Dialog.prototype.getSafeHtmlContent = function() {
   return this.content_;
 };
 
@@ -516,15 +565,24 @@ goog.ui.Dialog.prototype.getDraggable = function() {
  * @private.
  */
 goog.ui.Dialog.prototype.setDraggingEnabled_ = function(enabled) {
+  // This isn't ideal, but the quickest and easiest way to append
+  // title-draggable to the last class in the class_ string, then trim and
+  // split the string into an array (in case the dialog was set up with
+  // multiple, space-separated class names).
+  var classNames = goog.string.trim(goog.getCssName(this.class_,
+      'title-draggable')).split(' ');
+
   if (this.getElement()) {
-    goog.dom.classes.enable(this.titleEl_,
-        goog.getCssName(this.class_, 'title-draggable'), enabled);
+    if (enabled) {
+      goog.dom.classlist.addAll(this.titleEl_, classNames);
+    } else {
+      goog.dom.classlist.removeAll(this.titleEl_, classNames);
+    }
   }
 
   if (enabled && !this.dragger_) {
     this.dragger_ = this.createDragger();
-    goog.dom.classes.add(this.titleEl_,
-        goog.getCssName(this.class_, 'title-draggable'));
+    goog.dom.classlist.addAll(this.titleEl_, classNames);
     goog.events.listen(this.dragger_, goog.fx.Dragger.EventType.START,
         this.setDraggerLimits_, false, this);
   } else if (!enabled && this.dragger_) {
@@ -560,7 +618,7 @@ goog.ui.Dialog.prototype.createDom = function() {
   // If setContent() was called before createDom(), make sure the inner HTML of
   // the content element is initialized.
   if (this.content_) {
-    this.contentEl_.innerHTML = this.content_;
+    goog.dom.safe.setInnerHtml(this.contentEl_, this.content_);
   }
   goog.style.setElementShown(this.titleCloseEl_, this.hasTitleCloseButton_);
 
@@ -583,12 +641,10 @@ goog.ui.Dialog.prototype.decorateInternal = function(element) {
   var contentClass = goog.getCssName(this.class_, 'content');
   this.contentEl_ = goog.dom.getElementsByTagNameAndClass(
       null, contentClass, dialogElement)[0];
-  if (this.contentEl_) {
-    this.content_ = this.contentEl_.innerHTML;
-  } else {
+  if (!this.contentEl_) {
     this.contentEl_ = this.getDomHelper().createDom('div', contentClass);
     if (this.content_) {
-      this.contentEl_.innerHTML = this.content_;
+      goog.dom.safe.setInnerHtml(this.contentEl_, this.content_);
     }
     dialogElement.appendChild(this.contentEl_);
   }
@@ -921,7 +977,8 @@ goog.ui.Dialog.prototype.setButtonSet = function(buttons) {
     if (this.buttons_) {
       this.buttons_.attachToElement(this.buttonEl_);
     } else {
-      this.buttonEl_.innerHTML = '';
+      goog.dom.safe.setInnerHtml(
+          this.buttonEl_, goog.html.SafeHtml.EMPTY);
     }
     goog.style.setElementShown(this.buttonEl_, !!this.buttons_);
   }
@@ -1218,7 +1275,8 @@ goog.ui.Dialog.ButtonSet.prototype.attachToElement = function(el) {
  */
 goog.ui.Dialog.ButtonSet.prototype.render = function() {
   if (this.element_) {
-    this.element_.innerHTML = '';
+    goog.dom.safe.setInnerHtml(
+        this.element_, goog.html.SafeHtml.EMPTY);
     var domHelper = goog.dom.getDomHelper(this.element_);
     goog.structs.forEach(this, function(caption, key) {
       var button = domHelper.createDom('button', {'name': key}, caption);
@@ -1257,7 +1315,7 @@ goog.ui.Dialog.ButtonSet.prototype.decorate = function(element) {
       var isCancel = button.name == goog.ui.Dialog.DefaultButtonKeys.CANCEL;
       this.set(key, caption, isDefault, isCancel);
       if (isDefault) {
-        goog.dom.classes.add(button, goog.getCssName(this.class_,
+        goog.dom.classlist.add(button, goog.getCssName(this.class_,
             'default'));
       }
     }

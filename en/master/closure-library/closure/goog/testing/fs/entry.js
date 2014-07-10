@@ -230,6 +230,7 @@ goog.testing.fs.Entry.prototype.checkNotDeleted = function(action) {
  * @constructor
  * @extends {goog.testing.fs.Entry}
  * @implements {goog.fs.DirectoryEntry}
+ * @final
  */
 goog.testing.fs.DirectoryEntry = function(fs, parent, name, children) {
   goog.base(this, fs, parent || this, name);
@@ -308,8 +309,11 @@ goog.testing.fs.DirectoryEntry.prototype.remove = function() {
           'removing ' + this.getFullPath()));
     }, 0, this);
     return d;
-  } else {
+  } else if (this != this.getFileSystem().getRoot()) {
     return goog.base(this, 'remove');
+  } else {
+    // Root directory, do nothing.
+    return goog.async.Deferred.succeed();
   }
 };
 
@@ -531,6 +535,7 @@ goog.testing.fs.DirectoryEntry.prototype.createPath =
  * @constructor
  * @extends {goog.testing.fs.Entry}
  * @implements {goog.fs.FileEntry}
+ * @final
  */
 goog.testing.fs.FileEntry = function(fs, parent, name, data) {
   goog.base(this, fs, parent, name);

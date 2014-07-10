@@ -224,6 +224,20 @@ goog.style.getStyle_ = function(element, style) {
 
 
 /**
+ * Retrieves the computed value of the box-sizing CSS attribute.
+ * Browser support: http://caniuse.com/css3-boxsizing.
+ * @param {!Element} element The element whose box-sizing to get.
+ * @return {?string} 'content-box', 'border-box' or 'padding-box'. null if
+ *     box-sizing is not supported (IE7 and below).
+ */
+goog.style.getComputedBoxSizing = function(element) {
+  return goog.style.getStyle_(element, 'boxSizing') ||
+      goog.style.getStyle_(element, 'MozBoxSizing') ||
+      goog.style.getStyle_(element, 'WebkitBoxSizing') || null;
+};
+
+
+/**
  * Retrieves the computed value of the position CSS attribute.
  * @param {Element} element The element to get the position of.
  * @return {string} Position value.
@@ -417,7 +431,7 @@ goog.style.getBoundingClientRect_ = function(el) {
 
   // Patch the result in IE only, so that this function can be inlined if
   // compiled for non-IE.
-  if (goog.userAgent.IE) {
+  if (goog.userAgent.IE && el.ownerDocument.body) {
 
     // In IE, most of the time, 2 extra pixels are added to the top and left
     // due to the implicit 2-pixel inset border.  In IE6/7 quirks mode and
@@ -885,12 +899,13 @@ goog.style.getClientPosition = function(el) {
         /** @type {!Element} */ (el));
   } else {
     var isAbstractedEvent = goog.isFunction(el.getBrowserEvent);
+    var be = /** @type {!goog.events.BrowserEvent} */ (el);
     var targetEvent = el;
 
     if (el.targetTouches) {
       targetEvent = el.targetTouches[0];
-    } else if (isAbstractedEvent && el.getBrowserEvent().targetTouches) {
-      targetEvent = el.getBrowserEvent().targetTouches[0];
+    } else if (isAbstractedEvent && be.getBrowserEvent().targetTouches) {
+      targetEvent = be.getBrowserEvent().targetTouches[0];
     }
 
     return new goog.math.Coordinate(
@@ -1317,8 +1332,11 @@ goog.style.installStyles = function(stylesString, opt_node) {
   var dh = goog.dom.getDomHelper(opt_node);
   var styleSheet = null;
 
-  if (goog.userAgent.IE) {
-    styleSheet = dh.getDocument().createStyleSheet();
+  // IE < 11 requires createStyleSheet. Note that doc.createStyleSheet will be
+  // undefined as of IE 11.
+  var doc = dh.getDocument();
+  if (goog.userAgent.IE && doc.createStyleSheet) {
+    styleSheet = doc.createStyleSheet();
     goog.style.setStyles(styleSheet, stylesString);
   } else {
     var head = dh.getElementsByTagNameAndClass('head')[0];
@@ -1363,10 +1381,12 @@ goog.style.uninstallStyles = function(styleSheet) {
  * @param {string} stylesString The new content of the stylesheet.
  */
 goog.style.setStyles = function(element, stylesString) {
-  if (goog.userAgent.IE) {
+  if (goog.userAgent.IE && goog.isDef(element.cssText)) {
     // Adding the selectors individually caused the browser to hang if the
     // selector was invalid or there were CSS comments.  Setting the cssText of
-    // the style node works fine and ignores CSS that IE doesn't understand
+    // the style node works fine and ignores CSS that IE doesn't understand.
+    // However IE >= 11 doesn't support cssText any more, so we make sure that
+    // cssText is a defined property and otherwise fall back to innerHTML.
     element.cssText = stylesString;
   } else {
     element.innerHTML = stylesString;
@@ -1776,7 +1796,7 @@ goog.style.getIePixelBorder_ = function(element, prop) {
  * @return {!goog.math.Box} The computed border widths.
  */
 goog.style.getBorderBox = function(element) {
-  if (goog.userAgent.IE) {
+  if (goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher(9)) {
     var left = goog.style.getIePixelBorder_(element, 'borderLeft');
     var right = goog.style.getIePixelBorder_(element, 'borderRight');
     var top = goog.style.getIePixelBorder_(element, 'borderTop');

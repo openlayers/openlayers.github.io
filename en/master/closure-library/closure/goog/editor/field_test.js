@@ -65,7 +65,6 @@ function tearDown() {
   // it is lame. It manifests its lameness by throwing an exception.
   // Kudos to XT for helping me to figure this out.
   try {
-    goog.events.removeAllNativeListeners();
   } catch (e) {}
 }
 
@@ -77,6 +76,7 @@ function tearDown() {
  * Dummy plugin for test usage.
  * @constructor
  * @extends {goog.editor.Plugin}
+ * @final
  */
 function TestPlugin() {
   this.getTrogClassId = function() {

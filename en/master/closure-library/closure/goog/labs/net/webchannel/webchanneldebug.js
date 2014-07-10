@@ -31,6 +31,8 @@ goog.require('goog.log');
  * Logs and keeps a buffer of debugging info for the Channel.
  *
  * @constructor
+ * @struct
+ * @final
  */
 goog.labs.net.webChannel.WebChannelDebug = function() {
   /**

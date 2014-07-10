@@ -20,6 +20,7 @@
  * WARNING: Do not use this class from outside goog.events package.
  *
  * @visibility {//closure/goog/events:__pkg__}
+ * @visibility {//closure/goog/labs/events:__pkg__}
  */
 
 goog.provide('goog.events.ListenerMap');
@@ -34,6 +35,7 @@ goog.require('goog.object');
  * Creates a new listener map.
  * @param {EventTarget|goog.events.Listenable} src The src object.
  * @constructor
+ * @final
  */
 goog.events.ListenerMap = function(src) {
   /** @type {EventTarget|goog.events.Listenable} */
@@ -188,7 +190,7 @@ goog.events.ListenerMap.prototype.removeAll = function(opt_type) {
       var listenerArray = this.listeners[type];
       for (var i = 0; i < listenerArray.length; i++) {
         ++count;
-        listenerArray[i].removed = true;
+        listenerArray[i].markAsRemoved();
       }
       delete this.listeners[type];
       this.typeCount_--;

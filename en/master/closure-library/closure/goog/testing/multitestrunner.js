@@ -26,7 +26,7 @@ goog.provide('goog.testing.MultiTestRunner.TestFrame');
 goog.require('goog.Timer');
 goog.require('goog.array');
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.events.EventHandler');
 goog.require('goog.functions');
 goog.require('goog.string');
@@ -41,6 +41,7 @@ goog.require('goog.ui.TableSorter');
  * @param {goog.dom.DomHelper=} opt_domHelper A DOM helper.
  * @extends {goog.ui.Component}
  * @constructor
+ * @final
  */
 goog.testing.MultiTestRunner = function(opt_domHelper) {
   goog.ui.Component.call(this, opt_domHelper);
@@ -62,7 +63,7 @@ goog.testing.MultiTestRunner = function(opt_domHelper) {
 
   /**
    * An event handler for handling events.
-   * @type {goog.events.EventHandler}
+   * @type {goog.events.EventHandler.<!goog.testing.MultiTestRunner>}
    * @private
    */
   this.eh_ = new goog.events.EventHandler(this);
@@ -881,7 +882,8 @@ goog.testing.MultiTestRunner.prototype.drawStatsHistogram_ = function(
     ylabels.push(i);
   }
   var chart = new goog.ui.ServerChart(
-      goog.ui.ServerChart.ChartType.VERTICAL_STACKED_BAR, width, 250);
+      goog.ui.ServerChart.ChartType.VERTICAL_STACKED_BAR, width, 250, null,
+      goog.ui.ServerChart.CHART_SERVER_HTTPS_URI);
   chart.setTitle(title);
   chart.addDataSet(data, 'ff9900');
   chart.setLeftLabels(ylabels);
@@ -1070,26 +1072,26 @@ goog.testing.MultiTestRunner.prototype.showTab_ = function(tab) {
   var activeTabCssClass = goog.getCssName('goog-testrunner-activetab');
   if (tab == 0) {
     this.logEl_.style.display = '';
-    goog.dom.classes.add(this.logTabEl_, activeTabCssClass);
+    goog.dom.classlist.add(this.logTabEl_, activeTabCssClass);
   } else {
     this.logEl_.style.display = 'none';
-    goog.dom.classes.remove(this.logTabEl_, activeTabCssClass);
+    goog.dom.classlist.remove(this.logTabEl_, activeTabCssClass);
   }
 
   if (tab == 1) {
     this.reportEl_.style.display = '';
-    goog.dom.classes.add(this.reportTabEl_, activeTabCssClass);
+    goog.dom.classlist.add(this.reportTabEl_, activeTabCssClass);
   } else {
     this.reportEl_.style.display = 'none';
-    goog.dom.classes.remove(this.reportTabEl_, activeTabCssClass);
+    goog.dom.classlist.remove(this.reportTabEl_, activeTabCssClass);
   }
 
   if (tab == 2) {
     this.statsEl_.style.display = '';
-    goog.dom.classes.add(this.statsTabEl_, activeTabCssClass);
+    goog.dom.classlist.add(this.statsTabEl_, activeTabCssClass);
   } else {
     this.statsEl_.style.display = 'none';
-    goog.dom.classes.remove(this.statsTabEl_, activeTabCssClass);
+    goog.dom.classlist.remove(this.statsTabEl_, activeTabCssClass);
   }
 };
 
@@ -1154,6 +1156,7 @@ goog.testing.MultiTestRunner.prototype.onStatsTabClicked_ = function(e) {
  * @param {goog.dom.DomHelper=} opt_domHelper Optional dom helper.
  * @constructor
  * @extends {goog.ui.Component}
+ * @final
  */
 goog.testing.MultiTestRunner.TestFrame = function(
     basePath, timeoutMs, verbosePasses, opt_domHelper) {
@@ -1182,7 +1185,7 @@ goog.testing.MultiTestRunner.TestFrame = function(
 
   /**
    * An event handler for handling events.
-   * @type {goog.events.EventHandler}
+   * @type {goog.events.EventHandler.<!goog.testing.MultiTestRunner.TestFrame>}
    * @private
    */
   this.eh_ = new goog.events.EventHandler(this);

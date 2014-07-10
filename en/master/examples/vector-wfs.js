@@ -1,7 +1,3 @@
-var loadFeatures = function(response) {
-  vectorSource.addFeatures(vectorSource.readFeatures(response));
-};
-
 var vectorSource = new ol.source.ServerVector({
   format: new ol.format.GeoJSON(),
   loader: function(extent, resolution, projection) {
@@ -19,6 +15,10 @@ var vectorSource = new ol.source.ServerVector({
   })),
   projection: 'EPSG:3857'
 });
+
+var loadFeatures = function(response) {
+  vectorSource.addFeatures(vectorSource.readFeatures(response));
+};
 
 var vector = new ol.layer.Vector({
   source: vectorSource,

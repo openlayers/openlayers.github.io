@@ -20,23 +20,20 @@
 
 goog.provide('goog.labs.net.webChannel.BaseTestChannel');
 
-goog.require('goog.json.EvalJsonProcessor');
 goog.require('goog.labs.net.webChannel.Channel');
-goog.require('goog.labs.net.webChannel.WebChannelRequest');
+goog.require('goog.labs.net.webChannel.ChannelRequest');
 goog.require('goog.labs.net.webChannel.requestStats');
-goog.require('goog.labs.net.webChannel.requestStats.ServerReachability');
 goog.require('goog.labs.net.webChannel.requestStats.Stat');
-goog.require('goog.net.tmpnetwork');
 
 
 
 /**
  * A TestChannel is used during the first part of channel negotiation
  * with the server to create the channel. It helps us determine whether we're
- * behind a buffering proxy. It also runs the logic to see if the channel
- * has been blocked by a network administrator.
+ * behind a buffering proxy.
  *
  * @constructor
+ * @struct
  * @param {!goog.labs.net.webChannel.Channel} channel The channel
  *     that owns this test channel.
  * @param {!goog.labs.net.webChannel.WebChannelDebug} channelDebug A
@@ -46,32 +43,22 @@ goog.require('goog.net.tmpnetwork');
 goog.labs.net.webChannel.BaseTestChannel = function(channel, channelDebug) {
   /**
    * The channel that owns this test channel
-   * @type {!goog.labs.net.webChannel.Channel}
-   * @private
+   * @private {!goog.labs.net.webChannel.Channel}
    */
   this.channel_ = channel;
 
   /**
    * The channel debug to use for logging
-   * @type {!goog.labs.net.webChannel.WebChannelDebug}
-   * @private
+   * @private {!goog.labs.net.webChannel.WebChannelDebug}
    */
   this.channelDebug_ = channelDebug;
-
-  /**
-   * Parser for a response payload. Defaults to use
-   * {@code goog.json.unsafeParse}. The parser should return an array.
-   * @type {goog.string.Parser}
-   * @private
-   */
-  this.parser_ = new goog.json.EvalJsonProcessor(null, true);
 };
 
 
 goog.scope(function() {
 var BaseTestChannel = goog.labs.net.webChannel.BaseTestChannel;
 var WebChannelDebug = goog.labs.net.webChannel.WebChannelDebug;
-var WebChannelRequest = goog.labs.net.webChannel.WebChannelRequest;
+var ChannelRequest = goog.labs.net.webChannel.ChannelRequest;
 var requestStats = goog.labs.net.webChannel.requestStats;
 var Channel = goog.labs.net.webChannel.Channel;
 
@@ -86,7 +73,7 @@ BaseTestChannel.prototype.extraHeaders_ = null;
 
 /**
  * The test request.
- * @type {WebChannelRequest}
+ * @type {ChannelRequest}
  * @private
  */
 BaseTestChannel.prototype.request_ = null;
@@ -163,15 +150,6 @@ BaseTestChannel.prototype.hostPrefix_ = null;
 
 
 /**
- * A subdomain prefix for testing whether the channel was disabled by
- * a network administrator;
- * @type {?string}
- * @private
- */
-BaseTestChannel.prototype.blockedPrefix_ = null;
-
-
-/**
  * Enum type for the test channel state machine
  * @enum {number}
  * @private
@@ -184,45 +162,11 @@ BaseTestChannel.State_ = {
   INIT: 0,
 
   /**
-   * The state for the TestChannel state machine where we're checking to
-   * see if the channel has been blocked.
-   */
-  CHECKING_BLOCKED: 1,
-
-  /**
    * The  state for the TestChannel state machine where we're checking to
    * se if we're behind a buffering proxy.
    */
-  CONNECTION_TESTING: 2
+  CONNECTION_TESTING: 1
 };
-
-
-/**
- * Time in MS for waiting for the request to see if the channel is blocked.
- * If the response takes longer than this many ms, we assume the request has
- * failed.
- * @type {number}
- * @private
- */
-BaseTestChannel.BLOCKED_TIMEOUT_ = 5000;
-
-
-/**
- * Number of attempts to try to see if the check to see if we're blocked
- * succeeds. Sometimes the request can fail because of flaky network conditions
- * and checking multiple times reduces false positives.
- * @type {number}
- * @private
- */
-BaseTestChannel.BLOCKED_RETRIES_ = 3;
-
-
-/**
- * Time in ms between retries of the blocked request
- * @type {number}
- * @private
- */
-BaseTestChannel.BLOCKED_PAUSE_BETWEEN_RETRIES_ = 2000;
 
 
 /**
@@ -246,17 +190,6 @@ BaseTestChannel.prototype.setExtraHeaders = function(extraHeaders) {
 
 
 /**
- * Sets a new parser for the response payload. A custom parser may be set to
- * avoid using eval(), for example.
- * By default, the parser uses {@code goog.json.unsafeParse}.
- * @param {!goog.string.Parser} parser Parser.
- */
-BaseTestChannel.prototype.setParser = function(parser) {
-  this.parser_ = parser;
-};
-
-
-/**
  * Starts the test channel. This initiates connections to the server.
  *
  * @param {string} path The relative uri for the test connection.
@@ -268,77 +201,22 @@ BaseTestChannel.prototype.connect = function(path) {
   requestStats.notifyStatEvent(requestStats.Stat.TEST_STAGE_ONE_START);
   this.startTime_ = goog.now();
 
-  // If the channel already has the result of the first test, then skip it.
-  var firstTestResults = this.channel_.getFirstTestResults();
-  if (goog.isDefAndNotNull(firstTestResults)) {
-    this.hostPrefix_ = this.channel_.correctHostPrefix(firstTestResults[0]);
-    this.blockedPrefix_ = firstTestResults[1];
-    if (this.blockedPrefix_) {
-      this.state_ = BaseTestChannel.State_.CHECKING_BLOCKED;
-      this.checkBlocked_();
-    } else {
-      this.state_ = BaseTestChannel.State_.CONNECTION_TESTING;
-      this.connectStage2_();
-    }
+  // If the channel already has the result of the handshake, then skip it.
+  var handshakeResult = this.channel_.getConnectionState().handshakeResult;
+  if (goog.isDefAndNotNull(handshakeResult)) {
+    this.hostPrefix_ = this.channel_.correctHostPrefix(handshakeResult[0]);
+    this.state_ = BaseTestChannel.State_.CONNECTION_TESTING;
+    this.checkBufferingProxy_();
     return;
   }
 
   // the first request returns server specific parameters
   sendDataUri.setParameterValues('MODE', 'init');
-  this.request_ = WebChannelRequest.createChannelRequest(
-      this, this.channelDebug_);
+  this.request_ = ChannelRequest.createChannelRequest(this, this.channelDebug_);
   this.request_.setExtraHeaders(this.extraHeaders_);
   this.request_.xmlHttpGet(sendDataUri, false /* decodeChunks */,
       null /* hostPrefix */, true /* opt_noClose */);
   this.state_ = BaseTestChannel.State_.INIT;
-};
-
-
-/**
- * Checks to see whether the channel is blocked. This is for implementing the
- * feature that allows network administrators to block Gmail Chat. The
- * strategy to determine if we're blocked is to try to load an image off a
- * special subdomain that network administrators will block access to if they
- * are trying to block chat. For Gmail Chat, the subdomain is
- * chatenabled.mail.google.com.
- * @private
- */
-BaseTestChannel.prototype.checkBlocked_ = function() {
-  var uri = this.channel_.createDataUri(this.blockedPrefix_,
-      '/mail/images/cleardot.gif');
-  uri.makeUnique();
-  goog.net.tmpnetwork.testLoadImageWithRetries(uri.toString(),
-      BaseTestChannel.BLOCKED_TIMEOUT_,
-      goog.bind(this.checkBlockedCallback_, this),
-      BaseTestChannel.BLOCKED_RETRIES_,
-      BaseTestChannel.BLOCKED_PAUSE_BETWEEN_RETRIES_);
-  requestStats.notifyServerReachabilityEvent(
-      requestStats.ServerReachability.REQUEST_MADE);
-};
-
-
-/**
- * Callback for testLoadImageWithRetries to check if a channel is blocked.
- * @param {boolean} succeeded Whether the request succeeded.
- * @private
- */
-BaseTestChannel.prototype.checkBlockedCallback_ = function(
-    succeeded) {
-  if (succeeded) {
-    this.state_ = BaseTestChannel.State_.CONNECTION_TESTING;
-    this.connectStage2_();
-  } else {
-    requestStats.notifyStatEvent(requestStats.Stat.CHANNEL_BLOCKED);
-    this.channel_.testConnectionBlocked(this);
-  }
-
-  // We don't dispatch a REQUEST_FAILED server reachability event when the
-  // block request fails, as such a failure is not a good signal that the
-  // server has actually become unreachable.
-  if (succeeded) {
-    requestStats.notifyServerReachabilityEvent(
-        requestStats.ServerReachability.REQUEST_SUCCEEDED);
-  }
 };
 
 
@@ -350,17 +228,18 @@ BaseTestChannel.prototype.checkBlockedCallback_ = function(
  * receive the content, we can tell if we're behind a buffering proxy.
  * @private
  */
-BaseTestChannel.prototype.connectStage2_ = function() {
+BaseTestChannel.prototype.checkBufferingProxy_ = function() {
   this.channelDebug_.debug('TestConnection: starting stage 2');
 
-  // If the second test results are available, skip its execution.
-  var secondTestResults = this.channel_.getSecondTestResults();
-  if (goog.isDefAndNotNull(secondTestResults)) {
+  // If the test result is already available, skip its execution.
+  var bufferingProxyResult =
+      this.channel_.getConnectionState().bufferingProxyResult;
+  if (goog.isDefAndNotNull(bufferingProxyResult)) {
     this.channelDebug_.debug(
         'TestConnection: skipping stage 2, precomputed result is ' +
-        secondTestResults ? 'Buffered' : 'Unbuffered');
+        bufferingProxyResult ? 'Buffered' : 'Unbuffered');
     requestStats.notifyStatEvent(requestStats.Stat.TEST_STAGE_TWO_START);
-    if (secondTestResults) { // Buffered/Proxy connection
+    if (bufferingProxyResult) { // Buffered/Proxy connection
       requestStats.notifyStatEvent(requestStats.Stat.PROXY);
       this.channel_.testConnectionFinished(this, false);
     } else { // Unbuffered/NoProxy connection
@@ -369,14 +248,13 @@ BaseTestChannel.prototype.connectStage2_ = function() {
     }
     return; // Skip the test
   }
-  this.request_ = WebChannelRequest.createChannelRequest(
-      this, this.channelDebug_);
+  this.request_ = ChannelRequest.createChannelRequest(this, this.channelDebug_);
   this.request_.setExtraHeaders(this.extraHeaders_);
   var recvDataUri = this.channel_.getBackChannelUri(this.hostPrefix_,
       /** @type {string} */ (this.path_));
 
   requestStats.notifyStatEvent(requestStats.Stat.TEST_STAGE_TWO_START);
-  if (!WebChannelRequest.supportsXhrStreaming()) {
+  if (!ChannelRequest.supportsXhrStreaming()) {
     recvDataUri.setParameterValues('TYPE', 'html');
     this.request_.tridentGet(recvDataUri, Boolean(this.hostPrefix_));
   } else {
@@ -422,7 +300,7 @@ BaseTestChannel.prototype.isClosed = function() {
 /**
  * Callback from ChannelRequest for when new data is received
  *
- * @param {WebChannelRequest} req  The request object.
+ * @param {ChannelRequest} req The request object.
  * @param {string} responseText The text of the response.
  * @override
  */
@@ -433,21 +311,18 @@ BaseTestChannel.prototype.onRequestData = function(req, responseText) {
     if (!responseText) {
       this.channelDebug_.debug('TestConnection: Null responseText');
       // The server should always send text; something is wrong here
-      this.channel_.testConnectionFailure(this,
-          WebChannelRequest.Error.BAD_DATA);
+      this.channel_.testConnectionFailure(this, ChannelRequest.Error.BAD_DATA);
       return;
     }
     /** @preserveTry */
     try {
-      var respArray = this.parser_.parse(responseText);
+      var respArray = this.channel_.getWireCodec().decodeMessage(responseText);
     } catch (e) {
       this.channelDebug_.dumpException(e);
-      this.channel_.testConnectionFailure(this,
-          WebChannelRequest.Error.BAD_DATA);
+      this.channel_.testConnectionFailure(this, ChannelRequest.Error.BAD_DATA);
       return;
     }
     this.hostPrefix_ = this.channel_.correctHostPrefix(respArray[0]);
-    this.blockedPrefix_ = respArray[1];
   } else if (this.state_ == BaseTestChannel.State_.CONNECTION_TESTING) {
     if (this.receivedIntermediateResult_) {
       requestStats.notifyStatEvent(requestStats.Stat.TEST_STAGE_TWO_DATA_TWO);
@@ -483,7 +358,7 @@ BaseTestChannel.prototype.onRequestData = function(req, responseText) {
 /**
  * Callback from ChannelRequest that indicates a request has completed.
  *
- * @param {WebChannelRequest} req  The request object.
+ * @param {ChannelRequest} req The request object.
  * @override
  */
 BaseTestChannel.prototype.onRequestComplete = function(req) {
@@ -497,7 +372,7 @@ BaseTestChannel.prototype.onRequestComplete = function(req) {
       requestStats.notifyStatEvent(requestStats.Stat.TEST_STAGE_TWO_FAILED);
     }
     this.channel_.testConnectionFailure(this,
-        /** @type {WebChannelRequest.Error} */
+        /** @type {ChannelRequest.Error} */
         (this.request_.getLastError()));
     return;
   }
@@ -505,18 +380,13 @@ BaseTestChannel.prototype.onRequestComplete = function(req) {
   if (this.state_ == BaseTestChannel.State_.INIT) {
     this.channelDebug_.debug(
         'TestConnection: request complete for initial check');
-    if (this.blockedPrefix_) {
-      this.state_ = BaseTestChannel.State_.CHECKING_BLOCKED;
-      this.checkBlocked_();
-    } else {
-      this.state_ = BaseTestChannel.State_.CONNECTION_TESTING;
-      this.connectStage2_();
-    }
+    this.state_ = BaseTestChannel.State_.CONNECTION_TESTING;
+    this.checkBufferingProxy_();
   } else if (this.state_ == BaseTestChannel.State_.CONNECTION_TESTING) {
     this.channelDebug_.debug('TestConnection: request complete for stage 2');
     var goodConn = false;
 
-    if (!WebChannelRequest.supportsXhrStreaming()) {
+    if (!ChannelRequest.supportsXhrStreaming()) {
       // we always get Trident responses in separate calls to
       // onRequestData, so we have to check the time they came
       var ms = this.lastTime_ - this.firstTime_;
@@ -585,7 +455,7 @@ BaseTestChannel.prototype.checkForEarlyNonBuffered_ = function() {
   // onRequestData, so we have to check the time that the first came in
   // and verify that the data arrived before the second portion could
   // have been sent. For all other browser's we skip the timing test.
-  return WebChannelRequest.supportsXhrStreaming() ||
+  return ChannelRequest.supportsXhrStreaming() ||
       ms < BaseTestChannel.MIN_TIME_EXPECTED_BETWEEN_DATA_;
 };
 
@@ -617,12 +487,6 @@ BaseTestChannel.prototype.createDataUri = goog.abstractMethod;
 /**
  * @override
  */
-BaseTestChannel.prototype.testConnectionBlocked = goog.abstractMethod;
-
-
-/**
- * @override
- */
 BaseTestChannel.prototype.testConnectionFinished = goog.abstractMethod;
 
 
@@ -635,5 +499,5 @@ BaseTestChannel.prototype.testConnectionFailure = goog.abstractMethod;
 /**
  * @override
  */
-BaseTestChannel.prototype.getFirstTestResults = goog.abstractMethod;
+BaseTestChannel.prototype.getConnectionState = goog.abstractMethod;
 });  // goog.scope

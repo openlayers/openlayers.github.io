@@ -21,8 +21,13 @@ goog.provide('goog.net.xpc.IframeRelayTransport');
 
 goog.require('goog.dom');
 goog.require('goog.events');
+goog.require('goog.log');
+goog.require('goog.log.Level');
 goog.require('goog.net.xpc');
+goog.require('goog.net.xpc.CfgFields');
 goog.require('goog.net.xpc.Transport');
+goog.require('goog.net.xpc.TransportTypes');
+goog.require('goog.string');
 goog.require('goog.userAgent');
 
 
@@ -39,6 +44,7 @@ goog.require('goog.userAgent');
  *     the correct window.
  * @constructor
  * @extends {goog.net.xpc.Transport}
+ * @final
  */
 goog.net.xpc.IframeRelayTransport = function(channel, opt_domHelper) {
   goog.base(this, opt_domHelper);

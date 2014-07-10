@@ -15,12 +15,12 @@ goog.require('ol.style.Style');
  * @classdesc
  * Allows the user to zoom the map by clicking and dragging on the map,
  * normally combined with an {@link ol.events.condition} that limits
- * it to when the shift key is held down.
+ * it to when a key, shift by default, is held down.
  *
  * @constructor
  * @extends {ol.interaction.DragBox}
  * @param {olx.interaction.DragZoomOptions=} opt_options Options.
- * @todo api
+ * @api stable
  */
 ol.interaction.DragZoom = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};

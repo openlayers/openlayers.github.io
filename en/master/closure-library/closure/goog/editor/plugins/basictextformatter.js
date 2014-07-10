@@ -809,7 +809,8 @@ goog.editor.plugins.BasicTextFormatter.prototype.execCommandHelper_ = function(
     // lie. Also, this runs for insertunorderedlist so that the the list
     // isn't made up of an <ul> for each <li> - even though it looks the same,
     // the markup is disgusting.
-    if (goog.userAgent.WEBKIT) {
+    if (goog.userAgent.WEBKIT &&
+        !goog.userAgent.isVersionOrHigher(534)) {
       this.fixSafariLists_();
     }
     if (goog.userAgent.IE) {
@@ -959,7 +960,8 @@ goog.editor.plugins.BasicTextFormatter.prototype.toggleLink_ = function(
  *     current selection.
  * @param {string} url The url to link to.
  * @param {string=} opt_target Target for the link.
- * @return {goog.editor.Link?} The newly created link.
+ * @return {goog.editor.Link?} The newly created link, or null if the link
+ *     couldn't be created.
  * @private
  */
 goog.editor.plugins.BasicTextFormatter.prototype.createLink_ = function(range,
@@ -973,7 +975,13 @@ goog.editor.plugins.BasicTextFormatter.prototype.createLink_ = function(range,
   if (parent && parent.tagName == goog.dom.TagName.IMG) {
     return null;
   }
-  if (range && range.isCollapsed()) {
+  // If range is not present, the editable field doesn't have focus, abort
+  // creating a link.
+  if (!range) {
+    return null;
+  }
+
+  if (range.isCollapsed()) {
     var textRange = range.getTextRange(0).getBrowserRangeObject();
     if (goog.editor.BrowserFeature.HAS_W3C_RANGES) {
       anchor = this.getFieldDomHelper().createElement(goog.dom.TagName.A);
@@ -1264,7 +1272,7 @@ goog.editor.plugins.BasicTextFormatter.prototype.cleanUpSafariHeadings_ =
 /**
  * Prevent Safari from making each list item be "1" when converting from
  * unordered to ordered lists.
- * (see https://bugs.webkit.org/show_bug.cgi?id=19539 )
+ * (see https://bugs.webkit.org/show_bug.cgi?id=19539, fixed by 2010-04-21)
  * @private
  */
 goog.editor.plugins.BasicTextFormatter.prototype.fixSafariLists_ = function() {
@@ -1421,8 +1429,9 @@ goog.editor.plugins.BasicTextFormatter.prototype.applyExecCommandSafariFixes_ =
     goog.dom.appendChild(this.getFieldObject().getElement(), div);
   }
 
-  if (goog.editor.plugins.BasicTextFormatter.
-      hangingExecCommandWebkit_[command]) {
+  if (!goog.userAgent.isVersionOrHigher(534) &&
+      goog.editor.plugins.BasicTextFormatter.
+          hangingExecCommandWebkit_[command]) {
     // Add a new div at the beginning of the field.
     var field = this.getFieldObject().getElement();
     div = this.getFieldDomHelper().createDom(

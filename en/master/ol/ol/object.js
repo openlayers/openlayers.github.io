@@ -22,13 +22,13 @@ ol.ObjectEventType = {
   /**
    * Triggered before a property is changed.
    * @event ol.ObjectEvent#beforepropertychange
-   * @todo api
+   * @api
    */
   BEFOREPROPERTYCHANGE: 'beforepropertychange',
   /**
    * Triggered when a property is changed.
    * @event ol.ObjectEvent#propertychange
-   * @todo api
+   * @api
    */
   PROPERTYCHANGE: 'propertychange'
 };
@@ -50,7 +50,7 @@ ol.ObjectEvent = function(type, key) {
   /**
    * The name of the property whose value is changing.
    * @type {string}
-   * @todo api
+   * @api
    */
   this.key = key;
 
@@ -105,6 +105,7 @@ ol.ObjectAccessor = function(source, target, sourceKey, targetKey) {
  *     before it is set to the target.
  * @param {function(?): ?} to A function that transforms the target value
  *     before it is set to the source.
+ * @api
  */
 ol.ObjectAccessor.prototype.transform = function(from, to) {
   this.from = from;
@@ -132,7 +133,7 @@ ol.ObjectAccessor.prototype.transform = function(from, to) {
  * @extends {ol.Observable}
  * @param {Object.<string, *>=} opt_values Values.
  * @fires ol.ObjectEvent
- * @todo api
+ * @api
  */
 ol.Object = function(opt_values) {
   goog.base(this);
@@ -266,7 +267,7 @@ ol.Object.getSetterName = function(key) {
  * @param {ol.Object} target Target.
  * @param {string=} opt_targetKey Target key.
  * @return {ol.ObjectAccessor}
- * @todo api
+ * @api
  */
 ol.Object.prototype.bindTo = function(key, target, opt_targetKey) {
   var targetKey = opt_targetKey || key;
@@ -323,7 +324,7 @@ ol.Object.prototype.createBeforeChangeListener_ = function(key, targetKey) {
  * Gets a value.
  * @param {string} key Key name.
  * @return {*} Value.
- * @todo api
+ * @api
  */
 ol.Object.prototype.get = function(key) {
   var value;
@@ -351,7 +352,7 @@ ol.Object.prototype.get = function(key) {
 /**
  * Get a list of object property names.
  * @return {Array.<string>} List of property names.
- * @todo api
+ * @api
  */
 ol.Object.prototype.getKeys = function() {
   var accessors = this.accessors_;
@@ -383,7 +384,7 @@ ol.Object.prototype.getKeys = function() {
 /**
  * Get an object of all property names and values.
  * @return {Object.<string, *>} Object.
- * @todo api
+ * @api
  */
 ol.Object.prototype.getProperties = function() {
   var properties = {};
@@ -413,7 +414,7 @@ ol.Object.prototype.notify = function(key) {
  * Sets a value.
  * @param {string} key Key name.
  * @param {*} value Value.
- * @todo api
+ * @api
  */
 ol.Object.prototype.set = function(key, value) {
   this.dispatchEvent(
@@ -442,7 +443,7 @@ ol.Object.prototype.set = function(key, value) {
 /**
  * Sets a collection of key-value pairs.
  * @param {Object.<string, *>} values Values.
- * @todo api
+ * @api
  */
 ol.Object.prototype.setProperties = function(values) {
   var key;
@@ -456,7 +457,7 @@ ol.Object.prototype.setProperties = function(values) {
  * Removes a binding. Unbinding will set the unbound property to the current
  *     value. The object will not be notified, as the value has not changed.
  * @param {string} key Key name.
- * @todo api
+ * @api
  */
 ol.Object.prototype.unbind = function(key) {
   var listeners = this.listeners_;
@@ -480,7 +481,7 @@ ol.Object.prototype.unbind = function(key) {
 
 /**
  * Removes all bindings.
- * @todo api
+ * @api
  */
 ol.Object.prototype.unbindAll = function() {
   for (var key in this.listeners_) {

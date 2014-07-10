@@ -41,6 +41,7 @@ goog.require('goog.events.EventTarget');
  * @param {!IDBDatabase} db Underlying IndexedDB database object.
  * @constructor
  * @extends {goog.events.EventTarget}
+ * @final
  */
 goog.db.IndexedDb = function(db) {
   goog.base(this);
@@ -55,7 +56,7 @@ goog.db.IndexedDb = function(db) {
 
   /**
    * Internal event handler that listens to IDBDatabase events.
-   * @type {!goog.events.EventHandler}
+   * @type {!goog.events.EventHandler.<!goog.db.IndexedDb>}
    * @private
    */
   this.eventHandler_ = new goog.events.EventHandler(this);
@@ -318,6 +319,7 @@ goog.db.IndexedDb.EventType = {
  *     updated to.
  * @constructor
  * @extends {goog.events.Event}
+ * @final
  */
 goog.db.IndexedDb.VersionChangeEvent = function(oldVersion, newVersion) {
   goog.base(this, goog.db.IndexedDb.EventType.VERSION_CHANGE);

@@ -100,7 +100,7 @@ goog.net.XhrManager = function(
 
   /**
    * The event handler.
-   * @type {goog.events.EventHandler}
+   * @type {goog.events.EventHandler.<!goog.net.XhrManager>}
    * @private
    */
   this.eventHandler_ = new goog.events.EventHandler(this);
@@ -175,8 +175,8 @@ goog.net.XhrManager.prototype.getOutstandingRequestIds = function() {
  * @param {ArrayBuffer|Blob|Document|FormData|string=} opt_content Post data.
  * @param {Object|goog.structs.Map=} opt_headers Map of headers to add to the
  *     request.
- * @param {*=} opt_priority The priority of the request. A smaller value means a
- *     higher priority.
+ * @param {number=} opt_priority The priority of the request. A smaller value
+ *     means a higher priority.
  * @param {Function=} opt_callback Callback function for when request is
  *     complete. The only param is the event object from the COMPLETE event.
  * @param {number=} opt_maxRetries The maximum number of times the request
@@ -508,6 +508,7 @@ goog.net.XhrManager.prototype.disposeInternal = function() {
  * @param {goog.net.XhrIo} xhrIo The XhrIo object of the request.
  * @constructor
  * @extends {goog.events.Event}
+ * @final
  */
 goog.net.XhrManager.Event = function(type, target, id, xhrIo) {
   goog.events.Event.call(this, type, target);
@@ -548,6 +549,7 @@ goog.inherits(goog.net.XhrManager.Event, goog.events.Event);
  *
  * @constructor
  * @extends {goog.Disposable}
+ * @final
  */
 goog.net.XhrManager.Request = function(url, xhrEventCallback, opt_method,
     opt_content, opt_headers, opt_callback, opt_maxRetries, opt_responseType) {

@@ -58,7 +58,7 @@ goog.global = this;
  *
  * Example:
  * <pre>
- *   var CLOSURE_DEFINES = {'goog.DEBUG', false};
+ *   var CLOSURE_DEFINES = {'goog.DEBUG': false};
  * </pre>
  *
  * @type {Object.<string, (string|number|boolean)>|undefined}
@@ -823,7 +823,7 @@ goog.typeOf = function(value) {
  * WARNING: Do not use this to test if an object has a property. Use the in
  * operator instead.  Additionally, this function assumes that the global
  * undefined variable has not been redefined.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is defined.
  */
 goog.isDef = function(val) {
@@ -833,7 +833,7 @@ goog.isDef = function(val) {
 
 /**
  * Returns true if the specified value is null.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is null.
  */
 goog.isNull = function(val) {
@@ -843,7 +843,7 @@ goog.isNull = function(val) {
 
 /**
  * Returns true if the specified value is defined and not null.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is defined and not null.
  */
 goog.isDefAndNotNull = function(val) {
@@ -854,7 +854,7 @@ goog.isDefAndNotNull = function(val) {
 
 /**
  * Returns true if the specified value is an array.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is an array.
  */
 goog.isArray = function(val) {
@@ -866,7 +866,7 @@ goog.isArray = function(val) {
  * Returns true if the object looks like an array. To qualify as array like
  * the value needs to be either a NodeList or an object with a Number length
  * property.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is an array.
  */
 goog.isArrayLike = function(val) {
@@ -878,7 +878,7 @@ goog.isArrayLike = function(val) {
 /**
  * Returns true if the object looks like a Date. To qualify as Date-like the
  * value needs to be an object and have a getFullYear() function.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is a like a Date.
  */
 goog.isDateLike = function(val) {
@@ -888,7 +888,7 @@ goog.isDateLike = function(val) {
 
 /**
  * Returns true if the specified value is a string.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is a string.
  */
 goog.isString = function(val) {
@@ -898,7 +898,7 @@ goog.isString = function(val) {
 
 /**
  * Returns true if the specified value is a boolean.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is boolean.
  */
 goog.isBoolean = function(val) {
@@ -908,7 +908,7 @@ goog.isBoolean = function(val) {
 
 /**
  * Returns true if the specified value is a number.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is a number.
  */
 goog.isNumber = function(val) {
@@ -918,7 +918,7 @@ goog.isNumber = function(val) {
 
 /**
  * Returns true if the specified value is a function.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is a function.
  */
 goog.isFunction = function(val) {
@@ -929,7 +929,7 @@ goog.isFunction = function(val) {
 /**
  * Returns true if the specified value is an object.  This includes arrays and
  * functions.
- * @param {*} val Variable to test.
+ * @param {?} val Variable to test.
  * @return {boolean} Whether variable is an object.
  */
 goog.isObject = function(val) {
@@ -959,6 +959,19 @@ goog.getUid = function(obj) {
   // and SubClass.prototype will be the same.
   return obj[goog.UID_PROPERTY_] ||
       (obj[goog.UID_PROPERTY_] = ++goog.uidCounter_);
+};
+
+
+/**
+ * Whether the given object is alreay assigned a unique ID.
+ *
+ * This does not modify the object.
+ *
+ * @param {Object} obj The object to check.
+ * @return {boolean} Whether there an assigned unique id for the object.
+ */
+goog.hasUid = function(obj) {
+  return !!obj[goog.UID_PROPERTY_];
 };
 
 
@@ -1161,9 +1174,10 @@ goog.bind = function(fn, selfObj, var_args) {
 goog.partial = function(fn, var_args) {
   var args = Array.prototype.slice.call(arguments, 1);
   return function() {
-    // Prepend the bound arguments to the current arguments.
-    var newArgs = Array.prototype.slice.call(arguments);
-    newArgs.unshift.apply(newArgs, args);
+    // Clone the array (with slice()) and append additional arguments
+    // to the existing arguments.
+    var newArgs = args.slice();
+    newArgs.push.apply(newArgs, arguments);
     return fn.apply(this, newArgs);
   };
 };
@@ -1509,6 +1523,30 @@ goog.inherits = function(childCtor, parentCtor) {
   childCtor.prototype = new tempCtor();
   /** @override */
   childCtor.prototype.constructor = childCtor;
+
+  /**
+   * WARNING: DO NOT USE YET! JSCOMPILER SUPPORT HAS NOT BEEN IMPLEMENTED YET.
+   *
+   * Calls superclass constructor/method.
+   *
+   * This function is only available if you use goog.inherits to
+   * express inheritance relationships between classes.
+   *
+   * NOTE: This is a replacement for goog.base and for superClass_
+   * property defined in childCtor.
+   *
+   * @param {!Object} me Should always be "this".
+   * @param {string} methodName The method name to call. Calling
+   *     superclass constructor can be done with the special string
+   *     'constructor'.
+   * @param {...*} var_args The arguments to pass to superclass
+   *     method/constructor.
+   * @return {*} The return value of the superclass method/constructor.
+   */
+  childCtor.base = function(me, methodName, var_args) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    return parentCtor.prototype[methodName].apply(me, args);
+  };
 };
 
 

@@ -23,9 +23,11 @@
 
 goog.provide('goog.net.xpc.FrameElementMethodTransport');
 
+goog.require('goog.log');
 goog.require('goog.net.xpc');
 goog.require('goog.net.xpc.CrossPageChannelRole');
 goog.require('goog.net.xpc.Transport');
+goog.require('goog.net.xpc.TransportTypes');
 
 
 
@@ -42,6 +44,7 @@ goog.require('goog.net.xpc.Transport');
  *     the correct window.
  * @constructor
  * @extends {goog.net.xpc.Transport}
+ * @final
  */
 goog.net.xpc.FrameElementMethodTransport = function(channel, opt_domHelper) {
   goog.base(this, opt_domHelper);

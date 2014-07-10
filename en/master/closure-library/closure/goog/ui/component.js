@@ -71,12 +71,24 @@ goog.define('goog.ui.Component.ALLOW_DETACHED_DECORATION', false);
 goog.ui.Component.prototype.idGenerator_ = goog.ui.IdGenerator.getInstance();
 
 
+// TODO(gboyer): See if we can remove this and just check goog.i18n.bidi.IS_RTL.
+/**
+ * @define {number} Defines the default BIDI directionality.
+ *     0: Unknown.
+ *     1: Left-to-right.
+ *     -1: Right-to-left.
+ */
+goog.define('goog.ui.Component.DEFAULT_BIDI_DIR', 0);
+
+
 /**
  * The default right to left value.
  * @type {?boolean}
  * @private
  */
-goog.ui.Component.defaultRightToLeft_ = null;
+goog.ui.Component.defaultRightToLeft_ =
+    (goog.ui.Component.DEFAULT_BIDI_DIR == 1) ? false :
+    (goog.ui.Component.DEFAULT_BIDI_DIR == -1) ? true : null;
 
 
 /**
@@ -342,7 +354,7 @@ goog.ui.Component.prototype.id_ = null;
  * created in a different window.
  * @type {!goog.dom.DomHelper}
  * @protected
- * @suppress {underscore}
+ * @suppress {underscore|visibility}
  */
 goog.ui.Component.prototype.dom_;
 
@@ -557,12 +569,16 @@ goog.ui.Component.prototype.getRequiredElementByClass = function(className) {
 /**
  * Returns the event handler for this component, lazily created the first time
  * this method is called.
- * @return {!goog.events.EventHandler} Event handler for this component.
+ * @return {!goog.events.EventHandler.<T>} Event handler for this component.
  * @protected
+ * @this T
+ * @template T
  */
 goog.ui.Component.prototype.getHandler = function() {
-  return this.googUiComponentHandler_ ||
-         (this.googUiComponentHandler_ = new goog.events.EventHandler(this));
+  if (!this.googUiComponentHandler_) {
+    this.googUiComponentHandler_ = new goog.events.EventHandler(this);
+  }
+  return this.googUiComponentHandler_;
 };
 
 
@@ -962,7 +978,7 @@ goog.ui.Component.prototype.addChild = function(child, opt_render) {
   // reposition any already-rendered child to the end.  Instead, perhaps
   // addChild(child, false) should never reposition the child; instead, clients
   // that need the repositioning will use addChildAt explicitly.  Right now,
-  // clients can get around this by calling addChild first.
+  // clients can get around this by calling addChild before calling decorate.
   this.addChildAt(child, this.getChildCount(), opt_render);
 };
 
@@ -1012,6 +1028,8 @@ goog.ui.Component.prototype.addChild = function(child, opt_render) {
  * @return {void} Nada.
  */
 goog.ui.Component.prototype.addChildAt = function(child, index, opt_render) {
+  goog.asserts.assert(!!child, 'Provided element must not be null.');
+
   if (child.inDocument_ && (opt_render || !this.inDocument_)) {
     // Adding a child that's already in the document is an error, except if the
     // parent is also in the document and opt_render is false (e.g. decorate()).

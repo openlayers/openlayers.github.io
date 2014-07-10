@@ -60,6 +60,7 @@ goog.require('goog.userAgent');
  * @deprecated goog.graphics is deprecated. It existed to abstract over browser
  *     differences before the canvas tag was widely supported.  See
  *     http://en.wikipedia.org/wiki/Canvas_element for details.
+ * @final
  */
 goog.graphics.SvgGraphics = function(width, height,
                                      opt_coordWidth, opt_coordHeight,
@@ -90,7 +91,7 @@ goog.graphics.SvgGraphics = function(width, height,
 
   /**
    * Event handler.
-   * @type {goog.events.EventHandler}
+   * @type {goog.events.EventHandler.<!goog.graphics.SvgGraphics>}
    * @private
    */
   this.handler_ = new goog.events.EventHandler(this);

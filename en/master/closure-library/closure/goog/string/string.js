@@ -495,7 +495,8 @@ goog.string.htmlEscape = function(str, opt_isLikelyToContainHtmlChars) {
     return str.replace(goog.string.amperRe_, '&amp;')
           .replace(goog.string.ltRe_, '&lt;')
           .replace(goog.string.gtRe_, '&gt;')
-          .replace(goog.string.quotRe_, '&quot;');
+          .replace(goog.string.quotRe_, '&quot;')
+          .replace(goog.string.singleQuoteRe_, '&#39;');
 
   } else {
     // quick test helps in the case when there are no chars to replace, in
@@ -514,6 +515,9 @@ goog.string.htmlEscape = function(str, opt_isLikelyToContainHtmlChars) {
     }
     if (str.indexOf('"') != -1) {
       str = str.replace(goog.string.quotRe_, '&quot;');
+    }
+    if (str.indexOf('\'') != -1) {
+      str = str.replace(goog.string.singleQuoteRe_, '&#39;');
     }
     return str;
   }
@@ -549,7 +553,15 @@ goog.string.gtRe_ = />/g;
  * @type {RegExp}
  * @private
  */
-goog.string.quotRe_ = /\"/g;
+goog.string.quotRe_ = /"/g;
+
+
+/**
+ * Regular expression that matches a single quote, for use in escaping.
+ * @type {RegExp}
+ * @private
+ */
+goog.string.singleQuoteRe_ = /'/g;
 
 
 /**
@@ -557,7 +569,7 @@ goog.string.quotRe_ = /\"/g;
  * @type {RegExp}
  * @private
  */
-goog.string.allRe_ = /[&<>\"]/;
+goog.string.allRe_ = /[&<>"']/;
 
 
 /**
@@ -583,15 +595,38 @@ goog.string.unescapeEntities = function(str) {
 
 
 /**
+ * Unescapes a HTML string using the provided document.
+ *
+ * @param {string} str The string to unescape.
+ * @param {!Document} document A document to use in escaping the string.
+ * @return {string} An unescaped copy of {@code str}.
+ */
+goog.string.unescapeEntitiesWithDocument = function(str, document) {
+  if (goog.string.contains(str, '&')) {
+    return goog.string.unescapeEntitiesUsingDom_(str, document);
+  }
+  return str;
+};
+
+
+/**
  * Unescapes an HTML string using a DOM to resolve non-XML, non-numeric
  * entities. This function is XSS-safe and whitespace-preserving.
  * @private
  * @param {string} str The string to unescape.
+ * @param {Document=} opt_document An optional document to use for creating
+ *     elements. If this is not specified then the default window.document
+ *     will be used.
  * @return {string} The unescaped {@code str} string.
  */
-goog.string.unescapeEntitiesUsingDom_ = function(str) {
+goog.string.unescapeEntitiesUsingDom_ = function(str, opt_document) {
   var seen = {'&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"'};
-  var div = document.createElement('div');
+  var div;
+  if (opt_document) {
+    div = opt_document.createElement('div');
+  } else {
+    div = document.createElement('div');
+  }
   // Match as many valid entity characters as possible. If the actual entity
   // happens to be shorter, it will still work as innerHTML will return the
   // trailing characters unchanged. Since the entity characters do not include
@@ -1186,7 +1221,7 @@ goog.string.createUniqueString = function() {
 
 
 /**
- * Converts the supplied string to a number, which may be Ininity or NaN.
+ * Converts the supplied string to a number, which may be Infinity or NaN.
  * This function strips whitespace: (toNumber(' 123') === 123)
  * This function accepts scientific notation: (toNumber('1e1') === 10)
  *

@@ -26,9 +26,11 @@ goog.require('goog.asserts');
 goog.require('goog.async.Deferred');
 goog.require('goog.events');
 goog.require('goog.events.EventHandler');
+goog.require('goog.log');
 goog.require('goog.net.xpc');
 goog.require('goog.net.xpc.CrossPageChannelRole');
 goog.require('goog.net.xpc.Transport');
+goog.require('goog.net.xpc.TransportTypes');
 
 
 
@@ -51,6 +53,7 @@ goog.require('goog.net.xpc.Transport');
  *     transport should use.  The default is '2'.
  * @constructor
  * @extends {goog.net.xpc.Transport}
+ * @final
  */
 goog.net.xpc.NativeMessagingTransport = function(channel, peerHostname,
     opt_domHelper, opt_oneSidedHandshake, opt_protocolVersion) {
@@ -82,7 +85,7 @@ goog.net.xpc.NativeMessagingTransport = function(channel, peerHostname,
 
   /**
    * The event handler.
-   * @type {!goog.events.EventHandler}
+   * @type {!goog.events.EventHandler.<!goog.net.xpc.NativeMessagingTransport>}
    * @private
    */
   this.eventHandler_ = new goog.events.EventHandler(this);
@@ -336,13 +339,7 @@ goog.net.xpc.NativeMessagingTransport.messageReceived_ = function(msgEvt) {
       // navigation (particularly Firefox 1.5+). We can trust the outer peer,
       // since we only accept postMessage messages from the same hostname that
       // originally setup the channel.
-      goog.log.fine(goog.net.xpc.logger,
-          'changing channel name to ' + channelName);
-      staleChannel.name = channelName;
-      // Remove old stale pointer to channel.
-      delete goog.net.xpc.channels[staleChannelName];
-      // Create fresh pointer to channel.
-      goog.net.xpc.channels[channelName] = staleChannel;
+      staleChannel.updateChannelNameAndCatalog(channelName);
       staleChannel.xpcDeliver(service, payload);
       return true;
     }

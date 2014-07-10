@@ -16,12 +16,15 @@ goog.require('ol.interaction.Interaction');
 
 /**
  * @classdesc
- * Handles selection of vector data.
+ * Handles selection of vector data. A {@link ol.FeatureOverlay} is maintained
+ * internally to store the selected feature(s). Which features are selected is
+ * determined by the `condition` option, and optionally the `toggle` or
+ * `add`/`remove` options.
  *
  * @constructor
  * @extends {ol.interaction.Interaction}
  * @param {olx.interaction.SelectOptions=} opt_options Options.
- * @todo api
+ * @api stable
  */
 ol.interaction.Select = function(opt_options) {
 
@@ -102,8 +105,9 @@ goog.inherits(ol.interaction.Select, ol.interaction.Interaction);
 
 
 /**
+ * Get the selected features.
  * @return {ol.Collection} Features collection.
- * @todo api
+ * @api stable
  */
 ol.interaction.Select.prototype.getFeatures = function() {
   return this.featureOverlay_.getFeatures();
@@ -183,7 +187,7 @@ ol.interaction.Select.prototype.handleMapBrowserEvent =
  * Remove the interaction from its current map, if any,  and attach it to a new
  * map, if any. Pass `null` to just remove the interaction from the current map.
  * @param {ol.Map} map Map.
- * @todo api
+ * @api stable
  */
 ol.interaction.Select.prototype.setMap = function(map) {
   var currentMap = this.getMap();

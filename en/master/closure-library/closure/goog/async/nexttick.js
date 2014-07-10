@@ -29,8 +29,10 @@ goog.require('goog.functions');
  * Fires the provided callbacks as soon as possible after the current JS
  * execution context. setTimeout(…, 0) always takes at least 5ms for legacy
  * reasons.
- * @param {function()} callback Callback function to fire as soon as possible.
- * @param {Object=} opt_context Object in whose scope to call the listener.
+ * @param {function(this:SCOPE)} callback Callback function to fire as soon as
+ *     possible.
+ * @param {SCOPE=} opt_context Object in whose scope to call the listener.
+ * @template SCOPE
  */
 goog.async.nextTick = function(callback, opt_context) {
   var cb = callback;
@@ -82,7 +84,7 @@ goog.async.nextTick.getSetImmediateEmulator_ = function() {
       var iframe = document.createElement('iframe');
       iframe.style.display = 'none';
       iframe.src = '';
-      document.body.appendChild(iframe);
+      document.documentElement.appendChild(iframe);
       var win = iframe.contentWindow;
       var doc = win.document;
       doc.open();

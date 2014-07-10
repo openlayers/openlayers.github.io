@@ -184,6 +184,22 @@ function testGetComputedStyleFilter() {
   }
 }
 
+function testGetComputedBoxSizing() {
+  if (!goog.userAgent.IE || goog.userAgent.isVersionOrHigher(8)) {
+    var defaultBoxSizing = goog.dom.isCss1CompatMode() ?
+        'content-box' : 'border-box';
+    var el = goog.dom.getElement('box-sizing-unset');
+    assertEquals(defaultBoxSizing, goog.style.getComputedBoxSizing(el));
+
+    el = goog.dom.getElement('box-sizing-border-box');
+    assertEquals('border-box', goog.style.getComputedBoxSizing(el));
+  } else {
+    // IE7 and below don't support box-sizing.
+    assertNull(goog.style.getComputedBoxSizing(
+        goog.dom.getElement('box-sizing-border-box')));
+  }
+}
+
 function testGetComputedPosition() {
   assertEquals('position not set', 'static',
                goog.style.getComputedPosition($('position-unset')));
@@ -776,6 +792,24 @@ function testGetSizeSvgElements() {
     assertEquals(32, dims.width);
     assertRoughlyEquals(21, dims.height, 0.01);
   }
+}
+
+function testGetSizeSvgDocument() {
+  var svgEl = document.createElementNS &&
+      document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  if (!svgEl || svgEl.getAttribute('transform') == '' ||
+      (goog.userAgent.WEBKIT && !goog.userAgent.isVersionOrHigher(534.8))) {
+    // SVG not supported, or getBoundingClientRect not supported on SVG
+    // elements.
+    return;
+  }
+
+  var frame = goog.dom.getElement('svg-frame');
+  var doc = goog.dom.getFrameContentDocument(frame);
+  var rect = doc.getElementById('rect');
+  var dims = goog.style.getSize(rect);
+  assertEquals(50, dims.width);
+  assertEquals(50, dims.height);
 }
 
 function testGetSizeInlineBlock() {

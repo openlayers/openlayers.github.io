@@ -23,7 +23,7 @@ goog.provide('goog.ui.editor.AbstractDialog.Builder');
 goog.provide('goog.ui.editor.AbstractDialog.EventType');
 
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.events.EventTarget');
 goog.require('goog.string');
 goog.require('goog.ui.Dialog');
@@ -55,7 +55,7 @@ goog.ui.editor.AbstractDialog.prototype.show = function() {
   // Lazily create the wrapped dialog to be shown.
   if (!this.dialogInternal_) {
     this.dialogInternal_ = this.createDialogControl();
-    this.dialogInternal_.addEventListener(goog.ui.Dialog.EventType.AFTER_HIDE,
+    this.dialogInternal_.listen(goog.ui.Dialog.EventType.AFTER_HIDE,
         this.handleAfterHide_, false, this);
   }
 
@@ -218,7 +218,7 @@ goog.ui.editor.AbstractDialog.Builder.prototype.addButton =
  */
 goog.ui.editor.AbstractDialog.Builder.prototype.addClassName =
     function(className) {
-  goog.dom.classes.add(this.wrappedDialog_.getDialogElement(), className);
+  goog.dom.classlist.add(this.wrappedDialog_.getDialogElement(), className);
   return this;
 };
 
@@ -250,7 +250,7 @@ goog.ui.editor.AbstractDialog.Builder.prototype.build = function() {
 
   var handlers = this.buttonHandlers_;
   this.buttonHandlers_ = null;
-  this.wrappedDialog_.addEventListener(goog.ui.Dialog.EventType.SELECT,
+  this.wrappedDialog_.listen(goog.ui.Dialog.EventType.SELECT,
       // Listen for the SELECT event, which means a button was clicked, and
       // call the handler associated with that button via the key property.
       function(e) {
