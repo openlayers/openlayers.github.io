@@ -53,7 +53,11 @@ ol.inherits(app.RotateNorthControl, ol.control.Control);
 
 
 var map = new ol.Map({
-  controls: ol.control.defaults().extend([
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }).extend([
     new app.RotateNorthControl()
   ]),
   layers: [

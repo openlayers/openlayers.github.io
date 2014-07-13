@@ -116,6 +116,11 @@ var raster = new ol.layer.Tile({
 var map = new ol.Map({
   layers: [raster, vector],
   target: document.getElementById('map'),
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   view: new ol.View({
     center: [739218, 5906096],
     maxZoom: 19,

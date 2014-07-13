@@ -42,6 +42,11 @@ var map = new ol.Map({
     })
   ],
   target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   view: new ol.View({
     center: [-11158582, 4813697],
     zoom: 4

@@ -5,6 +5,11 @@ var attribution = new ol.Attribution({
 
 var map = new ol.Map({
   target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM({

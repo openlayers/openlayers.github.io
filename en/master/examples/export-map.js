@@ -5,6 +5,11 @@ var map = new ol.Map({
     })
   ],
   target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   view: new ol.View({
     center: [0, 0],
     zoom: 2
@@ -19,7 +24,7 @@ if ('download' in exportPNGElement) {
       var canvas = event.context.canvas;
       exportPNGElement.href = canvas.toDataURL('image/png');
     });
-    map.render();
+    map.renderSync();
   }, false);
 } else {
   var info = document.getElementById('no-download');

@@ -10,6 +10,11 @@ var map = new ol.Map({
     })
   ],
   target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   view: view
 });
 

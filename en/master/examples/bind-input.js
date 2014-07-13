@@ -21,6 +21,11 @@ var map = new ol.Map({
   layers: [layer],
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   view: view
 });
 

@@ -4,6 +4,11 @@ var map = new ol.Map({
       source: new ol.source.OSM()
     })
   ],
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View({

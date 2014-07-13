@@ -3,6 +3,7 @@ goog.require('ol.Feature');
 goog.require('ol.FeatureOverlay');
 goog.require('ol.Map');
 goog.require('ol.View');
+goog.require('ol.control');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.Point');
 goog.require('ol.layer.Tile');

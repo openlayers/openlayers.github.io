@@ -14,6 +14,11 @@ var map = new ol.Map({
   ],
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
   view: new ol.View({
     center: ol.proj.transform(
         [-0.1275, 51.507222], 'EPSG:4326', 'EPSG:3857'),

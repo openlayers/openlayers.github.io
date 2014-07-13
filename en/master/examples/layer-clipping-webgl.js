@@ -14,6 +14,11 @@ if (!ol.BrowserFeature.HAS_WEBGL) {
     layers: [osm],
     renderer: 'webgl',
     target: 'map',
+    controls: ol.control.defaults({
+      attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+        collapsible: false
+      })
+    }),
     view: new ol.View({
       center: [0, 0],
       zoom: 2
