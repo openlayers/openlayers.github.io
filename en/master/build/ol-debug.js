@@ -30142,8 +30142,7 @@ goog.inherits(ol.control.Attribution, ol.control.Control);
  * @param {?olx.FrameState} frameState Frame state.
  * @return {Array.<Object.<string, ol.Attribution>>} Attributions.
  */
-ol.control.Attribution.prototype.getSourceAttributions =
-    function(frameState) {
+ol.control.Attribution.prototype.getSourceAttributions = function(frameState) {
   var i, ii, j, jj, tileRanges, source, sourceAttribution,
       sourceAttributionKey, sourceAttributions, sourceKey;
   var layerStatesArray = frameState.layerStatesArray;
@@ -55044,7 +55043,8 @@ goog.require('ol.xml');
 
 /**
  * @classdesc
- * Feature format for reading and writing data in the OSMXML format.
+ * Feature format for reading data in the
+ * [OSMXML format](http://wiki.openstreetmap.org/wiki/OSM_XML).
  *
  * @constructor
  * @extends {ol.format.XMLFeature}
@@ -60196,8 +60196,7 @@ ol.interaction.Interaction.prototype.setMap = function(map) {
  * @param {ol.Coordinate} delta Delta.
  * @param {number=} opt_duration Duration.
  */
-ol.interaction.Interaction.pan = function(
-    map, view, delta, opt_duration) {
+ol.interaction.Interaction.pan = function(map, view, delta, opt_duration) {
   var currentCenter = view.getCenter();
   if (goog.isDef(currentCenter)) {
     if (goog.isDef(opt_duration) && opt_duration > 0) {
@@ -66493,8 +66492,7 @@ ol.interaction.DragBox.prototype.onBoxEnd = goog.nullFunction;
 /**
  * @inheritDoc
  */
-ol.interaction.DragBox.prototype.handlePointerUp =
-    function(mapBrowserEvent) {
+ol.interaction.DragBox.prototype.handlePointerUp = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return true;
   }
@@ -66517,8 +66515,7 @@ ol.interaction.DragBox.prototype.handlePointerUp =
 /**
  * @inheritDoc
  */
-ol.interaction.DragBox.prototype.handlePointerDown =
-    function(mapBrowserEvent) {
+ol.interaction.DragBox.prototype.handlePointerDown = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return false;
   }
@@ -66795,8 +66792,7 @@ ol.interaction.DragPan.prototype.handlePointerDrag = function(mapBrowserEvent) {
 /**
  * @inheritDoc
  */
-ol.interaction.DragPan.prototype.handlePointerUp =
-    function(mapBrowserEvent) {
+ol.interaction.DragPan.prototype.handlePointerUp = function(mapBrowserEvent) {
   var map = mapBrowserEvent.map;
   var view = map.getView();
   if (this.targetPointers.length === 0) {
@@ -66828,8 +66824,7 @@ ol.interaction.DragPan.prototype.handlePointerUp =
 /**
  * @inheritDoc
  */
-ol.interaction.DragPan.prototype.handlePointerDown =
-    function(mapBrowserEvent) {
+ol.interaction.DragPan.prototype.handlePointerDown = function(mapBrowserEvent) {
   if (this.targetPointers.length > 0 && this.condition_(mapBrowserEvent)) {
     var map = mapBrowserEvent.map;
     var view = map.getView();
@@ -85962,8 +85957,7 @@ ol.Map.prototype.getInteractions = function() {
  * @api stable
  */
 ol.Map.prototype.getLayerGroup = function() {
-  return /** @type {ol.layer.Group} */ (
-      this.get(ol.MapProperty.LAYERGROUP));
+  return /** @type {ol.layer.Group} */ (this.get(ol.MapProperty.LAYERGROUP));
 };
 goog.exportProperty(
     ol.Map.prototype,
@@ -86630,8 +86624,7 @@ ol.Map.prototype.updateSize = function() {
   /**
    * @type {Element}
    */
-  var targetElement = goog.isDef(target) ?
-      goog.dom.getElement(target) : null;
+  var targetElement = goog.isDef(target) ? goog.dom.getElement(target) : null;
 
   if (goog.isNull(targetElement)) {
     this.setSize(undefined);
