@@ -1,3 +1,5 @@
+var projection = ol.proj.get('EPSG:3857');
+
 var raster = new ol.layer.Tile({
   source: new ol.source.BingMaps({
     imagerySet: 'Aerial',
@@ -34,7 +36,7 @@ var style = {
 
 var vector = new ol.layer.Vector({
   source: new ol.source.GPX({
-    projection: 'EPSG:3857',
+    projection: projection,
     url: 'data/gpx/fells_loop.gpx'
   }),
   style: function(feature, resolution) {
@@ -78,3 +80,30 @@ $(map.getViewport()).on('mousemove', function(evt) {
 map.on('click', function(evt) {
   displayFeatureInfo(evt.pixel);
 });
+
+var exportGPXElement = document.getElementById('export-gpx');
+if ('download' in exportGPXElement) {
+  var vectorSource = /** @type {ol.source.Vector} */ (vector.getSource());
+  exportGPXElement.addEventListener('click', function(e) {
+    if (!exportGPXElement.href) {
+      var features = [];
+      vectorSource.forEachFeature(function(feature) {
+        var clone = feature.clone();
+        clone.getGeometry().transform(projection, 'EPSG:4326');
+        features.push(clone);
+      });
+      var node = new ol.format.GPX().writeFeatures(features);
+      var string = new XMLSerializer().serializeToString(
+          /** @type {Node} */ (node));
+      var base64 = exampleNS.strToBase64(string);
+      exportGPXElement.href =
+          'data:gpx+xml;base64,' + base64;
+    }
+  }, false);
+} else {
+  var info = document.getElementById('no-download');
+  /**
+   * display error message
+   */
+  info.style.display = '';
+}

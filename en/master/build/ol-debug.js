@@ -45730,7 +45730,6 @@ ol.format.GML.prototype.writeFeaturesNode = function(features) {
 };
 
 goog.provide('ol.format.GPX');
-goog.provide('ol.format.GPX.V1_1');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
@@ -46525,17 +46524,6 @@ ol.format.GPX.GPX_SERIALIZERS_ = ol.xml.makeStructureNS(
     });
 
 
-
-/**
- * @constructor
- * @extends {ol.format.GPX}
- */
-ol.format.GPX.V1_1 = function() {
-  goog.base(this);
-};
-goog.inherits(ol.format.GPX.V1_1, ol.format.GPX);
-
-
 /**
  * Encode an array of features in the GPX format.
  *
@@ -46550,7 +46538,7 @@ ol.format.GPX.prototype.writeFeatures;
 /**
  * @inheritDoc
  */
-ol.format.GPX.V1_1.prototype.writeFeaturesNode = function(features) {
+ol.format.GPX.prototype.writeFeaturesNode = function(features) {
   //FIXME Serialize metadata
   var gpx = ol.xml.createElementNS('http://www.topografix.com/GPX/1/1', 'gpx');
   ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */
@@ -90673,6 +90661,13 @@ ol.DebugTile_.prototype.getImage = function(opt_context) {
 
 
 /**
+ * @classdesc
+ * A pseudo tile source, which does not fetch tiles from a server, but renders
+ * a grid outline for the tile grid/projection along with the coordinates for
+ * each tile. See examples/canvas-tiles for an example.
+ *
+ * Uses Canvas context2d, so requires Canvas support.
+ *
  * @constructor
  * @extends {ol.source.Tile}
  * @param {olx.source.TileDebugOptions} options Debug tile options.
@@ -97523,7 +97518,6 @@ goog.require('ol.extent.Relationship');
 goog.require('ol.feature');
 goog.require('ol.format.GML');
 goog.require('ol.format.GPX');
-goog.require('ol.format.GPX.V1_1');
 goog.require('ol.format.GeoJSON');
 goog.require('ol.format.IGC');
 goog.require('ol.format.IGCZ');
@@ -105013,26 +105007,6 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'unByKey',
     ol.geom.Polygon.prototype.unByKey);
-
-goog.exportProperty(
-    ol.format.GPX.V1_1.prototype,
-    'readFeature',
-    ol.format.GPX.V1_1.prototype.readFeature);
-
-goog.exportProperty(
-    ol.format.GPX.V1_1.prototype,
-    'readFeatures',
-    ol.format.GPX.V1_1.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.format.GPX.V1_1.prototype,
-    'readProjection',
-    ol.format.GPX.V1_1.prototype.readProjection);
-
-goog.exportProperty(
-    ol.format.GPX.V1_1.prototype,
-    'writeFeatures',
-    ol.format.GPX.V1_1.prototype.writeFeatures);
 
 goog.exportProperty(
     ol.dom.Input.prototype,
