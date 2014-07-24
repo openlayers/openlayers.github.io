@@ -15,7 +15,6 @@ var urls = [
 var hiDPI = ol.BrowserFeature.DEVICE_PIXEL_RATIO > 1;
 
 var source = new ol.source.WMTS({
-  extent: [977844.377599999, 5837774.6617, 1915609.8654, 6295560.8122],
   projection: 'EPSG:3857',
   layer: hiDPI ? 'bmaphidpi' : 'geolandbasemap',
   tilePixelRatio: hiDPI ? 2 : 1,
@@ -56,6 +55,7 @@ var source = new ol.source.WMTS({
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
+      extent: [977844.377599999, 5837774.6617, 1915609.8654, 6295560.8122],
       source: source
     })
   ],
