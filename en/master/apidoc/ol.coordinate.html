@@ -7669,7 +7669,7 @@
         </h4>
         
         <div class="tag-source">
-            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line44">line 44</a>
+            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line50">line 50</a>
         </div>
         
         
@@ -7682,6 +7682,10 @@
     <div class="description">
         <p>Add <code>delta</code> to <code>coordinate</code>. <code>coordinate</code> is modified in place and returned
 by the function.</p>
+<p>Example:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+ol.coordinate.add(coord, [-2, 4]);
+// coord is now [5.85, 51.983333]</code></pre>
     </div>
     
 
@@ -7805,7 +7809,7 @@ by the function.</p>
 
 
 <h5>Returns:</h5>
-Coordinate.
+The input coordinate adjusted by the given delta.
 <br />
 
     
@@ -7828,7 +7832,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line96">line 96</a>
+            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line119">line 119</a>
         </div>
         
         
@@ -7837,6 +7841,20 @@ Coordinate.
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Returns a <a href="ol.html#CoordinateFormatType"><code>ol.CoordinateFormatType</code></a> function that can be used to format
+a {ol.Coordinate} to a string.</p>
+<p>Example without specifying the fractional digits:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var stringifyFunc = ol.coordinate.createStringXY();
+var out = stringifyFunc(coord);
+// out is now '8, 48'</code></pre><p>Example with explicitly specifying 2 fractional digits:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var stringifyFunc = ol.coordinate.createStringXY(2);
+var out = stringifyFunc(coord);
+// out is now '7.85, 47.98'</code></pre>
+    </div>
     
 
     
@@ -7965,7 +7983,7 @@ Coordinate format.
         </h4>
         
         <div class="tag-source">
-            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line133">line 133</a>
+            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line174">line 174</a>
         </div>
         
         
@@ -7974,6 +7992,21 @@ Coordinate format.
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Transforms the given <a href="ol.html#Coordinate"><code>ol.Coordinate</code></a> to a string using the given string
+template. The strings <code>{x}</code> and <code>{y}</code> in the template will be replaced with
+the first and second coordinate values respectively.</p>
+<p>Example without specifying the fractional digits:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var template = 'Coordinate is ({x}|{y}).';
+var out = ol.coordinate.format(coord, template);
+// out is now 'Coordinate is (8|48).'</code></pre><p>Example explicitly specifying the fractional digits:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var template = 'Coordinate is ({x}|{y}).';
+var out = ol.coordinate.format(coord, template, 2);
+// out is now 'Coordinate is (7.85|47.98).'</code></pre>
+    </div>
     
 
     
@@ -8168,7 +8201,7 @@ Formated coordinate.
         </h4>
         
         <div class="tag-source">
-            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line270">line 270</a>
+            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line352">line 352</a>
         </div>
         
         
@@ -8180,6 +8213,12 @@ Formated coordinate.
     
     <div class="description">
         <p>Create an ol.Coordinate from an Array and take into account axis order.</p>
+<p>Examples:</p>
+<pre class="prettyprint source"><code>var northCoord = ol.coordinate.fromProjectedArray([1, 2], 'n');
+// northCoord is now [2, 1]
+
+var eastCoord = ol.coordinate.fromProjectedArray([1, 2], 'e');
+// eastCoord is now [1, 2]</code></pre>
     </div>
     
 
@@ -8326,7 +8365,7 @@ The coordinate created.
         </h4>
         
         <div class="tag-source">
-            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line170">line 170</a>
+            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line218">line 218</a>
         </div>
         
         
@@ -8339,6 +8378,11 @@ The coordinate created.
     <div class="description">
         <p>Rotate <code>coordinate</code> by <code>angle</code>. <code>coordinate</code> is modified in place and
 returned by the function.</p>
+<p>Example:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var rotateRadians = Math.PI / 2; // 90 degrees
+ol.coordinate.rotate(coord, rotateRadians);
+// coord is now [-47.983333, 7.85]</code></pre>
     </div>
     
 
@@ -8485,7 +8529,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line241">line 241</a>
+            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line302">line 302</a>
         </div>
         
         
@@ -8494,6 +8538,13 @@ Coordinate.
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Example:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var out = ol.coordinate.toStringHDMS(coord);
+// out is now '47° 59′ 0″ N 7° 51′ 0″ E'</code></pre>
+    </div>
     
 
     
@@ -8624,7 +8675,7 @@ Hemisphere, degrees, minutes and seconds.
         </h4>
         
         <div class="tag-source">
-            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line258">line 258</a>
+            <a href="coordinate.js.html">src/ol/coordinate.js</a>, <a href="coordinate.js.html#line331">line 331</a>
         </div>
         
         
@@ -8633,6 +8684,16 @@ Hemisphere, degrees, minutes and seconds.
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Example without specifying fractional digits:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var out = ol.coordinate.toStringXY(coord);
+// out is now '8, 48'</code></pre><p>Example explicitly specifying 1 fractional digit:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var out = ol.coordinate.toStringXY(coord, 1);
+// out is now '7.8, 48.0'</code></pre>
+    </div>
     
 
     
@@ -8796,7 +8857,7 @@ XY.
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Jul 22 2014 14:05:25 GMT-0600 (MDT)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Jul 24 2014 09:01:17 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
