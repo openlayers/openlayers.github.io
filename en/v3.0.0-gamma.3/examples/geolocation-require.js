@@ -1,0 +1,10 @@
+goog.require('ol.Feature');
+goog.require('ol.FeatureOverlay');
+goog.require('ol.Geolocation');
+goog.require('ol.Map');
+goog.require('ol.View');
+goog.require('ol.control');
+goog.require('ol.dom.Input');
+goog.require('ol.geom.Point');
+goog.require('ol.layer.Tile');
+goog.require('ol.source.OSM');
