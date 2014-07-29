@@ -1,5 +1,5 @@
 // OpenLayers 3. See http://ol3.js.org/
-// Version: v3.0.0-gamma.3-24-g7b7070d
+// Version: v3.0.0-gamma.3-28-gf99e9e4
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -11864,7 +11864,6 @@ ol.size.equals = function(a, b) {
 };
 
 goog.provide('ol.Coordinate');
-goog.provide('ol.CoordinateArray');
 goog.provide('ol.CoordinateFormatType');
 goog.provide('ol.coordinate');
 
@@ -11887,14 +11886,6 @@ ol.CoordinateFormatType;
  * @api
  */
 ol.Coordinate;
-
-
-/**
- * An array of coordinate arrays.
- * @typedef {Array.<ol.Coordinate>}
- * @api
- */
-ol.CoordinateArray;
 
 
 /**
@@ -86406,7 +86397,8 @@ ol.Map = function(options) {
     goog.events.EventType.TOUCHSTART,
     goog.events.EventType.MSPOINTERDOWN,
     ol.MapBrowserEvent.EventType.POINTERDOWN,
-    goog.events.MouseWheelHandler.EventType.MOUSEWHEEL
+    // see https://github.com/google/closure-library/pull/308
+    goog.userAgent.GECKO ? 'DOMMouseScroll' : 'mousewheel'
   ], goog.events.Event.stopPropagation);
   goog.dom.appendChild(this.viewport_, this.overlayContainerStopEvent_);
 
@@ -98461,7 +98453,6 @@ goog.require('ol.Collection');
 goog.require('ol.CollectionEvent');
 goog.require('ol.CollectionEventType');
 goog.require('ol.Coordinate');
-goog.require('ol.CoordinateArray');
 goog.require('ol.CoordinateFormatType');
 goog.require('ol.DeviceOrientation');
 goog.require('ol.DeviceOrientationProperty');

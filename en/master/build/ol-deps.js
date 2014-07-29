@@ -21,7 +21,7 @@ goog.addDependency('../../../ol/ol/control/scalelinecontrol.js', ['ol.control.Sc
 goog.addDependency('../../../ol/ol/control/zoomcontrol.js', ['ol.control.Zoom'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'ol.animation', 'ol.control.Control', 'ol.css', 'ol.easing', 'ol.pointer.PointerEventHandler']);
 goog.addDependency('../../../ol/ol/control/zoomslidercontrol.js', ['ol.control.ZoomSlider'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.Event', 'goog.events.EventType', 'goog.fx.Dragger', 'goog.fx.Dragger.EventType', 'goog.math', 'goog.math.Rect', 'goog.style', 'ol', 'ol.animation', 'ol.control.Control', 'ol.css', 'ol.easing']);
 goog.addDependency('../../../ol/ol/control/zoomtoextentcontrol.js', ['ol.control.ZoomToExtent'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'ol.control.Control', 'ol.css', 'ol.pointer.PointerEventHandler']);
-goog.addDependency('../../../ol/ol/coordinate.js', ['ol.Coordinate', 'ol.CoordinateArray', 'ol.CoordinateFormatType', 'ol.coordinate'], ['goog.math']);
+goog.addDependency('../../../ol/ol/coordinate.js', ['ol.Coordinate', 'ol.CoordinateFormatType', 'ol.coordinate'], ['goog.math']);
 goog.addDependency('../../../ol/ol/css.js', ['ol.css'], []);
 goog.addDependency('../../../ol/ol/deviceorientation.js', ['ol.DeviceOrientation', 'ol.DeviceOrientationProperty'], ['goog.events', 'goog.math', 'ol.BrowserFeature', 'ol.Object']);
 goog.addDependency('../../../ol/ol/dom/dom.js', ['ol.dom', 'ol.dom.BrowserFeature'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.style', 'goog.userAgent', 'goog.vec.Mat4', 'ol']);
