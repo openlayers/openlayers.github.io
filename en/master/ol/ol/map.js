@@ -120,8 +120,8 @@ ol.MapProperty = {
 
 /**
  * @classdesc
- * The map is the core component of OpenLayers. In its minimal configuration it
- * needs a view, one or more layers, and a target container:
+ * The map is the core component of OpenLayers. For a map to render, a view,
+ * one or more layers, and a target container are needed:
  *
  *     var map = new ol.Map({
  *       view: new ol.View({
@@ -330,6 +330,7 @@ ol.Map = function(options) {
    * @private
    */
   this.viewportSizeMonitor_ = new goog.dom.ViewportSizeMonitor();
+  this.registerDisposable(this.viewportSizeMonitor_);
 
   goog.events.listen(this.viewportSizeMonitor_, goog.events.EventType.RESIZE,
       this.updateSize, false, this);
@@ -600,7 +601,7 @@ ol.Map.prototype.getEventPixel = function(event) {
   // but touchend and touchcancel events have no targetTouches when
   // the last finger is removed from the screen.
   // So we ourselves compute the position of touch events.
-  // See https://code.google.com/p/closure-library/issues/detail?id=588
+  // See https://github.com/google/closure-library/pull/323
   if (goog.isDef(event.changedTouches)) {
     var touch = event.changedTouches.item(0);
     var viewportPosition = goog.style.getClientPosition(this.viewport_);
