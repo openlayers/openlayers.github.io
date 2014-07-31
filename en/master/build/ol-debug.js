@@ -1,5 +1,5 @@
 // OpenLayers 3. See http://ol3.js.org/
-// Version: v3.0.0-gamma.3-28-gf99e9e4
+// Version: v3.0.0-gamma.3-32-g80c6e01
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -42412,7 +42412,7 @@ ol.format.GeoJSON.readPolygonGeometry_ = function(object) {
 /**
  * @param {ol.geom.Geometry} geometry Geometry.
  * @private
- * @return {GeoJSONObject} GeoJSON geometry.
+ * @return {GeoJSONGeometry|GeoJSONGeometryCollection} GeoJSON geometry.
  */
 ol.format.GeoJSON.writeGeometry_ = function(geometry) {
   var geometryWriter = ol.format.GeoJSON.GEOMETRY_WRITERS_[geometry.getType()];
@@ -42555,7 +42555,7 @@ ol.format.GeoJSON.GEOMETRY_READERS_ = {
 /**
  * @const
  * @private
- * @type {Object.<string, function(ol.geom.Geometry): GeoJSONObject>}
+ * @type {Object.<string, function(ol.geom.Geometry): (GeoJSONGeometry|GeoJSONGeometryCollection)>}
  */
 ol.format.GeoJSON.GEOMETRY_WRITERS_ = {
   'Point': ol.format.GeoJSON.writePointGeometry_,
@@ -42709,7 +42709,7 @@ ol.format.GeoJSON.prototype.readProjectionFromObject = function(object) {
  *
  * @function
  * @param {ol.Feature} feature Feature.
- * @return {ArrayBuffer|Node|Object|string} GeoJSON.
+ * @return {GeoJSONFeature} GeoJSON.
  * @api
  */
 ol.format.GeoJSON.prototype.writeFeature;
@@ -42745,7 +42745,7 @@ ol.format.GeoJSON.prototype.writeFeatureObject = function(feature) {
  *
  * @function
  * @param {Array.<ol.Feature>} features Features.
- * @return {ArrayBuffer|Node|Object|string} GeoJSON.
+ * @return {GeoJSONObject} GeoJSON.
  * @api
  */
 ol.format.GeoJSON.prototype.writeFeatures;
@@ -42772,7 +42772,7 @@ ol.format.GeoJSON.prototype.writeFeaturesObject = function(features) {
  *
  * @function
  * @param {ol.geom.Geometry} geometry Geometry.
- * @return {ArrayBuffer|Node|Object|string} GeoJSON.
+ * @return {GeoJSONGeometry|GeoJSONGeometryCollection} GeoJSON.
  * @api
  */
 ol.format.GeoJSON.prototype.writeGeometry;
@@ -45837,7 +45837,7 @@ ol.format.GML.prototype.writeGeometryNode = function(geometry) {
  *
  * @function
  * @param {Array.<ol.Feature>} features Features.
- * @return {ArrayBuffer|Node|Object|string} Result.
+ * @return {Node} Result.
  * @api
  */
 ol.format.GML.prototype.writeFeatures;
@@ -46711,7 +46711,7 @@ ol.format.GPX.GPX_SERIALIZERS_ = ol.xml.makeStructureNS(
  *
  * @function
  * @param {Array.<ol.Feature>} features Features.
- * @return {ArrayBuffer|Node|Object|string} Result.
+ * @return {Node} Result.
  * @api
  */
 ol.format.GPX.prototype.writeFeatures;
@@ -55174,7 +55174,7 @@ ol.format.KML.OUTER_BOUNDARY_NODE_FACTORY_ =
  *
  * @function
  * @param {Array.<ol.Feature>} features Features.
- * @return {ArrayBuffer|Node|Object|string} Result.
+ * @return {Node} Result.
  * @api
  */
 ol.format.KML.prototype.writeFeatures;
