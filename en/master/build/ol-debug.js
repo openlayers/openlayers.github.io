@@ -1,5 +1,5 @@
 // OpenLayers 3. See http://ol3.js.org/
-// Version: v3.0.0-gamma.3-32-g80c6e01
+// Version: v3.0.0-gamma.3-34-g819fd83
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -77858,7 +77858,7 @@ ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel =
   var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
-  var skippedFeatureUids = frameState.skippedFeatureUids_;
+  var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtPixel(
       extent, resolution, rotation, coordinate, skippedFeatureUids,
       /**
@@ -79698,7 +79698,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame =
     replayContext.globalAlpha = layerState.opacity;
     replayGroup.replay(
         replayContext, frameState.extent, frameState.pixelRatio, transform,
-        frameState.viewState.rotation, frameState.skippedFeatureUids_);
+        frameState.viewState.rotation, frameState.skippedFeatureUids);
 
     if (replayContext != context) {
       this.dispatchRenderEvent(replayContext, frameState, transform);
@@ -79724,7 +79724,7 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel =
     var rotation = frameState.viewState.rotation;
     var layer = this.getLayer();
     return this.replayGroup_.forEachGeometryAtPixel(extent, resolution,
-        rotation, coordinate, frameState.skippedFeatureUids_,
+        rotation, coordinate, frameState.skippedFeatureUids,
         /**
          * @param {ol.geom.Geometry} geometry Geometry.
          * @param {Object} data Data.
@@ -80176,7 +80176,7 @@ ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel =
   var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
-  var skippedFeatureUids = frameState.skippedFeatureUids_;
+  var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtPixel(
       extent, resolution, rotation, coordinate, skippedFeatureUids,
       /**
@@ -84523,7 +84523,7 @@ ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel =
   var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
-  var skippedFeatureUids = frameState.skippedFeatureUids_;
+  var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtPixel(
       extent, resolution, rotation, coordinate, skippedFeatureUids,
 
@@ -87350,7 +87350,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
       pixelToCoordinateMatrix: this.pixelToCoordinateMatrix_,
       postRenderFunctions: [],
       size: size,
-      skippedFeatureUids_: this.skippedFeatureUids_,
+      skippedFeatureUids: this.skippedFeatureUids_,
       tileQueue: this.tileQueue_,
       time: time,
       usedTiles: {},
