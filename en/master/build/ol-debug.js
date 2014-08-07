@@ -1,5 +1,5 @@
 // OpenLayers 3. See http://ol3.js.org/
-// Version: v3.0.0-gamma.3-34-g819fd83
+// Version: v3.0.0-gamma.3-65-g18b3c3e
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -17008,7 +17008,6 @@ goog.require('ol.proj.Units');
  */
 ol.ViewProperty = {
   CENTER: 'center',
-  PROJECTION: 'projection',
   RESOLUTION: 'resolution',
   ROTATION: 'rotation'
 };
@@ -17091,8 +17090,12 @@ ol.View = function(opt_options) {
   var properties = {};
   properties[ol.ViewProperty.CENTER] = goog.isDef(options.center) ?
       options.center : null;
-  properties[ol.ViewProperty.PROJECTION] = ol.proj.createProjection(
-      options.projection, 'EPSG:3857');
+
+  /**
+   * @private
+   * @type {ol.proj.Projection}
+   */
+  this.projection_ = ol.proj.createProjection(options.projection, 'EPSG:3857');
 
   var resolutionConstraintInfo = ol.View.createResolutionConstraint_(
       options);
@@ -17259,18 +17262,12 @@ ol.View.prototype.calculateExtent = function(size) {
 
 
 /**
- * @return {ol.proj.Projection|undefined} The projection of the view.
- * @observable
+ * @return {ol.proj.Projection} The projection of the view.
  * @api
  */
 ol.View.prototype.getProjection = function() {
-  return /** @type {ol.proj.Projection|undefined} */ (
-      this.get(ol.ViewProperty.PROJECTION));
+  return this.projection_;
 };
-goog.exportProperty(
-    ol.View.prototype,
-    'getProjection',
-    ol.View.prototype.getProjection);
 
 
 /**
@@ -17583,22 +17580,6 @@ ol.View.prototype.setHint = function(hint, delta) {
   goog.asserts.assert(this.hints_[hint] >= 0);
   return this.hints_[hint];
 };
-
-
-/**
- * Set the projection of this view.
- * Warning! This code is not yet implemented. Function should not be used.
- * @param {ol.proj.Projection|undefined} projection The projection of the view.
- * @observable
- * @api
- */
-ol.View.prototype.setProjection = function(projection) {
-  this.set(ol.ViewProperty.PROJECTION, projection);
-};
-goog.exportProperty(
-    ol.View.prototype,
-    'setProjection',
-    ol.View.prototype.setProjection);
 
 
 /**
@@ -26062,7 +26043,8 @@ ol.CollectionProperty = {
  * @constructor
  * @extends {ol.Object}
  * @fires ol.CollectionEvent
- * @param {Array=} opt_array Array.
+ * @param {Array.<T>=} opt_array Array.
+ * @template T
  * @api stable
  */
 ol.Collection = function(opt_array) {
@@ -26071,7 +26053,7 @@ ol.Collection = function(opt_array) {
 
   /**
    * @private
-   * @type {Array.<*>}
+   * @type {Array.<T>}
    */
   this.array_ = opt_array || [];
 
@@ -26093,8 +26075,8 @@ ol.Collection.prototype.clear = function() {
 
 
 /**
- * @param {Array} arr Array.
- * @return {ol.Collection} This collection.
+ * @param {Array.<T>} arr Array.
+ * @return {ol.Collection.<T>} This collection.
  * @api stable
  */
 ol.Collection.prototype.extend = function(arr) {
@@ -26112,7 +26094,7 @@ ol.Collection.prototype.extend = function(arr) {
  *     for every element. This function takes 3 arguments (the element, the
  *     index and the array). The return value is ignored.
  * @param {S=} opt_this The object to use as `this` in `f`.
- * @template T,S
+ * @template S
  * @api stable
  */
 ol.Collection.prototype.forEach = function(f, opt_this) {
@@ -26125,7 +26107,7 @@ ol.Collection.prototype.forEach = function(f, opt_this) {
  * is mutated, no events will be dispatched by the collection, and the
  * collection's "length" property won't be in sync with the actual length
  * of the array.
- * @return {Array} Array.
+ * @return {Array.<T>} Array.
  * @api stable
  */
 ol.Collection.prototype.getArray = function() {
@@ -26136,7 +26118,7 @@ ol.Collection.prototype.getArray = function() {
 /**
  * Get the element at the provided index.
  * @param {number} index Index.
- * @return {*} Element.
+ * @return {T} Element.
  * @api stable
  */
 ol.Collection.prototype.item = function(index) {
@@ -26158,7 +26140,7 @@ ol.Collection.prototype.getLength = function() {
 /**
  * Insert an element at the provided index.
  * @param {number} index Index.
- * @param {*} elem Element.
+ * @param {T} elem Element.
  * @api stable
  */
 ol.Collection.prototype.insertAt = function(index, elem) {
@@ -26171,7 +26153,7 @@ ol.Collection.prototype.insertAt = function(index, elem) {
 
 /**
  * Remove the last element of the collection.
- * @return {*} Element.
+ * @return {T} Element.
  * @api stable
  */
 ol.Collection.prototype.pop = function() {
@@ -26181,7 +26163,7 @@ ol.Collection.prototype.pop = function() {
 
 /**
  * Insert the provided element at the end of the collection.
- * @param {*} elem Element.
+ * @param {T} elem Element.
  * @return {number} Length.
  * @api stable
  */
@@ -26194,8 +26176,8 @@ ol.Collection.prototype.push = function(elem) {
 
 /**
  * Removes the first occurence of elem from the collection.
- * @param {*} elem Element.
- * @return {*} The removed element or undefined if elem was not found.
+ * @param {T} elem Element.
+ * @return {T|undefined} The removed element or undefined if elem was not found.
  * @api stable
  */
 ol.Collection.prototype.remove = function(elem) {
@@ -26213,7 +26195,7 @@ ol.Collection.prototype.remove = function(elem) {
 /**
  * Remove the element at the provided index.
  * @param {number} index Index.
- * @return {*} Value.
+ * @return {T} Value.
  * @api stable
  */
 ol.Collection.prototype.removeAt = function(index) {
@@ -26229,7 +26211,7 @@ ol.Collection.prototype.removeAt = function(index) {
 /**
  * Set the element at the provided index.
  * @param {number} index Index.
- * @param {*} elem Element.
+ * @param {T} elem Element.
  * @api stable
  */
 ol.Collection.prototype.setAt = function(index, elem) {
@@ -30861,7 +30843,7 @@ goog.require('ol.control.Zoom');
  * * {@link ol.control.Attribution}
  *
  * @param {olx.control.DefaultsOptions=} opt_options Defaults options.
- * @return {ol.Collection} Controls.
+ * @return {ol.Collection.<ol.control.Control>} Controls.
  * @api
  */
 ol.control.defaults = function(opt_options) {
@@ -35532,6 +35514,9 @@ goog.require('ol.color');
 /**
  * @classdesc
  * Set stroke style for vector features.
+ * Note that the defaults given are the Canvas defaults, which will be used if
+ * option is not defined. The `get` functions return whatever was entered in
+ * the options; they will not return the default.
  *
  * @constructor
  * @param {olx.style.StrokeOptions=} opt_options Options.
@@ -36098,7 +36083,9 @@ goog.require('ol.style.Style');
  * attribute properties, similar to the features in vector file formats like
  * GeoJSON.
  *
- * Features can be styled individually or use the style of their vector layer.
+ * Features can be styled individually with `setStyle`; otherwise they use the
+ * style of their vector layer or feature overlay.
+ *
  * Note that attribute properties are set as {@link ol.Object} properties on
  * the feature object, so they are observable, and have get/set accessors.
  *
@@ -36253,9 +36240,9 @@ ol.Feature.prototype.getGeometryName = function() {
 
 /**
  * @return {ol.style.Style|Array.<ol.style.Style>|
- *     ol.feature.FeatureStyleFunction} Return the style provided in the
- *     constructor options or the last call to setStyle in the same format
- *     that it was provided in.
+ *     ol.feature.FeatureStyleFunction} Return the style as set by setStyle in
+ *     the same format that it was provided in. If setStyle has not been run,
+ *     return `undefined`.
  * @api
  */
 ol.Feature.prototype.getStyle = function() {
@@ -36740,8 +36727,8 @@ goog.require('ol.geom.flat.transform');
 
 /**
  * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
+ * Abstract base class; only used for creating subclasses; do not instantiate
+ * in apps, as cannot be rendered.
  *
  * @constructor
  * @extends {ol.geom.Geometry}
@@ -38805,7 +38792,7 @@ ol.geom.LineString.prototype.getCoordinates = function() {
 
 
 /**
- * @return {number} Length.
+ * @return {number} Length (on projected plane).
  * @api
  */
 ol.geom.LineString.prototype.getLength = function() {
@@ -39570,7 +39557,8 @@ goog.require('ol.geom.flat.simplify');
 
 /**
  * @classdesc
- * Linear ring geometry.
+ * Linear ring geometry. Only used as part of polygon; cannot be rendered
+ * on its own.
  *
  * @constructor
  * @extends {ol.geom.SimpleGeometry}
@@ -39633,7 +39621,7 @@ ol.geom.LinearRing.prototype.closestPointXY =
 
 
 /**
- * @return {number} Area.
+ * @return {number} Area (on projected plane).
  * @api
  */
 ol.geom.LinearRing.prototype.getArea = function() {
@@ -40174,7 +40162,7 @@ ol.geom.Polygon.prototype.containsXY = function(x, y) {
 
 
 /**
- * @return {number} Area.
+ * @return {number} Area (on projected plane).
  * @api
  */
 ol.geom.Polygon.prototype.getArea = function() {
@@ -40557,7 +40545,7 @@ ol.geom.MultiPolygon.prototype.containsXY = function(x, y) {
 
 
 /**
- * @return {number} Area.
+ * @return {number} Area (on projected plane).
  * @api
  */
 ol.geom.MultiPolygon.prototype.getArea = function() {
@@ -41241,7 +41229,7 @@ ol.FeatureOverlay = function(opt_options) {
 
   /**
    * @private
-   * @type {ol.Collection}
+   * @type {ol.Collection.<ol.Feature>}
    */
   this.features_ = null;
 
@@ -41312,7 +41300,7 @@ ol.FeatureOverlay.prototype.addFeature = function(feature) {
 
 
 /**
- * @return {ol.Collection} Features collection.
+ * @return {ol.Collection.<ol.Feature>} Features collection.
  * @api
  */
 ol.FeatureOverlay.prototype.getFeatures = function() {
@@ -41420,7 +41408,7 @@ ol.FeatureOverlay.prototype.render_ = function() {
 
 
 /**
- * @param {ol.Collection} features Features collection.
+ * @param {ol.Collection.<ol.Feature>} features Features collection.
  * @api
  */
 ol.FeatureOverlay.prototype.setFeatures = function(features) {
@@ -59279,9 +59267,10 @@ ol.GeolocationProperty = {
  *
  * Example:
  *
- *     var geolocation = new ol.Geolocation();
- *     // take the projection to use from the map's view
- *     geolocation.bindTo('projection', map.getView());
+ *     var geolocation = new ol.Geolocation({
+ *       // take the projection to use from the map's view
+ *       projection: view.getprojection()
+ *     });
  *     // listen to changes in position
  *     geolocation.on('change', function(evt) {
  *       window.console.log(geolocation.getPosition());
@@ -73624,8 +73613,8 @@ goog.require('ol.interaction.PinchZoom');
  * should be excluded if you want a build with no vector support.
  *
  * @param {olx.interaction.DefaultsOptions=} opt_options Defaults options.
- * @return {ol.Collection} A collection of interactions to be used with
- * the ol.Map constructor's interactions option.
+ * @return {ol.Collection.<ol.interaction.Interaction>} A collection of
+ * interactions to be used with the ol.Map constructor's interactions option.
  * @api stable
  */
 ol.interaction.defaults = function(opt_options) {
@@ -73848,12 +73837,12 @@ ol.layer.Group.prototype.handleLayersRemove_ = function(collectionEvent) {
 
 
 /**
- * @return {ol.Collection|undefined} Collection of {@link ol.layer.Layer layers}
- *     that are part of this group.
+ * @return {ol.Collection.<ol.layer.Base>|undefined} Collection of
+ * {@link ol.layer.Layer layers} that are part of this group.
  * @observable
  */
 ol.layer.Group.prototype.getLayers = function() {
-  return /** @type {ol.Collection|undefined} */ (this.get(
+  return /** @type {ol.Collection.<ol.layer.Base>|undefined} */ (this.get(
       ol.layer.GroupProperty.LAYERS));
 };
 goog.exportProperty(
@@ -73863,7 +73852,7 @@ goog.exportProperty(
 
 
 /**
- * @param {ol.Collection|undefined} layers Collection of
+ * @param {ol.Collection.<ol.layer.Base>|undefined} layers Collection of
  * {@link ol.layer.Layer layers} that are part of this group.
  * @observable
  */
@@ -77549,6 +77538,10 @@ ol.renderer.canvas.Layer.prototype.composeFrame =
   var image = this.getImage();
   if (!goog.isNull(image)) {
     var imageTransform = this.getImageTransform();
+    // for performance reasons, context.save / context.restore is not used
+    // to save and restore the transformation matrix and the opacity.
+    // see http://jsperf.com/context-save-restore-versus-variable
+    var alpha = context.globalAlpha;
     context.globalAlpha = layerState.opacity;
 
     // for performance reasons, context.setTransform is only used
@@ -77571,6 +77564,7 @@ ol.renderer.canvas.Layer.prototype.composeFrame =
       context.drawImage(image, 0, 0);
       context.setTransform(1, 0, 0, 1, 0, 0);
     }
+    context.globalAlpha = alpha;
   }
 
   this.dispatchPostComposeEvent(context, frameState);
@@ -86430,7 +86424,7 @@ ol.Map = function(options) {
   this.registerDisposable(mouseWheelHandler);
 
   /**
-   * @type {ol.Collection}
+   * @type {ol.Collection.<ol.control.Control>}
    * @private
    */
   this.controls_ = optionsInternal.controls;
@@ -86442,13 +86436,13 @@ ol.Map = function(options) {
   this.deviceOptions_ = optionsInternal.deviceOptions;
 
   /**
-   * @type {ol.Collection}
+   * @type {ol.Collection.<ol.interaction.Interaction>}
    * @private
    */
   this.interactions_ = optionsInternal.interactions;
 
   /**
-   * @type {ol.Collection}
+   * @type {ol.Collection.<ol.Overlay>}
    * @private
    */
   this.overlays_ = optionsInternal.overlays;
@@ -86738,7 +86732,7 @@ ol.Map.prototype.getEventPixel = function(event) {
   // So we ourselves compute the position of touch events.
   // See https://github.com/google/closure-library/pull/323
   if (goog.isDef(event.changedTouches)) {
-    var touch = event.changedTouches.item(0);
+    var touch = event.changedTouches[0];
     var viewportPosition = goog.style.getClientPosition(this.viewport_);
     return [
       touch.clientX - viewportPosition.x,
@@ -86787,7 +86781,7 @@ ol.Map.prototype.getCoordinateFromPixel = function(pixel) {
 
 
 /**
- * @return {ol.Collection} Controls.
+ * @return {ol.Collection.<ol.control.Control>} Controls.
  * @api stable
  */
 ol.Map.prototype.getControls = function() {
@@ -86796,7 +86790,7 @@ ol.Map.prototype.getControls = function() {
 
 
 /**
- * @return {ol.Collection} Overlays.
+ * @return {ol.Collection.<ol.Overlay>} Overlays.
  * @api stable
  */
 ol.Map.prototype.getOverlays = function() {
@@ -86810,7 +86804,7 @@ ol.Map.prototype.getOverlays = function() {
  * associated with the map.
  *
  * Interactions are used for e.g. pan, zoom and rotate.
- * @return {ol.Collection} {@link ol.interaction.Interaction Interactions}.
+ * @return {ol.Collection.<ol.interaction.Interaction>} Interactions.
  * @api stable
  */
 ol.Map.prototype.getInteractions = function() {
@@ -86835,7 +86829,7 @@ goog.exportProperty(
 
 /**
  * Get the collection of layers associated with this map.
- * @return {ol.Collection|undefined} Layers.
+ * @return {ol.Collection.<ol.layer.Base>|undefined} Layers.
  * @api stable
  */
 ol.Map.prototype.getLayers = function() {
@@ -86990,8 +86984,8 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
   this.focus_ = mapBrowserEvent.coordinate;
   mapBrowserEvent.frameState = this.frameState_;
   var interactions = this.getInteractions();
-  var interactionsArray = /** @type {Array.<ol.interaction.Interaction>} */
-      (interactions.getArray());
+  goog.asserts.assert(goog.isDef(interactions));
+  var interactionsArray = interactions.getArray();
   var i;
   if (this.dispatchEvent(mapBrowserEvent) !== false) {
     for (i = interactionsArray.length - 1; i >= 0; i--) {
@@ -87280,7 +87274,7 @@ ol.Map.prototype.removeInteraction = function(interaction) {
 ol.Map.prototype.removeLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
   goog.asserts.assert(goog.isDef(layers));
-  return /** @type {ol.layer.Base|undefined} */ (layers.remove(layer));
+  return layers.remove(layer);
 };
 
 
@@ -87511,12 +87505,12 @@ ol.Map.prototype.unskipFeature = function(feature) {
 
 
 /**
- * @typedef {{controls: ol.Collection,
+ * @typedef {{controls: ol.Collection.<ol.control.Control>,
  *            deviceOptions: olx.DeviceOptions,
- *            interactions: ol.Collection,
+ *            interactions: ol.Collection.<ol.interaction.Interaction>,
  *            keyboardEventTarget: (Element|Document),
  *            logos: Object,
- *            overlays: ol.Collection,
+ *            overlays: ol.Collection.<ol.Overlay>,
  *            rendererConstructor:
  *                function(new: ol.renderer.Map, Element, ol.Map),
  *            values: Object.<string, *>}}
@@ -87775,7 +87769,7 @@ ol.interaction.Draw = function(options) {
 
   /**
    * Target collection for drawn features.
-   * @type {ol.Collection}
+   * @type {ol.Collection.<ol.Feature>}
    * @private
    */
   this.features_ = goog.isDef(options.features) ? options.features : null;
@@ -88408,7 +88402,7 @@ ol.interaction.Modify = function(options) {
   };
 
   /**
-   * @type {ol.Collection}
+   * @type {ol.Collection.<ol.Feature>}
    * @private
    */
   this.features_ = options.features;
@@ -89161,7 +89155,7 @@ goog.inherits(ol.interaction.Select, ol.interaction.Interaction);
 
 /**
  * Get the selected features.
- * @return {ol.Collection} Features collection.
+ * @return {ol.Collection.<ol.Feature>} Features collection.
  * @api stable
  */
 ol.interaction.Select.prototype.getFeatures = function() {
@@ -90783,6 +90777,10 @@ ol.TileCoordTransformType;
  * @return {ol.TileUrlFunctionType} Tile URL function.
  */
 ol.TileUrlFunction.createFromTemplate = function(template) {
+  var zRegEx = /\{z\}/g;
+  var xRegEx = /\{x\}/g;
+  var yRegEx = /\{y\}/g;
+  var dashYRegEx = /\{-y\}/g;
   return (
       /**
        * @param {ol.TileCoord} tileCoord Tile Coordinate.
@@ -90794,10 +90792,10 @@ ol.TileUrlFunction.createFromTemplate = function(template) {
         if (goog.isNull(tileCoord)) {
           return undefined;
         } else {
-          return template.replace('{z}', tileCoord.z.toString())
-                         .replace('{x}', tileCoord.x.toString())
-                         .replace('{y}', tileCoord.y.toString())
-                         .replace('{-y}', function() {
+          return template.replace(zRegEx, tileCoord.z.toString())
+                         .replace(xRegEx, tileCoord.x.toString())
+                         .replace(yRegEx, tileCoord.y.toString())
+                         .replace(dashYRegEx, function() {
                            var y = (1 << tileCoord.z) - tileCoord.y - 1;
                            return y.toString();
                          });
@@ -95685,6 +95683,7 @@ goog.inherits(ol.source.OSMXML, ol.source.StaticVector);
 
 goog.provide('ol.source.ServerVector');
 
+goog.require('goog.object');
 goog.require('ol.extent');
 goog.require('ol.loadingstrategy');
 goog.require('ol.source.FormatVector');
@@ -95759,6 +95758,16 @@ ol.source.ServerVector.prototype.addFeaturesInternal = function(features) {
     }
   }
   goog.base(this, 'addFeaturesInternal', notLoadedFeatures);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.ServerVector.prototype.clear = function() {
+  goog.object.clear(this.loadedFeatures_);
+  this.loadedExtents_.clear();
+  goog.base(this, 'clear');
 };
 
 
@@ -99526,11 +99535,6 @@ goog.exportProperty(
     ol.View.prototype,
     'setCenter',
     ol.View.prototype.setCenter);
-
-goog.exportProperty(
-    ol.View.prototype,
-    'setProjection',
-    ol.View.prototype.setProjection);
 
 goog.exportProperty(
     ol.View.prototype,
@@ -103459,11 +103463,6 @@ goog.exportProperty(
     ol.source.ServerVector.prototype,
     'addFeatures',
     ol.source.ServerVector.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'clear',
-    ol.source.ServerVector.prototype.clear);
 
 goog.exportProperty(
     ol.source.ServerVector.prototype,

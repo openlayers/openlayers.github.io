@@ -1313,8 +1313,6 @@
             
                 <li data-name="ol.View#setCenter"><a href="ol.View.html#setCenter">setCenter</a></li>
             
-                <li data-name="ol.View#setProjection"><a href="ol.View.html#setProjection">setProjection</a></li>
-            
                 <li data-name="ol.View#setProperties"><a href="ol.View.html#setProperties">setProperties</a></li>
             
                 <li data-name="ol.View#setResolution"><a href="ol.View.html#setResolution">setResolution</a></li>
@@ -1339,8 +1337,6 @@
                 <li data-name="ol.ObjectEvent#event:beforepropertychange"><a href="ol.ObjectEvent.html#event:beforepropertychange">beforepropertychange</a></li>
             
                 <li data-name="ol.ObjectEvent#event:change:center">change:center</li>
-            
-                <li data-name="ol.ObjectEvent#event:change:projection">change:projection</li>
             
                 <li data-name="ol.ObjectEvent#event:change:resolution">change:resolution</li>
             
@@ -7905,14 +7901,14 @@ olx.GraticuleOptions.prototype.targetSize;
 
 /**
  * Object literal with config options for the map.
- * @typedef {{controls: (ol.Collection|Array.&lt;ol.control.Control>|undefined),
+ * @typedef {{controls: (ol.Collection.&lt;ol.control.Control>|Array.&lt;ol.control.Control>|undefined),
  *     deviceOptions: (olx.DeviceOptions|undefined),
  *     pixelRatio: (number|undefined),
- *     interactions: (ol.Collection|Array.&lt;ol.interaction.Interaction>|undefined),
+ *     interactions: (ol.Collection.&lt;ol.interaction.Interaction>|Array.&lt;ol.interaction.Interaction>|undefined),
  *     keyboardEventTarget: (Element|Document|string|undefined),
- *     layers: (Array.&lt;ol.layer.Base>|ol.Collection|undefined),
+ *     layers: (Array.&lt;ol.layer.Base>|ol.Collection.&lt;ol.layer.Base>|undefined),
  *     logo: (boolean|string|olx.LogoOptions|undefined),
- *     overlays: (ol.Collection|Array.&lt;ol.Overlay>|undefined),
+ *     overlays: (ol.Collection.&lt;ol.Overlay>|Array.&lt;ol.Overlay>|undefined),
  *     renderer: (ol.RendererType|Array.&lt;ol.RendererType|string>|string|undefined),
  *     target: (Element|string|undefined),
  *     view: (ol.View|undefined)}}
@@ -7924,7 +7920,7 @@ olx.MapOptions;
 /**
  * Controls initially added to the map. If not specified,
  * {@link ol.control.defaults ol.control.defaults()} is used.
- * @type {ol.Collection|Array.&lt;ol.control.Control>|undefined}
+ * @type {ol.Collection.&lt;ol.control.Control>|Array.&lt;ol.control.Control>|undefined}
  */
 olx.MapOptions.prototype.controls;
 
@@ -7947,7 +7943,7 @@ olx.MapOptions.prototype.pixelRatio;
 /**
  * Interactions that are initially added to the map. If not specified,
  * {@link ol.interaction.defaults ol.interaction.defaults()} is used.
- * @type {ol.Collection|Array.&lt;ol.interaction.Interaction>|undefined}
+ * @type {ol.Collection.&lt;ol.interaction.Interaction>|Array.&lt;ol.interaction.Interaction>|undefined}
  */
 olx.MapOptions.prototype.interactions;
 
@@ -7967,7 +7963,7 @@ olx.MapOptions.prototype.keyboardEventTarget;
 
 /**
  * Layers. If this is not defined, a map with no layers will be rendered.
- * @type {Array.&lt;ol.layer.Base>|ol.Collection|undefined}
+ * @type {Array.&lt;ol.layer.Base>|ol.Collection.&lt;ol.layer.Base>|undefined}
  */
 olx.MapOptions.prototype.layers;
 
@@ -7985,7 +7981,7 @@ olx.MapOptions.prototype.logo;
 
 /**
  * Overlays initially added to the map. By default, no overlays are added.
- * @type {ol.Collection|Array.&lt;ol.Overlay>|undefined}
+ * @type {ol.Collection.&lt;ol.Overlay>|Array.&lt;ol.Overlay>|undefined}
  */
 olx.MapOptions.prototype.overlays;
 
@@ -9494,7 +9490,7 @@ olx.interaction.DragZoomOptions.prototype.style;
 
 
 /**
- * @typedef {{features: (ol.Collection|undefined),
+ * @typedef {{features: (ol.Collection.&lt;ol.Feature>|undefined),
  *     source: (ol.source.Vector|undefined),
  *     snapTolerance: (number|undefined),
  *     type: ol.geom.GeometryType,
@@ -9509,7 +9505,7 @@ olx.interaction.DrawOptions;
 
 /**
  * Destination collection for the drawn features.
- * @type {ol.Collection|undefined}
+ * @type {ol.Collection.&lt;ol.Feature>|undefined}
  */
 olx.interaction.DrawOptions.prototype.features;
 
@@ -9628,7 +9624,7 @@ olx.interaction.KeyboardZoomOptions.prototype.delta;
  * @typedef {{deleteCondition: (ol.events.ConditionType|undefined),
  *     pixelTolerance: (number|undefined),
  *     style: (ol.style.Style|Array.&lt;ol.style.Style>|ol.style.StyleFunction|undefined),
- *     features: ol.Collection}}
+ *     features: ol.Collection.&lt;ol.Feature>}}
  * @api
  */
 olx.interaction.ModifyOptions;
@@ -9661,7 +9657,7 @@ olx.interaction.ModifyOptions.prototype.style;
 
 /**
  * The features the interaction works on.
- * @type {ol.Collection}
+ * @type {ol.Collection.&lt;ol.Feature>}
  */
 olx.interaction.ModifyOptions.prototype.features;
 
@@ -9962,7 +9958,7 @@ olx.layer.LayerOptions.prototype.maxResolution;
  *     extent: (ol.Extent|undefined),
  *     minResolution: (number|undefined),
  *     maxResolution: (number|undefined),
- *     layers: (Array.&lt;ol.layer.Base>|ol.Collection|undefined)}}
+ *     layers: (Array.&lt;ol.layer.Base>|ol.Collection.&lt;ol.layer.Base>|undefined)}}
  * @api
  */
 olx.layer.GroupOptions;
@@ -10034,7 +10030,7 @@ olx.layer.GroupOptions.prototype.maxResolution;
 
 /**
  * Child layers.
- * @type {Array.&lt;ol.layer.Base>|ol.Collection|undefined}
+ * @type {Array.&lt;ol.layer.Base>|ol.Collection.&lt;ol.layer.Base>|undefined}
  */
 olx.layer.GroupOptions.prototype.layers;
 
@@ -10363,7 +10359,8 @@ olx.layer.VectorOptions.prototype.source;
 
 
 /**
- * Layer style.
+ * Layer style. See {@link ol.style} for default style which will be used if
+ * this is not defined.
  * @type {ol.style.Style|Array.&lt;ol.style.Style>|ol.style.StyleFunction|undefined}
  */
 olx.layer.VectorOptions.prototype.style;
@@ -10377,7 +10374,7 @@ olx.layer.VectorOptions.prototype.visible;
 
 
 /**
- * @typedef {{features: (Array.&lt;ol.Feature>|ol.Collection|undefined),
+ * @typedef {{features: (Array.&lt;ol.Feature>|ol.Collection.&lt;ol.Feature>|undefined),
  *     map: (ol.Map|undefined),
  *     style: (ol.style.Style|Array.&lt;ol.style.Style>|ol.style.StyleFunction|undefined)}}
  * @api
@@ -10387,7 +10384,7 @@ olx.FeatureOverlayOptions;
 
 /**
  * Features.
- * @type {Array.&lt;ol.Feature>|ol.Collection|undefined}
+ * @type {Array.&lt;ol.Feature>|ol.Collection.&lt;ol.Feature>|undefined}
  */
 olx.FeatureOverlayOptions.prototype.features;
 
@@ -12364,7 +12361,8 @@ olx.style.FillOptions;
 
 
 /**
- * Color.
+ * Color. Default null; if null, the Canvas/renderer default black will be
+ * used.
  * @type {ol.Color|string|undefined}
  */
 olx.style.FillOptions.prototype.color;
@@ -12516,7 +12514,8 @@ olx.style.StrokeOptions;
 
 
 /**
- * Color.
+ * Color. Default null; if null, the Canvas/renderer default black will be
+ * used.
  * @type {ol.Color|string|undefined}
  */
 olx.style.StrokeOptions.prototype.color;
@@ -12946,7 +12945,7 @@ olx.ViewState.prototype.rotation;
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Jul 31 2014 13:40:39 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Aug 07 2014 17:11:40 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

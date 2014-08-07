@@ -1313,8 +1313,6 @@
             
                 <li data-name="ol.View#setCenter"><a href="ol.View.html#setCenter">setCenter</a></li>
             
-                <li data-name="ol.View#setProjection"><a href="ol.View.html#setProjection">setProjection</a></li>
-            
                 <li data-name="ol.View#setProperties"><a href="ol.View.html#setProperties">setProperties</a></li>
             
                 <li data-name="ol.View#setResolution"><a href="ol.View.html#setResolution">setResolution</a></li>
@@ -1339,8 +1337,6 @@
                 <li data-name="ol.ObjectEvent#event:beforepropertychange"><a href="ol.ObjectEvent.html#event:beforepropertychange">beforepropertychange</a></li>
             
                 <li data-name="ol.ObjectEvent#event:change:center">change:center</li>
-            
-                <li data-name="ol.ObjectEvent#event:change:projection">change:projection</li>
             
                 <li data-name="ol.ObjectEvent#event:change:resolution">change:resolution</li>
             
@@ -7768,8 +7764,9 @@
         <div class="class-description"><p>A vector object for geographic features with a geometry and other
 attribute properties, similar to the features in vector file formats like
 GeoJSON.</p>
-<p>Features can be styled individually or use the style of their vector layer.
-Note that attribute properties are set as <a href="ol.Object.html"><code>ol.Object</code></a> properties on
+<p>Features can be styled individually with <code>setStyle</code>; otherwise they use the
+style of their vector layer or feature overlay.</p>
+<p>Note that attribute properties are set as <a href="ol.Object.html"><code>ol.Object</code></a> properties on
 the feature object, so they are observable, and have get/set accessors.</p>
 <p>Typically, a feature has a single geometry property. You can set the
 geometry using the <code>setGeometry</code> method and get it with <code>getGeometry</code>.
@@ -7814,7 +7811,7 @@ var point = feature.getGeometry();</code></pre></div>
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line62">line 62</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line64">line 64</a>
         </div>
         
         
@@ -8285,7 +8282,7 @@ from the target with the following:</p>
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line124">line 124</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line126">line 126</a>
         </div>
         
         
@@ -8599,7 +8596,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line147">line 147</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line149">line 149</a>
         </div>
         
         
@@ -8684,7 +8681,7 @@ Returns the Geometry associated
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line172">line 172</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line174">line 174</a>
         </div>
         
         
@@ -8768,7 +8765,7 @@ Get the property name associated with the geometry for
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line161">line 161</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line163">line 163</a>
         </div>
         
         
@@ -9110,7 +9107,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line184">line 184</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line186">line 186</a>
         </div>
         
         
@@ -9169,9 +9166,9 @@ Revision.
 
 
 <h5>Returns:</h5>
-Return the style provided in the
-    constructor options or the last call to setStyle in the same format
-    that it was provided in.
+Return the style as set by setStyle in
+    the same format that it was provided in. If setStyle has not been run,
+    return <code>undefined</code>.
 <br />
 
     
@@ -9194,7 +9191,7 @@ Return the style provided in the
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line194">line 194</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line196">line 196</a>
         </div>
         
         
@@ -9838,7 +9835,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line232">line 232</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line234">line 234</a>
         </div>
         
         
@@ -9971,7 +9968,7 @@ changed by calling <code>setGeometryName</code>.</p></td>
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line270">line 270</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line272">line 272</a>
         </div>
         
         
@@ -10092,7 +10089,7 @@ changed by calling <code>setGeometryName</code>.</p></td>
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line259">line 259</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line261">line 261</a>
         </div>
         
         
@@ -10353,7 +10350,7 @@ The id may be used to retrieve a feature from a vector source with the
         </h4>
         
         <div class="tag-source">
-            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line246">line 246</a>
+            <a href="feature.js.html">src/ol/feature.js</a>, <a href="feature.js.html#line248">line 248</a>
         </div>
         
         
@@ -11007,7 +11004,7 @@ The id may be used to retrieve a feature from a vector source with the
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Jul 31 2014 13:40:46 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Aug 07 2014 17:11:46 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

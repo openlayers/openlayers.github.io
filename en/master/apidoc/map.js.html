@@ -1313,8 +1313,6 @@
             
                 <li data-name="ol.View#setCenter"><a href="ol.View.html#setCenter">setCenter</a></li>
             
-                <li data-name="ol.View#setProjection"><a href="ol.View.html#setProjection">setProjection</a></li>
-            
                 <li data-name="ol.View#setProperties"><a href="ol.View.html#setProperties">setProperties</a></li>
             
                 <li data-name="ol.View#setResolution"><a href="ol.View.html#setResolution">setResolution</a></li>
@@ -1339,8 +1337,6 @@
                 <li data-name="ol.ObjectEvent#event:beforepropertychange"><a href="ol.ObjectEvent.html#event:beforepropertychange">beforepropertychange</a></li>
             
                 <li data-name="ol.ObjectEvent#event:change:center">change:center</li>
-            
-                <li data-name="ol.ObjectEvent#event:change:projection">change:projection</li>
             
                 <li data-name="ol.ObjectEvent#event:change:resolution">change:resolution</li>
             
@@ -8058,7 +8054,7 @@ ol.Map = function(options) {
   this.registerDisposable(mouseWheelHandler);
 
   /**
-   * @type {ol.Collection}
+   * @type {ol.Collection.&lt;ol.control.Control>}
    * @private
    */
   this.controls_ = optionsInternal.controls;
@@ -8070,13 +8066,13 @@ ol.Map = function(options) {
   this.deviceOptions_ = optionsInternal.deviceOptions;
 
   /**
-   * @type {ol.Collection}
+   * @type {ol.Collection.&lt;ol.interaction.Interaction>}
    * @private
    */
   this.interactions_ = optionsInternal.interactions;
 
   /**
-   * @type {ol.Collection}
+   * @type {ol.Collection.&lt;ol.Overlay>}
    * @private
    */
   this.overlays_ = optionsInternal.overlays;
@@ -8366,7 +8362,7 @@ ol.Map.prototype.getEventPixel = function(event) {
   // So we ourselves compute the position of touch events.
   // See https://github.com/google/closure-library/pull/323
   if (goog.isDef(event.changedTouches)) {
-    var touch = event.changedTouches.item(0);
+    var touch = event.changedTouches[0];
     var viewportPosition = goog.style.getClientPosition(this.viewport_);
     return [
       touch.clientX - viewportPosition.x,
@@ -8415,7 +8411,7 @@ ol.Map.prototype.getCoordinateFromPixel = function(pixel) {
 
 
 /**
- * @return {ol.Collection} Controls.
+ * @return {ol.Collection.&lt;ol.control.Control>} Controls.
  * @api stable
  */
 ol.Map.prototype.getControls = function() {
@@ -8424,7 +8420,7 @@ ol.Map.prototype.getControls = function() {
 
 
 /**
- * @return {ol.Collection} Overlays.
+ * @return {ol.Collection.&lt;ol.Overlay>} Overlays.
  * @api stable
  */
 ol.Map.prototype.getOverlays = function() {
@@ -8438,7 +8434,7 @@ ol.Map.prototype.getOverlays = function() {
  * associated with the map.
  *
  * Interactions are used for e.g. pan, zoom and rotate.
- * @return {ol.Collection} {@link ol.interaction.Interaction Interactions}.
+ * @return {ol.Collection.&lt;ol.interaction.Interaction>} Interactions.
  * @api stable
  */
 ol.Map.prototype.getInteractions = function() {
@@ -8463,7 +8459,7 @@ goog.exportProperty(
 
 /**
  * Get the collection of layers associated with this map.
- * @return {ol.Collection|undefined} Layers.
+ * @return {ol.Collection.&lt;ol.layer.Base>|undefined} Layers.
  * @api stable
  */
 ol.Map.prototype.getLayers = function() {
@@ -8618,8 +8614,8 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
   this.focus_ = mapBrowserEvent.coordinate;
   mapBrowserEvent.frameState = this.frameState_;
   var interactions = this.getInteractions();
-  var interactionsArray = /** @type {Array.&lt;ol.interaction.Interaction>} */
-      (interactions.getArray());
+  goog.asserts.assert(goog.isDef(interactions));
+  var interactionsArray = interactions.getArray();
   var i;
   if (this.dispatchEvent(mapBrowserEvent) !== false) {
     for (i = interactionsArray.length - 1; i >= 0; i--) {
@@ -8908,7 +8904,7 @@ ol.Map.prototype.removeInteraction = function(interaction) {
 ol.Map.prototype.removeLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
   goog.asserts.assert(goog.isDef(layers));
-  return /** @type {ol.layer.Base|undefined} */ (layers.remove(layer));
+  return layers.remove(layer);
 };
 
 
@@ -9139,12 +9135,12 @@ ol.Map.prototype.unskipFeature = function(feature) {
 
 
 /**
- * @typedef {{controls: ol.Collection,
+ * @typedef {{controls: ol.Collection.&lt;ol.control.Control>,
  *            deviceOptions: olx.DeviceOptions,
- *            interactions: ol.Collection,
+ *            interactions: ol.Collection.&lt;ol.interaction.Interaction>,
  *            keyboardEventTarget: (Element|Document),
  *            logos: Object,
- *            overlays: ol.Collection,
+ *            overlays: ol.Collection.&lt;ol.Overlay>,
  *            rendererConstructor:
  *                function(new: ol.renderer.Map, Element, ol.Map),
  *            values: Object.&lt;string, *>}}
@@ -9314,7 +9310,7 @@ if (goog.DEBUG) {
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Jul 31 2014 13:40:24 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Aug 07 2014 17:11:24 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

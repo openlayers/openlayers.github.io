@@ -182,7 +182,7 @@ goog.addDependency('../../../ol/ol/source/mapguidesource.js', ['ol.source.MapGui
 goog.addDependency('../../../ol/ol/source/mapquestsource.js', ['ol.source.MapQuest'], ['goog.asserts', 'ol', 'ol.Attribution', 'ol.source.OSM', 'ol.source.XYZ']);
 goog.addDependency('../../../ol/ol/source/osmsource.js', ['ol.source.OSM'], ['ol', 'ol.Attribution', 'ol.source.XYZ']);
 goog.addDependency('../../../ol/ol/source/osmxmlsource.js', ['ol.source.OSMXML'], ['ol.format.OSMXML', 'ol.source.StaticVector']);
-goog.addDependency('../../../ol/ol/source/servervectorsource.js', ['ol.source.ServerVector'], ['ol.extent', 'ol.loadingstrategy', 'ol.source.FormatVector', 'ol.structs.RBush']);
+goog.addDependency('../../../ol/ol/source/servervectorsource.js', ['ol.source.ServerVector'], ['goog.object', 'ol.extent', 'ol.loadingstrategy', 'ol.source.FormatVector', 'ol.structs.RBush']);
 goog.addDependency('../../../ol/ol/source/source.js', ['ol.source.Source', 'ol.source.State'], ['goog.events.EventType', 'ol.Attribution', 'ol.Extent', 'ol.Observable', 'ol.proj']);
 goog.addDependency('../../../ol/ol/source/stamensource.js', ['ol.source.Stamen'], ['goog.asserts', 'ol', 'ol.Attribution', 'ol.source.OSM', 'ol.source.XYZ']);
 goog.addDependency('../../../ol/ol/source/staticvectorsource.js', ['ol.source.StaticVector'], ['ol.source.FormatVector', 'ol.source.State']);
