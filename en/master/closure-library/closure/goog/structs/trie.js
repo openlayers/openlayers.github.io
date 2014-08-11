@@ -128,7 +128,7 @@ goog.structs.Trie.prototype.setAll = function(trie) {
  * Traverse along the given path, returns the child node at ending.
  * Returns undefined if node for the path doesn't exist.
  * @param {string} path The path to traverse.
- * @return {goog.structs.Trie.<VALUE>|undefined}
+ * @return {!goog.structs.Trie.<VALUE>|undefined}
  * @private
  */
 goog.structs.Trie.prototype.getChildNode_ = function(path) {
@@ -350,9 +350,8 @@ goog.structs.Trie.prototype.remove = function(key) {
     var currentParentAndCharacter = parents.pop();
     var currentParent = currentParentAndCharacter[0];
     var currentCharacter = currentParentAndCharacter[1];
-    if (goog.object.isEmpty(
-        currentParent.childNodes_[currentCharacter].childNodes_)) {
-      // If we have no child nodes, then remove this node.
+    if (currentParent.childNodes_[currentCharacter].isEmpty()) {
+      // If the child is empty, then remove it.
       delete currentParent.childNodes_[currentCharacter];
     } else {
       // No point of traversing back any further, since we can't remove this

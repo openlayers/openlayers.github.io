@@ -79,6 +79,7 @@ goog.ui.Control = function(opt_content, opt_renderer, opt_domHelper) {
   this.setContentInternal(goog.isDef(opt_content) ? opt_content : null);
 };
 goog.inherits(goog.ui.Control, goog.ui.Component);
+goog.tagUnsealableClass(goog.ui.Control);
 
 
 // Renderer registry.
@@ -290,7 +291,7 @@ goog.ui.Control.prototype.getKeyEventTarget = function() {
  * Returns the keyboard event handler for this component, lazily created the
  * first time this method is called.  Considered protected; should only be
  * used within this package and by subclasses.
- * @return {goog.events.KeyHandler} Keyboard event handler for this component.
+ * @return {!goog.events.KeyHandler} Keyboard event handler for this component.
  * @protected
  */
 goog.ui.Control.prototype.getKeyHandler = function() {
@@ -1207,7 +1208,7 @@ goog.ui.Control.isMouseEventWithinElement_ = function(e, elem) {
  * Handles mousedown events.  If the component is enabled, highlights and
  * activates it.  If the component isn't configured for keyboard access,
  * prevents it from receiving keyboard focus.  Considered protected; should
- * only be used within this package andy by subclasses.
+ * only be used within this package and by subclasses.
  * @param {goog.events.Event} e Mouse event to handle.
  */
 goog.ui.Control.prototype.handleMouseDown = function(e) {

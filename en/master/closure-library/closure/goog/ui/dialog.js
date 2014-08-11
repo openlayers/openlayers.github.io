@@ -48,11 +48,9 @@ goog.require('goog.html.SafeHtml');
 goog.require('goog.html.legacyconversions');
 goog.require('goog.math.Rect');
 goog.require('goog.string');
-goog.require('goog.structs');
 goog.require('goog.structs.Map');
 goog.require('goog.style');
 goog.require('goog.ui.ModalPopup');
-goog.require('goog.userAgent');
 
 
 
@@ -88,7 +86,7 @@ goog.require('goog.userAgent');
  * @extends {goog.ui.ModalPopup}
  */
 goog.ui.Dialog = function(opt_class, opt_useIframeMask, opt_domHelper) {
-  goog.base(this, opt_useIframeMask, opt_domHelper);
+  goog.ui.Dialog.base(this, 'constructor', opt_useIframeMask, opt_domHelper);
 
   /**
    * CSS class name for the dialog element, also used as a class name prefix for
@@ -101,22 +99,7 @@ goog.ui.Dialog = function(opt_class, opt_useIframeMask, opt_domHelper) {
   this.buttons_ = goog.ui.Dialog.ButtonSet.createOkCancel();
 };
 goog.inherits(goog.ui.Dialog, goog.ui.ModalPopup);
-
-
-/**
- * @define {boolean} Whether goog.ui.Dialog permits use of its potentially
- * unsafe API, subject to global defines
- * goog.html.legacyconversions.ALLOW_LEGACY_CONVERSIONS and
- * goog.html.legacyconversions.ALLOW_LEGACY_CONVERSION_OVERRIDES.
- *
- * For details of intended use, see the fileoverview of
- * goog.html.legacyconversions.
- *
- * @see goog.html.legacyconversions.ALLOW_LEGACY_CONVERSIONS
- * @see goog.html.legacyconversions.ALLOW_LEGACY_CONVERSION_OVERRIDES
- * @see goog.ui.Dialog#setContent
- */
-goog.define('goog.ui.Dialog.ALLOW_UNSAFE_API', false);
+goog.tagUnsealableClass(goog.ui.Dialog);
 
 
 /**
@@ -220,7 +203,7 @@ goog.ui.Dialog.prototype.titleTextEl_ = null;
  * @type {?string}
  * @private
  */
-goog.ui.Dialog.prototype.titleId_ = null;
+goog.ui.Dialog.prototype.titleTextId_ = null;
 
 
 /**
@@ -289,8 +272,7 @@ goog.ui.Dialog.prototype.getTitle = function() {
  * @param {string} html Content HTML.
  */
 goog.ui.Dialog.prototype.setContent = function(html) {
-  this.setSafeHtmlContent(goog.html.legacyconversions.safeHtmlFromString(
-      html, goog.ui.Dialog.ALLOW_UNSAFE_API));
+  this.setSafeHtmlContent(goog.html.legacyconversions.safeHtmlFromString(html));
 };
 
 
@@ -444,7 +426,7 @@ goog.ui.Dialog.prototype.getDialogElement = function() {
  */
 goog.ui.Dialog.prototype.getBackgroundElement = function() {
   this.renderIfNoDom_();
-  return goog.base(this, 'getBackgroundElement');
+  return goog.ui.Dialog.base(this, 'getBackgroundElement');
 };
 
 
@@ -510,6 +492,9 @@ goog.ui.Dialog.prototype.setModalInternal_ = function(modal) {
       dom.removeNode(bg);
     }
   }
+  if (this.isVisible()) {
+    this.setA11YDetectBackground(modal);
+  }
 };
 
 
@@ -562,7 +547,7 @@ goog.ui.Dialog.prototype.getDraggable = function() {
 /**
  * Enables or disables dragging.
  * @param {boolean} enabled Whether to enable it.
- * @private.
+ * @private
  */
 goog.ui.Dialog.prototype.setDraggingEnabled_ = function(enabled) {
   // This isn't ideal, but the quickest and easiest way to append
@@ -574,15 +559,17 @@ goog.ui.Dialog.prototype.setDraggingEnabled_ = function(enabled) {
 
   if (this.getElement()) {
     if (enabled) {
-      goog.dom.classlist.addAll(this.titleEl_, classNames);
+      goog.dom.classlist.addAll(
+          goog.asserts.assert(this.titleEl_), classNames);
     } else {
-      goog.dom.classlist.removeAll(this.titleEl_, classNames);
+      goog.dom.classlist.removeAll(
+          goog.asserts.assert(this.titleEl_), classNames);
     }
   }
 
   if (enabled && !this.dragger_) {
     this.dragger_ = this.createDragger();
-    goog.dom.classlist.addAll(this.titleEl_, classNames);
+    goog.dom.classlist.addAll(goog.asserts.assert(this.titleEl_), classNames);
     goog.events.listen(this.dragger_, goog.fx.Dragger.EventType.START,
         this.setDraggerLimits_, false, this);
   } else if (!enabled && this.dragger_) {
@@ -594,15 +581,17 @@ goog.ui.Dialog.prototype.setDraggingEnabled_ = function(enabled) {
 
 /** @override */
 goog.ui.Dialog.prototype.createDom = function() {
-  goog.base(this, 'createDom');
+  goog.ui.Dialog.base(this, 'createDom');
   var element = this.getElement();
   goog.asserts.assert(element, 'getElement() returns null');
 
   var dom = this.getDomHelper();
-  this.titleEl_ = dom.createDom('div',
-      {'className': goog.getCssName(this.class_, 'title'), 'id': this.getId()},
+  this.titleEl_ = dom.createDom('div', goog.getCssName(this.class_, 'title'),
       this.titleTextEl_ = dom.createDom(
-          'span', goog.getCssName(this.class_, 'title-text'), this.title_),
+          'span',
+          {'className': goog.getCssName(this.class_, 'title-text'),
+            'id': this.getId()},
+          this.title_),
       this.titleCloseEl_ = dom.createDom(
           'span', goog.getCssName(this.class_, 'title-close'))),
   goog.dom.append(element, this.titleEl_,
@@ -611,10 +600,19 @@ goog.ui.Dialog.prototype.createDom = function() {
       this.buttonEl_ = dom.createDom('div',
           goog.getCssName(this.class_, 'buttons')));
 
-  this.titleId_ = this.titleEl_.id;
+  // Make the title and close button behave correctly with screen readers.
+  // Note: this is only being added if the dialog is not decorated. Decorators
+  // are expected to add aria label, role, and tab indexing in their templates.
+  goog.a11y.aria.setRole(this.titleTextEl_, goog.a11y.aria.Role.HEADING);
+  goog.a11y.aria.setRole(this.titleCloseEl_, goog.a11y.aria.Role.BUTTON);
+  goog.dom.setFocusableTabIndex(this.titleCloseEl_, true);
+  goog.a11y.aria.setLabel(this.titleCloseEl_,
+      goog.ui.Dialog.MSG_GOOG_UI_DIALOG_CLOSE_);
+
+  this.titleTextId_ = this.titleTextEl_.id;
   goog.a11y.aria.setRole(element, this.getPreferredAriaRole());
   goog.a11y.aria.setState(element, goog.a11y.aria.State.LABELLEDBY,
-      this.titleId_ || '');
+      this.titleTextId_ || '');
   // If setContent() was called before createDom(), make sure the inner HTML of
   // the content element is initialized.
   if (this.content_) {
@@ -633,7 +631,7 @@ goog.ui.Dialog.prototype.createDom = function() {
 
 /** @override */
 goog.ui.Dialog.prototype.decorateInternal = function(element) {
-  goog.base(this, 'decorateInternal', element);
+  goog.ui.Dialog.base(this, 'decorateInternal', element);
   var dialogElement = this.getElement();
   goog.asserts.assert(dialogElement,
       'The DOM element for dialog cannot be null.');
@@ -663,29 +661,28 @@ goog.ui.Dialog.prototype.decorateInternal = function(element) {
         null, titleTextClass, this.titleEl_)[0];
     this.titleCloseEl_ = goog.dom.getElementsByTagNameAndClass(
         null, titleCloseClass, this.titleEl_)[0];
-    // Give the title an id if it doesn't already have one.
-    if (!this.titleEl_.id) {
-      this.titleEl_.id = this.getId();
-    }
   } else {
     // Create the title bar element and insert it before the content area.
     // This is useful if the element to decorate only includes a content area.
-    this.titleEl_ = this.getDomHelper().createDom('div',
-        {'className': titleClass, 'id': this.getId()});
+    this.titleEl_ = this.getDomHelper().createDom('div', titleClass);
     dialogElement.insertBefore(this.titleEl_, this.contentEl_);
   }
-  this.titleId_ = this.titleEl_.id;
 
   // Decorate or create the title text element.
   if (this.titleTextEl_) {
     this.title_ = goog.dom.getTextContent(this.titleTextEl_);
+    // Give the title text element an id if it doesn't already have one.
+    if (!this.titleTextEl_.id) {
+      this.titleTextEl_.id = this.getId();
+    }
   } else {
-    this.titleTextEl_ = this.getDomHelper().createDom('span', titleTextClass,
-        this.title_);
+    this.titleTextEl_ = goog.dom.createDom(
+        'span', {'className': titleTextClass, 'id': this.getId()});
     this.titleEl_.appendChild(this.titleTextEl_);
   }
+  this.titleTextId_ = this.titleTextEl_.id;
   goog.a11y.aria.setState(dialogElement, goog.a11y.aria.State.LABELLEDBY,
-      this.titleId_ || '');
+      this.titleTextId_ || '');
   // Decorate or create the title close element.
   if (!this.titleCloseEl_) {
     this.titleCloseEl_ = this.getDomHelper().createDom('span', titleCloseClass);
@@ -717,7 +714,7 @@ goog.ui.Dialog.prototype.decorateInternal = function(element) {
 
 /** @override */
 goog.ui.Dialog.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  goog.ui.Dialog.base(this, 'enterDocument');
 
   // Listen for keyboard events while the dialog is visible.
   this.getHandler().
@@ -766,7 +763,7 @@ goog.ui.Dialog.prototype.exitDocument = function() {
   // Remove drag support.
   this.setDraggingEnabled_(false);
 
-  goog.base(this, 'exitDocument');
+  goog.ui.Dialog.base(this, 'exitDocument');
 };
 
 
@@ -788,63 +785,29 @@ goog.ui.Dialog.prototype.setVisible = function(visible) {
     this.render();
   }
 
-  goog.base(this, 'setVisible', visible);
-};
-
-
-/** @override */
-goog.ui.Dialog.prototype.onShow = function() {
-  goog.base(this, 'onShow');
-  this.dispatchEvent(goog.ui.Dialog.EventType.AFTER_SHOW);
-};
-
-
-/** @override */
-goog.ui.Dialog.prototype.onHide = function() {
-  goog.base(this, 'onHide');
-  this.dispatchEvent(goog.ui.Dialog.EventType.AFTER_HIDE);
-  if (this.disposeOnHide_) {
-    this.dispose();
-  }
+  goog.ui.Dialog.base(this, 'setVisible', visible);
 };
 
 
 /**
- * Focuses the dialog contents and the default dialog button if there is one.
  * @override
+ * @suppress {deprecated} AFTER_SHOW is deprecated earlier in this file.
  */
-goog.ui.Dialog.prototype.focus = function() {
-  goog.base(this, 'focus');
+goog.ui.Dialog.prototype.onShow = function() {
+  goog.ui.Dialog.base(this, 'onShow');
+  this.dispatchEvent(goog.ui.Dialog.EventType.AFTER_SHOW);
+};
 
-  // Move focus to the default button (if any).
-  if (this.getButtonSet()) {
-    var defaultButton = this.getButtonSet().getDefault();
-    if (defaultButton) {
-      var doc = this.getDomHelper().getDocument();
-      var buttons = this.buttonEl_.getElementsByTagName('button');
-      for (var i = 0, button; button = buttons[i]; i++) {
-        if (button.name == defaultButton && !button.disabled) {
-          try {
-            // Reopening a dialog can cause focusing the button to fail in
-            // WebKit and Opera. Shift the focus to a temporary <input>
-            // element to make refocusing the button possible.
-            if (goog.userAgent.WEBKIT || goog.userAgent.OPERA) {
-              var temp = doc.createElement('input');
-              temp.style.cssText =
-                  'position:fixed;width:0;height:0;left:0;top:0;';
-              this.getElement().appendChild(temp);
-              temp.focus();
-              this.getElement().removeChild(temp);
-            }
-            button.focus();
-          } catch (e) {
-            // Swallow this. Could be the button is disabled
-            // and IE6 wishes to throw an error.
-          }
-          break;
-        }
-      }
-    }
+
+/**
+ * @override
+ * @suppress {deprecated} AFTER_HIDE is deprecated earlier in this file.
+ */
+goog.ui.Dialog.prototype.onHide = function() {
+  goog.ui.Dialog.base(this, 'onHide');
+  this.dispatchEvent(goog.ui.Dialog.EventType.AFTER_HIDE);
+  if (this.disposeOnHide_) {
+    this.dispose();
   }
 };
 
@@ -883,6 +846,17 @@ goog.ui.Dialog.prototype.setDraggerLimits_ = function(e) {
  * @private
  */
 goog.ui.Dialog.prototype.onTitleCloseClick_ = function(e) {
+  this.handleTitleClose_();
+};
+
+
+/**
+ * Performs the action of closing the dialog in response to the title close
+ * button being interacted with. General purpose method to be called by click
+ * and button event handlers.
+ * @private
+ */
+goog.ui.Dialog.prototype.handleTitleClose_ = function() {
   if (!this.hasTitleCloseButton_) {
     return;
   }
@@ -962,7 +936,7 @@ goog.ui.Dialog.prototype.getDisposeOnHide = function() {
 goog.ui.Dialog.prototype.disposeInternal = function() {
   this.titleCloseEl_ = null;
   this.buttonEl_ = null;
-  goog.base(this, 'disposeInternal');
+  goog.ui.Dialog.base(this, 'disposeInternal');
 };
 
 
@@ -1078,6 +1052,9 @@ goog.ui.Dialog.prototype.onKey_ = function(e) {
       // If the target is a button and it's enabled, we can fire that button's
       // handler.
       key = target.name;
+    } else if (target == this.titleCloseEl_) {
+      // if the title 'close' button is in focus, close the dialog
+      this.handleTitleClose_();
     } else if (buttonSet) {
       // Try to fire the default button's handler (if one exists), but only if
       // the button is enabled.
@@ -1098,6 +1075,10 @@ goog.ui.Dialog.prototype.onKey_ = function(e) {
       close = this.dispatchEvent(
           new goog.ui.Dialog.Event(key, String(buttonSet.get(key))));
     }
+  } else if (target == this.titleCloseEl_ &&
+      e.keyCode == goog.events.KeyCodes.SPACE) {
+    // if the title 'close' button is in focus on 'SPACE,' close the dialog
+    this.handleTitleClose_();
   }
 
   if (close || hasHandler) {
@@ -1177,6 +1158,7 @@ goog.ui.Dialog.ButtonSet = function(opt_domHelper) {
   goog.structs.Map.call(this);
 };
 goog.inherits(goog.ui.Dialog.ButtonSet, goog.structs.Map);
+goog.tagUnsealableClass(goog.ui.Dialog.ButtonSet);
 
 
 /**
@@ -1246,7 +1228,7 @@ goog.ui.Dialog.ButtonSet.prototype.set = function(key, caption,
  * Adds a button (an object with a key and caption) to this button set. Buttons
  * will be displayed in the order they are added.
  * @see goog.ui.Dialog.DefaultButtons
- * @param {!{key: string, caption: string}} button The button key and caption.
+ * @param {{key: string, caption: string}} button The button key and caption.
  * @param {boolean=} opt_isDefault Whether this button is the default button.
  *     Dialog will dispatch for this button if enter is pressed.
  * @param {boolean=} opt_isCancel Whether this button has the same behavior as
@@ -1278,7 +1260,7 @@ goog.ui.Dialog.ButtonSet.prototype.render = function() {
     goog.dom.safe.setInnerHtml(
         this.element_, goog.html.SafeHtml.EMPTY);
     var domHelper = goog.dom.getDomHelper(this.element_);
-    goog.structs.forEach(this, function(caption, key) {
+    this.forEach(function(caption, key) {
       var button = domHelper.createDom('button', {'name': key}, caption);
       if (key == this.defaultButton_) {
         button.className = goog.getCssName(this.class_, 'default');
@@ -1397,7 +1379,7 @@ goog.ui.Dialog.ButtonSet.prototype.getButton = function(key) {
 
 /**
  * Returns all the HTML Button elements in the button set container.
- * @return {NodeList} A live NodeList of the buttons.
+ * @return {!NodeList} A live NodeList of the buttons.
  */
 goog.ui.Dialog.ButtonSet.prototype.getAllButtons = function() {
   return this.element_.getElementsByTagName(goog.dom.TagName.BUTTON);
@@ -1487,6 +1469,13 @@ goog.ui.Dialog.MSG_DIALOG_CONTINUE_ = goog.getMsg('Continue');
 
 
 /**
+ * @desc Standard label for the dialog 'X' (close) button.
+ * @private
+ */
+goog.ui.Dialog.MSG_GOOG_UI_DIALOG_CLOSE_ = goog.getMsg('Close');
+
+
+/**
  * The default captions for the default buttons.
  * @enum {string}
  */
@@ -1502,7 +1491,7 @@ goog.ui.Dialog.DefaultButtonCaptions = {
 
 /**
  * The standard buttons (keys associated with captions).
- * @enum {!{key: string, caption: string}}
+ * @enum {{key: string, caption: string}}
  */
 goog.ui.Dialog.ButtonSet.DefaultButtons = {
   OK: {

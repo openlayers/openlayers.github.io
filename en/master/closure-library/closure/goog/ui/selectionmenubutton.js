@@ -63,6 +63,7 @@ goog.ui.SelectionMenuButton = function(opt_renderer,
   this.initialItemRenderer_ = opt_itemRenderer || null;
 };
 goog.inherits(goog.ui.SelectionMenuButton, goog.ui.MenuButton);
+goog.tagUnsealableClass(goog.ui.SelectionMenuButton);
 
 
 /**
@@ -99,7 +100,7 @@ goog.ui.SelectionMenuButton.prototype.initialItemRenderer_;
  * @override
  */
 goog.ui.SelectionMenuButton.prototype.setEnabled = function(enable) {
-  goog.base(this, 'setEnabled', enable);
+  goog.ui.SelectionMenuButton.base(this, 'setEnabled', enable);
   this.setCheckboxEnabled(enable);
 };
 

@@ -19,7 +19,6 @@
 goog.provide('goog.html.safeUrlTest');
 
 goog.require('goog.html.SafeUrl');
-goog.require('goog.html.uncheckedconversions');
 goog.require('goog.i18n.bidi.Dir');
 goog.require('goog.string.Const');
 goog.require('goog.testing.jsunit');
@@ -48,9 +47,9 @@ function testSafeUrl() {
 /** @suppress {checkTypes} */
 function testUnwrap() {
   var evil = {};
-  evil.safeUrlValueWithSecurityContract__googHtmlSecurityPrivate_ =
+  evil.safeUrlValueWithSecurityContract_googHtmlSecurityPrivate_ =
       '<script>evil()</script';
-  evil.SAFE_URL_TYPE_MARKER__GOOG_HTML_SECURITY_PRIVATE_ = {};
+  evil.SAFE_URL_TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_ = {};
 
   var exception = assertThrows(function() {
     goog.html.SafeUrl.unwrap(evil);
@@ -86,7 +85,7 @@ function assertBadUrl(url) {
 }
 
 
-function testSafeUrlSanitize() {
+function testSafeUrlSanitize_validatesUrl() {
   // Whitelisted schemes.
   assertGoodUrl('http://example.com/');
   assertGoodUrl('https://example.com');
@@ -132,28 +131,71 @@ function testSafeUrlSanitize() {
 }
 
 
-function testSafeUrlFrom() {
-  var safeUrlIn = goog.html.SafeUrl.sanitize('http://good.com/');
-  assertTrue(safeUrlIn === goog.html.SafeUrl.from(safeUrlIn));
-
-  assertEquals('http://alsogood.com/',
-      goog.html.SafeUrl.unwrap(goog.html.SafeUrl.from('http://alsogood.com/')));
-
+/**
+ * Asserts that goog.html.SafeUrl.unwrap returns the expected string when the
+ * SafeUrl has been constructed by passing the given url to
+ * goog.html.SafeUrl.sanitize.
+ * @param {string} url The string to pass to goog.html.SafeUrl.sanitize.
+ * @param {string} expected The string representation that
+ *         goog.html.SafeUrl.unwrap should return.
+ */
+function assertSanitizeEncodesTo(url, expected) {
+  var safeUrl = goog.html.SafeUrl.sanitize(url);
+  var actual = goog.html.SafeUrl.unwrap(safeUrl);
   assertEquals(
-      goog.html.SafeUrl.INNOCUOUS_STRING,
-      goog.html.SafeUrl.unwrap(
-          goog.html.SafeUrl.sanitize('javascript:evil()')));
+      'SafeUrl.sanitize().unwrap() doesn\'t return expected ' +
+          'percent-encoded string',
+      expected,
+      actual);
 }
 
 
-function testSafeUrlUncheckedConversion() {
-  var safeUrl =
-      goog.html.uncheckedconversions.
-          safeUrlFromStringKnownToSatisfyTypeContract(
-              goog.string.Const.from('Safe because value is constant. ' +
-                                     'Security review: b/7685625.'),
-              'javascript:trusted();');
-  var extracted = goog.html.SafeUrl.unwrap(safeUrl);
-  assertEquals('javascript:trusted();', extracted);
-  assertEquals('SafeUrl{javascript:trusted();}', String(safeUrl));
+function testSafeUrlSanitize_percentEncodesUrl() {
+  // '%' is preserved.
+  assertSanitizeEncodesTo('%', '%');
+  assertSanitizeEncodesTo('%2F', '%2F');
+
+  // Unreserved characters, RFC 3986.
+  assertSanitizeEncodesTo('aA1-._~', 'aA1-._~');
+
+  // Reserved characters, RFC 3986. Only '\'', '(' and ')' are encoded.
+  assertSanitizeEncodesTo('/:?#[]@!$&\'()*+,;=', '/:?#[]@!$&%27%28%29*+,;=');
+
+
+  // Other ASCII characters, printable and non-printable.
+  assertSanitizeEncodesTo('^"\\`\x00\n\r\x7f', '%5E%22%5C%60%00%0A%0D%7F');
+
+  // Codepoints which UTF-8 encode to 2 bytes.
+  assertSanitizeEncodesTo('\u0080\u07ff', '%C2%80%DF%BF');
+
+  // Highest codepoint which can be UTF-16 encoded using two bytes
+  // (one code unit). Highest codepoint in basic multilingual plane and highest
+  // that JavaScript can represent using \u.
+  assertSanitizeEncodesTo('\uffff', '%EF%BF%BF');
+
+  // Supplementary plane codepoint which UTF-16 and UTF-8 encode to 4 bytes.
+  // Valid surrogate sequence.
+  assertSanitizeEncodesTo('\ud800\udc00', '%F0%90%80%80');
+
+  // Invalid lead/high surrogate.
+  assertSanitizeEncodesTo('\udc00', goog.html.SafeUrl.INNOCUOUS_STRING);
+
+  // Invalid trail/low surrogate.
+  assertSanitizeEncodesTo('\ud800\ud800', goog.html.SafeUrl.INNOCUOUS_STRING);
+}
+
+
+function testSafeUrlSanitize_idempotentForSafeUrlArgument() {
+  // This goes through percent-encoding.
+  var safeUrl = goog.html.SafeUrl.sanitize('%11"');
+  var safeUrl2 = goog.html.SafeUrl.sanitize(safeUrl);
+  assertEquals(
+      goog.html.SafeUrl.unwrap(safeUrl), goog.html.SafeUrl.unwrap(safeUrl2));
+
+  // This doesn't match the safe prefix, getting converted into an innocuous
+  // string.
+  safeUrl = goog.html.SafeUrl.sanitize('disallowed:foo');
+  safeUrl2 = goog.html.SafeUrl.sanitize(safeUrl);
+  assertEquals(
+      goog.html.SafeUrl.unwrap(safeUrl), goog.html.SafeUrl.unwrap(safeUrl2));
 }

@@ -53,6 +53,13 @@ testAgents.ANDROID_BROWSER_403 =
 
 
 /** @const {string} */
+// User agent retrieved from dremel queries for cases matching b/13222688
+testAgents.ANDROID_BROWSER_403_ALT =
+    'Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K)' +
+    ' AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30';
+
+
+/** @const {string} */
 testAgents.IE_6 =
     'Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1;' +
     '.NET CLR 2.0.50727)';
@@ -91,6 +98,15 @@ testAgents.IE_10 =
 /** @const {string} */
 testAgents.IE_10_COMPATIBILITY =
     'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/6.0)';
+
+
+/**
+ * http://blogs.windows.com/windows_phone/b/wpdev/archive/2012/10/17/getting-websites-ready-for-internet-explorer-10-on-windows-phone-8.aspx
+ * @const {string}
+ */
+testAgents.IE_10_MOBILE =
+    'Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; ' +
+    'IEMobile/10.0; ARM; Touch; NOKIA; Lumia 820)';
 
 
 /** @const {string} */

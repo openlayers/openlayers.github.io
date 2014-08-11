@@ -38,7 +38,7 @@ goog.require('goog.userAgent');
  * @final
  */
 goog.editor.plugins.Emoticons = function() {
-  goog.base(this);
+  goog.editor.plugins.Emoticons.base(this, 'constructor');
 };
 goog.inherits(goog.editor.plugins.Emoticons, goog.editor.Plugin);
 
@@ -64,7 +64,7 @@ goog.editor.plugins.Emoticons.prototype.isSupportedCommand = function(
  * cursor to the right of the inserted emoticon.
  * @param {string} command Command to execute.
  * @param {*=} opt_arg Emoji to insert.
- * @return {Object|undefined} The result of the command.
+ * @return {!Object|undefined} The result of the command.
  * @override
  */
 goog.editor.plugins.Emoticons.prototype.execCommandInternal = function(

@@ -51,7 +51,7 @@ goog.require('goog.userAgent');
  * @final
  */
 goog.net.xpc.IframePollingTransport = function(channel, opt_domHelper) {
-  goog.base(this, opt_domHelper);
+  goog.net.xpc.IframePollingTransport.base(this, 'constructor', opt_domHelper);
 
   /**
    * The channel this transport belongs to.
@@ -200,7 +200,7 @@ goog.net.xpc.IframePollingTransport.prototype.getPeerFrames_ = function() {
 /**
  * Safely retrieves the peer frame with the specified name.
  * @param {string} frameName The name of the peer frame to retrieve.
- * @return {Window} The peer frame with the specified name.
+ * @return {!Window} The peer frame with the specified name.
  * @private
  */
 goog.net.xpc.IframePollingTransport.prototype.getPeerFrame_ = function(
@@ -251,7 +251,7 @@ goog.net.xpc.IframePollingTransport.prototype.constructSenderFrames_ =
 /**
  * Constructs a sending frame the the given id.
  * @param {string} id The id.
- * @return {Element} The constructed frame.
+ * @return {!Element} The constructed frame.
  * @private
  */
 goog.net.xpc.IframePollingTransport.prototype.constructSenderFrame_ =
@@ -691,7 +691,7 @@ goog.net.xpc.IframePollingTransport.prototype.send =
 
 /** @override */
 goog.net.xpc.IframePollingTransport.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  goog.net.xpc.IframePollingTransport.base(this, 'disposeInternal');
 
   var receivers = goog.net.xpc.IframePollingTransport.receivers_;
   goog.array.remove(receivers, this.msgReceiver_);

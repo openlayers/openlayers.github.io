@@ -100,7 +100,9 @@ var mockAnimation;
  * @extends {goog.ui.SliderBase}
  */
 function OneThumbSlider() {
-  goog.ui.SliderBase.call(this);
+  goog.ui.SliderBase.call(this, undefined /* domHelper */, function(value) {
+    return value > 5 ? 'A big value.' : 'A small value.';
+  });
 }
 goog.inherits(OneThumbSlider, goog.ui.SliderBase);
 
@@ -362,6 +364,26 @@ function testUpdateValueExtent() {
           goog.a11y.aria.State.VALUENOW));
   assertEquals(30, twoThumbSlider.getValue());
   assertEquals(50, twoThumbSlider.getExtent());
+}
+
+function testValueText() {
+  oneThumbSlider.setValue(10);
+  assertEquals('Setting value results in correct aria-valuetext',
+      'A big value.', goog.a11y.aria.getState(oneThumbSlider.getElement(),
+          goog.a11y.aria.State.VALUETEXT));
+  oneThumbSlider.setValue(2);
+  assertEquals('Updating value results in updated aria-valuetext',
+      'A small value.', goog.a11y.aria.getState(oneThumbSlider.getElement(),
+          goog.a11y.aria.State.VALUETEXT));
+}
+
+function testGetValueText() {
+  oneThumbSlider.setValue(10);
+  assertEquals('Getting the text value gets the correct description',
+      'A big value.', oneThumbSlider.getTextValue());
+  oneThumbSlider.setValue(2);
+  assertEquals('Getting the updated text value gets the correct updated description',
+      'A small value.', oneThumbSlider.getTextValue());
 }
 
 function testRangeListener() {
@@ -829,6 +851,48 @@ function testValueFromMousePosition() {
   oneThumbSlider.setValue(value / 2);
   assertEquals(
       value, Math.round(oneThumbSlider.getValueFromMousePosition(e)));
+}
+
+/**
+ * Tests ignoring click event after mousedown event.
+ */
+function testClickAfterMousedown() {
+  // Get the center of the thumb at value zero.
+  oneThumbSlider.setValue(0);
+  var offset = goog.style.getPageOffset(oneThumbSlider.valueThumb);
+  var size = goog.style.getSize(oneThumbSlider.valueThumb);
+  offset.x += size.width / 2;
+  offset.y += size.height / 2;
+
+  var sliderElement = oneThumbSlider.getElement();
+  var width = sliderElement.clientWidth - size.width;
+  var range = oneThumbSlider.getMaximum() - oneThumbSlider.getMinimum();
+  var offsetXAtZero = offset.x;
+
+  // Temporarily control time.
+  var theTime = goog.now();
+  var saveGoogNow = goog.now;
+  goog.now = function() { return theTime; };
+
+  // set coordinate for a particular value.
+  var valueOne = 10;
+  offset.x = offsetXAtZero + Math.round(valueOne / range * width);
+  goog.testing.events.fireMouseDownEvent(sliderElement, null, offset);
+  assertEquals(valueOne, oneThumbSlider.getValue());
+
+  // Verify a click event with another value that follows quickly is ignored.
+  theTime += oneThumbSlider.MOUSE_DOWN_DELAY_ / 2;
+  var valueTwo = 20;
+  offset.x = offsetXAtZero + Math.round(valueTwo / range * width);
+  goog.testing.events.fireClickEvent(sliderElement, null, offset);
+  assertEquals(valueOne, oneThumbSlider.getValue());
+
+  // Verify a click later in time does move the thumb.
+  theTime += oneThumbSlider.MOUSE_DOWN_DELAY_;
+  goog.testing.events.fireClickEvent(sliderElement, null, offset);
+  assertEquals(valueTwo, oneThumbSlider.getValue());
+
+  goog.now = saveGoogNow;
 }
 
 /**

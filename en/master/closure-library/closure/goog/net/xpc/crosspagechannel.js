@@ -61,7 +61,7 @@ goog.require('goog.userAgent');
  * @extends {goog.messaging.AbstractChannel}
  */
 goog.net.xpc.CrossPageChannel = function(cfg, opt_domHelper) {
-  goog.base(this);
+  goog.net.xpc.CrossPageChannel.base(this, 'constructor');
 
   for (var i = 0, uriField; uriField = goog.net.xpc.UriCfgFields[i]; i++) {
     if (uriField in cfg && !/^https?:\/\//.test(cfg[uriField])) {
@@ -247,9 +247,9 @@ goog.net.xpc.CrossPageChannel.prototype.setPeerWindowObject =
 
 /**
  * Returns the window object the foreign document resides in.
- * Package private. Do not call from outside goog.net.xpc.
  *
  * @return {Object} The window object of the peer.
+ * @package
  */
 goog.net.xpc.CrossPageChannel.prototype.getPeerWindowObject = function() {
   return this.peerWindowObject_;
@@ -258,9 +258,9 @@ goog.net.xpc.CrossPageChannel.prototype.getPeerWindowObject = function() {
 
 /**
  * Determines whether the peer window is available (e.g. not closed).
- * Package private. Do not call from outside goog.net.xpc.
  *
  * @return {boolean} Whether the peer window is available.
+ * @package
  */
 goog.net.xpc.CrossPageChannel.prototype.isPeerAvailable = function() {
   // NOTE(user): This check is not reliable in IE, where a document in an
@@ -396,7 +396,7 @@ goog.net.xpc.CrossPageChannel.prototype.getTransportName = function() {
 
 
 /**
- * @return {Object} Configuration-object to be used by the peer to
+ * @return {!Object} Configuration-object to be used by the peer to
  *     initialize the channel.
  */
 goog.net.xpc.CrossPageChannel.prototype.getPeerConfiguration = function() {
@@ -834,7 +834,7 @@ goog.net.xpc.CrossPageChannel.prototype.disposeInternal = function() {
   delete goog.net.xpc.channels[this.name];
   goog.dispose(this.peerLoadHandler_);
   delete this.peerLoadHandler_;
-  goog.base(this, 'disposeInternal');
+  goog.net.xpc.CrossPageChannel.base(this, 'disposeInternal');
 };
 
 

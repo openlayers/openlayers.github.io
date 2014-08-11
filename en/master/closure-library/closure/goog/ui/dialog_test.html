@@ -12,6 +12,7 @@ See the COPYING file for details.
 <script src="../base.js"></script>
 <script>
   goog.require('goog.dom');
+  goog.require('goog.dom.classlist');
   goog.require('goog.a11y.aria');
   goog.require('goog.a11y.aria.Role');
   goog.require('goog.a11y.aria.State');
@@ -34,6 +35,7 @@ See the COPYING file for details.
 <body>
 <iframe id="f" src="javascript:'<input>'"></iframe>
 <script>
+  var bodyChildElement;
   var decorateTarget;
   var dialog;
   var mockClock;
@@ -41,6 +43,8 @@ See the COPYING file for details.
 
   function setUp() {
     mockClock = new goog.testing.MockClock(true);
+    bodyChildElement = document.createElement('div');
+    document.body.appendChild(bodyChildElement);
     dialog = new goog.ui.Dialog();
     var buttons = new goog.ui.Dialog.ButtonSet();
     buttons.set(goog.ui.Dialog.DefaultButtonKeys.CANCEL,
@@ -58,13 +62,11 @@ See the COPYING file for details.
 
     // Reset global flags to their defaults.
     stubs.set(goog.html.legacyconversions, 'ALLOW_LEGACY_CONVERSIONS', true);
-    stubs.set(goog.html.legacyconversions, 'ALLOW_LEGACY_CONVERSION_OVERRIDES',
-              false);
-    stubs.set(goog.ui.Dialog, 'ALLOW_UNSAFE_API', false);
   }
 
   function tearDown() {
     dialog.dispose();
+    goog.dom.removeNode(bodyChildElement);
     goog.dom.removeNode(decorateTarget);
     mockClock.dispose();
   }
@@ -79,9 +81,9 @@ See the COPYING file for details.
     var iframeWindow = goog.dom.getElement('f').contentWindow;
     var iframeInput = iframeWindow.document.getElementsByTagName('input')[0];
     dialog.setButtonSet(goog.ui.Dialog.ButtonSet.OK);
-    var buttonElement = dialog.getButtonSet().getButton(0);
+    var dialogElement = dialog.getElement();
     var focusCounter = 0;
-    goog.events.listen(buttonElement, 'focus', function() {
+    goog.events.listen(dialogElement, 'focus', function() {
       focusCounter++;
     });
     iframeInput.focus();
@@ -544,7 +546,9 @@ See the COPYING file for details.
     dialog.dispose();
     dialog = new goog.ui.Dialog(null, true /* iframe mask */);
     dialog.setModal(false);
+    assertAriaHidden(false);
     dialog.setVisible(true);
+    assertAriaHidden(true);
 
     var iframes =
         goog.dom.getElementsByTagNameAndClass(goog.dom.TagName.IFRAME);
@@ -556,14 +560,18 @@ See the COPYING file for details.
   function testSwapModalForOpenDialog() {
     dialog.dispose();
     dialog = new goog.ui.Dialog(null, true /* iframe mask */);
+    assertAriaHidden(false);
     dialog.setVisible(true);
+    assertAriaHidden(true);
     dialog.setModal(false);
+    assertAriaHidden(false);
     assertFalse('IFrame bg element should not be in dom',
         goog.dom.contains(document.body, dialog.getBackgroundIframe()));
     assertFalse('bg element should not be in dom',
         goog.dom.contains(document.body, dialog.getBackgroundElement()));
 
     dialog.setModal(true);
+    assertAriaHidden(true);
     assertTrue('IFrame bg element should be in dom',
         goog.dom.contains(document.body, dialog.getBackgroundIframe()));
     assertTrue('bg element should be in dom',
@@ -643,9 +651,9 @@ See the COPYING file for details.
 
     dialog = new goog.ui.Dialog();
     dialog.render();
-    assertTrue(!!dialog.getTitleElement().id);
+    assertTrue(!!dialog.getTitleTextElement().id);
     assertNotNull(dialog.getElement());
-    assertEquals(dialog.getTitleElement().id,
+    assertEquals(dialog.getTitleTextElement().id,
         goog.a11y.aria.getState(dialog.getElement(),
             'labelledby'));
   }
@@ -656,9 +664,9 @@ See the COPYING file for details.
     dialog = new goog.ui.Dialog();
     dialog.decorate(decorateTarget);
     dialog.setVisible(true);
-    assertTrue(!!dialog.getTitleElement().id);
+    assertTrue(!!dialog.getTitleTextElement().id);
     assertNotNull(dialog.getElement());
-    assertEquals(dialog.getTitleElement().id,
+    assertEquals(dialog.getTitleTextElement().id,
         goog.a11y.aria.getState(dialog.getElement(),
             'labelledby'));
   }
@@ -723,10 +731,10 @@ See the COPYING file for details.
   }
 
   function testDraggableStyle() {
-    assertTrue('draggable CSS class is set', goog.dom.classes.has(
+    assertTrue('draggable CSS class is set', goog.dom.classlist.contains(
         dialog.titleEl_, 'modal-dialog-title-draggable'));
     dialog.setDraggable(false);
-    assertFalse('draggable CSS class is removed', goog.dom.classes.has(
+    assertFalse('draggable CSS class is removed', goog.dom.classlist.contains(
         dialog.titleEl_, 'modal-dialog-title-draggable'));
   }
 
@@ -797,33 +805,26 @@ See the COPYING file for details.
   function testSetContent_guardedByGlobalFlag() {
     stubs.set(goog.html.legacyconversions, 'ALLOW_LEGACY_CONVERSIONS', false);
     assertEquals(
-        'Failure: Legacy conversion from string to SafeHtml is disabled',
+        'Error: Legacy conversion from string to goog.html types is disabled',
         assertThrows(function() {
           dialog.setContent('<img src=blag onerror=evil();/>');
         }).message);
   }
 
-  function testSetContent_guardedByDialogApiFlag() {
-    stubs.set(goog.html.legacyconversions, 'ALLOW_LEGACY_CONVERSIONS', false);
-    stubs.set(goog.ui.Dialog, 'ALLOW_UNSAFE_API', true);
-    // Unsafe API still fails, since ALLOW_LEGACY_CONVERSION_OVERRIDES is not
-    // set.
-    assertEquals(
-        'Failure: Legacy conversion from string to SafeHtml is disabled',
-        assertThrows(function() {
-          dialog.setContent('<img src=blag onerror=evil();/>');
-        }).message);
+  function testFocus() {
+    // Focus should go to the dialog element.
+    document.body.focus();
+    dialog.focus();
+    assertEquals(dialog.getElement(), document.activeElement);
   }
 
-  function testSetContent_allowedByDialogApiFlag() {
-    stubs.set(goog.html.legacyconversions, 'ALLOW_LEGACY_CONVERSIONS', false);
-    stubs.set(goog.html.legacyconversions, 'ALLOW_LEGACY_CONVERSION_OVERRIDES',
-              true);
-    stubs.set(goog.ui.Dialog, 'ALLOW_UNSAFE_API', true);
-    // no exception
-    dialog.setContent('<div>Trusted<' + '/div>');
-    assertEquals('<div>Trusted<' + '/div>',
-                 goog.html.SafeHtml.unwrap(dialog.getSafeHtmlContent()));
+  // Asserts that a test element which is a child of the document body has the
+  // aria property 'hidden' set on it, or not.
+  function assertAriaHidden(expectedHidden) {
+    var expectedString = expectedHidden ? 'true' : '';
+    assertEquals(expectedString,
+        goog.a11y.aria.getState(bodyChildElement,
+            goog.a11y.aria.State.HIDDEN));
   }
 </script>
 </body>

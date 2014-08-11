@@ -135,6 +135,7 @@ goog.ui.DatePicker = function(opt_date, opt_dateTimeSymbols, opt_domHelper,
   this.keyHandlers_ = {};
 };
 goog.inherits(goog.ui.DatePicker, goog.ui.Component);
+goog.tagUnsealableClass(goog.ui.DatePicker);
 
 
 /**
@@ -654,7 +655,7 @@ goog.ui.DatePicker.prototype.selectNone = function() {
 
 
 /**
- * @return {goog.date.Date} The active month displayed.
+ * @return {!goog.date.Date} The active month displayed.
  */
 goog.ui.DatePicker.prototype.getActiveMonth = function() {
   return this.activeMonth_.clone();
@@ -836,7 +837,7 @@ goog.ui.DatePicker.prototype.updateFooterRow_ = function() {
 /** @override */
 goog.ui.DatePicker.prototype.decorateInternal = function(el) {
   goog.ui.DatePicker.superClass_.decorateInternal.call(this, el);
-
+  goog.asserts.assert(el);
   goog.dom.classlist.add(el, this.getBaseCssClass());
 
   var table = this.dom_.createElement('table');

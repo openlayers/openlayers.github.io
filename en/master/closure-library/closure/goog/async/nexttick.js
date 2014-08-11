@@ -20,15 +20,35 @@
  */
 
 goog.provide('goog.async.nextTick');
+goog.provide('goog.async.throwException');
 
 goog.require('goog.debug.entryPointRegistry');
 goog.require('goog.functions');
 
 
 /**
+ * Throw an item without interrupting the current execution context.  For
+ * example, if processing a group of items in a loop, sometimes it is useful
+ * to report an error while still allowing the rest of the batch to be
+ * processed.
+ * @param {*} exception
+ */
+goog.async.throwException = function(exception) {
+  // Each throw needs to be in its own context.
+  goog.global.setTimeout(function() { throw exception; }, 0);
+};
+
+
+/**
  * Fires the provided callbacks as soon as possible after the current JS
  * execution context. setTimeout(…, 0) always takes at least 5ms for legacy
  * reasons.
+ *
+ * This will not schedule the callback as a microtask (i.e. a task that can
+ * preempt user input or networking callbacks). It is meant to emulate what
+ * setTimeout(_, 0) would do if it were not throttled. If you desire microtask
+ * behavior, use {@see goog.Promise} instead.
+ *
  * @param {function(this:SCOPE)} callback Callback function to fire as soon as
  *     possible.
  * @param {SCOPE=} opt_context Object in whose scope to call the listener.
@@ -90,8 +110,15 @@ goog.async.nextTick.getSetImmediateEmulator_ = function() {
       doc.open();
       doc.write('');
       doc.close();
+      // Do not post anything sensitive over this channel, as the workaround for
+      // pages with file: origin could allow that information to be modified or
+      // intercepted.
       var message = 'callImmediate' + Math.random();
-      var origin = win.location.protocol + '//' + win.location.host;
+      // The same origin policy rejects attempts to postMessage from file: urls
+      // unless the origin is '*'.
+      // TODO(b/16335441): Use '*' origin for data: and other similar protocols.
+      var origin = win.location.protocol == 'file:' ?
+          '*' : win.location.protocol + '//' + win.location.host;
       var onmessage = goog.bind(function(e) {
         // Validate origin and message to make sure that this message was
         // intended for us.

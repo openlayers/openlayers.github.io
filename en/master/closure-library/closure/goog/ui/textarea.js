@@ -59,6 +59,7 @@ goog.ui.Textarea = function(content, opt_renderer, opt_domHelper) {
   }
 };
 goog.inherits(goog.ui.Textarea, goog.ui.Control);
+goog.tagUnsealableClass(goog.ui.Textarea);
 
 
 /**
@@ -385,7 +386,8 @@ goog.ui.Textarea.prototype.restorePlaceholder_ = function() {
       !this.hasFocusForPlaceholder_) {
     // We only want to set the value + placeholder CSS if we actually have
     // some placeholder text to show.
-    goog.dom.classlist.add(this.getElement(),
+    goog.dom.classlist.add(
+        goog.asserts.assert(this.getElement()),
         goog.ui.Textarea.TEXTAREA_PLACEHOLDER_CLASS);
     this.getElement().value = this.placeholderText_;
   }
@@ -394,7 +396,7 @@ goog.ui.Textarea.prototype.restorePlaceholder_ = function() {
 
 /** @override **/
 goog.ui.Textarea.prototype.enterDocument = function() {
-  goog.base(this, 'enterDocument');
+  goog.ui.Textarea.base(this, 'enterDocument');
   var textarea = this.getElement();
 
   // Eliminates the vertical scrollbar and changes the box-sizing mode for the
@@ -484,6 +486,7 @@ goog.ui.Textarea.prototype.setHeightToEstimate_ = function() {
   textarea.style.height = 'auto';
   var newlines = textarea.value.match(/\n/g) || [];
   textarea.rows = newlines.length + 1;
+  this.height_ = 0;
 };
 
 
@@ -677,8 +680,7 @@ goog.ui.Textarea.prototype.shrink_ = function() {
       var currentHeight = this.getHeight_();
       var minHeight = this.getMinHeight_();
       var maxHeight = this.getMaxHeight_();
-      if (!(minHeight && currentHeight <= minHeight) &&
-          !(maxHeight && currentHeight >= maxHeight)) {
+      if (!(minHeight && currentHeight <= minHeight)) {
         // Nudge the padding by 1px.
         var paddingBox = this.paddingBox_;
         textarea.style.paddingBottom = paddingBox.bottom + 1 + 'px';

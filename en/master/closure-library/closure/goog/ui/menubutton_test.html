@@ -72,11 +72,14 @@ goog.positioning.positionAtCoordinate = function(absolutePos, movableElement,
       goog.positioning.Overflow.IGNORE, opt_preferredSize);
 };
 
-function MyFakeEvent(keyCode) {
-  this.type = goog.events.KeyHandler.EventType.KEY;
+function MyFakeEvent(keyCode, opt_eventType) {
+  this.type = opt_eventType || goog.events.KeyHandler.EventType.KEY;
   this.keyCode = keyCode;
+  this.propagationStopped = false;
   this.preventDefault = goog.nullFunction;
-  this.stopPropagation = goog.nullFunction;
+  this.stopPropagation = function() {
+    this.propagationStopped = true;
+  };
 }
 
 function setUp() {
@@ -186,6 +189,38 @@ function testEnterOpensMenu() {
   menuButton.decorate(node);
   menuButton.handleKeyEvent(new MyFakeEvent(goog.events.KeyCodes.ENTER));
   assertTrue('Menu must open after enter', menuButton.isOpen());
+}
+
+/**
+ * Tests that a keydown event of the escape key propagates normally when the
+ * menu is closed.
+ */
+function testStopEscapePropagationMenuClosed() {
+  var node = goog.dom.getElement('demoMenuButton');
+  var fakeEvent = new MyFakeEvent(
+     goog.events.KeyCodes.ESCAPE, goog.events.EventType.KEYDOWN);
+  menuButton.decorate(node);
+  menuButton.setOpen(false);
+
+  menuButton.handleKeyDownEvent_(fakeEvent);
+  assertFalse('Event propagation was erroneously stopped.',
+      fakeEvent.propagationStopped);
+}
+
+/**
+ * Tests that a keydown event of the escape key is prevented from propagating
+ * when the menu is open.
+ */
+function testStopEscapePropagationMenuOpen() {
+  var node = goog.dom.getElement('demoMenuButton');
+  var fakeEvent = new MyFakeEvent(
+      goog.events.KeyCodes.ESCAPE, goog.events.EventType.KEYDOWN);
+  menuButton.decorate(node);
+  menuButton.setOpen(true);
+
+  menuButton.handleKeyDownEvent_(fakeEvent);
+  assertTrue(
+      'Event propagation was not stopped.', fakeEvent.propagationStopped);
 }
 
 /**
@@ -583,7 +618,8 @@ function testResizeOnItemAddOrRemoveWithScrollOnOverflow() {
 }
 
 /**
- * Try rendering the menu as a sibling rather than as a child of the dom.
+ * Try rendering the menu as a sibling rather than as a child of the dom. This
+ * tests the case when the button is rendered, rather than decorated.
  */
 function testRenderMenuAsSibling() {
   menuButton.setRenderMenuAsSibling(true);
@@ -598,6 +634,33 @@ function testRenderMenuAsSibling() {
   assertEquals(
       menuButton.getElement().parentNode,
       menuButton.getMenu().getElement().parentNode);
+}
+
+/**
+ * Check that we render the menu as a sibling of the menu button, immediately
+ * after the menu button.
+ */
+function testRenderMenuAsSiblingForDecoratedButton() {
+  var menu = new goog.ui.Menu();
+  menu.addChild(new goog.ui.MenuItem('Menu item 1'), true /* render */);
+  menu.addChild(new goog.ui.MenuItem('Menu item 2'), true /* render */);
+  menu.addChild(new goog.ui.MenuItem('Menu item 3'), true /* render */);
+
+  var menuButton = new goog.ui.MenuButton();
+  menuButton.setMenu(menu);
+  menuButton.setRenderMenuAsSibling(true);
+  var node = goog.dom.getElement('button1');
+  menuButton.decorate(node);
+
+  menuButton.setOpen(true);
+
+  assertEquals('The menu should be rendered immediately after the menu button',
+      goog.dom.getNextElementSibling(menuButton.getElement()),
+      menu.getElement());
+
+  assertEquals('The menu should be rendered immediately before the next button',
+      goog.dom.getNextElementSibling(menu.getElement()),
+      goog.dom.getElement('button2'));
 }
 
 function testAlignToStartSetter() {
@@ -631,7 +694,8 @@ function testScrollOnOverflowSetter() {
     <div id='menuItem3' class="goog-menuitem">Enemies List.txt</div>
   </div>
 </div>
-
+<div id="button1" class="goog-menu-button"></div>
+<div id="button2" class="goog-menu-button"></div>
 <div id="footer"></div>
 </body>
 </html>

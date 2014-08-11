@@ -20,7 +20,7 @@
  * XMLHTTP, Trident ActiveX (ie only), and Image request. It provides timeout
  * detection.
  *
- * @visibility {//visibility:private}
+ * @visibility {:internal}
  */
 
 
@@ -1207,6 +1207,16 @@ ChannelRequest.prototype.getRequestId = function() {
  */
 ChannelRequest.prototype.getPostData = function() {
   return this.postData_;
+};
+
+
+/**
+ * Returns the XhrIo request object.
+ *
+ * @return {?goog.net.XhrIo} Any XhrIo request created for this object.
+ */
+ChannelRequest.prototype.getXhr = function() {
+  return this.xmlHttp_;
 };
 
 

@@ -18,7 +18,6 @@
  * <pre>
  * The patched event object contains the following members:
  * - type           {string}    Event type, e.g. 'click'
- * - timestamp      {Date}      A date object for when the event was fired
  * - target         {Object}    The element that actually triggered the event
  * - currentTarget  {Object}    The element the listener is attached to
  * - relatedTarget  {Object}    For mouseover and mouseout, the previous object
@@ -65,7 +64,7 @@ goog.require('goog.userAgent');
  * @extends {goog.events.Event}
  */
 goog.events.BrowserEvent = function(opt_e, opt_currentTarget) {
-  goog.base(this, opt_e ? opt_e.type : '');
+  goog.events.BrowserEvent.base(this, 'constructor', opt_e ? opt_e.type : '');
 
   /**
    * Target that fired the event.

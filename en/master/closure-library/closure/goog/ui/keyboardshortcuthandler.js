@@ -140,6 +140,7 @@ goog.ui.KeyboardShortcutHandler = function(keyTarget) {
   this.initializeKeyListener(keyTarget);
 };
 goog.inherits(goog.ui.KeyboardShortcutHandler, goog.events.EventTarget);
+goog.tagUnsealableClass(goog.ui.KeyboardShortcutHandler);
 
 
 /**
@@ -503,7 +504,7 @@ goog.ui.KeyboardShortcutHandler.prototype.isShortcutRegistered = function(
  * @param {Object} args The "arguments" array passed
  *     to registerShortcut or unregisterShortcut.  Please see the comments in
  *     registerShortcut for list of allowed forms.
- * @return {Array.<Object>} The sequence of objects containing the
+ * @return {!Array.<Object>} The sequence of objects containing the
  *     keyCode and modifiers of each key in sequence.
  * @private
  */
@@ -556,7 +557,7 @@ goog.ui.KeyboardShortcutHandler.prototype.setGlobalKeys = function(keys) {
 
 
 /**
- * @return {Array.<string>} The global keys, i.e. keys that are safe to always
+ * @return {!Array.<string>} The global keys, i.e. keys that are safe to always
  *     regard as shortcuts, even if entered in a textarea or input field.
  */
 goog.ui.KeyboardShortcutHandler.prototype.getGlobalKeys = function() {
@@ -587,7 +588,7 @@ goog.ui.KeyboardShortcutHandler.prototype.getEventType =
 /**
  * Builds stroke array from string representation of shortcut.
  * @param {string} s String representation of shortcut.
- * @return {Array.<Object>} The stroke array.
+ * @return {!Array.<Object>} The stroke array.
  */
 goog.ui.KeyboardShortcutHandler.parseStringShortcut = function(s) {
   // Normalize whitespace and force to lower case.

@@ -55,7 +55,7 @@ goog.require('goog.userAgent');
  */
 goog.debug.ErrorReporter = function(
     handlerUrl, opt_contextProvider, opt_noAutoProtect) {
-  goog.base(this);
+  goog.debug.ErrorReporter.base(this, 'constructor');
 
   /**
    * Context provider, if one was provided.
@@ -196,7 +196,7 @@ goog.debug.ErrorReporter.logger_ =
  *     onerror and to protect entry points.  If apps have other error reporting
  *     facilities, it may make sense for them to set these up themselves and use
  *     the ErrorReporter just for transmission of reports.
- * @return {goog.debug.ErrorReporter} The error reporter.
+ * @return {!goog.debug.ErrorReporter} The error reporter.
  */
 goog.debug.ErrorReporter.install = function(
     loggingUrl, opt_contextProvider, opt_noAutoProtect) {
@@ -256,7 +256,7 @@ if (goog.debug.ErrorReporter.ALLOW_AUTO_PROTECT) {
    * @private
    */
   goog.debug.ErrorReporter.prototype.setup_ = function() {
-    if (goog.userAgent.IE) {
+    if (goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('10')) {
       // Use "onerror" because caught exceptions in IE don't provide line
       // number.
       goog.debug.catchErrors(
@@ -268,6 +268,7 @@ if (goog.debug.ErrorReporter.ALLOW_AUTO_PROTECT) {
 
       this.errorHandler_.protectWindowSetTimeout();
       this.errorHandler_.protectWindowSetInterval();
+      this.errorHandler_.protectWindowRequestAnimationFrame();
       goog.debug.entryPointRegistry.monitorAll(this.errorHandler_);
     }
   };
@@ -424,5 +425,5 @@ goog.debug.ErrorReporter.prototype.disposeInternal = function() {
   if (goog.debug.ErrorReporter.ALLOW_AUTO_PROTECT) {
     goog.dispose(this.errorHandler_);
   }
-  goog.base(this, 'disposeInternal');
+  goog.debug.ErrorReporter.base(this, 'disposeInternal');
 };

@@ -87,7 +87,7 @@ goog.editor.plugins.RemoveFormatting.appendNewline_ = function(sb) {
  *    range as the beginning of the new range.
  * @param {goog.dom.AbstractRange} endRange Use the end point of this
  *    range as the end of the new range.
- * @return {goog.dom.AbstractRange} The new range.
+ * @return {!goog.dom.AbstractRange} The new range.
  * @private
  */
 goog.editor.plugins.RemoveFormatting.createRangeDelimitedByRanges_ = function(
@@ -380,7 +380,7 @@ goog.editor.plugins.RemoveFormatting.prototype.getHtmlText_ = function(range) {
  * @param {goog.dom.AbstractRange} range The range to adjust.
  * @param {Node} startInTable Table node that the range starts in.
  * @param {Node} endInTable Table node that the range ends in.
- * @return {goog.dom.SavedCaretRange} Range to use to restore the
+ * @return {!goog.dom.SavedCaretRange} Range to use to restore the
  *     selection after we run our custom remove formatting.
  * @private
  */

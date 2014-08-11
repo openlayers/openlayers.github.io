@@ -206,8 +206,13 @@ goog.i18n.DateTimeFormat.prototype.applyPattern_ = function(pattern) {
  *    is not specified, "undefined" will be pass around and those function
  *    that really need time zone service will create a default one.
  * @return {string} Formatted string for the given date.
+ *    Throws an error if the date is null or if one tries to format a date-only
+ *    object (for instance goog.date.Date) using a pattern with time fields.
  */
 goog.i18n.DateTimeFormat.prototype.format = function(date, opt_timeZone) {
+  if (!date)
+    throw Error('The date to format must be non-null.');
+
   // We don't want to write code to calculate each date field because we
   // want to maximize performance and minimize code size.
   // JavaScript only provide API to render local time.
@@ -280,21 +285,28 @@ goog.i18n.DateTimeFormat.prototype.applyStandardPattern_ =
 /**
  * Localizes a string potentially containing numbers, replacing ASCII digits
  * with native digits if specified so by the locale. Leaves other characters.
- *
- * Although this is not private anymore, is should not be used.
- * We needed to make it public so that we can use it in goog.date.relative.
- * But when CLDR gets better support for relative dates, this will be
- * refactored and will become private again.
- *
  * @param {string} input the string to be localized, using ASCII digits.
  * @return {string} localized string, potentially using native digits.
+ * @private
  */
-goog.i18n.DateTimeFormat.prototype.localizeNumbers = function(input) {
-  // TODO(user): fix date/duration.js and date/relative.js.
-  // They call goog.i18n.DateTimeFormat.prototype.localizeNumbers directly,
-  // without calling a constructor.
-  if (this.dateTimeSymbols_ === undefined ||
-      this.dateTimeSymbols_.ZERODIGIT === undefined) {
+goog.i18n.DateTimeFormat.prototype.localizeNumbers_ = function(input) {
+  return goog.i18n.DateTimeFormat.localizeNumbers(input, this.dateTimeSymbols_);
+};
+
+
+/**
+ * Localizes a string potentially containing numbers, replacing ASCII digits
+ * with native digits if specified so by the locale. Leaves other characters.
+ * @param {number|string} input the string to be localized, using ASCII digits.
+ * @param {!Object=} opt_dateTimeSymbols Optional symbols to use use rather than
+ *     the global symbols.
+ * @return {string} localized string, potentially using native digits.
+ */
+goog.i18n.DateTimeFormat.localizeNumbers =
+    function(input, opt_dateTimeSymbols) {
+  input = String(input);
+  var dateTimeSymbols = opt_dateTimeSymbols || goog.i18n.DateTimeSymbols;
+  if (dateTimeSymbols.ZERODIGIT === undefined) {
     return input;
   }
 
@@ -302,7 +314,7 @@ goog.i18n.DateTimeFormat.prototype.localizeNumbers = function(input) {
   for (var i = 0; i < input.length; i++) {
     var c = input.charCodeAt(i);
     parts.push((0x30 <= c && c <= 0x39) ? // '0' <= c <= '9'
-        String.fromCharCode(this.dateTimeSymbols_.ZERODIGIT + c - 0x30) :
+        String.fromCharCode(dateTimeSymbols.ZERODIGIT + c - 0x30) :
         input.charAt(i));
   }
   return parts.join('');
@@ -314,7 +326,7 @@ goog.i18n.DateTimeFormat.prototype.localizeNumbers = function(input) {
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
@@ -334,7 +346,7 @@ goog.i18n.DateTimeFormat.prototype.formatEra_ = function(count, date) {
  *   unsupported.
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
@@ -350,7 +362,7 @@ goog.i18n.DateTimeFormat.prototype.formatYear_ = function(count, date) {
     // http://www.unicode.org/reports/tr35/tr35-dates.html
     value = value % 100;
   }
-  return this.localizeNumbers(goog.string.padNumber(value, count));
+  return this.localizeNumbers_(goog.string.padNumber(value, count));
 };
 
 
@@ -359,7 +371,7 @@ goog.i18n.DateTimeFormat.prototype.formatYear_ = function(count, date) {
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
@@ -370,8 +382,27 @@ goog.i18n.DateTimeFormat.prototype.formatMonth_ = function(count, date) {
     case 4: return this.dateTimeSymbols_.MONTHS[value];
     case 3: return this.dateTimeSymbols_.SHORTMONTHS[value];
     default:
-      return this.localizeNumbers(goog.string.padNumber(value + 1, count));
+      return this.localizeNumbers_(goog.string.padNumber(value + 1, count));
   }
+};
+
+
+/**
+ * Validates is the goog.date.DateLike object to format has a time.
+ * DateLike means Date|goog.date.Date, and goog.date.DateTime inherits
+ * from goog.date.Date. But goog.date.Date does not have time related
+ * members (getHours, getMinutes, getSeconds).
+ * Formatting can be done, if there are no time placeholders in the pattern.
+ *
+ * @param {!goog.date.DateLike} date the object to validate.
+ * @private
+ */
+goog.i18n.DateTimeFormat.validateDateHasTime_ = function(date) {
+  if (date.getHours && date.getSeconds && date.getMinutes)
+    return;
+  // if (date instanceof Date || date instanceof goog.date.DateTime)
+  throw Error('The date to format has no time (probably a goog.date.Date). ' +
+      'Use Date or goog.date.DateTime, or use a pattern without time fields.');
 };
 
 
@@ -380,13 +411,14 @@ goog.i18n.DateTimeFormat.prototype.formatMonth_ = function(count, date) {
  *
  * @param {number} count Number of time pattern char repeats. This controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.format24Hours_ =
     function(count, date) {
-  return this.localizeNumbers(
+  goog.i18n.DateTimeFormat.validateDateHasTime_(date);
+  return this.localizeNumbers_(
       goog.string.padNumber(date.getHours() || 24, count));
 };
 
@@ -397,7 +429,7 @@ goog.i18n.DateTimeFormat.prototype.format24Hours_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  *
  * @return {string} Formatted string that represent this field.
  * @private
@@ -406,7 +438,7 @@ goog.i18n.DateTimeFormat.prototype.formatFractionalSeconds_ =
     function(count, date) {
   // Fractional seconds left-justify, append 0 for precision beyond 3
   var value = date.getTime() % 1000 / 1000;
-  return this.localizeNumbers(
+  return this.localizeNumbers_(
       value.toFixed(Math.min(3, count)).substr(2) +
       (count > 3 ? goog.string.padNumber(0, count - 3) : ''));
 };
@@ -417,7 +449,7 @@ goog.i18n.DateTimeFormat.prototype.formatFractionalSeconds_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
@@ -434,11 +466,12 @@ goog.i18n.DateTimeFormat.prototype.formatDayOfWeek_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.formatAmPm_ = function(count, date) {
+  goog.i18n.DateTimeFormat.validateDateHasTime_(date);
   var hours = date.getHours();
   return this.dateTimeSymbols_.AMPMS[hours >= 12 && hours < 24 ? 1 : 0];
 };
@@ -449,13 +482,14 @@ goog.i18n.DateTimeFormat.prototype.formatAmPm_ = function(count, date) {
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.format1To12Hours_ =
     function(count, date) {
-  return this.localizeNumbers(
+  goog.i18n.DateTimeFormat.validateDateHasTime_(date);
+  return this.localizeNumbers_(
       goog.string.padNumber(date.getHours() % 12 || 12, count));
 };
 
@@ -465,13 +499,14 @@ goog.i18n.DateTimeFormat.prototype.format1To12Hours_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.format0To11Hours_ =
     function(count, date) {
-  return this.localizeNumbers(
+  goog.i18n.DateTimeFormat.validateDateHasTime_(date);
+  return this.localizeNumbers_(
       goog.string.padNumber(date.getHours() % 12, count));
 };
 
@@ -481,13 +516,14 @@ goog.i18n.DateTimeFormat.prototype.format0To11Hours_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.format0To23Hours_ =
     function(count, date) {
-  return this.localizeNumbers(goog.string.padNumber(date.getHours(), count));
+  goog.i18n.DateTimeFormat.validateDateHasTime_(date);
+  return this.localizeNumbers_(goog.string.padNumber(date.getHours(), count));
 };
 
 
@@ -496,7 +532,7 @@ goog.i18n.DateTimeFormat.prototype.format0To23Hours_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} formatted string that represent this field.
  * @private
  */
@@ -511,7 +547,7 @@ goog.i18n.DateTimeFormat.prototype.formatStandaloneDay_ =
     case 3:
       return this.dateTimeSymbols_.STANDALONESHORTWEEKDAYS[value];
     default:
-      return this.localizeNumbers(goog.string.padNumber(value, 1));
+      return this.localizeNumbers_(goog.string.padNumber(value, 1));
   }
 };
 
@@ -521,7 +557,7 @@ goog.i18n.DateTimeFormat.prototype.formatStandaloneDay_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} formatted string that represent this field.
  * @private
  */
@@ -536,7 +572,7 @@ goog.i18n.DateTimeFormat.prototype.formatStandaloneMonth_ =
     case 3:
       return this.dateTimeSymbols_.STANDALONESHORTMONTHS[value];
     default:
-      return this.localizeNumbers(goog.string.padNumber(value + 1, count));
+      return this.localizeNumbers_(goog.string.padNumber(value + 1, count));
   }
 };
 
@@ -546,7 +582,7 @@ goog.i18n.DateTimeFormat.prototype.formatStandaloneMonth_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
@@ -563,12 +599,12 @@ goog.i18n.DateTimeFormat.prototype.formatQuarter_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.formatDate_ = function(count, date) {
-  return this.localizeNumbers(goog.string.padNumber(date.getDate(), count));
+  return this.localizeNumbers_(goog.string.padNumber(date.getDate(), count));
 };
 
 
@@ -577,13 +613,14 @@ goog.i18n.DateTimeFormat.prototype.formatDate_ = function(count, date) {
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.formatMinutes_ =
     function(count, date) {
-  return this.localizeNumbers(goog.string.padNumber(date.getMinutes(), count));
+  goog.i18n.DateTimeFormat.validateDateHasTime_(date);
+  return this.localizeNumbers_(goog.string.padNumber(date.getMinutes(), count));
 };
 
 
@@ -592,13 +629,14 @@ goog.i18n.DateTimeFormat.prototype.formatMinutes_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
 goog.i18n.DateTimeFormat.prototype.formatSeconds_ =
     function(count, date) {
-  return this.localizeNumbers(goog.string.padNumber(date.getSeconds(), count));
+  goog.i18n.DateTimeFormat.validateDateHasTime_(date);
+  return this.localizeNumbers_(goog.string.padNumber(date.getSeconds(), count));
 };
 
 
@@ -607,7 +645,7 @@ goog.i18n.DateTimeFormat.prototype.formatSeconds_ =
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @return {string} Formatted string that represent this field.
  * @private
  */
@@ -619,7 +657,7 @@ goog.i18n.DateTimeFormat.prototype.formatWeekOfYear_ = function(count, date) {
       this.dateTimeSymbols_.FIRSTWEEKCUTOFFDAY,
       this.dateTimeSymbols_.FIRSTDAYOFWEEK);
 
-  return this.localizeNumbers(goog.string.padNumber(weekNum, count));
+  return this.localizeNumbers_(goog.string.padNumber(weekNum, count));
 };
 
 
@@ -628,7 +666,7 @@ goog.i18n.DateTimeFormat.prototype.formatWeekOfYear_ = function(count, date) {
  *
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date It holds the date object to be formatted.
+ * @param {!goog.date.DateLike} date It holds the date object to be formatted.
  * @param {goog.i18n.TimeZone=} opt_timeZone This holds current time zone info.
  * @return {string} Formatted string that represent this field.
  * @private
@@ -641,7 +679,7 @@ goog.i18n.DateTimeFormat.prototype.formatTimeZoneRFC_ =
   // RFC 822 formats should be kept in ASCII, but localized GMT formats may need
   // to use native digits.
   return count < 4 ? opt_timeZone.getRFCTimeZoneString(date) :
-                     this.localizeNumbers(opt_timeZone.getGMTString(date));
+                     this.localizeNumbers_(opt_timeZone.getGMTString(date));
 };
 
 
@@ -649,7 +687,7 @@ goog.i18n.DateTimeFormat.prototype.formatTimeZoneRFC_ =
  * Generate GMT timeZone string for given date
  * @param {number} count Number of time pattern char repeats, it controls
  *     how a field should be formatted.
- * @param {goog.date.DateLike} date Whose value being evaluated.
+ * @param {!goog.date.DateLike} date Whose value being evaluated.
  * @param {goog.i18n.TimeZone=} opt_timeZone This holds current time zone info.
  * @return {string} GMT timeZone string.
  * @private
@@ -665,7 +703,7 @@ goog.i18n.DateTimeFormat.prototype.formatTimeZone_ =
 
 /**
  * Generate GMT timeZone string for given date
- * @param {goog.date.DateLike} date Whose value being evaluated.
+ * @param {!goog.date.DateLike} date Whose value being evaluated.
  * @param {goog.i18n.TimeZone=} opt_timeZone This holds current time zone info.
  * @return {string} GMT timeZone string.
  * @private
@@ -681,10 +719,10 @@ goog.i18n.DateTimeFormat.prototype.formatTimeZoneId_ =
 /**
  * Formatting one date field.
  * @param {string} patternStr The pattern string for the field being formatted.
- * @param {goog.date.DateLike} date represents the real date to be formatted.
- * @param {goog.date.DateLike} dateForDate used to resolve date fields
+ * @param {!goog.date.DateLike} date represents the real date to be formatted.
+ * @param {!goog.date.DateLike} dateForDate used to resolve date fields
  *     for formatting.
- * @param {goog.date.DateLike} dateForTime used to resolve time fields
+ * @param {!goog.date.DateLike} dateForTime used to resolve time fields
  *     for formatting.
  * @param {goog.i18n.TimeZone=} opt_timeZone This holds current time zone info.
  * @return {string} string representation for the given field.

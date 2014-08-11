@@ -137,6 +137,7 @@ goog.provide('goog.net.IframeIo.IncrementalDataEvent');
 
 goog.require('goog.Timer');
 goog.require('goog.Uri');
+goog.require('goog.asserts');
 goog.require('goog.debug');
 goog.require('goog.dom');
 goog.require('goog.events');
@@ -145,6 +146,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventType');
 goog.require('goog.json');
 goog.require('goog.log');
+goog.require('goog.log.Level');
 goog.require('goog.net.ErrorCode');
 goog.require('goog.net.EventType');
 goog.require('goog.reflect');
@@ -160,7 +162,7 @@ goog.require('goog.userAgent');
  * @extends {goog.events.EventTarget}
  */
 goog.net.IframeIo = function() {
-  goog.base(this);
+  goog.net.IframeIo.base(this, 'constructor');
 
   /**
    * Name for this IframeIo and frame
@@ -298,7 +300,8 @@ goog.net.IframeIo.handleIncrementalData = function(win, data) {
   if (iframeIo && iframeName == iframeIo.iframeName_) {
     iframeIo.handleIncrementalData_(data);
   } else {
-    goog.log.getLogger('goog.net.IframeIo').info(
+    var logger = goog.log.getLogger('goog.net.IframeIo');
+    goog.log.info(logger,
         'Incremental iframe data routed for unknown iframe');
   }
 };
@@ -316,7 +319,7 @@ goog.net.IframeIo.getNextName_ = function() {
 /**
  * Gets a static form, one for all instances of IframeIo since IE6 leaks form
  * nodes that are created/removed from the document.
- * @return {HTMLFormElement} The static form.
+ * @return {!HTMLFormElement} The static form.
  * @private
  */
 goog.net.IframeIo.getForm_ = function() {
@@ -618,7 +621,9 @@ goog.net.IframeIo.prototype.sendFromForm = function(form, opt_uri,
 goog.net.IframeIo.prototype.abort = function(opt_failureCode) {
   if (this.active_) {
     goog.log.info(this.logger_, 'Request aborted');
-    goog.events.removeAll(this.getRequestIframe());
+    var requestIframe = this.getRequestIframe();
+    goog.asserts.assert(requestIframe);
+    goog.events.removeAll(requestIframe);
     this.complete_ = false;
     this.active_ = false;
     this.success_ = false;
@@ -1045,7 +1050,11 @@ goog.net.IframeIo.prototype.onIframeLoaded_ = function(e) {
   }
   goog.events.unlisten(this.getRequestIframe(),
       goog.events.EventType.LOAD, this.onIframeLoaded_, false, this);
-  this.handleLoad_(this.getContentDocument_());
+  try {
+    this.handleLoad_(this.getContentDocument_());
+  } catch (ex) {
+    this.handleError_(goog.net.ErrorCode.ACCESS_DENIED);
+  }
 };
 
 

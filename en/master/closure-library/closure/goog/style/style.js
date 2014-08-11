@@ -101,7 +101,7 @@ goog.style.getVendorJsStyleName_ = function(element, style) {
 
   if (element.style[camelStyle] === undefined) {
     var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() +
-        goog.string.toTitleCase(style);
+        goog.string.toTitleCase(camelStyle);
 
     if (element.style[prefixedStyle] !== undefined) {
       return prefixedStyle;
@@ -126,7 +126,7 @@ goog.style.getVendorStyleName_ = function(element, style) {
 
   if (element.style[camelStyle] === undefined) {
     var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() +
-        goog.string.toTitleCase(style);
+        goog.string.toTitleCase(camelStyle);
 
     if (element.style[prefixedStyle] !== undefined) {
       return goog.dom.vendor.getVendorPrefix() + '-' + style;
@@ -317,6 +317,18 @@ goog.style.getComputedTextAlign = function(element) {
  */
 goog.style.getComputedCursor = function(element) {
   return goog.style.getStyle_(element, 'cursor');
+};
+
+
+/**
+ * Retrieves the computed value of the CSS transform attribute.
+ * @param {Element} element The element to get the transform of.
+ * @return {string} The computed string representation of the transform matrix.
+ */
+goog.style.getComputedTransform = function(element) {
+  var property = goog.style.getVendorStyleName_(element, 'transform');
+  return goog.style.getStyle_(element, property) ||
+      goog.style.getStyle_(element, 'transform');
 };
 
 
@@ -1831,7 +1843,9 @@ goog.style.getBorderBox = function(element) {
 goog.style.getFontFamily = function(el) {
   var doc = goog.dom.getOwnerDocument(el);
   var font = '';
-  if (doc.body.createTextRange) {
+  // The moveToElementText method from the TextRange only works if the element
+  // is attached to the owner document.
+  if (doc.body.createTextRange && goog.dom.contains(doc, el)) {
     var range = doc.body.createTextRange();
     range.moveToElementText(el);
     /** @preserveTry */
@@ -2078,23 +2092,7 @@ goog.style.MATRIX_TRANSLATION_REGEX_ =
  * @return {!goog.math.Coordinate} The CSS translation of the element in px.
  */
 goog.style.getCssTranslation = function(element) {
-  var property;
-  if (goog.userAgent.IE) {
-    property = '-ms-transform';
-  } else if (goog.userAgent.WEBKIT) {
-    property = '-webkit-transform';
-  } else if (goog.userAgent.OPERA) {
-    property = '-o-transform';
-  } else if (goog.userAgent.GECKO) {
-    property = '-moz-transform';
-  }
-  var transform;
-  if (property) {
-    transform = goog.style.getStyle_(element, property);
-  }
-  if (!transform) {
-    transform = goog.style.getStyle_(element, 'transform');
-  }
+  var transform = goog.style.getComputedTransform(element);
   if (!transform) {
     return new goog.math.Coordinate(0, 0);
   }

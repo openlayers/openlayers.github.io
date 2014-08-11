@@ -394,9 +394,6 @@ function testCreateDomWithTypeAttribute() {
 function testCreateDomWithClassList() {
   var el = goog.dom.createDom('div', ['foo', 'bar']);
   assertEquals('foo bar', el.className);
-
-  el = goog.dom.createDom('div', ['foo', 'foo']);
-  assertEquals('foo', el.className);
 }
 
 function testContains() {
@@ -680,6 +677,15 @@ function testGetOwnerDocument() {
   assertEquals(goog.dom.getOwnerDocument($('p1')), document);
   assertEquals(goog.dom.getOwnerDocument(document.body), document);
   assertEquals(goog.dom.getOwnerDocument(document.documentElement), document);
+}
+
+// Tests the breakages resulting in rollback cl/64715474
+function testGetOwnerDocumentNonNodeInput() {
+  // We should fail on null.
+  assertThrows(function() {
+    goog.dom.getOwnerDocument(null);
+  });
+  assertEquals(document, goog.dom.getOwnerDocument(window));
 }
 
 function testDomHelper() {

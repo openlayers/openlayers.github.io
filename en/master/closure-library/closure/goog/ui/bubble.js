@@ -96,6 +96,7 @@ goog.ui.Bubble = function(message, opt_config, opt_domHelper) {
 
 };
 goog.inherits(goog.ui.Bubble, goog.ui.Component);
+goog.tagUnsealableClass(goog.ui.Bubble);
 
 
 /**
@@ -323,7 +324,7 @@ goog.ui.Bubble.prototype.hideBubble_ = function() {
  * given the position of the anchor element and the size of the viewport.
  *
  * @param {Element} anchorElement The element to which the bubble is attached.
- * @return {goog.ui.Popup.AnchoredPosition} The AnchoredPosition to give to
+ * @return {!goog.ui.Popup.AnchoredPosition} The AnchoredPosition to give to
  *     {@link #setPosition}.
  */
 goog.ui.Bubble.prototype.getComputedAnchoredPosition = function(anchorElement) {
@@ -367,7 +368,7 @@ goog.ui.Bubble.prototype.computePinnedCorner_ = function(anchorElement) {
  * button anchor element on its frame rather than on the corner.
  *
  * @param {goog.positioning.Corner} corner The corner.
- * @return {goog.math.Box} the computed margin. Only left or right fields are
+ * @return {!goog.math.Box} the computed margin. Only left or right fields are
  *     non-zero, but they may be negative.
  * @private
  */

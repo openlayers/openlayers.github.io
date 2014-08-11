@@ -25,7 +25,9 @@ goog.provide('goog.soy.data');
 goog.provide('goog.soy.data.SanitizedContent');
 goog.provide('goog.soy.data.SanitizedContentKind');
 
-goog.require('goog.i18n.bidi.Dir');
+goog.require('goog.html.SafeHtml');
+goog.require('goog.html.uncheckedconversions');
+goog.require('goog.string.Const');
 
 
 /**
@@ -48,10 +50,10 @@ goog.soy.data.SanitizedContentKind = {
    * Executable Javascript code or expression, safe for insertion in a
    * script-tag or event handler context, known to be free of any
    * attacker-controlled scripts. This can either be side-effect-free
-   * Javascript (such as JSON) or Javascript that entirely under Google's
+   * Javascript (such as JSON) or Javascript that's entirely under Google's
    * control.
    */
-  JS: goog.DEBUG ? {sanitizedContentJsStrChars: true} : {},
+  JS: goog.DEBUG ? {sanitizedContentJsChars: true} : {},
 
   /**
    * A sequence of code units that can appear between quotes (either kind) in a
@@ -139,4 +141,26 @@ goog.soy.data.SanitizedContent.prototype.content;
 /** @override */
 goog.soy.data.SanitizedContent.prototype.toString = function() {
   return this.content;
+};
+
+
+/**
+ * Converts sanitized content of kind TEXT or HTML into SafeHtml. HTML content
+ * is converted without modification, while text content is HTML-escaped.
+ * @return {!goog.html.SafeHtml}
+ * @throws {Error} when the content kind is not TEXT or HTML.
+ */
+goog.soy.data.SanitizedContent.prototype.toSafeHtml = function() {
+  if (this.contentKind === goog.soy.data.SanitizedContentKind.TEXT) {
+    return goog.html.SafeHtml.htmlEscape(this.toString());
+  }
+  if (this.contentKind !== goog.soy.data.SanitizedContentKind.HTML) {
+    throw Error('Sanitized content was not of kind TEXT or HTML.');
+  }
+  return goog.html.uncheckedconversions.
+      safeHtmlFromStringKnownToSatisfyTypeContract(
+          goog.string.Const.from(
+              'Soy SanitizedContent of kind HTML produces ' +
+                  'SafeHtml-contract-compliant value.'),
+          this.toString(), this.contentDir);
 };

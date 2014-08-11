@@ -38,6 +38,7 @@ goog.require('goog.labs.net.webChannel.requestStats');
 goog.require('goog.labs.net.webChannel.requestStats.Stat');
 goog.require('goog.log');
 goog.require('goog.net.XhrIo');
+goog.require('goog.object');
 goog.require('goog.string');
 goog.require('goog.structs');
 goog.require('goog.structs.CircularBuffer');
@@ -324,7 +325,7 @@ goog.labs.net.webChannel.WebChannelBase = function(opt_options,
    * @private {!ForwardChannelRequestPool}
    */
   this.forwardChannelRequestPool_ = new ForwardChannelRequestPool(
-      opt_options && opt_options.spdyRequestLimit);
+      opt_options && opt_options.concurrentRequestLimit);
 
   /**
    * The V8 codec.
@@ -491,7 +492,7 @@ WebChannelBase.prototype.getWireCodec = function() {
 /**
  * Returns the logger.
  *
- * @return {WebChannelDebug} The channel debug object.
+ * @return {!WebChannelDebug} The channel debug object.
  */
 WebChannelBase.prototype.getChannelDebug = function() {
   return this.channelDebug_;
@@ -1013,7 +1014,7 @@ WebChannelBase.prototype.startForwardChannel_ = function(
     if (this.forwardChannelRequestPool_.isFull()) {
       // Should be impossible to be called in this state.
       this.channelDebug_.severe('startForwardChannel_ returned: ' +
-                                    'connection already in progress');
+          'connection already in progress');
       return;
     }
 
@@ -1261,8 +1262,15 @@ WebChannelBase.prototype.testConnectionFinished =
     function(testChannel, useChunked) {
   this.channelDebug_.debug('Test Connection Finished');
 
+  // Forward channel will not be used prior to this method is called
+  var clientProtocol = testChannel.getClientProtocol();
+  if (clientProtocol) {
+    this.forwardChannelRequestPool_.applyClientProtocol(clientProtocol);
+  }
+
   this.useChunked_ = this.allowChunkedMode_ && useChunked;
   this.lastStatusCode_ = testChannel.getLastStatusCode();
+
   this.connectChannel_();
 };
 
@@ -1810,7 +1818,7 @@ WebChannelBase.prototype.createDataUri =
   }
 
   if (this.extraParams_) {
-    goog.structs.forEach(this.extraParams_, function(value, key, coll) {
+    goog.object.forEach(this.extraParams_, function(value, key) {
       uri.setParameterValue(key, value);
     });
   }
@@ -2035,7 +2043,7 @@ WebChannelBase.Handler.prototype.channelClosed =
  * Gets any parameters that should be added at the time another connection is
  * made to the server.
  * @param {WebChannelBase} channel The channel.
- * @return {Object} Extra parameter keys and values to add to the
+ * @return {!Object} Extra parameter keys and values to add to the
  *                  requests.
  */
 WebChannelBase.Handler.prototype.getAdditionalParams = function(channel) {

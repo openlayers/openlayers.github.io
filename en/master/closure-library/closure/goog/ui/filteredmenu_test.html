@@ -32,6 +32,9 @@ See the COPYING file for details.
 </style>
 <script src="../base.js"></script>
 <script>
+  goog.require('goog.a11y.aria');
+  goog.require('goog.a11y.aria.AutoCompleteValues');
+  goog.require('goog.a11y.aria.State');
   goog.require('goog.dom');
   goog.require('goog.events');
   goog.require('goog.events.Event');
@@ -57,7 +60,7 @@ See the COPYING file for details.
       <input tabindex="0" autocomplete="off" type="text">
     </div>
     <div class="goog-menu-content">
-      <div class="goog-menuitem">Apple</div>
+      <div class="goog-menuitem">Apple<span class="goog-menuitem-accel">A</span></div>
       <div class="goog-menuitem">Lemon</div>
       <div class="goog-menuitem">Orange</div>
       <div class="goog-menuitem">Strawberry</div>
@@ -109,6 +112,9 @@ function testDecorate() {
   assertEquals('Caption of menu item should match decorated element',
                'Apple',
                menu.getItemAt(0).getCaption());
+  assertEquals('Accelerator of menu item should match accelerator element',
+               'A',
+               menu.getItemAt(0).getAccelerator());
   assertEquals('Caption of menu item should match decorated element',
                'Lemon',
                menu.getItemAt(1).getCaption());
@@ -128,7 +134,10 @@ function testFilter() {
   menu.addItem(new goog.ui.MenuItem('Family'));
   menu.addItem(new goog.ui.MenuItem('Friends'));
   menu.addItem(new goog.ui.MenuItem('Photos'));
-  menu.addItem(new goog.ui.MenuItem('Work'));
+  menu.addItem(new goog.ui.MenuItem([
+    goog.dom.createTextNode('Work'),
+    goog.dom.createDom('span', goog.ui.MenuItem.ACCELERATOR_CLASS, 'W')
+  ]));
 
   menu.render(sandbox);
 
@@ -152,6 +161,9 @@ function testFilter() {
               menu.getChildAt(2).isVisible());
   assertTrue('Work should be visible when the menu is filtered',
              menu.getChildAt(3).isVisible());
+  // Check accelerator.
+  assertEquals('The accelerator for Work should be present',
+               'W', menu.getChildAt(3).getAccelerator());
 
   menu.setFilter('W,');
   for (var i = 0; i < menu.getChildCount(); i++) {
@@ -290,6 +302,40 @@ function testEscapeKeyHandling() {
       goog.events.KeyCodes.ESC);
   assertFalse('ESC key should not propagate out to parent', gotKeyCode);
 }
+
+
+function testAriaRoles() {
+  menu = new goog.ui.FilteredMenu();
+  menu.addItem(new goog.ui.MenuItem('Item 1'));
+  menu.render(sandbox);
+
+  var input = menu.getFilterInputElement();
+  assertEquals(goog.a11y.aria.AutoCompleteValues.LIST,
+      goog.a11y.aria.getState(input, goog.a11y.aria.State.AUTOCOMPLETE));
+  assertEquals(menu.getContentElement().id,
+      goog.a11y.aria.getState(input, goog.a11y.aria.State.OWNS));
+  assertEquals('true',
+      goog.a11y.aria.getState(input, goog.a11y.aria.State.EXPANDED));
+}
+
+
+function testInputActiveDecendant() {
+  menu = new goog.ui.FilteredMenu();
+  var menuItem1 = new goog.ui.MenuItem('Item 1');
+  var menuItem2 = new goog.ui.MenuItem('Item 2');
+  menu.addItem(menuItem1);
+  menu.addItem(menuItem2);
+  menu.render(sandbox);
+
+  assertNull(goog.a11y.aria.getActiveDescendant(menu.getFilterInputElement()));
+  menu.setHighlightedIndex(0);
+  assertEquals(menuItem1.getElementStrict(),
+      goog.a11y.aria.getActiveDescendant(menu.getFilterInputElement()));
+  menu.setHighlightedIndex(1);
+  assertEquals(menuItem2.getElementStrict(),
+      goog.a11y.aria.getActiveDescendant(menu.getFilterInputElement()));
+}
+
 
 function isHighlightedVisible(menu) {
   var contRect = goog.style.getBounds(menu.getContentElement());

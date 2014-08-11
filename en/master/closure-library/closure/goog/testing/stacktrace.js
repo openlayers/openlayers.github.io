@@ -79,16 +79,7 @@ goog.testing.stacktrace.Frame.prototype.toCanonicalString = function() {
 
   if (this.path_) {
     canonical.push(' at ');
-    // If Closure Inspector is installed and running, then convert the line
-    // into a source link for displaying the code in Firebug.
-    if (goog.testing.stacktrace.isClosureInspectorActive_()) {
-      var lineNumber = this.path_.match(/\d+$/)[0];
-      canonical.push('<a href="" onclick="CLOSURE_INSPECTOR___.showLine(\'',
-          htmlEscape(this.path_), '\', \'', lineNumber, '\'); return false">',
-          htmlEscape(this.path_), '</a>');
-    } else {
-      canonical.push(htmlEscape(this.path_));
-    }
+    canonical.push(htmlEscape(this.path_));
   }
   return canonical.join('');
 };
@@ -285,6 +276,7 @@ goog.testing.stacktrace.IE_STACK_FRAME_REGEXP_ = new RegExp('^   at ' +
  * {@link goog.debug.getStacktrace}.
  * @return {!Array.<!goog.testing.stacktrace.Frame>} Stack frames.
  * @private
+ * @suppress {es5Strict}
  */
 goog.testing.stacktrace.followCallChain_ = function() {
   var frames = [];
@@ -438,16 +430,6 @@ goog.testing.stacktrace.maybeDeobfuscateFunctionName_ = function(name) {
 
 
 /**
- * @return {boolean} Whether the Closure Inspector is active.
- * @private
- */
-goog.testing.stacktrace.isClosureInspectorActive_ = function() {
-  return Boolean(goog.global['CLOSURE_INSPECTOR___'] &&
-      goog.global['CLOSURE_INSPECTOR___']['supportsJSUnit']);
-};
-
-
-/**
  * Escapes the special character in HTML.
  * @param {string} text Plain text.
  * @return {string} Escaped text.
@@ -536,6 +518,11 @@ goog.testing.stacktrace.canonicalize = function(stack) {
  * @private
  */
 goog.testing.stacktrace.getNativeStack_ = function() {
+  var tmpError = new Error();
+  if (tmpError.stack) {
+    return tmpError.stack;
+  }
+
   // IE10 will only create a stack trace when the Error is thrown.
   // We use null.x() to throw an exception because the closure compiler may
   // replace "throw" with a function call in an attempt to minimize the binary

@@ -601,7 +601,7 @@ function testClonePrimitive() {
 function testCloneObjectThatHasACloneMethod() {
   var original = {
     name: 'original',
-    clone: function() { return { name: 'clone' } }
+    clone: function() { return { name: 'clone' }; }
   };
 
   var clone = goog.cloneObject(original);
@@ -918,7 +918,7 @@ function testMakeSingleton() {
 //=== tests for now ===
 
 function testNow() {
-  var toleranceMilliseconds = 10;
+  var toleranceMilliseconds = 20;  // 10 ms was not enough for IE7.
   var now1 = new Date().getTime();
   var now2 = goog.now();
   assertTrue(Math.abs(now1 - now2) < toleranceMilliseconds);
@@ -993,6 +993,15 @@ function testGetMsgWithDollarSigns() {
     dCost: '$100'
   });
   assertEquals('Burger Bob! Hamburgers: $0.50, Hotdogs: $100.', msg);
+}
+
+
+function testGetMsgWithPlaceholders() {
+  var msg = goog.getMsg('{$a} has {$b}', {a: '{$b}', b: 1});
+  assertEquals('{$b} has 1', msg);
+
+  msg = goog.getMsg('{$a}{$b}', {b: ''});
+  assertEquals('{$a}', msg);
 }
 
 
@@ -1292,6 +1301,24 @@ function testGoogRequireCheck() {
   assertObjectEquals({'far': true}, goog.implicitNamespaces_);
   assertTrue(goog.isProvided_('far.out'));
 
+  goog.global.far.out = 42;
+  assertEquals(42, goog.getObjectByName('far.out'));
+  assertTrue(goog.isProvided_('far.out'));
+
+  // Empty string should be allowed.
+  goog.global.far.out = '';
+  assertEquals('', goog.getObjectByName('far.out'));
+  assertTrue(goog.isProvided_('far.out'));
+
+  // Null or undefined are not allowed.
+  goog.global.far.out = null;
+  assertNull(goog.getObjectByName('far.out'));
+  assertFalse(goog.isProvided_('far.out'));
+
+  goog.global.far.out = undefined;
+  assertNull(goog.getObjectByName('far.out'));
+  assertFalse(goog.isProvided_('far.out'));
+
   stubs.reset();
   delete far;
 }
@@ -1305,4 +1332,72 @@ function testLateRequireProtection() {
   });
 
   assertContains('after document load', e.message);
+}
+
+function testDefineClass() {
+  var Base = goog.defineClass(null, {
+    constructor: function(foo) {
+      this.foo = foo;
+    },
+    statics: {
+      x: 42
+    },
+    frobnicate: function() {
+      return this.foo + this.foo;
+    }
+  });
+  var Derived = goog.defineClass(Base, {
+    constructor: function() {
+      Derived.base(this, 'constructor', 'bar');
+    },
+    frozzle: function(foo) {
+      this.foo = foo;
+    }
+  });
+
+  assertEquals(42, Base.x);
+  var der = new Derived();
+  assertEquals('barbar', der.frobnicate());
+  der.frozzle('qux');
+  assertEquals('quxqux', der.frobnicate());
+}
+
+function testDefineClass_interface() {
+  var Interface = goog.defineClass(null, {
+    statics: {
+      foo: 'bar'
+    },
+    qux: function() {}
+  });
+  assertEquals('bar', Interface.foo);
+  assertThrows(function() { new Interface(); });
+}
+
+function testDefineClass_seals() {
+  if (!(Object.seal instanceof Function)) return; // IE<9 doesn't have seal
+  var A = goog.defineClass(null, {
+    constructor: function() {}
+  });
+  var a = new A();
+  try {
+    a.foo = 'bar';
+  } catch (expectedInStrictModeOnly) { /* ignored */ }
+  assertEquals(undefined, a.foo);
+}
+
+function testDefineClass_unsealable() {
+  var LegacyBase = function() {};
+  LegacyBase.prototype.foo = null;
+  LegacyBase.prototype.setFoo = function(foo) {
+    this.foo = foo;
+  };
+  goog.tagUnsealableClass(LegacyBase);
+
+  var Derived = goog.defineClass(LegacyBase, {
+    constructor: function() {}
+  });
+
+  var der = new Derived();
+  der.setFoo('bar');
+  assertEquals('bar', der.foo);
 }

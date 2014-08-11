@@ -90,6 +90,9 @@ goog.testing.editor.TestHelper.prototype.setUpEditableElement = function() {
 /**
  * Reset the element previously initialized, restoring its HTML and making it
  * non editable.
+ * @suppress {accessControls} Private state of
+ *     {@link goog.editor.plugins.AbstractBubblePlugin} is accessed for test
+ *     purposes.
  */
 goog.testing.editor.TestHelper.prototype.tearDownEditableElement = function() {
   if (goog.editor.BrowserFeature.HAS_CONTENT_EDITABLE) {
@@ -173,5 +176,5 @@ goog.testing.editor.TestHelper.prototype.disposeInternal = function() {
     this.tearDownEditableElement();
   }
   delete this.root_;
-  goog.base(this, 'disposeInternal');
+  goog.testing.editor.TestHelper.base(this, 'disposeInternal');
 };

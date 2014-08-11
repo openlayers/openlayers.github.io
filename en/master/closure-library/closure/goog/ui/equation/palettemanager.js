@@ -92,7 +92,7 @@ goog.ui.equation.PaletteManager.prototype.stopDeactivation = function() {
  * Returns the palette instance of given type.
  * @param {goog.ui.equation.Palette.Type} type The type of palette
  *     to get.
- * @return {goog.ui.equation.Palette} The palette instance of given
+ * @return {!goog.ui.equation.Palette} The palette instance of given
  *     type. A new instance will be created.  If the instance doesn't exist.
  */
 goog.ui.equation.PaletteManager.prototype.getPalette =
@@ -132,7 +132,7 @@ goog.ui.equation.PaletteManager.prototype.getPalette =
  * Sets the palette instance of given type to be the active one.
  * @param {goog.ui.equation.Palette.Type} type The type of the
  *     palette to set active.
- * @return {goog.ui.equation.Palette} The palette instance of given
+ * @return {!goog.ui.equation.Palette} The palette instance of given
  *     type. A new instance will be created, if the instance doesn't exist.
  */
 goog.ui.equation.PaletteManager.prototype.setActive =
@@ -198,7 +198,7 @@ goog.ui.equation.PaletteManager.prototype.getDomHelper = function() {
 
 /** @override */
 goog.ui.equation.PaletteManager.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
+  goog.ui.equation.PaletteManager.base(this, 'disposeInternal');
   this.activePalette_ = null;
   this.paletteMap_ = null;
 };
