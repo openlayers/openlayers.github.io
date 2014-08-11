@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OpenLayers: Mapping Your Data</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="/two/css/common.css" type="text/css">
+  <link rel="stylesheet" href="/two/css/website.css" type="text/css">
+  <link rel="stylesheet" href="/two/api/theme/default/style.css" type="text/css">
+  <meta name="verify-v1" content="p07VY29NG/hLEwVP1RyE0P1chgYyekPikjkMUEgrVAI=">
+  <!--[if lt IE 7]>
+  <script defer="defer" type="text/javascript" src="pngfix.js"></script>
+  <![endif]-->
+  <style>
+      .olControlAttribution {
+          position: absolute;
+          font-size: 10px;
+          text-align: right;
+          color: #eeeeee;
+          bottom: 0;
+          right: 0;
+          background: #130085; /* fallback for IE - IE6 requires background shorthand*/
+          background: rgba(0, 60, 136, 0.3);
+          filter: alpha(opacity=30);
+          font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+          padding: 2px 4px;
+          border-radius: 5px 0 0 0;
+      }
+      .olControlAttribution a {
+          color: #eeeeee;
+          font-weight: bold;
+      }
+      .olControlZoom a:hover {
+          color: white;
+      }
+      div.olControlZoomPanel {
+          top: 15px;
+          left: 15px;
+      }
+  </style>
+  <script type="text/javascript" src="../ufo.js"></script>
+  <script type="text/javascript">
+    var FO = {  movie:"../flvplayer.swf",width:"800",height:"600",majorversion:"7",build:"0",bgcolor:"#FFFFFF",allowfullscreen:"true",
+      flashvars:"file=mappingyourdata/openlayersqgis.flv&image=preview.png" };
+    UFO.create( FO, "player1");
+  </script>
+  <script type="text/javascript">
+      document.write(unescape("%3Cscript src='http://www.google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+</head>
+<body>
+
+  <div id="olbanner">
+  <img class="openlayersbannerimg" src="/two/images/OpenLayers.trac.png" style="height: 44px; width: 49px;border:0px" alt="OpenLayers" />
+  <a class="openlayersbanner" href="/two/" >
+  OpenLayers 2</a>
+  </div>
+  <div id="navcontainer">
+  <a class="navtabtraccurrent" href="/two/">Home</a>
+  <a class="navtab" href="http://trac.openlayers.org">Support &amp; Development</a>
+  </div>
+
+  <div id="mainnav" class="nav">
+      <ul>
+          <li class="first"><a href="/two/sponsorship/">Sponsorship</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/Documentation" accesskey="1">Documentation</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/HowToDownload" accesskey="2">Download</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/FrequentlyAskedQuestions">FAQ</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/MailingLists">Email Lists</a></li>
+          <li><a href="http://blog.openlayers.org">Blog</a></li>
+      </ul>
+  </div>
+
+  <div id="main">
+    <h1>Mapping Your Data</h1>
+    <p> This presentation follows along with <a href="http://trac.openlayers.org/wiki/MappingYourData">MappingYourData</a> wiki page. </p>
+
+    <p id="player1"><a href="http://www.macromedia.com/go/getflashplayer">Get the Flash Player</a> to see this player.</p>
+
+  </div>
+  <script type="text/javascript">
+  (function() {
+      try {
+          var pageTracker = _gat._getTracker("UA-2577926-1");
+          pageTracker._trackPageview();
+      } catch(err) {
+          // pass
+      }
+      // track downloads - tracks all clicks to links with download href
+      var anchors, a, i, len, match,
+          pattern = /^(http:\/\/openlayers.org)?\/download\/(.*)$/;
+      function clickHandler(name) {
+          return function() {
+              try {
+                  pageTracker._trackPageview(name);
+              } catch(err) {
+                  // pass
+              }
+          };
+      }
+      anchors = document.getElementsByTagName("a");
+      for(i=0, len=anchors.length; i<len; ++i) {
+          a = anchors[i];
+          if(a.href) {
+              match = a.href.match(pattern);
+              if(match && match[2]) {
+                  a.onclick = clickHandler("/download/" + match[2]);
+              }
+          }
+      }
+  })();
+  </script>
+  </body>
+</html>
+
+

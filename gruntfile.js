@@ -20,6 +20,7 @@ module.exports = function(grunt) {
   // file patterns (these take / on win and *nix)
   var build = '.grunt/openlayers-website';
   var dist = build + '/dist';
+  var two = dist + '/two';
   var assets = dist + '/assets';
   var repo = build + '/repo';
 
@@ -117,7 +118,12 @@ module.exports = function(grunt) {
           cwd: 'bower_components/font-awesome',
           src: 'font/**/*.*',
           dest: assets
-        }]
+        }, {
+          expand: true,
+          cwd: 'src/two',
+          src: '**/*.*',
+          dest: dist + '/two/'
+      },]
       }
     },
     assemble: {
