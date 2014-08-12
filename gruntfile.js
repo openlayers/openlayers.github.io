@@ -21,6 +21,7 @@ module.exports = function(grunt) {
   var build = '.grunt/openlayers-website';
   var dist = build + '/dist';
   var two = dist + '/two';
+  var api = dist + '/api';
   var assets = dist + '/assets';
   var repo = build + '/repo';
 
@@ -123,6 +124,16 @@ module.exports = function(grunt) {
           cwd: 'src/two',
           src: '**/*.*',
           dest: dist + '/two/'
+      }, {
+          expand: true,
+          cwd: 'src/api',
+          src: '**/*.*',
+          dest: dist + '/api/'
+      }, {
+          expand: true,
+          cwd: 'src/images',
+          src: '**/*.*',
+          dest: dist + '/images/'
       },]
       }
     },

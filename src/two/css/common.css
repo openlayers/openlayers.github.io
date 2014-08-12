@@ -32,6 +32,10 @@ html,body {
 }
 body {
     padding: 0;
+    margin-bottom: 20px;
+}
+h3 {
+    margin-bottom: 1.5em;
 }
 div#wrap {
     background: white;
