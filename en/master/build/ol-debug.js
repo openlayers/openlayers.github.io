@@ -1,5 +1,5 @@
 // OpenLayers 3. See http://ol3.js.org/
-// Version: v3.0.0-gamma.4-2-g9db936f
+// Version: v3.0.0-gamma.4-38-g4fb9051
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -7195,7 +7195,6 @@ goog.require('goog.math');
 
 /**
  * @typedef {function((ol.Coordinate|undefined)): (ol.Coordinate|undefined)}
- * @api
  */
 ol.CenterConstraintType;
 
@@ -18126,7 +18125,7 @@ ol.ViewHint = {
  * ### The view states
  *
  * An `ol.View` is determined by three states: `center`, `resolution`,
- * and `rotation`. To each state corresponds a getter and a setter. E.g.
+ * and `rotation`. Each state has a corresponding getter and setter, e.g.
  * `getCenter` and `setCenter` for the `center` state.
  *
  * An `ol.View` has a `projection`. The projection determines the
@@ -18144,7 +18143,7 @@ ol.ViewHint = {
  * But an `ol.View` object also has a *resolution constraint*, a
  * *rotation constraint* and a *center constraint*.
  *
- * As said above no constraints are applied when the setters are used to set
+ * As said above, no constraints are applied when the setters are used to set
  * new states for the view. Applying constraints is done explicitly through
  * the use of the `constrain*` functions (`constrainResolution` and
  * `constrainRotation` and `constrainCenter`).
@@ -18159,7 +18158,7 @@ ol.ViewHint = {
  * `maxZoom`, and `zoomFactor`. If `resolutions` is set, the other three
  * options are ignored. See {@link ol.ViewOptions} for more information.
  *
- * The *rotation constaint* is currently not configurable. It snaps the
+ * The *rotation constraint* is currently not configurable. It snaps the
  * rotation value to zero when approaching the horizontal.
  *
  * @constructor
@@ -31643,7 +31642,6 @@ ol.control.Rotate.prototype.handleMapPostrender = function(mapEvent) {
 
 goog.provide('ol.control.Zoom');
 
-goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
 goog.require('goog.events');
@@ -60332,7 +60330,6 @@ ol.sphere.WGS84 = new ol.Sphere(6378137);
 goog.provide('ol.Geolocation');
 goog.provide('ol.GeolocationProperty');
 
-goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.math');
@@ -68516,7 +68513,6 @@ ol.render.Box.prototype.setPixels = function(startPixel, endPixel) {
 goog.provide('ol.DragBoxEvent');
 goog.provide('ol.interaction.DragBox');
 
-goog.require('goog.asserts');
 goog.require('goog.events.Event');
 goog.require('goog.functions');
 goog.require('ol');
@@ -73602,7 +73598,7 @@ ol.renderer.Layer.prototype.manageTilePyramid = function(
     preload = 0;
   }
   for (z = currentZ; z >= minZoom; --z) {
-    tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z);
+    tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z, tileRange);
     tileResolution = tileGrid.getResolution(z);
     for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
       for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
@@ -88076,7 +88072,7 @@ ol.Map.prototype.disposeInternal = function() {
  *     be `null`. To stop detection, callback functions can return a truthy
  *     value.
  * @param {S=} opt_this Value to use as `this` when executing `callback`.
- * @param {function(this: U, ol.layer.Layer): boolean=} opt_layerFilter Layer
+ * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
  *     filter function, only layers which are visible and for which this
  *     function returns `true` will be tested for features. By default, all
  *     visible layers will be tested. Feature overlays will always be tested.
