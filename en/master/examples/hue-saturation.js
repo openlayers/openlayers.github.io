@@ -7,7 +7,7 @@ function setResetSaturationButtonHTML() {
       layer.getSaturation().toFixed(2) + ')';
 }
 
-if (!ol.BrowserFeature.HAS_WEBGL) {
+if (!ol.browserfeature.HAS_WEBGL) {
   var info = document.getElementById('no-webgl');
   /**
    * display error message

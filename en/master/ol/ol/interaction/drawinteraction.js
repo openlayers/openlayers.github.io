@@ -11,7 +11,6 @@ goog.require('ol.Map');
 goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.events.condition');
-goog.require('ol.feature');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.MultiLineString');
@@ -21,6 +20,7 @@ goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.source.Vector');
+goog.require('ol.style.Style');
 
 
 /**
@@ -44,6 +44,10 @@ ol.DrawEventType = {
 
 
 /**
+ * @classdesc
+ * Events emitted by {@link ol.interaction.Draw} instances are instances of
+ * this type.
+ *
  * @constructor
  * @extends {goog.events.Event}
  * @implements {oli.DrawEvent}
@@ -208,7 +212,7 @@ goog.inherits(ol.interaction.Draw, ol.interaction.Pointer);
  * @return {ol.style.StyleFunction} Styles.
  */
 ol.interaction.Draw.getDefaultStyleFunction = function() {
-  var styles = ol.feature.createDefaultEditingStyles();
+  var styles = ol.style.createDefaultEditingStyles();
   return function(feature, resolution) {
     return styles[feature.getGeometry().getType()];
   };

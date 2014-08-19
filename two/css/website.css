@@ -1,0 +1,197 @@
+/* Override links*/
+a:link, a:visited {
+color: #2D4991;
+}
+a:link:hover, a:visited:hover {
+color: #f90;
+text-decoration: none;
+border-bottom: none;
+}
+
+#main p.sponsor-notice {
+    margin-right: 360px;
+    padding: 0.75em;
+    background: #130085;
+    background: rgba(0, 60, 136, 0.5);
+    filter: alpha(opacity=80);
+    -moz-box-shadow: 4px 4px 2px #888;
+    -webkit-box-shadow: 4px 4px 2px #888;
+    box-shadow: 4px 4px 2px #888;
+    color: #fff;
+}
+p.sponsor-notice a {
+    color: #fc3;
+}
+p.sponsor-notice a:hover {
+    color: #f90;
+}
+
+/* Remove margins and fix the navigation bar */
+body {
+margin: 0px;
+font: inherit;
+}
+#content {
+margin: 0px 10px 0px 10px;
+}
+#mainnav {
+background: rgb(233,238,249);
+border: none;
+border-bottom: 1px solid #d7d7d7;
+margin-top: 0px;
+}
+#mainnav :link, #mainnav :visited {
+background: none;
+border: none;
+padding: .2em 20px;
+}
+#mainnav :link:hover, #mainnav :visited:hover {
+/*background-color: inherit;
+border: none;
+text-decoration: none;
+color: black;
+background: none;
+*/
+border: none;
+color: black;
+text-decoration: none;
+background: #333 url(http://trac.openlayers.org/chrome/common/topbar_gradient2.png)  0 0 repeat-x;
+ border-top: none;
+   color: #eee;
+}
+#mainnav .active:link:hover, #mainnav .active:visited:hover {
+border: none;
+text-decoration: none;
+
+}
+
+
+/* Hide the top banner, login info, search field */
+#banner {
+display: none;
+}
+
+/* Accommodate our login info at the bottom of the page */
+#footer {
+border-bottom: 1px solid;
+padding-left: 10px;
+padding-right: 10px;
+}
+#bottomnav {
+margin: 10px 0px 10px 0px;
+}
+.centernav h2, .centernav hr { display: none }
+.centernav ul { font-size: 10px; list-style: none; margin: 0; text-align: center }
+.centernav li {
+border-right: 1px solid #d7d7d7;
+display: inline;
+padding: 0 .75em;
+white-space: nowrap;
+}
+.centernav li.last { border-right: none }
+
+#olbanner {
+background: #9D9FA1;
+color: #FFFFFF;
+font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+font-size: 44px;
+text-shadow: 2px 2px 3px gray;
+height: 32px;
+padding: 4px 16px 0px 16px;
+vertical-align: top;
+}
+#olbanner a:link, #olbanner a:visited { color: white; background: none; border: none;}
+
+.openlayersbannerimg { height: 44px; margin:6px 5px 5px 5px; vertical-align: top;  }
+.openlayersbanner {
+font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+font-size: 44px;
+text-shadow: 2px 2px 3px gray;
+height: 48px;
+padding: 1px 16px 0px 0px;
+vertical-align: top;
+}
+
+/* Tabs */
+#navcontainer {
+background: #9D9FA1;
+text-align: right;
+padding: 4px 16px 5px 0px;
+font-family: "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
+}
+.navtab, .navtabtraccurrent {
+width: 60px;
+height: 22px;
+padding: 3px 12px 4px 12px;
+margin: 0px -2px 0px -2px;
+border: none;
+border: 1px solid #cccccc;
+text-align: center;
+font-size: 12px;
+font-size: 12px;
+}
+.navtab {
+background: #fff url(images/tab_off_bg.gif) repeat-x;
+text-decoration: none;
+width: 180px;
+}
+.navtab:link, .navtab:visited { color: black; text-decoration: none; border: 1px solid #cccccc; }
+.navtab:hover, .navtab:visited:hover { color:black; text-decoration: none; background: white; border: 1px solid #cccccc;}
+
+.navtabtraccurrent, .navtabtraccurrent:link, .navtabtraccurrent:visited, .navtabtraccurrent:hover, .navtabtraccurrent:visited:hover {
+color: black;
+border-bottom: 1px solid rgb(233,238,249);
+background: rgb(233,238,249);
+text-decoration: none;
+}
+
+/* Custom font for Trac */
+#traccontent {
+ font: normal 13px verdana,arial,'Bitstream Vera Sans',helvetica,sans-serif;
+}
+
+/* Styles for TracNav */
+.wiki-toc.trac-nav h4 { margin: 0; padding: 0; }
+/*.wiki-toc.trac-nav ul > li:first-child { margin-right: 4ex; }*/
+.wiki-toc.trac-nav .edit {
+position: absolute;
+top: 2px;
+right: 3px;
+margin-left: 3px;
+border: 0;
+}
+.wiki-toc.trac-nav .edit a { color:blue; border-color:blue; }
+
+.wiki-toc { background: rgb(233,238,249); }
+.wiki-toc .active { background: white;}
+
+/* Styles for TracSearchBox */
+.wiki-searchbox {
+ margin-left: 24px;
+}
+
+/* */
+#ticket {
+ background: rgb(233,238,249);
+}
+
+/* For LastModified */
+span.last-modified { border-bottom: 1px dotted gray; cursor: help; }
+
+#content pre {
+	font-family: monospace;
+	font-size: 10px;
+}
+#content {
+	font-family: sans-serif;
+        font-size: .9em;
+}
+
+#content p {
+	padding: 0 20px 0px 0px;
+        text-align: justify;
+}
+
+.query a {
+    color: #4444aa;
+}

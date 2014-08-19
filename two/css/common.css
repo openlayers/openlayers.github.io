@@ -1,0 +1,241 @@
+@font-face {
+    font-family: 'OpenSansLight';
+    src: url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Light-webfont-eab555aaeee09e6810717a6797786fd2.eot);
+    src: url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Light-webfont.eot?#iefix) format("embedded-opentype"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Light-webfont-a16ffd98d21d4838d995a275db078586.woff) format("woff"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Light-webfont-e49ff15bc7b2cd2aa1e3489a92baaf16.ttf) format("truetype"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Light-webfont.svg#OpenSansLight) format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansRegular';
+    src: url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Regular-webfont-5939fb6401db7b6b3b5ec24c91aa6d3e.eot);
+    src: url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Regular-webfont.eot?#iefix) format("embedded-opentype"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Regular-webfont-cb318eceb295deba2b48994c92fa4161.woff) format("woff"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Regular-webfont-90ee812e0a38f8bc6544135fda1c28cc.ttf) format("truetype"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Regular-webfont.svg#OpenSansRegular) format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenSansBold';
+    src: url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Bold-webfont-e2ecea97dd4a09309c77f23c9c43bb01.eot);
+    src: url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Bold-webfont.eot?#iefix) format("embedded-opentype"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Bold-webfont-5daa41a650cded2f6af38604527999de.woff) format("woff"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Bold-webfont-a87728498aa8156e5ed850a47a911e0c.ttf) format("truetype"), url(//d13jv82ekraqyq.cloudfront.net/assets/OpenSans-Bold-webfont.svg#OpenSansBold) format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFFFFF;
+    color: #000;
+    font-family: 'OpenSansRegular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+body {
+    padding: 0;
+    margin-bottom: 20px;
+}
+h3 {
+    margin-bottom: 1.5em;
+}
+div#wrap {
+    background: white;
+    width: 100%;
+}
+#header h1 {
+    background: #000077;
+    color: #FFFF00;
+    padding: 20px 50px 20px 75px;
+    margin: 0px 0 0 0;
+    font-family: sans-serif;
+    font-size: 30px;
+}
+#nav {
+    padding: 5px;
+    background: #000077;
+    color: #FFFF00;
+    margin: 0px 0 0 0;
+}
+#nav a {
+    text-decoration: none;
+    color: #FFFF00;
+    padding: 0px 0px 0px 75px;
+}
+#nav ul {
+    margin: 0;
+    padding: 0;
+}
+#nav li {
+    display: inline;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#main {
+    float: left;
+    padding: 0px 25px 0px 25px;
+    width: 95%;
+    background: white;
+}
+#main h2 {
+    font-size: 25px;
+    color: #2D4991;
+    padding: 0 10px 0px 0;
+    margin: 20px 0 0 0;
+}
+#main h3 {
+    font-size: 16px;
+    color: #2D4991;
+    padding: 0 10px 0px 0;
+    margin: 20px 0 0 0;
+}
+#main pre {
+    font-family: monospace;
+    font-size: 10px;
+}
+#main p {
+    font-size: .9em;
+    margin: 0 0 1em 0px;
+}
+#main li {
+    margin: 5px 0 0 0;
+    padding: 0 10px 0px 0;
+}
+#main * td {
+    padding: 1em;
+    font-size: .8em;
+}
+#main * td pre {
+    padding: .5em;
+    font-size: .8em;
+    background-color: lightgray;
+    border: 1px dashed gray;
+}
+#sidebar {
+    display: none;
+    float: right;
+    background: white;
+}
+#mapFrame {
+    font-size: 16px;
+    float: right;
+    padding: 35px 10px 15px 35px;
+    width: 514px;
+}
+#map {
+    border: 1px solid lightgray;
+    margin: 0 0 30px 0;
+    width: 512px;
+    height: 256px;
+    padding: 0;
+}
+#sidebar h3, #sidebar p {
+    padding: 0 10px;
+}
+#footer {
+    text-align: center;
+    clear: both;
+}
+#footer p {
+    padding: 5px;
+    margin: 0;
+}
+#footer h3 {
+    margin: 0;
+}
+
+.cleared {
+    clear: both;
+}
+.spaced {
+    padding-top: 20px;
+}
+#side-panel {
+    font-size: 0.9em;
+    padding: 0 20px;
+    float: right;
+    width: 300px;
+}
+.centered {
+    display: block;
+    text-align: center;
+}
+#publications ul {
+    padding: 0;
+    list-style: none;
+}
+#publications li {
+    clear: both;
+    padding: 10px 0;
+}
+#publications li img {
+    height: 100px;
+    float: left;
+    padding: 0 10px;
+}
+#publications .author {
+    padding: 0.5em 0;
+    font-size: 0.8em;
+    color: #666666;
+}
+#sponsors h4 {
+    margin-bottom: 0;
+    color: #666666;
+}
+#sponsors ul {
+    padding: 0;
+    margin-top: 0;
+    list-style: none;
+}
+#sponsors li {
+    clear: both;
+    padding: 10px 10px 0px 10px;
+}
+
+:link, *:visited {
+    border-bottom: 0 none;
+    text-decoration: none;
+}
+
+/* Navigation */
+.nav h2, .nav hr { display: none }
+.nav ul { font-size: 10px; list-style: none; margin: 0; text-align: right }
+.nav li {
+    border-right: 1px solid #d7d7d7;
+    display: inline;
+    padding: 0 .75em;
+    white-space: nowrap;
+}
+.nav li.last { border-right: none }
+
+/* Main navigation bar */
+#mainnav {
+    background: #f7f7f7 url(../topbar_gradient.png) 0 0;
+    border: 1px solid #000;
+    font: normal 10px verdana,'Bitstream Vera Sans',helvetica,arial,sans-serif;
+    margin: .66em 0 .33em;
+    padding: .2em 0;
+}
+#mainnav li { border-right: none; padding: .25em 0 }
+#mainnav :link, #mainnav :visited {
+    background: url(../dots.gif) 0 0 no-repeat;
+    border-right: 1px solid #fff;
+    border-bottom: none;
+    border-left: 1px solid #555;
+    color: #000;
+    padding: .2em 20px;
+}
+* html #mainnav :link, * html #mainnav :visited { background-position: 1px 0 }
+#mainnav :link:hover, #mainnav :visited:hover {
+    background-color: #ccc;
+    border-right: 1px solid #ddd;
+}
+#mainnav .active :link, #mainnav .active :visited {
+    background: #333 url(../topbar_gradient2.png) 0 0 repeat-x;
+    border-top: none;
+    border-right: 1px solid #000;
+    color: #eee;
+    font-weight: bold;
+}
+#mainnav .active :link:hover, #mainnav .active :visited:hover {
+    border-right: 1px solid #000;
+}

@@ -12,7 +12,7 @@ var domMap = new ol.Map({
   })
 });
 
-if (ol.BrowserFeature.HAS_WEBGL) {
+if (ol.browserfeature.HAS_WEBGL) {
   var webglMap = new ol.Map({
     renderer: 'webgl',
     target: 'webglMap'

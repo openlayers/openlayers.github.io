@@ -11,7 +11,7 @@ var map = new ol.Map({
   layers: [
     new ol.layer.Image({
       extent: bounds,
-      source: new ol.source.MapGuide({
+      source: new ol.source.ImageMapGuide({
         projection: 'EPSG:4326',
         url: agentUrl,
         useOverlay: false,

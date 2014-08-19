@@ -7,7 +7,7 @@ function setResetContrastButtonHTML() {
   resetContrast.innerHTML = 'Contrast (' + layer.getContrast().toFixed(3) + ')';
 }
 
-if (!ol.BrowserFeature.HAS_WEBGL) {
+if (!ol.browserfeature.HAS_WEBGL) {
   var info = document.getElementById('no-webgl');
   /**
    * display error message

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OpenLayers 2</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="css/common.css" type="text/css">
+  <link rel="stylesheet" href="css/website.css" type="text/css">
+  <link rel="stylesheet" href="../api/theme/default/style.css" type="text/css">
+  <meta name="verify-v1" content="p07VY29NG/hLEwVP1RyE0P1chgYyekPikjkMUEgrVAI=">
+  <!--[if lt IE 7]>
+  <script defer="defer" type="text/javascript" src="pngfix.js"></script>
+  <![endif]-->
+  <style>
+      .olControlAttribution {
+          position: absolute;
+          font-size: 10px;
+          text-align: right;
+          color: #eeeeee;
+          bottom: 0;
+          right: 0;
+          background: #130085; /* fallback for IE - IE6 requires background shorthand*/
+          background: rgba(0, 60, 136, 0.3);
+          filter: alpha(opacity=30);
+          font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+          padding: 2px 4px;
+          border-radius: 5px 0 0 0;
+      }
+      .olControlAttribution a {
+          color: #eeeeee;
+          font-weight: bold;
+      }
+      .olControlZoom a:hover {
+          color: white;
+      }
+      div.olControlZoomPanel {
+          top: 15px;
+          left: 15px;
+      }
+  </style>
+</head>
+<body>
+
+  <div id="olbanner">
+    <a class="openlayersbanner" href="/two/" >
+      <img class="openlayersbannerimg" src="/two/images/OpenLayers.trac.png" style="height: 44px; width: 49px;border:0px" alt="OpenLayers" /> OpenLayers 2
+    </a>
+  </div>
+  <div id="navcontainer">
+    <a class="navtabtraccurrent" href="/two/">Home</a>
+    <a class="navtab" href="http://trac.openlayers.org">Support &amp; Development</a>
+  </div>
+
+
+  <div id="mainnav" class="nav">
+      <ul>
+          <li class="first"><a href="/two/sponsorship/">Sponsorship</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/Documentation" accesskey="1">Documentation</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/HowToDownload" accesskey="2">Download</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/FrequentlyAskedQuestions">FAQ</a></li>
+          <li><a href="http://trac.osgeo.org/openlayers/wiki/MailingLists">Email Lists</a></li>
+          <li><a href="http://blog.openlayers.org">Blog</a></li>
+      </ul>
+  </div>
+
+  <div id="main">
+    <div id="mapFrame">
+      <div id="map"></div>
+      <div style="text-align:center"><b>Put an open map widget in any web page!</b></div>
+    </div>
+    <div id="side-panel" class="cleared">
+        <div id="publications">
+            <h3>Books about OpenLayers</h3>
+            <ul>
+                <li>
+                    <a href="http://www.packtpub.com/openlayers-create-gis-web-applications-cookbook/book"><img src="images/packt-ol-cookbook.png"></a>
+                    <a href="http://www.packtpub.com/openlayers-create-gis-web-applications-cookbook/book">OpenLayers Cookbook</a><div class="author">Antonio Santiago Perez</div>Available in Print and eBook formats from <a href="http://www.packtpub.com/openlayers-create-gis-web-applications-cookbook/book">Packt Publishing</a>.
+                </li>
+                <li>
+                    <a href="http://www.packtpub.com/openlayers-2-1-javascript-web-mapping-library-beginners-guide/book"><img src="images/packt-ol.jpg"></a>
+                    <a href="http://www.packtpub.com/openlayers-2-1-javascript-web-mapping-library-beginners-guide/book">OpenLayers 2.10 Beginner's Guide</a><div class="author">Erik Hazzard</div>Available in Print and eBook formats from <a href="https://www.packtpub.com/openlayers-2-1-javascript-web-mapping-library-beginners-guide/book">Packt Publishing</a>.
+                </li>
+                <li>
+                    <a href="http://www.opensourcepress.de/de/produkte/OpenLayers/159/978-3-937514-92-5"><img src="images/openlayers_de_1ed.png"></a>
+                    <a href="http://www.opensourcepress.de/de/produkte/OpenLayers/159/978-3-937514-92-5">OpenLayers (in German)</a><div class="author">Till Adams &amp; Marc Jansen</div>Available from <a href="http://www.opensourcepress.de/de/produkte/OpenLayers/159/978-3-937514-92-5">Open Source Press</a>.
+                </li>
+            </ul>
+        </div>
+        <div class="cleared spaced">
+            <a href="http://www.osgeo.org/" class="centered"><img src="images/osgeo_sm.png"></a>
+            <p>OpenLayers is a project of the <a href="http://www.osgeo.org/">Open Source Geospatial Foundation</a>.</p>
+            <p>Visit our <a href="sponsorship/">sponsorship page</a> to find out how you can become an OpenLayers sponsor.
+            </p>
+            <p>We welcome contributions of any size.  If you're interested in supporting OpenLayers development, you can also use our Gittip account:
+            <iframe style="border: 0; margin: 0; padding: 0;"
+                src="https://www.gittip.com/openlayers/widget.html"
+                width="48pt" height="20pt">
+            </iframe>
+            </p>
+        </div>
+    </div>
+    <h2>
+        OpenLayers: Free Maps for the Web
+    </h2>
+    <h3>Where to get OpenLayers 2:</h3>
+    <ul style="font-size:.9em;margin-top:0px;">
+      <li>2.13.1 (Stable): <a href="http://github.com/openlayers/openlayers/releases/download/release-2.13.1/OpenLayers-2.13.1.tar.gz">.tar.gz</a> | <a href="http://github.com/openlayers/openlayers/releases/download/release-2.13.1/OpenLayers-2.13.1.zip">.zip</a></li>
+      <li><a href="http://github.com/openlayers/openlayers/blob/master/notes/2.13.md">2.13.1 Release Notes</a></li>
+      <li><a href="http://dev.openlayers.org/releases/OpenLayers-2.13.1/doc/apidocs/files/OpenLayers-js.html">API Documentation</a>, <a href="http://trac.openlayers.org/wiki/Documentation">User documentation</a></li>
+      <li>See examples of OpenLayers 2 Usage: <a href="examples/">Development Examples</a>, <a href="http://dev.openlayers.org/releases/OpenLayers-2.13.1/examples/">2.13.1 Release Examples</a></li>
+      <li>Fork us on <a href="http://github.com/openlayers/openlayers">GitHub</a></li>
+    </ul>
+
+    <h3>About OpenLayers</h3>
+    <p>OpenLayers makes it easy to put a dynamic map in any web page.  It can display map tiles and markers loaded from any source. OpenLayers has been developed to further the use of geographic information of all kinds. It is completely free, Open Source JavaScript, released under the <a href="https://raw.github.com/openlayers/openlayers/master/license.txt">2-clause BSD License</a> (also known as the FreeBSD).</p>
+
+    <h3><a href="http://blog.openlayers.org/2012/11/01/crowdfunding-openlayers-3/">Introducing OpenLayers 3!</a></h3>
+
+    <p>We've begun the development effort to make the next major version of OpenLayers a reality. <a href="http://openlayers.org">OpenLayers 3</a> is a comprehensive rewrite of the library, targeting the latest in HTML5 and CSS3 features. The library will continue to have broad support for projections, standard protocols, and editing functionality from OpenLayers 2.x. The new version of the library will focus on performance improvements, lighter builds, prettier visual components, an improved API, and more.</p>
+    <p>Some of the major highlights are:
+
+    <ul style="font-size:.9em;margin-top:0px;">
+      <li><strong><a href="http://en.wikipedia.org/wiki/WebGL">WebGL</a></strong> promises to bring 3D capabilities and increased performance for all mapping needs to the latest browsers. OpenLayers 3.0 will offer WebGL, while degrading nicely in less capable browsers.</li>
+      <li><strong><a href="http://cesium.agi.com/">Cesium</a></strong>: The OpenLayers community will also integrate the new Cesium library to enable full 3D spinning globe capabilities directly into the 3.0 release.</li>
+      <li><strong><a href="http://developers.google.com/closure/compiler/">Closure Compiler</a></strong>: By utilizing the Closure Compiler, applications developers will be able to create smaller and faster libraries, easing the use of the extensive OpenLayers 3.0 toolkit.</li>
+      <li><strong>A new codebase</strong>: This offers an opportunity to clean up some of the “clunky” ways of doing things in OpenLayers. The team will also create with new API designs, which will be more accessible to all.</li>
+      <li><strong>High-quality documentation</strong>: The new release will also feature documentation with fresh examples and default designs in OpenLayers 3.0. Making a toolkit standout is about more than the actual code.</li>
+    </ul>
+    </p>
+
+    <h3>For Developers!</h3>
+    <p>OpenLayers is a pure JavaScript library for displaying map data in most modern web browsers, with no server-side dependencies. OpenLayers implements a <a href="http://trac.openlayers.org/wiki/Documentation">JavaScript API</a> for building rich web-based geographic applications, similar to the Google Maps APIs, with one important difference -- OpenLayers is Free Software, developed for and by the Open Source software community.</p>
+
+    <h3>Getting the Code</h3>
+
+    <p>Releases are made available on the <a href="http://github.com/openlayers/openlayers/releases">downloads</a> page.  The code is also available in our <a href="http://github.com/openlayers/openlayers">Git repository</a>. With a clone of the Git repository, you can keep up with the latest and contribute patches to OpenLayers.</p>
+
+    <p>If you don't want to download the code, you can still try some of the <a href="/dev/examples/">hosted examples</a>. If you're familiar with JavaScript, try viewing the source of the examples to get an idea how the OpenLayers library is used.</p>
+
+    <h3>Other Resources</h3>
+
+    <ul style="font-size:.9em;margin-bottom:40px;">
+      <li><a href="presentations/">Presentations</a> on OpenLayers 2</li>
+      <li>OpenLayers 2 <a href="tests/">Test Suite</a></li>
+      <li><a href="http://trac.osgeo.org/openlayers/wiki/Documentation#InternationalDocumentation">International Documentation</a> (Also see <a href="http://www.opensourcepress.de/de/produkte/OpenLayers/159/978-3-937514-92-5">OpenLayers in German</a>)</li>
+    </ul>
+
+  </div>
+  <div id="sidebar"></div>
+  <div id="footer"></div>
+
+  <script type="text/javascript" src="../api/OpenLayers.js"></script>
+  <script type="text/javascript">
+    var map = new OpenLayers.Map({
+        div: "map",
+        theme: null,
+        layers: [
+            new OpenLayers.Layer.OSM("OpenStreetMap")
+        ],
+        center: new OpenLayers.LonLat(0, 0),
+        zoom: 1
+    });
+  </script>
+  <script type="text/javascript">
+      document.write(unescape("%3Cscript src='http://www.google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  (function() {
+      try {
+          var pageTracker = _gat._getTracker("UA-2577926-1");
+          pageTracker._trackPageview();
+      } catch(err) {
+          // pass
+      }
+      // track downloads - tracks all clicks to links with download href
+      var anchors, a, i, len, match,
+          pattern = /^(http:\/\/openlayers.org)?\/download\/(.*)$/;
+      function clickHandler(name) {
+          return function() {
+              try {
+                  pageTracker._trackPageview(name);
+              } catch(err) {
+                  // pass
+              }
+          };
+      }
+      anchors = document.getElementsByTagName("a");
+      for(i=0, len=anchors.length; i<len; ++i) {
+          a = anchors[i];
+          if(a.href) {
+              match = a.href.match(pattern);
+              if(match && match[2]) {
+                  a.onclick = clickHandler("/download/" + match[2]);
+              }
+          }
+      }
+  })();
+  </script>
+  </body>
+</html>
+
