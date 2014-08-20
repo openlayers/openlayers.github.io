@@ -1,5 +1,5 @@
 // OpenLayers 3. See http://ol3.js.org/
-// Version: v3.0.0-gamma.4-91-g365caa6
+// Version: v3.0.0-gamma.4-109-g42e8fb5
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -16336,6 +16336,7 @@ ol.TransformFunction;
 
 goog.provide('ol.Extent');
 goog.provide('ol.extent');
+goog.provide('ol.extent.Corner');
 goog.provide('ol.extent.Relationship');
 
 goog.require('goog.asserts');
@@ -16351,6 +16352,18 @@ goog.require('ol.TransformFunction');
  * @api
  */
 ol.Extent;
+
+
+/**
+ * Extent corner.
+ * @enum {string}
+ */
+ol.extent.Corner = {
+  BOTTOM_LEFT: 'bottom-left',
+  BOTTOM_RIGHT: 'bottom-right',
+  TOP_LEFT: 'top-left',
+  TOP_RIGHT: 'top-right'
+};
 
 
 /**
@@ -16789,6 +16802,30 @@ ol.extent.getBottomRight = function(extent) {
  */
 ol.extent.getCenter = function(extent) {
   return [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
+};
+
+
+/**
+ * Get a corner coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.extent.Corner} corner Corner.
+ * @return {ol.Coordinate} Corner coordinate.
+ */
+ol.extent.getCorner = function(extent, corner) {
+  var coordinate;
+  if (corner === ol.extent.Corner.BOTTOM_LEFT) {
+    coordinate = ol.extent.getBottomLeft(extent);
+  } else if (corner === ol.extent.Corner.BOTTOM_RIGHT) {
+    coordinate = ol.extent.getBottomRight(extent);
+  } else if (corner === ol.extent.Corner.TOP_LEFT) {
+    coordinate = ol.extent.getTopLeft(extent);
+  } else if (corner === ol.extent.Corner.TOP_RIGHT) {
+    coordinate = ol.extent.getTopRight(extent);
+  } else {
+    goog.asserts.fail('Invalid corner: %s', corner);
+  }
+  goog.asserts.assert(goog.isDef(coordinate));
+  return coordinate;
 };
 
 
@@ -17440,6 +17477,19 @@ ol.proj.METERS_PER_UNIT[ol.proj.Units.METERS] = 1;
  *
  * You can use {@link ol.proj.get} to retrieve the object for a particular
  * projection.
+ *
+ * The library includes definitions for `EPSG:4326` and `EPSG:3857`, together
+ * with the following aliases:
+ * * `EPSG:4326`: CRS:84, urn:ogc:def:crs:EPSG:6.6:4326,
+ *     urn:ogc:def:crs:OGC:1.3:CRS84, urn:ogc:def:crs:OGC:2:84,
+ *     http://www.opengis.net/gml/srs/epsg.xml#4326,
+ *     urn:x-ogc:def:crs:EPSG:4326
+ * * `EPSG:3857`: EPSG:102100, EPSG:102113, EPSG:900913,
+ *     urn:ogc:def:crs:EPSG:6.18:3:3857,
+ *     http://www.opengis.net/gml/srs/epsg.xml#3857
+ *
+ * If you use proj4js, aliases can be added using `proj4.defs()`; see
+ * [documentation](https://github.com/proj4js/proj4js).
  *
  * @constructor
  * @param {olx.ProjectionOptions} options Projection options.
@@ -31485,6 +31535,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
+goog.require('goog.math');
 goog.require('ol.animation');
 goog.require('ol.control.Control');
 goog.require('ol.css');
@@ -31510,10 +31561,13 @@ ol.control.Rotate = function(opt_options) {
   var className = goog.isDef(options.className) ?
       options.className : 'ol-rotate';
 
-  var label = goog.dom.createDom(goog.dom.TagName.SPAN,
+  /**
+   * @type {Element}
+   * @private
+   */
+  this.label_ = goog.dom.createDom(goog.dom.TagName.SPAN,
       { 'class': 'ol-compass' },
       goog.isDef(options.label) ? options.label : '\u21E7');
-  this.label_ = label;
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Reset rotation';
@@ -31525,7 +31579,7 @@ ol.control.Rotate = function(opt_options) {
     'class': className + '-reset ol-has-tooltip',
     'name' : 'ResetRotation',
     'type' : 'button'
-  }, tip, label);
+  }, tip, this.label_);
 
   var handler = new ol.pointer.PointerEventHandler(button);
   this.registerDisposable(handler);
@@ -31561,6 +31615,12 @@ ol.control.Rotate = function(opt_options) {
    * @private
    */
   this.autoHide_ = goog.isDef(options.autoHide) ? options.autoHide : true;
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.rotation_ = undefined;
 
   element.style.opacity = (this.autoHide_) ? 0 : 1;
 
@@ -31626,13 +31686,16 @@ ol.control.Rotate.prototype.handleMapPostrender = function(mapEvent) {
     return;
   }
   var rotation = frameState.viewState.rotation;
-  var transform = 'rotate(' + rotation * 360 / (Math.PI * 2) + 'deg)';
-  if (this.autoHide_) {
-    this.element.style.opacity = (rotation === 0) ? 0 : 1;
+  if (rotation != this.rotation_) {
+    var transform = 'rotate(' + goog.math.toDegrees(rotation) + 'deg)';
+    if (this.autoHide_) {
+      this.element.style.opacity = (rotation === 0) ? 0 : 1;
+    }
+    this.label_.style.msTransform = transform;
+    this.label_.style.webkitTransform = transform;
+    this.label_.style.transform = transform;
   }
-  this.label_.style.msTransform = transform;
-  this.label_.style.webkitTransform = transform;
-  this.label_.style.transform = transform;
+  this.rotation_ = rotation;
 };
 
 goog.provide('ol.control.Zoom');
@@ -72696,6 +72759,8 @@ goog.require('ol.TileCoord');
 goog.require('ol.TileRange');
 goog.require('ol.array');
 goog.require('ol.extent');
+goog.require('ol.extent.Corner');
+goog.require('ol.proj');
 goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Projection');
 goog.require('ol.proj.Units');
@@ -73092,33 +73157,95 @@ ol.tilegrid.getForProjection = function(projection) {
 
 
 /**
- * @param {ol.proj.Projection} projection Projection.
- * @param {number=} opt_maxZoom Maximum zoom level.
- * @param {number=} opt_tileSize Tile size.
+ * @param {ol.Extent} extent Extent.
+ * @param {number=} opt_maxZoom Maximum zoom level (default is
+ *     ol.DEFAULT_MAX_ZOOM).
+ * @param {number=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
+ * @param {ol.extent.Corner=} opt_corner Extent corner (default is
+ *     ol.extent.Corner.BOTTOM_LEFT).
  * @return {ol.tilegrid.TileGrid} TileGrid instance.
  */
-ol.tilegrid.createForProjection =
-    function(projection, opt_maxZoom, opt_tileSize) {
-  var projectionExtent = projection.getExtent();
-  var size = goog.isNull(projectionExtent) ?
-      360 * ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] /
-          projection.getMetersPerUnit() :
-      Math.max(projectionExtent[2] - projectionExtent[0],
-          projectionExtent[3] - projectionExtent[1]);
-  var maxZoom = goog.isDef(opt_maxZoom) ?
-      opt_maxZoom : ol.DEFAULT_MAX_ZOOM;
-  var tileSize = goog.isDef(opt_tileSize) ? opt_tileSize : ol.DEFAULT_TILE_SIZE;
-  var resolutions = new Array(maxZoom + 1);
-  var maxResolution = size / tileSize;
-  for (var z = 0, zz = resolutions.length; z < zz; ++z) {
-    resolutions[z] = maxResolution / Math.pow(2, z);
-  }
+ol.tilegrid.createForExtent =
+    function(extent, opt_maxZoom, opt_tileSize, opt_corner) {
+  var tileSize = goog.isDef(opt_tileSize) ?
+      opt_tileSize : ol.DEFAULT_TILE_SIZE;
+
+  var corner = goog.isDef(opt_corner) ?
+      opt_corner : ol.extent.Corner.BOTTOM_LEFT;
+
+  var resolutions = ol.tilegrid.resolutionsFromExtent(
+      extent, opt_maxZoom, tileSize);
+
   return new ol.tilegrid.TileGrid({
-    origin: goog.isNull(projectionExtent) ? [0, 0] :
-        ol.extent.getBottomLeft(projectionExtent),
+    origin: ol.extent.getCorner(extent, corner),
     resolutions: resolutions,
     tileSize: tileSize
   });
+};
+
+
+/**
+ * Create a resolutions array from an extent.  A zoom factor of 2 is assumed.
+ * @param {ol.Extent} extent Extent.
+ * @param {number=} opt_maxZoom Maximum zoom level (default is
+ *     ol.DEFAULT_MAX_ZOOM).
+ * @param {number=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
+ * @return {!Array.<number>} Resolutions array.
+ */
+ol.tilegrid.resolutionsFromExtent =
+    function(extent, opt_maxZoom, opt_tileSize) {
+  var maxZoom = goog.isDef(opt_maxZoom) ?
+      opt_maxZoom : ol.DEFAULT_MAX_ZOOM;
+
+  var height = ol.extent.getHeight(extent);
+  var width = ol.extent.getWidth(extent);
+
+  var tileSize = goog.isDef(opt_tileSize) ?
+      opt_tileSize : ol.DEFAULT_TILE_SIZE;
+  var maxResolution = Math.max(
+      width / tileSize, height / tileSize);
+
+  var length = maxZoom + 1;
+  var resolutions = new Array(length);
+  for (var z = 0; z < length; ++z) {
+    resolutions[z] = maxResolution / Math.pow(2, z);
+  }
+  return resolutions;
+};
+
+
+/**
+ * @param {ol.proj.ProjectionLike} projection Projection.
+ * @param {number=} opt_maxZoom Maximum zoom level (default is
+ *     ol.DEFAULT_MAX_ZOOM).
+ * @param {number=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
+ * @param {ol.extent.Corner=} opt_corner Extent corner (default is
+ *     ol.extent.Corner.BOTTOM_LEFT).
+ * @return {ol.tilegrid.TileGrid} TileGrid instance.
+ */
+ol.tilegrid.createForProjection =
+    function(projection, opt_maxZoom, opt_tileSize, opt_corner) {
+  var extent = ol.tilegrid.extentFromProjection(projection);
+  return ol.tilegrid.createForExtent(
+      extent, opt_maxZoom, opt_tileSize, opt_corner);
+};
+
+
+/**
+ * Generate a tile grid extent from a projection.  If the projection has an
+ * extent, it is used.  If not, a global extent is assumed.
+ * @param {ol.proj.ProjectionLike} projection Projection.
+ * @return {ol.Extent} Extent.
+ */
+ol.tilegrid.extentFromProjection = function(projection) {
+  projection = ol.proj.get(projection);
+  var extent = projection.getExtent();
+  if (goog.isNull(extent)) {
+    var half = 180 * ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] /
+        projection.getMetersPerUnit();
+    extent = ol.extent.createOrUpdate(-half, -half, half, half);
+  }
+  return extent;
 };
 
 goog.provide('ol.source.Tile');
@@ -92586,6 +92713,8 @@ goog.require('goog.math');
 goog.require('ol');
 goog.require('ol.TileCoord');
 goog.require('ol.TileRange');
+goog.require('ol.extent');
+goog.require('ol.extent.Corner');
 goog.require('ol.proj');
 goog.require('ol.proj.EPSG3857');
 goog.require('ol.tilecoord');
@@ -92604,19 +92733,16 @@ goog.require('ol.tilegrid.TileGrid');
  * @api
  */
 ol.tilegrid.XYZ = function(options) {
-
-  var resolutions = new Array(options.maxZoom + 1);
-  var z;
-  var size = 2 * ol.proj.EPSG3857.HALF_SIZE / ol.DEFAULT_TILE_SIZE;
-  for (z = 0; z <= options.maxZoom; ++z) {
-    resolutions[z] = size / Math.pow(2, z);
-  }
+  var extent = goog.isDef(options.extent) ?
+      options.extent : ol.proj.EPSG3857.EXTENT;
+  var resolutions = ol.tilegrid.resolutionsFromExtent(
+      extent, options.maxZoom, options.tileSize);
 
   goog.base(this, {
     minZoom: options.minZoom,
-    origin: [-ol.proj.EPSG3857.HALF_SIZE, ol.proj.EPSG3857.HALF_SIZE],
+    origin: ol.extent.getCorner(extent, ol.extent.Corner.TOP_LEFT),
     resolutions: resolutions,
-    tileSize: ol.DEFAULT_TILE_SIZE
+    tileSize: options.tileSize
   });
 
 };
@@ -92802,7 +92928,9 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse =
   var resource = response.resourceSets[0].resources[0];
 
   goog.asserts.assert(resource.imageWidth == resource.imageHeight);
+  var sourceProjection = this.getProjection();
   var tileGrid = new ol.tilegrid.XYZ({
+    extent: ol.tilegrid.extentFromProjection(sourceProjection),
     minZoom: resource.zoomMin,
     maxZoom: resource.zoomMax,
     tileSize: resource.imageWidth
@@ -92810,7 +92938,6 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse =
   this.tileGrid = tileGrid;
 
   var culture = this.culture_;
-  var sourceProjection = this.getProjection();
   this.tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(
       tileGrid.createTileCoordTransform(),
       ol.TileUrlFunction.createFromTileUrlFunctions(
@@ -96721,14 +96848,12 @@ goog.require('ol.tilegrid.XYZ');
  * @api
  */
 ol.source.XYZ = function(options) {
-
   var projection = goog.isDef(options.projection) ?
       options.projection : 'EPSG:3857';
 
-  var maxZoom = goog.isDef(options.maxZoom) ? options.maxZoom : 18;
-
   var tileGrid = new ol.tilegrid.XYZ({
-    maxZoom: maxZoom
+    extent: ol.tilegrid.extentFromProjection(projection),
+    maxZoom: options.maxZoom
   });
 
   goog.base(this, {
@@ -97438,10 +97563,11 @@ ol.source.TileJSON.prototype.handleTileJSONResponse = function(tileJSON) {
 
   var epsg4326Projection = ol.proj.get('EPSG:4326');
 
+  var sourceProjection = this.getProjection();
   var extent;
   if (goog.isDef(tileJSON.bounds)) {
     var transform = ol.proj.getTransformFromProjections(
-        epsg4326Projection, this.getProjection());
+        epsg4326Projection, sourceProjection);
     extent = ol.extent.applyTransform(tileJSON.bounds, transform);
   }
 
@@ -97451,6 +97577,7 @@ ol.source.TileJSON.prototype.handleTileJSONResponse = function(tileJSON) {
   var minZoom = tileJSON.minzoom || 0;
   var maxZoom = tileJSON.maxzoom || 22;
   var tileGrid = new ol.tilegrid.XYZ({
+    extent: ol.tilegrid.extentFromProjection(sourceProjection),
     maxZoom: maxZoom,
     minZoom: minZoom
   });
@@ -100353,6 +100480,7 @@ goog.require('ol.easing');
 goog.require('ol.events.ConditionType');
 goog.require('ol.events.condition');
 goog.require('ol.extent');
+goog.require('ol.extent.Corner');
 goog.require('ol.extent.Relationship');
 goog.require('ol.feature');
 goog.require('ol.format.GML');

@@ -7964,7 +7964,7 @@
         </h4>
         
         <div class="tag-source">
-            <a href="xyztilegrid.js.html">src/ol/tilegrid/xyztilegrid.js</a>, <a href="xyztilegrid.js.html#line24">line 24</a>
+            <a href="xyztilegrid.js.html">src/ol/tilegrid/xyztilegrid.js</a>, <a href="xyztilegrid.js.html#line26">line 26</a>
         </div>
         
         
@@ -8033,14 +8033,17 @@
 	
         <tr>
             
-                <td class="name"><code>maxZoom</code></td>
+                <td class="name"><code>extent</code></td>
             
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -8051,7 +8054,124 @@
             
             <td  class="description last">
                 
-                <p>Maximum zoom.</p></td>
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>Extent for the tile grid.  The origin for an XYZ tile grid is the top-left
+corner of the extent.  The zero level of the grid is defined by the
+resolution at which one tile fits in the provided extent.  If not provided,
+the extent of the EPSG:3857 projection is used.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>maxZoom</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>Maximum zoom.  The default is <code>ol.DEFAULT_MAX_ZOOM</code>.  This determines the
+number of levels in the grid set.  For example, a <code>maxZoom</code> of 21 means there
+are 22 levels in the grid set.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minZoom</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>Minimum zoom. Default is 0.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>tileSize</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+              
+                    
+                
+                <p>Tile size in pixels. Default is 256. (Only square tiles are supported.)</p></td>
         </tr>
 	
 	
@@ -8150,7 +8270,7 @@
         </h4>
         
         <div class="tag-source">
-            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line138">line 138</a>
+            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line140">line 140</a>
         </div>
         
         
@@ -8234,7 +8354,7 @@ Max zoom.
         </h4>
         
         <div class="tag-source">
-            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line147">line 147</a>
+            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line149">line 149</a>
         </div>
         
         
@@ -8318,7 +8438,7 @@ Min zoom.
         </h4>
         
         <div class="tag-source">
-            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line157">line 157</a>
+            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line159">line 159</a>
         </div>
         
         
@@ -8449,7 +8569,7 @@ Origin.
         </h4>
         
         <div class="tag-source">
-            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line173">line 173</a>
+            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line175">line 175</a>
         </div>
         
         
@@ -8580,7 +8700,7 @@ Resolution.
         </h4>
         
         <div class="tag-source">
-            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line183">line 183</a>
+            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line185">line 185</a>
         </div>
         
         
@@ -8664,7 +8784,7 @@ Resolutions.
         </h4>
         
         <div class="tag-source">
-            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line372">line 372</a>
+            <a href="tilegrid.js.html">src/ol/tilegrid/tilegrid.js</a>, <a href="tilegrid.js.html#line374">line 374</a>
         </div>
         
         
@@ -8793,7 +8913,7 @@ Tile size.
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Aug 19 2014 18:00:29 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Aug 20 2014 12:11:56 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
