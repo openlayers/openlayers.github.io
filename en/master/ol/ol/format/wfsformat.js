@@ -15,6 +15,8 @@ goog.require('ol.xml');
 /**
  * @classdesc
  * Feature format for reading and writing data in the WFS format.
+ * Currently only supports WFS version 1.1.0.
+ * Also see {@link ol.format.GML} which is used by this format.
  *
  * @constructor
  * @param {olx.format.WFSOptions=} opt_options
@@ -65,17 +67,21 @@ ol.format.WFS.xmlns = 'http://www.w3.org/2000/xmlns/';
 
 
 /**
+ * Number of features; bounds/extent.
  * @typedef {{numberOfFeatures: number,
  *            bounds: ol.Extent}}
+ * @api
  */
 ol.format.WFS.FeatureCollectionMetadata;
 
 
 /**
+ * Total deleted; total inserted; total updated; array of insert ids.
  * @typedef {{totalDeleted: number,
  *            totalInserted: number,
-              totalUpdated: number,
-              insertIds: Array.<string>}}
+ *            totalUpdated: number,
+ *            insertIds: Array.<string>}}
+ * @api
  */
 ol.format.WFS.TransactionResponse;
 

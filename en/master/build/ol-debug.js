@@ -1,5 +1,5 @@
 // OpenLayers 3. See http://ol3.js.org/
-// Version: v3.0.0-gamma.4-109-g42e8fb5
+// Version: v3.0.0-gamma.4-136-g55db958
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -18212,7 +18212,8 @@ ol.ViewHint = {
  * So the *resolution constraint* snaps to specific resolutions. It is
  * determined by the following options: `resolutions`, `maxResolution`,
  * `maxZoom`, and `zoomFactor`. If `resolutions` is set, the other three
- * options are ignored. See {@link ol.ViewOptions} for more information.
+ * options are ignored. See documentation for each option for more
+ * information.
  *
  * The *rotation constraint* is currently not configurable. It snaps the
  * rotation value to zero when approaching the horizontal.
@@ -29174,7 +29175,7 @@ ol.control.Control.prototype.disposeInternal = function() {
 /**
  * Get the map associated with this control.
  * @return {ol.Map} Map.
- * @api
+ * @api stable
  */
 ol.control.Control.prototype.getMap = function() {
   return this.map_;
@@ -31149,7 +31150,7 @@ goog.require('ol.pointer.PointerEventHandler');
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.AttributionOptions=} opt_options Attribution options.
- * @api
+ * @api stable
  */
 ol.control.Attribution = function(opt_options) {
 
@@ -31485,7 +31486,7 @@ ol.control.Attribution.prototype.handleToggle_ = function() {
 
 /**
  * @return {boolean} True if the widget is collapsible.
- * @api
+ * @api stable
  */
 ol.control.Attribution.prototype.getCollapsible = function() {
   return this.collapsible_;
@@ -31494,7 +31495,7 @@ ol.control.Attribution.prototype.getCollapsible = function() {
 
 /**
  * @param {boolean} collapsible True if the widget is collapsible.
- * @api
+ * @api stable
  */
 ol.control.Attribution.prototype.setCollapsible = function(collapsible) {
   if (this.collapsible_ === collapsible) {
@@ -31510,7 +31511,7 @@ ol.control.Attribution.prototype.setCollapsible = function(collapsible) {
 
 /**
  * @param {boolean} collapsed True if the widget is collapsed.
- * @api
+ * @api stable
  */
 ol.control.Attribution.prototype.setCollapsed = function(collapsed) {
   if (!this.collapsible_ || this.collapsed_ === collapsed) {
@@ -31522,7 +31523,7 @@ ol.control.Attribution.prototype.setCollapsed = function(collapsed) {
 
 /**
  * @return {boolean} True if the widget is collapsed.
- * @api
+ * @api stable
  */
 ol.control.Attribution.prototype.getCollapsed = function() {
   return this.collapsed_;
@@ -31552,7 +31553,7 @@ goog.require('ol.pointer.PointerEventHandler');
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.RotateOptions=} opt_options Rotate options.
- * @api
+ * @api stable
  */
 ol.control.Rotate = function(opt_options) {
 
@@ -31721,7 +31722,7 @@ goog.require('ol.pointer.PointerEventHandler');
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.ZoomOptions=} opt_options Zoom options.
- * @api
+ * @api stable
  */
 ol.control.Zoom = function(opt_options) {
 
@@ -31872,7 +31873,7 @@ goog.require('ol.control.Zoom');
  *
  * @param {olx.control.DefaultsOptions=} opt_options Defaults options.
  * @return {ol.Collection.<ol.control.Control>} Controls.
- * @api
+ * @api stable
  */
 ol.control.defaults = function(opt_options) {
 
@@ -32074,7 +32075,7 @@ goog.require('ol.pointer.PointerEventHandler');
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.FullScreenOptions=} opt_options Options.
- * @api
+ * @api stable
  */
 ol.control.FullScreen = function(opt_options) {
 
@@ -32253,7 +32254,7 @@ ol.control.MousePositionProperty = {
  * @extends {ol.control.Control}
  * @param {olx.control.MousePositionOptions=} opt_options Mouse position
  *     options.
- * @api
+ * @api stable
  */
 ol.control.MousePosition = function(opt_options) {
 
@@ -32346,7 +32347,7 @@ ol.control.MousePosition.prototype.handleProjectionChanged_ = function() {
  * @return {ol.CoordinateFormatType|undefined} The format to render the current
  *     position in.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.MousePosition.prototype.getCoordinateFormat = function() {
   return /** @type {ol.CoordinateFormatType|undefined} */ (
@@ -32362,7 +32363,7 @@ goog.exportProperty(
  * @return {ol.proj.Projection|undefined} The projection to report mouse
  *     position in.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.MousePosition.prototype.getProjection = function() {
   return /** @type {ol.proj.Projection|undefined} */ (
@@ -32399,7 +32400,7 @@ ol.control.MousePosition.prototype.handleMouseOut = function(browserEvent) {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.control.MousePosition.prototype.setMap = function(map) {
   goog.base(this, 'setMap', map);
@@ -32419,7 +32420,7 @@ ol.control.MousePosition.prototype.setMap = function(map) {
  * @param {ol.CoordinateFormatType} format The format to render the current
  *     position in.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.MousePosition.prototype.setCoordinateFormat = function(format) {
   this.set(ol.control.MousePositionProperty.COORDINATE_FORMAT, format);
@@ -32434,7 +32435,7 @@ goog.exportProperty(
  * @param {ol.proj.Projection} projection The projection to report mouse
  *     position in.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.MousePosition.prototype.setProjection = function(projection) {
   this.set(ol.control.MousePositionProperty.PROJECTION, projection);
@@ -32510,7 +32511,7 @@ ol.control.ScaleLineProperty = {
  * Units for the scale line. Supported values are `'degrees'`, `'imperial'`,
  * `'nautical'`, `'metric'`, `'us'`.
  * @enum {string}
- * @api
+ * @api stable
  */
 ol.control.ScaleLineUnits = {
   DEGREES: 'degrees',
@@ -32534,7 +32535,7 @@ ol.control.ScaleLineUnits = {
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.ScaleLineOptions=} opt_options Scale line options.
- * @api
+ * @api stable
  */
 ol.control.ScaleLine = function(opt_options) {
 
@@ -32622,7 +32623,7 @@ ol.control.ScaleLine.LEADING_DIGITS = [1, 2, 5];
  * @return {ol.control.ScaleLineUnits|undefined} The units to use in the scale
  *     line.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.ScaleLine.prototype.getUnits = function() {
   return /** @type {ol.control.ScaleLineUnits|undefined} */ (
@@ -32659,7 +32660,7 @@ ol.control.ScaleLine.prototype.handleUnitsChanged_ = function() {
 /**
  * @param {ol.control.ScaleLineUnits} units The units to use in the scale line.
  * @observable
- * @api
+ * @api stable
  */
 ol.control.ScaleLine.prototype.setUnits = function(units) {
   this.set(ol.control.ScaleLineProperty.UNITS, units);
@@ -34339,7 +34340,7 @@ goog.require('ol.easing');
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.ZoomSliderOptions=} opt_options Zoom slider options.
- * @api
+ * @api stable
  */
 ol.control.ZoomSlider = function(opt_options) {
 
@@ -34625,7 +34626,7 @@ goog.require('ol.pointer.PointerEventHandler');
  * @constructor
  * @extends {ol.control.Control}
  * @param {olx.control.ZoomToExtentOptions=} opt_options Options.
- * @api
+ * @api stable
  */
 ol.control.ZoomToExtent = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
@@ -45220,6 +45221,7 @@ goog.require('ol.xml');
 /**
  * @classdesc
  * Feature format for reading and writing data in the GML format.
+ * Currently only supports GML 3.1.1 Simple Features profile.
  *
  * @constructor
  * @param {olx.format.GMLOptions=} opt_options
@@ -48100,7 +48102,9 @@ goog.require('ol.proj');
 
 
 /**
+ * IGC altitude/z. One of 'barometric', 'gps', 'none'.
  * @enum {string}
+ * @api
  */
 ol.format.IGCZ = {
   BAROMETRIC: 'barometric',
@@ -53032,7 +53036,9 @@ goog.require('ol.style.ImageState');
 
 
 /**
+ * Icon anchor units. One of 'fraction', 'pixels'.
  * @enum {string}
+ * @api
  */
 ol.style.IconAnchorUnits = {
   FRACTION: 'fraction',
@@ -53041,7 +53047,9 @@ ol.style.IconAnchorUnits = {
 
 
 /**
+ * Icon origin. One of 'bottom-left', 'bottom-right', 'top-left', 'top-right'.
  * @enum {string}
+ * @api
  */
 ol.style.IconOrigin = {
   BOTTOM_LEFT: 'bottom-left',
@@ -57634,8 +57642,7 @@ ol.format.TopoJSON.concatenateArcs_ = function(indices, arcs) {
  * @return {ol.geom.Point} Geometry.
  * @private
  */
-ol.format.TopoJSON.readPointGeometry_ =
-    function(object, scale, translate) {
+ol.format.TopoJSON.readPointGeometry_ = function(object, scale, translate) {
   var coordinates = object.coordinates;
   if (!goog.isNull(scale) && !goog.isNull(translate)) {
     ol.format.TopoJSON.transformVertex_(coordinates, scale, translate);
@@ -57961,6 +57968,8 @@ goog.require('ol.xml');
 /**
  * @classdesc
  * Feature format for reading and writing data in the WFS format.
+ * Currently only supports WFS version 1.1.0.
+ * Also see {@link ol.format.GML} which is used by this format.
  *
  * @constructor
  * @param {olx.format.WFSOptions=} opt_options
@@ -58011,17 +58020,21 @@ ol.format.WFS.xmlns = 'http://www.w3.org/2000/xmlns/';
 
 
 /**
+ * Number of features; bounds/extent.
  * @typedef {{numberOfFeatures: number,
  *            bounds: ol.Extent}}
+ * @api
  */
 ol.format.WFS.FeatureCollectionMetadata;
 
 
 /**
+ * Total deleted; total inserted; total updated; array of insert ids.
  * @typedef {{totalDeleted: number,
  *            totalInserted: number,
-              totalUpdated: number,
-              insertIds: Array.<string>}}
+ *            totalUpdated: number,
+ *            insertIds: Array.<string>}}
+ * @api
  */
 ol.format.WFS.TransactionResponse;
 
@@ -61883,8 +61896,7 @@ goog.require('ol.TileState');
  * @param {?string} crossOrigin Cross origin.
  * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
  */
-ol.ImageTile =
-    function(tileCoord, state, src, crossOrigin, tileLoadFunction) {
+ol.ImageTile = function(tileCoord, state, src, crossOrigin, tileLoadFunction) {
 
   goog.base(this, tileCoord, state);
 
@@ -73935,9 +73947,7 @@ ol.renderer.Map.prototype.createLayerRenderer = function(layer) {
  * @inheritDoc
  */
 ol.renderer.Map.prototype.disposeInternal = function() {
-  goog.object.forEach(this.layerRenderers_, function(layerRenderer) {
-    goog.dispose(layerRenderer);
-  });
+  goog.object.forEach(this.layerRenderers_, goog.dispose);
   goog.base(this, 'disposeInternal');
 };
 
@@ -77545,8 +77555,7 @@ ol.render.canvas.Replay.prototype.drawText = goog.abstractMethod;
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {Object} data Opaque data object.
  */
-ol.render.canvas.Replay.prototype.endGeometry =
-    function(geometry, data) {
+ol.render.canvas.Replay.prototype.endGeometry = function(geometry, data) {
   goog.asserts.assert(!goog.isNull(this.beginGeometryInstruction1_));
   this.beginGeometryInstruction1_[3] = this.instructions.length;
   this.beginGeometryInstruction1_ = null;
@@ -81225,6 +81234,10 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame =
     } else {
       replayContext = context;
     }
+    // for performance reasons, context.save / context.restore is not used
+    // to save and restore the transformation matrix and the opacity.
+    // see http://jsperf.com/context-save-restore-versus-variable
+    var alpha = replayContext.globalAlpha;
     replayContext.globalAlpha = layerState.opacity;
     replayGroup.replay(
         replayContext, frameState.extent, frameState.pixelRatio, transform,
@@ -81234,6 +81247,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame =
       this.dispatchRenderEvent(replayContext, frameState, transform);
       context.drawImage(replayContext.canvas, 0, 0);
     }
+    replayContext.globalAlpha = alpha;
   }
 
   this.dispatchPostComposeEvent(context, frameState, transform);
@@ -87812,8 +87826,9 @@ ol.MapProperty = {
  *       target: 'map'
  *     });
  *
- * The above snippet creates a map with a MapQuest OSM layer on a 2D view and
- * renders it to a DOM element with the id `map`.
+ * The above snippet creates a map using a {@link ol.layer.Tile} to display
+ * {@link ol.source.MapQuest} OSM data and render it to a DOM element with the
+ * id `map`.
  *
  * The constructor places a viewport container (with CSS class name
  * `ol-viewport`) in the target element (see `getViewport()`), and then two
@@ -91156,7 +91171,7 @@ ol.OverlayProperty = {
  * `'center-left'`, `'center-center'`, `'center-right'`, `'top-left'`,
  * `'top-center'`, `'top-right'`
  * @enum {string}
- * @api
+ * @api stable
  */
 ol.OverlayPositioning = {
   BOTTOM_LEFT: 'bottom-left',
@@ -91281,7 +91296,7 @@ goog.inherits(ol.Overlay, ol.Object);
  * Get the DOM element of this overlay.
  * @return {Element|undefined} The Element containing the overlay.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.getElement = function() {
   return /** @type {Element|undefined} */ (
@@ -91297,7 +91312,7 @@ goog.exportProperty(
  * Get the map associated with this overlay.
  * @return {ol.Map|undefined} The map that the overlay is part of.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.getMap = function() {
   return /** @type {ol.Map|undefined} */ (
@@ -91313,7 +91328,7 @@ goog.exportProperty(
  * Get the offset of this overlay.
  * @return {Array.<number>} The offset.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.getOffset = function() {
   return /** @type {Array.<number>} */ (
@@ -91330,7 +91345,7 @@ goog.exportProperty(
  * @return {ol.Coordinate|undefined} The spatial point that the overlay is
  *     anchored at.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.getPosition = function() {
   return /** @type {ol.Coordinate|undefined} */ (
@@ -91347,7 +91362,7 @@ goog.exportProperty(
  * @return {ol.OverlayPositioning} How the overlay is positioned
  *     relative to its point on the map.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.getPositioning = function() {
   return /** @type {ol.OverlayPositioning} */ (
@@ -91433,7 +91448,7 @@ ol.Overlay.prototype.handlePositioningChanged = function() {
  * Set the DOM element to be associated with this overlay.
  * @param {Element|undefined} element The Element containing the overlay.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.setElement = function(element) {
   this.set(ol.OverlayProperty.ELEMENT, element);
@@ -91448,7 +91463,7 @@ goog.exportProperty(
  * Set the map to be associated with this overlay.
  * @param {ol.Map|undefined} map The map that the overlay is part of.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.setMap = function(map) {
   this.set(ol.OverlayProperty.MAP, map);
@@ -91463,7 +91478,7 @@ goog.exportProperty(
  * Set the offset for this overlay.
  * @param {Array.<number>} offset Offset.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.setOffset = function(offset) {
   this.set(ol.OverlayProperty.OFFSET, offset);
@@ -91495,7 +91510,7 @@ goog.exportProperty(
  * @param {ol.OverlayPositioning} positioning how the overlay is
  *     positioned relative to its point on the map.
  * @observable
- * @api
+ * @api stable
  */
 ol.Overlay.prototype.setPositioning = function(positioning) {
   this.set(ol.OverlayProperty.POSITIONING, positioning);
@@ -97643,8 +97658,6 @@ ol.source.TileVector = function(options) {
     projection: options.projection
   });
 
-  var tileGrid = options.tileGrid;
-
   /**
    * @private
    * @type {ol.tilegrid.TileGrid}
@@ -97661,7 +97674,7 @@ ol.source.TileVector = function(options) {
    * @private
    * @type {ol.TileCoordTransformType}
    */
-  this.tileCoordTransform_ = tileGrid.createTileCoordTransform();
+  this.tileCoordTransform_ = this.tileGrid_.createTileCoordTransform();
 
   /**
    * @private
@@ -98017,8 +98030,7 @@ ol.source.TileWMS.prototype.getGetFeatureInfoUrl =
   }
 
   var tileResolution = tileGrid.getResolution(tileCoord[0]);
-  var tileExtent = tileGrid.getTileCoordExtent(
-      tileCoord, this.tmpExtent_);
+  var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
   var tileSize = tileGrid.getTileSize(tileCoord[0]);
 
   var gutter = this.gutter_;
@@ -98469,7 +98481,9 @@ goog.require('ol.tilegrid.WMTS');
 
 
 /**
+ * Request encoding. One of 'KVP', 'REST'.
  * @enum {string}
+ * @api
  */
 ol.source.WMTSRequestEncoding = {
   KVP: 'KVP',  // see spec §8
