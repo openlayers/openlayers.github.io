@@ -12,7 +12,7 @@ var urls = [
 // HiDPI support:
 // * Use 'bmaphidpi' layer (pixel ratio 2) for device pixel ratio > 1
 // * Use 'geolandbasemap' layer (pixel ratio 1) for device pixel ratio == 1
-var hiDPI = ol.browserfeature.DEVICE_PIXEL_RATIO > 1;
+var hiDPI = ol.has.DEVICE_PIXEL_RATIO > 1;
 
 var source = new ol.source.WMTS({
   projection: 'EPSG:3857',

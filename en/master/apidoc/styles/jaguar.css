@@ -183,6 +183,10 @@ li {
   font-size: 0.8em;
   padding: 2px 4px;
 }
+td.description span.stability {
+  float: left;
+  margin-right: 0.5em;
+}
 span.type-signature.static {
   margin-right: 3px;
 }
@@ -282,7 +286,6 @@ span.type-signature.static {
   width: 110px;
 }
 .main table .type {
-  width: 60px;
   color: #aaa;
   font-size: 12px;
 }
@@ -368,4 +371,13 @@ footer {
 }
 .main .readme table ul li {
   margin-bottom: 0;
+}
+.unstable {
+  display: none;
+}
+#stability {
+  color: white;
+  position: absolute;
+  top: 1em;
+  right: 8em;
 }

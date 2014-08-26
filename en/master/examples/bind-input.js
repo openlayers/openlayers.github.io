@@ -1,8 +1,8 @@
 function checkWebGL(evt) {
   document.getElementById('no-webgl').style.display =
-      ol.browserfeature.HAS_WEBGL ? 'none' : '';
+      ol.has.WEBGL ? 'none' : '';
   document.getElementById('has-webgl').style.display =
-      ol.browserfeature.HAS_WEBGL && !evt.glContext ? '' : 'none';
+      ol.has.WEBGL && !evt.glContext ? '' : 'none';
   document.getElementById('webgl').style.display =
       evt.glContext ? '' : 'none';
 }
