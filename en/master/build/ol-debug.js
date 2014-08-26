@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://ol3.js.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-gamma.4-302-g1e0b366
+// Version: v3.0.0-gamma.4-308-gdea670f
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -6730,7 +6730,8 @@ ol.ZOOMSLIDER_ANIMATION_DURATION = 200;
  *     ParentClass.prototype.foo = function(a) { }
  *
  *     function ChildClass(a, b, c) {
- *       goog.base(this, a, b);
+ *       // Call parent constructor
+ *       ParentClass.call(this, a, b);
  *     }
  *     ol.inherits(ChildClass, ParentClass);
  *
@@ -6741,7 +6742,7 @@ ol.ZOOMSLIDER_ANIMATION_DURATION = 200;
  * follows:
  *
  *     ChildClass.prototype.foo = function(a) {
- *       ChildClass.superClass_.foo.call(this, a);
+ *       ChildClass.base(this, 'foo', a);
  *       // Other code here.
  *     };
  *
@@ -97223,7 +97224,7 @@ ol.source.OSM = function(opt_options) {
     attributions: attributions,
     crossOrigin: crossOrigin,
     opaque: true,
-    maxZoom: options.maxZoom,
+    maxZoom: goog.isDef(options.maxZoom) ? options.maxZoom : 19,
     tileLoadFunction: options.tileLoadFunction,
     url: url
   });
