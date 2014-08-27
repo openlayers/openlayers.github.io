@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://ol3.js.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-gamma.4-315-g55005cf
+// Version: v3.0.0-gamma.4-319-gb7ca592
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -69164,7 +69164,7 @@ ol.Kinetic.prototype.end = function() {
 ol.Kinetic.prototype.pan = function(source) {
   var decay = this.decay_;
   var initialVelocity = this.initialVelocity_;
-  var minVelocity = this.minVelocity_;
+  var velocity = this.minVelocity_ - initialVelocity;
   var duration = this.getDuration_();
   var easingFunction = (
       /**
@@ -69173,7 +69173,7 @@ ol.Kinetic.prototype.pan = function(source) {
        */
       function(t) {
         return initialVelocity * (Math.exp((decay * t) * duration) - 1) /
-            (minVelocity - initialVelocity);
+            velocity;
       });
   return ol.animation.pan({
     source: source,
