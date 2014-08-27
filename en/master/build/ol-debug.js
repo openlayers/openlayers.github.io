@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://ol3.js.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-gamma.4-319-gb7ca592
+// Version: v3.0.0-gamma.4-324-g4e8abb6
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -38118,7 +38118,8 @@ goog.inherits(ol.geom.Circle, ol.geom.SimpleGeometry);
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.Circle} Clone.
  * @api
  */
 ol.geom.Circle.prototype.clone = function() {
@@ -38387,7 +38388,8 @@ ol.geom.GeometryCollection.prototype.listenGeometriesChange_ = function() {
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.GeometryCollection} Clone.
  * @api stable
  */
 ol.geom.GeometryCollection.prototype.clone = function() {
@@ -39730,7 +39732,8 @@ ol.geom.LineString.prototype.appendCoordinate = function(coordinate) {
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.LineString} Clone.
  * @api stable
  */
 ol.geom.LineString.prototype.clone = function() {
@@ -39948,7 +39951,8 @@ ol.geom.MultiLineString.prototype.appendLineString = function(lineString) {
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.MultiLineString} Clone.
  * @api stable
  */
 ol.geom.MultiLineString.prototype.clone = function() {
@@ -40214,7 +40218,8 @@ goog.inherits(ol.geom.Point, ol.geom.SimpleGeometry);
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.Point} Clone.
  * @api stable
  */
 ol.geom.Point.prototype.clone = function() {
@@ -40355,7 +40360,8 @@ ol.geom.MultiPoint.prototype.appendPoint = function(point) {
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.MultiPoint} Clone.
  * @api stable
  */
 ol.geom.MultiPoint.prototype.clone = function() {
@@ -40594,7 +40600,8 @@ goog.inherits(ol.geom.LinearRing, ol.geom.SimpleGeometry);
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.LinearRing} Clone.
  * @api stable
  */
 ol.geom.LinearRing.prototype.clone = function() {
@@ -41125,7 +41132,8 @@ ol.geom.Polygon.prototype.appendLinearRing = function(linearRing) {
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.Polygon} Clone.
  * @api stable
  */
 ol.geom.Polygon.prototype.clone = function() {
@@ -41508,7 +41516,8 @@ ol.geom.MultiPolygon.prototype.appendPolygon = function(polygon) {
 
 
 /**
- * @inheritDoc
+ * Make a complete copy of the geometry.
+ * @return {!ol.geom.MultiPolygon} Clone.
  * @api stable
  */
 ol.geom.MultiPolygon.prototype.clone = function() {
@@ -97390,7 +97399,8 @@ ol.source.OSMXML = function(opt_options) {
     projection: options.projection,
     reprojectTo: options.reprojectTo,
     text: options.text,
-    url: options.url
+    url: options.url,
+    urls: options.urls
   });
 
 };
