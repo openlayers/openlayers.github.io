@@ -11,7 +11,7 @@ Requires that you have [Git](http://git-scm.com/) and [NodeJS](http://nodejs.org
 
 Future updates only require that you run `npm run deploy`.  This will update the site documentation and examples from the `master` branch of the `ol3` repository.  To deploy the site for other branches/tags, see below.
 
-Note that the `build` branch of this repository is the default branch.  The build tasks and resources are in this branch.  The `master` branch of this repository contains the build artifacts, and this is what is deployed at http://ol3js.org/.  The build tasks modify the contents of the `master` branch and push changes.
+Note that the `build` branch of this repository is the default branch.  The build tasks and resources are in this branch.  The `master` branch of this repository contains the build artifacts, and this is what is deployed at http://openlayers.org/.  The build tasks modify the contents of the `master` branch and push changes.
 
 ## Building the site for an arbitrary tag or branch
 
