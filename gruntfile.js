@@ -6,7 +6,7 @@ var path = require('path');
  * value.  Examples: v3.0.0-beta.1 or master.
  * @type {String}
  */
-var latest = 'master';
+var latest = 'v3.0.0';
 
 
 /** @param {Object} grunt Grunt. */
