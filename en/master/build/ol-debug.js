@@ -1,6 +1,6 @@
-// OpenLayers 3. See http://ol3.js.org/
+// OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-gamma.4-372-g90604fa
+// Version: v3.0.0-2-g36e5fb8
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -17197,8 +17197,20 @@ goog.require('goog.math');
 
 
 /**
+ * @classdesc
+ * Class to create objects that can be used with {@link
+ * ol.geom.Polygon.circular}.
+ *
+ * For example to create a sphere whose radius is equal to the semi-major
+ * axis of the WGS84 ellipsoid:
+ *
+ * ```js
+ * var wgs84Sphere= new ol.Sphere(6378137);
+ * ```
+ *
  * @constructor
  * @param {number} radius Radius.
+ * @api
  */
 ol.Sphere = function(radius) {
 
@@ -27161,8 +27173,9 @@ ol.Collection.prototype.insertAt = function(index, elem) {
 
 
 /**
- * Remove the last element of the collection.
- * @return {T} Element.
+ * Remove the last element of the collection and return it.
+ * Return `undefined` if the collection is empty.
+ * @return {T|undefined} Element.
  * @api stable
  */
 ol.Collection.prototype.pop = function() {
@@ -27202,9 +27215,10 @@ ol.Collection.prototype.remove = function(elem) {
 
 
 /**
- * Remove the element at the provided index.
+ * Remove the element at the provided index and return it.
+ * Return `undefined` if the collection does not contain this index.
  * @param {number} index Index.
- * @return {T} Value.
+ * @return {T|undefined} Value.
  * @api stable
  */
 ol.Collection.prototype.removeAt = function(index) {
@@ -60669,7 +60683,6 @@ goog.require('ol.Sphere');
  * A sphere with radius equal to the semi-major axis of the WGS84 ellipsoid.
  * @const
  * @type {ol.Sphere}
- * @api
  */
 ol.sphere.WGS84 = new ol.Sphere(6378137);
 
@@ -100729,6 +100742,7 @@ goog.require('ol.Observable');
 goog.require('ol.Overlay');
 goog.require('ol.OverlayPositioning');
 goog.require('ol.OverlayProperty');
+goog.require('ol.Sphere');
 goog.require('ol.Tile');
 goog.require('ol.TileState');
 goog.require('ol.View');
@@ -100854,7 +100868,6 @@ goog.require('ol.source.WMTS');
 goog.require('ol.source.WMTSRequestEncoding');
 goog.require('ol.source.XYZ');
 goog.require('ol.source.Zoomify');
-goog.require('ol.sphere.WGS84');
 goog.require('ol.style.Circle');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Icon');
@@ -102048,8 +102061,8 @@ goog.exportProperty(
     ol.style.Text.prototype.getTextBaseline);
 
 goog.exportSymbol(
-    'ol.sphere.WGS84',
-    ol.sphere.WGS84);
+    'ol.Sphere',
+    ol.Sphere);
 
 goog.exportSymbol(
     'ol.source.BingMaps',
