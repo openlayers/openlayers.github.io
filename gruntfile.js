@@ -124,17 +124,17 @@ module.exports = function(grunt) {
           cwd: 'src/two',
           src: '**/*.*',
           dest: dist + '/two/'
-      }, {
+        }, {
           expand: true,
           cwd: 'src/api',
           src: '**/*.*',
           dest: dist + '/api/'
-      }, {
+        }, {
           expand: true,
           cwd: 'src/images',
           src: '**/*.*',
           dest: dist + '/images/'
-      },]
+        }]
       }
     },
     assemble: {
