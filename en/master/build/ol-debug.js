@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-2-g36e5fb8
+// Version: v3.0.0-37-gad1f255
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -41244,6 +41244,23 @@ ol.geom.Polygon.prototype.getInteriorPoint = function() {
 
 
 /**
+ * Return the number of rings of the polygon,  this includes the exterior
+ * ring and any interior rings.
+ *
+ * @return {number} Number of rings.
+ * @api
+ */
+ol.geom.Polygon.prototype.getLinearRingCount = function() {
+  return this.ends_.length;
+};
+
+
+/**
+ * Return the Nth linear ring of the polygon geometry. Return `null` if the
+ * given index is out of range.
+ * The exterior linear ring is available at index `0` and the interior rings
+ * at index `1` and beyond.
+ *
  * @param {number} index Index.
  * @return {ol.geom.LinearRing} Linear ring.
  * @api stable
@@ -42403,9 +42420,13 @@ ol.FeatureOverlay.prototype.handleMapPostCompose_ = function(event) {
   var frameState = event.frameState;
   var pixelRatio = frameState.pixelRatio;
   var resolution = frameState.viewState.resolution;
-  var i, ii, styles;
+  var i, ii, styles, featureStyleFunction;
   this.features_.forEach(function(feature) {
-    styles = styleFunction(feature, resolution);
+    featureStyleFunction = feature.getStyleFunction();
+    styles = goog.isDef(featureStyleFunction) ?
+        featureStyleFunction.call(feature, resolution) :
+        styleFunction(feature, resolution);
+
     if (!goog.isDefAndNotNull(styles)) {
       return;
     }
@@ -53963,6 +53984,7 @@ ol.style.Text.prototype.getFont = function() {
 
 /**
  * @return {number} Horizontal text offset.
+ * @api
  */
 ol.style.Text.prototype.getOffsetX = function() {
   return this.offsetX_;
@@ -53971,6 +53993,7 @@ ol.style.Text.prototype.getOffsetX = function() {
 
 /**
  * @return {number} Vertical text offset.
+ * @api
  */
 ol.style.Text.prototype.getOffsetY = function() {
   return this.offsetY_;
@@ -60871,6 +60894,7 @@ ol.Geolocation.prototype.positionChange_ = function(position) {
  */
 ol.Geolocation.prototype.positionError_ = function(error) {
   error.type = goog.events.EventType.ERROR;
+  this.setTracking(false);
   this.dispatchEvent(error);
 };
 
@@ -62277,9 +62301,11 @@ ol.ImageTile.prototype.handleImageError_ = function() {
  * @private
  */
 ol.ImageTile.prototype.handleImageLoad_ = function() {
-  if (!goog.isDef(this.image_.naturalWidth)) {
-    this.image_.naturalWidth = this.image_.width;
-    this.image_.naturalHeight = this.image_.height;
+  if (ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE) {
+    if (!goog.isDef(this.image_.naturalWidth)) {
+      this.image_.naturalWidth = this.image_.width;
+      this.image_.naturalHeight = this.image_.height;
+    }
   }
 
   if (this.image_.naturalWidth && this.image_.naturalHeight) {
@@ -75577,7 +75603,7 @@ ol.layer.Group = function(opt_options) {
       ol.Object.getChangeEventType(ol.layer.GroupProperty.LAYERS),
       this.handleLayersChanged_, false, this);
 
-  if (goog.isDef(layers)) {
+  if (goog.isDefAndNotNull(layers)) {
     if (goog.isArray(layers)) {
       layers = new ol.Collection(goog.array.clone(layers));
     } else {
@@ -75666,13 +75692,13 @@ ol.layer.Group.prototype.handleLayersRemove_ = function(collectionEvent) {
 
 
 /**
- * @return {ol.Collection.<ol.layer.Base>|undefined} Collection of
+ * @return {!ol.Collection.<ol.layer.Base>} Collection of
  * {@link ol.layer.Layer layers} that are part of this group.
  * @observable
  * @api stable
  */
 ol.layer.Group.prototype.getLayers = function() {
-  return /** @type {ol.Collection.<ol.layer.Base>|undefined} */ (this.get(
+  return /** @type {!ol.Collection.<ol.layer.Base>} */ (this.get(
       ol.layer.GroupProperty.LAYERS));
 };
 goog.exportProperty(
@@ -75682,7 +75708,7 @@ goog.exportProperty(
 
 
 /**
- * @param {ol.Collection.<ol.layer.Base>|undefined} layers Collection of
+ * @param {!ol.Collection.<ol.layer.Base>} layers Collection of
  * {@link ol.layer.Layer layers} that are part of this group.
  * @observable
  * @api stable
@@ -76020,13 +76046,21 @@ goog.require('ol.layer.Layer');
  * @constructor
  * @extends {ol.layer.Layer}
  * @fires ol.render.Event
- * @param {olx.layer.LayerOptions} options Layer options.
+ * @param {olx.layer.ImageOptions} options Layer options.
  * @api stable
  */
 ol.layer.Image = function(options) {
-  goog.base(this, options);
+  goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
 };
 goog.inherits(ol.layer.Image, ol.layer.Layer);
+
+
+/**
+ * @function
+ * @return {ol.source.Image} Source.
+ * @api stable
+ */
+ol.layer.Image.prototype.getSource;
 
 goog.provide('ol.layer.Tile');
 
@@ -76058,8 +76092,7 @@ ol.layer.TileProperty = {
  * @api stable
  */
 ol.layer.Tile = function(options) {
-  goog.base(this, options);
-
+  goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
 };
 goog.inherits(ol.layer.Tile, ol.layer.Layer);
 
@@ -76077,6 +76110,14 @@ goog.exportProperty(
     ol.layer.Tile.prototype,
     'getPreload',
     ol.layer.Tile.prototype.getPreload);
+
+
+/**
+ * @function
+ * @return {ol.source.Tile} Source.
+ * @api stable
+ */
+ol.layer.Tile.prototype.getSource;
 
 
 /**
@@ -76190,6 +76231,14 @@ ol.layer.Vector.prototype.getRenderOrder = function() {
   return /** @type {function(ol.Feature, ol.Feature):number|null|undefined} */ (
       this.get(ol.layer.VectorProperty.RENDER_ORDER));
 };
+
+
+/**
+ * @function
+ * @return {ol.source.Vector} Source.
+ * @api stable
+ */
+ol.layer.Vector.prototype.getSource;
 
 
 /**
@@ -79546,96 +79595,6 @@ ol.renderer.canvas.Layer.testCanvasSize = (function() {
   };
 })();
 
-goog.provide('ol.source.Image');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('ol.Attribution');
-goog.require('ol.Extent');
-goog.require('ol.array');
-goog.require('ol.source.Source');
-
-
-/**
- * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
- *            extent: (null|ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            resolutions: (Array.<number>|undefined),
- *            state: (ol.source.State|undefined)}}
- */
-ol.source.ImageOptions;
-
-
-
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for sources providing a single image.
- *
- * @constructor
- * @extends {ol.source.Source}
- * @param {ol.source.ImageOptions} options Single image source options.
- */
-ol.source.Image = function(options) {
-
-  goog.base(this, {
-    attributions: options.attributions,
-    extent: options.extent,
-    logo: options.logo,
-    projection: options.projection,
-    state: options.state
-  });
-
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-  this.resolutions_ = goog.isDef(options.resolutions) ?
-      options.resolutions : null;
-  goog.asserts.assert(goog.isNull(this.resolutions_) ||
-      goog.array.isSorted(this.resolutions_,
-          function(a, b) {
-            return b - a;
-          }, true));
-
-};
-goog.inherits(ol.source.Image, ol.source.Source);
-
-
-/**
- * @return {Array.<number>} Resolutions.
- */
-ol.source.Image.prototype.getResolutions = function() {
-  return this.resolutions_;
-};
-
-
-/**
- * @protected
- * @param {number} resolution Resolution.
- * @return {number} Resolution.
- */
-ol.source.Image.prototype.findNearestResolution =
-    function(resolution) {
-  if (!goog.isNull(this.resolutions_)) {
-    var idx = ol.array.linearFindNearest(this.resolutions_, resolution, 0);
-    resolution = this.resolutions_[idx];
-  }
-  return resolution;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {ol.ImageBase} Single image.
- */
-ol.source.Image.prototype.getImage = goog.abstractMethod;
-
 goog.provide('ol.renderer.canvas.ImageLayer');
 
 goog.require('goog.asserts');
@@ -79649,7 +79608,6 @@ goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.renderer.Map');
 goog.require('ol.renderer.canvas.Layer');
-goog.require('ol.source.Image');
 goog.require('ol.vec.Mat4');
 
 
@@ -79687,7 +79645,6 @@ ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
-  goog.asserts.assertInstanceof(source, ol.source.Image);
   var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
@@ -79737,7 +79694,6 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
   var imageLayer = this.getLayer();
   goog.asserts.assertInstanceof(imageLayer, ol.layer.Image);
   var imageSource = imageLayer.getSource();
-  goog.asserts.assertInstanceof(imageSource, ol.source.Image);
 
   var hints = frameState.viewHints;
 
@@ -79801,7 +79757,6 @@ goog.require('ol.extent');
 goog.require('ol.layer.Tile');
 goog.require('ol.renderer.Map');
 goog.require('ol.renderer.canvas.Layer');
-goog.require('ol.source.Tile');
 goog.require('ol.tilecoord');
 goog.require('ol.vec.Mat4');
 
@@ -79961,7 +79916,6 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
   var tileLayer = this.getLayer();
   goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
   var tileSource = tileLayer.getSource();
-  goog.asserts.assertInstanceof(tileSource, ol.source.Tile);
   var tileGrid = tileSource.getTileGridForProjection(projection);
   var tileGutter = tileSource.getGutter();
   var z = tileGrid.getZForResolution(viewState.resolution);
@@ -80208,1242 +80162,6 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
   return true;
 };
 
-// Based on rbush https://github.com/mourner/rbush
-// Copyright (c) 2013 Vladimir Agafonkin
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-
-// FIXME bulk inserts
-// FIXME is level argument needed to insert_?
-
-goog.provide('ol.structs.RBush');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.object');
-goog.require('ol.extent');
-
-
-
-/**
- * @constructor
- * @param {ol.Extent} extent Extent.
- * @param {number} height Height.
- * @param {Array.<ol.structs.RBushNode.<T>>} children Children.
- * @param {?T} value Value.
- * @struct
- * @template T
- */
-ol.structs.RBushNode = function(extent, height, children, value) {
-
-  if (height === 0) {
-    goog.asserts.assert(goog.isNull(children));
-    goog.asserts.assert(!goog.isNull(value));
-  } else {
-    goog.asserts.assert(!goog.isNull(children));
-    goog.asserts.assert(goog.isNull(value));
-  }
-
-  /**
-   * @type {ol.Extent}
-   */
-  this.extent = extent;
-
-  /**
-   * @type {number}
-   */
-  this.height = height;
-
-  /**
-   * @type {Array.<ol.structs.RBushNode.<T>>}
-   */
-  this.children = children;
-
-  /**
-   * @type {?T}
-   */
-  this.value = value;
-
-};
-
-
-/**
- * @param {ol.structs.RBushNode.<T>} node1 Node 1.
- * @param {ol.structs.RBushNode.<T>} node2 Node 2.
- * @return {number} Compare minimum X.
- * @template T
- */
-ol.structs.RBushNode.compareMinX = function(node1, node2) {
-  return node1.extent[0] - node2.extent[0];
-};
-
-
-/**
- * @param {ol.structs.RBushNode.<T>} node1 Node 1.
- * @param {ol.structs.RBushNode.<T>} node2 Node 2.
- * @return {number} Compare minimum Y.
- * @template T
- */
-ol.structs.RBushNode.compareMinY = function(node1, node2) {
-  return node1.extent[1] - node2.extent[1];
-};
-
-
-/**
- * @param {number} maxEntries Max entries.
- */
-ol.structs.RBushNode.prototype.assertValid = function(maxEntries) {
-  if (this.height === 0) {
-    goog.asserts.assert(goog.isNull(this.children));
-    goog.asserts.assert(!goog.isNull(this.value));
-  } else {
-    goog.asserts.assert(!goog.isNull(this.children));
-    goog.asserts.assert(goog.isNull(this.value));
-    goog.asserts.assert(this.children.length <= maxEntries);
-    var i, ii;
-    for (i = 0, ii = this.children.length; i < ii; ++i) {
-      var child = this.children[i];
-      goog.asserts.assert(ol.extent.containsExtent(this.extent, child.extent));
-      child.assertValid(maxEntries);
-    }
-  }
-};
-
-
-/**
- * @param {number} start Start.
- * @param {number} stop Stop.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.structs.RBushNode.prototype.getChildrenExtent =
-    function(start, stop, opt_extent) {
-  goog.asserts.assert(!this.isLeaf());
-  var children = this.children;
-  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
-  var i;
-  for (i = start; i < stop; ++i) {
-    ol.extent.extend(extent, children[i].extent);
-  }
-  return extent;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {T} value Value.
- * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
- * @return {boolean} Removed.
- */
-ol.structs.RBushNode.prototype.remove = function(extent, value, path) {
-  var children = this.children;
-  var ii = children.length;
-  var child, i;
-  if (this.height == 1) {
-    for (i = 0; i < ii; ++i) {
-      child = children[i];
-      if (child.value === value) {
-        goog.array.removeAt(children, i);
-        return true;
-      }
-    }
-  } else {
-    goog.asserts.assert(this.height > 1);
-    for (i = 0; i < ii; ++i) {
-      child = children[i];
-      if (ol.extent.containsExtent(child.extent, extent)) {
-        path.push(child);
-        if (child.remove(extent, value, path)) {
-          return true;
-        }
-        path.pop();
-      }
-    }
-  }
-  return false;
-};
-
-
-/**
- * FIXME empty description for jsdoc
- */
-ol.structs.RBushNode.prototype.updateExtent = function() {
-  goog.asserts.assert(!this.isLeaf());
-  var extent = ol.extent.createOrUpdateEmpty(this.extent);
-  var children = this.children;
-  var i, ii;
-  for (i = 0, ii = children.length; i < ii; ++i) {
-    ol.extent.extend(extent, children[i].extent);
-  }
-};
-
-
-/**
- * @return {boolean} Is leaf.
- */
-ol.structs.RBushNode.prototype.isLeaf = function() {
-  return goog.isNull(this.children);
-};
-
-
-
-/**
- * @constructor
- * @param {number=} opt_maxEntries Max entries.
- * @see https://github.com/mourner/rbush
- * @struct
- * @template T
- */
-ol.structs.RBush = function(opt_maxEntries) {
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.maxEntries_ =
-      Math.max(4, goog.isDef(opt_maxEntries) ? opt_maxEntries : 9);
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.minEntries_ = Math.max(2, Math.ceil(0.4 * this.maxEntries_));
-
-  /**
-   * @private
-   * @type {ol.structs.RBushNode.<T>}
-   */
-  this.root_ = new ol.structs.RBushNode(ol.extent.createEmpty(), 1, [], null);
-
-  /**
-   * @private
-   * @type {Object.<string, ol.Extent>}
-   */
-  this.valueExtent_ = {};
-
-  if (goog.DEBUG) {
-    /**
-     * @private
-     * @type {number}
-     */
-    this.readers_ = 0;
-  }
-
-};
-
-
-/**
- * @param {ol.structs.RBushNode.<T>} node Node.
- * @param {function(ol.structs.RBushNode.<T>, ol.structs.RBushNode.<T>): number}
- *     compare Compare.
- * @private
- * @return {number} All distance margin.
- */
-ol.structs.RBush.prototype.allDistMargin_ = function(node, compare) {
-  var children = node.children;
-  var m = this.minEntries_;
-  var M = children.length;
-  var i;
-  goog.array.sort(children, compare);
-  var leftExtent = node.getChildrenExtent(0, m);
-  var rightExtent = node.getChildrenExtent(M - m, M);
-  var margin =
-      ol.extent.getMargin(leftExtent) + ol.extent.getMargin(rightExtent);
-  for (i = m; i < M - m; ++i) {
-    ol.extent.extend(leftExtent, children[i].extent);
-    margin += ol.extent.getMargin(leftExtent);
-  }
-  for (i = M - m - 1; i >= m; --i) {
-    ol.extent.extend(rightExtent, children[i].extent);
-    margin += ol.extent.getMargin(rightExtent);
-  }
-  return margin;
-};
-
-
-/**
- * FIXME empty description for jsdoc
- */
-ol.structs.RBush.prototype.assertValid = function() {
-  this.root_.assertValid(this.maxEntries_);
-};
-
-
-/**
- * @param {ol.structs.RBushNode.<T>} node Node.
- * @private
- */
-ol.structs.RBush.prototype.chooseSplitAxis_ = function(node) {
-  var xMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinX);
-  var yMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinY);
-  if (xMargin < yMargin) {
-    goog.array.sort(node.children, ol.structs.RBushNode.compareMinX);
-  }
-};
-
-
-/**
- * @param {ol.structs.RBushNode.<T>} node Node.
- * @private
- * @return {number} Split index.
- */
-ol.structs.RBush.prototype.chooseSplitIndex_ = function(node) {
-  var children = node.children;
-  var m = this.minEntries_;
-  var M = children.length;
-  var minOverlap = Infinity;
-  var minArea = Infinity;
-  var extent1 = ol.extent.createEmpty();
-  var extent2 = ol.extent.createEmpty();
-  var index = 0;
-  var i;
-  for (i = m; i <= M - m; ++i) {
-    extent1 = node.getChildrenExtent(0, i, extent1);
-    extent2 = node.getChildrenExtent(i, M, extent2);
-    var overlap = ol.extent.getIntersectionArea(extent1, extent2);
-    var area = ol.extent.getArea(extent1) + ol.extent.getArea(extent2);
-    if (overlap < minOverlap) {
-      minOverlap = overlap;
-      minArea = Math.min(area, minArea);
-      index = i;
-    } else if (overlap == minOverlap && area < minArea) {
-      minArea = area;
-      index = i;
-    }
-  }
-  return index;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {ol.structs.RBushNode.<T>} node Node.
- * @param {number} level Level.
- * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
- * @private
- * @return {ol.structs.RBushNode.<T>} Node.
- */
-ol.structs.RBush.prototype.chooseSubtree_ =
-    function(extent, node, level, path) {
-  while (!node.isLeaf() && path.length - 1 != level) {
-    var minArea = Infinity;
-    var minEnlargement = Infinity;
-    var children = node.children;
-    var bestChild = null;
-    var i, ii;
-    for (i = 0, ii = children.length; i < ii; ++i) {
-      var child = children[i];
-      var area = ol.extent.getArea(child.extent);
-      var enlargement = ol.extent.getEnlargedArea(child.extent, extent) - area;
-      if (enlargement < minEnlargement) {
-        minEnlargement = enlargement;
-        minArea = Math.min(area, minArea);
-        bestChild = child;
-      } else if (enlargement == minEnlargement && area < minArea) {
-        minArea = area;
-        bestChild = child;
-      }
-    }
-    goog.asserts.assert(!goog.isNull(bestChild));
-    node = bestChild;
-    path.push(node);
-  }
-  return node;
-};
-
-
-/**
- * FIXME empty description for jsdoc
- */
-ol.structs.RBush.prototype.clear = function() {
-  var node = this.root_;
-  node.extent = ol.extent.createOrUpdateEmpty(this.root_.extent);
-  node.height = 1;
-  node.children.length = 0;
-  node.value = null;
-  goog.object.clear(this.valueExtent_);
-};
-
-
-/**
- * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
- * @private
- */
-ol.structs.RBush.prototype.condense_ = function(path) {
-  var i;
-  for (i = path.length - 1; i >= 0; --i) {
-    var node = path[i];
-    if (node.children.length === 0) {
-      if (i > 0) {
-        goog.array.remove(path[i - 1].children, node);
-      } else {
-        this.clear();
-      }
-    } else {
-      node.updateExtent();
-    }
-  }
-};
-
-
-/**
- * Calls a callback function with each node in the tree. Inside the callback,
- * no tree modifications (insert, update, remove) can be made.
- * If the callback returns a truthy value, this value is returned without
- * checking the rest of the tree.
- * @param {function(this: S, T): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEach = function(callback, opt_this) {
-  if (goog.DEBUG) {
-    ++this.readers_;
-    try {
-      return this.forEach_(this.root_, callback, opt_this);
-    } finally {
-      --this.readers_;
-    }
-  } else {
-    return this.forEach_(this.root_, callback, opt_this);
-  }
-};
-
-
-/**
- * @param {ol.structs.RBushNode.<T>} node Node.
- * @param {function(this: S, T): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @private
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_this) {
-  goog.asserts.assert(!node.isLeaf());
-  /** @type {Array.<ol.structs.RBushNode.<T>>} */
-  var toVisit = [node];
-  var children, i, ii, result;
-  while (toVisit.length > 0) {
-    node = toVisit.pop();
-    children = node.children;
-    if (node.height == 1) {
-      for (i = 0, ii = children.length; i < ii; ++i) {
-        result = callback.call(opt_this, children[i].value);
-        if (result) {
-          return result;
-        }
-      }
-    } else {
-      toVisit.push.apply(toVisit, children);
-    }
-  }
-};
-
-
-/**
- * Calls a callback function with each node in the provided extent. Inside the
- * callback, no tree modifications (insert, update, remove) can be made.
- * @param {ol.Extent} extent Extent.
- * @param {function(this: S, T): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEachInExtent =
-    function(extent, callback, opt_this) {
-  if (goog.DEBUG) {
-    ++this.readers_;
-    try {
-      return this.forEachInExtent_(extent, callback, opt_this);
-    } finally {
-      --this.readers_;
-    }
-  } else {
-    return this.forEachInExtent_(extent, callback, opt_this);
-  }
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {function(this: S, T): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @private
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEachInExtent_ =
-    function(extent, callback, opt_this) {
-  /** @type {Array.<ol.structs.RBushNode.<T>>} */
-  var toVisit = [this.root_];
-  var result;
-  while (toVisit.length > 0) {
-    var node = toVisit.pop();
-    if (ol.extent.intersects(extent, node.extent)) {
-      if (node.isLeaf()) {
-        result = callback.call(opt_this, node.value);
-        if (result) {
-          return result;
-        }
-      } else if (ol.extent.containsExtent(extent, node.extent)) {
-        result = this.forEach_(node, callback, opt_this);
-        if (result) {
-          return result;
-        }
-      } else {
-        toVisit.push.apply(toVisit, node.children);
-      }
-    }
-  }
-  return undefined;
-};
-
-
-/**
- * @param {function(this: S, ol.structs.RBushNode.<T>): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEachNode = function(callback, opt_this) {
-  /** @type {Array.<ol.structs.RBushNode.<T>>} */
-  var toVisit = [this.root_];
-  while (toVisit.length > 0) {
-    var node = toVisit.pop();
-    var result = callback.call(opt_this, node);
-    if (result) {
-      return result;
-    }
-    if (!node.isLeaf()) {
-      toVisit.push.apply(toVisit, node.children);
-    }
-  }
-  return undefined;
-};
-
-
-/**
- * @return {Array.<T>} All.
- */
-ol.structs.RBush.prototype.getAll = function() {
-  var values = [];
-  this.forEach(
-      /**
-       * @param {T} value Value.
-       */
-      function(value) {
-        values.push(value);
-      });
-  return values;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @return {Array.<T>} All in extent.
- */
-ol.structs.RBush.prototype.getInExtent = function(extent) {
-  var values = [];
-  this.forEachInExtent(extent,
-      /**
-       * @param {T} value Value.
-       */
-      function(value) {
-        values.push(value);
-      });
-  return values;
-};
-
-
-/**
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.structs.RBush.prototype.getExtent = function(opt_extent) {
-  return ol.extent.returnOrUpdate(this.root_.extent, opt_extent);
-};
-
-
-/**
- * @param {T} value Value.
- * @private
- * @return {string} Key.
- */
-ol.structs.RBush.prototype.getKey_ = function(value) {
-  goog.asserts.assert(goog.isObject(value));
-  return goog.getUid(value).toString();
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {T} value Value.
- */
-ol.structs.RBush.prototype.insert = function(extent, value) {
-  if (goog.DEBUG && this.readers_) {
-    throw new Error('cannot insert value while reading');
-  }
-  var key = this.getKey_(value);
-  goog.asserts.assert(!this.valueExtent_.hasOwnProperty(key));
-  this.insert_(extent, value, this.root_.height - 1);
-  this.valueExtent_[key] = ol.extent.clone(extent);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {T} value Value.
- * @param {number} level Level.
- * @private
- * @return {ol.structs.RBushNode.<T>} Node.
- */
-ol.structs.RBush.prototype.insert_ = function(extent, value, level) {
-  /** @type {Array.<ol.structs.RBushNode.<T>>} */
-  var path = [this.root_];
-  var node = this.chooseSubtree_(extent, this.root_, level, path);
-  node.children.push(new ol.structs.RBushNode(extent, 0, null, value));
-  ol.extent.extend(node.extent, extent);
-  var i;
-  for (i = path.length - 1; i >= 0; --i) {
-    if (path[i].children.length > this.maxEntries_) {
-      this.split_(path, i);
-    } else {
-      break;
-    }
-  }
-  for (; i >= 0; --i) {
-    ol.extent.extend(path[i].extent, extent);
-  }
-  return node;
-};
-
-
-/**
- * @return {boolean} Is empty.
- */
-ol.structs.RBush.prototype.isEmpty = function() {
-  return this.root_.children.length === 0;
-};
-
-
-/**
- * @param {T} value Value.
- * @return {boolean} Removed.
- */
-ol.structs.RBush.prototype.remove = function(value) {
-  if (goog.DEBUG && this.readers_) {
-    throw new Error('cannot remove value while reading');
-  }
-  var key = this.getKey_(value);
-  goog.asserts.assert(this.valueExtent_.hasOwnProperty(key));
-  var extent = this.valueExtent_[key];
-  delete this.valueExtent_[key];
-  return this.remove_(extent, value);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {T} value Value.
- * @private
- * @return {boolean} Removed.
- */
-ol.structs.RBush.prototype.remove_ = function(extent, value) {
-  var root = this.root_;
-  var path = [root];
-  var removed = root.remove(extent, value, path);
-  if (removed) {
-    this.condense_(path);
-  } else {
-    goog.asserts.assert(path.length == 1);
-    goog.asserts.assert(path[0] === root);
-  }
-  return removed;
-};
-
-
-/**
- * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
- * @param {number} level Level.
- * @private
- */
-ol.structs.RBush.prototype.split_ = function(path, level) {
-  var node = path[level];
-  this.chooseSplitAxis_(node);
-  var splitIndex = this.chooseSplitIndex_(node);
-  // FIXME too few arguments to splice here
-  var newChildren = node.children.splice(splitIndex);
-  var newNode = new ol.structs.RBushNode(
-      ol.extent.createEmpty(), node.height, newChildren, null);
-  node.updateExtent();
-  newNode.updateExtent();
-  if (level) {
-    path[level - 1].children.push(newNode);
-  } else {
-    this.splitRoot_(node, newNode);
-  }
-};
-
-
-/**
- * @param {ol.structs.RBushNode.<T>} node1 Node 1.
- * @param {ol.structs.RBushNode.<T>} node2 Node 2.
- * @private
- */
-ol.structs.RBush.prototype.splitRoot_ = function(node1, node2) {
-  goog.asserts.assert(node1 === this.root_);
-  var height = node1.height + 1;
-  var extent = ol.extent.extend(node1.extent.slice(), node2.extent);
-  var children = [node1, node2];
-  this.root_ = new ol.structs.RBushNode(extent, height, children, null);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {T} value Value.
- */
-ol.structs.RBush.prototype.update = function(extent, value) {
-  var key = this.getKey_(value);
-  var currentExtent = this.valueExtent_[key];
-  goog.asserts.assert(goog.isDef(currentExtent));
-  if (!ol.extent.equals(currentExtent, extent)) {
-    if (goog.DEBUG && this.readers_) {
-      throw new Error('cannot update extent while reading');
-    }
-    var removed = this.remove_(currentExtent, value);
-    goog.asserts.assert(removed);
-    this.insert_(extent, value, this.root_.height - 1);
-    this.valueExtent_[key] = ol.extent.clone(extent, currentExtent);
-  }
-};
-
-// FIXME bulk feature upload - suppress events
-// FIXME put features in an ol.Collection
-// FIXME make change-detection more refined (notably, geometry hint)
-
-goog.provide('ol.source.Vector');
-goog.provide('ol.source.VectorEvent');
-goog.provide('ol.source.VectorEventType');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.events.Event');
-goog.require('goog.events.EventType');
-goog.require('goog.object');
-goog.require('ol.ObjectEventType');
-goog.require('ol.proj');
-goog.require('ol.source.Source');
-goog.require('ol.structs.RBush');
-
-
-/**
- * @enum {string}
- */
-ol.source.VectorEventType = {
-  /**
-   * Triggered when a feature is added to the source.
-   * @event ol.source.VectorEvent#addfeature
-   * @api stable
-   */
-  ADDFEATURE: 'addfeature',
-  /**
-   * Triggered when a feature is removed from the source.
-   * @event ol.source.VectorEvent#removefeature
-   * @api stable
-   */
-  REMOVEFEATURE: 'removefeature'
-};
-
-
-
-/**
- * @classdesc
- * Base class for vector sources.
- *
- * @constructor
- * @extends {ol.source.Source}
- * @fires ol.source.VectorEvent
- * @param {olx.source.VectorOptions=} opt_options Vector source options.
- * @api stable
- */
-ol.source.Vector = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    attributions: options.attributions,
-    logo: options.logo,
-    projection: options.projection,
-    state: goog.isDef(options.state) ?
-        /** @type {ol.source.State} */ (options.state) : undefined
-  });
-
-  /**
-   * @private
-   * @type {ol.structs.RBush.<ol.Feature>}
-   */
-  this.rBush_ = new ol.structs.RBush();
-
-  /**
-   * @private
-   * @type {Object.<string, ol.Feature>}
-   */
-  this.nullGeometryFeatures_ = {};
-
-  /**
-   * A lookup of features by id (the return from feature.getId()).
-   * @private
-   * @type {Object.<string, ol.Feature>}
-   */
-  this.idIndex_ = {};
-
-  /**
-   * A lookup of features without id (keyed by goog.getUid(feature)).
-   * @private
-   * @type {Object.<string, ol.Feature>}
-   */
-  this.undefIdIndex_ = {};
-
-  /**
-   * @private
-   * @type {Object.<string, Array.<goog.events.Key>>}
-   */
-  this.featureChangeKeys_ = {};
-
-  if (goog.isDef(options.features)) {
-    this.addFeaturesInternal(options.features);
-  }
-
-};
-goog.inherits(ol.source.Vector, ol.source.Source);
-
-
-/**
- * @param {ol.Feature} feature Feature.
- * @api stable
- */
-ol.source.Vector.prototype.addFeature = function(feature) {
-  this.addFeatureInternal(feature);
-  this.dispatchChangeEvent();
-};
-
-
-/**
- * Add a feature without firing a `change` event.
- * @param {ol.Feature} feature Feature.
- * @protected
- */
-ol.source.Vector.prototype.addFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
-  goog.asserts.assert(!(featureKey in this.featureChangeKeys_));
-  this.featureChangeKeys_[featureKey] = [
-    goog.events.listen(feature,
-        goog.events.EventType.CHANGE,
-        this.handleFeatureChange_, false, this),
-    goog.events.listen(feature,
-        ol.ObjectEventType.PROPERTYCHANGE,
-        this.handleFeatureChange_, false, this)
-  ];
-  var geometry = feature.getGeometry();
-  if (goog.isDefAndNotNull(geometry)) {
-    var extent = geometry.getExtent();
-    this.rBush_.insert(extent, feature);
-  } else {
-    this.nullGeometryFeatures_[featureKey] = feature;
-  }
-  var id = feature.getId();
-  if (goog.isDef(id)) {
-    this.idIndex_[id.toString()] = feature;
-  } else {
-    goog.asserts.assert(!(featureKey in this.undefIdIndex_),
-        'Feature already added to the source');
-    this.undefIdIndex_[featureKey] = feature;
-  }
-  this.dispatchEvent(
-      new ol.source.VectorEvent(ol.source.VectorEventType.ADDFEATURE, feature));
-};
-
-
-/**
- * @param {Array.<ol.Feature>} features Features.
- * @api stable
- */
-ol.source.Vector.prototype.addFeatures = function(features) {
-  this.addFeaturesInternal(features);
-  this.dispatchChangeEvent();
-};
-
-
-/**
- * Add features without firing a `change` event.
- * @param {Array.<ol.Feature>} features Features.
- * @protected
- */
-ol.source.Vector.prototype.addFeaturesInternal = function(features) {
-  // FIXME use R-Bush bulk load when available
-  var i, ii;
-  for (i = 0, ii = features.length; i < ii; ++i) {
-    this.addFeatureInternal(features[i]);
-  }
-};
-
-
-/**
- * Remove all features.
- * @api stable
- */
-ol.source.Vector.prototype.clear = function() {
-  this.rBush_.forEach(this.removeFeatureInternal, this);
-  this.rBush_.clear();
-  goog.object.forEach(
-      this.nullGeometryFeatures_, this.removeFeatureInternal, this);
-  goog.object.clear(this.nullGeometryFeatures_);
-  goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_));
-  this.dispatchChangeEvent();
-};
-
-
-/**
- * @param {function(this: T, ol.Feature): S} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @return {S|undefined}
- * @template T,S
- * @api stable
- */
-ol.source.Vector.prototype.forEachFeature = function(f, opt_this) {
-  return this.rBush_.forEach(f, opt_this);
-};
-
-
-/**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @param {function(this: T, ol.Feature): S} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @return {S|undefined}
- * @template T,S
- */
-ol.source.Vector.prototype.forEachFeatureAtCoordinate =
-    function(coordinate, f, opt_this) {
-  var extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
-  return this.forEachFeatureInExtent(extent, function(feature) {
-    var geometry = feature.getGeometry();
-    goog.asserts.assert(goog.isDefAndNotNull(geometry));
-    if (geometry.containsCoordinate(coordinate)) {
-      return f.call(opt_this, feature);
-    } else {
-      return undefined;
-    }
-  });
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {function(this: T, ol.Feature): S} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @return {S|undefined}
- * @template T,S
- * @api
- */
-ol.source.Vector.prototype.forEachFeatureInExtent =
-    function(extent, f, opt_this) {
-  return this.rBush_.forEachInExtent(extent, f, opt_this);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {function(this: T, ol.Feature): S} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @return {S|undefined}
- * @template T,S
- */
-ol.source.Vector.prototype.forEachFeatureInExtentAtResolution =
-    function(extent, resolution, f, opt_this) {
-  return this.forEachFeatureInExtent(extent, f, opt_this);
-};
-
-
-/**
- * @return {Array.<ol.Feature>} Features.
- * @api stable
- */
-ol.source.Vector.prototype.getFeatures = function() {
-  var features = this.rBush_.getAll();
-  if (!goog.object.isEmpty(this.nullGeometryFeatures_)) {
-    goog.array.extend(
-        features, goog.object.getValues(this.nullGeometryFeatures_));
-  }
-  return features;
-};
-
-
-/**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {Array.<ol.Feature>} Features.
- * @api stable
- */
-ol.source.Vector.prototype.getFeaturesAtCoordinate = function(coordinate) {
-  var features = [];
-  this.forEachFeatureAtCoordinate(coordinate, function(feature) {
-    features.push(feature);
-  });
-  return features;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @return {Array.<ol.Feature>} Features.
- */
-ol.source.Vector.prototype.getFeaturesInExtent = function(extent) {
-  return this.rBush_.getInExtent(extent);
-};
-
-
-/**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {ol.Feature} Closest feature.
- * @api stable
- */
-ol.source.Vector.prototype.getClosestFeatureToCoordinate =
-    function(coordinate) {
-  // Find the closest feature using branch and bound.  We start searching an
-  // infinite extent, and find the distance from the first feature found.  This
-  // becomes the closest feature.  We then compute a smaller extent which any
-  // closer feature must intersect.  We continue searching with this smaller
-  // extent, trying to find a closer feature.  Every time we find a closer
-  // feature, we update the extent being searched so that any even closer
-  // feature must intersect it.  We continue until we run out of features.
-  var x = coordinate[0];
-  var y = coordinate[1];
-  var closestFeature = null;
-  var closestPoint = [NaN, NaN];
-  var minSquaredDistance = Infinity;
-  var extent = [-Infinity, -Infinity, Infinity, Infinity];
-  this.rBush_.forEachInExtent(extent,
-      /**
-       * @param {ol.Feature} feature Feature.
-       */
-      function(feature) {
-        var geometry = feature.getGeometry();
-        goog.asserts.assert(goog.isDefAndNotNull(geometry));
-        var previousMinSquaredDistance = minSquaredDistance;
-        minSquaredDistance = geometry.closestPointXY(
-            x, y, closestPoint, minSquaredDistance);
-        if (minSquaredDistance < previousMinSquaredDistance) {
-          closestFeature = feature;
-          // This is sneaky.  Reduce the extent that it is currently being
-          // searched while the R-Tree traversal using this same extent object
-          // is still in progress.  This is safe because the new extent is
-          // strictly contained by the old extent.
-          var minDistance = Math.sqrt(minSquaredDistance);
-          extent[0] = x - minDistance;
-          extent[1] = y - minDistance;
-          extent[2] = x + minDistance;
-          extent[3] = y + minDistance;
-        }
-      });
-  return closestFeature;
-};
-
-
-/**
- * Get the extent of the features currently in the source.
- * @return {ol.Extent} Extent.
- * @api stable
- */
-ol.source.Vector.prototype.getExtent = function() {
-  return this.rBush_.getExtent();
-};
-
-
-/**
- * Get a feature by its identifier (the value returned by feature.getId()).
- * Note that the index treats string and numeric identifiers as the same.  So
- * `source.getFeatureById(2)` will return a feature with id `'2'` or `2`.
- *
- * @param {string|number} id Feature identifier.
- * @return {ol.Feature} The feature (or `null` if not found).
- * @api stable
- */
-ol.source.Vector.prototype.getFeatureById = function(id) {
-  var feature = this.idIndex_[id.toString()];
-  return goog.isDef(feature) ? feature : null;
-};
-
-
-/**
- * @param {goog.events.Event} event Event.
- * @private
- */
-ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
-  var feature = /** @type {ol.Feature} */ (event.target);
-  var featureKey = goog.getUid(feature).toString();
-  var geometry = feature.getGeometry();
-  if (!goog.isDefAndNotNull(geometry)) {
-    if (!(featureKey in this.nullGeometryFeatures_)) {
-      this.rBush_.remove(feature);
-      this.nullGeometryFeatures_[featureKey] = feature;
-    }
-  } else {
-    var extent = geometry.getExtent();
-    if (featureKey in this.nullGeometryFeatures_) {
-      delete this.nullGeometryFeatures_[featureKey];
-      this.rBush_.insert(extent, feature);
-    } else {
-      this.rBush_.update(extent, feature);
-    }
-  }
-  var id = feature.getId();
-  var removed;
-  if (goog.isDef(id)) {
-    var sid = id.toString();
-    if (featureKey in this.undefIdIndex_) {
-      delete this.undefIdIndex_[featureKey];
-      this.idIndex_[sid] = feature;
-    } else {
-      if (this.idIndex_[sid] !== feature) {
-        removed = this.removeFromIdIndex_(feature);
-        goog.asserts.assert(removed,
-            'Expected feature to be removed from index');
-        this.idIndex_[sid] = feature;
-      }
-    }
-  } else {
-    if (!(featureKey in this.undefIdIndex_)) {
-      removed = this.removeFromIdIndex_(feature);
-      goog.asserts.assert(removed,
-          'Expected feature to be removed from index');
-      this.undefIdIndex_[featureKey] = feature;
-    } else {
-      goog.asserts.assert(this.undefIdIndex_[featureKey] === feature);
-    }
-  }
-  this.dispatchChangeEvent();
-};
-
-
-/**
- * @return {boolean} Is empty.
- */
-ol.source.Vector.prototype.isEmpty = function() {
-  return this.rBush_.isEmpty() &&
-      goog.object.isEmpty(this.nullGeometryFeatures_);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {ol.proj.Projection} projection Projection.
- */
-ol.source.Vector.prototype.loadFeatures = goog.nullFunction;
-
-
-/**
- * @param {ol.Feature} feature Feature.
- * @api stable
- */
-ol.source.Vector.prototype.removeFeature = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
-  if (featureKey in this.nullGeometryFeatures_) {
-    delete this.nullGeometryFeatures_[featureKey];
-  } else {
-    this.rBush_.remove(feature);
-  }
-  this.removeFeatureInternal(feature);
-  this.dispatchChangeEvent();
-};
-
-
-/**
- * Remove feature without firing a `change` event.
- * @param {ol.Feature} feature Feature.
- * @protected
- */
-ol.source.Vector.prototype.removeFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
-  goog.asserts.assert(featureKey in this.featureChangeKeys_);
-  goog.array.forEach(this.featureChangeKeys_[featureKey],
-      goog.events.unlistenByKey);
-  delete this.featureChangeKeys_[featureKey];
-  var id = feature.getId();
-  if (goog.isDef(id)) {
-    delete this.idIndex_[id.toString()];
-  } else {
-    delete this.undefIdIndex_[featureKey];
-  }
-  this.dispatchEvent(new ol.source.VectorEvent(
-      ol.source.VectorEventType.REMOVEFEATURE, feature));
-};
-
-
-/**
- * Remove a feature from the id index.  Called internally when the feature id
- * may have changed.
- * @param {ol.Feature} feature The feature.
- * @return {boolean} Removed the feature from the index.
- * @private
- */
-ol.source.Vector.prototype.removeFromIdIndex_ = function(feature) {
-  var removed = false;
-  for (var id in this.idIndex_) {
-    if (this.idIndex_[id] === feature) {
-      delete this.idIndex_[id];
-      removed = true;
-      break;
-    }
-  }
-  return removed;
-};
-
-
-
-/**
- * @classdesc
- * Events emitted by {@link ol.source.Vector} instances are instances of this
- * type.
- *
- * @constructor
- * @extends {goog.events.Event}
- * @implements {oli.source.VectorEvent}
- * @param {string} type Type.
- * @param {ol.Feature=} opt_feature Feature.
- */
-ol.source.VectorEvent = function(type, opt_feature) {
-
-  goog.base(this, type);
-
-  /**
-   * The feature being added or removed.
-   * @type {ol.Feature|undefined}
-   * @api stable
-   */
-  this.feature = opt_feature;
-
-};
-goog.inherits(ol.source.VectorEvent, goog.events.Event);
-
 goog.provide('ol.renderer.canvas.VectorLayer');
 
 goog.require('goog.array');
@@ -81457,7 +80175,6 @@ goog.require('ol.render.EventType');
 goog.require('ol.render.canvas.ReplayGroup');
 goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.renderer.vector');
-goog.require('ol.source.Vector');
 
 
 
@@ -81614,7 +80331,6 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
   var vectorLayer = /** @type {ol.layer.Vector} */ (this.getLayer());
   goog.asserts.assertInstanceof(vectorLayer, ol.layer.Vector);
   var vectorSource = vectorLayer.getSource();
-  goog.asserts.assertInstanceof(vectorSource, ol.source.Vector);
 
   this.updateAttributions(
       frameState.attributions, vectorSource.getAttributions());
@@ -81988,7 +80704,6 @@ goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.renderer.dom.Layer');
-goog.require('ol.source.Image');
 goog.require('ol.vec.Mat4');
 
 
@@ -82029,7 +80744,6 @@ ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
-  goog.asserts.assertInstanceof(source, ol.source.Image);
   var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
@@ -82061,7 +80775,6 @@ ol.renderer.dom.ImageLayer.prototype.prepareFrame =
   var imageLayer = this.getLayer();
   goog.asserts.assertInstanceof(imageLayer, ol.layer.Image);
   var imageSource = imageLayer.getSource();
-  goog.asserts.assertInstanceof(imageSource, ol.source.Image);
 
   var hints = frameState.viewHints;
 
@@ -82151,7 +80864,6 @@ goog.require('ol.dom.BrowserFeature');
 goog.require('ol.extent');
 goog.require('ol.layer.Tile');
 goog.require('ol.renderer.dom.Layer');
-goog.require('ol.source.Tile');
 goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.TileGrid');
 goog.require('ol.vec.Mat4');
@@ -82226,7 +80938,6 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame =
   var tileLayer = this.getLayer();
   goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
   var tileSource = tileLayer.getSource();
-  goog.asserts.assertInstanceof(tileSource, ol.source.Tile);
   var tileGrid = tileSource.getTileGridForProjection(projection);
   var tileGutter = tileSource.getGutter();
   var z = tileGrid.getZForResolution(viewState.resolution);
@@ -86315,7 +85026,6 @@ goog.require('ol.ViewHint');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.renderer.webgl.Layer');
-goog.require('ol.source.Image');
 
 
 
@@ -86382,7 +85092,6 @@ ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
-  goog.asserts.assertInstanceof(source, ol.source.Image);
   var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
@@ -86418,7 +85127,6 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
   var imageLayer = this.getLayer();
   goog.asserts.assertInstanceof(imageLayer, ol.layer.Image);
   var imageSource = imageLayer.getSource();
-  goog.asserts.assertInstanceof(imageSource, ol.source.Image);
 
   var hints = frameState.viewHints;
 
@@ -86645,7 +85353,6 @@ goog.require('ol.layer.Tile');
 goog.require('ol.math');
 goog.require('ol.renderer.webgl.Layer');
 goog.require('ol.renderer.webgl.tilelayer.shader');
-goog.require('ol.source.Tile');
 goog.require('ol.structs.Buffer');
 goog.require('ol.tilecoord');
 
@@ -86749,7 +85456,6 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
   var tileLayer = this.getLayer();
   goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
   var tileSource = tileLayer.getSource();
-  goog.asserts.assertInstanceof(tileSource, ol.source.Tile);
   var tileGrid = tileSource.getTileGridForProjection(projection);
   var z = tileGrid.getZForResolution(viewState.resolution);
   var tileResolution = tileGrid.getResolution(z);
@@ -88492,7 +87198,6 @@ ol.Map.prototype.addInteraction = function(interaction) {
  */
 ol.Map.prototype.addLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
-  goog.asserts.assert(goog.isDef(layers));
   layers.push(layer);
 };
 
@@ -88700,16 +87405,12 @@ goog.exportProperty(
 
 /**
  * Get the collection of layers associated with this map.
- * @return {ol.Collection.<ol.layer.Base>|undefined} Layers.
+ * @return {!ol.Collection.<ol.layer.Base>} Layers.
  * @api stable
  */
 ol.Map.prototype.getLayers = function() {
-  var layerGroup = this.getLayerGroup();
-  if (goog.isDef(layerGroup)) {
-    return layerGroup.getLayers();
-  } else {
-    return undefined;
-  }
+  var layers = this.getLayerGroup().getLayers();
+  return layers;
 };
 
 
@@ -89144,7 +87845,6 @@ ol.Map.prototype.removeInteraction = function(interaction) {
  */
 ol.Map.prototype.removeLayer = function(layer) {
   var layers = this.getLayerGroup().getLayers();
-  goog.asserts.assert(goog.isDef(layers));
   return layers.remove(layer);
 };
 
@@ -89543,6 +88243,1242 @@ if (goog.DEBUG) {
   })();
 }
 
+// Based on rbush https://github.com/mourner/rbush
+// Copyright (c) 2013 Vladimir Agafonkin
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+// FIXME bulk inserts
+// FIXME is level argument needed to insert_?
+
+goog.provide('ol.structs.RBush');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.object');
+goog.require('ol.extent');
+
+
+
+/**
+ * @constructor
+ * @param {ol.Extent} extent Extent.
+ * @param {number} height Height.
+ * @param {Array.<ol.structs.RBushNode.<T>>} children Children.
+ * @param {?T} value Value.
+ * @struct
+ * @template T
+ */
+ol.structs.RBushNode = function(extent, height, children, value) {
+
+  if (height === 0) {
+    goog.asserts.assert(goog.isNull(children));
+    goog.asserts.assert(!goog.isNull(value));
+  } else {
+    goog.asserts.assert(!goog.isNull(children));
+    goog.asserts.assert(goog.isNull(value));
+  }
+
+  /**
+   * @type {ol.Extent}
+   */
+  this.extent = extent;
+
+  /**
+   * @type {number}
+   */
+  this.height = height;
+
+  /**
+   * @type {Array.<ol.structs.RBushNode.<T>>}
+   */
+  this.children = children;
+
+  /**
+   * @type {?T}
+   */
+  this.value = value;
+
+};
+
+
+/**
+ * @param {ol.structs.RBushNode.<T>} node1 Node 1.
+ * @param {ol.structs.RBushNode.<T>} node2 Node 2.
+ * @return {number} Compare minimum X.
+ * @template T
+ */
+ol.structs.RBushNode.compareMinX = function(node1, node2) {
+  return node1.extent[0] - node2.extent[0];
+};
+
+
+/**
+ * @param {ol.structs.RBushNode.<T>} node1 Node 1.
+ * @param {ol.structs.RBushNode.<T>} node2 Node 2.
+ * @return {number} Compare minimum Y.
+ * @template T
+ */
+ol.structs.RBushNode.compareMinY = function(node1, node2) {
+  return node1.extent[1] - node2.extent[1];
+};
+
+
+/**
+ * @param {number} maxEntries Max entries.
+ */
+ol.structs.RBushNode.prototype.assertValid = function(maxEntries) {
+  if (this.height === 0) {
+    goog.asserts.assert(goog.isNull(this.children));
+    goog.asserts.assert(!goog.isNull(this.value));
+  } else {
+    goog.asserts.assert(!goog.isNull(this.children));
+    goog.asserts.assert(goog.isNull(this.value));
+    goog.asserts.assert(this.children.length <= maxEntries);
+    var i, ii;
+    for (i = 0, ii = this.children.length; i < ii; ++i) {
+      var child = this.children[i];
+      goog.asserts.assert(ol.extent.containsExtent(this.extent, child.extent));
+      child.assertValid(maxEntries);
+    }
+  }
+};
+
+
+/**
+ * @param {number} start Start.
+ * @param {number} stop Stop.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.structs.RBushNode.prototype.getChildrenExtent =
+    function(start, stop, opt_extent) {
+  goog.asserts.assert(!this.isLeaf());
+  var children = this.children;
+  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
+  var i;
+  for (i = start; i < stop; ++i) {
+    ol.extent.extend(extent, children[i].extent);
+  }
+  return extent;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {T} value Value.
+ * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
+ * @return {boolean} Removed.
+ */
+ol.structs.RBushNode.prototype.remove = function(extent, value, path) {
+  var children = this.children;
+  var ii = children.length;
+  var child, i;
+  if (this.height == 1) {
+    for (i = 0; i < ii; ++i) {
+      child = children[i];
+      if (child.value === value) {
+        goog.array.removeAt(children, i);
+        return true;
+      }
+    }
+  } else {
+    goog.asserts.assert(this.height > 1);
+    for (i = 0; i < ii; ++i) {
+      child = children[i];
+      if (ol.extent.containsExtent(child.extent, extent)) {
+        path.push(child);
+        if (child.remove(extent, value, path)) {
+          return true;
+        }
+        path.pop();
+      }
+    }
+  }
+  return false;
+};
+
+
+/**
+ * FIXME empty description for jsdoc
+ */
+ol.structs.RBushNode.prototype.updateExtent = function() {
+  goog.asserts.assert(!this.isLeaf());
+  var extent = ol.extent.createOrUpdateEmpty(this.extent);
+  var children = this.children;
+  var i, ii;
+  for (i = 0, ii = children.length; i < ii; ++i) {
+    ol.extent.extend(extent, children[i].extent);
+  }
+};
+
+
+/**
+ * @return {boolean} Is leaf.
+ */
+ol.structs.RBushNode.prototype.isLeaf = function() {
+  return goog.isNull(this.children);
+};
+
+
+
+/**
+ * @constructor
+ * @param {number=} opt_maxEntries Max entries.
+ * @see https://github.com/mourner/rbush
+ * @struct
+ * @template T
+ */
+ol.structs.RBush = function(opt_maxEntries) {
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.maxEntries_ =
+      Math.max(4, goog.isDef(opt_maxEntries) ? opt_maxEntries : 9);
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.minEntries_ = Math.max(2, Math.ceil(0.4 * this.maxEntries_));
+
+  /**
+   * @private
+   * @type {ol.structs.RBushNode.<T>}
+   */
+  this.root_ = new ol.structs.RBushNode(ol.extent.createEmpty(), 1, [], null);
+
+  /**
+   * @private
+   * @type {Object.<string, ol.Extent>}
+   */
+  this.valueExtent_ = {};
+
+  if (goog.DEBUG) {
+    /**
+     * @private
+     * @type {number}
+     */
+    this.readers_ = 0;
+  }
+
+};
+
+
+/**
+ * @param {ol.structs.RBushNode.<T>} node Node.
+ * @param {function(ol.structs.RBushNode.<T>, ol.structs.RBushNode.<T>): number}
+ *     compare Compare.
+ * @private
+ * @return {number} All distance margin.
+ */
+ol.structs.RBush.prototype.allDistMargin_ = function(node, compare) {
+  var children = node.children;
+  var m = this.minEntries_;
+  var M = children.length;
+  var i;
+  goog.array.sort(children, compare);
+  var leftExtent = node.getChildrenExtent(0, m);
+  var rightExtent = node.getChildrenExtent(M - m, M);
+  var margin =
+      ol.extent.getMargin(leftExtent) + ol.extent.getMargin(rightExtent);
+  for (i = m; i < M - m; ++i) {
+    ol.extent.extend(leftExtent, children[i].extent);
+    margin += ol.extent.getMargin(leftExtent);
+  }
+  for (i = M - m - 1; i >= m; --i) {
+    ol.extent.extend(rightExtent, children[i].extent);
+    margin += ol.extent.getMargin(rightExtent);
+  }
+  return margin;
+};
+
+
+/**
+ * FIXME empty description for jsdoc
+ */
+ol.structs.RBush.prototype.assertValid = function() {
+  this.root_.assertValid(this.maxEntries_);
+};
+
+
+/**
+ * @param {ol.structs.RBushNode.<T>} node Node.
+ * @private
+ */
+ol.structs.RBush.prototype.chooseSplitAxis_ = function(node) {
+  var xMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinX);
+  var yMargin = this.allDistMargin_(node, ol.structs.RBushNode.compareMinY);
+  if (xMargin < yMargin) {
+    goog.array.sort(node.children, ol.structs.RBushNode.compareMinX);
+  }
+};
+
+
+/**
+ * @param {ol.structs.RBushNode.<T>} node Node.
+ * @private
+ * @return {number} Split index.
+ */
+ol.structs.RBush.prototype.chooseSplitIndex_ = function(node) {
+  var children = node.children;
+  var m = this.minEntries_;
+  var M = children.length;
+  var minOverlap = Infinity;
+  var minArea = Infinity;
+  var extent1 = ol.extent.createEmpty();
+  var extent2 = ol.extent.createEmpty();
+  var index = 0;
+  var i;
+  for (i = m; i <= M - m; ++i) {
+    extent1 = node.getChildrenExtent(0, i, extent1);
+    extent2 = node.getChildrenExtent(i, M, extent2);
+    var overlap = ol.extent.getIntersectionArea(extent1, extent2);
+    var area = ol.extent.getArea(extent1) + ol.extent.getArea(extent2);
+    if (overlap < minOverlap) {
+      minOverlap = overlap;
+      minArea = Math.min(area, minArea);
+      index = i;
+    } else if (overlap == minOverlap && area < minArea) {
+      minArea = area;
+      index = i;
+    }
+  }
+  return index;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.structs.RBushNode.<T>} node Node.
+ * @param {number} level Level.
+ * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
+ * @private
+ * @return {ol.structs.RBushNode.<T>} Node.
+ */
+ol.structs.RBush.prototype.chooseSubtree_ =
+    function(extent, node, level, path) {
+  while (!node.isLeaf() && path.length - 1 != level) {
+    var minArea = Infinity;
+    var minEnlargement = Infinity;
+    var children = node.children;
+    var bestChild = null;
+    var i, ii;
+    for (i = 0, ii = children.length; i < ii; ++i) {
+      var child = children[i];
+      var area = ol.extent.getArea(child.extent);
+      var enlargement = ol.extent.getEnlargedArea(child.extent, extent) - area;
+      if (enlargement < minEnlargement) {
+        minEnlargement = enlargement;
+        minArea = Math.min(area, minArea);
+        bestChild = child;
+      } else if (enlargement == minEnlargement && area < minArea) {
+        minArea = area;
+        bestChild = child;
+      }
+    }
+    goog.asserts.assert(!goog.isNull(bestChild));
+    node = bestChild;
+    path.push(node);
+  }
+  return node;
+};
+
+
+/**
+ * FIXME empty description for jsdoc
+ */
+ol.structs.RBush.prototype.clear = function() {
+  var node = this.root_;
+  node.extent = ol.extent.createOrUpdateEmpty(this.root_.extent);
+  node.height = 1;
+  node.children.length = 0;
+  node.value = null;
+  goog.object.clear(this.valueExtent_);
+};
+
+
+/**
+ * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
+ * @private
+ */
+ol.structs.RBush.prototype.condense_ = function(path) {
+  var i;
+  for (i = path.length - 1; i >= 0; --i) {
+    var node = path[i];
+    if (node.children.length === 0) {
+      if (i > 0) {
+        goog.array.remove(path[i - 1].children, node);
+      } else {
+        this.clear();
+      }
+    } else {
+      node.updateExtent();
+    }
+  }
+};
+
+
+/**
+ * Calls a callback function with each node in the tree. Inside the callback,
+ * no tree modifications (insert, update, remove) can be made.
+ * If the callback returns a truthy value, this value is returned without
+ * checking the rest of the tree.
+ * @param {function(this: S, T): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEach = function(callback, opt_this) {
+  if (goog.DEBUG) {
+    ++this.readers_;
+    try {
+      return this.forEach_(this.root_, callback, opt_this);
+    } finally {
+      --this.readers_;
+    }
+  } else {
+    return this.forEach_(this.root_, callback, opt_this);
+  }
+};
+
+
+/**
+ * @param {ol.structs.RBushNode.<T>} node Node.
+ * @param {function(this: S, T): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @private
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEach_ = function(node, callback, opt_this) {
+  goog.asserts.assert(!node.isLeaf());
+  /** @type {Array.<ol.structs.RBushNode.<T>>} */
+  var toVisit = [node];
+  var children, i, ii, result;
+  while (toVisit.length > 0) {
+    node = toVisit.pop();
+    children = node.children;
+    if (node.height == 1) {
+      for (i = 0, ii = children.length; i < ii; ++i) {
+        result = callback.call(opt_this, children[i].value);
+        if (result) {
+          return result;
+        }
+      }
+    } else {
+      toVisit.push.apply(toVisit, children);
+    }
+  }
+};
+
+
+/**
+ * Calls a callback function with each node in the provided extent. Inside the
+ * callback, no tree modifications (insert, update, remove) can be made.
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this: S, T): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEachInExtent =
+    function(extent, callback, opt_this) {
+  if (goog.DEBUG) {
+    ++this.readers_;
+    try {
+      return this.forEachInExtent_(extent, callback, opt_this);
+    } finally {
+      --this.readers_;
+    }
+  } else {
+    return this.forEachInExtent_(extent, callback, opt_this);
+  }
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this: S, T): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @private
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEachInExtent_ =
+    function(extent, callback, opt_this) {
+  /** @type {Array.<ol.structs.RBushNode.<T>>} */
+  var toVisit = [this.root_];
+  var result;
+  while (toVisit.length > 0) {
+    var node = toVisit.pop();
+    if (ol.extent.intersects(extent, node.extent)) {
+      if (node.isLeaf()) {
+        result = callback.call(opt_this, node.value);
+        if (result) {
+          return result;
+        }
+      } else if (ol.extent.containsExtent(extent, node.extent)) {
+        result = this.forEach_(node, callback, opt_this);
+        if (result) {
+          return result;
+        }
+      } else {
+        toVisit.push.apply(toVisit, node.children);
+      }
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * @param {function(this: S, ol.structs.RBushNode.<T>): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEachNode = function(callback, opt_this) {
+  /** @type {Array.<ol.structs.RBushNode.<T>>} */
+  var toVisit = [this.root_];
+  while (toVisit.length > 0) {
+    var node = toVisit.pop();
+    var result = callback.call(opt_this, node);
+    if (result) {
+      return result;
+    }
+    if (!node.isLeaf()) {
+      toVisit.push.apply(toVisit, node.children);
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * @return {Array.<T>} All.
+ */
+ol.structs.RBush.prototype.getAll = function() {
+  var values = [];
+  this.forEach(
+      /**
+       * @param {T} value Value.
+       */
+      function(value) {
+        values.push(value);
+      });
+  return values;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @return {Array.<T>} All in extent.
+ */
+ol.structs.RBush.prototype.getInExtent = function(extent) {
+  var values = [];
+  this.forEachInExtent(extent,
+      /**
+       * @param {T} value Value.
+       */
+      function(value) {
+        values.push(value);
+      });
+  return values;
+};
+
+
+/**
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.structs.RBush.prototype.getExtent = function(opt_extent) {
+  return ol.extent.returnOrUpdate(this.root_.extent, opt_extent);
+};
+
+
+/**
+ * @param {T} value Value.
+ * @private
+ * @return {string} Key.
+ */
+ol.structs.RBush.prototype.getKey_ = function(value) {
+  goog.asserts.assert(goog.isObject(value));
+  return goog.getUid(value).toString();
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {T} value Value.
+ */
+ol.structs.RBush.prototype.insert = function(extent, value) {
+  if (goog.DEBUG && this.readers_) {
+    throw new Error('cannot insert value while reading');
+  }
+  var key = this.getKey_(value);
+  goog.asserts.assert(!this.valueExtent_.hasOwnProperty(key));
+  this.insert_(extent, value, this.root_.height - 1);
+  this.valueExtent_[key] = ol.extent.clone(extent);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {T} value Value.
+ * @param {number} level Level.
+ * @private
+ * @return {ol.structs.RBushNode.<T>} Node.
+ */
+ol.structs.RBush.prototype.insert_ = function(extent, value, level) {
+  /** @type {Array.<ol.structs.RBushNode.<T>>} */
+  var path = [this.root_];
+  var node = this.chooseSubtree_(extent, this.root_, level, path);
+  node.children.push(new ol.structs.RBushNode(extent, 0, null, value));
+  ol.extent.extend(node.extent, extent);
+  var i;
+  for (i = path.length - 1; i >= 0; --i) {
+    if (path[i].children.length > this.maxEntries_) {
+      this.split_(path, i);
+    } else {
+      break;
+    }
+  }
+  for (; i >= 0; --i) {
+    ol.extent.extend(path[i].extent, extent);
+  }
+  return node;
+};
+
+
+/**
+ * @return {boolean} Is empty.
+ */
+ol.structs.RBush.prototype.isEmpty = function() {
+  return this.root_.children.length === 0;
+};
+
+
+/**
+ * @param {T} value Value.
+ * @return {boolean} Removed.
+ */
+ol.structs.RBush.prototype.remove = function(value) {
+  if (goog.DEBUG && this.readers_) {
+    throw new Error('cannot remove value while reading');
+  }
+  var key = this.getKey_(value);
+  goog.asserts.assert(this.valueExtent_.hasOwnProperty(key));
+  var extent = this.valueExtent_[key];
+  delete this.valueExtent_[key];
+  return this.remove_(extent, value);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {T} value Value.
+ * @private
+ * @return {boolean} Removed.
+ */
+ol.structs.RBush.prototype.remove_ = function(extent, value) {
+  var root = this.root_;
+  var path = [root];
+  var removed = root.remove(extent, value, path);
+  if (removed) {
+    this.condense_(path);
+  } else {
+    goog.asserts.assert(path.length == 1);
+    goog.asserts.assert(path[0] === root);
+  }
+  return removed;
+};
+
+
+/**
+ * @param {Array.<ol.structs.RBushNode.<T>>} path Path.
+ * @param {number} level Level.
+ * @private
+ */
+ol.structs.RBush.prototype.split_ = function(path, level) {
+  var node = path[level];
+  this.chooseSplitAxis_(node);
+  var splitIndex = this.chooseSplitIndex_(node);
+  // FIXME too few arguments to splice here
+  var newChildren = node.children.splice(splitIndex);
+  var newNode = new ol.structs.RBushNode(
+      ol.extent.createEmpty(), node.height, newChildren, null);
+  node.updateExtent();
+  newNode.updateExtent();
+  if (level) {
+    path[level - 1].children.push(newNode);
+  } else {
+    this.splitRoot_(node, newNode);
+  }
+};
+
+
+/**
+ * @param {ol.structs.RBushNode.<T>} node1 Node 1.
+ * @param {ol.structs.RBushNode.<T>} node2 Node 2.
+ * @private
+ */
+ol.structs.RBush.prototype.splitRoot_ = function(node1, node2) {
+  goog.asserts.assert(node1 === this.root_);
+  var height = node1.height + 1;
+  var extent = ol.extent.extend(node1.extent.slice(), node2.extent);
+  var children = [node1, node2];
+  this.root_ = new ol.structs.RBushNode(extent, height, children, null);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {T} value Value.
+ */
+ol.structs.RBush.prototype.update = function(extent, value) {
+  var key = this.getKey_(value);
+  var currentExtent = this.valueExtent_[key];
+  goog.asserts.assert(goog.isDef(currentExtent));
+  if (!ol.extent.equals(currentExtent, extent)) {
+    if (goog.DEBUG && this.readers_) {
+      throw new Error('cannot update extent while reading');
+    }
+    var removed = this.remove_(currentExtent, value);
+    goog.asserts.assert(removed);
+    this.insert_(extent, value, this.root_.height - 1);
+    this.valueExtent_[key] = ol.extent.clone(extent, currentExtent);
+  }
+};
+
+// FIXME bulk feature upload - suppress events
+// FIXME put features in an ol.Collection
+// FIXME make change-detection more refined (notably, geometry hint)
+
+goog.provide('ol.source.Vector');
+goog.provide('ol.source.VectorEvent');
+goog.provide('ol.source.VectorEventType');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.Event');
+goog.require('goog.events.EventType');
+goog.require('goog.object');
+goog.require('ol.ObjectEventType');
+goog.require('ol.proj');
+goog.require('ol.source.Source');
+goog.require('ol.structs.RBush');
+
+
+/**
+ * @enum {string}
+ */
+ol.source.VectorEventType = {
+  /**
+   * Triggered when a feature is added to the source.
+   * @event ol.source.VectorEvent#addfeature
+   * @api stable
+   */
+  ADDFEATURE: 'addfeature',
+  /**
+   * Triggered when a feature is removed from the source.
+   * @event ol.source.VectorEvent#removefeature
+   * @api stable
+   */
+  REMOVEFEATURE: 'removefeature'
+};
+
+
+
+/**
+ * @classdesc
+ * Base class for vector sources.
+ *
+ * @constructor
+ * @extends {ol.source.Source}
+ * @fires ol.source.VectorEvent
+ * @param {olx.source.VectorOptions=} opt_options Vector source options.
+ * @api stable
+ */
+ol.source.Vector = function(opt_options) {
+
+  var options = goog.isDef(opt_options) ? opt_options : {};
+
+  goog.base(this, {
+    attributions: options.attributions,
+    logo: options.logo,
+    projection: options.projection,
+    state: goog.isDef(options.state) ?
+        /** @type {ol.source.State} */ (options.state) : undefined
+  });
+
+  /**
+   * @private
+   * @type {ol.structs.RBush.<ol.Feature>}
+   */
+  this.rBush_ = new ol.structs.RBush();
+
+  /**
+   * @private
+   * @type {Object.<string, ol.Feature>}
+   */
+  this.nullGeometryFeatures_ = {};
+
+  /**
+   * A lookup of features by id (the return from feature.getId()).
+   * @private
+   * @type {Object.<string, ol.Feature>}
+   */
+  this.idIndex_ = {};
+
+  /**
+   * A lookup of features without id (keyed by goog.getUid(feature)).
+   * @private
+   * @type {Object.<string, ol.Feature>}
+   */
+  this.undefIdIndex_ = {};
+
+  /**
+   * @private
+   * @type {Object.<string, Array.<goog.events.Key>>}
+   */
+  this.featureChangeKeys_ = {};
+
+  if (goog.isDef(options.features)) {
+    this.addFeaturesInternal(options.features);
+  }
+
+};
+goog.inherits(ol.source.Vector, ol.source.Source);
+
+
+/**
+ * @param {ol.Feature} feature Feature.
+ * @api stable
+ */
+ol.source.Vector.prototype.addFeature = function(feature) {
+  this.addFeatureInternal(feature);
+  this.dispatchChangeEvent();
+};
+
+
+/**
+ * Add a feature without firing a `change` event.
+ * @param {ol.Feature} feature Feature.
+ * @protected
+ */
+ol.source.Vector.prototype.addFeatureInternal = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  goog.asserts.assert(!(featureKey in this.featureChangeKeys_));
+  this.featureChangeKeys_[featureKey] = [
+    goog.events.listen(feature,
+        goog.events.EventType.CHANGE,
+        this.handleFeatureChange_, false, this),
+    goog.events.listen(feature,
+        ol.ObjectEventType.PROPERTYCHANGE,
+        this.handleFeatureChange_, false, this)
+  ];
+  var geometry = feature.getGeometry();
+  if (goog.isDefAndNotNull(geometry)) {
+    var extent = geometry.getExtent();
+    this.rBush_.insert(extent, feature);
+  } else {
+    this.nullGeometryFeatures_[featureKey] = feature;
+  }
+  var id = feature.getId();
+  if (goog.isDef(id)) {
+    this.idIndex_[id.toString()] = feature;
+  } else {
+    goog.asserts.assert(!(featureKey in this.undefIdIndex_),
+        'Feature already added to the source');
+    this.undefIdIndex_[featureKey] = feature;
+  }
+  this.dispatchEvent(
+      new ol.source.VectorEvent(ol.source.VectorEventType.ADDFEATURE, feature));
+};
+
+
+/**
+ * @param {Array.<ol.Feature>} features Features.
+ * @api stable
+ */
+ol.source.Vector.prototype.addFeatures = function(features) {
+  this.addFeaturesInternal(features);
+  this.dispatchChangeEvent();
+};
+
+
+/**
+ * Add features without firing a `change` event.
+ * @param {Array.<ol.Feature>} features Features.
+ * @protected
+ */
+ol.source.Vector.prototype.addFeaturesInternal = function(features) {
+  // FIXME use R-Bush bulk load when available
+  var i, ii;
+  for (i = 0, ii = features.length; i < ii; ++i) {
+    this.addFeatureInternal(features[i]);
+  }
+};
+
+
+/**
+ * Remove all features.
+ * @api stable
+ */
+ol.source.Vector.prototype.clear = function() {
+  this.rBush_.forEach(this.removeFeatureInternal, this);
+  this.rBush_.clear();
+  goog.object.forEach(
+      this.nullGeometryFeatures_, this.removeFeatureInternal, this);
+  goog.object.clear(this.nullGeometryFeatures_);
+  goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_));
+  this.dispatchChangeEvent();
+};
+
+
+/**
+ * @param {function(this: T, ol.Feature): S} f Callback.
+ * @param {T=} opt_this The object to use as `this` in `f`.
+ * @return {S|undefined}
+ * @template T,S
+ * @api stable
+ */
+ol.source.Vector.prototype.forEachFeature = function(f, opt_this) {
+  return this.rBush_.forEach(f, opt_this);
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {function(this: T, ol.Feature): S} f Callback.
+ * @param {T=} opt_this The object to use as `this` in `f`.
+ * @return {S|undefined}
+ * @template T,S
+ */
+ol.source.Vector.prototype.forEachFeatureAtCoordinate =
+    function(coordinate, f, opt_this) {
+  var extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
+  return this.forEachFeatureInExtent(extent, function(feature) {
+    var geometry = feature.getGeometry();
+    goog.asserts.assert(goog.isDefAndNotNull(geometry));
+    if (geometry.containsCoordinate(coordinate)) {
+      return f.call(opt_this, feature);
+    } else {
+      return undefined;
+    }
+  });
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this: T, ol.Feature): S} f Callback.
+ * @param {T=} opt_this The object to use as `this` in `f`.
+ * @return {S|undefined}
+ * @template T,S
+ * @api
+ */
+ol.source.Vector.prototype.forEachFeatureInExtent =
+    function(extent, f, opt_this) {
+  return this.rBush_.forEachInExtent(extent, f, opt_this);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {function(this: T, ol.Feature): S} f Callback.
+ * @param {T=} opt_this The object to use as `this` in `f`.
+ * @return {S|undefined}
+ * @template T,S
+ */
+ol.source.Vector.prototype.forEachFeatureInExtentAtResolution =
+    function(extent, resolution, f, opt_this) {
+  return this.forEachFeatureInExtent(extent, f, opt_this);
+};
+
+
+/**
+ * @return {Array.<ol.Feature>} Features.
+ * @api stable
+ */
+ol.source.Vector.prototype.getFeatures = function() {
+  var features = this.rBush_.getAll();
+  if (!goog.object.isEmpty(this.nullGeometryFeatures_)) {
+    goog.array.extend(
+        features, goog.object.getValues(this.nullGeometryFeatures_));
+  }
+  return features;
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {Array.<ol.Feature>} Features.
+ * @api stable
+ */
+ol.source.Vector.prototype.getFeaturesAtCoordinate = function(coordinate) {
+  var features = [];
+  this.forEachFeatureAtCoordinate(coordinate, function(feature) {
+    features.push(feature);
+  });
+  return features;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @return {Array.<ol.Feature>} Features.
+ */
+ol.source.Vector.prototype.getFeaturesInExtent = function(extent) {
+  return this.rBush_.getInExtent(extent);
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {ol.Feature} Closest feature.
+ * @api stable
+ */
+ol.source.Vector.prototype.getClosestFeatureToCoordinate =
+    function(coordinate) {
+  // Find the closest feature using branch and bound.  We start searching an
+  // infinite extent, and find the distance from the first feature found.  This
+  // becomes the closest feature.  We then compute a smaller extent which any
+  // closer feature must intersect.  We continue searching with this smaller
+  // extent, trying to find a closer feature.  Every time we find a closer
+  // feature, we update the extent being searched so that any even closer
+  // feature must intersect it.  We continue until we run out of features.
+  var x = coordinate[0];
+  var y = coordinate[1];
+  var closestFeature = null;
+  var closestPoint = [NaN, NaN];
+  var minSquaredDistance = Infinity;
+  var extent = [-Infinity, -Infinity, Infinity, Infinity];
+  this.rBush_.forEachInExtent(extent,
+      /**
+       * @param {ol.Feature} feature Feature.
+       */
+      function(feature) {
+        var geometry = feature.getGeometry();
+        goog.asserts.assert(goog.isDefAndNotNull(geometry));
+        var previousMinSquaredDistance = minSquaredDistance;
+        minSquaredDistance = geometry.closestPointXY(
+            x, y, closestPoint, minSquaredDistance);
+        if (minSquaredDistance < previousMinSquaredDistance) {
+          closestFeature = feature;
+          // This is sneaky.  Reduce the extent that it is currently being
+          // searched while the R-Tree traversal using this same extent object
+          // is still in progress.  This is safe because the new extent is
+          // strictly contained by the old extent.
+          var minDistance = Math.sqrt(minSquaredDistance);
+          extent[0] = x - minDistance;
+          extent[1] = y - minDistance;
+          extent[2] = x + minDistance;
+          extent[3] = y + minDistance;
+        }
+      });
+  return closestFeature;
+};
+
+
+/**
+ * Get the extent of the features currently in the source.
+ * @return {ol.Extent} Extent.
+ * @api stable
+ */
+ol.source.Vector.prototype.getExtent = function() {
+  return this.rBush_.getExtent();
+};
+
+
+/**
+ * Get a feature by its identifier (the value returned by feature.getId()).
+ * Note that the index treats string and numeric identifiers as the same.  So
+ * `source.getFeatureById(2)` will return a feature with id `'2'` or `2`.
+ *
+ * @param {string|number} id Feature identifier.
+ * @return {ol.Feature} The feature (or `null` if not found).
+ * @api stable
+ */
+ol.source.Vector.prototype.getFeatureById = function(id) {
+  var feature = this.idIndex_[id.toString()];
+  return goog.isDef(feature) ? feature : null;
+};
+
+
+/**
+ * @param {goog.events.Event} event Event.
+ * @private
+ */
+ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
+  var feature = /** @type {ol.Feature} */ (event.target);
+  var featureKey = goog.getUid(feature).toString();
+  var geometry = feature.getGeometry();
+  if (!goog.isDefAndNotNull(geometry)) {
+    if (!(featureKey in this.nullGeometryFeatures_)) {
+      this.rBush_.remove(feature);
+      this.nullGeometryFeatures_[featureKey] = feature;
+    }
+  } else {
+    var extent = geometry.getExtent();
+    if (featureKey in this.nullGeometryFeatures_) {
+      delete this.nullGeometryFeatures_[featureKey];
+      this.rBush_.insert(extent, feature);
+    } else {
+      this.rBush_.update(extent, feature);
+    }
+  }
+  var id = feature.getId();
+  var removed;
+  if (goog.isDef(id)) {
+    var sid = id.toString();
+    if (featureKey in this.undefIdIndex_) {
+      delete this.undefIdIndex_[featureKey];
+      this.idIndex_[sid] = feature;
+    } else {
+      if (this.idIndex_[sid] !== feature) {
+        removed = this.removeFromIdIndex_(feature);
+        goog.asserts.assert(removed,
+            'Expected feature to be removed from index');
+        this.idIndex_[sid] = feature;
+      }
+    }
+  } else {
+    if (!(featureKey in this.undefIdIndex_)) {
+      removed = this.removeFromIdIndex_(feature);
+      goog.asserts.assert(removed,
+          'Expected feature to be removed from index');
+      this.undefIdIndex_[featureKey] = feature;
+    } else {
+      goog.asserts.assert(this.undefIdIndex_[featureKey] === feature);
+    }
+  }
+  this.dispatchChangeEvent();
+};
+
+
+/**
+ * @return {boolean} Is empty.
+ */
+ol.source.Vector.prototype.isEmpty = function() {
+  return this.rBush_.isEmpty() &&
+      goog.object.isEmpty(this.nullGeometryFeatures_);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {ol.proj.Projection} projection Projection.
+ */
+ol.source.Vector.prototype.loadFeatures = goog.nullFunction;
+
+
+/**
+ * @param {ol.Feature} feature Feature.
+ * @api stable
+ */
+ol.source.Vector.prototype.removeFeature = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  if (featureKey in this.nullGeometryFeatures_) {
+    delete this.nullGeometryFeatures_[featureKey];
+  } else {
+    this.rBush_.remove(feature);
+  }
+  this.removeFeatureInternal(feature);
+  this.dispatchChangeEvent();
+};
+
+
+/**
+ * Remove feature without firing a `change` event.
+ * @param {ol.Feature} feature Feature.
+ * @protected
+ */
+ol.source.Vector.prototype.removeFeatureInternal = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  goog.asserts.assert(featureKey in this.featureChangeKeys_);
+  goog.array.forEach(this.featureChangeKeys_[featureKey],
+      goog.events.unlistenByKey);
+  delete this.featureChangeKeys_[featureKey];
+  var id = feature.getId();
+  if (goog.isDef(id)) {
+    delete this.idIndex_[id.toString()];
+  } else {
+    delete this.undefIdIndex_[featureKey];
+  }
+  this.dispatchEvent(new ol.source.VectorEvent(
+      ol.source.VectorEventType.REMOVEFEATURE, feature));
+};
+
+
+/**
+ * Remove a feature from the id index.  Called internally when the feature id
+ * may have changed.
+ * @param {ol.Feature} feature The feature.
+ * @return {boolean} Removed the feature from the index.
+ * @private
+ */
+ol.source.Vector.prototype.removeFromIdIndex_ = function(feature) {
+  var removed = false;
+  for (var id in this.idIndex_) {
+    if (this.idIndex_[id] === feature) {
+      delete this.idIndex_[id];
+      removed = true;
+      break;
+    }
+  }
+  return removed;
+};
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.source.Vector} instances are instances of this
+ * type.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @implements {oli.source.VectorEvent}
+ * @param {string} type Type.
+ * @param {ol.Feature=} opt_feature Feature.
+ */
+ol.source.VectorEvent = function(type, opt_feature) {
+
+  goog.base(this, type);
+
+  /**
+   * The feature being added or removed.
+   * @type {ol.Feature|undefined}
+   * @api stable
+   */
+  this.feature = opt_feature;
+
+};
+goog.inherits(ol.source.VectorEvent, goog.events.Event);
+
 goog.provide('ol.DrawEvent');
 goog.provide('ol.interaction.Draw');
 
@@ -89726,7 +89662,7 @@ ol.interaction.Draw = function(options) {
   this.squaredClickTolerance_ = 4;
 
   /**
-   * Draw overlay where are sketch features are drawn.
+   * Draw overlay where our sketch features are drawn.
    * @type {ol.FeatureOverlay}
    * @private
    */
@@ -95809,7 +95745,6 @@ goog.require('goog.net.XhrIo.ResponseType');
 goog.require('goog.userAgent');
 goog.require('ol.format.FormatType');
 goog.require('ol.has');
-goog.require('ol.proj');
 goog.require('ol.source.State');
 goog.require('ol.source.Vector');
 goog.require('ol.xml');
@@ -95916,23 +95851,8 @@ ol.source.FormatVector.prototype.loadFeaturesFromURL =
  */
 ol.source.FormatVector.prototype.readFeatures = function(source) {
   var format = this.format;
-  var features = format.readFeatures(source);
-  var featureProjection = format.readProjection(source);
   var projection = this.getProjection();
-  if (!goog.isNull(projection) && !goog.isNull(featureProjection)) {
-    if (!ol.proj.equivalent(featureProjection, projection)) {
-      var transform = ol.proj.getTransform(featureProjection, projection);
-      var i, ii;
-      for (i = 0, ii = features.length; i < ii; ++i) {
-        var feature = features[i];
-        var geometry = feature.getGeometry();
-        if (goog.isDefAndNotNull(geometry)) {
-          geometry.applyTransform(transform);
-        }
-      }
-    }
-  }
-  return features;
+  return format.readFeatures(source, {featureProjection: projection});
 };
 
 goog.provide('ol.source.StaticVector');
@@ -96119,6 +96039,96 @@ ol.source.IGC = function(opt_options) {
 
 };
 goog.inherits(ol.source.IGC, ol.source.StaticVector);
+
+goog.provide('ol.source.Image');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('ol.Attribution');
+goog.require('ol.Extent');
+goog.require('ol.array');
+goog.require('ol.source.Source');
+
+
+/**
+ * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ *            extent: (null|ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            resolutions: (Array.<number>|undefined),
+ *            state: (ol.source.State|undefined)}}
+ */
+ol.source.ImageOptions;
+
+
+
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for sources providing a single image.
+ *
+ * @constructor
+ * @extends {ol.source.Source}
+ * @param {ol.source.ImageOptions} options Single image source options.
+ */
+ol.source.Image = function(options) {
+
+  goog.base(this, {
+    attributions: options.attributions,
+    extent: options.extent,
+    logo: options.logo,
+    projection: options.projection,
+    state: options.state
+  });
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.resolutions_ = goog.isDef(options.resolutions) ?
+      options.resolutions : null;
+  goog.asserts.assert(goog.isNull(this.resolutions_) ||
+      goog.array.isSorted(this.resolutions_,
+          function(a, b) {
+            return b - a;
+          }, true));
+
+};
+goog.inherits(ol.source.Image, ol.source.Source);
+
+
+/**
+ * @return {Array.<number>} Resolutions.
+ */
+ol.source.Image.prototype.getResolutions = function() {
+  return this.resolutions_;
+};
+
+
+/**
+ * @protected
+ * @param {number} resolution Resolution.
+ * @return {number} Resolution.
+ */
+ol.source.Image.prototype.findNearestResolution =
+    function(resolution) {
+  if (!goog.isNull(this.resolutions_)) {
+    var idx = ol.array.linearFindNearest(this.resolutions_, resolution, 0);
+    resolution = this.resolutions_[idx];
+  }
+  return resolution;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {ol.ImageBase} Single image.
+ */
+ol.source.Image.prototype.getImage = goog.abstractMethod;
 
 goog.provide('ol.source.ImageCanvas');
 
@@ -97160,7 +97170,8 @@ ol.source.XYZ = function(options) {
 
   var tileGrid = new ol.tilegrid.XYZ({
     extent: ol.tilegrid.extentFromProjection(projection),
-    maxZoom: options.maxZoom
+    maxZoom: options.maxZoom,
+    tileSize: options.tileSize
   });
 
   goog.base(this, {
@@ -102027,6 +102038,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.style.Text.prototype,
+    'getOffsetX',
+    ol.style.Text.prototype.getOffsetX);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
+    'getOffsetY',
+    ol.style.Text.prototype.getOffsetY);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
     'getFill',
     ol.style.Text.prototype.getFill);
 
@@ -102567,6 +102588,11 @@ goog.exportSymbol(
     'ol.layer.Image',
     ol.layer.Image);
 
+goog.exportProperty(
+    ol.layer.Image.prototype,
+    'getSource',
+    ol.layer.Image.prototype.getSource);
+
 goog.exportSymbol(
     'ol.layer.Layer',
     ol.layer.Layer);
@@ -102691,6 +102717,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Tile.prototype,
+    'getSource',
+    ol.layer.Tile.prototype.getSource);
+
+goog.exportProperty(
+    ol.layer.Tile.prototype,
     'setPreload',
     ol.layer.Tile.prototype.setPreload);
 
@@ -102707,6 +102738,11 @@ goog.exportProperty(
 goog.exportSymbol(
     'ol.layer.Vector',
     ol.layer.Vector);
+
+goog.exportProperty(
+    ol.layer.Vector.prototype,
+    'getSource',
+    ol.layer.Vector.prototype.getSource);
 
 goog.exportProperty(
     ol.layer.Vector.prototype,
@@ -103186,6 +103222,11 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getInteriorPoint',
     ol.geom.Polygon.prototype.getInteriorPoint);
+
+goog.exportProperty(
+    ol.geom.Polygon.prototype,
+    'getLinearRingCount',
+    ol.geom.Polygon.prototype.getLinearRingCount);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
@@ -106981,11 +107022,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Vector.prototype,
-    'getSource',
-    ol.layer.Vector.prototype.getSource);
-
-goog.exportProperty(
-    ol.layer.Vector.prototype,
     'getBrightness',
     ol.layer.Vector.prototype.getBrightness);
 
@@ -107146,6 +107182,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Heatmap.prototype,
+    'getSource',
+    ol.layer.Heatmap.prototype.getSource);
+
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
     'getStyle',
     ol.layer.Heatmap.prototype.getStyle);
 
@@ -107158,11 +107199,6 @@ goog.exportProperty(
     ol.layer.Heatmap.prototype,
     'setStyle',
     ol.layer.Heatmap.prototype.setStyle);
-
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'getSource',
-    ol.layer.Heatmap.prototype.getSource);
 
 goog.exportProperty(
     ol.layer.Heatmap.prototype,
@@ -107323,11 +107359,6 @@ goog.exportProperty(
     ol.layer.Heatmap.prototype,
     'unByKey',
     ol.layer.Heatmap.prototype.unByKey);
-
-goog.exportProperty(
-    ol.layer.Image.prototype,
-    'getSource',
-    ol.layer.Image.prototype.getSource);
 
 goog.exportProperty(
     ol.layer.Image.prototype,
@@ -107648,11 +107679,6 @@ goog.exportProperty(
     ol.layer.Group.prototype,
     'unByKey',
     ol.layer.Group.prototype.unByKey);
-
-goog.exportProperty(
-    ol.layer.Tile.prototype,
-    'getSource',
-    ol.layer.Tile.prototype.getSource);
 
 goog.exportProperty(
     ol.layer.Tile.prototype,

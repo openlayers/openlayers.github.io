@@ -45,6 +45,19 @@ var accuracyFeature = new ol.Feature();
 accuracyFeature.bindTo('geometry', geolocation, 'accuracyGeometry');
 
 var positionFeature = new ol.Feature();
+positionFeature.setStyle(new ol.style.Style({
+  image: new ol.style.Circle({
+    radius: 6,
+    fill: new ol.style.Fill({
+      color: '#3399CC'
+    }),
+    stroke: new ol.style.Stroke({
+      color: '#fff',
+      width: 2
+    })
+  })
+}));
+
 positionFeature.bindTo('geometry', geolocation, 'position')
     .transform(function() {}, function(coordinates) {
       return coordinates ? new ol.geom.Point(coordinates) : null;

@@ -4154,6 +4154,10 @@
                     <a href="ol.geom.Polygon.html#getLinearRing">getLinearRing</a>
                 </li>
             
+                <li data-name="ol.geom.Polygon#getLinearRingCount" class="unstable">
+                    <a href="ol.geom.Polygon.html#getLinearRingCount">getLinearRingCount</a>
+                </li>
+            
                 <li data-name="ol.geom.Polygon#getLinearRings" class="">
                     <a href="ol.geom.Polygon.html#getLinearRings">getLinearRings</a>
                 </li>
@@ -9475,6 +9479,14 @@
                     <a href="ol.style.Text.html#getFont">getFont</a>
                 </li>
             
+                <li data-name="ol.style.Text#getOffsetX" class="unstable">
+                    <a href="ol.style.Text.html#getOffsetX">getOffsetX</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getOffsetY" class="unstable">
+                    <a href="ol.style.Text.html#getOffsetY">getOffsetY</a>
+                </li>
+            
                 <li data-name="ol.style.Text#getRotation" class="unstable">
                     <a href="ol.style.Text.html#getRotation">getRotation</a>
                 </li>
@@ -11107,6 +11119,418 @@ outside of this extent.</p></td>
                 
 <dt class="unstable">
     <div class="nameContainer">
+        <h4 class="name" id="ImageOptions">
+            olx.layer.ImageOptions<span class="type-signature type object">{Object}</span> 
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>brightness</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Brightness. Default is <code>0</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>contrast</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Contrast. Default is <code>1</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>hue</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Hue. Default is <code>0</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opacity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Opacity (0, 1). Default is <code>1</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>saturation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Saturation. Default is <code>1</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.source.Image.html">ol.source.Image</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Source for this layer.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>visible</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Visibility. Default is <code>true</code> (visible).</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The bounding extent for layer rendering.  The layer will not be rendered
+outside of this extent.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minResolution</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The minimum resolution (inclusive) at which this layer will be visible.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>maxResolution</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The maximum resolution (exclusive) below which this layer will be visible.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt class="unstable">
+    <div class="nameContainer">
         <h4 class="name" id="LayerOptions">
             olx.layer.LayerOptions<span class="type-signature type object">{Object}</span> 
             
@@ -11775,7 +12199,7 @@ outside of this extent.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.source.Source.html">ol.source.Source</a></span>
+<span class="param-type"><a href="ol.source.Tile.html">ol.source.Tile</a></span>
 
 
             
@@ -12493,7 +12917,7 @@ this is not defined.</p></td>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Sat Aug 30 2014 09:00:24 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Sep 09 2014 23:59:07 GMT-0700 (PDT)
         </footer>
     </div>
 </div>

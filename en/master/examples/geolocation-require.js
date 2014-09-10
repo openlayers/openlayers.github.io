@@ -8,3 +8,7 @@ goog.require('ol.dom.Input');
 goog.require('ol.geom.Point');
 goog.require('ol.layer.Tile');
 goog.require('ol.source.OSM');
+goog.require('ol.style.Circle');
+goog.require('ol.style.Fill');
+goog.require('ol.style.Stroke');
+goog.require('ol.style.Style');
