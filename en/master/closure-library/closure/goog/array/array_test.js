@@ -1387,6 +1387,36 @@ function testStableSort() {
   assertArrayEquals(wantedSortedValues, sortedValues2);
 }
 
+function testSortByKey() {
+  function Item(value) {
+    this.getValue = function() {
+      return value;
+    };
+  }
+  var keyFn = function(item) {
+    return item.getValue();
+  };
+
+  // Test without custom key comparison function
+  var arr1 = [new Item(3), new Item(2), new Item(1), new Item(5), new Item(4)];
+  goog.array.sortByKey(arr1, keyFn);
+  var wantedSortedValues1 = [1, 2, 3, 4, 5];
+  for (var i = 0; i < arr1.length; i++) {
+    assertEquals(wantedSortedValues1[i], arr1[i].getValue());
+  }
+
+  // Test with custom key comparison function
+  var arr2 = [new Item(3), new Item(2), new Item(1), new Item(5), new Item(4)];
+  function comparisonFn(key1, key2) {
+    return -(key1 - key2);
+  }
+  goog.array.sortByKey(arr2, keyFn, comparisonFn);
+  var wantedSortedValues2 = [5, 4, 3, 2, 1];
+  for (var i = 0; i < arr2.length; i++) {
+    assertEquals(wantedSortedValues2[i], arr2[i].getValue());
+  }
+}
+
 function testArrayBucketModulus() {
   // bucket things by modulus
   var a = {};
@@ -1693,4 +1723,28 @@ function testShuffle() {
   // Ensure the shuffled array comprises the same elements (without regard to
   // order).
   assertSameElements(testArrayCopy, testArray);
+}
+
+function testRemoveAllIf() {
+  var testArray = [9, 1, 9, 2, 9, 3, 4, 9, 9, 9, 5];
+  var expectedArray = [1, 2, 3, 4, 5];
+
+  var actualOutput = goog.array.removeAllIf(testArray, function(el) {
+    return el == 9;
+  });
+
+  assertEquals(6, actualOutput);
+  assertArrayEquals(expectedArray, testArray);
+}
+
+function testRemoveAllIf_noMatches() {
+  var testArray = [1];
+  var expectedArray = [1];
+
+  var actualOutput = goog.array.removeAllIf(testArray, function(el) {
+    return false;
+  });
+
+  assertEquals(0, actualOutput);
+  assertArrayEquals(expectedArray, testArray);
 }

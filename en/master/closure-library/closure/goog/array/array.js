@@ -745,6 +745,31 @@ goog.array.removeIf = function(arr, f, opt_obj) {
 
 
 /**
+ * Removes all values that satisfy the given condition.
+ * @param {Array.<T>|goog.array.ArrayLike} arr Array or array
+ *     like object over which to iterate.
+ * @param {?function(this:S, T, number, ?) : boolean} f The function to call
+ *     for every element. This function
+ *     takes 3 arguments (the element, the index and the array) and should
+ *     return a boolean.
+ * @param {S=} opt_obj An optional "this" context for the function.
+ * @return {number} The number of items removed
+ * @template T,S
+ */
+goog.array.removeAllIf = function(arr, f, opt_obj) {
+  var removedCount = 0;
+  goog.array.forEachRight(arr, function(val, index) {
+    if (f.call(opt_obj, val, index, arr)) {
+      if (goog.array.removeAt(arr, index)) {
+        removedCount++;
+      }
+    }
+  });
+  return removedCount;
+};
+
+
+/**
  * Returns a new array that is the result of joining the arguments.  If arrays
  * are passed then their items are added, however, if non-arrays are passed they
  * will be added to the return array as is.
@@ -1151,6 +1176,34 @@ goog.array.stableSort = function(arr, opt_compareFn) {
 
 
 /**
+ * Sort the specified array into ascending order based on item keys
+ * returned by the specified key function.
+ * If no opt_compareFn is specified, the keys are compared in ascending order
+ * using <code>goog.array.defaultCompare</code>.
+ *
+ * Runtime: O(S(f(n)), where S is runtime of <code>goog.array.sort</code>
+ * and f(n) is runtime of the key function.
+ *
+ * @param {Array.<T>} arr The array to be sorted.
+ * @param {function(T): K} keyFn Function taking array element and returning
+ *     a key used for sorting this element.
+ * @param {?function(K, K): number=} opt_compareFn Optional comparison function
+ *     by which the keys are to be ordered. Should take 2 arguments to compare,
+ *     and return a negative number, zero, or a positive number depending on
+ *     whether the first argument is less than, equal to, or greater than the
+ *     second.
+ * @template T
+ * @template K
+ */
+goog.array.sortByKey = function(arr, keyFn, opt_compareFn) {
+  var keyCompareFn = opt_compareFn || goog.array.defaultCompare;
+  goog.array.sort(arr, function(a, b) {
+    return keyCompareFn(keyFn(a), keyFn(b));
+  });
+};
+
+
+/**
  * Sorts an array of objects by the specified object key and compare
  * function. If no compare function is provided, the key values are
  * compared in ascending order using <code>goog.array.defaultCompare</code>.
@@ -1162,10 +1215,9 @@ goog.array.stableSort = function(arr, opt_compareFn) {
  *     values.
  */
 goog.array.sortObjectsByKey = function(arr, key, opt_compareFn) {
-  var compare = opt_compareFn || goog.array.defaultCompare;
-  goog.array.sort(arr, function(a, b) {
-    return compare(a[key], b[key]);
-  });
+  goog.array.sortByKey(arr,
+      function(obj) { return obj[key]; },
+      opt_compareFn);
 };
 
 
