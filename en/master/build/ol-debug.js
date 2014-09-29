@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-62-g8bf43f5
+// Version: v3.0.0-134-gafd4368
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -12957,7 +12957,7 @@ ol.Object.capitalize = function(str) {
 ol.Object.getChangeEventType = function(key) {
   return ol.Object.changeEventTypeCache_.hasOwnProperty(key) ?
       ol.Object.changeEventTypeCache_[key] :
-      (ol.Object.changeEventTypeCache_[key] = 'change:' + key.toLowerCase());
+      (ol.Object.changeEventTypeCache_[key] = 'change:' + key);
 };
 
 
@@ -16931,8 +16931,7 @@ ol.extent.closestSquaredDistanceXY = function(extent, x, y) {
  * @api stable
  */
 ol.extent.containsCoordinate = function(extent, coordinate) {
-  return extent[0] <= coordinate[0] && coordinate[0] <= extent[2] &&
-      extent[1] <= coordinate[1] && coordinate[1] <= extent[3];
+  return ol.extent.containsXY(extent, coordinate[0], coordinate[1]);
 };
 
 
@@ -16947,6 +16946,20 @@ ol.extent.containsCoordinate = function(extent, coordinate) {
 ol.extent.containsExtent = function(extent1, extent2) {
   return extent1[0] <= extent2[0] && extent2[2] <= extent1[2] &&
       extent1[1] <= extent2[1] && extent2[3] <= extent1[3];
+};
+
+
+/**
+ * Checks if the passed coordinate is contained or on the edge of the extent.
+ *
+ * @param {ol.Extent} extent Extent.
+ * @param {number} x X coordinate.
+ * @param {number} y Y coordinate.
+ * @return {boolean} Contains.
+ * @api stable
+ */
+ol.extent.containsXY = function(extent, x, y) {
+  return extent[0] <= x && x <= extent[2] && extent[1] <= y && y <= extent[3];
 };
 
 
@@ -17199,6 +17212,38 @@ ol.extent.extendXY = function(extent, x, y) {
 
 
 /**
+ * This function calls `callback` for each corner of the extent. If the
+ * callback returns a truthy value the function returns that value
+ * immediately. Otherwise the function returns `false`.
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this:T, ol.Coordinate): S} callback Callback.
+ * @param {T=} opt_this Value to use as `this` when executing `callback`.
+ * @return {S|boolean} Value.
+ * @template S, T
+ */
+ol.extent.forEachCorner = function(extent, callback, opt_this) {
+  var val;
+  val = callback.call(opt_this, ol.extent.getBottomLeft(extent));
+  if (val) {
+    return val;
+  }
+  val = callback.call(opt_this, ol.extent.getBottomRight(extent));
+  if (val) {
+    return val;
+  }
+  val = callback.call(opt_this, ol.extent.getTopRight(extent));
+  if (val) {
+    return val;
+  }
+  val = callback.call(opt_this, ol.extent.getBottomRight(extent));
+  if (val) {
+    return val;
+  }
+  return false;
+};
+
+
+/**
  * @param {ol.Extent} extent Extent.
  * @return {number} Area.
  */
@@ -17335,6 +17380,7 @@ ol.extent.getIntersectionArea = function(extent1, extent2) {
  * @param {ol.Extent} extent2 Extent 2.
  * @param {ol.Extent=} opt_extent Optional extent to populate with intersection.
  * @return {ol.Extent} Intersecting extent.
+ * @api stable
  */
 ol.extent.getIntersection = function(extent1, extent2, opt_extent) {
   var intersection = goog.isDef(opt_extent) ?
@@ -17501,7 +17547,7 @@ ol.extent.scaleFromCenter = function(extent, value) {
  * @param {ol.Coordinate} end Segment end coordinate.
  * @return {boolean} The segment intersects the extent.
  */
-ol.extent.segmentIntersects = function(extent, start, end) {
+ol.extent.intersectsSegment = function(extent, start, end) {
   var intersects = false;
   var startRel = ol.extent.coordinateRelationship(extent, start);
   var endRel = ol.extent.coordinateRelationship(extent, end);
@@ -17831,12 +17877,13 @@ ol.Sphere.prototype.midpoint = function(c1, c2) {
 
 
 /**
- * Returns the coordinate at the given distance and bearing from c.
+ * Returns the coordinate at the given distance and bearing from `c1`.
  *
- * @param {ol.Coordinate} c1 Coordinate.
- * @param {number} distance Distance.
- * @param {number} bearing Bearing.
- * @return {ol.Coordinate} Coordinate.
+ * @param {ol.Coordinate} c1 The origin point (`[lon, lat]` in degrees).
+ * @param {number} distance The great-circle distance between the origin
+ *     point and the target point.
+ * @param {number} bearing The bearing (in radians).
+ * @return {ol.Coordinate} The target point.
  */
 ol.Sphere.prototype.offset = function(c1, distance, bearing) {
   var lat1 = goog.math.toRadians(c1[1]);
@@ -23669,6 +23716,2759 @@ goog.dom.DomHelper.prototype.getAncestorByClass =
  */
 goog.dom.DomHelper.prototype.getAncestor = goog.dom.getAncestor;
 
+// FIXME add tests for browser features (Modernizr?)
+
+goog.provide('ol.dom');
+goog.provide('ol.dom.BrowserFeature');
+
+goog.require('goog.asserts');
+goog.require('goog.dom');
+goog.require('goog.dom.TagName');
+goog.require('goog.userAgent');
+goog.require('goog.vec.Mat4');
+goog.require('ol');
+
+
+/**
+ * Create an html canvas element and returns its 2d context.
+ * @param {number=} opt_width Canvas width.
+ * @param {number=} opt_height Canvas height.
+ * @return {CanvasRenderingContext2D}
+ */
+ol.dom.createCanvasContext2D = function(opt_width, opt_height) {
+  var canvas = goog.dom.createElement(goog.dom.TagName.CANVAS);
+  if (goog.isDef(opt_width)) {
+    canvas.width = opt_width;
+  }
+  if (goog.isDef(opt_height)) {
+    canvas.height = opt_height;
+  }
+  return canvas.getContext('2d');
+};
+
+
+/**
+ * @enum {boolean}
+ */
+ol.dom.BrowserFeature = {
+  USE_MS_MATRIX_TRANSFORM: ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE,
+  USE_MS_ALPHA_FILTER: ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE
+};
+
+
+/**
+ * Detect 2d transform.
+ * Adapted from http://stackoverflow.com/q/5661671/130442
+ * http://caniuse.com/#feat=transforms2d
+ * @return {boolean}
+ */
+ol.dom.canUseCssTransform = (function() {
+  var canUseCssTransform;
+  return function() {
+    if (!goog.isDef(canUseCssTransform)) {
+      goog.asserts.assert(!goog.isNull(document.body));
+      if (!goog.global.getComputedStyle) {
+        // this browser is ancient
+        canUseCssTransform = false;
+      } else {
+        var el = goog.dom.createElement(goog.dom.TagName.P),
+            has2d,
+            transforms = {
+              'webkitTransform': '-webkit-transform',
+              'OTransform': '-o-transform',
+              'msTransform': '-ms-transform',
+              'MozTransform': '-moz-transform',
+              'transform': 'transform'
+            };
+        goog.dom.appendChild(document.body, el);
+        for (var t in transforms) {
+          if (t in el.style) {
+            el.style[t] = 'translate(1px,1px)';
+            has2d = goog.global.getComputedStyle(el).getPropertyValue(
+                transforms[t]);
+          }
+        }
+        goog.dom.removeNode(el);
+
+        canUseCssTransform = (has2d && has2d !== 'none');
+      }
+    }
+    return canUseCssTransform;
+  };
+}());
+
+
+/**
+ * Detect 3d transform.
+ * Adapted from http://stackoverflow.com/q/5661671/130442
+ * http://caniuse.com/#feat=transforms3d
+ * @return {boolean}
+ */
+ol.dom.canUseCssTransform3D = (function() {
+  var canUseCssTransform3D;
+  return function() {
+    if (!goog.isDef(canUseCssTransform3D)) {
+      goog.asserts.assert(!goog.isNull(document.body));
+      if (!goog.global.getComputedStyle) {
+        // this browser is ancient
+        canUseCssTransform3D = false;
+      } else {
+        var el = goog.dom.createElement(goog.dom.TagName.P),
+            has3d,
+            transforms = {
+              'webkitTransform': '-webkit-transform',
+              'OTransform': '-o-transform',
+              'msTransform': '-ms-transform',
+              'MozTransform': '-moz-transform',
+              'transform': 'transform'
+            };
+        goog.dom.appendChild(document.body, el);
+        for (var t in transforms) {
+          if (t in el.style) {
+            el.style[t] = 'translate3d(1px,1px,1px)';
+            has3d = goog.global.getComputedStyle(el).getPropertyValue(
+                transforms[t]);
+          }
+        }
+        goog.dom.removeNode(el);
+
+        canUseCssTransform3D = (has3d && has3d !== 'none');
+      }
+    }
+    return canUseCssTransform3D;
+  };
+}());
+
+
+/**
+ * @param {Element} element Element.
+ * @param {string} value Value.
+ */
+ol.dom.setTransform = function(element, value) {
+  var style = element.style;
+  style.WebkitTransform = value;
+  style.MozTransform = value;
+  style.OTransform = value;
+  style.msTransform = value;
+  style.transform = value;
+
+  // IE 9+ seems to assume transform-origin: 100% 100%; for some unknown reason
+  if (goog.userAgent.IE && !ol.IS_LEGACY_IE) {
+    element.style.transformOrigin = '0 0';
+  }
+};
+
+
+/**
+ * Sets the opacity of an element, in an IE-compatible way
+ * @param {!Element} element Element
+ * @param {number} value Opacity, [0..1]
+ */
+ol.dom.setOpacity = function(element, value) {
+  if (ol.dom.BrowserFeature.USE_MS_ALPHA_FILTER) {
+    /** @type {string} */
+    var filter = element.currentStyle.filter;
+
+    /** @type {RegExp} */
+    var regex;
+
+    /** @type {string} */
+    var alpha;
+
+    if (goog.userAgent.VERSION == '8.0') {
+      regex = /progid:DXImageTransform\.Microsoft\.Alpha\(.*?\)/i,
+      alpha = 'progid:DXImageTransform.Microsoft.Alpha(Opacity=' +
+          (value * 100) + ')';
+    } else {
+      regex = /alpha\(.*?\)/i;
+      alpha = 'alpha(opacity=' + (value * 100) + ')';
+    }
+
+    var newFilter = filter.replace(regex, alpha);
+    if (newFilter === filter) {
+      // no replace was made? just append the new alpha filter instead
+      newFilter += ' ' + alpha;
+    }
+
+    element.style.filter = newFilter;
+
+    // Fix to apply filter to absolutely-positioned children element
+    if (element.currentStyle.zIndex === 'auto') {
+      element.style.zIndex = 0;
+    }
+  } else {
+    element.style.opacity = value;
+  }
+};
+
+
+/**
+ * Sets the IE matrix transform without replacing other filters
+ * @private
+ * @param {!Element} element Element
+ * @param {string} value The new progid string
+ */
+ol.dom.setIEMatrix_ = function(element, value) {
+  var filter = element.currentStyle.filter;
+  var newFilter =
+      filter.replace(/progid:DXImageTransform.Microsoft.Matrix\(.*?\)/i, value);
+
+  if (newFilter === filter) {
+    newFilter = ' ' + value;
+  }
+
+  element.style.filter = newFilter;
+
+  // Fix to apply filter to absolutely-positioned children element
+  if (element.currentStyle.zIndex === 'auto') {
+    element.style.zIndex = 0;
+  }
+};
+
+
+/**
+ * @param {!Element} element Element.
+ * @param {goog.vec.Mat4.Number} transform Matrix.
+ * @param {number=} opt_precision Precision.
+ * @param {Element=} opt_translationElement Required for IE7-8
+ */
+ol.dom.transformElement2D =
+    function(element, transform, opt_precision, opt_translationElement) {
+  // using matrix() causes gaps in Chrome and Firefox on Mac OS X, so prefer
+  // matrix3d()
+  var i;
+  if (ol.dom.canUseCssTransform3D()) {
+    var value3D;
+
+    if (goog.isDef(opt_precision)) {
+      /** @type {Array.<string>} */
+      var strings3D = new Array(16);
+      for (i = 0; i < 16; ++i) {
+        strings3D[i] = transform[i].toFixed(opt_precision);
+      }
+      value3D = strings3D.join(',');
+    } else {
+      value3D = transform.join(',');
+    }
+    ol.dom.setTransform(element, 'matrix3d(' + value3D + ')');
+  } else if (ol.dom.canUseCssTransform()) {
+    /** @type {Array.<number>} */
+    var transform2D = [
+      goog.vec.Mat4.getElement(transform, 0, 0),
+      goog.vec.Mat4.getElement(transform, 1, 0),
+      goog.vec.Mat4.getElement(transform, 0, 1),
+      goog.vec.Mat4.getElement(transform, 1, 1),
+      goog.vec.Mat4.getElement(transform, 0, 3),
+      goog.vec.Mat4.getElement(transform, 1, 3)
+    ];
+    var value2D;
+    if (goog.isDef(opt_precision)) {
+      /** @type {Array.<string>} */
+      var strings2D = new Array(6);
+      for (i = 0; i < 6; ++i) {
+        strings2D[i] = transform2D[i].toFixed(opt_precision);
+      }
+      value2D = strings2D.join(',');
+    } else {
+      value2D = transform2D.join(',');
+    }
+    ol.dom.setTransform(element, 'matrix(' + value2D + ')');
+  } else if (ol.dom.BrowserFeature.USE_MS_MATRIX_TRANSFORM) {
+    var m11 = goog.vec.Mat4.getElement(transform, 0, 0),
+        m12 = goog.vec.Mat4.getElement(transform, 0, 1),
+        m21 = goog.vec.Mat4.getElement(transform, 1, 0),
+        m22 = goog.vec.Mat4.getElement(transform, 1, 1),
+        dx = goog.vec.Mat4.getElement(transform, 0, 3),
+        dy = goog.vec.Mat4.getElement(transform, 1, 3);
+
+    // See: http://msdn.microsoft.com/en-us/library/ms533014(v=vs.85).aspx
+    // and: http://extremelysatisfactorytotalitarianism.com/blog/?p=1002
+    // @TODO: fix terrible IE bbox rotation issue.
+    var s = 'progid:DXImageTransform.Microsoft.Matrix(';
+    s += 'sizingMethod="auto expand"';
+    s += ',M11=' + m11.toFixed(opt_precision || 20);
+    s += ',M12=' + m12.toFixed(opt_precision || 20);
+    s += ',M21=' + m21.toFixed(opt_precision || 20);
+    s += ',M22=' + m22.toFixed(opt_precision || 20);
+    s += ')';
+    ol.dom.setIEMatrix_(element, s);
+
+    // scale = m11 = m22 = target resolution [m/px] / current res [m/px]
+    // dx = (viewport width [px] / 2) * scale
+    //      + (layer.x [m] - view.x [m]) / target resolution [m / px]
+    // except that we're positioning the child element relative to the
+    // viewport, not the map.
+    // dividing by the scale factor isn't the exact correction, but it's
+    // close enough that you can barely tell unless you're looking for it
+    dx /= m11;
+    dy /= m22;
+
+    opt_translationElement.style.left = Math.round(dx) + 'px';
+    opt_translationElement.style.top = Math.round(dy) + 'px';
+  } else {
+    element.style.left =
+        Math.round(goog.vec.Mat4.getElement(transform, 0, 3)) + 'px';
+    element.style.top =
+        Math.round(goog.vec.Mat4.getElement(transform, 1, 3)) + 'px';
+
+    // TODO: Add scaling here. This isn't quite as simple as multiplying
+    // width/height, because that only changes the container size, not the
+    // content size.
+  }
+};
+
+goog.provide('ol.webgl');
+goog.provide('ol.webgl.WebGLContextEventType');
+
+
+/**
+ * @const
+ * @private
+ * @type {Array.<string>}
+ */
+ol.webgl.CONTEXT_IDS_ = [
+  'experimental-webgl',
+  'webgl',
+  'webkit-3d',
+  'moz-webgl'
+];
+
+
+/**
+ * @enum {string}
+ */
+ol.webgl.WebGLContextEventType = {
+  LOST: 'webglcontextlost',
+  RESTORED: 'webglcontextrestored'
+};
+
+
+/**
+ * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {Object=} opt_attributes Attributes.
+ * @return {WebGLRenderingContext} WebGL rendering context.
+ */
+ol.webgl.getContext = function(canvas, opt_attributes) {
+  var context, i, ii = ol.webgl.CONTEXT_IDS_.length;
+  for (i = 0; i < ii; ++i) {
+    try {
+      context = canvas.getContext(ol.webgl.CONTEXT_IDS_[i], opt_attributes);
+      if (!goog.isNull(context)) {
+        return /** @type {!WebGLRenderingContext} */ (context);
+      }
+    } catch (e) {
+    }
+  }
+  return null;
+};
+
+goog.provide('ol.has');
+
+goog.require('goog.dom');
+goog.require('goog.dom.TagName');
+goog.require('ol');
+goog.require('ol.dom');
+goog.require('ol.webgl');
+
+
+/**
+ * The ratio between physical pixels and device-independent pixels
+ * (dips) on the device (`window.devicePixelRatio`).
+ * @const
+ * @type {number}
+ * @api stable
+ */
+ol.has.DEVICE_PIXEL_RATIO = goog.global.devicePixelRatio || 1;
+
+
+/**
+ * True if the browser supports ArrayBuffers.
+ * @const
+ * @type {boolean}
+ */
+ol.has.ARRAY_BUFFER = 'ArrayBuffer' in goog.global;
+
+
+/**
+ * True if the browser's Canvas implementation implements {get,set}LineDash.
+ * @type {boolean}
+ */
+ol.has.CANVAS_LINE_DASH = false;
+
+
+/**
+ * True if browser supports Canvas.
+ * @const
+ * @type {boolean}
+ * @api stable
+ */
+ol.has.CANVAS = ol.ENABLE_CANVAS && (
+    /**
+     * @return {boolean} Canvas supported.
+     */
+    function() {
+      if (!('HTMLCanvasElement' in goog.global)) {
+        return false;
+      }
+      try {
+        var context = ol.dom.createCanvasContext2D();
+        if (goog.isNull(context)) {
+          return false;
+        } else {
+          if (goog.isDef(context.setLineDash)) {
+            ol.has.CANVAS_LINE_DASH = true;
+          }
+          return true;
+        }
+      } catch (e) {
+        return false;
+      }
+    })();
+
+
+/**
+ * Indicates if DeviceOrientation is supported in the user's browser.
+ * @const
+ * @type {boolean}
+ * @api stable
+ */
+ol.has.DEVICE_ORIENTATION =
+    'DeviceOrientationEvent' in goog.global;
+
+
+/**
+ * True if browser supports DOM.
+ * @const
+ * @type {boolean}
+ */
+ol.has.DOM = ol.ENABLE_DOM;
+
+
+/**
+ * Is HTML5 geolocation supported in the current browser?
+ * @const
+ * @type {boolean}
+ * @api stable
+ */
+ol.has.GEOLOCATION = 'geolocation' in goog.global.navigator;
+
+
+/**
+ * True if browser supports touch events.
+ * @const
+ * @type {boolean}
+ * @api stable
+ */
+ol.has.TOUCH = ol.ASSUME_TOUCH || 'ontouchstart' in goog.global;
+
+
+/**
+ * True if browser supports pointer events.
+ * @const
+ * @type {boolean}
+ */
+ol.has.POINTER = 'PointerEvent' in goog.global;
+
+
+/**
+ * True if browser supports ms pointer events (IE 10).
+ * @const
+ * @type {boolean}
+ */
+ol.has.MSPOINTER =
+    !!(goog.global.navigator.msPointerEnabled);
+
+
+/**
+ * True if browser supports WebGL.
+ * @const
+ * @type {boolean}
+ * @api stable
+ */
+ol.has.WEBGL = ol.ENABLE_WEBGL && (
+    /**
+     * @return {boolean} WebGL supported.
+     */
+    function() {
+      if (!('WebGLRenderingContext' in goog.global)) {
+        return false;
+      }
+      try {
+        var canvas = /** @type {HTMLCanvasElement} */
+            (goog.dom.createElement(goog.dom.TagName.CANVAS));
+        return !goog.isNull(ol.webgl.getContext(canvas, {
+          failIfMajorPerformanceCaveat: true
+        }));
+      } catch (e) {
+        return false;
+      }
+    })();
+
+// FIXME Test on Internet Explorer with VBArray
+
+goog.provide('ol.binary.Buffer');
+goog.provide('ol.binary.IReader');
+
+goog.require('goog.asserts');
+goog.require('goog.userAgent');
+goog.require('ol.has');
+
+
+
+/**
+ * @constructor
+ * @param {ArrayBuffer|string} data Data.
+ */
+ol.binary.Buffer = function(data) {
+
+  /**
+   * @private
+   * @type {ArrayBuffer|string}
+   */
+  this.data_ = data;
+
+};
+
+
+/**
+ * @return {ol.binary.IReader} Reader.
+ */
+ol.binary.Buffer.prototype.getReader = function() {
+  var data = this.data_;
+  if (ol.has.ARRAY_BUFFER) {
+    var arrayBuffer;
+    if (data instanceof ArrayBuffer) {
+      arrayBuffer = data;
+    } else if (goog.isString(data)) {
+      // FIXME check what happens with Unicode
+      arrayBuffer = new ArrayBuffer(data.length);
+      var uint8View = new Uint8Array(arrayBuffer);
+      var i, ii;
+      for (i = 0, ii = data.length; i < ii; ++i) {
+        uint8View[i] = data.charCodeAt(i);
+      }
+    } else {
+      goog.asserts.fail();
+      return null;
+    }
+    return new ol.binary.ArrayBufferReader(arrayBuffer);
+  } else {
+    goog.asserts.assert(goog.isString(data));
+    goog.asserts.assert(
+        goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('10.0'));
+    return new ol.binary.ArrayReader(new VBArray(data).toArray());
+  }
+};
+
+
+
+/**
+ * @interface
+ */
+ol.binary.IReader = function() {};
+
+
+/**
+ * @return {boolean} At EOF.
+ */
+ol.binary.IReader.prototype.atEOF = function() {};
+
+
+/**
+ * @return {number} Byte.
+ */
+ol.binary.IReader.prototype.readByte = function() {};
+
+
+
+/**
+ * @constructor
+ * @param {ArrayBuffer} arrayBuffer Array buffer.
+ * @implements {ol.binary.IReader}
+ */
+ol.binary.ArrayBufferReader = function(arrayBuffer) {
+
+  /**
+   * @private
+   * @type {Uint8Array}
+   */
+  this.uint8View_ = new Uint8Array(arrayBuffer);
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.length_ = this.uint8View_.length;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.offset_ = 0;
+
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.binary.ArrayBufferReader.prototype.atEOF = function() {
+  return this.offset_ == this.length_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.binary.ArrayBufferReader.prototype.readByte = function() {
+  if (this.offset_ < this.length_) {
+    return this.uint8View_[this.offset_++];
+  } else {
+    goog.asserts.fail();
+    return 0;
+  }
+};
+
+
+
+/**
+ * @constructor
+ * @implements {ol.binary.IReader}
+ * @param {Array.<number>} array Array.
+ */
+ol.binary.ArrayReader = function(array) {
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.array_ = array;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.length_ = array.length;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.offset_ = 0;
+
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.binary.ArrayReader.prototype.atEOF = function() {
+  return this.offset_ == this.length_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.binary.ArrayReader.prototype.readByte = function() {
+  if (this.offset_ < this.length_) {
+    return this.array_[this.offset_++];
+  } else {
+    goog.asserts.fail();
+    return 0;
+  }
+};
+
+goog.provide('ol.CanvasFunctionType');
+
+
+/**
+ * A function returning the canvas element (`{HTMLCanvasElement}`)
+ * used by the source as an image. The arguments passed to the function are:
+ * {@link ol.Extent} the image extent, `{number}` the image resolution,
+ * `{number}` the device pixel ratio, {@link ol.Size} the image size, and
+ * {@link ol.proj.Projection} the image projection. The canvas returned by
+ * this function is cached by the source. The this keyword inside the function
+ * references the {@link ol.source.ImageCanvas}.
+ *
+ * @typedef {function(this:ol.source.ImageCanvas, ol.Extent, number,
+ *     number, ol.Size, ol.proj.Projection): HTMLCanvasElement}
+ * @api
+ */
+ol.CanvasFunctionType;
+
+/**
+ * An implementation of Google Maps' MVCArray.
+ * @see https://developers.google.com/maps/documentation/javascript/reference
+ */
+
+goog.provide('ol.Collection');
+goog.provide('ol.CollectionEvent');
+goog.provide('ol.CollectionEventType');
+
+goog.require('goog.array');
+goog.require('goog.events.Event');
+goog.require('ol.Object');
+
+
+/**
+ * @enum {string}
+ */
+ol.CollectionEventType = {
+  /**
+   * Triggered when an item is added to the collection.
+   * @event ol.CollectionEvent#add
+   * @api stable
+   */
+  ADD: 'add',
+  /**
+   * Triggered when an item is removed from the collection.
+   * @event ol.CollectionEvent#remove
+   * @api stable
+   */
+  REMOVE: 'remove'
+};
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.Collection} instances are instances of this
+ * type.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @implements {oli.CollectionEvent}
+ * @param {ol.CollectionEventType} type Type.
+ * @param {*=} opt_element Element.
+ * @param {Object=} opt_target Target.
+ */
+ol.CollectionEvent = function(type, opt_element, opt_target) {
+
+  goog.base(this, type, opt_target);
+
+  /**
+   * The element that is added to or removed from the collection.
+   * @type {*}
+   * @api stable
+   */
+  this.element = opt_element;
+
+};
+goog.inherits(ol.CollectionEvent, goog.events.Event);
+
+
+/**
+ * @enum {string}
+ */
+ol.CollectionProperty = {
+  LENGTH: 'length'
+};
+
+
+
+/**
+ * @classdesc
+ * An expanded version of standard JS Array, adding convenience methods for
+ * manipulation. Add and remove changes to the Collection trigger a Collection
+ * event. Note that this does not cover changes to the objects _within_ the
+ * Collection; they trigger events on the appropriate object, not on the
+ * Collection as a whole.
+ *
+ * Because a Collection is itself an {@link ol.Object}, it can be bound to any
+ * other Object or Collection such that a change in one will automatically be
+ * reflected in the other.
+ *
+ * @constructor
+ * @extends {ol.Object}
+ * @fires ol.CollectionEvent
+ * @param {Array.<T>=} opt_array Array.
+ * @template T
+ * @api stable
+ */
+ol.Collection = function(opt_array) {
+
+  goog.base(this);
+
+  /**
+   * @private
+   * @type {Array.<T>}
+   */
+  this.array_ = opt_array || [];
+
+  this.updateLength_();
+
+};
+goog.inherits(ol.Collection, ol.Object);
+
+
+/**
+ * Remove all elements from the collection.
+ * @api stable
+ */
+ol.Collection.prototype.clear = function() {
+  while (this.getLength() > 0) {
+    this.pop();
+  }
+};
+
+
+/**
+ * @param {Array.<T>} arr Array.
+ * @return {ol.Collection.<T>} This collection.
+ * @api stable
+ */
+ol.Collection.prototype.extend = function(arr) {
+  var i, ii;
+  for (i = 0, ii = arr.length; i < ii; ++i) {
+    this.push(arr[i]);
+  }
+  return this;
+};
+
+
+/**
+ * Iterate over each element, calling the provided callback.
+ * @param {function(this: S, T, number, Array.<T>): *} f The function to call
+ *     for every element. This function takes 3 arguments (the element, the
+ *     index and the array). The return value is ignored.
+ * @param {S=} opt_this The object to use as `this` in `f`.
+ * @template S
+ * @api stable
+ */
+ol.Collection.prototype.forEach = function(f, opt_this) {
+  goog.array.forEach(this.array_, f, opt_this);
+};
+
+
+/**
+ * Get a reference to the underlying Array object. Warning: if the array
+ * is mutated, no events will be dispatched by the collection, and the
+ * collection's "length" property won't be in sync with the actual length
+ * of the array.
+ * @return {Array.<T>} Array.
+ * @api stable
+ */
+ol.Collection.prototype.getArray = function() {
+  return this.array_;
+};
+
+
+/**
+ * Get the element at the provided index.
+ * @param {number} index Index.
+ * @return {T} Element.
+ * @api stable
+ */
+ol.Collection.prototype.item = function(index) {
+  return this.array_[index];
+};
+
+
+/**
+ * Get the length of this collection.
+ * @return {number} The length of the array.
+ * @observable
+ * @api stable
+ */
+ol.Collection.prototype.getLength = function() {
+  return /** @type {number} */ (this.get(ol.CollectionProperty.LENGTH));
+};
+
+
+/**
+ * Insert an element at the provided index.
+ * @param {number} index Index.
+ * @param {T} elem Element.
+ * @api stable
+ */
+ol.Collection.prototype.insertAt = function(index, elem) {
+  goog.array.insertAt(this.array_, elem, index);
+  this.updateLength_();
+  this.dispatchEvent(
+      new ol.CollectionEvent(ol.CollectionEventType.ADD, elem, this));
+};
+
+
+/**
+ * Remove the last element of the collection and return it.
+ * Return `undefined` if the collection is empty.
+ * @return {T|undefined} Element.
+ * @api stable
+ */
+ol.Collection.prototype.pop = function() {
+  return this.removeAt(this.getLength() - 1);
+};
+
+
+/**
+ * Insert the provided element at the end of the collection.
+ * @param {T} elem Element.
+ * @return {number} Length.
+ * @api stable
+ */
+ol.Collection.prototype.push = function(elem) {
+  var n = this.array_.length;
+  this.insertAt(n, elem);
+  return n;
+};
+
+
+/**
+ * Removes the first occurence of elem from the collection.
+ * @param {T} elem Element.
+ * @return {T|undefined} The removed element or undefined if elem was not found.
+ * @api stable
+ */
+ol.Collection.prototype.remove = function(elem) {
+  var arr = this.array_;
+  var i, ii;
+  for (i = 0, ii = arr.length; i < ii; ++i) {
+    if (arr[i] === elem) {
+      return this.removeAt(i);
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * Remove the element at the provided index and return it.
+ * Return `undefined` if the collection does not contain this index.
+ * @param {number} index Index.
+ * @return {T|undefined} Value.
+ * @api stable
+ */
+ol.Collection.prototype.removeAt = function(index) {
+  var prev = this.array_[index];
+  goog.array.removeAt(this.array_, index);
+  this.updateLength_();
+  this.dispatchEvent(
+      new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev, this));
+  return prev;
+};
+
+
+/**
+ * Set the element at the provided index.
+ * @param {number} index Index.
+ * @param {T} elem Element.
+ * @api stable
+ */
+ol.Collection.prototype.setAt = function(index, elem) {
+  var n = this.getLength();
+  if (index < n) {
+    var prev = this.array_[index];
+    this.array_[index] = elem;
+    this.dispatchEvent(
+        new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev, this));
+    this.dispatchEvent(
+        new ol.CollectionEvent(ol.CollectionEventType.ADD, elem, this));
+  } else {
+    var j;
+    for (j = n; j < index; ++j) {
+      this.insertAt(j, undefined);
+    }
+    this.insertAt(index, elem);
+  }
+};
+
+
+/**
+ * @private
+ */
+ol.Collection.prototype.updateLength_ = function() {
+  this.set(ol.CollectionProperty.LENGTH, this.array_.length);
+};
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Names of standard colors with their associated hex values.
+ */
+
+goog.provide('goog.color.names');
+
+
+/**
+ * A map that contains a lot of colors that are recognised by various browsers.
+ * This list is way larger than the minimal one dictated by W3C.
+ * The keys of this map are the lowercase "readable" names of the colors, while
+ * the values are the "hex" values.
+ */
+goog.color.names = {
+  'aliceblue': '#f0f8ff',
+  'antiquewhite': '#faebd7',
+  'aqua': '#00ffff',
+  'aquamarine': '#7fffd4',
+  'azure': '#f0ffff',
+  'beige': '#f5f5dc',
+  'bisque': '#ffe4c4',
+  'black': '#000000',
+  'blanchedalmond': '#ffebcd',
+  'blue': '#0000ff',
+  'blueviolet': '#8a2be2',
+  'brown': '#a52a2a',
+  'burlywood': '#deb887',
+  'cadetblue': '#5f9ea0',
+  'chartreuse': '#7fff00',
+  'chocolate': '#d2691e',
+  'coral': '#ff7f50',
+  'cornflowerblue': '#6495ed',
+  'cornsilk': '#fff8dc',
+  'crimson': '#dc143c',
+  'cyan': '#00ffff',
+  'darkblue': '#00008b',
+  'darkcyan': '#008b8b',
+  'darkgoldenrod': '#b8860b',
+  'darkgray': '#a9a9a9',
+  'darkgreen': '#006400',
+  'darkgrey': '#a9a9a9',
+  'darkkhaki': '#bdb76b',
+  'darkmagenta': '#8b008b',
+  'darkolivegreen': '#556b2f',
+  'darkorange': '#ff8c00',
+  'darkorchid': '#9932cc',
+  'darkred': '#8b0000',
+  'darksalmon': '#e9967a',
+  'darkseagreen': '#8fbc8f',
+  'darkslateblue': '#483d8b',
+  'darkslategray': '#2f4f4f',
+  'darkslategrey': '#2f4f4f',
+  'darkturquoise': '#00ced1',
+  'darkviolet': '#9400d3',
+  'deeppink': '#ff1493',
+  'deepskyblue': '#00bfff',
+  'dimgray': '#696969',
+  'dimgrey': '#696969',
+  'dodgerblue': '#1e90ff',
+  'firebrick': '#b22222',
+  'floralwhite': '#fffaf0',
+  'forestgreen': '#228b22',
+  'fuchsia': '#ff00ff',
+  'gainsboro': '#dcdcdc',
+  'ghostwhite': '#f8f8ff',
+  'gold': '#ffd700',
+  'goldenrod': '#daa520',
+  'gray': '#808080',
+  'green': '#008000',
+  'greenyellow': '#adff2f',
+  'grey': '#808080',
+  'honeydew': '#f0fff0',
+  'hotpink': '#ff69b4',
+  'indianred': '#cd5c5c',
+  'indigo': '#4b0082',
+  'ivory': '#fffff0',
+  'khaki': '#f0e68c',
+  'lavender': '#e6e6fa',
+  'lavenderblush': '#fff0f5',
+  'lawngreen': '#7cfc00',
+  'lemonchiffon': '#fffacd',
+  'lightblue': '#add8e6',
+  'lightcoral': '#f08080',
+  'lightcyan': '#e0ffff',
+  'lightgoldenrodyellow': '#fafad2',
+  'lightgray': '#d3d3d3',
+  'lightgreen': '#90ee90',
+  'lightgrey': '#d3d3d3',
+  'lightpink': '#ffb6c1',
+  'lightsalmon': '#ffa07a',
+  'lightseagreen': '#20b2aa',
+  'lightskyblue': '#87cefa',
+  'lightslategray': '#778899',
+  'lightslategrey': '#778899',
+  'lightsteelblue': '#b0c4de',
+  'lightyellow': '#ffffe0',
+  'lime': '#00ff00',
+  'limegreen': '#32cd32',
+  'linen': '#faf0e6',
+  'magenta': '#ff00ff',
+  'maroon': '#800000',
+  'mediumaquamarine': '#66cdaa',
+  'mediumblue': '#0000cd',
+  'mediumorchid': '#ba55d3',
+  'mediumpurple': '#9370db',
+  'mediumseagreen': '#3cb371',
+  'mediumslateblue': '#7b68ee',
+  'mediumspringgreen': '#00fa9a',
+  'mediumturquoise': '#48d1cc',
+  'mediumvioletred': '#c71585',
+  'midnightblue': '#191970',
+  'mintcream': '#f5fffa',
+  'mistyrose': '#ffe4e1',
+  'moccasin': '#ffe4b5',
+  'navajowhite': '#ffdead',
+  'navy': '#000080',
+  'oldlace': '#fdf5e6',
+  'olive': '#808000',
+  'olivedrab': '#6b8e23',
+  'orange': '#ffa500',
+  'orangered': '#ff4500',
+  'orchid': '#da70d6',
+  'palegoldenrod': '#eee8aa',
+  'palegreen': '#98fb98',
+  'paleturquoise': '#afeeee',
+  'palevioletred': '#db7093',
+  'papayawhip': '#ffefd5',
+  'peachpuff': '#ffdab9',
+  'peru': '#cd853f',
+  'pink': '#ffc0cb',
+  'plum': '#dda0dd',
+  'powderblue': '#b0e0e6',
+  'purple': '#800080',
+  'red': '#ff0000',
+  'rosybrown': '#bc8f8f',
+  'royalblue': '#4169e1',
+  'saddlebrown': '#8b4513',
+  'salmon': '#fa8072',
+  'sandybrown': '#f4a460',
+  'seagreen': '#2e8b57',
+  'seashell': '#fff5ee',
+  'sienna': '#a0522d',
+  'silver': '#c0c0c0',
+  'skyblue': '#87ceeb',
+  'slateblue': '#6a5acd',
+  'slategray': '#708090',
+  'slategrey': '#708090',
+  'snow': '#fffafa',
+  'springgreen': '#00ff7f',
+  'steelblue': '#4682b4',
+  'tan': '#d2b48c',
+  'teal': '#008080',
+  'thistle': '#d8bfd8',
+  'tomato': '#ff6347',
+  'turquoise': '#40e0d0',
+  'violet': '#ee82ee',
+  'wheat': '#f5deb3',
+  'white': '#ffffff',
+  'whitesmoke': '#f5f5f5',
+  'yellow': '#ffff00',
+  'yellowgreen': '#9acd32'
+};
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities related to color and color conversion.
+ */
+
+goog.provide('goog.color');
+goog.provide('goog.color.Hsl');
+goog.provide('goog.color.Hsv');
+goog.provide('goog.color.Rgb');
+
+goog.require('goog.color.names');
+goog.require('goog.math');
+
+
+/**
+ * RGB color representation. An array containing three elements [r, g, b],
+ * each an integer in [0, 255], representing the red, green, and blue components
+ * of the color respectively.
+ * @typedef {Array.<number>}
+ */
+goog.color.Rgb;
+
+
+/**
+ * HSV color representation. An array containing three elements [h, s, v]:
+ * h (hue) must be an integer in [0, 360], cyclic.
+ * s (saturation) must be a number in [0, 1].
+ * v (value/brightness) must be an integer in [0, 255].
+ * @typedef {Array.<number>}
+ */
+goog.color.Hsv;
+
+
+/**
+ * HSL color representation. An array containing three elements [h, s, l]:
+ * h (hue) must be an integer in [0, 360], cyclic.
+ * s (saturation) must be a number in [0, 1].
+ * l (lightness) must be a number in [0, 1].
+ * @typedef {Array.<number>}
+ */
+goog.color.Hsl;
+
+
+/**
+ * Parses a color out of a string.
+ * @param {string} str Color in some format.
+ * @return {{hex: string, type: string}} 'hex' is a string containing a hex
+ *     representation of the color, 'type' is a string containing the type
+ *     of color format passed in ('hex', 'rgb', 'named').
+ */
+goog.color.parse = function(str) {
+  var result = {};
+  str = String(str);
+
+  var maybeHex = goog.color.prependHashIfNecessaryHelper(str);
+  if (goog.color.isValidHexColor_(maybeHex)) {
+    result.hex = goog.color.normalizeHex(maybeHex);
+    result.type = 'hex';
+    return result;
+  } else {
+    var rgb = goog.color.isValidRgbColor_(str);
+    if (rgb.length) {
+      result.hex = goog.color.rgbArrayToHex(rgb);
+      result.type = 'rgb';
+      return result;
+    } else if (goog.color.names) {
+      var hex = goog.color.names[str.toLowerCase()];
+      if (hex) {
+        result.hex = hex;
+        result.type = 'named';
+        return result;
+      }
+    }
+  }
+  throw Error(str + ' is not a valid color string');
+};
+
+
+/**
+ * Determines if the given string can be parsed as a color.
+ *     {@see goog.color.parse}.
+ * @param {string} str Potential color string.
+ * @return {boolean} True if str is in a format that can be parsed to a color.
+ */
+goog.color.isValidColor = function(str) {
+  var maybeHex = goog.color.prependHashIfNecessaryHelper(str);
+  return !!(goog.color.isValidHexColor_(maybeHex) ||
+            goog.color.isValidRgbColor_(str).length ||
+            goog.color.names && goog.color.names[str.toLowerCase()]);
+};
+
+
+/**
+ * Parses red, green, blue components out of a valid rgb color string.
+ * Throws Error if the color string is invalid.
+ * @param {string} str RGB representation of a color.
+ *    {@see goog.color.isValidRgbColor_}.
+ * @return {!goog.color.Rgb} rgb representation of the color.
+ */
+goog.color.parseRgb = function(str) {
+  var rgb = goog.color.isValidRgbColor_(str);
+  if (!rgb.length) {
+    throw Error(str + ' is not a valid RGB color');
+  }
+  return rgb;
+};
+
+
+/**
+ * Converts a hex representation of a color to RGB.
+ * @param {string} hexColor Color to convert.
+ * @return {string} string of the form 'rgb(R,G,B)' which can be used in
+ *    styles.
+ */
+goog.color.hexToRgbStyle = function(hexColor) {
+  return goog.color.rgbStyle_(goog.color.hexToRgb(hexColor));
+};
+
+
+/**
+ * Regular expression for extracting the digits in a hex color triplet.
+ * @type {RegExp}
+ * @private
+ */
+goog.color.hexTripletRe_ = /#(.)(.)(.)/;
+
+
+/**
+ * Normalize an hex representation of a color
+ * @param {string} hexColor an hex color string.
+ * @return {string} hex color in the format '#rrggbb' with all lowercase
+ *     literals.
+ */
+goog.color.normalizeHex = function(hexColor) {
+  if (!goog.color.isValidHexColor_(hexColor)) {
+    throw Error("'" + hexColor + "' is not a valid hex color");
+  }
+  if (hexColor.length == 4) { // of the form #RGB
+    hexColor = hexColor.replace(goog.color.hexTripletRe_, '#$1$1$2$2$3$3');
+  }
+  return hexColor.toLowerCase();
+};
+
+
+/**
+ * Converts a hex representation of a color to RGB.
+ * @param {string} hexColor Color to convert.
+ * @return {!goog.color.Rgb} rgb representation of the color.
+ */
+goog.color.hexToRgb = function(hexColor) {
+  hexColor = goog.color.normalizeHex(hexColor);
+  var r = parseInt(hexColor.substr(1, 2), 16);
+  var g = parseInt(hexColor.substr(3, 2), 16);
+  var b = parseInt(hexColor.substr(5, 2), 16);
+
+  return [r, g, b];
+};
+
+
+/**
+ * Converts a color from RGB to hex representation.
+ * @param {number} r Amount of red, int between 0 and 255.
+ * @param {number} g Amount of green, int between 0 and 255.
+ * @param {number} b Amount of blue, int between 0 and 255.
+ * @return {string} hex representation of the color.
+ */
+goog.color.rgbToHex = function(r, g, b) {
+  r = Number(r);
+  g = Number(g);
+  b = Number(b);
+  if (isNaN(r) || r < 0 || r > 255 ||
+      isNaN(g) || g < 0 || g > 255 ||
+      isNaN(b) || b < 0 || b > 255) {
+    throw Error('"(' + r + ',' + g + ',' + b + '") is not a valid RGB color');
+  }
+  var hexR = goog.color.prependZeroIfNecessaryHelper(r.toString(16));
+  var hexG = goog.color.prependZeroIfNecessaryHelper(g.toString(16));
+  var hexB = goog.color.prependZeroIfNecessaryHelper(b.toString(16));
+  return '#' + hexR + hexG + hexB;
+};
+
+
+/**
+ * Converts a color from RGB to hex representation.
+ * @param {goog.color.Rgb} rgb rgb representation of the color.
+ * @return {string} hex representation of the color.
+ */
+goog.color.rgbArrayToHex = function(rgb) {
+  return goog.color.rgbToHex(rgb[0], rgb[1], rgb[2]);
+};
+
+
+/**
+ * Converts a color from RGB color space to HSL color space.
+ * Modified from {@link http://en.wikipedia.org/wiki/HLS_color_space}.
+ * @param {number} r Value of red, in [0, 255].
+ * @param {number} g Value of green, in [0, 255].
+ * @param {number} b Value of blue, in [0, 255].
+ * @return {!goog.color.Hsl} hsl representation of the color.
+ */
+goog.color.rgbToHsl = function(r, g, b) {
+  // First must normalize r, g, b to be between 0 and 1.
+  var normR = r / 255;
+  var normG = g / 255;
+  var normB = b / 255;
+  var max = Math.max(normR, normG, normB);
+  var min = Math.min(normR, normG, normB);
+  var h = 0;
+  var s = 0;
+
+  // Luminosity is the average of the max and min rgb color intensities.
+  var l = 0.5 * (max + min);
+
+  // The hue and saturation are dependent on which color intensity is the max.
+  // If max and min are equal, the color is gray and h and s should be 0.
+  if (max != min) {
+    if (max == normR) {
+      h = 60 * (normG - normB) / (max - min);
+    } else if (max == normG) {
+      h = 60 * (normB - normR) / (max - min) + 120;
+    } else if (max == normB) {
+      h = 60 * (normR - normG) / (max - min) + 240;
+    }
+
+    if (0 < l && l <= 0.5) {
+      s = (max - min) / (2 * l);
+    } else {
+      s = (max - min) / (2 - 2 * l);
+    }
+  }
+
+  // Make sure the hue falls between 0 and 360.
+  return [Math.round(h + 360) % 360, s, l];
+};
+
+
+/**
+ * Converts a color from RGB color space to HSL color space.
+ * @param {goog.color.Rgb} rgb rgb representation of the color.
+ * @return {!goog.color.Hsl} hsl representation of the color.
+ */
+goog.color.rgbArrayToHsl = function(rgb) {
+  return goog.color.rgbToHsl(rgb[0], rgb[1], rgb[2]);
+};
+
+
+/**
+ * Helper for hslToRgb.
+ * @param {number} v1 Helper variable 1.
+ * @param {number} v2 Helper variable 2.
+ * @param {number} vH Helper variable 3.
+ * @return {number} Appropriate RGB value, given the above.
+ * @private
+ */
+goog.color.hueToRgb_ = function(v1, v2, vH) {
+  if (vH < 0) {
+    vH += 1;
+  } else if (vH > 1) {
+    vH -= 1;
+  }
+  if ((6 * vH) < 1) {
+    return (v1 + (v2 - v1) * 6 * vH);
+  } else if (2 * vH < 1) {
+    return v2;
+  } else if (3 * vH < 2) {
+    return (v1 + (v2 - v1) * ((2 / 3) - vH) * 6);
+  }
+  return v1;
+};
+
+
+/**
+ * Converts a color from HSL color space to RGB color space.
+ * Modified from {@link http://www.easyrgb.com/math.html}
+ * @param {number} h Hue, in [0, 360].
+ * @param {number} s Saturation, in [0, 1].
+ * @param {number} l Luminosity, in [0, 1].
+ * @return {!goog.color.Rgb} rgb representation of the color.
+ */
+goog.color.hslToRgb = function(h, s, l) {
+  var r = 0;
+  var g = 0;
+  var b = 0;
+  var normH = h / 360; // normalize h to fall in [0, 1]
+
+  if (s == 0) {
+    r = g = b = l * 255;
+  } else {
+    var temp1 = 0;
+    var temp2 = 0;
+    if (l < 0.5) {
+      temp2 = l * (1 + s);
+    } else {
+      temp2 = l + s - (s * l);
+    }
+    temp1 = 2 * l - temp2;
+    r = 255 * goog.color.hueToRgb_(temp1, temp2, normH + (1 / 3));
+    g = 255 * goog.color.hueToRgb_(temp1, temp2, normH);
+    b = 255 * goog.color.hueToRgb_(temp1, temp2, normH - (1 / 3));
+  }
+
+  return [Math.round(r), Math.round(g), Math.round(b)];
+};
+
+
+/**
+ * Converts a color from HSL color space to RGB color space.
+ * @param {goog.color.Hsl} hsl hsl representation of the color.
+ * @return {!goog.color.Rgb} rgb representation of the color.
+ */
+goog.color.hslArrayToRgb = function(hsl) {
+  return goog.color.hslToRgb(hsl[0], hsl[1], hsl[2]);
+};
+
+
+/**
+ * Helper for isValidHexColor_.
+ * @type {RegExp}
+ * @private
+ */
+goog.color.validHexColorRe_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
+
+
+/**
+ * Checks if a string is a valid hex color.  We expect strings of the format
+ * #RRGGBB (ex: #1b3d5f) or #RGB (ex: #3CA == #33CCAA).
+ * @param {string} str String to check.
+ * @return {boolean} Whether the string is a valid hex color.
+ * @private
+ */
+goog.color.isValidHexColor_ = function(str) {
+  return goog.color.validHexColorRe_.test(str);
+};
+
+
+/**
+ * Helper for isNormalizedHexColor_.
+ * @type {RegExp}
+ * @private
+ */
+goog.color.normalizedHexColorRe_ = /^#[0-9a-f]{6}$/;
+
+
+/**
+ * Checks if a string is a normalized hex color.
+ * We expect strings of the format #RRGGBB (ex: #1b3d5f)
+ * using only lowercase letters.
+ * @param {string} str String to check.
+ * @return {boolean} Whether the string is a normalized hex color.
+ * @private
+ */
+goog.color.isNormalizedHexColor_ = function(str) {
+  return goog.color.normalizedHexColorRe_.test(str);
+};
+
+
+/**
+ * Regular expression for matching and capturing RGB style strings. Helper for
+ * isValidRgbColor_.
+ * @type {RegExp}
+ * @private
+ */
+goog.color.rgbColorRe_ =
+    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
+
+
+/**
+ * Checks if a string is a valid rgb color.  We expect strings of the format
+ * '(r, g, b)', or 'rgb(r, g, b)', where each color component is an int in
+ * [0, 255].
+ * @param {string} str String to check.
+ * @return {!goog.color.Rgb} the rgb representation of the color if it is
+ *     a valid color, or the empty array otherwise.
+ * @private
+ */
+goog.color.isValidRgbColor_ = function(str) {
+  // Each component is separate (rather than using a repeater) so we can
+  // capture the match. Also, we explicitly set each component to be either 0,
+  // or start with a non-zero, to prevent octal numbers from slipping through.
+  var regExpResultArray = str.match(goog.color.rgbColorRe_);
+  if (regExpResultArray) {
+    var r = Number(regExpResultArray[1]);
+    var g = Number(regExpResultArray[2]);
+    var b = Number(regExpResultArray[3]);
+    if (r >= 0 && r <= 255 &&
+        g >= 0 && g <= 255 &&
+        b >= 0 && b <= 255) {
+      return [r, g, b];
+    }
+  }
+  return [];
+};
+
+
+/**
+ * Takes a hex value and prepends a zero if it's a single digit.
+ * Small helper method for use by goog.color and friends.
+ * @param {string} hex Hex value to prepend if single digit.
+ * @return {string} hex value prepended with zero if it was single digit,
+ *     otherwise the same value that was passed in.
+ */
+goog.color.prependZeroIfNecessaryHelper = function(hex) {
+  return hex.length == 1 ? '0' + hex : hex;
+};
+
+
+/**
+ * Takes a string a prepends a '#' sign if one doesn't exist.
+ * Small helper method for use by goog.color and friends.
+ * @param {string} str String to check.
+ * @return {string} The value passed in, prepended with a '#' if it didn't
+ *     already have one.
+ */
+goog.color.prependHashIfNecessaryHelper = function(str) {
+  return str.charAt(0) == '#' ? str : '#' + str;
+};
+
+
+/**
+ * Takes an array of [r, g, b] and converts it into a string appropriate for
+ * CSS styles.
+ * @param {goog.color.Rgb} rgb rgb representation of the color.
+ * @return {string} string of the form 'rgb(r,g,b)'.
+ * @private
+ */
+goog.color.rgbStyle_ = function(rgb) {
+  return 'rgb(' + rgb.join(',') + ')';
+};
+
+
+/**
+ * Converts an HSV triplet to an RGB array.  V is brightness because b is
+ *   reserved for blue in RGB.
+ * @param {number} h Hue value in [0, 360].
+ * @param {number} s Saturation value in [0, 1].
+ * @param {number} brightness brightness in [0, 255].
+ * @return {!goog.color.Rgb} rgb representation of the color.
+ */
+goog.color.hsvToRgb = function(h, s, brightness) {
+  var red = 0;
+  var green = 0;
+  var blue = 0;
+  if (s == 0) {
+    red = brightness;
+    green = brightness;
+    blue = brightness;
+  } else {
+    var sextant = Math.floor(h / 60);
+    var remainder = (h / 60) - sextant;
+    var val1 = brightness * (1 - s);
+    var val2 = brightness * (1 - (s * remainder));
+    var val3 = brightness * (1 - (s * (1 - remainder)));
+    switch (sextant) {
+      case 1:
+        red = val2;
+        green = brightness;
+        blue = val1;
+        break;
+      case 2:
+        red = val1;
+        green = brightness;
+        blue = val3;
+        break;
+      case 3:
+        red = val1;
+        green = val2;
+        blue = brightness;
+        break;
+      case 4:
+        red = val3;
+        green = val1;
+        blue = brightness;
+        break;
+      case 5:
+        red = brightness;
+        green = val1;
+        blue = val2;
+        break;
+      case 6:
+      case 0:
+        red = brightness;
+        green = val3;
+        blue = val1;
+        break;
+    }
+  }
+
+  return [Math.floor(red), Math.floor(green), Math.floor(blue)];
+};
+
+
+/**
+ * Converts from RGB values to an array of HSV values.
+ * @param {number} red Red value in [0, 255].
+ * @param {number} green Green value in [0, 255].
+ * @param {number} blue Blue value in [0, 255].
+ * @return {!goog.color.Hsv} hsv representation of the color.
+ */
+goog.color.rgbToHsv = function(red, green, blue) {
+
+  var max = Math.max(Math.max(red, green), blue);
+  var min = Math.min(Math.min(red, green), blue);
+  var hue;
+  var saturation;
+  var value = max;
+  if (min == max) {
+    hue = 0;
+    saturation = 0;
+  } else {
+    var delta = (max - min);
+    saturation = delta / max;
+
+    if (red == max) {
+      hue = (green - blue) / delta;
+    } else if (green == max) {
+      hue = 2 + ((blue - red) / delta);
+    } else {
+      hue = 4 + ((red - green) / delta);
+    }
+    hue *= 60;
+    if (hue < 0) {
+      hue += 360;
+    }
+    if (hue > 360) {
+      hue -= 360;
+    }
+  }
+
+  return [hue, saturation, value];
+};
+
+
+/**
+ * Converts from an array of RGB values to an array of HSV values.
+ * @param {goog.color.Rgb} rgb rgb representation of the color.
+ * @return {!goog.color.Hsv} hsv representation of the color.
+ */
+goog.color.rgbArrayToHsv = function(rgb) {
+  return goog.color.rgbToHsv(rgb[0], rgb[1], rgb[2]);
+};
+
+
+/**
+ * Converts an HSV triplet to an RGB array.
+ * @param {goog.color.Hsv} hsv hsv representation of the color.
+ * @return {!goog.color.Rgb} rgb representation of the color.
+ */
+goog.color.hsvArrayToRgb = function(hsv) {
+  return goog.color.hsvToRgb(hsv[0], hsv[1], hsv[2]);
+};
+
+
+/**
+ * Converts a hex representation of a color to HSL.
+ * @param {string} hex Color to convert.
+ * @return {!goog.color.Hsv} hsv representation of the color.
+ */
+goog.color.hexToHsl = function(hex) {
+  var rgb = goog.color.hexToRgb(hex);
+  return goog.color.rgbToHsl(rgb[0], rgb[1], rgb[2]);
+};
+
+
+/**
+ * Converts from h,s,l values to a hex string
+ * @param {number} h Hue, in [0, 360].
+ * @param {number} s Saturation, in [0, 1].
+ * @param {number} l Luminosity, in [0, 1].
+ * @return {string} hex representation of the color.
+ */
+goog.color.hslToHex = function(h, s, l) {
+  return goog.color.rgbArrayToHex(goog.color.hslToRgb(h, s, l));
+};
+
+
+/**
+ * Converts from an hsl array to a hex string
+ * @param {goog.color.Hsl} hsl hsl representation of the color.
+ * @return {string} hex representation of the color.
+ */
+goog.color.hslArrayToHex = function(hsl) {
+  return goog.color.rgbArrayToHex(goog.color.hslToRgb(hsl[0], hsl[1], hsl[2]));
+};
+
+
+/**
+ * Converts a hex representation of a color to HSV
+ * @param {string} hex Color to convert.
+ * @return {!goog.color.Hsv} hsv representation of the color.
+ */
+goog.color.hexToHsv = function(hex) {
+  return goog.color.rgbArrayToHsv(goog.color.hexToRgb(hex));
+};
+
+
+/**
+ * Converts from h,s,v values to a hex string
+ * @param {number} h Hue, in [0, 360].
+ * @param {number} s Saturation, in [0, 1].
+ * @param {number} v Value, in [0, 255].
+ * @return {string} hex representation of the color.
+ */
+goog.color.hsvToHex = function(h, s, v) {
+  return goog.color.rgbArrayToHex(goog.color.hsvToRgb(h, s, v));
+};
+
+
+/**
+ * Converts from an HSV array to a hex string
+ * @param {goog.color.Hsv} hsv hsv representation of the color.
+ * @return {string} hex representation of the color.
+ */
+goog.color.hsvArrayToHex = function(hsv) {
+  return goog.color.hsvToHex(hsv[0], hsv[1], hsv[2]);
+};
+
+
+/**
+ * Calculates the Euclidean distance between two color vectors on an HSL sphere.
+ * A demo of the sphere can be found at:
+ * http://en.wikipedia.org/wiki/HSL_color_space
+ * In short, a vector for color (H, S, L) in this system can be expressed as
+ * (S*L'*cos(2*PI*H), S*L'*sin(2*PI*H), L), where L' = abs(L - 0.5), and we
+ * simply calculate the 1-2 distance using these coordinates
+ * @param {goog.color.Hsl} hsl1 First color in hsl representation.
+ * @param {goog.color.Hsl} hsl2 Second color in hsl representation.
+ * @return {number} Distance between the two colors, in the range [0, 1].
+ */
+goog.color.hslDistance = function(hsl1, hsl2) {
+  var sl1, sl2;
+  if (hsl1[2] <= 0.5) {
+    sl1 = hsl1[1] * hsl1[2];
+  } else {
+    sl1 = hsl1[1] * (1.0 - hsl1[2]);
+  }
+
+  if (hsl2[2] <= 0.5) {
+    sl2 = hsl2[1] * hsl2[2];
+  } else {
+    sl2 = hsl2[1] * (1.0 - hsl2[2]);
+  }
+
+  var h1 = hsl1[0] / 360.0;
+  var h2 = hsl2[0] / 360.0;
+  var dh = (h1 - h2) * 2.0 * Math.PI;
+  return (hsl1[2] - hsl2[2]) * (hsl1[2] - hsl2[2]) +
+      sl1 * sl1 + sl2 * sl2 - 2 * sl1 * sl2 * Math.cos(dh);
+};
+
+
+/**
+ * Blend two colors together, using the specified factor to indicate the weight
+ * given to the first color
+ * @param {goog.color.Rgb} rgb1 First color represented in rgb.
+ * @param {goog.color.Rgb} rgb2 Second color represented in rgb.
+ * @param {number} factor The weight to be given to rgb1 over rgb2. Values
+ *     should be in the range [0, 1]. If less than 0, factor will be set to 0.
+ *     If greater than 1, factor will be set to 1.
+ * @return {!goog.color.Rgb} Combined color represented in rgb.
+ */
+goog.color.blend = function(rgb1, rgb2, factor) {
+  factor = goog.math.clamp(factor, 0, 1);
+
+  return [
+    Math.round(factor * rgb1[0] + (1.0 - factor) * rgb2[0]),
+    Math.round(factor * rgb1[1] + (1.0 - factor) * rgb2[1]),
+    Math.round(factor * rgb1[2] + (1.0 - factor) * rgb2[2])
+  ];
+};
+
+
+/**
+ * Adds black to the specified color, darkening it
+ * @param {goog.color.Rgb} rgb rgb representation of the color.
+ * @param {number} factor Number in the range [0, 1]. 0 will do nothing, while
+ *     1 will return black. If less than 0, factor will be set to 0. If greater
+ *     than 1, factor will be set to 1.
+ * @return {!goog.color.Rgb} Combined rgb color.
+ */
+goog.color.darken = function(rgb, factor) {
+  var black = [0, 0, 0];
+  return goog.color.blend(black, rgb, factor);
+};
+
+
+/**
+ * Adds white to the specified color, lightening it
+ * @param {goog.color.Rgb} rgb rgb representation of the color.
+ * @param {number} factor Number in the range [0, 1].  0 will do nothing, while
+ *     1 will return white. If less than 0, factor will be set to 0. If greater
+ *     than 1, factor will be set to 1.
+ * @return {!goog.color.Rgb} Combined rgb color.
+ */
+goog.color.lighten = function(rgb, factor) {
+  var white = [255, 255, 255];
+  return goog.color.blend(white, rgb, factor);
+};
+
+
+/**
+ * Find the "best" (highest-contrast) of the suggested colors for the prime
+ * color. Uses W3C formula for judging readability and visual accessibility:
+ * http://www.w3.org/TR/AERT#color-contrast
+ * @param {goog.color.Rgb} prime Color represented as a rgb array.
+ * @param {Array.<goog.color.Rgb>} suggestions Array of colors,
+ *     each representing a rgb array.
+ * @return {!goog.color.Rgb} Highest-contrast color represented by an array..
+ */
+goog.color.highContrast = function(prime, suggestions) {
+  var suggestionsWithDiff = [];
+  for (var i = 0; i < suggestions.length; i++) {
+    suggestionsWithDiff.push({
+      color: suggestions[i],
+      diff: goog.color.yiqBrightnessDiff_(suggestions[i], prime) +
+          goog.color.colorDiff_(suggestions[i], prime)
+    });
+  }
+  suggestionsWithDiff.sort(function(a, b) {
+    return b.diff - a.diff;
+  });
+  return suggestionsWithDiff[0].color;
+};
+
+
+/**
+ * Calculate brightness of a color according to YIQ formula (brightness is Y).
+ * More info on YIQ here: http://en.wikipedia.org/wiki/YIQ. Helper method for
+ * goog.color.highContrast()
+ * @param {goog.color.Rgb} rgb Color represented by a rgb array.
+ * @return {number} brightness (Y).
+ * @private
+ */
+goog.color.yiqBrightness_ = function(rgb) {
+  return Math.round((rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000);
+};
+
+
+/**
+ * Calculate difference in brightness of two colors. Helper method for
+ * goog.color.highContrast()
+ * @param {goog.color.Rgb} rgb1 Color represented by a rgb array.
+ * @param {goog.color.Rgb} rgb2 Color represented by a rgb array.
+ * @return {number} Brightness difference.
+ * @private
+ */
+goog.color.yiqBrightnessDiff_ = function(rgb1, rgb2) {
+  return Math.abs(goog.color.yiqBrightness_(rgb1) -
+                  goog.color.yiqBrightness_(rgb2));
+};
+
+
+/**
+ * Calculate color difference between two colors. Helper method for
+ * goog.color.highContrast()
+ * @param {goog.color.Rgb} rgb1 Color represented by a rgb array.
+ * @param {goog.color.Rgb} rgb2 Color represented by a rgb array.
+ * @return {number} Color difference.
+ * @private
+ */
+goog.color.colorDiff_ = function(rgb1, rgb2) {
+  return Math.abs(rgb1[0] - rgb2[0]) + Math.abs(rgb1[1] - rgb2[1]) +
+      Math.abs(rgb1[2] - rgb2[2]);
+};
+
+// We can't use goog.color or goog.color.alpha because they interally use a hex
+// string representation that encodes each channel in a single byte.  This
+// causes occasional loss of precision and rounding errors, especially in the
+// alpha channel.
+
+goog.provide('ol.color');
+
+goog.require('goog.asserts');
+goog.require('goog.color');
+goog.require('goog.color.names');
+goog.require('goog.math');
+goog.require('goog.vec.Mat4');
+goog.require('ol');
+
+
+/**
+ * A color represented as a short array [red, green, blue, alpha].
+ * red, green, and blue should be integers in the range 0..255 inclusive.
+ * alpha should be a float in the range 0..1 inclusive.
+ * @typedef {Array.<number>}
+ * @api
+ */
+ol.Color;
+
+
+/**
+ * This RegExp matches # followed by 3 or 6 hex digits.
+ * @const
+ * @type {RegExp}
+ * @private
+ */
+ol.color.hexColorRe_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
+
+
+/**
+ * @see goog.color.rgbColorRe_
+ * @const
+ * @type {RegExp}
+ * @private
+ */
+ol.color.rgbColorRe_ =
+    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
+
+
+/**
+ * @see goog.color.alpha.rgbaColorRe_
+ * @const
+ * @type {RegExp}
+ * @private
+ */
+ol.color.rgbaColorRe_ =
+    /^(?:rgba)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|1|0\.\d{0,10})\)$/i;
+
+
+/**
+ * @param {ol.Color} dst Destination.
+ * @param {ol.Color} src Source.
+ * @param {ol.Color=} opt_color Color.
+ * @return {ol.Color} Color.
+ */
+ol.color.blend = function(dst, src, opt_color) {
+  // http://en.wikipedia.org/wiki/Alpha_compositing
+  // FIXME do we need to scale by 255?
+  var out = goog.isDef(opt_color) ? opt_color : [];
+  var dstA = dst[3];
+  var srcA = dst[3];
+  if (dstA == 1) {
+    out[0] = (src[0] * srcA + dst[0] * (1 - srcA) + 0.5) | 0;
+    out[1] = (src[1] * srcA + dst[1] * (1 - srcA) + 0.5) | 0;
+    out[2] = (src[2] * srcA + dst[2] * (1 - srcA) + 0.5) | 0;
+    out[4] = 1;
+  } else if (srcA === 0) {
+    out[0] = dst[0];
+    out[1] = dst[1];
+    out[2] = dst[2];
+    out[3] = dstA;
+  } else {
+    var outA = srcA + dstA * (1 - srcA);
+    if (outA === 0) {
+      out[0] = 0;
+      out[1] = 0;
+      out[2] = 0;
+      out[3] = 0;
+    } else {
+      out[0] = ((src[0] * srcA + dst[0] * dstA * (1 - srcA)) / outA + 0.5) | 0;
+      out[1] = ((src[1] * srcA + dst[1] * dstA * (1 - srcA)) / outA + 0.5) | 0;
+      out[2] = ((src[2] * srcA + dst[2] * dstA * (1 - srcA)) / outA + 0.5) | 0;
+      out[3] = outA;
+    }
+  }
+  goog.asserts.assert(ol.color.isValid(out));
+  return out;
+};
+
+
+/**
+ * @param {ol.Color|string} color Color.
+ * @return {ol.Color} Color.
+ * @api
+ */
+ol.color.asArray = function(color) {
+  if (goog.isArray(color)) {
+    return color;
+  } else {
+    goog.asserts.assert(goog.isString(color));
+    return ol.color.fromString(color);
+  }
+};
+
+
+/**
+ * @param {ol.Color|string} color Color.
+ * @return {string} Rgba string.
+ * @api
+ */
+ol.color.asString = function(color) {
+  if (goog.isString(color)) {
+    return color;
+  } else {
+    goog.asserts.assert(goog.isArray(color));
+    return ol.color.toString(color);
+  }
+};
+
+
+/**
+ * @param {ol.Color} color1 Color1.
+ * @param {ol.Color} color2 Color2.
+ * @return {boolean} Equals.
+ */
+ol.color.equals = function(color1, color2) {
+  return color1 === color2 || (
+      color1[0] == color2[0] && color1[1] == color2[1] &&
+      color1[2] == color2[2] && color1[3] == color2[3]);
+};
+
+
+/**
+ * @param {string} s String.
+ * @param {ol.Color=} opt_color Color.
+ * @return {ol.Color} Color.
+ */
+ol.color.fromString = (
+    /**
+     * @return {function(string, ol.Color=): ol.Color}
+     */
+    function() {
+
+      // We maintain a small cache of parsed strings.  To provide cheap LRU-like
+      // semantics, whenever the cache grows too large we simply delete an
+      // arbitrary 25% of the entries.
+
+      /**
+       * @const
+       * @type {number}
+       */
+      var MAX_CACHE_SIZE = 1024;
+
+      /**
+       * @type {Object.<string, ol.Color>}
+       */
+      var cache = {};
+
+      /**
+       * @type {number}
+       */
+      var cacheSize = 0;
+
+      return (
+          /**
+           * @param {string} s String.
+           * @param {ol.Color=} opt_color Color.
+           * @return {ol.Color} Color.
+           */
+          function(s, opt_color) {
+            var color;
+            if (cache.hasOwnProperty(s)) {
+              color = cache[s];
+            } else {
+              if (cacheSize >= MAX_CACHE_SIZE) {
+                var i = 0;
+                var key;
+                for (key in cache) {
+                  if ((i++ & 3) === 0) {
+                    delete cache[key];
+                    --cacheSize;
+                  }
+                }
+              }
+              color = ol.color.fromStringInternal_(s);
+              cache[s] = color;
+              ++cacheSize;
+            }
+            return ol.color.returnOrUpdate(color, opt_color);
+          });
+
+    })();
+
+
+/**
+ * @param {string} s String.
+ * @private
+ * @return {ol.Color} Color.
+ */
+ol.color.fromStringInternal_ = function(s) {
+
+  var isHex = false;
+  if (ol.ENABLE_NAMED_COLORS && goog.color.names.hasOwnProperty(s)) {
+    // goog.color.names does not have a type declaration, so add a typecast
+    s = /** @type {string} */ (goog.color.names[s]);
+    isHex = true;
+  }
+
+  var r, g, b, a, color, match;
+  if (isHex || (match = ol.color.hexColorRe_.exec(s))) { // hex
+    var n = s.length - 1; // number of hex digits
+    goog.asserts.assert(n == 3 || n == 6);
+    var d = n == 3 ? 1 : 2; // number of digits per channel
+    r = parseInt(s.substr(1 + 0 * d, d), 16);
+    g = parseInt(s.substr(1 + 1 * d, d), 16);
+    b = parseInt(s.substr(1 + 2 * d, d), 16);
+    if (d == 1) {
+      r = (r << 4) + r;
+      g = (g << 4) + g;
+      b = (b << 4) + b;
+    }
+    a = 1;
+    color = [r, g, b, a];
+    goog.asserts.assert(ol.color.isValid(color));
+    return color;
+  } else if ((match = ol.color.rgbaColorRe_.exec(s))) { // rgba()
+    r = Number(match[1]);
+    g = Number(match[2]);
+    b = Number(match[3]);
+    a = Number(match[4]);
+    color = [r, g, b, a];
+    return ol.color.normalize(color, color);
+  } else if ((match = ol.color.rgbColorRe_.exec(s))) { // rgb()
+    r = Number(match[1]);
+    g = Number(match[2]);
+    b = Number(match[3]);
+    color = [r, g, b, 1];
+    return ol.color.normalize(color, color);
+  } else {
+    goog.asserts.fail(s + ' is not a valid color');
+  }
+
+};
+
+
+/**
+ * @param {ol.Color} color Color.
+ * @return {boolean} Is valid.
+ */
+ol.color.isValid = function(color) {
+  return 0 <= color[0] && color[0] < 256 &&
+      0 <= color[1] && color[1] < 256 &&
+      0 <= color[2] && color[2] < 256 &&
+      0 <= color[3] && color[3] <= 1;
+};
+
+
+/**
+ * @param {ol.Color} color Color.
+ * @param {ol.Color=} opt_color Color.
+ * @return {ol.Color} Clamped color.
+ */
+ol.color.normalize = function(color, opt_color) {
+  var result = goog.isDef(opt_color) ? opt_color : [];
+  result[0] = goog.math.clamp((color[0] + 0.5) | 0, 0, 255);
+  result[1] = goog.math.clamp((color[1] + 0.5) | 0, 0, 255);
+  result[2] = goog.math.clamp((color[2] + 0.5) | 0, 0, 255);
+  result[3] = goog.math.clamp(color[3], 0, 1);
+  return result;
+};
+
+
+/**
+ * @param {ol.Color} color Color.
+ * @param {ol.Color=} opt_color Color.
+ * @return {ol.Color} Color.
+ */
+ol.color.returnOrUpdate = function(color, opt_color) {
+  if (goog.isDef(opt_color)) {
+    opt_color[0] = color[0];
+    opt_color[1] = color[1];
+    opt_color[2] = color[2];
+    opt_color[3] = color[3];
+    return opt_color;
+  } else {
+    return color;
+  }
+};
+
+
+/**
+ * @param {ol.Color} color Color.
+ * @return {string} String.
+ */
+ol.color.toString = function(color) {
+  var r = color[0];
+  if (r != (r | 0)) {
+    r = (r + 0.5) | 0;
+  }
+  var g = color[1];
+  if (g != (g | 0)) {
+    g = (g + 0.5) | 0;
+  }
+  var b = color[2];
+  if (b != (b | 0)) {
+    b = (b + 0.5) | 0;
+  }
+  var a = color[3];
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+};
+
+
+/**
+ * @param {!ol.Color} color Color.
+ * @param {goog.vec.Mat4.Number} transform Transform.
+ * @param {!ol.Color=} opt_color Color.
+ * @return {ol.Color} Transformed color.
+ */
+ol.color.transform = function(color, transform, opt_color) {
+  var result = goog.isDef(opt_color) ? opt_color : [];
+  result = goog.vec.Mat4.multVec3(transform, color, result);
+  goog.asserts.assert(goog.isArray(result));
+  result[3] = color[3];
+  return ol.color.normalize(result, result);
+};
+
+
+/**
+ * @param {ol.Color|string} color1 Color2.
+ * @param {ol.Color|string} color2 Color2.
+ * @return {boolean} Equals.
+ */
+ol.color.stringOrColorEquals = function(color1, color2) {
+  if (color1 === color2 || color1 == color2) {
+    return true;
+  }
+  if (goog.isString(color1)) {
+    color1 = ol.color.fromString(color1);
+  }
+  if (goog.isString(color2)) {
+    color2 = ol.color.fromString(color2);
+  }
+  return ol.color.equals(color1, color2);
+};
+
+goog.provide('ol.color.Matrix');
+
+goog.require('goog.vec.Mat4');
+
+
+
+/**
+ * @constructor
+ */
+ol.color.Matrix = function() {
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.colorMatrix_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.brightness_ = undefined;
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.brightnessMatrix_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.contrast_ = undefined;
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.contrastMatrix_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.hue_ = undefined;
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.hueMatrix_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.saturation_ = undefined;
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.saturationMatrix_ = goog.vec.Mat4.createNumber();
+
+};
+
+
+/**
+ * @param {!goog.vec.Mat4.Number} matrix Matrix.
+ * @param {number} value Brightness value.
+ * @return {!goog.vec.Mat4.Number} Matrix.
+ */
+ol.color.Matrix.makeBrightness = function(matrix, value) {
+  goog.vec.Mat4.makeTranslate(matrix, value, value, value);
+  return matrix;
+};
+
+
+/**
+ * @param {!goog.vec.Mat4.Number} matrix Matrix.
+ * @param {number} value Contrast value.
+ * @return {!goog.vec.Mat4.Number} Matrix.
+ */
+ol.color.Matrix.makeContrast = function(matrix, value) {
+  goog.vec.Mat4.makeScale(matrix, value, value, value);
+  var translateValue = (-0.5 * value + 0.5);
+  goog.vec.Mat4.setColumnValues(matrix, 3,
+      translateValue, translateValue, translateValue, 1);
+  return matrix;
+};
+
+
+/**
+ * @param {!goog.vec.Mat4.Number} matrix Matrix.
+ * @param {number} value Hue value.
+ * @return {!goog.vec.Mat4.Number} Matrix.
+ */
+ol.color.Matrix.makeHue = function(matrix, value) {
+  var cosHue = Math.cos(value);
+  var sinHue = Math.sin(value);
+  var v00 = 0.213 + cosHue * 0.787 - sinHue * 0.213;
+  var v01 = 0.715 - cosHue * 0.715 - sinHue * 0.715;
+  var v02 = 0.072 - cosHue * 0.072 + sinHue * 0.928;
+  var v03 = 0;
+  var v10 = 0.213 - cosHue * 0.213 + sinHue * 0.143;
+  var v11 = 0.715 + cosHue * 0.285 + sinHue * 0.140;
+  var v12 = 0.072 - cosHue * 0.072 - sinHue * 0.283;
+  var v13 = 0;
+  var v20 = 0.213 - cosHue * 0.213 - sinHue * 0.787;
+  var v21 = 0.715 - cosHue * 0.715 + sinHue * 0.715;
+  var v22 = 0.072 + cosHue * 0.928 + sinHue * 0.072;
+  var v23 = 0;
+  var v30 = 0;
+  var v31 = 0;
+  var v32 = 0;
+  var v33 = 1;
+  goog.vec.Mat4.setFromValues(matrix,
+      v00, v10, v20, v30,
+      v01, v11, v21, v31,
+      v02, v12, v22, v32,
+      v03, v13, v23, v33);
+  return matrix;
+};
+
+
+/**
+ * @param {!goog.vec.Mat4.Number} matrix Matrix.
+ * @param {number} value Saturation value.
+ * @return {!goog.vec.Mat4.Number} Matrix.
+ */
+ol.color.Matrix.makeSaturation = function(matrix, value) {
+  var v00 = 0.213 + 0.787 * value;
+  var v01 = 0.715 - 0.715 * value;
+  var v02 = 0.072 - 0.072 * value;
+  var v03 = 0;
+  var v10 = 0.213 - 0.213 * value;
+  var v11 = 0.715 + 0.285 * value;
+  var v12 = 0.072 - 0.072 * value;
+  var v13 = 0;
+  var v20 = 0.213 - 0.213 * value;
+  var v21 = 0.715 - 0.715 * value;
+  var v22 = 0.072 + 0.928 * value;
+  var v23 = 0;
+  var v30 = 0;
+  var v31 = 0;
+  var v32 = 0;
+  var v33 = 1;
+  goog.vec.Mat4.setFromValues(matrix,
+      v00, v10, v20, v30,
+      v01, v11, v21, v31,
+      v02, v12, v22, v32,
+      v03, v13, v23, v33);
+  return matrix;
+};
+
+
+/**
+ * @param {number|undefined} brightness Brightness.
+ * @param {number|undefined} contrast Contrast.
+ * @param {number|undefined} hue Hue.
+ * @param {number|undefined} saturation Saturation.
+ * @return {!goog.vec.Mat4.Number} Matrix.
+ */
+ol.color.Matrix.prototype.getMatrix = function(
+    brightness, contrast, hue, saturation) {
+  var colorMatrixDirty = false;
+  if (goog.isDef(brightness) && brightness !== this.brightness_) {
+    ol.color.Matrix.makeBrightness(this.brightnessMatrix_, brightness);
+    this.brightness_ = brightness;
+    colorMatrixDirty = true;
+  }
+  if (goog.isDef(contrast) && contrast !== this.contrast_) {
+    ol.color.Matrix.makeContrast(this.contrastMatrix_, contrast);
+    this.contrast_ = contrast;
+    colorMatrixDirty = true;
+  }
+  if (goog.isDef(hue) && hue !== this.hue_) {
+    ol.color.Matrix.makeHue(this.hueMatrix_, hue);
+    this.hue_ = hue;
+    colorMatrixDirty = true;
+  }
+  if (goog.isDef(saturation) && saturation !== this.saturation_) {
+    ol.color.Matrix.makeSaturation(this.saturationMatrix_, saturation);
+    this.saturation_ = saturation;
+    colorMatrixDirty = true;
+  }
+  if (colorMatrixDirty) {
+    var colorMatrix = this.colorMatrix_;
+    goog.vec.Mat4.makeIdentity(colorMatrix);
+    if (goog.isDef(contrast)) {
+      goog.vec.Mat4.multMat(colorMatrix, this.contrastMatrix_, colorMatrix);
+    }
+    if (goog.isDef(brightness)) {
+      goog.vec.Mat4.multMat(colorMatrix, this.brightnessMatrix_, colorMatrix);
+    }
+    if (goog.isDef(saturation)) {
+      goog.vec.Mat4.multMat(colorMatrix, this.saturationMatrix_, colorMatrix);
+    }
+    if (goog.isDef(hue)) {
+      goog.vec.Mat4.multMat(colorMatrix, this.hueMatrix_, colorMatrix);
+    }
+  }
+  return this.colorMatrix_;
+};
+
+// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for detecting, adding and removing classes.  Prefer
+ * this over goog.dom.classes for new code since it attempts to use classList
+ * (DOMTokenList: http://dom.spec.whatwg.org/#domtokenlist) which is faster
+ * and requires less code.
+ *
+ * Note: these utilities are meant to operate on HTMLElements
+ * and may have unexpected behavior on elements with differing interfaces
+ * (such as SVGElements).
+ */
+
+
+goog.provide('goog.dom.classlist');
+
+goog.require('goog.array');
+
+
+/**
+ * Override this define at build-time if you know your target supports it.
+ * @define {boolean} Whether to use the classList property (DOMTokenList).
+ */
+goog.define('goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST', false);
+
+
+/**
+ * Gets an array-like object of class names on an element.
+ * @param {Element} element DOM node to get the classes of.
+ * @return {!goog.array.ArrayLike} Class names on {@code element}.
+ */
+goog.dom.classlist.get = function(element) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    return element.classList;
+  }
+
+  var className = element.className;
+  // Some types of elements don't have a className in IE (e.g. iframes).
+  // Furthermore, in Firefox, className is not a string when the element is
+  // an SVG element.
+  return goog.isString(className) && className.match(/\S+/g) || [];
+};
+
+
+/**
+ * Sets the entire class name of an element.
+ * @param {Element} element DOM node to set class of.
+ * @param {string} className Class name(s) to apply to element.
+ */
+goog.dom.classlist.set = function(element, className) {
+  element.className = className;
+};
+
+
+/**
+ * Returns true if an element has a class.  This method may throw a DOM
+ * exception for an invalid or empty class name if DOMTokenList is used.
+ * @param {Element} element DOM node to test.
+ * @param {string} className Class name to test for.
+ * @return {boolean} Whether element has the class.
+ */
+goog.dom.classlist.contains = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    return element.classList.contains(className);
+  }
+  return goog.array.contains(goog.dom.classlist.get(element), className);
+};
+
+
+/**
+ * Adds a class to an element.  Does not add multiples of class names.  This
+ * method may throw a DOM exception for an invalid or empty class name if
+ * DOMTokenList is used.
+ * @param {Element} element DOM node to add class to.
+ * @param {string} className Class name to add.
+ */
+goog.dom.classlist.add = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    element.classList.add(className);
+    return;
+  }
+
+  if (!goog.dom.classlist.contains(element, className)) {
+    // Ensure we add a space if this is not the first class name added.
+    element.className += element.className.length > 0 ?
+        (' ' + className) : className;
+  }
+};
+
+
+/**
+ * Convenience method to add a number of class names at once.
+ * @param {Element} element The element to which to add classes.
+ * @param {goog.array.ArrayLike.<string>} classesToAdd An array-like object
+ * containing a collection of class names to add to the element.
+ * This method may throw a DOM exception if classesToAdd contains invalid
+ * or empty class names.
+ */
+goog.dom.classlist.addAll = function(element, classesToAdd) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    goog.array.forEach(classesToAdd, function(className) {
+      goog.dom.classlist.add(element, className);
+    });
+    return;
+  }
+
+  var classMap = {};
+
+  // Get all current class names into a map.
+  goog.array.forEach(goog.dom.classlist.get(element),
+      function(className) {
+        classMap[className] = true;
+      });
+
+  // Add new class names to the map.
+  goog.array.forEach(classesToAdd,
+      function(className) {
+        classMap[className] = true;
+      });
+
+  // Flatten the keys of the map into the className.
+  element.className = '';
+  for (var className in classMap) {
+    element.className += element.className.length > 0 ?
+        (' ' + className) : className;
+  }
+};
+
+
+/**
+ * Removes a class from an element.  This method may throw a DOM exception
+ * for an invalid or empty class name if DOMTokenList is used.
+ * @param {Element} element DOM node to remove class from.
+ * @param {string} className Class name to remove.
+ */
+goog.dom.classlist.remove = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    element.classList.remove(className);
+    return;
+  }
+
+  if (goog.dom.classlist.contains(element, className)) {
+    // Filter out the class name.
+    element.className = goog.array.filter(
+        goog.dom.classlist.get(element),
+        function(c) {
+          return c != className;
+        }).join(' ');
+  }
+};
+
+
+/**
+ * Removes a set of classes from an element.  Prefer this call to
+ * repeatedly calling {@code goog.dom.classlist.remove} if you want to remove
+ * a large set of class names at once.
+ * @param {Element} element The element from which to remove classes.
+ * @param {goog.array.ArrayLike.<string>} classesToRemove An array-like object
+ * containing a collection of class names to remove from the element.
+ * This method may throw a DOM exception if classesToRemove contains invalid
+ * or empty class names.
+ */
+goog.dom.classlist.removeAll = function(element, classesToRemove) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    goog.array.forEach(classesToRemove, function(className) {
+      goog.dom.classlist.remove(element, className);
+    });
+    return;
+  }
+  // Filter out those classes in classesToRemove.
+  element.className = goog.array.filter(
+      goog.dom.classlist.get(element),
+      function(className) {
+        // If this class is not one we are trying to remove,
+        // add it to the array of new class names.
+        return !goog.array.contains(classesToRemove, className);
+      }).join(' ');
+};
+
+
+/**
+ * Adds or removes a class depending on the enabled argument.  This method
+ * may throw a DOM exception for an invalid or empty class name if DOMTokenList
+ * is used.
+ * @param {Element} element DOM node to add or remove the class on.
+ * @param {string} className Class name to add or remove.
+ * @param {boolean} enabled Whether to add or remove the class (true adds,
+ *     false removes).
+ */
+goog.dom.classlist.enable = function(element, className, enabled) {
+  if (enabled) {
+    goog.dom.classlist.add(element, className);
+  } else {
+    goog.dom.classlist.remove(element, className);
+  }
+};
+
+
+/**
+ * Adds or removes a set of classes depending on the enabled argument.  This
+ * method may throw a DOM exception for an invalid or empty class name if
+ * DOMTokenList is used.
+ * @param {!Element} element DOM node to add or remove the class on.
+ * @param {goog.array.ArrayLike.<string>} classesToEnable An array-like object
+ *     containing a collection of class names to add or remove from the element.
+ * @param {boolean} enabled Whether to add or remove the classes (true adds,
+ *     false removes).
+ */
+goog.dom.classlist.enableAll = function(element, classesToEnable, enabled) {
+  var f = enabled ? goog.dom.classlist.addAll :
+      goog.dom.classlist.removeAll;
+  f(element, classesToEnable);
+};
+
+
+/**
+ * Switches a class on an element from one to another without disturbing other
+ * classes. If the fromClass isn't removed, the toClass won't be added.  This
+ * method may throw a DOM exception if the class names are empty or invalid.
+ * @param {Element} element DOM node to swap classes on.
+ * @param {string} fromClass Class to remove.
+ * @param {string} toClass Class to add.
+ * @return {boolean} Whether classes were switched.
+ */
+goog.dom.classlist.swap = function(element, fromClass, toClass) {
+  if (goog.dom.classlist.contains(element, fromClass)) {
+    goog.dom.classlist.remove(element, fromClass);
+    goog.dom.classlist.add(element, toClass);
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * Removes a class if an element has it, and adds it the element doesn't have
+ * it.  Won't affect other classes on the node.  This method may throw a DOM
+ * exception if the class name is empty or invalid.
+ * @param {Element} element DOM node to toggle class on.
+ * @param {string} className Class to toggle.
+ * @return {boolean} True if class was added, false if it was removed
+ *     (in other words, whether element has the class after this function has
+ *     been called).
+ */
+goog.dom.classlist.toggle = function(element, className) {
+  var add = !goog.dom.classlist.contains(element, className);
+  goog.dom.classlist.enable(element, className, add);
+  return add;
+};
+
+
+/**
+ * Adds and removes a class of an element.  Unlike
+ * {@link goog.dom.classlist.swap}, this method adds the classToAdd regardless
+ * of whether the classToRemove was present and had been removed.  This method
+ * may throw a DOM exception if the class names are empty or invalid.
+ *
+ * @param {Element} element DOM node to swap classes on.
+ * @param {string} classToRemove Class to remove.
+ * @param {string} classToAdd Class to add.
+ */
+goog.dom.classlist.addRemove = function(element, classToRemove, classToAdd) {
+  goog.dom.classlist.remove(element, classToRemove);
+  goog.dom.classlist.add(element, classToAdd);
+};
+
 // Copyright 2012 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26731,2760 +29531,6 @@ goog.style.getCssTranslation = function(element) {
                                   parseFloat(matches[2]));
 };
 
-// FIXME add tests for browser features (Modernizr?)
-
-goog.provide('ol.dom');
-goog.provide('ol.dom.BrowserFeature');
-
-goog.require('goog.asserts');
-goog.require('goog.dom');
-goog.require('goog.dom.TagName');
-goog.require('goog.style');
-goog.require('goog.userAgent');
-goog.require('goog.vec.Mat4');
-goog.require('ol');
-
-
-/**
- * Create an html canvas element and returns its 2d context.
- * @param {number=} opt_width Canvas width.
- * @param {number=} opt_height Canvas height.
- * @return {CanvasRenderingContext2D}
- */
-ol.dom.createCanvasContext2D = function(opt_width, opt_height) {
-  var canvas = goog.dom.createElement(goog.dom.TagName.CANVAS);
-  if (goog.isDef(opt_width)) {
-    canvas.width = opt_width;
-  }
-  if (goog.isDef(opt_height)) {
-    canvas.height = opt_height;
-  }
-  return canvas.getContext('2d');
-};
-
-
-/**
- * @enum {boolean}
- */
-ol.dom.BrowserFeature = {
-  USE_MS_MATRIX_TRANSFORM: ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE,
-  USE_MS_ALPHA_FILTER: ol.LEGACY_IE_SUPPORT && ol.IS_LEGACY_IE
-};
-
-
-/**
- * Detect 2d transform.
- * Adapted from http://stackoverflow.com/q/5661671/130442
- * http://caniuse.com/#feat=transforms2d
- * @return {boolean}
- */
-ol.dom.canUseCssTransform = (function() {
-  var canUseCssTransform;
-  return function() {
-    if (!goog.isDef(canUseCssTransform)) {
-      goog.asserts.assert(!goog.isNull(document.body));
-      if (!goog.global.getComputedStyle) {
-        // this browser is ancient
-        canUseCssTransform = false;
-      } else {
-        var el = goog.dom.createElement(goog.dom.TagName.P),
-            has2d,
-            transforms = {
-              'webkitTransform': '-webkit-transform',
-              'OTransform': '-o-transform',
-              'msTransform': '-ms-transform',
-              'MozTransform': '-moz-transform',
-              'transform': 'transform'
-            };
-        goog.dom.appendChild(document.body, el);
-        for (var t in transforms) {
-          if (t in el.style) {
-            el.style[t] = 'translate(1px,1px)';
-            has2d = goog.global.getComputedStyle(el).getPropertyValue(
-                transforms[t]);
-          }
-        }
-        goog.dom.removeNode(el);
-
-        canUseCssTransform = (has2d && has2d !== 'none');
-      }
-    }
-    return canUseCssTransform;
-  };
-}());
-
-
-/**
- * Detect 3d transform.
- * Adapted from http://stackoverflow.com/q/5661671/130442
- * http://caniuse.com/#feat=transforms3d
- * @return {boolean}
- */
-ol.dom.canUseCssTransform3D = (function() {
-  var canUseCssTransform3D;
-  return function() {
-    if (!goog.isDef(canUseCssTransform3D)) {
-      goog.asserts.assert(!goog.isNull(document.body));
-      if (!goog.global.getComputedStyle) {
-        // this browser is ancient
-        canUseCssTransform3D = false;
-      } else {
-        var el = goog.dom.createElement(goog.dom.TagName.P),
-            has3d,
-            transforms = {
-              'webkitTransform': '-webkit-transform',
-              'OTransform': '-o-transform',
-              'msTransform': '-ms-transform',
-              'MozTransform': '-moz-transform',
-              'transform': 'transform'
-            };
-        goog.dom.appendChild(document.body, el);
-        for (var t in transforms) {
-          if (t in el.style) {
-            el.style[t] = 'translate3d(1px,1px,1px)';
-            has3d = goog.global.getComputedStyle(el).getPropertyValue(
-                transforms[t]);
-          }
-        }
-        goog.dom.removeNode(el);
-
-        canUseCssTransform3D = (has3d && has3d !== 'none');
-      }
-    }
-    return canUseCssTransform3D;
-  };
-}());
-
-
-/**
- * @param {Element} element Element.
- * @param {string} value Value.
- */
-ol.dom.setTransform = function(element, value) {
-  var style = element.style;
-  style.WebkitTransform = value;
-  style.MozTransform = value;
-  style.OTransform = value;
-  style.msTransform = value;
-  style.transform = value;
-
-  // IE 9+ seems to assume transform-origin: 100% 100%; for some unknown reason
-  if (goog.userAgent.IE && !ol.IS_LEGACY_IE) {
-    element.style.transformOrigin = '0 0';
-  }
-};
-
-
-/**
- * Sets the opacity of an element, in an IE-compatible way
- * @param {!Element} element Element
- * @param {number} value Opacity, [0..1]
- */
-ol.dom.setOpacity = function(element, value) {
-  if (ol.dom.BrowserFeature.USE_MS_ALPHA_FILTER) {
-    /** @type {string} */
-    var filter = element.currentStyle.filter;
-
-    /** @type {RegExp} */
-    var regex;
-
-    /** @type {string} */
-    var alpha;
-
-    if (goog.userAgent.VERSION == '8.0') {
-      regex = /progid:DXImageTransform\.Microsoft\.Alpha\(.*?\)/i,
-      alpha = 'progid:DXImageTransform.Microsoft.Alpha(Opacity=' +
-          (value * 100) + ')';
-    } else {
-      regex = /alpha\(.*?\)/i;
-      alpha = 'alpha(opacity=' + (value * 100) + ')';
-    }
-
-    var newFilter = filter.replace(regex, alpha);
-    if (newFilter === filter) {
-      // no replace was made? just append the new alpha filter instead
-      newFilter += ' ' + alpha;
-    }
-
-    element.style.filter = newFilter;
-
-    // Fix to apply filter to absolutely-positioned children element
-    if (element.currentStyle.zIndex === 'auto') {
-      element.style.zIndex = 0;
-    }
-  } else {
-    goog.style.setOpacity(element, value);
-  }
-};
-
-
-/**
- * Sets the IE matrix transform without replacing other filters
- * @private
- * @param {!Element} element Element
- * @param {string} value The new progid string
- */
-ol.dom.setIEMatrix_ = function(element, value) {
-  var filter = element.currentStyle.filter;
-  var newFilter =
-      filter.replace(/progid:DXImageTransform.Microsoft.Matrix\(.*?\)/i, value);
-
-  if (newFilter === filter) {
-    newFilter = ' ' + value;
-  }
-
-  element.style.filter = newFilter;
-
-  // Fix to apply filter to absolutely-positioned children element
-  if (element.currentStyle.zIndex === 'auto') {
-    element.style.zIndex = 0;
-  }
-};
-
-
-/**
- * @param {!Element} element Element.
- * @param {goog.vec.Mat4.Number} transform Matrix.
- * @param {number=} opt_precision Precision.
- * @param {Element=} opt_translationElement Required for IE7-8
- */
-ol.dom.transformElement2D =
-    function(element, transform, opt_precision, opt_translationElement) {
-  // using matrix() causes gaps in Chrome and Firefox on Mac OS X, so prefer
-  // matrix3d()
-  var i;
-  if (ol.dom.canUseCssTransform3D()) {
-    var value3D;
-
-    if (goog.isDef(opt_precision)) {
-      /** @type {Array.<string>} */
-      var strings3D = new Array(16);
-      for (i = 0; i < 16; ++i) {
-        strings3D[i] = transform[i].toFixed(opt_precision);
-      }
-      value3D = strings3D.join(',');
-    } else {
-      value3D = transform.join(',');
-    }
-    ol.dom.setTransform(element, 'matrix3d(' + value3D + ')');
-  } else if (ol.dom.canUseCssTransform()) {
-    /** @type {Array.<number>} */
-    var transform2D = [
-      goog.vec.Mat4.getElement(transform, 0, 0),
-      goog.vec.Mat4.getElement(transform, 1, 0),
-      goog.vec.Mat4.getElement(transform, 0, 1),
-      goog.vec.Mat4.getElement(transform, 1, 1),
-      goog.vec.Mat4.getElement(transform, 0, 3),
-      goog.vec.Mat4.getElement(transform, 1, 3)
-    ];
-    var value2D;
-    if (goog.isDef(opt_precision)) {
-      /** @type {Array.<string>} */
-      var strings2D = new Array(6);
-      for (i = 0; i < 6; ++i) {
-        strings2D[i] = transform2D[i].toFixed(opt_precision);
-      }
-      value2D = strings2D.join(',');
-    } else {
-      value2D = transform2D.join(',');
-    }
-    ol.dom.setTransform(element, 'matrix(' + value2D + ')');
-  } else if (ol.dom.BrowserFeature.USE_MS_MATRIX_TRANSFORM) {
-    var m11 = goog.vec.Mat4.getElement(transform, 0, 0),
-        m12 = goog.vec.Mat4.getElement(transform, 0, 1),
-        m21 = goog.vec.Mat4.getElement(transform, 1, 0),
-        m22 = goog.vec.Mat4.getElement(transform, 1, 1),
-        dx = goog.vec.Mat4.getElement(transform, 0, 3),
-        dy = goog.vec.Mat4.getElement(transform, 1, 3);
-
-    // See: http://msdn.microsoft.com/en-us/library/ms533014(v=vs.85).aspx
-    // and: http://extremelysatisfactorytotalitarianism.com/blog/?p=1002
-    // @TODO: fix terrible IE bbox rotation issue.
-    var s = 'progid:DXImageTransform.Microsoft.Matrix(';
-    s += 'sizingMethod="auto expand"';
-    s += ',M11=' + m11.toFixed(opt_precision || 20);
-    s += ',M12=' + m12.toFixed(opt_precision || 20);
-    s += ',M21=' + m21.toFixed(opt_precision || 20);
-    s += ',M22=' + m22.toFixed(opt_precision || 20);
-    s += ')';
-    ol.dom.setIEMatrix_(element, s);
-
-    // scale = m11 = m22 = target resolution [m/px] / current res [m/px]
-    // dx = (viewport width [px] / 2) * scale
-    //      + (layer.x [m] - view.x [m]) / target resolution [m / px]
-    // except that we're positioning the child element relative to the
-    // viewport, not the map.
-    // dividing by the scale factor isn't the exact correction, but it's
-    // close enough that you can barely tell unless you're looking for it
-    dx /= m11;
-    dy /= m22;
-
-    opt_translationElement.style.left = Math.round(dx) + 'px';
-    opt_translationElement.style.top = Math.round(dy) + 'px';
-  } else {
-    element.style.left =
-        Math.round(goog.vec.Mat4.getElement(transform, 0, 3)) + 'px';
-    element.style.top =
-        Math.round(goog.vec.Mat4.getElement(transform, 1, 3)) + 'px';
-
-    // TODO: Add scaling here. This isn't quite as simple as multiplying
-    // width/height, because that only changes the container size, not the
-    // content size.
-  }
-};
-
-goog.provide('ol.webgl');
-goog.provide('ol.webgl.WebGLContextEventType');
-
-
-/**
- * @const
- * @private
- * @type {Array.<string>}
- */
-ol.webgl.CONTEXT_IDS_ = [
-  'experimental-webgl',
-  'webgl',
-  'webkit-3d',
-  'moz-webgl'
-];
-
-
-/**
- * @enum {string}
- */
-ol.webgl.WebGLContextEventType = {
-  LOST: 'webglcontextlost',
-  RESTORED: 'webglcontextrestored'
-};
-
-
-/**
- * @param {HTMLCanvasElement} canvas Canvas.
- * @param {Object=} opt_attributes Attributes.
- * @return {WebGLRenderingContext} WebGL rendering context.
- */
-ol.webgl.getContext = function(canvas, opt_attributes) {
-  var context, i, ii = ol.webgl.CONTEXT_IDS_.length;
-  for (i = 0; i < ii; ++i) {
-    try {
-      context = canvas.getContext(ol.webgl.CONTEXT_IDS_[i], opt_attributes);
-      if (!goog.isNull(context)) {
-        return /** @type {!WebGLRenderingContext} */ (context);
-      }
-    } catch (e) {
-    }
-  }
-  return null;
-};
-
-goog.provide('ol.has');
-
-goog.require('goog.dom');
-goog.require('goog.dom.TagName');
-goog.require('ol');
-goog.require('ol.dom');
-goog.require('ol.webgl');
-
-
-/**
- * The ratio between physical pixels and device-independent pixels
- * (dips) on the device (`window.devicePixelRatio`).
- * @const
- * @type {number}
- * @api stable
- */
-ol.has.DEVICE_PIXEL_RATIO = goog.global.devicePixelRatio || 1;
-
-
-/**
- * True if the browser supports ArrayBuffers.
- * @const
- * @type {boolean}
- */
-ol.has.ARRAY_BUFFER = 'ArrayBuffer' in goog.global;
-
-
-/**
- * True if the browser's Canvas implementation implements {get,set}LineDash.
- * @type {boolean}
- */
-ol.has.CANVAS_LINE_DASH = false;
-
-
-/**
- * True if browser supports Canvas.
- * @const
- * @type {boolean}
- * @api stable
- */
-ol.has.CANVAS = ol.ENABLE_CANVAS && (
-    /**
-     * @return {boolean} Canvas supported.
-     */
-    function() {
-      if (!('HTMLCanvasElement' in goog.global)) {
-        return false;
-      }
-      try {
-        var context = ol.dom.createCanvasContext2D();
-        if (goog.isNull(context)) {
-          return false;
-        } else {
-          if (goog.isDef(context.setLineDash)) {
-            ol.has.CANVAS_LINE_DASH = true;
-          }
-          return true;
-        }
-      } catch (e) {
-        return false;
-      }
-    })();
-
-
-/**
- * Indicates if DeviceOrientation is supported in the user's browser.
- * @const
- * @type {boolean}
- * @api stable
- */
-ol.has.DEVICE_ORIENTATION =
-    'DeviceOrientationEvent' in goog.global;
-
-
-/**
- * True if browser supports DOM.
- * @const
- * @type {boolean}
- */
-ol.has.DOM = ol.ENABLE_DOM;
-
-
-/**
- * Is HTML5 geolocation supported in the current browser?
- * @const
- * @type {boolean}
- * @api stable
- */
-ol.has.GEOLOCATION = 'geolocation' in goog.global.navigator;
-
-
-/**
- * True if browser supports touch events.
- * @const
- * @type {boolean}
- * @api stable
- */
-ol.has.TOUCH = ol.ASSUME_TOUCH || 'ontouchstart' in goog.global;
-
-
-/**
- * True if browser supports pointer events.
- * @const
- * @type {boolean}
- */
-ol.has.POINTER = 'PointerEvent' in goog.global;
-
-
-/**
- * True if browser supports ms pointer events (IE 10).
- * @const
- * @type {boolean}
- */
-ol.has.MSPOINTER =
-    !!(goog.global.navigator.msPointerEnabled);
-
-
-/**
- * True if browser supports WebGL.
- * @const
- * @type {boolean}
- * @api stable
- */
-ol.has.WEBGL = ol.ENABLE_WEBGL && (
-    /**
-     * @return {boolean} WebGL supported.
-     */
-    function() {
-      if (!('WebGLRenderingContext' in goog.global)) {
-        return false;
-      }
-      try {
-        var canvas = /** @type {HTMLCanvasElement} */
-            (goog.dom.createElement(goog.dom.TagName.CANVAS));
-        return !goog.isNull(ol.webgl.getContext(canvas, {
-          failIfMajorPerformanceCaveat: true
-        }));
-      } catch (e) {
-        return false;
-      }
-    })();
-
-// FIXME Test on Internet Explorer with VBArray
-
-goog.provide('ol.binary.Buffer');
-goog.provide('ol.binary.IReader');
-
-goog.require('goog.asserts');
-goog.require('goog.userAgent');
-goog.require('ol.has');
-
-
-
-/**
- * @constructor
- * @param {ArrayBuffer|string} data Data.
- */
-ol.binary.Buffer = function(data) {
-
-  /**
-   * @private
-   * @type {ArrayBuffer|string}
-   */
-  this.data_ = data;
-
-};
-
-
-/**
- * @return {ol.binary.IReader} Reader.
- */
-ol.binary.Buffer.prototype.getReader = function() {
-  var data = this.data_;
-  if (ol.has.ARRAY_BUFFER) {
-    var arrayBuffer;
-    if (data instanceof ArrayBuffer) {
-      arrayBuffer = data;
-    } else if (goog.isString(data)) {
-      // FIXME check what happens with Unicode
-      arrayBuffer = new ArrayBuffer(data.length);
-      var uint8View = new Uint8Array(arrayBuffer);
-      var i, ii;
-      for (i = 0, ii = data.length; i < ii; ++i) {
-        uint8View[i] = data.charCodeAt(i);
-      }
-    } else {
-      goog.asserts.fail();
-      return null;
-    }
-    return new ol.binary.ArrayBufferReader(arrayBuffer);
-  } else {
-    goog.asserts.assert(goog.isString(data));
-    goog.asserts.assert(
-        goog.userAgent.IE && !goog.userAgent.isVersionOrHigher('10.0'));
-    return new ol.binary.ArrayReader(new VBArray(data).toArray());
-  }
-};
-
-
-
-/**
- * @interface
- */
-ol.binary.IReader = function() {};
-
-
-/**
- * @return {boolean} At EOF.
- */
-ol.binary.IReader.prototype.atEOF = function() {};
-
-
-/**
- * @return {number} Byte.
- */
-ol.binary.IReader.prototype.readByte = function() {};
-
-
-
-/**
- * @constructor
- * @param {ArrayBuffer} arrayBuffer Array buffer.
- * @implements {ol.binary.IReader}
- */
-ol.binary.ArrayBufferReader = function(arrayBuffer) {
-
-  /**
-   * @private
-   * @type {Uint8Array}
-   */
-  this.uint8View_ = new Uint8Array(arrayBuffer);
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.length_ = this.uint8View_.length;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.offset_ = 0;
-
-};
-
-
-/**
- * @inheritDoc
- */
-ol.binary.ArrayBufferReader.prototype.atEOF = function() {
-  return this.offset_ == this.length_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.binary.ArrayBufferReader.prototype.readByte = function() {
-  if (this.offset_ < this.length_) {
-    return this.uint8View_[this.offset_++];
-  } else {
-    goog.asserts.fail();
-    return 0;
-  }
-};
-
-
-
-/**
- * @constructor
- * @implements {ol.binary.IReader}
- * @param {Array.<number>} array Array.
- */
-ol.binary.ArrayReader = function(array) {
-
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-  this.array_ = array;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.length_ = array.length;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.offset_ = 0;
-
-};
-
-
-/**
- * @inheritDoc
- */
-ol.binary.ArrayReader.prototype.atEOF = function() {
-  return this.offset_ == this.length_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.binary.ArrayReader.prototype.readByte = function() {
-  if (this.offset_ < this.length_) {
-    return this.array_[this.offset_++];
-  } else {
-    goog.asserts.fail();
-    return 0;
-  }
-};
-
-goog.provide('ol.CanvasFunctionType');
-
-
-/**
- * A function returning the canvas element (`{HTMLCanvasElement}`)
- * used by the source as an image. The arguments passed to the function are:
- * {@link ol.Extent} the image extent, `{number}` the image resolution,
- * `{number}` the device pixel ratio, {@link ol.Size} the image size, and
- * {@link ol.proj.Projection} the image projection. The canvas returned by
- * this function is cached by the source. The this keyword inside the function
- * references the {@link ol.source.ImageCanvas}.
- *
- * @typedef {function(this:ol.source.ImageCanvas, ol.Extent, number,
- *     number, ol.Size, ol.proj.Projection): HTMLCanvasElement}
- * @api
- */
-ol.CanvasFunctionType;
-
-/**
- * An implementation of Google Maps' MVCArray.
- * @see https://developers.google.com/maps/documentation/javascript/reference
- */
-
-goog.provide('ol.Collection');
-goog.provide('ol.CollectionEvent');
-goog.provide('ol.CollectionEventType');
-
-goog.require('goog.array');
-goog.require('goog.events.Event');
-goog.require('ol.Object');
-
-
-/**
- * @enum {string}
- */
-ol.CollectionEventType = {
-  /**
-   * Triggered when an item is added to the collection.
-   * @event ol.CollectionEvent#add
-   * @api stable
-   */
-  ADD: 'add',
-  /**
-   * Triggered when an item is removed from the collection.
-   * @event ol.CollectionEvent#remove
-   * @api stable
-   */
-  REMOVE: 'remove'
-};
-
-
-
-/**
- * @classdesc
- * Events emitted by {@link ol.Collection} instances are instances of this
- * type.
- *
- * @constructor
- * @extends {goog.events.Event}
- * @implements {oli.CollectionEvent}
- * @param {ol.CollectionEventType} type Type.
- * @param {*=} opt_element Element.
- * @param {Object=} opt_target Target.
- */
-ol.CollectionEvent = function(type, opt_element, opt_target) {
-
-  goog.base(this, type, opt_target);
-
-  /**
-   * The element that is added to or removed from the collection.
-   * @type {*}
-   * @api stable
-   */
-  this.element = opt_element;
-
-};
-goog.inherits(ol.CollectionEvent, goog.events.Event);
-
-
-/**
- * @enum {string}
- */
-ol.CollectionProperty = {
-  LENGTH: 'length'
-};
-
-
-
-/**
- * @classdesc
- * An expanded version of standard JS Array, adding convenience methods for
- * manipulation. Add and remove changes to the Collection trigger a Collection
- * event. Note that this does not cover changes to the objects _within_ the
- * Collection; they trigger events on the appropriate object, not on the
- * Collection as a whole.
- *
- * Because a Collection is itself an {@link ol.Object}, it can be bound to any
- * other Object or Collection such that a change in one will automatically be
- * reflected in the other.
- *
- * @constructor
- * @extends {ol.Object}
- * @fires ol.CollectionEvent
- * @param {Array.<T>=} opt_array Array.
- * @template T
- * @api stable
- */
-ol.Collection = function(opt_array) {
-
-  goog.base(this);
-
-  /**
-   * @private
-   * @type {Array.<T>}
-   */
-  this.array_ = opt_array || [];
-
-  this.updateLength_();
-
-};
-goog.inherits(ol.Collection, ol.Object);
-
-
-/**
- * Remove all elements from the collection.
- * @api stable
- */
-ol.Collection.prototype.clear = function() {
-  while (this.getLength() > 0) {
-    this.pop();
-  }
-};
-
-
-/**
- * @param {Array.<T>} arr Array.
- * @return {ol.Collection.<T>} This collection.
- * @api stable
- */
-ol.Collection.prototype.extend = function(arr) {
-  var i, ii;
-  for (i = 0, ii = arr.length; i < ii; ++i) {
-    this.push(arr[i]);
-  }
-  return this;
-};
-
-
-/**
- * Iterate over each element, calling the provided callback.
- * @param {function(this: S, T, number, Array.<T>): *} f The function to call
- *     for every element. This function takes 3 arguments (the element, the
- *     index and the array). The return value is ignored.
- * @param {S=} opt_this The object to use as `this` in `f`.
- * @template S
- * @api stable
- */
-ol.Collection.prototype.forEach = function(f, opt_this) {
-  goog.array.forEach(this.array_, f, opt_this);
-};
-
-
-/**
- * Get a reference to the underlying Array object. Warning: if the array
- * is mutated, no events will be dispatched by the collection, and the
- * collection's "length" property won't be in sync with the actual length
- * of the array.
- * @return {Array.<T>} Array.
- * @api stable
- */
-ol.Collection.prototype.getArray = function() {
-  return this.array_;
-};
-
-
-/**
- * Get the element at the provided index.
- * @param {number} index Index.
- * @return {T} Element.
- * @api stable
- */
-ol.Collection.prototype.item = function(index) {
-  return this.array_[index];
-};
-
-
-/**
- * Get the length of this collection.
- * @return {number} The length of the array.
- * @observable
- * @api stable
- */
-ol.Collection.prototype.getLength = function() {
-  return /** @type {number} */ (this.get(ol.CollectionProperty.LENGTH));
-};
-
-
-/**
- * Insert an element at the provided index.
- * @param {number} index Index.
- * @param {T} elem Element.
- * @api stable
- */
-ol.Collection.prototype.insertAt = function(index, elem) {
-  goog.array.insertAt(this.array_, elem, index);
-  this.updateLength_();
-  this.dispatchEvent(
-      new ol.CollectionEvent(ol.CollectionEventType.ADD, elem, this));
-};
-
-
-/**
- * Remove the last element of the collection and return it.
- * Return `undefined` if the collection is empty.
- * @return {T|undefined} Element.
- * @api stable
- */
-ol.Collection.prototype.pop = function() {
-  return this.removeAt(this.getLength() - 1);
-};
-
-
-/**
- * Insert the provided element at the end of the collection.
- * @param {T} elem Element.
- * @return {number} Length.
- * @api stable
- */
-ol.Collection.prototype.push = function(elem) {
-  var n = this.array_.length;
-  this.insertAt(n, elem);
-  return n;
-};
-
-
-/**
- * Removes the first occurence of elem from the collection.
- * @param {T} elem Element.
- * @return {T|undefined} The removed element or undefined if elem was not found.
- * @api stable
- */
-ol.Collection.prototype.remove = function(elem) {
-  var arr = this.array_;
-  var i, ii;
-  for (i = 0, ii = arr.length; i < ii; ++i) {
-    if (arr[i] === elem) {
-      return this.removeAt(i);
-    }
-  }
-  return undefined;
-};
-
-
-/**
- * Remove the element at the provided index and return it.
- * Return `undefined` if the collection does not contain this index.
- * @param {number} index Index.
- * @return {T|undefined} Value.
- * @api stable
- */
-ol.Collection.prototype.removeAt = function(index) {
-  var prev = this.array_[index];
-  goog.array.removeAt(this.array_, index);
-  this.updateLength_();
-  this.dispatchEvent(
-      new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev, this));
-  return prev;
-};
-
-
-/**
- * Set the element at the provided index.
- * @param {number} index Index.
- * @param {T} elem Element.
- * @api stable
- */
-ol.Collection.prototype.setAt = function(index, elem) {
-  var n = this.getLength();
-  if (index < n) {
-    var prev = this.array_[index];
-    this.array_[index] = elem;
-    this.dispatchEvent(
-        new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev, this));
-    this.dispatchEvent(
-        new ol.CollectionEvent(ol.CollectionEventType.ADD, elem, this));
-  } else {
-    var j;
-    for (j = n; j < index; ++j) {
-      this.insertAt(j, undefined);
-    }
-    this.insertAt(index, elem);
-  }
-};
-
-
-/**
- * @private
- */
-ol.Collection.prototype.updateLength_ = function() {
-  this.set(ol.CollectionProperty.LENGTH, this.array_.length);
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Names of standard colors with their associated hex values.
- */
-
-goog.provide('goog.color.names');
-
-
-/**
- * A map that contains a lot of colors that are recognised by various browsers.
- * This list is way larger than the minimal one dictated by W3C.
- * The keys of this map are the lowercase "readable" names of the colors, while
- * the values are the "hex" values.
- */
-goog.color.names = {
-  'aliceblue': '#f0f8ff',
-  'antiquewhite': '#faebd7',
-  'aqua': '#00ffff',
-  'aquamarine': '#7fffd4',
-  'azure': '#f0ffff',
-  'beige': '#f5f5dc',
-  'bisque': '#ffe4c4',
-  'black': '#000000',
-  'blanchedalmond': '#ffebcd',
-  'blue': '#0000ff',
-  'blueviolet': '#8a2be2',
-  'brown': '#a52a2a',
-  'burlywood': '#deb887',
-  'cadetblue': '#5f9ea0',
-  'chartreuse': '#7fff00',
-  'chocolate': '#d2691e',
-  'coral': '#ff7f50',
-  'cornflowerblue': '#6495ed',
-  'cornsilk': '#fff8dc',
-  'crimson': '#dc143c',
-  'cyan': '#00ffff',
-  'darkblue': '#00008b',
-  'darkcyan': '#008b8b',
-  'darkgoldenrod': '#b8860b',
-  'darkgray': '#a9a9a9',
-  'darkgreen': '#006400',
-  'darkgrey': '#a9a9a9',
-  'darkkhaki': '#bdb76b',
-  'darkmagenta': '#8b008b',
-  'darkolivegreen': '#556b2f',
-  'darkorange': '#ff8c00',
-  'darkorchid': '#9932cc',
-  'darkred': '#8b0000',
-  'darksalmon': '#e9967a',
-  'darkseagreen': '#8fbc8f',
-  'darkslateblue': '#483d8b',
-  'darkslategray': '#2f4f4f',
-  'darkslategrey': '#2f4f4f',
-  'darkturquoise': '#00ced1',
-  'darkviolet': '#9400d3',
-  'deeppink': '#ff1493',
-  'deepskyblue': '#00bfff',
-  'dimgray': '#696969',
-  'dimgrey': '#696969',
-  'dodgerblue': '#1e90ff',
-  'firebrick': '#b22222',
-  'floralwhite': '#fffaf0',
-  'forestgreen': '#228b22',
-  'fuchsia': '#ff00ff',
-  'gainsboro': '#dcdcdc',
-  'ghostwhite': '#f8f8ff',
-  'gold': '#ffd700',
-  'goldenrod': '#daa520',
-  'gray': '#808080',
-  'green': '#008000',
-  'greenyellow': '#adff2f',
-  'grey': '#808080',
-  'honeydew': '#f0fff0',
-  'hotpink': '#ff69b4',
-  'indianred': '#cd5c5c',
-  'indigo': '#4b0082',
-  'ivory': '#fffff0',
-  'khaki': '#f0e68c',
-  'lavender': '#e6e6fa',
-  'lavenderblush': '#fff0f5',
-  'lawngreen': '#7cfc00',
-  'lemonchiffon': '#fffacd',
-  'lightblue': '#add8e6',
-  'lightcoral': '#f08080',
-  'lightcyan': '#e0ffff',
-  'lightgoldenrodyellow': '#fafad2',
-  'lightgray': '#d3d3d3',
-  'lightgreen': '#90ee90',
-  'lightgrey': '#d3d3d3',
-  'lightpink': '#ffb6c1',
-  'lightsalmon': '#ffa07a',
-  'lightseagreen': '#20b2aa',
-  'lightskyblue': '#87cefa',
-  'lightslategray': '#778899',
-  'lightslategrey': '#778899',
-  'lightsteelblue': '#b0c4de',
-  'lightyellow': '#ffffe0',
-  'lime': '#00ff00',
-  'limegreen': '#32cd32',
-  'linen': '#faf0e6',
-  'magenta': '#ff00ff',
-  'maroon': '#800000',
-  'mediumaquamarine': '#66cdaa',
-  'mediumblue': '#0000cd',
-  'mediumorchid': '#ba55d3',
-  'mediumpurple': '#9370db',
-  'mediumseagreen': '#3cb371',
-  'mediumslateblue': '#7b68ee',
-  'mediumspringgreen': '#00fa9a',
-  'mediumturquoise': '#48d1cc',
-  'mediumvioletred': '#c71585',
-  'midnightblue': '#191970',
-  'mintcream': '#f5fffa',
-  'mistyrose': '#ffe4e1',
-  'moccasin': '#ffe4b5',
-  'navajowhite': '#ffdead',
-  'navy': '#000080',
-  'oldlace': '#fdf5e6',
-  'olive': '#808000',
-  'olivedrab': '#6b8e23',
-  'orange': '#ffa500',
-  'orangered': '#ff4500',
-  'orchid': '#da70d6',
-  'palegoldenrod': '#eee8aa',
-  'palegreen': '#98fb98',
-  'paleturquoise': '#afeeee',
-  'palevioletred': '#db7093',
-  'papayawhip': '#ffefd5',
-  'peachpuff': '#ffdab9',
-  'peru': '#cd853f',
-  'pink': '#ffc0cb',
-  'plum': '#dda0dd',
-  'powderblue': '#b0e0e6',
-  'purple': '#800080',
-  'red': '#ff0000',
-  'rosybrown': '#bc8f8f',
-  'royalblue': '#4169e1',
-  'saddlebrown': '#8b4513',
-  'salmon': '#fa8072',
-  'sandybrown': '#f4a460',
-  'seagreen': '#2e8b57',
-  'seashell': '#fff5ee',
-  'sienna': '#a0522d',
-  'silver': '#c0c0c0',
-  'skyblue': '#87ceeb',
-  'slateblue': '#6a5acd',
-  'slategray': '#708090',
-  'slategrey': '#708090',
-  'snow': '#fffafa',
-  'springgreen': '#00ff7f',
-  'steelblue': '#4682b4',
-  'tan': '#d2b48c',
-  'teal': '#008080',
-  'thistle': '#d8bfd8',
-  'tomato': '#ff6347',
-  'turquoise': '#40e0d0',
-  'violet': '#ee82ee',
-  'wheat': '#f5deb3',
-  'white': '#ffffff',
-  'whitesmoke': '#f5f5f5',
-  'yellow': '#ffff00',
-  'yellowgreen': '#9acd32'
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities related to color and color conversion.
- */
-
-goog.provide('goog.color');
-goog.provide('goog.color.Hsl');
-goog.provide('goog.color.Hsv');
-goog.provide('goog.color.Rgb');
-
-goog.require('goog.color.names');
-goog.require('goog.math');
-
-
-/**
- * RGB color representation. An array containing three elements [r, g, b],
- * each an integer in [0, 255], representing the red, green, and blue components
- * of the color respectively.
- * @typedef {Array.<number>}
- */
-goog.color.Rgb;
-
-
-/**
- * HSV color representation. An array containing three elements [h, s, v]:
- * h (hue) must be an integer in [0, 360], cyclic.
- * s (saturation) must be a number in [0, 1].
- * v (value/brightness) must be an integer in [0, 255].
- * @typedef {Array.<number>}
- */
-goog.color.Hsv;
-
-
-/**
- * HSL color representation. An array containing three elements [h, s, l]:
- * h (hue) must be an integer in [0, 360], cyclic.
- * s (saturation) must be a number in [0, 1].
- * l (lightness) must be a number in [0, 1].
- * @typedef {Array.<number>}
- */
-goog.color.Hsl;
-
-
-/**
- * Parses a color out of a string.
- * @param {string} str Color in some format.
- * @return {{hex: string, type: string}} 'hex' is a string containing a hex
- *     representation of the color, 'type' is a string containing the type
- *     of color format passed in ('hex', 'rgb', 'named').
- */
-goog.color.parse = function(str) {
-  var result = {};
-  str = String(str);
-
-  var maybeHex = goog.color.prependHashIfNecessaryHelper(str);
-  if (goog.color.isValidHexColor_(maybeHex)) {
-    result.hex = goog.color.normalizeHex(maybeHex);
-    result.type = 'hex';
-    return result;
-  } else {
-    var rgb = goog.color.isValidRgbColor_(str);
-    if (rgb.length) {
-      result.hex = goog.color.rgbArrayToHex(rgb);
-      result.type = 'rgb';
-      return result;
-    } else if (goog.color.names) {
-      var hex = goog.color.names[str.toLowerCase()];
-      if (hex) {
-        result.hex = hex;
-        result.type = 'named';
-        return result;
-      }
-    }
-  }
-  throw Error(str + ' is not a valid color string');
-};
-
-
-/**
- * Determines if the given string can be parsed as a color.
- *     {@see goog.color.parse}.
- * @param {string} str Potential color string.
- * @return {boolean} True if str is in a format that can be parsed to a color.
- */
-goog.color.isValidColor = function(str) {
-  var maybeHex = goog.color.prependHashIfNecessaryHelper(str);
-  return !!(goog.color.isValidHexColor_(maybeHex) ||
-            goog.color.isValidRgbColor_(str).length ||
-            goog.color.names && goog.color.names[str.toLowerCase()]);
-};
-
-
-/**
- * Parses red, green, blue components out of a valid rgb color string.
- * Throws Error if the color string is invalid.
- * @param {string} str RGB representation of a color.
- *    {@see goog.color.isValidRgbColor_}.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.parseRgb = function(str) {
-  var rgb = goog.color.isValidRgbColor_(str);
-  if (!rgb.length) {
-    throw Error(str + ' is not a valid RGB color');
-  }
-  return rgb;
-};
-
-
-/**
- * Converts a hex representation of a color to RGB.
- * @param {string} hexColor Color to convert.
- * @return {string} string of the form 'rgb(R,G,B)' which can be used in
- *    styles.
- */
-goog.color.hexToRgbStyle = function(hexColor) {
-  return goog.color.rgbStyle_(goog.color.hexToRgb(hexColor));
-};
-
-
-/**
- * Regular expression for extracting the digits in a hex color triplet.
- * @type {RegExp}
- * @private
- */
-goog.color.hexTripletRe_ = /#(.)(.)(.)/;
-
-
-/**
- * Normalize an hex representation of a color
- * @param {string} hexColor an hex color string.
- * @return {string} hex color in the format '#rrggbb' with all lowercase
- *     literals.
- */
-goog.color.normalizeHex = function(hexColor) {
-  if (!goog.color.isValidHexColor_(hexColor)) {
-    throw Error("'" + hexColor + "' is not a valid hex color");
-  }
-  if (hexColor.length == 4) { // of the form #RGB
-    hexColor = hexColor.replace(goog.color.hexTripletRe_, '#$1$1$2$2$3$3');
-  }
-  return hexColor.toLowerCase();
-};
-
-
-/**
- * Converts a hex representation of a color to RGB.
- * @param {string} hexColor Color to convert.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hexToRgb = function(hexColor) {
-  hexColor = goog.color.normalizeHex(hexColor);
-  var r = parseInt(hexColor.substr(1, 2), 16);
-  var g = parseInt(hexColor.substr(3, 2), 16);
-  var b = parseInt(hexColor.substr(5, 2), 16);
-
-  return [r, g, b];
-};
-
-
-/**
- * Converts a color from RGB to hex representation.
- * @param {number} r Amount of red, int between 0 and 255.
- * @param {number} g Amount of green, int between 0 and 255.
- * @param {number} b Amount of blue, int between 0 and 255.
- * @return {string} hex representation of the color.
- */
-goog.color.rgbToHex = function(r, g, b) {
-  r = Number(r);
-  g = Number(g);
-  b = Number(b);
-  if (isNaN(r) || r < 0 || r > 255 ||
-      isNaN(g) || g < 0 || g > 255 ||
-      isNaN(b) || b < 0 || b > 255) {
-    throw Error('"(' + r + ',' + g + ',' + b + '") is not a valid RGB color');
-  }
-  var hexR = goog.color.prependZeroIfNecessaryHelper(r.toString(16));
-  var hexG = goog.color.prependZeroIfNecessaryHelper(g.toString(16));
-  var hexB = goog.color.prependZeroIfNecessaryHelper(b.toString(16));
-  return '#' + hexR + hexG + hexB;
-};
-
-
-/**
- * Converts a color from RGB to hex representation.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {string} hex representation of the color.
- */
-goog.color.rgbArrayToHex = function(rgb) {
-  return goog.color.rgbToHex(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Converts a color from RGB color space to HSL color space.
- * Modified from {@link http://en.wikipedia.org/wiki/HLS_color_space}.
- * @param {number} r Value of red, in [0, 255].
- * @param {number} g Value of green, in [0, 255].
- * @param {number} b Value of blue, in [0, 255].
- * @return {!goog.color.Hsl} hsl representation of the color.
- */
-goog.color.rgbToHsl = function(r, g, b) {
-  // First must normalize r, g, b to be between 0 and 1.
-  var normR = r / 255;
-  var normG = g / 255;
-  var normB = b / 255;
-  var max = Math.max(normR, normG, normB);
-  var min = Math.min(normR, normG, normB);
-  var h = 0;
-  var s = 0;
-
-  // Luminosity is the average of the max and min rgb color intensities.
-  var l = 0.5 * (max + min);
-
-  // The hue and saturation are dependent on which color intensity is the max.
-  // If max and min are equal, the color is gray and h and s should be 0.
-  if (max != min) {
-    if (max == normR) {
-      h = 60 * (normG - normB) / (max - min);
-    } else if (max == normG) {
-      h = 60 * (normB - normR) / (max - min) + 120;
-    } else if (max == normB) {
-      h = 60 * (normR - normG) / (max - min) + 240;
-    }
-
-    if (0 < l && l <= 0.5) {
-      s = (max - min) / (2 * l);
-    } else {
-      s = (max - min) / (2 - 2 * l);
-    }
-  }
-
-  // Make sure the hue falls between 0 and 360.
-  return [Math.round(h + 360) % 360, s, l];
-};
-
-
-/**
- * Converts a color from RGB color space to HSL color space.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {!goog.color.Hsl} hsl representation of the color.
- */
-goog.color.rgbArrayToHsl = function(rgb) {
-  return goog.color.rgbToHsl(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Helper for hslToRgb.
- * @param {number} v1 Helper variable 1.
- * @param {number} v2 Helper variable 2.
- * @param {number} vH Helper variable 3.
- * @return {number} Appropriate RGB value, given the above.
- * @private
- */
-goog.color.hueToRgb_ = function(v1, v2, vH) {
-  if (vH < 0) {
-    vH += 1;
-  } else if (vH > 1) {
-    vH -= 1;
-  }
-  if ((6 * vH) < 1) {
-    return (v1 + (v2 - v1) * 6 * vH);
-  } else if (2 * vH < 1) {
-    return v2;
-  } else if (3 * vH < 2) {
-    return (v1 + (v2 - v1) * ((2 / 3) - vH) * 6);
-  }
-  return v1;
-};
-
-
-/**
- * Converts a color from HSL color space to RGB color space.
- * Modified from {@link http://www.easyrgb.com/math.html}
- * @param {number} h Hue, in [0, 360].
- * @param {number} s Saturation, in [0, 1].
- * @param {number} l Luminosity, in [0, 1].
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hslToRgb = function(h, s, l) {
-  var r = 0;
-  var g = 0;
-  var b = 0;
-  var normH = h / 360; // normalize h to fall in [0, 1]
-
-  if (s == 0) {
-    r = g = b = l * 255;
-  } else {
-    var temp1 = 0;
-    var temp2 = 0;
-    if (l < 0.5) {
-      temp2 = l * (1 + s);
-    } else {
-      temp2 = l + s - (s * l);
-    }
-    temp1 = 2 * l - temp2;
-    r = 255 * goog.color.hueToRgb_(temp1, temp2, normH + (1 / 3));
-    g = 255 * goog.color.hueToRgb_(temp1, temp2, normH);
-    b = 255 * goog.color.hueToRgb_(temp1, temp2, normH - (1 / 3));
-  }
-
-  return [Math.round(r), Math.round(g), Math.round(b)];
-};
-
-
-/**
- * Converts a color from HSL color space to RGB color space.
- * @param {goog.color.Hsl} hsl hsl representation of the color.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hslArrayToRgb = function(hsl) {
-  return goog.color.hslToRgb(hsl[0], hsl[1], hsl[2]);
-};
-
-
-/**
- * Helper for isValidHexColor_.
- * @type {RegExp}
- * @private
- */
-goog.color.validHexColorRe_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
-
-
-/**
- * Checks if a string is a valid hex color.  We expect strings of the format
- * #RRGGBB (ex: #1b3d5f) or #RGB (ex: #3CA == #33CCAA).
- * @param {string} str String to check.
- * @return {boolean} Whether the string is a valid hex color.
- * @private
- */
-goog.color.isValidHexColor_ = function(str) {
-  return goog.color.validHexColorRe_.test(str);
-};
-
-
-/**
- * Helper for isNormalizedHexColor_.
- * @type {RegExp}
- * @private
- */
-goog.color.normalizedHexColorRe_ = /^#[0-9a-f]{6}$/;
-
-
-/**
- * Checks if a string is a normalized hex color.
- * We expect strings of the format #RRGGBB (ex: #1b3d5f)
- * using only lowercase letters.
- * @param {string} str String to check.
- * @return {boolean} Whether the string is a normalized hex color.
- * @private
- */
-goog.color.isNormalizedHexColor_ = function(str) {
-  return goog.color.normalizedHexColorRe_.test(str);
-};
-
-
-/**
- * Regular expression for matching and capturing RGB style strings. Helper for
- * isValidRgbColor_.
- * @type {RegExp}
- * @private
- */
-goog.color.rgbColorRe_ =
-    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
-
-
-/**
- * Checks if a string is a valid rgb color.  We expect strings of the format
- * '(r, g, b)', or 'rgb(r, g, b)', where each color component is an int in
- * [0, 255].
- * @param {string} str String to check.
- * @return {!goog.color.Rgb} the rgb representation of the color if it is
- *     a valid color, or the empty array otherwise.
- * @private
- */
-goog.color.isValidRgbColor_ = function(str) {
-  // Each component is separate (rather than using a repeater) so we can
-  // capture the match. Also, we explicitly set each component to be either 0,
-  // or start with a non-zero, to prevent octal numbers from slipping through.
-  var regExpResultArray = str.match(goog.color.rgbColorRe_);
-  if (regExpResultArray) {
-    var r = Number(regExpResultArray[1]);
-    var g = Number(regExpResultArray[2]);
-    var b = Number(regExpResultArray[3]);
-    if (r >= 0 && r <= 255 &&
-        g >= 0 && g <= 255 &&
-        b >= 0 && b <= 255) {
-      return [r, g, b];
-    }
-  }
-  return [];
-};
-
-
-/**
- * Takes a hex value and prepends a zero if it's a single digit.
- * Small helper method for use by goog.color and friends.
- * @param {string} hex Hex value to prepend if single digit.
- * @return {string} hex value prepended with zero if it was single digit,
- *     otherwise the same value that was passed in.
- */
-goog.color.prependZeroIfNecessaryHelper = function(hex) {
-  return hex.length == 1 ? '0' + hex : hex;
-};
-
-
-/**
- * Takes a string a prepends a '#' sign if one doesn't exist.
- * Small helper method for use by goog.color and friends.
- * @param {string} str String to check.
- * @return {string} The value passed in, prepended with a '#' if it didn't
- *     already have one.
- */
-goog.color.prependHashIfNecessaryHelper = function(str) {
-  return str.charAt(0) == '#' ? str : '#' + str;
-};
-
-
-/**
- * Takes an array of [r, g, b] and converts it into a string appropriate for
- * CSS styles.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {string} string of the form 'rgb(r,g,b)'.
- * @private
- */
-goog.color.rgbStyle_ = function(rgb) {
-  return 'rgb(' + rgb.join(',') + ')';
-};
-
-
-/**
- * Converts an HSV triplet to an RGB array.  V is brightness because b is
- *   reserved for blue in RGB.
- * @param {number} h Hue value in [0, 360].
- * @param {number} s Saturation value in [0, 1].
- * @param {number} brightness brightness in [0, 255].
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hsvToRgb = function(h, s, brightness) {
-  var red = 0;
-  var green = 0;
-  var blue = 0;
-  if (s == 0) {
-    red = brightness;
-    green = brightness;
-    blue = brightness;
-  } else {
-    var sextant = Math.floor(h / 60);
-    var remainder = (h / 60) - sextant;
-    var val1 = brightness * (1 - s);
-    var val2 = brightness * (1 - (s * remainder));
-    var val3 = brightness * (1 - (s * (1 - remainder)));
-    switch (sextant) {
-      case 1:
-        red = val2;
-        green = brightness;
-        blue = val1;
-        break;
-      case 2:
-        red = val1;
-        green = brightness;
-        blue = val3;
-        break;
-      case 3:
-        red = val1;
-        green = val2;
-        blue = brightness;
-        break;
-      case 4:
-        red = val3;
-        green = val1;
-        blue = brightness;
-        break;
-      case 5:
-        red = brightness;
-        green = val1;
-        blue = val2;
-        break;
-      case 6:
-      case 0:
-        red = brightness;
-        green = val3;
-        blue = val1;
-        break;
-    }
-  }
-
-  return [Math.floor(red), Math.floor(green), Math.floor(blue)];
-};
-
-
-/**
- * Converts from RGB values to an array of HSV values.
- * @param {number} red Red value in [0, 255].
- * @param {number} green Green value in [0, 255].
- * @param {number} blue Blue value in [0, 255].
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.rgbToHsv = function(red, green, blue) {
-
-  var max = Math.max(Math.max(red, green), blue);
-  var min = Math.min(Math.min(red, green), blue);
-  var hue;
-  var saturation;
-  var value = max;
-  if (min == max) {
-    hue = 0;
-    saturation = 0;
-  } else {
-    var delta = (max - min);
-    saturation = delta / max;
-
-    if (red == max) {
-      hue = (green - blue) / delta;
-    } else if (green == max) {
-      hue = 2 + ((blue - red) / delta);
-    } else {
-      hue = 4 + ((red - green) / delta);
-    }
-    hue *= 60;
-    if (hue < 0) {
-      hue += 360;
-    }
-    if (hue > 360) {
-      hue -= 360;
-    }
-  }
-
-  return [hue, saturation, value];
-};
-
-
-/**
- * Converts from an array of RGB values to an array of HSV values.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.rgbArrayToHsv = function(rgb) {
-  return goog.color.rgbToHsv(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Converts an HSV triplet to an RGB array.
- * @param {goog.color.Hsv} hsv hsv representation of the color.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hsvArrayToRgb = function(hsv) {
-  return goog.color.hsvToRgb(hsv[0], hsv[1], hsv[2]);
-};
-
-
-/**
- * Converts a hex representation of a color to HSL.
- * @param {string} hex Color to convert.
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.hexToHsl = function(hex) {
-  var rgb = goog.color.hexToRgb(hex);
-  return goog.color.rgbToHsl(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Converts from h,s,l values to a hex string
- * @param {number} h Hue, in [0, 360].
- * @param {number} s Saturation, in [0, 1].
- * @param {number} l Luminosity, in [0, 1].
- * @return {string} hex representation of the color.
- */
-goog.color.hslToHex = function(h, s, l) {
-  return goog.color.rgbArrayToHex(goog.color.hslToRgb(h, s, l));
-};
-
-
-/**
- * Converts from an hsl array to a hex string
- * @param {goog.color.Hsl} hsl hsl representation of the color.
- * @return {string} hex representation of the color.
- */
-goog.color.hslArrayToHex = function(hsl) {
-  return goog.color.rgbArrayToHex(goog.color.hslToRgb(hsl[0], hsl[1], hsl[2]));
-};
-
-
-/**
- * Converts a hex representation of a color to HSV
- * @param {string} hex Color to convert.
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.hexToHsv = function(hex) {
-  return goog.color.rgbArrayToHsv(goog.color.hexToRgb(hex));
-};
-
-
-/**
- * Converts from h,s,v values to a hex string
- * @param {number} h Hue, in [0, 360].
- * @param {number} s Saturation, in [0, 1].
- * @param {number} v Value, in [0, 255].
- * @return {string} hex representation of the color.
- */
-goog.color.hsvToHex = function(h, s, v) {
-  return goog.color.rgbArrayToHex(goog.color.hsvToRgb(h, s, v));
-};
-
-
-/**
- * Converts from an HSV array to a hex string
- * @param {goog.color.Hsv} hsv hsv representation of the color.
- * @return {string} hex representation of the color.
- */
-goog.color.hsvArrayToHex = function(hsv) {
-  return goog.color.hsvToHex(hsv[0], hsv[1], hsv[2]);
-};
-
-
-/**
- * Calculates the Euclidean distance between two color vectors on an HSL sphere.
- * A demo of the sphere can be found at:
- * http://en.wikipedia.org/wiki/HSL_color_space
- * In short, a vector for color (H, S, L) in this system can be expressed as
- * (S*L'*cos(2*PI*H), S*L'*sin(2*PI*H), L), where L' = abs(L - 0.5), and we
- * simply calculate the 1-2 distance using these coordinates
- * @param {goog.color.Hsl} hsl1 First color in hsl representation.
- * @param {goog.color.Hsl} hsl2 Second color in hsl representation.
- * @return {number} Distance between the two colors, in the range [0, 1].
- */
-goog.color.hslDistance = function(hsl1, hsl2) {
-  var sl1, sl2;
-  if (hsl1[2] <= 0.5) {
-    sl1 = hsl1[1] * hsl1[2];
-  } else {
-    sl1 = hsl1[1] * (1.0 - hsl1[2]);
-  }
-
-  if (hsl2[2] <= 0.5) {
-    sl2 = hsl2[1] * hsl2[2];
-  } else {
-    sl2 = hsl2[1] * (1.0 - hsl2[2]);
-  }
-
-  var h1 = hsl1[0] / 360.0;
-  var h2 = hsl2[0] / 360.0;
-  var dh = (h1 - h2) * 2.0 * Math.PI;
-  return (hsl1[2] - hsl2[2]) * (hsl1[2] - hsl2[2]) +
-      sl1 * sl1 + sl2 * sl2 - 2 * sl1 * sl2 * Math.cos(dh);
-};
-
-
-/**
- * Blend two colors together, using the specified factor to indicate the weight
- * given to the first color
- * @param {goog.color.Rgb} rgb1 First color represented in rgb.
- * @param {goog.color.Rgb} rgb2 Second color represented in rgb.
- * @param {number} factor The weight to be given to rgb1 over rgb2. Values
- *     should be in the range [0, 1]. If less than 0, factor will be set to 0.
- *     If greater than 1, factor will be set to 1.
- * @return {!goog.color.Rgb} Combined color represented in rgb.
- */
-goog.color.blend = function(rgb1, rgb2, factor) {
-  factor = goog.math.clamp(factor, 0, 1);
-
-  return [
-    Math.round(factor * rgb1[0] + (1.0 - factor) * rgb2[0]),
-    Math.round(factor * rgb1[1] + (1.0 - factor) * rgb2[1]),
-    Math.round(factor * rgb1[2] + (1.0 - factor) * rgb2[2])
-  ];
-};
-
-
-/**
- * Adds black to the specified color, darkening it
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @param {number} factor Number in the range [0, 1]. 0 will do nothing, while
- *     1 will return black. If less than 0, factor will be set to 0. If greater
- *     than 1, factor will be set to 1.
- * @return {!goog.color.Rgb} Combined rgb color.
- */
-goog.color.darken = function(rgb, factor) {
-  var black = [0, 0, 0];
-  return goog.color.blend(black, rgb, factor);
-};
-
-
-/**
- * Adds white to the specified color, lightening it
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @param {number} factor Number in the range [0, 1].  0 will do nothing, while
- *     1 will return white. If less than 0, factor will be set to 0. If greater
- *     than 1, factor will be set to 1.
- * @return {!goog.color.Rgb} Combined rgb color.
- */
-goog.color.lighten = function(rgb, factor) {
-  var white = [255, 255, 255];
-  return goog.color.blend(white, rgb, factor);
-};
-
-
-/**
- * Find the "best" (highest-contrast) of the suggested colors for the prime
- * color. Uses W3C formula for judging readability and visual accessibility:
- * http://www.w3.org/TR/AERT#color-contrast
- * @param {goog.color.Rgb} prime Color represented as a rgb array.
- * @param {Array.<goog.color.Rgb>} suggestions Array of colors,
- *     each representing a rgb array.
- * @return {!goog.color.Rgb} Highest-contrast color represented by an array..
- */
-goog.color.highContrast = function(prime, suggestions) {
-  var suggestionsWithDiff = [];
-  for (var i = 0; i < suggestions.length; i++) {
-    suggestionsWithDiff.push({
-      color: suggestions[i],
-      diff: goog.color.yiqBrightnessDiff_(suggestions[i], prime) +
-          goog.color.colorDiff_(suggestions[i], prime)
-    });
-  }
-  suggestionsWithDiff.sort(function(a, b) {
-    return b.diff - a.diff;
-  });
-  return suggestionsWithDiff[0].color;
-};
-
-
-/**
- * Calculate brightness of a color according to YIQ formula (brightness is Y).
- * More info on YIQ here: http://en.wikipedia.org/wiki/YIQ. Helper method for
- * goog.color.highContrast()
- * @param {goog.color.Rgb} rgb Color represented by a rgb array.
- * @return {number} brightness (Y).
- * @private
- */
-goog.color.yiqBrightness_ = function(rgb) {
-  return Math.round((rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000);
-};
-
-
-/**
- * Calculate difference in brightness of two colors. Helper method for
- * goog.color.highContrast()
- * @param {goog.color.Rgb} rgb1 Color represented by a rgb array.
- * @param {goog.color.Rgb} rgb2 Color represented by a rgb array.
- * @return {number} Brightness difference.
- * @private
- */
-goog.color.yiqBrightnessDiff_ = function(rgb1, rgb2) {
-  return Math.abs(goog.color.yiqBrightness_(rgb1) -
-                  goog.color.yiqBrightness_(rgb2));
-};
-
-
-/**
- * Calculate color difference between two colors. Helper method for
- * goog.color.highContrast()
- * @param {goog.color.Rgb} rgb1 Color represented by a rgb array.
- * @param {goog.color.Rgb} rgb2 Color represented by a rgb array.
- * @return {number} Color difference.
- * @private
- */
-goog.color.colorDiff_ = function(rgb1, rgb2) {
-  return Math.abs(rgb1[0] - rgb2[0]) + Math.abs(rgb1[1] - rgb2[1]) +
-      Math.abs(rgb1[2] - rgb2[2]);
-};
-
-// We can't use goog.color or goog.color.alpha because they interally use a hex
-// string representation that encodes each channel in a single byte.  This
-// causes occasional loss of precision and rounding errors, especially in the
-// alpha channel.
-
-goog.provide('ol.color');
-
-goog.require('goog.asserts');
-goog.require('goog.color');
-goog.require('goog.color.names');
-goog.require('goog.math');
-goog.require('goog.vec.Mat4');
-goog.require('ol');
-
-
-/**
- * A color represented as a short array [red, green, blue, alpha].
- * red, green, and blue should be integers in the range 0..255 inclusive.
- * alpha should be a float in the range 0..1 inclusive.
- * @typedef {Array.<number>}
- * @api
- */
-ol.Color;
-
-
-/**
- * This RegExp matches # followed by 3 or 6 hex digits.
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.hexColorRe_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
-
-
-/**
- * @see goog.color.rgbColorRe_
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.rgbColorRe_ =
-    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
-
-
-/**
- * @see goog.color.alpha.rgbaColorRe_
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.rgbaColorRe_ =
-    /^(?:rgba)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|1|0\.\d{0,10})\)$/i;
-
-
-/**
- * @param {ol.Color} dst Destination.
- * @param {ol.Color} src Source.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Color.
- */
-ol.color.blend = function(dst, src, opt_color) {
-  // http://en.wikipedia.org/wiki/Alpha_compositing
-  // FIXME do we need to scale by 255?
-  var out = goog.isDef(opt_color) ? opt_color : [];
-  var dstA = dst[3];
-  var srcA = dst[3];
-  if (dstA == 1) {
-    out[0] = (src[0] * srcA + dst[0] * (1 - srcA) + 0.5) | 0;
-    out[1] = (src[1] * srcA + dst[1] * (1 - srcA) + 0.5) | 0;
-    out[2] = (src[2] * srcA + dst[2] * (1 - srcA) + 0.5) | 0;
-    out[4] = 1;
-  } else if (srcA === 0) {
-    out[0] = dst[0];
-    out[1] = dst[1];
-    out[2] = dst[2];
-    out[3] = dstA;
-  } else {
-    var outA = srcA + dstA * (1 - srcA);
-    if (outA === 0) {
-      out[0] = 0;
-      out[1] = 0;
-      out[2] = 0;
-      out[3] = 0;
-    } else {
-      out[0] = ((src[0] * srcA + dst[0] * dstA * (1 - srcA)) / outA + 0.5) | 0;
-      out[1] = ((src[1] * srcA + dst[1] * dstA * (1 - srcA)) / outA + 0.5) | 0;
-      out[2] = ((src[2] * srcA + dst[2] * dstA * (1 - srcA)) / outA + 0.5) | 0;
-      out[3] = outA;
-    }
-  }
-  goog.asserts.assert(ol.color.isValid(out));
-  return out;
-};
-
-
-/**
- * @param {ol.Color|string} color Color.
- * @return {ol.Color} Color.
- * @api
- */
-ol.color.asArray = function(color) {
-  if (goog.isArray(color)) {
-    return color;
-  } else {
-    goog.asserts.assert(goog.isString(color));
-    return ol.color.fromString(color);
-  }
-};
-
-
-/**
- * @param {ol.Color|string} color Color.
- * @return {string} Rgba string.
- * @api
- */
-ol.color.asString = function(color) {
-  if (goog.isString(color)) {
-    return color;
-  } else {
-    goog.asserts.assert(goog.isArray(color));
-    return ol.color.toString(color);
-  }
-};
-
-
-/**
- * @param {ol.Color} color1 Color1.
- * @param {ol.Color} color2 Color2.
- * @return {boolean} Equals.
- */
-ol.color.equals = function(color1, color2) {
-  return color1 === color2 || (
-      color1[0] == color2[0] && color1[1] == color2[1] &&
-      color1[2] == color2[2] && color1[3] == color2[3]);
-};
-
-
-/**
- * @param {string} s String.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Color.
- */
-ol.color.fromString = (
-    /**
-     * @return {function(string, ol.Color=): ol.Color}
-     */
-    function() {
-
-      // We maintain a small cache of parsed strings.  To provide cheap LRU-like
-      // semantics, whenever the cache grows too large we simply delete an
-      // arbitrary 25% of the entries.
-
-      /**
-       * @const
-       * @type {number}
-       */
-      var MAX_CACHE_SIZE = 1024;
-
-      /**
-       * @type {Object.<string, ol.Color>}
-       */
-      var cache = {};
-
-      /**
-       * @type {number}
-       */
-      var cacheSize = 0;
-
-      return (
-          /**
-           * @param {string} s String.
-           * @param {ol.Color=} opt_color Color.
-           * @return {ol.Color} Color.
-           */
-          function(s, opt_color) {
-            var color;
-            if (cache.hasOwnProperty(s)) {
-              color = cache[s];
-            } else {
-              if (cacheSize >= MAX_CACHE_SIZE) {
-                var i = 0;
-                var key;
-                for (key in cache) {
-                  if ((i++ & 3) === 0) {
-                    delete cache[key];
-                    --cacheSize;
-                  }
-                }
-              }
-              color = ol.color.fromStringInternal_(s);
-              cache[s] = color;
-              ++cacheSize;
-            }
-            return ol.color.returnOrUpdate(color, opt_color);
-          });
-
-    })();
-
-
-/**
- * @param {string} s String.
- * @private
- * @return {ol.Color} Color.
- */
-ol.color.fromStringInternal_ = function(s) {
-
-  var isHex = false;
-  if (ol.ENABLE_NAMED_COLORS && goog.color.names.hasOwnProperty(s)) {
-    // goog.color.names does not have a type declaration, so add a typecast
-    s = /** @type {string} */ (goog.color.names[s]);
-    isHex = true;
-  }
-
-  var r, g, b, a, color, match;
-  if (isHex || (match = ol.color.hexColorRe_.exec(s))) { // hex
-    var n = s.length - 1; // number of hex digits
-    goog.asserts.assert(n == 3 || n == 6);
-    var d = n == 3 ? 1 : 2; // number of digits per channel
-    r = parseInt(s.substr(1 + 0 * d, d), 16);
-    g = parseInt(s.substr(1 + 1 * d, d), 16);
-    b = parseInt(s.substr(1 + 2 * d, d), 16);
-    if (d == 1) {
-      r = (r << 4) + r;
-      g = (g << 4) + g;
-      b = (b << 4) + b;
-    }
-    a = 1;
-    color = [r, g, b, a];
-    goog.asserts.assert(ol.color.isValid(color));
-    return color;
-  } else if ((match = ol.color.rgbaColorRe_.exec(s))) { // rgba()
-    r = Number(match[1]);
-    g = Number(match[2]);
-    b = Number(match[3]);
-    a = Number(match[4]);
-    color = [r, g, b, a];
-    return ol.color.normalize(color, color);
-  } else if ((match = ol.color.rgbColorRe_.exec(s))) { // rgb()
-    r = Number(match[1]);
-    g = Number(match[2]);
-    b = Number(match[3]);
-    color = [r, g, b, 1];
-    return ol.color.normalize(color, color);
-  } else {
-    goog.asserts.fail(s + ' is not a valid color');
-  }
-
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @return {boolean} Is valid.
- */
-ol.color.isValid = function(color) {
-  return 0 <= color[0] && color[0] < 256 &&
-      0 <= color[1] && color[1] < 256 &&
-      0 <= color[2] && color[2] < 256 &&
-      0 <= color[3] && color[3] <= 1;
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Clamped color.
- */
-ol.color.normalize = function(color, opt_color) {
-  var result = goog.isDef(opt_color) ? opt_color : [];
-  result[0] = goog.math.clamp((color[0] + 0.5) | 0, 0, 255);
-  result[1] = goog.math.clamp((color[1] + 0.5) | 0, 0, 255);
-  result[2] = goog.math.clamp((color[2] + 0.5) | 0, 0, 255);
-  result[3] = goog.math.clamp(color[3], 0, 1);
-  return result;
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Color.
- */
-ol.color.returnOrUpdate = function(color, opt_color) {
-  if (goog.isDef(opt_color)) {
-    opt_color[0] = color[0];
-    opt_color[1] = color[1];
-    opt_color[2] = color[2];
-    opt_color[3] = color[3];
-    return opt_color;
-  } else {
-    return color;
-  }
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @return {string} String.
- */
-ol.color.toString = function(color) {
-  var r = color[0];
-  if (r != (r | 0)) {
-    r = (r + 0.5) | 0;
-  }
-  var g = color[1];
-  if (g != (g | 0)) {
-    g = (g + 0.5) | 0;
-  }
-  var b = color[2];
-  if (b != (b | 0)) {
-    b = (b + 0.5) | 0;
-  }
-  var a = color[3];
-  return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-};
-
-
-/**
- * @param {!ol.Color} color Color.
- * @param {goog.vec.Mat4.Number} transform Transform.
- * @param {!ol.Color=} opt_color Color.
- * @return {ol.Color} Transformed color.
- */
-ol.color.transform = function(color, transform, opt_color) {
-  var result = goog.isDef(opt_color) ? opt_color : [];
-  result = goog.vec.Mat4.multVec3(transform, color, result);
-  goog.asserts.assert(goog.isArray(result));
-  result[3] = color[3];
-  return ol.color.normalize(result, result);
-};
-
-
-/**
- * @param {ol.Color|string} color1 Color2.
- * @param {ol.Color|string} color2 Color2.
- * @return {boolean} Equals.
- */
-ol.color.stringOrColorEquals = function(color1, color2) {
-  if (color1 === color2 || color1 == color2) {
-    return true;
-  }
-  if (goog.isString(color1)) {
-    color1 = ol.color.fromString(color1);
-  }
-  if (goog.isString(color2)) {
-    color2 = ol.color.fromString(color2);
-  }
-  return ol.color.equals(color1, color2);
-};
-
-goog.provide('ol.color.Matrix');
-
-goog.require('goog.vec.Mat4');
-
-
-
-/**
- * @constructor
- */
-ol.color.Matrix = function() {
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.colorMatrix_ = goog.vec.Mat4.createNumber();
-
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-  this.brightness_ = undefined;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.brightnessMatrix_ = goog.vec.Mat4.createNumber();
-
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-  this.contrast_ = undefined;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.contrastMatrix_ = goog.vec.Mat4.createNumber();
-
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-  this.hue_ = undefined;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.hueMatrix_ = goog.vec.Mat4.createNumber();
-
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-  this.saturation_ = undefined;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.saturationMatrix_ = goog.vec.Mat4.createNumber();
-
-};
-
-
-/**
- * @param {!goog.vec.Mat4.Number} matrix Matrix.
- * @param {number} value Brightness value.
- * @return {!goog.vec.Mat4.Number} Matrix.
- */
-ol.color.Matrix.makeBrightness = function(matrix, value) {
-  goog.vec.Mat4.makeTranslate(matrix, value, value, value);
-  return matrix;
-};
-
-
-/**
- * @param {!goog.vec.Mat4.Number} matrix Matrix.
- * @param {number} value Contrast value.
- * @return {!goog.vec.Mat4.Number} Matrix.
- */
-ol.color.Matrix.makeContrast = function(matrix, value) {
-  goog.vec.Mat4.makeScale(matrix, value, value, value);
-  var translateValue = (-0.5 * value + 0.5);
-  goog.vec.Mat4.setColumnValues(matrix, 3,
-      translateValue, translateValue, translateValue, 1);
-  return matrix;
-};
-
-
-/**
- * @param {!goog.vec.Mat4.Number} matrix Matrix.
- * @param {number} value Hue value.
- * @return {!goog.vec.Mat4.Number} Matrix.
- */
-ol.color.Matrix.makeHue = function(matrix, value) {
-  var cosHue = Math.cos(value);
-  var sinHue = Math.sin(value);
-  var v00 = 0.213 + cosHue * 0.787 - sinHue * 0.213;
-  var v01 = 0.715 - cosHue * 0.715 - sinHue * 0.715;
-  var v02 = 0.072 - cosHue * 0.072 + sinHue * 0.928;
-  var v03 = 0;
-  var v10 = 0.213 - cosHue * 0.213 + sinHue * 0.143;
-  var v11 = 0.715 + cosHue * 0.285 + sinHue * 0.140;
-  var v12 = 0.072 - cosHue * 0.072 - sinHue * 0.283;
-  var v13 = 0;
-  var v20 = 0.213 - cosHue * 0.213 - sinHue * 0.787;
-  var v21 = 0.715 - cosHue * 0.715 + sinHue * 0.715;
-  var v22 = 0.072 + cosHue * 0.928 + sinHue * 0.072;
-  var v23 = 0;
-  var v30 = 0;
-  var v31 = 0;
-  var v32 = 0;
-  var v33 = 1;
-  goog.vec.Mat4.setFromValues(matrix,
-      v00, v10, v20, v30,
-      v01, v11, v21, v31,
-      v02, v12, v22, v32,
-      v03, v13, v23, v33);
-  return matrix;
-};
-
-
-/**
- * @param {!goog.vec.Mat4.Number} matrix Matrix.
- * @param {number} value Saturation value.
- * @return {!goog.vec.Mat4.Number} Matrix.
- */
-ol.color.Matrix.makeSaturation = function(matrix, value) {
-  var v00 = 0.213 + 0.787 * value;
-  var v01 = 0.715 - 0.715 * value;
-  var v02 = 0.072 - 0.072 * value;
-  var v03 = 0;
-  var v10 = 0.213 - 0.213 * value;
-  var v11 = 0.715 + 0.285 * value;
-  var v12 = 0.072 - 0.072 * value;
-  var v13 = 0;
-  var v20 = 0.213 - 0.213 * value;
-  var v21 = 0.715 - 0.715 * value;
-  var v22 = 0.072 + 0.928 * value;
-  var v23 = 0;
-  var v30 = 0;
-  var v31 = 0;
-  var v32 = 0;
-  var v33 = 1;
-  goog.vec.Mat4.setFromValues(matrix,
-      v00, v10, v20, v30,
-      v01, v11, v21, v31,
-      v02, v12, v22, v32,
-      v03, v13, v23, v33);
-  return matrix;
-};
-
-
-/**
- * @param {number|undefined} brightness Brightness.
- * @param {number|undefined} contrast Contrast.
- * @param {number|undefined} hue Hue.
- * @param {number|undefined} saturation Saturation.
- * @return {!goog.vec.Mat4.Number} Matrix.
- */
-ol.color.Matrix.prototype.getMatrix = function(
-    brightness, contrast, hue, saturation) {
-  var colorMatrixDirty = false;
-  if (goog.isDef(brightness) && brightness !== this.brightness_) {
-    ol.color.Matrix.makeBrightness(this.brightnessMatrix_, brightness);
-    this.brightness_ = brightness;
-    colorMatrixDirty = true;
-  }
-  if (goog.isDef(contrast) && contrast !== this.contrast_) {
-    ol.color.Matrix.makeContrast(this.contrastMatrix_, contrast);
-    this.contrast_ = contrast;
-    colorMatrixDirty = true;
-  }
-  if (goog.isDef(hue) && hue !== this.hue_) {
-    ol.color.Matrix.makeHue(this.hueMatrix_, hue);
-    this.hue_ = hue;
-    colorMatrixDirty = true;
-  }
-  if (goog.isDef(saturation) && saturation !== this.saturation_) {
-    ol.color.Matrix.makeSaturation(this.saturationMatrix_, saturation);
-    this.saturation_ = saturation;
-    colorMatrixDirty = true;
-  }
-  if (colorMatrixDirty) {
-    var colorMatrix = this.colorMatrix_;
-    goog.vec.Mat4.makeIdentity(colorMatrix);
-    if (goog.isDef(contrast)) {
-      goog.vec.Mat4.multMat(colorMatrix, this.contrastMatrix_, colorMatrix);
-    }
-    if (goog.isDef(brightness)) {
-      goog.vec.Mat4.multMat(colorMatrix, this.brightnessMatrix_, colorMatrix);
-    }
-    if (goog.isDef(saturation)) {
-      goog.vec.Mat4.multMat(colorMatrix, this.saturationMatrix_, colorMatrix);
-    }
-    if (goog.isDef(hue)) {
-      goog.vec.Mat4.multMat(colorMatrix, this.hueMatrix_, colorMatrix);
-    }
-  }
-  return this.colorMatrix_;
-};
-
-// Copyright 2012 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities for detecting, adding and removing classes.  Prefer
- * this over goog.dom.classes for new code since it attempts to use classList
- * (DOMTokenList: http://dom.spec.whatwg.org/#domtokenlist) which is faster
- * and requires less code.
- *
- * Note: these utilities are meant to operate on HTMLElements
- * and may have unexpected behavior on elements with differing interfaces
- * (such as SVGElements).
- */
-
-
-goog.provide('goog.dom.classlist');
-
-goog.require('goog.array');
-
-
-/**
- * Override this define at build-time if you know your target supports it.
- * @define {boolean} Whether to use the classList property (DOMTokenList).
- */
-goog.define('goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST', false);
-
-
-/**
- * Gets an array-like object of class names on an element.
- * @param {Element} element DOM node to get the classes of.
- * @return {!goog.array.ArrayLike} Class names on {@code element}.
- */
-goog.dom.classlist.get = function(element) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    return element.classList;
-  }
-
-  var className = element.className;
-  // Some types of elements don't have a className in IE (e.g. iframes).
-  // Furthermore, in Firefox, className is not a string when the element is
-  // an SVG element.
-  return goog.isString(className) && className.match(/\S+/g) || [];
-};
-
-
-/**
- * Sets the entire class name of an element.
- * @param {Element} element DOM node to set class of.
- * @param {string} className Class name(s) to apply to element.
- */
-goog.dom.classlist.set = function(element, className) {
-  element.className = className;
-};
-
-
-/**
- * Returns true if an element has a class.  This method may throw a DOM
- * exception for an invalid or empty class name if DOMTokenList is used.
- * @param {Element} element DOM node to test.
- * @param {string} className Class name to test for.
- * @return {boolean} Whether element has the class.
- */
-goog.dom.classlist.contains = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    return element.classList.contains(className);
-  }
-  return goog.array.contains(goog.dom.classlist.get(element), className);
-};
-
-
-/**
- * Adds a class to an element.  Does not add multiples of class names.  This
- * method may throw a DOM exception for an invalid or empty class name if
- * DOMTokenList is used.
- * @param {Element} element DOM node to add class to.
- * @param {string} className Class name to add.
- */
-goog.dom.classlist.add = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    element.classList.add(className);
-    return;
-  }
-
-  if (!goog.dom.classlist.contains(element, className)) {
-    // Ensure we add a space if this is not the first class name added.
-    element.className += element.className.length > 0 ?
-        (' ' + className) : className;
-  }
-};
-
-
-/**
- * Convenience method to add a number of class names at once.
- * @param {Element} element The element to which to add classes.
- * @param {goog.array.ArrayLike.<string>} classesToAdd An array-like object
- * containing a collection of class names to add to the element.
- * This method may throw a DOM exception if classesToAdd contains invalid
- * or empty class names.
- */
-goog.dom.classlist.addAll = function(element, classesToAdd) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    goog.array.forEach(classesToAdd, function(className) {
-      goog.dom.classlist.add(element, className);
-    });
-    return;
-  }
-
-  var classMap = {};
-
-  // Get all current class names into a map.
-  goog.array.forEach(goog.dom.classlist.get(element),
-      function(className) {
-        classMap[className] = true;
-      });
-
-  // Add new class names to the map.
-  goog.array.forEach(classesToAdd,
-      function(className) {
-        classMap[className] = true;
-      });
-
-  // Flatten the keys of the map into the className.
-  element.className = '';
-  for (var className in classMap) {
-    element.className += element.className.length > 0 ?
-        (' ' + className) : className;
-  }
-};
-
-
-/**
- * Removes a class from an element.  This method may throw a DOM exception
- * for an invalid or empty class name if DOMTokenList is used.
- * @param {Element} element DOM node to remove class from.
- * @param {string} className Class name to remove.
- */
-goog.dom.classlist.remove = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    element.classList.remove(className);
-    return;
-  }
-
-  if (goog.dom.classlist.contains(element, className)) {
-    // Filter out the class name.
-    element.className = goog.array.filter(
-        goog.dom.classlist.get(element),
-        function(c) {
-          return c != className;
-        }).join(' ');
-  }
-};
-
-
-/**
- * Removes a set of classes from an element.  Prefer this call to
- * repeatedly calling {@code goog.dom.classlist.remove} if you want to remove
- * a large set of class names at once.
- * @param {Element} element The element from which to remove classes.
- * @param {goog.array.ArrayLike.<string>} classesToRemove An array-like object
- * containing a collection of class names to remove from the element.
- * This method may throw a DOM exception if classesToRemove contains invalid
- * or empty class names.
- */
-goog.dom.classlist.removeAll = function(element, classesToRemove) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    goog.array.forEach(classesToRemove, function(className) {
-      goog.dom.classlist.remove(element, className);
-    });
-    return;
-  }
-  // Filter out those classes in classesToRemove.
-  element.className = goog.array.filter(
-      goog.dom.classlist.get(element),
-      function(className) {
-        // If this class is not one we are trying to remove,
-        // add it to the array of new class names.
-        return !goog.array.contains(classesToRemove, className);
-      }).join(' ');
-};
-
-
-/**
- * Adds or removes a class depending on the enabled argument.  This method
- * may throw a DOM exception for an invalid or empty class name if DOMTokenList
- * is used.
- * @param {Element} element DOM node to add or remove the class on.
- * @param {string} className Class name to add or remove.
- * @param {boolean} enabled Whether to add or remove the class (true adds,
- *     false removes).
- */
-goog.dom.classlist.enable = function(element, className, enabled) {
-  if (enabled) {
-    goog.dom.classlist.add(element, className);
-  } else {
-    goog.dom.classlist.remove(element, className);
-  }
-};
-
-
-/**
- * Adds or removes a set of classes depending on the enabled argument.  This
- * method may throw a DOM exception for an invalid or empty class name if
- * DOMTokenList is used.
- * @param {!Element} element DOM node to add or remove the class on.
- * @param {goog.array.ArrayLike.<string>} classesToEnable An array-like object
- *     containing a collection of class names to add or remove from the element.
- * @param {boolean} enabled Whether to add or remove the classes (true adds,
- *     false removes).
- */
-goog.dom.classlist.enableAll = function(element, classesToEnable, enabled) {
-  var f = enabled ? goog.dom.classlist.addAll :
-      goog.dom.classlist.removeAll;
-  f(element, classesToEnable);
-};
-
-
-/**
- * Switches a class on an element from one to another without disturbing other
- * classes. If the fromClass isn't removed, the toClass won't be added.  This
- * method may throw a DOM exception if the class names are empty or invalid.
- * @param {Element} element DOM node to swap classes on.
- * @param {string} fromClass Class to remove.
- * @param {string} toClass Class to add.
- * @return {boolean} Whether classes were switched.
- */
-goog.dom.classlist.swap = function(element, fromClass, toClass) {
-  if (goog.dom.classlist.contains(element, fromClass)) {
-    goog.dom.classlist.remove(element, fromClass);
-    goog.dom.classlist.add(element, toClass);
-    return true;
-  }
-  return false;
-};
-
-
-/**
- * Removes a class if an element has it, and adds it the element doesn't have
- * it.  Won't affect other classes on the node.  This method may throw a DOM
- * exception if the class name is empty or invalid.
- * @param {Element} element DOM node to toggle class on.
- * @param {string} className Class to toggle.
- * @return {boolean} True if class was added, false if it was removed
- *     (in other words, whether element has the class after this function has
- *     been called).
- */
-goog.dom.classlist.toggle = function(element, className) {
-  var add = !goog.dom.classlist.contains(element, className);
-  goog.dom.classlist.enable(element, className, add);
-  return add;
-};
-
-
-/**
- * Adds and removes a class of an element.  Unlike
- * {@link goog.dom.classlist.swap}, this method adds the classToAdd regardless
- * of whether the classToRemove was present and had been removed.  This method
- * may throw a DOM exception if the class names are empty or invalid.
- *
- * @param {Element} element DOM node to swap classes on.
- * @param {string} classToRemove Class to remove.
- * @param {string} classToAdd Class to add.
- */
-goog.dom.classlist.addRemove = function(element, classToRemove, classToAdd) {
-  goog.dom.classlist.remove(element, classToRemove);
-  goog.dom.classlist.add(element, classToAdd);
-};
-
 goog.provide('ol.MapEvent');
 goog.provide('ol.MapEventType');
 
@@ -29673,6 +29719,15 @@ ol.control.Control.prototype.setMap = function(map) {
 };
 
 goog.provide('ol.css');
+
+
+/**
+ * The CSS class for hidden feature.
+ *
+ * @const
+ * @type {string}
+ */
+ol.css.CLASS_HIDDEN = 'ol-hidden';
 
 
 /**
@@ -31889,8 +31944,7 @@ ol.control.Attribution.prototype.insertLogos_ = function(frameState) {
         logoElement = image;
       } else {
         logoElement = goog.dom.createDom(goog.dom.TagName.A, {
-          'href': logoValue,
-          'target': '_blank'
+          'href': logoValue
         });
         logoElement.appendChild(image);
       }
@@ -31987,6 +32041,7 @@ goog.provide('ol.control.Rotate');
 goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
+goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.math');
@@ -32001,7 +32056,8 @@ goog.require('ol.pointer.PointerEventHandler');
 /**
  * @classdesc
  * A button control to reset rotation to 0.
- * To style this control use css selector `.ol-rotate`.
+ * To style this control use css selector `.ol-rotate`. A `.ol-hidden` css
+ * selector is added to the button when the rotation is 0.
  *
  * @constructor
  * @extends {ol.control.Control}
@@ -32076,7 +32132,9 @@ ol.control.Rotate = function(opt_options) {
    */
   this.rotation_ = undefined;
 
-  element.style.opacity = (this.autoHide_) ? 0 : 1;
+  if (this.autoHide_) {
+    goog.dom.classlist.add(this.element, ol.css.CLASS_HIDDEN);
+  }
 
 };
 goog.inherits(ol.control.Rotate, ol.control.Control);
@@ -32110,7 +32168,11 @@ ol.control.Rotate.prototype.handlePointerUp_ = function(pointerEvent) {
 ol.control.Rotate.prototype.resetNorth_ = function() {
   var map = this.getMap();
   var view = map.getView();
-  goog.asserts.assert(goog.isDef(view));
+  if (goog.isNull(view)) {
+    // the map does not have a view, so we can't act
+    // upon it
+    return;
+  }
   var currentRotation = view.getRotation();
   while (currentRotation < -Math.PI) {
     currentRotation += 2 * Math.PI;
@@ -32143,7 +32205,8 @@ ol.control.Rotate.prototype.handleMapPostrender = function(mapEvent) {
   if (rotation != this.rotation_) {
     var transform = 'rotate(' + goog.math.toDegrees(rotation) + 'deg)';
     if (this.autoHide_) {
-      this.element.style.opacity = (rotation === 0) ? 0 : 1;
+      goog.dom.classlist.enable(
+          this.element, ol.css.CLASS_HIDDEN, rotation === 0);
     }
     this.label_.style.msTransform = transform;
     this.label_.style.webkitTransform = transform;
@@ -32294,6 +32357,11 @@ ol.control.Zoom.prototype.handlePointerUp_ = function(delta, pointerEvent) {
 ol.control.Zoom.prototype.zoomByDelta_ = function(delta) {
   var map = this.getMap();
   var view = map.getView();
+  if (goog.isNull(view)) {
+    // the map does not have a view, so we can't act
+    // upon it
+    return;
+  }
   var currentResolution = view.getResolution();
   if (goog.isDef(currentResolution)) {
     if (this.duration_ > 0) {
@@ -38171,7 +38239,8 @@ ol.geom.Geometry.prototype.getType = goog.abstractMethod;
 
 
 /**
- * Apply a transform function to the geometry.  Modifies the geometry in place.
+ * Apply a transform function to each coordinate of the geometry.
+ * The geometry is modified in place.
  * If you do not want the geometry modified in place, first clone() it and
  * then use this function on the clone.
  * @function
@@ -38182,8 +38251,19 @@ ol.geom.Geometry.prototype.applyTransform = goog.abstractMethod;
 
 
 /**
- * Transform a geometry from one coordinate reference system to another.
- * Modifies the geometry in place.
+ * Test if the geometry and the passed extent intersect.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} `true` if the geometry and the extent intersect.
+ * @function
+ * @api
+ */
+ol.geom.Geometry.prototype.intersectsExtent = goog.abstractMethod;
+
+
+/**
+ * Transform each coordinate of the geometry from one coordinate reference
+ * system to another. The geometry is modified in place.
+ * For example, a line will be transformed to a line and a circle to a circle.
  * If you do not want the geometry modified in place, first clone() it and
  * then use this function on the clone.
  *
@@ -39323,7 +39403,8 @@ goog.require('ol.style.Style');
  *
  * @constructor
  * @extends {ol.Object}
- * @fires change Triggered when the geometry or style of the feature changes.
+ * @fires change Triggered when the id, the geometry or the style of the
+ *     feature changes.
  * @param {ol.geom.Geometry|Object.<string, *>=} opt_geometryOrProperties
  *     You may pass a Geometry object directly, or an object literal
  *     containing properties.  If you pass an object literal, you may
@@ -39447,9 +39528,10 @@ ol.Feature.prototype.getGeometryName = function() {
 
 /**
  * @return {ol.style.Style|Array.<ol.style.Style>|
- *     ol.feature.FeatureStyleFunction} Return the style as set by setStyle in
- *     the same format that it was provided in. If setStyle has not been run,
- *     return `undefined`.
+ *     ol.feature.FeatureStyleFunction} Return the style as set by `setStyle`
+ * in the same format that it was provided in. If `setStyle` has not been
+ * called, or if it was called with `null`, then `getStyle()` will return
+ * `null`.
  * @api stable
  */
 ol.Feature.prototype.getStyle = function() {
@@ -39510,13 +39592,17 @@ goog.exportProperty(
 
 
 /**
+ * Set the style for the feature.  This can be a single style object, an array
+ * of styles, or a function that takes a resolution and returns an array of
+ * styles. If it is `null` the feature has no style (a `null` style).
  * @param {ol.style.Style|Array.<ol.style.Style>|
- *     ol.feature.FeatureStyleFunction} style Set the style for this feature.
+ *     ol.feature.FeatureStyleFunction} style Style for this feature.
  * @api stable
  */
 ol.Feature.prototype.setStyle = function(style) {
   this.style_ = style;
-  this.styleFunction_ = ol.feature.createFeatureStyleFunction(style);
+  this.styleFunction_ = goog.isNull(style) ?
+      undefined : ol.feature.createFeatureStyleFunction(style);
   this.changed();
 };
 
@@ -39566,9 +39652,9 @@ ol.feature.FeatureStyleFunction;
  * Convert the provided object into a feature style function.  Functions passed
  * through unchanged.  Arrays of ol.style.Style or single style objects wrapped
  * in a new feature style function.
- * @param {ol.feature.FeatureStyleFunction|Array.<ol.style.Style>|
- *     ol.style.Style} obj A feature style function, a single style, or an array
- *     of styles.
+ * @param {ol.feature.FeatureStyleFunction|!Array.<ol.style.Style>|
+ *     !ol.style.Style} obj A feature style function, a single style, or an
+ *     array of styles.
  * @return {ol.feature.FeatureStyleFunction} A style function.
  */
 ol.feature.createFeatureStyleFunction = function(obj) {
@@ -40231,6 +40317,7 @@ goog.require('ol.extent');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.geom.flat.deflate');
+goog.require('ol.proj');
 
 
 
@@ -40425,6 +40512,7 @@ ol.geom.Circle.prototype.setFlatCoordinates =
 
 
 /**
+ * The radius is in the units of the projection.
  * @param {number} radius Radius.
  * @api
  */
@@ -40436,9 +40524,28 @@ ol.geom.Circle.prototype.setRadius = function(radius) {
 
 
 /**
- * @inheritDoc
+ * Transform each coordinate of the circle from one coordinate reference system
+ * to another. The geometry is modified in place.
+ * If you do not want the geometry modified in place, first clone() it and
+ * then use this function on the clone.
+ *
+ * Internally a circle is currently represented by two points: the center of
+ * the circle `[cx, cy]`, and the point to the right of the circle
+ * `[cx + r, cy]`. This `transform` function just transforms these two points.
+ * So the resulting geometry is also a circle, and that circle does not
+ * correspond to the shape that would be obtained by transforming every point
+ * of the original circle.
+ *
+ * @param {ol.proj.ProjectionLike} source The current projection.  Can be a
+ *     string identifier or a {@link ol.proj.Projection} object.
+ * @param {ol.proj.ProjectionLike} destination The desired projection.  Can be a
+ *     string identifier or a {@link ol.proj.Projection} object.
+ * @return {ol.geom.Circle} This geometry.  Note that original geometry is
+ *     modified in place.
+ * @function
+ * @api stable
  */
-ol.geom.Circle.prototype.applyTransform = goog.abstractMethod;
+ol.geom.Circle.prototype.transform;
 
 goog.provide('ol.geom.GeometryCollection');
 
@@ -40657,6 +40764,22 @@ ol.geom.GeometryCollection.prototype.getSimplifiedGeometry =
  */
 ol.geom.GeometryCollection.prototype.getType = function() {
   return ol.geom.GeometryType.GEOMETRY_COLLECTION;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.GeometryCollection.prototype.intersectsExtent = function(extent) {
+  var geometries = this.geometries_;
+  var i, ii;
+  for (i = 0, ii = geometries.length; i < ii; ++i) {
+    if (geometries[i].intersectsExtent(extent)) {
+      return true;
+    }
+  }
+  return false;
 };
 
 
@@ -41347,6 +41470,310 @@ ol.geom.flat.lineStringsCoordinateAtM = function(
   return null;
 };
 
+goog.provide('ol.geom.flat.contains');
+
+goog.require('goog.asserts');
+goog.require('ol.extent');
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} Contains extent.
+ */
+ol.geom.flat.contains.linearRingContainsExtent =
+    function(flatCoordinates, offset, end, stride, extent) {
+  var outside = ol.extent.forEachCorner(extent,
+      /**
+       * @param {ol.Coordinate} coordinate Coordinate.
+       */
+      function(coordinate) {
+        return !ol.geom.flat.contains.linearRingContainsXY(flatCoordinates,
+            offset, end, stride, coordinate[0], coordinate[1]);
+      });
+  return !outside;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @return {boolean} Contains (x, y).
+ */
+ol.geom.flat.contains.linearRingContainsXY =
+    function(flatCoordinates, offset, end, stride, x, y) {
+  // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+  var contains = false;
+  var x1 = flatCoordinates[end - stride];
+  var y1 = flatCoordinates[end - stride + 1];
+  for (; offset < end; offset += stride) {
+    var x2 = flatCoordinates[offset];
+    var y2 = flatCoordinates[offset + 1];
+    var intersect = ((y1 > y) != (y2 > y)) &&
+        (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1);
+    if (intersect) {
+      contains = !contains;
+    }
+    x1 = x2;
+    y1 = y2;
+  }
+  return contains;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array.<number>} ends Ends.
+ * @param {number} stride Stride.
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @return {boolean} Contains (x, y).
+ */
+ol.geom.flat.contains.linearRingsContainsXY =
+    function(flatCoordinates, offset, ends, stride, x, y) {
+  goog.asserts.assert(ends.length > 0);
+  if (ends.length === 0) {
+    return false;
+  }
+  if (!ol.geom.flat.contains.linearRingContainsXY(
+      flatCoordinates, offset, ends[0], stride, x, y)) {
+    return false;
+  }
+  var i, ii;
+  for (i = 1, ii = ends.length; i < ii; ++i) {
+    if (ol.geom.flat.contains.linearRingContainsXY(
+        flatCoordinates, ends[i - 1], ends[i], stride, x, y)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array.<Array.<number>>} endss Endss.
+ * @param {number} stride Stride.
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @return {boolean} Contains (x, y).
+ */
+ol.geom.flat.contains.linearRingssContainsXY =
+    function(flatCoordinates, offset, endss, stride, x, y) {
+  goog.asserts.assert(endss.length > 0);
+  if (endss.length === 0) {
+    return false;
+  }
+  var i, ii;
+  for (i = 0, ii = endss.length; i < ii; ++i) {
+    var ends = endss[i];
+    if (ol.geom.flat.contains.linearRingsContainsXY(
+        flatCoordinates, offset, ends, stride, x, y)) {
+      return true;
+    }
+    offset = ends[ends.length - 1];
+  }
+  return false;
+};
+
+goog.provide('ol.geom.flat.segments');
+
+
+/**
+ * This function calls `callback` for each segment of the flat coordinates
+ * array. If the callback returns a truthy value the function returns that
+ * value immediately. Otherwise the function returns `false`.
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {function(ol.Coordinate, ol.Coordinate): T} callback Function
+ *     called for each segment.
+ * @return {T|boolean} Value.
+ * @template T
+ */
+ol.geom.flat.segments.forEach =
+    function(flatCoordinates, offset, end, stride, callback) {
+  var point1 = [flatCoordinates[offset], flatCoordinates[offset + 1]];
+  var point2 = [];
+  var ret;
+  for (; (offset + stride) < end; offset += stride) {
+    point2[0] = flatCoordinates[offset + stride];
+    point2[1] = flatCoordinates[offset + stride + 1];
+    ret = callback(point1, point2);
+    if (ret) {
+      return ret;
+    }
+    point1[0] = point2[0];
+    point1[1] = point2[1];
+  }
+  return false;
+};
+
+goog.provide('ol.geom.flat.intersectsextent');
+
+goog.require('goog.asserts');
+goog.require('ol.extent');
+goog.require('ol.geom.flat.contains');
+goog.require('ol.geom.flat.segments');
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} True if the geometry and the extent intersect.
+ */
+ol.geom.flat.intersectsextent.lineString =
+    function(flatCoordinates, offset, end, stride, extent) {
+  var coordinatesExtent = ol.extent.extendFlatCoordinates(
+      ol.extent.createEmpty(), flatCoordinates, offset, end, stride);
+  if (!ol.extent.intersects(extent, coordinatesExtent)) {
+    return false;
+  }
+  if (ol.extent.containsExtent(extent, coordinatesExtent)) {
+    return true;
+  }
+  if (coordinatesExtent[0] >= extent[0] &&
+      coordinatesExtent[2] <= extent[2]) {
+    return true;
+  }
+  if (coordinatesExtent[1] >= extent[1] &&
+      coordinatesExtent[3] <= extent[3]) {
+    return true;
+  }
+  return ol.geom.flat.segments.forEach(flatCoordinates, offset, end, stride,
+      /**
+       * @param {ol.Coordinate} point1 Start point.
+       * @param {ol.Coordinate} point2 End point.
+       * @return {boolean} `true` if the segment and the extent intersect,
+       *     `false` otherwise.
+       */
+      function(point1, point2) {
+        return ol.extent.intersectsSegment(extent, point1, point2);
+      });
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array.<number>} ends Ends.
+ * @param {number} stride Stride.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} True if the geometry and the extent intersect.
+ */
+ol.geom.flat.intersectsextent.lineStrings =
+    function(flatCoordinates, offset, ends, stride, extent) {
+  var i, ii;
+  for (i = 0, ii = ends.length; i < ii; ++i) {
+    if (ol.geom.flat.intersectsextent.lineString(
+        flatCoordinates, offset, ends[i], stride, extent)) {
+      return true;
+    }
+    offset = ends[i];
+  }
+  return false;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} True if the geometry and the extent intersect.
+ */
+ol.geom.flat.intersectsextent.linearRing =
+    function(flatCoordinates, offset, end, stride, extent) {
+  if (ol.geom.flat.intersectsextent.lineString(
+      flatCoordinates, offset, end, stride, extent)) {
+    return true;
+  }
+  if (ol.geom.flat.contains.linearRingContainsXY(
+      flatCoordinates, offset, end, stride, extent[0], extent[1])) {
+    return true;
+  }
+  if (ol.geom.flat.contains.linearRingContainsXY(
+      flatCoordinates, offset, end, stride, extent[0], extent[3])) {
+    return true;
+  }
+  if (ol.geom.flat.contains.linearRingContainsXY(
+      flatCoordinates, offset, end, stride, extent[2], extent[1])) {
+    return true;
+  }
+  if (ol.geom.flat.contains.linearRingContainsXY(
+      flatCoordinates, offset, end, stride, extent[2], extent[3])) {
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array.<number>} ends Ends.
+ * @param {number} stride Stride.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} True if the geometry and the extent intersect.
+ */
+ol.geom.flat.intersectsextent.linearRings =
+    function(flatCoordinates, offset, ends, stride, extent) {
+  goog.asserts.assert(ends.length > 0);
+  if (!ol.geom.flat.intersectsextent.linearRing(
+      flatCoordinates, offset, ends[0], stride, extent)) {
+    return false;
+  }
+  if (ends.length === 1) {
+    return true;
+  }
+  var i, ii;
+  for (i = 1, ii = ends.length; i < ii; ++i) {
+    if (ol.geom.flat.contains.linearRingContainsExtent(
+        flatCoordinates, ends[i - 1], ends[i], stride, extent)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array.<Array.<number>>} endss Endss.
+ * @param {number} stride Stride.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} True if the geometry and the extent intersect.
+ */
+ol.geom.flat.intersectsextent.linearRingss =
+    function(flatCoordinates, offset, endss, stride, extent) {
+  goog.asserts.assert(endss.length > 0);
+  var i, ii;
+  for (i = 0, ii = endss.length; i < ii; ++i) {
+    var ends = endss[i];
+    if (ol.geom.flat.intersectsextent.linearRings(
+        flatCoordinates, offset, ends, stride, extent)) {
+      return true;
+    }
+    offset = ends[ends.length - 1];
+  }
+  return false;
+};
+
 goog.provide('ol.geom.flat.length');
 
 
@@ -41803,6 +42230,7 @@ goog.require('ol.geom.flat.closest');
 goog.require('ol.geom.flat.deflate');
 goog.require('ol.geom.flat.inflate');
 goog.require('ol.geom.flat.interpolate');
+goog.require('ol.geom.flat.intersectsextent');
 goog.require('ol.geom.flat.length');
 goog.require('ol.geom.flat.simplify');
 
@@ -41985,6 +42413,17 @@ ol.geom.LineString.prototype.getType = function() {
 
 
 /**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.LineString.prototype.intersectsExtent = function(extent) {
+  return ol.geom.flat.intersectsextent.lineString(
+      this.flatCoordinates, 0, this.flatCoordinates.length, this.stride,
+      extent);
+};
+
+
+/**
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -42027,6 +42466,7 @@ goog.require('ol.geom.flat.closest');
 goog.require('ol.geom.flat.deflate');
 goog.require('ol.geom.flat.inflate');
 goog.require('ol.geom.flat.interpolate');
+goog.require('ol.geom.flat.intersectsextent');
 goog.require('ol.geom.flat.simplify');
 
 
@@ -42262,6 +42702,16 @@ ol.geom.MultiLineString.prototype.getType = function() {
 
 
 /**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.MultiLineString.prototype.intersectsExtent = function(extent) {
+  return ol.geom.flat.intersectsextent.lineStrings(
+      this.flatCoordinates, 0, this.ends_, this.stride, extent);
+};
+
+
+/**
  * @param {Array.<Array.<ol.Coordinate>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -42417,6 +42867,16 @@ ol.geom.Point.prototype.getExtent = function(opt_extent) {
  */
 ol.geom.Point.prototype.getType = function() {
   return ol.geom.GeometryType.POINT;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.Point.prototype.intersectsExtent = function(extent) {
+  return ol.extent.containsXY(extent,
+      this.flatCoordinates[0], this.flatCoordinates[1]);
 };
 
 
@@ -42590,6 +43050,25 @@ ol.geom.MultiPoint.prototype.getPoints = function() {
  */
 ol.geom.MultiPoint.prototype.getType = function() {
   return ol.geom.GeometryType.MULTI_POINT;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.MultiPoint.prototype.intersectsExtent = function(extent) {
+  var flatCoordinates = this.flatCoordinates;
+  var stride = this.stride;
+  var i, ii, x, y;
+  for (i = 0, ii = flatCoordinates.length; i < ii; i += stride) {
+    x = flatCoordinates[i];
+    y = flatCoordinates[i + 1];
+    if (ol.extent.containsXY(extent, x, y)) {
+      return true;
+    }
+  }
+  return false;
 };
 
 
@@ -42844,98 +43323,6 @@ ol.geom.LinearRing.prototype.setFlatCoordinates =
   this.changed();
 };
 
-goog.provide('ol.geom.flat.contains');
-
-goog.require('goog.asserts');
-
-
-/**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
- * @param {number} x X.
- * @param {number} y Y.
- * @return {boolean} Contains (x, y).
- */
-ol.geom.flat.contains.linearRingContainsXY =
-    function(flatCoordinates, offset, end, stride, x, y) {
-  // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-  var contains = false;
-  var x1 = flatCoordinates[end - stride];
-  var y1 = flatCoordinates[end - stride + 1];
-  for (; offset < end; offset += stride) {
-    var x2 = flatCoordinates[offset];
-    var y2 = flatCoordinates[offset + 1];
-    var intersect = ((y1 > y) != (y2 > y)) &&
-        (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1);
-    if (intersect) {
-      contains = !contains;
-    }
-    x1 = x2;
-    y1 = y2;
-  }
-  return contains;
-};
-
-
-/**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {Array.<number>} ends Ends.
- * @param {number} stride Stride.
- * @param {number} x X.
- * @param {number} y Y.
- * @return {boolean} Contains (x, y).
- */
-ol.geom.flat.contains.linearRingsContainsXY =
-    function(flatCoordinates, offset, ends, stride, x, y) {
-  goog.asserts.assert(ends.length > 0);
-  if (ends.length === 0) {
-    return false;
-  }
-  if (!ol.geom.flat.contains.linearRingContainsXY(
-      flatCoordinates, offset, ends[0], stride, x, y)) {
-    return false;
-  }
-  var i, ii;
-  for (i = 1, ii = ends.length; i < ii; ++i) {
-    if (ol.geom.flat.contains.linearRingContainsXY(
-        flatCoordinates, ends[i - 1], ends[i], stride, x, y)) {
-      return false;
-    }
-  }
-  return true;
-};
-
-
-/**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {Array.<Array.<number>>} endss Endss.
- * @param {number} stride Stride.
- * @param {number} x X.
- * @param {number} y Y.
- * @return {boolean} Contains (x, y).
- */
-ol.geom.flat.contains.linearRingssContainsXY =
-    function(flatCoordinates, offset, endss, stride, x, y) {
-  goog.asserts.assert(endss.length > 0);
-  if (endss.length === 0) {
-    return false;
-  }
-  var i, ii;
-  for (i = 0, ii = endss.length; i < ii; ++i) {
-    var ends = endss[i];
-    if (ol.geom.flat.contains.linearRingsContainsXY(
-        flatCoordinates, offset, ends, stride, x, y)) {
-      return true;
-    }
-    offset = ends[ends.length - 1];
-  }
-  return false;
-};
-
 goog.provide('ol.geom.flat.interiorpoint');
 
 goog.require('goog.asserts');
@@ -43184,6 +43571,7 @@ goog.require('ol.geom.flat.contains');
 goog.require('ol.geom.flat.deflate');
 goog.require('ol.geom.flat.inflate');
 goog.require('ol.geom.flat.interiorpoint');
+goog.require('ol.geom.flat.intersectsextent');
 goog.require('ol.geom.flat.orient');
 goog.require('ol.geom.flat.simplify');
 
@@ -43467,6 +43855,16 @@ ol.geom.Polygon.prototype.getType = function() {
 
 
 /**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.Polygon.prototype.intersectsExtent = function(extent) {
+  return ol.geom.flat.intersectsextent.linearRings(
+      this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride, extent);
+};
+
+
+/**
  * @param {Array.<Array.<ol.Coordinate>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -43510,10 +43908,12 @@ ol.geom.Polygon.prototype.setFlatCoordinates =
 /**
  * Create an approximation of a circle on the surface of a sphere.
  * @param {ol.Sphere} sphere The sphere.
- * @param {ol.Coordinate} center Center.
- * @param {number} radius Radius.
- * @param {number=} opt_n Optional number of points.  Default is `32`.
- * @return {ol.geom.Polygon} Circle geometry.
+ * @param {ol.Coordinate} center Center (`[lon, lat]` in degrees).
+ * @param {number} radius The great-circle distance from the center to
+ *     the polygon vertices.
+ * @param {number=} opt_n Optional number of vertices for the resulting
+ *     polygon. Default is `32`.
+ * @return {ol.geom.Polygon} The "circular" polygon.
  * @api stable
  */
 ol.geom.Polygon.circular = function(sphere, center, radius, opt_n) {
@@ -43575,6 +43975,7 @@ goog.require('ol.geom.flat.contains');
 goog.require('ol.geom.flat.deflate');
 goog.require('ol.geom.flat.inflate');
 goog.require('ol.geom.flat.interiorpoint');
+goog.require('ol.geom.flat.intersectsextent');
 goog.require('ol.geom.flat.orient');
 goog.require('ol.geom.flat.simplify');
 
@@ -43873,6 +44274,16 @@ ol.geom.MultiPolygon.prototype.getPolygons = function() {
  */
 ol.geom.MultiPolygon.prototype.getType = function() {
   return ol.geom.GeometryType.MULTI_POLYGON;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.MultiPolygon.prototype.intersectsExtent = function(extent) {
+  return ol.geom.flat.intersectsextent.linearRingss(
+      this.getOrientedFlatCoordinates(), 0, this.endss_, this.stride, extent);
 };
 
 
@@ -48166,7 +48577,7 @@ ol.format.GML.readFlatCoordinatesFromNode_ = function(node, objectStack) {
  */
 ol.format.GML.readFlatPos_ = function(node, objectStack) {
   var s = ol.xml.getAllTextContent(node, false);
-  var re = /^\s*([+\-]?\d*\.?\d+(?:e[+\-]?\d+)?)\s*/;
+  var re = /^\s*([+\-]?\d*\.?\d+(?:[eE][+\-]?\d+)?)\s*/;
   /** @type {Array.<number>} */
   var flatCoordinates = [];
   var m;
@@ -62470,6 +62881,7 @@ ol.format.WMSCapabilities.readLayer_ = function(node, objectStack) {
     if (goog.isDef(parentValue)) {
       var childValue = goog.object.setIfUndefined(layerObject, key, []);
       childValue = childValue.concat(parentValue);
+      goog.object.set(layerObject, key, childValue);
     }
   });
 
@@ -64708,8 +65120,23 @@ ol.interaction.Interaction = function() {
    */
   this.map_ = null;
 
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.active_ = true;
+
 };
 goog.inherits(ol.interaction.Interaction, ol.Observable);
+
+
+/**
+ * @return {boolean} `true` if the interaction is active, `false` otherwise.
+ * @api
+ */
+ol.interaction.Interaction.prototype.getActive = function() {
+  return this.active_;
+};
 
 
 /**
@@ -64729,6 +65156,16 @@ ol.interaction.Interaction.prototype.getMap = function() {
  */
 ol.interaction.Interaction.prototype.handleMapBrowserEvent =
     goog.abstractMethod;
+
+
+/**
+ * Activate or deactivate the interaction.
+ * @param {boolean} active Active.
+ * @api
+ */
+ol.interaction.Interaction.prototype.setActive = function(active) {
+  this.active_ = active;
+};
 
 
 /**
@@ -64938,7 +65375,7 @@ ol.interaction.DoubleClickZoom.prototype.handleMapBrowserEvent =
     var anchor = mapBrowserEvent.coordinate;
     var delta = browserEvent.shiftKey ? -this.delta_ : this.delta_;
     var view = map.getView();
-    goog.asserts.assert(goog.isDef(view));
+    goog.asserts.assert(!goog.isNull(view));
     ol.interaction.Interaction.zoomByDelta(
         map, view, delta, anchor, this.duration_);
     mapBrowserEvent.preventDefault();
@@ -70750,7 +71187,7 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, result) {
   var projection = this.reprojectTo_;
   if (goog.isNull(projection)) {
     var view = map.getView();
-    goog.asserts.assert(goog.isDef(view));
+    goog.asserts.assert(!goog.isNull(view));
     projection = view.getProjection();
     goog.asserts.assert(goog.isDef(projection));
   }
@@ -71343,7 +71780,7 @@ ol.interaction.DragBox.prototype.handlePointerDrag = function(mapBrowserEvent) {
 
 /**
  * Returns geometry of last drawn box.
- * @return {ol.geom.Geometry} Geometry.
+ * @return {ol.geom.Polygon} Geometry.
  * @api stable
  */
 ol.interaction.DragBox.prototype.getGeometry = function() {
@@ -72327,7 +72764,7 @@ goog.inherits(ol.interaction.DragZoom, ol.interaction.DragBox);
 ol.interaction.DragZoom.prototype.onBoxEnd = function() {
   var map = this.getMap();
   var view = map.getView();
-  goog.asserts.assert(goog.isDef(view));
+  goog.asserts.assert(!goog.isNull(view));
   var extent = this.getGeometry().getExtent();
   var center = ol.extent.getCenter(extent);
   var size = map.getSize();
@@ -74727,6 +75164,7 @@ ol.source.SourceOptions;
  * @extends {ol.Observable}
  * @fires change Triggered when the state of the source changes.
  * @param {ol.source.SourceOptions} options Source options.
+ * @api stable
  */
 ol.source.Source = function(options) {
 
@@ -74906,6 +75344,7 @@ ol.layer.LayerState;
  * @constructor
  * @extends {ol.Object}
  * @param {olx.layer.BaseOptions} options Layer options.
+ * @api stable
  */
 ol.layer.Base = function(options) {
 
@@ -77223,7 +77662,7 @@ ol.interaction.KeyboardPan.prototype.handleMapBrowserEvent =
         keyCode == goog.events.KeyCodes.UP)) {
       var map = mapBrowserEvent.map;
       var view = map.getView();
-      goog.asserts.assert(goog.isDef(view));
+      goog.asserts.assert(!goog.isNull(view));
       var viewState = view.getState();
       var mapUnitsDelta = viewState.resolution * this.pixelDelta_;
       var deltaX = 0, deltaY = 0;
@@ -77319,7 +77758,7 @@ ol.interaction.KeyboardZoom.prototype.handleMapBrowserEvent =
       var delta = (charCode == '+'.charCodeAt(0)) ? this.delta_ : -this.delta_;
       map.render();
       var view = map.getView();
-      goog.asserts.assert(goog.isDef(view));
+      goog.asserts.assert(!goog.isNull(view));
       ol.interaction.Interaction.zoomByDelta(
           map, view, delta, undefined, this.duration_);
       mapBrowserEvent.preventDefault();
@@ -77432,7 +77871,7 @@ ol.interaction.MouseWheelZoom.prototype.doZoom_ = function(map) {
   var delta = goog.math.clamp(this.delta_, -maxDelta, maxDelta);
 
   var view = map.getView();
-  goog.asserts.assert(goog.isDef(view));
+  goog.asserts.assert(!goog.isNull(view));
 
   map.render();
   ol.interaction.Interaction.zoomByDelta(map, view, -delta, this.lastAnchor_,
@@ -89766,7 +90205,7 @@ goog.exportProperty(
 /**
  * Get the view associated with this map. A view manages properties such as
  * center and resolution.
- * @return {ol.View|undefined} The view that controls this map.
+ * @return {ol.View} The view that controls this map.
  * @observable
  * @api stable
  */
@@ -89871,6 +90310,9 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
   if (this.dispatchEvent(mapBrowserEvent) !== false) {
     for (i = interactionsArray.length - 1; i >= 0; i--) {
       var interaction = interactionsArray[i];
+      if (!interaction.getActive()) {
+        continue;
+      }
       var cont = interaction.handleMapBrowserEvent(mapBrowserEvent);
       if (!cont) {
         break;
@@ -90001,7 +90443,7 @@ ol.Map.prototype.handleViewChanged_ = function() {
     this.viewPropertyListenerKey_ = null;
   }
   var view = this.getView();
-  if (goog.isDefAndNotNull(view)) {
+  if (!goog.isNull(view)) {
     this.viewPropertyListenerKey_ = goog.events.listen(
         view, ol.ObjectEventType.PROPERTYCHANGE,
         this.handleViewPropertyChanged_, false, this);
@@ -90074,7 +90516,7 @@ ol.Map.prototype.isDef = function() {
     return false;
   }
   var view = this.getView();
-  if (!goog.isDef(view) || !view.isDef()) {
+  if (goog.isNull(view) || !view.isDef()) {
     return false;
   }
   return true;
@@ -90202,7 +90644,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
   /** @type {?olx.FrameState} */
   var frameState = null;
   if (goog.isDef(size) && hasArea(size) &&
-      goog.isDef(view) && view.isDef()) {
+      !goog.isNull(view) && view.isDef()) {
     var viewHints = view.getHints();
     var layerStatesArray = this.getLayerGroup().getLayerStatesArray();
     var layerStates = {};
@@ -90234,17 +90676,17 @@ ol.Map.prototype.renderFrame_ = function(time) {
     });
   }
 
-  var preRenderFunctions = this.preRenderFunctions_;
-  var n = 0, preRenderFunction;
-  for (i = 0, ii = preRenderFunctions.length; i < ii; ++i) {
-    preRenderFunction = preRenderFunctions[i];
-    if (preRenderFunction(this, frameState)) {
-      preRenderFunctions[n++] = preRenderFunction;
-    }
-  }
-  preRenderFunctions.length = n;
-
   if (!goog.isNull(frameState)) {
+    var preRenderFunctions = this.preRenderFunctions_;
+    var n = 0, preRenderFunction;
+    for (i = 0, ii = preRenderFunctions.length; i < ii; ++i) {
+      preRenderFunction = preRenderFunctions[i];
+      if (preRenderFunction(this, frameState)) {
+        preRenderFunctions[n++] = preRenderFunction;
+      }
+    }
+    preRenderFunctions.length = n;
+
     frameState.extent = ol.extent.getForViewAndSize(viewState.center,
         viewState.resolution, viewState.rotation, frameState.size);
   }
@@ -91308,6 +91750,14 @@ ol.source.VectorEventType = {
    * @api stable
    */
   ADDFEATURE: 'addfeature',
+
+  /**
+   * Triggered when a feature is updated.
+   * @event ol.source.VectorEvent#updatefeature
+   * @api
+   */
+  UPDATEFEATURE: 'updatefeature',
+
   /**
    * Triggered when a feature is removed from the source.
    * @event ol.source.VectorEvent#removefeature
@@ -91528,6 +91978,39 @@ ol.source.Vector.prototype.forEachFeatureInExtentAtResolution =
 
 
 /**
+ * This function executes the `callback` function once for each feature
+ * intersecting the `extent` until `callback` returns a truthy value. When
+ * `callback` returns a truthy value the function immediately returns that
+ * value. Otherwise the function returns `undefined`.
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this: T, ol.Feature): S} f Callback.
+ * @param {T=} opt_this The object to use as `this` in `f`.
+ * @return {S|undefined}
+ * @template T,S
+ * @api
+ */
+ol.source.Vector.prototype.forEachFeatureIntersectingExtent =
+    function(extent, f, opt_this) {
+  return this.forEachFeatureInExtent(extent,
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @return {S|undefined}
+       * @template S
+       */
+      function(feature) {
+        var geometry = feature.getGeometry();
+        goog.asserts.assert(goog.isDefAndNotNull(geometry));
+        if (geometry.intersectsExtent(extent)) {
+          var result = f.call(opt_this, feature);
+          if (result) {
+            return result;
+          }
+        }
+      });
+};
+
+
+/**
  * @return {Array.<ol.Feature>} Features.
  * @api stable
  */
@@ -91684,6 +92167,8 @@ ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
     }
   }
   this.changed();
+  this.dispatchEvent(new ol.source.VectorEvent(
+      ol.source.VectorEventType.UPDATEFEATURE, feature));
 };
 
 
@@ -95377,9 +95862,11 @@ ol.tilegrid.XYZ.prototype.createTileCoordTransform = function(opt_options) {
 ol.tilegrid.XYZ.prototype.getTileCoordChildTileRange =
     function(tileCoord, opt_tileRange) {
   if (tileCoord[0] < this.maxZoom) {
+    var doubleX = 2 * tileCoord[1];
+    var doubleY = 2 * tileCoord[2];
     return ol.TileRange.createOrUpdate(
-        2 * tileCoord[1], 2 * (tileCoord[1] + 1),
-        2 * tileCoord[2], 2 * (tileCoord[2] + 1),
+        doubleX, doubleX + 1,
+        doubleY, doubleY + 1,
         opt_tileRange);
   } else {
     return null;
@@ -95449,6 +95936,12 @@ ol.source.BingMaps = function(options) {
    */
   this.culture_ = goog.isDef(options.culture) ? options.culture : 'en-us';
 
+  /**
+   * @private
+   * @type {number}
+   */
+  this.maxZoom_ = goog.isDef(options.maxZoom) ? options.maxZoom : -1;
+
   var protocol = ol.IS_HTTPS ? 'https:' : 'http:';
   var uri = new goog.Uri(
       protocol + '//dev.virtualearth.net/REST/v1/Imagery/Metadata/' +
@@ -95470,7 +95963,7 @@ goog.inherits(ol.source.BingMaps, ol.source.TileImage);
  * @api
  */
 ol.source.BingMaps.TOS_ATTRIBUTION = new ol.Attribution({
-  html: '<a class="ol-attribution-bing-tos" target="_blank" ' +
+  html: '<a class="ol-attribution-bing-tos" ' +
       'href="http://www.microsoft.com/maps/product/terms.html">' +
       'Terms of Use</a>'
 });
@@ -95494,13 +95987,14 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse =
   var brandLogoUri = response.brandLogoUri;
   //var copyright = response.copyright;  // FIXME do we need to display this?
   var resource = response.resourceSets[0].resources[0];
-
   goog.asserts.assert(resource.imageWidth == resource.imageHeight);
+  var maxZoom = this.maxZoom_ == -1 ? resource.zoomMax : this.maxZoom_;
+
   var sourceProjection = this.getProjection();
   var tileGrid = new ol.tilegrid.XYZ({
     extent: ol.tilegrid.extentFromProjection(sourceProjection),
     minZoom: resource.zoomMin,
-    maxZoom: resource.zoomMax,
+    maxZoom: maxZoom,
     tileSize: resource.imageWidth
   });
   this.tileGrid = tileGrid;
@@ -95548,7 +96042,7 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse =
               imageryProvider.coverageAreas,
               function(coverageArea) {
                 var minZ = coverageArea.zoomMin;
-                var maxZ = coverageArea.zoomMax;
+                var maxZ = Math.min(coverageArea.zoomMax, maxZoom);
                 var bbox = coverageArea.bbox;
                 var epsg4326Extent = [bbox[1], bbox[0], bbox[3], bbox[2]];
                 var extent = ol.extent.applyTransform(
@@ -98953,6 +99447,8 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ =
       ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
       resolution);
 
+  this.source_.loadFeatures(extent, resolution, projection);
+
   var loading = false;
   this.source_.forEachFeatureInExtentAtResolution(extent, resolution,
       /**
@@ -99714,8 +100210,7 @@ goog.inherits(ol.source.MapQuest, ol.source.XYZ);
  * @type {ol.Attribution}
  */
 ol.source.MapQuest.TILE_ATTRIBUTION = new ol.Attribution({
-  html: 'Tiles Courtesy of ' +
-      '<a href="http://www.mapquest.com/" target="_blank">MapQuest</a>'
+  html: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a>'
 });
 
 
@@ -101822,6 +102317,7 @@ goog.require('ol.interaction.DragRotate');
 goog.require('ol.interaction.DragRotateAndZoom');
 goog.require('ol.interaction.DragZoom');
 goog.require('ol.interaction.Draw');
+goog.require('ol.interaction.Interaction');
 goog.require('ol.interaction.KeyboardPan');
 goog.require('ol.interaction.KeyboardZoom');
 goog.require('ol.interaction.Modify');
@@ -102091,6 +102587,10 @@ goog.exportSymbol(
     ol.extent.containsExtent);
 
 goog.exportSymbol(
+    'ol.extent.containsXY',
+    ol.extent.containsXY);
+
+goog.exportSymbol(
     'ol.extent.createEmpty',
     ol.extent.createEmpty);
 
@@ -102117,6 +102617,10 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.extent.getHeight',
     ol.extent.getHeight);
+
+goog.exportSymbol(
+    'ol.extent.getIntersection',
+    ol.extent.getIntersection);
 
 goog.exportSymbol(
     'ol.extent.getSize',
@@ -103301,6 +103805,10 @@ goog.exportProperty(
     'readFeatures',
     ol.source.ServerVector.prototype.readFeatures);
 
+goog.exportSymbol(
+    'ol.source.Source',
+    ol.source.Source);
+
 goog.exportProperty(
     ol.source.Source.prototype,
     'getAttributions',
@@ -103436,6 +103944,11 @@ goog.exportProperty(
     ol.source.Vector.prototype,
     'forEachFeatureInExtent',
     ol.source.Vector.prototype.forEachFeatureInExtent);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.Vector.prototype.forEachFeatureIntersectingExtent);
 
 goog.exportProperty(
     ol.source.Vector.prototype,
@@ -103696,6 +104209,10 @@ goog.exportProperty(
     'getSource',
     ol.layer.Layer.prototype.getSource);
 
+goog.exportSymbol(
+    'ol.layer.Base',
+    ol.layer.Base);
+
 goog.exportProperty(
     ol.layer.Base.prototype,
     'getBrightness',
@@ -103915,6 +104432,16 @@ goog.exportSymbol(
     'ol.interaction.Draw',
     ol.interaction.Draw);
 
+goog.exportProperty(
+    ol.interaction.Interaction.prototype,
+    'getActive',
+    ol.interaction.Interaction.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.Interaction.prototype,
+    'setActive',
+    ol.interaction.Interaction.prototype.setActive);
+
 goog.exportSymbol(
     'ol.interaction.defaults',
     ol.interaction.defaults);
@@ -104001,6 +104528,11 @@ goog.exportProperty(
     'setRadius',
     ol.geom.Circle.prototype.setRadius);
 
+goog.exportProperty(
+    ol.geom.Circle.prototype,
+    'transform',
+    ol.geom.Circle.prototype.transform);
+
 goog.exportSymbol(
     'ol.geom.Geometry',
     ol.geom.Geometry);
@@ -104032,6 +104564,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Geometry.prototype,
+    'intersectsExtent',
+    ol.geom.Geometry.prototype.intersectsExtent);
+
+goog.exportProperty(
+    ol.geom.Geometry.prototype,
     'transform',
     ol.geom.Geometry.prototype.transform);
 
@@ -104058,6 +104595,11 @@ goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
     'getType',
     ol.geom.GeometryCollection.prototype.getType);
+
+goog.exportProperty(
+    ol.geom.GeometryCollection.prototype,
+    'intersectsExtent',
+    ol.geom.GeometryCollection.prototype.intersectsExtent);
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
@@ -104129,6 +104671,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
+    'intersectsExtent',
+    ol.geom.LineString.prototype.intersectsExtent);
+
+goog.exportProperty(
+    ol.geom.LineString.prototype,
     'setCoordinates',
     ol.geom.LineString.prototype.setCoordinates);
 
@@ -104173,6 +104720,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
+    'intersectsExtent',
+    ol.geom.MultiLineString.prototype.intersectsExtent);
+
+goog.exportProperty(
+    ol.geom.MultiLineString.prototype,
     'setCoordinates',
     ol.geom.MultiLineString.prototype.setCoordinates);
 
@@ -104209,6 +104761,11 @@ goog.exportProperty(
     ol.geom.MultiPoint.prototype,
     'getType',
     ol.geom.MultiPoint.prototype.getType);
+
+goog.exportProperty(
+    ol.geom.MultiPoint.prototype,
+    'intersectsExtent',
+    ol.geom.MultiPoint.prototype.intersectsExtent);
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
@@ -104261,6 +104818,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
+    'intersectsExtent',
+    ol.geom.MultiPolygon.prototype.intersectsExtent);
+
+goog.exportProperty(
+    ol.geom.MultiPolygon.prototype,
     'setCoordinates',
     ol.geom.MultiPolygon.prototype.setCoordinates);
 
@@ -104282,6 +104844,11 @@ goog.exportProperty(
     ol.geom.Point.prototype,
     'getType',
     ol.geom.Point.prototype.getType);
+
+goog.exportProperty(
+    ol.geom.Point.prototype,
+    'intersectsExtent',
+    ol.geom.Point.prototype.intersectsExtent);
 
 goog.exportProperty(
     ol.geom.Point.prototype,
@@ -104336,6 +104903,11 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getType',
     ol.geom.Polygon.prototype.getType);
+
+goog.exportProperty(
+    ol.geom.Polygon.prototype,
+    'intersectsExtent',
+    ol.geom.Polygon.prototype.intersectsExtent);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
@@ -105821,6 +106393,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.Cluster.prototype.forEachFeatureIntersectingExtent);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
     'getFeatures',
     ol.source.Cluster.prototype.getFeatures);
 
@@ -105923,6 +106500,11 @@ goog.exportProperty(
     ol.source.FormatVector.prototype,
     'forEachFeatureInExtent',
     ol.source.FormatVector.prototype.forEachFeatureInExtent);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.FormatVector.prototype.forEachFeatureIntersectingExtent);
 
 goog.exportProperty(
     ol.source.FormatVector.prototype,
@@ -106036,6 +106618,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.StaticVector.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.StaticVector.prototype.forEachFeatureIntersectingExtent);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
     'getFeatures',
     ol.source.StaticVector.prototype.getFeatures);
 
@@ -106143,6 +106730,11 @@ goog.exportProperty(
     ol.source.GeoJSON.prototype,
     'forEachFeatureInExtent',
     ol.source.GeoJSON.prototype.forEachFeatureInExtent);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.GeoJSON.prototype.forEachFeatureIntersectingExtent);
 
 goog.exportProperty(
     ol.source.GeoJSON.prototype,
@@ -106256,6 +106848,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.GPX.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.GPX.prototype.forEachFeatureIntersectingExtent);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
     'getFeatures',
     ol.source.GPX.prototype.getFeatures);
 
@@ -106363,6 +106960,11 @@ goog.exportProperty(
     ol.source.IGC.prototype,
     'forEachFeatureInExtent',
     ol.source.IGC.prototype.forEachFeatureInExtent);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.IGC.prototype.forEachFeatureIntersectingExtent);
 
 goog.exportProperty(
     ol.source.IGC.prototype,
@@ -106776,6 +107378,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.KML.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.KML.prototype.forEachFeatureIntersectingExtent);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
     'getFeatures',
     ol.source.KML.prototype.getFeatures);
 
@@ -107116,6 +107723,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.OSMXML.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.OSMXML.prototype.forEachFeatureIntersectingExtent);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
     'getFeatures',
     ol.source.OSMXML.prototype.getFeatures);
 
@@ -107213,6 +107825,11 @@ goog.exportProperty(
     ol.source.ServerVector.prototype,
     'forEachFeatureInExtent',
     ol.source.ServerVector.prototype.forEachFeatureInExtent);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.ServerVector.prototype.forEachFeatureIntersectingExtent);
 
 goog.exportProperty(
     ol.source.ServerVector.prototype,
@@ -107511,6 +108128,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.TileVector.prototype.forEachFeatureIntersectingExtent);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
     'getFeaturesAtCoordinate',
     ol.source.TileVector.prototype.getFeaturesAtCoordinate);
 
@@ -107673,6 +108295,11 @@ goog.exportProperty(
     ol.source.TopoJSON.prototype,
     'forEachFeatureInExtent',
     ol.source.TopoJSON.prototype.forEachFeatureInExtent);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'forEachFeatureIntersectingExtent',
+    ol.source.TopoJSON.prototype.forEachFeatureIntersectingExtent);
 
 goog.exportProperty(
     ol.source.TopoJSON.prototype,
@@ -108986,6 +109613,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DoubleClickZoom.prototype,
+    'getActive',
+    ol.interaction.DoubleClickZoom.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.DoubleClickZoom.prototype,
+    'setActive',
+    ol.interaction.DoubleClickZoom.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.DoubleClickZoom.prototype,
     'changed',
     ol.interaction.DoubleClickZoom.prototype.changed);
 
@@ -109013,6 +109650,16 @@ goog.exportProperty(
     ol.interaction.DoubleClickZoom.prototype,
     'unByKey',
     ol.interaction.DoubleClickZoom.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.DragAndDrop.prototype,
+    'getActive',
+    ol.interaction.DragAndDrop.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.DragAndDrop.prototype,
+    'setActive',
+    ol.interaction.DragAndDrop.prototype.setActive);
 
 goog.exportProperty(
     ol.interaction.DragAndDrop.prototype,
@@ -109046,6 +109693,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Pointer.prototype,
+    'getActive',
+    ol.interaction.Pointer.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.Pointer.prototype,
+    'setActive',
+    ol.interaction.Pointer.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.Pointer.prototype,
     'changed',
     ol.interaction.Pointer.prototype.changed);
 
@@ -109073,6 +109730,16 @@ goog.exportProperty(
     ol.interaction.Pointer.prototype,
     'unByKey',
     ol.interaction.Pointer.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.DragBox.prototype,
+    'getActive',
+    ol.interaction.DragBox.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.DragBox.prototype,
+    'setActive',
+    ol.interaction.DragBox.prototype.setActive);
 
 goog.exportProperty(
     ol.interaction.DragBox.prototype,
@@ -109106,6 +109773,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragPan.prototype,
+    'getActive',
+    ol.interaction.DragPan.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.DragPan.prototype,
+    'setActive',
+    ol.interaction.DragPan.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.DragPan.prototype,
     'changed',
     ol.interaction.DragPan.prototype.changed);
 
@@ -109136,6 +109813,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragRotateAndZoom.prototype,
+    'getActive',
+    ol.interaction.DragRotateAndZoom.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.DragRotateAndZoom.prototype,
+    'setActive',
+    ol.interaction.DragRotateAndZoom.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.DragRotateAndZoom.prototype,
     'changed',
     ol.interaction.DragRotateAndZoom.prototype.changed);
 
@@ -109163,6 +109850,16 @@ goog.exportProperty(
     ol.interaction.DragRotateAndZoom.prototype,
     'unByKey',
     ol.interaction.DragRotateAndZoom.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.DragRotate.prototype,
+    'getActive',
+    ol.interaction.DragRotate.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.DragRotate.prototype,
+    'setActive',
+    ol.interaction.DragRotate.prototype.setActive);
 
 goog.exportProperty(
     ol.interaction.DragRotate.prototype,
@@ -109201,6 +109898,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragZoom.prototype,
+    'getActive',
+    ol.interaction.DragZoom.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.DragZoom.prototype,
+    'setActive',
+    ol.interaction.DragZoom.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.DragZoom.prototype,
     'changed',
     ol.interaction.DragZoom.prototype.changed);
 
@@ -109228,6 +109935,16 @@ goog.exportProperty(
     ol.interaction.DragZoom.prototype,
     'unByKey',
     ol.interaction.DragZoom.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.Draw.prototype,
+    'getActive',
+    ol.interaction.Draw.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.Draw.prototype,
+    'setActive',
+    ol.interaction.Draw.prototype.setActive);
 
 goog.exportProperty(
     ol.interaction.Draw.prototype,
@@ -109261,6 +109978,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.KeyboardPan.prototype,
+    'getActive',
+    ol.interaction.KeyboardPan.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.KeyboardPan.prototype,
+    'setActive',
+    ol.interaction.KeyboardPan.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.KeyboardPan.prototype,
     'changed',
     ol.interaction.KeyboardPan.prototype.changed);
 
@@ -109288,6 +110015,16 @@ goog.exportProperty(
     ol.interaction.KeyboardPan.prototype,
     'unByKey',
     ol.interaction.KeyboardPan.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.KeyboardZoom.prototype,
+    'getActive',
+    ol.interaction.KeyboardZoom.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.KeyboardZoom.prototype,
+    'setActive',
+    ol.interaction.KeyboardZoom.prototype.setActive);
 
 goog.exportProperty(
     ol.interaction.KeyboardZoom.prototype,
@@ -109321,6 +110058,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Modify.prototype,
+    'getActive',
+    ol.interaction.Modify.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.Modify.prototype,
+    'setActive',
+    ol.interaction.Modify.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.Modify.prototype,
     'changed',
     ol.interaction.Modify.prototype.changed);
 
@@ -109348,6 +110095,16 @@ goog.exportProperty(
     ol.interaction.Modify.prototype,
     'unByKey',
     ol.interaction.Modify.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.MouseWheelZoom.prototype,
+    'getActive',
+    ol.interaction.MouseWheelZoom.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.MouseWheelZoom.prototype,
+    'setActive',
+    ol.interaction.MouseWheelZoom.prototype.setActive);
 
 goog.exportProperty(
     ol.interaction.MouseWheelZoom.prototype,
@@ -109381,6 +110138,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.PinchRotate.prototype,
+    'getActive',
+    ol.interaction.PinchRotate.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.PinchRotate.prototype,
+    'setActive',
+    ol.interaction.PinchRotate.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.PinchRotate.prototype,
     'changed',
     ol.interaction.PinchRotate.prototype.changed);
 
@@ -109411,6 +110178,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.PinchZoom.prototype,
+    'getActive',
+    ol.interaction.PinchZoom.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.PinchZoom.prototype,
+    'setActive',
+    ol.interaction.PinchZoom.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.PinchZoom.prototype,
     'changed',
     ol.interaction.PinchZoom.prototype.changed);
 
@@ -109438,6 +110215,16 @@ goog.exportProperty(
     ol.interaction.PinchZoom.prototype,
     'unByKey',
     ol.interaction.PinchZoom.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.Select.prototype,
+    'getActive',
+    ol.interaction.Select.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.Select.prototype,
+    'setActive',
+    ol.interaction.Select.prototype.setActive);
 
 goog.exportProperty(
     ol.interaction.Select.prototype,
@@ -109516,6 +110303,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
+    'intersectsExtent',
+    ol.geom.SimpleGeometry.prototype.intersectsExtent);
+
+goog.exportProperty(
+    ol.geom.SimpleGeometry.prototype,
     'transform',
     ol.geom.SimpleGeometry.prototype.transform);
 
@@ -109571,8 +110363,8 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
-    'transform',
-    ol.geom.Circle.prototype.transform);
+    'intersectsExtent',
+    ol.geom.Circle.prototype.intersectsExtent);
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
@@ -109668,6 +110460,11 @@ goog.exportProperty(
     ol.geom.LinearRing.prototype,
     'getClosestPoint',
     ol.geom.LinearRing.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.LinearRing.prototype,
+    'intersectsExtent',
+    ol.geom.LinearRing.prototype.intersectsExtent);
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
