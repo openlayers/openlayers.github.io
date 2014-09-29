@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-134-gafd4368
+// Version: v3.0.0-140-g1a4d841
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -7654,7 +7654,7 @@ ol.DRAGZOOM_ANIMATION_DURATION = 200;
 
 
 /**
- * @define {number} Hysterisis pixels.
+ * @define {number} Hysteresis pixels.
  */
 ol.DRAG_BOX_HYSTERESIS_PIXELS = 8;
 
@@ -24132,8 +24132,7 @@ ol.has.CANVAS = ol.ENABLE_CANVAS && (
  * @type {boolean}
  * @api stable
  */
-ol.has.DEVICE_ORIENTATION =
-    'DeviceOrientationEvent' in goog.global;
+ol.has.DEVICE_ORIENTATION = 'DeviceOrientationEvent' in goog.global;
 
 
 /**
@@ -24175,8 +24174,7 @@ ol.has.POINTER = 'PointerEvent' in goog.global;
  * @const
  * @type {boolean}
  */
-ol.has.MSPOINTER =
-    !!(goog.global.navigator.msPointerEnabled);
+ol.has.MSPOINTER = !!(goog.global.navigator.msPointerEnabled);
 
 
 /**
@@ -75785,7 +75783,7 @@ ol.layer.Layer.visibleAtResolution = function(layerState, resolution) {
  * @inheritDoc
  */
 ol.layer.Layer.prototype.getLayersArray = function(opt_array) {
-  var array = (goog.isDef(opt_array)) ? opt_array : [];
+  var array = goog.isDef(opt_array) ? opt_array : [];
   array.push(this);
   return array;
 };
@@ -75795,7 +75793,7 @@ ol.layer.Layer.prototype.getLayersArray = function(opt_array) {
  * @inheritDoc
  */
 ol.layer.Layer.prototype.getLayerStatesArray = function(opt_states) {
-  var states = (goog.isDef(opt_states)) ? opt_states : [];
+  var states = goog.isDef(opt_states) ? opt_states : [];
   states.push(this.getLayerState());
   return states;
 };
@@ -78475,7 +78473,7 @@ goog.exportProperty(
  * @inheritDoc
  */
 ol.layer.Group.prototype.getLayersArray = function(opt_array) {
-  var array = (goog.isDef(opt_array)) ? opt_array : [];
+  var array = goog.isDef(opt_array) ? opt_array : [];
   this.getLayers().forEach(function(layer) {
     layer.getLayersArray(array);
   });
@@ -78487,7 +78485,7 @@ ol.layer.Group.prototype.getLayersArray = function(opt_array) {
  * @inheritDoc
  */
 ol.layer.Group.prototype.getLayerStatesArray = function(opt_states) {
-  var states = (goog.isDef(opt_states)) ? opt_states : [];
+  var states = goog.isDef(opt_states) ? opt_states : [];
 
   var pos = states.length;
 
@@ -91502,29 +91500,6 @@ ol.structs.RBush.prototype.forEachInExtent_ =
 
 
 /**
- * @param {function(this: S, ol.structs.RBushNode.<T>): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEachNode = function(callback, opt_this) {
-  /** @type {Array.<ol.structs.RBushNode.<T>>} */
-  var toVisit = [this.root_];
-  while (toVisit.length > 0) {
-    var node = toVisit.pop();
-    var result = callback.call(opt_this, node);
-    if (result) {
-      return result;
-    }
-    if (!node.isLeaf()) {
-      toVisit.push.apply(toVisit, node.children);
-    }
-  }
-  return undefined;
-};
-
-
-/**
  * @return {Array.<T>} All.
  */
 ol.structs.RBush.prototype.getAll = function() {
@@ -92986,7 +92961,7 @@ ol.interaction.Modify = function(options) {
    * @private
    */
   this.overlay_ = new ol.FeatureOverlay({
-    style: (goog.isDef(options.style)) ? options.style :
+    style: goog.isDef(options.style) ? options.style :
         ol.interaction.Modify.getDefaultStyleFunction()
   });
 
@@ -93744,7 +93719,7 @@ ol.interaction.Select = function(opt_options) {
    * @type {ol.FeatureOverlay}
    */
   this.featureOverlay_ = new ol.FeatureOverlay({
-    style: (goog.isDef(options.style)) ? options.style :
+    style: goog.isDef(options.style) ? options.style :
         ol.interaction.Select.getDefaultStyleFunction()
   });
 
@@ -94308,8 +94283,7 @@ ol.Overlay = function(options) {
       this.handlePositionChanged, false, this);
 
   goog.events.listen(
-      this,
-      ol.Object.getChangeEventType(ol.OverlayProperty.POSITIONING),
+      this, ol.Object.getChangeEventType(ol.OverlayProperty.POSITIONING),
       this.handlePositioningChanged, false, this);
 
   if (goog.isDef(options.element)) {
