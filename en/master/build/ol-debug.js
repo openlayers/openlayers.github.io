@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-165-g7273b50
+// Version: v3.0.0-174-gfa30ba2
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -19081,7 +19081,7 @@ ol.View.prototype.fitExtent = function(extent, size) {
  * Take care on the map angle.
  * @param {ol.geom.SimpleGeometry} geometry Geometry.
  * @param {ol.Size} size Box pixel size.
- * @param {olx.View.fitGeometryOptions=} opt_options Options.
+ * @param {olx.view.FitGeometryOptions=} opt_options Options.
  * @api
  */
 ol.View.prototype.fitGeometry = function(geometry, size, opt_options) {
