@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-174-gfa30ba2
+// Version: v3.0.0-186-g352d707
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -32085,7 +32085,6 @@ ol.control.Rotate = function(opt_options) {
   }, tipLabel);
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
     'class': className + '-reset ol-has-tooltip',
-    'name' : 'ResetRotation',
     'type' : 'button'
   }, tip, this.label_);
 
@@ -32615,7 +32614,8 @@ ol.control.FullScreen = function(opt_options) {
 
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
     'class': this.cssClassName_ + '-' + goog.dom.fullscreen.isFullScreen() +
-        ' ol-has-tooltip'
+        ' ol-has-tooltip',
+    'type': 'button'
   });
   goog.dom.appendChild(button, tip);
   var buttonHandler = new ol.pointer.PointerEventHandler(button);
@@ -36716,7 +36716,8 @@ ol.control.ZoomToExtent = function(opt_options) {
     'role' : 'tooltip'
   }, tipLabel);
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': 'ol-has-tooltip'
+    'class': 'ol-has-tooltip',
+    'type': 'button'
   });
   goog.dom.appendChild(button, tip);
 
@@ -65122,6 +65123,7 @@ ol.interaction.InteractionProperty = {
  *
  * @constructor
  * @extends {ol.Object}
+ * @api
  */
 ol.interaction.Interaction = function() {
 
@@ -71149,8 +71151,8 @@ ol.interaction.DragAndDrop = function(opt_options) {
    * @private
    * @type {ol.proj.Projection}
    */
-  this.reprojectTo_ = goog.isDef(options.reprojectTo) ?
-      ol.proj.get(options.reprojectTo) : null;
+  this.projection_ = goog.isDef(options.projection) ?
+      ol.proj.get(options.projection) : null;
 
   /**
    * @private
@@ -71204,7 +71206,7 @@ ol.interaction.DragAndDrop.prototype.handleDrop_ = function(event) {
 ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, result) {
   var map = this.getMap();
   goog.asserts.assert(!goog.isNull(map));
-  var projection = this.reprojectTo_;
+  var projection = this.projection_;
   if (goog.isNull(projection)) {
     var view = map.getView();
     goog.asserts.assert(!goog.isNull(view));
@@ -100265,7 +100267,6 @@ ol.source.OSMXML = function(opt_options) {
     logo: options.logo,
     node: options.node,
     projection: options.projection,
-    reprojectTo: options.reprojectTo,
     text: options.text,
     url: options.url,
     urls: options.urls
@@ -104443,6 +104444,10 @@ goog.exportProperty(
 goog.exportSymbol(
     'ol.interaction.Draw',
     ol.interaction.Draw);
+
+goog.exportSymbol(
+    'ol.interaction.Interaction',
+    ol.interaction.Interaction);
 
 goog.exportProperty(
     ol.interaction.Interaction.prototype,
