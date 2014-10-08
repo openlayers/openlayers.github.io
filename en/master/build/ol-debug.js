@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.0.0-186-g352d707
+// Version: v3.0.0-204-g27160be
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -12646,6 +12646,16 @@ goog.inherits(ol.Observable, goog.events.EventTarget);
 
 
 /**
+ * Removes an event listener using the key returned by `on()` or `once()`.
+ * @param {goog.events.Key} key The key returned by `on()` or `once()`.
+ * @api stable
+ */
+ol.Observable.unByKey = function(key) {
+  goog.events.unlistenByKey(key);
+};
+
+
+/**
  * Increases the revision counter and disptches a 'change' event.
  * @fires change
  * @api
@@ -12706,12 +12716,13 @@ ol.Observable.prototype.un = function(type, listener, opt_this) {
 
 /**
  * Removes an event listener using the key returned by `on()` or `once()`.
- * @param {goog.events.Key} key Key.
+ * Note that using the {@link ol.Observable.unByKey} static function is to
+ * be preferred.
+ * @param {goog.events.Key} key The key returned by `on()` or `once()`.
+ * @function
  * @api stable
  */
-ol.Observable.prototype.unByKey = function(key) {
-  goog.events.unlistenByKey(key);
-};
+ol.Observable.prototype.unByKey = ol.Observable.unByKey;
 
 /**
  * An implementation of Google Maps' MVCObject.
@@ -103128,6 +103139,10 @@ goog.exportProperty(
 goog.exportSymbol(
     'ol.Observable',
     ol.Observable);
+
+goog.exportSymbol(
+    'ol.Observable.unByKey',
+    ol.Observable.unByKey);
 
 goog.exportProperty(
     ol.Observable.prototype,
