@@ -1,5 +1,3 @@
-// FIXME bulk inserts
-
 goog.provide('ol.structs.RBush');
 
 goog.require('goog.array');
@@ -62,6 +60,36 @@ ol.structs.RBush.prototype.insert = function(extent, value) {
   this.rbush_.insert(item);
   // remember the object that was added to the internal rbush
   goog.object.add(this.items_, goog.getUid(value).toString(), item);
+};
+
+
+/**
+ * Bulk-insert values into the RBush.
+ * @param {Array.<ol.Extent>} extents Extents.
+ * @param {Array.<T>} values Values.
+ */
+ol.structs.RBush.prototype.load = function(extents, values) {
+  if (goog.DEBUG && this.readers_) {
+    throw new Error('Can not insert values while reading');
+  }
+  goog.asserts.assert(extents.length === values.length);
+
+  var items = [];
+  for (var i = 0, l = values.length; i < l; i++) {
+    var extent = extents[i];
+    var value = values[i];
+
+    var item = [
+      extent[0],
+      extent[1],
+      extent[2],
+      extent[3],
+      value
+    ];
+    items.push(item);
+    goog.object.add(this.items_, goog.getUid(value).toString(), item);
+  }
+  this.rbush_.load(items);
 };
 
 
