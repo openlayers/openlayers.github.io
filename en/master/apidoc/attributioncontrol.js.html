@@ -10438,6 +10438,68 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.style.RegularShape">
+            <span class="title">
+                <a href="ol.style.RegularShape.html">ol.style.RegularShape</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.style.RegularShape#getAnchor" class="unstable">
+                    <a href="ol.style.RegularShape.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getFill" class="unstable">
+                    <a href="ol.style.RegularShape.html#getFill">getFill</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getImage" class="unstable">
+                    <a href="ol.style.RegularShape.html#getImage">getImage</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getOrigin" class="unstable">
+                    <a href="ol.style.RegularShape.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRadius" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRotation">getRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getSize" class="unstable">
+                    <a href="ol.style.RegularShape.html#getSize">getSize</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getStroke" class="unstable">
+                    <a href="ol.style.RegularShape.html#getStroke">getStroke</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#setRotation">setRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#setScale">setScale</a>
+                </li>
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.style.Stroke">
             <span class="title">
                 <a href="ol.style.Stroke.html">ol.style.Stroke</a>
@@ -10874,7 +10936,6 @@ goog.require('goog.style');
 goog.require('ol.Attribution');
 goog.require('ol.control.Control');
 goog.require('ol.css');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -10931,9 +10992,6 @@ ol.control.Attribution = function(opt_options) {
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Attributions';
-  var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, tipLabel);
 
   /**
    * @private
@@ -10958,15 +11016,10 @@ ol.control.Attribution = function(opt_options) {
    */
   this.labelSpan_ = label;
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': 'ol-has-tooltip',
-    'type': 'button'
+    'type': 'button',
+    'title': tipLabel
   }, this.labelSpan_);
-  goog.dom.appendChild(button, tip);
 
-  var buttonHandler = new ol.pointer.PointerEventHandler(button);
-  this.registerDisposable(buttonHandler);
-  goog.events.listen(buttonHandler, ol.pointer.EventType.POINTERUP,
-      this.handlePointerUp_, false, this);
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
@@ -10977,12 +11030,12 @@ ol.control.Attribution = function(opt_options) {
     this.blur();
   }, false);
 
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, {
-    'class': className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
-        ol.css.CLASS_CONTROL +
-        (this.collapsed_ &amp;&amp; this.collapsible_ ? ' ol-collapsed' : '') +
-        (this.collapsible_ ? '' : ' ol-uncollapsible')
-  }, this.ulElement_, button);
+  var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
+      ol.css.CLASS_CONTROL +
+      (this.collapsed_ &amp;&amp; this.collapsible_ ? ' ol-collapsed' : '') +
+      (this.collapsible_ ? '' : ' ol-uncollapsible');
+  var element = goog.dom.createDom(goog.dom.TagName.DIV,
+      cssClasses, this.ulElement_, button);
 
   goog.base(this, {
     element: element,
@@ -11196,19 +11249,7 @@ ol.control.Attribution.prototype.insertLogos_ = function(frameState) {
  * @private
  */
 ol.control.Attribution.prototype.handleClick_ = function(event) {
-  if (event.screenX !== 0 &amp;&amp; event.screenY !== 0) {
-    return;
-  }
-  this.handleToggle_();
-};
-
-
-/**
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.Attribution.prototype.handlePointerUp_ = function(pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.handleToggle_();
 };
 
@@ -11277,7 +11318,7 @@ ol.control.Attribution.prototype.getCollapsed = function() {
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Oct 30 2014 09:49:46 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Nov 04 2014 17:40:11 GMT+0100 (CET)
         </footer>
     </div>
 </div>

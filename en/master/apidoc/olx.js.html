@@ -10438,6 +10438,68 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.style.RegularShape">
+            <span class="title">
+                <a href="ol.style.RegularShape.html">ol.style.RegularShape</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.style.RegularShape#getAnchor" class="unstable">
+                    <a href="ol.style.RegularShape.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getFill" class="unstable">
+                    <a href="ol.style.RegularShape.html#getFill">getFill</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getImage" class="unstable">
+                    <a href="ol.style.RegularShape.html#getImage">getImage</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getOrigin" class="unstable">
+                    <a href="ol.style.RegularShape.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRadius" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRotation">getRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getSize" class="unstable">
+                    <a href="ol.style.RegularShape.html#getSize">getSize</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getStroke" class="unstable">
+                    <a href="ol.style.RegularShape.html#getStroke">getStroke</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#setRotation">setRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#setScale">setScale</a>
+                </li>
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.style.Stroke">
             <span class="title">
                 <a href="ol.style.Stroke.html">ol.style.Stroke</a>
@@ -16386,7 +16448,8 @@ olx.style.IconOptions.prototype.crossOrigin;
 
 /**
  * Image object for the icon. If the `src` option is not provided then the
- * provided image must already be loaded.
+ * provided image must already be loaded. And in that case, it is required
+ * to provide the size of the image, with the `size` option.
  * @type {Image|undefined}
  * @api
  */
@@ -16451,7 +16514,9 @@ olx.style.IconOptions.prototype.rotation;
 
 
 /**
- * Icon size in pixel.
+ * Icon size in pixel. Can be used together with `offset` to define the
+ * sub-rectangle to use from the origin (sprite) icon image. Also, setting
+ * the `size` is required if `img` is set and `src` is not.
  * @type {ol.Size|undefined}
  * @api
  */
@@ -16464,6 +16529,86 @@ olx.style.IconOptions.prototype.size;
  * @api
  */
 olx.style.IconOptions.prototype.src;
+
+
+/**
+ * @typedef {{fill: (ol.style.Fill|undefined),
+ *     points: number,
+ *     radius: number,
+ *     radius2: number,
+ *     angle: number,
+ *     snapToPixel: (boolean|undefined),
+ *     stroke: (ol.style.Stroke|undefined)}}
+ * @api
+ */
+olx.style.RegularShapeOptions;
+
+
+/**
+ * Fill style.
+ * @type {ol.style.Fill|undefined}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.fill;
+
+
+/**
+ * Number of points for stars and regular polygons. In case of a polygon, the
+ * number of points is the number of sides.
+ * @type {number}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.points;
+
+
+/**
+ * Shape radius.
+ * @type {number}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.radius;
+
+
+/**
+ * Shape secondary radius for drawing stars. If radius 2 is equal to radius,
+ * the regular shape will be a regular polygon instead of a star.
+ * Default value is equal to radius.
+ * @type {number}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.radius2;
+
+
+/**
+ * Shape's rotation in radians. A value of 0 will have one of the shape's point
+ * facing up.
+ * Default value is 0.
+ * @type {number}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.angle;
+
+
+/**
+ * If `true` integral numbers of pixels are used as the X and Y pixel
+ * coordinate when drawing the shape in the output canvas. If `false`
+ * fractional numbers may be used. Using `true` allows for "sharp"
+ * rendering (no blur), while using `false` allows for "accurate"
+ * rendering. Note that accuracy is important if the shape's
+ * position is animated. Without it, the shape may jitter noticeably.
+ * Default value is `true`.
+ * @type {boolean|undefined}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.snapToPixel;
+
+
+/**
+ * Stroke style.
+ * @type {ol.style.Stroke|undefined}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.stroke;
 
 
 /**
@@ -17015,7 +17160,7 @@ olx.ViewState.prototype.rotation;
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Oct 30 2014 09:50:20 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Nov 04 2014 17:40:45 GMT+0100 (CET)
         </footer>
     </div>
 </div>

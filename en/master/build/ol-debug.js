@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-112-g8027c57
+// Version: v3.1.0-pre.2-139-gafe1467
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -29759,1880 +29759,6 @@ ol.css.CLASS_UNSUPPORTED = 'ol-unsupported';
  */
 ol.css.CLASS_CONTROL = 'ol-control';
 
-goog.provide('ol.pointer.EventSource');
-
-goog.require('goog.events.BrowserEvent');
-goog.require('goog.object');
-
-
-
-/**
- * @param {ol.pointer.PointerEventHandler} dispatcher
- * @param {Object.<string, function(goog.events.BrowserEvent)>} mapping
- * @constructor
- */
-ol.pointer.EventSource = function(dispatcher, mapping) {
-  /**
-   * @type {ol.pointer.PointerEventHandler}
-   */
-  this.dispatcher = dispatcher;
-
-  /**
-   * @private
-   * @const
-   * @type {Object.<string, function(goog.events.BrowserEvent)>}
-   */
-  this.mapping_ = mapping;
-};
-
-
-/**
- * List of events supported by this source.
- * @return {Array.<string>} Event names
- */
-ol.pointer.EventSource.prototype.getEvents = function() {
-  return goog.object.getKeys(this.mapping_);
-};
-
-
-/**
- * Returns a mapping between the supported event types and
- * the handlers that should handle an event.
- * @return {Object.<string, function(goog.events.BrowserEvent)>}
- *         Event/Handler mapping
- */
-ol.pointer.EventSource.prototype.getMapping = function() {
-  return this.mapping_;
-};
-
-
-/**
- * Returns the handler that should handle a given event type.
- * @param {string} eventType
- * @return {function(goog.events.BrowserEvent)} Handler
- */
-ol.pointer.EventSource.prototype.getHandlerForEvent = function(eventType) {
-  return this.mapping_[eventType];
-};
-
-// Based on https://github.com/Polymer/PointerEvents
-
-// Copyright (c) 2013 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-// * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-goog.provide('ol.pointer.MouseSource');
-
-goog.require('goog.object');
-goog.require('ol.pointer.EventSource');
-
-
-
-/**
- * @param {ol.pointer.PointerEventHandler} dispatcher
- * @constructor
- * @extends {ol.pointer.EventSource}
- */
-ol.pointer.MouseSource = function(dispatcher) {
-  var mapping = {
-    'mousedown': this.mousedown,
-    'mousemove': this.mousemove,
-    'mouseup': this.mouseup,
-    'mouseover': this.mouseover,
-    'mouseout': this.mouseout
-  };
-  goog.base(this, dispatcher, mapping);
-
-  /**
-   * @const
-   * @type {Object.<string, goog.events.BrowserEvent|Object>}
-   */
-  this.pointerMap = dispatcher.pointerMap;
-
-  /**
-   * @const
-   * @type {Array.<ol.Pixel>}
-   */
-  this.lastTouches = [];
-};
-goog.inherits(ol.pointer.MouseSource, ol.pointer.EventSource);
-
-
-/**
- * @const
- * @type {number}
- */
-ol.pointer.MouseSource.POINTER_ID = 1;
-
-
-/**
- * @const
- * @type {string}
- */
-ol.pointer.MouseSource.POINTER_TYPE = 'mouse';
-
-
-/**
- * Radius around touchend that swallows mouse events.
- *
- * @const
- * @type {number}
- */
-ol.pointer.MouseSource.DEDUP_DIST = 25;
-
-
-/**
- * Detect if a mouse event was simulated from a touch by
- * checking if previously there was a touch event at the
- * same position.
- *
- * FIXME - Known problem with the native Android browser on
- * Samsung GT-I9100 (Android 4.1.2):
- * In case the page is scrolled, this function does not work
- * correctly when a canvas is used (WebGL or canvas renderer).
- * Mouse listeners on canvas elements (for this browser), create
- * two mouse events: One 'good' and one 'bad' one (on other browsers or
- * when a div is used, there is only one event). For the 'bad' one,
- * clientX/clientY and also pageX/pageY are wrong when the page
- * is scrolled. Because of that, this function can not detect if
- * the events were simulated from a touch event. As result, a
- * pointer event at a wrong position is dispatched, which confuses
- * the map interactions.
- * It is unclear, how one can get the correct position for the event
- * or detect that the positions are invalid.
- *
- * @private
- * @param {goog.events.BrowserEvent} inEvent
- * @return {boolean} True, if the event was generated by a touch.
- */
-ol.pointer.MouseSource.prototype.isEventSimulatedFromTouch_ =
-    function(inEvent) {
-  var lts = this.lastTouches;
-  var x = inEvent.clientX, y = inEvent.clientY;
-  for (var i = 0, l = lts.length, t; i < l && (t = lts[i]); i++) {
-    // simulated mouse events will be swallowed near a primary touchend
-    var dx = Math.abs(x - t[0]), dy = Math.abs(y - t[1]);
-    if (dx <= ol.pointer.MouseSource.DEDUP_DIST &&
-        dy <= ol.pointer.MouseSource.DEDUP_DIST) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Creates a copy of the original event that will be used
- * for the fake pointer event.
- *
- * @param {goog.events.BrowserEvent} inEvent
- * @param {ol.pointer.PointerEventHandler} dispatcher
- * @return {Object}
- */
-ol.pointer.MouseSource.prepareEvent = function(inEvent, dispatcher) {
-  var e = dispatcher.cloneEvent(inEvent, inEvent.getBrowserEvent());
-
-  // forward mouse preventDefault
-  var pd = e.preventDefault;
-  e.preventDefault = function() {
-    inEvent.preventDefault();
-    pd();
-  };
-
-  e.pointerId = ol.pointer.MouseSource.POINTER_ID;
-  e.isPrimary = true;
-  e.pointerType = ol.pointer.MouseSource.POINTER_TYPE;
-
-  return e;
-};
-
-
-/**
- * Handler for `mousedown`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MouseSource.prototype.mousedown = function(inEvent) {
-  if (!this.isEventSimulatedFromTouch_(inEvent)) {
-    var p = goog.object.containsKey(this.pointerMap,
-        ol.pointer.MouseSource.POINTER_ID.toString());
-    // TODO(dfreedman) workaround for some elements not sending mouseup
-    // http://crbug/149091
-    if (p) {
-      this.cancel(inEvent);
-    }
-    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
-    goog.object.set(this.pointerMap,
-        ol.pointer.MouseSource.POINTER_ID.toString(), inEvent);
-    this.dispatcher.down(e, inEvent);
-  }
-};
-
-
-/**
- * Handler for `mousemove`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MouseSource.prototype.mousemove = function(inEvent) {
-  if (!this.isEventSimulatedFromTouch_(inEvent)) {
-    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
-    this.dispatcher.move(e, inEvent);
-  }
-};
-
-
-/**
- * Handler for `mouseup`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MouseSource.prototype.mouseup = function(inEvent) {
-  if (!this.isEventSimulatedFromTouch_(inEvent)) {
-    var p = goog.object.get(this.pointerMap,
-        ol.pointer.MouseSource.POINTER_ID.toString());
-
-    if (p && p.button === inEvent.button) {
-      var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
-      this.dispatcher.up(e, inEvent);
-      this.cleanupMouse();
-    }
-  }
-};
-
-
-/**
- * Handler for `mouseover`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MouseSource.prototype.mouseover = function(inEvent) {
-  if (!this.isEventSimulatedFromTouch_(inEvent)) {
-    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
-    this.dispatcher.enterOver(e, inEvent);
-  }
-};
-
-
-/**
- * Handler for `mouseout`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MouseSource.prototype.mouseout = function(inEvent) {
-  if (!this.isEventSimulatedFromTouch_(inEvent)) {
-    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
-    this.dispatcher.leaveOut(e, inEvent);
-  }
-};
-
-
-/**
- * Dispatches a `pointercancel` event.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MouseSource.prototype.cancel = function(inEvent) {
-  var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
-  this.dispatcher.cancel(e, inEvent);
-  this.cleanupMouse();
-};
-
-
-/**
- * Remove the mouse from the list of active pointers.
- */
-ol.pointer.MouseSource.prototype.cleanupMouse = function() {
-  goog.object.remove(this.pointerMap,
-      ol.pointer.MouseSource.POINTER_ID.toString());
-};
-
-// Based on https://github.com/Polymer/PointerEvents
-
-// Copyright (c) 2013 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-// * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-goog.provide('ol.pointer.MsSource');
-
-goog.require('goog.object');
-goog.require('ol.pointer.EventSource');
-
-
-
-/**
- * @param {ol.pointer.PointerEventHandler} dispatcher
- * @constructor
- * @extends {ol.pointer.EventSource}
- */
-ol.pointer.MsSource = function(dispatcher) {
-  var mapping = {
-    'MSPointerDown': this.msPointerDown,
-    'MSPointerMove': this.msPointerMove,
-    'MSPointerUp': this.msPointerUp,
-    'MSPointerOut': this.msPointerOut,
-    'MSPointerOver': this.msPointerOver,
-    'MSPointerCancel': this.msPointerCancel,
-    'MSGotPointerCapture': this.msGotPointerCapture,
-    'MSLostPointerCapture': this.msLostPointerCapture
-  };
-  goog.base(this, dispatcher, mapping);
-
-  /**
-   * @const
-   * @type {Object.<string, goog.events.BrowserEvent|Object>}
-   */
-  this.pointerMap = dispatcher.pointerMap;
-
-  /**
-   * @const
-   * @type {Array.<string>}
-   */
-  this.POINTER_TYPES = [
-    '',
-    'unavailable',
-    'touch',
-    'pen',
-    'mouse'
-  ];
-};
-goog.inherits(ol.pointer.MsSource, ol.pointer.EventSource);
-
-
-/**
- * Creates a copy of the original event that will be used
- * for the fake pointer event.
- *
- * @private
- * @param {goog.events.BrowserEvent} inEvent
- * @return {Object}
- */
-ol.pointer.MsSource.prototype.prepareEvent_ = function(inEvent) {
-  var e = inEvent;
-  if (goog.isNumber(inEvent.getBrowserEvent().pointerType)) {
-    e = this.dispatcher.cloneEvent(inEvent, inEvent.getBrowserEvent());
-    e.pointerType = this.POINTER_TYPES[inEvent.getBrowserEvent().pointerType];
-  }
-
-  return e;
-};
-
-
-/**
- * Remove this pointer from the list of active pointers.
- * @param {number} pointerId
- */
-ol.pointer.MsSource.prototype.cleanup = function(pointerId) {
-  goog.object.remove(this.pointerMap, pointerId);
-};
-
-
-/**
- * Handler for `msPointerDown`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msPointerDown = function(inEvent) {
-  goog.object.set(this.pointerMap,
-      inEvent.getBrowserEvent().pointerId, inEvent);
-  var e = this.prepareEvent_(inEvent);
-  this.dispatcher.down(e, inEvent);
-};
-
-
-/**
- * Handler for `msPointerMove`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msPointerMove = function(inEvent) {
-  var e = this.prepareEvent_(inEvent);
-  this.dispatcher.move(e, inEvent);
-};
-
-
-/**
- * Handler for `msPointerUp`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msPointerUp = function(inEvent) {
-  var e = this.prepareEvent_(inEvent);
-  this.dispatcher.up(e, inEvent);
-  this.cleanup(inEvent.getBrowserEvent().pointerId);
-};
-
-
-/**
- * Handler for `msPointerOut`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msPointerOut = function(inEvent) {
-  var e = this.prepareEvent_(inEvent);
-  this.dispatcher.leaveOut(e, inEvent);
-};
-
-
-/**
- * Handler for `msPointerOver`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msPointerOver = function(inEvent) {
-  var e = this.prepareEvent_(inEvent);
-  this.dispatcher.enterOver(e, inEvent);
-};
-
-
-/**
- * Handler for `msPointerCancel`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msPointerCancel = function(inEvent) {
-  var e = this.prepareEvent_(inEvent);
-  this.dispatcher.cancel(e, inEvent);
-  this.cleanup(inEvent.getBrowserEvent().pointerId);
-};
-
-
-/**
- * Handler for `msLostPointerCapture`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msLostPointerCapture = function(inEvent) {
-  var e = this.dispatcher.makeEvent('lostpointercapture',
-      inEvent.getBrowserEvent(), inEvent);
-  this.dispatcher.dispatchEvent(e);
-};
-
-
-/**
- * Handler for `msGotPointerCapture`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.MsSource.prototype.msGotPointerCapture = function(inEvent) {
-  var e = this.dispatcher.makeEvent('gotpointercapture',
-      inEvent.getBrowserEvent(), inEvent);
-  this.dispatcher.dispatchEvent(e);
-};
-
-// Based on https://github.com/Polymer/PointerEvents
-
-// Copyright (c) 2013 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-// * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-goog.provide('ol.pointer.NativeSource');
-
-goog.require('goog.object');
-goog.require('ol.pointer.EventSource');
-
-
-
-/**
- * @param {ol.pointer.PointerEventHandler} dispatcher
- * @constructor
- * @extends {ol.pointer.EventSource}
- */
-ol.pointer.NativeSource = function(dispatcher) {
-  var mapping = {
-    'pointerdown': this.pointerDown,
-    'pointermove': this.pointerMove,
-    'pointerup': this.pointerUp,
-    'pointerout': this.pointerOut,
-    'pointerover': this.pointerOver,
-    'pointercancel': this.pointerCancel,
-    'gotpointercapture': this.gotPointerCapture,
-    'lostpointercapture': this.lostPointerCapture
-  };
-  goog.base(this, dispatcher, mapping);
-};
-goog.inherits(ol.pointer.NativeSource, ol.pointer.EventSource);
-
-
-/**
- * Handler for `pointerdown`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.pointerDown = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-
-/**
- * Handler for `pointermove`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.pointerMove = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-
-/**
- * Handler for `pointerup`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.pointerUp = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-
-/**
- * Handler for `pointerout`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.pointerOut = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-
-/**
- * Handler for `pointerover`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.pointerOver = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-
-/**
- * Handler for `pointercancel`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.pointerCancel = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-
-/**
- * Handler for `lostpointercapture`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.lostPointerCapture = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-
-/**
- * Handler for `gotpointercapture`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.NativeSource.prototype.gotPointerCapture = function(inEvent) {
-  this.dispatcher.fireNativeEvent(inEvent);
-};
-
-// Based on https://github.com/Polymer/PointerEvents
-
-// Copyright (c) 2013 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-// * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-goog.provide('ol.pointer.PointerEvent');
-
-
-goog.require('goog.events');
-goog.require('goog.events.Event');
-goog.require('goog.object');
-
-
-
-/**
- * A class for pointer events.
- *
- * This class is used as an abstraction for mouse events,
- * touch events and even native pointer events.
- *
- * @constructor
- * @extends {goog.events.Event}
- * @param {string} type The type of the event to create.
- * @param {goog.events.BrowserEvent} browserEvent
- * @param {Object.<string, ?>=} opt_eventDict An optional dictionary of
- *    initial event properties.
- */
-ol.pointer.PointerEvent = function(type, browserEvent, opt_eventDict) {
-  goog.base(this, type);
-
-  /**
-   * @const
-   * @type {goog.events.BrowserEvent}
-   */
-  this.browserEvent = browserEvent;
-
-  var eventDict = goog.isDef(opt_eventDict) ? opt_eventDict : {};
-
-  /**
-   * @type {number}
-   */
-  this.buttons = this.getButtons_(eventDict);
-
-  /**
-   * @type {number}
-   */
-  this.pressure = this.getPressure_(eventDict, this.buttons);
-
-  // MouseEvent related properties
-
-  /**
-   * @type {boolean}
-   */
-  this.bubbles = goog.object.get(eventDict, 'bubbles', false);
-
-  /**
-   * @type {boolean}
-   */
-  this.cancelable = goog.object.get(eventDict, 'cancelable', false);
-
-  /**
-   * @type {Object}
-   */
-  this.view = goog.object.get(eventDict, 'view', null);
-
-  /**
-   * @type {number}
-   */
-  this.detail = goog.object.get(eventDict, 'detail', null);
-
-  /**
-   * @type {number}
-   */
-  this.screenX = goog.object.get(eventDict, 'screenX', 0);
-
-  /**
-   * @type {number}
-   */
-  this.screenY = goog.object.get(eventDict, 'screenY', 0);
-
-  /**
-   * @type {number}
-   */
-  this.clientX = goog.object.get(eventDict, 'clientX', 0);
-
-  /**
-   * @type {number}
-   */
-  this.clientY = goog.object.get(eventDict, 'clientY', 0);
-
-  /**
-   * @type {boolean}
-   */
-  this.ctrlKey = goog.object.get(eventDict, 'ctrlKey', false);
-
-  /**
-   * @type {boolean}
-   */
-  this.altKey = goog.object.get(eventDict, 'altKey', false);
-
-  /**
-   * @type {boolean}
-   */
-  this.shiftKey = goog.object.get(eventDict, 'shiftKey', false);
-
-  /**
-   * @type {boolean}
-   */
-  this.metaKey = goog.object.get(eventDict, 'metaKey', false);
-
-  /**
-   * @type {number}
-   */
-  this.button = goog.object.get(eventDict, 'button', 0);
-
-  /**
-   * @type {Node}
-   */
-  this.relatedTarget = goog.object.get(eventDict, 'relatedTarget', null);
-
-  // PointerEvent related properties
-
-  /**
-   * @const
-   * @type {number}
-   */
-  this.pointerId = goog.object.get(eventDict, 'pointerId', 0);
-
-  /**
-   * @type {number}
-   */
-  this.width = goog.object.get(eventDict, 'width', 0);
-
-  /**
-   * @type {number}
-   */
-  this.height = goog.object.get(eventDict, 'height', 0);
-
-  /**
-   * @type {number}
-   */
-  this.tiltX = goog.object.get(eventDict, 'tiltX', 0);
-
-  /**
-   * @type {number}
-   */
-  this.tiltY = goog.object.get(eventDict, 'tiltY', 0);
-
-  /**
-   * @type {string}
-   */
-  this.pointerType = goog.object.get(eventDict, 'pointerType', '');
-
-  /**
-   * @type {number}
-   */
-  this.hwTimestamp = goog.object.get(eventDict, 'hwTimestamp', 0);
-
-  /**
-   * @type {boolean}
-   */
-  this.isPrimary = goog.object.get(eventDict, 'isPrimary', false);
-
-  // keep the semantics of preventDefault
-  if (browserEvent.preventDefault) {
-    this.preventDefault = function() {
-      browserEvent.preventDefault();
-    };
-  }
-};
-goog.inherits(ol.pointer.PointerEvent, goog.events.Event);
-
-
-/**
- * @private
- * @param {Object.<string, ?>} eventDict
- * @return {number}
- */
-ol.pointer.PointerEvent.prototype.getButtons_ = function(eventDict) {
-  // According to the w3c spec,
-  // http://www.w3.org/TR/DOM-Level-3-Events/#events-MouseEvent-button
-  // MouseEvent.button == 0 can mean either no mouse button depressed, or the
-  // left mouse button depressed.
-  //
-  // As of now, the only way to distinguish between the two states of
-  // MouseEvent.button is by using the deprecated MouseEvent.which property, as
-  // this maps mouse buttons to positive integers > 0, and uses 0 to mean that
-  // no mouse button is held.
-  //
-  // MouseEvent.which is derived from MouseEvent.button at MouseEvent creation,
-  // but initMouseEvent does not expose an argument with which to set
-  // MouseEvent.which. Calling initMouseEvent with a buttonArg of 0 will set
-  // MouseEvent.button == 0 and MouseEvent.which == 1, breaking the expectations
-  // of app developers.
-  //
-  // The only way to propagate the correct state of MouseEvent.which and
-  // MouseEvent.button to a new MouseEvent.button == 0 and MouseEvent.which == 0
-  // is to call initMouseEvent with a buttonArg value of -1.
-  //
-  // This is fixed with DOM Level 4's use of buttons
-  var buttons;
-  if (eventDict.buttons || ol.pointer.PointerEvent.HAS_BUTTONS) {
-    buttons = eventDict.buttons;
-  } else {
-    switch (eventDict.which) {
-      case 1: buttons = 1; break;
-      case 2: buttons = 4; break;
-      case 3: buttons = 2; break;
-      default: buttons = 0;
-    }
-  }
-  return buttons;
-};
-
-
-/**
- * @private
- * @param {Object.<string, ?>} eventDict
- * @param {number} buttons
- * @return {number}
- */
-ol.pointer.PointerEvent.prototype.getPressure_ = function(eventDict, buttons) {
-  // Spec requires that pointers without pressure specified use 0.5 for down
-  // state and 0 for up state.
-  var pressure = 0;
-  if (eventDict.pressure) {
-    pressure = eventDict.pressure;
-  } else {
-    pressure = buttons ? 0.5 : 0;
-  }
-  return pressure;
-};
-
-
-/**
- * Is the `buttons` property supported?
- * @type {boolean}
- */
-ol.pointer.PointerEvent.HAS_BUTTONS = false;
-
-
-/**
- * Checks if the `buttons` property is supported.
- */
-(function() {
-  try {
-    var ev = new MouseEvent('click', {buttons: 1});
-    ol.pointer.PointerEvent.HAS_BUTTONS = ev.buttons === 1;
-  } catch (e) {
-  }
-})();
-
-// Based on https://github.com/Polymer/PointerEvents
-
-// Copyright (c) 2013 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-// * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-goog.provide('ol.pointer.TouchSource');
-
-goog.require('goog.array');
-goog.require('goog.object');
-goog.require('ol.pointer.EventSource');
-goog.require('ol.pointer.MouseSource');
-
-
-
-/**
- * @constructor
- * @param {ol.pointer.PointerEventHandler} dispatcher
- * @param {ol.pointer.MouseSource} mouseSource
- * @extends {ol.pointer.EventSource}
- */
-ol.pointer.TouchSource = function(dispatcher, mouseSource) {
-  var mapping = {
-    'touchstart': this.touchstart,
-    'touchmove': this.touchmove,
-    'touchend': this.touchend,
-    'touchcancel': this.touchcancel
-  };
-  goog.base(this, dispatcher, mapping);
-
-  /**
-   * @const
-   * @type {Object.<string, goog.events.BrowserEvent|Object>}
-   */
-  this.pointerMap = dispatcher.pointerMap;
-
-  /**
-   * @const
-   * @type {ol.pointer.MouseSource}
-   */
-  this.mouseSource = mouseSource;
-
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-  this.firstTouchId_ = undefined;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.clickCount_ = 0;
-
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-  this.resetId_ = undefined;
-};
-goog.inherits(ol.pointer.TouchSource, ol.pointer.EventSource);
-
-
-/**
- * Mouse event timeout: This should be long enough to
- * ignore compat mouse events made by touch.
- * @const
- * @type {number}
- */
-ol.pointer.TouchSource.DEDUP_TIMEOUT = 2500;
-
-
-/**
- * @const
- * @type {number}
- */
-ol.pointer.TouchSource.CLICK_COUNT_TIMEOUT = 200;
-
-
-/**
- * @const
- * @type {string}
- */
-ol.pointer.TouchSource.POINTER_TYPE = 'touch';
-
-
-/**
- * @private
- * @param {Touch} inTouch
- * @return {boolean} True, if this is the primary touch.
- */
-ol.pointer.TouchSource.prototype.isPrimaryTouch_ = function(inTouch) {
-  return this.firstTouchId_ === inTouch.identifier;
-};
-
-
-/**
- * Set primary touch if there are no pointers, or the only pointer is the mouse.
- * @param {Touch} inTouch
- * @private
- */
-ol.pointer.TouchSource.prototype.setPrimaryTouch_ = function(inTouch) {
-  var count = goog.object.getCount(this.pointerMap);
-  if (count === 0 || (count === 1 && goog.object.containsKey(this.pointerMap,
-      ol.pointer.MouseSource.POINTER_ID.toString()))) {
-    this.firstTouchId_ = inTouch.identifier;
-    this.cancelResetClickCount_();
-  }
-};
-
-
-/**
- * @private
- * @param {Object} inPointer
- */
-ol.pointer.TouchSource.prototype.removePrimaryPointer_ = function(inPointer) {
-  if (inPointer.isPrimary) {
-    this.firstTouchId_ = undefined;
-    this.resetClickCount_();
-  }
-};
-
-
-/**
- * @private
- */
-ol.pointer.TouchSource.prototype.resetClickCount_ = function() {
-  this.resetId_ = goog.global.setTimeout(
-      goog.bind(this.resetClickCountHandler_, this),
-      ol.pointer.TouchSource.CLICK_COUNT_TIMEOUT);
-};
-
-
-/**
- * @private
- */
-ol.pointer.TouchSource.prototype.resetClickCountHandler_ = function() {
-  this.clickCount_ = 0;
-  this.resetId_ = undefined;
-};
-
-
-/**
- * @private
- */
-ol.pointer.TouchSource.prototype.cancelResetClickCount_ = function() {
-  if (goog.isDef(this.resetId_)) {
-    goog.global.clearTimeout(this.resetId_);
-  }
-};
-
-
-/**
- * @private
- * @param {goog.events.BrowserEvent} browserEvent Browser event
- * @param {Touch} inTouch Touch event
- * @return {Object}
- */
-ol.pointer.TouchSource.prototype.touchToPointer_ =
-    function(browserEvent, inTouch) {
-  var e = this.dispatcher.cloneEvent(browserEvent, inTouch);
-  // Spec specifies that pointerId 1 is reserved for Mouse.
-  // Touch identifiers can start at 0.
-  // Add 2 to the touch identifier for compatibility.
-  e.pointerId = inTouch.identifier + 2;
-  // TODO: check if this is neccessary?
-  //e.target = findTarget(e);
-  e.bubbles = true;
-  e.cancelable = true;
-  e.detail = this.clickCount_;
-  e.button = 0;
-  e.buttons = 1;
-  e.width = inTouch.webkitRadiusX || inTouch.radiusX || 0;
-  e.height = inTouch.webkitRadiusY || inTouch.radiusY || 0;
-  e.pressure = inTouch.webkitForce || inTouch.force || 0.5;
-  e.isPrimary = this.isPrimaryTouch_(inTouch);
-  e.pointerType = ol.pointer.TouchSource.POINTER_TYPE;
-
-  // make sure that the properties that are different for
-  // each `Touch` object are not copied from the BrowserEvent object
-  e.clientX = inTouch.clientX;
-  e.clientY = inTouch.clientY;
-  e.screenX = inTouch.screenX;
-  e.screenY = inTouch.screenY;
-
-  return e;
-};
-
-
-/**
- * @private
- * @param {goog.events.BrowserEvent} inEvent Touch event
- * @param {function(goog.events.BrowserEvent, Object)} inFunction
- */
-ol.pointer.TouchSource.prototype.processTouches_ =
-    function(inEvent, inFunction) {
-  var touches = Array.prototype.slice.call(
-      inEvent.getBrowserEvent().changedTouches);
-  var count = touches.length;
-  function preventDefault() {
-    inEvent.preventDefault();
-  }
-  var i, pointer;
-  for (i = 0; i < count; ++i) {
-    pointer = this.touchToPointer_(inEvent, touches[i]);
-    // forward touch preventDefaults
-    pointer.preventDefault = preventDefault;
-    inFunction.call(this, inEvent, pointer);
-  }
-};
-
-
-/**
- * @private
- * @param {TouchList} touchList
- * @param {number} searchId
- * @return {boolean} True, if the `Touch` with the given id is in the list.
- */
-ol.pointer.TouchSource.prototype.findTouch_ = function(touchList, searchId) {
-  var l = touchList.length;
-  var touch;
-  for (var i = 0; i < l; i++) {
-    touch = touchList[i];
-    if (touch.identifier === searchId) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * In some instances, a touchstart can happen without a touchend. This
- * leaves the pointermap in a broken state.
- * Therefore, on every touchstart, we remove the touches that did not fire a
- * touchend event.
- * To keep state globally consistent, we fire a pointercancel for
- * this "abandoned" touch
- *
- * @private
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.TouchSource.prototype.vacuumTouches_ = function(inEvent) {
-  var touchList = inEvent.getBrowserEvent().touches;
-  // pointerMap.getCount() should be < touchList.length here,
-  // as the touchstart has not been processed yet.
-  var keys = goog.object.getKeys(this.pointerMap);
-  var count = keys.length;
-  if (count >= touchList.length) {
-    var d = [];
-    var i, key, value;
-    for (i = 0; i < count; ++i) {
-      key = keys[i];
-      value = this.pointerMap[key];
-      // Never remove pointerId == 1, which is mouse.
-      // Touch identifiers are 2 smaller than their pointerId, which is the
-      // index in pointermap.
-      if (key != ol.pointer.MouseSource.POINTER_ID &&
-          !this.findTouch_(touchList, key - 2)) {
-        d.push(value.out);
-      }
-    }
-    for (i = 0; i < d.length; ++i) {
-      this.cancelOut_(inEvent, d[i]);
-    }
-  }
-};
-
-
-/**
- * Handler for `touchstart`, triggers `pointerover`,
- * `pointerenter` and `pointerdown` events.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.TouchSource.prototype.touchstart = function(inEvent) {
-  this.vacuumTouches_(inEvent);
-  this.setPrimaryTouch_(inEvent.getBrowserEvent().changedTouches[0]);
-  this.dedupSynthMouse_(inEvent);
-  this.clickCount_++;
-  this.processTouches_(inEvent, this.overDown_);
-};
-
-
-/**
- * @private
- * @param {goog.events.BrowserEvent} browserEvent
- * @param {Object} inPointer
- */
-ol.pointer.TouchSource.prototype.overDown_ = function(browserEvent, inPointer) {
-  goog.object.set(this.pointerMap, inPointer.pointerId, {
-    target: inPointer.target,
-    out: inPointer,
-    outTarget: inPointer.target
-  });
-  this.dispatcher.over(inPointer, browserEvent);
-  this.dispatcher.enter(inPointer, browserEvent);
-  this.dispatcher.down(inPointer, browserEvent);
-};
-
-
-/**
- * Handler for `touchmove`.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.TouchSource.prototype.touchmove = function(inEvent) {
-  inEvent.preventDefault();
-  this.processTouches_(inEvent, this.moveOverOut_);
-};
-
-
-/**
- * @private
- * @param {goog.events.BrowserEvent} browserEvent
- * @param {Object} inPointer
- */
-ol.pointer.TouchSource.prototype.moveOverOut_ =
-    function(browserEvent, inPointer) {
-  var event = inPointer;
-  var pointer = goog.object.get(this.pointerMap, event.pointerId);
-  // a finger drifted off the screen, ignore it
-  if (!pointer) {
-    return;
-  }
-  var outEvent = pointer.out;
-  var outTarget = pointer.outTarget;
-  this.dispatcher.move(event, browserEvent);
-  if (outEvent && outTarget !== event.target) {
-    outEvent.relatedTarget = event.target;
-    event.relatedTarget = outTarget;
-    // recover from retargeting by shadow
-    outEvent.target = outTarget;
-    if (event.target) {
-      this.dispatcher.leaveOut(outEvent, browserEvent);
-      this.dispatcher.enterOver(event, browserEvent);
-    } else {
-      // clean up case when finger leaves the screen
-      event.target = outTarget;
-      event.relatedTarget = null;
-      this.cancelOut_(browserEvent, event);
-    }
-  }
-  pointer.out = event;
-  pointer.outTarget = event.target;
-};
-
-
-/**
- * Handler for `touchend`, triggers `pointerup`,
- * `pointerout` and `pointerleave` events.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.TouchSource.prototype.touchend = function(inEvent) {
-  this.dedupSynthMouse_(inEvent);
-  this.processTouches_(inEvent, this.upOut_);
-};
-
-
-/**
- * @private
- * @param {goog.events.BrowserEvent} browserEvent
- * @param {Object} inPointer
- */
-ol.pointer.TouchSource.prototype.upOut_ = function(browserEvent, inPointer) {
-  this.dispatcher.up(inPointer, browserEvent);
-  this.dispatcher.out(inPointer, browserEvent);
-  this.dispatcher.leave(inPointer, browserEvent);
-  this.cleanUpPointer_(inPointer);
-};
-
-
-/**
- * Handler for `touchcancel`, triggers `pointercancel`,
- * `pointerout` and `pointerleave` events.
- *
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.TouchSource.prototype.touchcancel = function(inEvent) {
-  this.processTouches_(inEvent, this.cancelOut_);
-};
-
-
-/**
- * @private
- * @param {goog.events.BrowserEvent} browserEvent
- * @param {Object} inPointer
- */
-ol.pointer.TouchSource.prototype.cancelOut_ =
-    function(browserEvent, inPointer) {
-  this.dispatcher.cancel(inPointer, browserEvent);
-  this.dispatcher.out(inPointer, browserEvent);
-  this.dispatcher.leave(inPointer, browserEvent);
-  this.cleanUpPointer_(inPointer);
-};
-
-
-/**
- * @private
- * @param {Object} inPointer
- */
-ol.pointer.TouchSource.prototype.cleanUpPointer_ = function(inPointer) {
-  goog.object.remove(this.pointerMap, inPointer.pointerId);
-  this.removePrimaryPointer_(inPointer);
-};
-
-
-/**
- * Prevent synth mouse events from creating pointer events.
- *
- * @private
- * @param {goog.events.BrowserEvent} inEvent
- */
-ol.pointer.TouchSource.prototype.dedupSynthMouse_ = function(inEvent) {
-  var lts = this.mouseSource.lastTouches;
-  var t = inEvent.getBrowserEvent().changedTouches[0];
-  // only the primary finger will synth mouse events
-  if (this.isPrimaryTouch_(t)) {
-    // remember x/y of last touch
-    var lt = /** @type {ol.Pixel} */ ([t.clientX, t.clientY]);
-    lts.push(lt);
-
-    goog.global.setTimeout(function() {
-      // remove touch after timeout
-      goog.array.remove(lts, lt);
-    }, ol.pointer.TouchSource.DEDUP_TIMEOUT);
-  }
-};
-
-// Based on https://github.com/Polymer/PointerEvents
-
-// Copyright (c) 2013 The Polymer Authors. All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-// * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-goog.provide('ol.pointer.PointerEventHandler');
-
-goog.require('goog.array');
-goog.require('goog.events');
-goog.require('goog.events.BrowserEvent');
-goog.require('goog.events.Event');
-goog.require('goog.events.EventTarget');
-
-goog.require('ol.has');
-goog.require('ol.pointer.MouseSource');
-goog.require('ol.pointer.MsSource');
-goog.require('ol.pointer.NativeSource');
-goog.require('ol.pointer.PointerEvent');
-goog.require('ol.pointer.TouchSource');
-
-
-
-/**
- * @constructor
- * @extends {goog.events.EventTarget}
- * @param {Element|HTMLDocument} element Viewport element.
- */
-ol.pointer.PointerEventHandler = function(element) {
-  goog.base(this);
-
-  /**
-   * @const
-   * @private
-   * @type {Element|HTMLDocument}
-   */
-  this.element_ = element;
-
-  /**
-   * @const
-   * @type {Object.<string, goog.events.BrowserEvent|Object>}
-   */
-  this.pointerMap = {};
-
-  /**
-   * @type {Object.<string, function(goog.events.BrowserEvent)>}
-   * @private
-   */
-  this.eventMap_ = {};
-
-  /**
-   * @type {Array.<ol.pointer.EventSource>}
-   * @private
-   */
-  this.eventSourceList_ = [];
-
-  this.registerSources();
-};
-goog.inherits(ol.pointer.PointerEventHandler, goog.events.EventTarget);
-
-
-/**
- * Set up the event sources (mouse, touch and native pointers)
- * that generate pointer events.
- */
-ol.pointer.PointerEventHandler.prototype.registerSources = function() {
-  if (ol.has.POINTER) {
-    this.registerSource('native', new ol.pointer.NativeSource(this));
-  } else if (ol.has.MSPOINTER) {
-    this.registerSource('ms', new ol.pointer.MsSource(this));
-  } else {
-    var mouseSource = new ol.pointer.MouseSource(this);
-    this.registerSource('mouse', mouseSource);
-
-    if (ol.has.TOUCH) {
-      this.registerSource('touch',
-          new ol.pointer.TouchSource(this, mouseSource));
-    }
-  }
-
-  // register events on the viewport element
-  this.register_();
-};
-
-
-/**
- * Add a new event source that will generate pointer events.
- *
- * @param {string} name A name for the event source
- * @param {ol.pointer.EventSource} source
- */
-ol.pointer.PointerEventHandler.prototype.registerSource =
-    function(name, source) {
-  var s = source;
-  var newEvents = s.getEvents();
-
-  if (newEvents) {
-    goog.array.forEach(newEvents, function(e) {
-      var handler = s.getHandlerForEvent(e);
-
-      if (handler) {
-        this.eventMap_[e] = goog.bind(handler, s);
-      }
-    }, this);
-    this.eventSourceList_.push(s);
-  }
-};
-
-
-/**
- * Set up the events for all registered event sources.
- * @private
- */
-ol.pointer.PointerEventHandler.prototype.register_ = function() {
-  var l = this.eventSourceList_.length;
-  var eventSource;
-  for (var i = 0; i < l; i++) {
-    eventSource = this.eventSourceList_[i];
-    this.addEvents_(eventSource.getEvents());
-  }
-};
-
-
-/**
- * Remove all registered events.
- * @private
- */
-ol.pointer.PointerEventHandler.prototype.unregister_ = function() {
-  var l = this.eventSourceList_.length;
-  var eventSource;
-  for (var i = 0; i < l; i++) {
-    eventSource = this.eventSourceList_[i];
-    this.removeEvents_(eventSource.getEvents());
-  }
-};
-
-
-/**
- * Calls the right handler for a new event.
- * @private
- * @param {goog.events.BrowserEvent} inEvent Browser event.
- */
-ol.pointer.PointerEventHandler.prototype.eventHandler_ = function(inEvent) {
-  var type = inEvent.type;
-  var handler = this.eventMap_[type];
-  if (handler) {
-    handler(inEvent);
-  }
-};
-
-
-/**
- * Setup listeners for the given events.
- * @private
- * @param {Array.<string>} events List of events.
- */
-ol.pointer.PointerEventHandler.prototype.addEvents_ = function(events) {
-  goog.array.forEach(events, function(eventName) {
-    goog.events.listen(this.element_, eventName,
-        this.eventHandler_, false, this);
-  }, this);
-};
-
-
-/**
- * Unregister listeners for the given events.
- * @private
- * @param {Array.<string>} events List of events.
- */
-ol.pointer.PointerEventHandler.prototype.removeEvents_ = function(events) {
-  goog.array.forEach(events, function(e) {
-    goog.events.unlisten(this.element_, e,
-        this.eventHandler_, false, this);
-  }, this);
-};
-
-
-/**
- * Returns a snapshot of inEvent, with writable properties.
- *
- * @param {goog.events.BrowserEvent} browserEvent Browser event.
- * @param {Event|Touch} inEvent An event that contains
- *    properties to copy.
- * @return {Object} An object containing shallow copies of
- *    `inEvent`'s properties.
- */
-ol.pointer.PointerEventHandler.prototype.cloneEvent =
-    function(browserEvent, inEvent) {
-  var eventCopy = {}, p;
-  for (var i = 0, ii = ol.pointer.CLONE_PROPS.length; i < ii; i++) {
-    p = ol.pointer.CLONE_PROPS[i][0];
-    eventCopy[p] =
-        browserEvent[p] ||
-        inEvent[p] ||
-        ol.pointer.CLONE_PROPS[i][1];
-  }
-
-  return eventCopy;
-};
-
-
-// EVENTS
-
-
-/**
- * Triggers a 'pointerdown' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.down =
-    function(pointerEventData, browserEvent) {
-  this.fireEvent(ol.pointer.EventType.POINTERDOWN,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a 'pointermove' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.move =
-    function(pointerEventData, browserEvent) {
-  this.fireEvent(ol.pointer.EventType.POINTERMOVE,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a 'pointerup' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.up =
-    function(pointerEventData, browserEvent) {
-  this.fireEvent(ol.pointer.EventType.POINTERUP,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a 'pointerenter' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.enter =
-    function(pointerEventData, browserEvent) {
-  pointerEventData.bubbles = false;
-  this.fireEvent(ol.pointer.EventType.POINTERENTER,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a 'pointerleave' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.leave =
-    function(pointerEventData, browserEvent) {
-  pointerEventData.bubbles = false;
-  this.fireEvent(ol.pointer.EventType.POINTERLEAVE,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a 'pointerover' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.over =
-    function(pointerEventData, browserEvent) {
-  pointerEventData.bubbles = true;
-  this.fireEvent(ol.pointer.EventType.POINTEROVER,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a 'pointerout' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.out =
-    function(pointerEventData, browserEvent) {
-  pointerEventData.bubbles = true;
-  this.fireEvent(ol.pointer.EventType.POINTEROUT,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a 'pointercancel' event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.cancel =
-    function(pointerEventData, browserEvent) {
-  this.fireEvent(ol.pointer.EventType.POINTERCANCEL,
-      pointerEventData, browserEvent);
-};
-
-
-/**
- * Triggers a combination of 'pointerout' and 'pointerleave' events.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.leaveOut =
-    function(pointerEventData, browserEvent) {
-  this.out(pointerEventData, browserEvent);
-  if (!this.contains_(
-      pointerEventData.target,
-      pointerEventData.relatedTarget)) {
-    this.leave(pointerEventData, browserEvent);
-  }
-};
-
-
-/**
- * Triggers a combination of 'pointerover' and 'pointerevents' events.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.enterOver =
-    function(pointerEventData, browserEvent) {
-  this.over(pointerEventData, browserEvent);
-  if (!this.contains_(
-      pointerEventData.target,
-      pointerEventData.relatedTarget)) {
-    this.enter(pointerEventData, browserEvent);
-  }
-};
-
-
-/**
- * @private
- * @param {Element} container
- * @param {Element} contained
- * @return {boolean} Returns true if the container element
- *   contains the other element.
- */
-ol.pointer.PointerEventHandler.prototype.contains_ =
-    function(container, contained) {
-  return container.contains(contained);
-};
-
-
-// EVENT CREATION AND TRACKING
-/**
- * Creates a new Event of type `inType`, based on the information in
- * `pointerEventData`.
- *
- * @param {string} inType A string representing the type of event to create.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- * @return {ol.pointer.PointerEvent} A PointerEvent of type `inType`.
- */
-ol.pointer.PointerEventHandler.prototype.makeEvent =
-    function(inType, pointerEventData, browserEvent) {
-  return new ol.pointer.PointerEvent(inType, browserEvent, pointerEventData);
-};
-
-
-/**
- * Make and dispatch an event in one call.
- * @param {string} inType A string representing the type of event.
- * @param {Object} pointerEventData
- * @param {goog.events.BrowserEvent } browserEvent
- */
-ol.pointer.PointerEventHandler.prototype.fireEvent =
-    function(inType, pointerEventData, browserEvent) {
-  var e = this.makeEvent(inType, pointerEventData, browserEvent);
-  this.dispatchEvent(e);
-};
-
-
-/**
- * Creates a pointer event from a native pointer event
- * and dispatches this event.
- * @param {goog.events.BrowserEvent} nativeEvent A platform event with a target.
- */
-ol.pointer.PointerEventHandler.prototype.fireNativeEvent =
-    function(nativeEvent) {
-  var e = this.makeEvent(nativeEvent.type, nativeEvent.getBrowserEvent(),
-      nativeEvent);
-  this.dispatchEvent(e);
-};
-
-
-/**
- * Wrap a native mouse event into a pointer event.
- * This proxy method is required for the legacy IE support.
- * @param {string} eventType The pointer event type.
- * @param {goog.events.BrowserEvent} browserEvent
- * @return {ol.pointer.PointerEvent}
- */
-ol.pointer.PointerEventHandler.prototype.wrapMouseEvent =
-    function(eventType, browserEvent) {
-  var pointerEvent = this.makeEvent(
-      eventType,
-      ol.pointer.MouseSource.prepareEvent(browserEvent, this),
-      browserEvent
-      );
-  return pointerEvent;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.pointer.PointerEventHandler.prototype.disposeInternal = function() {
-  this.unregister_();
-  goog.base(this, 'disposeInternal');
-};
-
-
-/**
- * Constants for event names.
- * @enum {string}
- */
-ol.pointer.EventType = {
-  POINTERMOVE: 'pointermove',
-  POINTERDOWN: 'pointerdown',
-  POINTERUP: 'pointerup',
-  POINTEROVER: 'pointerover',
-  POINTEROUT: 'pointerout',
-  POINTERENTER: 'pointerenter',
-  POINTERLEAVE: 'pointerleave',
-  POINTERCANCEL: 'pointercancel'
-};
-
-
-/**
- * Properties to copy when cloning an event, with default values.
- * @type {Array.<Array>}
- */
-ol.pointer.CLONE_PROPS = [
-  // MouseEvent
-  ['bubbles', false],
-  ['cancelable', false],
-  ['view', null],
-  ['detail', null],
-  ['screenX', 0],
-  ['screenY', 0],
-  ['clientX', 0],
-  ['clientY', 0],
-  ['ctrlKey', false],
-  ['altKey', false],
-  ['shiftKey', false],
-  ['metaKey', false],
-  ['button', 0],
-  ['relatedTarget', null],
-  // DOM Level 3
-  ['buttons', 0],
-  // PointerEvent
-  ['pointerId', 0],
-  ['width', 0],
-  ['height', 0],
-  ['pressure', 0],
-  ['tiltX', 0],
-  ['tiltY', 0],
-  ['pointerType', ''],
-  ['hwTimestamp', 0],
-  ['isPrimary', false],
-  // event instance
-  ['type', ''],
-  ['target', null],
-  ['currentTarget', null],
-  ['which', 0]
-];
-
 // FIXME handle date line wrap
 
 goog.provide('ol.control.Attribution');
@@ -31647,7 +29773,6 @@ goog.require('goog.style');
 goog.require('ol.Attribution');
 goog.require('ol.control.Control');
 goog.require('ol.css');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -31704,9 +29829,6 @@ ol.control.Attribution = function(opt_options) {
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Attributions';
-  var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, tipLabel);
 
   /**
    * @private
@@ -31731,15 +29853,10 @@ ol.control.Attribution = function(opt_options) {
    */
   this.labelSpan_ = label;
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': 'ol-has-tooltip',
-    'type': 'button'
+    'type': 'button',
+    'title': tipLabel
   }, this.labelSpan_);
-  goog.dom.appendChild(button, tip);
 
-  var buttonHandler = new ol.pointer.PointerEventHandler(button);
-  this.registerDisposable(buttonHandler);
-  goog.events.listen(buttonHandler, ol.pointer.EventType.POINTERUP,
-      this.handlePointerUp_, false, this);
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
@@ -31750,12 +29867,12 @@ ol.control.Attribution = function(opt_options) {
     this.blur();
   }, false);
 
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, {
-    'class': className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
-        ol.css.CLASS_CONTROL +
-        (this.collapsed_ && this.collapsible_ ? ' ol-collapsed' : '') +
-        (this.collapsible_ ? '' : ' ol-uncollapsible')
-  }, this.ulElement_, button);
+  var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
+      ol.css.CLASS_CONTROL +
+      (this.collapsed_ && this.collapsible_ ? ' ol-collapsed' : '') +
+      (this.collapsible_ ? '' : ' ol-uncollapsible');
+  var element = goog.dom.createDom(goog.dom.TagName.DIV,
+      cssClasses, this.ulElement_, button);
 
   goog.base(this, {
     element: element,
@@ -31969,19 +30086,7 @@ ol.control.Attribution.prototype.insertLogos_ = function(frameState) {
  * @private
  */
 ol.control.Attribution.prototype.handleClick_ = function(event) {
-  if (event.screenX !== 0 && event.screenY !== 0) {
-    return;
-  }
-  this.handleToggle_();
-};
-
-
-/**
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.Attribution.prototype.handlePointerUp_ = function(pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.handleToggle_();
 };
 
@@ -32055,7 +30160,6 @@ goog.require('ol.animation');
 goog.require('ol.control.Control');
 goog.require('ol.css');
 goog.require('ol.easing');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -32082,24 +30186,17 @@ ol.control.Rotate = function(opt_options) {
    * @private
    */
   this.label_ = goog.dom.createDom(goog.dom.TagName.SPAN,
-      { 'class': 'ol-compass' },
-      goog.isDef(options.label) ? options.label : '\u21E7');
+      'ol-compass', goog.isDef(options.label) ? options.label : '\u21E7');
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Reset rotation';
 
-  var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, tipLabel);
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': className + '-reset ol-has-tooltip',
-    'type' : 'button'
-  }, tip, this.label_);
+    'class': className + '-reset',
+    'type' : 'button',
+    'title': tipLabel
+  }, this.label_);
 
-  var handler = new ol.pointer.PointerEventHandler(button);
-  this.registerDisposable(handler);
-  goog.events.listen(handler, ol.pointer.EventType.POINTERUP,
-      ol.control.Rotate.prototype.handlePointerUp_, false, this);
   goog.events.listen(button, goog.events.EventType.CLICK,
       ol.control.Rotate.prototype.handleClick_, false, this);
 
@@ -32150,19 +30247,7 @@ goog.inherits(ol.control.Rotate, ol.control.Control);
  * @private
  */
 ol.control.Rotate.prototype.handleClick_ = function(event) {
-  if (event.screenX !== 0 && event.screenY !== 0) {
-    return;
-  }
-  this.resetNorth_();
-};
-
-
-/**
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.Rotate.prototype.handlePointerUp_ = function(pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.resetNorth_();
 };
 
@@ -32230,7 +30315,6 @@ goog.require('ol.animation');
 goog.require('ol.control.Control');
 goog.require('ol.css');
 goog.require('ol.easing');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -32263,19 +30347,12 @@ ol.control.Zoom = function(opt_options) {
   var zoomOutTipLabel = goog.isDef(options.zoomOutTipLabel) ?
       options.zoomOutTipLabel : 'Zoom out';
 
-  var tTipZoomIn = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, zoomInTipLabel);
   var inElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': className + '-in ol-has-tooltip',
-    'type' : 'button'
-  }, tTipZoomIn, zoomInLabel);
+    'class': className + '-in',
+    'type' : 'button',
+    'title': zoomInTipLabel
+  }, zoomInLabel);
 
-  var inElementHandler = new ol.pointer.PointerEventHandler(inElement);
-  this.registerDisposable(inElementHandler);
-  goog.events.listen(inElementHandler,
-      ol.pointer.EventType.POINTERUP, goog.partial(
-          ol.control.Zoom.prototype.handlePointerUp_, delta), false, this);
   goog.events.listen(inElement,
       goog.events.EventType.CLICK, goog.partial(
           ol.control.Zoom.prototype.handleClick_, delta), false, this);
@@ -32287,19 +30364,12 @@ ol.control.Zoom = function(opt_options) {
     this.blur();
   }, false);
 
-  var tTipsZoomOut = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, zoomOutTipLabel);
   var outElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': className + '-out  ol-has-tooltip',
-    'type' : 'button'
-  }, tTipsZoomOut, zoomOutLabel);
+    'class': className + '-out',
+    'type' : 'button',
+    'title': zoomOutTipLabel
+  }, zoomOutLabel);
 
-  var outElementHandler = new ol.pointer.PointerEventHandler(outElement);
-  this.registerDisposable(outElementHandler);
-  goog.events.listen(outElementHandler,
-      ol.pointer.EventType.POINTERUP, goog.partial(
-          ol.control.Zoom.prototype.handlePointerUp_, -delta), false, this);
   goog.events.listen(outElement,
       goog.events.EventType.CLICK, goog.partial(
           ol.control.Zoom.prototype.handleClick_, -delta), false, this);
@@ -32337,20 +30407,7 @@ goog.inherits(ol.control.Zoom, ol.control.Control);
  * @private
  */
 ol.control.Zoom.prototype.handleClick_ = function(delta, event) {
-  if (event.screenX !== 0 && event.screenY !== 0) {
-    return;
-  }
-  this.zoomByDelta_(delta);
-};
-
-
-/**
- * @param {number} delta Zoom delta.
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.Zoom.prototype.handlePointerUp_ = function(delta, pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.zoomByDelta_(delta);
 };
 
@@ -32586,7 +30643,6 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('ol.control.Control');
 goog.require('ol.css');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -32616,20 +30672,12 @@ ol.control.FullScreen = function(opt_options) {
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Toggle full-screen';
-  var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, tipLabel);
-
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': this.cssClassName_ + '-' + goog.dom.fullscreen.isFullScreen() +
-        ' ol-has-tooltip',
-    'type': 'button'
+    'class': this.cssClassName_ + '-' + goog.dom.fullscreen.isFullScreen(),
+    'type': 'button',
+    'title': tipLabel
   });
-  goog.dom.appendChild(button, tip);
-  var buttonHandler = new ol.pointer.PointerEventHandler(button);
-  this.registerDisposable(buttonHandler);
-  goog.events.listen(buttonHandler,
-      ol.pointer.EventType.POINTERUP, this.handlePointerUp_, false, this);
+
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
@@ -32645,7 +30693,7 @@ ol.control.FullScreen = function(opt_options) {
       this.handleFullScreenChange_, false, this);
 
   var cssClasses = this.cssClassName_ + ' ' + ol.css.CLASS_UNSELECTABLE +
-      ' ' + ol.css.CLASS_CONTROL +
+      ' ' + ol.css.CLASS_CONTROL + ' ' +
       (!goog.dom.fullscreen.isSupported() ? ol.css.CLASS_UNSUPPORTED : '');
   var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, button);
 
@@ -32669,19 +30717,7 @@ goog.inherits(ol.control.FullScreen, ol.control.Control);
  * @private
  */
 ol.control.FullScreen.prototype.handleClick_ = function(event) {
-  if (event.screenX !== 0 && event.screenY !== 0) {
-    return;
-  }
-  this.handleFullScreen_();
-};
-
-
-/**
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.FullScreen.prototype.handlePointerUp_ = function(pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.handleFullScreen_();
 };
 
@@ -32790,9 +30826,7 @@ ol.control.MousePosition = function(opt_options) {
   var className = goog.isDef(options.className) ?
       options.className : 'ol-mouse-position';
 
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, {
-    'class': className
-  });
+  var element = goog.dom.createDom(goog.dom.TagName.DIV, className);
 
   goog.base(this, {
     element: element,
@@ -42764,6 +40798,1880 @@ goog.log.fine = function(logger, msg, opt_exception) {
     logger.fine(msg, opt_exception);
   }
 };
+
+// Based on https://github.com/Polymer/PointerEvents
+
+// Copyright (c) 2013 The Polymer Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+// * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+// * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+goog.provide('ol.pointer.PointerEvent');
+
+
+goog.require('goog.events');
+goog.require('goog.events.Event');
+goog.require('goog.object');
+
+
+
+/**
+ * A class for pointer events.
+ *
+ * This class is used as an abstraction for mouse events,
+ * touch events and even native pointer events.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @param {string} type The type of the event to create.
+ * @param {goog.events.BrowserEvent} browserEvent
+ * @param {Object.<string, ?>=} opt_eventDict An optional dictionary of
+ *    initial event properties.
+ */
+ol.pointer.PointerEvent = function(type, browserEvent, opt_eventDict) {
+  goog.base(this, type);
+
+  /**
+   * @const
+   * @type {goog.events.BrowserEvent}
+   */
+  this.browserEvent = browserEvent;
+
+  var eventDict = goog.isDef(opt_eventDict) ? opt_eventDict : {};
+
+  /**
+   * @type {number}
+   */
+  this.buttons = this.getButtons_(eventDict);
+
+  /**
+   * @type {number}
+   */
+  this.pressure = this.getPressure_(eventDict, this.buttons);
+
+  // MouseEvent related properties
+
+  /**
+   * @type {boolean}
+   */
+  this.bubbles = goog.object.get(eventDict, 'bubbles', false);
+
+  /**
+   * @type {boolean}
+   */
+  this.cancelable = goog.object.get(eventDict, 'cancelable', false);
+
+  /**
+   * @type {Object}
+   */
+  this.view = goog.object.get(eventDict, 'view', null);
+
+  /**
+   * @type {number}
+   */
+  this.detail = goog.object.get(eventDict, 'detail', null);
+
+  /**
+   * @type {number}
+   */
+  this.screenX = goog.object.get(eventDict, 'screenX', 0);
+
+  /**
+   * @type {number}
+   */
+  this.screenY = goog.object.get(eventDict, 'screenY', 0);
+
+  /**
+   * @type {number}
+   */
+  this.clientX = goog.object.get(eventDict, 'clientX', 0);
+
+  /**
+   * @type {number}
+   */
+  this.clientY = goog.object.get(eventDict, 'clientY', 0);
+
+  /**
+   * @type {boolean}
+   */
+  this.ctrlKey = goog.object.get(eventDict, 'ctrlKey', false);
+
+  /**
+   * @type {boolean}
+   */
+  this.altKey = goog.object.get(eventDict, 'altKey', false);
+
+  /**
+   * @type {boolean}
+   */
+  this.shiftKey = goog.object.get(eventDict, 'shiftKey', false);
+
+  /**
+   * @type {boolean}
+   */
+  this.metaKey = goog.object.get(eventDict, 'metaKey', false);
+
+  /**
+   * @type {number}
+   */
+  this.button = goog.object.get(eventDict, 'button', 0);
+
+  /**
+   * @type {Node}
+   */
+  this.relatedTarget = goog.object.get(eventDict, 'relatedTarget', null);
+
+  // PointerEvent related properties
+
+  /**
+   * @const
+   * @type {number}
+   */
+  this.pointerId = goog.object.get(eventDict, 'pointerId', 0);
+
+  /**
+   * @type {number}
+   */
+  this.width = goog.object.get(eventDict, 'width', 0);
+
+  /**
+   * @type {number}
+   */
+  this.height = goog.object.get(eventDict, 'height', 0);
+
+  /**
+   * @type {number}
+   */
+  this.tiltX = goog.object.get(eventDict, 'tiltX', 0);
+
+  /**
+   * @type {number}
+   */
+  this.tiltY = goog.object.get(eventDict, 'tiltY', 0);
+
+  /**
+   * @type {string}
+   */
+  this.pointerType = goog.object.get(eventDict, 'pointerType', '');
+
+  /**
+   * @type {number}
+   */
+  this.hwTimestamp = goog.object.get(eventDict, 'hwTimestamp', 0);
+
+  /**
+   * @type {boolean}
+   */
+  this.isPrimary = goog.object.get(eventDict, 'isPrimary', false);
+
+  // keep the semantics of preventDefault
+  if (browserEvent.preventDefault) {
+    this.preventDefault = function() {
+      browserEvent.preventDefault();
+    };
+  }
+};
+goog.inherits(ol.pointer.PointerEvent, goog.events.Event);
+
+
+/**
+ * @private
+ * @param {Object.<string, ?>} eventDict
+ * @return {number}
+ */
+ol.pointer.PointerEvent.prototype.getButtons_ = function(eventDict) {
+  // According to the w3c spec,
+  // http://www.w3.org/TR/DOM-Level-3-Events/#events-MouseEvent-button
+  // MouseEvent.button == 0 can mean either no mouse button depressed, or the
+  // left mouse button depressed.
+  //
+  // As of now, the only way to distinguish between the two states of
+  // MouseEvent.button is by using the deprecated MouseEvent.which property, as
+  // this maps mouse buttons to positive integers > 0, and uses 0 to mean that
+  // no mouse button is held.
+  //
+  // MouseEvent.which is derived from MouseEvent.button at MouseEvent creation,
+  // but initMouseEvent does not expose an argument with which to set
+  // MouseEvent.which. Calling initMouseEvent with a buttonArg of 0 will set
+  // MouseEvent.button == 0 and MouseEvent.which == 1, breaking the expectations
+  // of app developers.
+  //
+  // The only way to propagate the correct state of MouseEvent.which and
+  // MouseEvent.button to a new MouseEvent.button == 0 and MouseEvent.which == 0
+  // is to call initMouseEvent with a buttonArg value of -1.
+  //
+  // This is fixed with DOM Level 4's use of buttons
+  var buttons;
+  if (eventDict.buttons || ol.pointer.PointerEvent.HAS_BUTTONS) {
+    buttons = eventDict.buttons;
+  } else {
+    switch (eventDict.which) {
+      case 1: buttons = 1; break;
+      case 2: buttons = 4; break;
+      case 3: buttons = 2; break;
+      default: buttons = 0;
+    }
+  }
+  return buttons;
+};
+
+
+/**
+ * @private
+ * @param {Object.<string, ?>} eventDict
+ * @param {number} buttons
+ * @return {number}
+ */
+ol.pointer.PointerEvent.prototype.getPressure_ = function(eventDict, buttons) {
+  // Spec requires that pointers without pressure specified use 0.5 for down
+  // state and 0 for up state.
+  var pressure = 0;
+  if (eventDict.pressure) {
+    pressure = eventDict.pressure;
+  } else {
+    pressure = buttons ? 0.5 : 0;
+  }
+  return pressure;
+};
+
+
+/**
+ * Is the `buttons` property supported?
+ * @type {boolean}
+ */
+ol.pointer.PointerEvent.HAS_BUTTONS = false;
+
+
+/**
+ * Checks if the `buttons` property is supported.
+ */
+(function() {
+  try {
+    var ev = new MouseEvent('click', {buttons: 1});
+    ol.pointer.PointerEvent.HAS_BUTTONS = ev.buttons === 1;
+  } catch (e) {
+  }
+})();
+
+goog.provide('ol.pointer.EventSource');
+
+goog.require('goog.events.BrowserEvent');
+goog.require('goog.object');
+
+
+
+/**
+ * @param {ol.pointer.PointerEventHandler} dispatcher
+ * @param {Object.<string, function(goog.events.BrowserEvent)>} mapping
+ * @constructor
+ */
+ol.pointer.EventSource = function(dispatcher, mapping) {
+  /**
+   * @type {ol.pointer.PointerEventHandler}
+   */
+  this.dispatcher = dispatcher;
+
+  /**
+   * @private
+   * @const
+   * @type {Object.<string, function(goog.events.BrowserEvent)>}
+   */
+  this.mapping_ = mapping;
+};
+
+
+/**
+ * List of events supported by this source.
+ * @return {Array.<string>} Event names
+ */
+ol.pointer.EventSource.prototype.getEvents = function() {
+  return goog.object.getKeys(this.mapping_);
+};
+
+
+/**
+ * Returns a mapping between the supported event types and
+ * the handlers that should handle an event.
+ * @return {Object.<string, function(goog.events.BrowserEvent)>}
+ *         Event/Handler mapping
+ */
+ol.pointer.EventSource.prototype.getMapping = function() {
+  return this.mapping_;
+};
+
+
+/**
+ * Returns the handler that should handle a given event type.
+ * @param {string} eventType
+ * @return {function(goog.events.BrowserEvent)} Handler
+ */
+ol.pointer.EventSource.prototype.getHandlerForEvent = function(eventType) {
+  return this.mapping_[eventType];
+};
+
+// Based on https://github.com/Polymer/PointerEvents
+
+// Copyright (c) 2013 The Polymer Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+// * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+// * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+goog.provide('ol.pointer.MouseSource');
+
+goog.require('goog.object');
+goog.require('ol.pointer.EventSource');
+
+
+
+/**
+ * @param {ol.pointer.PointerEventHandler} dispatcher
+ * @constructor
+ * @extends {ol.pointer.EventSource}
+ */
+ol.pointer.MouseSource = function(dispatcher) {
+  var mapping = {
+    'mousedown': this.mousedown,
+    'mousemove': this.mousemove,
+    'mouseup': this.mouseup,
+    'mouseover': this.mouseover,
+    'mouseout': this.mouseout
+  };
+  goog.base(this, dispatcher, mapping);
+
+  /**
+   * @const
+   * @type {Object.<string, goog.events.BrowserEvent|Object>}
+   */
+  this.pointerMap = dispatcher.pointerMap;
+
+  /**
+   * @const
+   * @type {Array.<ol.Pixel>}
+   */
+  this.lastTouches = [];
+};
+goog.inherits(ol.pointer.MouseSource, ol.pointer.EventSource);
+
+
+/**
+ * @const
+ * @type {number}
+ */
+ol.pointer.MouseSource.POINTER_ID = 1;
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.pointer.MouseSource.POINTER_TYPE = 'mouse';
+
+
+/**
+ * Radius around touchend that swallows mouse events.
+ *
+ * @const
+ * @type {number}
+ */
+ol.pointer.MouseSource.DEDUP_DIST = 25;
+
+
+/**
+ * Detect if a mouse event was simulated from a touch by
+ * checking if previously there was a touch event at the
+ * same position.
+ *
+ * FIXME - Known problem with the native Android browser on
+ * Samsung GT-I9100 (Android 4.1.2):
+ * In case the page is scrolled, this function does not work
+ * correctly when a canvas is used (WebGL or canvas renderer).
+ * Mouse listeners on canvas elements (for this browser), create
+ * two mouse events: One 'good' and one 'bad' one (on other browsers or
+ * when a div is used, there is only one event). For the 'bad' one,
+ * clientX/clientY and also pageX/pageY are wrong when the page
+ * is scrolled. Because of that, this function can not detect if
+ * the events were simulated from a touch event. As result, a
+ * pointer event at a wrong position is dispatched, which confuses
+ * the map interactions.
+ * It is unclear, how one can get the correct position for the event
+ * or detect that the positions are invalid.
+ *
+ * @private
+ * @param {goog.events.BrowserEvent} inEvent
+ * @return {boolean} True, if the event was generated by a touch.
+ */
+ol.pointer.MouseSource.prototype.isEventSimulatedFromTouch_ =
+    function(inEvent) {
+  var lts = this.lastTouches;
+  var x = inEvent.clientX, y = inEvent.clientY;
+  for (var i = 0, l = lts.length, t; i < l && (t = lts[i]); i++) {
+    // simulated mouse events will be swallowed near a primary touchend
+    var dx = Math.abs(x - t[0]), dy = Math.abs(y - t[1]);
+    if (dx <= ol.pointer.MouseSource.DEDUP_DIST &&
+        dy <= ol.pointer.MouseSource.DEDUP_DIST) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Creates a copy of the original event that will be used
+ * for the fake pointer event.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ * @param {ol.pointer.PointerEventHandler} dispatcher
+ * @return {Object}
+ */
+ol.pointer.MouseSource.prepareEvent = function(inEvent, dispatcher) {
+  var e = dispatcher.cloneEvent(inEvent, inEvent.getBrowserEvent());
+
+  // forward mouse preventDefault
+  var pd = e.preventDefault;
+  e.preventDefault = function() {
+    inEvent.preventDefault();
+    pd();
+  };
+
+  e.pointerId = ol.pointer.MouseSource.POINTER_ID;
+  e.isPrimary = true;
+  e.pointerType = ol.pointer.MouseSource.POINTER_TYPE;
+
+  return e;
+};
+
+
+/**
+ * Handler for `mousedown`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MouseSource.prototype.mousedown = function(inEvent) {
+  if (!this.isEventSimulatedFromTouch_(inEvent)) {
+    var p = goog.object.containsKey(this.pointerMap,
+        ol.pointer.MouseSource.POINTER_ID.toString());
+    // TODO(dfreedman) workaround for some elements not sending mouseup
+    // http://crbug/149091
+    if (p) {
+      this.cancel(inEvent);
+    }
+    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
+    goog.object.set(this.pointerMap,
+        ol.pointer.MouseSource.POINTER_ID.toString(), inEvent);
+    this.dispatcher.down(e, inEvent);
+  }
+};
+
+
+/**
+ * Handler for `mousemove`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MouseSource.prototype.mousemove = function(inEvent) {
+  if (!this.isEventSimulatedFromTouch_(inEvent)) {
+    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
+    this.dispatcher.move(e, inEvent);
+  }
+};
+
+
+/**
+ * Handler for `mouseup`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MouseSource.prototype.mouseup = function(inEvent) {
+  if (!this.isEventSimulatedFromTouch_(inEvent)) {
+    var p = goog.object.get(this.pointerMap,
+        ol.pointer.MouseSource.POINTER_ID.toString());
+
+    if (p && p.button === inEvent.button) {
+      var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
+      this.dispatcher.up(e, inEvent);
+      this.cleanupMouse();
+    }
+  }
+};
+
+
+/**
+ * Handler for `mouseover`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MouseSource.prototype.mouseover = function(inEvent) {
+  if (!this.isEventSimulatedFromTouch_(inEvent)) {
+    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
+    this.dispatcher.enterOver(e, inEvent);
+  }
+};
+
+
+/**
+ * Handler for `mouseout`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MouseSource.prototype.mouseout = function(inEvent) {
+  if (!this.isEventSimulatedFromTouch_(inEvent)) {
+    var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
+    this.dispatcher.leaveOut(e, inEvent);
+  }
+};
+
+
+/**
+ * Dispatches a `pointercancel` event.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MouseSource.prototype.cancel = function(inEvent) {
+  var e = ol.pointer.MouseSource.prepareEvent(inEvent, this.dispatcher);
+  this.dispatcher.cancel(e, inEvent);
+  this.cleanupMouse();
+};
+
+
+/**
+ * Remove the mouse from the list of active pointers.
+ */
+ol.pointer.MouseSource.prototype.cleanupMouse = function() {
+  goog.object.remove(this.pointerMap,
+      ol.pointer.MouseSource.POINTER_ID.toString());
+};
+
+// Based on https://github.com/Polymer/PointerEvents
+
+// Copyright (c) 2013 The Polymer Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+// * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+// * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+goog.provide('ol.pointer.MsSource');
+
+goog.require('goog.object');
+goog.require('ol.pointer.EventSource');
+
+
+
+/**
+ * @param {ol.pointer.PointerEventHandler} dispatcher
+ * @constructor
+ * @extends {ol.pointer.EventSource}
+ */
+ol.pointer.MsSource = function(dispatcher) {
+  var mapping = {
+    'MSPointerDown': this.msPointerDown,
+    'MSPointerMove': this.msPointerMove,
+    'MSPointerUp': this.msPointerUp,
+    'MSPointerOut': this.msPointerOut,
+    'MSPointerOver': this.msPointerOver,
+    'MSPointerCancel': this.msPointerCancel,
+    'MSGotPointerCapture': this.msGotPointerCapture,
+    'MSLostPointerCapture': this.msLostPointerCapture
+  };
+  goog.base(this, dispatcher, mapping);
+
+  /**
+   * @const
+   * @type {Object.<string, goog.events.BrowserEvent|Object>}
+   */
+  this.pointerMap = dispatcher.pointerMap;
+
+  /**
+   * @const
+   * @type {Array.<string>}
+   */
+  this.POINTER_TYPES = [
+    '',
+    'unavailable',
+    'touch',
+    'pen',
+    'mouse'
+  ];
+};
+goog.inherits(ol.pointer.MsSource, ol.pointer.EventSource);
+
+
+/**
+ * Creates a copy of the original event that will be used
+ * for the fake pointer event.
+ *
+ * @private
+ * @param {goog.events.BrowserEvent} inEvent
+ * @return {Object}
+ */
+ol.pointer.MsSource.prototype.prepareEvent_ = function(inEvent) {
+  var e = inEvent;
+  if (goog.isNumber(inEvent.getBrowserEvent().pointerType)) {
+    e = this.dispatcher.cloneEvent(inEvent, inEvent.getBrowserEvent());
+    e.pointerType = this.POINTER_TYPES[inEvent.getBrowserEvent().pointerType];
+  }
+
+  return e;
+};
+
+
+/**
+ * Remove this pointer from the list of active pointers.
+ * @param {number} pointerId
+ */
+ol.pointer.MsSource.prototype.cleanup = function(pointerId) {
+  goog.object.remove(this.pointerMap, pointerId);
+};
+
+
+/**
+ * Handler for `msPointerDown`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msPointerDown = function(inEvent) {
+  goog.object.set(this.pointerMap,
+      inEvent.getBrowserEvent().pointerId, inEvent);
+  var e = this.prepareEvent_(inEvent);
+  this.dispatcher.down(e, inEvent);
+};
+
+
+/**
+ * Handler for `msPointerMove`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msPointerMove = function(inEvent) {
+  var e = this.prepareEvent_(inEvent);
+  this.dispatcher.move(e, inEvent);
+};
+
+
+/**
+ * Handler for `msPointerUp`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msPointerUp = function(inEvent) {
+  var e = this.prepareEvent_(inEvent);
+  this.dispatcher.up(e, inEvent);
+  this.cleanup(inEvent.getBrowserEvent().pointerId);
+};
+
+
+/**
+ * Handler for `msPointerOut`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msPointerOut = function(inEvent) {
+  var e = this.prepareEvent_(inEvent);
+  this.dispatcher.leaveOut(e, inEvent);
+};
+
+
+/**
+ * Handler for `msPointerOver`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msPointerOver = function(inEvent) {
+  var e = this.prepareEvent_(inEvent);
+  this.dispatcher.enterOver(e, inEvent);
+};
+
+
+/**
+ * Handler for `msPointerCancel`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msPointerCancel = function(inEvent) {
+  var e = this.prepareEvent_(inEvent);
+  this.dispatcher.cancel(e, inEvent);
+  this.cleanup(inEvent.getBrowserEvent().pointerId);
+};
+
+
+/**
+ * Handler for `msLostPointerCapture`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msLostPointerCapture = function(inEvent) {
+  var e = this.dispatcher.makeEvent('lostpointercapture',
+      inEvent.getBrowserEvent(), inEvent);
+  this.dispatcher.dispatchEvent(e);
+};
+
+
+/**
+ * Handler for `msGotPointerCapture`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.MsSource.prototype.msGotPointerCapture = function(inEvent) {
+  var e = this.dispatcher.makeEvent('gotpointercapture',
+      inEvent.getBrowserEvent(), inEvent);
+  this.dispatcher.dispatchEvent(e);
+};
+
+// Based on https://github.com/Polymer/PointerEvents
+
+// Copyright (c) 2013 The Polymer Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+// * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+// * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+goog.provide('ol.pointer.NativeSource');
+
+goog.require('goog.object');
+goog.require('ol.pointer.EventSource');
+
+
+
+/**
+ * @param {ol.pointer.PointerEventHandler} dispatcher
+ * @constructor
+ * @extends {ol.pointer.EventSource}
+ */
+ol.pointer.NativeSource = function(dispatcher) {
+  var mapping = {
+    'pointerdown': this.pointerDown,
+    'pointermove': this.pointerMove,
+    'pointerup': this.pointerUp,
+    'pointerout': this.pointerOut,
+    'pointerover': this.pointerOver,
+    'pointercancel': this.pointerCancel,
+    'gotpointercapture': this.gotPointerCapture,
+    'lostpointercapture': this.lostPointerCapture
+  };
+  goog.base(this, dispatcher, mapping);
+};
+goog.inherits(ol.pointer.NativeSource, ol.pointer.EventSource);
+
+
+/**
+ * Handler for `pointerdown`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.pointerDown = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+
+/**
+ * Handler for `pointermove`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.pointerMove = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+
+/**
+ * Handler for `pointerup`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.pointerUp = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+
+/**
+ * Handler for `pointerout`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.pointerOut = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+
+/**
+ * Handler for `pointerover`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.pointerOver = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+
+/**
+ * Handler for `pointercancel`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.pointerCancel = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+
+/**
+ * Handler for `lostpointercapture`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.lostPointerCapture = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+
+/**
+ * Handler for `gotpointercapture`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.NativeSource.prototype.gotPointerCapture = function(inEvent) {
+  this.dispatcher.fireNativeEvent(inEvent);
+};
+
+// Based on https://github.com/Polymer/PointerEvents
+
+// Copyright (c) 2013 The Polymer Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+// * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+// * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+goog.provide('ol.pointer.TouchSource');
+
+goog.require('goog.array');
+goog.require('goog.object');
+goog.require('ol.pointer.EventSource');
+goog.require('ol.pointer.MouseSource');
+
+
+
+/**
+ * @constructor
+ * @param {ol.pointer.PointerEventHandler} dispatcher
+ * @param {ol.pointer.MouseSource} mouseSource
+ * @extends {ol.pointer.EventSource}
+ */
+ol.pointer.TouchSource = function(dispatcher, mouseSource) {
+  var mapping = {
+    'touchstart': this.touchstart,
+    'touchmove': this.touchmove,
+    'touchend': this.touchend,
+    'touchcancel': this.touchcancel
+  };
+  goog.base(this, dispatcher, mapping);
+
+  /**
+   * @const
+   * @type {Object.<string, goog.events.BrowserEvent|Object>}
+   */
+  this.pointerMap = dispatcher.pointerMap;
+
+  /**
+   * @const
+   * @type {ol.pointer.MouseSource}
+   */
+  this.mouseSource = mouseSource;
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.firstTouchId_ = undefined;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.clickCount_ = 0;
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.resetId_ = undefined;
+};
+goog.inherits(ol.pointer.TouchSource, ol.pointer.EventSource);
+
+
+/**
+ * Mouse event timeout: This should be long enough to
+ * ignore compat mouse events made by touch.
+ * @const
+ * @type {number}
+ */
+ol.pointer.TouchSource.DEDUP_TIMEOUT = 2500;
+
+
+/**
+ * @const
+ * @type {number}
+ */
+ol.pointer.TouchSource.CLICK_COUNT_TIMEOUT = 200;
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.pointer.TouchSource.POINTER_TYPE = 'touch';
+
+
+/**
+ * @private
+ * @param {Touch} inTouch
+ * @return {boolean} True, if this is the primary touch.
+ */
+ol.pointer.TouchSource.prototype.isPrimaryTouch_ = function(inTouch) {
+  return this.firstTouchId_ === inTouch.identifier;
+};
+
+
+/**
+ * Set primary touch if there are no pointers, or the only pointer is the mouse.
+ * @param {Touch} inTouch
+ * @private
+ */
+ol.pointer.TouchSource.prototype.setPrimaryTouch_ = function(inTouch) {
+  var count = goog.object.getCount(this.pointerMap);
+  if (count === 0 || (count === 1 && goog.object.containsKey(this.pointerMap,
+      ol.pointer.MouseSource.POINTER_ID.toString()))) {
+    this.firstTouchId_ = inTouch.identifier;
+    this.cancelResetClickCount_();
+  }
+};
+
+
+/**
+ * @private
+ * @param {Object} inPointer
+ */
+ol.pointer.TouchSource.prototype.removePrimaryPointer_ = function(inPointer) {
+  if (inPointer.isPrimary) {
+    this.firstTouchId_ = undefined;
+    this.resetClickCount_();
+  }
+};
+
+
+/**
+ * @private
+ */
+ol.pointer.TouchSource.prototype.resetClickCount_ = function() {
+  this.resetId_ = goog.global.setTimeout(
+      goog.bind(this.resetClickCountHandler_, this),
+      ol.pointer.TouchSource.CLICK_COUNT_TIMEOUT);
+};
+
+
+/**
+ * @private
+ */
+ol.pointer.TouchSource.prototype.resetClickCountHandler_ = function() {
+  this.clickCount_ = 0;
+  this.resetId_ = undefined;
+};
+
+
+/**
+ * @private
+ */
+ol.pointer.TouchSource.prototype.cancelResetClickCount_ = function() {
+  if (goog.isDef(this.resetId_)) {
+    goog.global.clearTimeout(this.resetId_);
+  }
+};
+
+
+/**
+ * @private
+ * @param {goog.events.BrowserEvent} browserEvent Browser event
+ * @param {Touch} inTouch Touch event
+ * @return {Object}
+ */
+ol.pointer.TouchSource.prototype.touchToPointer_ =
+    function(browserEvent, inTouch) {
+  var e = this.dispatcher.cloneEvent(browserEvent, inTouch);
+  // Spec specifies that pointerId 1 is reserved for Mouse.
+  // Touch identifiers can start at 0.
+  // Add 2 to the touch identifier for compatibility.
+  e.pointerId = inTouch.identifier + 2;
+  // TODO: check if this is neccessary?
+  //e.target = findTarget(e);
+  e.bubbles = true;
+  e.cancelable = true;
+  e.detail = this.clickCount_;
+  e.button = 0;
+  e.buttons = 1;
+  e.width = inTouch.webkitRadiusX || inTouch.radiusX || 0;
+  e.height = inTouch.webkitRadiusY || inTouch.radiusY || 0;
+  e.pressure = inTouch.webkitForce || inTouch.force || 0.5;
+  e.isPrimary = this.isPrimaryTouch_(inTouch);
+  e.pointerType = ol.pointer.TouchSource.POINTER_TYPE;
+
+  // make sure that the properties that are different for
+  // each `Touch` object are not copied from the BrowserEvent object
+  e.clientX = inTouch.clientX;
+  e.clientY = inTouch.clientY;
+  e.screenX = inTouch.screenX;
+  e.screenY = inTouch.screenY;
+
+  return e;
+};
+
+
+/**
+ * @private
+ * @param {goog.events.BrowserEvent} inEvent Touch event
+ * @param {function(goog.events.BrowserEvent, Object)} inFunction
+ */
+ol.pointer.TouchSource.prototype.processTouches_ =
+    function(inEvent, inFunction) {
+  var touches = Array.prototype.slice.call(
+      inEvent.getBrowserEvent().changedTouches);
+  var count = touches.length;
+  function preventDefault() {
+    inEvent.preventDefault();
+  }
+  var i, pointer;
+  for (i = 0; i < count; ++i) {
+    pointer = this.touchToPointer_(inEvent, touches[i]);
+    // forward touch preventDefaults
+    pointer.preventDefault = preventDefault;
+    inFunction.call(this, inEvent, pointer);
+  }
+};
+
+
+/**
+ * @private
+ * @param {TouchList} touchList
+ * @param {number} searchId
+ * @return {boolean} True, if the `Touch` with the given id is in the list.
+ */
+ol.pointer.TouchSource.prototype.findTouch_ = function(touchList, searchId) {
+  var l = touchList.length;
+  var touch;
+  for (var i = 0; i < l; i++) {
+    touch = touchList[i];
+    if (touch.identifier === searchId) {
+      return true;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * In some instances, a touchstart can happen without a touchend. This
+ * leaves the pointermap in a broken state.
+ * Therefore, on every touchstart, we remove the touches that did not fire a
+ * touchend event.
+ * To keep state globally consistent, we fire a pointercancel for
+ * this "abandoned" touch
+ *
+ * @private
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.TouchSource.prototype.vacuumTouches_ = function(inEvent) {
+  var touchList = inEvent.getBrowserEvent().touches;
+  // pointerMap.getCount() should be < touchList.length here,
+  // as the touchstart has not been processed yet.
+  var keys = goog.object.getKeys(this.pointerMap);
+  var count = keys.length;
+  if (count >= touchList.length) {
+    var d = [];
+    var i, key, value;
+    for (i = 0; i < count; ++i) {
+      key = keys[i];
+      value = this.pointerMap[key];
+      // Never remove pointerId == 1, which is mouse.
+      // Touch identifiers are 2 smaller than their pointerId, which is the
+      // index in pointermap.
+      if (key != ol.pointer.MouseSource.POINTER_ID &&
+          !this.findTouch_(touchList, key - 2)) {
+        d.push(value.out);
+      }
+    }
+    for (i = 0; i < d.length; ++i) {
+      this.cancelOut_(inEvent, d[i]);
+    }
+  }
+};
+
+
+/**
+ * Handler for `touchstart`, triggers `pointerover`,
+ * `pointerenter` and `pointerdown` events.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.TouchSource.prototype.touchstart = function(inEvent) {
+  this.vacuumTouches_(inEvent);
+  this.setPrimaryTouch_(inEvent.getBrowserEvent().changedTouches[0]);
+  this.dedupSynthMouse_(inEvent);
+  this.clickCount_++;
+  this.processTouches_(inEvent, this.overDown_);
+};
+
+
+/**
+ * @private
+ * @param {goog.events.BrowserEvent} browserEvent
+ * @param {Object} inPointer
+ */
+ol.pointer.TouchSource.prototype.overDown_ = function(browserEvent, inPointer) {
+  goog.object.set(this.pointerMap, inPointer.pointerId, {
+    target: inPointer.target,
+    out: inPointer,
+    outTarget: inPointer.target
+  });
+  this.dispatcher.over(inPointer, browserEvent);
+  this.dispatcher.enter(inPointer, browserEvent);
+  this.dispatcher.down(inPointer, browserEvent);
+};
+
+
+/**
+ * Handler for `touchmove`.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.TouchSource.prototype.touchmove = function(inEvent) {
+  inEvent.preventDefault();
+  this.processTouches_(inEvent, this.moveOverOut_);
+};
+
+
+/**
+ * @private
+ * @param {goog.events.BrowserEvent} browserEvent
+ * @param {Object} inPointer
+ */
+ol.pointer.TouchSource.prototype.moveOverOut_ =
+    function(browserEvent, inPointer) {
+  var event = inPointer;
+  var pointer = goog.object.get(this.pointerMap, event.pointerId);
+  // a finger drifted off the screen, ignore it
+  if (!pointer) {
+    return;
+  }
+  var outEvent = pointer.out;
+  var outTarget = pointer.outTarget;
+  this.dispatcher.move(event, browserEvent);
+  if (outEvent && outTarget !== event.target) {
+    outEvent.relatedTarget = event.target;
+    event.relatedTarget = outTarget;
+    // recover from retargeting by shadow
+    outEvent.target = outTarget;
+    if (event.target) {
+      this.dispatcher.leaveOut(outEvent, browserEvent);
+      this.dispatcher.enterOver(event, browserEvent);
+    } else {
+      // clean up case when finger leaves the screen
+      event.target = outTarget;
+      event.relatedTarget = null;
+      this.cancelOut_(browserEvent, event);
+    }
+  }
+  pointer.out = event;
+  pointer.outTarget = event.target;
+};
+
+
+/**
+ * Handler for `touchend`, triggers `pointerup`,
+ * `pointerout` and `pointerleave` events.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.TouchSource.prototype.touchend = function(inEvent) {
+  this.dedupSynthMouse_(inEvent);
+  this.processTouches_(inEvent, this.upOut_);
+};
+
+
+/**
+ * @private
+ * @param {goog.events.BrowserEvent} browserEvent
+ * @param {Object} inPointer
+ */
+ol.pointer.TouchSource.prototype.upOut_ = function(browserEvent, inPointer) {
+  this.dispatcher.up(inPointer, browserEvent);
+  this.dispatcher.out(inPointer, browserEvent);
+  this.dispatcher.leave(inPointer, browserEvent);
+  this.cleanUpPointer_(inPointer);
+};
+
+
+/**
+ * Handler for `touchcancel`, triggers `pointercancel`,
+ * `pointerout` and `pointerleave` events.
+ *
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.TouchSource.prototype.touchcancel = function(inEvent) {
+  this.processTouches_(inEvent, this.cancelOut_);
+};
+
+
+/**
+ * @private
+ * @param {goog.events.BrowserEvent} browserEvent
+ * @param {Object} inPointer
+ */
+ol.pointer.TouchSource.prototype.cancelOut_ =
+    function(browserEvent, inPointer) {
+  this.dispatcher.cancel(inPointer, browserEvent);
+  this.dispatcher.out(inPointer, browserEvent);
+  this.dispatcher.leave(inPointer, browserEvent);
+  this.cleanUpPointer_(inPointer);
+};
+
+
+/**
+ * @private
+ * @param {Object} inPointer
+ */
+ol.pointer.TouchSource.prototype.cleanUpPointer_ = function(inPointer) {
+  goog.object.remove(this.pointerMap, inPointer.pointerId);
+  this.removePrimaryPointer_(inPointer);
+};
+
+
+/**
+ * Prevent synth mouse events from creating pointer events.
+ *
+ * @private
+ * @param {goog.events.BrowserEvent} inEvent
+ */
+ol.pointer.TouchSource.prototype.dedupSynthMouse_ = function(inEvent) {
+  var lts = this.mouseSource.lastTouches;
+  var t = inEvent.getBrowserEvent().changedTouches[0];
+  // only the primary finger will synth mouse events
+  if (this.isPrimaryTouch_(t)) {
+    // remember x/y of last touch
+    var lt = /** @type {ol.Pixel} */ ([t.clientX, t.clientY]);
+    lts.push(lt);
+
+    goog.global.setTimeout(function() {
+      // remove touch after timeout
+      goog.array.remove(lts, lt);
+    }, ol.pointer.TouchSource.DEDUP_TIMEOUT);
+  }
+};
+
+// Based on https://github.com/Polymer/PointerEvents
+
+// Copyright (c) 2013 The Polymer Authors. All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+// * Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer.
+// * Redistributions in binary form must reproduce the above
+// copyright notice, this list of conditions and the following disclaimer
+// in the documentation and/or other materials provided with the
+// distribution.
+// * Neither the name of Google Inc. nor the names of its
+// contributors may be used to endorse or promote products derived from
+// this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+goog.provide('ol.pointer.PointerEventHandler');
+
+goog.require('goog.array');
+goog.require('goog.events');
+goog.require('goog.events.BrowserEvent');
+goog.require('goog.events.Event');
+goog.require('goog.events.EventTarget');
+
+goog.require('ol.has');
+goog.require('ol.pointer.MouseSource');
+goog.require('ol.pointer.MsSource');
+goog.require('ol.pointer.NativeSource');
+goog.require('ol.pointer.PointerEvent');
+goog.require('ol.pointer.TouchSource');
+
+
+
+/**
+ * @constructor
+ * @extends {goog.events.EventTarget}
+ * @param {Element|HTMLDocument} element Viewport element.
+ */
+ol.pointer.PointerEventHandler = function(element) {
+  goog.base(this);
+
+  /**
+   * @const
+   * @private
+   * @type {Element|HTMLDocument}
+   */
+  this.element_ = element;
+
+  /**
+   * @const
+   * @type {Object.<string, goog.events.BrowserEvent|Object>}
+   */
+  this.pointerMap = {};
+
+  /**
+   * @type {Object.<string, function(goog.events.BrowserEvent)>}
+   * @private
+   */
+  this.eventMap_ = {};
+
+  /**
+   * @type {Array.<ol.pointer.EventSource>}
+   * @private
+   */
+  this.eventSourceList_ = [];
+
+  this.registerSources();
+};
+goog.inherits(ol.pointer.PointerEventHandler, goog.events.EventTarget);
+
+
+/**
+ * Set up the event sources (mouse, touch and native pointers)
+ * that generate pointer events.
+ */
+ol.pointer.PointerEventHandler.prototype.registerSources = function() {
+  if (ol.has.POINTER) {
+    this.registerSource('native', new ol.pointer.NativeSource(this));
+  } else if (ol.has.MSPOINTER) {
+    this.registerSource('ms', new ol.pointer.MsSource(this));
+  } else {
+    var mouseSource = new ol.pointer.MouseSource(this);
+    this.registerSource('mouse', mouseSource);
+
+    if (ol.has.TOUCH) {
+      this.registerSource('touch',
+          new ol.pointer.TouchSource(this, mouseSource));
+    }
+  }
+
+  // register events on the viewport element
+  this.register_();
+};
+
+
+/**
+ * Add a new event source that will generate pointer events.
+ *
+ * @param {string} name A name for the event source
+ * @param {ol.pointer.EventSource} source
+ */
+ol.pointer.PointerEventHandler.prototype.registerSource =
+    function(name, source) {
+  var s = source;
+  var newEvents = s.getEvents();
+
+  if (newEvents) {
+    goog.array.forEach(newEvents, function(e) {
+      var handler = s.getHandlerForEvent(e);
+
+      if (handler) {
+        this.eventMap_[e] = goog.bind(handler, s);
+      }
+    }, this);
+    this.eventSourceList_.push(s);
+  }
+};
+
+
+/**
+ * Set up the events for all registered event sources.
+ * @private
+ */
+ol.pointer.PointerEventHandler.prototype.register_ = function() {
+  var l = this.eventSourceList_.length;
+  var eventSource;
+  for (var i = 0; i < l; i++) {
+    eventSource = this.eventSourceList_[i];
+    this.addEvents_(eventSource.getEvents());
+  }
+};
+
+
+/**
+ * Remove all registered events.
+ * @private
+ */
+ol.pointer.PointerEventHandler.prototype.unregister_ = function() {
+  var l = this.eventSourceList_.length;
+  var eventSource;
+  for (var i = 0; i < l; i++) {
+    eventSource = this.eventSourceList_[i];
+    this.removeEvents_(eventSource.getEvents());
+  }
+};
+
+
+/**
+ * Calls the right handler for a new event.
+ * @private
+ * @param {goog.events.BrowserEvent} inEvent Browser event.
+ */
+ol.pointer.PointerEventHandler.prototype.eventHandler_ = function(inEvent) {
+  var type = inEvent.type;
+  var handler = this.eventMap_[type];
+  if (handler) {
+    handler(inEvent);
+  }
+};
+
+
+/**
+ * Setup listeners for the given events.
+ * @private
+ * @param {Array.<string>} events List of events.
+ */
+ol.pointer.PointerEventHandler.prototype.addEvents_ = function(events) {
+  goog.array.forEach(events, function(eventName) {
+    goog.events.listen(this.element_, eventName,
+        this.eventHandler_, false, this);
+  }, this);
+};
+
+
+/**
+ * Unregister listeners for the given events.
+ * @private
+ * @param {Array.<string>} events List of events.
+ */
+ol.pointer.PointerEventHandler.prototype.removeEvents_ = function(events) {
+  goog.array.forEach(events, function(e) {
+    goog.events.unlisten(this.element_, e,
+        this.eventHandler_, false, this);
+  }, this);
+};
+
+
+/**
+ * Returns a snapshot of inEvent, with writable properties.
+ *
+ * @param {goog.events.BrowserEvent} browserEvent Browser event.
+ * @param {Event|Touch} inEvent An event that contains
+ *    properties to copy.
+ * @return {Object} An object containing shallow copies of
+ *    `inEvent`'s properties.
+ */
+ol.pointer.PointerEventHandler.prototype.cloneEvent =
+    function(browserEvent, inEvent) {
+  var eventCopy = {}, p;
+  for (var i = 0, ii = ol.pointer.CLONE_PROPS.length; i < ii; i++) {
+    p = ol.pointer.CLONE_PROPS[i][0];
+    eventCopy[p] =
+        browserEvent[p] ||
+        inEvent[p] ||
+        ol.pointer.CLONE_PROPS[i][1];
+  }
+
+  return eventCopy;
+};
+
+
+// EVENTS
+
+
+/**
+ * Triggers a 'pointerdown' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.down =
+    function(pointerEventData, browserEvent) {
+  this.fireEvent(ol.pointer.EventType.POINTERDOWN,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a 'pointermove' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.move =
+    function(pointerEventData, browserEvent) {
+  this.fireEvent(ol.pointer.EventType.POINTERMOVE,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a 'pointerup' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.up =
+    function(pointerEventData, browserEvent) {
+  this.fireEvent(ol.pointer.EventType.POINTERUP,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a 'pointerenter' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.enter =
+    function(pointerEventData, browserEvent) {
+  pointerEventData.bubbles = false;
+  this.fireEvent(ol.pointer.EventType.POINTERENTER,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a 'pointerleave' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.leave =
+    function(pointerEventData, browserEvent) {
+  pointerEventData.bubbles = false;
+  this.fireEvent(ol.pointer.EventType.POINTERLEAVE,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a 'pointerover' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.over =
+    function(pointerEventData, browserEvent) {
+  pointerEventData.bubbles = true;
+  this.fireEvent(ol.pointer.EventType.POINTEROVER,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a 'pointerout' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.out =
+    function(pointerEventData, browserEvent) {
+  pointerEventData.bubbles = true;
+  this.fireEvent(ol.pointer.EventType.POINTEROUT,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a 'pointercancel' event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.cancel =
+    function(pointerEventData, browserEvent) {
+  this.fireEvent(ol.pointer.EventType.POINTERCANCEL,
+      pointerEventData, browserEvent);
+};
+
+
+/**
+ * Triggers a combination of 'pointerout' and 'pointerleave' events.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.leaveOut =
+    function(pointerEventData, browserEvent) {
+  this.out(pointerEventData, browserEvent);
+  if (!this.contains_(
+      pointerEventData.target,
+      pointerEventData.relatedTarget)) {
+    this.leave(pointerEventData, browserEvent);
+  }
+};
+
+
+/**
+ * Triggers a combination of 'pointerover' and 'pointerevents' events.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.enterOver =
+    function(pointerEventData, browserEvent) {
+  this.over(pointerEventData, browserEvent);
+  if (!this.contains_(
+      pointerEventData.target,
+      pointerEventData.relatedTarget)) {
+    this.enter(pointerEventData, browserEvent);
+  }
+};
+
+
+/**
+ * @private
+ * @param {Element} container
+ * @param {Element} contained
+ * @return {boolean} Returns true if the container element
+ *   contains the other element.
+ */
+ol.pointer.PointerEventHandler.prototype.contains_ =
+    function(container, contained) {
+  return container.contains(contained);
+};
+
+
+// EVENT CREATION AND TRACKING
+/**
+ * Creates a new Event of type `inType`, based on the information in
+ * `pointerEventData`.
+ *
+ * @param {string} inType A string representing the type of event to create.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ * @return {ol.pointer.PointerEvent} A PointerEvent of type `inType`.
+ */
+ol.pointer.PointerEventHandler.prototype.makeEvent =
+    function(inType, pointerEventData, browserEvent) {
+  return new ol.pointer.PointerEvent(inType, browserEvent, pointerEventData);
+};
+
+
+/**
+ * Make and dispatch an event in one call.
+ * @param {string} inType A string representing the type of event.
+ * @param {Object} pointerEventData
+ * @param {goog.events.BrowserEvent } browserEvent
+ */
+ol.pointer.PointerEventHandler.prototype.fireEvent =
+    function(inType, pointerEventData, browserEvent) {
+  var e = this.makeEvent(inType, pointerEventData, browserEvent);
+  this.dispatchEvent(e);
+};
+
+
+/**
+ * Creates a pointer event from a native pointer event
+ * and dispatches this event.
+ * @param {goog.events.BrowserEvent} nativeEvent A platform event with a target.
+ */
+ol.pointer.PointerEventHandler.prototype.fireNativeEvent =
+    function(nativeEvent) {
+  var e = this.makeEvent(nativeEvent.type, nativeEvent.getBrowserEvent(),
+      nativeEvent);
+  this.dispatchEvent(e);
+};
+
+
+/**
+ * Wrap a native mouse event into a pointer event.
+ * This proxy method is required for the legacy IE support.
+ * @param {string} eventType The pointer event type.
+ * @param {goog.events.BrowserEvent} browserEvent
+ * @return {ol.pointer.PointerEvent}
+ */
+ol.pointer.PointerEventHandler.prototype.wrapMouseEvent =
+    function(eventType, browserEvent) {
+  var pointerEvent = this.makeEvent(
+      eventType,
+      ol.pointer.MouseSource.prepareEvent(browserEvent, this),
+      browserEvent
+      );
+  return pointerEvent;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.pointer.PointerEventHandler.prototype.disposeInternal = function() {
+  this.unregister_();
+  goog.base(this, 'disposeInternal');
+};
+
+
+/**
+ * Constants for event names.
+ * @enum {string}
+ */
+ol.pointer.EventType = {
+  POINTERMOVE: 'pointermove',
+  POINTERDOWN: 'pointerdown',
+  POINTERUP: 'pointerup',
+  POINTEROVER: 'pointerover',
+  POINTEROUT: 'pointerout',
+  POINTERENTER: 'pointerenter',
+  POINTERLEAVE: 'pointerleave',
+  POINTERCANCEL: 'pointercancel'
+};
+
+
+/**
+ * Properties to copy when cloning an event, with default values.
+ * @type {Array.<Array>}
+ */
+ol.pointer.CLONE_PROPS = [
+  // MouseEvent
+  ['bubbles', false],
+  ['cancelable', false],
+  ['view', null],
+  ['detail', null],
+  ['screenX', 0],
+  ['screenY', 0],
+  ['clientX', 0],
+  ['clientY', 0],
+  ['ctrlKey', false],
+  ['altKey', false],
+  ['shiftKey', false],
+  ['metaKey', false],
+  ['button', 0],
+  ['relatedTarget', null],
+  // DOM Level 3
+  ['buttons', 0],
+  // PointerEvent
+  ['pointerId', 0],
+  ['width', 0],
+  ['height', 0],
+  ['pressure', 0],
+  ['tiltX', 0],
+  ['tiltY', 0],
+  ['pointerType', ''],
+  ['hwTimestamp', 0],
+  ['isPrimary', false],
+  // event instance
+  ['type', ''],
+  ['target', null],
+  ['currentTarget', null],
+  ['which', 0]
+];
 
 goog.provide('ol.MapBrowserEvent');
 goog.provide('ol.MapBrowserEvent.EventType');
@@ -68959,7 +68867,6 @@ goog.require('ol.control.Control');
 goog.require('ol.coordinate');
 goog.require('ol.css');
 goog.require('ol.extent');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -68997,9 +68904,6 @@ ol.control.OverviewMap = function(opt_options) {
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Overview map';
-  var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, tipLabel);
 
   /**
    * @private
@@ -69023,15 +68927,10 @@ ol.control.OverviewMap = function(opt_options) {
    */
   this.labelSpan_ = label;
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': 'ol-has-tooltip',
-    'type': 'button'
+    'type': 'button',
+    'title': tipLabel
   }, this.labelSpan_);
-  goog.dom.appendChild(button, tip);
 
-  var buttonHandler = new ol.pointer.PointerEventHandler(button);
-  this.registerDisposable(buttonHandler);
-  goog.events.listen(buttonHandler, ol.pointer.EventType.POINTERUP,
-      this.handlePointerUp_, false, this);
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
@@ -69078,12 +68977,12 @@ ol.control.OverviewMap = function(opt_options) {
   });
   this.ovmap_.addOverlay(this.boxOverlay_);
 
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, {
-    'class': className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
-        ol.css.CLASS_CONTROL +
-        (this.collapsed_ && this.collapsible_ ? ' ol-collapsed' : '') +
-        (this.collapsible_ ? '' : ' ol-uncollapsible')
-  }, ovmapDiv, button);
+  var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
+      ol.css.CLASS_CONTROL +
+      (this.collapsed_ && this.collapsible_ ? ' ol-collapsed' : '') +
+      (this.collapsible_ ? '' : ' ol-uncollapsible');
+  var element = goog.dom.createDom(goog.dom.TagName.DIV,
+      cssClasses, ovmapDiv, button);
 
   goog.base(this, {
     element: element,
@@ -69363,19 +69262,7 @@ ol.control.OverviewMap.prototype.calculateCoordinateRotate_ = function(
  * @private
  */
 ol.control.OverviewMap.prototype.handleClick_ = function(event) {
-  if (event.screenX !== 0 && event.screenY !== 0) {
-    return;
-  }
-  this.handleToggle_();
-};
-
-
-/**
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.OverviewMap.prototype.handlePointerUp_ = function(pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.handleToggle_();
 };
 
@@ -69517,17 +69404,15 @@ ol.control.ScaleLine = function(opt_options) {
    * @private
    * @type {Element}
    */
-  this.innerElement_ = goog.dom.createDom(goog.dom.TagName.DIV, {
-    'class': className + '-inner'
-  });
+  this.innerElement_ = goog.dom.createDom(goog.dom.TagName.DIV,
+      className + '-inner');
 
   /**
    * @private
    * @type {Element}
    */
-  this.element_ = goog.dom.createDom(goog.dom.TagName.DIV, {
-    'class': className + ' ' + ol.css.CLASS_UNSELECTABLE
-  }, this.innerElement_);
+  this.element_ = goog.dom.createDom(goog.dom.TagName.DIV,
+      className + ' ' + ol.css.CLASS_UNSELECTABLE, this.innerElement_);
 
   /**
    * @private
@@ -73156,7 +73041,6 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('ol.control.Control');
 goog.require('ol.css');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -73184,19 +73068,11 @@ ol.control.ZoomToExtent = function(opt_options) {
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Fit to extent';
-  var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, tipLabel);
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': 'ol-has-tooltip',
-    'type': 'button'
+    'type': 'button',
+    'title': tipLabel
   });
-  goog.dom.appendChild(button, tip);
 
-  var buttonHandler = new ol.pointer.PointerEventHandler(button);
-  this.registerDisposable(buttonHandler);
-  goog.events.listen(buttonHandler, ol.pointer.EventType.POINTERUP,
-      this.handlePointerUp_, false, this);
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
@@ -73224,19 +73100,7 @@ goog.inherits(ol.control.ZoomToExtent, ol.control.Control);
  * @private
  */
 ol.control.ZoomToExtent.prototype.handleClick_ = function(event) {
-  if (event.screenX !== 0 && event.screenY !== 0) {
-    return;
-  }
-  this.handleZoomToExtent_();
-};
-
-
-/**
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.ZoomToExtent.prototype.handlePointerUp_ = function(pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.handleZoomToExtent_();
 };
 
@@ -77273,6 +77137,7 @@ ol.format.GMLBase.prototype.readFeature_ = function(node, objectStack) {
   var values = {}, geometryName;
   for (n = node.firstElementChild; !goog.isNull(n);
       n = n.nextElementSibling) {
+    var localName = ol.xml.getLocalName(n);
     // Assume attribute elements have one child node and that the child
     // is a text node.  Otherwise assume it is a geometry node.
     if (n.childNodes.length === 0 ||
@@ -77282,10 +77147,13 @@ ol.format.GMLBase.prototype.readFeature_ = function(node, objectStack) {
       if (goog.string.isEmpty(value)) {
         value = undefined;
       }
-      values[ol.xml.getLocalName(n)] = value;
+      values[localName] = value;
     } else {
-      geometryName = ol.xml.getLocalName(n);
-      values[geometryName] = this.readGeometryElement(n, objectStack);
+      // boundedBy is an extent and must not be considered as a geometry
+      if (localName !== 'boundedBy') {
+        geometryName = localName;
+      }
+      values[localName] = this.readGeometryElement(n, objectStack);
     }
   }
   var feature = new ol.Feature(values);
@@ -104073,6 +103941,306 @@ ol.source.ZoomifyTile_.prototype.getImage = function(opt_context) {
   }
 };
 
+goog.provide('ol.style.RegularShape');
+
+goog.require('goog.dom');
+goog.require('goog.dom.TagName');
+goog.require('ol.color');
+goog.require('ol.render.canvas');
+goog.require('ol.style.Fill');
+goog.require('ol.style.Image');
+goog.require('ol.style.ImageState');
+goog.require('ol.style.Stroke');
+
+
+
+/**
+ * @classdesc
+ * Set regular shape style for vector features.
+ *
+ * @constructor
+ * @param {olx.style.RegularShapeOptions=} opt_options Options.
+ * @extends {ol.style.Image}
+ * @api
+ */
+ol.style.RegularShape = function(opt_options) {
+
+  var options = goog.isDef(opt_options) ? opt_options : {};
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.canvas_ = /** @type {HTMLCanvasElement} */
+      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.hitDetectionCanvas_ = null;
+
+  /**
+   * @private
+   * @type {ol.style.Fill}
+   */
+  this.fill_ = goog.isDef(options.fill) ? options.fill : null;
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.origin_ = [0, 0];
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.points_ = options.points;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.radius_ = options.radius;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.radius2_ =
+      goog.isDef(options.radius2) ? options.radius2 : options.radius;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.angle_ = goog.isDef(options.angle) ? options.angle : 0;
+
+  /**
+   * @private
+   * @type {ol.style.Stroke}
+   */
+  this.stroke_ = goog.isDef(options.stroke) ? options.stroke : null;
+
+  var size = this.render_();
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.anchor_ = [size / 2, size / 2];
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.size_ = [size, size];
+
+  /**
+   * @type {boolean}
+   */
+  var snapToPixel = goog.isDef(options.snapToPixel) ?
+      options.snapToPixel : true;
+
+  goog.base(this, {
+    opacity: 1,
+    rotateWithView: false,
+    rotation: 0,
+    scale: 1,
+    snapToPixel: snapToPixel
+  });
+
+};
+goog.inherits(ol.style.RegularShape, ol.style.Image);
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.style.RegularShape.prototype.getAnchor = function() {
+  return this.anchor_;
+};
+
+
+/**
+ * @return {ol.style.Fill} Fill style.
+ * @api
+ */
+ol.style.RegularShape.prototype.getFill = function() {
+  return this.fill_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.getHitDetectionImage = function(pixelRatio) {
+  return this.hitDetectionCanvas_;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.style.RegularShape.prototype.getImage = function(pixelRatio) {
+  return this.canvas_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.getImageState = function() {
+  return ol.style.ImageState.LOADED;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.style.RegularShape.prototype.getOrigin = function() {
+  return this.origin_;
+};
+
+
+/**
+ * @return {number} Radius.
+ * @api
+ */
+ol.style.RegularShape.prototype.getRadius = function() {
+  return this.radius_;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.style.RegularShape.prototype.getSize = function() {
+  return this.size_;
+};
+
+
+/**
+ * @return {ol.style.Stroke} Stroke style.
+ * @api
+ */
+ol.style.RegularShape.prototype.getStroke = function() {
+  return this.stroke_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.listenImageChange = goog.nullFunction;
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.load = goog.nullFunction;
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.unlistenImageChange = goog.nullFunction;
+
+
+/**
+ * @private
+ * @return {number} Size.
+ */
+ol.style.RegularShape.prototype.render_ = function() {
+  var canvas = this.canvas_;
+  var strokeStyle, strokeWidth;
+
+  if (goog.isNull(this.stroke_)) {
+    strokeWidth = 0;
+  } else {
+    strokeStyle = ol.color.asString(this.stroke_.getColor());
+    strokeWidth = this.stroke_.getWidth();
+    if (!goog.isDef(strokeWidth)) {
+      strokeWidth = ol.render.canvas.defaultLineWidth;
+    }
+  }
+
+  var size = 2 * (this.radius_ + strokeWidth) + 1;
+
+  // draw the regular shape on the canvas
+
+  canvas.height = size;
+  canvas.width = size;
+
+  // canvas.width and height are rounded to the closest integer
+  size = canvas.width;
+
+  var context = /** @type {CanvasRenderingContext2D} */
+      (canvas.getContext('2d'));
+  var i, angle0, radiusC;
+  context.beginPath();
+  if (this.radius2_ !== this.radius_) {
+    this.points_ = 2 * this.points_;
+  }
+  for (i = 0; i <= this.points_; i++) {
+    angle0 = i * 2 * Math.PI / this.points_ - Math.PI / 2 + this.angle_;
+    radiusC = i % 2 === 0 ? this.radius_ : this.radius2_;
+    context.lineTo(size / 2 + radiusC * Math.cos(angle0),
+                   size / 2 + radiusC * Math.sin(angle0));
+  }
+
+  if (!goog.isNull(this.fill_)) {
+    context.fillStyle = ol.color.asString(this.fill_.getColor());
+    context.fill();
+  }
+  if (!goog.isNull(this.stroke_)) {
+    context.strokeStyle = strokeStyle;
+    context.lineWidth = strokeWidth;
+    context.stroke();
+  }
+
+  // deal with the hit detection canvas
+
+  if (!goog.isNull(this.fill_)) {
+    this.hitDetectionCanvas_ = canvas;
+  } else {
+    this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
+        (goog.dom.createElement(goog.dom.TagName.CANVAS));
+    canvas = this.hitDetectionCanvas_;
+
+    canvas.height = size;
+    canvas.width = size;
+
+    context = /** @type {CanvasRenderingContext2D} */
+        (canvas.getContext('2d'));
+    context.beginPath();
+    if (this.radius2_ !== this.radius_) {
+      this.points_ = 2 * this.points_;
+    }
+    for (i = 0; i <= this.points_; i++) {
+      angle0 = i * 2 * Math.PI / this.points_ - Math.PI / 2 + this.angle_;
+      radiusC = i % 2 === 0 ? this.radius_ : this.radius2_;
+      context.lineTo(size / 2 + radiusC * Math.cos(angle0),
+                     size / 2 + radiusC * Math.sin(angle0));
+    }
+
+    context.fillStyle = ol.render.canvas.defaultFillStyle;
+    context.fill();
+    if (!goog.isNull(this.stroke_)) {
+      context.strokeStyle = strokeStyle;
+      context.lineWidth = strokeWidth;
+      context.stroke();
+    }
+  }
+
+  return size;
+};
+
 // Copyright 2009 The Closure Library Authors.
 // All Rights Reserved.
 //
@@ -104271,6 +104439,7 @@ goog.require('ol.style.IconImageCache');
 goog.require('ol.style.IconOrigin');
 goog.require('ol.style.Image');
 goog.require('ol.style.ImageState');
+goog.require('ol.style.RegularShape');
 goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');
 goog.require('ol.style.Text');
@@ -105402,6 +105571,45 @@ goog.exportProperty(
     ol.style.Image.prototype,
     'setScale',
     ol.style.Image.prototype.setScale);
+
+goog.exportSymbol(
+    'ol.style.RegularShape',
+    ol.style.RegularShape);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getAnchor',
+    ol.style.RegularShape.prototype.getAnchor);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getFill',
+    ol.style.RegularShape.prototype.getFill);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getImage',
+    ol.style.RegularShape.prototype.getImage);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getOrigin',
+    ol.style.RegularShape.prototype.getOrigin);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getRadius',
+    ol.style.RegularShape.prototype.getRadius);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getSize',
+    ol.style.RegularShape.prototype.getSize);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getStroke',
+    ol.style.RegularShape.prototype.getStroke);
 
 goog.exportSymbol(
     'ol.style.Stroke',
@@ -108099,6 +108307,26 @@ goog.exportProperty(
     ol.style.Icon.prototype,
     'setScale',
     ol.style.Icon.prototype.setScale);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getRotation',
+    ol.style.RegularShape.prototype.getRotation);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getScale',
+    ol.style.RegularShape.prototype.getScale);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'setRotation',
+    ol.style.RegularShape.prototype.setRotation);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'setScale',
+    ol.style.RegularShape.prototype.setScale);
 
 goog.exportProperty(
     ol.source.Source.prototype,

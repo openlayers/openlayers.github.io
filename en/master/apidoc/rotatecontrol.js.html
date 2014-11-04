@@ -10438,6 +10438,68 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.style.RegularShape">
+            <span class="title">
+                <a href="ol.style.RegularShape.html">ol.style.RegularShape</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.style.RegularShape#getAnchor" class="unstable">
+                    <a href="ol.style.RegularShape.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getFill" class="unstable">
+                    <a href="ol.style.RegularShape.html#getFill">getFill</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getImage" class="unstable">
+                    <a href="ol.style.RegularShape.html#getImage">getImage</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getOrigin" class="unstable">
+                    <a href="ol.style.RegularShape.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRadius" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRotation">getRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getSize" class="unstable">
+                    <a href="ol.style.RegularShape.html#getSize">getSize</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getStroke" class="unstable">
+                    <a href="ol.style.RegularShape.html#getStroke">getStroke</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#setRotation">setRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#setScale">setScale</a>
+                </li>
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.style.Stroke">
             <span class="title">
                 <a href="ol.style.Stroke.html">ol.style.Stroke</a>
@@ -10873,7 +10935,6 @@ goog.require('ol.animation');
 goog.require('ol.control.Control');
 goog.require('ol.css');
 goog.require('ol.easing');
-goog.require('ol.pointer.PointerEventHandler');
 
 
 
@@ -10900,24 +10961,17 @@ ol.control.Rotate = function(opt_options) {
    * @private
    */
   this.label_ = goog.dom.createDom(goog.dom.TagName.SPAN,
-      { 'class': 'ol-compass' },
-      goog.isDef(options.label) ? options.label : '\u21E7');
+      'ol-compass', goog.isDef(options.label) ? options.label : '\u21E7');
 
   var tipLabel = goog.isDef(options.tipLabel) ?
       options.tipLabel : 'Reset rotation';
 
-  var tip = goog.dom.createDom(goog.dom.TagName.SPAN, {
-    'role' : 'tooltip'
-  }, tipLabel);
   var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
-    'class': className + '-reset ol-has-tooltip',
-    'type' : 'button'
-  }, tip, this.label_);
+    'class': className + '-reset',
+    'type' : 'button',
+    'title': tipLabel
+  }, this.label_);
 
-  var handler = new ol.pointer.PointerEventHandler(button);
-  this.registerDisposable(handler);
-  goog.events.listen(handler, ol.pointer.EventType.POINTERUP,
-      ol.control.Rotate.prototype.handlePointerUp_, false, this);
   goog.events.listen(button, goog.events.EventType.CLICK,
       ol.control.Rotate.prototype.handleClick_, false, this);
 
@@ -10968,19 +11022,7 @@ goog.inherits(ol.control.Rotate, ol.control.Control);
  * @private
  */
 ol.control.Rotate.prototype.handleClick_ = function(event) {
-  if (event.screenX !== 0 &amp;&amp; event.screenY !== 0) {
-    return;
-  }
-  this.resetNorth_();
-};
-
-
-/**
- * @param {ol.pointer.PointerEvent} pointerEvent The event to handle
- * @private
- */
-ol.control.Rotate.prototype.handlePointerUp_ = function(pointerEvent) {
-  pointerEvent.browserEvent.preventDefault();
+  event.preventDefault();
   this.resetNorth_();
 };
 
@@ -11046,7 +11088,7 @@ ol.control.Rotate.prototype.handleMapPostrender = function(mapEvent) {
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Oct 30 2014 09:49:48 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Nov 04 2014 17:40:13 GMT+0100 (CET)
         </footer>
     </div>
 </div>

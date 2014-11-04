@@ -10438,6 +10438,68 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.style.RegularShape">
+            <span class="title">
+                <a href="ol.style.RegularShape.html">ol.style.RegularShape</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.style.RegularShape#getAnchor" class="unstable">
+                    <a href="ol.style.RegularShape.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getFill" class="unstable">
+                    <a href="ol.style.RegularShape.html#getFill">getFill</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getImage" class="unstable">
+                    <a href="ol.style.RegularShape.html#getImage">getImage</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getOrigin" class="unstable">
+                    <a href="ol.style.RegularShape.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRadius" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#getRotation">getRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getSize" class="unstable">
+                    <a href="ol.style.RegularShape.html#getSize">getSize</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#getStroke" class="unstable">
+                    <a href="ol.style.RegularShape.html#getStroke">getStroke</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setRotation" class="unstable">
+                    <a href="ol.style.RegularShape.html#setRotation">setRotation</a>
+                </li>
+            
+                <li data-name="ol.style.RegularShape#setScale" class="unstable">
+                    <a href="ol.style.RegularShape.html#setScale">setScale</a>
+                </li>
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.style.Stroke">
             <span class="title">
                 <a href="ol.style.Stroke.html">ol.style.Stroke</a>
@@ -11507,7 +11569,8 @@ indicates the y value in pixels. Default is <code>'fraction'</code>.</p></td>
             
             
             <td class="description last"><p>Image object for the icon. If the <code>src</code> option is not provided then the
-provided image must already be loaded.</p></td>
+provided image must already be loaded. And in that case, it is required
+to provide the size of the image, with the <code>size</code> option.</p></td>
         </tr>
 	
 	
@@ -11754,7 +11817,9 @@ value is <code>true</code>.</p></td>
             
             
             
-            <td class="description last"><p>Icon size in pixel.</p></td>
+            <td class="description last"><p>Icon size in pixel. Can be used together with <code>offset</code> to define the
+sub-rectangle to use from the origin (sprite) icon image. Also, setting
+the <code>size</code> is required if <code>img</code> is set and <code>src</code> is not.</p></td>
         </tr>
 	
 	
@@ -11784,6 +11849,311 @@ value is <code>true</code>.</p></td>
             
             
             <td class="description last"><p>Image source URI.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt class="unstable">
+    <div class="nameContainer">
+        <h4 class="name" id="RegularShapeOptions">
+            olx.style.RegularShapeOptions<span class="type-signature type object">{Object}</span> 
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fill</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Fill.html">ol.style.Fill</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Fill style.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>points</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Number of points for stars and regular polygons. In case of a polygon, the
+number of points is the number of sides.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Shape radius.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>radius2</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Shape secondary radius for drawing stars. If radius 2 is equal to radius,
+the regular shape will be a regular polygon instead of a star.
+Default value is equal to radius.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>angle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Shape's rotation in radians. A value of 0 will have one of the shape's point
+facing up.
+Default value is 0.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>snapToPixel</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>If <code>true</code> integral numbers of pixels are used as the X and Y pixel
+coordinate when drawing the shape in the output canvas. If <code>false</code>
+fractional numbers may be used. Using <code>true</code> allows for &quot;sharp&quot;
+rendering (no blur), while using <code>false</code> allows for &quot;accurate&quot;
+rendering. Note that accuracy is important if the shape's
+position is animated. Without it, the shape may jitter noticeably.
+Default value is <code>true</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>stroke</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Stroke.html">ol.style.Stroke</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Stroke style.</p></td>
         </tr>
 	
 	
@@ -12778,7 +13148,7 @@ is <code>0</code>.</p></td>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Oct 30 2014 09:51:11 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Tue Nov 04 2014 17:41:34 GMT+0100 (CET)
         </footer>
     </div>
 </div>
