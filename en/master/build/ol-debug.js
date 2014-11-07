@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-139-gafe1467
+// Version: v3.1.0-pre.2-145-gc50b7d7
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -74223,6 +74223,8 @@ ol.FeatureOverlay.prototype.handleMapPostCompose_ = function(event) {
   var frameState = event.frameState;
   var pixelRatio = frameState.pixelRatio;
   var resolution = frameState.viewState.resolution;
+  var squaredTolerance = ol.renderer.vector.getSquaredTolerance(resolution,
+      pixelRatio);
   var i, ii, styles, featureStyleFunction;
   this.features_.forEach(function(feature) {
     featureStyleFunction = feature.getStyleFunction();
@@ -74236,8 +74238,7 @@ ol.FeatureOverlay.prototype.handleMapPostCompose_ = function(event) {
     ii = styles.length;
     for (i = 0; i < ii; ++i) {
       ol.renderer.vector.renderFeature(replayGroup, feature, styles[i],
-          ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
-          feature, this.handleImageChange_, this);
+          squaredTolerance, feature, this.handleImageChange_, this);
     }
   }, this);
 };
