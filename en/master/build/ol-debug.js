@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-145-gc50b7d7
+// Version: v3.1.0-pre.2-153-gb737677
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -46988,6 +46988,7 @@ ol.interaction.InteractionProperty = {
  *
  * @constructor
  * @extends {ol.Object}
+ * @implements {oli.interaction.Interaction}
  * @api
  */
 ol.interaction.Interaction = function() {
@@ -47031,10 +47032,16 @@ ol.interaction.Interaction.prototype.getMap = function() {
 
 
 /**
+ * Method called by the map to notify the interaction that a browser
+ * event was dispatched on the map. If the interaction wants to handle
+ * that event it can return `false` to prevent the propagation of the
+ * event to other interactions in the map's interactions chain.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} Whether the map browser event should continue
- *     through the chain of interactions. false means stop, true
+ *     through the chain of interactions. `false` means stop, `true`
  *     means continue.
+ * @function
+ * @api
  */
 ol.interaction.Interaction.prototype.handleMapBrowserEvent =
     goog.abstractMethod;
@@ -60224,21 +60231,23 @@ ol.renderer.canvas.Map.prototype.dispatchComposeEvent_ =
     var viewState = frameState.viewState;
     var resolution = viewState.resolution;
     var rotation = viewState.rotation;
+
     ol.vec.Mat4.makeTransform2D(this.transform_,
-        this.canvas_.width / 2,
-        this.canvas_.height / 2,
-        pixelRatio / viewState.resolution,
-        -pixelRatio / viewState.resolution,
-        -viewState.rotation,
+        this.canvas_.width / 2, this.canvas_.height / 2,
+        pixelRatio / resolution, -pixelRatio / resolution,
+        -rotation,
         -viewState.center[0], -viewState.center[1]);
+
+    var tolerance = ol.renderer.vector.getTolerance(resolution, pixelRatio);
+    var replayGroup = new ol.render.canvas.ReplayGroup(tolerance, extent,
+        resolution);
+
     var vectorContext = new ol.render.canvas.Immediate(context, pixelRatio,
         extent, this.transform_, rotation);
-    var replayGroup = new ol.render.canvas.ReplayGroup(
-        ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-        resolution);
     var composeEvent = new ol.render.Event(type, map, vectorContext,
         replayGroup, frameState, context, null);
     map.dispatchEvent(composeEvent);
+
     replayGroup.finish();
     if (!replayGroup.isEmpty()) {
       replayGroup.replay(context, extent, pixelRatio, this.transform_,
@@ -94683,7 +94692,7 @@ ol.interaction.Draw.prototype.handlePointerUp = function(event) {
       this.startDrawing_(event);
     } else if (this.mode_ === ol.interaction.DrawMode.POINT ||
         this.atFinish_(event)) {
-      this.finishDrawing_(event);
+      this.finishDrawing();
     } else {
       this.addToDrawing_(event);
     }
@@ -94878,10 +94887,9 @@ ol.interaction.Draw.prototype.addToDrawing_ = function(event) {
 
 /**
  * Stop drawing and add the sketch feature to the target layer.
- * @param {ol.MapBrowserEvent} event Event.
- * @private
+ * @api
  */
-ol.interaction.Draw.prototype.finishDrawing_ = function(event) {
+ol.interaction.Draw.prototype.finishDrawing = function() {
   var sketchFeature = this.abortDrawing_();
   goog.asserts.assert(!goog.isNull(sketchFeature));
   var coordinates;
@@ -106581,6 +106589,11 @@ goog.exportSymbol(
     'ol.interaction.Draw',
     ol.interaction.Draw);
 
+goog.exportProperty(
+    ol.interaction.Draw.prototype,
+    'finishDrawing',
+    ol.interaction.Draw.prototype.finishDrawing);
+
 goog.exportSymbol(
     'ol.interaction.Interaction',
     ol.interaction.Interaction);
@@ -106589,6 +106602,11 @@ goog.exportProperty(
     ol.interaction.Interaction.prototype,
     'getActive',
     ol.interaction.Interaction.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.Interaction.prototype,
+    'handleMapBrowserEvent',
+    ol.interaction.Interaction.prototype.handleMapBrowserEvent);
 
 goog.exportProperty(
     ol.interaction.Interaction.prototype,
