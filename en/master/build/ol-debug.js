@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-153-gb737677
+// Version: v3.1.0-pre.2-175-g3bf4cf2
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -18709,14 +18709,19 @@ ol.ViewHint = {
  * the "next" resolution. And releasing the fingers after pinch-zooming
  * snaps to the closest resolution (with an animation).
  *
- * So the *resolution constraint* snaps to specific resolutions. It is
+ * The *resolution constraint* snaps to specific resolutions. It is
  * determined by the following options: `resolutions`, `maxResolution`,
  * `maxZoom`, and `zoomFactor`. If `resolutions` is set, the other three
  * options are ignored. See documentation for each option for more
  * information.
  *
- * The *rotation constraint* is currently not configurable. It snaps the
- * rotation value to zero when approaching the horizontal.
+ * The *rotation constraint* snaps to specific angles. It is determined
+ * by the following options: `enableRotation` and `constrainRotation`.
+ * By default the rotation value is snapped to zero when approaching the
+ * horizontal.
+ *
+ * The *center constraint* is determined by the `extent` option. By
+ * default the center is not constrained at all.
  *
  * @constructor
  * @extends {ol.Object}
@@ -48378,6 +48383,7 @@ ol.geom.SimpleGeometry.prototype.setLayout =
 
 /**
  * @inheritDoc
+ * @api stable
  */
 ol.geom.SimpleGeometry.prototype.applyTransform = function(transformFn) {
   if (!goog.isNull(this.flatCoordinates)) {
@@ -58055,6 +58061,7 @@ ol.geom.GeometryCollection.prototype.setGeometriesArray = function(geometries) {
 
 /**
  * @inheritDoc
+ * @api stable
  */
 ol.geom.GeometryCollection.prototype.applyTransform = function(transformFn) {
   var geometries = this.geometries_;
@@ -84438,6 +84445,44 @@ ol.format.OWS.SERVICE_PROVIDER_PARSERS_ =
           ol.format.OWS.readServiceContact_, 'serviceContact')
     });
 
+goog.provide('ol.geom.flat.flip');
+
+goog.require('goog.asserts');
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {Array.<number>=} opt_dest Destination.
+ * @param {number=} opt_destOffset Destination offset.
+ * @return {Array.<number>} Flat coordinates.
+ */
+ol.geom.flat.flip.flipXY =
+    function(flatCoordinates, offset, end, stride, opt_dest, opt_destOffset) {
+  var dest, destOffset;
+  if (goog.isDef(opt_dest)) {
+    dest = opt_dest;
+    destOffset = goog.isDef(opt_destOffset) ? opt_destOffset : 0;
+  } else {
+    goog.asserts.assert(!goog.isDef(opt_destOffset));
+    dest = [];
+    destOffset = 0;
+  }
+  var j, k;
+  for (j = offset; j < end; ) {
+    var x = flatCoordinates[j++];
+    dest[destOffset++] = flatCoordinates[j++];
+    dest[destOffset++] = x;
+    for (k = 2; k < stride; ++k) {
+      dest[destOffset++] = flatCoordinates[j++];
+    }
+  }
+  dest.length = destOffset;
+  return dest;
+};
+
 goog.provide('ol.format.Polyline');
 
 goog.require('goog.asserts');
@@ -84445,12 +84490,17 @@ goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.TextFeature');
 goog.require('ol.geom.LineString');
+goog.require('ol.geom.flat.flip');
 goog.require('ol.geom.flat.inflate');
 goog.require('ol.proj');
 
 
 
 /**
+ * @classdesc
+ * Feature format for reading and writing data in the Encoded
+ * Polyline Algorithm Format.
+ *
  * @constructor
  * @extends {ol.format.TextFeature}
  * @param {olx.format.PolylineOptions=} opt_options
@@ -84690,7 +84740,8 @@ ol.format.Polyline.encodeUnsignedInteger = function(num) {
 
 
 /**
- * Read the feature from the Polyline source.
+ * Read the feature from the Polyline source. The coordinates are assumed to be
+ * in two dimensions and in latitude, longitude order.
  *
  * @function
  * @param {ArrayBuffer|Document|Node|Object|string} source Source.
@@ -84751,6 +84802,8 @@ ol.format.Polyline.prototype.readGeometry;
 ol.format.Polyline.prototype.readGeometryFromText =
     function(text, opt_options) {
   var flatCoordinates = ol.format.Polyline.decodeDeltas(text, 2, this.factor_);
+  ol.geom.flat.flip.flipXY(
+      flatCoordinates, 0, flatCoordinates.length, 2, flatCoordinates);
   var coordinates = ol.geom.flat.inflate.coordinates(
       flatCoordinates, 0, flatCoordinates.length, 2);
 
@@ -84827,6 +84880,8 @@ ol.format.Polyline.prototype.writeGeometryText =
           geometry, true, this.adaptOptions(opt_options)));
   var flatCoordinates = geometry.getFlatCoordinates();
   var stride = geometry.getStride();
+  ol.geom.flat.flip.flipXY(
+      flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
   return ol.format.Polyline.encodeDeltas(flatCoordinates, stride, this.factor_);
 };
 
@@ -86591,7 +86646,7 @@ ol.format.WKT.Parser.prototype.parse = function() {
 
 
 /**
- * @return {!ol.geom.Geometry|!ol.geom.GeometryCollection} The geometry.
+ * @return {!(ol.geom.Geometry|ol.geom.GeometryCollection)} The geometry.
  * @private
  */
 ol.format.WKT.Parser.prototype.parseGeometry_ = function() {
@@ -88121,44 +88176,6 @@ goog.exportProperty(
     ol.Geolocation.prototype,
     'setTrackingOptions',
     ol.Geolocation.prototype.setTrackingOptions);
-
-goog.provide('ol.geom.flat.flip');
-
-goog.require('goog.asserts');
-
-
-/**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
- * @param {Array.<number>=} opt_dest Destination.
- * @param {number=} opt_destOffset Destination offset.
- * @return {Array.<number>} Flat coordinates.
- */
-ol.geom.flat.flip.flipXY =
-    function(flatCoordinates, offset, end, stride, opt_dest, opt_destOffset) {
-  var dest, destOffset;
-  if (goog.isDef(opt_dest)) {
-    dest = opt_dest;
-    destOffset = goog.isDef(opt_destOffset) ? opt_destOffset : 0;
-  } else {
-    goog.asserts.assert(!goog.isDef(opt_destOffset));
-    dest = [];
-    destOffset = 0;
-  }
-  var j, k;
-  for (j = offset; j < end; ) {
-    var x = flatCoordinates[j++];
-    dest[destOffset++] = flatCoordinates[j++];
-    dest[destOffset++] = x;
-    for (k = 2; k < stride; ++k) {
-      dest[destOffset++] = flatCoordinates[j++];
-    }
-  }
-  dest.length = destOffset;
-  return dest;
-};
 
 goog.provide('ol.geom.flat.geodesic');
 
@@ -95949,7 +95966,7 @@ ol.interaction.Select.prototype.handleMapBrowserEvent =
     }
   } else {
     // Modify the currently selected feature(s).
-    var /** @type {Array.<number>} */ deselected = [];
+    var /** @type {Array.<ol.Feature>} */ deselected = [];
     var /** @type {Array.<ol.Feature>} */ selected = [];
     map.forEachFeatureAtPixel(mapBrowserEvent.pixel,
         /**
@@ -95964,13 +95981,13 @@ ol.interaction.Select.prototype.handleMapBrowserEvent =
             }
           } else {
             if (remove || toggle) {
-              deselected.push(index);
+              deselected.push(feature);
             }
           }
         }, undefined, this.layerFilter_);
     var i;
     for (i = deselected.length - 1; i >= 0; --i) {
-      features.removeAt(deselected[i]);
+      features.remove(deselected[i]);
     }
     features.extend(selected);
   }
@@ -100991,8 +101008,7 @@ goog.require('ol.source.Image');
 
 /**
  * @classdesc
- * An image source for 'static', that is, non-georeferenced, images.
- * See examples/static-image for example.
+ * A layer source for displaying a single, static image.
  *
  * @constructor
  * @extends {ol.source.Image}
@@ -103415,7 +103431,6 @@ ol.source.WMTS = function(options) {
 
   var context = {
     'Layer': options.layer,
-    'style': options.style,
     'Style': options.style,
     'TileMatrixSet': options.matrixSet
   };
@@ -106777,6 +106792,11 @@ goog.exportProperty(
     'setGeometries',
     ol.geom.GeometryCollection.prototype.setGeometries);
 
+goog.exportProperty(
+    ol.geom.GeometryCollection.prototype,
+    'applyTransform',
+    ol.geom.GeometryCollection.prototype.applyTransform);
+
 goog.exportSymbol(
     'ol.geom.LinearRing',
     ol.geom.LinearRing);
@@ -107116,6 +107136,11 @@ goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
     'getLayout',
     ol.geom.SimpleGeometry.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.SimpleGeometry.prototype,
+    'applyTransform',
+    ol.geom.SimpleGeometry.prototype.applyTransform);
 
 goog.exportSymbol(
     'ol.format.Feature',
@@ -113299,6 +113324,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
+    'applyTransform',
+    ol.geom.Circle.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.Circle.prototype,
     'getClosestPoint',
     ol.geom.Circle.prototype.getClosestPoint);
 
@@ -113399,6 +113429,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
+    'applyTransform',
+    ol.geom.LinearRing.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.LinearRing.prototype,
     'getClosestPoint',
     ol.geom.LinearRing.prototype.getClosestPoint);
 
@@ -113464,6 +113499,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
+    'applyTransform',
+    ol.geom.LineString.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.LineString.prototype,
     'getClosestPoint',
     ol.geom.LineString.prototype.getClosestPoint);
 
@@ -113521,6 +113561,11 @@ goog.exportProperty(
     ol.geom.MultiLineString.prototype,
     'getLayout',
     ol.geom.MultiLineString.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.MultiLineString.prototype,
+    'applyTransform',
+    ol.geom.MultiLineString.prototype.applyTransform);
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
@@ -113584,6 +113629,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
+    'applyTransform',
+    ol.geom.MultiPoint.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.MultiPoint.prototype,
     'getClosestPoint',
     ol.geom.MultiPoint.prototype.getClosestPoint);
 
@@ -113644,6 +113694,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
+    'applyTransform',
+    ol.geom.MultiPolygon.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.MultiPolygon.prototype,
     'getClosestPoint',
     ol.geom.MultiPolygon.prototype.getClosestPoint);
 
@@ -113696,6 +113751,11 @@ goog.exportProperty(
     ol.geom.Point.prototype,
     'getLayout',
     ol.geom.Point.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.Point.prototype,
+    'applyTransform',
+    ol.geom.Point.prototype.applyTransform);
 
 goog.exportProperty(
     ol.geom.Point.prototype,
@@ -113756,6 +113816,11 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getLayout',
     ol.geom.Polygon.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.Polygon.prototype,
+    'applyTransform',
+    ol.geom.Polygon.prototype.applyTransform);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
