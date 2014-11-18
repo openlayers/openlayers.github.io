@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-175-g3bf4cf2
+// Version: v3.1.0-pre.2-179-gca3dfe2
 
 (function(){var l,aa=aa||{},m=this;function t(b){return void 0!==b}function ca(){}function da(b){b.ub=function(){return b.We?b.We:b.We=new b}}
 function ea(b){var c=typeof b;if("object"==c)if(b){if(b instanceof Array)return"array";if(b instanceof Object)return c;var d=Object.prototype.toString.call(b);if("[object Window]"==d)return"object";if("[object Array]"==d||"number"==typeof b.length&&"undefined"!=typeof b.splice&&"undefined"!=typeof b.propertyIsEnumerable&&!b.propertyIsEnumerable("splice"))return"array";if("[object Function]"==d||"undefined"!=typeof b.call&&"undefined"!=typeof b.propertyIsEnumerable&&!b.propertyIsEnumerable("call"))return"function"}else return"null";

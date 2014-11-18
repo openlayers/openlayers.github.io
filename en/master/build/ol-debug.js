@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-175-g3bf4cf2
+// Version: v3.1.0-pre.2-179-gca3dfe2
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
