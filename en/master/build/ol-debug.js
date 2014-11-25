@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-179-gca3dfe2
+// Version: v3.1.0-pre.2-185-g32d5300
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -53057,9 +53057,13 @@ ol.layer.Group.prototype.getLayerStatesArray = function(opt_states) {
         layerState.maxResolution, ownLayerState.maxResolution);
     layerState.minResolution = Math.max(
         layerState.minResolution, ownLayerState.minResolution);
-    if (goog.isDef(ownLayerState.extent) && goog.isDef(layerState.extent)) {
-      layerState.extent = ol.extent.getIntersection(
-          layerState.extent, ownLayerState.extent);
+    if (goog.isDef(ownLayerState.extent)) {
+      if (goog.isDef(layerState.extent)) {
+        layerState.extent = ol.extent.getIntersection(
+            layerState.extent, ownLayerState.extent);
+      } else {
+        layerState.extent = ownLayerState.extent;
+      }
     }
   }
 
@@ -67121,7 +67125,7 @@ ol.Map = function(options) {
     goog.events.EventType.TOUCHSTART,
     goog.events.EventType.MSPOINTERDOWN,
     ol.MapBrowserEvent.EventType.POINTERDOWN,
-    goog.events.EventType.MOUSEWHEEL
+    goog.userAgent.GECKO ? 'DOMMouseScroll' : 'mousewheel'
   ], goog.events.Event.stopPropagation);
   goog.dom.appendChild(this.viewport_, this.overlayContainerStopEvent_);
 
@@ -95991,7 +95995,7 @@ ol.interaction.Select.prototype.handleMapBrowserEvent =
     }
     features.extend(selected);
   }
-  return false;
+  return this.condition_ == ol.events.condition.mouseMove;
 };
 
 
