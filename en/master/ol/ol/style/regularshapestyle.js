@@ -1,8 +1,10 @@
 goog.provide('ol.style.RegularShape');
 
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
 goog.require('ol.color');
+goog.require('ol.has');
 goog.require('ol.render.canvas');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Image');
@@ -13,7 +15,9 @@ goog.require('ol.style.Stroke');
 
 /**
  * @classdesc
- * Set regular shape style for vector features.
+ * Set regular shape style for vector features. The resulting shape will be
+ * a regular polygon when `radius` is provided, or a star when `radius1` and
+ * `radius2` are provided.
  *
  * @constructor
  * @param {olx.style.RegularShapeOptions=} opt_options Options.
@@ -55,18 +59,22 @@ ol.style.RegularShape = function(opt_options) {
    */
   this.points_ = options.points;
 
+  goog.asserts.assert(goog.isDef(options.radius) ||
+      goog.isDef(options.radius1));
+
   /**
    * @private
    * @type {number}
    */
-  this.radius_ = options.radius;
+  this.radius_ = /** @type {number} */ (goog.isDef(options.radius) ?
+      options.radius : options.radius1);
 
   /**
    * @private
    * @type {number}
    */
   this.radius2_ =
-      goog.isDef(options.radius2) ? options.radius2 : options.radius;
+      goog.isDef(options.radius2) ? options.radius2 : this.radius_;
 
   /**
    * @private
@@ -174,6 +182,15 @@ ol.style.RegularShape.prototype.getRadius = function() {
 
 
 /**
+ * @return {number} Radius2.
+ * @api
+ */
+ol.style.RegularShape.prototype.getRadius2 = function() {
+  return this.radius2_;
+};
+
+
+/**
  * @inheritDoc
  * @api
  */
@@ -215,7 +232,7 @@ ol.style.RegularShape.prototype.unlistenImageChange = goog.nullFunction;
  */
 ol.style.RegularShape.prototype.render_ = function() {
   var canvas = this.canvas_;
-  var strokeStyle, strokeWidth;
+  var strokeStyle, strokeWidth, lineDash;
 
   if (goog.isNull(this.stroke_)) {
     strokeWidth = 0;
@@ -257,6 +274,10 @@ ol.style.RegularShape.prototype.render_ = function() {
   }
   if (!goog.isNull(this.stroke_)) {
     context.strokeStyle = strokeStyle;
+    lineDash = this.stroke_.getLineDash();
+    if (ol.has.CANVAS_LINE_DASH && !goog.isNull(lineDash)) {
+      context.setLineDash(lineDash);
+    }
     context.lineWidth = strokeWidth;
     context.stroke();
   }
@@ -290,6 +311,10 @@ ol.style.RegularShape.prototype.render_ = function() {
     context.fill();
     if (!goog.isNull(this.stroke_)) {
       context.strokeStyle = strokeStyle;
+      lineDash = this.stroke_.getLineDash();
+      if (ol.has.CANVAS_LINE_DASH && !goog.isNull(lineDash)) {
+        context.setLineDash(lineDash);
+      }
       context.lineWidth = strokeWidth;
       context.stroke();
     }
