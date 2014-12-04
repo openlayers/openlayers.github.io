@@ -43,6 +43,10 @@
             </span>
             <ul class="members itemMembers">
             
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.WEBGL_MAX_TEXTURE_SIZE"><a href="ol.html#WEBGL_MAX_TEXTURE_SIZE">WEBGL_MAX_TEXTURE_SIZE</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -8857,6 +8861,83 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.render.webgl.Immediate">
+            <span class="title">
+                <a href="ol.render.webgl.Immediate.html">ol.render.webgl.Immediate</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.webgl.Immediate#drawAsync" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawAsync">drawAsync</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawCircleGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawCircleGeometry">drawCircleGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawFeature" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawGeometryCollectionGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawGeometryCollectionGeometry">drawGeometryCollectionGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawLineStringGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawLineStringGeometry">drawLineStringGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiLineStringGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiLineStringGeometry">drawMultiLineStringGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiPointGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiPointGeometry">drawMultiPointGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiPolygonGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiPolygonGeometry">drawMultiPolygonGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawPointGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawPointGeometry">drawPointGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawPolygonGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawPolygonGeometry">drawPolygonGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawText" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawText">drawText</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setFillStrokeStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setFillStrokeStyle">setFillStrokeStyle</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setImageStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setImageStyle">setImageStyle</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setTextStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setTextStyle">setTextStyle</a>
+                </li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.source">
             <span class="title">
                 <a href="ol.source.html">ol.source</a>
@@ -11326,8 +11407,8 @@
                     <a href="ol.source.TileVector.html#getFeaturesAtCoordinate">getFeaturesAtCoordinate</a>
                 </li>
             
-                <li data-name="ol.source.TileVector#getFeaturesAtCoordinateAtResolution" class="">
-                    <a href="ol.source.TileVector.html#getFeaturesAtCoordinateAtResolution">getFeaturesAtCoordinateAtResolution</a>
+                <li data-name="ol.source.TileVector#getFeaturesAtCoordinateAndResolution" class="unstable">
+                    <a href="ol.source.TileVector.html#getFeaturesAtCoordinateAndResolution">getFeaturesAtCoordinateAndResolution</a>
                 </li>
             
                 <li data-name="ol.source.TileVector#getLogo" class="">
@@ -12109,6 +12190,25 @@
                 <li data-name="ol.style.StyleFunction" class="unstable">
                     <a href="ol.style.html#StyleFunction">StyleFunction</a>
                 </li>
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.style.AtlasManager">
+            <span class="title">
+                <a href="ol.style.AtlasManager.html">ol.style.AtlasManager</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
             
             </ul>
             <ul class="methods itemMembers">
@@ -12982,24 +13082,35 @@ ol.has.MSPOINTER = !!(goog.global.navigator.msPointerEnabled);
  * @type {boolean}
  * @api stable
  */
-ol.has.WEBGL = ol.ENABLE_WEBGL &amp;&amp; (
-    /**
-     * @return {boolean} WebGL supported.
-     */
-    function() {
-      if (!('WebGLRenderingContext' in goog.global)) {
-        return false;
-      }
+ol.has.WEBGL;
+
+
+(function() {
+  if (ol.ENABLE_WEBGL) {
+    var hasWebGL = false;
+    var textureSize;
+    var /** @type {Array.&lt;string>} */ extensions = [];
+
+    if ('WebGLRenderingContext' in goog.global) {
       try {
         var canvas = /** @type {HTMLCanvasElement} */
             (goog.dom.createElement(goog.dom.TagName.CANVAS));
-        return !goog.isNull(ol.webgl.getContext(canvas, {
+        var gl = ol.webgl.getContext(canvas, {
           failIfMajorPerformanceCaveat: true
-        }));
-      } catch (e) {
-        return false;
-      }
-    })();
+        });
+        if (!goog.isNull(gl)) {
+          hasWebGL = true;
+          textureSize = /** @type {number} */
+              (gl.getParameter(gl.MAX_TEXTURE_SIZE));
+          extensions = gl.getSupportedExtensions();
+        }
+      } catch (e) {}
+    }
+    ol.has.WEBGL = hasWebGL;
+    ol.WEBGL_EXTENSIONS = extensions;
+    ol.WEBGL_MAX_TEXTURE_SIZE = textureSize;
+  }
+})();
 </code></pre>
         </article>
     </section>
@@ -13009,7 +13120,7 @@ ol.has.WEBGL = ol.ENABLE_WEBGL &amp;&amp; (
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Dec 01 2014 11:44:07 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Dec 04 2014 13:13:35 GMT+0100 (CET)
         </footer>
     </div>
 </div>

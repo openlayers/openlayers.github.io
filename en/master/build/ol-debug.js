@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-219-g6790b86
+// Version: v3.1.0-pre.2-374-gdfb55fb
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -7734,6 +7734,13 @@ ol.LEGACY_IE_SUPPORT = false;
 
 
 /**
+ * @define {number} The size in pixels of the first atlas image. Default is
+ * `256`.
+ */
+ol.INITIAL_ATLAS_SIZE = 256;
+
+
+/**
  * The page is loaded using HTTPS.
  * @const
  * @type {boolean}
@@ -7754,6 +7761,14 @@ ol.IS_LEGACY_IE = goog.userAgent.IE &&
  * @define {number} Keyboard pan duration.
  */
 ol.KEYBOARD_PAN_DURATION = 100;
+
+
+/**
+ * @define {number} The maximum size in pixels of atlas images. Default is
+ * `-1`, meaning it is not used (and `ol.ol.WEBGL_MAX_TEXTURE_SIZE` is
+ * used instead).
+ */
+ol.MAX_ATLAS_SIZE = -1;
 
 
 /**
@@ -7798,6 +7813,24 @@ ol.SIMPLIFY_TOLERANCE = 0.5;
  * @define {number} Texture cache high water mark.
  */
 ol.WEBGL_TEXTURE_CACHE_HIGH_WATER_MARK = 1024;
+
+
+/**
+ * The maximum supported WebGL texture size in pixels. If WebGL is not
+ * supported, the value is set to `undefined`.
+ * @const
+ * @type {number|undefined}
+ * @api
+ */
+ol.WEBGL_MAX_TEXTURE_SIZE; // value is set in `ol.has`
+
+
+/**
+ * List of supported WebGL extensions.
+ * @const
+ * @type {Array.<string>}
+ */
+ol.WEBGL_EXTENSIONS; // value is set in `ol.has`
 
 
 /**
@@ -24193,24 +24226,35 @@ ol.has.MSPOINTER = !!(goog.global.navigator.msPointerEnabled);
  * @type {boolean}
  * @api stable
  */
-ol.has.WEBGL = ol.ENABLE_WEBGL && (
-    /**
-     * @return {boolean} WebGL supported.
-     */
-    function() {
-      if (!('WebGLRenderingContext' in goog.global)) {
-        return false;
-      }
+ol.has.WEBGL;
+
+
+(function() {
+  if (ol.ENABLE_WEBGL) {
+    var hasWebGL = false;
+    var textureSize;
+    var /** @type {Array.<string>} */ extensions = [];
+
+    if ('WebGLRenderingContext' in goog.global) {
       try {
         var canvas = /** @type {HTMLCanvasElement} */
             (goog.dom.createElement(goog.dom.TagName.CANVAS));
-        return !goog.isNull(ol.webgl.getContext(canvas, {
+        var gl = ol.webgl.getContext(canvas, {
           failIfMajorPerformanceCaveat: true
-        }));
-      } catch (e) {
-        return false;
-      }
-    })();
+        });
+        if (!goog.isNull(gl)) {
+          hasWebGL = true;
+          textureSize = /** @type {number} */
+              (gl.getParameter(gl.MAX_TEXTURE_SIZE));
+          extensions = gl.getSupportedExtensions();
+        }
+      } catch (e) {}
+    }
+    ol.has.WEBGL = hasWebGL;
+    ol.WEBGL_EXTENSIONS = extensions;
+    ol.WEBGL_MAX_TEXTURE_SIZE = textureSize;
+  }
+})();
 
 // FIXME Test on Internet Explorer with VBArray
 
@@ -25739,6 +25783,8 @@ ol.color.blend = function(dst, src, opt_color) {
 
 
 /**
+ * Return the color as an array. This function maintains a cache of calculated
+ * arrays which means the result should not be modified.
  * @param {ol.Color|string} color Color.
  * @return {ol.Color} Color.
  * @api
@@ -25754,6 +25800,7 @@ ol.color.asArray = function(color) {
 
 
 /**
+ * Return the color as an rgba string.
  * @param {ol.Color|string} color Color.
  * @return {string} Rgba string.
  * @api
@@ -25782,12 +25829,11 @@ ol.color.equals = function(color1, color2) {
 
 /**
  * @param {string} s String.
- * @param {ol.Color=} opt_color Color.
  * @return {ol.Color} Color.
  */
 ol.color.fromString = (
     /**
-     * @return {function(string, ol.Color=): ol.Color}
+     * @return {function(string): ol.Color}
      */
     function() {
 
@@ -25814,10 +25860,9 @@ ol.color.fromString = (
       return (
           /**
            * @param {string} s String.
-           * @param {ol.Color=} opt_color Color.
            * @return {ol.Color} Color.
            */
-          function(s, opt_color) {
+          function(s) {
             var color;
             if (cache.hasOwnProperty(s)) {
               color = cache[s];
@@ -25836,7 +25881,7 @@ ol.color.fromString = (
               cache[s] = color;
               ++cacheSize;
             }
-            return ol.color.returnOrUpdate(color, opt_color);
+            return color;
           });
 
     })();
@@ -25917,24 +25962,6 @@ ol.color.normalize = function(color, opt_color) {
   result[2] = goog.math.clamp((color[2] + 0.5) | 0, 0, 255);
   result[3] = goog.math.clamp(color[3], 0, 1);
   return result;
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Color.
- */
-ol.color.returnOrUpdate = function(color, opt_color) {
-  if (goog.isDef(opt_color)) {
-    opt_color[0] = color[0];
-    opt_color[1] = color[1];
-    opt_color[2] = color[2];
-    opt_color[3] = color[3];
-    return opt_color;
-  } else {
-    return color;
-  }
 };
 
 
@@ -44882,7 +44909,6 @@ goog.require('ol.ImageState');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
 goog.require('ol.layer.Layer');
-goog.require('ol.layer.LayerState');
 goog.require('ol.source.Source');
 goog.require('ol.source.State');
 goog.require('ol.source.Tile');
@@ -44969,14 +44995,6 @@ ol.renderer.Layer.prototype.handleImageChange = function(event) {
     this.renderIfReadyAndVisible();
   }
 };
-
-
-/**
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
- * @return {boolean} whether composeFrame should be called.
- */
-ol.renderer.Layer.prototype.prepareFrame = goog.abstractMethod;
 
 
 /**
@@ -45306,12 +45324,6 @@ ol.style.Image.prototype.getImage = goog.abstractMethod;
 
 
 /**
- * @return {ol.style.ImageState} Image state.
- */
-ol.style.Image.prototype.getImageState = goog.abstractMethod;
-
-
-/**
  * @param {number} pixelRatio Pixel ratio.
  * @return {HTMLCanvasElement|HTMLVideoElement|Image} Image element.
  */
@@ -45319,10 +45331,35 @@ ol.style.Image.prototype.getHitDetectionImage = goog.abstractMethod;
 
 
 /**
+ * @return {ol.style.ImageState} Image state.
+ */
+ol.style.Image.prototype.getImageState = goog.abstractMethod;
+
+
+/**
+ * @return {ol.Size} Image size.
+ */
+ol.style.Image.prototype.getImageSize = goog.abstractMethod;
+
+
+/**
+ * @return {ol.Size} Size of the hit-detection image.
+ */
+ol.style.Image.prototype.getHitDetectionImageSize = goog.abstractMethod;
+
+
+/**
  * @function
  * @return {Array.<number>} Origin.
  */
 ol.style.Image.prototype.getOrigin = goog.abstractMethod;
+
+
+/**
+ * @function
+ * @return {Array.<number>} Origin for the hit-detection image.
+ */
+ol.style.Image.prototype.getHitDetectionOrigin = goog.abstractMethod;
 
 
 /**
@@ -45657,6 +45694,14 @@ ol.style.Icon.prototype.getImageSize = function() {
 /**
  * @inheritDoc
  */
+ol.style.Icon.prototype.getHitDetectionImageSize = function() {
+  return this.getImageSize();
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.style.Icon.prototype.getImageState = function() {
   return this.iconImage_.getImageState();
 };
@@ -45698,6 +45743,14 @@ ol.style.Icon.prototype.getOrigin = function() {
   }
   this.origin_ = offset;
   return this.origin_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.Icon.prototype.getHitDetectionOrigin = function() {
+  return this.getOrigin();
 };
 
 
@@ -50649,8 +50702,8 @@ goog.provide('ol.render.IVectorContext');
 
 
 /**
- * VectorContext interface. Currently implemented by
- * {@link ol.render.canvas.Immediate}
+ * VectorContext interface. Implemented by
+ * {@link ol.render.canvas.Immediate} and {@link ol.render.webgl.Immediate}.
  * @interface
  */
 ol.render.IVectorContext = function() {
@@ -50659,7 +50712,7 @@ ol.render.IVectorContext = function() {
 
 /**
  * @param {number} zIndex Z index.
- * @param {function(ol.render.canvas.Immediate)} callback Callback.
+ * @param {function(ol.render.IVectorContext)} callback Callback.
  */
 ol.render.IVectorContext.prototype.drawAsync = function(zIndex, callback) {
 };
@@ -51229,7 +51282,709 @@ ol.interaction.DragBox.prototype.handlePointerDown = function(mapBrowserEvent) {
  */
 ol.interaction.DragBox.prototype.shouldStopEvent = goog.functions.identity;
 
+// Copyright 2008 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Namespace with crypto related helper functions.
+ */
+
+goog.provide('goog.crypt');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+
+
+/**
+ * Turns a string into an array of bytes; a "byte" being a JS number in the
+ * range 0-255.
+ * @param {string} str String value to arrify.
+ * @return {!Array.<number>} Array of numbers corresponding to the
+ *     UCS character codes of each character in str.
+ */
+goog.crypt.stringToByteArray = function(str) {
+  var output = [], p = 0;
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+    while (c > 0xff) {
+      output[p++] = c & 0xff;
+      c >>= 8;
+    }
+    output[p++] = c;
+  }
+  return output;
+};
+
+
+/**
+ * Turns an array of numbers into the string given by the concatenation of the
+ * characters to which the numbers correspond.
+ * @param {Array} bytes Array of numbers representing characters.
+ * @return {string} Stringification of the array.
+ */
+goog.crypt.byteArrayToString = function(bytes) {
+  var CHUNK_SIZE = 8192;
+
+  // Special-case the simple case for speed's sake.
+  if (bytes.length < CHUNK_SIZE) {
+    return String.fromCharCode.apply(null, bytes);
+  }
+
+  // The remaining logic splits conversion by chunks since
+  // Function#apply() has a maximum parameter count.
+  // See discussion: http://goo.gl/LrWmZ9
+
+  var str = '';
+  for (var i = 0; i < bytes.length; i += CHUNK_SIZE) {
+    var chunk = goog.array.slice(bytes, i, i + CHUNK_SIZE);
+    str += String.fromCharCode.apply(null, chunk);
+  }
+  return str;
+};
+
+
+/**
+ * Turns an array of numbers into the hex string given by the concatenation of
+ * the hex values to which the numbers correspond.
+ * @param {Uint8Array|Int8Array|Array.<number>} array Array of numbers
+ *     representing characters.
+ * @return {string} Hex string.
+ */
+goog.crypt.byteArrayToHex = function(array) {
+  return goog.array.map(array, function(numByte) {
+    var hexByte = numByte.toString(16);
+    return hexByte.length > 1 ? hexByte : '0' + hexByte;
+  }).join('');
+};
+
+
+/**
+ * Converts a hex string into an integer array.
+ * @param {string} hexString Hex string of 16-bit integers (two characters
+ *     per integer).
+ * @return {!Array.<number>} Array of {0,255} integers for the given string.
+ */
+goog.crypt.hexToByteArray = function(hexString) {
+  goog.asserts.assert(hexString.length % 2 == 0,
+                      'Key string length must be multiple of 2');
+  var arr = [];
+  for (var i = 0; i < hexString.length; i += 2) {
+    arr.push(parseInt(hexString.substring(i, i + 2), 16));
+  }
+  return arr;
+};
+
+
+/**
+ * Converts a JS string to a UTF-8 "byte" array.
+ * @param {string} str 16-bit unicode string.
+ * @return {!Array.<number>} UTF-8 byte array.
+ */
+goog.crypt.stringToUtf8ByteArray = function(str) {
+  // TODO(user): Use native implementations if/when available
+  str = str.replace(/\r\n/g, '\n');
+  var out = [], p = 0;
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+    if (c < 128) {
+      out[p++] = c;
+    } else if (c < 2048) {
+      out[p++] = (c >> 6) | 192;
+      out[p++] = (c & 63) | 128;
+    } else {
+      out[p++] = (c >> 12) | 224;
+      out[p++] = ((c >> 6) & 63) | 128;
+      out[p++] = (c & 63) | 128;
+    }
+  }
+  return out;
+};
+
+
+/**
+ * Converts a UTF-8 byte array to JavaScript's 16-bit Unicode.
+ * @param {Uint8Array|Int8Array|Array.<number>} bytes UTF-8 byte array.
+ * @return {string} 16-bit Unicode string.
+ */
+goog.crypt.utf8ByteArrayToString = function(bytes) {
+  // TODO(user): Use native implementations if/when available
+  var out = [], pos = 0, c = 0;
+  while (pos < bytes.length) {
+    var c1 = bytes[pos++];
+    if (c1 < 128) {
+      out[c++] = String.fromCharCode(c1);
+    } else if (c1 > 191 && c1 < 224) {
+      var c2 = bytes[pos++];
+      out[c++] = String.fromCharCode((c1 & 31) << 6 | c2 & 63);
+    } else {
+      var c2 = bytes[pos++];
+      var c3 = bytes[pos++];
+      out[c++] = String.fromCharCode(
+          (c1 & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
+    }
+  }
+  return out.join('');
+};
+
+
+/**
+ * XOR two byte arrays.
+ * @param {!ArrayBufferView|!Array.<number>} bytes1 Byte array 1.
+ * @param {!ArrayBufferView|!Array.<number>} bytes2 Byte array 2.
+ * @return {!Array.<number>} Resulting XOR of the two byte arrays.
+ */
+goog.crypt.xorByteArray = function(bytes1, bytes2) {
+  goog.asserts.assert(
+      bytes1.length == bytes2.length,
+      'XOR array lengths must match');
+
+  var result = [];
+  for (var i = 0; i < bytes1.length; i++) {
+    result.push(bytes1[i] ^ bytes2[i]);
+  }
+  return result;
+};
+
+// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Abstract cryptographic hash interface.
+ *
+ * See goog.crypt.Sha1 and goog.crypt.Md5 for sample implementations.
+ *
+ */
+
+goog.provide('goog.crypt.Hash');
+
+
+
+/**
+ * Create a cryptographic hash instance.
+ *
+ * @constructor
+ * @struct
+ */
+goog.crypt.Hash = function() {
+  /**
+   * The block size for the hasher.
+   * @type {number}
+   */
+  this.blockSize = -1;
+};
+
+
+/**
+ * Resets the internal accumulator.
+ */
+goog.crypt.Hash.prototype.reset = goog.abstractMethod;
+
+
+/**
+ * Adds a byte array (array with values in [0-255] range) or a string (might
+ * only contain 8-bit, i.e., Latin1 characters) to the internal accumulator.
+ *
+ * Many hash functions operate on blocks of data and implement optimizations
+ * when a full chunk of data is readily available. Hence it is often preferable
+ * to provide large chunks of data (a kilobyte or more) than to repeatedly
+ * call the update method with few tens of bytes. If this is not possible, or
+ * not feasible, it might be good to provide data in multiplies of hash block
+ * size (often 64 bytes). Please see the implementation and performance tests
+ * of your favourite hash.
+ *
+ * @param {Array.<number>|Uint8Array|string} bytes Data used for the update.
+ * @param {number=} opt_length Number of bytes to use.
+ */
+goog.crypt.Hash.prototype.update = goog.abstractMethod;
+
+
+/**
+ * @return {!Array.<number>} The finalized hash computed
+ *     from the internal accumulator.
+ */
+goog.crypt.Hash.prototype.digest = goog.abstractMethod;
+
+// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview MD5 cryptographic hash.
+ * Implementation of http://tools.ietf.org/html/rfc1321 with common
+ * optimizations and tweaks (see http://en.wikipedia.org/wiki/MD5).
+ *
+ * Usage:
+ *   var md5 = new goog.crypt.Md5();
+ *   md5.update(bytes);
+ *   var hash = md5.digest();
+ *
+ * Performance:
+ *   Chrome 23              ~680 Mbit/s
+ *   Chrome 13 (in a VM)    ~250 Mbit/s
+ *   Firefox 6.0 (in a VM)  ~100 Mbit/s
+ *   IE9 (in a VM)           ~27 Mbit/s
+ *   Firefox 3.6             ~15 Mbit/s
+ *   IE8 (in a VM)           ~13 Mbit/s
+ *
+ */
+
+goog.provide('goog.crypt.Md5');
+
+goog.require('goog.crypt.Hash');
+
+
+
+/**
+ * MD5 cryptographic hash constructor.
+ * @constructor
+ * @extends {goog.crypt.Hash}
+ * @final
+ * @struct
+ */
+goog.crypt.Md5 = function() {
+  goog.crypt.Md5.base(this, 'constructor');
+
+  this.blockSize = 512 / 8;
+
+  /**
+   * Holds the current values of accumulated A-D variables (MD buffer).
+   * @type {Array.<number>}
+   * @private
+   */
+  this.chain_ = new Array(4);
+
+  /**
+   * A buffer holding the data until the whole block can be processed.
+   * @type {Array.<number>}
+   * @private
+   */
+  this.block_ = new Array(this.blockSize);
+
+  /**
+   * The length of yet-unprocessed data as collected in the block.
+   * @type {number}
+   * @private
+   */
+  this.blockLength_ = 0;
+
+  /**
+   * The total length of the message so far.
+   * @type {number}
+   * @private
+   */
+  this.totalLength_ = 0;
+
+  this.reset();
+};
+goog.inherits(goog.crypt.Md5, goog.crypt.Hash);
+
+
+/**
+ * Integer rotation constants used by the abbreviated implementation.
+ * They are hardcoded in the unrolled implementation, so it is left
+ * here commented out.
+ * @type {Array.<number>}
+ * @private
+ *
+goog.crypt.Md5.S_ = [
+  7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+  5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
+  4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
+  6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
+];
+ */
+
+/**
+ * Sine function constants used by the abbreviated implementation.
+ * They are hardcoded in the unrolled implementation, so it is left
+ * here commented out.
+ * @type {Array.<number>}
+ * @private
+ *
+goog.crypt.Md5.T_ = [
+  0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
+  0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
+  0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
+  0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
+  0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
+  0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
+  0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
+  0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
+  0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
+  0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
+  0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
+  0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
+  0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
+  0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
+  0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
+  0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
+];
+ */
+
+
+/** @override */
+goog.crypt.Md5.prototype.reset = function() {
+  this.chain_[0] = 0x67452301;
+  this.chain_[1] = 0xefcdab89;
+  this.chain_[2] = 0x98badcfe;
+  this.chain_[3] = 0x10325476;
+
+  this.blockLength_ = 0;
+  this.totalLength_ = 0;
+};
+
+
+/**
+ * Internal compress helper function. It takes a block of data (64 bytes)
+ * and updates the accumulator.
+ * @param {Array.<number>|Uint8Array|string} buf The block to compress.
+ * @param {number=} opt_offset Offset of the block in the buffer.
+ * @private
+ */
+goog.crypt.Md5.prototype.compress_ = function(buf, opt_offset) {
+  if (!opt_offset) {
+    opt_offset = 0;
+  }
+
+  // We allocate the array every time, but it's cheap in practice.
+  var X = new Array(16);
+
+  // Get 16 little endian words. It is not worth unrolling this for Chrome 11.
+  if (goog.isString(buf)) {
+    for (var i = 0; i < 16; ++i) {
+      X[i] = (buf.charCodeAt(opt_offset++)) |
+             (buf.charCodeAt(opt_offset++) << 8) |
+             (buf.charCodeAt(opt_offset++) << 16) |
+             (buf.charCodeAt(opt_offset++) << 24);
+    }
+  } else {
+    for (var i = 0; i < 16; ++i) {
+      X[i] = (buf[opt_offset++]) |
+             (buf[opt_offset++] << 8) |
+             (buf[opt_offset++] << 16) |
+             (buf[opt_offset++] << 24);
+    }
+  }
+
+  var A = this.chain_[0];
+  var B = this.chain_[1];
+  var C = this.chain_[2];
+  var D = this.chain_[3];
+  var sum = 0;
+
+  /*
+   * This is an abbreviated implementation, it is left here commented out for
+   * reference purposes. See below for an unrolled version in use.
+   *
+  var f, n, tmp;
+  for (var i = 0; i < 64; ++i) {
+
+    if (i < 16) {
+      f = (D ^ (B & (C ^ D)));
+      n = i;
+    } else if (i < 32) {
+      f = (C ^ (D & (B ^ C)));
+      n = (5 * i + 1) % 16;
+    } else if (i < 48) {
+      f = (B ^ C ^ D);
+      n = (3 * i + 5) % 16;
+    } else {
+      f = (C ^ (B | (~D)));
+      n = (7 * i) % 16;
+    }
+
+    tmp = D;
+    D = C;
+    C = B;
+    sum = (A + f + goog.crypt.Md5.T_[i] + X[n]) & 0xffffffff;
+    B += ((sum << goog.crypt.Md5.S_[i]) & 0xffffffff) |
+         (sum >>> (32 - goog.crypt.Md5.S_[i]));
+    A = tmp;
+  }
+   */
+
+  /*
+   * This is an unrolled MD5 implementation, which gives ~30% speedup compared
+   * to the abbreviated implementation above, as measured on Chrome 11. It is
+   * important to keep 32-bit croppings to minimum and inline the integer
+   * rotation.
+   */
+  sum = (A + (D ^ (B & (C ^ D))) + X[0] + 0xd76aa478) & 0xffffffff;
+  A = B + (((sum << 7) & 0xffffffff) | (sum >>> 25));
+  sum = (D + (C ^ (A & (B ^ C))) + X[1] + 0xe8c7b756) & 0xffffffff;
+  D = A + (((sum << 12) & 0xffffffff) | (sum >>> 20));
+  sum = (C + (B ^ (D & (A ^ B))) + X[2] + 0x242070db) & 0xffffffff;
+  C = D + (((sum << 17) & 0xffffffff) | (sum >>> 15));
+  sum = (B + (A ^ (C & (D ^ A))) + X[3] + 0xc1bdceee) & 0xffffffff;
+  B = C + (((sum << 22) & 0xffffffff) | (sum >>> 10));
+  sum = (A + (D ^ (B & (C ^ D))) + X[4] + 0xf57c0faf) & 0xffffffff;
+  A = B + (((sum << 7) & 0xffffffff) | (sum >>> 25));
+  sum = (D + (C ^ (A & (B ^ C))) + X[5] + 0x4787c62a) & 0xffffffff;
+  D = A + (((sum << 12) & 0xffffffff) | (sum >>> 20));
+  sum = (C + (B ^ (D & (A ^ B))) + X[6] + 0xa8304613) & 0xffffffff;
+  C = D + (((sum << 17) & 0xffffffff) | (sum >>> 15));
+  sum = (B + (A ^ (C & (D ^ A))) + X[7] + 0xfd469501) & 0xffffffff;
+  B = C + (((sum << 22) & 0xffffffff) | (sum >>> 10));
+  sum = (A + (D ^ (B & (C ^ D))) + X[8] + 0x698098d8) & 0xffffffff;
+  A = B + (((sum << 7) & 0xffffffff) | (sum >>> 25));
+  sum = (D + (C ^ (A & (B ^ C))) + X[9] + 0x8b44f7af) & 0xffffffff;
+  D = A + (((sum << 12) & 0xffffffff) | (sum >>> 20));
+  sum = (C + (B ^ (D & (A ^ B))) + X[10] + 0xffff5bb1) & 0xffffffff;
+  C = D + (((sum << 17) & 0xffffffff) | (sum >>> 15));
+  sum = (B + (A ^ (C & (D ^ A))) + X[11] + 0x895cd7be) & 0xffffffff;
+  B = C + (((sum << 22) & 0xffffffff) | (sum >>> 10));
+  sum = (A + (D ^ (B & (C ^ D))) + X[12] + 0x6b901122) & 0xffffffff;
+  A = B + (((sum << 7) & 0xffffffff) | (sum >>> 25));
+  sum = (D + (C ^ (A & (B ^ C))) + X[13] + 0xfd987193) & 0xffffffff;
+  D = A + (((sum << 12) & 0xffffffff) | (sum >>> 20));
+  sum = (C + (B ^ (D & (A ^ B))) + X[14] + 0xa679438e) & 0xffffffff;
+  C = D + (((sum << 17) & 0xffffffff) | (sum >>> 15));
+  sum = (B + (A ^ (C & (D ^ A))) + X[15] + 0x49b40821) & 0xffffffff;
+  B = C + (((sum << 22) & 0xffffffff) | (sum >>> 10));
+  sum = (A + (C ^ (D & (B ^ C))) + X[1] + 0xf61e2562) & 0xffffffff;
+  A = B + (((sum << 5) & 0xffffffff) | (sum >>> 27));
+  sum = (D + (B ^ (C & (A ^ B))) + X[6] + 0xc040b340) & 0xffffffff;
+  D = A + (((sum << 9) & 0xffffffff) | (sum >>> 23));
+  sum = (C + (A ^ (B & (D ^ A))) + X[11] + 0x265e5a51) & 0xffffffff;
+  C = D + (((sum << 14) & 0xffffffff) | (sum >>> 18));
+  sum = (B + (D ^ (A & (C ^ D))) + X[0] + 0xe9b6c7aa) & 0xffffffff;
+  B = C + (((sum << 20) & 0xffffffff) | (sum >>> 12));
+  sum = (A + (C ^ (D & (B ^ C))) + X[5] + 0xd62f105d) & 0xffffffff;
+  A = B + (((sum << 5) & 0xffffffff) | (sum >>> 27));
+  sum = (D + (B ^ (C & (A ^ B))) + X[10] + 0x02441453) & 0xffffffff;
+  D = A + (((sum << 9) & 0xffffffff) | (sum >>> 23));
+  sum = (C + (A ^ (B & (D ^ A))) + X[15] + 0xd8a1e681) & 0xffffffff;
+  C = D + (((sum << 14) & 0xffffffff) | (sum >>> 18));
+  sum = (B + (D ^ (A & (C ^ D))) + X[4] + 0xe7d3fbc8) & 0xffffffff;
+  B = C + (((sum << 20) & 0xffffffff) | (sum >>> 12));
+  sum = (A + (C ^ (D & (B ^ C))) + X[9] + 0x21e1cde6) & 0xffffffff;
+  A = B + (((sum << 5) & 0xffffffff) | (sum >>> 27));
+  sum = (D + (B ^ (C & (A ^ B))) + X[14] + 0xc33707d6) & 0xffffffff;
+  D = A + (((sum << 9) & 0xffffffff) | (sum >>> 23));
+  sum = (C + (A ^ (B & (D ^ A))) + X[3] + 0xf4d50d87) & 0xffffffff;
+  C = D + (((sum << 14) & 0xffffffff) | (sum >>> 18));
+  sum = (B + (D ^ (A & (C ^ D))) + X[8] + 0x455a14ed) & 0xffffffff;
+  B = C + (((sum << 20) & 0xffffffff) | (sum >>> 12));
+  sum = (A + (C ^ (D & (B ^ C))) + X[13] + 0xa9e3e905) & 0xffffffff;
+  A = B + (((sum << 5) & 0xffffffff) | (sum >>> 27));
+  sum = (D + (B ^ (C & (A ^ B))) + X[2] + 0xfcefa3f8) & 0xffffffff;
+  D = A + (((sum << 9) & 0xffffffff) | (sum >>> 23));
+  sum = (C + (A ^ (B & (D ^ A))) + X[7] + 0x676f02d9) & 0xffffffff;
+  C = D + (((sum << 14) & 0xffffffff) | (sum >>> 18));
+  sum = (B + (D ^ (A & (C ^ D))) + X[12] + 0x8d2a4c8a) & 0xffffffff;
+  B = C + (((sum << 20) & 0xffffffff) | (sum >>> 12));
+  sum = (A + (B ^ C ^ D) + X[5] + 0xfffa3942) & 0xffffffff;
+  A = B + (((sum << 4) & 0xffffffff) | (sum >>> 28));
+  sum = (D + (A ^ B ^ C) + X[8] + 0x8771f681) & 0xffffffff;
+  D = A + (((sum << 11) & 0xffffffff) | (sum >>> 21));
+  sum = (C + (D ^ A ^ B) + X[11] + 0x6d9d6122) & 0xffffffff;
+  C = D + (((sum << 16) & 0xffffffff) | (sum >>> 16));
+  sum = (B + (C ^ D ^ A) + X[14] + 0xfde5380c) & 0xffffffff;
+  B = C + (((sum << 23) & 0xffffffff) | (sum >>> 9));
+  sum = (A + (B ^ C ^ D) + X[1] + 0xa4beea44) & 0xffffffff;
+  A = B + (((sum << 4) & 0xffffffff) | (sum >>> 28));
+  sum = (D + (A ^ B ^ C) + X[4] + 0x4bdecfa9) & 0xffffffff;
+  D = A + (((sum << 11) & 0xffffffff) | (sum >>> 21));
+  sum = (C + (D ^ A ^ B) + X[7] + 0xf6bb4b60) & 0xffffffff;
+  C = D + (((sum << 16) & 0xffffffff) | (sum >>> 16));
+  sum = (B + (C ^ D ^ A) + X[10] + 0xbebfbc70) & 0xffffffff;
+  B = C + (((sum << 23) & 0xffffffff) | (sum >>> 9));
+  sum = (A + (B ^ C ^ D) + X[13] + 0x289b7ec6) & 0xffffffff;
+  A = B + (((sum << 4) & 0xffffffff) | (sum >>> 28));
+  sum = (D + (A ^ B ^ C) + X[0] + 0xeaa127fa) & 0xffffffff;
+  D = A + (((sum << 11) & 0xffffffff) | (sum >>> 21));
+  sum = (C + (D ^ A ^ B) + X[3] + 0xd4ef3085) & 0xffffffff;
+  C = D + (((sum << 16) & 0xffffffff) | (sum >>> 16));
+  sum = (B + (C ^ D ^ A) + X[6] + 0x04881d05) & 0xffffffff;
+  B = C + (((sum << 23) & 0xffffffff) | (sum >>> 9));
+  sum = (A + (B ^ C ^ D) + X[9] + 0xd9d4d039) & 0xffffffff;
+  A = B + (((sum << 4) & 0xffffffff) | (sum >>> 28));
+  sum = (D + (A ^ B ^ C) + X[12] + 0xe6db99e5) & 0xffffffff;
+  D = A + (((sum << 11) & 0xffffffff) | (sum >>> 21));
+  sum = (C + (D ^ A ^ B) + X[15] + 0x1fa27cf8) & 0xffffffff;
+  C = D + (((sum << 16) & 0xffffffff) | (sum >>> 16));
+  sum = (B + (C ^ D ^ A) + X[2] + 0xc4ac5665) & 0xffffffff;
+  B = C + (((sum << 23) & 0xffffffff) | (sum >>> 9));
+  sum = (A + (C ^ (B | (~D))) + X[0] + 0xf4292244) & 0xffffffff;
+  A = B + (((sum << 6) & 0xffffffff) | (sum >>> 26));
+  sum = (D + (B ^ (A | (~C))) + X[7] + 0x432aff97) & 0xffffffff;
+  D = A + (((sum << 10) & 0xffffffff) | (sum >>> 22));
+  sum = (C + (A ^ (D | (~B))) + X[14] + 0xab9423a7) & 0xffffffff;
+  C = D + (((sum << 15) & 0xffffffff) | (sum >>> 17));
+  sum = (B + (D ^ (C | (~A))) + X[5] + 0xfc93a039) & 0xffffffff;
+  B = C + (((sum << 21) & 0xffffffff) | (sum >>> 11));
+  sum = (A + (C ^ (B | (~D))) + X[12] + 0x655b59c3) & 0xffffffff;
+  A = B + (((sum << 6) & 0xffffffff) | (sum >>> 26));
+  sum = (D + (B ^ (A | (~C))) + X[3] + 0x8f0ccc92) & 0xffffffff;
+  D = A + (((sum << 10) & 0xffffffff) | (sum >>> 22));
+  sum = (C + (A ^ (D | (~B))) + X[10] + 0xffeff47d) & 0xffffffff;
+  C = D + (((sum << 15) & 0xffffffff) | (sum >>> 17));
+  sum = (B + (D ^ (C | (~A))) + X[1] + 0x85845dd1) & 0xffffffff;
+  B = C + (((sum << 21) & 0xffffffff) | (sum >>> 11));
+  sum = (A + (C ^ (B | (~D))) + X[8] + 0x6fa87e4f) & 0xffffffff;
+  A = B + (((sum << 6) & 0xffffffff) | (sum >>> 26));
+  sum = (D + (B ^ (A | (~C))) + X[15] + 0xfe2ce6e0) & 0xffffffff;
+  D = A + (((sum << 10) & 0xffffffff) | (sum >>> 22));
+  sum = (C + (A ^ (D | (~B))) + X[6] + 0xa3014314) & 0xffffffff;
+  C = D + (((sum << 15) & 0xffffffff) | (sum >>> 17));
+  sum = (B + (D ^ (C | (~A))) + X[13] + 0x4e0811a1) & 0xffffffff;
+  B = C + (((sum << 21) & 0xffffffff) | (sum >>> 11));
+  sum = (A + (C ^ (B | (~D))) + X[4] + 0xf7537e82) & 0xffffffff;
+  A = B + (((sum << 6) & 0xffffffff) | (sum >>> 26));
+  sum = (D + (B ^ (A | (~C))) + X[11] + 0xbd3af235) & 0xffffffff;
+  D = A + (((sum << 10) & 0xffffffff) | (sum >>> 22));
+  sum = (C + (A ^ (D | (~B))) + X[2] + 0x2ad7d2bb) & 0xffffffff;
+  C = D + (((sum << 15) & 0xffffffff) | (sum >>> 17));
+  sum = (B + (D ^ (C | (~A))) + X[9] + 0xeb86d391) & 0xffffffff;
+  B = C + (((sum << 21) & 0xffffffff) | (sum >>> 11));
+
+  this.chain_[0] = (this.chain_[0] + A) & 0xffffffff;
+  this.chain_[1] = (this.chain_[1] + B) & 0xffffffff;
+  this.chain_[2] = (this.chain_[2] + C) & 0xffffffff;
+  this.chain_[3] = (this.chain_[3] + D) & 0xffffffff;
+};
+
+
+/** @override */
+goog.crypt.Md5.prototype.update = function(bytes, opt_length) {
+  if (!goog.isDef(opt_length)) {
+    opt_length = bytes.length;
+  }
+  var lengthMinusBlock = opt_length - this.blockSize;
+
+  // Copy some object properties to local variables in order to save on access
+  // time from inside the loop (~10% speedup was observed on Chrome 11).
+  var block = this.block_;
+  var blockLength = this.blockLength_;
+  var i = 0;
+
+  // The outer while loop should execute at most twice.
+  while (i < opt_length) {
+    // When we have no data in the block to top up, we can directly process the
+    // input buffer (assuming it contains sufficient data). This gives ~30%
+    // speedup on Chrome 14 and ~70% speedup on Firefox 6.0, but requires that
+    // the data is provided in large chunks (or in multiples of 64 bytes).
+    if (blockLength == 0) {
+      while (i <= lengthMinusBlock) {
+        this.compress_(bytes, i);
+        i += this.blockSize;
+      }
+    }
+
+    if (goog.isString(bytes)) {
+      while (i < opt_length) {
+        block[blockLength++] = bytes.charCodeAt(i++);
+        if (blockLength == this.blockSize) {
+          this.compress_(block);
+          blockLength = 0;
+          // Jump to the outer loop so we use the full-block optimization.
+          break;
+        }
+      }
+    } else {
+      while (i < opt_length) {
+        block[blockLength++] = bytes[i++];
+        if (blockLength == this.blockSize) {
+          this.compress_(block);
+          blockLength = 0;
+          // Jump to the outer loop so we use the full-block optimization.
+          break;
+        }
+      }
+    }
+  }
+
+  this.blockLength_ = blockLength;
+  this.totalLength_ += opt_length;
+};
+
+
+/** @override */
+goog.crypt.Md5.prototype.digest = function() {
+  // This must accommodate at least 1 padding byte (0x80), 8 bytes of
+  // total bitlength, and must end at a 64-byte boundary.
+  var pad = new Array((this.blockLength_ < 56 ?
+                       this.blockSize :
+                       this.blockSize * 2) - this.blockLength_);
+
+  // Add padding: 0x80 0x00*
+  pad[0] = 0x80;
+  for (var i = 1; i < pad.length - 8; ++i) {
+    pad[i] = 0;
+  }
+  // Add the total number of bits, little endian 64-bit integer.
+  var totalBits = this.totalLength_ * 8;
+  for (var i = pad.length - 8; i < pad.length; ++i) {
+    pad[i] = totalBits & 0xff;
+    totalBits /= 0x100; // Don't use bit-shifting here!
+  }
+  this.update(pad);
+
+  var digest = new Array(16);
+  var n = 0;
+  for (var i = 0; i < 4; ++i) {
+    for (var j = 0; j < 32; j += 8) {
+      digest[n++] = (this.chain_[i] >>> j) & 0xff;
+    }
+  }
+  return digest;
+};
+
+goog.provide('ol.structs.IHasChecksum');
+
+
+
+/**
+ * @interface
+ */
+ol.structs.IHasChecksum = function() {
+};
+
+
+/**
+ * @return {string} The checksum.
+ */
+ol.structs.IHasChecksum.prototype.getChecksum = function() {
+};
+
 goog.provide('ol.style.Stroke');
+
+goog.require('goog.crypt');
+goog.require('goog.crypt.Md5');
+goog.require('ol.color');
+goog.require('ol.structs.IHasChecksum');
 
 
 
@@ -51242,6 +51997,7 @@ goog.provide('ol.style.Stroke');
  *
  * @constructor
  * @param {olx.style.StrokeOptions=} opt_options Options.
+ * @implements {ol.structs.IHasChecksum}
  * @api
  */
 ol.style.Stroke = function(opt_options) {
@@ -51283,6 +52039,12 @@ ol.style.Stroke = function(opt_options) {
    * @type {number|undefined}
    */
   this.width_ = options.width;
+
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+  this.checksum_ = undefined;
 };
 
 
@@ -51348,6 +52110,7 @@ ol.style.Stroke.prototype.getWidth = function() {
  */
 ol.style.Stroke.prototype.setColor = function(color) {
   this.color_ = color;
+  this.checksum_ = undefined;
 };
 
 
@@ -51359,6 +52122,7 @@ ol.style.Stroke.prototype.setColor = function(color) {
  */
 ol.style.Stroke.prototype.setLineCap = function(lineCap) {
   this.lineCap_ = lineCap;
+  this.checksum_ = undefined;
 };
 
 
@@ -51370,6 +52134,7 @@ ol.style.Stroke.prototype.setLineCap = function(lineCap) {
  */
 ol.style.Stroke.prototype.setLineDash = function(lineDash) {
   this.lineDash_ = lineDash;
+  this.checksum_ = undefined;
 };
 
 
@@ -51381,6 +52146,7 @@ ol.style.Stroke.prototype.setLineDash = function(lineDash) {
  */
 ol.style.Stroke.prototype.setLineJoin = function(lineJoin) {
   this.lineJoin_ = lineJoin;
+  this.checksum_ = undefined;
 };
 
 
@@ -51392,6 +52158,7 @@ ol.style.Stroke.prototype.setLineJoin = function(lineJoin) {
  */
 ol.style.Stroke.prototype.setMiterLimit = function(miterLimit) {
   this.miterLimit_ = miterLimit;
+  this.checksum_ = undefined;
 };
 
 
@@ -51403,6 +52170,35 @@ ol.style.Stroke.prototype.setMiterLimit = function(miterLimit) {
  */
 ol.style.Stroke.prototype.setWidth = function(width) {
   this.width_ = width;
+  this.checksum_ = undefined;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.Stroke.prototype.getChecksum = function() {
+  if (!goog.isDef(this.checksum_)) {
+    var raw = 's' +
+        (!goog.isNull(this.color_) ?
+            ol.color.asString(this.color_) : '-') + ',' +
+        (goog.isDef(this.lineCap_) ?
+            this.lineCap_.toString() : '-') + ',' +
+        (!goog.isNull(this.lineDash_) ?
+            this.lineDash_.toString() : '-') + ',' +
+        (goog.isDef(this.lineJoin_) ?
+            this.lineJoin_ : '-') + ',' +
+        (goog.isDef(this.miterLimit_) ?
+            this.miterLimit_.toString() : '-') + ',' +
+        (goog.isDef(this.width_) ?
+            this.width_.toString() : '-');
+
+    var md5 = new goog.crypt.Md5();
+    md5.update(raw);
+    this.checksum_ = goog.crypt.byteArrayToString(md5.digest());
+  }
+
+  return this.checksum_;
 };
 
 goog.provide('ol.render.canvas');
@@ -51504,6 +52300,9 @@ ol.render.canvas.defaultLineWidth = 1;
 
 goog.provide('ol.style.Fill');
 
+goog.require('ol.color');
+goog.require('ol.structs.IHasChecksum');
+
 
 
 /**
@@ -51512,6 +52311,7 @@ goog.provide('ol.style.Fill');
  *
  * @constructor
  * @param {olx.style.FillOptions=} opt_options Options.
+ * @implements {ol.structs.IHasChecksum}
  * @api
  */
 ol.style.Fill = function(opt_options) {
@@ -51523,6 +52323,12 @@ ol.style.Fill = function(opt_options) {
    * @type {ol.Color|string}
    */
   this.color_ = goog.isDef(options.color) ? options.color : null;
+
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+  this.checksum_ = undefined;
 };
 
 
@@ -51543,15 +52349,31 @@ ol.style.Fill.prototype.getColor = function() {
  */
 ol.style.Fill.prototype.setColor = function(color) {
   this.color_ = color;
+  this.checksum_ = undefined;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.Fill.prototype.getChecksum = function() {
+  if (!goog.isDef(this.checksum_)) {
+    this.checksum_ = 'f' + (!goog.isNull(this.color_) ?
+        ol.color.asString(this.color_) : '-');
+  }
+
+  return this.checksum_;
 };
 
 goog.provide('ol.style.Circle');
 
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
 goog.require('ol.color');
 goog.require('ol.has');
 goog.require('ol.render.canvas');
+goog.require('ol.structs.IHasChecksum');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Image');
 goog.require('ol.style.ImageState');
@@ -51566,6 +52388,7 @@ goog.require('ol.style.Stroke');
  * @constructor
  * @param {olx.style.CircleOptions=} opt_options Options.
  * @extends {ol.style.Image}
+ * @implements {ol.structs.IHasChecksum}
  * @api
  */
 ol.style.Circle = function(opt_options) {
@@ -51574,10 +52397,15 @@ ol.style.Circle = function(opt_options) {
 
   /**
    * @private
+   * @type {Array.<string>}
+   */
+  this.checksums_ = null;
+
+  /**
+   * @private
    * @type {HTMLCanvasElement}
    */
-  this.canvas_ = /** @type {HTMLCanvasElement} */
-      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+  this.canvas_ = null;
 
   /**
    * @private
@@ -51593,9 +52421,9 @@ ol.style.Circle = function(opt_options) {
 
   /**
    * @private
-   * @type {Array.<number>}
+   * @type {ol.style.Stroke}
    */
-  this.origin_ = [0, 0];
+  this.stroke_ = goog.isDef(options.stroke) ? options.stroke : null;
 
   /**
    * @private
@@ -51605,23 +52433,41 @@ ol.style.Circle = function(opt_options) {
 
   /**
    * @private
-   * @type {ol.style.Stroke}
+   * @type {Array.<number>}
    */
-  this.stroke_ = goog.isDef(options.stroke) ? options.stroke : null;
-
-  var size = this.render_();
+  this.origin_ = [0, 0];
 
   /**
    * @private
    * @type {Array.<number>}
    */
-  this.anchor_ = [size / 2, size / 2];
+  this.hitDetectionOrigin_ = [0, 0];
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.anchor_ = null;
 
   /**
    * @private
    * @type {ol.Size}
    */
-  this.size_ = [size, size];
+  this.size_ = null;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.imageSize_ = null;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.hitDetectionImageSize_ = null;
+
+  this.render_(options.atlasManager);
 
   /**
    * @type {boolean}
@@ -51687,10 +52533,34 @@ ol.style.Circle.prototype.getImageState = function() {
 
 /**
  * @inheritDoc
+ */
+ol.style.Circle.prototype.getImageSize = function() {
+  return this.imageSize_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.Circle.prototype.getHitDetectionImageSize = function() {
+  return this.hitDetectionImageSize_;
+};
+
+
+/**
+ * @inheritDoc
  * @api
  */
 ol.style.Circle.prototype.getOrigin = function() {
   return this.origin_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.Circle.prototype.getHitDetectionOrigin = function() {
+  return this.hitDetectionOrigin_;
 };
 
 
@@ -51740,81 +52610,218 @@ ol.style.Circle.prototype.unlistenImageChange = goog.nullFunction;
 
 
 /**
- * @private
- * @return {number} Size.
+ * @typedef {{strokeStyle: (string|undefined), strokeWidth: number,
+ *   size: number, lineDash: Array.<number>}}
  */
-ol.style.Circle.prototype.render_ = function() {
-  var canvas = this.canvas_;
-  var strokeStyle, strokeWidth, lineDash;
+ol.style.Circle.RenderOptions;
 
-  if (goog.isNull(this.stroke_)) {
-    strokeWidth = 0;
-  } else {
+
+/**
+ * @private
+ * @param {ol.style.AtlasManager|undefined} atlasManager
+ */
+ol.style.Circle.prototype.render_ = function(atlasManager) {
+  var imageSize;
+  var lineDash = null;
+  var strokeStyle;
+  var strokeWidth = 0;
+
+  if (!goog.isNull(this.stroke_)) {
     strokeStyle = ol.color.asString(this.stroke_.getColor());
     strokeWidth = this.stroke_.getWidth();
     if (!goog.isDef(strokeWidth)) {
       strokeWidth = ol.render.canvas.defaultLineWidth;
     }
+    lineDash = this.stroke_.getLineDash();
+    if (!ol.has.CANVAS_LINE_DASH) {
+      lineDash = null;
+    }
   }
+
 
   var size = 2 * (this.radius_ + strokeWidth) + 1;
 
-  // draw the circle on the canvas
+  /** @type {ol.style.Circle.RenderOptions} */
+  var renderOptions = {
+    strokeStyle: strokeStyle,
+    strokeWidth: strokeWidth,
+    size: size,
+    lineDash: lineDash
+  };
 
-  canvas.height = size;
-  canvas.width = size;
+  if (!goog.isDef(atlasManager)) {
+    // no atlas manager is used, create a new canvas
+    this.canvas_ = /** @type {HTMLCanvasElement} */
+        (goog.dom.createElement(goog.dom.TagName.CANVAS));
+    this.canvas_.height = size;
+    this.canvas_.width = size;
 
-  // canvas.width and height are rounded to the closest integer
-  size = canvas.width;
+    // canvas.width and height are rounded to the closest integer
+    size = this.canvas_.width;
+    imageSize = size;
 
-  var context = /** @type {CanvasRenderingContext2D} */
-      (canvas.getContext('2d'));
-  context.arc(size / 2, size / 2, this.radius_, 0, 2 * Math.PI, true);
+    // draw the circle on the canvas
+    var context = /** @type {CanvasRenderingContext2D} */
+        (this.canvas_.getContext('2d'));
+    this.draw_(renderOptions, context, 0, 0);
+
+    this.createHitDetectionCanvas_(renderOptions);
+  } else {
+    // an atlas manager is used, add the symbol to an atlas
+    size = Math.round(size);
+
+    var hasCustomHitDetectionImage = goog.isNull(this.fill_);
+    var renderHitDetectionCallback;
+    if (hasCustomHitDetectionImage) {
+      // render the hit-detection image into a separate atlas image
+      renderHitDetectionCallback =
+          goog.bind(this.drawHitDetectionCanvas_, this, renderOptions);
+    }
+
+    var id = this.getChecksum();
+    var info = atlasManager.add(
+        id, size, size, goog.bind(this.draw_, this, renderOptions),
+        renderHitDetectionCallback);
+    goog.asserts.assert(info !== null, 'circle radius is too large');
+
+    this.canvas_ = info.image;
+    this.origin_ = [info.offsetX, info.offsetY];
+    imageSize = info.image.width;
+
+    if (hasCustomHitDetectionImage) {
+      this.hitDetectionCanvas_ = info.hitImage;
+      this.hitDetectionOrigin_ = [info.hitOffsetX, info.hitOffsetY];
+      this.hitDetectionImageSize_ =
+          [info.hitImage.width, info.hitImage.height];
+    } else {
+      this.hitDetectionCanvas_ = this.canvas_;
+      this.hitDetectionOrigin_ = this.origin_;
+      this.hitDetectionImageSize_ = [imageSize, imageSize];
+    }
+  }
+
+  this.anchor_ = [size / 2, size / 2];
+  this.size_ = [size, size];
+  this.imageSize_ = [imageSize, imageSize];
+};
+
+
+/**
+ * @private
+ * @param {ol.style.Circle.RenderOptions} renderOptions
+ * @param {CanvasRenderingContext2D} context
+ * @param {number} x The origin for the symbol (x).
+ * @param {number} y The origin for the symbol (y).
+ */
+ol.style.Circle.prototype.draw_ = function(renderOptions, context, x, y) {
+  // reset transform
+  context.setTransform(1, 0, 0, 1, 0, 0);
+
+  // then move to (x, y)
+  context.translate(x, y);
+
+  context.beginPath();
+  context.arc(
+      renderOptions.size / 2, renderOptions.size / 2,
+      this.radius_, 0, 2 * Math.PI, true);
 
   if (!goog.isNull(this.fill_)) {
     context.fillStyle = ol.color.asString(this.fill_.getColor());
     context.fill();
   }
   if (!goog.isNull(this.stroke_)) {
-    context.strokeStyle = strokeStyle;
-    lineDash = this.stroke_.getLineDash();
-    if (ol.has.CANVAS_LINE_DASH && !goog.isNull(lineDash)) {
-      context.setLineDash(lineDash);
+    context.strokeStyle = renderOptions.strokeStyle;
+    context.lineWidth = renderOptions.strokeWidth;
+    if (!goog.isNull(renderOptions.lineDash)) {
+      context.setLineDash(renderOptions.lineDash);
     }
-    context.lineWidth = strokeWidth;
     context.stroke();
   }
+  context.closePath();
+};
 
-  // deal with the hit detection canvas
 
+/**
+ * @private
+ * @param {ol.style.Circle.RenderOptions} renderOptions
+ */
+ol.style.Circle.prototype.createHitDetectionCanvas_ = function(renderOptions) {
+  this.hitDetectionImageSize_ = [renderOptions.size, renderOptions.size];
   if (!goog.isNull(this.fill_)) {
-    this.hitDetectionCanvas_ = canvas;
-  } else {
-    this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
-        (goog.dom.createElement(goog.dom.TagName.CANVAS));
-    canvas = this.hitDetectionCanvas_;
-
-    canvas.height = size;
-    canvas.width = size;
-
-    context = /** @type {CanvasRenderingContext2D} */
-        (canvas.getContext('2d'));
-    context.arc(size / 2, size / 2, this.radius_, 0, 2 * Math.PI, true);
-
-    context.fillStyle = ol.render.canvas.defaultFillStyle;
-    context.fill();
-    if (!goog.isNull(this.stroke_)) {
-      context.strokeStyle = strokeStyle;
-      lineDash = this.stroke_.getLineDash();
-      if (ol.has.CANVAS_LINE_DASH && !goog.isNull(lineDash)) {
-        context.setLineDash(lineDash);
-      }
-      context.lineWidth = strokeWidth;
-      context.stroke();
-    }
+    this.hitDetectionCanvas_ = this.canvas_;
+    return;
   }
 
-  return size;
+  // if no fill style is set, create an extra hit-detection image with a
+  // default fill style
+  this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
+      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+  var canvas = this.hitDetectionCanvas_;
+
+  canvas.height = renderOptions.size;
+  canvas.width = renderOptions.size;
+
+  var context = /** @type {CanvasRenderingContext2D} */
+      (canvas.getContext('2d'));
+  this.drawHitDetectionCanvas_(renderOptions, context, 0, 0);
+};
+
+
+/**
+ * @private
+ * @param {ol.style.Circle.RenderOptions} renderOptions
+ * @param {CanvasRenderingContext2D} context
+ * @param {number} x The origin for the symbol (x).
+ * @param {number} y The origin for the symbol (y).
+ */
+ol.style.Circle.prototype.drawHitDetectionCanvas_ =
+    function(renderOptions, context, x, y) {
+  // reset transform
+  context.setTransform(1, 0, 0, 1, 0, 0);
+
+  // then move to (x, y)
+  context.translate(x, y);
+
+  context.beginPath();
+  context.arc(
+      renderOptions.size / 2, renderOptions.size / 2,
+      this.radius_, 0, 2 * Math.PI, true);
+
+  context.fillStyle = ol.render.canvas.defaultFillStyle;
+  context.fill();
+  if (!goog.isNull(this.stroke_)) {
+    context.strokeStyle = renderOptions.strokeStyle;
+    context.lineWidth = renderOptions.strokeWidth;
+    if (!goog.isNull(renderOptions.lineDash)) {
+      context.setLineDash(renderOptions.lineDash);
+    }
+    context.stroke();
+  }
+  context.closePath();
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.Circle.prototype.getChecksum = function() {
+  var strokeChecksum = !goog.isNull(this.stroke_) ?
+      this.stroke_.getChecksum() : '-';
+  var fillChecksum = !goog.isNull(this.fill_) ?
+      this.fill_.getChecksum() : '-';
+
+  var recalculate = goog.isNull(this.checksums_) ||
+      (strokeChecksum != this.checksums_[1] ||
+      fillChecksum != this.checksums_[2] ||
+      this.radius_ != this.checksums_[3]);
+
+  if (recalculate) {
+    var checksum = 'c' + strokeChecksum + fillChecksum +
+        (goog.isDef(this.radius_) ? this.radius_.toString() : '-');
+    this.checksums_ = [checksum, strokeChecksum, fillChecksum, this.radius_];
+  }
+
+  return this.checksums_[0];
 };
 
 goog.provide('ol.style.Style');
@@ -54662,13 +55669,6 @@ ol.render.IReplayGroup = function() {
 
 
 /**
- * FIXME empty description for jsdoc
- */
-ol.render.IReplayGroup.prototype.finish = function() {
-};
-
-
-/**
  * @param {number|undefined} zIndex Z index.
  * @param {ol.render.ReplayType} replayType Replay type.
  * @return {ol.render.IVectorContext} Replay.
@@ -56696,7 +57696,7 @@ ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtPixel = function(
 
 
 /**
- * @inheritDoc
+ * FIXME empty description for jsdoc
  */
 ol.render.canvas.ReplayGroup.prototype.finish = function() {
   var zKey;
@@ -56965,6 +57965,14 @@ ol.renderer.canvas.Layer.prototype.getTransform = function(frameState) {
 
 
 /**
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.layer.LayerState} layerState Layer state.
+ * @return {boolean} whether composeFrame should be called.
+ */
+ol.renderer.canvas.Layer.prototype.prepareFrame = goog.abstractMethod;
+
+
+/**
  * @param {ol.Size} size Size.
  * @return {boolean} True when the canvas with the current size does not exceed
  *     the maximum dimensions.
@@ -57017,6 +58025,7 @@ goog.require('ol.ImageState');
 goog.require('ol.ViewHint');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
+goog.require('ol.proj');
 goog.require('ol.renderer.Map');
 goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.vec.Mat4');
@@ -57116,8 +58125,14 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
 
   if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING] &&
       !ol.extent.isEmpty(renderedExtent)) {
+    var projection = viewState.projection;
+    var sourceProjection = imageSource.getProjection();
+    if (!goog.isNull(sourceProjection)) {
+      goog.asserts.assert(ol.proj.equivalent(projection, sourceProjection));
+      projection = sourceProjection;
+    }
     image = imageSource.getImage(
-        renderedExtent, viewResolution, pixelRatio, viewState.projection);
+        renderedExtent, viewResolution, pixelRatio, projection);
     if (!goog.isNull(image)) {
       var imageState = image.getState();
       if (imageState == ol.ImageState.IDLE) {
@@ -60400,6 +61415,14 @@ ol.renderer.dom.Layer.prototype.getTarget = function() {
   return this.target;
 };
 
+
+/**
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.layer.LayerState} layerState Layer state.
+ * @return {boolean} whether composeFrame should be called.
+ */
+ol.renderer.dom.Layer.prototype.prepareFrame = goog.abstractMethod;
+
 goog.provide('ol.renderer.dom.ImageLayer');
 
 goog.require('goog.asserts');
@@ -60414,6 +61437,7 @@ goog.require('ol.ViewHint');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
+goog.require('ol.proj');
 goog.require('ol.renderer.dom.Layer');
 goog.require('ol.vec.Mat4');
 
@@ -60506,8 +61530,14 @@ ol.renderer.dom.ImageLayer.prototype.prepareFrame =
 
   if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING] &&
       !ol.extent.isEmpty(renderedExtent)) {
+    var projection = viewState.projection;
+    var sourceProjection = imageSource.getProjection();
+    if (!goog.isNull(sourceProjection)) {
+      goog.asserts.assert(ol.proj.equivalent(projection, sourceProjection));
+      projection = sourceProjection;
+    }
     var image_ = imageSource.getImage(renderedExtent, viewResolution,
-        frameState.pixelRatio, viewState.projection);
+        frameState.pixelRatio, projection);
     if (!goog.isNull(image_)) {
       var imageState = image_.getState();
       if (imageState == ol.ImageState.IDLE) {
@@ -63836,128 +64866,6 @@ goog.webgl.TEXTURE_MAX_ANISOTROPY_EXT = 0x84FE;
  */
 goog.webgl.MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
 
-goog.provide('ol.render.webgl.Immediate');
-
-
-
-/**
- * @constructor
- * @implements {ol.render.IVectorContext}
- * @param {ol.webgl.Context} context Context.
- * @param {number} pixelRatio Pixel ratio.
- * @struct
- */
-ol.render.webgl.Immediate = function(context, pixelRatio) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawAsync = function(zIndex, callback) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawCircleGeometry =
-    function(circleGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawFeature = function(feature, style) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawGeometryCollectionGeometry =
-    function(geometryCollectionGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawPointGeometry =
-    function(pointGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawLineStringGeometry =
-    function(lineStringGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawMultiLineStringGeometry =
-    function(multiLineStringGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawMultiPointGeometry =
-    function(multiPointGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawMultiPolygonGeometry =
-    function(multiPolygonGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawPolygonGeometry =
-    function(polygonGeometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.drawText =
-    function(flatCoordinates, offset, end, stride, geometry, data) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.setFillStrokeStyle =
-    function(fillStyle, strokeStyle) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.setImageStyle = function(imageStyle) {
-};
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.Immediate.prototype.setTextStyle = function(textStyle) {
-};
-
 goog.provide('ol.webgl.shader');
 
 goog.require('goog.functions');
@@ -64041,6 +64949,1508 @@ goog.inherits(ol.webgl.shader.Vertex, ol.webgl.Shader);
  */
 ol.webgl.shader.Vertex.prototype.getType = function() {
   return goog.webgl.VERTEX_SHADER;
+};
+
+// This file is automatically generated, do not edit
+goog.provide('ol.render.webgl.imagereplay.shader.Color');
+
+goog.require('ol.webgl.shader');
+
+
+
+/**
+ * @constructor
+ * @extends {ol.webgl.shader.Fragment}
+ * @struct
+ */
+ol.render.webgl.imagereplay.shader.ColorFragment = function() {
+  goog.base(this, ol.render.webgl.imagereplay.shader.ColorFragment.SOURCE);
+};
+goog.inherits(ol.render.webgl.imagereplay.shader.ColorFragment, ol.webgl.shader.Fragment);
+goog.addSingletonGetter(ol.render.webgl.imagereplay.shader.ColorFragment);
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.ColorFragment.DEBUG_SOURCE = 'precision mediump float;\nvarying vec2 v_texCoord;\nvarying float v_opacity;\n\n// @see https://svn.webkit.org/repository/webkit/trunk/Source/WebCore/platform/graphics/filters/skia/SkiaImageFilterBuilder.cpp\nuniform mat4 u_colorMatrix;\nuniform float u_opacity;\nuniform sampler2D u_image;\n\nvoid main(void) {\n  vec4 texColor = texture2D(u_image, v_texCoord);\n  float alpha = texColor.a * v_opacity * u_opacity;\n  if (alpha == 0.0) {\n    discard;\n  }\n  gl_FragColor.a = alpha;\n  gl_FragColor.rgb = (u_colorMatrix * vec4(texColor.rgb, 1.)).rgb;\n}\n';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.ColorFragment.OPTIMIZED_SOURCE = 'precision mediump float;varying vec2 a;varying float b;uniform mat4 k;uniform float l;uniform sampler2D m;void main(void){vec4 texColor=texture2D(m,a);float alpha=texColor.a*b*l;if(alpha==0.0){discard;}gl_FragColor.a=alpha;gl_FragColor.rgb=(k*vec4(texColor.rgb,1.)).rgb;}';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.ColorFragment.SOURCE = goog.DEBUG ?
+    ol.render.webgl.imagereplay.shader.ColorFragment.DEBUG_SOURCE :
+    ol.render.webgl.imagereplay.shader.ColorFragment.OPTIMIZED_SOURCE;
+
+
+
+/**
+ * @constructor
+ * @extends {ol.webgl.shader.Vertex}
+ * @struct
+ */
+ol.render.webgl.imagereplay.shader.ColorVertex = function() {
+  goog.base(this, ol.render.webgl.imagereplay.shader.ColorVertex.SOURCE);
+};
+goog.inherits(ol.render.webgl.imagereplay.shader.ColorVertex, ol.webgl.shader.Vertex);
+goog.addSingletonGetter(ol.render.webgl.imagereplay.shader.ColorVertex);
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.ColorVertex.DEBUG_SOURCE = 'varying vec2 v_texCoord;\nvarying float v_opacity;\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\nattribute vec2 a_offsets;\nattribute float a_opacity;\nattribute float a_rotateWithView;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\n\nvoid main(void) {\n  mat4 offsetMatrix = u_offsetScaleMatrix;\n  if (a_rotateWithView == 1.0) {\n    offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  }\n  vec4 offsets = offsetMatrix * vec4(a_offsets, 0., 0.);\n  gl_Position = u_projectionMatrix * vec4(a_position, 0., 1.) + offsets;\n  v_texCoord = a_texCoord;\n  v_opacity = a_opacity;\n}\n\n\n';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.ColorVertex.OPTIMIZED_SOURCE = 'varying vec2 a;varying float b;attribute vec2 c;attribute vec2 d;attribute vec2 e;attribute float f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;void main(void){mat4 offsetMatrix=i;if(g==1.0){offsetMatrix=i*j;}vec4 offsets=offsetMatrix*vec4(e,0.,0.);gl_Position=h*vec4(c,0.,1.)+offsets;a=d;b=f;}';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.ColorVertex.SOURCE = goog.DEBUG ?
+    ol.render.webgl.imagereplay.shader.ColorVertex.DEBUG_SOURCE :
+    ol.render.webgl.imagereplay.shader.ColorVertex.OPTIMIZED_SOURCE;
+
+
+
+/**
+ * @constructor
+ * @param {WebGLRenderingContext} gl GL.
+ * @param {WebGLProgram} program Program.
+ * @struct
+ */
+ol.render.webgl.imagereplay.shader.Color.Locations = function(gl, program) {
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_colorMatrix = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_colorMatrix' : 'k');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_image = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_image' : 'm');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_offsetRotateMatrix = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_offsetRotateMatrix' : 'j');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_offsetScaleMatrix = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_offsetScaleMatrix' : 'i');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_opacity = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_opacity' : 'l');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_projectionMatrix = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_projectionMatrix' : 'h');
+
+  /**
+   * @type {number}
+   */
+  this.a_offsets = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_offsets' : 'e');
+
+  /**
+   * @type {number}
+   */
+  this.a_opacity = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_opacity' : 'f');
+
+  /**
+   * @type {number}
+   */
+  this.a_position = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_position' : 'c');
+
+  /**
+   * @type {number}
+   */
+  this.a_rotateWithView = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_rotateWithView' : 'g');
+
+  /**
+   * @type {number}
+   */
+  this.a_texCoord = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_texCoord' : 'd');
+};
+
+// This file is automatically generated, do not edit
+goog.provide('ol.render.webgl.imagereplay.shader.Default');
+
+goog.require('ol.webgl.shader');
+
+
+
+/**
+ * @constructor
+ * @extends {ol.webgl.shader.Fragment}
+ * @struct
+ */
+ol.render.webgl.imagereplay.shader.DefaultFragment = function() {
+  goog.base(this, ol.render.webgl.imagereplay.shader.DefaultFragment.SOURCE);
+};
+goog.inherits(ol.render.webgl.imagereplay.shader.DefaultFragment, ol.webgl.shader.Fragment);
+goog.addSingletonGetter(ol.render.webgl.imagereplay.shader.DefaultFragment);
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.DefaultFragment.DEBUG_SOURCE = 'precision mediump float;\nvarying vec2 v_texCoord;\nvarying float v_opacity;\n\nuniform float u_opacity;\nuniform sampler2D u_image;\n\nvoid main(void) {\n  vec4 texColor = texture2D(u_image, v_texCoord);\n  gl_FragColor.rgb = texColor.rgb;\n  float alpha = texColor.a * v_opacity * u_opacity;\n  if (alpha == 0.0) {\n    discard;\n  }\n  gl_FragColor.a = alpha;\n}\n';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.DefaultFragment.OPTIMIZED_SOURCE = 'precision mediump float;varying vec2 a;varying float b;uniform float k;uniform sampler2D l;void main(void){vec4 texColor=texture2D(l,a);gl_FragColor.rgb=texColor.rgb;float alpha=texColor.a*b*k;if(alpha==0.0){discard;}gl_FragColor.a=alpha;}';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.DefaultFragment.SOURCE = goog.DEBUG ?
+    ol.render.webgl.imagereplay.shader.DefaultFragment.DEBUG_SOURCE :
+    ol.render.webgl.imagereplay.shader.DefaultFragment.OPTIMIZED_SOURCE;
+
+
+
+/**
+ * @constructor
+ * @extends {ol.webgl.shader.Vertex}
+ * @struct
+ */
+ol.render.webgl.imagereplay.shader.DefaultVertex = function() {
+  goog.base(this, ol.render.webgl.imagereplay.shader.DefaultVertex.SOURCE);
+};
+goog.inherits(ol.render.webgl.imagereplay.shader.DefaultVertex, ol.webgl.shader.Vertex);
+goog.addSingletonGetter(ol.render.webgl.imagereplay.shader.DefaultVertex);
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.DefaultVertex.DEBUG_SOURCE = 'varying vec2 v_texCoord;\nvarying float v_opacity;\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\nattribute vec2 a_offsets;\nattribute float a_opacity;\nattribute float a_rotateWithView;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\n\nvoid main(void) {\n  mat4 offsetMatrix = u_offsetScaleMatrix;\n  if (a_rotateWithView == 1.0) {\n    offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  }\n  vec4 offsets = offsetMatrix * vec4(a_offsets, 0., 0.);\n  gl_Position = u_projectionMatrix * vec4(a_position, 0., 1.) + offsets;\n  v_texCoord = a_texCoord;\n  v_opacity = a_opacity;\n}\n\n\n';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.DefaultVertex.OPTIMIZED_SOURCE = 'varying vec2 a;varying float b;attribute vec2 c;attribute vec2 d;attribute vec2 e;attribute float f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;void main(void){mat4 offsetMatrix=i;if(g==1.0){offsetMatrix=i*j;}vec4 offsets=offsetMatrix*vec4(e,0.,0.);gl_Position=h*vec4(c,0.,1.)+offsets;a=d;b=f;}';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.render.webgl.imagereplay.shader.DefaultVertex.SOURCE = goog.DEBUG ?
+    ol.render.webgl.imagereplay.shader.DefaultVertex.DEBUG_SOURCE :
+    ol.render.webgl.imagereplay.shader.DefaultVertex.OPTIMIZED_SOURCE;
+
+
+
+/**
+ * @constructor
+ * @param {WebGLRenderingContext} gl GL.
+ * @param {WebGLProgram} program Program.
+ * @struct
+ */
+ol.render.webgl.imagereplay.shader.Default.Locations = function(gl, program) {
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_image = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_image' : 'l');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_offsetRotateMatrix = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_offsetRotateMatrix' : 'j');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_offsetScaleMatrix = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_offsetScaleMatrix' : 'i');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_opacity = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_opacity' : 'k');
+
+  /**
+   * @type {WebGLUniformLocation}
+   */
+  this.u_projectionMatrix = gl.getUniformLocation(
+      program, goog.DEBUG ? 'u_projectionMatrix' : 'h');
+
+  /**
+   * @type {number}
+   */
+  this.a_offsets = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_offsets' : 'e');
+
+  /**
+   * @type {number}
+   */
+  this.a_opacity = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_opacity' : 'f');
+
+  /**
+   * @type {number}
+   */
+  this.a_position = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_position' : 'c');
+
+  /**
+   * @type {number}
+   */
+  this.a_rotateWithView = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_rotateWithView' : 'g');
+
+  /**
+   * @type {number}
+   */
+  this.a_texCoord = gl.getAttribLocation(
+      program, goog.DEBUG ? 'a_texCoord' : 'd');
+};
+
+goog.provide('ol.webgl.Buffer');
+
+goog.require('goog.array');
+goog.require('goog.webgl');
+goog.require('ol');
+
+
+/**
+ * @enum {number}
+ */
+ol.webgl.BufferUsage = {
+  STATIC_DRAW: goog.webgl.STATIC_DRAW,
+  STREAM_DRAW: goog.webgl.STREAM_DRAW,
+  DYNAMIC_DRAW: goog.webgl.DYNAMIC_DRAW
+};
+
+
+
+/**
+ * @constructor
+ * @param {Array.<number>=} opt_arr Array.
+ * @param {number=} opt_usage Usage.
+ * @struct
+ */
+ol.webgl.Buffer = function(opt_arr, opt_usage) {
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.arr_ = goog.isDef(opt_arr) ? opt_arr : [];
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.usage_ = goog.isDef(opt_usage) ?
+      opt_usage : ol.webgl.BufferUsage.STATIC_DRAW;
+
+};
+
+
+/**
+ * @return {Array.<number>} Array.
+ */
+ol.webgl.Buffer.prototype.getArray = function() {
+  return this.arr_;
+};
+
+
+/**
+ * @return {number} Usage.
+ */
+ol.webgl.Buffer.prototype.getUsage = function() {
+  return this.usage_;
+};
+
+goog.provide('ol.render.webgl.ImageReplay');
+goog.provide('ol.render.webgl.ReplayGroup');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.functions');
+goog.require('goog.object');
+goog.require('goog.vec.Mat4');
+goog.require('ol.color.Matrix');
+goog.require('ol.extent');
+goog.require('ol.render.IReplayGroup');
+goog.require('ol.render.webgl.imagereplay.shader.Color');
+goog.require('ol.render.webgl.imagereplay.shader.Default');
+goog.require('ol.vec.Mat4');
+goog.require('ol.webgl.Buffer');
+
+
+
+/**
+ * @constructor
+ * @implements {ol.render.IVectorContext}
+ * @param {number} tolerance Tolerance.
+ * @param {ol.Extent} maxExtent Max extent.
+ * @protected
+ * @struct
+ */
+ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.anchorX_ = undefined;
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.anchorY_ = undefined;
+
+  /**
+   * @private
+   * @type {ol.color.Matrix}
+   */
+  this.colorMatrix_ = new ol.color.Matrix();
+
+  /**
+   * The origin of the coordinate system for the point coordinates sent to
+   * the GPU. To eliminate jitter caused by precision problems in the GPU
+   * we use the "Rendering Relative to Eye" technique described in the "3D
+   * Engine Design for Virtual Globes" book.
+   * @private
+   * @type {ol.Coordinate}
+   */
+  this.origin_ = ol.extent.getCenter(maxExtent);
+
+  /**
+   * @type {ol.Extent}
+   * @private
+   */
+  this.extent_ = ol.extent.createEmpty();
+
+  /**
+   * @type {Array.<number>}
+   * @private
+   */
+  this.groupIndices_ = [];
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.height_ = undefined;
+
+  /**
+   * @type {Array.<HTMLCanvasElement|HTMLImageElement|HTMLVideoElement>}
+   * @private
+   */
+  this.images_ = [];
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.imageHeight_ = undefined;
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.imageWidth_ = undefined;
+
+  /**
+   * @type {Array.<number>}
+   * @private
+   */
+  this.indices_ = [];
+
+  /**
+   * @type {ol.webgl.Buffer}
+   * @private
+   */
+  this.indicesBuffer_ = null;
+
+  /**
+   * @private
+   * @type {ol.render.webgl.imagereplay.shader.Color.Locations}
+   */
+  this.colorLocations_ = null;
+
+  /**
+   * @private
+   * @type {ol.render.webgl.imagereplay.shader.Default.Locations}
+   */
+  this.defaultLocations_ = null;
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.opacity_ = undefined;
+
+  /**
+   * @type {!goog.vec.Mat4.Number}
+   * @private
+   */
+  this.offsetRotateMatrix_ = goog.vec.Mat4.createNumberIdentity();
+
+  /**
+   * @type {!goog.vec.Mat4.Number}
+   * @private
+   */
+  this.offsetScaleMatrix_ = goog.vec.Mat4.createNumberIdentity();
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.originX_ = undefined;
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.originY_ = undefined;
+
+  /**
+   * @type {!goog.vec.Mat4.Number}
+   * @private
+   */
+  this.projectionMatrix_ = goog.vec.Mat4.createNumberIdentity();
+
+  /**
+   * @private
+   * @type {boolean|undefined}
+   */
+  this.rotateWithView_ = undefined;
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.rotation_ = undefined;
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.scale_ = undefined;
+
+  /**
+   * @type {Array.<WebGLTexture>}
+   * @private
+   */
+  this.textures_ = [];
+
+  /**
+   * @type {Array.<number>}
+   * @private
+   */
+  this.vertices_ = [];
+
+  /**
+   * @type {ol.webgl.Buffer}
+   * @private
+   */
+  this.verticesBuffer_ = null;
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.width_ = undefined;
+
+};
+
+
+/**
+ * @param {ol.webgl.Context} context WebGL context.
+ * @return {function()} Delete resources function.
+ */
+ol.render.webgl.ImageReplay.prototype.getDeleteResourcesFunction =
+    function(context) {
+  // We only delete our stuff here. The shaders and the program may
+  // be used by other ImageReplay instances (for other layers). And
+  // they will be deleted when disposing of the ol.webgl.Context
+  // object.
+  goog.asserts.assert(!goog.isNull(this.verticesBuffer_));
+  goog.asserts.assert(!goog.isNull(this.indicesBuffer_));
+  var verticesBuffer = this.verticesBuffer_;
+  var indicesBuffer = this.indicesBuffer_;
+  var textures = this.textures_;
+  var gl = context.getGL();
+  return function() {
+    if (!gl.isContextLost()) {
+      var i, ii;
+      for (i = 0, ii = textures.length; i < ii; ++i) {
+        gl.deleteTexture(textures[i]);
+      }
+    }
+    context.deleteBuffer(verticesBuffer);
+    context.deleteBuffer(indicesBuffer);
+  };
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawAsync = goog.abstractMethod;
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @return {number} My end.
+ * @private
+ */
+ol.render.webgl.ImageReplay.prototype.drawCoordinates_ =
+    function(flatCoordinates, offset, end, stride) {
+  goog.asserts.assert(goog.isDef(this.anchorX_));
+  goog.asserts.assert(goog.isDef(this.anchorY_));
+  goog.asserts.assert(goog.isDef(this.height_));
+  goog.asserts.assert(goog.isDef(this.imageHeight_));
+  goog.asserts.assert(goog.isDef(this.imageWidth_));
+  goog.asserts.assert(goog.isDef(this.opacity_));
+  goog.asserts.assert(goog.isDef(this.originX_));
+  goog.asserts.assert(goog.isDef(this.originY_));
+  goog.asserts.assert(goog.isDef(this.rotateWithView_));
+  goog.asserts.assert(goog.isDef(this.rotation_));
+  goog.asserts.assert(goog.isDef(this.scale_));
+  goog.asserts.assert(goog.isDef(this.width_));
+  var anchorX = this.anchorX_;
+  var anchorY = this.anchorY_;
+  var height = this.height_;
+  var imageHeight = this.imageHeight_;
+  var imageWidth = this.imageWidth_;
+  var opacity = this.opacity_;
+  var originX = this.originX_;
+  var originY = this.originY_;
+  var rotateWithView = this.rotateWithView_ ? 1.0 : 0.0;
+  var rotation = this.rotation_;
+  var scale = this.scale_;
+  var width = this.width_;
+  var cos = Math.cos(rotation);
+  var sin = Math.sin(rotation);
+  var numIndices = this.indices_.length;
+  var numVertices = this.vertices_.length;
+  var i, n, offsetX, offsetY, x, y;
+  for (i = offset; i < end; i += stride) {
+    x = flatCoordinates[i] - this.origin_[0];
+    y = flatCoordinates[i + 1] - this.origin_[1];
+
+    // There are 4 vertices per [x, y] point, one for each corner of the
+    // rectangle we're going to draw. We'd use 1 vertex per [x, y] point if
+    // WebGL supported Geometry Shaders (which can emit new vertices), but that
+    // is not currently the case.
+    //
+    // And each vertex includes 8 values: the x and y coordinates, the x and
+    // y offsets used to calculate the position of the corner, the u and
+    // v texture coordinates for the corner, the opacity, and whether the
+    // the image should be rotated with the view (rotateWithView).
+
+    n = numVertices / 8;
+
+    // bottom-left corner
+    offsetX = -scale * anchorX;
+    offsetY = -scale * (height - anchorY);
+    this.vertices_[numVertices++] = x;
+    this.vertices_[numVertices++] = y;
+    this.vertices_[numVertices++] = offsetX * cos - offsetY * sin;
+    this.vertices_[numVertices++] = offsetX * sin + offsetY * cos;
+    this.vertices_[numVertices++] = originX / imageWidth;
+    this.vertices_[numVertices++] = (originY + height) / imageHeight;
+    this.vertices_[numVertices++] = opacity;
+    this.vertices_[numVertices++] = rotateWithView;
+
+    // bottom-right corner
+    offsetX = scale * (width - anchorX);
+    offsetY = -scale * (height - anchorY);
+    this.vertices_[numVertices++] = x;
+    this.vertices_[numVertices++] = y;
+    this.vertices_[numVertices++] = offsetX * cos - offsetY * sin;
+    this.vertices_[numVertices++] = offsetX * sin + offsetY * cos;
+    this.vertices_[numVertices++] = (originX + width) / imageWidth;
+    this.vertices_[numVertices++] = (originY + height) / imageHeight;
+    this.vertices_[numVertices++] = opacity;
+    this.vertices_[numVertices++] = rotateWithView;
+
+    // top-right corner
+    offsetX = scale * (width - anchorX);
+    offsetY = scale * anchorY;
+    this.vertices_[numVertices++] = x;
+    this.vertices_[numVertices++] = y;
+    this.vertices_[numVertices++] = offsetX * cos - offsetY * sin;
+    this.vertices_[numVertices++] = offsetX * sin + offsetY * cos;
+    this.vertices_[numVertices++] = (originX + width) / imageWidth;
+    this.vertices_[numVertices++] = originY / imageHeight;
+    this.vertices_[numVertices++] = opacity;
+    this.vertices_[numVertices++] = rotateWithView;
+
+    // top-left corner
+    offsetX = -scale * anchorX;
+    offsetY = scale * anchorY;
+    this.vertices_[numVertices++] = x;
+    this.vertices_[numVertices++] = y;
+    this.vertices_[numVertices++] = offsetX * cos - offsetY * sin;
+    this.vertices_[numVertices++] = offsetX * sin + offsetY * cos;
+    this.vertices_[numVertices++] = originX / imageWidth;
+    this.vertices_[numVertices++] = originY / imageHeight;
+    this.vertices_[numVertices++] = opacity;
+    this.vertices_[numVertices++] = rotateWithView;
+
+    this.indices_[numIndices++] = n;
+    this.indices_[numIndices++] = n + 1;
+    this.indices_[numIndices++] = n + 2;
+    this.indices_[numIndices++] = n;
+    this.indices_[numIndices++] = n + 2;
+    this.indices_[numIndices++] = n + 3;
+  }
+
+  return numVertices;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawCircleGeometry = goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawFeature = goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawGeometryCollectionGeometry =
+    goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawLineStringGeometry =
+    goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawMultiLineStringGeometry =
+    goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawMultiPointGeometry =
+    function(multiPointGeometry, data) {
+  ol.extent.extend(this.extent_, multiPointGeometry.getExtent());
+  var flatCoordinates = multiPointGeometry.getFlatCoordinates();
+  var stride = multiPointGeometry.getStride();
+  this.drawCoordinates_(
+      flatCoordinates, 0, flatCoordinates.length, stride);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawMultiPolygonGeometry =
+    goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawPointGeometry =
+    function(pointGeometry, data) {
+  ol.extent.extend(this.extent_, pointGeometry.getExtent());
+  var flatCoordinates = pointGeometry.getFlatCoordinates();
+  var stride = pointGeometry.getStride();
+  this.drawCoordinates_(
+      flatCoordinates, 0, flatCoordinates.length, stride);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawPolygonGeometry = goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.drawText = goog.abstractMethod;
+
+
+/**
+ * @param {ol.webgl.Context} context Context.
+ */
+ol.render.webgl.ImageReplay.prototype.finish = function(context) {
+  var gl = context.getGL();
+
+  this.groupIndices_.push(this.indices_.length);
+  goog.asserts.assert(this.images_.length == this.groupIndices_.length);
+
+  // create, bind, and populate the vertices buffer
+  this.verticesBuffer_ = new ol.webgl.Buffer(this.vertices_);
+  context.bindBuffer(goog.webgl.ARRAY_BUFFER, this.verticesBuffer_);
+
+  var indices = this.indices_;
+  var bits = context.hasOESElementIndexUint ? 32 : 16;
+  goog.asserts.assert(indices[indices.length - 1] < Math.pow(2, bits),
+      'Too large element index detected [%s] (OES_element_index_uint "%s")',
+      indices[indices.length - 1], context.hasOESElementIndexUint);
+
+  // create, bind, and populate the indices buffer
+  this.indicesBuffer_ = new ol.webgl.Buffer(indices);
+  context.bindBuffer(goog.webgl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer_);
+
+  goog.asserts.assert(this.textures_.length === 0);
+
+  // create textures
+  var texture, image, uid;
+  /** @type {Object.<string, WebGLTexture>} */
+  var texturePerImage = {};
+  var i;
+  var ii = this.images_.length;
+  for (i = 0; i < ii; ++i) {
+    image = this.images_[i];
+
+    uid = goog.getUid(image).toString();
+    if (goog.object.containsKey(texturePerImage, uid)) {
+      texture = goog.object.get(texturePerImage, uid);
+    } else {
+      texture = gl.createTexture();
+      gl.bindTexture(goog.webgl.TEXTURE_2D, texture);
+      gl.texParameteri(goog.webgl.TEXTURE_2D,
+          goog.webgl.TEXTURE_WRAP_S, goog.webgl.CLAMP_TO_EDGE);
+      gl.texParameteri(goog.webgl.TEXTURE_2D,
+          goog.webgl.TEXTURE_WRAP_T, goog.webgl.CLAMP_TO_EDGE);
+      gl.texParameteri(goog.webgl.TEXTURE_2D,
+          goog.webgl.TEXTURE_MIN_FILTER, goog.webgl.LINEAR);
+      gl.texParameteri(goog.webgl.TEXTURE_2D,
+          goog.webgl.TEXTURE_MAG_FILTER, goog.webgl.LINEAR);
+      gl.texImage2D(goog.webgl.TEXTURE_2D, 0, goog.webgl.RGBA, goog.webgl.RGBA,
+          goog.webgl.UNSIGNED_BYTE, image);
+      goog.object.set(texturePerImage, uid, texture);
+    }
+    this.textures_[i] = texture;
+  }
+
+  goog.asserts.assert(this.textures_.length == this.groupIndices_.length);
+
+  this.anchorX_ = undefined;
+  this.anchorY_ = undefined;
+  this.height_ = undefined;
+  this.images_ = null;
+  this.imageHeight_ = undefined;
+  this.imageWidth_ = undefined;
+  this.indices_ = null;
+  this.opacity_ = undefined;
+  this.originX_ = undefined;
+  this.originY_ = undefined;
+  this.rotateWithView_ = undefined;
+  this.rotation_ = undefined;
+  this.scale_ = undefined;
+  this.vertices_ = null;
+  this.width_ = undefined;
+};
+
+
+/**
+ * @return {ol.Extent} Extent.
+ */
+ol.render.webgl.ImageReplay.prototype.getExtent = function() {
+  return this.extent_;
+};
+
+
+/**
+ * @param {ol.webgl.Context} context Context.
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {ol.Size} size Size.
+ * @param {ol.Extent} extent Extent.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} opacity Global opacity.
+ * @param {number} brightness Global brightness.
+ * @param {number} contrast Global contrast.
+ * @param {number} hue Global hue.
+ * @param {number} saturation Global saturation.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.render.webgl.ImageReplay.prototype.replay = function(context,
+    center, resolution, rotation, size, extent, pixelRatio,
+    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash) {
+  var gl = context.getGL();
+
+  // bind the vertices buffer
+  goog.asserts.assert(!goog.isNull(this.verticesBuffer_));
+  context.bindBuffer(goog.webgl.ARRAY_BUFFER, this.verticesBuffer_);
+
+  // bind the indices buffer
+  goog.asserts.assert(!goog.isNull(this.indicesBuffer_));
+  context.bindBuffer(goog.webgl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer_);
+
+  var useColor = brightness || contrast != 1 || hue || saturation != 1;
+
+  // get the program
+  var fragmentShader, vertexShader;
+  if (useColor) {
+    fragmentShader =
+        ol.render.webgl.imagereplay.shader.ColorFragment.getInstance();
+    vertexShader =
+        ol.render.webgl.imagereplay.shader.ColorVertex.getInstance();
+  } else {
+    fragmentShader =
+        ol.render.webgl.imagereplay.shader.DefaultFragment.getInstance();
+    vertexShader =
+        ol.render.webgl.imagereplay.shader.DefaultVertex.getInstance();
+  }
+  var program = context.getProgram(fragmentShader, vertexShader);
+
+  // get the locations
+  var locations;
+  if (useColor) {
+    if (goog.isNull(this.colorLocations_)) {
+      locations =
+          new ol.render.webgl.imagereplay.shader.Color.Locations(gl, program);
+      this.colorLocations_ = locations;
+    } else {
+      locations = this.colorLocations_;
+    }
+  } else {
+    if (goog.isNull(this.defaultLocations_)) {
+      locations =
+          new ol.render.webgl.imagereplay.shader.Default.Locations(gl, program);
+      this.defaultLocations_ = locations;
+    } else {
+      locations = this.defaultLocations_;
+    }
+  }
+
+  // use the program (FIXME: use the return value)
+  context.useProgram(program);
+
+  // enable the vertex attrib arrays
+  gl.enableVertexAttribArray(locations.a_position);
+  gl.vertexAttribPointer(locations.a_position, 2, goog.webgl.FLOAT,
+      false, 32, 0);
+
+  gl.enableVertexAttribArray(locations.a_offsets);
+  gl.vertexAttribPointer(locations.a_offsets, 2, goog.webgl.FLOAT,
+      false, 32, 8);
+
+  gl.enableVertexAttribArray(locations.a_texCoord);
+  gl.vertexAttribPointer(locations.a_texCoord, 2, goog.webgl.FLOAT,
+      false, 32, 16);
+
+  gl.enableVertexAttribArray(locations.a_opacity);
+  gl.vertexAttribPointer(locations.a_opacity, 1, goog.webgl.FLOAT,
+      false, 32, 24);
+
+  gl.enableVertexAttribArray(locations.a_rotateWithView);
+  gl.vertexAttribPointer(locations.a_rotateWithView, 1, goog.webgl.FLOAT,
+      false, 32, 28);
+
+  // set the "uniform" values
+  var projectionMatrix = this.projectionMatrix_;
+  ol.vec.Mat4.makeTransform2D(projectionMatrix,
+      0.0, 0.0,
+      2 / (resolution * size[0]),
+      2 / (resolution * size[1]),
+      -rotation,
+      -(center[0] - this.origin_[0]), -(center[1] - this.origin_[1]));
+
+  var offsetScaleMatrix = this.offsetScaleMatrix_;
+  goog.vec.Mat4.makeScale(offsetScaleMatrix, 2 / size[0], 2 / size[1], 1);
+
+  var offsetRotateMatrix = this.offsetRotateMatrix_;
+  goog.vec.Mat4.makeIdentity(offsetRotateMatrix);
+  if (rotation !== 0) {
+    goog.vec.Mat4.rotateZ(offsetRotateMatrix, -rotation);
+  }
+
+  gl.uniformMatrix4fv(locations.u_projectionMatrix, false, projectionMatrix);
+  gl.uniformMatrix4fv(locations.u_offsetScaleMatrix, false, offsetScaleMatrix);
+  gl.uniformMatrix4fv(locations.u_offsetRotateMatrix, false,
+      offsetRotateMatrix);
+  gl.uniform1f(locations.u_opacity, opacity);
+  if (useColor) {
+    gl.uniformMatrix4fv(locations.u_colorMatrix, false,
+        this.colorMatrix_.getMatrix(brightness, contrast, hue, saturation));
+  }
+
+  // draw!
+  goog.asserts.assert(this.textures_.length == this.groupIndices_.length);
+  var i, ii, start;
+  for (i = 0, ii = this.textures_.length, start = 0; i < ii; ++i) {
+    gl.bindTexture(goog.webgl.TEXTURE_2D, this.textures_[i]);
+    var end = this.groupIndices_[i];
+    var numItems = end - start;
+    var offsetInBytes = start * (context.hasOESElementIndexUint ? 4 : 2);
+    var elementType = context.hasOESElementIndexUint ?
+        goog.webgl.UNSIGNED_INT : goog.webgl.UNSIGNED_SHORT;
+    gl.drawElements(goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
+    start = end;
+  }
+
+  // disable the vertex attrib arrays
+  gl.disableVertexAttribArray(locations.a_position);
+  gl.disableVertexAttribArray(locations.a_offsets);
+  gl.disableVertexAttribArray(locations.a_texCoord);
+  gl.disableVertexAttribArray(locations.a_opacity);
+  gl.disableVertexAttribArray(locations.a_rotateWithView);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.setFillStrokeStyle = goog.abstractMethod;
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.setImageStyle = function(imageStyle) {
+  var anchor = imageStyle.getAnchor();
+  goog.asserts.assert(!goog.isNull(anchor));
+  var image = imageStyle.getImage(1);
+  goog.asserts.assert(!goog.isNull(image));
+  var imageSize = imageStyle.getImageSize();
+  goog.asserts.assert(!goog.isNull(imageSize));
+  var opacity = imageStyle.getOpacity();
+  goog.asserts.assert(goog.isDef(opacity));
+  var origin = imageStyle.getOrigin();
+  goog.asserts.assert(!goog.isNull(origin));
+  var rotateWithView = imageStyle.getRotateWithView();
+  goog.asserts.assert(goog.isDef(rotateWithView));
+  var rotation = imageStyle.getRotation();
+  goog.asserts.assert(goog.isDef(rotation));
+  var size = imageStyle.getSize();
+  goog.asserts.assert(!goog.isNull(size));
+  var scale = imageStyle.getScale();
+  goog.asserts.assert(goog.isDef(scale));
+
+  if (this.images_.length === 0) {
+    this.images_.push(image);
+  } else {
+    var currentImage = this.images_[this.images_.length - 1];
+    if (goog.getUid(currentImage) != goog.getUid(image)) {
+      this.groupIndices_.push(this.indices_.length);
+      goog.asserts.assert(this.groupIndices_.length == this.images_.length);
+      this.images_.push(image);
+    }
+  }
+
+  this.anchorX_ = anchor[0];
+  this.anchorY_ = anchor[1];
+  this.height_ = size[1];
+  this.imageHeight_ = imageSize[1];
+  this.imageWidth_ = imageSize[0];
+  this.opacity_ = opacity;
+  this.originX_ = origin[0];
+  this.originY_ = origin[1];
+  this.rotation_ = rotation;
+  this.rotateWithView_ = rotateWithView;
+  this.scale_ = scale;
+  this.width_ = size[0];
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ImageReplay.prototype.setTextStyle = goog.abstractMethod;
+
+
+
+/**
+ * @constructor
+ * @implements {ol.render.IReplayGroup}
+ * @param {number} tolerance Tolerance.
+ * @param {ol.Extent} maxExtent Max extent.
+ * @struct
+ */
+ol.render.webgl.ReplayGroup = function(tolerance, maxExtent) {
+
+  /**
+   * @type {ol.Extent}
+   * @private
+   */
+  this.maxExtent_ = maxExtent;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.tolerance_ = tolerance;
+
+  /**
+   * ImageReplay only is supported at this point.
+   * @type {Object.<ol.render.ReplayType, ol.render.webgl.ImageReplay>}
+   * @private
+   */
+  this.replays_ = {};
+
+};
+
+
+/**
+ * @param {ol.webgl.Context} context WebGL context.
+ * @return {function()} Delete resources function.
+ */
+ol.render.webgl.ReplayGroup.prototype.getDeleteResourcesFunction =
+    function(context) {
+  var functions = [];
+  var replayKey;
+  for (replayKey in this.replays_) {
+    functions.push(
+        this.replays_[replayKey].getDeleteResourcesFunction(context));
+  }
+  return goog.functions.sequence.apply(null, functions);
+};
+
+
+/**
+ * @param {ol.webgl.Context} context Context.
+ */
+ol.render.webgl.ReplayGroup.prototype.finish = function(context) {
+  var replayKey;
+  for (replayKey in this.replays_) {
+    this.replays_[replayKey].finish(context);
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ReplayGroup.prototype.getReplay =
+    function(zIndex, replayType) {
+  var replay = this.replays_[replayType];
+  if (!goog.isDef(replay)) {
+    var constructor = ol.render.webgl.BATCH_CONSTRUCTORS_[replayType];
+    goog.asserts.assert(goog.isDef(constructor));
+    replay = new constructor(this.tolerance_, this.maxExtent_);
+    this.replays_[replayType] = replay;
+  }
+  return replay;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.render.webgl.ReplayGroup.prototype.isEmpty = function() {
+  return goog.object.isEmpty(this.replays_);
+};
+
+
+/**
+ * @param {ol.webgl.Context} context Context.
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {ol.Size} size Size.
+ * @param {ol.Extent} extent Extent.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} opacity Global opacity.
+ * @param {number} brightness Global brightness.
+ * @param {number} contrast Global contrast.
+ * @param {number} hue Global hue.
+ * @param {number} saturation Global saturation.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.render.webgl.ReplayGroup.prototype.replay = function(context,
+    center, resolution, rotation, size, extent, pixelRatio,
+    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash) {
+  var i, ii, replay, result;
+  for (i = 0, ii = ol.render.REPLAY_ORDER.length; i < ii; ++i) {
+    replay = this.replays_[ol.render.REPLAY_ORDER[i]];
+    if (goog.isDef(replay) &&
+        ol.extent.intersects(extent, replay.getExtent())) {
+      result = replay.replay(context,
+          center, resolution, rotation, size, extent, pixelRatio,
+          opacity, brightness, contrast, hue, saturation, skippedFeaturesHash);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * @const
+ * @private
+ * @type {Object.<ol.render.ReplayType,
+ *                function(new: ol.render.webgl.ImageReplay, number,
+ *                ol.Extent)>}
+ */
+ol.render.webgl.BATCH_CONSTRUCTORS_ = {
+  'Image': ol.render.webgl.ImageReplay
+};
+
+goog.provide('ol.render.webgl.Immediate');
+goog.require('goog.array');
+goog.require('goog.object');
+goog.require('ol.extent');
+goog.require('ol.render.webgl.ReplayGroup');
+
+
+
+/**
+ * @constructor
+ * @implements {ol.render.IVectorContext}
+ * @param {ol.webgl.Context} context Context.
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {ol.Size} size Size.
+ * @param {ol.Extent} extent Extent.
+ * @param {number} pixelRatio Pixel ratio.
+ * @struct
+ */
+ol.render.webgl.Immediate = function(context,
+    center, resolution, rotation, size, extent, pixelRatio) {
+
+  /**
+   * @private
+   */
+  this.context_ = context;
+
+  /**
+   * @private
+   */
+  this.center_ = center;
+
+  /**
+   * @private
+   */
+  this.extent_ = extent;
+
+  /**
+   * @private
+   */
+  this.pixelRatio_ = pixelRatio;
+
+  /**
+   * @private
+   */
+  this.size_ = size;
+
+  /**
+   * @private
+   */
+  this.rotation_ = rotation;
+
+  /**
+   * @private
+   */
+  this.resolution_ = resolution;
+
+  /**
+   * @private
+   * @type {ol.style.Image}
+   */
+  this.imageStyle_ = null;
+
+  /**
+   * @private
+   * @type {Object.<string,
+   *        Array.<function(ol.render.webgl.Immediate)>>}
+   */
+  this.callbacksByZIndex_ = {};
+};
+
+
+/**
+ * FIXME: empty description for jsdoc
+ */
+ol.render.webgl.Immediate.prototype.flush = function() {
+  /** @type {Array.<number>} */
+  var zs = goog.array.map(goog.object.getKeys(this.callbacksByZIndex_), Number);
+  goog.array.sort(zs);
+  var i, ii, callbacks, j, jj;
+  for (i = 0, ii = zs.length; i < ii; ++i) {
+    callbacks = this.callbacksByZIndex_[zs[i].toString()];
+    for (j = 0, jj = callbacks.length; j < jj; ++j) {
+      callbacks[j](this);
+    }
+  }
+};
+
+
+/**
+ * @param {number} zIndex Z index.
+ * @param {function(ol.render.webgl.Immediate)} callback Callback.
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawAsync = function(zIndex, callback) {
+  var zIndexKey = zIndex.toString();
+  var callbacks = this.callbacksByZIndex_[zIndexKey];
+  if (goog.isDef(callbacks)) {
+    callbacks.push(callback);
+  } else {
+    this.callbacksByZIndex_[zIndexKey] = [callback];
+  }
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawCircleGeometry =
+    function(circleGeometry, data) {
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawFeature = function(feature, style) {
+  var geometry = feature.getGeometry();
+  if (!goog.isDefAndNotNull(geometry) ||
+      !ol.extent.intersects(this.extent_, geometry.getExtent())) {
+    return;
+  }
+  var zIndex = style.getZIndex();
+  if (!goog.isDef(zIndex)) {
+    zIndex = 0;
+  }
+  this.drawAsync(zIndex, function(render) {
+    render.setFillStrokeStyle(style.getFill(), style.getStroke());
+    render.setImageStyle(style.getImage());
+    render.setTextStyle(style.getText());
+    var type = geometry.getType();
+    var renderGeometry = ol.render.webgl.Immediate.GEOMETRY_RENDERERS_[type];
+    // Do not assert since all kinds of geometries are not handled yet.
+    // In spite, render what we support.
+    if (renderGeometry) {
+      renderGeometry.call(render, geometry, null);
+    }
+  });
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawGeometryCollectionGeometry =
+    function(geometryCollectionGeometry, data) {
+  var geometries = geometryCollectionGeometry.getGeometriesArray();
+  var renderers = ol.render.webgl.Immediate.GEOMETRY_RENDERERS_;
+  var i, ii;
+  for (i = 0, ii = geometries.length; i < ii; ++i) {
+    var geometry = geometries[i];
+    var geometryRenderer = renderers[geometry.getType()];
+    // Do not assert since all kinds of geometries are not handled yet.
+    // In order to support hierarchies, delegate instead what we can to
+    // valid renderers.
+    if (geometryRenderer) {
+      geometryRenderer.call(this, geometry, data);
+    }
+  }
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawPointGeometry =
+    function(pointGeometry, data) {
+  var context = this.context_;
+  var replayGroup = new ol.render.webgl.ReplayGroup(1, this.extent_);
+  var replay = replayGroup.getReplay(0, ol.render.ReplayType.IMAGE);
+  replay.setImageStyle(this.imageStyle_);
+  replay.drawPointGeometry(pointGeometry, data);
+  replay.finish(context);
+  // default colors
+  var opacity = 1;
+  var brightness = 0;
+  var contrast = 1;
+  var hue = 0;
+  var saturation = 1;
+  replay.replay(this.context_, this.center_, this.resolution_, this.rotation_,
+      this.size_, this.extent_, this.pixelRatio_, opacity, brightness,
+      contrast, hue, saturation, {});
+  replay.getDeleteResourcesFunction(context)();
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawLineStringGeometry =
+    function(lineStringGeometry, data) {
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawMultiLineStringGeometry =
+    function(multiLineStringGeometry, data) {
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawMultiPointGeometry =
+    function(multiPointGeometry, data) {
+  var context = this.context_;
+  var replayGroup = new ol.render.webgl.ReplayGroup(1, this.extent_);
+  var replay = replayGroup.getReplay(0, ol.render.ReplayType.IMAGE);
+  replay.setImageStyle(this.imageStyle_);
+  replay.drawMultiPointGeometry(multiPointGeometry, data);
+  replay.finish(context);
+  // default colors
+  var opacity = 1;
+  var brightness = 0;
+  var contrast = 1;
+  var hue = 0;
+  var saturation = 1;
+  replay.replay(this.context_, this.center_, this.resolution_, this.rotation_,
+      this.size_, this.extent_, this.pixelRatio_, opacity, brightness,
+      contrast, hue, saturation, {});
+  replay.getDeleteResourcesFunction(context)();
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawMultiPolygonGeometry =
+    function(multiPolygonGeometry, data) {
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawPolygonGeometry =
+    function(polygonGeometry, data) {
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.drawText =
+    function(flatCoordinates, offset, end, stride, geometry, data) {
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.setFillStrokeStyle =
+    function(fillStyle, strokeStyle) {
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.setImageStyle = function(imageStyle) {
+  this.imageStyle_ = imageStyle;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.render.webgl.Immediate.prototype.setTextStyle = function(textStyle) {
+};
+
+
+/**
+ * @const
+ * @private
+ * @type {Object.<ol.geom.GeometryType,
+ *                function(this: ol.render.webgl.Immediate, ol.geom.Geometry,
+ *                         Object)>}
+ */
+ol.render.webgl.Immediate.GEOMETRY_RENDERERS_ = {
+  'Point': ol.render.webgl.Immediate.prototype.drawPointGeometry,
+  'MultiPoint': ol.render.webgl.Immediate.prototype.drawMultiPointGeometry,
+  'GeometryCollection':
+      ol.render.webgl.Immediate.prototype.drawGeometryCollectionGeometry
 };
 
 // This file is automatically generated, do not edit
@@ -64297,595 +66707,6 @@ ol.renderer.webgl.map.shader.Default.Locations = function(gl, program) {
       program, goog.DEBUG ? 'a_texCoord' : 'c');
 };
 
-goog.provide('ol.structs.IntegerSet');
-
-goog.require('goog.asserts');
-
-
-
-/**
- * A set of integers represented as a set of integer ranges.
- * This implementation is designed for the case when the number of distinct
- * integer ranges is small.
- * @constructor
- * @struct
- * @param {Array.<number>=} opt_arr Array.
- */
-ol.structs.IntegerSet = function(opt_arr) {
-
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-  this.arr_ = goog.isDef(opt_arr) ? opt_arr : [];
-
-  if (goog.DEBUG) {
-    this.assertValid();
-  }
-
-};
-
-
-/**
- * @param {number} addStart Start.
- * @param {number} addStop Stop.
- */
-ol.structs.IntegerSet.prototype.addRange = function(addStart, addStop) {
-  goog.asserts.assert(addStart <= addStop);
-  if (addStart == addStop) {
-    return;
-  }
-  var arr = this.arr_;
-  var n = arr.length;
-  var i;
-  for (i = 0; i < n; i += 2) {
-    if (addStart <= arr[i]) {
-      // FIXME check if splice is really needed
-      arr.splice(i, 0, addStart, addStop);
-      this.compactRanges_();
-      return;
-    }
-  }
-  arr.push(addStart, addStop);
-  this.compactRanges_();
-};
-
-
-/**
- * FIXME empty description for jsdoc
- */
-ol.structs.IntegerSet.prototype.assertValid = function() {
-  var arr = this.arr_;
-  var n = arr.length;
-  goog.asserts.assert(n % 2 === 0);
-  var i;
-  for (i = 1; i < n; ++i) {
-    goog.asserts.assert(arr[i] > arr[i - 1]);
-  }
-};
-
-
-/**
- * FIXME empty description for jsdoc
- */
-ol.structs.IntegerSet.prototype.clear = function() {
-  this.arr_.length = 0;
-};
-
-
-/**
- * @private
- */
-ol.structs.IntegerSet.prototype.compactRanges_ = function() {
-  var arr = this.arr_;
-  var n = arr.length;
-  var rangeIndex = 0;
-  var i;
-  for (i = 0; i < n; i += 2) {
-    if (arr[i] == arr[i + 1]) {
-      // pass
-    } else if (rangeIndex > 0 &&
-               arr[rangeIndex - 2] <= arr[i] &&
-               arr[i] <= arr[rangeIndex - 1]) {
-      arr[rangeIndex - 1] = Math.max(arr[rangeIndex - 1], arr[i + 1]);
-    } else {
-      arr[rangeIndex++] = arr[i];
-      arr[rangeIndex++] = arr[i + 1];
-    }
-  }
-  arr.length = rangeIndex;
-};
-
-
-/**
- * Finds the start of smallest range that is at least of length minSize, or -1
- * if no such range exists.
- * @param {number} minSize Minimum size.
- * @return {number} Index.
- */
-ol.structs.IntegerSet.prototype.findRange = function(minSize) {
-  goog.asserts.assert(minSize > 0);
-  var arr = this.arr_;
-  var n = arr.length;
-  var bestIndex = -1;
-  var bestSize, i, size;
-  for (i = 0; i < n; i += 2) {
-    size = arr[i + 1] - arr[i];
-    if (size == minSize) {
-      return arr[i];
-    } else if (size > minSize && (bestIndex == -1 || size < bestSize)) {
-      bestIndex = arr[i];
-      bestSize = size;
-    }
-  }
-  return bestIndex;
-};
-
-
-/**
- * Calls f with each integer range.
- * @param {function(this: T, number, number)} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @template T
- */
-ol.structs.IntegerSet.prototype.forEachRange = function(f, opt_this) {
-  var arr = this.arr_;
-  var n = arr.length;
-  var i;
-  for (i = 0; i < n; i += 2) {
-    f.call(opt_this, arr[i], arr[i + 1]);
-  }
-};
-
-
-/**
- * Calls f with each integer range not in [start, stop) - 'this'.
- * @param {number} start Start.
- * @param {number} stop Stop.
- * @param {function(this: T, number, number)} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @template T
- */
-ol.structs.IntegerSet.prototype.forEachRangeInverted =
-    function(start, stop, f, opt_this) {
-  goog.asserts.assert(start < stop);
-  var arr = this.arr_;
-  var n = arr.length;
-  if (n === 0) {
-    f.call(opt_this, start, stop);
-  } else {
-    if (start < arr[0]) {
-      f.call(opt_this, start, arr[0]);
-    }
-    var i;
-    for (i = 1; i < n - 1; i += 2) {
-      f.call(opt_this, arr[i], arr[i + 1]);
-    }
-    if (arr[n - 1] < stop) {
-      f.call(opt_this, arr[n - 1], stop);
-    }
-  }
-};
-
-
-/**
- * @return {Array.<number>} Array.
- */
-ol.structs.IntegerSet.prototype.getArray = function() {
-  return this.arr_;
-};
-
-
-/**
- * Returns the first element in the set, or -1 if the set is empty.
- * @return {number} Start.
- */
-ol.structs.IntegerSet.prototype.getFirst = function() {
-  return this.arr_.length === 0 ? -1 : this.arr_[0];
-};
-
-
-/**
- * Returns the first integer after the last element in the set, or -1 if the
- * set is empty.
- * @return {number} Last.
- */
-ol.structs.IntegerSet.prototype.getLast = function() {
-  var n = this.arr_.length;
-  return n === 0 ? -1 : this.arr_[n - 1];
-};
-
-
-/**
- * Returns the number of integers in the set.
- * @return {number} Size.
- */
-ol.structs.IntegerSet.prototype.getSize = function() {
-  var arr = this.arr_;
-  var n = arr.length;
-  var size = 0;
-  var i;
-  for (i = 0; i < n; i += 2) {
-    size += arr[i + 1] - arr[i];
-  }
-  return size;
-};
-
-
-/**
- * @param {number} start Start.
- * @param {number} stop Stop.
- * @return {boolean} Intersects range.
- */
-ol.structs.IntegerSet.prototype.intersectsRange = function(start, stop) {
-  goog.asserts.assert(start <= stop);
-  if (start == stop) {
-    return false;
-  } else {
-    var arr = this.arr_;
-    var n = arr.length;
-    var i = 0;
-    for (i = 0; i < n; i += 2) {
-      if (arr[i] <= start && start < arr[i + 1] ||
-          arr[i] < stop && stop - 1 < arr[i + 1] ||
-          start < arr[i] && arr[i + 1] <= stop) {
-        return true;
-      }
-    }
-    return false;
-  }
-};
-
-
-/**
- * @return {boolean} Is empty.
- */
-ol.structs.IntegerSet.prototype.isEmpty = function() {
-  return this.arr_.length === 0;
-};
-
-
-/**
- * @return {Array.<number>} Array.
- */
-ol.structs.IntegerSet.prototype.pack = function() {
-  return this.arr_;
-};
-
-
-/**
- * @param {number} removeStart Start.
- * @param {number} removeStop Stop.
- */
-ol.structs.IntegerSet.prototype.removeRange =
-    function(removeStart, removeStop) {
-  // FIXME this could be more efficient
-  goog.asserts.assert(removeStart <= removeStop);
-  var arr = this.arr_;
-  var n = arr.length;
-  var i;
-  for (i = 0; i < n; i += 2) {
-    if (removeStop < arr[i] || arr[i + 1] < removeStart) {
-      continue;
-    } else if (arr[i] > removeStop) {
-      break;
-    }
-    if (removeStart < arr[i]) {
-      if (removeStop == arr[i]) {
-        break;
-      } else if (removeStop < arr[i + 1]) {
-        arr[i] = Math.max(arr[i], removeStop);
-        break;
-      } else {
-        arr.splice(i, 2);
-        i -= 2;
-        n -= 2;
-      }
-    } else if (removeStart == arr[i]) {
-      if (removeStop < arr[i + 1]) {
-        arr[i] = removeStop;
-        break;
-      } else if (removeStop == arr[i + 1]) {
-        arr.splice(i, 2);
-        break;
-      } else {
-        arr.splice(i, 2);
-        i -= 2;
-        n -= 2;
-      }
-    } else {
-      if (removeStop < arr[i + 1]) {
-        arr.splice(i, 2, arr[i], removeStart, removeStop, arr[i + 1]);
-        break;
-      } else if (removeStop == arr[i + 1]) {
-        arr[i + 1] = removeStart;
-        break;
-      } else {
-        arr[i + 1] = removeStart;
-      }
-    }
-  }
-  this.compactRanges_();
-};
-
-
-if (goog.DEBUG) {
-
-  /**
-   * @return {string} String.
-   */
-  ol.structs.IntegerSet.prototype.toString = function() {
-    var arr = this.arr_;
-    var n = arr.length;
-    var result = new Array(n / 2);
-    var resultIndex = 0;
-    var i;
-    for (i = 0; i < n; i += 2) {
-      result[resultIndex++] = arr[i] + '-' + arr[i + 1];
-    }
-    return result.join(', ');
-  };
-
-}
-
-goog.provide('ol.structs.Buffer');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.webgl');
-goog.require('ol');
-goog.require('ol.structs.IntegerSet');
-
-
-/**
- * @enum {number}
- */
-ol.structs.BufferUsage = {
-  STATIC_DRAW: goog.webgl.STATIC_DRAW,
-  STREAM_DRAW: goog.webgl.STREAM_DRAW,
-  DYNAMIC_DRAW: goog.webgl.DYNAMIC_DRAW
-};
-
-
-
-/**
- * @constructor
- * @param {Array.<number>=} opt_arr Array.
- * @param {number=} opt_used Used.
- * @param {number=} opt_usage Usage.
- * @struct
- */
-ol.structs.Buffer = function(opt_arr, opt_used, opt_usage) {
-
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-  this.arr_ = goog.isDef(opt_arr) ? opt_arr : [];
-
-  /**
-   * @private
-   * @type {Array.<ol.structs.IntegerSet>}
-   */
-  this.dirtySets_ = [];
-
-  /**
-   * @private
-   * @type {ol.structs.IntegerSet}
-   */
-  this.freeSet_ = new ol.structs.IntegerSet();
-
-  var used = goog.isDef(opt_used) ? opt_used : this.arr_.length;
-  if (used < this.arr_.length) {
-    this.freeSet_.addRange(used, this.arr_.length);
-  }
-  if (ol.BUFFER_REPLACE_UNUSED_ENTRIES_WITH_NANS) {
-    var arr = this.arr_;
-    var n = arr.length;
-    var i;
-    for (i = used; i < n; ++i) {
-      arr[i] = NaN;
-    }
-  }
-
-  /**
-   * @private
-   * @type {?Float32Array}
-   */
-  this.split32_ = null;
-
-  /**
-   * @private
-   * @type {ol.structs.IntegerSet}
-   */
-  this.split32DirtySet_ = null;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.usage_ = goog.isDef(opt_usage) ?
-      opt_usage : ol.structs.BufferUsage.STATIC_DRAW;
-
-};
-
-
-/**
- * @param {number} size Size.
- * @return {number} Offset.
- */
-ol.structs.Buffer.prototype.allocate = function(size) {
-  goog.asserts.assert(size > 0);
-  var offset = this.freeSet_.findRange(size);
-  goog.asserts.assert(offset != -1);  // FIXME
-  this.freeSet_.removeRange(offset, offset + size);
-  return offset;
-};
-
-
-/**
- * @param {Array.<number>} values Values.
- * @return {number} Offset.
- */
-ol.structs.Buffer.prototype.add = function(values) {
-  var size = values.length;
-  var offset = this.allocate(size);
-  var i;
-  for (i = 0; i < size; ++i) {
-    this.arr_[offset + i] = values[i];
-  }
-  this.markDirty(size, offset);
-  return offset;
-};
-
-
-/**
- * @param {ol.structs.IntegerSet} dirtySet Dirty set.
- */
-ol.structs.Buffer.prototype.addDirtySet = function(dirtySet) {
-  goog.asserts.assert(!goog.array.contains(this.dirtySets_, dirtySet));
-  this.dirtySets_.push(dirtySet);
-};
-
-
-/**
- * @param {function(this: T, number, number)} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @template T
- */
-ol.structs.Buffer.prototype.forEachRange = function(f, opt_this) {
-  if (this.arr_.length !== 0) {
-    this.freeSet_.forEachRangeInverted(0, this.arr_.length, f, opt_this);
-  }
-};
-
-
-/**
- * @return {Array.<number>} Array.
- */
-ol.structs.Buffer.prototype.getArray = function() {
-  return this.arr_;
-};
-
-
-/**
- * @return {number} Count.
- */
-ol.structs.Buffer.prototype.getCount = function() {
-  return this.arr_.length - this.freeSet_.getSize();
-};
-
-
-/**
- * @return {ol.structs.IntegerSet} Free set.
- */
-ol.structs.Buffer.prototype.getFreeSet = function() {
-  return this.freeSet_;
-};
-
-
-/**
- * Returns a Float32Array twice the length of the buffer containing each value
- * split into two 32-bit floating point values that, when added together,
- * approximate the original value. Even indicies contain the high bits, odd
- * indicies contain the low bits.
- * @see http://blogs.agi.com/insight3d/index.php/2008/09/03/precisions-precisions/
- * @return {Float32Array} Split.
- */
-ol.structs.Buffer.prototype.getSplit32 = function() {
-  var arr = this.arr_;
-  var n = arr.length;
-  if (goog.isNull(this.split32DirtySet_)) {
-    this.split32DirtySet_ = new ol.structs.IntegerSet([0, n]);
-    this.addDirtySet(this.split32DirtySet_);
-  }
-  if (goog.isNull(this.split32_)) {
-    this.split32_ = new Float32Array(2 * n);
-  }
-  var split32 = this.split32_;
-  this.split32DirtySet_.forEachRange(function(start, stop) {
-    var doubleHigh, i, j, value;
-    for (i = start, j = 2 * start; i < stop; ++i, j += 2) {
-      value = arr[i];
-      if (value < 0) {
-        doubleHigh = 65536 * Math.floor(-value / 65536);
-        split32[j] = -doubleHigh;
-        split32[j + 1] = value + doubleHigh;
-      } else {
-        doubleHigh = 65536 * Math.floor(value / 65536);
-        split32[j] = doubleHigh;
-        split32[j + 1] = value - doubleHigh;
-      }
-    }
-  });
-  this.split32DirtySet_.clear();
-  return this.split32_;
-};
-
-
-/**
- * @return {number} Usage.
- */
-ol.structs.Buffer.prototype.getUsage = function() {
-  return this.usage_;
-};
-
-
-/**
- * @param {number} size Size.
- * @param {number} offset Offset.
- */
-ol.structs.Buffer.prototype.markDirty = function(size, offset) {
-  var i, ii;
-  for (i = 0, ii = this.dirtySets_.length; i < ii; ++i) {
-    this.dirtySets_[i].addRange(offset, offset + size);
-  }
-};
-
-
-/**
- * @param {number} size Size.
- * @param {number} offset Offset.
- */
-ol.structs.Buffer.prototype.remove = function(size, offset) {
-  var i, ii;
-  this.freeSet_.addRange(offset, offset + size);
-  for (i = 0, ii = this.dirtySets_.length; i < ii; ++i) {
-    this.dirtySets_[i].removeRange(offset, offset + size);
-  }
-  if (ol.BUFFER_REPLACE_UNUSED_ENTRIES_WITH_NANS) {
-    var arr = this.arr_;
-    for (i = 0; i < size; ++i) {
-      arr[offset + i] = NaN;
-    }
-  }
-};
-
-
-/**
- * @param {ol.structs.IntegerSet} dirtySet Dirty set.
- */
-ol.structs.Buffer.prototype.removeDirtySet = function(dirtySet) {
-  var removed = goog.array.remove(this.dirtySets_, dirtySet);
-  goog.asserts.assert(removed);
-};
-
-
-/**
- * @param {Array.<number>} values Values.
- * @param {number} offset Offset.
- */
-ol.structs.Buffer.prototype.set = function(values, offset) {
-  var arr = this.arr_;
-  var n = values.length;
-  goog.asserts.assert(0 <= offset && offset + n <= arr.length);
-  var i;
-  for (i = 0; i < n; ++i) {
-    arr[offset + i] = values[i];
-  }
-  this.markDirty(n, offset);
-};
-
 goog.provide('ol.renderer.webgl.Layer');
 
 goog.require('goog.vec.Mat4');
@@ -64898,7 +66719,7 @@ goog.require('ol.render.webgl.Immediate');
 goog.require('ol.renderer.Layer');
 goog.require('ol.renderer.webgl.map.shader.Color');
 goog.require('ol.renderer.webgl.map.shader.Default');
-goog.require('ol.structs.Buffer');
+goog.require('ol.webgl.Buffer');
 
 
 
@@ -64914,9 +66735,9 @@ ol.renderer.webgl.Layer = function(mapRenderer, layer) {
 
   /**
    * @private
-   * @type {ol.structs.Buffer}
+   * @type {ol.webgl.Buffer}
    */
-  this.arrayBuffer_ = new ol.structs.Buffer([
+  this.arrayBuffer_ = new ol.webgl.Buffer([
     -1, -1, 0, 0,
     1, -1, 1, 0,
     -1, 1, 0, 1,
@@ -65125,7 +66946,16 @@ ol.renderer.webgl.Layer.prototype.dispatchComposeEvent_ =
     function(type, context, frameState) {
   var layer = this.getLayer();
   if (layer.hasListener(type)) {
-    var render = new ol.render.webgl.Immediate(context, frameState.pixelRatio);
+    var viewState = frameState.viewState;
+    var resolution = viewState.resolution;
+    var pixelRatio = frameState.pixelRatio;
+    var extent = frameState.extent;
+    var center = viewState.center;
+    var rotation = viewState.rotation;
+    var size = frameState.size;
+
+    var render = new ol.render.webgl.Immediate(
+        context, center, resolution, rotation, size, extent, pixelRatio);
     var composeEvent = new ol.render.Event(
         type, layer, render, null, frameState, null, context);
     layer.dispatchEvent(composeEvent);
@@ -65175,6 +67005,15 @@ ol.renderer.webgl.Layer.prototype.handleWebGLContextLost = function() {
   this.framebufferDimension = undefined;
 };
 
+
+/**
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.webgl.Context} context Context.
+ * @return {boolean} whether composeFrame should be called.
+ */
+ol.renderer.webgl.Layer.prototype.prepareFrame = goog.abstractMethod;
+
 goog.provide('ol.renderer.webgl.ImageLayer');
 
 goog.require('goog.asserts');
@@ -65189,6 +67028,7 @@ goog.require('ol.ImageState');
 goog.require('ol.ViewHint');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
+goog.require('ol.proj');
 goog.require('ol.renderer.webgl.Layer');
 
 
@@ -65277,7 +67117,7 @@ ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel =
  * @inheritDoc
  */
 ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
-    function(frameState, layerState) {
+    function(frameState, layerState, context) {
 
   var gl = this.getWebGLMapRenderer().getGL();
 
@@ -65301,8 +67141,14 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
   }
   if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING] &&
       !ol.extent.isEmpty(renderedExtent)) {
+    var projection = viewState.projection;
+    var sourceProjection = imageSource.getProjection();
+    if (!goog.isNull(sourceProjection)) {
+      goog.asserts.assert(ol.proj.equivalent(projection, sourceProjection));
+      projection = sourceProjection;
+    }
     var image_ = imageSource.getImage(renderedExtent, viewResolution,
-        frameState.pixelRatio, viewState.projection);
+        frameState.pixelRatio, projection);
     if (!goog.isNull(image_)) {
       var imageState = image_.getState();
       if (imageState == ol.ImageState.IDLE) {
@@ -65517,8 +67363,8 @@ goog.require('ol.layer.Tile');
 goog.require('ol.math');
 goog.require('ol.renderer.webgl.Layer');
 goog.require('ol.renderer.webgl.tilelayer.shader');
-goog.require('ol.structs.Buffer');
 goog.require('ol.tilecoord');
+goog.require('ol.webgl.Buffer');
 
 
 
@@ -65553,9 +67399,9 @@ ol.renderer.webgl.TileLayer = function(mapRenderer, tileLayer) {
 
   /**
    * @private
-   * @type {ol.structs.Buffer}
+   * @type {ol.webgl.Buffer}
    */
-  this.renderArrayBuffer_ = new ol.structs.Buffer([
+  this.renderArrayBuffer_ = new ol.webgl.Buffer([
     0, 0, 0, 1,
     1, 0, 1, 1,
     0, 1, 0, 0,
@@ -65608,11 +67454,10 @@ ol.renderer.webgl.TileLayer.prototype.handleWebGLContextLost = function() {
  * @inheritDoc
  */
 ol.renderer.webgl.TileLayer.prototype.prepareFrame =
-    function(frameState, layerState) {
+    function(frameState, layerState, context) {
 
   var mapRenderer = this.getWebGLMapRenderer();
-  var context = mapRenderer.getContext();
-  var gl = mapRenderer.getGL();
+  var gl = context.getGL();
 
   var viewState = frameState.viewState;
   var projection = viewState.projection;
@@ -65831,6 +67676,247 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
       0);
 
   return true;
+};
+
+goog.provide('ol.renderer.webgl.VectorLayer');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('ol.ViewHint');
+goog.require('ol.extent');
+goog.require('ol.layer.Vector');
+goog.require('ol.render.webgl.ReplayGroup');
+goog.require('ol.renderer.vector');
+goog.require('ol.renderer.webgl.Layer');
+
+
+
+/**
+ * @constructor
+ * @extends {ol.renderer.webgl.Layer}
+ * @param {ol.renderer.Map} mapRenderer Map renderer.
+ * @param {ol.layer.Vector} vectorLayer Vector layer.
+ */
+ol.renderer.webgl.VectorLayer = function(mapRenderer, vectorLayer) {
+
+  goog.base(this, mapRenderer, vectorLayer);
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.dirty_ = false;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedRevision_ = -1;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedResolution_ = NaN;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.renderedExtent_ = ol.extent.createEmpty();
+
+  /**
+   * @private
+   * @type {function(ol.Feature, ol.Feature): number|null}
+   */
+  this.renderedRenderOrder_ = null;
+
+  /**
+   * @private
+   * @type {ol.render.webgl.ReplayGroup}
+   */
+  this.replayGroup_ = null;
+
+};
+goog.inherits(ol.renderer.webgl.VectorLayer, ol.renderer.webgl.Layer);
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.VectorLayer.prototype.composeFrame =
+    function(frameState, layerState, context) {
+  var viewState = frameState.viewState;
+  var replayGroup = this.replayGroup_;
+  if (!goog.isNull(replayGroup) && !replayGroup.isEmpty()) {
+    replayGroup.replay(context,
+        viewState.center, viewState.resolution, viewState.rotation,
+        frameState.size, frameState.extent, frameState.pixelRatio,
+        layerState.opacity, layerState.brightness, layerState.contrast,
+        layerState.hue, layerState.saturation, frameState.skippedFeatureUids);
+  }
+
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.VectorLayer.prototype.disposeInternal = function() {
+  var replayGroup = this.replayGroup_;
+  if (!goog.isNull(replayGroup)) {
+    var mapRenderer = this.getWebGLMapRenderer();
+    var context = mapRenderer.getContext();
+    replayGroup.getDeleteResourcesFunction(context)();
+    this.replayGroup_ = null;
+  }
+  goog.base(this, 'disposeInternal');
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtPixel =
+    function(coordinate, frameState, callback, thisArg) {
+};
+
+
+/**
+ * Handle changes in image style state.
+ * @param {goog.events.Event} event Image style change event.
+ * @private
+ */
+ol.renderer.webgl.VectorLayer.prototype.handleImageChange_ =
+    function(event) {
+  this.renderIfReadyAndVisible();
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
+    function(frameState, layerState, context) {
+
+  var vectorLayer = /** @type {ol.layer.Vector} */ (this.getLayer());
+  goog.asserts.assertInstanceof(vectorLayer, ol.layer.Vector);
+  var vectorSource = vectorLayer.getSource();
+
+  this.updateAttributions(
+      frameState.attributions, vectorSource.getAttributions());
+  this.updateLogos(frameState, vectorSource);
+
+  if (!this.dirty_ && (frameState.viewHints[ol.ViewHint.ANIMATING] ||
+      frameState.viewHints[ol.ViewHint.INTERACTING])) {
+    return true;
+  }
+
+  var frameStateExtent = frameState.extent;
+  var viewState = frameState.viewState;
+  var projection = viewState.projection;
+  var resolution = viewState.resolution;
+  var pixelRatio = frameState.pixelRatio;
+  var vectorLayerRevision = vectorLayer.getRevision();
+  var vectorLayerRenderOrder = vectorLayer.getRenderOrder();
+  if (!goog.isDef(vectorLayerRenderOrder)) {
+    vectorLayerRenderOrder = ol.renderer.vector.defaultOrder;
+  }
+
+  if (!this.dirty_ &&
+      this.renderedResolution_ == resolution &&
+      this.renderedRevision_ == vectorLayerRevision &&
+      this.renderedRenderOrder_ == vectorLayerRenderOrder &&
+      ol.extent.containsExtent(this.renderedExtent_, frameStateExtent)) {
+    return true;
+  }
+
+  var extent = this.renderedExtent_;
+  var xBuffer = ol.extent.getWidth(frameStateExtent) / 4;
+  var yBuffer = ol.extent.getHeight(frameStateExtent) / 4;
+  extent[0] = frameStateExtent[0] - xBuffer;
+  extent[1] = frameStateExtent[1] - yBuffer;
+  extent[2] = frameStateExtent[2] + xBuffer;
+  extent[3] = frameStateExtent[3] + yBuffer;
+
+  if (!goog.isNull(this.replayGroup_)) {
+    frameState.postRenderFunctions.push(
+        this.replayGroup_.getDeleteResourcesFunction(context));
+  }
+
+  this.dirty_ = false;
+
+  var replayGroup = new ol.render.webgl.ReplayGroup(
+      ol.renderer.vector.getTolerance(resolution, pixelRatio),
+      extent);
+  vectorSource.loadFeatures(extent, resolution, projection);
+  var renderFeature =
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @this {ol.renderer.webgl.VectorLayer}
+       */
+      function(feature) {
+    var styles;
+    if (goog.isDef(feature.getStyleFunction())) {
+      styles = feature.getStyleFunction().call(feature, resolution);
+    } else if (goog.isDef(vectorLayer.getStyleFunction())) {
+      styles = vectorLayer.getStyleFunction()(feature, resolution);
+    }
+    if (goog.isDefAndNotNull(styles)) {
+      var dirty = this.renderFeature(
+          feature, resolution, pixelRatio, styles, replayGroup);
+      this.dirty_ = this.dirty_ || dirty;
+    }
+  };
+  if (!goog.isNull(vectorLayerRenderOrder)) {
+    /** @type {Array.<ol.Feature>} */
+    var features = [];
+    vectorSource.forEachFeatureInExtentAtResolution(extent, resolution,
+        /**
+         * @param {ol.Feature} feature Feature.
+         */
+        function(feature) {
+          features.push(feature);
+        }, this);
+    goog.array.sort(features, vectorLayerRenderOrder);
+    goog.array.forEach(features, renderFeature, this);
+  } else {
+    vectorSource.forEachFeatureInExtentAtResolution(
+        extent, resolution, renderFeature, this);
+  }
+  replayGroup.finish(context);
+
+  this.renderedResolution_ = resolution;
+  this.renderedRevision_ = vectorLayerRevision;
+  this.renderedRenderOrder_ = vectorLayerRenderOrder;
+  this.replayGroup_ = replayGroup;
+
+  return true;
+};
+
+
+/**
+ * @param {ol.Feature} feature Feature.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {Array.<ol.style.Style>} styles Array of styles
+ * @param {ol.render.webgl.ReplayGroup} replayGroup Replay group.
+ * @return {boolean} `true` if an image is loading.
+ */
+ol.renderer.webgl.VectorLayer.prototype.renderFeature =
+    function(feature, resolution, pixelRatio, styles, replayGroup) {
+  if (!goog.isDefAndNotNull(styles)) {
+    return false;
+  }
+  var i, ii, loading = false;
+  for (i = 0, ii = styles.length; i < ii; ++i) {
+    loading = ol.renderer.vector.renderFeature(
+        replayGroup, feature, styles[i],
+        ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
+        feature, this.handleImageChange_, this) || loading;
+  }
+  return loading;
 };
 
 goog.provide('ol.structs.LRUCache');
@@ -66084,19 +68170,19 @@ ol.structs.LRUCacheEntry;
 
 goog.provide('ol.webgl.Context');
 
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.log');
 goog.require('goog.object');
-goog.require('ol.structs.Buffer');
-goog.require('ol.structs.IntegerSet');
+goog.require('ol');
+goog.require('ol.webgl.Buffer');
 goog.require('ol.webgl.WebGLContextEventType');
 
 
 /**
- * @typedef {{buf: ol.structs.Buffer,
- *            buffer: WebGLBuffer,
- *            dirtySet: ol.structs.IntegerSet}}
+ * @typedef {{buf: ol.webgl.Buffer,
+ *            buffer: WebGLBuffer}}
  */
 ol.webgl.BufferCacheEntry;
 
@@ -66150,6 +68236,18 @@ ol.webgl.Context = function(canvas, gl) {
    */
   this.currentProgram_ = null;
 
+  /**
+   * @type {boolean}
+   */
+  this.hasOESElementIndexUint = goog.array.contains(
+      ol.WEBGL_EXTENSIONS, 'OES_element_index_uint');
+
+  // use the OES_element_index_uint extension if available
+  if (this.hasOESElementIndexUint) {
+    var ext = gl.getExtension('OES_element_index_uint');
+    goog.asserts.assert(!goog.isNull(ext));
+  }
+
   goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.LOST,
       this.handleWebGLContextLost, false, this);
   goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.RESTORED,
@@ -66159,8 +68257,11 @@ ol.webgl.Context = function(canvas, gl) {
 
 
 /**
+ * Just bind the buffer if it's in the cache. Otherwise create
+ * the WebGL buffer, bind it, populate it, and add an entry to
+ * the cache.
  * @param {number} target Target.
- * @param {ol.structs.Buffer} buf Buffer.
+ * @param {ol.webgl.Buffer} buf Buffer.
  */
 ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
   var gl = this.getGL();
@@ -66169,45 +68270,37 @@ ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
   if (bufferKey in this.bufferCache_) {
     var bufferCacheEntry = this.bufferCache_[bufferKey];
     gl.bindBuffer(target, bufferCacheEntry.buffer);
-    bufferCacheEntry.dirtySet.forEachRange(function(start, stop) {
-      // FIXME check if slice is really efficient here
-      var slice = arr.slice(start, stop);
-      gl.bufferSubData(
-          target,
-          start,
-          target == goog.webgl.ARRAY_BUFFER ?
-          new Float32Array(slice) :
-          new Uint16Array(slice));
-    });
-    bufferCacheEntry.dirtySet.clear();
   } else {
     var buffer = gl.createBuffer();
     gl.bindBuffer(target, buffer);
-    gl.bufferData(
-        target,
-        target == goog.webgl.ARRAY_BUFFER ?
-        new Float32Array(arr) : new Uint16Array(arr),
-        buf.getUsage());
-    var dirtySet = new ol.structs.IntegerSet();
-    buf.addDirtySet(dirtySet);
+    goog.asserts.assert(target == goog.webgl.ARRAY_BUFFER ||
+        target == goog.webgl.ELEMENT_ARRAY_BUFFER);
+    var /** @type {ArrayBufferView} */ arrayBuffer;
+    if (target == goog.webgl.ARRAY_BUFFER) {
+      arrayBuffer = new Float32Array(arr);
+    } else if (target == goog.webgl.ELEMENT_ARRAY_BUFFER) {
+      arrayBuffer = this.hasOESElementIndexUint ?
+          new Uint32Array(arr) : new Uint16Array(arr);
+    } else {
+      goog.asserts.fail();
+    }
+    gl.bufferData(target, arrayBuffer, buf.getUsage());
     this.bufferCache_[bufferKey] = {
       buf: buf,
-      buffer: buffer,
-      dirtySet: dirtySet
+      buffer: buffer
     };
   }
 };
 
 
 /**
- * @param {ol.structs.Buffer} buf Buffer.
+ * @param {ol.webgl.Buffer} buf Buffer.
  */
 ol.webgl.Context.prototype.deleteBuffer = function(buf) {
   var gl = this.getGL();
   var bufferKey = goog.getUid(buf);
   goog.asserts.assert(bufferKey in this.bufferCache_);
   var bufferCacheEntry = this.bufferCache_[bufferKey];
-  bufferCacheEntry.buf.removeDirtySet(bufferCacheEntry.dirtySet);
   if (!gl.isContextLost()) {
     gl.deleteBuffer(bufferCacheEntry.buffer);
   }
@@ -66219,9 +68312,6 @@ ol.webgl.Context.prototype.deleteBuffer = function(buf) {
  * @inheritDoc
  */
 ol.webgl.Context.prototype.disposeInternal = function() {
-  goog.object.forEach(this.bufferCache_, function(bufferCacheEntry) {
-    bufferCacheEntry.buf.removeDirtySet(bufferCacheEntry.dirtySet);
-  });
   var gl = this.getGL();
   if (!gl.isContextLost()) {
     goog.object.forEach(this.bufferCache_, function(bufferCacheEntry) {
@@ -66255,6 +68345,8 @@ ol.webgl.Context.prototype.getGL = function() {
 
 
 /**
+ * Get shader from the cache if it's in the cache. Otherwise, create
+ * the WebGL shader, compile it, and add entry to cache.
  * @param {ol.webgl.Shader} shaderObject Shader object.
  * @return {WebGLShader} Shader.
  */
@@ -66283,6 +68375,9 @@ ol.webgl.Context.prototype.getShader = function(shaderObject) {
 
 
 /**
+ * Get the program from the cache if it's in the cache. Otherwise create
+ * the WebGL program, attach the shaders to it, and add an entry to the
+ * cache.
  * @param {ol.webgl.shader.Fragment} fragmentShaderObject Fragment shader.
  * @param {ol.webgl.shader.Vertex} vertexShaderObject Vertex shader.
  * @return {WebGLProgram} Program.
@@ -66333,6 +68428,9 @@ ol.webgl.Context.prototype.handleWebGLContextRestored = function() {
 
 
 /**
+ * Just return false if that program is used already. Other use
+ * that program (call `gl.useProgram`) and make it the "current
+ * program".
  * @param {WebGLProgram} program Program.
  * @return {boolean} Changed.
  * @api
@@ -66377,13 +68475,17 @@ goog.require('ol.dom');
 goog.require('ol.layer.Image');
 goog.require('ol.layer.Layer');
 goog.require('ol.layer.Tile');
+goog.require('ol.layer.Vector');
 goog.require('ol.render.Event');
 goog.require('ol.render.EventType');
 goog.require('ol.render.webgl.Immediate');
+goog.require('ol.render.webgl.ReplayGroup');
 goog.require('ol.renderer.Map');
+goog.require('ol.renderer.vector');
 goog.require('ol.renderer.webgl.ImageLayer');
 goog.require('ol.renderer.webgl.Layer');
 goog.require('ol.renderer.webgl.TileLayer');
+goog.require('ol.renderer.webgl.VectorLayer');
 goog.require('ol.source.State');
 goog.require('ol.structs.LRUCache');
 goog.require('ol.structs.PriorityQueue');
@@ -66607,6 +68709,8 @@ ol.renderer.webgl.Map.prototype.createLayerRenderer = function(layer) {
     return new ol.renderer.webgl.ImageLayer(this, layer);
   } else if (ol.ENABLE_TILE && layer instanceof ol.layer.Tile) {
     return new ol.renderer.webgl.TileLayer(this, layer);
+  } else if (ol.ENABLE_VECTOR && layer instanceof ol.layer.Vector) {
+    return new ol.renderer.webgl.VectorLayer(this, layer);
   } else {
     goog.asserts.fail();
     return null;
@@ -66623,11 +68727,40 @@ ol.renderer.webgl.Map.prototype.dispatchComposeEvent_ =
     function(type, frameState) {
   var map = this.getMap();
   if (map.hasListener(type)) {
-    var context = this.getContext();
-    var render = new ol.render.webgl.Immediate(context, frameState.pixelRatio);
-    var composeEvent = new ol.render.Event(
-        type, map, render, null, frameState, null, context);
+    var context = this.context_;
+
+    var extent = frameState.extent;
+    var size = frameState.size;
+    var viewState = frameState.viewState;
+    var pixelRatio = frameState.pixelRatio;
+
+    var resolution = viewState.resolution;
+    var center = viewState.center;
+    var rotation = viewState.rotation;
+    var tolerance = ol.renderer.vector.getTolerance(resolution, pixelRatio);
+
+    var vectorContext = new ol.render.webgl.Immediate(context,
+        center, resolution, rotation, size, extent, pixelRatio);
+    var replayGroup = new ol.render.webgl.ReplayGroup(tolerance, extent);
+    var composeEvent = new ol.render.Event(type, map, vectorContext,
+        replayGroup, frameState, null, context);
     map.dispatchEvent(composeEvent);
+
+    replayGroup.finish(context);
+    if (!replayGroup.isEmpty()) {
+      // use default color values
+      var opacity = 1;
+      var brightness = 0;
+      var contrast = 1;
+      var hue = 0;
+      var saturation = 1;
+      replayGroup.replay(context, center, resolution, rotation, size, extent,
+          pixelRatio, opacity, brightness, contrast, hue, saturation, {});
+    }
+    replayGroup.getDeleteResourcesFunction(context)();
+
+    vectorContext.flush();
+    this.replayGroup = replayGroup;
   }
 };
 
@@ -66812,7 +68945,7 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
         layerState.sourceState == ol.source.State.READY) {
       layerRenderer = this.getLayerRenderer(layerState.layer);
       goog.asserts.assertInstanceof(layerRenderer, ol.renderer.webgl.Layer);
-      if (layerRenderer.prepareFrame(frameState, layerState)) {
+      if (layerRenderer.prepareFrame(frameState, layerState, context)) {
         layerStatesToDraw.push(layerState);
       }
     }
@@ -75754,7 +77887,7 @@ ol.format.GeoJSON.prototype.writeFeatureObject = function(
         ol.format.GeoJSON.writeGeometry_(geometry, opt_options));
   }
   var properties = feature.getProperties();
-  goog.object.remove(properties, 'geometry');
+  goog.object.remove(properties, feature.getGeometryName());
   if (!goog.object.isEmpty(properties)) {
     goog.object.set(object, 'properties', properties);
   }
@@ -102829,7 +104962,7 @@ ol.source.TileVector.prototype.forEachFeature = goog.abstractMethod;
  * @return {S|undefined} The return value from the last call to the callback.
  * @template T,S
  */
-ol.source.TileVector.prototype.forEachFeatureAtCoordinateAtResolution =
+ol.source.TileVector.prototype.forEachFeatureAtCoordinateAndResolution =
     function(coordinate, resolution, callback, opt_this) {
 
   var tileGrid = this.tileGrid_;
@@ -102926,12 +105059,12 @@ ol.source.TileVector.prototype.getFeatures = function() {
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {number} resolution Resolution.
  * @return {Array.<ol.Feature>} Features.
- * @api stable
+ * @api
  */
-ol.source.TileVector.prototype.getFeaturesAtCoordinateAtResolution =
+ol.source.TileVector.prototype.getFeaturesAtCoordinateAndResolution =
     function(coordinate, resolution) {
   var features = [];
-  this.forEachFeatureAtCoordinateAtResolution(coordinate, resolution,
+  this.forEachFeatureAtCoordinateAndResolution(coordinate, resolution,
       /**
        * @param {ol.Feature} feature Feature.
        */
@@ -104210,6 +106343,447 @@ ol.source.ZoomifyTile_.prototype.getImage = function(opt_context) {
   }
 };
 
+goog.provide('ol.style.Atlas');
+goog.provide('ol.style.AtlasManager');
+
+goog.require('goog.asserts');
+goog.require('goog.dom');
+goog.require('goog.dom.TagName');
+goog.require('goog.object');
+goog.require('ol');
+
+
+/**
+ * Provides information for an image inside an atlas manager.
+ * `offsetX` and `offsetY` is the position of the image inside
+ * the atlas image `image`.
+ * `hitOffsetX` and `hitOffsetY` ist the position of the hit-detection image
+ * inside the hit-detection atlas image `hitImage` (only when a hit-detection
+ * image was created for this image).
+ * @typedef {{offsetX: number, offsetY: number, image: HTMLCanvasElement,
+ *    hitOffsetX: number, hitOffsetY: number, hitImage: HTMLCanvasElement}}
+ */
+ol.style.AtlasManagerInfo;
+
+
+
+/**
+ * Manages the creation of image atlases.
+ *
+ * Images added to this manager will be inserted into an atlas, which
+ * will be used for rendering.
+ * The `size` given in the constructor is the size for the first
+ * atlas. After that, when new atlases are created, they will have
+ * twice the size as the latest atlas (until `maxSize` is reached).
+ *
+ * If an application uses many images or very large images, it is recommended
+ * to set a higher `size` value to avoid the creation of too many atlases.
+ *
+ * @constructor
+ * @struct
+ * @api
+ * @param {olx.style.AtlasManagerOptions=} opt_options Options.
+ */
+ol.style.AtlasManager = function(opt_options) {
+
+  var options = goog.isDef(opt_options) ? opt_options : {};
+
+  /**
+   * The size in pixels of the latest atlas image.
+   * @private
+   * @type {number}
+   */
+  this.currentSize_ = goog.isDef(options.initialSize) ?
+      options.initialSize : ol.INITIAL_ATLAS_SIZE;
+
+  /**
+   * The maximum size in pixels of atlas images.
+   * @private
+   * @type {number}
+   */
+  this.maxSize_ = goog.isDef(options.maxSize) ?
+      options.maxSize : ol.MAX_ATLAS_SIZE != -1 ?
+          ol.MAX_ATLAS_SIZE : goog.isDef(ol.WEBGL_MAX_TEXTURE_SIZE) ?
+              ol.WEBGL_MAX_TEXTURE_SIZE : 2048;
+
+  /**
+   * The size in pixels between images.
+   * @private
+   * @type {number}
+   */
+  this.space_ = goog.isDef(options.space) ? options.space : 1;
+
+  /**
+   * @private
+   * @type {Array.<ol.style.Atlas>}
+   */
+  this.atlases_ = [new ol.style.Atlas(this.currentSize_, this.space_)];
+
+  /**
+   * The size in pixels of the latest atlas image for hit-detection images.
+   * @private
+   * @type {number}
+   */
+  this.currentHitSize_ = this.currentSize_;
+
+  /**
+   * @private
+   * @type {Array.<ol.style.Atlas>}
+   */
+  this.hitAtlases_ = [new ol.style.Atlas(this.currentHitSize_, this.space_)];
+};
+
+
+/**
+ * @param {string} id The identifier of the entry to check.
+ * @return {?ol.style.AtlasManagerInfo} The position and atlas image for the
+ *    entry, or `null` if the entry is not part of the atlas manager.
+ */
+ol.style.AtlasManager.prototype.getInfo = function(id) {
+  /** @type {?ol.style.AtlasInfo} */
+  var info = this.getInfo_(this.atlases_, id);
+
+  if (goog.isNull(info)) {
+    return null;
+  }
+  /** @type {?ol.style.AtlasInfo} */
+  var hitInfo = this.getInfo_(this.hitAtlases_, id);
+
+  return this.mergeInfos_(info, hitInfo);
+};
+
+
+/**
+ * @private
+ * @param {Array.<ol.style.Atlas>} atlases The atlases to search.
+ * @param {string} id The identifier of the entry to check.
+ * @return {?ol.style.AtlasInfo} The position and atlas image for the entry,
+ *    or `null` if the entry is not part of the atlases.
+ */
+ol.style.AtlasManager.prototype.getInfo_ = function(atlases, id) {
+  var atlas, info, i, ii;
+  for (i = 0, ii = atlases.length; i < ii; ++i) {
+    atlas = atlases[i];
+    info = atlas.get(id);
+    if (!goog.isNull(info)) {
+      return info;
+    }
+  }
+  return null;
+};
+
+
+/**
+ * @private
+ * @param {ol.style.AtlasInfo} info The info for the real image.
+ * @param {?ol.style.AtlasInfo} hitInfo The info for the hit-detection
+ *    image.
+ * @return {?ol.style.AtlasManagerInfo} The position and atlas image for the
+ *    entry, or `null` if the entry is not part of the atlases.
+ */
+ol.style.AtlasManager.prototype.mergeInfos_ = function(info, hitInfo) {
+  return /** @type {ol.style.AtlasManagerInfo} */ ({
+    offsetX: info.offsetX,
+    offsetY: info.offsetY,
+    image: info.image,
+    hitOffsetX: goog.isNull(hitInfo) ? undefined : hitInfo.offsetX,
+    hitOffsetY: goog.isNull(hitInfo) ? undefined : hitInfo.offsetY,
+    hitImage: goog.isNull(hitInfo) ? undefined : hitInfo.image
+  });
+};
+
+
+/**
+ * Add an image to the atlas manager.
+ *
+ * If an entry for the given id already exists, the entry will
+ * be overridden (but the space on the atlas graphic will not be freed).
+ *
+ * If `renderHitCallback` is provided, the image (or the hit-detection version
+ * of the image) will be rendered into a separate hit-detection atlas image.
+ *
+ * @param {string} id The identifier of the entry to add.
+ * @param {number} width The width.
+ * @param {number} height The height.
+ * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
+ *    Called to render the new image onto an atlas image.
+ * @param {function(CanvasRenderingContext2D, number, number)=}
+ *    opt_renderHitCallback Called to render a hit-detection image onto a hit
+ *    detection atlas image.
+ * @param {Object=} opt_this Value to use as `this` when executing
+ *    `renderCallback` and `renderHitCallback`.
+ * @return {?ol.style.AtlasManagerInfo}  The position and atlas image for the
+ *    entry, or `null` if the image is too big.
+ */
+ol.style.AtlasManager.prototype.add =
+    function(id, width, height,
+        renderCallback, opt_renderHitCallback, opt_this) {
+  if (width + this.space_ > this.maxSize_ ||
+      height + this.space_ > this.maxSize_) {
+    return null;
+  }
+
+  /** @type {?ol.style.AtlasInfo} */
+  var info = this.add_(false,
+      id, width, height, renderCallback, opt_this);
+  if (goog.isNull(info)) {
+    return null;
+  }
+
+  /** @type {?ol.style.AtlasInfo} */
+  var hitInfo = null;
+  if (goog.isDef(opt_renderHitCallback)) {
+    hitInfo = this.add_(true,
+        id, width, height, opt_renderHitCallback, opt_this);
+  }
+  return this.mergeInfos_(info, hitInfo);
+};
+
+
+/**
+ * @private
+ * @param {boolean} isHitAtlas If the hit-detection atlases are used.
+ * @param {string} id The identifier of the entry to add.
+ * @param {number} width The width.
+ * @param {number} height The height.
+ * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
+ *    Called to render the new image onto an atlas image.
+ * @param {Object=} opt_this Value to use as `this` when executing
+ *    `renderCallback` and `renderHitCallback`.
+ * @return {?ol.style.AtlasInfo}  The position and atlas image for the entry,
+ *    or `null` if the image is too big.
+ */
+ol.style.AtlasManager.prototype.add_ =
+    function(isHitAtlas, id, width, height,
+        renderCallback, opt_this) {
+  var atlases = (isHitAtlas) ? this.hitAtlases_ : this.atlases_;
+  var atlas, info, i, ii;
+  for (i = 0, ii = atlases.length; i < ii; ++i) {
+    atlas = atlases[i];
+    info = atlas.add(id, width, height, renderCallback, opt_this);
+    if (!goog.isNull(info)) {
+      return info;
+    } else if (goog.isNull(info) && i === ii - 1) {
+      // the entry could not be added to one of the existing atlases,
+      // create a new atlas that is twice as big and try to add to this one.
+      var size;
+      if (isHitAtlas) {
+        size = Math.min(this.currentHitSize_ * 2, this.maxSize_);
+        this.currentHitSize_ = size;
+      } else {
+        size = Math.min(this.currentSize_ * 2, this.maxSize_);
+        this.currentSize_ = size;
+      }
+      atlas = new ol.style.Atlas(size, this.space_);
+      atlases.push(atlas);
+      // run the loop another time
+      ++ii;
+    }
+  }
+  goog.asserts.fail();
+};
+
+
+/**
+ * Provides information for an image inside an atlas.
+ * `offsetX` and `offsetY` are the position of the image inside
+ * the atlas image `image`.
+ * @typedef {{offsetX: number, offsetY: number, image: HTMLCanvasElement}}
+ */
+ol.style.AtlasInfo;
+
+
+
+/**
+ * This class facilitates the creation of image atlases.
+ *
+ * Images added to an atlas will be rendered onto a single
+ * atlas canvas. The distribution of images on the canvas is
+ * managed with the bin packing algorithm described in:
+ * http://www.blackpawn.com/texts/lightmaps/
+ *
+ * @constructor
+ * @struct
+ * @param {number} size The size in pixels of the sprite image.
+ * @param {number} space The space in pixels between images.
+ *    Because texture coordinates are float values, the edges of
+ *    images might not be completely correct (in a way that the
+ *    edges overlap when being rendered). To avoid this we add a
+ *    padding around each image.
+ */
+ol.style.Atlas = function(size, space) {
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.space_ = space;
+
+  /**
+   * @private
+   * @type {Array.<ol.style.Atlas.Block>}
+   */
+  this.emptyBlocks_ = [{x: 0, y: 0, width: size, height: size}];
+
+  /**
+   * @private
+   * @type {Object.<string, ol.style.AtlasInfo>}
+   */
+  this.entries_ = {};
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.canvas_ = /** @type {HTMLCanvasElement} */
+      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+  this.canvas_.width = size;
+  this.canvas_.height = size;
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.context_ = /** @type {CanvasRenderingContext2D} */
+      (this.canvas_.getContext('2d'));
+};
+
+
+/**
+ * @param {string} id The identifier of the entry to check.
+ * @return {?ol.style.AtlasInfo}
+ */
+ol.style.Atlas.prototype.get = function(id) {
+  return /** @type {?ol.style.AtlasInfo} */ (
+      goog.object.get(this.entries_, id, null));
+};
+
+
+/**
+ * @param {string} id The identifier of the entry to add.
+ * @param {number} width The width.
+ * @param {number} height The height.
+ * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
+ *    Called to render the new image onto an atlas image.
+ * @param {Object=} opt_this Value to use as `this` when executing
+ *    `renderCallback`.
+ * @return {?ol.style.AtlasInfo} The position and atlas image for the entry.
+ */
+ol.style.Atlas.prototype.add =
+    function(id, width, height, renderCallback, opt_this) {
+  var block, i, ii;
+  for (i = 0, ii = this.emptyBlocks_.length; i < ii; ++i) {
+    block = this.emptyBlocks_[i];
+    if (block.width >= width + this.space_ &&
+        block.height >= height + this.space_) {
+      // we found a block that is big enough for our entry
+      var entry = {
+        offsetX: block.x + this.space_,
+        offsetY: block.y + this.space_,
+        image: this.canvas_
+      };
+      this.entries_[id] = entry;
+
+      // render the image on the atlas image
+      renderCallback.call(opt_this, this.context_,
+          block.x + this.space_, block.y + this.space_);
+
+      // split the block after the insertion, either horizontally or vertically
+      this.split_(i, block, width + this.space_, height + this.space_);
+
+      return entry;
+    }
+  }
+
+  // there is no space for the new entry in this atlas
+  return null;
+};
+
+
+/**
+ * @private
+ * @param {number} index The index of the block.
+ * @param {ol.style.Atlas.Block} block The block to split.
+ * @param {number} width The width of the entry to insert.
+ * @param {number} height The height of the entry to insert.
+ */
+ol.style.Atlas.prototype.split_ =
+    function(index, block, width, height) {
+  var deltaWidth = block.width - width;
+  var deltaHeight = block.height - height;
+
+  /** @type {ol.style.Atlas.Block} */
+  var newBlock1;
+  /** @type {ol.style.Atlas.Block} */
+  var newBlock2;
+
+  if (deltaWidth > deltaHeight) {
+    // split vertically
+    // block right of the inserted entry
+    newBlock1 = {
+      x: block.x + width,
+      y: block.y,
+      width: block.width - width,
+      height: block.height
+    };
+
+    // block below the inserted entry
+    newBlock2 = {
+      x: block.x,
+      y: block.y + height,
+      width: width,
+      height: block.height - height
+    };
+    this.updateBlocks_(index, newBlock1, newBlock2);
+  } else {
+    // split horizontally
+    // block right of the inserted entry
+    newBlock1 = {
+      x: block.x + width,
+      y: block.y,
+      width: block.width - width,
+      height: height
+    };
+
+    // block below the inserted entry
+    newBlock2 = {
+      x: block.x,
+      y: block.y + height,
+      width: block.width,
+      height: block.height - height
+    };
+    this.updateBlocks_(index, newBlock1, newBlock2);
+  }
+};
+
+
+/**
+ * Remove the old block and insert new blocks at the same array position.
+ * The new blocks are inserted at the same position, so that splitted
+ * blocks (that are potentially smaller) are filled first.
+ * @private
+ * @param {number} index The index of the block to remove.
+ * @param {ol.style.Atlas.Block} newBlock1 The 1st block to add.
+ * @param {ol.style.Atlas.Block} newBlock2 The 2nd block to add.
+ */
+ol.style.Atlas.prototype.updateBlocks_ =
+    function(index, newBlock1, newBlock2) {
+  var args = [index, 1];
+  if (newBlock1.width > 0 && newBlock1.height > 0) {
+    args.push(newBlock1);
+  }
+  if (newBlock2.width > 0 && newBlock2.height > 0) {
+    args.push(newBlock2);
+  }
+  this.emptyBlocks_.splice.apply(this.emptyBlocks_, args);
+};
+
+
+/**
+ * @typedef {{x: number, y: number, width: number, height: number}}
+ */
+ol.style.Atlas.Block;
+
 goog.provide('ol.style.RegularShape');
 
 goog.require('goog.asserts');
@@ -104234,6 +106808,7 @@ goog.require('ol.style.Stroke');
  * @constructor
  * @param {olx.style.RegularShapeOptions=} opt_options Options.
  * @extends {ol.style.Image}
+ * @implements {ol.structs.IHasChecksum}
  * @api
  */
 ol.style.RegularShape = function(opt_options) {
@@ -104242,10 +106817,15 @@ ol.style.RegularShape = function(opt_options) {
 
   /**
    * @private
+   * @type {Array.<string>}
+   */
+  this.checksums_ = null;
+
+  /**
+   * @private
    * @type {HTMLCanvasElement}
    */
-  this.canvas_ = /** @type {HTMLCanvasElement} */
-      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+  this.canvas_ = null;
 
   /**
    * @private
@@ -104264,6 +106844,12 @@ ol.style.RegularShape = function(opt_options) {
    * @type {Array.<number>}
    */
   this.origin_ = [0, 0];
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.hitDetectionOrigin_ = [0, 0];
 
   /**
    * @private
@@ -104300,19 +106886,31 @@ ol.style.RegularShape = function(opt_options) {
    */
   this.stroke_ = goog.isDef(options.stroke) ? options.stroke : null;
 
-  var size = this.render_();
-
   /**
    * @private
    * @type {Array.<number>}
    */
-  this.anchor_ = [size / 2, size / 2];
+  this.anchor_ = null;
 
   /**
    * @private
    * @type {ol.Size}
    */
-  this.size_ = [size, size];
+  this.size_ = null;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.imageSize_ = null;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.hitDetectionImageSize_ = null;
+
+  this.render_(options.atlasManager);
 
   /**
    * @type {boolean}
@@ -104370,6 +106968,22 @@ ol.style.RegularShape.prototype.getImage = function(pixelRatio) {
 /**
  * @inheritDoc
  */
+ol.style.RegularShape.prototype.getImageSize = function() {
+  return this.imageSize_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.getHitDetectionImageSize = function() {
+  return this.hitDetectionImageSize_;
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.style.RegularShape.prototype.getImageState = function() {
   return ol.style.ImageState.LOADED;
 };
@@ -104381,6 +106995,14 @@ ol.style.RegularShape.prototype.getImageState = function() {
  */
 ol.style.RegularShape.prototype.getOrigin = function() {
   return this.origin_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.getHitDetectionOrigin = function() {
+  return this.hitDetectionOrigin_;
 };
 
 
@@ -104439,36 +107061,116 @@ ol.style.RegularShape.prototype.unlistenImageChange = goog.nullFunction;
 
 
 /**
- * @private
- * @return {number} Size.
+ * @typedef {{strokeStyle: (string|undefined), strokeWidth: number,
+ *   size: number, lineDash: Array.<number>}}
  */
-ol.style.RegularShape.prototype.render_ = function() {
-  var canvas = this.canvas_;
-  var strokeStyle, strokeWidth, lineDash;
+ol.style.RegularShape.RenderOptions;
 
-  if (goog.isNull(this.stroke_)) {
-    strokeWidth = 0;
-  } else {
+
+/**
+ * @private
+ * @param {ol.style.AtlasManager|undefined} atlasManager
+ */
+ol.style.RegularShape.prototype.render_ = function(atlasManager) {
+  var imageSize;
+  var lineDash = null;
+  var strokeStyle;
+  var strokeWidth = 0;
+
+  if (!goog.isNull(this.stroke_)) {
     strokeStyle = ol.color.asString(this.stroke_.getColor());
     strokeWidth = this.stroke_.getWidth();
     if (!goog.isDef(strokeWidth)) {
       strokeWidth = ol.render.canvas.defaultLineWidth;
     }
+    lineDash = this.stroke_.getLineDash();
+    if (!ol.has.CANVAS_LINE_DASH) {
+      lineDash = null;
+    }
   }
 
   var size = 2 * (this.radius_ + strokeWidth) + 1;
 
-  // draw the regular shape on the canvas
+  /** @type {ol.style.RegularShape.RenderOptions} */
+  var renderOptions = {
+    strokeStyle: strokeStyle,
+    strokeWidth: strokeWidth,
+    size: size,
+    lineDash: lineDash
+  };
 
-  canvas.height = size;
-  canvas.width = size;
+  if (!goog.isDef(atlasManager)) {
+    // no atlas manager is used, create a new canvas
+    this.canvas_ = /** @type {HTMLCanvasElement} */
+        (goog.dom.createElement(goog.dom.TagName.CANVAS));
 
-  // canvas.width and height are rounded to the closest integer
-  size = canvas.width;
+    this.canvas_.height = size;
+    this.canvas_.width = size;
 
-  var context = /** @type {CanvasRenderingContext2D} */
-      (canvas.getContext('2d'));
+    // canvas.width and height are rounded to the closest integer
+    size = this.canvas_.width;
+    imageSize = size;
+
+    var context = /** @type {CanvasRenderingContext2D} */
+        (this.canvas_.getContext('2d'));
+    this.draw_(renderOptions, context, 0, 0);
+
+    this.createHitDetectionCanvas_(renderOptions);
+  } else {
+    // an atlas manager is used, add the symbol to an atlas
+    size = Math.round(size);
+
+    var hasCustomHitDetectionImage = goog.isNull(this.fill_);
+    var renderHitDetectionCallback;
+    if (hasCustomHitDetectionImage) {
+      // render the hit-detection image into a separate atlas image
+      renderHitDetectionCallback =
+          goog.bind(this.drawHitDetectionCanvas_, this, renderOptions);
+    }
+
+    var id = this.getChecksum();
+    var info = atlasManager.add(
+        id, size, size, goog.bind(this.draw_, this, renderOptions),
+        renderHitDetectionCallback);
+    goog.asserts.assert(!goog.isNull(info), 'shape size is too large');
+
+    this.canvas_ = info.image;
+    this.origin_ = [info.offsetX, info.offsetY];
+    imageSize = info.image.width;
+
+    if (hasCustomHitDetectionImage) {
+      this.hitDetectionCanvas_ = info.hitImage;
+      this.hitDetectionOrigin_ = [info.hitOffsetX, info.hitOffsetY];
+      this.hitDetectionImageSize_ =
+          [info.hitImage.width, info.hitImage.height];
+    } else {
+      this.hitDetectionCanvas_ = this.canvas_;
+      this.hitDetectionOrigin_ = this.origin_;
+      this.hitDetectionImageSize_ = [imageSize, imageSize];
+    }
+  }
+
+  this.anchor_ = [size / 2, size / 2];
+  this.size_ = [size, size];
+  this.imageSize_ = [imageSize, imageSize];
+};
+
+
+/**
+ * @private
+ * @param {ol.style.Circle.RenderOptions} renderOptions
+ * @param {CanvasRenderingContext2D} context
+ * @param {number} x The origin for the symbol (x).
+ * @param {number} y The origin for the symbol (y).
+ */
+ol.style.RegularShape.prototype.draw_ = function(renderOptions, context, x, y) {
   var i, angle0, radiusC;
+  // reset transform
+  context.setTransform(1, 0, 0, 1, 0, 0);
+
+  // then move to (x, y)
+  context.translate(x, y);
+
   context.beginPath();
   if (this.radius2_ !== this.radius_) {
     this.points_ = 2 * this.points_;
@@ -104476,8 +107178,8 @@ ol.style.RegularShape.prototype.render_ = function() {
   for (i = 0; i <= this.points_; i++) {
     angle0 = i * 2 * Math.PI / this.points_ - Math.PI / 2 + this.angle_;
     radiusC = i % 2 === 0 ? this.radius_ : this.radius2_;
-    context.lineTo(size / 2 + radiusC * Math.cos(angle0),
-                   size / 2 + radiusC * Math.sin(angle0));
+    context.lineTo(renderOptions.size / 2 + radiusC * Math.cos(angle0),
+                   renderOptions.size / 2 + radiusC * Math.sin(angle0));
   }
 
   if (!goog.isNull(this.fill_)) {
@@ -104485,54 +107187,113 @@ ol.style.RegularShape.prototype.render_ = function() {
     context.fill();
   }
   if (!goog.isNull(this.stroke_)) {
-    context.strokeStyle = strokeStyle;
-    lineDash = this.stroke_.getLineDash();
-    if (ol.has.CANVAS_LINE_DASH && !goog.isNull(lineDash)) {
-      context.setLineDash(lineDash);
+    context.strokeStyle = renderOptions.strokeStyle;
+    context.lineWidth = renderOptions.strokeWidth;
+    if (!goog.isNull(renderOptions.lineDash)) {
+      context.setLineDash(renderOptions.lineDash);
     }
-    context.lineWidth = strokeWidth;
     context.stroke();
   }
+  context.closePath();
+};
 
-  // deal with the hit detection canvas
 
+/**
+ * @private
+ * @param {ol.style.RegularShape.RenderOptions} renderOptions
+ */
+ol.style.RegularShape.prototype.createHitDetectionCanvas_ =
+    function(renderOptions) {
+  this.hitDetectionImageSize_ = [renderOptions.size, renderOptions.size];
   if (!goog.isNull(this.fill_)) {
-    this.hitDetectionCanvas_ = canvas;
-  } else {
-    this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
-        (goog.dom.createElement(goog.dom.TagName.CANVAS));
-    canvas = this.hitDetectionCanvas_;
-
-    canvas.height = size;
-    canvas.width = size;
-
-    context = /** @type {CanvasRenderingContext2D} */
-        (canvas.getContext('2d'));
-    context.beginPath();
-    if (this.radius2_ !== this.radius_) {
-      this.points_ = 2 * this.points_;
-    }
-    for (i = 0; i <= this.points_; i++) {
-      angle0 = i * 2 * Math.PI / this.points_ - Math.PI / 2 + this.angle_;
-      radiusC = i % 2 === 0 ? this.radius_ : this.radius2_;
-      context.lineTo(size / 2 + radiusC * Math.cos(angle0),
-                     size / 2 + radiusC * Math.sin(angle0));
-    }
-
-    context.fillStyle = ol.render.canvas.defaultFillStyle;
-    context.fill();
-    if (!goog.isNull(this.stroke_)) {
-      context.strokeStyle = strokeStyle;
-      lineDash = this.stroke_.getLineDash();
-      if (ol.has.CANVAS_LINE_DASH && !goog.isNull(lineDash)) {
-        context.setLineDash(lineDash);
-      }
-      context.lineWidth = strokeWidth;
-      context.stroke();
-    }
+    this.hitDetectionCanvas_ = this.canvas_;
+    return;
   }
 
-  return size;
+  // if no fill style is set, create an extra hit-detection image with a
+  // default fill style
+  this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
+      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+  var canvas = this.hitDetectionCanvas_;
+
+  canvas.height = renderOptions.size;
+  canvas.width = renderOptions.size;
+
+  var context = /** @type {CanvasRenderingContext2D} */
+      (canvas.getContext('2d'));
+  this.drawHitDetectionCanvas_(renderOptions, context, 0, 0);
+};
+
+
+/**
+ * @private
+ * @param {ol.style.RegularShape.RenderOptions} renderOptions
+ * @param {CanvasRenderingContext2D} context
+ * @param {number} x The origin for the symbol (x).
+ * @param {number} y The origin for the symbol (y).
+ */
+ol.style.RegularShape.prototype.drawHitDetectionCanvas_ =
+    function(renderOptions, context, x, y) {
+  // reset transform
+  context.setTransform(1, 0, 0, 1, 0, 0);
+
+  // then move to (x, y)
+  context.translate(x, y);
+
+  context.beginPath();
+  if (this.radius2_ !== this.radius_) {
+    this.points_ = 2 * this.points_;
+  }
+  var i, radiusC, angle0;
+  for (i = 0; i <= this.points_; i++) {
+    angle0 = i * 2 * Math.PI / this.points_ - Math.PI / 2 + this.angle_;
+    radiusC = i % 2 === 0 ? this.radius_ : this.radius2_;
+    context.lineTo(renderOptions.size / 2 + radiusC * Math.cos(angle0),
+                   renderOptions.size / 2 + radiusC * Math.sin(angle0));
+  }
+
+  context.fillStyle = ol.render.canvas.defaultFillStyle;
+  context.fill();
+  if (!goog.isNull(this.stroke_)) {
+    context.strokeStyle = renderOptions.strokeStyle;
+    context.lineWidth = renderOptions.strokeWidth;
+    if (!goog.isNull(renderOptions.lineDash)) {
+      context.setLineDash(renderOptions.lineDash);
+    }
+    context.stroke();
+  }
+  context.closePath();
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.style.RegularShape.prototype.getChecksum = function() {
+  var strokeChecksum = !goog.isNull(this.stroke_) ?
+      this.stroke_.getChecksum() : '-';
+  var fillChecksum = !goog.isNull(this.fill_) ?
+      this.fill_.getChecksum() : '-';
+
+  var recalculate = goog.isNull(this.checksums_) ||
+      (strokeChecksum != this.checksums_[1] ||
+      fillChecksum != this.checksums_[2] ||
+      this.radius_ != this.checksums_[3] ||
+      this.radius2_ != this.checksums_[4] ||
+      this.angle_ != this.checksums_[5] ||
+      this.points_ != this.checksums_[6]);
+
+  if (recalculate) {
+    var checksum = 'r' + strokeChecksum + fillChecksum +
+        (goog.isDef(this.radius_) ? this.radius_.toString() : '-') +
+        (goog.isDef(this.radius2_) ? this.radius2_.toString() : '-') +
+        (goog.isDef(this.angle_) ? this.angle_.toString() : '-') +
+        (goog.isDef(this.points_) ? this.points_.toString() : '-');
+    this.checksums_ = [checksum, strokeChecksum, fillChecksum,
+      this.radius_, this.radius2_, this.angle_, this.points_];
+  }
+
+  return this.checksums_[0];
 };
 
 // Copyright 2009 The Closure Library Authors.
@@ -104690,6 +107451,7 @@ goog.require('ol.proj.common');
 goog.require('ol.render.Event');
 goog.require('ol.render.EventType');
 goog.require('ol.render.canvas.Immediate');
+goog.require('ol.render.webgl.Immediate');
 goog.require('ol.source.BingMaps');
 goog.require('ol.source.Cluster');
 goog.require('ol.source.FormatVector');
@@ -104726,6 +107488,8 @@ goog.require('ol.source.WMTS');
 goog.require('ol.source.WMTSRequestEncoding');
 goog.require('ol.source.XYZ');
 goog.require('ol.source.Zoomify');
+goog.require('ol.style.Atlas');
+goog.require('ol.style.AtlasManager');
 goog.require('ol.style.Circle');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Icon');
@@ -105527,6 +108291,10 @@ goog.exportProperty(
     ol.Observable.prototype.unByKey);
 
 goog.exportSymbol(
+    'ol.WEBGL_MAX_TEXTURE_SIZE',
+    ol.WEBGL_MAX_TEXTURE_SIZE);
+
+goog.exportSymbol(
     'ol.inherits',
     ol.inherits);
 
@@ -105765,6 +108533,10 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.tilegrid.Zoomify',
     ol.tilegrid.Zoomify);
+
+goog.exportSymbol(
+    'ol.style.AtlasManager',
+    ol.style.AtlasManager);
 
 goog.exportSymbol(
     'ol.style.Circle',
@@ -106338,8 +109110,8 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
-    'getFeaturesAtCoordinateAtResolution',
-    ol.source.TileVector.prototype.getFeaturesAtCoordinateAtResolution);
+    'getFeaturesAtCoordinateAndResolution',
+    ol.source.TileVector.prototype.getFeaturesAtCoordinateAndResolution);
 
 goog.exportSymbol(
     'ol.source.TileWMS',
@@ -106499,6 +109271,76 @@ goog.exportProperty(
     ol.render.Event.prototype,
     'glContext',
     ol.render.Event.prototype.glContext);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawAsync',
+    ol.render.webgl.Immediate.prototype.drawAsync);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawCircleGeometry',
+    ol.render.webgl.Immediate.prototype.drawCircleGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawFeature',
+    ol.render.webgl.Immediate.prototype.drawFeature);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawGeometryCollectionGeometry',
+    ol.render.webgl.Immediate.prototype.drawGeometryCollectionGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawPointGeometry',
+    ol.render.webgl.Immediate.prototype.drawPointGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawLineStringGeometry',
+    ol.render.webgl.Immediate.prototype.drawLineStringGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawMultiLineStringGeometry',
+    ol.render.webgl.Immediate.prototype.drawMultiLineStringGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawMultiPointGeometry',
+    ol.render.webgl.Immediate.prototype.drawMultiPointGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawMultiPolygonGeometry',
+    ol.render.webgl.Immediate.prototype.drawMultiPolygonGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawPolygonGeometry',
+    ol.render.webgl.Immediate.prototype.drawPolygonGeometry);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'drawText',
+    ol.render.webgl.Immediate.prototype.drawText);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'setFillStrokeStyle',
+    ol.render.webgl.Immediate.prototype.setFillStrokeStyle);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'setImageStyle',
+    ol.render.webgl.Immediate.prototype.setImageStyle);
+
+goog.exportProperty(
+    ol.render.webgl.Immediate.prototype,
+    'setTextStyle',
+    ol.render.webgl.Immediate.prototype.setTextStyle);
 
 goog.exportProperty(
     ol.render.canvas.Immediate.prototype,

@@ -43,6 +43,10 @@
             </span>
             <ul class="members itemMembers">
             
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.WEBGL_MAX_TEXTURE_SIZE"><a href="ol.html#WEBGL_MAX_TEXTURE_SIZE">WEBGL_MAX_TEXTURE_SIZE</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -8857,6 +8861,83 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.render.webgl.Immediate">
+            <span class="title">
+                <a href="ol.render.webgl.Immediate.html">ol.render.webgl.Immediate</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.webgl.Immediate#drawAsync" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawAsync">drawAsync</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawCircleGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawCircleGeometry">drawCircleGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawFeature" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawGeometryCollectionGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawGeometryCollectionGeometry">drawGeometryCollectionGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawLineStringGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawLineStringGeometry">drawLineStringGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiLineStringGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiLineStringGeometry">drawMultiLineStringGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiPointGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiPointGeometry">drawMultiPointGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiPolygonGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiPolygonGeometry">drawMultiPolygonGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawPointGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawPointGeometry">drawPointGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawPolygonGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawPolygonGeometry">drawPolygonGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawText" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawText">drawText</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setFillStrokeStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setFillStrokeStyle">setFillStrokeStyle</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setImageStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setImageStyle">setImageStyle</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setTextStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setTextStyle">setTextStyle</a>
+                </li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.source">
             <span class="title">
                 <a href="ol.source.html">ol.source</a>
@@ -11326,8 +11407,8 @@
                     <a href="ol.source.TileVector.html#getFeaturesAtCoordinate">getFeaturesAtCoordinate</a>
                 </li>
             
-                <li data-name="ol.source.TileVector#getFeaturesAtCoordinateAtResolution" class="">
-                    <a href="ol.source.TileVector.html#getFeaturesAtCoordinateAtResolution">getFeaturesAtCoordinateAtResolution</a>
+                <li data-name="ol.source.TileVector#getFeaturesAtCoordinateAndResolution" class="unstable">
+                    <a href="ol.source.TileVector.html#getFeaturesAtCoordinateAndResolution">getFeaturesAtCoordinateAndResolution</a>
                 </li>
             
                 <li data-name="ol.source.TileVector#getLogo" class="">
@@ -12109,6 +12190,25 @@
                 <li data-name="ol.style.StyleFunction" class="unstable">
                     <a href="ol.style.html#StyleFunction">StyleFunction</a>
                 </li>
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.style.AtlasManager">
+            <span class="title">
+                <a href="ol.style.AtlasManager.html">ol.style.AtlasManager</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
             
             </ul>
             <ul class="methods itemMembers">
@@ -12957,6 +13057,8 @@ ol.color.blend = function(dst, src, opt_color) {
 
 
 /**
+ * Return the color as an array. This function maintains a cache of calculated
+ * arrays which means the result should not be modified.
  * @param {ol.Color|string} color Color.
  * @return {ol.Color} Color.
  * @api
@@ -12972,6 +13074,7 @@ ol.color.asArray = function(color) {
 
 
 /**
+ * Return the color as an rgba string.
  * @param {ol.Color|string} color Color.
  * @return {string} Rgba string.
  * @api
@@ -13000,12 +13103,11 @@ ol.color.equals = function(color1, color2) {
 
 /**
  * @param {string} s String.
- * @param {ol.Color=} opt_color Color.
  * @return {ol.Color} Color.
  */
 ol.color.fromString = (
     /**
-     * @return {function(string, ol.Color=): ol.Color}
+     * @return {function(string): ol.Color}
      */
     function() {
 
@@ -13032,10 +13134,9 @@ ol.color.fromString = (
       return (
           /**
            * @param {string} s String.
-           * @param {ol.Color=} opt_color Color.
            * @return {ol.Color} Color.
            */
-          function(s, opt_color) {
+          function(s) {
             var color;
             if (cache.hasOwnProperty(s)) {
               color = cache[s];
@@ -13054,7 +13155,7 @@ ol.color.fromString = (
               cache[s] = color;
               ++cacheSize;
             }
-            return ol.color.returnOrUpdate(color, opt_color);
+            return color;
           });
 
     })();
@@ -13140,24 +13241,6 @@ ol.color.normalize = function(color, opt_color) {
 
 /**
  * @param {ol.Color} color Color.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Color.
- */
-ol.color.returnOrUpdate = function(color, opt_color) {
-  if (goog.isDef(opt_color)) {
-    opt_color[0] = color[0];
-    opt_color[1] = color[1];
-    opt_color[2] = color[2];
-    opt_color[3] = color[3];
-    return opt_color;
-  } else {
-    return color;
-  }
-};
-
-
-/**
- * @param {ol.Color} color Color.
  * @return {string} String.
  */
 ol.color.toString = function(color) {
@@ -13219,7 +13302,7 @@ ol.color.stringOrColorEquals = function(color1, color2) {
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Dec 01 2014 11:43:51 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Dec 04 2014 13:13:18 GMT+0100 (CET)
         </footer>
     </div>
 </div>

@@ -4,6 +4,7 @@ var map = new ol.Map({
       source: new ol.source.MapQuest({layer: 'sat'})
     })
   ],
+  renderer: exampleNS.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View({
     center: [0, 0],
@@ -16,6 +17,20 @@ var imageStyle = new ol.style.Circle({
   snapToPixel: false,
   fill: new ol.style.Fill({color: 'yellow'}),
   stroke: new ol.style.Stroke({color: 'red', width: 1})
+});
+
+var headInnerImageStyle = new ol.style.Style({
+  image: new ol.style.Circle({
+    radius: 2,
+    snapToPixel: false,
+    fill: new ol.style.Fill({color: 'blue'})
+  })
+});
+
+var headOuterImageStyle = new ol.style.Circle({
+  radius: 5,
+  snapToPixel: false,
+  fill: new ol.style.Fill({color: 'black'})
 });
 
 var n = 200;
@@ -38,6 +53,14 @@ map.on('postcompose', function(event) {
   vectorContext.setImageStyle(imageStyle);
   vectorContext.drawMultiPointGeometry(
       new ol.geom.MultiPoint(coordinates), null);
+
+  var headPoint = new ol.geom.Point(coordinates[coordinates.length - 1]);
+  var headFeature = new ol.Feature(headPoint);
+  vectorContext.drawFeature(headFeature, headInnerImageStyle);
+
+  vectorContext.setImageStyle(headOuterImageStyle);
+  vectorContext.drawMultiPointGeometry(headPoint, null);
+
   map.render();
 });
 map.render();

@@ -43,6 +43,10 @@
             </span>
             <ul class="members itemMembers">
             
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.WEBGL_MAX_TEXTURE_SIZE"><a href="ol.html#WEBGL_MAX_TEXTURE_SIZE">WEBGL_MAX_TEXTURE_SIZE</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -8857,6 +8861,83 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.render.webgl.Immediate">
+            <span class="title">
+                <a href="ol.render.webgl.Immediate.html">ol.render.webgl.Immediate</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.webgl.Immediate#drawAsync" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawAsync">drawAsync</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawCircleGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawCircleGeometry">drawCircleGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawFeature" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawGeometryCollectionGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawGeometryCollectionGeometry">drawGeometryCollectionGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawLineStringGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawLineStringGeometry">drawLineStringGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiLineStringGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiLineStringGeometry">drawMultiLineStringGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiPointGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiPointGeometry">drawMultiPointGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawMultiPolygonGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawMultiPolygonGeometry">drawMultiPolygonGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawPointGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawPointGeometry">drawPointGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawPolygonGeometry" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawPolygonGeometry">drawPolygonGeometry</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#drawText" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawText">drawText</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setFillStrokeStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setFillStrokeStyle">setFillStrokeStyle</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setImageStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setImageStyle">setImageStyle</a>
+                </li>
+            
+                <li data-name="ol.render.webgl.Immediate#setTextStyle" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#setTextStyle">setTextStyle</a>
+                </li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.source">
             <span class="title">
                 <a href="ol.source.html">ol.source</a>
@@ -11326,8 +11407,8 @@
                     <a href="ol.source.TileVector.html#getFeaturesAtCoordinate">getFeaturesAtCoordinate</a>
                 </li>
             
-                <li data-name="ol.source.TileVector#getFeaturesAtCoordinateAtResolution" class="">
-                    <a href="ol.source.TileVector.html#getFeaturesAtCoordinateAtResolution">getFeaturesAtCoordinateAtResolution</a>
+                <li data-name="ol.source.TileVector#getFeaturesAtCoordinateAndResolution" class="unstable">
+                    <a href="ol.source.TileVector.html#getFeaturesAtCoordinateAndResolution">getFeaturesAtCoordinateAndResolution</a>
                 </li>
             
                 <li data-name="ol.source.TileVector#getLogo" class="">
@@ -12119,6 +12200,25 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.style.AtlasManager">
+            <span class="title">
+                <a href="ol.style.AtlasManager.html">ol.style.AtlasManager</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.style.Circle">
             <span class="title">
                 <a href="ol.style.Circle.html">ol.style.Circle</a>
@@ -12863,19 +12963,19 @@
         <article>
             <pre class="prettyprint source"><code>goog.provide('ol.webgl.Context');
 
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.log');
 goog.require('goog.object');
-goog.require('ol.structs.Buffer');
-goog.require('ol.structs.IntegerSet');
+goog.require('ol');
+goog.require('ol.webgl.Buffer');
 goog.require('ol.webgl.WebGLContextEventType');
 
 
 /**
- * @typedef {{buf: ol.structs.Buffer,
- *            buffer: WebGLBuffer,
- *            dirtySet: ol.structs.IntegerSet}}
+ * @typedef {{buf: ol.webgl.Buffer,
+ *            buffer: WebGLBuffer}}
  */
 ol.webgl.BufferCacheEntry;
 
@@ -12929,6 +13029,18 @@ ol.webgl.Context = function(canvas, gl) {
    */
   this.currentProgram_ = null;
 
+  /**
+   * @type {boolean}
+   */
+  this.hasOESElementIndexUint = goog.array.contains(
+      ol.WEBGL_EXTENSIONS, 'OES_element_index_uint');
+
+  // use the OES_element_index_uint extension if available
+  if (this.hasOESElementIndexUint) {
+    var ext = gl.getExtension('OES_element_index_uint');
+    goog.asserts.assert(!goog.isNull(ext));
+  }
+
   goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.LOST,
       this.handleWebGLContextLost, false, this);
   goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.RESTORED,
@@ -12938,8 +13050,11 @@ ol.webgl.Context = function(canvas, gl) {
 
 
 /**
+ * Just bind the buffer if it's in the cache. Otherwise create
+ * the WebGL buffer, bind it, populate it, and add an entry to
+ * the cache.
  * @param {number} target Target.
- * @param {ol.structs.Buffer} buf Buffer.
+ * @param {ol.webgl.Buffer} buf Buffer.
  */
 ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
   var gl = this.getGL();
@@ -12948,45 +13063,37 @@ ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
   if (bufferKey in this.bufferCache_) {
     var bufferCacheEntry = this.bufferCache_[bufferKey];
     gl.bindBuffer(target, bufferCacheEntry.buffer);
-    bufferCacheEntry.dirtySet.forEachRange(function(start, stop) {
-      // FIXME check if slice is really efficient here
-      var slice = arr.slice(start, stop);
-      gl.bufferSubData(
-          target,
-          start,
-          target == goog.webgl.ARRAY_BUFFER ?
-          new Float32Array(slice) :
-          new Uint16Array(slice));
-    });
-    bufferCacheEntry.dirtySet.clear();
   } else {
     var buffer = gl.createBuffer();
     gl.bindBuffer(target, buffer);
-    gl.bufferData(
-        target,
-        target == goog.webgl.ARRAY_BUFFER ?
-        new Float32Array(arr) : new Uint16Array(arr),
-        buf.getUsage());
-    var dirtySet = new ol.structs.IntegerSet();
-    buf.addDirtySet(dirtySet);
+    goog.asserts.assert(target == goog.webgl.ARRAY_BUFFER ||
+        target == goog.webgl.ELEMENT_ARRAY_BUFFER);
+    var /** @type {ArrayBufferView} */ arrayBuffer;
+    if (target == goog.webgl.ARRAY_BUFFER) {
+      arrayBuffer = new Float32Array(arr);
+    } else if (target == goog.webgl.ELEMENT_ARRAY_BUFFER) {
+      arrayBuffer = this.hasOESElementIndexUint ?
+          new Uint32Array(arr) : new Uint16Array(arr);
+    } else {
+      goog.asserts.fail();
+    }
+    gl.bufferData(target, arrayBuffer, buf.getUsage());
     this.bufferCache_[bufferKey] = {
       buf: buf,
-      buffer: buffer,
-      dirtySet: dirtySet
+      buffer: buffer
     };
   }
 };
 
 
 /**
- * @param {ol.structs.Buffer} buf Buffer.
+ * @param {ol.webgl.Buffer} buf Buffer.
  */
 ol.webgl.Context.prototype.deleteBuffer = function(buf) {
   var gl = this.getGL();
   var bufferKey = goog.getUid(buf);
   goog.asserts.assert(bufferKey in this.bufferCache_);
   var bufferCacheEntry = this.bufferCache_[bufferKey];
-  bufferCacheEntry.buf.removeDirtySet(bufferCacheEntry.dirtySet);
   if (!gl.isContextLost()) {
     gl.deleteBuffer(bufferCacheEntry.buffer);
   }
@@ -12998,9 +13105,6 @@ ol.webgl.Context.prototype.deleteBuffer = function(buf) {
  * @inheritDoc
  */
 ol.webgl.Context.prototype.disposeInternal = function() {
-  goog.object.forEach(this.bufferCache_, function(bufferCacheEntry) {
-    bufferCacheEntry.buf.removeDirtySet(bufferCacheEntry.dirtySet);
-  });
   var gl = this.getGL();
   if (!gl.isContextLost()) {
     goog.object.forEach(this.bufferCache_, function(bufferCacheEntry) {
@@ -13034,6 +13138,8 @@ ol.webgl.Context.prototype.getGL = function() {
 
 
 /**
+ * Get shader from the cache if it's in the cache. Otherwise, create
+ * the WebGL shader, compile it, and add entry to cache.
  * @param {ol.webgl.Shader} shaderObject Shader object.
  * @return {WebGLShader} Shader.
  */
@@ -13062,6 +13168,9 @@ ol.webgl.Context.prototype.getShader = function(shaderObject) {
 
 
 /**
+ * Get the program from the cache if it's in the cache. Otherwise create
+ * the WebGL program, attach the shaders to it, and add an entry to the
+ * cache.
  * @param {ol.webgl.shader.Fragment} fragmentShaderObject Fragment shader.
  * @param {ol.webgl.shader.Vertex} vertexShaderObject Vertex shader.
  * @return {WebGLProgram} Program.
@@ -13112,6 +13221,9 @@ ol.webgl.Context.prototype.handleWebGLContextRestored = function() {
 
 
 /**
+ * Just return false if that program is used already. Other use
+ * that program (call `gl.useProgram`) and make it the "current
+ * program".
  * @param {WebGLProgram} program Program.
  * @return {boolean} Changed.
  * @api
@@ -13142,7 +13254,7 @@ ol.webgl.Context.prototype.logger_ = goog.log.getLogger('ol.webgl.Context');
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Dec 01 2014 11:44:33 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Dec 04 2014 13:14:03 GMT+0100 (CET)
         </footer>
     </div>
 </div>

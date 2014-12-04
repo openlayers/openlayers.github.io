@@ -1,5 +1,5 @@
 var wmsSource = new ol.source.ImageWMS({
-  url: 'http://demo.opengeo.org/geoserver/wms',
+  url: 'http://demo.boundlessgeo.com/geoserver/wms',
   params: {'LAYERS': 'ne:ne'},
   serverType: 'geoserver'
 });
