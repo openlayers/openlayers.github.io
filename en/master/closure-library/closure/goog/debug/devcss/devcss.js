@@ -81,8 +81,7 @@ goog.debug.DevCss = function(opt_userAgent, opt_userAgentVersion) {
   this.userAgent_ = opt_userAgent;
 
   /**
-   * @type {Object}
-   * @private
+   * @const @private
    */
   this.userAgentTokens_ = {};
 
@@ -102,7 +101,7 @@ goog.debug.DevCss = function(opt_userAgent, opt_userAgentVersion) {
 
   if (this.isIe6OrLess_) {
     /**
-     * @type {Array.<{classNames,combinedClassName,els}>}
+     * @type {Array<{classNames,combinedClassName,els}>}
      * @private
      */
     this.ie6CombinedMatches_ = [];

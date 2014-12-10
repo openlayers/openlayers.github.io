@@ -96,7 +96,7 @@ goog.ui.Zippy = function(header, opt_content, opt_expanded,
    * @private
    */
   this.elContent_ = this.lazyCreateFunc_ || !opt_content ? null :
-      this.dom_.getElement(/** @type {Element} */ (opt_content));
+      this.dom_.getElement(/** @type {!Element} */ (opt_content));
 
   /**
    * Expanded state.
@@ -107,14 +107,14 @@ goog.ui.Zippy = function(header, opt_content, opt_expanded,
 
   /**
    * A keyboard events handler. If there are two headers it is shared for both.
-   * @type {goog.events.EventHandler.<!goog.ui.Zippy>}
+   * @type {goog.events.EventHandler<!goog.ui.Zippy>}
    * @private
    */
   this.keyboardEventHandler_ = new goog.events.EventHandler(this);
 
   /**
    * A mouse events handler. If there are two headers it is shared for both.
-   * @type {goog.events.EventHandler.<!goog.ui.Zippy>}
+   * @type {goog.events.EventHandler<!goog.ui.Zippy>}
    * @private
    */
   this.mouseEventHandler_ = new goog.events.EventHandler(this);
@@ -142,7 +142,7 @@ goog.tagUnsealableClass(goog.ui.Zippy);
 /**
  * Constants for event names
  *
- * @type {Object}
+ * @const
  */
 goog.ui.Zippy.Events = {
   // Zippy will dispatch an ACTION event for user interaction. Mimics

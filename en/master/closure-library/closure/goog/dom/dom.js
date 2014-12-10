@@ -20,6 +20,7 @@
  * to a different document object.  This is useful if you are working with
  * frames or multiple windows.
  *
+ * @author arv@google.com (Erik Arvidsson)
  */
 
 
@@ -37,6 +38,8 @@ goog.require('goog.asserts');
 goog.require('goog.dom.BrowserFeature');
 goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
+goog.require('goog.dom.safe');
+goog.require('goog.html.SafeHtml');
 goog.require('goog.math.Coordinate');
 goog.require('goog.math.Size');
 goog.require('goog.object');
@@ -373,8 +376,8 @@ goog.dom.setProperties = function(element, properties) {
  * element.setAttribute(key, val) instead of element[key] = val.  Used
  * by goog.dom.setProperties.
  *
- * @type {Object}
- * @private
+ * @private {!Object<string, string>}
+ * @const
  */
 goog.dom.DIRECT_ATTRIBUTE_MAP_ = {
   'cellpadding': 'cellPadding',
@@ -493,7 +496,7 @@ goog.dom.getDocumentHeight = function() {
  *   gadgets.window.adjustHeight(opt_height)
  *
  * @private
- * @param {Window} win The window whose document height to retrieve.
+ * @param {!Window} win The window whose document height to retrieve.
  * @return {number} The height of the document of the given window.
  */
 goog.dom.getDocumentHeight_ = function(win) {
@@ -668,7 +671,7 @@ goog.dom.getWindow_ = function(doc) {
  * would return a div with two child paragraphs
  *
  * @param {string} tagName Tag to create.
- * @param {(Object|Array.<string>|string)=} opt_attributes If object, then a map
+ * @param {(Object|Array<string>|string)=} opt_attributes If object, then a map
  *     of name-value pairs for attributes. If a string, then this is the
  *     className of the new element. If an array, the elements will be joined
  *     together as the className of the new element.
@@ -852,6 +855,36 @@ goog.dom.createTable_ = function(doc, rows, columns, fillWithNbsp) {
 
 
 /**
+ * Converts HTML markup into a node.
+ * @param {!goog.html.SafeHtml} html The HTML markup to convert.
+ * @return {!Node} The resulting node.
+ */
+goog.dom.safeHtmlToNode = function(html) {
+  return goog.dom.safeHtmlToNode_(document, html);
+};
+
+
+/**
+ * Helper for {@code safeHtmlToNode}.
+ * @param {!Document} doc The document.
+ * @param {!goog.html.SafeHtml} html The HTML markup to convert.
+ * @return {!Node} The resulting node.
+ * @private
+ */
+goog.dom.safeHtmlToNode_ = function(doc, html) {
+  var tempDiv = doc.createElement('div');
+  if (goog.dom.BrowserFeature.INNER_HTML_NEEDS_SCOPED_ELEMENT) {
+    goog.dom.safe.setInnerHtml(tempDiv,
+        goog.html.SafeHtml.concat(goog.html.SafeHtml.create('br'), html));
+    tempDiv.removeChild(tempDiv.firstChild);
+  } else {
+    goog.dom.safe.setInnerHtml(tempDiv, html);
+  }
+  return goog.dom.childrenToNode_(doc, tempDiv);
+};
+
+
+/**
  * Converts an HTML string into a document fragment. The string must be
  * sanitized in order to avoid cross-site scripting. For example
  * {@code goog.dom.htmlToDocumentFragment('&lt;img src=x onerror=alert(0)&gt;')}
@@ -866,6 +899,7 @@ goog.dom.htmlToDocumentFragment = function(htmlString) {
 };
 
 
+// TODO(jakubvrana): Merge with {@code safeHtmlToNode_}.
 /**
  * Helper for {@code htmlToDocumentFragment}.
  *
@@ -882,6 +916,18 @@ goog.dom.htmlToDocumentFragment_ = function(doc, htmlString) {
   } else {
     tempDiv.innerHTML = htmlString;
   }
+  return goog.dom.childrenToNode_(doc, tempDiv);
+};
+
+
+/**
+ * Helper for {@code htmlToDocumentFragment_}.
+ * @param {!Document} doc The document.
+ * @param {!Node} tempDiv The input node.
+ * @return {!Node} The resulting node.
+ * @private
+ */
+goog.dom.childrenToNode_ = function(doc, tempDiv) {
   if (tempDiv.childNodes.length == 1) {
     return /** @type {!Node} */ (tempDiv.removeChild(tempDiv.firstChild));
   } else {
@@ -907,7 +953,7 @@ goog.dom.isCss1CompatMode = function() {
 /**
  * Returns true if the browser is in "CSS1-compatible" (standards-compliant)
  * mode, false otherwise.
- * @param {Document} doc The document to check.
+ * @param {!Document} doc The document to check.
  * @return {boolean} True if in CSS1-compatible mode.
  * @private
  */
@@ -1141,7 +1187,7 @@ goog.dom.getChildren = function(element) {
  */
 goog.dom.getFirstElementChild = function(node) {
   if (node.firstElementChild != undefined) {
-    return /** @type {Element} */(node).firstElementChild;
+    return /** @type {!Element} */(node).firstElementChild;
   }
   return goog.dom.getNextElementNode_(node.firstChild, true);
 };
@@ -1154,7 +1200,7 @@ goog.dom.getFirstElementChild = function(node) {
  */
 goog.dom.getLastElementChild = function(node) {
   if (node.lastElementChild != undefined) {
-    return /** @type {Element} */(node).lastElementChild;
+    return /** @type {!Element} */(node).lastElementChild;
   }
   return goog.dom.getNextElementNode_(node.lastChild, false);
 };
@@ -1167,7 +1213,7 @@ goog.dom.getLastElementChild = function(node) {
  */
 goog.dom.getNextElementSibling = function(node) {
   if (node.nextElementSibling != undefined) {
-    return /** @type {Element} */(node).nextElementSibling;
+    return /** @type {!Element} */(node).nextElementSibling;
   }
   return goog.dom.getNextElementNode_(node.nextSibling, true);
 };
@@ -1181,7 +1227,7 @@ goog.dom.getNextElementSibling = function(node) {
  */
 goog.dom.getPreviousElementSibling = function(node) {
   if (node.previousElementSibling != undefined) {
-    return /** @type {Element} */(node).previousElementSibling;
+    return /** @type {!Element} */(node).previousElementSibling;
   }
   return goog.dom.getNextElementNode_(node.previousSibling, false);
 };
@@ -1423,7 +1469,7 @@ goog.dom.compareNodeOrder = function(node1, node2) {
  * Utility function to compare the position of two nodes, when
  * {@code textNode}'s parent is an ancestor of {@code node}.  If this entry
  * condition is not met, this function will attempt to reference a null object.
- * @param {Node} textNode The textNode to compare.
+ * @param {!Node} textNode The textNode to compare.
  * @param {Node} node The node to compare.
  * @return {number} -1 if node is before textNode, +1 otherwise.
  * @private
@@ -1446,7 +1492,7 @@ goog.dom.compareParentsDescendantNodeIe_ = function(textNode, node) {
  * Utility function to compare the position of two nodes known to be non-equal
  * siblings.
  * @param {Node} node1 The first node to compare.
- * @param {Node} node2 The second node to compare.
+ * @param {!Node} node2 The second node to compare.
  * @return {number} -1 if node1 is before node2, +1 otherwise.
  * @private
  */
@@ -1622,7 +1668,7 @@ goog.dom.findNode = function(root, p) {
 
  * @param {Node} root The root of the tree to search.
  * @param {function(Node) : boolean} p The filter function.
- * @return {!Array.<!Node>} The found nodes or an empty array if none are found.
+ * @return {!Array<!Node>} The found nodes or an empty array if none are found.
  */
 goog.dom.findNodes = function(root, p) {
   var rv = [];
@@ -1636,7 +1682,7 @@ goog.dom.findNodes = function(root, p) {
  * using a depth first search.
  * @param {Node} root The root of the tree to search.
  * @param {function(Node) : boolean} p The filter function.
- * @param {!Array.<!Node>} rv The found nodes are added to this array.
+ * @param {!Array<!Node>} rv The found nodes are added to this array.
  * @param {boolean} findOne If true we exit after the first found node.
  * @return {boolean} Whether the search is complete or not. True in case findOne
  *     is true and the node is found. False otherwise.
@@ -1664,8 +1710,8 @@ goog.dom.findNodes_ = function(root, p, rv, findOne) {
 
 /**
  * Map of tags whose content to ignore when calculating text length.
- * @type {Object}
- * @private
+ * @private {!Object<string, number>}
+ * @const
  */
 goog.dom.TAGS_TO_IGNORE_ = {
   'SCRIPT': 1,
@@ -1678,8 +1724,8 @@ goog.dom.TAGS_TO_IGNORE_ = {
 
 /**
  * Map of tags which have predefined values with regard to whitespace.
- * @type {Object}
- * @private
+ * @private {!Object<string, string>}
+ * @const
  */
 goog.dom.PREDEFINED_TAG_VALUES_ = {'IMG': ' ', 'BR': '\n'};
 
@@ -1688,7 +1734,7 @@ goog.dom.PREDEFINED_TAG_VALUES_ = {'IMG': ' ', 'BR': '\n'};
  * Returns true if the element has a tab index that allows it to receive
  * keyboard focus (tabIndex >= 0), false otherwise.  Note that some elements
  * natively support keyboard focus, even if they have no tab index.
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element has a tab index that allows keyboard
  *     focus.
  * @see http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
@@ -1726,7 +1772,7 @@ goog.dom.setFocusableTabIndex = function(element, enable) {
  * Returns true if the element can be focused, i.e. it has a tab index that
  * allows it to receive keyboard focus (tabIndex >= 0), or it is an element
  * that natively supports keyboard focus.
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element allows keyboard focus.
  */
 goog.dom.isFocusable = function(element) {
@@ -1750,7 +1796,7 @@ goog.dom.isFocusable = function(element) {
 
 /**
  * Returns true if the element has a specified tab index.
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element has a specified tab index.
  * @private
  */
@@ -1765,7 +1811,7 @@ goog.dom.hasSpecifiedTabIndex_ = function(element) {
 
 /**
  * Returns true if the element's tab index allows the element to be focused.
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element's tab index allows focus.
  * @private
  */
@@ -1778,7 +1824,7 @@ goog.dom.isTabIndexFocusable_ = function(element) {
 
 /**
  * Returns true if the element is focusable even when tabIndex is not set.
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element natively supports focus.
  * @private
  */
@@ -1794,7 +1840,7 @@ goog.dom.nativelySupportsFocus_ = function(element) {
 /**
  * Returns true if the element has a bounding rectangle that would be visible
  * (i.e. its width and height are greater than zero).
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element has a non-zero bounding rectangle.
  * @private
  */
@@ -1871,7 +1917,7 @@ goog.dom.getRawTextContent = function(node) {
  * Recursive support function for text content retrieval.
  *
  * @param {Node} node The node from which we are getting content.
- * @param {Array} buf string buffer.
+ * @param {Array<string>} buf string buffer.
  * @param {boolean} normalizeWhitespace Whether to normalize whitespace.
  * @private
  */
@@ -2010,10 +2056,13 @@ goog.dom.isNodeList = function(val) {
  *     null/undefined to match only based on class name).
  * @param {?string=} opt_class The class name to match (or null/undefined to
  *     match only based on tag name).
+ * @param {number=} opt_maxSearchSteps Maximum number of levels to search up the
+ *     dom.
  * @return {Element} The first ancestor that matches the passed criteria, or
  *     null if no match is found.
  */
-goog.dom.getAncestorByTagNameAndClass = function(element, opt_tag, opt_class) {
+goog.dom.getAncestorByTagNameAndClass = function(element, opt_tag, opt_class,
+    opt_maxSearchSteps) {
   if (!opt_tag && !opt_class) {
     return null;
   }
@@ -2023,7 +2072,7 @@ goog.dom.getAncestorByTagNameAndClass = function(element, opt_tag, opt_class) {
         return (!tagName || node.nodeName == tagName) &&
                (!opt_class || goog.isString(node.className) &&
                    goog.array.contains(node.className.split(/\s+/), opt_class));
-      }, true));
+      }, true, opt_maxSearchSteps));
 };
 
 
@@ -2033,11 +2082,14 @@ goog.dom.getAncestorByTagNameAndClass = function(element, opt_tag, opt_class) {
  * element itself is returned.
  * @param {Node} element The DOM node to start with.
  * @param {string} className The class name to match.
+ * @param {number=} opt_maxSearchSteps Maximum number of levels to search up the
+ *     dom.
  * @return {Element} The first ancestor that matches the passed criteria, or
  *     null if none match.
  */
-goog.dom.getAncestorByClass = function(element, className) {
-  return goog.dom.getAncestorByTagNameAndClass(element, null, className);
+goog.dom.getAncestorByClass = function(element, className, opt_maxSearchSteps) {
+  return goog.dom.getAncestorByTagNameAndClass(element, null, className,
+      opt_maxSearchSteps);
 };
 
 
@@ -2422,6 +2474,18 @@ goog.dom.DomHelper.prototype.createTable = function(rows, columns,
 
 
 /**
+ * Converts an HTML into a node or a document fragment. A single Node is used if
+ * {@code html} only generates a single node. If {@code html} generates multiple
+ * nodes then these are put inside a {@code DocumentFragment}.
+ * @param {!goog.html.SafeHtml} html The HTML markup to convert.
+ * @return {!Node} The resulting node.
+ */
+goog.dom.DomHelper.prototype.safeHtmlToNode = function(html) {
+  return goog.dom.safeHtmlToNode_(this.document_, html);
+};
+
+
+/**
  * Converts an HTML string into a node or a document fragment.  A single Node
  * is used if the {@code htmlString} only generates a single node.  If the
  * {@code htmlString} generates multiple nodes then these are put inside a
@@ -2763,7 +2827,7 @@ goog.dom.DomHelper.prototype.findNode = goog.dom.findNode;
  * depth first search.
  * @param {Node} root The root of the tree to search.
  * @param {function(Node) : boolean} p The filter function.
- * @return {Array.<Node>} The found nodes or an empty array if none are found.
+ * @return {Array<Node>} The found nodes or an empty array if none are found.
  */
 goog.dom.DomHelper.prototype.findNodes = goog.dom.findNodes;
 
@@ -2772,7 +2836,7 @@ goog.dom.DomHelper.prototype.findNodes = goog.dom.findNodes;
  * Returns true if the element has a tab index that allows it to receive
  * keyboard focus (tabIndex >= 0), false otherwise.  Note that some elements
  * natively support keyboard focus, even if they have no tab index.
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element has a tab index that allows keyboard
  *     focus.
  */
@@ -2796,7 +2860,7 @@ goog.dom.DomHelper.prototype.setFocusableTabIndex =
  * Returns true if the element can be focused, i.e. it has a tab index that
  * allows it to receive keyboard focus (tabIndex >= 0), or it is an element
  * that natively supports keyboard focus.
- * @param {Element} element Element to check.
+ * @param {!Element} element Element to check.
  * @return {boolean} Whether the element allows keyboard focus.
  */
 goog.dom.DomHelper.prototype.isFocusable = goog.dom.isFocusable;
@@ -2873,6 +2937,8 @@ goog.dom.DomHelper.prototype.isNodeList = goog.dom.isNodeList;
  *     null/undefined to match only based on class name).
  * @param {?string=} opt_class The class name to match (or null/undefined to
  *     match only based on tag name).
+ * @param {number=} opt_maxSearchSteps Maximum number of levels to search up the
+ *     dom.
  * @return {Element} The first ancestor that matches the passed criteria, or
  *     null if no match is found.
  */
@@ -2886,6 +2952,8 @@ goog.dom.DomHelper.prototype.getAncestorByTagNameAndClass =
  * element itself is returned.
  * @param {Node} element The DOM node to start with.
  * @param {string} class The class name to match.
+ * @param {number=} opt_maxSearchSteps Maximum number of levels to search up the
+ *     dom.
  * @return {Element} The first ancestor that matches the passed criteria, or
  *     null if none match.
  */

@@ -16,8 +16,6 @@
  * @fileoverview Utilities for working with ranges in HTML documents.
  *
  * @author robbyw@google.com (Robby Walker)
- * @author ojan@google.com (Ojan Vafai)
- * @author jparent@google.com (Julie Parent)
  */
 
 goog.provide('goog.dom.Range');
@@ -71,7 +69,7 @@ goog.dom.Range.createFromBrowserSelection = function(selection) {
   } else if (selection.rangeCount) {
     if (selection.rangeCount > 1) {
       return goog.dom.MultiRange.createFromBrowserSelection(
-          /** @type {Selection} */ (selection));
+          /** @type {!Selection} */ (selection));
     } else {
       range = selection.getRangeAt(0);
       isReversed = goog.dom.Range.isReversed(selection.anchorNode,

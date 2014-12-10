@@ -73,7 +73,7 @@ goog.html.uncheckedconversions.safeHtmlFromStringKnownToSatisfyTypeContract =
   goog.asserts.assertString(goog.string.Const.unwrap(justification),
                             'must provide justification');
   goog.asserts.assert(
-      !goog.string.isEmpty(goog.string.Const.unwrap(justification)),
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
       'must provide non-empty justification');
   return goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
       html, opt_dir || null);
@@ -93,7 +93,6 @@ goog.html.uncheckedconversions.safeHtmlFromStringKnownToSatisfyTypeContract =
  *     this use of this method is safe. May include a security review ticket
  *     number.
  * @param {string} script The string to wrap as a SafeScript.
- *     contract.
  * @return {!goog.html.SafeScript} The value of {@code script}, wrapped in a
  *     SafeScript object.
  */
@@ -104,7 +103,7 @@ goog.html.uncheckedconversions.safeScriptFromStringKnownToSatisfyTypeContract =
   goog.asserts.assertString(goog.string.Const.unwrap(justification),
                             'must provide justification');
   goog.asserts.assert(
-      goog.string.trim(goog.string.Const.unwrap(justification)).length > 0,
+      !goog.string.isEmpty(goog.string.Const.unwrap(justification)),
       'must provide non-empty justification');
   return goog.html.SafeScript.createSafeScriptSecurityPrivateDoNotAccessOrElse(
       script);
@@ -124,7 +123,6 @@ goog.html.uncheckedconversions.safeScriptFromStringKnownToSatisfyTypeContract =
  *     this use of this method is safe. May include a security review ticket
  *     number.
  * @param {string} style The string to wrap as a SafeStyle.
- *     contract.
  * @return {!goog.html.SafeStyle} The value of {@code style}, wrapped in a
  *     SafeStyle object.
  */
@@ -135,7 +133,7 @@ goog.html.uncheckedconversions.safeStyleFromStringKnownToSatisfyTypeContract =
   goog.asserts.assertString(goog.string.Const.unwrap(justification),
                             'must provide justification');
   goog.asserts.assert(
-      !goog.string.isEmpty(goog.string.Const.unwrap(justification)),
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
       'must provide non-empty justification');
   return goog.html.SafeStyle.createSafeStyleSecurityPrivateDoNotAccessOrElse(
       style);
@@ -166,7 +164,7 @@ goog.html.uncheckedconversions.
   goog.asserts.assertString(goog.string.Const.unwrap(justification),
                             'must provide justification');
   goog.asserts.assert(
-      !goog.string.isEmpty(goog.string.Const.unwrap(justification)),
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
       'must provide non-empty justification');
   return goog.html.SafeStyleSheet.
       createSafeStyleSheetSecurityPrivateDoNotAccessOrElse(styleSheet);
@@ -186,7 +184,6 @@ goog.html.uncheckedconversions.
  *     this use of this method is safe. May include a security review ticket
  *     number.
  * @param {string} url The string to wrap as a SafeUrl.
- *     contract.
  * @return {!goog.html.SafeUrl} The value of {@code url}, wrapped in a SafeUrl
  *     object.
  */
@@ -197,7 +194,7 @@ goog.html.uncheckedconversions.safeUrlFromStringKnownToSatisfyTypeContract =
   goog.asserts.assertString(goog.string.Const.unwrap(justification),
                             'must provide justification');
   goog.asserts.assert(
-      !goog.string.isEmpty(goog.string.Const.unwrap(justification)),
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
       'must provide non-empty justification');
   return goog.html.SafeUrl.createSafeUrlSecurityPrivateDoNotAccessOrElse(url);
 };
@@ -216,7 +213,6 @@ goog.html.uncheckedconversions.safeUrlFromStringKnownToSatisfyTypeContract =
  *     this use of this method is safe. May include a security review ticket
  *     number.
  * @param {string} url The string to wrap as a TrustedResourceUrl.
- *     contract.
  * @return {!goog.html.TrustedResourceUrl} The value of {@code url}, wrapped in
  *     a TrustedResourceUrl object.
  */
@@ -228,7 +224,7 @@ goog.html.uncheckedconversions.
   goog.asserts.assertString(goog.string.Const.unwrap(justification),
                             'must provide justification');
   goog.asserts.assert(
-      !goog.string.isEmpty(goog.string.Const.unwrap(justification)),
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
       'must provide non-empty justification');
   return goog.html.TrustedResourceUrl.
       createTrustedResourceUrlSecurityPrivateDoNotAccessOrElse(url);

@@ -95,14 +95,14 @@ goog.net.xpc.CrossPageChannel = function(cfg, opt_domHelper) {
   /**
    * Collects deferred function calls which will be made once the connection
    * has been fully set up.
-   * @type {!Array.<function()>}
+   * @type {!Array<function()>}
    * @private
    */
   this.deferredDeliveries_ = [];
 
   /**
    * An event handler used to listen for load events on peer iframes.
-   * @type {!goog.events.EventHandler.<!goog.net.xpc.CrossPageChannel>}
+   * @type {!goog.events.EventHandler<!goog.net.xpc.CrossPageChannel>}
    * @private
    */
   this.peerLoadHandler_ = new goog.events.EventHandler(this);
@@ -831,8 +831,8 @@ goog.net.xpc.CrossPageChannel.prototype.updateChannelNameAndCatalog = function(
 goog.net.xpc.CrossPageChannel.prototype.isMessageOriginAcceptable_ = function(
     opt_origin) {
   var peerHostname = this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME];
-  return goog.string.isEmptySafe(opt_origin) ||
-      goog.string.isEmptySafe(peerHostname) ||
+  return goog.string.isEmptyOrWhitespace(goog.string.makeSafe(opt_origin)) ||
+      goog.string.isEmptyOrWhitespace(goog.string.makeSafe(peerHostname)) ||
       opt_origin == this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME];
 };
 

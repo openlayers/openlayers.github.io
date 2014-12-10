@@ -50,7 +50,7 @@ goog.ui.PopupBase = function(opt_element, opt_type) {
 
   /**
    * An event handler to manage the events easily
-   * @type {goog.events.EventHandler.<!goog.ui.PopupBase>}
+   * @type {goog.events.EventHandler<!goog.ui.PopupBase>}
    * @private
    */
   this.handler_ = new goog.events.EventHandler(this);
@@ -93,7 +93,7 @@ goog.ui.PopupBase.prototype.autoHide_ = true;
 
 /**
  * Mouse events without auto hide partner elements will not dismiss the popup.
- * @type {Array.<Element>}
+ * @type {Array<Element>}
  * @private
  */
 goog.ui.PopupBase.prototype.autoHidePartners_ = null;
@@ -418,13 +418,16 @@ goog.ui.PopupBase.prototype.getLastHideTime = function() {
  * this handler are removed when the tooltip is hidden. Therefore,
  * the recommended usage of this handler is to listen on events in
  * {@link #onShow_}.
- * @return {goog.events.EventHandler.<T>} Event handler for this popup.
+ * @return {goog.events.EventHandler<T>} Event handler for this popup.
  * @protected
  * @this T
  * @template T
  */
 goog.ui.PopupBase.prototype.getHandler = function() {
-  return this.handler_;
+  // As the template type is unbounded, narrow the "this" type
+  var self = /** @type {!goog.ui.PopupBase} */ (this);
+
+  return self.handler_;
 };
 
 
@@ -607,7 +610,7 @@ goog.ui.PopupBase.prototype.show_ = function() {
   // the transition is over.
   if (this.showTransition_) {
     goog.events.listenOnce(
-        /** @type {goog.events.EventTarget} */ (this.showTransition_),
+        /** @type {!goog.events.EventTarget} */ (this.showTransition_),
         goog.fx.Transition.EventType.END, this.onShow_, false, this);
     this.showTransition_.play();
   } else {
@@ -643,7 +646,7 @@ goog.ui.PopupBase.prototype.hide_ = function(opt_target) {
   // (and fire HIDE event) after the transition is over.
   if (this.hideTransition_) {
     goog.events.listenOnce(
-        /** @type {goog.events.EventTarget} */ (this.hideTransition_),
+        /** @type {!goog.events.EventTarget} */ (this.hideTransition_),
         goog.fx.Transition.EventType.END,
         goog.partial(this.continueHidingPopup_, opt_target), false, this);
     this.hideTransition_.play();

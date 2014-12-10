@@ -806,6 +806,15 @@ function testExtend() {
   goog.array.extend(f, length3ArrayLikeObject, length3ArrayLikeObject);
   var f2 = [0, 1, 2, 4, 8, 2, 4, 8];
   assertArrayEquals('extend, should be equal', f2, f);
+
+  var result = [];
+  var i = 1000000;
+  var bigArray = Array(i);
+  while (i--) {
+    bigArray[i] = i;
+  }
+  goog.array.extend(result, bigArray);
+  assertArrayEquals(bigArray, result);
 }
 
 function testExtendWithArguments() {
@@ -1536,6 +1545,10 @@ function testArrayFlatten() {
   assertArrayEquals([1], goog.array.flatten([[1]]));
   assertArrayEquals([], goog.array.flatten());
   assertArrayEquals([], goog.array.flatten([]));
+  assertArrayEquals(goog.array.repeat(3, 180002),
+      goog.array.flatten(3, goog.array.repeat(3, 180000), 3));
+  assertArrayEquals(goog.array.repeat(3, 180000),
+      goog.array.flatten([goog.array.repeat(3, 180000)]));
 }
 
 function testSortObjectsByKey() {

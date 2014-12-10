@@ -331,12 +331,12 @@ function testSuperscriptRemovesSubscriptIntersecting() {
   tearDownSubSuperTests();
 }
 
-function setUpLinkTests(url, isEditable) {
+function setUpLinkTests(text, url, isEditable) {
   stubs.set(window, 'prompt', function() {
     return url;
   });
 
-  ROOT.innerHTML = '12345';
+  ROOT.innerHTML = text;
   HELPER = new goog.testing.editor.TestHelper(ROOT);
   if (isEditable) {
     HELPER.setUpEditableElement();
@@ -359,7 +359,7 @@ function tearDownLinkTests() {
 }
 
 function testLink() {
-  setUpLinkTests('http://www.x.com/', true);
+  setUpLinkTests('12345', 'http://www.x.com/', true);
   FIELDMOCK.$replay();
 
   HELPER.select('12345', 3);
@@ -373,8 +373,23 @@ function testLink() {
   tearDownLinkTests();
 }
 
+function testLinks() {
+  var url1 = 'http://google.com/1';
+  var url2 = 'http://google.com/2';
+  var dialogUrl = 'http://google.com/3';
+  var html = '<p>' + url1 + '</p><p>' + url2 + '</p>';
+  setUpLinkTests(html, dialogUrl, true);
+  FIELDMOCK.$replay();
+
+  HELPER.select(url1, 0, url2, url2.length);
+  FORMATTER.execCommandInternal(goog.editor.Command.LINK);
+  HELPER.assertHtmlMatches('<p><a href="' + url1 + '">' + url1 + '</a></p><p>' +
+      '<a href="' + dialogUrl + '">' + (goog.userAgent.IE ? dialogUrl : url2) +
+      '</a></p>');
+}
+
 function testSelectedLink() {
-  setUpLinkTests('http://www.x.com/', true);
+  setUpLinkTests('12345', 'http://www.x.com/', true);
   FIELDMOCK.$replay();
 
   HELPER.select('12345', 1, '12345', 4);
@@ -389,7 +404,7 @@ function testSelectedLink() {
 }
 
 function testCanceledLink() {
-  setUpLinkTests(undefined, true);
+  setUpLinkTests('12345', undefined, true);
   FIELDMOCK.$replay();
 
   HELPER.select('12345', 1, '12345', 4);
@@ -407,7 +422,7 @@ function testUnfocusedLink() {
   FIELDMOCK.getEditableDomHelper().
       $anyTimes().
       $returns(goog.dom.getDomHelper(window.document));
-  setUpLinkTests(undefined, false);
+  setUpLinkTests('12345', undefined, false);
   FIELDMOCK.getRange().$anyTimes().$returns(null);
   FIELDMOCK.$replay();
 
@@ -524,7 +539,7 @@ function tearDownFontSizeTests() {
  * Asserts that the text nodes set up by setUpFontSizeTests() have had their
  * font sizes changed as described by sizeChangesMap.
  * @param {string} msg Assertion error message.
- * @param {Object.<string, number|null>} sizeChangesMap Maps the text content
+ * @param {Object<string, number|null>} sizeChangesMap Maps the text content
  *     of a text node to be measured to its expected font size in pixels, or
  *     null if that text node should not be present in the document (i.e.
  *     because it was split into two). Only the text nodes that have changed

@@ -18,8 +18,6 @@
  * DO NOT USE THIS FILE DIRECTLY.  Use goog.dom.Range instead.
  *
  * @author robbyw@google.com (Robby Walker)
- * @author ojan@google.com (Ojan Vafai)
- * @author jparent@google.com (Julie Parent)
  */
 
 
@@ -229,7 +227,7 @@ goog.dom.browserrange.W3cRange.prototype.getValidHtml = function() {
       container.parentNode;
 
   var html = goog.dom.getOuterHtml(
-      /** @type {Element} */ (container.cloneNode(false)));
+      /** @type {!Element} */ (container.cloneNode(false)));
   return html.replace('>', '>' + result);
 };
 

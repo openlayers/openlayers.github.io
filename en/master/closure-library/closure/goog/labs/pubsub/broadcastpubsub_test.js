@@ -71,7 +71,7 @@ var isIe8 = goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE == 8;
  * behaviour by the mockHtml5LocalStorage instanciated when using IE8 an event
  * is automatically generated in the local browser context. For other browsers
  * this simply creates a new browser event.
- * @param {{'args': !Array.<string>, 'timestamp': number}} data Value stored
+ * @param {{'args': !Array<string>, 'timestamp': number}} data Value stored
  *     in localStorage which generated the remote event.
  */
 function remoteStorageEvent(data) {
@@ -696,7 +696,7 @@ function testPublish() {
 
 function testPublishEmptyTopic() {
   mockHTML5LocalStorageCtor().$returns(mockHtml5LocalStorage);
-  foo = mockControl.createFunctionMock();
+  var foo = mockControl.createFunctionMock();
   foo();
 
   mockControl.$replayAll();
@@ -844,19 +844,19 @@ function testUnsubscribeSelfWhilePublishing() {
 
 function testNestedPublish() {
   mockHTML5LocalStorageCtor().$returns(mockHtml5LocalStorage);
-  xFn1 = mockControl.createFunctionMock();
+  var xFn1 = mockControl.createFunctionMock();
   xFn1().$does(function() {
     broadcastPubSub.publish('Y');
     broadcastPubSub.unsubscribe('X', arguments.callee);
   });
-  xFn2 = mockControl.createFunctionMock();
+  var xFn2 = mockControl.createFunctionMock();
   xFn2();
 
-  yFn1 = mockControl.createFunctionMock();
+  var yFn1 = mockControl.createFunctionMock();
   yFn1().$does(function() {
     broadcastPubSub.unsubscribe('Y', arguments.callee);
   });
-  yFn2 = mockControl.createFunctionMock();
+  var yFn2 = mockControl.createFunctionMock();
   yFn2();
 
   mockControl.$replayAll();
