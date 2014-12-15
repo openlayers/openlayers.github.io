@@ -11408,6 +11408,85 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.source.TileUTFGrid">
+            <span class="title">
+                <a href="ol.source.TileUTFGrid.html">ol.source.TileUTFGrid</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.source.TileUTFGrid#changed" class="unstable">
+                    <a href="ol.source.TileUTFGrid.html#changed">changed</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#forDataAtCoordinateAndResolution" class="unstable">
+                    <a href="ol.source.TileUTFGrid.html#forDataAtCoordinateAndResolution">forDataAtCoordinateAndResolution</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#getAttributions" class="">
+                    <a href="ol.source.TileUTFGrid.html#getAttributions">getAttributions</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#getLogo" class="">
+                    <a href="ol.source.TileUTFGrid.html#getLogo">getLogo</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#getProjection" class="unstable">
+                    <a href="ol.source.TileUTFGrid.html#getProjection">getProjection</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#getRevision" class="unstable">
+                    <a href="ol.source.TileUTFGrid.html#getRevision">getRevision</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#getState" class="unstable">
+                    <a href="ol.source.TileUTFGrid.html#getState">getState</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#getTemplate" class="unstable">
+                    <a href="ol.source.TileUTFGrid.html#getTemplate">getTemplate</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#getTileGrid" class="">
+                    <a href="ol.source.TileUTFGrid.html#getTileGrid">getTileGrid</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#on" class="">
+                    <a href="ol.source.TileUTFGrid.html#on">on</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#once" class="">
+                    <a href="ol.source.TileUTFGrid.html#once">once</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#un" class="">
+                    <a href="ol.source.TileUTFGrid.html#un">un</a>
+                </li>
+            
+                <li data-name="ol.source.TileUTFGrid#unByKey" class="">
+                    <a href="ol.source.TileUTFGrid.html#unByKey">unByKey</a>
+                </li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            <span class="subtitle">Fires</span>
+            
+                <li data-name="event:change Triggered when the state of the source changes." class="unstable">
+                    change Triggered when the state of the source changes.
+                </li>
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.source.TileVector">
             <span class="title">
                 <a href="ol.source.TileVector.html">ol.source.TileVector</a>
@@ -16593,6 +16672,34 @@ olx.source.GPXOptions.prototype.urls;
 
 
 /**
+ * @typedef {{preemptive: (boolean|undefined),
+ *            url: string}}
+ * @api
+ */
+olx.source.TileUTFGridOptions;
+
+
+/**
+ * If `true` the TileUTFGrid source loads the tiles based on their "visibility".
+ * This improves the speed of response, but increases traffic.
+ * Note that if set to `false`, you need to pass `true` as `opt_request`
+ * to the `forDataAtCoordinateAndResolution` method otherwise no data
+ * will ever be loaded.
+ * Default is `true`.
+ * @type {boolean|undefined}
+ * @api
+ */
+olx.source.TileUTFGridOptions.prototype.preemptive;
+
+
+/**
+ * @type {string}
+ * @api
+ */
+olx.source.TileUTFGridOptions.prototype.url;
+
+
+/**
  * @typedef {{attributions: (Array.&lt;ol.Attribution>|undefined),
  *            crossOrigin: (null|string|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
@@ -18724,6 +18831,7 @@ olx.style.IconOptions.prototype.src;
  *     angle: (number|undefined),
  *     snapToPixel: (boolean|undefined),
  *     stroke: (ol.style.Stroke|undefined),
+ *     rotation: (number|undefined),
  *     atlasManager: (ol.style.AtlasManager|undefined)}}
  * @api
  */
@@ -18772,7 +18880,7 @@ olx.style.RegularShapeOptions.prototype.radius2;
 
 
 /**
- * Shape's rotation in radians. A value of 0 will have one of the shape's point
+ * Shape's angle in radians. A value of 0 will have one of the shape's point
  * facing up.
  * Default value is 0.
  * @type {number|undefined}
@@ -18801,6 +18909,14 @@ olx.style.RegularShapeOptions.prototype.snapToPixel;
  * @api
  */
 olx.style.RegularShapeOptions.prototype.stroke;
+
+
+/**
+ * Rotation in radians (positive rotation clockwise). Default is `0`.
+ * @type {number|undefined}
+ * @api
+ */
+olx.style.RegularShapeOptions.prototype.rotation;
 
 
 /**
@@ -19400,7 +19516,7 @@ olx.style.AtlasManagerOptions.prototype.space;
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Dec 10 2014 09:00:32 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Dec 15 2014 13:39:19 GMT+0100 (CET)
         </footer>
     </div>
 </div>
