@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-447-ge0f574b
+// Version: v3.1.0-pre.2-482-gfe0e17f
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -20309,15 +20309,15 @@ ol.tilecoord.createFromString = function(str) {
  * @param {number} z Z.
  * @param {number} x X.
  * @param {number} y Y.
- * @param {ol.TileCoord|undefined} tileCoord Tile coordinate.
+ * @param {ol.TileCoord=} opt_tileCoord Tile coordinate.
  * @return {ol.TileCoord} Tile coordinate.
  */
-ol.tilecoord.createOrUpdate = function(z, x, y, tileCoord) {
-  if (goog.isDef(tileCoord)) {
-    tileCoord[0] = z;
-    tileCoord[1] = x;
-    tileCoord[2] = y;
-    return tileCoord;
+ol.tilecoord.createOrUpdate = function(z, x, y, opt_tileCoord) {
+  if (goog.isDef(opt_tileCoord)) {
+    opt_tileCoord[0] = z;
+    opt_tileCoord[1] = x;
+    opt_tileCoord[2] = y;
+    return opt_tileCoord;
   } else {
     return [z, x, y];
   }
@@ -33192,6 +33192,11 @@ ol.control.Control = function(options) {
    */
   this.listenerKeys = [];
 
+  /**
+   * @type {function(ol.MapEvent)}
+   */
+  this.render = goog.isDef(options.render) ? options.render : goog.nullFunction;
+
 };
 goog.inherits(ol.control.Control, ol.Object);
 
@@ -33216,15 +33221,6 @@ ol.control.Control.prototype.getMap = function() {
 
 
 /**
- * Function called on each map render. Executes in a requestAnimationFrame
- * callback. Can be implemented in sub-classes to re-render the control's
- * UI.
- * @param {ol.MapEvent} mapEvent Map event.
- */
-ol.control.Control.prototype.handleMapPostrender = goog.nullFunction;
-
-
-/**
  * Remove the control from its current map and attach it to the new map.
  * Subclasses may set up event handlers to get notified about changes to
  * the map here.
@@ -33244,9 +33240,9 @@ ol.control.Control.prototype.setMap = function(map) {
     var target = !goog.isNull(this.target_) ?
         this.target_ : map.getOverlayContainerStopEvent();
     goog.dom.appendChild(target, this.element);
-    if (this.handleMapPostrender !== goog.nullFunction) {
+    if (this.render !== goog.nullFunction) {
       this.listenerKeys.push(goog.events.listen(map,
-          ol.MapEventType.POSTRENDER, this.handleMapPostrender, false, this));
+          ol.MapEventType.POSTRENDER, this.render, false, this));
     }
     map.render();
   }
@@ -33405,8 +33401,12 @@ ol.control.Attribution = function(opt_options) {
   var element = goog.dom.createDom(goog.dom.TagName.DIV,
       cssClasses, this.ulElement_, button);
 
+  var render = goog.isDef(options.render) ?
+      options.render : ol.control.Attribution.render;
+
   goog.base(this, {
     element: element,
+    render: render,
     target: options.target
   });
 
@@ -33484,9 +33484,11 @@ ol.control.Attribution.prototype.getSourceAttributions = function(frameState) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapEvent} mapEvent Map event.
+ * @this {ol.control.Attribution}
+ * @api
  */
-ol.control.Attribution.prototype.handleMapPostrender = function(mapEvent) {
+ol.control.Attribution.render = function(mapEvent) {
   this.updateElement_(mapEvent.frameState);
 };
 
@@ -33742,8 +33744,12 @@ ol.control.Rotate = function(opt_options) {
       ol.css.CLASS_CONTROL;
   var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, button);
 
+  var render = goog.isDef(options.render) ?
+      options.render : ol.control.Rotate.render;
+
   goog.base(this, {
     element: element,
+    render: render,
     target: options.target
   });
 
@@ -33815,9 +33821,11 @@ ol.control.Rotate.prototype.resetNorth_ = function() {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapEvent} mapEvent Map event.
+ * @this {ol.control.Rotate}
+ * @api
  */
-ol.control.Rotate.prototype.handleMapPostrender = function(mapEvent) {
+ol.control.Rotate.render = function(mapEvent) {
   var frameState = mapEvent.frameState;
   if (goog.isNull(frameState)) {
     return;
@@ -34358,8 +34366,12 @@ ol.control.MousePosition = function(opt_options) {
 
   var element = goog.dom.createDom(goog.dom.TagName.DIV, className);
 
+  var render = goog.isDef(options.render) ?
+      options.render : ol.control.MousePosition.render;
+
   goog.base(this, {
     element: element,
+    render: render,
     target: options.target
   });
 
@@ -34410,9 +34422,11 @@ goog.inherits(ol.control.MousePosition, ol.control.Control);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapEvent} mapEvent Map event.
+ * @this {ol.control.MousePosition}
+ * @api
  */
-ol.control.MousePosition.prototype.handleMapPostrender = function(mapEvent) {
+ol.control.MousePosition.render = function(mapEvent) {
   var frameState = mapEvent.frameState;
   if (goog.isNull(frameState)) {
     this.mapProjection_ = null;
@@ -48759,6 +48773,7 @@ ol.style.Image = function(options) {
 
 /**
  * @return {number} Opacity.
+ * @api
  */
 ol.style.Image.prototype.getOpacity = function() {
   return this.opacity_;
@@ -48767,6 +48782,7 @@ ol.style.Image.prototype.getOpacity = function() {
 
 /**
  * @return {boolean} Rotate with map.
+ * @api
  */
 ol.style.Image.prototype.getRotateWithView = function() {
   return this.rotateWithView_;
@@ -48793,6 +48809,7 @@ ol.style.Image.prototype.getScale = function() {
 
 /**
  * @return {boolean} Snap to pixel?
+ * @api
  */
 ol.style.Image.prototype.getSnapToPixel = function() {
   return this.snapToPixel_;
@@ -50539,11 +50556,11 @@ ol.interaction.InteractionProperty = {
  * vectors and so are visible on the screen.
  *
  * @constructor
+ * @param {olx.interaction.InteractionOptions} options Options.
  * @extends {ol.Object}
- * @implements {oli.interaction.Interaction}
  * @api
  */
-ol.interaction.Interaction = function() {
+ol.interaction.Interaction = function(options) {
 
   goog.base(this);
 
@@ -50554,6 +50571,11 @@ ol.interaction.Interaction = function() {
   this.map_ = null;
 
   this.setActive(true);
+
+  /**
+   * @type {function(ol.MapBrowserEvent):boolean}
+   */
+  this.handleEvent = options.handleEvent;
 
 };
 goog.inherits(ol.interaction.Interaction, ol.Object);
@@ -50581,22 +50603,6 @@ goog.exportProperty(
 ol.interaction.Interaction.prototype.getMap = function() {
   return this.map_;
 };
-
-
-/**
- * Method called by the map to notify the interaction that a browser
- * event was dispatched on the map. If the interaction wants to handle
- * that event it can return `false` to prevent the propagation of the
- * event to other interactions in the map's interactions chain.
- * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
- * @return {boolean} Whether the map browser event should continue
- *     through the chain of interactions. `false` means stop, `true`
- *     means continue.
- * @function
- * @api
- */
-ol.interaction.Interaction.prototype.handleMapBrowserEvent =
-    goog.abstractMethod;
 
 
 /**
@@ -50797,7 +50803,9 @@ ol.interaction.DoubleClickZoom = function(opt_options) {
    */
   this.delta_ = goog.isDef(options.delta) ? options.delta : 1;
 
-  goog.base(this);
+  goog.base(this, {
+    handleEvent: ol.interaction.DoubleClickZoom.handleEvent
+  });
 
   /**
    * @private
@@ -50810,10 +50818,12 @@ goog.inherits(ol.interaction.DoubleClickZoom, ol.interaction.Interaction);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.DoubleClickZoom}
+ * @api
  */
-ol.interaction.DoubleClickZoom.prototype.handleMapBrowserEvent =
-    function(mapBrowserEvent) {
+ol.interaction.DoubleClickZoom.handleEvent = function(mapBrowserEvent) {
   var stopEvent = false;
   var browserEvent = mapBrowserEvent.browserEvent;
   if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.DBLCLICK) {
@@ -51018,11 +51028,20 @@ goog.require('ol.interaction.Interaction');
  * instantiated in apps.
  *
  * @constructor
+ * @param {olx.interaction.PointerOptions=} opt_options Options.
  * @extends {ol.interaction.Interaction}
+ * @api
  */
-ol.interaction.Pointer = function() {
+ol.interaction.Pointer = function(opt_options) {
 
-  goog.base(this);
+  var options = goog.isDef(opt_options) ? opt_options : {};
+
+  var handleEvent = goog.isDef(options.handleEvent) ?
+      options.handleEvent : ol.interaction.Pointer.handleEvent;
+
+  goog.base(this, {
+    handleEvent: handleEvent
+  });
 
   /**
    * @type {boolean}
@@ -51125,10 +51144,12 @@ ol.interaction.Pointer.prototype.handlePointerDown = goog.functions.FALSE;
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.Pointer}
+ * @api
  */
-ol.interaction.Pointer.prototype.handleMapBrowserEvent =
-    function(mapBrowserEvent) {
+ol.interaction.Pointer.handleEvent = function(mapBrowserEvent) {
   if (!(mapBrowserEvent instanceof ol.MapBrowserPointerEvent)) {
     return true;
   }
@@ -56314,9 +56335,11 @@ ol.style.Circle.prototype.getChecksum = function() {
 };
 
 goog.provide('ol.style.Style');
+goog.provide('ol.style.defaultGeometryFunction');
 
 goog.require('goog.asserts');
 goog.require('goog.functions');
+goog.require('ol.geom.Geometry');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.style.Circle');
 goog.require('ol.style.Fill');
@@ -56338,6 +56361,22 @@ goog.require('ol.style.Stroke');
 ol.style.Style = function(opt_options) {
 
   var options = goog.isDef(opt_options) ? opt_options : {};
+
+  /**
+   * @private
+   * @type {string|ol.geom.Geometry|ol.style.GeometryFunction}
+   */
+  this.geometry_ = null;
+
+  /**
+   * @private
+   * @type {!ol.style.GeometryFunction}
+   */
+  this.geometryFunction_ = ol.style.defaultGeometryFunction;
+
+  if (goog.isDef(options.geometry)) {
+    this.setGeometry(options.geometry);
+  }
 
   /**
    * @private
@@ -56369,6 +56408,27 @@ ol.style.Style = function(opt_options) {
    */
   this.zIndex_ = options.zIndex;
 
+};
+
+
+/**
+ * @return {string|ol.geom.Geometry|ol.style.GeometryFunction}
+ * Feature property or geometry or function that returns the geometry that will
+ * be rendered with this style.
+ * @api
+ */
+ol.style.Style.prototype.getGeometry = function() {
+  return this.geometry_;
+};
+
+
+/**
+ * @return {!ol.style.GeometryFunction} Function that is called with a feature
+ * and returns the geometry to render instead of the feature's geometry.
+ * @api
+ */
+ol.style.Style.prototype.getGeometryFunction = function() {
+  return this.geometryFunction_;
 };
 
 
@@ -56414,6 +56474,37 @@ ol.style.Style.prototype.getText = function() {
  */
 ol.style.Style.prototype.getZIndex = function() {
   return this.zIndex_;
+};
+
+
+/**
+ * Set a geometry that is rendered instead of the feature's geometry.
+ *
+ * @param {string|ol.geom.Geometry|ol.style.GeometryFunction} geometry
+ *     Feature property or geometry or function returning a geometry to render
+ *     for this style.
+ * @api
+ */
+ol.style.Style.prototype.setGeometry = function(geometry) {
+  if (goog.isFunction(geometry)) {
+    this.geometryFunction_ = geometry;
+  } else if (goog.isString(geometry)) {
+    this.geometryFunction_ = function(feature) {
+      var result = feature.get(geometry);
+      if (goog.isDefAndNotNull(result)) {
+        goog.asserts.assertInstanceof(result, ol.geom.Geometry);
+      }
+      return result;
+    };
+  } else if (goog.isNull(geometry)) {
+    this.geometryFunction_ = ol.style.defaultGeometryFunction;
+  } else if (goog.isDef(geometry)) {
+    goog.asserts.assertInstanceof(geometry, ol.geom.Geometry);
+    this.geometryFunction_ = function() {
+      return geometry;
+    };
+  }
+  this.geometry_ = geometry;
 };
 
 
@@ -56580,6 +56671,27 @@ ol.style.createDefaultEditingStyles = function() {
   return styles;
 };
 
+
+/**
+ * A function that takes an {@link ol.Feature} as argument and returns an
+ * {@link ol.geom.Geometry} that will be rendered and styled for the feature.
+ *
+ * @typedef {function(ol.Feature): (ol.geom.Geometry|undefined)}
+ * @api
+ */
+ol.style.GeometryFunction;
+
+
+/**
+ * Function that is called with a feature and returns its default geometry.
+ * @param {ol.Feature} feature Feature to get the geometry for.
+ * @return {ol.geom.Geometry|undefined} Geometry to render.
+ */
+ol.style.defaultGeometryFunction = function(feature) {
+  goog.asserts.assert(!goog.isNull(feature));
+  return feature.getGeometry();
+};
+
 goog.provide('ol.interaction.DragZoom');
 
 goog.require('goog.asserts');
@@ -56679,7 +56791,9 @@ goog.require('ol.interaction.Interaction');
  */
 ol.interaction.KeyboardPan = function(opt_options) {
 
-  goog.base(this);
+  goog.base(this, {
+    handleEvent: ol.interaction.KeyboardPan.handleEvent
+  });
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
@@ -56702,10 +56816,12 @@ goog.inherits(ol.interaction.KeyboardPan, ol.interaction.Interaction);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.KeyboardPan}
+ * @api
  */
-ol.interaction.KeyboardPan.prototype.handleMapBrowserEvent =
-    function(mapBrowserEvent) {
+ol.interaction.KeyboardPan.handleEvent = function(mapBrowserEvent) {
   var stopEvent = false;
   if (mapBrowserEvent.type == goog.events.KeyHandler.EventType.KEY) {
     var keyEvent = /** @type {goog.events.KeyEvent} */
@@ -56771,7 +56887,9 @@ goog.require('ol.interaction.Interaction');
  */
 ol.interaction.KeyboardZoom = function(opt_options) {
 
-  goog.base(this);
+  goog.base(this, {
+    handleEvent: ol.interaction.KeyboardZoom.handleEvent
+  });
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
@@ -56799,10 +56917,12 @@ goog.inherits(ol.interaction.KeyboardZoom, ol.interaction.Interaction);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.KeyboardZoom}
+ * @api
  */
-ol.interaction.KeyboardZoom.prototype.handleMapBrowserEvent =
-    function(mapBrowserEvent) {
+ol.interaction.KeyboardZoom.handleEvent = function(mapBrowserEvent) {
   var stopEvent = false;
   if (mapBrowserEvent.type == goog.events.KeyHandler.EventType.KEY) {
     var keyEvent = /** @type {goog.events.KeyEvent} */
@@ -56847,9 +56967,11 @@ goog.require('ol.interaction.Interaction');
  */
 ol.interaction.MouseWheelZoom = function(opt_options) {
 
-  var options = goog.isDef(opt_options) ? opt_options : {};
+  goog.base(this, {
+    handleEvent: ol.interaction.MouseWheelZoom.handleEvent
+  });
 
-  goog.base(this);
+  var options = goog.isDef(opt_options) ? opt_options : {};
 
   /**
    * @private
@@ -56886,10 +57008,12 @@ goog.inherits(ol.interaction.MouseWheelZoom, ol.interaction.Interaction);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.MouseWheelZoom}
+ * @api
  */
-ol.interaction.MouseWheelZoom.prototype.handleMapBrowserEvent =
-    function(mapBrowserEvent) {
+ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
   var stopEvent = false;
   if (mapBrowserEvent.type ==
       goog.events.MouseWheelHandler.EventType.MOUSEWHEEL) {
@@ -58582,7 +58706,7 @@ ol.render.canvas.Immediate.prototype.drawCircleGeometry =
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawFeature = function(feature, style) {
-  var geometry = feature.getGeometry();
+  var geometry = style.getGeometryFunction()(feature);
   if (!goog.isDefAndNotNull(geometry) ||
       !ol.extent.intersects(this.extent_, geometry.getExtent())) {
     return;
@@ -64105,7 +64229,7 @@ ol.renderer.vector.renderFeature = function(
  */
 ol.renderer.vector.renderFeature_ = function(
     replayGroup, feature, style, squaredTolerance) {
-  var geometry = feature.getGeometry();
+  var geometry = style.getGeometryFunction()(feature);
   if (!goog.isDefAndNotNull(geometry)) {
     return;
   }
@@ -69722,7 +69846,7 @@ ol.render.webgl.Immediate.prototype.drawCircleGeometry =
  * @api
  */
 ol.render.webgl.Immediate.prototype.drawFeature = function(feature, style) {
-  var geometry = feature.getGeometry();
+  var geometry = style.getGeometryFunction()(feature);
   if (!goog.isDefAndNotNull(geometry) ||
       !ol.extent.intersects(this.extent_, geometry.getExtent())) {
     return;
@@ -72665,7 +72789,7 @@ ol.Map = function(options) {
    * @private
    * @type {ol.Extent}
    */
-  this.previousExtent_ = null;
+  this.previousExtent_ = ol.extent.createEmpty();
 
   /**
    * @private
@@ -73320,7 +73444,7 @@ ol.Map.prototype.handleMapBrowserEvent = function(mapBrowserEvent) {
       if (!interaction.getActive()) {
         continue;
       }
-      var cont = interaction.handleMapBrowserEvent(mapBrowserEvent);
+      var cont = interaction.handleEvent(mapBrowserEvent);
       if (!cont) {
         break;
       }
@@ -73711,13 +73835,12 @@ ol.Map.prototype.renderFrame_ = function(time) {
     var idle = this.preRenderFunctions_.length === 0 &&
         !frameState.viewHints[ol.ViewHint.ANIMATING] &&
         !frameState.viewHints[ol.ViewHint.INTERACTING] &&
-        (!this.previousExtent_ ||
-            !ol.extent.equals(frameState.extent, this.previousExtent_));
+        !ol.extent.equals(frameState.extent, this.previousExtent_);
 
     if (idle) {
       this.dispatchEvent(
           new ol.MapEvent(ol.MapEventType.MOVEEND, this, frameState));
-      this.previousExtent_ = ol.extent.clone(frameState.extent);
+      ol.extent.clone(frameState.extent, this.previousExtent_);
     }
   }
 
@@ -74259,7 +74382,7 @@ ol.Overlay.prototype.handleMapChanged = function() {
   var map = this.getMap();
   if (goog.isDefAndNotNull(map)) {
     this.mapPostrenderListenerKey_ = goog.events.listen(map,
-        ol.MapEventType.POSTRENDER, this.handleMapPostrender, false, this);
+        ol.MapEventType.POSTRENDER, this.render, false, this);
     this.updatePixelPosition_();
     var container = this.stopEvent_ ?
         map.getOverlayContainerStopEvent() : map.getOverlayContainer();
@@ -74276,7 +74399,7 @@ ol.Overlay.prototype.handleMapChanged = function() {
 /**
  * @protected
  */
-ol.Overlay.prototype.handleMapPostrender = function() {
+ol.Overlay.prototype.render = function() {
   this.updatePixelPosition_();
 };
 
@@ -74603,8 +74726,12 @@ ol.control.OverviewMap = function(opt_options) {
   var element = goog.dom.createDom(goog.dom.TagName.DIV,
       cssClasses, ovmapDiv, button);
 
+  var render = goog.isDef(options.render) ?
+      options.render : ol.control.OverviewMap.render;
+
   goog.base(this, {
     element: element,
+    render: render,
     target: options.target
   });
 };
@@ -74668,12 +74795,11 @@ ol.control.OverviewMap.prototype.bindView_ = function() {
 
 
 /**
- * Function called on each map render. Executes in a requestAnimationFrame
- * callback. Manage the extent of the overview map accordingly,
- * then update the overview map box.
- * @param {goog.events.Event} event Event.
+ * @param {ol.MapEvent} mapEvent Map event.
+ * @this {ol.control.OverviewMap}
+ * @api
  */
-ol.control.OverviewMap.prototype.handleMapPostrender = function(event) {
+ol.control.OverviewMap.render = function(mapEvent) {
   this.validateExtent_();
   this.updateBox_();
 };
@@ -75069,8 +75195,12 @@ ol.control.ScaleLine = function(opt_options) {
    */
   this.toEPSG4326_ = null;
 
+  var render = goog.isDef(options.render) ?
+      options.render : ol.control.ScaleLine.render;
+
   goog.base(this, {
     element: this.element_,
+    render: render,
     target: options.target
   });
 
@@ -75109,9 +75239,11 @@ goog.exportProperty(
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapEvent} mapEvent Map event.
+ * @this {ol.control.ScaleLine}
+ * @api
  */
-ol.control.ScaleLine.prototype.handleMapPostrender = function(mapEvent) {
+ol.control.ScaleLine.render = function(mapEvent) {
   var frameState = mapEvent.frameState;
   if (goog.isNull(frameState)) {
     this.viewState_ = null;
@@ -78435,8 +78567,12 @@ ol.control.ZoomSlider = function(opt_options) {
   goog.events.listen(thumbElement, goog.events.EventType.CLICK,
       goog.events.Event.stopPropagation);
 
+  var render = goog.isDef(options.render) ?
+      options.render : ol.control.ZoomSlider.render;
+
   goog.base(this, {
-    element: containerElement
+    element: containerElement,
+    render: render
   });
 };
 goog.inherits(ol.control.ZoomSlider, ol.control.Control);
@@ -78501,9 +78637,11 @@ ol.control.ZoomSlider.prototype.initSlider_ = function() {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapEvent} mapEvent Map event.
+ * @this {ol.control.ZoomSlider}
+ * @api
  */
-ol.control.ZoomSlider.prototype.handleMapPostrender = function(mapEvent) {
+ol.control.ZoomSlider.render = function(mapEvent) {
   if (goog.isNull(mapEvent.frameState)) {
     return;
   }
@@ -83168,8 +83306,8 @@ ol.format.GMLBase.prototype.readFeatures;
 ol.format.GMLBase.prototype.readFeaturesFromNode =
     function(node, opt_options) {
   var options = {
-    'featureType': this.featureType,
-    'featureNS': this.featureNS
+    featureType: this.featureType,
+    featureNS: this.featureNS
   };
   if (goog.isDef(opt_options)) {
     goog.object.extend(options, this.getReadOptions(node, opt_options));
@@ -98120,7 +98258,9 @@ ol.interaction.DragAndDrop = function(opt_options) {
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
-  goog.base(this);
+  goog.base(this, {
+    handleEvent: ol.interaction.DragAndDrop.handleEvent
+  });
 
   /**
    * @private
@@ -98224,10 +98364,12 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, result) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.DragAndDrop}
+ * @api
  */
-ol.interaction.DragAndDrop.prototype.handleMapBrowserEvent =
-    goog.functions.TRUE;
+ol.interaction.DragAndDrop.handleEvent = goog.functions.TRUE;
 
 
 /**
@@ -100347,7 +100489,9 @@ goog.inherits(ol.DrawEvent, goog.events.Event);
  */
 ol.interaction.Draw = function(options) {
 
-  goog.base(this);
+  goog.base(this, {
+    handleEvent: ol.interaction.Draw.handleEvent
+  });
 
   /**
    * @type {ol.Pixel}
@@ -100498,20 +100642,23 @@ ol.interaction.Draw.prototype.setMap = function(map) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.Draw}
+ * @api
  */
-ol.interaction.Draw.prototype.handleMapBrowserEvent = function(event) {
-  var map = event.map;
+ol.interaction.Draw.handleEvent = function(mapBrowserEvent) {
+  var map = mapBrowserEvent.map;
   if (!map.isDef()) {
     return true;
   }
   var pass = true;
-  if (event.type === ol.MapBrowserEvent.EventType.POINTERMOVE) {
-    pass = this.handlePointerMove_(event);
-  } else if (event.type === ol.MapBrowserEvent.EventType.DBLCLICK) {
+  if (mapBrowserEvent.type === ol.MapBrowserEvent.EventType.POINTERMOVE) {
+    pass = this.handlePointerMove_(mapBrowserEvent);
+  } else if (mapBrowserEvent.type === ol.MapBrowserEvent.EventType.DBLCLICK) {
     pass = false;
   }
-  return (goog.base(this, 'handleMapBrowserEvent', event) && pass);
+  return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) && pass;
 };
 
 
@@ -100923,8 +101070,9 @@ ol.interaction.SegmentDataType;
  */
 ol.interaction.Modify = function(options) {
 
-  goog.base(this);
-
+  goog.base(this, {
+    handleEvent: ol.interaction.Modify.handleEvent
+  });
 
   /**
    * @type {ol.events.ConditionType}
@@ -101361,10 +101509,12 @@ ol.interaction.Modify.prototype.handlePointerUp = function(evt) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.Modify}
+ * @api
  */
-ol.interaction.Modify.prototype.handleMapBrowserEvent =
-    function(mapBrowserEvent) {
+ol.interaction.Modify.handleEvent = function(mapBrowserEvent) {
   var handled;
   if (!mapBrowserEvent.map.getView().getHints()[ol.ViewHint.INTERACTING] &&
       mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERMOVE) {
@@ -101376,7 +101526,8 @@ ol.interaction.Modify.prototype.handleMapBrowserEvent =
     goog.asserts.assertInstanceof(geometry, ol.geom.Point);
     handled = this.removeVertex_();
   }
-  return goog.base(this, 'handleMapBrowserEvent', mapBrowserEvent) && !handled;
+  return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) &&
+      !handled;
 };
 
 
@@ -101687,7 +101838,9 @@ goog.require('ol.style.Style');
  */
 ol.interaction.Select = function(opt_options) {
 
-  goog.base(this);
+  goog.base(this, {
+    handleEvent: ol.interaction.Select.handleEvent
+  });
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
@@ -101774,10 +101927,12 @@ ol.interaction.Select.prototype.getFeatures = function() {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} `false` to stop event propagation.
+ * @this {ol.interaction.Select}
+ * @api
  */
-ol.interaction.Select.prototype.handleMapBrowserEvent =
-    function(mapBrowserEvent) {
+ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
   if (!this.condition_(mapBrowserEvent)) {
     return true;
   }
@@ -110892,6 +111047,15 @@ ol.style.RegularShape.prototype.getAnchor = function() {
 
 
 /**
+ * @return {number} Shape's rotation in radians.
+ * @api
+ */
+ol.style.RegularShape.prototype.getAngle = function() {
+  return this.angle_;
+};
+
+
+/**
  * @return {ol.style.Fill} Fill style.
  * @api
  */
@@ -110955,6 +111119,15 @@ ol.style.RegularShape.prototype.getOrigin = function() {
  */
 ol.style.RegularShape.prototype.getHitDetectionOrigin = function() {
   return this.hitDetectionOrigin_;
+};
+
+
+/**
+ * @return {number} Number of points for stars and regular polygons.
+ * @api
+ */
+ol.style.RegularShape.prototype.getPoints = function() {
+  return this.points_;
 };
 
 
@@ -111383,6 +111556,7 @@ goog.require('ol.interaction.Modify');
 goog.require('ol.interaction.MouseWheelZoom');
 goog.require('ol.interaction.PinchRotate');
 goog.require('ol.interaction.PinchZoom');
+goog.require('ol.interaction.Pointer');
 goog.require('ol.interaction.Select');
 goog.require('ol.layer.Base');
 goog.require('ol.layer.Group');
@@ -111455,6 +111629,7 @@ goog.require('ol.style.RegularShape');
 goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');
 goog.require('ol.style.Text');
+goog.require('ol.style.defaultGeometryFunction');
 goog.require('ol.tilegrid.TileGrid');
 goog.require('ol.tilegrid.WMTS');
 goog.require('ol.tilegrid.XYZ');
@@ -112579,6 +112754,16 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.style.Image.prototype,
+    'getOpacity',
+    ol.style.Image.prototype.getOpacity);
+
+goog.exportProperty(
+    ol.style.Image.prototype,
+    'getRotateWithView',
+    ol.style.Image.prototype.getRotateWithView);
+
+goog.exportProperty(
+    ol.style.Image.prototype,
     'getRotation',
     ol.style.Image.prototype.getRotation);
 
@@ -112586,6 +112771,11 @@ goog.exportProperty(
     ol.style.Image.prototype,
     'getScale',
     ol.style.Image.prototype.getScale);
+
+goog.exportProperty(
+    ol.style.Image.prototype,
+    'getSnapToPixel',
+    ol.style.Image.prototype.getSnapToPixel);
 
 goog.exportProperty(
     ol.style.Image.prototype,
@@ -112613,6 +112803,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.style.RegularShape.prototype,
+    'getAngle',
+    ol.style.RegularShape.prototype.getAngle);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
     'getFill',
     ol.style.RegularShape.prototype.getFill);
 
@@ -112625,6 +112820,11 @@ goog.exportProperty(
     ol.style.RegularShape.prototype,
     'getOrigin',
     ol.style.RegularShape.prototype.getOrigin);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getPoints',
+    ol.style.RegularShape.prototype.getPoints);
 
 goog.exportProperty(
     ol.style.RegularShape.prototype,
@@ -112716,6 +112916,16 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.style.Style.prototype,
+    'getGeometry',
+    ol.style.Style.prototype.getGeometry);
+
+goog.exportProperty(
+    ol.style.Style.prototype,
+    'getGeometryFunction',
+    ol.style.Style.prototype.getGeometryFunction);
+
+goog.exportProperty(
+    ol.style.Style.prototype,
     'getFill',
     ol.style.Style.prototype.getFill);
 
@@ -112738,6 +112948,11 @@ goog.exportProperty(
     ol.style.Style.prototype,
     'getZIndex',
     ol.style.Style.prototype.getZIndex);
+
+goog.exportProperty(
+    ol.style.Style.prototype,
+    'setGeometry',
+    ol.style.Style.prototype.setGeometry);
 
 goog.exportProperty(
     ol.style.Style.prototype,
@@ -113652,8 +113867,16 @@ goog.exportSymbol(
     ol.interaction.DoubleClickZoom);
 
 goog.exportSymbol(
+    'ol.interaction.DoubleClickZoom.handleEvent',
+    ol.interaction.DoubleClickZoom.handleEvent);
+
+goog.exportSymbol(
     'ol.interaction.DragAndDrop',
     ol.interaction.DragAndDrop);
+
+goog.exportSymbol(
+    'ol.interaction.DragAndDrop.handleEvent',
+    ol.interaction.DragAndDrop.handleEvent);
 
 goog.exportProperty(
     ol.interaction.DragAndDropEvent.prototype,
@@ -113709,6 +113932,10 @@ goog.exportSymbol(
     'ol.interaction.Draw',
     ol.interaction.Draw);
 
+goog.exportSymbol(
+    'ol.interaction.Draw.handleEvent',
+    ol.interaction.Draw.handleEvent);
+
 goog.exportProperty(
     ol.interaction.Draw.prototype,
     'finishDrawing',
@@ -113725,11 +113952,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Interaction.prototype,
-    'handleMapBrowserEvent',
-    ol.interaction.Interaction.prototype.handleMapBrowserEvent);
-
-goog.exportProperty(
-    ol.interaction.Interaction.prototype,
     'setActive',
     ol.interaction.Interaction.prototype.setActive);
 
@@ -113742,16 +113964,32 @@ goog.exportSymbol(
     ol.interaction.KeyboardPan);
 
 goog.exportSymbol(
+    'ol.interaction.KeyboardPan.handleEvent',
+    ol.interaction.KeyboardPan.handleEvent);
+
+goog.exportSymbol(
     'ol.interaction.KeyboardZoom',
     ol.interaction.KeyboardZoom);
+
+goog.exportSymbol(
+    'ol.interaction.KeyboardZoom.handleEvent',
+    ol.interaction.KeyboardZoom.handleEvent);
 
 goog.exportSymbol(
     'ol.interaction.Modify',
     ol.interaction.Modify);
 
 goog.exportSymbol(
+    'ol.interaction.Modify.handleEvent',
+    ol.interaction.Modify.handleEvent);
+
+goog.exportSymbol(
     'ol.interaction.MouseWheelZoom',
     ol.interaction.MouseWheelZoom);
+
+goog.exportSymbol(
+    'ol.interaction.MouseWheelZoom.handleEvent',
+    ol.interaction.MouseWheelZoom.handleEvent);
 
 goog.exportSymbol(
     'ol.interaction.PinchRotate',
@@ -113762,6 +114000,14 @@ goog.exportSymbol(
     ol.interaction.PinchZoom);
 
 goog.exportSymbol(
+    'ol.interaction.Pointer',
+    ol.interaction.Pointer);
+
+goog.exportSymbol(
+    'ol.interaction.Pointer.handleEvent',
+    ol.interaction.Pointer.handleEvent);
+
+goog.exportSymbol(
     'ol.interaction.Select',
     ol.interaction.Select);
 
@@ -113769,6 +114015,10 @@ goog.exportProperty(
     ol.interaction.Select.prototype,
     'getFeatures',
     ol.interaction.Select.prototype.getFeatures);
+
+goog.exportSymbol(
+    'ol.interaction.Select.handleEvent',
+    ol.interaction.Select.handleEvent);
 
 goog.exportProperty(
     ol.interaction.Select.prototype,
@@ -114668,6 +114918,10 @@ goog.exportSymbol(
     'ol.control.Attribution',
     ol.control.Attribution);
 
+goog.exportSymbol(
+    'ol.control.Attribution.render',
+    ol.control.Attribution.render);
+
 goog.exportProperty(
     ol.control.Attribution.prototype,
     'getCollapsible',
@@ -114714,6 +114968,10 @@ goog.exportSymbol(
     'ol.control.MousePosition',
     ol.control.MousePosition);
 
+goog.exportSymbol(
+    'ol.control.MousePosition.render',
+    ol.control.MousePosition.render);
+
 goog.exportProperty(
     ol.control.MousePosition.prototype,
     'getCoordinateFormat',
@@ -114748,6 +115006,10 @@ goog.exportProperty(
     'setMap',
     ol.control.OverviewMap.prototype.setMap);
 
+goog.exportSymbol(
+    'ol.control.OverviewMap.render',
+    ol.control.OverviewMap.render);
+
 goog.exportProperty(
     ol.control.OverviewMap.prototype,
     'getCollapsible',
@@ -114773,6 +115035,10 @@ goog.exportSymbol(
     ol.control.Rotate);
 
 goog.exportSymbol(
+    'ol.control.Rotate.render',
+    ol.control.Rotate.render);
+
+goog.exportSymbol(
     'ol.control.ScaleLine',
     ol.control.ScaleLine);
 
@@ -114780,6 +115046,10 @@ goog.exportProperty(
     ol.control.ScaleLine.prototype,
     'getUnits',
     ol.control.ScaleLine.prototype.getUnits);
+
+goog.exportSymbol(
+    'ol.control.ScaleLine.render',
+    ol.control.ScaleLine.render);
 
 goog.exportProperty(
     ol.control.ScaleLine.prototype,
@@ -114793,6 +115063,10 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.control.ZoomSlider',
     ol.control.ZoomSlider);
+
+goog.exportSymbol(
+    'ol.control.ZoomSlider.render',
+    ol.control.ZoomSlider.render);
 
 goog.exportSymbol(
     'ol.control.ZoomToExtent',
@@ -115498,6 +115772,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.style.Circle.prototype,
+    'getOpacity',
+    ol.style.Circle.prototype.getOpacity);
+
+goog.exportProperty(
+    ol.style.Circle.prototype,
+    'getRotateWithView',
+    ol.style.Circle.prototype.getRotateWithView);
+
+goog.exportProperty(
+    ol.style.Circle.prototype,
     'getRotation',
     ol.style.Circle.prototype.getRotation);
 
@@ -115505,6 +115789,11 @@ goog.exportProperty(
     ol.style.Circle.prototype,
     'getScale',
     ol.style.Circle.prototype.getScale);
+
+goog.exportProperty(
+    ol.style.Circle.prototype,
+    'getSnapToPixel',
+    ol.style.Circle.prototype.getSnapToPixel);
 
 goog.exportProperty(
     ol.style.Circle.prototype,
@@ -115518,6 +115807,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.style.Icon.prototype,
+    'getOpacity',
+    ol.style.Icon.prototype.getOpacity);
+
+goog.exportProperty(
+    ol.style.Icon.prototype,
+    'getRotateWithView',
+    ol.style.Icon.prototype.getRotateWithView);
+
+goog.exportProperty(
+    ol.style.Icon.prototype,
     'getRotation',
     ol.style.Icon.prototype.getRotation);
 
@@ -115525,6 +115824,11 @@ goog.exportProperty(
     ol.style.Icon.prototype,
     'getScale',
     ol.style.Icon.prototype.getScale);
+
+goog.exportProperty(
+    ol.style.Icon.prototype,
+    'getSnapToPixel',
+    ol.style.Icon.prototype.getSnapToPixel);
 
 goog.exportProperty(
     ol.style.Icon.prototype,
@@ -115538,6 +115842,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.style.RegularShape.prototype,
+    'getOpacity',
+    ol.style.RegularShape.prototype.getOpacity);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getRotateWithView',
+    ol.style.RegularShape.prototype.getRotateWithView);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
     'getRotation',
     ol.style.RegularShape.prototype.getRotation);
 
@@ -115545,6 +115859,11 @@ goog.exportProperty(
     ol.style.RegularShape.prototype,
     'getScale',
     ol.style.RegularShape.prototype.getScale);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
+    'getSnapToPixel',
+    ol.style.RegularShape.prototype.getSnapToPixel);
 
 goog.exportProperty(
     ol.style.RegularShape.prototype,
