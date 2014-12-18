@@ -299,7 +299,6 @@ goog.html.SafeHtml.URL_ATTRIBUTES_ = goog.object.createSet('action', 'cite',
     'data', 'formaction', 'href', 'manifest', 'poster', 'src');
 
 
-// TODO(user): Disallow object, already in use in a few places.
 /**
  * Tags which are unsupported via create(). They might be supported via a
  * tag-specific create method. These are tags which might require a
@@ -308,7 +307,7 @@ goog.html.SafeHtml.URL_ATTRIBUTES_ = goog.object.createSet('action', 'cite',
  * @private @const {!Object<string,boolean>}
  */
 goog.html.SafeHtml.NOT_ALLOWED_TAG_NAMES_ = goog.object.createSet(
-    'embed', 'iframe', 'link', 'script', 'style', 'template');
+    'embed', 'iframe', 'link', 'object', 'script', 'style', 'template');
 
 
 /**
@@ -377,6 +376,43 @@ goog.html.SafeHtml.create = function(tagName, opt_attributes, opt_content) {
   }
   return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
       tagName, opt_attributes, opt_content);
+};
+
+
+/**
+ * Creates a SafeHtml representing an iframe tag.
+ *
+ * By default the sandbox attribute is set to an empty value, which is the most
+ * secure option, as it confers the iframe the least privileges. If this
+ * is too restrictive then granting individual privileges is the preferable
+ * option. Unsetting the attribute entirely is the least secure option and
+ * should never be done unless it's stricly necessary.
+ *
+ * @param {goog.html.TrustedResourceUrl=} opt_src The value of the src
+ *     attribute. If null or undefined src will not be set.
+ * @param {goog.html.SafeHtml=} opt_srcdoc The value of the srcdoc attribute.
+ *     If null or undefined srcdoc will not be set.
+ * @param {!Object<string, goog.html.SafeHtml.AttributeValue_>=}
+ *     opt_attributes Mapping from attribute names to their values. Only
+ *     attribute names consisting of [a-zA-Z0-9-] are allowed. Value of null or
+ *     undefined causes the attribute to be omitted.
+ * @param {!goog.html.SafeHtml.TextOrHtml_|
+ *     !Array<!goog.html.SafeHtml.TextOrHtml_>=} opt_content Content to
+ *     HTML-escape and put inside the tag. Array elements are concatenated.
+ * @return {!goog.html.SafeHtml} The SafeHtml content with the tag.
+ * @throws {Error} If invalid tag name, attribute name, or attribute value is
+ *     provided. If opt_attributes contains the src or srcdoc attributes.
+ */
+goog.html.SafeHtml.createIframe = function(
+    opt_src, opt_srcdoc, opt_attributes, opt_content) {
+  var fixedAttributes = {};
+  fixedAttributes['src'] = opt_src || null;
+  fixedAttributes['srcdoc'] = opt_srcdoc || null;
+  var defaultAttributes = {'sandbox': ''};
+  var attributes = goog.html.SafeHtml.combineAttributes(
+      fixedAttributes, defaultAttributes, opt_attributes);
+  return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
+      'iframe', attributes, opt_content);
 };
 
 
@@ -468,10 +504,9 @@ goog.html.SafeHtml.createWithDir = function(dir, tagName, opt_attributes,
 
 
 /**
- * Creates a new SafeHtml object by concatenating the values.
- * @param {...!goog.html.SafeHtml.TextOrHtml_|
- *     !Array<!goog.html.SafeHtml.TextOrHtml_>} var_args Elements of array
- *     arguments would be processed recursively.
+ * Creates a new SafeHtml object by concatenating values.
+ * @param {...(!goog.html.SafeHtml.TextOrHtml_|
+ *     !Array<!goog.html.SafeHtml.TextOrHtml_>)} var_args Values to concatenate.
  * @return {!goog.html.SafeHtml}
  */
 goog.html.SafeHtml.concat = function(var_args) {
@@ -607,6 +642,46 @@ goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse =
 
   return goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
       result, dir);
+};
+
+
+/**
+ * @param {!Object<string, string>} fixedAttributes
+ * @param {!Object<string, string>} defaultAttributes
+ * @param {!Object<string, goog.html.SafeHtml.AttributeValue_>=}
+ *     opt_attributes Optional attributes passed to create*().
+ * @return {!Object<string, goog.html.SafeHtml.AttributeValue_>}
+ * @throws {Error} If opt_attributes contains an attribute with the same name
+ *     as an attribute in fixedAttributes.
+ * @package
+ */
+goog.html.SafeHtml.combineAttributes = function(
+    fixedAttributes, defaultAttributes, opt_attributes) {
+  var combinedAttributes = {};
+  var name;
+
+  for (name in fixedAttributes) {
+    goog.asserts.assert(name.toLowerCase() == name, 'Must be lower case');
+    combinedAttributes[name] = fixedAttributes[name];
+  }
+  for (name in defaultAttributes) {
+    goog.asserts.assert(name.toLowerCase() == name, 'Must be lower case');
+    combinedAttributes[name] = defaultAttributes[name];
+  }
+
+  for (name in opt_attributes) {
+    var nameLower = name.toLowerCase();
+    if (nameLower in fixedAttributes) {
+      throw Error('Cannot override "' + nameLower + '" attribute, got "' +
+          name + '" with value "' + opt_attributes[name] + '"');
+    }
+    if (nameLower in defaultAttributes) {
+      delete combinedAttributes[nameLower];
+    }
+    combinedAttributes[name] = opt_attributes[name];
+  }
+
+  return combinedAttributes;
 };
 
 

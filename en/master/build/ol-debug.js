@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-482-gfe0e17f
+// Version: v3.1.0-pre.2-486-g6d3103d
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -228,7 +228,8 @@ goog.define('goog.TRUSTED_SITE', true);
  *
  * This define can be used to trigger alternate implementations compatible with
  * running in EcmaScript Strict mode or warn about unavailable functionality.
- * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+ *
  */
 goog.define('goog.STRICT_MODE_COMPATIBLE', false);
 
@@ -241,12 +242,24 @@ goog.define('goog.DISALLOW_TEST_ONLY_CODE', COMPILED && !goog.DEBUG);
 
 
 /**
- * Creates object stubs for a namespace.  The presence of one or more
- * goog.provide() calls indicate that the file defines the given
- * objects/namespaces.  Provided objects must not be null or undefined.
- * Build tools also scan for provide/require statements
+ * Defines a namespace in Closure.
+ *
+ * A namespace may only be defined once in a codebase. It may be defined using
+ * goog.provide() or goog.module().
+ *
+ * The presence of one or more goog.provide() calls in a file indicates
+ * that the file defines the given objects/namespaces.
+ * Provided symbols must not be null or undefined.
+ *
+ * In addition, goog.provide() creates the object stubs for a namespace
+ * (for example, goog.provide("goog.foo.bar") will create the object
+ * goog.foo.bar if it does not already exist).
+ *
+ * Build tools also scan for provide/require/module statements
  * to discern dependencies, build dependency files (see deps.js), etc.
+ *
  * @see goog.require
+ * @see goog.module
  * @param {string} name Namespace provided by this file in the form
  *     "goog.package.part".
  */
@@ -298,22 +311,31 @@ goog.VALID_MODULE_RE_ = /^[a-zA-Z_$][a-zA-Z0-9._$]*$/;
 
 
 /**
- * goog.module serves two purposes:
- * - marks a file that must be loaded as a module
- * - reserves a namespace (it can not also be goog.provided)
- * and has three requirements:
+ * Defines a module in Closure.
+ *
+ * Marks that this file must be loaded as a module and claims the namespace.
+ *
+ * A namespace may only be defined once in a codebase. It may be defined using
+ * goog.provide() or goog.module().
+ *
+ * goog.module() has three requirements:
  * - goog.module may not be used in the same file as goog.provide.
  * - goog.module must be the first statement in the file.
  * - only one goog.module is allowed per file.
- * When a goog.module annotated file is loaded, it is loaded enclosed in
+ *
+ * When a goog.module annotated file is loaded, it is enclosed in
  * a strict function closure. This means that:
- * - any variable declared in a goog.module file are private to the file,
- * not global. Although the compiler is expected to inline the module.
+ * - any variables declared in a goog.module file are private to the file
+ * (not global), though the compiler is expected to inline the module.
  * - The code must obey all the rules of "strict" JavaScript.
  * - the file will be marked as "use strict"
  *
  * NOTE: unlike goog.provide, goog.module does not declare any symbols by
- * itself.
+ * itself. If declared symbols are desired, use
+ * goog.module.declareLegacyNamespace().
+ *
+ *
+ * See the public goog.module proposal: http://goo.gl/Va1hin
  *
  * @param {string} name Namespace provided by this file in the form
  *     "goog.package.part", is expected but not required.
@@ -352,6 +374,7 @@ goog.module = function(name) {
  * indicate a hard dependency, instead it is used to indicate
  * an optional dependency or to access the exports of a module
  * that has already been loaded.
+ * @suppress {missingProvide}
  */
 goog.module.get = function(name) {
   return goog.module.getInternal_(name);
@@ -403,6 +426,7 @@ goog.isInModuleLoader_ = function() {
  * TODO(johnlenz): Make the test framework aware of goog.module so
  * that this isn't necessary. Alternately combine this with goog.setTestOnly
  * to minimize boiler plate.
+ * @suppress {missingProvide}
  */
 goog.module.declareTestMethods = function() {
   if (!goog.isInModuleLoader_()) {
@@ -417,6 +441,7 @@ goog.module.declareTestMethods = function() {
  * Provide the module's exports as a globally accessible object under the
  * module's declared name.  This is intended to ease migration to goog.module
  * for files that have existing usages.
+ * @suppress {missingProvide}
  */
 goog.module.declareLegacyNamespace = function() {
   if (!COMPILED && !goog.isInModuleLoader_()) {
@@ -1096,9 +1121,11 @@ if (goog.DEPENDENCIES_ENABLED) {
 
 
   /**
-   * @private @const {function(string):?}
+   * @param {string} source
+   * @return {!Object}
+   * @private
    */
-  goog.loadModuleFromSource_ = function() {
+  goog.loadModuleFromSource_ = function(source) {
     // NOTE: we avoid declaring parameters or local variables here to avoid
     // masking globals or leaking values into the module definition.
     'use strict';
@@ -2354,6 +2381,7 @@ goog.defineClass = function(superClass, def) {
  *     !Object|
  *     {constructor:!Function}|
  *     {constructor:!Function, statics:(Object|function(Function):void)}}
+ * @suppress {missingProvide}
  */
 goog.defineClass.ClassDescriptor;
 
@@ -6737,6 +6765,31 @@ goog.object.setIfUndefined = function(obj, key, value) {
 
 
 /**
+ * Sets a key and value to an object if the key is not set. The value will be
+ * the return value of the given function. If the key already exists, the
+ * object will not be changed and the function will not be called (the function
+ * will be lazily evaluated -- only called if necessary).
+ *
+ * This function is particularly useful for use with a map used a as a cache.
+ *
+ * @param {!Object<K,V>} obj The object to which to add the key-value pair.
+ * @param {string} key The key to add.
+ * @param {function():V} f The value to add if the key wasn't present.
+ * @return {V} The value of the entry at the end of the function.
+ * @template K,V
+ */
+goog.object.setWithReturnValueIfNotSet = function(obj, key, f) {
+  if (key in obj) {
+    return obj[key];
+  }
+
+  var val = f();
+  obj[key] = val;
+  return val;
+};
+
+
+/**
  * Compares two objects for equality using === on the values.
  *
  * @param {!Object<K,V>} a
@@ -10503,6 +10556,7 @@ goog.events.BrowserEvent.IEButtonMap = [
  * @param {EventTarget=} opt_currentTarget Current target for event.
  */
 goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
+  this.event_ = e;
   var type = this.type = e.type;
 
   // TODO(nicksantos): Change this.target to type EventTarget.
@@ -10532,12 +10586,28 @@ goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
 
   this.relatedTarget = relatedTarget;
 
-  // Webkit emits a lame warning whenever layerX/layerY is accessed.
-  // http://code.google.com/p/chromium/issues/detail?id=101733
-  this.offsetX = (goog.userAgent.WEBKIT || e.offsetX !== undefined) ?
-      e.offsetX : e.layerX;
-  this.offsetY = (goog.userAgent.WEBKIT || e.offsetY !== undefined) ?
-      e.offsetY : e.layerY;
+  // Lazily calculate the offsetX/Y properties because they trigger style
+  // recalc and layout. The original event's getters are themselves lazy.
+  if (Object.defineProperties) {
+    Object.defineProperties(this,
+        /** @lends {goog.events.BrowserEvent.prototype} */ ({
+          offsetX: {
+            configurable: true,
+            enumerable: true,
+            get: this.getOffsetX_,
+            set: this.setOffsetX_
+          },
+          offsetY: {
+            configurable: true,
+            enumerable: true,
+            get: this.getOffsetY_,
+            set: this.setOffsetY_
+          }
+        }));
+  } else {
+    this.offsetX = this.getOffsetX_();
+    this.offsetY = this.getOffsetY_();
+  }
 
   this.clientX = e.clientX !== undefined ? e.clientX : e.pageX;
   this.clientY = e.clientY !== undefined ? e.clientY : e.pageY;
@@ -10554,7 +10624,6 @@ goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
   this.metaKey = e.metaKey;
   this.platformModifierKey = goog.userAgent.MAC ? e.metaKey : e.ctrlKey;
   this.state = e.state;
-  this.event_ = e;
   if (e.defaultPrevented) {
     this.preventDefault();
   }
@@ -10670,6 +10739,50 @@ goog.events.BrowserEvent.prototype.getBrowserEvent = function() {
 
 /** @override */
 goog.events.BrowserEvent.prototype.disposeInternal = function() {
+};
+
+
+/** @private @return {number} */
+goog.events.BrowserEvent.prototype.getOffsetX_ = function() {
+  // Webkit emits a lame warning whenever layerX/layerY is accessed.
+  // http://code.google.com/p/chromium/issues/detail?id=101733
+  return (goog.userAgent.WEBKIT || this.event_.offsetX !== undefined) ?
+      this.event_.offsetX : this.event_.layerX;
+};
+
+
+/** @private @param {number} offset */
+goog.events.BrowserEvent.prototype.setOffsetX_ = function(offset) {
+  Object.defineProperties(this,
+      /** @lends {goog.events.BrowserEvent.prototype} */ ({
+        offsetX: {
+          writable: true,
+          enumerable: true,
+          configurable: true,
+          value: offset
+        }
+      }));
+};
+
+
+/** @private @return {number} */
+goog.events.BrowserEvent.prototype.getOffsetY_ = function() {
+  return (goog.userAgent.WEBKIT || this.event_.offsetY !== undefined) ?
+      this.event_.offsetY : this.event_.layerY;
+};
+
+
+/** @private @param {number} offset */
+goog.events.BrowserEvent.prototype.setOffsetY_ = function(offset) {
+  Object.defineProperties(this,
+      /** @lends {goog.events.BrowserEvent.prototype} */ ({
+        offsetY: {
+          writable: true,
+          enumerable: true,
+          configurable: true,
+          value: offset
+        }
+      }));
 };
 
 // Copyright 2012 The Closure Library Authors. All Rights Reserved.
@@ -21220,16 +21333,17 @@ goog.require('goog.string.TypedString');
  *
  * Values of this type must be composable, i.e. for any two values
  * {@code style1} and {@code style2} of this type,
- * {@code style1.getSafeStyleString() + style2.getSafeStyleString()} must
- * itself be a value that satisfies the SafeStyle type constraint. This
- * requirement implies that for any value {@code style} of this type,
- * {@code style.getSafeStyleString()} must not end in a "property value" or
- * "property name" context. For example, a value of {@code background:url("}
- * or {@code font-} would not satisfy the SafeStyle contract. This is because
- * concatenating such strings with a second value that itself does not contain
- * unsafe CSS can result in an overall string that does. For example, if
- * {@code javascript:evil())"} is appended to {@code background:url("}, the
- * resulting string may result in the execution of a malicious script.
+ * {@code goog.html.SafeStyle.unwrap(style1) +
+ * goog.html.SafeStyle.unwrap(style2)} must itself be a value that satisfies
+ * the SafeStyle type constraint. This requirement implies that for any value
+ * {@code style} of this type, {@code goog.html.SafeStyle.unwrap(style)} must
+ * not end in a "property value" or "property name" context. For example,
+ * a value of {@code background:url("} or {@code font-} would not satisfy the
+ * SafeStyle contract. This is because concatenating such strings with a
+ * second value that itself does not contain unsafe CSS can result in an
+ * overall string that does. For example, if {@code javascript:evil())"} is
+ * appended to {@code background:url("}, the resulting string may result in
+ * the execution of a malicious script.
  *
  * TODO(user): Consider whether we should implement UTF-8 interchange
  * validity checks and blacklisting of newlines (including Unicode ones) and
@@ -23346,7 +23460,6 @@ goog.html.SafeHtml.URL_ATTRIBUTES_ = goog.object.createSet('action', 'cite',
     'data', 'formaction', 'href', 'manifest', 'poster', 'src');
 
 
-// TODO(user): Disallow object, already in use in a few places.
 /**
  * Tags which are unsupported via create(). They might be supported via a
  * tag-specific create method. These are tags which might require a
@@ -23355,7 +23468,7 @@ goog.html.SafeHtml.URL_ATTRIBUTES_ = goog.object.createSet('action', 'cite',
  * @private @const {!Object<string,boolean>}
  */
 goog.html.SafeHtml.NOT_ALLOWED_TAG_NAMES_ = goog.object.createSet(
-    'embed', 'iframe', 'link', 'script', 'style', 'template');
+    'embed', 'iframe', 'link', 'object', 'script', 'style', 'template');
 
 
 /**
@@ -23424,6 +23537,43 @@ goog.html.SafeHtml.create = function(tagName, opt_attributes, opt_content) {
   }
   return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
       tagName, opt_attributes, opt_content);
+};
+
+
+/**
+ * Creates a SafeHtml representing an iframe tag.
+ *
+ * By default the sandbox attribute is set to an empty value, which is the most
+ * secure option, as it confers the iframe the least privileges. If this
+ * is too restrictive then granting individual privileges is the preferable
+ * option. Unsetting the attribute entirely is the least secure option and
+ * should never be done unless it's stricly necessary.
+ *
+ * @param {goog.html.TrustedResourceUrl=} opt_src The value of the src
+ *     attribute. If null or undefined src will not be set.
+ * @param {goog.html.SafeHtml=} opt_srcdoc The value of the srcdoc attribute.
+ *     If null or undefined srcdoc will not be set.
+ * @param {!Object<string, goog.html.SafeHtml.AttributeValue_>=}
+ *     opt_attributes Mapping from attribute names to their values. Only
+ *     attribute names consisting of [a-zA-Z0-9-] are allowed. Value of null or
+ *     undefined causes the attribute to be omitted.
+ * @param {!goog.html.SafeHtml.TextOrHtml_|
+ *     !Array<!goog.html.SafeHtml.TextOrHtml_>=} opt_content Content to
+ *     HTML-escape and put inside the tag. Array elements are concatenated.
+ * @return {!goog.html.SafeHtml} The SafeHtml content with the tag.
+ * @throws {Error} If invalid tag name, attribute name, or attribute value is
+ *     provided. If opt_attributes contains the src or srcdoc attributes.
+ */
+goog.html.SafeHtml.createIframe = function(
+    opt_src, opt_srcdoc, opt_attributes, opt_content) {
+  var fixedAttributes = {};
+  fixedAttributes['src'] = opt_src || null;
+  fixedAttributes['srcdoc'] = opt_srcdoc || null;
+  var defaultAttributes = {'sandbox': ''};
+  var attributes = goog.html.SafeHtml.combineAttributes(
+      fixedAttributes, defaultAttributes, opt_attributes);
+  return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
+      'iframe', attributes, opt_content);
 };
 
 
@@ -23515,10 +23665,9 @@ goog.html.SafeHtml.createWithDir = function(dir, tagName, opt_attributes,
 
 
 /**
- * Creates a new SafeHtml object by concatenating the values.
- * @param {...!goog.html.SafeHtml.TextOrHtml_|
- *     !Array<!goog.html.SafeHtml.TextOrHtml_>} var_args Elements of array
- *     arguments would be processed recursively.
+ * Creates a new SafeHtml object by concatenating values.
+ * @param {...(!goog.html.SafeHtml.TextOrHtml_|
+ *     !Array<!goog.html.SafeHtml.TextOrHtml_>)} var_args Values to concatenate.
  * @return {!goog.html.SafeHtml}
  */
 goog.html.SafeHtml.concat = function(var_args) {
@@ -23654,6 +23803,46 @@ goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse =
 
   return goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
       result, dir);
+};
+
+
+/**
+ * @param {!Object<string, string>} fixedAttributes
+ * @param {!Object<string, string>} defaultAttributes
+ * @param {!Object<string, goog.html.SafeHtml.AttributeValue_>=}
+ *     opt_attributes Optional attributes passed to create*().
+ * @return {!Object<string, goog.html.SafeHtml.AttributeValue_>}
+ * @throws {Error} If opt_attributes contains an attribute with the same name
+ *     as an attribute in fixedAttributes.
+ * @package
+ */
+goog.html.SafeHtml.combineAttributes = function(
+    fixedAttributes, defaultAttributes, opt_attributes) {
+  var combinedAttributes = {};
+  var name;
+
+  for (name in fixedAttributes) {
+    goog.asserts.assert(name.toLowerCase() == name, 'Must be lower case');
+    combinedAttributes[name] = fixedAttributes[name];
+  }
+  for (name in defaultAttributes) {
+    goog.asserts.assert(name.toLowerCase() == name, 'Must be lower case');
+    combinedAttributes[name] = defaultAttributes[name];
+  }
+
+  for (name in opt_attributes) {
+    var nameLower = name.toLowerCase();
+    if (nameLower in fixedAttributes) {
+      throw Error('Cannot override "' + nameLower + '" attribute, got "' +
+          name + '" with value "' + opt_attributes[name] + '"');
+    }
+    if (nameLower in defaultAttributes) {
+      delete combinedAttributes[nameLower];
+    }
+    combinedAttributes[name] = opt_attributes[name];
+  }
+
+  return combinedAttributes;
 };
 
 
@@ -24323,6 +24512,7 @@ goog.require('goog.math.Coordinate');
 goog.require('goog.math.Size');
 goog.require('goog.object');
 goog.require('goog.string');
+goog.require('goog.string.Unicode');
 goog.require('goog.userAgent');
 
 
@@ -25097,10 +25287,13 @@ goog.dom.createTextNode = function(content) {
  * Create a table.
  * @param {number} rows The number of rows in the table.  Must be >= 1.
  * @param {number} columns The number of columns in the table.  Must be >= 1.
- * @param {boolean=} opt_fillWithNbsp If true, fills table entries with nsbps.
+ * @param {boolean=} opt_fillWithNbsp If true, fills table entries with
+ *     {@code goog.string.Unicode.NBSP} characters.
  * @return {!Element} The created table.
  */
 goog.dom.createTable = function(rows, columns, opt_fillWithNbsp) {
+  // TODO(user): Return HTMLTableElement, also in prototype function.
+  // Callers need to be updated to e.g. not assign numbers to table.cellSpacing.
   return goog.dom.createTable_(document, rows, columns, !!opt_fillWithNbsp);
 };
 
@@ -25110,26 +25303,30 @@ goog.dom.createTable = function(rows, columns, opt_fillWithNbsp) {
  * @param {!Document} doc Document object to use to create the table.
  * @param {number} rows The number of rows in the table.  Must be >= 1.
  * @param {number} columns The number of columns in the table.  Must be >= 1.
- * @param {boolean} fillWithNbsp If true, fills table entries with nsbps.
- * @return {!Element} The created table.
+ * @param {boolean} fillWithNbsp If true, fills table entries with
+ *     {@code goog.string.Unicode.NBSP} characters.
+ * @return {!HTMLTableElement} The created table.
  * @private
  */
 goog.dom.createTable_ = function(doc, rows, columns, fillWithNbsp) {
-  var rowHtml = ['<tr>'];
-  for (var i = 0; i < columns; i++) {
-    rowHtml.push(fillWithNbsp ? '<td>&nbsp;</td>' : '<td></td>');
+  var table = /** @type {!HTMLTableElement} */
+      (doc.createElement(goog.dom.TagName.TABLE));
+  var tbody = table.appendChild(doc.createElement(goog.dom.TagName.TBODY));
+  for (var i = 0; i < rows; i++) {
+    var tr = doc.createElement(goog.dom.TagName.TR);
+    for (var j = 0; j < columns; j++) {
+      var td = doc.createElement(goog.dom.TagName.TD);
+      // IE <= 9 will create a text node if we set text content to the empty
+      // string, so we avoid doing it unless necessary. This ensures that the
+      // same DOM tree is returned on all browsers.
+      if (fillWithNbsp) {
+        goog.dom.setTextContent(td, goog.string.Unicode.NBSP);
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
   }
-  rowHtml.push('</tr>');
-  rowHtml = rowHtml.join('');
-  var totalHtml = ['<table>'];
-  for (i = 0; i < rows; i++) {
-    totalHtml.push(rowHtml);
-  }
-  totalHtml.push('</table>');
-
-  var elem = doc.createElement(goog.dom.TagName.DIV);
-  elem.innerHTML = totalHtml.join('');
-  return /** @type {!Element} */ (elem.removeChild(elem.firstChild));
+  return table;
 };
 
 
@@ -26742,8 +26939,9 @@ goog.dom.DomHelper.prototype.createTextNode = function(content) {
  * Create a table.
  * @param {number} rows The number of rows in the table.  Must be >= 1.
  * @param {number} columns The number of columns in the table.  Must be >= 1.
- * @param {boolean=} opt_fillWithNbsp If true, fills table entries with nsbps.
- * @return {!Element} The created table.
+ * @param {boolean=} opt_fillWithNbsp If true, fills table entries with
+ *     {@code goog.string.Unicode.NBSP} characters.
+ * @return {!HTMLElement} The created table.
  */
 goog.dom.DomHelper.prototype.createTable = function(rows, columns,
     opt_fillWithNbsp) {
@@ -31045,6 +31243,17 @@ goog.style.setStyle_ = function(element, value, style) {
 
 
 /**
+ * Style name cache that stores previous property name lookups.
+ *
+ * This is used by setStyle to speed up property lookups, entries look like:
+ *   { StyleName: ActualPropertyName }
+ *
+ * @private {!Object<string, string>}
+ */
+goog.style.styleNameCache_ = {};
+
+
+/**
  * Returns the style property name in camel-case. If it does not exist and a
  * vendor-specific version of the property does exist, then return the vendor-
  * specific property name instead.
@@ -31054,18 +31263,23 @@ goog.style.setStyle_ = function(element, value, style) {
  * @private
  */
 goog.style.getVendorJsStyleName_ = function(element, style) {
-  var camelStyle = goog.string.toCamelCase(style);
+  var propertyName = goog.style.styleNameCache_[style];
+  if (!propertyName) {
+    var camelStyle = goog.string.toCamelCase(style);
+    propertyName = camelStyle;
 
-  if (element.style[camelStyle] === undefined) {
-    var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() +
-        goog.string.toTitleCase(camelStyle);
+    if (element.style[camelStyle] === undefined) {
+      var prefixedStyle = goog.dom.vendor.getVendorJsPrefix() +
+          goog.string.toTitleCase(camelStyle);
 
-    if (element.style[prefixedStyle] !== undefined) {
-      return prefixedStyle;
+      if (element.style[prefixedStyle] !== undefined) {
+        propertyName = prefixedStyle;
+      }
     }
+    goog.style.styleNameCache_[style] = propertyName;
   }
 
-  return camelStyle;
+  return propertyName;
 };
 
 
@@ -39831,6 +40045,723 @@ goog.debug.entryPointRegistry.register(
       goog.async.nextTick.wrapCallback_ = transformer;
     });
 
+// Copyright 2014 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview The SafeScript type and its builders.
+ *
+ * TODO(user): Link to document stating type contract.
+ */
+
+goog.provide('goog.html.SafeScript');
+
+goog.require('goog.asserts');
+goog.require('goog.string.Const');
+goog.require('goog.string.TypedString');
+
+
+
+/**
+ * A string-like object which represents JavaScript code and that carries the
+ * security type contract that its value, as a string, will not cause execution
+ * of unconstrained attacker controlled code (XSS) when evaluated as JavaScript
+ * in a browser.
+ *
+ * Instances of this type must be created via the factory method
+ * {@code goog.html.SafeScript.fromConstant} and not by invoking its
+ * constructor. The constructor intentionally takes no parameters and the type
+ * is immutable; hence only a default instance corresponding to the empty string
+ * can be obtained via constructor invocation.
+ *
+ * A SafeScript's string representation can safely be interpolated as the
+ * content of a script element within HTML. The SafeScript string should not be
+ * escaped before interpolation.
+ *
+ * Note that the SafeScript might contain text that is attacker-controlled but
+ * that text should have been interpolated with appropriate escaping,
+ * sanitization and/or validation into the right location in the script, such
+ * that it is highly constrained in its effect (for example, it had to match a
+ * set of whitelisted words).
+ *
+ * A SafeScript can be constructed via security-reviewed unchecked
+ * conversions. In this case producers of SafeScript must ensure themselves that
+ * the SafeScript does not contain unsafe script. Note in particular that
+ * {@code &lt;} is dangerous, even when inside JavaScript strings, and so should
+ * always be forbidden or JavaScript escaped in user controlled input. For
+ * example, if {@code &lt;/script&gt;&lt;script&gt;evil&lt;/script&gt;"} were
+ * interpolated inside a JavaScript string, it would break out of the context
+ * of the original script element and {@code evil} would execute. Also note
+ * that within an HTML script (raw text) element, HTML character references,
+ * such as "&lt;" are not allowed. See
+ * http://www.w3.org/TR/html5/scripting-1.html#restrictions-for-contents-of-script-elements.
+ *
+ * @see goog.html.SafeScript#fromConstant
+ * @constructor
+ * @final
+ * @struct
+ * @implements {goog.string.TypedString}
+ */
+goog.html.SafeScript = function() {
+  /**
+   * The contained value of this SafeScript.  The field has a purposely
+   * ugly name to make (non-compiled) code that attempts to directly access this
+   * field stand out.
+   * @private {string}
+   */
+  this.privateDoNotAccessOrElseSafeScriptWrappedValue_ = '';
+
+  /**
+   * A type marker used to implement additional run-time type checking.
+   * @see goog.html.SafeScript#unwrap
+   * @const
+   * @private
+   */
+  this.SAFE_SCRIPT_TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_ =
+      goog.html.SafeScript.TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_;
+};
+
+
+/**
+ * @override
+ * @const
+ */
+goog.html.SafeScript.prototype.implementsGoogStringTypedString = true;
+
+
+/**
+ * Type marker for the SafeScript type, used to implement additional
+ * run-time type checking.
+ * @const
+ * @private
+ */
+goog.html.SafeScript.TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_ = {};
+
+
+/**
+ * Creates a SafeScript object from a compile-time constant string.
+ *
+ * @param {!goog.string.Const} script A compile-time-constant string from which
+ *     to create a SafeScript.
+ * @return {!goog.html.SafeScript} A SafeScript object initialized to
+ *     {@code script}.
+ */
+goog.html.SafeScript.fromConstant = function(script) {
+  var scriptString = goog.string.Const.unwrap(script);
+  if (scriptString.length === 0) {
+    return goog.html.SafeScript.EMPTY;
+  }
+  return goog.html.SafeScript.createSafeScriptSecurityPrivateDoNotAccessOrElse(
+      scriptString);
+};
+
+
+/**
+ * Returns this SafeScript's value as a string.
+ *
+ * IMPORTANT: In code where it is security relevant that an object's type is
+ * indeed {@code SafeScript}, use {@code goog.html.SafeScript.unwrap} instead of
+ * this method. If in doubt, assume that it's security relevant. In particular,
+ * note that goog.html functions which return a goog.html type do not guarantee
+ * the returned instance is of the right type. For example:
+ *
+ * <pre>
+ * var fakeSafeHtml = new String('fake');
+ * fakeSafeHtml.__proto__ = goog.html.SafeHtml.prototype;
+ * var newSafeHtml = goog.html.SafeHtml.htmlEscape(fakeSafeHtml);
+ * // newSafeHtml is just an alias for fakeSafeHtml, it's passed through by
+ * // goog.html.SafeHtml.htmlEscape() as fakeSafeHtml
+ * // instanceof goog.html.SafeHtml.
+ * </pre>
+ *
+ * @see goog.html.SafeScript#unwrap
+ * @override
+ */
+goog.html.SafeScript.prototype.getTypedStringValue = function() {
+  return this.privateDoNotAccessOrElseSafeScriptWrappedValue_;
+};
+
+
+if (goog.DEBUG) {
+  /**
+   * Returns a debug string-representation of this value.
+   *
+   * To obtain the actual string value wrapped in a SafeScript, use
+   * {@code goog.html.SafeScript.unwrap}.
+   *
+   * @see goog.html.SafeScript#unwrap
+   * @override
+   */
+  goog.html.SafeScript.prototype.toString = function() {
+    return 'SafeScript{' +
+        this.privateDoNotAccessOrElseSafeScriptWrappedValue_ + '}';
+  };
+}
+
+
+/**
+ * Performs a runtime check that the provided object is indeed a
+ * SafeScript object, and returns its value.
+ *
+ * @param {!goog.html.SafeScript} safeScript The object to extract from.
+ * @return {string} The safeScript object's contained string, unless
+ *     the run-time type check fails. In that case, {@code unwrap} returns an
+ *     innocuous string, or, if assertions are enabled, throws
+ *     {@code goog.asserts.AssertionError}.
+ */
+goog.html.SafeScript.unwrap = function(safeScript) {
+  // Perform additional Run-time type-checking to ensure that
+  // safeScript is indeed an instance of the expected type.  This
+  // provides some additional protection against security bugs due to
+  // application code that disables type checks.
+  // Specifically, the following checks are performed:
+  // 1. The object is an instance of the expected type.
+  // 2. The object is not an instance of a subclass.
+  // 3. The object carries a type marker for the expected type. "Faking" an
+  // object requires a reference to the type marker, which has names intended
+  // to stand out in code reviews.
+  if (safeScript instanceof goog.html.SafeScript &&
+      safeScript.constructor === goog.html.SafeScript &&
+      safeScript.SAFE_SCRIPT_TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_ ===
+          goog.html.SafeScript.TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_) {
+    return safeScript.privateDoNotAccessOrElseSafeScriptWrappedValue_;
+  } else {
+    goog.asserts.fail(
+        'expected object of type SafeScript, got \'' + safeScript + '\'');
+    return 'type_error:SafeScript';
+  }
+};
+
+
+/**
+ * Package-internal utility method to create SafeScript instances.
+ *
+ * @param {string} script The string to initialize the SafeScript object with.
+ * @return {!goog.html.SafeScript} The initialized SafeScript object.
+ * @package
+ */
+goog.html.SafeScript.createSafeScriptSecurityPrivateDoNotAccessOrElse =
+    function(script) {
+  var safeScript = new goog.html.SafeScript();
+  safeScript.privateDoNotAccessOrElseSafeScriptWrappedValue_ = script;
+  return safeScript;
+};
+
+
+/**
+ * A SafeScript instance corresponding to the empty string.
+ * @const {!goog.html.SafeScript}
+ */
+goog.html.SafeScript.EMPTY =
+    goog.html.SafeScript.createSafeScriptSecurityPrivateDoNotAccessOrElse('');
+
+// Copyright 2014 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview The SafeStyleSheet type and its builders.
+ *
+ * TODO(user): Link to document stating type contract.
+ */
+
+goog.provide('goog.html.SafeStyleSheet');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.string');
+goog.require('goog.string.Const');
+goog.require('goog.string.TypedString');
+
+
+
+/**
+ * A string-like object which represents a CSS style sheet and that carries the
+ * security type contract that its value, as a string, will not cause untrusted
+ * script execution (XSS) when evaluated as CSS in a browser.
+ *
+ * Instances of this type must be created via the factory method
+ * {@code goog.html.SafeStyleSheet.fromConstant} and not by invoking its
+ * constructor. The constructor intentionally takes no parameters and the type
+ * is immutable; hence only a default instance corresponding to the empty string
+ * can be obtained via constructor invocation.
+ *
+ * A SafeStyleSheet's string representation can safely be interpolated as the
+ * content of a style element within HTML. The SafeStyleSheet string should
+ * not be escaped before interpolation.
+ *
+ * Values of this type must be composable, i.e. for any two values
+ * {@code styleSheet1} and {@code styleSheet2} of this type,
+ * {@code goog.html.SafeStyleSheet.unwrap(styleSheet1) +
+ * goog.html.SafeStyleSheet.unwrap(styleSheet2)} must itself be a value that
+ * satisfies the SafeStyleSheet type constraint. This requirement implies that
+ * for any value {@code styleSheet} of this type,
+ * {@code goog.html.SafeStyleSheet.unwrap(styleSheet1)} must end in
+ * "beginning of rule" context.
+
+ * A SafeStyleSheet can be constructed via security-reviewed unchecked
+ * conversions. In this case producers of SafeStyleSheet must ensure themselves
+ * that the SafeStyleSheet does not contain unsafe script. Note in particular
+ * that {@code &lt;} is dangerous, even when inside CSS strings, and so should
+ * always be forbidden or CSS-escaped in user controlled input. For example, if
+ * {@code &lt;/style&gt;&lt;script&gt;evil&lt;/script&gt;"} were interpolated
+ * inside a CSS string, it would break out of the context of the original
+ * style element and {@code evil} would execute. Also note that within an HTML
+ * style (raw text) element, HTML character references, such as
+ * {@code &amp;lt;}, are not allowed. See
+ * http://www.w3.org/TR/html5/scripting-1.html#restrictions-for-contents-of-script-elements
+ * (similar considerations apply to the style element).
+ *
+ * @see goog.html.SafeStyleSheet#fromConstant
+ * @constructor
+ * @final
+ * @struct
+ * @implements {goog.string.TypedString}
+ */
+goog.html.SafeStyleSheet = function() {
+  /**
+   * The contained value of this SafeStyleSheet.  The field has a purposely
+   * ugly name to make (non-compiled) code that attempts to directly access this
+   * field stand out.
+   * @private {string}
+   */
+  this.privateDoNotAccessOrElseSafeStyleSheetWrappedValue_ = '';
+
+  /**
+   * A type marker used to implement additional run-time type checking.
+   * @see goog.html.SafeStyleSheet#unwrap
+   * @const
+   * @private
+   */
+  this.SAFE_SCRIPT_TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_ =
+      goog.html.SafeStyleSheet.TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_;
+};
+
+
+/**
+ * @override
+ * @const
+ */
+goog.html.SafeStyleSheet.prototype.implementsGoogStringTypedString = true;
+
+
+/**
+ * Type marker for the SafeStyleSheet type, used to implement additional
+ * run-time type checking.
+ * @const
+ * @private
+ */
+goog.html.SafeStyleSheet.TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_ = {};
+
+
+/**
+ * Creates a new SafeStyleSheet object by concatenating values.
+ * @param {...(!goog.html.SafeStyleSheet|!Array<!goog.html.SafeStyleSheet>)}
+ *     var_args Values to concatenate.
+ * @return {!goog.html.SafeStyleSheet}
+ */
+goog.html.SafeStyleSheet.concat = function(var_args) {
+  var result = '';
+
+  /**
+   * @param {!goog.html.SafeStyleSheet|!Array<!goog.html.SafeStyleSheet>}
+   *     argument
+   */
+  var addArgument = function(argument) {
+    if (goog.isArray(argument)) {
+      goog.array.forEach(argument, addArgument);
+    } else {
+      result += goog.html.SafeStyleSheet.unwrap(argument);
+    }
+  };
+
+  goog.array.forEach(arguments, addArgument);
+  return goog.html.SafeStyleSheet
+      .createSafeStyleSheetSecurityPrivateDoNotAccessOrElse(result);
+};
+
+
+/**
+ * Creates a SafeStyleSheet object from a compile-time constant string.
+ *
+ * {@code styleSheet} must not have any &lt; characters in it, so that
+ * the syntactic structure of the surrounding HTML is not affected.
+ *
+ * @param {!goog.string.Const} styleSheet A compile-time-constant string from
+ *     which to create a SafeStyleSheet.
+ * @return {!goog.html.SafeStyleSheet} A SafeStyleSheet object initialized to
+ *     {@code styleSheet}.
+ */
+goog.html.SafeStyleSheet.fromConstant = function(styleSheet) {
+  var styleSheetString = goog.string.Const.unwrap(styleSheet);
+  if (styleSheetString.length === 0) {
+    return goog.html.SafeStyleSheet.EMPTY;
+  }
+  // > is a valid character in CSS selectors and there's no strict need to
+  // block it if we already block <.
+  goog.asserts.assert(!goog.string.contains(styleSheetString, '<'),
+      "Forbidden '<' character in style sheet string: " + styleSheetString);
+  return goog.html.SafeStyleSheet.
+      createSafeStyleSheetSecurityPrivateDoNotAccessOrElse(styleSheetString);
+};
+
+
+/**
+ * Returns this SafeStyleSheet's value as a string.
+ *
+ * IMPORTANT: In code where it is security relevant that an object's type is
+ * indeed {@code SafeStyleSheet}, use {@code goog.html.SafeStyleSheet.unwrap}
+ * instead of this method. If in doubt, assume that it's security relevant. In
+ * particular, note that goog.html functions which return a goog.html type do
+ * not guarantee the returned instance is of the right type. For example:
+ *
+ * <pre>
+ * var fakeSafeHtml = new String('fake');
+ * fakeSafeHtml.__proto__ = goog.html.SafeHtml.prototype;
+ * var newSafeHtml = goog.html.SafeHtml.htmlEscape(fakeSafeHtml);
+ * // newSafeHtml is just an alias for fakeSafeHtml, it's passed through by
+ * // goog.html.SafeHtml.htmlEscape() as fakeSafeHtml
+ * // instanceof goog.html.SafeHtml.
+ * </pre>
+ *
+ * @see goog.html.SafeStyleSheet#unwrap
+ * @override
+ */
+goog.html.SafeStyleSheet.prototype.getTypedStringValue = function() {
+  return this.privateDoNotAccessOrElseSafeStyleSheetWrappedValue_;
+};
+
+
+if (goog.DEBUG) {
+  /**
+   * Returns a debug string-representation of this value.
+   *
+   * To obtain the actual string value wrapped in a SafeStyleSheet, use
+   * {@code goog.html.SafeStyleSheet.unwrap}.
+   *
+   * @see goog.html.SafeStyleSheet#unwrap
+   * @override
+   */
+  goog.html.SafeStyleSheet.prototype.toString = function() {
+    return 'SafeStyleSheet{' +
+        this.privateDoNotAccessOrElseSafeStyleSheetWrappedValue_ + '}';
+  };
+}
+
+
+/**
+ * Performs a runtime check that the provided object is indeed a
+ * SafeStyleSheet object, and returns its value.
+ *
+ * @param {!goog.html.SafeStyleSheet} safeStyleSheet The object to extract from.
+ * @return {string} The safeStyleSheet object's contained string, unless
+ *     the run-time type check fails. In that case, {@code unwrap} returns an
+ *     innocuous string, or, if assertions are enabled, throws
+ *     {@code goog.asserts.AssertionError}.
+ */
+goog.html.SafeStyleSheet.unwrap = function(safeStyleSheet) {
+  // Perform additional Run-time type-checking to ensure that
+  // safeStyleSheet is indeed an instance of the expected type.  This
+  // provides some additional protection against security bugs due to
+  // application code that disables type checks.
+  // Specifically, the following checks are performed:
+  // 1. The object is an instance of the expected type.
+  // 2. The object is not an instance of a subclass.
+  // 3. The object carries a type marker for the expected type. "Faking" an
+  // object requires a reference to the type marker, which has names intended
+  // to stand out in code reviews.
+  if (safeStyleSheet instanceof goog.html.SafeStyleSheet &&
+      safeStyleSheet.constructor === goog.html.SafeStyleSheet &&
+      safeStyleSheet.SAFE_SCRIPT_TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_ ===
+          goog.html.SafeStyleSheet.TYPE_MARKER_GOOG_HTML_SECURITY_PRIVATE_) {
+    return safeStyleSheet.privateDoNotAccessOrElseSafeStyleSheetWrappedValue_;
+  } else {
+    goog.asserts.fail(
+        "expected object of type SafeStyleSheet, got '" + safeStyleSheet +
+        "'");
+    return 'type_error:SafeStyleSheet';
+  }
+};
+
+
+/**
+ * Package-internal utility method to create SafeStyleSheet instances.
+ *
+ * @param {string} styleSheet The string to initialize the SafeStyleSheet
+ *     object with.
+ * @return {!goog.html.SafeStyleSheet} The initialized SafeStyleSheet object.
+ * @package
+ */
+goog.html.SafeStyleSheet.createSafeStyleSheetSecurityPrivateDoNotAccessOrElse =
+    function(styleSheet) {
+  var safeStyleSheet = new goog.html.SafeStyleSheet();
+  safeStyleSheet.privateDoNotAccessOrElseSafeStyleSheetWrappedValue_ =
+      styleSheet;
+  return safeStyleSheet;
+};
+
+
+/**
+ * A SafeStyleSheet instance corresponding to the empty string.
+ * @const {!goog.html.SafeStyleSheet}
+ */
+goog.html.SafeStyleSheet.EMPTY =
+    goog.html.SafeStyleSheet.
+        createSafeStyleSheetSecurityPrivateDoNotAccessOrElse('');
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Unchecked conversions to create values of goog.html types from
+ * plain strings.  Use of these functions could potentially result in instances
+ * of goog.html types that violate their type contracts, and hence result in
+ * security vulnerabilties.
+ *
+ * Therefore, all uses of the methods herein must be carefully security
+ * reviewed.  Avoid use of the methods in this file whenever possible; instead
+ * prefer to create instances of goog.html types using inherently safe builders
+ * or template systems.
+ *
+ *
+ * @visibility {//closure/goog/html:approved_for_unchecked_conversion}
+ * @visibility {//closure/goog/bin/sizetests:__pkg__}
+ */
+
+
+goog.provide('goog.html.uncheckedconversions');
+
+goog.require('goog.asserts');
+goog.require('goog.html.SafeHtml');
+goog.require('goog.html.SafeScript');
+goog.require('goog.html.SafeStyle');
+goog.require('goog.html.SafeStyleSheet');
+goog.require('goog.html.SafeUrl');
+goog.require('goog.html.TrustedResourceUrl');
+goog.require('goog.string');
+goog.require('goog.string.Const');
+
+
+/**
+ * Performs an "unchecked conversion" to SafeHtml from a plain string that is
+ * known to satisfy the SafeHtml type contract.
+ *
+ * IMPORTANT: Uses of this method must be carefully security-reviewed to ensure
+ * that the value of {@code html} satisfies the SafeHtml type contract in all
+ * possible program states.
+ *
+ *
+ * @param {!goog.string.Const} justification A constant string explaining why
+ *     this use of this method is safe. May include a security review ticket
+ *     number.
+ * @param {string} html A string that is claimed to adhere to the SafeHtml
+ *     contract.
+ * @param {?goog.i18n.bidi.Dir=} opt_dir The optional directionality of the
+ *     SafeHtml to be constructed. A null or undefined value signifies an
+ *     unknown directionality.
+ * @return {!goog.html.SafeHtml} The value of html, wrapped in a SafeHtml
+ *     object.
+ * @suppress {visibility} For access to SafeHtml.create...  Note that this
+ *     use is appropriate since this method is intended to be "package private"
+ *     withing goog.html.  DO NOT call SafeHtml.create... from outside this
+ *     package; use appropriate wrappers instead.
+ */
+goog.html.uncheckedconversions.safeHtmlFromStringKnownToSatisfyTypeContract =
+    function(justification, html, opt_dir) {
+  // unwrap() called inside an assert so that justification can be optimized
+  // away in production code.
+  goog.asserts.assertString(goog.string.Const.unwrap(justification),
+                            'must provide justification');
+  goog.asserts.assert(
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
+      'must provide non-empty justification');
+  return goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
+      html, opt_dir || null);
+};
+
+
+/**
+ * Performs an "unchecked conversion" to SafeScript from a plain string that is
+ * known to satisfy the SafeScript type contract.
+ *
+ * IMPORTANT: Uses of this method must be carefully security-reviewed to ensure
+ * that the value of {@code script} satisfies the SafeScript type contract in
+ * all possible program states.
+ *
+ *
+ * @param {!goog.string.Const} justification A constant string explaining why
+ *     this use of this method is safe. May include a security review ticket
+ *     number.
+ * @param {string} script The string to wrap as a SafeScript.
+ * @return {!goog.html.SafeScript} The value of {@code script}, wrapped in a
+ *     SafeScript object.
+ */
+goog.html.uncheckedconversions.safeScriptFromStringKnownToSatisfyTypeContract =
+    function(justification, script) {
+  // unwrap() called inside an assert so that justification can be optimized
+  // away in production code.
+  goog.asserts.assertString(goog.string.Const.unwrap(justification),
+                            'must provide justification');
+  goog.asserts.assert(
+      !goog.string.isEmpty(goog.string.Const.unwrap(justification)),
+      'must provide non-empty justification');
+  return goog.html.SafeScript.createSafeScriptSecurityPrivateDoNotAccessOrElse(
+      script);
+};
+
+
+/**
+ * Performs an "unchecked conversion" to SafeStyle from a plain string that is
+ * known to satisfy the SafeStyle type contract.
+ *
+ * IMPORTANT: Uses of this method must be carefully security-reviewed to ensure
+ * that the value of {@code style} satisfies the SafeUrl type contract in all
+ * possible program states.
+ *
+ *
+ * @param {!goog.string.Const} justification A constant string explaining why
+ *     this use of this method is safe. May include a security review ticket
+ *     number.
+ * @param {string} style The string to wrap as a SafeStyle.
+ * @return {!goog.html.SafeStyle} The value of {@code style}, wrapped in a
+ *     SafeStyle object.
+ */
+goog.html.uncheckedconversions.safeStyleFromStringKnownToSatisfyTypeContract =
+    function(justification, style) {
+  // unwrap() called inside an assert so that justification can be optimized
+  // away in production code.
+  goog.asserts.assertString(goog.string.Const.unwrap(justification),
+                            'must provide justification');
+  goog.asserts.assert(
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
+      'must provide non-empty justification');
+  return goog.html.SafeStyle.createSafeStyleSecurityPrivateDoNotAccessOrElse(
+      style);
+};
+
+
+/**
+ * Performs an "unchecked conversion" to SafeStyleSheet from a plain string
+ * that is known to satisfy the SafeStyleSheet type contract.
+ *
+ * IMPORTANT: Uses of this method must be carefully security-reviewed to ensure
+ * that the value of {@code styleSheet} satisfies the SafeUrl type contract in
+ * all possible program states.
+ *
+ *
+ * @param {!goog.string.Const} justification A constant string explaining why
+ *     this use of this method is safe. May include a security review ticket
+ *     number.
+ * @param {string} styleSheet The string to wrap as a SafeStyleSheet.
+ * @return {!goog.html.SafeStyleSheet} The value of {@code styleSheet}, wrapped
+ *     in a SafeStyleSheet object.
+ */
+goog.html.uncheckedconversions.
+    safeStyleSheetFromStringKnownToSatisfyTypeContract =
+    function(justification, styleSheet) {
+  // unwrap() called inside an assert so that justification can be optimized
+  // away in production code.
+  goog.asserts.assertString(goog.string.Const.unwrap(justification),
+                            'must provide justification');
+  goog.asserts.assert(
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
+      'must provide non-empty justification');
+  return goog.html.SafeStyleSheet.
+      createSafeStyleSheetSecurityPrivateDoNotAccessOrElse(styleSheet);
+};
+
+
+/**
+ * Performs an "unchecked conversion" to SafeUrl from a plain string that is
+ * known to satisfy the SafeUrl type contract.
+ *
+ * IMPORTANT: Uses of this method must be carefully security-reviewed to ensure
+ * that the value of {@code url} satisfies the SafeUrl type contract in all
+ * possible program states.
+ *
+ *
+ * @param {!goog.string.Const} justification A constant string explaining why
+ *     this use of this method is safe. May include a security review ticket
+ *     number.
+ * @param {string} url The string to wrap as a SafeUrl.
+ * @return {!goog.html.SafeUrl} The value of {@code url}, wrapped in a SafeUrl
+ *     object.
+ */
+goog.html.uncheckedconversions.safeUrlFromStringKnownToSatisfyTypeContract =
+    function(justification, url) {
+  // unwrap() called inside an assert so that justification can be optimized
+  // away in production code.
+  goog.asserts.assertString(goog.string.Const.unwrap(justification),
+                            'must provide justification');
+  goog.asserts.assert(
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
+      'must provide non-empty justification');
+  return goog.html.SafeUrl.createSafeUrlSecurityPrivateDoNotAccessOrElse(url);
+};
+
+
+/**
+ * Performs an "unchecked conversion" to TrustedResourceUrl from a plain string
+ * that is known to satisfy the TrustedResourceUrl type contract.
+ *
+ * IMPORTANT: Uses of this method must be carefully security-reviewed to ensure
+ * that the value of {@code url} satisfies the TrustedResourceUrl type contract
+ * in all possible program states.
+ *
+ *
+ * @param {!goog.string.Const} justification A constant string explaining why
+ *     this use of this method is safe. May include a security review ticket
+ *     number.
+ * @param {string} url The string to wrap as a TrustedResourceUrl.
+ * @return {!goog.html.TrustedResourceUrl} The value of {@code url}, wrapped in
+ *     a TrustedResourceUrl object.
+ */
+goog.html.uncheckedconversions.
+    trustedResourceUrlFromStringKnownToSatisfyTypeContract =
+    function(justification, url) {
+  // unwrap() called inside an assert so that justification can be optimized
+  // away in production code.
+  goog.asserts.assertString(goog.string.Const.unwrap(justification),
+                            'must provide justification');
+  goog.asserts.assert(
+      !goog.string.isEmptyOrWhitespace(goog.string.Const.unwrap(justification)),
+      'must provide non-empty justification');
+  return goog.html.TrustedResourceUrl.
+      createTrustedResourceUrlSecurityPrivateDoNotAccessOrElse(url);
+};
+
 // Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -40191,7 +41122,10 @@ goog.structs.Set.prototype.__iterator__ = function(opt_keys) {
 goog.provide('goog.debug');
 
 goog.require('goog.array');
-goog.require('goog.string');
+goog.require('goog.html.SafeHtml');
+goog.require('goog.html.SafeUrl');
+goog.require('goog.html.uncheckedconversions');
+goog.require('goog.string.Const');
 goog.require('goog.structs.Set');
 goog.require('goog.userAgent');
 
@@ -40381,27 +41315,66 @@ goog.debug.exposeArray = function(arr) {
 
 /**
  * Exposes an exception that has been caught by a try...catch and outputs the
+ * error as HTML with a stack trace.
+ * @param {Object} err Error object or string.
+ * @param {Function=} opt_fn Optional function to start stack trace from.
+ * @return {string} Details of exception, as HTML.
+ */
+goog.debug.exposeException = function(err, opt_fn) {
+  var html = goog.debug.exposeExceptionAsHtml(err, opt_fn);
+  return goog.html.SafeHtml.unwrap(html);
+};
+
+
+/**
+ * Exposes an exception that has been caught by a try...catch and outputs the
  * error with a stack trace.
  * @param {Object} err Error object or string.
  * @param {Function=} opt_fn Optional function to start stack trace from.
- * @return {string} Details of exception.
+ * @return {!goog.html.SafeHtml} Details of exception.
  */
-goog.debug.exposeException = function(err, opt_fn) {
+goog.debug.exposeExceptionAsHtml = function(err, opt_fn) {
   /** @preserveTry */
   try {
     var e = goog.debug.normalizeErrorObject(err);
-
     // Create the error message
-    var error = 'Message: ' + goog.string.htmlEscape(e.message) +
-        '\nUrl: <a href="view-source:' + e.fileName + '" target="_new">' +
-        e.fileName + '</a>\nLine: ' + e.lineNumber + '\n\nBrowser stack:\n' +
-        goog.string.htmlEscape(e.stack + '-> ') +
-        '[end]\n\nJS stack traversal:\n' + goog.string.htmlEscape(
-            goog.debug.getStacktrace(opt_fn) + '-> ');
+    var viewSourceUrl = goog.debug.createViewSourceUrl_(e.fileName);
+    var error = goog.html.SafeHtml.concat(
+        goog.html.SafeHtml.htmlEscapePreservingNewlinesAndSpaces(
+            'Message: ' + e.message + '\nUrl: '),
+        goog.html.SafeHtml.create('a',
+            {href: viewSourceUrl, target: '_new'}, e.fileName),
+        goog.html.SafeHtml.htmlEscapePreservingNewlinesAndSpaces(
+            '\nLine: ' + e.lineNumber + '\n\nBrowser stack:\n' +
+            e.stack + '-> ' + '[end]\n\nJS stack traversal:\n' +
+            goog.debug.getStacktrace(opt_fn) + '-> '));
     return error;
   } catch (e2) {
-    return 'Exception trying to expose exception! You win, we lose. ' + e2;
+    return goog.html.SafeHtml.htmlEscapePreservingNewlinesAndSpaces(
+        'Exception trying to expose exception! You win, we lose. ' + e2);
   }
+};
+
+
+/**
+ * @param {?string=} opt_fileName
+ * @return {!goog.html.SafeUrl} SafeUrl with view-source scheme, pointing at
+ *     fileName.
+ * @private
+ */
+goog.debug.createViewSourceUrl_ = function(opt_fileName) {
+  if (!goog.isDefAndNotNull(opt_fileName)) {
+    opt_fileName = '';
+  }
+  if (!/^https?:\/\//i.test(opt_fileName)) {
+    return goog.html.SafeUrl.fromConstant(
+        goog.string.Const.from('sanitizedviewsrc'));
+  }
+  var sanitizedFileName = goog.html.SafeUrl.sanitize(opt_fileName);
+  return goog.html.uncheckedconversions.
+      safeUrlFromStringKnownToSatisfyTypeContract(
+          goog.string.Const.from('view-source scheme plus HTTP/HTTPS URL'),
+          'view-source:' + goog.html.SafeUrl.unwrap(sanitizedFileName));
 };
 
 
@@ -42135,6 +43108,7 @@ goog.provide('goog.debug.Formatter');
 goog.provide('goog.debug.HtmlFormatter');
 goog.provide('goog.debug.TextFormatter');
 
+goog.require('goog.debug');
 goog.require('goog.debug.Logger');
 goog.require('goog.debug.RelativeTimeProvider');
 goog.require('goog.html.SafeHtml');
@@ -42393,14 +43367,9 @@ goog.debug.HtmlFormatter.prototype.formatRecordAsHtml = function(logRecord) {
   // HTML for exception text and log record.
   var exceptionHtml = goog.html.SafeHtml.EMPTY;
   if (this.showExceptionText && logRecord.getException()) {
-    var exception = logRecord.getException();
-    var exceptionText = exception instanceof Error ?
-        exception.message :
-        ((exception && exception.toString()) || '');
     exceptionHtml = goog.html.SafeHtml.concat(
         goog.html.SafeHtml.create('br'),
-        goog.html.SafeHtml.htmlEscapePreservingNewlinesAndSpaces(
-            exceptionText));
+        goog.debug.exposeExceptionAsHtml(logRecord.getException()));
   }
   var logRecordHtml = goog.html.SafeHtml.htmlEscapePreservingNewlinesAndSpaces(
       logRecord.getMessage());
