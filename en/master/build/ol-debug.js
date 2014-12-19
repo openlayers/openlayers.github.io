@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.0-pre.2-486-g6d3103d
+// Version: v3.1.0-pre.2-498-g85a6de0
 
 var CLOSURE_NO_DEPS = true;
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -47693,7 +47693,6 @@ goog.provide('ol.source.State');
 
 goog.require('goog.events.EventType');
 goog.require('ol.Attribution');
-goog.require('ol.Extent');
 goog.require('ol.Observable');
 goog.require('ol.proj');
 
@@ -47768,7 +47767,6 @@ goog.inherits(ol.source.Source, ol.Observable);
 
 
 /**
- * @param {ol.Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
  * @param {ol.Coordinate} coordinate Coordinate.
@@ -51983,7 +51981,6 @@ goog.provide('ol.interaction.Pointer');
 goog.require('goog.asserts');
 goog.require('goog.functions');
 goog.require('goog.object');
-goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.Pixel');
@@ -51993,8 +51990,13 @@ goog.require('ol.interaction.Interaction');
 
 /**
  * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
+ * Base class that calls user-defined functions on `down`, `move` and `up`
+ * events. This class also manages "drag sequences".
+ *
+ * When the `handleDownEvent` user function returns `true` a drag sequence is
+ * started. During a drag sequence the `handleDragEvent` user function is
+ * called on `move` events. The drag sequence ends when the `handleUpEvent`
+ * user function is called and returns `false`.
  *
  * @constructor
  * @param {olx.interaction.PointerOptions=} opt_options Options.
@@ -52011,6 +52013,34 @@ ol.interaction.Pointer = function(opt_options) {
   goog.base(this, {
     handleEvent: handleEvent
   });
+
+  /**
+   * @type {function(ol.MapBrowserPointerEvent):boolean}
+   * @private
+   */
+  this.handleDownEvent_ = goog.isDef(options.handleDownEvent) ?
+      options.handleDownEvent : ol.interaction.Pointer.handleDownEvent;
+
+  /**
+   * @type {function(ol.MapBrowserPointerEvent)}
+   * @private
+   */
+  this.handleDragEvent_ = goog.isDef(options.handleDragEvent) ?
+      options.handleDragEvent : ol.interaction.Pointer.handleDragEvent;
+
+  /**
+   * @type {function(ol.MapBrowserPointerEvent)}
+   * @private
+   */
+  this.handleMoveEvent_ = goog.isDef(options.handleMoveEvent) ?
+      options.handleMoveEvent : ol.interaction.Pointer.handleMoveEvent;
+
+  /**
+   * @type {function(ol.MapBrowserPointerEvent):boolean}
+   * @private
+   */
+  this.handleUpEvent_ = goog.isDef(options.handleUpEvent) ?
+      options.handleUpEvent : ol.interaction.Pointer.handleUpEvent;
 
   /**
    * @type {boolean}
@@ -52091,25 +52121,32 @@ ol.interaction.Pointer.prototype.updateTrackedPointers_ =
 
 /**
  * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
- * @protected
+ * @this {ol.interaction.Pointer}
  */
-ol.interaction.Pointer.prototype.handlePointerDrag = goog.nullFunction;
+ol.interaction.Pointer.handleDragEvent = goog.nullFunction;
 
 
 /**
  * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
- * @protected
  * @return {boolean} Capture dragging.
+ * @this {ol.interaction.Pointer}
  */
-ol.interaction.Pointer.prototype.handlePointerUp = goog.functions.FALSE;
+ol.interaction.Pointer.handleUpEvent = goog.functions.FALSE;
 
 
 /**
  * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
- * @protected
  * @return {boolean} Capture dragging.
+ * @this {ol.interaction.Pointer}
  */
-ol.interaction.Pointer.prototype.handlePointerDown = goog.functions.FALSE;
+ol.interaction.Pointer.handleDownEvent = goog.functions.FALSE;
+
+
+/**
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @this {ol.interaction.Pointer}
+ */
+ol.interaction.Pointer.handleMoveEvent = goog.nullFunction;
 
 
 /**
@@ -52128,32 +52165,38 @@ ol.interaction.Pointer.handleEvent = function(mapBrowserEvent) {
   if (this.handlingDownUpSequence) {
     if (mapBrowserEvent.type ==
         ol.MapBrowserEvent.EventType.POINTERDRAG) {
-      this.handlePointerDrag(mapBrowserEvent);
+      this.handleDragEvent_(mapBrowserEvent);
     } else if (mapBrowserEvent.type ==
         ol.MapBrowserEvent.EventType.POINTERUP) {
       this.handlingDownUpSequence =
-          this.handlePointerUp(mapBrowserEvent);
+          this.handleUpEvent_(mapBrowserEvent);
     }
   }
   if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERDOWN) {
-    var handled = this.handlePointerDown(mapBrowserEvent);
+    var handled = this.handleDownEvent_(mapBrowserEvent);
     this.handlingDownUpSequence = handled;
     stopEvent = this.shouldStopEvent(handled);
+  } else if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERMOVE) {
+    this.handleMoveEvent_(mapBrowserEvent);
   }
   return !stopEvent;
 };
 
 
 /**
- * This method allows inheriting classes to stop the event from being
- * passed to further interactions. For example, this is required for
- * interaction `DragRotateAndZoom`.
+ * This method is used to determine if "down" events should be propagated to
+ * other interactions or should be stopped.
  *
- * @protected
+ * The method receives the return code of the "handleDownEvent" function.
+ *
+ * By default this function is the "identity" function. It's overidden in
+ * child classes.
+ *
  * @param {boolean} handled Was the event handled by the interaction?
  * @return {boolean} Should the event be stopped?
+ * @protected
  */
-ol.interaction.Pointer.prototype.shouldStopEvent = goog.functions.FALSE;
+ol.interaction.Pointer.prototype.shouldStopEvent = goog.functions.identity;
 
 goog.provide('ol.interaction.DragPan');
 
@@ -52179,7 +52222,11 @@ goog.require('ol.interaction.Pointer');
  */
 ol.interaction.DragPan = function(opt_options) {
 
-  goog.base(this);
+  goog.base(this, {
+    handleDownEvent: ol.interaction.DragPan.handleDownEvent_,
+    handleDragEvent: ol.interaction.DragPan.handleDragEvent_,
+    handleUpEvent: ol.interaction.DragPan.handleUpEvent_
+  });
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
@@ -52218,9 +52265,11 @@ goog.inherits(ol.interaction.DragPan, ol.interaction.Pointer);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @this {ol.interaction.DragPan}
+ * @private
  */
-ol.interaction.DragPan.prototype.handlePointerDrag = function(mapBrowserEvent) {
+ol.interaction.DragPan.handleDragEvent_ = function(mapBrowserEvent) {
   goog.asserts.assert(this.targetPointers.length >= 1);
   var centroid =
       ol.interaction.Pointer.centroid(this.targetPointers);
@@ -52246,9 +52295,12 @@ ol.interaction.DragPan.prototype.handlePointerDrag = function(mapBrowserEvent) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.DragPan}
+ * @private
  */
-ol.interaction.DragPan.prototype.handlePointerUp = function(mapBrowserEvent) {
+ol.interaction.DragPan.handleUpEvent_ = function(mapBrowserEvent) {
   var map = mapBrowserEvent.map;
   var view = map.getView();
   if (this.targetPointers.length === 0) {
@@ -52278,9 +52330,12 @@ ol.interaction.DragPan.prototype.handlePointerUp = function(mapBrowserEvent) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.DragPan}
+ * @private
  */
-ol.interaction.DragPan.prototype.handlePointerDown = function(mapBrowserEvent) {
+ol.interaction.DragPan.handleDownEvent_ = function(mapBrowserEvent) {
   if (this.targetPointers.length > 0 && this.condition_(mapBrowserEvent)) {
     var map = mapBrowserEvent.map;
     var view = map.getView();
@@ -52305,6 +52360,12 @@ ol.interaction.DragPan.prototype.handlePointerDown = function(mapBrowserEvent) {
     return false;
   }
 };
+
+
+/**
+ * @inheritDoc
+ */
+ol.interaction.DragPan.prototype.shouldStopEvent = goog.functions.FALSE;
 
 goog.provide('ol.interaction.DragRotate');
 
@@ -52335,7 +52396,11 @@ ol.interaction.DragRotate = function(opt_options) {
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
-  goog.base(this);
+  goog.base(this, {
+    handleDownEvent: ol.interaction.DragRotate.handleDownEvent_,
+    handleDragEvent: ol.interaction.DragRotate.handleDragEvent_,
+    handleUpEvent: ol.interaction.DragRotate.handleUpEvent_
+  });
 
   /**
    * @private
@@ -52355,10 +52420,11 @@ goog.inherits(ol.interaction.DragRotate, ol.interaction.Pointer);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @this {ol.interaction.DragRotate}
+ * @private
  */
-ol.interaction.DragRotate.prototype.handlePointerDrag =
-    function(mapBrowserEvent) {
+ol.interaction.DragRotate.handleDragEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return;
   }
@@ -52381,10 +52447,12 @@ ol.interaction.DragRotate.prototype.handlePointerDrag =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.DragRotate}
+ * @private
  */
-ol.interaction.DragRotate.prototype.handlePointerUp =
-    function(mapBrowserEvent) {
+ol.interaction.DragRotate.handleUpEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return true;
   }
@@ -52400,10 +52468,12 @@ ol.interaction.DragRotate.prototype.handlePointerUp =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.DragRotate}
+ * @private
  */
-ol.interaction.DragRotate.prototype.handlePointerDown =
-    function(mapBrowserEvent) {
+ol.interaction.DragRotate.handleDownEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return false;
   }
@@ -52419,6 +52489,12 @@ ol.interaction.DragRotate.prototype.handlePointerDown =
     return false;
   }
 };
+
+
+/**
+ * @inheritDoc
+ */
+ol.interaction.DragRotate.prototype.shouldStopEvent = goog.functions.FALSE;
 
 goog.provide('ol.geom.Geometry');
 goog.provide('ol.geom.GeometryType');
@@ -52617,6 +52693,16 @@ ol.geom.Geometry.prototype.intersectsExtent = goog.abstractMethod;
 
 
 /**
+ * Translate the geometry.
+ * @param {number} deltaX Delta X.
+ * @param {number} deltaY Delta Y.
+ * @function
+ * @api
+ */
+ol.geom.Geometry.prototype.translate = goog.abstractMethod;
+
+
+/**
  * Transform each coordinate of the geometry from one coordinate reference
  * system to another. The geometry is modified in place.
  * For example, a line will be transformed to a line and a circle to a circle.
@@ -52660,12 +52746,41 @@ ol.geom.flat.transform.transform2D =
   var m13 = goog.vec.Mat4.getElement(transform, 1, 3);
   var dest = goog.isDef(opt_dest) ? opt_dest : [];
   var i = 0;
-  var j, jj;
+  var j;
   for (j = offset; j < end; j += stride) {
     var x = flatCoordinates[j];
     var y = flatCoordinates[j + 1];
     dest[i++] = m00 * x + m01 * y + m03;
     dest[i++] = m10 * x + m11 * y + m13;
+  }
+  if (goog.isDef(opt_dest) && dest.length != i) {
+    dest.length = i;
+  }
+  return dest;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {number} deltaX Delta X.
+ * @param {number} deltaY Delta Y.
+ * @param {Array.<number>=} opt_dest Destination.
+ * @return {Array.<number>} Transformed coordinates.
+ */
+ol.geom.flat.transform.translate =
+    function(flatCoordinates, offset, end, stride, deltaX, deltaY, opt_dest) {
+  var dest = goog.isDef(opt_dest) ? opt_dest : [];
+  var i = 0;
+  var j, k;
+  for (j = offset; j < end; j += stride) {
+    dest[i++] = flatCoordinates[j] + deltaX;
+    dest[i++] = flatCoordinates[j + 1] + deltaY;
+    for (k = j + 2; k < j + stride; ++k) {
+      dest[i++] = flatCoordinates[k];
+    }
   }
   if (goog.isDef(opt_dest) && dest.length != i) {
     dest.length = i;
@@ -52925,6 +53040,24 @@ ol.geom.SimpleGeometry.prototype.setLayout =
 ol.geom.SimpleGeometry.prototype.applyTransform = function(transformFn) {
   if (!goog.isNull(this.flatCoordinates)) {
     transformFn(this.flatCoordinates, this.flatCoordinates, this.stride);
+    this.changed();
+  }
+};
+
+
+/**
+ * Translate the geometry.
+ * @param {number} deltaX Delta X.
+ * @param {number} deltaY Delta Y.
+ * @api
+ */
+ol.geom.SimpleGeometry.prototype.translate = function(deltaX, deltaY) {
+  var flatCoordinates = this.getFlatCoordinates();
+  if (!goog.isNull(flatCoordinates)) {
+    var stride = this.getStride();
+    ol.geom.flat.transform.translate(
+        flatCoordinates, 0, flatCoordinates.length, stride,
+        deltaX, deltaY, flatCoordinates);
     this.changed();
   }
 };
@@ -55565,7 +55698,6 @@ goog.provide('ol.DragBoxEvent');
 goog.provide('ol.interaction.DragBox');
 
 goog.require('goog.events.Event');
-goog.require('goog.functions');
 goog.require('ol');
 goog.require('ol.events.ConditionType');
 goog.require('ol.events.condition');
@@ -55648,7 +55780,11 @@ goog.inherits(ol.DragBoxEvent, goog.events.Event);
  */
 ol.interaction.DragBox = function(opt_options) {
 
-  goog.base(this);
+  goog.base(this, {
+    handleDownEvent: ol.interaction.DragBox.handleDownEvent_,
+    handleDragEvent: ol.interaction.DragBox.handleDragEvent_,
+    handleUpEvent: ol.interaction.DragBox.handleUpEvent_
+  });
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
@@ -55682,9 +55818,11 @@ goog.inherits(ol.interaction.DragBox, ol.interaction.Pointer);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @this {ol.interaction.DragBox}
+ * @private
  */
-ol.interaction.DragBox.prototype.handlePointerDrag = function(mapBrowserEvent) {
+ol.interaction.DragBox.handleDragEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return;
   }
@@ -55705,6 +55843,7 @@ ol.interaction.DragBox.prototype.getGeometry = function() {
 
 /**
  * To be overriden by child classes.
+ * FIXME: use constructor option instead of relying on overridding.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @protected
  */
@@ -55712,9 +55851,12 @@ ol.interaction.DragBox.prototype.onBoxEnd = goog.nullFunction;
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.DragBox}
+ * @private
  */
-ol.interaction.DragBox.prototype.handlePointerUp = function(mapBrowserEvent) {
+ol.interaction.DragBox.handleUpEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return true;
   }
@@ -55735,9 +55877,12 @@ ol.interaction.DragBox.prototype.handlePointerUp = function(mapBrowserEvent) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.DragBox}
+ * @private
  */
-ol.interaction.DragBox.prototype.handlePointerDown = function(mapBrowserEvent) {
+ol.interaction.DragBox.handleDownEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return false;
   }
@@ -55754,12 +55899,6 @@ ol.interaction.DragBox.prototype.handlePointerDown = function(mapBrowserEvent) {
     return false;
   }
 };
-
-
-/**
- * @inheritDoc
- */
-ol.interaction.DragBox.prototype.shouldStopEvent = goog.functions.identity;
 
 // Copyright 2008 The Closure Library Authors. All Rights Reserved.
 //
@@ -58056,7 +58195,11 @@ goog.require('ol.interaction.Pointer');
  */
 ol.interaction.PinchRotate = function(opt_options) {
 
-  goog.base(this);
+  goog.base(this, {
+    handleDownEvent: ol.interaction.PinchRotate.handleDownEvent_,
+    handleDragEvent: ol.interaction.PinchRotate.handleDragEvent_,
+    handleUpEvent: ol.interaction.PinchRotate.handleUpEvent_
+  });
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
@@ -58095,10 +58238,11 @@ goog.inherits(ol.interaction.PinchRotate, ol.interaction.Pointer);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @this {ol.interaction.PinchRotate}
+ * @private
  */
-ol.interaction.PinchRotate.prototype.handlePointerDrag =
-    function(mapBrowserEvent) {
+ol.interaction.PinchRotate.handleDragEvent_ = function(mapBrowserEvent) {
   goog.asserts.assert(this.targetPointers.length >= 2);
   var rotationDelta = 0.0;
 
@@ -58145,10 +58289,12 @@ ol.interaction.PinchRotate.prototype.handlePointerDrag =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.PinchRotate}
+ * @private
  */
-ol.interaction.PinchRotate.prototype.handlePointerUp =
-    function(mapBrowserEvent) {
+ol.interaction.PinchRotate.handleUpEvent_ = function(mapBrowserEvent) {
   if (this.targetPointers.length < 2) {
     var map = mapBrowserEvent.map;
     var view = map.getView();
@@ -58167,10 +58313,12 @@ ol.interaction.PinchRotate.prototype.handlePointerUp =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.PinchRotate}
+ * @private
  */
-ol.interaction.PinchRotate.prototype.handlePointerDown =
-    function(mapBrowserEvent) {
+ol.interaction.PinchRotate.handleDownEvent_ = function(mapBrowserEvent) {
   if (this.targetPointers.length >= 2) {
     var map = mapBrowserEvent.map;
     this.anchor_ = null;
@@ -58186,6 +58334,12 @@ ol.interaction.PinchRotate.prototype.handlePointerDown =
     return false;
   }
 };
+
+
+/**
+ * @inheritDoc
+ */
+ol.interaction.PinchRotate.prototype.shouldStopEvent = goog.functions.FALSE;
 
 goog.provide('ol.interaction.PinchZoom');
 
@@ -58210,9 +58364,13 @@ goog.require('ol.interaction.Pointer');
  */
 ol.interaction.PinchZoom = function(opt_options) {
 
-  var options = goog.isDef(opt_options) ? opt_options : {};
+  goog.base(this, {
+    handleDownEvent: ol.interaction.PinchZoom.handleDownEvent_,
+    handleDragEvent: ol.interaction.PinchZoom.handleDragEvent_,
+    handleUpEvent: ol.interaction.PinchZoom.handleUpEvent_
+  });
 
-  goog.base(this);
+  var options = goog.isDef(opt_options) ? opt_options : {};
 
   /**
    * @private
@@ -58243,10 +58401,11 @@ goog.inherits(ol.interaction.PinchZoom, ol.interaction.Pointer);
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @this {ol.interaction.PinchZoom}
+ * @private
  */
-ol.interaction.PinchZoom.prototype.handlePointerDrag =
-    function(mapBrowserEvent) {
+ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
   goog.asserts.assert(this.targetPointers.length >= 2);
   var scaleDelta = 1.0;
 
@@ -58287,9 +58446,12 @@ ol.interaction.PinchZoom.prototype.handlePointerDrag =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.PinchZoom}
+ * @private
  */
-ol.interaction.PinchZoom.prototype.handlePointerUp =
+ol.interaction.PinchZoom.handleUpEvent_ =
     function(mapBrowserEvent) {
   if (this.targetPointers.length < 2) {
     var map = mapBrowserEvent.map;
@@ -58310,9 +58472,12 @@ ol.interaction.PinchZoom.prototype.handlePointerUp =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.PinchZoom}
+ * @private
  */
-ol.interaction.PinchZoom.prototype.handlePointerDown =
+ol.interaction.PinchZoom.handleDownEvent_ =
     function(mapBrowserEvent) {
   if (this.targetPointers.length >= 2) {
     var map = mapBrowserEvent.map;
@@ -58328,6 +58493,12 @@ ol.interaction.PinchZoom.prototype.handlePointerDown =
     return false;
   }
 };
+
+
+/**
+ * @inheritDoc
+ */
+ol.interaction.PinchZoom.prototype.shouldStopEvent = goog.functions.FALSE;
 
 goog.provide('ol.interaction');
 
@@ -59110,6 +59281,13 @@ ol.layer.Vector = function(opt_options) {
   goog.base(this, /** @type {olx.layer.LayerOptions} */ (baseOptions));
 
   /**
+   * @type {number}
+   * @private
+   */
+  this.renderBuffer_ = goog.isDef(options.renderBuffer) ?
+      options.renderBuffer : 100;
+
+  /**
    * User provided style.
    * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction}
    * @private
@@ -59127,6 +59305,14 @@ ol.layer.Vector = function(opt_options) {
 
 };
 goog.inherits(ol.layer.Vector, ol.layer.Layer);
+
+
+/**
+ * @return {number|undefined} Render buffer.
+ */
+ol.layer.Vector.prototype.getRenderBuffer = function() {
+  return this.renderBuffer_;
+};
 
 
 /**
@@ -60389,12 +60575,6 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
 
   /**
    * @private
-   * @type {ol.Extent}
-   */
-  this.extent_ = ol.extent.createEmpty();
-
-  /**
-   * @private
    * @type {!goog.vec.Mat4.Number}
    */
   this.tmpLocalTransform_ = goog.vec.Mat4.createNumber();
@@ -60888,14 +61068,6 @@ ol.render.canvas.Replay.prototype.getBufferedMaxExtent = function() {
 
 
 /**
- * @return {ol.Extent} Extent.
- */
-ol.render.canvas.Replay.prototype.getExtent = function() {
-  return this.extent_;
-};
-
-
-/**
  * @inheritDoc
  */
 ol.render.canvas.Replay.prototype.setFillStrokeStyle = goog.abstractMethod;
@@ -61042,7 +61214,6 @@ ol.render.canvas.ImageReplay.prototype.drawPointGeometry =
   goog.asserts.assert(goog.isDef(this.rotation_));
   goog.asserts.assert(goog.isDef(this.scale_));
   goog.asserts.assert(goog.isDef(this.width_));
-  ol.extent.extend(this.extent_, pointGeometry.getExtent());
   this.beginGeometry(pointGeometry, feature);
   var flatCoordinates = pointGeometry.getFlatCoordinates();
   var stride = pointGeometry.getStride();
@@ -61086,7 +61257,6 @@ ol.render.canvas.ImageReplay.prototype.drawMultiPointGeometry =
   goog.asserts.assert(goog.isDef(this.rotation_));
   goog.asserts.assert(goog.isDef(this.scale_));
   goog.asserts.assert(goog.isDef(this.width_));
-  ol.extent.extend(this.extent_, multiPointGeometry.getExtent());
   this.beginGeometry(multiPointGeometry, feature);
   var flatCoordinates = multiPointGeometry.getFlatCoordinates();
   var stride = multiPointGeometry.getStride();
@@ -61303,7 +61473,6 @@ ol.render.canvas.LineStringReplay.prototype.drawLineStringGeometry =
   if (!goog.isDef(strokeStyle) || !goog.isDef(lineWidth)) {
     return;
   }
-  ol.extent.extend(this.extent_, lineStringGeometry.getExtent());
   this.setStrokeStyle_();
   this.beginGeometry(lineStringGeometry, feature);
   this.hitDetectionInstructions.push(
@@ -61332,7 +61501,6 @@ ol.render.canvas.LineStringReplay.prototype.drawMultiLineStringGeometry =
   if (!goog.isDef(strokeStyle) || !goog.isDef(lineWidth)) {
     return;
   }
-  ol.extent.extend(this.extent_, multiLineStringGeometry.getExtent());
   this.setStrokeStyle_();
   this.beginGeometry(multiLineStringGeometry, feature);
   this.hitDetectionInstructions.push(
@@ -61510,7 +61678,6 @@ ol.render.canvas.PolygonReplay.prototype.drawCircleGeometry =
   if (goog.isDef(strokeStyle)) {
     goog.asserts.assert(goog.isDef(state.lineWidth));
   }
-  ol.extent.extend(this.extent_, circleGeometry.getExtent());
   this.setFillStrokeStyles_();
   this.beginGeometry(circleGeometry, feature);
   // always fill the circle for hit detection
@@ -61562,7 +61729,6 @@ ol.render.canvas.PolygonReplay.prototype.drawPolygonGeometry =
   if (goog.isDef(strokeStyle)) {
     goog.asserts.assert(goog.isDef(state.lineWidth));
   }
-  ol.extent.extend(this.extent_, polygonGeometry.getExtent());
   this.setFillStrokeStyles_();
   this.beginGeometry(polygonGeometry, feature);
   // always fill the polygon for hit detection
@@ -61598,7 +61764,6 @@ ol.render.canvas.PolygonReplay.prototype.drawMultiPolygonGeometry =
   if (goog.isDef(strokeStyle)) {
     goog.asserts.assert(goog.isDef(state.lineWidth));
   }
-  ol.extent.extend(this.extent_, multiPolygonGeometry.getExtent());
   this.setFillStrokeStyles_();
   this.beginGeometry(multiPolygonGeometry, feature);
   // always fill the multi-polygon for hit detection
@@ -61843,8 +62008,6 @@ ol.render.canvas.TextReplay.prototype.drawText =
        goog.isNull(this.textStrokeState_))) {
     return;
   }
-  ol.extent.extendFlatCoordinates(
-      this.extent_, flatCoordinates, offset, end, stride);
   if (!goog.isNull(this.textFillState_)) {
     this.setReplayFillState_(this.textFillState_);
   }
@@ -62133,7 +62296,6 @@ ol.render.canvas.ReplayGroup.prototype.finish = function() {
 
 
 /**
- * @param {ol.Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
  * @param {ol.Coordinate} coordinate Coordinate.
@@ -62143,8 +62305,7 @@ ol.render.canvas.ReplayGroup.prototype.finish = function() {
  * @template T
  */
 ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtPixel = function(
-    extent, resolution, rotation, coordinate,
-    skippedFeaturesHash, callback) {
+    resolution, rotation, coordinate, skippedFeaturesHash, callback) {
 
   var transform = this.hitDetectionTransform_;
   ol.vec.Mat4.makeTransform2D(transform, 0.5, 0.5,
@@ -62154,8 +62315,8 @@ ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtPixel = function(
   var context = this.hitDetectionContext_;
   context.clearRect(0, 0, 1, 1);
 
-  return this.replayHitDetection_(context, extent, transform,
-      rotation, skippedFeaturesHash,
+  return this.replayHitDetection_(context, transform, rotation,
+      skippedFeaturesHash,
       /**
        * @param {ol.Feature} feature Feature.
        * @return {?} Callback result.
@@ -62206,14 +62367,13 @@ ol.render.canvas.ReplayGroup.prototype.isEmpty = function() {
 
 /**
  * @param {CanvasRenderingContext2D} context Context.
- * @param {ol.Extent} extent Extent.
  * @param {number} pixelRatio Pixel ratio.
  * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {number} viewRotation View rotation.
  * @param {Object} skippedFeaturesHash Ids of features to skip
  */
 ol.render.canvas.ReplayGroup.prototype.replay = function(
-    context, extent, pixelRatio, transform, viewRotation, skippedFeaturesHash) {
+    context, pixelRatio, transform, viewRotation, skippedFeaturesHash) {
 
   /** @type {Array.<number>} */
   var zs = goog.array.map(goog.object.getKeys(this.replaysByZIndex_), Number);
@@ -62241,8 +62401,7 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(
     replays = this.replaysByZIndex_[zs[i].toString()];
     for (j = 0, jj = ol.render.REPLAY_ORDER.length; j < jj; ++j) {
       replay = replays[ol.render.REPLAY_ORDER[j]];
-      if (goog.isDef(replay) &&
-          ol.extent.intersects(extent, replay.getExtent())) {
+      if (goog.isDef(replay)) {
         replay.replay(context, pixelRatio, transform, viewRotation,
             skippedFeaturesHash);
       }
@@ -62256,7 +62415,6 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(
 /**
  * @private
  * @param {CanvasRenderingContext2D} context Context.
- * @param {ol.Extent} extent Extent.
  * @param {goog.vec.Mat4.Number} transform Transform.
  * @param {number} viewRotation View rotation.
  * @param {Object} skippedFeaturesHash Ids of features to skip
@@ -62265,7 +62423,7 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(
  * @template T
  */
 ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ = function(
-    context, extent, transform, viewRotation, skippedFeaturesHash,
+    context, transform, viewRotation, skippedFeaturesHash,
     featureCallback) {
   /** @type {Array.<number>} */
   var zs = goog.array.map(goog.object.getKeys(this.replaysByZIndex_), Number);
@@ -62276,8 +62434,7 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ = function(
     replays = this.replaysByZIndex_[zs[i].toString()];
     for (j = ol.render.REPLAY_ORDER.length - 1; j >= 0; --j) {
       replay = replays[ol.render.REPLAY_ORDER[j]];
-      if (goog.isDef(replay) &&
-          ol.extent.intersects(extent, replay.getExtent())) {
+      if (goog.isDef(replay)) {
         result = replay.replayHitDetection(context, transform, viewRotation,
             skippedFeaturesHash, featureCallback);
         if (result) {
@@ -62614,12 +62771,11 @@ ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
-  var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtPixel(
-      extent, resolution, rotation, coordinate, skippedFeatureUids,
+      resolution, rotation, coordinate, skippedFeatureUids,
       /**
        * @param {ol.Feature} feature Feature.
        * @return {?} Callback result.
@@ -63643,6 +63799,22 @@ ol.geom.GeometryCollection.prototype.applyTransform = function(transformFn) {
   var i, ii;
   for (i = 0, ii = geometries.length; i < ii; ++i) {
     geometries[i].applyTransform(transformFn);
+  }
+  this.changed();
+};
+
+
+/**
+ * Translate the geometry.
+ * @param {number} deltaX Delta X.
+ * @param {number} deltaY Delta Y.
+ * @api
+ */
+ol.geom.GeometryCollection.prototype.translate = function(deltaX, deltaY) {
+  var geometries = this.geometries_;
+  var i, ii;
+  for (i = 0, ii = geometries.length; i < ii; ++i) {
+    geometries[i].translate(deltaX, deltaY);
   }
   this.changed();
 };
@@ -65520,7 +65692,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame =
     var alpha = replayContext.globalAlpha;
     replayContext.globalAlpha = layerState.opacity;
     replayGroup.replay(
-        replayContext, frameState.extent, frameState.pixelRatio, transform,
+        replayContext, frameState.pixelRatio, transform,
         frameState.viewState.rotation, frameState.skippedFeatureUids);
 
     if (replayContext != context) {
@@ -65543,13 +65715,12 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel =
   if (goog.isNull(this.replayGroup_)) {
     return undefined;
   } else {
-    var extent = frameState.extent;
     var resolution = frameState.viewState.resolution;
     var rotation = frameState.viewState.rotation;
     var layer = this.getLayer();
     /** @type {Object.<string, boolean>} */
     var features = {};
-    return this.replayGroup_.forEachGeometryAtPixel(extent, resolution,
+    return this.replayGroup_.forEachGeometryAtPixel(resolution,
         rotation, coordinate, frameState.skippedFeatureUids,
         /**
          * @param {ol.Feature} feature Feature.
@@ -65603,26 +65774,23 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
   var resolution = viewState.resolution;
   var pixelRatio = frameState.pixelRatio;
   var vectorLayerRevision = vectorLayer.getRevision();
+  var vectorLayerRenderBuffer = vectorLayer.getRenderBuffer();
   var vectorLayerRenderOrder = vectorLayer.getRenderOrder();
+
   if (!goog.isDef(vectorLayerRenderOrder)) {
     vectorLayerRenderOrder = ol.renderer.vector.defaultOrder;
   }
+
+  var extent = ol.extent.buffer(frameStateExtent,
+      vectorLayerRenderBuffer * resolution);
 
   if (!this.dirty_ &&
       this.renderedResolution_ == resolution &&
       this.renderedRevision_ == vectorLayerRevision &&
       this.renderedRenderOrder_ == vectorLayerRenderOrder &&
-      ol.extent.containsExtent(this.renderedExtent_, frameStateExtent)) {
+      ol.extent.containsExtent(this.renderedExtent_, extent)) {
     return true;
   }
-
-  var extent = this.renderedExtent_;
-  var xBuffer = ol.extent.getWidth(frameStateExtent) / 4;
-  var yBuffer = ol.extent.getHeight(frameStateExtent) / 4;
-  extent[0] = frameStateExtent[0] - xBuffer;
-  extent[1] = frameStateExtent[1] - yBuffer;
-  extent[2] = frameStateExtent[2] + xBuffer;
-  extent[3] = frameStateExtent[3] + yBuffer;
 
   // FIXME dispose of old replayGroup in post render
   goog.dispose(this.replayGroup_);
@@ -65674,6 +65842,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
   this.renderedResolution_ = resolution;
   this.renderedRevision_ = vectorLayerRevision;
   this.renderedRenderOrder_ = vectorLayerRenderOrder;
+  this.renderedExtent_ = extent;
   this.replayGroup_ = replayGroup;
 
   return true;
@@ -65828,7 +65997,7 @@ ol.renderer.canvas.Map.prototype.dispatchComposeEvent_ =
 
     replayGroup.finish();
     if (!replayGroup.isEmpty()) {
-      replayGroup.replay(context, extent, pixelRatio, this.transform_,
+      replayGroup.replay(context, pixelRatio, this.transform_,
           rotation, {});
     }
     vectorContext.flush();
@@ -66024,12 +66193,11 @@ ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
-  var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtPixel(
-      extent, resolution, rotation, coordinate, skippedFeatureUids,
+      resolution, rotation, coordinate, skippedFeatureUids,
       /**
        * @param {ol.Feature} feature Feature.
        * @return {?} Callback result.
@@ -66740,9 +66908,8 @@ ol.renderer.dom.VectorLayer.prototype.composeFrame =
   if (!goog.isNull(replayGroup) && !replayGroup.isEmpty()) {
 
     context.globalAlpha = layerState.opacity;
-    replayGroup.replay(
-        context, frameState.extent, pixelRatio, transform,
-        viewRotation, frameState.skippedFeatureUids);
+    replayGroup.replay(context, pixelRatio, transform, viewRotation,
+        frameState.skippedFeatureUids);
 
     this.dispatchEvent_(ol.render.EventType.RENDER, frameState, transform);
   }
@@ -66781,13 +66948,12 @@ ol.renderer.dom.VectorLayer.prototype.forEachFeatureAtPixel =
   if (goog.isNull(this.replayGroup_)) {
     return undefined;
   } else {
-    var extent = frameState.extent;
     var resolution = frameState.viewState.resolution;
     var rotation = frameState.viewState.rotation;
     var layer = this.getLayer();
     /** @type {Object.<string, boolean>} */
     var features = {};
-    return this.replayGroup_.forEachGeometryAtPixel(extent, resolution,
+    return this.replayGroup_.forEachGeometryAtPixel(resolution,
         rotation, coordinate, frameState.skippedFeatureUids,
         /**
          * @param {ol.Feature} feature Feature.
@@ -66841,26 +67007,23 @@ ol.renderer.dom.VectorLayer.prototype.prepareFrame =
   var resolution = viewState.resolution;
   var pixelRatio = frameState.pixelRatio;
   var vectorLayerRevision = vectorLayer.getRevision();
+  var vectorLayerRenderBuffer = vectorLayer.getRenderBuffer();
   var vectorLayerRenderOrder = vectorLayer.getRenderOrder();
+
   if (!goog.isDef(vectorLayerRenderOrder)) {
     vectorLayerRenderOrder = ol.renderer.vector.defaultOrder;
   }
+
+  var extent = ol.extent.buffer(frameStateExtent,
+      vectorLayerRenderBuffer * resolution);
 
   if (!this.dirty_ &&
       this.renderedResolution_ == resolution &&
       this.renderedRevision_ == vectorLayerRevision &&
       this.renderedRenderOrder_ == vectorLayerRenderOrder &&
-      ol.extent.containsExtent(this.renderedExtent_, frameStateExtent)) {
+      ol.extent.containsExtent(this.renderedExtent_, extent)) {
     return true;
   }
-
-  var extent = this.renderedExtent_;
-  var xBuffer = ol.extent.getWidth(frameStateExtent) / 4;
-  var yBuffer = ol.extent.getHeight(frameStateExtent) / 4;
-  extent[0] = frameStateExtent[0] - xBuffer;
-  extent[1] = frameStateExtent[1] - yBuffer;
-  extent[2] = frameStateExtent[2] + xBuffer;
-  extent[3] = frameStateExtent[3] + yBuffer;
 
   // FIXME dispose of old replayGroup in post render
   goog.dispose(this.replayGroup_);
@@ -66912,6 +67075,7 @@ ol.renderer.dom.VectorLayer.prototype.prepareFrame =
   this.renderedResolution_ = resolution;
   this.renderedRevision_ = vectorLayerRevision;
   this.renderedRenderOrder_ = vectorLayerRenderOrder;
+  this.renderedExtent_ = extent;
   this.replayGroup_ = replayGroup;
 
   return true;
@@ -67103,8 +67267,7 @@ ol.renderer.dom.Map.prototype.dispatchComposeEvent_ =
     map.dispatchEvent(composeEvent);
     replayGroup.finish();
     if (!replayGroup.isEmpty()) {
-      replayGroup.replay(context, extent, pixelRatio, this.transform_,
-          rotation, {});
+      replayGroup.replay(context, pixelRatio, this.transform_, rotation, {});
     }
     vectorContext.flush();
     this.replayGroup = replayGroup;
@@ -69910,12 +70073,6 @@ ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
   this.origin_ = ol.extent.getCenter(maxExtent);
 
   /**
-   * @type {ol.Extent}
-   * @private
-   */
-  this.extent_ = ol.extent.createEmpty();
-
-  /**
    * @type {Array.<number>}
    * @private
    */
@@ -70238,7 +70395,6 @@ ol.render.webgl.ImageReplay.prototype.drawMultiLineStringGeometry =
  */
 ol.render.webgl.ImageReplay.prototype.drawMultiPointGeometry =
     function(multiPointGeometry, feature) {
-  ol.extent.extend(this.extent_, multiPointGeometry.getExtent());
   var flatCoordinates = multiPointGeometry.getFlatCoordinates();
   var stride = multiPointGeometry.getStride();
   this.drawCoordinates_(
@@ -70258,7 +70414,6 @@ ol.render.webgl.ImageReplay.prototype.drawMultiPolygonGeometry =
  */
 ol.render.webgl.ImageReplay.prototype.drawPointGeometry =
     function(pointGeometry, feature) {
-  ol.extent.extend(this.extent_, pointGeometry.getExtent());
   var flatCoordinates = pointGeometry.getFlatCoordinates();
   var stride = pointGeometry.getStride();
   this.drawCoordinates_(
@@ -70354,20 +70509,11 @@ ol.render.webgl.ImageReplay.prototype.finish = function(context) {
 
 
 /**
- * @return {ol.Extent} Extent.
- */
-ol.render.webgl.ImageReplay.prototype.getExtent = function() {
-  return this.extent_;
-};
-
-
-/**
  * @param {ol.webgl.Context} context Context.
  * @param {ol.Coordinate} center Center.
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
  * @param {ol.Size} size Size.
- * @param {ol.Extent} extent Extent.
  * @param {number} pixelRatio Pixel ratio.
  * @param {number} opacity Global opacity.
  * @param {number} brightness Global brightness.
@@ -70379,7 +70525,7 @@ ol.render.webgl.ImageReplay.prototype.getExtent = function() {
  * @template T
  */
 ol.render.webgl.ImageReplay.prototype.replay = function(context,
-    center, resolution, rotation, size, extent, pixelRatio,
+    center, resolution, rotation, size, pixelRatio,
     opacity, brightness, contrast, hue, saturation, skippedFeaturesHash) {
   var gl = context.getGL();
 
@@ -70653,7 +70799,6 @@ ol.render.webgl.ReplayGroup.prototype.isEmpty = function() {
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
  * @param {ol.Size} size Size.
- * @param {ol.Extent} extent Extent.
  * @param {number} pixelRatio Pixel ratio.
  * @param {number} opacity Global opacity.
  * @param {number} brightness Global brightness.
@@ -70665,15 +70810,14 @@ ol.render.webgl.ReplayGroup.prototype.isEmpty = function() {
  * @template T
  */
 ol.render.webgl.ReplayGroup.prototype.replay = function(context,
-    center, resolution, rotation, size, extent, pixelRatio,
+    center, resolution, rotation, size, pixelRatio,
     opacity, brightness, contrast, hue, saturation, skippedFeaturesHash) {
   var i, ii, replay, result;
   for (i = 0, ii = ol.render.REPLAY_ORDER.length; i < ii; ++i) {
     replay = this.replays_[ol.render.REPLAY_ORDER[i]];
-    if (goog.isDef(replay) &&
-        ol.extent.intersects(extent, replay.getExtent())) {
+    if (goog.isDef(replay)) {
       result = replay.replay(context,
-          center, resolution, rotation, size, extent, pixelRatio,
+          center, resolution, rotation, size, pixelRatio,
           opacity, brightness, contrast, hue, saturation, skippedFeaturesHash);
       if (result) {
         return result;
@@ -71639,12 +71783,11 @@ ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
-  var extent = frameState.extent;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtPixel(
-      extent, resolution, rotation, coordinate, skippedFeatureUids,
+      resolution, rotation, coordinate, skippedFeatureUids,
 
       /**
        * @param {ol.Feature} feature Feature.
@@ -72295,9 +72438,9 @@ ol.renderer.webgl.VectorLayer.prototype.composeFrame =
   if (!goog.isNull(replayGroup) && !replayGroup.isEmpty()) {
     replayGroup.replay(context,
         viewState.center, viewState.resolution, viewState.rotation,
-        frameState.size, frameState.extent, frameState.pixelRatio,
-        layerState.opacity, layerState.brightness, layerState.contrast,
-        layerState.hue, layerState.saturation, frameState.skippedFeatureUids);
+        frameState.size, frameState.pixelRatio, layerState.opacity,
+        layerState.brightness, layerState.contrast, layerState.hue,
+        layerState.saturation, frameState.skippedFeatureUids);
   }
 
 };
@@ -72362,26 +72505,23 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
   var resolution = viewState.resolution;
   var pixelRatio = frameState.pixelRatio;
   var vectorLayerRevision = vectorLayer.getRevision();
+  var vectorLayerRenderBuffer = vectorLayer.getRenderBuffer();
   var vectorLayerRenderOrder = vectorLayer.getRenderOrder();
+
   if (!goog.isDef(vectorLayerRenderOrder)) {
     vectorLayerRenderOrder = ol.renderer.vector.defaultOrder;
   }
+
+  var extent = ol.extent.buffer(frameStateExtent,
+      vectorLayerRenderBuffer * resolution);
 
   if (!this.dirty_ &&
       this.renderedResolution_ == resolution &&
       this.renderedRevision_ == vectorLayerRevision &&
       this.renderedRenderOrder_ == vectorLayerRenderOrder &&
-      ol.extent.containsExtent(this.renderedExtent_, frameStateExtent)) {
+      ol.extent.containsExtent(this.renderedExtent_, extent)) {
     return true;
   }
-
-  var extent = this.renderedExtent_;
-  var xBuffer = ol.extent.getWidth(frameStateExtent) / 4;
-  var yBuffer = ol.extent.getHeight(frameStateExtent) / 4;
-  extent[0] = frameStateExtent[0] - xBuffer;
-  extent[1] = frameStateExtent[1] - yBuffer;
-  extent[2] = frameStateExtent[2] + xBuffer;
-  extent[3] = frameStateExtent[3] + yBuffer;
 
   if (!goog.isNull(this.replayGroup_)) {
     frameState.postRenderFunctions.push(
@@ -72433,6 +72573,7 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
   this.renderedResolution_ = resolution;
   this.renderedRevision_ = vectorLayerRevision;
   this.renderedRenderOrder_ = vectorLayerRenderOrder;
+  this.renderedExtent_ = extent;
   this.replayGroup_ = replayGroup;
 
   return true;
@@ -73297,7 +73438,7 @@ ol.renderer.webgl.Map.prototype.dispatchComposeEvent_ =
       var contrast = 1;
       var hue = 0;
       var saturation = 1;
-      replayGroup.replay(context, center, resolution, rotation, size, extent,
+      replayGroup.replay(context, center, resolution, rotation, size,
           pixelRatio, opacity, brightness, contrast, hue, saturation, {});
     }
     replayGroup.getDeleteResourcesFunction(context)();
@@ -74186,6 +74327,19 @@ goog.exportProperty(
     ol.Map.prototype,
     'getTarget',
     ol.Map.prototype.getTarget);
+
+
+/**
+ * Get the DOM element into which this map is rendered. In contrast to
+ * `getTarget` this method always return an `Element`, or `null` if the
+ * map has no target.
+ * @return {Element} The element that the map is rendered in.
+ * @api
+ */
+ol.Map.prototype.getTargetElement = function() {
+  var target = this.getTarget();
+  return goog.isDef(target) ? goog.dom.getElement(target) : null;
+};
 
 
 /**
@@ -99720,7 +99874,6 @@ goog.math.Vec2.lerp = function(a, b, x) {
 goog.provide('ol.interaction.DragRotateAndZoom');
 
 goog.require('goog.asserts');
-goog.require('goog.functions');
 goog.require('goog.math.Vec2');
 goog.require('ol');
 goog.require('ol.ViewHint');
@@ -99750,7 +99903,11 @@ ol.interaction.DragRotateAndZoom = function(opt_options) {
 
   var options = goog.isDef(opt_options) ? opt_options : {};
 
-  goog.base(this);
+  goog.base(this, {
+    handleDownEvent: ol.interaction.DragRotateAndZoom.handleDownEvent_,
+    handleDragEvent: ol.interaction.DragRotateAndZoom.handleDragEvent_,
+    handleUpEvent: ol.interaction.DragRotateAndZoom.handleUpEvent_
+  });
 
   /**
    * @private
@@ -99783,10 +99940,11 @@ goog.inherits(ol.interaction.DragRotateAndZoom,
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @this {ol.interaction.DragRotateAndZoom}
+ * @private
  */
-ol.interaction.DragRotateAndZoom.prototype.handlePointerDrag =
-    function(mapBrowserEvent) {
+ol.interaction.DragRotateAndZoom.handleDragEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return;
   }
@@ -99820,10 +99978,12 @@ ol.interaction.DragRotateAndZoom.prototype.handlePointerDrag =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.DragRotateAndZoom}
+ * @private
  */
-ol.interaction.DragRotateAndZoom.prototype.handlePointerUp =
-    function(mapBrowserEvent) {
+ol.interaction.DragRotateAndZoom.handleUpEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return true;
   }
@@ -99843,10 +100003,12 @@ ol.interaction.DragRotateAndZoom.prototype.handlePointerUp =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.DragRotateAndZoom}
+ * @private
  */
-ol.interaction.DragRotateAndZoom.prototype.handlePointerDown =
-    function(mapBrowserEvent) {
+ol.interaction.DragRotateAndZoom.handleDownEvent_ = function(mapBrowserEvent) {
   if (!ol.events.condition.mouseOnly(mapBrowserEvent)) {
     return false;
   }
@@ -99860,15 +100022,6 @@ ol.interaction.DragRotateAndZoom.prototype.handlePointerDown =
     return false;
   }
 };
-
-
-/**
- * @inheritDoc
- * Stop the event if it was handled, so that interaction `DragZoom`
- * does not interfere.
- */
-ol.interaction.DragRotateAndZoom.prototype.shouldStopEvent =
-    goog.functions.identity;
 
 goog.provide('ol.ext.rbush');
 /** @typedef {function(*)} */
@@ -101459,7 +101612,9 @@ goog.inherits(ol.DrawEvent, goog.events.Event);
 ol.interaction.Draw = function(options) {
 
   goog.base(this, {
-    handleEvent: ol.interaction.Draw.handleEvent
+    handleDownEvent: ol.interaction.Draw.handleDownEvent_,
+    handleEvent: ol.interaction.Draw.handleEvent,
+    handleUpEvent: ol.interaction.Draw.handleUpEvent_
   });
 
   /**
@@ -101632,11 +101787,12 @@ ol.interaction.Draw.handleEvent = function(mapBrowserEvent) {
 
 
 /**
- * Handle down events.
- * @param {ol.MapBrowserEvent} event A down event.
- * @return {boolean} Pass the event to other interactions.
+ * @param {ol.MapBrowserPointerEvent} event Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.Draw}
+ * @private
  */
-ol.interaction.Draw.prototype.handlePointerDown = function(event) {
+ol.interaction.Draw.handleDownEvent_ = function(event) {
   if (this.condition_(event)) {
     this.downPx_ = event.pixel;
     return true;
@@ -101647,11 +101803,12 @@ ol.interaction.Draw.prototype.handlePointerDown = function(event) {
 
 
 /**
- * Handle up events.
- * @param {ol.MapBrowserEvent} event An up event.
- * @return {boolean} Pass the event to other interactions.
+ * @param {ol.MapBrowserPointerEvent} event Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.Draw}
+ * @private
  */
-ol.interaction.Draw.prototype.handlePointerUp = function(event) {
+ol.interaction.Draw.handleUpEvent_ = function(event) {
   var downPx = this.downPx_;
   var clickPx = event.pixel;
   var dx = downPx[0] - clickPx[0];
@@ -101924,6 +102081,12 @@ ol.interaction.Draw.prototype.abortDrawing_ = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ol.interaction.Draw.prototype.shouldStopEvent = goog.functions.FALSE;
+
+
+/**
  * Redraw the skecth features.
  * @private
  */
@@ -102040,7 +102203,10 @@ ol.interaction.SegmentDataType;
 ol.interaction.Modify = function(options) {
 
   goog.base(this, {
-    handleEvent: ol.interaction.Modify.handleEvent
+    handleDownEvent: ol.interaction.Modify.handleDownEvent_,
+    handleDragEvent: ol.interaction.Modify.handleDragEvent_,
+    handleEvent: ol.interaction.Modify.handleEvent,
+    handleUpEvent: ol.interaction.Modify.handleUpEvent_
   });
 
   /**
@@ -102381,9 +102547,12 @@ ol.interaction.Modify.prototype.createOrUpdateVertexFeature_ =
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} evt Event.
+ * @return {boolean} Start drag sequence?
+ * @this {ol.interaction.Modify}
+ * @private
  */
-ol.interaction.Modify.prototype.handlePointerDown = function(evt) {
+ol.interaction.Modify.handleDownEvent_ = function(evt) {
   this.handlePointerAtPixel_(evt.pixel, evt.map);
   this.dragSegments_ = [];
   var vertexFeature = this.vertexFeature_;
@@ -102413,9 +102582,11 @@ ol.interaction.Modify.prototype.handlePointerDown = function(evt) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} evt Event.
+ * @this {ol.interaction.Modify}
+ * @private
  */
-ol.interaction.Modify.prototype.handlePointerDrag = function(evt) {
+ol.interaction.Modify.handleDragEvent_ = function(evt) {
   var vertex = evt.coordinate;
   for (var i = 0, ii = this.dragSegments_.length; i < ii; ++i) {
     var dragSegment = this.dragSegments_[i];
@@ -102464,9 +102635,12 @@ ol.interaction.Modify.prototype.handlePointerDrag = function(evt) {
 
 
 /**
- * @inheritDoc
+ * @param {ol.MapBrowserPointerEvent} evt Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.Modify}
+ * @private
  */
-ol.interaction.Modify.prototype.handlePointerUp = function(evt) {
+ol.interaction.Modify.handleUpEvent_ = function(evt) {
   var segmentData;
   for (var i = this.dragSegments_.length - 1; i >= 0; --i) {
     segmentData = this.dragSegments_[i][0];
@@ -102739,12 +102913,6 @@ ol.interaction.Modify.prototype.removeVertex_ = function() {
   }
   return deleted;
 };
-
-
-/**
- * @inheritDoc
- */
-ol.interaction.Modify.prototype.shouldStopEvent = goog.functions.identity;
 
 
 /**
@@ -108190,8 +108358,7 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ =
 
   var transform = this.getTransform_(ol.extent.getCenter(extent),
       resolution, pixelRatio, size);
-  replayGroup.replay(this.canvasContext_, extent, pixelRatio, transform, 0,
-      {});
+  replayGroup.replay(this.canvasContext_, pixelRatio, transform, 0, {});
 
   this.replayGroup_ = replayGroup;
 
@@ -108203,14 +108370,14 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ =
  * @inheritDoc
  */
 ol.source.ImageVector.prototype.forEachFeatureAtPixel = function(
-    extent, resolution, rotation, coordinate, skippedFeatureUids, callback) {
+    resolution, rotation, coordinate, skippedFeatureUids, callback) {
   if (goog.isNull(this.replayGroup_)) {
     return undefined;
   } else {
     /** @type {Object.<string, boolean>} */
     var features = {};
     return this.replayGroup_.forEachGeometryAtPixel(
-        extent, resolution, 0, coordinate, skippedFeatureUids,
+        resolution, 0, coordinate, skippedFeatureUids,
         /**
          * @param {ol.Feature} feature Feature.
          * @return {?} Callback result.
@@ -113152,6 +113319,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Map.prototype,
+    'getTargetElement',
+    ol.Map.prototype.getTargetElement);
+
+goog.exportProperty(
+    ol.Map.prototype,
     'getCoordinateFromPixel',
     ol.Map.prototype.getCoordinateFromPixel);
 
@@ -115079,6 +115251,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Geometry.prototype,
+    'translate',
+    ol.geom.Geometry.prototype.translate);
+
+goog.exportProperty(
+    ol.geom.Geometry.prototype,
     'transform',
     ol.geom.Geometry.prototype.transform);
 
@@ -115120,6 +115297,11 @@ goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
     'applyTransform',
     ol.geom.GeometryCollection.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.GeometryCollection.prototype,
+    'translate',
+    ol.geom.GeometryCollection.prototype.translate);
 
 goog.exportSymbol(
     'ol.geom.LinearRing',
@@ -115465,6 +115647,11 @@ goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
     'applyTransform',
     ol.geom.SimpleGeometry.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.SimpleGeometry.prototype,
+    'translate',
+    ol.geom.SimpleGeometry.prototype.translate);
 
 goog.exportSymbol(
     'ol.format.Feature',
@@ -121856,6 +122043,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
+    'translate',
+    ol.geom.Circle.prototype.translate);
+
+goog.exportProperty(
+    ol.geom.Circle.prototype,
     'getClosestPoint',
     ol.geom.Circle.prototype.getClosestPoint);
 
@@ -121961,6 +122153,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
+    'translate',
+    ol.geom.LinearRing.prototype.translate);
+
+goog.exportProperty(
+    ol.geom.LinearRing.prototype,
     'getClosestPoint',
     ol.geom.LinearRing.prototype.getClosestPoint);
 
@@ -122031,6 +122228,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
+    'translate',
+    ol.geom.LineString.prototype.translate);
+
+goog.exportProperty(
+    ol.geom.LineString.prototype,
     'getClosestPoint',
     ol.geom.LineString.prototype.getClosestPoint);
 
@@ -122093,6 +122295,11 @@ goog.exportProperty(
     ol.geom.MultiLineString.prototype,
     'applyTransform',
     ol.geom.MultiLineString.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.MultiLineString.prototype,
+    'translate',
+    ol.geom.MultiLineString.prototype.translate);
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
@@ -122161,6 +122368,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
+    'translate',
+    ol.geom.MultiPoint.prototype.translate);
+
+goog.exportProperty(
+    ol.geom.MultiPoint.prototype,
     'getClosestPoint',
     ol.geom.MultiPoint.prototype.getClosestPoint);
 
@@ -122226,6 +122438,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
+    'translate',
+    ol.geom.MultiPolygon.prototype.translate);
+
+goog.exportProperty(
+    ol.geom.MultiPolygon.prototype,
     'getClosestPoint',
     ol.geom.MultiPolygon.prototype.getClosestPoint);
 
@@ -122283,6 +122500,11 @@ goog.exportProperty(
     ol.geom.Point.prototype,
     'applyTransform',
     ol.geom.Point.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.Point.prototype,
+    'translate',
+    ol.geom.Point.prototype.translate);
 
 goog.exportProperty(
     ol.geom.Point.prototype,
@@ -122348,6 +122570,11 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'applyTransform',
     ol.geom.Polygon.prototype.applyTransform);
+
+goog.exportProperty(
+    ol.geom.Polygon.prototype,
+    'translate',
+    ol.geom.Polygon.prototype.translate);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
