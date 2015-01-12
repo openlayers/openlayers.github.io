@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-27-g1f90aad
+// Version: v3.1.1-34-g409969f
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -59143,6 +59143,7 @@ ol.layer.Image.prototype.getSource;
 
 goog.provide('ol.layer.Tile');
 
+goog.require('goog.object');
 goog.require('ol.layer.Layer');
 
 
@@ -59172,14 +59173,16 @@ ol.layer.TileProperty = {
  */
 ol.layer.Tile = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
-  goog.base(this,  /** @type {olx.layer.LayerOptions} */ (options));
 
-  if (!goog.isDef(this.getPreload())) {
-    this.setPreload(0);
-  }
-  if (!goog.isDef(this.getUseInterimTilesOnError())) {
-    this.setUseInterimTilesOnError(true);
-  }
+  var baseOptions = goog.object.clone(options);
+
+  delete baseOptions.preload;
+  delete baseOptions.useInterimTilesOnError;
+  goog.base(this,  /** @type {olx.layer.LayerOptions} */ (baseOptions));
+
+  this.setPreload(goog.isDef(options.preload) ? options.preload : 0);
+  this.setUseInterimTilesOnError(goog.isDef(options.useInterimTilesOnError) ?
+      options.useInterimTilesOnError : true);
 };
 goog.inherits(ol.layer.Tile, ol.layer.Layer);
 
