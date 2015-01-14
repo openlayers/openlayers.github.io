@@ -217,7 +217,7 @@ goog.addDependency('../../../ol/ol/sphere/wgs84sphere.js', ['ol.sphere.WGS84'], 
 goog.addDependency('../../../ol/ol/structs/checksum.js', ['ol.structs.IHasChecksum'], [], false);
 goog.addDependency('../../../ol/ol/structs/lrucache.js', ['ol.structs.LRUCache'], ['goog.asserts', 'goog.object'], false);
 goog.addDependency('../../../ol/ol/structs/priorityqueue.js', ['ol.structs.PriorityQueue'], ['goog.asserts', 'goog.object'], false);
-goog.addDependency('../../../ol/ol/structs/rbush.js', ['ol.structs.RBush'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.ext.rbush'], false);
+goog.addDependency('../../../ol/ol/structs/rbush.js', ['ol.structs.RBush'], ['goog.array', 'goog.asserts', 'goog.object', 'ol.ext.rbush', 'ol.extent'], false);
 goog.addDependency('../../../ol/ol/style/atlasmanager.js', ['ol.style.Atlas', 'ol.style.AtlasManager'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.object', 'ol'], false);
 goog.addDependency('../../../ol/ol/style/circlestyle.js', ['ol.style.Circle'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'ol.color', 'ol.has', 'ol.render.canvas', 'ol.structs.IHasChecksum', 'ol.style.Fill', 'ol.style.Image', 'ol.style.ImageState', 'ol.style.Stroke'], false);
 goog.addDependency('../../../ol/ol/style/fillstyle.js', ['ol.style.Fill'], ['ol.color', 'ol.structs.IHasChecksum'], false);

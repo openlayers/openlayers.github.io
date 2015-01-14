@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-47-g017ff47
+// Version: v3.1.1-49-gdafcdfa
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -100664,6 +100664,7 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.object');
 goog.require('ol.ext.rbush');
+goog.require('ol.extent');
 
 
 
@@ -100783,8 +100784,17 @@ ol.structs.RBush.prototype.remove = function(value) {
  * @param {T} value Value.
  */
 ol.structs.RBush.prototype.update = function(extent, value) {
-  this.remove(value);
-  this.insert(extent, value);
+  var uid = goog.getUid(value);
+  goog.asserts.assert(goog.object.containsKey(this.items_, uid));
+
+  var item = this.items_[uid];
+  if (!ol.extent.equals(item.slice(0, 4), extent)) {
+    if (goog.DEBUG && this.readers_) {
+      throw new Error('Can not update extent while reading');
+    }
+    this.remove(value);
+    this.insert(extent, value);
+  }
 };
 
 
