@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-34-g409969f
+// Version: v3.1.1-43-g2f5bbb3
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -52502,9 +52502,9 @@ ol.interaction.DragRotate.prototype.shouldStopEvent = goog.functions.FALSE;
 goog.provide('ol.geom.Geometry');
 goog.provide('ol.geom.GeometryType');
 
-goog.require('goog.asserts');
 goog.require('goog.functions');
 goog.require('ol.Observable');
+goog.require('ol.extent');
 goog.require('ol.proj');
 
 
@@ -52560,16 +52560,16 @@ ol.geom.Geometry = function() {
   goog.base(this);
 
   /**
-   * @protected
-   * @type {ol.Extent|undefined}
+   * @private
+   * @type {ol.Extent}
    */
-  this.extent = undefined;
+  this.extent_ = ol.extent.createEmpty();
 
   /**
-   * @protected
+   * @private
    * @type {number}
    */
-  this.extentRevision = -1;
+  this.extentRevision_ = -1;
 
   /**
    * @protected
@@ -52636,6 +52636,14 @@ ol.geom.Geometry.prototype.containsCoordinate = function(coordinate) {
 
 
 /**
+ * @param {ol.Extent} extent Extent.
+ * @protected
+ * @return {ol.Extent} extent Extent.
+ */
+ol.geom.Geometry.prototype.computeExtent = goog.abstractMethod;
+
+
+/**
  * @param {number} x X.
  * @param {number} y Y.
  * @return {boolean} Contains (x, y).
@@ -52645,12 +52653,17 @@ ol.geom.Geometry.prototype.containsXY = goog.functions.FALSE;
 
 /**
  * Get the extent of the geometry.
- * @function
  * @param {ol.Extent=} opt_extent Extent.
  * @return {ol.Extent} extent Extent.
  * @api stable
  */
-ol.geom.Geometry.prototype.getExtent = goog.abstractMethod;
+ol.geom.Geometry.prototype.getExtent = function(opt_extent) {
+  if (this.extentRevision_ != this.getRevision()) {
+    this.extent_ = this.computeExtent(this.extent_);
+    this.extentRevision_ = this.getRevision();
+  }
+  return ol.extent.returnOrUpdate(this.extent_, opt_extent);
+};
 
 
 /**
@@ -52883,17 +52896,11 @@ ol.geom.SimpleGeometry.prototype.containsXY = goog.functions.FALSE;
 
 /**
  * @inheritDoc
- * @api stable
  */
-ol.geom.SimpleGeometry.prototype.getExtent = function(opt_extent) {
-  if (this.extentRevision != this.getRevision()) {
-    this.extent = ol.extent.createOrUpdateFromFlatCoordinates(
-        this.flatCoordinates, 0, this.flatCoordinates.length, this.stride,
-        this.extent);
-    this.extentRevision = this.getRevision();
-  }
-  goog.asserts.assert(goog.isDef(this.extent));
-  return ol.extent.returnOrUpdate(this.extent, opt_extent);
+ol.geom.SimpleGeometry.prototype.computeExtent = function(extent) {
+  return ol.extent.createOrUpdateFromFlatCoordinates(
+      this.flatCoordinates, 0, this.flatCoordinates.length, this.stride,
+      extent);
 };
 
 
@@ -54319,14 +54326,8 @@ ol.geom.Point.prototype.getCoordinates = function() {
 /**
  * @inheritDoc
  */
-ol.geom.Point.prototype.getExtent = function(opt_extent) {
-  if (this.extentRevision != this.getRevision()) {
-    this.extent = ol.extent.createOrUpdateFromCoordinate(
-        this.flatCoordinates, this.extent);
-    this.extentRevision = this.getRevision();
-  }
-  goog.asserts.assert(goog.isDef(this.extent));
-  return ol.extent.returnOrUpdate(this.extent, opt_extent);
+ol.geom.Point.prototype.computeExtent = function(extent) {
+  return ol.extent.createOrUpdateFromCoordinate(this.flatCoordinates, extent);
 };
 
 
@@ -63421,20 +63422,14 @@ ol.geom.Circle.prototype.getCenter = function() {
 
 /**
  * @inheritDoc
- * @api
  */
-ol.geom.Circle.prototype.getExtent = function(opt_extent) {
-  if (this.extentRevision != this.getRevision()) {
-    var flatCoordinates = this.flatCoordinates;
-    var radius = flatCoordinates[this.stride] - flatCoordinates[0];
-    this.extent = ol.extent.createOrUpdate(
-        flatCoordinates[0] - radius, flatCoordinates[1] - radius,
-        flatCoordinates[0] + radius, flatCoordinates[1] + radius,
-        this.extent);
-    this.extentRevision = this.getRevision();
-  }
-  goog.asserts.assert(goog.isDef(this.extent));
-  return ol.extent.returnOrUpdate(this.extent, opt_extent);
+ol.geom.Circle.prototype.computeExtent = function(extent) {
+  var flatCoordinates = this.flatCoordinates;
+  var radius = flatCoordinates[this.stride] - flatCoordinates[0];
+  return ol.extent.createOrUpdate(
+      flatCoordinates[0] - radius, flatCoordinates[1] - radius,
+      flatCoordinates[0] + radius, flatCoordinates[1] + radius,
+      extent);
 };
 
 
@@ -63565,7 +63560,6 @@ ol.geom.Circle.prototype.transform;
 goog.provide('ol.geom.GeometryCollection');
 
 goog.require('goog.array');
-goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.object');
@@ -63694,21 +63688,14 @@ ol.geom.GeometryCollection.prototype.containsXY = function(x, y) {
 
 /**
  * @inheritDoc
- * @api stable
  */
-ol.geom.GeometryCollection.prototype.getExtent = function(opt_extent) {
-  if (this.extentRevision != this.getRevision()) {
-    var extent = ol.extent.createOrUpdateEmpty(this.extent);
-    var geometries = this.geometries_;
-    var i, ii;
-    for (i = 0, ii = geometries.length; i < ii; ++i) {
-      ol.extent.extend(extent, geometries[i].getExtent());
-    }
-    this.extent = extent;
-    this.extentRevision = this.getRevision();
+ol.geom.GeometryCollection.prototype.computeExtent = function(extent) {
+  ol.extent.createOrUpdateEmpty(extent);
+  var geometries = this.geometries_;
+  for (var i = 0, ii = geometries.length; i < ii; ++i) {
+    ol.extent.extend(extent, geometries[i].getExtent());
   }
-  goog.asserts.assert(goog.isDef(this.extent));
-  return ol.extent.returnOrUpdate(this.extent, opt_extent);
+  return extent;
 };
 
 
@@ -64219,7 +64206,7 @@ ol.geom.LineString.prototype.closestPointXY =
  * return the last coordinate.
  *
  * @param {number} m M.
- * @param {boolean=} opt_extrapolate Extrapolate.
+ * @param {boolean=} opt_extrapolate Extrapolate. Default is `false`.
  * @return {ol.Coordinate} Coordinate.
  * @api stable
  */
@@ -64458,8 +64445,8 @@ ol.geom.MultiLineString.prototype.closestPointXY =
  * LineStrings.
  *
  * @param {number} m M.
- * @param {boolean=} opt_extrapolate Extrapolate.
- * @param {boolean=} opt_interpolate Interpolate.
+ * @param {boolean=} opt_extrapolate Extrapolate. Default is `false`.
+ * @param {boolean=} opt_interpolate Interpolate. Default is `false`.
  * @return {ol.Coordinate} Coordinate.
  * @api stable
  */
@@ -92993,8 +92980,10 @@ ol.format.WFS.prototype.readProjectionFromDocument = function(doc) {
 ol.format.WFS.prototype.readProjectionFromNode = function(node) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   goog.asserts.assert(node.localName == 'FeatureCollection');
-  node = node.firstElementChild.firstElementChild;
-  if (goog.isDefAndNotNull(node)) {
+
+  if (goog.isDefAndNotNull(node.firstElementChild) &&
+      goog.isDefAndNotNull(node.firstElementChild.firstElementChild)) {
+    node = node.firstElementChild.firstElementChild;
     for (var n = node.firstElementChild; !goog.isNull(n);
         n = n.nextElementSibling) {
       if (!(n.childNodes.length === 0 ||
@@ -93006,6 +92995,7 @@ ol.format.WFS.prototype.readProjectionFromNode = function(node) {
       }
     }
   }
+
   return null;
 };
 
@@ -115369,11 +115359,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
-    'getExtent',
-    ol.geom.Circle.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.Circle.prototype,
     'getRadius',
     ol.geom.Circle.prototype.getRadius);
 
@@ -115456,11 +115441,6 @@ goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
     'clone',
     ol.geom.GeometryCollection.prototype.clone);
-
-goog.exportProperty(
-    ol.geom.GeometryCollection.prototype,
-    'getExtent',
-    ol.geom.GeometryCollection.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
@@ -115821,11 +115801,6 @@ goog.exportSymbol(
     'ol.geom.SimpleGeometry',
     ol.geom.SimpleGeometry,
     OPENLAYERS);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
-    'getExtent',
-    ol.geom.SimpleGeometry.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
@@ -122229,6 +122204,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
+    'getExtent',
+    ol.geom.SimpleGeometry.prototype.getExtent);
+
+goog.exportProperty(
+    ol.geom.SimpleGeometry.prototype,
     'getType',
     ol.geom.SimpleGeometry.prototype.getType);
 
@@ -122304,6 +122284,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
+    'getExtent',
+    ol.geom.Circle.prototype.getExtent);
+
+goog.exportProperty(
+    ol.geom.Circle.prototype,
     'intersectsExtent',
     ol.geom.Circle.prototype.intersectsExtent);
 
@@ -122344,6 +122329,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
+    'getExtent',
+    ol.geom.GeometryCollection.prototype.getExtent);
+
+goog.exportProperty(
+    ol.geom.GeometryCollection.prototype,
     'transform',
     ol.geom.GeometryCollection.prototype.transform);
 
@@ -122379,11 +122369,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
-    'getExtent',
-    ol.geom.LinearRing.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
     'getFirstCoordinate',
     ol.geom.LinearRing.prototype.getFirstCoordinate);
 
@@ -122411,6 +122396,11 @@ goog.exportProperty(
     ol.geom.LinearRing.prototype,
     'getClosestPoint',
     ol.geom.LinearRing.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.LinearRing.prototype,
+    'getExtent',
+    ol.geom.LinearRing.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
@@ -122454,11 +122444,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
-    'getExtent',
-    ol.geom.LineString.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.LineString.prototype,
     'getFirstCoordinate',
     ol.geom.LineString.prototype.getFirstCoordinate);
 
@@ -122486,6 +122471,11 @@ goog.exportProperty(
     ol.geom.LineString.prototype,
     'getClosestPoint',
     ol.geom.LineString.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.LineString.prototype,
+    'getExtent',
+    ol.geom.LineString.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
@@ -122524,11 +122514,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
-    'getExtent',
-    ol.geom.MultiLineString.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.MultiLineString.prototype,
     'getFirstCoordinate',
     ol.geom.MultiLineString.prototype.getFirstCoordinate);
 
@@ -122556,6 +122541,11 @@ goog.exportProperty(
     ol.geom.MultiLineString.prototype,
     'getClosestPoint',
     ol.geom.MultiLineString.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.MultiLineString.prototype,
+    'getExtent',
+    ol.geom.MultiLineString.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
@@ -122594,11 +122584,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
-    'getExtent',
-    ol.geom.MultiPoint.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.MultiPoint.prototype,
     'getFirstCoordinate',
     ol.geom.MultiPoint.prototype.getFirstCoordinate);
 
@@ -122626,6 +122611,11 @@ goog.exportProperty(
     ol.geom.MultiPoint.prototype,
     'getClosestPoint',
     ol.geom.MultiPoint.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.MultiPoint.prototype,
+    'getExtent',
+    ol.geom.MultiPoint.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
@@ -122664,11 +122654,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
-    'getExtent',
-    ol.geom.MultiPolygon.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.MultiPolygon.prototype,
     'getFirstCoordinate',
     ol.geom.MultiPolygon.prototype.getFirstCoordinate);
 
@@ -122696,6 +122681,11 @@ goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
     'getClosestPoint',
     ol.geom.MultiPolygon.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.MultiPolygon.prototype,
+    'getExtent',
+    ol.geom.MultiPolygon.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
@@ -122764,6 +122754,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Point.prototype,
+    'getExtent',
+    ol.geom.Point.prototype.getExtent);
+
+goog.exportProperty(
+    ol.geom.Point.prototype,
     'transform',
     ol.geom.Point.prototype.transform);
 
@@ -122799,11 +122794,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
-    'getExtent',
-    ol.geom.Polygon.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.Polygon.prototype,
     'getFirstCoordinate',
     ol.geom.Polygon.prototype.getFirstCoordinate);
 
@@ -122831,6 +122821,11 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getClosestPoint',
     ol.geom.Polygon.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.Polygon.prototype,
+    'getExtent',
+    ol.geom.Polygon.prototype.getExtent);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
