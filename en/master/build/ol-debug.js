@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-49-gdafcdfa
+// Version: v3.1.1-53-gc23ae78
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -59292,6 +59292,7 @@ ol.layer.Vector = function(opt_options) {
 
   delete baseOptions.style;
   delete baseOptions.renderBuffer;
+  delete baseOptions.updateWhileAnimating;
   goog.base(this, /** @type {olx.layer.LayerOptions} */ (baseOptions));
 
   /**
@@ -59316,6 +59317,13 @@ ol.layer.Vector = function(opt_options) {
   this.styleFunction_ = undefined;
 
   this.setStyle(options.style);
+
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.updateWhileAnimating_ = goog.isDef(options.updateWhileAnimating) ?
+      options.updateWhileAnimating : false;
 
 };
 goog.inherits(ol.layer.Vector, ol.layer.Layer);
@@ -59366,6 +59374,15 @@ ol.layer.Vector.prototype.getStyle = function() {
  */
 ol.layer.Vector.prototype.getStyleFunction = function() {
   return this.styleFunction_;
+};
+
+
+/**
+ * @return {boolean} Whether the rendered layer should be updated while
+ *     animating.
+ */
+ol.layer.Vector.prototype.getUpdateWhileAnimating = function() {
+  return this.updateWhileAnimating_;
 };
 
 
@@ -65787,7 +65804,8 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
       frameState.attributions, vectorSource.getAttributions());
   this.updateLogos(frameState, vectorSource);
 
-  if (!this.dirty_ && (frameState.viewHints[ol.ViewHint.ANIMATING] ||
+  if (!this.dirty_ && (!vectorLayer.getUpdateWhileAnimating() &&
+      frameState.viewHints[ol.ViewHint.ANIMATING] ||
       frameState.viewHints[ol.ViewHint.INTERACTING])) {
     return true;
   }
@@ -67037,7 +67055,8 @@ ol.renderer.dom.VectorLayer.prototype.prepareFrame =
       frameState.attributions, vectorSource.getAttributions());
   this.updateLogos(frameState, vectorSource);
 
-  if (!this.dirty_ && (frameState.viewHints[ol.ViewHint.ANIMATING] ||
+  if (!this.dirty_ && (!vectorLayer.getUpdateWhileAnimating() &&
+      frameState.viewHints[ol.ViewHint.ANIMATING] ||
       frameState.viewHints[ol.ViewHint.INTERACTING])) {
     return true;
   }
@@ -72532,7 +72551,8 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
       frameState.attributions, vectorSource.getAttributions());
   this.updateLogos(frameState, vectorSource);
 
-  if (!this.dirty_ && (frameState.viewHints[ol.ViewHint.ANIMATING] ||
+  if (!this.dirty_ && (!vectorLayer.getUpdateWhileAnimating() &&
+      frameState.viewHints[ol.ViewHint.ANIMATING] ||
       frameState.viewHints[ol.ViewHint.INTERACTING])) {
     return true;
   }
@@ -74325,19 +74345,12 @@ ol.Map.prototype.getEventCoordinate = function(event) {
  * @api stable
  */
 ol.Map.prototype.getEventPixel = function(event) {
-  // Use the offsetX and offsetY values if available.
-  // See http://www.w3.org/TR/cssom-view/#dom-mouseevent-offsetx and
-  // http://www.w3.org/TR/cssom-view/#dom-mouseevent-offsety
-  if (goog.isDef(event.offsetX) && goog.isDef(event.offsetY)) {
-    return [event.offsetX, event.offsetY];
-  } else if (goog.isDef(event.changedTouches)) {
-    // offsetX and offsetY are not defined for Touch Event
-    //
-    // goog.style.getRelativePosition is based on event.targetTouches,
-    // but touchend and touchcancel events have no targetTouches when
-    // the last finger is removed from the screen.
-    // So we ourselves compute the position of touch events.
-    // See https://github.com/google/closure-library/pull/323
+  // goog.style.getRelativePosition is based on event.targetTouches,
+  // but touchend and touchcancel events have no targetTouches when
+  // the last finger is removed from the screen.
+  // So we ourselves compute the position of touch events.
+  // See https://github.com/google/closure-library/pull/323
+  if (goog.isDef(event.changedTouches)) {
     var touch = event.changedTouches[0];
     var viewportPosition = goog.style.getClientPosition(this.viewport_);
     return [
@@ -74345,8 +74358,6 @@ ol.Map.prototype.getEventPixel = function(event) {
       touch.clientY - viewportPosition.y
     ];
   } else {
-    // Compute offsetX and offsetY values for browsers that don't implement
-    // cssom-view specification
     var eventPosition = goog.style.getRelativePosition(event, this.viewport_);
     return [eventPosition.x, eventPosition.y];
   }
