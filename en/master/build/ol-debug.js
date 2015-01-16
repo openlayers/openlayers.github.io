@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-53-gc23ae78
+// Version: v3.1.1-57-g1033171
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -19546,7 +19546,7 @@ goog.exportProperty(
  * @return {Array.<number>} Hint.
  */
 ol.View.prototype.getHints = function() {
-  return goog.array.clone(this.hints_);
+  return this.hints_.slice();
 };
 
 
@@ -58678,7 +58678,7 @@ ol.layer.Group = function(opt_options) {
 
   if (goog.isDefAndNotNull(layers)) {
     if (goog.isArray(layers)) {
-      layers = new ol.Collection(goog.array.clone(layers));
+      layers = new ol.Collection(layers.slice());
     } else {
       goog.asserts.assertInstanceof(layers, ol.Collection);
       layers = layers;
@@ -75238,7 +75238,7 @@ ol.Map.createOptionsInternal = function(options) {
   var controls;
   if (goog.isDef(options.controls)) {
     if (goog.isArray(options.controls)) {
-      controls = new ol.Collection(goog.array.clone(options.controls));
+      controls = new ol.Collection(options.controls.slice());
     } else {
       goog.asserts.assertInstanceof(options.controls, ol.Collection);
       controls = options.controls;
@@ -75250,7 +75250,7 @@ ol.Map.createOptionsInternal = function(options) {
   var interactions;
   if (goog.isDef(options.interactions)) {
     if (goog.isArray(options.interactions)) {
-      interactions = new ol.Collection(goog.array.clone(options.interactions));
+      interactions = new ol.Collection(options.interactions.slice());
     } else {
       goog.asserts.assertInstanceof(options.interactions, ol.Collection);
       interactions = options.interactions;
@@ -75262,7 +75262,7 @@ ol.Map.createOptionsInternal = function(options) {
   var overlays;
   if (goog.isDef(options.overlays)) {
     if (goog.isArray(options.overlays)) {
-      overlays = new ol.Collection(goog.array.clone(options.overlays));
+      overlays = new ol.Collection(options.overlays.slice());
     } else {
       goog.asserts.assertInstanceof(options.overlays, ol.Collection);
       overlays = options.overlays;
@@ -81058,7 +81058,7 @@ ol.FeatureOverlay = function(opt_options) {
 
   if (goog.isDef(options.features)) {
     if (goog.isArray(options.features)) {
-      this.setFeatures(new ol.Collection(goog.array.clone(options.features)));
+      this.setFeatures(new ol.Collection(options.features.slice()));
     } else {
       goog.asserts.assertInstanceof(options.features, ol.Collection);
       this.setFeatures(options.features);
@@ -81288,7 +81288,6 @@ ol.FeatureOverlay.prototype.getStyleFunction = function() {
 
 goog.provide('ol.format.Feature');
 
-goog.require('goog.array');
 goog.require('ol.geom.Geometry');
 goog.require('ol.proj');
 
@@ -81465,7 +81464,7 @@ ol.format.Feature.transformWithOptions = function(
       // FIXME this is necessary because ol.format.GML treats extents
       // as geometries
       return ol.proj.transformExtent(
-          write ? goog.array.clone(geometry) : geometry,
+          write ? geometry.slice() : geometry,
           write ? featureProjection : dataProjection,
           write ? dataProjection : featureProjection);
     }
@@ -105058,7 +105057,7 @@ ol.source.Cluster.prototype.cluster_ = function() {
   if (!goog.isDef(this.resolution_)) {
     return;
   }
-  goog.array.clear(this.features_);
+  this.features_.length = 0;
   var extent = ol.extent.createEmpty();
   var mapDistance = this.distance_ * this.resolution_;
   var features = this.source_.getFeatures();
