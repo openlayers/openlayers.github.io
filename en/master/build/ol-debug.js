@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-67-g8bc72c6
+// Version: v3.1.1-81-gf625a29
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -49381,6 +49381,8 @@ goog.provide('ol.renderer.Layer');
 
 goog.require('goog.Disposable');
 goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.EventType');
 goog.require('ol.ImageState');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
@@ -49463,13 +49465,41 @@ ol.renderer.Layer.prototype.getMapRenderer = function() {
 /**
  * Handle changes in image state.
  * @param {goog.events.Event} event Image change event.
- * @protected
+ * @private
  */
-ol.renderer.Layer.prototype.handleImageChange = function(event) {
+ol.renderer.Layer.prototype.handleImageChange_ = function(event) {
   var image = /** @type {ol.Image} */ (event.target);
   if (image.getState() === ol.ImageState.LOADED) {
     this.renderIfReadyAndVisible();
   }
+};
+
+
+/**
+ * Load the image if not already loaded, and register the image change
+ * listener if needed.
+ * @param {ol.ImageBase} image Image.
+ * @return {boolean} `true` if the image is already loaded, `false`
+ *     otherwise.
+ * @protected
+ */
+ol.renderer.Layer.prototype.loadImage = function(image) {
+  var imageState = image.getState();
+  if (imageState != ol.ImageState.LOADED &&
+      imageState != ol.ImageState.ERROR) {
+    // the image is either "idle" or "loading", register the change
+    // listener (a noop if the listener was already registered)
+    goog.asserts.assert(imageState == ol.ImageState.IDLE ||
+        imageState == ol.ImageState.LOADING);
+    goog.events.listenOnce(image, goog.events.EventType.CHANGE,
+        this.handleImageChange_, false, this);
+  }
+  if (imageState == ol.ImageState.IDLE) {
+    image.load();
+    imageState = image.getState();
+    goog.asserts.assert(imageState == ol.ImageState.LOADING);
+  }
+  return imageState == ol.ImageState.LOADED;
 };
 
 
@@ -62776,11 +62806,8 @@ ol.renderer.canvas.Layer.testCanvasSize = (function() {
 goog.provide('ol.renderer.canvas.ImageLayer');
 
 goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.events.EventType');
 goog.require('goog.vec.Mat4');
 goog.require('ol.ImageBase');
-goog.require('ol.ImageState');
 goog.require('ol.ViewHint');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
@@ -62892,12 +62919,8 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
     image = imageSource.getImage(
         renderedExtent, viewResolution, pixelRatio, projection);
     if (!goog.isNull(image)) {
-      var imageState = image.getState();
-      if (imageState == ol.ImageState.IDLE) {
-        goog.events.listenOnce(image, goog.events.EventType.CHANGE,
-            this.handleImageChange, false, this);
-        image.load();
-      } else if (imageState == ol.ImageState.LOADED) {
+      var loaded = this.loadImage(image);
+      if (loaded) {
         this.image_ = image;
       }
     }
@@ -65371,18 +65394,11 @@ ol.renderer.vector.renderFeature = function(
   var loading = false;
   var imageStyle, imageState;
   imageStyle = style.getImage();
-  if (goog.isNull(imageStyle)) {
-    ol.renderer.vector.renderFeature_(
-        replayGroup, feature, style, squaredTolerance);
-  } else {
+  if (!goog.isNull(imageStyle)) {
     imageState = imageStyle.getImageState();
     if (imageState == ol.style.ImageState.LOADED ||
         imageState == ol.style.ImageState.ERROR) {
       imageStyle.unlistenImageChange(listener, thisArg);
-      if (imageState == ol.style.ImageState.LOADED) {
-        ol.renderer.vector.renderFeature_(
-            replayGroup, feature, style, squaredTolerance);
-      }
     } else {
       if (imageState == ol.style.ImageState.IDLE) {
         imageStyle.load();
@@ -65393,6 +65409,8 @@ ol.renderer.vector.renderFeature = function(
       loading = true;
     }
   }
+  ol.renderer.vector.renderFeature_(replayGroup, feature, style,
+      squaredTolerance);
   return loading;
 };
 
@@ -65537,6 +65555,9 @@ ol.renderer.vector.renderPointGeometry_ =
   goog.asserts.assertInstanceof(geometry, ol.geom.Point);
   var imageStyle = style.getImage();
   if (!goog.isNull(imageStyle)) {
+    if (imageStyle.getImageState() != ol.style.ImageState.LOADED) {
+      return;
+    }
     var imageReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.IMAGE);
     imageReplay.setImageStyle(imageStyle);
@@ -65564,6 +65585,9 @@ ol.renderer.vector.renderMultiPointGeometry_ =
   goog.asserts.assertInstanceof(geometry, ol.geom.MultiPoint);
   var imageStyle = style.getImage();
   if (!goog.isNull(imageStyle)) {
+    if (imageStyle.getImageState() != ol.style.ImageState.LOADED) {
+      return;
+    }
     var imageReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.IMAGE);
     imageReplay.setImageStyle(imageStyle);
@@ -65779,7 +65803,7 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel =
  * @param {goog.events.Event} event Image style change event.
  * @private
  */
-ol.renderer.canvas.VectorLayer.prototype.handleImageChange_ =
+ol.renderer.canvas.VectorLayer.prototype.handleStyleImageChange_ =
     function(event) {
   this.renderIfReadyAndVisible();
 };
@@ -65904,7 +65928,7 @@ ol.renderer.canvas.VectorLayer.prototype.renderFeature =
     loading = ol.renderer.vector.renderFeature(
         replayGroup, feature, styles[i],
         ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
-        this.handleImageChange_, this) || loading;
+        this.handleStyleImageChange_, this) || loading;
   }
   return loading;
 };
@@ -66179,11 +66203,8 @@ goog.provide('ol.renderer.dom.ImageLayer');
 goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
-goog.require('goog.events');
-goog.require('goog.events.EventType');
 goog.require('goog.vec.Mat4');
 goog.require('ol.ImageBase');
-goog.require('ol.ImageState');
 goog.require('ol.ViewHint');
 goog.require('ol.dom');
 goog.require('ol.extent');
@@ -66289,12 +66310,8 @@ ol.renderer.dom.ImageLayer.prototype.prepareFrame =
     var image_ = imageSource.getImage(renderedExtent, viewResolution,
         frameState.pixelRatio, projection);
     if (!goog.isNull(image_)) {
-      var imageState = image_.getState();
-      if (imageState == ol.ImageState.IDLE) {
-        goog.events.listenOnce(image_, goog.events.EventType.CHANGE,
-            this.handleImageChange, false, this);
-        image_.load();
-      } else if (imageState == ol.ImageState.LOADED) {
+      var loaded = this.loadImage(image_);
+      if (loaded) {
         image = image_;
       }
     }
@@ -67030,7 +67047,7 @@ ol.renderer.dom.VectorLayer.prototype.forEachFeatureAtPixel =
  * @param {goog.events.Event} event Image style change event.
  * @private
  */
-ol.renderer.dom.VectorLayer.prototype.handleImageChange_ =
+ol.renderer.dom.VectorLayer.prototype.handleStyleImageChange_ =
     function(event) {
   this.renderIfReadyAndVisible();
 };
@@ -67155,7 +67172,7 @@ ol.renderer.dom.VectorLayer.prototype.renderFeature =
     loading = ol.renderer.vector.renderFeature(
         replayGroup, feature, styles[i],
         ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
-        this.handleImageChange_, this) || loading;
+        this.handleStyleImageChange_, this) || loading;
   }
   return loading;
 };
@@ -71760,14 +71777,11 @@ ol.renderer.webgl.Layer.prototype.prepareFrame = goog.abstractMethod;
 goog.provide('ol.renderer.webgl.ImageLayer');
 
 goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.events.EventType');
 goog.require('goog.vec.Mat4');
 goog.require('goog.webgl');
 goog.require('ol.Coordinate');
 goog.require('ol.Extent');
 goog.require('ol.ImageBase');
-goog.require('ol.ImageState');
 goog.require('ol.ViewHint');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
@@ -71892,12 +71906,8 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
     var image_ = imageSource.getImage(renderedExtent, viewResolution,
         frameState.pixelRatio, projection);
     if (!goog.isNull(image_)) {
-      var imageState = image_.getState();
-      if (imageState == ol.ImageState.IDLE) {
-        goog.events.listenOnce(image_, goog.events.EventType.CHANGE,
-            this.handleImageChange, false, this);
-        image_.load();
-      } else if (imageState == ol.ImageState.LOADED) {
+      var loaded = this.loadImage(image_);
+      if (loaded) {
         image = image_;
         texture = this.createTexture_(image_);
         if (!goog.isNull(this.texture)) {
@@ -72526,7 +72536,7 @@ ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtPixel =
  * @param {goog.events.Event} event Image style change event.
  * @private
  */
-ol.renderer.webgl.VectorLayer.prototype.handleImageChange_ =
+ol.renderer.webgl.VectorLayer.prototype.handleStyleImageChange_ =
     function(event) {
   this.renderIfReadyAndVisible();
 };
@@ -72651,7 +72661,7 @@ ol.renderer.webgl.VectorLayer.prototype.renderFeature =
     loading = ol.renderer.vector.renderFeature(
         replayGroup, feature, styles[i],
         ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
-        this.handleImageChange_, this) || loading;
+        this.handleStyleImageChange_, this) || loading;
   }
   return loading;
 };
@@ -81318,8 +81328,7 @@ ol.format.Feature.prototype.getExtensions = goog.abstractMethod;
  * @return {olx.format.ReadOptions|undefined} Options.
  * @protected
  */
-ol.format.Feature.prototype.getReadOptions = function(
-    source, opt_options) {
+ol.format.Feature.prototype.getReadOptions = function(source, opt_options) {
   var options;
   if (goog.isDef(opt_options)) {
     options = {
@@ -81341,8 +81350,7 @@ ol.format.Feature.prototype.getReadOptions = function(
  * @return {olx.format.WriteOptions|olx.format.ReadOptions|undefined}
  *     Updated options.
  */
-ol.format.Feature.prototype.adaptOptions = function(
-    options) {
+ol.format.Feature.prototype.adaptOptions = function(options) {
   var updatedOptions;
   if (goog.isDef(options)) {
     updatedOptions = {
@@ -83855,7 +83863,9 @@ ol.format.XMLFeature.prototype.readProjection = function(source) {
  * @protected
  * @return {ol.proj.Projection} Projection.
  */
-ol.format.XMLFeature.prototype.readProjectionFromDocument = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readProjectionFromDocument = function(doc) {
+  return this.defaultDataProjection;
+};
 
 
 /**
@@ -83863,7 +83873,9 @@ ol.format.XMLFeature.prototype.readProjectionFromDocument = goog.abstractMethod;
  * @protected
  * @return {ol.proj.Projection} Projection.
  */
-ol.format.XMLFeature.prototype.readProjectionFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readProjectionFromNode = function(node) {
+  return this.defaultDataProjection;
+};
 
 
 /**
@@ -86741,22 +86753,6 @@ ol.format.GPX.prototype.readProjection;
 
 
 /**
- * @inheritDoc
- */
-ol.format.GPX.prototype.readProjectionFromDocument = function(doc) {
-  return this.defaultDataProjection;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.format.GPX.prototype.readProjectionFromNode = function(node) {
-  return this.defaultDataProjection;
-};
-
-
-/**
  * @param {Node} node Node.
  * @param {string} value Value for the link's `href` attribute.
  * @param {Array.<*>} objectStack Node stack.
@@ -87401,7 +87397,9 @@ ol.format.TextFeature.prototype.readProjection = function(source) {
  * @protected
  * @return {ol.proj.Projection} Projection.
  */
-ol.format.TextFeature.prototype.readProjectionFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.readProjectionFromText = function(text) {
+  return this.defaultDataProjection;
+};
 
 
 /**
@@ -87676,14 +87674,6 @@ ol.format.IGC.prototype.readFeaturesFromText = function(text, opt_options) {
  * @api
  */
 ol.format.IGC.prototype.readProjection;
-
-
-/**
- * @inheritDoc
- */
-ol.format.IGC.prototype.readProjectionFromText = function(text) {
-  return this.defaultDataProjection;
-};
 
 goog.provide('ol.style.Text');
 
@@ -89684,22 +89674,6 @@ ol.format.KML.prototype.readProjection;
 
 
 /**
- * @inheritDoc
- */
-ol.format.KML.prototype.readProjectionFromDocument = function(doc) {
-  return this.defaultDataProjection;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.format.KML.prototype.readProjectionFromNode = function(node) {
-  return this.defaultDataProjection;
-};
-
-
-/**
  * @param {Node} node Node to append a TextNode with the color to.
  * @param {ol.Color|string} color Color.
  * @private
@@ -90817,22 +90791,6 @@ ol.format.OSMXML.prototype.readFeaturesFromNode = function(node, opt_options) {
  */
 ol.format.OSMXML.prototype.readProjection;
 
-
-/**
- * @inheritDoc
- */
-ol.format.OSMXML.prototype.readProjectionFromDocument = function(doc) {
-  return this.defaultDataProjection;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.format.OSMXML.prototype.readProjectionFromNode = function(node) {
-  return this.defaultDataProjection;
-};
-
 goog.provide('ol.format.XLink');
 
 
@@ -91780,14 +91738,6 @@ ol.format.Polyline.prototype.readGeometryFromText =
  * @api stable
  */
 ol.format.Polyline.prototype.readProjection;
-
-
-/**
- * @inheritDoc
- */
-ol.format.Polyline.prototype.readProjectionFromText = function(text) {
-  return this.defaultDataProjection;
-};
 
 
 /**
@@ -93310,14 +93260,6 @@ ol.format.WKT.prototype.readGeometryFromText = function(text, opt_options) {
   } else {
     return null;
   }
-};
-
-
-/**
- * @inheritDoc
- */
-ol.format.WKT.prototype.readProjectionFromText = function(text) {
-  return null;
 };
 
 
