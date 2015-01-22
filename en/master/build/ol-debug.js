@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-81-gf625a29
+// Version: v3.1.1-100-g1702a4e
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -49436,6 +49436,14 @@ ol.renderer.Layer.prototype.forEachFeatureAtPixel = goog.nullFunction;
 
 
 /**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {olx.FrameState} frameState Frame state.
+ * @return {boolean} Is there a feature at the given pixel?
+ */
+ol.renderer.Layer.prototype.hasFeatureAtPixel = goog.functions.FALSE;
+
+
+/**
  * @protected
  * @return {ol.layer.Layer} Layer.
  */
@@ -49862,13 +49870,6 @@ ol.style.Image.prototype.getOrigin = goog.abstractMethod;
 
 /**
  * @function
- * @return {Array.<number>} Origin for the hit-detection image.
- */
-ol.style.Image.prototype.getHitDetectionOrigin = goog.abstractMethod;
-
-
-/**
- * @function
  * @return {ol.Size} Size.
  */
 ol.style.Image.prototype.getSize = goog.abstractMethod;
@@ -50248,14 +50249,6 @@ ol.style.Icon.prototype.getOrigin = function() {
   }
   this.origin_ = offset;
   return this.origin_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.style.Icon.prototype.getHitDetectionOrigin = function() {
-  return this.getOrigin();
 };
 
 
@@ -50856,6 +50849,26 @@ ol.renderer.Map.prototype.forEachFeatureAtPixel =
     }
   }
   return undefined;
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {olx.FrameState} frameState FrameState.
+ * @param {function(this: U, ol.layer.Layer): boolean} layerFilter Layer filter
+ *     function, only layers which are visible and for which this function
+ *     returns `true` will be tested for features.  By default, all visible
+ *     layers will be tested.
+ * @param {U} thisArg Value to use as `this` when executing `layerFilter`.
+ * @return {boolean} Is there a feature at the given pixel?
+ * @template U
+ */
+ol.renderer.Map.prototype.hasFeatureAtPixel =
+    function(coordinate, frameState, layerFilter, thisArg) {
+  var hasFeature = this.forEachFeatureAtPixel(
+      coordinate, frameState, goog.functions.TRUE, this, layerFilter, thisArg);
+
+  return goog.isDef(hasFeature);
 };
 
 
@@ -57088,12 +57101,6 @@ ol.style.Circle = function(opt_options) {
    * @private
    * @type {Array.<number>}
    */
-  this.hitDetectionOrigin_ = [0, 0];
-
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
   this.anchor_ = null;
 
   /**
@@ -57200,14 +57207,6 @@ ol.style.Circle.prototype.getHitDetectionImageSize = function() {
  */
 ol.style.Circle.prototype.getOrigin = function() {
   return this.origin_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.style.Circle.prototype.getHitDetectionOrigin = function() {
-  return this.hitDetectionOrigin_;
 };
 
 
@@ -57337,12 +57336,10 @@ ol.style.Circle.prototype.render_ = function(atlasManager) {
 
     if (hasCustomHitDetectionImage) {
       this.hitDetectionCanvas_ = info.hitImage;
-      this.hitDetectionOrigin_ = [info.hitOffsetX, info.hitOffsetY];
       this.hitDetectionImageSize_ =
           [info.hitImage.width, info.hitImage.height];
     } else {
       this.hitDetectionCanvas_ = this.canvas_;
-      this.hitDetectionOrigin_ = this.origin_;
       this.hitDetectionImageSize_ = [imageSize, imageSize];
     }
   }
@@ -62460,6 +62457,8 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(
   var zs = goog.array.map(goog.object.getKeys(this.replaysByZIndex_), Number);
   goog.array.sort(zs);
 
+  // setup clipping so that the parts of over-simplified geometries are not
+  // visible outside the current extent when panning
   var maxExtent = this.maxExtent_;
   var minX = maxExtent[0];
   var minY = maxExtent[1];
@@ -70089,6 +70088,417 @@ ol.webgl.Buffer.prototype.getUsage = function() {
   return this.usage_;
 };
 
+goog.provide('ol.webgl.Context');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.log');
+goog.require('goog.object');
+goog.require('ol');
+goog.require('ol.webgl.Buffer');
+goog.require('ol.webgl.WebGLContextEventType');
+
+
+/**
+ * @typedef {{buf: ol.webgl.Buffer,
+ *            buffer: WebGLBuffer}}
+ */
+ol.webgl.BufferCacheEntry;
+
+
+
+/**
+ * @classdesc
+ * A WebGL context for accessing low-level WebGL capabilities.
+ *
+ * @constructor
+ * @extends {goog.events.EventTarget}
+ * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {WebGLRenderingContext} gl GL.
+ * @api
+ */
+ol.webgl.Context = function(canvas, gl) {
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.canvas_ = canvas;
+
+  /**
+   * @private
+   * @type {WebGLRenderingContext}
+   */
+  this.gl_ = gl;
+
+  /**
+   * @private
+   * @type {Object.<number, ol.webgl.BufferCacheEntry>}
+   */
+  this.bufferCache_ = {};
+
+  /**
+   * @private
+   * @type {Object.<number, WebGLShader>}
+   */
+  this.shaderCache_ = {};
+
+  /**
+   * @private
+   * @type {Object.<string, WebGLProgram>}
+   */
+  this.programCache_ = {};
+
+  /**
+   * @private
+   * @type {WebGLProgram}
+   */
+  this.currentProgram_ = null;
+
+  /**
+   * @private
+   * @type {WebGLFramebuffer}
+   */
+  this.hitDetectionFramebuffer_ = null;
+
+  /**
+   * @private
+   * @type {WebGLTexture}
+   */
+  this.hitDetectionTexture_ = null;
+
+  /**
+   * @private
+   * @type {WebGLRenderbuffer}
+   */
+  this.hitDetectionRenderbuffer_ = null;
+
+  /**
+   * @type {boolean}
+   */
+  this.hasOESElementIndexUint = goog.array.contains(
+      ol.WEBGL_EXTENSIONS, 'OES_element_index_uint');
+
+  // use the OES_element_index_uint extension if available
+  if (this.hasOESElementIndexUint) {
+    var ext = gl.getExtension('OES_element_index_uint');
+    goog.asserts.assert(!goog.isNull(ext));
+  }
+
+  goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.LOST,
+      this.handleWebGLContextLost, false, this);
+  goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.RESTORED,
+      this.handleWebGLContextRestored, false, this);
+
+};
+
+
+/**
+ * Just bind the buffer if it's in the cache. Otherwise create
+ * the WebGL buffer, bind it, populate it, and add an entry to
+ * the cache.
+ * @param {number} target Target.
+ * @param {ol.webgl.Buffer} buf Buffer.
+ */
+ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
+  var gl = this.getGL();
+  var arr = buf.getArray();
+  var bufferKey = goog.getUid(buf);
+  if (bufferKey in this.bufferCache_) {
+    var bufferCacheEntry = this.bufferCache_[bufferKey];
+    gl.bindBuffer(target, bufferCacheEntry.buffer);
+  } else {
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(target, buffer);
+    goog.asserts.assert(target == goog.webgl.ARRAY_BUFFER ||
+        target == goog.webgl.ELEMENT_ARRAY_BUFFER);
+    var /** @type {ArrayBufferView} */ arrayBuffer;
+    if (target == goog.webgl.ARRAY_BUFFER) {
+      arrayBuffer = new Float32Array(arr);
+    } else if (target == goog.webgl.ELEMENT_ARRAY_BUFFER) {
+      arrayBuffer = this.hasOESElementIndexUint ?
+          new Uint32Array(arr) : new Uint16Array(arr);
+    } else {
+      goog.asserts.fail();
+    }
+    gl.bufferData(target, arrayBuffer, buf.getUsage());
+    this.bufferCache_[bufferKey] = {
+      buf: buf,
+      buffer: buffer
+    };
+  }
+};
+
+
+/**
+ * @param {ol.webgl.Buffer} buf Buffer.
+ */
+ol.webgl.Context.prototype.deleteBuffer = function(buf) {
+  var gl = this.getGL();
+  var bufferKey = goog.getUid(buf);
+  goog.asserts.assert(bufferKey in this.bufferCache_);
+  var bufferCacheEntry = this.bufferCache_[bufferKey];
+  if (!gl.isContextLost()) {
+    gl.deleteBuffer(bufferCacheEntry.buffer);
+  }
+  delete this.bufferCache_[bufferKey];
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.webgl.Context.prototype.disposeInternal = function() {
+  var gl = this.getGL();
+  if (!gl.isContextLost()) {
+    goog.object.forEach(this.bufferCache_, function(bufferCacheEntry) {
+      gl.deleteBuffer(bufferCacheEntry.buffer);
+    });
+    goog.object.forEach(this.programCache_, function(program) {
+      gl.deleteProgram(program);
+    });
+    goog.object.forEach(this.shaderCache_, function(shader) {
+      gl.deleteShader(shader);
+    });
+    // delete objects for hit-detection
+    gl.deleteFramebuffer(this.hitDetectionFramebuffer_);
+    gl.deleteRenderbuffer(this.hitDetectionRenderbuffer_);
+    gl.deleteTexture(this.hitDetectionTexture_);
+  }
+};
+
+
+/**
+ * @return {HTMLCanvasElement} Canvas.
+ */
+ol.webgl.Context.prototype.getCanvas = function() {
+  return this.canvas_;
+};
+
+
+/**
+ * @return {WebGLRenderingContext} GL.
+ * @api
+ */
+ol.webgl.Context.prototype.getGL = function() {
+  return this.gl_;
+};
+
+
+/**
+ * @return {WebGLFramebuffer} The framebuffer for the hit-detection.
+ * @api
+ */
+ol.webgl.Context.prototype.getHitDetectionFramebuffer = function() {
+  if (goog.isNull(this.hitDetectionFramebuffer_)) {
+    this.initHitDetectionFramebuffer_();
+  }
+  return this.hitDetectionFramebuffer_;
+};
+
+
+/**
+ * Get shader from the cache if it's in the cache. Otherwise, create
+ * the WebGL shader, compile it, and add entry to cache.
+ * @param {ol.webgl.Shader} shaderObject Shader object.
+ * @return {WebGLShader} Shader.
+ */
+ol.webgl.Context.prototype.getShader = function(shaderObject) {
+  var shaderKey = goog.getUid(shaderObject);
+  if (shaderKey in this.shaderCache_) {
+    return this.shaderCache_[shaderKey];
+  } else {
+    var gl = this.getGL();
+    var shader = gl.createShader(shaderObject.getType());
+    gl.shaderSource(shader, shaderObject.getSource());
+    gl.compileShader(shader);
+    if (goog.DEBUG) {
+      if (!gl.getShaderParameter(shader, goog.webgl.COMPILE_STATUS) &&
+          !gl.isContextLost()) {
+        goog.log.error(this.logger_, gl.getShaderInfoLog(shader));
+      }
+    }
+    goog.asserts.assert(
+        gl.getShaderParameter(shader, goog.webgl.COMPILE_STATUS) ||
+        gl.isContextLost());
+    this.shaderCache_[shaderKey] = shader;
+    return shader;
+  }
+};
+
+
+/**
+ * Get the program from the cache if it's in the cache. Otherwise create
+ * the WebGL program, attach the shaders to it, and add an entry to the
+ * cache.
+ * @param {ol.webgl.shader.Fragment} fragmentShaderObject Fragment shader.
+ * @param {ol.webgl.shader.Vertex} vertexShaderObject Vertex shader.
+ * @return {WebGLProgram} Program.
+ */
+ol.webgl.Context.prototype.getProgram = function(
+    fragmentShaderObject, vertexShaderObject) {
+  var programKey =
+      goog.getUid(fragmentShaderObject) + '/' + goog.getUid(vertexShaderObject);
+  if (programKey in this.programCache_) {
+    return this.programCache_[programKey];
+  } else {
+    var gl = this.getGL();
+    var program = gl.createProgram();
+    gl.attachShader(program, this.getShader(fragmentShaderObject));
+    gl.attachShader(program, this.getShader(vertexShaderObject));
+    gl.linkProgram(program);
+    if (goog.DEBUG) {
+      if (!gl.getProgramParameter(program, goog.webgl.LINK_STATUS) &&
+          !gl.isContextLost()) {
+        goog.log.error(this.logger_, gl.getProgramInfoLog(program));
+      }
+    }
+    goog.asserts.assert(
+        gl.getProgramParameter(program, goog.webgl.LINK_STATUS) ||
+        gl.isContextLost());
+    this.programCache_[programKey] = program;
+    return program;
+  }
+};
+
+
+/**
+ * FIXME empy description for jsdoc
+ */
+ol.webgl.Context.prototype.handleWebGLContextLost = function() {
+  goog.object.clear(this.bufferCache_);
+  goog.object.clear(this.shaderCache_);
+  goog.object.clear(this.programCache_);
+  this.currentProgram_ = null;
+  this.hitDetectionFramebuffer_ = null;
+  this.hitDetectionTexture_ = null;
+  this.hitDetectionRenderbuffer_ = null;
+};
+
+
+/**
+ * FIXME empy description for jsdoc
+ */
+ol.webgl.Context.prototype.handleWebGLContextRestored = function() {
+};
+
+
+/**
+ * Creates a 1x1 pixel framebuffer for the hit-detection.
+ * @private
+ */
+ol.webgl.Context.prototype.initHitDetectionFramebuffer_ = function() {
+  var gl = this.gl_;
+  var framebuffer = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+
+  var texture = ol.webgl.Context.createEmptyTexture(gl, 1, 1);
+  var renderbuffer = gl.createRenderbuffer();
+  gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+  gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, 1, 1);
+  gl.framebufferTexture2D(
+      gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+  gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT,
+      gl.RENDERBUFFER, renderbuffer);
+
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+  this.hitDetectionFramebuffer_ = framebuffer;
+  this.hitDetectionTexture_ = texture;
+  this.hitDetectionRenderbuffer_ = renderbuffer;
+};
+
+
+/**
+ * Just return false if that program is used already. Other use
+ * that program (call `gl.useProgram`) and make it the "current
+ * program".
+ * @param {WebGLProgram} program Program.
+ * @return {boolean} Changed.
+ * @api
+ */
+ol.webgl.Context.prototype.useProgram = function(program) {
+  if (program == this.currentProgram_) {
+    return false;
+  } else {
+    var gl = this.getGL();
+    gl.useProgram(program);
+    this.currentProgram_ = program;
+    return true;
+  }
+};
+
+
+/**
+ * @private
+ * @type {goog.log.Logger}
+ */
+ol.webgl.Context.prototype.logger_ = goog.log.getLogger('ol.webgl.Context');
+
+
+/**
+ * @param {WebGLRenderingContext} gl WebGL rendering context.
+ * @param {number=} opt_wrapS wrapS.
+ * @param {number=} opt_wrapT wrapT.
+ * @return {WebGLTexture}
+ * @private
+ */
+ol.webgl.Context.createTexture_ = function(gl, opt_wrapS, opt_wrapT) {
+  var texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+  if (goog.isDef(opt_wrapS)) {
+    gl.texParameteri(
+        goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_WRAP_S, opt_wrapS);
+  }
+  if (goog.isDef(opt_wrapT)) {
+    gl.texParameteri(
+        goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_WRAP_T, opt_wrapT);
+  }
+
+  return texture;
+};
+
+
+/**
+ * @param {WebGLRenderingContext} gl WebGL rendering context.
+ * @param {number} width Width.
+ * @param {number} height Height.
+ * @param {number=} opt_wrapS wrapS.
+ * @param {number=} opt_wrapT wrapT.
+ * @return {WebGLTexture}
+ */
+ol.webgl.Context.createEmptyTexture = function(
+    gl, width, height, opt_wrapS, opt_wrapT) {
+  var texture = ol.webgl.Context.createTexture_(gl, opt_wrapS, opt_wrapT);
+  gl.texImage2D(
+      gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+      null);
+
+  return texture;
+};
+
+
+/**
+ * @param {WebGLRenderingContext} gl WebGL rendering context.
+ * @param {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} image Image.
+ * @param {number=} opt_wrapS wrapS.
+ * @param {number=} opt_wrapT wrapT.
+ * @return {WebGLTexture}
+ */
+ol.webgl.Context.createTexture = function(gl, image, opt_wrapS, opt_wrapT) {
+  var texture = ol.webgl.Context.createTexture_(gl, opt_wrapS, opt_wrapT);
+  gl.texImage2D(
+      gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+  return texture;
+};
+
 goog.provide('ol.render.webgl.ImageReplay');
 goog.provide('ol.render.webgl.ReplayGroup');
 
@@ -70104,6 +70514,7 @@ goog.require('ol.render.webgl.imagereplay.shader.Color');
 goog.require('ol.render.webgl.imagereplay.shader.Default');
 goog.require('ol.vec.Mat4');
 goog.require('ol.webgl.Buffer');
+goog.require('ol.webgl.Context');
 
 
 
@@ -70152,6 +70563,12 @@ ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
   this.groupIndices_ = [];
 
   /**
+   * @type {Array.<number>}
+   * @private
+   */
+  this.hitDetectionGroupIndices_ = [];
+
+  /**
    * @type {number|undefined}
    * @private
    */
@@ -70162,6 +70579,12 @@ ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
    * @private
    */
   this.images_ = [];
+
+  /**
+   * @type {Array.<HTMLCanvasElement|HTMLImageElement|HTMLVideoElement>}
+   * @private
+   */
+  this.hitDetectionImages_ = [];
 
   /**
    * @type {number|undefined}
@@ -70260,6 +70683,12 @@ ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
   this.textures_ = [];
 
   /**
+   * @type {Array.<WebGLTexture>}
+   * @private
+   */
+  this.hitDetectionTextures_ = [];
+
+  /**
    * @type {Array.<number>}
    * @private
    */
@@ -70270,6 +70699,20 @@ ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
    * @private
    */
   this.verticesBuffer_ = null;
+
+  /**
+   * Start index per feature (the index).
+   * @type {Array.<number>}
+   * @private
+   */
+  this.startIndices_ = [];
+
+  /**
+   * Start index per feature (the feature).
+   * @type {Array.<ol.Feature>}
+   * @private
+   */
+  this.startIndicesFeature_ = [];
 
   /**
    * @type {number|undefined}
@@ -70295,12 +70738,16 @@ ol.render.webgl.ImageReplay.prototype.getDeleteResourcesFunction =
   var verticesBuffer = this.verticesBuffer_;
   var indicesBuffer = this.indicesBuffer_;
   var textures = this.textures_;
+  var hitDetectionTextures = this.hitDetectionTextures_;
   var gl = context.getGL();
   return function() {
     if (!gl.isContextLost()) {
       var i, ii;
       for (i = 0, ii = textures.length; i < ii; ++i) {
         gl.deleteTexture(textures[i]);
+      }
+      for (i = 0, ii = hitDetectionTextures.length; i < ii; ++i) {
+        gl.deleteTexture(hitDetectionTextures[i]);
       }
     }
     context.deleteBuffer(verticesBuffer);
@@ -70468,6 +70915,8 @@ ol.render.webgl.ImageReplay.prototype.drawMultiLineStringGeometry =
  */
 ol.render.webgl.ImageReplay.prototype.drawMultiPointGeometry =
     function(multiPointGeometry, feature) {
+  this.startIndices_.push(this.indices_.length);
+  this.startIndicesFeature_.push(feature);
   var flatCoordinates = multiPointGeometry.getFlatCoordinates();
   var stride = multiPointGeometry.getStride();
   this.drawCoordinates_(
@@ -70487,6 +70936,8 @@ ol.render.webgl.ImageReplay.prototype.drawMultiPolygonGeometry =
  */
 ol.render.webgl.ImageReplay.prototype.drawPointGeometry =
     function(pointGeometry, feature) {
+  this.startIndices_.push(this.indices_.length);
+  this.startIndicesFeature_.push(feature);
   var flatCoordinates = pointGeometry.getFlatCoordinates();
   var stride = pointGeometry.getStride();
   this.drawCoordinates_(
@@ -70513,7 +70964,10 @@ ol.render.webgl.ImageReplay.prototype.finish = function(context) {
   var gl = context.getGL();
 
   this.groupIndices_.push(this.indices_.length);
-  goog.asserts.assert(this.images_.length == this.groupIndices_.length);
+  goog.asserts.assert(this.images_.length === this.groupIndices_.length);
+  this.hitDetectionGroupIndices_.push(this.indices_.length);
+  goog.asserts.assert(this.hitDetectionImages_.length ===
+      this.hitDetectionGroupIndices_.length);
 
   // create, bind, and populate the vertices buffer
   this.verticesBuffer_ = new ol.webgl.Buffer(this.vertices_);
@@ -70529,44 +70983,23 @@ ol.render.webgl.ImageReplay.prototype.finish = function(context) {
   this.indicesBuffer_ = new ol.webgl.Buffer(indices);
   context.bindBuffer(goog.webgl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer_);
 
-  goog.asserts.assert(this.textures_.length === 0);
-
   // create textures
-  var texture, image, uid;
   /** @type {Object.<string, WebGLTexture>} */
   var texturePerImage = {};
-  var i;
-  var ii = this.images_.length;
-  for (i = 0; i < ii; ++i) {
-    image = this.images_[i];
 
-    uid = goog.getUid(image).toString();
-    if (goog.object.containsKey(texturePerImage, uid)) {
-      texture = texturePerImage[uid];
-    } else {
-      texture = gl.createTexture();
-      gl.bindTexture(goog.webgl.TEXTURE_2D, texture);
-      gl.texParameteri(goog.webgl.TEXTURE_2D,
-          goog.webgl.TEXTURE_WRAP_S, goog.webgl.CLAMP_TO_EDGE);
-      gl.texParameteri(goog.webgl.TEXTURE_2D,
-          goog.webgl.TEXTURE_WRAP_T, goog.webgl.CLAMP_TO_EDGE);
-      gl.texParameteri(goog.webgl.TEXTURE_2D,
-          goog.webgl.TEXTURE_MIN_FILTER, goog.webgl.LINEAR);
-      gl.texParameteri(goog.webgl.TEXTURE_2D,
-          goog.webgl.TEXTURE_MAG_FILTER, goog.webgl.LINEAR);
-      gl.texImage2D(goog.webgl.TEXTURE_2D, 0, goog.webgl.RGBA, goog.webgl.RGBA,
-          goog.webgl.UNSIGNED_BYTE, image);
-      texturePerImage[uid] = texture;
-    }
-    this.textures_[i] = texture;
-  }
+  this.createTextures_(this.textures_, this.images_, texturePerImage, gl);
+  goog.asserts.assert(this.textures_.length === this.groupIndices_.length);
 
-  goog.asserts.assert(this.textures_.length == this.groupIndices_.length);
+  this.createTextures_(this.hitDetectionTextures_, this.hitDetectionImages_,
+      texturePerImage, gl);
+  goog.asserts.assert(this.hitDetectionTextures_.length ===
+      this.hitDetectionGroupIndices_.length);
 
   this.anchorX_ = undefined;
   this.anchorY_ = undefined;
   this.height_ = undefined;
   this.images_ = null;
+  this.hitDetectionImages_ = null;
   this.imageHeight_ = undefined;
   this.imageWidth_ = undefined;
   this.indices_ = null;
@@ -70578,6 +71011,36 @@ ol.render.webgl.ImageReplay.prototype.finish = function(context) {
   this.scale_ = undefined;
   this.vertices_ = null;
   this.width_ = undefined;
+};
+
+
+/**
+ * @private
+ * @param {Array.<WebGLTexture>} textures Textures.
+ * @param {Array.<HTMLCanvasElement|HTMLImageElement|HTMLVideoElement>} images
+ *    Images.
+ * @param {Object.<string, WebGLTexture>} texturePerImage Texture cache.
+ * @param {WebGLRenderingContext} gl Gl.
+ */
+ol.render.webgl.ImageReplay.prototype.createTextures_ =
+    function(textures, images, texturePerImage, gl) {
+  goog.asserts.assert(textures.length === 0);
+
+  var texture, image, uid, i;
+  var ii = images.length;
+  for (i = 0; i < ii; ++i) {
+    image = images[i];
+
+    uid = goog.getUid(image).toString();
+    if (goog.object.containsKey(texturePerImage, uid)) {
+      texture = texturePerImage[uid];
+    } else {
+      texture = ol.webgl.Context.createTexture(
+          gl, image, goog.webgl.CLAMP_TO_EDGE, goog.webgl.CLAMP_TO_EDGE);
+      texturePerImage[uid] = texture;
+    }
+    textures[i] = texture;
+  }
 };
 
 
@@ -70594,12 +71057,17 @@ ol.render.webgl.ImageReplay.prototype.finish = function(context) {
  * @param {number} hue Global hue.
  * @param {number} saturation Global saturation.
  * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {boolean} oneByOne Draw features one-by-one for the hit-detecion.
+ * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
+ *  this extent are checked.
  * @return {T|undefined} Callback result.
  * @template T
  */
 ol.render.webgl.ImageReplay.prototype.replay = function(context,
     center, resolution, rotation, size, pixelRatio,
-    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash) {
+    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash,
+    featureCallback, oneByOne, opt_hitExtent) {
   var gl = context.getGL();
 
   // bind the vertices buffer
@@ -70700,17 +71168,13 @@ ol.render.webgl.ImageReplay.prototype.replay = function(context,
   }
 
   // draw!
-  goog.asserts.assert(this.textures_.length == this.groupIndices_.length);
-  var i, ii, start;
-  for (i = 0, ii = this.textures_.length, start = 0; i < ii; ++i) {
-    gl.bindTexture(goog.webgl.TEXTURE_2D, this.textures_[i]);
-    var end = this.groupIndices_[i];
-    var numItems = end - start;
-    var offsetInBytes = start * (context.hasOESElementIndexUint ? 4 : 2);
-    var elementType = context.hasOESElementIndexUint ?
-        goog.webgl.UNSIGNED_INT : goog.webgl.UNSIGNED_SHORT;
-    gl.drawElements(goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
-    start = end;
+  var result;
+  if (!goog.isDef(featureCallback)) {
+    this.drawReplay_(gl, context);
+  } else {
+    // draw feature by feature for the hit-detection
+    result = this.drawHitDetectionReplay_(gl, context, featureCallback,
+        oneByOne, opt_hitExtent);
   }
 
   // disable the vertex attrib arrays
@@ -70719,6 +71183,146 @@ ol.render.webgl.ImageReplay.prototype.replay = function(context,
   gl.disableVertexAttribArray(locations.a_texCoord);
   gl.disableVertexAttribArray(locations.a_opacity);
   gl.disableVertexAttribArray(locations.a_rotateWithView);
+
+  return result;
+};
+
+
+/**
+ * @private
+ * @param {WebGLRenderingContext} gl gl.
+ * @param {ol.webgl.Context} context Context.
+ */
+ol.render.webgl.ImageReplay.prototype.drawReplay_ =
+    function(gl, context) {
+  goog.asserts.assert(this.textures_.length === this.groupIndices_.length);
+  var elementType = context.hasOESElementIndexUint ?
+      goog.webgl.UNSIGNED_INT : goog.webgl.UNSIGNED_SHORT;
+  var elementSize = context.hasOESElementIndexUint ? 4 : 2;
+
+  var i, ii, start;
+  for (i = 0, ii = this.textures_.length, start = 0; i < ii; ++i) {
+    gl.bindTexture(goog.webgl.TEXTURE_2D, this.textures_[i]);
+    var end = this.groupIndices_[i];
+    var numItems = end - start;
+    var offsetInBytes = start * elementSize;
+    gl.drawElements(goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
+    start = end;
+  }
+};
+
+
+/**
+ * @private
+ * @param {WebGLRenderingContext} gl gl.
+ * @param {ol.webgl.Context} context Context.
+ * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {boolean} oneByOne Draw features one-by-one for the hit-detecion.
+ * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
+ *  this extent are checked.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplay_ =
+    function(gl, context, featureCallback, oneByOne, opt_hitExtent) {
+  goog.asserts.assert(this.hitDetectionTextures_.length ===
+      this.hitDetectionGroupIndices_.length);
+  var elementType = context.hasOESElementIndexUint ?
+      goog.webgl.UNSIGNED_INT : goog.webgl.UNSIGNED_SHORT;
+  var elementSize = context.hasOESElementIndexUint ? 4 : 2;
+
+  if (!oneByOne) {
+    // draw all hit-detection features in "once" (by texture group)
+    return this.drawHitDetectionReplayAll_(gl, context, featureCallback,
+        elementType, elementSize);
+  } else {
+    // draw hit-detection features one by one
+    return this.drawHitDetectionReplayOneByOne_(gl, context, featureCallback,
+        elementType, elementSize, opt_hitExtent);
+  }
+};
+
+
+/**
+ * @private
+ * @param {WebGLRenderingContext} gl gl.
+ * @param {ol.webgl.Context} context Context.
+ * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {number} elementType Element type.
+ * @param {number} elementSize Element size.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayAll_ =
+    function(gl, context, featureCallback, elementType, elementSize) {
+  var i, ii, start;
+  for (i = 0, ii = this.hitDetectionTextures_.length, start = 0; i < ii; ++i) {
+    gl.bindTexture(goog.webgl.TEXTURE_2D, this.hitDetectionTextures_[i]);
+    var end = this.hitDetectionGroupIndices_[i];
+    var numItems = end - start;
+    var offsetInBytes = start * elementSize;
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.drawElements(goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
+    start = end;
+  }
+
+  var result = featureCallback(null);
+  if (result) {
+    return result;
+  } else {
+    return undefined;
+  }
+};
+
+
+/**
+ * @private
+ * @param {WebGLRenderingContext} gl gl.
+ * @param {ol.webgl.Context} context Context.
+ * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {number} elementType Element type.
+ * @param {number} elementSize Element size.
+ * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
+ *  this extent are checked.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayOneByOne_ =
+    function(gl, context, featureCallback, elementType, elementSize,
+        opt_hitExtent) {
+  var i, groupStart, numItems, start, end, feature;
+  var featureIndex = this.startIndices_.length - 1;
+
+  for (i = this.hitDetectionTextures_.length - 1; i >= 0; --i) {
+    gl.bindTexture(goog.webgl.TEXTURE_2D, this.hitDetectionTextures_[i]);
+    groupStart = (i > 0) ? this.hitDetectionGroupIndices_[i - 1] : 0;
+    end = this.hitDetectionGroupIndices_[i];
+
+    // draw all features for this texture group
+    while (featureIndex >= 0 &&
+        this.startIndices_[featureIndex] >= groupStart) {
+      start = this.startIndices_[featureIndex];
+      numItems = end - start;
+      feature = this.startIndicesFeature_[featureIndex];
+
+      if (!goog.isDef(opt_hitExtent) || ol.extent.intersects(
+          opt_hitExtent, feature.getGeometry().getExtent())) {
+        var offsetInBytes = start * elementSize;
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.drawElements(
+            goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
+
+        var result = featureCallback(feature);
+        if (result) {
+          return result;
+        }
+      }
+
+      end = start;
+      featureIndex--;
+    }
+  }
+  return undefined;
 };
 
 
@@ -70738,6 +71342,10 @@ ol.render.webgl.ImageReplay.prototype.setImageStyle = function(imageStyle) {
   goog.asserts.assert(!goog.isNull(image));
   var imageSize = imageStyle.getImageSize();
   goog.asserts.assert(!goog.isNull(imageSize));
+  var hitDetectionImage = imageStyle.getHitDetectionImage(1);
+  goog.asserts.assert(!goog.isNull(hitDetectionImage));
+  var hitDetectionImageSize = imageStyle.getHitDetectionImageSize();
+  goog.asserts.assert(!goog.isNull(hitDetectionImageSize));
   var opacity = imageStyle.getOpacity();
   goog.asserts.assert(goog.isDef(opacity));
   var origin = imageStyle.getOrigin();
@@ -70751,14 +71359,28 @@ ol.render.webgl.ImageReplay.prototype.setImageStyle = function(imageStyle) {
   var scale = imageStyle.getScale();
   goog.asserts.assert(goog.isDef(scale));
 
+  var currentImage;
   if (this.images_.length === 0) {
     this.images_.push(image);
   } else {
-    var currentImage = this.images_[this.images_.length - 1];
+    currentImage = this.images_[this.images_.length - 1];
     if (goog.getUid(currentImage) != goog.getUid(image)) {
       this.groupIndices_.push(this.indices_.length);
-      goog.asserts.assert(this.groupIndices_.length == this.images_.length);
+      goog.asserts.assert(this.groupIndices_.length === this.images_.length);
       this.images_.push(image);
+    }
+  }
+
+  if (this.hitDetectionImages_.length === 0) {
+    this.hitDetectionImages_.push(hitDetectionImage);
+  } else {
+    currentImage =
+        this.hitDetectionImages_[this.hitDetectionImages_.length - 1];
+    if (goog.getUid(currentImage) != goog.getUid(hitDetectionImage)) {
+      this.hitDetectionGroupIndices_.push(this.indices_.length);
+      goog.asserts.assert(this.hitDetectionGroupIndices_.length ===
+          this.hitDetectionImages_.length);
+      this.hitDetectionImages_.push(hitDetectionImage);
     }
   }
 
@@ -70789,9 +71411,11 @@ ol.render.webgl.ImageReplay.prototype.setTextStyle = goog.abstractMethod;
  * @implements {ol.render.IReplayGroup}
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Max extent.
+ * @param {number=} opt_renderBuffer Render buffer.
  * @struct
  */
-ol.render.webgl.ReplayGroup = function(tolerance, maxExtent) {
+ol.render.webgl.ReplayGroup = function(
+    tolerance, maxExtent, opt_renderBuffer) {
 
   /**
    * @type {ol.Extent}
@@ -70804,6 +71428,12 @@ ol.render.webgl.ReplayGroup = function(tolerance, maxExtent) {
    * @private
    */
   this.tolerance_ = tolerance;
+
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  this.renderBuffer_ = opt_renderBuffer;
 
   /**
    * ImageReplay only is supported at this point.
@@ -70879,8 +71509,6 @@ ol.render.webgl.ReplayGroup.prototype.isEmpty = function() {
  * @param {number} hue Global hue.
  * @param {number} saturation Global saturation.
  * @param {Object} skippedFeaturesHash Ids of features to skip.
- * @return {T|undefined} Callback result.
- * @template T
  */
 ol.render.webgl.ReplayGroup.prototype.replay = function(context,
     center, resolution, rotation, size, pixelRatio,
@@ -70889,15 +71517,157 @@ ol.render.webgl.ReplayGroup.prototype.replay = function(context,
   for (i = 0, ii = ol.render.REPLAY_ORDER.length; i < ii; ++i) {
     replay = this.replays_[ol.render.REPLAY_ORDER[i]];
     if (goog.isDef(replay)) {
+      replay.replay(context,
+          center, resolution, rotation, size, pixelRatio,
+          opacity, brightness, contrast, hue, saturation, skippedFeaturesHash,
+          undefined, false);
+    }
+  }
+};
+
+
+/**
+ * @private
+ * @param {ol.webgl.Context} context Context.
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {ol.Size} size Size.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} opacity Global opacity.
+ * @param {number} brightness Global brightness.
+ * @param {number} contrast Global contrast.
+ * @param {number} hue Global hue.
+ * @param {number} saturation Global saturation.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {boolean} oneByOne Draw features one-by-one for the hit-detecion.
+ * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
+ *  this extent are checked.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.render.webgl.ReplayGroup.prototype.replayHitDetection_ = function(context,
+    center, resolution, rotation, size, pixelRatio,
+    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash,
+    featureCallback, oneByOne, opt_hitExtent) {
+  var i, replay, result;
+  for (i = ol.render.REPLAY_ORDER.length - 1; i >= 0; --i) {
+    replay = this.replays_[ol.render.REPLAY_ORDER[i]];
+    if (goog.isDef(replay)) {
       result = replay.replay(context,
           center, resolution, rotation, size, pixelRatio,
-          opacity, brightness, contrast, hue, saturation, skippedFeaturesHash);
+          opacity, brightness, contrast, hue, saturation,
+          skippedFeaturesHash, featureCallback, oneByOne, opt_hitExtent);
       if (result) {
         return result;
       }
     }
   }
   return undefined;
+};
+
+
+/**
+ * @param {ol.webgl.Context} context Context.
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {ol.Size} size Size.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} opacity Global opacity.
+ * @param {number} brightness Global brightness.
+ * @param {number} contrast Global contrast.
+ * @param {number} hue Global hue.
+ * @param {number} saturation Global saturation.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {function(ol.Feature): T|undefined} callback Feature callback.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.render.webgl.ReplayGroup.prototype.forEachFeatureAtPixel = function(
+    context, center, resolution, rotation, size, pixelRatio,
+    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash,
+    coordinate, callback) {
+  var gl = context.getGL();
+  gl.bindFramebuffer(
+      gl.FRAMEBUFFER, context.getHitDetectionFramebuffer());
+
+
+  /**
+   * @type {ol.Extent}
+   */
+  var hitExtent;
+  if (goog.isDef(this.renderBuffer_)) {
+    // build an extent around the coordinate, so that only features that
+    // intersect this extent are checked
+    hitExtent = ol.extent.buffer(
+        ol.extent.boundingExtent([coordinate]),
+        resolution * this.renderBuffer_);
+  }
+
+  return this.replayHitDetection_(context,
+      coordinate, resolution, rotation, ol.render.webgl.HIT_DETECTION_SIZE_,
+      pixelRatio, opacity, brightness, contrast, hue, saturation,
+      skippedFeaturesHash,
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @return {?} Callback result.
+       */
+      function(feature) {
+        var imageData = new Uint8Array(4);
+        gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, imageData);
+
+        if (imageData[3] > 0) {
+          var result = callback(feature);
+          if (result) {
+            return result;
+          }
+        }
+      }, true, hitExtent);
+};
+
+
+/**
+ * @param {ol.webgl.Context} context Context.
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {ol.Size} size Size.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} opacity Global opacity.
+ * @param {number} brightness Global brightness.
+ * @param {number} contrast Global contrast.
+ * @param {number} hue Global hue.
+ * @param {number} saturation Global saturation.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {boolean} Is there a feature at the given pixel?
+ */
+ol.render.webgl.ReplayGroup.prototype.hasFeatureAtPixel = function(
+    context, center, resolution, rotation, size, pixelRatio,
+    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash,
+    coordinate) {
+  var gl = context.getGL();
+  gl.bindFramebuffer(
+      gl.FRAMEBUFFER, context.getHitDetectionFramebuffer());
+
+  var hasFeature = this.replayHitDetection_(context,
+      coordinate, resolution, rotation, ol.render.webgl.HIT_DETECTION_SIZE_,
+      pixelRatio, opacity, brightness, contrast, hue, saturation,
+      skippedFeaturesHash,
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @return {boolean} Is there a feature?
+       */
+      function(feature) {
+        var imageData = new Uint8Array(4);
+        gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, imageData);
+        return imageData[3] > 0;
+      }, false);
+
+  return goog.isDef(hasFeature);
 };
 
 
@@ -70911,6 +71681,14 @@ ol.render.webgl.ReplayGroup.prototype.replay = function(context,
 ol.render.webgl.BATCH_CONSTRUCTORS_ = {
   'Image': ol.render.webgl.ImageReplay
 };
+
+
+/**
+ * @const
+ * @private
+ * @type {Array.<number>}
+ */
+ol.render.webgl.HIT_DETECTION_SIZE_ = [1, 1];
 
 goog.provide('ol.render.webgl.Immediate');
 goog.require('goog.array');
@@ -71480,6 +72258,7 @@ goog.require('ol.renderer.Layer');
 goog.require('ol.renderer.webgl.map.shader.Color');
 goog.require('ol.renderer.webgl.map.shader.Default');
 goog.require('ol.webgl.Buffer');
+goog.require('ol.webgl.Context');
 
 
 
@@ -71584,15 +72363,8 @@ ol.renderer.webgl.Layer.prototype.bindFramebuffer =
               }
             }, gl, this.framebuffer, this.texture));
 
-    var texture = gl.createTexture();
-    gl.bindTexture(goog.webgl.TEXTURE_2D, texture);
-    gl.texImage2D(goog.webgl.TEXTURE_2D, 0, goog.webgl.RGBA,
-        framebufferDimension, framebufferDimension, 0, goog.webgl.RGBA,
-        goog.webgl.UNSIGNED_BYTE, null);
-    gl.texParameteri(goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_MAG_FILTER,
-        goog.webgl.LINEAR);
-    gl.texParameteri(goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_MIN_FILTER,
-        goog.webgl.LINEAR);
+    var texture = ol.webgl.Context.createEmptyTexture(
+        gl, framebufferDimension, framebufferDimension);
 
     var framebuffer = gl.createFramebuffer();
     gl.bindFramebuffer(goog.webgl.FRAMEBUFFER, framebuffer);
@@ -71787,6 +72559,7 @@ goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.proj');
 goog.require('ol.renderer.webgl.Layer');
+goog.require('ol.webgl.Context');
 
 
 
@@ -71825,24 +72598,8 @@ ol.renderer.webgl.ImageLayer.prototype.createTexture_ = function(image) {
   var imageElement = image.getImage();
   var gl = this.getWebGLMapRenderer().getGL();
 
-  var texture = gl.createTexture();
-
-  gl.bindTexture(goog.webgl.TEXTURE_2D, texture);
-  gl.texImage2D(goog.webgl.TEXTURE_2D, 0, goog.webgl.RGBA,
-      goog.webgl.RGBA, goog.webgl.UNSIGNED_BYTE, imageElement);
-
-  gl.texParameteri(
-      goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_WRAP_S,
-      goog.webgl.CLAMP_TO_EDGE);
-  gl.texParameteri(
-      goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_WRAP_T,
-      goog.webgl.CLAMP_TO_EDGE);
-  gl.texParameteri(
-      goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_MIN_FILTER, goog.webgl.LINEAR);
-  gl.texParameteri(
-      goog.webgl.TEXTURE_2D, goog.webgl.TEXTURE_MAG_FILTER, goog.webgl.LINEAR);
-
-  return texture;
+  return ol.webgl.Context.createTexture(
+      gl, imageElement, goog.webgl.CLAMP_TO_EDGE, goog.webgl.CLAMP_TO_EDGE);
 };
 
 
@@ -72486,6 +73243,13 @@ ol.renderer.webgl.VectorLayer = function(mapRenderer, vectorLayer) {
    */
   this.replayGroup_ = null;
 
+  /**
+   * The last layer state.
+   * @private
+   * @type {?ol.layer.LayerState}
+   */
+  this.layerState_ = null;
+
 };
 goog.inherits(ol.renderer.webgl.VectorLayer, ol.renderer.webgl.Layer);
 
@@ -72495,6 +73259,7 @@ goog.inherits(ol.renderer.webgl.VectorLayer, ol.renderer.webgl.Layer);
  */
 ol.renderer.webgl.VectorLayer.prototype.composeFrame =
     function(frameState, layerState, context) {
+  this.layerState_ = layerState;
   var viewState = frameState.viewState;
   var replayGroup = this.replayGroup_;
   if (!goog.isNull(replayGroup) && !replayGroup.isEmpty()) {
@@ -72528,6 +73293,57 @@ ol.renderer.webgl.VectorLayer.prototype.disposeInternal = function() {
  */
 ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtPixel =
     function(coordinate, frameState, callback, thisArg) {
+  if (goog.isNull(this.replayGroup_) || goog.isNull(this.layerState_)) {
+    return undefined;
+  } else {
+    var mapRenderer = this.getWebGLMapRenderer();
+    var context = mapRenderer.getContext();
+    var viewState = frameState.viewState;
+    var layer = this.getLayer();
+    var layerState = this.layerState_;
+    /** @type {Object.<string, boolean>} */
+    var features = {};
+    return this.replayGroup_.forEachFeatureAtPixel(context,
+        viewState.center, viewState.resolution, viewState.rotation,
+        frameState.size, frameState.pixelRatio,
+        layerState.opacity, layerState.brightness, layerState.contrast,
+        layerState.hue, layerState.saturation, frameState.skippedFeatureUids,
+        coordinate,
+        /**
+         * @param {ol.Feature} feature Feature.
+         * @return {?} Callback result.
+         */
+        function(feature) {
+          goog.asserts.assert(goog.isDef(feature));
+          var key = goog.getUid(feature).toString();
+          if (!(key in features)) {
+            features[key] = true;
+            return callback.call(thisArg, feature, layer);
+          }
+        });
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.VectorLayer.prototype.hasFeatureAtPixel =
+    function(coordinate, frameState) {
+  if (goog.isNull(this.replayGroup_) || goog.isNull(this.layerState_)) {
+    return false;
+  } else {
+    var mapRenderer = this.getWebGLMapRenderer();
+    var context = mapRenderer.getContext();
+    var viewState = frameState.viewState;
+    var layerState = this.layerState_;
+    return this.replayGroup_.hasFeatureAtPixel(context,
+        viewState.center, viewState.resolution, viewState.rotation,
+        frameState.size, frameState.pixelRatio,
+        layerState.opacity, layerState.brightness, layerState.contrast,
+        layerState.hue, layerState.saturation, frameState.skippedFeatureUids,
+        coordinate);
+  }
 };
 
 
@@ -72595,7 +73411,7 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
 
   var replayGroup = new ol.render.webgl.ReplayGroup(
       ol.renderer.vector.getTolerance(resolution, pixelRatio),
-      extent);
+      extent, vectorLayer.getRenderBuffer());
   vectorSource.loadFeatures(extent, resolution, projection);
   var renderFeature =
       /**
@@ -72915,291 +73731,6 @@ ol.structs.LRUCache.prototype.set = function(key, value) {
  */
 ol.structs.LRUCacheEntry;
 
-goog.provide('ol.webgl.Context');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.log');
-goog.require('goog.object');
-goog.require('ol');
-goog.require('ol.webgl.Buffer');
-goog.require('ol.webgl.WebGLContextEventType');
-
-
-/**
- * @typedef {{buf: ol.webgl.Buffer,
- *            buffer: WebGLBuffer}}
- */
-ol.webgl.BufferCacheEntry;
-
-
-
-/**
- * @classdesc
- * A WebGL context for accessing low-level WebGL capabilities.
- *
- * @constructor
- * @extends {goog.events.EventTarget}
- * @param {HTMLCanvasElement} canvas Canvas.
- * @param {WebGLRenderingContext} gl GL.
- * @api
- */
-ol.webgl.Context = function(canvas, gl) {
-
-  /**
-   * @private
-   * @type {HTMLCanvasElement}
-   */
-  this.canvas_ = canvas;
-
-  /**
-   * @private
-   * @type {WebGLRenderingContext}
-   */
-  this.gl_ = gl;
-
-  /**
-   * @private
-   * @type {Object.<number, ol.webgl.BufferCacheEntry>}
-   */
-  this.bufferCache_ = {};
-
-  /**
-   * @private
-   * @type {Object.<number, WebGLShader>}
-   */
-  this.shaderCache_ = {};
-
-  /**
-   * @private
-   * @type {Object.<string, WebGLProgram>}
-   */
-  this.programCache_ = {};
-
-  /**
-   * @private
-   * @type {WebGLProgram}
-   */
-  this.currentProgram_ = null;
-
-  /**
-   * @type {boolean}
-   */
-  this.hasOESElementIndexUint = goog.array.contains(
-      ol.WEBGL_EXTENSIONS, 'OES_element_index_uint');
-
-  // use the OES_element_index_uint extension if available
-  if (this.hasOESElementIndexUint) {
-    var ext = gl.getExtension('OES_element_index_uint');
-    goog.asserts.assert(!goog.isNull(ext));
-  }
-
-  goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.LOST,
-      this.handleWebGLContextLost, false, this);
-  goog.events.listen(this.canvas_, ol.webgl.WebGLContextEventType.RESTORED,
-      this.handleWebGLContextRestored, false, this);
-
-};
-
-
-/**
- * Just bind the buffer if it's in the cache. Otherwise create
- * the WebGL buffer, bind it, populate it, and add an entry to
- * the cache.
- * @param {number} target Target.
- * @param {ol.webgl.Buffer} buf Buffer.
- */
-ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
-  var gl = this.getGL();
-  var arr = buf.getArray();
-  var bufferKey = goog.getUid(buf);
-  if (bufferKey in this.bufferCache_) {
-    var bufferCacheEntry = this.bufferCache_[bufferKey];
-    gl.bindBuffer(target, bufferCacheEntry.buffer);
-  } else {
-    var buffer = gl.createBuffer();
-    gl.bindBuffer(target, buffer);
-    goog.asserts.assert(target == goog.webgl.ARRAY_BUFFER ||
-        target == goog.webgl.ELEMENT_ARRAY_BUFFER);
-    var /** @type {ArrayBufferView} */ arrayBuffer;
-    if (target == goog.webgl.ARRAY_BUFFER) {
-      arrayBuffer = new Float32Array(arr);
-    } else if (target == goog.webgl.ELEMENT_ARRAY_BUFFER) {
-      arrayBuffer = this.hasOESElementIndexUint ?
-          new Uint32Array(arr) : new Uint16Array(arr);
-    } else {
-      goog.asserts.fail();
-    }
-    gl.bufferData(target, arrayBuffer, buf.getUsage());
-    this.bufferCache_[bufferKey] = {
-      buf: buf,
-      buffer: buffer
-    };
-  }
-};
-
-
-/**
- * @param {ol.webgl.Buffer} buf Buffer.
- */
-ol.webgl.Context.prototype.deleteBuffer = function(buf) {
-  var gl = this.getGL();
-  var bufferKey = goog.getUid(buf);
-  goog.asserts.assert(bufferKey in this.bufferCache_);
-  var bufferCacheEntry = this.bufferCache_[bufferKey];
-  if (!gl.isContextLost()) {
-    gl.deleteBuffer(bufferCacheEntry.buffer);
-  }
-  delete this.bufferCache_[bufferKey];
-};
-
-
-/**
- * @inheritDoc
- */
-ol.webgl.Context.prototype.disposeInternal = function() {
-  var gl = this.getGL();
-  if (!gl.isContextLost()) {
-    goog.object.forEach(this.bufferCache_, function(bufferCacheEntry) {
-      gl.deleteBuffer(bufferCacheEntry.buffer);
-    });
-    goog.object.forEach(this.programCache_, function(program) {
-      gl.deleteProgram(program);
-    });
-    goog.object.forEach(this.shaderCache_, function(shader) {
-      gl.deleteShader(shader);
-    });
-  }
-};
-
-
-/**
- * @return {HTMLCanvasElement} Canvas.
- */
-ol.webgl.Context.prototype.getCanvas = function() {
-  return this.canvas_;
-};
-
-
-/**
- * @return {WebGLRenderingContext} GL.
- * @api
- */
-ol.webgl.Context.prototype.getGL = function() {
-  return this.gl_;
-};
-
-
-/**
- * Get shader from the cache if it's in the cache. Otherwise, create
- * the WebGL shader, compile it, and add entry to cache.
- * @param {ol.webgl.Shader} shaderObject Shader object.
- * @return {WebGLShader} Shader.
- */
-ol.webgl.Context.prototype.getShader = function(shaderObject) {
-  var shaderKey = goog.getUid(shaderObject);
-  if (shaderKey in this.shaderCache_) {
-    return this.shaderCache_[shaderKey];
-  } else {
-    var gl = this.getGL();
-    var shader = gl.createShader(shaderObject.getType());
-    gl.shaderSource(shader, shaderObject.getSource());
-    gl.compileShader(shader);
-    if (goog.DEBUG) {
-      if (!gl.getShaderParameter(shader, goog.webgl.COMPILE_STATUS) &&
-          !gl.isContextLost()) {
-        goog.log.error(this.logger_, gl.getShaderInfoLog(shader));
-      }
-    }
-    goog.asserts.assert(
-        gl.getShaderParameter(shader, goog.webgl.COMPILE_STATUS) ||
-        gl.isContextLost());
-    this.shaderCache_[shaderKey] = shader;
-    return shader;
-  }
-};
-
-
-/**
- * Get the program from the cache if it's in the cache. Otherwise create
- * the WebGL program, attach the shaders to it, and add an entry to the
- * cache.
- * @param {ol.webgl.shader.Fragment} fragmentShaderObject Fragment shader.
- * @param {ol.webgl.shader.Vertex} vertexShaderObject Vertex shader.
- * @return {WebGLProgram} Program.
- */
-ol.webgl.Context.prototype.getProgram = function(
-    fragmentShaderObject, vertexShaderObject) {
-  var programKey =
-      goog.getUid(fragmentShaderObject) + '/' + goog.getUid(vertexShaderObject);
-  if (programKey in this.programCache_) {
-    return this.programCache_[programKey];
-  } else {
-    var gl = this.getGL();
-    var program = gl.createProgram();
-    gl.attachShader(program, this.getShader(fragmentShaderObject));
-    gl.attachShader(program, this.getShader(vertexShaderObject));
-    gl.linkProgram(program);
-    if (goog.DEBUG) {
-      if (!gl.getProgramParameter(program, goog.webgl.LINK_STATUS) &&
-          !gl.isContextLost()) {
-        goog.log.error(this.logger_, gl.getProgramInfoLog(program));
-      }
-    }
-    goog.asserts.assert(
-        gl.getProgramParameter(program, goog.webgl.LINK_STATUS) ||
-        gl.isContextLost());
-    this.programCache_[programKey] = program;
-    return program;
-  }
-};
-
-
-/**
- * FIXME empy description for jsdoc
- */
-ol.webgl.Context.prototype.handleWebGLContextLost = function() {
-  goog.object.clear(this.bufferCache_);
-  goog.object.clear(this.shaderCache_);
-  goog.object.clear(this.programCache_);
-  this.currentProgram_ = null;
-};
-
-
-/**
- * FIXME empy description for jsdoc
- */
-ol.webgl.Context.prototype.handleWebGLContextRestored = function() {
-};
-
-
-/**
- * Just return false if that program is used already. Other use
- * that program (call `gl.useProgram`) and make it the "current
- * program".
- * @param {WebGLProgram} program Program.
- * @return {boolean} Changed.
- * @api
- */
-ol.webgl.Context.prototype.useProgram = function(program) {
-  if (program == this.currentProgram_) {
-    return false;
-  } else {
-    var gl = this.getGL();
-    gl.useProgram(program);
-    this.currentProgram_ = program;
-    return true;
-  }
-};
-
-
-/**
- * @private
- * @type {goog.log.Logger}
- */
-ol.webgl.Context.prototype.logger_ = goog.log.getLogger('ol.webgl.Context');
-
 // FIXME check against gl.getParameter(webgl.MAX_TEXTURE_SIZE)
 
 goog.provide('ol.renderer.webgl.Map');
@@ -73492,13 +74023,10 @@ ol.renderer.webgl.Map.prototype.dispatchComposeEvent_ =
     replayGroup.finish(context);
     if (!replayGroup.isEmpty()) {
       // use default color values
-      var opacity = 1;
-      var brightness = 0;
-      var contrast = 1;
-      var hue = 0;
-      var saturation = 1;
+      var d = ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_;
       replayGroup.replay(context, center, resolution, rotation, size,
-          pixelRatio, opacity, brightness, contrast, hue, saturation, {});
+          pixelRatio, d.opacity, d.brightness, d.contrast,
+          d.hue, d.saturation, {});
     }
     replayGroup.getDeleteResourcesFunction(context)();
 
@@ -73739,6 +74267,130 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
   this.scheduleRemoveUnusedLayerRenderers(frameState);
   this.scheduleExpireIconCache(frameState);
 
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.Map.prototype.forEachFeatureAtPixel =
+    function(coordinate, frameState, callback, thisArg,
+        layerFilter, thisArg2) {
+  var result;
+
+  if (this.getGL().isContextLost()) {
+    return false;
+  }
+
+  var context = this.getContext();
+  var viewState = frameState.viewState;
+
+  // do the hit-detection for the overlays first
+  if (!goog.isNull(this.replayGroup)) {
+    /** @type {Object.<string, boolean>} */
+    var features = {};
+
+    // use default color values
+    var d = ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_;
+
+    result = this.replayGroup.forEachFeatureAtPixel(context,
+        viewState.center, viewState.resolution, viewState.rotation,
+        frameState.size, frameState.pixelRatio,
+        d.opacity, d.brightness, d.contrast, d.hue, d.saturation, {},
+        coordinate,
+        /**
+         * @param {ol.Feature} feature Feature.
+         * @return {?} Callback result.
+         */
+        function(feature) {
+          goog.asserts.assert(goog.isDef(feature));
+          var key = goog.getUid(feature).toString();
+          if (!(key in features)) {
+            features[key] = true;
+            return callback.call(thisArg, feature, null);
+          }
+        });
+    if (result) {
+      return result;
+    }
+  }
+  var layerStates = this.getMap().getLayerGroup().getLayerStatesArray();
+  var numLayers = layerStates.length;
+  var i;
+  for (i = numLayers - 1; i >= 0; --i) {
+    var layerState = layerStates[i];
+    var layer = layerState.layer;
+    if (ol.layer.Layer.visibleAtResolution(layerState, viewState.resolution) &&
+        layerFilter.call(thisArg2, layer)) {
+      var layerRenderer = this.getLayerRenderer(layer);
+      result = layerRenderer.forEachFeatureAtPixel(
+          coordinate, frameState, callback, thisArg);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.Map.prototype.hasFeatureAtPixel =
+    function(coordinate, frameState, layerFilter, thisArg) {
+  var hasFeature = false;
+
+  if (this.getGL().isContextLost()) {
+    return false;
+  }
+
+  var context = this.getContext();
+  var viewState = frameState.viewState;
+
+  // do the hit-detection for the overlays first
+  if (!goog.isNull(this.replayGroup)) {
+    // use default color values
+    var d = ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_;
+
+    hasFeature = this.replayGroup.hasFeatureAtPixel(context,
+        viewState.center, viewState.resolution, viewState.rotation,
+        frameState.size, frameState.pixelRatio,
+        d.opacity, d.brightness, d.contrast, d.hue, d.saturation, {},
+        coordinate);
+    if (hasFeature) {
+      return true;
+    }
+  }
+  var layerStates = this.getMap().getLayerGroup().getLayerStatesArray();
+  var numLayers = layerStates.length;
+  var i;
+  for (i = numLayers - 1; i >= 0; --i) {
+    var layerState = layerStates[i];
+    var layer = layerState.layer;
+    if (ol.layer.Layer.visibleAtResolution(layerState, viewState.resolution) &&
+        layerFilter.call(thisArg, layer)) {
+      var layerRenderer = this.getLayerRenderer(layer);
+      hasFeature = layerRenderer.hasFeatureAtPixel(coordinate, frameState);
+      if (hasFeature) {
+        return true;
+      }
+    }
+  }
+  return hasFeature;
+};
+
+
+/**
+ * @private
+ * @const
+ */
+ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_ = {
+  opacity: 1,
+  brightness: 0,
+  contrast: 1,
+  hue: 0,
+  saturation: 1
 };
 
 // FIXME recheck layer/map projection compatability when projection changes
@@ -74329,6 +74981,34 @@ ol.Map.prototype.forEachFeatureAtPixel =
   return this.renderer_.forEachFeatureAtPixel(
       coordinate, this.frameState_, callback, thisArg,
       layerFilter, thisArg2);
+};
+
+
+/**
+ * Detect if features intersect a pixel on the viewport. Layers included in the
+ * detection can be configured through `opt_layerFilter`. Feature overlays will
+ * always be included in the detection.
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
+ *     filter function, only layers which are visible and for which this
+ *     function returns `true` will be tested for features. By default, all
+ *     visible layers will be tested. Feature overlays will always be tested.
+ * @param {U=} opt_this2 Value to use as `this` when executing `layerFilter`.
+ * @return {boolean} Is there a feature at the given pixel?
+ * @template U
+ * @api
+ */
+ol.Map.prototype.hasFeatureAtPixel =
+    function(pixel, opt_layerFilter, opt_this2) {
+  if (goog.isNull(this.frameState_)) {
+    return false;
+  }
+  var coordinate = this.getCoordinateFromPixel(pixel);
+  var layerFilter = goog.isDef(opt_layerFilter) ?
+      opt_layerFilter : goog.functions.TRUE;
+  var thisArg2 = goog.isDef(opt_this2) ? opt_this2 : null;
+  return this.renderer_.hasFeatureAtPixel(
+      coordinate, this.frameState_, layerFilter, thisArg2);
 };
 
 
@@ -111599,12 +112279,10 @@ goog.require('ol');
 /**
  * Provides information for an image inside an atlas manager.
  * `offsetX` and `offsetY` is the position of the image inside
- * the atlas image `image`.
- * `hitOffsetX` and `hitOffsetY` ist the position of the hit-detection image
- * inside the hit-detection atlas image `hitImage` (only when a hit-detection
- * image was created for this image).
+ * the atlas image `image` and the position of the hit-detection image
+ * inside the hit-detection atlas image `hitImage`.
  * @typedef {{offsetX: number, offsetY: number, image: HTMLCanvasElement,
- *    hitOffsetX: number, hitOffsetY: number, hitImage: HTMLCanvasElement}}
+ *    hitImage: HTMLCanvasElement}}
  */
 ol.style.AtlasManagerInfo;
 
@@ -111691,6 +112369,7 @@ ol.style.AtlasManager.prototype.getInfo = function(id) {
   }
   /** @type {?ol.style.AtlasInfo} */
   var hitInfo = this.getInfo_(this.hitAtlases_, id);
+  goog.asserts.assert(!goog.isNull(hitInfo));
 
   return this.mergeInfos_(info, hitInfo);
 };
@@ -111719,19 +112398,19 @@ ol.style.AtlasManager.prototype.getInfo_ = function(atlases, id) {
 /**
  * @private
  * @param {ol.style.AtlasInfo} info The info for the real image.
- * @param {?ol.style.AtlasInfo} hitInfo The info for the hit-detection
+ * @param {ol.style.AtlasInfo} hitInfo The info for the hit-detection
  *    image.
  * @return {?ol.style.AtlasManagerInfo} The position and atlas image for the
  *    entry, or `null` if the entry is not part of the atlases.
  */
 ol.style.AtlasManager.prototype.mergeInfos_ = function(info, hitInfo) {
+  goog.asserts.assert(info.offsetX === hitInfo.offsetX);
+  goog.asserts.assert(info.offsetY === hitInfo.offsetY);
   return /** @type {ol.style.AtlasManagerInfo} */ ({
     offsetX: info.offsetX,
     offsetY: info.offsetY,
     image: info.image,
-    hitOffsetX: goog.isNull(hitInfo) ? undefined : hitInfo.offsetX,
-    hitOffsetY: goog.isNull(hitInfo) ? undefined : hitInfo.offsetY,
-    hitImage: goog.isNull(hitInfo) ? undefined : hitInfo.image
+    hitImage: hitInfo.image
   });
 };
 
@@ -111773,12 +112452,17 @@ ol.style.AtlasManager.prototype.add =
     return null;
   }
 
+  // even if no hit-detection entry is requested, we insert a fake entry into
+  // the hit-detection atlas, to make sure that the offset is the same for
+  // the original image and the hit-detection image.
+  var renderHitCallback = goog.isDef(opt_renderHitCallback) ?
+      opt_renderHitCallback : goog.functions.NULL;
+
   /** @type {?ol.style.AtlasInfo} */
-  var hitInfo = null;
-  if (goog.isDef(opt_renderHitCallback)) {
-    hitInfo = this.add_(true,
-        id, width, height, opt_renderHitCallback, opt_this);
-  }
+  var hitInfo = this.add_(true,
+      id, width, height, renderHitCallback, opt_this);
+  goog.asserts.assert(!goog.isNull(hitInfo));
+
   return this.mergeInfos_(info, hitInfo);
 };
 
@@ -112091,12 +112775,6 @@ ol.style.RegularShape = function(options) {
 
   /**
    * @private
-   * @type {Array.<number>}
-   */
-  this.hitDetectionOrigin_ = [0, 0];
-
-  /**
-   * @private
    * @type {number}
    */
   this.points_ = options.points;
@@ -112249,14 +112927,6 @@ ol.style.RegularShape.prototype.getOrigin = function() {
 
 
 /**
- * @inheritDoc
- */
-ol.style.RegularShape.prototype.getHitDetectionOrigin = function() {
-  return this.hitDetectionOrigin_;
-};
-
-
-/**
  * @return {number} Number of points for stars and regular polygons.
  * @api
  */
@@ -112399,12 +113069,10 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
 
     if (hasCustomHitDetectionImage) {
       this.hitDetectionCanvas_ = info.hitImage;
-      this.hitDetectionOrigin_ = [info.hitOffsetX, info.hitOffsetY];
       this.hitDetectionImageSize_ =
           [info.hitImage.width, info.hitImage.height];
     } else {
       this.hitDetectionCanvas_ = this.canvas_;
-      this.hitDetectionOrigin_ = this.origin_;
       this.hitDetectionImageSize_ = [imageSize, imageSize];
     }
   }
@@ -113360,6 +114028,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Map.prototype,
+    'hasFeatureAtPixel',
+    ol.Map.prototype.hasFeatureAtPixel);
+
+goog.exportProperty(
+    ol.Map.prototype,
     'getEventCoordinate',
     ol.Map.prototype.getEventCoordinate);
 
@@ -113802,6 +114475,11 @@ goog.exportProperty(
     ol.webgl.Context.prototype,
     'getGL',
     ol.webgl.Context.prototype.getGL);
+
+goog.exportProperty(
+    ol.webgl.Context.prototype,
+    'getHitDetectionFramebuffer',
+    ol.webgl.Context.prototype.getHitDetectionFramebuffer);
 
 goog.exportProperty(
     ol.webgl.Context.prototype,

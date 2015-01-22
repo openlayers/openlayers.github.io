@@ -27,11 +27,13 @@ var vectorLayer = new ol.layer.Vector({
 
 var rasterLayer = new ol.layer.Tile({
   source: new ol.source.TileJSON({
-    url: 'http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp'
+    url: 'http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp',
+    crossOrigin: ''
   })
 });
 
 var map = new ol.Map({
+  renderer: exampleNS.getRendererFromQueryString(),
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById('map'),
   view: new ol.View({
@@ -73,12 +75,6 @@ map.on('click', function(evt) {
 // change mouse cursor when over marker
 $(map.getViewport()).on('mousemove', function(e) {
   var pixel = map.getEventPixel(e.originalEvent);
-  var hit = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-    return true;
-  });
-  if (hit) {
-    map.getTarget().style.cursor = 'pointer';
-  } else {
-    map.getTarget().style.cursor = '';
-  }
+  var hit = map.hasFeatureAtPixel(pixel);
+  map.getTarget().style.cursor = hit ? 'pointer' : '';
 });
