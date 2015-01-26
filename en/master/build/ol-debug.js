@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-100-g1702a4e
+// Version: v3.1.1-118-g5c9b17a
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -19418,6 +19418,7 @@ ol.View = function(opt_options) {
 
   /**
    * @private
+   * @const
    * @type {ol.proj.Projection}
    */
   this.projection_ = ol.proj.createProjection(options.projection, 'EPSG:3857');
@@ -50832,7 +50833,7 @@ ol.renderer.Map.prototype.forEachFeatureAtPixel =
       return result;
     }
   }
-  var layerStates = this.map_.getLayerGroup().getLayerStatesArray();
+  var layerStates = frameState.layerStatesArray;
   var numLayers = layerStates.length;
   var i;
   for (i = numLayers - 1; i >= 0; --i) {
@@ -52478,10 +52479,10 @@ ol.interaction.DragRotate.handleDragEvent_ = function(mapBrowserEvent) {
   if (goog.isDef(this.lastAngle_)) {
     var delta = theta - this.lastAngle_;
     var view = map.getView();
-    var viewState = view.getState();
+    var rotation = view.getRotation();
     map.render();
     ol.interaction.Interaction.rotateWithoutConstraints(
-        map, view, viewState.rotation - delta);
+        map, view, rotation - delta);
   }
   this.lastAngle_ = theta;
 };
@@ -52501,8 +52502,8 @@ ol.interaction.DragRotate.handleUpEvent_ = function(mapBrowserEvent) {
   var map = mapBrowserEvent.map;
   var view = map.getView();
   view.setHint(ol.ViewHint.INTERACTING, -1);
-  var viewState = view.getState();
-  ol.interaction.Interaction.rotate(map, view, viewState.rotation,
+  var rotation = view.getRotation();
+  ol.interaction.Interaction.rotate(map, view, rotation,
       undefined, ol.DRAGROTATE_ANIMATION_DURATION);
   return false;
 };
@@ -58306,10 +58307,10 @@ ol.interaction.PinchRotate.handleDragEvent_ = function(mapBrowserEvent) {
   // rotate
   if (this.rotating_) {
     var view = map.getView();
-    var viewState = view.getState();
+    var rotation = view.getRotation();
     map.render();
     ol.interaction.Interaction.rotateWithoutConstraints(map, view,
-        viewState.rotation + rotationDelta, this.anchor_);
+        rotation + rotationDelta, this.anchor_);
   }
 };
 
@@ -58326,10 +58327,9 @@ ol.interaction.PinchRotate.handleUpEvent_ = function(mapBrowserEvent) {
     var view = map.getView();
     view.setHint(ol.ViewHint.INTERACTING, -1);
     if (this.rotating_) {
-      var viewState = view.getState();
+      var rotation = view.getRotation();
       ol.interaction.Interaction.rotate(
-          map, view, viewState.rotation, this.anchor_,
-          ol.ROTATE_ANIMATION_DURATION);
+          map, view, rotation, this.anchor_, ol.ROTATE_ANIMATION_DURATION);
     }
     return false;
   } else {
@@ -58453,7 +58453,7 @@ ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
 
   var map = mapBrowserEvent.map;
   var view = map.getView();
-  var viewState = view.getState();
+  var resolution = view.getResolution();
 
   // scale anchor point.
   var viewportPosition = goog.style.getClientPosition(map.getViewport());
@@ -58466,7 +58466,7 @@ ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
   // scale, bypass the resolution constraint
   map.render();
   ol.interaction.Interaction.zoomWithoutConstraints(
-      map, view, viewState.resolution * scaleDelta, this.anchor_);
+      map, view, resolution * scaleDelta, this.anchor_);
 
 };
 
@@ -58477,18 +58477,17 @@ ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
  * @this {ol.interaction.PinchZoom}
  * @private
  */
-ol.interaction.PinchZoom.handleUpEvent_ =
-    function(mapBrowserEvent) {
+ol.interaction.PinchZoom.handleUpEvent_ = function(mapBrowserEvent) {
   if (this.targetPointers.length < 2) {
     var map = mapBrowserEvent.map;
     var view = map.getView();
     view.setHint(ol.ViewHint.INTERACTING, -1);
-    var viewState = view.getState();
+    var resolution = view.getResolution();
     // Zoom to final resolution, with an animation, and provide a
     // direction not to zoom out/in if user was pinching in/out.
     // Direction is > 0 if pinching out, and < 0 if pinching in.
     var direction = this.lastScaleDelta_ - 1;
-    ol.interaction.Interaction.zoom(map, view, viewState.resolution,
+    ol.interaction.Interaction.zoom(map, view, resolution,
         this.anchor_, this.duration_, direction);
     return false;
   } else {
@@ -58503,8 +58502,7 @@ ol.interaction.PinchZoom.handleUpEvent_ =
  * @this {ol.interaction.PinchZoom}
  * @private
  */
-ol.interaction.PinchZoom.handleDownEvent_ =
-    function(mapBrowserEvent) {
+ol.interaction.PinchZoom.handleDownEvent_ = function(mapBrowserEvent) {
   if (this.targetPointers.length >= 2) {
     var map = mapBrowserEvent.map;
     this.anchor_ = null;
@@ -71170,11 +71168,12 @@ ol.render.webgl.ImageReplay.prototype.replay = function(context,
   // draw!
   var result;
   if (!goog.isDef(featureCallback)) {
-    this.drawReplay_(gl, context);
+    this.drawReplay_(gl, context, skippedFeaturesHash,
+        this.textures_, this.groupIndices_);
   } else {
     // draw feature by feature for the hit-detection
-    result = this.drawHitDetectionReplay_(gl, context, featureCallback,
-        oneByOne, opt_hitExtent);
+    result = this.drawHitDetectionReplay_(gl, context, skippedFeaturesHash,
+        featureCallback, oneByOne, opt_hitExtent);
   }
 
   // disable the vertex attrib arrays
@@ -71192,22 +71191,100 @@ ol.render.webgl.ImageReplay.prototype.replay = function(context,
  * @private
  * @param {WebGLRenderingContext} gl gl.
  * @param {ol.webgl.Context} context Context.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @param {Array.<WebGLTexture>} textures Textures.
+ * @param {Array.<number>} groupIndices Texture group indices.
  */
 ol.render.webgl.ImageReplay.prototype.drawReplay_ =
-    function(gl, context) {
-  goog.asserts.assert(this.textures_.length === this.groupIndices_.length);
+    function(gl, context, skippedFeaturesHash, textures, groupIndices) {
+  goog.asserts.assert(textures.length === groupIndices.length);
   var elementType = context.hasOESElementIndexUint ?
       goog.webgl.UNSIGNED_INT : goog.webgl.UNSIGNED_SHORT;
   var elementSize = context.hasOESElementIndexUint ? 4 : 2;
 
-  var i, ii, start;
-  for (i = 0, ii = this.textures_.length, start = 0; i < ii; ++i) {
-    gl.bindTexture(goog.webgl.TEXTURE_2D, this.textures_[i]);
-    var end = this.groupIndices_[i];
-    var numItems = end - start;
-    var offsetInBytes = start * elementSize;
-    gl.drawElements(goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
-    start = end;
+  if (!goog.object.isEmpty(skippedFeaturesHash)) {
+    this.drawReplaySkipping_(
+        gl, skippedFeaturesHash, textures, groupIndices,
+        elementType, elementSize);
+  } else {
+    var i, ii, start;
+    for (i = 0, ii = textures.length, start = 0; i < ii; ++i) {
+      gl.bindTexture(goog.webgl.TEXTURE_2D, textures[i]);
+      var end = groupIndices[i];
+      this.drawElements_(gl, start, end, elementType, elementSize);
+      start = end;
+    }
+  }
+};
+
+
+/**
+ * Draw the replay while paying attention to skipped features.
+ *
+ * This functions creates groups of features that can be drawn to together,
+ * so that the number of `drawElements` calls is minimized.
+ *
+ * For example given the following texture groups:
+ *
+ *    Group 1: A B C
+ *    Group 2: D [E] F G
+ *
+ * If feature E should be skipped, the following `drawElements` calls will be
+ * made:
+ *
+ *    drawElements with feature A, B and C
+ *    drawElements with feature D
+ *    drawElements with feature F and G
+ *
+ * @private
+ * @param {WebGLRenderingContext} gl gl.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
+ * @param {Array.<WebGLTexture>} textures Textures.
+ * @param {Array.<number>} groupIndices Texture group indices.
+ * @param {number} elementType Element type.
+ * @param {number} elementSize Element Size.
+ */
+ol.render.webgl.ImageReplay.prototype.drawReplaySkipping_ =
+    function(gl, skippedFeaturesHash, textures, groupIndices,
+    elementType, elementSize) {
+  var featureIndex = 0;
+
+  var i, ii;
+  for (i = 0, ii = textures.length; i < ii; ++i) {
+    gl.bindTexture(goog.webgl.TEXTURE_2D, textures[i]);
+    var groupStart = (i > 0) ? groupIndices[i - 1] : 0;
+    var groupEnd = groupIndices[i];
+
+    var start = groupStart;
+    var end = groupStart;
+    while (featureIndex < this.startIndices_.length &&
+        this.startIndices_[featureIndex] <= groupEnd) {
+      var feature = this.startIndicesFeature_[featureIndex];
+
+      var featureUid = goog.getUid(feature).toString();
+      if (goog.isDef(skippedFeaturesHash[featureUid])) {
+        // feature should be skipped
+        if (start !== end) {
+          // draw the features so far
+          this.drawElements_(gl, start, end, elementType, elementSize);
+        }
+        // continue with the next feature
+        start = (featureIndex === this.startIndices_.length - 1) ?
+            groupEnd : this.startIndices_[featureIndex + 1];
+        end = start;
+      } else {
+        // the feature is not skipped, augment the end index
+        end = (featureIndex === this.startIndices_.length - 1) ?
+            groupEnd : this.startIndices_[featureIndex + 1];
+      }
+      featureIndex++;
+    }
+
+    if (start !== end) {
+      // draw the remaining features (in case there was no skipped feature
+      // in this texture group, all features of a group are drawn together)
+      this.drawElements_(gl, start, end, elementType, elementSize);
+    }
   }
 };
 
@@ -71215,7 +71292,24 @@ ol.render.webgl.ImageReplay.prototype.drawReplay_ =
 /**
  * @private
  * @param {WebGLRenderingContext} gl gl.
+ * @param {number} start Start index.
+ * @param {number} end End index.
+ * @param {number} elementType Element type.
+ * @param {number} elementSize Element Size.
+ */
+ol.render.webgl.ImageReplay.prototype.drawElements_ = function(
+    gl, start, end, elementType, elementSize) {
+  var numItems = end - start;
+  var offsetInBytes = start * elementSize;
+  gl.drawElements(goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
+};
+
+
+/**
+ * @private
+ * @param {WebGLRenderingContext} gl gl.
  * @param {ol.webgl.Context} context Context.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
  * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
  * @param {boolean} oneByOne Draw features one-by-one for the hit-detecion.
  * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
@@ -71224,21 +71318,16 @@ ol.render.webgl.ImageReplay.prototype.drawReplay_ =
  * @template T
  */
 ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplay_ =
-    function(gl, context, featureCallback, oneByOne, opt_hitExtent) {
-  goog.asserts.assert(this.hitDetectionTextures_.length ===
-      this.hitDetectionGroupIndices_.length);
-  var elementType = context.hasOESElementIndexUint ?
-      goog.webgl.UNSIGNED_INT : goog.webgl.UNSIGNED_SHORT;
-  var elementSize = context.hasOESElementIndexUint ? 4 : 2;
-
+    function(gl, context, skippedFeaturesHash, featureCallback, oneByOne,
+    opt_hitExtent) {
   if (!oneByOne) {
     // draw all hit-detection features in "once" (by texture group)
-    return this.drawHitDetectionReplayAll_(gl, context, featureCallback,
-        elementType, elementSize);
+    return this.drawHitDetectionReplayAll_(gl, context,
+        skippedFeaturesHash, featureCallback);
   } else {
     // draw hit-detection features one by one
-    return this.drawHitDetectionReplayOneByOne_(gl, context, featureCallback,
-        elementType, elementSize, opt_hitExtent);
+    return this.drawHitDetectionReplayOneByOne_(gl, context,
+        skippedFeaturesHash, featureCallback, opt_hitExtent);
   }
 };
 
@@ -71247,24 +71336,16 @@ ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplay_ =
  * @private
  * @param {WebGLRenderingContext} gl gl.
  * @param {ol.webgl.Context} context Context.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
  * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
- * @param {number} elementType Element type.
- * @param {number} elementSize Element size.
  * @return {T|undefined} Callback result.
  * @template T
  */
 ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayAll_ =
-    function(gl, context, featureCallback, elementType, elementSize) {
-  var i, ii, start;
-  for (i = 0, ii = this.hitDetectionTextures_.length, start = 0; i < ii; ++i) {
-    gl.bindTexture(goog.webgl.TEXTURE_2D, this.hitDetectionTextures_[i]);
-    var end = this.hitDetectionGroupIndices_[i];
-    var numItems = end - start;
-    var offsetInBytes = start * elementSize;
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.drawElements(goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
-    start = end;
-  }
+    function(gl, context, skippedFeaturesHash, featureCallback) {
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  this.drawReplay_(gl, context, skippedFeaturesHash,
+      this.hitDetectionTextures_, this.hitDetectionGroupIndices_);
 
   var result = featureCallback(null);
   if (result) {
@@ -71279,20 +71360,24 @@ ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayAll_ =
  * @private
  * @param {WebGLRenderingContext} gl gl.
  * @param {ol.webgl.Context} context Context.
+ * @param {Object} skippedFeaturesHash Ids of features to skip.
  * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
- * @param {number} elementType Element type.
- * @param {number} elementSize Element size.
  * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
  *  this extent are checked.
  * @return {T|undefined} Callback result.
  * @template T
  */
 ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayOneByOne_ =
-    function(gl, context, featureCallback, elementType, elementSize,
-        opt_hitExtent) {
-  var i, groupStart, numItems, start, end, feature;
-  var featureIndex = this.startIndices_.length - 1;
+    function(gl, context, skippedFeaturesHash, featureCallback,
+    opt_hitExtent) {
+  goog.asserts.assert(this.hitDetectionTextures_.length ===
+      this.hitDetectionGroupIndices_.length);
+  var elementType = context.hasOESElementIndexUint ?
+      goog.webgl.UNSIGNED_INT : goog.webgl.UNSIGNED_SHORT;
+  var elementSize = context.hasOESElementIndexUint ? 4 : 2;
 
+  var i, groupStart, start, end, feature, featureUid;
+  var featureIndex = this.startIndices_.length - 1;
   for (i = this.hitDetectionTextures_.length - 1; i >= 0; --i) {
     gl.bindTexture(goog.webgl.TEXTURE_2D, this.hitDetectionTextures_[i]);
     groupStart = (i > 0) ? this.hitDetectionGroupIndices_[i - 1] : 0;
@@ -71302,15 +71387,14 @@ ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayOneByOne_ =
     while (featureIndex >= 0 &&
         this.startIndices_[featureIndex] >= groupStart) {
       start = this.startIndices_[featureIndex];
-      numItems = end - start;
       feature = this.startIndicesFeature_[featureIndex];
+      featureUid = goog.getUid(feature).toString();
 
-      if (!goog.isDef(opt_hitExtent) || ol.extent.intersects(
-          opt_hitExtent, feature.getGeometry().getExtent())) {
-        var offsetInBytes = start * elementSize;
+      if (!goog.isDef(skippedFeaturesHash[featureUid]) &&
+          (!goog.isDef(opt_hitExtent) || ol.extent.intersects(
+              opt_hitExtent, feature.getGeometry().getExtent()))) {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.drawElements(
-            goog.webgl.TRIANGLES, numItems, elementType, offsetInBytes);
+        this.drawElements_(gl, start, end, elementType, elementSize);
 
         var result = featureCallback(feature);
         if (result) {
@@ -74314,7 +74398,7 @@ ol.renderer.webgl.Map.prototype.forEachFeatureAtPixel =
       return result;
     }
   }
-  var layerStates = this.getMap().getLayerGroup().getLayerStatesArray();
+  var layerStates = frameState.layerStatesArray;
   var numLayers = layerStates.length;
   var i;
   for (i = numLayers - 1; i >= 0; --i) {
@@ -74362,7 +74446,7 @@ ol.renderer.webgl.Map.prototype.hasFeatureAtPixel =
       return true;
     }
   }
-  var layerStates = this.getMap().getLayerGroup().getLayerStatesArray();
+  var layerStates = frameState.layerStatesArray;
   var numLayers = layerStates.length;
   var i;
   for (i = numLayers - 1; i >= 0; --i) {
@@ -74993,22 +75077,22 @@ ol.Map.prototype.forEachFeatureAtPixel =
  *     filter function, only layers which are visible and for which this
  *     function returns `true` will be tested for features. By default, all
  *     visible layers will be tested. Feature overlays will always be tested.
- * @param {U=} opt_this2 Value to use as `this` when executing `layerFilter`.
+ * @param {U=} opt_this Value to use as `this` when executing `layerFilter`.
  * @return {boolean} Is there a feature at the given pixel?
  * @template U
  * @api
  */
 ol.Map.prototype.hasFeatureAtPixel =
-    function(pixel, opt_layerFilter, opt_this2) {
+    function(pixel, opt_layerFilter, opt_this) {
   if (goog.isNull(this.frameState_)) {
     return false;
   }
   var coordinate = this.getCoordinateFromPixel(pixel);
   var layerFilter = goog.isDef(opt_layerFilter) ?
       opt_layerFilter : goog.functions.TRUE;
-  var thisArg2 = goog.isDef(opt_this2) ? opt_this2 : null;
+  var thisArg = goog.isDef(opt_this) ? opt_this : null;
   return this.renderer_.hasFeatureAtPixel(
-      coordinate, this.frameState_, layerFilter, thisArg2);
+      coordinate, this.frameState_, layerFilter, thisArg);
 };
 
 
@@ -75339,13 +75423,11 @@ ol.Map.prototype.handlePostRender = function() {
     if (!goog.isNull(frameState)) {
       var hints = frameState.viewHints;
       if (hints[ol.ViewHint.ANIMATING]) {
-        maxTotalLoading = this.loadTilesWhileAnimating_ === true ?
-            8 : 0;
+        maxTotalLoading = this.loadTilesWhileAnimating_ ? 8 : 0;
         maxNewLoads = 2;
       }
       if (hints[ol.ViewHint.INTERACTING]) {
-        maxTotalLoading = this.loadTilesWhileInteracting_ === true ?
-            8 : 0;
+        maxTotalLoading = this.loadTilesWhileInteracting_ ? 8 : 0;
         maxNewLoads = 2;
       }
       tileSourceCount = goog.object.getCount(frameState.wantedTiles);
@@ -103873,6 +103955,7 @@ goog.provide('ol.layer.Heatmap');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.math');
+goog.require('goog.object');
 goog.require('ol.Object');
 goog.require('ol.dom');
 goog.require('ol.layer.Vector');
@@ -103906,7 +103989,14 @@ ol.layer.HeatmapLayerProperty = {
 ol.layer.Heatmap = function(opt_options) {
   var options = goog.isDef(opt_options) ? opt_options : {};
 
-  goog.base(this, /** @type {olx.layer.VectorOptions} */ (options));
+  var baseOptions = goog.object.clone(options);
+
+  delete baseOptions.gradient;
+  delete baseOptions.radius;
+  delete baseOptions.blur;
+  delete baseOptions.shadow;
+  delete baseOptions.weight;
+  goog.base(this, /** @type {olx.layer.VectorOptions} */ (baseOptions));
 
   /**
    * @private

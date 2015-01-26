@@ -598,22 +598,22 @@ ol.Map.prototype.forEachFeatureAtPixel =
  *     filter function, only layers which are visible and for which this
  *     function returns `true` will be tested for features. By default, all
  *     visible layers will be tested. Feature overlays will always be tested.
- * @param {U=} opt_this2 Value to use as `this` when executing `layerFilter`.
+ * @param {U=} opt_this Value to use as `this` when executing `layerFilter`.
  * @return {boolean} Is there a feature at the given pixel?
  * @template U
  * @api
  */
 ol.Map.prototype.hasFeatureAtPixel =
-    function(pixel, opt_layerFilter, opt_this2) {
+    function(pixel, opt_layerFilter, opt_this) {
   if (goog.isNull(this.frameState_)) {
     return false;
   }
   var coordinate = this.getCoordinateFromPixel(pixel);
   var layerFilter = goog.isDef(opt_layerFilter) ?
       opt_layerFilter : goog.functions.TRUE;
-  var thisArg2 = goog.isDef(opt_this2) ? opt_this2 : null;
+  var thisArg = goog.isDef(opt_this) ? opt_this : null;
   return this.renderer_.hasFeatureAtPixel(
-      coordinate, this.frameState_, layerFilter, thisArg2);
+      coordinate, this.frameState_, layerFilter, thisArg);
 };
 
 
@@ -944,13 +944,11 @@ ol.Map.prototype.handlePostRender = function() {
     if (!goog.isNull(frameState)) {
       var hints = frameState.viewHints;
       if (hints[ol.ViewHint.ANIMATING]) {
-        maxTotalLoading = this.loadTilesWhileAnimating_ === true ?
-            8 : 0;
+        maxTotalLoading = this.loadTilesWhileAnimating_ ? 8 : 0;
         maxNewLoads = 2;
       }
       if (hints[ol.ViewHint.INTERACTING]) {
-        maxTotalLoading = this.loadTilesWhileInteracting_ === true ?
-            8 : 0;
+        maxTotalLoading = this.loadTilesWhileInteracting_ ? 8 : 0;
         maxNewLoads = 2;
       }
       tileSourceCount = goog.object.getCount(frameState.wantedTiles);
