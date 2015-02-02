@@ -42,7 +42,10 @@ var sketchElement;
  * handle pointer move
  * @param {Event} evt
  */
-var mouseMoveHandler = function(evt) {
+var pointerMoveHandler = function(evt) {
+  if (evt.dragging) {
+    return;
+  }
   if (sketch) {
     var output;
     var geom = (sketch.getGeometry());
@@ -66,7 +69,7 @@ var map = new ol.Map({
   })
 });
 
-$(map.getViewport()).on('mousemove', mouseMoveHandler);
+map.on('pointermove', pointerMoveHandler);
 
 var typeSelect = document.getElementById('type');
 
