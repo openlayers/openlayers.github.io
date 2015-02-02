@@ -69,6 +69,10 @@ module.exports = function(grunt) {
         src: repo + '/build/hosted/HEAD/ol',
         dest: dist + '/en/' + branch + '/ol'
       },
+      'ol.ext': {
+        src: repo + '/build/hosted/HEAD/ol.ext',
+        dest: dist + '/en/' + branch + '/ol.ext'
+      },
       examples: {
         src: repo + '/build/hosted/HEAD/examples',
         dest: dist + '/en/' + branch + '/examples'
