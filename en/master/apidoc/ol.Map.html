@@ -1040,6 +1040,10 @@
                     <a href="ol.Map.html#forEachFeatureAtPixel">forEachFeatureAtPixel</a>
                 </li>
             
+                <li data-name="ol.Map#forEachLayerAtPixel" class="">
+                    <a href="ol.Map.html#forEachLayerAtPixel">forEachLayerAtPixel</a>
+                </li>
+            
                 <li data-name="ol.Map#get" class="unstable">
                     <a href="ol.Map.html#get">get</a>
                 </li>
@@ -15355,6 +15359,248 @@ callback execution, or the first truthy callback return value.
 
         
             
+<dt class="">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="forEachLayerAtPixel">
+            forEachLayerAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_this</span>, <span class="optional">opt_layerFilter</span>, <span class="optional">opt_this2</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{T|undefined}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/map.js, line 614
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+    
+    
+    <div class="description">
+        <p>Detect layers that have a color value at a pixel on the viewport, and
+execute a callback with each matching layer. Layers included in the
+detection can be configured through <code>opt_layerFilter</code>. Feature overlays will
+always be included in the detection.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>pixel</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Pixel">ol.Pixel</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Pixel.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Layer
+    callback. If the detected feature is not on a layer, but on a
+    <a href="ol.FeatureOverlay.html"><code>ol.FeatureOverlay</code></a>, then the argument to this function will
+    be <code>null</code>. To stop detection, callback functions can return a truthy
+    value.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">S</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Value to use as <code>this</code> when executing <code>callback</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>layerFilter</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Layer
+    filter function, only layers which are visible and for which this
+    function returns <code>true</code> will be tested for features. By default, all
+    visible layers will be tested. Feature overlays will always be tested.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>this2</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">U</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Value to use as <code>this</code> when executing <code>layerFilter</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Callback result, i.e. the return value of last
+callback execution, or the first truthy callback return value.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
 <dt class="unstable">
     <div class="nameContainer inherited">
         
@@ -15501,7 +15747,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 709
+            src/ol/map.js, line 746
         </div>
         
         
@@ -15581,7 +15827,7 @@ Controls.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 694
+            src/ol/map.js, line 731
         </div>
         
         
@@ -15708,7 +15954,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 626
+            src/ol/map.js, line 663
         </div>
         
         
@@ -15839,7 +16085,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 637
+            src/ol/map.js, line 674
         </div>
         
         
@@ -15970,7 +16216,7 @@ Pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 732
+            src/ol/map.js, line 769
         </div>
         
         
@@ -16145,7 +16391,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 743
+            src/ol/map.js, line 780
         </div>
         
         
@@ -16229,7 +16475,7 @@ A layer group containing the layers in this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 757
+            src/ol/map.js, line 794
         </div>
         
         
@@ -16313,7 +16559,7 @@ Layers.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 718
+            src/ol/map.js, line 755
         </div>
         
         
@@ -16393,7 +16639,7 @@ Overlays.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 768
+            src/ol/map.js, line 805
         </div>
         
         
@@ -16692,7 +16938,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 794
+            src/ol/map.js, line 831
         </div>
         
         
@@ -16776,7 +17022,7 @@ The size in pixels of the map in the DOM.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 666
+            src/ol/map.js, line 703
         </div>
         
         
@@ -16865,7 +17111,7 @@ The Element or id of the Element that the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 683
+            src/ol/map.js, line 720
         </div>
         
         
@@ -16951,7 +17197,7 @@ The element that the map is rendered in.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 810
+            src/ol/map.js, line 847
         </div>
         
         
@@ -17036,7 +17282,7 @@ The view that controls this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 823
+            src/ol/map.js, line 860
         </div>
         
         
@@ -17118,7 +17364,7 @@ Viewport.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 606
+            src/ol/map.js, line 643
         </div>
         
         
@@ -17676,7 +17922,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1157
+            src/ol/map.js, line 1194
         </div>
         
         
@@ -17808,7 +18054,7 @@ The removed control (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1174
+            src/ol/map.js, line 1211
         </div>
         
         
@@ -17940,7 +18186,7 @@ The removed interaction (or
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1192
+            src/ol/map.js, line 1229
         </div>
         
         
@@ -18072,7 +18318,7 @@ The removed layer (or undefined if the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1205
+            src/ol/map.js, line 1242
         </div>
         
         
@@ -18204,7 +18450,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1143
+            src/ol/map.js, line 1180
         </div>
         
         
@@ -18280,7 +18526,7 @@ animation frame.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1133
+            src/ol/map.js, line 1170
         </div>
         
         
@@ -18506,7 +18752,7 @@ animation frame.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1326
+            src/ol/map.js, line 1363
         </div>
         
         
@@ -18757,7 +19003,7 @@ animation frame.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1341
+            src/ol/map.js, line 1378
         </div>
         
         
@@ -18882,7 +19128,7 @@ animation frame.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1357
+            src/ol/map.js, line 1394
         </div>
         
         
@@ -19011,7 +19257,7 @@ animation frame.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1372
+            src/ol/map.js, line 1409
         </div>
         
         
@@ -19643,7 +19889,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1396
+            src/ol/map.js, line 1433
         </div>
         
         
@@ -19721,7 +19967,7 @@ third-party code changes the size of the map viewport.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Feb 02 2015 09:15:57 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Feb 02 2015 17:16:36 GMT+0100 (CET)
         </footer>
     </div>
 </div>

@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-157-gdf32d04
+// Version: v3.1.1-179-ga7fcf05
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -28571,7 +28571,7 @@ ol.Collection = function(opt_array) {
    * @private
    * @type {Array.<T>}
    */
-  this.array_ = opt_array || [];
+  this.array_ = goog.isDef(opt_array) ? opt_array : [];
 
   this.updateLength_();
 
@@ -34683,8 +34683,7 @@ ol.control.FullScreen = function(opt_options) {
   this.cssClassName_ = goog.isDef(options.className) ?
       options.className : 'ol-full-screen';
 
-  var label = goog.isDef(options.label) ?
-      options.label : '\u2194';
+  var label = goog.isDef(options.label) ? options.label : '\u2194';
 
   /**
    * @private
@@ -47820,15 +47819,15 @@ goog.inherits(ol.source.Source, ol.Observable);
 
 
 /**
+ * @param {ol.Coordinate} coordinate Coordinate.
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
- * @param {ol.Coordinate} coordinate Coordinate.
  * @param {Object.<string, boolean>} skippedFeatureUids Skipped feature uids.
  * @param {function(ol.Feature): T} callback Feature callback.
  * @return {T|undefined} Callback result.
  * @template T
  */
-ol.source.Source.prototype.forEachFeatureAtPixel =
+ol.source.Source.prototype.forEachFeatureAtCoordinate =
     goog.nullFunction;
 
 
@@ -49477,15 +49476,37 @@ goog.inherits(ol.renderer.Layer, goog.Disposable);
  * @return {T|undefined} Callback result.
  * @template S,T
  */
-ol.renderer.Layer.prototype.forEachFeatureAtPixel = goog.nullFunction;
+ol.renderer.Layer.prototype.forEachFeatureAtCoordinate = goog.nullFunction;
+
+
+/**
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {function(this: S, ol.layer.Layer): T} callback Layer callback.
+ * @param {S} thisArg Value to use as `this` when executing `callback`.
+ * @return {T|undefined} Callback result.
+ * @template S,T
+ */
+ol.renderer.Layer.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg) {
+  var coordinate = this.getMap().getCoordinateFromPixel(pixel);
+  var hasFeature = this.forEachFeatureAtCoordinate(
+      coordinate, frameState, goog.functions.TRUE, this);
+
+  if (hasFeature) {
+    return callback.call(thisArg, this.layer_);
+  } else {
+    return undefined;
+  }
+};
 
 
 /**
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {olx.FrameState} frameState Frame state.
- * @return {boolean} Is there a feature at the given pixel?
+ * @return {boolean} Is there a feature at the given coordinate?
  */
-ol.renderer.Layer.prototype.hasFeatureAtPixel = goog.functions.FALSE;
+ol.renderer.Layer.prototype.hasFeatureAtCoordinate = goog.functions.FALSE;
 
 
 /**
@@ -50849,7 +50870,7 @@ ol.renderer.Map.expireIconCache_ = function(map, frameState) {
  * @return {T|undefined} Callback result.
  * @template S,T,U
  */
-ol.renderer.Map.prototype.forEachFeatureAtPixel =
+ol.renderer.Map.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg,
         layerFilter, thisArg2) {
   var result;
@@ -50859,8 +50880,8 @@ ol.renderer.Map.prototype.forEachFeatureAtPixel =
   if (!goog.isNull(this.replayGroup)) {
     /** @type {Object.<string, boolean>} */
     var features = {};
-    result = this.replayGroup.forEachGeometryAtPixel(viewResolution,
-        viewRotation, coordinate, {},
+    result = this.replayGroup.forEachFeatureAtCoordinate(coordinate,
+        viewResolution, viewRotation, {},
         /**
          * @param {ol.Feature} feature Feature.
          * @return {?} Callback result.
@@ -50886,8 +50907,62 @@ ol.renderer.Map.prototype.forEachFeatureAtPixel =
     if (ol.layer.Layer.visibleAtResolution(layerState, viewResolution) &&
         layerFilter.call(thisArg2, layer)) {
       var layerRenderer = this.getLayerRenderer(layer);
-      result = layerRenderer.forEachFeatureAtPixel(
+      result = layerRenderer.forEachFeatureAtCoordinate(
           coordinate, frameState, callback, thisArg);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return undefined;
+};
+
+
+/**
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {olx.FrameState} frameState FrameState.
+ * @param {function(this: S, ol.layer.Layer): T} callback Layer
+ *     callback.
+ * @param {S} thisArg Value to use as `this` when executing `callback`.
+ * @param {function(this: U, ol.layer.Layer): boolean} layerFilter Layer filter
+ *     function, only layers which are visible and for which this function
+ *     returns `true` will be tested for features.  By default, all visible
+ *     layers will be tested.
+ * @param {U} thisArg2 Value to use as `this` when executing `layerFilter`.
+ * @return {T|undefined} Callback result.
+ * @template S,T,U
+ */
+ol.renderer.Map.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg,
+        layerFilter, thisArg2) {
+  var result;
+  var viewState = frameState.viewState;
+  var viewResolution = viewState.resolution;
+  var viewRotation = viewState.rotation;
+
+  if (!goog.isNull(this.replayGroup)) {
+    var coordinate = this.getMap().getCoordinateFromPixel(pixel);
+    var hasFeature = this.replayGroup.forEachFeatureAtCoordinate(coordinate,
+        viewResolution, viewRotation, {}, goog.functions.TRUE);
+
+    if (hasFeature) {
+      result = callback.call(thisArg, null);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  var layerStates = frameState.layerStatesArray;
+  var numLayers = layerStates.length;
+  var i;
+  for (i = numLayers - 1; i >= 0; --i) {
+    var layerState = layerStates[i];
+    var layer = layerState.layer;
+    if (ol.layer.Layer.visibleAtResolution(layerState, viewResolution) &&
+        layerFilter.call(thisArg2, layer)) {
+      var layerRenderer = this.getLayerRenderer(layer);
+      result = layerRenderer.forEachLayerAtPixel(
+          pixel, frameState, callback, thisArg);
       if (result) {
         return result;
       }
@@ -50905,12 +50980,12 @@ ol.renderer.Map.prototype.forEachFeatureAtPixel =
  *     returns `true` will be tested for features.  By default, all visible
  *     layers will be tested.
  * @param {U} thisArg Value to use as `this` when executing `layerFilter`.
- * @return {boolean} Is there a feature at the given pixel?
+ * @return {boolean} Is there a feature at the given coordinate?
  * @template U
  */
-ol.renderer.Map.prototype.hasFeatureAtPixel =
+ol.renderer.Map.prototype.hasFeatureAtCoordinate =
     function(coordinate, frameState, layerFilter, thisArg) {
-  var hasFeature = this.forEachFeatureAtPixel(
+  var hasFeature = this.forEachFeatureAtCoordinate(
       coordinate, frameState, goog.functions.TRUE, this, layerFilter, thisArg);
 
   return goog.isDef(hasFeature);
@@ -62406,16 +62481,16 @@ ol.render.canvas.ReplayGroup.prototype.finish = function() {
 
 
 /**
+ * @param {ol.Coordinate} coordinate Coordinate.
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
- * @param {ol.Coordinate} coordinate Coordinate.
  * @param {Object} skippedFeaturesHash Ids of features to skip
  * @param {function(ol.Feature): T} callback Feature callback.
  * @return {T|undefined} Callback result.
  * @template T
  */
-ol.render.canvas.ReplayGroup.prototype.forEachGeometryAtPixel = function(
-    resolution, rotation, coordinate, skippedFeaturesHash, callback) {
+ol.render.canvas.ReplayGroup.prototype.forEachFeatureAtCoordinate = function(
+    coordinate, resolution, rotation, skippedFeaturesHash, callback) {
 
   var transform = this.hitDetectionTransform_;
   ol.vec.Mat4.makeTransform2D(transform, 0.5, 0.5,
@@ -62804,6 +62879,21 @@ ol.renderer.canvas.Layer.prototype.prepareFrame = goog.abstractMethod;
 
 
 /**
+ * @param {ol.Pixel} pixelOnMap Pixel.
+ * @param {goog.vec.Mat4.Number} imageTransformInv The transformation matrix
+ *        to convert from a map pixel to a canvas pixel.
+ * @return {ol.Pixel}
+ * @protected
+ */
+ol.renderer.canvas.Layer.prototype.getPixelOnCanvas =
+    function(pixelOnMap, imageTransformInv) {
+  var pixelOnCanvas = [0, 0];
+  ol.vec.Mat4.multVec2(imageTransformInv, pixelOnMap, pixelOnCanvas);
+  return pixelOnCanvas;
+};
+
+
+/**
  * @param {ol.Size} size Size.
  * @return {boolean} True when the canvas with the current size does not exceed
  *     the maximum dimensions.
@@ -62844,564 +62934,6 @@ ol.renderer.canvas.Layer.testCanvasSize = (function() {
     return good;
   };
 })();
-
-goog.provide('ol.renderer.canvas.ImageLayer');
-
-goog.require('goog.asserts');
-goog.require('goog.vec.Mat4');
-goog.require('ol.ImageBase');
-goog.require('ol.ViewHint');
-goog.require('ol.extent');
-goog.require('ol.layer.Image');
-goog.require('ol.proj');
-goog.require('ol.renderer.Map');
-goog.require('ol.renderer.canvas.Layer');
-goog.require('ol.vec.Mat4');
-
-
-
-/**
- * @constructor
- * @extends {ol.renderer.canvas.Layer}
- * @param {ol.renderer.Map} mapRenderer Map renderer.
- * @param {ol.layer.Image} imageLayer Single image layer.
- */
-ol.renderer.canvas.ImageLayer = function(mapRenderer, imageLayer) {
-
-  goog.base(this, mapRenderer, imageLayer);
-
-  /**
-   * @private
-   * @type {?ol.ImageBase}
-   */
-  this.image_ = null;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.imageTransform_ = goog.vec.Mat4.createNumber();
-
-};
-goog.inherits(ol.renderer.canvas.ImageLayer, ol.renderer.canvas.Layer);
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtPixel =
-    function(coordinate, frameState, callback, thisArg) {
-  var layer = this.getLayer();
-  var source = layer.getSource();
-  var resolution = frameState.viewState.resolution;
-  var rotation = frameState.viewState.rotation;
-  var skippedFeatureUids = frameState.skippedFeatureUids;
-  return source.forEachFeatureAtPixel(
-      resolution, rotation, coordinate, skippedFeatureUids,
-      /**
-       * @param {ol.Feature} feature Feature.
-       * @return {?} Callback result.
-       */
-      function(feature) {
-        return callback.call(thisArg, feature, layer);
-      });
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.getImage = function() {
-  return goog.isNull(this.image_) ?
-      null : this.image_.getImage();
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.getImageTransform = function() {
-  return this.imageTransform_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
-    function(frameState, layerState) {
-
-  var pixelRatio = frameState.pixelRatio;
-  var viewState = frameState.viewState;
-  var viewCenter = viewState.center;
-  var viewResolution = viewState.resolution;
-  var viewRotation = viewState.rotation;
-
-  var image;
-  var imageLayer = this.getLayer();
-  goog.asserts.assertInstanceof(imageLayer, ol.layer.Image);
-  var imageSource = imageLayer.getSource();
-
-  var hints = frameState.viewHints;
-
-  var renderedExtent = frameState.extent;
-  if (goog.isDef(layerState.extent)) {
-    renderedExtent = ol.extent.getIntersection(
-        renderedExtent, layerState.extent);
-  }
-
-  if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING] &&
-      !ol.extent.isEmpty(renderedExtent)) {
-    var projection = viewState.projection;
-    var sourceProjection = imageSource.getProjection();
-    if (!goog.isNull(sourceProjection)) {
-      goog.asserts.assert(ol.proj.equivalent(projection, sourceProjection));
-      projection = sourceProjection;
-    }
-    image = imageSource.getImage(
-        renderedExtent, viewResolution, pixelRatio, projection);
-    if (!goog.isNull(image)) {
-      var loaded = this.loadImage(image);
-      if (loaded) {
-        this.image_ = image;
-      }
-    }
-  }
-
-  if (!goog.isNull(this.image_)) {
-    image = this.image_;
-    var imageExtent = image.getExtent();
-    var imageResolution = image.getResolution();
-    var imagePixelRatio = image.getPixelRatio();
-    var scale = pixelRatio * imageResolution /
-        (viewResolution * imagePixelRatio);
-    ol.vec.Mat4.makeTransform2D(this.imageTransform_,
-        pixelRatio * frameState.size[0] / 2,
-        pixelRatio * frameState.size[1] / 2,
-        scale, scale,
-        viewRotation,
-        imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolution,
-        imagePixelRatio * (viewCenter[1] - imageExtent[3]) / imageResolution);
-    this.updateAttributions(frameState.attributions, image.getAttributions());
-    this.updateLogos(frameState, imageSource);
-  }
-
-  return true;
-};
-
-// FIXME find correct globalCompositeOperation
-// FIXME optimize :-)
-
-goog.provide('ol.renderer.canvas.TileLayer');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.object');
-goog.require('goog.vec.Mat4');
-goog.require('ol.Size');
-goog.require('ol.TileRange');
-goog.require('ol.TileState');
-goog.require('ol.dom');
-goog.require('ol.extent');
-goog.require('ol.layer.Tile');
-goog.require('ol.renderer.Map');
-goog.require('ol.renderer.canvas.Layer');
-goog.require('ol.tilecoord');
-goog.require('ol.vec.Mat4');
-
-
-
-/**
- * @constructor
- * @extends {ol.renderer.canvas.Layer}
- * @param {ol.renderer.Map} mapRenderer Map renderer.
- * @param {ol.layer.Tile} tileLayer Tile layer.
- */
-ol.renderer.canvas.TileLayer = function(mapRenderer, tileLayer) {
-
-  goog.base(this, mapRenderer, tileLayer);
-
-  /**
-   * @private
-   * @type {HTMLCanvasElement}
-   */
-  this.canvas_ = null;
-
-  /**
-   * @private
-   * @type {ol.Size}
-   */
-  this.canvasSize_ = null;
-
-  /**
-   * @private
-   * @type {boolean}
-   */
-  this.canvasTooBig_ = false;
-
-  /**
-   * @private
-   * @type {CanvasRenderingContext2D}
-   */
-  this.context_ = null;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.imageTransform_ = goog.vec.Mat4.createNumber();
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.renderedCanvasZ_ = NaN;
-
-  /**
-   * @private
-   * @type {ol.TileRange}
-   */
-  this.renderedCanvasTileRange_ = null;
-
-  /**
-   * @private
-   * @type {Array.<ol.Tile|undefined>}
-   */
-  this.renderedTiles_ = null;
-
-};
-goog.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.TileLayer.prototype.getImage = function() {
-  return this.canvas_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.TileLayer.prototype.getImageTransform = function() {
-  return this.imageTransform_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.TileLayer.prototype.prepareFrame =
-    function(frameState, layerState) {
-
-  //
-  // Warning! You're entering a dangerous zone!
-  //
-  // The canvas tile layer renderering is highly optimized, hence
-  // the complexity of this function. For best performance we try
-  // to minimize the number of pixels to update on the canvas. This
-  // includes:
-  //
-  // - Only drawing pixels that will be visible.
-  // - Not re-drawing pixels/tiles that are already correct.
-  // - Minimizing calls to clearRect.
-  // - Never shrink the canvas. Just make it bigger when necessary.
-  //   Re-sizing the canvas also clears it, which further means
-  //   re-creating it (expensive).
-  //
-  // The various steps performed by this functions:
-  //
-  // - Create a canvas element if none has been created yet.
-  //
-  // - Make the canvas bigger if it's too small. Note that we never shrink
-  //   the canvas, we just make it bigger when necessary, when rotating for
-  //   example. Note also that the canvas always contains a whole number
-  //   of tiles.
-  //
-  // - Invalidate the canvas tile range (renderedCanvasTileRange_ = null)
-  //   if (1) the canvas has been enlarged, or (2) the zoom level changes,
-  //   or (3) the canvas tile range doesn't contain the required tile
-  //   range. This canvas tile range invalidation thing is related to
-  //   an optimization where we attempt to redraw as few pixels as
-  //   possible on each prepareFrame call.
-  //
-  // - If the canvas tile range has been invalidated we reset
-  //   renderedCanvasTileRange_ and reset the renderedTiles_ array.
-  //   The renderedTiles_ array is the structure used to determine
-  //   the canvas pixels that need not be redrawn from one prepareFrame
-  //   call to another. It records while tile has been rendered at
-  //   which position in the canvas.
-  //
-  // - We then determine the tiles to draw on the canvas. Tiles for
-  //   the target resolution may not be loaded yet. In that case we
-  //   use low-resolution/interim tiles if loaded already. And, if
-  //   for a non-yet-loaded tile we haven't found a corresponding
-  //   low-resolution tile we indicate that the pixels for that
-  //   tile must be cleared on the canvas. Note: determining the
-  //   interim tiles is based on tile extents instead of tile
-  //   coords, this is to be able to handler irregular tile grids.
-  //
-  // - We're now ready to render. We start by calling clearRect
-  //   for the tiles that aren't loaded yet and are not fully covered
-  //   by a low-resolution tile (if they're loaded, we'll draw them;
-  //   if they're fully covered by a low-resolution tile then there's
-  //   no need to clear). We then render the tiles "back to front",
-  //   i.e. starting with the low-resolution tiles.
-  //
-  // - After rendering some bookkeeping is performed (updateUsedTiles,
-  //   etc.). manageTilePyramid is what enqueue tiles in the tile
-  //   queue for loading.
-  //
-  // - The last step involves updating the image transform matrix,
-  //   which will be used by the map renderer for the final
-  //   composition and positioning.
-  //
-
-  var pixelRatio = frameState.pixelRatio;
-  var viewState = frameState.viewState;
-  var projection = viewState.projection;
-
-  var tileLayer = this.getLayer();
-  goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
-  var tileSource = tileLayer.getSource();
-  var tileGrid = tileSource.getTileGridForProjection(projection);
-  var tileGutter = tileSource.getGutter();
-  var z = tileGrid.getZForResolution(viewState.resolution);
-  var tilePixelSize =
-      tileSource.getTilePixelSize(z, frameState.pixelRatio, projection);
-  var tilePixelRatio = tilePixelSize / tileGrid.getTileSize(z);
-  var tileResolution = tileGrid.getResolution(z);
-  var tilePixelResolution = tileResolution / tilePixelRatio;
-  var center = viewState.center;
-  var extent;
-  if (tileResolution == viewState.resolution) {
-    center = this.snapCenterToPixel(center, tileResolution, frameState.size);
-    extent = ol.extent.getForViewAndSize(
-        center, tileResolution, viewState.rotation, frameState.size);
-  } else {
-    extent = frameState.extent;
-  }
-
-  if (goog.isDef(layerState.extent)) {
-    extent = ol.extent.getIntersection(extent, layerState.extent);
-  }
-  if (ol.extent.isEmpty(extent)) {
-    // Return false to prevent the rendering of the layer.
-    return false;
-  }
-
-  var tileRange = tileGrid.getTileRangeForExtentAndResolution(
-      extent, tileResolution);
-
-  var canvasWidth = tilePixelSize * tileRange.getWidth();
-  var canvasHeight = tilePixelSize * tileRange.getHeight();
-
-  var canvas, context;
-  if (goog.isNull(this.canvas_)) {
-    goog.asserts.assert(goog.isNull(this.canvasSize_));
-    goog.asserts.assert(goog.isNull(this.context_));
-    goog.asserts.assert(goog.isNull(this.renderedCanvasTileRange_));
-    context = ol.dom.createCanvasContext2D(canvasWidth, canvasHeight);
-    this.canvas_ = context.canvas;
-    this.canvasSize_ = [canvasWidth, canvasHeight];
-    this.context_ = context;
-    this.canvasTooBig_ =
-        !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
-  } else {
-    goog.asserts.assert(!goog.isNull(this.canvasSize_));
-    goog.asserts.assert(!goog.isNull(this.context_));
-    canvas = this.canvas_;
-    context = this.context_;
-    if (this.canvasSize_[0] < canvasWidth ||
-        this.canvasSize_[1] < canvasHeight ||
-        (this.canvasTooBig_ && (this.canvasSize_[0] > canvasWidth ||
-        this.canvasSize_[1] > canvasHeight))) {
-      // Canvas is too small, resize it. We never shrink the canvas, unless
-      // we know that the current canvas size exceeds the maximum size
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
-      this.canvasSize_ = [canvasWidth, canvasHeight];
-      this.canvasTooBig_ =
-          !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
-      this.renderedCanvasTileRange_ = null;
-    } else {
-      canvasWidth = this.canvasSize_[0];
-      canvasHeight = this.canvasSize_[1];
-      if (z != this.renderedCanvasZ_ ||
-          !this.renderedCanvasTileRange_.containsTileRange(tileRange)) {
-        this.renderedCanvasTileRange_ = null;
-      }
-    }
-  }
-
-  var canvasTileRange, canvasTileRangeWidth, minX, minY;
-  if (goog.isNull(this.renderedCanvasTileRange_)) {
-    canvasTileRangeWidth = canvasWidth / tilePixelSize;
-    var canvasTileRangeHeight = canvasHeight / tilePixelSize;
-    minX = tileRange.minX -
-        Math.floor((canvasTileRangeWidth - tileRange.getWidth()) / 2);
-    minY = tileRange.minY -
-        Math.floor((canvasTileRangeHeight - tileRange.getHeight()) / 2);
-    this.renderedCanvasZ_ = z;
-    this.renderedCanvasTileRange_ = new ol.TileRange(
-        minX, minX + canvasTileRangeWidth - 1,
-        minY, minY + canvasTileRangeHeight - 1);
-    this.renderedTiles_ =
-        new Array(canvasTileRangeWidth * canvasTileRangeHeight);
-    canvasTileRange = this.renderedCanvasTileRange_;
-  } else {
-    canvasTileRange = this.renderedCanvasTileRange_;
-    canvasTileRangeWidth = canvasTileRange.getWidth();
-  }
-
-  goog.asserts.assert(canvasTileRange.containsTileRange(tileRange));
-
-  /**
-   * @type {Object.<number, Object.<string, ol.Tile>>}
-   */
-  var tilesToDrawByZ = {};
-  tilesToDrawByZ[z] = {};
-  /** @type {Array.<ol.Tile>} */
-  var tilesToClear = [];
-
-  var getTileIfLoaded = this.createGetTileIfLoadedFunction(function(tile) {
-    return !goog.isNull(tile) && tile.getState() == ol.TileState.LOADED;
-  }, tileSource, pixelRatio, projection);
-  var findLoadedTiles = goog.bind(tileSource.findLoadedTiles, tileSource,
-      tilesToDrawByZ, getTileIfLoaded);
-
-  var useInterimTilesOnError = tileLayer.getUseInterimTilesOnError();
-
-  var tmpExtent = ol.extent.createEmpty();
-  var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
-  var childTileRange, fullyLoaded, tile, tileState, x, y;
-  for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
-    for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
-
-      tile = tileSource.getTile(z, x, y, pixelRatio, projection);
-      tileState = tile.getState();
-      if (tileState == ol.TileState.LOADED ||
-          tileState == ol.TileState.EMPTY ||
-          (tileState == ol.TileState.ERROR && !useInterimTilesOnError)) {
-        tilesToDrawByZ[z][ol.tilecoord.toString(tile.tileCoord)] = tile;
-        continue;
-      }
-
-      fullyLoaded = tileGrid.forEachTileCoordParentTileRange(
-          tile.tileCoord, findLoadedTiles, null, tmpTileRange, tmpExtent);
-      if (!fullyLoaded) {
-        // FIXME we do not need to clear the tile if it is fully covered by its
-        //       children
-        tilesToClear.push(tile);
-        childTileRange = tileGrid.getTileCoordChildTileRange(
-            tile.tileCoord, tmpTileRange, tmpExtent);
-        if (!goog.isNull(childTileRange)) {
-          findLoadedTiles(z + 1, childTileRange);
-        }
-      }
-
-    }
-  }
-
-  var i, ii;
-  for (i = 0, ii = tilesToClear.length; i < ii; ++i) {
-    tile = tilesToClear[i];
-    x = tilePixelSize * (tile.tileCoord[1] - canvasTileRange.minX);
-    y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord[2]);
-    context.clearRect(x, y, tilePixelSize, tilePixelSize);
-  }
-
-  /** @type {Array.<number>} */
-  var zs = goog.array.map(goog.object.getKeys(tilesToDrawByZ), Number);
-  goog.array.sort(zs);
-  var opaque = tileSource.getOpaque();
-  var origin = ol.extent.getTopLeft(tileGrid.getTileCoordExtent(
-      [z, canvasTileRange.minX, canvasTileRange.maxY],
-      tmpExtent));
-  var currentZ, index, scale, tileCoordKey, tileExtent, tilesToDraw;
-  var ix, iy, interimTileExtent, interimTileRange, maxX, maxY;
-  var height, width;
-  for (i = 0, ii = zs.length; i < ii; ++i) {
-    currentZ = zs[i];
-    tilePixelSize =
-        tileSource.getTilePixelSize(currentZ, pixelRatio, projection);
-    tilesToDraw = tilesToDrawByZ[currentZ];
-    if (currentZ == z) {
-      for (tileCoordKey in tilesToDraw) {
-        tile = tilesToDraw[tileCoordKey];
-        index =
-            (tile.tileCoord[2] - canvasTileRange.minY) * canvasTileRangeWidth +
-            (tile.tileCoord[1] - canvasTileRange.minX);
-        if (this.renderedTiles_[index] != tile) {
-          x = tilePixelSize * (tile.tileCoord[1] - canvasTileRange.minX);
-          y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord[2]);
-          tileState = tile.getState();
-          if (tileState == ol.TileState.EMPTY ||
-              (tileState == ol.TileState.ERROR && !useInterimTilesOnError) ||
-              !opaque) {
-            context.clearRect(x, y, tilePixelSize, tilePixelSize);
-          }
-          if (tileState == ol.TileState.LOADED) {
-            context.drawImage(tile.getImage(),
-                tileGutter, tileGutter, tilePixelSize, tilePixelSize,
-                x, y, tilePixelSize, tilePixelSize);
-          }
-          this.renderedTiles_[index] = tile;
-        }
-      }
-    } else {
-      scale = tileGrid.getResolution(currentZ) / tileResolution;
-      for (tileCoordKey in tilesToDraw) {
-        tile = tilesToDraw[tileCoordKey];
-        tileExtent = tileGrid.getTileCoordExtent(tile.tileCoord, tmpExtent);
-        x = (tileExtent[0] - origin[0]) / tilePixelResolution;
-        y = (origin[1] - tileExtent[3]) / tilePixelResolution;
-        width = scale * tilePixelSize;
-        height = scale * tilePixelSize;
-        tileState = tile.getState();
-        if (tileState == ol.TileState.EMPTY || !opaque) {
-          context.clearRect(x, y, width, height);
-        }
-        if (tileState == ol.TileState.LOADED) {
-          context.drawImage(tile.getImage(),
-              tileGutter, tileGutter, tilePixelSize, tilePixelSize,
-              x, y, width, height);
-        }
-        interimTileRange =
-            tileGrid.getTileRangeForExtentAndZ(tileExtent, z, tmpTileRange);
-        minX = Math.max(interimTileRange.minX, canvasTileRange.minX);
-        maxX = Math.min(interimTileRange.maxX, canvasTileRange.maxX);
-        minY = Math.max(interimTileRange.minY, canvasTileRange.minY);
-        maxY = Math.min(interimTileRange.maxY, canvasTileRange.maxY);
-        for (ix = minX; ix <= maxX; ++ix) {
-          for (iy = minY; iy <= maxY; ++iy) {
-            index = (iy - canvasTileRange.minY) * canvasTileRangeWidth +
-                    (ix - canvasTileRange.minX);
-            this.renderedTiles_[index] = undefined;
-          }
-        }
-      }
-    }
-  }
-
-  this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
-  this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio,
-      projection, extent, z, tileLayer.getPreload());
-  this.scheduleExpireCache(frameState, tileSource);
-  this.updateLogos(frameState, tileSource);
-
-  ol.vec.Mat4.makeTransform2D(this.imageTransform_,
-      pixelRatio * frameState.size[0] / 2,
-      pixelRatio * frameState.size[1] / 2,
-      pixelRatio * tilePixelResolution / viewState.resolution,
-      pixelRatio * tilePixelResolution / viewState.resolution,
-      viewState.rotation,
-      (origin[0] - center[0]) / tilePixelResolution,
-      (center[1] - origin[1]) / tilePixelResolution);
-
-  return true;
-};
 
 goog.provide('ol.geom.Circle');
 
@@ -65694,6 +65226,2708 @@ ol.renderer.vector.GEOMETRY_RENDERERS_ = {
   'Circle': ol.renderer.vector.renderCircleGeometry_
 };
 
+goog.provide('ol.ImageCanvas');
+
+goog.require('ol.ImageBase');
+goog.require('ol.ImageState');
+
+
+
+/**
+ * @constructor
+ * @extends {ol.ImageBase}
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {Array.<ol.Attribution>} attributions Attributions.
+ * @param {HTMLCanvasElement} canvas Canvas.
+ */
+ol.ImageCanvas = function(extent, resolution, pixelRatio, attributions,
+    canvas) {
+
+  goog.base(this, extent, resolution, pixelRatio, ol.ImageState.LOADED,
+      attributions);
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.canvas_ = canvas;
+
+};
+goog.inherits(ol.ImageCanvas, ol.ImageBase);
+
+
+/**
+ * @inheritDoc
+ */
+ol.ImageCanvas.prototype.getImage = function(opt_context) {
+  return this.canvas_;
+};
+
+goog.provide('ol.source.Image');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('ol.Attribution');
+goog.require('ol.Extent');
+goog.require('ol.array');
+goog.require('ol.source.Source');
+
+
+/**
+ * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ *            extent: (null|ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            resolutions: (Array.<number>|undefined),
+ *            state: (ol.source.State|undefined)}}
+ */
+ol.source.ImageOptions;
+
+
+
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for sources providing a single image.
+ *
+ * @constructor
+ * @extends {ol.source.Source}
+ * @param {ol.source.ImageOptions} options Single image source options.
+ * @api
+ */
+ol.source.Image = function(options) {
+
+  goog.base(this, {
+    attributions: options.attributions,
+    extent: options.extent,
+    logo: options.logo,
+    projection: options.projection,
+    state: options.state
+  });
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.resolutions_ = goog.isDef(options.resolutions) ?
+      options.resolutions : null;
+  goog.asserts.assert(goog.isNull(this.resolutions_) ||
+      goog.array.isSorted(this.resolutions_,
+          function(a, b) {
+            return b - a;
+          }, true));
+
+};
+goog.inherits(ol.source.Image, ol.source.Source);
+
+
+/**
+ * @return {Array.<number>} Resolutions.
+ */
+ol.source.Image.prototype.getResolutions = function() {
+  return this.resolutions_;
+};
+
+
+/**
+ * @protected
+ * @param {number} resolution Resolution.
+ * @return {number} Resolution.
+ */
+ol.source.Image.prototype.findNearestResolution =
+    function(resolution) {
+  if (!goog.isNull(this.resolutions_)) {
+    var idx = ol.array.linearFindNearest(this.resolutions_, resolution, 0);
+    resolution = this.resolutions_[idx];
+  }
+  return resolution;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {ol.ImageBase} Single image.
+ */
+ol.source.Image.prototype.getImage = goog.abstractMethod;
+
+
+/**
+ * Default image load function for image sources that use ol.Image image
+ * instances.
+ * @param {ol.Image} image Image.
+ * @param {string} src Source.
+ */
+ol.source.Image.defaultImageLoadFunction = function(image, src) {
+  image.getImage().src = src;
+};
+
+goog.provide('ol.source.ImageCanvas');
+
+goog.require('ol.CanvasFunctionType');
+goog.require('ol.ImageCanvas');
+goog.require('ol.extent');
+goog.require('ol.source.Image');
+
+
+
+/**
+ * @classdesc
+ * Base class for image sources where a canvas element is the image.
+ *
+ * @constructor
+ * @extends {ol.source.Image}
+ * @param {olx.source.ImageCanvasOptions} options
+ * @api
+ */
+ol.source.ImageCanvas = function(options) {
+
+  goog.base(this, {
+    attributions: options.attributions,
+    logo: options.logo,
+    projection: options.projection,
+    resolutions: options.resolutions,
+    state: goog.isDef(options.state) ?
+        /** @type {ol.source.State} */ (options.state) : undefined
+  });
+
+  /**
+   * @private
+   * @type {ol.CanvasFunctionType}
+   */
+  this.canvasFunction_ = options.canvasFunction;
+
+  /**
+   * @private
+   * @type {ol.ImageCanvas}
+   */
+  this.canvas_ = null;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedRevision_ = 0;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.ratio_ = goog.isDef(options.ratio) ?
+      options.ratio : 1.5;
+
+};
+goog.inherits(ol.source.ImageCanvas, ol.source.Image);
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.ImageCanvas.prototype.getImage =
+    function(extent, resolution, pixelRatio, projection) {
+  resolution = this.findNearestResolution(resolution);
+
+  var canvas = this.canvas_;
+  if (!goog.isNull(canvas) &&
+      this.renderedRevision_ == this.getRevision() &&
+      canvas.getResolution() == resolution &&
+      canvas.getPixelRatio() == pixelRatio &&
+      ol.extent.containsExtent(canvas.getExtent(), extent)) {
+    return canvas;
+  }
+
+  extent = extent.slice();
+  ol.extent.scaleFromCenter(extent, this.ratio_);
+  var width = ol.extent.getWidth(extent) / resolution;
+  var height = ol.extent.getHeight(extent) / resolution;
+  var size = [width * pixelRatio, height * pixelRatio];
+
+  var canvasElement = this.canvasFunction_(
+      extent, resolution, pixelRatio, size, projection);
+  if (!goog.isNull(canvasElement)) {
+    canvas = new ol.ImageCanvas(extent, resolution, pixelRatio,
+        this.getAttributions(), canvasElement);
+  }
+  this.canvas_ = canvas;
+  this.renderedRevision_ = this.getRevision();
+
+  return canvas;
+};
+
+goog.provide('ol.ext.rbush');
+/** @typedef {function(*)} */
+ol.ext.rbush;
+(function() {
+var exports = {};
+var module = {exports: exports};
+/**
+ * @fileoverview
+ * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
+ */
+/*
+ (c) 2013, Vladimir Agafonkin
+ RBush, a JavaScript library for high-performance 2D spatial indexing of points and rectangles.
+ https://github.com/mourner/rbush
+*/
+
+(function () { 'use strict';
+
+function rbush(maxEntries, format) {
+
+    // jshint newcap: false, validthis: true
+    if (!(this instanceof rbush)) return new rbush(maxEntries, format);
+
+    // max entries in a node is 9 by default; min node fill is 40% for best performance
+    this._maxEntries = Math.max(4, maxEntries || 9);
+    this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
+
+    if (format) {
+        this._initFormat(format);
+    }
+
+    this.clear();
+}
+
+rbush.prototype = {
+
+    all: function () {
+        return this._all(this.data, []);
+    },
+
+    search: function (bbox) {
+
+        var node = this.data,
+            result = [],
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node.bbox)) return result;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child.bbox;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf) result.push(child);
+                    else if (contains(bbox, childBBox)) this._all(child, result);
+                    else nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return result;
+    },
+
+    load: function (data) {
+        if (!(data && data.length)) return this;
+
+        if (data.length < this._minEntries) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                this.insert(data[i]);
+            }
+            return this;
+        }
+
+        // recursively build the tree with the given data from stratch using OMT algorithm
+        var node = this._build(data.slice(), 0, data.length - 1, 0);
+
+        if (!this.data.children.length) {
+            // save as is if tree is empty
+            this.data = node;
+
+        } else if (this.data.height === node.height) {
+            // split root if trees have the same height
+            this._splitRoot(this.data, node);
+
+        } else {
+            if (this.data.height < node.height) {
+                // swap trees if inserted one is bigger
+                var tmpNode = this.data;
+                this.data = node;
+                node = tmpNode;
+            }
+
+            // insert the small tree into the large tree at appropriate level
+            this._insert(node, this.data.height - node.height - 1, true);
+        }
+
+        return this;
+    },
+
+    insert: function (item) {
+        if (item) this._insert(item, this.data.height - 1);
+        return this;
+    },
+
+    clear: function () {
+        this.data = {
+            children: [],
+            height: 1,
+            bbox: empty(),
+            leaf: true
+        };
+        return this;
+    },
+
+    remove: function (item) {
+        if (!item) return this;
+
+        var node = this.data,
+            bbox = this.toBBox(item),
+            path = [],
+            indexes = [],
+            i, parent, index, goingUp;
+
+        // depth-first iterative tree traversal
+        while (node || path.length) {
+
+            if (!node) { // go up
+                node = path.pop();
+                parent = path[path.length - 1];
+                i = indexes.pop();
+                goingUp = true;
+            }
+
+            if (node.leaf) { // check current node
+                index = node.children.indexOf(item);
+
+                if (index !== -1) {
+                    // item found, remove the item and condense tree upwards
+                    node.children.splice(index, 1);
+                    path.push(node);
+                    this._condense(path);
+                    return this;
+                }
+            }
+
+            if (!goingUp && !node.leaf && contains(node.bbox, bbox)) { // go down
+                path.push(node);
+                indexes.push(i);
+                i = 0;
+                parent = node;
+                node = node.children[0];
+
+            } else if (parent) { // go right
+                i++;
+                node = parent.children[i];
+                goingUp = false;
+
+            } else node = null; // nothing found
+        }
+
+        return this;
+    },
+
+    toBBox: function (item) { return item; },
+
+    compareMinX: function (a, b) { return a[0] - b[0]; },
+    compareMinY: function (a, b) { return a[1] - b[1]; },
+
+    toJSON: function () { return this.data; },
+
+    fromJSON: function (data) {
+        this.data = data;
+        return this;
+    },
+
+    _all: function (node, result) {
+        var nodesToSearch = [];
+        while (node) {
+            if (node.leaf) result.push.apply(result, node.children);
+            else nodesToSearch.push.apply(nodesToSearch, node.children);
+
+            node = nodesToSearch.pop();
+        }
+        return result;
+    },
+
+    _build: function (items, left, right, height) {
+
+        var N = right - left + 1,
+            M = this._maxEntries,
+            node;
+
+        if (N <= M) {
+            // reached leaf level; return leaf
+            node = {
+                children: items.slice(left, right + 1),
+                height: 1,
+                bbox: null,
+                leaf: true
+            };
+            calcBBox(node, this.toBBox);
+            return node;
+        }
+
+        if (!height) {
+            // target height of the bulk-loaded tree
+            height = Math.ceil(Math.log(N) / Math.log(M));
+
+            // target number of root entries to maximize storage utilization
+            M = Math.ceil(N / Math.pow(M, height - 1));
+        }
+
+        // TODO eliminate recursion?
+
+        node = {
+            children: [],
+            height: height,
+            bbox: null
+        };
+
+        // split the items into M mostly square tiles
+
+        var N2 = Math.ceil(N / M),
+            N1 = N2 * Math.ceil(Math.sqrt(M)),
+            i, j, right2, right3;
+
+        multiSelect(items, left, right, N1, this.compareMinX);
+
+        for (i = left; i <= right; i += N1) {
+
+            right2 = Math.min(i + N1 - 1, right);
+
+            multiSelect(items, i, right2, N2, this.compareMinY);
+
+            for (j = i; j <= right2; j += N2) {
+
+                right3 = Math.min(j + N2 - 1, right2);
+
+                // pack each entry recursively
+                node.children.push(this._build(items, j, right3, height - 1));
+            }
+        }
+
+        calcBBox(node, this.toBBox);
+
+        return node;
+    },
+
+    _chooseSubtree: function (bbox, node, level, path) {
+
+        var i, len, child, targetNode, area, enlargement, minArea, minEnlargement;
+
+        while (true) {
+            path.push(node);
+
+            if (node.leaf || path.length - 1 === level) break;
+
+            minArea = minEnlargement = Infinity;
+
+            for (i = 0, len = node.children.length; i < len; i++) {
+                child = node.children[i];
+                area = bboxArea(child.bbox);
+                enlargement = enlargedArea(bbox, child.bbox) - area;
+
+                // choose entry with the least area enlargement
+                if (enlargement < minEnlargement) {
+                    minEnlargement = enlargement;
+                    minArea = area < minArea ? area : minArea;
+                    targetNode = child;
+
+                } else if (enlargement === minEnlargement) {
+                    // otherwise choose one with the smallest area
+                    if (area < minArea) {
+                        minArea = area;
+                        targetNode = child;
+                    }
+                }
+            }
+
+            node = targetNode;
+        }
+
+        return node;
+    },
+
+    _insert: function (item, level, isNode) {
+
+        var toBBox = this.toBBox,
+            bbox = isNode ? item.bbox : toBBox(item),
+            insertPath = [];
+
+        // find the best node for accommodating the item, saving all nodes along the path too
+        var node = this._chooseSubtree(bbox, this.data, level, insertPath);
+
+        // put the item into the node
+        node.children.push(item);
+        extend(node.bbox, bbox);
+
+        // split on node overflow; propagate upwards if necessary
+        while (level >= 0) {
+            if (insertPath[level].children.length > this._maxEntries) {
+                this._split(insertPath, level);
+                level--;
+            } else break;
+        }
+
+        // adjust bboxes along the insertion path
+        this._adjustParentBBoxes(bbox, insertPath, level);
+    },
+
+    // split overflowed node into two
+    _split: function (insertPath, level) {
+
+        var node = insertPath[level],
+            M = node.children.length,
+            m = this._minEntries;
+
+        this._chooseSplitAxis(node, m, M);
+
+        var newNode = {
+            children: node.children.splice(this._chooseSplitIndex(node, m, M)),
+            height: node.height
+        };
+
+        if (node.leaf) newNode.leaf = true;
+
+        calcBBox(node, this.toBBox);
+        calcBBox(newNode, this.toBBox);
+
+        if (level) insertPath[level - 1].children.push(newNode);
+        else this._splitRoot(node, newNode);
+    },
+
+    _splitRoot: function (node, newNode) {
+        // split root node
+        this.data = {
+            children: [node, newNode],
+            height: node.height + 1
+        };
+        calcBBox(this.data, this.toBBox);
+    },
+
+    _chooseSplitIndex: function (node, m, M) {
+
+        var i, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
+
+        minOverlap = minArea = Infinity;
+
+        for (i = m; i <= M - m; i++) {
+            bbox1 = distBBox(node, 0, i, this.toBBox);
+            bbox2 = distBBox(node, i, M, this.toBBox);
+
+            overlap = intersectionArea(bbox1, bbox2);
+            area = bboxArea(bbox1) + bboxArea(bbox2);
+
+            // choose distribution with minimum overlap
+            if (overlap < minOverlap) {
+                minOverlap = overlap;
+                index = i;
+
+                minArea = area < minArea ? area : minArea;
+
+            } else if (overlap === minOverlap) {
+                // otherwise choose distribution with minimum area
+                if (area < minArea) {
+                    minArea = area;
+                    index = i;
+                }
+            }
+        }
+
+        return index;
+    },
+
+    // sorts node children by the best axis for split
+    _chooseSplitAxis: function (node, m, M) {
+
+        var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX,
+            compareMinY = node.leaf ? this.compareMinY : compareNodeMinY,
+            xMargin = this._allDistMargin(node, m, M, compareMinX),
+            yMargin = this._allDistMargin(node, m, M, compareMinY);
+
+        // if total distributions margin value is minimal for x, sort by minX,
+        // otherwise it's already sorted by minY
+        if (xMargin < yMargin) node.children.sort(compareMinX);
+    },
+
+    // total margin of all possible split distributions where each node is at least m full
+    _allDistMargin: function (node, m, M, compare) {
+
+        node.children.sort(compare);
+
+        var toBBox = this.toBBox,
+            leftBBox = distBBox(node, 0, m, toBBox),
+            rightBBox = distBBox(node, M - m, M, toBBox),
+            margin = bboxMargin(leftBBox) + bboxMargin(rightBBox),
+            i, child;
+
+        for (i = m; i < M - m; i++) {
+            child = node.children[i];
+            extend(leftBBox, node.leaf ? toBBox(child) : child.bbox);
+            margin += bboxMargin(leftBBox);
+        }
+
+        for (i = M - m - 1; i >= m; i--) {
+            child = node.children[i];
+            extend(rightBBox, node.leaf ? toBBox(child) : child.bbox);
+            margin += bboxMargin(rightBBox);
+        }
+
+        return margin;
+    },
+
+    _adjustParentBBoxes: function (bbox, path, level) {
+        // adjust bboxes along the given tree path
+        for (var i = level; i >= 0; i--) {
+            extend(path[i].bbox, bbox);
+        }
+    },
+
+    _condense: function (path) {
+        // go through the path, removing empty nodes and updating bboxes
+        for (var i = path.length - 1, siblings; i >= 0; i--) {
+            if (path[i].children.length === 0) {
+                if (i > 0) {
+                    siblings = path[i - 1].children;
+                    siblings.splice(siblings.indexOf(path[i]), 1);
+
+                } else this.clear();
+
+            } else calcBBox(path[i], this.toBBox);
+        }
+    },
+
+    _initFormat: function (format) {
+        // data format (minX, minY, maxX, maxY accessors)
+
+        // uses eval-type function compilation instead of just accepting a toBBox function
+        // because the algorithms are very sensitive to sorting functions performance,
+        // so they should be dead simple and without inner calls
+
+        // jshint evil: true
+
+        var compareArr = ['return a', ' - b', ';'];
+
+        this.compareMinX = new Function('a', 'b', compareArr.join(format[0]));
+        this.compareMinY = new Function('a', 'b', compareArr.join(format[1]));
+
+        this.toBBox = new Function('a', 'return [a' + format.join(', a') + '];');
+    }
+};
+
+
+// calculate node's bbox from bboxes of its children
+function calcBBox(node, toBBox) {
+    node.bbox = distBBox(node, 0, node.children.length, toBBox);
+}
+
+// min bounding rectangle of node children from k to p-1
+function distBBox(node, k, p, toBBox) {
+    var bbox = empty();
+
+    for (var i = k, child; i < p; i++) {
+        child = node.children[i];
+        extend(bbox, node.leaf ? toBBox(child) : child.bbox);
+    }
+
+    return bbox;
+}
+
+function empty() { return [Infinity, Infinity, -Infinity, -Infinity]; }
+
+function extend(a, b) {
+    a[0] = Math.min(a[0], b[0]);
+    a[1] = Math.min(a[1], b[1]);
+    a[2] = Math.max(a[2], b[2]);
+    a[3] = Math.max(a[3], b[3]);
+    return a;
+}
+
+function compareNodeMinX(a, b) { return a.bbox[0] - b.bbox[0]; }
+function compareNodeMinY(a, b) { return a.bbox[1] - b.bbox[1]; }
+
+function bboxArea(a)   { return (a[2] - a[0]) * (a[3] - a[1]); }
+function bboxMargin(a) { return (a[2] - a[0]) + (a[3] - a[1]); }
+
+function enlargedArea(a, b) {
+    return (Math.max(b[2], a[2]) - Math.min(b[0], a[0])) *
+           (Math.max(b[3], a[3]) - Math.min(b[1], a[1]));
+}
+
+function intersectionArea (a, b) {
+    var minX = Math.max(a[0], b[0]),
+        minY = Math.max(a[1], b[1]),
+        maxX = Math.min(a[2], b[2]),
+        maxY = Math.min(a[3], b[3]);
+
+    return Math.max(0, maxX - minX) *
+           Math.max(0, maxY - minY);
+}
+
+function contains(a, b) {
+    return a[0] <= b[0] &&
+           a[1] <= b[1] &&
+           b[2] <= a[2] &&
+           b[3] <= a[3];
+}
+
+function intersects (a, b) {
+    return b[0] <= a[2] &&
+           b[1] <= a[3] &&
+           b[2] >= a[0] &&
+           b[3] >= a[1];
+}
+
+// sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
+// combines selection algorithm with binary divide & conquer approach
+
+function multiSelect(arr, left, right, n, compare) {
+    var stack = [left, right],
+        mid;
+
+    while (stack.length) {
+        right = stack.pop();
+        left = stack.pop();
+
+        if (right - left <= n) continue;
+
+        mid = left + Math.ceil((right - left) / n / 2) * n;
+        select(arr, left, right, mid, compare);
+
+        stack.push(left, mid, mid, right);
+    }
+}
+
+// sort array between left and right (inclusive) so that the smallest k elements come first (unordered)
+function select(arr, left, right, k, compare) {
+    var n, i, z, s, sd, newLeft, newRight, t, j;
+
+    while (right > left) {
+        if (right - left > 600) {
+            n = right - left + 1;
+            i = k - left + 1;
+            z = Math.log(n);
+            s = 0.5 * Math.exp(2 * z / 3);
+            sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (i - n / 2 < 0 ? -1 : 1);
+            newLeft = Math.max(left, Math.floor(k - i * s / n + sd));
+            newRight = Math.min(right, Math.floor(k + (n - i) * s / n + sd));
+            select(arr, newLeft, newRight, k, compare);
+        }
+
+        t = arr[k];
+        i = left;
+        j = right;
+
+        swap(arr, left, k);
+        if (compare(arr[right], t) > 0) swap(arr, left, right);
+
+        while (i < j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+            while (compare(arr[i], t) < 0) i++;
+            while (compare(arr[j], t) > 0) j--;
+        }
+
+        if (compare(arr[left], t) === 0) swap(arr, left, j);
+        else {
+            j++;
+            swap(arr, j, right);
+        }
+
+        if (j <= k) left = j + 1;
+        if (k <= j) right = j - 1;
+    }
+}
+
+function swap(arr, i, j) {
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+}
+
+
+// export as AMD/CommonJS module or global variable
+if (typeof define === 'function' && define.amd) define(function() { return rbush; });
+else if (typeof module !== 'undefined') module.exports = rbush;
+else if (typeof self !== 'undefined') self.rbush = rbush;
+else window.rbush = rbush;
+
+})();
+
+ol.ext.rbush = module.exports;
+})();
+
+goog.provide('ol.structs.RBush');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.object');
+goog.require('ol.ext.rbush');
+goog.require('ol.extent');
+
+
+
+/**
+ * Wrapper around the RBush by Vladimir Agafonkin.
+ *
+ * @constructor
+ * @param {number=} opt_maxEntries Max entries.
+ * @see https://github.com/mourner/rbush
+ * @struct
+ * @template T
+ */
+ol.structs.RBush = function(opt_maxEntries) {
+
+  /**
+   * @private
+   */
+  this.rbush_ = ol.ext.rbush(opt_maxEntries);
+
+  /**
+   * A mapping between the objects added to this rbush wrapper
+   * and the objects that are actually added to the internal rbush.
+   * @private
+   * @type {Object.<number, Object>}
+   */
+  this.items_ = {};
+
+  if (goog.DEBUG) {
+    /**
+     * @private
+     * @type {number}
+     */
+    this.readers_ = 0;
+  }
+};
+
+
+/**
+ * Insert a value into the RBush.
+ * @param {ol.Extent} extent Extent.
+ * @param {T} value Value.
+ */
+ol.structs.RBush.prototype.insert = function(extent, value) {
+  if (goog.DEBUG && this.readers_) {
+    throw new Error('Can not insert value while reading');
+  }
+  var item = [
+    extent[0],
+    extent[1],
+    extent[2],
+    extent[3],
+    value
+  ];
+  this.rbush_.insert(item);
+  // remember the object that was added to the internal rbush
+  goog.asserts.assert(
+      !goog.object.containsKey(this.items_, goog.getUid(value)));
+  this.items_[goog.getUid(value)] = item;
+};
+
+
+/**
+ * Bulk-insert values into the RBush.
+ * @param {Array.<ol.Extent>} extents Extents.
+ * @param {Array.<T>} values Values.
+ */
+ol.structs.RBush.prototype.load = function(extents, values) {
+  if (goog.DEBUG && this.readers_) {
+    throw new Error('Can not insert values while reading');
+  }
+  goog.asserts.assert(extents.length === values.length);
+
+  var items = new Array(values.length);
+  for (var i = 0, l = values.length; i < l; i++) {
+    var extent = extents[i];
+    var value = values[i];
+
+    var item = [
+      extent[0],
+      extent[1],
+      extent[2],
+      extent[3],
+      value
+    ];
+    items[i] = item;
+    goog.asserts.assert(
+        !goog.object.containsKey(this.items_, goog.getUid(value)));
+    this.items_[goog.getUid(value)] = item;
+  }
+  this.rbush_.load(items);
+};
+
+
+/**
+ * Remove a value from the RBush.
+ * @param {T} value Value.
+ * @return {boolean} Removed.
+ */
+ol.structs.RBush.prototype.remove = function(value) {
+  if (goog.DEBUG && this.readers_) {
+    throw new Error('Can not remove value while reading');
+  }
+  var uid = goog.getUid(value);
+  goog.asserts.assert(goog.object.containsKey(this.items_, uid));
+
+  // get the object in which the value was wrapped when adding to the
+  // internal rbush. then use that object to do the removal.
+  var item = this.items_[uid];
+  goog.object.remove(this.items_, uid);
+  return this.rbush_.remove(item) !== null;
+};
+
+
+/**
+ * Update the extent of a value in the RBush.
+ * @param {ol.Extent} extent Extent.
+ * @param {T} value Value.
+ */
+ol.structs.RBush.prototype.update = function(extent, value) {
+  var uid = goog.getUid(value);
+  goog.asserts.assert(goog.object.containsKey(this.items_, uid));
+
+  var item = this.items_[uid];
+  if (!ol.extent.equals(item.slice(0, 4), extent)) {
+    if (goog.DEBUG && this.readers_) {
+      throw new Error('Can not update extent while reading');
+    }
+    this.remove(value);
+    this.insert(extent, value);
+  }
+};
+
+
+/**
+ * Return all values in the RBush.
+ * @return {Array.<T>} All.
+ */
+ol.structs.RBush.prototype.getAll = function() {
+  var items = this.rbush_.all();
+  return goog.array.map(items, function(item) {
+    return item[4];
+  });
+};
+
+
+/**
+ * Return all values in the given extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {Array.<T>} All in extent.
+ */
+ol.structs.RBush.prototype.getInExtent = function(extent) {
+  var items = this.rbush_.search(extent);
+  return goog.array.map(items, function(item) {
+    return item[4];
+  });
+};
+
+
+/**
+ * Calls a callback function with each value in the tree.
+ * If the callback returns a truthy value, this value is returned without
+ * checking the rest of the tree.
+ * @param {function(this: S, T): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEach = function(callback, opt_this) {
+  if (goog.DEBUG) {
+    ++this.readers_;
+    try {
+      return this.forEach_(this.getAll(), callback, opt_this);
+    } finally {
+      --this.readers_;
+    }
+  } else {
+    return this.forEach_(this.getAll(), callback, opt_this);
+  }
+};
+
+
+/**
+ * Calls a callback function with each value in the provided extent.
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this: S, T): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEachInExtent =
+    function(extent, callback, opt_this) {
+  if (goog.DEBUG) {
+    ++this.readers_;
+    try {
+      return this.forEach_(this.getInExtent(extent), callback, opt_this);
+    } finally {
+      --this.readers_;
+    }
+  } else {
+    return this.forEach_(this.getInExtent(extent), callback, opt_this);
+  }
+};
+
+
+/**
+ * @param {Array.<T>} values Values.
+ * @param {function(this: S, T): *} callback Callback.
+ * @param {S=} opt_this The object to use as `this` in `callback`.
+ * @private
+ * @return {*} Callback return value.
+ * @template S
+ */
+ol.structs.RBush.prototype.forEach_ = function(values, callback, opt_this) {
+  var result;
+  for (var i = 0, l = values.length; i < l; i++) {
+    result = callback.call(opt_this, values[i]);
+    if (result) {
+      return result;
+    }
+  }
+  return result;
+};
+
+
+/**
+ * @return {boolean} Is empty.
+ */
+ol.structs.RBush.prototype.isEmpty = function() {
+  return goog.object.isEmpty(this.items_);
+};
+
+
+/**
+ * Remove all values from the RBush.
+ */
+ol.structs.RBush.prototype.clear = function() {
+  this.rbush_.clear();
+  this.items_ = {};
+};
+
+
+/**
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.structs.RBush.prototype.getExtent = function(opt_extent) {
+  // FIXME add getExtent() to rbush
+  return this.rbush_.data.bbox;
+};
+
+// FIXME bulk feature upload - suppress events
+// FIXME put features in an ol.Collection
+// FIXME make change-detection more refined (notably, geometry hint)
+
+goog.provide('ol.source.Vector');
+goog.provide('ol.source.VectorEvent');
+goog.provide('ol.source.VectorEventType');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.Event');
+goog.require('goog.events.EventType');
+goog.require('goog.object');
+goog.require('ol.ObjectEventType');
+goog.require('ol.proj');
+goog.require('ol.source.Source');
+goog.require('ol.structs.RBush');
+
+
+/**
+ * @enum {string}
+ */
+ol.source.VectorEventType = {
+  /**
+   * Triggered when a feature is added to the source.
+   * @event ol.source.VectorEvent#addfeature
+   * @api stable
+   */
+  ADDFEATURE: 'addfeature',
+
+  /**
+   * Triggered when a feature is updated.
+   * @event ol.source.VectorEvent#changefeature
+   * @api
+   */
+  CHANGEFEATURE: 'changefeature',
+
+  /**
+   * Triggered when the clear method is called on the source.
+   * @event ol.source.VectorEvent#clear
+   * @api
+   */
+  CLEAR: 'clear',
+
+  /**
+   * Triggered when a feature is removed from the source.
+   * See {@link ol.source.Vector#clear source.clear()} for exceptions.
+   * @event ol.source.VectorEvent#removefeature
+   * @api stable
+   */
+  REMOVEFEATURE: 'removefeature'
+};
+
+
+
+/**
+ * @classdesc
+ * Provides a source of features for vector layers.
+ *
+ * @constructor
+ * @extends {ol.source.Source}
+ * @fires ol.source.VectorEvent
+ * @param {olx.source.VectorOptions=} opt_options Vector source options.
+ * @api stable
+ */
+ol.source.Vector = function(opt_options) {
+
+  var options = goog.isDef(opt_options) ? opt_options : {};
+
+  goog.base(this, {
+    attributions: options.attributions,
+    logo: options.logo,
+    projection: options.projection,
+    state: goog.isDef(options.state) ?
+        /** @type {ol.source.State} */ (options.state) : undefined
+  });
+
+  /**
+   * @private
+   * @type {ol.structs.RBush.<ol.Feature>}
+   */
+  this.rBush_ = new ol.structs.RBush();
+
+  /**
+   * @private
+   * @type {Object.<string, ol.Feature>}
+   */
+  this.nullGeometryFeatures_ = {};
+
+  /**
+   * A lookup of features by id (the return from feature.getId()).
+   * @private
+   * @type {Object.<string, ol.Feature>}
+   */
+  this.idIndex_ = {};
+
+  /**
+   * A lookup of features without id (keyed by goog.getUid(feature)).
+   * @private
+   * @type {Object.<string, ol.Feature>}
+   */
+  this.undefIdIndex_ = {};
+
+  /**
+   * @private
+   * @type {Object.<string, Array.<goog.events.Key>>}
+   */
+  this.featureChangeKeys_ = {};
+
+  if (goog.isDef(options.features)) {
+    this.addFeaturesInternal(options.features);
+  }
+
+};
+goog.inherits(ol.source.Vector, ol.source.Source);
+
+
+/**
+ * Add a single feature to the source.  If you want to add a batch of features
+ * at once, call {@link ol.source.Vector#addFeatures source.addFeatures()}
+ * instead.
+ * @param {ol.Feature} feature Feature to add.
+ * @api stable
+ */
+ol.source.Vector.prototype.addFeature = function(feature) {
+  this.addFeatureInternal(feature);
+  this.changed();
+};
+
+
+/**
+ * Add a feature without firing a `change` event.
+ * @param {ol.Feature} feature Feature.
+ * @protected
+ */
+ol.source.Vector.prototype.addFeatureInternal = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  this.setupChangeEvents_(featureKey, feature);
+
+  var geometry = feature.getGeometry();
+  if (goog.isDefAndNotNull(geometry)) {
+    var extent = geometry.getExtent();
+    this.rBush_.insert(extent, feature);
+  } else {
+    this.nullGeometryFeatures_[featureKey] = feature;
+  }
+
+  this.addToIndex_(featureKey, feature);
+  this.dispatchEvent(
+      new ol.source.VectorEvent(ol.source.VectorEventType.ADDFEATURE, feature));
+};
+
+
+/**
+ * @param {string} featureKey
+ * @param {ol.Feature} feature
+ * @private
+ */
+ol.source.Vector.prototype.setupChangeEvents_ = function(featureKey, feature) {
+  goog.asserts.assert(!(featureKey in this.featureChangeKeys_));
+  this.featureChangeKeys_[featureKey] = [
+    goog.events.listen(feature,
+        goog.events.EventType.CHANGE,
+        this.handleFeatureChange_, false, this),
+    goog.events.listen(feature,
+        ol.ObjectEventType.PROPERTYCHANGE,
+        this.handleFeatureChange_, false, this)
+  ];
+};
+
+
+/**
+ * @param {string} featureKey
+ * @param {ol.Feature} feature
+ * @private
+ */
+ol.source.Vector.prototype.addToIndex_ = function(featureKey, feature) {
+  var id = feature.getId();
+  if (goog.isDef(id)) {
+    this.idIndex_[id.toString()] = feature;
+  } else {
+    goog.asserts.assert(!(featureKey in this.undefIdIndex_),
+        'Feature already added to the source');
+    this.undefIdIndex_[featureKey] = feature;
+  }
+};
+
+
+/**
+ * Add a batch of features to the source.
+ * @param {Array.<ol.Feature>} features Features to add.
+ * @api stable
+ */
+ol.source.Vector.prototype.addFeatures = function(features) {
+  this.addFeaturesInternal(features);
+  this.changed();
+};
+
+
+/**
+ * Add features without firing a `change` event.
+ * @param {Array.<ol.Feature>} features Features.
+ * @protected
+ */
+ol.source.Vector.prototype.addFeaturesInternal = function(features) {
+  var featureKey, i, length, feature;
+  var extents = [];
+  var validFeatures = [];
+  for (i = 0, length = features.length; i < length; i++) {
+    feature = features[i];
+    featureKey = goog.getUid(feature).toString();
+    this.setupChangeEvents_(featureKey, feature);
+
+    var geometry = feature.getGeometry();
+    if (goog.isDefAndNotNull(geometry)) {
+      var extent = geometry.getExtent();
+      extents.push(extent);
+      validFeatures.push(feature);
+    } else {
+      this.nullGeometryFeatures_[featureKey] = feature;
+    }
+  }
+  this.rBush_.load(extents, validFeatures);
+
+  for (i = 0, length = features.length; i < length; i++) {
+    feature = features[i];
+    featureKey = goog.getUid(feature).toString();
+    this.addToIndex_(featureKey, feature);
+    this.dispatchEvent(new ol.source.VectorEvent(
+        ol.source.VectorEventType.ADDFEATURE, feature));
+  }
+};
+
+
+/**
+ * Remove all features from the source.
+ * @param {boolean=} opt_fast Skip dispatching of {@link removefeature} events.
+ * @api stable
+ */
+ol.source.Vector.prototype.clear = function(opt_fast) {
+  if (opt_fast) {
+    for (var featureId in this.featureChangeKeys_) {
+      var keys = this.featureChangeKeys_[featureId];
+      goog.array.forEach(keys, goog.events.unlistenByKey);
+    }
+    this.featureChangeKeys_ = {};
+    this.idIndex_ = {};
+    this.undefIdIndex_ = {};
+  } else {
+    var rmFeatureInternal = this.removeFeatureInternal;
+    this.rBush_.forEach(rmFeatureInternal, this);
+    goog.object.forEach(this.nullGeometryFeatures_, rmFeatureInternal, this);
+    goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_));
+    goog.asserts.assert(goog.object.isEmpty(this.idIndex_));
+    goog.asserts.assert(goog.object.isEmpty(this.undefIdIndex_));
+  }
+
+  this.rBush_.clear();
+  this.nullGeometryFeatures_ = {};
+
+  var clearEvent = new ol.source.VectorEvent(ol.source.VectorEventType.CLEAR);
+  this.dispatchEvent(clearEvent);
+  this.changed();
+};
+
+
+/**
+ * Iterate through all features on the source, calling the provided callback
+ * with each one.  If the callback returns any "truthy" value, iteration will
+ * stop and the function will return the same value.
+ *
+ * @param {function(this: T, ol.Feature): S} callback Called with each feature
+ *     on the source.  Return a truthy value to stop iteration.
+ * @param {T=} opt_this The object to use as `this` in the callback.
+ * @return {S|undefined} The return value from the last call to the callback.
+ * @template T,S
+ * @api stable
+ */
+ol.source.Vector.prototype.forEachFeature = function(callback, opt_this) {
+  return this.rBush_.forEach(callback, opt_this);
+};
+
+
+/**
+ * Iterate through all features whose geometries contain the provided
+ * coordinate, calling the callback with each feature.  If the callback returns
+ * a "truthy" value, iteration will stop and the function will return the same
+ * value.
+ *
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {function(this: T, ol.Feature): S} callback Called with each feature
+ *     whose goemetry contains the provided coordinate.
+ * @param {T=} opt_this The object to use as `this` in the callback.
+ * @return {S|undefined} The return value from the last call to the callback.
+ * @template T,S
+ */
+ol.source.Vector.prototype.forEachFeatureAtCoordinateDirect =
+    function(coordinate, callback, opt_this) {
+  var extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
+  return this.forEachFeatureInExtent(extent, function(feature) {
+    var geometry = feature.getGeometry();
+    goog.asserts.assert(goog.isDefAndNotNull(geometry));
+    if (geometry.containsCoordinate(coordinate)) {
+      return callback.call(opt_this, feature);
+    } else {
+      return undefined;
+    }
+  });
+};
+
+
+/**
+ * Iterate through all features whose bounding box intersects the provided
+ * extent (note that the feature's geometry may not intersect the extent),
+ * calling the callback with each feature.  If the callback returns a "truthy"
+ * value, iteration will stop and the function will return the same value.
+ *
+ * If you are interested in features whose geometry intersects an extent, call
+ * the {@link ol.source.Vector#forEachFeatureIntersectingExtent
+ * source.forEachFeatureIntersectingExtent()} method instead.
+ *
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this: T, ol.Feature): S} callback Called with each feature
+ *     whose bounding box intersects the provided extent.
+ * @param {T=} opt_this The object to use as `this` in the callback.
+ * @return {S|undefined} The return value from the last call to the callback.
+ * @template T,S
+ * @api
+ */
+ol.source.Vector.prototype.forEachFeatureInExtent =
+    function(extent, callback, opt_this) {
+  return this.rBush_.forEachInExtent(extent, callback, opt_this);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {function(this: T, ol.Feature): S} f Callback.
+ * @param {T=} opt_this The object to use as `this` in `f`.
+ * @return {S|undefined}
+ * @template T,S
+ */
+ol.source.Vector.prototype.forEachFeatureInExtentAtResolution =
+    function(extent, resolution, f, opt_this) {
+  return this.forEachFeatureInExtent(extent, f, opt_this);
+};
+
+
+/**
+ * Iterate through all features whose geometry intersects the provided extent,
+ * calling the callback with each feature.  If the callback returns a "truthy"
+ * value, iteration will stop and the function will return the same value.
+ *
+ * If you only want to test for bounding box intersection, call the
+ * {@link ol.source.Vector#forEachFeatureInExtent
+ * source.forEachFeatureInExtent()} method instead.
+ *
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this: T, ol.Feature): S} callback Called with each feature
+ *     whose geometry intersects the provided extent.
+ * @param {T=} opt_this The object to use as `this` in the callback.
+ * @return {S|undefined} The return value from the last call to the callback.
+ * @template T,S
+ * @api
+ */
+ol.source.Vector.prototype.forEachFeatureIntersectingExtent =
+    function(extent, callback, opt_this) {
+  return this.forEachFeatureInExtent(extent,
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @return {S|undefined}
+       * @template S
+       */
+      function(feature) {
+        var geometry = feature.getGeometry();
+        goog.asserts.assert(goog.isDefAndNotNull(geometry));
+        if (geometry.intersectsExtent(extent)) {
+          var result = callback.call(opt_this, feature);
+          if (result) {
+            return result;
+          }
+        }
+      });
+};
+
+
+/**
+ * Get all features on the source.
+ * @return {Array.<ol.Feature>} Features.
+ * @api stable
+ */
+ol.source.Vector.prototype.getFeatures = function() {
+  var features = this.rBush_.getAll();
+  if (!goog.object.isEmpty(this.nullGeometryFeatures_)) {
+    goog.array.extend(
+        features, goog.object.getValues(this.nullGeometryFeatures_));
+  }
+  return features;
+};
+
+
+/**
+ * Get all features whose geometry intersects the provided coordinate.
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {Array.<ol.Feature>} Features.
+ * @api stable
+ */
+ol.source.Vector.prototype.getFeaturesAtCoordinate = function(coordinate) {
+  var features = [];
+  this.forEachFeatureAtCoordinateDirect(coordinate, function(feature) {
+    features.push(feature);
+  });
+  return features;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @return {Array.<ol.Feature>} Features.
+ */
+ol.source.Vector.prototype.getFeaturesInExtent = function(extent) {
+  return this.rBush_.getInExtent(extent);
+};
+
+
+/**
+ * Get the closest feature to the provided coordinate.
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {ol.Feature} Closest feature.
+ * @api stable
+ */
+ol.source.Vector.prototype.getClosestFeatureToCoordinate =
+    function(coordinate) {
+  // Find the closest feature using branch and bound.  We start searching an
+  // infinite extent, and find the distance from the first feature found.  This
+  // becomes the closest feature.  We then compute a smaller extent which any
+  // closer feature must intersect.  We continue searching with this smaller
+  // extent, trying to find a closer feature.  Every time we find a closer
+  // feature, we update the extent being searched so that any even closer
+  // feature must intersect it.  We continue until we run out of features.
+  var x = coordinate[0];
+  var y = coordinate[1];
+  var closestFeature = null;
+  var closestPoint = [NaN, NaN];
+  var minSquaredDistance = Infinity;
+  var extent = [-Infinity, -Infinity, Infinity, Infinity];
+  this.rBush_.forEachInExtent(extent,
+      /**
+       * @param {ol.Feature} feature Feature.
+       */
+      function(feature) {
+        var geometry = feature.getGeometry();
+        goog.asserts.assert(goog.isDefAndNotNull(geometry));
+        var previousMinSquaredDistance = minSquaredDistance;
+        minSquaredDistance = geometry.closestPointXY(
+            x, y, closestPoint, minSquaredDistance);
+        if (minSquaredDistance < previousMinSquaredDistance) {
+          closestFeature = feature;
+          // This is sneaky.  Reduce the extent that it is currently being
+          // searched while the R-Tree traversal using this same extent object
+          // is still in progress.  This is safe because the new extent is
+          // strictly contained by the old extent.
+          var minDistance = Math.sqrt(minSquaredDistance);
+          extent[0] = x - minDistance;
+          extent[1] = y - minDistance;
+          extent[2] = x + minDistance;
+          extent[3] = y + minDistance;
+        }
+      });
+  return closestFeature;
+};
+
+
+/**
+ * Get the extent of the features currently in the source.
+ * @return {ol.Extent} Extent.
+ * @api stable
+ */
+ol.source.Vector.prototype.getExtent = function() {
+  return this.rBush_.getExtent();
+};
+
+
+/**
+ * Get a feature by its identifier (the value returned by feature.getId()).
+ * Note that the index treats string and numeric identifiers as the same.  So
+ * `source.getFeatureById(2)` will return a feature with id `'2'` or `2`.
+ *
+ * @param {string|number} id Feature identifier.
+ * @return {ol.Feature} The feature (or `null` if not found).
+ * @api stable
+ */
+ol.source.Vector.prototype.getFeatureById = function(id) {
+  var feature = this.idIndex_[id.toString()];
+  return goog.isDef(feature) ? feature : null;
+};
+
+
+/**
+ * @param {goog.events.Event} event Event.
+ * @private
+ */
+ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
+  var feature = /** @type {ol.Feature} */ (event.target);
+  var featureKey = goog.getUid(feature).toString();
+  var geometry = feature.getGeometry();
+  if (!goog.isDefAndNotNull(geometry)) {
+    if (!(featureKey in this.nullGeometryFeatures_)) {
+      this.rBush_.remove(feature);
+      this.nullGeometryFeatures_[featureKey] = feature;
+    }
+  } else {
+    var extent = geometry.getExtent();
+    if (featureKey in this.nullGeometryFeatures_) {
+      delete this.nullGeometryFeatures_[featureKey];
+      this.rBush_.insert(extent, feature);
+    } else {
+      this.rBush_.update(extent, feature);
+    }
+  }
+  var id = feature.getId();
+  var removed;
+  if (goog.isDef(id)) {
+    var sid = id.toString();
+    if (featureKey in this.undefIdIndex_) {
+      delete this.undefIdIndex_[featureKey];
+      this.idIndex_[sid] = feature;
+    } else {
+      if (this.idIndex_[sid] !== feature) {
+        removed = this.removeFromIdIndex_(feature);
+        goog.asserts.assert(removed,
+            'Expected feature to be removed from index');
+        this.idIndex_[sid] = feature;
+      }
+    }
+  } else {
+    if (!(featureKey in this.undefIdIndex_)) {
+      removed = this.removeFromIdIndex_(feature);
+      goog.asserts.assert(removed,
+          'Expected feature to be removed from index');
+      this.undefIdIndex_[featureKey] = feature;
+    } else {
+      goog.asserts.assert(this.undefIdIndex_[featureKey] === feature);
+    }
+  }
+  this.changed();
+  this.dispatchEvent(new ol.source.VectorEvent(
+      ol.source.VectorEventType.CHANGEFEATURE, feature));
+};
+
+
+/**
+ * @return {boolean} Is empty.
+ */
+ol.source.Vector.prototype.isEmpty = function() {
+  return this.rBush_.isEmpty() &&
+      goog.object.isEmpty(this.nullGeometryFeatures_);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {ol.proj.Projection} projection Projection.
+ */
+ol.source.Vector.prototype.loadFeatures = goog.nullFunction;
+
+
+/**
+ * Remove a single feature from the source.  If you want to remove all features
+ * at once, use the {@link ol.source.Vector#clear source.clear()} method
+ * instead.
+ * @param {ol.Feature} feature Feature to remove.
+ * @api stable
+ */
+ol.source.Vector.prototype.removeFeature = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  if (featureKey in this.nullGeometryFeatures_) {
+    delete this.nullGeometryFeatures_[featureKey];
+  } else {
+    this.rBush_.remove(feature);
+  }
+  this.removeFeatureInternal(feature);
+  this.changed();
+};
+
+
+/**
+ * Remove feature without firing a `change` event.
+ * @param {ol.Feature} feature Feature.
+ * @protected
+ */
+ol.source.Vector.prototype.removeFeatureInternal = function(feature) {
+  var featureKey = goog.getUid(feature).toString();
+  goog.asserts.assert(featureKey in this.featureChangeKeys_);
+  goog.array.forEach(this.featureChangeKeys_[featureKey],
+      goog.events.unlistenByKey);
+  delete this.featureChangeKeys_[featureKey];
+  var id = feature.getId();
+  if (goog.isDef(id)) {
+    delete this.idIndex_[id.toString()];
+  } else {
+    delete this.undefIdIndex_[featureKey];
+  }
+  this.dispatchEvent(new ol.source.VectorEvent(
+      ol.source.VectorEventType.REMOVEFEATURE, feature));
+};
+
+
+/**
+ * Remove a feature from the id index.  Called internally when the feature id
+ * may have changed.
+ * @param {ol.Feature} feature The feature.
+ * @return {boolean} Removed the feature from the index.
+ * @private
+ */
+ol.source.Vector.prototype.removeFromIdIndex_ = function(feature) {
+  var removed = false;
+  for (var id in this.idIndex_) {
+    if (this.idIndex_[id] === feature) {
+      delete this.idIndex_[id];
+      removed = true;
+      break;
+    }
+  }
+  return removed;
+};
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.source.Vector} instances are instances of this
+ * type.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @implements {oli.source.VectorEvent}
+ * @param {string} type Type.
+ * @param {ol.Feature=} opt_feature Feature.
+ */
+ol.source.VectorEvent = function(type, opt_feature) {
+
+  goog.base(this, type);
+
+  /**
+   * The feature being added or removed.
+   * @type {ol.Feature|undefined}
+   * @api stable
+   */
+  this.feature = opt_feature;
+
+};
+goog.inherits(ol.source.VectorEvent, goog.events.Event);
+
+goog.provide('ol.source.ImageVector');
+
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.EventType');
+goog.require('goog.vec.Mat4');
+goog.require('ol.dom');
+goog.require('ol.extent');
+goog.require('ol.render.canvas.ReplayGroup');
+goog.require('ol.renderer.vector');
+goog.require('ol.source.ImageCanvas');
+goog.require('ol.source.Vector');
+goog.require('ol.style.Style');
+goog.require('ol.vec.Mat4');
+
+
+
+/**
+ * @classdesc
+ * An image source whose images are canvas elements into which vector features
+ * read from a vector source (`ol.source.Vector`) are drawn. An
+ * `ol.source.ImageVector` object is to be used as the `source` of an image
+ * layer (`ol.layer.Image`). Image layers are rotated, scaled, and translated,
+ * as opposed to being re-rendered, during animations and interactions. So, like
+ * any other image layer, an image layer configured with an
+ * `ol.source.ImageVector` will exhibit this behaviour. This is in contrast to a
+ * vector layer, where vector features are re-drawn during animations and
+ * interactions.
+ *
+ * @constructor
+ * @extends {ol.source.ImageCanvas}
+ * @param {olx.source.ImageVectorOptions} options Options.
+ * @api
+ */
+ol.source.ImageVector = function(options) {
+
+  /**
+   * @private
+   * @type {ol.source.Vector}
+   */
+  this.source_ = options.source;
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.transform_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.canvasContext_ = ol.dom.createCanvasContext2D();
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.canvasSize_ = [0, 0];
+
+  /**
+   * @private
+   * @type {ol.render.canvas.ReplayGroup}
+   */
+  this.replayGroup_ = null;
+
+  goog.base(this, {
+    attributions: options.attributions,
+    canvasFunction: goog.bind(this.canvasFunctionInternal_, this),
+    logo: options.logo,
+    projection: options.projection,
+    ratio: options.ratio,
+    resolutions: options.resolutions,
+    state: this.source_.getState()
+  });
+
+  /**
+   * User provided style.
+   * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction}
+   * @private
+   */
+  this.style_ = null;
+
+  /**
+   * Style function for use within the library.
+   * @type {ol.style.StyleFunction|undefined}
+   * @private
+   */
+  this.styleFunction_ = undefined;
+
+  this.setStyle(options.style);
+
+  goog.events.listen(this.source_, goog.events.EventType.CHANGE,
+      this.handleSourceChange_, undefined, this);
+
+};
+goog.inherits(ol.source.ImageVector, ol.source.ImageCanvas);
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.Size} size Size.
+ * @param {ol.proj.Projection} projection Projection;
+ * @return {HTMLCanvasElement} Canvas element.
+ * @private
+ */
+ol.source.ImageVector.prototype.canvasFunctionInternal_ =
+    function(extent, resolution, pixelRatio, size, projection) {
+
+  var replayGroup = new ol.render.canvas.ReplayGroup(
+      ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
+      resolution);
+
+  this.source_.loadFeatures(extent, resolution, projection);
+
+  var loading = false;
+  this.source_.forEachFeatureInExtentAtResolution(extent, resolution,
+      /**
+       * @param {ol.Feature} feature Feature.
+       */
+      function(feature) {
+        loading = loading ||
+            this.renderFeature_(feature, resolution, pixelRatio, replayGroup);
+      }, this);
+  replayGroup.finish();
+
+  if (loading) {
+    return null;
+  }
+
+  if (this.canvasSize_[0] != size[0] || this.canvasSize_[1] != size[1]) {
+    this.canvasContext_.canvas.width = size[0];
+    this.canvasContext_.canvas.height = size[1];
+    this.canvasSize_[0] = size[0];
+    this.canvasSize_[1] = size[1];
+  } else {
+    this.canvasContext_.clearRect(0, 0, size[0], size[1]);
+  }
+
+  var transform = this.getTransform_(ol.extent.getCenter(extent),
+      resolution, pixelRatio, size);
+  replayGroup.replay(this.canvasContext_, pixelRatio, transform, 0, {});
+
+  this.replayGroup_ = replayGroup;
+
+  return this.canvasContext_.canvas;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
+    coordinate, resolution, rotation, skippedFeatureUids, callback) {
+  if (goog.isNull(this.replayGroup_)) {
+    return undefined;
+  } else {
+    /** @type {Object.<string, boolean>} */
+    var features = {};
+    return this.replayGroup_.forEachFeatureAtCoordinate(
+        coordinate, resolution, 0, skippedFeatureUids,
+        /**
+         * @param {ol.Feature} feature Feature.
+         * @return {?} Callback result.
+         */
+        function(feature) {
+          goog.asserts.assert(goog.isDef(feature));
+          var key = goog.getUid(feature).toString();
+          if (!(key in features)) {
+            features[key] = true;
+            return callback(feature);
+          }
+        });
+  }
+};
+
+
+/**
+ * @return {ol.source.Vector} Source.
+ * @api
+ */
+ol.source.ImageVector.prototype.getSource = function() {
+  return this.source_;
+};
+
+
+/**
+ * Get the style for features.  This returns whatever was passed to the `style`
+ * option at construction or to the `setStyle` method.
+ * @return {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction}
+ *     Layer style.
+ * @api stable
+ */
+ol.source.ImageVector.prototype.getStyle = function() {
+  return this.style_;
+};
+
+
+/**
+ * Get the style function.
+ * @return {ol.style.StyleFunction|undefined} Layer style function.
+ * @api stable
+ */
+ol.source.ImageVector.prototype.getStyleFunction = function() {
+  return this.styleFunction_;
+};
+
+
+/**
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.Size} size Size.
+ * @return {!goog.vec.Mat4.Number} Transform.
+ * @private
+ */
+ol.source.ImageVector.prototype.getTransform_ =
+    function(center, resolution, pixelRatio, size) {
+  return ol.vec.Mat4.makeTransform2D(this.transform_,
+      size[0] / 2, size[1] / 2,
+      pixelRatio / resolution, -pixelRatio / resolution,
+      0,
+      -center[0], -center[1]);
+};
+
+
+/**
+ * Handle changes in image style state.
+ * @param {goog.events.Event} event Image style change event.
+ * @private
+ */
+ol.source.ImageVector.prototype.handleImageChange_ =
+    function(event) {
+  this.changed();
+};
+
+
+/**
+ * @private
+ */
+ol.source.ImageVector.prototype.handleSourceChange_ = function() {
+  // setState will trigger a CHANGE event, so we always rely
+  // change events by calling setState.
+  this.setState(this.source_.getState());
+};
+
+
+/**
+ * @param {ol.Feature} feature Feature.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.render.canvas.ReplayGroup} replayGroup Replay group.
+ * @return {boolean} `true` if an image is loading.
+ * @private
+ */
+ol.source.ImageVector.prototype.renderFeature_ =
+    function(feature, resolution, pixelRatio, replayGroup) {
+  var styles;
+  if (goog.isDef(feature.getStyleFunction())) {
+    styles = feature.getStyleFunction().call(feature, resolution);
+  } else if (goog.isDef(this.styleFunction_)) {
+    styles = this.styleFunction_(feature, resolution);
+  }
+  if (!goog.isDefAndNotNull(styles)) {
+    return false;
+  }
+  var i, ii, loading = false;
+  for (i = 0, ii = styles.length; i < ii; ++i) {
+    loading = ol.renderer.vector.renderFeature(
+        replayGroup, feature, styles[i],
+        ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
+        this.handleImageChange_, this) || loading;
+  }
+  return loading;
+};
+
+
+/**
+ * Set the style for features.  This can be a single style object, an array
+ * of styles, or a function that takes a feature and resolution and returns
+ * an array of styles. If it is `undefined` the default style is used. If
+ * it is `null` the layer has no style (a `null` style), so only features
+ * that have their own styles will be rendered in the layer. See
+ * {@link ol.style} for information on the default style.
+ * @param {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
+ *     style Layer style.
+ * @api stable
+ */
+ol.source.ImageVector.prototype.setStyle = function(style) {
+  this.style_ = goog.isDef(style) ? style : ol.style.defaultStyleFunction;
+  this.styleFunction_ = goog.isNull(style) ?
+      undefined : ol.style.createStyleFunction(this.style_);
+  this.changed();
+};
+
+goog.provide('ol.renderer.canvas.ImageLayer');
+
+goog.require('goog.asserts');
+goog.require('goog.vec.Mat4');
+goog.require('ol.ImageBase');
+goog.require('ol.ViewHint');
+goog.require('ol.dom');
+goog.require('ol.extent');
+goog.require('ol.layer.Image');
+goog.require('ol.proj');
+goog.require('ol.renderer.Map');
+goog.require('ol.renderer.canvas.Layer');
+goog.require('ol.source.ImageVector');
+goog.require('ol.vec.Mat4');
+
+
+
+/**
+ * @constructor
+ * @extends {ol.renderer.canvas.Layer}
+ * @param {ol.renderer.Map} mapRenderer Map renderer.
+ * @param {ol.layer.Image} imageLayer Single image layer.
+ */
+ol.renderer.canvas.ImageLayer = function(mapRenderer, imageLayer) {
+
+  goog.base(this, mapRenderer, imageLayer);
+
+  /**
+   * @private
+   * @type {?ol.ImageBase}
+   */
+  this.image_ = null;
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.imageTransform_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {?goog.vec.Mat4.Number}
+   */
+  this.imageTransformInv_ = null;
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.hitCanvasContext_ = null;
+
+};
+goog.inherits(ol.renderer.canvas.ImageLayer, ol.renderer.canvas.Layer);
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtCoordinate =
+    function(coordinate, frameState, callback, thisArg) {
+  var layer = this.getLayer();
+  var source = layer.getSource();
+  var resolution = frameState.viewState.resolution;
+  var rotation = frameState.viewState.rotation;
+  var skippedFeatureUids = frameState.skippedFeatureUids;
+  return source.forEachFeatureAtCoordinate(
+      coordinate, resolution, rotation, skippedFeatureUids,
+      /**
+       * @param {ol.Feature} feature Feature.
+       * @return {?} Callback result.
+       */
+      function(feature) {
+        return callback.call(thisArg, feature, layer);
+      });
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg) {
+  if (goog.isNull(this.getImage())) {
+    return undefined;
+  }
+
+  if (this.getLayer().getSource() instanceof ol.source.ImageVector) {
+    // for ImageVector sources use the original hit-detection logic,
+    // so that for example also transparent polygons are detected
+    var coordinate = this.getMap().getCoordinateFromPixel(pixel);
+    var hasFeature = this.forEachFeatureAtCoordinate(
+        coordinate, frameState, goog.functions.TRUE, this);
+
+    if (hasFeature) {
+      return callback.call(thisArg, this.getLayer());
+    } else {
+      return undefined;
+    }
+  } else {
+    // for all other image sources directly check the image
+    if (goog.isNull(this.imageTransformInv_)) {
+      this.imageTransformInv_ = goog.vec.Mat4.createNumber();
+      goog.vec.Mat4.invert(this.imageTransform_, this.imageTransformInv_);
+    }
+
+    var pixelOnCanvas =
+        this.getPixelOnCanvas(pixel, this.imageTransformInv_);
+
+    if (goog.isNull(this.hitCanvasContext_)) {
+      this.hitCanvasContext_ = ol.dom.createCanvasContext2D(1, 1);
+    }
+
+    this.hitCanvasContext_.clearRect(0, 0, 1, 1);
+    this.hitCanvasContext_.drawImage(
+        this.getImage(), pixelOnCanvas[0], pixelOnCanvas[1], 1, 1, 0, 0, 1, 1);
+
+    var imageData = this.hitCanvasContext_.getImageData(0, 0, 1, 1).data;
+    if (imageData[3] > 0) {
+      return callback.call(thisArg, this.getLayer());
+    } else {
+      return undefined;
+    }
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.getImage = function() {
+  return goog.isNull(this.image_) ?
+      null : this.image_.getImage();
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.getImageTransform = function() {
+  return this.imageTransform_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.prepareFrame =
+    function(frameState, layerState) {
+
+  var pixelRatio = frameState.pixelRatio;
+  var viewState = frameState.viewState;
+  var viewCenter = viewState.center;
+  var viewResolution = viewState.resolution;
+  var viewRotation = viewState.rotation;
+
+  var image;
+  var imageLayer = this.getLayer();
+  goog.asserts.assertInstanceof(imageLayer, ol.layer.Image);
+  var imageSource = imageLayer.getSource();
+
+  var hints = frameState.viewHints;
+
+  var renderedExtent = frameState.extent;
+  if (goog.isDef(layerState.extent)) {
+    renderedExtent = ol.extent.getIntersection(
+        renderedExtent, layerState.extent);
+  }
+
+  if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING] &&
+      !ol.extent.isEmpty(renderedExtent)) {
+    var projection = viewState.projection;
+    var sourceProjection = imageSource.getProjection();
+    if (!goog.isNull(sourceProjection)) {
+      goog.asserts.assert(ol.proj.equivalent(projection, sourceProjection));
+      projection = sourceProjection;
+    }
+    image = imageSource.getImage(
+        renderedExtent, viewResolution, pixelRatio, projection);
+    if (!goog.isNull(image)) {
+      var loaded = this.loadImage(image);
+      if (loaded) {
+        this.image_ = image;
+      }
+    }
+  }
+
+  if (!goog.isNull(this.image_)) {
+    image = this.image_;
+    var imageExtent = image.getExtent();
+    var imageResolution = image.getResolution();
+    var imagePixelRatio = image.getPixelRatio();
+    var scale = pixelRatio * imageResolution /
+        (viewResolution * imagePixelRatio);
+    ol.vec.Mat4.makeTransform2D(this.imageTransform_,
+        pixelRatio * frameState.size[0] / 2,
+        pixelRatio * frameState.size[1] / 2,
+        scale, scale,
+        viewRotation,
+        imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolution,
+        imagePixelRatio * (viewCenter[1] - imageExtent[3]) / imageResolution);
+    this.imageTransformInv_ = null;
+    this.updateAttributions(frameState.attributions, image.getAttributions());
+    this.updateLogos(frameState, imageSource);
+  }
+
+  return true;
+};
+
+// FIXME find correct globalCompositeOperation
+// FIXME optimize :-)
+
+goog.provide('ol.renderer.canvas.TileLayer');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.object');
+goog.require('goog.vec.Mat4');
+goog.require('ol.Size');
+goog.require('ol.TileRange');
+goog.require('ol.TileState');
+goog.require('ol.dom');
+goog.require('ol.extent');
+goog.require('ol.layer.Tile');
+goog.require('ol.renderer.Map');
+goog.require('ol.renderer.canvas.Layer');
+goog.require('ol.tilecoord');
+goog.require('ol.vec.Mat4');
+
+
+
+/**
+ * @constructor
+ * @extends {ol.renderer.canvas.Layer}
+ * @param {ol.renderer.Map} mapRenderer Map renderer.
+ * @param {ol.layer.Tile} tileLayer Tile layer.
+ */
+ol.renderer.canvas.TileLayer = function(mapRenderer, tileLayer) {
+
+  goog.base(this, mapRenderer, tileLayer);
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.canvas_ = null;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.canvasSize_ = null;
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.canvasTooBig_ = false;
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.context_ = null;
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.imageTransform_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {?goog.vec.Mat4.Number}
+   */
+  this.imageTransformInv_ = null;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedCanvasZ_ = NaN;
+
+  /**
+   * @private
+   * @type {ol.TileRange}
+   */
+  this.renderedCanvasTileRange_ = null;
+
+  /**
+   * @private
+   * @type {Array.<ol.Tile|undefined>}
+   */
+  this.renderedTiles_ = null;
+
+};
+goog.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.TileLayer.prototype.getImage = function() {
+  return this.canvas_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.TileLayer.prototype.getImageTransform = function() {
+  return this.imageTransform_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.TileLayer.prototype.prepareFrame =
+    function(frameState, layerState) {
+
+  //
+  // Warning! You're entering a dangerous zone!
+  //
+  // The canvas tile layer renderering is highly optimized, hence
+  // the complexity of this function. For best performance we try
+  // to minimize the number of pixels to update on the canvas. This
+  // includes:
+  //
+  // - Only drawing pixels that will be visible.
+  // - Not re-drawing pixels/tiles that are already correct.
+  // - Minimizing calls to clearRect.
+  // - Never shrink the canvas. Just make it bigger when necessary.
+  //   Re-sizing the canvas also clears it, which further means
+  //   re-creating it (expensive).
+  //
+  // The various steps performed by this functions:
+  //
+  // - Create a canvas element if none has been created yet.
+  //
+  // - Make the canvas bigger if it's too small. Note that we never shrink
+  //   the canvas, we just make it bigger when necessary, when rotating for
+  //   example. Note also that the canvas always contains a whole number
+  //   of tiles.
+  //
+  // - Invalidate the canvas tile range (renderedCanvasTileRange_ = null)
+  //   if (1) the canvas has been enlarged, or (2) the zoom level changes,
+  //   or (3) the canvas tile range doesn't contain the required tile
+  //   range. This canvas tile range invalidation thing is related to
+  //   an optimization where we attempt to redraw as few pixels as
+  //   possible on each prepareFrame call.
+  //
+  // - If the canvas tile range has been invalidated we reset
+  //   renderedCanvasTileRange_ and reset the renderedTiles_ array.
+  //   The renderedTiles_ array is the structure used to determine
+  //   the canvas pixels that need not be redrawn from one prepareFrame
+  //   call to another. It records while tile has been rendered at
+  //   which position in the canvas.
+  //
+  // - We then determine the tiles to draw on the canvas. Tiles for
+  //   the target resolution may not be loaded yet. In that case we
+  //   use low-resolution/interim tiles if loaded already. And, if
+  //   for a non-yet-loaded tile we haven't found a corresponding
+  //   low-resolution tile we indicate that the pixels for that
+  //   tile must be cleared on the canvas. Note: determining the
+  //   interim tiles is based on tile extents instead of tile
+  //   coords, this is to be able to handler irregular tile grids.
+  //
+  // - We're now ready to render. We start by calling clearRect
+  //   for the tiles that aren't loaded yet and are not fully covered
+  //   by a low-resolution tile (if they're loaded, we'll draw them;
+  //   if they're fully covered by a low-resolution tile then there's
+  //   no need to clear). We then render the tiles "back to front",
+  //   i.e. starting with the low-resolution tiles.
+  //
+  // - After rendering some bookkeeping is performed (updateUsedTiles,
+  //   etc.). manageTilePyramid is what enqueue tiles in the tile
+  //   queue for loading.
+  //
+  // - The last step involves updating the image transform matrix,
+  //   which will be used by the map renderer for the final
+  //   composition and positioning.
+  //
+
+  var pixelRatio = frameState.pixelRatio;
+  var viewState = frameState.viewState;
+  var projection = viewState.projection;
+
+  var tileLayer = this.getLayer();
+  goog.asserts.assertInstanceof(tileLayer, ol.layer.Tile);
+  var tileSource = tileLayer.getSource();
+  var tileGrid = tileSource.getTileGridForProjection(projection);
+  var tileGutter = tileSource.getGutter();
+  var z = tileGrid.getZForResolution(viewState.resolution);
+  var tilePixelSize =
+      tileSource.getTilePixelSize(z, frameState.pixelRatio, projection);
+  var tilePixelRatio = tilePixelSize / tileGrid.getTileSize(z);
+  var tileResolution = tileGrid.getResolution(z);
+  var tilePixelResolution = tileResolution / tilePixelRatio;
+  var center = viewState.center;
+  var extent;
+  if (tileResolution == viewState.resolution) {
+    center = this.snapCenterToPixel(center, tileResolution, frameState.size);
+    extent = ol.extent.getForViewAndSize(
+        center, tileResolution, viewState.rotation, frameState.size);
+  } else {
+    extent = frameState.extent;
+  }
+
+  if (goog.isDef(layerState.extent)) {
+    extent = ol.extent.getIntersection(extent, layerState.extent);
+  }
+  if (ol.extent.isEmpty(extent)) {
+    // Return false to prevent the rendering of the layer.
+    return false;
+  }
+
+  var tileRange = tileGrid.getTileRangeForExtentAndResolution(
+      extent, tileResolution);
+
+  var canvasWidth = tilePixelSize * tileRange.getWidth();
+  var canvasHeight = tilePixelSize * tileRange.getHeight();
+
+  var canvas, context;
+  if (goog.isNull(this.canvas_)) {
+    goog.asserts.assert(goog.isNull(this.canvasSize_));
+    goog.asserts.assert(goog.isNull(this.context_));
+    goog.asserts.assert(goog.isNull(this.renderedCanvasTileRange_));
+    context = ol.dom.createCanvasContext2D(canvasWidth, canvasHeight);
+    this.canvas_ = context.canvas;
+    this.canvasSize_ = [canvasWidth, canvasHeight];
+    this.context_ = context;
+    this.canvasTooBig_ =
+        !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
+  } else {
+    goog.asserts.assert(!goog.isNull(this.canvasSize_));
+    goog.asserts.assert(!goog.isNull(this.context_));
+    canvas = this.canvas_;
+    context = this.context_;
+    if (this.canvasSize_[0] < canvasWidth ||
+        this.canvasSize_[1] < canvasHeight ||
+        (this.canvasTooBig_ && (this.canvasSize_[0] > canvasWidth ||
+        this.canvasSize_[1] > canvasHeight))) {
+      // Canvas is too small, resize it. We never shrink the canvas, unless
+      // we know that the current canvas size exceeds the maximum size
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+      this.canvasSize_ = [canvasWidth, canvasHeight];
+      this.canvasTooBig_ =
+          !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
+      this.renderedCanvasTileRange_ = null;
+    } else {
+      canvasWidth = this.canvasSize_[0];
+      canvasHeight = this.canvasSize_[1];
+      if (z != this.renderedCanvasZ_ ||
+          !this.renderedCanvasTileRange_.containsTileRange(tileRange)) {
+        this.renderedCanvasTileRange_ = null;
+      }
+    }
+  }
+
+  var canvasTileRange, canvasTileRangeWidth, minX, minY;
+  if (goog.isNull(this.renderedCanvasTileRange_)) {
+    canvasTileRangeWidth = canvasWidth / tilePixelSize;
+    var canvasTileRangeHeight = canvasHeight / tilePixelSize;
+    minX = tileRange.minX -
+        Math.floor((canvasTileRangeWidth - tileRange.getWidth()) / 2);
+    minY = tileRange.minY -
+        Math.floor((canvasTileRangeHeight - tileRange.getHeight()) / 2);
+    this.renderedCanvasZ_ = z;
+    this.renderedCanvasTileRange_ = new ol.TileRange(
+        minX, minX + canvasTileRangeWidth - 1,
+        minY, minY + canvasTileRangeHeight - 1);
+    this.renderedTiles_ =
+        new Array(canvasTileRangeWidth * canvasTileRangeHeight);
+    canvasTileRange = this.renderedCanvasTileRange_;
+  } else {
+    canvasTileRange = this.renderedCanvasTileRange_;
+    canvasTileRangeWidth = canvasTileRange.getWidth();
+  }
+
+  goog.asserts.assert(canvasTileRange.containsTileRange(tileRange));
+
+  /**
+   * @type {Object.<number, Object.<string, ol.Tile>>}
+   */
+  var tilesToDrawByZ = {};
+  tilesToDrawByZ[z] = {};
+  /** @type {Array.<ol.Tile>} */
+  var tilesToClear = [];
+
+  var getTileIfLoaded = this.createGetTileIfLoadedFunction(function(tile) {
+    return !goog.isNull(tile) && tile.getState() == ol.TileState.LOADED;
+  }, tileSource, pixelRatio, projection);
+  var findLoadedTiles = goog.bind(tileSource.findLoadedTiles, tileSource,
+      tilesToDrawByZ, getTileIfLoaded);
+
+  var useInterimTilesOnError = tileLayer.getUseInterimTilesOnError();
+
+  var tmpExtent = ol.extent.createEmpty();
+  var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
+  var childTileRange, fullyLoaded, tile, tileState, x, y;
+  for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
+    for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
+
+      tile = tileSource.getTile(z, x, y, pixelRatio, projection);
+      tileState = tile.getState();
+      if (tileState == ol.TileState.LOADED ||
+          tileState == ol.TileState.EMPTY ||
+          (tileState == ol.TileState.ERROR && !useInterimTilesOnError)) {
+        tilesToDrawByZ[z][ol.tilecoord.toString(tile.tileCoord)] = tile;
+        continue;
+      }
+
+      fullyLoaded = tileGrid.forEachTileCoordParentTileRange(
+          tile.tileCoord, findLoadedTiles, null, tmpTileRange, tmpExtent);
+      if (!fullyLoaded) {
+        // FIXME we do not need to clear the tile if it is fully covered by its
+        //       children
+        tilesToClear.push(tile);
+        childTileRange = tileGrid.getTileCoordChildTileRange(
+            tile.tileCoord, tmpTileRange, tmpExtent);
+        if (!goog.isNull(childTileRange)) {
+          findLoadedTiles(z + 1, childTileRange);
+        }
+      }
+
+    }
+  }
+
+  var i, ii;
+  for (i = 0, ii = tilesToClear.length; i < ii; ++i) {
+    tile = tilesToClear[i];
+    x = tilePixelSize * (tile.tileCoord[1] - canvasTileRange.minX);
+    y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord[2]);
+    context.clearRect(x, y, tilePixelSize, tilePixelSize);
+  }
+
+  /** @type {Array.<number>} */
+  var zs = goog.array.map(goog.object.getKeys(tilesToDrawByZ), Number);
+  goog.array.sort(zs);
+  var opaque = tileSource.getOpaque();
+  var origin = ol.extent.getTopLeft(tileGrid.getTileCoordExtent(
+      [z, canvasTileRange.minX, canvasTileRange.maxY],
+      tmpExtent));
+  var currentZ, index, scale, tileCoordKey, tileExtent, tilesToDraw;
+  var ix, iy, interimTileExtent, interimTileRange, maxX, maxY;
+  var height, width;
+  for (i = 0, ii = zs.length; i < ii; ++i) {
+    currentZ = zs[i];
+    tilePixelSize =
+        tileSource.getTilePixelSize(currentZ, pixelRatio, projection);
+    tilesToDraw = tilesToDrawByZ[currentZ];
+    if (currentZ == z) {
+      for (tileCoordKey in tilesToDraw) {
+        tile = tilesToDraw[tileCoordKey];
+        index =
+            (tile.tileCoord[2] - canvasTileRange.minY) * canvasTileRangeWidth +
+            (tile.tileCoord[1] - canvasTileRange.minX);
+        if (this.renderedTiles_[index] != tile) {
+          x = tilePixelSize * (tile.tileCoord[1] - canvasTileRange.minX);
+          y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord[2]);
+          tileState = tile.getState();
+          if (tileState == ol.TileState.EMPTY ||
+              (tileState == ol.TileState.ERROR && !useInterimTilesOnError) ||
+              !opaque) {
+            context.clearRect(x, y, tilePixelSize, tilePixelSize);
+          }
+          if (tileState == ol.TileState.LOADED) {
+            context.drawImage(tile.getImage(),
+                tileGutter, tileGutter, tilePixelSize, tilePixelSize,
+                x, y, tilePixelSize, tilePixelSize);
+          }
+          this.renderedTiles_[index] = tile;
+        }
+      }
+    } else {
+      scale = tileGrid.getResolution(currentZ) / tileResolution;
+      for (tileCoordKey in tilesToDraw) {
+        tile = tilesToDraw[tileCoordKey];
+        tileExtent = tileGrid.getTileCoordExtent(tile.tileCoord, tmpExtent);
+        x = (tileExtent[0] - origin[0]) / tilePixelResolution;
+        y = (origin[1] - tileExtent[3]) / tilePixelResolution;
+        width = scale * tilePixelSize;
+        height = scale * tilePixelSize;
+        tileState = tile.getState();
+        if (tileState == ol.TileState.EMPTY || !opaque) {
+          context.clearRect(x, y, width, height);
+        }
+        if (tileState == ol.TileState.LOADED) {
+          context.drawImage(tile.getImage(),
+              tileGutter, tileGutter, tilePixelSize, tilePixelSize,
+              x, y, width, height);
+        }
+        interimTileRange =
+            tileGrid.getTileRangeForExtentAndZ(tileExtent, z, tmpTileRange);
+        minX = Math.max(interimTileRange.minX, canvasTileRange.minX);
+        maxX = Math.min(interimTileRange.maxX, canvasTileRange.maxX);
+        minY = Math.max(interimTileRange.minY, canvasTileRange.minY);
+        maxY = Math.min(interimTileRange.maxY, canvasTileRange.maxY);
+        for (ix = minX; ix <= maxX; ++ix) {
+          for (iy = minY; iy <= maxY; ++iy) {
+            index = (iy - canvasTileRange.minY) * canvasTileRangeWidth +
+                    (ix - canvasTileRange.minX);
+            this.renderedTiles_[index] = undefined;
+          }
+        }
+      }
+    }
+  }
+
+  this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
+  this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio,
+      projection, extent, z, tileLayer.getPreload());
+  this.scheduleExpireCache(frameState, tileSource);
+  this.updateLogos(frameState, tileSource);
+
+  ol.vec.Mat4.makeTransform2D(this.imageTransform_,
+      pixelRatio * frameState.size[0] / 2,
+      pixelRatio * frameState.size[1] / 2,
+      pixelRatio * tilePixelResolution / viewState.resolution,
+      pixelRatio * tilePixelResolution / viewState.resolution,
+      viewState.rotation,
+      (origin[0] - center[0]) / tilePixelResolution,
+      (center[1] - origin[1]) / tilePixelResolution);
+  this.imageTransformInv_ = null;
+
+  return true;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.TileLayer.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg) {
+  if (goog.isNull(this.context_)) {
+    return undefined;
+  }
+
+  if (goog.isNull(this.imageTransformInv_)) {
+    this.imageTransformInv_ = goog.vec.Mat4.createNumber();
+    goog.vec.Mat4.invert(this.imageTransform_, this.imageTransformInv_);
+  }
+
+  var pixelOnCanvas =
+      this.getPixelOnCanvas(pixel, this.imageTransformInv_);
+
+  var imageData = this.context_.getImageData(
+      pixelOnCanvas[0], pixelOnCanvas[1], 1, 1).data;
+
+  if (imageData[3] > 0) {
+    return callback.call(thisArg, this.getLayer());
+  } else {
+    return undefined;
+  }
+};
+
 goog.provide('ol.renderer.canvas.VectorLayer');
 
 goog.require('goog.array');
@@ -65812,7 +68046,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame =
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel =
+ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
   if (goog.isNull(this.replayGroup_)) {
     return undefined;
@@ -65822,8 +68056,8 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtPixel =
     var layer = this.getLayer();
     /** @type {Object.<string, boolean>} */
     var features = {};
-    return this.replayGroup_.forEachGeometryAtPixel(resolution,
-        rotation, coordinate, frameState.skippedFeatureUids,
+    return this.replayGroup_.forEachFeatureAtCoordinate(coordinate,
+        resolution, rotation, frameState.skippedFeatureUids,
         /**
          * @param {ol.Feature} feature Feature.
          * @return {?} Callback result.
@@ -66289,15 +68523,15 @@ goog.inherits(ol.renderer.dom.ImageLayer, ol.renderer.dom.Layer);
 /**
  * @inheritDoc
  */
-ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtPixel =
+ol.renderer.dom.ImageLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
-  return source.forEachFeatureAtPixel(
-      resolution, rotation, coordinate, skippedFeatureUids,
+  return source.forEachFeatureAtCoordinate(
+      coordinate, resolution, rotation, skippedFeatureUids,
       /**
        * @param {ol.Feature} feature Feature.
        * @return {?} Callback result.
@@ -67056,7 +69290,7 @@ ol.renderer.dom.VectorLayer.prototype.dispatchEvent_ =
 /**
  * @inheritDoc
  */
-ol.renderer.dom.VectorLayer.prototype.forEachFeatureAtPixel =
+ol.renderer.dom.VectorLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
   if (goog.isNull(this.replayGroup_)) {
     return undefined;
@@ -67066,8 +69300,8 @@ ol.renderer.dom.VectorLayer.prototype.forEachFeatureAtPixel =
     var layer = this.getLayer();
     /** @type {Object.<string, boolean>} */
     var features = {};
-    return this.replayGroup_.forEachGeometryAtPixel(resolution,
-        rotation, coordinate, frameState.skippedFeatureUids,
+    return this.replayGroup_.forEachFeatureAtCoordinate(coordinate,
+        resolution, rotation, frameState.skippedFeatureUids,
         /**
          * @param {ol.Feature} feature Feature.
          * @return {?} Callback result.
@@ -71698,6 +73932,7 @@ ol.render.webgl.ReplayGroup.prototype.replayHitDetection_ = function(context,
 
 
 /**
+ * @param {ol.Coordinate} coordinate Coordinate.
  * @param {ol.webgl.Context} context Context.
  * @param {ol.Coordinate} center Center.
  * @param {number} resolution Resolution.
@@ -71710,15 +73945,14 @@ ol.render.webgl.ReplayGroup.prototype.replayHitDetection_ = function(context,
  * @param {number} hue Global hue.
  * @param {number} saturation Global saturation.
  * @param {Object} skippedFeaturesHash Ids of features to skip.
- * @param {ol.Coordinate} coordinate Coordinate.
  * @param {function(ol.Feature): T|undefined} callback Feature callback.
  * @return {T|undefined} Callback result.
  * @template T
  */
-ol.render.webgl.ReplayGroup.prototype.forEachFeatureAtPixel = function(
-    context, center, resolution, rotation, size, pixelRatio,
+ol.render.webgl.ReplayGroup.prototype.forEachFeatureAtCoordinate = function(
+    coordinate, context, center, resolution, rotation, size, pixelRatio,
     opacity, brightness, contrast, hue, saturation, skippedFeaturesHash,
-    coordinate, callback) {
+    callback) {
   var gl = context.getGL();
   gl.bindFramebuffer(
       gl.FRAMEBUFFER, context.getHitDetectionFramebuffer());
@@ -71759,6 +73993,7 @@ ol.render.webgl.ReplayGroup.prototype.forEachFeatureAtPixel = function(
 
 
 /**
+ * @param {ol.Coordinate} coordinate Coordinate.
  * @param {ol.webgl.Context} context Context.
  * @param {ol.Coordinate} center Center.
  * @param {number} resolution Resolution.
@@ -71771,13 +74006,11 @@ ol.render.webgl.ReplayGroup.prototype.forEachFeatureAtPixel = function(
  * @param {number} hue Global hue.
  * @param {number} saturation Global saturation.
  * @param {Object} skippedFeaturesHash Ids of features to skip.
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {boolean} Is there a feature at the given pixel?
+ * @return {boolean} Is there a feature at the given coordinate?
  */
-ol.render.webgl.ReplayGroup.prototype.hasFeatureAtPixel = function(
-    context, center, resolution, rotation, size, pixelRatio,
-    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash,
-    coordinate) {
+ol.render.webgl.ReplayGroup.prototype.hasFeatureAtCoordinate = function(
+    coordinate, context, center, resolution, rotation, size, pixelRatio,
+    opacity, brightness, contrast, hue, saturation, skippedFeaturesHash) {
   var gl = context.getGL();
   gl.bindFramebuffer(
       gl.FRAMEBUFFER, context.getHitDetectionFramebuffer());
@@ -72684,10 +74917,13 @@ goog.require('ol.Coordinate');
 goog.require('ol.Extent');
 goog.require('ol.ImageBase');
 goog.require('ol.ViewHint');
+goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.proj');
 goog.require('ol.renderer.webgl.Layer');
+goog.require('ol.source.ImageVector');
+goog.require('ol.vec.Mat4');
 goog.require('ol.webgl.Context');
 
 
@@ -72708,6 +74944,18 @@ ol.renderer.webgl.ImageLayer = function(mapRenderer, imageLayer) {
    * @type {?ol.ImageBase}
    */
   this.image_ = null;
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.hitCanvasContext_ = null;
+
+  /**
+   * @private
+   * @type {?goog.vec.Mat4.Number}
+   */
+  this.hitTransformationMatrix_ = null;
 
 };
 goog.inherits(ol.renderer.webgl.ImageLayer, ol.renderer.webgl.Layer);
@@ -72735,15 +74983,15 @@ ol.renderer.webgl.ImageLayer.prototype.createTexture_ = function(image) {
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtPixel =
+ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
-  return source.forEachFeatureAtPixel(
-      resolution, rotation, coordinate, skippedFeatureUids,
+  return source.forEachFeatureAtCoordinate(
+      coordinate, resolution, rotation, skippedFeatureUids,
 
       /**
        * @param {ol.Feature} feature Feature.
@@ -72820,6 +75068,7 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
 
     this.updateProjectionMatrix_(canvas.width, canvas.height,
         viewCenter, viewResolution, viewRotation, image.getExtent());
+    this.hitTransformationMatrix_ = null;
 
     // Translate and scale to flip the Y coord.
     var texCoordMatrix = this.texCoordMatrix;
@@ -72869,6 +75118,117 @@ ol.renderer.webgl.ImageLayer.prototype.updateProjectionMatrix_ =
       1);
   goog.vec.Mat4.translate(projectionMatrix, 1, 1, 0);
 
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.ImageLayer.prototype.hasFeatureAtCoordinate =
+    function(coordinate, frameState) {
+  var hasFeature = this.forEachFeatureAtCoordinate(
+      coordinate, frameState, goog.functions.TRUE, this);
+  return goog.isDef(hasFeature);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.ImageLayer.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg) {
+  if (goog.isNull(this.image_) || goog.isNull(this.image_.getImage())) {
+    return undefined;
+  }
+
+  if (this.getLayer().getSource() instanceof ol.source.ImageVector) {
+    // for ImageVector sources use the original hit-detection logic,
+    // so that for example also transparent polygons are detected
+    var coordinate = this.getMap().getCoordinateFromPixel(pixel);
+    var hasFeature = this.forEachFeatureAtCoordinate(
+        coordinate, frameState, goog.functions.TRUE, this);
+
+    if (hasFeature) {
+      return callback.call(thisArg, this.getLayer());
+    } else {
+      return undefined;
+    }
+  } else {
+    var imageSize =
+        [this.image_.getImage().width, this.image_.getImage().height];
+
+    if (goog.isNull(this.hitTransformationMatrix_)) {
+      this.hitTransformationMatrix_ = this.getHitTransformationMatrix_(
+          frameState.size, imageSize);
+    }
+
+    var pixelOnFrameBuffer = [0, 0];
+    ol.vec.Mat4.multVec2(
+        this.hitTransformationMatrix_, pixel, pixelOnFrameBuffer);
+
+    if (pixelOnFrameBuffer[0] < 0 || pixelOnFrameBuffer[0] > imageSize[0] ||
+        pixelOnFrameBuffer[1] < 0 || pixelOnFrameBuffer[1] > imageSize[1]) {
+      // outside the image, no need to check
+      return undefined;
+    }
+
+    if (goog.isNull(this.hitCanvasContext_)) {
+      this.hitCanvasContext_ = ol.dom.createCanvasContext2D(1, 1);
+    }
+
+    this.hitCanvasContext_.clearRect(0, 0, 1, 1);
+    this.hitCanvasContext_.drawImage(this.image_.getImage(),
+        pixelOnFrameBuffer[0], pixelOnFrameBuffer[1], 1, 1, 0, 0, 1, 1);
+
+    var imageData = this.hitCanvasContext_.getImageData(0, 0, 1, 1).data;
+    if (imageData[3] > 0) {
+      return callback.call(thisArg, this.getLayer());
+    } else {
+      return undefined;
+    }
+  }
+};
+
+
+/**
+ * The transformation matrix to get the pixel on the image for a
+ * pixel on the map.
+ * @param {ol.Size} mapSize
+ * @param {ol.Size} imageSize
+ * @return {goog.vec.Mat4.Number}
+ * @private
+ */
+ol.renderer.webgl.ImageLayer.prototype.getHitTransformationMatrix_ =
+    function(mapSize, imageSize) {
+  // the first matrix takes a map pixel, flips the y-axis and scales to
+  // a range between -1 ... 1
+  var mapCoordMatrix = goog.vec.Mat4.createNumber();
+  goog.vec.Mat4.makeIdentity(mapCoordMatrix);
+  goog.vec.Mat4.translate(mapCoordMatrix, -1, -1, 0);
+  goog.vec.Mat4.scale(mapCoordMatrix, 2 / mapSize[0], 2 / mapSize[1], 1);
+  goog.vec.Mat4.translate(mapCoordMatrix, 0, mapSize[1], 0);
+  goog.vec.Mat4.scale(mapCoordMatrix, 1, -1, 1);
+
+  // the second matrix is the inverse of the projection matrix used in the
+  // shader for drawing
+  var projectionMatrixInv = goog.vec.Mat4.createNumber();
+  goog.vec.Mat4.invert(this.projectionMatrix, projectionMatrixInv);
+
+  // the third matrix scales to the image dimensions and flips the y-axis again
+  var imageCoordMatrix = goog.vec.Mat4.createNumber();
+  goog.vec.Mat4.makeIdentity(imageCoordMatrix);
+  goog.vec.Mat4.translate(imageCoordMatrix, 0, imageSize[1], 0);
+  goog.vec.Mat4.scale(imageCoordMatrix, 1, -1, 1);
+  goog.vec.Mat4.scale(imageCoordMatrix, imageSize[0] / 2, imageSize[1] / 2, 1);
+  goog.vec.Mat4.translate(imageCoordMatrix, 1, 1, 0);
+
+  var transformMatrix = goog.vec.Mat4.createNumber();
+  goog.vec.Mat4.multMat(
+      imageCoordMatrix, projectionMatrixInv, transformMatrix);
+  goog.vec.Mat4.multMat(
+      transformMatrix, mapCoordMatrix, transformMatrix);
+
+  return transformMatrix;
 };
 
 // This file is automatically generated, do not edit
@@ -73002,6 +75362,7 @@ goog.require('ol.math');
 goog.require('ol.renderer.webgl.Layer');
 goog.require('ol.renderer.webgl.tilelayer.shader');
 goog.require('ol.tilecoord');
+goog.require('ol.vec.Mat4');
 goog.require('ol.webgl.Buffer');
 
 
@@ -73312,6 +75673,41 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
   return true;
 };
 
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.TileLayer.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg) {
+  if (goog.isNull(this.framebuffer)) {
+    return undefined;
+  }
+  var mapSize = this.getMap().getSize();
+
+  var pixelOnMapScaled = [
+    pixel[0] / mapSize[0],
+    (mapSize[1] - pixel[1]) / mapSize[1]];
+
+  var pixelOnFrameBufferScaled = [0, 0];
+  ol.vec.Mat4.multVec2(
+      this.texCoordMatrix, pixelOnMapScaled, pixelOnFrameBufferScaled);
+  var pixelOnFrameBuffer = [
+    pixelOnFrameBufferScaled[0] * this.framebufferDimension,
+    pixelOnFrameBufferScaled[1] * this.framebufferDimension];
+
+  var gl = this.getWebGLMapRenderer().getContext().getGL();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
+  var imageData = new Uint8Array(4);
+  gl.readPixels(pixelOnFrameBuffer[0], pixelOnFrameBuffer[1], 1, 1,
+      gl.RGBA, gl.UNSIGNED_BYTE, imageData);
+
+  if (imageData[3] > 0) {
+    return callback.call(thisArg, this.getLayer());
+  } else {
+    return undefined;
+  }
+};
+
 goog.provide('ol.renderer.webgl.VectorLayer');
 
 goog.require('goog.array');
@@ -73420,7 +75816,7 @@ ol.renderer.webgl.VectorLayer.prototype.disposeInternal = function() {
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtPixel =
+ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
   if (goog.isNull(this.replayGroup_) || goog.isNull(this.layerState_)) {
     return undefined;
@@ -73432,12 +75828,11 @@ ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtPixel =
     var layerState = this.layerState_;
     /** @type {Object.<string, boolean>} */
     var features = {};
-    return this.replayGroup_.forEachFeatureAtPixel(context,
-        viewState.center, viewState.resolution, viewState.rotation,
+    return this.replayGroup_.forEachFeatureAtCoordinate(coordinate,
+        context, viewState.center, viewState.resolution, viewState.rotation,
         frameState.size, frameState.pixelRatio,
         layerState.opacity, layerState.brightness, layerState.contrast,
         layerState.hue, layerState.saturation, frameState.skippedFeatureUids,
-        coordinate,
         /**
          * @param {ol.Feature} feature Feature.
          * @return {?} Callback result.
@@ -73457,7 +75852,7 @@ ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtPixel =
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.VectorLayer.prototype.hasFeatureAtPixel =
+ol.renderer.webgl.VectorLayer.prototype.hasFeatureAtCoordinate =
     function(coordinate, frameState) {
   if (goog.isNull(this.replayGroup_) || goog.isNull(this.layerState_)) {
     return false;
@@ -73466,12 +75861,27 @@ ol.renderer.webgl.VectorLayer.prototype.hasFeatureAtPixel =
     var context = mapRenderer.getContext();
     var viewState = frameState.viewState;
     var layerState = this.layerState_;
-    return this.replayGroup_.hasFeatureAtPixel(context,
-        viewState.center, viewState.resolution, viewState.rotation,
+    return this.replayGroup_.hasFeatureAtCoordinate(coordinate,
+        context, viewState.center, viewState.resolution, viewState.rotation,
         frameState.size, frameState.pixelRatio,
         layerState.opacity, layerState.brightness, layerState.contrast,
-        layerState.hue, layerState.saturation, frameState.skippedFeatureUids,
-        coordinate);
+        layerState.hue, layerState.saturation, frameState.skippedFeatureUids);
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.VectorLayer.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg) {
+  var coordinate = this.getMap().getCoordinateFromPixel(pixel);
+  var hasFeature = this.hasFeatureAtCoordinate(coordinate, frameState);
+
+  if (hasFeature) {
+    return callback.call(thisArg, this.getLayer());
+  } else {
+    return undefined;
   }
 };
 
@@ -74402,7 +76812,7 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.Map.prototype.forEachFeatureAtPixel =
+ol.renderer.webgl.Map.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg,
         layerFilter, thisArg2) {
   var result;
@@ -74422,11 +76832,10 @@ ol.renderer.webgl.Map.prototype.forEachFeatureAtPixel =
     // use default color values
     var d = ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_;
 
-    result = this.replayGroup.forEachFeatureAtPixel(context,
-        viewState.center, viewState.resolution, viewState.rotation,
+    result = this.replayGroup.forEachFeatureAtCoordinate(coordinate,
+        context, viewState.center, viewState.resolution, viewState.rotation,
         frameState.size, frameState.pixelRatio,
         d.opacity, d.brightness, d.contrast, d.hue, d.saturation, {},
-        coordinate,
         /**
          * @param {ol.Feature} feature Feature.
          * @return {?} Callback result.
@@ -74452,7 +76861,7 @@ ol.renderer.webgl.Map.prototype.forEachFeatureAtPixel =
     if (ol.layer.Layer.visibleAtResolution(layerState, viewState.resolution) &&
         layerFilter.call(thisArg2, layer)) {
       var layerRenderer = this.getLayerRenderer(layer);
-      result = layerRenderer.forEachFeatureAtPixel(
+      result = layerRenderer.forEachFeatureAtCoordinate(
           coordinate, frameState, callback, thisArg);
       if (result) {
         return result;
@@ -74466,7 +76875,7 @@ ol.renderer.webgl.Map.prototype.forEachFeatureAtPixel =
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.Map.prototype.hasFeatureAtPixel =
+ol.renderer.webgl.Map.prototype.hasFeatureAtCoordinate =
     function(coordinate, frameState, layerFilter, thisArg) {
   var hasFeature = false;
 
@@ -74482,11 +76891,10 @@ ol.renderer.webgl.Map.prototype.hasFeatureAtPixel =
     // use default color values
     var d = ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_;
 
-    hasFeature = this.replayGroup.hasFeatureAtPixel(context,
-        viewState.center, viewState.resolution, viewState.rotation,
+    hasFeature = this.replayGroup.hasFeatureAtCoordinate(coordinate,
+        context, viewState.center, viewState.resolution, viewState.rotation,
         frameState.size, frameState.pixelRatio,
-        d.opacity, d.brightness, d.contrast, d.hue, d.saturation, {},
-        coordinate);
+        d.opacity, d.brightness, d.contrast, d.hue, d.saturation, {});
     if (hasFeature) {
       return true;
     }
@@ -74500,13 +76908,65 @@ ol.renderer.webgl.Map.prototype.hasFeatureAtPixel =
     if (ol.layer.Layer.visibleAtResolution(layerState, viewState.resolution) &&
         layerFilter.call(thisArg, layer)) {
       var layerRenderer = this.getLayerRenderer(layer);
-      hasFeature = layerRenderer.hasFeatureAtPixel(coordinate, frameState);
+      hasFeature =
+          layerRenderer.hasFeatureAtCoordinate(coordinate, frameState);
       if (hasFeature) {
         return true;
       }
     }
   }
   return hasFeature;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.webgl.Map.prototype.forEachLayerAtPixel =
+    function(pixel, frameState, callback, thisArg,
+        layerFilter, thisArg2) {
+  if (this.getGL().isContextLost()) {
+    return false;
+  }
+
+  var context = this.getContext();
+  var viewState = frameState.viewState;
+  var result;
+
+  // do the hit-detection for the overlays first
+  if (!goog.isNull(this.replayGroup)) {
+    // use default color values
+    var d = ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_;
+    var coordinate = this.getMap().getCoordinateFromPixel(pixel);
+
+    var hasFeature = this.replayGroup.hasFeatureAtCoordinate(coordinate,
+        context, viewState.center, viewState.resolution, viewState.rotation,
+        frameState.size, frameState.pixelRatio,
+        d.opacity, d.brightness, d.contrast, d.hue, d.saturation, {});
+    if (hasFeature) {
+      result = callback.call(thisArg, null);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  var layerStates = frameState.layerStatesArray;
+  var numLayers = layerStates.length;
+  var i;
+  for (i = numLayers - 1; i >= 0; --i) {
+    var layerState = layerStates[i];
+    var layer = layerState.layer;
+    if (ol.layer.Layer.visibleAtResolution(layerState, viewState.resolution) &&
+        layerFilter.call(thisArg, layer)) {
+      var layerRenderer = this.getLayerRenderer(layer);
+      result = layerRenderer.forEachLayerAtPixel(
+          pixel, frameState, callback, thisArg);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return undefined;
 };
 
 
@@ -75107,8 +77567,45 @@ ol.Map.prototype.forEachFeatureAtPixel =
   var layerFilter = goog.isDef(opt_layerFilter) ?
       opt_layerFilter : goog.functions.TRUE;
   var thisArg2 = goog.isDef(opt_this2) ? opt_this2 : null;
-  return this.renderer_.forEachFeatureAtPixel(
+  return this.renderer_.forEachFeatureAtCoordinate(
       coordinate, this.frameState_, callback, thisArg,
+      layerFilter, thisArg2);
+};
+
+
+/**
+ * Detect layers that have a color value at a pixel on the viewport, and
+ * execute a callback with each matching layer. Layers included in the
+ * detection can be configured through `opt_layerFilter`. Feature overlays will
+ * always be included in the detection.
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {function(this: S, ol.layer.Layer): T} callback Layer
+ *     callback. If the detected feature is not on a layer, but on a
+ *     {@link ol.FeatureOverlay}, then the argument to this function will
+ *     be `null`. To stop detection, callback functions can return a truthy
+ *     value.
+ * @param {S=} opt_this Value to use as `this` when executing `callback`.
+ * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
+ *     filter function, only layers which are visible and for which this
+ *     function returns `true` will be tested for features. By default, all
+ *     visible layers will be tested. Feature overlays will always be tested.
+ * @param {U=} opt_this2 Value to use as `this` when executing `layerFilter`.
+ * @return {T|undefined} Callback result, i.e. the return value of last
+ * callback execution, or the first truthy callback return value.
+ * @template S,T,U
+ * @api stable
+ */
+ol.Map.prototype.forEachLayerAtPixel =
+    function(pixel, callback, opt_this, opt_layerFilter, opt_this2) {
+  if (goog.isNull(this.frameState_)) {
+    return;
+  }
+  var thisArg = goog.isDef(opt_this) ? opt_this : null;
+  var layerFilter = goog.isDef(opt_layerFilter) ?
+      opt_layerFilter : goog.functions.TRUE;
+  var thisArg2 = goog.isDef(opt_this2) ? opt_this2 : null;
+  return this.renderer_.forEachLayerAtPixel(
+      pixel, this.frameState_, callback, thisArg,
       layerFilter, thisArg2);
 };
 
@@ -75136,7 +77633,7 @@ ol.Map.prototype.hasFeatureAtPixel =
   var layerFilter = goog.isDef(opt_layerFilter) ?
       opt_layerFilter : goog.functions.TRUE;
   var thisArg = goog.isDef(opt_this) ? opt_this : null;
-  return this.renderer_.hasFeatureAtPixel(
+  return this.renderer_.hasFeatureAtCoordinate(
       coordinate, this.frameState_, layerFilter, thisArg);
 };
 
@@ -84824,18 +87321,35 @@ ol.format.GMLBase = function(opt_options) {
    */
   this.schemaLocation = '';
 
+  /**
+   * @type {Object.<string, Object.<string, Object>>}
+   */
+  this.FEATURE_COLLECTION_PARSERS = {};
+  this.FEATURE_COLLECTION_PARSERS[ol.format.GMLBase.GMLNS] = {
+    'featureMember': ol.xml.makeReplacer(
+        ol.format.GMLBase.prototype.readFeaturesInternal),
+    'featureMembers': ol.xml.makeReplacer(
+        ol.format.GMLBase.prototype.readFeaturesInternal)
+  };
+
   goog.base(this);
 };
 goog.inherits(ol.format.GMLBase, ol.format.XMLFeature);
 
 
 /**
+ * @const
+ * @type {string}
+ */
+ol.format.GMLBase.GMLNS = 'http://www.opengis.net/gml';
+
+
+/**
  * @param {Node} node Node.
  * @param {Array.<*>} objectStack Object stack.
  * @return {Array.<ol.Feature>} Features.
- * @private
  */
-ol.format.GMLBase.prototype.readFeatures_ = function(node, objectStack) {
+ol.format.GMLBase.prototype.readFeaturesInternal = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT);
   var localName = ol.xml.getLocalName(node);
   var features;
@@ -84869,19 +87383,6 @@ ol.format.GMLBase.prototype.readFeatures_ = function(node, objectStack) {
 
 
 /**
- * @type {Object.<string, Object.<string, Object>>}
- */
-ol.format.GMLBase.prototype.FEATURE_COLLECTION_PARSERS = Object({
-  'http://www.opengis.net/gml': {
-    'featureMember': ol.xml.makeArrayPusher(
-        ol.format.GMLBase.prototype.readFeatures_),
-    'featureMembers': ol.xml.makeReplacer(
-        ol.format.GMLBase.prototype.readFeatures_)
-  }
-});
-
-
-/**
  * @param {Node} node Node.
  * @param {Array.<*>} objectStack Object stack.
  * @return {ol.geom.Geometry|undefined} Geometry.
@@ -84909,7 +87410,7 @@ ol.format.GMLBase.prototype.readGeometryElement = function(node, objectStack) {
 ol.format.GMLBase.prototype.readFeatureElement = function(node, objectStack) {
   var n;
   var fid = node.getAttribute('fid') ||
-      ol.xml.getAttributeNS(node, 'http://www.opengis.net/gml', 'id');
+      ol.xml.getAttributeNS(node, ol.format.GMLBase.GMLNS, 'id');
   var values = {}, geometryName;
   for (n = node.firstElementChild; !goog.isNull(n);
       n = n.nextElementSibling) {
@@ -85305,7 +87806,7 @@ ol.format.GMLBase.prototype.readFeaturesFromNode =
   if (goog.isDef(opt_options)) {
     goog.object.extend(options, this.getReadOptions(node, opt_options));
   }
-  return this.readFeatures_(node, [options]);
+  return this.readFeaturesInternal(node, [options]);
 };
 
 
@@ -85587,8 +88088,8 @@ goog.inherits(ol.format.GML3, ol.format.GMLBase);
  * @type {string}
  * @private
  */
-ol.format.GML3.schemaLocation_ = 'http://www.opengis.net/gml ' +
-    'http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/' +
+ol.format.GML3.schemaLocation_ = ol.format.GMLBase.GMLNS +
+    ' http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/' +
     '1.0.0/gmlsf.xsd';
 
 
@@ -86898,8 +89399,8 @@ goog.inherits(ol.format.GML2, ol.format.GMLBase);
  * @type {string}
  * @private
  */
-ol.format.GML2.schemaLocation_ = 'http://www.opengis.net/gml ' +
-    'http://schemas.opengis.net/gml/2.1.2/feature.xsd';
+ol.format.GML2.schemaLocation_ = ol.format.GMLBase.GMLNS +
+    ' http://schemas.opengis.net/gml/2.1.2/feature.xsd';
 
 
 /**
@@ -93152,6 +95653,9 @@ ol.format.WFS.prototype.readFeaturesFromNode = function(node, opt_options) {
   goog.object.extend(context, this.getReadOptions(node,
       goog.isDef(opt_options) ? opt_options : {}));
   var objectStack = [context];
+  this.gmlFormat_.FEATURE_COLLECTION_PARSERS[ol.format.GMLBase.GMLNS][
+      'featureMember'] =
+      ol.xml.makeArrayPusher(ol.format.GMLBase.prototype.readFeaturesInternal);
   var features = ol.xml.pushParseAndPop([],
       this.gmlFormat_.FEATURE_COLLECTION_PARSERS, node,
       objectStack, this.gmlFormat_);
@@ -96813,45 +99317,6 @@ ol.Image.prototype.unlistenImage_ = function() {
   goog.asserts.assert(!goog.isNull(this.imageListenerKeys_));
   goog.array.forEach(this.imageListenerKeys_, goog.events.unlistenByKey);
   this.imageListenerKeys_ = null;
-};
-
-goog.provide('ol.ImageCanvas');
-
-goog.require('ol.ImageBase');
-goog.require('ol.ImageState');
-
-
-
-/**
- * @constructor
- * @extends {ol.ImageBase}
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {Array.<ol.Attribution>} attributions Attributions.
- * @param {HTMLCanvasElement} canvas Canvas.
- */
-ol.ImageCanvas = function(extent, resolution, pixelRatio, attributions,
-    canvas) {
-
-  goog.base(this, extent, resolution, pixelRatio, ol.ImageState.LOADED,
-      attributions);
-
-  /**
-   * @private
-   * @type {HTMLCanvasElement}
-   */
-  this.canvas_ = canvas;
-
-};
-goog.inherits(ol.ImageCanvas, ol.ImageBase);
-
-
-/**
- * @inheritDoc
- */
-ol.ImageCanvas.prototype.getImage = function(opt_context) {
-  return this.canvas_;
 };
 
 goog.provide('ol.ImageLoadFunctionType');
@@ -100822,1521 +103287,6 @@ ol.interaction.DragRotateAndZoom.handleDownEvent_ = function(mapBrowserEvent) {
     return false;
   }
 };
-
-goog.provide('ol.ext.rbush');
-/** @typedef {function(*)} */
-ol.ext.rbush;
-(function() {
-var exports = {};
-var module = {exports: exports};
-/**
- * @fileoverview
- * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
- */
-/*
- (c) 2013, Vladimir Agafonkin
- RBush, a JavaScript library for high-performance 2D spatial indexing of points and rectangles.
- https://github.com/mourner/rbush
-*/
-
-(function () { 'use strict';
-
-function rbush(maxEntries, format) {
-
-    // jshint newcap: false, validthis: true
-    if (!(this instanceof rbush)) return new rbush(maxEntries, format);
-
-    // max entries in a node is 9 by default; min node fill is 40% for best performance
-    this._maxEntries = Math.max(4, maxEntries || 9);
-    this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
-
-    if (format) {
-        this._initFormat(format);
-    }
-
-    this.clear();
-}
-
-rbush.prototype = {
-
-    all: function () {
-        return this._all(this.data, []);
-    },
-
-    search: function (bbox) {
-
-        var node = this.data,
-            result = [],
-            toBBox = this.toBBox;
-
-        if (!intersects(bbox, node.bbox)) return result;
-
-        var nodesToSearch = [],
-            i, len, child, childBBox;
-
-        while (node) {
-            for (i = 0, len = node.children.length; i < len; i++) {
-
-                child = node.children[i];
-                childBBox = node.leaf ? toBBox(child) : child.bbox;
-
-                if (intersects(bbox, childBBox)) {
-                    if (node.leaf) result.push(child);
-                    else if (contains(bbox, childBBox)) this._all(child, result);
-                    else nodesToSearch.push(child);
-                }
-            }
-            node = nodesToSearch.pop();
-        }
-
-        return result;
-    },
-
-    load: function (data) {
-        if (!(data && data.length)) return this;
-
-        if (data.length < this._minEntries) {
-            for (var i = 0, len = data.length; i < len; i++) {
-                this.insert(data[i]);
-            }
-            return this;
-        }
-
-        // recursively build the tree with the given data from stratch using OMT algorithm
-        var node = this._build(data.slice(), 0, data.length - 1, 0);
-
-        if (!this.data.children.length) {
-            // save as is if tree is empty
-            this.data = node;
-
-        } else if (this.data.height === node.height) {
-            // split root if trees have the same height
-            this._splitRoot(this.data, node);
-
-        } else {
-            if (this.data.height < node.height) {
-                // swap trees if inserted one is bigger
-                var tmpNode = this.data;
-                this.data = node;
-                node = tmpNode;
-            }
-
-            // insert the small tree into the large tree at appropriate level
-            this._insert(node, this.data.height - node.height - 1, true);
-        }
-
-        return this;
-    },
-
-    insert: function (item) {
-        if (item) this._insert(item, this.data.height - 1);
-        return this;
-    },
-
-    clear: function () {
-        this.data = {
-            children: [],
-            height: 1,
-            bbox: empty(),
-            leaf: true
-        };
-        return this;
-    },
-
-    remove: function (item) {
-        if (!item) return this;
-
-        var node = this.data,
-            bbox = this.toBBox(item),
-            path = [],
-            indexes = [],
-            i, parent, index, goingUp;
-
-        // depth-first iterative tree traversal
-        while (node || path.length) {
-
-            if (!node) { // go up
-                node = path.pop();
-                parent = path[path.length - 1];
-                i = indexes.pop();
-                goingUp = true;
-            }
-
-            if (node.leaf) { // check current node
-                index = node.children.indexOf(item);
-
-                if (index !== -1) {
-                    // item found, remove the item and condense tree upwards
-                    node.children.splice(index, 1);
-                    path.push(node);
-                    this._condense(path);
-                    return this;
-                }
-            }
-
-            if (!goingUp && !node.leaf && contains(node.bbox, bbox)) { // go down
-                path.push(node);
-                indexes.push(i);
-                i = 0;
-                parent = node;
-                node = node.children[0];
-
-            } else if (parent) { // go right
-                i++;
-                node = parent.children[i];
-                goingUp = false;
-
-            } else node = null; // nothing found
-        }
-
-        return this;
-    },
-
-    toBBox: function (item) { return item; },
-
-    compareMinX: function (a, b) { return a[0] - b[0]; },
-    compareMinY: function (a, b) { return a[1] - b[1]; },
-
-    toJSON: function () { return this.data; },
-
-    fromJSON: function (data) {
-        this.data = data;
-        return this;
-    },
-
-    _all: function (node, result) {
-        var nodesToSearch = [];
-        while (node) {
-            if (node.leaf) result.push.apply(result, node.children);
-            else nodesToSearch.push.apply(nodesToSearch, node.children);
-
-            node = nodesToSearch.pop();
-        }
-        return result;
-    },
-
-    _build: function (items, left, right, height) {
-
-        var N = right - left + 1,
-            M = this._maxEntries,
-            node;
-
-        if (N <= M) {
-            // reached leaf level; return leaf
-            node = {
-                children: items.slice(left, right + 1),
-                height: 1,
-                bbox: null,
-                leaf: true
-            };
-            calcBBox(node, this.toBBox);
-            return node;
-        }
-
-        if (!height) {
-            // target height of the bulk-loaded tree
-            height = Math.ceil(Math.log(N) / Math.log(M));
-
-            // target number of root entries to maximize storage utilization
-            M = Math.ceil(N / Math.pow(M, height - 1));
-        }
-
-        // TODO eliminate recursion?
-
-        node = {
-            children: [],
-            height: height,
-            bbox: null
-        };
-
-        // split the items into M mostly square tiles
-
-        var N2 = Math.ceil(N / M),
-            N1 = N2 * Math.ceil(Math.sqrt(M)),
-            i, j, right2, right3;
-
-        multiSelect(items, left, right, N1, this.compareMinX);
-
-        for (i = left; i <= right; i += N1) {
-
-            right2 = Math.min(i + N1 - 1, right);
-
-            multiSelect(items, i, right2, N2, this.compareMinY);
-
-            for (j = i; j <= right2; j += N2) {
-
-                right3 = Math.min(j + N2 - 1, right2);
-
-                // pack each entry recursively
-                node.children.push(this._build(items, j, right3, height - 1));
-            }
-        }
-
-        calcBBox(node, this.toBBox);
-
-        return node;
-    },
-
-    _chooseSubtree: function (bbox, node, level, path) {
-
-        var i, len, child, targetNode, area, enlargement, minArea, minEnlargement;
-
-        while (true) {
-            path.push(node);
-
-            if (node.leaf || path.length - 1 === level) break;
-
-            minArea = minEnlargement = Infinity;
-
-            for (i = 0, len = node.children.length; i < len; i++) {
-                child = node.children[i];
-                area = bboxArea(child.bbox);
-                enlargement = enlargedArea(bbox, child.bbox) - area;
-
-                // choose entry with the least area enlargement
-                if (enlargement < minEnlargement) {
-                    minEnlargement = enlargement;
-                    minArea = area < minArea ? area : minArea;
-                    targetNode = child;
-
-                } else if (enlargement === minEnlargement) {
-                    // otherwise choose one with the smallest area
-                    if (area < minArea) {
-                        minArea = area;
-                        targetNode = child;
-                    }
-                }
-            }
-
-            node = targetNode;
-        }
-
-        return node;
-    },
-
-    _insert: function (item, level, isNode) {
-
-        var toBBox = this.toBBox,
-            bbox = isNode ? item.bbox : toBBox(item),
-            insertPath = [];
-
-        // find the best node for accommodating the item, saving all nodes along the path too
-        var node = this._chooseSubtree(bbox, this.data, level, insertPath);
-
-        // put the item into the node
-        node.children.push(item);
-        extend(node.bbox, bbox);
-
-        // split on node overflow; propagate upwards if necessary
-        while (level >= 0) {
-            if (insertPath[level].children.length > this._maxEntries) {
-                this._split(insertPath, level);
-                level--;
-            } else break;
-        }
-
-        // adjust bboxes along the insertion path
-        this._adjustParentBBoxes(bbox, insertPath, level);
-    },
-
-    // split overflowed node into two
-    _split: function (insertPath, level) {
-
-        var node = insertPath[level],
-            M = node.children.length,
-            m = this._minEntries;
-
-        this._chooseSplitAxis(node, m, M);
-
-        var newNode = {
-            children: node.children.splice(this._chooseSplitIndex(node, m, M)),
-            height: node.height
-        };
-
-        if (node.leaf) newNode.leaf = true;
-
-        calcBBox(node, this.toBBox);
-        calcBBox(newNode, this.toBBox);
-
-        if (level) insertPath[level - 1].children.push(newNode);
-        else this._splitRoot(node, newNode);
-    },
-
-    _splitRoot: function (node, newNode) {
-        // split root node
-        this.data = {
-            children: [node, newNode],
-            height: node.height + 1
-        };
-        calcBBox(this.data, this.toBBox);
-    },
-
-    _chooseSplitIndex: function (node, m, M) {
-
-        var i, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
-
-        minOverlap = minArea = Infinity;
-
-        for (i = m; i <= M - m; i++) {
-            bbox1 = distBBox(node, 0, i, this.toBBox);
-            bbox2 = distBBox(node, i, M, this.toBBox);
-
-            overlap = intersectionArea(bbox1, bbox2);
-            area = bboxArea(bbox1) + bboxArea(bbox2);
-
-            // choose distribution with minimum overlap
-            if (overlap < minOverlap) {
-                minOverlap = overlap;
-                index = i;
-
-                minArea = area < minArea ? area : minArea;
-
-            } else if (overlap === minOverlap) {
-                // otherwise choose distribution with minimum area
-                if (area < minArea) {
-                    minArea = area;
-                    index = i;
-                }
-            }
-        }
-
-        return index;
-    },
-
-    // sorts node children by the best axis for split
-    _chooseSplitAxis: function (node, m, M) {
-
-        var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX,
-            compareMinY = node.leaf ? this.compareMinY : compareNodeMinY,
-            xMargin = this._allDistMargin(node, m, M, compareMinX),
-            yMargin = this._allDistMargin(node, m, M, compareMinY);
-
-        // if total distributions margin value is minimal for x, sort by minX,
-        // otherwise it's already sorted by minY
-        if (xMargin < yMargin) node.children.sort(compareMinX);
-    },
-
-    // total margin of all possible split distributions where each node is at least m full
-    _allDistMargin: function (node, m, M, compare) {
-
-        node.children.sort(compare);
-
-        var toBBox = this.toBBox,
-            leftBBox = distBBox(node, 0, m, toBBox),
-            rightBBox = distBBox(node, M - m, M, toBBox),
-            margin = bboxMargin(leftBBox) + bboxMargin(rightBBox),
-            i, child;
-
-        for (i = m; i < M - m; i++) {
-            child = node.children[i];
-            extend(leftBBox, node.leaf ? toBBox(child) : child.bbox);
-            margin += bboxMargin(leftBBox);
-        }
-
-        for (i = M - m - 1; i >= m; i--) {
-            child = node.children[i];
-            extend(rightBBox, node.leaf ? toBBox(child) : child.bbox);
-            margin += bboxMargin(rightBBox);
-        }
-
-        return margin;
-    },
-
-    _adjustParentBBoxes: function (bbox, path, level) {
-        // adjust bboxes along the given tree path
-        for (var i = level; i >= 0; i--) {
-            extend(path[i].bbox, bbox);
-        }
-    },
-
-    _condense: function (path) {
-        // go through the path, removing empty nodes and updating bboxes
-        for (var i = path.length - 1, siblings; i >= 0; i--) {
-            if (path[i].children.length === 0) {
-                if (i > 0) {
-                    siblings = path[i - 1].children;
-                    siblings.splice(siblings.indexOf(path[i]), 1);
-
-                } else this.clear();
-
-            } else calcBBox(path[i], this.toBBox);
-        }
-    },
-
-    _initFormat: function (format) {
-        // data format (minX, minY, maxX, maxY accessors)
-
-        // uses eval-type function compilation instead of just accepting a toBBox function
-        // because the algorithms are very sensitive to sorting functions performance,
-        // so they should be dead simple and without inner calls
-
-        // jshint evil: true
-
-        var compareArr = ['return a', ' - b', ';'];
-
-        this.compareMinX = new Function('a', 'b', compareArr.join(format[0]));
-        this.compareMinY = new Function('a', 'b', compareArr.join(format[1]));
-
-        this.toBBox = new Function('a', 'return [a' + format.join(', a') + '];');
-    }
-};
-
-
-// calculate node's bbox from bboxes of its children
-function calcBBox(node, toBBox) {
-    node.bbox = distBBox(node, 0, node.children.length, toBBox);
-}
-
-// min bounding rectangle of node children from k to p-1
-function distBBox(node, k, p, toBBox) {
-    var bbox = empty();
-
-    for (var i = k, child; i < p; i++) {
-        child = node.children[i];
-        extend(bbox, node.leaf ? toBBox(child) : child.bbox);
-    }
-
-    return bbox;
-}
-
-function empty() { return [Infinity, Infinity, -Infinity, -Infinity]; }
-
-function extend(a, b) {
-    a[0] = Math.min(a[0], b[0]);
-    a[1] = Math.min(a[1], b[1]);
-    a[2] = Math.max(a[2], b[2]);
-    a[3] = Math.max(a[3], b[3]);
-    return a;
-}
-
-function compareNodeMinX(a, b) { return a.bbox[0] - b.bbox[0]; }
-function compareNodeMinY(a, b) { return a.bbox[1] - b.bbox[1]; }
-
-function bboxArea(a)   { return (a[2] - a[0]) * (a[3] - a[1]); }
-function bboxMargin(a) { return (a[2] - a[0]) + (a[3] - a[1]); }
-
-function enlargedArea(a, b) {
-    return (Math.max(b[2], a[2]) - Math.min(b[0], a[0])) *
-           (Math.max(b[3], a[3]) - Math.min(b[1], a[1]));
-}
-
-function intersectionArea (a, b) {
-    var minX = Math.max(a[0], b[0]),
-        minY = Math.max(a[1], b[1]),
-        maxX = Math.min(a[2], b[2]),
-        maxY = Math.min(a[3], b[3]);
-
-    return Math.max(0, maxX - minX) *
-           Math.max(0, maxY - minY);
-}
-
-function contains(a, b) {
-    return a[0] <= b[0] &&
-           a[1] <= b[1] &&
-           b[2] <= a[2] &&
-           b[3] <= a[3];
-}
-
-function intersects (a, b) {
-    return b[0] <= a[2] &&
-           b[1] <= a[3] &&
-           b[2] >= a[0] &&
-           b[3] >= a[1];
-}
-
-// sort an array so that items come in groups of n unsorted items, with groups sorted between each other;
-// combines selection algorithm with binary divide & conquer approach
-
-function multiSelect(arr, left, right, n, compare) {
-    var stack = [left, right],
-        mid;
-
-    while (stack.length) {
-        right = stack.pop();
-        left = stack.pop();
-
-        if (right - left <= n) continue;
-
-        mid = left + Math.ceil((right - left) / n / 2) * n;
-        select(arr, left, right, mid, compare);
-
-        stack.push(left, mid, mid, right);
-    }
-}
-
-// sort array between left and right (inclusive) so that the smallest k elements come first (unordered)
-function select(arr, left, right, k, compare) {
-    var n, i, z, s, sd, newLeft, newRight, t, j;
-
-    while (right > left) {
-        if (right - left > 600) {
-            n = right - left + 1;
-            i = k - left + 1;
-            z = Math.log(n);
-            s = 0.5 * Math.exp(2 * z / 3);
-            sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (i - n / 2 < 0 ? -1 : 1);
-            newLeft = Math.max(left, Math.floor(k - i * s / n + sd));
-            newRight = Math.min(right, Math.floor(k + (n - i) * s / n + sd));
-            select(arr, newLeft, newRight, k, compare);
-        }
-
-        t = arr[k];
-        i = left;
-        j = right;
-
-        swap(arr, left, k);
-        if (compare(arr[right], t) > 0) swap(arr, left, right);
-
-        while (i < j) {
-            swap(arr, i, j);
-            i++;
-            j--;
-            while (compare(arr[i], t) < 0) i++;
-            while (compare(arr[j], t) > 0) j--;
-        }
-
-        if (compare(arr[left], t) === 0) swap(arr, left, j);
-        else {
-            j++;
-            swap(arr, j, right);
-        }
-
-        if (j <= k) left = j + 1;
-        if (k <= j) right = j - 1;
-    }
-}
-
-function swap(arr, i, j) {
-    var tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-}
-
-
-// export as AMD/CommonJS module or global variable
-if (typeof define === 'function' && define.amd) define(function() { return rbush; });
-else if (typeof module !== 'undefined') module.exports = rbush;
-else if (typeof self !== 'undefined') self.rbush = rbush;
-else window.rbush = rbush;
-
-})();
-
-ol.ext.rbush = module.exports;
-})();
-
-goog.provide('ol.structs.RBush');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.object');
-goog.require('ol.ext.rbush');
-goog.require('ol.extent');
-
-
-
-/**
- * Wrapper around the RBush by Vladimir Agafonkin.
- *
- * @constructor
- * @param {number=} opt_maxEntries Max entries.
- * @see https://github.com/mourner/rbush
- * @struct
- * @template T
- */
-ol.structs.RBush = function(opt_maxEntries) {
-
-  /**
-   * @private
-   */
-  this.rbush_ = ol.ext.rbush(opt_maxEntries);
-
-  /**
-   * A mapping between the objects added to this rbush wrapper
-   * and the objects that are actually added to the internal rbush.
-   * @private
-   * @type {Object.<number, Object>}
-   */
-  this.items_ = {};
-
-  if (goog.DEBUG) {
-    /**
-     * @private
-     * @type {number}
-     */
-    this.readers_ = 0;
-  }
-};
-
-
-/**
- * Insert a value into the RBush.
- * @param {ol.Extent} extent Extent.
- * @param {T} value Value.
- */
-ol.structs.RBush.prototype.insert = function(extent, value) {
-  if (goog.DEBUG && this.readers_) {
-    throw new Error('Can not insert value while reading');
-  }
-  var item = [
-    extent[0],
-    extent[1],
-    extent[2],
-    extent[3],
-    value
-  ];
-  this.rbush_.insert(item);
-  // remember the object that was added to the internal rbush
-  goog.asserts.assert(
-      !goog.object.containsKey(this.items_, goog.getUid(value)));
-  this.items_[goog.getUid(value)] = item;
-};
-
-
-/**
- * Bulk-insert values into the RBush.
- * @param {Array.<ol.Extent>} extents Extents.
- * @param {Array.<T>} values Values.
- */
-ol.structs.RBush.prototype.load = function(extents, values) {
-  if (goog.DEBUG && this.readers_) {
-    throw new Error('Can not insert values while reading');
-  }
-  goog.asserts.assert(extents.length === values.length);
-
-  var items = new Array(values.length);
-  for (var i = 0, l = values.length; i < l; i++) {
-    var extent = extents[i];
-    var value = values[i];
-
-    var item = [
-      extent[0],
-      extent[1],
-      extent[2],
-      extent[3],
-      value
-    ];
-    items[i] = item;
-    goog.asserts.assert(
-        !goog.object.containsKey(this.items_, goog.getUid(value)));
-    this.items_[goog.getUid(value)] = item;
-  }
-  this.rbush_.load(items);
-};
-
-
-/**
- * Remove a value from the RBush.
- * @param {T} value Value.
- * @return {boolean} Removed.
- */
-ol.structs.RBush.prototype.remove = function(value) {
-  if (goog.DEBUG && this.readers_) {
-    throw new Error('Can not remove value while reading');
-  }
-  var uid = goog.getUid(value);
-  goog.asserts.assert(goog.object.containsKey(this.items_, uid));
-
-  // get the object in which the value was wrapped when adding to the
-  // internal rbush. then use that object to do the removal.
-  var item = this.items_[uid];
-  goog.object.remove(this.items_, uid);
-  return this.rbush_.remove(item) !== null;
-};
-
-
-/**
- * Update the extent of a value in the RBush.
- * @param {ol.Extent} extent Extent.
- * @param {T} value Value.
- */
-ol.structs.RBush.prototype.update = function(extent, value) {
-  var uid = goog.getUid(value);
-  goog.asserts.assert(goog.object.containsKey(this.items_, uid));
-
-  var item = this.items_[uid];
-  if (!ol.extent.equals(item.slice(0, 4), extent)) {
-    if (goog.DEBUG && this.readers_) {
-      throw new Error('Can not update extent while reading');
-    }
-    this.remove(value);
-    this.insert(extent, value);
-  }
-};
-
-
-/**
- * Return all values in the RBush.
- * @return {Array.<T>} All.
- */
-ol.structs.RBush.prototype.getAll = function() {
-  var items = this.rbush_.all();
-  return goog.array.map(items, function(item) {
-    return item[4];
-  });
-};
-
-
-/**
- * Return all values in the given extent.
- * @param {ol.Extent} extent Extent.
- * @return {Array.<T>} All in extent.
- */
-ol.structs.RBush.prototype.getInExtent = function(extent) {
-  var items = this.rbush_.search(extent);
-  return goog.array.map(items, function(item) {
-    return item[4];
-  });
-};
-
-
-/**
- * Calls a callback function with each value in the tree.
- * If the callback returns a truthy value, this value is returned without
- * checking the rest of the tree.
- * @param {function(this: S, T): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEach = function(callback, opt_this) {
-  if (goog.DEBUG) {
-    ++this.readers_;
-    try {
-      return this.forEach_(this.getAll(), callback, opt_this);
-    } finally {
-      --this.readers_;
-    }
-  } else {
-    return this.forEach_(this.getAll(), callback, opt_this);
-  }
-};
-
-
-/**
- * Calls a callback function with each value in the provided extent.
- * @param {ol.Extent} extent Extent.
- * @param {function(this: S, T): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEachInExtent =
-    function(extent, callback, opt_this) {
-  if (goog.DEBUG) {
-    ++this.readers_;
-    try {
-      return this.forEach_(this.getInExtent(extent), callback, opt_this);
-    } finally {
-      --this.readers_;
-    }
-  } else {
-    return this.forEach_(this.getInExtent(extent), callback, opt_this);
-  }
-};
-
-
-/**
- * @param {Array.<T>} values Values.
- * @param {function(this: S, T): *} callback Callback.
- * @param {S=} opt_this The object to use as `this` in `callback`.
- * @private
- * @return {*} Callback return value.
- * @template S
- */
-ol.structs.RBush.prototype.forEach_ = function(values, callback, opt_this) {
-  var result;
-  for (var i = 0, l = values.length; i < l; i++) {
-    result = callback.call(opt_this, values[i]);
-    if (result) {
-      return result;
-    }
-  }
-  return result;
-};
-
-
-/**
- * @return {boolean} Is empty.
- */
-ol.structs.RBush.prototype.isEmpty = function() {
-  return goog.object.isEmpty(this.items_);
-};
-
-
-/**
- * Remove all values from the RBush.
- */
-ol.structs.RBush.prototype.clear = function() {
-  this.rbush_.clear();
-  this.items_ = {};
-};
-
-
-/**
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.structs.RBush.prototype.getExtent = function(opt_extent) {
-  // FIXME add getExtent() to rbush
-  return this.rbush_.data.bbox;
-};
-
-// FIXME bulk feature upload - suppress events
-// FIXME put features in an ol.Collection
-// FIXME make change-detection more refined (notably, geometry hint)
-
-goog.provide('ol.source.Vector');
-goog.provide('ol.source.VectorEvent');
-goog.provide('ol.source.VectorEventType');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.events.Event');
-goog.require('goog.events.EventType');
-goog.require('goog.object');
-goog.require('ol.ObjectEventType');
-goog.require('ol.proj');
-goog.require('ol.source.Source');
-goog.require('ol.structs.RBush');
-
-
-/**
- * @enum {string}
- */
-ol.source.VectorEventType = {
-  /**
-   * Triggered when a feature is added to the source.
-   * @event ol.source.VectorEvent#addfeature
-   * @api stable
-   */
-  ADDFEATURE: 'addfeature',
-
-  /**
-   * Triggered when a feature is updated.
-   * @event ol.source.VectorEvent#changefeature
-   * @api
-   */
-  CHANGEFEATURE: 'changefeature',
-
-  /**
-   * Triggered when the clear method is called on the source.
-   * @event ol.source.VectorEvent#clear
-   * @api
-   */
-  CLEAR: 'clear',
-
-  /**
-   * Triggered when a feature is removed from the source.
-   * See {@link ol.source.Vector#clear source.clear()} for exceptions.
-   * @event ol.source.VectorEvent#removefeature
-   * @api stable
-   */
-  REMOVEFEATURE: 'removefeature'
-};
-
-
-
-/**
- * @classdesc
- * Provides a source of features for vector layers.
- *
- * @constructor
- * @extends {ol.source.Source}
- * @fires ol.source.VectorEvent
- * @param {olx.source.VectorOptions=} opt_options Vector source options.
- * @api stable
- */
-ol.source.Vector = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    attributions: options.attributions,
-    logo: options.logo,
-    projection: options.projection,
-    state: goog.isDef(options.state) ?
-        /** @type {ol.source.State} */ (options.state) : undefined
-  });
-
-  /**
-   * @private
-   * @type {ol.structs.RBush.<ol.Feature>}
-   */
-  this.rBush_ = new ol.structs.RBush();
-
-  /**
-   * @private
-   * @type {Object.<string, ol.Feature>}
-   */
-  this.nullGeometryFeatures_ = {};
-
-  /**
-   * A lookup of features by id (the return from feature.getId()).
-   * @private
-   * @type {Object.<string, ol.Feature>}
-   */
-  this.idIndex_ = {};
-
-  /**
-   * A lookup of features without id (keyed by goog.getUid(feature)).
-   * @private
-   * @type {Object.<string, ol.Feature>}
-   */
-  this.undefIdIndex_ = {};
-
-  /**
-   * @private
-   * @type {Object.<string, Array.<goog.events.Key>>}
-   */
-  this.featureChangeKeys_ = {};
-
-  if (goog.isDef(options.features)) {
-    this.addFeaturesInternal(options.features);
-  }
-
-};
-goog.inherits(ol.source.Vector, ol.source.Source);
-
-
-/**
- * Add a single feature to the source.  If you want to add a batch of features
- * at once, call {@link ol.source.Vector#addFeatures source.addFeatures()}
- * instead.
- * @param {ol.Feature} feature Feature to add.
- * @api stable
- */
-ol.source.Vector.prototype.addFeature = function(feature) {
-  this.addFeatureInternal(feature);
-  this.changed();
-};
-
-
-/**
- * Add a feature without firing a `change` event.
- * @param {ol.Feature} feature Feature.
- * @protected
- */
-ol.source.Vector.prototype.addFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
-  this.setupChangeEvents_(featureKey, feature);
-
-  var geometry = feature.getGeometry();
-  if (goog.isDefAndNotNull(geometry)) {
-    var extent = geometry.getExtent();
-    this.rBush_.insert(extent, feature);
-  } else {
-    this.nullGeometryFeatures_[featureKey] = feature;
-  }
-
-  this.addToIndex_(featureKey, feature);
-  this.dispatchEvent(
-      new ol.source.VectorEvent(ol.source.VectorEventType.ADDFEATURE, feature));
-};
-
-
-/**
- * @param {string} featureKey
- * @param {ol.Feature} feature
- * @private
- */
-ol.source.Vector.prototype.setupChangeEvents_ = function(featureKey, feature) {
-  goog.asserts.assert(!(featureKey in this.featureChangeKeys_));
-  this.featureChangeKeys_[featureKey] = [
-    goog.events.listen(feature,
-        goog.events.EventType.CHANGE,
-        this.handleFeatureChange_, false, this),
-    goog.events.listen(feature,
-        ol.ObjectEventType.PROPERTYCHANGE,
-        this.handleFeatureChange_, false, this)
-  ];
-};
-
-
-/**
- * @param {string} featureKey
- * @param {ol.Feature} feature
- * @private
- */
-ol.source.Vector.prototype.addToIndex_ = function(featureKey, feature) {
-  var id = feature.getId();
-  if (goog.isDef(id)) {
-    this.idIndex_[id.toString()] = feature;
-  } else {
-    goog.asserts.assert(!(featureKey in this.undefIdIndex_),
-        'Feature already added to the source');
-    this.undefIdIndex_[featureKey] = feature;
-  }
-};
-
-
-/**
- * Add a batch of features to the source.
- * @param {Array.<ol.Feature>} features Features to add.
- * @api stable
- */
-ol.source.Vector.prototype.addFeatures = function(features) {
-  this.addFeaturesInternal(features);
-  this.changed();
-};
-
-
-/**
- * Add features without firing a `change` event.
- * @param {Array.<ol.Feature>} features Features.
- * @protected
- */
-ol.source.Vector.prototype.addFeaturesInternal = function(features) {
-  var featureKey, i, length, feature;
-  var extents = [];
-  var validFeatures = [];
-  for (i = 0, length = features.length; i < length; i++) {
-    feature = features[i];
-    featureKey = goog.getUid(feature).toString();
-    this.setupChangeEvents_(featureKey, feature);
-
-    var geometry = feature.getGeometry();
-    if (goog.isDefAndNotNull(geometry)) {
-      var extent = geometry.getExtent();
-      extents.push(extent);
-      validFeatures.push(feature);
-    } else {
-      this.nullGeometryFeatures_[featureKey] = feature;
-    }
-  }
-  this.rBush_.load(extents, validFeatures);
-
-  for (i = 0, length = features.length; i < length; i++) {
-    feature = features[i];
-    featureKey = goog.getUid(feature).toString();
-    this.addToIndex_(featureKey, feature);
-    this.dispatchEvent(new ol.source.VectorEvent(
-        ol.source.VectorEventType.ADDFEATURE, feature));
-  }
-};
-
-
-/**
- * Remove all features from the source.
- * @param {boolean=} opt_fast Skip dispatching of {@link removefeature} events.
- * @api stable
- */
-ol.source.Vector.prototype.clear = function(opt_fast) {
-  if (opt_fast) {
-    for (var featureId in this.featureChangeKeys_) {
-      var keys = this.featureChangeKeys_[featureId];
-      goog.array.forEach(keys, goog.events.unlistenByKey);
-    }
-    this.featureChangeKeys_ = {};
-    this.idIndex_ = {};
-    this.undefIdIndex_ = {};
-  } else {
-    var rmFeatureInternal = this.removeFeatureInternal;
-    this.rBush_.forEach(rmFeatureInternal, this);
-    goog.object.forEach(this.nullGeometryFeatures_, rmFeatureInternal, this);
-    goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_));
-    goog.asserts.assert(goog.object.isEmpty(this.idIndex_));
-    goog.asserts.assert(goog.object.isEmpty(this.undefIdIndex_));
-  }
-
-  this.rBush_.clear();
-  this.nullGeometryFeatures_ = {};
-
-  var clearEvent = new ol.source.VectorEvent(ol.source.VectorEventType.CLEAR);
-  this.dispatchEvent(clearEvent);
-  this.changed();
-};
-
-
-/**
- * Iterate through all features on the source, calling the provided callback
- * with each one.  If the callback returns any "truthy" value, iteration will
- * stop and the function will return the same value.
- *
- * @param {function(this: T, ol.Feature): S} callback Called with each feature
- *     on the source.  Return a truthy value to stop iteration.
- * @param {T=} opt_this The object to use as `this` in the callback.
- * @return {S|undefined} The return value from the last call to the callback.
- * @template T,S
- * @api stable
- */
-ol.source.Vector.prototype.forEachFeature = function(callback, opt_this) {
-  return this.rBush_.forEach(callback, opt_this);
-};
-
-
-/**
- * Iterate through all features whose geometries contain the provided
- * coordinate, calling the callback with each feature.  If the callback returns
- * a "truthy" value, iteration will stop and the function will return the same
- * value.
- *
- * @param {ol.Coordinate} coordinate Coordinate.
- * @param {function(this: T, ol.Feature): S} callback Called with each feature
- *     whose goemetry contains the provided coordinate.
- * @param {T=} opt_this The object to use as `this` in the callback.
- * @return {S|undefined} The return value from the last call to the callback.
- * @template T,S
- */
-ol.source.Vector.prototype.forEachFeatureAtCoordinate =
-    function(coordinate, callback, opt_this) {
-  var extent = [coordinate[0], coordinate[1], coordinate[0], coordinate[1]];
-  return this.forEachFeatureInExtent(extent, function(feature) {
-    var geometry = feature.getGeometry();
-    goog.asserts.assert(goog.isDefAndNotNull(geometry));
-    if (geometry.containsCoordinate(coordinate)) {
-      return callback.call(opt_this, feature);
-    } else {
-      return undefined;
-    }
-  });
-};
-
-
-/**
- * Iterate through all features whose bounding box intersects the provided
- * extent (note that the feature's geometry may not intersect the extent),
- * calling the callback with each feature.  If the callback returns a "truthy"
- * value, iteration will stop and the function will return the same value.
- *
- * If you are interested in features whose geometry intersects an extent, call
- * the {@link ol.source.Vector#forEachFeatureIntersectingExtent
- * source.forEachFeatureIntersectingExtent()} method instead.
- *
- * @param {ol.Extent} extent Extent.
- * @param {function(this: T, ol.Feature): S} callback Called with each feature
- *     whose bounding box intersects the provided extent.
- * @param {T=} opt_this The object to use as `this` in the callback.
- * @return {S|undefined} The return value from the last call to the callback.
- * @template T,S
- * @api
- */
-ol.source.Vector.prototype.forEachFeatureInExtent =
-    function(extent, callback, opt_this) {
-  return this.rBush_.forEachInExtent(extent, callback, opt_this);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {function(this: T, ol.Feature): S} f Callback.
- * @param {T=} opt_this The object to use as `this` in `f`.
- * @return {S|undefined}
- * @template T,S
- */
-ol.source.Vector.prototype.forEachFeatureInExtentAtResolution =
-    function(extent, resolution, f, opt_this) {
-  return this.forEachFeatureInExtent(extent, f, opt_this);
-};
-
-
-/**
- * Iterate through all features whose geometry intersects the provided extent,
- * calling the callback with each feature.  If the callback returns a "truthy"
- * value, iteration will stop and the function will return the same value.
- *
- * If you only want to test for bounding box intersection, call the
- * {@link ol.source.Vector#forEachFeatureInExtent
- * source.forEachFeatureInExtent()} method instead.
- *
- * @param {ol.Extent} extent Extent.
- * @param {function(this: T, ol.Feature): S} callback Called with each feature
- *     whose geometry intersects the provided extent.
- * @param {T=} opt_this The object to use as `this` in the callback.
- * @return {S|undefined} The return value from the last call to the callback.
- * @template T,S
- * @api
- */
-ol.source.Vector.prototype.forEachFeatureIntersectingExtent =
-    function(extent, callback, opt_this) {
-  return this.forEachFeatureInExtent(extent,
-      /**
-       * @param {ol.Feature} feature Feature.
-       * @return {S|undefined}
-       * @template S
-       */
-      function(feature) {
-        var geometry = feature.getGeometry();
-        goog.asserts.assert(goog.isDefAndNotNull(geometry));
-        if (geometry.intersectsExtent(extent)) {
-          var result = callback.call(opt_this, feature);
-          if (result) {
-            return result;
-          }
-        }
-      });
-};
-
-
-/**
- * Get all features on the source.
- * @return {Array.<ol.Feature>} Features.
- * @api stable
- */
-ol.source.Vector.prototype.getFeatures = function() {
-  var features = this.rBush_.getAll();
-  if (!goog.object.isEmpty(this.nullGeometryFeatures_)) {
-    goog.array.extend(
-        features, goog.object.getValues(this.nullGeometryFeatures_));
-  }
-  return features;
-};
-
-
-/**
- * Get all features whose geometry intersects the provided coordinate.
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {Array.<ol.Feature>} Features.
- * @api stable
- */
-ol.source.Vector.prototype.getFeaturesAtCoordinate = function(coordinate) {
-  var features = [];
-  this.forEachFeatureAtCoordinate(coordinate, function(feature) {
-    features.push(feature);
-  });
-  return features;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @return {Array.<ol.Feature>} Features.
- */
-ol.source.Vector.prototype.getFeaturesInExtent = function(extent) {
-  return this.rBush_.getInExtent(extent);
-};
-
-
-/**
- * Get the closest feature to the provided coordinate.
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {ol.Feature} Closest feature.
- * @api stable
- */
-ol.source.Vector.prototype.getClosestFeatureToCoordinate =
-    function(coordinate) {
-  // Find the closest feature using branch and bound.  We start searching an
-  // infinite extent, and find the distance from the first feature found.  This
-  // becomes the closest feature.  We then compute a smaller extent which any
-  // closer feature must intersect.  We continue searching with this smaller
-  // extent, trying to find a closer feature.  Every time we find a closer
-  // feature, we update the extent being searched so that any even closer
-  // feature must intersect it.  We continue until we run out of features.
-  var x = coordinate[0];
-  var y = coordinate[1];
-  var closestFeature = null;
-  var closestPoint = [NaN, NaN];
-  var minSquaredDistance = Infinity;
-  var extent = [-Infinity, -Infinity, Infinity, Infinity];
-  this.rBush_.forEachInExtent(extent,
-      /**
-       * @param {ol.Feature} feature Feature.
-       */
-      function(feature) {
-        var geometry = feature.getGeometry();
-        goog.asserts.assert(goog.isDefAndNotNull(geometry));
-        var previousMinSquaredDistance = minSquaredDistance;
-        minSquaredDistance = geometry.closestPointXY(
-            x, y, closestPoint, minSquaredDistance);
-        if (minSquaredDistance < previousMinSquaredDistance) {
-          closestFeature = feature;
-          // This is sneaky.  Reduce the extent that it is currently being
-          // searched while the R-Tree traversal using this same extent object
-          // is still in progress.  This is safe because the new extent is
-          // strictly contained by the old extent.
-          var minDistance = Math.sqrt(minSquaredDistance);
-          extent[0] = x - minDistance;
-          extent[1] = y - minDistance;
-          extent[2] = x + minDistance;
-          extent[3] = y + minDistance;
-        }
-      });
-  return closestFeature;
-};
-
-
-/**
- * Get the extent of the features currently in the source.
- * @return {ol.Extent} Extent.
- * @api stable
- */
-ol.source.Vector.prototype.getExtent = function() {
-  return this.rBush_.getExtent();
-};
-
-
-/**
- * Get a feature by its identifier (the value returned by feature.getId()).
- * Note that the index treats string and numeric identifiers as the same.  So
- * `source.getFeatureById(2)` will return a feature with id `'2'` or `2`.
- *
- * @param {string|number} id Feature identifier.
- * @return {ol.Feature} The feature (or `null` if not found).
- * @api stable
- */
-ol.source.Vector.prototype.getFeatureById = function(id) {
-  var feature = this.idIndex_[id.toString()];
-  return goog.isDef(feature) ? feature : null;
-};
-
-
-/**
- * @param {goog.events.Event} event Event.
- * @private
- */
-ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
-  var feature = /** @type {ol.Feature} */ (event.target);
-  var featureKey = goog.getUid(feature).toString();
-  var geometry = feature.getGeometry();
-  if (!goog.isDefAndNotNull(geometry)) {
-    if (!(featureKey in this.nullGeometryFeatures_)) {
-      this.rBush_.remove(feature);
-      this.nullGeometryFeatures_[featureKey] = feature;
-    }
-  } else {
-    var extent = geometry.getExtent();
-    if (featureKey in this.nullGeometryFeatures_) {
-      delete this.nullGeometryFeatures_[featureKey];
-      this.rBush_.insert(extent, feature);
-    } else {
-      this.rBush_.update(extent, feature);
-    }
-  }
-  var id = feature.getId();
-  var removed;
-  if (goog.isDef(id)) {
-    var sid = id.toString();
-    if (featureKey in this.undefIdIndex_) {
-      delete this.undefIdIndex_[featureKey];
-      this.idIndex_[sid] = feature;
-    } else {
-      if (this.idIndex_[sid] !== feature) {
-        removed = this.removeFromIdIndex_(feature);
-        goog.asserts.assert(removed,
-            'Expected feature to be removed from index');
-        this.idIndex_[sid] = feature;
-      }
-    }
-  } else {
-    if (!(featureKey in this.undefIdIndex_)) {
-      removed = this.removeFromIdIndex_(feature);
-      goog.asserts.assert(removed,
-          'Expected feature to be removed from index');
-      this.undefIdIndex_[featureKey] = feature;
-    } else {
-      goog.asserts.assert(this.undefIdIndex_[featureKey] === feature);
-    }
-  }
-  this.changed();
-  this.dispatchEvent(new ol.source.VectorEvent(
-      ol.source.VectorEventType.CHANGEFEATURE, feature));
-};
-
-
-/**
- * @return {boolean} Is empty.
- */
-ol.source.Vector.prototype.isEmpty = function() {
-  return this.rBush_.isEmpty() &&
-      goog.object.isEmpty(this.nullGeometryFeatures_);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {ol.proj.Projection} projection Projection.
- */
-ol.source.Vector.prototype.loadFeatures = goog.nullFunction;
-
-
-/**
- * Remove a single feature from the source.  If you want to remove all features
- * at once, use the {@link ol.source.Vector#clear source.clear()} method
- * instead.
- * @param {ol.Feature} feature Feature to remove.
- * @api stable
- */
-ol.source.Vector.prototype.removeFeature = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
-  if (featureKey in this.nullGeometryFeatures_) {
-    delete this.nullGeometryFeatures_[featureKey];
-  } else {
-    this.rBush_.remove(feature);
-  }
-  this.removeFeatureInternal(feature);
-  this.changed();
-};
-
-
-/**
- * Remove feature without firing a `change` event.
- * @param {ol.Feature} feature Feature.
- * @protected
- */
-ol.source.Vector.prototype.removeFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
-  goog.asserts.assert(featureKey in this.featureChangeKeys_);
-  goog.array.forEach(this.featureChangeKeys_[featureKey],
-      goog.events.unlistenByKey);
-  delete this.featureChangeKeys_[featureKey];
-  var id = feature.getId();
-  if (goog.isDef(id)) {
-    delete this.idIndex_[id.toString()];
-  } else {
-    delete this.undefIdIndex_[featureKey];
-  }
-  this.dispatchEvent(new ol.source.VectorEvent(
-      ol.source.VectorEventType.REMOVEFEATURE, feature));
-};
-
-
-/**
- * Remove a feature from the id index.  Called internally when the feature id
- * may have changed.
- * @param {ol.Feature} feature The feature.
- * @return {boolean} Removed the feature from the index.
- * @private
- */
-ol.source.Vector.prototype.removeFromIdIndex_ = function(feature) {
-  var removed = false;
-  for (var id in this.idIndex_) {
-    if (this.idIndex_[id] === feature) {
-      delete this.idIndex_[id];
-      removed = true;
-      break;
-    }
-  }
-  return removed;
-};
-
-
-
-/**
- * @classdesc
- * Events emitted by {@link ol.source.Vector} instances are instances of this
- * type.
- *
- * @constructor
- * @extends {goog.events.Event}
- * @implements {oli.source.VectorEvent}
- * @param {string} type Type.
- * @param {ol.Feature=} opt_feature Feature.
- */
-ol.source.VectorEvent = function(type, opt_feature) {
-
-  goog.base(this, type);
-
-  /**
-   * The feature being added or removed.
-   * @type {ol.Feature|undefined}
-   * @api stable
-   */
-  this.feature = opt_feature;
-
-};
-goog.inherits(ol.source.VectorEvent, goog.events.Event);
 
 goog.provide('ol.DrawEvent');
 goog.provide('ol.interaction.Draw');
@@ -108558,200 +109508,6 @@ ol.source.IGC = function(opt_options) {
 };
 goog.inherits(ol.source.IGC, ol.source.StaticVector);
 
-goog.provide('ol.source.Image');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('ol.Attribution');
-goog.require('ol.Extent');
-goog.require('ol.array');
-goog.require('ol.source.Source');
-
-
-/**
- * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
- *            extent: (null|ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            resolutions: (Array.<number>|undefined),
- *            state: (ol.source.State|undefined)}}
- */
-ol.source.ImageOptions;
-
-
-
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for sources providing a single image.
- *
- * @constructor
- * @extends {ol.source.Source}
- * @param {ol.source.ImageOptions} options Single image source options.
- * @api
- */
-ol.source.Image = function(options) {
-
-  goog.base(this, {
-    attributions: options.attributions,
-    extent: options.extent,
-    logo: options.logo,
-    projection: options.projection,
-    state: options.state
-  });
-
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-  this.resolutions_ = goog.isDef(options.resolutions) ?
-      options.resolutions : null;
-  goog.asserts.assert(goog.isNull(this.resolutions_) ||
-      goog.array.isSorted(this.resolutions_,
-          function(a, b) {
-            return b - a;
-          }, true));
-
-};
-goog.inherits(ol.source.Image, ol.source.Source);
-
-
-/**
- * @return {Array.<number>} Resolutions.
- */
-ol.source.Image.prototype.getResolutions = function() {
-  return this.resolutions_;
-};
-
-
-/**
- * @protected
- * @param {number} resolution Resolution.
- * @return {number} Resolution.
- */
-ol.source.Image.prototype.findNearestResolution =
-    function(resolution) {
-  if (!goog.isNull(this.resolutions_)) {
-    var idx = ol.array.linearFindNearest(this.resolutions_, resolution, 0);
-    resolution = this.resolutions_[idx];
-  }
-  return resolution;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {ol.ImageBase} Single image.
- */
-ol.source.Image.prototype.getImage = goog.abstractMethod;
-
-
-/**
- * Default image load function for image sources that use ol.Image image
- * instances.
- * @param {ol.Image} image Image.
- * @param {string} src Source.
- */
-ol.source.Image.defaultImageLoadFunction = function(image, src) {
-  image.getImage().src = src;
-};
-
-goog.provide('ol.source.ImageCanvas');
-
-goog.require('ol.CanvasFunctionType');
-goog.require('ol.ImageCanvas');
-goog.require('ol.extent');
-goog.require('ol.source.Image');
-
-
-
-/**
- * @classdesc
- * Base class for image sources where a canvas element is the image.
- *
- * @constructor
- * @extends {ol.source.Image}
- * @param {olx.source.ImageCanvasOptions} options
- * @api
- */
-ol.source.ImageCanvas = function(options) {
-
-  goog.base(this, {
-    attributions: options.attributions,
-    logo: options.logo,
-    projection: options.projection,
-    resolutions: options.resolutions,
-    state: goog.isDef(options.state) ?
-        /** @type {ol.source.State} */ (options.state) : undefined
-  });
-
-  /**
-   * @private
-   * @type {ol.CanvasFunctionType}
-   */
-  this.canvasFunction_ = options.canvasFunction;
-
-  /**
-   * @private
-   * @type {ol.ImageCanvas}
-   */
-  this.canvas_ = null;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.renderedRevision_ = 0;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.ratio_ = goog.isDef(options.ratio) ?
-      options.ratio : 1.5;
-
-};
-goog.inherits(ol.source.ImageCanvas, ol.source.Image);
-
-
-/**
- * @inheritDoc
- */
-ol.source.ImageCanvas.prototype.getImage =
-    function(extent, resolution, pixelRatio, projection) {
-  resolution = this.findNearestResolution(resolution);
-
-  var canvas = this.canvas_;
-  if (!goog.isNull(canvas) &&
-      this.renderedRevision_ == this.getRevision() &&
-      canvas.getResolution() == resolution &&
-      canvas.getPixelRatio() == pixelRatio &&
-      ol.extent.containsExtent(canvas.getExtent(), extent)) {
-    return canvas;
-  }
-
-  extent = extent.slice();
-  ol.extent.scaleFromCenter(extent, this.ratio_);
-  var width = ol.extent.getWidth(extent) / resolution;
-  var height = ol.extent.getHeight(extent) / resolution;
-  var size = [width * pixelRatio, height * pixelRatio];
-
-  var canvasElement = this.canvasFunction_(
-      extent, resolution, pixelRatio, size, projection);
-  if (!goog.isNull(canvasElement)) {
-    canvas = new ol.ImageCanvas(extent, resolution, pixelRatio,
-        this.getAttributions(), canvasElement);
-  }
-  this.canvas_ = canvas;
-  this.renderedRevision_ = this.getRevision();
-
-  return canvas;
-};
-
 goog.provide('ol.source.ImageMapGuide');
 
 goog.require('goog.object');
@@ -109041,303 +109797,6 @@ ol.source.ImageStatic.prototype.getImage =
     return this.image_;
   }
   return null;
-};
-
-goog.provide('ol.source.ImageVector');
-
-goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.events.EventType');
-goog.require('goog.vec.Mat4');
-goog.require('ol.dom');
-goog.require('ol.extent');
-goog.require('ol.render.canvas.ReplayGroup');
-goog.require('ol.renderer.vector');
-goog.require('ol.source.ImageCanvas');
-goog.require('ol.source.Vector');
-goog.require('ol.style.Style');
-goog.require('ol.vec.Mat4');
-
-
-
-/**
- * @classdesc
- * An image source whose images are canvas elements into which vector features
- * read from a vector source (`ol.source.Vector`) are drawn. An
- * `ol.source.ImageVector` object is to be used as the `source` of an image
- * layer (`ol.layer.Image`). Image layers are rotated, scaled, and translated,
- * as opposed to being re-rendered, during animations and interactions. So, like
- * any other image layer, an image layer configured with an
- * `ol.source.ImageVector` will exhibit this behaviour. This is in contrast to a
- * vector layer, where vector features are re-drawn during animations and
- * interactions.
- *
- * @constructor
- * @extends {ol.source.ImageCanvas}
- * @param {olx.source.ImageVectorOptions} options Options.
- * @api
- */
-ol.source.ImageVector = function(options) {
-
-  /**
-   * @private
-   * @type {ol.source.Vector}
-   */
-  this.source_ = options.source;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.transform_ = goog.vec.Mat4.createNumber();
-
-  /**
-   * @private
-   * @type {CanvasRenderingContext2D}
-   */
-  this.canvasContext_ = ol.dom.createCanvasContext2D();
-
-  /**
-   * @private
-   * @type {ol.Size}
-   */
-  this.canvasSize_ = [0, 0];
-
-  /**
-   * @private
-   * @type {ol.render.canvas.ReplayGroup}
-   */
-  this.replayGroup_ = null;
-
-  goog.base(this, {
-    attributions: options.attributions,
-    canvasFunction: goog.bind(this.canvasFunctionInternal_, this),
-    logo: options.logo,
-    projection: options.projection,
-    ratio: options.ratio,
-    resolutions: options.resolutions,
-    state: this.source_.getState()
-  });
-
-  /**
-   * User provided style.
-   * @type {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction}
-   * @private
-   */
-  this.style_ = null;
-
-  /**
-   * Style function for use within the library.
-   * @type {ol.style.StyleFunction|undefined}
-   * @private
-   */
-  this.styleFunction_ = undefined;
-
-  this.setStyle(options.style);
-
-  goog.events.listen(this.source_, goog.events.EventType.CHANGE,
-      this.handleSourceChange_, undefined, this);
-
-};
-goog.inherits(ol.source.ImageVector, ol.source.ImageCanvas);
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.Size} size Size.
- * @param {ol.proj.Projection} projection Projection;
- * @return {HTMLCanvasElement} Canvas element.
- * @private
- */
-ol.source.ImageVector.prototype.canvasFunctionInternal_ =
-    function(extent, resolution, pixelRatio, size, projection) {
-
-  var replayGroup = new ol.render.canvas.ReplayGroup(
-      ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-      resolution);
-
-  this.source_.loadFeatures(extent, resolution, projection);
-
-  var loading = false;
-  this.source_.forEachFeatureInExtentAtResolution(extent, resolution,
-      /**
-       * @param {ol.Feature} feature Feature.
-       */
-      function(feature) {
-        loading = loading ||
-            this.renderFeature_(feature, resolution, pixelRatio, replayGroup);
-      }, this);
-  replayGroup.finish();
-
-  if (loading) {
-    return null;
-  }
-
-  if (this.canvasSize_[0] != size[0] || this.canvasSize_[1] != size[1]) {
-    this.canvasContext_.canvas.width = size[0];
-    this.canvasContext_.canvas.height = size[1];
-    this.canvasSize_[0] = size[0];
-    this.canvasSize_[1] = size[1];
-  } else {
-    this.canvasContext_.clearRect(0, 0, size[0], size[1]);
-  }
-
-  var transform = this.getTransform_(ol.extent.getCenter(extent),
-      resolution, pixelRatio, size);
-  replayGroup.replay(this.canvasContext_, pixelRatio, transform, 0, {});
-
-  this.replayGroup_ = replayGroup;
-
-  return this.canvasContext_.canvas;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.source.ImageVector.prototype.forEachFeatureAtPixel = function(
-    resolution, rotation, coordinate, skippedFeatureUids, callback) {
-  if (goog.isNull(this.replayGroup_)) {
-    return undefined;
-  } else {
-    /** @type {Object.<string, boolean>} */
-    var features = {};
-    return this.replayGroup_.forEachGeometryAtPixel(
-        resolution, 0, coordinate, skippedFeatureUids,
-        /**
-         * @param {ol.Feature} feature Feature.
-         * @return {?} Callback result.
-         */
-        function(feature) {
-          goog.asserts.assert(goog.isDef(feature));
-          var key = goog.getUid(feature).toString();
-          if (!(key in features)) {
-            features[key] = true;
-            return callback(feature);
-          }
-        });
-  }
-};
-
-
-/**
- * @return {ol.source.Vector} Source.
- * @api
- */
-ol.source.ImageVector.prototype.getSource = function() {
-  return this.source_;
-};
-
-
-/**
- * Get the style for features.  This returns whatever was passed to the `style`
- * option at construction or to the `setStyle` method.
- * @return {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction}
- *     Layer style.
- * @api stable
- */
-ol.source.ImageVector.prototype.getStyle = function() {
-  return this.style_;
-};
-
-
-/**
- * Get the style function.
- * @return {ol.style.StyleFunction|undefined} Layer style function.
- * @api stable
- */
-ol.source.ImageVector.prototype.getStyleFunction = function() {
-  return this.styleFunction_;
-};
-
-
-/**
- * @param {ol.Coordinate} center Center.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.Size} size Size.
- * @return {!goog.vec.Mat4.Number} Transform.
- * @private
- */
-ol.source.ImageVector.prototype.getTransform_ =
-    function(center, resolution, pixelRatio, size) {
-  return ol.vec.Mat4.makeTransform2D(this.transform_,
-      size[0] / 2, size[1] / 2,
-      pixelRatio / resolution, -pixelRatio / resolution,
-      0,
-      -center[0], -center[1]);
-};
-
-
-/**
- * Handle changes in image style state.
- * @param {goog.events.Event} event Image style change event.
- * @private
- */
-ol.source.ImageVector.prototype.handleImageChange_ =
-    function(event) {
-  this.changed();
-};
-
-
-/**
- * @private
- */
-ol.source.ImageVector.prototype.handleSourceChange_ = function() {
-  // setState will trigger a CHANGE event, so we always rely
-  // change events by calling setState.
-  this.setState(this.source_.getState());
-};
-
-
-/**
- * @param {ol.Feature} feature Feature.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.render.canvas.ReplayGroup} replayGroup Replay group.
- * @return {boolean} `true` if an image is loading.
- * @private
- */
-ol.source.ImageVector.prototype.renderFeature_ =
-    function(feature, resolution, pixelRatio, replayGroup) {
-  var styles;
-  if (goog.isDef(feature.getStyleFunction())) {
-    styles = feature.getStyleFunction().call(feature, resolution);
-  } else if (goog.isDef(this.styleFunction_)) {
-    styles = this.styleFunction_(feature, resolution);
-  }
-  if (!goog.isDefAndNotNull(styles)) {
-    return false;
-  }
-  var i, ii, loading = false;
-  for (i = 0, ii = styles.length; i < ii; ++i) {
-    loading = ol.renderer.vector.renderFeature(
-        replayGroup, feature, styles[i],
-        ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
-        this.handleImageChange_, this) || loading;
-  }
-  return loading;
-};
-
-
-/**
- * Set the style for features.  This can be a single style object, an array
- * of styles, or a function that takes a feature and resolution and returns
- * an array of styles. If it is `undefined` the default style is used. If
- * it is `null` the layer has no style (a `null` style), so only features
- * that have their own styles will be rendered in the layer. See
- * {@link ol.style} for information on the default style.
- * @param {ol.style.Style|Array.<ol.style.Style>|ol.style.StyleFunction|undefined}
- *     style Layer style.
- * @api stable
- */
-ol.source.ImageVector.prototype.setStyle = function(style) {
-  this.style_ = goog.isDef(style) ? style : ol.style.defaultStyleFunction;
-  this.styleFunction_ = goog.isNull(style) ?
-      undefined : ol.style.createStyleFunction(this.style_);
-  this.changed();
 };
 
 goog.provide('ol.source.wms');
@@ -109927,7 +110386,8 @@ ol.source.MapQuest = function(opt_options) {
   var layerConfig = ol.source.MapQuestConfig[options.layer];
 
   var protocol = ol.IS_HTTPS ? 'https:' : 'http:';
-  var url = protocol + '//otile{1-4}-s.mqcdn.com/tiles/1.0.0/' +
+  var url = goog.isDef(options.url) ? options.url :
+      protocol + '//otile{1-4}-s.mqcdn.com/tiles/1.0.0/' +
       options.layer + '/{z}/{x}/{y}.jpg';
 
   goog.base(this, {
@@ -111611,8 +112071,7 @@ ol.source.TileWMS.prototype.tileUrlFunction_ =
   }
 
   var tileResolution = tileGrid.getResolution(tileCoord[0]);
-  var tileExtent = tileGrid.getTileCoordExtent(
-      tileCoord, this.tmpExtent_);
+  var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
   var tileSize = tileGrid.getTileSize(tileCoord[0]);
 
   var gutter = this.gutter_;
@@ -114181,6 +114640,11 @@ goog.exportProperty(
     ol.Map.prototype,
     'forEachFeatureAtPixel',
     ol.Map.prototype.forEachFeatureAtPixel);
+
+goog.exportProperty(
+    ol.Map.prototype,
+    'forEachLayerAtPixel',
+    ol.Map.prototype.forEachLayerAtPixel);
 
 goog.exportProperty(
     ol.Map.prototype,
