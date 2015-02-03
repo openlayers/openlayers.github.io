@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.1.1-179-ga7fcf05
+// Version: v3.1.1-181-g38c80e7
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -60685,9 +60685,16 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
 
   /**
    * @protected
+   * @const
    * @type {ol.Extent}
    */
   this.maxExtent = maxExtent;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.bufferedMaxExtent_ = null;
 
   /**
    * @protected
@@ -60697,6 +60704,7 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
 
   /**
    * @protected
+   * @const
    * @type {number}
    */
   this.resolution = resolution;
@@ -61587,12 +61595,14 @@ ol.render.canvas.LineStringReplay.prototype.drawFlatCoordinates_ =
  * @inheritDoc
  */
 ol.render.canvas.LineStringReplay.prototype.getBufferedMaxExtent = function() {
-  var extent = this.maxExtent;
-  if (this.maxLineWidth) {
-    extent = ol.extent.buffer(
-        extent, this.resolution * (this.maxLineWidth + 1) / 2);
+  if (goog.isNull(this.bufferedMaxExtent_)) {
+    this.bufferedMaxExtent_ = ol.extent.clone(this.maxExtent);
+    if (this.maxLineWidth > 0) {
+      var width = this.resolution * (this.maxLineWidth + 1) / 2;
+      ol.extent.buffer(this.bufferedMaxExtent_, width, this.bufferedMaxExtent_);
+    }
   }
-  return extent;
+  return this.bufferedMaxExtent_;
 };
 
 
@@ -61739,7 +61749,12 @@ ol.render.canvas.LineStringReplay.prototype.setFillStrokeStyle =
   var strokeStyleMiterLimit = strokeStyle.getMiterLimit();
   this.state_.miterLimit = goog.isDef(strokeStyleMiterLimit) ?
       strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit;
-  this.maxLineWidth = Math.max(this.maxLineWidth, this.state_.lineWidth);
+
+  if (this.state_.lineWidth > this.maxLineWidth) {
+    this.maxLineWidth = this.state_.lineWidth;
+    // invalidate the buffered max extent cache
+    this.bufferedMaxExtent_ = null;
+  }
 };
 
 
@@ -61992,12 +62007,14 @@ ol.render.canvas.PolygonReplay.prototype.finish = function() {
  * @inheritDoc
  */
 ol.render.canvas.PolygonReplay.prototype.getBufferedMaxExtent = function() {
-  var extent = this.maxExtent;
-  if (this.maxLineWidth) {
-    extent = ol.extent.buffer(
-        extent, this.resolution * (this.maxLineWidth + 1) / 2);
+  if (goog.isNull(this.bufferedMaxExtent_)) {
+    this.bufferedMaxExtent_ = ol.extent.clone(this.maxExtent);
+    if (this.maxLineWidth > 0) {
+      var width = this.resolution * (this.maxLineWidth + 1) / 2;
+      ol.extent.buffer(this.bufferedMaxExtent_, width, this.bufferedMaxExtent_);
+    }
   }
-  return extent;
+  return this.bufferedMaxExtent_;
 };
 
 
@@ -62035,7 +62052,12 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyle =
     var strokeStyleMiterLimit = strokeStyle.getMiterLimit();
     state.miterLimit = goog.isDef(strokeStyleMiterLimit) ?
         strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit;
-    this.maxLineWidth = Math.max(this.maxLineWidth, state.lineWidth);
+
+    if (state.lineWidth > this.maxLineWidth) {
+      this.maxLineWidth = state.lineWidth;
+      // invalidate the buffered max extent cache
+      this.bufferedMaxExtent_ = null;
+    }
   } else {
     state.strokeStyle = undefined;
     state.lineCap = undefined;
