@@ -1,5 +1,6 @@
 goog.require('ol.Map');
 goog.require('ol.Overlay');
+goog.require('ol.Sphere');
 goog.require('ol.View');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.Polygon');
@@ -7,6 +8,7 @@ goog.require('ol.interaction');
 goog.require('ol.interaction.Draw');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
+goog.require('ol.proj');
 goog.require('ol.source.MapQuest');
 goog.require('ol.source.Vector');
 goog.require('ol.style.Circle');

@@ -1,3 +1,5 @@
+var wgs84Sphere = new ol.Sphere(6378137);
+
 var raster = new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: 'sat'})
 });
@@ -119,6 +121,7 @@ var map = new ol.Map({
 map.on('pointermove', pointerMoveHandler);
 
 var typeSelect = document.getElementById('type');
+var geodesicCheckbox = document.getElementById('geodesic');
 
 var draw; // global so we can remove it later
 function addInteraction() {
@@ -222,7 +225,19 @@ typeSelect.onchange = function(e) {
  * @return {string}
  */
 var formatLength = function(line) {
-  var length = Math.round(line.getLength() * 100) / 100;
+  var length;
+  if (geodesicCheckbox.checked) {
+    var coordinates = line.getCoordinates();
+    length = 0;
+    var sourceProj = map.getView().getProjection();
+    for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
+      var c1 = ol.proj.transform(coordinates[i], sourceProj, 'EPSG:4326');
+      var c2 = ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
+      length += wgs84Sphere.haversineDistance(c1, c2);
+    }
+  } else {
+    length = Math.round(line.getLength() * 100) / 100;
+  }
   var output;
   if (length > 100) {
     output = (Math.round(length / 1000 * 100) / 100) +
@@ -241,7 +256,16 @@ var formatLength = function(line) {
  * @return {string}
  */
 var formatArea = function(polygon) {
-  var area = polygon.getArea();
+  var area;
+  if (geodesicCheckbox.checked) {
+    var sourceProj = map.getView().getProjection();
+    var geom = /** @type {ol.geom.Polygon} */(polygon.clone().transform(
+        sourceProj, 'EPSG:4326'));
+    var coordinates = geom.getLinearRing(0).getCoordinates();
+    area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
+  } else {
+    area = polygon.getArea();
+  }
   var output;
   if (area > 10000) {
     output = (Math.round(area / 1000000 * 100) / 100) +
