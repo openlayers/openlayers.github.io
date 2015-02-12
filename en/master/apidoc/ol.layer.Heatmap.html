@@ -7651,6 +7651,10 @@
                     <a href="ol.layer.Heatmap.html#getProperties">getProperties</a>
                 </li>
             
+                <li data-name="ol.layer.Heatmap#getRadius" class="unstable">
+                    <a href="ol.layer.Heatmap.html#getRadius">getRadius</a>
+                </li>
+            
                 <li data-name="ol.layer.Heatmap#getRevision" class="unstable">
                     <a href="ol.layer.Heatmap.html#getRevision">getRevision</a>
                 </li>
@@ -7721,6 +7725,10 @@
             
                 <li data-name="ol.layer.Heatmap#setProperties" class="unstable">
                     <a href="ol.layer.Heatmap.html#setProperties">setProperties</a>
+                </li>
+            
+                <li data-name="ol.layer.Heatmap#setRadius" class="unstable">
+                    <a href="ol.layer.Heatmap.html#setRadius">setRadius</a>
                 </li>
             
                 <li data-name="ol.layer.Heatmap#setSaturation" class="unstable">
@@ -7794,6 +7802,10 @@
             
                 <li data-name="ol.ObjectEvent#event:change:opacity" class="unstable">
                     change:opacity
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:radius" class="unstable">
+                    change:radius
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:change:saturation" class="unstable">
@@ -10513,6 +10525,10 @@
             
                 <li data-name="ol.source.MapQuest#getAttributions" class="">
                     <a href="ol.source.MapQuest.html#getAttributions">getAttributions</a>
+                </li>
+            
+                <li data-name="ol.source.MapQuest#getLayer" class="unstable">
+                    <a href="ol.source.MapQuest.html#getLayer">getLayer</a>
                 </li>
             
                 <li data-name="ol.source.MapQuest#getLogo" class="">
@@ -13376,7 +13392,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 37
+            src/ol/layer/heatmaplayer.js, line 38
         </div>
         
         
@@ -14095,6 +14111,19 @@ outside of this extent.</p></td>
         </li>
     
         <li class="unstable">
+            <code>change:radius</code>
+            
+                (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
+              
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+            
+        </li>
+    
+        <li class="unstable">
             <code>change:saturation</code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
@@ -14367,6 +14396,22 @@ outside of this extent.</p></td>
       <td class="setter">yes</td>
       <td class="event"><code>change:opacity</code></td>
       <td class="description last"><p>The opacity of the layer.</p></td>
+    </tr>
+    
+
+    <tr class="unstable">
+      <td class="name"><code>radius</code></td>
+      <td class="type">
+      
+      
+<span class="param-type">number</span>
+
+
+      
+      </td>
+      <td class="setter">yes</td>
+      <td class="event"><code>change:radius</code></td>
+      <td class="description last"><p>Radius size in pixel.</p></td>
     </tr>
     
 
@@ -15120,7 +15165,7 @@ The layer extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 171
+            src/ol/layer/heatmaplayer.js, line 190
         </div>
         
         
@@ -15686,6 +15731,88 @@ The opacity of the layer.
 
 <h5>Returns:</h5>
 Object.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="getRadius">
+            getRadius<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/layer/heatmaplayer.js, line 205
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Radius size in pixel.
 <br />
 
     
@@ -17129,7 +17256,7 @@ will be visible at all extents.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 217
+            src/ol/layer/heatmaplayer.js, line 260
         </div>
         
         
@@ -17800,6 +17927,126 @@ unchanged.  Other values are radians around the color circle.</p>
             <td  class="description last">
                 
                 <p>Values.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="setRadius">
+            setRadius<span class="signature">(radius)</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/layer/heatmaplayer.js, line 274
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>radius</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Radius size in pixel.</p></td>
         </tr>
 	
 	
@@ -18883,7 +19130,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Feb 11 2015 13:40:18 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Feb 12 2015 16:39:57 GMT+0100 (CET)
         </footer>
     </div>
 </div>

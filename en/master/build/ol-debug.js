@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.2.0-16-gb529f0f
+// Version: v3.2.0-26-gc4ddc62
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -64963,6 +64963,12 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
 
   /**
    * @private
+   * @type {number}
+   */
+  this.renderedTileSize_ = NaN;
+
+  /**
+   * @private
    * @type {ol.TileRange}
    */
   this.renderedCanvasTileRange_ = null;
@@ -65119,9 +65125,11 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
     context = this.context_;
     if (this.canvasSize_[0] < canvasWidth ||
         this.canvasSize_[1] < canvasHeight ||
+        this.renderedTileSize_ !== tilePixelSize ||
         (this.canvasTooBig_ && (this.canvasSize_[0] > canvasWidth ||
         this.canvasSize_[1] > canvasHeight))) {
-      // Canvas is too small, resize it. We never shrink the canvas, unless
+      // Canvas is too small or tileSize has changed, resize it.
+      // We never shrink the canvas, unless
       // we know that the current canvas size exceeds the maximum size
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
@@ -65148,6 +65156,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
     minY = tileRange.minY -
         Math.floor((canvasTileRangeHeight - tileRange.getHeight()) / 2);
     this.renderedCanvasZ_ = z;
+    this.renderedTileSize_ = tilePixelSize;
     this.renderedCanvasTileRange_ = new ol.TileRange(
         minX, minX + canvasTileRangeWidth - 1,
         minY, minY + canvasTileRangeHeight - 1);
@@ -105489,7 +105498,8 @@ goog.require('ol.style.Style');
  * @enum {string}
  */
 ol.layer.HeatmapLayerProperty = {
-  GRADIENT: 'gradient'
+  GRADIENT: 'gradient',
+  RADIUS: 'radius'
 };
 
 
@@ -105525,22 +105535,42 @@ ol.layer.Heatmap = function(opt_options) {
    */
   this.gradient_ = null;
 
+  /**
+   * @private
+   * @type {number}
+   */
+  this.blur_ = goog.isDef(options.blur) ? options.blur : 15;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.shadow_ = goog.isDef(options.shadow) ? options.shadow : 250;
+
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+  this.circleImage_ = undefined;
+
+  /**
+   * @private
+   * @type {Array.<Array.<ol.style.Style>>}
+   */
+  this.styleCache_ = null;
+
   goog.events.listen(this,
       ol.Object.getChangeEventType(ol.layer.HeatmapLayerProperty.GRADIENT),
       this.handleGradientChanged_, false, this);
 
+  goog.events.listen(this,
+      ol.Object.getChangeEventType(ol.layer.HeatmapLayerProperty.RADIUS),
+      this.handleStyleChanged_, false, this);
+
   this.setGradient(goog.isDef(options.gradient) ?
       options.gradient : ol.layer.Heatmap.DEFAULT_GRADIENT);
 
-  var circle = ol.layer.Heatmap.createCircle_(
-      goog.isDef(options.radius) ? options.radius : 8,
-      goog.isDef(options.blur) ? options.blur : 15,
-      goog.isDef(options.shadow) ? options.shadow : 250);
-
-  /**
-   * @type {Array.<Array.<ol.style.Style>>}
-   */
-  var styleCache = new Array(256);
+  this.setRadius(goog.isDef(options.radius) ? options.radius : 8);
 
   var weight = goog.isDef(options.weight) ? options.weight : 'weight';
   var weightFunction;
@@ -105553,25 +105583,25 @@ ol.layer.Heatmap = function(opt_options) {
   }
   goog.asserts.assert(goog.isFunction(weightFunction));
 
-  this.setStyle(function(feature, resolution) {
+  this.setStyle(goog.bind(function(feature, resolution) {
     var weight = weightFunction(feature);
     var opacity = goog.isDef(weight) ? goog.math.clamp(weight, 0, 1) : 1;
     // cast to 8 bits
     var index = (255 * opacity) | 0;
-    var style = styleCache[index];
+    var style = this.styleCache_[index];
     if (!goog.isDef(style)) {
       style = [
         new ol.style.Style({
           image: new ol.style.Icon({
             opacity: opacity,
-            src: circle
+            src: this.circleImage_
           })
         })
       ];
-      styleCache[index] = style;
+      this.styleCache_[index] = style;
     }
     return style;
-  });
+  }, this));
 
   // For performance reasons, don't sort the features before rendering.
   // The render order is not relevant for a heatmap representation.
@@ -105615,21 +105645,19 @@ ol.layer.Heatmap.createGradient_ = function(colors) {
 
 
 /**
- * @param {number} radius Radius size in pixel.
- * @param {number} blur Blur size in pixel.
- * @param {number} shadow Shadow offset size in pixel.
  * @return {string}
  * @private
  */
-ol.layer.Heatmap.createCircle_ = function(radius, blur, shadow) {
-  var halfSize = radius + blur + 1;
+ol.layer.Heatmap.prototype.createCircle_ = function() {
+  var radius = this.getRadius();
+  var halfSize = radius + this.blur_ + 1;
   var size = 2 * halfSize;
   var context = ol.dom.createCanvasContext2D(size, size);
-  context.shadowOffsetX = context.shadowOffsetY = shadow;
-  context.shadowBlur = blur;
+  context.shadowOffsetX = context.shadowOffsetY = this.shadow_;
+  context.shadowBlur = this.blur_;
   context.shadowColor = '#000';
   context.beginPath();
-  var center = halfSize - shadow;
+  var center = halfSize - this.shadow_;
   context.arc(center, center, radius, 0, Math.PI * 2, true);
   context.fill();
   return context.canvas.toDataURL();
@@ -105652,10 +105680,34 @@ goog.exportProperty(
 
 
 /**
+ * @return {number} Radius size in pixel.
+ * @api
+ * @observable
+ */
+ol.layer.Heatmap.prototype.getRadius = function() {
+  return /** @type {number} */ (this.get(ol.layer.HeatmapLayerProperty.RADIUS));
+};
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
+    'getRadius',
+    ol.layer.Heatmap.prototype.getRadius);
+
+
+/**
  * @private
  */
 ol.layer.Heatmap.prototype.handleGradientChanged_ = function() {
   this.gradient_ = ol.layer.Heatmap.createGradient_(this.getGradient());
+};
+
+
+/**
+ * @private
+ */
+ol.layer.Heatmap.prototype.handleStyleChanged_ = function() {
+  this.circleImage_ = this.createCircle_();
+  this.styleCache_ = new Array(256);
+  this.changed();
 };
 
 
@@ -105694,6 +105746,20 @@ goog.exportProperty(
     ol.layer.Heatmap.prototype,
     'setGradient',
     ol.layer.Heatmap.prototype.setGradient);
+
+
+/**
+ * @param {number} radius Radius size in pixel.
+ * @api
+ * @observable
+ */
+ol.layer.Heatmap.prototype.setRadius = function(radius) {
+  this.set(ol.layer.HeatmapLayerProperty.RADIUS, radius);
+};
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
+    'setRadius',
+    ol.layer.Heatmap.prototype.setRadius);
 
 goog.provide('ol.loadingstrategy');
 
@@ -110939,10 +111005,17 @@ ol.source.MapQuest = function(opt_options) {
 
   var layerConfig = ol.source.MapQuestConfig[options.layer];
 
+  /**
+   * Layer. Possible values are `osm`, `sat`, and `hyb`.
+   * @type {string}
+   * @private
+   */
+  this.layer_ = options.layer;
+
   var protocol = ol.IS_HTTPS ? 'https:' : 'http:';
   var url = goog.isDef(options.url) ? options.url :
       protocol + '//otile{1-4}-s.mqcdn.com/tiles/1.0.0/' +
-      options.layer + '/{z}/{x}/{y}.jpg';
+      this.layer_ + '/{z}/{x}/{y}.jpg';
 
   goog.base(this, {
     attributions: layerConfig.attributions,
@@ -110995,6 +111068,15 @@ ol.source.MapQuestConfig = {
       ol.source.OSM.ATTRIBUTION
     ]
   }
+};
+
+
+/**
+ * @return {string} Layer.
+ * @api
+ */
+ol.source.MapQuest.prototype.getLayer = function() {
+  return this.layer_;
 };
 
 goog.provide('ol.source.OSMXML');
@@ -111459,6 +111541,7 @@ goog.require('ol.tilegrid.XYZ');
 ol.source.TileJSON = function(options) {
 
   goog.base(this, {
+    attributions: options.attributions,
     crossOrigin: options.crossOrigin,
     projection: ol.proj.get('EPSG:3857'),
     state: ol.source.State.LOADING,
@@ -111513,7 +111596,8 @@ ol.source.TileJSON.prototype.handleTileJSONResponse = function(tileJSON) {
       }),
       ol.TileUrlFunction.createFromTemplates(tileJSON.tiles));
 
-  if (goog.isDef(tileJSON.attribution)) {
+  if (goog.isDef(tileJSON.attribution) &&
+      goog.isNull(this.getAttributions())) {
     var attributionExtent = goog.isDef(extent) ?
         extent : epsg4326Projection.getExtent();
     /** @type {Object.<string, Array.<ol.TileRange>>} */
@@ -116299,6 +116383,11 @@ goog.exportSymbol(
     ol.source.MapQuest,
     OPENLAYERS);
 
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'getLayer',
+    ol.source.MapQuest.prototype.getLayer);
+
 goog.exportSymbol(
     'ol.source.OSM',
     ol.source.OSM,
@@ -116836,8 +116925,18 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Heatmap.prototype,
+    'getRadius',
+    ol.layer.Heatmap.prototype.getRadius);
+
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
     'setGradient',
     ol.layer.Heatmap.prototype.setGradient);
+
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
+    'setRadius',
+    ol.layer.Heatmap.prototype.setRadius);
 
 goog.exportSymbol(
     'ol.layer.Image',
