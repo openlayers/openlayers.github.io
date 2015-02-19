@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.2.0-26-gc4ddc62
+// Version: v3.2.1-43-g9e94308
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -14092,7 +14092,7 @@ ol.coordinate.degreesToStringHDMS_ = function(degrees, hemispheres) {
  *     that will be replaced by first and second coordinate values.
  * @param {number=} opt_fractionDigits The number of digits to include
  *    after the decimal point. Default is `0`.
- * @return {string} Formated coordinate.
+ * @return {string} Formatted coordinate.
  * @api stable
  */
 ol.coordinate.format = function(coordinate, template, opt_fractionDigits) {
@@ -18341,7 +18341,7 @@ ol.extent.transform2D = function(extent, transform, opt_extent) {
  * @license
  * Latitude/longitude spherical geodesy formulae taken from
  * http://www.movable-type.co.uk/scripts/latlong.html
- * Licenced under CC-BY-3.0.
+ * Licensed under CC-BY-3.0.
  */
 
 // FIXME add intersection of two paths given start points and bearings
@@ -27975,7 +27975,7 @@ ol.dom.setOpacity = function(element, value) {
     var alpha;
 
     if (goog.userAgent.VERSION == '8.0') {
-      regex = /progid:DXImageTransform\.Microsoft\.Alpha\(.*?\)/i,
+      regex = /progid:DXImageTransform\.Microsoft\.Alpha\(.*?\)/i;
       alpha = 'progid:DXImageTransform.Microsoft.Alpha(Opacity=' +
           (value * 100) + ')';
     } else {
@@ -28723,7 +28723,7 @@ ol.Collection.prototype.push = function(elem) {
 
 
 /**
- * Removes the first occurence of elem from the collection.
+ * Removes the first occurrence of elem from the collection.
  * @param {T} elem Element.
  * @return {T|undefined} The removed element or undefined if elem was not found.
  * @api stable
@@ -43834,7 +43834,7 @@ ol.pointer.TouchSource.prototype.touchToPointer_ =
   // Touch identifiers can start at 0.
   // Add 2 to the touch identifier for compatibility.
   e.pointerId = inTouch.identifier + 2;
-  // TODO: check if this is neccessary?
+  // TODO: check if this is necessary?
   //e.target = findTarget(e);
   e.bubbles = true;
   e.cancelable = true;
@@ -46600,6 +46600,7 @@ ol.tilegrid.extentFromProjection = function(projection) {
 goog.provide('ol.source.Tile');
 goog.provide('ol.source.TileOptions');
 
+goog.require('goog.events.Event');
 goog.require('goog.functions');
 goog.require('ol.Attribution');
 goog.require('ol.Extent');
@@ -46805,6 +46806,62 @@ ol.source.Tile.prototype.getTilePixelSize =
  * @param {number} y Tile coordinate y.
  */
 ol.source.Tile.prototype.useTile = goog.nullFunction;
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.source.Tile} instances are instances of this
+ * type.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @implements {oli.source.TileEvent}
+ * @param {string} type Type.
+ * @param {ol.Tile} tile The tile.
+ */
+ol.source.TileEvent = function(type, tile) {
+
+  goog.base(this, type);
+
+  /**
+   * The tile related to the event.
+   * @type {ol.Tile}
+   * @api
+   */
+  this.tile = tile;
+
+};
+goog.inherits(ol.source.TileEvent, goog.events.Event);
+
+
+/**
+ * @enum {string}
+ */
+ol.source.TileEventType = {
+
+  /**
+   * Triggered when a tile starts loading.
+   * @event ol.source.TileEvent#tileloadstart
+   * @api
+   */
+  TILELOADSTART: 'tileloadstart',
+
+  /**
+   * Triggered when a tile finishes loading.
+   * @event ol.source.TileEvent#tileloadend
+   * @api
+   */
+  TILELOADEND: 'tileloadend',
+
+  /**
+   * Triggered if tile loading results in an error.
+   * @event ol.source.TileEvent#tileloaderror
+   * @api
+   */
+  TILELOADERROR: 'tileloaderror'
+
+};
 
 goog.provide('ol.vec.Mat4');
 
@@ -48793,6 +48850,7 @@ goog.provide('ol.TileQueue');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('ol.Coordinate');
+goog.require('ol.TileState');
 goog.require('ol.structs.PriorityQueue');
 
 
@@ -48856,11 +48914,17 @@ ol.TileQueue.prototype.getTilesLoading = function() {
 
 
 /**
+ * @param {goog.events.Event} event Event.
  * @protected
  */
-ol.TileQueue.prototype.handleTileChange = function() {
-  --this.tilesLoading_;
-  this.tileChangeCallback_();
+ol.TileQueue.prototype.handleTileChange = function(event) {
+  var tile = /** @type {ol.Tile} */ (event.target);
+  var state = tile.getState();
+  if (state === ol.TileState.LOADED || state === ol.TileState.ERROR ||
+      state === ol.TileState.EMPTY) {
+    --this.tilesLoading_;
+    this.tileChangeCallback_();
+  }
 };
 
 
@@ -48874,7 +48938,7 @@ ol.TileQueue.prototype.loadMoreTiles = function(maxTotalLoading, maxNewLoads) {
   var i, tile;
   for (i = 0; i < newLoads; ++i) {
     tile = /** @type {ol.Tile} */ (this.dequeue()[0]);
-    goog.events.listenOnce(tile, goog.events.EventType.CHANGE,
+    goog.events.listen(tile, goog.events.EventType.CHANGE,
         this.handleTileChange, false, this);
     tile.load();
   }
@@ -74392,7 +74456,7 @@ ol.renderer.webgl.Map.DEFAULT_COLOR_VALUES_ = {
   saturation: 1
 };
 
-// FIXME recheck layer/map projection compatability when projection changes
+// FIXME recheck layer/map projection compatibility when projection changes
 // FIXME layer renderers should skip when they can't reproject
 // FIXME add tilt and height?
 
@@ -80801,7 +80865,7 @@ ol.DeviceOrientationProperty = {
  *
  * Many new computers, and especially mobile phones
  * and tablets, provide hardware support for device orientation. Web
- * developers targetting mobile devices will be especially interested in this
+ * developers targeting mobile devices will be especially interested in this
  * class.
  *
  * Device orientation data are relative to a common starting point. For mobile
@@ -99935,6 +99999,15 @@ goog.inherits(ol.ImageTile, ol.Tile);
 
 /**
  * @inheritDoc
+ */
+ol.ImageTile.prototype.disposeInternal = function() {
+  this.unlistenImage_();
+  goog.base(this, 'disposeInternal');
+};
+
+
+/**
+ * @inheritDoc
  * @api
  */
 ol.ImageTile.prototype.getImage = function(opt_context) {
@@ -100005,6 +100078,7 @@ ol.ImageTile.prototype.handleImageLoad_ = function() {
 ol.ImageTile.prototype.load = function() {
   if (this.state == ol.TileState.IDLE) {
     this.state = ol.TileState.LOADING;
+    this.changed();
     goog.asserts.assert(goog.isNull(this.imageListenerKeys_));
     this.imageListenerKeys_ = [
       goog.events.listenOnce(this.image_, goog.events.EventType.ERROR,
@@ -106764,6 +106838,8 @@ ol.TileCache.prototype.pruneTileRange = function(tileRange) {
 goog.provide('ol.source.TileImage');
 
 goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.EventType');
 goog.require('ol.ImageTile');
 goog.require('ol.TileCache');
 goog.require('ol.TileCoord');
@@ -106780,6 +106856,7 @@ goog.require('ol.source.Tile');
  * Base class for sources providing images divided into a tile grid.
  *
  * @constructor
+ * @fires ol.source.TileEvent
  * @extends {ol.source.Tile}
  * @param {olx.source.TileImageOptions} options Image tile options.
  * @api
@@ -106881,6 +106958,9 @@ ol.source.TileImage.prototype.getTile =
         goog.isDef(tileUrl) ? tileUrl : '',
         this.crossOrigin,
         this.tileLoadFunction);
+    goog.events.listen(tile, goog.events.EventType.CHANGE,
+        this.handleTileChange_, false, this);
+
     this.tileCache.set(tileCoordKey, tile);
     return tile;
   }
@@ -106902,6 +106982,30 @@ ol.source.TileImage.prototype.getTileLoadFunction = function() {
  */
 ol.source.TileImage.prototype.getTileUrlFunction = function() {
   return this.tileUrlFunction;
+};
+
+
+/**
+ * Handle tile change events.
+ * @param {goog.events.Event} event Event.
+ * @private
+ */
+ol.source.TileImage.prototype.handleTileChange_ = function(event) {
+  var tile = /** @type {ol.Tile} */ (event.target);
+  switch (tile.getState()) {
+    case ol.TileState.LOADING:
+      this.dispatchEvent(
+          new ol.source.TileEvent(ol.source.TileEventType.TILELOADSTART, tile));
+      break;
+    case ol.TileState.LOADED:
+      this.dispatchEvent(
+          new ol.source.TileEvent(ol.source.TileEventType.TILELOADEND, tile));
+      break;
+    case ol.TileState.ERROR:
+      this.dispatchEvent(
+          new ol.source.TileEvent(ol.source.TileEventType.TILELOADERROR, tile));
+      break;
+  }
 };
 
 
@@ -116497,6 +116601,11 @@ goog.exportProperty(
     ol.source.Tile.prototype,
     'getTileGrid',
     ol.source.Tile.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.TileEvent.prototype,
+    'tile',
+    ol.source.TileEvent.prototype.tile);
 
 goog.exportSymbol(
     'ol.source.TileUTFGrid',
