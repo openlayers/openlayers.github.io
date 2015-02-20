@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.2.1-49-g733167c
+// Version: v3.2.1-51-gc303739
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -46922,7 +46922,6 @@ goog.provide('ol.source.Tile');
 goog.provide('ol.source.TileOptions');
 
 goog.require('goog.events.Event');
-goog.require('goog.functions');
 goog.require('ol.Attribution');
 goog.require('ol.Extent');
 goog.require('ol.TileCache');
