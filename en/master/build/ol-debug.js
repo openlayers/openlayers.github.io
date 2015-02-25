@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.2.1-51-gc303739
+// Version: v3.2.1-68-g4c1be59
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -17911,7 +17911,7 @@ ol.extent.forEachCorner = function(extent, callback, opt_this) {
   if (val) {
     return val;
   }
-  val = callback.call(opt_this, ol.extent.getBottomRight(extent));
+  val = callback.call(opt_this, ol.extent.getTopLeft(extent));
   if (val) {
     return val;
   }
@@ -28114,6 +28114,38 @@ ol.dom.transformElement2D =
     // width/height, because that only changes the container size, not the
     // content size.
   }
+};
+
+
+/**
+ * Get the current computed width for the given element including margin,
+ * padding and border.
+ * Equivalent to jQuery's `$(el).outerWidth(true)`.
+ * @param {!Element} element Element.
+ * @return {number}
+ */
+ol.dom.outerWidth = function(element) {
+  var width = element.offsetWidth;
+  var style = element.currentStyle || window.getComputedStyle(element);
+  width += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
+
+  return width;
+};
+
+
+/**
+ * Get the current computed height for the given element including margin,
+ * padding and border.
+ * Equivalent to jQuery's `$(el).outerHeight(true)`.
+ * @param {!Element} element Element.
+ * @return {number}
+ */
+ol.dom.outerHeight = function(element) {
+  var height = element.offsetHeight;
+  var style = element.currentStyle || window.getComputedStyle(element);
+  height += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
+
+  return height;
 };
 
 goog.provide('ol.webgl');
@@ -47368,19 +47400,20 @@ ol.renderer.Layer.prototype.hasFeatureAtCoordinate = goog.functions.FALSE;
  * @protected
  */
 ol.renderer.Layer.prototype.createLoadedTileFinder = function(source, tiles) {
-  /**
-   * @param {number} zoom Zoom level.
-   * @param {ol.TileRange} tileRange Tile range.
-   * @return {boolean} The tile range is fully loaded.
-   */
-  return function(zoom, tileRange) {
-    return source.forEachLoadedTile(zoom, tileRange, function(tile) {
-      if (!tiles[zoom]) {
-        tiles[zoom] = {};
-      }
-      tiles[zoom][tile.tileCoord.toString()] = tile;
-    });
-  };
+  return (
+      /**
+       * @param {number} zoom Zoom level.
+       * @param {ol.TileRange} tileRange Tile range.
+       * @return {boolean} The tile range is fully loaded.
+       */
+      function(zoom, tileRange) {
+        return source.forEachLoadedTile(zoom, tileRange, function(tile) {
+          if (!tiles[zoom]) {
+            tiles[zoom] = {};
+          }
+          tiles[zoom][tile.tileCoord.toString()] = tile;
+        });
+      });
 };
 
 
@@ -47527,32 +47560,6 @@ ol.renderer.Layer.prototype.updateUsedTiles =
     usedTiles[tileSourceKey] = {};
     usedTiles[tileSourceKey][zKey] = tileRange;
   }
-};
-
-
-/**
- * @param {function(ol.Tile): boolean} isLoadedFunction Function to
- *     determine if the tile is loaded.
- * @param {ol.source.Tile} tileSource Tile source.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @protected
- * @return {function(number, number, number): ol.Tile} Returns a tile if it is
- *     loaded.
- */
-ol.renderer.Layer.prototype.createGetTileIfLoadedFunction =
-    function(isLoadedFunction, tileSource, pixelRatio, projection) {
-  return (
-      /**
-       * @param {number} z Z.
-       * @param {number} x X.
-       * @param {number} y Y.
-       * @return {ol.Tile} Tile.
-       */
-      function(z, x, y) {
-        var tile = tileSource.getTile(z, x, y, pixelRatio, projection);
-        return isLoadedFunction(tile) ? tile : null;
-      });
 };
 
 
@@ -73272,23 +73279,24 @@ ol.renderer.webgl.TileLayer.prototype.createLoadedTileFinder =
     function(source, tiles) {
   var mapRenderer = this.mapRenderer;
 
-  /**
-   * @param {number} zoom Zoom level.
-   * @param {ol.TileRange} tileRange Tile range.
-   * @return {boolean} The tile range is fully loaded.
-   */
-  return function(zoom, tileRange) {
-    return source.forEachLoadedTile(zoom, tileRange, function(tile) {
-      var loaded = mapRenderer.isTileTextureLoaded(tile);
-      if (loaded) {
-        if (!tiles[zoom]) {
-          tiles[zoom] = {};
-        }
-        tiles[zoom][tile.tileCoord.toString()] = tile;
-      }
-      return loaded;
-    });
-  };
+  return (
+      /**
+       * @param {number} zoom Zoom level.
+       * @param {ol.TileRange} tileRange Tile range.
+       * @return {boolean} The tile range is fully loaded.
+       */
+      function(zoom, tileRange) {
+        return source.forEachLoadedTile(zoom, tileRange, function(tile) {
+          var loaded = mapRenderer.isTileTextureLoaded(tile);
+          if (loaded) {
+            if (!tiles[zoom]) {
+              tiles[zoom] = {};
+            }
+            tiles[zoom][tile.tileCoord.toString()] = tile;
+          }
+          return loaded;
+        });
+      });
 };
 
 
@@ -76215,6 +76223,9 @@ goog.require('ol.Coordinate');
 goog.require('ol.Map');
 goog.require('ol.MapEventType');
 goog.require('ol.Object');
+goog.require('ol.animation');
+goog.require('ol.dom');
+goog.require('ol.extent');
 
 
 /**
@@ -76293,6 +76304,26 @@ ol.Overlay = function(options) {
    */
   this.element_ = goog.dom.createElement(goog.dom.TagName.DIV);
   this.element_.style.position = 'absolute';
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.autoPan_ = goog.isDef(options.autoPan) ? options.autoPan : false;
+
+  /**
+   * @private
+   * @type {olx.animation.PanOptions}
+   */
+  this.autoPanAnimation_ = goog.isDef(options.autoPanAnimation) ?
+      options.autoPanAnimation : /** @type {olx.animation.PanOptions} */ ({});
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.autoPanMargin_ = goog.isDef(options.autoPanMargin) ?
+      options.autoPanMargin : 20;
 
   /**
    * @private
@@ -76495,6 +76526,9 @@ ol.Overlay.prototype.handleOffsetChanged = function() {
  */
 ol.Overlay.prototype.handlePositionChanged = function() {
   this.updatePixelPosition_();
+  if (goog.isDef(this.get(ol.OverlayProperty.POSITION)) && this.autoPan_) {
+    this.panIntoView_();
+  }
 };
 
 
@@ -76566,6 +76600,89 @@ goog.exportProperty(
     ol.Overlay.prototype,
     'setPosition',
     ol.Overlay.prototype.setPosition);
+
+
+/**
+ * Pan the map so that the overlay is entirely visible in the current viewport
+ * (if necessary).
+ * @private
+ */
+ol.Overlay.prototype.panIntoView_ = function() {
+  goog.asserts.assert(this.autoPan_);
+  var map = this.getMap();
+
+  if (!goog.isDef(map) || goog.isNull(map.getTargetElement())) {
+    return;
+  }
+
+  var mapRect = this.getRect_(map.getTargetElement(), map.getSize());
+  var element = this.getElement();
+  goog.asserts.assert(!goog.isNull(element) && goog.isDef(element));
+  var overlayRect = this.getRect_(element,
+      [ol.dom.outerWidth(element), ol.dom.outerHeight(element)]);
+
+  var margin = this.autoPanMargin_;
+  if (!ol.extent.containsExtent(mapRect, overlayRect)) {
+    // the overlay is not completely inside the viewport, so pan the map
+    var offsetLeft = overlayRect[0] - mapRect[0];
+    var offsetRight = mapRect[2] - overlayRect[2];
+    var offsetTop = overlayRect[1] - mapRect[1];
+    var offsetBottom = mapRect[3] - overlayRect[3];
+
+    var delta = [0, 0];
+    if (offsetLeft < 0) {
+      // move map to the left
+      delta[0] = offsetLeft - margin;
+    } else if (offsetRight < 0) {
+      // move map to the right
+      delta[0] = Math.abs(offsetRight) + margin;
+    }
+    if (offsetTop < 0) {
+      // move map up
+      delta[1] = offsetTop - margin;
+    } else if (offsetBottom < 0) {
+      // move map down
+      delta[1] = Math.abs(offsetBottom) + margin;
+    }
+
+    if (delta[0] !== 0 || delta[1] !== 0) {
+      var center = map.getView().getCenter();
+      goog.asserts.assert(goog.isDef(center));
+      var centerPx = map.getPixelFromCoordinate(center);
+      var newCenterPx = [
+        centerPx[0] + delta[0],
+        centerPx[1] + delta[1]
+      ];
+
+      if (!goog.isNull(this.autoPanAnimation_)) {
+        this.autoPanAnimation_.source = center;
+        map.beforeRender(ol.animation.pan(this.autoPanAnimation_));
+      }
+      map.getView().setCenter(map.getCoordinateFromPixel(newCenterPx));
+    }
+  }
+};
+
+
+/**
+ * Get the extent of an element relative to the document
+ * @param {Element|undefined} element The element.
+ * @param {ol.Size|undefined} size The size of the element.
+ * @return {ol.Extent}
+ * @private
+ */
+ol.Overlay.prototype.getRect_ = function(element, size) {
+  goog.asserts.assert(!goog.isNull(element) && goog.isDef(element));
+  goog.asserts.assert(goog.isDef(size));
+
+  var offset = goog.style.getPageOffset(element);
+  return [
+    offset.x,
+    offset.y,
+    offset.x + size[0],
+    offset.y + size[1]
+  ];
+};
 
 
 /**
@@ -105696,6 +105813,7 @@ goog.require('ol.style.Style');
  * @enum {string}
  */
 ol.layer.HeatmapLayerProperty = {
+  BLUR: 'blur',
   GRADIENT: 'gradient',
   RADIUS: 'radius'
 };
@@ -105737,12 +105855,6 @@ ol.layer.Heatmap = function(opt_options) {
    * @private
    * @type {number}
    */
-  this.blur_ = goog.isDef(options.blur) ? options.blur : 15;
-
-  /**
-   * @private
-   * @type {number}
-   */
   this.shadow_ = goog.isDef(options.shadow) ? options.shadow : 250;
 
   /**
@@ -105761,14 +105873,19 @@ ol.layer.Heatmap = function(opt_options) {
       ol.Object.getChangeEventType(ol.layer.HeatmapLayerProperty.GRADIENT),
       this.handleGradientChanged_, false, this);
 
-  goog.events.listen(this,
-      ol.Object.getChangeEventType(ol.layer.HeatmapLayerProperty.RADIUS),
-      this.handleStyleChanged_, false, this);
-
   this.setGradient(goog.isDef(options.gradient) ?
       options.gradient : ol.layer.Heatmap.DEFAULT_GRADIENT);
 
+  this.setBlur(goog.isDef(options.blur) ? options.blur : 15);
+
   this.setRadius(goog.isDef(options.radius) ? options.radius : 8);
+
+  goog.events.listen(this, [
+    ol.Object.getChangeEventType(ol.layer.HeatmapLayerProperty.BLUR),
+    ol.Object.getChangeEventType(ol.layer.HeatmapLayerProperty.RADIUS)
+  ], this.handleStyleChanged_, false, this);
+
+  this.handleStyleChanged_();
 
   var weight = goog.isDef(options.weight) ? options.weight : 'weight';
   var weightFunction;
@@ -105782,6 +105899,8 @@ ol.layer.Heatmap = function(opt_options) {
   goog.asserts.assert(goog.isFunction(weightFunction));
 
   this.setStyle(goog.bind(function(feature, resolution) {
+    goog.asserts.assert(!goog.isNull(this.styleCache_));
+    goog.asserts.assert(goog.isDef(this.circleImage_));
     var weight = weightFunction(feature);
     var opacity = goog.isDef(weight) ? goog.math.clamp(weight, 0, 1) : 1;
     // cast to 8 bits
@@ -105848,11 +105967,13 @@ ol.layer.Heatmap.createGradient_ = function(colors) {
  */
 ol.layer.Heatmap.prototype.createCircle_ = function() {
   var radius = this.getRadius();
-  var halfSize = radius + this.blur_ + 1;
+  var blur = this.getBlur();
+  goog.asserts.assert(goog.isDef(radius) && goog.isDef(blur));
+  var halfSize = radius + blur + 1;
   var size = 2 * halfSize;
   var context = ol.dom.createCanvasContext2D(size, size);
   context.shadowOffsetX = context.shadowOffsetY = this.shadow_;
-  context.shadowBlur = this.blur_;
+  context.shadowBlur = blur;
   context.shadowColor = '#000';
   context.beginPath();
   var center = halfSize - this.shadow_;
@@ -105860,6 +105981,20 @@ ol.layer.Heatmap.prototype.createCircle_ = function() {
   context.fill();
   return context.canvas.toDataURL();
 };
+
+
+/**
+ * @return {number} Blur size in pixels.
+ * @api
+ * @observable
+ */
+ol.layer.Heatmap.prototype.getBlur = function() {
+  return /** @type {number} */ (this.get(ol.layer.HeatmapLayerProperty.BLUR));
+};
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
+    'getBlur',
+    ol.layer.Heatmap.prototype.getBlur);
 
 
 /**
@@ -105915,6 +106050,7 @@ ol.layer.Heatmap.prototype.handleStyleChanged_ = function() {
  */
 ol.layer.Heatmap.prototype.handleRender_ = function(event) {
   goog.asserts.assert(event.type == ol.render.EventType.RENDER);
+  goog.asserts.assert(!goog.isNull(this.gradient_));
   var context = event.context;
   var canvas = context.canvas;
   var image = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -105930,6 +106066,20 @@ ol.layer.Heatmap.prototype.handleRender_ = function(event) {
   }
   context.putImageData(image, 0, 0);
 };
+
+
+/**
+ * @param {number} blur Blur size in pixels.
+ * @api
+ * @observable
+ */
+ol.layer.Heatmap.prototype.setBlur = function(blur) {
+  this.set(ol.layer.HeatmapLayerProperty.BLUR, blur);
+};
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
+    'setBlur',
+    ol.layer.Heatmap.prototype.setBlur);
 
 
 /**
@@ -112950,6 +113100,7 @@ ol.tilegrid.WMTS.prototype.getMatrixIds = function() {
  * @param {Object} matrixSet An object representing a matrixSet in the
  *     capabilities document.
  * @return {ol.tilegrid.WMTS} WMTS tileGrid instance.
+ * @api
  */
 ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet =
     function(matrixSet) {
@@ -112963,16 +113114,20 @@ ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet =
   /** @type {!Array.<number>} */
   var tileSizes = [];
 
-  var supportedCRSPropName = 'supportedCRS';
-  var matrixIdsPropName = 'matrixIds';
-  var identifierPropName = 'identifier';
-  var scaleDenominatorPropName = 'scaleDenominator';
-  var topLeftCornerPropName = 'topLeftCorner';
-  var tileWidthPropName = 'tileWidth';
-  var tileHeightPropName = 'tileHeight';
+  var supportedCRSPropName = 'SupportedCRS';
+  var matrixIdsPropName = 'TileMatrix';
+  var identifierPropName = 'Identifier';
+  var scaleDenominatorPropName = 'ScaleDenominator';
+  var topLeftCornerPropName = 'TopLeftCorner';
+  var tileWidthPropName = 'TileWidth';
+  var tileHeightPropName = 'TileHeight';
 
-  var projection = ol.proj.get(matrixSet[supportedCRSPropName]);
+  var projection;
+  projection = ol.proj.get(matrixSet[supportedCRSPropName].replace(
+      /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'));
   var metersPerUnit = projection.getMetersPerUnit();
+  // swap origin x and y coordinates if axis orientation is lat/long
+  var switchOriginXY = projection.getAxisOrientation().substr(0, 2) == 'ne';
 
   goog.array.sort(matrixSet[matrixIdsPropName], function(a, b) {
     return b[scaleDenominatorPropName] - a[scaleDenominatorPropName];
@@ -112981,7 +113136,12 @@ ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet =
   goog.array.forEach(matrixSet[matrixIdsPropName],
       function(elt, index, array) {
         matrixIds.push(elt[identifierPropName]);
-        origins.push(elt[topLeftCornerPropName]);
+        if (switchOriginXY) {
+          origins.push([elt[topLeftCornerPropName][1],
+            elt[topLeftCornerPropName][0]]);
+        } else {
+          origins.push(elt[topLeftCornerPropName]);
+        }
         resolutions.push(elt[scaleDenominatorPropName] * 0.28E-3 /
             metersPerUnit);
         var tileWidth = elt[tileWidthPropName];
@@ -113066,10 +113226,12 @@ ol.source.WMTS = function(options) {
   // we could issue a getCapabilities xhr to retrieve missing configuration
   var tileGrid = options.tileGrid;
 
+  // context property names are lower case to allow for a case insensitive
+  // replacement as some services use different naming conventions
   var context = {
-    'Layer': options.layer,
-    'Style': options.style,
-    'TileMatrixSet': options.matrixSet
+    'layer': options.layer,
+    'style': options.style,
+    'tilematrixset': options.matrixSet
   };
 
   if (requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
@@ -113096,7 +113258,7 @@ ol.source.WMTS = function(options) {
     template = (requestEncoding == ol.source.WMTSRequestEncoding.KVP) ?
         goog.uri.utils.appendParamsFromMap(template, context) :
         template.replace(/\{(\w+?)\}/g, function(m, p) {
-          return (p in context) ? context[p] : m;
+          return (p.toLowerCase() in context) ? context[p.toLowerCase()] : m;
         });
 
     return (
@@ -113239,90 +113401,144 @@ ol.source.WMTS.prototype.updateDimensions = function(dimensions) {
 
 /**
  * @param {Object} wmtsCap An object representing the capabilities document.
- * @param {string} layer The layer identifier.
+ * @param {Object} config Configuration properties for the layer.  Defaults for
+ *                  the layer will apply if not provided.
+ *
+ * Required config properties:
+ * layer - {String} The layer identifier.
+ *
+ * Optional config properties:
+ * matrixSet - {String} The matrix set identifier, required if there is
+ *      more than one matrix set in the layer capabilities.
+ * projection - {String} The desired CRS when no matrixSet is specified.
+ *     eg: "EPSG:3857". If the desired projection is not available,
+ *     an error is thrown.
+ * requestEncoding - {String} url encoding format for the layer. Default is the
+ *     first tile url format found in the GetCapabilities response.
+ * style - {String} The name of the style
+ * format - {String} Image format for the layer. Default is the first
+ *     format returned in the GetCapabilities response.
  * @return {olx.source.WMTSOptions} WMTS source options object.
+ * @api
  */
-ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, layer) {
+ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
 
   /* jshint -W069 */
 
   // TODO: add support for TileMatrixLimits
+  goog.asserts.assert(!goog.isNull(config['layer']));
 
-  var layers = wmtsCap['contents']['layers'];
+  var layers = wmtsCap['Contents']['Layer'];
   var l = goog.array.find(layers, function(elt, index, array) {
-    return elt['identifier'] == layer;
+    return elt['Identifier'] == config['layer'];
   });
   goog.asserts.assert(!goog.isNull(l));
-  goog.asserts.assert(l['tileMatrixSetLinks'].length > 0);
-  var matrixSet = /** @type {string} */
-      (l['tileMatrixSetLinks'][0]['tileMatrixSet']);
-  var format = /** @type {string} */ (l['formats'][0]);
-  var idx = goog.array.findIndex(l['styles'], function(elt, index, array) {
-    return elt['isDefault'];
+
+  goog.asserts.assert(l['TileMatrixSetLink'].length > 0);
+  var idx, matrixSet;
+  if (l['TileMatrixSetLink'].length > 1) {
+    idx = goog.array.findIndex(l['TileMatrixSetLink'],
+        function(elt, index, array) {
+          return elt['TileMatrixSet'] == config['matrixSet'];
+        });
+  } else if (goog.isDef(config['projection'])) {
+    idx = goog.array.findIndex(l['TileMatrixSetLink'],
+        function(elt, index, array) {
+          return elt['TileMatrixSet']['SupportedCRS'].replace(
+              /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'
+                 ) == config['projection'];
+        });
+  } else {
+    idx = 0;
+  }
+  if (idx < 0) {
+    idx = 0;
+  }
+  matrixSet = /** @type {string} */
+      (l['TileMatrixSetLink'][idx]['TileMatrixSet']);
+
+  goog.asserts.assert(!goog.isNull(matrixSet));
+
+  var format = /** @type {string} */ (l['Format'][0]);
+  if (goog.isDef(config['format'])) {
+    format = config['format'];
+  }
+  idx = goog.array.findIndex(l['Style'], function(elt, index, array) {
+    if (goog.isDef(config['style'])) {
+      return elt['Title'] == config['style'];
+    } else {
+      return elt['isDefault'];
+    }
   });
   if (idx < 0) {
     idx = 0;
   }
-  var style = /** @type {string} */ (l['styles'][idx]['identifier']);
+  var style = /** @type {string} */ (l['Style'][idx]['Identifier']);
 
   var dimensions = {};
-  goog.array.forEach(l['dimensions'], function(elt, index, array) {
-    var key = elt['identifier'];
-    var value = elt['default'];
-    if (goog.isDef(value)) {
-      goog.asserts.assert(goog.array.contains(elt['values'], value));
-    } else {
-      value = elt['values'][0];
-    }
-    goog.asserts.assert(goog.isDef(value));
-    dimensions[key] = value;
-  });
+  if (goog.isDef(l['Dimension'])) {
+    goog.array.forEach(l['Dimension'], function(elt, index, array) {
+      var key = elt['Identifier'];
+      var value = elt['default'];
+      if (goog.isDef(value)) {
+        goog.asserts.assert(goog.array.contains(elt['values'], value));
+      } else {
+        value = elt['values'][0];
+      }
+      goog.asserts.assert(goog.isDef(value));
+      dimensions[key] = value;
+    });
+  }
 
-  var matrixSets = wmtsCap['contents']['tileMatrixSets'];
-  goog.asserts.assert(matrixSet in matrixSets);
-  var matrixSetObj = matrixSets[matrixSet];
+  var matrixSets = wmtsCap['Contents']['TileMatrixSet'];
+  var matrixSetObj = goog.array.find(matrixSets, function(elt, index, array) {
+    return elt['Identifier'] == matrixSet;
+  });
+  goog.asserts.assert(!goog.isNull(matrixSetObj));
 
   var tileGrid = ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet(
       matrixSetObj);
 
-  var projection = ol.proj.get(matrixSetObj['supportedCRS']);
-
-  var gets = wmtsCap['operationsMetadata']['GetTile']['dcp']['http']['get'];
-  var encodings = goog.object.getKeys(
-      gets[0]['constraints']['GetEncoding']['allowedValues']);
-  goog.asserts.assert(encodings.length > 0);
-
-  var urls;
-  var requestEncoding;
-  switch (encodings[0]) {
-    case 'REST':
-    case 'RESTful':
-      // The OGC documentation is not clear if we should use REST or RESTful,
-      // ArcGis use RESTful, and OpenLayers use REST.
-      requestEncoding = ol.source.WMTSRequestEncoding.REST;
-      goog.asserts.assert(l['resourceUrls'].hasOwnProperty('tile'));
-      goog.asserts.assert(l['resourceUrls']['tile'].hasOwnProperty(format));
-      urls = /** @type {Array.<string>} */
-          (l['resourceUrls']['tile'][format]);
-      break;
-    case 'KVP':
-      requestEncoding = ol.source.WMTSRequestEncoding.KVP;
-      urls = [];
-      goog.array.forEach(gets, function(elt, index, array) {
-        if (elt['constraints']['GetEncoding']['allowedValues'].hasOwnProperty(
-            ol.source.WMTSRequestEncoding.KVP)) {
-          urls.push(/** @type {string} */ (elt['url']));
-        }
-      });
-      goog.asserts.assert(urls.length > 0);
-      break;
-    default:
-      goog.asserts.fail();
+  var projection;
+  if (goog.isDef(config['projection'])) {
+    projection = ol.proj.get(config['projection']);
+  } else {
+    projection = ol.proj.get(matrixSetObj['SupportedCRS'].replace(
+        /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'));
   }
+
+  /** @type {!Array.<string>} */
+  var urls = [];
+  var requestEncoding = config['requestEncoding'];
+  if (wmtsCap['OperationsMetadata'].hasOwnProperty('GetTile') &&
+      requestEncoding != 'REST') {
+    var gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
+
+    var constraint = goog.array.find(gets[0]['Constraint'],
+        function(elt, index, array) {
+          return elt['name'] == 'GetEncoding';
+        });
+    var encodings = constraint['AllowedValues']['Value'];
+    if (encodings.length > 0 && goog.array.contains(encodings, 'KVP')) {
+      requestEncoding = ol.source.WMTSRequestEncoding.KVP;
+      urls.push(/** @type {string} */ (gets[0]['href']));
+
+    }
+  } else {
+    // Add REST tile resource url
+    requestEncoding = ol.source.WMTSRequestEncoding.REST;
+    goog.array.forEach(l['ResourceURL'], function(elt, index, array) {
+      if (elt['resourceType'] == 'tile') {
+        format = elt['format'];
+        urls.push(/** @type {string} */ (elt['template']));
+      }
+    });
+  }
+  goog.asserts.assert(urls.length > 0);
 
   return {
     urls: urls,
-    layer: layer,
+    layer: config['layer'],
     matrixSet: matrixSet,
     format: format,
     projection: projection,
@@ -115924,6 +116140,11 @@ goog.exportProperty(
     ol.tilegrid.WMTS.prototype.getMatrixIds);
 
 goog.exportSymbol(
+    'ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet',
+    ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.tilegrid.XYZ',
     ol.tilegrid.XYZ,
     OPENLAYERS);
@@ -116774,6 +116995,11 @@ goog.exportProperty(
     ol.source.WMTS.prototype.updateDimensions);
 
 goog.exportSymbol(
+    'ol.source.WMTS.optionsFromCapabilities',
+    ol.source.WMTS.optionsFromCapabilities,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.source.XYZ',
     ol.source.XYZ,
     OPENLAYERS);
@@ -117040,6 +117266,11 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.layer.Heatmap.prototype,
+    'getBlur',
+    ol.layer.Heatmap.prototype.getBlur);
+
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
     'getGradient',
     ol.layer.Heatmap.prototype.getGradient);
 
@@ -117047,6 +117278,11 @@ goog.exportProperty(
     ol.layer.Heatmap.prototype,
     'getRadius',
     ol.layer.Heatmap.prototype.getRadius);
+
+goog.exportProperty(
+    ol.layer.Heatmap.prototype,
+    'setBlur',
+    ol.layer.Heatmap.prototype.setBlur);
 
 goog.exportProperty(
     ol.layer.Heatmap.prototype,

@@ -131,7 +131,7 @@ goog.addDependency('../../../ol/ol/math.js', ['ol.math'], ['goog.asserts'], fals
 goog.addDependency('../../../ol/ol/object.js', ['ol.Object', 'ol.ObjectEvent', 'ol.ObjectEventType'], ['goog.events', 'goog.events.Event', 'goog.functions', 'goog.object', 'goog.string', 'ol.Observable'], false);
 goog.addDependency('../../../ol/ol/observable.js', ['ol.Observable'], ['goog.events', 'goog.events.EventTarget', 'goog.events.EventType'], false);
 goog.addDependency('../../../ol/ol/ol.js', ['ol'], ['goog.userAgent'], false);
-goog.addDependency('../../../ol/ol/overlay.js', ['ol.Overlay', 'ol.OverlayPositioning', 'ol.OverlayProperty'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.style', 'ol.Coordinate', 'ol.Map', 'ol.MapEventType', 'ol.Object'], false);
+goog.addDependency('../../../ol/ol/overlay.js', ['ol.Overlay', 'ol.OverlayPositioning', 'ol.OverlayProperty'], ['goog.asserts', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.style', 'ol.Coordinate', 'ol.Map', 'ol.MapEventType', 'ol.Object', 'ol.animation', 'ol.dom', 'ol.extent'], false);
 goog.addDependency('../../../ol/ol/pixel.js', ['ol.Pixel'], [], false);
 goog.addDependency('../../../ol/ol/pointer/eventsource.js', ['ol.pointer.EventSource'], ['goog.events.BrowserEvent', 'goog.object'], false);
 goog.addDependency('../../../ol/ol/pointer/mousesource.js', ['ol.pointer.MouseSource'], ['goog.object', 'ol.pointer.EventSource'], false);

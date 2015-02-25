@@ -7611,6 +7611,10 @@
                     <a href="ol.layer.Heatmap.html#get">get</a>
                 </li>
             
+                <li data-name="ol.layer.Heatmap#getBlur" class="unstable">
+                    <a href="ol.layer.Heatmap.html#getBlur">getBlur</a>
+                </li>
+            
                 <li data-name="ol.layer.Heatmap#getBrightness" class="unstable">
                     <a href="ol.layer.Heatmap.html#getBrightness">getBrightness</a>
                 </li>
@@ -7689,6 +7693,10 @@
             
                 <li data-name="ol.layer.Heatmap#set" class="unstable">
                     <a href="ol.layer.Heatmap.html#set">set</a>
+                </li>
+            
+                <li data-name="ol.layer.Heatmap#setBlur" class="unstable">
+                    <a href="ol.layer.Heatmap.html#setBlur">setBlur</a>
                 </li>
             
                 <li data-name="ol.layer.Heatmap#setBrightness" class="unstable">
@@ -7770,6 +7778,10 @@
             
                 <li data-name="event:change Triggered when the state of the source changes." class="unstable">
                     change Triggered when the state of the source changes.
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:blur" class="unstable">
+                    change:blur
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:change:brightness" class="unstable">
@@ -12313,6 +12325,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.source.WMTS.optionsFromCapabilities" class="unstable">
+                    <a href="ol.source.WMTS.html#optionsFromCapabilities">optionsFromCapabilities</a>
+                </li>
+            
                 <li data-name="ol.source.WMTS#changed" class="unstable">
                     <a href="ol.source.WMTS.html#changed">changed</a>
                 </li>
@@ -13312,6 +13328,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet" class="unstable">
+                    <a href="ol.tilegrid.WMTS.html#createFromCapabilitiesMatrixSet">createFromCapabilitiesMatrixSet</a>
+                </li>
             
                 <li data-name="ol.tilegrid.WMTS#getMatrixIds" class="unstable">
                     <a href="ol.tilegrid.WMTS.html#getMatrixIds">getMatrixIds</a>
@@ -14334,6 +14354,174 @@ should be set to <code>2</code>. Default is <code>1</code>.</p></td>
         <dl>
             
 <dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="optionsFromCapabilities">
+            ol.source.WMTS.optionsFromCapabilities<span class="signature">(wmtsCap, config)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="olx.source.html#WMTSOptions">olx.source.WMTSOptions</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/source/wmtssource.js, line 264
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>wmtsCap</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>An object representing the capabilities document.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>config</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Configuration properties for the layer.  Defaults for
+                 the layer will apply if not provided.</p>
+<p>Required config properties:
+layer - {String} The layer identifier.</p>
+<p>Optional config properties:
+matrixSet - {String} The matrix set identifier, required if there is
+     more than one matrix set in the layer capabilities.
+projection - {String} The desired CRS when no matrixSet is specified.
+    eg: &quot;EPSG:3857&quot;. If the desired projection is not available,
+    an error is thrown.
+requestEncoding - {String} url encoding format for the layer. Default is the
+    first tile url format found in the GetCapabilities response.
+style - {String} The name of the style
+format - {String} Image format for the layer. Default is the first
+    format returned in the GetCapabilities response.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+WMTS source options object.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
     <div class="nameContainer inherited">
         
         <h4 class="name" id="changed">
@@ -14520,7 +14708,7 @@ Attributions.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 202
+            src/ol/source/wmtssource.js, line 204
         </div>
         
         
@@ -16112,7 +16300,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 233
+            src/ol/source/wmtssource.js, line 235
         </div>
         
         
@@ -16236,7 +16424,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Feb 20 2015 07:42:49 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Feb 25 2015 17:33:04 GMT+0100 (CET)
         </footer>
     </div>
 </div>

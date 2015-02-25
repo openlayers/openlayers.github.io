@@ -1,3 +1,4 @@
+var blur = $('#blur');
 var radius = $('#radius');
 
 var vector = new ol.layer.Heatmap({
@@ -6,6 +7,7 @@ var vector = new ol.layer.Heatmap({
     projection: 'EPSG:3857',
     url: 'data/kml/2012_Earthquakes_Mag5.kml'
   }),
+  blur: parseInt(blur.val(), 10),
   radius: parseInt(radius.val(), 10)
 });
 
@@ -33,6 +35,10 @@ var map = new ol.Map({
   })
 });
 
+
+blur.on('input', function() {
+  vector.setBlur(parseInt(blur.val(), 10));
+});
 
 radius.on('input', function() {
   vector.setRadius(parseInt(radius.val(), 10));

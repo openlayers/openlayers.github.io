@@ -7611,6 +7611,10 @@
                     <a href="ol.layer.Heatmap.html#get">get</a>
                 </li>
             
+                <li data-name="ol.layer.Heatmap#getBlur" class="unstable">
+                    <a href="ol.layer.Heatmap.html#getBlur">getBlur</a>
+                </li>
+            
                 <li data-name="ol.layer.Heatmap#getBrightness" class="unstable">
                     <a href="ol.layer.Heatmap.html#getBrightness">getBrightness</a>
                 </li>
@@ -7689,6 +7693,10 @@
             
                 <li data-name="ol.layer.Heatmap#set" class="unstable">
                     <a href="ol.layer.Heatmap.html#set">set</a>
+                </li>
+            
+                <li data-name="ol.layer.Heatmap#setBlur" class="unstable">
+                    <a href="ol.layer.Heatmap.html#setBlur">setBlur</a>
                 </li>
             
                 <li data-name="ol.layer.Heatmap#setBrightness" class="unstable">
@@ -7770,6 +7778,10 @@
             
                 <li data-name="event:change Triggered when the state of the source changes." class="unstable">
                     change Triggered when the state of the source changes.
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:blur" class="unstable">
+                    change:blur
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:change:brightness" class="unstable">
@@ -12313,6 +12325,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.source.WMTS.optionsFromCapabilities" class="unstable">
+                    <a href="ol.source.WMTS.html#optionsFromCapabilities">optionsFromCapabilities</a>
+                </li>
+            
                 <li data-name="ol.source.WMTS#changed" class="unstable">
                     <a href="ol.source.WMTS.html#changed">changed</a>
                 </li>
@@ -13313,6 +13329,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet" class="unstable">
+                    <a href="ol.tilegrid.WMTS.html#createFromCapabilitiesMatrixSet">createFromCapabilitiesMatrixSet</a>
+                </li>
+            
                 <li data-name="ol.tilegrid.WMTS#getMatrixIds" class="unstable">
                     <a href="ol.tilegrid.WMTS.html#getMatrixIds">getMatrixIds</a>
                 </li>
@@ -13535,7 +13555,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 38
+            src/ol/layer/heatmaplayer.js, line 39
         </div>
         
         
@@ -14150,6 +14170,19 @@ outside of this extent.</p></td>
         </li>
     
         <li class="unstable">
+            <code>change:blur</code>
+            
+                (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
+              
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+            
+        </li>
+    
+        <li class="unstable">
             <code>change:brightness</code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
@@ -14410,6 +14443,22 @@ outside of this extent.</p></td>
 
   <tbody>
   
+
+    <tr class="unstable">
+      <td class="name"><code>blur</code></td>
+      <td class="type">
+      
+      
+<span class="param-type">number</span>
+
+
+      
+      </td>
+      <td class="setter">yes</td>
+      <td class="event"><code>change:blur</code></td>
+      <td class="description last"><p>Blur size in pixels.</p></td>
+    </tr>
+    
 
     <tr class="unstable">
       <td class="name"><code>brightness</code></td>
@@ -15046,6 +15095,88 @@ Value.
         
             
 <dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="getBlur">
+            getBlur<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/layer/heatmaplayer.js, line 194
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Blur size in pixels.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
     <div class="nameContainer inherited">
         
         <h4 class="name" id="getBrightness">
@@ -15308,7 +15439,7 @@ The layer extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 190
+            src/ol/layer/heatmaplayer.js, line 208
         </div>
         
         
@@ -15896,7 +16027,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 205
+            src/ol/layer/heatmaplayer.js, line 223
         </div>
         
         
@@ -16994,6 +17125,126 @@ Unique key for the listener.
         
             
 <dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="setBlur">
+            setBlur<span class="signature">(blur)</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/layer/heatmaplayer.js, line 279
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>blur</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Blur size in pixels.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
     <div class="nameContainer inherited">
         
         <h4 class="name" id="setBrightness">
@@ -17399,7 +17650,7 @@ will be visible at all extents.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 260
+            src/ol/layer/heatmaplayer.js, line 293
         </div>
         
         
@@ -18132,7 +18383,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/heatmaplayer.js, line 274
+            src/ol/layer/heatmaplayer.js, line 307
         </div>
         
         
@@ -19273,7 +19524,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Feb 20 2015 07:42:21 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Feb 25 2015 17:32:46 GMT+0100 (CET)
         </footer>
     </div>
 </div>

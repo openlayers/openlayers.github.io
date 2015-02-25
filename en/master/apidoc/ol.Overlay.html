@@ -7611,6 +7611,10 @@
                     <a href="ol.layer.Heatmap.html#get">get</a>
                 </li>
             
+                <li data-name="ol.layer.Heatmap#getBlur" class="unstable">
+                    <a href="ol.layer.Heatmap.html#getBlur">getBlur</a>
+                </li>
+            
                 <li data-name="ol.layer.Heatmap#getBrightness" class="unstable">
                     <a href="ol.layer.Heatmap.html#getBrightness">getBrightness</a>
                 </li>
@@ -7689,6 +7693,10 @@
             
                 <li data-name="ol.layer.Heatmap#set" class="unstable">
                     <a href="ol.layer.Heatmap.html#set">set</a>
+                </li>
+            
+                <li data-name="ol.layer.Heatmap#setBlur" class="unstable">
+                    <a href="ol.layer.Heatmap.html#setBlur">setBlur</a>
                 </li>
             
                 <li data-name="ol.layer.Heatmap#setBrightness" class="unstable">
@@ -7770,6 +7778,10 @@
             
                 <li data-name="event:change Triggered when the state of the source changes." class="unstable">
                     change Triggered when the state of the source changes.
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:blur" class="unstable">
+                    change:blur
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:change:brightness" class="unstable">
@@ -12313,6 +12325,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.source.WMTS.optionsFromCapabilities" class="unstable">
+                    <a href="ol.source.WMTS.html#optionsFromCapabilities">optionsFromCapabilities</a>
+                </li>
+            
                 <li data-name="ol.source.WMTS#changed" class="unstable">
                     <a href="ol.source.WMTS.html#changed">changed</a>
                 </li>
@@ -13313,6 +13329,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet" class="unstable">
+                    <a href="ol.tilegrid.WMTS.html#createFromCapabilitiesMatrixSet">createFromCapabilitiesMatrixSet</a>
+                </li>
+            
                 <li data-name="ol.tilegrid.WMTS#getMatrixIds" class="unstable">
                     <a href="ol.tilegrid.WMTS.html#getMatrixIds">getMatrixIds</a>
                 </li>
@@ -13539,7 +13559,7 @@ map.addOverlay(popup);</code></pre></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 69
+            src/ol/overlay.js, line 72
         </div>
         
         
@@ -13803,6 +13823,110 @@ placed in the container with CSS class name <code>ol-overlaycontainer</code>.</p
 Default is <code>true</code>. If the overlay is placed in the same container as that of
 the controls (see the <code>stopEvent</code> option) you will probably set <code>insertFirst</code>
 to <code>true</code> so the overlay is displayed below the controls.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>autoPan</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>If set to <code>true</code> the map is panned when calling <code>setPosition</code>, so that the
+overlay is entirely visible in the current viewport.
+The default is <code>false</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>autoPanAnimation</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="olx.animation.html#PanOptions">olx.animation.PanOptions</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The options used to create a <code>ol.animation.pan</code> animation. This animation
+is only used when <code>autoPan</code> is enabled. By default the default options for
+<code>ol.animation.pan</code> are used. If set to <code>null</code> the panning is not animated.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>autoPanMargin</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The margin (in pixels) between the overlay and the borders of the map when
+autopanning. The default is <code>20</code>.</p></td>
         </tr>
 	
 	
@@ -14509,7 +14633,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 159
+            src/ol/overlay.js, line 182
         </div>
         
         
@@ -14681,7 +14805,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 175
+            src/ol/overlay.js, line 198
         </div>
         
         
@@ -14765,7 +14889,7 @@ The map that the overlay is part of.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 191
+            src/ol/overlay.js, line 214
         </div>
         
         
@@ -14849,7 +14973,7 @@ The offset.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 208
+            src/ol/overlay.js, line 231
         </div>
         
         
@@ -14934,7 +15058,7 @@ The spatial point that the overlay is
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 225
+            src/ol/overlay.js, line 248
         </div>
         
         
@@ -15714,7 +15838,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 311
+            src/ol/overlay.js, line 337
         </div>
         
         
@@ -15839,7 +15963,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 326
+            src/ol/overlay.js, line 352
         </div>
         
         
@@ -15964,7 +16088,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 341
+            src/ol/overlay.js, line 367
         </div>
         
         
@@ -16086,7 +16210,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 358
+            src/ol/overlay.js, line 384
         </div>
         
         
@@ -16213,7 +16337,7 @@ overlay is hidden.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/overlay.js, line 374
+            src/ol/overlay.js, line 483
         </div>
         
         
@@ -16974,7 +17098,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Fri Feb 20 2015 07:42:26 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Feb 25 2015 17:32:50 GMT+0100 (CET)
         </footer>
     </div>
 </div>
