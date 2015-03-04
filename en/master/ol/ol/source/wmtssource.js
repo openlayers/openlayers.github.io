@@ -5,6 +5,7 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.math');
 goog.require('goog.object');
+goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('ol.TileUrlFunction');
 goog.require('ol.TileUrlFunctionType');
@@ -40,8 +41,17 @@ ol.source.WMTS = function(options) {
 
   // TODO: add support for TileMatrixLimits
 
-  var version = goog.isDef(options.version) ? options.version : '1.0.0';
-  var format = goog.isDef(options.format) ? options.format : 'image/jpeg';
+  /**
+   * @private
+   * @type {string}
+   */
+  this.version_ = goog.isDef(options.version) ? options.version : '1.0.0';
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.format_ = goog.isDef(options.format) ? options.format : 'image/jpeg';
 
   /**
    * @private
@@ -56,6 +66,24 @@ ol.source.WMTS = function(options) {
   this.coordKeyPrefix_ = '';
   this.resetCoordKeyPrefix_();
 
+  /**
+   * @private
+   * @type {string}
+   */
+  this.layer_ = options.layer;
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.matrixSet_ = options.matrixSet;
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.style_ = options.style;
+
   // FIXME: should we guess this requestEncoding from options.url(s)
   //        structure? that would mean KVP only if a template is not provided.
   var requestEncoding = goog.isDef(options.requestEncoding) ?
@@ -69,17 +97,17 @@ ol.source.WMTS = function(options) {
   // context property names are lower case to allow for a case insensitive
   // replacement as some services use different naming conventions
   var context = {
-    'layer': options.layer,
-    'style': options.style,
-    'tilematrixset': options.matrixSet
+    'layer': this.layer_,
+    'style': this.style_,
+    'tilematrixset': this.matrixSet_
   };
 
   if (requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
     goog.object.extend(context, {
       'Service': 'WMTS',
       'Request': 'GetTile',
-      'Version': version,
-      'Format': format
+      'Version': this.version_,
+      'Format': this.format_
     });
   }
 
@@ -207,10 +235,55 @@ ol.source.WMTS.prototype.getDimensions = function() {
 
 
 /**
+ * @return {string} Format.
+ * @api
+ */
+ol.source.WMTS.prototype.getFormat = function() {
+  return this.format_;
+};
+
+
+/**
  * @inheritDoc
  */
 ol.source.WMTS.prototype.getKeyZXY = function(z, x, y) {
   return this.coordKeyPrefix_ + goog.base(this, 'getKeyZXY', z, x, y);
+};
+
+
+/**
+ * @return {string} Layer.
+ * @api
+ */
+ol.source.WMTS.prototype.getLayer = function() {
+  return this.layer_;
+};
+
+
+/**
+ * @return {string} MatrixSet.
+ * @api
+ */
+ol.source.WMTS.prototype.getMatrixSet = function() {
+  return this.matrixSet_;
+};
+
+
+/**
+ * @return {string} Style.
+ * @api
+ */
+ol.source.WMTS.prototype.getStyle = function() {
+  return this.style_;
+};
+
+
+/**
+ * @return {string} Version.
+ * @api
+ */
+ol.source.WMTS.prototype.getVersion = function() {
+  return this.version_;
 };
 
 
@@ -350,8 +423,22 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   /** @type {!Array.<string>} */
   var urls = [];
   var requestEncoding = config['requestEncoding'];
-  if (wmtsCap['OperationsMetadata'].hasOwnProperty('GetTile') &&
-      requestEncoding != 'REST') {
+  requestEncoding = goog.isDef(requestEncoding) ? requestEncoding : '';
+
+  goog.asserts.assert(
+      goog.array.contains(['REST', 'RESTful', 'KVP', ''], requestEncoding));
+
+  if (!wmtsCap['OperationsMetadata'].hasOwnProperty('GetTile') ||
+      goog.string.startsWith(requestEncoding, 'REST')) {
+    // Add REST tile resource url
+    requestEncoding = ol.source.WMTSRequestEncoding.REST;
+    goog.array.forEach(l['ResourceURL'], function(elt, index, array) {
+      if (elt['resourceType'] == 'tile') {
+        format = elt['format'];
+        urls.push(/** @type {string} */ (elt['template']));
+      }
+    });
+  } else {
     var gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
 
     var constraint = goog.array.find(gets[0]['Constraint'],
@@ -364,15 +451,6 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
       urls.push(/** @type {string} */ (gets[0]['href']));
 
     }
-  } else {
-    // Add REST tile resource url
-    requestEncoding = ol.source.WMTSRequestEncoding.REST;
-    goog.array.forEach(l['ResourceURL'], function(elt, index, array) {
-      if (elt['resourceType'] == 'tile') {
-        format = elt['format'];
-        urls.push(/** @type {string} */ (elt['template']));
-      }
-    });
   }
   goog.asserts.assert(urls.length > 0);
 

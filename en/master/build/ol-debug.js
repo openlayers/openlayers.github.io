@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.2.1-68-g4c1be59
+// Version: v3.3.0-12-g41fe72f
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -18651,7 +18651,8 @@ ol.proj.Units = {
   DEGREES: 'degrees',
   FEET: 'ft',
   METERS: 'm',
-  PIXELS: 'pixels'
+  PIXELS: 'pixels',
+  USFEET: 'us-ft'
 };
 
 
@@ -18666,6 +18667,7 @@ ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] =
     2 * Math.PI * ol.sphere.NORMAL.radius / 360;
 ol.proj.METERS_PER_UNIT[ol.proj.Units.FEET] = 0.3048;
 ol.proj.METERS_PER_UNIT[ol.proj.Units.METERS] = 1;
+ol.proj.METERS_PER_UNIT[ol.proj.Units.USFEET] = 1200 / 3937;
 
 
 
@@ -44786,7 +44788,7 @@ ol.MapBrowserEventHandler = function(map) {
   this.dragging_ = false;
 
   /**
-   * @type {Array.<number>}
+   * @type {Array.<goog.events.Key>}
    * @private
    */
   this.dragListenerKeys_ = null;
@@ -45163,7 +45165,7 @@ goog.provide('ol.source.State');
 
 goog.require('goog.events.EventType');
 goog.require('ol.Attribution');
-goog.require('ol.Observable');
+goog.require('ol.Object');
 goog.require('ol.proj');
 
 
@@ -45197,7 +45199,7 @@ ol.source.SourceOptions;
  * Base class for {@link ol.layer.Layer} sources.
  *
  * @constructor
- * @extends {ol.Observable}
+ * @extends {ol.Object}
  * @fires change Triggered when the state of the source changes.
  * @param {ol.source.SourceOptions} options Source options.
  * @api stable
@@ -45233,7 +45235,7 @@ ol.source.Source = function(options) {
       options.state : ol.source.State.READY;
 
 };
-goog.inherits(ol.source.Source, ol.Observable);
+goog.inherits(ol.source.Source, ol.Object);
 
 
 /**
@@ -48258,7 +48260,7 @@ ol.style.IconImage_ = function(image, src, crossOrigin, imageState) {
 
   /**
    * @private
-   * @type {Array.<number>}
+   * @type {Array.<goog.events.Key>}
    */
   this.imageListenerKeys_ = null;
 
@@ -49849,16 +49851,6 @@ ol.events.condition.click = function(mapBrowserEvent) {
 
 
 /**
- * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
- * @return {boolean} True if the browser event is a `mousemove` event.
- * @api
- */
-ol.events.condition.mouseMove = function(mapBrowserEvent) {
-  return mapBrowserEvent.originalEvent.type == 'mousemove';
-};
-
-
-/**
  * Always false.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} False.
@@ -49866,6 +49858,16 @@ ol.events.condition.mouseMove = function(mapBrowserEvent) {
  * @api stable
  */
 ol.events.condition.never = goog.functions.FALSE;
+
+
+/**
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} True if the browser event is a `pointermove` event.
+ * @api
+ */
+ol.events.condition.pointerMove = function(mapBrowserEvent) {
+  return mapBrowserEvent.type == 'pointermove';
+};
 
 
 /**
@@ -64985,6 +64987,7 @@ ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
 
 
 /**
+ * Get a reference to the wrapped source.
  * @return {ol.source.Vector} Source.
  * @api
  */
@@ -77297,6 +77300,7 @@ goog.require('ol.TransformFunction');
 goog.require('ol.control.Control');
 goog.require('ol.css');
 goog.require('ol.proj');
+goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Units');
 goog.require('ol.sphere.NORMAL');
 
@@ -77511,20 +77515,18 @@ ol.control.ScaleLine.prototype.updateElement_ = function() {
     pointResolution *= Math.PI * cosLatitude * ol.sphere.NORMAL.radius / 180;
     projectionUnits = ol.proj.Units.METERS;
 
-  } else if ((projectionUnits == ol.proj.Units.FEET ||
-      projectionUnits == ol.proj.Units.METERS) &&
+  } else if (projectionUnits != ol.proj.Units.DEGREES &&
       units == ol.control.ScaleLineUnits.DEGREES) {
 
-    // Convert pointResolution from meters or feet to degrees
+    // Convert pointResolution from other units to degrees
     if (goog.isNull(this.toEPSG4326_)) {
       this.toEPSG4326_ = ol.proj.getTransformFromProjections(
           projection, ol.proj.get('EPSG:4326'));
     }
     cosLatitude = Math.cos(goog.math.toRadians(this.toEPSG4326_(center)[1]));
     var radius = ol.sphere.NORMAL.radius;
-    if (projectionUnits == ol.proj.Units.FEET) {
-      radius /= 0.3048;
-    }
+    goog.asserts.assert(goog.isDef(ol.proj.METERS_PER_UNIT[projectionUnits]));
+    radius /= ol.proj.METERS_PER_UNIT[projectionUnits];
     pointResolution *= 180 / (Math.PI * cosLatitude * radius);
     projectionUnits = ol.proj.Units.DEGREES;
 
@@ -85013,13 +85015,13 @@ ol.format.GMLBase = function(opt_options) {
 
   /**
    * @protected
-   * @type {string}
+   * @type {Array.<string>|string|undefined}
    */
   this.featureType = options.featureType;
 
   /**
    * @protected
-   * @type {string}
+   * @type {Object.<string, string>|string|undefined}
    */
   this.featureNS = options.featureNS;
 
@@ -85075,18 +85077,52 @@ ol.format.GMLBase.prototype.readFeaturesInternal = function(node, objectStack) {
     var context = objectStack[0];
     goog.asserts.assert(goog.isObject(context));
     var featureType = context['featureType'];
-    if (!goog.isDef(featureType) && !goog.isNull(node.firstElementChild)) {
-      var member = node.firstElementChild;
-      featureType = member.nodeName.split(':').pop();
+    var featureNS = context['featureNS'];
+    var i, ii, prefix = 'p', defaultPrefix = 'p0';
+    if (!goog.isDef(featureType) && goog.isDefAndNotNull(node.childNodes)) {
+      featureType = [], featureNS = {};
+      for (i = 0, ii = node.childNodes.length; i < ii; ++i) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 1) {
+          var ft = child.nodeName.split(':').pop();
+          if (goog.array.indexOf(featureType, ft) === -1) {
+            var key;
+            if (!goog.object.contains(featureNS, child.namespaceURI)) {
+              key = prefix + goog.object.getCount(featureNS);
+              featureNS[key] = child.namespaceURI;
+            } else {
+              key = goog.object.findKey(featureNS, function(value) {
+                return value === child.namespaceURI;
+              });
+            }
+            featureType.push(key + ':' + ft);
+          }
+        }
+      }
       context['featureType'] = featureType;
-      context['featureNS'] = member.namespaceURI;
+      context['featureNS'] = featureNS;
     }
-    var parsers = {};
+    if (goog.isString(featureNS)) {
+      var ns = featureNS;
+      featureNS = {};
+      featureNS[defaultPrefix] = ns;
+    }
     var parsersNS = {};
-    parsers[featureType] = (localName == 'featureMembers') ?
-        ol.xml.makeArrayPusher(this.readFeatureElement, this) :
-        ol.xml.makeReplacer(this.readFeatureElement, this);
-    parsersNS[context['featureNS']] = parsers;
+    var featureTypes = goog.isArray(featureType) ? featureType : [featureType];
+    for (var p in featureNS) {
+      var parsers = {};
+      for (i = 0, ii = featureTypes.length; i < ii; ++i) {
+        var featurePrefix = featureTypes[i].indexOf(':') === -1 ?
+            defaultPrefix : featureTypes[i].split(':')[0];
+        if (featurePrefix === p) {
+          parsers[featureTypes[i].split(':').pop()] =
+              (localName == 'featureMembers') ?
+              ol.xml.makeArrayPusher(this.readFeatureElement, this) :
+              ol.xml.makeReplacer(this.readFeatureElement, this);
+        }
+      }
+      parsersNS[featureNS[p]] = parsers;
+    }
     features = ol.xml.pushParseAndPop([], parsersNS, node, objectStack);
   }
   if (!goog.isDef(features)) {
@@ -95978,13 +96014,13 @@ ol.format.WFS = function(opt_options) {
 
   /**
    * @private
-   * @type {string}
+   * @type {Array.<string>|string|undefined}
    */
   this.featureType_ = options.featureType;
 
   /**
    * @private
-   * @type {string}
+   * @type {Object.<string, string>|string|undefined}
    */
   this.featureNS_ = options.featureNS;
 
@@ -100038,7 +100074,7 @@ ol.Image = function(extent, resolution, pixelRatio, attributions, src,
 
   /**
    * @private
-   * @type {Array.<number>}
+   * @type {Array.<goog.events.Key>}
    */
   this.imageListenerKeys_ = null;
 
@@ -100224,7 +100260,7 @@ ol.ImageTile = function(tileCoord, state, src, crossOrigin, tileLoadFunction) {
 
   /**
    * @private
-   * @type {Array.<number>}
+   * @type {Array.<goog.events.Key>}
    */
   this.imageListenerKeys_ = null;
 
@@ -104116,6 +104152,7 @@ ol.interaction.DragRotateAndZoom.handleDownEvent_ = function(mapBrowserEvent) {
 };
 
 goog.provide('ol.DrawEvent');
+goog.provide('ol.DrawEventType');
 goog.provide('ol.interaction.Draw');
 
 goog.require('goog.asserts');
@@ -105541,6 +105578,7 @@ goog.provide('ol.interaction.Select');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
+goog.require('goog.events.Event');
 goog.require('goog.functions');
 goog.require('ol.CollectionEventType');
 goog.require('ol.Feature');
@@ -105549,6 +105587,51 @@ goog.require('ol.events.condition');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.interaction.Interaction');
 goog.require('ol.style.Style');
+
+
+/**
+ * @enum {string}
+ */
+ol.SelectEventType = {
+  /**
+   * Triggered when feature(s) has been (de)selected.
+   * @event ol.SelectEvent#select
+   * @api
+   */
+  SELECT: 'select'
+};
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.interaction.Select} instances are instances of
+ * this type.
+ *
+ * @param {string} type The event type.
+ * @param {Array.<ol.Feature>} selected Selected features.
+ * @param {Array.<ol.Feature>} deselected Deselected features.
+ * @extends {goog.events.Event}
+ * @constructor
+ */
+ol.SelectEvent = function(type, selected, deselected) {
+  goog.base(this, type);
+
+  /**
+   * Selected features array.
+   * @type {Array.<ol.Feature>}
+   * @api
+   */
+  this.selected = selected;
+
+  /**
+   * Deselected features array.
+   * @type {Array.<ol.Feature>}
+   * @api
+   */
+  this.deselected = deselected;
+};
+goog.inherits(ol.SelectEvent, goog.events.Event);
 
 
 
@@ -105678,6 +105761,7 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
   var features = this.featureOverlay_.getFeatures();
   var /** @type {Array.<ol.Feature>} */ deselected = [];
   var /** @type {Array.<ol.Feature>} */ selected = [];
+  var change = false;
   if (set) {
     // Replace the currently selected feature(s) with the feature(s) at the
     // pixel, or clear the selected feature(s) if there is no feature at
@@ -105689,19 +105773,18 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
          */
         function(feature, layer) {
           selected.push(feature);
-        }, undefined, this.layerFilter_);
+          return !this.multi_;
+        }, this, this.layerFilter_);
     if (selected.length > 0 && features.getLength() == 1 &&
         features.item(0) == selected[0]) {
       // No change
     } else {
+      change = true;
       if (features.getLength() !== 0) {
+        deselected = Array.prototype.concat(features.getArray());
         features.clear();
       }
-      if (this.multi_) {
-        features.extend(selected);
-      } else if (selected.length > 0) {
-        features.push(selected[0]);
-      }
+      features.extend(selected);
     }
   } else {
     // Modify the currently selected feature(s).
@@ -105727,8 +105810,15 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
       features.remove(deselected[i]);
     }
     features.extend(selected);
+    if (selected.length > 0 || deselected.length > 0) {
+      change = true;
+    }
   }
-  return ol.events.condition.mouseMove(mapBrowserEvent);
+  if (change) {
+    this.dispatchEvent(
+        new ol.SelectEvent(ol.SelectEventType.SELECT, selected, deselected));
+  }
+  return ol.events.condition.pointerMove(mapBrowserEvent);
 };
 
 
@@ -107602,6 +107692,16 @@ ol.source.Cluster = function(options) {
       ol.source.Cluster.prototype.onSourceChange_, this);
 };
 goog.inherits(ol.source.Cluster, ol.source.Vector);
+
+
+/**
+ * Get a reference to the wrapped source.
+ * @return {ol.source.Vector} Source.
+ * @api
+ */
+ol.source.Cluster.prototype.getSource = function() {
+  return this.source_;
+};
 
 
 /**
@@ -111658,6 +111758,243 @@ ol.source.Stamen.ATTRIBUTIONS = [
   ol.source.OSM.ATTRIBUTION
 ];
 
+goog.provide('ol.source.TileArcGISRest');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.math');
+goog.require('goog.object');
+goog.require('goog.string');
+goog.require('goog.uri.utils');
+goog.require('ol');
+goog.require('ol.TileCoord');
+goog.require('ol.TileUrlFunction');
+goog.require('ol.extent');
+goog.require('ol.proj');
+goog.require('ol.source.TileImage');
+goog.require('ol.tilecoord');
+
+
+
+/**
+ * @classdesc
+ * Layer source for tile data from ArcGIS Rest services. Map and Image
+ * Services are supported.
+ *
+ * For cached ArcGIS services, better performance is available using the
+ * {@link ol.source.XYZ} data source.
+ *
+ * @constructor
+ * @extends {ol.source.TileImage}
+ * @param {olx.source.TileArcGISRestOptions=} opt_options Tile ArcGIS Rest
+ *     options.
+ * @api
+ */
+ol.source.TileArcGISRest = function(opt_options) {
+
+  var options = goog.isDef(opt_options) ? opt_options : {};
+
+  var params = goog.isDef(options.params) ? options.params : {};
+
+  goog.base(this, {
+    attributions: options.attributions,
+    logo: options.logo,
+    projection: options.projection,
+    tileGrid: options.tileGrid,
+    tileLoadFunction: options.tileLoadFunction,
+    tileUrlFunction: goog.bind(this.tileUrlFunction_, this)
+  });
+
+  var urls = options.urls;
+  if (!goog.isDef(urls) && goog.isDef(options.url)) {
+    urls = ol.TileUrlFunction.expandUrl(options.url);
+  }
+
+  /**
+   * @private
+   * @type {!Array.<string>}
+   */
+  this.urls_ = goog.isDefAndNotNull(urls) ? urls : [];
+
+  /**
+   * @private
+   * @type {Object}
+   */
+  this.params_ = params;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.tmpExtent_ = ol.extent.createEmpty();
+
+};
+goog.inherits(ol.source.TileArcGISRest, ol.source.TileImage);
+
+
+/**
+ * Get the user-provided params, i.e. those passed to the constructor through
+ * the "params" option, and possibly updated using the updateParams method.
+ * @return {Object} Params.
+ * @api
+ */
+ol.source.TileArcGISRest.prototype.getParams = function() {
+  return this.params_;
+};
+
+
+/**
+ * @param {ol.TileCoord} tileCoord Tile coordinate.
+ * @param {number} tileSize Tile size.
+ * @param {ol.Extent} tileExtent Tile extent.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @param {Object} params Params.
+ * @return {string|undefined} Request URL.
+ * @private
+ */
+ol.source.TileArcGISRest.prototype.getRequestUrl_ =
+    function(tileCoord, tileSize, tileExtent,
+        pixelRatio, projection, params) {
+
+  var urls = this.urls_;
+  if (goog.array.isEmpty(urls)) {
+    return undefined;
+  }
+
+  // ArcGIS Server only wants the numeric portion of the projection ID.
+  var srid = projection.getCode().split(':').pop();
+
+  params['SIZE'] = tileSize + ',' + tileSize;
+  params['BBOX'] = tileExtent.join(',');
+  params['BBOXSR'] = srid;
+  params['IMAGESR'] = srid;
+  params['DPI'] = 90 * pixelRatio;
+
+  var url;
+  if (urls.length == 1) {
+    url = urls[0];
+  } else {
+    var index = goog.math.modulo(ol.tilecoord.hash(tileCoord), urls.length);
+    url = urls[index];
+  }
+
+  if (!goog.string.endsWith(url, '/')) {
+    url = url + '/';
+  }
+
+  // If a MapServer, use export. If an ImageServer, use exportImage.
+  if (goog.string.endsWith(url, 'MapServer/')) {
+    url = url + 'export';
+  }
+  else if (goog.string.endsWith(url, 'ImageServer/')) {
+    url = url + 'exportImage';
+  }
+  else {
+    goog.asserts.fail('Unknown Rest Service', url);
+  }
+
+  return goog.uri.utils.appendParamsFromMap(url, params);
+};
+
+
+/**
+ * @param {number} z Z.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {number} Size.
+ */
+ol.source.TileArcGISRest.prototype.getTilePixelSize =
+    function(z, pixelRatio, projection) {
+  var tileSize = goog.base(this, 'getTilePixelSize', z, pixelRatio, projection);
+  if (pixelRatio == 1) {
+    return tileSize;
+  } else {
+    return (tileSize * pixelRatio + 0.5) | 0;
+  }
+};
+
+
+/**
+ * Return the URLs used for this ArcGIS source.
+ * @return {!Array.<string>} URLs.
+ * @api stable
+ */
+ol.source.TileArcGISRest.prototype.getUrls = function() {
+  return this.urls_;
+};
+
+
+/**
+ * @param {string|undefined} url URL.
+ * @api stable
+ */
+ol.source.TileArcGISRest.prototype.setUrl = function(url) {
+  var urls = goog.isDef(url) ? ol.TileUrlFunction.expandUrl(url) : null;
+  this.setUrls(urls);
+};
+
+
+/**
+ * @param {Array.<string>|undefined} urls URLs.
+ * @api stable
+ */
+ol.source.TileArcGISRest.prototype.setUrls = function(urls) {
+  this.urls_ = goog.isDefAndNotNull(urls) ? urls : [];
+  this.changed();
+};
+
+
+/**
+ * @param {ol.TileCoord} tileCoord Tile coordinate.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {string|undefined} Tile URL.
+ * @private
+ */
+ol.source.TileArcGISRest.prototype.tileUrlFunction_ =
+    function(tileCoord, pixelRatio, projection) {
+
+  var tileGrid = this.getTileGrid();
+  if (goog.isNull(tileGrid)) {
+    tileGrid = this.getTileGridForProjection(projection);
+  }
+
+  if (tileGrid.getResolutions().length <= tileCoord[0]) {
+    return undefined;
+  }
+
+  var tileExtent = tileGrid.getTileCoordExtent(
+      tileCoord, this.tmpExtent_);
+  var tileSize = tileGrid.getTileSize(tileCoord[0]);
+
+  if (pixelRatio != 1) {
+    tileSize = (tileSize * pixelRatio + 0.5) | 0;
+  }
+
+  // Apply default params and override with user specified values.
+  var baseParams = {
+    'F': 'image',
+    'FORMAT': 'PNG32',
+    'TRANSPARENT': true
+  };
+  goog.object.extend(baseParams, this.params_);
+
+  return this.getRequestUrl_(tileCoord, tileSize, tileExtent,
+      pixelRatio, projection, baseParams);
+};
+
+
+/**
+ * Update the user-provided params.
+ * @param {Object} params Params.
+ * @api stable
+ */
+ol.source.TileArcGISRest.prototype.updateParams = function(params) {
+  goog.object.extend(this.params_, params);
+  this.changed();
+};
+
 goog.provide('ol.source.TileDebug');
 
 goog.require('ol.Tile');
@@ -113165,6 +113502,7 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.math');
 goog.require('goog.object');
+goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('ol.TileUrlFunction');
 goog.require('ol.TileUrlFunctionType');
@@ -113200,8 +113538,17 @@ ol.source.WMTS = function(options) {
 
   // TODO: add support for TileMatrixLimits
 
-  var version = goog.isDef(options.version) ? options.version : '1.0.0';
-  var format = goog.isDef(options.format) ? options.format : 'image/jpeg';
+  /**
+   * @private
+   * @type {string}
+   */
+  this.version_ = goog.isDef(options.version) ? options.version : '1.0.0';
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.format_ = goog.isDef(options.format) ? options.format : 'image/jpeg';
 
   /**
    * @private
@@ -113216,6 +113563,24 @@ ol.source.WMTS = function(options) {
   this.coordKeyPrefix_ = '';
   this.resetCoordKeyPrefix_();
 
+  /**
+   * @private
+   * @type {string}
+   */
+  this.layer_ = options.layer;
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.matrixSet_ = options.matrixSet;
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.style_ = options.style;
+
   // FIXME: should we guess this requestEncoding from options.url(s)
   //        structure? that would mean KVP only if a template is not provided.
   var requestEncoding = goog.isDef(options.requestEncoding) ?
@@ -113229,17 +113594,17 @@ ol.source.WMTS = function(options) {
   // context property names are lower case to allow for a case insensitive
   // replacement as some services use different naming conventions
   var context = {
-    'layer': options.layer,
-    'style': options.style,
-    'tilematrixset': options.matrixSet
+    'layer': this.layer_,
+    'style': this.style_,
+    'tilematrixset': this.matrixSet_
   };
 
   if (requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
     goog.object.extend(context, {
       'Service': 'WMTS',
       'Request': 'GetTile',
-      'Version': version,
-      'Format': format
+      'Version': this.version_,
+      'Format': this.format_
     });
   }
 
@@ -113367,10 +113732,55 @@ ol.source.WMTS.prototype.getDimensions = function() {
 
 
 /**
+ * @return {string} Format.
+ * @api
+ */
+ol.source.WMTS.prototype.getFormat = function() {
+  return this.format_;
+};
+
+
+/**
  * @inheritDoc
  */
 ol.source.WMTS.prototype.getKeyZXY = function(z, x, y) {
   return this.coordKeyPrefix_ + goog.base(this, 'getKeyZXY', z, x, y);
+};
+
+
+/**
+ * @return {string} Layer.
+ * @api
+ */
+ol.source.WMTS.prototype.getLayer = function() {
+  return this.layer_;
+};
+
+
+/**
+ * @return {string} MatrixSet.
+ * @api
+ */
+ol.source.WMTS.prototype.getMatrixSet = function() {
+  return this.matrixSet_;
+};
+
+
+/**
+ * @return {string} Style.
+ * @api
+ */
+ol.source.WMTS.prototype.getStyle = function() {
+  return this.style_;
+};
+
+
+/**
+ * @return {string} Version.
+ * @api
+ */
+ol.source.WMTS.prototype.getVersion = function() {
+  return this.version_;
 };
 
 
@@ -113510,8 +113920,22 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   /** @type {!Array.<string>} */
   var urls = [];
   var requestEncoding = config['requestEncoding'];
-  if (wmtsCap['OperationsMetadata'].hasOwnProperty('GetTile') &&
-      requestEncoding != 'REST') {
+  requestEncoding = goog.isDef(requestEncoding) ? requestEncoding : '';
+
+  goog.asserts.assert(
+      goog.array.contains(['REST', 'RESTful', 'KVP', ''], requestEncoding));
+
+  if (!wmtsCap['OperationsMetadata'].hasOwnProperty('GetTile') ||
+      goog.string.startsWith(requestEncoding, 'REST')) {
+    // Add REST tile resource url
+    requestEncoding = ol.source.WMTSRequestEncoding.REST;
+    goog.array.forEach(l['ResourceURL'], function(elt, index, array) {
+      if (elt['resourceType'] == 'tile') {
+        format = elt['format'];
+        urls.push(/** @type {string} */ (elt['template']));
+      }
+    });
+  } else {
     var gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
 
     var constraint = goog.array.find(gets[0]['Constraint'],
@@ -113524,15 +113948,6 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
       urls.push(/** @type {string} */ (gets[0]['href']));
 
     }
-  } else {
-    // Add REST tile resource url
-    requestEncoding = ol.source.WMTSRequestEncoding.REST;
-    goog.array.forEach(l['ResourceURL'], function(elt, index, array) {
-      if (elt['resourceType'] == 'tile') {
-        format = elt['format'];
-        urls.push(/** @type {string} */ (elt['template']));
-      }
-    });
   }
   goog.asserts.assert(urls.length > 0);
 
@@ -114843,6 +115258,7 @@ goog.require('ol.DeviceOrientation');
 goog.require('ol.DeviceOrientationProperty');
 goog.require('ol.DragBoxEvent');
 goog.require('ol.DrawEvent');
+goog.require('ol.DrawEventType');
 goog.require('ol.Extent');
 goog.require('ol.Feature');
 goog.require('ol.FeatureOverlay');
@@ -114990,6 +115406,7 @@ goog.require('ol.source.Stamen');
 goog.require('ol.source.State');
 goog.require('ol.source.StaticVector');
 goog.require('ol.source.Tile');
+goog.require('ol.source.TileArcGISRest');
 goog.require('ol.source.TileDebug');
 goog.require('ol.source.TileImage');
 goog.require('ol.source.TileJSON');
@@ -116585,6 +117002,11 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'getSource',
+    ol.source.Cluster.prototype.getSource);
+
+goog.exportProperty(
     ol.source.FormatVector.prototype,
     'readFeatures',
     ol.source.FormatVector.prototype.readFeatures);
@@ -116790,6 +117212,36 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
+    'ol.source.TileArcGISRest',
+    ol.source.TileArcGISRest,
+    OPENLAYERS);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getParams',
+    ol.source.TileArcGISRest.prototype.getParams);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getUrls',
+    ol.source.TileArcGISRest.prototype.getUrls);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'setUrl',
+    ol.source.TileArcGISRest.prototype.setUrl);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'setUrls',
+    ol.source.TileArcGISRest.prototype.setUrls);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'updateParams',
+    ol.source.TileArcGISRest.prototype.updateParams);
+
+goog.exportSymbol(
     'ol.source.TileDebug',
     ol.source.TileDebug,
     OPENLAYERS);
@@ -116988,6 +117440,31 @@ goog.exportProperty(
     ol.source.WMTS.prototype,
     'getDimensions',
     ol.source.WMTS.prototype.getDimensions);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'getFormat',
+    ol.source.WMTS.prototype.getFormat);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'getLayer',
+    ol.source.WMTS.prototype.getLayer);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'getMatrixSet',
+    ol.source.WMTS.prototype.getMatrixSet);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'getStyle',
+    ol.source.WMTS.prototype.getStyle);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'getVersion',
+    ol.source.WMTS.prototype.getVersion);
 
 goog.exportProperty(
     ol.source.WMTS.prototype,
@@ -117653,6 +118130,16 @@ goog.exportSymbol(
     'ol.interaction.Pointer.handleEvent',
     ol.interaction.Pointer.handleEvent,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.SelectEvent.prototype,
+    'selected',
+    ol.SelectEvent.prototype.selected);
+
+goog.exportProperty(
+    ol.SelectEvent.prototype,
+    'deselected',
+    ol.SelectEvent.prototype.deselected);
 
 goog.exportSymbol(
     'ol.interaction.Select',
@@ -118560,13 +119047,13 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.events.condition.mouseMove',
-    ol.events.condition.mouseMove,
+    'ol.events.condition.never',
+    ol.events.condition.never,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.events.condition.never',
-    ol.events.condition.never,
+    'ol.events.condition.pointerMove',
+    ol.events.condition.pointerMove,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -119616,6 +120103,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Source.prototype,
+    'bindTo',
+    ol.source.Source.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
+    'get',
+    ol.source.Source.prototype.get);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
+    'getKeys',
+    ol.source.Source.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
+    'getProperties',
+    ol.source.Source.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
+    'set',
+    ol.source.Source.prototype.set);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
+    'setProperties',
+    ol.source.Source.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
+    'unbind',
+    ol.source.Source.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
+    'unbindAll',
+    ol.source.Source.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
     'changed',
     ol.source.Source.prototype.changed);
 
@@ -119663,6 +120190,46 @@ goog.exportProperty(
     ol.source.Tile.prototype,
     'getState',
     ol.source.Tile.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'bindTo',
+    ol.source.Tile.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'get',
+    ol.source.Tile.prototype.get);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'getKeys',
+    ol.source.Tile.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'getProperties',
+    ol.source.Tile.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'set',
+    ol.source.Tile.prototype.set);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'setProperties',
+    ol.source.Tile.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'unbind',
+    ol.source.Tile.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
+    'unbindAll',
+    ol.source.Tile.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Tile.prototype,
@@ -119718,6 +120285,46 @@ goog.exportProperty(
     ol.source.TileImage.prototype,
     'getState',
     ol.source.TileImage.prototype.getState);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'bindTo',
+    ol.source.TileImage.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'get',
+    ol.source.TileImage.prototype.get);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'getKeys',
+    ol.source.TileImage.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'getProperties',
+    ol.source.TileImage.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'set',
+    ol.source.TileImage.prototype.set);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'setProperties',
+    ol.source.TileImage.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'unbind',
+    ol.source.TileImage.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'unbindAll',
+    ol.source.TileImage.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileImage.prototype,
@@ -119796,6 +120403,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.BingMaps.prototype,
+    'bindTo',
+    ol.source.BingMaps.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
+    'get',
+    ol.source.BingMaps.prototype.get);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
+    'getKeys',
+    ol.source.BingMaps.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
+    'getProperties',
+    ol.source.BingMaps.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
+    'set',
+    ol.source.BingMaps.prototype.set);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
+    'setProperties',
+    ol.source.BingMaps.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
+    'unbind',
+    ol.source.BingMaps.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
+    'unbindAll',
+    ol.source.BingMaps.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
     'changed',
     ol.source.BingMaps.prototype.changed);
 
@@ -119843,6 +120490,46 @@ goog.exportProperty(
     ol.source.Vector.prototype,
     'getState',
     ol.source.Vector.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'bindTo',
+    ol.source.Vector.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'get',
+    ol.source.Vector.prototype.get);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'getKeys',
+    ol.source.Vector.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'getProperties',
+    ol.source.Vector.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'set',
+    ol.source.Vector.prototype.set);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'setProperties',
+    ol.source.Vector.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'unbind',
+    ol.source.Vector.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'unbindAll',
+    ol.source.Vector.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Vector.prototype,
@@ -119956,6 +120643,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
+    'bindTo',
+    ol.source.Cluster.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'get',
+    ol.source.Cluster.prototype.get);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'getKeys',
+    ol.source.Cluster.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'getProperties',
+    ol.source.Cluster.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'set',
+    ol.source.Cluster.prototype.set);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'setProperties',
+    ol.source.Cluster.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'unbind',
+    ol.source.Cluster.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'unbindAll',
+    ol.source.Cluster.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
     'changed',
     ol.source.Cluster.prototype.changed);
 
@@ -120063,6 +120790,46 @@ goog.exportProperty(
     ol.source.FormatVector.prototype,
     'getState',
     ol.source.FormatVector.prototype.getState);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'bindTo',
+    ol.source.FormatVector.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'get',
+    ol.source.FormatVector.prototype.get);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'getKeys',
+    ol.source.FormatVector.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'getProperties',
+    ol.source.FormatVector.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'set',
+    ol.source.FormatVector.prototype.set);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'setProperties',
+    ol.source.FormatVector.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'unbind',
+    ol.source.FormatVector.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'unbindAll',
+    ol.source.FormatVector.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.FormatVector.prototype,
@@ -120181,6 +120948,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.StaticVector.prototype,
+    'bindTo',
+    ol.source.StaticVector.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
+    'get',
+    ol.source.StaticVector.prototype.get);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
+    'getKeys',
+    ol.source.StaticVector.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
+    'getProperties',
+    ol.source.StaticVector.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
+    'set',
+    ol.source.StaticVector.prototype.set);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
+    'setProperties',
+    ol.source.StaticVector.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
+    'unbind',
+    ol.source.StaticVector.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
+    'unbindAll',
+    ol.source.StaticVector.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
     'changed',
     ol.source.StaticVector.prototype.changed);
 
@@ -120293,6 +121100,46 @@ goog.exportProperty(
     ol.source.GeoJSON.prototype,
     'getState',
     ol.source.GeoJSON.prototype.getState);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'bindTo',
+    ol.source.GeoJSON.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'get',
+    ol.source.GeoJSON.prototype.get);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'getKeys',
+    ol.source.GeoJSON.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'getProperties',
+    ol.source.GeoJSON.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'set',
+    ol.source.GeoJSON.prototype.set);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'setProperties',
+    ol.source.GeoJSON.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'unbind',
+    ol.source.GeoJSON.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'unbindAll',
+    ol.source.GeoJSON.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.GeoJSON.prototype,
@@ -120411,6 +121258,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.GPX.prototype,
+    'bindTo',
+    ol.source.GPX.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
+    'get',
+    ol.source.GPX.prototype.get);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
+    'getKeys',
+    ol.source.GPX.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
+    'getProperties',
+    ol.source.GPX.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
+    'set',
+    ol.source.GPX.prototype.set);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
+    'setProperties',
+    ol.source.GPX.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
+    'unbind',
+    ol.source.GPX.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
+    'unbindAll',
+    ol.source.GPX.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
     'changed',
     ol.source.GPX.prototype.changed);
 
@@ -120526,6 +121413,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.IGC.prototype,
+    'bindTo',
+    ol.source.IGC.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'get',
+    ol.source.IGC.prototype.get);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'getKeys',
+    ol.source.IGC.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'getProperties',
+    ol.source.IGC.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'set',
+    ol.source.IGC.prototype.set);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'setProperties',
+    ol.source.IGC.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'unbind',
+    ol.source.IGC.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'unbindAll',
+    ol.source.IGC.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
     'changed',
     ol.source.IGC.prototype.changed);
 
@@ -120573,6 +121500,46 @@ goog.exportProperty(
     ol.source.Image.prototype,
     'getState',
     ol.source.Image.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'bindTo',
+    ol.source.Image.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'get',
+    ol.source.Image.prototype.get);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'getKeys',
+    ol.source.Image.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'getProperties',
+    ol.source.Image.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'set',
+    ol.source.Image.prototype.set);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'setProperties',
+    ol.source.Image.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'unbind',
+    ol.source.Image.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'unbindAll',
+    ol.source.Image.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Image.prototype,
@@ -120626,6 +121593,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageCanvas.prototype,
+    'bindTo',
+    ol.source.ImageCanvas.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
+    'get',
+    ol.source.ImageCanvas.prototype.get);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
+    'getKeys',
+    ol.source.ImageCanvas.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
+    'getProperties',
+    ol.source.ImageCanvas.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
+    'set',
+    ol.source.ImageCanvas.prototype.set);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
+    'setProperties',
+    ol.source.ImageCanvas.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
+    'unbind',
+    ol.source.ImageCanvas.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
+    'unbindAll',
+    ol.source.ImageCanvas.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
     'changed',
     ol.source.ImageCanvas.prototype.changed);
 
@@ -120673,6 +121680,46 @@ goog.exportProperty(
     ol.source.ImageMapGuide.prototype,
     'getState',
     ol.source.ImageMapGuide.prototype.getState);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'bindTo',
+    ol.source.ImageMapGuide.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'get',
+    ol.source.ImageMapGuide.prototype.get);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'getKeys',
+    ol.source.ImageMapGuide.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'getProperties',
+    ol.source.ImageMapGuide.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'set',
+    ol.source.ImageMapGuide.prototype.set);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'setProperties',
+    ol.source.ImageMapGuide.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'unbind',
+    ol.source.ImageMapGuide.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'unbindAll',
+    ol.source.ImageMapGuide.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.ImageMapGuide.prototype,
@@ -120726,6 +121773,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageStatic.prototype,
+    'bindTo',
+    ol.source.ImageStatic.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
+    'get',
+    ol.source.ImageStatic.prototype.get);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
+    'getKeys',
+    ol.source.ImageStatic.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
+    'getProperties',
+    ol.source.ImageStatic.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
+    'set',
+    ol.source.ImageStatic.prototype.set);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
+    'setProperties',
+    ol.source.ImageStatic.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
+    'unbind',
+    ol.source.ImageStatic.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
+    'unbindAll',
+    ol.source.ImageStatic.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
     'changed',
     ol.source.ImageStatic.prototype.changed);
 
@@ -120776,6 +121863,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageVector.prototype,
+    'bindTo',
+    ol.source.ImageVector.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
+    'get',
+    ol.source.ImageVector.prototype.get);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
+    'getKeys',
+    ol.source.ImageVector.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
+    'getProperties',
+    ol.source.ImageVector.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
+    'set',
+    ol.source.ImageVector.prototype.set);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
+    'setProperties',
+    ol.source.ImageVector.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
+    'unbind',
+    ol.source.ImageVector.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
+    'unbindAll',
+    ol.source.ImageVector.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
     'changed',
     ol.source.ImageVector.prototype.changed);
 
@@ -120823,6 +121950,46 @@ goog.exportProperty(
     ol.source.ImageWMS.prototype,
     'getState',
     ol.source.ImageWMS.prototype.getState);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'bindTo',
+    ol.source.ImageWMS.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'get',
+    ol.source.ImageWMS.prototype.get);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'getKeys',
+    ol.source.ImageWMS.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'getProperties',
+    ol.source.ImageWMS.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'set',
+    ol.source.ImageWMS.prototype.set);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'setProperties',
+    ol.source.ImageWMS.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'unbind',
+    ol.source.ImageWMS.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'unbindAll',
+    ol.source.ImageWMS.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.ImageWMS.prototype,
@@ -120941,6 +122108,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.KML.prototype,
+    'bindTo',
+    ol.source.KML.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
+    'get',
+    ol.source.KML.prototype.get);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
+    'getKeys',
+    ol.source.KML.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
+    'getProperties',
+    ol.source.KML.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
+    'set',
+    ol.source.KML.prototype.set);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
+    'setProperties',
+    ol.source.KML.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
+    'unbind',
+    ol.source.KML.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
+    'unbindAll',
+    ol.source.KML.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
     'changed',
     ol.source.KML.prototype.changed);
 
@@ -121008,6 +122215,46 @@ goog.exportProperty(
     ol.source.XYZ.prototype,
     'getState',
     ol.source.XYZ.prototype.getState);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'bindTo',
+    ol.source.XYZ.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'get',
+    ol.source.XYZ.prototype.get);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getKeys',
+    ol.source.XYZ.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getProperties',
+    ol.source.XYZ.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'set',
+    ol.source.XYZ.prototype.set);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setProperties',
+    ol.source.XYZ.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'unbind',
+    ol.source.XYZ.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'unbindAll',
+    ol.source.XYZ.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.XYZ.prototype,
@@ -121091,6 +122338,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.MapQuest.prototype,
+    'bindTo',
+    ol.source.MapQuest.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'get',
+    ol.source.MapQuest.prototype.get);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'getKeys',
+    ol.source.MapQuest.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'getProperties',
+    ol.source.MapQuest.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'set',
+    ol.source.MapQuest.prototype.set);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'setProperties',
+    ol.source.MapQuest.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'unbind',
+    ol.source.MapQuest.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
+    'unbindAll',
+    ol.source.MapQuest.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
     'changed',
     ol.source.MapQuest.prototype.changed);
 
@@ -121168,6 +122455,46 @@ goog.exportProperty(
     ol.source.OSM.prototype,
     'getState',
     ol.source.OSM.prototype.getState);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'bindTo',
+    ol.source.OSM.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'get',
+    ol.source.OSM.prototype.get);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'getKeys',
+    ol.source.OSM.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'getProperties',
+    ol.source.OSM.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'set',
+    ol.source.OSM.prototype.set);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'setProperties',
+    ol.source.OSM.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'unbind',
+    ol.source.OSM.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
+    'unbindAll',
+    ol.source.OSM.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.OSM.prototype,
@@ -121286,6 +122613,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.OSMXML.prototype,
+    'bindTo',
+    ol.source.OSMXML.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
+    'get',
+    ol.source.OSMXML.prototype.get);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
+    'getKeys',
+    ol.source.OSMXML.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
+    'getProperties',
+    ol.source.OSMXML.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
+    'set',
+    ol.source.OSMXML.prototype.set);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
+    'setProperties',
+    ol.source.OSMXML.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
+    'unbind',
+    ol.source.OSMXML.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
+    'unbindAll',
+    ol.source.OSMXML.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
     'changed',
     ol.source.OSMXML.prototype.changed);
 
@@ -121391,6 +122758,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ServerVector.prototype,
+    'bindTo',
+    ol.source.ServerVector.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'get',
+    ol.source.ServerVector.prototype.get);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'getKeys',
+    ol.source.ServerVector.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'getProperties',
+    ol.source.ServerVector.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'set',
+    ol.source.ServerVector.prototype.set);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'setProperties',
+    ol.source.ServerVector.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'unbind',
+    ol.source.ServerVector.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'unbindAll',
+    ol.source.ServerVector.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
     'changed',
     ol.source.ServerVector.prototype.changed);
 
@@ -121471,6 +122878,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Stamen.prototype,
+    'bindTo',
+    ol.source.Stamen.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'get',
+    ol.source.Stamen.prototype.get);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'getKeys',
+    ol.source.Stamen.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'getProperties',
+    ol.source.Stamen.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'set',
+    ol.source.Stamen.prototype.set);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'setProperties',
+    ol.source.Stamen.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'unbind',
+    ol.source.Stamen.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'unbindAll',
+    ol.source.Stamen.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
     'changed',
     ol.source.Stamen.prototype.changed);
 
@@ -121500,6 +122947,121 @@ goog.exportProperty(
     ol.source.Stamen.prototype.unByKey);
 
 goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getTileLoadFunction',
+    ol.source.TileArcGISRest.prototype.getTileLoadFunction);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getTileUrlFunction',
+    ol.source.TileArcGISRest.prototype.getTileUrlFunction);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'setTileLoadFunction',
+    ol.source.TileArcGISRest.prototype.setTileLoadFunction);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'setTileUrlFunction',
+    ol.source.TileArcGISRest.prototype.setTileUrlFunction);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getTileGrid',
+    ol.source.TileArcGISRest.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getAttributions',
+    ol.source.TileArcGISRest.prototype.getAttributions);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getLogo',
+    ol.source.TileArcGISRest.prototype.getLogo);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getProjection',
+    ol.source.TileArcGISRest.prototype.getProjection);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getState',
+    ol.source.TileArcGISRest.prototype.getState);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'bindTo',
+    ol.source.TileArcGISRest.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'get',
+    ol.source.TileArcGISRest.prototype.get);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getKeys',
+    ol.source.TileArcGISRest.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getProperties',
+    ol.source.TileArcGISRest.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'set',
+    ol.source.TileArcGISRest.prototype.set);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'setProperties',
+    ol.source.TileArcGISRest.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'unbind',
+    ol.source.TileArcGISRest.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'unbindAll',
+    ol.source.TileArcGISRest.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'changed',
+    ol.source.TileArcGISRest.prototype.changed);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'getRevision',
+    ol.source.TileArcGISRest.prototype.getRevision);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'on',
+    ol.source.TileArcGISRest.prototype.on);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'once',
+    ol.source.TileArcGISRest.prototype.once);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'un',
+    ol.source.TileArcGISRest.prototype.un);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
+    'unByKey',
+    ol.source.TileArcGISRest.prototype.unByKey);
+
+goog.exportProperty(
     ol.source.TileDebug.prototype,
     'getTileGrid',
     ol.source.TileDebug.prototype.getTileGrid);
@@ -121523,6 +123085,46 @@ goog.exportProperty(
     ol.source.TileDebug.prototype,
     'getState',
     ol.source.TileDebug.prototype.getState);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'bindTo',
+    ol.source.TileDebug.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'get',
+    ol.source.TileDebug.prototype.get);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'getKeys',
+    ol.source.TileDebug.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'getProperties',
+    ol.source.TileDebug.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'set',
+    ol.source.TileDebug.prototype.set);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'setProperties',
+    ol.source.TileDebug.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'unbind',
+    ol.source.TileDebug.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'unbindAll',
+    ol.source.TileDebug.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileDebug.prototype,
@@ -121601,6 +123203,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileJSON.prototype,
+    'bindTo',
+    ol.source.TileJSON.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'get',
+    ol.source.TileJSON.prototype.get);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'getKeys',
+    ol.source.TileJSON.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'getProperties',
+    ol.source.TileJSON.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'set',
+    ol.source.TileJSON.prototype.set);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'setProperties',
+    ol.source.TileJSON.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'unbind',
+    ol.source.TileJSON.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'unbindAll',
+    ol.source.TileJSON.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
     'changed',
     ol.source.TileJSON.prototype.changed);
 
@@ -121653,6 +123295,46 @@ goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
     'getState',
     ol.source.TileUTFGrid.prototype.getState);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'bindTo',
+    ol.source.TileUTFGrid.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'get',
+    ol.source.TileUTFGrid.prototype.get);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'getKeys',
+    ol.source.TileUTFGrid.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'getProperties',
+    ol.source.TileUTFGrid.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'set',
+    ol.source.TileUTFGrid.prototype.set);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'setProperties',
+    ol.source.TileUTFGrid.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'unbind',
+    ol.source.TileUTFGrid.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'unbindAll',
+    ol.source.TileUTFGrid.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
@@ -121723,6 +123405,46 @@ goog.exportProperty(
     ol.source.TileVector.prototype,
     'getState',
     ol.source.TileVector.prototype.getState);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'bindTo',
+    ol.source.TileVector.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'get',
+    ol.source.TileVector.prototype.get);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'getKeys',
+    ol.source.TileVector.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'getProperties',
+    ol.source.TileVector.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'set',
+    ol.source.TileVector.prototype.set);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'setProperties',
+    ol.source.TileVector.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'unbind',
+    ol.source.TileVector.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'unbindAll',
+    ol.source.TileVector.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
@@ -121798,6 +123520,46 @@ goog.exportProperty(
     ol.source.TileWMS.prototype,
     'getState',
     ol.source.TileWMS.prototype.getState);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'bindTo',
+    ol.source.TileWMS.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'get',
+    ol.source.TileWMS.prototype.get);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'getKeys',
+    ol.source.TileWMS.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'getProperties',
+    ol.source.TileWMS.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'set',
+    ol.source.TileWMS.prototype.set);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'setProperties',
+    ol.source.TileWMS.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'unbind',
+    ol.source.TileWMS.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
+    'unbindAll',
+    ol.source.TileWMS.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileWMS.prototype,
@@ -121916,6 +123678,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TopoJSON.prototype,
+    'bindTo',
+    ol.source.TopoJSON.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'get',
+    ol.source.TopoJSON.prototype.get);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'getKeys',
+    ol.source.TopoJSON.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'getProperties',
+    ol.source.TopoJSON.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'set',
+    ol.source.TopoJSON.prototype.set);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'setProperties',
+    ol.source.TopoJSON.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'unbind',
+    ol.source.TopoJSON.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'unbindAll',
+    ol.source.TopoJSON.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
     'changed',
     ol.source.TopoJSON.prototype.changed);
 
@@ -121991,6 +123793,46 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.WMTS.prototype,
+    'bindTo',
+    ol.source.WMTS.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'get',
+    ol.source.WMTS.prototype.get);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'getKeys',
+    ol.source.WMTS.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'getProperties',
+    ol.source.WMTS.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'set',
+    ol.source.WMTS.prototype.set);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'setProperties',
+    ol.source.WMTS.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'unbind',
+    ol.source.WMTS.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
+    'unbindAll',
+    ol.source.WMTS.prototype.unbindAll);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
     'changed',
     ol.source.WMTS.prototype.changed);
 
@@ -122063,6 +123905,46 @@ goog.exportProperty(
     ol.source.Zoomify.prototype,
     'getState',
     ol.source.Zoomify.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'bindTo',
+    ol.source.Zoomify.prototype.bindTo);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'get',
+    ol.source.Zoomify.prototype.get);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'getKeys',
+    ol.source.Zoomify.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'getProperties',
+    ol.source.Zoomify.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'set',
+    ol.source.Zoomify.prototype.set);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'setProperties',
+    ol.source.Zoomify.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'unbind',
+    ol.source.Zoomify.prototype.unbind);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'unbindAll',
+    ol.source.Zoomify.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Zoomify.prototype,
