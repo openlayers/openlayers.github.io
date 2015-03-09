@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.3.0-12-g41fe72f
+// Version: v3.3.0-21-g9951c88
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -104162,7 +104162,6 @@ goog.require('ol.Collection');
 goog.require('ol.Coordinate');
 goog.require('ol.Feature');
 goog.require('ol.FeatureOverlay');
-goog.require('ol.Map');
 goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.Object');
@@ -104400,10 +104399,6 @@ ol.interaction.Draw.prototype.setMap = function(map) {
  * @api
  */
 ol.interaction.Draw.handleEvent = function(mapBrowserEvent) {
-  var map = mapBrowserEvent.map;
-  if (!map.isDef()) {
-    return true;
-  }
   var pass = true;
   if (mapBrowserEvent.type === ol.MapBrowserEvent.EventType.POINTERMOVE) {
     pass = this.handlePointerMove_(mapBrowserEvent);
@@ -105611,6 +105606,7 @@ ol.SelectEventType = {
  * @param {string} type The event type.
  * @param {Array.<ol.Feature>} selected Selected features.
  * @param {Array.<ol.Feature>} deselected Deselected features.
+ * @implements {oli.SelectEvent}
  * @extends {goog.events.Event}
  * @constructor
  */
