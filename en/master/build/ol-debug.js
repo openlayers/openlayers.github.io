@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.3.0-21-g9951c88
+// Version: v3.3.0-25-gb6adeea
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -63789,7 +63789,7 @@ function enlargedArea(a, b) {
            (Math.max(b[3], a[3]) - Math.min(b[1], a[1]));
 }
 
-function intersectionArea (a, b) {
+function intersectionArea(a, b) {
     var minX = Math.max(a[0], b[0]),
         minY = Math.max(a[1], b[1]),
         maxX = Math.min(a[2], b[2]),
@@ -63806,7 +63806,7 @@ function contains(a, b) {
            b[3] <= a[3];
 }
 
-function intersects (a, b) {
+function intersects(a, b) {
     return b[0] <= a[2] &&
            b[1] <= a[3] &&
            b[2] >= a[0] &&
@@ -63883,7 +63883,7 @@ function swap(arr, i, j) {
 
 
 // export as AMD/CommonJS module or global variable
-if (typeof define === 'function' && define.amd) define(function() { return rbush; });
+if (typeof define === 'function' && define.amd) define('rbush', function() { return rbush; });
 else if (typeof module !== 'undefined') module.exports = rbush;
 else if (typeof self !== 'undefined') self.rbush = rbush;
 else window.rbush = rbush;
@@ -75617,13 +75617,7 @@ ol.Map.prototype.handleTargetChanged_ = function() {
   // If it's not now an Element we remove the viewport from the DOM.
   // If it's an Element we append the viewport element to it.
 
-  var target = this.getTarget();
-
-  /**
-   * @type {Element}
-   */
-  var targetElement = goog.isDef(target) ?
-      goog.dom.getElement(target) : null;
+  var targetElement = this.getTargetElement();
 
   this.keyHandler_.detach();
 
@@ -76024,12 +76018,7 @@ ol.Map.prototype.skipFeature = function(feature) {
  * @api stable
  */
 ol.Map.prototype.updateSize = function() {
-  var target = this.getTarget();
-
-  /**
-   * @type {Element}
-   */
-  var targetElement = goog.isDef(target) ? goog.dom.getElement(target) : null;
+  var targetElement = this.getTargetElement();
 
   if (goog.isNull(targetElement)) {
     this.setSize(undefined);
