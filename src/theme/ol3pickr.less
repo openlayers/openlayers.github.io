@@ -1,5 +1,40 @@
 @import url('//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 
+@olgreen: #1f6b75;
+@white: #fff;
+
+button {
+  &:focus, &:active {
+    outline: none !important;
+  }
+}
+
+.description {
+  line-height: 2.2;
+
+  .lead {
+    margin-top: 10px;
+  }
+
+  #btn-compile {
+    float: right;
+    color: @olgreen;
+    background-color: transparent;
+    border-color: @olgreen;
+    width: 100%;
+    float: right;
+
+    &:hover {
+      background-color: @olgreen;
+      color: @white;
+    }
+    .reallybig {
+      font-size: 1.4em;
+      margin-left: 3px;
+    }
+  }
+}
+
 .subheading {
   width: 100%;
 
@@ -11,7 +46,10 @@
     float: right;
     margin-top: 18px;
     color: #999;
-    border-color: #aaa;
+
+    &#btn-toggleDefines {
+      margin-right: 10px;
+    }
   }
 }
 

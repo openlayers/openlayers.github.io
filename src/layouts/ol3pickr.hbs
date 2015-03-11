@@ -62,13 +62,23 @@
           }
         });
         var symbolsToggled = true, definesToggled = true;
-        $('#toggleSymbols').on('click', function () {
+        $('btn-#toggleSymbols').on('click', function () {
           $('#symbols').find('input[type="checkbox"]').prop("checked", symbolsToggled);
           symbolsToggled = !symbolsToggled;
         });
-        $('#toggleDefines').on('click', function () {
+        $('btn-#toggleDefines').on('click', function () {
           $('#defines').find('input[type="checkbox"]').prop("checked", definesToggled);
           definesToggled = !definesToggled;
+        });
+        $('#btn-toggleDefault').on('click', function () {
+          $('#defines').find('input[default="true"]').prop("checked", definesToggled);
+          definesToggled = !definesToggled;
+        });
+        $('#btn-toggleDefault').trigger('click');
+
+        $('#btn-compile').on('click', function() {
+          //console.log($('form#compile'));
+          alert("Let's get this working, ok?")
         });
       });
   </script>

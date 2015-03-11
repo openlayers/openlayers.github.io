@@ -17,8 +17,6 @@ module.exports.register = function (Handlebars, options)  {
             obj = method.slice(0, hash);
             method = method.slice(hash+1);
           }
-          console.log(method);
-          console.log(obj);
 
           var ns = ol3model.symbols[namespace];
           if (!ns) {
@@ -35,7 +33,6 @@ module.exports.register = function (Handlebars, options)  {
             if (!ns['methods']) {
               ol3model.symbols[namespace]['methods'] = [];
             }
-            console.log(ns['methods']);
             ns['methods'].push(method);
           }
           return;
@@ -52,7 +49,6 @@ module.exports.register = function (Handlebars, options)  {
       for (var i = 0; i < arr.length; i++) {
         savePropsAndMethods(arr[i].name);
       }
-      console.log(ol3model);
       // process the inside of the block
       buffer += options.fn(ol3model.symbols);
       // return the finished buffer
