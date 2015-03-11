@@ -1,0 +1,72 @@
+---
+title: 'OL3 Picker'
+layout: ol3pickr.hbs
+head:
+ - <link rel="stylesheet" href="en/<%= latest %>/css/ol.css" type="text/css">
+ - <link rel="stylesheet" href="<%= assets %>/theme/index.css" type="text/css">
+ - <link rel="stylesheet" href="<%= assets %>/theme/ol3pickr.css" type="text/css">
+---
+
+<div class='container'>
+  <div class='heading'>
+    <h1>OL3Pickr</h1>
+  </div>
+  <div class="lead">
+    Choose which OL3 components to compile into your custom build of OL3.
+  </div>
+  <form action="" method="post">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class='subheading'>
+          <h3>Symbols</h3>
+          <button type="button" id="toggleSymbols" class="btn btn-default btn-sm">Toggle All</button>
+        </div>
+        <ul class="list-unstyled well" id="symbols">
+          {{#filterNamespace ol3pickr.symbols}}
+            {{#eachProperty this}}
+            <li class="mainClass">
+              <input type="checkbox" /> <label class="tree-toggler">{{key}}</label>
+              <ul class="list-unstyled submenu nav nav-list tree">
+                {{#eachProperty value}}
+                  {{#isnt key 'methods'}}
+                    <li>
+                      <input type="checkbox" /> {{key}}
+                      <ul class="list-unstyled submenu tree">
+                        {{#each value}}
+                        <li>
+                          <input type="checkbox" /> {{this}}
+                        </li>
+                        {{/each}}
+                      </ul>
+                    </li>
+                  {{else}}
+                    {{#each value}}
+                      <li>
+                        <input type="checkbox" /> {{this}}
+                      </li>
+                    {{/each}}
+                  {{/isnt}}
+                {{/eachProperty}}
+              </ul>
+            </li>
+            {{/eachProperty}}
+          {{/filterNamespace}}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <div class='subheading'>
+          <h3>Defines</h3>
+          <button type="button" id="toggleDefines" class="btn btn-default btn-sm">Toggle All</button>
+        </div>
+        <ul class="list-unstyled well" id="defines">
+          {{#each ol3pickr.defines}}
+            <li class="mainClass">
+              <input type="checkbox" {{#if default}}checked{{/if}}/>
+              <label data-container="body" data-toggle="popover" data-placement="right" title="{{name}}" data-content="{{description}}">{{name}}</label>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+  </form>
+</div>
+
