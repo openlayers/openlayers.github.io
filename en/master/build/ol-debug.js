@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.3.0-25-gb6adeea
+// Version: v3.3.0-29-gb26bea8
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -76294,7 +76294,9 @@ ol.Overlay = function(options) {
    * @private
    * @type {Element}
    */
-  this.element_ = goog.dom.createElement(goog.dom.TagName.DIV);
+  this.element_ = goog.dom.createDom(goog.dom.TagName.DIV, {
+    'class': 'ol-overlay-container'
+  });
   this.element_.style.position = 'absolute';
 
   /**
