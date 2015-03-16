@@ -4525,6 +4525,10 @@
                     <a href="ol.geom.LineString.html#clone">clone</a>
                 </li>
             
+                <li data-name="ol.geom.LineString#forEachSegment" class="unstable">
+                    <a href="ol.geom.LineString.html#forEachSegment">forEachSegment</a>
+                </li>
+            
                 <li data-name="ol.geom.LineString#getClosestPoint" class="">
                     <a href="ol.geom.LineString.html#getClosestPoint">getClosestPoint</a>
                 </li>
@@ -14906,7 +14910,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 28
+            src/ol/geom/linestring.js, line 29
         </div>
         
         
@@ -15090,7 +15094,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 67
+            src/ol/geom/linestring.js, line 68
         </div>
         
         
@@ -15427,7 +15431,7 @@ then use this function on the clone.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 83
+            src/ol/geom/linestring.js, line 84
         </div>
         
         
@@ -15491,6 +15495,168 @@ then use this function on the clone.</p>
 
 <h5>Returns:</h5>
 Clone.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="forEachSegment">
+            forEachSegment<span class="signature">(callback, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{T|boolean}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/geom/linestring.js, line 124
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+    <div class="description">
+        <p>Iterate over each segment, calling the provided callback.
+If the callback returns a truthy value the function returns that
+value immediately. Otherwise the function returns <code>false</code>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Function
+    called for each segment.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>this</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">S</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>The object to be used as the value of 'this'
+    within callback.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Value.
 <br />
 
     
@@ -15665,7 +15831,7 @@ Closest point.
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 124
+            src/ol/geom/linestring.js, line 144
         </div>
         
         
@@ -15826,7 +15992,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 139
+            src/ol/geom/linestring.js, line 159
         </div>
         
         
@@ -16285,7 +16451,7 @@ Layout.
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 149
+            src/ol/geom/linestring.js, line 169
         </div>
         
         
@@ -16449,7 +16615,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 189
+            src/ol/geom/linestring.js, line 209
         </div>
         
         
@@ -16535,7 +16701,7 @@ Geometry type.
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 198
+            src/ol/geom/linestring.js, line 218
         </div>
         
         
@@ -17038,7 +17204,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/geom/linestring.js, line 210
+            src/ol/geom/linestring.js, line 230
         </div>
         
         
@@ -17803,7 +17969,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Mar 16 2015 10:36:32 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Mar 16 2015 14:32:26 GMT+0100 (CET)
         </footer>
     </div>
 </div>

@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.3.0-40-gdd23403
+// Version: v3.3.0-48-g3a7b975
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -52567,20 +52567,22 @@ goog.provide('ol.geom.flat.segments');
  * @param {number} offset Offset.
  * @param {number} end End.
  * @param {number} stride Stride.
- * @param {function(ol.Coordinate, ol.Coordinate): T} callback Function
+ * @param {function(this: S, ol.Coordinate, ol.Coordinate): T} callback Function
  *     called for each segment.
+ * @param {S=} opt_this The object to be used as the value of 'this'
+ *     within callback.
  * @return {T|boolean} Value.
- * @template T
+ * @template T,S
  */
 ol.geom.flat.segments.forEach =
-    function(flatCoordinates, offset, end, stride, callback) {
+    function(flatCoordinates, offset, end, stride, callback, opt_this) {
   var point1 = [flatCoordinates[offset], flatCoordinates[offset + 1]];
   var point2 = [];
   var ret;
   for (; (offset + stride) < end; offset += stride) {
     point2[0] = flatCoordinates[offset + stride];
     point2[1] = flatCoordinates[offset + stride + 1];
-    ret = callback(point1, point2);
+    ret = callback.call(opt_this, point1, point2);
     if (ret) {
       return ret;
     }
@@ -61548,6 +61550,7 @@ goog.require('ol.geom.flat.inflate');
 goog.require('ol.geom.flat.interpolate');
 goog.require('ol.geom.flat.intersectsextent');
 goog.require('ol.geom.flat.length');
+goog.require('ol.geom.flat.segments');
 goog.require('ol.geom.flat.simplify');
 
 
@@ -61641,6 +61644,25 @@ ol.geom.LineString.prototype.closestPointXY =
   return ol.geom.flat.closest.getClosestPoint(
       this.flatCoordinates, 0, this.flatCoordinates.length, this.stride,
       this.maxDelta_, false, x, y, closestPoint, minSquaredDistance);
+};
+
+
+/**
+ * Iterate over each segment, calling the provided callback.
+ * If the callback returns a truthy value the function returns that
+ * value immediately. Otherwise the function returns `false`.
+ *
+ * @param {function(this: S, ol.Coordinate, ol.Coordinate): T} callback Function
+ *     called for each segment.
+ * @param {S=} opt_this The object to be used as the value of 'this'
+ *     within callback.
+ * @return {T|boolean} Value.
+ * @template T,S
+ * @api
+ */
+ol.geom.LineString.prototype.forEachSegment = function(callback, opt_this) {
+  return ol.geom.flat.segments.forEach(this.flatCoordinates, 0,
+      this.flatCoordinates.length, this.stride, callback, opt_this);
 };
 
 
@@ -83652,7 +83674,7 @@ ol.format.GeoJSON.prototype.readProjectionFromObject = function(object) {
  *
  * @function
  * @param {ol.Feature} feature Feature.
- * @param {olx.format.WriteOptions} options Write options.
+ * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} GeoJSON.
  * @api stable
  */
@@ -83698,7 +83720,7 @@ ol.format.GeoJSON.prototype.writeFeatureObject = function(
  *
  * @function
  * @param {Array.<ol.Feature>} features Features.
- * @param {olx.format.WriteOptions} options Write options.
+ * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} GeoJSON.
  * @api stable
  */
@@ -83733,7 +83755,7 @@ ol.format.GeoJSON.prototype.writeFeaturesObject =
  *
  * @function
  * @param {ol.geom.Geometry} geometry Geometry.
- * @param {olx.format.WriteOptions} options Write options.
+ * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} GeoJSON.
  * @api stable
  */
@@ -118349,6 +118371,11 @@ goog.exportProperty(
     ol.geom.LineString.prototype,
     'clone',
     ol.geom.LineString.prototype.clone);
+
+goog.exportProperty(
+    ol.geom.LineString.prototype,
+    'forEachSegment',
+    ol.geom.LineString.prototype.forEachSegment);
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
