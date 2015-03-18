@@ -61,7 +61,7 @@
             $(this).parent().find('input[type="checkbox"]').prop("checked", false);
           }
         });
-        var symbolsToggled = true, definesToggled = true;
+        var symbolsToggled = true, definesToggled = true, definesDefaultToggled = true;
         $('#btn-toggleSymbols').on('click', function () {
           $('#symbols').find('input[type="checkbox"]').prop("checked", symbolsToggled);
           symbolsToggled = !symbolsToggled;
@@ -71,8 +71,12 @@
           definesToggled = !definesToggled;
         });
         $('#btn-toggleDefault').on('click', function () {
-          $('#defines').find('input[default="true"]').prop("checked", definesToggled);
-          definesToggled = !definesToggled;
+          if (!definesToggled) {
+            $('#btn-toggleDefines').trigger('click'); // clear if toggleAll'd
+            definesDefaultToggled = true;
+          }
+          $('#defines').find('input[default="true"]').prop("checked", definesDefaultToggled);
+          definesDefaultToggled = !definesDefaultToggled;
         });
         $('#btn-toggleDefault').trigger('click');
 
