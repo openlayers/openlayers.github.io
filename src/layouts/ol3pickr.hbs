@@ -62,11 +62,11 @@
           }
         });
         var symbolsToggled = true, definesToggled = true;
-        $('btn-#toggleSymbols').on('click', function () {
+        $('#btn-toggleSymbols').on('click', function () {
           $('#symbols').find('input[type="checkbox"]').prop("checked", symbolsToggled);
           symbolsToggled = !symbolsToggled;
         });
-        $('btn-#toggleDefines').on('click', function () {
+        $('#btn-toggleDefines').on('click', function () {
           $('#defines').find('input[type="checkbox"]').prop("checked", definesToggled);
           definesToggled = !definesToggled;
         });
