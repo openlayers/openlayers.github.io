@@ -1,0 +1,81 @@
+@import url('//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+
+@olgreen: #1f6b75;
+@white: #fff;
+
+button {
+  &:focus, &:active {
+    outline: none !important;
+  }
+}
+
+.description {
+  line-height: 2.2;
+
+  .lead {
+    margin-top: 10px;
+  }
+
+  #btn-compile {
+    float: right;
+    color: @olgreen;
+    background-color: transparent;
+    border-color: @olgreen;
+    width: 100%;
+    float: right;
+
+    &:hover {
+      background-color: @olgreen;
+      color: @white;
+    }
+    .reallybig {
+      font-size: 1.4em;
+      margin-left: 3px;
+    }
+  }
+}
+
+.subheading {
+  width: 100%;
+
+  h3 {
+    display: inline-block;
+  }
+  button {
+    display: inline-block;
+    float: right;
+    margin-top: 18px;
+    color: #999;
+
+    &#btn-toggleDefines {
+      margin-right: 10px;
+    }
+  }
+}
+
+.submenu {
+  margin-left: 5%;
+}
+
+.tree-toggler:after {
+    font-family: 'FontAwesome';
+    content: "\f056";
+    margin-left: 10px;
+    color: #aaa;
+}
+.toggleIcon.tree-toggler:after {
+    content: "\f055";
+}
+.mainClass {
+  padding: 4px 0;
+
+  li {
+    padding: 2px 0;
+  }
+}
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+h3.popover-title {
+  font-weight: bold;
+}
