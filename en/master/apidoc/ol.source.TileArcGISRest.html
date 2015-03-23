@@ -8917,6 +8917,10 @@
                     <a href="ol.proj.Projection.html#getMetersPerUnit">getMetersPerUnit</a>
                 </li>
             
+                <li data-name="ol.proj.Projection#getPointResolution" class="unstable">
+                    <a href="ol.proj.Projection.html#getPointResolution">getPointResolution</a>
+                </li>
+            
                 <li data-name="ol.proj.Projection#getUnits" class="">
                     <a href="ol.proj.Projection.html#getUnits">getUnits</a>
                 </li>
@@ -8931,6 +8935,14 @@
             
                 <li data-name="ol.proj.Projection#setExtent" class="">
                     <a href="ol.proj.Projection.html#setExtent">setExtent</a>
+                </li>
+            
+                <li data-name="ol.proj.Projection#setGetPointResolution" class="unstable">
+                    <a href="ol.proj.Projection.html#setGetPointResolution">setGetPointResolution</a>
+                </li>
+            
+                <li data-name="ol.proj.Projection#setGlobal" class="">
+                    <a href="ol.proj.Projection.html#setGlobal">setGlobal</a>
                 </li>
             
                 <li data-name="ol.proj.Projection#setWorldExtent" class="unstable">
@@ -10386,6 +10398,29 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.source.ImageEvent">
+            <span class="title">
+                <a href="ol.source.ImageEvent.html">ol.source.ImageEvent</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.source.ImageEvent#image"><a href="ol.source.ImageEvent.html#image">image</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.source.ImageMapGuide">
             <span class="title">
                 <a href="ol.source.ImageMapGuide.html">ol.source.ImageMapGuide</a>
@@ -10496,6 +10531,18 @@
             
                 <li data-name="event:change Triggered when the state of the source changes." class="unstable">
                     change Triggered when the state of the source changes.
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadend" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadend">imageloadend</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloaderror" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloaderror">imageloaderror</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadstart" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadstart">imageloadstart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="unstable">
@@ -10849,6 +10896,18 @@
             
                 <li data-name="event:change Triggered when the state of the source changes." class="unstable">
                     change Triggered when the state of the source changes.
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadend" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadend">imageloadend</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloaderror" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloaderror">imageloaderror</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadstart" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadstart">imageloadstart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="unstable">
@@ -15046,9 +15105,9 @@ Services are supported.</p>
                 
                 <p>ArcGIS Rest parameters. This field is optional. Service defaults will be
 used for any fields not specified. <code>FORMAT</code> is <code>PNG32</code> by default. <code>F</code> is <code>IMAGE</code> by
-default. <code>TRANSPARENT</code> is <code>true</code> by default.  <code>BBOX,</code>SIZE<code>,</code>BBOXSR<code>, 
+default. <code>TRANSPARENT</code> is <code>true</code> by default.  <code>BBOX,</code>SIZE<code>,</code>BBOXSR<code>,
 and</code>IMAGESR<code>will be set dynamically. Set</code>LAYERS` to
-override the default service layer visibility. See 
+override the default service layer visibility. See
 <a href="http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/">http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Export_Map/02r3000000v7000000/</a>
 for further reference.</p></td>
         </tr>
@@ -15221,6 +15280,39 @@ extent with origin at 0,0 will be used.</p></td>
                 
                 <p>ArcGIS Rest service URL for a Map Service or Image Service. The
 url should include /MapServer or /ImageServer.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>wrapX</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Whether to wrap the world horizontally. Default is <code>true</code>.</p></td>
         </tr>
 	
 	
@@ -16105,7 +16197,7 @@ Logo.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilearcgisrestsource.js, line 81
+            src/ol/source/tilearcgisrestsource.js, line 82
         </div>
         
         
@@ -16532,7 +16624,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilesource.js, line 175
+            src/ol/source/tilesource.js, line 182
         </div>
         
         
@@ -16616,7 +16708,7 @@ Tile grid.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 114
+            src/ol/source/tileimagesource.js, line 117
         </div>
         
         
@@ -16700,7 +16792,7 @@ TileLoadFunction
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 123
+            src/ol/source/tileimagesource.js, line 126
         </div>
         
         
@@ -16780,7 +16872,7 @@ TileUrlFunction
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilearcgisrestsource.js, line 163
+            src/ol/source/tilearcgisrestsource.js, line 164
         </div>
         
         
@@ -17517,7 +17609,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 156
+            src/ol/source/tileimagesource.js, line 159
         </div>
         
         
@@ -17639,7 +17731,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 167
+            src/ol/source/tileimagesource.js, line 170
         </div>
         
         
@@ -17757,7 +17849,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilearcgisrestsource.js, line 172
+            src/ol/source/tilearcgisrestsource.js, line 173
         </div>
         
         
@@ -17878,7 +17970,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilearcgisrestsource.js, line 182
+            src/ol/source/tilearcgisrestsource.js, line 183
         </div>
         
         
@@ -18509,7 +18601,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilearcgisrestsource.js, line 233
+            src/ol/source/tilearcgisrestsource.js, line 234
         </div>
         
         
@@ -18633,7 +18725,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Mar 16 2015 14:32:55 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Mar 23 2015 18:12:57 GMT+0100 (CET)
         </footer>
     </div>
 </div>

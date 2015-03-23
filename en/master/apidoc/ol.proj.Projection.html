@@ -8917,6 +8917,10 @@
                     <a href="ol.proj.Projection.html#getMetersPerUnit">getMetersPerUnit</a>
                 </li>
             
+                <li data-name="ol.proj.Projection#getPointResolution" class="unstable">
+                    <a href="ol.proj.Projection.html#getPointResolution">getPointResolution</a>
+                </li>
+            
                 <li data-name="ol.proj.Projection#getUnits" class="">
                     <a href="ol.proj.Projection.html#getUnits">getUnits</a>
                 </li>
@@ -8931,6 +8935,14 @@
             
                 <li data-name="ol.proj.Projection#setExtent" class="">
                     <a href="ol.proj.Projection.html#setExtent">setExtent</a>
+                </li>
+            
+                <li data-name="ol.proj.Projection#setGetPointResolution" class="unstable">
+                    <a href="ol.proj.Projection.html#setGetPointResolution">setGetPointResolution</a>
+                </li>
+            
+                <li data-name="ol.proj.Projection#setGlobal" class="">
+                    <a href="ol.proj.Projection.html#setGlobal">setGlobal</a>
                 </li>
             
                 <li data-name="ol.proj.Projection#setWorldExtent" class="unstable">
@@ -10386,6 +10398,29 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.source.ImageEvent">
+            <span class="title">
+                <a href="ol.source.ImageEvent.html">ol.source.ImageEvent</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.source.ImageEvent#image"><a href="ol.source.ImageEvent.html#image">image</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.source.ImageMapGuide">
             <span class="title">
                 <a href="ol.source.ImageMapGuide.html">ol.source.ImageMapGuide</a>
@@ -10496,6 +10531,18 @@
             
                 <li data-name="event:change Triggered when the state of the source changes." class="unstable">
                     change Triggered when the state of the source changes.
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadend" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadend">imageloadend</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloaderror" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloaderror">imageloaderror</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadstart" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadstart">imageloadstart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="unstable">
@@ -10849,6 +10896,18 @@
             
                 <li data-name="event:change Triggered when the state of the source changes." class="unstable">
                     change Triggered when the state of the source changes.
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadend" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadend">imageloadend</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloaderror" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloaderror">imageloaderror</a>
+                </li>
+            
+                <li data-name="ol.source.ImageEvent#event:imageloadstart" class="unstable">
+                    <a href="ol.source.ImageEvent.html#event:imageloadstart">imageloadstart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="unstable">
@@ -15180,6 +15239,41 @@ with the following aliases:</p>
         </tr>
 	
 	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>getPointResolution</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Function to determine resolution at a point. The function is called with a
+<code>{number}</code> view resolution and an <code>{ol.Coordinate}</code> as arguments, and returns
+the <code>{number}</code> resolution at the passed coordinate.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
             </td>
@@ -15265,7 +15359,7 @@ with the following aliases:</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 138
+            src/ol/proj/proj.js, line 145
         </div>
         
         
@@ -15349,7 +15443,7 @@ Code.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 148
+            src/ol/proj/proj.js, line 155
         </div>
         
         
@@ -15433,7 +15527,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 169
+            src/ol/proj/proj.js, line 176
         </div>
         
         
@@ -15507,6 +15601,172 @@ Meters.
 
         
             
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="getPointResolution">
+            getPointResolution<span class="signature">(resolution, point)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/proj/proj.js, line 332
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+    <div class="description">
+        <p>Get the resolution of the point in degrees or distance units.
+For projections with degrees as the unit this will simply return the
+provided resolution. The default for other projections is to estimate
+the point resolution by transforming the 'point' pixel to EPSG:4326,
+measuring its width and height on the normal sphere,
+and taking the average of the width and height.
+An alternative implementation may be given when constructing a
+projection. For many local projections,
+such a custom function will return the resolution unchanged.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>resolution</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Resolution in projection units.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>point</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Coordinate">ol.Coordinate</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Point.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Point resolution in projection units.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
 <dt class="">
     <div class="nameContainer">
         
@@ -15518,7 +15778,7 @@ Meters.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 158
+            src/ol/proj/proj.js, line 165
         </div>
         
         
@@ -15604,7 +15864,7 @@ Units.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 179
+            src/ol/proj/proj.js, line 186
         </div>
         
         
@@ -15688,7 +15948,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 204
+            src/ol/proj/proj.js, line 211
         </div>
         
         
@@ -15772,7 +16032,7 @@ Whether the projection is global.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 230
+            src/ol/proj/proj.js, line 247
         </div>
         
         
@@ -15886,6 +16146,252 @@ Whether the projection is global.
 <dt class="unstable">
     <div class="nameContainer">
         
+        <h4 class="name" id="setGetPointResolution">
+            setGetPointResolution<span class="signature">(func)</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/proj/proj.js, line 268
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+    <div class="description">
+        <p>Set the getPointResolution function for this projection.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>func</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Function</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="setGlobal">
+            setGlobal<span class="signature">(global)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/proj/proj.js, line 221
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+    
+    
+    <div class="description">
+        <p>Set if the projection is a global projection which spans the whole world</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>global</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Whether the projection is global.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
         <h4 class="name" id="setWorldExtent">
             setWorldExtent<span class="signature">(worldExtent)</span>
             
@@ -15896,7 +16402,7 @@ Whether the projection is global.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 241
+            src/ol/proj/proj.js, line 258
         </div>
         
         
@@ -16021,7 +16527,7 @@ Whether the projection is global.
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Mar 16 2015 14:32:44 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Mar 23 2015 18:12:24 GMT+0100 (CET)
         </footer>
     </div>
 </div>
