@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.3.0-70-gae2c914
+// Version: v3.3.0-75-g1d04eab
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -50291,13 +50291,10 @@ ol.interaction.Pointer.handleEvent = function(mapBrowserEvent) {
   var stopEvent = false;
   this.updateTrackedPointers_(mapBrowserEvent);
   if (this.handlingDownUpSequence) {
-    if (mapBrowserEvent.type ==
-        ol.MapBrowserEvent.EventType.POINTERDRAG) {
+    if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERDRAG) {
       this.handleDragEvent_(mapBrowserEvent);
-    } else if (mapBrowserEvent.type ==
-        ol.MapBrowserEvent.EventType.POINTERUP) {
-      this.handlingDownUpSequence =
-          this.handleUpEvent_(mapBrowserEvent);
+    } else if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERUP) {
+      this.handlingDownUpSequence = this.handleUpEvent_(mapBrowserEvent);
     }
   }
   if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERDOWN) {
@@ -50994,10 +50991,9 @@ ol.geom.SimpleGeometry.getLayoutForStride_ = function(stride) {
 
 /**
  * @param {ol.geom.GeometryLayout} layout Layout.
- * @private
  * @return {number} Stride.
  */
-ol.geom.SimpleGeometry.getStrideForLayout_ = function(layout) {
+ol.geom.SimpleGeometry.getStrideForLayout = function(layout) {
   if (layout == ol.geom.GeometryLayout.XY) {
     return 2;
   } else if (layout == ol.geom.GeometryLayout.XYZ) {
@@ -51130,7 +51126,7 @@ ol.geom.SimpleGeometry.prototype.getStride = function() {
  */
 ol.geom.SimpleGeometry.prototype.setFlatCoordinatesInternal =
     function(layout, flatCoordinates) {
-  this.stride = ol.geom.SimpleGeometry.getStrideForLayout_(layout);
+  this.stride = ol.geom.SimpleGeometry.getStrideForLayout(layout);
   this.layout = layout;
   this.flatCoordinates = flatCoordinates;
 };
@@ -51147,7 +51143,7 @@ ol.geom.SimpleGeometry.prototype.setLayout =
   /** @type {number} */
   var stride;
   if (goog.isDef(layout)) {
-    stride = ol.geom.SimpleGeometry.getStrideForLayout_(layout);
+    stride = ol.geom.SimpleGeometry.getStrideForLayout(layout);
   } else {
     var i;
     for (i = 0; i < nesting; ++i) {
@@ -95444,6 +95440,7 @@ goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.TextFeature');
 goog.require('ol.geom.LineString');
+goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.geom.flat.flip');
 goog.require('ol.geom.flat.inflate');
 goog.require('ol.proj');
@@ -95477,6 +95474,13 @@ ol.format.Polyline = function(opt_options) {
    * @type {number}
    */
   this.factor_ = goog.isDef(options.factor) ? options.factor : 1e5;
+
+  /**
+   * @private
+   * @type {ol.geom.GeometryLayout}
+   */
+  this.geometryLayout_ = goog.isDef(options.geometryLayout) ?
+      options.geometryLayout : ol.geom.GeometryLayout.XY;
 };
 goog.inherits(ol.format.Polyline, ol.format.TextFeature);
 
@@ -95755,15 +95759,17 @@ ol.format.Polyline.prototype.readGeometry;
  */
 ol.format.Polyline.prototype.readGeometryFromText =
     function(text, opt_options) {
-  var flatCoordinates = ol.format.Polyline.decodeDeltas(text, 2, this.factor_);
+  var stride = ol.geom.SimpleGeometry.getStrideForLayout(this.geometryLayout_);
+  var flatCoordinates = ol.format.Polyline.decodeDeltas(
+      text, stride, this.factor_);
   ol.geom.flat.flip.flipXY(
-      flatCoordinates, 0, flatCoordinates.length, 2, flatCoordinates);
+      flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
   var coordinates = ol.geom.flat.inflate.coordinates(
-      flatCoordinates, 0, flatCoordinates.length, 2);
+      flatCoordinates, 0, flatCoordinates.length, stride);
 
   return /** @type {ol.geom.Geometry} */ (
       ol.format.Feature.transformWithOptions(
-          new ol.geom.LineString(coordinates), false,
+          new ol.geom.LineString(coordinates, this.geometryLayout_), false,
           this.adaptOptions(opt_options)));
 };
 
