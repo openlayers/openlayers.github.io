@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.3.0-68-g45e9695
+// Version: v3.3.0-70-gae2c914
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -34508,6 +34508,7 @@ goog.provide('ol.tilegrid.TileGrid');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.functions');
+goog.require('goog.math');
 goog.require('ol');
 goog.require('ol.Coordinate');
 goog.require('ol.TileCoord');
@@ -34898,7 +34899,8 @@ ol.tilegrid.TileGrid.prototype.getTileSize = function(z) {
  * @return {number} Z.
  */
 ol.tilegrid.TileGrid.prototype.getZForResolution = function(resolution) {
-  return ol.array.linearFindNearest(this.resolutions_, resolution, 0);
+  var z = ol.array.linearFindNearest(this.resolutions_, resolution, 0);
+  return goog.math.clamp(z, this.minZoom, this.maxZoom);
 };
 
 
