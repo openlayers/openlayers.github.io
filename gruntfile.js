@@ -145,7 +145,9 @@ module.exports = function(grunt) {
       options: {
         layoutdir: 'src/layouts',
         assets: assets,
-        latest: latest
+        latest: latest,
+        data: 'src/ol3pickr/ol3pickr.json',
+        helpers: ['src/helpers/helper-*.js']
       },
       pages: {
         files: [{
