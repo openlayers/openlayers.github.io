@@ -1,6 +1,7 @@
 module.exports.register = function (Handlebars, options)  {
 
-   var ol3model = { 'symbols': [], 'defines': [] };
+  var ol3model = { 'symbols': [], 'defines': [] };
+  var duplicateBaseClasses = {};
 
   var savePropsAndMethods = function(str) {
     var length = str.length, foundFirst = false, namespace, method, obj = null;
@@ -26,8 +27,10 @@ module.exports.register = function (Handlebars, options)  {
           if (obj) {
             if (obj in ns) {
               ns[obj].push(method);
+              duplicateBaseClasses[namespace+'.'+obj] = true; // duplicate
             } else {
               ns[obj] = [];
+              duplicateBaseClasses[namespace+'.'+obj] = false;
             }
           } else {
             if (!ns['methods']) {
@@ -42,6 +45,20 @@ module.exports.register = function (Handlebars, options)  {
     return;
   };
 
+  var removeDuplicates = function(symbols) {
+    var uniqueSymbols = symbols;
+    for (var key in uniqueSymbols) {
+      for (var baseClass in uniqueSymbols[key]) {
+        for (var methodIndex in uniqueSymbols[key]['methods']) {
+          if (baseClass === uniqueSymbols[key]['methods'][methodIndex]) {
+            uniqueSymbols[key]['methods'].splice(methodIndex,1);
+          }
+        }
+      }
+    }
+    return uniqueSymbols;
+  };
+
   // Block Helper to categorize symbols and defines by namespace
   Handlebars.registerHelper("filterNamespace", function(arr, options) {
     if (arr && arr.length > 0) {
@@ -49,8 +66,12 @@ module.exports.register = function (Handlebars, options)  {
       for (var i = 0; i < arr.length; i++) {
         savePropsAndMethods(arr[i].name);
       }
+      // remove duplicates
+      ol3model.symbols = removeDuplicates(ol3model.symbols);
       // process the inside of the block
       buffer += options.fn(ol3model.symbols);
+
+
       // return the finished buffer
       return buffer;
     }
