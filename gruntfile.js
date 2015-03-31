@@ -100,17 +100,6 @@ module.exports = function(grunt) {
         }]
       }
     },
-    uglify: {
-      all: {
-        files: [{
-          src: [
-            'bower_components/jquery/dist/jquery.js',
-            'bower_components/bootstrap/dist/js/bootstrap.js'
-          ],
-          dest: assets + '/js/main.js'
-        }]
-      }
-    },
     copy: {
       all: {
         files: [{
