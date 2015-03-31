@@ -1,25 +1,31 @@
 ---
-title: 'OL3 Picker'
-layout: ol3pickr.hbs
+title: 'OpenLayers Custom Build'
+layout: main.hbs
 head:
  - <link rel="stylesheet" href="en/<%= latest %>/css/ol.css" type="text/css">
  - <link rel="stylesheet" href="<%= assets %>/theme/index.css" type="text/css">
- - <link rel="stylesheet" href="<%= assets %>/theme/ol3pickr.css" type="text/css">
+ - <link rel="stylesheet" href="<%= assets %>/theme/builder.css" type="text/css">
+scripts:
+- <script src="<%= assets %>/js/builder.js"></script>
 ---
 
 <div class='container'>
   <div class='heading'>
-    <h1>OL3Pickr</h1>
+    <h1>OpenLayers Online Build Tool</h1>
   </div>
   <div class="row description">
-    <div class="col-sm-7 col-md-8 lead">
+    <div class="col-sus7 col-md-8 lead">
       Choose components for your custom build of OL3.
     </div>
     <div class="col-sm-5 col-md-4">
-      <button type="submit" id="btn-compile" class="btn btn-md btn-outline">  Compile &amp; Download Selected <span class="reallybig">&#187;</span>
-      </button>
+      <a href="" type="submit" id="btn-compile" class="btn btn-md btn-outline" data-loading-text="Building...">
+        <span class="status">Compile &amp; Download Selected</span>
+        <span class="status-icon"></span>
+      </a>
     </div>
   </div>
+  <div class="build-success alert alert-success" style="display: none;" role="alert"></div>
+  <div class="build-error alert alert-success" style="display: none;" role="alert"></div>
   <form action="" method="post" id="compile">
     <div class="row">
       <div class="col-sm-6">
@@ -28,34 +34,8 @@ head:
           <button type="button" id="btn-toggleSymbols" class="btn btn-default btn-sm">Toggle All</button>
         </div>
         <ul class="list-unstyled well" id="symbols">
-          {{#filterNamespace ol3pickr.symbols}}
-            {{#eachProperty this}}
-            <li class="mainClass">
-              <input type="checkbox" /> <label class="tree-toggler">{{key}}</label>
-              <ul class="list-unstyled submenu nav nav-list tree">
-                {{#eachProperty value}}
-                  {{#isnt key 'methods'}}
-                    <li>
-                      <input type="checkbox" /> {{key}}
-                      <ul class="list-unstyled submenu tree">
-                        {{#each value}}
-                        <li>
-                          <input type="checkbox" /> {{this}}
-                        </li>
-                        {{/each}}
-                      </ul>
-                    </li>
-                  {{else}}
-                    {{#each value}}
-                      <li>
-                        <input type="checkbox" /> {{this}}
-                      </li>
-                    {{/each}}
-                  {{/isnt}}
-                {{/eachProperty}}
-              </ul>
-            </li>
-            {{/eachProperty}}
+          {{#filterNamespace info.symbols}}
+            {{> api-item.partial}}
           {{/filterNamespace}}
         </ul>
       </div>
@@ -66,10 +46,10 @@ head:
           <button type="button" id="btn-toggleDefines" class="btn btn-default btn-sm">Toggle All</button>
         </div>
         <ul class="list-unstyled well" id="defines">
-          {{#each ol3pickr.defines}}
+          {{#each info.defines}}
             <li class="mainClass">
-              <input type="checkbox" {{#if default}}default="true"{{/if}}/>
-              <label data-container="body" data-toggle="popover" data-placement="right" title="{{name}}" data-content="{{description}}">{{name}}</label>
+              <input type="checkbox" class="toggle-defines" {{#if default}}default="true"{{/if}} value="{{name}}"/>
+              <label data-container="body" data-toggle="popover" data-placement="right" title="{{name}}" data-content="{{description}}" data-trigger="hover">{{name}}</label>
             </li>
           {{/each}}
         </ul>

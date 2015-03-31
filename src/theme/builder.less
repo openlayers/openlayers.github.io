@@ -1,11 +1,31 @@
-@import url('//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
-
+@import url('https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+@import (reference) "../../bower_components/bootstrap/less/bootstrap.less";
 @olgreen: #1f6b75;
 @white: #fff;
 
 button {
   &:focus, &:active {
     outline: none !important;
+  }
+}
+
+label {
+  &:after {
+    padding-left: 5px;
+    color: lightgrey;
+    font-style: italic;
+  }
+  &.is-function:after {
+    content: '( )';
+  }
+  &.is-member:after {
+    content: 'member';
+  }
+  &.is-constant:after {
+    content: 'constant';
+  }
+  &.is-constructor:after {
+    content: 'constructor';
   }
 }
 
@@ -23,14 +43,36 @@ button {
     border-color: @olgreen;
     width: 100%;
     float: right;
-
     &:hover {
       background-color: @olgreen;
       color: @white;
     }
-    .reallybig {
-      font-size: 1.4em;
+    .status-icon {
+      float: right;
+    }
+    .status-icon:after {
+      content: '\f054';
       margin-left: 3px;
+      font-family: 'FontAwesome';
+    }
+
+    &.loading {
+      .btn-info;
+      .status-icon:after {
+
+      }
+    }
+    &.download {
+      .btn-success;
+      .status-icon:after {
+        content: '\f019';
+      }
+    }
+    &.error {
+      .btn-warning;
+      .status-icon:after {
+        content: '';
+      }
     }
   }
 }
@@ -57,13 +99,14 @@ button {
   margin-left: 5%;
 }
 
-.tree-toggler:after {
+.tree-toggler i:after {
     font-family: 'FontAwesome';
+    font-style: normal;
     content: "\f056";
     margin-left: 10px;
     color: #aaa;
 }
-.toggleIcon.tree-toggler:after {
+.toggleIcon.tree-toggler i:after {
     content: "\f055";
 }
 .mainClass {

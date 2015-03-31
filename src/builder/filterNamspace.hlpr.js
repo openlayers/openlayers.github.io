@@ -1,58 +1,59 @@
+var util = require('util');
 module.exports.register = function (Handlebars, options)  {
-
-   var ol3model = { 'symbols': [], 'defines': [] };
-
-  var savePropsAndMethods = function(str) {
-    var length = str.length, foundFirst = false, namespace, method, obj = null;
-
-    for (var i=0; i<length; i++) {
-      if (str[i] == '.') {
-        if (!foundFirst) { // found 1st .
-          foundFirst = true;
-        } else {
-          namespace = str.slice(0, i);
-          method = str.slice(i+1);
-          var hash = method.indexOf('#');
-          if (hash > -1) {
-            obj = method.slice(0, hash);
-            method = method.slice(hash+1);
-          }
-
-          var ns = ol3model.symbols[namespace];
-          if (!ns) {
-            ol3model.symbols[namespace] = {};
-            ns = ol3model.symbols[namespace];
-          }
-          if (obj) {
-            if (obj in ns) {
-              ns[obj].push(method);
-            } else {
-              ns[obj] = [];
-            }
-          } else {
-            if (!ns['methods']) {
-              ol3model.symbols[namespace]['methods'] = [];
-            }
-            ns['methods'].push(method);
-          }
-          return;
-        }
+  function createPath(obj, path) {
+    var arr = path.split('.');
+    return arr.reduce(function(o, key) {
+      if (!o[key]) {
+        o[key] = {};
       }
-    }
-    return;
-  };
+      return o[key];
+    }, obj);
+  }
+
+  function toNested(symbols) {
+    var res = {};
+
+    symbols.forEach(function(item, i) {
+      var name = item.name;
+      var method = name.split('#');
+      var path = method[0].split('.').splice(1);
+
+      //TODO: match first sentence to '. ' '.\n' etc
+      item.blurb = item.description ? 
+        item.description.match(/^(.|\s)*?([\.!\?](?:\s|$)|$)/gi) : '';
+
+      if (item.kind && item.kind.length > 0) {
+        item['is' + item.kind] = true;
+      }
+      // Create path to object.
+      var obj = path.reduce(function(obj, key, i) {
+        // All children are stored in __nodes.children
+        createPath(obj, '__nodes.children');
+        if (!obj.__nodes.children[key]) {
+            obj.__nodes.children[key] = {};
+        }
+
+        return obj.__nodes.children[key];
+      }, res);
+
+      if (method[1]) {
+        // All of an objects methods are stored in __nodes.methods
+        createPath(obj, '__nodes.methods');
+        var methods = obj.__nodes.methods;
+        methods[method[1]] = { id: i, props: item };
+      } else {
+        obj.props = item; // make item properties accessible to template
+        obj.id = i; // save index
+      }
+    });
+
+    return res.__nodes.children;
+  }
 
   // Block Helper to categorize symbols and defines by namespace
   Handlebars.registerHelper("filterNamespace", function(arr, options) {
     if (arr && arr.length > 0) {
-      var buffer = "", items = {};
-      for (var i = 0; i < arr.length; i++) {
-        savePropsAndMethods(arr[i].name);
-      }
-      // process the inside of the block
-      buffer += options.fn(ol3model.symbols);
-      // return the finished buffer
-      return buffer;
+      return options.fn(toNested(arr));
     }
     else {
       return options.elseFn();
