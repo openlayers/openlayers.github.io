@@ -7,6 +7,7 @@ goog.require('ol.color');
 goog.require('ol.has');
 goog.require('ol.render.canvas');
 goog.require('ol.structs.IHasChecksum');
+goog.require('ol.style.AtlasManager');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Image');
 goog.require('ol.style.ImageState');
@@ -28,8 +29,9 @@ goog.require('ol.style.Stroke');
  */
 ol.style.RegularShape = function(options) {
 
-  goog.asserts.assert(goog.isDef(options.radius) ||
-      goog.isDef(options.radius1));
+  goog.asserts.assert(
+      goog.isDef(options.radius) || goog.isDef(options.radius1),
+      'must provide either "radius" or "radius1"');
 
   /**
    * @private
