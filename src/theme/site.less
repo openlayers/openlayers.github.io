@@ -135,6 +135,7 @@ body {
 .navbar {
   background-color: @primary2;
   color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.25);
 }
 .navbar-toggle {
   background-color: transparent;
@@ -145,25 +146,32 @@ body {
 .navbar-brand {
   color: white;
   font-weight: bold;
-  font-size: 170%;
-  padding: 5px 0;
+  font-size: 160%;
+  padding: 8px 0;
   max-width: 250px;
 }
 .navbar-brand img {
-  height: 40px;
+  height: 35px;
   vertical-align: middle;
   margin-right: 5px;
 }
+.navbar-brand:hover,
+.navbar-brand:focus {
+  color: lighten(@primary2, 50%);
+}
+
 .navbar-nav>li>a {
   color: white;
 }
-.navbar-brand:hover,
-.navbar-brand:focus,
+.nav>li>a:hover, .nav>li>a:focus,
+.nav>li>a.active {
+  background-color: lighten(@primary2, 7%);
+}
 .navbar-nav>li>a:hover,
 .navbar-nav>li>a:focus,
 footer a:hover,
 footer a:focus {
-  color: @complimentary1;
+  color: white;
 }
 
 h1,
@@ -181,6 +189,10 @@ h6,
   font-family: 'Quattrocento Sans', sans-serif;
   font-weight: 700;
 }
+h1 {
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
 h1.topic {
   font-size: 110%;
   color: #bbb;
@@ -197,7 +209,9 @@ a {
   .transition(all 0.2s); // bootstrap mixin
 }
 a:hover,
-a:focus {
+a:focus,
+footer a:hover,
+footer a:focus {
   color: @complimentary1;
   text-decoration: none;
 }
@@ -226,14 +240,14 @@ blockquote.plain {
 }
 
 footer {
-  background-color: @primary1;
+  background-color: @primary2;
   color: white;
   margin-top: 40px;
   padding: 10px;
   text-align: center;
 }
 footer a {
-  color: white;
+  color: lighten(@primary2, 50%);
 }
 
 /* Style for code blocks parsed with highlight.js */
