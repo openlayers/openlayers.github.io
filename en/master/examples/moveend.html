@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../resources/layout.css" type="text/css">
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+    
+    
+    <link rel="stylesheet" href="../resources/prism/prism.css" type="text/css">
+    <script src="../resources/zeroclipboard/ZeroClipboard.min.js"></script>
     <title>Moveend Example</title>
   </head>
   <body>
@@ -21,34 +25,172 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <div id="map" class="map"></div>
-        </div>
-      </div>
+
+      <p><div class="row-fluid">
+  <div class="span12">
+    <div id="map" class="map"></div>
+  </div>
+</div></p>
+<p><label>top</label><input type="text" id="top"></p>
+<p><label>right</label><input type="text" id="right"></p>
+<p><label>bottom</label><input type="text" id="bottom"></p>
+<p><label>left</label><input type="text" id="left"></p>
+
 
       <div class="row-fluid">
+
         <div class="span12">
-          <h4 id="title">Move end example</h4>
+          <h4 id="title">Moveend Example</h4>
           <p id="shortdesc">Use of the moveend event.</p>
           <div id="docs">
-            <p>In this example, a listener is registered for the map's <code>moveend</code> event.  Whenever this listener is called, it updates the inputs below with the map extent in decimal degrees.</p>
-            <p>See the <a href="moveend.js" target="_blank">moveend.js source</a> for details on how this is done.</p>
+            <p>In this example, a listener is registered for the map&#39;s <code>moveend</code> event.  Whenever this listener is called, it updates the inputs below with the map extent in decimal degrees.</p>
+
           </div>
           <div id="tags">moveend, map, event</div>
-          <label>top</label><input type="text" id="top">
-          <label>right</label><input type="text" id="right">
-          <label>bottom</label><input type="text" id="bottom">
-          <label>left</label><input type="text" id="left">
         </div>
 
       </div>
 
+      <div class="row-fluid">
+        <hr>
+        <form method="POST" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
+          <input type="button" class="btn btn-info" id="copy-button" value="Copy example code">
+          <input type="submit" class="btn btn-primary" id="jsfiddle-button" value="Create JSFiddle">
+          <textarea class="hidden" name="js">var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  target: &#x27;map&#x27;,
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+function display(id, value) {
+  document.getElementById(id).value = value.toFixed(2);
+}
+
+function wrapLon(value) {
+  var worlds = Math.floor((value + 180) / 360);
+  return value - (worlds * 360);
+}
+
+function onMoveEnd(evt) {
+  var map = evt.map;
+  var extent = map.getView().calculateExtent(map.getSize());
+  var bottomLeft = ol.proj.transform(ol.extent.getBottomLeft(extent),
+      &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
+  var topRight = ol.proj.transform(ol.extent.getTopRight(extent),
+      &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
+  display(&#x27;left&#x27;, wrapLon(bottomLeft[0]));
+  display(&#x27;bottom&#x27;, bottomLeft[1]);
+  display(&#x27;right&#x27;, wrapLon(topRight[0]));
+  display(&#x27;top&#x27;, topRight[1]);
+}
+
+map.on(&#x27;moveend&#x27;, onMoveEnd);
+</textarea>
+          <textarea class="hidden" name="css"></textarea>
+          <textarea class="hidden" name="html">&lt;p&gt;&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span12&quot;&gt;
+    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;top&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;top&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;right&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;right&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;bottom&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;bottom&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;left&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;left&quot;&gt;&lt;/p&gt;
+</textarea>
+          <input type="hidden" name="wrap" value="l">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js">
+          <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Moveend Example&lt;/title&gt;
+&lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"&gt;
+&lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css" type="text/css"&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js"&gt;&lt;/script&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="container-fluid"&gt;
+
+&lt;p&gt;&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span12&quot;&gt;
+    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;top&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;top&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;right&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;right&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;bottom&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;bottom&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;label&gt;left&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;left&quot;&gt;&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;script&gt;
+var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  target: &#x27;map&#x27;,
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+function display(id, value) {
+  document.getElementById(id).value = value.toFixed(2);
+}
+
+function wrapLon(value) {
+  var worlds = Math.floor((value + 180) / 360);
+  return value - (worlds * 360);
+}
+
+function onMoveEnd(evt) {
+  var map = evt.map;
+  var extent = map.getView().calculateExtent(map.getSize());
+  var bottomLeft = ol.proj.transform(ol.extent.getBottomLeft(extent),
+      &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
+  var topRight = ol.proj.transform(ol.extent.getTopRight(extent),
+      &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
+  display(&#x27;left&#x27;, wrapLon(bottomLeft[0]));
+  display(&#x27;bottom&#x27;, bottomLeft[1]);
+  display(&#x27;right&#x27;, wrapLon(topRight[0]));
+  display(&#x27;top&#x27;, topRight[1]);
+}
+
+map.on(&#x27;moveend&#x27;, onMoveEnd);
+
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+      </div>
     </div>
 
-    <script src="../resources/jquery.min.js" type="text/javascript"></script>
-    <script src="../resources/example-behaviour.js" type="text/javascript"></script>
-    <script src="loader.js?id=moveend" type="text/javascript"></script>
+    <script src="../resources/jquery.min.js"></script>
+    <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../resources/example-behaviour.js"></script>
+    <script src="../resources/prism/prism.min.js"></script>
+    <script src="loader.js?id=moveend"></script>
 
   </body>
 </html>

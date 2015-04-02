@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-66-g5293cdc
+// Version: v3.4.0-145-gda9de6e
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -13437,7 +13437,7 @@ ol.ObjectEventType = {
   /**
    * Triggered when a property is changed.
    * @event ol.ObjectEvent#propertychange
-   * @api
+   * @api stable
    */
   PROPERTYCHANGE: 'propertychange'
 };
@@ -13461,7 +13461,7 @@ ol.ObjectEvent = function(type, key, oldValue) {
   /**
    * The name of the property whose value is changing.
    * @type {string}
-   * @api
+   * @api stable
    */
   this.key = key;
 
@@ -13469,7 +13469,7 @@ ol.ObjectEvent = function(type, key, oldValue) {
    * The old value. To get the new value use `e.target.get(e.key)` where
    * `e` is the event object.
    * @type {*}
-   * @api
+   * @api stable
    */
   this.oldValue = oldValue;
 
@@ -13766,7 +13766,7 @@ ol.Object.prototype.bindTo = function(key, target, opt_targetKey) {
  * Gets a value.
  * @param {string} key Key name.
  * @return {*} Value.
- * @api
+ * @api stable
  */
 ol.Object.prototype.get = function(key) {
   var value;
@@ -13785,7 +13785,7 @@ ol.Object.prototype.get = function(key) {
 /**
  * Get a list of object property names.
  * @return {Array.<string>} List of property names.
- * @api
+ * @api stable
  */
 ol.Object.prototype.getKeys = function() {
   var accessors = this.accessors_;
@@ -13817,7 +13817,7 @@ ol.Object.prototype.getKeys = function() {
 /**
  * Get an object of all property names and values.
  * @return {Object.<string, *>} Object.
- * @api
+ * @api stable
  */
 ol.Object.prototype.getProperties = function() {
   var properties = {};
@@ -13849,7 +13849,7 @@ ol.Object.prototype.notify = function(key, oldValue) {
  * Sets a value.
  * @param {string} key Key name.
  * @param {*} value Value.
- * @api
+ * @api stable
  */
 ol.Object.prototype.set = function(key, value) {
   var accessors = this.accessors_;
@@ -13866,9 +13866,10 @@ ol.Object.prototype.set = function(key, value) {
 
 
 /**
- * Sets a collection of key-value pairs.
+ * Sets a collection of key-value pairs.  Note that this changes any existing
+ * properties and adds new ones (it does not remove any existing properties).
  * @param {Object.<string, *>} values Values.
- * @api
+ * @api stable
  */
 ol.Object.prototype.setProperties = function(values) {
   var key;
@@ -13911,7 +13912,7 @@ ol.Object.prototype.unbindAll = function() {
 /**
  * Unsets a property.
  * @param {string} key Key name.
- * @api
+ * @api stable
  */
 ol.Object.prototype.unset = function(key) {
   if (key in this.values_) {
@@ -19707,7 +19708,7 @@ ol.View.prototype.getHints = function() {
  * that is `map.getSize()`.
  * @param {ol.Size} size Box pixel size.
  * @return {ol.Extent} Extent.
- * @api
+ * @api stable
  */
 ol.View.prototype.calculateExtent = function(size) {
   goog.asserts.assert(this.isDef(),
@@ -19752,7 +19753,6 @@ goog.exportProperty(
  * @param {ol.Size} size Box pixel size.
  * @return {number} The resolution at which the provided extent will render at
  *     the given size.
- * @api
  */
 ol.View.prototype.getResolutionForExtent = function(extent, size) {
   var xResolution = ol.extent.getWidth(extent) / size[0];
@@ -33757,18 +33757,21 @@ goog.require('goog.events.Event');
  * @enum {string}
  */
 ol.MapEventType = {
+
   /**
    * Triggered after a map frame is rendered.
    * @event ol.MapEvent#postrender
    * @api
    */
   POSTRENDER: 'postrender',
+
   /**
    * Triggered after the map is moved.
    * @event ol.MapEvent#moveend
-   * @api
+   * @api stable
    */
   MOVEEND: 'moveend'
+
 };
 
 
@@ -35456,21 +35459,21 @@ ol.source.TileEventType = {
   /**
    * Triggered when a tile starts loading.
    * @event ol.source.TileEvent#tileloadstart
-   * @api
+   * @api stable
    */
   TILELOADSTART: 'tileloadstart',
 
   /**
    * Triggered when a tile finishes loading.
    * @event ol.source.TileEvent#tileloadend
-   * @api
+   * @api stable
    */
   TILELOADEND: 'tileloadend',
 
   /**
    * Triggered if tile loading results in an error.
    * @event ol.source.TileEvent#tileloaderror
-   * @api
+   * @api stable
    */
   TILELOADERROR: 'tileloaderror'
 
@@ -46803,26 +46806,29 @@ ol.MapBrowserEventHandler.prototype.disposeInternal = function() {
  * @enum {string}
  */
 ol.MapBrowserEvent.EventType = {
-  // derived event types
+
   /**
    * A true single click with no dragging and no double click. Note that this
    * event is delayed by 250 ms to ensure that it is not a double click.
    * @event ol.MapBrowserEvent#singleclick
-   * @api
+   * @api stable
    */
   SINGLECLICK: 'singleclick',
+
   /**
    * A click with no dragging. A double click will fire two of this.
    * @event ol.MapBrowserEvent#click
-   * @api
+   * @api stable
    */
   CLICK: goog.events.EventType.CLICK,
+
   /**
    * A true double click, with no dragging.
    * @event ol.MapBrowserEvent#dblclick
-   * @api
+   * @api stable
    */
   DBLCLICK: goog.events.EventType.DBLCLICK,
+
   /**
    * Triggered when a pointer is dragged.
    * @event ol.MapBrowserEvent#pointerdrag
@@ -46830,14 +46836,14 @@ ol.MapBrowserEvent.EventType = {
    */
   POINTERDRAG: 'pointerdrag',
 
-  // original pointer event types
   /**
    * Triggered when a pointer is moved. Note that on touch devices this is
    * triggered when the map is panned, so is not the same as mousemove.
    * @event ol.MapBrowserEvent#pointermove
-   * @api
+   * @api stable
    */
   POINTERMOVE: 'pointermove',
+
   POINTERDOWN: 'pointerdown',
   POINTERUP: 'pointerup',
   POINTEROVER: 'pointerover',
@@ -48093,7 +48099,6 @@ ol.style.Image.prototype.getAnchor = goog.abstractMethod;
  * @function
  * @param {number} pixelRatio Pixel ratio.
  * @return {HTMLCanvasElement|HTMLVideoElement|Image} Image element.
- * @api
  */
 ol.style.Image.prototype.getImage = goog.abstractMethod;
 
@@ -48309,15 +48314,29 @@ ol.style.Icon = function(opt_options) {
   var image = goog.isDef(options.img) ? options.img : null;
 
   /**
+   * @type {ol.Size}
+   */
+  var imgSize = goog.isDef(options.imgSize) ? options.imgSize : null;
+
+  /**
    * @type {string|undefined}
    */
   var src = options.src;
+
+  goog.asserts.assert(!(goog.isDef(src) && !goog.isNull(image)),
+      'image and src can not provided at the same time');
+  goog.asserts.assert(
+      !goog.isDef(src) || (goog.isDef(src) && goog.isNull(imgSize)),
+      'imgSize should not be set when src is provided');
+  goog.asserts.assert(
+      goog.isNull(image) || (!goog.isNull(image) && !goog.isNull(imgSize)),
+      'imgSize must be set when image is provided');
 
   if ((!goog.isDef(src) || src.length === 0) && !goog.isNull(image)) {
     src = image.src;
   }
   goog.asserts.assert(goog.isDef(src) && src.length > 0,
-      'must provide a defined and non-empty src');
+      'must provide a defined and non-empty src or image');
 
   /**
    * @type {ol.style.ImageState}
@@ -48330,7 +48349,7 @@ ol.style.Icon = function(opt_options) {
    * @type {ol.style.IconImage_}
    */
   this.iconImage_ = ol.style.IconImage_.get(
-      image, src, crossOrigin, imageState);
+      image, src, imgSize, crossOrigin, imageState);
 
   /**
    * @private
@@ -48564,12 +48583,13 @@ ol.style.Icon.prototype.unlistenImageChange = function(listener, thisArg) {
  * @constructor
  * @param {Image} image Image.
  * @param {string|undefined} src Src.
+ * @param {ol.Size} size Size.
  * @param {?string} crossOrigin Cross origin.
  * @param {ol.style.ImageState} imageState Image state.
  * @extends {goog.events.EventTarget}
  * @private
  */
-ol.style.IconImage_ = function(image, src, crossOrigin, imageState) {
+ol.style.IconImage_ = function(image, src, size, crossOrigin, imageState) {
 
   goog.base(this);
 
@@ -48605,7 +48625,7 @@ ol.style.IconImage_ = function(image, src, crossOrigin, imageState) {
    * @private
    * @type {ol.Size}
    */
-  this.size_ = null;
+  this.size_ = size;
 
   /**
    * @private
@@ -48626,15 +48646,17 @@ goog.inherits(ol.style.IconImage_, goog.events.EventTarget);
 /**
  * @param {Image} image Image.
  * @param {string} src Src.
+ * @param {ol.Size} size Size.
  * @param {?string} crossOrigin Cross origin.
  * @param {ol.style.ImageState} imageState Image state.
  * @return {ol.style.IconImage_} Icon image.
  */
-ol.style.IconImage_.get = function(image, src, crossOrigin, imageState) {
+ol.style.IconImage_.get = function(image, src, size, crossOrigin, imageState) {
   var iconImageCache = ol.style.IconImageCache.getInstance();
   var iconImage = iconImageCache.get(src, crossOrigin);
   if (goog.isNull(iconImage)) {
-    iconImage = new ol.style.IconImage_(image, src, crossOrigin, imageState);
+    iconImage = new ol.style.IconImage_(
+        image, src, size, crossOrigin, imageState);
     iconImageCache.set(src, crossOrigin, iconImage);
   }
   return iconImage;
@@ -50913,7 +50935,6 @@ goog.inherits(ol.geom.Geometry, ol.Object);
  * Make a complete copy of the geometry.
  * @function
  * @return {!ol.geom.Geometry} Clone.
- * @api stable
  */
 ol.geom.Geometry.prototype.clone = goog.abstractMethod;
 
@@ -50997,7 +51018,6 @@ ol.geom.Geometry.prototype.getSimplifiedGeometry = goog.abstractMethod;
  * Get the type of this geometry.
  * @function
  * @return {ol.geom.GeometryType} Geometry type.
- * @api stable
  */
 ol.geom.Geometry.prototype.getType = goog.abstractMethod;
 
@@ -51009,7 +51029,6 @@ ol.geom.Geometry.prototype.getType = goog.abstractMethod;
  * then use this function on the clone.
  * @function
  * @param {ol.TransformFunction} transformFn Transform.
- * @api stable
  */
 ol.geom.Geometry.prototype.applyTransform = goog.abstractMethod;
 
@@ -51019,17 +51038,16 @@ ol.geom.Geometry.prototype.applyTransform = goog.abstractMethod;
  * @param {ol.Extent} extent Extent.
  * @return {boolean} `true` if the geometry and the extent intersect.
  * @function
- * @api
  */
 ol.geom.Geometry.prototype.intersectsExtent = goog.abstractMethod;
 
 
 /**
- * Translate the geometry.
+ * Translate the geometry.  This modifies the geometry coordinates in place.  If
+ * instead you want a new geometry, first `clone()` this geometry.
  * @param {number} deltaX Delta X.
  * @param {number} deltaY Delta Y.
  * @function
- * @api
  */
 ol.geom.Geometry.prototype.translate = goog.abstractMethod;
 
@@ -51047,7 +51065,6 @@ ol.geom.Geometry.prototype.translate = goog.abstractMethod;
  *     string identifier or a {@link ol.proj.Projection} object.
  * @return {ol.geom.Geometry} This geometry.  Note that original geometry is
  *     modified in place.
- * @api stable
  */
 ol.geom.Geometry.prototype.transform = function(source, destination) {
   this.applyTransform(ol.proj.getTransform(source, destination));
@@ -51371,10 +51388,8 @@ ol.geom.SimpleGeometry.prototype.applyTransform = function(transformFn) {
 
 
 /**
- * Translate the geometry.
- * @param {number} deltaX Delta X.
- * @param {number} deltaY Delta Y.
- * @api
+ * @inheritDoc
+ * @api stable
  */
 ol.geom.SimpleGeometry.prototype.translate = function(deltaX, deltaY) {
   var flatCoordinates = this.getFlatCoordinates();
@@ -52658,7 +52673,7 @@ ol.geom.Point.prototype.getType = function() {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.geom.Point.prototype.intersectsExtent = function(extent) {
   return ol.extent.containsXY(extent,
@@ -53586,7 +53601,7 @@ ol.geom.Polygon.prototype.getType = function() {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.geom.Polygon.prototype.intersectsExtent = function(extent) {
   return ol.geom.flat.intersectsextent.linearRings(
@@ -61729,7 +61744,7 @@ ol.geom.GeometryCollection.prototype.getType = function() {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.geom.GeometryCollection.prototype.intersectsExtent = function(extent) {
   var geometries = this.geometries_;
@@ -62264,7 +62279,7 @@ ol.geom.LineString.prototype.getType = function() {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.geom.LineString.prototype.intersectsExtent = function(extent) {
   return ol.geom.flat.intersectsextent.lineString(
@@ -62555,7 +62570,7 @@ ol.geom.MultiLineString.prototype.getType = function() {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.geom.MultiLineString.prototype.intersectsExtent = function(extent) {
   return ol.geom.flat.intersectsextent.lineStrings(
@@ -62779,7 +62794,7 @@ ol.geom.MultiPoint.prototype.getType = function() {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.geom.MultiPoint.prototype.intersectsExtent = function(extent) {
   var flatCoordinates = this.flatCoordinates;
@@ -63194,7 +63209,7 @@ ol.geom.MultiPolygon.prototype.getType = function() {
 
 /**
  * @inheritDoc
- * @api
+ * @api stable
  */
 ol.geom.MultiPolygon.prototype.intersectsExtent = function(extent) {
   return ol.geom.flat.intersectsextent.linearRingss(
@@ -65247,8 +65262,12 @@ ol.source.Vector.prototype.getFeaturesAtCoordinate = function(coordinate) {
 
 
 /**
+ * Get all features in the provided extent.  Note that this returns all features
+ * whose bounding boxes intersect the given extent (so it may include features
+ * whose geometries do not intersect the extent).
  * @param {ol.Extent} extent Extent.
  * @return {Array.<ol.Feature>} Features.
+ * @api
  */
 ol.source.Vector.prototype.getFeaturesInExtent = function(extent) {
   return this.rBush_.getInExtent(extent);
@@ -84458,8 +84477,8 @@ ol.format.GeoJSON.prototype.writeFeature;
  *
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Write options.
- * @api
  * @return {Object} Object.
+ * @api stable
  */
 ol.format.GeoJSON.prototype.writeFeatureObject = function(
     feature, opt_options) {
@@ -84505,7 +84524,7 @@ ol.format.GeoJSON.prototype.writeFeatures;
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {Object} GeoJSON Object.
- * @api
+ * @api stable
  */
 ol.format.GeoJSON.prototype.writeFeaturesObject =
     function(features, opt_options) {
@@ -84540,7 +84559,7 @@ ol.format.GeoJSON.prototype.writeGeometry;
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {GeoJSONGeometry|GeoJSONGeometryCollection} Object.
- * @api
+ * @api stable
  */
 ol.format.GeoJSON.prototype.writeGeometryObject = function(geometry,
     opt_options) {
@@ -115463,7 +115482,7 @@ ol.source.WMTSRequestEncoding = {
  * @constructor
  * @extends {ol.source.TileImage}
  * @param {olx.source.WMTSOptions} options WMTS options.
- * @api
+ * @api stable
  */
 ol.source.WMTS = function(options) {
 
@@ -118366,11 +118385,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.View.prototype,
-    'getResolutionForExtent',
-    ol.View.prototype.getResolutionForExtent);
-
-goog.exportProperty(
-    ol.View.prototype,
     'getRotation',
     ol.View.prototype.getRotation);
 
@@ -118638,11 +118652,6 @@ goog.exportProperty(
     ol.style.Image.prototype,
     'getSnapToPixel',
     ol.style.Image.prototype.getSnapToPixel);
-
-goog.exportProperty(
-    ol.style.Image.prototype,
-    'getImage',
-    ol.style.Image.prototype.getImage);
 
 goog.exportProperty(
     ol.style.Image.prototype,
@@ -119358,6 +119367,11 @@ goog.exportProperty(
     ol.source.Vector.prototype,
     'getFeaturesAtCoordinate',
     ol.source.Vector.prototype.getFeaturesAtCoordinate);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'getFeaturesInExtent',
+    ol.source.Vector.prototype.getFeaturesInExtent);
 
 goog.exportProperty(
     ol.source.Vector.prototype,
@@ -120206,11 +120220,6 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.geom.Geometry.prototype,
-    'clone',
-    ol.geom.Geometry.prototype.clone);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
     'getClosestPoint',
     ol.geom.Geometry.prototype.getClosestPoint);
 
@@ -120218,31 +120227,6 @@ goog.exportProperty(
     ol.geom.Geometry.prototype,
     'getExtent',
     ol.geom.Geometry.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
-    'getType',
-    ol.geom.Geometry.prototype.getType);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
-    'applyTransform',
-    ol.geom.Geometry.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
-    'intersectsExtent',
-    ol.geom.Geometry.prototype.intersectsExtent);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
-    'translate',
-    ol.geom.Geometry.prototype.translate);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
-    'transform',
-    ol.geom.Geometry.prototype.transform);
 
 goog.exportSymbol(
     'ol.geom.GeometryCollection',
@@ -122661,6 +122645,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
+    'getFeaturesInExtent',
+    ol.source.Cluster.prototype.getFeaturesInExtent);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
     'getClosestFeatureToCoordinate',
     ol.source.Cluster.prototype.getClosestFeatureToCoordinate);
 
@@ -122813,6 +122802,11 @@ goog.exportProperty(
     ol.source.FormatVector.prototype,
     'getFeaturesAtCoordinate',
     ol.source.FormatVector.prototype.getFeaturesAtCoordinate);
+
+goog.exportProperty(
+    ol.source.FormatVector.prototype,
+    'getFeaturesInExtent',
+    ol.source.FormatVector.prototype.getFeaturesInExtent);
 
 goog.exportProperty(
     ol.source.FormatVector.prototype,
@@ -122976,6 +122970,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.StaticVector.prototype,
+    'getFeaturesInExtent',
+    ol.source.StaticVector.prototype.getFeaturesInExtent);
+
+goog.exportProperty(
+    ol.source.StaticVector.prototype,
     'getClosestFeatureToCoordinate',
     ol.source.StaticVector.prototype.getClosestFeatureToCoordinate);
 
@@ -123133,6 +123132,11 @@ goog.exportProperty(
     ol.source.GeoJSON.prototype,
     'getFeaturesAtCoordinate',
     ol.source.GeoJSON.prototype.getFeaturesAtCoordinate);
+
+goog.exportProperty(
+    ol.source.GeoJSON.prototype,
+    'getFeaturesInExtent',
+    ol.source.GeoJSON.prototype.getFeaturesInExtent);
 
 goog.exportProperty(
     ol.source.GeoJSON.prototype,
@@ -123296,6 +123300,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.GPX.prototype,
+    'getFeaturesInExtent',
+    ol.source.GPX.prototype.getFeaturesInExtent);
+
+goog.exportProperty(
+    ol.source.GPX.prototype,
     'getClosestFeatureToCoordinate',
     ol.source.GPX.prototype.getClosestFeatureToCoordinate);
 
@@ -123453,6 +123462,11 @@ goog.exportProperty(
     ol.source.IGC.prototype,
     'getFeaturesAtCoordinate',
     ol.source.IGC.prototype.getFeaturesAtCoordinate);
+
+goog.exportProperty(
+    ol.source.IGC.prototype,
+    'getFeaturesInExtent',
+    ol.source.IGC.prototype.getFeaturesInExtent);
 
 goog.exportProperty(
     ol.source.IGC.prototype,
@@ -124186,6 +124200,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.KML.prototype,
+    'getFeaturesInExtent',
+    ol.source.KML.prototype.getFeaturesInExtent);
+
+goog.exportProperty(
+    ol.source.KML.prototype,
     'getClosestFeatureToCoordinate',
     ol.source.KML.prototype.getClosestFeatureToCoordinate);
 
@@ -124711,6 +124730,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.OSMXML.prototype,
+    'getFeaturesInExtent',
+    ol.source.OSMXML.prototype.getFeaturesInExtent);
+
+goog.exportProperty(
+    ol.source.OSMXML.prototype,
     'getClosestFeatureToCoordinate',
     ol.source.OSMXML.prototype.getClosestFeatureToCoordinate);
 
@@ -124858,6 +124882,11 @@ goog.exportProperty(
     ol.source.ServerVector.prototype,
     'getFeaturesAtCoordinate',
     ol.source.ServerVector.prototype.getFeaturesAtCoordinate);
+
+goog.exportProperty(
+    ol.source.ServerVector.prototype,
+    'getFeaturesInExtent',
+    ol.source.ServerVector.prototype.getFeaturesInExtent);
 
 goog.exportProperty(
     ol.source.ServerVector.prototype,
@@ -125818,6 +125847,11 @@ goog.exportProperty(
     ol.source.TopoJSON.prototype,
     'getFeaturesAtCoordinate',
     ol.source.TopoJSON.prototype.getFeaturesAtCoordinate);
+
+goog.exportProperty(
+    ol.source.TopoJSON.prototype,
+    'getFeaturesInExtent',
+    ol.source.TopoJSON.prototype.getFeaturesInExtent);
 
 goog.exportProperty(
     ol.source.TopoJSON.prototype,
@@ -129271,11 +129305,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
-    'clone',
-    ol.geom.SimpleGeometry.prototype.clone);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
     'getClosestPoint',
     ol.geom.SimpleGeometry.prototype.getClosestPoint);
 
@@ -129283,21 +129312,6 @@ goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
     'getExtent',
     ol.geom.SimpleGeometry.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
-    'getType',
-    ol.geom.SimpleGeometry.prototype.getType);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
-    'intersectsExtent',
-    ol.geom.SimpleGeometry.prototype.intersectsExtent);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
-    'transform',
-    ol.geom.SimpleGeometry.prototype.transform);
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
@@ -129411,11 +129425,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
-    'intersectsExtent',
-    ol.geom.Circle.prototype.intersectsExtent);
-
-goog.exportProperty(
-    ol.geom.Circle.prototype,
     'bindTo',
     ol.geom.Circle.prototype.bindTo);
 
@@ -129498,11 +129507,6 @@ goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
     'getExtent',
     ol.geom.GeometryCollection.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.GeometryCollection.prototype,
-    'transform',
-    ol.geom.GeometryCollection.prototype.transform);
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
@@ -129616,16 +129620,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
-    'intersectsExtent',
-    ol.geom.LinearRing.prototype.intersectsExtent);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
-    'transform',
-    ol.geom.LinearRing.prototype.transform);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
     'bindTo',
     ol.geom.LinearRing.prototype.bindTo);
 
@@ -129733,11 +129727,6 @@ goog.exportProperty(
     ol.geom.LineString.prototype,
     'getExtent',
     ol.geom.LineString.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.LineString.prototype,
-    'transform',
-    ol.geom.LineString.prototype.transform);
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
@@ -129851,11 +129840,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
-    'transform',
-    ol.geom.MultiLineString.prototype.transform);
-
-goog.exportProperty(
-    ol.geom.MultiLineString.prototype,
     'bindTo',
     ol.geom.MultiLineString.prototype.bindTo);
 
@@ -129963,11 +129947,6 @@ goog.exportProperty(
     ol.geom.MultiPoint.prototype,
     'getExtent',
     ol.geom.MultiPoint.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.MultiPoint.prototype,
-    'transform',
-    ol.geom.MultiPoint.prototype.transform);
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
@@ -130081,11 +130060,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
-    'transform',
-    ol.geom.MultiPolygon.prototype.transform);
-
-goog.exportProperty(
-    ol.geom.MultiPolygon.prototype,
     'bindTo',
     ol.geom.MultiPolygon.prototype.bindTo);
 
@@ -130196,11 +130170,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Point.prototype,
-    'transform',
-    ol.geom.Point.prototype.transform);
-
-goog.exportProperty(
-    ol.geom.Point.prototype,
     'bindTo',
     ol.geom.Point.prototype.bindTo);
 
@@ -130308,11 +130277,6 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getExtent',
     ol.geom.Polygon.prototype.getExtent);
-
-goog.exportProperty(
-    ol.geom.Polygon.prototype,
-    'transform',
-    ol.geom.Polygon.prototype.transform);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,

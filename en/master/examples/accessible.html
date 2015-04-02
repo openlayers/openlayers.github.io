@@ -8,32 +8,18 @@
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../resources/layout.css" type="text/css">
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+    
+    <link rel="stylesheet" href="accessible.css">
+    <link rel="stylesheet" href="../resources/prism/prism.css" type="text/css">
+    <script src="../resources/zeroclipboard/ZeroClipboard.min.js"></script>
     <title>Accessibility example</title>
-    <style>
-      a.skiplink {
-        position: absolute;
-        clip: rect(1px, 1px, 1px, 1px);
-        padding: 0;
-        border: 0;
-        height: 1px;
-        width: 1px;
-        overflow: hidden;
-      }
-      a.skiplink:focus {
-        clip: auto;
-        height: auto;
-        width: auto;
-        background-color: #fff;
-        padding: 0.3em;
-      }
-    </style>
   </head>
   <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="./"><img src="../resources/logo.png" alt=""> OpenLayers 3 Examples</a>
+          <a class="brand" href="./"><img src="../resources/logo.png"> OpenLayers 3 Examples</a>
         </div>
       </div>
     </div>
@@ -41,11 +27,12 @@
     <div class="container-fluid">
 
       <div class="row-fluid">
-        <div class="span12">
-          <a class="skiplink" href="#map">Go to map</a>
-          <div id="map" class="map" tabindex="0"></div>
-        </div>
-      </div>
+  <div class="span12">
+    <a class="skiplink" href="#map">Go to map</a>
+    <div id="map" class="map" tabindex="0"></div>
+  </div>
+</div>
+
 
       <div class="row-fluid">
 
@@ -53,20 +40,149 @@
           <h4 id="title">Accessibility example</h4>
           <p id="shortdesc">Example of an accessible map.</p>
           <div id="docs">
-            <p>This page's <code>map</code> element has its <code>tabindex</code> attribute set to <code>"0"</code>, that makes it focusable. To focus the map element you can either navigate to it using the "tab" key or use the skip link. When the <code>map</code> element is focused the + and - keys can be used to zoom in and out and the arrow keys can be used to pan.</p>
-            <p>When clicked the "Zoom in" and "Zoom out" buttons below the map zoom the map in and out, respectively. You can navigate to the buttons using the "tab" key, and press the "enter" key to trigger the zooming action.</p>
-            <p>See the <a href="accessible.js" target="_blank">accessible.js source</a> to see how this is done.</p>
+            <p>This page&#39;s <code>map</code> element has its <code>tabindex</code> attribute set to <code>&quot;0&quot;</code>, that makes it focusable. To focus the map element you can either navigate to it using the &quot;tab&quot; key or use the skip link. When the <code>map</code> element is focused the + and - keys can be used to zoom in and out and the arrow keys can be used to pan.</p> <p>When clicked the &quot;Zoom in&quot; and &quot;Zoom out&quot; buttons below the map zoom the map in and out, respectively. You can navigate to the buttons using the &quot;tab&quot; key, and press the &quot;enter&quot; key to trigger the zooming action.</p>
+
           </div>
           <div id="tags">accessibility, tabindex</div>
         </div>
 
       </div>
 
+      <div class="row-fluid">
+        <hr>
+        <form method="POST" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
+          <input type="button" class="btn btn-info" id="copy-button" value="Copy example code">
+          <input type="submit" class="btn btn-primary" id="jsfiddle-button" value="Create JSFiddle">
+          <textarea class="hidden" name="js">var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  target: &#x27;map&#x27;,
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+jQuery(&#x27;#map&#x27;).after(&#x27;&lt;button type=&quot;button&quot; &#x27; +
+    &#x27;onclick=&quot;map.getView().setZoom(map.getView().getZoom() - 1);&quot;&gt;&#x27; +
+    &#x27;Zoom out&lt;/button&gt;&#x27;);
+jQuery(&#x27;#map&#x27;).after(&#x27;&lt;button type=&quot;button&quot; &#x27; +
+    &#x27;onclick=&quot;map.getView().setZoom(map.getView().getZoom() + 1);&quot;&gt;&#x27; +
+    &#x27;Zoom in&lt;/button&gt;&#x27;);
+</textarea>
+          <textarea class="hidden" name="css">a.skiplink {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+a.skiplink:focus {
+  clip: auto;
+  height: auto;
+  width: auto;
+  background-color: #fff;
+  padding: 0.3em;
+}
+</textarea>
+          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span12&quot;&gt;
+    &lt;a class=&quot;skiplink&quot; href=&quot;#map&quot;&gt;Go to map&lt;/a&gt;
+    &lt;div id=&quot;map&quot; class=&quot;map&quot; tabindex=&quot;0&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</textarea>
+          <input type="hidden" name="wrap" value="l">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js">
+          <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Accessibility example&lt;/title&gt;
+&lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"&gt;
+&lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css" type="text/css"&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js"&gt;&lt;/script&gt;
+
+&lt;style&gt;
+a.skiplink {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+a.skiplink:focus {
+  clip: auto;
+  height: auto;
+  width: auto;
+  background-color: #fff;
+  padding: 0.3em;
+}
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="container-fluid"&gt;
+
+&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span12&quot;&gt;
+    &lt;a class=&quot;skiplink&quot; href=&quot;#map&quot;&gt;Go to map&lt;/a&gt;
+    &lt;div id=&quot;map&quot; class=&quot;map&quot; tabindex=&quot;0&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;script&gt;
+var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  target: &#x27;map&#x27;,
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+jQuery(&#x27;#map&#x27;).after(&#x27;&lt;button type=&quot;button&quot; &#x27; +
+    &#x27;onclick=&quot;map.getView().setZoom(map.getView().getZoom() - 1);&quot;&gt;&#x27; +
+    &#x27;Zoom out&lt;/button&gt;&#x27;);
+jQuery(&#x27;#map&#x27;).after(&#x27;&lt;button type=&quot;button&quot; &#x27; +
+    &#x27;onclick=&quot;map.getView().setZoom(map.getView().getZoom() + 1);&quot;&gt;&#x27; +
+    &#x27;Zoom in&lt;/button&gt;&#x27;);
+
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+      </div>
     </div>
 
-    <script src="../resources/jquery.min.js" type="text/javascript"></script>
-    <script src="../resources/example-behaviour.js" type="text/javascript"></script>
-    <script src="loader.js?id=accessible" type="text/javascript"></script>
+    <script src="../resources/jquery.min.js"></script>
+    <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../resources/example-behaviour.js"></script>
+    <script src="../resources/prism/prism.min.js"></script>
+    <script src="loader.js?id=accessible"></script>
 
   </body>
 </html>

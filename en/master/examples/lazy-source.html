@@ -8,15 +8,11 @@
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../resources/layout.css" type="text/css">
     <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+    
+    <link rel="stylesheet" href="lazy-source.css">
+    <link rel="stylesheet" href="../resources/prism/prism.css" type="text/css">
+    <script src="../resources/zeroclipboard/ZeroClipboard.min.js"></script>
     <title>Lazy Source</title>
-    <style>
-      button.code {
-        font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-        font-size: 12px;
-        padding: 5px;
-        margin: 0 5px;
-      }
-    </style>
   </head>
   <body>
 
@@ -30,44 +26,133 @@
 
     <div class="container-fluid">
 
-      <div class="row-fluid">
-        <div class="span12">
-          <div id="map" class="map"></div>
-        </div>
-      </div>
+      <p><div class="row-fluid">
+  <div class="span12">
+    <div id="map" class="map"></div>
+  </div>
+</div></p>
+<button id="set-source" class="code">layer.setSource(source)</button>
+<button id="unset-source" class="code">layer.setSource(null)</button>
 
       <div class="row-fluid">
 
         <div class="span12">
-          <h4 id="title">Lazy source example</h4>
+          <h4 id="title">Lazy Source</h4>
           <p id="shortdesc">Example of setting a layer source after construction.</p>
           <div id="docs">
-            <p>
-              Typically, the source for a layer is provided to the layer constructor.
-              If you need to set a layer source after construction, this can be
-              done with the <code>layer.setSource()</code> method.
-            </p>
-            <p>
-              The layer in the map above is constructed with no source.  Use the
-              links below to set/unset the layer source.  A layer is not rendered
-              until its source is set.
-            </p>
-            <p>
-              <button id="set-source" class="code">layer.setSource(source)</button>
-              <button id="unset-source" class="code">layer.setSource(null)</button>
-            </p>
-            <p>See the <a href="lazy-source.js" target="_blank">lazy-source.js source</a> for details on how this is done.</p>
+            <p>Typically, the source for a layer is provided to the layer constructor. If you need to set a layer source after construction, this can be done with the <code>layer.setSource()</code> method.</p> <p>The layer in the map above is constructed with no source.  Use the links below to set/unset the layer source.  A layer is not rendered until its source is set.</p>
+
           </div>
           <div id="tags">source</div>
         </div>
 
       </div>
 
+      <div class="row-fluid">
+        <hr>
+        <form method="POST" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
+          <input type="button" class="btn btn-info" id="copy-button" value="Copy example code">
+          <input type="submit" class="btn btn-primary" id="jsfiddle-button" value="Create JSFiddle">
+          <textarea class="hidden" name="js">var source = new ol.source.MapQuest({layer: &#x27;sat&#x27;});
+
+var layer = new ol.layer.Tile();
+
+var map = new ol.Map({
+  layers: [layer],
+  target: &#x27;map&#x27;,
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+document.getElementById(&#x27;set-source&#x27;).onclick = function() {
+  layer.setSource(source);
+};
+
+document.getElementById(&#x27;unset-source&#x27;).onclick = function() {
+  layer.setSource(null);
+};
+</textarea>
+          <textarea class="hidden" name="css"> button.code {
+   font-family: Monaco,Menlo,Consolas,&quot;Courier New&quot;,monospace;
+   font-size: 12px;
+   padding: 5px;
+   margin: 0 5px;
+ }</textarea>
+          <textarea class="hidden" name="html">&lt;p&gt;&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span12&quot;&gt;
+    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;button id=&quot;set-source&quot; class=&quot;code&quot;&gt;layer.setSource(source)&lt;/button&gt;
+&lt;button id=&quot;unset-source&quot; class=&quot;code&quot;&gt;layer.setSource(null)&lt;/button&gt;</textarea>
+          <input type="hidden" name="wrap" value="l">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js">
+          <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Lazy Source&lt;/title&gt;
+&lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"&gt;
+&lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css" type="text/css"&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js"&gt;&lt;/script&gt;
+
+&lt;style&gt;
+ button.code {
+   font-family: Monaco,Menlo,Consolas,&quot;Courier New&quot;,monospace;
+   font-size: 12px;
+   padding: 5px;
+   margin: 0 5px;
+ }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="container-fluid"&gt;
+
+&lt;p&gt;&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span12&quot;&gt;
+    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;button id=&quot;set-source&quot; class=&quot;code&quot;&gt;layer.setSource(source)&lt;/button&gt;
+&lt;button id=&quot;unset-source&quot; class=&quot;code&quot;&gt;layer.setSource(null)&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var source = new ol.source.MapQuest({layer: &#x27;sat&#x27;});
+
+var layer = new ol.layer.Tile();
+
+var map = new ol.Map({
+  layers: [layer],
+  target: &#x27;map&#x27;,
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+document.getElementById(&#x27;set-source&#x27;).onclick = function() {
+  layer.setSource(source);
+};
+
+document.getElementById(&#x27;unset-source&#x27;).onclick = function() {
+  layer.setSource(null);
+};
+
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+      </div>
     </div>
 
-    <script src="../resources/jquery.min.js" type="text/javascript"></script>
-    <script src="../resources/example-behaviour.js" type="text/javascript"></script>
-    <script src="loader.js?id=lazy-source" type="text/javascript"></script>
+    <script src="../resources/jquery.min.js"></script>
+    <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../resources/example-behaviour.js"></script>
+    <script src="../resources/prism/prism.min.js"></script>
+    <script src="loader.js?id=lazy-source"></script>
 
   </body>
 </html>
