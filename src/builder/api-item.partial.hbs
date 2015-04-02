@@ -17,7 +17,7 @@
     {{#if value.__nodes.methods}}{{> api-item.partial value.__nodes.methods}}{{/if}}
     </ul>
   {{else}}
-    <label class="is-{{value.props.kind}}">{{key}}</label>
+    <label class="is-{{value.props.kind}}" data-toggle="popover" title="{{value.props.name}}" data-content="{{value.props.blurb}}" data-placement="right" data-trigger="hover">{{key}}</label>
   {{/if}}
 </li> 
 {{/eachProperty}}
