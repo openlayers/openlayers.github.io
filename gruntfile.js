@@ -155,7 +155,7 @@ module.exports = function(grunt) {
           partials: 'src/builder/**/*.partial.hbs',
           helpers: ['src/builder/*.hlpr.js']
         },
-        src: ['src/builder/builder.hbs'],
+        src: ['src/builder/index.hbs'],
         dest: dist
       },
       doc: {
