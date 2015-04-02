@@ -131,7 +131,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/builder',
           src: '**/*.js',
-          dest: assets + '/js/'
+          dest: dist + '/en/' + branch + '/builder'
         }]
       }
     },
@@ -155,8 +155,8 @@ module.exports = function(grunt) {
           partials: 'src/builder/**/*.partial.hbs',
           helpers: ['src/builder/*.hlpr.js']
         },
-        src: ['src/builder/index.hbs'],
-        dest: dist
+        src: 'src/builder/index.hbs',
+        dest: dist + '/en/' + branch + '/builder/index.html'
       },
       doc: {
         files: [{
@@ -175,6 +175,10 @@ module.exports = function(grunt) {
       server: {}
     },
     watch: {
+      builder: {
+        files: 'src/builder/**/*',
+        tasks: ['assemble:builder', 'copy:all']
+      },
       layouts: {
         files: 'src/layouts/**/*',
         tasks: ['assemble']
