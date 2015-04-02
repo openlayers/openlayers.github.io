@@ -14,6 +14,9 @@ module.exports.register = function (Handlebars, options)  {
     var res = {};
 
     symbols.forEach(function(item, i) {
+      if (item.kind === 'member' || item.kind === 'constant') {
+        return;
+      }
       var name = item.name;
       var method = name.split('#');
       var path = method[0].split('.').splice(1);
