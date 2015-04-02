@@ -128,10 +128,8 @@ module.exports = function(grunt) {
           src: '**/*.*',
           dest: dist + '/images/'
         }, {
-          expand: true,
-          cwd: 'src/builder',
-          src: '**/*.js',
-          dest: dist + '/en/' + branch + '/builder'
+          src: 'src/builder/builder.js',
+          dest: dist + '/en/' + branch + '/builder/builder.js'
         }]
       }
     },
