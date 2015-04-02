@@ -100,17 +100,6 @@ module.exports = function(grunt) {
         }]
       }
     },
-    uglify: {
-      all: {
-        files: [{
-          src: [
-            'bower_components/jquery/dist/jquery.js',
-            'bower_components/bootstrap/dist/js/bootstrap.js'
-          ],
-          dest: assets + '/js/main.js'
-        }]
-      }
-    },
     copy: {
       all: {
         files: [{
@@ -138,6 +127,11 @@ module.exports = function(grunt) {
           cwd: 'src/images',
           src: '**/*.*',
           dest: dist + '/images/'
+        }, {
+          expand: true,
+          cwd: 'src/builder',
+          src: '**/*.js',
+          dest: assets + '/js/'
         }]
       }
     },
@@ -154,6 +148,15 @@ module.exports = function(grunt) {
           src: '**/*.*',
           dest: dist
         }]
+      },
+      builder: {
+        options: {
+          data: repo + '/build/info.json',
+          partials: 'src/builder/**/*.partial.hbs',
+          helpers: ['src/builder/*.hlpr.js']
+        },
+        src: ['src/builder/builder.hbs'],
+        dest: dist
       },
       doc: {
         files: [{
@@ -209,7 +212,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-gh-pages');
 
@@ -217,7 +219,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', 'Build the website', [
     'checkout', 'install', 'buildpy:examples', 'buildpy:apidoc', 'clean:dist',
-    'move', 'less', 'uglify', 'copy', 'assemble']);
+    'move', 'less', 'copy', 'assemble']);
 
 
   grunt.registerTask('deploy', 'Deploy the site', function() {

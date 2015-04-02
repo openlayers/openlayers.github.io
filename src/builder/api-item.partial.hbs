@@ -1,0 +1,23 @@
+{{#eachProperty this}}
+<li class="mainClass">
+  <input class="toggle-symbol {{#if value.__nodes}}has-children{{/if}}" align="" type="checkbox" {{#unless value.props.isclass}}value="{{value.props.name}}"{{/unless}}/>
+  {{#if value.__nodes}}  
+    <label class="tree-toggler toggleIcon is-{{value.props.kind}}" data-toggle="popover" title="{{value.props.name}}" data-content="{{value.props.blurb}}" data-placement="right" data-trigger="hover">
+      {{key}}{{#if value.props.isfunction}}(){{/if}}
+      <i></i>
+    </label>
+    <ul class="list-unstyled submenu nav nav-list tree" style="display: none;">
+    {{#if value.props.isclass}}
+      <li>
+        <input class="toggle-symbol" type="checkbox" value="{{value.props.name}}"/>
+         <label class="is-constructor">{{value.props.name}}</label>
+      </li>
+    {{/if}}
+    {{#if value.__nodes.children}}{{> api-item.partial value.__nodes.children}}{{/if}}
+    {{#if value.__nodes.methods}}{{> api-item.partial value.__nodes.methods}}{{/if}}
+    </ul>
+  {{else}}
+    <label class="is-{{value.props.kind}}">{{key}}</label>
+  {{/if}}
+</li> 
+{{/eachProperty}}
