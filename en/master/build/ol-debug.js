@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-145-gda9de6e
+// Version: v3.4.0-157-gd678e9e
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -49650,6 +49650,8 @@ ol.TileQueue.prototype.handleTileChange = function(event) {
   var state = tile.getState();
   if (state === ol.TileState.LOADED || state === ol.TileState.ERROR ||
       state === ol.TileState.EMPTY) {
+    goog.events.unlisten(tile, goog.events.EventType.CHANGE,
+        this.handleTileChange, false, this);
     --this.tilesLoading_;
     this.tileChangeCallback_();
   }
@@ -75696,13 +75698,17 @@ ol.Map = function(options) {
   this.registerDisposable(this.renderer_);
 
   /**
+   * @type {goog.dom.ViewportSizeMonitor}
    * @private
    */
   this.viewportSizeMonitor_ = new goog.dom.ViewportSizeMonitor();
   this.registerDisposable(this.viewportSizeMonitor_);
 
-  goog.events.listen(this.viewportSizeMonitor_, goog.events.EventType.RESIZE,
-      this.updateSize, false, this);
+  /**
+   * @type {goog.events.Key}
+   * @private
+   */
+  this.viewportResizeListenerKey_ = null;
 
   /**
    * @private
@@ -76390,12 +76396,22 @@ ol.Map.prototype.handleTargetChanged_ = function() {
 
   if (goog.isNull(targetElement)) {
     goog.dom.removeNode(this.viewport_);
+    if (!goog.isNull(this.viewportResizeListenerKey_)) {
+      goog.events.unlistenByKey(this.viewportResizeListenerKey_);
+      this.viewportResizeListenerKey_ = null;
+    }
   } else {
     goog.dom.appendChild(targetElement, this.viewport_);
 
     var keyboardEventTarget = goog.isNull(this.keyboardEventTarget_) ?
         targetElement : this.keyboardEventTarget_;
     this.keyHandler_.attach(keyboardEventTarget);
+
+    if (goog.isNull(this.viewportResizeListenerKey_)) {
+      this.viewportResizeListenerKey_ = goog.events.listen(
+          this.viewportSizeMonitor_, goog.events.EventType.RESIZE,
+          this.updateSize, false, this);
+    }
   }
 
   this.updateSize();
@@ -85838,7 +85854,7 @@ goog.require('ol.xml');
  * Abstract base class; normally only used for creating subclasses and not
  * instantiated in apps.
  * Feature base format for reading and writing data in the GML format.
- * This class cannot be instantiate, it contains only base content that
+ * This class cannot be instantiated, it contains only base content that
  * is shared with versioned format classes ol.format.GML2 and
  * ol.format.GML3.
  *
@@ -85846,7 +85862,6 @@ goog.require('ol.xml');
  * @param {olx.format.GMLOptions=} opt_options
  *     Optional configuration object.
  * @extends {ol.format.XMLFeature}
- * @api
  */
 ol.format.GMLBase = function(opt_options) {
   var options = /** @type {olx.format.GMLOptions} */
@@ -120997,11 +121012,6 @@ goog.exportProperty(
     ol.format.GML.prototype,
     'writeFeaturesNode',
     ol.format.GML.prototype.writeFeaturesNode);
-
-goog.exportSymbol(
-    'ol.format.GMLBase',
-    ol.format.GMLBase,
-    OPENLAYERS);
 
 goog.exportProperty(
     ol.format.GMLBase.prototype,

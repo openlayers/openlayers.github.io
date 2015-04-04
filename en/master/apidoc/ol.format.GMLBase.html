@@ -20,7 +20,7 @@
     <div class="container">
       <a class="brand" href="/"><img src="../resources/logo-70x70.png"> OpenLayers 3</a>
       <label id="stability">
-        <input type="checkbox" id="stability-toggle" checked> Stable Only
+        <input type="checkbox" id="stability-toggle"> Stable Only
       </label>
       <ul class="nav navbar-nav pull-right">
         <li><a href="../doc">Docs</a></li>
@@ -15777,7 +15777,7 @@
         <div class="class-description"><p>Abstract base class; normally only used for creating subclasses and not
 instantiated in apps.
 Feature base format for reading and writing data in the GML format.
-This class cannot be instantiate, it contains only base content that
+This class cannot be instantiated, it contains only base content that
 is shared with versioned format classes ol.format.GML2 and
 ol.format.GML3.</p></div>
     
@@ -15789,363 +15789,19 @@ ol.format.GML3.</p></div>
     
     
         
-<dt class="unstable">
+<dt class="">
     <div class="nameContainer">
-        
-        <h4 class="name" id="GMLBase">
-            new ol.format.GMLBase<span class="signature">(<span class="optional">opt_options</span>)</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/format/gml/gmlbaseformat.js, line 42
-        </div>
-        
         
     </div>
     
 </dt>
-<dd class="unstable">
+<dd class="">
     
     
 
     
     
     
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            
-            
-            <td colspan=2 class="description last">
-                
-                <p>Optional configuration object.</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>featureNS</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-|
-
-<span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>Feature namespace. If not defined will be derived from GML. If multiple
-feature types have been configured which come from different feature
-namespaces, this will be an object with the keys being the prefixes used
-in the entries of featureType array. The values of the object will be the
-feature namespaces themselves. So for instance there might be a featureType
-item <code>topp:states</code> in the <code>featureType</code> array and then there will be a key
-<code>topp</code> in the featureNS object with value <code>http://www.openplans.org/topp</code>.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>featureType</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-|
-
-<span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>Feature type(s) to parse. If multiple feature types need to be configured
-which come from different feature namespaces, <code>featureNS</code> will be an object
-with the keys being the prefixes used in the entries of featureType array.
-The values of the object will be the feature namespaces themselves.
-So for instance there might be a featureType item <code>topp:states</code> and then
-there will be a key named <code>topp</code> in the featureNS object with value
-<code>http://www.openplans.org/topp</code>.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="unstable">
-            
-                <td class="name"><code>srsName</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-<span class="stability experimental">experimental</span>
-
-
-                
-                <p>srsName to use when writing geometries.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>surface</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>Write gml:Surface instead of gml:Polygon elements. This also affects the
-elements in multi-part geometries. Default is <code>false</code>.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>curve</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>Write gml:Curve instead of gml:LineString elements. This also affects the
-elements in multi-part geometries. Default is <code>false</code>.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>multiCurve</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>Write gml:MultiCurve instead of gml:MultiLineString. Since the latter is
-deprecated in GML 3, the default is <code>true</code>.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>multiSurface</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>Write gml:multiSurface instead of gml:MultiPolygon. Since the latter is
-deprecated in GML 3, the default is <code>true</code>.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>schemaLocation</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>Optional schemaLocation to use when writing out the GML, this will override
-the default provided.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -16244,7 +15900,7 @@ the default provided.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/gml/gmlbaseformat.js, line 598
+            src/ol/format/gml/gmlbaseformat.js, line 597
         </div>
         
         
@@ -16486,7 +16142,7 @@ Features.
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Apr 02 2015 21:08:11 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Sat Apr 04 2015 09:48:45 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
