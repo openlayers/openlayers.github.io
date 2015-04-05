@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-157-gd678e9e
+// Version: v3.4.0-201-g17d1cff
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -14226,6 +14226,9 @@ ol.coordinate.squaredDistanceToSegment = function(coordinate, segment) {
 
 
 /**
+ * Format a geographic coordinate with the hemisphere, degrees, minutes, and
+ * seconds.
+ *
  * Example:
  *
  *     var coord = [7.85, 47.983333];
@@ -14247,6 +14250,8 @@ ol.coordinate.toStringHDMS = function(coordinate) {
 
 
 /**
+ * Format a coordinate as a comma delimited string.
+ *
  * Example without specifying fractional digits:
  *
  *     var coord = [7.85, 47.983333];
@@ -17506,7 +17511,7 @@ ol.extent.Relationship = {
 
 
 /**
- * Builds an extent that includes all given coordinates.
+ * Build an extent that includes all given coordinates.
  *
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @return {ol.Extent} Bounding extent.
@@ -17612,11 +17617,11 @@ ol.extent.closestSquaredDistanceXY = function(extent, x, y) {
 
 
 /**
- * Checks if the passed coordinate is contained or on the edge of the extent.
+ * Check if the passed coordinate is contained or on the edge of the extent.
  *
  * @param {ol.Extent} extent Extent.
  * @param {ol.Coordinate} coordinate Coordinate.
- * @return {boolean} Contains.
+ * @return {boolean} The coordinate is contained in the extent.
  * @api stable
  */
 ol.extent.containsCoordinate = function(extent, coordinate) {
@@ -17625,11 +17630,12 @@ ol.extent.containsCoordinate = function(extent, coordinate) {
 
 
 /**
- * Checks if `extent2` is contained by or on the edge of `extent1`.
+ * Check if one extent is contained by or on the edge of another.
  *
  * @param {ol.Extent} extent1 Extent 1.
  * @param {ol.Extent} extent2 Extent 2.
- * @return {boolean} Contains.
+ * @return {boolean} The first extent is contained by or on the edge of the
+ *     second.
  * @api stable
  */
 ol.extent.containsExtent = function(extent1, extent2) {
@@ -17639,12 +17645,12 @@ ol.extent.containsExtent = function(extent1, extent2) {
 
 
 /**
- * Checks if the passed coordinate is contained or on the edge of the extent.
+ * Check if the passed coordinate is contained or on the edge of the extent.
  *
  * @param {ol.Extent} extent Extent.
  * @param {number} x X coordinate.
  * @param {number} y Y coordinate.
- * @return {boolean} Contains.
+ * @return {boolean} The x, y values are contained in the extent.
  * @api stable
  */
 ol.extent.containsXY = function(extent, x, y) {
@@ -17685,6 +17691,7 @@ ol.extent.coordinateRelationship = function(extent, coordinate) {
 
 
 /**
+ * Create an empty extent.
  * @return {ol.Extent} Empty extent.
  * @api stable
  */
@@ -17694,6 +17701,7 @@ ol.extent.createEmpty = function() {
 
 
 /**
+ * Create a new extent or update the provided extent.
  * @param {number} minX Minimum X.
  * @param {number} minY Minimum Y.
  * @param {number} maxX Maximum X.
@@ -17715,6 +17723,7 @@ ol.extent.createOrUpdate = function(minX, minY, maxX, maxY, opt_extent) {
 
 
 /**
+ * Create a new empty extent or make the provided one empty.
  * @param {ol.Extent=} opt_extent Extent.
  * @return {ol.Extent} Extent.
  */
@@ -17775,7 +17784,7 @@ ol.extent.createOrUpdateFromRings = function(rings, opt_extent) {
 
 
 /**
- * Empties extent in place.
+ * Empty an extent in place.
  * @param {ol.Extent} extent Extent.
  * @return {ol.Extent} Extent.
  */
@@ -17787,9 +17796,10 @@ ol.extent.empty = function(extent) {
 
 
 /**
+ * Determine if two extents are equivalent.
  * @param {ol.Extent} extent1 Extent 1.
  * @param {ol.Extent} extent2 Extent 2.
- * @return {boolean} Equals.
+ * @return {boolean} The two extents are equivalent.
  * @api stable
  */
 ol.extent.equals = function(extent1, extent2) {
@@ -17799,9 +17809,10 @@ ol.extent.equals = function(extent1, extent2) {
 
 
 /**
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent 2.
- * @return {ol.Extent} Extent.
+ * Modify an extent to include another extent.
+ * @param {ol.Extent} extent1 The extent to be modified.
+ * @param {ol.Extent} extent2 The extent that will be included in the first.
+ * @return {ol.Extent} A reference to the first (extended) extent.
  * @api stable
  */
 ol.extent.extend = function(extent1, extent2) {
@@ -17946,6 +17957,7 @@ ol.extent.getArea = function(extent) {
 
 
 /**
+ * Get the bottom left coordinate of an extent.
  * @param {ol.Extent} extent Extent.
  * @return {ol.Coordinate} Bottom left coordinate.
  * @api stable
@@ -17956,6 +17968,7 @@ ol.extent.getBottomLeft = function(extent) {
 
 
 /**
+ * Get the bottom right coordinate of an extent.
  * @param {ol.Extent} extent Extent.
  * @return {ol.Coordinate} Bottom right coordinate.
  * @api stable
@@ -17966,6 +17979,7 @@ ol.extent.getBottomRight = function(extent) {
 
 
 /**
+ * Get the center coordinate of an extent.
  * @param {ol.Extent} extent Extent.
  * @return {ol.Coordinate} Center.
  * @api stable
@@ -18043,6 +18057,7 @@ ol.extent.getForViewAndSize =
 
 
 /**
+ * Get the height of an extent.
  * @param {ol.Extent} extent Extent.
  * @return {number} Height.
  * @api stable
@@ -18110,8 +18125,9 @@ ol.extent.getMargin = function(extent) {
 
 
 /**
- * @param {ol.Extent} extent Extent.
- * @return {ol.Size} Size.
+ * Get the size (width, height) of an extent.
+ * @param {ol.Extent} extent The extent.
+ * @return {ol.Size} The extent size.
  * @api stable
  */
 ol.extent.getSize = function(extent) {
@@ -18120,6 +18136,7 @@ ol.extent.getSize = function(extent) {
 
 
 /**
+ * Get the top left coordinate of an extent.
  * @param {ol.Extent} extent Extent.
  * @return {ol.Coordinate} Top left coordinate.
  * @api stable
@@ -18130,6 +18147,7 @@ ol.extent.getTopLeft = function(extent) {
 
 
 /**
+ * Get the top right coordinate of an extent.
  * @param {ol.Extent} extent Extent.
  * @return {ol.Coordinate} Top right coordinate.
  * @api stable
@@ -18140,6 +18158,7 @@ ol.extent.getTopRight = function(extent) {
 
 
 /**
+ * Get the width of an extent.
  * @param {ol.Extent} extent Extent.
  * @return {number} Width.
  * @api stable
@@ -18150,9 +18169,10 @@ ol.extent.getWidth = function(extent) {
 
 
 /**
+ * Determine if one extent intersects another.
  * @param {ol.Extent} extent1 Extent 1.
  * @param {ol.Extent} extent2 Extent.
- * @return {boolean} Intersects.
+ * @return {boolean} The two extents intersect.
  * @api stable
  */
 ol.extent.intersects = function(extent1, extent2) {
@@ -18164,6 +18184,7 @@ ol.extent.intersects = function(extent1, extent2) {
 
 
 /**
+ * Determine if an extent is empty.
  * @param {ol.Extent} extent Extent.
  * @return {boolean} Is empty.
  * @api stable
@@ -19679,6 +19700,7 @@ ol.View.prototype.constrainRotation = function(rotation, opt_delta) {
 
 
 /**
+ * Get the view center.
  * @return {ol.Coordinate|undefined} The center of the view.
  * @observable
  * @api stable
@@ -19702,8 +19724,8 @@ ol.View.prototype.getHints = function() {
 
 
 /**
- * Calculate the extent for the current view state and the passed `size`.
- * `size` is the size in pixels of the box into which the calculated extent
+ * Calculate the extent for the current view state and the passed size.
+ * The size is the pixel dimensions of the box into which the calculated extent
  * should fit. In most cases you want to get the extent of the entire map,
  * that is `map.getSize()`.
  * @param {ol.Size} size Box pixel size.
@@ -19724,6 +19746,7 @@ ol.View.prototype.calculateExtent = function(size) {
 
 
 /**
+ * Get the view projection.
  * @return {ol.proj.Projection} The projection of the view.
  * @api stable
  */
@@ -19733,6 +19756,7 @@ ol.View.prototype.getProjection = function() {
 
 
 /**
+ * Get the view resolution.
  * @return {number|undefined} The resolution of the view.
  * @observable
  * @api stable
@@ -19789,7 +19813,8 @@ ol.View.prototype.getResolutionForValueFunction = function(opt_power) {
 
 
 /**
- * @return {number} The rotation of the view.
+ * Get the view rotation.
+ * @return {number} The rotation of the view in radians.
  * @observable
  * @api stable
  */
@@ -19874,9 +19899,9 @@ ol.View.prototype.getZoom = function() {
 
 
 /**
- * Fit the map view to the passed `extent` and `size`. `size` is the size in
- * pixels of the box to fit the extent into. In most cases you will want to
- * use the map size, that is `map.getSize()`.
+ * Fit the map view to the passed extent and size. The size is pixel dimensions
+ * of the box to fit the extent into. In most cases you will want to use the map
+ * size, that is `map.getSize()`.
  * @param {ol.Extent} extent Extent.
  * @param {ol.Size} size Box pixel size.
  * @api
@@ -19896,8 +19921,7 @@ ol.View.prototype.fitExtent = function(extent, size) {
 
 
 /**
- * Fit the given geometry based on the given map size and border.
- * Take care on the map angle.
+ * Fit the given geometry into the view based on the given map size and border.
  * @param {ol.geom.SimpleGeometry} geometry Geometry.
  * @param {ol.Size} size Box pixel size.
  * @param {olx.view.FitGeometryOptions=} opt_options Options.
@@ -19971,7 +19995,6 @@ ol.View.prototype.fitGeometry = function(geometry, size, opt_options) {
 
 /**
  * Center on coordinate and view position.
- * Take care on the map angle.
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {ol.Size} size Box pixel size.
  * @param {ol.Pixel} position Position on the view to center on.
@@ -20068,7 +20091,7 @@ goog.exportProperty(
 
 /**
  * Set the rotation for this view.
- * @param {number} rotation The rotation of the view.
+ * @param {number} rotation The rotation of the view in radians.
  * @observable
  * @api stable
  */
@@ -20307,6 +20330,7 @@ goog.require('goog.fx.easing');
 
 
 /**
+ * Start slow and speed up.
  * @function
  * @param {number} t Input between 0 and 1.
  * @return {number} Output between 0 and 1.
@@ -20316,6 +20340,7 @@ ol.easing.easeIn = goog.fx.easing.easeIn;
 
 
 /**
+ * Start fast and slow down.
  * @function
  * @param {number} t Input between 0 and 1.
  * @return {number} Output between 0 and 1.
@@ -20325,6 +20350,7 @@ ol.easing.easeOut = goog.fx.easing.easeOut;
 
 
 /**
+ * Start slow, speed up, and then slow down again.
  * @function
  * @param {number} t Input between 0 and 1.
  * @return {number} Output between 0 and 1.
@@ -20334,6 +20360,7 @@ ol.easing.inAndOut = goog.fx.easing.inAndOut;
 
 
 /**
+ * Maintain a constant speed over time.
  * @param {number} t Input between 0 and 1.
  * @return {number} Output between 0 and 1.
  * @api
@@ -20344,6 +20371,9 @@ ol.easing.linear = function(t) {
 
 
 /**
+ * Start slow, speed up, and at the very end slow down again.  This has the
+ * same general behavior as {@link ol.easing.inAndOut}, but the final slowdown
+ * is delayed.
  * @param {number} t Input between 0 and 1.
  * @return {number} Output between 0 and 1.
  * @api
@@ -20365,6 +20395,8 @@ goog.require('ol.easing');
 
 
 /**
+ * Generate an animated transition that will "bounce" the resolution as it
+ * approaches the final value.
  * @param {olx.animation.BounceOptions} options Bounce options.
  * @return {ol.PreRenderFunction} Pre-render function.
  * @api
@@ -20400,6 +20432,7 @@ ol.animation.bounce = function(options) {
 
 
 /**
+ * Generate an animated transition while updating the view center.
  * @param {olx.animation.PanOptions} options Pan options.
  * @return {ol.PreRenderFunction} Pre-render function.
  * @api
@@ -20439,6 +20472,7 @@ ol.animation.pan = function(options) {
 
 
 /**
+ * Generate an animated transition while updating the view rotation.
  * @param {olx.animation.RotateOptions} options Rotate options.
  * @return {ol.PreRenderFunction} Pre-render function.
  * @api
@@ -20484,6 +20518,7 @@ ol.animation.rotate = function(options) {
 
 
 /**
+ * Generate an animated transition while updating the view resolution.
  * @param {olx.animation.ZoomOptions} options Zoom options.
  * @return {ol.PreRenderFunction} Pre-render function.
  * @api
@@ -20926,7 +20961,8 @@ ol.Attribution = function(options) {
 
 
 /**
- * @return {string} HTML.
+ * Get the attribution markup.
+ * @return {string} The attribution HTML.
  * @api stable
  */
 ol.Attribution.prototype.getHTML = function() {
@@ -28826,6 +28862,8 @@ ol.Collection.prototype.clear = function() {
 
 
 /**
+ * Add elements to the collection.  This pushes each item in the provided array
+ * to the end of the collection.
  * @param {Array.<T>} arr Array.
  * @return {ol.Collection.<T>} This collection.
  * @api stable
@@ -28927,9 +28965,9 @@ ol.Collection.prototype.push = function(elem) {
 
 
 /**
- * Removes the first occurrence of elem from the collection.
+ * Remove the first occurrence of an element from the collection.
  * @param {T} elem Element.
- * @return {T|undefined} The removed element or undefined if elem was not found.
+ * @return {T|undefined} The removed element or undefined if none found.
  * @api stable
  */
 ol.Collection.prototype.remove = function(elem) {
@@ -34381,6 +34419,7 @@ ol.Tile.prototype.changed = function() {
 
 
 /**
+ * Get the HTML image element for this tile (may be a Canvas, Image, or Video).
  * @function
  * @param {Object=} opt_context Object.
  * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
@@ -34397,6 +34436,7 @@ ol.Tile.prototype.getKey = function() {
 
 
 /**
+ * Get the tile coordinate for this tile.
  * @return {ol.TileCoord}
  * @api
  */
@@ -34740,6 +34780,7 @@ ol.tilegrid.TileGrid.prototype.forEachTileCoordParentTileRange =
 
 
 /**
+ * Get the maximum zoom level for the grid.
  * @return {number} Max zoom.
  * @api
  */
@@ -34749,6 +34790,7 @@ ol.tilegrid.TileGrid.prototype.getMaxZoom = function() {
 
 
 /**
+ * Get the minimum zoom level for the grid.
  * @return {number} Min zoom.
  * @api
  */
@@ -34758,6 +34800,7 @@ ol.tilegrid.TileGrid.prototype.getMinZoom = function() {
 
 
 /**
+ * Get the origin for the grid at the given zoom level.
  * @param {number} z Z.
  * @return {ol.Coordinate} Origin.
  * @api stable
@@ -34777,6 +34820,7 @@ ol.tilegrid.TileGrid.prototype.getOrigin = function(z) {
 
 
 /**
+ * Get the resolution for the given zoom level.
  * @param {number} z Z.
  * @return {number} Resolution.
  * @api stable
@@ -34790,6 +34834,7 @@ ol.tilegrid.TileGrid.prototype.getResolution = function(z) {
 
 
 /**
+ * Get the list of resolutions for the tile grid.
  * @return {Array.<number>} Resolutions.
  * @api stable
  */
@@ -34954,8 +34999,9 @@ ol.tilegrid.TileGrid.prototype.getTileCoordForXYAndResolution_ = function(
 
 
 /**
+ * Get a tile coordinate given a map coordinate and zoom level.
  * @param {ol.Coordinate} coordinate Coordinate.
- * @param {number} z Z.
+ * @param {number} z Zoom level.
  * @param {ol.TileCoord=} opt_tileCoord Destination ol.TileCoord object.
  * @return {ol.TileCoord} Tile coordinate.
  * @api
@@ -35001,6 +35047,7 @@ ol.tilegrid.TileGrid.prototype.getTileRange =
 
 
 /**
+ * Get the tile size for a zoom level.
  * @param {number} z Z.
  * @return {number} Tile size.
  * @api stable
@@ -48001,7 +48048,7 @@ ol.style.ImageOptions;
 
 /**
  * @classdesc
- * Abstract base class; used for creating subclasses and not instantiated in
+ * A base class used for creating subclasses and not instantiated in
  * apps. Base class for {@link ol.style.Icon} and {@link ol.style.Circle}.
  *
  * @constructor
@@ -48044,6 +48091,7 @@ ol.style.Image = function(options) {
 
 
 /**
+ * Get the symbolizer opacity.
  * @return {number} Opacity.
  * @api
  */
@@ -48053,6 +48101,7 @@ ol.style.Image.prototype.getOpacity = function() {
 
 
 /**
+ * Determine whether the symbolizer rotates with the map.
  * @return {boolean} Rotate with map.
  * @api
  */
@@ -48062,6 +48111,7 @@ ol.style.Image.prototype.getRotateWithView = function() {
 
 
 /**
+ * Get the symoblizer rotation.
  * @return {number} Rotation.
  * @api
  */
@@ -48071,6 +48121,7 @@ ol.style.Image.prototype.getRotation = function() {
 
 
 /**
+ * Get the symbolizer scale.
  * @return {number} Scale.
  * @api
  */
@@ -48080,7 +48131,8 @@ ol.style.Image.prototype.getScale = function() {
 
 
 /**
- * @return {boolean} Snap to pixel?
+ * Determine whether the symbolizer should be snapped to a pixel.
+ * @return {boolean} The symbolizer should snap to a pixel.
  * @api
  */
 ol.style.Image.prototype.getSnapToPixel = function() {
@@ -48461,6 +48513,7 @@ ol.style.Icon.prototype.getAnchor = function() {
 
 
 /**
+ * Get the image icon.
  * @param {number} pixelRatio Pixel ratio.
  * @return {Image} Image element.
  * @api
@@ -48535,6 +48588,7 @@ ol.style.Icon.prototype.getOrigin = function() {
 
 
 /**
+ * Get the image URL.
  * @return {string|undefined} Image src.
  * @api
  */
@@ -53702,44 +53756,38 @@ ol.geom.Polygon.fromExtent = function(extent) {
   return polygon;
 };
 
-// FIXME remove trailing "Geometry" in method names
-
-goog.provide('ol.render.IVectorContext');
+goog.provide('ol.render.VectorContext');
 
 
 
 /**
- * VectorContext interface. Implemented by
- * {@link ol.render.canvas.Immediate} and {@link ol.render.webgl.Immediate}.
- * @interface
+ * @constructor
+ * @struct
+ * @api
  */
-ol.render.IVectorContext = function() {
+ol.render.VectorContext = function() {
 };
 
 
 /**
  * @param {number} zIndex Z index.
- * @param {function(ol.render.IVectorContext)} callback Callback.
+ * @param {function(ol.render.VectorContext)} callback Callback.
  */
-ol.render.IVectorContext.prototype.drawAsync = function(zIndex, callback) {
-};
+ol.render.VectorContext.prototype.drawAsync = goog.abstractMethod;
 
 
 /**
  * @param {ol.geom.Circle} circleGeometry Circle geometry.
  * @param {ol.Feature} feature Feature,
  */
-ol.render.IVectorContext.prototype.drawCircleGeometry =
-    function(circleGeometry, feature) {
-};
+ol.render.VectorContext.prototype.drawCircleGeometry = goog.abstractMethod;
 
 
 /**
  * @param {ol.Feature} feature Feature.
  * @param {ol.style.Style} style Style.
  */
-ol.render.IVectorContext.prototype.drawFeature = function(feature, style) {
-};
+ol.render.VectorContext.prototype.drawFeature = goog.abstractMethod;
 
 
 /**
@@ -53747,27 +53795,16 @@ ol.render.IVectorContext.prototype.drawFeature = function(feature, style) {
  *     collection.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.IVectorContext.prototype.drawGeometryCollectionGeometry =
-    function(geometryCollectionGeometry, feature) {
-};
-
-
-/**
- * @param {ol.geom.Point} pointGeometry Point geometry.
- * @param {ol.Feature} feature Feature.
- */
-ol.render.IVectorContext.prototype.drawPointGeometry =
-    function(pointGeometry, feature) {
-};
+ol.render.VectorContext.prototype.drawGeometryCollectionGeometry =
+    goog.abstractMethod;
 
 
 /**
  * @param {ol.geom.LineString} lineStringGeometry Line string geometry.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.IVectorContext.prototype.drawLineStringGeometry =
-    function(lineStringGeometry, feature) {
-};
+ol.render.VectorContext.prototype.drawLineStringGeometry =
+    goog.abstractMethod;
 
 
 /**
@@ -53775,36 +53812,37 @@ ol.render.IVectorContext.prototype.drawLineStringGeometry =
  *     MultiLineString geometry.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.IVectorContext.prototype.drawMultiLineStringGeometry =
-    function(multiLineStringGeometry, feature) {
-};
+ol.render.VectorContext.prototype.drawMultiLineStringGeometry =
+    goog.abstractMethod;
 
 
 /**
  * @param {ol.geom.MultiPoint} multiPointGeometry MultiPoint geometry.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.IVectorContext.prototype.drawMultiPointGeometry =
-    function(multiPointGeometry, feature) {
-};
+ol.render.VectorContext.prototype.drawMultiPointGeometry = goog.abstractMethod;
 
 
 /**
  * @param {ol.geom.MultiPolygon} multiPolygonGeometry MultiPolygon geometry.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.IVectorContext.prototype.drawMultiPolygonGeometry =
-    function(multiPolygonGeometry, feature) {
-};
+ol.render.VectorContext.prototype.drawMultiPolygonGeometry =
+    goog.abstractMethod;
+
+
+/**
+ * @param {ol.geom.Point} pointGeometry Point geometry.
+ * @param {ol.Feature} feature Feature.
+ */
+ol.render.VectorContext.prototype.drawPointGeometry = goog.abstractMethod;
 
 
 /**
  * @param {ol.geom.Polygon} polygonGeometry Polygon geometry.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.IVectorContext.prototype.drawPolygonGeometry =
-    function(polygonGeometry, feature) {
-};
+ol.render.VectorContext.prototype.drawPolygonGeometry = goog.abstractMethod;
 
 
 /**
@@ -53815,38 +53853,32 @@ ol.render.IVectorContext.prototype.drawPolygonGeometry =
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.IVectorContext.prototype.drawText =
-    function(flatCoordinates, offset, end, stride, geometry, feature) {
-};
+ol.render.VectorContext.prototype.drawText = goog.abstractMethod;
 
 
 /**
  * @param {ol.style.Fill} fillStyle Fill style.
  * @param {ol.style.Stroke} strokeStyle Stroke style.
  */
-ol.render.IVectorContext.prototype.setFillStrokeStyle =
-    function(fillStyle, strokeStyle) {
-};
+ol.render.VectorContext.prototype.setFillStrokeStyle = goog.abstractMethod;
 
 
 /**
  * @param {ol.style.Image} imageStyle Image style.
  */
-ol.render.IVectorContext.prototype.setImageStyle = function(imageStyle) {
-};
+ol.render.VectorContext.prototype.setImageStyle = goog.abstractMethod;
 
 
 /**
  * @param {ol.style.Text} textStyle Text style.
  */
-ol.render.IVectorContext.prototype.setTextStyle = function(textStyle) {
-};
+ol.render.VectorContext.prototype.setTextStyle = goog.abstractMethod;
 
 goog.provide('ol.render.Event');
 goog.provide('ol.render.EventType');
 
 goog.require('goog.events.Event');
-goog.require('ol.render.IVectorContext');
+goog.require('ol.render.VectorContext');
 
 
 /**
@@ -53878,7 +53910,7 @@ ol.render.EventType = {
  * @implements {oli.render.Event}
  * @param {ol.render.EventType} type Type.
  * @param {Object=} opt_target Target.
- * @param {ol.render.IVectorContext=} opt_vectorContext Vector context.
+ * @param {ol.render.VectorContext=} opt_vectorContext Vector context.
  * @param {ol.render.IReplayGroup=} opt_replayGroup Replay group.
  * @param {olx.FrameState=} opt_frameState Frame state.
  * @param {?CanvasRenderingContext2D=} opt_context Context.
@@ -53892,7 +53924,7 @@ ol.render.Event = function(
 
   /**
    * For canvas, this is an instance of {@link ol.render.canvas.Immediate}.
-   * @type {ol.render.IVectorContext|undefined}
+   * @type {ol.render.VectorContext|undefined}
    * @api
    */
   this.vectorContext = opt_vectorContext;
@@ -55065,6 +55097,7 @@ ol.style.Stroke = function(opt_options) {
 
 
 /**
+ * Get the stroke color.
  * @return {ol.Color|string} Color.
  * @api
  */
@@ -55074,6 +55107,7 @@ ol.style.Stroke.prototype.getColor = function() {
 
 
 /**
+ * Get the line cap type for the stroke.
  * @return {string|undefined} Line cap.
  * @api
  */
@@ -55083,6 +55117,7 @@ ol.style.Stroke.prototype.getLineCap = function() {
 
 
 /**
+ * Get the line dash style for the stroke.
  * @return {Array.<number>} Line dash.
  * @api
  */
@@ -55092,6 +55127,7 @@ ol.style.Stroke.prototype.getLineDash = function() {
 
 
 /**
+ * Get the line join type for the stroke.
  * @return {string|undefined} Line join.
  * @api
  */
@@ -55101,6 +55137,7 @@ ol.style.Stroke.prototype.getLineJoin = function() {
 
 
 /**
+ * Get the miter limit for the stroke.
  * @return {number|undefined} Miter limit.
  * @api
  */
@@ -55110,6 +55147,7 @@ ol.style.Stroke.prototype.getMiterLimit = function() {
 
 
 /**
+ * Get the stroke width.
  * @return {number|undefined} Width.
  * @api
  */
@@ -55349,6 +55387,7 @@ ol.style.Fill = function(opt_options) {
 
 
 /**
+ * Get the fill color.
  * @return {ol.Color|string} Color.
  * @api
  */
@@ -55507,6 +55546,7 @@ ol.style.Circle.prototype.getAnchor = function() {
 
 
 /**
+ * Get the fill style for the circle.
  * @return {ol.style.Fill} Fill style.
  * @api
  */
@@ -55524,6 +55564,7 @@ ol.style.Circle.prototype.getHitDetectionImage = function(pixelRatio) {
 
 
 /**
+ * Get the image used to render the circle.
  * @param {number} pixelRatio Pixel ratio.
  * @return {HTMLCanvasElement} Canvas element.
  * @api
@@ -55567,6 +55608,7 @@ ol.style.Circle.prototype.getOrigin = function() {
 
 
 /**
+ * Get the circle radius.
  * @return {number} Radius.
  * @api
  */
@@ -55585,6 +55627,7 @@ ol.style.Circle.prototype.getSize = function() {
 
 
 /**
+ * Get the stroke style for the circle.
  * @return {ol.style.Stroke} Stroke style.
  * @api
  */
@@ -55902,6 +55945,7 @@ ol.style.Style = function(opt_options) {
 
 
 /**
+ * Get the geometry to be rendered.
  * @return {string|ol.geom.Geometry|ol.style.GeometryFunction}
  * Feature property or geometry or function that returns the geometry that will
  * be rendered with this style.
@@ -55913,6 +55957,7 @@ ol.style.Style.prototype.getGeometry = function() {
 
 
 /**
+ * Get the function used to generate a geometry for rendering.
  * @return {!ol.style.GeometryFunction} Function that is called with a feature
  * and returns the geometry to render instead of the feature's geometry.
  * @api
@@ -55923,6 +55968,7 @@ ol.style.Style.prototype.getGeometryFunction = function() {
 
 
 /**
+ * Get the fill style.
  * @return {ol.style.Fill} Fill style.
  * @api
  */
@@ -55932,6 +55978,7 @@ ol.style.Style.prototype.getFill = function() {
 
 
 /**
+ * Get the image style.
  * @return {ol.style.Image} Image style.
  * @api
  */
@@ -55941,6 +55988,7 @@ ol.style.Style.prototype.getImage = function() {
 
 
 /**
+ * Get the stroke style.
  * @return {ol.style.Stroke} Stroke style.
  * @api
  */
@@ -55950,6 +55998,7 @@ ol.style.Style.prototype.getStroke = function() {
 
 
 /**
+ * Get the text style.
  * @return {ol.style.Text} Text style.
  * @api
  */
@@ -55959,6 +56008,7 @@ ol.style.Style.prototype.getText = function() {
 
 
 /**
+ * Get the z-index for the style.
  * @return {number|undefined} ZIndex.
  * @api
  */
@@ -56001,7 +56051,7 @@ ol.style.Style.prototype.setGeometry = function(geometry) {
 
 
 /**
- * Set the zIndex.
+ * Set the z-index.
  *
  * @param {number|undefined} zIndex ZIndex.
  * @api
@@ -57837,7 +57887,7 @@ goog.require('ol.color');
 goog.require('ol.extent');
 goog.require('ol.geom.flat.transform');
 goog.require('ol.has');
-goog.require('ol.render.IVectorContext');
+goog.require('ol.render.VectorContext');
 goog.require('ol.render.canvas');
 goog.require('ol.vec.Mat4');
 
@@ -57845,7 +57895,7 @@ goog.require('ol.vec.Mat4');
 
 /**
  * @classdesc
- * A concrete subclass of {@link ol.render.IVectorContext} that implements
+ * A concrete subclass of {@link ol.render.VectorContext} that implements
  * direct rendering of features and geometries to an HTML5 Canvas context.
  * Instances of this class are created internally by the library and
  * provided to application code as vectorContext member of the
@@ -57853,7 +57903,7 @@ goog.require('ol.vec.Mat4');
  * render events emitted by layers and maps.
  *
  * @constructor
- * @implements {ol.render.IVectorContext}
+ * @extends {ol.render.VectorContext}
  * @param {CanvasRenderingContext2D} context Context.
  * @param {number} pixelRatio Pixel ratio.
  * @param {ol.Extent} extent Extent.
@@ -58850,7 +58900,7 @@ ol.render.canvas.Immediate.GEOMETRY_RENDERERS_ = {
 
 goog.provide('ol.render.IReplayGroup');
 
-goog.require('ol.render.IVectorContext');
+goog.require('ol.render.VectorContext');
 
 
 /**
@@ -58887,7 +58937,7 @@ ol.render.IReplayGroup = function() {
 /**
  * @param {number|undefined} zIndex Z index.
  * @param {ol.render.ReplayType} replayType Replay type.
- * @return {ol.render.IVectorContext} Replay.
+ * @return {ol.render.VectorContext} Replay.
  */
 ol.render.IReplayGroup.prototype.getReplay = function(zIndex, replayType) {
 };
@@ -58918,7 +58968,7 @@ goog.require('ol.geom.flat.simplify');
 goog.require('ol.geom.flat.transform');
 goog.require('ol.has');
 goog.require('ol.render.IReplayGroup');
-goog.require('ol.render.IVectorContext');
+goog.require('ol.render.VectorContext');
 goog.require('ol.render.canvas');
 goog.require('ol.vec.Mat4');
 
@@ -58946,7 +58996,7 @@ ol.render.canvas.Instruction = {
 
 /**
  * @constructor
- * @implements {ol.render.IVectorContext}
+ * @extends {ol.render.VectorContext}
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Maximum extent.
  * @param {number} resolution Resolution.
@@ -58954,6 +59004,7 @@ ol.render.canvas.Instruction = {
  * @struct
  */
 ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
+  goog.base(this);
 
   /**
    * @protected
@@ -59034,8 +59085,8 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
    * @type {!goog.vec.Mat4.Number}
    */
   this.tmpLocalTransform_ = goog.vec.Mat4.createNumber();
-
 };
+goog.inherits(ol.render.canvas.Replay, ol.render.VectorContext);
 
 
 /**
@@ -59453,75 +59504,6 @@ ol.render.canvas.Replay.prototype.reverseHitDetectionInstructions_ =
 
 
 /**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawAsync = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawCircleGeometry = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawFeature = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawGeometryCollectionGeometry =
-    goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawLineStringGeometry = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawMultiLineStringGeometry =
-    goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawPointGeometry = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawMultiPointGeometry = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawPolygonGeometry = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawMultiPolygonGeometry =
-    goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.drawText = goog.abstractMethod;
-
-
-/**
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {ol.Feature} feature Feature.
  */
@@ -59559,24 +59541,6 @@ ol.render.canvas.Replay.prototype.getBufferedMaxExtent = function() {
 };
 
 
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.setFillStrokeStyle = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.setImageStyle = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Replay.prototype.setTextStyle = goog.abstractMethod;
-
-
 
 /**
  * @constructor
@@ -59588,7 +59552,6 @@ ol.render.canvas.Replay.prototype.setTextStyle = goog.abstractMethod;
  * @struct
  */
 ol.render.canvas.ImageReplay = function(tolerance, maxExtent, resolution) {
-
   goog.base(this, tolerance, maxExtent, resolution);
 
   /**
@@ -71116,7 +71079,8 @@ ol.webgl.Context.prototype.getCanvas = function() {
 
 
 /**
- * @return {WebGLRenderingContext} GL.
+ * Get the WebGL rendering context
+ * @return {WebGLRenderingContext} The rendering context.
  * @api
  */
 ol.webgl.Context.prototype.getGL = function() {
@@ -71125,7 +71089,8 @@ ol.webgl.Context.prototype.getGL = function() {
 
 
 /**
- * @return {WebGLFramebuffer} The framebuffer for the hit-detection.
+ * Get the frame buffer for hit detection.
+ * @return {WebGLFramebuffer} The hit detection frame buffer.
  * @api
  */
 ol.webgl.Context.prototype.getHitDetectionFramebuffer = function() {
@@ -71253,9 +71218,7 @@ ol.webgl.Context.prototype.initHitDetectionFramebuffer_ = function() {
 
 
 /**
- * Just return false if that program is used already. Other use
- * that program (call `gl.useProgram`) and make it the "current
- * program".
+ * Use a program.  If the program is already in use, this will return `false`.
  * @param {WebGLProgram} program Program.
  * @return {boolean} Changed.
  * @api
@@ -71350,7 +71313,7 @@ goog.require('goog.vec.Mat4');
 goog.require('ol.color.Matrix');
 goog.require('ol.extent');
 goog.require('ol.render.IReplayGroup');
-goog.require('ol.render.IVectorContext');
+goog.require('ol.render.VectorContext');
 goog.require('ol.render.webgl.imagereplay.shader.Color');
 goog.require('ol.render.webgl.imagereplay.shader.Default');
 goog.require('ol.vec.Mat4');
@@ -71361,13 +71324,14 @@ goog.require('ol.webgl.Context');
 
 /**
  * @constructor
- * @implements {ol.render.IVectorContext}
+ * @extends {ol.render.VectorContext}
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Max extent.
  * @protected
  * @struct
  */
 ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
+  goog.base(this);
 
   /**
    * @type {number|undefined}
@@ -71560,8 +71524,8 @@ ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
    * @private
    */
   this.width_ = undefined;
-
 };
+goog.inherits(ol.render.webgl.ImageReplay, ol.render.VectorContext);
 
 
 /**
@@ -71724,39 +71688,6 @@ ol.render.webgl.ImageReplay.prototype.drawCoordinates_ =
 /**
  * @inheritDoc
  */
-ol.render.webgl.ImageReplay.prototype.drawCircleGeometry = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.ImageReplay.prototype.drawFeature = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.ImageReplay.prototype.drawGeometryCollectionGeometry =
-    goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.ImageReplay.prototype.drawLineStringGeometry =
-    goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.ImageReplay.prototype.drawMultiLineStringGeometry =
-    goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
 ol.render.webgl.ImageReplay.prototype.drawMultiPointGeometry =
     function(multiPointGeometry, feature) {
   this.startIndices_.push(this.indices_.length);
@@ -71771,13 +71702,6 @@ ol.render.webgl.ImageReplay.prototype.drawMultiPointGeometry =
 /**
  * @inheritDoc
  */
-ol.render.webgl.ImageReplay.prototype.drawMultiPolygonGeometry =
-    goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
 ol.render.webgl.ImageReplay.prototype.drawPointGeometry =
     function(pointGeometry, feature) {
   this.startIndices_.push(this.indices_.length);
@@ -71787,18 +71711,6 @@ ol.render.webgl.ImageReplay.prototype.drawPointGeometry =
   this.drawCoordinates_(
       flatCoordinates, 0, flatCoordinates.length, stride);
 };
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.ImageReplay.prototype.drawPolygonGeometry = goog.abstractMethod;
-
-
-/**
- * @inheritDoc
- */
-ol.render.webgl.ImageReplay.prototype.drawText = goog.abstractMethod;
 
 
 /**
@@ -72344,12 +72256,6 @@ ol.render.webgl.ImageReplay.prototype.setImageStyle = function(imageStyle) {
 };
 
 
-/**
- * @inheritDoc
- */
-ol.render.webgl.ImageReplay.prototype.setTextStyle = goog.abstractMethod;
-
-
 
 /**
  * @constructor
@@ -72640,14 +72546,15 @@ goog.provide('ol.render.webgl.Immediate');
 goog.require('goog.array');
 goog.require('goog.object');
 goog.require('ol.extent');
-goog.require('ol.render.IVectorContext');
+goog.require('ol.render.VectorContext');
+goog.require('ol.render.webgl.ImageReplay');
 goog.require('ol.render.webgl.ReplayGroup');
 
 
 
 /**
  * @constructor
- * @implements {ol.render.IVectorContext}
+ * @extends {ol.render.VectorContext}
  * @param {ol.webgl.Context} context Context.
  * @param {ol.Coordinate} center Center.
  * @param {number} resolution Resolution.
@@ -72659,6 +72566,7 @@ goog.require('ol.render.webgl.ReplayGroup');
  */
 ol.render.webgl.Immediate = function(context,
     center, resolution, rotation, size, extent, pixelRatio) {
+  goog.base(this);
 
   /**
    * @private
@@ -72708,6 +72616,7 @@ ol.render.webgl.Immediate = function(context,
    */
   this.callbacksByZIndex_ = {};
 };
+goog.inherits(ol.render.webgl.Immediate, ol.render.VectorContext);
 
 
 /**
@@ -72811,7 +72720,8 @@ ol.render.webgl.Immediate.prototype.drawPointGeometry =
     function(pointGeometry, data) {
   var context = this.context_;
   var replayGroup = new ol.render.webgl.ReplayGroup(1, this.extent_);
-  var replay = replayGroup.getReplay(0, ol.render.ReplayType.IMAGE);
+  var replay = /** @type {ol.render.webgl.ImageReplay} */ (
+      replayGroup.getReplay(0, ol.render.ReplayType.IMAGE));
   replay.setImageStyle(this.imageStyle_);
   replay.drawPointGeometry(pointGeometry, data);
   replay.finish(context);
@@ -72821,9 +72731,12 @@ ol.render.webgl.Immediate.prototype.drawPointGeometry =
   var contrast = 1;
   var hue = 0;
   var saturation = 1;
+  var skippedFeatures = {};
+  var featureCallback;
+  var oneByOne = false;
   replay.replay(this.context_, this.center_, this.resolution_, this.rotation_,
-      this.size_, this.extent_, this.pixelRatio_, opacity, brightness,
-      contrast, hue, saturation, {});
+      this.size_, this.pixelRatio_, opacity, brightness,
+      contrast, hue, saturation, skippedFeatures, featureCallback, oneByOne);
   replay.getDeleteResourcesFunction(context)();
 };
 
@@ -72854,7 +72767,8 @@ ol.render.webgl.Immediate.prototype.drawMultiPointGeometry =
     function(multiPointGeometry, data) {
   var context = this.context_;
   var replayGroup = new ol.render.webgl.ReplayGroup(1, this.extent_);
-  var replay = replayGroup.getReplay(0, ol.render.ReplayType.IMAGE);
+  var replay = /** @type {ol.render.webgl.ImageReplay} */ (
+      replayGroup.getReplay(0, ol.render.ReplayType.IMAGE));
   replay.setImageStyle(this.imageStyle_);
   replay.drawMultiPointGeometry(multiPointGeometry, data);
   replay.finish(context);
@@ -72864,9 +72778,12 @@ ol.render.webgl.Immediate.prototype.drawMultiPointGeometry =
   var contrast = 1;
   var hue = 0;
   var saturation = 1;
+  var skippedFeatures = {};
+  var featureCallback;
+  var oneByOne = false;
   replay.replay(this.context_, this.center_, this.resolution_, this.rotation_,
-      this.size_, this.extent_, this.pixelRatio_, opacity, brightness,
-      contrast, hue, saturation, {});
+      this.size_, this.pixelRatio_, opacity, brightness,
+      contrast, hue, saturation, skippedFeatures, featureCallback, oneByOne);
   replay.getDeleteResourcesFunction(context)();
 };
 
@@ -76089,8 +76006,10 @@ ol.Map.prototype.getTargetElement = function() {
 
 
 /**
- * @param {ol.Pixel} pixel Pixel.
- * @return {ol.Coordinate} Coordinate.
+ * Get the coordinate for a given pixel.  This returns a coordinate in the
+ * map view projection.
+ * @param {ol.Pixel} pixel Pixel position in the map viewport.
+ * @return {ol.Coordinate} The coordinate for the pixel position.
  * @api stable
  */
 ol.Map.prototype.getCoordinateFromPixel = function(pixel) {
@@ -76105,6 +76024,8 @@ ol.Map.prototype.getCoordinateFromPixel = function(pixel) {
 
 
 /**
+ * Get the map controls. Modifying this collection changes the controls
+ * associated with the map.
  * @return {ol.Collection.<ol.control.Control>} Controls.
  * @api stable
  */
@@ -76114,6 +76035,8 @@ ol.Map.prototype.getControls = function() {
 
 
 /**
+ * Get the map overlays. Modifying this collection changes the overlays
+ * associated with the map.
  * @return {ol.Collection.<ol.Overlay>} Overlays.
  * @api stable
  */
@@ -76123,8 +76046,7 @@ ol.Map.prototype.getOverlays = function() {
 
 
 /**
- * Gets the collection of {@link ol.interaction.Interaction} instances
- * associated with this map. Modifying this collection changes the interactions
+ * Get the map interactions. Modifying this collection changes the interactions
  * associated with the map.
  *
  * Interactions are used for e.g. pan, zoom and rotate.
@@ -76163,8 +76085,10 @@ ol.Map.prototype.getLayers = function() {
 
 
 /**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {ol.Pixel} Pixel.
+ * Get the pixel for a coordinate.  This takes a coordinate in the map view
+ * projection and returns the corresponding pixel.
+ * @param {ol.Coordinate} coordinate A map coordinate.
+ * @return {ol.Pixel} A pixel position in the map viewport.
  * @api stable
  */
 ol.Map.prototype.getPixelFromCoordinate = function(coordinate) {
@@ -76219,6 +76143,7 @@ goog.exportProperty(
 
 
 /**
+ * Get the element that serves as the map viewport.
  * @return {Element} Viewport.
  * @api stable
  */
@@ -76228,10 +76153,11 @@ ol.Map.prototype.getViewport = function() {
 
 
 /**
- * @return {Element} The map's overlay container. Elements added to this
- * container will let mousedown and touchstart events through to the map, so
- * clicks and gestures on an overlay will trigger {@link ol.MapBrowserEvent}
+ * Get the element that serves as the container for overlays.  Elements added to
+ * this container will let mousedown and touchstart events through to the map,
+ * so clicks and gestures on an overlay will trigger {@link ol.MapBrowserEvent}
  * events.
+ * @return {Element} The map's overlay container.
  */
 ol.Map.prototype.getOverlayContainer = function() {
   return this.overlayContainer_;
@@ -76239,10 +76165,11 @@ ol.Map.prototype.getOverlayContainer = function() {
 
 
 /**
- * @return {Element} The map's overlay container. Elements added to this
- * container won't let mousedown and touchstart events through to the map, so
- * clicks and gestures on an overlay don't trigger any
- * {@link ol.MapBrowserEvent}.
+ * Get the element that serves as a container for overlays that don't allow
+ * event propagation. Elements added to this container won't let mousedown and
+ * touchstart events through to the map, so clicks and gestures on an overlay
+ * don't trigger any {@link ol.MapBrowserEvent}.
+ * @return {Element} The map's overlay container that stops events.
  */
 ol.Map.prototype.getOverlayContainerStopEvent = function() {
   return this.overlayContainerStopEvent_;
@@ -76545,8 +76472,7 @@ ol.Map.prototype.renderSync = function() {
 
 
 /**
- * Requests a render frame; rendering will effectively occur at the next browser
- * animation frame.
+ * Request a map rendering (at the next animation frame).
  * @api stable
  */
 ol.Map.prototype.render = function() {
@@ -77044,7 +76970,8 @@ ol.OverlayPositioning = {
 
 /**
  * @classdesc
- * Like {@link ol.control.Control}, Overlays are visible widgets.
+ * An element to be displayed over the map and attached to a single map
+ * location.  Like {@link ol.control.Control}, Overlays are visible widgets.
  * Unlike Controls, they are not in a fixed position on the screen, but are tied
  * to a geographical coordinate, so panning the map will move an Overlay but not
  * a Control.
@@ -81890,8 +81817,8 @@ ol.DeviceOrientationProperty = {
 
 /**
  * @classdesc
- * The ol.DeviceOrientation class provides access to DeviceOrientation
- * information and events, see the [HTML 5 DeviceOrientation Specification](
+ * The ol.DeviceOrientation class provides access to information from
+ * DeviceOrientation events.  See the [HTML 5 DeviceOrientation Specification](
  * http://www.w3.org/TR/orientation-event/) for more details.
  *
  * Many new computers, and especially mobile phones
@@ -82005,6 +81932,7 @@ ol.DeviceOrientation.prototype.orientationChange_ = function(browserEvent) {
 
 
 /**
+ * Rotation around the device z-axis (in radians).
  * @return {number|undefined} The euler angle in radians of the device from the
  *     standard Z axis.
  * @observable
@@ -82021,6 +81949,7 @@ goog.exportProperty(
 
 
 /**
+ * Rotation around the device x-axis (in radians).
  * @return {number|undefined} The euler angle in radians of the device from the
  *     planar X axis.
  * @observable
@@ -82037,6 +81966,7 @@ goog.exportProperty(
 
 
 /**
+ * Rotation around the device y-axis (in radians).
  * @return {number|undefined} The euler angle in radians of the device from the
  *     planar Y axis.
  * @observable
@@ -82053,6 +81983,7 @@ goog.exportProperty(
 
 
 /**
+ * The heading of the device relative to north (in radians).
  * @return {number|undefined} The heading of the device relative to north, in
  *     radians, normalizing for different browser behavior.
  * @observable
@@ -82069,9 +82000,8 @@ goog.exportProperty(
 
 
 /**
- * Are we tracking the device's orientation?
- * @return {boolean} The status of tracking changes to alpha, beta and gamma.
- *     If true, changes are tracked and reported immediately.
+ * Determine if orientation is being tracked.
+ * @return {boolean} Changes in device orientation are being tracked.
  * @observable
  * @api
  */
@@ -82103,7 +82033,7 @@ ol.DeviceOrientation.prototype.handleTrackingChanged_ = function() {
 
 
 /**
- * Enable or disable tracking of DeviceOrientation events.
+ * Enable or disable tracking of device orientation events.
  * @param {boolean} tracking The status of tracking changes to alpha, beta and
  *     gamma. If true, changes are tracked and reported immediately.
  * @observable
@@ -82603,10 +82533,10 @@ ol.Feature.prototype.clone = function() {
 
 
 /**
- * @return {ol.geom.Geometry|undefined} Returns the Geometry associated
- *     with this feature using the current geometry name property.  By
- *     default, this is `geometry` but it may be changed by calling
- *     `setGeometryName`.
+ * Get the feature's default geometry.  A feature may have any number of named
+ * geometries.  The "default" geometry (the one that is rendered by default) is
+ * set when calling {@link ol.Feature#setGeometry}.
+ * @return {ol.geom.Geometry|undefined} The default geometry for the feature.
  * @api stable
  * @observable
  */
@@ -82630,9 +82560,10 @@ ol.Feature.prototype.getId = function() {
 
 
 /**
- * @return {string} Get the property name associated with the geometry for
- *     this feature.  By default, this is `geometry` but it may be changed by
- *     calling `setGeometryName`.
+ * Get the name of the feature's default geometry.  By default, the default
+ * geometry is named `geometry`.
+ * @return {string} Get the property name associated with the default geometry
+ *     for this feature.
  * @api stable
  */
 ol.Feature.prototype.getGeometryName = function() {
@@ -82641,11 +82572,10 @@ ol.Feature.prototype.getGeometryName = function() {
 
 
 /**
+ * Get the feature's style.  This return for this method depends on what was
+ * provided to the {@link ol.Feature#setStyle} method.
  * @return {ol.style.Style|Array.<ol.style.Style>|
- *     ol.feature.FeatureStyleFunction} Return the style as set by `setStyle`
- * in the same format that it was provided in. If `setStyle` has not been
- * called, or if it was called with `null`, then `getStyle()` will return
- * `null`.
+ *     ol.feature.FeatureStyleFunction} The feature style.
  * @api stable
  */
 ol.Feature.prototype.getStyle = function() {
@@ -82654,6 +82584,7 @@ ol.Feature.prototype.getStyle = function() {
 
 
 /**
+ * Get the feature's style function.
  * @return {ol.feature.FeatureStyleFunction|undefined} Return a function
  * representing the current style of this feature.
  * @api stable
@@ -82689,10 +82620,9 @@ ol.Feature.prototype.handleGeometryChanged_ = function() {
 
 
 /**
- * @param {ol.geom.Geometry|undefined} geometry Set the geometry for this
- * feature. This will update the property associated with the current
- * geometry property name.  By default, this is `geometry` but it can be
- * changed by calling `setGeometryName`.
+ * Set the default geometry for the feature.  This will update the property
+ * with the name returned by {@link ol.Feature#getGeometryName}.
+ * @param {ol.geom.Geometry|undefined} geometry The new geometry.
  * @api stable
  * @observable
  */
@@ -82722,9 +82652,11 @@ ol.Feature.prototype.setStyle = function(style) {
 
 
 /**
- * @param {number|string|undefined} id Set a unique id for this feature.
- * The id may be used to retrieve a feature from a vector source with the
- * {@link ol.source.Vector#getFeatureById} method.
+ * Set the feature id.  The feature id is considered stable and may be used when
+ * requesting features or comparing identifiers returned from a remote source.
+ * The feature id can be used with the {@link ol.source.Vector#getFeatureById}
+ * method.
+ * @param {number|string|undefined} id The feature id.
  * @api stable
  */
 ol.Feature.prototype.setId = function(id) {
@@ -82734,8 +82666,10 @@ ol.Feature.prototype.setId = function(id) {
 
 
 /**
- * @param {string} name Set the property name from which this feature's
- *     geometry will be fetched when calling `getGeometry`.
+ * Set the property name to be used when getting the feature's default geometry.
+ * When calling {@link ol.Feature#getGeometry}, the value of the property with
+ * this name will be returned.
+ * @param {string} name The property name of the default geometry.
  * @api stable
  */
 ol.Feature.prototype.setGeometryName = function(name) {
@@ -82751,10 +82685,8 @@ ol.Feature.prototype.setGeometryName = function(name) {
 
 
 /**
- * A function that takes a `{number}` representing the view's resolution. It
- * returns an Array of {@link ol.style.Style}. This way individual features
- * can be styled. The this keyword inside the function references the
- * {@link ol.Feature} to be styled.
+ * A function that returns a style given a resolution. The `this` keyword inside
+ * the function references the {@link ol.Feature} to be styled.
  *
  * @typedef {function(this: ol.Feature, number): Array.<ol.style.Style>}
  * @api stable
@@ -82894,6 +82826,7 @@ ol.FeatureOverlay = function(opt_options) {
 
 
 /**
+ * Add a feature to the overlay.
  * @param {ol.Feature} feature Feature.
  * @api
  */
@@ -82903,6 +82836,7 @@ ol.FeatureOverlay.prototype.addFeature = function(feature) {
 
 
 /**
+ * Get the features on the overlay.
  * @return {ol.Collection.<ol.Feature>} Features collection.
  * @api
  */
@@ -82912,6 +82846,7 @@ ol.FeatureOverlay.prototype.getFeatures = function() {
 
 
 /**
+ * Get the map associated with the overlay.
  * @return {?ol.Map} The map with which this feature overlay is associated.
  * @api
  */
@@ -83009,7 +82944,8 @@ ol.FeatureOverlay.prototype.handleMapPostCompose_ = function(event) {
 
 
 /**
- * @param {ol.Feature} feature Feature.
+ * Remove a feature from the overlay.
+ * @param {ol.Feature} feature The feature to be removed.
  * @api
  */
 ol.FeatureOverlay.prototype.removeFeature = function(feature) {
@@ -83028,6 +82964,7 @@ ol.FeatureOverlay.prototype.render_ = function() {
 
 
 /**
+ * Set the features for the overlay.
  * @param {ol.Collection.<ol.Feature>} features Features collection.
  * @api
  */
@@ -83062,6 +82999,7 @@ ol.FeatureOverlay.prototype.setFeatures = function(features) {
 
 
 /**
+ * Set the map for the overlay.
  * @param {ol.Map} map Map.
  * @api
  */
@@ -92406,6 +92344,7 @@ ol.style.Text = function(opt_options) {
 
 
 /**
+ * Get the font name.
  * @return {string|undefined} Font.
  * @api
  */
@@ -92415,6 +92354,7 @@ ol.style.Text.prototype.getFont = function() {
 
 
 /**
+ * Get the x-offset for the text.
  * @return {number} Horizontal text offset.
  * @api
  */
@@ -92424,6 +92364,7 @@ ol.style.Text.prototype.getOffsetX = function() {
 
 
 /**
+ * Get the y-offset for the text.
  * @return {number} Vertical text offset.
  * @api
  */
@@ -92433,6 +92374,7 @@ ol.style.Text.prototype.getOffsetY = function() {
 
 
 /**
+ * Get the fill style for the text.
  * @return {ol.style.Fill} Fill style.
  * @api
  */
@@ -92442,6 +92384,7 @@ ol.style.Text.prototype.getFill = function() {
 
 
 /**
+ * Get the text rotation.
  * @return {number|undefined} Rotation.
  * @api
  */
@@ -92451,6 +92394,7 @@ ol.style.Text.prototype.getRotation = function() {
 
 
 /**
+ * Get the text scale.
  * @return {number|undefined} Scale.
  * @api
  */
@@ -92460,6 +92404,7 @@ ol.style.Text.prototype.getScale = function() {
 
 
 /**
+ * Get the stroke style for the text.
  * @return {ol.style.Stroke} Stroke style.
  * @api
  */
@@ -92469,6 +92414,7 @@ ol.style.Text.prototype.getStroke = function() {
 
 
 /**
+ * Get the text to be rendered.
  * @return {string|undefined} Text.
  * @api
  */
@@ -92478,6 +92424,7 @@ ol.style.Text.prototype.getText = function() {
 
 
 /**
+ * Get the text alignment.
  * @return {string|undefined} Text align.
  * @api
  */
@@ -92487,6 +92434,7 @@ ol.style.Text.prototype.getTextAlign = function() {
 
 
 /**
+ * Get the text baseline.
  * @return {string|undefined} Text baseline.
  * @api
  */
@@ -100512,8 +100460,8 @@ goog.exportProperty(
 
 
 /**
- * Are we tracking the user's position?
- * @return {boolean} Whether to track the device's position.
+ * Determine if the device location is being tracked.
+ * @return {boolean} The device location is being tracked.
  * @observable
  * @api stable
  */
@@ -100531,8 +100479,8 @@ goog.exportProperty(
  * Get the tracking options.
  * @see http://www.w3.org/TR/geolocation-API/#position-options
  * @return {GeolocationPositionOptions|undefined} PositionOptions as defined by
- *     the HTML5 Geolocation spec at
- *     {@link http://www.w3.org/TR/geolocation-API/#position_options_interface}
+ *     the [HTML5 Geolocation spec
+ *     ](http://www.w3.org/TR/geolocation-API/#position_options_interface).
  * @observable
  * @api stable
  */
@@ -100563,8 +100511,8 @@ goog.exportProperty(
 
 
 /**
- * Enable/disable tracking.
- * @param {boolean} tracking Whether to track the device's position.
+ * Enable or disable tracking.
+ * @param {boolean} tracking Enable tracking.
  * @observable
  * @api stable
  */
@@ -100581,8 +100529,8 @@ goog.exportProperty(
  * Set the tracking options.
  * @see http://www.w3.org/TR/geolocation-API/#position-options
  * @param {GeolocationPositionOptions} options PositionOptions as defined by the
- *     HTML5 Geolocation spec at
- *     {@link http://www.w3.org/TR/geolocation-API/#position_options_interface}
+ *     [HTML5 Geolocation spec
+ *     ](http://www.w3.org/TR/geolocation-API/#position_options_interface).
  * @observable
  * @api stable
  */
@@ -100791,6 +100739,7 @@ goog.require('ol.style.Stroke');
 
 
 /**
+ * Render a grid for a coordinate system on a map.
  * @constructor
  * @param {olx.GraticuleOptions=} opt_options Options.
  * @api
@@ -101051,6 +101000,7 @@ ol.Graticule.prototype.getInterval_ = function(resolution) {
 
 
 /**
+ * Get the map associated with this graticule.
  * @return {ol.Map} The map.
  * @api
  */
@@ -101083,6 +101033,7 @@ ol.Graticule.prototype.getMeridian_ = function(lon, squaredTolerance, index) {
 
 
 /**
+ * Get the list of meridians.  Meridians are lines of equal longitude.
  * @return {Array.<ol.geom.LineString>} The meridians.
  * @api
  */
@@ -101115,6 +101066,7 @@ ol.Graticule.prototype.getParallel_ = function(lat, squaredTolerance, index) {
 
 
 /**
+ * Get the list of parallels.  Pallels are lines of equal latitude.
  * @return {Array.<ol.geom.LineString>} The parallels.
  * @api
  */
@@ -101203,6 +101155,8 @@ ol.Graticule.prototype.updateProjectionInfo_ = function(projection) {
 
 
 /**
+ * Set the map for this graticule.  The graticule will be rendered on the
+ * provided map.
  * @param {ol.Map} map Map.
  * @api
  */
@@ -101294,6 +101248,7 @@ goog.inherits(ol.Image, ol.ImageBase);
 
 
 /**
+ * Get the HTML image element (may be a Canvas, Image, or Video).
  * @param {Object=} opt_context Object.
  * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
  * @api
@@ -112668,6 +112623,7 @@ ol.source.ImageMapGuide.prototype.setImageLoadFunction = function(
 goog.provide('ol.source.ImageStatic');
 
 goog.require('goog.events');
+goog.require('goog.events.EventType');
 goog.require('ol.Image');
 goog.require('ol.extent');
 goog.require('ol.proj');
@@ -112716,6 +112672,8 @@ ol.source.ImageStatic = function(options) {
    */
   this.image_ = new ol.Image(imageExtent, resolution, 1, attributions,
       options.url, crossOrigin, imageLoadFunction);
+  goog.events.listen(this.image_, goog.events.EventType.CHANGE,
+      this.handleImageChange, false, this);
 
 };
 goog.inherits(ol.source.ImageStatic, ol.source.Image);
@@ -115385,6 +115343,7 @@ ol.tilegrid.WMTS.prototype.getMatrixId = function(z) {
 
 
 /**
+ * Get the list of matrix identifiers.
  * @return {Array.<string>} MatrixIds.
  * @api
  */
@@ -115394,6 +115353,7 @@ ol.tilegrid.WMTS.prototype.getMatrixIds = function() {
 
 
 /**
+ * Create a tile grid from a WMTS capabilities matrix set.
  * @param {Object} matrixSet An object representing a matrixSet in the
  *     capabilities document.
  * @return {ol.tilegrid.WMTS} WMTS tileGrid instance.
@@ -115909,15 +115869,16 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   } else {
     var gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
 
-    var constraint = goog.array.find(gets[0]['Constraint'],
-        function(elt, index, array) {
-          return elt['name'] == 'GetEncoding';
-        });
-    var encodings = constraint['AllowedValues']['Value'];
-    if (encodings.length > 0 && goog.array.contains(encodings, 'KVP')) {
-      requestEncoding = ol.source.WMTSRequestEncoding.KVP;
-      urls.push(/** @type {string} */ (gets[0]['href']));
-
+    for (var i = 0, ii = gets.length; i < ii; ++i) {
+      var constraint = goog.array.find(gets[i]['Constraint'],
+          function(elt, index, array) {
+            return elt['name'] == 'GetEncoding';
+          });
+      var encodings = constraint['AllowedValues']['Value'];
+      if (encodings.length > 0 && goog.array.contains(encodings, 'KVP')) {
+        requestEncoding = ol.source.WMTSRequestEncoding.KVP;
+        urls.push(/** @type {string} */ (gets[i]['href']));
+      }
     }
   }
   goog.asserts.assert(urls.length > 0, 'At least one URL found');
@@ -116806,6 +116767,7 @@ ol.style.RegularShape.prototype.getAnchor = function() {
 
 
 /**
+ * Get the angle used in generating the shape.
  * @return {number} Shape's rotation in radians.
  * @api
  */
@@ -116815,6 +116777,7 @@ ol.style.RegularShape.prototype.getAngle = function() {
 
 
 /**
+ * Get the fill style for the shape.
  * @return {ol.style.Fill} Fill style.
  * @api
  */
@@ -116874,6 +116837,7 @@ ol.style.RegularShape.prototype.getOrigin = function() {
 
 
 /**
+ * Get the number of points for generating the shape.
  * @return {number} Number of points for stars and regular polygons.
  * @api
  */
@@ -116883,6 +116847,7 @@ ol.style.RegularShape.prototype.getPoints = function() {
 
 
 /**
+ * Get the (primary) radius for the shape.
  * @return {number} Radius.
  * @api
  */
@@ -116892,6 +116857,7 @@ ol.style.RegularShape.prototype.getRadius = function() {
 
 
 /**
+ * Get the secondary radius for the shape.
  * @return {number} Radius2.
  * @api
  */
@@ -116910,6 +116876,7 @@ ol.style.RegularShape.prototype.getSize = function() {
 
 
 /**
+ * Get the stroke style for the shape.
  * @return {ol.style.Stroke} Stroke style.
  * @api
  */
@@ -117363,6 +117330,7 @@ goog.require('ol.proj.Units');
 goog.require('ol.proj.common');
 goog.require('ol.render.Event');
 goog.require('ol.render.EventType');
+goog.require('ol.render.VectorContext');
 goog.require('ol.render.canvas.Immediate');
 goog.require('ol.render.webgl.Immediate');
 goog.require('ol.source.BingMaps');
@@ -119497,6 +119465,11 @@ goog.exportProperty(
     ol.render.Event.prototype,
     'glContext',
     ol.render.Event.prototype.glContext);
+
+goog.exportSymbol(
+    'ol.render.VectorContext',
+    ol.render.VectorContext,
+    OPENLAYERS);
 
 goog.exportProperty(
     ol.render.webgl.Immediate.prototype,

@@ -148,7 +148,6 @@ select.onchange = function() {
 
 /**
  * Apply a filter on &quot;postcompose&quot; events.
- * @param {ol.render.Event} event Render event.
  */
 imagery.on(&#x27;postcompose&#x27;, function(event) {
   convolve(event.context, selectedKernel);
@@ -338,7 +337,6 @@ select.onchange = function() {
 
 /**
  * Apply a filter on &quot;postcompose&quot; events.
- * @param {ol.render.Event} event Render event.
  */
 imagery.on(&#x27;postcompose&#x27;, function(event) {
   convolve(event.context, selectedKernel);
