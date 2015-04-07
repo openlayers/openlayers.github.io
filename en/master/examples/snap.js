@@ -2,20 +2,8 @@ var raster = new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: 'sat'})
 });
 
-var map = new ol.Map({
-  layers: [raster],
-  target: 'map',
-  view: new ol.View({
-    center: [-11000000, 4600000],
-    zoom: 4
-  })
-});
-
-// The features are not added to a regular vector layer/source,
-// but to a feature overlay which holds a collection of features.
-// This collection is passed to the modify and also the draw
-// interaction, so that both can add or modify features.
-var featureOverlay = new ol.FeatureOverlay({
+var vector = new ol.layer.Vector({
+  source: new ol.source.Vector(),
   style: new ol.style.Style({
     fill: new ol.style.Fill({
       color: 'rgba(255, 255, 255, 0.2)'
@@ -30,8 +18,16 @@ var featureOverlay = new ol.FeatureOverlay({
         color: '#ffcc33'
       })
     })
-  }),
-  map: map
+  })
+});
+
+var map = new ol.Map({
+  layers: [raster, vector],
+  target: 'map',
+  view: new ol.View({
+    center: [-11000000, 4600000],
+    zoom: 4
+  })
 });
 
 var Modify = {
@@ -71,15 +67,15 @@ var Draw = {
     this.Polygon.setActive(false);
   },
   Point: new ol.interaction.Draw({
-    features: featureOverlay.getFeatures(),
+    source: vector.getSource(),
     type: /** @type {ol.geom.GeometryType} */ ('Point')
   }),
   LineString: new ol.interaction.Draw({
-    features: featureOverlay.getFeatures(),
+    source: vector.getSource(),
     type: /** @type {ol.geom.GeometryType} */ ('LineString')
   }),
   Polygon: new ol.interaction.Draw({
-    features: featureOverlay.getFeatures(),
+    source: vector.getSource(),
     type: /** @type {ol.geom.GeometryType} */ ('Polygon')
   }),
   getActive: function() {
@@ -129,6 +125,6 @@ Modify.setActive(false);
 // in order for its map browser event handlers to be fired first. Its handlers
 // are responsible of doing the snapping.
 var snap = new ol.interaction.Snap({
-  features: featureOverlay.getFeatures()
+  source: vector.getSource()
 });
 map.addInteraction(snap);

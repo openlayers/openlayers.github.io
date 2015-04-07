@@ -26,14 +26,14 @@
 
     <div class="container-fluid">
 
-      <p> <div class="row-fluid">
+       <div class="row-fluid">
    <div class="span12">
      <div id="map" class="map" style="background: white;"></div>
    </div>
- </div></p>
-<p><div class="alert">
+ </div>
+<div class="alert">
   <strong>Warning</strong> Map is becoming unresponsive with too many layers.
-</div></p>
+</div>
 <fieldset>
   <legend>Layers</legend>
   <label class="checkbox"><input type="checkbox" id="landuse"/> Landuse</label>
@@ -42,18 +42,15 @@
   <label class="checkbox"><input type="checkbox" id="roads" checked/> Roads</label>
 </fieldset>
 
-      <div class="row-fluid">
 
+      <div class="row-fluid">
         <div class="span12">
           <h4 id="title">Tile vector example</h4>
           <p id="shortdesc">Example of vector tiles from openstreetmap.us.</p>
-          <div id="docs">
-            <p>Example of vector tiles from openstreetmap.us.</p>
-
-          </div>
+          <div id="docs"><p>Example of vector tiles from openstreetmap.us.</p>
+</div>
           <div id="tags">custom, control</div>
         </div>
-
       </div>
 
       <div class="row-fluid">
@@ -224,21 +221,22 @@ $(&#x27;input[type=checkbox]&#x27;).on(&#x27;change&#x27;, function() {
    max-width: 600px;
    margin: 0 auto;
  }</textarea>
-          <textarea class="hidden" name="html">&lt;p&gt; &lt;div class=&quot;row-fluid&quot;&gt;
+          <textarea class="hidden" name="html"> &lt;div class=&quot;row-fluid&quot;&gt;
    &lt;div class=&quot;span12&quot;&gt;
      &lt;div id=&quot;map&quot; class=&quot;map&quot; style=&quot;background: white;&quot;&gt;&lt;/div&gt;
    &lt;/div&gt;
- &lt;/div&gt;&lt;/p&gt;
-&lt;p&gt;&lt;div class=&quot;alert&quot;&gt;
+ &lt;/div&gt;
+&lt;div class=&quot;alert&quot;&gt;
   &lt;strong&gt;Warning&lt;/strong&gt; Map is becoming unresponsive with too many layers.
-&lt;/div&gt;&lt;/p&gt;
+&lt;/div&gt;
 &lt;fieldset&gt;
   &lt;legend&gt;Layers&lt;/legend&gt;
   &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;landuse&quot;/&gt; Landuse&lt;/label&gt;
   &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;buildings&quot;/&gt; Buildings&lt;/label&gt;
   &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;water&quot; checked/&gt; Water&lt;/label&gt;
   &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;roads&quot; checked/&gt; Roads&lt;/label&gt;
-&lt;/fieldset&gt;</textarea>
+&lt;/fieldset&gt;
+</textarea>
           <input type="hidden" name="wrap" value="l">
           <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js">
           <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
@@ -261,14 +259,14 @@ $(&#x27;input[type=checkbox]&#x27;).on(&#x27;change&#x27;, function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;p&gt; &lt;div class=&quot;row-fluid&quot;&gt;
+ &lt;div class=&quot;row-fluid&quot;&gt;
    &lt;div class=&quot;span12&quot;&gt;
      &lt;div id=&quot;map&quot; class=&quot;map&quot; style=&quot;background: white;&quot;&gt;&lt;/div&gt;
    &lt;/div&gt;
- &lt;/div&gt;&lt;/p&gt;
-&lt;p&gt;&lt;div class=&quot;alert&quot;&gt;
+ &lt;/div&gt;
+&lt;div class=&quot;alert&quot;&gt;
   &lt;strong&gt;Warning&lt;/strong&gt; Map is becoming unresponsive with too many layers.
-&lt;/div&gt;&lt;/p&gt;
+&lt;/div&gt;
 &lt;fieldset&gt;
   &lt;legend&gt;Layers&lt;/legend&gt;
   &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;landuse&quot;/&gt; Landuse&lt;/label&gt;
@@ -276,6 +274,7 @@ $(&#x27;input[type=checkbox]&#x27;).on(&#x27;change&#x27;, function() {
   &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;water&quot; checked/&gt; Water&lt;/label&gt;
   &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;roads&quot; checked/&gt; Roads&lt;/label&gt;
 &lt;/fieldset&gt;
+
 &lt;/div&gt;
 &lt;script&gt;
 var waterLayer = new ol.layer.Vector({

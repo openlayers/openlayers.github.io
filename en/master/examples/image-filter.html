@@ -26,11 +26,11 @@
 
     <div class="container-fluid">
 
-      <p><div class="row-fluid">
+      <div class="row-fluid">
   <div class="span12">
     <div id="map" class="map"></div>
   </div>
-</div></p>
+</div>
 <select id="kernel" name="kernel">
   <option>none</option>
   <option selected>sharpen</option>
@@ -43,17 +43,13 @@
 
 
       <div class="row-fluid">
-
         <div class="span12">
           <h4 id="title">Image Filter Example</h4>
           <p id="shortdesc">Apply a filter to imagery</p>
-          <div id="docs">
-            <p>Layer rendering can be manipulated in <code>precompose</code> and <code>postcompose</code> event listeners. These listeners get an event with a reference to the Canvas rendering context. In this example, the <code>postcompose</code> listener applies a filter to the image data.</p>
-
-          </div>
+          <div id="docs"><p>Layer rendering can be manipulated in <code>precompose</code> and <code>postcompose</code> event listeners. These listeners get an event with a reference to the Canvas rendering context. In this example, the <code>postcompose</code> listener applies a filter to the image data.</p>
+</div>
           <div id="tags">filter, image manipulation</div>
         </div>
-
       </div>
 
       <div class="row-fluid">
@@ -202,11 +198,11 @@ function convolve(context, kernel) {
 }
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;p&gt;&lt;div class=&quot;row-fluid&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
   &lt;div class=&quot;span12&quot;&gt;
     &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;
+&lt;/div&gt;
 &lt;select id=&quot;kernel&quot; name=&quot;kernel&quot;&gt;
   &lt;option&gt;none&lt;/option&gt;
   &lt;option selected&gt;sharpen&lt;/option&gt;
@@ -233,11 +229,11 @@ function convolve(context, kernel) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;p&gt;&lt;div class=&quot;row-fluid&quot;&gt;
+&lt;div class=&quot;row-fluid&quot;&gt;
   &lt;div class=&quot;span12&quot;&gt;
     &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;
+&lt;/div&gt;
 &lt;select id=&quot;kernel&quot; name=&quot;kernel&quot;&gt;
   &lt;option&gt;none&lt;/option&gt;
   &lt;option selected&gt;sharpen&lt;/option&gt;
