@@ -55,9 +55,9 @@
 });
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/countries.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/countries.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   })
 });
 
@@ -115,9 +115,9 @@ var raster = new ol.layer.Tile({
 });
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/countries.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/countries.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   })
 });
 

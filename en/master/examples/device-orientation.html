@@ -81,8 +81,10 @@ var map = new ol.Map({
 });
 
 var deviceOrientation = new ol.DeviceOrientation();
-var track = new ol.dom.Input(document.getElementById(&#x27;track&#x27;));
-track.bindTo(&#x27;checked&#x27;, deviceOrientation, &#x27;tracking&#x27;);
+
+$(&#x27;#track&#x27;).on(&#x27;change&#x27;, function() {
+  deviceOrientation.setTracking(this.checked);
+});
 
 deviceOrientation.on(&#x27;change&#x27;, function(event) {
   $(&#x27;#alpha&#x27;).text(deviceOrientation.getAlpha() + &#x27; [rad]&#x27;);
@@ -178,8 +180,10 @@ var map = new ol.Map({
 });
 
 var deviceOrientation = new ol.DeviceOrientation();
-var track = new ol.dom.Input(document.getElementById(&#x27;track&#x27;));
-track.bindTo(&#x27;checked&#x27;, deviceOrientation, &#x27;tracking&#x27;);
+
+$(&#x27;#track&#x27;).on(&#x27;change&#x27;, function() {
+  deviceOrientation.setTracking(this.checked);
+});
 
 deviceOrientation.on(&#x27;change&#x27;, function(event) {
   $(&#x27;#alpha&#x27;).text(deviceOrientation.getAlpha() + &#x27; [rad]&#x27;);

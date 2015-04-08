@@ -27,20 +27,14 @@ var map = new ol.Map({
   })
 });
 
-var projectionSelect = new ol.dom.Input(document.getElementById('projection'));
-projectionSelect.bindTo('value', mousePositionControl, 'projection')
-  .transform(
-    function(code) {
-      // projectionSelect.value -> mousePositionControl.projection
-      return ol.proj.get(/** @type {string} */ (code));
-    },
-    function(projection) {
-      // mousePositionControl.projection -> projectionSelect.value
-      return projection.getCode();
-    });
+var projectionSelect = $('#projection');
+projectionSelect.on('change', function() {
+  mousePositionControl.setProjection(ol.proj.get(this.value));
+});
+projectionSelect.val(mousePositionControl.getProjection().getCode());
 
-var precisionInput = document.getElementById('precision');
-precisionInput.addEventListener('change', function() {
-  var format = ol.coordinate.createStringXY(precisionInput.valueAsNumber);
+var precisionInput = $('#precision');
+precisionInput.on('change', function() {
+  var format = ol.coordinate.createStringXY(this.valueAsNumber);
   mousePositionControl.setCoordinateFormat(format);
-}, false);
+});

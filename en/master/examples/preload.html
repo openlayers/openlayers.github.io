@@ -52,7 +52,12 @@
         <form method="POST" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <input type="button" class="btn btn-info" id="copy-button" value="Copy example code">
           <input type="submit" class="btn btn-primary" id="jsfiddle-button" value="Create JSFiddle">
-          <textarea class="hidden" name="js">var map1 = new ol.Map({
+          <textarea class="hidden" name="js">var view = new ol.View({
+  center: [-4808600, -2620936],
+  zoom: 8
+});
+
+var map1 = new ol.Map({
   layers: [
     new ol.layer.Tile({
       preload: Infinity,
@@ -63,10 +68,7 @@
     })
   ],
   target: &#x27;map1&#x27;,
-  view: new ol.View({
-    center: [-4808600, -2620936],
-    zoom: 8
-  })
+  view: view
 });
 
 var map2 = new ol.Map({
@@ -79,9 +81,9 @@ var map2 = new ol.Map({
       })
     })
   ],
-  target: &#x27;map2&#x27;
+  target: &#x27;map2&#x27;,
+  view: view
 });
-map2.bindTo(&#x27;view&#x27;, map1);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
@@ -122,6 +124,11 @@ map2.bindTo(&#x27;view&#x27;, map1);
 
 &lt;/div&gt;
 &lt;script&gt;
+var view = new ol.View({
+  center: [-4808600, -2620936],
+  zoom: 8
+});
+
 var map1 = new ol.Map({
   layers: [
     new ol.layer.Tile({
@@ -133,10 +140,7 @@ var map1 = new ol.Map({
     })
   ],
   target: &#x27;map1&#x27;,
-  view: new ol.View({
-    center: [-4808600, -2620936],
-    zoom: 8
-  })
+  view: view
 });
 
 var map2 = new ol.Map({
@@ -149,9 +153,9 @@ var map2 = new ol.Map({
       })
     })
   ],
-  target: &#x27;map2&#x27;
+  target: &#x27;map2&#x27;,
+  view: view
 });
-map2.bindTo(&#x27;view&#x27;, map1);
 
 &lt;/script&gt;
 &lt;/body&gt;

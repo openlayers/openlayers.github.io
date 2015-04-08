@@ -5,9 +5,9 @@ var map = new ol.Map({
     }),
     new ol.layer.Image({
       source: new ol.source.ImageVector({
-        source: new ol.source.GeoJSON({
-          projection: 'EPSG:3857',
-          url: 'data/geojson/countries.geojson'
+        source: new ol.source.Vector({
+          url: 'data/geojson/countries.geojson',
+          format: new ol.format.GeoJSON()
         }),
         style: new ol.style.Style({
           fill: new ol.style.Fill({

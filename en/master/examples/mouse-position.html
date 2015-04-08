@@ -88,23 +88,17 @@ var map = new ol.Map({
   })
 });
 
-var projectionSelect = new ol.dom.Input(document.getElementById(&#x27;projection&#x27;));
-projectionSelect.bindTo(&#x27;value&#x27;, mousePositionControl, &#x27;projection&#x27;)
-  .transform(
-    function(code) {
-      // projectionSelect.value -&gt; mousePositionControl.projection
-      return ol.proj.get(/** @type {string} */ (code));
-    },
-    function(projection) {
-      // mousePositionControl.projection -&gt; projectionSelect.value
-      return projection.getCode();
-    });
+var projectionSelect = $(&#x27;#projection&#x27;);
+projectionSelect.on(&#x27;change&#x27;, function() {
+  mousePositionControl.setProjection(ol.proj.get(this.value));
+});
+projectionSelect.val(mousePositionControl.getProjection().getCode());
 
-var precisionInput = document.getElementById(&#x27;precision&#x27;);
-precisionInput.addEventListener(&#x27;change&#x27;, function() {
-  var format = ol.coordinate.createStringXY(precisionInput.valueAsNumber);
+var precisionInput = $(&#x27;#precision&#x27;);
+precisionInput.on(&#x27;change&#x27;, function() {
+  var format = ol.coordinate.createStringXY(this.valueAsNumber);
   mousePositionControl.setCoordinateFormat(format);
-}, false);
+});
 </textarea>
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
@@ -189,23 +183,17 @@ var map = new ol.Map({
   })
 });
 
-var projectionSelect = new ol.dom.Input(document.getElementById(&#x27;projection&#x27;));
-projectionSelect.bindTo(&#x27;value&#x27;, mousePositionControl, &#x27;projection&#x27;)
-  .transform(
-    function(code) {
-      // projectionSelect.value -&gt; mousePositionControl.projection
-      return ol.proj.get(/** @type {string} */ (code));
-    },
-    function(projection) {
-      // mousePositionControl.projection -&gt; projectionSelect.value
-      return projection.getCode();
-    });
+var projectionSelect = $(&#x27;#projection&#x27;);
+projectionSelect.on(&#x27;change&#x27;, function() {
+  mousePositionControl.setProjection(ol.proj.get(this.value));
+});
+projectionSelect.val(mousePositionControl.getProjection().getCode());
 
-var precisionInput = document.getElementById(&#x27;precision&#x27;);
-precisionInput.addEventListener(&#x27;change&#x27;, function() {
-  var format = ol.coordinate.createStringXY(precisionInput.valueAsNumber);
+var precisionInput = $(&#x27;#precision&#x27;);
+precisionInput.on(&#x27;change&#x27;, function() {
+  var format = ol.coordinate.createStringXY(this.valueAsNumber);
   mousePositionControl.setCoordinateFormat(format);
-}, false);
+});
 
 &lt;/script&gt;
 &lt;/body&gt;

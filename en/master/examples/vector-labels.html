@@ -427,9 +427,9 @@ var createPolygonStyleFunction = function() {
 };
 
 var vectorPolygons = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/polygon-samples.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   }),
   style: createPolygonStyleFunction()
 });
@@ -450,9 +450,9 @@ var createLineStyleFunction = function() {
 };
 
 var vectorLines = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/line-samples.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/line-samples.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   }),
   style: createLineStyleFunction()
 });
@@ -474,9 +474,9 @@ var createPointStyleFunction = function() {
 };
 
 var vectorPoints = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/point-samples.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/point-samples.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   }),
   style: createPointStyleFunction()
 });
@@ -1294,9 +1294,9 @@ var createPolygonStyleFunction = function() {
 };
 
 var vectorPolygons = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/polygon-samples.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   }),
   style: createPolygonStyleFunction()
 });
@@ -1317,9 +1317,9 @@ var createLineStyleFunction = function() {
 };
 
 var vectorLines = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/line-samples.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/line-samples.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   }),
   style: createLineStyleFunction()
 });
@@ -1341,9 +1341,9 @@ var createPointStyleFunction = function() {
 };
 
 var vectorPoints = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/geojson/point-samples.geojson&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/geojson/point-samples.geojson&#x27;,
+    format: new ol.format.GeoJSON()
   }),
   style: createPointStyleFunction()
 });

@@ -37,7 +37,7 @@
         <div class="span12">
           <h4 id="title">TopoJSON example</h4>
           <p id="shortdesc">Demonstrates rendering of features from a TopoJSON topology.</p>
-          <div id="docs"><p>This example uses a vector layer with a <code>ol.source.TopoJSON</code> for rendering features from <a href="https://github.com/mbostock/topojson/wiki">TopoJSON</a>.</p>
+          <div id="docs"><p>This example uses a vector layer with <code>ol.format.TopoJSON</code> for rendering features from <a href="https://github.com/mbostock/topojson/wiki">TopoJSON</a>.</p>
 </div>
           <div id="tags">topojson, vector, style</div>
         </div>
@@ -65,9 +65,9 @@ var styleArray = [new ol.style.Style({
 })];
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.TopoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/topojson/world-110m.json&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/topojson/world-110m.json&#x27;,
+    format: new ol.format.TopoJSON()
   }),
   style: function(feature, resolution) {
     // don&#x27;t want to render the full world polygon, which repeats all countries
@@ -132,9 +132,9 @@ var styleArray = [new ol.style.Style({
 })];
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.TopoJSON({
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/topojson/world-110m.json&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/topojson/world-110m.json&#x27;,
+    format: new ol.format.TopoJSON()
   }),
   style: function(feature, resolution) {
     // don&#x27;t want to render the full world polygon, which repeats all countries

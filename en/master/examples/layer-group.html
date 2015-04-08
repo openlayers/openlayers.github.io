@@ -154,13 +154,19 @@
 });
 
 function bindInputs(layerid, layer) {
-  new ol.dom.Input($(layerid + &#x27; .visible&#x27;)[0])
-      .bindTo(&#x27;checked&#x27;, layer, &#x27;visible&#x27;);
+  var visibilityInput = $(layerid + &#x27; input.visible&#x27;);
+  visibilityInput.on(&#x27;change&#x27;, function() {
+    layer.setVisible(this.checked);
+  });
+  visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
+
   $.each([&#x27;opacity&#x27;, &#x27;hue&#x27;, &#x27;saturation&#x27;, &#x27;contrast&#x27;, &#x27;brightness&#x27;],
       function(i, v) {
-        new ol.dom.Input($(layerid + &#x27; .&#x27; + v)[0])
-            .bindTo(&#x27;value&#x27;, layer, v)
-            .transform(parseFloat, String);
+        var input = $(layerid + &#x27; input.&#x27; + v);
+        input.on(&#x27;input change&#x27;, function() {
+          layer.set(v, parseFloat(this.value));
+        });
+        input.val(String(layer.get(v)));
       }
   );
 }
@@ -396,13 +402,19 @@ var map = new ol.Map({
 });
 
 function bindInputs(layerid, layer) {
-  new ol.dom.Input($(layerid + &#x27; .visible&#x27;)[0])
-      .bindTo(&#x27;checked&#x27;, layer, &#x27;visible&#x27;);
+  var visibilityInput = $(layerid + &#x27; input.visible&#x27;);
+  visibilityInput.on(&#x27;change&#x27;, function() {
+    layer.setVisible(this.checked);
+  });
+  visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
+
   $.each([&#x27;opacity&#x27;, &#x27;hue&#x27;, &#x27;saturation&#x27;, &#x27;contrast&#x27;, &#x27;brightness&#x27;],
       function(i, v) {
-        new ol.dom.Input($(layerid + &#x27; .&#x27; + v)[0])
-            .bindTo(&#x27;value&#x27;, layer, v)
-            .transform(parseFloat, String);
+        var input = $(layerid + &#x27; input.&#x27; + v);
+        input.on(&#x27;input change&#x27;, function() {
+          layer.set(v, parseFloat(this.value));
+        });
+        input.val(String(layer.get(v)));
       }
   );
 }

@@ -78,16 +78,24 @@ var styleFunction = function(feature, resolution) {
   return styleArray;
 };
 
-var vectorSource = new ol.source.IGC({
-  projection: &#x27;EPSG:3857&#x27;,
-  urls: [
-    &#x27;data/igc/Clement-Latour.igc&#x27;,
-    &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
-    &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
-    &#x27;data/igc/Tom-Payne.igc&#x27;,
-    &#x27;data/igc/Ulrich-Prinz.igc&#x27;
-  ]
-});
+var vectorSource = new ol.source.Vector();
+
+var igcUrls = [
+  &#x27;data/igc/Clement-Latour.igc&#x27;,
+  &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
+  &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
+  &#x27;data/igc/Tom-Payne.igc&#x27;,
+  &#x27;data/igc/Ulrich-Prinz.igc&#x27;
+];
+
+var igcFormat = new ol.format.IGC();
+for (var i = 0; i &lt; igcUrls.length; ++i) {
+  $.ajax(igcUrls[i]).then(function(data) {
+    var features = igcFormat.readFeatures(data,
+        {featureProjection: &#x27;EPSG:3857&#x27;});
+    vectorSource.addFeatures(features);
+  });
+}
 
 var time = {
   start: Infinity,
@@ -298,16 +306,24 @@ var styleFunction = function(feature, resolution) {
   return styleArray;
 };
 
-var vectorSource = new ol.source.IGC({
-  projection: &#x27;EPSG:3857&#x27;,
-  urls: [
-    &#x27;data/igc/Clement-Latour.igc&#x27;,
-    &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
-    &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
-    &#x27;data/igc/Tom-Payne.igc&#x27;,
-    &#x27;data/igc/Ulrich-Prinz.igc&#x27;
-  ]
-});
+var vectorSource = new ol.source.Vector();
+
+var igcUrls = [
+  &#x27;data/igc/Clement-Latour.igc&#x27;,
+  &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
+  &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
+  &#x27;data/igc/Tom-Payne.igc&#x27;,
+  &#x27;data/igc/Ulrich-Prinz.igc&#x27;
+];
+
+var igcFormat = new ol.format.IGC();
+for (var i = 0; i &lt; igcUrls.length; ++i) {
+  $.ajax(igcUrls[i]).then(function(data) {
+    var features = igcFormat.readFeatures(data,
+        {featureProjection: &#x27;EPSG:3857&#x27;});
+    vectorSource.addFeatures(features);
+  });
+}
 
 var time = {
   start: Infinity,

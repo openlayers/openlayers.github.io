@@ -60,9 +60,9 @@
     }),
     new ol.layer.Image({
       source: new ol.source.ImageVector({
-        source: new ol.source.GeoJSON({
-          projection: &#x27;EPSG:3857&#x27;,
-          url: &#x27;data/geojson/countries.geojson&#x27;
+        source: new ol.source.Vector({
+          url: &#x27;data/geojson/countries.geojson&#x27;,
+          format: new ol.format.GeoJSON()
         }),
         style: new ol.style.Style({
           fill: new ol.style.Fill({
@@ -182,9 +182,9 @@ var map = new ol.Map({
     }),
     new ol.layer.Image({
       source: new ol.source.ImageVector({
-        source: new ol.source.GeoJSON({
-          projection: &#x27;EPSG:3857&#x27;,
-          url: &#x27;data/geojson/countries.geojson&#x27;
+        source: new ol.source.Vector({
+          url: &#x27;data/geojson/countries.geojson&#x27;,
+          format: new ol.format.GeoJSON()
         }),
         style: new ol.style.Style({
           fill: new ol.style.Fill({

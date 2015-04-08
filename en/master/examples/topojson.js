@@ -15,9 +15,9 @@ var styleArray = [new ol.style.Style({
 })];
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.TopoJSON({
-    projection: 'EPSG:3857',
-    url: 'data/topojson/world-110m.json'
+  source: new ol.source.Vector({
+    url: 'data/topojson/world-110m.json',
+    format: new ol.format.TopoJSON()
   }),
   style: function(feature, resolution) {
     // don't want to render the full world polygon, which repeats all countries

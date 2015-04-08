@@ -77,10 +77,10 @@
 if (ol.has.WEBGL) {
   var webglMap = new ol.Map({
     renderer: &#x27;webgl&#x27;,
-    target: &#x27;webglMap&#x27;
+    target: &#x27;webglMap&#x27;,
+    layers: domMap.getLayers(),
+    view: domMap.getView()
   });
-  webglMap.bindTo(&#x27;layergroup&#x27;, domMap);
-  webglMap.bindTo(&#x27;view&#x27;, domMap);
 } else {
   var info = document.getElementById(&#x27;no-webgl&#x27;);
   /**
@@ -90,10 +90,10 @@ if (ol.has.WEBGL) {
 }
 
 var canvasMap = new ol.Map({
-  target: &#x27;canvasMap&#x27;
+  target: &#x27;canvasMap&#x27;,
+  layers: domMap.getLayers(),
+  view: domMap.getView()
 });
-canvasMap.bindTo(&#x27;layergroup&#x27;, domMap);
-canvasMap.bindTo(&#x27;view&#x27;, domMap);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
@@ -167,10 +167,10 @@ var domMap = new ol.Map({
 if (ol.has.WEBGL) {
   var webglMap = new ol.Map({
     renderer: &#x27;webgl&#x27;,
-    target: &#x27;webglMap&#x27;
+    target: &#x27;webglMap&#x27;,
+    layers: domMap.getLayers(),
+    view: domMap.getView()
   });
-  webglMap.bindTo(&#x27;layergroup&#x27;, domMap);
-  webglMap.bindTo(&#x27;view&#x27;, domMap);
 } else {
   var info = document.getElementById(&#x27;no-webgl&#x27;);
   /**
@@ -180,10 +180,10 @@ if (ol.has.WEBGL) {
 }
 
 var canvasMap = new ol.Map({
-  target: &#x27;canvasMap&#x27;
+  target: &#x27;canvasMap&#x27;,
+  layers: domMap.getLayers(),
+  view: domMap.getView()
 });
-canvasMap.bindTo(&#x27;layergroup&#x27;, domMap);
-canvasMap.bindTo(&#x27;view&#x27;, domMap);
 
 &lt;/script&gt;
 &lt;/body&gt;

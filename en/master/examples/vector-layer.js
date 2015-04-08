@@ -18,10 +18,11 @@ var style = new ol.style.Style({
   })
 });
 var styles = [style];
+
 var vectorLayer = new ol.layer.Vector({
-  source: new ol.source.GeoJSON({
-    projection: 'EPSG:3857',
-    url: 'data/geojson/countries.geojson'
+  source: new ol.source.Vector({
+    url: 'data/geojson/countries.geojson',
+    format: new ol.format.GeoJSON()
   }),
   style: function(feature, resolution) {
     style.getText().setText(resolution < 5000 ? feature.get('name') : '');

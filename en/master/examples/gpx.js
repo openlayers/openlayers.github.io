@@ -35,9 +35,9 @@ var style = {
 };
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.GPX({
-    projection: projection,
-    url: 'data/gpx/fells_loop.gpx'
+  source: new ol.source.Vector({
+    url: 'data/gpx/fells_loop.gpx',
+    format: new ol.format.GPX()
   }),
   style: function(feature, resolution) {
     return style[feature.getGeometry().getType()];

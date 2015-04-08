@@ -83,8 +83,9 @@ var geolocation = new ol.Geolocation({
   projection: view.getProjection()
 });
 
-var track = new ol.dom.Input(document.getElementById(&#x27;track&#x27;));
-track.bindTo(&#x27;checked&#x27;, geolocation, &#x27;tracking&#x27;);
+$(&#x27;#track&#x27;).on(&#x27;change&#x27;, function() {
+  geolocation.setTracking(this.checked);
+});
 
 // update the HTML page when the position changes.
 geolocation.on(&#x27;change&#x27;, function() {
@@ -103,7 +104,9 @@ geolocation.on(&#x27;error&#x27;, function(error) {
 });
 
 var accuracyFeature = new ol.Feature();
-accuracyFeature.bindTo(&#x27;geometry&#x27;, geolocation, &#x27;accuracyGeometry&#x27;);
+geolocation.on(&#x27;change:accuracyGeometry&#x27;, function() {
+  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+});
 
 var positionFeature = new ol.Feature();
 positionFeature.setStyle(new ol.style.Style({
@@ -119,10 +122,11 @@ positionFeature.setStyle(new ol.style.Style({
   })
 }));
 
-positionFeature.bindTo(&#x27;geometry&#x27;, geolocation, &#x27;position&#x27;)
-    .transform(function() {}, function(coordinates) {
-      return coordinates ? new ol.geom.Point(coordinates) : null;
-    });
+geolocation.on(&#x27;change:position&#x27;, function() {
+  var coordinates = geolocation.getPosition();
+  positionFeature.setGeometry(coordinates ?
+      new ol.geom.Point(coordinates) : null);
+});
 
 var featuresOverlay = new ol.FeatureOverlay({
   map: map,
@@ -206,8 +210,9 @@ var geolocation = new ol.Geolocation({
   projection: view.getProjection()
 });
 
-var track = new ol.dom.Input(document.getElementById(&#x27;track&#x27;));
-track.bindTo(&#x27;checked&#x27;, geolocation, &#x27;tracking&#x27;);
+$(&#x27;#track&#x27;).on(&#x27;change&#x27;, function() {
+  geolocation.setTracking(this.checked);
+});
 
 // update the HTML page when the position changes.
 geolocation.on(&#x27;change&#x27;, function() {
@@ -226,7 +231,9 @@ geolocation.on(&#x27;error&#x27;, function(error) {
 });
 
 var accuracyFeature = new ol.Feature();
-accuracyFeature.bindTo(&#x27;geometry&#x27;, geolocation, &#x27;accuracyGeometry&#x27;);
+geolocation.on(&#x27;change:accuracyGeometry&#x27;, function() {
+  accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+});
 
 var positionFeature = new ol.Feature();
 positionFeature.setStyle(new ol.style.Style({
@@ -242,10 +249,11 @@ positionFeature.setStyle(new ol.style.Style({
   })
 }));
 
-positionFeature.bindTo(&#x27;geometry&#x27;, geolocation, &#x27;position&#x27;)
-    .transform(function() {}, function(coordinates) {
-      return coordinates ? new ol.geom.Point(coordinates) : null;
-    });
+geolocation.on(&#x27;change:position&#x27;, function() {
+  var coordinates = geolocation.getPosition();
+  positionFeature.setGeometry(coordinates ?
+      new ol.geom.Point(coordinates) : null);
+});
 
 var featuresOverlay = new ol.FeatureOverlay({
   map: map,

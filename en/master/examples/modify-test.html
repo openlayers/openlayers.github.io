@@ -97,106 +97,107 @@
   /* jshint +W069 */
 })();
 
-var source = new ol.source.GeoJSON(
-    /** @type {olx.source.GeoJSONOptions} */ ({
-      object: {
-        &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
-        &#x27;crs&#x27;: {
-          &#x27;type&#x27;: &#x27;name&#x27;,
-          &#x27;properties&#x27;: {
-            &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
-          }
-        },
-        &#x27;features&#x27;: [
+var geojsonObject = {
+  &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
+  &#x27;crs&#x27;: {
+    &#x27;type&#x27;: &#x27;name&#x27;,
+    &#x27;properties&#x27;: {
+      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
+    }
+  },
+  &#x27;features&#x27;: [
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Point&#x27;,
+        &#x27;coordinates&#x27;: [0, 0]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiPoint&#x27;,
+        &#x27;coordinates&#x27;: [[-2e6, 0], [0, -2e6]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [9e6, 2e6]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [8e6, 3e6]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-5e6, -1e6], [-4e6, 1e6],
+            [-3e6, -1e6], [-5e6, -1e6]], [[-4.5e6, -0.5e6],
+            [-3.5e6, -0.5e6], [-4e6, 0.5e6], [-4.5e6, -0.5e6]]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [[-1e6, -7.5e5], [-1e6, 7.5e5]],
+          [[-1e6, -7.5e5], [-1e6, 7.5e5], [-5e5, 0], [-1e6, -7.5e5]],
+          [[1e6, -7.5e5], [15e5, 0], [15e5, 0], [1e6, 7.5e5]],
+          [[-7.5e5, -1e6], [7.5e5, -1e6]],
+          [[-7.5e5, 1e6], [7.5e5, 1e6]]
+        ]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
+        &#x27;coordinates&#x27;: [
+          [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
+              [-3e6, 6e6], [-5e6, 6e6]]],
+          [[[-3e6, 6e6], [-2e6, 8e6], [0, 8e6],
+              [0, 6e6], [-3e6, 6e6]]],
+          [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
+              [3e6, 6e6], [1e6, 6e6]]]
+        ]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
+        &#x27;geometries&#x27;: [
           {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;Point&#x27;,
-              &#x27;coordinates&#x27;: [0, 0]
-            }
+            &#x27;type&#x27;: &#x27;LineString&#x27;,
+            &#x27;coordinates&#x27;: [[-5e6, -5e6], [0, -5e6]]
           },
           {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;MultiPoint&#x27;,
-              &#x27;coordinates&#x27;: [[-2e6, 0], [0, -2e6]]
-            }
+            &#x27;type&#x27;: &#x27;Point&#x27;,
+            &#x27;coordinates&#x27;: [4e6, -5e6]
           },
           {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;LineString&#x27;,
-              &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [9e6, 2e6]]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;LineString&#x27;,
-              &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [8e6, 3e6]]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;Polygon&#x27;,
-              &#x27;coordinates&#x27;: [[[-5e6, -1e6], [-4e6, 1e6],
-                  [-3e6, -1e6], [-5e6, -1e6]], [[-4.5e6, -0.5e6],
-                  [-3.5e6, -0.5e6], [-4e6, 0.5e6], [-4.5e6, -0.5e6]]]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
-              &#x27;coordinates&#x27;: [
-                [[-1e6, -7.5e5], [-1e6, 7.5e5]],
-                [[-1e6, -7.5e5], [-1e6, 7.5e5], [-5e5, 0], [-1e6, -7.5e5]],
-                [[1e6, -7.5e5], [15e5, 0], [15e5, 0], [1e6, 7.5e5]],
-                [[-7.5e5, -1e6], [7.5e5, -1e6]],
-                [[-7.5e5, 1e6], [7.5e5, 1e6]]
-              ]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
-              &#x27;coordinates&#x27;: [
-                [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
-                    [-3e6, 6e6], [-5e6, 6e6]]],
-                [[[-3e6, 6e6], [-2e6, 8e6], [0, 8e6],
-                    [0, 6e6], [-3e6, 6e6]]],
-                [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
-                    [3e6, 6e6], [1e6, 6e6]]]
-              ]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
-              &#x27;geometries&#x27;: [
-                {
-                  &#x27;type&#x27;: &#x27;LineString&#x27;,
-                  &#x27;coordinates&#x27;: [[-5e6, -5e6], [0, -5e6]]
-                },
-                {
-                  &#x27;type&#x27;: &#x27;Point&#x27;,
-                  &#x27;coordinates&#x27;: [4e6, -5e6]
-                },
-                {
-                  &#x27;type&#x27;: &#x27;Polygon&#x27;,
-                  &#x27;coordinates&#x27;: [
-                    [[1e6, -6e6], [2e6, -4e6], [3e6, -6e6], [1e6, -6e6]]
-                  ]
-                }
-              ]
-            }
+            &#x27;type&#x27;: &#x27;Polygon&#x27;,
+            &#x27;coordinates&#x27;: [
+              [[1e6, -6e6], [2e6, -4e6], [3e6, -6e6], [1e6, -6e6]]
+            ]
           }
         ]
       }
-    }));
+    }
+  ]
+};
+
+var source = new ol.source.Vector({
+  features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+});
 
 var layer = new ol.layer.Vector({
   source: source,
@@ -376,106 +377,107 @@ var styleFunction = (function() {
   /* jshint +W069 */
 })();
 
-var source = new ol.source.GeoJSON(
-    /** @type {olx.source.GeoJSONOptions} */ ({
-      object: {
-        &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
-        &#x27;crs&#x27;: {
-          &#x27;type&#x27;: &#x27;name&#x27;,
-          &#x27;properties&#x27;: {
-            &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
-          }
-        },
-        &#x27;features&#x27;: [
+var geojsonObject = {
+  &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
+  &#x27;crs&#x27;: {
+    &#x27;type&#x27;: &#x27;name&#x27;,
+    &#x27;properties&#x27;: {
+      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
+    }
+  },
+  &#x27;features&#x27;: [
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Point&#x27;,
+        &#x27;coordinates&#x27;: [0, 0]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiPoint&#x27;,
+        &#x27;coordinates&#x27;: [[-2e6, 0], [0, -2e6]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [9e6, 2e6]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [8e6, 3e6]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-5e6, -1e6], [-4e6, 1e6],
+            [-3e6, -1e6], [-5e6, -1e6]], [[-4.5e6, -0.5e6],
+            [-3.5e6, -0.5e6], [-4e6, 0.5e6], [-4.5e6, -0.5e6]]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [[-1e6, -7.5e5], [-1e6, 7.5e5]],
+          [[-1e6, -7.5e5], [-1e6, 7.5e5], [-5e5, 0], [-1e6, -7.5e5]],
+          [[1e6, -7.5e5], [15e5, 0], [15e5, 0], [1e6, 7.5e5]],
+          [[-7.5e5, -1e6], [7.5e5, -1e6]],
+          [[-7.5e5, 1e6], [7.5e5, 1e6]]
+        ]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
+        &#x27;coordinates&#x27;: [
+          [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
+              [-3e6, 6e6], [-5e6, 6e6]]],
+          [[[-3e6, 6e6], [-2e6, 8e6], [0, 8e6],
+              [0, 6e6], [-3e6, 6e6]]],
+          [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
+              [3e6, 6e6], [1e6, 6e6]]]
+        ]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
+        &#x27;geometries&#x27;: [
           {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;Point&#x27;,
-              &#x27;coordinates&#x27;: [0, 0]
-            }
+            &#x27;type&#x27;: &#x27;LineString&#x27;,
+            &#x27;coordinates&#x27;: [[-5e6, -5e6], [0, -5e6]]
           },
           {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;MultiPoint&#x27;,
-              &#x27;coordinates&#x27;: [[-2e6, 0], [0, -2e6]]
-            }
+            &#x27;type&#x27;: &#x27;Point&#x27;,
+            &#x27;coordinates&#x27;: [4e6, -5e6]
           },
           {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;LineString&#x27;,
-              &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [9e6, 2e6]]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;LineString&#x27;,
-              &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [8e6, 3e6]]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;Polygon&#x27;,
-              &#x27;coordinates&#x27;: [[[-5e6, -1e6], [-4e6, 1e6],
-                  [-3e6, -1e6], [-5e6, -1e6]], [[-4.5e6, -0.5e6],
-                  [-3.5e6, -0.5e6], [-4e6, 0.5e6], [-4.5e6, -0.5e6]]]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
-              &#x27;coordinates&#x27;: [
-                [[-1e6, -7.5e5], [-1e6, 7.5e5]],
-                [[-1e6, -7.5e5], [-1e6, 7.5e5], [-5e5, 0], [-1e6, -7.5e5]],
-                [[1e6, -7.5e5], [15e5, 0], [15e5, 0], [1e6, 7.5e5]],
-                [[-7.5e5, -1e6], [7.5e5, -1e6]],
-                [[-7.5e5, 1e6], [7.5e5, 1e6]]
-              ]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
-              &#x27;coordinates&#x27;: [
-                [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
-                    [-3e6, 6e6], [-5e6, 6e6]]],
-                [[[-3e6, 6e6], [-2e6, 8e6], [0, 8e6],
-                    [0, 6e6], [-3e6, 6e6]]],
-                [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
-                    [3e6, 6e6], [1e6, 6e6]]]
-              ]
-            }
-          },
-          {
-            &#x27;type&#x27;: &#x27;Feature&#x27;,
-            &#x27;geometry&#x27;: {
-              &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
-              &#x27;geometries&#x27;: [
-                {
-                  &#x27;type&#x27;: &#x27;LineString&#x27;,
-                  &#x27;coordinates&#x27;: [[-5e6, -5e6], [0, -5e6]]
-                },
-                {
-                  &#x27;type&#x27;: &#x27;Point&#x27;,
-                  &#x27;coordinates&#x27;: [4e6, -5e6]
-                },
-                {
-                  &#x27;type&#x27;: &#x27;Polygon&#x27;,
-                  &#x27;coordinates&#x27;: [
-                    [[1e6, -6e6], [2e6, -4e6], [3e6, -6e6], [1e6, -6e6]]
-                  ]
-                }
-              ]
-            }
+            &#x27;type&#x27;: &#x27;Polygon&#x27;,
+            &#x27;coordinates&#x27;: [
+              [[1e6, -6e6], [2e6, -4e6], [3e6, -6e6], [1e6, -6e6]]
+            ]
           }
         ]
       }
-    }));
+    }
+  ]
+};
+
+var source = new ol.source.Vector({
+  features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+});
 
 var layer = new ol.layer.Vector({
   source: source,

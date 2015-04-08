@@ -1,3 +1,8 @@
+var view = new ol.View({
+  center: [-4808600, -2620936],
+  zoom: 8
+});
+
 var map1 = new ol.Map({
   layers: [
     new ol.layer.Tile({
@@ -10,10 +15,7 @@ var map1 = new ol.Map({
   ],
   renderer: exampleNS.getRendererFromQueryString(),
   target: 'map1',
-  view: new ol.View({
-    center: [-4808600, -2620936],
-    zoom: 8
-  })
+  view: view
 });
 
 var map2 = new ol.Map({
@@ -27,6 +29,6 @@ var map2 = new ol.Map({
     })
   ],
   renderer: exampleNS.getRendererFromQueryString(),
-  target: 'map2'
+  target: 'map2',
+  view: view
 });
-map2.bindTo('view', map1);

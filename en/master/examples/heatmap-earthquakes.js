@@ -2,10 +2,10 @@ var blur = $('#blur');
 var radius = $('#radius');
 
 var vector = new ol.layer.Heatmap({
-  source: new ol.source.KML({
+  source: new ol.source.Vector({
     extractStyles: false,
-    projection: 'EPSG:3857',
-    url: 'data/kml/2012_Earthquakes_Mag5.kml'
+    url: 'data/kml/2012_Earthquakes_Mag5.kml',
+    format: new ol.format.KML()
   }),
   blur: parseInt(blur.val(), 10),
   radius: parseInt(radius.val(), 10)

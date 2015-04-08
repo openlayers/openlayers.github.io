@@ -14,9 +14,9 @@ var map = new ol.Map({
   keyboardEventTarget: document,
   layers: [
     new ol.layer.Vector({
-      source: new ol.source.GeoJSON({
-        projection: sphereMollweideProjection,
-        url: 'data/geojson/countries-110m.geojson'
+      source: new ol.source.Vector({
+        url: 'data/geojson/countries-110m.geojson',
+        format: new ol.format.GeoJSON()
       })
     })
   ],

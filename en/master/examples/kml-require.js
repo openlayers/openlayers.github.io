@@ -5,4 +5,4 @@ goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
 goog.require('ol.proj');
 goog.require('ol.source.BingMaps');
-goog.require('ol.source.KML');
+goog.require('ol.source.Vector');

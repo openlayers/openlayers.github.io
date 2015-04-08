@@ -53,9 +53,9 @@
         <form method="POST" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <input type="button" class="btn btn-info" id="copy-button" value="Copy example code">
           <input type="submit" class="btn btn-primary" id="jsfiddle-button" value="Create JSFiddle">
-          <textarea class="hidden" name="js">var vectorSource = new ol.source.GeoJSON({
-  projection: &#x27;EPSG:3857&#x27;,
-  url: &#x27;data/geojson/countries.geojson&#x27;
+          <textarea class="hidden" name="js">var vectorSource = new ol.source.Vector({
+  url: &#x27;data/geojson/countries.geojson&#x27;,
+  format: new ol.format.GeoJSON()
 });
 
 
@@ -162,9 +162,9 @@ map.on(&#x27;click&#x27;, function() {
 
 &lt;/div&gt;
 &lt;script&gt;
-var vectorSource = new ol.source.GeoJSON({
-  projection: &#x27;EPSG:3857&#x27;,
-  url: &#x27;data/geojson/countries.geojson&#x27;
+var vectorSource = new ol.source.Vector({
+  url: &#x27;data/geojson/countries.geojson&#x27;,
+  format: new ol.format.GeoJSON()
 });
 
 

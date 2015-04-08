@@ -76,10 +76,10 @@ var styleFunction = function(feature, resolution) {
 };
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.KML({
+  source: new ol.source.Vector({
     extractStyles: false,
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;
+    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
+    format: new ol.format.KML()
   }),
   style: styleFunction
 });
@@ -235,10 +235,10 @@ var styleFunction = function(feature, resolution) {
 };
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.KML({
+  source: new ol.source.Vector({
     extractStyles: false,
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;
+    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
+    format: new ol.format.KML()
   }),
   style: styleFunction
 });

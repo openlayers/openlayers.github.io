@@ -48,26 +48,28 @@
         <form method="POST" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <input type="button" class="btn btn-info" id="copy-button" value="Copy example code">
           <input type="submit" class="btn btn-primary" id="jsfiddle-button" value="Create JSFiddle">
-          <textarea class="hidden" name="js">var vectorSource = new ol.source.ServerVector({
-  format: new ol.format.GeoJSON(),
+          <textarea class="hidden" name="js">// format used to parse WFS GetFeature responses
+var geojsonFormat = new ol.format.GeoJSON();
+
+var vectorSource = new ol.source.Vector({
   loader: function(extent, resolution, projection) {
     var url = &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
         &#x27;version=1.1.0&amp;request=GetFeature&amp;typename=osm:water_areas&amp;&#x27; +
         &#x27;outputFormat=text/javascript&amp;format_options=callback:loadFeatures&#x27; +
         &#x27;&amp;srsname=EPSG:3857&amp;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
-    $.ajax({
-      url: url,
-      dataType: &#x27;jsonp&#x27;
-    });
+    // use jsonp: false to prevent jQuery from adding the &quot;callback&quot;
+    // parameter to the URL
+    $.ajax({url: url, dataType: &#x27;jsonp&#x27;, jsonp: false});
   },
-  strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
+  strategy: ol.loadingstrategy.tile(new ol.tilegrid.XYZ({
     maxZoom: 19
-  })),
-  projection: &#x27;EPSG:3857&#x27;
+  }))
 });
 
+// the global function whose name is specified in the URL of JSONP WFS
+// GetFeature requests
 var loadFeatures = function(response) {
-  vectorSource.addFeatures(vectorSource.readFeatures(response));
+  vectorSource.addFeatures(geojsonFormat.readFeatures(response));
 };
 
 var vector = new ol.layer.Vector({
@@ -128,26 +130,28 @@ var map = new ol.Map({
 
 &lt;/div&gt;
 &lt;script&gt;
-var vectorSource = new ol.source.ServerVector({
-  format: new ol.format.GeoJSON(),
+// format used to parse WFS GetFeature responses
+var geojsonFormat = new ol.format.GeoJSON();
+
+var vectorSource = new ol.source.Vector({
   loader: function(extent, resolution, projection) {
     var url = &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
         &#x27;version=1.1.0&amp;request=GetFeature&amp;typename=osm:water_areas&amp;&#x27; +
         &#x27;outputFormat=text/javascript&amp;format_options=callback:loadFeatures&#x27; +
         &#x27;&amp;srsname=EPSG:3857&amp;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
-    $.ajax({
-      url: url,
-      dataType: &#x27;jsonp&#x27;
-    });
+    // use jsonp: false to prevent jQuery from adding the &quot;callback&quot;
+    // parameter to the URL
+    $.ajax({url: url, dataType: &#x27;jsonp&#x27;, jsonp: false});
   },
-  strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
+  strategy: ol.loadingstrategy.tile(new ol.tilegrid.XYZ({
     maxZoom: 19
-  })),
-  projection: &#x27;EPSG:3857&#x27;
+  }))
 });
 
+// the global function whose name is specified in the URL of JSONP WFS
+// GetFeature requests
 var loadFeatures = function(response) {
-  vectorSource.addFeatures(vectorSource.readFeatures(response));
+  vectorSource.addFeatures(geojsonFormat.readFeatures(response));
 };
 
 var vector = new ol.layer.Vector({

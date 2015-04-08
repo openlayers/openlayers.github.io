@@ -22,16 +22,24 @@ var styleFunction = function(feature, resolution) {
   return styleArray;
 };
 
-var vectorSource = new ol.source.IGC({
-  projection: 'EPSG:3857',
-  urls: [
-    'data/igc/Clement-Latour.igc',
-    'data/igc/Damien-de-Baenst.igc',
-    'data/igc/Sylvain-Dhonneur.igc',
-    'data/igc/Tom-Payne.igc',
-    'data/igc/Ulrich-Prinz.igc'
-  ]
-});
+var vectorSource = new ol.source.Vector();
+
+var igcUrls = [
+  'data/igc/Clement-Latour.igc',
+  'data/igc/Damien-de-Baenst.igc',
+  'data/igc/Sylvain-Dhonneur.igc',
+  'data/igc/Tom-Payne.igc',
+  'data/igc/Ulrich-Prinz.igc'
+];
+
+var igcFormat = new ol.format.IGC();
+for (var i = 0; i < igcUrls.length; ++i) {
+  $.ajax(igcUrls[i]).then(function(data) {
+    var features = igcFormat.readFeatures(data,
+        {featureProjection: 'EPSG:3857'});
+    vectorSource.addFeatures(features);
+  });
+}
 
 var time = {
   start: Infinity,

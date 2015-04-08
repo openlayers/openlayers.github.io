@@ -60,10 +60,10 @@
 var radius = $(&#x27;#radius&#x27;);
 
 var vector = new ol.layer.Heatmap({
-  source: new ol.source.KML({
+  source: new ol.source.Vector({
     extractStyles: false,
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;
+    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
+    format: new ol.format.KML()
   }),
   blur: parseInt(blur.val(), 10),
   radius: parseInt(radius.val(), 10)
@@ -153,10 +153,10 @@ var blur = $(&#x27;#blur&#x27;);
 var radius = $(&#x27;#radius&#x27;);
 
 var vector = new ol.layer.Heatmap({
-  source: new ol.source.KML({
+  source: new ol.source.Vector({
     extractStyles: false,
-    projection: &#x27;EPSG:3857&#x27;,
-    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;
+    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
+    format: new ol.format.KML()
   }),
   blur: parseInt(blur.val(), 10),
   radius: parseInt(radius.val(), 10)

@@ -22,5 +22,8 @@ var map = new ol.Map({
 });
 
 
-var unitsSelect = new ol.dom.Input(document.getElementById('units'));
-unitsSelect.bindTo('value', scaleLineControl, 'units');
+var unitsSelect = $('#units');
+unitsSelect.on('change', function() {
+  scaleLineControl.setUnits(this.value);
+});
+unitsSelect.val(scaleLineControl.getUnits());

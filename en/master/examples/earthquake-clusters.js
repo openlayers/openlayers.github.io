@@ -104,10 +104,10 @@ function selectStyleFunction(feature, resolution) {
 var vector = new ol.layer.Vector({
   source: new ol.source.Cluster({
     distance: 40,
-    source: new ol.source.KML({
+    source: new ol.source.Vector({
       extractStyles: false,
-      projection: 'EPSG:3857',
-      url: 'data/kml/2012_Earthquakes_Mag5.kml'
+      url: 'data/kml/2012_Earthquakes_Mag5.kml',
+      format: new ol.format.KML()
     })
   }),
   style: styleFunction

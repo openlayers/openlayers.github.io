@@ -84,51 +84,53 @@
   })
 ];
 
-var source = new ol.source.GeoJSON(/** @type {olx.source.GeoJSONOptions} */ ({
-  object: {
-    &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
-    &#x27;crs&#x27;: {
-      &#x27;type&#x27;: &#x27;name&#x27;,
-      &#x27;properties&#x27;: {
-        &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
+var geojsonObject = {
+  &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
+  &#x27;crs&#x27;: {
+    &#x27;type&#x27;: &#x27;name&#x27;,
+    &#x27;properties&#x27;: {
+      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
+    }
+  },
+  &#x27;features&#x27;: [
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
+            [-3e6, 6e6], [-5e6, 6e6]]]
       }
     },
-    &#x27;features&#x27;: [
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
-              [-3e6, 6e6], [-5e6, 6e6]]]
-        }
-      },
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6],
-              [0, 6e6], [-2e6, 6e6]]]
-        }
-      },
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
-              [3e6, 6e6], [1e6, 6e6]]]
-        }
-      },
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[-2e6, -1e6], [-1e6, 1e6],
-              [0, -1e6], [-2e6, -1e6]]]
-        }
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6],
+            [0, 6e6], [-2e6, 6e6]]]
       }
-    ]
-  }
-}));
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
+            [3e6, 6e6], [1e6, 6e6]]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-2e6, -1e6], [-1e6, 1e6],
+            [0, -1e6], [-2e6, -1e6]]]
+      }
+    }
+  ]
+};
+
+var source = new ol.source.Vector({
+  features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+});
 
 var layer = new ol.layer.Vector({
   source: source,
@@ -207,51 +209,53 @@ var styles = [
   })
 ];
 
-var source = new ol.source.GeoJSON(/** @type {olx.source.GeoJSONOptions} */ ({
-  object: {
-    &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
-    &#x27;crs&#x27;: {
-      &#x27;type&#x27;: &#x27;name&#x27;,
-      &#x27;properties&#x27;: {
-        &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
+var geojsonObject = {
+  &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
+  &#x27;crs&#x27;: {
+    &#x27;type&#x27;: &#x27;name&#x27;,
+    &#x27;properties&#x27;: {
+      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
+    }
+  },
+  &#x27;features&#x27;: [
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
+            [-3e6, 6e6], [-5e6, 6e6]]]
       }
     },
-    &#x27;features&#x27;: [
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
-              [-3e6, 6e6], [-5e6, 6e6]]]
-        }
-      },
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6],
-              [0, 6e6], [-2e6, 6e6]]]
-        }
-      },
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
-              [3e6, 6e6], [1e6, 6e6]]]
-        }
-      },
-      {
-        &#x27;type&#x27;: &#x27;Feature&#x27;,
-        &#x27;geometry&#x27;: {
-          &#x27;type&#x27;: &#x27;Polygon&#x27;,
-          &#x27;coordinates&#x27;: [[[-2e6, -1e6], [-1e6, 1e6],
-              [0, -1e6], [-2e6, -1e6]]]
-        }
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6],
+            [0, 6e6], [-2e6, 6e6]]]
       }
-    ]
-  }
-}));
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
+            [3e6, 6e6], [1e6, 6e6]]]
+      }
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;Polygon&#x27;,
+        &#x27;coordinates&#x27;: [[[-2e6, -1e6], [-1e6, 1e6],
+            [0, -1e6], [-2e6, -1e6]]]
+      }
+    }
+  ]
+};
+
+var source = new ol.source.Vector({
+  features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+});
 
 var layer = new ol.layer.Vector({
   source: source,

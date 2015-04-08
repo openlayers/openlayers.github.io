@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-221-g0789604
+// Version: v3.4.0-248-gb5a0ca0
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -12569,339 +12569,6 @@ goog.debug.entryPointRegistry.register(
           goog.events.handleBrowserEvent_);
     });
 
-// Copyright 2008 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities for creating functions. Loosely inspired by the
- * java classes: http://goo.gl/GM0Hmu and http://goo.gl/6k7nI8.
- *
- * @author nicksantos@google.com (Nick Santos)
- */
-
-
-goog.provide('goog.functions');
-
-
-/**
- * Creates a function that always returns the same value.
- * @param {T} retValue The value to return.
- * @return {function():T} The new function.
- * @template T
- */
-goog.functions.constant = function(retValue) {
-  return function() {
-    return retValue;
-  };
-};
-
-
-/**
- * Always returns false.
- * @type {function(...): boolean}
- */
-goog.functions.FALSE = goog.functions.constant(false);
-
-
-/**
- * Always returns true.
- * @type {function(...): boolean}
- */
-goog.functions.TRUE = goog.functions.constant(true);
-
-
-/**
- * Always returns NULL.
- * @type {function(...): null}
- */
-goog.functions.NULL = goog.functions.constant(null);
-
-
-/**
- * A simple function that returns the first argument of whatever is passed
- * into it.
- * @param {T=} opt_returnValue The single value that will be returned.
- * @param {...*} var_args Optional trailing arguments. These are ignored.
- * @return {T} The first argument passed in, or undefined if nothing was passed.
- * @template T
- */
-goog.functions.identity = function(opt_returnValue, var_args) {
-  return opt_returnValue;
-};
-
-
-/**
- * Creates a function that always throws an error with the given message.
- * @param {string} message The error message.
- * @return {!Function} The error-throwing function.
- */
-goog.functions.error = function(message) {
-  return function() {
-    throw Error(message);
-  };
-};
-
-
-/**
- * Creates a function that throws the given object.
- * @param {*} err An object to be thrown.
- * @return {!Function} The error-throwing function.
- */
-goog.functions.fail = function(err) {
-  return function() {
-    throw err;
-  }
-};
-
-
-/**
- * Given a function, create a function that keeps opt_numArgs arguments and
- * silently discards all additional arguments.
- * @param {Function} f The original function.
- * @param {number=} opt_numArgs The number of arguments to keep. Defaults to 0.
- * @return {!Function} A version of f that only keeps the first opt_numArgs
- *     arguments.
- */
-goog.functions.lock = function(f, opt_numArgs) {
-  opt_numArgs = opt_numArgs || 0;
-  return function() {
-    return f.apply(this, Array.prototype.slice.call(arguments, 0, opt_numArgs));
-  };
-};
-
-
-/**
- * Creates a function that returns its nth argument.
- * @param {number} n The position of the return argument.
- * @return {!Function} A new function.
- */
-goog.functions.nth = function(n) {
-  return function() {
-    return arguments[n];
-  };
-};
-
-
-/**
- * Given a function, create a new function that swallows its return value
- * and replaces it with a new one.
- * @param {Function} f A function.
- * @param {T} retValue A new return value.
- * @return {function(...?):T} A new function.
- * @template T
- */
-goog.functions.withReturnValue = function(f, retValue) {
-  return goog.functions.sequence(f, goog.functions.constant(retValue));
-};
-
-
-/**
- * Creates a function that returns whether its arguement equals the given value.
- *
- * Example:
- * var key = goog.object.findKey(obj, goog.functions.equalTo('needle'));
- *
- * @param {*} value The value to compare to.
- * @param {boolean=} opt_useLooseComparison Whether to use a loose (==)
- *     comparison rather than a strict (===) one. Defaults to false.
- * @return {function(*):boolean} The new function.
- */
-goog.functions.equalTo = function(value, opt_useLooseComparison) {
-  return function(other) {
-    return opt_useLooseComparison ? (value == other) : (value === other);
-  };
-};
-
-
-/**
- * Creates the composition of the functions passed in.
- * For example, (goog.functions.compose(f, g))(a) is equivalent to f(g(a)).
- * @param {function(...?):T} fn The final function.
- * @param {...Function} var_args A list of functions.
- * @return {function(...?):T} The composition of all inputs.
- * @template T
- */
-goog.functions.compose = function(fn, var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    var result;
-    if (length) {
-      result = functions[length - 1].apply(this, arguments);
-    }
-
-    for (var i = length - 2; i >= 0; i--) {
-      result = functions[i].call(this, result);
-    }
-    return result;
-  };
-};
-
-
-/**
- * Creates a function that calls the functions passed in in sequence, and
- * returns the value of the last function. For example,
- * (goog.functions.sequence(f, g))(x) is equivalent to f(x),g(x).
- * @param {...Function} var_args A list of functions.
- * @return {!Function} A function that calls all inputs in sequence.
- */
-goog.functions.sequence = function(var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    var result;
-    for (var i = 0; i < length; i++) {
-      result = functions[i].apply(this, arguments);
-    }
-    return result;
-  };
-};
-
-
-/**
- * Creates a function that returns true if each of its components evaluates
- * to true. The components are evaluated in order, and the evaluation will be
- * short-circuited as soon as a function returns false.
- * For example, (goog.functions.and(f, g))(x) is equivalent to f(x) && g(x).
- * @param {...Function} var_args A list of functions.
- * @return {function(...?):boolean} A function that ANDs its component
- *      functions.
- */
-goog.functions.and = function(var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    for (var i = 0; i < length; i++) {
-      if (!functions[i].apply(this, arguments)) {
-        return false;
-      }
-    }
-    return true;
-  };
-};
-
-
-/**
- * Creates a function that returns true if any of its components evaluates
- * to true. The components are evaluated in order, and the evaluation will be
- * short-circuited as soon as a function returns true.
- * For example, (goog.functions.or(f, g))(x) is equivalent to f(x) || g(x).
- * @param {...Function} var_args A list of functions.
- * @return {function(...?):boolean} A function that ORs its component
- *    functions.
- */
-goog.functions.or = function(var_args) {
-  var functions = arguments;
-  var length = functions.length;
-  return function() {
-    for (var i = 0; i < length; i++) {
-      if (functions[i].apply(this, arguments)) {
-        return true;
-      }
-    }
-    return false;
-  };
-};
-
-
-/**
- * Creates a function that returns the Boolean opposite of a provided function.
- * For example, (goog.functions.not(f))(x) is equivalent to !f(x).
- * @param {!Function} f The original function.
- * @return {function(...?):boolean} A function that delegates to f and returns
- * opposite.
- */
-goog.functions.not = function(f) {
-  return function() {
-    return !f.apply(this, arguments);
-  };
-};
-
-
-/**
- * Generic factory function to construct an object given the constructor
- * and the arguments. Intended to be bound to create object factories.
- *
- * Example:
- *
- * var factory = goog.partial(goog.functions.create, Class);
- *
- * @param {function(new:T, ...)} constructor The constructor for the Object.
- * @param {...*} var_args The arguments to be passed to the constructor.
- * @return {T} A new instance of the class given in {@code constructor}.
- * @template T
- */
-goog.functions.create = function(constructor, var_args) {
-  /**
-   * @constructor
-   * @final
-   */
-  var temp = function() {};
-  temp.prototype = constructor.prototype;
-
-  // obj will have constructor's prototype in its chain and
-  // 'obj instanceof constructor' will be true.
-  var obj = new temp();
-
-  // obj is initialized by constructor.
-  // arguments is only array-like so lacks shift(), but can be used with
-  // the Array prototype function.
-  constructor.apply(obj, Array.prototype.slice.call(arguments, 1));
-  return obj;
-};
-
-
-/**
- * @define {boolean} Whether the return value cache should be used.
- *    This should only be used to disable caches when testing.
- */
-goog.define('goog.functions.CACHE_RETURN_VALUE', true);
-
-
-/**
- * Gives a wrapper function that caches the return value of a parameterless
- * function when first called.
- *
- * When called for the first time, the given function is called and its
- * return value is cached (thus this is only appropriate for idempotent
- * functions).  Subsequent calls will return the cached return value. This
- * allows the evaluation of expensive functions to be delayed until first used.
- *
- * To cache the return values of functions with parameters, see goog.memoize.
- *
- * @param {!function():T} fn A function to lazily evaluate.
- * @return {!function():T} A wrapped version the function.
- * @template T
- */
-goog.functions.cacheReturnValue = function(fn) {
-  var called = false;
-  var value;
-
-  return function() {
-    if (!goog.functions.CACHE_RETURN_VALUE) {
-      return fn();
-    }
-
-    if (!called) {
-      value = fn();
-      called = true;
-    }
-
-    return value;
-  }
-};
-
 // Copyright 2005 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13412,21 +13079,13 @@ ol.Observable.prototype.un = function(type, listener, opt_this) {
  */
 ol.Observable.prototype.unByKey = ol.Observable.unByKey;
 
-/**
- * An implementation of Google Maps' MVCObject.
- * @see https://developers.google.com/maps/articles/mvcfun
- * @see https://developers.google.com/maps/documentation/javascript/reference
- */
-
 goog.provide('ol.Object');
 goog.provide('ol.ObjectEvent');
 goog.provide('ol.ObjectEventType');
 
 goog.require('goog.events');
 goog.require('goog.events.Event');
-goog.require('goog.functions');
 goog.require('goog.object');
-goog.require('goog.string');
 goog.require('ol.Observable');
 
 
@@ -13479,63 +13138,6 @@ goog.inherits(ol.ObjectEvent, goog.events.Event);
 
 
 /**
- * @constructor
- * @param {ol.Object} source Source object.
- * @param {ol.Object} target Target object.
- * @param {string} sourceKey Source key.
- * @param {string} targetKey Target key.
- */
-ol.ObjectAccessor = function(source, target, sourceKey, targetKey) {
-
-  /**
-   * @type {ol.Object}
-   */
-  this.source = source;
-
-  /**
-   * @type {ol.Object}
-   */
-  this.target = target;
-
-  /**
-   * @type {string}
-   */
-  this.sourceKey = sourceKey;
-
-  /**
-   * @type {string}
-   */
-  this.targetKey = targetKey;
-
-  /**
-   * @type {function(?): ?}
-   */
-  this.from = goog.functions.identity;
-
-  /**
-   * @type {function(?): ?}
-   */
-  this.to = goog.functions.identity;
-};
-
-
-/**
- * @param {function(?): ?} from A function that transforms the source value
- *     before it is set to the target.
- * @param {function(?): ?} to A function that transforms the target value
- *     before it is set to the source.
- * @api
- */
-ol.ObjectAccessor.prototype.transform = function(from, to) {
-  var oldValue = ol.Object.getKeyValue_(this.source, this.sourceKey);
-  this.from = from;
-  this.to = to;
-  this.source.notify(this.sourceKey, oldValue);
-};
-
-
-
-/**
  * @classdesc
  * Abstract base class; normally only used for creating subclasses and not
  * instantiated in apps.
@@ -13571,12 +13173,6 @@ ol.ObjectAccessor.prototype.transform = function(from, to) {
  * first will be a `hasOwnProperty`; the second will appear in
  * `getProperties()`. Only the second is observable.
  *
- * The observable properties also implement a form of Key Value Observing.
- * Two objects can be bound together such that a change in one will
- * automatically be reflected in the other. See `bindTo` method for more
- * details, and see {@link ol.dom.Input} for the specific case of binding an
- * object with an HTML element.
- *
  * Properties can be deleted by using the unset method. E.g.
  * object.unset('foo').
  *
@@ -13601,18 +13197,6 @@ ol.Object = function(opt_values) {
    */
   this.values_ = {};
 
-  /**
-   * @private
-   * @type {Object.<string, ol.ObjectAccessor>}
-   */
-  this.accessors_ = {};
-
-  /**
-   * @private
-   * @type {Object.<string, goog.events.Key>}
-   */
-  this.listeners_ = {};
-
   if (goog.isDef(opt_values)) {
     this.setProperties(opt_values);
   }
@@ -13628,20 +13212,6 @@ ol.Object.changeEventTypeCache_ = {};
 
 
 /**
- * @private
- * @type {Object.<string, string>}
- */
-ol.Object.getterNameCache_ = {};
-
-
-/**
- * @private
- * @type {Object.<string, string>}
- */
-ol.Object.setterNameCache_ = {};
-
-
-/**
  * @param {string} key Key name.
  * @return {string} Change name.
  */
@@ -13653,116 +13223,6 @@ ol.Object.getChangeEventType = function(key) {
 
 
 /**
- * @param {string} key String.
- * @return {string} Getter name.
- */
-ol.Object.getGetterName = function(key) {
-  return ol.Object.getterNameCache_.hasOwnProperty(key) ?
-      ol.Object.getterNameCache_[key] :
-      (ol.Object.getterNameCache_[key] = 'get' + goog.string.capitalize(key));
-};
-
-
-/**
- * @param {string} key String.
- * @return {string} Setter name.
- */
-ol.Object.getSetterName = function(key) {
-  return ol.Object.setterNameCache_.hasOwnProperty(key) ?
-      ol.Object.setterNameCache_[key] :
-      (ol.Object.setterNameCache_[key] = 'set' + goog.string.capitalize(key));
-};
-
-
-/**
- * Get the value for an object and a key. Use the getter (`getX`) if it exists,
- * otherwise use the generic `get` function.
- * @param {ol.Object} obj Object.
- * @param {string} key Key;
- * @return {*} Value;
- * @private
- */
-ol.Object.getKeyValue_ = function(obj, key) {
-  var getterName = ol.Object.getGetterName(key);
-  var getter = /** @type {function(): *|undefined} */
-      (/** @type {Object} */ (obj)[getterName]);
-  return goog.isDef(getter) ? getter.call(obj) : obj.get(key);
-};
-
-
-/**
- * Set the value for an object and a key. Use the setter (`setX`) if it exists,
- * otherwise use the generic `set` function.
- * @param {ol.Object} obj Object.
- * @param {string} key Key.
- * @param {*} value Value.
- * @private
- */
-ol.Object.setKeyValue_ = function(obj, key, value) {
-  var setterName = ol.Object.getSetterName(key);
-  var setter = /** @type {function(*)|undefined} */
-      (/** @type {Object} */ (obj)[setterName]);
-  if (goog.isDef(setter)) {
-    setter.call(obj, value);
-  } else {
-    obj.set(key, value);
-  }
-};
-
-
-/**
- * The bindTo method allows you to set up a two-way binding between a
- * `source` and `target` object. The method returns an object with a
- * `transform` method that you can use to provide `from` and `to`
- * functions to transform values on the way from the source to the
- * target and on the way back.
-*
- * For example, if you had two map views (sourceView and targetView)
- * and you wanted the target view to have double the resolution of the
- * source view, you could transform the resolution on the way to and
- * from the target with the following:
- *
- *     sourceView.bindTo('resolution', targetView)
- *       .transform(
- *         function(sourceResolution) {
- *           // from sourceView.resolution to targetView.resolution
- *           return 2 * sourceResolution;
- *         },
- *         function(targetResolution) {
- *           // from targetView.resolution to sourceView.resolution
- *           return targetResolution / 2;
- *         }
- *       );
- *
- * @param {string} key Key name.
- * @param {ol.Object} target Target.
- * @param {string=} opt_targetKey Target key.
- * @return {ol.ObjectAccessor}
- * @api
- */
-ol.Object.prototype.bindTo = function(key, target, opt_targetKey) {
-  var targetKey = opt_targetKey || key;
-  this.unbind(key);
-
-  // listen for change:targetkey events
-  var eventType = ol.Object.getChangeEventType(targetKey);
-  this.listeners_[key] = goog.events.listen(target, eventType,
-      /**
-       * @param {ol.ObjectEvent} e Event.
-       * @this {ol.Object}
-       */
-      function(e) {
-        this.notify(key, e.oldValue);
-      }, undefined, this);
-
-  var accessor = new ol.ObjectAccessor(this, target, key, targetKey);
-  this.accessors_[key] = accessor;
-  this.notify(key, this.values_[key]);
-  return accessor;
-};
-
-
-/**
  * Gets a value.
  * @param {string} key Key name.
  * @return {*} Value.
@@ -13770,12 +13230,7 @@ ol.Object.prototype.bindTo = function(key, target, opt_targetKey) {
  */
 ol.Object.prototype.get = function(key) {
   var value;
-  var accessors = this.accessors_;
-  if (accessors.hasOwnProperty(key)) {
-    var accessor = accessors[key];
-    value = ol.Object.getKeyValue_(accessor.target, accessor.targetKey);
-    value = accessor.to(value);
-  } else if (this.values_.hasOwnProperty(key)) {
+  if (this.values_.hasOwnProperty(key)) {
     value = this.values_[key];
   }
   return value;
@@ -13788,29 +13243,7 @@ ol.Object.prototype.get = function(key) {
  * @api stable
  */
 ol.Object.prototype.getKeys = function() {
-  var accessors = this.accessors_;
-  var keysObject;
-  if (goog.object.isEmpty(this.values_)) {
-    if (goog.object.isEmpty(accessors)) {
-      return [];
-    } else {
-      keysObject = accessors;
-    }
-  } else {
-    if (goog.object.isEmpty(accessors)) {
-      keysObject = this.values_;
-    } else {
-      keysObject = {};
-      var key;
-      for (key in this.values_) {
-        keysObject[key] = true;
-      }
-      for (key in accessors) {
-        keysObject[key] = true;
-      }
-    }
-  }
-  return goog.object.getKeys(keysObject);
+  return goog.object.getKeys(this.values_);
 };
 
 
@@ -13824,9 +13257,6 @@ ol.Object.prototype.getProperties = function() {
   var key;
   for (key in this.values_) {
     properties[key] = this.values_[key];
-  }
-  for (key in this.accessors_) {
-    properties[key] = this.get(key);
   }
   return properties;
 };
@@ -13852,16 +13282,9 @@ ol.Object.prototype.notify = function(key, oldValue) {
  * @api stable
  */
 ol.Object.prototype.set = function(key, value) {
-  var accessors = this.accessors_;
-  if (accessors.hasOwnProperty(key)) {
-    var accessor = accessors[key];
-    value = accessor.from(value);
-    ol.Object.setKeyValue_(accessor.target, accessor.targetKey, value);
-  } else {
-    var oldValue = this.values_[key];
-    this.values_[key] = value;
-    this.notify(key, oldValue);
-  }
+  var oldValue = this.values_[key];
+  this.values_[key] = value;
+  this.notify(key, oldValue);
 };
 
 
@@ -13875,36 +13298,6 @@ ol.Object.prototype.setProperties = function(values) {
   var key;
   for (key in values) {
     this.set(key, values[key]);
-  }
-};
-
-
-/**
- * Removes a binding. Unbinding will set the unbound property to the current
- *     value. The object will not be notified, as the value has not changed.
- * @param {string} key Key name.
- * @api
- */
-ol.Object.prototype.unbind = function(key) {
-  var listeners = this.listeners_;
-  var listener = listeners[key];
-  if (listener) {
-    delete listeners[key];
-    goog.events.unlistenByKey(listener);
-    var value = this.get(key);
-    delete this.accessors_[key];
-    this.values_[key] = value;
-  }
-};
-
-
-/**
- * Removes all bindings.
- * @api
- */
-ol.Object.prototype.unbindAll = function() {
-  for (var key in this.listeners_) {
-    this.unbind(key);
   }
 };
 
@@ -19457,6 +18850,7 @@ ol.proj.transformWithProjections =
 
 goog.provide('ol.View');
 goog.provide('ol.ViewHint');
+goog.provide('ol.ViewProperty');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
@@ -19709,10 +19103,6 @@ ol.View.prototype.getCenter = function() {
   return /** @type {ol.Coordinate|undefined} */ (
       this.get(ol.ViewProperty.CENTER));
 };
-goog.exportProperty(
-    ol.View.prototype,
-    'getCenter',
-    ol.View.prototype.getCenter);
 
 
 /**
@@ -19765,10 +19155,6 @@ ol.View.prototype.getResolution = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.ViewProperty.RESOLUTION));
 };
-goog.exportProperty(
-    ol.View.prototype,
-    'getResolution',
-    ol.View.prototype.getResolution);
 
 
 /**
@@ -19821,10 +19207,6 @@ ol.View.prototype.getResolutionForValueFunction = function(opt_power) {
 ol.View.prototype.getRotation = function() {
   return /** @type {number} */ (this.get(ol.ViewProperty.ROTATION));
 };
-goog.exportProperty(
-    ol.View.prototype,
-    'getRotation',
-    ol.View.prototype.getRotation);
 
 
 /**
@@ -20053,10 +19435,6 @@ ol.View.prototype.rotate = function(rotation, opt_anchor) {
 ol.View.prototype.setCenter = function(center) {
   this.set(ol.ViewProperty.CENTER, center);
 };
-goog.exportProperty(
-    ol.View.prototype,
-    'setCenter',
-    ol.View.prototype.setCenter);
 
 
 /**
@@ -20083,10 +19461,6 @@ ol.View.prototype.setHint = function(hint, delta) {
 ol.View.prototype.setResolution = function(resolution) {
   this.set(ol.ViewProperty.RESOLUTION, resolution);
 };
-goog.exportProperty(
-    ol.View.prototype,
-    'setResolution',
-    ol.View.prototype.setResolution);
 
 
 /**
@@ -20098,10 +19472,6 @@ goog.exportProperty(
 ol.View.prototype.setRotation = function(rotation) {
   this.set(ol.ViewProperty.ROTATION, rotation);
 };
-goog.exportProperty(
-    ol.View.prototype,
-    'setRotation',
-    ol.View.prototype.setRotation);
 
 
 /**
@@ -29990,6 +29360,7 @@ goog.color.colorDiff_ = function(rgb1, rgb2) {
 // causes occasional loss of precision and rounding errors, especially in the
 // alpha channel.
 
+goog.provide('ol.Color');
 goog.provide('ol.color');
 
 goog.require('goog.asserts');
@@ -34624,6 +33995,339 @@ ol.source.Source.prototype.setProjection = function(projection) {
   this.projection_ = projection;
 };
 
+// Copyright 2008 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for creating functions. Loosely inspired by the
+ * java classes: http://goo.gl/GM0Hmu and http://goo.gl/6k7nI8.
+ *
+ * @author nicksantos@google.com (Nick Santos)
+ */
+
+
+goog.provide('goog.functions');
+
+
+/**
+ * Creates a function that always returns the same value.
+ * @param {T} retValue The value to return.
+ * @return {function():T} The new function.
+ * @template T
+ */
+goog.functions.constant = function(retValue) {
+  return function() {
+    return retValue;
+  };
+};
+
+
+/**
+ * Always returns false.
+ * @type {function(...): boolean}
+ */
+goog.functions.FALSE = goog.functions.constant(false);
+
+
+/**
+ * Always returns true.
+ * @type {function(...): boolean}
+ */
+goog.functions.TRUE = goog.functions.constant(true);
+
+
+/**
+ * Always returns NULL.
+ * @type {function(...): null}
+ */
+goog.functions.NULL = goog.functions.constant(null);
+
+
+/**
+ * A simple function that returns the first argument of whatever is passed
+ * into it.
+ * @param {T=} opt_returnValue The single value that will be returned.
+ * @param {...*} var_args Optional trailing arguments. These are ignored.
+ * @return {T} The first argument passed in, or undefined if nothing was passed.
+ * @template T
+ */
+goog.functions.identity = function(opt_returnValue, var_args) {
+  return opt_returnValue;
+};
+
+
+/**
+ * Creates a function that always throws an error with the given message.
+ * @param {string} message The error message.
+ * @return {!Function} The error-throwing function.
+ */
+goog.functions.error = function(message) {
+  return function() {
+    throw Error(message);
+  };
+};
+
+
+/**
+ * Creates a function that throws the given object.
+ * @param {*} err An object to be thrown.
+ * @return {!Function} The error-throwing function.
+ */
+goog.functions.fail = function(err) {
+  return function() {
+    throw err;
+  }
+};
+
+
+/**
+ * Given a function, create a function that keeps opt_numArgs arguments and
+ * silently discards all additional arguments.
+ * @param {Function} f The original function.
+ * @param {number=} opt_numArgs The number of arguments to keep. Defaults to 0.
+ * @return {!Function} A version of f that only keeps the first opt_numArgs
+ *     arguments.
+ */
+goog.functions.lock = function(f, opt_numArgs) {
+  opt_numArgs = opt_numArgs || 0;
+  return function() {
+    return f.apply(this, Array.prototype.slice.call(arguments, 0, opt_numArgs));
+  };
+};
+
+
+/**
+ * Creates a function that returns its nth argument.
+ * @param {number} n The position of the return argument.
+ * @return {!Function} A new function.
+ */
+goog.functions.nth = function(n) {
+  return function() {
+    return arguments[n];
+  };
+};
+
+
+/**
+ * Given a function, create a new function that swallows its return value
+ * and replaces it with a new one.
+ * @param {Function} f A function.
+ * @param {T} retValue A new return value.
+ * @return {function(...?):T} A new function.
+ * @template T
+ */
+goog.functions.withReturnValue = function(f, retValue) {
+  return goog.functions.sequence(f, goog.functions.constant(retValue));
+};
+
+
+/**
+ * Creates a function that returns whether its arguement equals the given value.
+ *
+ * Example:
+ * var key = goog.object.findKey(obj, goog.functions.equalTo('needle'));
+ *
+ * @param {*} value The value to compare to.
+ * @param {boolean=} opt_useLooseComparison Whether to use a loose (==)
+ *     comparison rather than a strict (===) one. Defaults to false.
+ * @return {function(*):boolean} The new function.
+ */
+goog.functions.equalTo = function(value, opt_useLooseComparison) {
+  return function(other) {
+    return opt_useLooseComparison ? (value == other) : (value === other);
+  };
+};
+
+
+/**
+ * Creates the composition of the functions passed in.
+ * For example, (goog.functions.compose(f, g))(a) is equivalent to f(g(a)).
+ * @param {function(...?):T} fn The final function.
+ * @param {...Function} var_args A list of functions.
+ * @return {function(...?):T} The composition of all inputs.
+ * @template T
+ */
+goog.functions.compose = function(fn, var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    var result;
+    if (length) {
+      result = functions[length - 1].apply(this, arguments);
+    }
+
+    for (var i = length - 2; i >= 0; i--) {
+      result = functions[i].call(this, result);
+    }
+    return result;
+  };
+};
+
+
+/**
+ * Creates a function that calls the functions passed in in sequence, and
+ * returns the value of the last function. For example,
+ * (goog.functions.sequence(f, g))(x) is equivalent to f(x),g(x).
+ * @param {...Function} var_args A list of functions.
+ * @return {!Function} A function that calls all inputs in sequence.
+ */
+goog.functions.sequence = function(var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    var result;
+    for (var i = 0; i < length; i++) {
+      result = functions[i].apply(this, arguments);
+    }
+    return result;
+  };
+};
+
+
+/**
+ * Creates a function that returns true if each of its components evaluates
+ * to true. The components are evaluated in order, and the evaluation will be
+ * short-circuited as soon as a function returns false.
+ * For example, (goog.functions.and(f, g))(x) is equivalent to f(x) && g(x).
+ * @param {...Function} var_args A list of functions.
+ * @return {function(...?):boolean} A function that ANDs its component
+ *      functions.
+ */
+goog.functions.and = function(var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    for (var i = 0; i < length; i++) {
+      if (!functions[i].apply(this, arguments)) {
+        return false;
+      }
+    }
+    return true;
+  };
+};
+
+
+/**
+ * Creates a function that returns true if any of its components evaluates
+ * to true. The components are evaluated in order, and the evaluation will be
+ * short-circuited as soon as a function returns true.
+ * For example, (goog.functions.or(f, g))(x) is equivalent to f(x) || g(x).
+ * @param {...Function} var_args A list of functions.
+ * @return {function(...?):boolean} A function that ORs its component
+ *    functions.
+ */
+goog.functions.or = function(var_args) {
+  var functions = arguments;
+  var length = functions.length;
+  return function() {
+    for (var i = 0; i < length; i++) {
+      if (functions[i].apply(this, arguments)) {
+        return true;
+      }
+    }
+    return false;
+  };
+};
+
+
+/**
+ * Creates a function that returns the Boolean opposite of a provided function.
+ * For example, (goog.functions.not(f))(x) is equivalent to !f(x).
+ * @param {!Function} f The original function.
+ * @return {function(...?):boolean} A function that delegates to f and returns
+ * opposite.
+ */
+goog.functions.not = function(f) {
+  return function() {
+    return !f.apply(this, arguments);
+  };
+};
+
+
+/**
+ * Generic factory function to construct an object given the constructor
+ * and the arguments. Intended to be bound to create object factories.
+ *
+ * Example:
+ *
+ * var factory = goog.partial(goog.functions.create, Class);
+ *
+ * @param {function(new:T, ...)} constructor The constructor for the Object.
+ * @param {...*} var_args The arguments to be passed to the constructor.
+ * @return {T} A new instance of the class given in {@code constructor}.
+ * @template T
+ */
+goog.functions.create = function(constructor, var_args) {
+  /**
+   * @constructor
+   * @final
+   */
+  var temp = function() {};
+  temp.prototype = constructor.prototype;
+
+  // obj will have constructor's prototype in its chain and
+  // 'obj instanceof constructor' will be true.
+  var obj = new temp();
+
+  // obj is initialized by constructor.
+  // arguments is only array-like so lacks shift(), but can be used with
+  // the Array prototype function.
+  constructor.apply(obj, Array.prototype.slice.call(arguments, 1));
+  return obj;
+};
+
+
+/**
+ * @define {boolean} Whether the return value cache should be used.
+ *    This should only be used to disable caches when testing.
+ */
+goog.define('goog.functions.CACHE_RETURN_VALUE', true);
+
+
+/**
+ * Gives a wrapper function that caches the return value of a parameterless
+ * function when first called.
+ *
+ * When called for the first time, the given function is called and its
+ * return value is cached (thus this is only appropriate for idempotent
+ * functions).  Subsequent calls will return the cached return value. This
+ * allows the evaluation of expensive functions to be delayed until first used.
+ *
+ * To cache the return values of functions with parameters, see goog.memoize.
+ *
+ * @param {!function():T} fn A function to lazily evaluate.
+ * @return {!function():T} A wrapped version the function.
+ * @template T
+ */
+goog.functions.cacheReturnValue = function(fn) {
+  var called = false;
+  var value;
+
+  return function() {
+    if (!goog.functions.CACHE_RETURN_VALUE) {
+      return fn();
+    }
+
+    if (!called) {
+      value = fn();
+      called = true;
+    }
+
+    return value;
+  }
+};
+
 goog.provide('ol.tilegrid.TileGrid');
 
 goog.require('goog.array');
@@ -36747,10 +36451,6 @@ ol.control.MousePosition.prototype.getCoordinateFormat = function() {
   return /** @type {ol.CoordinateFormatType|undefined} */ (
       this.get(ol.control.MousePositionProperty.COORDINATE_FORMAT));
 };
-goog.exportProperty(
-    ol.control.MousePosition.prototype,
-    'getCoordinateFormat',
-    ol.control.MousePosition.prototype.getCoordinateFormat);
 
 
 /**
@@ -36763,10 +36463,6 @@ ol.control.MousePosition.prototype.getProjection = function() {
   return /** @type {ol.proj.Projection|undefined} */ (
       this.get(ol.control.MousePositionProperty.PROJECTION));
 };
-goog.exportProperty(
-    ol.control.MousePosition.prototype,
-    'getProjection',
-    ol.control.MousePosition.prototype.getProjection);
 
 
 /**
@@ -36817,10 +36513,6 @@ ol.control.MousePosition.prototype.setMap = function(map) {
 ol.control.MousePosition.prototype.setCoordinateFormat = function(format) {
   this.set(ol.control.MousePositionProperty.COORDINATE_FORMAT, format);
 };
-goog.exportProperty(
-    ol.control.MousePosition.prototype,
-    'setCoordinateFormat',
-    ol.control.MousePosition.prototype.setCoordinateFormat);
 
 
 /**
@@ -36832,10 +36524,6 @@ goog.exportProperty(
 ol.control.MousePosition.prototype.setProjection = function(projection) {
   this.set(ol.control.MousePositionProperty.PROJECTION, projection);
 };
-goog.exportProperty(
-    ol.control.MousePosition.prototype,
-    'setProjection',
-    ol.control.MousePosition.prototype.setProjection);
 
 
 /**
@@ -46996,10 +46684,6 @@ goog.inherits(ol.layer.Base, ol.Object);
 ol.layer.Base.prototype.getBrightness = function() {
   return /** @type {number} */ (this.get(ol.layer.LayerProperty.BRIGHTNESS));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getBrightness',
-    ol.layer.Base.prototype.getBrightness);
 
 
 /**
@@ -47010,10 +46694,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.getContrast = function() {
   return /** @type {number} */ (this.get(ol.layer.LayerProperty.CONTRAST));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getContrast',
-    ol.layer.Base.prototype.getContrast);
 
 
 /**
@@ -47024,10 +46704,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.getHue = function() {
   return /** @type {number} */ (this.get(ol.layer.LayerProperty.HUE));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getHue',
-    ol.layer.Base.prototype.getHue);
 
 
 /**
@@ -47085,10 +46761,6 @@ ol.layer.Base.prototype.getExtent = function() {
   return /** @type {ol.Extent|undefined} */ (
       this.get(ol.layer.LayerProperty.EXTENT));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getExtent',
-    ol.layer.Base.prototype.getExtent);
 
 
 /**
@@ -47100,10 +46772,6 @@ ol.layer.Base.prototype.getMaxResolution = function() {
   return /** @type {number} */ (
       this.get(ol.layer.LayerProperty.MAX_RESOLUTION));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getMaxResolution',
-    ol.layer.Base.prototype.getMaxResolution);
 
 
 /**
@@ -47115,10 +46783,6 @@ ol.layer.Base.prototype.getMinResolution = function() {
   return /** @type {number} */ (
       this.get(ol.layer.LayerProperty.MIN_RESOLUTION));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getMinResolution',
-    ol.layer.Base.prototype.getMinResolution);
 
 
 /**
@@ -47129,10 +46793,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.getOpacity = function() {
   return /** @type {number} */ (this.get(ol.layer.LayerProperty.OPACITY));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getOpacity',
-    ol.layer.Base.prototype.getOpacity);
 
 
 /**
@@ -47143,10 +46803,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.getSaturation = function() {
   return /** @type {number} */ (this.get(ol.layer.LayerProperty.SATURATION));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getSaturation',
-    ol.layer.Base.prototype.getSaturation);
 
 
 /**
@@ -47163,10 +46819,6 @@ ol.layer.Base.prototype.getSourceState = goog.abstractMethod;
 ol.layer.Base.prototype.getVisible = function() {
   return /** @type {boolean} */ (this.get(ol.layer.LayerProperty.VISIBLE));
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'getVisible',
-    ol.layer.Base.prototype.getVisible);
 
 
 /**
@@ -47194,10 +46846,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setBrightness = function(brightness) {
   this.set(ol.layer.LayerProperty.BRIGHTNESS, brightness);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setBrightness',
-    ol.layer.Base.prototype.setBrightness);
 
 
 /**
@@ -47212,10 +46860,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setContrast = function(contrast) {
   this.set(ol.layer.LayerProperty.CONTRAST, contrast);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setContrast',
-    ol.layer.Base.prototype.setContrast);
 
 
 /**
@@ -47228,10 +46872,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setHue = function(hue) {
   this.set(ol.layer.LayerProperty.HUE, hue);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setHue',
-    ol.layer.Base.prototype.setHue);
 
 
 /**
@@ -47244,10 +46884,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setExtent = function(extent) {
   this.set(ol.layer.LayerProperty.EXTENT, extent);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setExtent',
-    ol.layer.Base.prototype.setExtent);
 
 
 /**
@@ -47258,10 +46894,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setMaxResolution = function(maxResolution) {
   this.set(ol.layer.LayerProperty.MAX_RESOLUTION, maxResolution);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setMaxResolution',
-    ol.layer.Base.prototype.setMaxResolution);
 
 
 /**
@@ -47272,10 +46904,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setMinResolution = function(minResolution) {
   this.set(ol.layer.LayerProperty.MIN_RESOLUTION, minResolution);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setMinResolution',
-    ol.layer.Base.prototype.setMinResolution);
 
 
 /**
@@ -47286,10 +46914,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setOpacity = function(opacity) {
   this.set(ol.layer.LayerProperty.OPACITY, opacity);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setOpacity',
-    ol.layer.Base.prototype.setOpacity);
 
 
 /**
@@ -47305,10 +46929,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setSaturation = function(saturation) {
   this.set(ol.layer.LayerProperty.SATURATION, saturation);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setSaturation',
-    ol.layer.Base.prototype.setSaturation);
 
 
 /**
@@ -47319,10 +46939,6 @@ goog.exportProperty(
 ol.layer.Base.prototype.setVisible = function(visible) {
   this.set(ol.layer.LayerProperty.VISIBLE, visible);
 };
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'setVisible',
-    ol.layer.Base.prototype.setVisible);
 
 goog.provide('ol.layer.Layer');
 
@@ -47419,10 +47035,6 @@ ol.layer.Layer.prototype.getSource = function() {
   return goog.isDef(source) ?
       /** @type {ol.source.Source} */ (source) : null;
 };
-goog.exportProperty(
-    ol.layer.Layer.prototype,
-    'getSource',
-    ol.layer.Layer.prototype.getSource);
 
 
 /**
@@ -47468,10 +47080,6 @@ ol.layer.Layer.prototype.handleSourcePropertyChange_ = function() {
 ol.layer.Layer.prototype.setSource = function(source) {
   this.set(ol.layer.LayerProperty.SOURCE, source);
 };
-goog.exportProperty(
-    ol.layer.Layer.prototype,
-    'setSource',
-    ol.layer.Layer.prototype.setSource);
 
 goog.provide('ol.ImageBase');
 goog.provide('ol.ImageState');
@@ -47604,8 +47212,16 @@ ol.ImageBase.prototype.getState = function() {
 ol.ImageBase.prototype.load = goog.abstractMethod;
 
 goog.provide('ol.vec.Mat4');
+goog.provide('ol.vec.Mat4.Number');
 
 goog.require('goog.vec.Mat4');
+
+
+/**
+ * A alias for the goog.vec.Number type.
+ * @typedef {goog.vec.Number}
+ */
+ol.vec.Mat4.Number;
 
 
 /**
@@ -49956,10 +49572,6 @@ ol.interaction.Interaction.prototype.getActive = function() {
   return /** @type {boolean} */ (
       this.get(ol.interaction.InteractionProperty.ACTIVE));
 };
-goog.exportProperty(
-    ol.interaction.Interaction.prototype,
-    'getActive',
-    ol.interaction.Interaction.prototype.getActive);
 
 
 /**
@@ -49980,10 +49592,6 @@ ol.interaction.Interaction.prototype.getMap = function() {
 ol.interaction.Interaction.prototype.setActive = function(active) {
   this.set(ol.interaction.InteractionProperty.ACTIVE, active);
 };
-goog.exportProperty(
-    ol.interaction.Interaction.prototype,
-    'setActive',
-    ol.interaction.Interaction.prototype.setActive);
 
 
 /**
@@ -50894,6 +50502,7 @@ ol.interaction.DragRotate.handleDownEvent_ = function(mapBrowserEvent) {
 ol.interaction.DragRotate.prototype.shouldStopEvent = goog.functions.FALSE;
 
 goog.provide('ol.geom.Geometry');
+goog.provide('ol.geom.GeometryLayout');
 goog.provide('ol.geom.GeometryType');
 
 goog.require('goog.functions');
@@ -51200,6 +50809,7 @@ goog.require('goog.functions');
 goog.require('goog.object');
 goog.require('ol.extent');
 goog.require('ol.geom.Geometry');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.flat.transform');
 
 
@@ -52487,6 +52097,7 @@ ol.geom.flat.simplify.quantizess = function(
 goog.provide('ol.geom.LinearRing');
 
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.geom.flat.area');
@@ -52642,6 +52253,7 @@ ol.geom.LinearRing.prototype.setFlatCoordinates =
 goog.provide('ol.geom.Point');
 
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.geom.flat.deflate');
@@ -53342,6 +52954,7 @@ goog.provide('ol.geom.Polygon');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.LinearRing');
 goog.require('ol.geom.Point');
@@ -55867,7 +55480,9 @@ ol.style.Circle.prototype.getChecksum = function() {
   return this.checksums_[0];
 };
 
+goog.provide('ol.style.GeometryFunction');
 goog.provide('ol.style.Style');
+goog.provide('ol.style.StyleFunction');
 goog.provide('ol.style.defaultGeometryFunction');
 
 goog.require('goog.asserts');
@@ -57215,10 +56830,6 @@ ol.layer.Group.prototype.getLayers = function() {
   return /** @type {!ol.Collection.<ol.layer.Base>} */ (this.get(
       ol.layer.GroupProperty.LAYERS));
 };
-goog.exportProperty(
-    ol.layer.Group.prototype,
-    'getLayers',
-    ol.layer.Group.prototype.getLayers);
 
 
 /**
@@ -57230,10 +56841,6 @@ goog.exportProperty(
 ol.layer.Group.prototype.setLayers = function(layers) {
   this.set(ol.layer.GroupProperty.LAYERS, layers);
 };
-goog.exportProperty(
-    ol.layer.Group.prototype,
-    'setLayers',
-    ol.layer.Group.prototype.setLayers);
 
 
 /**
@@ -57639,10 +57246,6 @@ goog.inherits(ol.layer.Tile, ol.layer.Layer);
 ol.layer.Tile.prototype.getPreload = function() {
   return /** @type {number} */ (this.get(ol.layer.TileProperty.PRELOAD));
 };
-goog.exportProperty(
-    ol.layer.Tile.prototype,
-    'getPreload',
-    ol.layer.Tile.prototype.getPreload);
 
 
 /**
@@ -57661,10 +57264,6 @@ ol.layer.Tile.prototype.getSource;
 ol.layer.Tile.prototype.setPreload = function(preload) {
   this.set(ol.layer.TileProperty.PRELOAD, preload);
 };
-goog.exportProperty(
-    ol.layer.Tile.prototype,
-    'setPreload',
-    ol.layer.Tile.prototype.setPreload);
 
 
 /**
@@ -57676,10 +57275,6 @@ ol.layer.Tile.prototype.getUseInterimTilesOnError = function() {
   return /** @type {boolean} */ (
       this.get(ol.layer.TileProperty.USE_INTERIM_TILES_ON_ERROR));
 };
-goog.exportProperty(
-    ol.layer.Tile.prototype,
-    'getUseInterimTilesOnError',
-    ol.layer.Tile.prototype.getUseInterimTilesOnError);
 
 
 /**
@@ -57692,10 +57287,6 @@ ol.layer.Tile.prototype.setUseInterimTilesOnError =
   this.set(
       ol.layer.TileProperty.USE_INTERIM_TILES_ON_ERROR, useInterimTilesOnError);
 };
-goog.exportProperty(
-    ol.layer.Tile.prototype,
-    'setUseInterimTilesOnError',
-    ol.layer.Tile.prototype.setUseInterimTilesOnError);
 
 goog.provide('ol.layer.Vector');
 
@@ -61266,6 +60857,7 @@ goog.provide('ol.geom.Circle');
 
 goog.require('goog.asserts');
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.geom.flat.deflate');
@@ -62033,6 +61625,7 @@ goog.provide('ol.geom.LineString');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.geom.flat.closest');
@@ -62289,6 +61882,7 @@ goog.provide('ol.geom.MultiLineString');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.SimpleGeometry');
@@ -62616,6 +62210,7 @@ goog.provide('ol.geom.MultiPoint');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.SimpleGeometry');
@@ -62839,6 +62434,7 @@ goog.provide('ol.geom.MultiPolygon');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.MultiPoint');
 goog.require('ol.geom.Polygon');
@@ -63938,6 +63534,6389 @@ ol.source.ImageCanvas.prototype.getImage =
   return canvas;
 };
 
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Common events for the network classes.
+ */
+
+
+goog.provide('goog.net.EventType');
+
+
+/**
+ * Event names for network events
+ * @enum {string}
+ */
+goog.net.EventType = {
+  COMPLETE: 'complete',
+  SUCCESS: 'success',
+  ERROR: 'error',
+  ABORT: 'abort',
+  READY: 'ready',
+  READY_STATE_CHANGE: 'readystatechange',
+  TIMEOUT: 'timeout',
+  INCREMENTAL_DATA: 'incrementaldata',
+  PROGRESS: 'progress'
+};
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+goog.provide('goog.Thenable');
+
+
+
+/**
+ * Provides a more strict interface for Thenables in terms of
+ * http://promisesaplus.com for interop with {@see goog.Promise}.
+ *
+ * @interface
+ * @extends {IThenable<TYPE>}
+ * @template TYPE
+ */
+goog.Thenable = function() {};
+
+
+/**
+ * Adds callbacks that will operate on the result of the Thenable, returning a
+ * new child Promise.
+ *
+ * If the Thenable is fulfilled, the {@code onFulfilled} callback will be
+ * invoked with the fulfillment value as argument, and the child Promise will
+ * be fulfilled with the return value of the callback. If the callback throws
+ * an exception, the child Promise will be rejected with the thrown value
+ * instead.
+ *
+ * If the Thenable is rejected, the {@code onRejected} callback will be invoked
+ * with the rejection reason as argument, and the child Promise will be rejected
+ * with the return value of the callback or thrown value.
+ *
+ * @param {?(function(this:THIS, TYPE):
+ *             (RESULT|IThenable<RESULT>|Thenable))=} opt_onFulfilled A
+ *     function that will be invoked with the fulfillment value if the Promise
+ *     is fullfilled.
+ * @param {?(function(this:THIS, *): *)=} opt_onRejected A function that will
+ *     be invoked with the rejection reason if the Promise is rejected.
+ * @param {THIS=} opt_context An optional context object that will be the
+ *     execution context for the callbacks. By default, functions are executed
+ *     with the default this.
+ * @return {!goog.Promise<RESULT>} A new Promise that will receive the result
+ *     of the fulfillment or rejection callback.
+ * @template RESULT,THIS
+ */
+goog.Thenable.prototype.then = function(opt_onFulfilled, opt_onRejected,
+    opt_context) {};
+
+
+/**
+ * An expando property to indicate that an object implements
+ * {@code goog.Thenable}.
+ *
+ * {@see addImplementation}.
+ *
+ * @const
+ */
+goog.Thenable.IMPLEMENTED_BY_PROP = '$goog_Thenable';
+
+
+/**
+ * Marks a given class (constructor) as an implementation of Thenable, so
+ * that we can query that fact at runtime. The class must have already
+ * implemented the interface.
+ * Exports a 'then' method on the constructor prototype, so that the objects
+ * also implement the extern {@see goog.Thenable} interface for interop with
+ * other Promise implementations.
+ * @param {function(new:goog.Thenable,...?)} ctor The class constructor. The
+ *     corresponding class must have already implemented the interface.
+ */
+goog.Thenable.addImplementation = function(ctor) {
+  goog.exportProperty(ctor.prototype, 'then', ctor.prototype.then);
+  if (COMPILED) {
+    ctor.prototype[goog.Thenable.IMPLEMENTED_BY_PROP] = true;
+  } else {
+    // Avoids dictionary access in uncompiled mode.
+    ctor.prototype.$goog_Thenable = true;
+  }
+};
+
+
+/**
+ * @param {*} object
+ * @return {boolean} Whether a given instance implements {@code goog.Thenable}.
+ *     The class/superclass of the instance must call {@code addImplementation}.
+ */
+goog.Thenable.isImplementedBy = function(object) {
+  if (!object) {
+    return false;
+  }
+  try {
+    if (COMPILED) {
+      return !!object[goog.Thenable.IMPLEMENTED_BY_PROP];
+    }
+    return !!object.$goog_Thenable;
+  } catch (e) {
+    // Property access seems to be forbidden.
+    return false;
+  }
+};
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Simple notifiers for the Closure testing framework.
+ *
+ * @author johnlenz@google.com (John Lenz)
+ */
+
+goog.provide('goog.testing.watchers');
+
+
+/** @private {!Array<function()>} */
+goog.testing.watchers.resetWatchers_ = [];
+
+
+/**
+ * Fires clock reset watching functions.
+ */
+goog.testing.watchers.signalClockReset = function() {
+  var watchers = goog.testing.watchers.resetWatchers_;
+  for (var i = 0; i < watchers.length; i++) {
+    goog.testing.watchers.resetWatchers_[i]();
+  }
+};
+
+
+/**
+ * Enqueues a function to be called when the clock used for setTimeout is reset.
+ * @param {function()} fn
+ */
+goog.testing.watchers.watchClockReset = function(fn) {
+  goog.testing.watchers.resetWatchers_.push(fn);
+};
+
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+goog.provide('goog.async.run');
+
+goog.require('goog.async.nextTick');
+goog.require('goog.async.throwException');
+goog.require('goog.testing.watchers');
+
+
+/**
+ * Fires the provided callback just before the current callstack unwinds, or as
+ * soon as possible after the current JS execution context.
+ * @param {function(this:THIS)} callback
+ * @param {THIS=} opt_context Object to use as the "this value" when calling
+ *     the provided function.
+ * @template THIS
+ */
+goog.async.run = function(callback, opt_context) {
+  if (!goog.async.run.schedule_) {
+    goog.async.run.initializeRunner_();
+  }
+  if (!goog.async.run.workQueueScheduled_) {
+    // Nothing is currently scheduled, schedule it now.
+    goog.async.run.schedule_();
+    goog.async.run.workQueueScheduled_ = true;
+  }
+
+  goog.async.run.workQueue_.push(
+      new goog.async.run.WorkItem_(callback, opt_context));
+};
+
+
+/**
+ * Initializes the function to use to process the work queue.
+ * @private
+ */
+goog.async.run.initializeRunner_ = function() {
+  // If native Promises are available in the browser, just schedule the callback
+  // on a fulfilled promise, which is specified to be async, but as fast as
+  // possible.
+  if (goog.global.Promise && goog.global.Promise.resolve) {
+    var promise = goog.global.Promise.resolve();
+    goog.async.run.schedule_ = function() {
+      promise.then(goog.async.run.processWorkQueue);
+    };
+  } else {
+    goog.async.run.schedule_ = function() {
+      goog.async.nextTick(goog.async.run.processWorkQueue);
+    };
+  }
+};
+
+
+/**
+ * Forces goog.async.run to use nextTick instead of Promise.
+ *
+ * This should only be done in unit tests. It's useful because MockClock
+ * replaces nextTick, but not the browser Promise implementation, so it allows
+ * Promise-based code to be tested with MockClock.
+ */
+goog.async.run.forceNextTick = function() {
+  goog.async.run.schedule_ = function() {
+    goog.async.nextTick(goog.async.run.processWorkQueue);
+  };
+};
+
+
+/**
+ * The function used to schedule work asynchronousely.
+ * @private {function()}
+ */
+goog.async.run.schedule_;
+
+
+/** @private {boolean} */
+goog.async.run.workQueueScheduled_ = false;
+
+
+/** @private {!Array<!goog.async.run.WorkItem_>} */
+goog.async.run.workQueue_ = [];
+
+
+if (goog.DEBUG) {
+  /**
+   * Reset the event queue.
+   * @private
+   */
+  goog.async.run.resetQueue_ = function() {
+    goog.async.run.workQueueScheduled_ = false;
+    goog.async.run.workQueue_ = [];
+  };
+
+  // If there is a clock implemenation in use for testing
+  // and it is reset, reset the queue.
+  goog.testing.watchers.watchClockReset(goog.async.run.resetQueue_);
+}
+
+
+/**
+ * Run any pending goog.async.run work items. This function is not intended
+ * for general use, but for use by entry point handlers to run items ahead of
+ * goog.async.nextTick.
+ */
+goog.async.run.processWorkQueue = function() {
+  // NOTE: additional work queue items may be pushed while processing.
+  while (goog.async.run.workQueue_.length) {
+    // Don't let the work queue grow indefinitely.
+    var workItems = goog.async.run.workQueue_;
+    goog.async.run.workQueue_ = [];
+    for (var i = 0; i < workItems.length; i++) {
+      var workItem = workItems[i];
+      try {
+        workItem.fn.call(workItem.scope);
+      } catch (e) {
+        goog.async.throwException(e);
+      }
+    }
+  }
+
+  // There are no more work items, reset the work queue.
+  goog.async.run.workQueueScheduled_ = false;
+};
+
+
+
+/**
+ * @constructor
+ * @final
+ * @struct
+ * @private
+ *
+ * @param {function()} fn
+ * @param {Object|null|undefined} scope
+ */
+goog.async.run.WorkItem_ = function(fn, scope) {
+  /** @const */ this.fn = fn;
+  /** @const */ this.scope = scope;
+};
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+goog.provide('goog.promise.Resolver');
+
+
+
+/**
+ * Resolver interface for promises. The resolver is a convenience interface that
+ * bundles the promise and its associated resolve and reject functions together,
+ * for cases where the resolver needs to be persisted internally.
+ *
+ * @interface
+ * @template TYPE
+ */
+goog.promise.Resolver = function() {};
+
+
+/**
+ * The promise that created this resolver.
+ * @type {!goog.Promise<TYPE>}
+ */
+goog.promise.Resolver.prototype.promise;
+
+
+/**
+ * Resolves this resolver with the specified value.
+ * @type {function((TYPE|goog.Promise<TYPE>|Thenable)=)}
+ */
+goog.promise.Resolver.prototype.resolve;
+
+
+/**
+ * Rejects this resolver with the specified reason.
+ * @type {function(*): void}
+ */
+goog.promise.Resolver.prototype.reject;
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+goog.provide('goog.Promise');
+
+goog.require('goog.Thenable');
+goog.require('goog.asserts');
+goog.require('goog.async.run');
+goog.require('goog.async.throwException');
+goog.require('goog.debug.Error');
+goog.require('goog.promise.Resolver');
+
+
+
+/**
+ * Promises provide a result that may be resolved asynchronously. A Promise may
+ * be resolved by being fulfilled or rejected with a value, which will be known
+ * as the fulfillment value or the rejection reason. Whether fulfilled or
+ * rejected, the Promise result is immutable once it is set.
+ *
+ * Promises may represent results of any type, including undefined. Rejection
+ * reasons are typically Errors, but may also be of any type. Closure Promises
+ * allow for optional type annotations that enforce that fulfillment values are
+ * of the appropriate types at compile time.
+ *
+ * The result of a Promise is accessible by calling {@code then} and registering
+ * {@code onFulfilled} and {@code onRejected} callbacks. Once the Promise
+ * resolves, the relevant callbacks are invoked with the fulfillment value or
+ * rejection reason as argument. Callbacks are always invoked in the order they
+ * were registered, even when additional {@code then} calls are made from inside
+ * another callback. A callback is always run asynchronously sometime after the
+ * scope containing the registering {@code then} invocation has returned.
+ *
+ * If a Promise is resolved with another Promise, the first Promise will block
+ * until the second is resolved, and then assumes the same result as the second
+ * Promise. This allows Promises to depend on the results of other Promises,
+ * linking together multiple asynchronous operations.
+ *
+ * This implementation is compatible with the Promises/A+ specification and
+ * passes that specification's conformance test suite. A Closure Promise may be
+ * resolved with a Promise instance (or sufficiently compatible Promise-like
+ * object) created by other Promise implementations. From the specification,
+ * Promise-like objects are known as "Thenables".
+ *
+ * @see http://promisesaplus.com/
+ *
+ * @param {function(
+ *             this:RESOLVER_CONTEXT,
+ *             function((TYPE|IThenable<TYPE>|Thenable)=),
+ *             function(*)): void} resolver
+ *     Initialization function that is invoked immediately with {@code resolve}
+ *     and {@code reject} functions as arguments. The Promise is resolved or
+ *     rejected with the first argument passed to either function.
+ * @param {RESOLVER_CONTEXT=} opt_context An optional context for executing the
+ *     resolver function. If unspecified, the resolver function will be executed
+ *     in the default scope.
+ * @constructor
+ * @struct
+ * @final
+ * @implements {goog.Thenable<TYPE>}
+ * @template TYPE,RESOLVER_CONTEXT
+ */
+goog.Promise = function(resolver, opt_context) {
+  /**
+   * The internal state of this Promise. Either PENDING, FULFILLED, REJECTED, or
+   * BLOCKED.
+   * @private {goog.Promise.State_}
+   */
+  this.state_ = goog.Promise.State_.PENDING;
+
+  /**
+   * The resolved result of the Promise. Immutable once set with either a
+   * fulfillment value or rejection reason.
+   * @private {*}
+   */
+  this.result_ = undefined;
+
+  /**
+   * For Promises created by calling {@code then()}, the originating parent.
+   * @private {goog.Promise}
+   */
+  this.parent_ = null;
+
+  /**
+   * The list of {@code onFulfilled} and {@code onRejected} callbacks added to
+   * this Promise by calls to {@code then()}.
+   * @private {Array<goog.Promise.CallbackEntry_>}
+   */
+  this.callbackEntries_ = null;
+
+  /**
+   * Whether the Promise is in the queue of Promises to execute.
+   * @private {boolean}
+   */
+  this.executing_ = false;
+
+  if (goog.Promise.UNHANDLED_REJECTION_DELAY > 0) {
+    /**
+     * A timeout ID used when the {@code UNHANDLED_REJECTION_DELAY} is greater
+     * than 0 milliseconds. The ID is set when the Promise is rejected, and
+     * cleared only if an {@code onRejected} callback is invoked for the
+     * Promise (or one of its descendants) before the delay is exceeded.
+     *
+     * If the rejection is not handled before the timeout completes, the
+     * rejection reason is passed to the unhandled rejection handler.
+     * @private {number}
+     */
+    this.unhandledRejectionId_ = 0;
+  } else if (goog.Promise.UNHANDLED_REJECTION_DELAY == 0) {
+    /**
+     * When the {@code UNHANDLED_REJECTION_DELAY} is set to 0 milliseconds, a
+     * boolean that is set if the Promise is rejected, and reset to false if an
+     * {@code onRejected} callback is invoked for the Promise (or one of its
+     * descendants). If the rejection is not handled before the next timestep,
+     * the rejection reason is passed to the unhandled rejection handler.
+     * @private {boolean}
+     */
+    this.hadUnhandledRejection_ = false;
+  }
+
+  if (goog.Promise.LONG_STACK_TRACES) {
+    /**
+     * A list of stack trace frames pointing to the locations where this Promise
+     * was created or had callbacks added to it. Saved to add additional context
+     * to stack traces when an exception is thrown.
+     * @private {!Array<string>}
+     */
+    this.stack_ = [];
+    this.addStackTrace_(new Error('created'));
+
+    /**
+     * Index of the most recently executed stack frame entry.
+     * @private {number}
+     */
+    this.currentStep_ = 0;
+  }
+
+  try {
+    var self = this;
+    resolver.call(
+        opt_context,
+        function(value) {
+          self.resolve_(goog.Promise.State_.FULFILLED, value);
+        },
+        function(reason) {
+          if (goog.DEBUG &&
+              !(reason instanceof goog.Promise.CancellationError)) {
+            try {
+              // Promise was rejected. Step up one call frame to see why.
+              if (reason instanceof Error) {
+                throw reason;
+              } else {
+                throw new Error('Promise rejected.');
+              }
+            } catch (e) {
+              // Only thrown so browser dev tools can catch rejections of
+              // promises when the option to break on caught exceptions is
+              // activated.
+            }
+          }
+          self.resolve_(goog.Promise.State_.REJECTED, reason);
+        });
+  } catch (e) {
+    this.resolve_(goog.Promise.State_.REJECTED, e);
+  }
+};
+
+
+/**
+ * @define {boolean} Whether traces of {@code then} calls should be included in
+ * exceptions thrown
+ */
+goog.define('goog.Promise.LONG_STACK_TRACES', false);
+
+
+/**
+ * @define {number} The delay in milliseconds before a rejected Promise's reason
+ * is passed to the rejection handler. By default, the rejection handler
+ * rethrows the rejection reason so that it appears in the developer console or
+ * {@code window.onerror} handler.
+ *
+ * Rejections are rethrown as quickly as possible by default. A negative value
+ * disables rejection handling entirely.
+ */
+goog.define('goog.Promise.UNHANDLED_REJECTION_DELAY', 0);
+
+
+/**
+ * The possible internal states for a Promise. These states are not directly
+ * observable to external callers.
+ * @enum {number}
+ * @private
+ */
+goog.Promise.State_ = {
+  /** The Promise is waiting for resolution. */
+  PENDING: 0,
+
+  /** The Promise is blocked waiting for the result of another Thenable. */
+  BLOCKED: 1,
+
+  /** The Promise has been resolved with a fulfillment value. */
+  FULFILLED: 2,
+
+  /** The Promise has been resolved with a rejection reason. */
+  REJECTED: 3
+};
+
+
+/**
+ * Typedef for entries in the callback chain. Each call to {@code then},
+ * {@code thenCatch}, or {@code thenAlways} creates an entry containing the
+ * functions that may be invoked once the Promise is resolved.
+ *
+ * @typedef {{
+ *   child: goog.Promise,
+ *   onFulfilled: function(*),
+ *   onRejected: function(*)
+ * }}
+ * @private
+ */
+goog.Promise.CallbackEntry_;
+
+
+/**
+ * @param {(TYPE|goog.Thenable<TYPE>|Thenable)=} opt_value
+ * @return {!goog.Promise<TYPE>} A new Promise that is immediately resolved
+ *     with the given value.
+ * @template TYPE
+ */
+goog.Promise.resolve = function(opt_value) {
+  return new goog.Promise(function(resolve, reject) {
+    resolve(opt_value);
+  });
+};
+
+
+/**
+ * @param {*=} opt_reason
+ * @return {!goog.Promise} A new Promise that is immediately rejected with the
+ *     given reason.
+ */
+goog.Promise.reject = function(opt_reason) {
+  return new goog.Promise(function(resolve, reject) {
+    reject(opt_reason);
+  });
+};
+
+
+/**
+ * @param {!Array<!(goog.Thenable<TYPE>|Thenable)>} promises
+ * @return {!goog.Promise<TYPE>} A Promise that receives the result of the
+ *     first Promise (or Promise-like) input to complete.
+ * @template TYPE
+ */
+goog.Promise.race = function(promises) {
+  return new goog.Promise(function(resolve, reject) {
+    if (!promises.length) {
+      resolve(undefined);
+    }
+    for (var i = 0, promise; promise = promises[i]; i++) {
+      promise.then(resolve, reject);
+    }
+  });
+};
+
+
+/**
+ * @param {!Array<!(goog.Thenable<TYPE>|Thenable)>} promises
+ * @return {!goog.Promise<!Array<TYPE>>} A Promise that receives a list of
+ *     every fulfilled value once every input Promise (or Promise-like) is
+ *     successfully fulfilled, or is rejected by the first rejection result.
+ * @template TYPE
+ */
+goog.Promise.all = function(promises) {
+  return new goog.Promise(function(resolve, reject) {
+    var toFulfill = promises.length;
+    var values = [];
+
+    if (!toFulfill) {
+      resolve(values);
+      return;
+    }
+
+    var onFulfill = function(index, value) {
+      toFulfill--;
+      values[index] = value;
+      if (toFulfill == 0) {
+        resolve(values);
+      }
+    };
+
+    var onReject = function(reason) {
+      reject(reason);
+    };
+
+    for (var i = 0, promise; promise = promises[i]; i++) {
+      promise.then(goog.partial(onFulfill, i), onReject);
+    }
+  });
+};
+
+
+/**
+ * @param {!Array<!(goog.Thenable<TYPE>|Thenable)>} promises
+ * @return {!goog.Promise<TYPE>} A Promise that receives the value of the first
+ *     input to be fulfilled, or is rejected with a list of every rejection
+ *     reason if all inputs are rejected.
+ * @template TYPE
+ */
+goog.Promise.firstFulfilled = function(promises) {
+  return new goog.Promise(function(resolve, reject) {
+    var toReject = promises.length;
+    var reasons = [];
+
+    if (!toReject) {
+      resolve(undefined);
+      return;
+    }
+
+    var onFulfill = function(value) {
+      resolve(value);
+    };
+
+    var onReject = function(index, reason) {
+      toReject--;
+      reasons[index] = reason;
+      if (toReject == 0) {
+        reject(reasons);
+      }
+    };
+
+    for (var i = 0, promise; promise = promises[i]; i++) {
+      promise.then(onFulfill, goog.partial(onReject, i));
+    }
+  });
+};
+
+
+/**
+ * @return {!goog.promise.Resolver<TYPE>} Resolver wrapping the promise and its
+ *     resolve / reject functions. Resolving or rejecting the resolver
+ *     resolves or rejects the promise.
+ * @template TYPE
+ */
+goog.Promise.withResolver = function() {
+  var resolve, reject;
+  var promise = new goog.Promise(function(rs, rj) {
+    resolve = rs;
+    reject = rj;
+  });
+  return new goog.Promise.Resolver_(promise, resolve, reject);
+};
+
+
+/**
+ * Adds callbacks that will operate on the result of the Promise, returning a
+ * new child Promise.
+ *
+ * If the Promise is fulfilled, the {@code onFulfilled} callback will be invoked
+ * with the fulfillment value as argument, and the child Promise will be
+ * fulfilled with the return value of the callback. If the callback throws an
+ * exception, the child Promise will be rejected with the thrown value instead.
+ *
+ * If the Promise is rejected, the {@code onRejected} callback will be invoked
+ * with the rejection reason as argument, and the child Promise will be resolved
+ * with the return value or rejected with the thrown value of the callback.
+ *
+ * @override
+ */
+goog.Promise.prototype.then = function(
+    opt_onFulfilled, opt_onRejected, opt_context) {
+
+  if (opt_onFulfilled != null) {
+    goog.asserts.assertFunction(opt_onFulfilled,
+        'opt_onFulfilled should be a function.');
+  }
+  if (opt_onRejected != null) {
+    goog.asserts.assertFunction(opt_onRejected,
+        'opt_onRejected should be a function. Did you pass opt_context ' +
+        'as the second argument instead of the third?');
+  }
+
+  if (goog.Promise.LONG_STACK_TRACES) {
+    this.addStackTrace_(new Error('then'));
+  }
+
+  return this.addChildPromise_(
+      goog.isFunction(opt_onFulfilled) ? opt_onFulfilled : null,
+      goog.isFunction(opt_onRejected) ? opt_onRejected : null,
+      opt_context);
+};
+goog.Thenable.addImplementation(goog.Promise);
+
+
+/**
+ * Adds a callback that will be invoked whether the Promise is fulfilled or
+ * rejected. The callback receives no argument, and no new child Promise is
+ * created. This is useful for ensuring that cleanup takes place after certain
+ * asynchronous operations. Callbacks added with {@code thenAlways} will be
+ * executed in the same order with other calls to {@code then},
+ * {@code thenAlways}, or {@code thenCatch}.
+ *
+ * Since it does not produce a new child Promise, cancellation propagation is
+ * not prevented by adding callbacks with {@code thenAlways}. A Promise that has
+ * a cleanup handler added with {@code thenAlways} will be canceled if all of
+ * its children created by {@code then} (or {@code thenCatch}) are canceled.
+ * Additionally, since any rejections are not passed to the callback, it does
+ * not stop the unhandled rejection handler from running.
+ *
+ * @param {function(this:THIS): void} onResolved A function that will be invoked
+ *     when the Promise is resolved.
+ * @param {THIS=} opt_context An optional context object that will be the
+ *     execution context for the callbacks. By default, functions are executed
+ *     in the global scope.
+ * @return {!goog.Promise<TYPE>} This Promise, for chaining additional calls.
+ * @template THIS
+ */
+goog.Promise.prototype.thenAlways = function(onResolved, opt_context) {
+  if (goog.Promise.LONG_STACK_TRACES) {
+    this.addStackTrace_(new Error('thenAlways'));
+  }
+
+  var callback = function() {
+    try {
+      // Ensure that no arguments are passed to onResolved.
+      onResolved.call(opt_context);
+    } catch (err) {
+      goog.Promise.handleRejection_.call(null, err);
+    }
+  };
+
+  this.addCallbackEntry_({
+    child: null,
+    onRejected: callback,
+    onFulfilled: callback
+  });
+  return this;
+};
+
+
+/**
+ * Adds a callback that will be invoked only if the Promise is rejected. This
+ * is equivalent to {@code then(null, onRejected)}.
+ *
+ * @param {!function(this:THIS, *): *} onRejected A function that will be
+ *     invoked with the rejection reason if the Promise is rejected.
+ * @param {THIS=} opt_context An optional context object that will be the
+ *     execution context for the callbacks. By default, functions are executed
+ *     in the global scope.
+ * @return {!goog.Promise} A new Promise that will receive the result of the
+ *     callback.
+ * @template THIS
+ */
+goog.Promise.prototype.thenCatch = function(onRejected, opt_context) {
+  if (goog.Promise.LONG_STACK_TRACES) {
+    this.addStackTrace_(new Error('thenCatch'));
+  }
+  return this.addChildPromise_(null, onRejected, opt_context);
+};
+
+
+/**
+ * Cancels the Promise if it is still pending by rejecting it with a cancel
+ * Error. No action is performed if the Promise is already resolved.
+ *
+ * All child Promises of the canceled Promise will be rejected with the same
+ * cancel error, as with normal Promise rejection. If the Promise to be canceled
+ * is the only child of a pending Promise, the parent Promise will also be
+ * canceled. Cancellation may propagate upward through multiple generations.
+ *
+ * @param {string=} opt_message An optional debugging message for describing the
+ *     cancellation reason.
+ */
+goog.Promise.prototype.cancel = function(opt_message) {
+  if (this.state_ == goog.Promise.State_.PENDING) {
+    goog.async.run(function() {
+      var err = new goog.Promise.CancellationError(opt_message);
+      this.cancelInternal_(err);
+    }, this);
+  }
+};
+
+
+/**
+ * Cancels this Promise with the given error.
+ *
+ * @param {!Error} err The cancellation error.
+ * @private
+ */
+goog.Promise.prototype.cancelInternal_ = function(err) {
+  if (this.state_ == goog.Promise.State_.PENDING) {
+    if (this.parent_) {
+      // Cancel the Promise and remove it from the parent's child list.
+      this.parent_.cancelChild_(this, err);
+    } else {
+      this.resolve_(goog.Promise.State_.REJECTED, err);
+    }
+  }
+};
+
+
+/**
+ * Cancels a child Promise from the list of callback entries. If the Promise has
+ * not already been resolved, reject it with a cancel error. If there are no
+ * other children in the list of callback entries, propagate the cancellation
+ * by canceling this Promise as well.
+ *
+ * @param {!goog.Promise} childPromise The Promise to cancel.
+ * @param {!Error} err The cancel error to use for rejecting the Promise.
+ * @private
+ */
+goog.Promise.prototype.cancelChild_ = function(childPromise, err) {
+  if (!this.callbackEntries_) {
+    return;
+  }
+  var childCount = 0;
+  var childIndex = -1;
+
+  // Find the callback entry for the childPromise, and count whether there are
+  // additional child Promises.
+  for (var i = 0, entry; entry = this.callbackEntries_[i]; i++) {
+    var child = entry.child;
+    if (child) {
+      childCount++;
+      if (child == childPromise) {
+        childIndex = i;
+      }
+      if (childIndex >= 0 && childCount > 1) {
+        break;
+      }
+    }
+  }
+
+  // If the child Promise was the only child, cancel this Promise as well.
+  // Otherwise, reject only the child Promise with the cancel error.
+  if (childIndex >= 0) {
+    if (this.state_ == goog.Promise.State_.PENDING && childCount == 1) {
+      this.cancelInternal_(err);
+    } else {
+      var callbackEntry = this.callbackEntries_.splice(childIndex, 1)[0];
+      this.executeCallback_(
+          callbackEntry, goog.Promise.State_.REJECTED, err);
+    }
+  }
+};
+
+
+/**
+ * Adds a callback entry to the current Promise, and schedules callback
+ * execution if the Promise has already been resolved.
+ *
+ * @param {goog.Promise.CallbackEntry_} callbackEntry Record containing
+ *     {@code onFulfilled} and {@code onRejected} callbacks to execute after
+ *     the Promise is resolved.
+ * @private
+ */
+goog.Promise.prototype.addCallbackEntry_ = function(callbackEntry) {
+  if ((!this.callbackEntries_ || !this.callbackEntries_.length) &&
+      (this.state_ == goog.Promise.State_.FULFILLED ||
+       this.state_ == goog.Promise.State_.REJECTED)) {
+    this.scheduleCallbacks_();
+  }
+  if (!this.callbackEntries_) {
+    this.callbackEntries_ = [];
+  }
+  this.callbackEntries_.push(callbackEntry);
+};
+
+
+/**
+ * Creates a child Promise and adds it to the callback entry list. The result of
+ * the child Promise is determined by the state of the parent Promise and the
+ * result of the {@code onFulfilled} or {@code onRejected} callbacks as
+ * specified in the Promise resolution procedure.
+ *
+ * @see http://promisesaplus.com/#the__method
+ *
+ * @param {?function(this:THIS, TYPE):
+ *          (RESULT|goog.Promise<RESULT>|Thenable)} onFulfilled A callback that
+ *     will be invoked if the Promise is fullfilled, or null.
+ * @param {?function(this:THIS, *): *} onRejected A callback that will be
+ *     invoked if the Promise is rejected, or null.
+ * @param {THIS=} opt_context An optional execution context for the callbacks.
+ *     in the default calling context.
+ * @return {!goog.Promise} The child Promise.
+ * @template RESULT,THIS
+ * @private
+ */
+goog.Promise.prototype.addChildPromise_ = function(
+    onFulfilled, onRejected, opt_context) {
+
+  var callbackEntry = {
+    child: null,
+    onFulfilled: null,
+    onRejected: null
+  };
+
+  callbackEntry.child = new goog.Promise(function(resolve, reject) {
+    // Invoke onFulfilled, or resolve with the parent's value if absent.
+    callbackEntry.onFulfilled = onFulfilled ? function(value) {
+      try {
+        var result = onFulfilled.call(opt_context, value);
+        resolve(result);
+      } catch (err) {
+        reject(err);
+      }
+    } : resolve;
+
+    // Invoke onRejected, or reject with the parent's reason if absent.
+    callbackEntry.onRejected = onRejected ? function(reason) {
+      try {
+        var result = onRejected.call(opt_context, reason);
+        if (!goog.isDef(result) &&
+            reason instanceof goog.Promise.CancellationError) {
+          // Propagate cancellation to children if no other result is returned.
+          reject(reason);
+        } else {
+          resolve(result);
+        }
+      } catch (err) {
+        reject(err);
+      }
+    } : reject;
+  });
+
+  callbackEntry.child.parent_ = this;
+  this.addCallbackEntry_(
+      /** @type {goog.Promise.CallbackEntry_} */ (callbackEntry));
+  return callbackEntry.child;
+};
+
+
+/**
+ * Unblocks the Promise and fulfills it with the given value.
+ *
+ * @param {TYPE} value
+ * @private
+ */
+goog.Promise.prototype.unblockAndFulfill_ = function(value) {
+  goog.asserts.assert(this.state_ == goog.Promise.State_.BLOCKED);
+  this.state_ = goog.Promise.State_.PENDING;
+  this.resolve_(goog.Promise.State_.FULFILLED, value);
+};
+
+
+/**
+ * Unblocks the Promise and rejects it with the given rejection reason.
+ *
+ * @param {*} reason
+ * @private
+ */
+goog.Promise.prototype.unblockAndReject_ = function(reason) {
+  goog.asserts.assert(this.state_ == goog.Promise.State_.BLOCKED);
+  this.state_ = goog.Promise.State_.PENDING;
+  this.resolve_(goog.Promise.State_.REJECTED, reason);
+};
+
+
+/**
+ * Attempts to resolve a Promise with a given resolution state and value. This
+ * is a no-op if the given Promise has already been resolved.
+ *
+ * If the given result is a Thenable (such as another Promise), the Promise will
+ * be resolved with the same state and result as the Thenable once it is itself
+ * resolved.
+ *
+ * If the given result is not a Thenable, the Promise will be fulfilled or
+ * rejected with that result based on the given state.
+ *
+ * @see http://promisesaplus.com/#the_promise_resolution_procedure
+ *
+ * @param {goog.Promise.State_} state
+ * @param {*} x The result to apply to the Promise.
+ * @private
+ */
+goog.Promise.prototype.resolve_ = function(state, x) {
+  if (this.state_ != goog.Promise.State_.PENDING) {
+    return;
+  }
+
+  if (this == x) {
+    state = goog.Promise.State_.REJECTED;
+    x = new TypeError('Promise cannot resolve to itself');
+
+  } else if (goog.Thenable.isImplementedBy(x)) {
+    x = /** @type {!goog.Thenable} */ (x);
+    this.state_ = goog.Promise.State_.BLOCKED;
+    x.then(this.unblockAndFulfill_, this.unblockAndReject_, this);
+    return;
+
+  } else if (goog.isObject(x)) {
+    try {
+      var then = x['then'];
+      if (goog.isFunction(then)) {
+        this.tryThen_(x, then);
+        return;
+      }
+    } catch (e) {
+      state = goog.Promise.State_.REJECTED;
+      x = e;
+    }
+  }
+
+  this.result_ = x;
+  this.state_ = state;
+  this.scheduleCallbacks_();
+
+  if (state == goog.Promise.State_.REJECTED &&
+      !(x instanceof goog.Promise.CancellationError)) {
+    goog.Promise.addUnhandledRejection_(this, x);
+  }
+};
+
+
+/**
+ * Attempts to call the {@code then} method on an object in the hopes that it is
+ * a Promise-compatible instance. This allows interoperation between different
+ * Promise implementations, however a non-compliant object may cause a Promise
+ * to hang indefinitely. If the {@code then} method throws an exception, the
+ * dependent Promise will be rejected with the thrown value.
+ *
+ * @see http://promisesaplus.com/#point-70
+ *
+ * @param {Thenable} thenable An object with a {@code then} method that may be
+ *     compatible with the Promise/A+ specification.
+ * @param {!Function} then The {@code then} method of the Thenable object.
+ * @private
+ */
+goog.Promise.prototype.tryThen_ = function(thenable, then) {
+  this.state_ = goog.Promise.State_.BLOCKED;
+  var promise = this;
+  var called = false;
+
+  var resolve = function(value) {
+    if (!called) {
+      called = true;
+      promise.unblockAndFulfill_(value);
+    }
+  };
+
+  var reject = function(reason) {
+    if (!called) {
+      called = true;
+      promise.unblockAndReject_(reason);
+    }
+  };
+
+  try {
+    then.call(thenable, resolve, reject);
+  } catch (e) {
+    reject(e);
+  }
+};
+
+
+/**
+ * Executes the pending callbacks of a resolved Promise after a timeout.
+ *
+ * Section 2.2.4 of the Promises/A+ specification requires that Promise
+ * callbacks must only be invoked from a call stack that only contains Promise
+ * implementation code, which we accomplish by invoking callback execution after
+ * a timeout. If {@code startExecution_} is called multiple times for the same
+ * Promise, the callback chain will be evaluated only once. Additional callbacks
+ * may be added during the evaluation phase, and will be executed in the same
+ * event loop.
+ *
+ * All Promises added to the waiting list during the same browser event loop
+ * will be executed in one batch to avoid using a separate timeout per Promise.
+ *
+ * @private
+ */
+goog.Promise.prototype.scheduleCallbacks_ = function() {
+  if (!this.executing_) {
+    this.executing_ = true;
+    goog.async.run(this.executeCallbacks_, this);
+  }
+};
+
+
+/**
+ * Executes all pending callbacks for this Promise.
+ *
+ * @private
+ */
+goog.Promise.prototype.executeCallbacks_ = function() {
+  while (this.callbackEntries_ && this.callbackEntries_.length) {
+    var entries = this.callbackEntries_;
+    this.callbackEntries_ = [];
+
+    for (var i = 0; i < entries.length; i++) {
+      if (goog.Promise.LONG_STACK_TRACES) {
+        this.currentStep_++;
+      }
+      this.executeCallback_(entries[i], this.state_, this.result_);
+    }
+  }
+  this.executing_ = false;
+};
+
+
+/**
+ * Executes a pending callback for this Promise. Invokes an {@code onFulfilled}
+ * or {@code onRejected} callback based on the resolved state of the Promise.
+ *
+ * @param {!goog.Promise.CallbackEntry_} callbackEntry An entry containing the
+ *     onFulfilled and/or onRejected callbacks for this step.
+ * @param {goog.Promise.State_} state The resolution status of the Promise,
+ *     either FULFILLED or REJECTED.
+ * @param {*} result The resolved result of the Promise.
+ * @private
+ */
+goog.Promise.prototype.executeCallback_ = function(
+    callbackEntry, state, result) {
+  if (state == goog.Promise.State_.FULFILLED) {
+    callbackEntry.onFulfilled(result);
+  } else {
+    if (callbackEntry.child) {
+      this.removeUnhandledRejection_();
+    }
+    callbackEntry.onRejected(result);
+  }
+};
+
+
+/**
+ * Records a stack trace entry for functions that call {@code then} or the
+ * Promise constructor. May be disabled by unsetting {@code LONG_STACK_TRACES}.
+ *
+ * @param {!Error} err An Error object created by the calling function for
+ *     providing a stack trace.
+ * @private
+ */
+goog.Promise.prototype.addStackTrace_ = function(err) {
+  if (goog.Promise.LONG_STACK_TRACES && goog.isString(err.stack)) {
+    // Extract the third line of the stack trace, which is the entry for the
+    // user function that called into Promise code.
+    var trace = err.stack.split('\n', 4)[3];
+    var message = err.message;
+
+    // Pad the message to align the traces.
+    message += Array(11 - message.length).join(' ');
+    this.stack_.push(message + trace);
+  }
+};
+
+
+/**
+ * Adds extra stack trace information to an exception for the list of
+ * asynchronous {@code then} calls that have been run for this Promise. Stack
+ * trace information is recorded in {@see #addStackTrace_}, and appended to
+ * rethrown errors when {@code LONG_STACK_TRACES} is enabled.
+ *
+ * @param {*} err An unhandled exception captured during callback execution.
+ * @private
+ */
+goog.Promise.prototype.appendLongStack_ = function(err) {
+  if (goog.Promise.LONG_STACK_TRACES &&
+      err && goog.isString(err.stack) && this.stack_.length) {
+    var longTrace = ['Promise trace:'];
+
+    for (var promise = this; promise; promise = promise.parent_) {
+      for (var i = this.currentStep_; i >= 0; i--) {
+        longTrace.push(promise.stack_[i]);
+      }
+      longTrace.push('Value: ' +
+          '[' + (promise.state_ == goog.Promise.State_.REJECTED ?
+              'REJECTED' : 'FULFILLED') + '] ' +
+          '<' + String(promise.result_) + '>');
+    }
+    err.stack += '\n\n' + longTrace.join('\n');
+  }
+};
+
+
+/**
+ * Marks this rejected Promise as having being handled. Also marks any parent
+ * Promises in the rejected state as handled. The rejection handler will no
+ * longer be invoked for this Promise (if it has not been called already).
+ *
+ * @private
+ */
+goog.Promise.prototype.removeUnhandledRejection_ = function() {
+  if (goog.Promise.UNHANDLED_REJECTION_DELAY > 0) {
+    for (var p = this; p && p.unhandledRejectionId_; p = p.parent_) {
+      goog.global.clearTimeout(p.unhandledRejectionId_);
+      p.unhandledRejectionId_ = 0;
+    }
+  } else if (goog.Promise.UNHANDLED_REJECTION_DELAY == 0) {
+    for (var p = this; p && p.hadUnhandledRejection_; p = p.parent_) {
+      p.hadUnhandledRejection_ = false;
+    }
+  }
+};
+
+
+/**
+ * Marks this rejected Promise as unhandled. If no {@code onRejected} callback
+ * is called for this Promise before the {@code UNHANDLED_REJECTION_DELAY}
+ * expires, the reason will be passed to the unhandled rejection handler. The
+ * handler typically rethrows the rejection reason so that it becomes visible in
+ * the developer console.
+ *
+ * @param {!goog.Promise} promise The rejected Promise.
+ * @param {*} reason The Promise rejection reason.
+ * @private
+ */
+goog.Promise.addUnhandledRejection_ = function(promise, reason) {
+  if (goog.Promise.UNHANDLED_REJECTION_DELAY > 0) {
+    promise.unhandledRejectionId_ = goog.global.setTimeout(function() {
+      promise.appendLongStack_(reason);
+      goog.Promise.handleRejection_.call(null, reason);
+    }, goog.Promise.UNHANDLED_REJECTION_DELAY);
+
+  } else if (goog.Promise.UNHANDLED_REJECTION_DELAY == 0) {
+    promise.hadUnhandledRejection_ = true;
+    goog.async.run(function() {
+      if (promise.hadUnhandledRejection_) {
+        promise.appendLongStack_(reason);
+        goog.Promise.handleRejection_.call(null, reason);
+      }
+    });
+  }
+};
+
+
+/**
+ * A method that is invoked with the rejection reasons for Promises that are
+ * rejected but have no {@code onRejected} callbacks registered yet.
+ * @type {function(*)}
+ * @private
+ */
+goog.Promise.handleRejection_ = goog.async.throwException;
+
+
+/**
+ * Sets a handler that will be called with reasons from unhandled rejected
+ * Promises. If the rejected Promise (or one of its descendants) has an
+ * {@code onRejected} callback registered, the rejection will be considered
+ * handled, and the rejection handler will not be called.
+ *
+ * By default, unhandled rejections are rethrown so that the error may be
+ * captured by the developer console or a {@code window.onerror} handler.
+ *
+ * @param {function(*)} handler A function that will be called with reasons from
+ *     rejected Promises. Defaults to {@code goog.async.throwException}.
+ */
+goog.Promise.setUnhandledRejectionHandler = function(handler) {
+  goog.Promise.handleRejection_ = handler;
+};
+
+
+
+/**
+ * Error used as a rejection reason for canceled Promises.
+ *
+ * @param {string=} opt_message
+ * @constructor
+ * @extends {goog.debug.Error}
+ * @final
+ */
+goog.Promise.CancellationError = function(opt_message) {
+  goog.Promise.CancellationError.base(this, 'constructor', opt_message);
+};
+goog.inherits(goog.Promise.CancellationError, goog.debug.Error);
+
+
+/** @override */
+goog.Promise.CancellationError.prototype.name = 'cancel';
+
+
+
+/**
+ * Internal implementation of the resolver interface.
+ *
+ * @param {!goog.Promise<TYPE>} promise
+ * @param {function((TYPE|goog.Promise<TYPE>|Thenable)=)} resolve
+ * @param {function(*): void} reject
+ * @implements {goog.promise.Resolver<TYPE>}
+ * @final @struct
+ * @constructor
+ * @private
+ * @template TYPE
+ */
+goog.Promise.Resolver_ = function(promise, resolve, reject) {
+  /** @const */
+  this.promise = promise;
+
+  /** @const */
+  this.resolve = resolve;
+
+  /** @const */
+  this.reject = reject;
+};
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A timer class to which other classes and objects can
+ * listen on.  This is only an abstraction above setInterval.
+ *
+ * @see ../demos/timers.html
+ */
+
+goog.provide('goog.Timer');
+
+goog.require('goog.Promise');
+goog.require('goog.events.EventTarget');
+
+
+
+/**
+ * Class for handling timing events.
+ *
+ * @param {number=} opt_interval Number of ms between ticks (Default: 1ms).
+ * @param {Object=} opt_timerObject  An object that has setTimeout, setInterval,
+ *     clearTimeout and clearInterval (eg Window).
+ * @constructor
+ * @extends {goog.events.EventTarget}
+ */
+goog.Timer = function(opt_interval, opt_timerObject) {
+  goog.events.EventTarget.call(this);
+
+  /**
+   * Number of ms between ticks
+   * @type {number}
+   * @private
+   */
+  this.interval_ = opt_interval || 1;
+
+  /**
+   * An object that implements setTimeout, setInterval, clearTimeout and
+   * clearInterval. We default to the window object. Changing this on
+   * goog.Timer.prototype changes the object for all timer instances which can
+   * be useful if your environment has some other implementation of timers than
+   * the window object.
+   * @type {Object}
+   * @private
+   */
+  this.timerObject_ = opt_timerObject || goog.Timer.defaultTimerObject;
+
+  /**
+   * Cached tick_ bound to the object for later use in the timer.
+   * @type {Function}
+   * @private
+   */
+  this.boundTick_ = goog.bind(this.tick_, this);
+
+  /**
+   * Firefox browser often fires the timer event sooner
+   * (sometimes MUCH sooner) than the requested timeout. So we
+   * compare the time to when the event was last fired, and
+   * reschedule if appropriate. See also goog.Timer.intervalScale
+   * @type {number}
+   * @private
+   */
+  this.last_ = goog.now();
+};
+goog.inherits(goog.Timer, goog.events.EventTarget);
+
+
+/**
+ * Maximum timeout value.
+ *
+ * Timeout values too big to fit into a signed 32-bit integer may cause
+ * overflow in FF, Safari, and Chrome, resulting in the timeout being
+ * scheduled immediately.  It makes more sense simply not to schedule these
+ * timeouts, since 24.8 days is beyond a reasonable expectation for the
+ * browser to stay open.
+ *
+ * @type {number}
+ * @private
+ */
+goog.Timer.MAX_TIMEOUT_ = 2147483647;
+
+
+/**
+ * A timer ID that cannot be returned by any known implmentation of
+ * Window.setTimeout.  Passing this value to window.clearTimeout should
+ * therefore be a no-op.
+ *
+ * @const {number}
+ * @private
+ */
+goog.Timer.INVALID_TIMEOUT_ID_ = -1;
+
+
+/**
+ * Whether this timer is enabled
+ * @type {boolean}
+ */
+goog.Timer.prototype.enabled = false;
+
+
+/**
+ * An object that implements setTimout, setInterval, clearTimeout and
+ * clearInterval. We default to the global object. Changing
+ * goog.Timer.defaultTimerObject changes the object for all timer instances
+ * which can be useful if your environment has some other implementation of
+ * timers you'd like to use.
+ * @type {Object}
+ */
+goog.Timer.defaultTimerObject = goog.global;
+
+
+/**
+ * A variable that controls the timer error correction. If the
+ * timer is called before the requested interval times
+ * intervalScale, which often happens on mozilla, the timer is
+ * rescheduled. See also this.last_
+ * @type {number}
+ */
+goog.Timer.intervalScale = 0.8;
+
+
+/**
+ * Variable for storing the result of setInterval
+ * @type {?number}
+ * @private
+ */
+goog.Timer.prototype.timer_ = null;
+
+
+/**
+ * Gets the interval of the timer.
+ * @return {number} interval Number of ms between ticks.
+ */
+goog.Timer.prototype.getInterval = function() {
+  return this.interval_;
+};
+
+
+/**
+ * Sets the interval of the timer.
+ * @param {number} interval Number of ms between ticks.
+ */
+goog.Timer.prototype.setInterval = function(interval) {
+  this.interval_ = interval;
+  if (this.timer_ && this.enabled) {
+    // Stop and then start the timer to reset the interval.
+    this.stop();
+    this.start();
+  } else if (this.timer_) {
+    this.stop();
+  }
+};
+
+
+/**
+ * Callback for the setTimeout used by the timer
+ * @private
+ */
+goog.Timer.prototype.tick_ = function() {
+  if (this.enabled) {
+    var elapsed = goog.now() - this.last_;
+    if (elapsed > 0 &&
+        elapsed < this.interval_ * goog.Timer.intervalScale) {
+      this.timer_ = this.timerObject_.setTimeout(this.boundTick_,
+          this.interval_ - elapsed);
+      return;
+    }
+
+    // Prevents setInterval from registering a duplicate timeout when called
+    // in the timer event handler.
+    if (this.timer_) {
+      this.timerObject_.clearTimeout(this.timer_);
+      this.timer_ = null;
+    }
+
+    this.dispatchTick();
+    // The timer could be stopped in the timer event handler.
+    if (this.enabled) {
+      this.timer_ = this.timerObject_.setTimeout(this.boundTick_,
+          this.interval_);
+      this.last_ = goog.now();
+    }
+  }
+};
+
+
+/**
+ * Dispatches the TICK event. This is its own method so subclasses can override.
+ */
+goog.Timer.prototype.dispatchTick = function() {
+  this.dispatchEvent(goog.Timer.TICK);
+};
+
+
+/**
+ * Starts the timer.
+ */
+goog.Timer.prototype.start = function() {
+  this.enabled = true;
+
+  // If there is no interval already registered, start it now
+  if (!this.timer_) {
+    // IMPORTANT!
+    // window.setInterval in FireFox has a bug - it fires based on
+    // absolute time, rather than on relative time. What this means
+    // is that if a computer is sleeping/hibernating for 24 hours
+    // and the timer interval was configured to fire every 1000ms,
+    // then after the PC wakes up the timer will fire, in rapid
+    // succession, 3600*24 times.
+    // This bug is described here and is already fixed, but it will
+    // take time to propagate, so for now I am switching this over
+    // to setTimeout logic.
+    //     https://bugzilla.mozilla.org/show_bug.cgi?id=376643
+    //
+    this.timer_ = this.timerObject_.setTimeout(this.boundTick_,
+        this.interval_);
+    this.last_ = goog.now();
+  }
+};
+
+
+/**
+ * Stops the timer.
+ */
+goog.Timer.prototype.stop = function() {
+  this.enabled = false;
+  if (this.timer_) {
+    this.timerObject_.clearTimeout(this.timer_);
+    this.timer_ = null;
+  }
+};
+
+
+/** @override */
+goog.Timer.prototype.disposeInternal = function() {
+  goog.Timer.superClass_.disposeInternal.call(this);
+  this.stop();
+  delete this.timerObject_;
+};
+
+
+/**
+ * Constant for the timer's event type
+ * @type {string}
+ */
+goog.Timer.TICK = 'tick';
+
+
+/**
+ * Calls the given function once, after the optional pause.
+ *
+ * The function is always called asynchronously, even if the delay is 0. This
+ * is a common trick to schedule a function to run after a batch of browser
+ * event processing.
+ *
+ * @param {function(this:SCOPE)|{handleEvent:function()}|null} listener Function
+ *     or object that has a handleEvent method.
+ * @param {number=} opt_delay Milliseconds to wait; default is 0.
+ * @param {SCOPE=} opt_handler Object in whose scope to call the listener.
+ * @return {number} A handle to the timer ID.
+ * @template SCOPE
+ */
+goog.Timer.callOnce = function(listener, opt_delay, opt_handler) {
+  if (goog.isFunction(listener)) {
+    if (opt_handler) {
+      listener = goog.bind(listener, opt_handler);
+    }
+  } else if (listener && typeof listener.handleEvent == 'function') {
+    // using typeof to prevent strict js warning
+    listener = goog.bind(listener.handleEvent, listener);
+  } else {
+    throw Error('Invalid listener argument');
+  }
+
+  if (opt_delay > goog.Timer.MAX_TIMEOUT_) {
+    // Timeouts greater than MAX_INT return immediately due to integer
+    // overflow in many browsers.  Since MAX_INT is 24.8 days, just don't
+    // schedule anything at all.
+    return goog.Timer.INVALID_TIMEOUT_ID_;
+  } else {
+    return goog.Timer.defaultTimerObject.setTimeout(
+        listener, opt_delay || 0);
+  }
+};
+
+
+/**
+ * Clears a timeout initiated by callOnce
+ * @param {?number} timerId a timer ID.
+ */
+goog.Timer.clear = function(timerId) {
+  goog.Timer.defaultTimerObject.clearTimeout(timerId);
+};
+
+
+/**
+ * @param {number} delay Milliseconds to wait.
+ * @param {(RESULT|goog.Thenable<RESULT>|Thenable)=} opt_result The value
+ *     with which the promise will be resolved.
+ * @return {!goog.Promise<RESULT>} A promise that will be resolved after
+ *     the specified delay, unless it is canceled first.
+ * @template RESULT
+ */
+goog.Timer.promise = function(delay, opt_result) {
+  var timerKey = null;
+  return new goog.Promise(function(resolve, reject) {
+    timerKey = goog.Timer.callOnce(function() {
+      resolve(opt_result);
+    }, delay);
+    if (timerKey == goog.Timer.INVALID_TIMEOUT_ID_) {
+      reject(new Error('Failed to schedule timer.'));
+    }
+  }).thenCatch(function(error) {
+    // Clear the timer. The most likely reason is "cancel" signal.
+    goog.Timer.clear(timerKey);
+    throw error;
+  });
+};
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview JSON utility functions.
+ * @author arv@google.com (Erik Arvidsson)
+ */
+
+
+goog.provide('goog.json');
+goog.provide('goog.json.Replacer');
+goog.provide('goog.json.Reviver');
+goog.provide('goog.json.Serializer');
+
+
+/**
+ * @define {boolean} If true, use the native JSON parsing API.
+ * NOTE(ruilopes): EXPERIMENTAL, handle with care.  Setting this to true might
+ * break your code.  The default {@code goog.json.parse} implementation is able
+ * to handle invalid JSON, such as JSPB.
+ */
+goog.define('goog.json.USE_NATIVE_JSON', false);
+
+
+/**
+ * Tests if a string is an invalid JSON string. This only ensures that we are
+ * not using any invalid characters
+ * @param {string} s The string to test.
+ * @return {boolean} True if the input is a valid JSON string.
+ */
+goog.json.isValid = function(s) {
+  // All empty whitespace is not valid.
+  if (/^\s*$/.test(s)) {
+    return false;
+  }
+
+  // This is taken from http://www.json.org/json2.js which is released to the
+  // public domain.
+  // Changes: We dissallow \u2028 Line separator and \u2029 Paragraph separator
+  // inside strings.  We also treat \u2028 and \u2029 as whitespace which they
+  // are in the RFC but IE and Safari does not match \s to these so we need to
+  // include them in the reg exps in all places where whitespace is allowed.
+  // We allowed \x7f inside strings because some tools don't escape it,
+  // e.g. http://www.json.org/java/org/json/JSONObject.java
+
+  // Parsing happens in three stages. In the first stage, we run the text
+  // against regular expressions that look for non-JSON patterns. We are
+  // especially concerned with '()' and 'new' because they can cause invocation,
+  // and '=' because it can cause mutation. But just to be safe, we want to
+  // reject all unexpected forms.
+
+  // We split the first stage into 4 regexp operations in order to work around
+  // crippling inefficiencies in IE's and Safari's regexp engines. First we
+  // replace all backslash pairs with '@' (a non-JSON character). Second, we
+  // replace all simple value tokens with ']' characters. Third, we delete all
+  // open brackets that follow a colon or comma or that begin the text. Finally,
+  // we look to see that the remaining characters are only whitespace or ']' or
+  // ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+
+  // Don't make these static since they have the global flag.
+  var backslashesRe = /\\["\\\/bfnrtu]/g;
+  var simpleValuesRe =
+      /"[^"\\\n\r\u2028\u2029\x00-\x08\x0a-\x1f]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+  var openBracketsRe = /(?:^|:|,)(?:[\s\u2028\u2029]*\[)+/g;
+  var remainderRe = /^[\],:{}\s\u2028\u2029]*$/;
+
+  return remainderRe.test(s.replace(backslashesRe, '@').
+      replace(simpleValuesRe, ']').
+      replace(openBracketsRe, ''));
+};
+
+
+/**
+ * Parses a JSON string and returns the result. This throws an exception if
+ * the string is an invalid JSON string.
+ *
+ * Note that this is very slow on large strings. If you trust the source of
+ * the string then you should use unsafeParse instead.
+ *
+ * @param {*} s The JSON string to parse.
+ * @throws Error if s is invalid JSON.
+ * @return {Object} The object generated from the JSON string, or null.
+ */
+goog.json.parse = goog.json.USE_NATIVE_JSON ?
+    /** @type {function(*):Object} */ (goog.global['JSON']['parse']) :
+    function(s) {
+      var o = String(s);
+      if (goog.json.isValid(o)) {
+        /** @preserveTry */
+        try {
+          return /** @type {Object} */ (eval('(' + o + ')'));
+        } catch (ex) {
+        }
+      }
+      throw Error('Invalid JSON string: ' + o);
+    };
+
+
+/**
+ * Parses a JSON string and returns the result. This uses eval so it is open
+ * to security issues and it should only be used if you trust the source.
+ *
+ * @param {string} s The JSON string to parse.
+ * @return {Object} The object generated from the JSON string.
+ */
+goog.json.unsafeParse = goog.json.USE_NATIVE_JSON ?
+    /** @type {function(string):Object} */ (goog.global['JSON']['parse']) :
+    function(s) {
+      return /** @type {Object} */ (eval('(' + s + ')'));
+    };
+
+
+/**
+ * JSON replacer, as defined in Section 15.12.3 of the ES5 spec.
+ * @see http://ecma-international.org/ecma-262/5.1/#sec-15.12.3
+ *
+ * TODO(nicksantos): Array should also be a valid replacer.
+ *
+ * @typedef {function(this:Object, string, *): *}
+ */
+goog.json.Replacer;
+
+
+/**
+ * JSON reviver, as defined in Section 15.12.2 of the ES5 spec.
+ * @see http://ecma-international.org/ecma-262/5.1/#sec-15.12.3
+ *
+ * @typedef {function(this:Object, string, *): *}
+ */
+goog.json.Reviver;
+
+
+/**
+ * Serializes an object or a value to a JSON string.
+ *
+ * @param {*} object The object to serialize.
+ * @param {?goog.json.Replacer=} opt_replacer A replacer function
+ *     called for each (key, value) pair that determines how the value
+ *     should be serialized. By defult, this just returns the value
+ *     and allows default serialization to kick in.
+ * @throws Error if there are loops in the object graph.
+ * @return {string} A JSON string representation of the input.
+ */
+goog.json.serialize = goog.json.USE_NATIVE_JSON ?
+    /** @type {function(*, ?goog.json.Replacer=):string} */
+    (goog.global['JSON']['stringify']) :
+    function(object, opt_replacer) {
+      // NOTE(nicksantos): Currently, we never use JSON.stringify.
+      //
+      // The last time I evaluated this, JSON.stringify had subtle bugs and
+      // behavior differences on all browsers, and the performance win was not
+      // large enough to justify all the issues. This may change in the future
+      // as browser implementations get better.
+      //
+      // assertSerialize in json_test contains if branches for the cases
+      // that fail.
+      return new goog.json.Serializer(opt_replacer).serialize(object);
+    };
+
+
+
+/**
+ * Class that is used to serialize JSON objects to a string.
+ * @param {?goog.json.Replacer=} opt_replacer Replacer.
+ * @constructor
+ */
+goog.json.Serializer = function(opt_replacer) {
+  /**
+   * @type {goog.json.Replacer|null|undefined}
+   * @private
+   */
+  this.replacer_ = opt_replacer;
+};
+
+
+/**
+ * Serializes an object or a value to a JSON string.
+ *
+ * @param {*} object The object to serialize.
+ * @throws Error if there are loops in the object graph.
+ * @return {string} A JSON string representation of the input.
+ */
+goog.json.Serializer.prototype.serialize = function(object) {
+  var sb = [];
+  this.serializeInternal(object, sb);
+  return sb.join('');
+};
+
+
+/**
+ * Serializes a generic value to a JSON string
+ * @protected
+ * @param {*} object The object to serialize.
+ * @param {Array<string>} sb Array used as a string builder.
+ * @throws Error if there are loops in the object graph.
+ */
+goog.json.Serializer.prototype.serializeInternal = function(object, sb) {
+  switch (typeof object) {
+    case 'string':
+      this.serializeString_(/** @type {string} */ (object), sb);
+      break;
+    case 'number':
+      this.serializeNumber_(/** @type {number} */ (object), sb);
+      break;
+    case 'boolean':
+      sb.push(object);
+      break;
+    case 'undefined':
+      sb.push('null');
+      break;
+    case 'object':
+      if (object == null) {
+        sb.push('null');
+        break;
+      }
+      if (goog.isArray(object)) {
+        this.serializeArray(/** @type {!Array<?>} */ (object), sb);
+        break;
+      }
+      // should we allow new String, new Number and new Boolean to be treated
+      // as string, number and boolean? Most implementations do not and the
+      // need is not very big
+      this.serializeObject_(/** @type {Object} */ (object), sb);
+      break;
+    case 'function':
+      // Skip functions.
+      // TODO(user) Should we return something here?
+      break;
+    default:
+      throw Error('Unknown type: ' + typeof object);
+  }
+};
+
+
+/**
+ * Character mappings used internally for goog.string.quote
+ * @private
+ * @type {!Object}
+ */
+goog.json.Serializer.charToJsonCharCache_ = {
+  '\"': '\\"',
+  '\\': '\\\\',
+  '/': '\\/',
+  '\b': '\\b',
+  '\f': '\\f',
+  '\n': '\\n',
+  '\r': '\\r',
+  '\t': '\\t',
+
+  '\x0B': '\\u000b' // '\v' is not supported in JScript
+};
+
+
+/**
+ * Regular expression used to match characters that need to be replaced.
+ * The S60 browser has a bug where unicode characters are not matched by
+ * regular expressions. The condition below detects such behaviour and
+ * adjusts the regular expression accordingly.
+ * @private
+ * @type {!RegExp}
+ */
+goog.json.Serializer.charsToReplace_ = /\uffff/.test('\uffff') ?
+    /[\\\"\x00-\x1f\x7f-\uffff]/g : /[\\\"\x00-\x1f\x7f-\xff]/g;
+
+
+/**
+ * Serializes a string to a JSON string
+ * @private
+ * @param {string} s The string to serialize.
+ * @param {Array<string>} sb Array used as a string builder.
+ */
+goog.json.Serializer.prototype.serializeString_ = function(s, sb) {
+  // The official JSON implementation does not work with international
+  // characters.
+  sb.push('"', s.replace(goog.json.Serializer.charsToReplace_, function(c) {
+    // caching the result improves performance by a factor 2-3
+    if (c in goog.json.Serializer.charToJsonCharCache_) {
+      return goog.json.Serializer.charToJsonCharCache_[c];
+    }
+
+    var cc = c.charCodeAt(0);
+    var rv = '\\u';
+    if (cc < 16) {
+      rv += '000';
+    } else if (cc < 256) {
+      rv += '00';
+    } else if (cc < 4096) { // \u1000
+      rv += '0';
+    }
+    return goog.json.Serializer.charToJsonCharCache_[c] = rv + cc.toString(16);
+  }), '"');
+};
+
+
+/**
+ * Serializes a number to a JSON string
+ * @private
+ * @param {number} n The number to serialize.
+ * @param {Array<string>} sb Array used as a string builder.
+ */
+goog.json.Serializer.prototype.serializeNumber_ = function(n, sb) {
+  sb.push(isFinite(n) && !isNaN(n) ? n : 'null');
+};
+
+
+/**
+ * Serializes an array to a JSON string
+ * @param {Array<string>} arr The array to serialize.
+ * @param {Array<string>} sb Array used as a string builder.
+ * @protected
+ */
+goog.json.Serializer.prototype.serializeArray = function(arr, sb) {
+  var l = arr.length;
+  sb.push('[');
+  var sep = '';
+  for (var i = 0; i < l; i++) {
+    sb.push(sep);
+
+    var value = arr[i];
+    this.serializeInternal(
+        this.replacer_ ? this.replacer_.call(arr, String(i), value) : value,
+        sb);
+
+    sep = ',';
+  }
+  sb.push(']');
+};
+
+
+/**
+ * Serializes an object to a JSON string
+ * @private
+ * @param {Object} obj The object to serialize.
+ * @param {Array<string>} sb Array used as a string builder.
+ */
+goog.json.Serializer.prototype.serializeObject_ = function(obj, sb) {
+  sb.push('{');
+  var sep = '';
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      var value = obj[key];
+      // Skip functions.
+      // TODO(ptucker) Should we return something for function properties?
+      if (typeof value != 'function') {
+        sb.push(sep);
+        this.serializeString_(key, sb);
+        sb.push(':');
+
+        this.serializeInternal(
+            this.replacer_ ? this.replacer_.call(obj, key, value) : value,
+            sb);
+
+        sep = ',';
+      }
+    }
+  }
+  sb.push('}');
+};
+
+// Copyright 2007 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Error codes shared between goog.net.IframeIo and
+ * goog.net.XhrIo.
+ */
+
+goog.provide('goog.net.ErrorCode');
+
+
+/**
+ * Error codes
+ * @enum {number}
+ */
+goog.net.ErrorCode = {
+
+  /**
+   * There is no error condition.
+   */
+  NO_ERROR: 0,
+
+  /**
+   * The most common error from iframeio, unfortunately, is that the browser
+   * responded with an error page that is classed as a different domain. The
+   * situations, are when a browser error page  is shown -- 404, access denied,
+   * DNS failure, connection reset etc.)
+   *
+   */
+  ACCESS_DENIED: 1,
+
+  /**
+   * Currently the only case where file not found will be caused is when the
+   * code is running on the local file system and a non-IE browser makes a
+   * request to a file that doesn't exist.
+   */
+  FILE_NOT_FOUND: 2,
+
+  /**
+   * If Firefox shows a browser error page, such as a connection reset by
+   * server or access denied, then it will fail silently without the error or
+   * load handlers firing.
+   */
+  FF_SILENT_ERROR: 3,
+
+  /**
+   * Custom error provided by the client through the error check hook.
+   */
+  CUSTOM_ERROR: 4,
+
+  /**
+   * Exception was thrown while processing the request.
+   */
+  EXCEPTION: 5,
+
+  /**
+   * The Http response returned a non-successful http status code.
+   */
+  HTTP_ERROR: 6,
+
+  /**
+   * The request was aborted.
+   */
+  ABORT: 7,
+
+  /**
+   * The request timed out.
+   */
+  TIMEOUT: 8,
+
+  /**
+   * The resource is not available offline.
+   */
+  OFFLINE: 9
+};
+
+
+/**
+ * Returns a friendly error message for an error code. These messages are for
+ * debugging and are not localized.
+ * @param {goog.net.ErrorCode} errorCode An error code.
+ * @return {string} A message for debugging.
+ */
+goog.net.ErrorCode.getDebugMessage = function(errorCode) {
+  switch (errorCode) {
+    case goog.net.ErrorCode.NO_ERROR:
+      return 'No Error';
+
+    case goog.net.ErrorCode.ACCESS_DENIED:
+      return 'Access denied to content document';
+
+    case goog.net.ErrorCode.FILE_NOT_FOUND:
+      return 'File not found';
+
+    case goog.net.ErrorCode.FF_SILENT_ERROR:
+      return 'Firefox silently errored';
+
+    case goog.net.ErrorCode.CUSTOM_ERROR:
+      return 'Application custom error';
+
+    case goog.net.ErrorCode.EXCEPTION:
+      return 'An exception occurred';
+
+    case goog.net.ErrorCode.HTTP_ERROR:
+      return 'Http response at 400 or 500 level';
+
+    case goog.net.ErrorCode.ABORT:
+      return 'Request was aborted';
+
+    case goog.net.ErrorCode.TIMEOUT:
+      return 'Request timed out';
+
+    case goog.net.ErrorCode.OFFLINE:
+      return 'The resource is not available offline';
+
+    default:
+      return 'Unrecognized error code';
+  }
+};
+
+// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Constants for HTTP status codes.
+ */
+
+goog.provide('goog.net.HttpStatus');
+
+
+/**
+ * HTTP Status Codes defined in RFC 2616 and RFC 6585.
+ * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+ * @see http://tools.ietf.org/html/rfc6585
+ * @enum {number}
+ */
+goog.net.HttpStatus = {
+  // Informational 1xx
+  CONTINUE: 100,
+  SWITCHING_PROTOCOLS: 101,
+
+  // Successful 2xx
+  OK: 200,
+  CREATED: 201,
+  ACCEPTED: 202,
+  NON_AUTHORITATIVE_INFORMATION: 203,
+  NO_CONTENT: 204,
+  RESET_CONTENT: 205,
+  PARTIAL_CONTENT: 206,
+
+  // Redirection 3xx
+  MULTIPLE_CHOICES: 300,
+  MOVED_PERMANENTLY: 301,
+  FOUND: 302,
+  SEE_OTHER: 303,
+  NOT_MODIFIED: 304,
+  USE_PROXY: 305,
+  TEMPORARY_REDIRECT: 307,
+
+  // Client Error 4xx
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  PAYMENT_REQUIRED: 402,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  METHOD_NOT_ALLOWED: 405,
+  NOT_ACCEPTABLE: 406,
+  PROXY_AUTHENTICATION_REQUIRED: 407,
+  REQUEST_TIMEOUT: 408,
+  CONFLICT: 409,
+  GONE: 410,
+  LENGTH_REQUIRED: 411,
+  PRECONDITION_FAILED: 412,
+  REQUEST_ENTITY_TOO_LARGE: 413,
+  REQUEST_URI_TOO_LONG: 414,
+  UNSUPPORTED_MEDIA_TYPE: 415,
+  REQUEST_RANGE_NOT_SATISFIABLE: 416,
+  EXPECTATION_FAILED: 417,
+  PRECONDITION_REQUIRED: 428,
+  TOO_MANY_REQUESTS: 429,
+  REQUEST_HEADER_FIELDS_TOO_LARGE: 431,
+
+  // Server Error 5xx
+  INTERNAL_SERVER_ERROR: 500,
+  NOT_IMPLEMENTED: 501,
+  BAD_GATEWAY: 502,
+  SERVICE_UNAVAILABLE: 503,
+  GATEWAY_TIMEOUT: 504,
+  HTTP_VERSION_NOT_SUPPORTED: 505,
+  NETWORK_AUTHENTICATION_REQUIRED: 511,
+
+  /*
+   * IE returns this code for 204 due to its use of URLMon, which returns this
+   * code for 'Operation Aborted'. The status text is 'Unknown', the response
+   * headers are ''. Known to occur on IE 6 on XP through IE9 on Win7.
+   */
+  QUIRK_IE_NO_CONTENT: 1223
+};
+
+
+/**
+ * Returns whether the given status should be considered successful.
+ *
+ * Successful codes are OK (200), CREATED (201), ACCEPTED (202),
+ * NO CONTENT (204), PARTIAL CONTENT (206), NOT MODIFIED (304),
+ * and IE's no content code (1223).
+ *
+ * @param {number} status The status code to test.
+ * @return {boolean} Whether the status code should be considered successful.
+ */
+goog.net.HttpStatus.isSuccess = function(status) {
+  switch (status) {
+    case goog.net.HttpStatus.OK:
+    case goog.net.HttpStatus.CREATED:
+    case goog.net.HttpStatus.ACCEPTED:
+    case goog.net.HttpStatus.NO_CONTENT:
+    case goog.net.HttpStatus.PARTIAL_CONTENT:
+    case goog.net.HttpStatus.NOT_MODIFIED:
+    case goog.net.HttpStatus.QUIRK_IE_NO_CONTENT:
+      return true;
+
+    default:
+      return false;
+  }
+};
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+goog.provide('goog.net.XhrLike');
+
+
+
+/**
+ * Interface for the common parts of XMLHttpRequest.
+ *
+ * Mostly copied from externs/w3c_xml.js.
+ *
+ * @interface
+ * @see http://www.w3.org/TR/XMLHttpRequest/
+ */
+goog.net.XhrLike = function() {};
+
+
+/**
+ * Typedef that refers to either native or custom-implemented XHR objects.
+ * @typedef {!goog.net.XhrLike|!XMLHttpRequest}
+ */
+goog.net.XhrLike.OrNative;
+
+
+/**
+ * @type {function()|null|undefined}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#handler-xhr-onreadystatechange
+ */
+goog.net.XhrLike.prototype.onreadystatechange;
+
+
+/**
+ * @type {string}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsetext-attribute
+ */
+goog.net.XhrLike.prototype.responseText;
+
+
+/**
+ * @type {Document}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsexml-attribute
+ */
+goog.net.XhrLike.prototype.responseXML;
+
+
+/**
+ * @type {number}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#readystate
+ */
+goog.net.XhrLike.prototype.readyState;
+
+
+/**
+ * @type {number}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#status
+ */
+goog.net.XhrLike.prototype.status;
+
+
+/**
+ * @type {string}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#statustext
+ */
+goog.net.XhrLike.prototype.statusText;
+
+
+/**
+ * @param {string} method
+ * @param {string} url
+ * @param {?boolean=} opt_async
+ * @param {?string=} opt_user
+ * @param {?string=} opt_password
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-open()-method
+ */
+goog.net.XhrLike.prototype.open = function(method, url, opt_async, opt_user,
+    opt_password) {};
+
+
+/**
+ * @param {ArrayBuffer|ArrayBufferView|Blob|Document|FormData|string=} opt_data
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-send()-method
+ */
+goog.net.XhrLike.prototype.send = function(opt_data) {};
+
+
+/**
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-abort()-method
+ */
+goog.net.XhrLike.prototype.abort = function() {};
+
+
+/**
+ * @param {string} header
+ * @param {string} value
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-setrequestheader()-method
+ */
+goog.net.XhrLike.prototype.setRequestHeader = function(header, value) {};
+
+
+/**
+ * @param {string} header
+ * @return {string}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-getresponseheader()-method
+ */
+goog.net.XhrLike.prototype.getResponseHeader = function(header) {};
+
+
+/**
+ * @return {string}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-getallresponseheaders()-method
+ */
+goog.net.XhrLike.prototype.getAllResponseHeaders = function() {};
+
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Interface for a factory for creating XMLHttpRequest objects
+ * and metadata about them.
+ * @author dbk@google.com (David Barrett-Kahn)
+ */
+
+goog.provide('goog.net.XmlHttpFactory');
+
+/** @suppress {extraRequire} Typedef. */
+goog.require('goog.net.XhrLike');
+
+
+
+/**
+ * Abstract base class for an XmlHttpRequest factory.
+ * @constructor
+ */
+goog.net.XmlHttpFactory = function() {
+};
+
+
+/**
+ * Cache of options - we only actually call internalGetOptions once.
+ * @type {Object}
+ * @private
+ */
+goog.net.XmlHttpFactory.prototype.cachedOptions_ = null;
+
+
+/**
+ * @return {!goog.net.XhrLike.OrNative} A new XhrLike instance.
+ */
+goog.net.XmlHttpFactory.prototype.createInstance = goog.abstractMethod;
+
+
+/**
+ * @return {Object} Options describing how xhr objects obtained from this
+ *     factory should be used.
+ */
+goog.net.XmlHttpFactory.prototype.getOptions = function() {
+  return this.cachedOptions_ ||
+      (this.cachedOptions_ = this.internalGetOptions());
+};
+
+
+/**
+ * Override this method in subclasses to preserve the caching offered by
+ * getOptions().
+ * @return {Object} Options describing how xhr objects obtained from this
+ *     factory should be used.
+ * @protected
+ */
+goog.net.XmlHttpFactory.prototype.internalGetOptions = goog.abstractMethod;
+
+// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Implementation of XmlHttpFactory which allows construction from
+ * simple factory methods.
+ * @author dbk@google.com (David Barrett-Kahn)
+ */
+
+goog.provide('goog.net.WrapperXmlHttpFactory');
+
+/** @suppress {extraRequire} Typedef. */
+goog.require('goog.net.XhrLike');
+goog.require('goog.net.XmlHttpFactory');
+
+
+
+/**
+ * An xhr factory subclass which can be constructed using two factory methods.
+ * This exists partly to allow the preservation of goog.net.XmlHttp.setFactory()
+ * with an unchanged signature.
+ * @param {function():!goog.net.XhrLike.OrNative} xhrFactory
+ *     A function which returns a new XHR object.
+ * @param {function():!Object} optionsFactory A function which returns the
+ *     options associated with xhr objects from this factory.
+ * @extends {goog.net.XmlHttpFactory}
+ * @constructor
+ * @final
+ */
+goog.net.WrapperXmlHttpFactory = function(xhrFactory, optionsFactory) {
+  goog.net.XmlHttpFactory.call(this);
+
+  /**
+   * XHR factory method.
+   * @type {function() : !goog.net.XhrLike.OrNative}
+   * @private
+   */
+  this.xhrFactory_ = xhrFactory;
+
+  /**
+   * Options factory method.
+   * @type {function() : !Object}
+   * @private
+   */
+  this.optionsFactory_ = optionsFactory;
+};
+goog.inherits(goog.net.WrapperXmlHttpFactory, goog.net.XmlHttpFactory);
+
+
+/** @override */
+goog.net.WrapperXmlHttpFactory.prototype.createInstance = function() {
+  return this.xhrFactory_();
+};
+
+
+/** @override */
+goog.net.WrapperXmlHttpFactory.prototype.getOptions = function() {
+  return this.optionsFactory_();
+};
+
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Low level handling of XMLHttpRequest.
+ * @author arv@google.com (Erik Arvidsson)
+ * @author dbk@google.com (David Barrett-Kahn)
+ */
+
+goog.provide('goog.net.DefaultXmlHttpFactory');
+goog.provide('goog.net.XmlHttp');
+goog.provide('goog.net.XmlHttp.OptionType');
+goog.provide('goog.net.XmlHttp.ReadyState');
+goog.provide('goog.net.XmlHttpDefines');
+
+goog.require('goog.asserts');
+goog.require('goog.net.WrapperXmlHttpFactory');
+goog.require('goog.net.XmlHttpFactory');
+
+
+/**
+ * Static class for creating XMLHttpRequest objects.
+ * @return {!goog.net.XhrLike.OrNative} A new XMLHttpRequest object.
+ */
+goog.net.XmlHttp = function() {
+  return goog.net.XmlHttp.factory_.createInstance();
+};
+
+
+/**
+ * @define {boolean} Whether to assume XMLHttpRequest exists. Setting this to
+ *     true bypasses the ActiveX probing code.
+ * NOTE(ruilopes): Due to the way JSCompiler works, this define *will not* strip
+ * out the ActiveX probing code from binaries.  To achieve this, use
+ * {@code goog.net.XmlHttpDefines.ASSUME_NATIVE_XHR} instead.
+ * TODO(ruilopes): Collapse both defines.
+ */
+goog.define('goog.net.XmlHttp.ASSUME_NATIVE_XHR', false);
+
+
+/** @const */
+goog.net.XmlHttpDefines = {};
+
+
+/**
+ * @define {boolean} Whether to assume XMLHttpRequest exists. Setting this to
+ *     true eliminates the ActiveX probing code.
+ */
+goog.define('goog.net.XmlHttpDefines.ASSUME_NATIVE_XHR', false);
+
+
+/**
+ * Gets the options to use with the XMLHttpRequest objects obtained using
+ * the static methods.
+ * @return {Object} The options.
+ */
+goog.net.XmlHttp.getOptions = function() {
+  return goog.net.XmlHttp.factory_.getOptions();
+};
+
+
+/**
+ * Type of options that an XmlHttp object can have.
+ * @enum {number}
+ */
+goog.net.XmlHttp.OptionType = {
+  /**
+   * Whether a goog.nullFunction should be used to clear the onreadystatechange
+   * handler instead of null.
+   */
+  USE_NULL_FUNCTION: 0,
+
+  /**
+   * NOTE(user): In IE if send() errors on a *local* request the readystate
+   * is still changed to COMPLETE.  We need to ignore it and allow the
+   * try/catch around send() to pick up the error.
+   */
+  LOCAL_REQUEST_ERROR: 1
+};
+
+
+/**
+ * Status constants for XMLHTTP, matches:
+ * http://msdn.microsoft.com/library/default.asp?url=/library/
+ *   en-us/xmlsdk/html/0e6a34e4-f90c-489d-acff-cb44242fafc6.asp
+ * @enum {number}
+ */
+goog.net.XmlHttp.ReadyState = {
+  /**
+   * Constant for when xmlhttprequest.readyState is uninitialized
+   */
+  UNINITIALIZED: 0,
+
+  /**
+   * Constant for when xmlhttprequest.readyState is loading.
+   */
+  LOADING: 1,
+
+  /**
+   * Constant for when xmlhttprequest.readyState is loaded.
+   */
+  LOADED: 2,
+
+  /**
+   * Constant for when xmlhttprequest.readyState is in an interactive state.
+   */
+  INTERACTIVE: 3,
+
+  /**
+   * Constant for when xmlhttprequest.readyState is completed
+   */
+  COMPLETE: 4
+};
+
+
+/**
+ * The global factory instance for creating XMLHttpRequest objects.
+ * @type {goog.net.XmlHttpFactory}
+ * @private
+ */
+goog.net.XmlHttp.factory_;
+
+
+/**
+ * Sets the factories for creating XMLHttpRequest objects and their options.
+ * @param {Function} factory The factory for XMLHttpRequest objects.
+ * @param {Function} optionsFactory The factory for options.
+ * @deprecated Use setGlobalFactory instead.
+ */
+goog.net.XmlHttp.setFactory = function(factory, optionsFactory) {
+  goog.net.XmlHttp.setGlobalFactory(new goog.net.WrapperXmlHttpFactory(
+      goog.asserts.assert(factory),
+      goog.asserts.assert(optionsFactory)));
+};
+
+
+/**
+ * Sets the global factory object.
+ * @param {!goog.net.XmlHttpFactory} factory New global factory object.
+ */
+goog.net.XmlHttp.setGlobalFactory = function(factory) {
+  goog.net.XmlHttp.factory_ = factory;
+};
+
+
+
+/**
+ * Default factory to use when creating xhr objects.  You probably shouldn't be
+ * instantiating this directly, but rather using it via goog.net.XmlHttp.
+ * @extends {goog.net.XmlHttpFactory}
+ * @constructor
+ */
+goog.net.DefaultXmlHttpFactory = function() {
+  goog.net.XmlHttpFactory.call(this);
+};
+goog.inherits(goog.net.DefaultXmlHttpFactory, goog.net.XmlHttpFactory);
+
+
+/** @override */
+goog.net.DefaultXmlHttpFactory.prototype.createInstance = function() {
+  var progId = this.getProgId_();
+  if (progId) {
+    return new ActiveXObject(progId);
+  } else {
+    return new XMLHttpRequest();
+  }
+};
+
+
+/** @override */
+goog.net.DefaultXmlHttpFactory.prototype.internalGetOptions = function() {
+  var progId = this.getProgId_();
+  var options = {};
+  if (progId) {
+    options[goog.net.XmlHttp.OptionType.USE_NULL_FUNCTION] = true;
+    options[goog.net.XmlHttp.OptionType.LOCAL_REQUEST_ERROR] = true;
+  }
+  return options;
+};
+
+
+/**
+ * The ActiveX PROG ID string to use to create xhr's in IE. Lazily initialized.
+ * @type {string|undefined}
+ * @private
+ */
+goog.net.DefaultXmlHttpFactory.prototype.ieProgId_;
+
+
+/**
+ * Initialize the private state used by other functions.
+ * @return {string} The ActiveX PROG ID string to use to create xhr's in IE.
+ * @private
+ */
+goog.net.DefaultXmlHttpFactory.prototype.getProgId_ = function() {
+  if (goog.net.XmlHttp.ASSUME_NATIVE_XHR ||
+      goog.net.XmlHttpDefines.ASSUME_NATIVE_XHR) {
+    return '';
+  }
+
+  // The following blog post describes what PROG IDs to use to create the
+  // XMLHTTP object in Internet Explorer:
+  // http://blogs.msdn.com/xmlteam/archive/2006/10/23/using-the-right-version-of-msxml-in-internet-explorer.aspx
+  // However we do not (yet) fully trust that this will be OK for old versions
+  // of IE on Win9x so we therefore keep the last 2.
+  if (!this.ieProgId_ && typeof XMLHttpRequest == 'undefined' &&
+      typeof ActiveXObject != 'undefined') {
+    // Candidate Active X types.
+    var ACTIVE_X_IDENTS = ['MSXML2.XMLHTTP.6.0', 'MSXML2.XMLHTTP.3.0',
+                           'MSXML2.XMLHTTP', 'Microsoft.XMLHTTP'];
+    for (var i = 0; i < ACTIVE_X_IDENTS.length; i++) {
+      var candidate = ACTIVE_X_IDENTS[i];
+      /** @preserveTry */
+      try {
+        new ActiveXObject(candidate);
+        // NOTE(user): cannot assign progid and return candidate in one line
+        // because JSCompiler complaings: BUG 658126
+        this.ieProgId_ = candidate;
+        return candidate;
+      } catch (e) {
+        // do nothing; try next choice
+      }
+    }
+
+    // couldn't find any matches
+    throw Error('Could not create ActiveXObject. ActiveX might be disabled,' +
+                ' or MSXML might not be installed');
+  }
+
+  return /** @type {string} */ (this.ieProgId_);
+};
+
+
+//Set the global factory to an instance of the default factory.
+goog.net.XmlHttp.setGlobalFactory(new goog.net.DefaultXmlHttpFactory());
+
+// Copyright 2008 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Simple utilities for dealing with URI strings.
+ *
+ * This is intended to be a lightweight alternative to constructing goog.Uri
+ * objects.  Whereas goog.Uri adds several kilobytes to the binary regardless
+ * of how much of its functionality you use, this is designed to be a set of
+ * mostly-independent utilities so that the compiler includes only what is
+ * necessary for the task.  Estimated savings of porting is 5k pre-gzip and
+ * 1.5k post-gzip.  To ensure the savings remain, future developers should
+ * avoid adding new functionality to existing functions, but instead create
+ * new ones and factor out shared code.
+ *
+ * Many of these utilities have limited functionality, tailored to common
+ * cases.  The query parameter utilities assume that the parameter keys are
+ * already encoded, since most keys are compile-time alphanumeric strings.  The
+ * query parameter mutation utilities also do not tolerate fragment identifiers.
+ *
+ * By design, these functions can be slower than goog.Uri equivalents.
+ * Repeated calls to some of functions may be quadratic in behavior for IE,
+ * although the effect is somewhat limited given the 2kb limit.
+ *
+ * One advantage of the limited functionality here is that this approach is
+ * less sensitive to differences in URI encodings than goog.Uri, since these
+ * functions modify the strings in place, rather than decoding and
+ * re-encoding.
+ *
+ * Uses features of RFC 3986 for parsing/formatting URIs:
+ *   http://www.ietf.org/rfc/rfc3986.txt
+ *
+ * @author gboyer@google.com (Garrett Boyer) - The "lightened" design.
+ */
+
+goog.provide('goog.uri.utils');
+goog.provide('goog.uri.utils.ComponentIndex');
+goog.provide('goog.uri.utils.QueryArray');
+goog.provide('goog.uri.utils.QueryValue');
+goog.provide('goog.uri.utils.StandardQueryParam');
+
+goog.require('goog.asserts');
+goog.require('goog.string');
+goog.require('goog.userAgent');
+
+
+/**
+ * Character codes inlined to avoid object allocations due to charCode.
+ * @enum {number}
+ * @private
+ */
+goog.uri.utils.CharCode_ = {
+  AMPERSAND: 38,
+  EQUAL: 61,
+  HASH: 35,
+  QUESTION: 63
+};
+
+
+/**
+ * Builds a URI string from already-encoded parts.
+ *
+ * No encoding is performed.  Any component may be omitted as either null or
+ * undefined.
+ *
+ * @param {?string=} opt_scheme The scheme such as 'http'.
+ * @param {?string=} opt_userInfo The user name before the '@'.
+ * @param {?string=} opt_domain The domain such as 'www.google.com', already
+ *     URI-encoded.
+ * @param {(string|number|null)=} opt_port The port number.
+ * @param {?string=} opt_path The path, already URI-encoded.  If it is not
+ *     empty, it must begin with a slash.
+ * @param {?string=} opt_queryData The URI-encoded query data.
+ * @param {?string=} opt_fragment The URI-encoded fragment identifier.
+ * @return {string} The fully combined URI.
+ */
+goog.uri.utils.buildFromEncodedParts = function(opt_scheme, opt_userInfo,
+    opt_domain, opt_port, opt_path, opt_queryData, opt_fragment) {
+  var out = '';
+
+  if (opt_scheme) {
+    out += opt_scheme + ':';
+  }
+
+  if (opt_domain) {
+    out += '//';
+
+    if (opt_userInfo) {
+      out += opt_userInfo + '@';
+    }
+
+    out += opt_domain;
+
+    if (opt_port) {
+      out += ':' + opt_port;
+    }
+  }
+
+  if (opt_path) {
+    out += opt_path;
+  }
+
+  if (opt_queryData) {
+    out += '?' + opt_queryData;
+  }
+
+  if (opt_fragment) {
+    out += '#' + opt_fragment;
+  }
+
+  return out;
+};
+
+
+/**
+ * A regular expression for breaking a URI into its component parts.
+ *
+ * {@link http://www.ietf.org/rfc/rfc3986.txt} says in Appendix B
+ * As the "first-match-wins" algorithm is identical to the "greedy"
+ * disambiguation method used by POSIX regular expressions, it is natural and
+ * commonplace to use a regular expression for parsing the potential five
+ * components of a URI reference.
+ *
+ * The following line is the regular expression for breaking-down a
+ * well-formed URI reference into its components.
+ *
+ * <pre>
+ * ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
+ *  12            3  4          5       6  7        8 9
+ * </pre>
+ *
+ * The numbers in the second line above are only to assist readability; they
+ * indicate the reference points for each subexpression (i.e., each paired
+ * parenthesis). We refer to the value matched for subexpression <n> as $<n>.
+ * For example, matching the above expression to
+ * <pre>
+ *     http://www.ics.uci.edu/pub/ietf/uri/#Related
+ * </pre>
+ * results in the following subexpression matches:
+ * <pre>
+ *    $1 = http:
+ *    $2 = http
+ *    $3 = //www.ics.uci.edu
+ *    $4 = www.ics.uci.edu
+ *    $5 = /pub/ietf/uri/
+ *    $6 = <undefined>
+ *    $7 = <undefined>
+ *    $8 = #Related
+ *    $9 = Related
+ * </pre>
+ * where <undefined> indicates that the component is not present, as is the
+ * case for the query component in the above example. Therefore, we can
+ * determine the value of the five components as
+ * <pre>
+ *    scheme    = $2
+ *    authority = $4
+ *    path      = $5
+ *    query     = $7
+ *    fragment  = $9
+ * </pre>
+ *
+ * The regular expression has been modified slightly to expose the
+ * userInfo, domain, and port separately from the authority.
+ * The modified version yields
+ * <pre>
+ *    $1 = http              scheme
+ *    $2 = <undefined>       userInfo -\
+ *    $3 = www.ics.uci.edu   domain     | authority
+ *    $4 = <undefined>       port     -/
+ *    $5 = /pub/ietf/uri/    path
+ *    $6 = <undefined>       query without ?
+ *    $7 = Related           fragment without #
+ * </pre>
+ * @type {!RegExp}
+ * @private
+ */
+goog.uri.utils.splitRe_ = new RegExp(
+    '^' +
+    '(?:' +
+        '([^:/?#.]+)' +                  // scheme - ignore special characters
+                                         // used by other URL parts such as :,
+                                         // ?, /, #, and .
+    ':)?' +
+    '(?://' +
+        '(?:([^/?#]*)@)?' +              // userInfo
+        '([^/#?]*?)' +                   // domain
+        '(?::([0-9]+))?' +               // port
+        '(?=[/#?]|$)' +                  // authority-terminating character
+    ')?' +
+    '([^?#]+)?' +                        // path
+    '(?:\\?([^#]*))?' +                  // query
+    '(?:#(.*))?' +                       // fragment
+    '$');
+
+
+/**
+ * The index of each URI component in the return value of goog.uri.utils.split.
+ * @enum {number}
+ */
+goog.uri.utils.ComponentIndex = {
+  SCHEME: 1,
+  USER_INFO: 2,
+  DOMAIN: 3,
+  PORT: 4,
+  PATH: 5,
+  QUERY_DATA: 6,
+  FRAGMENT: 7
+};
+
+
+/**
+ * Splits a URI into its component parts.
+ *
+ * Each component can be accessed via the component indices; for example:
+ * <pre>
+ * goog.uri.utils.split(someStr)[goog.uri.utils.CompontentIndex.QUERY_DATA];
+ * </pre>
+ *
+ * @param {string} uri The URI string to examine.
+ * @return {!Array<string|undefined>} Each component still URI-encoded.
+ *     Each component that is present will contain the encoded value, whereas
+ *     components that are not present will be undefined or empty, depending
+ *     on the browser's regular expression implementation.  Never null, since
+ *     arbitrary strings may still look like path names.
+ */
+goog.uri.utils.split = function(uri) {
+  goog.uri.utils.phishingProtection_();
+
+  // See @return comment -- never null.
+  return /** @type {!Array<string|undefined>} */ (
+      uri.match(goog.uri.utils.splitRe_));
+};
+
+
+/**
+ * Safari has a nasty bug where if you have an http URL with a username, e.g.,
+ * http://evil.com%2F@google.com/
+ * Safari will report that window.location.href is
+ * http://evil.com/google.com/
+ * so that anyone who tries to parse the domain of that URL will get
+ * the wrong domain. We've seen exploits where people use this to trick
+ * Safari into loading resources from evil domains.
+ *
+ * To work around this, we run a little "Safari phishing check", and throw
+ * an exception if we see this happening.
+ *
+ * There is no convenient place to put this check. We apply it to
+ * anyone doing URI parsing on Webkit. We're not happy about this, but
+ * it fixes the problem.
+ *
+ * This should be removed once Safari fixes their bug.
+ *
+ * Exploit reported by Masato Kinugawa.
+ *
+ * @type {boolean}
+ * @private
+ */
+goog.uri.utils.needsPhishingProtection_ = goog.userAgent.WEBKIT;
+
+
+/**
+ * Check to see if the user is being phished.
+ * @private
+ */
+goog.uri.utils.phishingProtection_ = function() {
+  if (goog.uri.utils.needsPhishingProtection_) {
+    // Turn protection off, so that we don't recurse.
+    goog.uri.utils.needsPhishingProtection_ = false;
+
+    // Use quoted access, just in case the user isn't using location externs.
+    var location = goog.global['location'];
+    if (location) {
+      var href = location['href'];
+      if (href) {
+        var domain = goog.uri.utils.getDomain(href);
+        if (domain && domain != location['hostname']) {
+          // Phishing attack
+          goog.uri.utils.needsPhishingProtection_ = true;
+          throw Error();
+        }
+      }
+    }
+  }
+};
+
+
+/**
+ * @param {?string} uri A possibly null string.
+ * @param {boolean=} opt_preserveReserved If true, percent-encoding of RFC-3986
+ *     reserved characters will not be removed.
+ * @return {?string} The string URI-decoded, or null if uri is null.
+ * @private
+ */
+goog.uri.utils.decodeIfPossible_ = function(uri, opt_preserveReserved) {
+  if (!uri) {
+    return uri;
+  }
+
+  return opt_preserveReserved ? decodeURI(uri) : decodeURIComponent(uri);
+};
+
+
+/**
+ * Gets a URI component by index.
+ *
+ * It is preferred to use the getPathEncoded() variety of functions ahead,
+ * since they are more readable.
+ *
+ * @param {goog.uri.utils.ComponentIndex} componentIndex The component index.
+ * @param {string} uri The URI to examine.
+ * @return {?string} The still-encoded component, or null if the component
+ *     is not present.
+ * @private
+ */
+goog.uri.utils.getComponentByIndex_ = function(componentIndex, uri) {
+  // Convert undefined, null, and empty string into null.
+  return goog.uri.utils.split(uri)[componentIndex] || null;
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The protocol or scheme, or null if none.  Does not
+ *     include trailing colons or slashes.
+ */
+goog.uri.utils.getScheme = function(uri) {
+  return goog.uri.utils.getComponentByIndex_(
+      goog.uri.utils.ComponentIndex.SCHEME, uri);
+};
+
+
+/**
+ * Gets the effective scheme for the URL.  If the URL is relative then the
+ * scheme is derived from the page's location.
+ * @param {string} uri The URI to examine.
+ * @return {string} The protocol or scheme, always lower case.
+ */
+goog.uri.utils.getEffectiveScheme = function(uri) {
+  var scheme = goog.uri.utils.getScheme(uri);
+  if (!scheme && self.location) {
+    var protocol = self.location.protocol;
+    scheme = protocol.substr(0, protocol.length - 1);
+  }
+  // NOTE: When called from a web worker in Firefox 3.5, location maybe null.
+  // All other browsers with web workers support self.location from the worker.
+  return scheme ? scheme.toLowerCase() : '';
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The user name still encoded, or null if none.
+ */
+goog.uri.utils.getUserInfoEncoded = function(uri) {
+  return goog.uri.utils.getComponentByIndex_(
+      goog.uri.utils.ComponentIndex.USER_INFO, uri);
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The decoded user info, or null if none.
+ */
+goog.uri.utils.getUserInfo = function(uri) {
+  return goog.uri.utils.decodeIfPossible_(
+      goog.uri.utils.getUserInfoEncoded(uri));
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The domain name still encoded, or null if none.
+ */
+goog.uri.utils.getDomainEncoded = function(uri) {
+  return goog.uri.utils.getComponentByIndex_(
+      goog.uri.utils.ComponentIndex.DOMAIN, uri);
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The decoded domain, or null if none.
+ */
+goog.uri.utils.getDomain = function(uri) {
+  return goog.uri.utils.decodeIfPossible_(
+      goog.uri.utils.getDomainEncoded(uri), true /* opt_preserveReserved */);
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?number} The port number, or null if none.
+ */
+goog.uri.utils.getPort = function(uri) {
+  // Coerce to a number.  If the result of getComponentByIndex_ is null or
+  // non-numeric, the number coersion yields NaN.  This will then return
+  // null for all non-numeric cases (though also zero, which isn't a relevant
+  // port number).
+  return Number(goog.uri.utils.getComponentByIndex_(
+      goog.uri.utils.ComponentIndex.PORT, uri)) || null;
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The path still encoded, or null if none. Includes the
+ *     leading slash, if any.
+ */
+goog.uri.utils.getPathEncoded = function(uri) {
+  return goog.uri.utils.getComponentByIndex_(
+      goog.uri.utils.ComponentIndex.PATH, uri);
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The decoded path, or null if none.  Includes the leading
+ *     slash, if any.
+ */
+goog.uri.utils.getPath = function(uri) {
+  return goog.uri.utils.decodeIfPossible_(
+      goog.uri.utils.getPathEncoded(uri), true /* opt_preserveReserved */);
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The query data still encoded, or null if none.  Does not
+ *     include the question mark itself.
+ */
+goog.uri.utils.getQueryData = function(uri) {
+  return goog.uri.utils.getComponentByIndex_(
+      goog.uri.utils.ComponentIndex.QUERY_DATA, uri);
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The fragment identifier, or null if none.  Does not
+ *     include the hash mark itself.
+ */
+goog.uri.utils.getFragmentEncoded = function(uri) {
+  // The hash mark may not appear in any other part of the URL.
+  var hashIndex = uri.indexOf('#');
+  return hashIndex < 0 ? null : uri.substr(hashIndex + 1);
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @param {?string} fragment The encoded fragment identifier, or null if none.
+ *     Does not include the hash mark itself.
+ * @return {string} The URI with the fragment set.
+ */
+goog.uri.utils.setFragmentEncoded = function(uri, fragment) {
+  return goog.uri.utils.removeFragment(uri) + (fragment ? '#' + fragment : '');
+};
+
+
+/**
+ * @param {string} uri The URI to examine.
+ * @return {?string} The decoded fragment identifier, or null if none.  Does
+ *     not include the hash mark.
+ */
+goog.uri.utils.getFragment = function(uri) {
+  return goog.uri.utils.decodeIfPossible_(
+      goog.uri.utils.getFragmentEncoded(uri));
+};
+
+
+/**
+ * Extracts everything up to the port of the URI.
+ * @param {string} uri The URI string.
+ * @return {string} Everything up to and including the port.
+ */
+goog.uri.utils.getHost = function(uri) {
+  var pieces = goog.uri.utils.split(uri);
+  return goog.uri.utils.buildFromEncodedParts(
+      pieces[goog.uri.utils.ComponentIndex.SCHEME],
+      pieces[goog.uri.utils.ComponentIndex.USER_INFO],
+      pieces[goog.uri.utils.ComponentIndex.DOMAIN],
+      pieces[goog.uri.utils.ComponentIndex.PORT]);
+};
+
+
+/**
+ * Extracts the path of the URL and everything after.
+ * @param {string} uri The URI string.
+ * @return {string} The URI, starting at the path and including the query
+ *     parameters and fragment identifier.
+ */
+goog.uri.utils.getPathAndAfter = function(uri) {
+  var pieces = goog.uri.utils.split(uri);
+  return goog.uri.utils.buildFromEncodedParts(null, null, null, null,
+      pieces[goog.uri.utils.ComponentIndex.PATH],
+      pieces[goog.uri.utils.ComponentIndex.QUERY_DATA],
+      pieces[goog.uri.utils.ComponentIndex.FRAGMENT]);
+};
+
+
+/**
+ * Gets the URI with the fragment identifier removed.
+ * @param {string} uri The URI to examine.
+ * @return {string} Everything preceding the hash mark.
+ */
+goog.uri.utils.removeFragment = function(uri) {
+  // The hash mark may not appear in any other part of the URL.
+  var hashIndex = uri.indexOf('#');
+  return hashIndex < 0 ? uri : uri.substr(0, hashIndex);
+};
+
+
+/**
+ * Ensures that two URI's have the exact same domain, scheme, and port.
+ *
+ * Unlike the version in goog.Uri, this checks protocol, and therefore is
+ * suitable for checking against the browser's same-origin policy.
+ *
+ * @param {string} uri1 The first URI.
+ * @param {string} uri2 The second URI.
+ * @return {boolean} Whether they have the same scheme, domain and port.
+ */
+goog.uri.utils.haveSameDomain = function(uri1, uri2) {
+  var pieces1 = goog.uri.utils.split(uri1);
+  var pieces2 = goog.uri.utils.split(uri2);
+  return pieces1[goog.uri.utils.ComponentIndex.DOMAIN] ==
+             pieces2[goog.uri.utils.ComponentIndex.DOMAIN] &&
+         pieces1[goog.uri.utils.ComponentIndex.SCHEME] ==
+             pieces2[goog.uri.utils.ComponentIndex.SCHEME] &&
+         pieces1[goog.uri.utils.ComponentIndex.PORT] ==
+             pieces2[goog.uri.utils.ComponentIndex.PORT];
+};
+
+
+/**
+ * Asserts that there are no fragment or query identifiers, only in uncompiled
+ * mode.
+ * @param {string} uri The URI to examine.
+ * @private
+ */
+goog.uri.utils.assertNoFragmentsOrQueries_ = function(uri) {
+  // NOTE: would use goog.asserts here, but jscompiler doesn't know that
+  // indexOf has no side effects.
+  if (goog.DEBUG && (uri.indexOf('#') >= 0 || uri.indexOf('?') >= 0)) {
+    throw Error('goog.uri.utils: Fragment or query identifiers are not ' +
+        'supported: [' + uri + ']');
+  }
+};
+
+
+/**
+ * Supported query parameter values by the parameter serializing utilities.
+ *
+ * If a value is null or undefined, the key-value pair is skipped, as an easy
+ * way to omit parameters conditionally.  Non-array parameters are converted
+ * to a string and URI encoded.  Array values are expanded into multiple
+ * &key=value pairs, with each element stringized and URI-encoded.
+ *
+ * @typedef {*}
+ */
+goog.uri.utils.QueryValue;
+
+
+/**
+ * An array representing a set of query parameters with alternating keys
+ * and values.
+ *
+ * Keys are assumed to be URI encoded already and live at even indices.  See
+ * goog.uri.utils.QueryValue for details on how parameter values are encoded.
+ *
+ * Example:
+ * <pre>
+ * var data = [
+ *   // Simple param: ?name=BobBarker
+ *   'name', 'BobBarker',
+ *   // Conditional param -- may be omitted entirely.
+ *   'specialDietaryNeeds', hasDietaryNeeds() ? getDietaryNeeds() : null,
+ *   // Multi-valued param: &house=LosAngeles&house=NewYork&house=null
+ *   'house', ['LosAngeles', 'NewYork', null]
+ * ];
+ * </pre>
+ *
+ * @typedef {!Array<string|goog.uri.utils.QueryValue>}
+ */
+goog.uri.utils.QueryArray;
+
+
+/**
+ * Parses encoded query parameters and calls callback function for every
+ * parameter found in the string.
+ *
+ * Missing value of parameter (e.g. “…&key&…”) is treated as if the value was an
+ * empty string.  Keys may be empty strings (e.g. “…&=value&…”) which also means
+ * that “…&=&…” and “…&&…” will result in an empty key and value.
+ *
+ * @param {string} encodedQuery Encoded query string excluding question mark at
+ *     the beginning.
+ * @param {function(string, string)} callback Function called for every
+ *     parameter found in query string.  The first argument (name) will not be
+ *     urldecoded (so the function is consistent with buildQueryData), but the
+ *     second will.  If the parameter has no value (i.e. “=” was not present)
+ *     the second argument (value) will be an empty string.
+ */
+goog.uri.utils.parseQueryData = function(encodedQuery, callback) {
+  var pairs = encodedQuery.split('&');
+  for (var i = 0; i < pairs.length; i++) {
+    var indexOfEquals = pairs[i].indexOf('=');
+    var name = null;
+    var value = null;
+    if (indexOfEquals >= 0) {
+      name = pairs[i].substring(0, indexOfEquals);
+      value = pairs[i].substring(indexOfEquals + 1);
+    } else {
+      name = pairs[i];
+    }
+    callback(name, value ? goog.string.urlDecode(value) : '');
+  }
+};
+
+
+/**
+ * Appends a URI and query data in a string buffer with special preconditions.
+ *
+ * Internal implementation utility, performing very few object allocations.
+ *
+ * @param {!Array<string|undefined>} buffer A string buffer.  The first element
+ *     must be the base URI, and may have a fragment identifier.  If the array
+ *     contains more than one element, the second element must be an ampersand,
+ *     and may be overwritten, depending on the base URI.  Undefined elements
+ *     are treated as empty-string.
+ * @return {string} The concatenated URI and query data.
+ * @private
+ */
+goog.uri.utils.appendQueryData_ = function(buffer) {
+  if (buffer[1]) {
+    // At least one query parameter was added.  We need to check the
+    // punctuation mark, which is currently an ampersand, and also make sure
+    // there aren't any interfering fragment identifiers.
+    var baseUri = /** @type {string} */ (buffer[0]);
+    var hashIndex = baseUri.indexOf('#');
+    if (hashIndex >= 0) {
+      // Move the fragment off the base part of the URI into the end.
+      buffer.push(baseUri.substr(hashIndex));
+      buffer[0] = baseUri = baseUri.substr(0, hashIndex);
+    }
+    var questionIndex = baseUri.indexOf('?');
+    if (questionIndex < 0) {
+      // No question mark, so we need a question mark instead of an ampersand.
+      buffer[1] = '?';
+    } else if (questionIndex == baseUri.length - 1) {
+      // Question mark is the very last character of the existing URI, so don't
+      // append an additional delimiter.
+      buffer[1] = undefined;
+    }
+  }
+
+  return buffer.join('');
+};
+
+
+/**
+ * Appends key=value pairs to an array, supporting multi-valued objects.
+ * @param {string} key The key prefix.
+ * @param {goog.uri.utils.QueryValue} value The value to serialize.
+ * @param {!Array<string>} pairs The array to which the 'key=value' strings
+ *     should be appended.
+ * @private
+ */
+goog.uri.utils.appendKeyValuePairs_ = function(key, value, pairs) {
+  if (goog.isArray(value)) {
+    // Convince the compiler it's an array.
+    goog.asserts.assertArray(value);
+    for (var j = 0; j < value.length; j++) {
+      // Convert to string explicitly, to short circuit the null and array
+      // logic in this function -- this ensures that null and undefined get
+      // written as literal 'null' and 'undefined', and arrays don't get
+      // expanded out but instead encoded in the default way.
+      goog.uri.utils.appendKeyValuePairs_(key, String(value[j]), pairs);
+    }
+  } else if (value != null) {
+    // Skip a top-level null or undefined entirely.
+    pairs.push('&', key,
+        // Check for empty string. Zero gets encoded into the url as literal
+        // strings.  For empty string, skip the equal sign, to be consistent
+        // with UriBuilder.java.
+        value === '' ? '' : '=',
+        goog.string.urlEncode(value));
+  }
+};
+
+
+/**
+ * Builds a buffer of query data from a sequence of alternating keys and values.
+ *
+ * @param {!Array<string|undefined>} buffer A string buffer to append to.  The
+ *     first element appended will be an '&', and may be replaced by the caller.
+ * @param {!goog.uri.utils.QueryArray|!Arguments} keysAndValues An array with
+ *     alternating keys and values -- see the typedef.
+ * @param {number=} opt_startIndex A start offset into the arary, defaults to 0.
+ * @return {!Array<string|undefined>} The buffer argument.
+ * @private
+ */
+goog.uri.utils.buildQueryDataBuffer_ = function(
+    buffer, keysAndValues, opt_startIndex) {
+  goog.asserts.assert(Math.max(keysAndValues.length - (opt_startIndex || 0),
+      0) % 2 == 0, 'goog.uri.utils: Key/value lists must be even in length.');
+
+  for (var i = opt_startIndex || 0; i < keysAndValues.length; i += 2) {
+    goog.uri.utils.appendKeyValuePairs_(
+        keysAndValues[i], keysAndValues[i + 1], buffer);
+  }
+
+  return buffer;
+};
+
+
+/**
+ * Builds a query data string from a sequence of alternating keys and values.
+ * Currently generates "&key&" for empty args.
+ *
+ * @param {goog.uri.utils.QueryArray} keysAndValues Alternating keys and
+ *     values.  See the typedef.
+ * @param {number=} opt_startIndex A start offset into the arary, defaults to 0.
+ * @return {string} The encoded query string, in the form 'a=1&b=2'.
+ */
+goog.uri.utils.buildQueryData = function(keysAndValues, opt_startIndex) {
+  var buffer = goog.uri.utils.buildQueryDataBuffer_(
+      [], keysAndValues, opt_startIndex);
+  buffer[0] = ''; // Remove the leading ampersand.
+  return buffer.join('');
+};
+
+
+/**
+ * Builds a buffer of query data from a map.
+ *
+ * @param {!Array<string|undefined>} buffer A string buffer to append to.  The
+ *     first element appended will be an '&', and may be replaced by the caller.
+ * @param {!Object<string, goog.uri.utils.QueryValue>} map An object where keys
+ *     are URI-encoded parameter keys, and the values conform to the contract
+ *     specified in the goog.uri.utils.QueryValue typedef.
+ * @return {!Array<string|undefined>} The buffer argument.
+ * @private
+ */
+goog.uri.utils.buildQueryDataBufferFromMap_ = function(buffer, map) {
+  for (var key in map) {
+    goog.uri.utils.appendKeyValuePairs_(key, map[key], buffer);
+  }
+
+  return buffer;
+};
+
+
+/**
+ * Builds a query data string from a map.
+ * Currently generates "&key&" for empty args.
+ *
+ * @param {!Object<string, goog.uri.utils.QueryValue>} map An object where keys
+ *     are URI-encoded parameter keys, and the values are arbitrary types
+ *     or arrays. Keys with a null value are dropped.
+ * @return {string} The encoded query string, in the form 'a=1&b=2'.
+ */
+goog.uri.utils.buildQueryDataFromMap = function(map) {
+  var buffer = goog.uri.utils.buildQueryDataBufferFromMap_([], map);
+  buffer[0] = '';
+  return buffer.join('');
+};
+
+
+/**
+ * Appends URI parameters to an existing URI.
+ *
+ * The variable arguments may contain alternating keys and values.  Keys are
+ * assumed to be already URI encoded.  The values should not be URI-encoded,
+ * and will instead be encoded by this function.
+ * <pre>
+ * appendParams('http://www.foo.com?existing=true',
+ *     'key1', 'value1',
+ *     'key2', 'value?willBeEncoded',
+ *     'key3', ['valueA', 'valueB', 'valueC'],
+ *     'key4', null);
+ * result: 'http://www.foo.com?existing=true&' +
+ *     'key1=value1&' +
+ *     'key2=value%3FwillBeEncoded&' +
+ *     'key3=valueA&key3=valueB&key3=valueC'
+ * </pre>
+ *
+ * A single call to this function will not exhibit quadratic behavior in IE,
+ * whereas multiple repeated calls may, although the effect is limited by
+ * fact that URL's generally can't exceed 2kb.
+ *
+ * @param {string} uri The original URI, which may already have query data.
+ * @param {...(goog.uri.utils.QueryArray|string|goog.uri.utils.QueryValue)} var_args
+ *     An array or argument list conforming to goog.uri.utils.QueryArray.
+ * @return {string} The URI with all query parameters added.
+ */
+goog.uri.utils.appendParams = function(uri, var_args) {
+  return goog.uri.utils.appendQueryData_(
+      arguments.length == 2 ?
+      goog.uri.utils.buildQueryDataBuffer_([uri], arguments[1], 0) :
+      goog.uri.utils.buildQueryDataBuffer_([uri], arguments, 1));
+};
+
+
+/**
+ * Appends query parameters from a map.
+ *
+ * @param {string} uri The original URI, which may already have query data.
+ * @param {!Object<goog.uri.utils.QueryValue>} map An object where keys are
+ *     URI-encoded parameter keys, and the values are arbitrary types or arrays.
+ *     Keys with a null value are dropped.
+ * @return {string} The new parameters.
+ */
+goog.uri.utils.appendParamsFromMap = function(uri, map) {
+  return goog.uri.utils.appendQueryData_(
+      goog.uri.utils.buildQueryDataBufferFromMap_([uri], map));
+};
+
+
+/**
+ * Appends a single URI parameter.
+ *
+ * Repeated calls to this can exhibit quadratic behavior in IE6 due to the
+ * way string append works, though it should be limited given the 2kb limit.
+ *
+ * @param {string} uri The original URI, which may already have query data.
+ * @param {string} key The key, which must already be URI encoded.
+ * @param {*=} opt_value The value, which will be stringized and encoded
+ *     (assumed not already to be encoded).  If omitted, undefined, or null, the
+ *     key will be added as a valueless parameter.
+ * @return {string} The URI with the query parameter added.
+ */
+goog.uri.utils.appendParam = function(uri, key, opt_value) {
+  var paramArr = [uri, '&', key];
+  if (goog.isDefAndNotNull(opt_value)) {
+    paramArr.push('=', goog.string.urlEncode(opt_value));
+  }
+  return goog.uri.utils.appendQueryData_(paramArr);
+};
+
+
+/**
+ * Finds the next instance of a query parameter with the specified name.
+ *
+ * Does not instantiate any objects.
+ *
+ * @param {string} uri The URI to search.  May contain a fragment identifier
+ *     if opt_hashIndex is specified.
+ * @param {number} startIndex The index to begin searching for the key at.  A
+ *     match may be found even if this is one character after the ampersand.
+ * @param {string} keyEncoded The URI-encoded key.
+ * @param {number} hashOrEndIndex Index to stop looking at.  If a hash
+ *     mark is present, it should be its index, otherwise it should be the
+ *     length of the string.
+ * @return {number} The position of the first character in the key's name,
+ *     immediately after either a question mark or a dot.
+ * @private
+ */
+goog.uri.utils.findParam_ = function(
+    uri, startIndex, keyEncoded, hashOrEndIndex) {
+  var index = startIndex;
+  var keyLength = keyEncoded.length;
+
+  // Search for the key itself and post-filter for surronuding punctuation,
+  // rather than expensively building a regexp.
+  while ((index = uri.indexOf(keyEncoded, index)) >= 0 &&
+      index < hashOrEndIndex) {
+    var precedingChar = uri.charCodeAt(index - 1);
+    // Ensure that the preceding character is '&' or '?'.
+    if (precedingChar == goog.uri.utils.CharCode_.AMPERSAND ||
+        precedingChar == goog.uri.utils.CharCode_.QUESTION) {
+      // Ensure the following character is '&', '=', '#', or NaN
+      // (end of string).
+      var followingChar = uri.charCodeAt(index + keyLength);
+      if (!followingChar ||
+          followingChar == goog.uri.utils.CharCode_.EQUAL ||
+          followingChar == goog.uri.utils.CharCode_.AMPERSAND ||
+          followingChar == goog.uri.utils.CharCode_.HASH) {
+        return index;
+      }
+    }
+    index += keyLength + 1;
+  }
+
+  return -1;
+};
+
+
+/**
+ * Regular expression for finding a hash mark or end of string.
+ * @type {RegExp}
+ * @private
+ */
+goog.uri.utils.hashOrEndRe_ = /#|$/;
+
+
+/**
+ * Determines if the URI contains a specific key.
+ *
+ * Performs no object instantiations.
+ *
+ * @param {string} uri The URI to process.  May contain a fragment
+ *     identifier.
+ * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
+ * @return {boolean} Whether the key is present.
+ */
+goog.uri.utils.hasParam = function(uri, keyEncoded) {
+  return goog.uri.utils.findParam_(uri, 0, keyEncoded,
+      uri.search(goog.uri.utils.hashOrEndRe_)) >= 0;
+};
+
+
+/**
+ * Gets the first value of a query parameter.
+ * @param {string} uri The URI to process.  May contain a fragment.
+ * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
+ * @return {?string} The first value of the parameter (URI-decoded), or null
+ *     if the parameter is not found.
+ */
+goog.uri.utils.getParamValue = function(uri, keyEncoded) {
+  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
+  var foundIndex = goog.uri.utils.findParam_(
+      uri, 0, keyEncoded, hashOrEndIndex);
+
+  if (foundIndex < 0) {
+    return null;
+  } else {
+    var endPosition = uri.indexOf('&', foundIndex);
+    if (endPosition < 0 || endPosition > hashOrEndIndex) {
+      endPosition = hashOrEndIndex;
+    }
+    // Progress forth to the end of the "key=" or "key&" substring.
+    foundIndex += keyEncoded.length + 1;
+    // Use substr, because it (unlike substring) will return empty string
+    // if foundIndex > endPosition.
+    return goog.string.urlDecode(
+        uri.substr(foundIndex, endPosition - foundIndex));
+  }
+};
+
+
+/**
+ * Gets all values of a query parameter.
+ * @param {string} uri The URI to process.  May contain a framgnet.
+ * @param {string} keyEncoded The URI-encoded key.  Case-snsitive.
+ * @return {!Array<string>} All URI-decoded values with the given key.
+ *     If the key is not found, this will have length 0, but never be null.
+ */
+goog.uri.utils.getParamValues = function(uri, keyEncoded) {
+  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
+  var position = 0;
+  var foundIndex;
+  var result = [];
+
+  while ((foundIndex = goog.uri.utils.findParam_(
+      uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
+    // Find where this parameter ends, either the '&' or the end of the
+    // query parameters.
+    position = uri.indexOf('&', foundIndex);
+    if (position < 0 || position > hashOrEndIndex) {
+      position = hashOrEndIndex;
+    }
+
+    // Progress forth to the end of the "key=" or "key&" substring.
+    foundIndex += keyEncoded.length + 1;
+    // Use substr, because it (unlike substring) will return empty string
+    // if foundIndex > position.
+    result.push(goog.string.urlDecode(uri.substr(
+        foundIndex, position - foundIndex)));
+  }
+
+  return result;
+};
+
+
+/**
+ * Regexp to find trailing question marks and ampersands.
+ * @type {RegExp}
+ * @private
+ */
+goog.uri.utils.trailingQueryPunctuationRe_ = /[?&]($|#)/;
+
+
+/**
+ * Removes all instances of a query parameter.
+ * @param {string} uri The URI to process.  Must not contain a fragment.
+ * @param {string} keyEncoded The URI-encoded key.
+ * @return {string} The URI with all instances of the parameter removed.
+ */
+goog.uri.utils.removeParam = function(uri, keyEncoded) {
+  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
+  var position = 0;
+  var foundIndex;
+  var buffer = [];
+
+  // Look for a query parameter.
+  while ((foundIndex = goog.uri.utils.findParam_(
+      uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
+    // Get the portion of the query string up to, but not including, the ?
+    // or & starting the parameter.
+    buffer.push(uri.substring(position, foundIndex));
+    // Progress to immediately after the '&'.  If not found, go to the end.
+    // Avoid including the hash mark.
+    position = Math.min((uri.indexOf('&', foundIndex) + 1) || hashOrEndIndex,
+        hashOrEndIndex);
+  }
+
+  // Append everything that is remaining.
+  buffer.push(uri.substr(position));
+
+  // Join the buffer, and remove trailing punctuation that remains.
+  return buffer.join('').replace(
+      goog.uri.utils.trailingQueryPunctuationRe_, '$1');
+};
+
+
+/**
+ * Replaces all existing definitions of a parameter with a single definition.
+ *
+ * Repeated calls to this can exhibit quadratic behavior due to the need to
+ * find existing instances and reconstruct the string, though it should be
+ * limited given the 2kb limit.  Consider using appendParams to append multiple
+ * parameters in bulk.
+ *
+ * @param {string} uri The original URI, which may already have query data.
+ * @param {string} keyEncoded The key, which must already be URI encoded.
+ * @param {*} value The value, which will be stringized and encoded (assumed
+ *     not already to be encoded).
+ * @return {string} The URI with the query parameter added.
+ */
+goog.uri.utils.setParam = function(uri, keyEncoded, value) {
+  return goog.uri.utils.appendParam(
+      goog.uri.utils.removeParam(uri, keyEncoded), keyEncoded, value);
+};
+
+
+/**
+ * Generates a URI path using a given URI and a path with checks to
+ * prevent consecutive "//". The baseUri passed in must not contain
+ * query or fragment identifiers. The path to append may not contain query or
+ * fragment identifiers.
+ *
+ * @param {string} baseUri URI to use as the base.
+ * @param {string} path Path to append.
+ * @return {string} Updated URI.
+ */
+goog.uri.utils.appendPath = function(baseUri, path) {
+  goog.uri.utils.assertNoFragmentsOrQueries_(baseUri);
+
+  // Remove any trailing '/'
+  if (goog.string.endsWith(baseUri, '/')) {
+    baseUri = baseUri.substr(0, baseUri.length - 1);
+  }
+  // Remove any leading '/'
+  if (goog.string.startsWith(path, '/')) {
+    path = path.substr(1);
+  }
+  return goog.string.buildString(baseUri, '/', path);
+};
+
+
+/**
+ * Replaces the path.
+ * @param {string} uri URI to use as the base.
+ * @param {string} path New path.
+ * @return {string} Updated URI.
+ */
+goog.uri.utils.setPath = function(uri, path) {
+  // Add any missing '/'.
+  if (!goog.string.startsWith(path, '/')) {
+    path = '/' + path;
+  }
+  var parts = goog.uri.utils.split(uri);
+  return goog.uri.utils.buildFromEncodedParts(
+      parts[goog.uri.utils.ComponentIndex.SCHEME],
+      parts[goog.uri.utils.ComponentIndex.USER_INFO],
+      parts[goog.uri.utils.ComponentIndex.DOMAIN],
+      parts[goog.uri.utils.ComponentIndex.PORT],
+      path,
+      parts[goog.uri.utils.ComponentIndex.QUERY_DATA],
+      parts[goog.uri.utils.ComponentIndex.FRAGMENT]);
+};
+
+
+/**
+ * Standard supported query parameters.
+ * @enum {string}
+ */
+goog.uri.utils.StandardQueryParam = {
+
+  /** Unused parameter for unique-ifying. */
+  RANDOM: 'zx'
+};
+
+
+/**
+ * Sets the zx parameter of a URI to a random value.
+ * @param {string} uri Any URI.
+ * @return {string} That URI with the "zx" parameter added or replaced to
+ *     contain a random string.
+ */
+goog.uri.utils.makeUnique = function(uri) {
+  return goog.uri.utils.setParam(uri,
+      goog.uri.utils.StandardQueryParam.RANDOM, goog.string.getRandomString());
+};
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Wrapper class for handling XmlHttpRequests.
+ *
+ * One off requests can be sent through goog.net.XhrIo.send() or an
+ * instance can be created to send multiple requests.  Each request uses its
+ * own XmlHttpRequest object and handles clearing of the event callback to
+ * ensure no leaks.
+ *
+ * XhrIo is event based, it dispatches events when a request finishes, fails or
+ * succeeds or when the ready-state changes. The ready-state or timeout event
+ * fires first, followed by a generic completed event. Then the abort, error,
+ * or success event is fired as appropriate. Lastly, the ready event will fire
+ * to indicate that the object may be used to make another request.
+ *
+ * The error event may also be called before completed and
+ * ready-state-change if the XmlHttpRequest.open() or .send() methods throw.
+ *
+ * This class does not support multiple requests, queuing, or prioritization.
+ *
+ * Tested = IE6, FF1.5, Safari, Opera 8.5
+ *
+ * TODO(user): Error cases aren't playing nicely in Safari.
+ *
+ */
+
+
+goog.provide('goog.net.XhrIo');
+goog.provide('goog.net.XhrIo.ResponseType');
+
+goog.require('goog.Timer');
+goog.require('goog.array');
+goog.require('goog.debug.entryPointRegistry');
+goog.require('goog.events.EventTarget');
+goog.require('goog.json');
+goog.require('goog.log');
+goog.require('goog.net.ErrorCode');
+goog.require('goog.net.EventType');
+goog.require('goog.net.HttpStatus');
+goog.require('goog.net.XmlHttp');
+goog.require('goog.object');
+goog.require('goog.string');
+goog.require('goog.structs');
+goog.require('goog.structs.Map');
+goog.require('goog.uri.utils');
+goog.require('goog.userAgent');
+
+goog.forwardDeclare('goog.Uri');
+
+
+
+/**
+ * Basic class for handling XMLHttpRequests.
+ * @param {goog.net.XmlHttpFactory=} opt_xmlHttpFactory Factory to use when
+ *     creating XMLHttpRequest objects.
+ * @constructor
+ * @extends {goog.events.EventTarget}
+ */
+goog.net.XhrIo = function(opt_xmlHttpFactory) {
+  goog.net.XhrIo.base(this, 'constructor');
+
+  /**
+   * Map of default headers to add to every request, use:
+   * XhrIo.headers.set(name, value)
+   * @type {!goog.structs.Map}
+   */
+  this.headers = new goog.structs.Map();
+
+  /**
+   * Optional XmlHttpFactory
+   * @private {goog.net.XmlHttpFactory}
+   */
+  this.xmlHttpFactory_ = opt_xmlHttpFactory || null;
+
+  /**
+   * Whether XMLHttpRequest is active.  A request is active from the time send()
+   * is called until onReadyStateChange() is complete, or error() or abort()
+   * is called.
+   * @private {boolean}
+   */
+  this.active_ = false;
+
+  /**
+   * The XMLHttpRequest object that is being used for the transfer.
+   * @private {?goog.net.XhrLike.OrNative}
+   */
+  this.xhr_ = null;
+
+  /**
+   * The options to use with the current XMLHttpRequest object.
+   * @private {Object}
+   */
+  this.xhrOptions_ = null;
+
+  /**
+   * Last URL that was requested.
+   * @private {string|goog.Uri}
+   */
+  this.lastUri_ = '';
+
+  /**
+   * Method for the last request.
+   * @private {string}
+   */
+  this.lastMethod_ = '';
+
+  /**
+   * Last error code.
+   * @private {!goog.net.ErrorCode}
+   */
+  this.lastErrorCode_ = goog.net.ErrorCode.NO_ERROR;
+
+  /**
+   * Last error message.
+   * @private {Error|string}
+   */
+  this.lastError_ = '';
+
+  /**
+   * Used to ensure that we don't dispatch an multiple ERROR events. This can
+   * happen in IE when it does a synchronous load and one error is handled in
+   * the ready statte change and one is handled due to send() throwing an
+   * exception.
+   * @private {boolean}
+   */
+  this.errorDispatched_ = false;
+
+  /**
+   * Used to make sure we don't fire the complete event from inside a send call.
+   * @private {boolean}
+   */
+  this.inSend_ = false;
+
+  /**
+   * Used in determining if a call to {@link #onReadyStateChange_} is from
+   * within a call to this.xhr_.open.
+   * @private {boolean}
+   */
+  this.inOpen_ = false;
+
+  /**
+   * Used in determining if a call to {@link #onReadyStateChange_} is from
+   * within a call to this.xhr_.abort.
+   * @private {boolean}
+   */
+  this.inAbort_ = false;
+
+  /**
+   * Number of milliseconds after which an incomplete request will be aborted
+   * and a {@link goog.net.EventType.TIMEOUT} event raised; 0 means no timeout
+   * is set.
+   * @private {number}
+   */
+  this.timeoutInterval_ = 0;
+
+  /**
+   * Timer to track request timeout.
+   * @private {?number}
+   */
+  this.timeoutId_ = null;
+
+  /**
+   * The requested type for the response. The empty string means use the default
+   * XHR behavior.
+   * @private {goog.net.XhrIo.ResponseType}
+   */
+  this.responseType_ = goog.net.XhrIo.ResponseType.DEFAULT;
+
+  /**
+   * Whether a "credentialed" request is to be sent (one that is aware of
+   * cookies and authentication). This is applicable only for cross-domain
+   * requests and more recent browsers that support this part of the HTTP Access
+   * Control standard.
+   *
+   * @see http://www.w3.org/TR/XMLHttpRequest/#the-withcredentials-attribute
+   *
+   * @private {boolean}
+   */
+  this.withCredentials_ = false;
+
+  /**
+   * True if we can use XMLHttpRequest's timeout directly.
+   * @private {boolean}
+   */
+  this.useXhr2Timeout_ = false;
+};
+goog.inherits(goog.net.XhrIo, goog.events.EventTarget);
+
+
+/**
+ * Response types that may be requested for XMLHttpRequests.
+ * @enum {string}
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsetype-attribute
+ */
+goog.net.XhrIo.ResponseType = {
+  DEFAULT: '',
+  TEXT: 'text',
+  DOCUMENT: 'document',
+  // Not supported as of Chrome 10.0.612.1 dev
+  BLOB: 'blob',
+  ARRAY_BUFFER: 'arraybuffer'
+};
+
+
+/**
+ * A reference to the XhrIo logger
+ * @private {goog.debug.Logger}
+ * @const
+ */
+goog.net.XhrIo.prototype.logger_ =
+    goog.log.getLogger('goog.net.XhrIo');
+
+
+/**
+ * The Content-Type HTTP header name
+ * @type {string}
+ */
+goog.net.XhrIo.CONTENT_TYPE_HEADER = 'Content-Type';
+
+
+/**
+ * The pattern matching the 'http' and 'https' URI schemes
+ * @type {!RegExp}
+ */
+goog.net.XhrIo.HTTP_SCHEME_PATTERN = /^https?$/i;
+
+
+/**
+ * The methods that typically come along with form data.  We set different
+ * headers depending on whether the HTTP action is one of these.
+ */
+goog.net.XhrIo.METHODS_WITH_FORM_DATA = ['POST', 'PUT'];
+
+
+/**
+ * The Content-Type HTTP header value for a url-encoded form
+ * @type {string}
+ */
+goog.net.XhrIo.FORM_CONTENT_TYPE =
+    'application/x-www-form-urlencoded;charset=utf-8';
+
+
+/**
+ * The XMLHttpRequest Level two timeout delay ms property name.
+ *
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-timeout-attribute
+ *
+ * @private {string}
+ * @const
+ */
+goog.net.XhrIo.XHR2_TIMEOUT_ = 'timeout';
+
+
+/**
+ * The XMLHttpRequest Level two ontimeout handler property name.
+ *
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-timeout-attribute
+ *
+ * @private {string}
+ * @const
+ */
+goog.net.XhrIo.XHR2_ON_TIMEOUT_ = 'ontimeout';
+
+
+/**
+ * All non-disposed instances of goog.net.XhrIo created
+ * by {@link goog.net.XhrIo.send} are in this Array.
+ * @see goog.net.XhrIo.cleanup
+ * @private {!Array<!goog.net.XhrIo>}
+ */
+goog.net.XhrIo.sendInstances_ = [];
+
+
+/**
+ * Static send that creates a short lived instance of XhrIo to send the
+ * request.
+ * @see goog.net.XhrIo.cleanup
+ * @param {string|goog.Uri} url Uri to make request to.
+ * @param {?function(this:goog.net.XhrIo, ?)=} opt_callback Callback function
+ *     for when request is complete.
+ * @param {string=} opt_method Send method, default: GET.
+ * @param {ArrayBuffer|ArrayBufferView|Blob|Document|FormData|string=}
+ *     opt_content Body data.
+ * @param {Object|goog.structs.Map=} opt_headers Map of headers to add to the
+ *     request.
+ * @param {number=} opt_timeoutInterval Number of milliseconds after which an
+ *     incomplete request will be aborted; 0 means no timeout is set.
+ * @param {boolean=} opt_withCredentials Whether to send credentials with the
+ *     request. Default to false. See {@link goog.net.XhrIo#setWithCredentials}.
+ * @return {!goog.net.XhrIo} The sent XhrIo.
+ */
+goog.net.XhrIo.send = function(url, opt_callback, opt_method, opt_content,
+                               opt_headers, opt_timeoutInterval,
+                               opt_withCredentials) {
+  var x = new goog.net.XhrIo();
+  goog.net.XhrIo.sendInstances_.push(x);
+  if (opt_callback) {
+    x.listen(goog.net.EventType.COMPLETE, opt_callback);
+  }
+  x.listenOnce(goog.net.EventType.READY, x.cleanupSend_);
+  if (opt_timeoutInterval) {
+    x.setTimeoutInterval(opt_timeoutInterval);
+  }
+  if (opt_withCredentials) {
+    x.setWithCredentials(opt_withCredentials);
+  }
+  x.send(url, opt_method, opt_content, opt_headers);
+  return x;
+};
+
+
+/**
+ * Disposes all non-disposed instances of goog.net.XhrIo created by
+ * {@link goog.net.XhrIo.send}.
+ * {@link goog.net.XhrIo.send} cleans up the goog.net.XhrIo instance
+ * it creates when the request completes or fails.  However, if
+ * the request never completes, then the goog.net.XhrIo is not disposed.
+ * This can occur if the window is unloaded before the request completes.
+ * We could have {@link goog.net.XhrIo.send} return the goog.net.XhrIo
+ * it creates and make the client of {@link goog.net.XhrIo.send} be
+ * responsible for disposing it in this case.  However, this makes things
+ * significantly more complicated for the client, and the whole point
+ * of {@link goog.net.XhrIo.send} is that it's simple and easy to use.
+ * Clients of {@link goog.net.XhrIo.send} should call
+ * {@link goog.net.XhrIo.cleanup} when doing final
+ * cleanup on window unload.
+ */
+goog.net.XhrIo.cleanup = function() {
+  var instances = goog.net.XhrIo.sendInstances_;
+  while (instances.length) {
+    instances.pop().dispose();
+  }
+};
+
+
+/**
+ * Installs exception protection for all entry point introduced by
+ * goog.net.XhrIo instances which are not protected by
+ * {@link goog.debug.ErrorHandler#protectWindowSetTimeout},
+ * {@link goog.debug.ErrorHandler#protectWindowSetInterval}, or
+ * {@link goog.events.protectBrowserEventEntryPoint}.
+ *
+ * @param {goog.debug.ErrorHandler} errorHandler Error handler with which to
+ *     protect the entry point(s).
+ */
+goog.net.XhrIo.protectEntryPoints = function(errorHandler) {
+  goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_ =
+      errorHandler.protectEntryPoint(
+          goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_);
+};
+
+
+/**
+ * Disposes of the specified goog.net.XhrIo created by
+ * {@link goog.net.XhrIo.send} and removes it from
+ * {@link goog.net.XhrIo.pendingStaticSendInstances_}.
+ * @private
+ */
+goog.net.XhrIo.prototype.cleanupSend_ = function() {
+  this.dispose();
+  goog.array.remove(goog.net.XhrIo.sendInstances_, this);
+};
+
+
+/**
+ * Returns the number of milliseconds after which an incomplete request will be
+ * aborted, or 0 if no timeout is set.
+ * @return {number} Timeout interval in milliseconds.
+ */
+goog.net.XhrIo.prototype.getTimeoutInterval = function() {
+  return this.timeoutInterval_;
+};
+
+
+/**
+ * Sets the number of milliseconds after which an incomplete request will be
+ * aborted and a {@link goog.net.EventType.TIMEOUT} event raised; 0 means no
+ * timeout is set.
+ * @param {number} ms Timeout interval in milliseconds; 0 means none.
+ */
+goog.net.XhrIo.prototype.setTimeoutInterval = function(ms) {
+  this.timeoutInterval_ = Math.max(0, ms);
+};
+
+
+/**
+ * Sets the desired type for the response. At time of writing, this is only
+ * supported in very recent versions of WebKit (10.0.612.1 dev and later).
+ *
+ * If this is used, the response may only be accessed via {@link #getResponse}.
+ *
+ * @param {goog.net.XhrIo.ResponseType} type The desired type for the response.
+ */
+goog.net.XhrIo.prototype.setResponseType = function(type) {
+  this.responseType_ = type;
+};
+
+
+/**
+ * Gets the desired type for the response.
+ * @return {goog.net.XhrIo.ResponseType} The desired type for the response.
+ */
+goog.net.XhrIo.prototype.getResponseType = function() {
+  return this.responseType_;
+};
+
+
+/**
+ * Sets whether a "credentialed" request that is aware of cookie and
+ * authentication information should be made. This option is only supported by
+ * browsers that support HTTP Access Control. As of this writing, this option
+ * is not supported in IE.
+ *
+ * @param {boolean} withCredentials Whether this should be a "credentialed"
+ *     request.
+ */
+goog.net.XhrIo.prototype.setWithCredentials = function(withCredentials) {
+  this.withCredentials_ = withCredentials;
+};
+
+
+/**
+ * Gets whether a "credentialed" request is to be sent.
+ * @return {boolean} The desired type for the response.
+ */
+goog.net.XhrIo.prototype.getWithCredentials = function() {
+  return this.withCredentials_;
+};
+
+
+/**
+ * Instance send that actually uses XMLHttpRequest to make a server call.
+ * @param {string|goog.Uri} url Uri to make request to.
+ * @param {string=} opt_method Send method, default: GET.
+ * @param {ArrayBuffer|ArrayBufferView|Blob|Document|FormData|string=}
+ *     opt_content Body data.
+ * @param {Object|goog.structs.Map=} opt_headers Map of headers to add to the
+ *     request.
+ */
+goog.net.XhrIo.prototype.send = function(url, opt_method, opt_content,
+                                         opt_headers) {
+  if (this.xhr_) {
+    throw Error('[goog.net.XhrIo] Object is active with another request=' +
+        this.lastUri_ + '; newUri=' + url);
+  }
+
+  var method = opt_method ? opt_method.toUpperCase() : 'GET';
+
+  this.lastUri_ = url;
+  this.lastError_ = '';
+  this.lastErrorCode_ = goog.net.ErrorCode.NO_ERROR;
+  this.lastMethod_ = method;
+  this.errorDispatched_ = false;
+  this.active_ = true;
+
+  // Use the factory to create the XHR object and options
+  this.xhr_ = this.createXhr();
+  this.xhrOptions_ = this.xmlHttpFactory_ ?
+      this.xmlHttpFactory_.getOptions() : goog.net.XmlHttp.getOptions();
+
+  // Set up the onreadystatechange callback
+  this.xhr_.onreadystatechange = goog.bind(this.onReadyStateChange_, this);
+
+  /**
+   * Try to open the XMLHttpRequest (always async), if an error occurs here it
+   * is generally permission denied
+   * @preserveTry
+   */
+  try {
+    goog.log.fine(this.logger_, this.formatMsg_('Opening Xhr'));
+    this.inOpen_ = true;
+    this.xhr_.open(method, String(url), true);  // Always async!
+    this.inOpen_ = false;
+  } catch (err) {
+    goog.log.fine(this.logger_,
+        this.formatMsg_('Error opening Xhr: ' + err.message));
+    this.error_(goog.net.ErrorCode.EXCEPTION, err);
+    return;
+  }
+
+  // We can't use null since this won't allow requests with form data to have a
+  // content length specified which will cause some proxies to return a 411
+  // error.
+  var content = opt_content || '';
+
+  var headers = this.headers.clone();
+
+  // Add headers specific to this request
+  if (opt_headers) {
+    goog.structs.forEach(opt_headers, function(value, key) {
+      headers.set(key, value);
+    });
+  }
+
+  // Find whether a content type header is set, ignoring case.
+  // HTTP header names are case-insensitive.  See:
+  // http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+  var contentTypeKey = goog.array.find(headers.getKeys(),
+      goog.net.XhrIo.isContentTypeHeader_);
+
+  var contentIsFormData = (goog.global['FormData'] &&
+      (content instanceof goog.global['FormData']));
+  if (goog.array.contains(goog.net.XhrIo.METHODS_WITH_FORM_DATA, method) &&
+      !contentTypeKey && !contentIsFormData) {
+    // For requests typically with form data, default to the url-encoded form
+    // content type unless this is a FormData request.  For FormData,
+    // the browser will automatically add a multipart/form-data content type
+    // with an appropriate multipart boundary.
+    headers.set(goog.net.XhrIo.CONTENT_TYPE_HEADER,
+                goog.net.XhrIo.FORM_CONTENT_TYPE);
+  }
+
+  // Add the headers to the Xhr object
+  headers.forEach(function(value, key) {
+    this.xhr_.setRequestHeader(key, value);
+  }, this);
+
+  if (this.responseType_) {
+    this.xhr_.responseType = this.responseType_;
+  }
+
+  if (goog.object.containsKey(this.xhr_, 'withCredentials')) {
+    this.xhr_.withCredentials = this.withCredentials_;
+  }
+
+  /**
+   * Try to send the request, or other wise report an error (404 not found).
+   * @preserveTry
+   */
+  try {
+    this.cleanUpTimeoutTimer_(); // Paranoid, should never be running.
+    if (this.timeoutInterval_ > 0) {
+      this.useXhr2Timeout_ = goog.net.XhrIo.shouldUseXhr2Timeout_(this.xhr_);
+      goog.log.fine(this.logger_, this.formatMsg_('Will abort after ' +
+          this.timeoutInterval_ + 'ms if incomplete, xhr2 ' +
+          this.useXhr2Timeout_));
+      if (this.useXhr2Timeout_) {
+        this.xhr_[goog.net.XhrIo.XHR2_TIMEOUT_] = this.timeoutInterval_;
+        this.xhr_[goog.net.XhrIo.XHR2_ON_TIMEOUT_] =
+            goog.bind(this.timeout_, this);
+      } else {
+        this.timeoutId_ = goog.Timer.callOnce(this.timeout_,
+            this.timeoutInterval_, this);
+      }
+    }
+    goog.log.fine(this.logger_, this.formatMsg_('Sending request'));
+    this.inSend_ = true;
+    this.xhr_.send(content);
+    this.inSend_ = false;
+
+  } catch (err) {
+    goog.log.fine(this.logger_, this.formatMsg_('Send error: ' + err.message));
+    this.error_(goog.net.ErrorCode.EXCEPTION, err);
+  }
+};
+
+
+/**
+ * Determines if the argument is an XMLHttpRequest that supports the level 2
+ * timeout value and event.
+ *
+ * Currently, FF 21.0 OS X has the fields but won't actually call the timeout
+ * handler.  Perhaps the confusion in the bug referenced below hasn't
+ * entirely been resolved.
+ *
+ * @see http://www.w3.org/TR/XMLHttpRequest/#the-timeout-attribute
+ * @see https://bugzilla.mozilla.org/show_bug.cgi?id=525816
+ *
+ * @param {!goog.net.XhrLike.OrNative} xhr The request.
+ * @return {boolean} True if the request supports level 2 timeout.
+ * @private
+ */
+goog.net.XhrIo.shouldUseXhr2Timeout_ = function(xhr) {
+  return goog.userAgent.IE &&
+      goog.userAgent.isVersionOrHigher(9) &&
+      goog.isNumber(xhr[goog.net.XhrIo.XHR2_TIMEOUT_]) &&
+      goog.isDef(xhr[goog.net.XhrIo.XHR2_ON_TIMEOUT_]);
+};
+
+
+/**
+ * @param {string} header An HTTP header key.
+ * @return {boolean} Whether the key is a content type header (ignoring
+ *     case.
+ * @private
+ */
+goog.net.XhrIo.isContentTypeHeader_ = function(header) {
+  return goog.string.caseInsensitiveEquals(
+      goog.net.XhrIo.CONTENT_TYPE_HEADER, header);
+};
+
+
+/**
+ * Creates a new XHR object.
+ * @return {!goog.net.XhrLike.OrNative} The newly created XHR object.
+ * @protected
+ */
+goog.net.XhrIo.prototype.createXhr = function() {
+  return this.xmlHttpFactory_ ?
+      this.xmlHttpFactory_.createInstance() : goog.net.XmlHttp();
+};
+
+
+/**
+ * The request didn't complete after {@link goog.net.XhrIo#timeoutInterval_}
+ * milliseconds; raises a {@link goog.net.EventType.TIMEOUT} event and aborts
+ * the request.
+ * @private
+ */
+goog.net.XhrIo.prototype.timeout_ = function() {
+  if (typeof goog == 'undefined') {
+    // If goog is undefined then the callback has occurred as the application
+    // is unloading and will error.  Thus we let it silently fail.
+  } else if (this.xhr_) {
+    this.lastError_ = 'Timed out after ' + this.timeoutInterval_ +
+                      'ms, aborting';
+    this.lastErrorCode_ = goog.net.ErrorCode.TIMEOUT;
+    goog.log.fine(this.logger_, this.formatMsg_(this.lastError_));
+    this.dispatchEvent(goog.net.EventType.TIMEOUT);
+    this.abort(goog.net.ErrorCode.TIMEOUT);
+  }
+};
+
+
+/**
+ * Something errorred, so inactivate, fire error callback and clean up
+ * @param {goog.net.ErrorCode} errorCode The error code.
+ * @param {Error} err The error object.
+ * @private
+ */
+goog.net.XhrIo.prototype.error_ = function(errorCode, err) {
+  this.active_ = false;
+  if (this.xhr_) {
+    this.inAbort_ = true;
+    this.xhr_.abort();  // Ensures XHR isn't hung (FF)
+    this.inAbort_ = false;
+  }
+  this.lastError_ = err;
+  this.lastErrorCode_ = errorCode;
+  this.dispatchErrors_();
+  this.cleanUpXhr_();
+};
+
+
+/**
+ * Dispatches COMPLETE and ERROR in case of an error. This ensures that we do
+ * not dispatch multiple error events.
+ * @private
+ */
+goog.net.XhrIo.prototype.dispatchErrors_ = function() {
+  if (!this.errorDispatched_) {
+    this.errorDispatched_ = true;
+    this.dispatchEvent(goog.net.EventType.COMPLETE);
+    this.dispatchEvent(goog.net.EventType.ERROR);
+  }
+};
+
+
+/**
+ * Abort the current XMLHttpRequest
+ * @param {goog.net.ErrorCode=} opt_failureCode Optional error code to use -
+ *     defaults to ABORT.
+ */
+goog.net.XhrIo.prototype.abort = function(opt_failureCode) {
+  if (this.xhr_ && this.active_) {
+    goog.log.fine(this.logger_, this.formatMsg_('Aborting'));
+    this.active_ = false;
+    this.inAbort_ = true;
+    this.xhr_.abort();
+    this.inAbort_ = false;
+    this.lastErrorCode_ = opt_failureCode || goog.net.ErrorCode.ABORT;
+    this.dispatchEvent(goog.net.EventType.COMPLETE);
+    this.dispatchEvent(goog.net.EventType.ABORT);
+    this.cleanUpXhr_();
+  }
+};
+
+
+/**
+ * Nullifies all callbacks to reduce risks of leaks.
+ * @override
+ * @protected
+ */
+goog.net.XhrIo.prototype.disposeInternal = function() {
+  if (this.xhr_) {
+    // We explicitly do not call xhr_.abort() unless active_ is still true.
+    // This is to avoid unnecessarily aborting a successful request when
+    // dispose() is called in a callback triggered by a complete response, but
+    // in which browser cleanup has not yet finished.
+    // (See http://b/issue?id=1684217.)
+    if (this.active_) {
+      this.active_ = false;
+      this.inAbort_ = true;
+      this.xhr_.abort();
+      this.inAbort_ = false;
+    }
+    this.cleanUpXhr_(true);
+  }
+
+  goog.net.XhrIo.base(this, 'disposeInternal');
+};
+
+
+/**
+ * Internal handler for the XHR object's readystatechange event.  This method
+ * checks the status and the readystate and fires the correct callbacks.
+ * If the request has ended, the handlers are cleaned up and the XHR object is
+ * nullified.
+ * @private
+ */
+goog.net.XhrIo.prototype.onReadyStateChange_ = function() {
+  if (this.isDisposed()) {
+    // This method is the target of an untracked goog.Timer.callOnce().
+    return;
+  }
+  if (!this.inOpen_ && !this.inSend_ && !this.inAbort_) {
+    // Were not being called from within a call to this.xhr_.send
+    // this.xhr_.abort, or this.xhr_.open, so this is an entry point
+    this.onReadyStateChangeEntryPoint_();
+  } else {
+    this.onReadyStateChangeHelper_();
+  }
+};
+
+
+/**
+ * Used to protect the onreadystatechange handler entry point.  Necessary
+ * as {#onReadyStateChange_} maybe called from within send or abort, this
+ * method is only called when {#onReadyStateChange_} is called as an
+ * entry point.
+ * {@see #protectEntryPoints}
+ * @private
+ */
+goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_ = function() {
+  this.onReadyStateChangeHelper_();
+};
+
+
+/**
+ * Helper for {@link #onReadyStateChange_}.  This is used so that
+ * entry point calls to {@link #onReadyStateChange_} can be routed through
+ * {@link #onReadyStateChangeEntryPoint_}.
+ * @private
+ */
+goog.net.XhrIo.prototype.onReadyStateChangeHelper_ = function() {
+  if (!this.active_) {
+    // can get called inside abort call
+    return;
+  }
+
+  if (typeof goog == 'undefined') {
+    // NOTE(user): If goog is undefined then the callback has occurred as the
+    // application is unloading and will error.  Thus we let it silently fail.
+
+  } else if (
+      this.xhrOptions_[goog.net.XmlHttp.OptionType.LOCAL_REQUEST_ERROR] &&
+      this.getReadyState() == goog.net.XmlHttp.ReadyState.COMPLETE &&
+      this.getStatus() == 2) {
+    // NOTE(user): In IE if send() errors on a *local* request the readystate
+    // is still changed to COMPLETE.  We need to ignore it and allow the
+    // try/catch around send() to pick up the error.
+    goog.log.fine(this.logger_, this.formatMsg_(
+        'Local request error detected and ignored'));
+
+  } else {
+
+    // In IE when the response has been cached we sometimes get the callback
+    // from inside the send call and this usually breaks code that assumes that
+    // XhrIo is asynchronous.  If that is the case we delay the callback
+    // using a timer.
+    if (this.inSend_ &&
+        this.getReadyState() == goog.net.XmlHttp.ReadyState.COMPLETE) {
+      goog.Timer.callOnce(this.onReadyStateChange_, 0, this);
+      return;
+    }
+
+    this.dispatchEvent(goog.net.EventType.READY_STATE_CHANGE);
+
+    // readyState indicates the transfer has finished
+    if (this.isComplete()) {
+      goog.log.fine(this.logger_, this.formatMsg_('Request complete'));
+
+      this.active_ = false;
+
+      try {
+        // Call the specific callbacks for success or failure. Only call the
+        // success if the status is 200 (HTTP_OK) or 304 (HTTP_CACHED)
+        if (this.isSuccess()) {
+          this.dispatchEvent(goog.net.EventType.COMPLETE);
+          this.dispatchEvent(goog.net.EventType.SUCCESS);
+        } else {
+          this.lastErrorCode_ = goog.net.ErrorCode.HTTP_ERROR;
+          this.lastError_ =
+              this.getStatusText() + ' [' + this.getStatus() + ']';
+          this.dispatchErrors_();
+        }
+      } finally {
+        this.cleanUpXhr_();
+      }
+    }
+  }
+};
+
+
+/**
+ * Remove the listener to protect against leaks, and nullify the XMLHttpRequest
+ * object.
+ * @param {boolean=} opt_fromDispose If this is from the dispose (don't want to
+ *     fire any events).
+ * @private
+ */
+goog.net.XhrIo.prototype.cleanUpXhr_ = function(opt_fromDispose) {
+  if (this.xhr_) {
+    // Cancel any pending timeout event handler.
+    this.cleanUpTimeoutTimer_();
+
+    // Save reference so we can mark it as closed after the READY event.  The
+    // READY event may trigger another request, thus we must nullify this.xhr_
+    var xhr = this.xhr_;
+    var clearedOnReadyStateChange =
+        this.xhrOptions_[goog.net.XmlHttp.OptionType.USE_NULL_FUNCTION] ?
+            goog.nullFunction : null;
+    this.xhr_ = null;
+    this.xhrOptions_ = null;
+
+    if (!opt_fromDispose) {
+      this.dispatchEvent(goog.net.EventType.READY);
+    }
+
+    try {
+      // NOTE(user): Not nullifying in FireFox can still leak if the callbacks
+      // are defined in the same scope as the instance of XhrIo. But, IE doesn't
+      // allow you to set the onreadystatechange to NULL so nullFunction is
+      // used.
+      xhr.onreadystatechange = clearedOnReadyStateChange;
+    } catch (e) {
+      // This seems to occur with a Gears HTTP request. Delayed the setting of
+      // this onreadystatechange until after READY is sent out and catching the
+      // error to see if we can track down the problem.
+      goog.log.error(this.logger_,
+          'Problem encountered resetting onreadystatechange: ' + e.message);
+    }
+  }
+};
+
+
+/**
+ * Make sure the timeout timer isn't running.
+ * @private
+ */
+goog.net.XhrIo.prototype.cleanUpTimeoutTimer_ = function() {
+  if (this.xhr_ && this.useXhr2Timeout_) {
+    this.xhr_[goog.net.XhrIo.XHR2_ON_TIMEOUT_] = null;
+  }
+  if (goog.isNumber(this.timeoutId_)) {
+    goog.Timer.clear(this.timeoutId_);
+    this.timeoutId_ = null;
+  }
+};
+
+
+/**
+ * @return {boolean} Whether there is an active request.
+ */
+goog.net.XhrIo.prototype.isActive = function() {
+  return !!this.xhr_;
+};
+
+
+/**
+ * @return {boolean} Whether the request has completed.
+ */
+goog.net.XhrIo.prototype.isComplete = function() {
+  return this.getReadyState() == goog.net.XmlHttp.ReadyState.COMPLETE;
+};
+
+
+/**
+ * @return {boolean} Whether the request completed with a success.
+ */
+goog.net.XhrIo.prototype.isSuccess = function() {
+  var status = this.getStatus();
+  // A zero status code is considered successful for local files.
+  return goog.net.HttpStatus.isSuccess(status) ||
+      status === 0 && !this.isLastUriEffectiveSchemeHttp_();
+};
+
+
+/**
+ * @return {boolean} whether the effective scheme of the last URI that was
+ *     fetched was 'http' or 'https'.
+ * @private
+ */
+goog.net.XhrIo.prototype.isLastUriEffectiveSchemeHttp_ = function() {
+  var scheme = goog.uri.utils.getEffectiveScheme(String(this.lastUri_));
+  return goog.net.XhrIo.HTTP_SCHEME_PATTERN.test(scheme);
+};
+
+
+/**
+ * Get the readystate from the Xhr object
+ * Will only return correct result when called from the context of a callback
+ * @return {goog.net.XmlHttp.ReadyState} goog.net.XmlHttp.ReadyState.*.
+ */
+goog.net.XhrIo.prototype.getReadyState = function() {
+  return this.xhr_ ?
+      /** @type {goog.net.XmlHttp.ReadyState} */ (this.xhr_.readyState) :
+      goog.net.XmlHttp.ReadyState.UNINITIALIZED;
+};
+
+
+/**
+ * Get the status from the Xhr object
+ * Will only return correct result when called from the context of a callback
+ * @return {number} Http status.
+ */
+goog.net.XhrIo.prototype.getStatus = function() {
+  /**
+   * IE doesn't like you checking status until the readystate is greater than 2
+   * (i.e. it is receiving or complete).  The try/catch is used for when the
+   * page is unloading and an ERROR_NOT_AVAILABLE may occur when accessing xhr_.
+   * @preserveTry
+   */
+  try {
+    return this.getReadyState() > goog.net.XmlHttp.ReadyState.LOADED ?
+        this.xhr_.status : -1;
+  } catch (e) {
+    return -1;
+  }
+};
+
+
+/**
+ * Get the status text from the Xhr object
+ * Will only return correct result when called from the context of a callback
+ * @return {string} Status text.
+ */
+goog.net.XhrIo.prototype.getStatusText = function() {
+  /**
+   * IE doesn't like you checking status until the readystate is greater than 2
+   * (i.e. it is recieving or complete).  The try/catch is used for when the
+   * page is unloading and an ERROR_NOT_AVAILABLE may occur when accessing xhr_.
+   * @preserveTry
+   */
+  try {
+    return this.getReadyState() > goog.net.XmlHttp.ReadyState.LOADED ?
+        this.xhr_.statusText : '';
+  } catch (e) {
+    goog.log.fine(this.logger_, 'Can not get status: ' + e.message);
+    return '';
+  }
+};
+
+
+/**
+ * Get the last Uri that was requested
+ * @return {string} Last Uri.
+ */
+goog.net.XhrIo.prototype.getLastUri = function() {
+  return String(this.lastUri_);
+};
+
+
+/**
+ * Get the response text from the Xhr object
+ * Will only return correct result when called from the context of a callback.
+ * @return {string} Result from the server, or '' if no result available.
+ */
+goog.net.XhrIo.prototype.getResponseText = function() {
+  /** @preserveTry */
+  try {
+    return this.xhr_ ? this.xhr_.responseText : '';
+  } catch (e) {
+    // http://www.w3.org/TR/XMLHttpRequest/#the-responsetext-attribute
+    // states that responseText should return '' (and responseXML null)
+    // when the state is not LOADING or DONE. Instead, IE can
+    // throw unexpected exceptions, for example when a request is aborted
+    // or no data is available yet.
+    goog.log.fine(this.logger_, 'Can not get responseText: ' + e.message);
+    return '';
+  }
+};
+
+
+/**
+ * Get the response body from the Xhr object. This property is only available
+ * in IE since version 7 according to MSDN:
+ * http://msdn.microsoft.com/en-us/library/ie/ms534368(v=vs.85).aspx
+ * Will only return correct result when called from the context of a callback.
+ *
+ * One option is to construct a VBArray from the returned object and convert
+ * it to a JavaScript array using the toArray method:
+ * {@code (new window['VBArray'](xhrIo.getResponseBody())).toArray()}
+ * This will result in an array of numbers in the range of [0..255]
+ *
+ * Another option is to use the VBScript CStr method to convert it into a
+ * string as outlined in http://stackoverflow.com/questions/1919972
+ *
+ * @return {Object} Binary result from the server or null if not available.
+ */
+goog.net.XhrIo.prototype.getResponseBody = function() {
+  /** @preserveTry */
+  try {
+    if (this.xhr_ && 'responseBody' in this.xhr_) {
+      return this.xhr_['responseBody'];
+    }
+  } catch (e) {
+    // IE can throw unexpected exceptions, for example when a request is aborted
+    // or no data is yet available.
+    goog.log.fine(this.logger_, 'Can not get responseBody: ' + e.message);
+  }
+  return null;
+};
+
+
+/**
+ * Get the response XML from the Xhr object
+ * Will only return correct result when called from the context of a callback.
+ * @return {Document} The DOM Document representing the XML file, or null
+ * if no result available.
+ */
+goog.net.XhrIo.prototype.getResponseXml = function() {
+  /** @preserveTry */
+  try {
+    return this.xhr_ ? this.xhr_.responseXML : null;
+  } catch (e) {
+    goog.log.fine(this.logger_, 'Can not get responseXML: ' + e.message);
+    return null;
+  }
+};
+
+
+/**
+ * Get the response and evaluates it as JSON from the Xhr object
+ * Will only return correct result when called from the context of a callback
+ * @param {string=} opt_xssiPrefix Optional XSSI prefix string to use for
+ *     stripping of the response before parsing. This needs to be set only if
+ *     your backend server prepends the same prefix string to the JSON response.
+ * @return {Object|undefined} JavaScript object.
+ */
+goog.net.XhrIo.prototype.getResponseJson = function(opt_xssiPrefix) {
+  if (!this.xhr_) {
+    return undefined;
+  }
+
+  var responseText = this.xhr_.responseText;
+  if (opt_xssiPrefix && responseText.indexOf(opt_xssiPrefix) == 0) {
+    responseText = responseText.substring(opt_xssiPrefix.length);
+  }
+
+  return goog.json.parse(responseText);
+};
+
+
+/**
+ * Get the response as the type specificed by {@link #setResponseType}. At time
+ * of writing, this is only directly supported in very recent versions of WebKit
+ * (10.0.612.1 dev and later). If the field is not supported directly, we will
+ * try to emulate it.
+ *
+ * Emulating the response means following the rules laid out at
+ * http://www.w3.org/TR/XMLHttpRequest/#the-response-attribute
+ *
+ * On browsers with no support for this (Chrome < 10, Firefox < 4, etc), only
+ * response types of DEFAULT or TEXT may be used, and the response returned will
+ * be the text response.
+ *
+ * On browsers with Mozilla's draft support for array buffers (Firefox 4, 5),
+ * only response types of DEFAULT, TEXT, and ARRAY_BUFFER may be used, and the
+ * response returned will be either the text response or the Mozilla
+ * implementation of the array buffer response.
+ *
+ * On browsers will full support, any valid response type supported by the
+ * browser may be used, and the response provided by the browser will be
+ * returned.
+ *
+ * @return {*} The response.
+ */
+goog.net.XhrIo.prototype.getResponse = function() {
+  /** @preserveTry */
+  try {
+    if (!this.xhr_) {
+      return null;
+    }
+    if ('response' in this.xhr_) {
+      return this.xhr_.response;
+    }
+    switch (this.responseType_) {
+      case goog.net.XhrIo.ResponseType.DEFAULT:
+      case goog.net.XhrIo.ResponseType.TEXT:
+        return this.xhr_.responseText;
+        // DOCUMENT and BLOB don't need to be handled here because they are
+        // introduced in the same spec that adds the .response field, and would
+        // have been caught above.
+        // ARRAY_BUFFER needs an implementation for Firefox 4, where it was
+        // implemented using a draft spec rather than the final spec.
+      case goog.net.XhrIo.ResponseType.ARRAY_BUFFER:
+        if ('mozResponseArrayBuffer' in this.xhr_) {
+          return this.xhr_.mozResponseArrayBuffer;
+        }
+    }
+    // Fell through to a response type that is not supported on this browser.
+    goog.log.error(this.logger_,
+        'Response type ' + this.responseType_ + ' is not ' +
+        'supported on this browser');
+    return null;
+  } catch (e) {
+    goog.log.fine(this.logger_, 'Can not get response: ' + e.message);
+    return null;
+  }
+};
+
+
+/**
+ * Get the value of the response-header with the given name from the Xhr object
+ * Will only return correct result when called from the context of a callback
+ * and the request has completed
+ * @param {string} key The name of the response-header to retrieve.
+ * @return {string|undefined} The value of the response-header named key.
+ */
+goog.net.XhrIo.prototype.getResponseHeader = function(key) {
+  return this.xhr_ && this.isComplete() ?
+      this.xhr_.getResponseHeader(key) : undefined;
+};
+
+
+/**
+ * Gets the text of all the headers in the response.
+ * Will only return correct result when called from the context of a callback
+ * and the request has completed.
+ * @return {string} The value of the response headers or empty string.
+ */
+goog.net.XhrIo.prototype.getAllResponseHeaders = function() {
+  return this.xhr_ && this.isComplete() ?
+      this.xhr_.getAllResponseHeaders() : '';
+};
+
+
+/**
+ * Returns all response headers as a key-value map.
+ * Multiple values for the same header key can be combined into one,
+ * separated by a comma and a space.
+ * Note that the native getResponseHeader method for retrieving a single header
+ * does a case insensitive match on the header name. This method does not
+ * include any case normalization logic, it will just return a key-value
+ * representation of the headers.
+ * See: http://www.w3.org/TR/XMLHttpRequest/#the-getresponseheader()-method
+ * @return {!Object<string, string>} An object with the header keys as keys
+ *     and header values as values.
+ */
+goog.net.XhrIo.prototype.getResponseHeaders = function() {
+  var headersObject = {};
+  var headersArray = this.getAllResponseHeaders().split('\r\n');
+  for (var i = 0; i < headersArray.length; i++) {
+    if (goog.string.isEmptyOrWhitespace(headersArray[i])) {
+      continue;
+    }
+    var keyValue = goog.string.splitLimit(headersArray[i], ': ', 2);
+    if (headersObject[keyValue[0]]) {
+      headersObject[keyValue[0]] += ', ' + keyValue[1];
+    } else {
+      headersObject[keyValue[0]] = keyValue[1];
+    }
+  }
+  return headersObject;
+};
+
+
+/**
+ * Get the last error message
+ * @return {goog.net.ErrorCode} Last error code.
+ */
+goog.net.XhrIo.prototype.getLastErrorCode = function() {
+  return this.lastErrorCode_;
+};
+
+
+/**
+ * Get the last error message
+ * @return {string} Last error message.
+ */
+goog.net.XhrIo.prototype.getLastError = function() {
+  return goog.isString(this.lastError_) ? this.lastError_ :
+      String(this.lastError_);
+};
+
+
+/**
+ * Adds the last method, status and URI to the message.  This is used to add
+ * this information to the logging calls.
+ * @param {string} msg The message text that we want to add the extra text to.
+ * @return {string} The message with the extra text appended.
+ * @private
+ */
+goog.net.XhrIo.prototype.formatMsg_ = function(msg) {
+  return msg + ' [' + this.lastMethod_ + ' ' + this.lastUri_ + ' ' +
+      this.getStatus() + ']';
+};
+
+
+// Register the xhr handler as an entry point, so that
+// it can be monitored for exception handling, etc.
+goog.debug.entryPointRegistry.register(
+    /**
+     * @param {function(!Function): !Function} transformer The transforming
+     *     function.
+     */
+    function(transformer) {
+      goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_ =
+          transformer(goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_);
+    });
+
+goog.provide('ol.format.FormatType');
+
+
+/**
+ * @enum {string}
+ */
+ol.format.FormatType = {
+  BINARY: 'binary',
+  JSON: 'json',
+  TEXT: 'text',
+  XML: 'xml'
+};
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview
+ * XML utilities.
+ *
+ */
+
+goog.provide('goog.dom.xml');
+
+goog.require('goog.dom');
+goog.require('goog.dom.NodeType');
+
+
+/**
+ * Max XML size for MSXML2.  Used to prevent potential DoS attacks.
+ * @type {number}
+ */
+goog.dom.xml.MAX_XML_SIZE_KB = 2 * 1024;  // In kB
+
+
+/**
+ * Max XML size for MSXML2.  Used to prevent potential DoS attacks.
+ * @type {number}
+ */
+goog.dom.xml.MAX_ELEMENT_DEPTH = 256; // Same default as MSXML6.
+
+
+/**
+ * Creates an XML document appropriate for the current JS runtime
+ * @param {string=} opt_rootTagName The root tag name.
+ * @param {string=} opt_namespaceUri Namespace URI of the document element.
+ * @return {Document} The new document.
+ */
+goog.dom.xml.createDocument = function(opt_rootTagName, opt_namespaceUri) {
+  if (opt_namespaceUri && !opt_rootTagName) {
+    throw Error("Can't create document with namespace and no root tag");
+  }
+  if (document.implementation && document.implementation.createDocument) {
+    return document.implementation.createDocument(opt_namespaceUri || '',
+                                                  opt_rootTagName || '',
+                                                  null);
+  } else if (typeof ActiveXObject != 'undefined') {
+    var doc = goog.dom.xml.createMsXmlDocument_();
+    if (doc) {
+      if (opt_rootTagName) {
+        doc.appendChild(doc.createNode(goog.dom.NodeType.ELEMENT,
+                                       opt_rootTagName,
+                                       opt_namespaceUri || ''));
+      }
+      return doc;
+    }
+  }
+  throw Error('Your browser does not support creating new documents');
+};
+
+
+/**
+ * Creates an XML document from a string
+ * @param {string} xml The text.
+ * @return {Document} XML document from the text.
+ */
+goog.dom.xml.loadXml = function(xml) {
+  if (typeof DOMParser != 'undefined') {
+    return new DOMParser().parseFromString(xml, 'application/xml');
+  } else if (typeof ActiveXObject != 'undefined') {
+    var doc = goog.dom.xml.createMsXmlDocument_();
+    doc.loadXML(xml);
+    return doc;
+  }
+  throw Error('Your browser does not support loading xml documents');
+};
+
+
+/**
+ * Serializes an XML document or subtree to string.
+ * @param {Document|Element} xml The document or the root node of the subtree.
+ * @return {string} The serialized XML.
+ */
+goog.dom.xml.serialize = function(xml) {
+  // Compatible with Firefox, Opera and WebKit.
+  if (typeof XMLSerializer != 'undefined') {
+    return new XMLSerializer().serializeToString(xml);
+  }
+  // Compatible with Internet Explorer.
+  var text = xml.xml;
+  if (text) {
+    return text;
+  }
+  throw Error('Your browser does not support serializing XML documents');
+};
+
+
+/**
+ * Selects a single node using an Xpath expression and a root node
+ * @param {Node} node The root node.
+ * @param {string} path Xpath selector.
+ * @return {Node} The selected node, or null if no matching node.
+ */
+goog.dom.xml.selectSingleNode = function(node, path) {
+  if (typeof node.selectSingleNode != 'undefined') {
+    var doc = goog.dom.getOwnerDocument(node);
+    if (typeof doc.setProperty != 'undefined') {
+      doc.setProperty('SelectionLanguage', 'XPath');
+    }
+    return node.selectSingleNode(path);
+  } else if (document.implementation.hasFeature('XPath', '3.0')) {
+    var doc = goog.dom.getOwnerDocument(node);
+    var resolver = doc.createNSResolver(doc.documentElement);
+    var result = doc.evaluate(path, node, resolver,
+        XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+    return result.singleNodeValue;
+  }
+  return null;
+};
+
+
+/**
+ * Selects multiple nodes using an Xpath expression and a root node
+ * @param {Node} node The root node.
+ * @param {string} path Xpath selector.
+ * @return {(NodeList|Array<Node>)} The selected nodes, or empty array if no
+ *     matching nodes.
+ */
+goog.dom.xml.selectNodes = function(node, path) {
+  if (typeof node.selectNodes != 'undefined') {
+    var doc = goog.dom.getOwnerDocument(node);
+    if (typeof doc.setProperty != 'undefined') {
+      doc.setProperty('SelectionLanguage', 'XPath');
+    }
+    return node.selectNodes(path);
+  } else if (document.implementation.hasFeature('XPath', '3.0')) {
+    var doc = goog.dom.getOwnerDocument(node);
+    var resolver = doc.createNSResolver(doc.documentElement);
+    var nodes = doc.evaluate(path, node, resolver,
+        XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    var results = [];
+    var count = nodes.snapshotLength;
+    for (var i = 0; i < count; i++) {
+      results.push(nodes.snapshotItem(i));
+    }
+    return results;
+  } else {
+    return [];
+  }
+};
+
+
+/**
+ * Sets multiple attributes on an element. Differs from goog.dom.setProperties
+ * in that it exclusively uses the element's setAttributes method. Use this
+ * when you need to ensure that the exact property is available as an attribute
+ * and can be read later by the native getAttribute method.
+ * @param {!Element} element XML or DOM element to set attributes on.
+ * @param {!Object<string, string>} attributes Map of property:value pairs.
+ */
+goog.dom.xml.setAttributes = function(element, attributes) {
+  for (var key in attributes) {
+    if (attributes.hasOwnProperty(key)) {
+      element.setAttribute(key, attributes[key]);
+    }
+  }
+};
+
+
+/**
+ * Creates an instance of the MSXML2.DOMDocument.
+ * @return {Document} The new document.
+ * @private
+ */
+goog.dom.xml.createMsXmlDocument_ = function() {
+  var doc = new ActiveXObject('MSXML2.DOMDocument');
+  if (doc) {
+    // Prevent potential vulnerabilities exposed by MSXML2, see
+    // http://b/1707300 and http://wiki/Main/ISETeamXMLAttacks for details.
+    doc.resolveExternals = false;
+    doc.validateOnParse = false;
+    // Add a try catch block because accessing these properties will throw an
+    // error on unsupported MSXML versions. This affects Windows machines
+    // running IE6 or IE7 that are on XP SP2 or earlier without MSXML updates.
+    // See http://msdn.microsoft.com/en-us/library/ms766391(VS.85).aspx for
+    // specific details on which MSXML versions support these properties.
+    try {
+      doc.setProperty('ProhibitDTD', true);
+      doc.setProperty('MaxXMLSize', goog.dom.xml.MAX_XML_SIZE_KB);
+      doc.setProperty('MaxElementDepth', goog.dom.xml.MAX_ELEMENT_DEPTH);
+    } catch (e) {
+      // No-op.
+    }
+  }
+  return doc;
+};
+
+// FIXME Remove ol.xml.makeParsersNS, and use ol.xml.makeStructureNS instead.
+
+goog.provide('ol.xml');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.dom.NodeType');
+goog.require('goog.dom.xml');
+goog.require('goog.object');
+goog.require('goog.userAgent');
+
+
+/**
+ * When using {@link ol.xml.makeChildAppender} or
+ * {@link ol.xml.makeSimpleNodeFactory}, the top `objectStack` item needs to
+ * have this structure.
+ * @typedef {{node:Node}}
+ */
+ol.xml.NodeStackItem;
+
+
+/**
+ * @typedef {function(Node, Array.<*>)}
+ */
+ol.xml.Parser;
+
+
+/**
+ * @typedef {function(Node, *, Array.<*>)}
+ */
+ol.xml.Serializer;
+
+
+/**
+ * This document should be used when creating nodes for XML serializations. This
+ * document is also used by {@link ol.xml.createElementNS} and
+ * {@link ol.xml.setAttributeNS}
+ * @const
+ * @type {Document}
+ */
+ol.xml.DOCUMENT = goog.dom.xml.createDocument();
+
+
+/**
+ * @param {string} namespaceURI Namespace URI.
+ * @param {string} qualifiedName Qualified name.
+ * @return {Node} Node.
+ * @private
+ */
+ol.xml.createElementNS_ = function(namespaceURI, qualifiedName) {
+  return ol.xml.DOCUMENT.createElementNS(namespaceURI, qualifiedName);
+};
+
+
+/**
+ * @param {string} namespaceURI Namespace URI.
+ * @param {string} qualifiedName Qualified name.
+ * @return {Node} Node.
+ * @private
+ */
+ol.xml.createElementNSActiveX_ = function(namespaceURI, qualifiedName) {
+  if (goog.isNull(namespaceURI)) {
+    namespaceURI = '';
+  }
+  return ol.xml.DOCUMENT.createNode(1, qualifiedName, namespaceURI);
+};
+
+
+/**
+ * @param {string} namespaceURI Namespace URI.
+ * @param {string} qualifiedName Qualified name.
+ * @return {Node} Node.
+ */
+ol.xml.createElementNS =
+    (document.implementation && document.implementation.createDocument) ?
+        ol.xml.createElementNS_ : ol.xml.createElementNSActiveX_;
+
+
+/**
+ * Recursively grab all text content of child nodes into a single string.
+ * @param {Node} node Node.
+ * @param {boolean} normalizeWhitespace Normalize whitespace: remove all line
+ * breaks.
+ * @return {string} All text content.
+ * @api
+ */
+ol.xml.getAllTextContent = function(node, normalizeWhitespace) {
+  return ol.xml.getAllTextContent_(node, normalizeWhitespace, []).join('');
+};
+
+
+/**
+ * Recursively grab all text content of child nodes into a single string.
+ * @param {Node} node Node.
+ * @param {boolean} normalizeWhitespace Normalize whitespace: remove all line
+ * breaks.
+ * @param {Array.<String|string>} accumulator Accumulator.
+ * @private
+ * @return {Array.<String|string>} Accumulator.
+ */
+ol.xml.getAllTextContent_ = function(node, normalizeWhitespace, accumulator) {
+  if (node.nodeType == goog.dom.NodeType.CDATA_SECTION ||
+      node.nodeType == goog.dom.NodeType.TEXT) {
+    if (normalizeWhitespace) {
+      // FIXME understand why goog.dom.getTextContent_ uses String here
+      accumulator.push(String(node.nodeValue).replace(/(\r\n|\r|\n)/g, ''));
+    } else {
+      accumulator.push(node.nodeValue);
+    }
+  } else {
+    var n;
+    for (n = node.firstChild; !goog.isNull(n); n = n.nextSibling) {
+      ol.xml.getAllTextContent_(n, normalizeWhitespace, accumulator);
+    }
+  }
+  return accumulator;
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @private
+ * @return {string} Local name.
+ */
+ol.xml.getLocalName_ = function(node) {
+  return node.localName;
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @private
+ * @return {string} Local name.
+ */
+ol.xml.getLocalNameIE_ = function(node) {
+  var localName = node.localName;
+  if (goog.isDef(localName)) {
+    return localName;
+  }
+  var baseName = node.baseName;
+  goog.asserts.assert(goog.isDefAndNotNull(baseName),
+      'Failed to get localName/baseName of node %s', node);
+  return baseName;
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @return {string} Local name.
+ */
+ol.xml.getLocalName = goog.userAgent.IE ?
+    ol.xml.getLocalNameIE_ : ol.xml.getLocalName_;
+
+
+/**
+ * @param {?} value Value.
+ * @private
+ * @return {boolean} Is document.
+ */
+ol.xml.isDocument_ = function(value) {
+  return value instanceof Document;
+};
+
+
+/**
+ * @param {?} value Value.
+ * @private
+ * @return {boolean} Is document.
+ */
+ol.xml.isDocumentIE_ = function(value) {
+  return goog.isObject(value) && value.nodeType == goog.dom.NodeType.DOCUMENT;
+};
+
+
+/**
+ * @param {?} value Value.
+ * @return {boolean} Is document.
+ */
+ol.xml.isDocument = goog.userAgent.IE ?
+    ol.xml.isDocumentIE_ : ol.xml.isDocument_;
+
+
+/**
+ * @param {?} value Value.
+ * @private
+ * @return {boolean} Is node.
+ */
+ol.xml.isNode_ = function(value) {
+  return value instanceof Node;
+};
+
+
+/**
+ * @param {?} value Value.
+ * @private
+ * @return {boolean} Is node.
+ */
+ol.xml.isNodeIE_ = function(value) {
+  return goog.isObject(value) && goog.isDef(value.nodeType);
+};
+
+
+/**
+ * @param {?} value Value.
+ * @return {boolean} Is node.
+ */
+ol.xml.isNode = goog.userAgent.IE ? ol.xml.isNodeIE_ : ol.xml.isNode_;
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @return {string} Value
+ * @private
+ */
+ol.xml.getAttributeNS_ = function(node, namespaceURI, name) {
+  return node.getAttributeNS(namespaceURI, name) || '';
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @return {string} Value
+ * @private
+ */
+ol.xml.getAttributeNSActiveX_ = function(node, namespaceURI, name) {
+  var attributeValue = '';
+  var attributeNode = ol.xml.getAttributeNodeNS(node, namespaceURI, name);
+  if (goog.isDef(attributeNode)) {
+    attributeValue = attributeNode.nodeValue;
+  }
+  return attributeValue;
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @return {string} Value
+ */
+ol.xml.getAttributeNS =
+    (document.implementation && document.implementation.createDocument) ?
+        ol.xml.getAttributeNS_ : ol.xml.getAttributeNSActiveX_;
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @return {?Node} Attribute node or null if none found.
+ * @private
+ */
+ol.xml.getAttributeNodeNS_ = function(node, namespaceURI, name) {
+  return node.getAttributeNodeNS(namespaceURI, name);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @return {?Node} Attribute node or null if none found.
+ * @private
+ */
+ol.xml.getAttributeNodeNSActiveX_ = function(node, namespaceURI, name) {
+  var attributeNode = null;
+  var attributes = node.attributes;
+  var potentialNode, fullName;
+  for (var i = 0, len = attributes.length; i < len; ++i) {
+    potentialNode = attributes[i];
+    if (potentialNode.namespaceURI == namespaceURI) {
+      fullName = (potentialNode.prefix) ?
+          (potentialNode.prefix + ':' + name) : name;
+      if (fullName == potentialNode.nodeName) {
+        attributeNode = potentialNode;
+        break;
+      }
+    }
+  }
+  return attributeNode;
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @return {?Node} Attribute node or null if none found.
+ */
+ol.xml.getAttributeNodeNS =
+    (document.implementation && document.implementation.createDocument) ?
+        ol.xml.getAttributeNodeNS_ : ol.xml.getAttributeNodeNSActiveX_;
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @param {string|number} value Value.
+ * @private
+ */
+ol.xml.setAttributeNS_ = function(node, namespaceURI, name, value) {
+  node.setAttributeNS(namespaceURI, name, value);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @param {string|number} value Value.
+ * @private
+ */
+ol.xml.setAttributeNSActiveX_ = function(node, namespaceURI, name, value) {
+  if (!goog.isNull(namespaceURI)) {
+    var attribute = node.ownerDocument.createNode(2, name, namespaceURI);
+    attribute.nodeValue = value;
+    node.setAttributeNode(attribute);
+  } else {
+    node.setAttribute(name, value);
+  }
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @param {string|number} value Value.
+ */
+ol.xml.setAttributeNS =
+    (document.implementation && document.implementation.createDocument) ?
+        ol.xml.setAttributeNS_ : ol.xml.setAttributeNSActiveX_;
+
+
+/**
+ * Parse an XML string to an XML Document.
+ * @param {string} xml XML.
+ * @return {Document} Document.
+ * @api
+ */
+ol.xml.parse = function(xml) {
+  return new DOMParser().parseFromString(xml, 'application/xml');
+};
+
+
+/**
+ * Make an array extender function for extending the array at the top of the
+ * object stack.
+ * @param {function(this: T, Node, Array.<*>): (Array.<*>|undefined)}
+ *     valueReader Value reader.
+ * @param {T=} opt_this The object to use as `this` in `valueReader`.
+ * @return {ol.xml.Parser} Parser.
+ * @template T
+ */
+ol.xml.makeArrayExtender = function(valueReader, opt_this) {
+  return (
+      /**
+       * @param {Node} node Node.
+       * @param {Array.<*>} objectStack Object stack.
+       */
+      function(node, objectStack) {
+        var value = valueReader.call(opt_this, node, objectStack);
+        if (goog.isDef(value)) {
+          goog.asserts.assert(goog.isArray(value),
+              'valueReader function is expected to return an array of values');
+          var array = /** @type {Array.<*>} */
+              (objectStack[objectStack.length - 1]);
+          goog.asserts.assert(goog.isArray(array),
+              'objectStack is supposed to be an array of arrays');
+          goog.array.extend(array, value);
+        }
+      });
+};
+
+
+/**
+ * Make an array pusher function for pushing to the array at the top of the
+ * object stack.
+ * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
+ * @param {T=} opt_this The object to use as `this` in `valueReader`.
+ * @return {ol.xml.Parser} Parser.
+ * @template T
+ */
+ol.xml.makeArrayPusher = function(valueReader, opt_this) {
+  return (
+      /**
+       * @param {Node} node Node.
+       * @param {Array.<*>} objectStack Object stack.
+       */
+      function(node, objectStack) {
+        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
+            node, objectStack);
+        if (goog.isDef(value)) {
+          var array = objectStack[objectStack.length - 1];
+          goog.asserts.assert(goog.isArray(array),
+              'objectStack is supposed to be an array of arrays');
+          array.push(value);
+        }
+      });
+};
+
+
+/**
+ * Make an object stack replacer function for replacing the object at the
+ * top of the stack.
+ * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
+ * @param {T=} opt_this The object to use as `this` in `valueReader`.
+ * @return {ol.xml.Parser} Parser.
+ * @template T
+ */
+ol.xml.makeReplacer = function(valueReader, opt_this) {
+  return (
+      /**
+       * @param {Node} node Node.
+       * @param {Array.<*>} objectStack Object stack.
+       */
+      function(node, objectStack) {
+        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
+            node, objectStack);
+        if (goog.isDef(value)) {
+          objectStack[objectStack.length - 1] = value;
+        }
+      });
+};
+
+
+/**
+ * Make an object property pusher function for adding a property to the
+ * object at the top of the stack.
+ * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
+ * @param {string=} opt_property Property.
+ * @param {T=} opt_this The object to use as `this` in `valueReader`.
+ * @return {ol.xml.Parser} Parser.
+ * @template T
+ */
+ol.xml.makeObjectPropertyPusher =
+    function(valueReader, opt_property, opt_this) {
+  goog.asserts.assert(goog.isDef(valueReader),
+      'undefined valueReader, expected function(this: T, Node, Array.<*>)');
+  return (
+      /**
+       * @param {Node} node Node.
+       * @param {Array.<*>} objectStack Object stack.
+       */
+      function(node, objectStack) {
+        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
+            node, objectStack);
+        if (goog.isDef(value)) {
+          var object = /** @type {Object} */
+              (objectStack[objectStack.length - 1]);
+          var property = goog.isDef(opt_property) ?
+              opt_property : node.localName;
+          goog.asserts.assert(goog.isObject(object),
+              'entity from stack was not an object');
+          var array = goog.object.setIfUndefined(object, property, []);
+          array.push(value);
+        }
+      });
+};
+
+
+/**
+ * Make an object property setter function.
+ * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
+ * @param {string=} opt_property Property.
+ * @param {T=} opt_this The object to use as `this` in `valueReader`.
+ * @return {ol.xml.Parser} Parser.
+ * @template T
+ */
+ol.xml.makeObjectPropertySetter =
+    function(valueReader, opt_property, opt_this) {
+  goog.asserts.assert(goog.isDef(valueReader),
+      'undefined valueReader, expected function(this: T, Node, Array.<*>)');
+  return (
+      /**
+       * @param {Node} node Node.
+       * @param {Array.<*>} objectStack Object stack.
+       */
+      function(node, objectStack) {
+        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
+            node, objectStack);
+        if (goog.isDef(value)) {
+          var object = /** @type {Object} */
+              (objectStack[objectStack.length - 1]);
+          var property = goog.isDef(opt_property) ?
+              opt_property : node.localName;
+          goog.asserts.assert(goog.isObject(object),
+              'entity from stack was not an object');
+          object[property] = value;
+        }
+      });
+};
+
+
+/**
+ * Make a parserNS hash.
+ * @param {Array.<string>} namespaceURIs Namespace URIs.
+ * @param {Object.<string, ol.xml.Parser>} parsers Parsers.
+ * @param {Object.<string, Object.<string, ol.xml.Parser>>=} opt_parsersNS
+ *     ParsersNS.
+ * @return {Object.<string, Object.<string, ol.xml.Parser>>} Parsers NS.
+ */
+ol.xml.makeParsersNS = function(namespaceURIs, parsers, opt_parsersNS) {
+  return /** @type {Object.<string, Object.<string, ol.xml.Parser>>} */ (
+      ol.xml.makeStructureNS(namespaceURIs, parsers, opt_parsersNS));
+};
+
+
+/**
+ * Create a serializer that appends nodes written by its `nodeWriter` to its
+ * designated parent. The parent is the `node` of the
+ * {@link ol.xml.NodeStackItem} at the top of the `objectStack`.
+ * @param {function(this: T, Node, V, Array.<*>)}
+ *     nodeWriter Node writer.
+ * @param {T=} opt_this The object to use as `this` in `nodeWriter`.
+ * @return {ol.xml.Serializer} Serializer.
+ * @template T, V
+ */
+ol.xml.makeChildAppender = function(nodeWriter, opt_this) {
+  return function(node, value, objectStack) {
+    nodeWriter.call(goog.isDef(opt_this) ? opt_this : this,
+        node, value, objectStack);
+    var parent = objectStack[objectStack.length - 1];
+    goog.asserts.assert(goog.isObject(parent),
+        'entity from stack was not an object');
+    var parentNode = parent.node;
+    goog.asserts.assert(ol.xml.isNode(parentNode) ||
+        ol.xml.isDocument(parentNode),
+        'expected parentNode %s to be a Node or a Document', parentNode);
+    parentNode.appendChild(node);
+  };
+};
+
+
+/**
+ * Create a serializer that calls the provided `nodeWriter` from
+ * {@link ol.xml.serialize}. This can be used by the parent writer to have the
+ * 'nodeWriter' called with an array of values when the `nodeWriter` was
+ * designed to serialize a single item. An example would be a LineString
+ * geometry writer, which could be reused for writing MultiLineString
+ * geometries.
+ * @param {function(this: T, Node, V, Array.<*>)}
+ *     nodeWriter Node writer.
+ * @param {T=} opt_this The object to use as `this` in `nodeWriter`.
+ * @return {ol.xml.Serializer} Serializer.
+ * @template T, V
+ */
+ol.xml.makeArraySerializer = function(nodeWriter, opt_this) {
+  var serializersNS, nodeFactory;
+  return function(node, value, objectStack) {
+    if (!goog.isDef(serializersNS)) {
+      serializersNS = {};
+      var serializers = {};
+      serializers[node.localName] = nodeWriter;
+      serializersNS[node.namespaceURI] = serializers;
+      nodeFactory = ol.xml.makeSimpleNodeFactory(node.localName);
+    }
+    ol.xml.serialize(serializersNS, nodeFactory, value, objectStack);
+  };
+};
+
+
+/**
+ * Create a node factory which can use the `opt_keys` passed to
+ * {@link ol.xml.serialize} or {@link ol.xml.pushSerializeAndPop} as node names,
+ * or a fixed node name. The namespace of the created nodes can either be fixed,
+ * or the parent namespace will be used.
+ * @param {string=} opt_nodeName Fixed node name which will be used for all
+ *     created nodes. If not provided, the 3rd argument to the resulting node
+ *     factory needs to be provided and will be the nodeName.
+ * @param {string=} opt_namespaceURI Fixed namespace URI which will be used for
+ *     all created nodes. If not provided, the namespace of the parent node will
+ *     be used.
+ * @return {function(*, Array.<*>, string=): (Node|undefined)} Node factory.
+ */
+ol.xml.makeSimpleNodeFactory = function(opt_nodeName, opt_namespaceURI) {
+  var fixedNodeName = opt_nodeName;
+  return (
+      /**
+       * @param {*} value Value.
+       * @param {Array.<*>} objectStack Object stack.
+       * @param {string=} opt_nodeName Node name.
+       * @return {Node} Node.
+       */
+      function(value, objectStack, opt_nodeName) {
+        var context = objectStack[objectStack.length - 1];
+        var node = context.node;
+        goog.asserts.assert(ol.xml.isNode(node) || ol.xml.isDocument(node),
+            'expected node %s to be a Node or a Document', node);
+        var nodeName = fixedNodeName;
+        if (!goog.isDef(nodeName)) {
+          nodeName = opt_nodeName;
+        }
+        var namespaceURI = opt_namespaceURI;
+        if (!goog.isDef(opt_namespaceURI)) {
+          namespaceURI = node.namespaceURI;
+        }
+        goog.asserts.assert(goog.isDef(nodeName), 'nodeName was undefined');
+        return ol.xml.createElementNS(namespaceURI, nodeName);
+      }
+  );
+};
+
+
+/**
+ * A node factory that creates a node using the parent's `namespaceURI` and the
+ * `nodeName` passed by {@link ol.xml.serialize} or
+ * {@link ol.xml.pushSerializeAndPop} to the node factory.
+ * @const
+ * @type {function(*, Array.<*>, string=): (Node|undefined)}
+ */
+ol.xml.OBJECT_PROPERTY_NODE_FACTORY = ol.xml.makeSimpleNodeFactory();
+
+
+/**
+ * Create an array of `values` to be used with {@link ol.xml.serialize} or
+ * {@link ol.xml.pushSerializeAndPop}, where `orderedKeys` has to be provided as
+ * `opt_key` argument.
+ * @param {Object.<string, V>} object Key-value pairs for the sequence. Keys can
+ *     be a subset of the `orderedKeys`.
+ * @param {Array.<string>} orderedKeys Keys in the order of the sequence.
+ * @return {Array.<V>} Values in the order of the sequence. The resulting array
+ *     has the same length as the `orderedKeys` array. Values that are not
+ *     present in `object` will be `undefined` in the resulting array.
+ * @template V
+ */
+ol.xml.makeSequence = function(object, orderedKeys) {
+  var length = orderedKeys.length;
+  var sequence = new Array(length);
+  for (var i = 0; i < length; ++i) {
+    sequence[i] = object[orderedKeys[i]];
+  }
+  return sequence;
+};
+
+
+/**
+ * Create a namespaced structure, using the same values for each namespace.
+ * This can be used as a starting point for versioned parsers, when only a few
+ * values are version specific.
+ * @param {Array.<string>} namespaceURIs Namespace URIs.
+ * @param {T} structure Structure.
+ * @param {Object.<string, T>=} opt_structureNS Namespaced structure to add to.
+ * @return {Object.<string, T>} Namespaced structure.
+ * @template T
+ */
+ol.xml.makeStructureNS = function(namespaceURIs, structure, opt_structureNS) {
+  /**
+   * @type {Object.<string, *>}
+   */
+  var structureNS = goog.isDef(opt_structureNS) ? opt_structureNS : {};
+  var i, ii;
+  for (i = 0, ii = namespaceURIs.length; i < ii; ++i) {
+    structureNS[namespaceURIs[i]] = structure;
+  }
+  return structureNS;
+};
+
+
+/**
+ * Parse a node using the parsers and object stack.
+ * @param {Object.<string, Object.<string, ol.xml.Parser>>} parsersNS
+ *     Parsers by namespace.
+ * @param {Node} node Node.
+ * @param {Array.<*>} objectStack Object stack.
+ * @param {*=} opt_this The object to use as `this`.
+ */
+ol.xml.parseNode = function(parsersNS, node, objectStack, opt_this) {
+  var n;
+  for (n = node.firstElementChild; !goog.isNull(n); n = n.nextElementSibling) {
+    var parsers = parsersNS[n.namespaceURI];
+    if (goog.isDef(parsers)) {
+      var parser = parsers[n.localName];
+      if (goog.isDef(parser)) {
+        parser.call(opt_this, n, objectStack);
+      }
+    }
+  }
+};
+
+
+/**
+ * Push an object on top of the stack, parse and return the popped object.
+ * @param {T} object Object.
+ * @param {Object.<string, Object.<string, ol.xml.Parser>>} parsersNS
+ *     Parsers by namespace.
+ * @param {Node} node Node.
+ * @param {Array.<*>} objectStack Object stack.
+ * @param {*=} opt_this The object to use as `this`.
+ * @return {T} Object.
+ * @template T
+ */
+ol.xml.pushParseAndPop = function(
+    object, parsersNS, node, objectStack, opt_this) {
+  objectStack.push(object);
+  ol.xml.parseNode(parsersNS, node, objectStack, opt_this);
+  return objectStack.pop();
+};
+
+
+/**
+ * Walk through an array of `values` and call a serializer for each value.
+ * @param {Object.<string, Object.<string, ol.xml.Serializer>>} serializersNS
+ *     Namespaced serializers.
+ * @param {function(this: T, *, Array.<*>, (string|undefined)): (Node|undefined)} nodeFactory
+ *     Node factory. The `nodeFactory` creates the node whose namespace and name
+ *     will be used to choose a node writer from `serializersNS`. This
+ *     separation allows us to decide what kind of node to create, depending on
+ *     the value we want to serialize. An example for this would be different
+ *     geometry writers based on the geometry type.
+ * @param {Array.<*>} values Values to serialize. An example would be an array
+ *     of {@link ol.Feature} instances.
+ * @param {Array.<*>} objectStack Node stack.
+ * @param {Array.<string>=} opt_keys Keys of the `values`. Will be passed to the
+ *     `nodeFactory`. This is used for serializing object literals where the
+ *     node name relates to the property key. The array length of `opt_keys` has
+ *     to match the length of `values`. For serializing a sequence, `opt_keys`
+ *     determines the order of the sequence.
+ * @param {T=} opt_this The object to use as `this` for the node factory and
+ *     serializers.
+ * @template T
+ */
+ol.xml.serialize = function(
+    serializersNS, nodeFactory, values, objectStack, opt_keys, opt_this) {
+  var length = (goog.isDef(opt_keys) ? opt_keys : values).length;
+  var value, node;
+  for (var i = 0; i < length; ++i) {
+    value = values[i];
+    if (goog.isDef(value)) {
+      node = nodeFactory.call(opt_this, value, objectStack,
+          goog.isDef(opt_keys) ? opt_keys[i] : undefined);
+      if (goog.isDef(node)) {
+        serializersNS[node.namespaceURI][node.localName]
+            .call(opt_this, node, value, objectStack);
+      }
+    }
+  }
+};
+
+
+/**
+ * @param {O} object Object.
+ * @param {Object.<string, Object.<string, ol.xml.Serializer>>} serializersNS
+ *     Namespaced serializers.
+ * @param {function(this: T, *, Array.<*>, (string|undefined)): (Node|undefined)} nodeFactory
+ *     Node factory. The `nodeFactory` creates the node whose namespace and name
+ *     will be used to choose a node writer from `serializersNS`. This
+ *     separation allows us to decide what kind of node to create, depending on
+ *     the value we want to serialize. An example for this would be different
+ *     geometry writers based on the geometry type.
+ * @param {Array.<*>} values Values to serialize. An example would be an array
+ *     of {@link ol.Feature} instances.
+ * @param {Array.<*>} objectStack Node stack.
+ * @param {Array.<string>=} opt_keys Keys of the `values`. Will be passed to the
+ *     `nodeFactory`. This is used for serializing object literals where the
+ *     node name relates to the property key. The array length of `opt_keys` has
+ *     to match the length of `values`. For serializing a sequence, `opt_keys`
+ *     determines the order of the sequence.
+ * @param {T=} opt_this The object to use as `this` for the node factory and
+ *     serializers.
+ * @return {O|undefined} Object.
+ * @template O, T
+ */
+ol.xml.pushSerializeAndPop = function(object,
+    serializersNS, nodeFactory, values, objectStack, opt_keys, opt_this) {
+  objectStack.push(object);
+  ol.xml.serialize(
+      serializersNS, nodeFactory, values, objectStack, opt_keys, opt_this);
+  return objectStack.pop();
+};
+
+goog.provide('ol.FeatureLoader');
+goog.provide('ol.featureloader');
+
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.net.EventType');
+goog.require('goog.net.XhrIo');
+goog.require('goog.net.XhrIo.ResponseType');
+goog.require('ol.format.FormatType');
+goog.require('ol.xml');
+
+
+/**
+ * @typedef {function(this:ol.source.Vector, ol.Extent, number,
+ *                    ol.proj.Projection)}
+ */
+ol.FeatureLoader;
+
+
+/**
+ * @param {string} url Feature URL service.
+ * @param {ol.format.Feature} format Feature format.
+ * @param {function(this:ol.source.Vector, Array.<ol.Feature>)} success
+ *     Function called with the loaded features. Called with the vector
+ *     source as `this`.
+ * @return {ol.FeatureLoader} The feature loader.
+ */
+ol.featureloader.loadFeaturesXhr = function(url, format, success) {
+  return (
+      /**
+       * @param {ol.Extent} extent Extent.
+       * @param {number} resolution Resolution.
+       * @param {ol.proj.Projection} projection Projection.
+       * @this {ol.source.Vector}
+       */
+      function(extent, resolution, projection) {
+        var xhrIo = new goog.net.XhrIo();
+        var type = format.getType();
+        var responseType;
+        // FIXME maybe use ResponseType.DOCUMENT?
+        if (type == ol.format.FormatType.BINARY &&
+            ol.has.ARRAY_BUFFER) {
+          responseType = goog.net.XhrIo.ResponseType.ARRAY_BUFFER;
+        } else {
+          responseType = goog.net.XhrIo.ResponseType.TEXT;
+        }
+        xhrIo.setResponseType(responseType);
+        goog.events.listen(xhrIo, goog.net.EventType.COMPLETE,
+            /**
+             * @param {Event} event Event.
+             * @private
+             * @this {ol.source.Vector}
+             */
+            function(event) {
+              var xhrIo = event.target;
+              goog.asserts.assertInstanceof(xhrIo, goog.net.XhrIo,
+                  'event.target/xhrIo is an instance of goog.net.XhrIo');
+              if (xhrIo.isSuccess()) {
+                var type = format.getType();
+                /** @type {ArrayBuffer|Document|Node|Object|string|undefined} */
+                var source;
+                if (type == ol.format.FormatType.BINARY &&
+                    ol.has.ARRAY_BUFFER) {
+                  source = xhrIo.getResponse();
+                  goog.asserts.assertInstanceof(source, ArrayBuffer,
+                      'source is an instance of ArrayBuffer');
+                } else if (type == ol.format.FormatType.JSON) {
+                  source = xhrIo.getResponseText();
+                } else if (type == ol.format.FormatType.TEXT) {
+                  source = xhrIo.getResponseText();
+                } else if (type == ol.format.FormatType.XML) {
+                  if (!goog.userAgent.IE) {
+                    source = xhrIo.getResponseXml();
+                  }
+                  if (!goog.isDefAndNotNull(source)) {
+                    source = ol.xml.parse(xhrIo.getResponseText());
+                  }
+                } else {
+                  goog.asserts.fail('unexpected format type');
+                }
+                if (goog.isDefAndNotNull(source)) {
+                  var features = format.readFeatures(source,
+                      {featureProjection: projection});
+                  success.call(this, features);
+                } else {
+                  goog.asserts.fail('undefined or null source');
+                }
+              } else {
+                // FIXME
+              }
+              goog.dispose(xhrIo);
+            }, false, this);
+        xhrIo.send(url);
+      });
+};
+
+
+/**
+ * Create an XHR feature loader for a `url` and `format`. The feature loader
+ * loads features (with XHR), parses the features, and adds them to the
+ * vector source.
+ * @param {string} url Feature URL service.
+ * @param {ol.format.Feature} format Feature format.
+ * @return {ol.FeatureLoader} The feature loader.
+ * @api
+ */
+ol.featureloader.xhr = function(url, format) {
+  return ol.featureloader.loadFeaturesXhr(url, format,
+      /**
+       * @param {Array.<ol.Feature>} features The loaded features.
+       * @this {ol.source.Vector}
+       */
+      function(features) {
+        this.addFeatures(features);
+      });
+};
+
+goog.provide('ol.LoadingStrategy');
+goog.provide('ol.loadingstrategy');
+
+goog.require('ol.TileCoord');
+
+
+/**
+ * @typedef {function(ol.Extent, number): Array.<ol.Extent>}
+ */
+ol.LoadingStrategy;
+
+
+/**
+ * Strategy function for loading all features with a single request.
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @return {Array.<ol.Extent>} Extents.
+ * @api
+ */
+ol.loadingstrategy.all = function(extent, resolution) {
+  return [[-Infinity, -Infinity, Infinity, Infinity]];
+};
+
+
+/**
+ * Strategy function for loading features based on the view's extent and
+ * resolution.
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @return {Array.<ol.Extent>} Extents.
+ * @api
+ */
+ol.loadingstrategy.bbox = function(extent, resolution) {
+  return [extent];
+};
+
+
+/**
+ * Creates a strategy function for loading features based on a tile grid.
+ * @param {ol.tilegrid.TileGrid} tileGrid Tile grid.
+ * @return {function(ol.Extent, number): Array.<ol.Extent>} Loading strategy.
+ * @api
+ */
+ol.loadingstrategy.tile = function(tileGrid) {
+  return (
+      /**
+       * @param {ol.Extent} extent Extent.
+       * @param {number} resolution Resolution.
+       * @return {Array.<ol.Extent>} Extents.
+       */
+      function(extent, resolution) {
+        var z = tileGrid.getZForResolution(resolution);
+        var tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z);
+        /** @type {Array.<ol.Extent>} */
+        var extents = [];
+        /** @type {ol.TileCoord} */
+        var tileCoord = [z, 0, 0];
+        for (tileCoord[1] = tileRange.minX; tileCoord[1] <= tileRange.maxX;
+             ++tileCoord[1]) {
+          for (tileCoord[2] = tileRange.minY; tileCoord[2] <= tileRange.maxY;
+               ++tileCoord[2]) {
+            extents.push(tileGrid.getTileCoordExtent(tileCoord));
+          }
+        }
+        return extents;
+      });
+};
+
 goog.provide('ol.ext.rbush');
 /** @typedef {function(*)} */
 ol.ext.rbush;
@@ -64816,9 +70795,16 @@ goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.events.EventType');
 goog.require('goog.object');
+goog.require('ol.Extent');
+goog.require('ol.FeatureLoader');
+goog.require('ol.LoadingStrategy');
 goog.require('ol.ObjectEventType');
+goog.require('ol.extent');
+goog.require('ol.featureloader');
+goog.require('ol.loadingstrategy');
 goog.require('ol.proj');
 goog.require('ol.source.Source');
+goog.require('ol.source.State');
 goog.require('ol.structs.RBush');
 
 
@@ -64875,16 +70861,43 @@ ol.source.Vector = function(opt_options) {
   goog.base(this, {
     attributions: options.attributions,
     logo: options.logo,
-    projection: options.projection,
-    state: goog.isDef(options.state) ?
-        /** @type {ol.source.State} */ (options.state) : undefined
+    projection: undefined,
+    state: ol.source.State.READY
   });
+
+  /**
+   * @private
+   * @type {ol.FeatureLoader}
+   */
+  this.loader_ = goog.nullFunction;
+
+  if (goog.isDef(options.loader)) {
+    this.loader_ = options.loader;
+  } else if (goog.isDef(options.url)) {
+    goog.asserts.assert(goog.isDef(options.format),
+        'format must be set when url is set');
+    // create a XHR feature loader for "url" and "format"
+    this.loader_ = ol.featureloader.xhr(options.url, options.format);
+  }
+
+  /**
+   * @private
+   * @type {ol.LoadingStrategy}
+   */
+  this.strategy_ = goog.isDef(options.strategy) ? options.strategy :
+      ol.loadingstrategy.all;
 
   /**
    * @private
    * @type {ol.structs.RBush.<ol.Feature>}
    */
-  this.rBush_ = new ol.structs.RBush();
+  this.featuresRtree_ = new ol.structs.RBush();
+
+  /**
+   * @private
+   * @type {ol.structs.RBush.<{extent: ol.Extent}>}
+   */
+  this.loadedExtentsRtree_ = new ol.structs.RBush();
 
   /**
    * @private
@@ -64940,17 +70953,21 @@ ol.source.Vector.prototype.addFeature = function(feature) {
  */
 ol.source.Vector.prototype.addFeatureInternal = function(feature) {
   var featureKey = goog.getUid(feature).toString();
+
+  if (!this.addToIndex_(featureKey, feature)) {
+    return;
+  }
+
   this.setupChangeEvents_(featureKey, feature);
 
   var geometry = feature.getGeometry();
   if (goog.isDefAndNotNull(geometry)) {
     var extent = geometry.getExtent();
-    this.rBush_.insert(extent, feature);
+    this.featuresRtree_.insert(extent, feature);
   } else {
     this.nullGeometryFeatures_[featureKey] = feature;
   }
 
-  this.addToIndex_(featureKey, feature);
   this.dispatchEvent(
       new ol.source.VectorEvent(ol.source.VectorEventType.ADDFEATURE, feature));
 };
@@ -64978,17 +70995,25 @@ ol.source.Vector.prototype.setupChangeEvents_ = function(featureKey, feature) {
 /**
  * @param {string} featureKey
  * @param {ol.Feature} feature
+ * @return {boolean} `true` if the feature is "valid", in the sense that it is
+ *     also a candidate for insertion into the Rtree, otherwise `false`.
  * @private
  */
 ol.source.Vector.prototype.addToIndex_ = function(featureKey, feature) {
+  var valid = true;
   var id = feature.getId();
   if (goog.isDef(id)) {
-    this.idIndex_[id.toString()] = feature;
+    if (!(id.toString() in this.idIndex_)) {
+      this.idIndex_[id.toString()] = feature;
+    } else {
+      valid = false;
+    }
   } else {
     goog.asserts.assert(!(featureKey in this.undefIdIndex_),
         'Feature already added to the source');
     this.undefIdIndex_[featureKey] = feature;
   }
+  return valid;
 };
 
 
@@ -65010,10 +71035,21 @@ ol.source.Vector.prototype.addFeatures = function(features) {
  */
 ol.source.Vector.prototype.addFeaturesInternal = function(features) {
   var featureKey, i, length, feature;
+
   var extents = [];
-  var validFeatures = [];
+  var newFeatures = [];
+  var geometryFeatures = [];
+
   for (i = 0, length = features.length; i < length; i++) {
     feature = features[i];
+    featureKey = goog.getUid(feature).toString();
+    if (this.addToIndex_(featureKey, feature)) {
+      newFeatures.push(feature);
+    }
+  }
+
+  for (i = 0, length = newFeatures.length; i < length; i++) {
+    feature = newFeatures[i];
     featureKey = goog.getUid(feature).toString();
     this.setupChangeEvents_(featureKey, feature);
 
@@ -65021,19 +71057,16 @@ ol.source.Vector.prototype.addFeaturesInternal = function(features) {
     if (goog.isDefAndNotNull(geometry)) {
       var extent = geometry.getExtent();
       extents.push(extent);
-      validFeatures.push(feature);
+      geometryFeatures.push(feature);
     } else {
       this.nullGeometryFeatures_[featureKey] = feature;
     }
   }
-  this.rBush_.load(extents, validFeatures);
+  this.featuresRtree_.load(extents, geometryFeatures);
 
-  for (i = 0, length = features.length; i < length; i++) {
-    feature = features[i];
-    featureKey = goog.getUid(feature).toString();
-    this.addToIndex_(featureKey, feature);
+  for (i = 0, length = newFeatures.length; i < length; i++) {
     this.dispatchEvent(new ol.source.VectorEvent(
-        ol.source.VectorEventType.ADDFEATURE, feature));
+        ol.source.VectorEventType.ADDFEATURE, newFeatures[i]));
   }
 };
 
@@ -65054,7 +71087,7 @@ ol.source.Vector.prototype.clear = function(opt_fast) {
     this.undefIdIndex_ = {};
   } else {
     var rmFeatureInternal = this.removeFeatureInternal;
-    this.rBush_.forEach(rmFeatureInternal, this);
+    this.featuresRtree_.forEach(rmFeatureInternal, this);
     goog.object.forEach(this.nullGeometryFeatures_, rmFeatureInternal, this);
     goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_),
         'featureChangeKeys is an empty object now');
@@ -65064,7 +71097,8 @@ ol.source.Vector.prototype.clear = function(opt_fast) {
         'undefIdIndex is an empty object now');
   }
 
-  this.rBush_.clear();
+  this.featuresRtree_.clear();
+  this.loadedExtentsRtree_.clear();
   this.nullGeometryFeatures_ = {};
 
   var clearEvent = new ol.source.VectorEvent(ol.source.VectorEventType.CLEAR);
@@ -65086,7 +71120,7 @@ ol.source.Vector.prototype.clear = function(opt_fast) {
  * @api stable
  */
 ol.source.Vector.prototype.forEachFeature = function(callback, opt_this) {
-  return this.rBush_.forEach(callback, opt_this);
+  return this.featuresRtree_.forEach(callback, opt_this);
 };
 
 
@@ -65139,7 +71173,7 @@ ol.source.Vector.prototype.forEachFeatureAtCoordinateDirect =
  */
 ol.source.Vector.prototype.forEachFeatureInExtent =
     function(extent, callback, opt_this) {
-  return this.rBush_.forEachInExtent(extent, callback, opt_this);
+  return this.featuresRtree_.forEachInExtent(extent, callback, opt_this);
 };
 
 
@@ -65202,7 +71236,7 @@ ol.source.Vector.prototype.forEachFeatureIntersectingExtent =
  * @api stable
  */
 ol.source.Vector.prototype.getFeatures = function() {
-  var features = this.rBush_.getAll();
+  var features = this.featuresRtree_.getAll();
   if (!goog.object.isEmpty(this.nullGeometryFeatures_)) {
     goog.array.extend(
         features, goog.object.getValues(this.nullGeometryFeatures_));
@@ -65235,7 +71269,7 @@ ol.source.Vector.prototype.getFeaturesAtCoordinate = function(coordinate) {
  * @api
  */
 ol.source.Vector.prototype.getFeaturesInExtent = function(extent) {
-  return this.rBush_.getInExtent(extent);
+  return this.featuresRtree_.getInExtent(extent);
 };
 
 
@@ -65260,7 +71294,7 @@ ol.source.Vector.prototype.getClosestFeatureToCoordinate =
   var closestPoint = [NaN, NaN];
   var minSquaredDistance = Infinity;
   var extent = [-Infinity, -Infinity, Infinity, Infinity];
-  this.rBush_.forEachInExtent(extent,
+  this.featuresRtree_.forEachInExtent(extent,
       /**
        * @param {ol.Feature} feature Feature.
        */
@@ -65294,7 +71328,7 @@ ol.source.Vector.prototype.getClosestFeatureToCoordinate =
  * @api stable
  */
 ol.source.Vector.prototype.getExtent = function() {
-  return this.rBush_.getExtent();
+  return this.featuresRtree_.getExtent();
 };
 
 
@@ -65323,16 +71357,16 @@ ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
   var geometry = feature.getGeometry();
   if (!goog.isDefAndNotNull(geometry)) {
     if (!(featureKey in this.nullGeometryFeatures_)) {
-      this.rBush_.remove(feature);
+      this.featuresRtree_.remove(feature);
       this.nullGeometryFeatures_[featureKey] = feature;
     }
   } else {
     var extent = geometry.getExtent();
     if (featureKey in this.nullGeometryFeatures_) {
       delete this.nullGeometryFeatures_[featureKey];
-      this.rBush_.insert(extent, feature);
+      this.featuresRtree_.insert(extent, feature);
     } else {
-      this.rBush_.update(extent, feature);
+      this.featuresRtree_.update(extent, feature);
     }
   }
   var id = feature.getId();
@@ -65371,7 +71405,7 @@ ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
  * @return {boolean} Is empty.
  */
 ol.source.Vector.prototype.isEmpty = function() {
-  return this.rBush_.isEmpty() &&
+  return this.featuresRtree_.isEmpty() &&
       goog.object.isEmpty(this.nullGeometryFeatures_);
 };
 
@@ -65381,7 +71415,27 @@ ol.source.Vector.prototype.isEmpty = function() {
  * @param {number} resolution Resolution.
  * @param {ol.proj.Projection} projection Projection.
  */
-ol.source.Vector.prototype.loadFeatures = goog.nullFunction;
+ol.source.Vector.prototype.loadFeatures = function(
+    extent, resolution, projection) {
+  var loadedExtentsRtree = this.loadedExtentsRtree_;
+  var extentsToLoad = this.strategy_(extent, resolution);
+  var i, ii;
+  for (i = 0, ii = extentsToLoad.length; i < ii; ++i) {
+    var extentToLoad = extentsToLoad[i];
+    var alreadyLoaded = loadedExtentsRtree.forEachInExtent(extentToLoad,
+        /**
+         * @param {{extent: ol.Extent}} object Object.
+         * @return {boolean} Contains.
+         */
+        function(object) {
+          return ol.extent.containsExtent(object.extent, extentToLoad);
+        });
+    if (!alreadyLoaded) {
+      this.loader_.call(this, extentToLoad, resolution, projection);
+      loadedExtentsRtree.insert(extentToLoad, {extent: extentToLoad.slice()});
+    }
+  }
+};
 
 
 /**
@@ -65396,7 +71450,7 @@ ol.source.Vector.prototype.removeFeature = function(feature) {
   if (featureKey in this.nullGeometryFeatures_) {
     delete this.nullGeometryFeatures_[featureKey];
   } else {
-    this.rBush_.remove(feature);
+    this.featuresRtree_.remove(feature);
   }
   this.removeFeatureInternal(feature);
   this.changed();
@@ -75986,10 +82040,6 @@ ol.Map.prototype.getTarget = function() {
   return /** @type {Element|string|undefined} */ (
       this.get(ol.MapProperty.TARGET));
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'getTarget',
-    ol.Map.prototype.getTarget);
 
 
 /**
@@ -76067,10 +82117,6 @@ ol.Map.prototype.getInteractions = function() {
 ol.Map.prototype.getLayerGroup = function() {
   return /** @type {ol.layer.Group} */ (this.get(ol.MapProperty.LAYERGROUP));
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'getLayerGroup',
-    ol.Map.prototype.getLayerGroup);
 
 
 /**
@@ -76120,10 +82166,6 @@ ol.Map.prototype.getRenderer = function() {
 ol.Map.prototype.getSize = function() {
   return /** @type {ol.Size|undefined} */ (this.get(ol.MapProperty.SIZE));
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'getSize',
-    ol.Map.prototype.getSize);
 
 
 /**
@@ -76136,10 +82178,6 @@ goog.exportProperty(
 ol.Map.prototype.getView = function() {
   return /** @type {ol.View} */ (this.get(ol.MapProperty.VIEW));
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'getView',
-    ol.Map.prototype.getView);
 
 
 /**
@@ -76662,10 +82700,6 @@ ol.Map.prototype.renderFrame_ = function(time) {
 ol.Map.prototype.setLayerGroup = function(layerGroup) {
   this.set(ol.MapProperty.LAYERGROUP, layerGroup);
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'setLayerGroup',
-    ol.Map.prototype.setLayerGroup);
 
 
 /**
@@ -76677,10 +82711,6 @@ goog.exportProperty(
 ol.Map.prototype.setSize = function(size) {
   this.set(ol.MapProperty.SIZE, size);
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'setSize',
-    ol.Map.prototype.setSize);
 
 
 /**
@@ -76693,10 +82723,6 @@ goog.exportProperty(
 ol.Map.prototype.setTarget = function(target) {
   this.set(ol.MapProperty.TARGET, target);
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'setTarget',
-    ol.Map.prototype.setTarget);
 
 
 /**
@@ -76708,10 +82734,6 @@ goog.exportProperty(
 ol.Map.prototype.setView = function(view) {
   this.set(ol.MapProperty.VIEW, view);
 };
-goog.exportProperty(
-    ol.Map.prototype,
-    'setView',
-    ol.Map.prototype.setView);
 
 
 /**
@@ -77105,10 +83127,6 @@ ol.Overlay.prototype.getElement = function() {
   return /** @type {Element|undefined} */ (
       this.get(ol.OverlayProperty.ELEMENT));
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'getElement',
-    ol.Overlay.prototype.getElement);
 
 
 /**
@@ -77121,10 +83139,6 @@ ol.Overlay.prototype.getMap = function() {
   return /** @type {ol.Map|undefined} */ (
       this.get(ol.OverlayProperty.MAP));
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'getMap',
-    ol.Overlay.prototype.getMap);
 
 
 /**
@@ -77137,10 +83151,6 @@ ol.Overlay.prototype.getOffset = function() {
   return /** @type {Array.<number>} */ (
       this.get(ol.OverlayProperty.OFFSET));
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'getOffset',
-    ol.Overlay.prototype.getOffset);
 
 
 /**
@@ -77154,10 +83164,6 @@ ol.Overlay.prototype.getPosition = function() {
   return /** @type {ol.Coordinate|undefined} */ (
       this.get(ol.OverlayProperty.POSITION));
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'getPosition',
-    ol.Overlay.prototype.getPosition);
 
 
 /**
@@ -77171,10 +83177,6 @@ ol.Overlay.prototype.getPositioning = function() {
   return /** @type {ol.OverlayPositioning} */ (
       this.get(ol.OverlayProperty.POSITIONING));
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'getPositioning',
-    ol.Overlay.prototype.getPositioning);
 
 
 /**
@@ -77259,10 +83261,6 @@ ol.Overlay.prototype.handlePositioningChanged = function() {
 ol.Overlay.prototype.setElement = function(element) {
   this.set(ol.OverlayProperty.ELEMENT, element);
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'setElement',
-    ol.Overlay.prototype.setElement);
 
 
 /**
@@ -77274,10 +83272,6 @@ goog.exportProperty(
 ol.Overlay.prototype.setMap = function(map) {
   this.set(ol.OverlayProperty.MAP, map);
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'setMap',
-    ol.Overlay.prototype.setMap);
 
 
 /**
@@ -77289,10 +83283,6 @@ goog.exportProperty(
 ol.Overlay.prototype.setOffset = function(offset) {
   this.set(ol.OverlayProperty.OFFSET, offset);
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'setOffset',
-    ol.Overlay.prototype.setOffset);
 
 
 /**
@@ -77306,10 +83296,6 @@ goog.exportProperty(
 ol.Overlay.prototype.setPosition = function(position) {
   this.set(ol.OverlayProperty.POSITION, position);
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'setPosition',
-    ol.Overlay.prototype.setPosition);
 
 
 /**
@@ -77407,10 +83393,6 @@ ol.Overlay.prototype.getRect_ = function(element, size) {
 ol.Overlay.prototype.setPositioning = function(positioning) {
   this.set(ol.OverlayProperty.POSITIONING, positioning);
 };
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'setPositioning',
-    ol.Overlay.prototype.setPositioning);
 
 
 /**
@@ -77511,9 +83493,11 @@ goog.require('ol.Collection');
 goog.require('ol.Map');
 goog.require('ol.MapEventType');
 goog.require('ol.Object');
+goog.require('ol.ObjectEventType');
 goog.require('ol.Overlay');
 goog.require('ol.OverlayPositioning');
 goog.require('ol.View');
+goog.require('ol.ViewProperty');
 goog.require('ol.control.Control');
 goog.require('ol.coordinate');
 goog.require('ol.css');
@@ -77654,54 +83638,89 @@ goog.inherits(ol.control.OverviewMap, ol.control.Control);
  * @api
  */
 ol.control.OverviewMap.prototype.setMap = function(map) {
-  var currentMap = this.getMap();
-
-  if (goog.isNull(map) && !goog.isNull(currentMap)) {
-    goog.events.unlisten(
-        currentMap, ol.Object.getChangeEventType(ol.MapProperty.VIEW),
-        this.handleViewChanged_, false, this);
+  var oldMap = this.getMap();
+  if (map === oldMap) {
+    return;
   }
-
+  if (oldMap) {
+    var oldView = oldMap.getView();
+    if (oldView) {
+      this.unbindView_(oldView);
+    }
+  }
   goog.base(this, 'setMap', map);
 
-  if (!goog.isNull(map)) {
+  if (map) {
+    this.listenerKeys.push(goog.events.listen(
+        map, ol.ObjectEventType.PROPERTYCHANGE,
+        this.handleMapPropertyChange_, false, this));
 
-    // if no layers were set for the overviewmap map, then bind with
-    // those in the main map
+    // TODO: to really support map switching, this would need to be reworked
     if (this.ovmap_.getLayers().getLength() === 0) {
-      this.ovmap_.bindTo(ol.MapProperty.LAYERGROUP, map);
+      this.ovmap_.setLayerGroup(map.getLayerGroup());
     }
 
-    // bind current map view, or any new one
-    this.bindView_();
-
-    goog.events.listen(
-        map, ol.Object.getChangeEventType(ol.MapProperty.VIEW),
-        this.handleViewChanged_, false, this);
-
-    this.ovmap_.updateSize();
-    this.resetExtent_();
+    var view = map.getView();
+    if (view) {
+      this.bindView_(view);
+      if (view.isDef()) {
+        this.ovmap_.updateSize();
+        this.resetExtent_();
+      }
+    }
   }
 };
 
 
 /**
- * Bind some actions to the main map view.
+ * Handle map property changes.  This only deals with changes to the map's view.
+ * @param {ol.ObjectEvent} event The propertychange event.
  * @private
  */
-ol.control.OverviewMap.prototype.bindView_ = function() {
-  var map = this.getMap();
-  var view = map.getView();
-
-  // if the map does not have a view, we can't act upon it
-  if (goog.isNull(view)) {
-    return;
+ol.control.OverviewMap.prototype.handleMapPropertyChange_ = function(event) {
+  if (event.key === ol.MapProperty.VIEW) {
+    var oldView = /** @type {ol.View} */ (event.oldValue);
+    if (oldView) {
+      this.unbindView_(oldView);
+    }
+    var newView = this.getMap().getView();
+    this.bindView_(newView);
   }
+};
 
-  // FIXME - the overviewmap view rotation currently follows the one used
-  // by the main map view.  We could support box rotation instead.  The choice
-  // between the 2 modes would be made in a single option
-  this.ovmap_.getView().bindTo(ol.ViewProperty.ROTATION, view);
+
+/**
+ * Register listeners for view property changes.
+ * @param {ol.View} view The view.
+ * @private
+ */
+ol.control.OverviewMap.prototype.bindView_ = function(view) {
+  goog.events.listen(view,
+      ol.Object.getChangeEventType(ol.ViewProperty.ROTATION),
+      this.handleRotationChanged_, false, this);
+};
+
+
+/**
+ * Unregister listeners for view property changes.
+ * @param {ol.View} view The view.
+ * @private
+ */
+ol.control.OverviewMap.prototype.unbindView_ = function(view) {
+  goog.events.unlisten(view,
+      ol.Object.getChangeEventType(ol.ViewProperty.ROTATION),
+      this.handleRotationChanged_, false, this);
+};
+
+
+/**
+ * Handle rotation changes to the main map.
+ * TODO: This should rotate the extent rectrangle instead of the
+ * overview map's view.
+ * @private
+ */
+ol.control.OverviewMap.prototype.handleRotationChanged_ = function() {
+  this.ovmap_.getView().setRotation(this.getMap().getView().getRotation());
 };
 
 
@@ -77713,16 +83732,6 @@ ol.control.OverviewMap.prototype.bindView_ = function() {
 ol.control.OverviewMap.render = function(mapEvent) {
   this.validateExtent_();
   this.updateBox_();
-};
-
-
-/**
- * Called on main map view changed.
- * @param {goog.events.Event} event Event.
- * @private
- */
-ol.control.OverviewMap.prototype.handleViewChanged_ = function(event) {
-  this.bindView_();
 };
 
 
@@ -78147,10 +84156,6 @@ ol.control.ScaleLine.prototype.getUnits = function() {
   return /** @type {ol.control.ScaleLineUnits|undefined} */ (
       this.get(ol.control.ScaleLineProperty.UNITS));
 };
-goog.exportProperty(
-    ol.control.ScaleLine.prototype,
-    'getUnits',
-    ol.control.ScaleLine.prototype.getUnits);
 
 
 /**
@@ -78185,10 +84190,6 @@ ol.control.ScaleLine.prototype.handleUnitsChanged_ = function() {
 ol.control.ScaleLine.prototype.setUnits = function(units) {
   this.set(ol.control.ScaleLineProperty.UNITS, units);
 };
-goog.exportProperty(
-    ol.control.ScaleLine.prototype,
-    'setUnits',
-    ol.control.ScaleLine.prototype.setUnits);
 
 
 /**
@@ -81942,10 +87943,6 @@ ol.DeviceOrientation.prototype.getAlpha = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.DeviceOrientationProperty.ALPHA));
 };
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'getAlpha',
-    ol.DeviceOrientation.prototype.getAlpha);
 
 
 /**
@@ -81959,10 +87956,6 @@ ol.DeviceOrientation.prototype.getBeta = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.DeviceOrientationProperty.BETA));
 };
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'getBeta',
-    ol.DeviceOrientation.prototype.getBeta);
 
 
 /**
@@ -81976,10 +87969,6 @@ ol.DeviceOrientation.prototype.getGamma = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.DeviceOrientationProperty.GAMMA));
 };
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'getGamma',
-    ol.DeviceOrientation.prototype.getGamma);
 
 
 /**
@@ -81993,10 +87982,6 @@ ol.DeviceOrientation.prototype.getHeading = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.DeviceOrientationProperty.HEADING));
 };
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'getHeading',
-    ol.DeviceOrientation.prototype.getHeading);
 
 
 /**
@@ -82009,10 +87994,6 @@ ol.DeviceOrientation.prototype.getTracking = function() {
   return /** @type {boolean} */ (
       this.get(ol.DeviceOrientationProperty.TRACKING));
 };
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'getTracking',
-    ol.DeviceOrientation.prototype.getTracking);
 
 
 /**
@@ -82041,160 +88022,6 @@ ol.DeviceOrientation.prototype.handleTrackingChanged_ = function() {
  */
 ol.DeviceOrientation.prototype.setTracking = function(tracking) {
   this.set(ol.DeviceOrientationProperty.TRACKING, tracking);
-};
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'setTracking',
-    ol.DeviceOrientation.prototype.setTracking);
-
-goog.provide('ol.dom.Input');
-goog.provide('ol.dom.InputProperty');
-
-goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.events.EventType');
-goog.require('ol.Object');
-
-
-/**
- * @enum {string}
- */
-ol.dom.InputProperty = {
-  VALUE: 'value',
-  CHECKED: 'checked'
-};
-
-
-
-/**
- * @classdesc
- * Helper class for binding HTML input to an {@link ol.Object}.
- *
- * Example:
- *
- *     // bind a checkbox with id 'visible' to a layer's visibility
- *     var visible = new ol.dom.Input(document.getElementById('visible'));
- *     visible.bindTo('checked', layer, 'visible');
- *
- * @constructor
- * @extends {ol.Object}
- * @param {Element} target Target element.
- * @api
- */
-ol.dom.Input = function(target) {
-  goog.base(this);
-
-  /**
-   * @private
-   * @type {HTMLInputElement}
-   */
-  this.target_ = /** @type {HTMLInputElement} */ (target);
-
-  goog.events.listen(this.target_,
-      [goog.events.EventType.CHANGE, goog.events.EventType.INPUT],
-      this.handleInputChanged_, false, this);
-
-  goog.events.listen(this,
-      ol.Object.getChangeEventType(ol.dom.InputProperty.VALUE),
-      this.handleValueChanged_, false, this);
-  goog.events.listen(this,
-      ol.Object.getChangeEventType(ol.dom.InputProperty.CHECKED),
-      this.handleCheckedChanged_, false, this);
-};
-goog.inherits(ol.dom.Input, ol.Object);
-
-
-/**
- * If the input is a checkbox, return whether or not the checkbox is checked.
- * @return {boolean|undefined} The checked state of the Input.
- * @observable
- * @api
- */
-ol.dom.Input.prototype.getChecked = function() {
-  return /** @type {boolean} */ (this.get(ol.dom.InputProperty.CHECKED));
-};
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'getChecked',
-    ol.dom.Input.prototype.getChecked);
-
-
-/**
- * Get the value of the input.
- * @return {string|undefined} The value of the Input.
- * @observable
- * @api
- */
-ol.dom.Input.prototype.getValue = function() {
-  return /** @type {string} */ (this.get(ol.dom.InputProperty.VALUE));
-};
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'getValue',
-    ol.dom.Input.prototype.getValue);
-
-
-/**
- * Sets the value of the input.
- * @param {string} value The value of the Input.
- * @observable
- * @api
- */
-ol.dom.Input.prototype.setValue = function(value) {
-  this.set(ol.dom.InputProperty.VALUE, value);
-};
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'setValue',
-    ol.dom.Input.prototype.setValue);
-
-
-/**
- * Set whether or not a checkbox is checked.
- * @param {boolean} checked The checked state of the Input.
- * @observable
- * @api
- */
-ol.dom.Input.prototype.setChecked = function(checked) {
-  this.set(ol.dom.InputProperty.CHECKED, checked);
-};
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'setChecked',
-    ol.dom.Input.prototype.setChecked);
-
-
-/**
- * @param {goog.events.BrowserEvent} browserEvent Browser event.
- * @private
- */
-ol.dom.Input.prototype.handleInputChanged_ = function(browserEvent) {
-  goog.asserts.assert(browserEvent.currentTarget == this.target_,
-      'currentTarget should be the same as this.target_');
-  var target = this.target_;
-  if (target.type === 'checkbox' || target.type === 'radio') {
-    this.setChecked(target.checked);
-  } else {
-    this.setValue(target.value);
-  }
-};
-
-
-/**
- * @param {goog.events.Event} event Change event.
- * @private
- */
-ol.dom.Input.prototype.handleCheckedChanged_ = function(event) {
-  this.target_.checked = /** @type {boolean} */ (this.getChecked());
-};
-
-
-/**
- * @param {goog.events.Event} event Change event.
- * @private
- */
-ol.dom.Input.prototype.handleValueChanged_ = function(event) {
-  this.target_.value =  /** @type {string} */ (this.getValue());
 };
 
 goog.provide('ol.Ellipsoid');
@@ -82544,10 +88371,6 @@ ol.Feature.prototype.getGeometry = function() {
   return /** @type {ol.geom.Geometry|undefined} */ (
       this.get(this.geometryName_));
 };
-goog.exportProperty(
-    ol.Feature.prototype,
-    'getGeometry',
-    ol.Feature.prototype.getGeometry);
 
 
 /**
@@ -82614,8 +88437,8 @@ ol.Feature.prototype.handleGeometryChanged_ = function() {
   if (goog.isDefAndNotNull(geometry)) {
     this.geometryChangeKey_ = goog.events.listen(geometry,
         goog.events.EventType.CHANGE, this.handleGeometryChange_, false, this);
-    this.changed();
   }
+  this.changed();
 };
 
 
@@ -82629,10 +88452,6 @@ ol.Feature.prototype.handleGeometryChanged_ = function() {
 ol.Feature.prototype.setGeometry = function(geometry) {
   this.set(this.geometryName_, geometry);
 };
-goog.exportProperty(
-    ol.Feature.prototype,
-    'setGeometry',
-    ol.Feature.prototype.setGeometry);
 
 
 /**
@@ -83241,19 +89060,6 @@ ol.format.Feature.transformWithOptions = function(
   }
 };
 
-goog.provide('ol.format.FormatType');
-
-
-/**
- * @enum {string}
- */
-ol.format.FormatType = {
-  BINARY: 'binary',
-  JSON: 'json',
-  TEXT: 'text',
-  XML: 'xml'
-};
-
 goog.provide('ol.format.BinaryFeature');
 
 goog.require('goog.asserts');
@@ -83365,376 +89171,6 @@ ol.format.BinaryFeature.prototype.readProjection = function(source) {
  */
 ol.format.BinaryFeature.prototype.readProjectionFromBuffer =
     goog.abstractMethod;
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview JSON utility functions.
- * @author arv@google.com (Erik Arvidsson)
- */
-
-
-goog.provide('goog.json');
-goog.provide('goog.json.Replacer');
-goog.provide('goog.json.Reviver');
-goog.provide('goog.json.Serializer');
-
-
-/**
- * @define {boolean} If true, use the native JSON parsing API.
- * NOTE(ruilopes): EXPERIMENTAL, handle with care.  Setting this to true might
- * break your code.  The default {@code goog.json.parse} implementation is able
- * to handle invalid JSON, such as JSPB.
- */
-goog.define('goog.json.USE_NATIVE_JSON', false);
-
-
-/**
- * Tests if a string is an invalid JSON string. This only ensures that we are
- * not using any invalid characters
- * @param {string} s The string to test.
- * @return {boolean} True if the input is a valid JSON string.
- */
-goog.json.isValid = function(s) {
-  // All empty whitespace is not valid.
-  if (/^\s*$/.test(s)) {
-    return false;
-  }
-
-  // This is taken from http://www.json.org/json2.js which is released to the
-  // public domain.
-  // Changes: We dissallow \u2028 Line separator and \u2029 Paragraph separator
-  // inside strings.  We also treat \u2028 and \u2029 as whitespace which they
-  // are in the RFC but IE and Safari does not match \s to these so we need to
-  // include them in the reg exps in all places where whitespace is allowed.
-  // We allowed \x7f inside strings because some tools don't escape it,
-  // e.g. http://www.json.org/java/org/json/JSONObject.java
-
-  // Parsing happens in three stages. In the first stage, we run the text
-  // against regular expressions that look for non-JSON patterns. We are
-  // especially concerned with '()' and 'new' because they can cause invocation,
-  // and '=' because it can cause mutation. But just to be safe, we want to
-  // reject all unexpected forms.
-
-  // We split the first stage into 4 regexp operations in order to work around
-  // crippling inefficiencies in IE's and Safari's regexp engines. First we
-  // replace all backslash pairs with '@' (a non-JSON character). Second, we
-  // replace all simple value tokens with ']' characters. Third, we delete all
-  // open brackets that follow a colon or comma or that begin the text. Finally,
-  // we look to see that the remaining characters are only whitespace or ']' or
-  // ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
-
-  // Don't make these static since they have the global flag.
-  var backslashesRe = /\\["\\\/bfnrtu]/g;
-  var simpleValuesRe =
-      /"[^"\\\n\r\u2028\u2029\x00-\x08\x0a-\x1f]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
-  var openBracketsRe = /(?:^|:|,)(?:[\s\u2028\u2029]*\[)+/g;
-  var remainderRe = /^[\],:{}\s\u2028\u2029]*$/;
-
-  return remainderRe.test(s.replace(backslashesRe, '@').
-      replace(simpleValuesRe, ']').
-      replace(openBracketsRe, ''));
-};
-
-
-/**
- * Parses a JSON string and returns the result. This throws an exception if
- * the string is an invalid JSON string.
- *
- * Note that this is very slow on large strings. If you trust the source of
- * the string then you should use unsafeParse instead.
- *
- * @param {*} s The JSON string to parse.
- * @throws Error if s is invalid JSON.
- * @return {Object} The object generated from the JSON string, or null.
- */
-goog.json.parse = goog.json.USE_NATIVE_JSON ?
-    /** @type {function(*):Object} */ (goog.global['JSON']['parse']) :
-    function(s) {
-      var o = String(s);
-      if (goog.json.isValid(o)) {
-        /** @preserveTry */
-        try {
-          return /** @type {Object} */ (eval('(' + o + ')'));
-        } catch (ex) {
-        }
-      }
-      throw Error('Invalid JSON string: ' + o);
-    };
-
-
-/**
- * Parses a JSON string and returns the result. This uses eval so it is open
- * to security issues and it should only be used if you trust the source.
- *
- * @param {string} s The JSON string to parse.
- * @return {Object} The object generated from the JSON string.
- */
-goog.json.unsafeParse = goog.json.USE_NATIVE_JSON ?
-    /** @type {function(string):Object} */ (goog.global['JSON']['parse']) :
-    function(s) {
-      return /** @type {Object} */ (eval('(' + s + ')'));
-    };
-
-
-/**
- * JSON replacer, as defined in Section 15.12.3 of the ES5 spec.
- * @see http://ecma-international.org/ecma-262/5.1/#sec-15.12.3
- *
- * TODO(nicksantos): Array should also be a valid replacer.
- *
- * @typedef {function(this:Object, string, *): *}
- */
-goog.json.Replacer;
-
-
-/**
- * JSON reviver, as defined in Section 15.12.2 of the ES5 spec.
- * @see http://ecma-international.org/ecma-262/5.1/#sec-15.12.3
- *
- * @typedef {function(this:Object, string, *): *}
- */
-goog.json.Reviver;
-
-
-/**
- * Serializes an object or a value to a JSON string.
- *
- * @param {*} object The object to serialize.
- * @param {?goog.json.Replacer=} opt_replacer A replacer function
- *     called for each (key, value) pair that determines how the value
- *     should be serialized. By defult, this just returns the value
- *     and allows default serialization to kick in.
- * @throws Error if there are loops in the object graph.
- * @return {string} A JSON string representation of the input.
- */
-goog.json.serialize = goog.json.USE_NATIVE_JSON ?
-    /** @type {function(*, ?goog.json.Replacer=):string} */
-    (goog.global['JSON']['stringify']) :
-    function(object, opt_replacer) {
-      // NOTE(nicksantos): Currently, we never use JSON.stringify.
-      //
-      // The last time I evaluated this, JSON.stringify had subtle bugs and
-      // behavior differences on all browsers, and the performance win was not
-      // large enough to justify all the issues. This may change in the future
-      // as browser implementations get better.
-      //
-      // assertSerialize in json_test contains if branches for the cases
-      // that fail.
-      return new goog.json.Serializer(opt_replacer).serialize(object);
-    };
-
-
-
-/**
- * Class that is used to serialize JSON objects to a string.
- * @param {?goog.json.Replacer=} opt_replacer Replacer.
- * @constructor
- */
-goog.json.Serializer = function(opt_replacer) {
-  /**
-   * @type {goog.json.Replacer|null|undefined}
-   * @private
-   */
-  this.replacer_ = opt_replacer;
-};
-
-
-/**
- * Serializes an object or a value to a JSON string.
- *
- * @param {*} object The object to serialize.
- * @throws Error if there are loops in the object graph.
- * @return {string} A JSON string representation of the input.
- */
-goog.json.Serializer.prototype.serialize = function(object) {
-  var sb = [];
-  this.serializeInternal(object, sb);
-  return sb.join('');
-};
-
-
-/**
- * Serializes a generic value to a JSON string
- * @protected
- * @param {*} object The object to serialize.
- * @param {Array<string>} sb Array used as a string builder.
- * @throws Error if there are loops in the object graph.
- */
-goog.json.Serializer.prototype.serializeInternal = function(object, sb) {
-  switch (typeof object) {
-    case 'string':
-      this.serializeString_(/** @type {string} */ (object), sb);
-      break;
-    case 'number':
-      this.serializeNumber_(/** @type {number} */ (object), sb);
-      break;
-    case 'boolean':
-      sb.push(object);
-      break;
-    case 'undefined':
-      sb.push('null');
-      break;
-    case 'object':
-      if (object == null) {
-        sb.push('null');
-        break;
-      }
-      if (goog.isArray(object)) {
-        this.serializeArray(/** @type {!Array<?>} */ (object), sb);
-        break;
-      }
-      // should we allow new String, new Number and new Boolean to be treated
-      // as string, number and boolean? Most implementations do not and the
-      // need is not very big
-      this.serializeObject_(/** @type {Object} */ (object), sb);
-      break;
-    case 'function':
-      // Skip functions.
-      // TODO(user) Should we return something here?
-      break;
-    default:
-      throw Error('Unknown type: ' + typeof object);
-  }
-};
-
-
-/**
- * Character mappings used internally for goog.string.quote
- * @private
- * @type {!Object}
- */
-goog.json.Serializer.charToJsonCharCache_ = {
-  '\"': '\\"',
-  '\\': '\\\\',
-  '/': '\\/',
-  '\b': '\\b',
-  '\f': '\\f',
-  '\n': '\\n',
-  '\r': '\\r',
-  '\t': '\\t',
-
-  '\x0B': '\\u000b' // '\v' is not supported in JScript
-};
-
-
-/**
- * Regular expression used to match characters that need to be replaced.
- * The S60 browser has a bug where unicode characters are not matched by
- * regular expressions. The condition below detects such behaviour and
- * adjusts the regular expression accordingly.
- * @private
- * @type {!RegExp}
- */
-goog.json.Serializer.charsToReplace_ = /\uffff/.test('\uffff') ?
-    /[\\\"\x00-\x1f\x7f-\uffff]/g : /[\\\"\x00-\x1f\x7f-\xff]/g;
-
-
-/**
- * Serializes a string to a JSON string
- * @private
- * @param {string} s The string to serialize.
- * @param {Array<string>} sb Array used as a string builder.
- */
-goog.json.Serializer.prototype.serializeString_ = function(s, sb) {
-  // The official JSON implementation does not work with international
-  // characters.
-  sb.push('"', s.replace(goog.json.Serializer.charsToReplace_, function(c) {
-    // caching the result improves performance by a factor 2-3
-    if (c in goog.json.Serializer.charToJsonCharCache_) {
-      return goog.json.Serializer.charToJsonCharCache_[c];
-    }
-
-    var cc = c.charCodeAt(0);
-    var rv = '\\u';
-    if (cc < 16) {
-      rv += '000';
-    } else if (cc < 256) {
-      rv += '00';
-    } else if (cc < 4096) { // \u1000
-      rv += '0';
-    }
-    return goog.json.Serializer.charToJsonCharCache_[c] = rv + cc.toString(16);
-  }), '"');
-};
-
-
-/**
- * Serializes a number to a JSON string
- * @private
- * @param {number} n The number to serialize.
- * @param {Array<string>} sb Array used as a string builder.
- */
-goog.json.Serializer.prototype.serializeNumber_ = function(n, sb) {
-  sb.push(isFinite(n) && !isNaN(n) ? n : 'null');
-};
-
-
-/**
- * Serializes an array to a JSON string
- * @param {Array<string>} arr The array to serialize.
- * @param {Array<string>} sb Array used as a string builder.
- * @protected
- */
-goog.json.Serializer.prototype.serializeArray = function(arr, sb) {
-  var l = arr.length;
-  sb.push('[');
-  var sep = '';
-  for (var i = 0; i < l; i++) {
-    sb.push(sep);
-
-    var value = arr[i];
-    this.serializeInternal(
-        this.replacer_ ? this.replacer_.call(arr, String(i), value) : value,
-        sb);
-
-    sep = ',';
-  }
-  sb.push(']');
-};
-
-
-/**
- * Serializes an object to a JSON string
- * @private
- * @param {Object} obj The object to serialize.
- * @param {Array<string>} sb Array used as a string builder.
- */
-goog.json.Serializer.prototype.serializeObject_ = function(obj, sb) {
-  sb.push('{');
-  var sep = '';
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      var value = obj[key];
-      // Skip functions.
-      // TODO(ptucker) Should we return something for function properties?
-      if (typeof value != 'function') {
-        sb.push(sep);
-        this.serializeString_(key, sb);
-        sb.push(':');
-
-        this.serializeInternal(
-            this.replacer_ ? this.replacer_.call(obj, key, value) : value,
-            sb);
-
-        sep = ',';
-      }
-    }
-  }
-  sb.push('}');
-};
 
 goog.provide('ol.format.JSONFeature');
 
@@ -84521,987 +89957,6 @@ ol.format.GeoJSON.prototype.writeGeometryObject = function(geometry,
       this.adaptOptions(opt_options));
 };
 
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview
- * XML utilities.
- *
- */
-
-goog.provide('goog.dom.xml');
-
-goog.require('goog.dom');
-goog.require('goog.dom.NodeType');
-
-
-/**
- * Max XML size for MSXML2.  Used to prevent potential DoS attacks.
- * @type {number}
- */
-goog.dom.xml.MAX_XML_SIZE_KB = 2 * 1024;  // In kB
-
-
-/**
- * Max XML size for MSXML2.  Used to prevent potential DoS attacks.
- * @type {number}
- */
-goog.dom.xml.MAX_ELEMENT_DEPTH = 256; // Same default as MSXML6.
-
-
-/**
- * Creates an XML document appropriate for the current JS runtime
- * @param {string=} opt_rootTagName The root tag name.
- * @param {string=} opt_namespaceUri Namespace URI of the document element.
- * @return {Document} The new document.
- */
-goog.dom.xml.createDocument = function(opt_rootTagName, opt_namespaceUri) {
-  if (opt_namespaceUri && !opt_rootTagName) {
-    throw Error("Can't create document with namespace and no root tag");
-  }
-  if (document.implementation && document.implementation.createDocument) {
-    return document.implementation.createDocument(opt_namespaceUri || '',
-                                                  opt_rootTagName || '',
-                                                  null);
-  } else if (typeof ActiveXObject != 'undefined') {
-    var doc = goog.dom.xml.createMsXmlDocument_();
-    if (doc) {
-      if (opt_rootTagName) {
-        doc.appendChild(doc.createNode(goog.dom.NodeType.ELEMENT,
-                                       opt_rootTagName,
-                                       opt_namespaceUri || ''));
-      }
-      return doc;
-    }
-  }
-  throw Error('Your browser does not support creating new documents');
-};
-
-
-/**
- * Creates an XML document from a string
- * @param {string} xml The text.
- * @return {Document} XML document from the text.
- */
-goog.dom.xml.loadXml = function(xml) {
-  if (typeof DOMParser != 'undefined') {
-    return new DOMParser().parseFromString(xml, 'application/xml');
-  } else if (typeof ActiveXObject != 'undefined') {
-    var doc = goog.dom.xml.createMsXmlDocument_();
-    doc.loadXML(xml);
-    return doc;
-  }
-  throw Error('Your browser does not support loading xml documents');
-};
-
-
-/**
- * Serializes an XML document or subtree to string.
- * @param {Document|Element} xml The document or the root node of the subtree.
- * @return {string} The serialized XML.
- */
-goog.dom.xml.serialize = function(xml) {
-  // Compatible with Firefox, Opera and WebKit.
-  if (typeof XMLSerializer != 'undefined') {
-    return new XMLSerializer().serializeToString(xml);
-  }
-  // Compatible with Internet Explorer.
-  var text = xml.xml;
-  if (text) {
-    return text;
-  }
-  throw Error('Your browser does not support serializing XML documents');
-};
-
-
-/**
- * Selects a single node using an Xpath expression and a root node
- * @param {Node} node The root node.
- * @param {string} path Xpath selector.
- * @return {Node} The selected node, or null if no matching node.
- */
-goog.dom.xml.selectSingleNode = function(node, path) {
-  if (typeof node.selectSingleNode != 'undefined') {
-    var doc = goog.dom.getOwnerDocument(node);
-    if (typeof doc.setProperty != 'undefined') {
-      doc.setProperty('SelectionLanguage', 'XPath');
-    }
-    return node.selectSingleNode(path);
-  } else if (document.implementation.hasFeature('XPath', '3.0')) {
-    var doc = goog.dom.getOwnerDocument(node);
-    var resolver = doc.createNSResolver(doc.documentElement);
-    var result = doc.evaluate(path, node, resolver,
-        XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-    return result.singleNodeValue;
-  }
-  return null;
-};
-
-
-/**
- * Selects multiple nodes using an Xpath expression and a root node
- * @param {Node} node The root node.
- * @param {string} path Xpath selector.
- * @return {(NodeList|Array<Node>)} The selected nodes, or empty array if no
- *     matching nodes.
- */
-goog.dom.xml.selectNodes = function(node, path) {
-  if (typeof node.selectNodes != 'undefined') {
-    var doc = goog.dom.getOwnerDocument(node);
-    if (typeof doc.setProperty != 'undefined') {
-      doc.setProperty('SelectionLanguage', 'XPath');
-    }
-    return node.selectNodes(path);
-  } else if (document.implementation.hasFeature('XPath', '3.0')) {
-    var doc = goog.dom.getOwnerDocument(node);
-    var resolver = doc.createNSResolver(doc.documentElement);
-    var nodes = doc.evaluate(path, node, resolver,
-        XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    var results = [];
-    var count = nodes.snapshotLength;
-    for (var i = 0; i < count; i++) {
-      results.push(nodes.snapshotItem(i));
-    }
-    return results;
-  } else {
-    return [];
-  }
-};
-
-
-/**
- * Sets multiple attributes on an element. Differs from goog.dom.setProperties
- * in that it exclusively uses the element's setAttributes method. Use this
- * when you need to ensure that the exact property is available as an attribute
- * and can be read later by the native getAttribute method.
- * @param {!Element} element XML or DOM element to set attributes on.
- * @param {!Object<string, string>} attributes Map of property:value pairs.
- */
-goog.dom.xml.setAttributes = function(element, attributes) {
-  for (var key in attributes) {
-    if (attributes.hasOwnProperty(key)) {
-      element.setAttribute(key, attributes[key]);
-    }
-  }
-};
-
-
-/**
- * Creates an instance of the MSXML2.DOMDocument.
- * @return {Document} The new document.
- * @private
- */
-goog.dom.xml.createMsXmlDocument_ = function() {
-  var doc = new ActiveXObject('MSXML2.DOMDocument');
-  if (doc) {
-    // Prevent potential vulnerabilities exposed by MSXML2, see
-    // http://b/1707300 and http://wiki/Main/ISETeamXMLAttacks for details.
-    doc.resolveExternals = false;
-    doc.validateOnParse = false;
-    // Add a try catch block because accessing these properties will throw an
-    // error on unsupported MSXML versions. This affects Windows machines
-    // running IE6 or IE7 that are on XP SP2 or earlier without MSXML updates.
-    // See http://msdn.microsoft.com/en-us/library/ms766391(VS.85).aspx for
-    // specific details on which MSXML versions support these properties.
-    try {
-      doc.setProperty('ProhibitDTD', true);
-      doc.setProperty('MaxXMLSize', goog.dom.xml.MAX_XML_SIZE_KB);
-      doc.setProperty('MaxElementDepth', goog.dom.xml.MAX_ELEMENT_DEPTH);
-    } catch (e) {
-      // No-op.
-    }
-  }
-  return doc;
-};
-
-// FIXME Remove ol.xml.makeParsersNS, and use ol.xml.makeStructureNS instead.
-
-goog.provide('ol.xml');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.dom.NodeType');
-goog.require('goog.dom.xml');
-goog.require('goog.object');
-goog.require('goog.userAgent');
-
-
-/**
- * When using {@link ol.xml.makeChildAppender} or
- * {@link ol.xml.makeSimpleNodeFactory}, the top `objectStack` item needs to
- * have this structure.
- * @typedef {{node:Node}}
- */
-ol.xml.NodeStackItem;
-
-
-/**
- * @typedef {function(Node, Array.<*>)}
- */
-ol.xml.Parser;
-
-
-/**
- * @typedef {function(Node, *, Array.<*>)}
- */
-ol.xml.Serializer;
-
-
-/**
- * This document should be used when creating nodes for XML serializations. This
- * document is also used by {@link ol.xml.createElementNS} and
- * {@link ol.xml.setAttributeNS}
- * @const
- * @type {Document}
- */
-ol.xml.DOCUMENT = goog.dom.xml.createDocument();
-
-
-/**
- * @param {string} namespaceURI Namespace URI.
- * @param {string} qualifiedName Qualified name.
- * @return {Node} Node.
- * @private
- */
-ol.xml.createElementNS_ = function(namespaceURI, qualifiedName) {
-  return ol.xml.DOCUMENT.createElementNS(namespaceURI, qualifiedName);
-};
-
-
-/**
- * @param {string} namespaceURI Namespace URI.
- * @param {string} qualifiedName Qualified name.
- * @return {Node} Node.
- * @private
- */
-ol.xml.createElementNSActiveX_ = function(namespaceURI, qualifiedName) {
-  if (goog.isNull(namespaceURI)) {
-    namespaceURI = '';
-  }
-  return ol.xml.DOCUMENT.createNode(1, qualifiedName, namespaceURI);
-};
-
-
-/**
- * @param {string} namespaceURI Namespace URI.
- * @param {string} qualifiedName Qualified name.
- * @return {Node} Node.
- */
-ol.xml.createElementNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.createElementNS_ : ol.xml.createElementNSActiveX_;
-
-
-/**
- * Recursively grab all text content of child nodes into a single string.
- * @param {Node} node Node.
- * @param {boolean} normalizeWhitespace Normalize whitespace: remove all line
- * breaks.
- * @return {string} All text content.
- * @api
- */
-ol.xml.getAllTextContent = function(node, normalizeWhitespace) {
-  return ol.xml.getAllTextContent_(node, normalizeWhitespace, []).join('');
-};
-
-
-/**
- * Recursively grab all text content of child nodes into a single string.
- * @param {Node} node Node.
- * @param {boolean} normalizeWhitespace Normalize whitespace: remove all line
- * breaks.
- * @param {Array.<String|string>} accumulator Accumulator.
- * @private
- * @return {Array.<String|string>} Accumulator.
- */
-ol.xml.getAllTextContent_ = function(node, normalizeWhitespace, accumulator) {
-  if (node.nodeType == goog.dom.NodeType.CDATA_SECTION ||
-      node.nodeType == goog.dom.NodeType.TEXT) {
-    if (normalizeWhitespace) {
-      // FIXME understand why goog.dom.getTextContent_ uses String here
-      accumulator.push(String(node.nodeValue).replace(/(\r\n|\r|\n)/g, ''));
-    } else {
-      accumulator.push(node.nodeValue);
-    }
-  } else {
-    var n;
-    for (n = node.firstChild; !goog.isNull(n); n = n.nextSibling) {
-      ol.xml.getAllTextContent_(n, normalizeWhitespace, accumulator);
-    }
-  }
-  return accumulator;
-};
-
-
-/**
- * @param {Node} node Node.
- * @private
- * @return {string} Local name.
- */
-ol.xml.getLocalName_ = function(node) {
-  return node.localName;
-};
-
-
-/**
- * @param {Node} node Node.
- * @private
- * @return {string} Local name.
- */
-ol.xml.getLocalNameIE_ = function(node) {
-  var localName = node.localName;
-  if (goog.isDef(localName)) {
-    return localName;
-  }
-  var baseName = node.baseName;
-  goog.asserts.assert(goog.isDefAndNotNull(baseName),
-      'Failed to get localName/baseName of node %s', node);
-  return baseName;
-};
-
-
-/**
- * @param {Node} node Node.
- * @return {string} Local name.
- */
-ol.xml.getLocalName = goog.userAgent.IE ?
-    ol.xml.getLocalNameIE_ : ol.xml.getLocalName_;
-
-
-/**
- * @param {?} value Value.
- * @private
- * @return {boolean} Is document.
- */
-ol.xml.isDocument_ = function(value) {
-  return value instanceof Document;
-};
-
-
-/**
- * @param {?} value Value.
- * @private
- * @return {boolean} Is document.
- */
-ol.xml.isDocumentIE_ = function(value) {
-  return goog.isObject(value) && value.nodeType == goog.dom.NodeType.DOCUMENT;
-};
-
-
-/**
- * @param {?} value Value.
- * @return {boolean} Is document.
- */
-ol.xml.isDocument = goog.userAgent.IE ?
-    ol.xml.isDocumentIE_ : ol.xml.isDocument_;
-
-
-/**
- * @param {?} value Value.
- * @private
- * @return {boolean} Is node.
- */
-ol.xml.isNode_ = function(value) {
-  return value instanceof Node;
-};
-
-
-/**
- * @param {?} value Value.
- * @private
- * @return {boolean} Is node.
- */
-ol.xml.isNodeIE_ = function(value) {
-  return goog.isObject(value) && goog.isDef(value.nodeType);
-};
-
-
-/**
- * @param {?} value Value.
- * @return {boolean} Is node.
- */
-ol.xml.isNode = goog.userAgent.IE ? ol.xml.isNodeIE_ : ol.xml.isNode_;
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {string} Value
- * @private
- */
-ol.xml.getAttributeNS_ = function(node, namespaceURI, name) {
-  return node.getAttributeNS(namespaceURI, name) || '';
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {string} Value
- * @private
- */
-ol.xml.getAttributeNSActiveX_ = function(node, namespaceURI, name) {
-  var attributeValue = '';
-  var attributeNode = ol.xml.getAttributeNodeNS(node, namespaceURI, name);
-  if (goog.isDef(attributeNode)) {
-    attributeValue = attributeNode.nodeValue;
-  }
-  return attributeValue;
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {string} Value
- */
-ol.xml.getAttributeNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.getAttributeNS_ : ol.xml.getAttributeNSActiveX_;
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {?Node} Attribute node or null if none found.
- * @private
- */
-ol.xml.getAttributeNodeNS_ = function(node, namespaceURI, name) {
-  return node.getAttributeNodeNS(namespaceURI, name);
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {?Node} Attribute node or null if none found.
- * @private
- */
-ol.xml.getAttributeNodeNSActiveX_ = function(node, namespaceURI, name) {
-  var attributeNode = null;
-  var attributes = node.attributes;
-  var potentialNode, fullName;
-  for (var i = 0, len = attributes.length; i < len; ++i) {
-    potentialNode = attributes[i];
-    if (potentialNode.namespaceURI == namespaceURI) {
-      fullName = (potentialNode.prefix) ?
-          (potentialNode.prefix + ':' + name) : name;
-      if (fullName == potentialNode.nodeName) {
-        attributeNode = potentialNode;
-        break;
-      }
-    }
-  }
-  return attributeNode;
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {?Node} Attribute node or null if none found.
- */
-ol.xml.getAttributeNodeNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.getAttributeNodeNS_ : ol.xml.getAttributeNodeNSActiveX_;
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @param {string|number} value Value.
- * @private
- */
-ol.xml.setAttributeNS_ = function(node, namespaceURI, name, value) {
-  node.setAttributeNS(namespaceURI, name, value);
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @param {string|number} value Value.
- * @private
- */
-ol.xml.setAttributeNSActiveX_ = function(node, namespaceURI, name, value) {
-  if (!goog.isNull(namespaceURI)) {
-    var attribute = node.ownerDocument.createNode(2, name, namespaceURI);
-    attribute.nodeValue = value;
-    node.setAttributeNode(attribute);
-  } else {
-    node.setAttribute(name, value);
-  }
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @param {string|number} value Value.
- */
-ol.xml.setAttributeNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.setAttributeNS_ : ol.xml.setAttributeNSActiveX_;
-
-
-/**
- * Parse an XML string to an XML Document.
- * @param {string} xml XML.
- * @return {Document} Document.
- * @api
- */
-ol.xml.parse = function(xml) {
-  return new DOMParser().parseFromString(xml, 'application/xml');
-};
-
-
-/**
- * Make an array extender function for extending the array at the top of the
- * object stack.
- * @param {function(this: T, Node, Array.<*>): (Array.<*>|undefined)}
- *     valueReader Value reader.
- * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
- * @template T
- */
-ol.xml.makeArrayExtender = function(valueReader, opt_this) {
-  return (
-      /**
-       * @param {Node} node Node.
-       * @param {Array.<*>} objectStack Object stack.
-       */
-      function(node, objectStack) {
-        var value = valueReader.call(opt_this, node, objectStack);
-        if (goog.isDef(value)) {
-          goog.asserts.assert(goog.isArray(value),
-              'valueReader function is expected to return an array of values');
-          var array = /** @type {Array.<*>} */
-              (objectStack[objectStack.length - 1]);
-          goog.asserts.assert(goog.isArray(array),
-              'objectStack is supposed to be an array of arrays');
-          goog.array.extend(array, value);
-        }
-      });
-};
-
-
-/**
- * Make an array pusher function for pushing to the array at the top of the
- * object stack.
- * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
- * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
- * @template T
- */
-ol.xml.makeArrayPusher = function(valueReader, opt_this) {
-  return (
-      /**
-       * @param {Node} node Node.
-       * @param {Array.<*>} objectStack Object stack.
-       */
-      function(node, objectStack) {
-        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
-            node, objectStack);
-        if (goog.isDef(value)) {
-          var array = objectStack[objectStack.length - 1];
-          goog.asserts.assert(goog.isArray(array),
-              'objectStack is supposed to be an array of arrays');
-          array.push(value);
-        }
-      });
-};
-
-
-/**
- * Make an object stack replacer function for replacing the object at the
- * top of the stack.
- * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
- * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
- * @template T
- */
-ol.xml.makeReplacer = function(valueReader, opt_this) {
-  return (
-      /**
-       * @param {Node} node Node.
-       * @param {Array.<*>} objectStack Object stack.
-       */
-      function(node, objectStack) {
-        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
-            node, objectStack);
-        if (goog.isDef(value)) {
-          objectStack[objectStack.length - 1] = value;
-        }
-      });
-};
-
-
-/**
- * Make an object property pusher function for adding a property to the
- * object at the top of the stack.
- * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
- * @param {string=} opt_property Property.
- * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
- * @template T
- */
-ol.xml.makeObjectPropertyPusher =
-    function(valueReader, opt_property, opt_this) {
-  goog.asserts.assert(goog.isDef(valueReader),
-      'undefined valueReader, expected function(this: T, Node, Array.<*>)');
-  return (
-      /**
-       * @param {Node} node Node.
-       * @param {Array.<*>} objectStack Object stack.
-       */
-      function(node, objectStack) {
-        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
-            node, objectStack);
-        if (goog.isDef(value)) {
-          var object = /** @type {Object} */
-              (objectStack[objectStack.length - 1]);
-          var property = goog.isDef(opt_property) ?
-              opt_property : node.localName;
-          goog.asserts.assert(goog.isObject(object),
-              'entity from stack was not an object');
-          var array = goog.object.setIfUndefined(object, property, []);
-          array.push(value);
-        }
-      });
-};
-
-
-/**
- * Make an object property setter function.
- * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
- * @param {string=} opt_property Property.
- * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
- * @template T
- */
-ol.xml.makeObjectPropertySetter =
-    function(valueReader, opt_property, opt_this) {
-  goog.asserts.assert(goog.isDef(valueReader),
-      'undefined valueReader, expected function(this: T, Node, Array.<*>)');
-  return (
-      /**
-       * @param {Node} node Node.
-       * @param {Array.<*>} objectStack Object stack.
-       */
-      function(node, objectStack) {
-        var value = valueReader.call(goog.isDef(opt_this) ? opt_this : this,
-            node, objectStack);
-        if (goog.isDef(value)) {
-          var object = /** @type {Object} */
-              (objectStack[objectStack.length - 1]);
-          var property = goog.isDef(opt_property) ?
-              opt_property : node.localName;
-          goog.asserts.assert(goog.isObject(object),
-              'entity from stack was not an object');
-          object[property] = value;
-        }
-      });
-};
-
-
-/**
- * Make a parserNS hash.
- * @param {Array.<string>} namespaceURIs Namespace URIs.
- * @param {Object.<string, ol.xml.Parser>} parsers Parsers.
- * @param {Object.<string, Object.<string, ol.xml.Parser>>=} opt_parsersNS
- *     ParsersNS.
- * @return {Object.<string, Object.<string, ol.xml.Parser>>} Parsers NS.
- */
-ol.xml.makeParsersNS = function(namespaceURIs, parsers, opt_parsersNS) {
-  return /** @type {Object.<string, Object.<string, ol.xml.Parser>>} */ (
-      ol.xml.makeStructureNS(namespaceURIs, parsers, opt_parsersNS));
-};
-
-
-/**
- * Create a serializer that appends nodes written by its `nodeWriter` to its
- * designated parent. The parent is the `node` of the
- * {@link ol.xml.NodeStackItem} at the top of the `objectStack`.
- * @param {function(this: T, Node, V, Array.<*>)}
- *     nodeWriter Node writer.
- * @param {T=} opt_this The object to use as `this` in `nodeWriter`.
- * @return {ol.xml.Serializer} Serializer.
- * @template T, V
- */
-ol.xml.makeChildAppender = function(nodeWriter, opt_this) {
-  return function(node, value, objectStack) {
-    nodeWriter.call(goog.isDef(opt_this) ? opt_this : this,
-        node, value, objectStack);
-    var parent = objectStack[objectStack.length - 1];
-    goog.asserts.assert(goog.isObject(parent),
-        'entity from stack was not an object');
-    var parentNode = parent.node;
-    goog.asserts.assert(ol.xml.isNode(parentNode) ||
-        ol.xml.isDocument(parentNode),
-        'expected parentNode %s to be a Node or a Document', parentNode);
-    parentNode.appendChild(node);
-  };
-};
-
-
-/**
- * Create a serializer that calls the provided `nodeWriter` from
- * {@link ol.xml.serialize}. This can be used by the parent writer to have the
- * 'nodeWriter' called with an array of values when the `nodeWriter` was
- * designed to serialize a single item. An example would be a LineString
- * geometry writer, which could be reused for writing MultiLineString
- * geometries.
- * @param {function(this: T, Node, V, Array.<*>)}
- *     nodeWriter Node writer.
- * @param {T=} opt_this The object to use as `this` in `nodeWriter`.
- * @return {ol.xml.Serializer} Serializer.
- * @template T, V
- */
-ol.xml.makeArraySerializer = function(nodeWriter, opt_this) {
-  var serializersNS, nodeFactory;
-  return function(node, value, objectStack) {
-    if (!goog.isDef(serializersNS)) {
-      serializersNS = {};
-      var serializers = {};
-      serializers[node.localName] = nodeWriter;
-      serializersNS[node.namespaceURI] = serializers;
-      nodeFactory = ol.xml.makeSimpleNodeFactory(node.localName);
-    }
-    ol.xml.serialize(serializersNS, nodeFactory, value, objectStack);
-  };
-};
-
-
-/**
- * Create a node factory which can use the `opt_keys` passed to
- * {@link ol.xml.serialize} or {@link ol.xml.pushSerializeAndPop} as node names,
- * or a fixed node name. The namespace of the created nodes can either be fixed,
- * or the parent namespace will be used.
- * @param {string=} opt_nodeName Fixed node name which will be used for all
- *     created nodes. If not provided, the 3rd argument to the resulting node
- *     factory needs to be provided and will be the nodeName.
- * @param {string=} opt_namespaceURI Fixed namespace URI which will be used for
- *     all created nodes. If not provided, the namespace of the parent node will
- *     be used.
- * @return {function(*, Array.<*>, string=): (Node|undefined)} Node factory.
- */
-ol.xml.makeSimpleNodeFactory = function(opt_nodeName, opt_namespaceURI) {
-  var fixedNodeName = opt_nodeName;
-  return (
-      /**
-       * @param {*} value Value.
-       * @param {Array.<*>} objectStack Object stack.
-       * @param {string=} opt_nodeName Node name.
-       * @return {Node} Node.
-       */
-      function(value, objectStack, opt_nodeName) {
-        var context = objectStack[objectStack.length - 1];
-        var node = context.node;
-        goog.asserts.assert(ol.xml.isNode(node) || ol.xml.isDocument(node),
-            'expected node %s to be a Node or a Document', node);
-        var nodeName = fixedNodeName;
-        if (!goog.isDef(nodeName)) {
-          nodeName = opt_nodeName;
-        }
-        var namespaceURI = opt_namespaceURI;
-        if (!goog.isDef(opt_namespaceURI)) {
-          namespaceURI = node.namespaceURI;
-        }
-        goog.asserts.assert(goog.isDef(nodeName), 'nodeName was undefined');
-        return ol.xml.createElementNS(namespaceURI, nodeName);
-      }
-  );
-};
-
-
-/**
- * A node factory that creates a node using the parent's `namespaceURI` and the
- * `nodeName` passed by {@link ol.xml.serialize} or
- * {@link ol.xml.pushSerializeAndPop} to the node factory.
- * @const
- * @type {function(*, Array.<*>, string=): (Node|undefined)}
- */
-ol.xml.OBJECT_PROPERTY_NODE_FACTORY = ol.xml.makeSimpleNodeFactory();
-
-
-/**
- * Create an array of `values` to be used with {@link ol.xml.serialize} or
- * {@link ol.xml.pushSerializeAndPop}, where `orderedKeys` has to be provided as
- * `opt_key` argument.
- * @param {Object.<string, V>} object Key-value pairs for the sequence. Keys can
- *     be a subset of the `orderedKeys`.
- * @param {Array.<string>} orderedKeys Keys in the order of the sequence.
- * @return {Array.<V>} Values in the order of the sequence. The resulting array
- *     has the same length as the `orderedKeys` array. Values that are not
- *     present in `object` will be `undefined` in the resulting array.
- * @template V
- */
-ol.xml.makeSequence = function(object, orderedKeys) {
-  var length = orderedKeys.length;
-  var sequence = new Array(length);
-  for (var i = 0; i < length; ++i) {
-    sequence[i] = object[orderedKeys[i]];
-  }
-  return sequence;
-};
-
-
-/**
- * Create a namespaced structure, using the same values for each namespace.
- * This can be used as a starting point for versioned parsers, when only a few
- * values are version specific.
- * @param {Array.<string>} namespaceURIs Namespace URIs.
- * @param {T} structure Structure.
- * @param {Object.<string, T>=} opt_structureNS Namespaced structure to add to.
- * @return {Object.<string, T>} Namespaced structure.
- * @template T
- */
-ol.xml.makeStructureNS = function(namespaceURIs, structure, opt_structureNS) {
-  /**
-   * @type {Object.<string, *>}
-   */
-  var structureNS = goog.isDef(opt_structureNS) ? opt_structureNS : {};
-  var i, ii;
-  for (i = 0, ii = namespaceURIs.length; i < ii; ++i) {
-    structureNS[namespaceURIs[i]] = structure;
-  }
-  return structureNS;
-};
-
-
-/**
- * Parse a node using the parsers and object stack.
- * @param {Object.<string, Object.<string, ol.xml.Parser>>} parsersNS
- *     Parsers by namespace.
- * @param {Node} node Node.
- * @param {Array.<*>} objectStack Object stack.
- * @param {*=} opt_this The object to use as `this`.
- */
-ol.xml.parseNode = function(parsersNS, node, objectStack, opt_this) {
-  var n;
-  for (n = node.firstElementChild; !goog.isNull(n); n = n.nextElementSibling) {
-    var parsers = parsersNS[n.namespaceURI];
-    if (goog.isDef(parsers)) {
-      var parser = parsers[n.localName];
-      if (goog.isDef(parser)) {
-        parser.call(opt_this, n, objectStack);
-      }
-    }
-  }
-};
-
-
-/**
- * Push an object on top of the stack, parse and return the popped object.
- * @param {T} object Object.
- * @param {Object.<string, Object.<string, ol.xml.Parser>>} parsersNS
- *     Parsers by namespace.
- * @param {Node} node Node.
- * @param {Array.<*>} objectStack Object stack.
- * @param {*=} opt_this The object to use as `this`.
- * @return {T} Object.
- * @template T
- */
-ol.xml.pushParseAndPop = function(
-    object, parsersNS, node, objectStack, opt_this) {
-  objectStack.push(object);
-  ol.xml.parseNode(parsersNS, node, objectStack, opt_this);
-  return objectStack.pop();
-};
-
-
-/**
- * Walk through an array of `values` and call a serializer for each value.
- * @param {Object.<string, Object.<string, ol.xml.Serializer>>} serializersNS
- *     Namespaced serializers.
- * @param {function(this: T, *, Array.<*>, (string|undefined)): (Node|undefined)} nodeFactory
- *     Node factory. The `nodeFactory` creates the node whose namespace and name
- *     will be used to choose a node writer from `serializersNS`. This
- *     separation allows us to decide what kind of node to create, depending on
- *     the value we want to serialize. An example for this would be different
- *     geometry writers based on the geometry type.
- * @param {Array.<*>} values Values to serialize. An example would be an array
- *     of {@link ol.Feature} instances.
- * @param {Array.<*>} objectStack Node stack.
- * @param {Array.<string>=} opt_keys Keys of the `values`. Will be passed to the
- *     `nodeFactory`. This is used for serializing object literals where the
- *     node name relates to the property key. The array length of `opt_keys` has
- *     to match the length of `values`. For serializing a sequence, `opt_keys`
- *     determines the order of the sequence.
- * @param {T=} opt_this The object to use as `this` for the node factory and
- *     serializers.
- * @template T
- */
-ol.xml.serialize = function(
-    serializersNS, nodeFactory, values, objectStack, opt_keys, opt_this) {
-  var length = (goog.isDef(opt_keys) ? opt_keys : values).length;
-  var value, node;
-  for (var i = 0; i < length; ++i) {
-    value = values[i];
-    if (goog.isDef(value)) {
-      node = nodeFactory.call(opt_this, value, objectStack,
-          goog.isDef(opt_keys) ? opt_keys[i] : undefined);
-      if (goog.isDef(node)) {
-        serializersNS[node.namespaceURI][node.localName]
-            .call(opt_this, node, value, objectStack);
-      }
-    }
-  }
-};
-
-
-/**
- * @param {O} object Object.
- * @param {Object.<string, Object.<string, ol.xml.Serializer>>} serializersNS
- *     Namespaced serializers.
- * @param {function(this: T, *, Array.<*>, (string|undefined)): (Node|undefined)} nodeFactory
- *     Node factory. The `nodeFactory` creates the node whose namespace and name
- *     will be used to choose a node writer from `serializersNS`. This
- *     separation allows us to decide what kind of node to create, depending on
- *     the value we want to serialize. An example for this would be different
- *     geometry writers based on the geometry type.
- * @param {Array.<*>} values Values to serialize. An example would be an array
- *     of {@link ol.Feature} instances.
- * @param {Array.<*>} objectStack Node stack.
- * @param {Array.<string>=} opt_keys Keys of the `values`. Will be passed to the
- *     `nodeFactory`. This is used for serializing object literals where the
- *     node name relates to the property key. The array length of `opt_keys` has
- *     to match the length of `values`. For serializing a sequence, `opt_keys`
- *     determines the order of the sequence.
- * @param {T=} opt_this The object to use as `this` for the node factory and
- *     serializers.
- * @return {O|undefined} Object.
- * @template O, T
- */
-ol.xml.pushSerializeAndPop = function(object,
-    serializersNS, nodeFactory, values, objectStack, opt_keys, opt_this) {
-  objectStack.push(object);
-  ol.xml.serialize(
-      serializersNS, nodeFactory, values, objectStack, opt_keys, opt_this);
-  return objectStack.pop();
-};
-
 goog.provide('ol.format.XMLFeature');
 
 goog.require('goog.array');
@@ -85775,6 +90230,7 @@ goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.XMLFeature');
 goog.require('ol.geom.Geometry');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.LinearRing');
 goog.require('ol.geom.MultiLineString');
@@ -86582,6 +91038,7 @@ goog.require('ol.format.Feature');
 goog.require('ol.format.GMLBase');
 goog.require('ol.format.XSD');
 goog.require('ol.geom.Geometry');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.LinearRing');
 goog.require('ol.geom.MultiLineString');
@@ -88189,6 +92646,7 @@ goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.XMLFeature');
 goog.require('ol.format.XSD');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.MultiLineString');
 goog.require('ol.geom.Point');
@@ -89409,6 +93867,7 @@ goog.require('goog.string.newlines');
 goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.TextFeature');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
 goog.require('ol.proj');
 
@@ -89620,1123 +94079,6 @@ ol.format.IGC.prototype.readFeaturesFromText = function(text, opt_options) {
  * @api
  */
 ol.format.IGC.prototype.readProjection;
-
-// Copyright 2008 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Simple utilities for dealing with URI strings.
- *
- * This is intended to be a lightweight alternative to constructing goog.Uri
- * objects.  Whereas goog.Uri adds several kilobytes to the binary regardless
- * of how much of its functionality you use, this is designed to be a set of
- * mostly-independent utilities so that the compiler includes only what is
- * necessary for the task.  Estimated savings of porting is 5k pre-gzip and
- * 1.5k post-gzip.  To ensure the savings remain, future developers should
- * avoid adding new functionality to existing functions, but instead create
- * new ones and factor out shared code.
- *
- * Many of these utilities have limited functionality, tailored to common
- * cases.  The query parameter utilities assume that the parameter keys are
- * already encoded, since most keys are compile-time alphanumeric strings.  The
- * query parameter mutation utilities also do not tolerate fragment identifiers.
- *
- * By design, these functions can be slower than goog.Uri equivalents.
- * Repeated calls to some of functions may be quadratic in behavior for IE,
- * although the effect is somewhat limited given the 2kb limit.
- *
- * One advantage of the limited functionality here is that this approach is
- * less sensitive to differences in URI encodings than goog.Uri, since these
- * functions modify the strings in place, rather than decoding and
- * re-encoding.
- *
- * Uses features of RFC 3986 for parsing/formatting URIs:
- *   http://www.ietf.org/rfc/rfc3986.txt
- *
- * @author gboyer@google.com (Garrett Boyer) - The "lightened" design.
- */
-
-goog.provide('goog.uri.utils');
-goog.provide('goog.uri.utils.ComponentIndex');
-goog.provide('goog.uri.utils.QueryArray');
-goog.provide('goog.uri.utils.QueryValue');
-goog.provide('goog.uri.utils.StandardQueryParam');
-
-goog.require('goog.asserts');
-goog.require('goog.string');
-goog.require('goog.userAgent');
-
-
-/**
- * Character codes inlined to avoid object allocations due to charCode.
- * @enum {number}
- * @private
- */
-goog.uri.utils.CharCode_ = {
-  AMPERSAND: 38,
-  EQUAL: 61,
-  HASH: 35,
-  QUESTION: 63
-};
-
-
-/**
- * Builds a URI string from already-encoded parts.
- *
- * No encoding is performed.  Any component may be omitted as either null or
- * undefined.
- *
- * @param {?string=} opt_scheme The scheme such as 'http'.
- * @param {?string=} opt_userInfo The user name before the '@'.
- * @param {?string=} opt_domain The domain such as 'www.google.com', already
- *     URI-encoded.
- * @param {(string|number|null)=} opt_port The port number.
- * @param {?string=} opt_path The path, already URI-encoded.  If it is not
- *     empty, it must begin with a slash.
- * @param {?string=} opt_queryData The URI-encoded query data.
- * @param {?string=} opt_fragment The URI-encoded fragment identifier.
- * @return {string} The fully combined URI.
- */
-goog.uri.utils.buildFromEncodedParts = function(opt_scheme, opt_userInfo,
-    opt_domain, opt_port, opt_path, opt_queryData, opt_fragment) {
-  var out = '';
-
-  if (opt_scheme) {
-    out += opt_scheme + ':';
-  }
-
-  if (opt_domain) {
-    out += '//';
-
-    if (opt_userInfo) {
-      out += opt_userInfo + '@';
-    }
-
-    out += opt_domain;
-
-    if (opt_port) {
-      out += ':' + opt_port;
-    }
-  }
-
-  if (opt_path) {
-    out += opt_path;
-  }
-
-  if (opt_queryData) {
-    out += '?' + opt_queryData;
-  }
-
-  if (opt_fragment) {
-    out += '#' + opt_fragment;
-  }
-
-  return out;
-};
-
-
-/**
- * A regular expression for breaking a URI into its component parts.
- *
- * {@link http://www.ietf.org/rfc/rfc3986.txt} says in Appendix B
- * As the "first-match-wins" algorithm is identical to the "greedy"
- * disambiguation method used by POSIX regular expressions, it is natural and
- * commonplace to use a regular expression for parsing the potential five
- * components of a URI reference.
- *
- * The following line is the regular expression for breaking-down a
- * well-formed URI reference into its components.
- *
- * <pre>
- * ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
- *  12            3  4          5       6  7        8 9
- * </pre>
- *
- * The numbers in the second line above are only to assist readability; they
- * indicate the reference points for each subexpression (i.e., each paired
- * parenthesis). We refer to the value matched for subexpression <n> as $<n>.
- * For example, matching the above expression to
- * <pre>
- *     http://www.ics.uci.edu/pub/ietf/uri/#Related
- * </pre>
- * results in the following subexpression matches:
- * <pre>
- *    $1 = http:
- *    $2 = http
- *    $3 = //www.ics.uci.edu
- *    $4 = www.ics.uci.edu
- *    $5 = /pub/ietf/uri/
- *    $6 = <undefined>
- *    $7 = <undefined>
- *    $8 = #Related
- *    $9 = Related
- * </pre>
- * where <undefined> indicates that the component is not present, as is the
- * case for the query component in the above example. Therefore, we can
- * determine the value of the five components as
- * <pre>
- *    scheme    = $2
- *    authority = $4
- *    path      = $5
- *    query     = $7
- *    fragment  = $9
- * </pre>
- *
- * The regular expression has been modified slightly to expose the
- * userInfo, domain, and port separately from the authority.
- * The modified version yields
- * <pre>
- *    $1 = http              scheme
- *    $2 = <undefined>       userInfo -\
- *    $3 = www.ics.uci.edu   domain     | authority
- *    $4 = <undefined>       port     -/
- *    $5 = /pub/ietf/uri/    path
- *    $6 = <undefined>       query without ?
- *    $7 = Related           fragment without #
- * </pre>
- * @type {!RegExp}
- * @private
- */
-goog.uri.utils.splitRe_ = new RegExp(
-    '^' +
-    '(?:' +
-        '([^:/?#.]+)' +                  // scheme - ignore special characters
-                                         // used by other URL parts such as :,
-                                         // ?, /, #, and .
-    ':)?' +
-    '(?://' +
-        '(?:([^/?#]*)@)?' +              // userInfo
-        '([^/#?]*?)' +                   // domain
-        '(?::([0-9]+))?' +               // port
-        '(?=[/#?]|$)' +                  // authority-terminating character
-    ')?' +
-    '([^?#]+)?' +                        // path
-    '(?:\\?([^#]*))?' +                  // query
-    '(?:#(.*))?' +                       // fragment
-    '$');
-
-
-/**
- * The index of each URI component in the return value of goog.uri.utils.split.
- * @enum {number}
- */
-goog.uri.utils.ComponentIndex = {
-  SCHEME: 1,
-  USER_INFO: 2,
-  DOMAIN: 3,
-  PORT: 4,
-  PATH: 5,
-  QUERY_DATA: 6,
-  FRAGMENT: 7
-};
-
-
-/**
- * Splits a URI into its component parts.
- *
- * Each component can be accessed via the component indices; for example:
- * <pre>
- * goog.uri.utils.split(someStr)[goog.uri.utils.CompontentIndex.QUERY_DATA];
- * </pre>
- *
- * @param {string} uri The URI string to examine.
- * @return {!Array<string|undefined>} Each component still URI-encoded.
- *     Each component that is present will contain the encoded value, whereas
- *     components that are not present will be undefined or empty, depending
- *     on the browser's regular expression implementation.  Never null, since
- *     arbitrary strings may still look like path names.
- */
-goog.uri.utils.split = function(uri) {
-  goog.uri.utils.phishingProtection_();
-
-  // See @return comment -- never null.
-  return /** @type {!Array<string|undefined>} */ (
-      uri.match(goog.uri.utils.splitRe_));
-};
-
-
-/**
- * Safari has a nasty bug where if you have an http URL with a username, e.g.,
- * http://evil.com%2F@google.com/
- * Safari will report that window.location.href is
- * http://evil.com/google.com/
- * so that anyone who tries to parse the domain of that URL will get
- * the wrong domain. We've seen exploits where people use this to trick
- * Safari into loading resources from evil domains.
- *
- * To work around this, we run a little "Safari phishing check", and throw
- * an exception if we see this happening.
- *
- * There is no convenient place to put this check. We apply it to
- * anyone doing URI parsing on Webkit. We're not happy about this, but
- * it fixes the problem.
- *
- * This should be removed once Safari fixes their bug.
- *
- * Exploit reported by Masato Kinugawa.
- *
- * @type {boolean}
- * @private
- */
-goog.uri.utils.needsPhishingProtection_ = goog.userAgent.WEBKIT;
-
-
-/**
- * Check to see if the user is being phished.
- * @private
- */
-goog.uri.utils.phishingProtection_ = function() {
-  if (goog.uri.utils.needsPhishingProtection_) {
-    // Turn protection off, so that we don't recurse.
-    goog.uri.utils.needsPhishingProtection_ = false;
-
-    // Use quoted access, just in case the user isn't using location externs.
-    var location = goog.global['location'];
-    if (location) {
-      var href = location['href'];
-      if (href) {
-        var domain = goog.uri.utils.getDomain(href);
-        if (domain && domain != location['hostname']) {
-          // Phishing attack
-          goog.uri.utils.needsPhishingProtection_ = true;
-          throw Error();
-        }
-      }
-    }
-  }
-};
-
-
-/**
- * @param {?string} uri A possibly null string.
- * @param {boolean=} opt_preserveReserved If true, percent-encoding of RFC-3986
- *     reserved characters will not be removed.
- * @return {?string} The string URI-decoded, or null if uri is null.
- * @private
- */
-goog.uri.utils.decodeIfPossible_ = function(uri, opt_preserveReserved) {
-  if (!uri) {
-    return uri;
-  }
-
-  return opt_preserveReserved ? decodeURI(uri) : decodeURIComponent(uri);
-};
-
-
-/**
- * Gets a URI component by index.
- *
- * It is preferred to use the getPathEncoded() variety of functions ahead,
- * since they are more readable.
- *
- * @param {goog.uri.utils.ComponentIndex} componentIndex The component index.
- * @param {string} uri The URI to examine.
- * @return {?string} The still-encoded component, or null if the component
- *     is not present.
- * @private
- */
-goog.uri.utils.getComponentByIndex_ = function(componentIndex, uri) {
-  // Convert undefined, null, and empty string into null.
-  return goog.uri.utils.split(uri)[componentIndex] || null;
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The protocol or scheme, or null if none.  Does not
- *     include trailing colons or slashes.
- */
-goog.uri.utils.getScheme = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.SCHEME, uri);
-};
-
-
-/**
- * Gets the effective scheme for the URL.  If the URL is relative then the
- * scheme is derived from the page's location.
- * @param {string} uri The URI to examine.
- * @return {string} The protocol or scheme, always lower case.
- */
-goog.uri.utils.getEffectiveScheme = function(uri) {
-  var scheme = goog.uri.utils.getScheme(uri);
-  if (!scheme && self.location) {
-    var protocol = self.location.protocol;
-    scheme = protocol.substr(0, protocol.length - 1);
-  }
-  // NOTE: When called from a web worker in Firefox 3.5, location maybe null.
-  // All other browsers with web workers support self.location from the worker.
-  return scheme ? scheme.toLowerCase() : '';
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The user name still encoded, or null if none.
- */
-goog.uri.utils.getUserInfoEncoded = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.USER_INFO, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded user info, or null if none.
- */
-goog.uri.utils.getUserInfo = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getUserInfoEncoded(uri));
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The domain name still encoded, or null if none.
- */
-goog.uri.utils.getDomainEncoded = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.DOMAIN, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded domain, or null if none.
- */
-goog.uri.utils.getDomain = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getDomainEncoded(uri), true /* opt_preserveReserved */);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?number} The port number, or null if none.
- */
-goog.uri.utils.getPort = function(uri) {
-  // Coerce to a number.  If the result of getComponentByIndex_ is null or
-  // non-numeric, the number coersion yields NaN.  This will then return
-  // null for all non-numeric cases (though also zero, which isn't a relevant
-  // port number).
-  return Number(goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.PORT, uri)) || null;
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The path still encoded, or null if none. Includes the
- *     leading slash, if any.
- */
-goog.uri.utils.getPathEncoded = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.PATH, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded path, or null if none.  Includes the leading
- *     slash, if any.
- */
-goog.uri.utils.getPath = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getPathEncoded(uri), true /* opt_preserveReserved */);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The query data still encoded, or null if none.  Does not
- *     include the question mark itself.
- */
-goog.uri.utils.getQueryData = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.QUERY_DATA, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The fragment identifier, or null if none.  Does not
- *     include the hash mark itself.
- */
-goog.uri.utils.getFragmentEncoded = function(uri) {
-  // The hash mark may not appear in any other part of the URL.
-  var hashIndex = uri.indexOf('#');
-  return hashIndex < 0 ? null : uri.substr(hashIndex + 1);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @param {?string} fragment The encoded fragment identifier, or null if none.
- *     Does not include the hash mark itself.
- * @return {string} The URI with the fragment set.
- */
-goog.uri.utils.setFragmentEncoded = function(uri, fragment) {
-  return goog.uri.utils.removeFragment(uri) + (fragment ? '#' + fragment : '');
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded fragment identifier, or null if none.  Does
- *     not include the hash mark.
- */
-goog.uri.utils.getFragment = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getFragmentEncoded(uri));
-};
-
-
-/**
- * Extracts everything up to the port of the URI.
- * @param {string} uri The URI string.
- * @return {string} Everything up to and including the port.
- */
-goog.uri.utils.getHost = function(uri) {
-  var pieces = goog.uri.utils.split(uri);
-  return goog.uri.utils.buildFromEncodedParts(
-      pieces[goog.uri.utils.ComponentIndex.SCHEME],
-      pieces[goog.uri.utils.ComponentIndex.USER_INFO],
-      pieces[goog.uri.utils.ComponentIndex.DOMAIN],
-      pieces[goog.uri.utils.ComponentIndex.PORT]);
-};
-
-
-/**
- * Extracts the path of the URL and everything after.
- * @param {string} uri The URI string.
- * @return {string} The URI, starting at the path and including the query
- *     parameters and fragment identifier.
- */
-goog.uri.utils.getPathAndAfter = function(uri) {
-  var pieces = goog.uri.utils.split(uri);
-  return goog.uri.utils.buildFromEncodedParts(null, null, null, null,
-      pieces[goog.uri.utils.ComponentIndex.PATH],
-      pieces[goog.uri.utils.ComponentIndex.QUERY_DATA],
-      pieces[goog.uri.utils.ComponentIndex.FRAGMENT]);
-};
-
-
-/**
- * Gets the URI with the fragment identifier removed.
- * @param {string} uri The URI to examine.
- * @return {string} Everything preceding the hash mark.
- */
-goog.uri.utils.removeFragment = function(uri) {
-  // The hash mark may not appear in any other part of the URL.
-  var hashIndex = uri.indexOf('#');
-  return hashIndex < 0 ? uri : uri.substr(0, hashIndex);
-};
-
-
-/**
- * Ensures that two URI's have the exact same domain, scheme, and port.
- *
- * Unlike the version in goog.Uri, this checks protocol, and therefore is
- * suitable for checking against the browser's same-origin policy.
- *
- * @param {string} uri1 The first URI.
- * @param {string} uri2 The second URI.
- * @return {boolean} Whether they have the same scheme, domain and port.
- */
-goog.uri.utils.haveSameDomain = function(uri1, uri2) {
-  var pieces1 = goog.uri.utils.split(uri1);
-  var pieces2 = goog.uri.utils.split(uri2);
-  return pieces1[goog.uri.utils.ComponentIndex.DOMAIN] ==
-             pieces2[goog.uri.utils.ComponentIndex.DOMAIN] &&
-         pieces1[goog.uri.utils.ComponentIndex.SCHEME] ==
-             pieces2[goog.uri.utils.ComponentIndex.SCHEME] &&
-         pieces1[goog.uri.utils.ComponentIndex.PORT] ==
-             pieces2[goog.uri.utils.ComponentIndex.PORT];
-};
-
-
-/**
- * Asserts that there are no fragment or query identifiers, only in uncompiled
- * mode.
- * @param {string} uri The URI to examine.
- * @private
- */
-goog.uri.utils.assertNoFragmentsOrQueries_ = function(uri) {
-  // NOTE: would use goog.asserts here, but jscompiler doesn't know that
-  // indexOf has no side effects.
-  if (goog.DEBUG && (uri.indexOf('#') >= 0 || uri.indexOf('?') >= 0)) {
-    throw Error('goog.uri.utils: Fragment or query identifiers are not ' +
-        'supported: [' + uri + ']');
-  }
-};
-
-
-/**
- * Supported query parameter values by the parameter serializing utilities.
- *
- * If a value is null or undefined, the key-value pair is skipped, as an easy
- * way to omit parameters conditionally.  Non-array parameters are converted
- * to a string and URI encoded.  Array values are expanded into multiple
- * &key=value pairs, with each element stringized and URI-encoded.
- *
- * @typedef {*}
- */
-goog.uri.utils.QueryValue;
-
-
-/**
- * An array representing a set of query parameters with alternating keys
- * and values.
- *
- * Keys are assumed to be URI encoded already and live at even indices.  See
- * goog.uri.utils.QueryValue for details on how parameter values are encoded.
- *
- * Example:
- * <pre>
- * var data = [
- *   // Simple param: ?name=BobBarker
- *   'name', 'BobBarker',
- *   // Conditional param -- may be omitted entirely.
- *   'specialDietaryNeeds', hasDietaryNeeds() ? getDietaryNeeds() : null,
- *   // Multi-valued param: &house=LosAngeles&house=NewYork&house=null
- *   'house', ['LosAngeles', 'NewYork', null]
- * ];
- * </pre>
- *
- * @typedef {!Array<string|goog.uri.utils.QueryValue>}
- */
-goog.uri.utils.QueryArray;
-
-
-/**
- * Parses encoded query parameters and calls callback function for every
- * parameter found in the string.
- *
- * Missing value of parameter (e.g. “…&key&…”) is treated as if the value was an
- * empty string.  Keys may be empty strings (e.g. “…&=value&…”) which also means
- * that “…&=&…” and “…&&…” will result in an empty key and value.
- *
- * @param {string} encodedQuery Encoded query string excluding question mark at
- *     the beginning.
- * @param {function(string, string)} callback Function called for every
- *     parameter found in query string.  The first argument (name) will not be
- *     urldecoded (so the function is consistent with buildQueryData), but the
- *     second will.  If the parameter has no value (i.e. “=” was not present)
- *     the second argument (value) will be an empty string.
- */
-goog.uri.utils.parseQueryData = function(encodedQuery, callback) {
-  var pairs = encodedQuery.split('&');
-  for (var i = 0; i < pairs.length; i++) {
-    var indexOfEquals = pairs[i].indexOf('=');
-    var name = null;
-    var value = null;
-    if (indexOfEquals >= 0) {
-      name = pairs[i].substring(0, indexOfEquals);
-      value = pairs[i].substring(indexOfEquals + 1);
-    } else {
-      name = pairs[i];
-    }
-    callback(name, value ? goog.string.urlDecode(value) : '');
-  }
-};
-
-
-/**
- * Appends a URI and query data in a string buffer with special preconditions.
- *
- * Internal implementation utility, performing very few object allocations.
- *
- * @param {!Array<string|undefined>} buffer A string buffer.  The first element
- *     must be the base URI, and may have a fragment identifier.  If the array
- *     contains more than one element, the second element must be an ampersand,
- *     and may be overwritten, depending on the base URI.  Undefined elements
- *     are treated as empty-string.
- * @return {string} The concatenated URI and query data.
- * @private
- */
-goog.uri.utils.appendQueryData_ = function(buffer) {
-  if (buffer[1]) {
-    // At least one query parameter was added.  We need to check the
-    // punctuation mark, which is currently an ampersand, and also make sure
-    // there aren't any interfering fragment identifiers.
-    var baseUri = /** @type {string} */ (buffer[0]);
-    var hashIndex = baseUri.indexOf('#');
-    if (hashIndex >= 0) {
-      // Move the fragment off the base part of the URI into the end.
-      buffer.push(baseUri.substr(hashIndex));
-      buffer[0] = baseUri = baseUri.substr(0, hashIndex);
-    }
-    var questionIndex = baseUri.indexOf('?');
-    if (questionIndex < 0) {
-      // No question mark, so we need a question mark instead of an ampersand.
-      buffer[1] = '?';
-    } else if (questionIndex == baseUri.length - 1) {
-      // Question mark is the very last character of the existing URI, so don't
-      // append an additional delimiter.
-      buffer[1] = undefined;
-    }
-  }
-
-  return buffer.join('');
-};
-
-
-/**
- * Appends key=value pairs to an array, supporting multi-valued objects.
- * @param {string} key The key prefix.
- * @param {goog.uri.utils.QueryValue} value The value to serialize.
- * @param {!Array<string>} pairs The array to which the 'key=value' strings
- *     should be appended.
- * @private
- */
-goog.uri.utils.appendKeyValuePairs_ = function(key, value, pairs) {
-  if (goog.isArray(value)) {
-    // Convince the compiler it's an array.
-    goog.asserts.assertArray(value);
-    for (var j = 0; j < value.length; j++) {
-      // Convert to string explicitly, to short circuit the null and array
-      // logic in this function -- this ensures that null and undefined get
-      // written as literal 'null' and 'undefined', and arrays don't get
-      // expanded out but instead encoded in the default way.
-      goog.uri.utils.appendKeyValuePairs_(key, String(value[j]), pairs);
-    }
-  } else if (value != null) {
-    // Skip a top-level null or undefined entirely.
-    pairs.push('&', key,
-        // Check for empty string. Zero gets encoded into the url as literal
-        // strings.  For empty string, skip the equal sign, to be consistent
-        // with UriBuilder.java.
-        value === '' ? '' : '=',
-        goog.string.urlEncode(value));
-  }
-};
-
-
-/**
- * Builds a buffer of query data from a sequence of alternating keys and values.
- *
- * @param {!Array<string|undefined>} buffer A string buffer to append to.  The
- *     first element appended will be an '&', and may be replaced by the caller.
- * @param {!goog.uri.utils.QueryArray|!Arguments} keysAndValues An array with
- *     alternating keys and values -- see the typedef.
- * @param {number=} opt_startIndex A start offset into the arary, defaults to 0.
- * @return {!Array<string|undefined>} The buffer argument.
- * @private
- */
-goog.uri.utils.buildQueryDataBuffer_ = function(
-    buffer, keysAndValues, opt_startIndex) {
-  goog.asserts.assert(Math.max(keysAndValues.length - (opt_startIndex || 0),
-      0) % 2 == 0, 'goog.uri.utils: Key/value lists must be even in length.');
-
-  for (var i = opt_startIndex || 0; i < keysAndValues.length; i += 2) {
-    goog.uri.utils.appendKeyValuePairs_(
-        keysAndValues[i], keysAndValues[i + 1], buffer);
-  }
-
-  return buffer;
-};
-
-
-/**
- * Builds a query data string from a sequence of alternating keys and values.
- * Currently generates "&key&" for empty args.
- *
- * @param {goog.uri.utils.QueryArray} keysAndValues Alternating keys and
- *     values.  See the typedef.
- * @param {number=} opt_startIndex A start offset into the arary, defaults to 0.
- * @return {string} The encoded query string, in the form 'a=1&b=2'.
- */
-goog.uri.utils.buildQueryData = function(keysAndValues, opt_startIndex) {
-  var buffer = goog.uri.utils.buildQueryDataBuffer_(
-      [], keysAndValues, opt_startIndex);
-  buffer[0] = ''; // Remove the leading ampersand.
-  return buffer.join('');
-};
-
-
-/**
- * Builds a buffer of query data from a map.
- *
- * @param {!Array<string|undefined>} buffer A string buffer to append to.  The
- *     first element appended will be an '&', and may be replaced by the caller.
- * @param {!Object<string, goog.uri.utils.QueryValue>} map An object where keys
- *     are URI-encoded parameter keys, and the values conform to the contract
- *     specified in the goog.uri.utils.QueryValue typedef.
- * @return {!Array<string|undefined>} The buffer argument.
- * @private
- */
-goog.uri.utils.buildQueryDataBufferFromMap_ = function(buffer, map) {
-  for (var key in map) {
-    goog.uri.utils.appendKeyValuePairs_(key, map[key], buffer);
-  }
-
-  return buffer;
-};
-
-
-/**
- * Builds a query data string from a map.
- * Currently generates "&key&" for empty args.
- *
- * @param {!Object<string, goog.uri.utils.QueryValue>} map An object where keys
- *     are URI-encoded parameter keys, and the values are arbitrary types
- *     or arrays. Keys with a null value are dropped.
- * @return {string} The encoded query string, in the form 'a=1&b=2'.
- */
-goog.uri.utils.buildQueryDataFromMap = function(map) {
-  var buffer = goog.uri.utils.buildQueryDataBufferFromMap_([], map);
-  buffer[0] = '';
-  return buffer.join('');
-};
-
-
-/**
- * Appends URI parameters to an existing URI.
- *
- * The variable arguments may contain alternating keys and values.  Keys are
- * assumed to be already URI encoded.  The values should not be URI-encoded,
- * and will instead be encoded by this function.
- * <pre>
- * appendParams('http://www.foo.com?existing=true',
- *     'key1', 'value1',
- *     'key2', 'value?willBeEncoded',
- *     'key3', ['valueA', 'valueB', 'valueC'],
- *     'key4', null);
- * result: 'http://www.foo.com?existing=true&' +
- *     'key1=value1&' +
- *     'key2=value%3FwillBeEncoded&' +
- *     'key3=valueA&key3=valueB&key3=valueC'
- * </pre>
- *
- * A single call to this function will not exhibit quadratic behavior in IE,
- * whereas multiple repeated calls may, although the effect is limited by
- * fact that URL's generally can't exceed 2kb.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {...(goog.uri.utils.QueryArray|string|goog.uri.utils.QueryValue)} var_args
- *     An array or argument list conforming to goog.uri.utils.QueryArray.
- * @return {string} The URI with all query parameters added.
- */
-goog.uri.utils.appendParams = function(uri, var_args) {
-  return goog.uri.utils.appendQueryData_(
-      arguments.length == 2 ?
-      goog.uri.utils.buildQueryDataBuffer_([uri], arguments[1], 0) :
-      goog.uri.utils.buildQueryDataBuffer_([uri], arguments, 1));
-};
-
-
-/**
- * Appends query parameters from a map.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {!Object<goog.uri.utils.QueryValue>} map An object where keys are
- *     URI-encoded parameter keys, and the values are arbitrary types or arrays.
- *     Keys with a null value are dropped.
- * @return {string} The new parameters.
- */
-goog.uri.utils.appendParamsFromMap = function(uri, map) {
-  return goog.uri.utils.appendQueryData_(
-      goog.uri.utils.buildQueryDataBufferFromMap_([uri], map));
-};
-
-
-/**
- * Appends a single URI parameter.
- *
- * Repeated calls to this can exhibit quadratic behavior in IE6 due to the
- * way string append works, though it should be limited given the 2kb limit.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {string} key The key, which must already be URI encoded.
- * @param {*=} opt_value The value, which will be stringized and encoded
- *     (assumed not already to be encoded).  If omitted, undefined, or null, the
- *     key will be added as a valueless parameter.
- * @return {string} The URI with the query parameter added.
- */
-goog.uri.utils.appendParam = function(uri, key, opt_value) {
-  var paramArr = [uri, '&', key];
-  if (goog.isDefAndNotNull(opt_value)) {
-    paramArr.push('=', goog.string.urlEncode(opt_value));
-  }
-  return goog.uri.utils.appendQueryData_(paramArr);
-};
-
-
-/**
- * Finds the next instance of a query parameter with the specified name.
- *
- * Does not instantiate any objects.
- *
- * @param {string} uri The URI to search.  May contain a fragment identifier
- *     if opt_hashIndex is specified.
- * @param {number} startIndex The index to begin searching for the key at.  A
- *     match may be found even if this is one character after the ampersand.
- * @param {string} keyEncoded The URI-encoded key.
- * @param {number} hashOrEndIndex Index to stop looking at.  If a hash
- *     mark is present, it should be its index, otherwise it should be the
- *     length of the string.
- * @return {number} The position of the first character in the key's name,
- *     immediately after either a question mark or a dot.
- * @private
- */
-goog.uri.utils.findParam_ = function(
-    uri, startIndex, keyEncoded, hashOrEndIndex) {
-  var index = startIndex;
-  var keyLength = keyEncoded.length;
-
-  // Search for the key itself and post-filter for surronuding punctuation,
-  // rather than expensively building a regexp.
-  while ((index = uri.indexOf(keyEncoded, index)) >= 0 &&
-      index < hashOrEndIndex) {
-    var precedingChar = uri.charCodeAt(index - 1);
-    // Ensure that the preceding character is '&' or '?'.
-    if (precedingChar == goog.uri.utils.CharCode_.AMPERSAND ||
-        precedingChar == goog.uri.utils.CharCode_.QUESTION) {
-      // Ensure the following character is '&', '=', '#', or NaN
-      // (end of string).
-      var followingChar = uri.charCodeAt(index + keyLength);
-      if (!followingChar ||
-          followingChar == goog.uri.utils.CharCode_.EQUAL ||
-          followingChar == goog.uri.utils.CharCode_.AMPERSAND ||
-          followingChar == goog.uri.utils.CharCode_.HASH) {
-        return index;
-      }
-    }
-    index += keyLength + 1;
-  }
-
-  return -1;
-};
-
-
-/**
- * Regular expression for finding a hash mark or end of string.
- * @type {RegExp}
- * @private
- */
-goog.uri.utils.hashOrEndRe_ = /#|$/;
-
-
-/**
- * Determines if the URI contains a specific key.
- *
- * Performs no object instantiations.
- *
- * @param {string} uri The URI to process.  May contain a fragment
- *     identifier.
- * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
- * @return {boolean} Whether the key is present.
- */
-goog.uri.utils.hasParam = function(uri, keyEncoded) {
-  return goog.uri.utils.findParam_(uri, 0, keyEncoded,
-      uri.search(goog.uri.utils.hashOrEndRe_)) >= 0;
-};
-
-
-/**
- * Gets the first value of a query parameter.
- * @param {string} uri The URI to process.  May contain a fragment.
- * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
- * @return {?string} The first value of the parameter (URI-decoded), or null
- *     if the parameter is not found.
- */
-goog.uri.utils.getParamValue = function(uri, keyEncoded) {
-  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
-  var foundIndex = goog.uri.utils.findParam_(
-      uri, 0, keyEncoded, hashOrEndIndex);
-
-  if (foundIndex < 0) {
-    return null;
-  } else {
-    var endPosition = uri.indexOf('&', foundIndex);
-    if (endPosition < 0 || endPosition > hashOrEndIndex) {
-      endPosition = hashOrEndIndex;
-    }
-    // Progress forth to the end of the "key=" or "key&" substring.
-    foundIndex += keyEncoded.length + 1;
-    // Use substr, because it (unlike substring) will return empty string
-    // if foundIndex > endPosition.
-    return goog.string.urlDecode(
-        uri.substr(foundIndex, endPosition - foundIndex));
-  }
-};
-
-
-/**
- * Gets all values of a query parameter.
- * @param {string} uri The URI to process.  May contain a framgnet.
- * @param {string} keyEncoded The URI-encoded key.  Case-snsitive.
- * @return {!Array<string>} All URI-decoded values with the given key.
- *     If the key is not found, this will have length 0, but never be null.
- */
-goog.uri.utils.getParamValues = function(uri, keyEncoded) {
-  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
-  var position = 0;
-  var foundIndex;
-  var result = [];
-
-  while ((foundIndex = goog.uri.utils.findParam_(
-      uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
-    // Find where this parameter ends, either the '&' or the end of the
-    // query parameters.
-    position = uri.indexOf('&', foundIndex);
-    if (position < 0 || position > hashOrEndIndex) {
-      position = hashOrEndIndex;
-    }
-
-    // Progress forth to the end of the "key=" or "key&" substring.
-    foundIndex += keyEncoded.length + 1;
-    // Use substr, because it (unlike substring) will return empty string
-    // if foundIndex > position.
-    result.push(goog.string.urlDecode(uri.substr(
-        foundIndex, position - foundIndex)));
-  }
-
-  return result;
-};
-
-
-/**
- * Regexp to find trailing question marks and ampersands.
- * @type {RegExp}
- * @private
- */
-goog.uri.utils.trailingQueryPunctuationRe_ = /[?&]($|#)/;
-
-
-/**
- * Removes all instances of a query parameter.
- * @param {string} uri The URI to process.  Must not contain a fragment.
- * @param {string} keyEncoded The URI-encoded key.
- * @return {string} The URI with all instances of the parameter removed.
- */
-goog.uri.utils.removeParam = function(uri, keyEncoded) {
-  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
-  var position = 0;
-  var foundIndex;
-  var buffer = [];
-
-  // Look for a query parameter.
-  while ((foundIndex = goog.uri.utils.findParam_(
-      uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
-    // Get the portion of the query string up to, but not including, the ?
-    // or & starting the parameter.
-    buffer.push(uri.substring(position, foundIndex));
-    // Progress to immediately after the '&'.  If not found, go to the end.
-    // Avoid including the hash mark.
-    position = Math.min((uri.indexOf('&', foundIndex) + 1) || hashOrEndIndex,
-        hashOrEndIndex);
-  }
-
-  // Append everything that is remaining.
-  buffer.push(uri.substr(position));
-
-  // Join the buffer, and remove trailing punctuation that remains.
-  return buffer.join('').replace(
-      goog.uri.utils.trailingQueryPunctuationRe_, '$1');
-};
-
-
-/**
- * Replaces all existing definitions of a parameter with a single definition.
- *
- * Repeated calls to this can exhibit quadratic behavior due to the need to
- * find existing instances and reconstruct the string, though it should be
- * limited given the 2kb limit.  Consider using appendParams to append multiple
- * parameters in bulk.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {string} keyEncoded The key, which must already be URI encoded.
- * @param {*} value The value, which will be stringized and encoded (assumed
- *     not already to be encoded).
- * @return {string} The URI with the query parameter added.
- */
-goog.uri.utils.setParam = function(uri, keyEncoded, value) {
-  return goog.uri.utils.appendParam(
-      goog.uri.utils.removeParam(uri, keyEncoded), keyEncoded, value);
-};
-
-
-/**
- * Generates a URI path using a given URI and a path with checks to
- * prevent consecutive "//". The baseUri passed in must not contain
- * query or fragment identifiers. The path to append may not contain query or
- * fragment identifiers.
- *
- * @param {string} baseUri URI to use as the base.
- * @param {string} path Path to append.
- * @return {string} Updated URI.
- */
-goog.uri.utils.appendPath = function(baseUri, path) {
-  goog.uri.utils.assertNoFragmentsOrQueries_(baseUri);
-
-  // Remove any trailing '/'
-  if (goog.string.endsWith(baseUri, '/')) {
-    baseUri = baseUri.substr(0, baseUri.length - 1);
-  }
-  // Remove any leading '/'
-  if (goog.string.startsWith(path, '/')) {
-    path = path.substr(1);
-  }
-  return goog.string.buildString(baseUri, '/', path);
-};
-
-
-/**
- * Replaces the path.
- * @param {string} uri URI to use as the base.
- * @param {string} path New path.
- * @return {string} Updated URI.
- */
-goog.uri.utils.setPath = function(uri, path) {
-  // Add any missing '/'.
-  if (!goog.string.startsWith(path, '/')) {
-    path = '/' + path;
-  }
-  var parts = goog.uri.utils.split(uri);
-  return goog.uri.utils.buildFromEncodedParts(
-      parts[goog.uri.utils.ComponentIndex.SCHEME],
-      parts[goog.uri.utils.ComponentIndex.USER_INFO],
-      parts[goog.uri.utils.ComponentIndex.DOMAIN],
-      parts[goog.uri.utils.ComponentIndex.PORT],
-      path,
-      parts[goog.uri.utils.ComponentIndex.QUERY_DATA],
-      parts[goog.uri.utils.ComponentIndex.FRAGMENT]);
-};
-
-
-/**
- * Standard supported query parameters.
- * @enum {string}
- */
-goog.uri.utils.StandardQueryParam = {
-
-  /** Unused parameter for unique-ifying. */
-  RANDOM: 'zx'
-};
-
-
-/**
- * Sets the zx parameter of a URI to a random value.
- * @param {string} uri Any URI.
- * @return {string} That URI with the "zx" parameter added or replaced to
- *     contain a random string.
- */
-goog.uri.utils.makeUnique = function(uri) {
-  return goog.uri.utils.setParam(uri,
-      goog.uri.utils.StandardQueryParam.RANDOM, goog.string.getRandomString());
-};
 
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
@@ -92573,6 +95915,7 @@ goog.require('ol.format.XMLFeature');
 goog.require('ol.format.XSD');
 goog.require('ol.geom.Geometry');
 goog.require('ol.geom.GeometryCollection');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.LinearRing');
@@ -95416,6 +98759,7 @@ goog.require('goog.object');
 goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.XMLFeature');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
@@ -96247,6 +99591,7 @@ goog.require('goog.asserts');
 goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.TextFeature');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.geom.flat.flip');
@@ -100336,10 +103681,6 @@ ol.Geolocation.prototype.getAccuracy = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.GeolocationProperty.ACCURACY));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getAccuracy',
-    ol.Geolocation.prototype.getAccuracy);
 
 
 /**
@@ -100352,10 +103693,6 @@ ol.Geolocation.prototype.getAccuracyGeometry = function() {
   return /** @type {?ol.geom.Geometry} */ (
       this.get(ol.GeolocationProperty.ACCURACY_GEOMETRY) || null);
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getAccuracyGeometry',
-    ol.Geolocation.prototype.getAccuracyGeometry);
 
 
 /**
@@ -100369,10 +103706,6 @@ ol.Geolocation.prototype.getAltitude = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.GeolocationProperty.ALTITUDE));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getAltitude',
-    ol.Geolocation.prototype.getAltitude);
 
 
 /**
@@ -100386,10 +103719,6 @@ ol.Geolocation.prototype.getAltitudeAccuracy = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.GeolocationProperty.ALTITUDE_ACCURACY));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getAltitudeAccuracy',
-    ol.Geolocation.prototype.getAltitudeAccuracy);
 
 
 /**
@@ -100402,10 +103731,6 @@ ol.Geolocation.prototype.getHeading = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.GeolocationProperty.HEADING));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getHeading',
-    ol.Geolocation.prototype.getHeading);
 
 
 /**
@@ -100419,10 +103744,6 @@ ol.Geolocation.prototype.getPosition = function() {
   return /** @type {ol.Coordinate|undefined} */ (
       this.get(ol.GeolocationProperty.POSITION));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getPosition',
-    ol.Geolocation.prototype.getPosition);
 
 
 /**
@@ -100436,10 +103757,6 @@ ol.Geolocation.prototype.getProjection = function() {
   return /** @type {ol.proj.Projection|undefined} */ (
       this.get(ol.GeolocationProperty.PROJECTION));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getProjection',
-    ol.Geolocation.prototype.getProjection);
 
 
 /**
@@ -100453,10 +103770,6 @@ ol.Geolocation.prototype.getSpeed = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.GeolocationProperty.SPEED));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getSpeed',
-    ol.Geolocation.prototype.getSpeed);
 
 
 /**
@@ -100469,10 +103782,6 @@ ol.Geolocation.prototype.getTracking = function() {
   return /** @type {boolean} */ (
       this.get(ol.GeolocationProperty.TRACKING));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getTracking',
-    ol.Geolocation.prototype.getTracking);
 
 
 /**
@@ -100488,10 +103797,6 @@ ol.Geolocation.prototype.getTrackingOptions = function() {
   return /** @type {GeolocationPositionOptions|undefined} */ (
       this.get(ol.GeolocationProperty.TRACKING_OPTIONS));
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'getTrackingOptions',
-    ol.Geolocation.prototype.getTrackingOptions);
 
 
 /**
@@ -100504,10 +103809,6 @@ goog.exportProperty(
 ol.Geolocation.prototype.setProjection = function(projection) {
   this.set(ol.GeolocationProperty.PROJECTION, projection);
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'setProjection',
-    ol.Geolocation.prototype.setProjection);
 
 
 /**
@@ -100519,10 +103820,6 @@ goog.exportProperty(
 ol.Geolocation.prototype.setTracking = function(tracking) {
   this.set(ol.GeolocationProperty.TRACKING, tracking);
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'setTracking',
-    ol.Geolocation.prototype.setTracking);
 
 
 /**
@@ -100537,10 +103834,6 @@ goog.exportProperty(
 ol.Geolocation.prototype.setTrackingOptions = function(options) {
   this.set(ol.GeolocationProperty.TRACKING_OPTIONS, options);
 };
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'setTrackingOptions',
-    ol.Geolocation.prototype.setTrackingOptions);
 
 goog.provide('ol.geom.flat.geodesic');
 
@@ -100730,6 +104023,7 @@ goog.provide('ol.Graticule');
 goog.require('goog.asserts');
 goog.require('goog.math');
 goog.require('ol.extent');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.flat.geodesic');
 goog.require('ol.proj');
@@ -101808,1370 +105102,6 @@ goog.events.FileDropHandler.prototype.onElemDrop_ = function(e) {
     // Dispatch DROP event.
     this.dispatch_(e);
   }
-};
-
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-goog.provide('goog.Thenable');
-
-
-
-/**
- * Provides a more strict interface for Thenables in terms of
- * http://promisesaplus.com for interop with {@see goog.Promise}.
- *
- * @interface
- * @extends {IThenable<TYPE>}
- * @template TYPE
- */
-goog.Thenable = function() {};
-
-
-/**
- * Adds callbacks that will operate on the result of the Thenable, returning a
- * new child Promise.
- *
- * If the Thenable is fulfilled, the {@code onFulfilled} callback will be
- * invoked with the fulfillment value as argument, and the child Promise will
- * be fulfilled with the return value of the callback. If the callback throws
- * an exception, the child Promise will be rejected with the thrown value
- * instead.
- *
- * If the Thenable is rejected, the {@code onRejected} callback will be invoked
- * with the rejection reason as argument, and the child Promise will be rejected
- * with the return value of the callback or thrown value.
- *
- * @param {?(function(this:THIS, TYPE):
- *             (RESULT|IThenable<RESULT>|Thenable))=} opt_onFulfilled A
- *     function that will be invoked with the fulfillment value if the Promise
- *     is fullfilled.
- * @param {?(function(this:THIS, *): *)=} opt_onRejected A function that will
- *     be invoked with the rejection reason if the Promise is rejected.
- * @param {THIS=} opt_context An optional context object that will be the
- *     execution context for the callbacks. By default, functions are executed
- *     with the default this.
- * @return {!goog.Promise<RESULT>} A new Promise that will receive the result
- *     of the fulfillment or rejection callback.
- * @template RESULT,THIS
- */
-goog.Thenable.prototype.then = function(opt_onFulfilled, opt_onRejected,
-    opt_context) {};
-
-
-/**
- * An expando property to indicate that an object implements
- * {@code goog.Thenable}.
- *
- * {@see addImplementation}.
- *
- * @const
- */
-goog.Thenable.IMPLEMENTED_BY_PROP = '$goog_Thenable';
-
-
-/**
- * Marks a given class (constructor) as an implementation of Thenable, so
- * that we can query that fact at runtime. The class must have already
- * implemented the interface.
- * Exports a 'then' method on the constructor prototype, so that the objects
- * also implement the extern {@see goog.Thenable} interface for interop with
- * other Promise implementations.
- * @param {function(new:goog.Thenable,...?)} ctor The class constructor. The
- *     corresponding class must have already implemented the interface.
- */
-goog.Thenable.addImplementation = function(ctor) {
-  goog.exportProperty(ctor.prototype, 'then', ctor.prototype.then);
-  if (COMPILED) {
-    ctor.prototype[goog.Thenable.IMPLEMENTED_BY_PROP] = true;
-  } else {
-    // Avoids dictionary access in uncompiled mode.
-    ctor.prototype.$goog_Thenable = true;
-  }
-};
-
-
-/**
- * @param {*} object
- * @return {boolean} Whether a given instance implements {@code goog.Thenable}.
- *     The class/superclass of the instance must call {@code addImplementation}.
- */
-goog.Thenable.isImplementedBy = function(object) {
-  if (!object) {
-    return false;
-  }
-  try {
-    if (COMPILED) {
-      return !!object[goog.Thenable.IMPLEMENTED_BY_PROP];
-    }
-    return !!object.$goog_Thenable;
-  } catch (e) {
-    // Property access seems to be forbidden.
-    return false;
-  }
-};
-
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Simple notifiers for the Closure testing framework.
- *
- * @author johnlenz@google.com (John Lenz)
- */
-
-goog.provide('goog.testing.watchers');
-
-
-/** @private {!Array<function()>} */
-goog.testing.watchers.resetWatchers_ = [];
-
-
-/**
- * Fires clock reset watching functions.
- */
-goog.testing.watchers.signalClockReset = function() {
-  var watchers = goog.testing.watchers.resetWatchers_;
-  for (var i = 0; i < watchers.length; i++) {
-    goog.testing.watchers.resetWatchers_[i]();
-  }
-};
-
-
-/**
- * Enqueues a function to be called when the clock used for setTimeout is reset.
- * @param {function()} fn
- */
-goog.testing.watchers.watchClockReset = function(fn) {
-  goog.testing.watchers.resetWatchers_.push(fn);
-};
-
-
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-goog.provide('goog.async.run');
-
-goog.require('goog.async.nextTick');
-goog.require('goog.async.throwException');
-goog.require('goog.testing.watchers');
-
-
-/**
- * Fires the provided callback just before the current callstack unwinds, or as
- * soon as possible after the current JS execution context.
- * @param {function(this:THIS)} callback
- * @param {THIS=} opt_context Object to use as the "this value" when calling
- *     the provided function.
- * @template THIS
- */
-goog.async.run = function(callback, opt_context) {
-  if (!goog.async.run.schedule_) {
-    goog.async.run.initializeRunner_();
-  }
-  if (!goog.async.run.workQueueScheduled_) {
-    // Nothing is currently scheduled, schedule it now.
-    goog.async.run.schedule_();
-    goog.async.run.workQueueScheduled_ = true;
-  }
-
-  goog.async.run.workQueue_.push(
-      new goog.async.run.WorkItem_(callback, opt_context));
-};
-
-
-/**
- * Initializes the function to use to process the work queue.
- * @private
- */
-goog.async.run.initializeRunner_ = function() {
-  // If native Promises are available in the browser, just schedule the callback
-  // on a fulfilled promise, which is specified to be async, but as fast as
-  // possible.
-  if (goog.global.Promise && goog.global.Promise.resolve) {
-    var promise = goog.global.Promise.resolve();
-    goog.async.run.schedule_ = function() {
-      promise.then(goog.async.run.processWorkQueue);
-    };
-  } else {
-    goog.async.run.schedule_ = function() {
-      goog.async.nextTick(goog.async.run.processWorkQueue);
-    };
-  }
-};
-
-
-/**
- * Forces goog.async.run to use nextTick instead of Promise.
- *
- * This should only be done in unit tests. It's useful because MockClock
- * replaces nextTick, but not the browser Promise implementation, so it allows
- * Promise-based code to be tested with MockClock.
- */
-goog.async.run.forceNextTick = function() {
-  goog.async.run.schedule_ = function() {
-    goog.async.nextTick(goog.async.run.processWorkQueue);
-  };
-};
-
-
-/**
- * The function used to schedule work asynchronousely.
- * @private {function()}
- */
-goog.async.run.schedule_;
-
-
-/** @private {boolean} */
-goog.async.run.workQueueScheduled_ = false;
-
-
-/** @private {!Array<!goog.async.run.WorkItem_>} */
-goog.async.run.workQueue_ = [];
-
-
-if (goog.DEBUG) {
-  /**
-   * Reset the event queue.
-   * @private
-   */
-  goog.async.run.resetQueue_ = function() {
-    goog.async.run.workQueueScheduled_ = false;
-    goog.async.run.workQueue_ = [];
-  };
-
-  // If there is a clock implemenation in use for testing
-  // and it is reset, reset the queue.
-  goog.testing.watchers.watchClockReset(goog.async.run.resetQueue_);
-}
-
-
-/**
- * Run any pending goog.async.run work items. This function is not intended
- * for general use, but for use by entry point handlers to run items ahead of
- * goog.async.nextTick.
- */
-goog.async.run.processWorkQueue = function() {
-  // NOTE: additional work queue items may be pushed while processing.
-  while (goog.async.run.workQueue_.length) {
-    // Don't let the work queue grow indefinitely.
-    var workItems = goog.async.run.workQueue_;
-    goog.async.run.workQueue_ = [];
-    for (var i = 0; i < workItems.length; i++) {
-      var workItem = workItems[i];
-      try {
-        workItem.fn.call(workItem.scope);
-      } catch (e) {
-        goog.async.throwException(e);
-      }
-    }
-  }
-
-  // There are no more work items, reset the work queue.
-  goog.async.run.workQueueScheduled_ = false;
-};
-
-
-
-/**
- * @constructor
- * @final
- * @struct
- * @private
- *
- * @param {function()} fn
- * @param {Object|null|undefined} scope
- */
-goog.async.run.WorkItem_ = function(fn, scope) {
-  /** @const */ this.fn = fn;
-  /** @const */ this.scope = scope;
-};
-
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-goog.provide('goog.promise.Resolver');
-
-
-
-/**
- * Resolver interface for promises. The resolver is a convenience interface that
- * bundles the promise and its associated resolve and reject functions together,
- * for cases where the resolver needs to be persisted internally.
- *
- * @interface
- * @template TYPE
- */
-goog.promise.Resolver = function() {};
-
-
-/**
- * The promise that created this resolver.
- * @type {!goog.Promise<TYPE>}
- */
-goog.promise.Resolver.prototype.promise;
-
-
-/**
- * Resolves this resolver with the specified value.
- * @type {function((TYPE|goog.Promise<TYPE>|Thenable)=)}
- */
-goog.promise.Resolver.prototype.resolve;
-
-
-/**
- * Rejects this resolver with the specified reason.
- * @type {function(*): void}
- */
-goog.promise.Resolver.prototype.reject;
-
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-goog.provide('goog.Promise');
-
-goog.require('goog.Thenable');
-goog.require('goog.asserts');
-goog.require('goog.async.run');
-goog.require('goog.async.throwException');
-goog.require('goog.debug.Error');
-goog.require('goog.promise.Resolver');
-
-
-
-/**
- * Promises provide a result that may be resolved asynchronously. A Promise may
- * be resolved by being fulfilled or rejected with a value, which will be known
- * as the fulfillment value or the rejection reason. Whether fulfilled or
- * rejected, the Promise result is immutable once it is set.
- *
- * Promises may represent results of any type, including undefined. Rejection
- * reasons are typically Errors, but may also be of any type. Closure Promises
- * allow for optional type annotations that enforce that fulfillment values are
- * of the appropriate types at compile time.
- *
- * The result of a Promise is accessible by calling {@code then} and registering
- * {@code onFulfilled} and {@code onRejected} callbacks. Once the Promise
- * resolves, the relevant callbacks are invoked with the fulfillment value or
- * rejection reason as argument. Callbacks are always invoked in the order they
- * were registered, even when additional {@code then} calls are made from inside
- * another callback. A callback is always run asynchronously sometime after the
- * scope containing the registering {@code then} invocation has returned.
- *
- * If a Promise is resolved with another Promise, the first Promise will block
- * until the second is resolved, and then assumes the same result as the second
- * Promise. This allows Promises to depend on the results of other Promises,
- * linking together multiple asynchronous operations.
- *
- * This implementation is compatible with the Promises/A+ specification and
- * passes that specification's conformance test suite. A Closure Promise may be
- * resolved with a Promise instance (or sufficiently compatible Promise-like
- * object) created by other Promise implementations. From the specification,
- * Promise-like objects are known as "Thenables".
- *
- * @see http://promisesaplus.com/
- *
- * @param {function(
- *             this:RESOLVER_CONTEXT,
- *             function((TYPE|IThenable<TYPE>|Thenable)=),
- *             function(*)): void} resolver
- *     Initialization function that is invoked immediately with {@code resolve}
- *     and {@code reject} functions as arguments. The Promise is resolved or
- *     rejected with the first argument passed to either function.
- * @param {RESOLVER_CONTEXT=} opt_context An optional context for executing the
- *     resolver function. If unspecified, the resolver function will be executed
- *     in the default scope.
- * @constructor
- * @struct
- * @final
- * @implements {goog.Thenable<TYPE>}
- * @template TYPE,RESOLVER_CONTEXT
- */
-goog.Promise = function(resolver, opt_context) {
-  /**
-   * The internal state of this Promise. Either PENDING, FULFILLED, REJECTED, or
-   * BLOCKED.
-   * @private {goog.Promise.State_}
-   */
-  this.state_ = goog.Promise.State_.PENDING;
-
-  /**
-   * The resolved result of the Promise. Immutable once set with either a
-   * fulfillment value or rejection reason.
-   * @private {*}
-   */
-  this.result_ = undefined;
-
-  /**
-   * For Promises created by calling {@code then()}, the originating parent.
-   * @private {goog.Promise}
-   */
-  this.parent_ = null;
-
-  /**
-   * The list of {@code onFulfilled} and {@code onRejected} callbacks added to
-   * this Promise by calls to {@code then()}.
-   * @private {Array<goog.Promise.CallbackEntry_>}
-   */
-  this.callbackEntries_ = null;
-
-  /**
-   * Whether the Promise is in the queue of Promises to execute.
-   * @private {boolean}
-   */
-  this.executing_ = false;
-
-  if (goog.Promise.UNHANDLED_REJECTION_DELAY > 0) {
-    /**
-     * A timeout ID used when the {@code UNHANDLED_REJECTION_DELAY} is greater
-     * than 0 milliseconds. The ID is set when the Promise is rejected, and
-     * cleared only if an {@code onRejected} callback is invoked for the
-     * Promise (or one of its descendants) before the delay is exceeded.
-     *
-     * If the rejection is not handled before the timeout completes, the
-     * rejection reason is passed to the unhandled rejection handler.
-     * @private {number}
-     */
-    this.unhandledRejectionId_ = 0;
-  } else if (goog.Promise.UNHANDLED_REJECTION_DELAY == 0) {
-    /**
-     * When the {@code UNHANDLED_REJECTION_DELAY} is set to 0 milliseconds, a
-     * boolean that is set if the Promise is rejected, and reset to false if an
-     * {@code onRejected} callback is invoked for the Promise (or one of its
-     * descendants). If the rejection is not handled before the next timestep,
-     * the rejection reason is passed to the unhandled rejection handler.
-     * @private {boolean}
-     */
-    this.hadUnhandledRejection_ = false;
-  }
-
-  if (goog.Promise.LONG_STACK_TRACES) {
-    /**
-     * A list of stack trace frames pointing to the locations where this Promise
-     * was created or had callbacks added to it. Saved to add additional context
-     * to stack traces when an exception is thrown.
-     * @private {!Array<string>}
-     */
-    this.stack_ = [];
-    this.addStackTrace_(new Error('created'));
-
-    /**
-     * Index of the most recently executed stack frame entry.
-     * @private {number}
-     */
-    this.currentStep_ = 0;
-  }
-
-  try {
-    var self = this;
-    resolver.call(
-        opt_context,
-        function(value) {
-          self.resolve_(goog.Promise.State_.FULFILLED, value);
-        },
-        function(reason) {
-          if (goog.DEBUG &&
-              !(reason instanceof goog.Promise.CancellationError)) {
-            try {
-              // Promise was rejected. Step up one call frame to see why.
-              if (reason instanceof Error) {
-                throw reason;
-              } else {
-                throw new Error('Promise rejected.');
-              }
-            } catch (e) {
-              // Only thrown so browser dev tools can catch rejections of
-              // promises when the option to break on caught exceptions is
-              // activated.
-            }
-          }
-          self.resolve_(goog.Promise.State_.REJECTED, reason);
-        });
-  } catch (e) {
-    this.resolve_(goog.Promise.State_.REJECTED, e);
-  }
-};
-
-
-/**
- * @define {boolean} Whether traces of {@code then} calls should be included in
- * exceptions thrown
- */
-goog.define('goog.Promise.LONG_STACK_TRACES', false);
-
-
-/**
- * @define {number} The delay in milliseconds before a rejected Promise's reason
- * is passed to the rejection handler. By default, the rejection handler
- * rethrows the rejection reason so that it appears in the developer console or
- * {@code window.onerror} handler.
- *
- * Rejections are rethrown as quickly as possible by default. A negative value
- * disables rejection handling entirely.
- */
-goog.define('goog.Promise.UNHANDLED_REJECTION_DELAY', 0);
-
-
-/**
- * The possible internal states for a Promise. These states are not directly
- * observable to external callers.
- * @enum {number}
- * @private
- */
-goog.Promise.State_ = {
-  /** The Promise is waiting for resolution. */
-  PENDING: 0,
-
-  /** The Promise is blocked waiting for the result of another Thenable. */
-  BLOCKED: 1,
-
-  /** The Promise has been resolved with a fulfillment value. */
-  FULFILLED: 2,
-
-  /** The Promise has been resolved with a rejection reason. */
-  REJECTED: 3
-};
-
-
-/**
- * Typedef for entries in the callback chain. Each call to {@code then},
- * {@code thenCatch}, or {@code thenAlways} creates an entry containing the
- * functions that may be invoked once the Promise is resolved.
- *
- * @typedef {{
- *   child: goog.Promise,
- *   onFulfilled: function(*),
- *   onRejected: function(*)
- * }}
- * @private
- */
-goog.Promise.CallbackEntry_;
-
-
-/**
- * @param {(TYPE|goog.Thenable<TYPE>|Thenable)=} opt_value
- * @return {!goog.Promise<TYPE>} A new Promise that is immediately resolved
- *     with the given value.
- * @template TYPE
- */
-goog.Promise.resolve = function(opt_value) {
-  return new goog.Promise(function(resolve, reject) {
-    resolve(opt_value);
-  });
-};
-
-
-/**
- * @param {*=} opt_reason
- * @return {!goog.Promise} A new Promise that is immediately rejected with the
- *     given reason.
- */
-goog.Promise.reject = function(opt_reason) {
-  return new goog.Promise(function(resolve, reject) {
-    reject(opt_reason);
-  });
-};
-
-
-/**
- * @param {!Array<!(goog.Thenable<TYPE>|Thenable)>} promises
- * @return {!goog.Promise<TYPE>} A Promise that receives the result of the
- *     first Promise (or Promise-like) input to complete.
- * @template TYPE
- */
-goog.Promise.race = function(promises) {
-  return new goog.Promise(function(resolve, reject) {
-    if (!promises.length) {
-      resolve(undefined);
-    }
-    for (var i = 0, promise; promise = promises[i]; i++) {
-      promise.then(resolve, reject);
-    }
-  });
-};
-
-
-/**
- * @param {!Array<!(goog.Thenable<TYPE>|Thenable)>} promises
- * @return {!goog.Promise<!Array<TYPE>>} A Promise that receives a list of
- *     every fulfilled value once every input Promise (or Promise-like) is
- *     successfully fulfilled, or is rejected by the first rejection result.
- * @template TYPE
- */
-goog.Promise.all = function(promises) {
-  return new goog.Promise(function(resolve, reject) {
-    var toFulfill = promises.length;
-    var values = [];
-
-    if (!toFulfill) {
-      resolve(values);
-      return;
-    }
-
-    var onFulfill = function(index, value) {
-      toFulfill--;
-      values[index] = value;
-      if (toFulfill == 0) {
-        resolve(values);
-      }
-    };
-
-    var onReject = function(reason) {
-      reject(reason);
-    };
-
-    for (var i = 0, promise; promise = promises[i]; i++) {
-      promise.then(goog.partial(onFulfill, i), onReject);
-    }
-  });
-};
-
-
-/**
- * @param {!Array<!(goog.Thenable<TYPE>|Thenable)>} promises
- * @return {!goog.Promise<TYPE>} A Promise that receives the value of the first
- *     input to be fulfilled, or is rejected with a list of every rejection
- *     reason if all inputs are rejected.
- * @template TYPE
- */
-goog.Promise.firstFulfilled = function(promises) {
-  return new goog.Promise(function(resolve, reject) {
-    var toReject = promises.length;
-    var reasons = [];
-
-    if (!toReject) {
-      resolve(undefined);
-      return;
-    }
-
-    var onFulfill = function(value) {
-      resolve(value);
-    };
-
-    var onReject = function(index, reason) {
-      toReject--;
-      reasons[index] = reason;
-      if (toReject == 0) {
-        reject(reasons);
-      }
-    };
-
-    for (var i = 0, promise; promise = promises[i]; i++) {
-      promise.then(onFulfill, goog.partial(onReject, i));
-    }
-  });
-};
-
-
-/**
- * @return {!goog.promise.Resolver<TYPE>} Resolver wrapping the promise and its
- *     resolve / reject functions. Resolving or rejecting the resolver
- *     resolves or rejects the promise.
- * @template TYPE
- */
-goog.Promise.withResolver = function() {
-  var resolve, reject;
-  var promise = new goog.Promise(function(rs, rj) {
-    resolve = rs;
-    reject = rj;
-  });
-  return new goog.Promise.Resolver_(promise, resolve, reject);
-};
-
-
-/**
- * Adds callbacks that will operate on the result of the Promise, returning a
- * new child Promise.
- *
- * If the Promise is fulfilled, the {@code onFulfilled} callback will be invoked
- * with the fulfillment value as argument, and the child Promise will be
- * fulfilled with the return value of the callback. If the callback throws an
- * exception, the child Promise will be rejected with the thrown value instead.
- *
- * If the Promise is rejected, the {@code onRejected} callback will be invoked
- * with the rejection reason as argument, and the child Promise will be resolved
- * with the return value or rejected with the thrown value of the callback.
- *
- * @override
- */
-goog.Promise.prototype.then = function(
-    opt_onFulfilled, opt_onRejected, opt_context) {
-
-  if (opt_onFulfilled != null) {
-    goog.asserts.assertFunction(opt_onFulfilled,
-        'opt_onFulfilled should be a function.');
-  }
-  if (opt_onRejected != null) {
-    goog.asserts.assertFunction(opt_onRejected,
-        'opt_onRejected should be a function. Did you pass opt_context ' +
-        'as the second argument instead of the third?');
-  }
-
-  if (goog.Promise.LONG_STACK_TRACES) {
-    this.addStackTrace_(new Error('then'));
-  }
-
-  return this.addChildPromise_(
-      goog.isFunction(opt_onFulfilled) ? opt_onFulfilled : null,
-      goog.isFunction(opt_onRejected) ? opt_onRejected : null,
-      opt_context);
-};
-goog.Thenable.addImplementation(goog.Promise);
-
-
-/**
- * Adds a callback that will be invoked whether the Promise is fulfilled or
- * rejected. The callback receives no argument, and no new child Promise is
- * created. This is useful for ensuring that cleanup takes place after certain
- * asynchronous operations. Callbacks added with {@code thenAlways} will be
- * executed in the same order with other calls to {@code then},
- * {@code thenAlways}, or {@code thenCatch}.
- *
- * Since it does not produce a new child Promise, cancellation propagation is
- * not prevented by adding callbacks with {@code thenAlways}. A Promise that has
- * a cleanup handler added with {@code thenAlways} will be canceled if all of
- * its children created by {@code then} (or {@code thenCatch}) are canceled.
- * Additionally, since any rejections are not passed to the callback, it does
- * not stop the unhandled rejection handler from running.
- *
- * @param {function(this:THIS): void} onResolved A function that will be invoked
- *     when the Promise is resolved.
- * @param {THIS=} opt_context An optional context object that will be the
- *     execution context for the callbacks. By default, functions are executed
- *     in the global scope.
- * @return {!goog.Promise<TYPE>} This Promise, for chaining additional calls.
- * @template THIS
- */
-goog.Promise.prototype.thenAlways = function(onResolved, opt_context) {
-  if (goog.Promise.LONG_STACK_TRACES) {
-    this.addStackTrace_(new Error('thenAlways'));
-  }
-
-  var callback = function() {
-    try {
-      // Ensure that no arguments are passed to onResolved.
-      onResolved.call(opt_context);
-    } catch (err) {
-      goog.Promise.handleRejection_.call(null, err);
-    }
-  };
-
-  this.addCallbackEntry_({
-    child: null,
-    onRejected: callback,
-    onFulfilled: callback
-  });
-  return this;
-};
-
-
-/**
- * Adds a callback that will be invoked only if the Promise is rejected. This
- * is equivalent to {@code then(null, onRejected)}.
- *
- * @param {!function(this:THIS, *): *} onRejected A function that will be
- *     invoked with the rejection reason if the Promise is rejected.
- * @param {THIS=} opt_context An optional context object that will be the
- *     execution context for the callbacks. By default, functions are executed
- *     in the global scope.
- * @return {!goog.Promise} A new Promise that will receive the result of the
- *     callback.
- * @template THIS
- */
-goog.Promise.prototype.thenCatch = function(onRejected, opt_context) {
-  if (goog.Promise.LONG_STACK_TRACES) {
-    this.addStackTrace_(new Error('thenCatch'));
-  }
-  return this.addChildPromise_(null, onRejected, opt_context);
-};
-
-
-/**
- * Cancels the Promise if it is still pending by rejecting it with a cancel
- * Error. No action is performed if the Promise is already resolved.
- *
- * All child Promises of the canceled Promise will be rejected with the same
- * cancel error, as with normal Promise rejection. If the Promise to be canceled
- * is the only child of a pending Promise, the parent Promise will also be
- * canceled. Cancellation may propagate upward through multiple generations.
- *
- * @param {string=} opt_message An optional debugging message for describing the
- *     cancellation reason.
- */
-goog.Promise.prototype.cancel = function(opt_message) {
-  if (this.state_ == goog.Promise.State_.PENDING) {
-    goog.async.run(function() {
-      var err = new goog.Promise.CancellationError(opt_message);
-      this.cancelInternal_(err);
-    }, this);
-  }
-};
-
-
-/**
- * Cancels this Promise with the given error.
- *
- * @param {!Error} err The cancellation error.
- * @private
- */
-goog.Promise.prototype.cancelInternal_ = function(err) {
-  if (this.state_ == goog.Promise.State_.PENDING) {
-    if (this.parent_) {
-      // Cancel the Promise and remove it from the parent's child list.
-      this.parent_.cancelChild_(this, err);
-    } else {
-      this.resolve_(goog.Promise.State_.REJECTED, err);
-    }
-  }
-};
-
-
-/**
- * Cancels a child Promise from the list of callback entries. If the Promise has
- * not already been resolved, reject it with a cancel error. If there are no
- * other children in the list of callback entries, propagate the cancellation
- * by canceling this Promise as well.
- *
- * @param {!goog.Promise} childPromise The Promise to cancel.
- * @param {!Error} err The cancel error to use for rejecting the Promise.
- * @private
- */
-goog.Promise.prototype.cancelChild_ = function(childPromise, err) {
-  if (!this.callbackEntries_) {
-    return;
-  }
-  var childCount = 0;
-  var childIndex = -1;
-
-  // Find the callback entry for the childPromise, and count whether there are
-  // additional child Promises.
-  for (var i = 0, entry; entry = this.callbackEntries_[i]; i++) {
-    var child = entry.child;
-    if (child) {
-      childCount++;
-      if (child == childPromise) {
-        childIndex = i;
-      }
-      if (childIndex >= 0 && childCount > 1) {
-        break;
-      }
-    }
-  }
-
-  // If the child Promise was the only child, cancel this Promise as well.
-  // Otherwise, reject only the child Promise with the cancel error.
-  if (childIndex >= 0) {
-    if (this.state_ == goog.Promise.State_.PENDING && childCount == 1) {
-      this.cancelInternal_(err);
-    } else {
-      var callbackEntry = this.callbackEntries_.splice(childIndex, 1)[0];
-      this.executeCallback_(
-          callbackEntry, goog.Promise.State_.REJECTED, err);
-    }
-  }
-};
-
-
-/**
- * Adds a callback entry to the current Promise, and schedules callback
- * execution if the Promise has already been resolved.
- *
- * @param {goog.Promise.CallbackEntry_} callbackEntry Record containing
- *     {@code onFulfilled} and {@code onRejected} callbacks to execute after
- *     the Promise is resolved.
- * @private
- */
-goog.Promise.prototype.addCallbackEntry_ = function(callbackEntry) {
-  if ((!this.callbackEntries_ || !this.callbackEntries_.length) &&
-      (this.state_ == goog.Promise.State_.FULFILLED ||
-       this.state_ == goog.Promise.State_.REJECTED)) {
-    this.scheduleCallbacks_();
-  }
-  if (!this.callbackEntries_) {
-    this.callbackEntries_ = [];
-  }
-  this.callbackEntries_.push(callbackEntry);
-};
-
-
-/**
- * Creates a child Promise and adds it to the callback entry list. The result of
- * the child Promise is determined by the state of the parent Promise and the
- * result of the {@code onFulfilled} or {@code onRejected} callbacks as
- * specified in the Promise resolution procedure.
- *
- * @see http://promisesaplus.com/#the__method
- *
- * @param {?function(this:THIS, TYPE):
- *          (RESULT|goog.Promise<RESULT>|Thenable)} onFulfilled A callback that
- *     will be invoked if the Promise is fullfilled, or null.
- * @param {?function(this:THIS, *): *} onRejected A callback that will be
- *     invoked if the Promise is rejected, or null.
- * @param {THIS=} opt_context An optional execution context for the callbacks.
- *     in the default calling context.
- * @return {!goog.Promise} The child Promise.
- * @template RESULT,THIS
- * @private
- */
-goog.Promise.prototype.addChildPromise_ = function(
-    onFulfilled, onRejected, opt_context) {
-
-  var callbackEntry = {
-    child: null,
-    onFulfilled: null,
-    onRejected: null
-  };
-
-  callbackEntry.child = new goog.Promise(function(resolve, reject) {
-    // Invoke onFulfilled, or resolve with the parent's value if absent.
-    callbackEntry.onFulfilled = onFulfilled ? function(value) {
-      try {
-        var result = onFulfilled.call(opt_context, value);
-        resolve(result);
-      } catch (err) {
-        reject(err);
-      }
-    } : resolve;
-
-    // Invoke onRejected, or reject with the parent's reason if absent.
-    callbackEntry.onRejected = onRejected ? function(reason) {
-      try {
-        var result = onRejected.call(opt_context, reason);
-        if (!goog.isDef(result) &&
-            reason instanceof goog.Promise.CancellationError) {
-          // Propagate cancellation to children if no other result is returned.
-          reject(reason);
-        } else {
-          resolve(result);
-        }
-      } catch (err) {
-        reject(err);
-      }
-    } : reject;
-  });
-
-  callbackEntry.child.parent_ = this;
-  this.addCallbackEntry_(
-      /** @type {goog.Promise.CallbackEntry_} */ (callbackEntry));
-  return callbackEntry.child;
-};
-
-
-/**
- * Unblocks the Promise and fulfills it with the given value.
- *
- * @param {TYPE} value
- * @private
- */
-goog.Promise.prototype.unblockAndFulfill_ = function(value) {
-  goog.asserts.assert(this.state_ == goog.Promise.State_.BLOCKED);
-  this.state_ = goog.Promise.State_.PENDING;
-  this.resolve_(goog.Promise.State_.FULFILLED, value);
-};
-
-
-/**
- * Unblocks the Promise and rejects it with the given rejection reason.
- *
- * @param {*} reason
- * @private
- */
-goog.Promise.prototype.unblockAndReject_ = function(reason) {
-  goog.asserts.assert(this.state_ == goog.Promise.State_.BLOCKED);
-  this.state_ = goog.Promise.State_.PENDING;
-  this.resolve_(goog.Promise.State_.REJECTED, reason);
-};
-
-
-/**
- * Attempts to resolve a Promise with a given resolution state and value. This
- * is a no-op if the given Promise has already been resolved.
- *
- * If the given result is a Thenable (such as another Promise), the Promise will
- * be resolved with the same state and result as the Thenable once it is itself
- * resolved.
- *
- * If the given result is not a Thenable, the Promise will be fulfilled or
- * rejected with that result based on the given state.
- *
- * @see http://promisesaplus.com/#the_promise_resolution_procedure
- *
- * @param {goog.Promise.State_} state
- * @param {*} x The result to apply to the Promise.
- * @private
- */
-goog.Promise.prototype.resolve_ = function(state, x) {
-  if (this.state_ != goog.Promise.State_.PENDING) {
-    return;
-  }
-
-  if (this == x) {
-    state = goog.Promise.State_.REJECTED;
-    x = new TypeError('Promise cannot resolve to itself');
-
-  } else if (goog.Thenable.isImplementedBy(x)) {
-    x = /** @type {!goog.Thenable} */ (x);
-    this.state_ = goog.Promise.State_.BLOCKED;
-    x.then(this.unblockAndFulfill_, this.unblockAndReject_, this);
-    return;
-
-  } else if (goog.isObject(x)) {
-    try {
-      var then = x['then'];
-      if (goog.isFunction(then)) {
-        this.tryThen_(x, then);
-        return;
-      }
-    } catch (e) {
-      state = goog.Promise.State_.REJECTED;
-      x = e;
-    }
-  }
-
-  this.result_ = x;
-  this.state_ = state;
-  this.scheduleCallbacks_();
-
-  if (state == goog.Promise.State_.REJECTED &&
-      !(x instanceof goog.Promise.CancellationError)) {
-    goog.Promise.addUnhandledRejection_(this, x);
-  }
-};
-
-
-/**
- * Attempts to call the {@code then} method on an object in the hopes that it is
- * a Promise-compatible instance. This allows interoperation between different
- * Promise implementations, however a non-compliant object may cause a Promise
- * to hang indefinitely. If the {@code then} method throws an exception, the
- * dependent Promise will be rejected with the thrown value.
- *
- * @see http://promisesaplus.com/#point-70
- *
- * @param {Thenable} thenable An object with a {@code then} method that may be
- *     compatible with the Promise/A+ specification.
- * @param {!Function} then The {@code then} method of the Thenable object.
- * @private
- */
-goog.Promise.prototype.tryThen_ = function(thenable, then) {
-  this.state_ = goog.Promise.State_.BLOCKED;
-  var promise = this;
-  var called = false;
-
-  var resolve = function(value) {
-    if (!called) {
-      called = true;
-      promise.unblockAndFulfill_(value);
-    }
-  };
-
-  var reject = function(reason) {
-    if (!called) {
-      called = true;
-      promise.unblockAndReject_(reason);
-    }
-  };
-
-  try {
-    then.call(thenable, resolve, reject);
-  } catch (e) {
-    reject(e);
-  }
-};
-
-
-/**
- * Executes the pending callbacks of a resolved Promise after a timeout.
- *
- * Section 2.2.4 of the Promises/A+ specification requires that Promise
- * callbacks must only be invoked from a call stack that only contains Promise
- * implementation code, which we accomplish by invoking callback execution after
- * a timeout. If {@code startExecution_} is called multiple times for the same
- * Promise, the callback chain will be evaluated only once. Additional callbacks
- * may be added during the evaluation phase, and will be executed in the same
- * event loop.
- *
- * All Promises added to the waiting list during the same browser event loop
- * will be executed in one batch to avoid using a separate timeout per Promise.
- *
- * @private
- */
-goog.Promise.prototype.scheduleCallbacks_ = function() {
-  if (!this.executing_) {
-    this.executing_ = true;
-    goog.async.run(this.executeCallbacks_, this);
-  }
-};
-
-
-/**
- * Executes all pending callbacks for this Promise.
- *
- * @private
- */
-goog.Promise.prototype.executeCallbacks_ = function() {
-  while (this.callbackEntries_ && this.callbackEntries_.length) {
-    var entries = this.callbackEntries_;
-    this.callbackEntries_ = [];
-
-    for (var i = 0; i < entries.length; i++) {
-      if (goog.Promise.LONG_STACK_TRACES) {
-        this.currentStep_++;
-      }
-      this.executeCallback_(entries[i], this.state_, this.result_);
-    }
-  }
-  this.executing_ = false;
-};
-
-
-/**
- * Executes a pending callback for this Promise. Invokes an {@code onFulfilled}
- * or {@code onRejected} callback based on the resolved state of the Promise.
- *
- * @param {!goog.Promise.CallbackEntry_} callbackEntry An entry containing the
- *     onFulfilled and/or onRejected callbacks for this step.
- * @param {goog.Promise.State_} state The resolution status of the Promise,
- *     either FULFILLED or REJECTED.
- * @param {*} result The resolved result of the Promise.
- * @private
- */
-goog.Promise.prototype.executeCallback_ = function(
-    callbackEntry, state, result) {
-  if (state == goog.Promise.State_.FULFILLED) {
-    callbackEntry.onFulfilled(result);
-  } else {
-    if (callbackEntry.child) {
-      this.removeUnhandledRejection_();
-    }
-    callbackEntry.onRejected(result);
-  }
-};
-
-
-/**
- * Records a stack trace entry for functions that call {@code then} or the
- * Promise constructor. May be disabled by unsetting {@code LONG_STACK_TRACES}.
- *
- * @param {!Error} err An Error object created by the calling function for
- *     providing a stack trace.
- * @private
- */
-goog.Promise.prototype.addStackTrace_ = function(err) {
-  if (goog.Promise.LONG_STACK_TRACES && goog.isString(err.stack)) {
-    // Extract the third line of the stack trace, which is the entry for the
-    // user function that called into Promise code.
-    var trace = err.stack.split('\n', 4)[3];
-    var message = err.message;
-
-    // Pad the message to align the traces.
-    message += Array(11 - message.length).join(' ');
-    this.stack_.push(message + trace);
-  }
-};
-
-
-/**
- * Adds extra stack trace information to an exception for the list of
- * asynchronous {@code then} calls that have been run for this Promise. Stack
- * trace information is recorded in {@see #addStackTrace_}, and appended to
- * rethrown errors when {@code LONG_STACK_TRACES} is enabled.
- *
- * @param {*} err An unhandled exception captured during callback execution.
- * @private
- */
-goog.Promise.prototype.appendLongStack_ = function(err) {
-  if (goog.Promise.LONG_STACK_TRACES &&
-      err && goog.isString(err.stack) && this.stack_.length) {
-    var longTrace = ['Promise trace:'];
-
-    for (var promise = this; promise; promise = promise.parent_) {
-      for (var i = this.currentStep_; i >= 0; i--) {
-        longTrace.push(promise.stack_[i]);
-      }
-      longTrace.push('Value: ' +
-          '[' + (promise.state_ == goog.Promise.State_.REJECTED ?
-              'REJECTED' : 'FULFILLED') + '] ' +
-          '<' + String(promise.result_) + '>');
-    }
-    err.stack += '\n\n' + longTrace.join('\n');
-  }
-};
-
-
-/**
- * Marks this rejected Promise as having being handled. Also marks any parent
- * Promises in the rejected state as handled. The rejection handler will no
- * longer be invoked for this Promise (if it has not been called already).
- *
- * @private
- */
-goog.Promise.prototype.removeUnhandledRejection_ = function() {
-  if (goog.Promise.UNHANDLED_REJECTION_DELAY > 0) {
-    for (var p = this; p && p.unhandledRejectionId_; p = p.parent_) {
-      goog.global.clearTimeout(p.unhandledRejectionId_);
-      p.unhandledRejectionId_ = 0;
-    }
-  } else if (goog.Promise.UNHANDLED_REJECTION_DELAY == 0) {
-    for (var p = this; p && p.hadUnhandledRejection_; p = p.parent_) {
-      p.hadUnhandledRejection_ = false;
-    }
-  }
-};
-
-
-/**
- * Marks this rejected Promise as unhandled. If no {@code onRejected} callback
- * is called for this Promise before the {@code UNHANDLED_REJECTION_DELAY}
- * expires, the reason will be passed to the unhandled rejection handler. The
- * handler typically rethrows the rejection reason so that it becomes visible in
- * the developer console.
- *
- * @param {!goog.Promise} promise The rejected Promise.
- * @param {*} reason The Promise rejection reason.
- * @private
- */
-goog.Promise.addUnhandledRejection_ = function(promise, reason) {
-  if (goog.Promise.UNHANDLED_REJECTION_DELAY > 0) {
-    promise.unhandledRejectionId_ = goog.global.setTimeout(function() {
-      promise.appendLongStack_(reason);
-      goog.Promise.handleRejection_.call(null, reason);
-    }, goog.Promise.UNHANDLED_REJECTION_DELAY);
-
-  } else if (goog.Promise.UNHANDLED_REJECTION_DELAY == 0) {
-    promise.hadUnhandledRejection_ = true;
-    goog.async.run(function() {
-      if (promise.hadUnhandledRejection_) {
-        promise.appendLongStack_(reason);
-        goog.Promise.handleRejection_.call(null, reason);
-      }
-    });
-  }
-};
-
-
-/**
- * A method that is invoked with the rejection reasons for Promises that are
- * rejected but have no {@code onRejected} callbacks registered yet.
- * @type {function(*)}
- * @private
- */
-goog.Promise.handleRejection_ = goog.async.throwException;
-
-
-/**
- * Sets a handler that will be called with reasons from unhandled rejected
- * Promises. If the rejected Promise (or one of its descendants) has an
- * {@code onRejected} callback registered, the rejection will be considered
- * handled, and the rejection handler will not be called.
- *
- * By default, unhandled rejections are rethrown so that the error may be
- * captured by the developer console or a {@code window.onerror} handler.
- *
- * @param {function(*)} handler A function that will be called with reasons from
- *     rejected Promises. Defaults to {@code goog.async.throwException}.
- */
-goog.Promise.setUnhandledRejectionHandler = function(handler) {
-  goog.Promise.handleRejection_ = handler;
-};
-
-
-
-/**
- * Error used as a rejection reason for canceled Promises.
- *
- * @param {string=} opt_message
- * @constructor
- * @extends {goog.debug.Error}
- * @final
- */
-goog.Promise.CancellationError = function(opt_message) {
-  goog.Promise.CancellationError.base(this, 'constructor', opt_message);
-};
-goog.inherits(goog.Promise.CancellationError, goog.debug.Error);
-
-
-/** @override */
-goog.Promise.CancellationError.prototype.name = 'cancel';
-
-
-
-/**
- * Internal implementation of the resolver interface.
- *
- * @param {!goog.Promise<TYPE>} promise
- * @param {function((TYPE|goog.Promise<TYPE>|Thenable)=)} resolve
- * @param {function(*): void} reject
- * @implements {goog.promise.Resolver<TYPE>}
- * @final @struct
- * @constructor
- * @private
- * @template TYPE
- */
-goog.Promise.Resolver_ = function(promise, resolve, reject) {
-  /** @const */
-  this.promise = promise;
-
-  /** @const */
-  this.resolve = resolve;
-
-  /** @const */
-  this.reject = reject;
 };
 
 // Copyright 2007 Bob Ippolito. All Rights Reserved.
@@ -107332,10 +109262,6 @@ ol.interaction.Snap.prototype.addFeature = function(feature, opt_listen) {
     }
   }
 };
-goog.exportProperty(
-    ol.interaction.Snap.prototype,
-    'addFeature',
-    ol.interaction.Snap.prototype.addFeature);
 
 
 /**
@@ -107465,10 +109391,6 @@ ol.interaction.Snap.prototype.removeFeature = function(feature, opt_unlisten) {
     }
   }
 };
-goog.exportProperty(
-    ol.interaction.Snap.prototype,
-    'removeFeature',
-    ol.interaction.Snap.prototype.removeFeature);
 
 
 /**
@@ -107980,10 +109902,6 @@ ol.layer.Heatmap.prototype.createCircle_ = function() {
 ol.layer.Heatmap.prototype.getBlur = function() {
   return /** @type {number} */ (this.get(ol.layer.HeatmapLayerProperty.BLUR));
 };
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'getBlur',
-    ol.layer.Heatmap.prototype.getBlur);
 
 
 /**
@@ -107995,10 +109913,6 @@ ol.layer.Heatmap.prototype.getGradient = function() {
   return /** @type {Array.<string>} */ (
       this.get(ol.layer.HeatmapLayerProperty.GRADIENT));
 };
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'getGradient',
-    ol.layer.Heatmap.prototype.getGradient);
 
 
 /**
@@ -108009,10 +109923,6 @@ goog.exportProperty(
 ol.layer.Heatmap.prototype.getRadius = function() {
   return /** @type {number} */ (this.get(ol.layer.HeatmapLayerProperty.RADIUS));
 };
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'getRadius',
-    ol.layer.Heatmap.prototype.getRadius);
 
 
 /**
@@ -108067,10 +109977,6 @@ ol.layer.Heatmap.prototype.handleRender_ = function(event) {
 ol.layer.Heatmap.prototype.setBlur = function(blur) {
   this.set(ol.layer.HeatmapLayerProperty.BLUR, blur);
 };
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'setBlur',
-    ol.layer.Heatmap.prototype.setBlur);
 
 
 /**
@@ -108081,10 +109987,6 @@ goog.exportProperty(
 ol.layer.Heatmap.prototype.setGradient = function(colors) {
   this.set(ol.layer.HeatmapLayerProperty.GRADIENT, colors);
 };
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'setGradient',
-    ol.layer.Heatmap.prototype.setGradient);
 
 
 /**
@@ -108094,71 +109996,6 @@ goog.exportProperty(
  */
 ol.layer.Heatmap.prototype.setRadius = function(radius) {
   this.set(ol.layer.HeatmapLayerProperty.RADIUS, radius);
-};
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'setRadius',
-    ol.layer.Heatmap.prototype.setRadius);
-
-goog.provide('ol.loadingstrategy');
-
-goog.require('ol.TileCoord');
-
-
-/**
- * Strategy function for loading all features with a single request.
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @return {Array.<ol.Extent>} Extents.
- * @api
- */
-ol.loadingstrategy.all = function(extent, resolution) {
-  return [[-Infinity, -Infinity, Infinity, Infinity]];
-};
-
-
-/**
- * Strategy function for loading features based on the view's extent and
- * resolution.
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @return {Array.<ol.Extent>} Extents.
- * @api
- */
-ol.loadingstrategy.bbox = function(extent, resolution) {
-  return [extent];
-};
-
-
-/**
- * Creates a strategy function for loading features based on a tile grid.
- * @param {ol.tilegrid.TileGrid} tileGrid Tile grid.
- * @return {function(ol.Extent, number): Array.<ol.Extent>} Loading strategy.
- * @api
- */
-ol.loadingstrategy.createTile = function(tileGrid) {
-  return (
-      /**
-       * @param {ol.Extent} extent Extent.
-       * @param {number} resolution Resolution.
-       * @return {Array.<ol.Extent>} Extents.
-       */
-      function(extent, resolution) {
-        var z = tileGrid.getZForResolution(resolution);
-        var tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z);
-        /** @type {Array.<ol.Extent>} */
-        var extents = [];
-        /** @type {ol.TileCoord} */
-        var tileCoord = [z, 0, 0];
-        for (tileCoord[1] = tileRange.minX; tileCoord[1] <= tileRange.maxX;
-             ++tileCoord[1]) {
-          for (tileCoord[2] = tileRange.minY; tileCoord[2] <= tileRange.maxY;
-               ++tileCoord[2]) {
-            extents.push(tileGrid.getTileCoordExtent(tileCoord));
-          }
-        }
-        return extents;
-      });
 };
 
 // Copyright 2011 The Closure Library Authors. All Rights Reserved.
@@ -109696,2680 +111533,6 @@ ol.source.Cluster.prototype.createCluster_ = function(features) {
   return cluster;
 };
 
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Common events for the network classes.
- */
-
-
-goog.provide('goog.net.EventType');
-
-
-/**
- * Event names for network events
- * @enum {string}
- */
-goog.net.EventType = {
-  COMPLETE: 'complete',
-  SUCCESS: 'success',
-  ERROR: 'error',
-  ABORT: 'abort',
-  READY: 'ready',
-  READY_STATE_CHANGE: 'readystatechange',
-  TIMEOUT: 'timeout',
-  INCREMENTAL_DATA: 'incrementaldata',
-  PROGRESS: 'progress'
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A timer class to which other classes and objects can
- * listen on.  This is only an abstraction above setInterval.
- *
- * @see ../demos/timers.html
- */
-
-goog.provide('goog.Timer');
-
-goog.require('goog.Promise');
-goog.require('goog.events.EventTarget');
-
-
-
-/**
- * Class for handling timing events.
- *
- * @param {number=} opt_interval Number of ms between ticks (Default: 1ms).
- * @param {Object=} opt_timerObject  An object that has setTimeout, setInterval,
- *     clearTimeout and clearInterval (eg Window).
- * @constructor
- * @extends {goog.events.EventTarget}
- */
-goog.Timer = function(opt_interval, opt_timerObject) {
-  goog.events.EventTarget.call(this);
-
-  /**
-   * Number of ms between ticks
-   * @type {number}
-   * @private
-   */
-  this.interval_ = opt_interval || 1;
-
-  /**
-   * An object that implements setTimeout, setInterval, clearTimeout and
-   * clearInterval. We default to the window object. Changing this on
-   * goog.Timer.prototype changes the object for all timer instances which can
-   * be useful if your environment has some other implementation of timers than
-   * the window object.
-   * @type {Object}
-   * @private
-   */
-  this.timerObject_ = opt_timerObject || goog.Timer.defaultTimerObject;
-
-  /**
-   * Cached tick_ bound to the object for later use in the timer.
-   * @type {Function}
-   * @private
-   */
-  this.boundTick_ = goog.bind(this.tick_, this);
-
-  /**
-   * Firefox browser often fires the timer event sooner
-   * (sometimes MUCH sooner) than the requested timeout. So we
-   * compare the time to when the event was last fired, and
-   * reschedule if appropriate. See also goog.Timer.intervalScale
-   * @type {number}
-   * @private
-   */
-  this.last_ = goog.now();
-};
-goog.inherits(goog.Timer, goog.events.EventTarget);
-
-
-/**
- * Maximum timeout value.
- *
- * Timeout values too big to fit into a signed 32-bit integer may cause
- * overflow in FF, Safari, and Chrome, resulting in the timeout being
- * scheduled immediately.  It makes more sense simply not to schedule these
- * timeouts, since 24.8 days is beyond a reasonable expectation for the
- * browser to stay open.
- *
- * @type {number}
- * @private
- */
-goog.Timer.MAX_TIMEOUT_ = 2147483647;
-
-
-/**
- * A timer ID that cannot be returned by any known implmentation of
- * Window.setTimeout.  Passing this value to window.clearTimeout should
- * therefore be a no-op.
- *
- * @const {number}
- * @private
- */
-goog.Timer.INVALID_TIMEOUT_ID_ = -1;
-
-
-/**
- * Whether this timer is enabled
- * @type {boolean}
- */
-goog.Timer.prototype.enabled = false;
-
-
-/**
- * An object that implements setTimout, setInterval, clearTimeout and
- * clearInterval. We default to the global object. Changing
- * goog.Timer.defaultTimerObject changes the object for all timer instances
- * which can be useful if your environment has some other implementation of
- * timers you'd like to use.
- * @type {Object}
- */
-goog.Timer.defaultTimerObject = goog.global;
-
-
-/**
- * A variable that controls the timer error correction. If the
- * timer is called before the requested interval times
- * intervalScale, which often happens on mozilla, the timer is
- * rescheduled. See also this.last_
- * @type {number}
- */
-goog.Timer.intervalScale = 0.8;
-
-
-/**
- * Variable for storing the result of setInterval
- * @type {?number}
- * @private
- */
-goog.Timer.prototype.timer_ = null;
-
-
-/**
- * Gets the interval of the timer.
- * @return {number} interval Number of ms between ticks.
- */
-goog.Timer.prototype.getInterval = function() {
-  return this.interval_;
-};
-
-
-/**
- * Sets the interval of the timer.
- * @param {number} interval Number of ms between ticks.
- */
-goog.Timer.prototype.setInterval = function(interval) {
-  this.interval_ = interval;
-  if (this.timer_ && this.enabled) {
-    // Stop and then start the timer to reset the interval.
-    this.stop();
-    this.start();
-  } else if (this.timer_) {
-    this.stop();
-  }
-};
-
-
-/**
- * Callback for the setTimeout used by the timer
- * @private
- */
-goog.Timer.prototype.tick_ = function() {
-  if (this.enabled) {
-    var elapsed = goog.now() - this.last_;
-    if (elapsed > 0 &&
-        elapsed < this.interval_ * goog.Timer.intervalScale) {
-      this.timer_ = this.timerObject_.setTimeout(this.boundTick_,
-          this.interval_ - elapsed);
-      return;
-    }
-
-    // Prevents setInterval from registering a duplicate timeout when called
-    // in the timer event handler.
-    if (this.timer_) {
-      this.timerObject_.clearTimeout(this.timer_);
-      this.timer_ = null;
-    }
-
-    this.dispatchTick();
-    // The timer could be stopped in the timer event handler.
-    if (this.enabled) {
-      this.timer_ = this.timerObject_.setTimeout(this.boundTick_,
-          this.interval_);
-      this.last_ = goog.now();
-    }
-  }
-};
-
-
-/**
- * Dispatches the TICK event. This is its own method so subclasses can override.
- */
-goog.Timer.prototype.dispatchTick = function() {
-  this.dispatchEvent(goog.Timer.TICK);
-};
-
-
-/**
- * Starts the timer.
- */
-goog.Timer.prototype.start = function() {
-  this.enabled = true;
-
-  // If there is no interval already registered, start it now
-  if (!this.timer_) {
-    // IMPORTANT!
-    // window.setInterval in FireFox has a bug - it fires based on
-    // absolute time, rather than on relative time. What this means
-    // is that if a computer is sleeping/hibernating for 24 hours
-    // and the timer interval was configured to fire every 1000ms,
-    // then after the PC wakes up the timer will fire, in rapid
-    // succession, 3600*24 times.
-    // This bug is described here and is already fixed, but it will
-    // take time to propagate, so for now I am switching this over
-    // to setTimeout logic.
-    //     https://bugzilla.mozilla.org/show_bug.cgi?id=376643
-    //
-    this.timer_ = this.timerObject_.setTimeout(this.boundTick_,
-        this.interval_);
-    this.last_ = goog.now();
-  }
-};
-
-
-/**
- * Stops the timer.
- */
-goog.Timer.prototype.stop = function() {
-  this.enabled = false;
-  if (this.timer_) {
-    this.timerObject_.clearTimeout(this.timer_);
-    this.timer_ = null;
-  }
-};
-
-
-/** @override */
-goog.Timer.prototype.disposeInternal = function() {
-  goog.Timer.superClass_.disposeInternal.call(this);
-  this.stop();
-  delete this.timerObject_;
-};
-
-
-/**
- * Constant for the timer's event type
- * @type {string}
- */
-goog.Timer.TICK = 'tick';
-
-
-/**
- * Calls the given function once, after the optional pause.
- *
- * The function is always called asynchronously, even if the delay is 0. This
- * is a common trick to schedule a function to run after a batch of browser
- * event processing.
- *
- * @param {function(this:SCOPE)|{handleEvent:function()}|null} listener Function
- *     or object that has a handleEvent method.
- * @param {number=} opt_delay Milliseconds to wait; default is 0.
- * @param {SCOPE=} opt_handler Object in whose scope to call the listener.
- * @return {number} A handle to the timer ID.
- * @template SCOPE
- */
-goog.Timer.callOnce = function(listener, opt_delay, opt_handler) {
-  if (goog.isFunction(listener)) {
-    if (opt_handler) {
-      listener = goog.bind(listener, opt_handler);
-    }
-  } else if (listener && typeof listener.handleEvent == 'function') {
-    // using typeof to prevent strict js warning
-    listener = goog.bind(listener.handleEvent, listener);
-  } else {
-    throw Error('Invalid listener argument');
-  }
-
-  if (opt_delay > goog.Timer.MAX_TIMEOUT_) {
-    // Timeouts greater than MAX_INT return immediately due to integer
-    // overflow in many browsers.  Since MAX_INT is 24.8 days, just don't
-    // schedule anything at all.
-    return goog.Timer.INVALID_TIMEOUT_ID_;
-  } else {
-    return goog.Timer.defaultTimerObject.setTimeout(
-        listener, opt_delay || 0);
-  }
-};
-
-
-/**
- * Clears a timeout initiated by callOnce
- * @param {?number} timerId a timer ID.
- */
-goog.Timer.clear = function(timerId) {
-  goog.Timer.defaultTimerObject.clearTimeout(timerId);
-};
-
-
-/**
- * @param {number} delay Milliseconds to wait.
- * @param {(RESULT|goog.Thenable<RESULT>|Thenable)=} opt_result The value
- *     with which the promise will be resolved.
- * @return {!goog.Promise<RESULT>} A promise that will be resolved after
- *     the specified delay, unless it is canceled first.
- * @template RESULT
- */
-goog.Timer.promise = function(delay, opt_result) {
-  var timerKey = null;
-  return new goog.Promise(function(resolve, reject) {
-    timerKey = goog.Timer.callOnce(function() {
-      resolve(opt_result);
-    }, delay);
-    if (timerKey == goog.Timer.INVALID_TIMEOUT_ID_) {
-      reject(new Error('Failed to schedule timer.'));
-    }
-  }).thenCatch(function(error) {
-    // Clear the timer. The most likely reason is "cancel" signal.
-    goog.Timer.clear(timerKey);
-    throw error;
-  });
-};
-
-// Copyright 2007 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Error codes shared between goog.net.IframeIo and
- * goog.net.XhrIo.
- */
-
-goog.provide('goog.net.ErrorCode');
-
-
-/**
- * Error codes
- * @enum {number}
- */
-goog.net.ErrorCode = {
-
-  /**
-   * There is no error condition.
-   */
-  NO_ERROR: 0,
-
-  /**
-   * The most common error from iframeio, unfortunately, is that the browser
-   * responded with an error page that is classed as a different domain. The
-   * situations, are when a browser error page  is shown -- 404, access denied,
-   * DNS failure, connection reset etc.)
-   *
-   */
-  ACCESS_DENIED: 1,
-
-  /**
-   * Currently the only case where file not found will be caused is when the
-   * code is running on the local file system and a non-IE browser makes a
-   * request to a file that doesn't exist.
-   */
-  FILE_NOT_FOUND: 2,
-
-  /**
-   * If Firefox shows a browser error page, such as a connection reset by
-   * server or access denied, then it will fail silently without the error or
-   * load handlers firing.
-   */
-  FF_SILENT_ERROR: 3,
-
-  /**
-   * Custom error provided by the client through the error check hook.
-   */
-  CUSTOM_ERROR: 4,
-
-  /**
-   * Exception was thrown while processing the request.
-   */
-  EXCEPTION: 5,
-
-  /**
-   * The Http response returned a non-successful http status code.
-   */
-  HTTP_ERROR: 6,
-
-  /**
-   * The request was aborted.
-   */
-  ABORT: 7,
-
-  /**
-   * The request timed out.
-   */
-  TIMEOUT: 8,
-
-  /**
-   * The resource is not available offline.
-   */
-  OFFLINE: 9
-};
-
-
-/**
- * Returns a friendly error message for an error code. These messages are for
- * debugging and are not localized.
- * @param {goog.net.ErrorCode} errorCode An error code.
- * @return {string} A message for debugging.
- */
-goog.net.ErrorCode.getDebugMessage = function(errorCode) {
-  switch (errorCode) {
-    case goog.net.ErrorCode.NO_ERROR:
-      return 'No Error';
-
-    case goog.net.ErrorCode.ACCESS_DENIED:
-      return 'Access denied to content document';
-
-    case goog.net.ErrorCode.FILE_NOT_FOUND:
-      return 'File not found';
-
-    case goog.net.ErrorCode.FF_SILENT_ERROR:
-      return 'Firefox silently errored';
-
-    case goog.net.ErrorCode.CUSTOM_ERROR:
-      return 'Application custom error';
-
-    case goog.net.ErrorCode.EXCEPTION:
-      return 'An exception occurred';
-
-    case goog.net.ErrorCode.HTTP_ERROR:
-      return 'Http response at 400 or 500 level';
-
-    case goog.net.ErrorCode.ABORT:
-      return 'Request was aborted';
-
-    case goog.net.ErrorCode.TIMEOUT:
-      return 'Request timed out';
-
-    case goog.net.ErrorCode.OFFLINE:
-      return 'The resource is not available offline';
-
-    default:
-      return 'Unrecognized error code';
-  }
-};
-
-// Copyright 2011 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Constants for HTTP status codes.
- */
-
-goog.provide('goog.net.HttpStatus');
-
-
-/**
- * HTTP Status Codes defined in RFC 2616 and RFC 6585.
- * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
- * @see http://tools.ietf.org/html/rfc6585
- * @enum {number}
- */
-goog.net.HttpStatus = {
-  // Informational 1xx
-  CONTINUE: 100,
-  SWITCHING_PROTOCOLS: 101,
-
-  // Successful 2xx
-  OK: 200,
-  CREATED: 201,
-  ACCEPTED: 202,
-  NON_AUTHORITATIVE_INFORMATION: 203,
-  NO_CONTENT: 204,
-  RESET_CONTENT: 205,
-  PARTIAL_CONTENT: 206,
-
-  // Redirection 3xx
-  MULTIPLE_CHOICES: 300,
-  MOVED_PERMANENTLY: 301,
-  FOUND: 302,
-  SEE_OTHER: 303,
-  NOT_MODIFIED: 304,
-  USE_PROXY: 305,
-  TEMPORARY_REDIRECT: 307,
-
-  // Client Error 4xx
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  PAYMENT_REQUIRED: 402,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  METHOD_NOT_ALLOWED: 405,
-  NOT_ACCEPTABLE: 406,
-  PROXY_AUTHENTICATION_REQUIRED: 407,
-  REQUEST_TIMEOUT: 408,
-  CONFLICT: 409,
-  GONE: 410,
-  LENGTH_REQUIRED: 411,
-  PRECONDITION_FAILED: 412,
-  REQUEST_ENTITY_TOO_LARGE: 413,
-  REQUEST_URI_TOO_LONG: 414,
-  UNSUPPORTED_MEDIA_TYPE: 415,
-  REQUEST_RANGE_NOT_SATISFIABLE: 416,
-  EXPECTATION_FAILED: 417,
-  PRECONDITION_REQUIRED: 428,
-  TOO_MANY_REQUESTS: 429,
-  REQUEST_HEADER_FIELDS_TOO_LARGE: 431,
-
-  // Server Error 5xx
-  INTERNAL_SERVER_ERROR: 500,
-  NOT_IMPLEMENTED: 501,
-  BAD_GATEWAY: 502,
-  SERVICE_UNAVAILABLE: 503,
-  GATEWAY_TIMEOUT: 504,
-  HTTP_VERSION_NOT_SUPPORTED: 505,
-  NETWORK_AUTHENTICATION_REQUIRED: 511,
-
-  /*
-   * IE returns this code for 204 due to its use of URLMon, which returns this
-   * code for 'Operation Aborted'. The status text is 'Unknown', the response
-   * headers are ''. Known to occur on IE 6 on XP through IE9 on Win7.
-   */
-  QUIRK_IE_NO_CONTENT: 1223
-};
-
-
-/**
- * Returns whether the given status should be considered successful.
- *
- * Successful codes are OK (200), CREATED (201), ACCEPTED (202),
- * NO CONTENT (204), PARTIAL CONTENT (206), NOT MODIFIED (304),
- * and IE's no content code (1223).
- *
- * @param {number} status The status code to test.
- * @return {boolean} Whether the status code should be considered successful.
- */
-goog.net.HttpStatus.isSuccess = function(status) {
-  switch (status) {
-    case goog.net.HttpStatus.OK:
-    case goog.net.HttpStatus.CREATED:
-    case goog.net.HttpStatus.ACCEPTED:
-    case goog.net.HttpStatus.NO_CONTENT:
-    case goog.net.HttpStatus.PARTIAL_CONTENT:
-    case goog.net.HttpStatus.NOT_MODIFIED:
-    case goog.net.HttpStatus.QUIRK_IE_NO_CONTENT:
-      return true;
-
-    default:
-      return false;
-  }
-};
-
-// Copyright 2013 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-goog.provide('goog.net.XhrLike');
-
-
-
-/**
- * Interface for the common parts of XMLHttpRequest.
- *
- * Mostly copied from externs/w3c_xml.js.
- *
- * @interface
- * @see http://www.w3.org/TR/XMLHttpRequest/
- */
-goog.net.XhrLike = function() {};
-
-
-/**
- * Typedef that refers to either native or custom-implemented XHR objects.
- * @typedef {!goog.net.XhrLike|!XMLHttpRequest}
- */
-goog.net.XhrLike.OrNative;
-
-
-/**
- * @type {function()|null|undefined}
- * @see http://www.w3.org/TR/XMLHttpRequest/#handler-xhr-onreadystatechange
- */
-goog.net.XhrLike.prototype.onreadystatechange;
-
-
-/**
- * @type {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsetext-attribute
- */
-goog.net.XhrLike.prototype.responseText;
-
-
-/**
- * @type {Document}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsexml-attribute
- */
-goog.net.XhrLike.prototype.responseXML;
-
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/XMLHttpRequest/#readystate
- */
-goog.net.XhrLike.prototype.readyState;
-
-
-/**
- * @type {number}
- * @see http://www.w3.org/TR/XMLHttpRequest/#status
- */
-goog.net.XhrLike.prototype.status;
-
-
-/**
- * @type {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#statustext
- */
-goog.net.XhrLike.prototype.statusText;
-
-
-/**
- * @param {string} method
- * @param {string} url
- * @param {?boolean=} opt_async
- * @param {?string=} opt_user
- * @param {?string=} opt_password
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-open()-method
- */
-goog.net.XhrLike.prototype.open = function(method, url, opt_async, opt_user,
-    opt_password) {};
-
-
-/**
- * @param {ArrayBuffer|ArrayBufferView|Blob|Document|FormData|string=} opt_data
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-send()-method
- */
-goog.net.XhrLike.prototype.send = function(opt_data) {};
-
-
-/**
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-abort()-method
- */
-goog.net.XhrLike.prototype.abort = function() {};
-
-
-/**
- * @param {string} header
- * @param {string} value
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-setrequestheader()-method
- */
-goog.net.XhrLike.prototype.setRequestHeader = function(header, value) {};
-
-
-/**
- * @param {string} header
- * @return {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-getresponseheader()-method
- */
-goog.net.XhrLike.prototype.getResponseHeader = function(header) {};
-
-
-/**
- * @return {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-getallresponseheaders()-method
- */
-goog.net.XhrLike.prototype.getAllResponseHeaders = function() {};
-
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Interface for a factory for creating XMLHttpRequest objects
- * and metadata about them.
- * @author dbk@google.com (David Barrett-Kahn)
- */
-
-goog.provide('goog.net.XmlHttpFactory');
-
-/** @suppress {extraRequire} Typedef. */
-goog.require('goog.net.XhrLike');
-
-
-
-/**
- * Abstract base class for an XmlHttpRequest factory.
- * @constructor
- */
-goog.net.XmlHttpFactory = function() {
-};
-
-
-/**
- * Cache of options - we only actually call internalGetOptions once.
- * @type {Object}
- * @private
- */
-goog.net.XmlHttpFactory.prototype.cachedOptions_ = null;
-
-
-/**
- * @return {!goog.net.XhrLike.OrNative} A new XhrLike instance.
- */
-goog.net.XmlHttpFactory.prototype.createInstance = goog.abstractMethod;
-
-
-/**
- * @return {Object} Options describing how xhr objects obtained from this
- *     factory should be used.
- */
-goog.net.XmlHttpFactory.prototype.getOptions = function() {
-  return this.cachedOptions_ ||
-      (this.cachedOptions_ = this.internalGetOptions());
-};
-
-
-/**
- * Override this method in subclasses to preserve the caching offered by
- * getOptions().
- * @return {Object} Options describing how xhr objects obtained from this
- *     factory should be used.
- * @protected
- */
-goog.net.XmlHttpFactory.prototype.internalGetOptions = goog.abstractMethod;
-
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Implementation of XmlHttpFactory which allows construction from
- * simple factory methods.
- * @author dbk@google.com (David Barrett-Kahn)
- */
-
-goog.provide('goog.net.WrapperXmlHttpFactory');
-
-/** @suppress {extraRequire} Typedef. */
-goog.require('goog.net.XhrLike');
-goog.require('goog.net.XmlHttpFactory');
-
-
-
-/**
- * An xhr factory subclass which can be constructed using two factory methods.
- * This exists partly to allow the preservation of goog.net.XmlHttp.setFactory()
- * with an unchanged signature.
- * @param {function():!goog.net.XhrLike.OrNative} xhrFactory
- *     A function which returns a new XHR object.
- * @param {function():!Object} optionsFactory A function which returns the
- *     options associated with xhr objects from this factory.
- * @extends {goog.net.XmlHttpFactory}
- * @constructor
- * @final
- */
-goog.net.WrapperXmlHttpFactory = function(xhrFactory, optionsFactory) {
-  goog.net.XmlHttpFactory.call(this);
-
-  /**
-   * XHR factory method.
-   * @type {function() : !goog.net.XhrLike.OrNative}
-   * @private
-   */
-  this.xhrFactory_ = xhrFactory;
-
-  /**
-   * Options factory method.
-   * @type {function() : !Object}
-   * @private
-   */
-  this.optionsFactory_ = optionsFactory;
-};
-goog.inherits(goog.net.WrapperXmlHttpFactory, goog.net.XmlHttpFactory);
-
-
-/** @override */
-goog.net.WrapperXmlHttpFactory.prototype.createInstance = function() {
-  return this.xhrFactory_();
-};
-
-
-/** @override */
-goog.net.WrapperXmlHttpFactory.prototype.getOptions = function() {
-  return this.optionsFactory_();
-};
-
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Low level handling of XMLHttpRequest.
- * @author arv@google.com (Erik Arvidsson)
- * @author dbk@google.com (David Barrett-Kahn)
- */
-
-goog.provide('goog.net.DefaultXmlHttpFactory');
-goog.provide('goog.net.XmlHttp');
-goog.provide('goog.net.XmlHttp.OptionType');
-goog.provide('goog.net.XmlHttp.ReadyState');
-goog.provide('goog.net.XmlHttpDefines');
-
-goog.require('goog.asserts');
-goog.require('goog.net.WrapperXmlHttpFactory');
-goog.require('goog.net.XmlHttpFactory');
-
-
-/**
- * Static class for creating XMLHttpRequest objects.
- * @return {!goog.net.XhrLike.OrNative} A new XMLHttpRequest object.
- */
-goog.net.XmlHttp = function() {
-  return goog.net.XmlHttp.factory_.createInstance();
-};
-
-
-/**
- * @define {boolean} Whether to assume XMLHttpRequest exists. Setting this to
- *     true bypasses the ActiveX probing code.
- * NOTE(ruilopes): Due to the way JSCompiler works, this define *will not* strip
- * out the ActiveX probing code from binaries.  To achieve this, use
- * {@code goog.net.XmlHttpDefines.ASSUME_NATIVE_XHR} instead.
- * TODO(ruilopes): Collapse both defines.
- */
-goog.define('goog.net.XmlHttp.ASSUME_NATIVE_XHR', false);
-
-
-/** @const */
-goog.net.XmlHttpDefines = {};
-
-
-/**
- * @define {boolean} Whether to assume XMLHttpRequest exists. Setting this to
- *     true eliminates the ActiveX probing code.
- */
-goog.define('goog.net.XmlHttpDefines.ASSUME_NATIVE_XHR', false);
-
-
-/**
- * Gets the options to use with the XMLHttpRequest objects obtained using
- * the static methods.
- * @return {Object} The options.
- */
-goog.net.XmlHttp.getOptions = function() {
-  return goog.net.XmlHttp.factory_.getOptions();
-};
-
-
-/**
- * Type of options that an XmlHttp object can have.
- * @enum {number}
- */
-goog.net.XmlHttp.OptionType = {
-  /**
-   * Whether a goog.nullFunction should be used to clear the onreadystatechange
-   * handler instead of null.
-   */
-  USE_NULL_FUNCTION: 0,
-
-  /**
-   * NOTE(user): In IE if send() errors on a *local* request the readystate
-   * is still changed to COMPLETE.  We need to ignore it and allow the
-   * try/catch around send() to pick up the error.
-   */
-  LOCAL_REQUEST_ERROR: 1
-};
-
-
-/**
- * Status constants for XMLHTTP, matches:
- * http://msdn.microsoft.com/library/default.asp?url=/library/
- *   en-us/xmlsdk/html/0e6a34e4-f90c-489d-acff-cb44242fafc6.asp
- * @enum {number}
- */
-goog.net.XmlHttp.ReadyState = {
-  /**
-   * Constant for when xmlhttprequest.readyState is uninitialized
-   */
-  UNINITIALIZED: 0,
-
-  /**
-   * Constant for when xmlhttprequest.readyState is loading.
-   */
-  LOADING: 1,
-
-  /**
-   * Constant for when xmlhttprequest.readyState is loaded.
-   */
-  LOADED: 2,
-
-  /**
-   * Constant for when xmlhttprequest.readyState is in an interactive state.
-   */
-  INTERACTIVE: 3,
-
-  /**
-   * Constant for when xmlhttprequest.readyState is completed
-   */
-  COMPLETE: 4
-};
-
-
-/**
- * The global factory instance for creating XMLHttpRequest objects.
- * @type {goog.net.XmlHttpFactory}
- * @private
- */
-goog.net.XmlHttp.factory_;
-
-
-/**
- * Sets the factories for creating XMLHttpRequest objects and their options.
- * @param {Function} factory The factory for XMLHttpRequest objects.
- * @param {Function} optionsFactory The factory for options.
- * @deprecated Use setGlobalFactory instead.
- */
-goog.net.XmlHttp.setFactory = function(factory, optionsFactory) {
-  goog.net.XmlHttp.setGlobalFactory(new goog.net.WrapperXmlHttpFactory(
-      goog.asserts.assert(factory),
-      goog.asserts.assert(optionsFactory)));
-};
-
-
-/**
- * Sets the global factory object.
- * @param {!goog.net.XmlHttpFactory} factory New global factory object.
- */
-goog.net.XmlHttp.setGlobalFactory = function(factory) {
-  goog.net.XmlHttp.factory_ = factory;
-};
-
-
-
-/**
- * Default factory to use when creating xhr objects.  You probably shouldn't be
- * instantiating this directly, but rather using it via goog.net.XmlHttp.
- * @extends {goog.net.XmlHttpFactory}
- * @constructor
- */
-goog.net.DefaultXmlHttpFactory = function() {
-  goog.net.XmlHttpFactory.call(this);
-};
-goog.inherits(goog.net.DefaultXmlHttpFactory, goog.net.XmlHttpFactory);
-
-
-/** @override */
-goog.net.DefaultXmlHttpFactory.prototype.createInstance = function() {
-  var progId = this.getProgId_();
-  if (progId) {
-    return new ActiveXObject(progId);
-  } else {
-    return new XMLHttpRequest();
-  }
-};
-
-
-/** @override */
-goog.net.DefaultXmlHttpFactory.prototype.internalGetOptions = function() {
-  var progId = this.getProgId_();
-  var options = {};
-  if (progId) {
-    options[goog.net.XmlHttp.OptionType.USE_NULL_FUNCTION] = true;
-    options[goog.net.XmlHttp.OptionType.LOCAL_REQUEST_ERROR] = true;
-  }
-  return options;
-};
-
-
-/**
- * The ActiveX PROG ID string to use to create xhr's in IE. Lazily initialized.
- * @type {string|undefined}
- * @private
- */
-goog.net.DefaultXmlHttpFactory.prototype.ieProgId_;
-
-
-/**
- * Initialize the private state used by other functions.
- * @return {string} The ActiveX PROG ID string to use to create xhr's in IE.
- * @private
- */
-goog.net.DefaultXmlHttpFactory.prototype.getProgId_ = function() {
-  if (goog.net.XmlHttp.ASSUME_NATIVE_XHR ||
-      goog.net.XmlHttpDefines.ASSUME_NATIVE_XHR) {
-    return '';
-  }
-
-  // The following blog post describes what PROG IDs to use to create the
-  // XMLHTTP object in Internet Explorer:
-  // http://blogs.msdn.com/xmlteam/archive/2006/10/23/using-the-right-version-of-msxml-in-internet-explorer.aspx
-  // However we do not (yet) fully trust that this will be OK for old versions
-  // of IE on Win9x so we therefore keep the last 2.
-  if (!this.ieProgId_ && typeof XMLHttpRequest == 'undefined' &&
-      typeof ActiveXObject != 'undefined') {
-    // Candidate Active X types.
-    var ACTIVE_X_IDENTS = ['MSXML2.XMLHTTP.6.0', 'MSXML2.XMLHTTP.3.0',
-                           'MSXML2.XMLHTTP', 'Microsoft.XMLHTTP'];
-    for (var i = 0; i < ACTIVE_X_IDENTS.length; i++) {
-      var candidate = ACTIVE_X_IDENTS[i];
-      /** @preserveTry */
-      try {
-        new ActiveXObject(candidate);
-        // NOTE(user): cannot assign progid and return candidate in one line
-        // because JSCompiler complaings: BUG 658126
-        this.ieProgId_ = candidate;
-        return candidate;
-      } catch (e) {
-        // do nothing; try next choice
-      }
-    }
-
-    // couldn't find any matches
-    throw Error('Could not create ActiveXObject. ActiveX might be disabled,' +
-                ' or MSXML might not be installed');
-  }
-
-  return /** @type {string} */ (this.ieProgId_);
-};
-
-
-//Set the global factory to an instance of the default factory.
-goog.net.XmlHttp.setGlobalFactory(new goog.net.DefaultXmlHttpFactory());
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Wrapper class for handling XmlHttpRequests.
- *
- * One off requests can be sent through goog.net.XhrIo.send() or an
- * instance can be created to send multiple requests.  Each request uses its
- * own XmlHttpRequest object and handles clearing of the event callback to
- * ensure no leaks.
- *
- * XhrIo is event based, it dispatches events when a request finishes, fails or
- * succeeds or when the ready-state changes. The ready-state or timeout event
- * fires first, followed by a generic completed event. Then the abort, error,
- * or success event is fired as appropriate. Lastly, the ready event will fire
- * to indicate that the object may be used to make another request.
- *
- * The error event may also be called before completed and
- * ready-state-change if the XmlHttpRequest.open() or .send() methods throw.
- *
- * This class does not support multiple requests, queuing, or prioritization.
- *
- * Tested = IE6, FF1.5, Safari, Opera 8.5
- *
- * TODO(user): Error cases aren't playing nicely in Safari.
- *
- */
-
-
-goog.provide('goog.net.XhrIo');
-goog.provide('goog.net.XhrIo.ResponseType');
-
-goog.require('goog.Timer');
-goog.require('goog.array');
-goog.require('goog.debug.entryPointRegistry');
-goog.require('goog.events.EventTarget');
-goog.require('goog.json');
-goog.require('goog.log');
-goog.require('goog.net.ErrorCode');
-goog.require('goog.net.EventType');
-goog.require('goog.net.HttpStatus');
-goog.require('goog.net.XmlHttp');
-goog.require('goog.object');
-goog.require('goog.string');
-goog.require('goog.structs');
-goog.require('goog.structs.Map');
-goog.require('goog.uri.utils');
-goog.require('goog.userAgent');
-
-goog.forwardDeclare('goog.Uri');
-
-
-
-/**
- * Basic class for handling XMLHttpRequests.
- * @param {goog.net.XmlHttpFactory=} opt_xmlHttpFactory Factory to use when
- *     creating XMLHttpRequest objects.
- * @constructor
- * @extends {goog.events.EventTarget}
- */
-goog.net.XhrIo = function(opt_xmlHttpFactory) {
-  goog.net.XhrIo.base(this, 'constructor');
-
-  /**
-   * Map of default headers to add to every request, use:
-   * XhrIo.headers.set(name, value)
-   * @type {!goog.structs.Map}
-   */
-  this.headers = new goog.structs.Map();
-
-  /**
-   * Optional XmlHttpFactory
-   * @private {goog.net.XmlHttpFactory}
-   */
-  this.xmlHttpFactory_ = opt_xmlHttpFactory || null;
-
-  /**
-   * Whether XMLHttpRequest is active.  A request is active from the time send()
-   * is called until onReadyStateChange() is complete, or error() or abort()
-   * is called.
-   * @private {boolean}
-   */
-  this.active_ = false;
-
-  /**
-   * The XMLHttpRequest object that is being used for the transfer.
-   * @private {?goog.net.XhrLike.OrNative}
-   */
-  this.xhr_ = null;
-
-  /**
-   * The options to use with the current XMLHttpRequest object.
-   * @private {Object}
-   */
-  this.xhrOptions_ = null;
-
-  /**
-   * Last URL that was requested.
-   * @private {string|goog.Uri}
-   */
-  this.lastUri_ = '';
-
-  /**
-   * Method for the last request.
-   * @private {string}
-   */
-  this.lastMethod_ = '';
-
-  /**
-   * Last error code.
-   * @private {!goog.net.ErrorCode}
-   */
-  this.lastErrorCode_ = goog.net.ErrorCode.NO_ERROR;
-
-  /**
-   * Last error message.
-   * @private {Error|string}
-   */
-  this.lastError_ = '';
-
-  /**
-   * Used to ensure that we don't dispatch an multiple ERROR events. This can
-   * happen in IE when it does a synchronous load and one error is handled in
-   * the ready statte change and one is handled due to send() throwing an
-   * exception.
-   * @private {boolean}
-   */
-  this.errorDispatched_ = false;
-
-  /**
-   * Used to make sure we don't fire the complete event from inside a send call.
-   * @private {boolean}
-   */
-  this.inSend_ = false;
-
-  /**
-   * Used in determining if a call to {@link #onReadyStateChange_} is from
-   * within a call to this.xhr_.open.
-   * @private {boolean}
-   */
-  this.inOpen_ = false;
-
-  /**
-   * Used in determining if a call to {@link #onReadyStateChange_} is from
-   * within a call to this.xhr_.abort.
-   * @private {boolean}
-   */
-  this.inAbort_ = false;
-
-  /**
-   * Number of milliseconds after which an incomplete request will be aborted
-   * and a {@link goog.net.EventType.TIMEOUT} event raised; 0 means no timeout
-   * is set.
-   * @private {number}
-   */
-  this.timeoutInterval_ = 0;
-
-  /**
-   * Timer to track request timeout.
-   * @private {?number}
-   */
-  this.timeoutId_ = null;
-
-  /**
-   * The requested type for the response. The empty string means use the default
-   * XHR behavior.
-   * @private {goog.net.XhrIo.ResponseType}
-   */
-  this.responseType_ = goog.net.XhrIo.ResponseType.DEFAULT;
-
-  /**
-   * Whether a "credentialed" request is to be sent (one that is aware of
-   * cookies and authentication). This is applicable only for cross-domain
-   * requests and more recent browsers that support this part of the HTTP Access
-   * Control standard.
-   *
-   * @see http://www.w3.org/TR/XMLHttpRequest/#the-withcredentials-attribute
-   *
-   * @private {boolean}
-   */
-  this.withCredentials_ = false;
-
-  /**
-   * True if we can use XMLHttpRequest's timeout directly.
-   * @private {boolean}
-   */
-  this.useXhr2Timeout_ = false;
-};
-goog.inherits(goog.net.XhrIo, goog.events.EventTarget);
-
-
-/**
- * Response types that may be requested for XMLHttpRequests.
- * @enum {string}
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-responsetype-attribute
- */
-goog.net.XhrIo.ResponseType = {
-  DEFAULT: '',
-  TEXT: 'text',
-  DOCUMENT: 'document',
-  // Not supported as of Chrome 10.0.612.1 dev
-  BLOB: 'blob',
-  ARRAY_BUFFER: 'arraybuffer'
-};
-
-
-/**
- * A reference to the XhrIo logger
- * @private {goog.debug.Logger}
- * @const
- */
-goog.net.XhrIo.prototype.logger_ =
-    goog.log.getLogger('goog.net.XhrIo');
-
-
-/**
- * The Content-Type HTTP header name
- * @type {string}
- */
-goog.net.XhrIo.CONTENT_TYPE_HEADER = 'Content-Type';
-
-
-/**
- * The pattern matching the 'http' and 'https' URI schemes
- * @type {!RegExp}
- */
-goog.net.XhrIo.HTTP_SCHEME_PATTERN = /^https?$/i;
-
-
-/**
- * The methods that typically come along with form data.  We set different
- * headers depending on whether the HTTP action is one of these.
- */
-goog.net.XhrIo.METHODS_WITH_FORM_DATA = ['POST', 'PUT'];
-
-
-/**
- * The Content-Type HTTP header value for a url-encoded form
- * @type {string}
- */
-goog.net.XhrIo.FORM_CONTENT_TYPE =
-    'application/x-www-form-urlencoded;charset=utf-8';
-
-
-/**
- * The XMLHttpRequest Level two timeout delay ms property name.
- *
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-timeout-attribute
- *
- * @private {string}
- * @const
- */
-goog.net.XhrIo.XHR2_TIMEOUT_ = 'timeout';
-
-
-/**
- * The XMLHttpRequest Level two ontimeout handler property name.
- *
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-timeout-attribute
- *
- * @private {string}
- * @const
- */
-goog.net.XhrIo.XHR2_ON_TIMEOUT_ = 'ontimeout';
-
-
-/**
- * All non-disposed instances of goog.net.XhrIo created
- * by {@link goog.net.XhrIo.send} are in this Array.
- * @see goog.net.XhrIo.cleanup
- * @private {!Array<!goog.net.XhrIo>}
- */
-goog.net.XhrIo.sendInstances_ = [];
-
-
-/**
- * Static send that creates a short lived instance of XhrIo to send the
- * request.
- * @see goog.net.XhrIo.cleanup
- * @param {string|goog.Uri} url Uri to make request to.
- * @param {?function(this:goog.net.XhrIo, ?)=} opt_callback Callback function
- *     for when request is complete.
- * @param {string=} opt_method Send method, default: GET.
- * @param {ArrayBuffer|ArrayBufferView|Blob|Document|FormData|string=}
- *     opt_content Body data.
- * @param {Object|goog.structs.Map=} opt_headers Map of headers to add to the
- *     request.
- * @param {number=} opt_timeoutInterval Number of milliseconds after which an
- *     incomplete request will be aborted; 0 means no timeout is set.
- * @param {boolean=} opt_withCredentials Whether to send credentials with the
- *     request. Default to false. See {@link goog.net.XhrIo#setWithCredentials}.
- * @return {!goog.net.XhrIo} The sent XhrIo.
- */
-goog.net.XhrIo.send = function(url, opt_callback, opt_method, opt_content,
-                               opt_headers, opt_timeoutInterval,
-                               opt_withCredentials) {
-  var x = new goog.net.XhrIo();
-  goog.net.XhrIo.sendInstances_.push(x);
-  if (opt_callback) {
-    x.listen(goog.net.EventType.COMPLETE, opt_callback);
-  }
-  x.listenOnce(goog.net.EventType.READY, x.cleanupSend_);
-  if (opt_timeoutInterval) {
-    x.setTimeoutInterval(opt_timeoutInterval);
-  }
-  if (opt_withCredentials) {
-    x.setWithCredentials(opt_withCredentials);
-  }
-  x.send(url, opt_method, opt_content, opt_headers);
-  return x;
-};
-
-
-/**
- * Disposes all non-disposed instances of goog.net.XhrIo created by
- * {@link goog.net.XhrIo.send}.
- * {@link goog.net.XhrIo.send} cleans up the goog.net.XhrIo instance
- * it creates when the request completes or fails.  However, if
- * the request never completes, then the goog.net.XhrIo is not disposed.
- * This can occur if the window is unloaded before the request completes.
- * We could have {@link goog.net.XhrIo.send} return the goog.net.XhrIo
- * it creates and make the client of {@link goog.net.XhrIo.send} be
- * responsible for disposing it in this case.  However, this makes things
- * significantly more complicated for the client, and the whole point
- * of {@link goog.net.XhrIo.send} is that it's simple and easy to use.
- * Clients of {@link goog.net.XhrIo.send} should call
- * {@link goog.net.XhrIo.cleanup} when doing final
- * cleanup on window unload.
- */
-goog.net.XhrIo.cleanup = function() {
-  var instances = goog.net.XhrIo.sendInstances_;
-  while (instances.length) {
-    instances.pop().dispose();
-  }
-};
-
-
-/**
- * Installs exception protection for all entry point introduced by
- * goog.net.XhrIo instances which are not protected by
- * {@link goog.debug.ErrorHandler#protectWindowSetTimeout},
- * {@link goog.debug.ErrorHandler#protectWindowSetInterval}, or
- * {@link goog.events.protectBrowserEventEntryPoint}.
- *
- * @param {goog.debug.ErrorHandler} errorHandler Error handler with which to
- *     protect the entry point(s).
- */
-goog.net.XhrIo.protectEntryPoints = function(errorHandler) {
-  goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_ =
-      errorHandler.protectEntryPoint(
-          goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_);
-};
-
-
-/**
- * Disposes of the specified goog.net.XhrIo created by
- * {@link goog.net.XhrIo.send} and removes it from
- * {@link goog.net.XhrIo.pendingStaticSendInstances_}.
- * @private
- */
-goog.net.XhrIo.prototype.cleanupSend_ = function() {
-  this.dispose();
-  goog.array.remove(goog.net.XhrIo.sendInstances_, this);
-};
-
-
-/**
- * Returns the number of milliseconds after which an incomplete request will be
- * aborted, or 0 if no timeout is set.
- * @return {number} Timeout interval in milliseconds.
- */
-goog.net.XhrIo.prototype.getTimeoutInterval = function() {
-  return this.timeoutInterval_;
-};
-
-
-/**
- * Sets the number of milliseconds after which an incomplete request will be
- * aborted and a {@link goog.net.EventType.TIMEOUT} event raised; 0 means no
- * timeout is set.
- * @param {number} ms Timeout interval in milliseconds; 0 means none.
- */
-goog.net.XhrIo.prototype.setTimeoutInterval = function(ms) {
-  this.timeoutInterval_ = Math.max(0, ms);
-};
-
-
-/**
- * Sets the desired type for the response. At time of writing, this is only
- * supported in very recent versions of WebKit (10.0.612.1 dev and later).
- *
- * If this is used, the response may only be accessed via {@link #getResponse}.
- *
- * @param {goog.net.XhrIo.ResponseType} type The desired type for the response.
- */
-goog.net.XhrIo.prototype.setResponseType = function(type) {
-  this.responseType_ = type;
-};
-
-
-/**
- * Gets the desired type for the response.
- * @return {goog.net.XhrIo.ResponseType} The desired type for the response.
- */
-goog.net.XhrIo.prototype.getResponseType = function() {
-  return this.responseType_;
-};
-
-
-/**
- * Sets whether a "credentialed" request that is aware of cookie and
- * authentication information should be made. This option is only supported by
- * browsers that support HTTP Access Control. As of this writing, this option
- * is not supported in IE.
- *
- * @param {boolean} withCredentials Whether this should be a "credentialed"
- *     request.
- */
-goog.net.XhrIo.prototype.setWithCredentials = function(withCredentials) {
-  this.withCredentials_ = withCredentials;
-};
-
-
-/**
- * Gets whether a "credentialed" request is to be sent.
- * @return {boolean} The desired type for the response.
- */
-goog.net.XhrIo.prototype.getWithCredentials = function() {
-  return this.withCredentials_;
-};
-
-
-/**
- * Instance send that actually uses XMLHttpRequest to make a server call.
- * @param {string|goog.Uri} url Uri to make request to.
- * @param {string=} opt_method Send method, default: GET.
- * @param {ArrayBuffer|ArrayBufferView|Blob|Document|FormData|string=}
- *     opt_content Body data.
- * @param {Object|goog.structs.Map=} opt_headers Map of headers to add to the
- *     request.
- */
-goog.net.XhrIo.prototype.send = function(url, opt_method, opt_content,
-                                         opt_headers) {
-  if (this.xhr_) {
-    throw Error('[goog.net.XhrIo] Object is active with another request=' +
-        this.lastUri_ + '; newUri=' + url);
-  }
-
-  var method = opt_method ? opt_method.toUpperCase() : 'GET';
-
-  this.lastUri_ = url;
-  this.lastError_ = '';
-  this.lastErrorCode_ = goog.net.ErrorCode.NO_ERROR;
-  this.lastMethod_ = method;
-  this.errorDispatched_ = false;
-  this.active_ = true;
-
-  // Use the factory to create the XHR object and options
-  this.xhr_ = this.createXhr();
-  this.xhrOptions_ = this.xmlHttpFactory_ ?
-      this.xmlHttpFactory_.getOptions() : goog.net.XmlHttp.getOptions();
-
-  // Set up the onreadystatechange callback
-  this.xhr_.onreadystatechange = goog.bind(this.onReadyStateChange_, this);
-
-  /**
-   * Try to open the XMLHttpRequest (always async), if an error occurs here it
-   * is generally permission denied
-   * @preserveTry
-   */
-  try {
-    goog.log.fine(this.logger_, this.formatMsg_('Opening Xhr'));
-    this.inOpen_ = true;
-    this.xhr_.open(method, String(url), true);  // Always async!
-    this.inOpen_ = false;
-  } catch (err) {
-    goog.log.fine(this.logger_,
-        this.formatMsg_('Error opening Xhr: ' + err.message));
-    this.error_(goog.net.ErrorCode.EXCEPTION, err);
-    return;
-  }
-
-  // We can't use null since this won't allow requests with form data to have a
-  // content length specified which will cause some proxies to return a 411
-  // error.
-  var content = opt_content || '';
-
-  var headers = this.headers.clone();
-
-  // Add headers specific to this request
-  if (opt_headers) {
-    goog.structs.forEach(opt_headers, function(value, key) {
-      headers.set(key, value);
-    });
-  }
-
-  // Find whether a content type header is set, ignoring case.
-  // HTTP header names are case-insensitive.  See:
-  // http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
-  var contentTypeKey = goog.array.find(headers.getKeys(),
-      goog.net.XhrIo.isContentTypeHeader_);
-
-  var contentIsFormData = (goog.global['FormData'] &&
-      (content instanceof goog.global['FormData']));
-  if (goog.array.contains(goog.net.XhrIo.METHODS_WITH_FORM_DATA, method) &&
-      !contentTypeKey && !contentIsFormData) {
-    // For requests typically with form data, default to the url-encoded form
-    // content type unless this is a FormData request.  For FormData,
-    // the browser will automatically add a multipart/form-data content type
-    // with an appropriate multipart boundary.
-    headers.set(goog.net.XhrIo.CONTENT_TYPE_HEADER,
-                goog.net.XhrIo.FORM_CONTENT_TYPE);
-  }
-
-  // Add the headers to the Xhr object
-  headers.forEach(function(value, key) {
-    this.xhr_.setRequestHeader(key, value);
-  }, this);
-
-  if (this.responseType_) {
-    this.xhr_.responseType = this.responseType_;
-  }
-
-  if (goog.object.containsKey(this.xhr_, 'withCredentials')) {
-    this.xhr_.withCredentials = this.withCredentials_;
-  }
-
-  /**
-   * Try to send the request, or other wise report an error (404 not found).
-   * @preserveTry
-   */
-  try {
-    this.cleanUpTimeoutTimer_(); // Paranoid, should never be running.
-    if (this.timeoutInterval_ > 0) {
-      this.useXhr2Timeout_ = goog.net.XhrIo.shouldUseXhr2Timeout_(this.xhr_);
-      goog.log.fine(this.logger_, this.formatMsg_('Will abort after ' +
-          this.timeoutInterval_ + 'ms if incomplete, xhr2 ' +
-          this.useXhr2Timeout_));
-      if (this.useXhr2Timeout_) {
-        this.xhr_[goog.net.XhrIo.XHR2_TIMEOUT_] = this.timeoutInterval_;
-        this.xhr_[goog.net.XhrIo.XHR2_ON_TIMEOUT_] =
-            goog.bind(this.timeout_, this);
-      } else {
-        this.timeoutId_ = goog.Timer.callOnce(this.timeout_,
-            this.timeoutInterval_, this);
-      }
-    }
-    goog.log.fine(this.logger_, this.formatMsg_('Sending request'));
-    this.inSend_ = true;
-    this.xhr_.send(content);
-    this.inSend_ = false;
-
-  } catch (err) {
-    goog.log.fine(this.logger_, this.formatMsg_('Send error: ' + err.message));
-    this.error_(goog.net.ErrorCode.EXCEPTION, err);
-  }
-};
-
-
-/**
- * Determines if the argument is an XMLHttpRequest that supports the level 2
- * timeout value and event.
- *
- * Currently, FF 21.0 OS X has the fields but won't actually call the timeout
- * handler.  Perhaps the confusion in the bug referenced below hasn't
- * entirely been resolved.
- *
- * @see http://www.w3.org/TR/XMLHttpRequest/#the-timeout-attribute
- * @see https://bugzilla.mozilla.org/show_bug.cgi?id=525816
- *
- * @param {!goog.net.XhrLike.OrNative} xhr The request.
- * @return {boolean} True if the request supports level 2 timeout.
- * @private
- */
-goog.net.XhrIo.shouldUseXhr2Timeout_ = function(xhr) {
-  return goog.userAgent.IE &&
-      goog.userAgent.isVersionOrHigher(9) &&
-      goog.isNumber(xhr[goog.net.XhrIo.XHR2_TIMEOUT_]) &&
-      goog.isDef(xhr[goog.net.XhrIo.XHR2_ON_TIMEOUT_]);
-};
-
-
-/**
- * @param {string} header An HTTP header key.
- * @return {boolean} Whether the key is a content type header (ignoring
- *     case.
- * @private
- */
-goog.net.XhrIo.isContentTypeHeader_ = function(header) {
-  return goog.string.caseInsensitiveEquals(
-      goog.net.XhrIo.CONTENT_TYPE_HEADER, header);
-};
-
-
-/**
- * Creates a new XHR object.
- * @return {!goog.net.XhrLike.OrNative} The newly created XHR object.
- * @protected
- */
-goog.net.XhrIo.prototype.createXhr = function() {
-  return this.xmlHttpFactory_ ?
-      this.xmlHttpFactory_.createInstance() : goog.net.XmlHttp();
-};
-
-
-/**
- * The request didn't complete after {@link goog.net.XhrIo#timeoutInterval_}
- * milliseconds; raises a {@link goog.net.EventType.TIMEOUT} event and aborts
- * the request.
- * @private
- */
-goog.net.XhrIo.prototype.timeout_ = function() {
-  if (typeof goog == 'undefined') {
-    // If goog is undefined then the callback has occurred as the application
-    // is unloading and will error.  Thus we let it silently fail.
-  } else if (this.xhr_) {
-    this.lastError_ = 'Timed out after ' + this.timeoutInterval_ +
-                      'ms, aborting';
-    this.lastErrorCode_ = goog.net.ErrorCode.TIMEOUT;
-    goog.log.fine(this.logger_, this.formatMsg_(this.lastError_));
-    this.dispatchEvent(goog.net.EventType.TIMEOUT);
-    this.abort(goog.net.ErrorCode.TIMEOUT);
-  }
-};
-
-
-/**
- * Something errorred, so inactivate, fire error callback and clean up
- * @param {goog.net.ErrorCode} errorCode The error code.
- * @param {Error} err The error object.
- * @private
- */
-goog.net.XhrIo.prototype.error_ = function(errorCode, err) {
-  this.active_ = false;
-  if (this.xhr_) {
-    this.inAbort_ = true;
-    this.xhr_.abort();  // Ensures XHR isn't hung (FF)
-    this.inAbort_ = false;
-  }
-  this.lastError_ = err;
-  this.lastErrorCode_ = errorCode;
-  this.dispatchErrors_();
-  this.cleanUpXhr_();
-};
-
-
-/**
- * Dispatches COMPLETE and ERROR in case of an error. This ensures that we do
- * not dispatch multiple error events.
- * @private
- */
-goog.net.XhrIo.prototype.dispatchErrors_ = function() {
-  if (!this.errorDispatched_) {
-    this.errorDispatched_ = true;
-    this.dispatchEvent(goog.net.EventType.COMPLETE);
-    this.dispatchEvent(goog.net.EventType.ERROR);
-  }
-};
-
-
-/**
- * Abort the current XMLHttpRequest
- * @param {goog.net.ErrorCode=} opt_failureCode Optional error code to use -
- *     defaults to ABORT.
- */
-goog.net.XhrIo.prototype.abort = function(opt_failureCode) {
-  if (this.xhr_ && this.active_) {
-    goog.log.fine(this.logger_, this.formatMsg_('Aborting'));
-    this.active_ = false;
-    this.inAbort_ = true;
-    this.xhr_.abort();
-    this.inAbort_ = false;
-    this.lastErrorCode_ = opt_failureCode || goog.net.ErrorCode.ABORT;
-    this.dispatchEvent(goog.net.EventType.COMPLETE);
-    this.dispatchEvent(goog.net.EventType.ABORT);
-    this.cleanUpXhr_();
-  }
-};
-
-
-/**
- * Nullifies all callbacks to reduce risks of leaks.
- * @override
- * @protected
- */
-goog.net.XhrIo.prototype.disposeInternal = function() {
-  if (this.xhr_) {
-    // We explicitly do not call xhr_.abort() unless active_ is still true.
-    // This is to avoid unnecessarily aborting a successful request when
-    // dispose() is called in a callback triggered by a complete response, but
-    // in which browser cleanup has not yet finished.
-    // (See http://b/issue?id=1684217.)
-    if (this.active_) {
-      this.active_ = false;
-      this.inAbort_ = true;
-      this.xhr_.abort();
-      this.inAbort_ = false;
-    }
-    this.cleanUpXhr_(true);
-  }
-
-  goog.net.XhrIo.base(this, 'disposeInternal');
-};
-
-
-/**
- * Internal handler for the XHR object's readystatechange event.  This method
- * checks the status and the readystate and fires the correct callbacks.
- * If the request has ended, the handlers are cleaned up and the XHR object is
- * nullified.
- * @private
- */
-goog.net.XhrIo.prototype.onReadyStateChange_ = function() {
-  if (this.isDisposed()) {
-    // This method is the target of an untracked goog.Timer.callOnce().
-    return;
-  }
-  if (!this.inOpen_ && !this.inSend_ && !this.inAbort_) {
-    // Were not being called from within a call to this.xhr_.send
-    // this.xhr_.abort, or this.xhr_.open, so this is an entry point
-    this.onReadyStateChangeEntryPoint_();
-  } else {
-    this.onReadyStateChangeHelper_();
-  }
-};
-
-
-/**
- * Used to protect the onreadystatechange handler entry point.  Necessary
- * as {#onReadyStateChange_} maybe called from within send or abort, this
- * method is only called when {#onReadyStateChange_} is called as an
- * entry point.
- * {@see #protectEntryPoints}
- * @private
- */
-goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_ = function() {
-  this.onReadyStateChangeHelper_();
-};
-
-
-/**
- * Helper for {@link #onReadyStateChange_}.  This is used so that
- * entry point calls to {@link #onReadyStateChange_} can be routed through
- * {@link #onReadyStateChangeEntryPoint_}.
- * @private
- */
-goog.net.XhrIo.prototype.onReadyStateChangeHelper_ = function() {
-  if (!this.active_) {
-    // can get called inside abort call
-    return;
-  }
-
-  if (typeof goog == 'undefined') {
-    // NOTE(user): If goog is undefined then the callback has occurred as the
-    // application is unloading and will error.  Thus we let it silently fail.
-
-  } else if (
-      this.xhrOptions_[goog.net.XmlHttp.OptionType.LOCAL_REQUEST_ERROR] &&
-      this.getReadyState() == goog.net.XmlHttp.ReadyState.COMPLETE &&
-      this.getStatus() == 2) {
-    // NOTE(user): In IE if send() errors on a *local* request the readystate
-    // is still changed to COMPLETE.  We need to ignore it and allow the
-    // try/catch around send() to pick up the error.
-    goog.log.fine(this.logger_, this.formatMsg_(
-        'Local request error detected and ignored'));
-
-  } else {
-
-    // In IE when the response has been cached we sometimes get the callback
-    // from inside the send call and this usually breaks code that assumes that
-    // XhrIo is asynchronous.  If that is the case we delay the callback
-    // using a timer.
-    if (this.inSend_ &&
-        this.getReadyState() == goog.net.XmlHttp.ReadyState.COMPLETE) {
-      goog.Timer.callOnce(this.onReadyStateChange_, 0, this);
-      return;
-    }
-
-    this.dispatchEvent(goog.net.EventType.READY_STATE_CHANGE);
-
-    // readyState indicates the transfer has finished
-    if (this.isComplete()) {
-      goog.log.fine(this.logger_, this.formatMsg_('Request complete'));
-
-      this.active_ = false;
-
-      try {
-        // Call the specific callbacks for success or failure. Only call the
-        // success if the status is 200 (HTTP_OK) or 304 (HTTP_CACHED)
-        if (this.isSuccess()) {
-          this.dispatchEvent(goog.net.EventType.COMPLETE);
-          this.dispatchEvent(goog.net.EventType.SUCCESS);
-        } else {
-          this.lastErrorCode_ = goog.net.ErrorCode.HTTP_ERROR;
-          this.lastError_ =
-              this.getStatusText() + ' [' + this.getStatus() + ']';
-          this.dispatchErrors_();
-        }
-      } finally {
-        this.cleanUpXhr_();
-      }
-    }
-  }
-};
-
-
-/**
- * Remove the listener to protect against leaks, and nullify the XMLHttpRequest
- * object.
- * @param {boolean=} opt_fromDispose If this is from the dispose (don't want to
- *     fire any events).
- * @private
- */
-goog.net.XhrIo.prototype.cleanUpXhr_ = function(opt_fromDispose) {
-  if (this.xhr_) {
-    // Cancel any pending timeout event handler.
-    this.cleanUpTimeoutTimer_();
-
-    // Save reference so we can mark it as closed after the READY event.  The
-    // READY event may trigger another request, thus we must nullify this.xhr_
-    var xhr = this.xhr_;
-    var clearedOnReadyStateChange =
-        this.xhrOptions_[goog.net.XmlHttp.OptionType.USE_NULL_FUNCTION] ?
-            goog.nullFunction : null;
-    this.xhr_ = null;
-    this.xhrOptions_ = null;
-
-    if (!opt_fromDispose) {
-      this.dispatchEvent(goog.net.EventType.READY);
-    }
-
-    try {
-      // NOTE(user): Not nullifying in FireFox can still leak if the callbacks
-      // are defined in the same scope as the instance of XhrIo. But, IE doesn't
-      // allow you to set the onreadystatechange to NULL so nullFunction is
-      // used.
-      xhr.onreadystatechange = clearedOnReadyStateChange;
-    } catch (e) {
-      // This seems to occur with a Gears HTTP request. Delayed the setting of
-      // this onreadystatechange until after READY is sent out and catching the
-      // error to see if we can track down the problem.
-      goog.log.error(this.logger_,
-          'Problem encountered resetting onreadystatechange: ' + e.message);
-    }
-  }
-};
-
-
-/**
- * Make sure the timeout timer isn't running.
- * @private
- */
-goog.net.XhrIo.prototype.cleanUpTimeoutTimer_ = function() {
-  if (this.xhr_ && this.useXhr2Timeout_) {
-    this.xhr_[goog.net.XhrIo.XHR2_ON_TIMEOUT_] = null;
-  }
-  if (goog.isNumber(this.timeoutId_)) {
-    goog.Timer.clear(this.timeoutId_);
-    this.timeoutId_ = null;
-  }
-};
-
-
-/**
- * @return {boolean} Whether there is an active request.
- */
-goog.net.XhrIo.prototype.isActive = function() {
-  return !!this.xhr_;
-};
-
-
-/**
- * @return {boolean} Whether the request has completed.
- */
-goog.net.XhrIo.prototype.isComplete = function() {
-  return this.getReadyState() == goog.net.XmlHttp.ReadyState.COMPLETE;
-};
-
-
-/**
- * @return {boolean} Whether the request completed with a success.
- */
-goog.net.XhrIo.prototype.isSuccess = function() {
-  var status = this.getStatus();
-  // A zero status code is considered successful for local files.
-  return goog.net.HttpStatus.isSuccess(status) ||
-      status === 0 && !this.isLastUriEffectiveSchemeHttp_();
-};
-
-
-/**
- * @return {boolean} whether the effective scheme of the last URI that was
- *     fetched was 'http' or 'https'.
- * @private
- */
-goog.net.XhrIo.prototype.isLastUriEffectiveSchemeHttp_ = function() {
-  var scheme = goog.uri.utils.getEffectiveScheme(String(this.lastUri_));
-  return goog.net.XhrIo.HTTP_SCHEME_PATTERN.test(scheme);
-};
-
-
-/**
- * Get the readystate from the Xhr object
- * Will only return correct result when called from the context of a callback
- * @return {goog.net.XmlHttp.ReadyState} goog.net.XmlHttp.ReadyState.*.
- */
-goog.net.XhrIo.prototype.getReadyState = function() {
-  return this.xhr_ ?
-      /** @type {goog.net.XmlHttp.ReadyState} */ (this.xhr_.readyState) :
-      goog.net.XmlHttp.ReadyState.UNINITIALIZED;
-};
-
-
-/**
- * Get the status from the Xhr object
- * Will only return correct result when called from the context of a callback
- * @return {number} Http status.
- */
-goog.net.XhrIo.prototype.getStatus = function() {
-  /**
-   * IE doesn't like you checking status until the readystate is greater than 2
-   * (i.e. it is receiving or complete).  The try/catch is used for when the
-   * page is unloading and an ERROR_NOT_AVAILABLE may occur when accessing xhr_.
-   * @preserveTry
-   */
-  try {
-    return this.getReadyState() > goog.net.XmlHttp.ReadyState.LOADED ?
-        this.xhr_.status : -1;
-  } catch (e) {
-    return -1;
-  }
-};
-
-
-/**
- * Get the status text from the Xhr object
- * Will only return correct result when called from the context of a callback
- * @return {string} Status text.
- */
-goog.net.XhrIo.prototype.getStatusText = function() {
-  /**
-   * IE doesn't like you checking status until the readystate is greater than 2
-   * (i.e. it is recieving or complete).  The try/catch is used for when the
-   * page is unloading and an ERROR_NOT_AVAILABLE may occur when accessing xhr_.
-   * @preserveTry
-   */
-  try {
-    return this.getReadyState() > goog.net.XmlHttp.ReadyState.LOADED ?
-        this.xhr_.statusText : '';
-  } catch (e) {
-    goog.log.fine(this.logger_, 'Can not get status: ' + e.message);
-    return '';
-  }
-};
-
-
-/**
- * Get the last Uri that was requested
- * @return {string} Last Uri.
- */
-goog.net.XhrIo.prototype.getLastUri = function() {
-  return String(this.lastUri_);
-};
-
-
-/**
- * Get the response text from the Xhr object
- * Will only return correct result when called from the context of a callback.
- * @return {string} Result from the server, or '' if no result available.
- */
-goog.net.XhrIo.prototype.getResponseText = function() {
-  /** @preserveTry */
-  try {
-    return this.xhr_ ? this.xhr_.responseText : '';
-  } catch (e) {
-    // http://www.w3.org/TR/XMLHttpRequest/#the-responsetext-attribute
-    // states that responseText should return '' (and responseXML null)
-    // when the state is not LOADING or DONE. Instead, IE can
-    // throw unexpected exceptions, for example when a request is aborted
-    // or no data is available yet.
-    goog.log.fine(this.logger_, 'Can not get responseText: ' + e.message);
-    return '';
-  }
-};
-
-
-/**
- * Get the response body from the Xhr object. This property is only available
- * in IE since version 7 according to MSDN:
- * http://msdn.microsoft.com/en-us/library/ie/ms534368(v=vs.85).aspx
- * Will only return correct result when called from the context of a callback.
- *
- * One option is to construct a VBArray from the returned object and convert
- * it to a JavaScript array using the toArray method:
- * {@code (new window['VBArray'](xhrIo.getResponseBody())).toArray()}
- * This will result in an array of numbers in the range of [0..255]
- *
- * Another option is to use the VBScript CStr method to convert it into a
- * string as outlined in http://stackoverflow.com/questions/1919972
- *
- * @return {Object} Binary result from the server or null if not available.
- */
-goog.net.XhrIo.prototype.getResponseBody = function() {
-  /** @preserveTry */
-  try {
-    if (this.xhr_ && 'responseBody' in this.xhr_) {
-      return this.xhr_['responseBody'];
-    }
-  } catch (e) {
-    // IE can throw unexpected exceptions, for example when a request is aborted
-    // or no data is yet available.
-    goog.log.fine(this.logger_, 'Can not get responseBody: ' + e.message);
-  }
-  return null;
-};
-
-
-/**
- * Get the response XML from the Xhr object
- * Will only return correct result when called from the context of a callback.
- * @return {Document} The DOM Document representing the XML file, or null
- * if no result available.
- */
-goog.net.XhrIo.prototype.getResponseXml = function() {
-  /** @preserveTry */
-  try {
-    return this.xhr_ ? this.xhr_.responseXML : null;
-  } catch (e) {
-    goog.log.fine(this.logger_, 'Can not get responseXML: ' + e.message);
-    return null;
-  }
-};
-
-
-/**
- * Get the response and evaluates it as JSON from the Xhr object
- * Will only return correct result when called from the context of a callback
- * @param {string=} opt_xssiPrefix Optional XSSI prefix string to use for
- *     stripping of the response before parsing. This needs to be set only if
- *     your backend server prepends the same prefix string to the JSON response.
- * @return {Object|undefined} JavaScript object.
- */
-goog.net.XhrIo.prototype.getResponseJson = function(opt_xssiPrefix) {
-  if (!this.xhr_) {
-    return undefined;
-  }
-
-  var responseText = this.xhr_.responseText;
-  if (opt_xssiPrefix && responseText.indexOf(opt_xssiPrefix) == 0) {
-    responseText = responseText.substring(opt_xssiPrefix.length);
-  }
-
-  return goog.json.parse(responseText);
-};
-
-
-/**
- * Get the response as the type specificed by {@link #setResponseType}. At time
- * of writing, this is only directly supported in very recent versions of WebKit
- * (10.0.612.1 dev and later). If the field is not supported directly, we will
- * try to emulate it.
- *
- * Emulating the response means following the rules laid out at
- * http://www.w3.org/TR/XMLHttpRequest/#the-response-attribute
- *
- * On browsers with no support for this (Chrome < 10, Firefox < 4, etc), only
- * response types of DEFAULT or TEXT may be used, and the response returned will
- * be the text response.
- *
- * On browsers with Mozilla's draft support for array buffers (Firefox 4, 5),
- * only response types of DEFAULT, TEXT, and ARRAY_BUFFER may be used, and the
- * response returned will be either the text response or the Mozilla
- * implementation of the array buffer response.
- *
- * On browsers will full support, any valid response type supported by the
- * browser may be used, and the response provided by the browser will be
- * returned.
- *
- * @return {*} The response.
- */
-goog.net.XhrIo.prototype.getResponse = function() {
-  /** @preserveTry */
-  try {
-    if (!this.xhr_) {
-      return null;
-    }
-    if ('response' in this.xhr_) {
-      return this.xhr_.response;
-    }
-    switch (this.responseType_) {
-      case goog.net.XhrIo.ResponseType.DEFAULT:
-      case goog.net.XhrIo.ResponseType.TEXT:
-        return this.xhr_.responseText;
-        // DOCUMENT and BLOB don't need to be handled here because they are
-        // introduced in the same spec that adds the .response field, and would
-        // have been caught above.
-        // ARRAY_BUFFER needs an implementation for Firefox 4, where it was
-        // implemented using a draft spec rather than the final spec.
-      case goog.net.XhrIo.ResponseType.ARRAY_BUFFER:
-        if ('mozResponseArrayBuffer' in this.xhr_) {
-          return this.xhr_.mozResponseArrayBuffer;
-        }
-    }
-    // Fell through to a response type that is not supported on this browser.
-    goog.log.error(this.logger_,
-        'Response type ' + this.responseType_ + ' is not ' +
-        'supported on this browser');
-    return null;
-  } catch (e) {
-    goog.log.fine(this.logger_, 'Can not get response: ' + e.message);
-    return null;
-  }
-};
-
-
-/**
- * Get the value of the response-header with the given name from the Xhr object
- * Will only return correct result when called from the context of a callback
- * and the request has completed
- * @param {string} key The name of the response-header to retrieve.
- * @return {string|undefined} The value of the response-header named key.
- */
-goog.net.XhrIo.prototype.getResponseHeader = function(key) {
-  return this.xhr_ && this.isComplete() ?
-      this.xhr_.getResponseHeader(key) : undefined;
-};
-
-
-/**
- * Gets the text of all the headers in the response.
- * Will only return correct result when called from the context of a callback
- * and the request has completed.
- * @return {string} The value of the response headers or empty string.
- */
-goog.net.XhrIo.prototype.getAllResponseHeaders = function() {
-  return this.xhr_ && this.isComplete() ?
-      this.xhr_.getAllResponseHeaders() : '';
-};
-
-
-/**
- * Returns all response headers as a key-value map.
- * Multiple values for the same header key can be combined into one,
- * separated by a comma and a space.
- * Note that the native getResponseHeader method for retrieving a single header
- * does a case insensitive match on the header name. This method does not
- * include any case normalization logic, it will just return a key-value
- * representation of the headers.
- * See: http://www.w3.org/TR/XMLHttpRequest/#the-getresponseheader()-method
- * @return {!Object<string, string>} An object with the header keys as keys
- *     and header values as values.
- */
-goog.net.XhrIo.prototype.getResponseHeaders = function() {
-  var headersObject = {};
-  var headersArray = this.getAllResponseHeaders().split('\r\n');
-  for (var i = 0; i < headersArray.length; i++) {
-    if (goog.string.isEmptyOrWhitespace(headersArray[i])) {
-      continue;
-    }
-    var keyValue = goog.string.splitLimit(headersArray[i], ': ', 2);
-    if (headersObject[keyValue[0]]) {
-      headersObject[keyValue[0]] += ', ' + keyValue[1];
-    } else {
-      headersObject[keyValue[0]] = keyValue[1];
-    }
-  }
-  return headersObject;
-};
-
-
-/**
- * Get the last error message
- * @return {goog.net.ErrorCode} Last error code.
- */
-goog.net.XhrIo.prototype.getLastErrorCode = function() {
-  return this.lastErrorCode_;
-};
-
-
-/**
- * Get the last error message
- * @return {string} Last error message.
- */
-goog.net.XhrIo.prototype.getLastError = function() {
-  return goog.isString(this.lastError_) ? this.lastError_ :
-      String(this.lastError_);
-};
-
-
-/**
- * Adds the last method, status and URI to the message.  This is used to add
- * this information to the logging calls.
- * @param {string} msg The message text that we want to add the extra text to.
- * @return {string} The message with the extra text appended.
- * @private
- */
-goog.net.XhrIo.prototype.formatMsg_ = function(msg) {
-  return msg + ' [' + this.lastMethod_ + ' ' + this.lastUri_ + ' ' +
-      this.getStatus() + ']';
-};
-
-
-// Register the xhr handler as an entry point, so that
-// it can be monitored for exception handling, etc.
-goog.debug.entryPointRegistry.register(
-    /**
-     * @param {function(!Function): !Function} transformer The transforming
-     *     function.
-     */
-    function(transformer) {
-      goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_ =
-          transformer(goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_);
-    });
-
-// FIXME consider delaying feature reading so projection can be provided by
-// consumer (e.g. the view)
-
-goog.provide('ol.source.FormatVector');
-
-goog.require('goog.asserts');
-goog.require('goog.dispose');
-goog.require('goog.events');
-goog.require('goog.net.EventType');
-goog.require('goog.net.XhrIo');
-goog.require('goog.net.XhrIo.ResponseType');
-goog.require('goog.userAgent');
-goog.require('ol.format.FormatType');
-goog.require('ol.has');
-goog.require('ol.source.State');
-goog.require('ol.source.Vector');
-goog.require('ol.xml');
-
-
-
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for vector sources in one of the supported formats.
- *
- * @constructor
- * @extends {ol.source.Vector}
- * @param {olx.source.FormatVectorOptions} options Options.
- */
-ol.source.FormatVector = function(options) {
-
-  goog.base(this, {
-    attributions: options.attributions,
-    logo: options.logo,
-    projection: options.projection
-  });
-
-  /**
-   * @protected
-   * @type {ol.format.Feature}
-   */
-  this.format = options.format;
-
-};
-goog.inherits(ol.source.FormatVector, ol.source.Vector);
-
-
-/**
- * @param {goog.Uri|string} url URL.
- * @param {function(this: T, Array.<ol.Feature>)} success Success Callback.
- * @param {function(this: T)} error Error callback.
- * @param {T} thisArg Value to use as `this` when executing `success` or
- *     `error`.
- * @template T
- */
-ol.source.FormatVector.prototype.loadFeaturesFromURL =
-    function(url, success, error, thisArg) {
-  var xhrIo = new goog.net.XhrIo();
-  var type = this.format.getType();
-  var responseType;
-  // FIXME maybe use ResponseType.DOCUMENT?
-  if (type == ol.format.FormatType.BINARY &&
-      ol.has.ARRAY_BUFFER) {
-    responseType = goog.net.XhrIo.ResponseType.ARRAY_BUFFER;
-  } else {
-    responseType = goog.net.XhrIo.ResponseType.TEXT;
-  }
-  xhrIo.setResponseType(responseType);
-  goog.events.listen(xhrIo, goog.net.EventType.COMPLETE,
-      /**
-       * @param {Event} event Event.
-       * @private
-       * @this {ol.source.FormatVector}
-       */
-      function(event) {
-        var xhrIo = event.target;
-        goog.asserts.assertInstanceof(xhrIo, goog.net.XhrIo,
-            'event.target/xhrIo is an instance of goog.net.XhrIo');
-        if (xhrIo.isSuccess()) {
-          var type = this.format.getType();
-          /** @type {ArrayBuffer|Document|Node|Object|string|undefined} */
-          var source;
-          if (type == ol.format.FormatType.BINARY &&
-              ol.has.ARRAY_BUFFER) {
-            source = xhrIo.getResponse();
-            goog.asserts.assertInstanceof(source, ArrayBuffer,
-                'source is an instance of ArrayBuffer');
-          } else if (type == ol.format.FormatType.JSON) {
-            source = xhrIo.getResponseText();
-          } else if (type == ol.format.FormatType.TEXT) {
-            source = xhrIo.getResponseText();
-          } else if (type == ol.format.FormatType.XML) {
-            if (!goog.userAgent.IE) {
-              source = xhrIo.getResponseXml();
-            }
-            if (!goog.isDefAndNotNull(source)) {
-              source = ol.xml.parse(xhrIo.getResponseText());
-            }
-          } else {
-            goog.asserts.fail('unexpected format type');
-          }
-          if (goog.isDefAndNotNull(source)) {
-            success.call(thisArg, this.readFeatures(source));
-          } else {
-            this.setState(ol.source.State.ERROR);
-            goog.asserts.fail('undefined or null source');
-          }
-        } else {
-          error.call(thisArg);
-        }
-        goog.dispose(xhrIo);
-      }, false, this);
-  xhrIo.send(url);
-};
-
-
-/**
- * @param {ArrayBuffer|Document|Node|Object|string} source Source.
- * @return {Array.<ol.Feature>} Features.
- * @api
- */
-ol.source.FormatVector.prototype.readFeatures = function(source) {
-  var format = this.format;
-  var projection = this.getProjection();
-  return format.readFeatures(source, {featureProjection: projection});
-};
-
-goog.provide('ol.source.StaticVector');
-
-goog.require('ol.source.FormatVector');
-goog.require('ol.source.State');
-
-
-
-/**
- * @classdesc
- * A vector source that uses one of the supported formats to read the data from
- * a file or other static source.
- *
- * @constructor
- * @extends {ol.source.FormatVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.StaticVectorOptions} options Options.
- * @api
- */
-ol.source.StaticVector = function(options) {
-
-  goog.base(this, {
-    attributions: options.attributions,
-    format: options.format,
-    logo: options.logo,
-    projection: options.projection
-  });
-
-  if (goog.isDef(options.arrayBuffer)) {
-    this.addFeaturesInternal(this.readFeatures(options.arrayBuffer));
-  }
-
-  if (goog.isDef(options.doc)) {
-    this.addFeaturesInternal(this.readFeatures(options.doc));
-  }
-
-  if (goog.isDef(options.node)) {
-    this.addFeaturesInternal(this.readFeatures(options.node));
-  }
-
-  if (goog.isDef(options.object)) {
-    this.addFeaturesInternal(this.readFeatures(options.object));
-  }
-
-  if (goog.isDef(options.text)) {
-    this.addFeaturesInternal(this.readFeatures(options.text));
-  }
-
-  if (goog.isDef(options.url) || goog.isDef(options.urls)) {
-    this.setState(ol.source.State.LOADING);
-    if (goog.isDef(options.url)) {
-      this.loadFeaturesFromURL(options.url,
-          this.onFeaturesLoadedSuccess_, this.onFeaturesLoadedError_, this);
-    }
-    if (goog.isDef(options.urls)) {
-      var urls = options.urls;
-      var i, ii;
-      for (i = 0, ii = urls.length; i < ii; ++i) {
-        this.loadFeaturesFromURL(urls[i],
-            this.onFeaturesLoadedSuccess_, this.onFeaturesLoadedError_, this);
-      }
-    }
-  }
-
-};
-goog.inherits(ol.source.StaticVector, ol.source.FormatVector);
-
-
-/**
- * @private
- */
-ol.source.StaticVector.prototype.onFeaturesLoadedError_ = function() {
-  this.setState(ol.source.State.ERROR);
-};
-
-
-/**
- * @param {Array.<ol.Feature>} features Features.
- * @private
- */
-ol.source.StaticVector.prototype.onFeaturesLoadedSuccess_ = function(features) {
-  this.addFeaturesInternal(features);
-  this.setState(ol.source.State.READY);
-};
-
-goog.provide('ol.source.GeoJSON');
-
-goog.require('ol.format.GeoJSON');
-goog.require('ol.source.StaticVector');
-
-
-
-/**
- * @classdesc
- * Static vector source in GeoJSON format
- *
- * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.GeoJSONOptions=} opt_options Options.
- * @api
- */
-ol.source.GeoJSON = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    attributions: options.attributions,
-    extent: options.extent,
-    format: new ol.format.GeoJSON({
-      defaultDataProjection: options.defaultProjection
-    }),
-    logo: options.logo,
-    object: options.object,
-    projection: options.projection,
-    text: options.text,
-    url: options.url,
-    urls: options.urls
-  });
-
-};
-goog.inherits(ol.source.GeoJSON, ol.source.StaticVector);
-
-goog.provide('ol.source.GPX');
-
-goog.require('ol.format.GPX');
-goog.require('ol.source.StaticVector');
-
-
-
-/**
- * @classdesc
- * Static vector source in GPX format
- *
- * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.GPXOptions=} opt_options Options.
- * @api
- */
-ol.source.GPX = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    attributions: options.attributions,
-    doc: options.doc,
-    extent: options.extent,
-    format: new ol.format.GPX(),
-    logo: options.logo,
-    node: options.node,
-    projection: options.projection,
-    text: options.text,
-    url: options.url,
-    urls: options.urls
-  });
-
-};
-goog.inherits(ol.source.GPX, ol.source.StaticVector);
-
-goog.provide('ol.source.IGC');
-
-goog.require('ol.format.IGC');
-goog.require('ol.source.StaticVector');
-
-
-
-/**
- * @classdesc
- * Static vector source in IGC format
- *
- * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.IGCOptions=} opt_options Options.
- * @api
- */
-ol.source.IGC = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    format: new ol.format.IGC({
-      altitudeMode: options.altitudeMode
-    }),
-    projection: options.projection,
-    text: options.text,
-    url: options.url,
-    urls: options.urls
-  });
-
-};
-goog.inherits(ol.source.IGC, ol.source.StaticVector);
-
 goog.provide('ol.source.ImageMapGuide');
 
 goog.require('goog.events');
@@ -113092,45 +112255,6 @@ ol.source.ImageWMS.prototype.updateV13_ = function() {
   this.v13_ = goog.string.compareVersions(version, '1.3') >= 0;
 };
 
-goog.provide('ol.source.KML');
-
-goog.require('ol.format.KML');
-goog.require('ol.source.StaticVector');
-
-
-
-/**
- * @classdesc
- * Static vector source in KML format
- *
- * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.KMLOptions=} opt_options Options.
- * @api
- */
-ol.source.KML = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    attributions: options.attributions,
-    doc: options.doc,
-    format: new ol.format.KML({
-      extractStyles: options.extractStyles,
-      defaultStyle: options.defaultStyle
-    }),
-    logo: options.logo,
-    node: options.node,
-    projection: options.projection,
-    text: options.text,
-    url: options.url,
-    urls: options.urls
-  });
-
-};
-goog.inherits(ol.source.KML, ol.source.StaticVector);
-
 goog.provide('ol.source.XYZ');
 
 goog.require('ol.Attribution');
@@ -113377,169 +112501,6 @@ ol.source.MapQuestConfig = {
 ol.source.MapQuest.prototype.getLayer = function() {
   return this.layer_;
 };
-
-goog.provide('ol.source.OSMXML');
-
-goog.require('ol.format.OSMXML');
-goog.require('ol.source.StaticVector');
-
-
-
-/**
- * @classdesc
- * Static vector source in OSMXML format
- *
- * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.OSMXMLOptions=} opt_options Options.
- * @api
- */
-ol.source.OSMXML = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    attributions: options.attributions,
-    doc: options.doc,
-    format: new ol.format.OSMXML(),
-    logo: options.logo,
-    node: options.node,
-    projection: options.projection,
-    text: options.text,
-    url: options.url,
-    urls: options.urls
-  });
-
-};
-goog.inherits(ol.source.OSMXML, ol.source.StaticVector);
-
-// FIXME cache expiration
-
-goog.provide('ol.source.ServerVector');
-
-goog.require('goog.object');
-goog.require('ol.extent');
-goog.require('ol.loadingstrategy');
-goog.require('ol.source.FormatVector');
-goog.require('ol.structs.RBush');
-
-
-
-/**
- * @classdesc
- * A vector source in one of the supported formats, using a custom function to
- * read in the data from a remote server.
- *
- * @constructor
- * @extends {ol.source.FormatVector}
- * @param {olx.source.ServerVectorOptions} options Options.
- * @api
- */
-ol.source.ServerVector = function(options) {
-
-  goog.base(this, {
-    attributions: options.attributions,
-    format: options.format,
-    logo: options.logo,
-    projection: options.projection
-  });
-
-  /**
-   * @private
-   * @type {ol.structs.RBush.<{extent: ol.Extent}>}
-   */
-  this.loadedExtents_ = new ol.structs.RBush();
-
-  /**
-   * @private
-   * @type {function(this: ol.source.ServerVector, ol.Extent, number,
-   *                 ol.proj.Projection)}
-   */
-  this.loader_ = options.loader;
-
-  /**
-   * @private
-   * @type {function(ol.Extent, number): Array.<ol.Extent>}
-   */
-  this.strategy_ = goog.isDef(options.strategy) ?
-      options.strategy : ol.loadingstrategy.bbox;
-
-  /**
-   * @private
-   * @type {Object.<number|string, boolean>}
-   */
-  this.loadedFeatures_ = {};
-
-};
-goog.inherits(ol.source.ServerVector, ol.source.FormatVector);
-
-
-/**
- * @inheritDoc
- */
-ol.source.ServerVector.prototype.addFeaturesInternal = function(features) {
-  /** @type {Array.<ol.Feature>} */
-  var notLoadedFeatures = [];
-  var i, ii;
-  for (i = 0, ii = features.length; i < ii; ++i) {
-    var feature = features[i];
-    var featureId = feature.getId();
-    if (!goog.isDef(featureId)) {
-      notLoadedFeatures.push(feature);
-    } else if (!(featureId in this.loadedFeatures_)) {
-      notLoadedFeatures.push(feature);
-      this.loadedFeatures_[featureId] = true;
-    }
-  }
-  goog.base(this, 'addFeaturesInternal', notLoadedFeatures);
-};
-
-
-/**
- * @inheritDoc
- * @api stable
- */
-ol.source.ServerVector.prototype.clear = function(opt_fast) {
-  goog.object.clear(this.loadedFeatures_);
-  this.loadedExtents_.clear();
-  goog.base(this, 'clear', opt_fast);
-};
-
-
-/**
- * @inheritDoc
- */
-ol.source.ServerVector.prototype.loadFeatures =
-    function(extent, resolution, projection) {
-  var loadedExtents = this.loadedExtents_;
-  var extentsToLoad = this.strategy_(extent, resolution);
-  var i, ii;
-  for (i = 0, ii = extentsToLoad.length; i < ii; ++i) {
-    var extentToLoad = extentsToLoad[i];
-    var alreadyLoaded = loadedExtents.forEachInExtent(extentToLoad,
-        /**
-         * @param {{extent: ol.Extent}} object Object.
-         * @return {boolean} Contains.
-         */
-        function(object) {
-          return ol.extent.containsExtent(object.extent, extentToLoad);
-        });
-    if (!alreadyLoaded) {
-      this.loader_.call(this, extentToLoad, resolution, projection);
-      loadedExtents.insert(extentToLoad, {extent: extentToLoad.slice()});
-    }
-  }
-};
-
-
-/**
- * @function
- * @param {ArrayBuffer|Document|Node|Object|string} source Source.
- * @return {Array.<ol.Feature>} Features.
- * @api
- */
-ol.source.ServerVector.prototype.readFeatures;
 
 goog.provide('ol.source.Stamen');
 
@@ -114519,8 +113480,9 @@ goog.require('goog.asserts');
 goog.require('goog.object');
 goog.require('ol.TileCoord');
 goog.require('ol.TileUrlFunction');
-goog.require('ol.source.FormatVector');
+goog.require('ol.featureloader');
 goog.require('ol.source.State');
+goog.require('ol.source.Vector');
 goog.require('ol.tilegrid.TileGrid');
 
 
@@ -114531,7 +113493,7 @@ goog.require('ol.tilegrid.TileGrid');
  * into tiles in a fixed grid pattern.
  *
  * @constructor
- * @extends {ol.source.FormatVector}
+ * @extends {ol.source.Vector}
  * @param {olx.source.TileVectorOptions} options Options.
  * @api
  */
@@ -114539,10 +113501,19 @@ ol.source.TileVector = function(options) {
 
   goog.base(this, {
     attributions: options.attributions,
-    format: options.format,
     logo: options.logo,
-    projection: options.projection
+    projection: undefined,
+    state: ol.source.State.READY
   });
+
+  /**
+   * @private
+   * @type {ol.format.Feature}
+   */
+  this.format_ = options.format;
+
+  goog.asserts.assert(goog.isDefAndNotNull(this.format_),
+      'ol.source.TileVector requires a format');
 
   /**
    * @private
@@ -114577,7 +113548,7 @@ ol.source.TileVector = function(options) {
   }
 
 };
-goog.inherits(ol.source.TileVector, ol.source.FormatVector);
+goog.inherits(ol.source.TileVector, ol.source.Vector);
 
 
 /**
@@ -114772,7 +113743,7 @@ ol.source.TileVector.prototype.loadFeatures =
    */
   function success(tileKey, features) {
     tiles[tileKey] = features;
-    this.setState(ol.source.State.READY);
+    this.changed();
   }
   for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
     for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
@@ -114785,8 +113756,9 @@ ol.source.TileVector.prototype.loadFeatures =
         var url = tileUrlFunction(tileCoord, 1, projection);
         if (goog.isDef(url)) {
           tiles[tileKey] = [];
-          this.loadFeaturesFromURL(url, goog.partial(success, tileKey),
-              goog.nullFunction, this);
+          var loader = ol.featureloader.loadFeaturesXhr(url, this.format_,
+              goog.partial(success, tileKey));
+          loader.call(this, extent, resolution, projection);
         }
       }
     }
@@ -115247,43 +114219,6 @@ ol.source.TileWMS.prototype.updateV13_ = function() {
       goog.object.get(this.params_, 'VERSION', ol.DEFAULT_WMS_VERSION);
   this.v13_ = goog.string.compareVersions(version, '1.3') >= 0;
 };
-
-goog.provide('ol.source.TopoJSON');
-
-goog.require('ol.format.TopoJSON');
-goog.require('ol.source.StaticVector');
-
-
-
-/**
- * @classdesc
- * Static vector source in TopoJSON format
- *
- * @constructor
- * @extends {ol.source.StaticVector}
- * @fires ol.source.VectorEvent
- * @param {olx.source.TopoJSONOptions=} opt_options Options.
- * @api
- */
-ol.source.TopoJSON = function(opt_options) {
-
-  var options = goog.isDef(opt_options) ? opt_options : {};
-
-  goog.base(this, {
-    attributions: options.attributions,
-    extent: options.extent,
-    format: new ol.format.TopoJSON({
-      defaultDataProjection: options.defaultProjection
-    }),
-    logo: options.logo,
-    object: options.object,
-    projection: options.projection,
-    text: options.text,
-    url: options.url
-  });
-
-};
-goog.inherits(ol.source.TopoJSON, ol.source.StaticVector);
 
 goog.provide('ol.tilegrid.WMTS');
 
@@ -117197,6 +116132,7 @@ goog.require('ol.Attribution');
 goog.require('ol.Collection');
 goog.require('ol.CollectionEvent');
 goog.require('ol.CollectionEventType');
+goog.require('ol.Color');
 goog.require('ol.Coordinate');
 goog.require('ol.CoordinateFormatType');
 goog.require('ol.DeviceOrientation');
@@ -117206,6 +116142,7 @@ goog.require('ol.DrawEvent');
 goog.require('ol.DrawEventType');
 goog.require('ol.Extent');
 goog.require('ol.Feature');
+goog.require('ol.FeatureLoader');
 goog.require('ol.FeatureOverlay');
 goog.require('ol.Geolocation');
 goog.require('ol.GeolocationProperty');
@@ -117213,6 +116150,7 @@ goog.require('ol.Graticule');
 goog.require('ol.Image');
 goog.require('ol.ImageTile');
 goog.require('ol.Kinetic');
+goog.require('ol.LoadingStrategy');
 goog.require('ol.Map');
 goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserEvent.EventType');
@@ -117233,6 +116171,7 @@ goog.require('ol.Tile');
 goog.require('ol.TileState');
 goog.require('ol.View');
 goog.require('ol.ViewHint');
+goog.require('ol.ViewProperty');
 goog.require('ol.animation');
 goog.require('ol.color');
 goog.require('ol.control');
@@ -117249,8 +116188,6 @@ goog.require('ol.control.Zoom');
 goog.require('ol.control.ZoomSlider');
 goog.require('ol.control.ZoomToExtent');
 goog.require('ol.coordinate');
-goog.require('ol.dom.Input');
-goog.require('ol.dom.InputProperty');
 goog.require('ol.easing');
 goog.require('ol.events.ConditionType');
 goog.require('ol.events.condition');
@@ -117258,6 +116195,7 @@ goog.require('ol.extent');
 goog.require('ol.extent.Corner');
 goog.require('ol.extent.Relationship');
 goog.require('ol.feature');
+goog.require('ol.featureloader');
 goog.require('ol.format.Feature');
 goog.require('ol.format.GML');
 goog.require('ol.format.GML2');
@@ -117279,6 +116217,7 @@ goog.require('ol.format.WMTSCapabilities');
 goog.require('ol.geom.Circle');
 goog.require('ol.geom.Geometry');
 goog.require('ol.geom.GeometryCollection');
+goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.LinearRing');
@@ -117335,25 +116274,17 @@ goog.require('ol.render.canvas.Immediate');
 goog.require('ol.render.webgl.Immediate');
 goog.require('ol.source.BingMaps');
 goog.require('ol.source.Cluster');
-goog.require('ol.source.FormatVector');
-goog.require('ol.source.GPX');
-goog.require('ol.source.GeoJSON');
-goog.require('ol.source.IGC');
 goog.require('ol.source.Image');
 goog.require('ol.source.ImageCanvas');
 goog.require('ol.source.ImageMapGuide');
 goog.require('ol.source.ImageStatic');
 goog.require('ol.source.ImageVector');
 goog.require('ol.source.ImageWMS');
-goog.require('ol.source.KML');
 goog.require('ol.source.MapQuest');
 goog.require('ol.source.OSM');
-goog.require('ol.source.OSMXML');
-goog.require('ol.source.ServerVector');
 goog.require('ol.source.Source');
 goog.require('ol.source.Stamen');
 goog.require('ol.source.State');
-goog.require('ol.source.StaticVector');
 goog.require('ol.source.Tile');
 goog.require('ol.source.TileArcGISRest');
 goog.require('ol.source.TileDebug');
@@ -117364,7 +116295,6 @@ goog.require('ol.source.TileOptions');
 goog.require('ol.source.TileUTFGrid');
 goog.require('ol.source.TileVector');
 goog.require('ol.source.TileWMS');
-goog.require('ol.source.TopoJSON');
 goog.require('ol.source.Vector');
 goog.require('ol.source.VectorEvent');
 goog.require('ol.source.VectorEventType');
@@ -117376,6 +116306,7 @@ goog.require('ol.style.Atlas');
 goog.require('ol.style.AtlasManager');
 goog.require('ol.style.Circle');
 goog.require('ol.style.Fill');
+goog.require('ol.style.GeometryFunction');
 goog.require('ol.style.Icon');
 goog.require('ol.style.IconAnchorUnits');
 goog.require('ol.style.IconImageCache');
@@ -117385,6 +116316,7 @@ goog.require('ol.style.ImageState');
 goog.require('ol.style.RegularShape');
 goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');
+goog.require('ol.style.StyleFunction');
 goog.require('ol.style.Text');
 goog.require('ol.style.defaultGeometryFunction');
 goog.require('ol.tilegrid.TileGrid');
@@ -117742,6 +116674,11 @@ goog.exportProperty(
     ol.Feature.prototype.setGeometryName);
 
 goog.exportSymbol(
+    'ol.featureloader.xhr',
+    ol.featureloader.xhr,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.FeatureOverlay',
     ol.FeatureOverlay,
     OPENLAYERS);
@@ -117942,8 +116879,8 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.loadingstrategy.createTile',
-    ol.loadingstrategy.createTile,
+    'ol.loadingstrategy.tile',
+    ol.loadingstrategy.tile,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -118166,20 +117103,10 @@ goog.exportProperty(
     'oldValue',
     ol.ObjectEvent.prototype.oldValue);
 
-goog.exportProperty(
-    ol.ObjectAccessor.prototype,
-    'transform',
-    ol.ObjectAccessor.prototype.transform);
-
 goog.exportSymbol(
     'ol.Object',
     ol.Object,
     OPENLAYERS);
-
-goog.exportProperty(
-    ol.Object.prototype,
-    'bindTo',
-    ol.Object.prototype.bindTo);
 
 goog.exportProperty(
     ol.Object.prototype,
@@ -118205,16 +117132,6 @@ goog.exportProperty(
     ol.Object.prototype,
     'setProperties',
     ol.Object.prototype.setProperties);
-
-goog.exportProperty(
-    ol.Object.prototype,
-    'unbind',
-    ol.Object.prototype.unbind);
-
-goog.exportProperty(
-    ol.Object.prototype,
-    'unbindAll',
-    ol.Object.prototype.unbindAll);
 
 goog.exportProperty(
     ol.Object.prototype,
@@ -118946,26 +117863,6 @@ goog.exportProperty(
     'getSource',
     ol.source.Cluster.prototype.getSource);
 
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'readFeatures',
-    ol.source.FormatVector.prototype.readFeatures);
-
-goog.exportSymbol(
-    'ol.source.GeoJSON',
-    ol.source.GeoJSON,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.source.GPX',
-    ol.source.GPX,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.source.IGC',
-    ol.source.IGC,
-    OPENLAYERS);
-
 goog.exportSymbol(
     'ol.source.ImageCanvas',
     ol.source.ImageCanvas,
@@ -119077,11 +117974,6 @@ goog.exportProperty(
     ol.source.ImageWMS.prototype.updateParams);
 
 goog.exportSymbol(
-    'ol.source.KML',
-    ol.source.KML,
-    OPENLAYERS);
-
-goog.exportSymbol(
     'ol.source.MapQuest',
     ol.source.MapQuest,
     OPENLAYERS);
@@ -119100,26 +117992,6 @@ goog.exportSymbol(
     'ol.source.OSM.ATTRIBUTION',
     ol.source.OSM.ATTRIBUTION,
     OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.source.OSMXML',
-    ol.source.OSMXML,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.source.ServerVector',
-    ol.source.ServerVector,
-    OPENLAYERS);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'clear',
-    ol.source.ServerVector.prototype.clear);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'readFeatures',
-    ol.source.ServerVector.prototype.readFeatures);
 
 goog.exportSymbol(
     'ol.source.Source',
@@ -119149,11 +118021,6 @@ goog.exportProperty(
 goog.exportSymbol(
     'ol.source.Stamen',
     ol.source.Stamen,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.source.StaticVector',
-    ol.source.StaticVector,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -119300,11 +118167,6 @@ goog.exportProperty(
     ol.source.TileWMS.prototype,
     'updateParams',
     ol.source.TileWMS.prototype.updateParams);
-
-goog.exportSymbol(
-    'ol.source.TopoJSON',
-    ol.source.TopoJSON,
-    OPENLAYERS);
 
 goog.exportSymbol(
     'ol.source.Vector',
@@ -121052,31 +119914,6 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.dom.Input',
-    ol.dom.Input,
-    OPENLAYERS);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'getChecked',
-    ol.dom.Input.prototype.getChecked);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'getValue',
-    ol.dom.Input.prototype.getValue);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'setValue',
-    ol.dom.Input.prototype.setValue);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'setChecked',
-    ol.dom.Input.prototype.setChecked);
-
-goog.exportSymbol(
     'ol.control.Attribution',
     ol.control.Attribution,
     OPENLAYERS);
@@ -121298,11 +120135,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Collection.prototype,
-    'bindTo',
-    ol.Collection.prototype.bindTo);
-
-goog.exportProperty(
-    ol.Collection.prototype,
     'get',
     ol.Collection.prototype.get);
 
@@ -121325,16 +120157,6 @@ goog.exportProperty(
     ol.Collection.prototype,
     'setProperties',
     ol.Collection.prototype.setProperties);
-
-goog.exportProperty(
-    ol.Collection.prototype,
-    'unbind',
-    ol.Collection.prototype.unbind);
-
-goog.exportProperty(
-    ol.Collection.prototype,
-    'unbindAll',
-    ol.Collection.prototype.unbindAll);
 
 goog.exportProperty(
     ol.Collection.prototype,
@@ -121373,11 +120195,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.DeviceOrientation.prototype,
-    'bindTo',
-    ol.DeviceOrientation.prototype.bindTo);
-
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
     'get',
     ol.DeviceOrientation.prototype.get);
 
@@ -121400,16 +120217,6 @@ goog.exportProperty(
     ol.DeviceOrientation.prototype,
     'setProperties',
     ol.DeviceOrientation.prototype.setProperties);
-
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'unbind',
-    ol.DeviceOrientation.prototype.unbind);
-
-goog.exportProperty(
-    ol.DeviceOrientation.prototype,
-    'unbindAll',
-    ol.DeviceOrientation.prototype.unbindAll);
 
 goog.exportProperty(
     ol.DeviceOrientation.prototype,
@@ -121448,11 +120255,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Feature.prototype,
-    'bindTo',
-    ol.Feature.prototype.bindTo);
-
-goog.exportProperty(
-    ol.Feature.prototype,
     'get',
     ol.Feature.prototype.get);
 
@@ -121475,16 +120277,6 @@ goog.exportProperty(
     ol.Feature.prototype,
     'setProperties',
     ol.Feature.prototype.setProperties);
-
-goog.exportProperty(
-    ol.Feature.prototype,
-    'unbind',
-    ol.Feature.prototype.unbind);
-
-goog.exportProperty(
-    ol.Feature.prototype,
-    'unbindAll',
-    ol.Feature.prototype.unbindAll);
 
 goog.exportProperty(
     ol.Feature.prototype,
@@ -121523,11 +120315,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Geolocation.prototype,
-    'bindTo',
-    ol.Geolocation.prototype.bindTo);
-
-goog.exportProperty(
-    ol.Geolocation.prototype,
     'get',
     ol.Geolocation.prototype.get);
 
@@ -121550,16 +120337,6 @@ goog.exportProperty(
     ol.Geolocation.prototype,
     'setProperties',
     ol.Geolocation.prototype.setProperties);
-
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'unbind',
-    ol.Geolocation.prototype.unbind);
-
-goog.exportProperty(
-    ol.Geolocation.prototype,
-    'unbindAll',
-    ol.Geolocation.prototype.unbindAll);
 
 goog.exportProperty(
     ol.Geolocation.prototype,
@@ -121603,11 +120380,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Map.prototype,
-    'bindTo',
-    ol.Map.prototype.bindTo);
-
-goog.exportProperty(
-    ol.Map.prototype,
     'get',
     ol.Map.prototype.get);
 
@@ -121630,16 +120402,6 @@ goog.exportProperty(
     ol.Map.prototype,
     'setProperties',
     ol.Map.prototype.setProperties);
-
-goog.exportProperty(
-    ol.Map.prototype,
-    'unbind',
-    ol.Map.prototype.unbind);
-
-goog.exportProperty(
-    ol.Map.prototype,
-    'unbindAll',
-    ol.Map.prototype.unbindAll);
 
 goog.exportProperty(
     ol.Map.prototype,
@@ -121728,11 +120490,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Overlay.prototype,
-    'bindTo',
-    ol.Overlay.prototype.bindTo);
-
-goog.exportProperty(
-    ol.Overlay.prototype,
     'get',
     ol.Overlay.prototype.get);
 
@@ -121755,16 +120512,6 @@ goog.exportProperty(
     ol.Overlay.prototype,
     'setProperties',
     ol.Overlay.prototype.setProperties);
-
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'unbind',
-    ol.Overlay.prototype.unbind);
-
-goog.exportProperty(
-    ol.Overlay.prototype,
-    'unbindAll',
-    ol.Overlay.prototype.unbindAll);
 
 goog.exportProperty(
     ol.Overlay.prototype,
@@ -121803,11 +120550,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.View.prototype,
-    'bindTo',
-    ol.View.prototype.bindTo);
-
-goog.exportProperty(
-    ol.View.prototype,
     'get',
     ol.View.prototype.get);
 
@@ -121830,16 +120572,6 @@ goog.exportProperty(
     ol.View.prototype,
     'setProperties',
     ol.View.prototype.setProperties);
-
-goog.exportProperty(
-    ol.View.prototype,
-    'unbind',
-    ol.View.prototype.unbind);
-
-goog.exportProperty(
-    ol.View.prototype,
-    'unbindAll',
-    ol.View.prototype.unbindAll);
 
 goog.exportProperty(
     ol.View.prototype,
@@ -122103,11 +120835,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Source.prototype,
-    'bindTo',
-    ol.source.Source.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.Source.prototype,
     'get',
     ol.source.Source.prototype.get);
 
@@ -122130,16 +120857,6 @@ goog.exportProperty(
     ol.source.Source.prototype,
     'setProperties',
     ol.source.Source.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.Source.prototype,
-    'unbind',
-    ol.source.Source.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.Source.prototype,
-    'unbindAll',
-    ol.source.Source.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Source.prototype,
@@ -122198,11 +120915,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Tile.prototype,
-    'bindTo',
-    ol.source.Tile.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.Tile.prototype,
     'get',
     ol.source.Tile.prototype.get);
 
@@ -122225,16 +120937,6 @@ goog.exportProperty(
     ol.source.Tile.prototype,
     'setProperties',
     ol.source.Tile.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.Tile.prototype,
-    'unbind',
-    ol.source.Tile.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.Tile.prototype,
-    'unbindAll',
-    ol.source.Tile.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Tile.prototype,
@@ -122298,11 +121000,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileImage.prototype,
-    'bindTo',
-    ol.source.TileImage.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TileImage.prototype,
     'get',
     ol.source.TileImage.prototype.get);
 
@@ -122325,16 +121022,6 @@ goog.exportProperty(
     ol.source.TileImage.prototype,
     'setProperties',
     ol.source.TileImage.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TileImage.prototype,
-    'unbind',
-    ol.source.TileImage.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TileImage.prototype,
-    'unbindAll',
-    ol.source.TileImage.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileImage.prototype,
@@ -122418,11 +121105,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.BingMaps.prototype,
-    'bindTo',
-    ol.source.BingMaps.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.BingMaps.prototype,
     'get',
     ol.source.BingMaps.prototype.get);
 
@@ -122445,16 +121127,6 @@ goog.exportProperty(
     ol.source.BingMaps.prototype,
     'setProperties',
     ol.source.BingMaps.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.BingMaps.prototype,
-    'unbind',
-    ol.source.BingMaps.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.BingMaps.prototype,
-    'unbindAll',
-    ol.source.BingMaps.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.BingMaps.prototype,
@@ -122513,11 +121185,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Vector.prototype,
-    'bindTo',
-    ol.source.Vector.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.Vector.prototype,
     'get',
     ol.source.Vector.prototype.get);
 
@@ -122540,16 +121207,6 @@ goog.exportProperty(
     ol.source.Vector.prototype,
     'setProperties',
     ol.source.Vector.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.Vector.prototype,
-    'unbind',
-    ol.source.Vector.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.Vector.prototype,
-    'unbindAll',
-    ol.source.Vector.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Vector.prototype,
@@ -122673,11 +121330,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
-    'bindTo',
-    ol.source.Cluster.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.Cluster.prototype,
     'get',
     ol.source.Cluster.prototype.get);
 
@@ -122700,16 +121352,6 @@ goog.exportProperty(
     ol.source.Cluster.prototype,
     'setProperties',
     ol.source.Cluster.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.Cluster.prototype,
-    'unbind',
-    ol.source.Cluster.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.Cluster.prototype,
-    'unbindAll',
-    ol.source.Cluster.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
@@ -122747,826 +121389,6 @@ goog.exportProperty(
     ol.source.Cluster.prototype.unByKey);
 
 goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'addFeature',
-    ol.source.FormatVector.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'addFeatures',
-    ol.source.FormatVector.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'clear',
-    ol.source.FormatVector.prototype.clear);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'forEachFeature',
-    ol.source.FormatVector.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'forEachFeatureInExtent',
-    ol.source.FormatVector.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.FormatVector.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getFeatures',
-    ol.source.FormatVector.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.FormatVector.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getFeaturesInExtent',
-    ol.source.FormatVector.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.FormatVector.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getExtent',
-    ol.source.FormatVector.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getFeatureById',
-    ol.source.FormatVector.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'removeFeature',
-    ol.source.FormatVector.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getAttributions',
-    ol.source.FormatVector.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getLogo',
-    ol.source.FormatVector.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getProjection',
-    ol.source.FormatVector.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getState',
-    ol.source.FormatVector.prototype.getState);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'bindTo',
-    ol.source.FormatVector.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'get',
-    ol.source.FormatVector.prototype.get);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getKeys',
-    ol.source.FormatVector.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getProperties',
-    ol.source.FormatVector.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'set',
-    ol.source.FormatVector.prototype.set);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'setProperties',
-    ol.source.FormatVector.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'unbind',
-    ol.source.FormatVector.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'unbindAll',
-    ol.source.FormatVector.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'unset',
-    ol.source.FormatVector.prototype.unset);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'changed',
-    ol.source.FormatVector.prototype.changed);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'getRevision',
-    ol.source.FormatVector.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'on',
-    ol.source.FormatVector.prototype.on);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'once',
-    ol.source.FormatVector.prototype.once);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'un',
-    ol.source.FormatVector.prototype.un);
-
-goog.exportProperty(
-    ol.source.FormatVector.prototype,
-    'unByKey',
-    ol.source.FormatVector.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'readFeatures',
-    ol.source.StaticVector.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'addFeature',
-    ol.source.StaticVector.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'addFeatures',
-    ol.source.StaticVector.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'clear',
-    ol.source.StaticVector.prototype.clear);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'forEachFeature',
-    ol.source.StaticVector.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'forEachFeatureInExtent',
-    ol.source.StaticVector.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.StaticVector.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getFeatures',
-    ol.source.StaticVector.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.StaticVector.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getFeaturesInExtent',
-    ol.source.StaticVector.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.StaticVector.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getExtent',
-    ol.source.StaticVector.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getFeatureById',
-    ol.source.StaticVector.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'removeFeature',
-    ol.source.StaticVector.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getAttributions',
-    ol.source.StaticVector.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getLogo',
-    ol.source.StaticVector.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getProjection',
-    ol.source.StaticVector.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getState',
-    ol.source.StaticVector.prototype.getState);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'bindTo',
-    ol.source.StaticVector.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'get',
-    ol.source.StaticVector.prototype.get);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getKeys',
-    ol.source.StaticVector.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getProperties',
-    ol.source.StaticVector.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'set',
-    ol.source.StaticVector.prototype.set);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'setProperties',
-    ol.source.StaticVector.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'unbind',
-    ol.source.StaticVector.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'unbindAll',
-    ol.source.StaticVector.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'unset',
-    ol.source.StaticVector.prototype.unset);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'changed',
-    ol.source.StaticVector.prototype.changed);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'getRevision',
-    ol.source.StaticVector.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'on',
-    ol.source.StaticVector.prototype.on);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'once',
-    ol.source.StaticVector.prototype.once);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'un',
-    ol.source.StaticVector.prototype.un);
-
-goog.exportProperty(
-    ol.source.StaticVector.prototype,
-    'unByKey',
-    ol.source.StaticVector.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'readFeatures',
-    ol.source.GeoJSON.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'addFeature',
-    ol.source.GeoJSON.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'addFeatures',
-    ol.source.GeoJSON.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'clear',
-    ol.source.GeoJSON.prototype.clear);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'forEachFeature',
-    ol.source.GeoJSON.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'forEachFeatureInExtent',
-    ol.source.GeoJSON.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.GeoJSON.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getFeatures',
-    ol.source.GeoJSON.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.GeoJSON.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getFeaturesInExtent',
-    ol.source.GeoJSON.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.GeoJSON.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getExtent',
-    ol.source.GeoJSON.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getFeatureById',
-    ol.source.GeoJSON.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'removeFeature',
-    ol.source.GeoJSON.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getAttributions',
-    ol.source.GeoJSON.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getLogo',
-    ol.source.GeoJSON.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getProjection',
-    ol.source.GeoJSON.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getState',
-    ol.source.GeoJSON.prototype.getState);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'bindTo',
-    ol.source.GeoJSON.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'get',
-    ol.source.GeoJSON.prototype.get);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getKeys',
-    ol.source.GeoJSON.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getProperties',
-    ol.source.GeoJSON.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'set',
-    ol.source.GeoJSON.prototype.set);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'setProperties',
-    ol.source.GeoJSON.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'unbind',
-    ol.source.GeoJSON.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'unbindAll',
-    ol.source.GeoJSON.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'unset',
-    ol.source.GeoJSON.prototype.unset);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'changed',
-    ol.source.GeoJSON.prototype.changed);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'getRevision',
-    ol.source.GeoJSON.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'on',
-    ol.source.GeoJSON.prototype.on);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'once',
-    ol.source.GeoJSON.prototype.once);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'un',
-    ol.source.GeoJSON.prototype.un);
-
-goog.exportProperty(
-    ol.source.GeoJSON.prototype,
-    'unByKey',
-    ol.source.GeoJSON.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'readFeatures',
-    ol.source.GPX.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'addFeature',
-    ol.source.GPX.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'addFeatures',
-    ol.source.GPX.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'clear',
-    ol.source.GPX.prototype.clear);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'forEachFeature',
-    ol.source.GPX.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'forEachFeatureInExtent',
-    ol.source.GPX.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.GPX.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getFeatures',
-    ol.source.GPX.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.GPX.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getFeaturesInExtent',
-    ol.source.GPX.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.GPX.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getExtent',
-    ol.source.GPX.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getFeatureById',
-    ol.source.GPX.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'removeFeature',
-    ol.source.GPX.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getAttributions',
-    ol.source.GPX.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getLogo',
-    ol.source.GPX.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getProjection',
-    ol.source.GPX.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getState',
-    ol.source.GPX.prototype.getState);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'bindTo',
-    ol.source.GPX.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'get',
-    ol.source.GPX.prototype.get);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getKeys',
-    ol.source.GPX.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getProperties',
-    ol.source.GPX.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'set',
-    ol.source.GPX.prototype.set);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'setProperties',
-    ol.source.GPX.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'unbind',
-    ol.source.GPX.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'unbindAll',
-    ol.source.GPX.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'unset',
-    ol.source.GPX.prototype.unset);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'changed',
-    ol.source.GPX.prototype.changed);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'getRevision',
-    ol.source.GPX.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'on',
-    ol.source.GPX.prototype.on);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'once',
-    ol.source.GPX.prototype.once);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'un',
-    ol.source.GPX.prototype.un);
-
-goog.exportProperty(
-    ol.source.GPX.prototype,
-    'unByKey',
-    ol.source.GPX.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'readFeatures',
-    ol.source.IGC.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'addFeature',
-    ol.source.IGC.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'addFeatures',
-    ol.source.IGC.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'clear',
-    ol.source.IGC.prototype.clear);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'forEachFeature',
-    ol.source.IGC.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'forEachFeatureInExtent',
-    ol.source.IGC.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.IGC.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getFeatures',
-    ol.source.IGC.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.IGC.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getFeaturesInExtent',
-    ol.source.IGC.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.IGC.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getExtent',
-    ol.source.IGC.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getFeatureById',
-    ol.source.IGC.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'removeFeature',
-    ol.source.IGC.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getAttributions',
-    ol.source.IGC.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getLogo',
-    ol.source.IGC.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getProjection',
-    ol.source.IGC.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getState',
-    ol.source.IGC.prototype.getState);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'bindTo',
-    ol.source.IGC.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'get',
-    ol.source.IGC.prototype.get);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getKeys',
-    ol.source.IGC.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getProperties',
-    ol.source.IGC.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'set',
-    ol.source.IGC.prototype.set);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'setProperties',
-    ol.source.IGC.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'unbind',
-    ol.source.IGC.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'unbindAll',
-    ol.source.IGC.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'unset',
-    ol.source.IGC.prototype.unset);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'changed',
-    ol.source.IGC.prototype.changed);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'getRevision',
-    ol.source.IGC.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'on',
-    ol.source.IGC.prototype.on);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'once',
-    ol.source.IGC.prototype.once);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'un',
-    ol.source.IGC.prototype.un);
-
-goog.exportProperty(
-    ol.source.IGC.prototype,
-    'unByKey',
-    ol.source.IGC.prototype.unByKey);
-
-goog.exportProperty(
     ol.source.Image.prototype,
     'getAttributions',
     ol.source.Image.prototype.getAttributions);
@@ -123585,11 +121407,6 @@ goog.exportProperty(
     ol.source.Image.prototype,
     'getState',
     ol.source.Image.prototype.getState);
-
-goog.exportProperty(
-    ol.source.Image.prototype,
-    'bindTo',
-    ol.source.Image.prototype.bindTo);
 
 goog.exportProperty(
     ol.source.Image.prototype,
@@ -123615,16 +121432,6 @@ goog.exportProperty(
     ol.source.Image.prototype,
     'setProperties',
     ol.source.Image.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.Image.prototype,
-    'unbind',
-    ol.source.Image.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.Image.prototype,
-    'unbindAll',
-    ol.source.Image.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Image.prototype,
@@ -123683,11 +121490,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageCanvas.prototype,
-    'bindTo',
-    ol.source.ImageCanvas.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.ImageCanvas.prototype,
     'get',
     ol.source.ImageCanvas.prototype.get);
 
@@ -123710,16 +121512,6 @@ goog.exportProperty(
     ol.source.ImageCanvas.prototype,
     'setProperties',
     ol.source.ImageCanvas.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.ImageCanvas.prototype,
-    'unbind',
-    ol.source.ImageCanvas.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.ImageCanvas.prototype,
-    'unbindAll',
-    ol.source.ImageCanvas.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.ImageCanvas.prototype,
@@ -123778,11 +121570,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageMapGuide.prototype,
-    'bindTo',
-    ol.source.ImageMapGuide.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.ImageMapGuide.prototype,
     'get',
     ol.source.ImageMapGuide.prototype.get);
 
@@ -123805,16 +121592,6 @@ goog.exportProperty(
     ol.source.ImageMapGuide.prototype,
     'setProperties',
     ol.source.ImageMapGuide.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.ImageMapGuide.prototype,
-    'unbind',
-    ol.source.ImageMapGuide.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.ImageMapGuide.prototype,
-    'unbindAll',
-    ol.source.ImageMapGuide.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.ImageMapGuide.prototype,
@@ -123873,11 +121650,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageStatic.prototype,
-    'bindTo',
-    ol.source.ImageStatic.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.ImageStatic.prototype,
     'get',
     ol.source.ImageStatic.prototype.get);
 
@@ -123900,16 +121672,6 @@ goog.exportProperty(
     ol.source.ImageStatic.prototype,
     'setProperties',
     ol.source.ImageStatic.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.ImageStatic.prototype,
-    'unbind',
-    ol.source.ImageStatic.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.ImageStatic.prototype,
-    'unbindAll',
-    ol.source.ImageStatic.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.ImageStatic.prototype,
@@ -123968,11 +121730,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageVector.prototype,
-    'bindTo',
-    ol.source.ImageVector.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.ImageVector.prototype,
     'get',
     ol.source.ImageVector.prototype.get);
 
@@ -123995,16 +121752,6 @@ goog.exportProperty(
     ol.source.ImageVector.prototype,
     'setProperties',
     ol.source.ImageVector.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.ImageVector.prototype,
-    'unbind',
-    ol.source.ImageVector.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.ImageVector.prototype,
-    'unbindAll',
-    ol.source.ImageVector.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.ImageVector.prototype,
@@ -124063,11 +121810,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageWMS.prototype,
-    'bindTo',
-    ol.source.ImageWMS.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.ImageWMS.prototype,
     'get',
     ol.source.ImageWMS.prototype.get);
 
@@ -124090,16 +121832,6 @@ goog.exportProperty(
     ol.source.ImageWMS.prototype,
     'setProperties',
     ol.source.ImageWMS.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.ImageWMS.prototype,
-    'unbind',
-    ol.source.ImageWMS.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.ImageWMS.prototype,
-    'unbindAll',
-    ol.source.ImageWMS.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.ImageWMS.prototype,
@@ -124135,171 +121867,6 @@ goog.exportProperty(
     ol.source.ImageWMS.prototype,
     'unByKey',
     ol.source.ImageWMS.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'readFeatures',
-    ol.source.KML.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'addFeature',
-    ol.source.KML.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'addFeatures',
-    ol.source.KML.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'clear',
-    ol.source.KML.prototype.clear);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'forEachFeature',
-    ol.source.KML.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'forEachFeatureInExtent',
-    ol.source.KML.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.KML.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getFeatures',
-    ol.source.KML.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.KML.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getFeaturesInExtent',
-    ol.source.KML.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.KML.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getExtent',
-    ol.source.KML.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getFeatureById',
-    ol.source.KML.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'removeFeature',
-    ol.source.KML.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getAttributions',
-    ol.source.KML.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getLogo',
-    ol.source.KML.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getProjection',
-    ol.source.KML.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getState',
-    ol.source.KML.prototype.getState);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'bindTo',
-    ol.source.KML.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'get',
-    ol.source.KML.prototype.get);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getKeys',
-    ol.source.KML.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getProperties',
-    ol.source.KML.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'set',
-    ol.source.KML.prototype.set);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'setProperties',
-    ol.source.KML.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'unbind',
-    ol.source.KML.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'unbindAll',
-    ol.source.KML.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'unset',
-    ol.source.KML.prototype.unset);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'changed',
-    ol.source.KML.prototype.changed);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'getRevision',
-    ol.source.KML.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'on',
-    ol.source.KML.prototype.on);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'once',
-    ol.source.KML.prototype.once);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'un',
-    ol.source.KML.prototype.un);
-
-goog.exportProperty(
-    ol.source.KML.prototype,
-    'unByKey',
-    ol.source.KML.prototype.unByKey);
 
 goog.exportProperty(
     ol.source.XYZ.prototype,
@@ -124343,11 +121910,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.XYZ.prototype,
-    'bindTo',
-    ol.source.XYZ.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
     'get',
     ol.source.XYZ.prototype.get);
 
@@ -124370,16 +121932,6 @@ goog.exportProperty(
     ol.source.XYZ.prototype,
     'setProperties',
     ol.source.XYZ.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'unbind',
-    ol.source.XYZ.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'unbindAll',
-    ol.source.XYZ.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.XYZ.prototype,
@@ -124468,11 +122020,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.MapQuest.prototype,
-    'bindTo',
-    ol.source.MapQuest.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.MapQuest.prototype,
     'get',
     ol.source.MapQuest.prototype.get);
 
@@ -124495,16 +122042,6 @@ goog.exportProperty(
     ol.source.MapQuest.prototype,
     'setProperties',
     ol.source.MapQuest.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.MapQuest.prototype,
-    'unbind',
-    ol.source.MapQuest.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.MapQuest.prototype,
-    'unbindAll',
-    ol.source.MapQuest.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.MapQuest.prototype,
@@ -124593,11 +122130,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.OSM.prototype,
-    'bindTo',
-    ol.source.OSM.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.OSM.prototype,
     'get',
     ol.source.OSM.prototype.get);
 
@@ -124620,16 +122152,6 @@ goog.exportProperty(
     ol.source.OSM.prototype,
     'setProperties',
     ol.source.OSM.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.OSM.prototype,
-    'unbind',
-    ol.source.OSM.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.OSM.prototype,
-    'unbindAll',
-    ol.source.OSM.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.OSM.prototype,
@@ -124665,326 +122187,6 @@ goog.exportProperty(
     ol.source.OSM.prototype,
     'unByKey',
     ol.source.OSM.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'readFeatures',
-    ol.source.OSMXML.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'addFeature',
-    ol.source.OSMXML.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'addFeatures',
-    ol.source.OSMXML.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'clear',
-    ol.source.OSMXML.prototype.clear);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'forEachFeature',
-    ol.source.OSMXML.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'forEachFeatureInExtent',
-    ol.source.OSMXML.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.OSMXML.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getFeatures',
-    ol.source.OSMXML.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.OSMXML.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getFeaturesInExtent',
-    ol.source.OSMXML.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.OSMXML.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getExtent',
-    ol.source.OSMXML.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getFeatureById',
-    ol.source.OSMXML.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'removeFeature',
-    ol.source.OSMXML.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getAttributions',
-    ol.source.OSMXML.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getLogo',
-    ol.source.OSMXML.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getProjection',
-    ol.source.OSMXML.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getState',
-    ol.source.OSMXML.prototype.getState);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'bindTo',
-    ol.source.OSMXML.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'get',
-    ol.source.OSMXML.prototype.get);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getKeys',
-    ol.source.OSMXML.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getProperties',
-    ol.source.OSMXML.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'set',
-    ol.source.OSMXML.prototype.set);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'setProperties',
-    ol.source.OSMXML.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'unbind',
-    ol.source.OSMXML.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'unbindAll',
-    ol.source.OSMXML.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'unset',
-    ol.source.OSMXML.prototype.unset);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'changed',
-    ol.source.OSMXML.prototype.changed);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'getRevision',
-    ol.source.OSMXML.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'on',
-    ol.source.OSMXML.prototype.on);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'once',
-    ol.source.OSMXML.prototype.once);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'un',
-    ol.source.OSMXML.prototype.un);
-
-goog.exportProperty(
-    ol.source.OSMXML.prototype,
-    'unByKey',
-    ol.source.OSMXML.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'addFeature',
-    ol.source.ServerVector.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'addFeatures',
-    ol.source.ServerVector.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'forEachFeature',
-    ol.source.ServerVector.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'forEachFeatureInExtent',
-    ol.source.ServerVector.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.ServerVector.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getFeatures',
-    ol.source.ServerVector.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.ServerVector.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getFeaturesInExtent',
-    ol.source.ServerVector.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.ServerVector.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getExtent',
-    ol.source.ServerVector.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getFeatureById',
-    ol.source.ServerVector.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'removeFeature',
-    ol.source.ServerVector.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getAttributions',
-    ol.source.ServerVector.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getLogo',
-    ol.source.ServerVector.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getProjection',
-    ol.source.ServerVector.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getState',
-    ol.source.ServerVector.prototype.getState);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'bindTo',
-    ol.source.ServerVector.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'get',
-    ol.source.ServerVector.prototype.get);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getKeys',
-    ol.source.ServerVector.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getProperties',
-    ol.source.ServerVector.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'set',
-    ol.source.ServerVector.prototype.set);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'setProperties',
-    ol.source.ServerVector.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'unbind',
-    ol.source.ServerVector.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'unbindAll',
-    ol.source.ServerVector.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'unset',
-    ol.source.ServerVector.prototype.unset);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'changed',
-    ol.source.ServerVector.prototype.changed);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'getRevision',
-    ol.source.ServerVector.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'on',
-    ol.source.ServerVector.prototype.on);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'once',
-    ol.source.ServerVector.prototype.once);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'un',
-    ol.source.ServerVector.prototype.un);
-
-goog.exportProperty(
-    ol.source.ServerVector.prototype,
-    'unByKey',
-    ol.source.ServerVector.prototype.unByKey);
 
 goog.exportProperty(
     ol.source.Stamen.prototype,
@@ -125038,11 +122240,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Stamen.prototype,
-    'bindTo',
-    ol.source.Stamen.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.Stamen.prototype,
     'get',
     ol.source.Stamen.prototype.get);
 
@@ -125065,16 +122262,6 @@ goog.exportProperty(
     ol.source.Stamen.prototype,
     'setProperties',
     ol.source.Stamen.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.Stamen.prototype,
-    'unbind',
-    ol.source.Stamen.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.Stamen.prototype,
-    'unbindAll',
-    ol.source.Stamen.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Stamen.prototype,
@@ -125158,11 +122345,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileArcGISRest.prototype,
-    'bindTo',
-    ol.source.TileArcGISRest.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TileArcGISRest.prototype,
     'get',
     ol.source.TileArcGISRest.prototype.get);
 
@@ -125185,16 +122367,6 @@ goog.exportProperty(
     ol.source.TileArcGISRest.prototype,
     'setProperties',
     ol.source.TileArcGISRest.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TileArcGISRest.prototype,
-    'unbind',
-    ol.source.TileArcGISRest.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TileArcGISRest.prototype,
-    'unbindAll',
-    ol.source.TileArcGISRest.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileArcGISRest.prototype,
@@ -125258,11 +122430,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileDebug.prototype,
-    'bindTo',
-    ol.source.TileDebug.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TileDebug.prototype,
     'get',
     ol.source.TileDebug.prototype.get);
 
@@ -125285,16 +122452,6 @@ goog.exportProperty(
     ol.source.TileDebug.prototype,
     'setProperties',
     ol.source.TileDebug.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TileDebug.prototype,
-    'unbind',
-    ol.source.TileDebug.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TileDebug.prototype,
-    'unbindAll',
-    ol.source.TileDebug.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileDebug.prototype,
@@ -125378,11 +122535,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileJSON.prototype,
-    'bindTo',
-    ol.source.TileJSON.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TileJSON.prototype,
     'get',
     ol.source.TileJSON.prototype.get);
 
@@ -125405,16 +122557,6 @@ goog.exportProperty(
     ol.source.TileJSON.prototype,
     'setProperties',
     ol.source.TileJSON.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TileJSON.prototype,
-    'unbind',
-    ol.source.TileJSON.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TileJSON.prototype,
-    'unbindAll',
-    ol.source.TileJSON.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileJSON.prototype,
@@ -125478,11 +122620,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
-    'bindTo',
-    ol.source.TileUTFGrid.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TileUTFGrid.prototype,
     'get',
     ol.source.TileUTFGrid.prototype.get);
 
@@ -125505,16 +122642,6 @@ goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
     'setProperties',
     ol.source.TileUTFGrid.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TileUTFGrid.prototype,
-    'unbind',
-    ol.source.TileUTFGrid.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TileUTFGrid.prototype,
-    'unbindAll',
-    ol.source.TileUTFGrid.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
@@ -125553,11 +122680,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
-    'readFeatures',
-    ol.source.TileVector.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.TileVector.prototype,
     'forEachFeatureIntersectingExtent',
     ol.source.TileVector.prototype.forEachFeatureIntersectingExtent);
 
@@ -125593,11 +122715,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
-    'bindTo',
-    ol.source.TileVector.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TileVector.prototype,
     'get',
     ol.source.TileVector.prototype.get);
 
@@ -125620,16 +122737,6 @@ goog.exportProperty(
     ol.source.TileVector.prototype,
     'setProperties',
     ol.source.TileVector.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TileVector.prototype,
-    'unbind',
-    ol.source.TileVector.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TileVector.prototype,
-    'unbindAll',
-    ol.source.TileVector.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
@@ -125713,11 +122820,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileWMS.prototype,
-    'bindTo',
-    ol.source.TileWMS.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TileWMS.prototype,
     'get',
     ol.source.TileWMS.prototype.get);
 
@@ -125740,16 +122842,6 @@ goog.exportProperty(
     ol.source.TileWMS.prototype,
     'setProperties',
     ol.source.TileWMS.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TileWMS.prototype,
-    'unbind',
-    ol.source.TileWMS.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TileWMS.prototype,
-    'unbindAll',
-    ol.source.TileWMS.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.TileWMS.prototype,
@@ -125785,171 +122877,6 @@ goog.exportProperty(
     ol.source.TileWMS.prototype,
     'unByKey',
     ol.source.TileWMS.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'readFeatures',
-    ol.source.TopoJSON.prototype.readFeatures);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'addFeature',
-    ol.source.TopoJSON.prototype.addFeature);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'addFeatures',
-    ol.source.TopoJSON.prototype.addFeatures);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'clear',
-    ol.source.TopoJSON.prototype.clear);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'forEachFeature',
-    ol.source.TopoJSON.prototype.forEachFeature);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'forEachFeatureInExtent',
-    ol.source.TopoJSON.prototype.forEachFeatureInExtent);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'forEachFeatureIntersectingExtent',
-    ol.source.TopoJSON.prototype.forEachFeatureIntersectingExtent);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getFeatures',
-    ol.source.TopoJSON.prototype.getFeatures);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getFeaturesAtCoordinate',
-    ol.source.TopoJSON.prototype.getFeaturesAtCoordinate);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getFeaturesInExtent',
-    ol.source.TopoJSON.prototype.getFeaturesInExtent);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getClosestFeatureToCoordinate',
-    ol.source.TopoJSON.prototype.getClosestFeatureToCoordinate);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getExtent',
-    ol.source.TopoJSON.prototype.getExtent);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getFeatureById',
-    ol.source.TopoJSON.prototype.getFeatureById);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'removeFeature',
-    ol.source.TopoJSON.prototype.removeFeature);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getAttributions',
-    ol.source.TopoJSON.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getLogo',
-    ol.source.TopoJSON.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getProjection',
-    ol.source.TopoJSON.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getState',
-    ol.source.TopoJSON.prototype.getState);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'bindTo',
-    ol.source.TopoJSON.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'get',
-    ol.source.TopoJSON.prototype.get);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getKeys',
-    ol.source.TopoJSON.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getProperties',
-    ol.source.TopoJSON.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'set',
-    ol.source.TopoJSON.prototype.set);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'setProperties',
-    ol.source.TopoJSON.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'unbind',
-    ol.source.TopoJSON.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'unbindAll',
-    ol.source.TopoJSON.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'unset',
-    ol.source.TopoJSON.prototype.unset);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'changed',
-    ol.source.TopoJSON.prototype.changed);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'getRevision',
-    ol.source.TopoJSON.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'on',
-    ol.source.TopoJSON.prototype.on);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'once',
-    ol.source.TopoJSON.prototype.once);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'un',
-    ol.source.TopoJSON.prototype.un);
-
-goog.exportProperty(
-    ol.source.TopoJSON.prototype,
-    'unByKey',
-    ol.source.TopoJSON.prototype.unByKey);
 
 goog.exportProperty(
     ol.source.WMTS.prototype,
@@ -125998,11 +122925,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.WMTS.prototype,
-    'bindTo',
-    ol.source.WMTS.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.WMTS.prototype,
     'get',
     ol.source.WMTS.prototype.get);
 
@@ -126025,16 +122947,6 @@ goog.exportProperty(
     ol.source.WMTS.prototype,
     'setProperties',
     ol.source.WMTS.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.WMTS.prototype,
-    'unbind',
-    ol.source.WMTS.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.WMTS.prototype,
-    'unbindAll',
-    ol.source.WMTS.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.WMTS.prototype,
@@ -126118,11 +123030,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Zoomify.prototype,
-    'bindTo',
-    ol.source.Zoomify.prototype.bindTo);
-
-goog.exportProperty(
-    ol.source.Zoomify.prototype,
     'get',
     ol.source.Zoomify.prototype.get);
 
@@ -126145,16 +123052,6 @@ goog.exportProperty(
     ol.source.Zoomify.prototype,
     'setProperties',
     ol.source.Zoomify.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.Zoomify.prototype,
-    'unbind',
-    ol.source.Zoomify.prototype.unbind);
-
-goog.exportProperty(
-    ol.source.Zoomify.prototype,
-    'unbindAll',
-    ol.source.Zoomify.prototype.unbindAll);
 
 goog.exportProperty(
     ol.source.Zoomify.prototype,
@@ -126583,11 +123480,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Base.prototype,
-    'bindTo',
-    ol.layer.Base.prototype.bindTo);
-
-goog.exportProperty(
-    ol.layer.Base.prototype,
     'get',
     ol.layer.Base.prototype.get);
 
@@ -126610,16 +123502,6 @@ goog.exportProperty(
     ol.layer.Base.prototype,
     'setProperties',
     ol.layer.Base.prototype.setProperties);
-
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'unbind',
-    ol.layer.Base.prototype.unbind);
-
-goog.exportProperty(
-    ol.layer.Base.prototype,
-    'unbindAll',
-    ol.layer.Base.prototype.unbindAll);
 
 goog.exportProperty(
     ol.layer.Base.prototype,
@@ -126748,11 +123630,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Layer.prototype,
-    'bindTo',
-    ol.layer.Layer.prototype.bindTo);
-
-goog.exportProperty(
-    ol.layer.Layer.prototype,
     'get',
     ol.layer.Layer.prototype.get);
 
@@ -126775,16 +123652,6 @@ goog.exportProperty(
     ol.layer.Layer.prototype,
     'setProperties',
     ol.layer.Layer.prototype.setProperties);
-
-goog.exportProperty(
-    ol.layer.Layer.prototype,
-    'unbind',
-    ol.layer.Layer.prototype.unbind);
-
-goog.exportProperty(
-    ol.layer.Layer.prototype,
-    'unbindAll',
-    ol.layer.Layer.prototype.unbindAll);
 
 goog.exportProperty(
     ol.layer.Layer.prototype,
@@ -126918,11 +123785,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Vector.prototype,
-    'bindTo',
-    ol.layer.Vector.prototype.bindTo);
-
-goog.exportProperty(
-    ol.layer.Vector.prototype,
     'get',
     ol.layer.Vector.prototype.get);
 
@@ -126945,16 +123807,6 @@ goog.exportProperty(
     ol.layer.Vector.prototype,
     'setProperties',
     ol.layer.Vector.prototype.setProperties);
-
-goog.exportProperty(
-    ol.layer.Vector.prototype,
-    'unbind',
-    ol.layer.Vector.prototype.unbind);
-
-goog.exportProperty(
-    ol.layer.Vector.prototype,
-    'unbindAll',
-    ol.layer.Vector.prototype.unbindAll);
 
 goog.exportProperty(
     ol.layer.Vector.prototype,
@@ -127108,11 +123960,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Heatmap.prototype,
-    'bindTo',
-    ol.layer.Heatmap.prototype.bindTo);
-
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
     'get',
     ol.layer.Heatmap.prototype.get);
 
@@ -127135,16 +123982,6 @@ goog.exportProperty(
     ol.layer.Heatmap.prototype,
     'setProperties',
     ol.layer.Heatmap.prototype.setProperties);
-
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'unbind',
-    ol.layer.Heatmap.prototype.unbind);
-
-goog.exportProperty(
-    ol.layer.Heatmap.prototype,
-    'unbindAll',
-    ol.layer.Heatmap.prototype.unbindAll);
 
 goog.exportProperty(
     ol.layer.Heatmap.prototype,
@@ -127278,11 +124115,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Image.prototype,
-    'bindTo',
-    ol.layer.Image.prototype.bindTo);
-
-goog.exportProperty(
-    ol.layer.Image.prototype,
     'get',
     ol.layer.Image.prototype.get);
 
@@ -127305,16 +124137,6 @@ goog.exportProperty(
     ol.layer.Image.prototype,
     'setProperties',
     ol.layer.Image.prototype.setProperties);
-
-goog.exportProperty(
-    ol.layer.Image.prototype,
-    'unbind',
-    ol.layer.Image.prototype.unbind);
-
-goog.exportProperty(
-    ol.layer.Image.prototype,
-    'unbindAll',
-    ol.layer.Image.prototype.unbindAll);
 
 goog.exportProperty(
     ol.layer.Image.prototype,
@@ -127443,11 +124265,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Group.prototype,
-    'bindTo',
-    ol.layer.Group.prototype.bindTo);
-
-goog.exportProperty(
-    ol.layer.Group.prototype,
     'get',
     ol.layer.Group.prototype.get);
 
@@ -127470,16 +124287,6 @@ goog.exportProperty(
     ol.layer.Group.prototype,
     'setProperties',
     ol.layer.Group.prototype.setProperties);
-
-goog.exportProperty(
-    ol.layer.Group.prototype,
-    'unbind',
-    ol.layer.Group.prototype.unbind);
-
-goog.exportProperty(
-    ol.layer.Group.prototype,
-    'unbindAll',
-    ol.layer.Group.prototype.unbindAll);
 
 goog.exportProperty(
     ol.layer.Group.prototype,
@@ -127613,11 +124420,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.Tile.prototype,
-    'bindTo',
-    ol.layer.Tile.prototype.bindTo);
-
-goog.exportProperty(
-    ol.layer.Tile.prototype,
     'get',
     ol.layer.Tile.prototype.get);
 
@@ -127640,16 +124442,6 @@ goog.exportProperty(
     ol.layer.Tile.prototype,
     'setProperties',
     ol.layer.Tile.prototype.setProperties);
-
-goog.exportProperty(
-    ol.layer.Tile.prototype,
-    'unbind',
-    ol.layer.Tile.prototype.unbind);
-
-goog.exportProperty(
-    ol.layer.Tile.prototype,
-    'unbindAll',
-    ol.layer.Tile.prototype.unbindAll);
 
 goog.exportProperty(
     ol.layer.Tile.prototype,
@@ -127688,11 +124480,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Interaction.prototype,
-    'bindTo',
-    ol.interaction.Interaction.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.Interaction.prototype,
     'get',
     ol.interaction.Interaction.prototype.get);
 
@@ -127715,16 +124502,6 @@ goog.exportProperty(
     ol.interaction.Interaction.prototype,
     'setProperties',
     ol.interaction.Interaction.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.Interaction.prototype,
-    'unbind',
-    ol.interaction.Interaction.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.Interaction.prototype,
-    'unbindAll',
-    ol.interaction.Interaction.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.Interaction.prototype,
@@ -127773,11 +124550,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DoubleClickZoom.prototype,
-    'bindTo',
-    ol.interaction.DoubleClickZoom.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.DoubleClickZoom.prototype,
     'get',
     ol.interaction.DoubleClickZoom.prototype.get);
 
@@ -127800,16 +124572,6 @@ goog.exportProperty(
     ol.interaction.DoubleClickZoom.prototype,
     'setProperties',
     ol.interaction.DoubleClickZoom.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.DoubleClickZoom.prototype,
-    'unbind',
-    ol.interaction.DoubleClickZoom.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.DoubleClickZoom.prototype,
-    'unbindAll',
-    ol.interaction.DoubleClickZoom.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.DoubleClickZoom.prototype,
@@ -127858,11 +124620,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragAndDrop.prototype,
-    'bindTo',
-    ol.interaction.DragAndDrop.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.DragAndDrop.prototype,
     'get',
     ol.interaction.DragAndDrop.prototype.get);
 
@@ -127885,16 +124642,6 @@ goog.exportProperty(
     ol.interaction.DragAndDrop.prototype,
     'setProperties',
     ol.interaction.DragAndDrop.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.DragAndDrop.prototype,
-    'unbind',
-    ol.interaction.DragAndDrop.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.DragAndDrop.prototype,
-    'unbindAll',
-    ol.interaction.DragAndDrop.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.DragAndDrop.prototype,
@@ -127943,11 +124690,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Pointer.prototype,
-    'bindTo',
-    ol.interaction.Pointer.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.Pointer.prototype,
     'get',
     ol.interaction.Pointer.prototype.get);
 
@@ -127970,16 +124712,6 @@ goog.exportProperty(
     ol.interaction.Pointer.prototype,
     'setProperties',
     ol.interaction.Pointer.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.Pointer.prototype,
-    'unbind',
-    ol.interaction.Pointer.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.Pointer.prototype,
-    'unbindAll',
-    ol.interaction.Pointer.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.Pointer.prototype,
@@ -128028,11 +124760,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragBox.prototype,
-    'bindTo',
-    ol.interaction.DragBox.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.DragBox.prototype,
     'get',
     ol.interaction.DragBox.prototype.get);
 
@@ -128055,16 +124782,6 @@ goog.exportProperty(
     ol.interaction.DragBox.prototype,
     'setProperties',
     ol.interaction.DragBox.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.DragBox.prototype,
-    'unbind',
-    ol.interaction.DragBox.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.DragBox.prototype,
-    'unbindAll',
-    ol.interaction.DragBox.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.DragBox.prototype,
@@ -128113,11 +124830,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragPan.prototype,
-    'bindTo',
-    ol.interaction.DragPan.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.DragPan.prototype,
     'get',
     ol.interaction.DragPan.prototype.get);
 
@@ -128140,16 +124852,6 @@ goog.exportProperty(
     ol.interaction.DragPan.prototype,
     'setProperties',
     ol.interaction.DragPan.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.DragPan.prototype,
-    'unbind',
-    ol.interaction.DragPan.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.DragPan.prototype,
-    'unbindAll',
-    ol.interaction.DragPan.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.DragPan.prototype,
@@ -128198,11 +124900,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragRotateAndZoom.prototype,
-    'bindTo',
-    ol.interaction.DragRotateAndZoom.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.DragRotateAndZoom.prototype,
     'get',
     ol.interaction.DragRotateAndZoom.prototype.get);
 
@@ -128225,16 +124922,6 @@ goog.exportProperty(
     ol.interaction.DragRotateAndZoom.prototype,
     'setProperties',
     ol.interaction.DragRotateAndZoom.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.DragRotateAndZoom.prototype,
-    'unbind',
-    ol.interaction.DragRotateAndZoom.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.DragRotateAndZoom.prototype,
-    'unbindAll',
-    ol.interaction.DragRotateAndZoom.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.DragRotateAndZoom.prototype,
@@ -128283,11 +124970,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragRotate.prototype,
-    'bindTo',
-    ol.interaction.DragRotate.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.DragRotate.prototype,
     'get',
     ol.interaction.DragRotate.prototype.get);
 
@@ -128310,16 +124992,6 @@ goog.exportProperty(
     ol.interaction.DragRotate.prototype,
     'setProperties',
     ol.interaction.DragRotate.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.DragRotate.prototype,
-    'unbind',
-    ol.interaction.DragRotate.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.DragRotate.prototype,
-    'unbindAll',
-    ol.interaction.DragRotate.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.DragRotate.prototype,
@@ -128373,11 +125045,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.DragZoom.prototype,
-    'bindTo',
-    ol.interaction.DragZoom.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.DragZoom.prototype,
     'get',
     ol.interaction.DragZoom.prototype.get);
 
@@ -128400,16 +125067,6 @@ goog.exportProperty(
     ol.interaction.DragZoom.prototype,
     'setProperties',
     ol.interaction.DragZoom.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.DragZoom.prototype,
-    'unbind',
-    ol.interaction.DragZoom.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.DragZoom.prototype,
-    'unbindAll',
-    ol.interaction.DragZoom.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.DragZoom.prototype,
@@ -128458,11 +125115,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Draw.prototype,
-    'bindTo',
-    ol.interaction.Draw.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.Draw.prototype,
     'get',
     ol.interaction.Draw.prototype.get);
 
@@ -128485,16 +125137,6 @@ goog.exportProperty(
     ol.interaction.Draw.prototype,
     'setProperties',
     ol.interaction.Draw.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.Draw.prototype,
-    'unbind',
-    ol.interaction.Draw.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.Draw.prototype,
-    'unbindAll',
-    ol.interaction.Draw.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.Draw.prototype,
@@ -128543,11 +125185,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.KeyboardPan.prototype,
-    'bindTo',
-    ol.interaction.KeyboardPan.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.KeyboardPan.prototype,
     'get',
     ol.interaction.KeyboardPan.prototype.get);
 
@@ -128570,16 +125207,6 @@ goog.exportProperty(
     ol.interaction.KeyboardPan.prototype,
     'setProperties',
     ol.interaction.KeyboardPan.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.KeyboardPan.prototype,
-    'unbind',
-    ol.interaction.KeyboardPan.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.KeyboardPan.prototype,
-    'unbindAll',
-    ol.interaction.KeyboardPan.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.KeyboardPan.prototype,
@@ -128628,11 +125255,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.KeyboardZoom.prototype,
-    'bindTo',
-    ol.interaction.KeyboardZoom.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.KeyboardZoom.prototype,
     'get',
     ol.interaction.KeyboardZoom.prototype.get);
 
@@ -128655,16 +125277,6 @@ goog.exportProperty(
     ol.interaction.KeyboardZoom.prototype,
     'setProperties',
     ol.interaction.KeyboardZoom.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.KeyboardZoom.prototype,
-    'unbind',
-    ol.interaction.KeyboardZoom.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.KeyboardZoom.prototype,
-    'unbindAll',
-    ol.interaction.KeyboardZoom.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.KeyboardZoom.prototype,
@@ -128713,11 +125325,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Modify.prototype,
-    'bindTo',
-    ol.interaction.Modify.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.Modify.prototype,
     'get',
     ol.interaction.Modify.prototype.get);
 
@@ -128740,16 +125347,6 @@ goog.exportProperty(
     ol.interaction.Modify.prototype,
     'setProperties',
     ol.interaction.Modify.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.Modify.prototype,
-    'unbind',
-    ol.interaction.Modify.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.Modify.prototype,
-    'unbindAll',
-    ol.interaction.Modify.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.Modify.prototype,
@@ -128798,11 +125395,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.MouseWheelZoom.prototype,
-    'bindTo',
-    ol.interaction.MouseWheelZoom.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.MouseWheelZoom.prototype,
     'get',
     ol.interaction.MouseWheelZoom.prototype.get);
 
@@ -128825,16 +125417,6 @@ goog.exportProperty(
     ol.interaction.MouseWheelZoom.prototype,
     'setProperties',
     ol.interaction.MouseWheelZoom.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.MouseWheelZoom.prototype,
-    'unbind',
-    ol.interaction.MouseWheelZoom.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.MouseWheelZoom.prototype,
-    'unbindAll',
-    ol.interaction.MouseWheelZoom.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.MouseWheelZoom.prototype,
@@ -128883,11 +125465,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.PinchRotate.prototype,
-    'bindTo',
-    ol.interaction.PinchRotate.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.PinchRotate.prototype,
     'get',
     ol.interaction.PinchRotate.prototype.get);
 
@@ -128910,16 +125487,6 @@ goog.exportProperty(
     ol.interaction.PinchRotate.prototype,
     'setProperties',
     ol.interaction.PinchRotate.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.PinchRotate.prototype,
-    'unbind',
-    ol.interaction.PinchRotate.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.PinchRotate.prototype,
-    'unbindAll',
-    ol.interaction.PinchRotate.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.PinchRotate.prototype,
@@ -128968,11 +125535,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.PinchZoom.prototype,
-    'bindTo',
-    ol.interaction.PinchZoom.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.PinchZoom.prototype,
     'get',
     ol.interaction.PinchZoom.prototype.get);
 
@@ -128995,16 +125557,6 @@ goog.exportProperty(
     ol.interaction.PinchZoom.prototype,
     'setProperties',
     ol.interaction.PinchZoom.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.PinchZoom.prototype,
-    'unbind',
-    ol.interaction.PinchZoom.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.PinchZoom.prototype,
-    'unbindAll',
-    ol.interaction.PinchZoom.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.PinchZoom.prototype,
@@ -129053,11 +125605,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Select.prototype,
-    'bindTo',
-    ol.interaction.Select.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.Select.prototype,
     'get',
     ol.interaction.Select.prototype.get);
 
@@ -129080,16 +125627,6 @@ goog.exportProperty(
     ol.interaction.Select.prototype,
     'setProperties',
     ol.interaction.Select.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.Select.prototype,
-    'unbind',
-    ol.interaction.Select.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.Select.prototype,
-    'unbindAll',
-    ol.interaction.Select.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.Select.prototype,
@@ -129138,11 +125675,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Snap.prototype,
-    'bindTo',
-    ol.interaction.Snap.prototype.bindTo);
-
-goog.exportProperty(
-    ol.interaction.Snap.prototype,
     'get',
     ol.interaction.Snap.prototype.get);
 
@@ -129165,16 +125697,6 @@ goog.exportProperty(
     ol.interaction.Snap.prototype,
     'setProperties',
     ol.interaction.Snap.prototype.setProperties);
-
-goog.exportProperty(
-    ol.interaction.Snap.prototype,
-    'unbind',
-    ol.interaction.Snap.prototype.unbind);
-
-goog.exportProperty(
-    ol.interaction.Snap.prototype,
-    'unbindAll',
-    ol.interaction.Snap.prototype.unbindAll);
 
 goog.exportProperty(
     ol.interaction.Snap.prototype,
@@ -129213,11 +125735,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Geometry.prototype,
-    'bindTo',
-    ol.geom.Geometry.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
     'get',
     ol.geom.Geometry.prototype.get);
 
@@ -129240,16 +125757,6 @@ goog.exportProperty(
     ol.geom.Geometry.prototype,
     'setProperties',
     ol.geom.Geometry.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
-    'unbind',
-    ol.geom.Geometry.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.Geometry.prototype,
-    'unbindAll',
-    ol.geom.Geometry.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.Geometry.prototype,
@@ -129298,11 +125805,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
-    'bindTo',
-    ol.geom.SimpleGeometry.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
     'get',
     ol.geom.SimpleGeometry.prototype.get);
 
@@ -129325,16 +125827,6 @@ goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
     'setProperties',
     ol.geom.SimpleGeometry.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
-    'unbind',
-    ol.geom.SimpleGeometry.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.SimpleGeometry.prototype,
-    'unbindAll',
-    ol.geom.SimpleGeometry.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
@@ -129408,11 +125900,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
-    'bindTo',
-    ol.geom.Circle.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.Circle.prototype,
     'get',
     ol.geom.Circle.prototype.get);
 
@@ -129435,16 +125922,6 @@ goog.exportProperty(
     ol.geom.Circle.prototype,
     'setProperties',
     ol.geom.Circle.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.Circle.prototype,
-    'unbind',
-    ol.geom.Circle.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.Circle.prototype,
-    'unbindAll',
-    ol.geom.Circle.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
@@ -129493,11 +125970,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
-    'bindTo',
-    ol.geom.GeometryCollection.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.GeometryCollection.prototype,
     'get',
     ol.geom.GeometryCollection.prototype.get);
 
@@ -129520,16 +125992,6 @@ goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
     'setProperties',
     ol.geom.GeometryCollection.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.GeometryCollection.prototype,
-    'unbind',
-    ol.geom.GeometryCollection.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.GeometryCollection.prototype,
-    'unbindAll',
-    ol.geom.GeometryCollection.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
@@ -129603,11 +126065,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
-    'bindTo',
-    ol.geom.LinearRing.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
     'get',
     ol.geom.LinearRing.prototype.get);
 
@@ -129630,16 +126087,6 @@ goog.exportProperty(
     ol.geom.LinearRing.prototype,
     'setProperties',
     ol.geom.LinearRing.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
-    'unbind',
-    ol.geom.LinearRing.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
-    'unbindAll',
-    ol.geom.LinearRing.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
@@ -129713,11 +126160,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
-    'bindTo',
-    ol.geom.LineString.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.LineString.prototype,
     'get',
     ol.geom.LineString.prototype.get);
 
@@ -129740,16 +126182,6 @@ goog.exportProperty(
     ol.geom.LineString.prototype,
     'setProperties',
     ol.geom.LineString.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.LineString.prototype,
-    'unbind',
-    ol.geom.LineString.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.LineString.prototype,
-    'unbindAll',
-    ol.geom.LineString.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
@@ -129823,11 +126255,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
-    'bindTo',
-    ol.geom.MultiLineString.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.MultiLineString.prototype,
     'get',
     ol.geom.MultiLineString.prototype.get);
 
@@ -129850,16 +126277,6 @@ goog.exportProperty(
     ol.geom.MultiLineString.prototype,
     'setProperties',
     ol.geom.MultiLineString.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.MultiLineString.prototype,
-    'unbind',
-    ol.geom.MultiLineString.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.MultiLineString.prototype,
-    'unbindAll',
-    ol.geom.MultiLineString.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
@@ -129933,11 +126350,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
-    'bindTo',
-    ol.geom.MultiPoint.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.MultiPoint.prototype,
     'get',
     ol.geom.MultiPoint.prototype.get);
 
@@ -129960,16 +126372,6 @@ goog.exportProperty(
     ol.geom.MultiPoint.prototype,
     'setProperties',
     ol.geom.MultiPoint.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.MultiPoint.prototype,
-    'unbind',
-    ol.geom.MultiPoint.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.MultiPoint.prototype,
-    'unbindAll',
-    ol.geom.MultiPoint.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
@@ -130043,11 +126445,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
-    'bindTo',
-    ol.geom.MultiPolygon.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.MultiPolygon.prototype,
     'get',
     ol.geom.MultiPolygon.prototype.get);
 
@@ -130070,16 +126467,6 @@ goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
     'setProperties',
     ol.geom.MultiPolygon.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.MultiPolygon.prototype,
-    'unbind',
-    ol.geom.MultiPolygon.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.MultiPolygon.prototype,
-    'unbindAll',
-    ol.geom.MultiPolygon.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
@@ -130153,11 +126540,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Point.prototype,
-    'bindTo',
-    ol.geom.Point.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.Point.prototype,
     'get',
     ol.geom.Point.prototype.get);
 
@@ -130180,16 +126562,6 @@ goog.exportProperty(
     ol.geom.Point.prototype,
     'setProperties',
     ol.geom.Point.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.Point.prototype,
-    'unbind',
-    ol.geom.Point.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.Point.prototype,
-    'unbindAll',
-    ol.geom.Point.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.Point.prototype,
@@ -130263,11 +126635,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
-    'bindTo',
-    ol.geom.Polygon.prototype.bindTo);
-
-goog.exportProperty(
-    ol.geom.Polygon.prototype,
     'get',
     ol.geom.Polygon.prototype.get);
 
@@ -130290,16 +126657,6 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'setProperties',
     ol.geom.Polygon.prototype.setProperties);
-
-goog.exportProperty(
-    ol.geom.Polygon.prototype,
-    'unbind',
-    ol.geom.Polygon.prototype.unbind);
-
-goog.exportProperty(
-    ol.geom.Polygon.prototype,
-    'unbindAll',
-    ol.geom.Polygon.prototype.unbindAll);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
@@ -130352,86 +126709,6 @@ goog.exportProperty(
     ol.format.GML.prototype.readFeatures);
 
 goog.exportProperty(
-    ol.dom.Input.prototype,
-    'bindTo',
-    ol.dom.Input.prototype.bindTo);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'get',
-    ol.dom.Input.prototype.get);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'getKeys',
-    ol.dom.Input.prototype.getKeys);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'getProperties',
-    ol.dom.Input.prototype.getProperties);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'set',
-    ol.dom.Input.prototype.set);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'setProperties',
-    ol.dom.Input.prototype.setProperties);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'unbind',
-    ol.dom.Input.prototype.unbind);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'unbindAll',
-    ol.dom.Input.prototype.unbindAll);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'unset',
-    ol.dom.Input.prototype.unset);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'changed',
-    ol.dom.Input.prototype.changed);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'getRevision',
-    ol.dom.Input.prototype.getRevision);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'on',
-    ol.dom.Input.prototype.on);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'once',
-    ol.dom.Input.prototype.once);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'un',
-    ol.dom.Input.prototype.un);
-
-goog.exportProperty(
-    ol.dom.Input.prototype,
-    'unByKey',
-    ol.dom.Input.prototype.unByKey);
-
-goog.exportProperty(
-    ol.control.Control.prototype,
-    'bindTo',
-    ol.control.Control.prototype.bindTo);
-
-goog.exportProperty(
     ol.control.Control.prototype,
     'get',
     ol.control.Control.prototype.get);
@@ -130455,16 +126732,6 @@ goog.exportProperty(
     ol.control.Control.prototype,
     'setProperties',
     ol.control.Control.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.Control.prototype,
-    'unbind',
-    ol.control.Control.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.Control.prototype,
-    'unbindAll',
-    ol.control.Control.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.Control.prototype,
@@ -130518,11 +126785,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.Attribution.prototype,
-    'bindTo',
-    ol.control.Attribution.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.Attribution.prototype,
     'get',
     ol.control.Attribution.prototype.get);
 
@@ -130545,16 +126807,6 @@ goog.exportProperty(
     ol.control.Attribution.prototype,
     'setProperties',
     ol.control.Attribution.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.Attribution.prototype,
-    'unbind',
-    ol.control.Attribution.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.Attribution.prototype,
-    'unbindAll',
-    ol.control.Attribution.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.Attribution.prototype,
@@ -130608,11 +126860,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.FullScreen.prototype,
-    'bindTo',
-    ol.control.FullScreen.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.FullScreen.prototype,
     'get',
     ol.control.FullScreen.prototype.get);
 
@@ -130635,16 +126882,6 @@ goog.exportProperty(
     ol.control.FullScreen.prototype,
     'setProperties',
     ol.control.FullScreen.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.FullScreen.prototype,
-    'unbind',
-    ol.control.FullScreen.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.FullScreen.prototype,
-    'unbindAll',
-    ol.control.FullScreen.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.FullScreen.prototype,
@@ -130693,11 +126930,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.MousePosition.prototype,
-    'bindTo',
-    ol.control.MousePosition.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.MousePosition.prototype,
     'get',
     ol.control.MousePosition.prototype.get);
 
@@ -130720,16 +126952,6 @@ goog.exportProperty(
     ol.control.MousePosition.prototype,
     'setProperties',
     ol.control.MousePosition.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.MousePosition.prototype,
-    'unbind',
-    ol.control.MousePosition.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.MousePosition.prototype,
-    'unbindAll',
-    ol.control.MousePosition.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.MousePosition.prototype,
@@ -130778,11 +127000,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.OverviewMap.prototype,
-    'bindTo',
-    ol.control.OverviewMap.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.OverviewMap.prototype,
     'get',
     ol.control.OverviewMap.prototype.get);
 
@@ -130805,16 +127022,6 @@ goog.exportProperty(
     ol.control.OverviewMap.prototype,
     'setProperties',
     ol.control.OverviewMap.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.OverviewMap.prototype,
-    'unbind',
-    ol.control.OverviewMap.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.OverviewMap.prototype,
-    'unbindAll',
-    ol.control.OverviewMap.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.OverviewMap.prototype,
@@ -130868,11 +127075,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.Rotate.prototype,
-    'bindTo',
-    ol.control.Rotate.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.Rotate.prototype,
     'get',
     ol.control.Rotate.prototype.get);
 
@@ -130895,16 +127097,6 @@ goog.exportProperty(
     ol.control.Rotate.prototype,
     'setProperties',
     ol.control.Rotate.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.Rotate.prototype,
-    'unbind',
-    ol.control.Rotate.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.Rotate.prototype,
-    'unbindAll',
-    ol.control.Rotate.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.Rotate.prototype,
@@ -130958,11 +127150,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.ScaleLine.prototype,
-    'bindTo',
-    ol.control.ScaleLine.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.ScaleLine.prototype,
     'get',
     ol.control.ScaleLine.prototype.get);
 
@@ -130985,16 +127172,6 @@ goog.exportProperty(
     ol.control.ScaleLine.prototype,
     'setProperties',
     ol.control.ScaleLine.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.ScaleLine.prototype,
-    'unbind',
-    ol.control.ScaleLine.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.ScaleLine.prototype,
-    'unbindAll',
-    ol.control.ScaleLine.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.ScaleLine.prototype,
@@ -131048,11 +127225,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.Zoom.prototype,
-    'bindTo',
-    ol.control.Zoom.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.Zoom.prototype,
     'get',
     ol.control.Zoom.prototype.get);
 
@@ -131075,16 +127247,6 @@ goog.exportProperty(
     ol.control.Zoom.prototype,
     'setProperties',
     ol.control.Zoom.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.Zoom.prototype,
-    'unbind',
-    ol.control.Zoom.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.Zoom.prototype,
-    'unbindAll',
-    ol.control.Zoom.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.Zoom.prototype,
@@ -131133,11 +127295,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.ZoomSlider.prototype,
-    'bindTo',
-    ol.control.ZoomSlider.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.ZoomSlider.prototype,
     'get',
     ol.control.ZoomSlider.prototype.get);
 
@@ -131160,16 +127317,6 @@ goog.exportProperty(
     ol.control.ZoomSlider.prototype,
     'setProperties',
     ol.control.ZoomSlider.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.ZoomSlider.prototype,
-    'unbind',
-    ol.control.ZoomSlider.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.ZoomSlider.prototype,
-    'unbindAll',
-    ol.control.ZoomSlider.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.ZoomSlider.prototype,
@@ -131223,11 +127370,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
-    'bindTo',
-    ol.control.ZoomToExtent.prototype.bindTo);
-
-goog.exportProperty(
-    ol.control.ZoomToExtent.prototype,
     'get',
     ol.control.ZoomToExtent.prototype.get);
 
@@ -131250,16 +127392,6 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'setProperties',
     ol.control.ZoomToExtent.prototype.setProperties);
-
-goog.exportProperty(
-    ol.control.ZoomToExtent.prototype,
-    'unbind',
-    ol.control.ZoomToExtent.prototype.unbind);
-
-goog.exportProperty(
-    ol.control.ZoomToExtent.prototype,
-    'unbindAll',
-    ol.control.ZoomToExtent.prototype.unbindAll);
 
 goog.exportProperty(
     ol.control.ZoomToExtent.prototype,

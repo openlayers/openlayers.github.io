@@ -77,8 +77,11 @@ var map = new ol.Map({
 });
 
 
-var unitsSelect = new ol.dom.Input(document.getElementById(&#x27;units&#x27;));
-unitsSelect.bindTo(&#x27;value&#x27;, scaleLineControl, &#x27;units&#x27;);
+var unitsSelect = $(&#x27;#units&#x27;);
+unitsSelect.on(&#x27;change&#x27;, function() {
+  scaleLineControl.setUnits(this.value);
+});
+unitsSelect.val(scaleLineControl.getUnits());
 </textarea>
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
@@ -148,8 +151,11 @@ var map = new ol.Map({
 });
 
 
-var unitsSelect = new ol.dom.Input(document.getElementById(&#x27;units&#x27;));
-unitsSelect.bindTo(&#x27;value&#x27;, scaleLineControl, &#x27;units&#x27;);
+var unitsSelect = $(&#x27;#units&#x27;);
+unitsSelect.on(&#x27;change&#x27;, function() {
+  scaleLineControl.setUnits(this.value);
+});
+unitsSelect.val(scaleLineControl.getUnits());
 
 &lt;/script&gt;
 &lt;/body&gt;

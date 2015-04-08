@@ -1,6 +1,6 @@
-var vectorSource = new ol.source.GeoJSON({
-  projection: 'EPSG:3857',
-  url: 'data/geojson/countries.geojson'
+var vectorSource = new ol.source.Vector({
+  url: 'data/geojson/countries.geojson',
+  format: new ol.format.GeoJSON()
 });
 
 

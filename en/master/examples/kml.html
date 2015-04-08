@@ -68,9 +68,9 @@ var raster = new ol.layer.Tile({
 });
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.KML({
-    projection: projection,
-    url: &#x27;data/kml/2012-02-10.kml&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/kml/2012-02-10.kml&#x27;,
+    format: new ol.format.KML()
   })
 });
 
@@ -202,9 +202,9 @@ var raster = new ol.layer.Tile({
 });
 
 var vector = new ol.layer.Vector({
-  source: new ol.source.KML({
-    projection: projection,
-    url: &#x27;data/kml/2012-02-10.kml&#x27;
+  source: new ol.source.Vector({
+    url: &#x27;data/kml/2012-02-10.kml&#x27;,
+    format: new ol.format.KML()
   })
 });
 

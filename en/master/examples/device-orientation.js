@@ -22,8 +22,10 @@ var map = new ol.Map({
 });
 
 var deviceOrientation = new ol.DeviceOrientation();
-var track = new ol.dom.Input(document.getElementById('track'));
-track.bindTo('checked', deviceOrientation, 'tracking');
+
+$('#track').on('change', function() {
+  deviceOrientation.setTracking(this.checked);
+});
 
 deviceOrientation.on('change', function(event) {
   $('#alpha').text(deviceOrientation.getAlpha() + ' [rad]');
