@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-248-gb5a0ca0
+// Version: v3.4.0-259-gee67a9d
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -45589,6 +45589,7 @@ ol.pointer.TouchSource.prototype.dedupSynthMouse_ = function(inEvent) {
 goog.provide('ol.pointer.PointerEventHandler');
 
 goog.require('goog.array');
+goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.BrowserEvent');
 goog.require('goog.events.Event');
@@ -45925,7 +45926,10 @@ ol.pointer.PointerEventHandler.prototype.enterOver =
  */
 ol.pointer.PointerEventHandler.prototype.contains_ =
     function(container, contained) {
-  return container.contains(contained);
+  if (goog.isNull(contained)) {
+    return false;
+  }
+  return goog.dom.contains(container, contained);
 };
 
 
@@ -56771,23 +56775,21 @@ ol.layer.Group.prototype.handleLayersChanged_ = function(event) {
   }
 
   var layers = this.getLayers();
-  if (goog.isDefAndNotNull(layers)) {
-    this.listenerKeys_ = {
-      'add': goog.events.listen(layers, ol.CollectionEventType.ADD,
-          this.handleLayersAdd_, false, this),
-      'remove': goog.events.listen(layers, ol.CollectionEventType.REMOVE,
-          this.handleLayersRemove_, false, this)
-    };
+  this.listenerKeys_ = {
+    'add': goog.events.listen(layers, ol.CollectionEventType.ADD,
+        this.handleLayersAdd_, false, this),
+    'remove': goog.events.listen(layers, ol.CollectionEventType.REMOVE,
+        this.handleLayersRemove_, false, this)
+  };
 
-    var layersArray = layers.getArray();
-    var i, ii, layer;
-    for (i = 0, ii = layersArray.length; i < ii; i++) {
-      layer = layersArray[i];
-      this.listenerKeys_[goog.getUid(layer).toString()] =
-          goog.events.listen(layer,
-              [ol.ObjectEventType.PROPERTYCHANGE, goog.events.EventType.CHANGE],
-              this.handleLayerChange_, false, this);
-    }
+  var layersArray = layers.getArray();
+  var i, ii, layer;
+  for (i = 0, ii = layersArray.length; i < ii; i++) {
+    layer = layersArray[i];
+    this.listenerKeys_[goog.getUid(layer).toString()] =
+        goog.events.listen(layer,
+            [ol.ObjectEventType.PROPERTYCHANGE, goog.events.EventType.CHANGE],
+            this.handleLayerChange_, false, this);
   }
 
   this.changed();
@@ -79564,6 +79566,7 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
 
   var gl = this.mapRenderer.getGL();
 
+  var pixelRatio = frameState.pixelRatio;
   var viewState = frameState.viewState;
   var viewCenter = viewState.center;
   var viewResolution = viewState.resolution;
@@ -79593,7 +79596,7 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
       projection = sourceProjection;
     }
     var image_ = imageSource.getImage(renderedExtent, viewResolution,
-        frameState.pixelRatio, projection);
+        pixelRatio, projection);
     if (!goog.isNull(image_)) {
       var loaded = this.loadImage(image_);
       if (loaded) {
@@ -79622,7 +79625,8 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
     var canvas = this.mapRenderer.getContext().getCanvas();
 
     this.updateProjectionMatrix_(canvas.width, canvas.height,
-        viewCenter, viewResolution, viewRotation, image.getExtent());
+        pixelRatio, viewCenter, viewResolution, viewRotation,
+        image.getExtent());
     this.hitTransformationMatrix_ = null;
 
     // Translate and scale to flip the Y coord.
@@ -79645,6 +79649,7 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
 /**
  * @param {number} canvasWidth Canvas width.
  * @param {number} canvasHeight Canvas height.
+ * @param {number} pixelRatio Pixel ratio.
  * @param {ol.Coordinate} viewCenter View center.
  * @param {number} viewResolution View resolution.
  * @param {number} viewRotation View rotation.
@@ -79652,8 +79657,8 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame =
  * @private
  */
 ol.renderer.webgl.ImageLayer.prototype.updateProjectionMatrix_ =
-    function(canvasWidth, canvasHeight, viewCenter,
-        viewResolution, viewRotation, imageExtent) {
+    function(canvasWidth, canvasHeight, pixelRatio,
+        viewCenter, viewResolution, viewRotation, imageExtent) {
 
   var canvasExtentWidth = canvasWidth * viewResolution;
   var canvasExtentHeight = canvasHeight * viewResolution;
@@ -79661,7 +79666,8 @@ ol.renderer.webgl.ImageLayer.prototype.updateProjectionMatrix_ =
   var projectionMatrix = this.projectionMatrix;
   goog.vec.Mat4.makeIdentity(projectionMatrix);
   goog.vec.Mat4.scale(projectionMatrix,
-      2 / canvasExtentWidth, 2 / canvasExtentHeight, 1);
+      pixelRatio * 2 / canvasExtentWidth,
+      pixelRatio * 2 / canvasExtentHeight, 1);
   goog.vec.Mat4.rotateZ(projectionMatrix, -viewRotation);
   goog.vec.Mat4.translate(projectionMatrix,
       imageExtent[0] - viewCenter[0],
@@ -89341,8 +89347,8 @@ ol.format.JSONFeature.prototype.writeGeometry = function(
  */
 ol.format.JSONFeature.prototype.writeGeometryObject = goog.abstractMethod;
 
-// FIXME coordinate order
-// FIXME reprojection
+// TODO: serialize dataProjection as crs member when writing
+// see https://github.com/openlayers/ol3/issues/2078
 
 goog.provide('ol.format.GeoJSON');
 
