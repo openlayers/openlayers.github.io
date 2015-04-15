@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-283-g8b0179b
+// Version: v3.4.0-291-g31cebc7
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -113368,7 +113368,7 @@ ol.source.TileUTFGridTile_.prototype.getImage = function(opt_context) {
  */
 ol.source.TileUTFGridTile_.prototype.getData = function(coordinate) {
   if (goog.isNull(this.grid_) || goog.isNull(this.keys_) ||
-      goog.isNull(this.data_)) {
+      !goog.isDefAndNotNull(this.data_)) {
     return null;
   }
   var xRelative = (coordinate[0] - this.extent_[0]) /
