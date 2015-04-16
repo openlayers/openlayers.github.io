@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-291-g31cebc7
+// Version: v3.4.0-302-gab9846f
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -13319,12 +13319,32 @@ goog.provide('ol.Size');
 goog.provide('ol.size');
 
 
+goog.require('goog.asserts');
+
+
 /**
  * An array of numbers representing a size: `[width, height]`.
  * @typedef {Array.<number>}
  * @api stable
  */
 ol.Size;
+
+
+/**
+ * Returns a buffered size.
+ * @param {ol.Size} size Size.
+ * @param {number} buffer Buffer.
+ * @param {ol.Size=} opt_size Optional reusable size array.
+ * @return {ol.Size}
+ */
+ol.size.buffer = function(size, buffer, opt_size) {
+  if (!goog.isDef(opt_size)) {
+    opt_size = [0, 0];
+  }
+  opt_size[0] = size[0] + 2 * buffer;
+  opt_size[1] = size[1] + 2 * buffer;
+  return opt_size;
+};
 
 
 /**
@@ -13335,6 +13355,48 @@ ol.Size;
  */
 ol.size.equals = function(a, b) {
   return a[0] == b[0] && a[1] == b[1];
+};
+
+
+/**
+ * Returns a size scaled by a ratio. The result will be an array of integers.
+ * @param {ol.Size} size Size.
+ * @param {number} ratio Ratio.
+ * @param {ol.Size=} opt_size Optional reusable size array.
+ * @return {ol.Size}
+ */
+ol.size.scale = function(size, ratio, opt_size) {
+  if (!goog.isDef(opt_size)) {
+    opt_size = [0, 0];
+  }
+  opt_size[0] = (size[0] * ratio + 0.5) | 0;
+  opt_size[1] = (size[1] * ratio + 0.5) | 0;
+  return opt_size;
+};
+
+
+/**
+ * Returns an `ol.Size` array for the passed in number (meaning: square) or
+ * `ol.Size` array.
+ * (meaning: non-square),
+ * @param {number|ol.Size} size Width and height.
+ * @param {ol.Size=} opt_size Optional reusable size array.
+ * @return {ol.Size} Size.
+ * @api stable
+ */
+ol.size.toSize = function(size, opt_size) {
+  if (goog.isArray(size)) {
+    return size;
+  } else {
+    goog.asserts.assert(goog.isNumber(size));
+    if (!goog.isDef(opt_size)) {
+      opt_size = [size, size];
+    } else {
+      opt_size[0] = size;
+      opt_size[1] = size;
+    }
+    return opt_size;
+  }
 };
 
 goog.provide('ol.Coordinate');
@@ -34345,6 +34407,7 @@ goog.require('ol.proj');
 goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Projection');
 goog.require('ol.proj.Units');
+goog.require('ol.size');
 goog.require('ol.tilecoord');
 
 
@@ -34405,7 +34468,7 @@ ol.tilegrid.TileGrid = function(options) {
 
   /**
    * @private
-   * @type {Array.<number>}
+   * @type {Array.<number|ol.Size>}
    */
   this.tileSizes_ = null;
   if (goog.isDef(options.tileSizes)) {
@@ -34416,15 +34479,22 @@ ol.tilegrid.TileGrid = function(options) {
 
   /**
    * @private
-   * @type {number|undefined}
+   * @type {number|ol.Size}
    */
   this.tileSize_ = goog.isDef(options.tileSize) ?
       options.tileSize :
-      goog.isNull(this.tileSizes_) ? ol.DEFAULT_TILE_SIZE : undefined;
+      goog.isNull(this.tileSizes_) ? ol.DEFAULT_TILE_SIZE : null;
   goog.asserts.assert(
-      (!goog.isDef(this.tileSize_) && !goog.isNull(this.tileSizes_)) ||
-      (goog.isDef(this.tileSize_) && goog.isNull(this.tileSizes_)),
+      (goog.isNull(this.tileSize_) && !goog.isNull(this.tileSizes_)) ||
+      (!goog.isNull(this.tileSize_) && goog.isNull(this.tileSizes_)),
       'either tileSize or tileSizes must be configured, never both');
+
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.tmpSize_ = [0, 0];
 
   /**
    * @private
@@ -34575,11 +34645,11 @@ ol.tilegrid.TileGrid.prototype.getTileRangeExtent =
     function(z, tileRange, opt_extent) {
   var origin = this.getOrigin(z);
   var resolution = this.getResolution(z);
-  var tileSize = this.getTileSize(z);
-  var minX = origin[0] + tileRange.minX * tileSize * resolution;
-  var maxX = origin[0] + (tileRange.maxX + 1) * tileSize * resolution;
-  var minY = origin[1] + tileRange.minY * tileSize * resolution;
-  var maxY = origin[1] + (tileRange.maxY + 1) * tileSize * resolution;
+  var tileSize = ol.size.toSize(this.getTileSize(z), this.tmpSize_);
+  var minX = origin[0] + tileRange.minX * tileSize[0] * resolution;
+  var maxX = origin[0] + (tileRange.maxX + 1) * tileSize[0] * resolution;
+  var minY = origin[1] + tileRange.minY * tileSize[1] * resolution;
+  var maxY = origin[1] + (tileRange.maxY + 1) * tileSize[1] * resolution;
   return ol.extent.createOrUpdate(minX, minY, maxX, maxY, opt_extent);
 };
 
@@ -34625,10 +34695,10 @@ ol.tilegrid.TileGrid.prototype.getTileRangeForExtentAndZ =
 ol.tilegrid.TileGrid.prototype.getTileCoordCenter = function(tileCoord) {
   var origin = this.getOrigin(tileCoord[0]);
   var resolution = this.getResolution(tileCoord[0]);
-  var tileSize = this.getTileSize(tileCoord[0]);
+  var tileSize = ol.size.toSize(this.getTileSize(tileCoord[0]), this.tmpSize_);
   return [
-    origin[0] + (tileCoord[1] + 0.5) * tileSize * resolution,
-    origin[1] + (tileCoord[2] + 0.5) * tileSize * resolution
+    origin[0] + (tileCoord[1] + 0.5) * tileSize[0] * resolution,
+    origin[1] + (tileCoord[2] + 0.5) * tileSize[1] * resolution
   ];
 };
 
@@ -34642,11 +34712,11 @@ ol.tilegrid.TileGrid.prototype.getTileCoordExtent =
     function(tileCoord, opt_extent) {
   var origin = this.getOrigin(tileCoord[0]);
   var resolution = this.getResolution(tileCoord[0]);
-  var tileSize = this.getTileSize(tileCoord[0]);
-  var minX = origin[0] + tileCoord[1] * tileSize * resolution;
-  var minY = origin[1] + tileCoord[2] * tileSize * resolution;
-  var maxX = minX + tileSize * resolution;
-  var maxY = minY + tileSize * resolution;
+  var tileSize = ol.size.toSize(this.getTileSize(tileCoord[0]), this.tmpSize_);
+  var minX = origin[0] + tileCoord[1] * tileSize[0] * resolution;
+  var minY = origin[1] + tileCoord[2] * tileSize[1] * resolution;
+  var maxX = minX + tileSize[0] * resolution;
+  var maxY = minY + tileSize[1] * resolution;
   return ol.extent.createOrUpdate(minX, minY, maxX, maxY, opt_extent);
 };
 
@@ -34685,10 +34755,10 @@ ol.tilegrid.TileGrid.prototype.getTileCoordForXYAndResolution_ = function(
   var z = this.getZForResolution(resolution);
   var scale = resolution / this.getResolution(z);
   var origin = this.getOrigin(z);
-  var tileSize = this.getTileSize(z);
+  var tileSize = ol.size.toSize(this.getTileSize(z), this.tmpSize_);
 
-  var tileCoordX = scale * (x - origin[0]) / (resolution * tileSize);
-  var tileCoordY = scale * (y - origin[1]) / (resolution * tileSize);
+  var tileCoordX = scale * (x - origin[0]) / (resolution * tileSize[0]);
+  var tileCoordY = scale * (y - origin[1]) / (resolution * tileSize[1]);
 
   if (reverseIntersectionPolicy) {
     tileCoordX = Math.ceil(tileCoordX) - 1;
@@ -34751,9 +34821,11 @@ ol.tilegrid.TileGrid.prototype.getTileRange =
 
 
 /**
- * Get the tile size for a zoom level.
+ * Get the tile size for a zoom level. The type of the return value matches the
+ * `tileSize` or `tileSizes` that the tile grid was configured with. To always
+ * get an `ol.Size`, run the result through `ol.size.toSize()`.
  * @param {number} z Z.
- * @return {number} Tile size.
+ * @return {number|ol.Size} Tile size.
  * @api stable
  */
 ol.tilegrid.TileGrid.prototype.getTileSize = function(z) {
@@ -34806,7 +34878,7 @@ ol.tilegrid.TileGrid.prototype.isGlobal = function(z, projection) {
   if (goog.isDef(width)) {
     var projTileGrid = ol.tilegrid.getForProjection(projection);
     var projExtent = projection.getExtent();
-    return this.getTileSize(z) * width ==
+    return ol.size.toSize(this.getTileSize(z), this.tmpSize_)[0] * width ==
         projTileGrid.getTileSize(z) *
         projTileGrid.getTileRangeForExtentAndZ(projExtent, z).getWidth();
   } else {
@@ -34833,7 +34905,8 @@ ol.tilegrid.getForProjection = function(projection) {
  * @param {ol.Extent} extent Extent.
  * @param {number=} opt_maxZoom Maximum zoom level (default is
  *     ol.DEFAULT_MAX_ZOOM).
- * @param {number=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
+ * @param {number|ol.Size=} opt_tileSize Tile size (default uses
+ *     ol.DEFAULT_TILE_SIZE).
  * @param {ol.extent.Corner=} opt_corner Extent corner (default is
  *     ol.extent.Corner.BOTTOM_LEFT).
  * @return {ol.tilegrid.TileGrid} TileGrid instance.
@@ -34841,24 +34914,24 @@ ol.tilegrid.getForProjection = function(projection) {
 ol.tilegrid.createForExtent =
     function(extent, opt_maxZoom, opt_tileSize, opt_corner) {
   var tileSize = goog.isDef(opt_tileSize) ?
-      opt_tileSize : ol.DEFAULT_TILE_SIZE;
+      ol.size.toSize(opt_tileSize) : ol.size.toSize(ol.DEFAULT_TILE_SIZE);
 
   var corner = goog.isDef(opt_corner) ?
       opt_corner : ol.extent.Corner.BOTTOM_LEFT;
 
   var resolutions = ol.tilegrid.resolutionsFromExtent(
-      extent, opt_maxZoom, tileSize);
+      extent, opt_maxZoom, ol.size.toSize(tileSize));
 
   var widths = new Array(resolutions.length);
   var extentWidth = ol.extent.getWidth(extent);
   for (var z = resolutions.length - 1; z >= 0; --z) {
-    widths[z] = extentWidth / tileSize / resolutions[z];
+    widths[z] = extentWidth / tileSize[0] / resolutions[z];
   }
 
   return new ol.tilegrid.TileGrid({
     origin: ol.extent.getCorner(extent, corner),
     resolutions: resolutions,
-    tileSize: tileSize,
+    tileSize: goog.isDef(opt_tileSize) ? opt_tileSize : ol.DEFAULT_TILE_SIZE,
     widths: widths
   });
 };
@@ -34869,7 +34942,7 @@ ol.tilegrid.createForExtent =
  * @param {ol.Extent} extent Extent.
  * @param {number=} opt_maxZoom Maximum zoom level (default is
  *     ol.DEFAULT_MAX_ZOOM).
- * @param {number=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
+ * @param {ol.Size=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
  * @return {!Array.<number>} Resolutions array.
  */
 ol.tilegrid.resolutionsFromExtent =
@@ -34881,9 +34954,9 @@ ol.tilegrid.resolutionsFromExtent =
   var width = ol.extent.getWidth(extent);
 
   var tileSize = goog.isDef(opt_tileSize) ?
-      opt_tileSize : ol.DEFAULT_TILE_SIZE;
+      opt_tileSize : ol.size.toSize(ol.DEFAULT_TILE_SIZE);
   var maxResolution = Math.max(
-      width / tileSize, height / tileSize);
+      width / tileSize[0], height / tileSize[1]);
 
   var length = maxZoom + 1;
   var resolutions = new Array(length);
@@ -34898,7 +34971,7 @@ ol.tilegrid.resolutionsFromExtent =
  * @param {ol.proj.ProjectionLike} projection Projection.
  * @param {number=} opt_maxZoom Maximum zoom level (default is
  *     ol.DEFAULT_MAX_ZOOM).
- * @param {number=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
+ * @param {ol.Size=} opt_tileSize Tile size (default uses ol.DEFAULT_TILE_SIZE).
  * @param {ol.extent.Corner=} opt_corner Extent corner (default is
  *     ol.extent.Corner.BOTTOM_LEFT).
  * @return {ol.tilegrid.TileGrid} TileGrid instance.
@@ -34938,6 +35011,7 @@ goog.require('ol.Extent');
 goog.require('ol.TileCache');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
+goog.require('ol.size');
 goog.require('ol.source.Source');
 goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.TileGrid');
@@ -35003,6 +35077,12 @@ ol.source.Tile = function(options) {
    * @type {ol.TileCache}
    */
   this.tileCache = new ol.TileCache();
+
+  /**
+   * @protected
+   * @type {ol.Size}
+   */
+  this.tmpSize = [0, 0];
 
   /**
    * @private
@@ -35132,12 +35212,13 @@ ol.source.Tile.prototype.getTileGridForProjection = function(projection) {
  * @param {number} z Z.
  * @param {number} pixelRatio Pixel ratio.
  * @param {ol.proj.Projection} projection Projection.
- * @return {number} Tile size.
+ * @return {ol.Size} Tile size.
  */
 ol.source.Tile.prototype.getTilePixelSize =
     function(z, pixelRatio, projection) {
   var tileGrid = this.getTileGridForProjection(projection);
-  return tileGrid.getTileSize(z) * this.tilePixelRatio_;
+  return ol.size.scale(ol.size.toSize(tileGrid.getTileSize(z), this.tmpSize),
+      this.tilePixelRatio_, this.tmpSize);
 };
 
 
@@ -72053,6 +72134,7 @@ goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Tile');
 goog.require('ol.renderer.canvas.Layer');
+goog.require('ol.size');
 goog.require('ol.tilecoord');
 goog.require('ol.vec.Mat4');
 
@@ -72113,7 +72195,13 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
    * @private
    * @type {number}
    */
-  this.renderedTileSize_ = NaN;
+  this.renderedTileWidth_ = NaN;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedTileHeight_ = NaN;
 
   /**
    * @private
@@ -72126,6 +72214,12 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
    * @type {Array.<ol.Tile|undefined>}
    */
   this.renderedTiles_ = null;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.tmpSize_ = [0, 0];
 
 };
 goog.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
@@ -72229,7 +72323,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
   var z = tileGrid.getZForResolution(viewState.resolution);
   var tilePixelSize =
       tileSource.getTilePixelSize(z, frameState.pixelRatio, projection);
-  var tilePixelRatio = tilePixelSize / tileGrid.getTileSize(z);
+  var tilePixelRatio = tilePixelSize[0] /
+      ol.size.toSize(tileGrid.getTileSize(z), this.tmpSize_)[0];
   var tileResolution = tileGrid.getResolution(z);
   var tilePixelResolution = tileResolution / tilePixelRatio;
   var center = viewState.center;
@@ -72253,8 +72348,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
   var tileRange = tileGrid.getTileRangeForExtentAndResolution(
       extent, tileResolution);
 
-  var canvasWidth = tilePixelSize * tileRange.getWidth();
-  var canvasHeight = tilePixelSize * tileRange.getHeight();
+  var canvasWidth = tilePixelSize[0] * tileRange.getWidth();
+  var canvasHeight = tilePixelSize[1] * tileRange.getHeight();
 
   var canvas, context;
   if (goog.isNull(this.canvas_)) {
@@ -72279,7 +72374,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
     context = this.context_;
     if (this.canvasSize_[0] < canvasWidth ||
         this.canvasSize_[1] < canvasHeight ||
-        this.renderedTileSize_ !== tilePixelSize ||
+        this.renderedTileWidth_ !== tilePixelSize[0] ||
+        this.renderedTileHeight_ !== tilePixelSize[1] ||
         (this.canvasTooBig_ && (this.canvasSize_[0] > canvasWidth ||
         this.canvasSize_[1] > canvasHeight))) {
       // Canvas is too small or tileSize has changed, resize it.
@@ -72303,14 +72399,15 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
 
   var canvasTileRange, canvasTileRangeWidth, minX, minY;
   if (goog.isNull(this.renderedCanvasTileRange_)) {
-    canvasTileRangeWidth = canvasWidth / tilePixelSize;
-    var canvasTileRangeHeight = canvasHeight / tilePixelSize;
+    canvasTileRangeWidth = canvasWidth / tilePixelSize[0];
+    var canvasTileRangeHeight = canvasHeight / tilePixelSize[1];
     minX = tileRange.minX -
         Math.floor((canvasTileRangeWidth - tileRange.getWidth()) / 2);
     minY = tileRange.minY -
         Math.floor((canvasTileRangeHeight - tileRange.getHeight()) / 2);
     this.renderedCanvasZ_ = z;
-    this.renderedTileSize_ = tilePixelSize;
+    this.renderedTileWidth_ = tilePixelSize[0];
+    this.renderedTileHeight_ = tilePixelSize[1];
     this.renderedCanvasTileRange_ = new ol.TileRange(
         minX, minX + canvasTileRangeWidth - 1,
         minY, minY + canvasTileRangeHeight - 1);
@@ -72371,9 +72468,9 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
   var i, ii;
   for (i = 0, ii = tilesToClear.length; i < ii; ++i) {
     tile = tilesToClear[i];
-    x = tilePixelSize * (tile.tileCoord[1] - canvasTileRange.minX);
-    y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord[2]);
-    context.clearRect(x, y, tilePixelSize, tilePixelSize);
+    x = tilePixelSize[0] * (tile.tileCoord[1] - canvasTileRange.minX);
+    y = tilePixelSize[1] * (canvasTileRange.maxY - tile.tileCoord[2]);
+    context.clearRect(x, y, tilePixelSize[0], tilePixelSize[1]);
   }
 
   /** @type {Array.<number>} */
@@ -72398,18 +72495,18 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
             (tile.tileCoord[2] - canvasTileRange.minY) * canvasTileRangeWidth +
             (tile.tileCoord[1] - canvasTileRange.minX);
         if (this.renderedTiles_[index] != tile) {
-          x = tilePixelSize * (tile.tileCoord[1] - canvasTileRange.minX);
-          y = tilePixelSize * (canvasTileRange.maxY - tile.tileCoord[2]);
+          x = tilePixelSize[0] * (tile.tileCoord[1] - canvasTileRange.minX);
+          y = tilePixelSize[1] * (canvasTileRange.maxY - tile.tileCoord[2]);
           tileState = tile.getState();
           if (tileState == ol.TileState.EMPTY ||
               (tileState == ol.TileState.ERROR && !useInterimTilesOnError) ||
               !opaque) {
-            context.clearRect(x, y, tilePixelSize, tilePixelSize);
+            context.clearRect(x, y, tilePixelSize[0], tilePixelSize[1]);
           }
           if (tileState == ol.TileState.LOADED) {
             context.drawImage(tile.getImage(),
-                tileGutter, tileGutter, tilePixelSize, tilePixelSize,
-                x, y, tilePixelSize, tilePixelSize);
+                tileGutter, tileGutter, tilePixelSize[0], tilePixelSize[1],
+                x, y, tilePixelSize[0], tilePixelSize[1]);
           }
           this.renderedTiles_[index] = tile;
         }
@@ -72421,15 +72518,15 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
         tileExtent = tileGrid.getTileCoordExtent(tile.tileCoord, tmpExtent);
         x = (tileExtent[0] - origin[0]) / tilePixelResolution;
         y = (origin[1] - tileExtent[3]) / tilePixelResolution;
-        width = scale * tilePixelSize;
-        height = scale * tilePixelSize;
+        width = scale * tilePixelSize[0];
+        height = scale * tilePixelSize[1];
         tileState = tile.getState();
         if (tileState == ol.TileState.EMPTY || !opaque) {
           context.clearRect(x, y, width, height);
         }
         if (tileState == ol.TileState.LOADED) {
           context.drawImage(tile.getImage(),
-              tileGutter, tileGutter, tilePixelSize, tilePixelSize,
+              tileGutter, tileGutter, tilePixelSize[0], tilePixelSize[1],
               x, y, width, height);
         }
         interimTileRange =
@@ -73230,6 +73327,7 @@ goog.require('ol.dom.BrowserFeature');
 goog.require('ol.extent');
 goog.require('ol.layer.Tile');
 goog.require('ol.renderer.dom.Layer');
+goog.require('ol.size');
 goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.TileGrid');
 goog.require('ol.vec.Mat4');
@@ -73551,6 +73649,12 @@ ol.renderer.dom.TileLayerZ_ = function(tileGrid, tileCoordOrigin) {
    */
   this.transform_ = goog.vec.Mat4.createNumberIdentity();
 
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.tmpSize_ = [0, 0];
+
 };
 
 
@@ -73569,7 +73673,8 @@ ol.renderer.dom.TileLayerZ_.prototype.addTile = function(tile, tileGutter) {
   if (tileCoordKey in this.tiles_) {
     return;
   }
-  var tileSize = this.tileGrid_.getTileSize(tileCoordZ);
+  var tileSize = ol.size.toSize(
+      this.tileGrid_.getTileSize(tileCoordZ), this.tmpSize_);
   var image = tile.getImage(this);
   var imageStyle = image.style;
   // Bootstrap sets the style max-width: 100% for all images, which
@@ -73582,25 +73687,25 @@ ol.renderer.dom.TileLayerZ_.prototype.addTile = function(tile, tileGutter) {
     tileElement = goog.dom.createElement(goog.dom.TagName.DIV);
     tileElementStyle = tileElement.style;
     tileElementStyle.overflow = 'hidden';
-    tileElementStyle.width = tileSize + 'px';
-    tileElementStyle.height = tileSize + 'px';
+    tileElementStyle.width = tileSize[0] + 'px';
+    tileElementStyle.height = tileSize[1] + 'px';
     imageStyle.position = 'absolute';
     imageStyle.left = -tileGutter + 'px';
     imageStyle.top = -tileGutter + 'px';
-    imageStyle.width = (tileSize + 2 * tileGutter) + 'px';
-    imageStyle.height = (tileSize + 2 * tileGutter) + 'px';
+    imageStyle.width = (tileSize[0] + 2 * tileGutter) + 'px';
+    imageStyle.height = (tileSize[1] + 2 * tileGutter) + 'px';
     goog.dom.appendChild(tileElement, image);
   } else {
-    imageStyle.width = tileSize + 'px';
-    imageStyle.height = tileSize + 'px';
+    imageStyle.width = tileSize[0] + 'px';
+    imageStyle.height = tileSize[1] + 'px';
     tileElement = image;
     tileElementStyle = imageStyle;
   }
   tileElementStyle.position = 'absolute';
   tileElementStyle.left =
-      ((tileCoordX - this.tileCoordOrigin_[1]) * tileSize) + 'px';
+      ((tileCoordX - this.tileCoordOrigin_[1]) * tileSize[0]) + 'px';
   tileElementStyle.top =
-      ((this.tileCoordOrigin_[2] - tileCoordY) * tileSize) + 'px';
+      ((this.tileCoordOrigin_[2] - tileCoordY) * tileSize[1]) + 'px';
   if (goog.isNull(this.documentFragment_)) {
     this.documentFragment_ = document.createDocumentFragment();
   }
@@ -79924,6 +80029,7 @@ goog.require('ol.layer.Tile');
 goog.require('ol.math');
 goog.require('ol.renderer.webgl.Layer');
 goog.require('ol.renderer.webgl.tilelayer.shader');
+goog.require('ol.size');
 goog.require('ol.tilecoord');
 goog.require('ol.vec.Mat4');
 goog.require('ol.webgl.Buffer');
@@ -79987,6 +80093,12 @@ ol.renderer.webgl.TileLayer = function(mapRenderer, tileLayer) {
    * @type {number}
    */
   this.renderedRevision_ = -1;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.tmpSize_ = [0, 0];
 
 };
 goog.inherits(ol.renderer.webgl.TileLayer, ol.renderer.webgl.Layer);
@@ -80068,7 +80180,8 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
 
   var tilePixelSize =
       tileSource.getTilePixelSize(z, frameState.pixelRatio, projection);
-  var pixelRatio = tilePixelSize / tileGrid.getTileSize(z);
+  var pixelRatio = tilePixelSize[0] /
+      ol.size.toSize(tileGrid.getTileSize(z), this.tmpSize_)[0];
   var tilePixelResolution = tileResolution / pixelRatio;
   var tileGutter = tileSource.getGutter();
 
@@ -80094,12 +80207,15 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
     var tileRangeSize = tileRange.getSize();
 
     var maxDimension = Math.max(
-        tileRangeSize[0] * tilePixelSize, tileRangeSize[1] * tilePixelSize);
+        tileRangeSize[0] * tilePixelSize[0],
+        tileRangeSize[1] * tilePixelSize[1]);
     var framebufferDimension = ol.math.roundUpToPowerOfTwo(maxDimension);
     var framebufferExtentDimension = tilePixelResolution * framebufferDimension;
     var origin = tileGrid.getOrigin(z);
-    var minX = origin[0] + tileRange.minX * tilePixelSize * tilePixelResolution;
-    var minY = origin[1] + tileRange.minY * tilePixelSize * tilePixelResolution;
+    var minX = origin[0] +
+        tileRange.minX * tilePixelSize[0] * tilePixelResolution;
+    var minY = origin[1] +
+        tileRange.minY * tilePixelSize[1] * tilePixelResolution;
     framebufferExtent = [
       minX, minY,
       minX + framebufferExtentDimension, minY + framebufferExtentDimension
@@ -80692,7 +80808,13 @@ ol.renderer.webgl.Map = function(container, map) {
    * @private
    * @type {number}
    */
-  this.clipTileCanvasSize_ = 0;
+  this.clipTileCanvasWidth_ = 0;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.clipTileCanvasHeight_ = 0;
 
   /**
    * @private
@@ -80779,7 +80901,7 @@ ol.renderer.webgl.Map = function(container, map) {
           this.tileTextureQueue_.reprioritize();
           var element = this.tileTextureQueue_.dequeue();
           var tile = /** @type {ol.Tile} */ (element[0]);
-          var tileSize = /** @type {number} */ (element[3]);
+          var tileSize = /** @type {ol.Size} */ (element[3]);
           var tileGutter = /** @type {number} */ (element[4]);
           this.bindTileTexture(
               tile, tileSize, tileGutter, goog.webgl.LINEAR, goog.webgl.LINEAR);
@@ -80800,7 +80922,7 @@ goog.inherits(ol.renderer.webgl.Map, ol.renderer.Map);
 
 /**
  * @param {ol.Tile} tile Tile.
- * @param {number} tileSize Tile size.
+ * @param {ol.Size} tileSize Tile size.
  * @param {number} tileGutter Tile gutter.
  * @param {number} magFilter Mag filter.
  * @param {number} minFilter Min filter.
@@ -80830,15 +80952,17 @@ ol.renderer.webgl.Map.prototype.bindTileTexture =
     if (tileGutter > 0) {
       var clipTileCanvas = this.clipTileContext_.canvas;
       var clipTileContext = this.clipTileContext_;
-      if (this.clipTileCanvasSize_ != tileSize) {
-        clipTileCanvas.width = tileSize;
-        clipTileCanvas.height = tileSize;
-        this.clipTileCanvasSize_ = tileSize;
+      if (this.clipTileCanvasWidth_ !== tileSize[0] ||
+          this.clipTileCanvasHeight_ !== tileSize[1]) {
+        clipTileCanvas.width = tileSize[0];
+        clipTileCanvas.height = tileSize[1];
+        this.clipTileCanvasWidth_ = tileSize[0];
+        this.clipTileCanvasHeight_ = tileSize[1];
       } else {
-        clipTileContext.clearRect(0, 0, tileSize, tileSize);
+        clipTileContext.clearRect(0, 0, tileSize[0], tileSize[1]);
       }
       clipTileContext.drawImage(tile.getImage(), tileGutter, tileGutter,
-          tileSize, tileSize, 0, 0, tileSize, tileSize);
+          tileSize[0], tileSize[1], 0, 0, tileSize[0], tileSize[1]);
       gl.texImage2D(goog.webgl.TEXTURE_2D, 0,
           goog.webgl.RGBA, goog.webgl.RGBA,
           goog.webgl.UNSIGNED_BYTE, clipTileCanvas);
@@ -111071,6 +111195,7 @@ goog.require('ol.extent');
 goog.require('ol.extent.Corner');
 goog.require('ol.proj');
 goog.require('ol.proj.EPSG3857');
+goog.require('ol.size');
 goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.TileGrid');
 
@@ -111089,8 +111214,12 @@ goog.require('ol.tilegrid.TileGrid');
 ol.tilegrid.XYZ = function(options) {
   var extent = goog.isDef(options.extent) ?
       options.extent : ol.proj.EPSG3857.EXTENT;
+  var tileSize;
+  if (goog.isDef(options.tileSize)) {
+    tileSize = ol.size.toSize(options.tileSize);
+  }
   var resolutions = ol.tilegrid.resolutionsFromExtent(
-      extent, options.maxZoom, options.tileSize);
+      extent, options.maxZoom, tileSize);
 
   goog.base(this, {
     minZoom: options.minZoom,
@@ -111296,7 +111425,8 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse =
     extent: ol.tilegrid.extentFromProjection(sourceProjection),
     minZoom: resource.zoomMin,
     maxZoom: maxZoom,
-    tileSize: resource.imageWidth
+    tileSize: resource.imageWidth == resource.imageHeight ?
+        resource.imageWidth : [resource.imageWidth, resource.imageHeight]
   });
   this.tileGrid = tileGrid;
 
@@ -112656,6 +112786,7 @@ goog.require('ol.TileCoord');
 goog.require('ol.TileUrlFunction');
 goog.require('ol.extent');
 goog.require('ol.proj');
+goog.require('ol.size');
 goog.require('ol.source.TileImage');
 goog.require('ol.tilecoord');
 
@@ -112731,7 +112862,7 @@ ol.source.TileArcGISRest.prototype.getParams = function() {
 
 /**
  * @param {ol.TileCoord} tileCoord Tile coordinate.
- * @param {number} tileSize Tile size.
+ * @param {ol.Size} tileSize Tile size.
  * @param {ol.Extent} tileExtent Tile extent.
  * @param {number} pixelRatio Pixel ratio.
  * @param {ol.proj.Projection} projection Projection.
@@ -112751,7 +112882,7 @@ ol.source.TileArcGISRest.prototype.getRequestUrl_ =
   // ArcGIS Server only wants the numeric portion of the projection ID.
   var srid = projection.getCode().split(':').pop();
 
-  params['SIZE'] = tileSize + ',' + tileSize;
+  params['SIZE'] = tileSize[0] + ',' + tileSize[1];
   params['BBOX'] = tileExtent.join(',');
   params['BBOXSR'] = srid;
   params['IMAGESR'] = srid;
@@ -112788,7 +112919,7 @@ ol.source.TileArcGISRest.prototype.getRequestUrl_ =
  * @param {number} z Z.
  * @param {number} pixelRatio Pixel ratio.
  * @param {ol.proj.Projection} projection Projection.
- * @return {number} Size.
+ * @return {ol.Size} Size.
  */
 ol.source.TileArcGISRest.prototype.getTilePixelSize =
     function(z, pixelRatio, projection) {
@@ -112796,7 +112927,7 @@ ol.source.TileArcGISRest.prototype.getTilePixelSize =
   if (pixelRatio == 1) {
     return tileSize;
   } else {
-    return (tileSize * pixelRatio + 0.5) | 0;
+    return ol.size.scale(tileSize, pixelRatio, this.tmpSize);
   }
 };
 
@@ -112852,10 +112983,11 @@ ol.source.TileArcGISRest.prototype.tileUrlFunction_ =
 
   var tileExtent = tileGrid.getTileCoordExtent(
       tileCoord, this.tmpExtent_);
-  var tileSize = tileGrid.getTileSize(tileCoord[0]);
+  var tileSize = ol.size.toSize(
+      tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
 
   if (pixelRatio != 1) {
-    tileSize = (tileSize * pixelRatio + 0.5) | 0;
+    tileSize = ol.size.scale(tileSize, pixelRatio, this.tmpSize);
   }
 
   // Apply default params and override with user specified values.
@@ -112887,6 +113019,7 @@ goog.require('ol.Tile');
 goog.require('ol.TileCoord');
 goog.require('ol.TileState');
 goog.require('ol.dom');
+goog.require('ol.size');
 goog.require('ol.source.Tile');
 goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.TileGrid');
@@ -112906,9 +113039,10 @@ ol.DebugTile_ = function(tileCoord, tileGrid) {
 
   /**
    * @private
-   * @type {number}
+   * @type {ol.Size}
    */
-  this.tileSize_ = tileGrid.getTileSize(tileCoord[0]);
+  this.tileSize_ = ol.size.toSize(
+      tileGrid.getTileSize(tileCoord[0]));
 
   /**
    * @private
@@ -112930,17 +113064,17 @@ ol.DebugTile_.prototype.getImage = function(opt_context) {
   } else {
 
     var tileSize = this.tileSize_;
-    var context = ol.dom.createCanvasContext2D(tileSize, tileSize);
+    var context = ol.dom.createCanvasContext2D(tileSize[0], tileSize[1]);
 
     context.strokeStyle = 'black';
-    context.strokeRect(0.5, 0.5, tileSize + 0.5, tileSize + 0.5);
+    context.strokeRect(0.5, 0.5, tileSize[0] + 0.5, tileSize[1] + 0.5);
 
     context.fillStyle = 'black';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.font = '24px sans-serif';
     context.fillText(ol.tilecoord.toString(this.tileCoord),
-        tileSize / 2, tileSize / 2);
+        tileSize[0] / 2, tileSize[1] / 2);
 
     this.canvasByContext_[key] = context.canvas;
     return context.canvas;
@@ -113820,6 +113954,7 @@ goog.require('ol.TileCoord');
 goog.require('ol.TileUrlFunction');
 goog.require('ol.extent');
 goog.require('ol.proj');
+goog.require('ol.size');
 goog.require('ol.source.TileImage');
 goog.require('ol.source.wms');
 goog.require('ol.source.wms.ServerType');
@@ -113953,11 +114088,12 @@ ol.source.TileWMS.prototype.getGetFeatureInfoUrl =
 
   var tileResolution = tileGrid.getResolution(tileCoord[0]);
   var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
-  var tileSize = tileGrid.getTileSize(tileCoord[0]);
+  var tileSize = ol.size.toSize(
+      tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
 
   var gutter = this.gutter_;
   if (gutter !== 0) {
-    tileSize += 2 * gutter;
+    tileSize = ol.size.buffer(tileSize, gutter, this.tmpSize);
     tileExtent = ol.extent.buffer(tileExtent,
         tileResolution * gutter, tileExtent);
   }
@@ -114012,7 +114148,7 @@ ol.source.TileWMS.prototype.getParams = function() {
 
 /**
  * @param {ol.TileCoord} tileCoord Tile coordinate.
- * @param {number} tileSize Tile size.
+ * @param {ol.Size} tileSize Tile size.
  * @param {ol.Extent} tileExtent Tile extent.
  * @param {number} pixelRatio Pixel ratio.
  * @param {ol.proj.Projection} projection Projection.
@@ -114029,8 +114165,8 @@ ol.source.TileWMS.prototype.getRequestUrl_ =
     return undefined;
   }
 
-  params['WIDTH'] = tileSize;
-  params['HEIGHT'] = tileSize;
+  params['WIDTH'] = tileSize[0];
+  params['HEIGHT'] = tileSize[1];
 
   params[this.v13_ ? 'CRS' : 'SRS'] = projection.getCode();
 
@@ -114087,7 +114223,7 @@ ol.source.TileWMS.prototype.getRequestUrl_ =
  * @param {number} z Z.
  * @param {number} pixelRatio Pixel ratio.
  * @param {ol.proj.Projection} projection Projection.
- * @return {number} Size.
+ * @return {ol.Size} Size.
  */
 ol.source.TileWMS.prototype.getTilePixelSize =
     function(z, pixelRatio, projection) {
@@ -114095,7 +114231,7 @@ ol.source.TileWMS.prototype.getTilePixelSize =
   if (pixelRatio == 1 || !this.hidpi_ || !goog.isDef(this.serverType_)) {
     return tileSize;
   } else {
-    return (tileSize * pixelRatio + 0.5) | 0;
+    return ol.size.scale(tileSize, pixelRatio, this.tmpSize);
   }
 };
 
@@ -114177,17 +114313,18 @@ ol.source.TileWMS.prototype.tileUrlFunction_ =
 
   var tileResolution = tileGrid.getResolution(tileCoord[0]);
   var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
-  var tileSize = tileGrid.getTileSize(tileCoord[0]);
+  var tileSize = ol.size.toSize(
+      tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
 
   var gutter = this.gutter_;
   if (gutter !== 0) {
-    tileSize += 2 * gutter;
+    tileSize = ol.size.buffer(tileSize, gutter, this.tmpSize);
     tileExtent = ol.extent.buffer(tileExtent,
         tileResolution * gutter, tileExtent);
   }
 
   if (pixelRatio != 1) {
-    tileSize = (tileSize * pixelRatio + 0.5) | 0;
+    tileSize = ol.size.scale(tileSize, pixelRatio, this.tmpSize);
   }
 
   var baseParams = {
@@ -114309,7 +114446,7 @@ ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet =
   var matrixIds = [];
   /** @type {!Array.<ol.Coordinate>} */
   var origins = [];
-  /** @type {!Array.<number>} */
+  /** @type {!Array.<ol.Size>} */
   var tileSizes = [];
   /** @type {!Array.<number>} */
   var widths = [];
@@ -114346,10 +114483,8 @@ ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet =
             metersPerUnit);
         var tileWidth = elt[tileWidthPropName];
         var tileHeight = elt[tileHeightPropName];
-        goog.asserts.assert(tileWidth == tileHeight,
-            'square tiles are assumed, tileWidth (%s) ==  tileHeight (%s)',
-            tileWidth, tileHeight);
-        tileSizes.push(tileWidth);
+        tileSizes.push(tileWidth == tileHeight ?
+            tileWidth : [tileWidth, tileHeight]);
         widths.push(elt['MatrixWidth']);
       });
 
@@ -116172,6 +116307,7 @@ goog.require('ol.Observable');
 goog.require('ol.Overlay');
 goog.require('ol.OverlayPositioning');
 goog.require('ol.OverlayProperty');
+goog.require('ol.Size');
 goog.require('ol.Sphere');
 goog.require('ol.Tile');
 goog.require('ol.TileState');
@@ -116278,6 +116414,7 @@ goog.require('ol.render.EventType');
 goog.require('ol.render.VectorContext');
 goog.require('ol.render.canvas.Immediate');
 goog.require('ol.render.webgl.Immediate');
+goog.require('ol.size');
 goog.require('ol.source.BingMaps');
 goog.require('ol.source.Cluster');
 goog.require('ol.source.Image');
@@ -117243,6 +117380,11 @@ goog.exportProperty(
     ol.Overlay.prototype,
     'setPositioning',
     ol.Overlay.prototype.setPositioning);
+
+goog.exportSymbol(
+    'ol.size.toSize',
+    ol.size.toSize,
+    OPENLAYERS);
 
 goog.exportProperty(
     ol.Tile.prototype,

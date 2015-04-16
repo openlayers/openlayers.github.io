@@ -85,9 +85,10 @@ var styleFunction = function(feature, resolution) {
 
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
-    extractStyles: false,
     url: &#x27;data/kml/timezones.kml&#x27;,
-    format: new ol.format.KML()
+    format: new ol.format.KML({
+      extractStyles: false
+    })
   }),
   style: styleFunction
 });
@@ -232,9 +233,10 @@ var styleFunction = function(feature, resolution) {
 
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
-    extractStyles: false,
     url: &#x27;data/kml/timezones.kml&#x27;,
-    format: new ol.format.KML()
+    format: new ol.format.KML({
+      extractStyles: false
+    })
   }),
   style: styleFunction
 });
