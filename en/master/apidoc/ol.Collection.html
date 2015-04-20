@@ -18,7 +18,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="/"><img src="../resources/logo-70x70.png"> OpenLayers 3</a>
+      <a class="brand" href="/"><img src="logo-70x70.png"> OpenLayers 3</a>
       <label id="stability">
         <input type="checkbox" id="stability-toggle"> Stable Only
       </label>
@@ -73,8 +73,16 @@
                     <a href="ol.html#Extent">Extent</a>
                 </li>
             
+                <li data-name="ol.FeatureLoader" class="unstable">
+                    <a href="ol.html#FeatureLoader">FeatureLoader</a>
+                </li>
+            
                 <li data-name="ol.ImageLoadFunctionType" class="unstable">
                     <a href="ol.html#ImageLoadFunctionType">ImageLoadFunctionType</a>
+                </li>
+            
+                <li data-name="ol.LoadingStrategy" class="unstable">
+                    <a href="ol.html#LoadingStrategy">LoadingStrategy</a>
                 </li>
             
                 <li data-name="ol.OverlayPositioning" class="">
@@ -3200,6 +3208,67 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.EsriJSON">
+            <span class="title">
+                <a href="ol.format.EsriJSON.html">ol.format.EsriJSON</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.EsriJSON#readFeature" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readFeature">readFeature</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readFeatures" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readFeatures">readFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readGeometry" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readGeometry">readGeometry</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readProjection" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readProjection">readProjection</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeature" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeature">writeFeature</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeatureObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeatureObject">writeFeatureObject</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeatures" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeatures">writeFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeaturesObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeaturesObject">writeFeaturesObject</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeGeometry" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeGeometry">writeGeometry</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeGeometryObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeGeometryObject">writeGeometryObject</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -13086,10 +13155,7 @@
 manipulation. Add and remove changes to the Collection trigger a Collection
 event. Note that this does not cover changes to the objects <em>within</em> the
 Collection; they trigger events on the appropriate object, not on the
-Collection as a whole.</p>
-<p>Because a Collection is itself an <a href="ol.Object.html"><code>ol.Object</code></a>, it can be bound to any
-other Object or Collection such that a change in one will automatically be
-reflected in the other.</p></div>
+Collection as a whole.</p></div>
     
 </header>  
 
@@ -13110,7 +13176,7 @@ reflected in the other.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 90
+            src/ol/collection.js, line 86
         </div>
         
         
@@ -13438,7 +13504,7 @@ reflected in the other.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 110
+            src/ol/collection.js, line 106
         </div>
         
         
@@ -13513,7 +13579,7 @@ reflected in the other.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 124
+            src/ol/collection.js, line 120
         </div>
         
         
@@ -13645,7 +13711,7 @@ This collection.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 142
+            src/ol/collection.js, line 138
         </div>
         
         
@@ -13927,7 +13993,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 155
+            src/ol/collection.js, line 151
         </div>
         
         
@@ -14100,7 +14166,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 177
+            src/ol/collection.js, line 173
         </div>
         
         
@@ -14354,7 +14420,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 188
+            src/ol/collection.js, line 184
         </div>
         
         
@@ -14501,7 +14567,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 166
+            src/ol/collection.js, line 162
         </div>
         
         
@@ -15004,7 +15070,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 202
+            src/ol/collection.js, line 198
         </div>
         
         
@@ -15089,7 +15155,7 @@ Element.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 213
+            src/ol/collection.js, line 209
         </div>
         
         
@@ -15220,7 +15286,7 @@ Length.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 226
+            src/ol/collection.js, line 222
         </div>
         
         
@@ -15351,7 +15417,7 @@ The removed element or undefined if none found.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 245
+            src/ol/collection.js, line 241
         </div>
         
         
@@ -15632,7 +15698,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 261
+            src/ol/collection.js, line 257
         </div>
         
         
@@ -16334,7 +16400,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Apr 16 2015 09:32:40 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Apr 20 2015 13:47:18 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

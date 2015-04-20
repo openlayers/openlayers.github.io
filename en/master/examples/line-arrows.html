@@ -4,22 +4,21 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" type="text/css">
     <link rel="stylesheet" href="../css/ol.css" type="text/css">
-    <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../resources/layout.css" type="text/css">
-    <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     
-    <link rel="stylesheet" href="../resources/prism/prism.css" type="text/css">
-    <script src="../resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
     <title>LineString arrows example</title>
   </head>
   <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="./"><img src="../resources/logo.png"> OpenLayers 3 Examples</a>
+        <div class="container" id="navbar-inner-container">
+          <a class="brand" href="./"><img src="./resources/logo-70x70.png"> OpenLayers 3 Examples</a>
         </div>
       </div>
     </div>
@@ -40,6 +39,7 @@
           <div id="docs"><p>Example of drawing arrows for each line string segment.</p>
 </div>
           <div id="tags">draw, vector, arrow</div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.geom.Point.html" title="API documentation for ol.geom.Point">ol.geom.Point</a></li>,<li><a href="../apidoc/ol.interaction.Draw.html" title="API documentation for ol.interaction.Draw">ol.interaction.Draw</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.source.MapQuest.html" title="API documentation for ol.source.MapQuest">ol.source.MapQuest</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Icon.html" title="API documentation for ol.style.Icon">ol.style.Icon</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li></ul></div>
         </div>
       </div>
 
@@ -196,10 +196,10 @@ map.addInteraction(new ol.interaction.Draw({
       </div>
     </div>
 
-    <script src="../resources/jquery.min.js"></script>
-    <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../resources/example-behaviour.js"></script>
-    <script src="../resources/prism/prism.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
     <script src="loader.js?id=line-arrows"></script>
 
   </body>

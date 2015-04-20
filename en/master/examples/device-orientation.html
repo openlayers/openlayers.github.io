@@ -4,22 +4,21 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" type="text/css">
     <link rel="stylesheet" href="../css/ol.css" type="text/css">
-    <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../resources/layout.css" type="text/css">
-    <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     
-    <link rel="stylesheet" href="../resources/prism/prism.css" type="text/css">
-    <script src="../resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
     <title>Device-Orientation example</title>
   </head>
   <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="./"><img src="../resources/logo.png"> OpenLayers 3 Examples</a>
+        <div class="container" id="navbar-inner-container">
+          <a class="brand" href="./"><img src="./resources/logo-70x70.png"> OpenLayers 3 Examples</a>
         </div>
       </div>
     </div>
@@ -50,6 +49,7 @@
           <div id="docs"><p>This example shows how to track changes in device orientation.</p>
 </div>
           <div id="tags">orientation, openstreetmap</div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.DeviceOrientation.html" title="API documentation for ol.DeviceOrientation">ol.DeviceOrientation</a></li>,<li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li></ul></div>
         </div>
       </div>
 
@@ -82,15 +82,19 @@ var map = new ol.Map({
 
 var deviceOrientation = new ol.DeviceOrientation();
 
-$(&#x27;#track&#x27;).on(&#x27;change&#x27;, function() {
+function el(id) {
+  return document.getElementById(id);
+}
+
+el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
   deviceOrientation.setTracking(this.checked);
 });
 
 deviceOrientation.on(&#x27;change&#x27;, function(event) {
-  $(&#x27;#alpha&#x27;).text(deviceOrientation.getAlpha() + &#x27; [rad]&#x27;);
-  $(&#x27;#beta&#x27;).text(deviceOrientation.getBeta() + &#x27; [rad]&#x27;);
-  $(&#x27;#gamma&#x27;).text(deviceOrientation.getGamma() + &#x27; [rad]&#x27;);
-  $(&#x27;#heading&#x27;).text(deviceOrientation.getHeading() + &#x27; [rad]&#x27;);
+  el(&#x27;alpha&#x27;).innerText = deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
+  el(&#x27;beta&#x27;).innerText = deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
+  el(&#x27;gamma&#x27;).innerText = deviceOrientation.getGamma() + &#x27; [rad]&#x27;;
+  el(&#x27;heading&#x27;).innerText = deviceOrientation.getHeading() + &#x27; [rad]&#x27;;
 });
 
 // tilt the map
@@ -181,15 +185,19 @@ var map = new ol.Map({
 
 var deviceOrientation = new ol.DeviceOrientation();
 
-$(&#x27;#track&#x27;).on(&#x27;change&#x27;, function() {
+function el(id) {
+  return document.getElementById(id);
+}
+
+el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
   deviceOrientation.setTracking(this.checked);
 });
 
 deviceOrientation.on(&#x27;change&#x27;, function(event) {
-  $(&#x27;#alpha&#x27;).text(deviceOrientation.getAlpha() + &#x27; [rad]&#x27;);
-  $(&#x27;#beta&#x27;).text(deviceOrientation.getBeta() + &#x27; [rad]&#x27;);
-  $(&#x27;#gamma&#x27;).text(deviceOrientation.getGamma() + &#x27; [rad]&#x27;);
-  $(&#x27;#heading&#x27;).text(deviceOrientation.getHeading() + &#x27; [rad]&#x27;);
+  el(&#x27;alpha&#x27;).innerText = deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
+  el(&#x27;beta&#x27;).innerText = deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
+  el(&#x27;gamma&#x27;).innerText = deviceOrientation.getGamma() + &#x27; [rad]&#x27;;
+  el(&#x27;heading&#x27;).innerText = deviceOrientation.getHeading() + &#x27; [rad]&#x27;;
 });
 
 // tilt the map
@@ -212,10 +220,10 @@ deviceOrientation.on([&#x27;change:beta&#x27;, &#x27;change:gamma&#x27;], functi
       </div>
     </div>
 
-    <script src="../resources/jquery.min.js"></script>
-    <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../resources/example-behaviour.js"></script>
-    <script src="../resources/prism/prism.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
     <script src="loader.js?id=device-orientation"></script>
 
   </body>

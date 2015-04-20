@@ -13,7 +13,7 @@ var map1 = new ol.Map({
       })
     })
   ],
-  renderer: exampleNS.getRendererFromQueryString(),
+  renderer: common.getRendererFromQueryString(),
   target: 'map1',
   view: view
 });
@@ -28,7 +28,7 @@ var map2 = new ol.Map({
       })
     })
   ],
-  renderer: exampleNS.getRendererFromQueryString(),
+  renderer: common.getRendererFromQueryString(),
   target: 'map2',
   view: view
 });

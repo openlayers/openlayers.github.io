@@ -42,7 +42,7 @@ var map = new ol.Map({
       })
     })
   ],
-  renderer: exampleNS.getRendererFromQueryString(),
+  renderer: common.getRendererFromQueryString(),
   overlays: [overlay],
   target: 'map',
   view: new ol.View({

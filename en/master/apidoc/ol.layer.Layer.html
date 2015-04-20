@@ -18,7 +18,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="/"><img src="../resources/logo-70x70.png"> OpenLayers 3</a>
+      <a class="brand" href="/"><img src="logo-70x70.png"> OpenLayers 3</a>
       <label id="stability">
         <input type="checkbox" id="stability-toggle"> Stable Only
       </label>
@@ -73,8 +73,16 @@
                     <a href="ol.html#Extent">Extent</a>
                 </li>
             
+                <li data-name="ol.FeatureLoader" class="unstable">
+                    <a href="ol.html#FeatureLoader">FeatureLoader</a>
+                </li>
+            
                 <li data-name="ol.ImageLoadFunctionType" class="unstable">
                     <a href="ol.html#ImageLoadFunctionType">ImageLoadFunctionType</a>
+                </li>
+            
+                <li data-name="ol.LoadingStrategy" class="unstable">
+                    <a href="ol.html#LoadingStrategy">LoadingStrategy</a>
                 </li>
             
                 <li data-name="ol.OverlayPositioning" class="">
@@ -3200,6 +3208,67 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.EsriJSON">
+            <span class="title">
+                <a href="ol.format.EsriJSON.html">ol.format.EsriJSON</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.EsriJSON#readFeature" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readFeature">readFeature</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readFeatures" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readFeatures">readFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readGeometry" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readGeometry">readGeometry</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readProjection" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readProjection">readProjection</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeature" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeature">writeFeature</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeatureObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeatureObject">writeFeatureObject</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeatures" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeatures">writeFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeaturesObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeaturesObject">writeFeaturesObject</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeGeometry" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeGeometry">writeGeometry</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeGeometryObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeGeometryObject">writeGeometryObject</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -14188,7 +14257,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 94
+            src/ol/layer/layerbase.js, line 95
         </div>
         
         
@@ -14197,6 +14266,10 @@ Value.
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Return the brightness of the layer.</p>
+    </div>
     
 
     
@@ -14272,7 +14345,7 @@ The brightness of the layer.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 104
+            src/ol/layer/layerbase.js, line 106
         </div>
         
         
@@ -14281,6 +14354,10 @@ The brightness of the layer.
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Return the contrast of the layer.</p>
+    </div>
     
 
     
@@ -14354,7 +14431,7 @@ The contrast of the layer.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 170
+            src/ol/layer/layerbase.js, line 175
         </div>
         
         
@@ -14363,6 +14440,11 @@ The contrast of the layer.
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Return the <a href="ol.html#Extent"><code>extent</code></a> of the layer or <code>undefined</code> if it
+will be visible regardless of extent.</p>
+    </div>
     
 
     
@@ -14438,7 +14520,7 @@ The layer extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 114
+            src/ol/layer/layerbase.js, line 117
         </div>
         
         
@@ -14447,6 +14529,10 @@ The layer extent.
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Return the hue of the layer.</p>
+    </div>
     
 
     
@@ -14606,7 +14692,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 181
+            src/ol/layer/layerbase.js, line 187
         </div>
         
         
@@ -14615,6 +14701,10 @@ List of property names.
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Return the maximum resolution of the layer.</p>
+    </div>
     
 
     
@@ -14688,7 +14778,7 @@ The maximum resolution of the layer.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 192
+            src/ol/layer/layerbase.js, line 199
         </div>
         
         
@@ -14697,6 +14787,10 @@ The maximum resolution of the layer.
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Return the minimum resolution of the layer.</p>
+    </div>
     
 
     
@@ -14770,7 +14864,7 @@ The minimum resolution of the layer.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 203
+            src/ol/layer/layerbase.js, line 211
         </div>
         
         
@@ -14779,6 +14873,10 @@ The minimum resolution of the layer.
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Return the opacity of the layer (between 0 and 1).</p>
+    </div>
     
 
     
@@ -15024,7 +15122,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 213
+            src/ol/layer/layerbase.js, line 222
         </div>
         
         
@@ -15033,6 +15131,10 @@ Revision.
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Return the saturation of the layer.</p>
+    </div>
     
 
     
@@ -15190,7 +15292,7 @@ The layer source (or <code>null</code> if not yet set).
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 229
+            src/ol/layer/layerbase.js, line 239
         </div>
         
         
@@ -15199,6 +15301,10 @@ The layer source (or <code>null</code> if not yet set).
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Return the visibility of the layer (<code>true</code> or <code>false</code>).</p>
+    </div>
     
 
     
@@ -15795,7 +15901,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 256
+            src/ol/layer/layerbase.js, line 266
         </div>
         
         
@@ -15932,7 +16038,7 @@ render 0 black, 1 unchanged, and all other values as a linear multiplier.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 270
+            src/ol/layer/layerbase.js, line 280
         </div>
         
         
@@ -16058,7 +16164,7 @@ linear multipliers on the effect (and values over 1 are permitted).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 294
+            src/ol/layer/layerbase.js, line 304
         </div>
         
         
@@ -16188,7 +16294,7 @@ will be visible at all extents.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 282
+            src/ol/layer/layerbase.js, line 292
         </div>
         
         
@@ -16313,7 +16419,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 304
+            src/ol/layer/layerbase.js, line 315
         </div>
         
         
@@ -16322,6 +16428,10 @@ unchanged.  Other values are radians around the color circle.</p>
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Set the maximum resolution at which the layer is visible.</p>
+    </div>
     
 
     
@@ -16433,7 +16543,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 314
+            src/ol/layer/layerbase.js, line 326
         </div>
         
         
@@ -16442,6 +16552,10 @@ unchanged.  Other values are radians around the color circle.</p>
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Set the minimum resolution at which the layer is visible.</p>
+    </div>
     
 
     
@@ -16553,7 +16667,7 @@ unchanged.  Other values are radians around the color circle.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 324
+            src/ol/layer/layerbase.js, line 337
         </div>
         
         
@@ -16562,6 +16676,10 @@ unchanged.  Other values are radians around the color circle.</p>
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Set the opacity of the layer, allowed values range from 0 to 1.</p>
+    </div>
     
 
     
@@ -16800,7 +16918,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 339
+            src/ol/layer/layerbase.js, line 352
         </div>
         
         
@@ -17049,7 +17167,7 @@ permitted).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layerbase.js, line 349
+            src/ol/layer/layerbase.js, line 363
         </div>
         
         
@@ -17058,6 +17176,10 @@ permitted).</p>
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Set the visibility of the layer (<code>true</code> or <code>false</code>).</p>
+    </div>
     
 
     
@@ -17597,7 +17719,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Apr 16 2015 09:33:08 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Apr 20 2015 13:47:46 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

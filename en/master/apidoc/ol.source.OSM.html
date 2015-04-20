@@ -18,7 +18,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="/"><img src="../resources/logo-70x70.png"> OpenLayers 3</a>
+      <a class="brand" href="/"><img src="logo-70x70.png"> OpenLayers 3</a>
       <label id="stability">
         <input type="checkbox" id="stability-toggle"> Stable Only
       </label>
@@ -73,8 +73,16 @@
                     <a href="ol.html#Extent">Extent</a>
                 </li>
             
+                <li data-name="ol.FeatureLoader" class="unstable">
+                    <a href="ol.html#FeatureLoader">FeatureLoader</a>
+                </li>
+            
                 <li data-name="ol.ImageLoadFunctionType" class="unstable">
                     <a href="ol.html#ImageLoadFunctionType">ImageLoadFunctionType</a>
+                </li>
+            
+                <li data-name="ol.LoadingStrategy" class="unstable">
+                    <a href="ol.html#LoadingStrategy">LoadingStrategy</a>
                 </li>
             
                 <li data-name="ol.OverlayPositioning" class="">
@@ -3200,6 +3208,67 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.EsriJSON">
+            <span class="title">
+                <a href="ol.format.EsriJSON.html">ol.format.EsriJSON</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.EsriJSON#readFeature" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readFeature">readFeature</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readFeatures" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readFeatures">readFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readGeometry" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readGeometry">readGeometry</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#readProjection" class="unstable">
+                    <a href="ol.format.EsriJSON.html#readProjection">readProjection</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeature" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeature">writeFeature</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeatureObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeatureObject">writeFeatureObject</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeatures" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeatures">writeFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeFeaturesObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeFeaturesObject">writeFeaturesObject</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeGeometry" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeGeometry">writeGeometry</a>
+                </li>
+            
+                <li data-name="ol.format.EsriJSON#writeGeometryObject" class="unstable">
+                    <a href="ol.format.EsriJSON.html#writeGeometryObject">writeGeometryObject</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -13103,7 +13172,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/source/osmsource.js, line 18
+            src/ol/source/osmsource.js, line 17
         </div>
         
         
@@ -13527,6 +13596,11 @@ Default is <code>//{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png</code>.</p></td>
 </dt>
 <dd class="unstable">
     
+    <div class="description">
+        <p>The attribution containing a link to the OpenStreetMap Copyright and License
+page.</p>
+    </div>
+    
     
     
 <dl class="details">
@@ -13803,7 +13877,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 96
+            src/ol/source/source.js, line 97
         </div>
         
         
@@ -13812,6 +13886,10 @@ Value.
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Get the attributions of the source.</p>
+    </div>
     
 
     
@@ -13971,7 +14049,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 105
+            src/ol/source/source.js, line 107
         </div>
         
         
@@ -13980,6 +14058,10 @@ List of property names.
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Get the logo of the source.</p>
+    </div>
     
 
     
@@ -14055,7 +14137,7 @@ Logo.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 114
+            src/ol/source/source.js, line 117
         </div>
         
         
@@ -14064,6 +14146,10 @@ Logo.
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Get the projection of the source.</p>
+    </div>
     
 
     
@@ -14309,7 +14395,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 129
+            src/ol/source/source.js, line 133
         </div>
         
         
@@ -14318,6 +14404,10 @@ Revision.
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Get the state of the source, see <a href="ol.source.html#State"><code>ol.source.State</code></a> for possible states.</p>
+    </div>
     
 
     
@@ -14391,7 +14481,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilesource.js, line 190
+            src/ol/source/tilesource.js, line 191
         </div>
         
         
@@ -14400,6 +14490,10 @@ State.
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Return the tile grid of the tile source.</p>
+    </div>
     
 
     
@@ -14475,7 +14569,7 @@ Tile grid.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 118
+            src/ol/source/tileimagesource.js, line 119
         </div>
         
         
@@ -14484,6 +14578,10 @@ Tile grid.
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Return the tile load function of the source.</p>
+    </div>
     
 
     
@@ -14559,7 +14657,7 @@ TileLoadFunction
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 127
+            src/ol/source/tileimagesource.js, line 129
         </div>
         
         
@@ -14568,6 +14666,10 @@ TileLoadFunction
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Return the tile URL function of the source.</p>
+    </div>
     
 
     
@@ -15289,7 +15391,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 160
+            src/ol/source/tileimagesource.js, line 163
         </div>
         
         
@@ -15298,6 +15400,10 @@ properties and adds new ones (it does not remove any existing properties).</p>
 </dt>
 <dd class="unstable">
     
+    
+    <div class="description">
+        <p>Set the tile load function of the source.</p>
+    </div>
     
 
     
@@ -15421,6 +15527,10 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dd class="unstable">
     
     
+    <div class="description">
+        <p>Set the tile URL function of the source.</p>
+    </div>
+    
 
     
     
@@ -15531,7 +15641,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/xyzsource.js, line 74
+            src/ol/source/xyzsource.js, line 75
         </div>
         
         
@@ -15540,6 +15650,10 @@ properties and adds new ones (it does not remove any existing properties).</p>
 </dt>
 <dd class="">
     
+    
+    <div class="description">
+        <p>Set the URL to use for requests.</p>
+    </div>
     
 
     
@@ -16079,7 +16193,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Apr 16 2015 09:33:18 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Apr 20 2015 13:47:56 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
