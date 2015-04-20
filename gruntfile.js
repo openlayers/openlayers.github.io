@@ -80,10 +80,6 @@ module.exports = function(grunt) {
       css: {
         src: repo + '/build/hosted/HEAD/css',
         dest: dist + '/en/' + branch + '/css'
-      },
-      resources: {
-        src: repo + '/build/hosted/HEAD/resources',
-        dest: dist + '/en/' + branch + '/resources'
       }
     },
     less: {
