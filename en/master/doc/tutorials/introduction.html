@@ -58,7 +58,6 @@
 </ul>
 <p>Class namespaces, such as <code>ol.layer</code> have a base class type with the same name, such as <code>ol.layer.Layer</code>. These are mainly abstract classes, from which the other subclasses inherit.</p>
 <p>Source files are similarly organised, with a directory for each class namespace. Names are however all lower-case, and the subclasses repeat the superclass type in their name, for example, <code>ol/layer/vectorlayer.js</code>.</p>
-<p>The naming structure means that there are sometimes 2 objects with the same name but different initial, such as <code>ol.feature</code>, a simple object with static functions to be used with features, and <code>ol.Feature</code>, a class used to instantiate new features. These two objects are however stored in the same file, in this case, <code>ol/feature.js</code></p>
 <p>OL3 follows the convention that the names of private properties and methods, that is, those that are not part of the API, end in an underscore. In general, instance properties are private and accessed using accessors.</p>
 </div>
 

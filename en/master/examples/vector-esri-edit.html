@@ -130,7 +130,7 @@ selected.on(&#x27;remove&#x27;, function(evt) {
   var fid = feature.getId();
   if (dirty[fid] === true) {
     var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
-      featureProjection: select.getMap().getView().getProjection()
+      featureProjection: map.getView().getProjection()
     }) + &#x27;]&#x27;;
     var url = serviceUrl + layer + &#x27;/updateFeatures&#x27;;
     $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
@@ -150,7 +150,7 @@ selected.on(&#x27;remove&#x27;, function(evt) {
 draw.on(&#x27;drawend&#x27;, function(evt) {
   var feature = evt.feature;
   var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
-    featureProjection: evt.target.getMap().getView().getProjection()
+    featureProjection: map.getView().getProjection()
   }) + &#x27;]&#x27;;
   var url = serviceUrl + layer + &#x27;/addFeatures&#x27;;
   $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
@@ -310,7 +310,7 @@ selected.on(&#x27;remove&#x27;, function(evt) {
   var fid = feature.getId();
   if (dirty[fid] === true) {
     var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
-      featureProjection: select.getMap().getView().getProjection()
+      featureProjection: map.getView().getProjection()
     }) + &#x27;]&#x27;;
     var url = serviceUrl + layer + &#x27;/updateFeatures&#x27;;
     $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
@@ -330,7 +330,7 @@ selected.on(&#x27;remove&#x27;, function(evt) {
 draw.on(&#x27;drawend&#x27;, function(evt) {
   var feature = evt.feature;
   var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
-    featureProjection: evt.target.getMap().getView().getProjection()
+    featureProjection: map.getView().getProjection()
   }) + &#x27;]&#x27;;
   var url = serviceUrl + layer + &#x27;/addFeatures&#x27;;
   $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
