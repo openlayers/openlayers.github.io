@@ -2,15 +2,15 @@ var cp = require('child_process');
 
 
 /**
- * This exports a "buildpy" task that simply calls build.py with the supplied
+ * This exports a "make" task that simply calls make with the supplied
  * arguments.  The `cwd` option may be used to specify the parent directory of
- * the build.py script.
+ * the Makefile.
  */
 
 
 /** @param {Object} grunt Grunt DSL object. */
 module.exports = function(grunt) {
-  grunt.registerMultiTask('buildpy', 'Run build.py.', function() {
+  grunt.registerMultiTask('make', 'Run make.', function() {
     var args = this.data.args;
     var done = this.async();
 
@@ -18,18 +18,18 @@ module.exports = function(grunt) {
       cwd: process.cwd()
     });
 
-    var py = cp.spawn('python', ['build.py'].concat(args), {cwd: options.cwd});
+    var mk = cp.spawn('make', args, {cwd: options.cwd});
 
-    py.stderr.on('data', function(chunk) {
+    mk.stderr.on('data', function(chunk) {
       grunt.log.error(chunk.toString());
     });
-    py.stdout.on('data', function(chunk) {
+    mk.stdout.on('data', function(chunk) {
       grunt.verbose.writeln(chunk.toString());
     });
 
-    py.on('exit', function(code) {
+    mk.on('exit', function(code) {
       if (code) {
-        return done(new Error('build.py failure: ' + code));
+        return done(new Error('make failure: ' + code));
       }
       done();
     });
