@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-428-g2a95049
+// Version: v3.4.0-487-gc025f63
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -12967,7 +12967,7 @@ ol.Observable.unByKey = function(key) {
 
 
 /**
- * Increases the revision counter and disptches a 'change' event.
+ * Increases the revision counter and dispatches a 'change' event.
  * @fires change
  * @api
  */
@@ -13311,6 +13311,16 @@ ol.size.buffer = function(size, buffer, opt_size) {
  */
 ol.size.equals = function(a, b) {
   return a[0] == b[0] && a[1] == b[1];
+};
+
+
+/**
+ * Determines if a size has a positive area.
+ * @param {ol.Size} size The size to test.
+ * @return {boolean} The size has a positive area.
+ */
+ol.size.hasArea = function(size) {
+  return size[0] > 0 && size[1] > 0;
 };
 
 
@@ -34808,6 +34818,7 @@ ol.control.Attribution.prototype.getSourceAttributions = function(frameState) {
 
 
 /**
+ * Update the attribution element.
  * @param {ol.MapEvent} mapEvent Map event.
  * @this {ol.control.Attribution}
  * @api
@@ -34963,6 +34974,7 @@ ol.control.Attribution.prototype.handleToggle_ = function() {
 
 
 /**
+ * Return `true` if the attribution is collapsible, `false` otherwise.
  * @return {boolean} True if the widget is collapsible.
  * @api stable
  */
@@ -34972,6 +34984,7 @@ ol.control.Attribution.prototype.getCollapsible = function() {
 
 
 /**
+ * Set whether the attribution should be collapsible.
  * @param {boolean} collapsible True if the widget is collapsible.
  * @api stable
  */
@@ -34988,6 +35001,9 @@ ol.control.Attribution.prototype.setCollapsible = function(collapsible) {
 
 
 /**
+ * Collapse or expand the attribution according to the passed parameter. Will
+ * not do anything if the attribution isn't collapsible or if the current
+ * collapsed state is already the one requested.
  * @param {boolean} collapsed True if the widget is collapsed.
  * @api stable
  */
@@ -35000,6 +35016,8 @@ ol.control.Attribution.prototype.setCollapsed = function(collapsed) {
 
 
 /**
+ * Return `true` when the attribution is currently collapsed or `false`
+ * otherwise.
  * @return {boolean} True if the widget is collapsed.
  * @api stable
  */
@@ -35157,6 +35175,7 @@ ol.control.Rotate.prototype.resetNorth_ = function() {
 
 
 /**
+ * Update the rotate control element.
  * @param {ol.MapEvent} mapEvent Map event.
  * @this {ol.control.Rotate}
  * @api
@@ -35781,6 +35800,7 @@ goog.inherits(ol.control.MousePosition, ol.control.Control);
 
 
 /**
+ * Update the mouseposition element.
  * @param {ol.MapEvent} mapEvent Map event.
  * @this {ol.control.MousePosition}
  * @api
@@ -35808,6 +35828,8 @@ ol.control.MousePosition.prototype.handleProjectionChanged_ = function() {
 
 
 /**
+ * Return the coordinate format type used to render the current position or
+ * undefined.
  * @return {ol.CoordinateFormatType|undefined} The format to render the current
  *     position in.
  * @observable
@@ -35820,6 +35842,7 @@ ol.control.MousePosition.prototype.getCoordinateFormat = function() {
 
 
 /**
+ * Return the projection that is used to report the mouse position.
  * @return {ol.proj.Projection|undefined} The projection to report mouse
  *     position in.
  * @observable
@@ -35871,6 +35894,7 @@ ol.control.MousePosition.prototype.setMap = function(map) {
 
 
 /**
+ * Set the coordinate format type used to render the current position.
  * @param {ol.CoordinateFormatType} format The format to render the current
  *     position in.
  * @observable
@@ -35882,6 +35906,7 @@ ol.control.MousePosition.prototype.setCoordinateFormat = function(format) {
 
 
 /**
+ * Set the projection that is used to report the mouse position.
  * @param {ol.proj.Projection} projection The projection to report mouse
  *     position in.
  * @observable
@@ -45993,6 +46018,7 @@ ol.MapBrowserEvent = function(type, map, browserEvent, opt_dragging,
   this.browserEvent = browserEvent;
 
   /**
+   * The original browser event.
    * @const
    * @type {Event}
    * @api stable
@@ -46000,12 +46026,14 @@ ol.MapBrowserEvent = function(type, map, browserEvent, opt_dragging,
   this.originalEvent = browserEvent.getBrowserEvent();
 
   /**
+   * The pixel of the original browser event.
    * @type {ol.Pixel}
    * @api stable
    */
   this.pixel = map.getEventPixel(this.originalEvent);
 
   /**
+   * The coordinate of the original browser event.
    * @type {ol.Coordinate}
    * @api stable
    */
@@ -49490,6 +49518,7 @@ goog.inherits(ol.interaction.Interaction, ol.Object);
 
 
 /**
+ * Return whether the interaction is currently active.
  * @return {boolean} `true` if the interaction is active, `false` otherwise.
  * @observable
  * @api
@@ -49718,6 +49747,8 @@ goog.inherits(ol.interaction.DoubleClickZoom, ol.interaction.Interaction);
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} (if it was a
+ * doubleclick) and eventually zooms the map.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.DoubleClickZoom}
@@ -49761,6 +49792,9 @@ ol.events.ConditionType;
 
 
 /**
+ * Return `true` if only the alt-key is pressed, `false` otherwise (e.g. when
+ * additionally the shift-key is pressed).
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if only the alt key is pressed.
  * @api stable
@@ -49775,6 +49809,9 @@ ol.events.condition.altKeyOnly = function(mapBrowserEvent) {
 
 
 /**
+ * Return `true` if only the alt-key and shift-key is pressed, `false` otherwise
+ * (e.g. when additionally the platform-modifier-key is pressed).
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if only the alt and shift keys are pressed.
  * @api stable
@@ -49789,7 +49826,8 @@ ol.events.condition.altShiftKeysOnly = function(mapBrowserEvent) {
 
 
 /**
- * Always true.
+ * Return always true.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True.
  * @function
@@ -49799,6 +49837,8 @@ ol.events.condition.always = goog.functions.TRUE;
 
 
 /**
+ * Return `true` if the event is a `click` event, `false` otherwise.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if the event is a map `click` event.
  * @api stable
@@ -49809,7 +49849,8 @@ ol.events.condition.click = function(mapBrowserEvent) {
 
 
 /**
- * Always false.
+ * Return always false.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} False.
  * @function
@@ -49819,6 +49860,9 @@ ol.events.condition.never = goog.functions.FALSE;
 
 
 /**
+ * Return `true` if the browser event is a `pointermove` event, `false`
+ * otherwise.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if the browser event is a `pointermove` event.
  * @api
@@ -49829,6 +49873,8 @@ ol.events.condition.pointerMove = function(mapBrowserEvent) {
 
 
 /**
+ * Return `true` if the event is a map `singleclick` event, `false` otherwise.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if the event is a map `singleclick` event.
  * @api stable
@@ -49839,6 +49885,9 @@ ol.events.condition.singleClick = function(mapBrowserEvent) {
 
 
 /**
+ * Return `true` if no modifier key (alt-, shift- or platform-modifier-key) is
+ * pressed.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True only if there no modifier keys are pressed.
  * @api stable
@@ -49853,6 +49902,9 @@ ol.events.condition.noModifierKeys = function(mapBrowserEvent) {
 
 
 /**
+ * Return `true` if only the platform-modifier-key (e.g. the windows-key) is
+ * pressed, `false` otherwise (e.g. when additionally the shift-key is pressed).
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if only the platform modifier key is pressed.
  * @api stable
@@ -49867,6 +49919,9 @@ ol.events.condition.platformModifierKeyOnly = function(mapBrowserEvent) {
 
 
 /**
+ * Return `true` if only the shift-key is pressed, `false` otherwise (e.g. when
+ * additionally the alt-key is pressed).
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if only the shift key is pressed.
  * @api stable
@@ -49881,6 +49936,9 @@ ol.events.condition.shiftKeyOnly = function(mapBrowserEvent) {
 
 
 /**
+ * Return `true` if the target element is not editable, i.e. not a `<input>`-,
+ * `<select>`- or `<textarea>`-element, `false` otherwise.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True only if the target element is not editable.
  * @api
@@ -49898,6 +49956,8 @@ ol.events.condition.targetNotEditable = function(mapBrowserEvent) {
 
 
 /**
+ * Return `true` if the event originates from a mouse device.
+ *
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if the event originates from a mouse device.
  * @api stable
@@ -50084,6 +50144,9 @@ ol.interaction.Pointer.handleMoveEvent = goog.nullFunction;
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} and may call into
+ * other functions, if event sequences like e.g. 'drag' or 'down-up' etc. are
+ * detected.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.Pointer}
@@ -50545,6 +50608,8 @@ ol.geom.Geometry.prototype.closestPointXY = goog.abstractMethod;
 
 
 /**
+ * Return the closest point of the geometry to the passed point as
+ * {@link ol.Coordinate coordinate}.
  * @param {ol.Coordinate} point Point.
  * @param {ol.Coordinate=} opt_closestPoint Closest point.
  * @return {ol.Coordinate} Closest point.
@@ -50833,6 +50898,7 @@ ol.geom.SimpleGeometry.prototype.computeExtent = function(extent) {
 
 
 /**
+ * Return the first coordinate of the geometry.
  * @return {ol.Coordinate} First coordinate.
  * @api stable
  */
@@ -50850,6 +50916,7 @@ ol.geom.SimpleGeometry.prototype.getFlatCoordinates = function() {
 
 
 /**
+ * Return the last coordinate of the geometry.
  * @return {ol.Coordinate} Last point.
  * @api stable
  */
@@ -50859,6 +50926,7 @@ ol.geom.SimpleGeometry.prototype.getLastCoordinate = function() {
 
 
 /**
+ * Return the {@link ol.geom.GeometryLayout layout} of the geometry.
  * @return {ol.geom.GeometryLayout} Layout.
  * @api stable
  */
@@ -52105,6 +52173,7 @@ ol.geom.LinearRing.prototype.closestPointXY =
 
 
 /**
+ * Return the area of the linear ring on projected plane.
  * @return {number} Area (on projected plane).
  * @api stable
  */
@@ -52115,6 +52184,7 @@ ol.geom.LinearRing.prototype.getArea = function() {
 
 
 /**
+ * Return the coordinates of the linear ring.
  * @return {Array.<ol.Coordinate>} Coordinates.
  * @api stable
  */
@@ -52150,6 +52220,7 @@ ol.geom.LinearRing.prototype.getType = function() {
 
 
 /**
+ * Set the coordinates of the linear ring.
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -52244,6 +52315,7 @@ ol.geom.Point.prototype.closestPointXY =
 
 
 /**
+ * Return the coordinate of the point.
  * @return {ol.Coordinate} Coordinates.
  * @api stable
  */
@@ -52280,6 +52352,7 @@ ol.geom.Point.prototype.intersectsExtent = function(extent) {
 
 
 /**
+ * Set the coordinate of the point.
  * @param {ol.Coordinate} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -52965,6 +53038,7 @@ goog.inherits(ol.geom.Polygon, ol.geom.SimpleGeometry);
 
 
 /**
+ * Append the passed linear ring to this polygon.
  * @param {ol.geom.LinearRing} linearRing Linear ring.
  * @api stable
  */
@@ -53024,6 +53098,7 @@ ol.geom.Polygon.prototype.containsXY = function(x, y) {
 
 
 /**
+ * Return the area of the polygon on projected plane.
  * @return {number} Area (on projected plane).
  * @api stable
  */
@@ -53085,6 +53160,7 @@ ol.geom.Polygon.prototype.getFlatInteriorPoint = function() {
 
 
 /**
+ * Return an interior point of the polygon.
  * @return {ol.geom.Point} Interior point.
  * @api stable
  */
@@ -53129,6 +53205,7 @@ ol.geom.Polygon.prototype.getLinearRing = function(index) {
 
 
 /**
+ * Return the linear rings of the polygon.
  * @return {Array.<ol.geom.LinearRing>} Linear rings.
  * @api stable
  */
@@ -53209,6 +53286,7 @@ ol.geom.Polygon.prototype.intersectsExtent = function(extent) {
 
 
 /**
+ * Set the coordinates of the polygon.
  * @param {Array.<Array.<ol.Coordinate>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -55921,6 +55999,9 @@ goog.inherits(ol.interaction.KeyboardPan, ol.interaction.Interaction);
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} if it was a
+ * `KeyEvent`, and decides the direction to pan to (if an arrow key was
+ * pressed).
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.KeyboardPan}
@@ -56021,6 +56102,9 @@ goog.inherits(ol.interaction.KeyboardZoom, ol.interaction.Interaction);
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} if it was a
+ * `KeyEvent`, and decides whether to zoom in or out (depending on whether the
+ * key pressed was '+' or '-').
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.KeyboardZoom}
@@ -56112,6 +56196,8 @@ goog.inherits(ol.interaction.MouseWheelZoom, ol.interaction.Interaction);
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} (if it was a
+ * mousewheel-event) and eventually zooms the map.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.MouseWheelZoom}
@@ -60912,6 +60998,7 @@ ol.geom.Circle.prototype.containsXY = function(x, y) {
 
 
 /**
+ * Return the center of the circle as {@link ol.Coordinate coordinate}.
  * @return {ol.Coordinate} Center.
  * @api
  */
@@ -60934,6 +61021,7 @@ ol.geom.Circle.prototype.computeExtent = function(extent) {
 
 
 /**
+ * Return the radius of the circle.
  * @return {number} Radius.
  * @api
  */
@@ -60963,6 +61051,7 @@ ol.geom.Circle.prototype.getType = function() {
 
 
 /**
+ * Set the center of the circle as {@link ol.Coordinate coordinate}.
  * @param {ol.Coordinate} center Center.
  * @api
  */
@@ -60982,6 +61071,8 @@ ol.geom.Circle.prototype.setCenter = function(center) {
 
 
 /**
+ * Set the center (as {@link ol.Coordinate coordinate}) and the radius (as
+ * number) of the circle.
  * @param {ol.Coordinate} center Center.
  * @param {number} radius Radius.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
@@ -61023,7 +61114,7 @@ ol.geom.Circle.prototype.setFlatCoordinates =
 
 
 /**
- * The radius is in the units of the projection.
+ * Set the radius of the circle. The radius is in the units of the projection.
  * @param {number} radius Radius.
  * @api
  */
@@ -61202,6 +61293,7 @@ ol.geom.GeometryCollection.prototype.computeExtent = function(extent) {
 
 
 /**
+ * Return the geometries that make up this geometry collection.
  * @return {Array.<ol.geom.Geometry>} Geometries.
  * @api stable
  */
@@ -61296,6 +61388,7 @@ ol.geom.GeometryCollection.prototype.isEmpty = function() {
 
 
 /**
+ * Set the geometries that make up this geometry collection.
  * @param {Array.<ol.geom.Geometry>} geometries Geometries.
  * @api stable
  */
@@ -61657,6 +61750,7 @@ goog.inherits(ol.geom.LineString, ol.geom.SimpleGeometry);
 
 
 /**
+ * Append the passed coordinate to the coordinates of the linestring.
  * @param {ol.Coordinate} coordinate Coordinate.
  * @api stable
  */
@@ -61749,6 +61843,7 @@ ol.geom.LineString.prototype.getCoordinateAtM = function(m, opt_extrapolate) {
 
 
 /**
+ * Return the coordinates of the linestring.
  * @return {Array.<ol.Coordinate>} Coordinates.
  * @api stable
  */
@@ -61759,6 +61854,7 @@ ol.geom.LineString.prototype.getCoordinates = function() {
 
 
 /**
+ * Return the length of the linestring on projected plane.
  * @return {number} Length (on projected plane).
  * @api stable
  */
@@ -61819,6 +61915,7 @@ ol.geom.LineString.prototype.intersectsExtent = function(extent) {
 
 
 /**
+ * Set the coordinates of the linestring.
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -61907,6 +62004,7 @@ goog.inherits(ol.geom.MultiLineString, ol.geom.SimpleGeometry);
 
 
 /**
+ * Append the passed linestring to the multilinestring.
  * @param {ol.geom.LineString} lineString LineString.
  * @api stable
  */
@@ -61994,6 +62092,7 @@ ol.geom.MultiLineString.prototype.getCoordinateAtM =
 
 
 /**
+ * Return the coordinates of the multilinestring.
  * @return {Array.<Array.<ol.Coordinate>>} Coordinates.
  * @api stable
  */
@@ -62012,6 +62111,7 @@ ol.geom.MultiLineString.prototype.getEnds = function() {
 
 
 /**
+ * Return the linestring at the specified index.
  * @param {number} index Index.
  * @return {ol.geom.LineString} LineString.
  * @api stable
@@ -62030,6 +62130,7 @@ ol.geom.MultiLineString.prototype.getLineString = function(index) {
 
 
 /**
+ * Return the linestrings of this multilinestring.
  * @return {Array.<ol.geom.LineString>} LineStrings.
  * @api stable
  */
@@ -62110,6 +62211,7 @@ ol.geom.MultiLineString.prototype.intersectsExtent = function(extent) {
 
 
 /**
+ * Set the coordinates of the multilinestring.
  * @param {Array.<Array.<ol.Coordinate>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -62211,6 +62313,7 @@ goog.inherits(ol.geom.MultiPoint, ol.geom.SimpleGeometry);
 
 
 /**
+ * Append the passed point to this multipoint.
  * @param {ol.geom.Point} point Point.
  * @api stable
  */
@@ -62266,6 +62369,7 @@ ol.geom.MultiPoint.prototype.closestPointXY =
 
 
 /**
+ * Return the coordinates of the multipoint.
  * @return {Array.<ol.Coordinate>} Coordinates.
  * @api stable
  */
@@ -62276,6 +62380,7 @@ ol.geom.MultiPoint.prototype.getCoordinates = function() {
 
 
 /**
+ * Return the point at the specified index.
  * @param {number} index Index.
  * @return {ol.geom.Point} Point.
  * @api stable
@@ -62296,6 +62401,7 @@ ol.geom.MultiPoint.prototype.getPoint = function(index) {
 
 
 /**
+ * Return the points of this multipoint.
  * @return {Array.<ol.geom.Point>} Points.
  * @api stable
  */
@@ -62344,6 +62450,7 @@ ol.geom.MultiPoint.prototype.intersectsExtent = function(extent) {
 
 
 /**
+ * Set the coordinates of the multipoint.
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -62488,6 +62595,7 @@ goog.inherits(ol.geom.MultiPolygon, ol.geom.SimpleGeometry);
 
 
 /**
+ * Append the passed polygon to this multipolygon.
  * @param {ol.geom.Polygon} polygon Polygon.
  * @api stable
  */
@@ -62557,6 +62665,7 @@ ol.geom.MultiPolygon.prototype.containsXY = function(x, y) {
 
 
 /**
+ * Return the area of the multipolygon on projected plane.
  * @return {number} Area (on projected plane).
  * @api stable
  */
@@ -62619,6 +62728,7 @@ ol.geom.MultiPolygon.prototype.getFlatInteriorPoints = function() {
 
 
 /**
+ * Return the interior points as {@link ol.geom.MultiPoint multipoint}.
  * @return {ol.geom.MultiPoint} Interior points.
  * @api stable
  */
@@ -62670,6 +62780,7 @@ ol.geom.MultiPolygon.prototype.getSimplifiedGeometryInternal =
 
 
 /**
+ * Return the polygon at the specified index.
  * @param {number} index Index.
  * @return {ol.geom.Polygon} Polygon.
  * @api stable
@@ -62703,6 +62814,7 @@ ol.geom.MultiPolygon.prototype.getPolygon = function(index) {
 
 
 /**
+ * Return the polygons of this multipolygon.
  * @return {Array.<ol.geom.Polygon>} Polygons.
  * @api stable
  */
@@ -62751,6 +62863,7 @@ ol.geom.MultiPolygon.prototype.intersectsExtent = function(extent) {
 
 
 /**
+ * Set the coordinates of the multipolygon.
  * @param {Array.<Array.<Array.<ol.Coordinate>>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  * @api stable
@@ -69267,7 +69380,7 @@ ol.xml.setAttributeNS =
 
 
 /**
- * Parse an XML string to an XML Document.
+ * Parse an XML string to an XML Document.
  * @param {string} xml XML.
  * @return {Document} Document.
  * @api
@@ -69724,7 +69837,7 @@ ol.FeatureLoader;
 
 
 /**
- * @param {string} url Feature URL service.
+ * @param {string} url Feature URL service.
  * @param {ol.format.Feature} format Feature format.
  * @param {function(this:ol.source.Vector, Array.<ol.Feature>)} success
  *     Function called with the loaded features. Called with the vector
@@ -69792,7 +69905,7 @@ ol.featureloader.loadFeaturesXhr = function(url, format, success) {
  * Create an XHR feature loader for a `url` and `format`. The feature loader
  * loads features (with XHR), parses the features, and adds them to the
  * vector source.
- * @param {string} url Feature URL service.
+ * @param {string} url Feature URL service.
  * @param {ol.format.Feature} format Feature format.
  * @return {ol.FeatureLoader} The feature loader.
  * @api
@@ -77225,7 +77338,7 @@ ol.webgl.Context.prototype.getHitDetectionFramebuffer = function() {
 
 /**
  * Get shader from the cache if it's in the cache. Otherwise, create
- * the WebGL shader, compile it, and add entry to cache.
+ * the WebGL shader, compile it, and add entry to cache.
  * @param {ol.webgl.Shader} shaderObject Shader object.
  * @return {WebGLShader} Shader.
  */
@@ -77256,7 +77369,7 @@ ol.webgl.Context.prototype.getShader = function(shaderObject) {
 
 /**
  * Get the program from the cache if it's in the cache. Otherwise create
- * the WebGL program, attach the shaders to it, and add an entry to the
+ * the WebGL program, attach the shaders to it, and add an entry to the
  * cache.
  * @param {ol.webgl.shader.Fragment} fragmentShaderObject Fragment shader.
  * @param {ol.webgl.shader.Vertex} vertexShaderObject Vertex shader.
@@ -81479,6 +81592,7 @@ goog.require('ol.renderer.Map');
 goog.require('ol.renderer.canvas.Map');
 goog.require('ol.renderer.dom.Map');
 goog.require('ol.renderer.webgl.Map');
+goog.require('ol.size');
 goog.require('ol.structs.PriorityQueue');
 goog.require('ol.tilecoord');
 goog.require('ol.vec.Mat4');
@@ -82685,25 +82799,11 @@ ol.Map.prototype.renderFrame_ = function(time) {
 
   var i, ii, viewState;
 
-  /**
-   * Check whether a size has non-zero width and height.  Note that this
-   * function is here because the compiler doesn't recognize that size is
-   * defined in the frameState assignment below when the same code is inline in
-   * the condition below.  The compiler inlines this function itself, so the
-   * resulting code is the same.
-   *
-   * @param {ol.Size} size The size to test.
-   * @return {boolean} Has non-zero width and height.
-   */
-  function hasArea(size) {
-    return size[0] > 0 && size[1] > 0;
-  }
-
   var size = this.getSize();
   var view = this.getView();
   /** @type {?olx.FrameState} */
   var frameState = null;
-  if (goog.isDef(size) && hasArea(size) &&
+  if (goog.isDef(size) && ol.size.hasArea(size) &&
       !goog.isNull(view) && view.isDef()) {
     var viewHints = view.getHints();
     var layerStatesArray = this.getLayerGroup().getLayerStatesArray();
@@ -83816,6 +83916,7 @@ ol.control.OverviewMap.prototype.handleRotationChanged_ = function() {
 
 
 /**
+ * Update the overview map element.
  * @param {ol.MapEvent} mapEvent Map event.
  * @this {ol.control.OverviewMap}
  * @api
@@ -84051,6 +84152,7 @@ ol.control.OverviewMap.prototype.handleToggle_ = function() {
 
 
 /**
+ * Return `true` if the overview map is collapsible, `false` otherwise.
  * @return {boolean} True if the widget is collapsible.
  * @api stable
  */
@@ -84060,6 +84162,7 @@ ol.control.OverviewMap.prototype.getCollapsible = function() {
 
 
 /**
+ * Set whether the overview map should be collapsible.
  * @param {boolean} collapsible True if the widget is collapsible.
  * @api stable
  */
@@ -84076,6 +84179,9 @@ ol.control.OverviewMap.prototype.setCollapsible = function(collapsible) {
 
 
 /**
+ * Collapse or expand the overview map according to the passed parameter. Will
+ * not do anything if the overview map isn't collapsible or if the current
+ * collapsed state is already the one requested.
  * @param {boolean} collapsed True if the widget is collapsed.
  * @api stable
  */
@@ -84238,6 +84344,7 @@ ol.control.ScaleLine.LEADING_DIGITS = [1, 2, 5];
 
 
 /**
+ * Return the units to use in the scale line.
  * @return {ol.control.ScaleLineUnits|undefined} The units to use in the scale
  *     line.
  * @observable
@@ -84250,6 +84357,7 @@ ol.control.ScaleLine.prototype.getUnits = function() {
 
 
 /**
+ * Update the scale line element.
  * @param {ol.MapEvent} mapEvent Map event.
  * @this {ol.control.ScaleLine}
  * @api
@@ -84274,6 +84382,7 @@ ol.control.ScaleLine.prototype.handleUnitsChanged_ = function() {
 
 
 /**
+ * Set the units to use in the scale line.
  * @param {ol.control.ScaleLineUnits} units The units to use in the scale line.
  * @observable
  * @api stable
@@ -87644,6 +87753,7 @@ ol.control.ZoomSlider.prototype.initSlider_ = function() {
 
 
 /**
+ * Update the zoomslider element.
  * @param {ol.MapEvent} mapEvent Map event.
  * @this {ol.control.ZoomSlider}
  * @api
@@ -91009,9 +91119,15 @@ ol.format.GMLBase.prototype.readFeaturesInternal = function(node, objectStack) {
   var localName = ol.xml.getLocalName(node);
   var features;
   if (localName == 'FeatureCollection') {
-    features = ol.xml.pushParseAndPop(null,
-        this.FEATURE_COLLECTION_PARSERS, node,
-        objectStack, this);
+    if (node.namespaceURI === 'http://www.opengis.net/wfs') {
+      features = ol.xml.pushParseAndPop([],
+          this.FEATURE_COLLECTION_PARSERS, node,
+          objectStack, this);
+    } else {
+      features = ol.xml.pushParseAndPop(null,
+          this.FEATURE_COLLECTION_PARSERS, node,
+          objectStack, this);
+    }
   } else if (localName == 'featureMembers' || localName == 'featureMember') {
     var context = objectStack[0];
     goog.asserts.assert(goog.isObject(context), 'context should be an Object');
@@ -93128,6 +93244,10 @@ ol.format.GML2 = function(opt_options) {
       (goog.isDef(opt_options) ? opt_options : {});
 
   goog.base(this, options);
+
+  this.FEATURE_COLLECTION_PARSERS[ol.format.GMLBase.GMLNS][
+      'featureMember'] =
+      ol.xml.makeArrayPusher(ol.format.GMLBase.prototype.readFeaturesInternal);
 
   /**
    * @inheritDoc
@@ -98406,6 +98526,8 @@ ol.format.KML.prototype.readFeaturesFromNode = function(node, opt_options) {
 
 
 /**
+ * Read the name of the KML.
+ *
  * @param {Document|Node|string} source Souce.
  * @return {string|undefined} Name.
  * @api stable
@@ -98473,7 +98595,9 @@ ol.format.KML.prototype.readNameFromNode = function(node) {
 
 
 /**
- * @param {Document|Node|string} source Souce.
+ * Read the network links of the KML.
+ *
+ * @param {Document|Node|string} source Source.
  * @return {Array.<Object>} Network links.
  * @api
  */
@@ -101234,6 +101358,8 @@ ol.format.WFS.prototype.readFeaturesFromNode = function(node, opt_options) {
 
 
 /**
+ * Read transaction response of the source.
+ *
  * @param {Document|Node|Object|string} source Source.
  * @return {ol.format.WFS.TransactionResponse|undefined} Transaction response.
  * @api stable
@@ -101255,6 +101381,8 @@ ol.format.WFS.prototype.readTransactionResponse = function(source) {
 
 
 /**
+ * Read feature collection metadata of the source.
+ *
  * @param {Document|Node|Object|string} source Source.
  * @return {ol.format.WFS.FeatureCollectionMetadata|undefined}
  *     FeatureCollection metadata.
@@ -101712,6 +101840,8 @@ ol.format.WFS.writeGetFeature_ = function(node, featureTypes, objectStack) {
 
 
 /**
+ * Encode format as WFS `GetFeature` and return the Node.
+ *
  * @param {olx.format.WFSWriteGetFeatureOptions} options Options.
  * @return {Node} Result.
  * @api stable
@@ -101762,6 +101892,8 @@ ol.format.WFS.prototype.writeGetFeature = function(options) {
 
 
 /**
+ * Encode format as WFS `Transaction` and return the Node.
+ *
  * @param {Array.<ol.Feature>} inserts The features to insert.
  * @param {Array.<ol.Feature>} updates The features to update.
  * @param {Array.<ol.Feature>} deletes The features to delete.
@@ -101894,6 +102026,10 @@ goog.require('ol.geom.Polygon');
 
 
 /**
+ * @classdesc
+ * Geometry format for reading and writing data in the `WellKnownText` (WKT)
+ * format.
+ *
  * @constructor
  * @extends {ol.format.TextFeature}
  * @param {olx.format.WKTOptions=} opt_options Options.
@@ -107398,6 +107534,8 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, result) {
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} unconditionally and
+ * neither prevents the browser default nor stops event propagation.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.DragAndDrop}
@@ -108181,6 +108319,8 @@ ol.interaction.Draw.prototype.setMap = function(map) {
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} and may actually
+ * draw or finish the drawing.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.Draw}
@@ -109143,6 +109283,8 @@ ol.interaction.Modify.handleUpEvent_ = function(evt) {
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} and may modify the
+ * geometry.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.Modify}
@@ -109634,6 +109776,8 @@ ol.interaction.Select.prototype.getFeatures = function() {
 
 
 /**
+ * Handles the {@link ol.MapBrowserEvent map browser event} and may change the
+ * selected state of features.
  * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.Select}
@@ -109935,6 +110079,7 @@ goog.inherits(ol.interaction.Snap, ol.interaction.Pointer);
 
 
 /**
+ * Add a feature to the collection of features that we may snap to.
  * @param {ol.Feature} feature Feature.
  * @param {boolean=} opt_listen Whether to listen to the geometry change or not
  *     Defaults to `true`.
@@ -110061,6 +110206,7 @@ ol.interaction.Snap.prototype.handleGeometryModify_ = function(feature, evt) {
 
 
 /**
+ * Remove a feature from the collection of features that we may snap to.
  * @param {ol.Feature} feature Feature
  * @param {boolean=} opt_unlisten Whether to unlisten to the geometry change
  *     or not. Defaults to `true`.
@@ -112888,7 +113034,11 @@ ol.source.ImageWMS.prototype.getRequestUrl_ =
     switch (this.serverType_) {
       case ol.source.wms.ServerType.GEOSERVER:
         var dpi = (90 * pixelRatio + 0.5) | 0;
-        params['FORMAT_OPTIONS'] = 'dpi:' + dpi;
+        if (goog.isDef(params['FORMAT_OPTIONS'])) {
+          params['FORMAT_OPTIONS'] += ';dpi:' + dpi;
+        } else {
+          params['FORMAT_OPTIONS'] = 'dpi:' + dpi;
+        }
         break;
       case ol.source.wms.ServerType.MAPSERVER:
         params['MAP_RESOLUTION'] = 90 * pixelRatio;
@@ -112920,7 +113070,7 @@ ol.source.ImageWMS.prototype.getRequestUrl_ =
 
 
 /**
- * Return the URL used for this WMS source.
+ * Return the URL used for this WMS source.
  * @return {string|undefined} URL.
  * @api stable
  */
@@ -113518,7 +113668,7 @@ ol.source.TileArcGISRest.prototype.getTilePixelSize =
 
 
 /**
- * Return the URLs used for this ArcGIS source.
+ * Return the URLs used for this ArcGIS source.
  * @return {!Array.<string>} URLs.
  * @api stable
  */
@@ -114769,7 +114919,11 @@ ol.source.TileWMS.prototype.getRequestUrl_ =
     switch (this.serverType_) {
       case ol.source.wms.ServerType.GEOSERVER:
         var dpi = (90 * pixelRatio + 0.5) | 0;
-        params['FORMAT_OPTIONS'] = 'dpi:' + dpi;
+        if (goog.isDef(params['FORMAT_OPTIONS'])) {
+          params['FORMAT_OPTIONS'] += ';dpi:' + dpi;
+        } else {
+          params['FORMAT_OPTIONS'] = 'dpi:' + dpi;
+        }
         break;
       case ol.source.wms.ServerType.MAPSERVER:
         params['MAP_RESOLUTION'] = 90 * pixelRatio;
@@ -114826,7 +114980,7 @@ ol.source.TileWMS.prototype.getTilePixelSize =
 
 
 /**
- * Return the URLs used for this WMS source.
+ * Return the URLs used for this WMS source.
  * @return {!Array.<string>} URLs.
  * @api stable
  */

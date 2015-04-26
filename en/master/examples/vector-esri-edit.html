@@ -71,12 +71,17 @@ var vectorSource = new ol.source.Vector({
         &#x27;&amp;geometryType=esriGeometryEnvelope&amp;inSR=102100&amp;outFields=*&#x27; +
         &#x27;&amp;outSR=102100&#x27;;
     $.ajax({url: url, dataType: &#x27;jsonp&#x27;, success: function(response) {
-      // dataProjection will be read from document
-      var features = esrijsonFormat.readFeatures(response, {
-        featureProjection: projection
-      });
-      if (features.length &gt; 0) {
-        vectorSource.addFeatures(features);
+      if (response.error) {
+        alert(response.error.message + &#x27;\n&#x27; +
+            response.error.details.join(&#x27;\n&#x27;));
+      } else {
+        // dataProjection will be read from document
+        var features = esrijsonFormat.readFeatures(response, {
+          featureProjection: projection
+        });
+        if (features.length &gt; 0) {
+          vectorSource.addFeatures(features);
+        }
       }
     }});
   },
@@ -251,12 +256,17 @@ var vectorSource = new ol.source.Vector({
         &#x27;&amp;geometryType=esriGeometryEnvelope&amp;inSR=102100&amp;outFields=*&#x27; +
         &#x27;&amp;outSR=102100&#x27;;
     $.ajax({url: url, dataType: &#x27;jsonp&#x27;, success: function(response) {
-      // dataProjection will be read from document
-      var features = esrijsonFormat.readFeatures(response, {
-        featureProjection: projection
-      });
-      if (features.length &gt; 0) {
-        vectorSource.addFeatures(features);
+      if (response.error) {
+        alert(response.error.message + &#x27;\n&#x27; +
+            response.error.details.join(&#x27;\n&#x27;));
+      } else {
+        // dataProjection will be read from document
+        var features = esrijsonFormat.readFeatures(response, {
+          featureProjection: projection
+        });
+        if (features.length &gt; 0) {
+          vectorSource.addFeatures(features);
+        }
       }
     }});
   },

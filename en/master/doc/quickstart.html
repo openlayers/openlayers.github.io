@@ -6,6 +6,7 @@
     <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
     <link href='../../../assets/theme/site.css' rel='stylesheet' type='text/css'>
     <link rel="icon" type="image/x-icon" href="../../../assets/theme/img/favicon.ico" />
+    
   </head>
   <body>
     <header class='navbar navbar-fixed-top' role='navigation'>
@@ -119,6 +120,7 @@
       zoom: <span class="number">4</span>
     })</code></pre>
 <p>You will notice that the <code>center</code> specified is in lat/lon coordinates (EPSG:4326). Since the only layer we use is in Spherical Mercator projection (EPSG:3857), we can reproject them on the fly to be able to zoom the map on the right coordinates.</p>
+
 </div>
 
     <footer>
@@ -126,5 +128,6 @@
     </footer>
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
   </body>
 </html>
