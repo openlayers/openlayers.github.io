@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.4.0-487-gc025f63
+// Version: v3.4.0-497-g8e4063d
 
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -110510,7 +110510,7 @@ ol.interaction.Snap.SegmentDataType;
 ol.interaction.Snap.handleEvent_ = function(evt) {
   var result = this.snapTo(evt.pixel, evt.coordinate, evt.map);
   if (result.snapped) {
-    evt.coordinate = result.vertex;
+    evt.coordinate = result.vertex.slice(0, 2);
     evt.pixel = result.vertexPixel;
   }
   return ol.interaction.Pointer.handleEvent.call(this, evt);
