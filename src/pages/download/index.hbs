@@ -1,0 +1,38 @@
+---
+title: 'Download'
+layout: main.hbs
+---
+
+<div class="container">
+
+  <div class="row">
+    <h3 class="col-sm-12">Downloads for the {{ latest }} release</h3>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-hover">
+        <tbody>
+          <tr><th>Archive</th><th>Description</th></tr>
+          <tr>
+            <td><a href="https://github.com/openlayers/ol3/releases/download/{{ latest }}/{{ latest }}-dist.zip">{{ latest }}-dist.zip</a></td>
+            <td>Includes a full build of the library, a debug build, and library CSS.</td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/openlayers/ol3/releases/download/{{ latest }}/{{ latest }}.zip">{{ latest }}.zip</a></td>
+            <td>Includes all of the above plus examples, API docs, and sources.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        See the <a href="https://github.com/openlayers/ol3/releases/tag/{{ latest }}">{{ latest }} release page</a> for a changelog and any special upgrade notes.
+      </p>
+
+      <p>
+        For archives of previous releases, see the <a href="https://github.com/openlayers/ol3/releases/">complete list of releases</a>.
+      </p>
+    </div>
+  </div>
+
+</div>
