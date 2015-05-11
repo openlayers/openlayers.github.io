@@ -12,4 +12,3 @@ goog.require('ol.loadingstrategy');
 goog.require('ol.proj');
 goog.require('ol.source.Vector');
 goog.require('ol.source.XYZ');
-goog.require('ol.tilegrid.XYZ');

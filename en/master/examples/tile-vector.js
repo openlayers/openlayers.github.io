@@ -2,7 +2,7 @@ var waterLayer = new ol.layer.Vector({
   source: new ol.source.TileVector({
     format: new ol.format.TopoJSON(),
     projection: 'EPSG:3857',
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: 'http://{a-c}.tile.openstreetmap.us/' +
@@ -20,7 +20,7 @@ var roadLayer = new ol.layer.Vector({
   source: new ol.source.TileVector({
     format: new ol.format.TopoJSON(),
     projection: 'EPSG:3857',
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: 'http://{a-c}.tile.openstreetmap.us/' +
@@ -76,7 +76,7 @@ var buildingLayer = new ol.layer.Vector({
       defaultProjection: 'EPSG:4326'
     }),
     projection: 'EPSG:3857',
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: 'http://{a-c}.tile.openstreetmap.us/' +
@@ -95,7 +95,7 @@ var landuseLayer = new ol.layer.Vector({
       defaultProjection: 'EPSG:4326'
     }),
     projection: 'EPSG:3857',
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: 'http://{a-c}.tile.openstreetmap.us/' +

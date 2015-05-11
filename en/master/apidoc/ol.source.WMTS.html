@@ -11899,6 +11899,10 @@
                     <a href="ol.source.WMTS.html#getProperties">getProperties</a>
                 </li>
             
+                <li data-name="ol.source.WMTS#getRequestEncoding" class="unstable">
+                    <a href="ol.source.WMTS.html#getRequestEncoding">getRequestEncoding</a>
+                </li>
+            
                 <li data-name="ol.source.WMTS#getRevision" class="unstable">
                     <a href="ol.source.WMTS.html#getRevision">getRevision</a>
                 </li>
@@ -11921,6 +11925,10 @@
             
                 <li data-name="ol.source.WMTS#getTileUrlFunction" class="unstable">
                     <a href="ol.source.WMTS.html#getTileUrlFunction">getTileUrlFunction</a>
+                </li>
+            
+                <li data-name="ol.source.WMTS#getUrls" class="unstable">
+                    <a href="ol.source.WMTS.html#getUrls">getUrls</a>
                 </li>
             
                 <li data-name="ol.source.WMTS#getVersion" class="unstable">
@@ -12872,6 +12880,7 @@
             <span class="title">
                 <a href="ol.tilegrid.html">ol.tilegrid</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
@@ -12880,6 +12889,12 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.tilegrid.createXYZ" class="unstable">
+                    <a href="ol.tilegrid.html#createXYZ">createXYZ</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -12993,59 +13008,6 @@
             
                 <li data-name="ol.tilegrid.WMTS#getTileSize" class="">
                     <a href="ol.tilegrid.WMTS.html#getTileSize">getTileSize</a>
-                </li>
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="ol.tilegrid.XYZ">
-            <span class="title">
-                <a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="ol.tilegrid.XYZ#getMaxZoom" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getMaxZoom">getMaxZoom</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getMinZoom" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getMinZoom">getMinZoom</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getOrigin" class="">
-                    <a href="ol.tilegrid.XYZ.html#getOrigin">getOrigin</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getResolution" class="">
-                    <a href="ol.tilegrid.XYZ.html#getResolution">getResolution</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getResolutions" class="">
-                    <a href="ol.tilegrid.XYZ.html#getResolutions">getResolutions</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileCoordForCoordAndResolution" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getTileCoordForCoordAndResolution">getTileCoordForCoordAndResolution</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileCoordForCoordAndZ" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getTileCoordForCoordAndZ">getTileCoordForCoordAndZ</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileSize" class="">
-                    <a href="ol.tilegrid.XYZ.html#getTileSize">getTileSize</a>
                 </li>
             
             </ul>
@@ -13176,7 +13138,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 39
+            src/ol/source/wmtssource.js, line 38
         </div>
         
         
@@ -14012,7 +13974,7 @@ template.  For KVP encoding, it is normal URL.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 332
+            src/ol/source/wmtssource.js, line 341
         </div>
         
         
@@ -14491,7 +14453,7 @@ Attributions.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 222
+            src/ol/source/wmtssource.js, line 211
         </div>
         
         
@@ -14579,7 +14541,7 @@ Dimensions.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 232
+            src/ol/source/wmtssource.js, line 221
         </div>
         
         
@@ -14751,7 +14713,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 250
+            src/ol/source/wmtssource.js, line 239
         </div>
         
         
@@ -14923,7 +14885,7 @@ Logo.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 260
+            src/ol/source/wmtssource.js, line 249
         </div>
         
         
@@ -15171,6 +15133,92 @@ Object.
         
             
 <dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="getRequestEncoding">
+            getRequestEncoding<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.source.html#WMTSRequestEncoding">ol.source.WMTSRequestEncoding</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/source/wmtssource.js, line 259
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+    <div class="description">
+        <p>Return the request encoding, either &quot;KVP&quot; or &quot;REST&quot;.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Request encoding.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
     <div class="nameContainer inherited">
         
         <h4 class="name" id="getRevision">
@@ -15355,7 +15403,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 270
+            src/ol/source/wmtssource.js, line 269
         </div>
         
         
@@ -15441,7 +15489,7 @@ Style.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilesource.js, line 186
+            src/ol/source/tilesource.js, line 187
         </div>
         
         
@@ -15529,7 +15577,7 @@ Tile grid.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 119
+            src/ol/source/tileimagesource.js, line 120
         </div>
         
         
@@ -15617,7 +15665,7 @@ TileLoadFunction
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 129
+            src/ol/source/tileimagesource.js, line 130
         </div>
         
         
@@ -15693,6 +15741,92 @@ TileUrlFunction
 <dt class="unstable">
     <div class="nameContainer">
         
+        <h4 class="name" id="getUrls">
+            getUrls<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/source/wmtssource.js, line 279
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    
+    <div class="description">
+        <p>Return the URLs used for this WMTS source.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+URLs.
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
         <h4 class="name" id="getVersion">
             getVersion<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
             
@@ -15703,7 +15837,7 @@ TileUrlFunction
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 280
+            src/ol/source/wmtssource.js, line 289
         </div>
         
         
@@ -16437,7 +16571,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 163
+            src/ol/source/tileimagesource.js, line 164
         </div>
         
         
@@ -16563,7 +16697,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileimagesource.js, line 175
+            src/ol/source/tileimagesource.js, line 176
         </div>
         
         
@@ -17115,7 +17249,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 303
+            src/ol/source/wmtssource.js, line 312
         </div>
         
         
@@ -17239,7 +17373,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Apr 27 2015 19:42:37 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon May 11 2015 11:20:39 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

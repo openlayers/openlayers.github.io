@@ -11899,6 +11899,10 @@
                     <a href="ol.source.WMTS.html#getProperties">getProperties</a>
                 </li>
             
+                <li data-name="ol.source.WMTS#getRequestEncoding" class="unstable">
+                    <a href="ol.source.WMTS.html#getRequestEncoding">getRequestEncoding</a>
+                </li>
+            
                 <li data-name="ol.source.WMTS#getRevision" class="unstable">
                     <a href="ol.source.WMTS.html#getRevision">getRevision</a>
                 </li>
@@ -11921,6 +11925,10 @@
             
                 <li data-name="ol.source.WMTS#getTileUrlFunction" class="unstable">
                     <a href="ol.source.WMTS.html#getTileUrlFunction">getTileUrlFunction</a>
+                </li>
+            
+                <li data-name="ol.source.WMTS#getUrls" class="unstable">
+                    <a href="ol.source.WMTS.html#getUrls">getUrls</a>
                 </li>
             
                 <li data-name="ol.source.WMTS#getVersion" class="unstable">
@@ -12872,6 +12880,7 @@
             <span class="title">
                 <a href="ol.tilegrid.html">ol.tilegrid</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
@@ -12880,6 +12889,12 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.tilegrid.createXYZ" class="unstable">
+                    <a href="ol.tilegrid.html#createXYZ">createXYZ</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -12993,59 +13008,6 @@
             
                 <li data-name="ol.tilegrid.WMTS#getTileSize" class="">
                     <a href="ol.tilegrid.WMTS.html#getTileSize">getTileSize</a>
-                </li>
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="ol.tilegrid.XYZ">
-            <span class="title">
-                <a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="ol.tilegrid.XYZ#getMaxZoom" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getMaxZoom">getMaxZoom</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getMinZoom" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getMinZoom">getMinZoom</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getOrigin" class="">
-                    <a href="ol.tilegrid.XYZ.html#getOrigin">getOrigin</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getResolution" class="">
-                    <a href="ol.tilegrid.XYZ.html#getResolution">getResolution</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getResolutions" class="">
-                    <a href="ol.tilegrid.XYZ.html#getResolutions">getResolutions</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileCoordForCoordAndResolution" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getTileCoordForCoordAndResolution">getTileCoordForCoordAndResolution</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileCoordForCoordAndZ" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getTileCoordForCoordAndZ">getTileCoordForCoordAndZ</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileSize" class="">
-                    <a href="ol.tilegrid.XYZ.html#getTileSize">getTileSize</a>
                 </li>
             
             </ul>
@@ -14314,7 +14276,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 510
+            src/ol/map.js, line 512
         </div>
         
         
@@ -14325,7 +14287,9 @@ event is delayed by 250 ms to ensure that it is not a double click.
     
     
     <div class="description">
-        <p>Adds the given layer to the top of this map.</p>
+        <p>Adds the given layer to the top of this map. If you want to add a layer
+elsewhere in the stack, use <code>getLayers()</code> and the methods available on
+<a href="ol.Collection.html"><code>ol.Collection</code></a>.</p>
     </div>
     
 
@@ -14436,7 +14400,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 521
+            src/ol/map.js, line 523
         </div>
         
         
@@ -14560,7 +14524,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 535
+            src/ol/map.js, line 537
         </div>
         
         
@@ -14776,7 +14740,7 @@ namespace provides several static methods for creating prerender functions.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 582
+            src/ol/map.js, line 584
         </div>
         
         
@@ -15018,7 +14982,7 @@ callback execution, or the first truthy callback return value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 620
+            src/ol/map.js, line 622
         </div>
         
         
@@ -15393,7 +15357,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 752
+            src/ol/map.js, line 754
         </div>
         
         
@@ -15478,7 +15442,7 @@ Controls.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 735
+            src/ol/map.js, line 737
         </div>
         
         
@@ -15610,7 +15574,7 @@ The coordinate for the pixel position.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 669
+            src/ol/map.js, line 671
         </div>
         
         
@@ -15741,7 +15705,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 680
+            src/ol/map.js, line 682
         </div>
         
         
@@ -15872,7 +15836,7 @@ Pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 776
+            src/ol/map.js, line 778
         </div>
         
         
@@ -16044,7 +16008,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 787
+            src/ol/map.js, line 789
         </div>
         
         
@@ -16128,7 +16092,7 @@ A layer group containing the layers in this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 797
+            src/ol/map.js, line 799
         </div>
         
         
@@ -16212,7 +16176,7 @@ Layers.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 763
+            src/ol/map.js, line 765
         </div>
         
         
@@ -16297,7 +16261,7 @@ Overlays.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 810
+            src/ol/map.js, line 812
         </div>
         
         
@@ -16599,7 +16563,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 836
+            src/ol/map.js, line 838
         </div>
         
         
@@ -16683,7 +16647,7 @@ The size in pixels of the map in the DOM.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 709
+            src/ol/map.js, line 711
         </div>
         
         
@@ -16772,7 +16736,7 @@ The Element or id of the Element that the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 722
+            src/ol/map.js, line 724
         </div>
         
         
@@ -16858,7 +16822,7 @@ The element that the map is rendered in.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 848
+            src/ol/map.js, line 850
         </div>
         
         
@@ -16943,7 +16907,7 @@ The view that controls this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 858
+            src/ol/map.js, line 860
         </div>
         
         
@@ -17029,7 +16993,7 @@ Viewport.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 649
+            src/ol/map.js, line 651
         </div>
         
         
@@ -17587,7 +17551,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1200
+            src/ol/map.js, line 1202
         </div>
         
         
@@ -17719,7 +17683,7 @@ The removed control (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1217
+            src/ol/map.js, line 1219
         </div>
         
         
@@ -17851,7 +17815,7 @@ The removed interaction (or
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1236
+            src/ol/map.js, line 1238
         </div>
         
         
@@ -17983,7 +17947,7 @@ The removed layer (or undefined if the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1249
+            src/ol/map.js, line 1251
         </div>
         
         
@@ -18115,7 +18079,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1186
+            src/ol/map.js, line 1188
         </div>
         
         
@@ -18190,7 +18154,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1177
+            src/ol/map.js, line 1179
         </div>
         
         
@@ -18414,7 +18378,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1356
+            src/ol/map.js, line 1358
         </div>
         
         
@@ -18664,7 +18628,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1367
+            src/ol/map.js, line 1369
         </div>
         
         
@@ -18789,7 +18753,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1379
+            src/ol/map.js, line 1381
         </div>
         
         
@@ -18918,7 +18882,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1390
+            src/ol/map.js, line 1392
         </div>
         
         
@@ -19468,7 +19432,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1410
+            src/ol/map.js, line 1412
         </div>
         
         
@@ -19546,7 +19510,7 @@ third-party code changes the size of the map viewport.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Apr 27 2015 19:42:25 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon May 11 2015 11:20:25 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

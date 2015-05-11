@@ -75,7 +75,7 @@ var vectorSource = new ol.source.Vector({
       }
     }});
   },
-  strategy: ol.loadingstrategy.tile(new ol.tilegrid.XYZ({
+  strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
     tileSize: 512
   }))
 });

@@ -49,7 +49,7 @@
           <div id="docs"><p>Example of vector tiles from openstreetmap.us.</p>
 </div>
           <div id="tags">custom, control</div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.TopoJSON.html" title="API documentation for ol.format.TopoJSON">ol.format.TopoJSON</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.TileVector.html" title="API documentation for ol.source.TileVector">ol.source.TileVector</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.tilegrid.XYZ.html" title="API documentation for ol.tilegrid.XYZ">ol.tilegrid.XYZ</a></li></ul></div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.TopoJSON.html" title="API documentation for ol.format.TopoJSON">ol.format.TopoJSON</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.TileVector.html" title="API documentation for ol.source.TileVector">ol.source.TileVector</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li></ul></div>
         </div>
       </div>
 
@@ -62,7 +62,7 @@
   source: new ol.source.TileVector({
     format: new ol.format.TopoJSON(),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
@@ -80,7 +80,7 @@ var roadLayer = new ol.layer.Vector({
   source: new ol.source.TileVector({
     format: new ol.format.TopoJSON(),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
@@ -136,7 +136,7 @@ var buildingLayer = new ol.layer.Vector({
       defaultProjection: &#x27;EPSG:4326&#x27;
     }),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
@@ -155,7 +155,7 @@ var landuseLayer = new ol.layer.Vector({
       defaultProjection: &#x27;EPSG:4326&#x27;
     }),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
@@ -238,7 +238,7 @@ $(&#x27;input[type=checkbox]&#x27;).on(&#x27;change&#x27;, function() {
 &lt;/fieldset&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.js">
           <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -246,8 +246,8 @@ $(&#x27;input[type=checkbox]&#x27;).on(&#x27;change&#x27;, function() {
 &lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"&gt;
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css" type="text/css"&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.css" type="text/css"&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.js"&gt;&lt;/script&gt;
 
 &lt;style&gt;
  #map {
@@ -281,7 +281,7 @@ var waterLayer = new ol.layer.Vector({
   source: new ol.source.TileVector({
     format: new ol.format.TopoJSON(),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
@@ -299,7 +299,7 @@ var roadLayer = new ol.layer.Vector({
   source: new ol.source.TileVector({
     format: new ol.format.TopoJSON(),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
@@ -355,7 +355,7 @@ var buildingLayer = new ol.layer.Vector({
       defaultProjection: &#x27;EPSG:4326&#x27;
     }),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
@@ -374,7 +374,7 @@ var landuseLayer = new ol.layer.Vector({
       defaultProjection: &#x27;EPSG:4326&#x27;
     }),
     projection: &#x27;EPSG:3857&#x27;,
-    tileGrid: new ol.tilegrid.XYZ({
+    tileGrid: ol.tilegrid.createXYZ({
       maxZoom: 19
     }),
     url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +

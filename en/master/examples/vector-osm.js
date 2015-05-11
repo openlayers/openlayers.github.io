@@ -86,7 +86,7 @@ var vectorSource = new ol.source.Vector({
       vectorSource.addFeatures(features);
     });
   },
-  strategy: ol.loadingstrategy.tile(new ol.tilegrid.XYZ({
+  strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
     maxZoom: 19
   }))
 });

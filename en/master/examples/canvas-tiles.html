@@ -39,7 +39,7 @@
           <div id="docs"><p>The black grid tiles are generated on the client with an HTML5 canvas. Note that the tile coordinates are ol3 normalized tile coordinates (origin bottom left), not OSM tile coordinates (origin top left).</p>
 </div>
           <div id="tags">layers, openstreetmap, canvas</div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.TileDebug.html" title="API documentation for ol.source.TileDebug">ol.source.TileDebug</a></li>,<li><a href="../apidoc/ol.tilegrid.XYZ.html" title="API documentation for ol.tilegrid.XYZ">ol.tilegrid.XYZ</a></li></ul></div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.TileDebug.html" title="API documentation for ol.source.TileDebug">ol.source.TileDebug</a></li></ul></div>
         </div>
       </div>
 
@@ -56,9 +56,7 @@
     new ol.layer.Tile({
       source: new ol.source.TileDebug({
         projection: &#x27;EPSG:3857&#x27;,
-        tileGrid: new ol.tilegrid.XYZ({
-          maxZoom: 22
-        })
+        tileGrid: ol.tilegrid.createXYZ({maxZoom: 22})
       })
     })
   ],
@@ -83,7 +81,7 @@
 &lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.js">
           <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -91,8 +89,8 @@
 &lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"&gt;
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.css" type="text/css"&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.4.0/ol.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.css" type="text/css"&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.js"&gt;&lt;/script&gt;
 
 &lt;/head&gt;
 &lt;body&gt;
@@ -114,9 +112,7 @@ var map = new ol.Map({
     new ol.layer.Tile({
       source: new ol.source.TileDebug({
         projection: &#x27;EPSG:3857&#x27;,
-        tileGrid: new ol.tilegrid.XYZ({
-          maxZoom: 22
-        })
+        tileGrid: ol.tilegrid.createXYZ({maxZoom: 22})
       })
     })
   ],

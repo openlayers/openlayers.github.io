@@ -11899,6 +11899,10 @@
                     <a href="ol.source.WMTS.html#getProperties">getProperties</a>
                 </li>
             
+                <li data-name="ol.source.WMTS#getRequestEncoding" class="unstable">
+                    <a href="ol.source.WMTS.html#getRequestEncoding">getRequestEncoding</a>
+                </li>
+            
                 <li data-name="ol.source.WMTS#getRevision" class="unstable">
                     <a href="ol.source.WMTS.html#getRevision">getRevision</a>
                 </li>
@@ -11921,6 +11925,10 @@
             
                 <li data-name="ol.source.WMTS#getTileUrlFunction" class="unstable">
                     <a href="ol.source.WMTS.html#getTileUrlFunction">getTileUrlFunction</a>
+                </li>
+            
+                <li data-name="ol.source.WMTS#getUrls" class="unstable">
+                    <a href="ol.source.WMTS.html#getUrls">getUrls</a>
                 </li>
             
                 <li data-name="ol.source.WMTS#getVersion" class="unstable">
@@ -12872,6 +12880,7 @@
             <span class="title">
                 <a href="ol.tilegrid.html">ol.tilegrid</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
@@ -12880,6 +12889,12 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.tilegrid.createXYZ" class="unstable">
+                    <a href="ol.tilegrid.html#createXYZ">createXYZ</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -12993,59 +13008,6 @@
             
                 <li data-name="ol.tilegrid.WMTS#getTileSize" class="">
                     <a href="ol.tilegrid.WMTS.html#getTileSize">getTileSize</a>
-                </li>
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="ol.tilegrid.XYZ">
-            <span class="title">
-                <a href="ol.tilegrid.XYZ.html">ol.tilegrid.XYZ</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="ol.tilegrid.XYZ#getMaxZoom" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getMaxZoom">getMaxZoom</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getMinZoom" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getMinZoom">getMinZoom</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getOrigin" class="">
-                    <a href="ol.tilegrid.XYZ.html#getOrigin">getOrigin</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getResolution" class="">
-                    <a href="ol.tilegrid.XYZ.html#getResolution">getResolution</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getResolutions" class="">
-                    <a href="ol.tilegrid.XYZ.html#getResolutions">getResolutions</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileCoordForCoordAndResolution" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getTileCoordForCoordAndResolution">getTileCoordForCoordAndResolution</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileCoordForCoordAndZ" class="unstable">
-                    <a href="ol.tilegrid.XYZ.html#getTileCoordForCoordAndZ">getTileCoordForCoordAndZ</a>
-                </li>
-            
-                <li data-name="ol.tilegrid.XYZ#getTileSize" class="">
-                    <a href="ol.tilegrid.XYZ.html#getTileSize">getTileSize</a>
                 </li>
             
             </ul>
@@ -13247,6 +13209,42 @@
 	
         <tr class="unstable">
             
+                <td class="name"><code>extent</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Extent for the tile grid. No tiles outside this extent will be requested by
+<a href="ol.source.WMTS.html"><code>ol.source.WMTS</code></a> sources. When no <code>origin</code> or <code>origins</code> are
+configured, the <code>origin</code> will be calculated from the extent.
+When no <code>sizes</code> are configured, they will be calculated from the extent.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
                 <td class="name"><code>origin</code></td>
             
             
@@ -13273,7 +13271,7 @@
 
 
                 
-                <p>Origin.</p></td>
+                <p>Origin, i.e. the top-left corner of the grid.</p></td>
         </tr>
 	
 	
@@ -13306,7 +13304,8 @@
 
 
                 
-                <p>Origins. The length of this array needs to match the length of the
+                <p>Origins, i.e. the top-left corners of the grid for each zoom level. The
+length of this array needs to match the length of the
 <code>resolutions</code> array.</p></td>
         </tr>
 	
@@ -13371,6 +13370,43 @@ array will have a length of <code>maxZoom + 1</code></p></td>
                 
                 <p>matrix IDs. The length of this array needs to match the length of the
 <code>resolutions</code> array.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>sizes</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="ol.html#Size">ol.Size</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Number of tile rows and columns of the grid for each zoom level. The values
+here are the <code>TileMatrixWidth</code> and <code>TileMatrixHeight</code> advertised in the
+GetCapabilities response of the WMTS, and define the grid's extent together
+with the <code>origin</code>. An <code>extent</code> can be configured in addition, and will
+further limit the extent for which tile requests are made by sources.</p></td>
         </tr>
 	
 	
@@ -13565,7 +13601,7 @@ resolution will have a matching entry here.</p></td>
     <div class="nameContainer">
         
         <h4 class="name" id="createFromCapabilitiesMatrixSet">
-            ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet<span class="signature">(matrixSet)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a>}</span>
+            ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet<span class="signature">(matrixSet, <span class="optional">opt_extent</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.tilegrid.WMTS.html">ol.tilegrid.WMTS</a>}</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -13574,7 +13610,7 @@ resolution will have a matching entry here.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/wmtstilegrid.js, line 75
+            src/ol/tilegrid/wmtstilegrid.js, line 78
         </div>
         
         
@@ -13637,6 +13673,32 @@ resolution will have a matching entry here.</p></td>
                 
                 <p>An object representing a matrixSet in the
     capabilities document.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>An optional extent to restrict the tile
+    ranges the server provides.</p></td>
         </tr>
 	
 	
@@ -13708,7 +13770,7 @@ WMTS tileGrid instance.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/wmtstilegrid.js, line 63
+            src/ol/tilegrid/wmtstilegrid.js, line 64
         </div>
         
         
@@ -13796,7 +13858,7 @@ MatrixIds.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 169
+            src/ol/tilegrid/tilegrid.js, line 217
         </div>
         
         
@@ -13884,7 +13946,7 @@ Max zoom.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 179
+            src/ol/tilegrid/tilegrid.js, line 227
         </div>
         
         
@@ -13970,7 +14032,7 @@ Min zoom.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 190
+            src/ol/tilegrid/tilegrid.js, line 238
         </div>
         
         
@@ -14103,7 +14165,7 @@ Origin.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 210
+            src/ol/tilegrid/tilegrid.js, line 258
         </div>
         
         
@@ -14236,7 +14298,7 @@ Resolution.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 223
+            src/ol/tilegrid/tilegrid.js, line 271
         </div>
         
         
@@ -14324,7 +14386,7 @@ Resolutions.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 343
+            src/ol/tilegrid/tilegrid.js, line 391
         </div>
         
         
@@ -14511,7 +14573,7 @@ Tile coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 391
+            src/ol/tilegrid/tilegrid.js, line 442
         </div>
         
         
@@ -14694,7 +14756,7 @@ Tile coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/tilegrid/tilegrid.js, line 439
+            src/ol/tilegrid/tilegrid.js, line 471
         </div>
         
         
@@ -14829,7 +14891,7 @@ Tile size.
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon Apr 27 2015 19:42:42 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Mon May 11 2015 11:20:45 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

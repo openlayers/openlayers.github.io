@@ -25,9 +25,9 @@
         <!-- menu items that get hidden below 768px width -->
         <nav class='collapse navbar-collapse navbar-responsive-collapse'>
           <ul class='nav navbar-nav pull-right'>
-            <li><a href='/en/v3.4.0/doc'>Docs</a></li>
-            <li><a href='/en/v3.4.0/examples'>Examples</a></li>
-            <li><a href='/en/v3.4.0/apidoc'>API</a></li>
+            <li><a href='/en/v3.5.0/doc'>Docs</a></li>
+            <li><a href='/en/v3.5.0/examples'>Examples</a></li>
+            <li><a href='/en/v3.5.0/apidoc'>API</a></li>
             <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
           </ul>
         </nav>
@@ -882,7 +882,7 @@
             </li> 
             <li class="mainClass">
               <input class="toggle-symbol " align="" type="checkbox" value="ol.Map#addLayer"/>
-                <label class="is-function" data-toggle="popover" title="ol.Map#addLayer" data-content="Adds the given layer to the top of this map." data-placement="right" data-trigger="hover">addLayer</label>
+                <label class="is-function" data-toggle="popover" title="ol.Map#addLayer" data-content="Adds the given layer to the top of this map. " data-placement="right" data-trigger="hover">addLayer</label>
             </li> 
             <li class="mainClass">
               <input class="toggle-symbol " align="" type="checkbox" value="ol.Map#addOverlay"/>
@@ -1579,6 +1579,10 @@
                 </ul>
             </li> 
             <li class="mainClass">
+              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.createXYZ"/>
+                <label class="is-function" data-toggle="popover" title="ol.tilegrid.createXYZ" data-content="Creates a tile grid with a standard XYZ tiling scheme." data-placement="right" data-trigger="hover">createXYZ</label>
+            </li> 
+            <li class="mainClass">
               <input class="toggle-symbol has-children" align="" type="checkbox" />
                 <label class="tree-toggler toggleIcon is-class" data-toggle="popover" title="ol.tilegrid.WMTS" data-content="Set the grid pattern for sources accessing WMTS tiled-image servers." data-placement="right" data-trigger="hover">
                   WMTS
@@ -1629,53 +1633,6 @@
             <li class="mainClass">
               <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.WMTS#getTileSize"/>
                 <label class="is-function" data-toggle="popover" title="ol.tilegrid.WMTS#getTileSize" data-content="Get the tile size for a zoom level. " data-placement="right" data-trigger="hover">getTileSize</label>
-            </li> 
-            
-                </ul>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol has-children" align="" type="checkbox" />
-                <label class="tree-toggler toggleIcon is-class" data-toggle="popover" title="ol.tilegrid.XYZ" data-content="Set the grid pattern for sources accessing XYZ tiled-image servers." data-placement="right" data-trigger="hover">
-                  XYZ
-                  <i></i>
-                </label>
-                <ul class="list-unstyled submenu nav nav-list tree" style="display: none;">
-                  <li>
-                    <input class="toggle-symbol" type="checkbox" value="ol.tilegrid.XYZ"/>
-                     <label class="is-constructor">ol.tilegrid.XYZ</label>
-                  </li>
-                
-                <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getMaxZoom"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getMaxZoom" data-content="Get the maximum zoom level for the grid." data-placement="right" data-trigger="hover">getMaxZoom</label>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getMinZoom"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getMinZoom" data-content="Get the minimum zoom level for the grid." data-placement="right" data-trigger="hover">getMinZoom</label>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getOrigin"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getOrigin" data-content="Get the origin for the grid at the given zoom level." data-placement="right" data-trigger="hover">getOrigin</label>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getResolution"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getResolution" data-content="Get the resolution for the given zoom level." data-placement="right" data-trigger="hover">getResolution</label>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getResolutions"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getResolutions" data-content="Get the list of resolutions for the tile grid." data-placement="right" data-trigger="hover">getResolutions</label>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getTileCoordForCoordAndResolution"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getTileCoordForCoordAndResolution" data-content="Get the tile coordinate for the given map coordinate and resolution. " data-placement="right" data-trigger="hover">getTileCoordForCoordAndResolution</label>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getTileCoordForCoordAndZ"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getTileCoordForCoordAndZ" data-content="Get a tile coordinate given a map coordinate and zoom level." data-placement="right" data-trigger="hover">getTileCoordForCoordAndZ</label>
-            </li> 
-            <li class="mainClass">
-              <input class="toggle-symbol " align="" type="checkbox" value="ol.tilegrid.XYZ#getTileSize"/>
-                <label class="is-function" data-toggle="popover" title="ol.tilegrid.XYZ#getTileSize" data-content="Get the tile size for a zoom level. " data-placement="right" data-trigger="hover">getTileSize</label>
             </li> 
             
                 </ul>
@@ -4434,8 +4391,16 @@
                 <label class="is-function" data-toggle="popover" title="ol.source.WMTS#getMatrixSet" data-content="Return the matrix set of the WMTS source." data-placement="right" data-trigger="hover">getMatrixSet</label>
             </li> 
             <li class="mainClass">
+              <input class="toggle-symbol " align="" type="checkbox" value="ol.source.WMTS#getRequestEncoding"/>
+                <label class="is-function" data-toggle="popover" title="ol.source.WMTS#getRequestEncoding" data-content="Return the request encoding, either &quot;KVP&quot; or &quot;REST&quot;." data-placement="right" data-trigger="hover">getRequestEncoding</label>
+            </li> 
+            <li class="mainClass">
               <input class="toggle-symbol " align="" type="checkbox" value="ol.source.WMTS#getStyle"/>
                 <label class="is-function" data-toggle="popover" title="ol.source.WMTS#getStyle" data-content="Return the style of the WMTS source." data-placement="right" data-trigger="hover">getStyle</label>
+            </li> 
+            <li class="mainClass">
+              <input class="toggle-symbol " align="" type="checkbox" value="ol.source.WMTS#getUrls"/>
+                <label class="is-function" data-toggle="popover" title="ol.source.WMTS#getUrls" data-content="Return the URLs used for this WMTS source." data-placement="right" data-trigger="hover">getUrls</label>
             </li> 
             <li class="mainClass">
               <input class="toggle-symbol " align="" type="checkbox" value="ol.source.WMTS#getVersion"/>

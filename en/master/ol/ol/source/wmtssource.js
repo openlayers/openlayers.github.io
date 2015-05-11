@@ -11,7 +11,6 @@ goog.require('ol.TileUrlFunctionType');
 goog.require('ol.extent');
 goog.require('ol.proj');
 goog.require('ol.source.TileImage');
-goog.require('ol.tilecoord');
 goog.require('ol.tilegrid.WMTS');
 
 
@@ -83,11 +82,29 @@ ol.source.WMTS = function(options) {
    */
   this.style_ = options.style;
 
+  var urls = options.urls;
+  if (!goog.isDef(urls) && goog.isDef(options.url)) {
+    urls = ol.TileUrlFunction.expandUrl(options.url);
+  }
+
+  /**
+   * @private
+   * @type {!Array.<string>}
+   */
+  this.urls_ = goog.isDefAndNotNull(urls) ? urls : [];
+
   // FIXME: should we guess this requestEncoding from options.url(s)
   //        structure? that would mean KVP only if a template is not provided.
-  var requestEncoding = goog.isDef(options.requestEncoding) ?
+
+  /**
+   * @private
+   * @type {ol.source.WMTSRequestEncoding}
+   */
+  this.requestEncoding_ = goog.isDef(options.requestEncoding) ?
       /** @type {ol.source.WMTSRequestEncoding} */ (options.requestEncoding) :
       ol.source.WMTSRequestEncoding.KVP;
+
+  var requestEncoding = this.requestEncoding_;
 
   // FIXME: should we create a default tileGrid?
   // we could issue a getCapabilities xhr to retrieve missing configuration
@@ -158,41 +175,13 @@ ol.source.WMTS = function(options) {
         });
   }
 
-  var tileUrlFunction = ol.TileUrlFunction.nullTileUrlFunction;
-  var urls = options.urls;
-  if (!goog.isDef(urls) && goog.isDef(options.url)) {
-    urls = ol.TileUrlFunction.expandUrl(options.url);
-  }
-  if (goog.isDef(urls)) {
-    tileUrlFunction = ol.TileUrlFunction.createFromTileUrlFunctions(
-        goog.array.map(urls, createFromWMTSTemplate));
-  }
+  var tileUrlFunction = this.urls_.length > 0 ?
+      ol.TileUrlFunction.createFromTileUrlFunctions(
+          goog.array.map(this.urls_, createFromWMTSTemplate)) :
+      ol.TileUrlFunction.nullTileUrlFunction;
 
-  var tmpExtent = ol.extent.createEmpty();
   tileUrlFunction = ol.TileUrlFunction.withTileCoordTransform(
-      /**
-       * @param {ol.TileCoord} tileCoord Tile coordinate.
-       * @param {ol.proj.Projection} projection Projection.
-       * @param {ol.TileCoord=} opt_tileCoord Tile coordinate.
-       * @return {ol.TileCoord} Tile coordinate.
-       */
-      function(tileCoord, projection, opt_tileCoord) {
-        goog.asserts.assert(!goog.isNull(tileGrid),
-            'tileGrid must not be null');
-        if (tileGrid.getResolutions().length <= tileCoord[0]) {
-          return null;
-        }
-        var x = tileCoord[1];
-        var y = -tileCoord[2] - 1;
-        var tileExtent = tileGrid.getTileCoordExtent(tileCoord, tmpExtent);
-        var extent = projection.getExtent();
-
-        if (!ol.extent.intersects(tileExtent, extent) ||
-            ol.extent.touches(tileExtent, extent)) {
-          return null;
-        }
-        return ol.tilecoord.createOrUpdate(tileCoord[0], x, y, opt_tileCoord);
-      },
+      ol.tilegrid.createOriginTopLeftTileCoordTransform(tileGrid),
       tileUrlFunction);
 
   goog.base(this, {
@@ -263,12 +252,32 @@ ol.source.WMTS.prototype.getMatrixSet = function() {
 
 
 /**
+ * Return the request encoding, either "KVP" or "REST".
+ * @return {ol.source.WMTSRequestEncoding} Request encoding.
+ * @api
+ */
+ol.source.WMTS.prototype.getRequestEncoding = function() {
+  return this.requestEncoding_;
+};
+
+
+/**
  * Return the style of the WMTS source.
  * @return {string} Style.
  * @api
  */
 ol.source.WMTS.prototype.getStyle = function() {
   return this.style_;
+};
+
+
+/**
+ * Return the URLs used for this WMTS source.
+ * @return {!Array.<string>} URLs.
+ * @api
+ */
+ol.source.WMTS.prototype.getUrls = function() {
+  return this.urls_;
 };
 
 
@@ -346,7 +355,7 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
 
   goog.asserts.assert(l['TileMatrixSetLink'].length > 0,
       'layer has TileMatrixSetLink');
-  var idx, matrixSet, wrapX;
+  var idx, matrixSet;
   if (l['TileMatrixSetLink'].length > 1) {
     idx = goog.array.findIndex(l['TileMatrixSetLink'],
         function(elt, index, array) {
@@ -370,13 +379,6 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
 
   goog.asserts.assert(!goog.isNull(matrixSet),
       'TileMatrixSet must not be null');
-
-  var wgs84BoundingBox = l['WGS84BoundingBox'];
-  if (goog.isDef(wgs84BoundingBox)) {
-    var wgs84ProjectionExtent = ol.proj.get('EPSG:4326').getExtent();
-    wrapX = (wgs84BoundingBox[0] == wgs84ProjectionExtent[0] &&
-        wgs84BoundingBox[2] == wgs84ProjectionExtent[2]);
-  }
 
   var format = /** @type {string} */ (l['Format'][0]);
   if (goog.isDef(config['format'])) {
@@ -417,9 +419,6 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   goog.asserts.assert(!goog.isNull(matrixSetObj),
       'found matrixSet in Contents/TileMatrixSet');
 
-  var tileGrid = ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet(
-      matrixSetObj);
-
   var projection;
   if (goog.isDef(config['projection'])) {
     projection = ol.proj.get(config['projection']);
@@ -427,6 +426,27 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
     projection = ol.proj.get(matrixSetObj['SupportedCRS'].replace(
         /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'));
   }
+
+  var wgs84BoundingBox = l['WGS84BoundingBox'];
+  var extent, wrapX;
+  if (goog.isDef(wgs84BoundingBox)) {
+    var wgs84ProjectionExtent = ol.proj.get('EPSG:4326').getExtent();
+    wrapX = (wgs84BoundingBox[0] == wgs84ProjectionExtent[0] &&
+        wgs84BoundingBox[2] == wgs84ProjectionExtent[2]);
+    extent = ol.proj.transformExtent(
+        wgs84BoundingBox, 'EPSG:4326', projection);
+    var projectionExtent = projection.getExtent();
+    if (!goog.isNull(projectionExtent)) {
+      // If possible, do a sanity check on the extent - it should never be
+      // bigger than the validity extent of the projection of a matrix set.
+      if (!ol.extent.containsExtent(projectionExtent, extent)) {
+        extent = undefined;
+      }
+    }
+  }
+
+  var tileGrid = ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet(
+      matrixSetObj, extent);
 
   /** @type {!Array.<string>} */
   var urls = [];
