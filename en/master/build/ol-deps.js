@@ -223,7 +223,7 @@ goog.addDependency('../../../ol/ol/style/textstyle.js', ['ol.style.Text'], [], f
 goog.addDependency('../../../ol/ol/tile.js', ['ol.Tile', 'ol.TileState'], ['goog.events', 'goog.events.EventTarget', 'goog.events.EventType', 'ol.TileCoord'], false);
 goog.addDependency('../../../ol/ol/tilecache.js', ['ol.TileCache'], ['ol', 'ol.TileRange', 'ol.structs.LRUCache', 'ol.tilecoord'], false);
 goog.addDependency('../../../ol/ol/tilecoord.js', ['ol.TileCoord', 'ol.tilecoord'], ['goog.array', 'goog.asserts', 'ol.extent'], false);
-goog.addDependency('../../../ol/ol/tilegrid/tilegrid.js', ['ol.tilegrid.TileGrid'], ['goog.array', 'goog.asserts', 'goog.functions', 'goog.math', 'goog.object', 'ol', 'ol.Coordinate', 'ol.TileCoord', 'ol.TileRange', 'ol.array', 'ol.extent', 'ol.extent.Corner', 'ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.Units', 'ol.size', 'ol.tilecoord'], false);
+goog.addDependency('../../../ol/ol/tilegrid/tilegrid.js', ['ol.tilegrid.TileGrid'], ['goog.array', 'goog.asserts', 'goog.math', 'goog.object', 'ol', 'ol.Coordinate', 'ol.TileCoord', 'ol.TileRange', 'ol.array', 'ol.extent', 'ol.extent.Corner', 'ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.Units', 'ol.size', 'ol.tilecoord'], false);
 goog.addDependency('../../../ol/ol/tilegrid/wmtstilegrid.js', ['ol.tilegrid.WMTS'], ['goog.array', 'goog.asserts', 'ol.proj', 'ol.tilegrid.TileGrid'], false);
 goog.addDependency('../../../ol/ol/tilegrid/zoomifytilegrid.js', ['ol.tilegrid.Zoomify'], ['goog.math', 'ol.TileCoord', 'ol.proj', 'ol.tilecoord', 'ol.tilegrid.TileGrid'], false);
 goog.addDependency('../../../ol/ol/tileloadfunction.js', ['ol.TileLoadFunctionType'], [], false);
