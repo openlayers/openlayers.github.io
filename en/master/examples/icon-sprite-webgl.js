@@ -91,12 +91,14 @@ for (i = 0; i < featureCount; i += 30) {
   overlayFeatures.push(clone);
 }
 
-var featureOverlay = new ol.FeatureOverlay({
+var featureOverlay = new ol.layer.Vector({
   map: map,
+  source: new ol.source.Vector({
+    features: overlayFeatures
+  }),
   style: new ol.style.Style({
     image: icons[iconCount - 1]
-  }),
-  features: overlayFeatures
+  })
 });
 
 map.on('click', function(evt) {
