@@ -36,10 +36,10 @@
         <div class="span12">
           <h4 id="title">XYZ Esri EPSG:4326 tileSize 512 example</h4>
           <p id="shortdesc">Example of a XYZ source in EPSG:4326 using Esri 512x512 tiles.</p>
-          <div id="docs"><p>ArcGIS REST tile services with custom tile sizes (here: 512x512 pixels) and projection (here: EPSG:4326) are supported by <code>ol.source.XYZ</code>. A custom tile grid and tile url function are required.</p>
+          <div id="docs"><p>ArcGIS REST tile services with custom tile sizes (here: 512x512 pixels) and projection (here: EPSG:4326) are supported by <code>ol.source.XYZ</code>. A custom tile url function is used to handle zoom level offsets.</p>
 </div>
           <div id="tags">xyz, esri, tilesize, custom projection</div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Attribution.html" title="API documentation for ol.Attribution">ol.Attribution</a></li>,<li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.extent.html" title="API documentation for ol.extent">ol.extent</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.TileImage.html" title="API documentation for ol.source.TileImage">ol.source.TileImage</a></li>,<li><a href="../apidoc/ol.tilegrid.TileGrid.html" title="API documentation for ol.tilegrid.TileGrid">ol.tilegrid.TileGrid</a></li></ul></div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Attribution.html" title="API documentation for ol.Attribution">ol.Attribution</a></li>,<li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.XYZ.html" title="API documentation for ol.source.XYZ">ol.source.XYZ</a></li></ul></div>
         </div>
       </div>
 
@@ -53,21 +53,9 @@
 });
 
 var projection = ol.proj.get(&#x27;EPSG:4326&#x27;);
-var projectionExtent = projection.getExtent();
 
 // The tile size supported by the ArcGIS tile service.
 var tileSize = 512;
-
-// Calculate the resolutions supported by the ArcGIS tile service.
-// There are 16 resolutions, with a factor of 2 between successive
-// resolutions. The max resolution is such that the world (360°)
-// fits into two (512x512 px) tiles.
-var maxResolution = ol.extent.getWidth(projectionExtent) / (tileSize * 2);
-var resolutions = new Array(16);
-var z;
-for (z = 0; z &lt; 16; ++z) {
-  resolutions[z] = maxResolution / Math.pow(2, z);
-}
 
 var urlTemplate = &#x27;http://services.arcgisonline.com/arcgis/rest/services/&#x27; +
     &#x27;ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}&#x27;;
@@ -76,31 +64,17 @@ var map = new ol.Map({
   target: &#x27;map&#x27;,
   layers: [
     new ol.layer.Tile({
-      /* ol.source.XYZ and ol.tilegrid.TileGrid have no resolutions config */
-      source: new ol.source.TileImage({
+      source: new ol.source.XYZ({
         attributions: [attribution],
-        tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-          var z = tileCoord[0];
-          var x = tileCoord[1];
-          var y = -tileCoord[2] - 1;
-          // wrap the world on the X axis
-          var n = Math.pow(2, z + 1); // 2 tiles at z=0
-          x = x % n;
-          if (x * n &lt; 0) {
-            // x and n differ in sign so add n to wrap the result
-            // to the correct sign
-            x = x + n;
-          }
-          return urlTemplate.replace(&#x27;{z}&#x27;, z.toString())
-              .replace(&#x27;{y}&#x27;, y.toString())
-              .replace(&#x27;{x}&#x27;, x.toString());
-        },
+        maxZoom: 16,
         projection: projection,
-        tileGrid: new ol.tilegrid.TileGrid({
-          origin: ol.extent.getTopLeft(projectionExtent),
-          resolutions: resolutions,
-          tileSize: 512
-        })
+        tileSize: 512,
+        tileUrlFunction: function(tileCoord) {
+          return urlTemplate.replace(&#x27;{z}&#x27;, (tileCoord[0] - 1).toString())
+                            .replace(&#x27;{x}&#x27;, tileCoord[1].toString())
+                            .replace(&#x27;{y}&#x27;, tileCoord[2].toString());
+        },
+        wrapX: true
       })
     })
   ],
@@ -148,21 +122,9 @@ var attribution = new ol.Attribution({
 });
 
 var projection = ol.proj.get(&#x27;EPSG:4326&#x27;);
-var projectionExtent = projection.getExtent();
 
 // The tile size supported by the ArcGIS tile service.
 var tileSize = 512;
-
-// Calculate the resolutions supported by the ArcGIS tile service.
-// There are 16 resolutions, with a factor of 2 between successive
-// resolutions. The max resolution is such that the world (360°)
-// fits into two (512x512 px) tiles.
-var maxResolution = ol.extent.getWidth(projectionExtent) / (tileSize * 2);
-var resolutions = new Array(16);
-var z;
-for (z = 0; z &lt; 16; ++z) {
-  resolutions[z] = maxResolution / Math.pow(2, z);
-}
 
 var urlTemplate = &#x27;http://services.arcgisonline.com/arcgis/rest/services/&#x27; +
     &#x27;ESRI_Imagery_World_2D/MapServer/tile/{z}/{y}/{x}&#x27;;
@@ -171,31 +133,17 @@ var map = new ol.Map({
   target: &#x27;map&#x27;,
   layers: [
     new ol.layer.Tile({
-      /* ol.source.XYZ and ol.tilegrid.TileGrid have no resolutions config */
-      source: new ol.source.TileImage({
+      source: new ol.source.XYZ({
         attributions: [attribution],
-        tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-          var z = tileCoord[0];
-          var x = tileCoord[1];
-          var y = -tileCoord[2] - 1;
-          // wrap the world on the X axis
-          var n = Math.pow(2, z + 1); // 2 tiles at z=0
-          x = x % n;
-          if (x * n &lt; 0) {
-            // x and n differ in sign so add n to wrap the result
-            // to the correct sign
-            x = x + n;
-          }
-          return urlTemplate.replace(&#x27;{z}&#x27;, z.toString())
-              .replace(&#x27;{y}&#x27;, y.toString())
-              .replace(&#x27;{x}&#x27;, x.toString());
-        },
+        maxZoom: 16,
         projection: projection,
-        tileGrid: new ol.tilegrid.TileGrid({
-          origin: ol.extent.getTopLeft(projectionExtent),
-          resolutions: resolutions,
-          tileSize: 512
-        })
+        tileSize: 512,
+        tileUrlFunction: function(tileCoord) {
+          return urlTemplate.replace(&#x27;{z}&#x27;, (tileCoord[0] - 1).toString())
+                            .replace(&#x27;{x}&#x27;, tileCoord[1].toString())
+                            .replace(&#x27;{y}&#x27;, tileCoord[2].toString());
+        },
+        wrapX: true
       })
     })
   ],

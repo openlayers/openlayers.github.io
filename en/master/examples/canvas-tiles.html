@@ -36,7 +36,7 @@
         <div class="span12">
           <h4 id="title">Canvas tiles example</h4>
           <p id="shortdesc">Renders tiles with coordinates for debugging.</p>
-          <div id="docs"><p>The black grid tiles are generated on the client with an HTML5 canvas. Note that the tile coordinates are ol3 normalized tile coordinates (origin bottom left), not OSM tile coordinates (origin top left).</p>
+          <div id="docs"><p>The black grid tiles are generated on the client with an HTML5 canvas. In this example, the <code>ol.source.TileDebug</code> source uses the tile grid of the <code>ol.source.OSM</code> source, so the displayed tile coordinates are the same as those for OSM tile requests. </p>
 </div>
           <div id="tags">layers, openstreetmap, canvas</div>
           <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.TileDebug.html" title="API documentation for ol.source.TileDebug">ol.source.TileDebug</a></li></ul></div>
@@ -48,15 +48,16 @@
         <form method="POST" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <input type="button" class="btn btn-info" id="copy-button" value="Copy example code">
           <input type="submit" class="btn btn-primary" id="jsfiddle-button" value="Create JSFiddle">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var osmSource = new ol.source.OSM();
+var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.OSM()
+      source: osmSource
     }),
     new ol.layer.Tile({
       source: new ol.source.TileDebug({
         projection: &#x27;EPSG:3857&#x27;,
-        tileGrid: ol.tilegrid.createXYZ({maxZoom: 22})
+        tileGrid: osmSource.getTileGrid()
       })
     })
   ],
@@ -104,15 +105,16 @@
 
 &lt;/div&gt;
 &lt;script&gt;
+var osmSource = new ol.source.OSM();
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.OSM()
+      source: osmSource
     }),
     new ol.layer.Tile({
       source: new ol.source.TileDebug({
         projection: &#x27;EPSG:3857&#x27;,
-        tileGrid: ol.tilegrid.createXYZ({maxZoom: 22})
+        tileGrid: osmSource.getTileGrid()
       })
     })
   ],
