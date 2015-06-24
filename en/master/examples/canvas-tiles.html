@@ -36,7 +36,7 @@
         <div class="span12">
           <h4 id="title">Canvas tiles example</h4>
           <p id="shortdesc">Renders tiles with coordinates for debugging.</p>
-          <div id="docs"><p>The black grid tiles are generated on the client with an HTML5 canvas. In this example, the <code>ol.source.TileDebug</code> source uses the tile grid of the <code>ol.source.OSM</code> source, so the displayed tile coordinates are the same as those for OSM tile requests. </p>
+          <div id="docs"><p>The black grid tiles are generated on the client with an HTML5 canvas. The displayed tile coordinates are OpenLayers tile coordinates. These increase from bottom to top, but standard XYZ tiling scheme coordinates increase from top to bottom. To calculate the <code>y</code> for a standard XYZ tile coordinate, use <code>-y - 1</code>. </p>
 </div>
           <div id="tags">layers, openstreetmap, canvas</div>
           <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.TileDebug.html" title="API documentation for ol.source.TileDebug">ol.source.TileDebug</a></li></ul></div>
