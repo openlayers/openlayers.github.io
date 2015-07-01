@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git://github.com/openlayers/openlayers.github.io.git"
   },
-  "license": "BSD",
+  "license": "BSD-2-Clause",
   "readmeFilename": "README.md",
   "devDependencies": {
     "grunt": "0.4.4",
