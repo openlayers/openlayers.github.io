@@ -1,12 +1,12 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.6.0-77-g28450cb
+// Version: v3.6.0-88-g3f214f6
 
 (function (root, factory) {
-  if (typeof define === "function" && define.amd) {
-    define([], factory);
-  } else if (typeof exports === "object") {
+  if (typeof exports === "object") {
     module.exports = factory();
+  } else if (typeof define === "function" && define.amd) {
+    define([], factory);
   } else {
     root.ol = factory();
   }
@@ -13370,6 +13370,7 @@ goog.provide('ol.CoordinateFormatType');
 goog.provide('ol.coordinate');
 
 goog.require('goog.math');
+goog.require('goog.string');
 
 
 /**
@@ -13496,8 +13497,8 @@ ol.coordinate.degreesToStringHDMS_ = function(degrees, hemispheres) {
   var normalizedDegrees = goog.math.modulo(degrees + 180, 360) - 180;
   var x = Math.abs(Math.round(3600 * normalizedDegrees));
   return Math.floor(x / 3600) + '\u00b0 ' +
-      Math.floor((x / 60) % 60) + '\u2032 ' +
-      Math.floor(x % 60) + '\u2033 ' +
+      goog.string.padNumber(Math.floor((x / 60) % 60), 2) + '\u2032 ' +
+      goog.string.padNumber(Math.floor(x % 60), 2) + '\u2033 ' +
       hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0);
 };
 
@@ -20526,7 +20527,7 @@ ol.CollectionProperty = {
  * @constructor
  * @extends {ol.Object}
  * @fires ol.CollectionEvent
- * @param {Array.<T>=} opt_array Array.
+ * @param {!Array.<T>=} opt_array Array.
  * @template T
  * @api stable
  */
@@ -20536,7 +20537,7 @@ ol.Collection = function(opt_array) {
 
   /**
    * @private
-   * @type {Array.<T>}
+   * @type {!Array.<T>}
    */
   this.array_ = goog.isDef(opt_array) ? opt_array : [];
 
@@ -20560,7 +20561,7 @@ ol.Collection.prototype.clear = function() {
 /**
  * Add elements to the collection.  This pushes each item in the provided array
  * to the end of the collection.
- * @param {Array.<T>} arr Array.
+ * @param {!Array.<T>} arr Array.
  * @return {ol.Collection.<T>} This collection.
  * @api stable
  */
@@ -20592,7 +20593,7 @@ ol.Collection.prototype.forEach = function(f, opt_this) {
  * is mutated, no events will be dispatched by the collection, and the
  * collection's "length" property won't be in sync with the actual length
  * of the array.
- * @return {Array.<T>} Array.
+ * @return {!Array.<T>} Array.
  * @api stable
  */
 ol.Collection.prototype.getArray = function() {
@@ -109796,8 +109797,8 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
   var set = !add && !remove && !toggle;
   var map = mapBrowserEvent.map;
   var features = this.featureOverlay_.getSource().getFeaturesCollection();
-  var /** @type {Array.<ol.Feature>} */ deselected = [];
-  var /** @type {Array.<ol.Feature>} */ selected = [];
+  var /** @type {!Array.<ol.Feature>} */ deselected = [];
+  var /** @type {!Array.<ol.Feature>} */ selected = [];
   var change = false;
   if (set) {
     // Replace the currently selected feature(s) with the feature(s) at the
@@ -114508,7 +114509,7 @@ ol.source.TileVector.prototype.loadFeatures =
           tiles[tileKey] = [];
           var tileSuccess = goog.partial(success, tileKey);
           if (!goog.isNull(this.tileLoadFunction_)) {
-            this.tileLoadFunction_(url, tileSuccess);
+            this.tileLoadFunction_(url, goog.bind(tileSuccess, this));
           } else {
             var loader = ol.featureloader.loadFeaturesXhr(url,
                 /** @type {ol.format.Feature} */ (this.format_), tileSuccess);
