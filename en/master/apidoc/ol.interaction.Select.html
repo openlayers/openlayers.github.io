@@ -581,14 +581,16 @@
             
             <span class="subtitle">Fires</span>
             
-                <li data-name="change Triggered when the id, the geometry or the style of the
-    feature changes.event:" class="unstable">
-                    change Triggered when the id, the geometry or the style of the
-    feature changes.event:
-                </li>
-            
                 <li data-name="ol.ObjectEvent#event:change:geometry" class="unstable">
                     change:geometry
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:id" class="unstable">
+                    change:id
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:style" class="unstable">
+                    change:style
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
@@ -1225,6 +1227,31 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.ModifyEvent">
+            <span class="title">
+                <a href="ol.ModifyEvent.html">ol.ModifyEvent</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.ModifyEvent#features"><a href="ol.ModifyEvent.html#features">features</a></li>
+            
+                <li data-name="ol.ModifyEvent#mapBrowserPointerEvent"><a href="ol.ModifyEvent.html#mapBrowserPointerEvent">mapBrowserPointerEvent</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.Object">
             <span class="title">
                 <a href="ol.Object.html">ol.Object</a>
@@ -1629,12 +1656,8 @@
                     <a href="ol.View.html#constrainRotation">constrainRotation</a>
                 </li>
             
-                <li data-name="ol.View#fitExtent" class="unstable">
-                    <a href="ol.View.html#fitExtent">fitExtent</a>
-                </li>
-            
-                <li data-name="ol.View#fitGeometry" class="unstable">
-                    <a href="ol.View.html#fitGeometry">fitGeometry</a>
+                <li data-name="ol.View#fit" class="unstable">
+                    <a href="ol.View.html#fit">fit</a>
                 </li>
             
                 <li data-name="ol.View#get" class="">
@@ -6629,6 +6652,14 @@
             
                 <li data-name="ol.ObjectEvent#event:change:active" class="unstable">
                     change:active
+                </li>
+            
+                <li data-name="ol.ModifyEvent#event:modifyend" class="unstable">
+                    <a href="ol.ModifyEvent.html#event:modifyend">modifyend</a>
+                </li>
+            
+                <li data-name="ol.ModifyEvent#event:modifystart" class="unstable">
+                    <a href="ol.ModifyEvent.html#event:modifystart">modifystart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
@@ -13105,10 +13136,13 @@
         <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>Select
     </h2>
     
-        <div class="class-description"><p>Handles selection of vector data. An <a href="ol.source.Vector.html"><code>ol.source.Vector</code></a> is maintained
-internally to store the selected feature(s). Which features are selected is
-determined by the <code>condition</code> option, and optionally the <code>toggle</code> or
-<code>add</code>/<code>remove</code> options.</p></div>
+        <div class="class-description"><p>Interaction for selecting vector features. By default, selected features are
+styled differently, so this interaction can be used for visual highlighting,
+as well as selecting features for other actions, such as modification or
+output. There are three ways of controlling which features are selected:
+using the browser event as defined by the <code>condition</code> and optionally the
+<code>toggle</code>, <code>add</code>/<code>remove</code>, and <code>multi</code> options; a <code>layers</code> filter; and a
+further feature filter using the <code>filter</code> option.</p></div>
     
 </header>  
 
@@ -13129,7 +13163,7 @@ determined by the <code>condition</code> option, and optionally the <code>toggle
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 97
+            src/ol/interaction/selectinteraction.js, line 100
         </div>
         
         
@@ -13698,7 +13732,7 @@ returns <code>true</code> if the feature may be selected or <code>false</code> o
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 214
+            src/ol/interaction/selectinteraction.js, line 217
         </div>
         
         
@@ -14146,7 +14180,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 201
+            src/ol/interaction/selectinteraction.js, line 204
         </div>
         
         
@@ -15133,7 +15167,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 298
+            src/ol/interaction/selectinteraction.js, line 301
         </div>
         
         
@@ -15811,7 +15845,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Jul 01 2015 14:47:55 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Jul 15 2015 11:07:46 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

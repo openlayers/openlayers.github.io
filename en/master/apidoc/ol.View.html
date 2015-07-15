@@ -581,14 +581,16 @@
             
             <span class="subtitle">Fires</span>
             
-                <li data-name="change Triggered when the id, the geometry or the style of the
-    feature changes.event:" class="unstable">
-                    change Triggered when the id, the geometry or the style of the
-    feature changes.event:
-                </li>
-            
                 <li data-name="ol.ObjectEvent#event:change:geometry" class="unstable">
                     change:geometry
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:id" class="unstable">
+                    change:id
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:style" class="unstable">
+                    change:style
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
@@ -1225,6 +1227,31 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.ModifyEvent">
+            <span class="title">
+                <a href="ol.ModifyEvent.html">ol.ModifyEvent</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.ModifyEvent#features"><a href="ol.ModifyEvent.html#features">features</a></li>
+            
+                <li data-name="ol.ModifyEvent#mapBrowserPointerEvent"><a href="ol.ModifyEvent.html#mapBrowserPointerEvent">mapBrowserPointerEvent</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.Object">
             <span class="title">
                 <a href="ol.Object.html">ol.Object</a>
@@ -1629,12 +1656,8 @@
                     <a href="ol.View.html#constrainRotation">constrainRotation</a>
                 </li>
             
-                <li data-name="ol.View#fitExtent" class="unstable">
-                    <a href="ol.View.html#fitExtent">fitExtent</a>
-                </li>
-            
-                <li data-name="ol.View#fitGeometry" class="unstable">
-                    <a href="ol.View.html#fitGeometry">fitGeometry</a>
+                <li data-name="ol.View#fit" class="unstable">
+                    <a href="ol.View.html#fit">fit</a>
                 </li>
             
                 <li data-name="ol.View#get" class="">
@@ -6629,6 +6652,14 @@
             
                 <li data-name="ol.ObjectEvent#event:change:active" class="unstable">
                     change:active
+                </li>
+            
+                <li data-name="ol.ModifyEvent#event:modifyend" class="unstable">
+                    <a href="ol.ModifyEvent.html#event:modifyend">modifyend</a>
+                </li>
+            
+                <li data-name="ol.ModifyEvent#event:modifystart" class="unstable">
+                    <a href="ol.ModifyEvent.html#event:modifystart">modifystart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
@@ -13160,7 +13191,7 @@ default the center is not constrained at all.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 100
+            src/ol/view.js, line 102
         </div>
         
         
@@ -13913,7 +13944,7 @@ the <code>ol.View#constrainResolution</code> method.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 275
+            src/ol/view.js, line 277
         </div>
         
         
@@ -14049,7 +14080,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 535
+            src/ol/view.js, line 528
         </div>
         
         
@@ -14315,7 +14346,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 212
+            src/ol/view.js, line 214
         </div>
         
         
@@ -14451,7 +14482,7 @@ Constrained center.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 225
+            src/ol/view.js, line 227
         </div>
         
         
@@ -14637,7 +14668,7 @@ Constrained resolution.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 240
+            src/ol/view.js, line 242
         </div>
         
         
@@ -14788,8 +14819,8 @@ Constrained rotation.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="fitExtent">
-            fitExtent<span class="signature">(extent, size)</span>
+        <h4 class="name" id="fit">
+            fit<span class="signature">(geometry, size, <span class="optional">opt_options</span>)</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -14798,7 +14829,7 @@ Constrained rotation.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 441
+            src/ol/view.js, line 447
         </div>
         
         
@@ -14809,158 +14840,10 @@ Constrained rotation.
     
     
     <div class="description">
-        <p>Fit the map view to the passed extent and size. The size is pixel dimensions
-of the box to fit the extent into. In most cases you will want to use the map
-size, that is <code>map.getSize()</code>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>extent</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Extent.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>size</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#Size">ol.Size</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Box pixel size.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="fitGeometry">
-            fitGeometry<span class="signature">(geometry, size, <span class="optional">opt_options</span>)</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/view.js, line 462
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    
-    <div class="description">
-        <p>Fit the given geometry into the view based on the given map size and border.</p>
+        <p>Fit the given geometry or extent based on the given map size and border.
+The size is pixel dimensions of the box to fit the extent into.
+In most cases you will want to use the map size, that is <code>map.getSize()</code>.
+Takes care of the map angle.</p>
     </div>
     
 
@@ -15000,6 +14883,9 @@ size, that is <code>map.getSize()</code>.</p>
             
                 
 <span class="param-type"><a href="ol.geom.SimpleGeometry.html">ol.geom.SimpleGeometry</a></span>
+|
+
+<span class="param-type"><a href="ol.html#Extent">ol.Extent</a></span>
 
 
             
@@ -15429,7 +15315,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 252
+            src/ol/view.js, line 254
         </div>
         
         
@@ -15599,7 +15485,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 293
+            src/ol/view.js, line 297
         </div>
         
         
@@ -15769,7 +15655,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 304
+            src/ol/view.js, line 308
         </div>
         
         
@@ -15937,7 +15823,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 357
+            src/ol/view.js, line 361
         </div>
         
         
@@ -16021,7 +15907,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 413
+            src/ol/view.js, line 417
         </div>
         
         
@@ -16478,7 +16364,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 570
+            src/ol/view.js, line 563
         </div>
         
         
@@ -16774,7 +16660,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 585
+            src/ol/view.js, line 578
         </div>
         
         
@@ -17024,7 +16910,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 611
+            src/ol/view.js, line 604
         </div>
         
         
@@ -17149,7 +17035,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 622
+            src/ol/view.js, line 615
         </div>
         
         
@@ -17271,7 +17157,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 632
+            src/ol/view.js, line 625
         </div>
         
         
@@ -17823,7 +17709,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Jul 01 2015 14:48:21 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Jul 15 2015 11:08:26 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

@@ -581,14 +581,16 @@
             
             <span class="subtitle">Fires</span>
             
-                <li data-name="change Triggered when the id, the geometry or the style of the
-    feature changes.event:" class="unstable">
-                    change Triggered when the id, the geometry or the style of the
-    feature changes.event:
-                </li>
-            
                 <li data-name="ol.ObjectEvent#event:change:geometry" class="unstable">
                     change:geometry
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:id" class="unstable">
+                    change:id
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:style" class="unstable">
+                    change:style
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
@@ -1225,6 +1227,31 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.ModifyEvent">
+            <span class="title">
+                <a href="ol.ModifyEvent.html">ol.ModifyEvent</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.ModifyEvent#features"><a href="ol.ModifyEvent.html#features">features</a></li>
+            
+                <li data-name="ol.ModifyEvent#mapBrowserPointerEvent"><a href="ol.ModifyEvent.html#mapBrowserPointerEvent">mapBrowserPointerEvent</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.Object">
             <span class="title">
                 <a href="ol.Object.html">ol.Object</a>
@@ -1629,12 +1656,8 @@
                     <a href="ol.View.html#constrainRotation">constrainRotation</a>
                 </li>
             
-                <li data-name="ol.View#fitExtent" class="unstable">
-                    <a href="ol.View.html#fitExtent">fitExtent</a>
-                </li>
-            
-                <li data-name="ol.View#fitGeometry" class="unstable">
-                    <a href="ol.View.html#fitGeometry">fitGeometry</a>
+                <li data-name="ol.View#fit" class="unstable">
+                    <a href="ol.View.html#fit">fit</a>
                 </li>
             
                 <li data-name="ol.View#get" class="">
@@ -6629,6 +6652,14 @@
             
                 <li data-name="ol.ObjectEvent#event:change:active" class="unstable">
                     change:active
+                </li>
+            
+                <li data-name="ol.ModifyEvent#event:modifyend" class="unstable">
+                    <a href="ol.ModifyEvent.html#event:modifyend">modifyend</a>
+                </li>
+            
+                <li data-name="ol.ModifyEvent#event:modifystart" class="unstable">
+                    <a href="ol.ModifyEvent.html#event:modifystart">modifystart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
@@ -13153,7 +13184,7 @@ var point = feature.getGeometry();</code></pre></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 61
+            src/ol/feature.js, line 59
         </div>
         
         
@@ -13254,9 +13285,10 @@ var point = feature.getGeometry();</code></pre></div>
     <h5>Fires:</h5>
     <ul>
         <li class="">
-            <code>change Triggered when the id, the geometry or the style of the
-    feature changes.event:</code>
+            <code>change:geometry</code>
             
+                (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
+              
             
             
 
@@ -13264,7 +13296,18 @@ var point = feature.getGeometry();</code></pre></div>
         </li>
     
         <li class="">
-            <code>change:geometry</code>
+            <code>change:id</code>
+            
+                (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
+              
+            
+            
+
+            
+        </li>
+    
+        <li class="">
+            <code>change:style</code>
             
                 (<a href="ol.ObjectEvent.html">ol.ObjectEvent</a>)
               
@@ -13355,6 +13398,50 @@ var point = feature.getGeometry();</code></pre></div>
       <td class="setter">yes</td>
       <td class="event"><code>change:geometry</code></td>
       <td class="description last"><p>The default geometry for the feature.</p></td>
+    </tr>
+    
+
+    <tr class="">
+      <td class="name"><code>id</code></td>
+      <td class="type">
+      
+      
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+      
+      </td>
+      <td class="setter">yes</td>
+      <td class="event"><code>change:id</code></td>
+      <td class="description last"><p>Id.</p></td>
+    </tr>
+    
+
+    <tr class="">
+      <td class="name"><code>style</code></td>
+      <td class="type">
+      
+      
+<span class="param-type"><a href="ol.style.Style.html">ol.style.Style</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="ol.style.Style.html">ol.style.Style</a>></span>
+|
+
+<span class="param-type"><a href="ol.html#FeatureStyleFunction">ol.FeatureStyleFunction</a></span>
+
+
+      
+      </td>
+      <td class="setter">yes</td>
+      <td class="event"><code>change:style</code></td>
+      <td class="description last"><p>The feature style.</p></td>
     </tr>
     
   </tbody>
@@ -13473,7 +13560,7 @@ var point = feature.getGeometry();</code></pre></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 124
+            src/ol/feature.js, line 122
         </div>
         
         
@@ -13691,7 +13778,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 147
+            src/ol/feature.js, line 145
         </div>
         
         
@@ -13777,7 +13864,7 @@ The default geometry for the feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 169
+            src/ol/feature.js, line 168
         </div>
         
         
@@ -13863,7 +13950,7 @@ Get the property name associated with the default geometry
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 157
+            src/ol/feature.js, line 156
         </div>
         
         
@@ -15016,7 +15103,7 @@ with the name returned by <a href="ol.Feature.html#getGeometryName"><code>ol.Fea
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 271
+            src/ol/feature.js, line 273
         </div>
         
         
@@ -15140,7 +15227,7 @@ this name will be returned.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 258
+            src/ol/feature.js, line 260
         </div>
         
         
@@ -15396,7 +15483,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 242
+            src/ol/feature.js, line 243
         </div>
         
         
@@ -15956,7 +16043,7 @@ be preferred.</p>
 
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Jul 01 2015 14:47:33 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Jul 15 2015 11:07:14 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

@@ -3,6 +3,7 @@ goog.provide('ol.interaction.Modify');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
+goog.require('goog.events.Event');
 goog.require('goog.functions');
 goog.require('ol.Collection');
 goog.require('ol.CollectionEventType');
@@ -27,6 +28,60 @@ goog.require('ol.style.Style');
 
 
 /**
+ * @enum {string}
+ */
+ol.ModifyEventType = {
+  /**
+   * Triggered upon feature modification start
+   * @event ol.ModifyEvent#modifystart
+   * @api
+   */
+  MODIFYSTART: 'modifystart',
+  /**
+   * Triggered upon feature modification end
+   * @event ol.ModifyEvent#modifyend
+   * @api
+   */
+  MODIFYEND: 'modifyend'
+};
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.interaction.Modify} instances are instances of
+ * this type.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @implements {oli.ModifyEvent}
+ * @param {ol.ModifyEventType} type Type.
+ * @param {ol.Collection.<ol.Feature>} features The features modified.
+ * @param {ol.MapBrowserPointerEvent} mapBrowserPointerEvent Associated
+ *     {@link ol.MapBrowserPointerEvent}.
+ */
+ol.ModifyEvent = function(type, features, mapBrowserPointerEvent) {
+
+  goog.base(this, type);
+
+  /**
+   * The features being modified.
+   * @type {ol.Collection.<ol.Feature>}
+   * @api
+   */
+  this.features = features;
+
+  /**
+   * Associated {@link ol.MapBrowserPointerEvent}.
+   * @type {ol.MapBrowserPointerEvent}
+   * @api
+   */
+  this.mapBrowserPointerEvent = mapBrowserPointerEvent;
+};
+goog.inherits(ol.ModifyEvent, goog.events.Event);
+
+
+/**
  * @typedef {{depth: (Array.<number>|undefined),
  *            feature: ol.Feature,
  *            geometry: ol.geom.SimpleGeometry,
@@ -44,7 +99,8 @@ ol.interaction.SegmentDataType;
  * @constructor
  * @extends {ol.interaction.Pointer}
  * @param {olx.interaction.ModifyOptions} options Options.
- * @api stable
+ * @fires ol.ModifyEvent
+ * @api
  */
 ol.interaction.Modify = function(options) {
 
@@ -86,6 +142,14 @@ ol.interaction.Modify = function(options) {
   this.lastPixel_ = [0, 0];
 
   /**
+   * Keep track of the last inserted pixel location to avoid
+   * unintentional deletion.
+   * @type {ol.Pixel}
+   * @private
+   */
+  this.lastNewVertexPixel_ = [NaN, NaN];
+
+  /**
    * Segment RTree for each layer
    * @type {Object.<*, ol.structs.RBush>}
    * @private
@@ -112,7 +176,7 @@ ol.interaction.Modify = function(options) {
   this.dragSegments_ = null;
 
   /**
-   * Draw overlay where are sketch features are drawn.
+   * Draw overlay where sketch features are drawn.
    * @type {ol.layer.Vector}
    * @private
    */
@@ -466,6 +530,8 @@ ol.interaction.Modify.handleDownEvent_ = function(evt) {
     for (i = insertVertices.length - 1; i >= 0; --i) {
       this.insertVertex_.apply(this, insertVertices[i]);
     }
+    this.dispatchEvent(new ol.ModifyEvent(ol.ModifyEventType.MODIFYSTART,
+        this.features_, evt));
   }
   return !goog.isNull(this.vertexFeature_);
 };
@@ -537,6 +603,8 @@ ol.interaction.Modify.handleUpEvent_ = function(evt) {
     this.rBush_.update(ol.extent.boundingExtent(segmentData.segment),
         segmentData);
   }
+  this.dispatchEvent(new ol.ModifyEvent(ol.ModifyEventType.MODIFYEND,
+      this.features_, evt));
   return false;
 };
 
@@ -558,10 +626,15 @@ ol.interaction.Modify.handleEvent = function(mapBrowserEvent) {
   }
   if (!goog.isNull(this.vertexFeature_) &&
       this.deleteCondition_(mapBrowserEvent)) {
-    var geometry = this.vertexFeature_.getGeometry();
-    goog.asserts.assertInstanceof(geometry, ol.geom.Point,
-        'geometry should be an ol.geom.Point');
-    handled = this.removeVertex_();
+    if (!(this.lastNewVertexPixel_[0] === this.lastPixel_[0] &&
+        this.lastNewVertexPixel_[1] === this.lastPixel_[1])) {
+      var geometry = this.vertexFeature_.getGeometry();
+      goog.asserts.assertInstanceof(geometry, ol.geom.Point,
+          'geometry should be an ol.geom.Point');
+      handled = this.removeVertex_();
+    } else {
+      handled = true;
+    }
   }
   return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) &&
       !handled;
@@ -716,6 +789,7 @@ ol.interaction.Modify.prototype.insertVertex_ = function(segmentData, vertex) {
   rTree.insert(ol.extent.boundingExtent(newSegmentData2.segment),
       newSegmentData2);
   this.dragSegments_.push([newSegmentData2, 0]);
+  this.lastNewVertexPixel_ = this.lastPixel_;
 };
 
 

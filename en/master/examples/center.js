@@ -50,7 +50,7 @@ zoomtoswitzerlandbest.addEventListener('click', function() {
   var feature = source.getFeatures()[0];
   var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
   var size = /** @type {ol.Size} */ (map.getSize());
-  view.fitGeometry(
+  view.fit(
       polygon,
       size,
       {
@@ -66,7 +66,7 @@ zoomtoswitzerlandconstrained.addEventListener('click', function() {
   var feature = source.getFeatures()[0];
   var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
   var size = /** @type {ol.Size} */ (map.getSize());
-  view.fitGeometry(
+  view.fit(
       polygon,
       size,
       {
@@ -81,7 +81,7 @@ zoomtoswitzerlandnearest.addEventListener('click', function() {
   var feature = source.getFeatures()[0];
   var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
   var size = /** @type {ol.Size} */ (map.getSize());
-  view.fitGeometry(
+  view.fit(
       polygon,
       size,
       {
@@ -96,7 +96,7 @@ zoomtolausanne.addEventListener('click', function() {
   var feature = source.getFeatures()[1];
   var point = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
   var size = /** @type {ol.Size} */ (map.getSize());
-  view.fitGeometry(
+  view.fit(
       point,
       size,
       {
