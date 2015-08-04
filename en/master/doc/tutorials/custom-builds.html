@@ -4,6 +4,9 @@
     <title>OpenLayers 3 - Custom builds</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href='../../../../assets/theme/site.css' rel='stylesheet' type='text/css'>
     <link rel="icon" type="image/x-icon" href="../../../../assets/theme/img/favicon.ico" />
     
@@ -85,7 +88,6 @@
       <span class="string">"api"</span>, <span class="string">"observable"</span>
     ]</span>,
     "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED_OPTIMIZATIONS"</span></span>,
-    "<span class="attribute">use_types_for_optimization</span>": <span class="value"><span class="literal">true</span></span>,
     "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span>
   </span>}
 </span>}</code></pre>
@@ -164,7 +166,7 @@ info ol Compiling 364 sources</code></pre>
 <p>The Closure documentation explains that &quot;externs&quot; are for external names used in the code being compiled. The compiler includes externs for built-ins such as <code>document</code>. The <code>externs</code> directory of the OpenLayers 3 code includes files for all those used in some part of the library. For example, if you use Bing Maps, you should include the Bing externs file in the <code>externs</code> section of the config file.</p>
 <p><code>oli.js</code> and <code>olx.js</code> are externs files for the OpenLayers 3 API. For examples <code>olx.js</code> includes extern definitions for OpenLayers 3&#39;s constructor options. You should always use these two files as externs when creating custom builds.</p>
 <h3 id="other-compiler-options">Other compiler options</h3>
-<p>There are a couple of other compiler options in the config file above. <code>manage_closure_dependencies</code> should always be used. <code>use_types_for_optimization</code> should be used for better compression rates.</p>
+<p>There are a couple of other compiler options in the config file above. <code>manage_closure_dependencies</code> should always be used.</p>
 <p>You can specify any of the other compiler options here as needed, such as the renaming reports, output manifest, or source maps. There is a full list of available options in <a href="https://github.com/openlayers/closure-util/blob/master/compiler-options.txt">closure-util</a>.</p>
 <p>Note that <code>build.js</code> currently requires you to enter an output file and will write the output from the compiler to it; it does not use the <code>js_output_file</code> compiler option. If you specify this in the config file, there will be no compiler output, so <code>build.js</code>&#39;s output file will be empty.</p>
 <h2 id="a-more-complicated-example">A more complicated example</h2>
@@ -197,7 +199,6 @@ info ol Compiling 364 sources</code></pre>
       <span class="string">"goog.DEBUG=false"</span>
     ]</span>,
     "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED_OPTIMIZATIONS"</span></span>,
-    "<span class="attribute">use_types_for_optimization</span>": <span class="value"><span class="literal">true</span></span>,
     "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span>
   </span>}
 </span>}</code></pre>

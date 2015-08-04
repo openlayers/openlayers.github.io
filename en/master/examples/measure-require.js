@@ -1,4 +1,5 @@
 goog.require('ol.Map');
+goog.require('ol.Observable');
 goog.require('ol.Overlay');
 goog.require('ol.Sphere');
 goog.require('ol.View');

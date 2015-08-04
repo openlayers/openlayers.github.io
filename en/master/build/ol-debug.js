@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.7.0-26-g7094f65
+// Version: v3.8.0-12-g575fff6
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -12938,6 +12938,7 @@ goog.require('goog.events.EventType');
  *
  * @constructor
  * @extends {goog.events.EventTarget}
+ * @fires change
  * @suppress {checkStructDictInheritance}
  * @struct
  * @api stable
@@ -12968,13 +12969,19 @@ ol.Observable.unByKey = function(key) {
 
 /**
  * Increases the revision counter and dispatches a 'change' event.
- * @fires change
  * @api
  */
 ol.Observable.prototype.changed = function() {
   ++this.revision_;
   this.dispatchEvent(goog.events.EventType.CHANGE);
 };
+
+
+/**
+ * Triggered when the revision counter is increased.
+ * @event change
+ * @api
+ */
 
 
 /**
@@ -19287,9 +19294,11 @@ ol.geom.GeometryLayout = {
  * instantiated in apps.
  * Base class for vector geometries.
  *
+ * To get notified of changes to the geometry, register a listener for the
+ * generic `change` event on your geometry instance.
+ *
  * @constructor
  * @extends {ol.Object}
- * @fires change Triggered when the geometry changes.
  * @api stable
  */
 ol.geom.Geometry = function() {
@@ -22187,7 +22196,6 @@ goog.provide('ol.View');
 goog.provide('ol.ViewHint');
 goog.provide('ol.ViewProperty');
 
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol');
 goog.require('ol.CenterConstraint');
@@ -22585,7 +22593,11 @@ ol.View.prototype.getState = function() {
   var resolution = /** @type {number} */ (this.getResolution());
   var rotation = this.getRotation();
   return /** @type {olx.ViewState} */ ({
-    center: center.slice(),
+    // Snap center to closest pixel
+    center: [
+      Math.round(center[0] / resolution) * resolution,
+      Math.round(center[1] / resolution) * resolution
+    ],
     projection: goog.isDef(projection) ? projection : null,
     resolution: resolution,
     rotation: rotation
@@ -23603,7 +23615,6 @@ ol.TileRange.prototype.intersects = function(tileRange) {
 
 goog.provide('ol.Attribution');
 
-goog.require('goog.asserts');
 goog.require('goog.math');
 goog.require('ol.TileRange');
 
@@ -35828,7 +35839,6 @@ goog.provide('ol.control.Control');
 goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.events');
-goog.require('goog.events.EventType');
 goog.require('ol.MapEventType');
 goog.require('ol.Object');
 
@@ -35902,24 +35912,6 @@ ol.control.Control = function(options) {
 
 };
 goog.inherits(ol.control.Control, ol.Object);
-
-
-/**
- * Bind a listener that blurs the passed element on any mouseout- or
- * focusout-event.
- *
- * @param {!Element} button The button which shall blur on mouseout- or
- *     focusout-event.
- * @protected
- */
-ol.control.Control.bindMouseOutFocusOutBlur = function(button) {
-  goog.events.listen(button, [
-    goog.events.EventType.MOUSEOUT,
-    goog.events.EventType.FOCUSOUT
-  ], /** @this {Element} */ function() {
-    this.blur();
-  }, false);
-};
 
 
 /**
@@ -36456,7 +36448,6 @@ ol.Tile.prototype.load = goog.abstractMethod;
 goog.provide('ol.source.Source');
 goog.provide('ol.source.State');
 
-goog.require('goog.events.EventType');
 goog.require('ol.Attribution');
 goog.require('ol.Object');
 goog.require('ol.proj');
@@ -36492,9 +36483,10 @@ ol.source.SourceOptions;
  * instantiated in apps.
  * Base class for {@link ol.layer.Layer} sources.
  *
+ * A generic `change` event is triggered when the state of the source changes.
+ *
  * @constructor
  * @extends {ol.Object}
- * @fires change Triggered when the state of the source changes.
  * @param {ol.source.SourceOptions} options Source options.
  * @api stable
  */
@@ -38057,8 +38049,6 @@ ol.control.Rotate = function(opt_options) {
   goog.events.listen(button, goog.events.EventType.CLICK,
       ol.control.Rotate.prototype.handleClick_, false, this);
 
-  ol.control.Control.bindMouseOutFocusOutBlur(button);
-
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
   var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, button);
@@ -38215,8 +38205,6 @@ ol.control.Zoom = function(opt_options) {
   goog.events.listen(inElement,
       goog.events.EventType.CLICK, goog.partial(
           ol.control.Zoom.prototype.handleClick_, delta), false, this);
-
-  ol.control.Control.bindMouseOutFocusOutBlur(inElement);
 
   var outElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {
     'class': className + '-out',
@@ -38553,8 +38541,6 @@ ol.control.FullScreen = function(opt_options) {
 
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
-
-  ol.control.Control.bindMouseOutFocusOutBlur(button);
 
   goog.events.listen(goog.global.document,
       goog.dom.fullscreen.EventType.CHANGE,
@@ -47866,7 +47852,6 @@ ol.pointer.MsSource.prototype.msGotPointerCapture = function(inEvent) {
 
 goog.provide('ol.pointer.NativeSource');
 
-goog.require('goog.object');
 goog.require('ol.pointer.EventSource');
 
 
@@ -48461,7 +48446,6 @@ goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.events.BrowserEvent');
-goog.require('goog.events.Event');
 goog.require('goog.events.EventTarget');
 
 goog.require('ol.has');
@@ -49468,7 +49452,6 @@ goog.provide('ol.layer.Base');
 goog.provide('ol.layer.LayerProperty');
 goog.provide('ol.layer.LayerState');
 
-goog.require('goog.events');
 goog.require('goog.math');
 goog.require('goog.object');
 goog.require('ol.Object');
@@ -50050,10 +50033,11 @@ goog.require('ol.source.State');
  * Layers group together those properties that pertain to how the data is to be
  * displayed, irrespective of the source of that data.
  *
+ * A generic `change` event is fired when the state of the source changes.
+ *
  * @constructor
  * @extends {ol.layer.Base}
  * @fires ol.render.Event
- * @fires change Triggered when the state of the source changes.
  * @param {olx.layer.LayerOptions} options Layer options.
  * @api stable
  */
@@ -50553,7 +50537,6 @@ ol.renderer.Layer.prototype.createLoadedTileFinder = function(source, tiles) {
 
 
 /**
- * @protected
  * @return {ol.layer.Layer} Layer.
  */
 ol.renderer.Layer.prototype.getLayer = function() {
@@ -53059,6 +53042,18 @@ ol.events.condition.pointerMove = function(mapBrowserEvent) {
  */
 ol.events.condition.singleClick = function(mapBrowserEvent) {
   return mapBrowserEvent.type == ol.MapBrowserEvent.EventType.SINGLECLICK;
+};
+
+
+/**
+ * Return `true` if the event is a map `dblclick` event, `false` otherwise.
+ *
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @return {boolean} True if the event is a map `dblclick` event.
+ * @api stable
+ */
+ol.events.condition.doubleClick = function(mapBrowserEvent) {
+  return mapBrowserEvent.type == ol.MapBrowserEvent.EventType.DBLCLICK;
 };
 
 
@@ -56826,9 +56821,10 @@ ol.layer.GroupProperty = {
  * @classdesc
  * A {@link ol.Collection} of layers that are handled together.
  *
+ * A generic `change` event is triggered when the group/Collection changes.
+ *
  * @constructor
  * @extends {ol.layer.Base}
- * @fires change Triggered when the group/Collection changes.
  * @param {olx.layer.GroupOptions=} opt_options Layer options.
  * @api stable
  */
@@ -63431,6 +63427,7 @@ ol.renderer.vector.GEOMETRY_RENDERERS_ = {
 
 goog.provide('ol.ImageCanvas');
 
+goog.require('goog.asserts');
 goog.require('ol.ImageBase');
 goog.require('ol.ImageState');
 
@@ -63444,12 +63441,23 @@ goog.require('ol.ImageState');
  * @param {number} pixelRatio Pixel ratio.
  * @param {Array.<ol.Attribution>} attributions Attributions.
  * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {ol.ImageCanvasLoader=} opt_loader Optional loader function to
+ *     support asynchronous canvas drawing.
  */
 ol.ImageCanvas = function(extent, resolution, pixelRatio, attributions,
-    canvas) {
+    canvas, opt_loader) {
 
-  goog.base(this, extent, resolution, pixelRatio, ol.ImageState.LOADED,
-      attributions);
+  /**
+   * Optional canvas loader function.
+   * @type {?ol.ImageCanvasLoader}
+   * @private
+   */
+  this.loader_ = goog.isDef(opt_loader) ? opt_loader : null;
+
+  var state = goog.isDef(opt_loader) ?
+      ol.ImageState.IDLE : ol.ImageState.LOADED;
+
+  goog.base(this, extent, resolution, pixelRatio, state, attributions);
 
   /**
    * @private
@@ -63457,8 +63465,52 @@ ol.ImageCanvas = function(extent, resolution, pixelRatio, attributions,
    */
   this.canvas_ = canvas;
 
+  /**
+   * @private
+   * @type {Error}
+   */
+  this.error_ = null;
+
 };
 goog.inherits(ol.ImageCanvas, ol.ImageBase);
+
+
+/**
+ * Get any error associated with asynchronous rendering.
+ * @return {Error} Any error that occurred during rendering.
+ */
+ol.ImageCanvas.prototype.getError = function() {
+  return this.error_;
+};
+
+
+/**
+ * Handle async drawing complete.
+ * @param {Error} err Any error during drawing.
+ * @private
+ */
+ol.ImageCanvas.prototype.handleLoad_ = function(err) {
+  if (err) {
+    this.error_ = err;
+    this.state = ol.ImageState.ERROR;
+  } else {
+    this.state = ol.ImageState.LOADED;
+  }
+  this.changed();
+};
+
+
+/**
+ * Trigger drawing on canvas.
+ */
+ol.ImageCanvas.prototype.load = function() {
+  if (this.state == ol.ImageState.IDLE) {
+    goog.asserts.assert(!goog.isNull(this.loader_));
+    this.state = ol.ImageState.LOADING;
+    this.changed();
+    this.loader_(goog.bind(this.handleLoad_, this));
+  }
+};
 
 
 /**
@@ -63467,6 +63519,17 @@ goog.inherits(ol.ImageCanvas, ol.ImageBase);
 ol.ImageCanvas.prototype.getImage = function(opt_context) {
   return this.canvas_;
 };
+
+
+/**
+ * A function that is called to trigger asynchronous canvas drawing.  It is
+ * called with a "done" callback that should be called when drawing is done.
+ * If any error occurs during drawing, the "done" callback should be called with
+ * that error.
+ *
+ * @typedef {function(function(Error))}
+ */
+ol.ImageCanvasLoader;
 
 goog.provide('ol.source.Image');
 
@@ -70450,6 +70513,7 @@ ol.ext.rbush;
 (function() {
 var exports = {};
 var module = {exports: exports};
+var define;
 /**
  * @fileoverview
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
@@ -71682,16 +71746,14 @@ ol.source.Vector.prototype.bindFeaturesCollection_ = function(collection) {
  */
 ol.source.Vector.prototype.clear = function(opt_fast) {
   if (opt_fast) {
+    for (var featureId in this.featureChangeKeys_) {
+      var keys = this.featureChangeKeys_[featureId];
+      goog.array.forEach(keys, goog.events.unlistenByKey);
+    }
     if (goog.isNull(this.featuresCollection_)) {
-      for (var featureId in this.featureChangeKeys_) {
-        var keys = this.featureChangeKeys_[featureId];
-        goog.array.forEach(keys, goog.events.unlistenByKey);
-      }
       this.featureChangeKeys_ = {};
       this.idIndex_ = {};
       this.undefIdIndex_ = {};
-    } else {
-      this.featuresCollection_.clear();
     }
   } else {
     var rmFeatureInternal = this.removeFeatureInternal;
@@ -71699,6 +71761,9 @@ ol.source.Vector.prototype.clear = function(opt_fast) {
       this.featuresRtree_.forEach(rmFeatureInternal, this);
       goog.object.forEach(this.nullGeometryFeatures_, rmFeatureInternal, this);
     }
+  }
+  if (!goog.isNull(this.featuresCollection_)) {
+    this.featuresCollection_.clear();
   }
   goog.asserts.assert(goog.object.isEmpty(this.featureChangeKeys_),
       'featureChangeKeys is an empty object now');
@@ -77611,7 +77676,6 @@ ol.render.webgl.imagereplay.shader.Default.Locations = function(gl, program) {
 
 goog.provide('ol.webgl.Buffer');
 
-goog.require('goog.array');
 goog.require('goog.webgl');
 goog.require('ol');
 
@@ -78085,7 +78149,6 @@ ol.webgl.Context.createTexture = function(gl, image, opt_wrapS, opt_wrapT) {
 goog.provide('ol.render.webgl.ImageReplay');
 goog.provide('ol.render.webgl.ReplayGroup');
 
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.functions');
 goog.require('goog.object');
@@ -81360,7 +81423,6 @@ ol.renderer.webgl.VectorLayer.prototype.renderFeature =
 
 goog.provide('ol.renderer.webgl.Map');
 
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
@@ -84247,8 +84309,6 @@ ol.control.OverviewMap = function(opt_options) {
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
-  ol.control.Control.bindMouseOutFocusOutBlur(button);
-
   var ovmapDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'ol-overviewmap-map');
 
   /**
@@ -86515,1547 +86575,6 @@ goog.fx.DragEvent = function(type, dragobj, clientX, clientY, browserEvent,
 };
 goog.inherits(goog.fx.DragEvent, goog.events.Event);
 
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Abstract Base Class for Drag and Drop.
- *
- * Provides functionality for implementing drag and drop classes. Also provides
- * support classes and events.
- *
- * @author eae@google.com (Emil A Eklund)
- */
-
-goog.provide('goog.fx.AbstractDragDrop');
-goog.provide('goog.fx.AbstractDragDrop.EventType');
-goog.provide('goog.fx.DragDropEvent');
-goog.provide('goog.fx.DragDropItem');
-
-goog.require('goog.asserts');
-goog.require('goog.dom');
-goog.require('goog.dom.classlist');
-goog.require('goog.events');
-goog.require('goog.events.Event');
-goog.require('goog.events.EventHandler');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventType');
-goog.require('goog.fx.Dragger');
-goog.require('goog.math.Box');
-goog.require('goog.math.Coordinate');
-goog.require('goog.style');
-
-
-
-/**
- * Abstract class that provides reusable functionality for implementing drag
- * and drop functionality.
- *
- * This class also allows clients to define their own subtargeting function
- * so that drop areas can have finer granularity then a singe element. This is
- * accomplished by using a client provided function to map from element and
- * coordinates to a subregion id.
- *
- * This class can also be made aware of scrollable containers that contain
- * drop targets by calling addScrollableContainer. This will cause dnd to
- * take changing scroll positions into account while a drag is occuring.
- *
- * @extends {goog.events.EventTarget}
- * @constructor
- */
-goog.fx.AbstractDragDrop = function() {
-  goog.fx.AbstractDragDrop.base(this, 'constructor');
-
-  /**
-   * List of items that makes up the drag source or drop target.
-   * @type {Array<goog.fx.DragDropItem>}
-   * @protected
-   * @suppress {underscore|visibility}
-   */
-  this.items_ = [];
-
-  /**
-   * List of associated drop targets.
-   * @type {Array<goog.fx.AbstractDragDrop>}
-   * @private
-   */
-  this.targets_ = [];
-
-  /**
-   * Scrollable containers to account for during drag
-   * @type {Array<goog.fx.ScrollableContainer_>}
-   * @private
-   */
-  this.scrollableContainers_ = [];
-
-};
-goog.inherits(goog.fx.AbstractDragDrop, goog.events.EventTarget);
-
-
-/**
- * Minimum size (in pixels) for a dummy target. If the box for the target is
- * less than the specified size it's not created.
- * @type {number}
- * @private
- */
-goog.fx.AbstractDragDrop.DUMMY_TARGET_MIN_SIZE_ = 10;
-
-
-/**
- * Flag indicating if it's a drag source, set by addTarget.
- * @type {boolean}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.isSource_ = false;
-
-
-/**
- * Flag indicating if it's a drop target, set when added as target to another
- * DragDrop object.
- * @type {boolean}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.isTarget_ = false;
-
-
-/**
- * Subtargeting function accepting args:
- * (goog.fx.DragDropItem, goog.math.Box, number, number)
- * @type {Function}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.subtargetFunction_;
-
-
-/**
- * Last active subtarget.
- * @type {Object}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.activeSubtarget_;
-
-
-/**
- * Class name to add to source elements being dragged. Set by setDragClass.
- * @type {?string}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.dragClass_;
-
-
-/**
- * Class name to add to source elements. Set by setSourceClass.
- * @type {?string}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.sourceClass_;
-
-
-/**
- * Class name to add to target elements. Set by setTargetClass.
- * @type {?string}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.targetClass_;
-
-
-/**
- * The SCROLL event target used to make drag element follow scrolling.
- * @type {EventTarget}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.scrollTarget_;
-
-
-/**
- * Dummy target, {@see maybeCreateDummyTargetForPosition_}.
- * @type {goog.fx.ActiveDropTarget_}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.dummyTarget_;
-
-
-/**
- * Whether the object has been initialized.
- * @type {boolean}
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.initialized_ = false;
-
-
-/**
- * Constants for event names
- * @const
- */
-goog.fx.AbstractDragDrop.EventType = {
-  DRAGOVER: 'dragover',
-  DRAGOUT: 'dragout',
-  DRAG: 'drag',
-  DROP: 'drop',
-  DRAGSTART: 'dragstart',
-  DRAGEND: 'dragend'
-};
-
-
-/**
- * Constant for distance threshold, in pixels, an element has to be moved to
- * initiate a drag operation.
- * @type {number}
- */
-goog.fx.AbstractDragDrop.initDragDistanceThreshold = 5;
-
-
-/**
- * Set class to add to source elements being dragged.
- *
- * @param {string} className Class to be added.  Must be a single, valid
- *     classname.
- */
-goog.fx.AbstractDragDrop.prototype.setDragClass = function(className) {
-  this.dragClass_ = className;
-};
-
-
-/**
- * Set class to add to source elements.
- *
- * @param {string} className Class to be added.  Must be a single, valid
- *     classname.
- */
-goog.fx.AbstractDragDrop.prototype.setSourceClass = function(className) {
-  this.sourceClass_ = className;
-};
-
-
-/**
- * Set class to add to target elements.
- *
- * @param {string} className Class to be added.  Must be a single, valid
- *     classname.
- */
-goog.fx.AbstractDragDrop.prototype.setTargetClass = function(className) {
-  this.targetClass_ = className;
-};
-
-
-/**
- * Whether the control has been initialized.
- *
- * @return {boolean} True if it's been initialized.
- */
-goog.fx.AbstractDragDrop.prototype.isInitialized = function() {
-  return this.initialized_;
-};
-
-
-/**
- * Add item to drag object.
- *
- * @param {Element|string} element Dom Node, or string representation of node
- *     id, to be used as drag source/drop target.
- * @throws Error Thrown if called on instance of abstract class
- */
-goog.fx.AbstractDragDrop.prototype.addItem = goog.abstractMethod;
-
-
-/**
- * Associate drop target with drag element.
- *
- * @param {goog.fx.AbstractDragDrop} target Target to add.
- */
-goog.fx.AbstractDragDrop.prototype.addTarget = function(target) {
-  this.targets_.push(target);
-  target.isTarget_ = true;
-  this.isSource_ = true;
-};
-
-
-/**
- * Sets the SCROLL event target to make drag element follow scrolling.
- *
- * @param {EventTarget} scrollTarget The element that dispatches SCROLL events.
- */
-goog.fx.AbstractDragDrop.prototype.setScrollTarget = function(scrollTarget) {
-  this.scrollTarget_ = scrollTarget;
-};
-
-
-/**
- * Initialize drag and drop functionality for sources/targets already added.
- * Sources/targets added after init has been called will initialize themselves
- * one by one.
- */
-goog.fx.AbstractDragDrop.prototype.init = function() {
-  if (this.initialized_) {
-    return;
-  }
-  for (var item, i = 0; item = this.items_[i]; i++) {
-    this.initItem(item);
-  }
-
-  this.initialized_ = true;
-};
-
-
-/**
- * Initializes a single item.
- *
- * @param {goog.fx.DragDropItem} item Item to initialize.
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.initItem = function(item) {
-  if (this.isSource_) {
-    goog.events.listen(item.element, goog.events.EventType.MOUSEDOWN,
-                       item.mouseDown_, false, item);
-    if (this.sourceClass_) {
-      goog.dom.classlist.add(
-          goog.asserts.assert(item.element), this.sourceClass_);
-    }
-  }
-
-  if (this.isTarget_ && this.targetClass_) {
-    goog.dom.classlist.add(
-        goog.asserts.assert(item.element), this.targetClass_);
-  }
-};
-
-
-/**
- * Called when removing an item. Removes event listeners and classes.
- *
- * @param {goog.fx.DragDropItem} item Item to dispose.
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.disposeItem = function(item) {
-  if (this.isSource_) {
-    goog.events.unlisten(item.element, goog.events.EventType.MOUSEDOWN,
-                         item.mouseDown_, false, item);
-    if (this.sourceClass_) {
-      goog.dom.classlist.remove(
-          goog.asserts.assert(item.element), this.sourceClass_);
-    }
-  }
-  if (this.isTarget_ && this.targetClass_) {
-    goog.dom.classlist.remove(
-        goog.asserts.assert(item.element), this.targetClass_);
-  }
-  item.dispose();
-};
-
-
-/**
- * Removes all items.
- */
-goog.fx.AbstractDragDrop.prototype.removeItems = function() {
-  for (var item, i = 0; item = this.items_[i]; i++) {
-    this.disposeItem(item);
-  }
-  this.items_.length = 0;
-};
-
-
-/**
- * Starts a drag event for an item if the mouse button stays pressed and the
- * cursor moves a few pixels. Allows dragging of items without first having to
- * register them with addItem.
- *
- * @param {goog.events.BrowserEvent} event Mouse down event.
- * @param {goog.fx.DragDropItem} item Item that's being dragged.
- */
-goog.fx.AbstractDragDrop.prototype.maybeStartDrag = function(event, item) {
-  item.maybeStartDrag_(event, item.element);
-};
-
-
-/**
- * Event handler that's used to start drag.
- *
- * @param {goog.events.BrowserEvent} event Mouse move event.
- * @param {goog.fx.DragDropItem} item Item that's being dragged.
- */
-goog.fx.AbstractDragDrop.prototype.startDrag = function(event, item) {
-
-  // Prevent a new drag operation from being started if another one is already
-  // in progress (could happen if the mouse was released outside of the
-  // document).
-  if (this.dragItem_) {
-    return;
-  }
-
-  this.dragItem_ = item;
-
-  // Dispatch DRAGSTART event
-  var dragStartEvent = new goog.fx.DragDropEvent(
-      goog.fx.AbstractDragDrop.EventType.DRAGSTART, this, this.dragItem_);
-  if (this.dispatchEvent(dragStartEvent) == false) {
-    this.dragItem_ = null;
-    return;
-  }
-
-  // Get the source element and create a drag element for it.
-  var el = item.getCurrentDragElement();
-  this.dragEl_ = this.createDragElement(el);
-  var doc = goog.dom.getOwnerDocument(el);
-  doc.body.appendChild(this.dragEl_);
-
-  this.dragger_ = this.createDraggerFor(el, this.dragEl_, event);
-  this.dragger_.setScrollTarget(this.scrollTarget_);
-
-  goog.events.listen(this.dragger_, goog.fx.Dragger.EventType.DRAG,
-                     this.moveDrag_, false, this);
-
-  goog.events.listen(this.dragger_, goog.fx.Dragger.EventType.END,
-                     this.endDrag, false, this);
-
-  // IE may issue a 'selectstart' event when dragging over an iframe even when
-  // default mousemove behavior is suppressed. If the default selectstart
-  // behavior is not suppressed, elements dragged over will show as selected.
-  goog.events.listen(doc.body, goog.events.EventType.SELECTSTART,
-                     this.suppressSelect_);
-
-  this.recalculateDragTargets();
-  this.recalculateScrollableContainers();
-  this.activeTarget_ = null;
-  this.initScrollableContainerListeners_();
-  this.dragger_.startDrag(event);
-
-  event.preventDefault();
-};
-
-
-/**
- * Recalculates the geometry of this source's drag targets.  Call this
- * if the position or visibility of a drag target has changed during
- * a drag, or if targets are added or removed.
- *
- * TODO(user): this is an expensive operation;  more efficient APIs
- * may be necessary.
- */
-goog.fx.AbstractDragDrop.prototype.recalculateDragTargets = function() {
-  this.targetList_ = [];
-  for (var target, i = 0; target = this.targets_[i]; i++) {
-    for (var itm, j = 0; itm = target.items_[j]; j++) {
-      this.addDragTarget_(target, itm);
-    }
-  }
-  if (!this.targetBox_) {
-    this.targetBox_ = new goog.math.Box(0, 0, 0, 0);
-  }
-};
-
-
-/**
- * Recalculates the current scroll positions of scrollable containers and
- * allocates targets. Call this if the position of a container changed or if
- * targets are added or removed.
- */
-goog.fx.AbstractDragDrop.prototype.recalculateScrollableContainers =
-    function() {
-  var container, i, j, target;
-  for (i = 0; container = this.scrollableContainers_[i]; i++) {
-    container.containedTargets_ = [];
-    container.savedScrollLeft_ = container.element_.scrollLeft;
-    container.savedScrollTop_ = container.element_.scrollTop;
-    var pos = goog.style.getPageOffset(container.element_);
-    var size = goog.style.getSize(container.element_);
-    container.box_ = new goog.math.Box(pos.y, pos.x + size.width,
-                                       pos.y + size.height, pos.x);
-  }
-
-  for (i = 0; target = this.targetList_[i]; i++) {
-    for (j = 0; container = this.scrollableContainers_[j]; j++) {
-      if (goog.dom.contains(container.element_, target.element_)) {
-        container.containedTargets_.push(target);
-        target.scrollableContainer_ = container;
-      }
-    }
-  }
-};
-
-
-/**
- * Creates the Dragger for the drag element.
- * @param {Element} sourceEl Drag source element.
- * @param {Element} el the element created by createDragElement().
- * @param {goog.events.BrowserEvent} event Mouse down event for start of drag.
- * @return {!goog.fx.Dragger} The new Dragger.
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.createDraggerFor =
-    function(sourceEl, el, event) {
-  // Position the drag element.
-  var pos = this.getDragElementPosition(sourceEl, el, event);
-  el.style.position = 'absolute';
-  el.style.left = pos.x + 'px';
-  el.style.top = pos.y + 'px';
-  return new goog.fx.Dragger(el);
-};
-
-
-/**
- * Event handler that's used to stop drag. Fires a drop event if over a valid
- * target.
- *
- * @param {goog.fx.DragEvent} event Drag event.
- */
-goog.fx.AbstractDragDrop.prototype.endDrag = function(event) {
-  var activeTarget = event.dragCanceled ? null : this.activeTarget_;
-  if (activeTarget && activeTarget.target_) {
-    var clientX = event.clientX;
-    var clientY = event.clientY;
-    var scroll = this.getScrollPos();
-    var x = clientX + scroll.x;
-    var y = clientY + scroll.y;
-
-    var subtarget;
-    // If a subtargeting function is enabled get the current subtarget
-    if (this.subtargetFunction_) {
-      subtarget = this.subtargetFunction_(activeTarget.item_,
-          activeTarget.box_, x, y);
-    }
-
-    var dragEvent = new goog.fx.DragDropEvent(
-        goog.fx.AbstractDragDrop.EventType.DRAG, this, this.dragItem_,
-        activeTarget.target_, activeTarget.item_, activeTarget.element_,
-        clientX, clientY, x, y);
-    this.dispatchEvent(dragEvent);
-
-    var dropEvent = new goog.fx.DragDropEvent(
-        goog.fx.AbstractDragDrop.EventType.DROP, this, this.dragItem_,
-        activeTarget.target_, activeTarget.item_, activeTarget.element_,
-        clientX, clientY, x, y, subtarget);
-    activeTarget.target_.dispatchEvent(dropEvent);
-  }
-
-  var dragEndEvent = new goog.fx.DragDropEvent(
-      goog.fx.AbstractDragDrop.EventType.DRAGEND, this, this.dragItem_);
-  this.dispatchEvent(dragEndEvent);
-
-  goog.events.unlisten(this.dragger_, goog.fx.Dragger.EventType.DRAG,
-                       this.moveDrag_, false, this);
-  goog.events.unlisten(this.dragger_, goog.fx.Dragger.EventType.END,
-                       this.endDrag, false, this);
-  var doc = goog.dom.getOwnerDocument(this.dragItem_.getCurrentDragElement());
-  goog.events.unlisten(doc.body, goog.events.EventType.SELECTSTART,
-                       this.suppressSelect_);
-
-
-  this.afterEndDrag(this.activeTarget_ ? this.activeTarget_.item_ : null);
-};
-
-
-/**
- * Called after a drag operation has finished.
- *
- * @param {goog.fx.DragDropItem=} opt_dropTarget Target for successful drop.
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.afterEndDrag = function(opt_dropTarget) {
-  this.disposeDrag();
-};
-
-
-/**
- * Called once a drag operation has finished. Removes event listeners and
- * elements.
- *
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.disposeDrag = function() {
-  this.disposeScrollableContainerListeners_();
-  this.dragger_.dispose();
-
-  goog.dom.removeNode(this.dragEl_);
-  delete this.dragItem_;
-  delete this.dragEl_;
-  delete this.dragger_;
-  delete this.targetList_;
-  delete this.activeTarget_;
-};
-
-
-/**
- * Event handler for drag events. Determines the active drop target, if any, and
- * fires dragover and dragout events appropriately.
- *
- * @param {goog.fx.DragEvent} event Drag event.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.moveDrag_ = function(event) {
-  var position = this.getEventPosition(event);
-  var x = position.x;
-  var y = position.y;
-
-  // Check if we're still inside the bounds of the active target, if not fire
-  // a dragout event and proceed to find a new target.
-  var activeTarget = this.activeTarget_;
-
-  var subtarget;
-  if (activeTarget) {
-    // If a subtargeting function is enabled get the current subtarget
-    if (this.subtargetFunction_ && activeTarget.target_) {
-      subtarget = this.subtargetFunction_(activeTarget.item_,
-          activeTarget.box_, x, y);
-    }
-
-    if (activeTarget.box_.contains(position) &&
-        subtarget == this.activeSubtarget_) {
-      return;
-    }
-
-    if (activeTarget.target_) {
-      var sourceDragOutEvent = new goog.fx.DragDropEvent(
-          goog.fx.AbstractDragDrop.EventType.DRAGOUT, this, this.dragItem_,
-          activeTarget.target_, activeTarget.item_, activeTarget.element_);
-      this.dispatchEvent(sourceDragOutEvent);
-
-      // The event should be dispatched the by target DragDrop so that the
-      // target DragDrop can manage these events without having to know what
-      // sources this is a target for.
-      var targetDragOutEvent = new goog.fx.DragDropEvent(
-          goog.fx.AbstractDragDrop.EventType.DRAGOUT,
-          this,
-          this.dragItem_,
-          activeTarget.target_,
-          activeTarget.item_,
-          activeTarget.element_,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          this.activeSubtarget_);
-      activeTarget.target_.dispatchEvent(targetDragOutEvent);
-    }
-    this.activeSubtarget_ = subtarget;
-    this.activeTarget_ = null;
-  }
-
-  // Check if inside target box
-  if (this.targetBox_.contains(position)) {
-    // Search for target and fire a dragover event if found
-    activeTarget = this.activeTarget_ = this.getTargetFromPosition_(position);
-    if (activeTarget && activeTarget.target_) {
-      // If a subtargeting function is enabled get the current subtarget
-      if (this.subtargetFunction_) {
-        subtarget = this.subtargetFunction_(activeTarget.item_,
-            activeTarget.box_, x, y);
-      }
-      var sourceDragOverEvent = new goog.fx.DragDropEvent(
-          goog.fx.AbstractDragDrop.EventType.DRAGOVER, this, this.dragItem_,
-          activeTarget.target_, activeTarget.item_, activeTarget.element_);
-      sourceDragOverEvent.subtarget = subtarget;
-      this.dispatchEvent(sourceDragOverEvent);
-
-      // The event should be dispatched by the target DragDrop so that the
-      // target DragDrop can manage these events without having to know what
-      // sources this is a target for.
-      var targetDragOverEvent = new goog.fx.DragDropEvent(
-          goog.fx.AbstractDragDrop.EventType.DRAGOVER, this, this.dragItem_,
-          activeTarget.target_, activeTarget.item_, activeTarget.element_,
-          event.clientX, event.clientY, undefined, undefined, subtarget);
-      activeTarget.target_.dispatchEvent(targetDragOverEvent);
-
-    } else if (!activeTarget) {
-      // If no target was found create a dummy one so we won't have to iterate
-      // over all possible targets for every move event.
-      this.activeTarget_ = this.maybeCreateDummyTargetForPosition_(x, y);
-    }
-  }
-};
-
-
-/**
- * Event handler for suppressing selectstart events. Selecting should be
- * disabled while dragging.
- *
- * @param {goog.events.Event} event The selectstart event to suppress.
- * @return {boolean} Whether to perform default behavior.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.suppressSelect_ = function(event) {
-  return false;
-};
-
-
-/**
- * Sets up listeners for the scrollable containers that keep track of their
- * scroll positions.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.initScrollableContainerListeners_ =
-    function() {
-  var container, i;
-  for (i = 0; container = this.scrollableContainers_[i]; i++) {
-    goog.events.listen(container.element_, goog.events.EventType.SCROLL,
-        this.containerScrollHandler_, false, this);
-  }
-};
-
-
-/**
- * Cleans up the scrollable container listeners.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.disposeScrollableContainerListeners_ =
-    function() {
-  for (var i = 0, container; container = this.scrollableContainers_[i]; i++) {
-    goog.events.unlisten(container.element_, 'scroll',
-        this.containerScrollHandler_, false, this);
-    container.containedTargets_ = [];
-  }
-};
-
-
-/**
- * Makes drag and drop aware of a target container that could scroll mid drag.
- * @param {Element} element The scroll container.
- */
-goog.fx.AbstractDragDrop.prototype.addScrollableContainer = function(element) {
-  this.scrollableContainers_.push(new goog.fx.ScrollableContainer_(element));
-};
-
-
-/**
- * Removes all scrollable containers.
- */
-goog.fx.AbstractDragDrop.prototype.removeAllScrollableContainers = function() {
-  this.disposeScrollableContainerListeners_();
-  this.scrollableContainers_ = [];
-};
-
-
-/**
- * Event handler for containers scrolling.
- * @param {goog.events.Event} e The event.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.containerScrollHandler_ = function(e) {
-  for (var i = 0, container; container = this.scrollableContainers_[i]; i++) {
-    if (e.target == container.element_) {
-      var deltaTop = container.savedScrollTop_ - container.element_.scrollTop;
-      var deltaLeft =
-          container.savedScrollLeft_ - container.element_.scrollLeft;
-      container.savedScrollTop_ = container.element_.scrollTop;
-      container.savedScrollLeft_ = container.element_.scrollLeft;
-
-      // When the container scrolls, it's possible that one of the targets will
-      // move to the region contained by the dummy target. Since we don't know
-      // which sides (if any) of the dummy target are defined by targets
-      // contained by this container, we are conservative and just shrink it.
-      if (this.dummyTarget_ && this.activeTarget_ == this.dummyTarget_) {
-        if (deltaTop > 0) {
-          this.dummyTarget_.box_.top += deltaTop;
-        } else {
-          this.dummyTarget_.box_.bottom += deltaTop;
-        }
-        if (deltaLeft > 0) {
-          this.dummyTarget_.box_.left += deltaLeft;
-        } else {
-          this.dummyTarget_.box_.right += deltaLeft;
-        }
-      }
-      for (var j = 0, target; target = container.containedTargets_[j]; j++) {
-        var box = target.box_;
-        box.top += deltaTop;
-        box.left += deltaLeft;
-        box.bottom += deltaTop;
-        box.right += deltaLeft;
-
-        this.calculateTargetBox_(box);
-      }
-    }
-  }
-  this.dragger_.onScroll_(e);
-};
-
-
-/**
- * Set a function that provides subtargets. A subtargeting function
- * returns an arbitrary identifier for each subtarget of an element.
- * DnD code will generate additional drag over / out events when
- * switching from subtarget to subtarget. This is useful for instance
- * if you are interested if you are on the top half or the bottom half
- * of the element.
- * The provided function will be given the DragDropItem, box, x, y
- * box is the current window coordinates occupied by element
- * x, y is the mouse position in window coordinates
- *
- * @param {Function} f The new subtarget function.
- */
-goog.fx.AbstractDragDrop.prototype.setSubtargetFunction = function(f) {
-  this.subtargetFunction_ = f;
-};
-
-
-/**
- * Creates an element for the item being dragged.
- *
- * @param {Element} sourceEl Drag source element.
- * @return {Element} The new drag element.
- */
-goog.fx.AbstractDragDrop.prototype.createDragElement = function(sourceEl) {
-  var dragEl = this.createDragElementInternal(sourceEl);
-  goog.asserts.assert(dragEl);
-  if (this.dragClass_) {
-    goog.dom.classlist.add(dragEl, this.dragClass_);
-  }
-
-  return dragEl;
-};
-
-
-/**
- * Returns the position for the drag element.
- *
- * @param {Element} el Drag source element.
- * @param {Element} dragEl The dragged element created by createDragElement().
- * @param {goog.events.BrowserEvent} event Mouse down event for start of drag.
- * @return {!goog.math.Coordinate} The position for the drag element.
- */
-goog.fx.AbstractDragDrop.prototype.getDragElementPosition =
-    function(el, dragEl, event) {
-  var pos = goog.style.getPageOffset(el);
-
-  // Subtract margin from drag element position twice, once to adjust the
-  // position given by the original node and once for the drag node.
-  var marginBox = goog.style.getMarginBox(el);
-  pos.x -= (marginBox.left || 0) * 2;
-  pos.y -= (marginBox.top || 0) * 2;
-
-  return pos;
-};
-
-
-/**
- * Returns the dragger object.
- *
- * @return {goog.fx.Dragger} The dragger object used by this drag and drop
- *     instance.
- */
-goog.fx.AbstractDragDrop.prototype.getDragger = function() {
-  return this.dragger_;
-};
-
-
-/**
- * Creates copy of node being dragged.
- *
- * @param {Element} sourceEl Element to copy.
- * @return {!Element} The clone of {@code sourceEl}.
- * @deprecated Use goog.fx.Dragger.cloneNode().
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.cloneNode_ = function(sourceEl) {
-  return goog.fx.Dragger.cloneNode(sourceEl);
-};
-
-
-/**
- * Generates an element to follow the cursor during dragging, given a drag
- * source element.  The default behavior is simply to clone the source element,
- * but this may be overridden in subclasses.  This method is called by
- * {@code createDragElement()} before the drag class is added.
- *
- * @param {Element} sourceEl Drag source element.
- * @return {!Element} The new drag element.
- * @protected
- * @suppress {deprecated}
- */
-goog.fx.AbstractDragDrop.prototype.createDragElementInternal =
-    function(sourceEl) {
-  return this.cloneNode_(sourceEl);
-};
-
-
-/**
- * Add possible drop target for current drag operation.
- *
- * @param {goog.fx.AbstractDragDrop} target Drag handler.
- * @param {goog.fx.DragDropItem} item Item that's being dragged.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.addDragTarget_ = function(target, item) {
-
-  // Get all the draggable elements and add each one.
-  var draggableElements = item.getDraggableElements();
-  var targetList = this.targetList_;
-  for (var i = 0; i < draggableElements.length; i++) {
-    var draggableElement = draggableElements[i];
-
-    // Determine target position and dimension
-    var box = this.getElementBox(item, draggableElement);
-
-    targetList.push(
-        new goog.fx.ActiveDropTarget_(box, target, item, draggableElement));
-
-    this.calculateTargetBox_(box);
-  }
-};
-
-
-/**
- * Calculates the position and dimension of a draggable element.
- *
- * @param {goog.fx.DragDropItem} item Item that's being dragged.
- * @param {Element} element The element to calculate the box.
- *
- * @return {!goog.math.Box} Box describing the position and dimension
- *     of element.
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.getElementBox = function(item, element) {
-  var pos = goog.style.getPageOffset(element);
-  var size = goog.style.getSize(element);
-  return new goog.math.Box(pos.y, pos.x + size.width, pos.y + size.height,
-      pos.x);
-};
-
-
-/**
- * Calculate the outer bounds (the region all targets are inside).
- *
- * @param {goog.math.Box} box Box describing the position and dimension
- *     of a drag target.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.calculateTargetBox_ = function(box) {
-  if (this.targetList_.length == 1) {
-    this.targetBox_ = new goog.math.Box(box.top, box.right,
-                                        box.bottom, box.left);
-  } else {
-    var tb = this.targetBox_;
-    tb.left = Math.min(box.left, tb.left);
-    tb.right = Math.max(box.right, tb.right);
-    tb.top = Math.min(box.top, tb.top);
-    tb.bottom = Math.max(box.bottom, tb.bottom);
-  }
-};
-
-
-/**
- * Creates a dummy target for the given cursor position. The assumption is to
- * create as big dummy target box as possible, the only constraints are:
- * - The dummy target box cannot overlap any of real target boxes.
- * - The dummy target has to contain a point with current mouse coordinates.
- *
- * NOTE: For performance reasons the box construction algorithm is kept simple
- * and it is not optimal (see example below). Currently it is O(n) in regard to
- * the number of real drop target boxes, but its result depends on the order
- * of those boxes being processed (the order in which they're added to the
- * targetList_ collection).
- *
- * The algorithm.
- * a) Assumptions
- * - Mouse pointer is in the bounding box of real target boxes.
- * - None of the boxes have negative coordinate values.
- * - Mouse pointer is not contained by any of "real target" boxes.
- * - For targets inside a scrollable container, the box used is the
- *   intersection of the scrollable container's box and the target's box.
- *   This is because the part of the target that extends outside the scrollable
- *   container should not be used in the clipping calculations.
- *
- * b) Outline
- * - Initialize the fake target to the bounding box of real targets.
- * - For each real target box - clip the fake target box so it does not contain
- *   that target box, but does contain the mouse pointer.
- *   -- Project the real target box, mouse pointer and fake target box onto
- *      both axes and calculate the clipping coordinates.
- *   -- Only one coordinate is used to clip the fake target box to keep the
- *      fake target as big as possible.
- *   -- If the projection of the real target box contains the mouse pointer,
- *      clipping for a given axis is not possible.
- *   -- If both clippings are possible, the clipping more distant from the
- *      mouse pointer is selected to keep bigger fake target area.
- * - Save the created fake target only if it has a big enough area.
- *
- *
- * c) Example
- * <pre>
- *        Input:           Algorithm created box:        Maximum box:
- * +---------------------+ +---------------------+ +---------------------+
- * | B1      |        B2 | | B1               B2 | | B1               B2 |
- * |         |           | |   +-------------+   | |+-------------------+|
- * |---------x-----------| |   |             |   | ||                   ||
- * |         |           | |   |             |   | ||                   ||
- * |         |           | |   |             |   | ||                   ||
- * |         |           | |   |             |   | ||                   ||
- * |         |           | |   |             |   | ||                   ||
- * |         |           | |   +-------------+   | |+-------------------+|
- * | B4      |        B3 | | B4               B3 | | B4               B3 |
- * +---------------------+ +---------------------+ +---------------------+
- * </pre>
- *
- * @param {number} x Cursor position on the x-axis.
- * @param {number} y Cursor position on the y-axis.
- * @return {goog.fx.ActiveDropTarget_} Dummy drop target.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.maybeCreateDummyTargetForPosition_ =
-    function(x, y) {
-  if (!this.dummyTarget_) {
-    this.dummyTarget_ = new goog.fx.ActiveDropTarget_(this.targetBox_.clone());
-  }
-  var fakeTargetBox = this.dummyTarget_.box_;
-
-  // Initialize the fake target box to the bounding box of DnD targets.
-  fakeTargetBox.top = this.targetBox_.top;
-  fakeTargetBox.right = this.targetBox_.right;
-  fakeTargetBox.bottom = this.targetBox_.bottom;
-  fakeTargetBox.left = this.targetBox_.left;
-
-  // Clip the fake target based on mouse position and DnD target boxes.
-  for (var i = 0, target; target = this.targetList_[i]; i++) {
-    var box = target.box_;
-
-    if (target.scrollableContainer_) {
-      // If the target has a scrollable container, use the intersection of that
-      // container's box and the target's box.
-      var scrollBox = target.scrollableContainer_.box_;
-
-      box = new goog.math.Box(
-          Math.max(box.top, scrollBox.top),
-          Math.min(box.right, scrollBox.right),
-          Math.min(box.bottom, scrollBox.bottom),
-          Math.max(box.left, scrollBox.left));
-    }
-
-    // Calculate clipping coordinates for horizontal and vertical axis.
-    // The clipping coordinate is calculated by projecting fake target box,
-    // the mouse pointer and DnD target box onto an axis and checking how
-    // box projections overlap and if the projected DnD target box contains
-    // mouse pointer. The clipping coordinate cannot be computed and is set to
-    // a negative value if the projected DnD target contains the mouse pointer.
-
-    var horizontalClip = null; // Assume mouse is above or below the DnD box.
-    if (x >= box.right) { // Mouse is to the right of the DnD box.
-      // Clip the fake box only if the DnD box overlaps it.
-      horizontalClip = box.right > fakeTargetBox.left ?
-          box.right : fakeTargetBox.left;
-    } else if (x < box.left) { // Mouse is to the left of the DnD box.
-      // Clip the fake box only if the DnD box overlaps it.
-      horizontalClip = box.left < fakeTargetBox.right ?
-          box.left : fakeTargetBox.right;
-    }
-    var verticalClip = null;
-    if (y >= box.bottom) {
-      verticalClip = box.bottom > fakeTargetBox.top ?
-          box.bottom : fakeTargetBox.top;
-    } else if (y < box.top) {
-      verticalClip = box.top < fakeTargetBox.bottom ?
-          box.top : fakeTargetBox.bottom;
-    }
-
-    // If both clippings are possible, choose one that gives us larger distance
-    // to mouse pointer (mark the shorter clipping as impossible, by setting it
-    // to null).
-    if (!goog.isNull(horizontalClip) && !goog.isNull(verticalClip)) {
-      if (Math.abs(horizontalClip - x) > Math.abs(verticalClip - y)) {
-        verticalClip = null;
-      } else {
-        horizontalClip = null;
-      }
-    }
-
-    // Clip none or one of fake target box sides (at most one clipping
-    // coordinate can be active).
-    if (!goog.isNull(horizontalClip)) {
-      if (horizontalClip <= x) {
-        fakeTargetBox.left = horizontalClip;
-      } else {
-        fakeTargetBox.right = horizontalClip;
-      }
-    } else if (!goog.isNull(verticalClip)) {
-      if (verticalClip <= y) {
-        fakeTargetBox.top = verticalClip;
-      } else {
-        fakeTargetBox.bottom = verticalClip;
-      }
-    }
-  }
-
-  // Only return the new fake target if it is big enough.
-  return (fakeTargetBox.right - fakeTargetBox.left) *
-         (fakeTargetBox.bottom - fakeTargetBox.top) >=
-         goog.fx.AbstractDragDrop.DUMMY_TARGET_MIN_SIZE_ ?
-      this.dummyTarget_ : null;
-};
-
-
-/**
- * Returns the target for a given cursor position.
- *
- * @param {goog.math.Coordinate} position Cursor position.
- * @return {Object} Target for position or null if no target was defined
- *     for the given position.
- * @private
- */
-goog.fx.AbstractDragDrop.prototype.getTargetFromPosition_ = function(position) {
-  for (var target, i = 0; target = this.targetList_[i]; i++) {
-    if (target.box_.contains(position)) {
-      if (target.scrollableContainer_) {
-        // If we have a scrollable container we will need to make sure
-        // we account for clipping of the scroll area
-        var box = target.scrollableContainer_.box_;
-        if (box.contains(position)) {
-          return target;
-        }
-      } else {
-        return target;
-      }
-    }
-  }
-
-  return null;
-};
-
-
-/**
- * Checks whatever a given point is inside a given box.
- *
- * @param {number} x Cursor position on the x-axis.
- * @param {number} y Cursor position on the y-axis.
- * @param {goog.math.Box} box Box to check position against.
- * @return {boolean} Whether the given point is inside {@code box}.
- * @protected
- * @deprecated Use goog.math.Box.contains.
- */
-goog.fx.AbstractDragDrop.prototype.isInside = function(x, y, box) {
-  return x >= box.left &&
-         x < box.right &&
-         y >= box.top &&
-         y < box.bottom;
-};
-
-
-/**
- * Gets the scroll distance as a coordinate object, using
- * the window of the current drag element's dom.
- * @return {!goog.math.Coordinate} Object with scroll offsets 'x' and 'y'.
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.getScrollPos = function() {
-  return goog.dom.getDomHelper(this.dragEl_).getDocumentScroll();
-};
-
-
-/**
- * Get the position of a drag event.
- * @param {goog.fx.DragEvent} event Drag event.
- * @return {!goog.math.Coordinate} Position of the event.
- * @protected
- */
-goog.fx.AbstractDragDrop.prototype.getEventPosition = function(event) {
-  var scroll = this.getScrollPos();
-  return new goog.math.Coordinate(event.clientX + scroll.x,
-                                  event.clientY + scroll.y);
-};
-
-
-/** @override */
-goog.fx.AbstractDragDrop.prototype.disposeInternal = function() {
-  goog.fx.AbstractDragDrop.base(this, 'disposeInternal');
-  this.removeItems();
-};
-
-
-
-/**
- * Object representing a drag and drop event.
- *
- * @param {string} type Event type.
- * @param {goog.fx.AbstractDragDrop} source Source drag drop object.
- * @param {goog.fx.DragDropItem} sourceItem Source item.
- * @param {goog.fx.AbstractDragDrop=} opt_target Target drag drop object.
- * @param {goog.fx.DragDropItem=} opt_targetItem Target item.
- * @param {Element=} opt_targetElement Target element.
- * @param {number=} opt_clientX X-Position relative to the screen.
- * @param {number=} opt_clientY Y-Position relative to the screen.
- * @param {number=} opt_x X-Position relative to the viewport.
- * @param {number=} opt_y Y-Position relative to the viewport.
- * @param {Object=} opt_subtarget The currently active subtarget.
- * @extends {goog.events.Event}
- * @constructor
- */
-goog.fx.DragDropEvent = function(type, source, sourceItem,
-                                 opt_target, opt_targetItem, opt_targetElement,
-                                 opt_clientX, opt_clientY, opt_x, opt_y,
-                                 opt_subtarget) {
-  // TODO(eae): Get rid of all the optional parameters and have the caller set
-  // the fields directly instead.
-  goog.fx.DragDropEvent.base(this, 'constructor', type);
-
-  /**
-   * Reference to the source goog.fx.AbstractDragDrop object.
-   * @type {goog.fx.AbstractDragDrop}
-   */
-  this.dragSource = source;
-
-  /**
-   * Reference to the source goog.fx.DragDropItem object.
-   * @type {goog.fx.DragDropItem}
-   */
-  this.dragSourceItem = sourceItem;
-
-  /**
-   * Reference to the target goog.fx.AbstractDragDrop object.
-   * @type {goog.fx.AbstractDragDrop|undefined}
-   */
-  this.dropTarget = opt_target;
-
-  /**
-   * Reference to the target goog.fx.DragDropItem object.
-   * @type {goog.fx.DragDropItem|undefined}
-   */
-  this.dropTargetItem = opt_targetItem;
-
-  /**
-   * The actual element of the drop target that is the target for this event.
-   * @type {Element|undefined}
-   */
-  this.dropTargetElement = opt_targetElement;
-
-  /**
-   * X-Position relative to the screen.
-   * @type {number|undefined}
-   */
-  this.clientX = opt_clientX;
-
-  /**
-   * Y-Position relative to the screen.
-   * @type {number|undefined}
-   */
-  this.clientY = opt_clientY;
-
-  /**
-   * X-Position relative to the viewport.
-   * @type {number|undefined}
-   */
-  this.viewportX = opt_x;
-
-  /**
-   * Y-Position relative to the viewport.
-   * @type {number|undefined}
-   */
-  this.viewportY = opt_y;
-
-  /**
-   * The subtarget that is currently active if a subtargeting function
-   * is supplied.
-   * @type {Object|undefined}
-   */
-  this.subtarget = opt_subtarget;
-};
-goog.inherits(goog.fx.DragDropEvent, goog.events.Event);
-
-
-
-/**
- * Class representing a source or target element for drag and drop operations.
- *
- * @param {Element|string} element Dom Node, or string representation of node
- *     id, to be used as drag source/drop target.
- * @param {Object=} opt_data Data associated with the source/target.
- * @throws Error If no element argument is provided or if the type is invalid
- * @extends {goog.events.EventTarget}
- * @constructor
- */
-goog.fx.DragDropItem = function(element, opt_data) {
-  goog.fx.DragDropItem.base(this, 'constructor');
-
-  /**
-   * Reference to drag source/target element
-   * @type {Element}
-   */
-  this.element = goog.dom.getElement(element);
-
-  /**
-   * Data associated with element.
-   * @type {Object|undefined}
-   */
-  this.data = opt_data;
-
-  /**
-   * Drag object the item belongs to.
-   * @type {goog.fx.AbstractDragDrop?}
-   * @private
-   */
-  this.parent_ = null;
-
-  /**
-   * Event handler for listeners on events that can initiate a drag.
-   * @type {!goog.events.EventHandler<!goog.fx.DragDropItem>}
-   * @private
-   */
-  this.eventHandler_ = new goog.events.EventHandler(this);
-  this.registerDisposable(this.eventHandler_);
-
-  if (!this.element) {
-    throw Error('Invalid argument');
-  }
-};
-goog.inherits(goog.fx.DragDropItem, goog.events.EventTarget);
-
-
-/**
- * The current element being dragged. This is needed because a DragDropItem can
- * have multiple elements that can be dragged.
- * @type {Element}
- * @private
- */
-goog.fx.DragDropItem.prototype.currentDragElement_ = null;
-
-
-/**
- * Get the data associated with the source/target.
- * @return {Object|null|undefined} Data associated with the source/target.
- */
-goog.fx.DragDropItem.prototype.getData = function() {
-  return this.data;
-};
-
-
-/**
- * Gets the element that is actually draggable given that the given target was
- * attempted to be dragged. This should be overriden when the element that was
- * given actually contains many items that can be dragged. From the target, you
- * can determine what element should actually be dragged.
- *
- * @param {Element} target The target that was attempted to be dragged.
- * @return {Element} The element that is draggable given the target. If
- *     none are draggable, this will return null.
- */
-goog.fx.DragDropItem.prototype.getDraggableElement = function(target) {
-  return target;
-};
-
-
-/**
- * Gets the element that is currently being dragged.
- *
- * @return {Element} The element that is currently being dragged.
- */
-goog.fx.DragDropItem.prototype.getCurrentDragElement = function() {
-  return this.currentDragElement_;
-};
-
-
-/**
- * Gets all the elements of this item that are potentially draggable/
- *
- * @return {!Array<Element>} The draggable elements.
- */
-goog.fx.DragDropItem.prototype.getDraggableElements = function() {
-  return [this.element];
-};
-
-
-/**
- * Event handler for mouse down.
- *
- * @param {goog.events.BrowserEvent} event Mouse down event.
- * @private
- */
-goog.fx.DragDropItem.prototype.mouseDown_ = function(event) {
-  if (!event.isMouseActionButton()) {
-    return;
-  }
-
-  // Get the draggable element for the target.
-  var element = this.getDraggableElement(/** @type {Element} */ (event.target));
-  if (element) {
-    this.maybeStartDrag_(event, element);
-  }
-};
-
-
-/**
- * Sets the dragdrop to which this item belongs.
- * @param {goog.fx.AbstractDragDrop} parent The parent dragdrop.
- */
-goog.fx.DragDropItem.prototype.setParent = function(parent) {
-  this.parent_ = parent;
-};
-
-
-/**
- * Adds mouse move, mouse out and mouse up handlers.
- *
- * @param {goog.events.BrowserEvent} event Mouse down event.
- * @param {Element} element Element.
- * @private
- */
-goog.fx.DragDropItem.prototype.maybeStartDrag_ = function(event, element) {
-  var eventType = goog.events.EventType;
-  this.eventHandler_.
-      listen(element, eventType.MOUSEMOVE, this.mouseMove_, false).
-      listen(element, eventType.MOUSEOUT, this.mouseMove_, false);
-
-  // Capture the MOUSEUP on the document to ensure that we cancel the start
-  // drag handlers even if the mouse up occurs on some other element. This can
-  // happen for instance when the mouse down changes the geometry of the element
-  // clicked on (e.g. through changes in activation styling) such that the mouse
-  // up occurs outside the original element.
-  var doc = goog.dom.getOwnerDocument(element);
-  this.eventHandler_.listen(doc, eventType.MOUSEUP, this.mouseUp_, true);
-
-  this.currentDragElement_ = element;
-
-  this.startPosition_ = new goog.math.Coordinate(
-      event.clientX, event.clientY);
-
-  event.preventDefault();
-};
-
-
-/**
- * Event handler for mouse move. Starts drag operation if moved more than the
- * threshold value.
- *
- * @param {goog.events.BrowserEvent} event Mouse move or mouse out event.
- * @private
- */
-goog.fx.DragDropItem.prototype.mouseMove_ = function(event) {
-  var distance = Math.abs(event.clientX - this.startPosition_.x) +
-      Math.abs(event.clientY - this.startPosition_.y);
-  // Fire dragStart event if the drag distance exceeds the threshold or if the
-  // mouse leave the dragged element.
-  // TODO(user): Consider using the goog.fx.Dragger to track the distance
-  // even after the mouse leaves the dragged element.
-  var currentDragElement = this.currentDragElement_;
-  var distanceAboveThreshold =
-      distance > goog.fx.AbstractDragDrop.initDragDistanceThreshold;
-  var mouseOutOnDragElement = event.type == goog.events.EventType.MOUSEOUT &&
-      event.target == currentDragElement;
-  if (distanceAboveThreshold || mouseOutOnDragElement) {
-    this.eventHandler_.removeAll();
-    this.parent_.startDrag(event, this);
-  }
-};
-
-
-/**
- * Event handler for mouse up. Removes mouse move, mouse out and mouse up event
- * handlers.
- *
- * @param {goog.events.BrowserEvent} event Mouse up event.
- * @private
- */
-goog.fx.DragDropItem.prototype.mouseUp_ = function(event) {
-  this.eventHandler_.removeAll();
-  delete this.startPosition_;
-  this.currentDragElement_ = null;
-};
-
-
-
-/**
- * Class representing an active drop target
- *
- * @param {goog.math.Box} box Box describing the position and dimension of the
- *     target item.
- * @param {goog.fx.AbstractDragDrop=} opt_target Target that contains the item
-       associated with position.
- * @param {goog.fx.DragDropItem=} opt_item Item associated with position.
- * @param {Element=} opt_element Element of item associated with position.
- * @constructor
- * @private
- */
-goog.fx.ActiveDropTarget_ = function(box, opt_target, opt_item, opt_element) {
-
-  /**
-   * Box describing the position and dimension of the target item
-   * @type {goog.math.Box}
-   * @private
-   */
-  this.box_ = box;
-
-  /**
-   * Target that contains the item associated with position
-   * @type {goog.fx.AbstractDragDrop|undefined}
-   * @private
-   */
-  this.target_ = opt_target;
-
-  /**
-   * Item associated with position
-   * @type {goog.fx.DragDropItem|undefined}
-   * @private
-   */
-  this.item_ = opt_item;
-
-  /**
-   * The draggable element of the item associated with position.
-   * @type {Element|undefined}
-   * @private
-   */
-  this.element_ = opt_element;
-};
-
-
-/**
- * If this target is in a scrollable container this is it.
- * @type {goog.fx.ScrollableContainer_}
- * @private
- */
-goog.fx.ActiveDropTarget_.prototype.scrollableContainer_ = null;
-
-
-
-/**
- * Class for representing a scrollable container
- * @param {Element} element the scrollable element.
- * @constructor
- * @private
- */
-goog.fx.ScrollableContainer_ = function(element) {
-
-  /**
-   * The targets that lie within this container.
-   * @type {Array<goog.fx.ActiveDropTarget_>}
-   * @private
-   */
-  this.containedTargets_ = [];
-
-  /**
-   * The element that is this container
-   * @type {Element}
-   * @private
-   */
-  this.element_ = element;
-
-  /**
-   * The saved scroll left location for calculating deltas.
-   * @type {number}
-   * @private
-   */
-  this.savedScrollLeft_ = 0;
-
-  /**
-   * The saved scroll top location for calculating deltas.
-   * @type {number}
-   * @private
-   */
-  this.savedScrollTop_ = 0;
-
-  /**
-   * The space occupied by the container.
-   * @type {goog.math.Box}
-   * @private
-   */
-  this.box_ = null;
-};
-
 // FIXME should possibly show tooltip when dragging?
 
 goog.provide('ol.control.ZoomSlider');
@@ -88066,7 +86585,7 @@ goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.events.EventType');
-goog.require('goog.fx.DragDropEvent');
+goog.require('goog.fx.DragEvent');
 goog.require('goog.fx.Dragger');
 goog.require('goog.fx.Dragger.EventType');
 goog.require('goog.math');
@@ -88280,7 +86799,7 @@ ol.control.ZoomSlider.prototype.handleContainerClick_ = function(browserEvent) {
 
 /**
  * Handle dragger start events.
- * @param {goog.fx.DragDropEvent} event The dragdropevent.
+ * @param {goog.fx.DragEvent} event The drag event.
  * @private
  */
 ol.control.ZoomSlider.prototype.handleDraggerStart_ = function(event) {
@@ -88291,7 +86810,7 @@ ol.control.ZoomSlider.prototype.handleDraggerStart_ = function(event) {
 /**
  * Handle dragger drag events.
  *
- * @param {goog.fx.DragDropEvent} event The dragdropevent.
+ * @param {goog.fx.DragEvent} event The drag event.
  * @private
  */
 ol.control.ZoomSlider.prototype.handleDraggerDrag_ = function(event) {
@@ -88303,7 +86822,7 @@ ol.control.ZoomSlider.prototype.handleDraggerDrag_ = function(event) {
 
 /**
  * Handle dragger end events.
- * @param {goog.fx.DragDropEvent} event The dragdropevent.
+ * @param {goog.fx.DragEvent} event The drag event.
  * @private
  */
 ol.control.ZoomSlider.prototype.handleDraggerEnd_ = function(event) {
@@ -88438,8 +86957,6 @@ ol.control.ZoomToExtent = function(opt_options) {
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
-  ol.control.Control.bindMouseOutFocusOutBlur(button);
-
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
   var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, button);
@@ -88544,9 +87061,11 @@ ol.DeviceOrientationProperty = {
  *
  * @see http://www.w3.org/TR/orientation-event/
  *
+ * To get notified of device orientation changes, register a listener for the
+ * generic `change` event on your `ol.DeviceOrientation` instance.
+ *
  * @constructor
  * @extends {ol.Object}
- * @fires change Triggered when the device orientation changes.
  * @param {olx.DeviceOrientationOptions=} opt_options Options.
  * @api
  */
@@ -91657,6 +90176,235 @@ ol.format.XSD.writeStringTextNode = function(node, string) {
   node.appendChild(ol.xml.DOCUMENT.createTextNode(string));
 };
 
+goog.provide('ol.format.GML2');
+
+goog.require('goog.asserts');
+goog.require('goog.dom.NodeType');
+goog.require('ol.extent');
+goog.require('ol.format.GMLBase');
+goog.require('ol.format.XSD');
+goog.require('ol.proj');
+goog.require('ol.xml');
+
+
+
+/**
+ * @classdesc
+ * Feature format for reading and writing data in the GML format,
+ * version 2.1.2.
+ *
+ * @constructor
+ * @param {olx.format.GMLOptions=} opt_options Optional configuration object.
+ * @extends {ol.format.GMLBase}
+ * @api
+ */
+ol.format.GML2 = function(opt_options) {
+  var options = /** @type {olx.format.GMLOptions} */
+      (goog.isDef(opt_options) ? opt_options : {});
+
+  goog.base(this, options);
+
+  this.FEATURE_COLLECTION_PARSERS[ol.format.GMLBase.GMLNS][
+      'featureMember'] =
+      ol.xml.makeArrayPusher(ol.format.GMLBase.prototype.readFeaturesInternal);
+
+  /**
+   * @inheritDoc
+   */
+  this.schemaLocation = goog.isDef(options.schemaLocation) ?
+      options.schemaLocation : ol.format.GML2.schemaLocation_;
+
+};
+goog.inherits(ol.format.GML2, ol.format.GMLBase);
+
+
+/**
+ * @const
+ * @type {string}
+ * @private
+ */
+ol.format.GML2.schemaLocation_ = ol.format.GMLBase.GMLNS +
+    ' http://schemas.opengis.net/gml/2.1.2/feature.xsd';
+
+
+/**
+ * @param {Node} node Node.
+ * @param {Array.<*>} objectStack Object stack.
+ * @private
+ * @return {Array.<number>|undefined} Flat coordinates.
+ */
+ol.format.GML2.prototype.readFlatCoordinates_ = function(node, objectStack) {
+  var s = ol.xml.getAllTextContent(node, false).replace(/^\s*|\s*$/g, '');
+  var context = objectStack[0];
+  goog.asserts.assert(goog.isObject(context), 'context should be an Object');
+  var containerSrs = context['srsName'];
+  var containerDimension = node.parentNode.getAttribute('srsDimension');
+  var axisOrientation = 'enu';
+  if (!goog.isNull(containerSrs)) {
+    var proj = ol.proj.get(containerSrs);
+    axisOrientation = proj.getAxisOrientation();
+  }
+  var coords = s.split(/[\s,]+/);
+  // The "dimension" attribute is from the GML 3.0.1 spec.
+  var dim = 2;
+  if (!goog.isNull(node.getAttribute('srsDimension'))) {
+    dim = ol.format.XSD.readNonNegativeIntegerString(
+        node.getAttribute('srsDimension'));
+  } else if (!goog.isNull(node.getAttribute('dimension'))) {
+    dim = ol.format.XSD.readNonNegativeIntegerString(
+        node.getAttribute('dimension'));
+  } else if (!goog.isNull(containerDimension)) {
+    dim = ol.format.XSD.readNonNegativeIntegerString(containerDimension);
+  }
+  var x, y, z;
+  var flatCoordinates = [];
+  for (var i = 0, ii = coords.length; i < ii; i += dim) {
+    x = parseFloat(coords[i]);
+    y = parseFloat(coords[i + 1]);
+    z = (dim === 3) ? parseFloat(coords[i + 2]) : 0;
+    if (axisOrientation.substr(0, 2) === 'en') {
+      flatCoordinates.push(x, y, z);
+    } else {
+      flatCoordinates.push(y, x, z);
+    }
+  }
+  return flatCoordinates;
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {Array.<*>} objectStack Object stack.
+ * @private
+ * @return {ol.Extent|undefined} Envelope.
+ */
+ol.format.GML2.prototype.readBox_ = function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
+      'node.nodeType should be ELEMENT');
+  goog.asserts.assert(node.localName == 'Box', 'localName should be Box');
+  var flatCoordinates = ol.xml.pushParseAndPop(
+      /** @type {Array.<number>} */ ([null]),
+      this.BOX_PARSERS_, node, objectStack, this);
+  return ol.extent.createOrUpdate(flatCoordinates[1][0],
+      flatCoordinates[1][1], flatCoordinates[1][3],
+      flatCoordinates[1][4]);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {Array.<*>} objectStack Object stack.
+ * @private
+ */
+ol.format.GML2.prototype.innerBoundaryIsParser_ =
+    function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
+      'node.nodeType should be ELEMENT');
+  goog.asserts.assert(node.localName == 'innerBoundaryIs',
+      'localName should be innerBoundaryIs');
+  var flatLinearRing = ol.xml.pushParseAndPop(
+      /** @type {Array.<number>|undefined} */ (undefined),
+      this.RING_PARSERS, node, objectStack, this);
+  if (goog.isDef(flatLinearRing)) {
+    var flatLinearRings = /** @type {Array.<Array.<number>>} */
+        (objectStack[objectStack.length - 1]);
+    goog.asserts.assert(goog.isArray(flatLinearRings),
+        'flatLinearRings should be an array');
+    goog.asserts.assert(flatLinearRings.length > 0,
+        'flatLinearRings should have an array length larger than 0');
+    flatLinearRings.push(flatLinearRing);
+  }
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {Array.<*>} objectStack Object stack.
+ * @private
+ */
+ol.format.GML2.prototype.outerBoundaryIsParser_ =
+    function(node, objectStack) {
+  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
+      'node.nodeType should be ELEMENT');
+  goog.asserts.assert(node.localName == 'outerBoundaryIs',
+      'localName should be outerBoundaryIs');
+  var flatLinearRing = ol.xml.pushParseAndPop(
+      /** @type {Array.<number>|undefined} */ (undefined),
+      this.RING_PARSERS, node, objectStack, this);
+  if (goog.isDef(flatLinearRing)) {
+    var flatLinearRings = /** @type {Array.<Array.<number>>} */
+        (objectStack[objectStack.length - 1]);
+    goog.asserts.assert(goog.isArray(flatLinearRings),
+        'flatLinearRings should be an array');
+    goog.asserts.assert(flatLinearRings.length > 0,
+        'flatLinearRings should have an array length larger than 0');
+    flatLinearRings[0] = flatLinearRing;
+  }
+};
+
+
+/**
+ * @const
+ * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @private
+ */
+ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = Object({
+  'http://www.opengis.net/gml' : {
+    'coordinates': ol.xml.makeReplacer(
+        ol.format.GML2.prototype.readFlatCoordinates_)
+  }
+});
+
+
+/**
+ * @const
+ * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @private
+ */
+ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = Object({
+  'http://www.opengis.net/gml' : {
+    'innerBoundaryIs': ol.format.GML2.prototype.innerBoundaryIsParser_,
+    'outerBoundaryIs': ol.format.GML2.prototype.outerBoundaryIsParser_
+  }
+});
+
+
+/**
+ * @const
+ * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @private
+ */
+ol.format.GML2.prototype.BOX_PARSERS_ = Object({
+  'http://www.opengis.net/gml' : {
+    'coordinates': ol.xml.makeArrayPusher(
+        ol.format.GML2.prototype.readFlatCoordinates_)
+  }
+});
+
+
+/**
+ * @const
+ * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @private
+ */
+ol.format.GML2.prototype.GEOMETRY_PARSERS_ = Object({
+  'http://www.opengis.net/gml' : {
+    'Point': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPoint),
+    'MultiPoint': ol.xml.makeReplacer(
+        ol.format.GMLBase.prototype.readMultiPoint),
+    'LineString': ol.xml.makeReplacer(
+        ol.format.GMLBase.prototype.readLineString),
+    'MultiLineString': ol.xml.makeReplacer(
+        ol.format.GMLBase.prototype.readMultiLineString),
+    'LinearRing' : ol.xml.makeReplacer(
+        ol.format.GMLBase.prototype.readLinearRing),
+    'Polygon': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPolygon),
+    'MultiPolygon': ol.xml.makeReplacer(
+        ol.format.GMLBase.prototype.readMultiPolygon),
+    'Box': ol.xml.makeReplacer(ol.format.GML2.prototype.readBox_)
+  }
+});
+
 goog.provide('ol.format.GML');
 goog.provide('ol.format.GML3');
 
@@ -93041,236 +91789,6 @@ ol.format.GML.prototype.writeFeatures;
  * @api
  */
 ol.format.GML.prototype.writeFeaturesNode;
-
-goog.provide('ol.format.GML2');
-
-goog.require('goog.asserts');
-goog.require('goog.dom.NodeType');
-goog.require('ol.extent');
-goog.require('ol.format.GML');
-goog.require('ol.format.GMLBase');
-goog.require('ol.format.XSD');
-goog.require('ol.proj');
-goog.require('ol.xml');
-
-
-
-/**
- * @classdesc
- * Feature format for reading and writing data in the GML format,
- * version 2.1.2.
- *
- * @constructor
- * @param {olx.format.GMLOptions=} opt_options Optional configuration object.
- * @extends {ol.format.GMLBase}
- * @api
- */
-ol.format.GML2 = function(opt_options) {
-  var options = /** @type {olx.format.GMLOptions} */
-      (goog.isDef(opt_options) ? opt_options : {});
-
-  goog.base(this, options);
-
-  this.FEATURE_COLLECTION_PARSERS[ol.format.GMLBase.GMLNS][
-      'featureMember'] =
-      ol.xml.makeArrayPusher(ol.format.GMLBase.prototype.readFeaturesInternal);
-
-  /**
-   * @inheritDoc
-   */
-  this.schemaLocation = goog.isDef(options.schemaLocation) ?
-      options.schemaLocation : ol.format.GML2.schemaLocation_;
-
-};
-goog.inherits(ol.format.GML2, ol.format.GMLBase);
-
-
-/**
- * @const
- * @type {string}
- * @private
- */
-ol.format.GML2.schemaLocation_ = ol.format.GMLBase.GMLNS +
-    ' http://schemas.opengis.net/gml/2.1.2/feature.xsd';
-
-
-/**
- * @param {Node} node Node.
- * @param {Array.<*>} objectStack Object stack.
- * @private
- * @return {Array.<number>|undefined} Flat coordinates.
- */
-ol.format.GML2.prototype.readFlatCoordinates_ = function(node, objectStack) {
-  var s = ol.xml.getAllTextContent(node, false).replace(/^\s*|\s*$/g, '');
-  var context = objectStack[0];
-  goog.asserts.assert(goog.isObject(context), 'context should be an Object');
-  var containerSrs = context['srsName'];
-  var containerDimension = node.parentNode.getAttribute('srsDimension');
-  var axisOrientation = 'enu';
-  if (!goog.isNull(containerSrs)) {
-    var proj = ol.proj.get(containerSrs);
-    axisOrientation = proj.getAxisOrientation();
-  }
-  var coords = s.split(/[\s,]+/);
-  // The "dimension" attribute is from the GML 3.0.1 spec.
-  var dim = 2;
-  if (!goog.isNull(node.getAttribute('srsDimension'))) {
-    dim = ol.format.XSD.readNonNegativeIntegerString(
-        node.getAttribute('srsDimension'));
-  } else if (!goog.isNull(node.getAttribute('dimension'))) {
-    dim = ol.format.XSD.readNonNegativeIntegerString(
-        node.getAttribute('dimension'));
-  } else if (!goog.isNull(containerDimension)) {
-    dim = ol.format.XSD.readNonNegativeIntegerString(containerDimension);
-  }
-  var x, y, z;
-  var flatCoordinates = [];
-  for (var i = 0, ii = coords.length; i < ii; i += dim) {
-    x = parseFloat(coords[i]);
-    y = parseFloat(coords[i + 1]);
-    z = (dim === 3) ? parseFloat(coords[i + 2]) : 0;
-    if (axisOrientation.substr(0, 2) === 'en') {
-      flatCoordinates.push(x, y, z);
-    } else {
-      flatCoordinates.push(y, x, z);
-    }
-  }
-  return flatCoordinates;
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {Array.<*>} objectStack Object stack.
- * @private
- * @return {ol.Extent|undefined} Envelope.
- */
-ol.format.GML2.prototype.readBox_ = function(node, objectStack) {
-  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
-      'node.nodeType should be ELEMENT');
-  goog.asserts.assert(node.localName == 'Box', 'localName should be Box');
-  var flatCoordinates = ol.xml.pushParseAndPop(
-      /** @type {Array.<number>} */ ([null]),
-      this.BOX_PARSERS_, node, objectStack, this);
-  return ol.extent.createOrUpdate(flatCoordinates[1][0],
-      flatCoordinates[1][1], flatCoordinates[1][3],
-      flatCoordinates[1][4]);
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {Array.<*>} objectStack Object stack.
- * @private
- */
-ol.format.GML2.prototype.innerBoundaryIsParser_ =
-    function(node, objectStack) {
-  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
-      'node.nodeType should be ELEMENT');
-  goog.asserts.assert(node.localName == 'innerBoundaryIs',
-      'localName should be innerBoundaryIs');
-  var flatLinearRing = ol.xml.pushParseAndPop(
-      /** @type {Array.<number>|undefined} */ (undefined),
-      this.RING_PARSERS, node, objectStack, this);
-  if (goog.isDef(flatLinearRing)) {
-    var flatLinearRings = /** @type {Array.<Array.<number>>} */
-        (objectStack[objectStack.length - 1]);
-    goog.asserts.assert(goog.isArray(flatLinearRings),
-        'flatLinearRings should be an array');
-    goog.asserts.assert(flatLinearRings.length > 0,
-        'flatLinearRings should have an array length larger than 0');
-    flatLinearRings.push(flatLinearRing);
-  }
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {Array.<*>} objectStack Object stack.
- * @private
- */
-ol.format.GML2.prototype.outerBoundaryIsParser_ =
-    function(node, objectStack) {
-  goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
-      'node.nodeType should be ELEMENT');
-  goog.asserts.assert(node.localName == 'outerBoundaryIs',
-      'localName should be outerBoundaryIs');
-  var flatLinearRing = ol.xml.pushParseAndPop(
-      /** @type {Array.<number>|undefined} */ (undefined),
-      this.RING_PARSERS, node, objectStack, this);
-  if (goog.isDef(flatLinearRing)) {
-    var flatLinearRings = /** @type {Array.<Array.<number>>} */
-        (objectStack[objectStack.length - 1]);
-    goog.asserts.assert(goog.isArray(flatLinearRings),
-        'flatLinearRings should be an array');
-    goog.asserts.assert(flatLinearRings.length > 0,
-        'flatLinearRings should have an array length larger than 0');
-    flatLinearRings[0] = flatLinearRing;
-  }
-};
-
-
-/**
- * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
- * @private
- */
-ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = Object({
-  'http://www.opengis.net/gml' : {
-    'coordinates': ol.xml.makeReplacer(
-        ol.format.GML2.prototype.readFlatCoordinates_)
-  }
-});
-
-
-/**
- * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
- * @private
- */
-ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = Object({
-  'http://www.opengis.net/gml' : {
-    'innerBoundaryIs': ol.format.GML2.prototype.innerBoundaryIsParser_,
-    'outerBoundaryIs': ol.format.GML2.prototype.outerBoundaryIsParser_
-  }
-});
-
-
-/**
- * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
- * @private
- */
-ol.format.GML2.prototype.BOX_PARSERS_ = Object({
-  'http://www.opengis.net/gml' : {
-    'coordinates': ol.xml.makeArrayPusher(
-        ol.format.GML2.prototype.readFlatCoordinates_)
-  }
-});
-
-
-/**
- * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
- * @private
- */
-ol.format.GML2.prototype.GEOMETRY_PARSERS_ = Object({
-  'http://www.opengis.net/gml' : {
-    'Point': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPoint),
-    'MultiPoint': ol.xml.makeReplacer(
-        ol.format.GMLBase.prototype.readMultiPoint),
-    'LineString': ol.xml.makeReplacer(
-        ol.format.GMLBase.prototype.readLineString),
-    'MultiLineString': ol.xml.makeReplacer(
-        ol.format.GMLBase.prototype.readMultiLineString),
-    'LinearRing' : ol.xml.makeReplacer(
-        ol.format.GMLBase.prototype.readLinearRing),
-    'Polygon': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPolygon),
-    'MultiPolygon': ol.xml.makeReplacer(
-        ol.format.GMLBase.prototype.readMultiPolygon),
-    'Box': ol.xml.makeReplacer(ol.format.GML2.prototype.readBox_)
-  }
-});
 
 goog.provide('ol.format.GPX');
 
@@ -103582,7 +102100,6 @@ goog.require('goog.asserts');
 goog.require('goog.dom.NodeType');
 goog.require('goog.object');
 goog.require('goog.string');
-goog.require('ol.format.GML');
 goog.require('ol.format.GML2');
 goog.require('ol.format.XMLFeature');
 goog.require('ol.xml');
@@ -104184,6 +102701,9 @@ ol.GeolocationProperty = {
  * The [Geolocation API](http://www.w3.org/TR/geolocation-API/)
  * is used to locate a user's position.
  *
+ * To get notified of position changes, register a listener for the generic
+ * `change` event on your instance of `ol.Geolocation`.
+ *
  * Example:
  *
  *     var geolocation = new ol.Geolocation({
@@ -104197,7 +102717,6 @@ ol.GeolocationProperty = {
  *
  * @constructor
  * @extends {ol.Object}
- * @fires change Triggered when the position changes.
  * @param {olx.GeolocationOptions=} opt_options Options.
  * @api stable
  */
@@ -107954,7 +106473,6 @@ goog.require('ol.interaction.InteractionProperty');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
-goog.require('ol.style.Style');
 
 
 /**
@@ -108324,10 +106842,12 @@ ol.interaction.Draw.handleUpEvent_ = function(event) {
     this.handlePointerMove_(event);
     if (goog.isNull(this.finishCoordinate_)) {
       this.startDrawing_(event);
-    } else if ((this.mode_ === ol.interaction.DrawMode.POINT ||
-        this.mode_ === ol.interaction.DrawMode.CIRCLE) &&
-            !goog.isNull(this.finishCoordinate_) ||
-        this.atFinish_(event)) {
+      if (this.mode_ === ol.interaction.DrawMode.POINT) {
+        this.finishDrawing();
+      }
+    } else if (this.mode_ === ol.interaction.DrawMode.CIRCLE) {
+      this.finishDrawing();
+    } else if (this.atFinish_(event)) {
       this.finishDrawing();
     } else {
       this.addToDrawing_(event);
@@ -108345,10 +106865,7 @@ ol.interaction.Draw.handleUpEvent_ = function(event) {
  * @private
  */
 ol.interaction.Draw.prototype.handlePointerMove_ = function(event) {
-  if (this.mode_ === ol.interaction.DrawMode.POINT &&
-      goog.isNull(this.finishCoordinate_)) {
-    this.startDrawing_(event);
-  } else if (!goog.isNull(this.finishCoordinate_)) {
+  if (!goog.isNull(this.finishCoordinate_)) {
     this.modifyDrawing_(event);
   } else {
     this.createOrUpdateSketchPoint_(event);
@@ -108540,6 +107057,37 @@ ol.interaction.Draw.prototype.addToDrawing_ = function(event) {
   if (done) {
     this.finishDrawing();
   }
+};
+
+
+/**
+ * Remove last point of the feature currently being drawn.
+ * @api
+ */
+ol.interaction.Draw.prototype.removeLastPoint = function() {
+  var geometry = this.sketchFeature_.getGeometry();
+  goog.asserts.assertInstanceof(geometry, ol.geom.SimpleGeometry,
+      'geometry must be an ol.geom.SimpleGeometry');
+  var coordinates, sketchLineGeom;
+  if (this.mode_ === ol.interaction.DrawMode.LINE_STRING) {
+    coordinates = this.sketchCoords_;
+    coordinates.splice(-2, 1);
+    this.geometryFunction_(coordinates, geometry);
+  } else if (this.mode_ === ol.interaction.DrawMode.POLYGON) {
+    coordinates = this.sketchCoords_[0];
+    coordinates.splice(-2, 1);
+    sketchLineGeom = this.sketchLine_.getGeometry();
+    goog.asserts.assertInstanceof(sketchLineGeom, ol.geom.LineString,
+        'sketchLineGeom must be an ol.geom.LineString');
+    sketchLineGeom.setCoordinates(coordinates);
+    this.geometryFunction_(this.sketchCoords_, geometry);
+  }
+
+  if (coordinates.length === 0) {
+    this.finishCoordinate_ = null;
+  }
+
+  this.updateSketchFeatures_();
 };
 
 
@@ -108766,7 +107314,6 @@ goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
 goog.require('ol.structs.RBush');
-goog.require('ol.style.Style');
 
 
 /**
@@ -108884,12 +107431,12 @@ ol.interaction.Modify = function(options) {
   this.lastPixel_ = [0, 0];
 
   /**
-   * Keep track of the last inserted pixel location to avoid
-   * unintentional deletion.
-   * @type {ol.Pixel}
+   * Tracks if the next `singleclick` event should be ignored to prevent
+   * accidental deletion right after vertex creation.
+   * @type {boolean}
    * @private
    */
-  this.lastNewVertexPixel_ = [NaN, NaN];
+  this.ignoreNextSingleClick_ = false;
 
   /**
    * Segment RTree for each layer
@@ -109285,6 +107832,8 @@ ol.interaction.Modify.handleDownEvent_ = function(evt) {
  * @private
  */
 ol.interaction.Modify.handleDragEvent_ = function(evt) {
+  this.ignoreNextSingleClick_ = false;
+
   var vertex = evt.coordinate;
   for (var i = 0, ii = this.dragSegments_.length; i < ii; ++i) {
     var dragSegment = this.dragSegments_[i];
@@ -109368,8 +107917,8 @@ ol.interaction.Modify.handleEvent = function(mapBrowserEvent) {
   }
   if (!goog.isNull(this.vertexFeature_) &&
       this.deleteCondition_(mapBrowserEvent)) {
-    if (!(this.lastNewVertexPixel_[0] === this.lastPixel_[0] &&
-        this.lastNewVertexPixel_[1] === this.lastPixel_[1])) {
+    if (mapBrowserEvent.type != ol.MapBrowserEvent.EventType.SINGLECLICK ||
+        !this.ignoreNextSingleClick_) {
       var geometry = this.vertexFeature_.getGeometry();
       goog.asserts.assertInstanceof(geometry, ol.geom.Point,
           'geometry should be an ol.geom.Point');
@@ -109378,6 +107927,11 @@ ol.interaction.Modify.handleEvent = function(mapBrowserEvent) {
       handled = true;
     }
   }
+
+  if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.SINGLECLICK) {
+    this.ignoreNextSingleClick_ = false;
+  }
+
   return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) &&
       !handled;
 };
@@ -109531,7 +108085,7 @@ ol.interaction.Modify.prototype.insertVertex_ = function(segmentData, vertex) {
   rTree.insert(ol.extent.boundingExtent(newSegmentData2.segment),
       newSegmentData2);
   this.dragSegments_.push([newSegmentData2, 0]);
-  this.lastNewVertexPixel_ = this.lastPixel_;
+  this.ignoreNextSingleClick_ = true;
 };
 
 
@@ -109623,8 +108177,10 @@ ol.interaction.Modify.prototype.removeVertex_ = function() {
             newSegmentData);
         this.updateSegmentIndices_(geometry, index, segmentData.depth, -1);
 
-        this.overlay_.getSource().removeFeature(this.vertexFeature_);
-        this.vertexFeature_ = null;
+        if (!goog.isNull(this.vertexFeature_)) {
+          this.overlay_.getSource().removeFeature(this.vertexFeature_);
+          this.vertexFeature_ = null;
+        }
       }
     }
   }
@@ -109677,7 +108233,6 @@ goog.require('ol.geom.GeometryType');
 goog.require('ol.interaction.Interaction');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
-goog.require('ol.style.Style');
 
 
 /**
@@ -110945,6 +109500,49 @@ ol.layer.Heatmap.prototype.setGradient = function(colors) {
 ol.layer.Heatmap.prototype.setRadius = function(radius) {
   this.set(ol.layer.HeatmapLayerProperty.RADIUS, radius);
 };
+
+goog.provide('ol.raster.Operation');
+goog.provide('ol.raster.OperationType');
+
+
+/**
+ * Raster operation type. Supported values are `'pixel'` and `'image'`.
+ * @enum {string}
+ * @api
+ */
+ol.raster.OperationType = {
+  PIXEL: 'pixel',
+  IMAGE: 'image'
+};
+
+
+/**
+ * A function that takes an array of input data, performs some operation, and
+ * returns an array of ouput data.  For `'pixel'` type operations, functions
+ * will be called with an array of {@link ol.raster.Pixel} data and should
+ * return an array of the same.  For `'image'` type operations, functions will
+ * be called with an array of {@link ImageData
+ * https://developer.mozilla.org/en-US/docs/Web/API/ImageData} and should return
+ * an array of the same.  The operations are called with a second "data"
+ * argument, which can be used for storage.  The data object is accessible
+ * from raster events, where it can be initialized in "beforeoperations" and
+ * accessed again in "afteroperations".
+ *
+ * @typedef {function((Array.<ol.raster.Pixel>|Array.<ImageData>), Object):
+ *     (Array.<ol.raster.Pixel>|Array.<ImageData>)}
+ * @api
+ */
+ol.raster.Operation;
+
+goog.provide('ol.raster.Pixel');
+
+
+/**
+ * An array of numbers representing pixel values.
+ * @typedef {Array.<number>} ol.raster.Pixel
+ * @api
+ */
+ol.raster.Pixel;
 
 // Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
@@ -113081,7 +111679,6 @@ ol.source.ImageWMS.prototype.updateV13_ = function() {
 
 goog.provide('ol.source.XYZ');
 
-goog.require('ol.Attribution');
 goog.require('ol.TileUrlFunction');
 goog.require('ol.source.TileImage');
 
@@ -113089,7 +111686,20 @@ goog.require('ol.source.TileImage');
 
 /**
  * @classdesc
- * Layer source for tile data with URLs in a set XYZ format.
+ * Layer source for tile data with URLs in a set XYZ format that are
+ * defined in a URL template. By default, this follows the widely-used
+ * Google grid where `x` 0 and `y` 0 are in the top left. Grids like
+ * TMS where `x` 0 and `y` 0 are in the bottom left can be used by
+ * using the `{-y}` placeholder in the URL template, so long as the
+ * source does not have a custom tile grid. In this case,
+ * {@link ol.source.TileImage} can be used with a `tileUrlFunction`
+ * such as:
+ *
+ *  tileUrlFunction: function(coordinate) {
+ *    return 'http://mapserver.com/' + coordinate[0] + '/' +
+ *        coordinate[1] + '/' + coordinate[2] + '.png';
+ *    }
+ *
  *
  * @constructor
  * @extends {ol.source.TileImage}
@@ -113308,6 +111918,825 @@ ol.source.MapQuestConfig = {
  */
 ol.source.MapQuest.prototype.getLayer = function() {
   return this.layer_;
+};
+
+goog.provide('ol.ext.pixelworks');
+/** @typedef {function(*)} */
+ol.ext.pixelworks;
+(function() {
+var exports = {};
+var module = {exports: exports};
+var define;
+/**
+ * @fileoverview
+ * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
+ */
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pixelworks = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Processor = require('./processor');
+
+exports.Processor = Processor;
+
+},{"./processor":2}],2:[function(require,module,exports){
+/* eslint-disable dot-notation */
+
+/**
+ * Create a function for running operations.
+ * @param {function(Array, Object):*} operation The operation.
+ * @return {function(Object):ArrayBuffer} A function that takes an object with
+ * buffers, meta, imageOps, width, and height properties and returns an array
+ * buffer.
+ */
+function createMinion(operation) {
+  return function(data) {
+    // bracket notation for minification support
+    var buffers = data['buffers'];
+    var meta = data['meta'];
+    var imageOps = data['imageOps'];
+    var width = data['width'];
+    var height = data['height'];
+
+    var numBuffers = buffers.length;
+    var numBytes = buffers[0].byteLength;
+    var output, b;
+
+    if (imageOps) {
+      var images = new Array(numBuffers);
+      for (b = 0; b < numBuffers; ++b) {
+        images[b] = new ImageData(
+            new Uint8ClampedArray(buffers[b]), width, height);
+      }
+      output = operation(images, meta).data;
+    } else {
+      output = new Uint8ClampedArray(numBytes);
+      var arrays = new Array(numBuffers);
+      var pixels = new Array(numBuffers);
+      for (b = 0; b < numBuffers; ++b) {
+        arrays[b] = new Uint8ClampedArray(buffers[b]);
+        pixels[b] = [0, 0, 0, 0];
+      }
+      for (var i = 0; i < numBytes; i += 4) {
+        for (var j = 0; j < numBuffers; ++j) {
+          var array = arrays[j];
+          pixels[j][0] = array[i];
+          pixels[j][1] = array[i + 1];
+          pixels[j][2] = array[i + 2];
+          pixels[j][3] = array[i + 3];
+        }
+        var pixel = operation(pixels, meta);
+        output[i] = pixel[0];
+        output[i + 1] = pixel[1];
+        output[i + 2] = pixel[2];
+        output[i + 3] = pixel[3];
+      }
+    }
+    return output.buffer;
+  };
+}
+
+/**
+ * Create a worker for running operations.
+ * @param {Object} config Configuration.
+ * @param {function(Object)} onMessage Called with a message event.
+ * @return {Worker} The worker.
+ */
+function createWorker(config, onMessage) {
+  var lib = Object.keys(config.lib || {}).map(function(name) {
+    return 'var ' + name + ' = ' + config.lib[name].toString() + ';';
+  });
+
+  var lines = lib.concat([
+    'var __minion__ = (' + createMinion.toString() + ')(',
+        config.operation.toString(),
+    ');',
+    'self.addEventListener("message", function(__event__) {',
+      'var buffer = __minion__(__event__.data);',
+      'self.postMessage({buffer: buffer, meta: __event__.data.meta}, [buffer]);',
+    '});'
+  ]);
+
+  var blob = new Blob(lines, {type: 'text/javascript'});
+  var source = URL.createObjectURL(blob);
+  var worker = new Worker(source);
+  worker.addEventListener('message', onMessage);
+  return worker;
+}
+
+/**
+ * Create a faux worker for running operations.
+ * @param {Object} config Configuration.
+ * @param {function(Object)} onMessage Called with a message event.
+ * @return {Object} The faux worker.
+ */
+function createFauxWorker(config, onMessage) {
+  var minion = createMinion(config.operation);
+  return {
+    postMessage: function(data) {
+      setTimeout(function() {
+        onMessage({data: {buffer: minion(data), meta: data.meta}});
+      }, 0);
+    }
+  };
+}
+
+/**
+ * A processor runs pixel or image operations in workers.
+ * @param {Object} config Configuration.
+ */
+function Processor(config) {
+  this._imageOps = !!config.imageOps;
+  var threads;
+  if (config.threads === 0) {
+    threads = 0;
+  } else if (this._imageOps) {
+    threads = 1;
+  } else {
+    threads = config.threads || 1;
+  }
+  var workers = [];
+  if (threads) {
+    for (var i = 0; i < threads; ++i) {
+      workers[i] = createWorker(config, this._onWorkerMessage.bind(this, i));
+    }
+  } else {
+    workers[0] = createFauxWorker(config, this._onWorkerMessage.bind(this, 0));
+  }
+  this._workers = workers;
+  this._queue = [];
+  this._maxQueueLength = config.queue || Infinity;
+  this._running = 0;
+  this._dataLookup = {};
+  this._job = null;
+}
+
+/**
+ * Run operation on input data.
+ * @param {Array.<Array|ImageData>} inputs Array of pixels or image data
+ *     (depending on the operation type).
+ * @param {Object} meta A user data object.  This is passed to all operations
+ *     and must be serializable.
+ * @param {function(Error, ImageData, Object)} callback Called when work
+ *     completes.  The first argument is any error.  The second is the ImageData
+ *     generated by operations.  The third is the user data object.
+ */
+Processor.prototype.process = function(inputs, meta, callback) {
+  this._enqueue({
+    inputs: inputs,
+    meta: meta,
+    callback: callback
+  });
+  this._dispatch();
+};
+
+/**
+ * Stop responding to any completed work and destroy the processor.
+ */
+Processor.prototype.destroy = function() {
+  for (var key in this) {
+    this[key] = null;
+  }
+  this._destroyed = true;
+};
+
+/**
+ * Add a job to the queue.
+ * @param {Object} job The job.
+ */
+Processor.prototype._enqueue = function(job) {
+  this._queue.push(job);
+  while (this._queue.length > this._maxQueueLength) {
+    this._queue.shift().callback(null, null);
+  }
+};
+
+/**
+ * Dispatch a job.
+ */
+Processor.prototype._dispatch = function() {
+  if (this._running === 0 && this._queue.length > 0) {
+    var job = this._job = this._queue.shift();
+    var width = job.inputs[0].width;
+    var height = job.inputs[0].height;
+    var buffers = job.inputs.map(function(input) {
+      return input.data.buffer;
+    });
+    var threads = this._workers.length;
+    this._running = threads;
+    if (threads === 1) {
+      this._workers[0].postMessage({
+        'buffers': buffers,
+        'meta': job.meta,
+        'imageOps': this._imageOps,
+        'width': width,
+        'height': height
+      }, buffers);
+    } else {
+      var length = job.inputs[0].data.length;
+      var segmentLength = 4 * Math.ceil(length / 4 / threads);
+      for (var i = 0; i < threads; ++i) {
+        var offset = i * segmentLength;
+        var slices = [];
+        for (var j = 0, jj = buffers.length; j < jj; ++j) {
+          slices.push(buffers[i].slice(offset, offset + segmentLength));
+        }
+        this._workers[i].postMessage({
+          'buffers': slices,
+          'meta': job.meta,
+          'imageOps': this._imageOps,
+          'width': width,
+          'height': height
+        }, slices);
+      }
+    }
+  }
+};
+
+/**
+ * Handle messages from the worker.
+ * @param {number} index The worker index.
+ * @param {Object} event The message event.
+ */
+Processor.prototype._onWorkerMessage = function(index, event) {
+  if (this._destroyed) {
+    return;
+  }
+  this._dataLookup[index] = event.data;
+  --this._running;
+  if (this._running === 0) {
+    this._resolveJob();
+  }
+};
+
+/**
+ * Resolve a job.  If there are no more worker threads, the processor callback
+ * will be called.
+ */
+Processor.prototype._resolveJob = function() {
+  var job = this._job;
+  var threads = this._workers.length;
+  var data, meta;
+  if (threads === 1) {
+    data = new Uint8ClampedArray(this._dataLookup[0]['buffer']);
+    meta = this._dataLookup[0]['meta'];
+  } else {
+    var length = job.inputs[0].data.length;
+    data = new Uint8ClampedArray(length);
+    meta = new Array(length);
+    var segmentLength = 4 * Math.ceil(length / 4 / threads);
+    for (var i = 0; i < threads; ++i) {
+      var buffer = this._dataLookup[i]['buffer'];
+      var offset = i * segmentLength;
+      data.set(new Uint8ClampedArray(buffer), offset);
+      meta[i] = this._dataLookup[i]['meta'];
+    }
+  }
+  this._job = null;
+  this._dataLookup = {};
+  job.callback(null,
+      new ImageData(data, job.inputs[0].width, job.inputs[0].height), meta);
+  this._dispatch();
+};
+
+module.exports = Processor;
+
+},{}]},{},[1])(1)
+});
+ol.ext.pixelworks = module.exports;
+})();
+
+goog.provide('ol.source.Raster');
+goog.provide('ol.source.RasterEvent');
+goog.provide('ol.source.RasterEventType');
+
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.Event');
+goog.require('goog.events.EventType');
+goog.require('goog.functions');
+goog.require('goog.object');
+goog.require('goog.vec.Mat4');
+goog.require('ol.ImageCanvas');
+goog.require('ol.TileQueue');
+goog.require('ol.dom');
+goog.require('ol.ext.pixelworks');
+goog.require('ol.extent');
+goog.require('ol.layer.Image');
+goog.require('ol.layer.Tile');
+goog.require('ol.raster.OperationType');
+goog.require('ol.renderer.canvas.ImageLayer');
+goog.require('ol.renderer.canvas.TileLayer');
+goog.require('ol.source.Image');
+goog.require('ol.source.State');
+goog.require('ol.source.Tile');
+
+
+
+/**
+ * @classdesc
+ * A source that transforms data from any number of input sources using an array
+ * of {@link ol.raster.Operation} functions to transform input pixel values into
+ * output pixel values.
+ *
+ * @constructor
+ * @extends {ol.source.Image}
+ * @param {olx.source.RasterOptions} options Options.
+ * @api
+ */
+ol.source.Raster = function(options) {
+
+  /**
+   * @private
+   * @type {*}
+   */
+  this.worker_ = null;
+
+  /**
+   * @private
+   * @type {ol.raster.OperationType}
+   */
+  this.operationType_ = goog.isDef(options.operationType) ?
+      options.operationType : ol.raster.OperationType.PIXEL;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.threads_ = goog.isDef(options.threads) ? options.threads : 1;
+
+  /**
+   * @private
+   * @type {Array.<ol.renderer.canvas.Layer>}
+   */
+  this.renderers_ = ol.source.Raster.createRenderers_(options.sources);
+
+  for (var r = 0, rr = this.renderers_.length; r < rr; ++r) {
+    goog.events.listen(this.renderers_[r], goog.events.EventType.CHANGE,
+        this.changed, false, this);
+  }
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.canvasContext_ = ol.dom.createCanvasContext2D();
+
+  /**
+   * @private
+   * @type {ol.TileQueue}
+   */
+  this.tileQueue_ = new ol.TileQueue(
+      goog.functions.constant(1),
+      goog.bind(this.changed, this));
+
+  var layerStatesArray = ol.source.Raster.getLayerStatesArray_(this.renderers_);
+  var layerStates = {};
+  for (var i = 0, ii = layerStatesArray.length; i < ii; ++i) {
+    layerStates[goog.getUid(layerStatesArray[i].layer)] = layerStatesArray[i];
+  }
+
+  /**
+   * The most recently rendered state.
+   * @type {?ol.source.Raster.RenderedState}
+   * @private
+   */
+  this.renderedState_ = null;
+
+  /**
+   * The most recently rendered image canvas.
+   * @type {ol.ImageCanvas}
+   * @private
+   */
+  this.renderedImageCanvas_ = null;
+
+  /**
+   * @private
+   * @type {olx.FrameState}
+   */
+  this.frameState_ = {
+    animate: false,
+    attributions: {},
+    coordinateToPixelMatrix: goog.vec.Mat4.createNumber(),
+    extent: null,
+    focus: null,
+    index: 0,
+    layerStates: layerStates,
+    layerStatesArray: layerStatesArray,
+    logos: {},
+    pixelRatio: 1,
+    pixelToCoordinateMatrix: goog.vec.Mat4.createNumber(),
+    postRenderFunctions: [],
+    size: [0, 0],
+    skippedFeatureUids: {},
+    tileQueue: this.tileQueue_,
+    time: Date.now(),
+    usedTiles: {},
+    viewState: /** @type {olx.ViewState} */ ({
+      rotation: 0
+    }),
+    viewHints: [],
+    wantedTiles: {}
+  };
+
+  goog.base(this, {});
+
+  if (goog.isDef(options.operation)) {
+    this.setOperation(options.operation, options.lib);
+  }
+
+};
+goog.inherits(ol.source.Raster, ol.source.Image);
+
+
+/**
+ * Set the operation.
+ * @param {ol.raster.Operation} operation New operation.
+ * @param {Object=} opt_lib Functions that will be available to operations run
+ *     in a worker.
+ * @api
+ */
+ol.source.Raster.prototype.setOperation = function(operation, opt_lib) {
+  this.worker_ = new ol.ext.pixelworks.Processor({
+    operation: operation,
+    imageOps: this.operationType_ === ol.raster.OperationType.IMAGE,
+    queue: 1,
+    lib: opt_lib,
+    threads: this.threads_
+  });
+  this.changed();
+};
+
+
+/**
+ * Update the stored frame state.
+ * @param {ol.Extent} extent The view extent (in map units).
+ * @param {number} resolution The view resolution.
+ * @param {ol.proj.Projection} projection The view projection.
+ * @return {olx.FrameState} The updated frame state.
+ * @private
+ */
+ol.source.Raster.prototype.updateFrameState_ =
+    function(extent, resolution, projection) {
+
+  var frameState = /** @type {olx.FrameState} */ (
+      goog.object.clone(this.frameState_));
+
+  frameState.viewState = /** @type {olx.ViewState} */ (
+      goog.object.clone(frameState.viewState));
+
+  var center = ol.extent.getCenter(extent);
+  var width = Math.round(ol.extent.getWidth(extent) / resolution);
+  var height = Math.round(ol.extent.getHeight(extent) / resolution);
+
+  frameState.extent = extent;
+  frameState.focus = ol.extent.getCenter(extent);
+  frameState.size[0] = width;
+  frameState.size[1] = height;
+
+  var viewState = frameState.viewState;
+  viewState.center = center;
+  viewState.projection = projection;
+  viewState.resolution = resolution;
+  return frameState;
+};
+
+
+/**
+ * Determine if the most recently rendered image canvas is dirty.
+ * @param {ol.Extent} extent The requested extent.
+ * @param {number} resolution The requested resolution.
+ * @return {boolean} The image is dirty.
+ * @private
+ */
+ol.source.Raster.prototype.isDirty_ = function(extent, resolution) {
+  var state = this.renderedState_;
+  return !state ||
+      this.getRevision() !== state.revision ||
+      resolution !== state.resolution ||
+      !ol.extent.equals(extent, state.extent);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.Raster.prototype.getImage =
+    function(extent, resolution, pixelRatio, projection) {
+
+  if (!this.allSourcesReady_()) {
+    return null;
+  }
+
+  if (!this.isDirty_(extent, resolution)) {
+    return this.renderedImageCanvas_;
+  }
+
+  var context = this.canvasContext_;
+  var canvas = context.canvas;
+
+  var width = Math.round(ol.extent.getWidth(extent) / resolution);
+  var height = Math.round(ol.extent.getHeight(extent) / resolution);
+
+  if (width !== canvas.width ||
+      height !== canvas.height) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+
+  var frameState = this.updateFrameState_(extent, resolution, projection);
+
+  var imageCanvas = new ol.ImageCanvas(
+      extent, resolution, 1, this.getAttributions(), canvas,
+      this.composeFrame_.bind(this, frameState));
+
+  this.renderedImageCanvas_ = imageCanvas;
+
+  this.renderedState_ = {
+    extent: extent,
+    resolution: resolution,
+    revision: this.getRevision()
+  };
+
+  return imageCanvas;
+};
+
+
+/**
+ * Determine if all sources are ready.
+ * @return {boolean} All sources are ready.
+ * @private
+ */
+ol.source.Raster.prototype.allSourcesReady_ = function() {
+  var ready = true;
+  var source;
+  for (var i = 0, ii = this.renderers_.length; i < ii; ++i) {
+    source = this.renderers_[i].getLayer().getSource();
+    if (source.getState() !== ol.source.State.READY) {
+      ready = false;
+      break;
+    }
+  }
+  return ready;
+};
+
+
+/**
+ * Compose the frame.  This renders data from all sources, runs pixel-wise
+ * operations, and renders the result to the stored canvas context.
+ * @param {olx.FrameState} frameState The frame state.
+ * @param {function(Error)} callback Called when composition is complete.
+ * @private
+ */
+ol.source.Raster.prototype.composeFrame_ = function(frameState, callback) {
+  var len = this.renderers_.length;
+  var imageDatas = new Array(len);
+  for (var i = 0; i < len; ++i) {
+    var imageData = ol.source.Raster.getImageData_(
+        this.renderers_[i], frameState, frameState.layerStatesArray[i]);
+    if (imageData) {
+      imageDatas[i] = imageData;
+    } else {
+      // image not yet ready
+      return;
+    }
+  }
+
+  var data = {};
+  this.dispatchEvent(new ol.source.RasterEvent(
+      ol.source.RasterEventType.BEFOREOPERATIONS, frameState, data));
+
+  this.worker_.process(imageDatas, data,
+      this.onWorkerComplete_.bind(this, frameState, callback));
+
+  frameState.tileQueue.loadMoreTiles(16, 16);
+};
+
+
+/**
+ * Called when pixel processing is complete.
+ * @param {olx.FrameState} frameState The frame state.
+ * @param {function(Error)} callback Called when rendering is complete.
+ * @param {Error} err Any error during processing.
+ * @param {ImageData} output The output image data.
+ * @param {Object} data The user data.
+ * @private
+ */
+ol.source.Raster.prototype.onWorkerComplete_ =
+    function(frameState, callback, err, output, data) {
+  if (err) {
+    callback(err);
+    return;
+  }
+  if (goog.isNull(output)) {
+    // job aborted
+    return;
+  }
+
+  this.dispatchEvent(new ol.source.RasterEvent(
+      ol.source.RasterEventType.AFTEROPERATIONS, frameState, data));
+
+  var resolution = frameState.viewState.resolution / frameState.pixelRatio;
+  if (!this.isDirty_(frameState.extent, resolution)) {
+    this.canvasContext_.putImageData(output, 0, 0);
+  }
+
+  callback(null);
+};
+
+
+/**
+ * Get image data from a renderer.
+ * @param {ol.renderer.canvas.Layer} renderer Layer renderer.
+ * @param {olx.FrameState} frameState The frame state.
+ * @param {ol.layer.LayerState} layerState The layer state.
+ * @return {ImageData} The image data.
+ * @private
+ */
+ol.source.Raster.getImageData_ = function(renderer, frameState, layerState) {
+  renderer.prepareFrame(frameState, layerState);
+  // We should be able to call renderer.composeFrame(), but this is inefficient
+  // for tiled sources (we've already rendered to an intermediate canvas in the
+  // prepareFrame call and we don't need to render again to the output canvas).
+  // TODO: make all canvas renderers render to a single canvas
+  var image = renderer.getImage();
+  if (!image) {
+    return null;
+  }
+  var imageTransform = renderer.getImageTransform();
+  var dx = Math.round(goog.vec.Mat4.getElement(imageTransform, 0, 3));
+  var dy = Math.round(goog.vec.Mat4.getElement(imageTransform, 1, 3));
+  var width = frameState.size[0];
+  var height = frameState.size[1];
+  if (image instanceof Image) {
+    if (!ol.source.Raster.context_) {
+      ol.source.Raster.context_ = ol.dom.createCanvasContext2D(width, height);
+    } else {
+      var canvas = ol.source.Raster.context_.canvas;
+      if (canvas.width !== width || canvas.height !== height) {
+        ol.source.Raster.context_ = ol.dom.createCanvasContext2D(width, height);
+      } else {
+        ol.source.Raster.context_.clearRect(0, 0, width, height);
+      }
+    }
+    var dw = Math.round(
+        image.width * goog.vec.Mat4.getElement(imageTransform, 0, 0));
+    var dh = Math.round(
+        image.height * goog.vec.Mat4.getElement(imageTransform, 1, 1));
+    ol.source.Raster.context_.drawImage(image, dx, dy, dw, dh);
+    return ol.source.Raster.context_.getImageData(0, 0, width, height);
+  } else {
+    return image.getContext('2d').getImageData(-dx, -dy, width, height);
+  }
+};
+
+
+/**
+ * A reusable canvas context.
+ * @type {CanvasRenderingContext2D}
+ * @private
+ */
+ol.source.Raster.context_ = null;
+
+
+/**
+ * Get a list of layer states from a list of renderers.
+ * @param {Array.<ol.renderer.canvas.Layer>} renderers Layer renderers.
+ * @return {Array.<ol.layer.LayerState>} The layer states.
+ * @private
+ */
+ol.source.Raster.getLayerStatesArray_ = function(renderers) {
+  return renderers.map(function(renderer) {
+    return renderer.getLayer().getLayerState();
+  });
+};
+
+
+/**
+ * Create renderers for all sources.
+ * @param {Array.<ol.source.Source>} sources The sources.
+ * @return {Array.<ol.renderer.canvas.Layer>} Array of layer renderers.
+ * @private
+ */
+ol.source.Raster.createRenderers_ = function(sources) {
+  var len = sources.length;
+  var renderers = new Array(len);
+  for (var i = 0; i < len; ++i) {
+    renderers[i] = ol.source.Raster.createRenderer_(sources[i]);
+  }
+  return renderers;
+};
+
+
+/**
+ * Create a renderer for the provided source.
+ * @param {ol.source.Source} source The source.
+ * @return {ol.renderer.canvas.Layer} The renderer.
+ * @private
+ */
+ol.source.Raster.createRenderer_ = function(source) {
+  var renderer = null;
+  if (source instanceof ol.source.Tile) {
+    renderer = ol.source.Raster.createTileRenderer_(
+        /** @type {ol.source.Tile} */ (source));
+  } else if (source instanceof ol.source.Image) {
+    renderer = ol.source.Raster.createImageRenderer_(
+        /** @type {ol.source.Image} */ (source));
+  } else {
+    goog.asserts.fail('Unsupported source type: ' + source);
+  }
+  return renderer;
+};
+
+
+/**
+ * Create an image renderer for the provided source.
+ * @param {ol.source.Image} source The source.
+ * @return {ol.renderer.canvas.Layer} The renderer.
+ * @private
+ */
+ol.source.Raster.createImageRenderer_ = function(source) {
+  var layer = new ol.layer.Image({source: source});
+  return new ol.renderer.canvas.ImageLayer(layer);
+};
+
+
+/**
+ * Create a tile renderer for the provided source.
+ * @param {ol.source.Tile} source The source.
+ * @return {ol.renderer.canvas.Layer} The renderer.
+ * @private
+ */
+ol.source.Raster.createTileRenderer_ = function(source) {
+  var layer = new ol.layer.Tile({source: source});
+  return new ol.renderer.canvas.TileLayer(layer);
+};
+
+
+/**
+ * @typedef {{revision: number,
+ *            resolution: number,
+ *            extent: ol.Extent}}
+ */
+ol.source.Raster.RenderedState;
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.source.Raster} instances are instances of this
+ * type.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @implements {oli.source.RasterEvent}
+ * @param {string} type Type.
+ * @param {olx.FrameState} frameState The frame state.
+ * @param {Object} data An object made available to operations.
+ */
+ol.source.RasterEvent = function(type, frameState, data) {
+  goog.base(this, type);
+
+  /**
+   * The raster extent.
+   * @type {ol.Extent}
+   * @api
+   */
+  this.extent = frameState.extent;
+
+  /**
+   * The pixel resolution (map units per pixel).
+   * @type {number}
+   * @api
+   */
+  this.resolution = frameState.viewState.resolution / frameState.pixelRatio;
+
+  /**
+   * An object made available to all operations.  This can be used by operations
+   * as a storage object (e.g. for calculating statistics).
+   * @type {Object}
+   * @api
+   */
+  this.data = data;
+
+};
+goog.inherits(ol.source.RasterEvent, goog.events.Event);
+
+
+/**
+ * @enum {string}
+ */
+ol.source.RasterEventType = {
+  /**
+   * Triggered before operations are run.
+   * @event ol.source.RasterEvent#beforeoperations
+   * @api
+   */
+  BEFOREOPERATIONS: 'beforeoperations',
+
+  /**
+   * Triggered after operations are run.
+   * @event ol.source.RasterEvent#afteroperations
+   * @api
+   */
+  AFTEROPERATIONS: 'afteroperations'
 };
 
 goog.provide('ol.source.Stamen');
@@ -115570,19 +114999,25 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
 
   goog.asserts.assert(l['TileMatrixSetLink'].length > 0,
       'layer has TileMatrixSetLink');
+  var tileMatrixSets = wmtsCap['Contents']['TileMatrixSet'];
   var idx, matrixSet;
   if (l['TileMatrixSetLink'].length > 1) {
-    idx = goog.array.findIndex(l['TileMatrixSetLink'],
-        function(elt, index, array) {
-          return elt['TileMatrixSet'] == config['matrixSet'];
-        });
-  } else if (goog.isDef(config['projection'])) {
-    idx = goog.array.findIndex(l['TileMatrixSetLink'],
-        function(elt, index, array) {
-          return elt['TileMatrixSet']['SupportedCRS'].replace(
-              /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'
-                 ) == config['projection'];
-        });
+    if (goog.isDef(config['projection'])) {
+      idx = goog.array.findIndex(l['TileMatrixSetLink'],
+          function(elt, index, array) {
+            var tileMatrixSet = goog.array.find(tileMatrixSets, function(el) {
+              return el['Identifier'] == elt['TileMatrixSet'];
+            });
+            return tileMatrixSet['SupportedCRS'].replace(
+                /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'
+                   ) == config['projection'];
+          });
+    } else {
+      idx = goog.array.findIndex(l['TileMatrixSetLink'],
+          function(elt, index, array) {
+            return elt['TileMatrixSet'] == config['matrixSet'];
+          });
+    }
   } else {
     idx = 0;
   }
@@ -117091,6 +116526,9 @@ goog.require('ol.source.ImageVector');
 goog.require('ol.source.ImageWMS');
 goog.require('ol.source.MapQuest');
 goog.require('ol.source.OSM');
+goog.require('ol.source.Raster');
+goog.require('ol.source.RasterEvent');
+goog.require('ol.source.RasterEventType');
 goog.require('ol.source.Source');
 goog.require('ol.source.Stamen');
 goog.require('ol.source.State');
@@ -118746,6 +118184,31 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
+    'ol.source.Raster',
+    ol.source.Raster,
+    OPENLAYERS);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'setOperation',
+    ol.source.Raster.prototype.setOperation);
+
+goog.exportProperty(
+    ol.source.RasterEvent.prototype,
+    'extent',
+    ol.source.RasterEvent.prototype.extent);
+
+goog.exportProperty(
+    ol.source.RasterEvent.prototype,
+    'resolution',
+    ol.source.RasterEvent.prototype.resolution);
+
+goog.exportProperty(
+    ol.source.RasterEvent.prototype,
+    'data',
+    ol.source.RasterEvent.prototype.data);
+
+goog.exportSymbol(
     'ol.source.Source',
     ol.source.Source,
     OPENLAYERS);
@@ -119654,6 +119117,11 @@ goog.exportSymbol(
     'ol.interaction.Draw.handleEvent',
     ol.interaction.Draw.handleEvent,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.interaction.Draw.prototype,
+    'removeLastPoint',
+    ol.interaction.Draw.prototype.removeLastPoint);
 
 goog.exportProperty(
     ol.interaction.Draw.prototype,
@@ -120743,6 +120211,11 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.events.condition.singleClick',
     ol.events.condition.singleClick,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.events.condition.doubleClick',
+    ol.events.condition.doubleClick,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -122976,6 +122449,86 @@ goog.exportProperty(
     ol.source.OSM.prototype.unByKey);
 
 goog.exportProperty(
+    ol.source.Raster.prototype,
+    'getAttributions',
+    ol.source.Raster.prototype.getAttributions);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'getLogo',
+    ol.source.Raster.prototype.getLogo);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'getProjection',
+    ol.source.Raster.prototype.getProjection);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'getState',
+    ol.source.Raster.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'get',
+    ol.source.Raster.prototype.get);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'getKeys',
+    ol.source.Raster.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'getProperties',
+    ol.source.Raster.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'set',
+    ol.source.Raster.prototype.set);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'setProperties',
+    ol.source.Raster.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'unset',
+    ol.source.Raster.prototype.unset);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'changed',
+    ol.source.Raster.prototype.changed);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'getRevision',
+    ol.source.Raster.prototype.getRevision);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'on',
+    ol.source.Raster.prototype.on);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'once',
+    ol.source.Raster.prototype.once);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'un',
+    ol.source.Raster.prototype.un);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'unByKey',
+    ol.source.Raster.prototype.unByKey);
+
+goog.exportProperty(
     ol.source.Stamen.prototype,
     'setUrl',
     ol.source.Stamen.prototype.setUrl);
@@ -123467,6 +123020,31 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
+    'addFeature',
+    ol.source.TileVector.prototype.addFeature);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'addFeatures',
+    ol.source.TileVector.prototype.addFeatures);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'clear',
+    ol.source.TileVector.prototype.clear);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'forEachFeature',
+    ol.source.TileVector.prototype.forEachFeature);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'forEachFeatureInExtent',
+    ol.source.TileVector.prototype.forEachFeatureInExtent);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
     'forEachFeatureIntersectingExtent',
     ol.source.TileVector.prototype.forEachFeatureIntersectingExtent);
 
@@ -123477,13 +123055,38 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
+    'getFeatures',
+    ol.source.TileVector.prototype.getFeatures);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
     'getFeaturesAtCoordinate',
     ol.source.TileVector.prototype.getFeaturesAtCoordinate);
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
+    'getFeaturesInExtent',
+    ol.source.TileVector.prototype.getFeaturesInExtent);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'getClosestFeatureToCoordinate',
+    ol.source.TileVector.prototype.getClosestFeatureToCoordinate);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'getExtent',
+    ol.source.TileVector.prototype.getExtent);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
     'getFeatureById',
     ol.source.TileVector.prototype.getFeatureById);
+
+goog.exportProperty(
+    ol.source.TileVector.prototype,
+    'removeFeature',
+    ol.source.TileVector.prototype.removeFeature);
 
 goog.exportProperty(
     ol.source.TileVector.prototype,
@@ -126697,16 +126300,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
-    'applyTransform',
-    ol.geom.Circle.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.Circle.prototype,
-    'translate',
-    ol.geom.Circle.prototype.translate);
-
-goog.exportProperty(
-    ol.geom.Circle.prototype,
     'getClosestPoint',
     ol.geom.Circle.prototype.getClosestPoint);
 
@@ -126867,16 +126460,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
-    'applyTransform',
-    ol.geom.LinearRing.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
-    'translate',
-    ol.geom.LinearRing.prototype.translate);
-
-goog.exportProperty(
-    ol.geom.LinearRing.prototype,
     'getClosestPoint',
     ol.geom.LinearRing.prototype.getClosestPoint);
 
@@ -126964,16 +126547,6 @@ goog.exportProperty(
     ol.geom.LineString.prototype,
     'getLayout',
     ol.geom.LineString.prototype.getLayout);
-
-goog.exportProperty(
-    ol.geom.LineString.prototype,
-    'applyTransform',
-    ol.geom.LineString.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.LineString.prototype,
-    'translate',
-    ol.geom.LineString.prototype.translate);
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
@@ -127067,16 +126640,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
-    'applyTransform',
-    ol.geom.MultiLineString.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.MultiLineString.prototype,
-    'translate',
-    ol.geom.MultiLineString.prototype.translate);
-
-goog.exportProperty(
-    ol.geom.MultiLineString.prototype,
     'getClosestPoint',
     ol.geom.MultiLineString.prototype.getClosestPoint);
 
@@ -127164,16 +126727,6 @@ goog.exportProperty(
     ol.geom.MultiPoint.prototype,
     'getLayout',
     ol.geom.MultiPoint.prototype.getLayout);
-
-goog.exportProperty(
-    ol.geom.MultiPoint.prototype,
-    'applyTransform',
-    ol.geom.MultiPoint.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.MultiPoint.prototype,
-    'translate',
-    ol.geom.MultiPoint.prototype.translate);
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
@@ -127267,16 +126820,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
-    'applyTransform',
-    ol.geom.MultiPolygon.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.MultiPolygon.prototype,
-    'translate',
-    ol.geom.MultiPolygon.prototype.translate);
-
-goog.exportProperty(
-    ol.geom.MultiPolygon.prototype,
     'getClosestPoint',
     ol.geom.MultiPolygon.prototype.getClosestPoint);
 
@@ -127367,16 +126910,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Point.prototype,
-    'applyTransform',
-    ol.geom.Point.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.Point.prototype,
-    'translate',
-    ol.geom.Point.prototype.translate);
-
-goog.exportProperty(
-    ol.geom.Point.prototype,
     'getClosestPoint',
     ol.geom.Point.prototype.getClosestPoint);
 
@@ -127464,16 +126997,6 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getLayout',
     ol.geom.Polygon.prototype.getLayout);
-
-goog.exportProperty(
-    ol.geom.Polygon.prototype,
-    'applyTransform',
-    ol.geom.Polygon.prototype.applyTransform);
-
-goog.exportProperty(
-    ol.geom.Polygon.prototype,
-    'translate',
-    ol.geom.Polygon.prototype.translate);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
@@ -127782,6 +127305,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.control.MousePosition.prototype,
+    'setMap',
+    ol.control.MousePosition.prototype.setMap);
+
+goog.exportProperty(
+    ol.control.MousePosition.prototype,
     'setTarget',
     ol.control.MousePosition.prototype.setTarget);
 
@@ -127849,6 +127377,11 @@ goog.exportProperty(
     ol.control.OverviewMap.prototype,
     'getMap',
     ol.control.OverviewMap.prototype.getMap);
+
+goog.exportProperty(
+    ol.control.OverviewMap.prototype,
+    'setMap',
+    ol.control.OverviewMap.prototype.setMap);
 
 goog.exportProperty(
     ol.control.OverviewMap.prototype,
@@ -128144,6 +127677,11 @@ goog.exportProperty(
     ol.control.ZoomSlider.prototype,
     'getMap',
     ol.control.ZoomSlider.prototype.getMap);
+
+goog.exportProperty(
+    ol.control.ZoomSlider.prototype,
+    'setMap',
+    ol.control.ZoomSlider.prototype.setMap);
 
 goog.exportProperty(
     ol.control.ZoomSlider.prototype,

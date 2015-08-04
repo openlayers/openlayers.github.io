@@ -105,9 +105,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         return feature;
       });
   if (feature) {
-    var geometry = feature.getGeometry();
-    var coord = geometry.getCoordinates();
-    popup.setPosition(coord);
+    popup.setPosition(evt.coordinate);
     $(element).popover({
       &#x27;placement&#x27;: &#x27;top&#x27;,
       &#x27;html&#x27;: true,
@@ -133,9 +131,7 @@ map.on(&#x27;pointermove&#x27;, function(e) {
           <textarea class="hidden" name="css">#map {
   position: relative;
 }
-#popup {
-  padding-bottom: 45px;
-}</textarea>
+</textarea>
           <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
   &lt;div class=&quot;span12&quot;&gt;
     &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;div id=&quot;popup&quot;&gt;&lt;/div&gt;&lt;/div&gt;
@@ -143,7 +139,7 @@ map.on(&#x27;pointermove&#x27;, function(e) {
 &lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.7.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.7.0/ol.js">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.8.0/ol.css,https://cdnjs.cloudflare.com/ajax/libs/ol3/3.8.0/ol.js">
           <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -151,16 +147,14 @@ map.on(&#x27;pointermove&#x27;, function(e) {
 &lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"&gt;
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.7.0/ol.css" type="text/css"&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.7.0/ol.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.8.0/ol.css" type="text/css"&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.8.0/ol.js"&gt;&lt;/script&gt;
 
 &lt;style&gt;
 #map {
   position: relative;
 }
-#popup {
-  padding-bottom: 45px;
-}
+
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -233,9 +227,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         return feature;
       });
   if (feature) {
-    var geometry = feature.getGeometry();
-    var coord = geometry.getCoordinates();
-    popup.setPosition(coord);
+    popup.setPosition(evt.coordinate);
     $(element).popover({
       &#x27;placement&#x27;: &#x27;top&#x27;,
       &#x27;html&#x27;: true,
