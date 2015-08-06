@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.8.0-12-g575fff6
+// Version: v3.8.0-18-ga673c39
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -111486,24 +111486,6 @@ ol.source.ImageWMS.prototype.getImage =
     pixelRatio = 1;
   }
 
-  var image = this.image_;
-  if (!goog.isNull(image) &&
-      this.renderedRevision_ == this.getRevision() &&
-      image.getResolution() == resolution &&
-      image.getPixelRatio() == pixelRatio &&
-      ol.extent.containsExtent(image.getExtent(), extent)) {
-    return image;
-  }
-
-  var params = {
-    'SERVICE': 'WMS',
-    'VERSION': ol.DEFAULT_WMS_VERSION,
-    'REQUEST': 'GetMap',
-    'FORMAT': 'image/png',
-    'TRANSPARENT': true
-  };
-  goog.object.extend(params, this.params_);
-
   extent = extent.slice();
   var centerX = (extent[0] + extent[2]) / 2;
   var centerY = (extent[1] + extent[3]) / 2;
@@ -111527,6 +111509,24 @@ ol.source.ImageWMS.prototype.getImage =
   extent[2] = centerX + imageResolution * width / 2;
   extent[1] = centerY - imageResolution * height / 2;
   extent[3] = centerY + imageResolution * height / 2;
+
+  var image = this.image_;
+  if (!goog.isNull(image) &&
+      this.renderedRevision_ == this.getRevision() &&
+      image.getResolution() == resolution &&
+      image.getPixelRatio() == pixelRatio &&
+      ol.extent.containsExtent(image.getExtent(), extent)) {
+    return image;
+  }
+
+  var params = {
+    'SERVICE': 'WMS',
+    'VERSION': ol.DEFAULT_WMS_VERSION,
+    'REQUEST': 'GetMap',
+    'FORMAT': 'image/png',
+    'TRANSPARENT': true
+  };
+  goog.object.extend(params, this.params_);
 
   this.imageSize_[0] = width;
   this.imageSize_[1] = height;
