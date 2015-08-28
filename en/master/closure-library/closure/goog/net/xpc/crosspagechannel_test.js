@@ -19,6 +19,7 @@ goog.require('goog.Disposable');
 goog.require('goog.Uri');
 goog.require('goog.async.Deferred');
 goog.require('goog.dom');
+goog.require('goog.dom.TagName');
 goog.require('goog.labs.userAgent.browser');
 goog.require('goog.log');
 goog.require('goog.log.Level');
@@ -55,7 +56,7 @@ function setUpPage() {
   var logger = goog.log.getLogger('goog.net.xpc');
   logger.setLevel(goog.log.Level.ALL);
   goog.log.addHandler(logger, function(logRecord) {
-    var msgElm = goog.dom.createDom('div');
+    var msgElm = goog.dom.createDom(goog.dom.TagName.DIV);
     msgElm.innerHTML = logRecord.getMessage();
     goog.dom.appendChild(debugDiv, msgElm);
   });
@@ -86,7 +87,7 @@ function checkSameDomainIframeAccess() {
 
 
 function create1x1Iframe(iframeId, src) {
-  var iframeAccessChecker = goog.dom.createElement('IFRAME');
+  var iframeAccessChecker = goog.dom.createElement(goog.dom.TagName.IFRAME);
   iframeAccessChecker.id = iframeAccessChecker.name = iframeId;
   iframeAccessChecker.style.width = iframeAccessChecker.style.height = '1px';
   iframeAccessChecker.src = src;
@@ -297,6 +298,13 @@ function testLifeCycle_v2_v1_onesided_rev() {
 
 
 function testLifeCycle_v2_v2() {
+  // Test flakes on IE 10+ and Chrome: see b/22873770 and b/18595666.
+  if ((goog.labs.userAgent.browser.isIE() &&
+       goog.labs.userAgent.browser.isVersionOrHigher(10)) ||
+      goog.labs.userAgent.browser.isChrome()) {
+    return;
+  }
+
   checkLifeCycle(
       false /* oneSidedHandshake */,
       2 /* innerProtocolVersion */,
@@ -530,6 +538,12 @@ function testUnescapeServiceName() {
  * Tests the case where the channel is disposed before it is fully connected.
  */
 function testDisposeBeforeConnect() {
+  // Test flakes on IE: see b/22873770 and b/18595666.
+  if (goog.labs.userAgent.browser.isIE() &&
+      goog.labs.userAgent.browser.isVersionOrHigher(9)) {
+    return;
+  }
+
   asyncTestCase.waitForAsync('Checking disposal before connection.');
   driver.createPeerIframe('new_iframe', false /* oneSidedHandshake */,
       2 /* innerProtocolVersion */, 2 /* outerProtocolVersion */,

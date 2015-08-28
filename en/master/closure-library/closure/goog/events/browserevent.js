@@ -221,11 +221,18 @@ goog.events.BrowserEvent.IEButtonMap = [
  * @param {EventTarget=} opt_currentTarget Current target for event.
  */
 goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
-  this.event_ = e;
   var type = this.type = e.type;
 
+  /**
+   * On touch devices use the first "changed touch" as the relevant touch.
+   * @type {Touch}
+   */
+  var relevantTouch = e.changedTouches ? e.changedTouches[0] : null;
+
   // TODO(nicksantos): Change this.target to type EventTarget.
-  this.target = /** @type {Node} */ (e.target) || e.srcElement;
+  this.target = goog.isNull(relevantTouch) ?
+      /** @type {Node} */ (e.target) || e.srcElement :
+      /** @type {Node} */ (relevantTouch.target);
 
   // TODO(nicksantos): Change this.currentTarget to type EventTarget.
   this.currentTarget = /** @type {Node} */ (opt_currentTarget);
@@ -251,33 +258,25 @@ goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
 
   this.relatedTarget = relatedTarget;
 
-  // Lazily calculate the offsetX/Y properties because they trigger style
-  // recalc and layout. The original event's getters are themselves lazy.
-  if (Object.defineProperties) {
-    Object.defineProperties(this,
-        /** @lends {goog.events.BrowserEvent.prototype} */ ({
-          offsetX: {
-            configurable: true,
-            enumerable: true,
-            get: this.getOffsetX_,
-            set: this.setOffsetX_
-          },
-          offsetY: {
-            configurable: true,
-            enumerable: true,
-            get: this.getOffsetY_,
-            set: this.setOffsetY_
-          }
-        }));
+  if (!goog.isNull(relevantTouch)) {
+    this.clientX = relevantTouch.clientX !== undefined ?
+        relevantTouch.clientX : relevantTouch.pageX;
+    this.clientY = relevantTouch.clientY !== undefined ?
+        relevantTouch.clientY : relevantTouch.pageY;
+    this.screenX = relevantTouch.screenX || 0;
+    this.screenY = relevantTouch.screenY || 0;
   } else {
-    this.offsetX = this.getOffsetX_();
-    this.offsetY = this.getOffsetY_();
+    // Webkit emits a lame warning whenever layerX/layerY is accessed.
+    // http://code.google.com/p/chromium/issues/detail?id=101733
+    this.offsetX = (goog.userAgent.WEBKIT || e.offsetX !== undefined) ?
+        e.offsetX : e.layerX;
+    this.offsetY = (goog.userAgent.WEBKIT || e.offsetY !== undefined) ?
+        e.offsetY : e.layerY;
+    this.clientX = e.clientX !== undefined ? e.clientX : e.pageX;
+    this.clientY = e.clientY !== undefined ? e.clientY : e.pageY;
+    this.screenX = e.screenX || 0;
+    this.screenY = e.screenY || 0;
   }
-
-  this.clientX = e.clientX !== undefined ? e.clientX : e.pageX;
-  this.clientY = e.clientY !== undefined ? e.clientY : e.pageY;
-  this.screenX = e.screenX || 0;
-  this.screenY = e.screenY || 0;
 
   this.button = e.button;
 
@@ -289,6 +288,7 @@ goog.events.BrowserEvent.prototype.init = function(e, opt_currentTarget) {
   this.metaKey = e.metaKey;
   this.platformModifierKey = goog.userAgent.MAC ? e.metaKey : e.ctrlKey;
   this.state = e.state;
+  this.event_ = e;
   if (e.defaultPrevented) {
     this.preventDefault();
   }
@@ -399,48 +399,4 @@ goog.events.BrowserEvent.prototype.preventDefault = function() {
  */
 goog.events.BrowserEvent.prototype.getBrowserEvent = function() {
   return this.event_;
-};
-
-
-/** @private @return {number} */
-goog.events.BrowserEvent.prototype.getOffsetX_ = function() {
-  // Webkit emits a lame warning whenever layerX/layerY is accessed.
-  // http://code.google.com/p/chromium/issues/detail?id=101733
-  return (goog.userAgent.WEBKIT || this.event_.offsetX !== undefined) ?
-      this.event_.offsetX : this.event_.layerX;
-};
-
-
-/** @private @param {number} offset */
-goog.events.BrowserEvent.prototype.setOffsetX_ = function(offset) {
-  Object.defineProperties(this,
-      /** @lends {goog.events.BrowserEvent.prototype} */ ({
-        offsetX: {
-          writable: true,
-          enumerable: true,
-          configurable: true,
-          value: offset
-        }
-      }));
-};
-
-
-/** @private @return {number} */
-goog.events.BrowserEvent.prototype.getOffsetY_ = function() {
-  return (goog.userAgent.WEBKIT || this.event_.offsetY !== undefined) ?
-      this.event_.offsetY : this.event_.layerY;
-};
-
-
-/** @private @param {number} offset */
-goog.events.BrowserEvent.prototype.setOffsetY_ = function(offset) {
-  Object.defineProperties(this,
-      /** @lends {goog.events.BrowserEvent.prototype} */ ({
-        offsetY: {
-          writable: true,
-          enumerable: true,
-          configurable: true,
-          value: offset
-        }
-      }));
 };

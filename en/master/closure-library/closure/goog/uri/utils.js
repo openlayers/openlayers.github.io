@@ -35,8 +35,8 @@
  *
  * One advantage of the limited functionality here is that this approach is
  * less sensitive to differences in URI encodings than goog.Uri, since these
- * functions modify the strings in place, rather than decoding and
- * re-encoding.
+ * functions operate on strings directly, rather than decoding them and
+ * then re-encoding.
  *
  * Uses features of RFC 3986 for parsing/formatting URIs:
  *   http://www.ietf.org/rfc/rfc3986.txt
@@ -348,8 +348,8 @@ goog.uri.utils.getScheme = function(uri) {
  */
 goog.uri.utils.getEffectiveScheme = function(uri) {
   var scheme = goog.uri.utils.getScheme(uri);
-  if (!scheme && self.location) {
-    var protocol = self.location.protocol;
+  if (!scheme && goog.global.self && goog.global.self.location) {
+    var protocol = goog.global.self.location.protocol;
     scheme = protocol.substr(0, protocol.length - 1);
   }
   // NOTE: When called from a web worker in Firefox 3.5, location maybe null.
@@ -613,6 +613,9 @@ goog.uri.utils.QueryArray;
  *     the second argument (value) will be an empty string.
  */
 goog.uri.utils.parseQueryData = function(encodedQuery, callback) {
+  if (!encodedQuery) {
+    return;
+  }
   var pairs = encodedQuery.split('&');
   for (var i = 0; i < pairs.length; i++) {
     var indexOfEquals = pairs[i].indexOf('=');
@@ -952,8 +955,8 @@ goog.uri.utils.getParamValue = function(uri, keyEncoded) {
 
 /**
  * Gets all values of a query parameter.
- * @param {string} uri The URI to process.  May contain a framgnet.
- * @param {string} keyEncoded The URI-encoded key.  Case-snsitive.
+ * @param {string} uri The URI to process.  May contain a fragment.
+ * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
  * @return {!Array<string>} All URI-decoded values with the given key.
  *     If the key is not found, this will have length 0, but never be null.
  */

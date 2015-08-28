@@ -61,6 +61,11 @@ var THROTTLE_TIME = 500;
 var ALL_DAY_MS = 1000 * 60 * 60 * 24;
 
 
+function shouldRunTests() {
+  return goog.labs.net.webChannel.ChannelRequest.supportsXhrStreaming();
+}
+
+
 function setUp() {
   mockClock = new goog.testing.MockClock();
   mockClock.install();
@@ -269,21 +274,6 @@ function testRequestTimeoutWithUnexpectedException() {
 }
 
 
-function testActiveXBlocked() {
-  createChannelRequest();
-  stubs.set(goog.global, 'ActiveXObject',
-      goog.functions.error('Active X blocked'));
-
-  channelRequest.tridentGet(new goog.Uri('some_uri'), false);
-  assertFalse(channelRequest.getSuccess());
-  assertEquals(
-      goog.labs.net.webChannel.ChannelRequest.Error.ACTIVE_X_BLOCKED,
-      channelRequest.getLastError());
-
-  checkReachabilityEvents(0, 0, 0, 0);
-}
-
-
 function checkReachabilityEvents(reqMade, reqSucceeded, reqFail, backChannel) {
   var Reachability =
       goog.labs.net.webChannel.requestStats.ServerReachability;
@@ -295,16 +285,4 @@ function checkReachabilityEvents(reqMade, reqSucceeded, reqFail, backChannel) {
       reachabilityEvents[Reachability.REQUEST_FAILED] || 0);
   assertEquals(backChannel,
       reachabilityEvents[Reachability.BACK_CHANNEL_ACTIVITY] || 0);
-}
-
-
-function testDuplicatedRandomParams() {
-  createChannelRequest();
-  channelRequest.xmlHttpGet(new goog.Uri('some_uri'), true, null, true,
-      true /* opt_duplicateRandom */);
-  var z = xhrIo.getLastUri().getParameterValue('zx');
-  var z1 = xhrIo.getLastUri().getParameterValue('zx1');
-  assertTrue(goog.isDefAndNotNull(z));
-  assertTrue(goog.isDefAndNotNull(z1));
-  assertEquals(z1, z);
 }

@@ -26,10 +26,11 @@ Progress.prototype.addLoading = function() {
  * Increment the count of loaded tiles.
  */
 Progress.prototype.addLoaded = function() {
+  var this_ = this;
   setTimeout(function() {
-    ++this.loaded;
-    this.update();
-  }.bind(this), 100);
+    ++this_.loaded;
+    this_.update();
+  }, 100);
 };
 
 
@@ -42,7 +43,10 @@ Progress.prototype.update = function() {
   if (this.loading === this.loaded) {
     this.loading = 0;
     this.loaded = 0;
-    setTimeout(this.hide.bind(this), 500);
+    var this_ = this;
+    setTimeout(function() {
+      this_.hide();
+    }, 500);
   }
 };
 

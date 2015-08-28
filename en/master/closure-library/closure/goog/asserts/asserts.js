@@ -60,7 +60,7 @@ goog.define('goog.asserts.ENABLE_ASSERTS', goog.DEBUG);
 goog.asserts.AssertionError = function(messagePattern, messageArgs) {
   messageArgs.unshift(messagePattern);
   goog.debug.Error.call(this, goog.string.subs.apply(null, messageArgs));
-  // Remove the messagePattern afterwards to avoid permenantly modifying the
+  // Remove the messagePattern afterwards to avoid permanently modifying the
   // passed in array.
   messageArgs.shift();
 
@@ -297,7 +297,7 @@ goog.asserts.assertBoolean = function(value, opt_message, var_args) {
  * @param {...*} var_args The items to substitute into the failure message.
  * @return {!Element} The value, likely to be a DOM Element when asserts are
  *     enabled.
- * @throws {goog.asserts.AssertionError} When the value is not a boolean.
+ * @throws {goog.asserts.AssertionError} When the value is not an Element.
  */
 goog.asserts.assertElement = function(value, opt_message, var_args) {
   if (goog.asserts.ENABLE_ASSERTS && (!goog.isObject(value) ||

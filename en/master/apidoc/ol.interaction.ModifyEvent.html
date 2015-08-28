@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Reference - Class: SelectEvent</title>
+    <title>OpenLayers 3 API Reference - Class: ModifyEvent</title>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <script src="scripts/jquery.min.js"> </script>
@@ -1239,31 +1239,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="ol.ModifyEvent">
-            <span class="title">
-                <a href="ol.ModifyEvent.html">ol.ModifyEvent</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.ModifyEvent#features"><a href="ol.ModifyEvent.html#features">features</a></li>
-            
-                <li data-name="ol.ModifyEvent#mapBrowserPointerEvent"><a href="ol.ModifyEvent.html#mapBrowserPointerEvent">mapBrowserPointerEvent</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="ol.Object">
             <span class="title">
                 <a href="ol.Object.html">ol.Object</a>
@@ -1558,33 +1533,6 @@
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
                     <a href="ol.ObjectEvent.html#event:propertychange">propertychange</a>
                 </li>
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="ol.SelectEvent">
-            <span class="title">
-                <a href="ol.SelectEvent.html">ol.SelectEvent</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.SelectEvent#deselected"><a href="ol.SelectEvent.html#deselected">deselected</a></li>
-            
-                <li data-name="ol.SelectEvent#mapBrowserEvent"><a href="ol.SelectEvent.html#mapBrowserEvent">mapBrowserEvent</a></li>
-            
-                <li data-name="ol.SelectEvent#selected"><a href="ol.SelectEvent.html#selected">selected</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
             
             </ul>
         </li>
@@ -6780,17 +6728,42 @@
                     change:active
                 </li>
             
-                <li data-name="ol.ModifyEvent#event:modifyend" class="unstable">
-                    <a href="ol.ModifyEvent.html#event:modifyend">modifyend</a>
+                <li data-name="ol.interaction.ModifyEvent#event:modifyend" class="unstable">
+                    <a href="ol.interaction.ModifyEvent.html#event:modifyend">modifyend</a>
                 </li>
             
-                <li data-name="ol.ModifyEvent#event:modifystart" class="unstable">
-                    <a href="ol.ModifyEvent.html#event:modifystart">modifystart</a>
+                <li data-name="ol.interaction.ModifyEvent#event:modifystart" class="unstable">
+                    <a href="ol.interaction.ModifyEvent.html#event:modifystart">modifystart</a>
                 </li>
             
                 <li data-name="ol.ObjectEvent#event:propertychange" class="">
                     <a href="ol.ObjectEvent.html#event:propertychange">propertychange</a>
                 </li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.interaction.ModifyEvent">
+            <span class="title">
+                <a href="ol.interaction.ModifyEvent.html">ol.interaction.ModifyEvent</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.interaction.ModifyEvent#features"><a href="ol.interaction.ModifyEvent.html#features">features</a></li>
+            
+                <li data-name="ol.interaction.ModifyEvent#mapBrowserPointerEvent"><a href="ol.interaction.ModifyEvent.html#mapBrowserPointerEvent">mapBrowserPointerEvent</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
             
             </ul>
         </li>
@@ -7267,9 +7240,36 @@
                     <a href="ol.ObjectEvent.html#event:propertychange">propertychange</a>
                 </li>
             
-                <li data-name="ol.SelectEvent#event:select" class="unstable">
-                    <a href="ol.SelectEvent.html#event:select">select</a>
+                <li data-name="ol.interaction.SelectEvent#event:select" class="unstable">
+                    <a href="ol.interaction.SelectEvent.html#event:select">select</a>
                 </li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.interaction.SelectEvent">
+            <span class="title">
+                <a href="ol.interaction.SelectEvent.html">ol.interaction.SelectEvent</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ol.interaction.SelectEvent#deselected"><a href="ol.interaction.SelectEvent.html#deselected">deselected</a></li>
+            
+                <li data-name="ol.interaction.SelectEvent#mapBrowserEvent"><a href="ol.interaction.SelectEvent.html#mapBrowserEvent">mapBrowserEvent</a></li>
+            
+                <li data-name="ol.interaction.SelectEvent#selected"><a href="ol.interaction.SelectEvent.html#selected">selected</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
             
             </ul>
         </li>
@@ -7351,6 +7351,97 @@
             
                 <li data-name="ol.interaction.Snap#unset" class="">
                     <a href="ol.interaction.Snap.html#unset">unset</a>
+                </li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            <span class="subtitle">Fires</span>
+            
+                <li data-name="event:change" class="unstable">
+                    <a href="global.html#event:change">change</a>
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:change:active" class="unstable">
+                    change:active
+                </li>
+            
+                <li data-name="ol.ObjectEvent#event:propertychange" class="">
+                    <a href="ol.ObjectEvent.html#event:propertychange">propertychange</a>
+                </li>
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.interaction.Translate">
+            <span class="title">
+                <a href="ol.interaction.Translate.html">ol.interaction.Translate</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.interaction.Translate#changed" class="unstable">
+                    <a href="ol.interaction.Translate.html#changed">changed</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#get" class="">
+                    <a href="ol.interaction.Translate.html#get">get</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#getActive" class="unstable">
+                    <a href="ol.interaction.Translate.html#getActive">getActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#getKeys" class="">
+                    <a href="ol.interaction.Translate.html#getKeys">getKeys</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#getProperties" class="">
+                    <a href="ol.interaction.Translate.html#getProperties">getProperties</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#getRevision" class="unstable">
+                    <a href="ol.interaction.Translate.html#getRevision">getRevision</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#on" class="">
+                    <a href="ol.interaction.Translate.html#on">on</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#once" class="">
+                    <a href="ol.interaction.Translate.html#once">once</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#set" class="">
+                    <a href="ol.interaction.Translate.html#set">set</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setActive" class="unstable">
+                    <a href="ol.interaction.Translate.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setProperties" class="">
+                    <a href="ol.interaction.Translate.html#setProperties">setProperties</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#un" class="">
+                    <a href="ol.interaction.Translate.html#un">un</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#unByKey" class="">
+                    <a href="ol.interaction.Translate.html#unByKey">unByKey</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#unset" class="">
+                    <a href="ol.interaction.Translate.html#unset">unset</a>
                 </li>
             
             </ul>
@@ -10416,6 +10507,10 @@
                     <a href="ol.source.MapQuest.html#getTileUrlFunction">getTileUrlFunction</a>
                 </li>
             
+                <li data-name="ol.source.MapQuest#getUrls" class="unstable">
+                    <a href="ol.source.MapQuest.html#getUrls">getUrls</a>
+                </li>
+            
                 <li data-name="ol.source.MapQuest#on" class="">
                     <a href="ol.source.MapQuest.html#on">on</a>
                 </li>
@@ -10549,6 +10644,10 @@
             
                 <li data-name="ol.source.OSM#getTileUrlFunction" class="unstable">
                     <a href="ol.source.OSM.html#getTileUrlFunction">getTileUrlFunction</a>
+                </li>
+            
+                <li data-name="ol.source.OSM#getUrls" class="unstable">
+                    <a href="ol.source.OSM.html#getUrls">getUrls</a>
                 </li>
             
                 <li data-name="ol.source.OSM#on" class="">
@@ -10901,6 +11000,10 @@
             
                 <li data-name="ol.source.Stamen#getTileUrlFunction" class="unstable">
                     <a href="ol.source.Stamen.html#getTileUrlFunction">getTileUrlFunction</a>
+                </li>
+            
+                <li data-name="ol.source.Stamen#getUrls" class="unstable">
+                    <a href="ol.source.Stamen.html#getUrls">getUrls</a>
                 </li>
             
                 <li data-name="ol.source.Stamen#on" class="">
@@ -12442,6 +12545,10 @@
                     <a href="ol.source.XYZ.html#getTileUrlFunction">getTileUrlFunction</a>
                 </li>
             
+                <li data-name="ol.source.XYZ#getUrls" class="unstable">
+                    <a href="ol.source.XYZ.html#getUrls">getUrls</a>
+                </li>
+            
                 <li data-name="ol.source.XYZ#on" class="">
                     <a href="ol.source.XYZ.html#on">on</a>
                 </li>
@@ -13432,7 +13539,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="ol.SelectEvent.html">Class: SelectEvent</h1>
+        <h1 class="page-title" data-filename="ol.interaction.ModifyEvent.html">Class: ModifyEvent</h1>
         
 
 
@@ -13441,10 +13548,10 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a>.</span>SelectEvent
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>ModifyEvent
     </h2>
     
-        <div class="class-description"><p>Events emitted by <a href="ol.interaction.Select.html"><code>ol.interaction.Select</code></a> instances are instances of
+        <div class="class-description"><p>Events emitted by <a href="ol.interaction.Modify.html"><code>ol.interaction.Modify</code></a> instances are instances of
 this type.</p></div>
     
 </header>  
@@ -13540,8 +13647,8 @@ this type.</p></div>
             
 <dt class="unstable">
     <div class="nameContainer">
-        <h4 class="name" id="deselected">
-            deselected<span class="type-signature type array.<ol.feature>">{Array.&lt;<a href="ol.Feature.html">ol.Feature</a>>}</span> 
+        <h4 class="name" id="features">
+            features<span class="type-signature type ol.collection.<ol.feature>">{<a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.Feature.html">ol.Feature</a>>}</span> 
             
 <span class="stability experimental">experimental</span>
 
@@ -13553,7 +13660,7 @@ this type.</p></div>
 <dd class="unstable">
     
     <div class="description">
-        <p>Deselected features array.</p>
+        <p>The features being modified.</p>
     </div>
     
     
@@ -13590,8 +13697,8 @@ this type.</p></div>
             
 <dt class="unstable">
     <div class="nameContainer">
-        <h4 class="name" id="mapBrowserEvent">
-            mapBrowserEvent<span class="type-signature type ol.mapbrowserevent">{<a href="ol.MapBrowserEvent.html">ol.MapBrowserEvent</a>}</span> 
+        <h4 class="name" id="mapBrowserPointerEvent">
+            mapBrowserPointerEvent<span class="type-signature type ol.mapbrowserpointerevent">{<a href="ol.MapBrowserPointerEvent.html">ol.MapBrowserPointerEvent</a>}</span> 
             
 <span class="stability experimental">experimental</span>
 
@@ -13603,57 +13710,7 @@ this type.</p></div>
 <dd class="unstable">
     
     <div class="description">
-        <p>Associated <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a>.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        <h4 class="name" id="selected">
-            selected<span class="type-signature type array.<ol.feature>">{Array.&lt;<a href="ol.Feature.html">ol.Feature</a>>}</span> 
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    <div class="description">
-        <p>Selected features array.</p>
+        <p>Associated <a href="ol.MapBrowserPointerEvent.html"><code>ol.MapBrowserPointerEvent</code></a>.</p>
     </div>
     
     
@@ -13701,8 +13758,8 @@ this type.</p></div>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="event:select">
-            select
+        <h4 class="name" id="event:modifyend">
+            modifyend
             
             
 <span class="stability experimental">experimental</span>
@@ -13711,7 +13768,7 @@ this type.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 22
+            src/ol/interaction/modifyinteraction.js, line 41
         </div>
         
         
@@ -13722,7 +13779,84 @@ this type.</p></div>
 
     
     <div class="description">
-        <p>Triggered when feature(s) has been (de)selected.</p>
+        <p>Triggered upon feature modification end</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="event:modifystart">
+            modifystart
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/interaction/modifyinteraction.js, line 35
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Triggered upon feature modification start</p>
     </div>
     
 

@@ -326,7 +326,7 @@ function testChineseDate() {
 
   parser = new goog.i18n.DateTimeParse(
       goog.i18n.DateTimeFormat.Format.FULL_TIME);
-  assertTrue(parser.parse('GMT-07:00\u4E0B\u534803:26:28', date) > 0);
+  assertTrue(parser.parse('GMT-07:00 \u4E0B\u534803:26:28', date) > 0);
 
   // Fails in Safari4/Chrome Winxp because of infrastructure issues, temporarily
   // disabled. See b/4274778.
@@ -399,6 +399,9 @@ function testTimeZone() {
 
   assertTrue(parser.parse('07/21/2003, 11:22:33 GMT0800', date) > 0);
   assertEquals(hourGmt08, date.getHours());
+
+  // 'foo' is not a timezone
+  assertFalse(parser.parse('07/21/2003, 11:22:33 foo', date) > 0);
 }
 
 function testWeekDay() {

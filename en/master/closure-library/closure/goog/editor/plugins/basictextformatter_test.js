@@ -15,6 +15,7 @@
 goog.provide('goog.editor.plugins.BasicTextFormatterTest');
 goog.setTestOnly('goog.editor.plugins.BasicTextFormatterTest');
 
+goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.dom.Range');
 goog.require('goog.dom.TagName');
@@ -188,7 +189,7 @@ function testWebKitList() {
     goog.dom.Range.createFromNodeContents(ul).select();
 
     FORMATTER.fixSafariLists_();
-    var childULs = ul.getElementsByTagName('ul');
+    var childULs = ul.getElementsByTagName(goog.dom.TagName.UL);
     assertEquals('UL should have one child UL',
         1, childULs.length);
     tearDownListAndBlockquoteTests();
@@ -246,6 +247,23 @@ function testSwitchListType() {
       goog.dom.TagName.LI, null, list).length);
 
   tearDownListAndBlockquoteTests();
+}
+
+function testIsSilentCommand() {
+  var commands =
+      goog.object.getValues(goog.editor.plugins.BasicTextFormatter.COMMAND);
+  var silentCommands = [
+    goog.editor.plugins.BasicTextFormatter.COMMAND.CREATE_LINK
+  ];
+
+  for (var i = 0; i < commands.length; i += 1) {
+    var command = commands[i];
+    var shouldBeSilent = goog.array.contains(silentCommands, command);
+    var isSilent =
+        goog.editor.plugins.BasicTextFormatter.prototype.isSilentCommand.call(
+            null, command);
+    assertEquals(shouldBeSilent, isSilent);
+  }
 }
 
 function setUpSubSuperTests() {
@@ -433,6 +451,27 @@ function testUnfocusedLink() {
   tearDownLinkTests();
 }
 
+function testCreateLink() {
+  var text = 'some text here';
+  var url = 'http://google.com';
+
+  ROOT.innerHTML = text;
+  HELPER = new goog.testing.editor.TestHelper(ROOT);
+  HELPER.setUpEditableElement();
+  FIELDMOCK.isSelectionEditable().$anyTimes().$returns(true);
+  FIELDMOCK.getElement().$anyTimes().$returns(ROOT);
+  FIELDMOCK.$replay();
+
+  HELPER.select(text, 0, text, text.length);
+  FORMATTER.execCommandInternal(
+      goog.editor.plugins.BasicTextFormatter.COMMAND.CREATE_LINK,
+      FIELDMOCK.getRange(), url);
+  HELPER.assertHtmlMatches('<a href="' + url + '">' + text + '</a>');
+
+  FIELDMOCK.$verify();
+  tearDownLinkTests();
+}
+
 function setUpJustifyTests(html) {
   ROOT.innerHTML = html;
   HELPER = new goog.testing.editor.TestHelper(ROOT);
@@ -539,7 +578,7 @@ function tearDownFontSizeTests() {
  * Asserts that the text nodes set up by setUpFontSizeTests() have had their
  * font sizes changed as described by sizeChangesMap.
  * @param {string} msg Assertion error message.
- * @param {Object<string, number|null>} sizeChangesMap Maps the text content
+ * @param {Object<string,?number>} sizeChangesMap Maps the text content
  *     of a text node to be measured to its expected font size in pixels, or
  *     null if that text node should not be present in the document (i.e.
  *     because it was split into two). Only the text nodes that have changed
@@ -777,7 +816,8 @@ function testConvertBreaksToDivsKeepsP() {
   HELPER.select('three', 0);
   FORMATTER.convertBreaksToDivs_();
   assertEquals('There should still be a <p> tag',
-               1, FIELDMOCK.getElement().getElementsByTagName('p').length);
+               1, FIELDMOCK.getElement().getElementsByTagName(
+                   goog.dom.TagName.P).length);
   var html = FIELDMOCK.getElement().innerHTML.toLowerCase();
   assertNotBadBrElements(html);
   assertNotContains('There should not be empty <div> elements',
@@ -1123,7 +1163,7 @@ function testScrubImagesRemovesCustomAttributes() {
     'tabIndexSet': '0'};
   attrs[goog.HASH_CODE_PROPERTY_] = '0';
   goog.dom.appendChild(fieldElem,
-      goog.dom.createDom('img', attrs));
+      goog.dom.createDom(goog.dom.TagName.IMG, attrs));
 
   setUpRealField();
 
