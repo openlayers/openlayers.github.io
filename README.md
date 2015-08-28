@@ -4,10 +4,15 @@
 
 Requires that you have [Git](http://git-scm.com/) and [NodeJS](http://nodejs.org/) installed.  Currently, building the website also requires all the ol3 [development dependencies](https://github.com/openlayers/ol3/blob/master/CONTRIBUTING.md) as well.
 
-    $ git clone -b build https://github.com/openlayers/openlayers.github.io.git
-    $ cd openlayers.github.io
-    $ npm install
-    $ npm run deploy
+```shell
+# only once: clone
+git clone -b build https://github.com/openlayers/openlayers.github.io.git
+cd openlayers.github.io
+# always fetch the latest of the build branch:
+git pull origin build 
+npm install
+npm run deploy
+```
 
 Future updates only require that you run `npm run deploy`.  This will update the site documentation and examples from the `master` branch of the `ol3` repository.  To deploy the site for other branches/tags, see below.
 
