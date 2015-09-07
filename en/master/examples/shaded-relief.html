@@ -86,7 +86,7 @@
  * neighborhood for determining slope and aspect.
  * @param {Array.&lt;ImageData&gt;} inputs Array of input images.
  * @param {Object} data Data added in the &quot;beforeoperations&quot; event.
- * @return {Array.&lt;ImageData&gt;} Output images (only the first is rendered).
+ * @return {ImageData} Output image.
  */
 function shade(inputs, data) {
   var elevationImage = inputs[0];
@@ -307,7 +307,7 @@ table.controls td {
  * neighborhood for determining slope and aspect.
  * @param {Array.&lt;ImageData&gt;} inputs Array of input images.
  * @param {Object} data Data added in the &quot;beforeoperations&quot; event.
- * @return {Array.&lt;ImageData&gt;} Output images (only the first is rendered).
+ * @return {ImageData} Output image.
  */
 function shade(inputs, data) {
   var elevationImage = inputs[0];

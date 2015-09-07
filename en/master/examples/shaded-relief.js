@@ -3,7 +3,7 @@
  * neighborhood for determining slope and aspect.
  * @param {Array.<ImageData>} inputs Array of input images.
  * @param {Object} data Data added in the "beforeoperations" event.
- * @return {Array.<ImageData>} Output images (only the first is rendered).
+ * @return {ImageData} Output image.
  */
 function shade(inputs, data) {
   var elevationImage = inputs[0];

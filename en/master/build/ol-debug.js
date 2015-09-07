@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.8.2-156-gcb9054f
+// Version: v3.8.2-164-g1e78c45
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -97675,6 +97675,7 @@ ol.format.KML.prototype.readDocumentOrFolder_ = function(node, objectStack) {
   // FIXME use scope somehow
   var parsersNS = ol.xml.makeStructureNS(
       ol.format.KML.NAMESPACE_URIS_, {
+        'Document': ol.xml.makeArrayExtender(this.readDocumentOrFolder_, this),
         'Folder': ol.xml.makeArrayExtender(this.readDocumentOrFolder_, this),
         'Placemark': ol.xml.makeArrayPusher(this.readPlacemark_, this),
         'Style': goog.bind(this.readSharedStyle_, this),
@@ -102388,10 +102389,10 @@ ol.format.WMSCapabilities.readEXGeographicBoundingBox_ =
       !goog.isDef(eastBoundLongitude) || !goog.isDef(northBoundLatitude)) {
     return undefined;
   }
-  return [
+  return /** @type {ol.Extent} */ ([
     westBoundLongitude, southBoundLatitude,
     eastBoundLongitude, northBoundLatitude
-  ];
+  ]);
 };
 
 
@@ -117719,7 +117720,7 @@ goog.addDependency('demos/editor/helloworlddialogplugin.js', ['goog.demos.editor
 
 /**
  * @fileoverview Custom exports file.
- * @suppress {checkVars}
+ * @suppress {checkVars,extraRequire}
  */
 
 goog.require('ol');
