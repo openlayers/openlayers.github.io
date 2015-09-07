@@ -101,6 +101,7 @@ ol.OL3_LOGO_URL = 'data:image/png;base64,' +
 
 /**
  * @type {Array.<ol.RendererType>}
+ * @const
  */
 ol.DEFAULT_RENDERER_TYPES = [
   ol.RendererType.CANVAS,
@@ -200,7 +201,7 @@ ol.Map = function(options) {
 
   /**
    * @private
-   * @type {Object}
+   * @type {Object.<string, string>}
    */
   this.logos_ = optionsInternal.logos;
 
@@ -1433,7 +1434,7 @@ ol.Map.prototype.unskipFeature = function(feature) {
  * @typedef {{controls: ol.Collection.<ol.control.Control>,
  *            interactions: ol.Collection.<ol.interaction.Interaction>,
  *            keyboardEventTarget: (Element|Document),
- *            logos: Object,
+ *            logos: Object.<string, string>,
  *            overlays: ol.Collection.<ol.Overlay>,
  *            rendererConstructor:
  *                function(new: ol.renderer.Map, Element, ol.Map),

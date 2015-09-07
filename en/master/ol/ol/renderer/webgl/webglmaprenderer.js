@@ -2,6 +2,7 @@
 
 goog.provide('ol.renderer.webgl.Map');
 
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
@@ -392,9 +393,7 @@ ol.renderer.webgl.Map.prototype.handleWebGLContextLost = function(event) {
       function(layerRenderer, key, object) {
         goog.asserts.assertInstanceof(layerRenderer, ol.renderer.webgl.Layer,
             'renderer is an instance of ol.renderer.webgl.Layer');
-        var webGLLayerRenderer = /** @type {ol.renderer.webgl.Layer} */
-            (layerRenderer);
-        webGLLayerRenderer.handleWebGLContextLost();
+        layerRenderer.handleWebGLContextLost();
       });
 };
 
@@ -471,6 +470,8 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
   /** @type {Array.<ol.layer.LayerState>} */
   var layerStatesToDraw = [];
   var layerStatesArray = frameState.layerStatesArray;
+  goog.array.stableSort(layerStatesArray, ol.renderer.Map.sortByZIndex);
+
   var viewResolution = frameState.viewState.resolution;
   var i, ii, layerRenderer, layerState;
   for (i = 0, ii = layerStatesArray.length; i < ii; ++i) {

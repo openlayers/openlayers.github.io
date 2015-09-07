@@ -48,32 +48,19 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">// format used to parse WFS GetFeature responses
-var geojsonFormat = new ol.format.GeoJSON();
-
-var vectorSource = new ol.source.Vector({
-  loader: function(extent, resolution, projection) {
-    var url = &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
+          <textarea class="hidden" name="js">var vectorSource = new ol.source.Vector({
+  format: new ol.format.GeoJSON(),
+  url: function(extent, resolution, projection) {
+    return &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
         &#x27;version=1.1.0&amp;request=GetFeature&amp;typename=osm:water_areas&amp;&#x27; +
-        &#x27;outputFormat=text/javascript&amp;format_options=callback:loadFeatures&#x27; +
-        &#x27;&amp;srsname=EPSG:3857&amp;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
-    // use jsonp: false to prevent jQuery from adding the &quot;callback&quot;
-    // parameter to the URL
-    $.ajax({url: url, dataType: &#x27;jsonp&#x27;, jsonp: false});
+        &#x27;outputFormat=application/json&amp;srsname=EPSG:3857&amp;&#x27; +
+        &#x27;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
   },
   strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
     maxZoom: 19
   }))
 });
 
-
-/**
- * JSONP WFS callback function.
- * @param {Object} response The response object.
- */
-window.loadFeatures = function(response) {
-  vectorSource.addFeatures(geojsonFormat.readFeatures(response));
-};
 
 var vector = new ol.layer.Vector({
   source: vectorSource,
@@ -134,32 +121,19 @@ var map = new ol.Map({
 
 &lt;/div&gt;
 &lt;script&gt;
-// format used to parse WFS GetFeature responses
-var geojsonFormat = new ol.format.GeoJSON();
-
 var vectorSource = new ol.source.Vector({
-  loader: function(extent, resolution, projection) {
-    var url = &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
+  format: new ol.format.GeoJSON(),
+  url: function(extent, resolution, projection) {
+    return &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
         &#x27;version=1.1.0&amp;request=GetFeature&amp;typename=osm:water_areas&amp;&#x27; +
-        &#x27;outputFormat=text/javascript&amp;format_options=callback:loadFeatures&#x27; +
-        &#x27;&amp;srsname=EPSG:3857&amp;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
-    // use jsonp: false to prevent jQuery from adding the &quot;callback&quot;
-    // parameter to the URL
-    $.ajax({url: url, dataType: &#x27;jsonp&#x27;, jsonp: false});
+        &#x27;outputFormat=application/json&amp;srsname=EPSG:3857&amp;&#x27; +
+        &#x27;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
   },
   strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
     maxZoom: 19
   }))
 });
 
-
-/**
- * JSONP WFS callback function.
- * @param {Object} response The response object.
- */
-window.loadFeatures = function(response) {
-  vectorSource.addFeatures(geojsonFormat.readFeatures(response));
-};
 
 var vector = new ol.layer.Vector({
   source: vectorSource,
