@@ -134,14 +134,14 @@ function testTouchEventHandling() {
   var clientCoords = new goog.math.Coordinate(5, 5);
   var screenCoords = new goog.math.Coordinate(10, 10);
   var target = document.body;
-  var touchStart = createTouchEvent('touchstart', target, clientCoords,
-    screenCoords);
-  var touchMove = createTouchEvent('touchmove', target, clientCoords,
-    screenCoords);
-  var touchEnd = createTouchEvent('touchend', target, clientCoords,
-    screenCoords);
-  var touchCancel = createTouchEvent('touchcancel', target, clientCoords,
-    screenCoords);
+  var touchStart =
+      createTouchEvent('touchstart', target, clientCoords, screenCoords);
+  var touchMove =
+      createTouchEvent('touchmove', target, clientCoords, screenCoords);
+  var touchEnd =
+      createTouchEvent('touchend', target, clientCoords, screenCoords);
+  var touchCancel =
+      createTouchEvent('touchcancel', target, clientCoords, screenCoords);
 
   assertEquals(clientCoords.x, touchStart.clientX);
   assertEquals(clientCoords.y, touchStart.clientY);
@@ -169,8 +169,8 @@ function createMouseEvent(type, button, opt_ctrlKey) {
 function createTouchEvent(type, target, clientCoords, screenCoords) {
   return new goog.events.BrowserEvent({
     type: type,
+    target: target,
     changedTouches: [{
-      target: target,
       clientX: clientCoords.x,
       clientY: clientCoords.y,
       screenX: screenCoords.x,

@@ -25,6 +25,7 @@ goog.require('goog.labs.userAgent.engine');
 goog.require('goog.labs.userAgent.platform');
 goog.require('goog.string');
 goog.require('goog.testing.PropertyReplacer');
+goog.require('goog.testing.TestCase');
 goog.require('goog.testing.jsunit');
 goog.require('goog.window');
 
@@ -47,6 +48,7 @@ function setUpPage() {
               goog.dom.getTextContent(e.target), {'noreferrer': true});
         });
   }
+  goog.testing.TestCase.getActiveTestCase().promiseTimeout = 60000; // 60s
 }
 
 

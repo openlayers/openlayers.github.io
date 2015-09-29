@@ -182,7 +182,7 @@ goog.date.DateRange.offsetInMonths_ = function(date, offset) {
 goog.date.DateRange.yesterday = function(opt_today) {
   var today = goog.date.DateRange.cloneOrCreate_(opt_today);
   var yesterday = goog.date.DateRange.offsetInDays_(today, -1);
-  return new goog.date.DateRange(yesterday, yesterday);
+  return new goog.date.DateRange(yesterday, yesterday.clone());
 };
 
 
@@ -194,7 +194,7 @@ goog.date.DateRange.yesterday = function(opt_today) {
  */
 goog.date.DateRange.today = function(opt_today) {
   var today = goog.date.DateRange.cloneOrCreate_(opt_today);
-  return new goog.date.DateRange(today, today);
+  return new goog.date.DateRange(today, today.clone());
 };
 
 
@@ -396,7 +396,6 @@ goog.date.DateRange.cloneOrCreate_ = function(opt_today) {
  * Creates an iterator over the dates in a {@link goog.date.DateRange}.
  * @constructor
  * @struct
- * @suppress {checkStructDictInheritance}
  * @extends {goog.iter.Iterator<goog.date.Date>}
  * @param {goog.date.DateRange} dateRange The date range to iterate.
  * @final

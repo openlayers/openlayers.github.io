@@ -38,14 +38,6 @@
           </label>
           <label>opacity</label>
           <input class="opacity" type="range" min="0" max="1" step="0.01"/>
-          <label>hue</label>
-          <input class="hue" type="range" min="-3.141592653589793" max="3.141592653589793" step="0.01"/>
-          <label>saturation</label>
-          <input class="saturation" type="range" min="0" max="5" step="0.01"/>
-          <label>contrast</label>
-          <input class="contrast" type="range" min="0" max="2" step="0.01"/>
-          <label>brightness</label>
-          <input class="brightness" type="range" min="-1" max="1" step="0.01"/>
         </fieldset>
       </li>
       <li><span>Layer group</span>
@@ -55,14 +47,6 @@
           </label>
           <label>opacity</label>
           <input class="opacity" type="range" min="0" max="1" step="0.01"/>
-          <label>hue</label>
-          <input class="hue" type="range" min="-3.141592653589793" max="3.141592653589793" step="0.01"/>
-          <label>saturation</label>
-          <input class="saturation" type="range" min="0" max="5" step="0.01"/>
-          <label>contrast</label>
-          <input class="contrast" type="range" min="0" max="2" step="0.01"/>
-          <label>brightness</label>
-          <input class="brightness" type="range" min="-1" max="1" step="0.01"/>
         </fieldset>
         <ul>
           <li><span>Food insecurity layer</span>
@@ -72,14 +56,6 @@
               </label>
               <label>opacity</label>
               <input class="opacity" type="range" min="0" max="1" step="0.01"/>
-              <label>hue</label>
-              <input class="hue" type="range" min="-3.141592653589793" max="3.141592653589793" step="0.01"/>
-              <label>saturation</label>
-              <input class="saturation" type="range" min="0" max="5" step="0.01"/>
-              <label>contrast</label>
-              <input class="contrast" type="range" min="0" max="2" step="0.01"/>
-              <label>brightness</label>
-              <input class="brightness" type="range" min="-1" max="1" step="0.01"/>
             </fieldset>
           </li>
           <li><span>World borders layer</span>
@@ -89,14 +65,6 @@
               </label>
               <label>opacity</label>
               <input class="opacity" type="range" min="0" max="1" step="0.01"/>
-              <label>hue</label>
-              <input class="hue" type="range" min="-3.141592653589793" max="3.141592653589793" step="0.01"/>
-              <label>saturation</label>
-              <input class="saturation" type="range" min="0" max="5" step="0.01"/>
-              <label>contrast</label>
-              <input class="contrast" type="range" min="0" max="2" step="0.01"/>
-              <label>brightness</label>
-              <input class="brightness" type="range" min="-1" max="1" step="0.01"/>
             </fieldset>
           </li>
         </ul>
@@ -160,15 +128,11 @@ function bindInputs(layerid, layer) {
   });
   visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
 
-  $.each([&#x27;opacity&#x27;, &#x27;hue&#x27;, &#x27;saturation&#x27;, &#x27;contrast&#x27;, &#x27;brightness&#x27;],
-      function(i, v) {
-        var input = $(layerid + &#x27; input.&#x27; + v);
-        input.on(&#x27;input change&#x27;, function() {
-          layer.set(v, parseFloat(this.value));
-        });
-        input.val(String(layer.get(v)));
-      }
-  );
+  var opacityInput = $(layerid + &#x27; input.opacity&#x27;);
+  opacityInput.on(&#x27;input change&#x27;, function() {
+    layer.setOpacity(parseFloat(this.value));
+  });
+  opacityInput.val(String(layer.getOpacity()));
 }
 map.getLayers().forEach(function(layer, i) {
   bindInputs(&#x27;#layer&#x27; + i, layer);
@@ -200,14 +164,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
           &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;hue&lt;/label&gt;
-          &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;saturation&lt;/label&gt;
-          &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;contrast&lt;/label&gt;
-          &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;brightness&lt;/label&gt;
-          &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;span&gt;Layer group&lt;/span&gt;
@@ -217,14 +173,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
           &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;hue&lt;/label&gt;
-          &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;saturation&lt;/label&gt;
-          &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;contrast&lt;/label&gt;
-          &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;brightness&lt;/label&gt;
-          &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
         &lt;ul&gt;
           &lt;li&gt;&lt;span&gt;Food insecurity layer&lt;/span&gt;
@@ -234,14 +182,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
               &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;hue&lt;/label&gt;
-              &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;saturation&lt;/label&gt;
-              &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;contrast&lt;/label&gt;
-              &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;brightness&lt;/label&gt;
-              &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
           &lt;li&gt;&lt;span&gt;World borders layer&lt;/span&gt;
@@ -251,14 +191,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
               &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;hue&lt;/label&gt;
-              &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;saturation&lt;/label&gt;
-              &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;contrast&lt;/label&gt;
-              &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;brightness&lt;/label&gt;
-              &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
         &lt;/ul&gt;
@@ -303,14 +235,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
           &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;hue&lt;/label&gt;
-          &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;saturation&lt;/label&gt;
-          &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;contrast&lt;/label&gt;
-          &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;brightness&lt;/label&gt;
-          &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;span&gt;Layer group&lt;/span&gt;
@@ -320,14 +244,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
           &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;hue&lt;/label&gt;
-          &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;saturation&lt;/label&gt;
-          &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;contrast&lt;/label&gt;
-          &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-          &lt;label&gt;brightness&lt;/label&gt;
-          &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
         &lt;ul&gt;
           &lt;li&gt;&lt;span&gt;Food insecurity layer&lt;/span&gt;
@@ -337,14 +253,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
               &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;hue&lt;/label&gt;
-              &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;saturation&lt;/label&gt;
-              &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;contrast&lt;/label&gt;
-              &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;brightness&lt;/label&gt;
-              &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
           &lt;li&gt;&lt;span&gt;World borders layer&lt;/span&gt;
@@ -354,14 +262,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
               &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;hue&lt;/label&gt;
-              &lt;input class=&quot;hue&quot; type=&quot;range&quot; min=&quot;-3.141592653589793&quot; max=&quot;3.141592653589793&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;saturation&lt;/label&gt;
-              &lt;input class=&quot;saturation&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;5&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;contrast&lt;/label&gt;
-              &lt;input class=&quot;contrast&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;2&quot; step=&quot;0.01&quot;/&gt;
-              &lt;label&gt;brightness&lt;/label&gt;
-              &lt;input class=&quot;brightness&quot; type=&quot;range&quot; min=&quot;-1&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
         &lt;/ul&gt;
@@ -409,15 +309,11 @@ function bindInputs(layerid, layer) {
   });
   visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
 
-  $.each([&#x27;opacity&#x27;, &#x27;hue&#x27;, &#x27;saturation&#x27;, &#x27;contrast&#x27;, &#x27;brightness&#x27;],
-      function(i, v) {
-        var input = $(layerid + &#x27; input.&#x27; + v);
-        input.on(&#x27;input change&#x27;, function() {
-          layer.set(v, parseFloat(this.value));
-        });
-        input.val(String(layer.get(v)));
-      }
-  );
+  var opacityInput = $(layerid + &#x27; input.opacity&#x27;);
+  opacityInput.on(&#x27;input change&#x27;, function() {
+    layer.setOpacity(parseFloat(this.value));
+  });
+  opacityInput.val(String(layer.getOpacity()));
 }
 map.getLayers().forEach(function(layer, i) {
   bindInputs(&#x27;#layer&#x27; + i, layer);
