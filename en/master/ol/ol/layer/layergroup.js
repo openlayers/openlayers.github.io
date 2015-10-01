@@ -1,6 +1,5 @@
 goog.provide('ol.layer.Group');
 
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -62,7 +61,7 @@ ol.layer.Group = function(opt_options) {
       ol.Object.getChangeEventType(ol.layer.GroupProperty.LAYERS),
       this.handleLayersChanged_, false, this);
 
-  if (goog.isDefAndNotNull(layers)) {
+  if (layers) {
     if (goog.isArray(layers)) {
       layers = new ol.Collection(layers.slice());
     } else {
@@ -95,7 +94,7 @@ ol.layer.Group.prototype.handleLayerChange_ = function() {
  * @private
  */
 ol.layer.Group.prototype.handleLayersChanged_ = function(event) {
-  goog.array.forEach(this.layersListenerKeys_, goog.events.unlistenByKey);
+  this.layersListenerKeys_.forEach(goog.events.unlistenByKey);
   this.layersListenerKeys_.length = 0;
 
   var layers = this.getLayers();
@@ -106,7 +105,7 @@ ol.layer.Group.prototype.handleLayersChanged_ = function(event) {
           this.handleLayersRemove_, false, this));
 
   goog.object.forEach(this.listenerKeys_, function(keys) {
-    goog.array.forEach(keys, goog.events.unlistenByKey);
+    keys.forEach(goog.events.unlistenByKey);
   });
   goog.object.clear(this.listenerKeys_);
 
@@ -153,7 +152,7 @@ ol.layer.Group.prototype.handleLayersRemove_ = function(collectionEvent) {
   var layer = /** @type {ol.layer.Base} */ (collectionEvent.element);
   var key = goog.getUid(layer).toString();
   goog.asserts.assert(key in this.listenerKeys_, 'no listeners to unregister');
-  goog.array.forEach(this.listenerKeys_[key], goog.events.unlistenByKey);
+  this.listenerKeys_[key].forEach(goog.events.unlistenByKey);
   delete this.listenerKeys_[key];
   this.changed();
 };

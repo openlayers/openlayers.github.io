@@ -78,7 +78,7 @@ ol.renderer.webgl.VectorLayer.prototype.composeFrame =
   this.layerState_ = layerState;
   var viewState = frameState.viewState;
   var replayGroup = this.replayGroup_;
-  if (!goog.isNull(replayGroup) && !replayGroup.isEmpty()) {
+  if (replayGroup && !replayGroup.isEmpty()) {
     replayGroup.replay(context,
         viewState.center, viewState.resolution, viewState.rotation,
         frameState.size, frameState.pixelRatio, layerState.opacity,
@@ -93,7 +93,7 @@ ol.renderer.webgl.VectorLayer.prototype.composeFrame =
  */
 ol.renderer.webgl.VectorLayer.prototype.disposeInternal = function() {
   var replayGroup = this.replayGroup_;
-  if (!goog.isNull(replayGroup)) {
+  if (replayGroup) {
     var context = this.mapRenderer.getContext();
     replayGroup.getDeleteResourcesFunction(context)();
     this.replayGroup_ = null;
@@ -107,7 +107,7 @@ ol.renderer.webgl.VectorLayer.prototype.disposeInternal = function() {
  */
 ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
-  if (goog.isNull(this.replayGroup_) || goog.isNull(this.layerState_)) {
+  if (!this.replayGroup_ || !this.layerState_) {
     return undefined;
   } else {
     var context = this.mapRenderer.getContext();
@@ -141,7 +141,7 @@ ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate =
  */
 ol.renderer.webgl.VectorLayer.prototype.hasFeatureAtCoordinate =
     function(coordinate, frameState) {
-  if (goog.isNull(this.replayGroup_) || goog.isNull(this.layerState_)) {
+  if (!this.replayGroup_ || !this.layerState_) {
     return false;
   } else {
     var context = this.mapRenderer.getContext();
@@ -233,7 +233,7 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
     return true;
   }
 
-  if (!goog.isNull(this.replayGroup_)) {
+  if (this.replayGroup_) {
     frameState.postRenderFunctions.push(
         this.replayGroup_.getDeleteResourcesFunction(context));
   }
@@ -260,13 +260,13 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
         styles = styleFunction(feature, resolution);
       }
     }
-    if (goog.isDefAndNotNull(styles)) {
+    if (styles) {
       var dirty = this.renderFeature(
           feature, resolution, pixelRatio, styles, replayGroup);
       this.dirty_ = this.dirty_ || dirty;
     }
   };
-  if (!goog.isNull(vectorLayerRenderOrder)) {
+  if (vectorLayerRenderOrder) {
     /** @type {Array.<ol.Feature>} */
     var features = [];
     vectorSource.forEachFeatureInExtentAtResolution(extent, resolution,
@@ -277,7 +277,7 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
           features.push(feature);
         }, this);
     goog.array.sort(features, vectorLayerRenderOrder);
-    goog.array.forEach(features, renderFeature, this);
+    features.forEach(renderFeature, this);
   } else {
     vectorSource.forEachFeatureInExtentAtResolution(
         extent, resolution, renderFeature, this);
@@ -304,7 +304,7 @@ ol.renderer.webgl.VectorLayer.prototype.prepareFrame =
  */
 ol.renderer.webgl.VectorLayer.prototype.renderFeature =
     function(feature, resolution, pixelRatio, styles, replayGroup) {
-  if (!goog.isDefAndNotNull(styles)) {
+  if (!styles) {
     return false;
   }
   var i, ii, loading = false;

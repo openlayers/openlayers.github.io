@@ -116,13 +116,13 @@ ol.format.GMLBase.prototype.readFeaturesInternal = function(node, objectStack) {
     var featureType = context['featureType'];
     var featureNS = context['featureNS'];
     var i, ii, prefix = 'p', defaultPrefix = 'p0';
-    if (!featureType && goog.isDefAndNotNull(node.childNodes)) {
+    if (!featureType && node.childNodes) {
       featureType = [], featureNS = {};
       for (i = 0, ii = node.childNodes.length; i < ii; ++i) {
         var child = node.childNodes[i];
         if (child.nodeType === 1) {
           var ft = child.nodeName.split(':').pop();
-          if (goog.array.indexOf(featureType, ft) === -1) {
+          if (featureType.indexOf(ft) === -1) {
             var key;
             if (!goog.object.contains(featureNS, child.namespaceURI)) {
               key = prefix + goog.object.getCount(featureNS);
@@ -180,7 +180,7 @@ ol.format.GMLBase.prototype.readGeometryElement = function(node, objectStack) {
   context['srsName'] = node.firstElementChild.getAttribute('srsName');
   var geometry = ol.xml.pushParseAndPop(/** @type {ol.geom.Geometry} */(null),
       this.GEOMETRY_PARSERS_, node, objectStack, this);
-  if (goog.isDefAndNotNull(geometry)) {
+  if (geometry) {
     return /** @type {ol.geom.Geometry} */ (
         ol.format.Feature.transformWithOptions(geometry, false, context));
   } else {
@@ -199,8 +199,7 @@ ol.format.GMLBase.prototype.readFeatureElement = function(node, objectStack) {
   var fid = node.getAttribute('fid') ||
       ol.xml.getAttributeNS(node, ol.format.GMLBase.GMLNS, 'id');
   var values = {}, geometryName;
-  for (n = node.firstElementChild; !goog.isNull(n);
-      n = n.nextElementSibling) {
+  for (n = node.firstElementChild; n; n = n.nextElementSibling) {
     var localName = ol.xml.getLocalName(n);
     // Assume attribute elements have one child node and that the child
     // is a text or CDATA node (to be treated as text).
@@ -243,7 +242,7 @@ ol.format.GMLBase.prototype.readPoint = function(node, objectStack) {
   goog.asserts.assert(node.localName == 'Point', 'localName should be Point');
   var flatCoordinates =
       this.readFlatCoordinatesFromNode_(node, objectStack);
-  if (goog.isDefAndNotNull(flatCoordinates)) {
+  if (flatCoordinates) {
     var point = new ol.geom.Point(null);
     goog.asserts.assert(flatCoordinates.length == 3,
         'flatCoordinates should have a length of 3');
@@ -382,7 +381,7 @@ ol.format.GMLBase.prototype.readLineString = function(node, objectStack) {
       'localName should be LineString');
   var flatCoordinates =
       this.readFlatCoordinatesFromNode_(node, objectStack);
-  if (goog.isDefAndNotNull(flatCoordinates)) {
+  if (flatCoordinates) {
     var lineString = new ol.geom.LineString(null);
     lineString.setFlatCoordinates(ol.geom.GeometryLayout.XYZ, flatCoordinates);
     return lineString;
@@ -406,7 +405,7 @@ ol.format.GMLBase.prototype.readFlatLinearRing_ = function(node, objectStack) {
   var ring = ol.xml.pushParseAndPop(/** @type {Array.<number>} */(null),
       this.GEOMETRY_FLAT_COORDINATES_PARSERS_, node,
       objectStack, this);
-  if (goog.isDefAndNotNull(ring)) {
+  if (ring) {
     return ring;
   } else {
     return undefined;
@@ -449,8 +448,7 @@ ol.format.GMLBase.prototype.readPolygon = function(node, objectStack) {
   var flatLinearRings = ol.xml.pushParseAndPop(
       /** @type {Array.<Array.<number>>} */ ([null]),
       this.FLAT_LINEAR_RINGS_PARSERS_, node, objectStack, this);
-  if (flatLinearRings &&
-      !goog.isNull(flatLinearRings[0])) {
+  if (flatLinearRings && flatLinearRings[0]) {
     var polygon = new ol.geom.Polygon(null);
     var flatCoordinates = flatLinearRings[0];
     var ends = [flatCoordinates.length];

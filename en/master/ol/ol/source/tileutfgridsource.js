@@ -81,7 +81,7 @@ ol.source.TileUTFGrid.prototype.getTemplate = function() {
  */
 ol.source.TileUTFGrid.prototype.forDataAtCoordinateAndResolution = function(
     coordinate, resolution, callback, opt_this, opt_request) {
-  if (!goog.isNull(this.tileGrid)) {
+  if (this.tileGrid) {
     var tileCoord = this.tileGrid.getTileCoordForCoordAndResolution(
         coordinate, resolution);
     var tile = /** @type {!ol.source.TileUTFGridTile_} */(this.getTile(
@@ -131,12 +131,13 @@ ol.source.TileUTFGrid.prototype.handleTileJSONResponse = function(tileJSON) {
   this.template_ = tileJSON.template;
 
   var grids = tileJSON.grids;
-  if (!goog.isDefAndNotNull(grids)) {
+  if (!grids) {
     this.setState(ol.source.State.ERROR);
     return;
   }
 
-  this.tileUrlFunction_ = ol.TileUrlFunction.createFromTemplates(grids);
+  this.tileUrlFunction_ =
+      ol.TileUrlFunction.createFromTemplates(grids, tileGrid);
 
   if (tileJSON.attribution !== undefined) {
     var attributionExtent = extent !== undefined ?
@@ -268,8 +269,7 @@ ol.source.TileUTFGridTile_.prototype.getImage = function(opt_context) {
  * @return {Object}
  */
 ol.source.TileUTFGridTile_.prototype.getData = function(coordinate) {
-  if (goog.isNull(this.grid_) || goog.isNull(this.keys_) ||
-      !goog.isDefAndNotNull(this.data_)) {
+  if (!this.grid_ || !this.keys_ || !this.data_) {
     return null;
   }
   var xRelative = (coordinate[0] - this.extent_[0]) /
@@ -292,9 +292,7 @@ ol.source.TileUTFGridTile_.prototype.getData = function(coordinate) {
   }
   code -= 32;
 
-  var key = this.keys_[code];
-
-  return goog.isDefAndNotNull(key) ? this.data_[key] : null;
+  return (code in this.keys_) ? this.data_[this.keys_[code]] : null;
 };
 
 

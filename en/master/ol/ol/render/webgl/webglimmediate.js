@@ -1,6 +1,5 @@
 goog.provide('ol.render.webgl.Immediate');
 goog.require('goog.array');
-goog.require('goog.object');
 goog.require('ol.extent');
 goog.require('ol.render.VectorContext');
 goog.require('ol.render.webgl.ImageReplay');
@@ -67,7 +66,7 @@ ol.render.webgl.Immediate = function(context,
 
   /**
    * @private
-   * @type {Object.<string,
+   * @type {!Object.<string,
    *        Array.<function(ol.render.webgl.Immediate)>>}
    */
   this.callbacksByZIndex_ = {};
@@ -80,7 +79,7 @@ goog.inherits(ol.render.webgl.Immediate, ol.render.VectorContext);
  */
 ol.render.webgl.Immediate.prototype.flush = function() {
   /** @type {Array.<number>} */
-  var zs = goog.array.map(goog.object.getKeys(this.callbacksByZIndex_), Number);
+  var zs = Object.keys(this.callbacksByZIndex_).map(Number);
   goog.array.sort(zs);
   var i, ii, callbacks, j, jj;
   for (i = 0, ii = zs.length; i < ii; ++i) {
@@ -126,7 +125,7 @@ ol.render.webgl.Immediate.prototype.drawCircleGeometry =
  */
 ol.render.webgl.Immediate.prototype.drawFeature = function(feature, style) {
   var geometry = style.getGeometryFunction()(feature);
-  if (!goog.isDefAndNotNull(geometry) ||
+  if (!geometry ||
       !ol.extent.intersects(this.extent_, geometry.getExtent())) {
     return;
   }

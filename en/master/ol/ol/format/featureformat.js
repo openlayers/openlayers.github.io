@@ -67,7 +67,7 @@ ol.format.Feature.prototype.adaptOptions = function(options) {
   if (options) {
     updatedOptions = {
       featureProjection: options.featureProjection,
-      dataProjection: goog.isDefAndNotNull(options.dataProjection) ?
+      dataProjection: options.dataProjection ?
           options.dataProjection : this.defaultDataProjection,
       rightHanded: options.rightHanded
     };
@@ -165,7 +165,7 @@ ol.format.Feature.transformWithOptions = function(
       ol.proj.get(opt_options.featureProjection) : null;
   var dataProjection = opt_options ?
       ol.proj.get(opt_options.dataProjection) : null;
-  if (!goog.isNull(featureProjection) && !goog.isNull(dataProjection) &&
+  if (featureProjection && dataProjection &&
       !ol.proj.equivalent(featureProjection, dataProjection)) {
     if (geometry instanceof ol.geom.Geometry) {
       return (write ? geometry.clone() : geometry).transform(

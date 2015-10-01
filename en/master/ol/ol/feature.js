@@ -4,7 +4,6 @@ goog.provide('ol.FeatureStyleFunction');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
-goog.require('goog.functions');
 goog.require('ol');
 goog.require('ol.Object');
 goog.require('ol.geom.Geometry');
@@ -99,7 +98,7 @@ ol.Feature = function(opt_geometryOrProperties) {
 
   if (opt_geometryOrProperties !== undefined) {
     if (opt_geometryOrProperties instanceof ol.geom.Geometry ||
-        goog.isNull(opt_geometryOrProperties)) {
+        !opt_geometryOrProperties) {
       var geometry = /** @type {ol.geom.Geometry} */ (opt_geometryOrProperties);
       this.setGeometry(geometry);
     } else {
@@ -124,11 +123,11 @@ ol.Feature.prototype.clone = function() {
   var clone = new ol.Feature(this.getProperties());
   clone.setGeometryName(this.getGeometryName());
   var geometry = this.getGeometry();
-  if (goog.isDefAndNotNull(geometry)) {
+  if (geometry) {
     clone.setGeometry(geometry.clone());
   }
   var style = this.getStyle();
-  if (!goog.isNull(style)) {
+  if (style) {
     clone.setStyle(style);
   }
   return clone;
@@ -210,12 +209,12 @@ ol.Feature.prototype.handleGeometryChange_ = function() {
  * @private
  */
 ol.Feature.prototype.handleGeometryChanged_ = function() {
-  if (!goog.isNull(this.geometryChangeKey_)) {
+  if (this.geometryChangeKey_) {
     goog.events.unlistenByKey(this.geometryChangeKey_);
     this.geometryChangeKey_ = null;
   }
   var geometry = this.getGeometry();
-  if (goog.isDefAndNotNull(geometry)) {
+  if (geometry) {
     this.geometryChangeKey_ = goog.events.listen(geometry,
         goog.events.EventType.CHANGE, this.handleGeometryChange_, false, this);
   }
@@ -246,7 +245,7 @@ ol.Feature.prototype.setGeometry = function(geometry) {
  */
 ol.Feature.prototype.setStyle = function(style) {
   this.style_ = style;
-  this.styleFunction_ = goog.isNull(style) ?
+  this.styleFunction_ = !style ?
       undefined : ol.Feature.createStyleFunction(style);
   this.changed();
 };
@@ -322,7 +321,9 @@ ol.Feature.createStyleFunction = function(obj) {
           'obj should be an ol.style.Style');
       styles = [obj];
     }
-    styleFunction = goog.functions.constant(styles);
+    styleFunction = function() {
+      return styles;
+    };
   }
   return styleFunction;
 };

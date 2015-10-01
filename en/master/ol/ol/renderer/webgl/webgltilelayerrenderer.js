@@ -5,7 +5,6 @@ goog.provide('ol.renderer.webgl.TileLayer');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
-goog.require('goog.object');
 goog.require('goog.vec.Mat4');
 goog.require('goog.vec.Vec4');
 goog.require('goog.webgl');
@@ -187,7 +186,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
       extent, tileResolution);
 
   var framebufferExtent;
-  if (!goog.isNull(this.renderedTileRange_) &&
+  if (this.renderedTileRange_ &&
       this.renderedTileRange_.equals(tileRange) &&
       this.renderedRevision_ == tileSource.getRevision()) {
     framebufferExtent = this.renderedFramebufferExtent_;
@@ -219,7 +218,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
 
     var program = context.getProgram(this.fragmentShader_, this.vertexShader_);
     context.useProgram(program);
-    if (goog.isNull(this.locations_)) {
+    if (!this.locations_) {
       this.locations_ =
           new ol.renderer.webgl.tilelayer.shader.Locations(gl, program);
     }
@@ -276,7 +275,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
         if (!fullyLoaded) {
           childTileRange = tileGrid.getTileCoordChildTileRange(
               tile.tileCoord, tmpTileRange, tmpExtent);
-          if (!goog.isNull(childTileRange)) {
+          if (childTileRange) {
             findLoadedTiles(z + 1, childTileRange);
           }
         }
@@ -286,7 +285,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
     }
 
     /** @type {Array.<number>} */
-    var zs = goog.array.map(goog.object.getKeys(tilesToDrawByZ), Number);
+    var zs = Object.keys(tilesToDrawByZ).map(Number);
     goog.array.sort(zs);
     var u_tileOffset = goog.vec.Vec4.createFloat32();
     var i, ii, sx, sy, tileKey, tilesToDraw, tx, ty;
@@ -378,7 +377,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
  */
 ol.renderer.webgl.TileLayer.prototype.forEachLayerAtPixel =
     function(pixel, frameState, callback, thisArg) {
-  if (goog.isNull(this.framebuffer)) {
+  if (!this.framebuffer) {
     return undefined;
   }
 

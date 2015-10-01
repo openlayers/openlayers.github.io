@@ -75,10 +75,10 @@ ol.source.TileJSON.prototype.handleTileJSONResponse = function(tileJSON) {
   });
   this.tileGrid = tileGrid;
 
-  this.tileUrlFunction = ol.TileUrlFunction.createFromTemplates(tileJSON.tiles);
+  this.tileUrlFunction =
+      ol.TileUrlFunction.createFromTemplates(tileJSON.tiles, tileGrid);
 
-  if (tileJSON.attribution !== undefined &&
-      goog.isNull(this.getAttributions())) {
+  if (tileJSON.attribution !== undefined && !this.getAttributions()) {
     var attributionExtent = extent !== undefined ?
         extent : epsg4326Projection.getExtent();
     /** @type {Object.<string, Array.<ol.TileRange>>} */

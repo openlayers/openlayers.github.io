@@ -4,6 +4,7 @@ goog.provide('ol.source.TileOptions');
 
 goog.require('goog.asserts');
 goog.require('goog.events.Event');
+goog.require('ol');
 goog.require('ol.Attribution');
 goog.require('ol.Extent');
 goog.require('ol.TileCache');
@@ -194,7 +195,7 @@ ol.source.Tile.prototype.getTileGrid = function() {
  * @return {ol.tilegrid.TileGrid} Tile grid.
  */
 ol.source.Tile.prototype.getTileGridForProjection = function(projection) {
-  if (goog.isNull(this.tileGrid)) {
+  if (!this.tileGrid) {
     return ol.tilegrid.getForProjection(projection);
   } else {
     return this.tileGrid;
@@ -230,7 +231,7 @@ ol.source.Tile.prototype.getTileCoordForTileUrlFunction =
   var projection = opt_projection !== undefined ?
       opt_projection : this.getProjection();
   var tileGrid = this.getTileGridForProjection(projection);
-  goog.asserts.assert(!goog.isNull(tileGrid), 'tile grid needed');
+  goog.asserts.assert(tileGrid, 'tile grid needed');
   if (this.getWrapX() && projection.isGlobal()) {
     tileCoord = ol.tilecoord.wrapX(tileCoord, tileGrid, projection);
   }
@@ -244,7 +245,7 @@ ol.source.Tile.prototype.getTileCoordForTileUrlFunction =
  * @param {number} x Tile coordinate x.
  * @param {number} y Tile coordinate y.
  */
-ol.source.Tile.prototype.useTile = goog.nullFunction;
+ol.source.Tile.prototype.useTile = ol.nullFunction;
 
 
 

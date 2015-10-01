@@ -58,13 +58,6 @@ ol.control.Zoom = function(opt_options) {
       goog.events.EventType.CLICK, goog.partial(
           ol.control.Zoom.prototype.handleClick_, -delta), false, this);
 
-  goog.events.listen(outElement, [
-    goog.events.EventType.MOUSEOUT,
-    goog.events.EventType.FOCUSOUT
-  ], function() {
-    this.blur();
-  }, false);
-
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
   var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, inElement,
@@ -103,7 +96,7 @@ ol.control.Zoom.prototype.handleClick_ = function(delta, event) {
 ol.control.Zoom.prototype.zoomByDelta_ = function(delta) {
   var map = this.getMap();
   var view = map.getView();
-  if (goog.isNull(view)) {
+  if (!view) {
     // the map does not have a view, so we can't act
     // upon it
     return;

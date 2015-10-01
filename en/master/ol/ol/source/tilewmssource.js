@@ -60,7 +60,7 @@ ol.source.TileWMS = function(opt_options) {
    * @private
    * @type {!Array.<string>}
    */
-  this.urls_ = goog.isDefAndNotNull(urls) ? urls : [];
+  this.urls_ = urls || [];
 
   /**
    * @private
@@ -135,7 +135,7 @@ ol.source.TileWMS.prototype.getGetFeatureInfoUrl =
   var projectionObj = ol.proj.get(projection);
 
   var tileGrid = this.getTileGrid();
-  if (goog.isNull(tileGrid)) {
+  if (!tileGrid) {
     tileGrid = this.getTileGridForProjection(projectionObj);
   }
 
@@ -348,7 +348,7 @@ ol.source.TileWMS.prototype.setUrl = function(url) {
  * @api stable
  */
 ol.source.TileWMS.prototype.setUrls = function(urls) {
-  this.urls_ = goog.isDefAndNotNull(urls) ? urls : [];
+  this.urls_ = urls || [];
   this.resetCoordKeyPrefix_();
   this.changed();
 };
@@ -365,7 +365,7 @@ ol.source.TileWMS.prototype.tileUrlFunction_ =
     function(tileCoord, pixelRatio, projection) {
 
   var tileGrid = this.getTileGrid();
-  if (goog.isNull(tileGrid)) {
+  if (!tileGrid) {
     tileGrid = this.getTileGridForProjection(projection);
   }
 

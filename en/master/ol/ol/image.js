@@ -1,6 +1,5 @@
 goog.provide('ol.Image');
 
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -39,7 +38,7 @@ ol.Image = function(extent, resolution, pixelRatio, attributions, src,
    * @type {Image}
    */
   this.image_ = new Image();
-  if (!goog.isNull(crossOrigin)) {
+  if (crossOrigin) {
     this.image_.crossOrigin = crossOrigin;
   }
 
@@ -130,7 +129,7 @@ ol.Image.prototype.load = function() {
   if (this.state == ol.ImageState.IDLE) {
     this.state = ol.ImageState.LOADING;
     this.changed();
-    goog.asserts.assert(goog.isNull(this.imageListenerKeys_),
+    goog.asserts.assert(!this.imageListenerKeys_,
         'this.imageListenerKeys_ should be null');
     this.imageListenerKeys_ = [
       goog.events.listenOnce(this.image_, goog.events.EventType.ERROR,
@@ -149,8 +148,8 @@ ol.Image.prototype.load = function() {
  * @private
  */
 ol.Image.prototype.unlistenImage_ = function() {
-  goog.asserts.assert(!goog.isNull(this.imageListenerKeys_),
+  goog.asserts.assert(this.imageListenerKeys_,
       'this.imageListenerKeys_ should not be null');
-  goog.array.forEach(this.imageListenerKeys_, goog.events.unlistenByKey);
+  this.imageListenerKeys_.forEach(goog.events.unlistenByKey);
   this.imageListenerKeys_ = null;
 };

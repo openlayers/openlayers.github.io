@@ -7,7 +7,6 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.TagName');
-goog.require('goog.object');
 goog.require('goog.style');
 goog.require('goog.vec.Mat4');
 goog.require('ol');
@@ -59,7 +58,7 @@ ol.renderer.dom.TileLayer = function(tileLayer) {
 
   /**
    * @private
-   * @type {Object.<number, ol.renderer.dom.TileLayerZ_>}
+   * @type {!Object.<number, ol.renderer.dom.TileLayerZ_>}
    */
   this.tileLayerZs_ = {};
 
@@ -149,7 +148,7 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame =
       if (!fullyLoaded) {
         childTileRange = tileGrid.getTileCoordChildTileRange(
             tile.tileCoord, tmpTileRange, tmpExtent);
-        if (!goog.isNull(childTileRange)) {
+        if (childTileRange) {
           findLoadedTiles(z + 1, childTileRange);
         }
       }
@@ -172,7 +171,7 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame =
   }
 
   /** @type {Array.<number>} */
-  var zs = goog.array.map(goog.object.getKeys(tilesToDrawByZ), Number);
+  var zs = Object.keys(tilesToDrawByZ).map(Number);
   goog.array.sort(zs);
 
   /** @type {Object.<number, boolean>} */
@@ -198,8 +197,7 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame =
   }
 
   /** @type {Array.<number>} */
-  var tileLayerZKeys =
-      goog.array.map(goog.object.getKeys(this.tileLayerZs_), Number);
+  var tileLayerZKeys = Object.keys(this.tileLayerZs_).map(Number);
   goog.array.sort(tileLayerZKeys);
 
   var i, ii, j, origin, resolution;
@@ -378,7 +376,7 @@ ol.renderer.dom.TileLayerZ_.prototype.addTile = function(tile, tileGutter) {
       ((tileCoordX - this.tileCoordOrigin_[1]) * tileSize[0]) + 'px';
   tileElementStyle.top =
       ((this.tileCoordOrigin_[2] - tileCoordY) * tileSize[1]) + 'px';
-  if (goog.isNull(this.documentFragment_)) {
+  if (!this.documentFragment_) {
     this.documentFragment_ = document.createDocumentFragment();
   }
   goog.dom.appendChild(this.documentFragment_, tileElement);
@@ -390,7 +388,7 @@ ol.renderer.dom.TileLayerZ_.prototype.addTile = function(tile, tileGutter) {
  * FIXME empty description for jsdoc
  */
 ol.renderer.dom.TileLayerZ_.prototype.finalizeAddTiles = function() {
-  if (!goog.isNull(this.documentFragment_)) {
+  if (this.documentFragment_) {
     goog.dom.appendChild(this.target, this.documentFragment_);
     this.documentFragment_ = null;
   }

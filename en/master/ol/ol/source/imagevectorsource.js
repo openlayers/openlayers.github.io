@@ -154,7 +154,7 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ =
  */
 ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
     coordinate, resolution, rotation, skippedFeatureUids, callback) {
-  if (goog.isNull(this.replayGroup_)) {
+  if (!this.replayGroup_) {
     return undefined;
   } else {
     /** @type {Object.<string, boolean>} */
@@ -265,7 +265,7 @@ ol.source.ImageVector.prototype.renderFeature_ =
   } else if (this.styleFunction_) {
     styles = this.styleFunction_(feature, resolution);
   }
-  if (!goog.isDefAndNotNull(styles)) {
+  if (!styles) {
     return false;
   }
   var i, ii, loading = false;
@@ -292,7 +292,7 @@ ol.source.ImageVector.prototype.renderFeature_ =
  */
 ol.source.ImageVector.prototype.setStyle = function(style) {
   this.style_ = style !== undefined ? style : ol.style.defaultStyleFunction;
-  this.styleFunction_ = goog.isNull(style) ?
+  this.styleFunction_ = !style ?
       undefined : ol.style.createStyleFunction(this.style_);
   this.changed();
 };

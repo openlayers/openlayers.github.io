@@ -301,7 +301,7 @@ ol.format.GML3.prototype.readSurface_ = function(node, objectStack) {
   var flatLinearRings = ol.xml.pushParseAndPop(
       /** @type {Array.<Array.<number>>} */ ([null]),
       this.SURFACE_PARSERS_, node, objectStack, this);
-  if (flatLinearRings && !goog.isNull(flatLinearRings[0])) {
+  if (flatLinearRings && flatLinearRings[0]) {
     var polygon = new ol.geom.Polygon(null);
     var flatCoordinates = flatLinearRings[0];
     var ends = [flatCoordinates.length];
@@ -385,7 +385,7 @@ ol.format.GML3.prototype.readFlatPos_ = function(node, objectStack) {
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var containerSrs = context['srsName'];
   var axisOrientation = 'enu';
-  if (!goog.isNull(containerSrs)) {
+  if (containerSrs) {
     var proj = ol.proj.get(containerSrs);
     axisOrientation = proj.getAxisOrientation();
   }
@@ -422,20 +422,20 @@ ol.format.GML3.prototype.readFlatPosList_ = function(node, objectStack) {
   var containerSrs = context['srsName'];
   var containerDimension = node.parentNode.getAttribute('srsDimension');
   var axisOrientation = 'enu';
-  if (!goog.isNull(containerSrs)) {
+  if (containerSrs) {
     var proj = ol.proj.get(containerSrs);
     axisOrientation = proj.getAxisOrientation();
   }
   var coords = s.split(/\s+/);
   // The "dimension" attribute is from the GML 3.0.1 spec.
   var dim = 2;
-  if (!goog.isNull(node.getAttribute('srsDimension'))) {
+  if (node.getAttribute('srsDimension')) {
     dim = ol.format.XSD.readNonNegativeIntegerString(
         node.getAttribute('srsDimension'));
-  } else if (!goog.isNull(node.getAttribute('dimension'))) {
+  } else if (node.getAttribute('dimension')) {
     dim = ol.format.XSD.readNonNegativeIntegerString(
         node.getAttribute('dimension'));
-  } else if (!goog.isNull(containerDimension)) {
+  } else if (containerDimension) {
     dim = ol.format.XSD.readNonNegativeIntegerString(containerDimension);
   }
   var x, y, z;
@@ -643,7 +643,7 @@ ol.format.GML3.prototype.writePos_ = function(node, value, objectStack) {
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
   var axisOrientation = 'enu';
-  if (goog.isDefAndNotNull(srsName)) {
+  if (srsName) {
     axisOrientation = ol.proj.get(srsName).getAxisOrientation();
   }
   var point = value.getCoordinates();
@@ -666,7 +666,7 @@ ol.format.GML3.prototype.writePos_ = function(node, value, objectStack) {
  */
 ol.format.GML3.prototype.getCoords_ = function(point, opt_srsName) {
   var axisOrientation = 'enu';
-  if (goog.isDefAndNotNull(opt_srsName)) {
+  if (opt_srsName) {
     axisOrientation = ol.proj.get(opt_srsName).getAxisOrientation();
   }
   return ((axisOrientation.substr(0, 2) === 'en') ?
@@ -708,7 +708,7 @@ ol.format.GML3.prototype.writePoint_ = function(node, geometry, objectStack) {
   var context = objectStack[objectStack.length - 1];
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
-  if (goog.isDefAndNotNull(srsName)) {
+  if (srsName) {
     node.setAttribute('srsName', srsName);
   }
   var pos = ol.xml.createElementNS(node.namespaceURI, 'pos');
@@ -763,7 +763,7 @@ ol.format.GML3.prototype.writeLinearRing_ =
   var context = objectStack[objectStack.length - 1];
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
-  if (goog.isDefAndNotNull(srsName)) {
+  if (srsName) {
     node.setAttribute('srsName', srsName);
   }
   var posList = ol.xml.createElementNS(node.namespaceURI, 'posList');
@@ -804,7 +804,7 @@ ol.format.GML3.prototype.writeSurfaceOrPolygon_ =
   var context = objectStack[objectStack.length - 1];
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
-  if (node.nodeName !== 'PolygonPatch' && goog.isDefAndNotNull(srsName)) {
+  if (node.nodeName !== 'PolygonPatch' && srsName) {
     node.setAttribute('srsName', srsName);
   }
   if (node.nodeName === 'Polygon' || node.nodeName === 'PolygonPatch') {
@@ -834,8 +834,7 @@ ol.format.GML3.prototype.writeCurveOrLineString_ =
   var context = objectStack[objectStack.length - 1];
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
-  if (node.nodeName !== 'LineStringSegment' &&
-      goog.isDefAndNotNull(srsName)) {
+  if (node.nodeName !== 'LineStringSegment' && srsName) {
     node.setAttribute('srsName', srsName);
   }
   if (node.nodeName === 'LineString' ||
@@ -864,7 +863,7 @@ ol.format.GML3.prototype.writeMultiSurfaceOrPolygon_ =
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
   var surface = context['surface'];
-  if (goog.isDefAndNotNull(srsName)) {
+  if (srsName) {
     node.setAttribute('srsName', srsName);
   }
   var polygons = geometry.getPolygons();
@@ -886,7 +885,7 @@ ol.format.GML3.prototype.writeMultiPoint_ = function(node, geometry,
   var context = objectStack[objectStack.length - 1];
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
-  if (goog.isDefAndNotNull(srsName)) {
+  if (srsName) {
     node.setAttribute('srsName', srsName);
   }
   var points = geometry.getPoints();
@@ -909,7 +908,7 @@ ol.format.GML3.prototype.writeMultiCurveOrLineString_ =
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
   var srsName = context['srsName'];
   var curve = context['curve'];
-  if (goog.isDefAndNotNull(srsName)) {
+  if (srsName) {
     node.setAttribute('srsName', srsName);
   }
   var lines = geometry.getLineStrings();
@@ -1068,7 +1067,7 @@ ol.format.GML3.prototype.writeFeatureElement =
   var keys = [], values = [];
   for (var key in properties) {
     var value = properties[key];
-    if (!goog.isNull(value)) {
+    if (value !== null) {
       keys.push(key);
       values.push(value);
       if (key == geometryName) {

@@ -113,20 +113,21 @@ ol.control.Rotate.prototype.handleClick_ = function(event) {
 ol.control.Rotate.prototype.resetNorth_ = function() {
   var map = this.getMap();
   var view = map.getView();
-  if (goog.isNull(view)) {
+  if (!view) {
     // the map does not have a view, so we can't act
     // upon it
     return;
   }
   var currentRotation = view.getRotation();
-  while (currentRotation < -Math.PI) {
-    currentRotation += 2 * Math.PI;
-  }
-  while (currentRotation > Math.PI) {
-    currentRotation -= 2 * Math.PI;
-  }
   if (currentRotation !== undefined) {
     if (this.duration_ > 0) {
+      currentRotation = currentRotation % (2 * Math.PI);
+      if (currentRotation < -Math.PI) {
+        currentRotation += 2 * Math.PI;
+      }
+      if (currentRotation > Math.PI) {
+        currentRotation -= 2 * Math.PI;
+      }
       map.beforeRender(ol.animation.rotate({
         rotation: currentRotation,
         duration: this.duration_,
@@ -146,7 +147,7 @@ ol.control.Rotate.prototype.resetNorth_ = function() {
  */
 ol.control.Rotate.render = function(mapEvent) {
   var frameState = mapEvent.frameState;
-  if (goog.isNull(frameState)) {
+  if (!frameState) {
     return;
   }
   var rotation = frameState.viewState.rotation;

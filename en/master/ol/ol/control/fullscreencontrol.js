@@ -107,18 +107,16 @@ ol.control.FullScreen.prototype.handleFullScreen_ = function() {
     return;
   }
   var map = this.getMap();
-  if (goog.isNull(map)) {
+  if (!map) {
     return;
   }
   if (goog.dom.fullscreen.isFullScreen()) {
     goog.dom.fullscreen.exitFullScreen();
   } else {
     var target = map.getTarget();
-    goog.asserts.assert(goog.isDefAndNotNull(target),
-        'target should be defined');
+    goog.asserts.assert(target, 'target should be defined');
     var element = goog.dom.getElement(target);
-    goog.asserts.assert(goog.isDefAndNotNull(element),
-        'element should be defined');
+    goog.asserts.assert(element, 'element should be defined');
     if (this.keys_) {
       goog.dom.fullscreen.requestFullScreenWithKeys(element);
     } else {
@@ -143,7 +141,7 @@ ol.control.FullScreen.prototype.handleFullScreenChange_ = function() {
     goog.dom.classlist.swap(button, opened, closed);
     goog.dom.replaceNode(this.labelNode_, this.labelActiveNode_);
   }
-  if (!goog.isNull(map)) {
+  if (map) {
     map.updateSize();
   }
 };

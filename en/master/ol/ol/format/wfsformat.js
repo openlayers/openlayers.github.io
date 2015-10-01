@@ -196,7 +196,7 @@ ol.format.WFS.prototype.readFeatureCollectionMetadataFromDocument =
     function(doc) {
   goog.asserts.assert(doc.nodeType == goog.dom.NodeType.DOCUMENT,
       'doc.nodeType should be DOCUMENT');
-  for (var n = doc.firstChild; !goog.isNull(n); n = n.nextSibling) {
+  for (var n = doc.firstChild; n; n = n.nextSibling) {
     if (n.nodeType == goog.dom.NodeType.ELEMENT) {
       return this.readFeatureCollectionMetadataFromNode(n);
     }
@@ -337,7 +337,7 @@ ol.format.WFS.TRANSACTION_RESPONSE_PARSERS_ = {
 ol.format.WFS.prototype.readTransactionResponseFromDocument = function(doc) {
   goog.asserts.assert(doc.nodeType == goog.dom.NodeType.DOCUMENT,
       'doc.nodeType should be DOCUMENT');
-  for (var n = doc.firstChild; !goog.isNull(n); n = n.nextSibling) {
+  for (var n = doc.firstChild; n; n = n.nextSibling) {
     if (n.nodeType == goog.dom.NodeType.ELEMENT) {
       return this.readTransactionResponseFromNode(n);
     }
@@ -475,7 +475,7 @@ ol.format.WFS.writeProperty_ = function(node, pair, objectStack) {
   var name = ol.xml.createElementNS('http://www.opengis.net/wfs', 'Name');
   node.appendChild(name);
   ol.format.XSD.writeStringTextNode(name, pair.name);
-  if (goog.isDefAndNotNull(pair.value)) {
+  if (pair.value !== undefined && pair.value !== null) {
     var value = ol.xml.createElementNS('http://www.opengis.net/wfs', 'Value');
     node.appendChild(value);
     if (pair.value instanceof ol.geom.Geometry) {
@@ -697,7 +697,7 @@ ol.format.WFS.prototype.writeTransaction = function(inserts, updates, deletes,
   }
   ol.xml.setAttributeNS(node, 'http://www.w3.org/2001/XMLSchema-instance',
       'xsi:schemaLocation', this.schemaLocation_);
-  if (goog.isDefAndNotNull(inserts)) {
+  if (inserts) {
     obj = {node: node, featureNS: options.featureNS,
       featureType: options.featureType, featurePrefix: options.featurePrefix};
     goog.object.extend(obj, baseObj);
@@ -706,7 +706,7 @@ ol.format.WFS.prototype.writeTransaction = function(inserts, updates, deletes,
         ol.xml.makeSimpleNodeFactory('Insert'), inserts,
         objectStack);
   }
-  if (goog.isDefAndNotNull(updates)) {
+  if (updates) {
     obj = {node: node, featureNS: options.featureNS,
       featureType: options.featureType, featurePrefix: options.featurePrefix};
     goog.object.extend(obj, baseObj);
@@ -715,7 +715,7 @@ ol.format.WFS.prototype.writeTransaction = function(inserts, updates, deletes,
         ol.xml.makeSimpleNodeFactory('Update'), updates,
         objectStack);
   }
-  if (goog.isDefAndNotNull(deletes)) {
+  if (deletes) {
     ol.xml.pushSerializeAndPop({node: node, featureNS: options.featureNS,
       featureType: options.featureType, featurePrefix: options.featurePrefix},
     ol.format.WFS.TRANSACTION_SERIALIZERS_,
@@ -750,7 +750,7 @@ ol.format.WFS.prototype.readProjection;
 ol.format.WFS.prototype.readProjectionFromDocument = function(doc) {
   goog.asserts.assert(doc.nodeType == goog.dom.NodeType.DOCUMENT,
       'doc.nodeType should be a DOCUMENT');
-  for (var n = doc.firstChild; !goog.isNull(n); n = n.nextSibling) {
+  for (var n = doc.firstChild; n; n = n.nextSibling) {
     if (n.nodeType == goog.dom.NodeType.ELEMENT) {
       return this.readProjectionFromNode(n);
     }
@@ -768,11 +768,10 @@ ol.format.WFS.prototype.readProjectionFromNode = function(node) {
   goog.asserts.assert(node.localName == 'FeatureCollection',
       'localName should be FeatureCollection');
 
-  if (goog.isDefAndNotNull(node.firstElementChild) &&
-      goog.isDefAndNotNull(node.firstElementChild.firstElementChild)) {
+  if (node.firstElementChild &&
+      node.firstElementChild.firstElementChild) {
     node = node.firstElementChild.firstElementChild;
-    for (var n = node.firstElementChild; !goog.isNull(n);
-        n = n.nextElementSibling) {
+    for (var n = node.firstElementChild; n; n = n.nextElementSibling) {
       if (!(n.childNodes.length === 0 ||
           (n.childNodes.length === 1 &&
           n.firstChild.nodeType === 3))) {

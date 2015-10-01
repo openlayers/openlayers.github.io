@@ -92,7 +92,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame =
   this.dispatchPreComposeEvent(context, frameState, transform);
 
   var replayGroup = this.replayGroup_;
-  if (!goog.isNull(replayGroup) && !replayGroup.isEmpty()) {
+  if (replayGroup && !replayGroup.isEmpty()) {
     var layer = this.getLayer();
     var replayContext;
     if (layer.hasListener(ol.render.EventType.RENDER)) {
@@ -156,7 +156,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame =
  */
 ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
-  if (goog.isNull(this.replayGroup_)) {
+  if (!this.replayGroup_) {
     return undefined;
   } else {
     var resolution = frameState.viewState.resolution;
@@ -284,13 +284,13 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
         styles = styleFunction(feature, resolution);
       }
     }
-    if (goog.isDefAndNotNull(styles)) {
+    if (styles) {
       var dirty = this.renderFeature(
           feature, resolution, pixelRatio, styles, replayGroup);
       this.dirty_ = this.dirty_ || dirty;
     }
   };
-  if (!goog.isNull(vectorLayerRenderOrder)) {
+  if (vectorLayerRenderOrder) {
     /** @type {Array.<ol.Feature>} */
     var features = [];
     vectorSource.forEachFeatureInExtentAtResolution(extent, resolution,
@@ -301,7 +301,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
           features.push(feature);
         }, this);
     goog.array.sort(features, vectorLayerRenderOrder);
-    goog.array.forEach(features, renderFeature, this);
+    features.forEach(renderFeature, this);
   } else {
     vectorSource.forEachFeatureInExtentAtResolution(
         extent, resolution, renderFeature, this);
@@ -328,7 +328,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame =
  */
 ol.renderer.canvas.VectorLayer.prototype.renderFeature =
     function(feature, resolution, pixelRatio, styles, replayGroup) {
-  if (!goog.isDefAndNotNull(styles)) {
+  if (!styles) {
     return false;
   }
   var i, ii, loading = false;

@@ -1,6 +1,5 @@
 goog.provide('ol.ImageTile');
 
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -38,7 +37,7 @@ ol.ImageTile = function(tileCoord, state, src, crossOrigin, tileLoadFunction) {
    * @type {Image}
    */
   this.image_ = new Image();
-  if (!goog.isNull(crossOrigin)) {
+  if (crossOrigin) {
     this.image_.crossOrigin = crossOrigin;
   }
 
@@ -142,7 +141,7 @@ ol.ImageTile.prototype.load = function() {
   if (this.state == ol.TileState.IDLE) {
     this.state = ol.TileState.LOADING;
     this.changed();
-    goog.asserts.assert(goog.isNull(this.imageListenerKeys_),
+    goog.asserts.assert(!this.imageListenerKeys_,
         'this.imageListenerKeys_ should be null');
     this.imageListenerKeys_ = [
       goog.events.listenOnce(this.image_, goog.events.EventType.ERROR,
@@ -161,8 +160,8 @@ ol.ImageTile.prototype.load = function() {
  * @private
  */
 ol.ImageTile.prototype.unlistenImage_ = function() {
-  goog.asserts.assert(!goog.isNull(this.imageListenerKeys_),
+  goog.asserts.assert(this.imageListenerKeys_,
       'this.imageListenerKeys_ should not be null');
-  goog.array.forEach(this.imageListenerKeys_, goog.events.unlistenByKey);
+  this.imageListenerKeys_.forEach(goog.events.unlistenByKey);
   this.imageListenerKeys_ = null;
 };
