@@ -2305,6 +2305,10 @@
                     <a href="ol.control.OverviewMap.html#getMap">getMap</a>
                 </li>
             
+                <li data-name="ol.control.OverviewMap#getOverviewMap" class="unstable">
+                    <a href="ol.control.OverviewMap.html#getOverviewMap">getOverviewMap</a>
+                </li>
+            
                 <li data-name="ol.control.OverviewMap#getProperties" class="">
                     <a href="ol.control.OverviewMap.html#getProperties">getProperties</a>
                 </li>
@@ -7233,6 +7237,10 @@
             
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#getLayer" class="unstable">
+                    <a href="ol.interaction.Select.html#getLayer">getLayer</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#getProperties" class="">
@@ -13458,7 +13466,7 @@ further feature filter using the <code>filter</code> option.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 103
+            src/ol/interaction/selectinteraction.js, line 104
         </div>
         
         
@@ -14072,7 +14080,7 @@ returns <code>true</code> if the feature may be selected or <code>false</code> o
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 221
+            src/ol/interaction/selectinteraction.js, line 257
         </div>
         
         
@@ -14507,7 +14515,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 208
+            src/ol/interaction/selectinteraction.js, line 229
         </div>
         
         
@@ -14657,6 +14665,140 @@ Features collection.
 
 <h5>Returns:</h5>
 List of property names.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="getLayer">
+            getLayer<span class="signature">(feature)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.layer.Vector.html">ol.layer.Vector</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/interaction/selectinteraction.js, line 241
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Returns the associated <a href="ol.layer.Vector.html"><code>vectorlayer</code></a> of
+the (last) selected feature.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>feature</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Feature.html">ol.Feature</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Feature</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Layer.
 <br />
 
     
@@ -15499,7 +15641,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 304
+            src/ol/interaction/selectinteraction.js, line 353
         </div>
         
         

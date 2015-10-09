@@ -64,9 +64,9 @@ ol.control.OverviewMap = function(opt_options) {
    * @private
    * @type {Node}
    */
-  this.collapseLabel_ = /** @type {Node} */ (goog.isString(collapseLabel) ?
+  this.collapseLabel_ = goog.isString(collapseLabel) ?
       goog.dom.createDom(goog.dom.TagName.SPAN, {}, collapseLabel) :
-      collapseLabel);
+      collapseLabel;
 
   var label = options.label ? options.label : '\u00BB';
 
@@ -74,9 +74,9 @@ ol.control.OverviewMap = function(opt_options) {
    * @private
    * @type {Node}
    */
-  this.label_ = /** @type {Node} */ (goog.isString(label) ?
+  this.label_ = goog.isString(label) ?
       goog.dom.createDom(goog.dom.TagName.SPAN, {}, label) :
-      label);
+      label;
 
   var activeLabel = (this.collapsible_ && !this.collapsed_) ?
       this.collapseLabel_ : this.label_;
@@ -97,7 +97,8 @@ ol.control.OverviewMap = function(opt_options) {
   this.ovmap_ = new ol.Map({
     controls: new ol.Collection(),
     interactions: new ol.Collection(),
-    target: ovmapDiv
+    target: ovmapDiv,
+    view: options.view
   });
   var ovmap = this.ovmap_;
 
@@ -518,4 +519,14 @@ ol.control.OverviewMap.prototype.setCollapsed = function(collapsed) {
  */
 ol.control.OverviewMap.prototype.getCollapsed = function() {
   return this.collapsed_;
+};
+
+
+/**
+ * Return the overview map.
+ * @return {ol.Map} Overview map.
+ * @api
+ */
+ol.control.OverviewMap.prototype.getOverviewMap = function() {
+  return this.ovmap_;
 };

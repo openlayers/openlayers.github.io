@@ -46,7 +46,7 @@ ol.control.Attribution = function(opt_options) {
    */
   this.logoLi_ = goog.dom.createElement(goog.dom.TagName.LI);
 
-  goog.dom.appendChild(this.ulElement_, this.logoLi_);
+  this.ulElement_.appendChild(this.logoLi_);
   goog.style.setElementShown(this.logoLi_, false);
 
   /**
@@ -76,9 +76,9 @@ ol.control.Attribution = function(opt_options) {
    * @private
    * @type {Node}
    */
-  this.collapseLabel_ = /** @type {Node} */ (goog.isString(collapseLabel) ?
+  this.collapseLabel_ = goog.isString(collapseLabel) ?
       goog.dom.createDom(goog.dom.TagName.SPAN, {}, collapseLabel) :
-      collapseLabel);
+      collapseLabel;
 
   var label = options.label ? options.label : 'i';
 
@@ -86,9 +86,9 @@ ol.control.Attribution = function(opt_options) {
    * @private
    * @type {Node}
    */
-  this.label_ = /** @type {Node} */ (goog.isString(label) ?
+  this.label_ = goog.isString(label) ?
       goog.dom.createDom(goog.dom.TagName.SPAN, {}, label) :
-      label);
+      label;
 
   var activeLabel = (this.collapsible_ && !this.collapsed_) ?
       this.collapseLabel_ : this.label_;
@@ -265,7 +265,7 @@ ol.control.Attribution.prototype.updateElement_ = function(frameState) {
     attributionElement = goog.dom.createElement(goog.dom.TagName.LI);
     attributionElement.innerHTML =
         visibleAttributions[attributionKey].getHTML();
-    goog.dom.appendChild(this.ulElement_, attributionElement);
+    this.ulElement_.appendChild(attributionElement);
     this.attributionElements_[attributionKey] = attributionElement;
     this.attributionElementRenderedVisible_[attributionKey] = true;
   }
@@ -274,7 +274,7 @@ ol.control.Attribution.prototype.updateElement_ = function(frameState) {
     attributionElement.innerHTML =
         hiddenAttributions[attributionKey].getHTML();
     goog.style.setElementShown(attributionElement, false);
-    goog.dom.appendChild(this.ulElement_, attributionElement);
+    this.ulElement_.appendChild(attributionElement);
     this.attributionElements_[attributionKey] = attributionElement;
   }
 
@@ -328,7 +328,7 @@ ol.control.Attribution.prototype.insertLogos_ = function(frameState) {
         });
         logoElement.appendChild(image);
       }
-      goog.dom.appendChild(this.logoLi_, logoElement);
+      this.logoLi_.appendChild(logoElement);
       logoElements[logoKey] = logoElement;
     }
   }

@@ -1560,10 +1560,8 @@ goog.inherits(ol.render.canvas.TextReplay, ol.render.canvas.Replay);
  */
 ol.render.canvas.TextReplay.prototype.drawText =
     function(flatCoordinates, offset, end, stride, geometry, feature) {
-  if (this.text_ === '' ||
-      !this.textState_ ||
-      (this.textFillState_ &&
-       !this.textStrokeState_)) {
+  if (this.text_ === '' || !this.textState_ ||
+      (!this.textFillState_ && !this.textStrokeState_)) {
     return;
   }
   if (this.textFillState_) {
@@ -1577,8 +1575,8 @@ ol.render.canvas.TextReplay.prototype.drawText =
   var myBegin = this.coordinates.length;
   var myEnd =
       this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false);
-  var fill = this.textFillState_;
-  var stroke = this.textStrokeState_;
+  var fill = !!this.textFillState_;
+  var stroke = !!this.textStrokeState_;
   var drawTextInstruction = [
     ol.render.canvas.Instruction.DRAW_TEXT, myBegin, myEnd, this.text_,
     this.textOffsetX_, this.textOffsetY_, this.textRotation_, this.textScale_,
@@ -1978,7 +1976,7 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(
   context.closePath();
   context.clip();
 
-  var i, ii, j, jj, replays, replay, result;
+  var i, ii, j, jj, replays, replay;
   for (i = 0, ii = zs.length; i < ii; ++i) {
     replays = this.replaysByZIndex_[zs[i].toString()];
     for (j = 0, jj = ol.render.REPLAY_ORDER.length; j < jj; ++j) {

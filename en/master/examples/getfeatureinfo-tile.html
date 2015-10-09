@@ -27,10 +27,12 @@
       <div class="row-fluid">
   <div class="span12">
     <div id="map" class="map"></div>
-    <div class="span4 offset4 pull-right">
-      <div id="info" class="alert alert-success">
-        &nbsp;
-      </div>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="span4 offset4 iframe-info">
+    <div id="info" class="alert alert-success">
+      &nbsp;
     </div>
   </div>
 </div>
@@ -102,16 +104,18 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
           <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
   &lt;div class=&quot;span12&quot;&gt;
     &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
-        &amp;nbsp;
-      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span4 offset4 iframe-info&quot;&gt;
+    &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+      &amp;nbsp;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,http://openlayers.org/en/v3.9.0/css/ol.css,http://openlayers.org/en/v3.9.0/build/ol.js">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,http://openlayers.org/en/v3.10.0/css/ol.css,http://openlayers.org/en/v3.10.0/build/ol.js">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -120,8 +124,8 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 &lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"&gt;
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="http://openlayers.org/en/v3.9.0/css/ol.css" type="text/css"&gt;
-&lt;script src="http://openlayers.org/en/v3.9.0/build/ol.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.0/css/ol.css" type="text/css"&gt;
+&lt;script src="http://openlayers.org/en/v3.10.0/build/ol.js"&gt;&lt;/script&gt;
 
 &lt;/head&gt;
 &lt;body&gt;
@@ -130,10 +134,12 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 &lt;div class=&quot;row-fluid&quot;&gt;
   &lt;div class=&quot;span12&quot;&gt;
     &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
-        &amp;nbsp;
-      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;row-fluid&quot;&gt;
+  &lt;div class=&quot;span4 offset4 iframe-info&quot;&gt;
+    &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+      &amp;nbsp;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;

@@ -66,7 +66,7 @@ ol.format.GML3 = function(opt_options) {
    * @type {boolean}
    */
   this.multiSurface_ = options.multiSurface !== undefined ?
-      /** @type {boolean} */ (options.multiSurface) : true;
+      options.multiSurface : true;
 
   /**
    * @inheritDoc
@@ -1070,7 +1070,7 @@ ol.format.GML3.prototype.writeFeatureElement =
     if (value !== null) {
       keys.push(key);
       values.push(value);
-      if (key == geometryName) {
+      if (key == geometryName || value instanceof ol.geom.Geometry) {
         if (!(key in context.serializers[featureNS])) {
           context.serializers[featureNS][key] = ol.xml.makeChildAppender(
               this.writeGeometryElement, this);

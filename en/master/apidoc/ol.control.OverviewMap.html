@@ -2305,6 +2305,10 @@
                     <a href="ol.control.OverviewMap.html#getMap">getMap</a>
                 </li>
             
+                <li data-name="ol.control.OverviewMap#getOverviewMap" class="unstable">
+                    <a href="ol.control.OverviewMap.html#getOverviewMap">getOverviewMap</a>
+                </li>
+            
                 <li data-name="ol.control.OverviewMap#getProperties" class="">
                     <a href="ol.control.OverviewMap.html#getProperties">getProperties</a>
                 </li>
@@ -7233,6 +7237,10 @@
             
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#getLayer" class="unstable">
+                    <a href="ol.interaction.Select.html#getLayer">getLayer</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#getProperties" class="">
@@ -13802,6 +13810,40 @@ viewport.</p></td>
         </tr>
 	
 	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>view</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.View.html">ol.View</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Custom view for the overview map. If not provided, a default view with
+an EPSG:3857 projection will be used.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
             </td>
@@ -13923,7 +13965,7 @@ viewport.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/control/overviewmapcontrol.js, line 242
+            src/ol/control/overviewmapcontrol.js, line 243
         </div>
         
         
@@ -14260,7 +14302,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/control/overviewmapcontrol.js, line 519
+            src/ol/control/overviewmapcontrol.js, line 520
         </div>
         
         
@@ -14344,7 +14386,7 @@ The overview map is collapsed.
         </h4>
         
         <div class="tag-source">
-            src/ol/control/overviewmapcontrol.js, line 477
+            src/ol/control/overviewmapcontrol.js, line 478
         </div>
         
         
@@ -14580,6 +14622,92 @@ List of property names.
 
 <h5>Returns:</h5>
 Map.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="getOverviewMap">
+            getOverviewMap<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Map.html">ol.Map</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/control/overviewmapcontrol.js, line 530
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Return the overview map.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Overview map.
 <br />
 
     
@@ -15296,7 +15424,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/control/overviewmapcontrol.js, line 506
+            src/ol/control/overviewmapcontrol.js, line 507
         </div>
         
         
@@ -15420,7 +15548,7 @@ collapsed state is already the one requested.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/control/overviewmapcontrol.js, line 487
+            src/ol/control/overviewmapcontrol.js, line 488
         </div>
         
         
