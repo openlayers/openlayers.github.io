@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Reference - Class: Image</title>
+    <title>OpenLayers 3 API Reference - Class: TranslateEvent</title>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <script src="scripts/jquery.min.js"> </script>
@@ -13464,7 +13464,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="ol.style.Image.html">Class: Image</h1>
+        <h1 class="page-title" data-filename="ol.interaction.TranslateEvent.html">Class: TranslateEvent</h1>
         
 
 
@@ -13473,11 +13473,11 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.style.html">.style</a>.</span>Image
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>TranslateEvent
     </h2>
     
-        <div class="class-description"><p>A base class used for creating subclasses and not instantiated in
-apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a> and <a href="ol.style.Circle.html"><code>ol.style.Circle</code></a>.</p></div>
+        <div class="class-description"><p>Events emitted by <a href="ol.interaction.Translate.html"><code>ol.interaction.Translate</code></a> instances are instances of
+this type.</p></div>
     
 </header>  
 
@@ -13487,27 +13487,13 @@ apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a>
     
     
         
-<dt class="unstable">
+<dt class="">
     <div class="nameContainer">
-        
-        <h4 class="name" id="Image">
-            new ol.style.Image<span class="signature">(options)</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/style/imagestyle.js, line 36
-        </div>
-        
         
     </div>
     
 </dt>
-<dd class="unstable">
+<dd class="">
 
     
 
@@ -13515,55 +13501,6 @@ apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a>
 
     
 
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">ol.style.ImageOptions</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Options.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
     
 
     
@@ -13609,21 +13546,56 @@ apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a>
     </div>
     
     
-        <h3 class="subsection-title">Subclasses</h3>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+        
         <ul>
-          <li><a href="ol.style.Circle.html">ol.style.Circle</a>
-            
-          </li>
-        
-          <li><a href="ol.style.Icon.html">ol.style.Icon</a>
-            
-          </li>
-        
-          <li><a href="ol.style.RegularShape.html">ol.style.RegularShape</a>
-            
-          </li>
+            <li>goog.events.Event</li>
         </ul>
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        <h4 class="name" id="coordinate">
+            coordinate<span class="type-signature type ol.coordinate">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span> 
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    <div class="description">
+        <p>The coordinate of the drag event.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
     
     
@@ -13636,19 +13608,83 @@ apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a>
     
     
     
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        <h4 class="name" id="features">
+            features<span class="type-signature type ol.collection.<ol.feature>">{<a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.Feature.html">ol.Feature</a>>}</span> 
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    <div class="description">
+        <p>The features being translated.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
     
     
     
-        <h3 class="subsection-title">Methods</h3>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Events</h3>
         
         <dl>
             
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="getOpacity">
-            getOpacity<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+        <h4 class="name" id="event:translateend">
+            translateend
             
             
 <span class="stability experimental">experimental</span>
@@ -13657,7 +13693,7 @@ apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a>
         </h4>
         
         <div class="tag-source">
-            src/ol/style/imagestyle.js, line 76
+            src/ol/interaction/translateinteraction.js, line 26
         </div>
         
         
@@ -13668,7 +13704,7 @@ apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a>
 
     
     <div class="description">
-        <p>Get the symbolizer opacity.</p>
+        <p>Triggered upon feature translation end.</p>
     </div>
     
 
@@ -13677,483 +13713,6 @@ apps. Base class for <a href="ol.style.Icon.html"><code>ol.style.Icon</code></a>
     
 
     
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-
-<h5>Returns:</h5>
-Opacity.
-<br />
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="getRotateWithView">
-            getRotateWithView<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/style/imagestyle.js, line 86
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-    <div class="description">
-        <p>Determine whether the symbolizer rotates with the map.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-
-<h5>Returns:</h5>
-Rotate with map.
-<br />
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="getRotation">
-            getRotation<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/style/imagestyle.js, line 96
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-    <div class="description">
-        <p>Get the symoblizer rotation.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-
-<h5>Returns:</h5>
-Rotation.
-<br />
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="getScale">
-            getScale<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/style/imagestyle.js, line 106
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-    <div class="description">
-        <p>Get the symbolizer scale.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-
-<h5>Returns:</h5>
-Scale.
-<br />
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="getSnapToPixel">
-            getSnapToPixel<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/style/imagestyle.js, line 116
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-    <div class="description">
-        <p>Determine whether the symbolizer should be snapped to a pixel.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-
-<h5>Returns:</h5>
-The symbolizer should snap to a pixel.
-<br />
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="setOpacity">
-            setOpacity<span class="signature">(opacity)</span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/style/imagestyle.js, line 186
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-    <div class="description">
-        <p>Set the opacity.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>opacity</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Opacity.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
 
@@ -14201,8 +13760,8 @@ The symbolizer should snap to a pixel.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="setRotation">
-            setRotation<span class="signature">(rotation)</span>
+        <h4 class="name" id="event:translatestart">
+            translatestart
             
             
 <span class="stability experimental">experimental</span>
@@ -14211,7 +13770,7 @@ The symbolizer should snap to a pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/imagestyle.js, line 207
+            src/ol/interaction/translateinteraction.js, line 14
         </div>
         
         
@@ -14222,7 +13781,7 @@ The symbolizer should snap to a pixel.
 
     
     <div class="description">
-        <p>Set the rotation.</p>
+        <p>Triggered upon feature translation start.</p>
     </div>
     
 
@@ -14231,53 +13790,6 @@ The symbolizer should snap to a pixel.
     
 
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>rotation</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Rotation.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
 
@@ -14325,8 +13837,8 @@ The symbolizer should snap to a pixel.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="setScale">
-            setScale<span class="signature">(scale)</span>
+        <h4 class="name" id="event:translating">
+            translating
             
             
 <span class="stability experimental">experimental</span>
@@ -14335,7 +13847,7 @@ The symbolizer should snap to a pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/imagestyle.js, line 218
+            src/ol/interaction/translateinteraction.js, line 20
         </div>
         
         
@@ -14346,7 +13858,7 @@ The symbolizer should snap to a pixel.
 
     
     <div class="description">
-        <p>Set the scale.</p>
+        <p>Triggered upon feature translation.</p>
     </div>
     
 
@@ -14355,53 +13867,6 @@ The symbolizer should snap to a pixel.
     
 
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>scale</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Scale.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
 
@@ -14445,10 +13910,6 @@ The symbolizer should snap to a pixel.
 </dd>
 
         </dl>
-    
-    
-    
-    
     
 </article>
 

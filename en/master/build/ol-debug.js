@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.10.1-9-gd0f5585
+// Version: v3.10.1-29-gb4061e7
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -4948,6 +4948,28 @@ ol.math.tanh = function(x) {
   return (1 - expMinusTwoX) / (1 + expMinusTwoX);
 };
 
+
+/**
+ * Converts radians to to degrees.
+ *
+ * @param {number} angleInRadians Angle in radians.
+ * @return {number} Angle in degrees.
+ */
+ol.math.toDegrees = function(angleInRadians) {
+  return angleInRadians * 180 / Math.PI;
+};
+
+
+/**
+ * Converts degrees to radians.
+ *
+ * @param {number} angleInDegrees Angle in degrees.
+ * @return {number} Angle in radians.
+ */
+ol.math.toRadians = function(angleInDegrees) {
+  return angleInDegrees * Math.PI / 180;
+};
+
 goog.provide('ol.CenterConstraint');
 goog.provide('ol.CenterConstraintType');
 
@@ -6841,462 +6863,10 @@ ol.ResolutionConstraint.createSnapToPower =
       });
 };
 
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Additional mathematical functions.
- */
-
-goog.provide('goog.math');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-
-
-/**
- * Returns a random integer greater than or equal to 0 and less than {@code a}.
- * @param {number} a  The upper bound for the random integer (exclusive).
- * @return {number} A random integer N such that 0 <= N < a.
- */
-goog.math.randomInt = function(a) {
-  return Math.floor(Math.random() * a);
-};
-
-
-/**
- * Returns a random number greater than or equal to {@code a} and less than
- * {@code b}.
- * @param {number} a  The lower bound for the random number (inclusive).
- * @param {number} b  The upper bound for the random number (exclusive).
- * @return {number} A random number N such that a <= N < b.
- */
-goog.math.uniformRandom = function(a, b) {
-  return a + Math.random() * (b - a);
-};
-
-
-/**
- * Takes a number and clamps it to within the provided bounds.
- * @param {number} value The input number.
- * @param {number} min The minimum value to return.
- * @param {number} max The maximum value to return.
- * @return {number} The input number if it is within bounds, or the nearest
- *     number within the bounds.
- */
-goog.math.clamp = function(value, min, max) {
-  return Math.min(Math.max(value, min), max);
-};
-
-
-/**
- * The % operator in JavaScript returns the remainder of a / b, but differs from
- * some other languages in that the result will have the same sign as the
- * dividend. For example, -1 % 8 == -1, whereas in some other languages
- * (such as Python) the result would be 7. This function emulates the more
- * correct modulo behavior, which is useful for certain applications such as
- * calculating an offset index in a circular list.
- *
- * @param {number} a The dividend.
- * @param {number} b The divisor.
- * @return {number} a % b where the result is between 0 and b (either 0 <= x < b
- *     or b < x <= 0, depending on the sign of b).
- */
-goog.math.modulo = function(a, b) {
-  var r = a % b;
-  // If r and b differ in sign, add b to wrap the result to the correct sign.
-  return (r * b < 0) ? r + b : r;
-};
-
-
-/**
- * Performs linear interpolation between values a and b. Returns the value
- * between a and b proportional to x (when x is between 0 and 1. When x is
- * outside this range, the return value is a linear extrapolation).
- * @param {number} a A number.
- * @param {number} b A number.
- * @param {number} x The proportion between a and b.
- * @return {number} The interpolated value between a and b.
- */
-goog.math.lerp = function(a, b, x) {
-  return a + x * (b - a);
-};
-
-
-/**
- * Tests whether the two values are equal to each other, within a certain
- * tolerance to adjust for floating point errors.
- * @param {number} a A number.
- * @param {number} b A number.
- * @param {number=} opt_tolerance Optional tolerance range. Defaults
- *     to 0.000001. If specified, should be greater than 0.
- * @return {boolean} Whether {@code a} and {@code b} are nearly equal.
- */
-goog.math.nearlyEquals = function(a, b, opt_tolerance) {
-  return Math.abs(a - b) <= (opt_tolerance || 0.000001);
-};
-
-
-// TODO(user): Rename to normalizeAngle, retaining old name as deprecated
-// alias.
-/**
- * Normalizes an angle to be in range [0-360). Angles outside this range will
- * be normalized to be the equivalent angle with that range.
- * @param {number} angle Angle in degrees.
- * @return {number} Standardized angle.
- */
-goog.math.standardAngle = function(angle) {
-  return goog.math.modulo(angle, 360);
-};
-
-
-/**
- * Normalizes an angle to be in range [0-2*PI). Angles outside this range will
- * be normalized to be the equivalent angle with that range.
- * @param {number} angle Angle in radians.
- * @return {number} Standardized angle.
- */
-goog.math.standardAngleInRadians = function(angle) {
-  return goog.math.modulo(angle, 2 * Math.PI);
-};
-
-
-/**
- * Converts degrees to radians.
- * @param {number} angleDegrees Angle in degrees.
- * @return {number} Angle in radians.
- */
-goog.math.toRadians = function(angleDegrees) {
-  return angleDegrees * Math.PI / 180;
-};
-
-
-/**
- * Converts radians to degrees.
- * @param {number} angleRadians Angle in radians.
- * @return {number} Angle in degrees.
- */
-goog.math.toDegrees = function(angleRadians) {
-  return angleRadians * 180 / Math.PI;
-};
-
-
-/**
- * For a given angle and radius, finds the X portion of the offset.
- * @param {number} degrees Angle in degrees (zero points in +X direction).
- * @param {number} radius Radius.
- * @return {number} The x-distance for the angle and radius.
- */
-goog.math.angleDx = function(degrees, radius) {
-  return radius * Math.cos(goog.math.toRadians(degrees));
-};
-
-
-/**
- * For a given angle and radius, finds the Y portion of the offset.
- * @param {number} degrees Angle in degrees (zero points in +X direction).
- * @param {number} radius Radius.
- * @return {number} The y-distance for the angle and radius.
- */
-goog.math.angleDy = function(degrees, radius) {
-  return radius * Math.sin(goog.math.toRadians(degrees));
-};
-
-
-/**
- * Computes the angle between two points (x1,y1) and (x2,y2).
- * Angle zero points in the +X direction, 90 degrees points in the +Y
- * direction (down) and from there we grow clockwise towards 360 degrees.
- * @param {number} x1 x of first point.
- * @param {number} y1 y of first point.
- * @param {number} x2 x of second point.
- * @param {number} y2 y of second point.
- * @return {number} Standardized angle in degrees of the vector from
- *     x1,y1 to x2,y2.
- */
-goog.math.angle = function(x1, y1, x2, y2) {
-  return goog.math.standardAngle(goog.math.toDegrees(Math.atan2(y2 - y1,
-                                                                x2 - x1)));
-};
-
-
-/**
- * Computes the difference between startAngle and endAngle (angles in degrees).
- * @param {number} startAngle  Start angle in degrees.
- * @param {number} endAngle  End angle in degrees.
- * @return {number} The number of degrees that when added to
- *     startAngle will result in endAngle. Positive numbers mean that the
- *     direction is clockwise. Negative numbers indicate a counter-clockwise
- *     direction.
- *     The shortest route (clockwise vs counter-clockwise) between the angles
- *     is used.
- *     When the difference is 180 degrees, the function returns 180 (not -180)
- *     angleDifference(30, 40) is 10, and angleDifference(40, 30) is -10.
- *     angleDifference(350, 10) is 20, and angleDifference(10, 350) is -20.
- */
-goog.math.angleDifference = function(startAngle, endAngle) {
-  var d = goog.math.standardAngle(endAngle) -
-          goog.math.standardAngle(startAngle);
-  if (d > 180) {
-    d = d - 360;
-  } else if (d <= -180) {
-    d = 360 + d;
-  }
-  return d;
-};
-
-
-/**
- * Returns the sign of a number as per the "sign" or "signum" function.
- * @param {number} x The number to take the sign of.
- * @return {number} -1 when negative, 1 when positive, 0 when 0. Preserves
- *     signed zeros and NaN.
- */
-goog.math.sign = Math.sign || function(x) {
-  if (x > 0) {
-    return 1;
-  }
-  if (x < 0) {
-    return -1;
-  }
-  return x;  // Preserves signed zeros and NaN.
-};
-
-
-/**
- * JavaScript implementation of Longest Common Subsequence problem.
- * http://en.wikipedia.org/wiki/Longest_common_subsequence
- *
- * Returns the longest possible array that is subarray of both of given arrays.
- *
- * @param {Array<Object>} array1 First array of objects.
- * @param {Array<Object>} array2 Second array of objects.
- * @param {Function=} opt_compareFn Function that acts as a custom comparator
- *     for the array ojects. Function should return true if objects are equal,
- *     otherwise false.
- * @param {Function=} opt_collectorFn Function used to decide what to return
- *     as a result subsequence. It accepts 2 arguments: index of common element
- *     in the first array and index in the second. The default function returns
- *     element from the first array.
- * @return {!Array<Object>} A list of objects that are common to both arrays
- *     such that there is no common subsequence with size greater than the
- *     length of the list.
- */
-goog.math.longestCommonSubsequence = function(
-    array1, array2, opt_compareFn, opt_collectorFn) {
-
-  var compare = opt_compareFn || function(a, b) {
-    return a == b;
-  };
-
-  var collect = opt_collectorFn || function(i1, i2) {
-    return array1[i1];
-  };
-
-  var length1 = array1.length;
-  var length2 = array2.length;
-
-  var arr = [];
-  for (var i = 0; i < length1 + 1; i++) {
-    arr[i] = [];
-    arr[i][0] = 0;
-  }
-
-  for (var j = 0; j < length2 + 1; j++) {
-    arr[0][j] = 0;
-  }
-
-  for (i = 1; i <= length1; i++) {
-    for (j = 1; j <= length2; j++) {
-      if (compare(array1[i - 1], array2[j - 1])) {
-        arr[i][j] = arr[i - 1][j - 1] + 1;
-      } else {
-        arr[i][j] = Math.max(arr[i - 1][j], arr[i][j - 1]);
-      }
-    }
-  }
-
-  // Backtracking
-  var result = [];
-  var i = length1, j = length2;
-  while (i > 0 && j > 0) {
-    if (compare(array1[i - 1], array2[j - 1])) {
-      result.unshift(collect(i - 1, j - 1));
-      i--;
-      j--;
-    } else {
-      if (arr[i - 1][j] > arr[i][j - 1]) {
-        i--;
-      } else {
-        j--;
-      }
-    }
-  }
-
-  return result;
-};
-
-
-/**
- * Returns the sum of the arguments.
- * @param {...number} var_args Numbers to add.
- * @return {number} The sum of the arguments (0 if no arguments were provided,
- *     {@code NaN} if any of the arguments is not a valid number).
- */
-goog.math.sum = function(var_args) {
-  return /** @type {number} */ (goog.array.reduce(arguments,
-      function(sum, value) {
-        return sum + value;
-      }, 0));
-};
-
-
-/**
- * Returns the arithmetic mean of the arguments.
- * @param {...number} var_args Numbers to average.
- * @return {number} The average of the arguments ({@code NaN} if no arguments
- *     were provided or any of the arguments is not a valid number).
- */
-goog.math.average = function(var_args) {
-  return goog.math.sum.apply(null, arguments) / arguments.length;
-};
-
-
-/**
- * Returns the unbiased sample variance of the arguments. For a definition,
- * see e.g. http://en.wikipedia.org/wiki/Variance
- * @param {...number} var_args Number samples to analyze.
- * @return {number} The unbiased sample variance of the arguments (0 if fewer
- *     than two samples were provided, or {@code NaN} if any of the samples is
- *     not a valid number).
- */
-goog.math.sampleVariance = function(var_args) {
-  var sampleSize = arguments.length;
-  if (sampleSize < 2) {
-    return 0;
-  }
-
-  var mean = goog.math.average.apply(null, arguments);
-  var variance = goog.math.sum.apply(null, goog.array.map(arguments,
-      function(val) {
-        return Math.pow(val - mean, 2);
-      })) / (sampleSize - 1);
-
-  return variance;
-};
-
-
-/**
- * Returns the sample standard deviation of the arguments.  For a definition of
- * sample standard deviation, see e.g.
- * http://en.wikipedia.org/wiki/Standard_deviation
- * @param {...number} var_args Number samples to analyze.
- * @return {number} The sample standard deviation of the arguments (0 if fewer
- *     than two samples were provided, or {@code NaN} if any of the samples is
- *     not a valid number).
- */
-goog.math.standardDeviation = function(var_args) {
-  return Math.sqrt(goog.math.sampleVariance.apply(null, arguments));
-};
-
-
-/**
- * Returns whether the supplied number represents an integer, i.e. that is has
- * no fractional component.  No range-checking is performed on the number.
- * @param {number} num The number to test.
- * @return {boolean} Whether {@code num} is an integer.
- */
-goog.math.isInt = function(num) {
-  return isFinite(num) && num % 1 == 0;
-};
-
-
-/**
- * Returns whether the supplied number is finite and not NaN.
- * @param {number} num The number to test.
- * @return {boolean} Whether {@code num} is a finite number.
- */
-goog.math.isFiniteNumber = function(num) {
-  return isFinite(num) && !isNaN(num);
-};
-
-
-/**
- * @param {number} num The number to test.
- * @return {boolean} Whether it is negative zero.
- */
-goog.math.isNegativeZero = function(num) {
-  return num == 0 && 1 / num < 0;
-};
-
-
-/**
- * Returns the precise value of floor(log10(num)).
- * Simpler implementations didn't work because of floating point rounding
- * errors. For example
- * <ul>
- * <li>Math.floor(Math.log(num) / Math.LN10) is off by one for num == 1e+3.
- * <li>Math.floor(Math.log(num) * Math.LOG10E) is off by one for num == 1e+15.
- * <li>Math.floor(Math.log10(num)) is off by one for num == 1e+15 - 1.
- * </ul>
- * @param {number} num A floating point number.
- * @return {number} Its logarithm to base 10 rounded down to the nearest
- *     integer if num > 0. -Infinity if num == 0. NaN if num < 0.
- */
-goog.math.log10Floor = function(num) {
-  if (num > 0) {
-    var x = Math.round(Math.log(num) * Math.LOG10E);
-    return x - (parseFloat('1e' + x) > num);
-  }
-  return num == 0 ? -Infinity : NaN;
-};
-
-
-/**
- * A tweaked variant of {@code Math.floor} which tolerates if the passed number
- * is infinitesimally smaller than the closest integer. It often happens with
- * the results of floating point calculations because of the finite precision
- * of the intermediate results. For example {@code Math.floor(Math.log(1000) /
- * Math.LN10) == 2}, not 3 as one would expect.
- * @param {number} num A number.
- * @param {number=} opt_epsilon An infinitesimally small positive number, the
- *     rounding error to tolerate.
- * @return {number} The largest integer less than or equal to {@code num}.
- */
-goog.math.safeFloor = function(num, opt_epsilon) {
-  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
-  return Math.floor(num + (opt_epsilon || 2e-15));
-};
-
-
-/**
- * A tweaked variant of {@code Math.ceil}. See {@code goog.math.safeFloor} for
- * details.
- * @param {number} num A number.
- * @param {number=} opt_epsilon An infinitesimally small positive number, the
- *     rounding error to tolerate.
- * @return {number} The smallest integer greater than or equal to {@code num}.
- */
-goog.math.safeCeil = function(num, opt_epsilon) {
-  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
-  return Math.ceil(num - (opt_epsilon || 2e-15));
-};
-
 goog.provide('ol.RotationConstraint');
 goog.provide('ol.RotationConstraintType');
 
-goog.require('goog.math');
+goog.require('ol.math');
 
 
 /**
@@ -7361,7 +6931,7 @@ ol.RotationConstraint.createSnapToN = function(n) {
  * @return {ol.RotationConstraintType} Rotation constraint.
  */
 ol.RotationConstraint.createSnapToZero = function(opt_tolerance) {
-  var tolerance = opt_tolerance || goog.math.toRadians(5);
+  var tolerance = opt_tolerance || ol.math.toRadians(5);
   return (
       /**
        * @param {number|undefined} rotation Rotation.
@@ -13607,6 +13177,458 @@ ol.size.toSize = function(size, opt_size) {
   }
 };
 
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Additional mathematical functions.
+ */
+
+goog.provide('goog.math');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+
+
+/**
+ * Returns a random integer greater than or equal to 0 and less than {@code a}.
+ * @param {number} a  The upper bound for the random integer (exclusive).
+ * @return {number} A random integer N such that 0 <= N < a.
+ */
+goog.math.randomInt = function(a) {
+  return Math.floor(Math.random() * a);
+};
+
+
+/**
+ * Returns a random number greater than or equal to {@code a} and less than
+ * {@code b}.
+ * @param {number} a  The lower bound for the random number (inclusive).
+ * @param {number} b  The upper bound for the random number (exclusive).
+ * @return {number} A random number N such that a <= N < b.
+ */
+goog.math.uniformRandom = function(a, b) {
+  return a + Math.random() * (b - a);
+};
+
+
+/**
+ * Takes a number and clamps it to within the provided bounds.
+ * @param {number} value The input number.
+ * @param {number} min The minimum value to return.
+ * @param {number} max The maximum value to return.
+ * @return {number} The input number if it is within bounds, or the nearest
+ *     number within the bounds.
+ */
+goog.math.clamp = function(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+};
+
+
+/**
+ * The % operator in JavaScript returns the remainder of a / b, but differs from
+ * some other languages in that the result will have the same sign as the
+ * dividend. For example, -1 % 8 == -1, whereas in some other languages
+ * (such as Python) the result would be 7. This function emulates the more
+ * correct modulo behavior, which is useful for certain applications such as
+ * calculating an offset index in a circular list.
+ *
+ * @param {number} a The dividend.
+ * @param {number} b The divisor.
+ * @return {number} a % b where the result is between 0 and b (either 0 <= x < b
+ *     or b < x <= 0, depending on the sign of b).
+ */
+goog.math.modulo = function(a, b) {
+  var r = a % b;
+  // If r and b differ in sign, add b to wrap the result to the correct sign.
+  return (r * b < 0) ? r + b : r;
+};
+
+
+/**
+ * Performs linear interpolation between values a and b. Returns the value
+ * between a and b proportional to x (when x is between 0 and 1. When x is
+ * outside this range, the return value is a linear extrapolation).
+ * @param {number} a A number.
+ * @param {number} b A number.
+ * @param {number} x The proportion between a and b.
+ * @return {number} The interpolated value between a and b.
+ */
+goog.math.lerp = function(a, b, x) {
+  return a + x * (b - a);
+};
+
+
+/**
+ * Tests whether the two values are equal to each other, within a certain
+ * tolerance to adjust for floating point errors.
+ * @param {number} a A number.
+ * @param {number} b A number.
+ * @param {number=} opt_tolerance Optional tolerance range. Defaults
+ *     to 0.000001. If specified, should be greater than 0.
+ * @return {boolean} Whether {@code a} and {@code b} are nearly equal.
+ */
+goog.math.nearlyEquals = function(a, b, opt_tolerance) {
+  return Math.abs(a - b) <= (opt_tolerance || 0.000001);
+};
+
+
+// TODO(user): Rename to normalizeAngle, retaining old name as deprecated
+// alias.
+/**
+ * Normalizes an angle to be in range [0-360). Angles outside this range will
+ * be normalized to be the equivalent angle with that range.
+ * @param {number} angle Angle in degrees.
+ * @return {number} Standardized angle.
+ */
+goog.math.standardAngle = function(angle) {
+  return goog.math.modulo(angle, 360);
+};
+
+
+/**
+ * Normalizes an angle to be in range [0-2*PI). Angles outside this range will
+ * be normalized to be the equivalent angle with that range.
+ * @param {number} angle Angle in radians.
+ * @return {number} Standardized angle.
+ */
+goog.math.standardAngleInRadians = function(angle) {
+  return goog.math.modulo(angle, 2 * Math.PI);
+};
+
+
+/**
+ * Converts degrees to radians.
+ * @param {number} angleDegrees Angle in degrees.
+ * @return {number} Angle in radians.
+ */
+goog.math.toRadians = function(angleDegrees) {
+  return angleDegrees * Math.PI / 180;
+};
+
+
+/**
+ * Converts radians to degrees.
+ * @param {number} angleRadians Angle in radians.
+ * @return {number} Angle in degrees.
+ */
+goog.math.toDegrees = function(angleRadians) {
+  return angleRadians * 180 / Math.PI;
+};
+
+
+/**
+ * For a given angle and radius, finds the X portion of the offset.
+ * @param {number} degrees Angle in degrees (zero points in +X direction).
+ * @param {number} radius Radius.
+ * @return {number} The x-distance for the angle and radius.
+ */
+goog.math.angleDx = function(degrees, radius) {
+  return radius * Math.cos(goog.math.toRadians(degrees));
+};
+
+
+/**
+ * For a given angle and radius, finds the Y portion of the offset.
+ * @param {number} degrees Angle in degrees (zero points in +X direction).
+ * @param {number} radius Radius.
+ * @return {number} The y-distance for the angle and radius.
+ */
+goog.math.angleDy = function(degrees, radius) {
+  return radius * Math.sin(goog.math.toRadians(degrees));
+};
+
+
+/**
+ * Computes the angle between two points (x1,y1) and (x2,y2).
+ * Angle zero points in the +X direction, 90 degrees points in the +Y
+ * direction (down) and from there we grow clockwise towards 360 degrees.
+ * @param {number} x1 x of first point.
+ * @param {number} y1 y of first point.
+ * @param {number} x2 x of second point.
+ * @param {number} y2 y of second point.
+ * @return {number} Standardized angle in degrees of the vector from
+ *     x1,y1 to x2,y2.
+ */
+goog.math.angle = function(x1, y1, x2, y2) {
+  return goog.math.standardAngle(goog.math.toDegrees(Math.atan2(y2 - y1,
+                                                                x2 - x1)));
+};
+
+
+/**
+ * Computes the difference between startAngle and endAngle (angles in degrees).
+ * @param {number} startAngle  Start angle in degrees.
+ * @param {number} endAngle  End angle in degrees.
+ * @return {number} The number of degrees that when added to
+ *     startAngle will result in endAngle. Positive numbers mean that the
+ *     direction is clockwise. Negative numbers indicate a counter-clockwise
+ *     direction.
+ *     The shortest route (clockwise vs counter-clockwise) between the angles
+ *     is used.
+ *     When the difference is 180 degrees, the function returns 180 (not -180)
+ *     angleDifference(30, 40) is 10, and angleDifference(40, 30) is -10.
+ *     angleDifference(350, 10) is 20, and angleDifference(10, 350) is -20.
+ */
+goog.math.angleDifference = function(startAngle, endAngle) {
+  var d = goog.math.standardAngle(endAngle) -
+          goog.math.standardAngle(startAngle);
+  if (d > 180) {
+    d = d - 360;
+  } else if (d <= -180) {
+    d = 360 + d;
+  }
+  return d;
+};
+
+
+/**
+ * Returns the sign of a number as per the "sign" or "signum" function.
+ * @param {number} x The number to take the sign of.
+ * @return {number} -1 when negative, 1 when positive, 0 when 0. Preserves
+ *     signed zeros and NaN.
+ */
+goog.math.sign = Math.sign || function(x) {
+  if (x > 0) {
+    return 1;
+  }
+  if (x < 0) {
+    return -1;
+  }
+  return x;  // Preserves signed zeros and NaN.
+};
+
+
+/**
+ * JavaScript implementation of Longest Common Subsequence problem.
+ * http://en.wikipedia.org/wiki/Longest_common_subsequence
+ *
+ * Returns the longest possible array that is subarray of both of given arrays.
+ *
+ * @param {Array<Object>} array1 First array of objects.
+ * @param {Array<Object>} array2 Second array of objects.
+ * @param {Function=} opt_compareFn Function that acts as a custom comparator
+ *     for the array ojects. Function should return true if objects are equal,
+ *     otherwise false.
+ * @param {Function=} opt_collectorFn Function used to decide what to return
+ *     as a result subsequence. It accepts 2 arguments: index of common element
+ *     in the first array and index in the second. The default function returns
+ *     element from the first array.
+ * @return {!Array<Object>} A list of objects that are common to both arrays
+ *     such that there is no common subsequence with size greater than the
+ *     length of the list.
+ */
+goog.math.longestCommonSubsequence = function(
+    array1, array2, opt_compareFn, opt_collectorFn) {
+
+  var compare = opt_compareFn || function(a, b) {
+    return a == b;
+  };
+
+  var collect = opt_collectorFn || function(i1, i2) {
+    return array1[i1];
+  };
+
+  var length1 = array1.length;
+  var length2 = array2.length;
+
+  var arr = [];
+  for (var i = 0; i < length1 + 1; i++) {
+    arr[i] = [];
+    arr[i][0] = 0;
+  }
+
+  for (var j = 0; j < length2 + 1; j++) {
+    arr[0][j] = 0;
+  }
+
+  for (i = 1; i <= length1; i++) {
+    for (j = 1; j <= length2; j++) {
+      if (compare(array1[i - 1], array2[j - 1])) {
+        arr[i][j] = arr[i - 1][j - 1] + 1;
+      } else {
+        arr[i][j] = Math.max(arr[i - 1][j], arr[i][j - 1]);
+      }
+    }
+  }
+
+  // Backtracking
+  var result = [];
+  var i = length1, j = length2;
+  while (i > 0 && j > 0) {
+    if (compare(array1[i - 1], array2[j - 1])) {
+      result.unshift(collect(i - 1, j - 1));
+      i--;
+      j--;
+    } else {
+      if (arr[i - 1][j] > arr[i][j - 1]) {
+        i--;
+      } else {
+        j--;
+      }
+    }
+  }
+
+  return result;
+};
+
+
+/**
+ * Returns the sum of the arguments.
+ * @param {...number} var_args Numbers to add.
+ * @return {number} The sum of the arguments (0 if no arguments were provided,
+ *     {@code NaN} if any of the arguments is not a valid number).
+ */
+goog.math.sum = function(var_args) {
+  return /** @type {number} */ (goog.array.reduce(arguments,
+      function(sum, value) {
+        return sum + value;
+      }, 0));
+};
+
+
+/**
+ * Returns the arithmetic mean of the arguments.
+ * @param {...number} var_args Numbers to average.
+ * @return {number} The average of the arguments ({@code NaN} if no arguments
+ *     were provided or any of the arguments is not a valid number).
+ */
+goog.math.average = function(var_args) {
+  return goog.math.sum.apply(null, arguments) / arguments.length;
+};
+
+
+/**
+ * Returns the unbiased sample variance of the arguments. For a definition,
+ * see e.g. http://en.wikipedia.org/wiki/Variance
+ * @param {...number} var_args Number samples to analyze.
+ * @return {number} The unbiased sample variance of the arguments (0 if fewer
+ *     than two samples were provided, or {@code NaN} if any of the samples is
+ *     not a valid number).
+ */
+goog.math.sampleVariance = function(var_args) {
+  var sampleSize = arguments.length;
+  if (sampleSize < 2) {
+    return 0;
+  }
+
+  var mean = goog.math.average.apply(null, arguments);
+  var variance = goog.math.sum.apply(null, goog.array.map(arguments,
+      function(val) {
+        return Math.pow(val - mean, 2);
+      })) / (sampleSize - 1);
+
+  return variance;
+};
+
+
+/**
+ * Returns the sample standard deviation of the arguments.  For a definition of
+ * sample standard deviation, see e.g.
+ * http://en.wikipedia.org/wiki/Standard_deviation
+ * @param {...number} var_args Number samples to analyze.
+ * @return {number} The sample standard deviation of the arguments (0 if fewer
+ *     than two samples were provided, or {@code NaN} if any of the samples is
+ *     not a valid number).
+ */
+goog.math.standardDeviation = function(var_args) {
+  return Math.sqrt(goog.math.sampleVariance.apply(null, arguments));
+};
+
+
+/**
+ * Returns whether the supplied number represents an integer, i.e. that is has
+ * no fractional component.  No range-checking is performed on the number.
+ * @param {number} num The number to test.
+ * @return {boolean} Whether {@code num} is an integer.
+ */
+goog.math.isInt = function(num) {
+  return isFinite(num) && num % 1 == 0;
+};
+
+
+/**
+ * Returns whether the supplied number is finite and not NaN.
+ * @param {number} num The number to test.
+ * @return {boolean} Whether {@code num} is a finite number.
+ */
+goog.math.isFiniteNumber = function(num) {
+  return isFinite(num) && !isNaN(num);
+};
+
+
+/**
+ * @param {number} num The number to test.
+ * @return {boolean} Whether it is negative zero.
+ */
+goog.math.isNegativeZero = function(num) {
+  return num == 0 && 1 / num < 0;
+};
+
+
+/**
+ * Returns the precise value of floor(log10(num)).
+ * Simpler implementations didn't work because of floating point rounding
+ * errors. For example
+ * <ul>
+ * <li>Math.floor(Math.log(num) / Math.LN10) is off by one for num == 1e+3.
+ * <li>Math.floor(Math.log(num) * Math.LOG10E) is off by one for num == 1e+15.
+ * <li>Math.floor(Math.log10(num)) is off by one for num == 1e+15 - 1.
+ * </ul>
+ * @param {number} num A floating point number.
+ * @return {number} Its logarithm to base 10 rounded down to the nearest
+ *     integer if num > 0. -Infinity if num == 0. NaN if num < 0.
+ */
+goog.math.log10Floor = function(num) {
+  if (num > 0) {
+    var x = Math.round(Math.log(num) * Math.LOG10E);
+    return x - (parseFloat('1e' + x) > num);
+  }
+  return num == 0 ? -Infinity : NaN;
+};
+
+
+/**
+ * A tweaked variant of {@code Math.floor} which tolerates if the passed number
+ * is infinitesimally smaller than the closest integer. It often happens with
+ * the results of floating point calculations because of the finite precision
+ * of the intermediate results. For example {@code Math.floor(Math.log(1000) /
+ * Math.LN10) == 2}, not 3 as one would expect.
+ * @param {number} num A number.
+ * @param {number=} opt_epsilon An infinitesimally small positive number, the
+ *     rounding error to tolerate.
+ * @return {number} The largest integer less than or equal to {@code num}.
+ */
+goog.math.safeFloor = function(num, opt_epsilon) {
+  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
+  return Math.floor(num + (opt_epsilon || 2e-15));
+};
+
+
+/**
+ * A tweaked variant of {@code Math.ceil}. See {@code goog.math.safeFloor} for
+ * details.
+ * @param {number} num A number.
+ * @param {number=} opt_epsilon An infinitesimally small positive number, the
+ *     rounding error to tolerate.
+ * @return {number} The smallest integer greater than or equal to {@code num}.
+ */
+goog.math.safeCeil = function(num, opt_epsilon) {
+  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
+  return Math.ceil(num - (opt_epsilon || 2e-15));
+};
+
 goog.provide('ol.Coordinate');
 goog.provide('ol.CoordinateFormatType');
 goog.provide('ol.coordinate');
@@ -18482,7 +18504,7 @@ goog.functions.throttle = function(f, interval, opt_scope) {
 
 goog.provide('ol.Sphere');
 
-goog.require('goog.math');
+goog.require('ol.math');
 
 
 
@@ -18532,9 +18554,9 @@ ol.Sphere.prototype.geodesicArea = function(coordinates) {
   var y1 = coordinates[len - 1][1];
   for (var i = 0; i < len; i++) {
     var x2 = coordinates[i][0], y2 = coordinates[i][1];
-    area += goog.math.toRadians(x2 - x1) *
-        (2 + Math.sin(goog.math.toRadians(y1)) +
-        Math.sin(goog.math.toRadians(y2)));
+    area += ol.math.toRadians(x2 - x1) *
+        (2 + Math.sin(ol.math.toRadians(y1)) +
+        Math.sin(ol.math.toRadians(y2)));
     x1 = x2;
     y1 = y2;
   }
@@ -18551,10 +18573,10 @@ ol.Sphere.prototype.geodesicArea = function(coordinates) {
  * @api
  */
 ol.Sphere.prototype.haversineDistance = function(c1, c2) {
-  var lat1 = goog.math.toRadians(c1[1]);
-  var lat2 = goog.math.toRadians(c2[1]);
+  var lat1 = ol.math.toRadians(c1[1]);
+  var lat2 = ol.math.toRadians(c2[1]);
   var deltaLatBy2 = (lat2 - lat1) / 2;
-  var deltaLonBy2 = goog.math.toRadians(c2[0] - c1[0]) / 2;
+  var deltaLonBy2 = ol.math.toRadians(c2[0] - c1[0]) / 2;
   var a = Math.sin(deltaLatBy2) * Math.sin(deltaLatBy2) +
       Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) *
       Math.cos(lat1) * Math.cos(lat2);
@@ -18572,8 +18594,8 @@ ol.Sphere.prototype.haversineDistance = function(c1, c2) {
  * @return {ol.Coordinate} The target point.
  */
 ol.Sphere.prototype.offset = function(c1, distance, bearing) {
-  var lat1 = goog.math.toRadians(c1[1]);
-  var lon1 = goog.math.toRadians(c1[0]);
+  var lat1 = ol.math.toRadians(c1[1]);
+  var lon1 = ol.math.toRadians(c1[0]);
   var dByR = distance / this.radius;
   var lat = Math.asin(
       Math.sin(lat1) * Math.cos(dByR) +
@@ -18581,7 +18603,7 @@ ol.Sphere.prototype.offset = function(c1, distance, bearing) {
   var lon = lon1 + Math.atan2(
       Math.sin(bearing) * Math.sin(dByR) * Math.cos(lat1),
       Math.cos(dByR) - Math.sin(lat1) * Math.sin(lat));
-  return [goog.math.toDegrees(lon), goog.math.toDegrees(lat)];
+  return [ol.math.toDegrees(lon), ol.math.toDegrees(lat)];
 };
 
 goog.provide('ol.sphere.NORMAL');
@@ -37858,7 +37880,6 @@ goog.provide('ol.control.Attribution');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -37892,13 +37913,13 @@ ol.control.Attribution = function(opt_options) {
    * @private
    * @type {Element}
    */
-  this.ulElement_ = goog.dom.createElement(goog.dom.TagName.UL);
+  this.ulElement_ = goog.dom.createElement('UL');
 
   /**
    * @private
    * @type {Element}
    */
-  this.logoLi_ = goog.dom.createElement(goog.dom.TagName.LI);
+  this.logoLi_ = goog.dom.createElement('LI');
 
   this.ulElement_.appendChild(this.logoLi_);
   goog.style.setElementShown(this.logoLi_, false);
@@ -37931,7 +37952,7 @@ ol.control.Attribution = function(opt_options) {
    * @type {Node}
    */
   this.collapseLabel_ = goog.isString(collapseLabel) ?
-      goog.dom.createDom(goog.dom.TagName.SPAN, {}, collapseLabel) :
+      goog.dom.createDom('SPAN', {}, collapseLabel) :
       collapseLabel;
 
   var label = options.label ? options.label : 'i';
@@ -37941,12 +37962,12 @@ ol.control.Attribution = function(opt_options) {
    * @type {Node}
    */
   this.label_ = goog.isString(label) ?
-      goog.dom.createDom(goog.dom.TagName.SPAN, {}, label) :
+      goog.dom.createDom('SPAN', {}, label) :
       label;
 
   var activeLabel = (this.collapsible_ && !this.collapsed_) ?
       this.collapseLabel_ : this.label_;
-  var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
+  var button = goog.dom.createDom('BUTTON', {
     'type': 'button',
     'title': tipLabel
   }, activeLabel);
@@ -37965,7 +37986,7 @@ ol.control.Attribution = function(opt_options) {
       ol.css.CLASS_CONTROL +
       (this.collapsed_ && this.collapsible_ ? ' ol-collapsed' : '') +
       (this.collapsible_ ? '' : ' ol-uncollapsible');
-  var element = goog.dom.createDom(goog.dom.TagName.DIV,
+  var element = goog.dom.createDom('DIV',
       cssClasses, this.ulElement_, button);
 
   var render = options.render ? options.render : ol.control.Attribution.render;
@@ -38116,7 +38137,7 @@ ol.control.Attribution.prototype.updateElement_ = function(frameState) {
     }
   }
   for (attributionKey in visibleAttributions) {
-    attributionElement = goog.dom.createElement(goog.dom.TagName.LI);
+    attributionElement = goog.dom.createElement('LI');
     attributionElement.innerHTML =
         visibleAttributions[attributionKey].getHTML();
     this.ulElement_.appendChild(attributionElement);
@@ -38124,7 +38145,7 @@ ol.control.Attribution.prototype.updateElement_ = function(frameState) {
     this.attributionElementRenderedVisible_[attributionKey] = true;
   }
   for (attributionKey in hiddenAttributions) {
-    attributionElement = goog.dom.createElement(goog.dom.TagName.LI);
+    attributionElement = goog.dom.createElement('LI');
     attributionElement.innerHTML =
         hiddenAttributions[attributionKey].getHTML();
     goog.style.setElementShown(attributionElement, false);
@@ -38177,7 +38198,7 @@ ol.control.Attribution.prototype.insertLogos_ = function(frameState) {
       if (logoValue === '') {
         logoElement = image;
       } else {
-        logoElement = goog.dom.createDom(goog.dom.TagName.A, {
+        logoElement = goog.dom.createDom('A', {
           'href': logoValue
         });
         logoElement.appendChild(image);
@@ -38271,7 +38292,6 @@ ol.control.Attribution.prototype.getCollapsed = function() {
 goog.provide('ol.control.Rotate');
 
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -38310,7 +38330,7 @@ ol.control.Rotate = function(opt_options) {
   this.label_ = null;
 
   if (goog.isString(label)) {
-    this.label_ = goog.dom.createDom(goog.dom.TagName.SPAN,
+    this.label_ = goog.dom.createDom('SPAN',
         'ol-compass', label);
   } else {
     this.label_ = label;
@@ -38319,7 +38339,7 @@ ol.control.Rotate = function(opt_options) {
 
   var tipLabel = options.tipLabel ? options.tipLabel : 'Reset rotation';
 
-  var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
+  var button = goog.dom.createDom('BUTTON', {
     'class': className + '-reset',
     'type' : 'button',
     'title': tipLabel
@@ -38330,7 +38350,7 @@ ol.control.Rotate = function(opt_options) {
 
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, button);
+  var element = goog.dom.createDom('DIV', cssClasses, button);
 
   var render = options.render ? options.render : ol.control.Rotate.render;
 
@@ -38436,7 +38456,6 @@ ol.control.Rotate.render = function(mapEvent) {
 goog.provide('ol.control.Zoom');
 
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('ol.animation');
@@ -38473,7 +38492,7 @@ ol.control.Zoom = function(opt_options) {
   var zoomOutTipLabel = options.zoomOutTipLabel ?
       options.zoomOutTipLabel : 'Zoom out';
 
-  var inElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {
+  var inElement = goog.dom.createDom('BUTTON', {
     'class': className + '-in',
     'type' : 'button',
     'title': zoomInTipLabel
@@ -38483,7 +38502,7 @@ ol.control.Zoom = function(opt_options) {
       goog.events.EventType.CLICK, goog.partial(
           ol.control.Zoom.prototype.handleClick_, delta), false, this);
 
-  var outElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {
+  var outElement = goog.dom.createDom('BUTTON', {
     'class': className + '-out',
     'type' : 'button',
     'title': zoomOutTipLabel
@@ -38495,7 +38514,7 @@ ol.control.Zoom = function(opt_options) {
 
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, inElement,
+  var element = goog.dom.createDom('DIV', cssClasses, inElement,
       outElement);
 
   goog.base(this, {
@@ -38769,7 +38788,6 @@ goog.provide('ol.control.FullScreen');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.fullscreen');
 goog.require('goog.dom.fullscreen.EventType');
@@ -38823,7 +38841,7 @@ ol.control.FullScreen = function(opt_options) {
       goog.dom.createTextNode(labelActive) : labelActive;
 
   var tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';
-  var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
+  var button = goog.dom.createDom('BUTTON', {
     'class': this.cssClassName_ + '-' + goog.dom.fullscreen.isFullScreen(),
     'type': 'button',
     'title': tipLabel
@@ -38839,7 +38857,7 @@ ol.control.FullScreen = function(opt_options) {
   var cssClasses = this.cssClassName_ + ' ' + ol.css.CLASS_UNSELECTABLE +
       ' ' + ol.css.CLASS_CONTROL + ' ' +
       (!goog.dom.fullscreen.isSupported() ? ol.css.CLASS_UNSUPPORTED : '');
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, button);
+  var element = goog.dom.createDom('DIV', cssClasses, button);
 
   goog.base(this, {
     element: element,
@@ -38929,7 +38947,6 @@ ol.Pixel;
 goog.provide('ol.control.MousePosition');
 
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('ol.CoordinateFormatType');
@@ -38970,7 +38987,7 @@ ol.control.MousePosition = function(opt_options) {
 
   var className = options.className ? options.className : 'ol-mouse-position';
 
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, className);
+  var element = goog.dom.createDom('DIV', className);
 
   var render = options.render ?
       options.render : ol.control.MousePosition.render;
@@ -47137,7 +47154,6 @@ goog.provide('ol.dom.BrowserFeature');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.userAgent');
 goog.require('goog.vec.Mat4');
 goog.require('ol');
@@ -47150,7 +47166,7 @@ goog.require('ol');
  * @return {CanvasRenderingContext2D}
  */
 ol.dom.createCanvasContext2D = function(opt_width, opt_height) {
-  var canvas = goog.dom.createElement(goog.dom.TagName.CANVAS);
+  var canvas = goog.dom.createElement('CANVAS');
   if (opt_width) {
     canvas.width = opt_width;
   }
@@ -47177,7 +47193,7 @@ ol.dom.canUseCssTransform = (function() {
         // this browser is ancient
         canUseCssTransform = false;
       } else {
-        var el = goog.dom.createElement(goog.dom.TagName.P),
+        var el = goog.dom.createElement('P'),
             has2d,
             transforms = {
               'webkitTransform': '-webkit-transform',
@@ -47220,7 +47236,7 @@ ol.dom.canUseCssTransform3D = (function() {
         // this browser is ancient
         canUseCssTransform3D = false;
       } else {
-        var el = goog.dom.createElement(goog.dom.TagName.P),
+        var el = goog.dom.createElement('P'),
             has3d,
             transforms = {
               'webkitTransform': '-webkit-transform',
@@ -47403,7 +47419,6 @@ ol.webgl.getContext = function(canvas, opt_attributes) {
 goog.provide('ol.has');
 
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('ol');
 goog.require('ol.dom');
 goog.require('ol.webgl');
@@ -47527,7 +47542,7 @@ ol.has.WEBGL;
     if ('WebGLRenderingContext' in goog.global) {
       try {
         var canvas = /** @type {HTMLCanvasElement} */
-            (goog.dom.createElement(goog.dom.TagName.CANVAS));
+            (goog.dom.createElement('CANVAS'));
         var gl = ol.webgl.getContext(canvas, {
           failIfMajorPerformanceCaveat: true
         });
@@ -53047,7 +53062,6 @@ goog.provide('ol.events.ConditionType');
 goog.provide('ol.events.condition');
 
 goog.require('goog.asserts');
-goog.require('goog.dom.TagName');
 goog.require('goog.functions');
 goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.MapBrowserPointerEvent');
@@ -53233,9 +53247,9 @@ ol.events.condition.targetNotEditable = function(mapBrowserEvent) {
       'target should be an Element');
   var tagName = target.tagName;
   return (
-      tagName !== goog.dom.TagName.INPUT &&
-      tagName !== goog.dom.TagName.SELECT &&
-      tagName !== goog.dom.TagName.TEXTAREA);
+      tagName !== 'INPUT' &&
+      tagName !== 'SELECT' &&
+      tagName !== 'TEXTAREA');
 };
 
 
@@ -55239,7 +55253,6 @@ goog.provide('ol.style.Circle');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('ol');
 goog.require('ol.color');
 goog.require('ol.has');
@@ -55510,7 +55523,7 @@ ol.style.Circle.prototype.render_ = function(atlasManager) {
   if (atlasManager === undefined) {
     // no atlas manager is used, create a new canvas
     this.canvas_ = /** @type {HTMLCanvasElement} */
-        (goog.dom.createElement(goog.dom.TagName.CANVAS));
+        (goog.dom.createElement('CANVAS'));
     this.canvas_.height = size;
     this.canvas_.width = size;
 
@@ -55611,7 +55624,7 @@ ol.style.Circle.prototype.createHitDetectionCanvas_ = function(renderOptions) {
   // if no fill style is set, create an extra hit-detection image with a
   // default fill style
   this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
-      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+      (goog.dom.createElement('CANVAS'));
   var canvas = this.hitDetectionCanvas_;
 
   canvas.height = renderOptions.size;
@@ -74650,7 +74663,6 @@ goog.provide('ol.renderer.dom.ImageLayer');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.vec.Mat4');
 goog.require('ol.ImageBase');
 goog.require('ol.ViewHint');
@@ -74669,7 +74681,7 @@ goog.require('ol.vec.Mat4');
  * @param {ol.layer.Image} imageLayer Image layer.
  */
 ol.renderer.dom.ImageLayer = function(imageLayer) {
-  var target = goog.dom.createElement(goog.dom.TagName.DIV);
+  var target = goog.dom.createElement('DIV');
   target.style.position = 'absolute';
 
   goog.base(this, imageLayer, target);
@@ -74815,7 +74827,6 @@ goog.provide('ol.renderer.dom.TileLayer');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.style');
 goog.require('goog.vec.Mat4');
 goog.require('ol');
@@ -74842,7 +74853,7 @@ goog.require('ol.vec.Mat4');
  */
 ol.renderer.dom.TileLayer = function(tileLayer) {
 
-  var target = goog.dom.createElement(goog.dom.TagName.DIV);
+  var target = goog.dom.createElement('DIV');
   target.style.position = 'absolute';
 
   goog.base(this, tileLayer, target);
@@ -75080,7 +75091,7 @@ ol.renderer.dom.TileLayerZ_ = function(tileGrid, tileCoordOrigin) {
   /**
    * @type {!Element}
    */
-  this.target = goog.dom.createElement(goog.dom.TagName.DIV);
+  this.target = goog.dom.createElement('DIV');
   this.target.style.position = 'absolute';
   this.target.style.width = '100%';
   this.target.style.height = '100%';
@@ -75163,7 +75174,7 @@ ol.renderer.dom.TileLayerZ_.prototype.addTile = function(tile, tileGutter) {
   var tileElement;
   var tileElementStyle;
   if (tileGutter > 0) {
-    tileElement = goog.dom.createElement(goog.dom.TagName.DIV);
+    tileElement = goog.dom.createElement('DIV');
     tileElementStyle = tileElement.style;
     tileElementStyle.overflow = 'hidden';
     tileElementStyle.width = tileSize[0] + 'px';
@@ -75613,7 +75624,6 @@ goog.provide('ol.renderer.dom.Map');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.events.EventType');
@@ -75672,7 +75682,7 @@ ol.renderer.dom.Map = function(container, map) {
    * @type {!Element}
    * @private
    */
-  this.layersPane_ = goog.dom.createElement(goog.dom.TagName.DIV);
+  this.layersPane_ = goog.dom.createElement('DIV');
   this.layersPane_.className = ol.css.CLASS_UNSELECTABLE;
   var style = this.layersPane_.style;
   style.position = 'absolute';
@@ -78352,7 +78362,6 @@ ol.webgl.BufferCacheEntry;
  * @extends {goog.events.EventTarget}
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {WebGLRenderingContext} gl GL.
- * @api
  */
 ol.webgl.Context = function(canvas, gl) {
 
@@ -81799,7 +81808,6 @@ goog.provide('ol.renderer.webgl.Map');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.log');
@@ -81853,7 +81861,7 @@ ol.renderer.webgl.Map = function(container, map) {
    * @type {HTMLCanvasElement}
    */
   this.canvas_ = /** @type {HTMLCanvasElement} */
-      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+      (goog.dom.createElement('CANVAS'));
   this.canvas_.style.width = '100%';
   this.canvas_.style.height = '100%';
   this.canvas_.className = ol.css.CLASS_UNSELECTABLE;
@@ -82440,7 +82448,6 @@ goog.require('goog.async.AnimationDelay');
 goog.require('goog.async.nextTick');
 goog.require('goog.debug.Console');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.dom.classlist');
 goog.require('goog.events');
@@ -82690,7 +82697,7 @@ ol.Map = function(options) {
    * @private
    * @type {Element}
    */
-  this.viewport_ = goog.dom.createDom(goog.dom.TagName.DIV, 'ol-viewport');
+  this.viewport_ = goog.dom.createDom('DIV', 'ol-viewport');
   this.viewport_.style.position = 'relative';
   this.viewport_.style.overflow = 'hidden';
   this.viewport_.style.width = '100%';
@@ -82706,7 +82713,7 @@ ol.Map = function(options) {
    * @private
    * @type {Element}
    */
-  this.overlayContainer_ = goog.dom.createDom(goog.dom.TagName.DIV,
+  this.overlayContainer_ = goog.dom.createDom('DIV',
       'ol-overlaycontainer');
   this.viewport_.appendChild(this.overlayContainer_);
 
@@ -82714,7 +82721,7 @@ ol.Map = function(options) {
    * @private
    * @type {Element}
    */
-  this.overlayContainerStopEvent_ = goog.dom.createDom(goog.dom.TagName.DIV,
+  this.overlayContainerStopEvent_ = goog.dom.createDom('DIV',
       'ol-overlaycontainer-stopevent');
   goog.events.listen(this.overlayContainerStopEvent_, [
     goog.events.EventType.CLICK,
@@ -84020,7 +84027,6 @@ goog.provide('ol.OverlayProperty');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.style');
 goog.require('ol.Coordinate');
@@ -84107,7 +84113,7 @@ ol.Overlay = function(options) {
    * @private
    * @type {Element}
    */
-  this.element_ = goog.dom.createDom(goog.dom.TagName.DIV, {
+  this.element_ = goog.dom.createDom('DIV', {
     'class': 'ol-overlay-container'
   });
   this.element_.style.position = 'absolute';
@@ -84573,7 +84579,6 @@ goog.provide('ol.control.OverviewMap');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
@@ -84636,7 +84641,7 @@ ol.control.OverviewMap = function(opt_options) {
    * @type {Node}
    */
   this.collapseLabel_ = goog.isString(collapseLabel) ?
-      goog.dom.createDom(goog.dom.TagName.SPAN, {}, collapseLabel) :
+      goog.dom.createDom('SPAN', {}, collapseLabel) :
       collapseLabel;
 
   var label = options.label ? options.label : '\u00BB';
@@ -84646,12 +84651,12 @@ ol.control.OverviewMap = function(opt_options) {
    * @type {Node}
    */
   this.label_ = goog.isString(label) ?
-      goog.dom.createDom(goog.dom.TagName.SPAN, {}, label) :
+      goog.dom.createDom('SPAN', {}, label) :
       label;
 
   var activeLabel = (this.collapsible_ && !this.collapsed_) ?
       this.collapseLabel_ : this.label_;
-  var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
+  var button = goog.dom.createDom('BUTTON', {
     'type': 'button',
     'title': tipLabel
   }, activeLabel);
@@ -84659,7 +84664,7 @@ ol.control.OverviewMap = function(opt_options) {
   goog.events.listen(button, goog.events.EventType.CLICK,
       this.handleClick_, false, this);
 
-  var ovmapDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'ol-overviewmap-map');
+  var ovmapDiv = goog.dom.createDom('DIV', 'ol-overviewmap-map');
 
   /**
    * @type {ol.Map}
@@ -84683,7 +84688,7 @@ ol.control.OverviewMap = function(opt_options) {
         }, this);
   }
 
-  var box = goog.dom.createDom(goog.dom.TagName.DIV, 'ol-overviewmap-box');
+  var box = goog.dom.createDom('DIV', 'ol-overviewmap-box');
 
   /**
    * @type {ol.Overlay}
@@ -84700,7 +84705,7 @@ ol.control.OverviewMap = function(opt_options) {
       ol.css.CLASS_CONTROL +
       (this.collapsed_ && this.collapsible_ ? ' ol-collapsed' : '') +
       (this.collapsible_ ? '' : ' ol-uncollapsible');
-  var element = goog.dom.createDom(goog.dom.TagName.DIV,
+  var element = goog.dom.createDom('DIV',
       cssClasses, ovmapDiv, button);
 
   var render = options.render ? options.render : ol.control.OverviewMap.render;
@@ -85108,15 +85113,14 @@ goog.provide('ol.control.ScaleLineUnits');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
-goog.require('goog.math');
 goog.require('goog.style');
 goog.require('ol');
 goog.require('ol.Object');
 goog.require('ol.TransformFunction');
 goog.require('ol.control.Control');
 goog.require('ol.css');
+goog.require('ol.math');
 goog.require('ol.proj');
 goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Units');
@@ -85171,14 +85175,14 @@ ol.control.ScaleLine = function(opt_options) {
    * @private
    * @type {Element}
    */
-  this.innerElement_ = goog.dom.createDom(goog.dom.TagName.DIV,
+  this.innerElement_ = goog.dom.createDom('DIV',
       className + '-inner');
 
   /**
    * @private
    * @type {Element}
    */
-  this.element_ = goog.dom.createDom(goog.dom.TagName.DIV,
+  this.element_ = goog.dom.createDom('DIV',
       className + ' ' + ol.css.CLASS_UNSELECTABLE, this.innerElement_);
 
   /**
@@ -85322,7 +85326,7 @@ ol.control.ScaleLine.prototype.updateElement_ = function() {
 
     // Convert pointResolution from degrees to meters
     this.toEPSG4326_ = null;
-    cosLatitude = Math.cos(goog.math.toRadians(center[1]));
+    cosLatitude = Math.cos(ol.math.toRadians(center[1]));
     pointResolution *= Math.PI * cosLatitude * ol.sphere.NORMAL.radius / 180;
     projectionUnits = ol.proj.Units.METERS;
 
@@ -85334,7 +85338,7 @@ ol.control.ScaleLine.prototype.updateElement_ = function() {
       this.toEPSG4326_ = ol.proj.getTransformFromProjections(
           projection, ol.proj.get('EPSG:4326'));
     }
-    cosLatitude = Math.cos(goog.math.toRadians(this.toEPSG4326_(center)[1]));
+    cosLatitude = Math.cos(ol.math.toRadians(this.toEPSG4326_(center)[1]));
     var radius = ol.sphere.NORMAL.radius;
     goog.asserts.assert(ol.proj.METERS_PER_UNIT[projectionUnits],
         'Meters per unit should be defined for the projection unit');
@@ -86908,7 +86912,6 @@ goog.provide('ol.control.ZoomSlider');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.Event');
 goog.require('goog.events.EventType');
@@ -86983,9 +86986,11 @@ ol.control.ZoomSlider = function(opt_options) {
   this.duration_ = options.duration ? options.duration : 200;
 
   var className = options.className ? options.className : 'ol-zoomslider';
-  var thumbElement = goog.dom.createDom(goog.dom.TagName.DIV,
-      [className + '-thumb', ol.css.CLASS_UNSELECTABLE]);
-  var containerElement = goog.dom.createDom(goog.dom.TagName.DIV,
+  var thumbElement = goog.dom.createDom('BUTTON', {
+    'type': 'button',
+    'class': className + '-thumb ' + ol.css.CLASS_UNSELECTABLE
+  });
+  var containerElement = goog.dom.createDom('DIV',
       [className, ol.css.CLASS_UNSELECTABLE, ol.css.CLASS_CONTROL],
       thumbElement);
 
@@ -87241,7 +87246,6 @@ goog.provide('ol.control.ZoomToExtent');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('ol.control.Control');
@@ -87274,7 +87278,7 @@ ol.control.ZoomToExtent = function(opt_options) {
   var label = options.label ? options.label : 'E';
   var tipLabel = options.tipLabel ?
       options.tipLabel : 'Fit to extent';
-  var button = goog.dom.createDom(goog.dom.TagName.BUTTON, {
+  var button = goog.dom.createDom('BUTTON', {
     'type': 'button',
     'title': tipLabel
   }, label);
@@ -87284,7 +87288,7 @@ ol.control.ZoomToExtent = function(opt_options) {
 
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
-  var element = goog.dom.createDom(goog.dom.TagName.DIV, cssClasses, button);
+  var element = goog.dom.createDom('DIV', cssClasses, button);
 
   goog.base(this, {
     element: element,
@@ -87321,10 +87325,10 @@ goog.provide('ol.DeviceOrientation');
 goog.provide('ol.DeviceOrientationProperty');
 
 goog.require('goog.events');
-goog.require('goog.math');
 goog.require('ol');
 goog.require('ol.Object');
 goog.require('ol.has');
+goog.require('ol.math');
 
 
 /**
@@ -87434,24 +87438,24 @@ ol.DeviceOrientation.prototype.orientationChange_ = function(browserEvent) {
   var event = /** @type {DeviceOrientationEvent} */
       (browserEvent.getBrowserEvent());
   if (event.alpha !== null) {
-    var alpha = goog.math.toRadians(event.alpha);
+    var alpha = ol.math.toRadians(event.alpha);
     this.set(ol.DeviceOrientationProperty.ALPHA, alpha);
     // event.absolute is undefined in iOS.
     if (goog.isBoolean(event.absolute) && event.absolute) {
       this.set(ol.DeviceOrientationProperty.HEADING, alpha);
     } else if (goog.isNumber(event.webkitCompassHeading) &&
                event.webkitCompassAccuracy != -1) {
-      var heading = goog.math.toRadians(event.webkitCompassHeading);
+      var heading = ol.math.toRadians(event.webkitCompassHeading);
       this.set(ol.DeviceOrientationProperty.HEADING, heading);
     }
   }
   if (event.beta !== null) {
     this.set(ol.DeviceOrientationProperty.BETA,
-        goog.math.toRadians(event.beta));
+        ol.math.toRadians(event.beta));
   }
   if (event.gamma !== null) {
     this.set(ol.DeviceOrientationProperty.GAMMA,
-        goog.math.toRadians(event.gamma));
+        ol.math.toRadians(event.gamma));
   }
   this.changed();
 };
@@ -95182,7 +95186,6 @@ goog.require('goog.Uri');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.dom.NodeType');
-goog.require('goog.math');
 goog.require('ol');
 goog.require('ol.Feature');
 goog.require('ol.FeatureStyleFunction');
@@ -95202,6 +95205,7 @@ goog.require('ol.geom.MultiPoint');
 goog.require('ol.geom.MultiPolygon');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
+goog.require('ol.math');
 goog.require('ol.proj');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Icon');
@@ -95705,7 +95709,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
   var heading = /** @type {number} */
       (object['heading']);
   if (heading !== undefined) {
-    rotation = goog.math.toRadians(heading);
+    rotation = ol.math.toRadians(heading);
   }
 
   var scale = /** @type {number|undefined} */
@@ -102544,6 +102548,18 @@ ol.format.WMTSCapabilities.readTileMatrixSetLink_ = function(node,
  * @private
  * @param {Node} node Node.
  * @param {Array.<*>} objectStack Object stack.
+ * @return {Object|undefined} Dimension object.
+ */
+ol.format.WMTSCapabilities.readDimensions_ = function(node, objectStack) {
+  return ol.xml.pushParseAndPop({},
+      ol.format.WMTSCapabilities.DIMENSION_PARSERS_, node, objectStack);
+};
+
+
+/**
+ * @private
+ * @param {Node} node Node.
+ * @param {Array.<*>} objectStack Object stack.
  * @return {Object|undefined} Resource URL object.
  */
 ol.format.WMTSCapabilities.readResourceUrl_ = function(node, objectStack) {
@@ -102687,6 +102703,8 @@ ol.format.WMTSCapabilities.LAYER_PARSERS_ = ol.xml.makeStructureNS(
           ol.format.XSD.readString),
       'TileMatrixSetLink': ol.xml.makeObjectPropertyPusher(
           ol.format.WMTSCapabilities.readTileMatrixSetLink_),
+      'Dimension': ol.xml.makeObjectPropertyPusher(
+          ol.format.WMTSCapabilities.readDimensions_),
       'ResourceURL': ol.xml.makeObjectPropertyPusher(
           ol.format.WMTSCapabilities.readResourceUrl_)
     }, ol.xml.makeStructureNS(ol.format.WMTSCapabilities.OWS_NAMESPACE_URIS_, {
@@ -102728,6 +102746,23 @@ ol.format.WMTSCapabilities.TMS_LINKS_PARSERS_ = ol.xml.makeStructureNS(
       'TileMatrixSet': ol.xml.makeObjectPropertySetter(
           ol.format.XSD.readString)
     });
+
+
+/**
+ * @const
+ * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @private
+ */
+ol.format.WMTSCapabilities.DIMENSION_PARSERS_ = ol.xml.makeStructureNS(
+    ol.format.WMTSCapabilities.NAMESPACE_URIS_, {
+      'Default': ol.xml.makeObjectPropertySetter(
+          ol.format.XSD.readString),
+      'Value': ol.xml.makeObjectPropertyPusher(
+          ol.format.XSD.readString)
+    }, ol.xml.makeStructureNS(ol.format.WMTSCapabilities.OWS_NAMESPACE_URIS_, {
+      'Identifier': ol.xml.makeObjectPropertySetter(
+          ol.format.XSD.readString)
+    }));
 
 
 /**
@@ -102806,12 +102841,12 @@ goog.provide('ol.GeolocationProperty');
 
 goog.require('goog.events');
 goog.require('goog.events.EventType');
-goog.require('goog.math');
 goog.require('ol.Coordinate');
 goog.require('ol.Object');
 goog.require('ol.geom.Geometry');
 goog.require('ol.geom.Polygon');
 goog.require('ol.has');
+goog.require('ol.math');
 goog.require('ol.proj');
 goog.require('ol.sphere.WGS84');
 
@@ -102961,7 +102996,7 @@ ol.Geolocation.prototype.positionChange_ = function(position) {
       coords.altitudeAccuracy === null ?
       undefined : coords.altitudeAccuracy);
   this.set(ol.GeolocationProperty.HEADING, coords.heading === null ?
-      undefined : goog.math.toRadians(coords.heading));
+      undefined : ol.math.toRadians(coords.heading));
   if (!this.position_) {
     this.position_ = [coords.longitude, coords.latitude];
   } else {
@@ -103159,7 +103194,6 @@ ol.Geolocation.prototype.setTrackingOptions = function(options) {
 goog.provide('ol.geom.flat.geodesic');
 
 goog.require('goog.asserts');
-goog.require('goog.math');
 goog.require('goog.object');
 goog.require('ol.TransformFunction');
 goog.require('ol.math');
@@ -103260,12 +103294,12 @@ ol.geom.flat.geodesic.greatCircleArc = function(
 
   var geoProjection = ol.proj.get('EPSG:4326');
 
-  var cosLat1 = Math.cos(goog.math.toRadians(lat1));
-  var sinLat1 = Math.sin(goog.math.toRadians(lat1));
-  var cosLat2 = Math.cos(goog.math.toRadians(lat2));
-  var sinLat2 = Math.sin(goog.math.toRadians(lat2));
-  var cosDeltaLon = Math.cos(goog.math.toRadians(lon2 - lon1));
-  var sinDeltaLon = Math.sin(goog.math.toRadians(lon2 - lon1));
+  var cosLat1 = Math.cos(ol.math.toRadians(lat1));
+  var sinLat1 = Math.sin(ol.math.toRadians(lat1));
+  var cosLat2 = Math.cos(ol.math.toRadians(lat2));
+  var sinLat2 = Math.sin(ol.math.toRadians(lat2));
+  var cosDeltaLon = Math.cos(ol.math.toRadians(lon2 - lon1));
+  var sinDeltaLon = Math.sin(ol.math.toRadians(lon2 - lon1));
   var d = sinLat1 * sinLat2 + cosLat1 * cosLat2 * cosDeltaLon;
 
   return ol.geom.flat.geodesic.line_(
@@ -103284,10 +103318,10 @@ ol.geom.flat.geodesic.greatCircleArc = function(
         var x = cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosDeltaLon;
         var theta = Math.atan2(y, x);
         var lat = Math.asin(sinLat1 * cosD + cosLat1 * sinD * Math.cos(theta));
-        var lon = goog.math.toRadians(lon1) +
+        var lon = ol.math.toRadians(lon1) +
             Math.atan2(Math.sin(theta) * sinD * cosLat1,
                        cosD - sinLat1 * Math.sin(lat));
-        return [goog.math.toDegrees(lon), goog.math.toDegrees(lat)];
+        return [ol.math.toDegrees(lon), ol.math.toDegrees(lat)];
       }, ol.proj.getTransform(geoProjection, projection), squaredTolerance);
 };
 
@@ -109647,9 +109681,72 @@ ol.interaction.Snap.sortByDistance = function(a, b) {
 };
 
 goog.provide('ol.interaction.Translate');
+goog.provide('ol.interaction.TranslateEvent');
 
+goog.require('goog.events');
+goog.require('goog.events.Event');
 goog.require('ol.array');
 goog.require('ol.interaction.Pointer');
+
+
+/**
+ * @enum {string}
+ */
+ol.interaction.TranslateEventType = {
+  /**
+   * Triggered upon feature translation start.
+   * @event ol.interaction.TranslateEvent#translatestart
+   * @api
+   */
+  TRANSLATESTART: 'translatestart',
+  /**
+   * Triggered upon feature translation.
+   * @event ol.interaction.TranslateEvent#translating
+   * @api
+   */
+  TRANSLATING: 'translating',
+  /**
+   * Triggered upon feature translation end.
+   * @event ol.interaction.TranslateEvent#translateend
+   * @api
+   */
+  TRANSLATEEND: 'translateend'
+};
+
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.interaction.Translate} instances are instances of
+ * this type.
+ *
+ * @constructor
+ * @extends {goog.events.Event}
+ * @implements {oli.interaction.TranslateEvent}
+ * @param {ol.interaction.TranslateEventType} type Type.
+ * @param {ol.Collection.<ol.Feature>} features The features translated.
+ * @param {ol.Coordinate} coordinate The event coordinate.
+ */
+ol.interaction.TranslateEvent = function(type, features, coordinate) {
+
+  goog.base(this, type);
+
+  /**
+   * The features being translated.
+   * @type {ol.Collection.<ol.Feature>}
+   * @api
+   */
+  this.features = features;
+
+  /**
+   * The coordinate of the drag event.
+   * @const
+   * @type {ol.Coordinate}
+   * @api
+   */
+  this.coordinate = coordinate;
+};
+goog.inherits(ol.interaction.TranslateEvent, goog.events.Event);
 
 
 
@@ -109659,6 +109756,7 @@ goog.require('ol.interaction.Pointer');
  *
  * @constructor
  * @extends {ol.interaction.Pointer}
+ * @fires ol.interaction.TranslateEvent
  * @param {olx.interaction.TranslateOptions} options Options.
  * @api
  */
@@ -109712,6 +109810,10 @@ ol.interaction.Translate.handleDownEvent_ = function(event) {
   if (!this.lastCoordinate_ && this.lastFeature_) {
     this.lastCoordinate_ = event.coordinate;
     ol.interaction.Translate.handleMoveEvent_.call(this, event);
+    this.dispatchEvent(
+        new ol.interaction.TranslateEvent(
+            ol.interaction.TranslateEventType.TRANSLATESTART, this.features_,
+            event.coordinate));
     return true;
   }
   return false;
@@ -109728,6 +109830,10 @@ ol.interaction.Translate.handleUpEvent_ = function(event) {
   if (this.lastCoordinate_) {
     this.lastCoordinate_ = null;
     ol.interaction.Translate.handleMoveEvent_.call(this, event);
+    this.dispatchEvent(
+        new ol.interaction.TranslateEvent(
+            ol.interaction.TranslateEventType.TRANSLATEEND, this.features_,
+            event.coordinate));
     return true;
   }
   return false;
@@ -109758,6 +109864,10 @@ ol.interaction.Translate.handleDragEvent_ = function(event) {
     }
 
     this.lastCoordinate_ = newCoordinate;
+    this.dispatchEvent(
+        new ol.interaction.TranslateEvent(
+            ol.interaction.TranslateEventType.TRANSLATING, this.features_,
+            newCoordinate));
   }
 };
 
@@ -115715,12 +115825,12 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   if ('Dimension' in l) {
     l['Dimension'].forEach(function(elt, index, array) {
       var key = elt['Identifier'];
-      var value = elt['default'];
+      var value = elt['Default'];
       if (value !== undefined) {
-        goog.asserts.assert(ol.array.includes(elt['values'], value),
+        goog.asserts.assert(ol.array.includes(elt['Value'], value),
             'default value contained in values');
       } else {
-        value = elt['values'][0];
+        value = elt['Value'][0];
       }
       goog.asserts.assert(value !== undefined, 'value could be found');
       dimensions[key] = value;
@@ -116012,7 +116122,6 @@ goog.provide('ol.style.AtlasManager');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('goog.functions');
 goog.require('goog.object');
 goog.require('ol');
@@ -116307,7 +116416,7 @@ ol.style.Atlas = function(size, space) {
    * @type {HTMLCanvasElement}
    */
   this.canvas_ = /** @type {HTMLCanvasElement} */
-      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+      (goog.dom.createElement('CANVAS'));
   this.canvas_.width = size;
   this.canvas_.height = size;
 
@@ -116459,7 +116568,6 @@ goog.provide('ol.style.RegularShape');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.TagName');
 goog.require('ol');
 goog.require('ol.color');
 goog.require('ol.has');
@@ -116810,7 +116918,7 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
   if (atlasManager === undefined) {
     // no atlas manager is used, create a new canvas
     this.canvas_ = /** @type {HTMLCanvasElement} */
-        (goog.dom.createElement(goog.dom.TagName.CANVAS));
+        (goog.dom.createElement('CANVAS'));
 
     this.canvas_.height = size;
     this.canvas_.width = size;
@@ -116922,7 +117030,7 @@ ol.style.RegularShape.prototype.createHitDetectionCanvas_ =
   // if no fill style is set, create an extra hit-detection image with a
   // default fill style
   this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
-      (goog.dom.createElement(goog.dom.TagName.CANVAS));
+      (goog.dom.createElement('CANVAS'));
   var canvas = this.hitDetectionCanvas_;
 
   canvas.height = renderOptions.size;
@@ -117164,6 +117272,7 @@ goog.require('ol.interaction.SelectFilterFunction');
 goog.require('ol.interaction.Snap');
 goog.require('ol.interaction.SnapProperty');
 goog.require('ol.interaction.Translate');
+goog.require('ol.interaction.TranslateEvent');
 goog.require('ol.layer.Base');
 goog.require('ol.layer.Group');
 goog.require('ol.layer.Heatmap');
@@ -118207,11 +118316,6 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.xml.parse',
     ol.xml.parse,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.webgl.Context',
-    ol.webgl.Context,
     OPENLAYERS);
 
 goog.exportProperty(
@@ -119923,6 +120027,16 @@ goog.exportProperty(
     ol.interaction.Snap.prototype,
     'removeFeature',
     ol.interaction.Snap.prototype.removeFeature);
+
+goog.exportProperty(
+    ol.interaction.TranslateEvent.prototype,
+    'features',
+    ol.interaction.TranslateEvent.prototype.features);
+
+goog.exportProperty(
+    ol.interaction.TranslateEvent.prototype,
+    'coordinate',
+    ol.interaction.TranslateEvent.prototype.coordinate);
 
 goog.exportSymbol(
     'ol.interaction.Translate',
