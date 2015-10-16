@@ -29,15 +29,7 @@ var selectedFeatures = select.getFeatures();
 
 // a DragBox interaction used to select features by drawing boxes
 var dragBox = new ol.interaction.DragBox({
-  condition: ol.events.condition.platformModifierKeyOnly,
-  style: new ol.style.Style({
-    fill: new ol.style.Fill({
-      color: [255, 255, 255, 0.4]
-    }),
-    stroke: new ol.style.Stroke({
-      color: [100, 150, 0, 1]
-    })
-  })
+  condition: ol.events.condition.platformModifierKeyOnly
 });
 
 map.addInteraction(dragBox);
