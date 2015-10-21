@@ -100,10 +100,8 @@ var displayCountryInfo = function(coordinate) {
         //  info.innerHTML = Mustache.render(gridSource.getTemplate(), data);
         mapElement.style.cursor = data ? &#x27;pointer&#x27; : &#x27;&#x27;;
         if (data) {
-          /* jshint -W069 */
           flagElement.src = &#x27;data:image/png;base64,&#x27; + data[&#x27;flag_png&#x27;];
           nameElement.innerHTML = data[&#x27;admin&#x27;];
-          /* jshint +W069 */
         }
         infoOverlay.setPosition(data ? coordinate : undefined);
       });
@@ -228,10 +226,8 @@ var displayCountryInfo = function(coordinate) {
         //  info.innerHTML = Mustache.render(gridSource.getTemplate(), data);
         mapElement.style.cursor = data ? &#x27;pointer&#x27; : &#x27;&#x27;;
         if (data) {
-          /* jshint -W069 */
           flagElement.src = &#x27;data:image/png;base64,&#x27; + data[&#x27;flag_png&#x27;];
           nameElement.innerHTML = data[&#x27;admin&#x27;];
-          /* jshint +W069 */
         }
         infoOverlay.setPosition(data ? coordinate : undefined);
       });

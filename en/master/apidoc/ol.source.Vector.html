@@ -14231,7 +14231,13 @@ strategy is used, a one-off strategy which loads all features at once.</p></td>
 <a href="ol.loadingstrategy.html#.all"><code>ol.loadingstrategy.all</code></a> for a one-off download of all features from
 the given URL. Use a <a href="ol.html#.FeatureUrlFunction"><code>ol.FeatureUrlFunction</code></a> to generate the url with
 other loading strategies.
-Requires <code>format</code> to be set as well.</p></td>
+Requires <code>format</code> to be set as well.
+When default XHR feature loader is provided, the features will
+be transformed from the data projection to the view projection 
+during parsing. If your remote data source does not advertise its projection 
+properly, this transformation will be incorrect. For some formats, the 
+default projection (usually EPSG:4326) can be overridden by setting the 
+defaultDataProjection constructor option on the format.</p></td>
         </tr>
 	
 	

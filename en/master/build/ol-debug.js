@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.10.1-142-g819b9ce
+// Version: v3.10.1-157-g78a961e
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -4890,12 +4890,30 @@ ol.math.clamp = function(value, min, max) {
 
 
 /**
+ * Return the hyperbolic cosine of a given number. The method will use the
+ * native `Math.cosh` function if it is available, otherwise the hyperbolic
+ * cosine will be calculated via the reference implementation of the Mozilla
+ * developer network.
+ *
  * @param {number} x X.
  * @return {number} Hyperbolic cosine of x.
  */
-ol.math.cosh = function(x) {
-  return (Math.exp(x) + Math.exp(-x)) / 2;
-};
+ol.math.cosh = (function() {
+  // Wrapped in a iife, to save the overhead of checking for the native
+  // implementation on every invocation.
+  var cosh;
+  if ('cosh' in Math) {
+    // The environment supports the native Math.cosh function, use it…
+    cosh = Math.cosh;
+  } else {
+    // … else, use the reference implementation of MDN:
+    cosh = function(x) {
+      var y = Math.exp(x);
+      return (y + 1 / y) / 2;
+    };
+  }
+  return cosh;
+}());
 
 
 /**
@@ -53378,13 +53396,11 @@ ol.events.condition.targetNotEditable = function(mapBrowserEvent) {
 /**
  * Return `true` if the event originates from a mouse device.
  *
- * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Map browser event.
  * @return {boolean} True if the event originates from a mouse device.
  * @api stable
  */
 ol.events.condition.mouseOnly = function(mapBrowserEvent) {
-  goog.asserts.assertInstanceof(mapBrowserEvent, ol.MapBrowserPointerEvent,
-      'mapBrowserEvent should be an instance of ol.MapBrowserPointerEvent');
   // see http://www.w3.org/TR/pointerevents/#widl-PointerEvent-pointerType
   return mapBrowserEvent.pointerEvent.pointerType == 'mouse';
 };
@@ -117316,8 +117332,6 @@ ol.source.WMTS.prototype.updateDimensions = function(dimensions) {
  */
 ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
 
-  /* jshint -W069 */
-
   // TODO: add support for TileMatrixLimits
   goog.asserts.assert(config['layer'],
       'config "layer" must not be null');
@@ -117478,8 +117492,6 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
     dimensions: dimensions,
     wrapX: wrapX
   };
-
-  /* jshint +W069 */
 
 };
 
