@@ -62,11 +62,11 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var source = new ol.source.Vector({
+          <textarea class="hidden" name="js">var source &#x3D; new ol.source.Vector({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,
   format: new ol.format.GeoJSON()
 });
-var style = new ol.style.Style({
+var style &#x3D; new ol.style.Style({
   fill: new ol.style.Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -85,15 +85,15 @@ var style = new ol.style.Style({
     })
   })
 });
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source,
   style: style
 });
-var view = new ol.View({
+var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 1
 });
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -109,11 +109,11 @@ var map = new ol.Map({
   view: view
 });
 
-var zoomtoswitzerlandbest = document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
+var zoomtoswitzerlandbest &#x3D; document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
 zoomtoswitzerlandbest.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[0];
-  var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       polygon,
       size,
@@ -124,12 +124,12 @@ zoomtoswitzerlandbest.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var zoomtoswitzerlandconstrained =
+var zoomtoswitzerlandconstrained &#x3D;
     document.getElementById(&#x27;zoomtoswitzerlandconstrained&#x27;);
 zoomtoswitzerlandconstrained.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[0];
-  var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       polygon,
       size,
@@ -139,12 +139,12 @@ zoomtoswitzerlandconstrained.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var zoomtoswitzerlandnearest =
+var zoomtoswitzerlandnearest &#x3D;
     document.getElementById(&#x27;zoomtoswitzerlandnearest&#x27;);
 zoomtoswitzerlandnearest.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[0];
-  var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       polygon,
       size,
@@ -155,11 +155,11 @@ zoomtoswitzerlandnearest.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var zoomtolausanne = document.getElementById(&#x27;zoomtolausanne&#x27;);
+var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
 zoomtolausanne.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[1];
-  var point = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[1];
+  var point &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       point,
       size,
@@ -170,11 +170,11 @@ zoomtolausanne.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var centerlausanne = document.getElementById(&#x27;centerlausanne&#x27;);
+var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
 centerlausanne.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[1];
-  var point = /** @type {ol.geom.Point} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[1];
+  var point &#x3D; /** @type {ol.geom.Point} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.centerOn(
       point.getCoordinates(),
       size,
@@ -239,23 +239,23 @@ div.ol-attribution {
   height: 20px;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12 mapcontainer&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-top&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-left&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-right&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-bottom&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12 mapcontainer&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-top&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-left&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-right&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-bottom&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;center&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;button id=&quot;zoomtoswitzerlandbest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (best fit),&lt;br/&gt;
-    &lt;button id=&quot;zoomtoswitzerlandconstrained&quot;&gt;Zoom to Switzerland&lt;/button&gt; (respect resolution constraint).&lt;br/&gt;
-    &lt;button id=&quot;zoomtoswitzerlandnearest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (nearest),&lt;br/&gt;
-    &lt;button id=&quot;zoomtolausanne&quot;&gt;Zoom to Lausanne&lt;/button&gt; (with min resolution),&lt;br/&gt;
-    &lt;button id=&quot;centerlausanne&quot;&gt;Center on Lausanne&lt;/button&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;button id&#x3D;&quot;zoomtoswitzerlandbest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (best fit),&lt;br/&gt;
+    &lt;button id&#x3D;&quot;zoomtoswitzerlandconstrained&quot;&gt;Zoom to Switzerland&lt;/button&gt; (respect resolution constraint).&lt;br/&gt;
+    &lt;button id&#x3D;&quot;zoomtoswitzerlandnearest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (nearest),&lt;br/&gt;
+    &lt;button id&#x3D;&quot;zoomtolausanne&quot;&gt;Zoom to Lausanne&lt;/button&gt; (with min resolution),&lt;br/&gt;
+    &lt;button id&#x3D;&quot;centerlausanne&quot;&gt;Center on Lausanne&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -335,33 +335,33 @@ div.ol-attribution {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12 mapcontainer&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-top&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-left&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-right&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;padding-bottom&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12 mapcontainer&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-top&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-left&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-right&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;padding-bottom&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;center&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;button id=&quot;zoomtoswitzerlandbest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (best fit),&lt;br/&gt;
-    &lt;button id=&quot;zoomtoswitzerlandconstrained&quot;&gt;Zoom to Switzerland&lt;/button&gt; (respect resolution constraint).&lt;br/&gt;
-    &lt;button id=&quot;zoomtoswitzerlandnearest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (nearest),&lt;br/&gt;
-    &lt;button id=&quot;zoomtolausanne&quot;&gt;Zoom to Lausanne&lt;/button&gt; (with min resolution),&lt;br/&gt;
-    &lt;button id=&quot;centerlausanne&quot;&gt;Center on Lausanne&lt;/button&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;button id&#x3D;&quot;zoomtoswitzerlandbest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (best fit),&lt;br/&gt;
+    &lt;button id&#x3D;&quot;zoomtoswitzerlandconstrained&quot;&gt;Zoom to Switzerland&lt;/button&gt; (respect resolution constraint).&lt;br/&gt;
+    &lt;button id&#x3D;&quot;zoomtoswitzerlandnearest&quot;&gt;Zoom to Switzerland&lt;/button&gt; (nearest),&lt;br/&gt;
+    &lt;button id&#x3D;&quot;zoomtolausanne&quot;&gt;Zoom to Lausanne&lt;/button&gt; (with min resolution),&lt;br/&gt;
+    &lt;button id&#x3D;&quot;centerlausanne&quot;&gt;Center on Lausanne&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var source = new ol.source.Vector({
+var source &#x3D; new ol.source.Vector({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,
   format: new ol.format.GeoJSON()
 });
-var style = new ol.style.Style({
+var style &#x3D; new ol.style.Style({
   fill: new ol.style.Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -380,15 +380,15 @@ var style = new ol.style.Style({
     })
   })
 });
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source,
   style: style
 });
-var view = new ol.View({
+var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 1
 });
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -404,11 +404,11 @@ var map = new ol.Map({
   view: view
 });
 
-var zoomtoswitzerlandbest = document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
+var zoomtoswitzerlandbest &#x3D; document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
 zoomtoswitzerlandbest.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[0];
-  var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       polygon,
       size,
@@ -419,12 +419,12 @@ zoomtoswitzerlandbest.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var zoomtoswitzerlandconstrained =
+var zoomtoswitzerlandconstrained &#x3D;
     document.getElementById(&#x27;zoomtoswitzerlandconstrained&#x27;);
 zoomtoswitzerlandconstrained.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[0];
-  var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       polygon,
       size,
@@ -434,12 +434,12 @@ zoomtoswitzerlandconstrained.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var zoomtoswitzerlandnearest =
+var zoomtoswitzerlandnearest &#x3D;
     document.getElementById(&#x27;zoomtoswitzerlandnearest&#x27;);
 zoomtoswitzerlandnearest.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[0];
-  var polygon = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       polygon,
       size,
@@ -450,11 +450,11 @@ zoomtoswitzerlandnearest.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var zoomtolausanne = document.getElementById(&#x27;zoomtolausanne&#x27;);
+var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
 zoomtolausanne.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[1];
-  var point = /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[1];
+  var point &#x3D; /** @type {ol.geom.SimpleGeometry} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.fit(
       point,
       size,
@@ -465,11 +465,11 @@ zoomtolausanne.addEventListener(&#x27;click&#x27;, function() {
   );
 }, false);
 
-var centerlausanne = document.getElementById(&#x27;centerlausanne&#x27;);
+var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
 centerlausanne.addEventListener(&#x27;click&#x27;, function() {
-  var feature = source.getFeatures()[1];
-  var point = /** @type {ol.geom.Point} */ (feature.getGeometry());
-  var size = /** @type {ol.Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[1];
+  var point &#x3D; /** @type {ol.geom.Point} */ (feature.getGeometry());
+  var size &#x3D; /** @type {ol.Size} */ (map.getSize());
   view.centerOn(
       point.getCoordinates(),
       size,

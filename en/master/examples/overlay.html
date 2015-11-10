@@ -55,11 +55,11 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var layer = new ol.layer.Tile({
+          <textarea class="hidden" name="js">var layer &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -68,10 +68,10 @@ var map = new ol.Map({
   })
 });
 
-var pos = ol.proj.fromLonLat([16.3725, 48.208889]);
+var pos &#x3D; ol.proj.fromLonLat([16.3725, 48.208889]);
 
 // Vienna marker
-var marker = new ol.Overlay({
+var marker &#x3D; new ol.Overlay({
   position: pos,
   positioning: &#x27;center-center&#x27;,
   element: document.getElementById(&#x27;marker&#x27;),
@@ -80,22 +80,22 @@ var marker = new ol.Overlay({
 map.addOverlay(marker);
 
 // Vienna label
-var vienna = new ol.Overlay({
+var vienna &#x3D; new ol.Overlay({
   position: pos,
   element: document.getElementById(&#x27;vienna&#x27;)
 });
 map.addOverlay(vienna);
 
 // Popup showing the position the user clicked
-var popup = new ol.Overlay({
+var popup &#x3D; new ol.Overlay({
   element: document.getElementById(&#x27;popup&#x27;)
 });
 map.addOverlay(popup);
 
 map.on(&#x27;click&#x27;, function(evt) {
-  var element = popup.getElement();
-  var coordinate = evt.coordinate;
-  var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+  var element &#x3D; popup.getElement();
+  var coordinate &#x3D; evt.coordinate;
+  var hdms &#x3D; ol.coordinate.toStringHDMS(ol.proj.transform(
       coordinate, &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;));
 
   $(element).popover(&#x27;destroy&#x27;);
@@ -129,17 +129,17 @@ map.on(&#x27;click&#x27;, function(evt) {
   min-width: 180px;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div style=&quot;display: none;&quot;&gt;
+&lt;div style&#x3D;&quot;display: none;&quot;&gt;
   &lt;!-- Clickable label for Vienna --&gt;
-  &lt;a class=&quot;overlay&quot; id=&quot;vienna&quot; target=&quot;_blank&quot; href=&quot;http://en.wikipedia.org/wiki/Vienna&quot;&gt;Vienna&lt;/a&gt;
-  &lt;div id=&quot;marker&quot; title=&quot;Marker&quot;&gt;&lt;/div&gt;
+  &lt;a class&#x3D;&quot;overlay&quot; id&#x3D;&quot;vienna&quot; target&#x3D;&quot;_blank&quot; href&#x3D;&quot;http://en.wikipedia.org/wiki/Vienna&quot;&gt;Vienna&lt;/a&gt;
+  &lt;div id&#x3D;&quot;marker&quot; title&#x3D;&quot;Marker&quot;&gt;&lt;/div&gt;
   &lt;!-- Popup --&gt;
-  &lt;div id=&quot;popup&quot; title=&quot;Welcome to ol3&quot;&gt;&lt;/div&gt;
+  &lt;div id&#x3D;&quot;popup&quot; title&#x3D;&quot;Welcome to ol3&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
@@ -154,7 +154,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;http://openlayers.org/en/v3.10.1/examples/overlay.css&quot;&gt;
+&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;http://openlayers.org/en/v3.10.1/examples/overlay.css&quot;&gt;
 &lt;style&gt;
 #marker {
   width: 20px;
@@ -180,26 +180,26 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div style=&quot;display: none;&quot;&gt;
+&lt;div style&#x3D;&quot;display: none;&quot;&gt;
   &lt;!-- Clickable label for Vienna --&gt;
-  &lt;a class=&quot;overlay&quot; id=&quot;vienna&quot; target=&quot;_blank&quot; href=&quot;http://en.wikipedia.org/wiki/Vienna&quot;&gt;Vienna&lt;/a&gt;
-  &lt;div id=&quot;marker&quot; title=&quot;Marker&quot;&gt;&lt;/div&gt;
+  &lt;a class&#x3D;&quot;overlay&quot; id&#x3D;&quot;vienna&quot; target&#x3D;&quot;_blank&quot; href&#x3D;&quot;http://en.wikipedia.org/wiki/Vienna&quot;&gt;Vienna&lt;/a&gt;
+  &lt;div id&#x3D;&quot;marker&quot; title&#x3D;&quot;Marker&quot;&gt;&lt;/div&gt;
   &lt;!-- Popup --&gt;
-  &lt;div id=&quot;popup&quot; title=&quot;Welcome to ol3&quot;&gt;&lt;/div&gt;
+  &lt;div id&#x3D;&quot;popup&quot; title&#x3D;&quot;Welcome to ol3&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var layer = new ol.layer.Tile({
+var layer &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -208,10 +208,10 @@ var map = new ol.Map({
   })
 });
 
-var pos = ol.proj.fromLonLat([16.3725, 48.208889]);
+var pos &#x3D; ol.proj.fromLonLat([16.3725, 48.208889]);
 
 // Vienna marker
-var marker = new ol.Overlay({
+var marker &#x3D; new ol.Overlay({
   position: pos,
   positioning: &#x27;center-center&#x27;,
   element: document.getElementById(&#x27;marker&#x27;),
@@ -220,22 +220,22 @@ var marker = new ol.Overlay({
 map.addOverlay(marker);
 
 // Vienna label
-var vienna = new ol.Overlay({
+var vienna &#x3D; new ol.Overlay({
   position: pos,
   element: document.getElementById(&#x27;vienna&#x27;)
 });
 map.addOverlay(vienna);
 
 // Popup showing the position the user clicked
-var popup = new ol.Overlay({
+var popup &#x3D; new ol.Overlay({
   element: document.getElementById(&#x27;popup&#x27;)
 });
 map.addOverlay(popup);
 
 map.on(&#x27;click&#x27;, function(evt) {
-  var element = popup.getElement();
-  var coordinate = evt.coordinate;
-  var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+  var element &#x3D; popup.getElement();
+  var coordinate &#x3D; evt.coordinate;
+  var hdms &#x3D; ol.coordinate.toStringHDMS(ol.proj.transform(
       coordinate, &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;));
 
   $(element).popover(&#x27;destroy&#x27;);

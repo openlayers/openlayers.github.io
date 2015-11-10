@@ -56,7 +56,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -75,25 +75,25 @@
 
 map.setTarget(&#x27;map1&#x27;);
 
-var teleportButton = document.getElementById(&#x27;teleport&#x27;);
+var teleportButton &#x3D; document.getElementById(&#x27;teleport&#x27;);
 
 teleportButton.addEventListener(&#x27;click&#x27;, function() {
-  var target = map.getTarget() === &#x27;map1&#x27; ? &#x27;map2&#x27; : &#x27;map1&#x27;;
+  var target &#x3D; map.getTarget() &#x3D;&#x3D;&#x3D; &#x27;map1&#x27; ? &#x27;map2&#x27; : &#x27;map1&#x27;;
   map.setTarget(target);
 }, false);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span8&quot;&gt;
-    &lt;div id=&quot;map1&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span8&quot;&gt;
+    &lt;div id&#x3D;&quot;map1&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
-    &lt;div id=&quot;map2&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
+    &lt;div id&#x3D;&quot;map2&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;a id=&quot;teleport&quot; href=&quot;#&quot; class=&quot;btn&quot;&gt;Teleport&lt;/a&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;a id&#x3D;&quot;teleport&quot; href&#x3D;&quot;#&quot; class&#x3D;&quot;btn&quot;&gt;Teleport&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -114,23 +114,23 @@ teleportButton.addEventListener(&#x27;click&#x27;, function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span8&quot;&gt;
-    &lt;div id=&quot;map1&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span8&quot;&gt;
+    &lt;div id&#x3D;&quot;map1&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
-    &lt;div id=&quot;map2&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
+    &lt;div id&#x3D;&quot;map2&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;a id=&quot;teleport&quot; href=&quot;#&quot; class=&quot;btn&quot;&gt;Teleport&lt;/a&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;a id&#x3D;&quot;teleport&quot; href&#x3D;&quot;#&quot; class&#x3D;&quot;btn&quot;&gt;Teleport&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -149,10 +149,10 @@ var map = new ol.Map({
 
 map.setTarget(&#x27;map1&#x27;);
 
-var teleportButton = document.getElementById(&#x27;teleport&#x27;);
+var teleportButton &#x3D; document.getElementById(&#x27;teleport&#x27;);
 
 teleportButton.addEventListener(&#x27;click&#x27;, function() {
-  var target = map.getTarget() === &#x27;map1&#x27; ? &#x27;map2&#x27; : &#x27;map1&#x27;;
+  var target &#x3D; map.getTarget() &#x3D;&#x3D;&#x3D; &#x27;map1&#x27; ? &#x27;map2&#x27; : &#x27;map1&#x27;;
   map.setTarget(target);
 }, false);
 

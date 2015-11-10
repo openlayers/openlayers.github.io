@@ -53,7 +53,7 @@
 // ol.proj.addProjection to make it available to the library for lookup by its
 // code.
 
-var projection = new ol.proj.Projection({
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;EPSG:21781&#x27;,
   // The extent is used to determine zoom level 0. Recommended values for a
   // projection&#x27;s validity extent can be found at http://epsg.io/.
@@ -80,8 +80,8 @@ ol.proj.addCoordinateTransforms(&#x27;EPSG:4326&#x27;, projection,
       ];
     });
 
-var extent = [420000, 30000, 900000, 350000];
-var layers = [
+var extent &#x3D; [420000, 30000, 900000, 350000];
+var layers &#x3D; [
   new ol.layer.Tile({
     extent: extent,
     source: new ol.source.TileWMS({
@@ -89,7 +89,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -107,7 +107,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;National parks / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -117,7 +117,7 @@ var layers = [
   })
 ];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults().extend([
     new ol.control.ScaleLine({
       units: &#x27;metric&#x27;
@@ -144,19 +144,19 @@ var map = new ol.Map({
 function WGStoCHy(lat, lng) {
 
   // Converts degrees dec to sex
-  lat = DECtoSEX(lat);
-  lng = DECtoSEX(lng);
+  lat &#x3D; DECtoSEX(lat);
+  lng &#x3D; DECtoSEX(lng);
 
   // Converts degrees to seconds (sex)
-  lat = DEGtoSEC(lat);
-  lng = DEGtoSEC(lng);
+  lat &#x3D; DEGtoSEC(lat);
+  lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  var lat_aux = (lat - 169028.66) / 10000;
-  var lng_aux = (lng - 26782.5) / 10000;
+  var lat_aux &#x3D; (lat - 169028.66) / 10000;
+  var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process Y
-  var y = 600072.37 +
+  var y &#x3D; 600072.37 +
       211455.93 * lng_aux -
       10938.51 * lng_aux * lat_aux -
       0.36 * lng_aux * Math.pow(lat_aux, 2) -
@@ -169,19 +169,19 @@ function WGStoCHy(lat, lng) {
 function WGStoCHx(lat, lng) {
 
   // Converts degrees dec to sex
-  lat = DECtoSEX(lat);
-  lng = DECtoSEX(lng);
+  lat &#x3D; DECtoSEX(lat);
+  lng &#x3D; DECtoSEX(lng);
 
   // Converts degrees to seconds (sex)
-  lat = DEGtoSEC(lat);
-  lng = DEGtoSEC(lng);
+  lat &#x3D; DEGtoSEC(lat);
+  lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  var lat_aux = (lat - 169028.66) / 10000;
-  var lng_aux = (lng - 26782.5) / 10000;
+  var lat_aux &#x3D; (lat - 169028.66) / 10000;
+  var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process X
-  var x = 200147.07 +
+  var x &#x3D; 200147.07 +
       308807.95 * lat_aux +
       3745.25 * Math.pow(lng_aux, 2) +
       76.63 * Math.pow(lat_aux, 2) -
@@ -196,13 +196,13 @@ function WGStoCHx(lat, lng) {
 // Convert CH y/x to WGS lat
 function CHtoWGSlat(y, x) {
 
-  // Converts militar to civil and  to unit = 1000km
+  // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  var y_aux = (y - 600000) / 1000000;
-  var x_aux = (x - 200000) / 1000000;
+  var y_aux &#x3D; (y - 600000) / 1000000;
+  var x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process lat
-  var lat = 16.9023892 +
+  var lat &#x3D; 16.9023892 +
       3.238272 * x_aux -
       0.270978 * Math.pow(y_aux, 2) -
       0.002528 * Math.pow(x_aux, 2) -
@@ -210,7 +210,7 @@ function CHtoWGSlat(y, x) {
       0.0140 * Math.pow(x_aux, 3);
 
   // Unit 10000&quot; to 1 &quot; and converts seconds to degrees (dec)
-  lat = lat * 100 / 36;
+  lat &#x3D; lat * 100 / 36;
 
   return lat;
 
@@ -219,20 +219,20 @@ function CHtoWGSlat(y, x) {
 // Convert CH y/x to WGS long
 function CHtoWGSlng(y, x) {
 
-  // Converts militar to civil and  to unit = 1000km
+  // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  var y_aux = (y - 600000) / 1000000;
-  var x_aux = (x - 200000) / 1000000;
+  var y_aux &#x3D; (y - 600000) / 1000000;
+  var x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process long
-  var lng = 2.6779094 +
+  var lng &#x3D; 2.6779094 +
       4.728982 * y_aux +
       0.791484 * y_aux * x_aux +
       0.1306 * y_aux * Math.pow(x_aux, 2) -
       0.0436 * Math.pow(y_aux, 3);
 
   // Unit 10000&quot; to 1 &quot; and converts seconds to degrees (dec)
-  lng = lng * 100 / 36;
+  lng &#x3D; lng * 100 / 36;
 
   return lng;
 
@@ -243,9 +243,9 @@ function CHtoWGSlng(y, x) {
 function SEXtoDEC(angle) {
 
   // Extract DMS
-  var deg = parseInt(angle, 10);
-  var min = parseInt((angle - deg) * 100, 10);
-  var sec = (((angle - deg) * 100) - min) * 100;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 100, 10);
+  var sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
   // Result in degrees sex (dd.mmss)
   return deg + (sec / 60 + min) / 60;
@@ -256,9 +256,9 @@ function SEXtoDEC(angle) {
 function DECtoSEX(angle) {
 
   // Extract DMS
-  var deg = parseInt(angle, 10);
-  var min = parseInt((angle - deg) * 60, 10);
-  var sec = (((angle - deg) * 60) - min) * 60;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 60, 10);
+  var sec &#x3D; (((angle - deg) * 60) - min) * 60;
 
   // Result in degrees sex (dd.mmss)
   return deg + min / 100 + sec / 10000;
@@ -269,15 +269,15 @@ function DECtoSEX(angle) {
 function DEGtoSEC(angle) {
 
   // Extract DMS
-  var deg = parseInt(angle, 10);
-  var min = parseInt((angle - deg) * 100, 10);
-  var sec = (((angle - deg) * 100) - min) * 100;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 100, 10);
+  var sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
-  // Avoid rounding problems with seconds=0
-  var parts = String(angle).split(&#x27;.&#x27;);
-  if (parts.length == 2 &amp;&amp; parts[1].length == 2) {
-    min = Number(parts[1]);
-    sec = 0;
+  // Avoid rounding problems with seconds&#x3D;0
+  var parts &#x3D; String(angle).split(&#x27;.&#x27;);
+  if (parts.length &#x3D;&#x3D; 2 &amp;&amp; parts[1].length &#x3D;&#x3D; 2) {
+    min &#x3D; Number(parts[1]);
+    sec &#x3D; 0;
   }
 
   // Result in degrees sex (dd.mmss)
@@ -286,9 +286,9 @@ function DEGtoSEC(angle) {
 }
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -309,9 +309,9 @@ function DEGtoSEC(angle) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -322,7 +322,7 @@ function DEGtoSEC(angle) {
 // ol.proj.addProjection to make it available to the library for lookup by its
 // code.
 
-var projection = new ol.proj.Projection({
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;EPSG:21781&#x27;,
   // The extent is used to determine zoom level 0. Recommended values for a
   // projection&#x27;s validity extent can be found at http://epsg.io/.
@@ -349,8 +349,8 @@ ol.proj.addCoordinateTransforms(&#x27;EPSG:4326&#x27;, projection,
       ];
     });
 
-var extent = [420000, 30000, 900000, 350000];
-var layers = [
+var extent &#x3D; [420000, 30000, 900000, 350000];
+var layers &#x3D; [
   new ol.layer.Tile({
     extent: extent,
     source: new ol.source.TileWMS({
@@ -358,7 +358,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -376,7 +376,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;National parks / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -386,7 +386,7 @@ var layers = [
   })
 ];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults().extend([
     new ol.control.ScaleLine({
       units: &#x27;metric&#x27;
@@ -413,19 +413,19 @@ var map = new ol.Map({
 function WGStoCHy(lat, lng) {
 
   // Converts degrees dec to sex
-  lat = DECtoSEX(lat);
-  lng = DECtoSEX(lng);
+  lat &#x3D; DECtoSEX(lat);
+  lng &#x3D; DECtoSEX(lng);
 
   // Converts degrees to seconds (sex)
-  lat = DEGtoSEC(lat);
-  lng = DEGtoSEC(lng);
+  lat &#x3D; DEGtoSEC(lat);
+  lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  var lat_aux = (lat - 169028.66) / 10000;
-  var lng_aux = (lng - 26782.5) / 10000;
+  var lat_aux &#x3D; (lat - 169028.66) / 10000;
+  var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process Y
-  var y = 600072.37 +
+  var y &#x3D; 600072.37 +
       211455.93 * lng_aux -
       10938.51 * lng_aux * lat_aux -
       0.36 * lng_aux * Math.pow(lat_aux, 2) -
@@ -438,19 +438,19 @@ function WGStoCHy(lat, lng) {
 function WGStoCHx(lat, lng) {
 
   // Converts degrees dec to sex
-  lat = DECtoSEX(lat);
-  lng = DECtoSEX(lng);
+  lat &#x3D; DECtoSEX(lat);
+  lng &#x3D; DECtoSEX(lng);
 
   // Converts degrees to seconds (sex)
-  lat = DEGtoSEC(lat);
-  lng = DEGtoSEC(lng);
+  lat &#x3D; DEGtoSEC(lat);
+  lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  var lat_aux = (lat - 169028.66) / 10000;
-  var lng_aux = (lng - 26782.5) / 10000;
+  var lat_aux &#x3D; (lat - 169028.66) / 10000;
+  var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process X
-  var x = 200147.07 +
+  var x &#x3D; 200147.07 +
       308807.95 * lat_aux +
       3745.25 * Math.pow(lng_aux, 2) +
       76.63 * Math.pow(lat_aux, 2) -
@@ -465,13 +465,13 @@ function WGStoCHx(lat, lng) {
 // Convert CH y/x to WGS lat
 function CHtoWGSlat(y, x) {
 
-  // Converts militar to civil and  to unit = 1000km
+  // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  var y_aux = (y - 600000) / 1000000;
-  var x_aux = (x - 200000) / 1000000;
+  var y_aux &#x3D; (y - 600000) / 1000000;
+  var x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process lat
-  var lat = 16.9023892 +
+  var lat &#x3D; 16.9023892 +
       3.238272 * x_aux -
       0.270978 * Math.pow(y_aux, 2) -
       0.002528 * Math.pow(x_aux, 2) -
@@ -479,7 +479,7 @@ function CHtoWGSlat(y, x) {
       0.0140 * Math.pow(x_aux, 3);
 
   // Unit 10000&quot; to 1 &quot; and converts seconds to degrees (dec)
-  lat = lat * 100 / 36;
+  lat &#x3D; lat * 100 / 36;
 
   return lat;
 
@@ -488,20 +488,20 @@ function CHtoWGSlat(y, x) {
 // Convert CH y/x to WGS long
 function CHtoWGSlng(y, x) {
 
-  // Converts militar to civil and  to unit = 1000km
+  // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  var y_aux = (y - 600000) / 1000000;
-  var x_aux = (x - 200000) / 1000000;
+  var y_aux &#x3D; (y - 600000) / 1000000;
+  var x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process long
-  var lng = 2.6779094 +
+  var lng &#x3D; 2.6779094 +
       4.728982 * y_aux +
       0.791484 * y_aux * x_aux +
       0.1306 * y_aux * Math.pow(x_aux, 2) -
       0.0436 * Math.pow(y_aux, 3);
 
   // Unit 10000&quot; to 1 &quot; and converts seconds to degrees (dec)
-  lng = lng * 100 / 36;
+  lng &#x3D; lng * 100 / 36;
 
   return lng;
 
@@ -512,9 +512,9 @@ function CHtoWGSlng(y, x) {
 function SEXtoDEC(angle) {
 
   // Extract DMS
-  var deg = parseInt(angle, 10);
-  var min = parseInt((angle - deg) * 100, 10);
-  var sec = (((angle - deg) * 100) - min) * 100;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 100, 10);
+  var sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
   // Result in degrees sex (dd.mmss)
   return deg + (sec / 60 + min) / 60;
@@ -525,9 +525,9 @@ function SEXtoDEC(angle) {
 function DECtoSEX(angle) {
 
   // Extract DMS
-  var deg = parseInt(angle, 10);
-  var min = parseInt((angle - deg) * 60, 10);
-  var sec = (((angle - deg) * 60) - min) * 60;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 60, 10);
+  var sec &#x3D; (((angle - deg) * 60) - min) * 60;
 
   // Result in degrees sex (dd.mmss)
   return deg + min / 100 + sec / 10000;
@@ -538,15 +538,15 @@ function DECtoSEX(angle) {
 function DEGtoSEC(angle) {
 
   // Extract DMS
-  var deg = parseInt(angle, 10);
-  var min = parseInt((angle - deg) * 100, 10);
-  var sec = (((angle - deg) * 100) - min) * 100;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 100, 10);
+  var sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
-  // Avoid rounding problems with seconds=0
-  var parts = String(angle).split(&#x27;.&#x27;);
-  if (parts.length == 2 &amp;&amp; parts[1].length == 2) {
-    min = Number(parts[1]);
-    sec = 0;
+  // Avoid rounding problems with seconds&#x3D;0
+  var parts &#x3D; String(angle).split(&#x27;.&#x27;);
+  if (parts.length &#x3D;&#x3D; 2 &amp;&amp; parts[1].length &#x3D;&#x3D; 2) {
+    min &#x3D; Number(parts[1]);
+    sec &#x3D; 0;
   }
 
   // Result in degrees sex (dd.mmss)

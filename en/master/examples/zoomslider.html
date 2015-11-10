@@ -63,14 +63,14 @@
  * @param {string} divId The id of the div for the map.
  * @return {ol.Map} The ol.Map instance.
  */
-var createMap = function(divId) {
+var createMap &#x3D; function(divId) {
   var source, layer, map, zoomslider, resolutions;
 
-  source = new ol.source.MapQuest({layer: &#x27;sat&#x27;});
-  layer = new ol.layer.Tile({
+  source &#x3D; new ol.source.MapQuest({layer: &#x27;sat&#x27;});
+  layer &#x3D; new ol.layer.Tile({
     source: source
   });
-  map = new ol.Map({
+  map &#x3D; new ol.Map({
     layers: [layer],
     target: divId,
     view: new ol.View({
@@ -78,14 +78,14 @@ var createMap = function(divId) {
       zoom: 2
     })
   });
-  zoomslider = new ol.control.ZoomSlider();
+  zoomslider &#x3D; new ol.control.ZoomSlider();
   map.addControl(zoomslider);
   return map;
 };
 
-var map1 = createMap(&#x27;map1&#x27;);
-var map2 = createMap(&#x27;map2&#x27;);
-var map3 = createMap(&#x27;map3&#x27;);
+var map1 &#x3D; createMap(&#x27;map1&#x27;);
+var map2 &#x3D; createMap(&#x27;map2&#x27;);
+var map3 &#x3D; createMap(&#x27;map3&#x27;);
 </textarea>
           <textarea class="hidden" name="css">/**
  * The zoomslider in the second map shall be placed between the zoom-in and
@@ -106,13 +106,13 @@ var map3 = createMap(&#x27;map3&#x27;);
   top: 2.75em;
 }
 
-#map2 .ol-zoom-in.ol-has-tooltip:hover [role=tooltip],
-#map2 .ol-zoom-in.ol-has-tooltip:focus [role=tooltip] {
+#map2 .ol-zoom-in.ol-has-tooltip:hover [role&#x3D;tooltip],
+#map2 .ol-zoom-in.ol-has-tooltip:focus [role&#x3D;tooltip] {
   top: 3px;
 }
 
-#map2 .ol-zoom-out.ol-has-tooltip:hover [role=tooltip],
-#map2 .ol-zoom-out.ol-has-tooltip:focus [role=tooltip] {
+#map2 .ol-zoom-out.ol-has-tooltip:hover [role&#x3D;tooltip],
+#map2 .ol-zoom-out.ol-has-tooltip:focus [role&#x3D;tooltip] {
   top: 232px;
 }
 
@@ -148,18 +148,18 @@ var map3 = createMap(&#x27;map3&#x27;);
   background-color: rgba(255,69,0,0.7);
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Default style&lt;/h4&gt;
-    &lt;div id=&quot;map1&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map1&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Placed between zoom controls&lt;/h4&gt;
-    &lt;div id=&quot;map2&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map2&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Horizontal and completely re-styled&lt;/h4&gt;
-    &lt;div id=&quot;map3&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map3&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -196,13 +196,13 @@ var map3 = createMap(&#x27;map3&#x27;);
   top: 2.75em;
 }
 
-#map2 .ol-zoom-in.ol-has-tooltip:hover [role=tooltip],
-#map2 .ol-zoom-in.ol-has-tooltip:focus [role=tooltip] {
+#map2 .ol-zoom-in.ol-has-tooltip:hover [role&#x3D;tooltip],
+#map2 .ol-zoom-in.ol-has-tooltip:focus [role&#x3D;tooltip] {
   top: 3px;
 }
 
-#map2 .ol-zoom-out.ol-has-tooltip:hover [role=tooltip],
-#map2 .ol-zoom-out.ol-has-tooltip:focus [role=tooltip] {
+#map2 .ol-zoom-out.ol-has-tooltip:hover [role&#x3D;tooltip],
+#map2 .ol-zoom-out.ol-has-tooltip:focus [role&#x3D;tooltip] {
   top: 232px;
 }
 
@@ -243,18 +243,18 @@ var map3 = createMap(&#x27;map3&#x27;);
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Default style&lt;/h4&gt;
-    &lt;div id=&quot;map1&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map1&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Placed between zoom controls&lt;/h4&gt;
-    &lt;div id=&quot;map2&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map2&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Horizontal and completely re-styled&lt;/h4&gt;
-    &lt;div id=&quot;map3&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map3&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -266,14 +266,14 @@ var map3 = createMap(&#x27;map3&#x27;);
  * @param {string} divId The id of the div for the map.
  * @return {ol.Map} The ol.Map instance.
  */
-var createMap = function(divId) {
+var createMap &#x3D; function(divId) {
   var source, layer, map, zoomslider, resolutions;
 
-  source = new ol.source.MapQuest({layer: &#x27;sat&#x27;});
-  layer = new ol.layer.Tile({
+  source &#x3D; new ol.source.MapQuest({layer: &#x27;sat&#x27;});
+  layer &#x3D; new ol.layer.Tile({
     source: source
   });
-  map = new ol.Map({
+  map &#x3D; new ol.Map({
     layers: [layer],
     target: divId,
     view: new ol.View({
@@ -281,14 +281,14 @@ var createMap = function(divId) {
       zoom: 2
     })
   });
-  zoomslider = new ol.control.ZoomSlider();
+  zoomslider &#x3D; new ol.control.ZoomSlider();
   map.addControl(zoomslider);
   return map;
 };
 
-var map1 = createMap(&#x27;map1&#x27;);
-var map2 = createMap(&#x27;map2&#x27;);
-var map3 = createMap(&#x27;map3&#x27;);
+var map1 &#x3D; createMap(&#x27;map1&#x27;);
+var map2 &#x3D; createMap(&#x27;map2&#x27;);
+var map3 &#x3D; createMap(&#x27;map3&#x27;);
 
 &lt;/script&gt;
 &lt;/body&gt;

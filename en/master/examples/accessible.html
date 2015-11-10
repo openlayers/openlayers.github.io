@@ -52,7 +52,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -70,15 +70,15 @@
   })
 });
 
-document.getElementById(&#x27;zoom-out&#x27;).onclick = function() {
-  var view = map.getView();
-  var zoom = view.getZoom();
+document.getElementById(&#x27;zoom-out&#x27;).onclick &#x3D; function() {
+  var view &#x3D; map.getView();
+  var zoom &#x3D; view.getZoom();
   view.setZoom(zoom - 1);
 };
 
-document.getElementById(&#x27;zoom-in&#x27;).onclick = function() {
-  var view = map.getView();
-  var zoom = view.getZoom();
+document.getElementById(&#x27;zoom-in&#x27;).onclick &#x3D; function() {
+  var view &#x3D; map.getView();
+  var zoom &#x3D; view.getZoom();
   view.setZoom(zoom + 1);
 };
 </textarea>
@@ -99,12 +99,12 @@ a.skiplink:focus {
   padding: 0.3em;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;a class=&quot;skiplink&quot; href=&quot;#map&quot;&gt;Go to map&lt;/a&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot; tabindex=&quot;0&quot;&gt;&lt;/div&gt;
-    &lt;button id=&quot;zoom-out&quot;&gt;Zoom out&lt;/button&gt;
-    &lt;button id=&quot;zoom-in&quot;&gt;Zoom in&lt;/button&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;a class&#x3D;&quot;skiplink&quot; href&#x3D;&quot;#map&quot;&gt;Go to map&lt;/a&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot; tabindex&#x3D;&quot;0&quot;&gt;&lt;/div&gt;
+    &lt;button id&#x3D;&quot;zoom-out&quot;&gt;Zoom out&lt;/button&gt;
+    &lt;button id&#x3D;&quot;zoom-in&quot;&gt;Zoom in&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -144,18 +144,18 @@ a.skiplink:focus {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;a class=&quot;skiplink&quot; href=&quot;#map&quot;&gt;Go to map&lt;/a&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot; tabindex=&quot;0&quot;&gt;&lt;/div&gt;
-    &lt;button id=&quot;zoom-out&quot;&gt;Zoom out&lt;/button&gt;
-    &lt;button id=&quot;zoom-in&quot;&gt;Zoom in&lt;/button&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;a class&#x3D;&quot;skiplink&quot; href&#x3D;&quot;#map&quot;&gt;Go to map&lt;/a&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot; tabindex&#x3D;&quot;0&quot;&gt;&lt;/div&gt;
+    &lt;button id&#x3D;&quot;zoom-out&quot;&gt;Zoom out&lt;/button&gt;
+    &lt;button id&#x3D;&quot;zoom-in&quot;&gt;Zoom in&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -173,15 +173,15 @@ var map = new ol.Map({
   })
 });
 
-document.getElementById(&#x27;zoom-out&#x27;).onclick = function() {
-  var view = map.getView();
-  var zoom = view.getZoom();
+document.getElementById(&#x27;zoom-out&#x27;).onclick &#x3D; function() {
+  var view &#x3D; map.getView();
+  var zoom &#x3D; view.getZoom();
   view.setZoom(zoom - 1);
 };
 
-document.getElementById(&#x27;zoom-in&#x27;).onclick = function() {
-  var view = map.getView();
-  var zoom = view.getZoom();
+document.getElementById(&#x27;zoom-in&#x27;).onclick &#x3D; function() {
+  var view &#x3D; map.getView();
+  var zoom &#x3D; view.getZoom();
   view.setZoom(zoom + 1);
 };
 

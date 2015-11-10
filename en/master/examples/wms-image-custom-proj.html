@@ -64,13 +64,13 @@
 // create an ol.proj.Projection instance. ol.proj.get() will take care of it
 // internally.
 
-var projection = new ol.proj.Projection({
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;EPSG:21781&#x27;,
   extent: [485869.5728, 76443.1884, 837076.5648, 299941.7864]
 });
 
-var extent = [420000, 30000, 900000, 350000];
-var layers = [
+var extent &#x3D; [420000, 30000, 900000, 350000];
+var layers &#x3D; [
   new ol.layer.Image({
     extent: extent,
     source: new ol.source.ImageWMS({
@@ -78,7 +78,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -96,7 +96,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;National parks / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -106,7 +106,7 @@ var layers = [
   })
 ];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults().extend([
     new ol.control.ScaleLine()
   ]),
@@ -121,9 +121,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -139,15 +139,15 @@ var map = new ol.Map({
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;http://epsg.io/21781-1753.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://epsg.io/21781-1753.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -168,13 +168,13 @@ var map = new ol.Map({
 // create an ol.proj.Projection instance. ol.proj.get() will take care of it
 // internally.
 
-var projection = new ol.proj.Projection({
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;EPSG:21781&#x27;,
   extent: [485869.5728, 76443.1884, 837076.5648, 299941.7864]
 });
 
-var extent = [420000, 30000, 900000, 350000];
-var layers = [
+var extent &#x3D; [420000, 30000, 900000, 350000];
+var layers &#x3D; [
   new ol.layer.Image({
     extent: extent,
     source: new ol.source.ImageWMS({
@@ -182,7 +182,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -200,7 +200,7 @@ var layers = [
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;National parks / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -210,7 +210,7 @@ var layers = [
   })
 ];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults().extend([
     new ol.control.ScaleLine()
   ]),

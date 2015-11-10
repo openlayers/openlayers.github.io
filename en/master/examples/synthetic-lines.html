@@ -103,35 +103,35 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var count = 10000;
-var features = new Array(count);
+          <textarea class="hidden" name="js">var count &#x3D; 10000;
+var features &#x3D; new Array(count);
 
-var startPoint = [0, 0];
+var startPoint &#x3D; [0, 0];
 var endPoint;
 
 var delta, deltaX, deltaY;
-var signX = 1;
-var signY = -1;
+var signX &#x3D; 1;
+var signY &#x3D; -1;
 
 // Create a square spiral.
 var i;
-for (i = 0; i &lt; count; ++i) {
-  delta = (i + 1) * 2500;
-  if (i % 2 === 0) {
-    signY *= -1;
+for (i &#x3D; 0; i &lt; count; ++i) {
+  delta &#x3D; (i + 1) * 2500;
+  if (i % 2 &#x3D;&#x3D;&#x3D; 0) {
+    signY *&#x3D; -1;
   } else {
-    signX *= -1;
+    signX *&#x3D; -1;
   }
-  deltaX = delta * signX;
-  deltaY = delta * signY;
-  endPoint = [startPoint[0] + deltaX, startPoint[1] + deltaY];
-  features[i] = new ol.Feature({
+  deltaX &#x3D; delta * signX;
+  deltaY &#x3D; delta * signY;
+  endPoint &#x3D; [startPoint[0] + deltaX, startPoint[1] + deltaY];
+  features[i] &#x3D; new ol.Feature({
     &#x27;geometry&#x27;: new ol.geom.LineString([startPoint, endPoint])
   });
-  startPoint = endPoint;
+  startPoint &#x3D; endPoint;
 }
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: features
   }),
@@ -143,21 +143,21 @@ var vector = new ol.layer.Vector({
   })
 });
 
-var view = new ol.View({
+var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 0
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [vector],
   target: &#x27;map&#x27;,
   view: view
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -178,43 +178,43 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var count = 10000;
-var features = new Array(count);
+var count &#x3D; 10000;
+var features &#x3D; new Array(count);
 
-var startPoint = [0, 0];
+var startPoint &#x3D; [0, 0];
 var endPoint;
 
 var delta, deltaX, deltaY;
-var signX = 1;
-var signY = -1;
+var signX &#x3D; 1;
+var signY &#x3D; -1;
 
 // Create a square spiral.
 var i;
-for (i = 0; i &lt; count; ++i) {
-  delta = (i + 1) * 2500;
-  if (i % 2 === 0) {
-    signY *= -1;
+for (i &#x3D; 0; i &lt; count; ++i) {
+  delta &#x3D; (i + 1) * 2500;
+  if (i % 2 &#x3D;&#x3D;&#x3D; 0) {
+    signY *&#x3D; -1;
   } else {
-    signX *= -1;
+    signX *&#x3D; -1;
   }
-  deltaX = delta * signX;
-  deltaY = delta * signY;
-  endPoint = [startPoint[0] + deltaX, startPoint[1] + deltaY];
-  features[i] = new ol.Feature({
+  deltaX &#x3D; delta * signX;
+  deltaY &#x3D; delta * signY;
+  endPoint &#x3D; [startPoint[0] + deltaX, startPoint[1] + deltaY];
+  features[i] &#x3D; new ol.Feature({
     &#x27;geometry&#x27;: new ol.geom.LineString([startPoint, endPoint])
   });
-  startPoint = endPoint;
+  startPoint &#x3D; endPoint;
 }
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: features
   }),
@@ -226,12 +226,12 @@ var vector = new ol.layer.Vector({
   })
 });
 
-var view = new ol.View({
+var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 0
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [vector],
   target: &#x27;map&#x27;,
   view: view

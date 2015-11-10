@@ -48,22 +48,22 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var key = &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
+          <textarea class="hidden" name="js">var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.VectorTile({
       source: new ol.source.VectorTile({
         attributions: [new ol.Attribution({
-          html: &#x27;© &lt;a href=&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
-              &#x27;© &lt;a href=&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
+          html: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
+              &#x27;© &lt;a href&#x3D;&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
               &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;
         })],
         format: new ol.format.MVT(),
         tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
         tilePixelRatio: 16,
         url: &#x27;http://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/&#x27; +
-            &#x27;{z}/{x}/{y}.vector.pbf?access_token=&#x27; + key
+            &#x27;{z}/{x}/{y}.vector.pbf?access_token&#x3D;&#x27; + key
       }),
       style: createMapboxStreetsV6Style()
     })
@@ -82,9 +82,9 @@ var map = new ol.Map({
   background: #f8f4f0;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -100,7 +100,7 @@ var map = new ol.Map({
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://openlayers.org/en/v3.10.1/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://openlayers.org/en/v3.10.1/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
 &lt;style&gt;
 .map {
   background: #f8f4f0;
@@ -111,30 +111,30 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var key = &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
+var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.VectorTile({
       source: new ol.source.VectorTile({
         attributions: [new ol.Attribution({
-          html: &#x27;© &lt;a href=&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
-              &#x27;© &lt;a href=&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
+          html: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
+              &#x27;© &lt;a href&#x3D;&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
               &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;
         })],
         format: new ol.format.MVT(),
         tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
         tilePixelRatio: 16,
         url: &#x27;http://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/&#x27; +
-            &#x27;{z}/{x}/{y}.vector.pbf?access_token=&#x27; + key
+            &#x27;{z}/{x}/{y}.vector.pbf?access_token&#x3D;&#x27; + key
       }),
       style: createMapboxStreetsV6Style()
     })

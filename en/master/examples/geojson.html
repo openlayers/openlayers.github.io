@@ -48,13 +48,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var image = new ol.style.Circle({
+          <textarea class="hidden" name="js">var image &#x3D; new ol.style.Circle({
   radius: 5,
   fill: null,
   stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
 });
 
-var styles = {
+var styles &#x3D; {
   &#x27;Point&#x27;: [new ol.style.Style({
     image: image
   })],
@@ -119,11 +119,11 @@ var styles = {
   })]
 };
 
-var styleFunction = function(feature, resolution) {
+var styleFunction &#x3D; function(feature, resolution) {
   return styles[feature.getGeometry().getType()];
 };
 
-var geojsonObject = {
+var geojsonObject &#x3D; {
   &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
@@ -206,18 +206,18 @@ var geojsonObject = {
   ]
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
 });
 
 vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: styleFunction
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -237,9 +237,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -260,21 +260,21 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var image = new ol.style.Circle({
+var image &#x3D; new ol.style.Circle({
   radius: 5,
   fill: null,
   stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
 });
 
-var styles = {
+var styles &#x3D; {
   &#x27;Point&#x27;: [new ol.style.Style({
     image: image
   })],
@@ -339,11 +339,11 @@ var styles = {
   })]
 };
 
-var styleFunction = function(feature, resolution) {
+var styleFunction &#x3D; function(feature, resolution) {
   return styles[feature.getGeometry().getType()];
 };
 
-var geojsonObject = {
+var geojsonObject &#x3D; {
   &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
@@ -426,18 +426,18 @@ var geojsonObject = {
   ]
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
 });
 
 vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: styleFunction
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()

@@ -49,17 +49,17 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var osm = new ol.layer.Tile({
+          <textarea class="hidden" name="js">var osm &#x3D; new ol.layer.Tile({
   source: new ol.source.OSM()
 });
-var bing = new ol.layer.Tile({
+var bing &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({
     key: &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;,
     imagerySet: &#x27;Aerial&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [osm, bing],
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
@@ -73,11 +73,11 @@ var map = new ol.Map({
   })
 });
 
-var swipe = document.getElementById(&#x27;swipe&#x27;);
+var swipe &#x3D; document.getElementById(&#x27;swipe&#x27;);
 
 bing.on(&#x27;precompose&#x27;, function(event) {
-  var ctx = event.context;
-  var width = ctx.canvas.width * (swipe.value / 100);
+  var ctx &#x3D; event.context;
+  var width &#x3D; ctx.canvas.width * (swipe.value / 100);
 
   ctx.save();
   ctx.beginPath();
@@ -86,7 +86,7 @@ bing.on(&#x27;precompose&#x27;, function(event) {
 });
 
 bing.on(&#x27;postcompose&#x27;, function(event) {
-  var ctx = event.context;
+  var ctx &#x3D; event.context;
   ctx.restore();
 });
 
@@ -95,10 +95,10 @@ swipe.addEventListener(&#x27;input&#x27;, function() {
 }, false);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;input id=&quot;swipe&quot; type=&quot;range&quot; style=&quot;width: 100%&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;input id&#x3D;&quot;swipe&quot; type&#x3D;&quot;range&quot; style&#x3D;&quot;width: 100%&quot;&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -119,26 +119,26 @@ swipe.addEventListener(&#x27;input&#x27;, function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;input id=&quot;swipe&quot; type=&quot;range&quot; style=&quot;width: 100%&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;input id&#x3D;&quot;swipe&quot; type&#x3D;&quot;range&quot; style&#x3D;&quot;width: 100%&quot;&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var osm = new ol.layer.Tile({
+var osm &#x3D; new ol.layer.Tile({
   source: new ol.source.OSM()
 });
-var bing = new ol.layer.Tile({
+var bing &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({
     key: &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;,
     imagerySet: &#x27;Aerial&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [osm, bing],
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
@@ -152,11 +152,11 @@ var map = new ol.Map({
   })
 });
 
-var swipe = document.getElementById(&#x27;swipe&#x27;);
+var swipe &#x3D; document.getElementById(&#x27;swipe&#x27;);
 
 bing.on(&#x27;precompose&#x27;, function(event) {
-  var ctx = event.context;
-  var width = ctx.canvas.width * (swipe.value / 100);
+  var ctx &#x3D; event.context;
+  var width &#x3D; ctx.canvas.width * (swipe.value / 100);
 
   ctx.save();
   ctx.beginPath();
@@ -165,7 +165,7 @@ bing.on(&#x27;precompose&#x27;, function(event) {
 });
 
 bing.on(&#x27;postcompose&#x27;, function(event) {
-  var ctx = event.context;
+  var ctx &#x3D; event.context;
   ctx.restore();
 });
 

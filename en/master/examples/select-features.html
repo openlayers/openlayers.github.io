@@ -60,18 +60,18 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var raster = new ol.layer.Tile({
+          <textarea class="hidden" name="js">var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new ol.format.GeoJSON()
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -80,47 +80,47 @@ var map = new ol.Map({
   })
 });
 
-var select = null;  // ref to currently selected interaction
+var select &#x3D; null;  // ref to currently selected interaction
 
 // select interaction working on &quot;singleclick&quot;
-var selectSingleClick = new ol.interaction.Select();
+var selectSingleClick &#x3D; new ol.interaction.Select();
 
 // select interaction working on &quot;click&quot;
-var selectClick = new ol.interaction.Select({
+var selectClick &#x3D; new ol.interaction.Select({
   condition: ol.events.condition.click
 });
 
 // select interaction working on &quot;pointermove&quot;
-var selectPointerMove = new ol.interaction.Select({
+var selectPointerMove &#x3D; new ol.interaction.Select({
   condition: ol.events.condition.pointerMove
 });
 
-var selectAltClick = new ol.interaction.Select({
+var selectAltClick &#x3D; new ol.interaction.Select({
   condition: function(mapBrowserEvent) {
     return ol.events.condition.click(mapBrowserEvent) &amp;&amp;
         ol.events.condition.altKeyOnly(mapBrowserEvent);
   }
 });
 
-var selectElement = document.getElementById(&#x27;type&#x27;);
+var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
-var changeInteraction = function() {
-  if (select !== null) {
+var changeInteraction &#x3D; function() {
+  if (select !&#x3D;&#x3D; null) {
     map.removeInteraction(select);
   }
-  var value = selectElement.value;
-  if (value == &#x27;singleclick&#x27;) {
-    select = selectSingleClick;
-  } else if (value == &#x27;click&#x27;) {
-    select = selectClick;
-  } else if (value == &#x27;pointermove&#x27;) {
-    select = selectPointerMove;
-  } else if (value == &#x27;altclick&#x27;) {
-    select = selectAltClick;
+  var value &#x3D; selectElement.value;
+  if (value &#x3D;&#x3D; &#x27;singleclick&#x27;) {
+    select &#x3D; selectSingleClick;
+  } else if (value &#x3D;&#x3D; &#x27;click&#x27;) {
+    select &#x3D; selectClick;
+  } else if (value &#x3D;&#x3D; &#x27;pointermove&#x27;) {
+    select &#x3D; selectPointerMove;
+  } else if (value &#x3D;&#x3D; &#x27;altclick&#x27;) {
+    select &#x3D; selectAltClick;
   } else {
-    select = null;
+    select &#x3D; null;
   }
-  if (select !== null) {
+  if (select !&#x3D;&#x3D; null) {
     map.addInteraction(select);
     select.on(&#x27;select&#x27;, function(e) {
       $(&#x27;#status&#x27;).html(&#x27;&amp;nbsp;&#x27; + e.target.getFeatures().getLength() +
@@ -134,13 +134,13 @@ var changeInteraction = function() {
 /**
  * onchange callback on the select element.
  */
-selectElement.onchange = changeInteraction;
+selectElement.onchange &#x3D; changeInteraction;
 changeInteraction();
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -161,26 +161,26 @@ changeInteraction();
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new ol.format.GeoJSON()
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -189,47 +189,47 @@ var map = new ol.Map({
   })
 });
 
-var select = null;  // ref to currently selected interaction
+var select &#x3D; null;  // ref to currently selected interaction
 
 // select interaction working on &quot;singleclick&quot;
-var selectSingleClick = new ol.interaction.Select();
+var selectSingleClick &#x3D; new ol.interaction.Select();
 
 // select interaction working on &quot;click&quot;
-var selectClick = new ol.interaction.Select({
+var selectClick &#x3D; new ol.interaction.Select({
   condition: ol.events.condition.click
 });
 
 // select interaction working on &quot;pointermove&quot;
-var selectPointerMove = new ol.interaction.Select({
+var selectPointerMove &#x3D; new ol.interaction.Select({
   condition: ol.events.condition.pointerMove
 });
 
-var selectAltClick = new ol.interaction.Select({
+var selectAltClick &#x3D; new ol.interaction.Select({
   condition: function(mapBrowserEvent) {
     return ol.events.condition.click(mapBrowserEvent) &amp;&amp;
         ol.events.condition.altKeyOnly(mapBrowserEvent);
   }
 });
 
-var selectElement = document.getElementById(&#x27;type&#x27;);
+var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
-var changeInteraction = function() {
-  if (select !== null) {
+var changeInteraction &#x3D; function() {
+  if (select !&#x3D;&#x3D; null) {
     map.removeInteraction(select);
   }
-  var value = selectElement.value;
-  if (value == &#x27;singleclick&#x27;) {
-    select = selectSingleClick;
-  } else if (value == &#x27;click&#x27;) {
-    select = selectClick;
-  } else if (value == &#x27;pointermove&#x27;) {
-    select = selectPointerMove;
-  } else if (value == &#x27;altclick&#x27;) {
-    select = selectAltClick;
+  var value &#x3D; selectElement.value;
+  if (value &#x3D;&#x3D; &#x27;singleclick&#x27;) {
+    select &#x3D; selectSingleClick;
+  } else if (value &#x3D;&#x3D; &#x27;click&#x27;) {
+    select &#x3D; selectClick;
+  } else if (value &#x3D;&#x3D; &#x27;pointermove&#x27;) {
+    select &#x3D; selectPointerMove;
+  } else if (value &#x3D;&#x3D; &#x27;altclick&#x27;) {
+    select &#x3D; selectAltClick;
   } else {
-    select = null;
+    select &#x3D; null;
   }
-  if (select !== null) {
+  if (select !&#x3D;&#x3D; null) {
     map.addInteraction(select);
     select.on(&#x27;select&#x27;, function(e) {
       $(&#x27;#status&#x27;).html(&#x27;&amp;nbsp;&#x27; + e.target.getFeatures().getLength() +
@@ -243,7 +243,7 @@ var changeInteraction = function() {
 /**
  * onchange callback on the select element.
  */
-selectElement.onchange = changeInteraction;
+selectElement.onchange &#x3D; changeInteraction;
 changeInteraction();
 
 &lt;/script&gt;

@@ -48,17 +48,17 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var styleCache = {};
-var styleFunction = function(feature, resolution) {
+          <textarea class="hidden" name="js">var styleCache &#x3D; {};
+var styleFunction &#x3D; function(feature, resolution) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
-  var name = feature.get(&#x27;name&#x27;);
-  var magnitude = parseFloat(name.substr(2));
-  var radius = 5 + 20 * (magnitude - 5);
-  var style = styleCache[radius];
+  var name &#x3D; feature.get(&#x27;name&#x27;);
+  var magnitude &#x3D; parseFloat(name.substr(2));
+  var radius &#x3D; 5 + 20 * (magnitude - 5);
+  var style &#x3D; styleCache[radius];
   if (!style) {
-    style = [new ol.style.Style({
+    style &#x3D; [new ol.style.Style({
       image: new ol.style.Circle({
         radius: radius,
         fill: new ol.style.Fill({
@@ -70,12 +70,12 @@ var styleFunction = function(feature, resolution) {
         })
       })
     })];
-    styleCache[radius] = style;
+    styleCache[radius] &#x3D; style;
   }
   return style;
 };
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new ol.format.KML({
@@ -85,13 +85,13 @@ var vector = new ol.layer.Vector({
   style: styleFunction
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: &#x27;toner&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -100,18 +100,18 @@ var map = new ol.Map({
   })
 });
 
-var info = $(&#x27;#info&#x27;);
+var info &#x3D; $(&#x27;#info&#x27;);
 info.tooltip({
   animation: false,
   trigger: &#x27;manual&#x27;
 });
 
-var displayFeatureInfo = function(pixel) {
+var displayFeatureInfo &#x3D; function(pixel) {
   info.css({
     left: pixel[0] + &#x27;px&#x27;,
     top: (pixel[1] - 15) + &#x27;px&#x27;
   });
-  var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     return feature;
   });
   if (feature) {
@@ -147,7 +147,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 }
 .tooltip.in {
   opacity: 1;
-  filter: alpha(opacity=100);
+  filter: alpha(opacity&#x3D;100);
 }
 .tooltip.top .tooltip-arrow {
   border-top-color: white;
@@ -156,9 +156,9 @@ map.on(&#x27;click&#x27;, function(evt) {
   border: 2px solid white;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;div id=&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;div id&#x3D;&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -187,7 +187,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 }
 .tooltip.in {
   opacity: 1;
-  filter: alpha(opacity=100);
+  filter: alpha(opacity&#x3D;100);
 }
 .tooltip.top .tooltip-arrow {
   border-top-color: white;
@@ -201,25 +201,25 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;div id=&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;div id&#x3D;&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var styleCache = {};
-var styleFunction = function(feature, resolution) {
+var styleCache &#x3D; {};
+var styleFunction &#x3D; function(feature, resolution) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
-  var name = feature.get(&#x27;name&#x27;);
-  var magnitude = parseFloat(name.substr(2));
-  var radius = 5 + 20 * (magnitude - 5);
-  var style = styleCache[radius];
+  var name &#x3D; feature.get(&#x27;name&#x27;);
+  var magnitude &#x3D; parseFloat(name.substr(2));
+  var radius &#x3D; 5 + 20 * (magnitude - 5);
+  var style &#x3D; styleCache[radius];
   if (!style) {
-    style = [new ol.style.Style({
+    style &#x3D; [new ol.style.Style({
       image: new ol.style.Circle({
         radius: radius,
         fill: new ol.style.Fill({
@@ -231,12 +231,12 @@ var styleFunction = function(feature, resolution) {
         })
       })
     })];
-    styleCache[radius] = style;
+    styleCache[radius] &#x3D; style;
   }
   return style;
 };
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new ol.format.KML({
@@ -246,13 +246,13 @@ var vector = new ol.layer.Vector({
   style: styleFunction
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: &#x27;toner&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -261,18 +261,18 @@ var map = new ol.Map({
   })
 });
 
-var info = $(&#x27;#info&#x27;);
+var info &#x3D; $(&#x27;#info&#x27;);
 info.tooltip({
   animation: false,
   trigger: &#x27;manual&#x27;
 });
 
-var displayFeatureInfo = function(pixel) {
+var displayFeatureInfo &#x3D; function(pixel) {
   info.css({
     left: pixel[0] + &#x27;px&#x27;,
     top: (pixel[1] - 15) + &#x27;px&#x27;
   });
-  var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     return feature;
   });
   if (feature) {

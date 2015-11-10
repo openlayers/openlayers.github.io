@@ -48,19 +48,19 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">proj4.defs(&#x27;ESRI:53009&#x27;, &#x27;+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 &#x27; +
-    &#x27;+b=6371000 +units=m +no_defs&#x27;);
+          <textarea class="hidden" name="js">proj4.defs(&#x27;ESRI:53009&#x27;, &#x27;+proj&#x3D;moll +lon_0&#x3D;0 +x_0&#x3D;0 +y_0&#x3D;0 +a&#x3D;6371000 &#x27; +
+    &#x27;+b&#x3D;6371000 +units&#x3D;m +no_defs&#x27;);
 
 // Configure the Sphere Mollweide projection object with an extent,
 // and a world extent. These are required for the Graticule.
-var sphereMollweideProjection = new ol.proj.Projection({
+var sphereMollweideProjection &#x3D; new ol.proj.Projection({
   code: &#x27;ESRI:53009&#x27;,
   extent: [-9009954.605703328, -9009954.605703328,
     9009954.605703328, 9009954.605703328],
   worldExtent: [-179, -89.99, 179, 89.99]
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   keyboardEventTarget: document,
   layers: [
     new ol.layer.Vector({
@@ -80,14 +80,14 @@ var map = new ol.Map({
   })
 });
 
-var graticule = new ol.Graticule({
+var graticule &#x3D; new ol.Graticule({
   map: map
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -103,32 +103,32 @@ var graticule = new ol.Graticule({
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-proj4.defs(&#x27;ESRI:53009&#x27;, &#x27;+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 &#x27; +
-    &#x27;+b=6371000 +units=m +no_defs&#x27;);
+proj4.defs(&#x27;ESRI:53009&#x27;, &#x27;+proj&#x3D;moll +lon_0&#x3D;0 +x_0&#x3D;0 +y_0&#x3D;0 +a&#x3D;6371000 &#x27; +
+    &#x27;+b&#x3D;6371000 +units&#x3D;m +no_defs&#x27;);
 
 // Configure the Sphere Mollweide projection object with an extent,
 // and a world extent. These are required for the Graticule.
-var sphereMollweideProjection = new ol.proj.Projection({
+var sphereMollweideProjection &#x3D; new ol.proj.Projection({
   code: &#x27;ESRI:53009&#x27;,
   extent: [-9009954.605703328, -9009954.605703328,
     9009954.605703328, 9009954.605703328],
   worldExtent: [-179, -89.99, 179, 89.99]
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   keyboardEventTarget: document,
   layers: [
     new ol.layer.Vector({
@@ -148,7 +148,7 @@ var map = new ol.Map({
   })
 });
 
-var graticule = new ol.Graticule({
+var graticule &#x3D; new ol.Graticule({
   map: map
 });
 

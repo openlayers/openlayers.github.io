@@ -59,7 +59,7 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// This long string is placed here due to jsFiddle limitations.
 // It is usually loaded with AJAX.
-var polyline = [
+var polyline &#x3D; [
   &#x27;hldhx@lnau&#x60;BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N&#x27;,
   &#x27;fIoGxB_I\\gG}@eHoCyTmPqGaBaHOoD\\??yVrGotA|N??o[N_STiwAtEmHGeHcAkiA}^&#x27;,
   &#x27;aMyBiHOkFNoI&#x60;CcVvM??gG^gF_@iJwC??eCcA]OoL}DwFyCaCgCcCwDcGwHsSoX??wI_E&#x27;,
@@ -101,34 +101,34 @@ var polyline = [
   &#x27;~@ym@yjA??a@cFd@kBrCgDbAUnAcBhAyAdk@et@??kF}D??OL&#x27;
 ].join(&#x27;&#x27;);
 
-var route = /** @type {ol.geom.LineString} */ (new ol.format.Polyline({
+var route &#x3D; /** @type {ol.geom.LineString} */ (new ol.format.Polyline({
   factor: 1e6
 }).readGeometry(polyline, {
   dataProjection: &#x27;EPSG:4326&#x27;,
   featureProjection: &#x27;EPSG:3857&#x27;
 }));
 
-var routeCoords = route.getCoordinates();
-var routeLength = routeCoords.length;
+var routeCoords &#x3D; route.getCoordinates();
+var routeLength &#x3D; routeCoords.length;
 
-var routeFeature = new ol.Feature({
+var routeFeature &#x3D; new ol.Feature({
   type: &#x27;route&#x27;,
   geometry: route
 });
-var geoMarker = new ol.Feature({
+var geoMarker &#x3D; new ol.Feature({
   type: &#x27;geoMarker&#x27;,
   geometry: new ol.geom.Point(routeCoords[0])
 });
-var startMarker = new ol.Feature({
+var startMarker &#x3D; new ol.Feature({
   type: &#x27;icon&#x27;,
   geometry: new ol.geom.Point(routeCoords[0])
 });
-var endMarker = new ol.Feature({
+var endMarker &#x3D; new ol.Feature({
   type: &#x27;icon&#x27;,
   geometry: new ol.geom.Point(routeCoords[routeLength - 1])
 });
 
-var styles = {
+var styles &#x3D; {
   &#x27;route&#x27;: new ol.style.Style({
     stroke: new ol.style.Stroke({
       width: 6, color: [237, 212, 0, 0.8]
@@ -152,21 +152,21 @@ var styles = {
   })
 };
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [routeFeature, geoMarker, startMarker, endMarker]
   }),
   style: function(feature, resolution) {
     // hide geoMarker if animation is active
-    if (animating &amp;&amp; feature.get(&#x27;type&#x27;) === &#x27;geoMarker&#x27;) {
+    if (animating &amp;&amp; feature.get(&#x27;type&#x27;) &#x3D;&#x3D;&#x3D; &#x27;geoMarker&#x27;) {
       return [];
     }
     return [styles[feature.get(&#x27;type&#x27;)]];
   }
 });
 
-var center = [-5639523.95, -3501274.52];
-var map = new ol.Map({
+var center &#x3D; [-5639523.95, -3501274.52];
+var map &#x3D; new ol.Map({
   target: document.getElementById(&#x27;map&#x27;),
   loadTilesWhileAnimating: true,
   view: new ol.View({
@@ -186,23 +186,23 @@ var map = new ol.Map({
   ]
 });
 
-var moveFeature = function(event) {
-  var vectorContext = event.vectorContext;
-  var frameState = event.frameState;
+var moveFeature &#x3D; function(event) {
+  var vectorContext &#x3D; event.vectorContext;
+  var frameState &#x3D; event.frameState;
 
   if (animating) {
-    var elapsedTime = frameState.time - now;
+    var elapsedTime &#x3D; frameState.time - now;
     // here the trick to increase speed is to jump some indexes
     // on lineString coordinates
-    var index = Math.round(speed * elapsedTime / 1000);
+    var index &#x3D; Math.round(speed * elapsedTime / 1000);
 
-    if (index &gt;= routeLength) {
+    if (index &gt;&#x3D; routeLength) {
       stopAnimation(true);
       return;
     }
 
-    var currentPoint = new ol.geom.Point(routeCoords[index]);
-    var feature = new ol.Feature(currentPoint);
+    var currentPoint &#x3D; new ol.geom.Point(routeCoords[index]);
+    var feature &#x3D; new ol.Feature(currentPoint);
     vectorContext.drawFeature(feature, styles.geoMarker);
   }
   // tell OL3 to continue the postcompose animation
@@ -213,10 +213,10 @@ function startAnimation() {
   if (animating) {
     stopAnimation(false);
   } else {
-    animating = true;
-    now = new Date().getTime();
-    speed = speedInput.value;
-    startButton.textContent = &#x27;Cancel Animation&#x27;;
+    animating &#x3D; true;
+    now &#x3D; new Date().getTime();
+    speed &#x3D; speedInput.value;
+    startButton.textContent &#x3D; &#x27;Cancel Animation&#x27;;
     // hide geoMarker
     geoMarker.setStyle(null);
     // just in case you pan somewhere else
@@ -231,11 +231,11 @@ function startAnimation() {
  * @param {boolean} ended end of animation.
  */
 function stopAnimation(ended) {
-  animating = false;
-  startButton.textContent = &#x27;Start Animation&#x27;;
+  animating &#x3D; false;
+  startButton.textContent &#x3D; &#x27;Start Animation&#x27;;
 
   // if animation cancelled set the marker at the beginning
-  var coord = ended ? routeCoords[routeLength - 1] : routeCoords[0];
+  var coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
   /** @type {ol.geom.Point} */ (geoMarker.getGeometry())
     .setCoordinates(coord);
   //remove listener
@@ -243,24 +243,24 @@ function stopAnimation(ended) {
 }
 
 var speed, now;
-var animating = false;
-var speedInput = document.getElementById(&#x27;speed&#x27;);
-var startButton = document.getElementById(&#x27;start-animation&#x27;);
+var animating &#x3D; false;
+var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
+var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
 startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;label for=&quot;speed&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;label for&#x3D;&quot;speed&quot;&gt;
       speed:&amp;nbsp;
-      &lt;input id=&quot;speed&quot; type=&quot;range&quot; min=&quot;10&quot; max=&quot;999&quot; step=&quot;10&quot; value=&quot;60&quot;&gt;
+      &lt;input id&#x3D;&quot;speed&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;10&quot; max&#x3D;&quot;999&quot; step&#x3D;&quot;10&quot; value&#x3D;&quot;60&quot;&gt;
     &lt;/label&gt;
-    &lt;button id=&quot;start-animation&quot;&gt;Start Animation&lt;/button&gt;
+    &lt;button id&#x3D;&quot;start-animation&quot;&gt;Start Animation&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -281,18 +281,18 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;label for=&quot;speed&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;label for&#x3D;&quot;speed&quot;&gt;
       speed:&amp;nbsp;
-      &lt;input id=&quot;speed&quot; type=&quot;range&quot; min=&quot;10&quot; max=&quot;999&quot; step=&quot;10&quot; value=&quot;60&quot;&gt;
+      &lt;input id&#x3D;&quot;speed&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;10&quot; max&#x3D;&quot;999&quot; step&#x3D;&quot;10&quot; value&#x3D;&quot;60&quot;&gt;
     &lt;/label&gt;
-    &lt;button id=&quot;start-animation&quot;&gt;Start Animation&lt;/button&gt;
+    &lt;button id&#x3D;&quot;start-animation&quot;&gt;Start Animation&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -300,7 +300,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 &lt;script&gt;
 // This long string is placed here due to jsFiddle limitations.
 // It is usually loaded with AJAX.
-var polyline = [
+var polyline &#x3D; [
   &#x27;hldhx@lnau&#x60;BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N&#x27;,
   &#x27;fIoGxB_I\\gG}@eHoCyTmPqGaBaHOoD\\??yVrGotA|N??o[N_STiwAtEmHGeHcAkiA}^&#x27;,
   &#x27;aMyBiHOkFNoI&#x60;CcVvM??gG^gF_@iJwC??eCcA]OoL}DwFyCaCgCcCwDcGwHsSoX??wI_E&#x27;,
@@ -342,34 +342,34 @@ var polyline = [
   &#x27;~@ym@yjA??a@cFd@kBrCgDbAUnAcBhAyAdk@et@??kF}D??OL&#x27;
 ].join(&#x27;&#x27;);
 
-var route = /** @type {ol.geom.LineString} */ (new ol.format.Polyline({
+var route &#x3D; /** @type {ol.geom.LineString} */ (new ol.format.Polyline({
   factor: 1e6
 }).readGeometry(polyline, {
   dataProjection: &#x27;EPSG:4326&#x27;,
   featureProjection: &#x27;EPSG:3857&#x27;
 }));
 
-var routeCoords = route.getCoordinates();
-var routeLength = routeCoords.length;
+var routeCoords &#x3D; route.getCoordinates();
+var routeLength &#x3D; routeCoords.length;
 
-var routeFeature = new ol.Feature({
+var routeFeature &#x3D; new ol.Feature({
   type: &#x27;route&#x27;,
   geometry: route
 });
-var geoMarker = new ol.Feature({
+var geoMarker &#x3D; new ol.Feature({
   type: &#x27;geoMarker&#x27;,
   geometry: new ol.geom.Point(routeCoords[0])
 });
-var startMarker = new ol.Feature({
+var startMarker &#x3D; new ol.Feature({
   type: &#x27;icon&#x27;,
   geometry: new ol.geom.Point(routeCoords[0])
 });
-var endMarker = new ol.Feature({
+var endMarker &#x3D; new ol.Feature({
   type: &#x27;icon&#x27;,
   geometry: new ol.geom.Point(routeCoords[routeLength - 1])
 });
 
-var styles = {
+var styles &#x3D; {
   &#x27;route&#x27;: new ol.style.Style({
     stroke: new ol.style.Stroke({
       width: 6, color: [237, 212, 0, 0.8]
@@ -393,21 +393,21 @@ var styles = {
   })
 };
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [routeFeature, geoMarker, startMarker, endMarker]
   }),
   style: function(feature, resolution) {
     // hide geoMarker if animation is active
-    if (animating &amp;&amp; feature.get(&#x27;type&#x27;) === &#x27;geoMarker&#x27;) {
+    if (animating &amp;&amp; feature.get(&#x27;type&#x27;) &#x3D;&#x3D;&#x3D; &#x27;geoMarker&#x27;) {
       return [];
     }
     return [styles[feature.get(&#x27;type&#x27;)]];
   }
 });
 
-var center = [-5639523.95, -3501274.52];
-var map = new ol.Map({
+var center &#x3D; [-5639523.95, -3501274.52];
+var map &#x3D; new ol.Map({
   target: document.getElementById(&#x27;map&#x27;),
   loadTilesWhileAnimating: true,
   view: new ol.View({
@@ -427,23 +427,23 @@ var map = new ol.Map({
   ]
 });
 
-var moveFeature = function(event) {
-  var vectorContext = event.vectorContext;
-  var frameState = event.frameState;
+var moveFeature &#x3D; function(event) {
+  var vectorContext &#x3D; event.vectorContext;
+  var frameState &#x3D; event.frameState;
 
   if (animating) {
-    var elapsedTime = frameState.time - now;
+    var elapsedTime &#x3D; frameState.time - now;
     // here the trick to increase speed is to jump some indexes
     // on lineString coordinates
-    var index = Math.round(speed * elapsedTime / 1000);
+    var index &#x3D; Math.round(speed * elapsedTime / 1000);
 
-    if (index &gt;= routeLength) {
+    if (index &gt;&#x3D; routeLength) {
       stopAnimation(true);
       return;
     }
 
-    var currentPoint = new ol.geom.Point(routeCoords[index]);
-    var feature = new ol.Feature(currentPoint);
+    var currentPoint &#x3D; new ol.geom.Point(routeCoords[index]);
+    var feature &#x3D; new ol.Feature(currentPoint);
     vectorContext.drawFeature(feature, styles.geoMarker);
   }
   // tell OL3 to continue the postcompose animation
@@ -454,10 +454,10 @@ function startAnimation() {
   if (animating) {
     stopAnimation(false);
   } else {
-    animating = true;
-    now = new Date().getTime();
-    speed = speedInput.value;
-    startButton.textContent = &#x27;Cancel Animation&#x27;;
+    animating &#x3D; true;
+    now &#x3D; new Date().getTime();
+    speed &#x3D; speedInput.value;
+    startButton.textContent &#x3D; &#x27;Cancel Animation&#x27;;
     // hide geoMarker
     geoMarker.setStyle(null);
     // just in case you pan somewhere else
@@ -472,11 +472,11 @@ function startAnimation() {
  * @param {boolean} ended end of animation.
  */
 function stopAnimation(ended) {
-  animating = false;
-  startButton.textContent = &#x27;Start Animation&#x27;;
+  animating &#x3D; false;
+  startButton.textContent &#x3D; &#x27;Start Animation&#x27;;
 
   // if animation cancelled set the marker at the beginning
-  var coord = ended ? routeCoords[routeLength - 1] : routeCoords[0];
+  var coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
   /** @type {ol.geom.Point} */ (geoMarker.getGeometry())
     .setCoordinates(coord);
   //remove listener
@@ -484,9 +484,9 @@ function stopAnimation(ended) {
 }
 
 var speed, now;
-var animating = false;
-var speedInput = document.getElementById(&#x27;speed&#x27;);
-var startButton = document.getElementById(&#x27;start-animation&#x27;);
+var animating &#x3D; false;
+var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
+var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
 startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 
 &lt;/script&gt;

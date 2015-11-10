@@ -49,25 +49,25 @@
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// default zoom, center and rotation
-var zoom = 2;
-var center = [0, 0];
-var rotation = 0;
+var zoom &#x3D; 2;
+var center &#x3D; [0, 0];
+var rotation &#x3D; 0;
 
-if (window.location.hash !== &#x27;&#x27;) {
+if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   // try to restore center, zoom-level and rotation from the URL
-  var hash = window.location.hash.replace(&#x27;#map=&#x27;, &#x27;&#x27;);
-  var parts = hash.split(&#x27;/&#x27;);
-  if (parts.length === 4) {
-    zoom = parseInt(parts[0], 10);
-    center = [
+  var hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
+  var parts &#x3D; hash.split(&#x27;/&#x27;);
+  if (parts.length &#x3D;&#x3D;&#x3D; 4) {
+    zoom &#x3D; parseInt(parts[0], 10);
+    center &#x3D; [
       parseFloat(parts[1]),
       parseFloat(parts[2])
     ];
-    rotation = parseFloat(parts[3]);
+    rotation &#x3D; parseFloat(parts[3]);
   }
 }
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -86,22 +86,22 @@ var map = new ol.Map({
   })
 });
 
-var shouldUpdate = true;
-var view = map.getView();
-var updatePermalink = function() {
+var shouldUpdate &#x3D; true;
+var view &#x3D; map.getView();
+var updatePermalink &#x3D; function() {
   if (!shouldUpdate) {
     // do not update the URL when the view was changed in the &#x27;popstate&#x27; handler
-    shouldUpdate = true;
+    shouldUpdate &#x3D; true;
     return;
   }
 
-  var center = view.getCenter();
-  var hash = &#x27;#map=&#x27; +
+  var center &#x3D; view.getCenter();
+  var hash &#x3D; &#x27;#map&#x3D;&#x27; +
       view.getZoom() + &#x27;/&#x27; +
       Math.round(center[0] * 100) / 100 + &#x27;/&#x27; +
       Math.round(center[1] * 100) / 100 + &#x27;/&#x27; +
       view.getRotation();
-  var state = {
+  var state &#x3D; {
     zoom: view.getZoom(),
     center: view.getCenter(),
     rotation: view.getRotation()
@@ -114,19 +114,19 @@ map.on(&#x27;moveend&#x27;, updatePermalink);
 // restore the view state when navigating through the history, see
 // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onpopstate
 window.addEventListener(&#x27;popstate&#x27;, function(event) {
-  if (event.state === null) {
+  if (event.state &#x3D;&#x3D;&#x3D; null) {
     return;
   }
   map.getView().setCenter(event.state.center);
   map.getView().setZoom(event.state.zoom);
   map.getView().setRotation(event.state.rotation);
-  shouldUpdate = false;
+  shouldUpdate &#x3D; false;
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -147,34 +147,34 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
 // default zoom, center and rotation
-var zoom = 2;
-var center = [0, 0];
-var rotation = 0;
+var zoom &#x3D; 2;
+var center &#x3D; [0, 0];
+var rotation &#x3D; 0;
 
-if (window.location.hash !== &#x27;&#x27;) {
+if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   // try to restore center, zoom-level and rotation from the URL
-  var hash = window.location.hash.replace(&#x27;#map=&#x27;, &#x27;&#x27;);
-  var parts = hash.split(&#x27;/&#x27;);
-  if (parts.length === 4) {
-    zoom = parseInt(parts[0], 10);
-    center = [
+  var hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
+  var parts &#x3D; hash.split(&#x27;/&#x27;);
+  if (parts.length &#x3D;&#x3D;&#x3D; 4) {
+    zoom &#x3D; parseInt(parts[0], 10);
+    center &#x3D; [
       parseFloat(parts[1]),
       parseFloat(parts[2])
     ];
-    rotation = parseFloat(parts[3]);
+    rotation &#x3D; parseFloat(parts[3]);
   }
 }
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -193,22 +193,22 @@ var map = new ol.Map({
   })
 });
 
-var shouldUpdate = true;
-var view = map.getView();
-var updatePermalink = function() {
+var shouldUpdate &#x3D; true;
+var view &#x3D; map.getView();
+var updatePermalink &#x3D; function() {
   if (!shouldUpdate) {
     // do not update the URL when the view was changed in the &#x27;popstate&#x27; handler
-    shouldUpdate = true;
+    shouldUpdate &#x3D; true;
     return;
   }
 
-  var center = view.getCenter();
-  var hash = &#x27;#map=&#x27; +
+  var center &#x3D; view.getCenter();
+  var hash &#x3D; &#x27;#map&#x3D;&#x27; +
       view.getZoom() + &#x27;/&#x27; +
       Math.round(center[0] * 100) / 100 + &#x27;/&#x27; +
       Math.round(center[1] * 100) / 100 + &#x27;/&#x27; +
       view.getRotation();
-  var state = {
+  var state &#x3D; {
     zoom: view.getZoom(),
     center: view.getCenter(),
     rotation: view.getRotation()
@@ -221,13 +221,13 @@ map.on(&#x27;moveend&#x27;, updatePermalink);
 // restore the view state when navigating through the history, see
 // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onpopstate
 window.addEventListener(&#x27;popstate&#x27;, function(event) {
-  if (event.state === null) {
+  if (event.state &#x3D;&#x3D;&#x3D; null) {
     return;
   }
   map.getView().setCenter(event.state.center);
   map.getView().setZoom(event.state.zoom);
   map.getView().setRotation(event.state.rotation);
-  shouldUpdate = false;
+  shouldUpdate &#x3D; false;
 });
 
 &lt;/script&gt;

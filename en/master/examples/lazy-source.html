@@ -50,11 +50,11 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var source = new ol.source.MapQuest({layer: &#x27;sat&#x27;});
+          <textarea class="hidden" name="js">var source &#x3D; new ol.source.MapQuest({layer: &#x27;sat&#x27;});
 
-var layer = new ol.layer.Tile();
+var layer &#x3D; new ol.layer.Tile();
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -63,11 +63,11 @@ var map = new ol.Map({
   })
 });
 
-document.getElementById(&#x27;set-source&#x27;).onclick = function() {
+document.getElementById(&#x27;set-source&#x27;).onclick &#x3D; function() {
   layer.setSource(source);
 };
 
-document.getElementById(&#x27;unset-source&#x27;).onclick = function() {
+document.getElementById(&#x27;unset-source&#x27;).onclick &#x3D; function() {
   layer.setSource(null);
 };
 </textarea>
@@ -77,13 +77,13 @@ document.getElementById(&#x27;unset-source&#x27;).onclick = function() {
    padding: 5px;
    margin: 0 5px;
  }</textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;button id=&quot;set-source&quot; class=&quot;code&quot;&gt;layer.setSource(source)&lt;/button&gt;
-&lt;button id=&quot;unset-source&quot; class=&quot;code&quot;&gt;layer.setSource(null)&lt;/button&gt;
+&lt;button id&#x3D;&quot;set-source&quot; class&#x3D;&quot;code&quot;&gt;layer.setSource(source)&lt;/button&gt;
+&lt;button id&#x3D;&quot;unset-source&quot; class&#x3D;&quot;code&quot;&gt;layer.setSource(null)&lt;/button&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
           <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,http://openlayers.org/en/v3.10.1/css/ol.css,http://openlayers.org/en/v3.10.1/build/ol.js">
@@ -110,21 +110,21 @@ document.getElementById(&#x27;unset-source&#x27;).onclick = function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;button id=&quot;set-source&quot; class=&quot;code&quot;&gt;layer.setSource(source)&lt;/button&gt;
-&lt;button id=&quot;unset-source&quot; class=&quot;code&quot;&gt;layer.setSource(null)&lt;/button&gt;
+&lt;button id&#x3D;&quot;set-source&quot; class&#x3D;&quot;code&quot;&gt;layer.setSource(source)&lt;/button&gt;
+&lt;button id&#x3D;&quot;unset-source&quot; class&#x3D;&quot;code&quot;&gt;layer.setSource(null)&lt;/button&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var source = new ol.source.MapQuest({layer: &#x27;sat&#x27;});
+var source &#x3D; new ol.source.MapQuest({layer: &#x27;sat&#x27;});
 
-var layer = new ol.layer.Tile();
+var layer &#x3D; new ol.layer.Tile();
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -133,11 +133,11 @@ var map = new ol.Map({
   })
 });
 
-document.getElementById(&#x27;set-source&#x27;).onclick = function() {
+document.getElementById(&#x27;set-source&#x27;).onclick &#x3D; function() {
   layer.setSource(source);
 };
 
-document.getElementById(&#x27;unset-source&#x27;).onclick = function() {
+document.getElementById(&#x27;unset-source&#x27;).onclick &#x3D; function() {
   layer.setSource(null);
 };
 

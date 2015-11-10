@@ -55,24 +55,24 @@
  * currently midnight would have an opacity of 0.  This doesn&#x27;t account for
  * daylight savings, so don&#x27;t use it to plan your vacation.
  */
-var styleFunction = function(feature, resolution) {
-  var offset = 0;
-  var name = feature.get(&#x27;name&#x27;); // e.g. GMT -08:30
-  var match = name.match(/([\-+]\d{2}):(\d{2})$/);
+var styleFunction &#x3D; function(feature, resolution) {
+  var offset &#x3D; 0;
+  var name &#x3D; feature.get(&#x27;name&#x27;); // e.g. GMT -08:30
+  var match &#x3D; name.match(/([\-+]\d{2}):(\d{2})$/);
   if (match) {
-    var hours = parseInt(match[1], 10);
-    var minutes = parseInt(match[2], 10);
-    offset = 60 * hours + minutes;
+    var hours &#x3D; parseInt(match[1], 10);
+    var minutes &#x3D; parseInt(match[2], 10);
+    offset &#x3D; 60 * hours + minutes;
   }
-  var date = new Date();
-  var local = new Date(date.getTime() +
+  var date &#x3D; new Date();
+  var local &#x3D; new Date(date.getTime() +
       (date.getTimezoneOffset() + offset) * 60000);
   // offset from local noon (in hours)
-  var delta = Math.abs(12 - local.getHours() + (local.getMinutes() / 60));
+  var delta &#x3D; Math.abs(12 - local.getHours() + (local.getMinutes() / 60));
   if (delta &gt; 12) {
-    delta = 24 - delta;
+    delta &#x3D; 24 - delta;
   }
-  var opacity = 0.75 * (1 - delta / 12);
+  var opacity &#x3D; 0.75 * (1 - delta / 12);
   return [new ol.style.Style({
     fill: new ol.style.Fill({
       color: [0xff, 0xff, 0x33, opacity]
@@ -83,7 +83,7 @@ var styleFunction = function(feature, resolution) {
   })];
 };
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/kml/timezones.kml&#x27;,
     format: new ol.format.KML({
@@ -93,13 +93,13 @@ var vector = new ol.layer.Vector({
   style: styleFunction
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: &#x27;toner&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -108,18 +108,18 @@ var map = new ol.Map({
   })
 });
 
-var info = $(&#x27;#info&#x27;);
+var info &#x3D; $(&#x27;#info&#x27;);
 info.tooltip({
   animation: false,
   trigger: &#x27;manual&#x27;
 });
 
-var displayFeatureInfo = function(pixel) {
+var displayFeatureInfo &#x3D; function(pixel) {
   info.css({
     left: pixel[0] + &#x27;px&#x27;,
     top: (pixel[1] - 15) + &#x27;px&#x27;
   });
-  var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     return feature;
   });
   if (feature) {
@@ -154,9 +154,9 @@ map.on(&#x27;click&#x27;, function(evt) {
   z-index: 100;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;div id=&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;div id&#x3D;&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -189,9 +189,9 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;div id=&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;div id&#x3D;&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -204,24 +204,24 @@ map.on(&#x27;click&#x27;, function(evt) {
  * currently midnight would have an opacity of 0.  This doesn&#x27;t account for
  * daylight savings, so don&#x27;t use it to plan your vacation.
  */
-var styleFunction = function(feature, resolution) {
-  var offset = 0;
-  var name = feature.get(&#x27;name&#x27;); // e.g. GMT -08:30
-  var match = name.match(/([\-+]\d{2}):(\d{2})$/);
+var styleFunction &#x3D; function(feature, resolution) {
+  var offset &#x3D; 0;
+  var name &#x3D; feature.get(&#x27;name&#x27;); // e.g. GMT -08:30
+  var match &#x3D; name.match(/([\-+]\d{2}):(\d{2})$/);
   if (match) {
-    var hours = parseInt(match[1], 10);
-    var minutes = parseInt(match[2], 10);
-    offset = 60 * hours + minutes;
+    var hours &#x3D; parseInt(match[1], 10);
+    var minutes &#x3D; parseInt(match[2], 10);
+    offset &#x3D; 60 * hours + minutes;
   }
-  var date = new Date();
-  var local = new Date(date.getTime() +
+  var date &#x3D; new Date();
+  var local &#x3D; new Date(date.getTime() +
       (date.getTimezoneOffset() + offset) * 60000);
   // offset from local noon (in hours)
-  var delta = Math.abs(12 - local.getHours() + (local.getMinutes() / 60));
+  var delta &#x3D; Math.abs(12 - local.getHours() + (local.getMinutes() / 60));
   if (delta &gt; 12) {
-    delta = 24 - delta;
+    delta &#x3D; 24 - delta;
   }
-  var opacity = 0.75 * (1 - delta / 12);
+  var opacity &#x3D; 0.75 * (1 - delta / 12);
   return [new ol.style.Style({
     fill: new ol.style.Fill({
       color: [0xff, 0xff, 0x33, opacity]
@@ -232,7 +232,7 @@ var styleFunction = function(feature, resolution) {
   })];
 };
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/kml/timezones.kml&#x27;,
     format: new ol.format.KML({
@@ -242,13 +242,13 @@ var vector = new ol.layer.Vector({
   style: styleFunction
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: &#x27;toner&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -257,18 +257,18 @@ var map = new ol.Map({
   })
 });
 
-var info = $(&#x27;#info&#x27;);
+var info &#x3D; $(&#x27;#info&#x27;);
 info.tooltip({
   animation: false,
   trigger: &#x27;manual&#x27;
 });
 
-var displayFeatureInfo = function(pixel) {
+var displayFeatureInfo &#x3D; function(pixel) {
   info.css({
     left: pixel[0] + &#x27;px&#x27;,
     top: (pixel[1] - 15) + &#x27;px&#x27;
   });
-  var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     return feature;
   });
   if (feature) {

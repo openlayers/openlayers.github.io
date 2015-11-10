@@ -70,14 +70,14 @@
  * Color manipulation functions below are adapted from
  * https://github.com/d3/d3-color.
  */
-var Xn = 0.950470;
-var Yn = 1;
-var Zn = 1.088830;
-var t0 = 4 / 29;
-var t1 = 6 / 29;
-var t2 = 3 * t1 * t1;
-var t3 = t1 * t1 * t1;
-var twoPi = 2 * Math.PI;
+var Xn &#x3D; 0.950470;
+var Yn &#x3D; 1;
+var Zn &#x3D; 1.088830;
+var t0 &#x3D; 4 / 29;
+var t1 &#x3D; 6 / 29;
+var t2 &#x3D; 3 * t1 * t1;
+var t3 &#x3D; t1 * t1 * t1;
+var twoPi &#x3D; 2 * Math.PI;
 
 
 /**
@@ -86,30 +86,30 @@ var twoPi = 2 * Math.PI;
  * @return {ol.raster.Pixel} A pixel in HCL space.
  */
 function rgb2hcl(pixel) {
-  var red = rgb2xyz(pixel[0]);
-  var green = rgb2xyz(pixel[1]);
-  var blue = rgb2xyz(pixel[2]);
+  var red &#x3D; rgb2xyz(pixel[0]);
+  var green &#x3D; rgb2xyz(pixel[1]);
+  var blue &#x3D; rgb2xyz(pixel[2]);
 
-  var x = xyz2lab(
+  var x &#x3D; xyz2lab(
       (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn);
-  var y = xyz2lab(
+  var y &#x3D; xyz2lab(
       (0.2126729 * red + 0.7151522 * green + 0.0721750 * blue) / Yn);
-  var z = xyz2lab(
+  var z &#x3D; xyz2lab(
       (0.0193339 * red + 0.1191920 * green + 0.9503041 * blue) / Zn);
 
-  var l = 116 * y - 16;
-  var a = 500 * (x - y);
-  var b = 200 * (y - z);
+  var l &#x3D; 116 * y - 16;
+  var a &#x3D; 500 * (x - y);
+  var b &#x3D; 200 * (y - z);
 
-  var c = Math.sqrt(a * a + b * b);
-  var h = Math.atan2(b, a);
+  var c &#x3D; Math.sqrt(a * a + b * b);
+  var h &#x3D; Math.atan2(b, a);
   if (h &lt; 0) {
-    h += twoPi;
+    h +&#x3D; twoPi;
   }
 
-  pixel[0] = h;
-  pixel[1] = c;
-  pixel[2] = l;
+  pixel[0] &#x3D; h;
+  pixel[1] &#x3D; c;
+  pixel[2] &#x3D; l;
 
   return pixel;
 }
@@ -121,24 +121,24 @@ function rgb2hcl(pixel) {
  * @return {ol.raster.Pixel} A pixel in RGB space.
  */
 function hcl2rgb(pixel) {
-  var h = pixel[0];
-  var c = pixel[1];
-  var l = pixel[2];
+  var h &#x3D; pixel[0];
+  var c &#x3D; pixel[1];
+  var l &#x3D; pixel[2];
 
-  var a = Math.cos(h) * c;
-  var b = Math.sin(h) * c;
+  var a &#x3D; Math.cos(h) * c;
+  var b &#x3D; Math.sin(h) * c;
 
-  var y = (l + 16) / 116;
-  var x = isNaN(a) ? y : y + a / 500;
-  var z = isNaN(b) ? y : y - b / 200;
+  var y &#x3D; (l + 16) / 116;
+  var x &#x3D; isNaN(a) ? y : y + a / 500;
+  var z &#x3D; isNaN(b) ? y : y - b / 200;
 
-  y = Yn * lab2xyz(y);
-  x = Xn * lab2xyz(x);
-  z = Zn * lab2xyz(z);
+  y &#x3D; Yn * lab2xyz(y);
+  x &#x3D; Xn * lab2xyz(x);
+  z &#x3D; Zn * lab2xyz(z);
 
-  pixel[0] = xyz2rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
-  pixel[1] = xyz2rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
-  pixel[2] = xyz2rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
+  pixel[0] &#x3D; xyz2rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
+  pixel[1] &#x3D; xyz2rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
+  pixel[2] &#x3D; xyz2rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
 
   return pixel;
 }
@@ -152,31 +152,31 @@ function lab2xyz(t) {
 }
 
 function rgb2xyz(x) {
-  return (x /= 255) &lt;= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  return (x /&#x3D; 255) &lt;&#x3D; 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
 }
 
 function xyz2rgb(x) {
-  return 255 * (x &lt;= 0.0031308 ?
+  return 255 * (x &lt;&#x3D; 0.0031308 ?
       12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
 }
 
-var raster = new ol.source.Raster({
+var raster &#x3D; new ol.source.Raster({
   sources: [new ol.source.Stamen({
     layer: &#x27;watercolor&#x27;
   })],
   operation: function(pixels, data) {
-    var hcl = rgb2hcl(pixels[0]);
+    var hcl &#x3D; rgb2hcl(pixels[0]);
 
-    var h = hcl[0] + Math.PI * data.hue / 180;
+    var h &#x3D; hcl[0] + Math.PI * data.hue / 180;
     if (h &lt; 0) {
-      h += twoPi;
+      h +&#x3D; twoPi;
     } else if (h &gt; twoPi) {
-      h -= twoPi;
+      h -&#x3D; twoPi;
     }
-    hcl[0] = h;
+    hcl[0] &#x3D; h;
 
-    hcl[1] *= (data.chroma / 100);
-    hcl[2] *= (data.lightness / 100);
+    hcl[1] *&#x3D; (data.chroma / 100);
+    hcl[2] *&#x3D; (data.lightness / 100);
 
     return hcl2rgb(hcl);
   },
@@ -199,13 +199,13 @@ var raster = new ol.source.Raster({
 });
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
-  var data = event.data;
+  var data &#x3D; event.data;
   for (var id in controls) {
-    data[id] = Number(controls[id].value);
+    data[id] &#x3D; Number(controls[id].value);
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Image({
       source: raster
@@ -219,17 +219,17 @@ var map = new ol.Map({
   })
 });
 
-var controlIds = [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
-var controls = {};
+var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
+var controls &#x3D; {};
 controlIds.forEach(function(id) {
-  var control = document.getElementById(id);
-  var output = document.getElementById(id + &#x27;Out&#x27;);
+  var control &#x3D; document.getElementById(id);
+  var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
   control.addEventListener(&#x27;input&#x27;, function() {
-    output.innerText = control.value;
+    output.innerText &#x3D; control.value;
     raster.changed();
   });
-  output.innerText = control.value;
-  controls[id] = control;
+  output.innerText &#x3D; control.value;
+  controls[id] &#x3D; control;
 });
 </textarea>
           <textarea class="hidden" name="css">table.controls td {
@@ -238,24 +238,24 @@ controlIds.forEach(function(id) {
   min-width: 60px;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;table class=&quot;controls&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;table class&#x3D;&quot;controls&quot;&gt;
       &lt;tr&gt;
         &lt;td&gt;hue&lt;/td&gt;
-        &lt;td&gt;&lt;span id=&quot;hueOut&quot;&gt;&lt;/span&gt;°&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;hue&quot; type=&quot;range&quot; min=&quot;-180&quot; max=&quot;180&quot; value=&quot;0&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;hueOut&quot;&gt;&lt;/span&gt;°&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;hue&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;-180&quot; max&#x3D;&quot;180&quot; value&#x3D;&quot;0&quot;/&gt;&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;chroma&lt;/td&gt;
-        &lt;td&gt;&lt;span id=&quot;chromaOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;chroma&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;100&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;chromaOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;chroma&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;100&quot;/&gt;&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;lightness&lt;/td&gt;
-        &lt;td&gt;&lt;span id=&quot;lightnessOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;lightness&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;100&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;lightnessOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;lightness&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;100&quot;/&gt;&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
   &lt;/div&gt;
@@ -286,24 +286,24 @@ table.controls td {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;table class=&quot;controls&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;table class&#x3D;&quot;controls&quot;&gt;
       &lt;tr&gt;
         &lt;td&gt;hue&lt;/td&gt;
-        &lt;td&gt;&lt;span id=&quot;hueOut&quot;&gt;&lt;/span&gt;°&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;hue&quot; type=&quot;range&quot; min=&quot;-180&quot; max=&quot;180&quot; value=&quot;0&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;hueOut&quot;&gt;&lt;/span&gt;°&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;hue&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;-180&quot; max&#x3D;&quot;180&quot; value&#x3D;&quot;0&quot;/&gt;&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;chroma&lt;/td&gt;
-        &lt;td&gt;&lt;span id=&quot;chromaOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;chroma&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;100&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;chromaOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;chroma&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;100&quot;/&gt;&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;lightness&lt;/td&gt;
-        &lt;td&gt;&lt;span id=&quot;lightnessOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;lightness&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;100&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;lightnessOut&quot;&gt;&lt;/span&gt; %&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;lightness&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;100&quot;/&gt;&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
   &lt;/div&gt;
@@ -316,14 +316,14 @@ table.controls td {
  * Color manipulation functions below are adapted from
  * https://github.com/d3/d3-color.
  */
-var Xn = 0.950470;
-var Yn = 1;
-var Zn = 1.088830;
-var t0 = 4 / 29;
-var t1 = 6 / 29;
-var t2 = 3 * t1 * t1;
-var t3 = t1 * t1 * t1;
-var twoPi = 2 * Math.PI;
+var Xn &#x3D; 0.950470;
+var Yn &#x3D; 1;
+var Zn &#x3D; 1.088830;
+var t0 &#x3D; 4 / 29;
+var t1 &#x3D; 6 / 29;
+var t2 &#x3D; 3 * t1 * t1;
+var t3 &#x3D; t1 * t1 * t1;
+var twoPi &#x3D; 2 * Math.PI;
 
 
 /**
@@ -332,30 +332,30 @@ var twoPi = 2 * Math.PI;
  * @return {ol.raster.Pixel} A pixel in HCL space.
  */
 function rgb2hcl(pixel) {
-  var red = rgb2xyz(pixel[0]);
-  var green = rgb2xyz(pixel[1]);
-  var blue = rgb2xyz(pixel[2]);
+  var red &#x3D; rgb2xyz(pixel[0]);
+  var green &#x3D; rgb2xyz(pixel[1]);
+  var blue &#x3D; rgb2xyz(pixel[2]);
 
-  var x = xyz2lab(
+  var x &#x3D; xyz2lab(
       (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn);
-  var y = xyz2lab(
+  var y &#x3D; xyz2lab(
       (0.2126729 * red + 0.7151522 * green + 0.0721750 * blue) / Yn);
-  var z = xyz2lab(
+  var z &#x3D; xyz2lab(
       (0.0193339 * red + 0.1191920 * green + 0.9503041 * blue) / Zn);
 
-  var l = 116 * y - 16;
-  var a = 500 * (x - y);
-  var b = 200 * (y - z);
+  var l &#x3D; 116 * y - 16;
+  var a &#x3D; 500 * (x - y);
+  var b &#x3D; 200 * (y - z);
 
-  var c = Math.sqrt(a * a + b * b);
-  var h = Math.atan2(b, a);
+  var c &#x3D; Math.sqrt(a * a + b * b);
+  var h &#x3D; Math.atan2(b, a);
   if (h &lt; 0) {
-    h += twoPi;
+    h +&#x3D; twoPi;
   }
 
-  pixel[0] = h;
-  pixel[1] = c;
-  pixel[2] = l;
+  pixel[0] &#x3D; h;
+  pixel[1] &#x3D; c;
+  pixel[2] &#x3D; l;
 
   return pixel;
 }
@@ -367,24 +367,24 @@ function rgb2hcl(pixel) {
  * @return {ol.raster.Pixel} A pixel in RGB space.
  */
 function hcl2rgb(pixel) {
-  var h = pixel[0];
-  var c = pixel[1];
-  var l = pixel[2];
+  var h &#x3D; pixel[0];
+  var c &#x3D; pixel[1];
+  var l &#x3D; pixel[2];
 
-  var a = Math.cos(h) * c;
-  var b = Math.sin(h) * c;
+  var a &#x3D; Math.cos(h) * c;
+  var b &#x3D; Math.sin(h) * c;
 
-  var y = (l + 16) / 116;
-  var x = isNaN(a) ? y : y + a / 500;
-  var z = isNaN(b) ? y : y - b / 200;
+  var y &#x3D; (l + 16) / 116;
+  var x &#x3D; isNaN(a) ? y : y + a / 500;
+  var z &#x3D; isNaN(b) ? y : y - b / 200;
 
-  y = Yn * lab2xyz(y);
-  x = Xn * lab2xyz(x);
-  z = Zn * lab2xyz(z);
+  y &#x3D; Yn * lab2xyz(y);
+  x &#x3D; Xn * lab2xyz(x);
+  z &#x3D; Zn * lab2xyz(z);
 
-  pixel[0] = xyz2rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
-  pixel[1] = xyz2rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
-  pixel[2] = xyz2rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
+  pixel[0] &#x3D; xyz2rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
+  pixel[1] &#x3D; xyz2rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
+  pixel[2] &#x3D; xyz2rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
 
   return pixel;
 }
@@ -398,31 +398,31 @@ function lab2xyz(t) {
 }
 
 function rgb2xyz(x) {
-  return (x /= 255) &lt;= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  return (x /&#x3D; 255) &lt;&#x3D; 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
 }
 
 function xyz2rgb(x) {
-  return 255 * (x &lt;= 0.0031308 ?
+  return 255 * (x &lt;&#x3D; 0.0031308 ?
       12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
 }
 
-var raster = new ol.source.Raster({
+var raster &#x3D; new ol.source.Raster({
   sources: [new ol.source.Stamen({
     layer: &#x27;watercolor&#x27;
   })],
   operation: function(pixels, data) {
-    var hcl = rgb2hcl(pixels[0]);
+    var hcl &#x3D; rgb2hcl(pixels[0]);
 
-    var h = hcl[0] + Math.PI * data.hue / 180;
+    var h &#x3D; hcl[0] + Math.PI * data.hue / 180;
     if (h &lt; 0) {
-      h += twoPi;
+      h +&#x3D; twoPi;
     } else if (h &gt; twoPi) {
-      h -= twoPi;
+      h -&#x3D; twoPi;
     }
-    hcl[0] = h;
+    hcl[0] &#x3D; h;
 
-    hcl[1] *= (data.chroma / 100);
-    hcl[2] *= (data.lightness / 100);
+    hcl[1] *&#x3D; (data.chroma / 100);
+    hcl[2] *&#x3D; (data.lightness / 100);
 
     return hcl2rgb(hcl);
   },
@@ -445,13 +445,13 @@ var raster = new ol.source.Raster({
 });
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
-  var data = event.data;
+  var data &#x3D; event.data;
   for (var id in controls) {
-    data[id] = Number(controls[id].value);
+    data[id] &#x3D; Number(controls[id].value);
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Image({
       source: raster
@@ -465,17 +465,17 @@ var map = new ol.Map({
   })
 });
 
-var controlIds = [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
-var controls = {};
+var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
+var controls &#x3D; {};
 controlIds.forEach(function(id) {
-  var control = document.getElementById(id);
-  var output = document.getElementById(id + &#x27;Out&#x27;);
+  var control &#x3D; document.getElementById(id);
+  var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
   control.addEventListener(&#x27;input&#x27;, function() {
-    output.innerText = control.value;
+    output.innerText &#x3D; control.value;
     raster.changed();
   });
-  output.innerText = control.value;
-  controls[id] = control;
+  output.innerText &#x3D; control.value;
+  controls[id] &#x3D; control;
 });
 
 &lt;/script&gt;

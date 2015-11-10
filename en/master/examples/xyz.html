@@ -48,12 +48,12 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://maps.nls.uk/townplans/glasgow_1.html&quot;&gt;&#x27; +
+          <textarea class="hidden" name="js">var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://maps.nls.uk/townplans/glasgow_1.html&quot;&gt;&#x27; +
       &#x27;National Library of Scotland&lt;/a&gt;&#x27;
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -65,7 +65,7 @@ var map = new ol.Map({
       source: new ol.source.OSM({
         attributions: [
           new ol.Attribution({
-            html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://www.opencyclemap.org/&quot;&gt;&#x27; +
+            html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;&#x27; +
                 &#x27;OpenCycleMap&lt;/a&gt;&#x27;
           }),
           ol.source.OSM.ATTRIBUTION
@@ -87,9 +87,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -110,20 +110,20 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://maps.nls.uk/townplans/glasgow_1.html&quot;&gt;&#x27; +
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://maps.nls.uk/townplans/glasgow_1.html&quot;&gt;&#x27; +
       &#x27;National Library of Scotland&lt;/a&gt;&#x27;
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -135,7 +135,7 @@ var map = new ol.Map({
       source: new ol.source.OSM({
         attributions: [
           new ol.Attribution({
-            html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://www.opencyclemap.org/&quot;&gt;&#x27; +
+            html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;&#x27; +
                 &#x27;OpenCycleMap&lt;/a&gt;&#x27;
           }),
           ol.source.OSM.ATTRIBUTION

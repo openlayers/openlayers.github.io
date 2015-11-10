@@ -53,7 +53,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var defaultStyle = {
+          <textarea class="hidden" name="js">var defaultStyle &#x3D; {
   &#x27;Point&#x27;: [new ol.style.Style({
     image: new ol.style.Circle({
       fill: new ol.style.Fill({
@@ -110,8 +110,8 @@
   })]
 };
 
-var styleFunction = function(feature, resolution) {
-  var featureStyleFunction = feature.getStyleFunction();
+var styleFunction &#x3D; function(feature, resolution) {
+  var featureStyleFunction &#x3D; feature.getStyleFunction();
   if (featureStyleFunction) {
     return featureStyleFunction.call(feature, resolution);
   } else {
@@ -119,7 +119,7 @@ var styleFunction = function(feature, resolution) {
   }
 };
 
-var dragAndDropInteraction = new ol.interaction.DragAndDrop({
+var dragAndDropInteraction &#x3D; new ol.interaction.DragAndDrop({
   formatConstructors: [
     ol.format.GPX,
     ol.format.GeoJSON,
@@ -129,7 +129,7 @@ var dragAndDropInteraction = new ol.interaction.DragAndDrop({
   ]
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
   layers: [
     new ol.layer.Tile({
@@ -147,7 +147,7 @@ var map = new ol.Map({
 });
 
 dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
-  var vectorSource = new ol.source.Vector({
+  var vectorSource &#x3D; new ol.source.Vector({
     features: event.features
   });
   map.addLayer(new ol.layer.Vector({
@@ -158,20 +158,20 @@ dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
       vectorSource.getExtent(), /** @type {ol.Size} */ (map.getSize()));
 });
 
-var displayFeatureInfo = function(pixel) {
-  var features = [];
+var displayFeatureInfo &#x3D; function(pixel) {
+  var features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    var info = [];
+    var info &#x3D; [];
     var i, ii;
-    for (i = 0, ii = features.length; i &lt; ii; ++i) {
+    for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
       info.push(features[i].get(&#x27;name&#x27;));
     }
-    document.getElementById(&#x27;info&#x27;).innerHTML = info.join(&#x27;, &#x27;) || &#x27;&amp;nbsp&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info.join(&#x27;, &#x27;) || &#x27;&amp;nbsp&#x27;;
   } else {
-    document.getElementById(&#x27;info&#x27;).innerHTML = &#x27;&amp;nbsp;&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   }
 };
 
@@ -179,7 +179,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 
@@ -188,11 +188,11 @@ map.on(&#x27;click&#x27;, function(evt) {
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
         &amp;nbsp;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -216,11 +216,11 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
         &amp;nbsp;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -229,7 +229,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 
 &lt;/div&gt;
 &lt;script&gt;
-var defaultStyle = {
+var defaultStyle &#x3D; {
   &#x27;Point&#x27;: [new ol.style.Style({
     image: new ol.style.Circle({
       fill: new ol.style.Fill({
@@ -286,8 +286,8 @@ var defaultStyle = {
   })]
 };
 
-var styleFunction = function(feature, resolution) {
-  var featureStyleFunction = feature.getStyleFunction();
+var styleFunction &#x3D; function(feature, resolution) {
+  var featureStyleFunction &#x3D; feature.getStyleFunction();
   if (featureStyleFunction) {
     return featureStyleFunction.call(feature, resolution);
   } else {
@@ -295,7 +295,7 @@ var styleFunction = function(feature, resolution) {
   }
 };
 
-var dragAndDropInteraction = new ol.interaction.DragAndDrop({
+var dragAndDropInteraction &#x3D; new ol.interaction.DragAndDrop({
   formatConstructors: [
     ol.format.GPX,
     ol.format.GeoJSON,
@@ -305,7 +305,7 @@ var dragAndDropInteraction = new ol.interaction.DragAndDrop({
   ]
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
   layers: [
     new ol.layer.Tile({
@@ -323,7 +323,7 @@ var map = new ol.Map({
 });
 
 dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
-  var vectorSource = new ol.source.Vector({
+  var vectorSource &#x3D; new ol.source.Vector({
     features: event.features
   });
   map.addLayer(new ol.layer.Vector({
@@ -334,20 +334,20 @@ dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
       vectorSource.getExtent(), /** @type {ol.Size} */ (map.getSize()));
 });
 
-var displayFeatureInfo = function(pixel) {
-  var features = [];
+var displayFeatureInfo &#x3D; function(pixel) {
+  var features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    var info = [];
+    var info &#x3D; [];
     var i, ii;
-    for (i = 0, ii = features.length; i &lt; ii; ++i) {
+    for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
       info.push(features[i].get(&#x27;name&#x27;));
     }
-    document.getElementById(&#x27;info&#x27;).innerHTML = info.join(&#x27;, &#x27;) || &#x27;&amp;nbsp&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info.join(&#x27;, &#x27;) || &#x27;&amp;nbsp&#x27;;
   } else {
-    document.getElementById(&#x27;info&#x27;).innerHTML = &#x27;&amp;nbsp;&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   }
 };
 
@@ -355,7 +355,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 

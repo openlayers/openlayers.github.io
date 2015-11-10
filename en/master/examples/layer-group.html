@@ -91,7 +91,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -122,13 +122,13 @@
 });
 
 function bindInputs(layerid, layer) {
-  var visibilityInput = $(layerid + &#x27; input.visible&#x27;);
+  var visibilityInput &#x3D; $(layerid + &#x27; input.visible&#x27;);
   visibilityInput.on(&#x27;change&#x27;, function() {
     layer.setVisible(this.checked);
   });
   visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
 
-  var opacityInput = $(layerid + &#x27; input.opacity&#x27;);
+  var opacityInput &#x3D; $(layerid + &#x27; input.opacity&#x27;);
   opacityInput.on(&#x27;input change&#x27;, function() {
     layer.setOpacity(parseFloat(this.value));
   });
@@ -150,47 +150,47 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
           <textarea class="hidden" name="css">#layertree li &gt; span {
   cursor: pointer;
 }</textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span6&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span6&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div id=&quot;layertree&quot; class=&quot;span6&quot;&gt;
+  &lt;div id&#x3D;&quot;layertree&quot; class&#x3D;&quot;span6&quot;&gt;
     &lt;h5&gt;Click on layer nodes below to change their properties.&lt;/h5&gt;
     &lt;ul&gt;
       &lt;li&gt;&lt;span&gt;OpenAerial layer&lt;/span&gt;
-        &lt;fieldset id=&quot;layer0&quot;&gt;
-          &lt;label class=&quot;checkbox&quot; for=&quot;visible0&quot;&gt;
-            &lt;input id=&quot;visible0&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+        &lt;fieldset id&#x3D;&quot;layer0&quot;&gt;
+          &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible0&quot;&gt;
+            &lt;input id&#x3D;&quot;visible0&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
-          &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+          &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;span&gt;Layer group&lt;/span&gt;
-        &lt;fieldset id=&quot;layer1&quot;&gt;
-          &lt;label class=&quot;checkbox&quot; for=&quot;visible1&quot;&gt;
-            &lt;input id=&quot;visible1&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+        &lt;fieldset id&#x3D;&quot;layer1&quot;&gt;
+          &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible1&quot;&gt;
+            &lt;input id&#x3D;&quot;visible1&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
-          &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+          &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
         &lt;ul&gt;
           &lt;li&gt;&lt;span&gt;Food insecurity layer&lt;/span&gt;
-            &lt;fieldset id=&quot;layer10&quot;&gt;
-              &lt;label class=&quot;checkbox&quot; for=&quot;visible10&quot;&gt;
-                &lt;input id=&quot;visible10&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+            &lt;fieldset id&#x3D;&quot;layer10&quot;&gt;
+              &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible10&quot;&gt;
+                &lt;input id&#x3D;&quot;visible10&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
-              &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+              &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
           &lt;li&gt;&lt;span&gt;World borders layer&lt;/span&gt;
-            &lt;fieldset id=&quot;layer11&quot;&gt;
-              &lt;label class=&quot;checkbox&quot; for=&quot;visible11&quot;&gt;
-                &lt;input id=&quot;visible11&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+            &lt;fieldset id&#x3D;&quot;layer11&quot;&gt;
+              &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible11&quot;&gt;
+                &lt;input id&#x3D;&quot;visible11&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
-              &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+              &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
         &lt;/ul&gt;
@@ -221,47 +221,47 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span6&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span6&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div id=&quot;layertree&quot; class=&quot;span6&quot;&gt;
+  &lt;div id&#x3D;&quot;layertree&quot; class&#x3D;&quot;span6&quot;&gt;
     &lt;h5&gt;Click on layer nodes below to change their properties.&lt;/h5&gt;
     &lt;ul&gt;
       &lt;li&gt;&lt;span&gt;OpenAerial layer&lt;/span&gt;
-        &lt;fieldset id=&quot;layer0&quot;&gt;
-          &lt;label class=&quot;checkbox&quot; for=&quot;visible0&quot;&gt;
-            &lt;input id=&quot;visible0&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+        &lt;fieldset id&#x3D;&quot;layer0&quot;&gt;
+          &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible0&quot;&gt;
+            &lt;input id&#x3D;&quot;visible0&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
-          &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+          &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;span&gt;Layer group&lt;/span&gt;
-        &lt;fieldset id=&quot;layer1&quot;&gt;
-          &lt;label class=&quot;checkbox&quot; for=&quot;visible1&quot;&gt;
-            &lt;input id=&quot;visible1&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+        &lt;fieldset id&#x3D;&quot;layer1&quot;&gt;
+          &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible1&quot;&gt;
+            &lt;input id&#x3D;&quot;visible1&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
           &lt;/label&gt;
           &lt;label&gt;opacity&lt;/label&gt;
-          &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+          &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
         &lt;/fieldset&gt;
         &lt;ul&gt;
           &lt;li&gt;&lt;span&gt;Food insecurity layer&lt;/span&gt;
-            &lt;fieldset id=&quot;layer10&quot;&gt;
-              &lt;label class=&quot;checkbox&quot; for=&quot;visible10&quot;&gt;
-                &lt;input id=&quot;visible10&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+            &lt;fieldset id&#x3D;&quot;layer10&quot;&gt;
+              &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible10&quot;&gt;
+                &lt;input id&#x3D;&quot;visible10&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
-              &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+              &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
           &lt;li&gt;&lt;span&gt;World borders layer&lt;/span&gt;
-            &lt;fieldset id=&quot;layer11&quot;&gt;
-              &lt;label class=&quot;checkbox&quot; for=&quot;visible11&quot;&gt;
-                &lt;input id=&quot;visible11&quot; class=&quot;visible&quot; type=&quot;checkbox&quot;/&gt;visibility
+            &lt;fieldset id&#x3D;&quot;layer11&quot;&gt;
+              &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible11&quot;&gt;
+                &lt;input id&#x3D;&quot;visible11&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
               &lt;/label&gt;
               &lt;label&gt;opacity&lt;/label&gt;
-              &lt;input class=&quot;opacity&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;/&gt;
+              &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
             &lt;/fieldset&gt;
           &lt;/li&gt;
         &lt;/ul&gt;
@@ -272,7 +272,7 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -303,13 +303,13 @@ var map = new ol.Map({
 });
 
 function bindInputs(layerid, layer) {
-  var visibilityInput = $(layerid + &#x27; input.visible&#x27;);
+  var visibilityInput &#x3D; $(layerid + &#x27; input.visible&#x27;);
   visibilityInput.on(&#x27;change&#x27;, function() {
     layer.setVisible(this.checked);
   });
   visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
 
-  var opacityInput = $(layerid + &#x27; input.opacity&#x27;);
+  var opacityInput &#x3D; $(layerid + &#x27; input.opacity&#x27;);
   opacityInput.on(&#x27;input change&#x27;, function() {
     layer.setOpacity(parseFloat(this.value));
   });

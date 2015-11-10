@@ -14418,6 +14418,10 @@ instantiated in apps.
 A visual representation of raster or vector map data.
 Layers group together those properties that pertain to how the data is to be
 displayed, irrespective of the source of that data.</p>
+<p>Layers are usually added to a map with <a href="ol.Map.html#addLayer"><code>ol.Map#addLayer</code></a>. Components
+like <a href="ol.interaction.Select.html"><code>ol.interaction.Select</code></a> use unmanaged layers internally. These
+unmanaged layers are associated with the map using
+<a href="ol.layer.Layer.html#setMap"><code>ol.layer.Layer#setMap</code></a> instead.</p>
 <p>A generic <code>change</code> event is fired when the state of the source changes.</p></div>
     
 </header>  
@@ -14439,7 +14443,7 @@ displayed, irrespective of the source of that data.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layer.js, line 31
+            src/ol/layer/layer.js, line 36
         </div>
         
         
@@ -16060,7 +16064,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layer.js, line 110
+            src/ol/layer/layer.js, line 115
         </div>
         
         
@@ -16970,7 +16974,7 @@ will be visible at all extents.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layer.js, line 162
+            src/ol/layer/layer.js, line 167
         </div>
         
         
@@ -17595,7 +17599,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/layer.js, line 192
+            src/ol/layer/layer.js, line 197
         </div>
         
         

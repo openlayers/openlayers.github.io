@@ -72,62 +72,62 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// NOCOMPILE
 function growRegion(inputs, data) {
-  var image = inputs[0];
-  var seed = data.pixel;
-  var delta = parseInt(data.delta);
+  var image &#x3D; inputs[0];
+  var seed &#x3D; data.pixel;
+  var delta &#x3D; parseInt(data.delta);
   if (!seed) {
     return image;
   }
 
-  seed = seed.map(Math.round);
-  var width = image.width;
-  var height = image.height;
-  var inputData = image.data;
-  var outputData = new Uint8ClampedArray(inputData);
-  var seedIdx = (seed[1] * width + seed[0]) * 4;
-  var seedR = inputData[seedIdx];
-  var seedG = inputData[seedIdx + 1];
-  var seedB = inputData[seedIdx + 2];
-  var edge = [seed];
+  seed &#x3D; seed.map(Math.round);
+  var width &#x3D; image.width;
+  var height &#x3D; image.height;
+  var inputData &#x3D; image.data;
+  var outputData &#x3D; new Uint8ClampedArray(inputData);
+  var seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
+  var seedR &#x3D; inputData[seedIdx];
+  var seedG &#x3D; inputData[seedIdx + 1];
+  var seedB &#x3D; inputData[seedIdx + 2];
+  var edge &#x3D; [seed];
   while (edge.length) {
-    var newedge = [];
-    for (var i = 0, ii = edge.length; i &lt; ii; i++) {
+    var newedge &#x3D; [];
+    for (var i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
       // As noted in the Raster source constructor, this function is provided
       // using the &#x60;lib&#x60; option. Other functions will NOT be visible unless
       // provided using the &#x60;lib&#x60; option.
-      var next = nextEdges(edge[i]);
-      for (var j = 0, jj = next.length; j &lt; jj; j++) {
-        var s = next[j][0], t = next[j][1];
-        if (s &gt;= 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;= 0 &amp;&amp; t &lt; height) {
-          var ci = (t * width + s) * 4;
-          var cr = inputData[ci];
-          var cg = inputData[ci + 1];
-          var cb = inputData[ci + 2];
-          var ca = inputData[ci + 3];
+      var next &#x3D; nextEdges(edge[i]);
+      for (var j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
+        var s &#x3D; next[j][0], t &#x3D; next[j][1];
+        if (s &gt;&#x3D; 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;&#x3D; 0 &amp;&amp; t &lt; height) {
+          var ci &#x3D; (t * width + s) * 4;
+          var cr &#x3D; inputData[ci];
+          var cg &#x3D; inputData[ci + 1];
+          var cb &#x3D; inputData[ci + 2];
+          var ca &#x3D; inputData[ci + 3];
           // if alpha is zero, carry on
-          if (ca === 0) {
+          if (ca &#x3D;&#x3D;&#x3D; 0) {
             continue;
           }
           if (Math.abs(seedR - cr) &lt; delta &amp;&amp; Math.abs(seedG - cg) &lt; delta &amp;&amp;
               Math.abs(seedB - cb) &lt; delta) {
-            outputData[ci] = 255;
-            outputData[ci + 1] = 0;
-            outputData[ci + 2] = 0;
-            outputData[ci + 3] = 255;
+            outputData[ci] &#x3D; 255;
+            outputData[ci + 1] &#x3D; 0;
+            outputData[ci + 2] &#x3D; 0;
+            outputData[ci + 3] &#x3D; 255;
             newedge.push([s, t]);
           }
           // mark as visited
-          inputData[ci + 3] = 0;
+          inputData[ci + 3] &#x3D; 0;
         }
       }
     }
-    edge = newedge;
+    edge &#x3D; newedge;
   }
   return new ImageData(outputData, width, height);
 }
 
 function next4Edges(edge) {
-  var x = edge[0], y = edge[1];
+  var x &#x3D; edge[0], y &#x3D; edge[1];
   return [
     [x + 1, y],
     [x - 1, y],
@@ -136,13 +136,13 @@ function next4Edges(edge) {
   ];
 }
 
-var key = &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
+var key &#x3D; &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
 
-var imagery = new ol.layer.Tile({
+var imagery &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
 });
 
-var raster = new ol.source.Raster({
+var raster &#x3D; new ol.source.Raster({
   sources: [imagery.getSource()],
   operationType: &#x27;image&#x27;,
   operation: growRegion,
@@ -153,12 +153,12 @@ var raster = new ol.source.Raster({
   }
 });
 
-var rasterImage = new ol.layer.Image({
+var rasterImage &#x3D; new ol.layer.Image({
   opacity: 0.7,
   source: raster
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [imagery, rasterImage],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -170,23 +170,23 @@ var map = new ol.Map({
 var coordinate;
 
 map.on(&#x27;click&#x27;, function(event) {
-  coordinate = event.coordinate;
+  coordinate &#x3D; event.coordinate;
   raster.changed();
 });
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
   // the event.data object will be passed to operations
-  var data = event.data;
-  data.delta = thresholdControl.value;
+  var data &#x3D; event.data;
+  data.delta &#x3D; thresholdControl.value;
   if (coordinate) {
-    data.pixel = map.getPixelFromCoordinate(coordinate);
+    data.pixel &#x3D; map.getPixelFromCoordinate(coordinate);
   }
 });
 
-var thresholdControl = document.getElementById(&#x27;threshold&#x27;);
+var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
 
 function updateControlValue() {
-  document.getElementById(&#x27;threshold-value&#x27;).innerText = thresholdControl.value;
+  document.getElementById(&#x27;threshold-value&#x27;).innerText &#x3D; thresholdControl.value;
 }
 updateControlValue();
 
@@ -200,13 +200,13 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
   padding: 2px 5px;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot; style=&quot;cursor: pointer&quot;&gt;&lt;/div&gt;
-    &lt;table class=&quot;controls&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot; style&#x3D;&quot;cursor: pointer&quot;&gt;&lt;/div&gt;
+    &lt;table class&#x3D;&quot;controls&quot;&gt;
       &lt;tr&gt;
-        &lt;td&gt;Threshold: &lt;span id=&quot;threshold-value&quot;&gt;&lt;/span&gt;&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;threshold&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;50&quot; value=&quot;20&quot;&gt;&lt;/td&gt;
+        &lt;td&gt;Threshold: &lt;span id&#x3D;&quot;threshold-value&quot;&gt;&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;threshold&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;50&quot; value&#x3D;&quot;20&quot;&gt;&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
   &lt;/div&gt;
@@ -236,13 +236,13 @@ table.controls td {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot; style=&quot;cursor: pointer&quot;&gt;&lt;/div&gt;
-    &lt;table class=&quot;controls&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot; style&#x3D;&quot;cursor: pointer&quot;&gt;&lt;/div&gt;
+    &lt;table class&#x3D;&quot;controls&quot;&gt;
       &lt;tr&gt;
-        &lt;td&gt;Threshold: &lt;span id=&quot;threshold-value&quot;&gt;&lt;/span&gt;&lt;/td&gt;
-        &lt;td&gt;&lt;input id=&quot;threshold&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;50&quot; value=&quot;20&quot;&gt;&lt;/td&gt;
+        &lt;td&gt;Threshold: &lt;span id&#x3D;&quot;threshold-value&quot;&gt;&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;input id&#x3D;&quot;threshold&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;50&quot; value&#x3D;&quot;20&quot;&gt;&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
   &lt;/div&gt;
@@ -252,62 +252,62 @@ table.controls td {
 &lt;script&gt;
 // NOCOMPILE
 function growRegion(inputs, data) {
-  var image = inputs[0];
-  var seed = data.pixel;
-  var delta = parseInt(data.delta);
+  var image &#x3D; inputs[0];
+  var seed &#x3D; data.pixel;
+  var delta &#x3D; parseInt(data.delta);
   if (!seed) {
     return image;
   }
 
-  seed = seed.map(Math.round);
-  var width = image.width;
-  var height = image.height;
-  var inputData = image.data;
-  var outputData = new Uint8ClampedArray(inputData);
-  var seedIdx = (seed[1] * width + seed[0]) * 4;
-  var seedR = inputData[seedIdx];
-  var seedG = inputData[seedIdx + 1];
-  var seedB = inputData[seedIdx + 2];
-  var edge = [seed];
+  seed &#x3D; seed.map(Math.round);
+  var width &#x3D; image.width;
+  var height &#x3D; image.height;
+  var inputData &#x3D; image.data;
+  var outputData &#x3D; new Uint8ClampedArray(inputData);
+  var seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
+  var seedR &#x3D; inputData[seedIdx];
+  var seedG &#x3D; inputData[seedIdx + 1];
+  var seedB &#x3D; inputData[seedIdx + 2];
+  var edge &#x3D; [seed];
   while (edge.length) {
-    var newedge = [];
-    for (var i = 0, ii = edge.length; i &lt; ii; i++) {
+    var newedge &#x3D; [];
+    for (var i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
       // As noted in the Raster source constructor, this function is provided
       // using the &#x60;lib&#x60; option. Other functions will NOT be visible unless
       // provided using the &#x60;lib&#x60; option.
-      var next = nextEdges(edge[i]);
-      for (var j = 0, jj = next.length; j &lt; jj; j++) {
-        var s = next[j][0], t = next[j][1];
-        if (s &gt;= 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;= 0 &amp;&amp; t &lt; height) {
-          var ci = (t * width + s) * 4;
-          var cr = inputData[ci];
-          var cg = inputData[ci + 1];
-          var cb = inputData[ci + 2];
-          var ca = inputData[ci + 3];
+      var next &#x3D; nextEdges(edge[i]);
+      for (var j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
+        var s &#x3D; next[j][0], t &#x3D; next[j][1];
+        if (s &gt;&#x3D; 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;&#x3D; 0 &amp;&amp; t &lt; height) {
+          var ci &#x3D; (t * width + s) * 4;
+          var cr &#x3D; inputData[ci];
+          var cg &#x3D; inputData[ci + 1];
+          var cb &#x3D; inputData[ci + 2];
+          var ca &#x3D; inputData[ci + 3];
           // if alpha is zero, carry on
-          if (ca === 0) {
+          if (ca &#x3D;&#x3D;&#x3D; 0) {
             continue;
           }
           if (Math.abs(seedR - cr) &lt; delta &amp;&amp; Math.abs(seedG - cg) &lt; delta &amp;&amp;
               Math.abs(seedB - cb) &lt; delta) {
-            outputData[ci] = 255;
-            outputData[ci + 1] = 0;
-            outputData[ci + 2] = 0;
-            outputData[ci + 3] = 255;
+            outputData[ci] &#x3D; 255;
+            outputData[ci + 1] &#x3D; 0;
+            outputData[ci + 2] &#x3D; 0;
+            outputData[ci + 3] &#x3D; 255;
             newedge.push([s, t]);
           }
           // mark as visited
-          inputData[ci + 3] = 0;
+          inputData[ci + 3] &#x3D; 0;
         }
       }
     }
-    edge = newedge;
+    edge &#x3D; newedge;
   }
   return new ImageData(outputData, width, height);
 }
 
 function next4Edges(edge) {
-  var x = edge[0], y = edge[1];
+  var x &#x3D; edge[0], y &#x3D; edge[1];
   return [
     [x + 1, y],
     [x - 1, y],
@@ -316,13 +316,13 @@ function next4Edges(edge) {
   ];
 }
 
-var key = &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
+var key &#x3D; &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
 
-var imagery = new ol.layer.Tile({
+var imagery &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
 });
 
-var raster = new ol.source.Raster({
+var raster &#x3D; new ol.source.Raster({
   sources: [imagery.getSource()],
   operationType: &#x27;image&#x27;,
   operation: growRegion,
@@ -333,12 +333,12 @@ var raster = new ol.source.Raster({
   }
 });
 
-var rasterImage = new ol.layer.Image({
+var rasterImage &#x3D; new ol.layer.Image({
   opacity: 0.7,
   source: raster
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [imagery, rasterImage],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -350,23 +350,23 @@ var map = new ol.Map({
 var coordinate;
 
 map.on(&#x27;click&#x27;, function(event) {
-  coordinate = event.coordinate;
+  coordinate &#x3D; event.coordinate;
   raster.changed();
 });
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
   // the event.data object will be passed to operations
-  var data = event.data;
-  data.delta = thresholdControl.value;
+  var data &#x3D; event.data;
+  data.delta &#x3D; thresholdControl.value;
   if (coordinate) {
-    data.pixel = map.getPixelFromCoordinate(coordinate);
+    data.pixel &#x3D; map.getPixelFromCoordinate(coordinate);
   }
 });
 
-var thresholdControl = document.getElementById(&#x27;threshold&#x27;);
+var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
 
 function updateControlValue() {
-  document.getElementById(&#x27;threshold-value&#x27;).innerText = thresholdControl.value;
+  document.getElementById(&#x27;threshold-value&#x27;).innerText &#x3D; thresholdControl.value;
 }
 updateControlValue();
 

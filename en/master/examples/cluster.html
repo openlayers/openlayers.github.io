@@ -48,31 +48,31 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var count = 20000;
-var features = new Array(count);
-var e = 4500000;
-for (var i = 0; i &lt; count; ++i) {
-  var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-  features[i] = new ol.Feature(new ol.geom.Point(coordinates));
+          <textarea class="hidden" name="js">var count &#x3D; 20000;
+var features &#x3D; new Array(count);
+var e &#x3D; 4500000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
+  var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+  features[i] &#x3D; new ol.Feature(new ol.geom.Point(coordinates));
 }
 
-var source = new ol.source.Vector({
+var source &#x3D; new ol.source.Vector({
   features: features
 });
 
-var clusterSource = new ol.source.Cluster({
+var clusterSource &#x3D; new ol.source.Cluster({
   distance: 40,
   source: source
 });
 
-var styleCache = {};
-var clusters = new ol.layer.Vector({
+var styleCache &#x3D; {};
+var clusters &#x3D; new ol.layer.Vector({
   source: clusterSource,
   style: function(feature, resolution) {
-    var size = feature.get(&#x27;features&#x27;).length;
-    var style = styleCache[size];
+    var size &#x3D; feature.get(&#x27;features&#x27;).length;
+    var style &#x3D; styleCache[size];
     if (!style) {
-      style = [new ol.style.Style({
+      style &#x3D; [new ol.style.Style({
         image: new ol.style.Circle({
           radius: 10,
           stroke: new ol.style.Stroke({
@@ -89,21 +89,21 @@ var clusters = new ol.layer.Vector({
           })
         })
       })];
-      styleCache[size] = style;
+      styleCache[size] &#x3D; style;
     }
     return style;
   }
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var raw = new ol.layer.Vector({
+var raw &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, clusters],
   renderer: &#x27;canvas&#x27;,
   target: &#x27;map&#x27;,
@@ -114,9 +114,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -137,39 +137,39 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var count = 20000;
-var features = new Array(count);
-var e = 4500000;
-for (var i = 0; i &lt; count; ++i) {
-  var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-  features[i] = new ol.Feature(new ol.geom.Point(coordinates));
+var count &#x3D; 20000;
+var features &#x3D; new Array(count);
+var e &#x3D; 4500000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
+  var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+  features[i] &#x3D; new ol.Feature(new ol.geom.Point(coordinates));
 }
 
-var source = new ol.source.Vector({
+var source &#x3D; new ol.source.Vector({
   features: features
 });
 
-var clusterSource = new ol.source.Cluster({
+var clusterSource &#x3D; new ol.source.Cluster({
   distance: 40,
   source: source
 });
 
-var styleCache = {};
-var clusters = new ol.layer.Vector({
+var styleCache &#x3D; {};
+var clusters &#x3D; new ol.layer.Vector({
   source: clusterSource,
   style: function(feature, resolution) {
-    var size = feature.get(&#x27;features&#x27;).length;
-    var style = styleCache[size];
+    var size &#x3D; feature.get(&#x27;features&#x27;).length;
+    var style &#x3D; styleCache[size];
     if (!style) {
-      style = [new ol.style.Style({
+      style &#x3D; [new ol.style.Style({
         image: new ol.style.Circle({
           radius: 10,
           stroke: new ol.style.Stroke({
@@ -186,21 +186,21 @@ var clusters = new ol.layer.Vector({
           })
         })
       })];
-      styleCache[size] = style;
+      styleCache[size] &#x3D; style;
     }
     return style;
   }
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var raw = new ol.layer.Vector({
+var raw &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, clusters],
   renderer: &#x27;canvas&#x27;,
   target: &#x27;map&#x27;,

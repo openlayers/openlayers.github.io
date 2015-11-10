@@ -56,10 +56,10 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var blur = document.getElementById(&#x27;blur&#x27;);
-var radius = document.getElementById(&#x27;radius&#x27;);
+          <textarea class="hidden" name="js">var blur &#x3D; document.getElementById(&#x27;blur&#x27;);
+var radius &#x3D; document.getElementById(&#x27;radius&#x27;);
 
-var vector = new ol.layer.Heatmap({
+var vector &#x3D; new ol.layer.Heatmap({
   source: new ol.source.Vector({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new ol.format.KML({
@@ -74,18 +74,18 @@ vector.getSource().on(&#x27;addfeature&#x27;, function(event) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
-  var name = event.feature.get(&#x27;name&#x27;);
-  var magnitude = parseFloat(name.substr(2));
+  var name &#x3D; event.feature.get(&#x27;name&#x27;);
+  var magnitude &#x3D; parseFloat(name.substr(2));
   event.feature.set(&#x27;weight&#x27;, magnitude - 5);
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: &#x27;toner&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -104,16 +104,16 @@ radius.addEventListener(&#x27;input&#x27;, function() {
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;form&gt;
       &lt;label&gt;radius size&lt;/label&gt;
-      &lt;input id=&quot;radius&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;50&quot; step=&quot;1&quot; value=&quot;5&quot;/&gt;
+      &lt;input id&#x3D;&quot;radius&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;50&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;5&quot;/&gt;
       &lt;label&gt;blur size&lt;/label&gt;
-      &lt;input id=&quot;blur&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;50&quot; step=&quot;1&quot; value=&quot;15&quot;/&gt;
+      &lt;input id&#x3D;&quot;blur&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;50&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;15&quot;/&gt;
     &lt;/form&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -135,26 +135,26 @@ radius.addEventListener(&#x27;input&#x27;, function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;form&gt;
       &lt;label&gt;radius size&lt;/label&gt;
-      &lt;input id=&quot;radius&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;50&quot; step=&quot;1&quot; value=&quot;5&quot;/&gt;
+      &lt;input id&#x3D;&quot;radius&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;50&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;5&quot;/&gt;
       &lt;label&gt;blur size&lt;/label&gt;
-      &lt;input id=&quot;blur&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;50&quot; step=&quot;1&quot; value=&quot;15&quot;/&gt;
+      &lt;input id&#x3D;&quot;blur&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;50&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;15&quot;/&gt;
     &lt;/form&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var blur = document.getElementById(&#x27;blur&#x27;);
-var radius = document.getElementById(&#x27;radius&#x27;);
+var blur &#x3D; document.getElementById(&#x27;blur&#x27;);
+var radius &#x3D; document.getElementById(&#x27;radius&#x27;);
 
-var vector = new ol.layer.Heatmap({
+var vector &#x3D; new ol.layer.Heatmap({
   source: new ol.source.Vector({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new ol.format.KML({
@@ -169,18 +169,18 @@ vector.getSource().on(&#x27;addfeature&#x27;, function(event) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
-  var name = event.feature.get(&#x27;name&#x27;);
-  var magnitude = parseFloat(name.substr(2));
+  var name &#x3D; event.feature.get(&#x27;name&#x27;);
+  var magnitude &#x3D; parseFloat(name.substr(2));
   event.feature.set(&#x27;weight&#x27;, magnitude - 5);
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.Stamen({
     layer: &#x27;toner&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({

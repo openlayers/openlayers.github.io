@@ -63,20 +63,20 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// from https://github.com/DmitryBaranovskiy/raphael
 function bounce(t) {
-  var s = 7.5625, p = 2.75, l;
+  var s &#x3D; 7.5625, p &#x3D; 2.75, l;
   if (t &lt; (1 / p)) {
-    l = s * t * t;
+    l &#x3D; s * t * t;
   } else {
     if (t &lt; (2 / p)) {
-      t -= (1.5 / p);
-      l = s * t * t + 0.75;
+      t -&#x3D; (1.5 / p);
+      l &#x3D; s * t * t + 0.75;
     } else {
       if (t &lt; (2.5 / p)) {
-        t -= (2.25 / p);
-        l = s * t * t + 0.9375;
+        t -&#x3D; (2.25 / p);
+        l &#x3D; s * t * t + 0.9375;
       } else {
-        t -= (2.625 / p);
-        l = s * t * t + 0.984375;
+        t -&#x3D; (2.625 / p);
+        l &#x3D; s * t * t + 0.984375;
       }
     }
   }
@@ -88,20 +88,20 @@ function elastic(t) {
   return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
 }
 
-var london = ol.proj.fromLonLat([-0.12755, 51.507222]);
-var moscow = ol.proj.fromLonLat([37.6178, 55.7517]);
-var istanbul = ol.proj.fromLonLat([28.9744, 41.0128]);
-var rome = ol.proj.fromLonLat([12.5, 41.9]);
-var bern = ol.proj.fromLonLat([7.4458, 46.95]);
-var madrid = ol.proj.fromLonLat([-3.683333, 40.4]);
+var london &#x3D; ol.proj.fromLonLat([-0.12755, 51.507222]);
+var moscow &#x3D; ol.proj.fromLonLat([37.6178, 55.7517]);
+var istanbul &#x3D; ol.proj.fromLonLat([28.9744, 41.0128]);
+var rome &#x3D; ol.proj.fromLonLat([12.5, 41.9]);
+var bern &#x3D; ol.proj.fromLonLat([7.4458, 46.95]);
+var madrid &#x3D; ol.proj.fromLonLat([-3.683333, 40.4]);
 
-var view = new ol.View({
+var view &#x3D; new ol.View({
   // the view&#x27;s initial state
   center: istanbul,
   zoom: 6
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       preload: 4,
@@ -120,27 +120,27 @@ var map = new ol.Map({
   view: view
 });
 
-var rotateLeft = document.getElementById(&#x27;rotate-left&#x27;);
+var rotateLeft &#x3D; document.getElementById(&#x27;rotate-left&#x27;);
 rotateLeft.addEventListener(&#x27;click&#x27;, function() {
-  var rotateLeft = ol.animation.rotate({
+  var rotateLeft &#x3D; ol.animation.rotate({
     duration: 2000,
     rotation: -4 * Math.PI
   });
   map.beforeRender(rotateLeft);
 }, false);
-var rotateRight = document.getElementById(&#x27;rotate-right&#x27;);
+var rotateRight &#x3D; document.getElementById(&#x27;rotate-right&#x27;);
 rotateRight.addEventListener(&#x27;click&#x27;, function() {
-  var rotateRight = ol.animation.rotate({
+  var rotateRight &#x3D; ol.animation.rotate({
     duration: 2000,
     rotation: 4 * Math.PI
   });
   map.beforeRender(rotateRight);
 }, false);
 
-var rotateAroundRome = document.getElementById(&#x27;rotate-around-rome&#x27;);
+var rotateAroundRome &#x3D; document.getElementById(&#x27;rotate-around-rome&#x27;);
 rotateAroundRome.addEventListener(&#x27;click&#x27;, function() {
-  var currentRotation = view.getRotation();
-  var rotateAroundRome = ol.animation.rotate({
+  var currentRotation &#x3D; view.getRotation();
+  var rotateAroundRome &#x3D; ol.animation.rotate({
     anchor: rome,
     duration: 1000,
     rotation: currentRotation
@@ -149,9 +149,9 @@ rotateAroundRome.addEventListener(&#x27;click&#x27;, function() {
   view.rotate(currentRotation + (Math.PI / 2), rome);
 }, false);
 
-var panToLondon = document.getElementById(&#x27;pan-to-london&#x27;);
+var panToLondon &#x3D; document.getElementById(&#x27;pan-to-london&#x27;);
 panToLondon.addEventListener(&#x27;click&#x27;, function() {
-  var pan = ol.animation.pan({
+  var pan &#x3D; ol.animation.pan({
     duration: 2000,
     source: /** @type {ol.Coordinate} */ (view.getCenter())
   });
@@ -159,9 +159,9 @@ panToLondon.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(london);
 }, false);
 
-var elasticToMoscow = document.getElementById(&#x27;elastic-to-moscow&#x27;);
+var elasticToMoscow &#x3D; document.getElementById(&#x27;elastic-to-moscow&#x27;);
 elasticToMoscow.addEventListener(&#x27;click&#x27;, function() {
-  var pan = ol.animation.pan({
+  var pan &#x3D; ol.animation.pan({
     duration: 2000,
     easing: elastic,
     source: /** @type {ol.Coordinate} */ (view.getCenter())
@@ -170,9 +170,9 @@ elasticToMoscow.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(moscow);
 }, false);
 
-var bounceToIstanbul = document.getElementById(&#x27;bounce-to-istanbul&#x27;);
+var bounceToIstanbul &#x3D; document.getElementById(&#x27;bounce-to-istanbul&#x27;);
 bounceToIstanbul.addEventListener(&#x27;click&#x27;, function() {
-  var pan = ol.animation.pan({
+  var pan &#x3D; ol.animation.pan({
     duration: 2000,
     easing: bounce,
     source: /** @type {ol.Coordinate} */ (view.getCenter())
@@ -181,16 +181,16 @@ bounceToIstanbul.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(istanbul);
 }, false);
 
-var spinToRome = document.getElementById(&#x27;spin-to-rome&#x27;);
+var spinToRome &#x3D; document.getElementById(&#x27;spin-to-rome&#x27;);
 spinToRome.addEventListener(&#x27;click&#x27;, function() {
-  var duration = 2000;
-  var start = +new Date();
-  var pan = ol.animation.pan({
+  var duration &#x3D; 2000;
+  var start &#x3D; +new Date();
+  var pan &#x3D; ol.animation.pan({
     duration: duration,
     source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
-  var rotate = ol.animation.rotate({
+  var rotate &#x3D; ol.animation.rotate({
     duration: duration,
     rotation: 2 * Math.PI,
     start: start
@@ -199,16 +199,16 @@ spinToRome.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(rome);
 }, false);
 
-var flyToBern = document.getElementById(&#x27;fly-to-bern&#x27;);
+var flyToBern &#x3D; document.getElementById(&#x27;fly-to-bern&#x27;);
 flyToBern.addEventListener(&#x27;click&#x27;, function() {
-  var duration = 2000;
-  var start = +new Date();
-  var pan = ol.animation.pan({
+  var duration &#x3D; 2000;
+  var start &#x3D; +new Date();
+  var pan &#x3D; ol.animation.pan({
     duration: duration,
     source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
-  var bounce = ol.animation.bounce({
+  var bounce &#x3D; ol.animation.bounce({
     duration: duration,
     resolution: 4 * view.getResolution(),
     start: start
@@ -217,21 +217,21 @@ flyToBern.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(bern);
 }, false);
 
-var spiralToMadrid = document.getElementById(&#x27;spiral-to-madrid&#x27;);
+var spiralToMadrid &#x3D; document.getElementById(&#x27;spiral-to-madrid&#x27;);
 spiralToMadrid.addEventListener(&#x27;click&#x27;, function() {
-  var duration = 2000;
-  var start = +new Date();
-  var pan = ol.animation.pan({
+  var duration &#x3D; 2000;
+  var start &#x3D; +new Date();
+  var pan &#x3D; ol.animation.pan({
     duration: duration,
     source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
-  var bounce = ol.animation.bounce({
+  var bounce &#x3D; ol.animation.bounce({
     duration: duration,
     resolution: 2 * view.getResolution(),
     start: start
   });
-  var rotate = ol.animation.rotate({
+  var rotate &#x3D; ol.animation.rotate({
     duration: duration,
     rotation: -4 * Math.PI,
     start: start
@@ -241,22 +241,22 @@ spiralToMadrid.addEventListener(&#x27;click&#x27;, function() {
 }, false);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;button id=&quot;rotate-left&quot; title=&quot;Rotate clockwise&quot;&gt;↻&lt;/button&gt;
-    &lt;button id=&quot;rotate-right&quot; title=&quot;Rotate counterclockwise&quot;&gt;↺&lt;/button&gt;
-    &lt;button id=&quot;rotate-around-rome&quot;&gt;Rotate around Rome&lt;/button&gt;
-    &lt;button id=&quot;pan-to-london&quot;&gt;Pan to London&lt;/button&gt;
-    &lt;button id=&quot;elastic-to-moscow&quot;&gt;Elastic to Moscow&lt;/button&gt;
-    &lt;button id=&quot;bounce-to-istanbul&quot;&gt;Bounce to Istanbul&lt;/button&gt;
-    &lt;button id=&quot;spin-to-rome&quot;&gt;Spin to Rome&lt;/button&gt;
-    &lt;button id=&quot;fly-to-bern&quot;&gt;Fly to Bern&lt;/button&gt;
-    &lt;button id=&quot;spiral-to-madrid&quot;&gt;Spiral to Madrid&lt;/button&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;button id&#x3D;&quot;rotate-left&quot; title&#x3D;&quot;Rotate clockwise&quot;&gt;↻&lt;/button&gt;
+    &lt;button id&#x3D;&quot;rotate-right&quot; title&#x3D;&quot;Rotate counterclockwise&quot;&gt;↺&lt;/button&gt;
+    &lt;button id&#x3D;&quot;rotate-around-rome&quot;&gt;Rotate around Rome&lt;/button&gt;
+    &lt;button id&#x3D;&quot;pan-to-london&quot;&gt;Pan to London&lt;/button&gt;
+    &lt;button id&#x3D;&quot;elastic-to-moscow&quot;&gt;Elastic to Moscow&lt;/button&gt;
+    &lt;button id&#x3D;&quot;bounce-to-istanbul&quot;&gt;Bounce to Istanbul&lt;/button&gt;
+    &lt;button id&#x3D;&quot;spin-to-rome&quot;&gt;Spin to Rome&lt;/button&gt;
+    &lt;button id&#x3D;&quot;fly-to-bern&quot;&gt;Fly to Bern&lt;/button&gt;
+    &lt;button id&#x3D;&quot;spiral-to-madrid&quot;&gt;Spiral to Madrid&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -277,22 +277,22 @@ spiralToMadrid.addEventListener(&#x27;click&#x27;, function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;button id=&quot;rotate-left&quot; title=&quot;Rotate clockwise&quot;&gt;↻&lt;/button&gt;
-    &lt;button id=&quot;rotate-right&quot; title=&quot;Rotate counterclockwise&quot;&gt;↺&lt;/button&gt;
-    &lt;button id=&quot;rotate-around-rome&quot;&gt;Rotate around Rome&lt;/button&gt;
-    &lt;button id=&quot;pan-to-london&quot;&gt;Pan to London&lt;/button&gt;
-    &lt;button id=&quot;elastic-to-moscow&quot;&gt;Elastic to Moscow&lt;/button&gt;
-    &lt;button id=&quot;bounce-to-istanbul&quot;&gt;Bounce to Istanbul&lt;/button&gt;
-    &lt;button id=&quot;spin-to-rome&quot;&gt;Spin to Rome&lt;/button&gt;
-    &lt;button id=&quot;fly-to-bern&quot;&gt;Fly to Bern&lt;/button&gt;
-    &lt;button id=&quot;spiral-to-madrid&quot;&gt;Spiral to Madrid&lt;/button&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;button id&#x3D;&quot;rotate-left&quot; title&#x3D;&quot;Rotate clockwise&quot;&gt;↻&lt;/button&gt;
+    &lt;button id&#x3D;&quot;rotate-right&quot; title&#x3D;&quot;Rotate counterclockwise&quot;&gt;↺&lt;/button&gt;
+    &lt;button id&#x3D;&quot;rotate-around-rome&quot;&gt;Rotate around Rome&lt;/button&gt;
+    &lt;button id&#x3D;&quot;pan-to-london&quot;&gt;Pan to London&lt;/button&gt;
+    &lt;button id&#x3D;&quot;elastic-to-moscow&quot;&gt;Elastic to Moscow&lt;/button&gt;
+    &lt;button id&#x3D;&quot;bounce-to-istanbul&quot;&gt;Bounce to Istanbul&lt;/button&gt;
+    &lt;button id&#x3D;&quot;spin-to-rome&quot;&gt;Spin to Rome&lt;/button&gt;
+    &lt;button id&#x3D;&quot;fly-to-bern&quot;&gt;Fly to Bern&lt;/button&gt;
+    &lt;button id&#x3D;&quot;spiral-to-madrid&quot;&gt;Spiral to Madrid&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -300,20 +300,20 @@ spiralToMadrid.addEventListener(&#x27;click&#x27;, function() {
 &lt;script&gt;
 // from https://github.com/DmitryBaranovskiy/raphael
 function bounce(t) {
-  var s = 7.5625, p = 2.75, l;
+  var s &#x3D; 7.5625, p &#x3D; 2.75, l;
   if (t &lt; (1 / p)) {
-    l = s * t * t;
+    l &#x3D; s * t * t;
   } else {
     if (t &lt; (2 / p)) {
-      t -= (1.5 / p);
-      l = s * t * t + 0.75;
+      t -&#x3D; (1.5 / p);
+      l &#x3D; s * t * t + 0.75;
     } else {
       if (t &lt; (2.5 / p)) {
-        t -= (2.25 / p);
-        l = s * t * t + 0.9375;
+        t -&#x3D; (2.25 / p);
+        l &#x3D; s * t * t + 0.9375;
       } else {
-        t -= (2.625 / p);
-        l = s * t * t + 0.984375;
+        t -&#x3D; (2.625 / p);
+        l &#x3D; s * t * t + 0.984375;
       }
     }
   }
@@ -325,20 +325,20 @@ function elastic(t) {
   return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
 }
 
-var london = ol.proj.fromLonLat([-0.12755, 51.507222]);
-var moscow = ol.proj.fromLonLat([37.6178, 55.7517]);
-var istanbul = ol.proj.fromLonLat([28.9744, 41.0128]);
-var rome = ol.proj.fromLonLat([12.5, 41.9]);
-var bern = ol.proj.fromLonLat([7.4458, 46.95]);
-var madrid = ol.proj.fromLonLat([-3.683333, 40.4]);
+var london &#x3D; ol.proj.fromLonLat([-0.12755, 51.507222]);
+var moscow &#x3D; ol.proj.fromLonLat([37.6178, 55.7517]);
+var istanbul &#x3D; ol.proj.fromLonLat([28.9744, 41.0128]);
+var rome &#x3D; ol.proj.fromLonLat([12.5, 41.9]);
+var bern &#x3D; ol.proj.fromLonLat([7.4458, 46.95]);
+var madrid &#x3D; ol.proj.fromLonLat([-3.683333, 40.4]);
 
-var view = new ol.View({
+var view &#x3D; new ol.View({
   // the view&#x27;s initial state
   center: istanbul,
   zoom: 6
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       preload: 4,
@@ -357,27 +357,27 @@ var map = new ol.Map({
   view: view
 });
 
-var rotateLeft = document.getElementById(&#x27;rotate-left&#x27;);
+var rotateLeft &#x3D; document.getElementById(&#x27;rotate-left&#x27;);
 rotateLeft.addEventListener(&#x27;click&#x27;, function() {
-  var rotateLeft = ol.animation.rotate({
+  var rotateLeft &#x3D; ol.animation.rotate({
     duration: 2000,
     rotation: -4 * Math.PI
   });
   map.beforeRender(rotateLeft);
 }, false);
-var rotateRight = document.getElementById(&#x27;rotate-right&#x27;);
+var rotateRight &#x3D; document.getElementById(&#x27;rotate-right&#x27;);
 rotateRight.addEventListener(&#x27;click&#x27;, function() {
-  var rotateRight = ol.animation.rotate({
+  var rotateRight &#x3D; ol.animation.rotate({
     duration: 2000,
     rotation: 4 * Math.PI
   });
   map.beforeRender(rotateRight);
 }, false);
 
-var rotateAroundRome = document.getElementById(&#x27;rotate-around-rome&#x27;);
+var rotateAroundRome &#x3D; document.getElementById(&#x27;rotate-around-rome&#x27;);
 rotateAroundRome.addEventListener(&#x27;click&#x27;, function() {
-  var currentRotation = view.getRotation();
-  var rotateAroundRome = ol.animation.rotate({
+  var currentRotation &#x3D; view.getRotation();
+  var rotateAroundRome &#x3D; ol.animation.rotate({
     anchor: rome,
     duration: 1000,
     rotation: currentRotation
@@ -386,9 +386,9 @@ rotateAroundRome.addEventListener(&#x27;click&#x27;, function() {
   view.rotate(currentRotation + (Math.PI / 2), rome);
 }, false);
 
-var panToLondon = document.getElementById(&#x27;pan-to-london&#x27;);
+var panToLondon &#x3D; document.getElementById(&#x27;pan-to-london&#x27;);
 panToLondon.addEventListener(&#x27;click&#x27;, function() {
-  var pan = ol.animation.pan({
+  var pan &#x3D; ol.animation.pan({
     duration: 2000,
     source: /** @type {ol.Coordinate} */ (view.getCenter())
   });
@@ -396,9 +396,9 @@ panToLondon.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(london);
 }, false);
 
-var elasticToMoscow = document.getElementById(&#x27;elastic-to-moscow&#x27;);
+var elasticToMoscow &#x3D; document.getElementById(&#x27;elastic-to-moscow&#x27;);
 elasticToMoscow.addEventListener(&#x27;click&#x27;, function() {
-  var pan = ol.animation.pan({
+  var pan &#x3D; ol.animation.pan({
     duration: 2000,
     easing: elastic,
     source: /** @type {ol.Coordinate} */ (view.getCenter())
@@ -407,9 +407,9 @@ elasticToMoscow.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(moscow);
 }, false);
 
-var bounceToIstanbul = document.getElementById(&#x27;bounce-to-istanbul&#x27;);
+var bounceToIstanbul &#x3D; document.getElementById(&#x27;bounce-to-istanbul&#x27;);
 bounceToIstanbul.addEventListener(&#x27;click&#x27;, function() {
-  var pan = ol.animation.pan({
+  var pan &#x3D; ol.animation.pan({
     duration: 2000,
     easing: bounce,
     source: /** @type {ol.Coordinate} */ (view.getCenter())
@@ -418,16 +418,16 @@ bounceToIstanbul.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(istanbul);
 }, false);
 
-var spinToRome = document.getElementById(&#x27;spin-to-rome&#x27;);
+var spinToRome &#x3D; document.getElementById(&#x27;spin-to-rome&#x27;);
 spinToRome.addEventListener(&#x27;click&#x27;, function() {
-  var duration = 2000;
-  var start = +new Date();
-  var pan = ol.animation.pan({
+  var duration &#x3D; 2000;
+  var start &#x3D; +new Date();
+  var pan &#x3D; ol.animation.pan({
     duration: duration,
     source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
-  var rotate = ol.animation.rotate({
+  var rotate &#x3D; ol.animation.rotate({
     duration: duration,
     rotation: 2 * Math.PI,
     start: start
@@ -436,16 +436,16 @@ spinToRome.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(rome);
 }, false);
 
-var flyToBern = document.getElementById(&#x27;fly-to-bern&#x27;);
+var flyToBern &#x3D; document.getElementById(&#x27;fly-to-bern&#x27;);
 flyToBern.addEventListener(&#x27;click&#x27;, function() {
-  var duration = 2000;
-  var start = +new Date();
-  var pan = ol.animation.pan({
+  var duration &#x3D; 2000;
+  var start &#x3D; +new Date();
+  var pan &#x3D; ol.animation.pan({
     duration: duration,
     source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
-  var bounce = ol.animation.bounce({
+  var bounce &#x3D; ol.animation.bounce({
     duration: duration,
     resolution: 4 * view.getResolution(),
     start: start
@@ -454,21 +454,21 @@ flyToBern.addEventListener(&#x27;click&#x27;, function() {
   view.setCenter(bern);
 }, false);
 
-var spiralToMadrid = document.getElementById(&#x27;spiral-to-madrid&#x27;);
+var spiralToMadrid &#x3D; document.getElementById(&#x27;spiral-to-madrid&#x27;);
 spiralToMadrid.addEventListener(&#x27;click&#x27;, function() {
-  var duration = 2000;
-  var start = +new Date();
-  var pan = ol.animation.pan({
+  var duration &#x3D; 2000;
+  var start &#x3D; +new Date();
+  var pan &#x3D; ol.animation.pan({
     duration: duration,
     source: /** @type {ol.Coordinate} */ (view.getCenter()),
     start: start
   });
-  var bounce = ol.animation.bounce({
+  var bounce &#x3D; ol.animation.bounce({
     duration: duration,
     resolution: 2 * view.getResolution(),
     start: start
   });
-  var rotate = ol.animation.rotate({
+  var rotate &#x3D; ol.animation.rotate({
     duration: duration,
     rotation: -4 * Math.PI,
     start: start

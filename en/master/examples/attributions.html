@@ -48,10 +48,10 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var attribution = new ol.control.Attribution({
+          <textarea class="hidden" name="js">var attribution &#x3D; new ol.control.Attribution({
   collapsible: false
 });
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -66,7 +66,7 @@ var map = new ol.Map({
 });
 
 function checkSize() {
-  var small = map.getSize()[0] &lt; 600;
+  var small &#x3D; map.getSize()[0] &lt; 600;
   attribution.setCollapsible(small);
   attribution.setCollapsed(small);
 }
@@ -75,9 +75,9 @@ window.addEventListener(&#x27;resize&#x27;, checkSize);
 checkSize();
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -98,18 +98,18 @@ checkSize();
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var attribution = new ol.control.Attribution({
+var attribution &#x3D; new ol.control.Attribution({
   collapsible: false
 });
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -124,7 +124,7 @@ var map = new ol.Map({
 });
 
 function checkSize() {
-  var small = map.getSize()[0] &lt; 600;
+  var small &#x3D; map.getSize()[0] &lt; 600;
   attribution.setCollapsible(small);
   attribution.setCollapsed(small);
 }

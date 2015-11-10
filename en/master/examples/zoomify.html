@@ -49,35 +49,35 @@
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// This server does not support CORS, and so is incompatible with WebGL.
-//var imgWidth = 8001;
-//var imgHeight = 6943;
-//var url = &#x27;http://mapy.mzk.cz/AA22/0103/&#x27;;
-//var crossOrigin = undefined;
+//var imgWidth &#x3D; 8001;
+//var imgHeight &#x3D; 6943;
+//var url &#x3D; &#x27;http://mapy.mzk.cz/AA22/0103/&#x27;;
+//var crossOrigin &#x3D; undefined;
 
-var imgWidth = 9911;
-var imgHeight = 6100;
-var url = &#x27;http://vips.vtech.fr/cgi-bin/iipsrv.fcgi?zoomify=&#x27; +
+var imgWidth &#x3D; 9911;
+var imgHeight &#x3D; 6100;
+var url &#x3D; &#x27;http://vips.vtech.fr/cgi-bin/iipsrv.fcgi?zoomify&#x3D;&#x27; +
         &#x27;/mnt/MD1/AD00/plan_CHU-4HD-01/FOND.TIF/&#x27;;
-var crossOrigin = &#x27;anonymous&#x27;;
+var crossOrigin &#x3D; &#x27;anonymous&#x27;;
 
-var imgCenter = [imgWidth / 2, - imgHeight / 2];
+var imgCenter &#x3D; [imgWidth / 2, - imgHeight / 2];
 
 // Maps always need a projection, but Zoomify layers are not geo-referenced, and
 // are only measured in pixels.  So, we create a fake projection that the map
 // can use to properly display the layer.
-var proj = new ol.proj.Projection({
+var proj &#x3D; new ol.proj.Projection({
   code: &#x27;ZOOMIFY&#x27;,
   units: &#x27;pixels&#x27;,
   extent: [0, 0, imgWidth, imgHeight]
 });
 
-var source = new ol.source.Zoomify({
+var source &#x3D; new ol.source.Zoomify({
   url: url,
   size: [imgWidth, imgHeight],
   crossOrigin: crossOrigin
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: source
@@ -95,9 +95,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -118,44 +118,44 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
 // This server does not support CORS, and so is incompatible with WebGL.
-//var imgWidth = 8001;
-//var imgHeight = 6943;
-//var url = &#x27;http://mapy.mzk.cz/AA22/0103/&#x27;;
-//var crossOrigin = undefined;
+//var imgWidth &#x3D; 8001;
+//var imgHeight &#x3D; 6943;
+//var url &#x3D; &#x27;http://mapy.mzk.cz/AA22/0103/&#x27;;
+//var crossOrigin &#x3D; undefined;
 
-var imgWidth = 9911;
-var imgHeight = 6100;
-var url = &#x27;http://vips.vtech.fr/cgi-bin/iipsrv.fcgi?zoomify=&#x27; +
+var imgWidth &#x3D; 9911;
+var imgHeight &#x3D; 6100;
+var url &#x3D; &#x27;http://vips.vtech.fr/cgi-bin/iipsrv.fcgi?zoomify&#x3D;&#x27; +
         &#x27;/mnt/MD1/AD00/plan_CHU-4HD-01/FOND.TIF/&#x27;;
-var crossOrigin = &#x27;anonymous&#x27;;
+var crossOrigin &#x3D; &#x27;anonymous&#x27;;
 
-var imgCenter = [imgWidth / 2, - imgHeight / 2];
+var imgCenter &#x3D; [imgWidth / 2, - imgHeight / 2];
 
 // Maps always need a projection, but Zoomify layers are not geo-referenced, and
 // are only measured in pixels.  So, we create a fake projection that the map
 // can use to properly display the layer.
-var proj = new ol.proj.Projection({
+var proj &#x3D; new ol.proj.Projection({
   code: &#x27;ZOOMIFY&#x27;,
   units: &#x27;pixels&#x27;,
   extent: [0, 0, imgWidth, imgHeight]
 });
 
-var source = new ol.source.Zoomify({
+var source &#x3D; new ol.source.Zoomify({
   url: url,
   size: [imgWidth, imgHeight],
   crossOrigin: crossOrigin
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: source

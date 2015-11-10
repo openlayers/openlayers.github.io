@@ -48,15 +48,15 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var styleFunction = (function() {
-  var styles = {};
-  var image = new ol.style.Circle({
+          <textarea class="hidden" name="js">var styleFunction &#x3D; (function() {
+  var styles &#x3D; {};
+  var image &#x3D; new ol.style.Circle({
     radius: 5,
     fill: null,
     stroke: new ol.style.Stroke({color: &#x27;orange&#x27;, width: 2})
   });
-  styles[&#x27;Point&#x27;] = [new ol.style.Style({image: image})];
-  styles[&#x27;Polygon&#x27;] = [new ol.style.Style({
+  styles[&#x27;Point&#x27;] &#x3D; [new ol.style.Style({image: image})];
+  styles[&#x27;Polygon&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;blue&#x27;,
       width: 3
@@ -65,13 +65,13 @@
       color: &#x27;rgba(0, 0, 255, 0.1)&#x27;
     })
   })];
-  styles[&#x27;MultiLinestring&#x27;] = [new ol.style.Style({
+  styles[&#x27;MultiLinestring&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;green&#x27;,
       width: 3
     })
   })];
-  styles[&#x27;MultiPolygon&#x27;] = [new ol.style.Style({
+  styles[&#x27;MultiPolygon&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;yellow&#x27;,
       width: 1
@@ -80,7 +80,7 @@
       color: &#x27;rgba(255, 255, 0, 0.1)&#x27;
     })
   })];
-  styles[&#x27;default&#x27;] = [new ol.style.Style({
+  styles[&#x27;default&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;red&#x27;,
       width: 3
@@ -95,7 +95,7 @@
   };
 })();
 
-var geojsonObject = {
+var geojsonObject &#x3D; {
   &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
@@ -193,18 +193,18 @@ var geojsonObject = {
   ]
 };
 
-var source = new ol.source.Vector({
+var source &#x3D; new ol.source.Vector({
   features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
 });
 
-var layer = new ol.layer.Vector({
+var layer &#x3D; new ol.layer.Vector({
   source: source,
   style: styleFunction
 });
 
-var overlayStyle = (function() {
-  var styles = {};
-  styles[&#x27;Polygon&#x27;] = [
+var overlayStyle &#x3D; (function() {
+  var styles &#x3D; {};
+  styles[&#x27;Polygon&#x27;] &#x3D; [
     new ol.style.Style({
       fill: new ol.style.Fill({
         color: [255, 255, 255, 0.5]
@@ -223,9 +223,9 @@ var overlayStyle = (function() {
       })
     })
   ];
-  styles[&#x27;MultiPolygon&#x27;] = styles[&#x27;Polygon&#x27;];
+  styles[&#x27;MultiPolygon&#x27;] &#x3D; styles[&#x27;Polygon&#x27;];
 
-  styles[&#x27;LineString&#x27;] = [
+  styles[&#x27;LineString&#x27;] &#x3D; [
     new ol.style.Style({
       stroke: new ol.style.Stroke({
         color: [255, 255, 255, 1],
@@ -239,9 +239,9 @@ var overlayStyle = (function() {
       })
     })
   ];
-  styles[&#x27;MultiLineString&#x27;] = styles[&#x27;LineString&#x27;];
+  styles[&#x27;MultiLineString&#x27;] &#x3D; styles[&#x27;LineString&#x27;];
 
-  styles[&#x27;Point&#x27;] = [
+  styles[&#x27;Point&#x27;] &#x3D; [
     new ol.style.Style({
       image: new ol.style.Circle({
         radius: 7,
@@ -256,25 +256,25 @@ var overlayStyle = (function() {
       zIndex: 100000
     })
   ];
-  styles[&#x27;MultiPoint&#x27;] = styles[&#x27;Point&#x27;];
+  styles[&#x27;MultiPoint&#x27;] &#x3D; styles[&#x27;Point&#x27;];
 
-  styles[&#x27;GeometryCollection&#x27;] = styles[&#x27;Polygon&#x27;].concat(styles[&#x27;Point&#x27;]);
+  styles[&#x27;GeometryCollection&#x27;] &#x3D; styles[&#x27;Polygon&#x27;].concat(styles[&#x27;Point&#x27;]);
 
   return function(feature, resolution) {
     return styles[feature.getGeometry().getType()];
   };
 })();
 
-var select = new ol.interaction.Select({
+var select &#x3D; new ol.interaction.Select({
   style: overlayStyle
 });
 
-var modify = new ol.interaction.Modify({
+var modify &#x3D; new ol.interaction.Modify({
   features: select.getFeatures(),
   style: overlayStyle
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([select, modify]),
   layers: [layer],
   target: &#x27;map&#x27;,
@@ -288,9 +288,9 @@ var map = new ol.Map({
   background: grey;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -317,23 +317,23 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var styleFunction = (function() {
-  var styles = {};
-  var image = new ol.style.Circle({
+var styleFunction &#x3D; (function() {
+  var styles &#x3D; {};
+  var image &#x3D; new ol.style.Circle({
     radius: 5,
     fill: null,
     stroke: new ol.style.Stroke({color: &#x27;orange&#x27;, width: 2})
   });
-  styles[&#x27;Point&#x27;] = [new ol.style.Style({image: image})];
-  styles[&#x27;Polygon&#x27;] = [new ol.style.Style({
+  styles[&#x27;Point&#x27;] &#x3D; [new ol.style.Style({image: image})];
+  styles[&#x27;Polygon&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;blue&#x27;,
       width: 3
@@ -342,13 +342,13 @@ var styleFunction = (function() {
       color: &#x27;rgba(0, 0, 255, 0.1)&#x27;
     })
   })];
-  styles[&#x27;MultiLinestring&#x27;] = [new ol.style.Style({
+  styles[&#x27;MultiLinestring&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;green&#x27;,
       width: 3
     })
   })];
-  styles[&#x27;MultiPolygon&#x27;] = [new ol.style.Style({
+  styles[&#x27;MultiPolygon&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;yellow&#x27;,
       width: 1
@@ -357,7 +357,7 @@ var styleFunction = (function() {
       color: &#x27;rgba(255, 255, 0, 0.1)&#x27;
     })
   })];
-  styles[&#x27;default&#x27;] = [new ol.style.Style({
+  styles[&#x27;default&#x27;] &#x3D; [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: &#x27;red&#x27;,
       width: 3
@@ -372,7 +372,7 @@ var styleFunction = (function() {
   };
 })();
 
-var geojsonObject = {
+var geojsonObject &#x3D; {
   &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
@@ -470,18 +470,18 @@ var geojsonObject = {
   ]
 };
 
-var source = new ol.source.Vector({
+var source &#x3D; new ol.source.Vector({
   features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
 });
 
-var layer = new ol.layer.Vector({
+var layer &#x3D; new ol.layer.Vector({
   source: source,
   style: styleFunction
 });
 
-var overlayStyle = (function() {
-  var styles = {};
-  styles[&#x27;Polygon&#x27;] = [
+var overlayStyle &#x3D; (function() {
+  var styles &#x3D; {};
+  styles[&#x27;Polygon&#x27;] &#x3D; [
     new ol.style.Style({
       fill: new ol.style.Fill({
         color: [255, 255, 255, 0.5]
@@ -500,9 +500,9 @@ var overlayStyle = (function() {
       })
     })
   ];
-  styles[&#x27;MultiPolygon&#x27;] = styles[&#x27;Polygon&#x27;];
+  styles[&#x27;MultiPolygon&#x27;] &#x3D; styles[&#x27;Polygon&#x27;];
 
-  styles[&#x27;LineString&#x27;] = [
+  styles[&#x27;LineString&#x27;] &#x3D; [
     new ol.style.Style({
       stroke: new ol.style.Stroke({
         color: [255, 255, 255, 1],
@@ -516,9 +516,9 @@ var overlayStyle = (function() {
       })
     })
   ];
-  styles[&#x27;MultiLineString&#x27;] = styles[&#x27;LineString&#x27;];
+  styles[&#x27;MultiLineString&#x27;] &#x3D; styles[&#x27;LineString&#x27;];
 
-  styles[&#x27;Point&#x27;] = [
+  styles[&#x27;Point&#x27;] &#x3D; [
     new ol.style.Style({
       image: new ol.style.Circle({
         radius: 7,
@@ -533,25 +533,25 @@ var overlayStyle = (function() {
       zIndex: 100000
     })
   ];
-  styles[&#x27;MultiPoint&#x27;] = styles[&#x27;Point&#x27;];
+  styles[&#x27;MultiPoint&#x27;] &#x3D; styles[&#x27;Point&#x27;];
 
-  styles[&#x27;GeometryCollection&#x27;] = styles[&#x27;Polygon&#x27;].concat(styles[&#x27;Point&#x27;]);
+  styles[&#x27;GeometryCollection&#x27;] &#x3D; styles[&#x27;Polygon&#x27;].concat(styles[&#x27;Point&#x27;]);
 
   return function(feature, resolution) {
     return styles[feature.getGeometry().getType()];
   };
 })();
 
-var select = new ol.interaction.Select({
+var select &#x3D; new ol.interaction.Select({
   style: overlayStyle
 });
 
-var modify = new ol.interaction.Modify({
+var modify &#x3D; new ol.interaction.Modify({
   features: select.getFeatures(),
   style: overlayStyle
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([select, modify]),
   layers: [layer],
   target: &#x27;map&#x27;,

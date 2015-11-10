@@ -48,12 +48,12 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var layers = [
+          <textarea class="hidden" name="js">var layers &#x3D; [
   new ol.layer.Tile({
     source: new ol.source.TileWMS({
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -69,7 +69,7 @@
     source: new ol.source.ImageWMS({
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;National parks / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -86,12 +86,12 @@
 // projection object. Requesting tiles only needs the code together with a
 // tile grid of Cartesian coordinates; it does not matter how those
 // coordinates relate to latitude or longitude.
-var projection = new ol.proj.Projection({
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;EPSG:21781&#x27;,
   units: &#x27;m&#x27;
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -102,9 +102,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -125,20 +125,20 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var layers = [
+var layers &#x3D; [
   new ol.layer.Tile({
     source: new ol.source.TileWMS({
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -154,7 +154,7 @@ var layers = [
     source: new ol.source.ImageWMS({
       attributions: [new ol.Attribution({
         html: &#x27;&amp;copy; &#x27; +
-            &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
             &#x27;en/home.html&quot;&gt;&#x27; +
             &#x27;National parks / geo.admin.ch&lt;/a&gt;&#x27;
       })],
@@ -171,12 +171,12 @@ var layers = [
 // projection object. Requesting tiles only needs the code together with a
 // tile grid of Cartesian coordinates; it does not matter how those
 // coordinates relate to latitude or longitude.
-var projection = new ol.proj.Projection({
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;EPSG:21781&#x27;,
   units: &#x27;m&#x27;
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new ol.View({

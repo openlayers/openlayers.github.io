@@ -48,7 +48,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -61,14 +61,14 @@
   })
 });
 
-var imageStyle = new ol.style.Circle({
+var imageStyle &#x3D; new ol.style.Circle({
   radius: 5,
   snapToPixel: false,
   fill: new ol.style.Fill({color: &#x27;yellow&#x27;}),
   stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
 });
 
-var headInnerImageStyle = new ol.style.Style({
+var headInnerImageStyle &#x3D; new ol.style.Style({
   image: new ol.style.Circle({
     radius: 2,
     snapToPixel: false,
@@ -76,35 +76,35 @@ var headInnerImageStyle = new ol.style.Style({
   })
 });
 
-var headOuterImageStyle = new ol.style.Circle({
+var headOuterImageStyle &#x3D; new ol.style.Circle({
   radius: 5,
   snapToPixel: false,
   fill: new ol.style.Fill({color: &#x27;black&#x27;})
 });
 
-var n = 200;
-var omegaTheta = 30000; // Rotation period in ms
-var R = 7e6;
-var r = 2e6;
-var p = 2e6;
+var n &#x3D; 200;
+var omegaTheta &#x3D; 30000; // Rotation period in ms
+var R &#x3D; 7e6;
+var r &#x3D; 2e6;
+var p &#x3D; 2e6;
 map.on(&#x27;postcompose&#x27;, function(event) {
-  var vectorContext = event.vectorContext;
-  var frameState = event.frameState;
-  var theta = 2 * Math.PI * frameState.time / omegaTheta;
-  var coordinates = [];
+  var vectorContext &#x3D; event.vectorContext;
+  var frameState &#x3D; event.frameState;
+  var theta &#x3D; 2 * Math.PI * frameState.time / omegaTheta;
+  var coordinates &#x3D; [];
   var i;
-  for (i = 0; i &lt; n; ++i) {
-    var t = theta + 2 * Math.PI * i / n;
-    var x = (R + r) * Math.cos(t) + p * Math.cos((R + r) * t / r);
-    var y = (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
+  for (i &#x3D; 0; i &lt; n; ++i) {
+    var t &#x3D; theta + 2 * Math.PI * i / n;
+    var x &#x3D; (R + r) * Math.cos(t) + p * Math.cos((R + r) * t / r);
+    var y &#x3D; (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
     coordinates.push([x, y]);
   }
   vectorContext.setImageStyle(imageStyle);
   vectorContext.drawMultiPointGeometry(
       new ol.geom.MultiPoint(coordinates), null);
 
-  var headPoint = new ol.geom.Point(coordinates[coordinates.length - 1]);
-  var headFeature = new ol.Feature(headPoint);
+  var headPoint &#x3D; new ol.geom.Point(coordinates[coordinates.length - 1]);
+  var headFeature &#x3D; new ol.Feature(headPoint);
   vectorContext.drawFeature(headFeature, headInnerImageStyle);
 
   vectorContext.setImageStyle(headOuterImageStyle);
@@ -115,9 +115,9 @@ map.on(&#x27;postcompose&#x27;, function(event) {
 map.render();
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -138,15 +138,15 @@ map.render();
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -159,14 +159,14 @@ var map = new ol.Map({
   })
 });
 
-var imageStyle = new ol.style.Circle({
+var imageStyle &#x3D; new ol.style.Circle({
   radius: 5,
   snapToPixel: false,
   fill: new ol.style.Fill({color: &#x27;yellow&#x27;}),
   stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
 });
 
-var headInnerImageStyle = new ol.style.Style({
+var headInnerImageStyle &#x3D; new ol.style.Style({
   image: new ol.style.Circle({
     radius: 2,
     snapToPixel: false,
@@ -174,35 +174,35 @@ var headInnerImageStyle = new ol.style.Style({
   })
 });
 
-var headOuterImageStyle = new ol.style.Circle({
+var headOuterImageStyle &#x3D; new ol.style.Circle({
   radius: 5,
   snapToPixel: false,
   fill: new ol.style.Fill({color: &#x27;black&#x27;})
 });
 
-var n = 200;
-var omegaTheta = 30000; // Rotation period in ms
-var R = 7e6;
-var r = 2e6;
-var p = 2e6;
+var n &#x3D; 200;
+var omegaTheta &#x3D; 30000; // Rotation period in ms
+var R &#x3D; 7e6;
+var r &#x3D; 2e6;
+var p &#x3D; 2e6;
 map.on(&#x27;postcompose&#x27;, function(event) {
-  var vectorContext = event.vectorContext;
-  var frameState = event.frameState;
-  var theta = 2 * Math.PI * frameState.time / omegaTheta;
-  var coordinates = [];
+  var vectorContext &#x3D; event.vectorContext;
+  var frameState &#x3D; event.frameState;
+  var theta &#x3D; 2 * Math.PI * frameState.time / omegaTheta;
+  var coordinates &#x3D; [];
   var i;
-  for (i = 0; i &lt; n; ++i) {
-    var t = theta + 2 * Math.PI * i / n;
-    var x = (R + r) * Math.cos(t) + p * Math.cos((R + r) * t / r);
-    var y = (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
+  for (i &#x3D; 0; i &lt; n; ++i) {
+    var t &#x3D; theta + 2 * Math.PI * i / n;
+    var x &#x3D; (R + r) * Math.cos(t) + p * Math.cos((R + r) * t / r);
+    var y &#x3D; (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
     coordinates.push([x, y]);
   }
   vectorContext.setImageStyle(imageStyle);
   vectorContext.drawMultiPointGeometry(
       new ol.geom.MultiPoint(coordinates), null);
 
-  var headPoint = new ol.geom.Point(coordinates[coordinates.length - 1]);
-  var headFeature = new ol.Feature(headPoint);
+  var headPoint &#x3D; new ol.geom.Point(coordinates[coordinates.length - 1]);
+  var headFeature &#x3D; new ol.Feature(headPoint);
   vectorContext.drawFeature(headFeature, headInnerImageStyle);
 
   vectorContext.setImageStyle(headOuterImageStyle);

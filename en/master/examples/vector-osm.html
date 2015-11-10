@@ -48,7 +48,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var styles = {
+          <textarea class="hidden" name="js">var styles &#x3D; {
   &#x27;amenity&#x27;: {
     &#x27;parking&#x27;: [
       new ol.style.Style({
@@ -122,12 +122,12 @@
   }
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   format: new ol.format.OSMXML(),
   url: function(extent, resolution, projection) {
-    var epsg4326Extent =
+    var epsg4326Extent &#x3D;
         ol.proj.transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
-    return &#x27;http://overpass-api.de/api/xapi?map?bbox=&#x27; +
+    return &#x27;http://overpass-api.de/api/xapi?map?bbox&#x3D;&#x27; +
         epsg4326Extent.join(&#x27;,&#x27;);
   },
   strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
@@ -135,12 +135,12 @@ var vectorSource = new ol.source.Vector({
   }))
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: function(feature, resolution) {
     for (var key in styles) {
-      var value = feature.get(key);
-      if (value !== undefined) {
+      var value &#x3D; feature.get(key);
+      if (value !&#x3D;&#x3D; undefined) {
         for (var regexp in styles[key]) {
           if (new RegExp(regexp).test(value)) {
             return styles[key][regexp];
@@ -152,14 +152,14 @@ var vector = new ol.layer.Vector({
   }
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({
     imagerySet: &#x27;Aerial&#x27;,
     key: &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   controls: ol.control.defaults({
@@ -175,9 +175,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -198,15 +198,15 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var styles = {
+var styles &#x3D; {
   &#x27;amenity&#x27;: {
     &#x27;parking&#x27;: [
       new ol.style.Style({
@@ -280,12 +280,12 @@ var styles = {
   }
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   format: new ol.format.OSMXML(),
   url: function(extent, resolution, projection) {
-    var epsg4326Extent =
+    var epsg4326Extent &#x3D;
         ol.proj.transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
-    return &#x27;http://overpass-api.de/api/xapi?map?bbox=&#x27; +
+    return &#x27;http://overpass-api.de/api/xapi?map?bbox&#x3D;&#x27; +
         epsg4326Extent.join(&#x27;,&#x27;);
   },
   strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
@@ -293,12 +293,12 @@ var vectorSource = new ol.source.Vector({
   }))
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: function(feature, resolution) {
     for (var key in styles) {
-      var value = feature.get(key);
-      if (value !== undefined) {
+      var value &#x3D; feature.get(key);
+      if (value !&#x3D;&#x3D; undefined) {
         for (var regexp in styles[key]) {
           if (new RegExp(regexp).test(value)) {
             return styles[key][regexp];
@@ -310,14 +310,14 @@ var vector = new ol.layer.Vector({
   }
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({
     imagerySet: &#x27;Aerial&#x27;,
     key: &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   controls: ol.control.defaults({

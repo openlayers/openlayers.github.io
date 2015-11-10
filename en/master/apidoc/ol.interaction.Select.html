@@ -14419,7 +14419,8 @@ as well as selecting features for other actions, such as modification or
 output. There are three ways of controlling which features are selected:
 using the browser event as defined by the <code>condition</code> and optionally the
 <code>toggle</code>, <code>add</code>/<code>remove</code>, and <code>multi</code> options; a <code>layers</code> filter; and a
-further feature filter using the <code>filter</code> option.</p></div>
+further feature filter using the <code>filter</code> option.</p>
+<p>Selected features are added to an internal unmanaged layer.</p></div>
     
 </header>  
 
@@ -14440,7 +14441,7 @@ further feature filter using the <code>filter</code> option.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 106
+            src/ol/interaction/selectinteraction.js, line 108
         </div>
         
         
@@ -15054,7 +15055,7 @@ returns <code>true</code> if the feature may be selected or <code>false</code> o
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 259
+            src/ol/interaction/selectinteraction.js, line 263
         </div>
         
         
@@ -15617,7 +15618,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 231
+            src/ol/interaction/selectinteraction.js, line 233
         </div>
         
         
@@ -15789,7 +15790,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 243
+            src/ol/interaction/selectinteraction.js, line 247
         </div>
         
         
@@ -15801,7 +15802,9 @@ List of property names.
     
     <div class="description">
         <p>Returns the associated <a href="ol.layer.Vector.html"><code>vectorlayer</code></a> of
-the (last) selected feature.</p>
+the (last) selected feature. Note that this will not work with any
+programmatic method like pushing features to
+<a href="ol.interaction.Select.html#getFeatures"><code>collection</code></a>.</p>
     </div>
     
 
@@ -16746,7 +16749,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/selectinteraction.js, line 355
+            src/ol/interaction/selectinteraction.js, line 359
         </div>
         
         

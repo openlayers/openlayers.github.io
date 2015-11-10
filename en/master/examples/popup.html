@@ -57,16 +57,16 @@
           <textarea class="hidden" name="js">/**
  * Elements that make up the popup.
  */
-var container = document.getElementById(&#x27;popup&#x27;);
-var content = document.getElementById(&#x27;popup-content&#x27;);
-var closer = document.getElementById(&#x27;popup-closer&#x27;);
+var container &#x3D; document.getElementById(&#x27;popup&#x27;);
+var content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
+var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 
 
 /**
  * Add a click handler to hide the popup.
  * @return {boolean} Don&#x27;t follow the href.
  */
-closer.onclick = function() {
+closer.onclick &#x3D; function() {
   overlay.setPosition(undefined);
   closer.blur();
   return false;
@@ -76,7 +76,7 @@ closer.onclick = function() {
 /**
  * Create an overlay to anchor the popup to the map.
  */
-var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+var overlay &#x3D; new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
   element: container,
   autoPan: true,
   autoPanAnimation: {
@@ -88,7 +88,7 @@ var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
 /**
  * Create the map.
  */
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.TileJSON({
@@ -111,11 +111,11 @@ var map = new ol.Map({
  * Add a click handler to the map to render the popup.
  */
 map.on(&#x27;singleclick&#x27;, function(evt) {
-  var coordinate = evt.coordinate;
-  var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+  var coordinate &#x3D; evt.coordinate;
+  var hdms &#x3D; ol.coordinate.toStringHDMS(ol.proj.transform(
       coordinate, &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;));
 
-  content.innerHTML = &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms +
+  content.innerHTML &#x3D; &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms +
       &#x27;&lt;/code&gt;&#x27;;
   overlay.setPosition(coordinate);
 });
@@ -163,12 +163,12 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
   content: &quot;✖&quot;;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;popup&quot; class=&quot;ol-popup&quot;&gt;
-      &lt;a href=&quot;#&quot; id=&quot;popup-closer&quot; class=&quot;ol-popup-closer&quot;&gt;&lt;/a&gt;
-      &lt;div id=&quot;popup-content&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;popup&quot; class&#x3D;&quot;ol-popup&quot;&gt;
+      &lt;a href&#x3D;&quot;#&quot; id&#x3D;&quot;popup-closer&quot; class&#x3D;&quot;ol-popup-closer&quot;&gt;&lt;/a&gt;
+      &lt;div id&#x3D;&quot;popup-content&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -185,7 +185,7 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;http://openlayers.org/en/v3.10.1/examples/popup.css&quot;&gt;
+&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;http://openlayers.org/en/v3.10.1/examples/popup.css&quot;&gt;
 &lt;style&gt;
 .ol-popup {
   position: absolute;
@@ -235,12 +235,12 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;popup&quot; class=&quot;ol-popup&quot;&gt;
-      &lt;a href=&quot;#&quot; id=&quot;popup-closer&quot; class=&quot;ol-popup-closer&quot;&gt;&lt;/a&gt;
-      &lt;div id=&quot;popup-content&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;popup&quot; class&#x3D;&quot;ol-popup&quot;&gt;
+      &lt;a href&#x3D;&quot;#&quot; id&#x3D;&quot;popup-closer&quot; class&#x3D;&quot;ol-popup-closer&quot;&gt;&lt;/a&gt;
+      &lt;div id&#x3D;&quot;popup-content&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -250,16 +250,16 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
 /**
  * Elements that make up the popup.
  */
-var container = document.getElementById(&#x27;popup&#x27;);
-var content = document.getElementById(&#x27;popup-content&#x27;);
-var closer = document.getElementById(&#x27;popup-closer&#x27;);
+var container &#x3D; document.getElementById(&#x27;popup&#x27;);
+var content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
+var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 
 
 /**
  * Add a click handler to hide the popup.
  * @return {boolean} Don&#x27;t follow the href.
  */
-closer.onclick = function() {
+closer.onclick &#x3D; function() {
   overlay.setPosition(undefined);
   closer.blur();
   return false;
@@ -269,7 +269,7 @@ closer.onclick = function() {
 /**
  * Create an overlay to anchor the popup to the map.
  */
-var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+var overlay &#x3D; new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
   element: container,
   autoPan: true,
   autoPanAnimation: {
@@ -281,7 +281,7 @@ var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
 /**
  * Create the map.
  */
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.TileJSON({
@@ -304,11 +304,11 @@ var map = new ol.Map({
  * Add a click handler to the map to render the popup.
  */
 map.on(&#x27;singleclick&#x27;, function(evt) {
-  var coordinate = evt.coordinate;
-  var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+  var coordinate &#x3D; evt.coordinate;
+  var hdms &#x3D; ol.coordinate.toStringHDMS(ol.proj.transform(
       coordinate, &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;));
 
-  content.innerHTML = &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms +
+  content.innerHTML &#x3D; &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms +
       &#x27;&lt;/code&gt;&#x27;;
   overlay.setPosition(coordinate);
 });

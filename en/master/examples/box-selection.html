@@ -53,13 +53,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var vectorSource = new ol.source.Vector({
+          <textarea class="hidden" name="js">var vectorSource &#x3D; new ol.source.Vector({
   url: &#x27;data/geojson/countries.geojson&#x27;,
   format: new ol.format.GeoJSON()
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -77,43 +77,43 @@ var map = new ol.Map({
 });
 
 // a normal select interaction to handle click
-var select = new ol.interaction.Select();
+var select &#x3D; new ol.interaction.Select();
 map.addInteraction(select);
 
-var selectedFeatures = select.getFeatures();
+var selectedFeatures &#x3D; select.getFeatures();
 
 // a DragBox interaction used to select features by drawing boxes
-var dragBox = new ol.interaction.DragBox({
+var dragBox &#x3D; new ol.interaction.DragBox({
   condition: ol.events.condition.platformModifierKeyOnly
 });
 
 map.addInteraction(dragBox);
 
-var infoBox = document.getElementById(&#x27;info&#x27;);
+var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
 dragBox.on(&#x27;boxend&#x27;, function(e) {
   // features that intersect the box are added to the collection of
   // selected features, and their names are displayed in the &quot;info&quot;
   // div
-  var info = [];
-  var extent = dragBox.getGeometry().getExtent();
+  var info &#x3D; [];
+  var extent &#x3D; dragBox.getGeometry().getExtent();
   vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
     selectedFeatures.push(feature);
     info.push(feature.get(&#x27;name&#x27;));
   });
   if (info.length &gt; 0) {
-    infoBox.innerHTML = info.join(&#x27;, &#x27;);
+    infoBox.innerHTML &#x3D; info.join(&#x27;, &#x27;);
   }
 });
 
 // clear selection when drawing a new box and when clicking on the map
 dragBox.on(&#x27;boxstart&#x27;, function(e) {
   selectedFeatures.clear();
-  infoBox.innerHTML = &#x27;&amp;nbsp;&#x27;;
+  infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
 });
 map.on(&#x27;click&#x27;, function() {
   selectedFeatures.clear();
-  infoBox.innerHTML = &#x27;&amp;nbsp;&#x27;;
+  infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
 });
 </textarea>
           <textarea class="hidden" name="css">.ol-dragbox {
@@ -121,12 +121,12 @@ map.on(&#x27;click&#x27;, function() {
   border-color: rgba(100,150,0,1);
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-    &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+  &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+    &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
       &amp;nbsp;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -156,12 +156,12 @@ map.on(&#x27;click&#x27;, function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-    &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+  &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+    &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
       &amp;nbsp;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -169,13 +169,13 @@ map.on(&#x27;click&#x27;, function() {
 
 &lt;/div&gt;
 &lt;script&gt;
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   url: &#x27;data/geojson/countries.geojson&#x27;,
   format: new ol.format.GeoJSON()
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -193,43 +193,43 @@ var map = new ol.Map({
 });
 
 // a normal select interaction to handle click
-var select = new ol.interaction.Select();
+var select &#x3D; new ol.interaction.Select();
 map.addInteraction(select);
 
-var selectedFeatures = select.getFeatures();
+var selectedFeatures &#x3D; select.getFeatures();
 
 // a DragBox interaction used to select features by drawing boxes
-var dragBox = new ol.interaction.DragBox({
+var dragBox &#x3D; new ol.interaction.DragBox({
   condition: ol.events.condition.platformModifierKeyOnly
 });
 
 map.addInteraction(dragBox);
 
-var infoBox = document.getElementById(&#x27;info&#x27;);
+var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
 dragBox.on(&#x27;boxend&#x27;, function(e) {
   // features that intersect the box are added to the collection of
   // selected features, and their names are displayed in the &quot;info&quot;
   // div
-  var info = [];
-  var extent = dragBox.getGeometry().getExtent();
+  var info &#x3D; [];
+  var extent &#x3D; dragBox.getGeometry().getExtent();
   vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
     selectedFeatures.push(feature);
     info.push(feature.get(&#x27;name&#x27;));
   });
   if (info.length &gt; 0) {
-    infoBox.innerHTML = info.join(&#x27;, &#x27;);
+    infoBox.innerHTML &#x3D; info.join(&#x27;, &#x27;);
   }
 });
 
 // clear selection when drawing a new box and when clicking on the map
 dragBox.on(&#x27;boxstart&#x27;, function(e) {
   selectedFeatures.clear();
-  infoBox.innerHTML = &#x27;&amp;nbsp;&#x27;;
+  infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
 });
 map.on(&#x27;click&#x27;, function() {
   selectedFeatures.clear();
-  infoBox.innerHTML = &#x27;&amp;nbsp;&#x27;;
+  infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
 });
 
 &lt;/script&gt;

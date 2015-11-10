@@ -51,7 +51,7 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// NOCOMPILE
 // this example uses d3 for which we don&#x27;t have an externs file.
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.Stamen({
@@ -71,7 +71,7 @@ var map = new ol.Map({
  * Load the topojson data and create an ol.layer.Image for that data.
  */
 d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
-  var features = topojson.feature(us, us.objects.counties);
+  var features &#x3D; topojson.feature(us, us.objects.counties);
 
   /**
    * This function uses d3 to render the topojson features to a canvas.
@@ -82,51 +82,51 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
    * @param {ol.proj.Projection} projection Projection.
    * @return {HTMLCanvasElement}
    */
-  var canvasFunction = function(extent, resolution, pixelRatio,
+  var canvasFunction &#x3D; function(extent, resolution, pixelRatio,
       size, projection) {
-    var canvasWidth = size[0];
-    var canvasHeight = size[1];
+    var canvasWidth &#x3D; size[0];
+    var canvasHeight &#x3D; size[1];
 
-    var canvas = d3.select(document.createElement(&#x27;canvas&#x27;));
+    var canvas &#x3D; d3.select(document.createElement(&#x27;canvas&#x27;));
     canvas.attr(&#x27;width&#x27;, canvasWidth).attr(&#x27;height&#x27;, canvasHeight);
 
-    var context = canvas.node().getContext(&#x27;2d&#x27;);
+    var context &#x3D; canvas.node().getContext(&#x27;2d&#x27;);
 
-    var d3Projection = d3.geo.mercator().scale(1).translate([0, 0]);
-    var d3Path = d3.geo.path().projection(d3Projection);
+    var d3Projection &#x3D; d3.geo.mercator().scale(1).translate([0, 0]);
+    var d3Path &#x3D; d3.geo.path().projection(d3Projection);
 
-    var pixelBounds = d3Path.bounds(features);
-    var pixelBoundsWidth = pixelBounds[1][0] - pixelBounds[0][0];
-    var pixelBoundsHeight = pixelBounds[1][1] - pixelBounds[0][1];
+    var pixelBounds &#x3D; d3Path.bounds(features);
+    var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
+    var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
 
-    var geoBounds = d3.geo.bounds(features);
-    var geoBoundsLeftBottom = ol.proj.transform(
+    var geoBounds &#x3D; d3.geo.bounds(features);
+    var geoBoundsLeftBottom &#x3D; ol.proj.transform(
         geoBounds[0], &#x27;EPSG:4326&#x27;, projection);
-    var geoBoundsRightTop = ol.proj.transform(
+    var geoBoundsRightTop &#x3D; ol.proj.transform(
         geoBounds[1], &#x27;EPSG:4326&#x27;, projection);
-    var geoBoundsWidth = geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
+    var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
     if (geoBoundsWidth &lt; 0) {
-      geoBoundsWidth += ol.extent.getWidth(projection.getExtent());
+      geoBoundsWidth +&#x3D; ol.extent.getWidth(projection.getExtent());
     }
-    var geoBoundsHeight = geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
+    var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
 
-    var widthResolution = geoBoundsWidth / pixelBoundsWidth;
-    var heightResolution = geoBoundsHeight / pixelBoundsHeight;
-    var r = Math.max(widthResolution, heightResolution);
-    var scale = r / (resolution / pixelRatio);
+    var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
+    var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
+    var r &#x3D; Math.max(widthResolution, heightResolution);
+    var scale &#x3D; r / (resolution / pixelRatio);
 
-    var center = ol.proj.transform(ol.extent.getCenter(extent),
+    var center &#x3D; ol.proj.transform(ol.extent.getCenter(extent),
         projection, &#x27;EPSG:4326&#x27;);
     d3Projection.scale(scale).center(center)
         .translate([canvasWidth / 2, canvasHeight / 2]);
-    d3Path = d3Path.projection(d3Projection).context(context);
+    d3Path &#x3D; d3Path.projection(d3Projection).context(context);
     d3Path(features);
     context.stroke();
 
     return canvas[0][0];
   };
 
-  var layer = new ol.layer.Image({
+  var layer &#x3D; new ol.layer.Image({
     source: new ol.source.ImageCanvas({
       canvasFunction: canvasFunction,
       projection: &#x27;EPSG:3857&#x27;
@@ -136,9 +136,9 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -154,15 +154,15 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://d3js.org/d3.v3.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;http://d3js.org/topojson.v1.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://d3js.org/d3.v3.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://d3js.org/topojson.v1.min.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -170,7 +170,7 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
 &lt;script&gt;
 // NOCOMPILE
 // this example uses d3 for which we don&#x27;t have an externs file.
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.Stamen({
@@ -190,7 +190,7 @@ var map = new ol.Map({
  * Load the topojson data and create an ol.layer.Image for that data.
  */
 d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
-  var features = topojson.feature(us, us.objects.counties);
+  var features &#x3D; topojson.feature(us, us.objects.counties);
 
   /**
    * This function uses d3 to render the topojson features to a canvas.
@@ -201,51 +201,51 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
    * @param {ol.proj.Projection} projection Projection.
    * @return {HTMLCanvasElement}
    */
-  var canvasFunction = function(extent, resolution, pixelRatio,
+  var canvasFunction &#x3D; function(extent, resolution, pixelRatio,
       size, projection) {
-    var canvasWidth = size[0];
-    var canvasHeight = size[1];
+    var canvasWidth &#x3D; size[0];
+    var canvasHeight &#x3D; size[1];
 
-    var canvas = d3.select(document.createElement(&#x27;canvas&#x27;));
+    var canvas &#x3D; d3.select(document.createElement(&#x27;canvas&#x27;));
     canvas.attr(&#x27;width&#x27;, canvasWidth).attr(&#x27;height&#x27;, canvasHeight);
 
-    var context = canvas.node().getContext(&#x27;2d&#x27;);
+    var context &#x3D; canvas.node().getContext(&#x27;2d&#x27;);
 
-    var d3Projection = d3.geo.mercator().scale(1).translate([0, 0]);
-    var d3Path = d3.geo.path().projection(d3Projection);
+    var d3Projection &#x3D; d3.geo.mercator().scale(1).translate([0, 0]);
+    var d3Path &#x3D; d3.geo.path().projection(d3Projection);
 
-    var pixelBounds = d3Path.bounds(features);
-    var pixelBoundsWidth = pixelBounds[1][0] - pixelBounds[0][0];
-    var pixelBoundsHeight = pixelBounds[1][1] - pixelBounds[0][1];
+    var pixelBounds &#x3D; d3Path.bounds(features);
+    var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
+    var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
 
-    var geoBounds = d3.geo.bounds(features);
-    var geoBoundsLeftBottom = ol.proj.transform(
+    var geoBounds &#x3D; d3.geo.bounds(features);
+    var geoBoundsLeftBottom &#x3D; ol.proj.transform(
         geoBounds[0], &#x27;EPSG:4326&#x27;, projection);
-    var geoBoundsRightTop = ol.proj.transform(
+    var geoBoundsRightTop &#x3D; ol.proj.transform(
         geoBounds[1], &#x27;EPSG:4326&#x27;, projection);
-    var geoBoundsWidth = geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
+    var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
     if (geoBoundsWidth &lt; 0) {
-      geoBoundsWidth += ol.extent.getWidth(projection.getExtent());
+      geoBoundsWidth +&#x3D; ol.extent.getWidth(projection.getExtent());
     }
-    var geoBoundsHeight = geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
+    var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
 
-    var widthResolution = geoBoundsWidth / pixelBoundsWidth;
-    var heightResolution = geoBoundsHeight / pixelBoundsHeight;
-    var r = Math.max(widthResolution, heightResolution);
-    var scale = r / (resolution / pixelRatio);
+    var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
+    var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
+    var r &#x3D; Math.max(widthResolution, heightResolution);
+    var scale &#x3D; r / (resolution / pixelRatio);
 
-    var center = ol.proj.transform(ol.extent.getCenter(extent),
+    var center &#x3D; ol.proj.transform(ol.extent.getCenter(extent),
         projection, &#x27;EPSG:4326&#x27;);
     d3Projection.scale(scale).center(center)
         .translate([canvasWidth / 2, canvasHeight / 2]);
-    d3Path = d3Path.projection(d3Projection).context(context);
+    d3Path &#x3D; d3Path.projection(d3Projection).context(context);
     d3Path(features);
     context.stroke();
 
     return canvas[0][0];
   };
 
-  var layer = new ol.layer.Image({
+  var layer &#x3D; new ol.layer.Image({
     source: new ol.source.ImageCanvas({
       canvasFunction: canvasFunction,
       projection: &#x27;EPSG:3857&#x27;

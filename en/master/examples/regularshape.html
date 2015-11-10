@@ -47,10 +47,10 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var stroke = new ol.style.Stroke({color: &#x27;black&#x27;, width: 2});
-var fill = new ol.style.Fill({color: &#x27;red&#x27;});
+          <textarea class="hidden" name="js">var stroke &#x3D; new ol.style.Stroke({color: &#x27;black&#x27;, width: 2});
+var fill &#x3D; new ol.style.Fill({color: &#x27;red&#x27;});
 
-var styles = {
+var styles &#x3D; {
   &#x27;square&#x27;: [new ol.style.Style({
     image: new ol.style.RegularShape({
       fill: fill,
@@ -103,25 +103,25 @@ var styles = {
 };
 
 
-var styleKeys = [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
-var count = 250;
-var features = new Array(count);
-var e = 4500000;
-for (var i = 0; i &lt; count; ++i) {
-  var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-  features[i] = new ol.Feature(new ol.geom.Point(coordinates));
+var styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
+var count &#x3D; 250;
+var features &#x3D; new Array(count);
+var e &#x3D; 4500000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
+  var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+  features[i] &#x3D; new ol.Feature(new ol.geom.Point(coordinates));
   features[i].setStyle(styles[styleKeys[Math.floor(Math.random() * 5)]]);
 }
 
-var source = new ol.source.Vector({
+var source &#x3D; new ol.source.Vector({
   features: features
 });
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     vectorLayer
   ],
@@ -133,9 +133,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -156,18 +156,18 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var stroke = new ol.style.Stroke({color: &#x27;black&#x27;, width: 2});
-var fill = new ol.style.Fill({color: &#x27;red&#x27;});
+var stroke &#x3D; new ol.style.Stroke({color: &#x27;black&#x27;, width: 2});
+var fill &#x3D; new ol.style.Fill({color: &#x27;red&#x27;});
 
-var styles = {
+var styles &#x3D; {
   &#x27;square&#x27;: [new ol.style.Style({
     image: new ol.style.RegularShape({
       fill: fill,
@@ -220,25 +220,25 @@ var styles = {
 };
 
 
-var styleKeys = [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
-var count = 250;
-var features = new Array(count);
-var e = 4500000;
-for (var i = 0; i &lt; count; ++i) {
-  var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-  features[i] = new ol.Feature(new ol.geom.Point(coordinates));
+var styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
+var count &#x3D; 250;
+var features &#x3D; new Array(count);
+var e &#x3D; 4500000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
+  var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+  features[i] &#x3D; new ol.Feature(new ol.geom.Point(coordinates));
   features[i].setStyle(styles[styleKeys[Math.floor(Math.random() * 5)]]);
 }
 
-var source = new ol.source.Vector({
+var source &#x3D; new ol.source.Vector({
   features: features
 });
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     vectorLayer
   ],

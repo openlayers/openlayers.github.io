@@ -50,25 +50,25 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// NOCOMPILE
 // this example uses turf.js for which we don&#x27;t have an externs file.
-var source = new ol.source.Vector();
+var source &#x3D; new ol.source.Vector();
 $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
-  var format = new ol.format.GeoJSON();
-  var features = format.readFeatures(response);
-  var street = features[0];
+  var format &#x3D; new ol.format.GeoJSON();
+  var features &#x3D; format.readFeatures(response);
+  var street &#x3D; features[0];
 
   // convert to a turf.js feature
-  var turfLine = format.writeFeatureObject(street);
+  var turfLine &#x3D; format.writeFeatureObject(street);
 
   // show a marker every 200 meters
-  var distance = 0.2;
+  var distance &#x3D; 0.2;
 
   // get the line length in kilometers
-  var length = turf.lineDistance(turfLine, &#x27;kilometers&#x27;);
-  for (var i = 1; i &lt;= length / distance; i++) {
-    var turfPoint = turf.along(turfLine, i * distance, &#x27;kilometers&#x27;);
+  var length &#x3D; turf.lineDistance(turfLine, &#x27;kilometers&#x27;);
+  for (var i &#x3D; 1; i &lt;&#x3D; length / distance; i++) {
+    var turfPoint &#x3D; turf.along(turfLine, i * distance, &#x27;kilometers&#x27;);
 
     // convert the generated point to a OpenLayers feature
-    var marker = format.readFeature(turfPoint);
+    var marker &#x3D; format.readFeature(turfPoint);
     marker.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
     source.addFeature(marker);
   }
@@ -76,17 +76,17 @@ $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
   street.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
   source.addFeature(street);
 });
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var rasterLayer = new ol.layer.Tile({
+var rasterLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({
     layer: &#x27;osm&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -96,9 +96,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -114,14 +114,14 @@ var map = new ol.Map({
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -129,25 +129,25 @@ var map = new ol.Map({
 &lt;script&gt;
 // NOCOMPILE
 // this example uses turf.js for which we don&#x27;t have an externs file.
-var source = new ol.source.Vector();
+var source &#x3D; new ol.source.Vector();
 $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
-  var format = new ol.format.GeoJSON();
-  var features = format.readFeatures(response);
-  var street = features[0];
+  var format &#x3D; new ol.format.GeoJSON();
+  var features &#x3D; format.readFeatures(response);
+  var street &#x3D; features[0];
 
   // convert to a turf.js feature
-  var turfLine = format.writeFeatureObject(street);
+  var turfLine &#x3D; format.writeFeatureObject(street);
 
   // show a marker every 200 meters
-  var distance = 0.2;
+  var distance &#x3D; 0.2;
 
   // get the line length in kilometers
-  var length = turf.lineDistance(turfLine, &#x27;kilometers&#x27;);
-  for (var i = 1; i &lt;= length / distance; i++) {
-    var turfPoint = turf.along(turfLine, i * distance, &#x27;kilometers&#x27;);
+  var length &#x3D; turf.lineDistance(turfLine, &#x27;kilometers&#x27;);
+  for (var i &#x3D; 1; i &lt;&#x3D; length / distance; i++) {
+    var turfPoint &#x3D; turf.along(turfLine, i * distance, &#x27;kilometers&#x27;);
 
     // convert the generated point to a OpenLayers feature
-    var marker = format.readFeature(turfPoint);
+    var marker &#x3D; format.readFeature(turfPoint);
     marker.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
     source.addFeature(marker);
   }
@@ -155,17 +155,17 @@ $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
   street.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
   source.addFeature(street);
 });
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var rasterLayer = new ol.layer.Tile({
+var rasterLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({
     layer: &#x27;osm&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({

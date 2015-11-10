@@ -48,7 +48,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var overviewMapControl = new ol.control.OverviewMap({
+          <textarea class="hidden" name="js">var overviewMapControl &#x3D; new ol.control.OverviewMap({
   // see in overviewmap-custom.html to see the custom CSS used
   className: &#x27;ol-overviewmap ol-custom-overviewmap&#x27;,
   layers: [
@@ -63,7 +63,7 @@
   collapsed: false
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults().extend([
     overviewMapControl
   ]),
@@ -115,9 +115,9 @@ var map = new ol.Map({
   right: 0;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -133,7 +133,7 @@ var map = new ol.Map({
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;http://openlayers.org/en/v3.10.1/examples/overviewmap-custom.css&quot;&gt;
+&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;http://openlayers.org/en/v3.10.1/examples/overviewmap-custom.css&quot;&gt;
 &lt;style&gt;
 .ol-custom-overviewmap,
 .ol-custom-overviewmap.ol-uncollapsible {
@@ -173,15 +173,15 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var overviewMapControl = new ol.control.OverviewMap({
+var overviewMapControl &#x3D; new ol.control.OverviewMap({
   // see in overviewmap-custom.html to see the custom CSS used
   className: &#x27;ol-overviewmap ol-custom-overviewmap&#x27;,
   layers: [
@@ -196,7 +196,7 @@ var overviewMapControl = new ol.control.OverviewMap({
   collapsed: false
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults().extend([
     overviewMapControl
   ]),

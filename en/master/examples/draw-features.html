@@ -60,13 +60,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var raster = new ol.layer.Tile({
+          <textarea class="hidden" name="js">var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var source = new ol.source.Vector({wrapX: false});
+var source &#x3D; new ol.source.Vector({wrapX: false});
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: source,
   style: new ol.style.Style({
     fill: new ol.style.Fill({
@@ -85,7 +85,7 @@ var vector = new ol.layer.Vector({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -94,32 +94,32 @@ var map = new ol.Map({
   })
 });
 
-var typeSelect = document.getElementById(&#x27;type&#x27;);
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 var draw; // global so we can remove it later
 function addInteraction() {
-  var value = typeSelect.value;
-  if (value !== &#x27;None&#x27;) {
+  var value &#x3D; typeSelect.value;
+  if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
     var geometryFunction, maxPoints;
-    if (value === &#x27;Square&#x27;) {
-      value = &#x27;Circle&#x27;;
-      geometryFunction = ol.interaction.Draw.createRegularPolygon(4);
-    } else if (value === &#x27;Box&#x27;) {
-      value = &#x27;LineString&#x27;;
-      maxPoints = 2;
-      geometryFunction = function(coordinates, geometry) {
+    if (value &#x3D;&#x3D;&#x3D; &#x27;Square&#x27;) {
+      value &#x3D; &#x27;Circle&#x27;;
+      geometryFunction &#x3D; ol.interaction.Draw.createRegularPolygon(4);
+    } else if (value &#x3D;&#x3D;&#x3D; &#x27;Box&#x27;) {
+      value &#x3D; &#x27;LineString&#x27;;
+      maxPoints &#x3D; 2;
+      geometryFunction &#x3D; function(coordinates, geometry) {
         if (!geometry) {
-          geometry = new ol.geom.Polygon(null);
+          geometry &#x3D; new ol.geom.Polygon(null);
         }
-        var start = coordinates[0];
-        var end = coordinates[1];
+        var start &#x3D; coordinates[0];
+        var end &#x3D; coordinates[1];
         geometry.setCoordinates([
           [start, [start[0], end[1]], end, [end[0], start[1]], start]
         ]);
         return geometry;
       };
     }
-    draw = new ol.interaction.Draw({
+    draw &#x3D; new ol.interaction.Draw({
       source: source,
       type: /** @type {ol.geom.GeometryType} */ (value),
       geometryFunction: geometryFunction,
@@ -134,7 +134,7 @@ function addInteraction() {
  * Let user change the geometry type.
  * @param {Event} e Change event.
  */
-typeSelect.onchange = function(e) {
+typeSelect.onchange &#x3D; function(e) {
   map.removeInteraction(draw);
   addInteraction();
 };
@@ -142,19 +142,19 @@ typeSelect.onchange = function(e) {
 addInteraction();
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;form class=&quot;form-inline&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form class&#x3D;&quot;form-inline&quot;&gt;
       &lt;label&gt;Geometry type &amp;nbsp;&lt;/label&gt;
-      &lt;select id=&quot;type&quot;&gt;
-        &lt;option value=&quot;None&quot;&gt;None&lt;/option&gt;
-        &lt;option value=&quot;Point&quot;&gt;Point&lt;/option&gt;
-        &lt;option value=&quot;LineString&quot;&gt;LineString&lt;/option&gt;
-        &lt;option value=&quot;Polygon&quot;&gt;Polygon&lt;/option&gt;
-        &lt;option value=&quot;Circle&quot;&gt;Circle&lt;/option&gt;
-        &lt;option value=&quot;Square&quot;&gt;Square&lt;/option&gt;
-        &lt;option value=&quot;Box&quot;&gt;Box&lt;/option&gt;
+      &lt;select id&#x3D;&quot;type&quot;&gt;
+        &lt;option value&#x3D;&quot;None&quot;&gt;None&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Point&quot;&gt;Point&lt;/option&gt;
+        &lt;option value&#x3D;&quot;LineString&quot;&gt;LineString&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Polygon&quot;&gt;Polygon&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Square&quot;&gt;Square&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Box&quot;&gt;Box&lt;/option&gt;
       &lt;/select&gt;
     &lt;/form&gt;
   &lt;/div&gt;
@@ -177,19 +177,19 @@ addInteraction();
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;form class=&quot;form-inline&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form class&#x3D;&quot;form-inline&quot;&gt;
       &lt;label&gt;Geometry type &amp;nbsp;&lt;/label&gt;
-      &lt;select id=&quot;type&quot;&gt;
-        &lt;option value=&quot;None&quot;&gt;None&lt;/option&gt;
-        &lt;option value=&quot;Point&quot;&gt;Point&lt;/option&gt;
-        &lt;option value=&quot;LineString&quot;&gt;LineString&lt;/option&gt;
-        &lt;option value=&quot;Polygon&quot;&gt;Polygon&lt;/option&gt;
-        &lt;option value=&quot;Circle&quot;&gt;Circle&lt;/option&gt;
-        &lt;option value=&quot;Square&quot;&gt;Square&lt;/option&gt;
-        &lt;option value=&quot;Box&quot;&gt;Box&lt;/option&gt;
+      &lt;select id&#x3D;&quot;type&quot;&gt;
+        &lt;option value&#x3D;&quot;None&quot;&gt;None&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Point&quot;&gt;Point&lt;/option&gt;
+        &lt;option value&#x3D;&quot;LineString&quot;&gt;LineString&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Polygon&quot;&gt;Polygon&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Square&quot;&gt;Square&lt;/option&gt;
+        &lt;option value&#x3D;&quot;Box&quot;&gt;Box&lt;/option&gt;
       &lt;/select&gt;
     &lt;/form&gt;
   &lt;/div&gt;
@@ -197,13 +197,13 @@ addInteraction();
 
 &lt;/div&gt;
 &lt;script&gt;
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var source = new ol.source.Vector({wrapX: false});
+var source &#x3D; new ol.source.Vector({wrapX: false});
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: source,
   style: new ol.style.Style({
     fill: new ol.style.Fill({
@@ -222,7 +222,7 @@ var vector = new ol.layer.Vector({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -231,32 +231,32 @@ var map = new ol.Map({
   })
 });
 
-var typeSelect = document.getElementById(&#x27;type&#x27;);
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 var draw; // global so we can remove it later
 function addInteraction() {
-  var value = typeSelect.value;
-  if (value !== &#x27;None&#x27;) {
+  var value &#x3D; typeSelect.value;
+  if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
     var geometryFunction, maxPoints;
-    if (value === &#x27;Square&#x27;) {
-      value = &#x27;Circle&#x27;;
-      geometryFunction = ol.interaction.Draw.createRegularPolygon(4);
-    } else if (value === &#x27;Box&#x27;) {
-      value = &#x27;LineString&#x27;;
-      maxPoints = 2;
-      geometryFunction = function(coordinates, geometry) {
+    if (value &#x3D;&#x3D;&#x3D; &#x27;Square&#x27;) {
+      value &#x3D; &#x27;Circle&#x27;;
+      geometryFunction &#x3D; ol.interaction.Draw.createRegularPolygon(4);
+    } else if (value &#x3D;&#x3D;&#x3D; &#x27;Box&#x27;) {
+      value &#x3D; &#x27;LineString&#x27;;
+      maxPoints &#x3D; 2;
+      geometryFunction &#x3D; function(coordinates, geometry) {
         if (!geometry) {
-          geometry = new ol.geom.Polygon(null);
+          geometry &#x3D; new ol.geom.Polygon(null);
         }
-        var start = coordinates[0];
-        var end = coordinates[1];
+        var start &#x3D; coordinates[0];
+        var end &#x3D; coordinates[1];
         geometry.setCoordinates([
           [start, [start[0], end[1]], end, [end[0], start[1]], start]
         ]);
         return geometry;
       };
     }
-    draw = new ol.interaction.Draw({
+    draw &#x3D; new ol.interaction.Draw({
       source: source,
       type: /** @type {ol.geom.GeometryType} */ (value),
       geometryFunction: geometryFunction,
@@ -271,7 +271,7 @@ function addInteraction() {
  * Let user change the geometry type.
  * @param {Event} e Change event.
  */
-typeSelect.onchange = function(e) {
+typeSelect.onchange &#x3D; function(e) {
   map.removeInteraction(draw);
   addInteraction();
 };

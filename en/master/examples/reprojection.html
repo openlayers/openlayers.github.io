@@ -81,49 +81,49 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 &#x27; +
-    &#x27;+x_0=400000 +y_0=-100000 +ellps=airy &#x27; +
-    &#x27;+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
-    &#x27;+units=m +no_defs&#x27;);
-var proj27700 = ol.proj.get(&#x27;EPSG:27700&#x27;);
+          <textarea class="hidden" name="js">proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
+    &#x27;+x_0&#x3D;400000 +y_0&#x3D;-100000 +ellps&#x3D;airy &#x27; +
+    &#x27;+towgs84&#x3D;446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
+    &#x27;+units&#x3D;m +no_defs&#x27;);
+var proj27700 &#x3D; ol.proj.get(&#x27;EPSG:27700&#x27;);
 proj27700.setExtent([0, 0, 700000, 1300000]);
 
-proj4.defs(&#x27;EPSG:23032&#x27;, &#x27;+proj=utm +zone=32 +ellps=intl &#x27; +
-    &#x27;+towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs&#x27;);
-var proj23032 = ol.proj.get(&#x27;EPSG:23032&#x27;);
+proj4.defs(&#x27;EPSG:23032&#x27;, &#x27;+proj&#x3D;utm +zone&#x3D;32 +ellps&#x3D;intl &#x27; +
+    &#x27;+towgs84&#x3D;-87,-98,-121,0,0,0,0 +units&#x3D;m +no_defs&#x27;);
+var proj23032 &#x3D; ol.proj.get(&#x27;EPSG:23032&#x27;);
 proj23032.setExtent([-1206118.71, 4021309.92, 1295389.00, 8051813.28]);
 
-proj4.defs(&#x27;EPSG:5479&#x27;, &#x27;+proj=lcc +lat_1=-76.66666666666667 +lat_2=&#x27; +
-    &#x27;-79.33333333333333 +lat_0=-78 +lon_0=163 +x_0=7000000 +y_0=5000000 &#x27; +
-    &#x27;+ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&#x27;);
-var proj5479 = ol.proj.get(&#x27;EPSG:5479&#x27;);
+proj4.defs(&#x27;EPSG:5479&#x27;, &#x27;+proj&#x3D;lcc +lat_1&#x3D;-76.66666666666667 +lat_2&#x3D;&#x27; +
+    &#x27;-79.33333333333333 +lat_0&#x3D;-78 +lon_0&#x3D;163 +x_0&#x3D;7000000 +y_0&#x3D;5000000 &#x27; +
+    &#x27;+ellps&#x3D;GRS80 +towgs84&#x3D;0,0,0,0,0,0,0 +units&#x3D;m +no_defs&#x27;);
+var proj5479 &#x3D; ol.proj.get(&#x27;EPSG:5479&#x27;);
 proj5479.setExtent([6825737.53, 4189159.80, 9633741.96, 5782472.71]);
 
-proj4.defs(&#x27;EPSG:21781&#x27;, &#x27;+proj=somerc +lat_0=46.95240555555556 &#x27; +
-    &#x27;+lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel &#x27; +
-    &#x27;+towgs84=674.4,15.1,405.3,0,0,0,0 +units=m +no_defs&#x27;);
-var proj21781 = ol.proj.get(&#x27;EPSG:21781&#x27;);
+proj4.defs(&#x27;EPSG:21781&#x27;, &#x27;+proj&#x3D;somerc +lat_0&#x3D;46.95240555555556 &#x27; +
+    &#x27;+lon_0&#x3D;7.439583333333333 +k_0&#x3D;1 +x_0&#x3D;600000 +y_0&#x3D;200000 +ellps&#x3D;bessel &#x27; +
+    &#x27;+towgs84&#x3D;674.4,15.1,405.3,0,0,0,0 +units&#x3D;m +no_defs&#x27;);
+var proj21781 &#x3D; ol.proj.get(&#x27;EPSG:21781&#x27;);
 proj21781.setExtent([485071.54, 75346.36, 828515.78, 299941.84]);
 
-proj4.defs(&#x27;EPSG:3413&#x27;, &#x27;+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 &#x27; +
-    &#x27;+x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs&#x27;);
-var proj3413 = ol.proj.get(&#x27;EPSG:3413&#x27;);
+proj4.defs(&#x27;EPSG:3413&#x27;, &#x27;+proj&#x3D;stere +lat_0&#x3D;90 +lat_ts&#x3D;70 +lon_0&#x3D;-45 +k&#x3D;1 &#x27; +
+    &#x27;+x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 +units&#x3D;m +no_defs&#x27;);
+var proj3413 &#x3D; ol.proj.get(&#x27;EPSG:3413&#x27;);
 proj3413.setExtent([-4194304, -4194304, 4194304, 4194304]);
 
-proj4.defs(&#x27;EPSG:2163&#x27;, &#x27;+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 &#x27; +
-    &#x27;+a=6370997 +b=6370997 +units=m +no_defs&#x27;);
-var proj2163 = ol.proj.get(&#x27;EPSG:2163&#x27;);
+proj4.defs(&#x27;EPSG:2163&#x27;, &#x27;+proj&#x3D;laea +lat_0&#x3D;45 +lon_0&#x3D;-100 +x_0&#x3D;0 +y_0&#x3D;0 &#x27; +
+    &#x27;+a&#x3D;6370997 +b&#x3D;6370997 +units&#x3D;m +no_defs&#x27;);
+var proj2163 &#x3D; ol.proj.get(&#x27;EPSG:2163&#x27;);
 proj2163.setExtent([-8040784.5135, -2577524.9210, 3668901.4484, 4785105.1096]);
 
-proj4.defs(&#x27;ESRI:54009&#x27;, &#x27;+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 &#x27; +
-    &#x27;+units=m +no_defs&#x27;);
-var proj54009 = ol.proj.get(&#x27;ESRI:54009&#x27;);
+proj4.defs(&#x27;ESRI:54009&#x27;, &#x27;+proj&#x3D;moll +lon_0&#x3D;0 +x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 &#x27; +
+    &#x27;+units&#x3D;m +no_defs&#x27;);
+var proj54009 &#x3D; ol.proj.get(&#x27;ESRI:54009&#x27;);
 proj54009.setExtent([-18e6, -9e6, 18e6, 9e6]);
 
 
-var layers = [];
+var layers &#x3D; [];
 
-layers[&#x27;bng&#x27;] = new ol.layer.Tile({
+layers[&#x27;bng&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     projection: &#x27;EPSG:27700&#x27;,
     url: &#x27;http://tileserver.maptiler.com/miniscale/{z}/{x}/{y}.png&#x27;,
@@ -132,11 +132,11 @@ layers[&#x27;bng&#x27;] = new ol.layer.Tile({
   })
 });
 
-layers[&#x27;mapquest&#x27;] = new ol.layer.Tile({
+layers[&#x27;mapquest&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
 });
 
-layers[&#x27;wms4326&#x27;] = new ol.layer.Tile({
+layers[&#x27;wms4326&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.TileWMS({
     url: &#x27;http://demo.boundlessgeo.com/geoserver/wms&#x27;,
     crossOrigin: &#x27;&#x27;,
@@ -147,11 +147,11 @@ layers[&#x27;wms4326&#x27;] = new ol.layer.Tile({
   })
 });
 
-layers[&#x27;wms21781&#x27;] = new ol.layer.Tile({
+layers[&#x27;wms21781&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.TileWMS({
     attributions: [new ol.Attribution({
       html: &#x27;&amp;copy; &#x27; +
-          &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+          &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
           &#x27;en/home.html&quot;&gt;&#x27; +
           &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
     })],
@@ -165,21 +165,21 @@ layers[&#x27;wms21781&#x27;] = new ol.layer.Tile({
   })
 });
 
-var parser = new ol.format.WMTSCapabilities();
+var parser &#x3D; new ol.format.WMTSCapabilities();
 $.ajax(&#x27;http://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
-    &#x27;wmts.cgi?SERVICE=WMTS&amp;request=GetCapabilities&#x27;).then(function(response) {
-  var result = parser.read(response);
-  var options = ol.source.WMTS.optionsFromCapabilities(result,
+    &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;).then(function(response) {
+  var result &#x3D; parser.read(response);
+  var options &#x3D; ol.source.WMTS.optionsFromCapabilities(result,
       {layer: &#x27;OSM_Land_Mask&#x27;, matrixSet: &#x27;EPSG3413_250m&#x27;});
-  options.crossOrigin = &#x27;&#x27;;
-  options.projection = &#x27;EPSG:3413&#x27;;
-  options.wrapX = false;
-  layers[&#x27;wmts3413&#x27;] = new ol.layer.Tile({
+  options.crossOrigin &#x3D; &#x27;&#x27;;
+  options.projection &#x3D; &#x27;EPSG:3413&#x27;;
+  options.wrapX &#x3D; false;
+  layers[&#x27;wmts3413&#x27;] &#x3D; new ol.layer.Tile({
     source: new ol.source.WMTS(options)
   });
 });
 
-layers[&#x27;grandcanyon&#x27;] = new ol.layer.Tile({
+layers[&#x27;grandcanyon&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     url: &#x27;http://tileserver.maptiler.com/grandcanyon@2x/{z}/{x}/{y}.png&#x27;,
     crossOrigin: &#x27;&#x27;,
@@ -187,19 +187,19 @@ layers[&#x27;grandcanyon&#x27;] = new ol.layer.Tile({
     maxZoom: 15,
     attributions: [new ol.Attribution({
       html: &#x27;Tiles &amp;copy; USGS, rendered with &#x27; +
-          &#x27;&lt;a href=&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;
+          &#x27;&lt;a href&#x3D;&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;
     })]
   })
 });
 
-var startResolution =
+var startResolution &#x3D;
     ol.extent.getWidth(ol.proj.get(&#x27;EPSG:3857&#x27;).getExtent()) / 256;
-var resolutions = new Array(22);
-for (var i = 0, ii = resolutions.length; i &lt; ii; ++i) {
-  resolutions[i] = startResolution / Math.pow(2, i);
+var resolutions &#x3D; new Array(22);
+for (var i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
+  resolutions[i] &#x3D; startResolution / Math.pow(2, i);
 }
 
-layers[&#x27;states&#x27;] = new ol.layer.Tile({
+layers[&#x27;states&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.TileWMS({
     url: &#x27;http://demo.boundlessgeo.com/geoserver/wms&#x27;,
     crossOrigin: &#x27;&#x27;,
@@ -215,7 +215,7 @@ layers[&#x27;states&#x27;] = new ol.layer.Tile({
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     layers[&#x27;mapquest&#x27;],
     layers[&#x27;bng&#x27;]
@@ -229,16 +229,16 @@ var map = new ol.Map({
 });
 
 
-var baseLayerSelect = document.getElementById(&#x27;base-layer&#x27;);
-var overlayLayerSelect = document.getElementById(&#x27;overlay-layer&#x27;);
-var viewProjSelect = document.getElementById(&#x27;view-projection&#x27;);
-var renderEdgesCheckbox = document.getElementById(&#x27;render-edges&#x27;);
-var renderEdges = false;
+var baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
+var overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
+var viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
+var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+var renderEdges &#x3D; false;
 
 function updateViewProjection() {
-  var newProj = ol.proj.get(viewProjSelect.value);
-  var newProjExtent = newProj.getExtent();
-  var newView = new ol.View({
+  var newProj &#x3D; ol.proj.get(viewProjSelect.value);
+  var newProjExtent &#x3D; newProj.getExtent();
+  var newView &#x3D; new ol.View({
     projection: newProj,
     center: ol.extent.getCenter(newProjExtent || [0, 0, 0, 0]),
     zoom: 0,
@@ -247,7 +247,7 @@ function updateViewProjection() {
   map.setView(newView);
 
   // Example how to prevent double occurence of map by limiting layer extent
-  if (newProj == ol.proj.get(&#x27;EPSG:3857&#x27;)) {
+  if (newProj &#x3D;&#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;)) {
     layers[&#x27;bng&#x27;].setExtent([-1057216, 6405988, 404315, 8759696]);
   } else {
     layers[&#x27;bng&#x27;].setExtent(undefined);
@@ -258,15 +258,15 @@ function updateViewProjection() {
 /**
  * @param {Event} e Change event.
  */
-viewProjSelect.onchange = function(e) {
+viewProjSelect.onchange &#x3D; function(e) {
   updateViewProjection();
 };
 
 updateViewProjection();
 
-var updateRenderEdgesOnLayer = function(layer) {
+var updateRenderEdgesOnLayer &#x3D; function(layer) {
   if (layer instanceof ol.layer.Tile) {
-    var source = layer.getSource();
+    var source &#x3D; layer.getSource();
     if (source instanceof ol.source.TileImage) {
       source.setRenderReprojectionEdges(renderEdges);
     }
@@ -277,8 +277,8 @@ var updateRenderEdgesOnLayer = function(layer) {
 /**
  * @param {Event} e Change event.
  */
-baseLayerSelect.onchange = function(e) {
-  var layer = layers[baseLayerSelect.value];
+baseLayerSelect.onchange &#x3D; function(e) {
+  var layer &#x3D; layers[baseLayerSelect.value];
   if (layer) {
     layer.setOpacity(1);
     updateRenderEdgesOnLayer(layer);
@@ -290,8 +290,8 @@ baseLayerSelect.onchange = function(e) {
 /**
  * @param {Event} e Change event.
  */
-overlayLayerSelect.onchange = function(e) {
-  var layer = layers[overlayLayerSelect.value];
+overlayLayerSelect.onchange &#x3D; function(e) {
+  var layer &#x3D; layers[overlayLayerSelect.value];
   if (layer) {
     layer.setOpacity(0.7);
     updateRenderEdgesOnLayer(layer);
@@ -303,50 +303,50 @@ overlayLayerSelect.onchange = function(e) {
 /**
  * @param {Event} e Change event.
  */
-renderEdgesCheckbox.onchange = function(e) {
-  renderEdges = renderEdgesCheckbox.checked;
+renderEdgesCheckbox.onchange &#x3D; function(e) {
+  renderEdges &#x3D; renderEdgesCheckbox.checked;
   map.getLayers().forEach(function(layer) {
     updateRenderEdgesOnLayer(layer);
   });
 };
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;form class=&quot;form-inline&quot;&gt;
-    &lt;div class=&quot;col-md-3&quot;&gt;
+  &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+    &lt;div class&#x3D;&quot;col-md-3&quot;&gt;
       &lt;label&gt;Base map:&lt;/label&gt;
-      &lt;select id=&quot;base-layer&quot;&gt;
-        &lt;option value=&quot;mapquest&quot;&gt;MapQuest (EPSG:3857)&lt;/option&gt;
-        &lt;option value=&quot;wms4326&quot;&gt;WMS (EPSG:4326)&lt;/option&gt;
+      &lt;select id&#x3D;&quot;base-layer&quot;&gt;
+        &lt;option value&#x3D;&quot;mapquest&quot;&gt;MapQuest (EPSG:3857)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;wms4326&quot;&gt;WMS (EPSG:4326)&lt;/option&gt;
       &lt;/select&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
       &lt;label&gt;Overlay map:&lt;/label&gt;
-      &lt;select id=&quot;overlay-layer&quot;&gt;
-        &lt;option value=&quot;bng&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
-        &lt;option value=&quot;wms21781&quot;&gt;Swisstopo WMS (EPSG:21781)&lt;/option&gt;
-        &lt;option value=&quot;wmts3413&quot;&gt;NASA Arctic WMTS (EPSG:3413)&lt;/option&gt;
-        &lt;option value=&quot;grandcanyon&quot;&gt;Grand Canyon HiDPI (EPSG:3857)&lt;/option&gt;
-        &lt;option value=&quot;states&quot;&gt;United States (EPSG:3857)&lt;/option&gt;
+      &lt;select id&#x3D;&quot;overlay-layer&quot;&gt;
+        &lt;option value&#x3D;&quot;bng&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;wms21781&quot;&gt;Swisstopo WMS (EPSG:21781)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;wmts3413&quot;&gt;NASA Arctic WMTS (EPSG:3413)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;grandcanyon&quot;&gt;Grand Canyon HiDPI (EPSG:3857)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;states&quot;&gt;United States (EPSG:3857)&lt;/option&gt;
       &lt;/select&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;col-md-5&quot;&gt;
+    &lt;div class&#x3D;&quot;col-md-5&quot;&gt;
       &lt;label&gt;View projection:&lt;/label&gt;
-      &lt;select id=&quot;view-projection&quot;&gt;
-        &lt;option value=&quot;EPSG:3857&quot;&gt;Spherical Mercator (EPSG:3857)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:4326&quot;&gt;WGS 84 (EPSG:4326)&lt;/option&gt;
-        &lt;option value=&quot;ESRI:54009&quot;&gt;Mollweide (ESRI:54009)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:27700&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:23032&quot;&gt;ED50 / UTM zone 32N (EPSG:23032)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:2163&quot;&gt;US National Atlas Equal Area (EPSG:2163)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:3413&quot;&gt;NSIDC Polar Stereographic North (EPSG:3413)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:5479&quot;&gt;RSRGD2000 / MSLC2000 (EPSG:5479)&lt;/option&gt;
+      &lt;select id&#x3D;&quot;view-projection&quot;&gt;
+        &lt;option value&#x3D;&quot;EPSG:3857&quot;&gt;Spherical Mercator (EPSG:3857)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:4326&quot;&gt;WGS 84 (EPSG:4326)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;ESRI:54009&quot;&gt;Mollweide (ESRI:54009)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:27700&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:23032&quot;&gt;ED50 / UTM zone 32N (EPSG:23032)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:2163&quot;&gt;US National Atlas Equal Area (EPSG:2163)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:3413&quot;&gt;NSIDC Polar Stereographic North (EPSG:3413)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:5479&quot;&gt;RSRGD2000 / MSLC2000 (EPSG:5479)&lt;/option&gt;
       &lt;/select&gt;
     &lt;/div&gt;
-    &lt;label for=&quot;render-edges&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt; (only displayed on reprojected data)
+    &lt;label for&#x3D;&quot;render-edges&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt; (only displayed on reprojected data)
   &lt;/form&gt;
 &lt;/div&gt;
 </textarea>
@@ -362,95 +362,95 @@ renderEdgesCheckbox.onchange = function(e) {
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;form class=&quot;form-inline&quot;&gt;
-    &lt;div class=&quot;col-md-3&quot;&gt;
+  &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+    &lt;div class&#x3D;&quot;col-md-3&quot;&gt;
       &lt;label&gt;Base map:&lt;/label&gt;
-      &lt;select id=&quot;base-layer&quot;&gt;
-        &lt;option value=&quot;mapquest&quot;&gt;MapQuest (EPSG:3857)&lt;/option&gt;
-        &lt;option value=&quot;wms4326&quot;&gt;WMS (EPSG:4326)&lt;/option&gt;
+      &lt;select id&#x3D;&quot;base-layer&quot;&gt;
+        &lt;option value&#x3D;&quot;mapquest&quot;&gt;MapQuest (EPSG:3857)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;wms4326&quot;&gt;WMS (EPSG:4326)&lt;/option&gt;
       &lt;/select&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
       &lt;label&gt;Overlay map:&lt;/label&gt;
-      &lt;select id=&quot;overlay-layer&quot;&gt;
-        &lt;option value=&quot;bng&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
-        &lt;option value=&quot;wms21781&quot;&gt;Swisstopo WMS (EPSG:21781)&lt;/option&gt;
-        &lt;option value=&quot;wmts3413&quot;&gt;NASA Arctic WMTS (EPSG:3413)&lt;/option&gt;
-        &lt;option value=&quot;grandcanyon&quot;&gt;Grand Canyon HiDPI (EPSG:3857)&lt;/option&gt;
-        &lt;option value=&quot;states&quot;&gt;United States (EPSG:3857)&lt;/option&gt;
+      &lt;select id&#x3D;&quot;overlay-layer&quot;&gt;
+        &lt;option value&#x3D;&quot;bng&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;wms21781&quot;&gt;Swisstopo WMS (EPSG:21781)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;wmts3413&quot;&gt;NASA Arctic WMTS (EPSG:3413)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;grandcanyon&quot;&gt;Grand Canyon HiDPI (EPSG:3857)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;states&quot;&gt;United States (EPSG:3857)&lt;/option&gt;
       &lt;/select&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;col-md-5&quot;&gt;
+    &lt;div class&#x3D;&quot;col-md-5&quot;&gt;
       &lt;label&gt;View projection:&lt;/label&gt;
-      &lt;select id=&quot;view-projection&quot;&gt;
-        &lt;option value=&quot;EPSG:3857&quot;&gt;Spherical Mercator (EPSG:3857)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:4326&quot;&gt;WGS 84 (EPSG:4326)&lt;/option&gt;
-        &lt;option value=&quot;ESRI:54009&quot;&gt;Mollweide (ESRI:54009)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:27700&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:23032&quot;&gt;ED50 / UTM zone 32N (EPSG:23032)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:2163&quot;&gt;US National Atlas Equal Area (EPSG:2163)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:3413&quot;&gt;NSIDC Polar Stereographic North (EPSG:3413)&lt;/option&gt;
-        &lt;option value=&quot;EPSG:5479&quot;&gt;RSRGD2000 / MSLC2000 (EPSG:5479)&lt;/option&gt;
+      &lt;select id&#x3D;&quot;view-projection&quot;&gt;
+        &lt;option value&#x3D;&quot;EPSG:3857&quot;&gt;Spherical Mercator (EPSG:3857)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:4326&quot;&gt;WGS 84 (EPSG:4326)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;ESRI:54009&quot;&gt;Mollweide (ESRI:54009)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:27700&quot;&gt;British National Grid (EPSG:27700)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:23032&quot;&gt;ED50 / UTM zone 32N (EPSG:23032)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:2163&quot;&gt;US National Atlas Equal Area (EPSG:2163)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:3413&quot;&gt;NSIDC Polar Stereographic North (EPSG:3413)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;EPSG:5479&quot;&gt;RSRGD2000 / MSLC2000 (EPSG:5479)&lt;/option&gt;
       &lt;/select&gt;
     &lt;/div&gt;
-    &lt;label for=&quot;render-edges&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt; (only displayed on reprojected data)
+    &lt;label for&#x3D;&quot;render-edges&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt; (only displayed on reprojected data)
   &lt;/form&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 &#x27; +
-    &#x27;+x_0=400000 +y_0=-100000 +ellps=airy &#x27; +
-    &#x27;+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
-    &#x27;+units=m +no_defs&#x27;);
-var proj27700 = ol.proj.get(&#x27;EPSG:27700&#x27;);
+proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
+    &#x27;+x_0&#x3D;400000 +y_0&#x3D;-100000 +ellps&#x3D;airy &#x27; +
+    &#x27;+towgs84&#x3D;446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
+    &#x27;+units&#x3D;m +no_defs&#x27;);
+var proj27700 &#x3D; ol.proj.get(&#x27;EPSG:27700&#x27;);
 proj27700.setExtent([0, 0, 700000, 1300000]);
 
-proj4.defs(&#x27;EPSG:23032&#x27;, &#x27;+proj=utm +zone=32 +ellps=intl &#x27; +
-    &#x27;+towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs&#x27;);
-var proj23032 = ol.proj.get(&#x27;EPSG:23032&#x27;);
+proj4.defs(&#x27;EPSG:23032&#x27;, &#x27;+proj&#x3D;utm +zone&#x3D;32 +ellps&#x3D;intl &#x27; +
+    &#x27;+towgs84&#x3D;-87,-98,-121,0,0,0,0 +units&#x3D;m +no_defs&#x27;);
+var proj23032 &#x3D; ol.proj.get(&#x27;EPSG:23032&#x27;);
 proj23032.setExtent([-1206118.71, 4021309.92, 1295389.00, 8051813.28]);
 
-proj4.defs(&#x27;EPSG:5479&#x27;, &#x27;+proj=lcc +lat_1=-76.66666666666667 +lat_2=&#x27; +
-    &#x27;-79.33333333333333 +lat_0=-78 +lon_0=163 +x_0=7000000 +y_0=5000000 &#x27; +
-    &#x27;+ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs&#x27;);
-var proj5479 = ol.proj.get(&#x27;EPSG:5479&#x27;);
+proj4.defs(&#x27;EPSG:5479&#x27;, &#x27;+proj&#x3D;lcc +lat_1&#x3D;-76.66666666666667 +lat_2&#x3D;&#x27; +
+    &#x27;-79.33333333333333 +lat_0&#x3D;-78 +lon_0&#x3D;163 +x_0&#x3D;7000000 +y_0&#x3D;5000000 &#x27; +
+    &#x27;+ellps&#x3D;GRS80 +towgs84&#x3D;0,0,0,0,0,0,0 +units&#x3D;m +no_defs&#x27;);
+var proj5479 &#x3D; ol.proj.get(&#x27;EPSG:5479&#x27;);
 proj5479.setExtent([6825737.53, 4189159.80, 9633741.96, 5782472.71]);
 
-proj4.defs(&#x27;EPSG:21781&#x27;, &#x27;+proj=somerc +lat_0=46.95240555555556 &#x27; +
-    &#x27;+lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel &#x27; +
-    &#x27;+towgs84=674.4,15.1,405.3,0,0,0,0 +units=m +no_defs&#x27;);
-var proj21781 = ol.proj.get(&#x27;EPSG:21781&#x27;);
+proj4.defs(&#x27;EPSG:21781&#x27;, &#x27;+proj&#x3D;somerc +lat_0&#x3D;46.95240555555556 &#x27; +
+    &#x27;+lon_0&#x3D;7.439583333333333 +k_0&#x3D;1 +x_0&#x3D;600000 +y_0&#x3D;200000 +ellps&#x3D;bessel &#x27; +
+    &#x27;+towgs84&#x3D;674.4,15.1,405.3,0,0,0,0 +units&#x3D;m +no_defs&#x27;);
+var proj21781 &#x3D; ol.proj.get(&#x27;EPSG:21781&#x27;);
 proj21781.setExtent([485071.54, 75346.36, 828515.78, 299941.84]);
 
-proj4.defs(&#x27;EPSG:3413&#x27;, &#x27;+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 &#x27; +
-    &#x27;+x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs&#x27;);
-var proj3413 = ol.proj.get(&#x27;EPSG:3413&#x27;);
+proj4.defs(&#x27;EPSG:3413&#x27;, &#x27;+proj&#x3D;stere +lat_0&#x3D;90 +lat_ts&#x3D;70 +lon_0&#x3D;-45 +k&#x3D;1 &#x27; +
+    &#x27;+x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 +units&#x3D;m +no_defs&#x27;);
+var proj3413 &#x3D; ol.proj.get(&#x27;EPSG:3413&#x27;);
 proj3413.setExtent([-4194304, -4194304, 4194304, 4194304]);
 
-proj4.defs(&#x27;EPSG:2163&#x27;, &#x27;+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 &#x27; +
-    &#x27;+a=6370997 +b=6370997 +units=m +no_defs&#x27;);
-var proj2163 = ol.proj.get(&#x27;EPSG:2163&#x27;);
+proj4.defs(&#x27;EPSG:2163&#x27;, &#x27;+proj&#x3D;laea +lat_0&#x3D;45 +lon_0&#x3D;-100 +x_0&#x3D;0 +y_0&#x3D;0 &#x27; +
+    &#x27;+a&#x3D;6370997 +b&#x3D;6370997 +units&#x3D;m +no_defs&#x27;);
+var proj2163 &#x3D; ol.proj.get(&#x27;EPSG:2163&#x27;);
 proj2163.setExtent([-8040784.5135, -2577524.9210, 3668901.4484, 4785105.1096]);
 
-proj4.defs(&#x27;ESRI:54009&#x27;, &#x27;+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 &#x27; +
-    &#x27;+units=m +no_defs&#x27;);
-var proj54009 = ol.proj.get(&#x27;ESRI:54009&#x27;);
+proj4.defs(&#x27;ESRI:54009&#x27;, &#x27;+proj&#x3D;moll +lon_0&#x3D;0 +x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 &#x27; +
+    &#x27;+units&#x3D;m +no_defs&#x27;);
+var proj54009 &#x3D; ol.proj.get(&#x27;ESRI:54009&#x27;);
 proj54009.setExtent([-18e6, -9e6, 18e6, 9e6]);
 
 
-var layers = [];
+var layers &#x3D; [];
 
-layers[&#x27;bng&#x27;] = new ol.layer.Tile({
+layers[&#x27;bng&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     projection: &#x27;EPSG:27700&#x27;,
     url: &#x27;http://tileserver.maptiler.com/miniscale/{z}/{x}/{y}.png&#x27;,
@@ -459,11 +459,11 @@ layers[&#x27;bng&#x27;] = new ol.layer.Tile({
   })
 });
 
-layers[&#x27;mapquest&#x27;] = new ol.layer.Tile({
+layers[&#x27;mapquest&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
 });
 
-layers[&#x27;wms4326&#x27;] = new ol.layer.Tile({
+layers[&#x27;wms4326&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.TileWMS({
     url: &#x27;http://demo.boundlessgeo.com/geoserver/wms&#x27;,
     crossOrigin: &#x27;&#x27;,
@@ -474,11 +474,11 @@ layers[&#x27;wms4326&#x27;] = new ol.layer.Tile({
   })
 });
 
-layers[&#x27;wms21781&#x27;] = new ol.layer.Tile({
+layers[&#x27;wms21781&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.TileWMS({
     attributions: [new ol.Attribution({
       html: &#x27;&amp;copy; &#x27; +
-          &#x27;&lt;a href=&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
+          &#x27;&lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
           &#x27;en/home.html&quot;&gt;&#x27; +
           &#x27;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;
     })],
@@ -492,21 +492,21 @@ layers[&#x27;wms21781&#x27;] = new ol.layer.Tile({
   })
 });
 
-var parser = new ol.format.WMTSCapabilities();
+var parser &#x3D; new ol.format.WMTSCapabilities();
 $.ajax(&#x27;http://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
-    &#x27;wmts.cgi?SERVICE=WMTS&amp;request=GetCapabilities&#x27;).then(function(response) {
-  var result = parser.read(response);
-  var options = ol.source.WMTS.optionsFromCapabilities(result,
+    &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;).then(function(response) {
+  var result &#x3D; parser.read(response);
+  var options &#x3D; ol.source.WMTS.optionsFromCapabilities(result,
       {layer: &#x27;OSM_Land_Mask&#x27;, matrixSet: &#x27;EPSG3413_250m&#x27;});
-  options.crossOrigin = &#x27;&#x27;;
-  options.projection = &#x27;EPSG:3413&#x27;;
-  options.wrapX = false;
-  layers[&#x27;wmts3413&#x27;] = new ol.layer.Tile({
+  options.crossOrigin &#x3D; &#x27;&#x27;;
+  options.projection &#x3D; &#x27;EPSG:3413&#x27;;
+  options.wrapX &#x3D; false;
+  layers[&#x27;wmts3413&#x27;] &#x3D; new ol.layer.Tile({
     source: new ol.source.WMTS(options)
   });
 });
 
-layers[&#x27;grandcanyon&#x27;] = new ol.layer.Tile({
+layers[&#x27;grandcanyon&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     url: &#x27;http://tileserver.maptiler.com/grandcanyon@2x/{z}/{x}/{y}.png&#x27;,
     crossOrigin: &#x27;&#x27;,
@@ -514,19 +514,19 @@ layers[&#x27;grandcanyon&#x27;] = new ol.layer.Tile({
     maxZoom: 15,
     attributions: [new ol.Attribution({
       html: &#x27;Tiles &amp;copy; USGS, rendered with &#x27; +
-          &#x27;&lt;a href=&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;
+          &#x27;&lt;a href&#x3D;&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;
     })]
   })
 });
 
-var startResolution =
+var startResolution &#x3D;
     ol.extent.getWidth(ol.proj.get(&#x27;EPSG:3857&#x27;).getExtent()) / 256;
-var resolutions = new Array(22);
-for (var i = 0, ii = resolutions.length; i &lt; ii; ++i) {
-  resolutions[i] = startResolution / Math.pow(2, i);
+var resolutions &#x3D; new Array(22);
+for (var i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
+  resolutions[i] &#x3D; startResolution / Math.pow(2, i);
 }
 
-layers[&#x27;states&#x27;] = new ol.layer.Tile({
+layers[&#x27;states&#x27;] &#x3D; new ol.layer.Tile({
   source: new ol.source.TileWMS({
     url: &#x27;http://demo.boundlessgeo.com/geoserver/wms&#x27;,
     crossOrigin: &#x27;&#x27;,
@@ -542,7 +542,7 @@ layers[&#x27;states&#x27;] = new ol.layer.Tile({
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     layers[&#x27;mapquest&#x27;],
     layers[&#x27;bng&#x27;]
@@ -556,16 +556,16 @@ var map = new ol.Map({
 });
 
 
-var baseLayerSelect = document.getElementById(&#x27;base-layer&#x27;);
-var overlayLayerSelect = document.getElementById(&#x27;overlay-layer&#x27;);
-var viewProjSelect = document.getElementById(&#x27;view-projection&#x27;);
-var renderEdgesCheckbox = document.getElementById(&#x27;render-edges&#x27;);
-var renderEdges = false;
+var baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
+var overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
+var viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
+var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+var renderEdges &#x3D; false;
 
 function updateViewProjection() {
-  var newProj = ol.proj.get(viewProjSelect.value);
-  var newProjExtent = newProj.getExtent();
-  var newView = new ol.View({
+  var newProj &#x3D; ol.proj.get(viewProjSelect.value);
+  var newProjExtent &#x3D; newProj.getExtent();
+  var newView &#x3D; new ol.View({
     projection: newProj,
     center: ol.extent.getCenter(newProjExtent || [0, 0, 0, 0]),
     zoom: 0,
@@ -574,7 +574,7 @@ function updateViewProjection() {
   map.setView(newView);
 
   // Example how to prevent double occurence of map by limiting layer extent
-  if (newProj == ol.proj.get(&#x27;EPSG:3857&#x27;)) {
+  if (newProj &#x3D;&#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;)) {
     layers[&#x27;bng&#x27;].setExtent([-1057216, 6405988, 404315, 8759696]);
   } else {
     layers[&#x27;bng&#x27;].setExtent(undefined);
@@ -585,15 +585,15 @@ function updateViewProjection() {
 /**
  * @param {Event} e Change event.
  */
-viewProjSelect.onchange = function(e) {
+viewProjSelect.onchange &#x3D; function(e) {
   updateViewProjection();
 };
 
 updateViewProjection();
 
-var updateRenderEdgesOnLayer = function(layer) {
+var updateRenderEdgesOnLayer &#x3D; function(layer) {
   if (layer instanceof ol.layer.Tile) {
-    var source = layer.getSource();
+    var source &#x3D; layer.getSource();
     if (source instanceof ol.source.TileImage) {
       source.setRenderReprojectionEdges(renderEdges);
     }
@@ -604,8 +604,8 @@ var updateRenderEdgesOnLayer = function(layer) {
 /**
  * @param {Event} e Change event.
  */
-baseLayerSelect.onchange = function(e) {
-  var layer = layers[baseLayerSelect.value];
+baseLayerSelect.onchange &#x3D; function(e) {
+  var layer &#x3D; layers[baseLayerSelect.value];
   if (layer) {
     layer.setOpacity(1);
     updateRenderEdgesOnLayer(layer);
@@ -617,8 +617,8 @@ baseLayerSelect.onchange = function(e) {
 /**
  * @param {Event} e Change event.
  */
-overlayLayerSelect.onchange = function(e) {
-  var layer = layers[overlayLayerSelect.value];
+overlayLayerSelect.onchange &#x3D; function(e) {
+  var layer &#x3D; layers[overlayLayerSelect.value];
   if (layer) {
     layer.setOpacity(0.7);
     updateRenderEdgesOnLayer(layer);
@@ -630,8 +630,8 @@ overlayLayerSelect.onchange = function(e) {
 /**
  * @param {Event} e Change event.
  */
-renderEdgesCheckbox.onchange = function(e) {
-  renderEdges = renderEdgesCheckbox.checked;
+renderEdgesCheckbox.onchange &#x3D; function(e) {
+  renderEdges &#x3D; renderEdgesCheckbox.checked;
   map.getLayers().forEach(function(layer) {
     updateRenderEdgesOnLayer(layer);
   });

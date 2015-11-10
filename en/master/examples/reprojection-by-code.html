@@ -57,7 +57,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
@@ -72,14 +72,14 @@
 });
 
 
-var queryInput = document.getElementById(&#x27;epsg-query&#x27;);
-var searchButton = document.getElementById(&#x27;epsg-search&#x27;);
-var resultSpan = document.getElementById(&#x27;epsg-result&#x27;);
-var renderEdgesCheckbox = document.getElementById(&#x27;render-edges&#x27;);
+var queryInput &#x3D; document.getElementById(&#x27;epsg-query&#x27;);
+var searchButton &#x3D; document.getElementById(&#x27;epsg-search&#x27;);
+var resultSpan &#x3D; document.getElementById(&#x27;epsg-result&#x27;);
+var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
 
 function setProjection(code, name, proj4def, bbox) {
-  if (code === null || name === null || proj4def === null || bbox === null) {
-    resultSpan.innerHTML = &#x27;Nothing usable found, using EPSG:3857...&#x27;;
+  if (code &#x3D;&#x3D;&#x3D; null || name &#x3D;&#x3D;&#x3D; null || proj4def &#x3D;&#x3D;&#x3D; null || bbox &#x3D;&#x3D;&#x3D; null) {
+    resultSpan.innerHTML &#x3D; &#x27;Nothing usable found, using EPSG:3857...&#x27;;
     map.setView(new ol.View({
       projection: &#x27;EPSG:3857&#x27;,
       center: [0, 0],
@@ -88,23 +88,23 @@ function setProjection(code, name, proj4def, bbox) {
     return;
   }
 
-  resultSpan.innerHTML = &#x27;(&#x27; + code + &#x27;) &#x27; + name;
+  resultSpan.innerHTML &#x3D; &#x27;(&#x27; + code + &#x27;) &#x27; + name;
 
-  var newProjCode = &#x27;EPSG:&#x27; + code;
+  var newProjCode &#x3D; &#x27;EPSG:&#x27; + code;
   proj4.defs(newProjCode, proj4def);
-  var newProj = ol.proj.get(newProjCode);
-  var fromLonLat = ol.proj.getTransform(&#x27;EPSG:4326&#x27;, newProj);
+  var newProj &#x3D; ol.proj.get(newProjCode);
+  var fromLonLat &#x3D; ol.proj.getTransform(&#x27;EPSG:4326&#x27;, newProj);
 
   // very approximate calculation of projection extent
-  var extent = ol.extent.applyTransform(
+  var extent &#x3D; ol.extent.applyTransform(
       [bbox[1], bbox[2], bbox[3], bbox[0]], fromLonLat);
   newProj.setExtent(extent);
-  var newView = new ol.View({
+  var newView &#x3D; new ol.View({
     projection: newProj
   });
   map.setView(newView);
 
-  var size = map.getSize();
+  var size &#x3D; map.getSize();
   if (size) {
     newView.fit(extent, size);
   }
@@ -112,21 +112,21 @@ function setProjection(code, name, proj4def, bbox) {
 
 
 function search(query) {
-  resultSpan.innerHTML = &#x27;Searching...&#x27;;
+  resultSpan.innerHTML &#x3D; &#x27;Searching...&#x27;;
   $.ajax({
-    url: &#x27;http://epsg.io/?format=json&amp;q=&#x27; + query,
+    url: &#x27;http://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query,
     dataType: &#x27;jsonp&#x27;,
     success: function(response) {
       if (response) {
-        var results = response[&#x27;results&#x27;];
+        var results &#x3D; response[&#x27;results&#x27;];
         if (results &amp;&amp; results.length &gt; 0) {
-          for (var i = 0, ii = results.length; i &lt; ii; i++) {
-            var result = results[i];
+          for (var i &#x3D; 0, ii &#x3D; results.length; i &lt; ii; i++) {
+            var result &#x3D; results[i];
             if (result) {
-              var code = result[&#x27;code&#x27;], name = result[&#x27;name&#x27;],
-                  proj4def = result[&#x27;proj4&#x27;], bbox = result[&#x27;bbox&#x27;];
+              var code &#x3D; result[&#x27;code&#x27;], name &#x3D; result[&#x27;name&#x27;],
+                  proj4def &#x3D; result[&#x27;proj4&#x27;], bbox &#x3D; result[&#x27;bbox&#x27;];
               if (code &amp;&amp; code.length &gt; 0 &amp;&amp; proj4def &amp;&amp; proj4def.length &gt; 0 &amp;&amp;
-                  bbox &amp;&amp; bbox.length == 4) {
+                  bbox &amp;&amp; bbox.length &#x3D;&#x3D; 4) {
                 setProjection(code, name, proj4def, bbox);
                 return;
               }
@@ -143,7 +143,7 @@ function search(query) {
 /**
  * @param {Event} e Change event.
  */
-searchButton.onclick = function(e) {
+searchButton.onclick &#x3D; function(e) {
   search(queryInput.value);
   e.preventDefault();
 };
@@ -152,10 +152,10 @@ searchButton.onclick = function(e) {
 /**
  * @param {Event} e Change event.
  */
-renderEdgesCheckbox.onchange = function(e) {
+renderEdgesCheckbox.onchange &#x3D; function(e) {
   map.getLayers().forEach(function(layer) {
     if (layer instanceof ol.layer.Tile) {
-      var source = layer.getSource();
+      var source &#x3D; layer.getSource();
       if (source instanceof ol.source.TileImage) {
         source.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
       }
@@ -164,17 +164,17 @@ renderEdgesCheckbox.onchange = function(e) {
 };
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;form class=&quot;form-inline&quot;&gt;
-    &lt;label for=&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
-    &lt;input type=&quot;text&quot; id=&quot;epsg-query&quot; placeholder=&quot;4326, 27700, US National Atlas, Swiss, France, ...&quot; class=&quot;form-control&quot; size=&quot;50&quot; /&gt;
-    &lt;button id=&quot;epsg-search&quot; class=&quot;btn&quot;&gt;Search&lt;/button&gt;
-    &lt;span id=&quot;epsg-result&quot;&gt;&lt;/span&gt;
+  &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+    &lt;label for&#x3D;&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
+    &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;epsg-query&quot; placeholder&#x3D;&quot;4326, 27700, US National Atlas, Swiss, France, ...&quot; class&#x3D;&quot;form-control&quot; size&#x3D;&quot;50&quot; /&gt;
+    &lt;button id&#x3D;&quot;epsg-search&quot; class&#x3D;&quot;btn&quot;&gt;Search&lt;/button&gt;
+    &lt;span id&#x3D;&quot;epsg-result&quot;&gt;&lt;/span&gt;
     &lt;div&gt;
-      &lt;label for=&quot;render-edges&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt;
+      &lt;label for&#x3D;&quot;render-edges&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt;
     &lt;/div&gt;
   &lt;/form&gt;
 &lt;/div&gt;
@@ -191,29 +191,29 @@ renderEdgesCheckbox.onchange = function(e) {
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;form class=&quot;form-inline&quot;&gt;
-    &lt;label for=&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
-    &lt;input type=&quot;text&quot; id=&quot;epsg-query&quot; placeholder=&quot;4326, 27700, US National Atlas, Swiss, France, ...&quot; class=&quot;form-control&quot; size=&quot;50&quot; /&gt;
-    &lt;button id=&quot;epsg-search&quot; class=&quot;btn&quot;&gt;Search&lt;/button&gt;
-    &lt;span id=&quot;epsg-result&quot;&gt;&lt;/span&gt;
+  &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+    &lt;label for&#x3D;&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
+    &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;epsg-query&quot; placeholder&#x3D;&quot;4326, 27700, US National Atlas, Swiss, France, ...&quot; class&#x3D;&quot;form-control&quot; size&#x3D;&quot;50&quot; /&gt;
+    &lt;button id&#x3D;&quot;epsg-search&quot; class&#x3D;&quot;btn&quot;&gt;Search&lt;/button&gt;
+    &lt;span id&#x3D;&quot;epsg-result&quot;&gt;&lt;/span&gt;
     &lt;div&gt;
-      &lt;label for=&quot;render-edges&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt;
+      &lt;label for&#x3D;&quot;render-edges&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt;
     &lt;/div&gt;
   &lt;/form&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
@@ -228,14 +228,14 @@ var map = new ol.Map({
 });
 
 
-var queryInput = document.getElementById(&#x27;epsg-query&#x27;);
-var searchButton = document.getElementById(&#x27;epsg-search&#x27;);
-var resultSpan = document.getElementById(&#x27;epsg-result&#x27;);
-var renderEdgesCheckbox = document.getElementById(&#x27;render-edges&#x27;);
+var queryInput &#x3D; document.getElementById(&#x27;epsg-query&#x27;);
+var searchButton &#x3D; document.getElementById(&#x27;epsg-search&#x27;);
+var resultSpan &#x3D; document.getElementById(&#x27;epsg-result&#x27;);
+var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
 
 function setProjection(code, name, proj4def, bbox) {
-  if (code === null || name === null || proj4def === null || bbox === null) {
-    resultSpan.innerHTML = &#x27;Nothing usable found, using EPSG:3857...&#x27;;
+  if (code &#x3D;&#x3D;&#x3D; null || name &#x3D;&#x3D;&#x3D; null || proj4def &#x3D;&#x3D;&#x3D; null || bbox &#x3D;&#x3D;&#x3D; null) {
+    resultSpan.innerHTML &#x3D; &#x27;Nothing usable found, using EPSG:3857...&#x27;;
     map.setView(new ol.View({
       projection: &#x27;EPSG:3857&#x27;,
       center: [0, 0],
@@ -244,23 +244,23 @@ function setProjection(code, name, proj4def, bbox) {
     return;
   }
 
-  resultSpan.innerHTML = &#x27;(&#x27; + code + &#x27;) &#x27; + name;
+  resultSpan.innerHTML &#x3D; &#x27;(&#x27; + code + &#x27;) &#x27; + name;
 
-  var newProjCode = &#x27;EPSG:&#x27; + code;
+  var newProjCode &#x3D; &#x27;EPSG:&#x27; + code;
   proj4.defs(newProjCode, proj4def);
-  var newProj = ol.proj.get(newProjCode);
-  var fromLonLat = ol.proj.getTransform(&#x27;EPSG:4326&#x27;, newProj);
+  var newProj &#x3D; ol.proj.get(newProjCode);
+  var fromLonLat &#x3D; ol.proj.getTransform(&#x27;EPSG:4326&#x27;, newProj);
 
   // very approximate calculation of projection extent
-  var extent = ol.extent.applyTransform(
+  var extent &#x3D; ol.extent.applyTransform(
       [bbox[1], bbox[2], bbox[3], bbox[0]], fromLonLat);
   newProj.setExtent(extent);
-  var newView = new ol.View({
+  var newView &#x3D; new ol.View({
     projection: newProj
   });
   map.setView(newView);
 
-  var size = map.getSize();
+  var size &#x3D; map.getSize();
   if (size) {
     newView.fit(extent, size);
   }
@@ -268,21 +268,21 @@ function setProjection(code, name, proj4def, bbox) {
 
 
 function search(query) {
-  resultSpan.innerHTML = &#x27;Searching...&#x27;;
+  resultSpan.innerHTML &#x3D; &#x27;Searching...&#x27;;
   $.ajax({
-    url: &#x27;http://epsg.io/?format=json&amp;q=&#x27; + query,
+    url: &#x27;http://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query,
     dataType: &#x27;jsonp&#x27;,
     success: function(response) {
       if (response) {
-        var results = response[&#x27;results&#x27;];
+        var results &#x3D; response[&#x27;results&#x27;];
         if (results &amp;&amp; results.length &gt; 0) {
-          for (var i = 0, ii = results.length; i &lt; ii; i++) {
-            var result = results[i];
+          for (var i &#x3D; 0, ii &#x3D; results.length; i &lt; ii; i++) {
+            var result &#x3D; results[i];
             if (result) {
-              var code = result[&#x27;code&#x27;], name = result[&#x27;name&#x27;],
-                  proj4def = result[&#x27;proj4&#x27;], bbox = result[&#x27;bbox&#x27;];
+              var code &#x3D; result[&#x27;code&#x27;], name &#x3D; result[&#x27;name&#x27;],
+                  proj4def &#x3D; result[&#x27;proj4&#x27;], bbox &#x3D; result[&#x27;bbox&#x27;];
               if (code &amp;&amp; code.length &gt; 0 &amp;&amp; proj4def &amp;&amp; proj4def.length &gt; 0 &amp;&amp;
-                  bbox &amp;&amp; bbox.length == 4) {
+                  bbox &amp;&amp; bbox.length &#x3D;&#x3D; 4) {
                 setProjection(code, name, proj4def, bbox);
                 return;
               }
@@ -299,7 +299,7 @@ function search(query) {
 /**
  * @param {Event} e Change event.
  */
-searchButton.onclick = function(e) {
+searchButton.onclick &#x3D; function(e) {
   search(queryInput.value);
   e.preventDefault();
 };
@@ -308,10 +308,10 @@ searchButton.onclick = function(e) {
 /**
  * @param {Event} e Change event.
  */
-renderEdgesCheckbox.onchange = function(e) {
+renderEdgesCheckbox.onchange &#x3D; function(e) {
   map.getLayers().forEach(function(layer) {
     if (layer instanceof ol.layer.Tile) {
-      var source = layer.getSource();
+      var source &#x3D; layer.getSource();
       if (source instanceof ol.source.TileImage) {
         source.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
       }

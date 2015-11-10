@@ -53,7 +53,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -77,33 +77,33 @@
   })
 });
 
-var exportPNGElement = document.getElementById(&#x27;export-png&#x27;);
+var exportPNGElement &#x3D; document.getElementById(&#x27;export-png&#x27;);
 
 if (&#x27;download&#x27; in exportPNGElement) {
   exportPNGElement.addEventListener(&#x27;click&#x27;, function(e) {
     map.once(&#x27;postcompose&#x27;, function(event) {
-      var canvas = event.context.canvas;
-      exportPNGElement.href = canvas.toDataURL(&#x27;image/png&#x27;);
+      var canvas &#x3D; event.context.canvas;
+      exportPNGElement.href &#x3D; canvas.toDataURL(&#x27;image/png&#x27;);
     });
     map.renderSync();
   }, false);
 } else {
-  var info = document.getElementById(&#x27;no-download&#x27;);
+  var info &#x3D; document.getElementById(&#x27;no-download&#x27;);
   /**
    * display error message
    */
-  info.style.display = &#x27;&#x27;;
+  info.style.display &#x3D; &#x27;&#x27;;
 }
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;no-download&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;no-download&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
       This example requires a browser that supports the
-      &lt;a href=&quot;http://caniuse.com/#feat=download&quot;&gt;link download&lt;/a&gt; attribute.
+      &lt;a href&#x3D;&quot;http://caniuse.com/#feat&#x3D;download&quot;&gt;link download&lt;/a&gt; attribute.
     &lt;/div&gt;
-    &lt;a id=&quot;export-png&quot; class=&quot;btn btn-default&quot; download=&quot;map.png&quot;&gt;&lt;i class=&quot;fa fa-download&quot;&gt;&lt;/i&gt; Export PNG&lt;/a&gt;
+    &lt;a id&#x3D;&quot;export-png&quot; class&#x3D;&quot;btn btn-default&quot; download&#x3D;&quot;map.png&quot;&gt;&lt;i class&#x3D;&quot;fa fa-download&quot;&gt;&lt;/i&gt; Export PNG&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -124,20 +124,20 @@ if (&#x27;download&#x27; in exportPNGElement) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;no-download&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;no-download&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
       This example requires a browser that supports the
-      &lt;a href=&quot;http://caniuse.com/#feat=download&quot;&gt;link download&lt;/a&gt; attribute.
+      &lt;a href&#x3D;&quot;http://caniuse.com/#feat&#x3D;download&quot;&gt;link download&lt;/a&gt; attribute.
     &lt;/div&gt;
-    &lt;a id=&quot;export-png&quot; class=&quot;btn btn-default&quot; download=&quot;map.png&quot;&gt;&lt;i class=&quot;fa fa-download&quot;&gt;&lt;/i&gt; Export PNG&lt;/a&gt;
+    &lt;a id&#x3D;&quot;export-png&quot; class&#x3D;&quot;btn btn-default&quot; download&#x3D;&quot;map.png&quot;&gt;&lt;i class&#x3D;&quot;fa fa-download&quot;&gt;&lt;/i&gt; Export PNG&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -161,22 +161,22 @@ var map = new ol.Map({
   })
 });
 
-var exportPNGElement = document.getElementById(&#x27;export-png&#x27;);
+var exportPNGElement &#x3D; document.getElementById(&#x27;export-png&#x27;);
 
 if (&#x27;download&#x27; in exportPNGElement) {
   exportPNGElement.addEventListener(&#x27;click&#x27;, function(e) {
     map.once(&#x27;postcompose&#x27;, function(event) {
-      var canvas = event.context.canvas;
-      exportPNGElement.href = canvas.toDataURL(&#x27;image/png&#x27;);
+      var canvas &#x3D; event.context.canvas;
+      exportPNGElement.href &#x3D; canvas.toDataURL(&#x27;image/png&#x27;);
     });
     map.renderSync();
   }, false);
 } else {
-  var info = document.getElementById(&#x27;no-download&#x27;);
+  var info &#x3D; document.getElementById(&#x27;no-download&#x27;);
   /**
    * display error message
    */
-  info.style.display = &#x27;&#x27;;
+  info.style.display &#x3D; &#x27;&#x27;;
 }
 
 &lt;/script&gt;

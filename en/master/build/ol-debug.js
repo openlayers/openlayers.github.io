@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.10.1-217-g0b7cd12
+// Version: v3.10.1-278-gdf460d2
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -50281,6 +50281,11 @@ goog.require('ol.source.State');
  * Layers group together those properties that pertain to how the data is to be
  * displayed, irrespective of the source of that data.
  *
+ * Layers are usually added to a map with {@link ol.Map#addLayer}. Components
+ * like {@link ol.interaction.Select} use unmanaged layers internally. These
+ * unmanaged layers are associated with the map using
+ * {@link ol.layer.Layer#setMap} instead.
+ *
  * A generic `change` event is fired when the state of the source changes.
  *
  * @constructor
@@ -52124,7 +52129,9 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate =
       if (layer.getSource()) {
         result = layerRenderer.forEachFeatureAtCoordinate(
             layer.getSource().getWrapX() ? translatedCoordinate : coordinate,
-            frameState, callback, thisArg);
+            frameState,
+            layerState.managed ? callback : forEachFeatureAtCoordinate,
+            thisArg);
       }
       if (result) {
         return result;
@@ -59599,6 +59606,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
     goog.asserts.assert(pixelCoordinates === this.pixelCoordinates_,
         'pixelCoordinates should be the same as this.pixelCoordinates_');
   }
+  var skipFeatures = !goog.object.isEmpty(skippedFeaturesHash);
   var i = 0; // instruction index
   var ii = instructions.length; // end of instructions
   var d = 0; // data index
@@ -59612,8 +59620,8 @@ ol.render.canvas.Replay.prototype.replay_ = function(
     switch (type) {
       case ol.render.canvas.Instruction.BEGIN_GEOMETRY:
         feature = /** @type {ol.Feature|ol.render.Feature} */ (instruction[1]);
-        var featureUid = goog.getUid(feature).toString();
-        if (skippedFeaturesHash[featureUid] !== undefined ||
+        if ((skipFeatures &&
+            skippedFeaturesHash[goog.getUid(feature).toString()]) ||
             !feature.getGeometry()) {
           i = /** @type {number} */ (instruction[2]);
         } else if (opt_hitExtent !== undefined && !ol.extent.intersects(
@@ -70600,7 +70608,7 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 /*
- (c) 2013, Vladimir Agafonkin
+ (c) 2015, Vladimir Agafonkin
  RBush, a JavaScript library for high-performance 2D spatial indexing of points and rectangles.
  https://github.com/mourner/rbush
 */
@@ -70656,6 +70664,33 @@ rbush.prototype = {
         }
 
         return result;
+    },
+
+    collides: function (bbox) {
+
+        var node = this.data,
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node.bbox)) return false;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child.bbox;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf || contains(bbox, childBBox)) return true;
+                    nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return false;
     },
 
     load: function (data) {
@@ -70914,8 +70949,10 @@ rbush.prototype = {
 
         this._chooseSplitAxis(node, m, M);
 
+        var splitIndex = this._chooseSplitIndex(node, m, M);
+
         var newNode = {
-            children: node.children.splice(this._chooseSplitIndex(node, m, M)),
+            children: node.children.splice(splitIndex, node.children.length - splitIndex),
             height: node.height
         };
 
@@ -71130,7 +71167,8 @@ function multiSelect(arr, left, right, n, compare) {
     }
 }
 
-// sort array between left and right (inclusive) so that the smallest k elements come first (unordered)
+// Floyd-Rivest selection algorithm:
+// sort an array between left and right (inclusive) so that the smallest k elements come first (unordered)
 function select(arr, left, right, k, compare) {
     var n, i, z, s, sd, newLeft, newRight, t, j;
 
@@ -71445,7 +71483,7 @@ ol.structs.RBush.prototype.clear = function() {
 
 /**
  * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
+ * @return {!ol.Extent} Extent.
  */
 ol.structs.RBush.prototype.getExtent = function(opt_extent) {
   // FIXME add getExtent() to rbush
@@ -72113,7 +72151,7 @@ ol.source.Vector.prototype.getClosestFeatureToCoordinate =
  *
  * This method is not available when the source is configured with
  * `useSpatialIndex` set to `false`.
- * @return {ol.Extent} Extent.
+ * @return {!ol.Extent} Extent.
  * @api stable
  */
 ol.source.Vector.prototype.getExtent = function() {
@@ -83410,8 +83448,9 @@ ol.Map.prototype.disposeInternal = function() {
  *     called with two arguments. The first argument is one
  *     {@link ol.Feature feature} or
  *     {@link ol.render.Feature render feature} at the pixel, the second is
- *     the {@link ol.layer.Layer layer} of the feature. To stop detection,
- *     callback functions can return a truthy value.
+ *     the {@link ol.layer.Layer layer} of the feature and will be null for
+ *     unmanaged layers. To stop detection, callback functions can return a
+ *     truthy value.
  * @param {S=} opt_this Value to use as `this` when executing `callback`.
  * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
  *     filter function. The filter function will receive one argument, the
@@ -94968,11 +95007,13 @@ ol.format.GPX.GPX_NODE_FACTORY_ = function(value, objectStack, opt_nodeName) {
       'value should be an ol.Feature');
   var geometry = value.getGeometry();
   if (geometry) {
-    var parentNode = objectStack[objectStack.length - 1].node;
-    goog.asserts.assert(ol.xml.isNode(parentNode),
-        'parentNode should be an XML node');
-    return ol.xml.createElementNS(parentNode.namespaceURI,
-        ol.format.GPX.GEOMETRY_TYPE_TO_NODENAME_[geometry.getType()]);
+    var nodeName = ol.format.GPX.GEOMETRY_TYPE_TO_NODENAME_[geometry.getType()];
+    if (nodeName) {
+      var parentNode = objectStack[objectStack.length - 1].node;
+      goog.asserts.assert(ol.xml.isNode(parentNode),
+          'parentNode should be an XML node');
+      return ol.xml.createElementNS(parentNode.namespaceURI, nodeName);
+    }
   }
 };
 
@@ -97488,6 +97529,13 @@ ol.format.KML = function(opt_options) {
 
   /**
    * @private
+   * @type {boolean}
+   */
+  this.writeStyles_ = options.writeStyles !== undefined ?
+      options.writeStyles : true;
+
+  /**
+   * @private
    * @type {Object.<string, (Array.<ol.style.Style>|string)>}
    */
   this.sharedStyles_ = {};
@@ -97736,11 +97784,7 @@ ol.format.KML.createNameStyleFunction_ = function(foundStyle, name) {
     });
   }
   var nameStyle = new ol.style.Style({
-    fill: undefined,
-    image: undefined,
-    text: textStyle,
-    stroke: undefined,
-    zIndex: undefined
+    text: textStyle
   });
   return nameStyle;
 };
@@ -97788,7 +97832,7 @@ ol.format.KML.createFeatureStyleFunction_ = function(style, styleUrl,
           if (drawName) {
             nameStyle = ol.format.KML.createNameStyleFunction_(style[0],
                 name);
-            return [style, nameStyle];
+            return style.concat(nameStyle);
           }
           return style;
         }
@@ -98045,6 +98089,9 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
       (object['scale']);
   if (src == ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_) {
     size = ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_;
+    if (scale === undefined) {
+      scale = ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
+    }
   }
 
   var imageStyle = new ol.style.Icon({
@@ -98056,7 +98103,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
     offset: offset,
     offsetOrigin: ol.style.IconOrigin.BOTTOM_LEFT,
     rotation: rotation,
-    scale: ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_ * scale,
+    scale: scale,
     size: size,
     src: src
   });
@@ -99567,6 +99614,7 @@ ol.format.KML.writeCoordinatesTextNode_ =
  * @param {Node} node Node.
  * @param {Array.<ol.Feature>} features Features.
  * @param {Array.<*>} objectStack Object stack.
+ * @this {ol.format.KML}
  * @private
  */
 ol.format.KML.writeDocument_ = function(node, features, objectStack) {
@@ -99764,6 +99812,7 @@ ol.format.KML.writeBoundaryIs_ = function(node, linearRing, objectStack) {
  * @param {Node} node Node.
  * @param {ol.Feature} feature Feature.
  * @param {Array.<*>} objectStack Object stack.
+ * @this {ol.format.KML}
  * @private
  */
 ol.format.KML.writePlacemark_ = function(node, feature, objectStack) {
@@ -99776,14 +99825,18 @@ ol.format.KML.writePlacemark_ = function(node, feature, objectStack) {
 
   // serialize properties (properties unknown to KML are not serialized)
   var properties = feature.getProperties();
+
   var styleFunction = feature.getStyleFunction();
   if (styleFunction) {
     // FIXME the styles returned by the style function are supposed to be
     // resolution-independent here
     var styles = styleFunction.call(feature, 0);
     if (styles && styles.length > 0) {
-      properties['Style'] = styles[0];
-      var textStyle = styles[0].getText();
+      var style = styles[0];
+      if (this.writeStyles_) {
+        properties['Style'] = styles[0];
+      }
+      var textStyle = style.getText();
       if (textStyle) {
         properties['name'] = textStyle.getText();
       }
@@ -99894,7 +99947,7 @@ ol.format.KML.writeStyle_ = function(node, style, objectStack) {
   var strokeStyle = style.getStroke();
   var imageStyle = style.getImage();
   var textStyle = style.getText();
-  if (imageStyle) {
+  if (imageStyle instanceof ol.style.Icon) {
     properties['IconStyle'] = imageStyle;
   }
   if (textStyle) {
@@ -100386,7 +100439,8 @@ ol.format.KML.prototype.writeFeaturesNode = function(features, opt_options) {
   var orderedKeys = ol.format.KML.KML_SEQUENCE_[kml.namespaceURI];
   var values = ol.xml.makeSequence(properties, orderedKeys);
   ol.xml.pushSerializeAndPop(context, ol.format.KML.KML_SERIALIZERS_,
-      ol.xml.OBJECT_PROPERTY_NODE_FACTORY, values, [opt_options], orderedKeys);
+      ol.xml.OBJECT_PROPERTY_NODE_FACTORY, values, [opt_options], orderedKeys,
+      this);
   return kml;
 };
 
@@ -112662,6 +112716,8 @@ goog.inherits(ol.interaction.SelectEvent, goog.events.Event);
  * `toggle`, `add`/`remove`, and `multi` options; a `layers` filter; and a
  * further feature filter using the `filter` option.
  *
+ * Selected features are added to an internal unmanaged layer.
+ *
  * @constructor
  * @extends {ol.interaction.Interaction}
  * @param {olx.interaction.SelectOptions=} opt_options Options.
@@ -112800,7 +112856,9 @@ ol.interaction.Select.prototype.getFeatures = function() {
 
 /**
  * Returns the associated {@link ol.layer.Vector vectorlayer} of
- * the (last) selected feature.
+ * the (last) selected feature. Note that this will not work with any
+ * programmatic method like pushing features to
+ * {@link ol.interaction.Select#getFeatures collection}.
  * @param {ol.Feature|ol.render.Feature} feature Feature
  * @return {ol.layer.Vector} Layer.
  * @api
@@ -112844,7 +112902,7 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
          * @param {ol.layer.Layer} layer Layer.
          */
         function(feature, layer) {
-          if (this.filter_(feature, layer)) {
+          if (layer && this.filter_(feature, layer)) {
             selected.push(feature);
             this.addFeatureLayerAssociation_(feature, layer);
             return !this.multi_;

@@ -55,16 +55,16 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var styles = [
+          <textarea class="hidden" name="js">var styles &#x3D; [
   &#x27;Road&#x27;,
   &#x27;Aerial&#x27;,
   &#x27;AerialWithLabels&#x27;,
   &#x27;collinsBart&#x27;,
   &#x27;ordnanceSurvey&#x27;
 ];
-var layers = [];
+var layers &#x3D; [];
 var i, ii;
-for (i = 0, ii = styles.length; i &lt; ii; ++i) {
+for (i &#x3D; 0, ii &#x3D; styles.length; i &lt; ii; ++i) {
   layers.push(new ol.layer.Tile({
     visible: false,
     preload: Infinity,
@@ -77,7 +77,7 @@ for (i = 0, ii = styles.length; i &lt; ii; ++i) {
     })
   }));
 }
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   // Improve user experience by loading tiles while dragging/zooming. Will make
   // zooming choppy on mobile or slow devices.
@@ -89,26 +89,26 @@ var map = new ol.Map({
   })
 });
 
-var select = document.getElementById(&#x27;layer-select&#x27;);
+var select &#x3D; document.getElementById(&#x27;layer-select&#x27;);
 function onChange() {
-  var style = select.value;
-  for (var i = 0, ii = layers.length; i &lt; ii; ++i) {
-    layers[i].setVisible(styles[i] === style);
+  var style &#x3D; select.value;
+  for (var i &#x3D; 0, ii &#x3D; layers.length; i &lt; ii; ++i) {
+    layers[i].setVisible(styles[i] &#x3D;&#x3D;&#x3D; style);
   }
 }
 select.addEventListener(&#x27;change&#x27;, onChange);
 onChange();
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html"> &lt;div class=&quot;row-fluid&quot;&gt;
-   &lt;div class=&quot;span12&quot;&gt;
-     &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-     &lt;select id=&quot;layer-select&quot;&gt;
-       &lt;option value=&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
-       &lt;option value=&quot;AerialWithLabels&quot; selected&gt;Aerial with labels&lt;/option&gt;
-       &lt;option value=&quot;Road&quot;&gt;Road&lt;/option&gt;
-       &lt;option value=&quot;collinsBart&quot;&gt;Collins Bart&lt;/option&gt;
-       &lt;option value=&quot;ordnanceSurvey&quot;&gt;Ordnance Survey&lt;/option&gt;
+          <textarea class="hidden" name="html"> &lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+   &lt;div class&#x3D;&quot;span12&quot;&gt;
+     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+     &lt;select id&#x3D;&quot;layer-select&quot;&gt;
+       &lt;option value&#x3D;&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
+       &lt;option value&#x3D;&quot;AerialWithLabels&quot; selected&gt;Aerial with labels&lt;/option&gt;
+       &lt;option value&#x3D;&quot;Road&quot;&gt;Road&lt;/option&gt;
+       &lt;option value&#x3D;&quot;collinsBart&quot;&gt;Collins Bart&lt;/option&gt;
+       &lt;option value&#x3D;&quot;ordnanceSurvey&quot;&gt;Ordnance Survey&lt;/option&gt;
      &lt;/select&gt;
    &lt;/div&gt;
  &lt;/div&gt;
@@ -130,31 +130,31 @@ onChange();
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
- &lt;div class=&quot;row-fluid&quot;&gt;
-   &lt;div class=&quot;span12&quot;&gt;
-     &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-     &lt;select id=&quot;layer-select&quot;&gt;
-       &lt;option value=&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
-       &lt;option value=&quot;AerialWithLabels&quot; selected&gt;Aerial with labels&lt;/option&gt;
-       &lt;option value=&quot;Road&quot;&gt;Road&lt;/option&gt;
-       &lt;option value=&quot;collinsBart&quot;&gt;Collins Bart&lt;/option&gt;
-       &lt;option value=&quot;ordnanceSurvey&quot;&gt;Ordnance Survey&lt;/option&gt;
+ &lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+   &lt;div class&#x3D;&quot;span12&quot;&gt;
+     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+     &lt;select id&#x3D;&quot;layer-select&quot;&gt;
+       &lt;option value&#x3D;&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
+       &lt;option value&#x3D;&quot;AerialWithLabels&quot; selected&gt;Aerial with labels&lt;/option&gt;
+       &lt;option value&#x3D;&quot;Road&quot;&gt;Road&lt;/option&gt;
+       &lt;option value&#x3D;&quot;collinsBart&quot;&gt;Collins Bart&lt;/option&gt;
+       &lt;option value&#x3D;&quot;ordnanceSurvey&quot;&gt;Ordnance Survey&lt;/option&gt;
      &lt;/select&gt;
    &lt;/div&gt;
  &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var styles = [
+var styles &#x3D; [
   &#x27;Road&#x27;,
   &#x27;Aerial&#x27;,
   &#x27;AerialWithLabels&#x27;,
   &#x27;collinsBart&#x27;,
   &#x27;ordnanceSurvey&#x27;
 ];
-var layers = [];
+var layers &#x3D; [];
 var i, ii;
-for (i = 0, ii = styles.length; i &lt; ii; ++i) {
+for (i &#x3D; 0, ii &#x3D; styles.length; i &lt; ii; ++i) {
   layers.push(new ol.layer.Tile({
     visible: false,
     preload: Infinity,
@@ -167,7 +167,7 @@ for (i = 0, ii = styles.length; i &lt; ii; ++i) {
     })
   }));
 }
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   // Improve user experience by loading tiles while dragging/zooming. Will make
   // zooming choppy on mobile or slow devices.
@@ -179,11 +179,11 @@ var map = new ol.Map({
   })
 });
 
-var select = document.getElementById(&#x27;layer-select&#x27;);
+var select &#x3D; document.getElementById(&#x27;layer-select&#x27;);
 function onChange() {
-  var style = select.value;
-  for (var i = 0, ii = layers.length; i &lt; ii; ++i) {
-    layers[i].setVisible(styles[i] === style);
+  var style &#x3D; select.value;
+  for (var i &#x3D; 0, ii &#x3D; layers.length; i &lt; ii; ++i) {
+    layers[i].setVisible(styles[i] &#x3D;&#x3D;&#x3D; style);
   }
 }
 select.addEventListener(&#x27;change&#x27;, onChange);

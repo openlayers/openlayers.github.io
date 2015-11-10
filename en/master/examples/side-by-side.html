@@ -60,7 +60,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var domMap = new ol.Map({
+          <textarea class="hidden" name="js">var domMap &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -75,42 +75,42 @@
 });
 
 if (ol.has.WEBGL) {
-  var webglMap = new ol.Map({
+  var webglMap &#x3D; new ol.Map({
     renderer: &#x27;webgl&#x27;,
     target: &#x27;webglMap&#x27;,
     layers: domMap.getLayers(),
     view: domMap.getView()
   });
 } else {
-  var info = document.getElementById(&#x27;no-webgl&#x27;);
+  var info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
   /**
    * display error message
    */
-  info.style.display = &#x27;&#x27;;
+  info.style.display &#x3D; &#x27;&#x27;;
 }
 
-var canvasMap = new ol.Map({
+var canvasMap &#x3D; new ol.Map({
   target: &#x27;canvasMap&#x27;,
   layers: domMap.getLayers(),
   view: domMap.getView()
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Canvas&lt;/h4&gt;
-    &lt;div id=&quot;canvasMap&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;canvasMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;WebGL&lt;/h4&gt;
-    &lt;div id=&quot;webglMap&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;no-webgl&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none&quot;&gt;
-      This map requires a browser that supports &lt;a href=&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+    &lt;div id&#x3D;&quot;webglMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
+      This map requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
     &lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;DOM&lt;/h4&gt;
-    &lt;div id=&quot;domMap&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;domMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -131,27 +131,27 @@ var canvasMap = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;Canvas&lt;/h4&gt;
-    &lt;div id=&quot;canvasMap&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;canvasMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;WebGL&lt;/h4&gt;
-    &lt;div id=&quot;webglMap&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;no-webgl&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none&quot;&gt;
-      This map requires a browser that supports &lt;a href=&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+    &lt;div id&#x3D;&quot;webglMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
+      This map requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
     &lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span4&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;
     &lt;h4&gt;DOM&lt;/h4&gt;
-    &lt;div id=&quot;domMap&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;domMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var domMap = new ol.Map({
+var domMap &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -166,21 +166,21 @@ var domMap = new ol.Map({
 });
 
 if (ol.has.WEBGL) {
-  var webglMap = new ol.Map({
+  var webglMap &#x3D; new ol.Map({
     renderer: &#x27;webgl&#x27;,
     target: &#x27;webglMap&#x27;,
     layers: domMap.getLayers(),
     view: domMap.getView()
   });
 } else {
-  var info = document.getElementById(&#x27;no-webgl&#x27;);
+  var info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
   /**
    * display error message
    */
-  info.style.display = &#x27;&#x27;;
+  info.style.display &#x3D; &#x27;&#x27;;
 }
 
-var canvasMap = new ol.Map({
+var canvasMap &#x3D; new ol.Map({
   target: &#x27;canvasMap&#x27;,
   layers: domMap.getLayers(),
   view: domMap.getView()

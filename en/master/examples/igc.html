@@ -54,7 +54,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var colors = {
+          <textarea class="hidden" name="js">var colors &#x3D; {
   &#x27;Clement Latour&#x27;: &#x27;rgba(0, 0, 255, 0.7)&#x27;,
   &#x27;Damien de Baesnt&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;,
   &#x27;Sylvain Dhonneur&#x27;: &#x27;rgba(0, 165, 255, 0.7)&#x27;,
@@ -62,25 +62,25 @@
   &#x27;Ulrich Prinz&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;
 };
 
-var styleCache = {};
-var styleFunction = function(feature, resolution) {
-  var color = colors[feature.get(&#x27;PLT&#x27;)];
-  var styleArray = styleCache[color];
+var styleCache &#x3D; {};
+var styleFunction &#x3D; function(feature, resolution) {
+  var color &#x3D; colors[feature.get(&#x27;PLT&#x27;)];
+  var styleArray &#x3D; styleCache[color];
   if (!styleArray) {
-    styleArray = [new ol.style.Style({
+    styleArray &#x3D; [new ol.style.Style({
       stroke: new ol.style.Stroke({
         color: color,
         width: 3
       })
     })];
-    styleCache[color] = styleArray;
+    styleCache[color] &#x3D; styleArray;
   }
   return styleArray;
 };
 
-var vectorSource = new ol.source.Vector();
+var vectorSource &#x3D; new ol.source.Vector();
 
-var igcUrls = [
+var igcUrls &#x3D; [
   &#x27;data/igc/Clement-Latour.igc&#x27;,
   &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
   &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
@@ -89,44 +89,44 @@ var igcUrls = [
 ];
 
 function get(url, callback) {
-  var client = new XMLHttpRequest();
+  var client &#x3D; new XMLHttpRequest();
   client.open(&#x27;GET&#x27;, url);
-  client.onload = function() {
+  client.onload &#x3D; function() {
     callback(client.responseText);
   };
   client.send();
 }
 
-var igcFormat = new ol.format.IGC();
-for (var i = 0; i &lt; igcUrls.length; ++i) {
+var igcFormat &#x3D; new ol.format.IGC();
+for (var i &#x3D; 0; i &lt; igcUrls.length; ++i) {
   get(igcUrls[i], function(data) {
-    var features = igcFormat.readFeatures(data,
+    var features &#x3D; igcFormat.readFeatures(data,
         {featureProjection: &#x27;EPSG:3857&#x27;});
     vectorSource.addFeatures(features);
   });
 }
 
-var time = {
+var time &#x3D; {
   start: Infinity,
   stop: -Infinity,
   duration: 0
 };
 vectorSource.on(&#x27;addfeature&#x27;, function(event) {
-  var geometry = event.feature.getGeometry();
-  time.start = Math.min(time.start, geometry.getFirstCoordinate()[2]);
-  time.stop = Math.max(time.stop, geometry.getLastCoordinate()[2]);
-  time.duration = time.stop - time.start;
+  var geometry &#x3D; event.feature.getGeometry();
+  time.start &#x3D; Math.min(time.start, geometry.getFirstCoordinate()[2]);
+  time.stop &#x3D; Math.max(time.stop, geometry.getLastCoordinate()[2]);
+  time.duration &#x3D; time.stop - time.start;
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM({
         attributions: [
           new ol.Attribution({
             html: &#x27;All maps &amp;copy; &#x27; +
-                &#x27;&lt;a href=&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;
+                &#x27;&lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;
           }),
           ol.source.OSM.ATTRIBUTION
         ],
@@ -151,29 +151,29 @@ var map = new ol.Map({
 });
 
 
-var point = null;
-var line = null;
-var displaySnap = function(coordinate) {
-  var closestFeature = vectorSource.getClosestFeatureToCoordinate(coordinate);
-  var info = document.getElementById(&#x27;info&#x27;);
-  if (closestFeature === null) {
-    point = null;
-    line = null;
-    info.innerHTML = &#x27;&amp;nbsp;&#x27;;
+var point &#x3D; null;
+var line &#x3D; null;
+var displaySnap &#x3D; function(coordinate) {
+  var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+  var info &#x3D; document.getElementById(&#x27;info&#x27;);
+  if (closestFeature &#x3D;&#x3D;&#x3D; null) {
+    point &#x3D; null;
+    line &#x3D; null;
+    info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   } else {
-    var geometry = closestFeature.getGeometry();
-    var closestPoint = geometry.getClosestPoint(coordinate);
-    if (point === null) {
-      point = new ol.geom.Point(closestPoint);
+    var geometry &#x3D; closestFeature.getGeometry();
+    var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+    if (point &#x3D;&#x3D;&#x3D; null) {
+      point &#x3D; new ol.geom.Point(closestPoint);
     } else {
       point.setCoordinates(closestPoint);
     }
-    var date = new Date(closestPoint[2] * 1000);
-    info.innerHTML =
+    var date &#x3D; new Date(closestPoint[2] * 1000);
+    info.innerHTML &#x3D;
         closestFeature.get(&#x27;PLT&#x27;) + &#x27; (&#x27; + date.toUTCString() + &#x27;)&#x27;;
-    var coordinates = [coordinate, [closestPoint[0], closestPoint[1]]];
-    if (line === null) {
-      line = new ol.geom.LineString(coordinates);
+    var coordinates &#x3D; [coordinate, [closestPoint[0], closestPoint[1]]];
+    if (line &#x3D;&#x3D;&#x3D; null) {
+      line &#x3D; new ol.geom.LineString(coordinates);
     } else {
       line.setCoordinates(coordinates);
     }
@@ -185,7 +185,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate = map.getEventCoordinate(evt.originalEvent);
+  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displaySnap(coordinate);
 });
 
@@ -193,7 +193,7 @@ map.on(&#x27;click&#x27;, function(evt) {
   displaySnap(evt.coordinate);
 });
 
-var imageStyle = new ol.style.Circle({
+var imageStyle &#x3D; new ol.style.Circle({
   radius: 5,
   fill: null,
   stroke: new ol.style.Stroke({
@@ -201,23 +201,23 @@ var imageStyle = new ol.style.Circle({
     width: 1
   })
 });
-var strokeStyle = new ol.style.Stroke({
+var strokeStyle &#x3D; new ol.style.Stroke({
   color: &#x27;rgba(255,0,0,0.9)&#x27;,
   width: 1
 });
 map.on(&#x27;postcompose&#x27;, function(evt) {
-  var vectorContext = evt.vectorContext;
-  if (point !== null) {
+  var vectorContext &#x3D; evt.vectorContext;
+  if (point !&#x3D;&#x3D; null) {
     vectorContext.setImageStyle(imageStyle);
     vectorContext.drawPointGeometry(point);
   }
-  if (line !== null) {
+  if (line !&#x3D;&#x3D; null) {
     vectorContext.setFillStrokeStyle(null, strokeStyle);
     vectorContext.drawLineStringGeometry(line);
   }
 });
 
-var featureOverlay = new ol.layer.Vector({
+var featureOverlay &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector(),
   map: map,
   style: new ol.style.Style({
@@ -232,14 +232,14 @@ var featureOverlay = new ol.layer.Vector({
 });
 
 document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, function() {
-  var value = parseInt(this.value, 10) / 100;
-  var m = time.start + (time.duration * value);
+  var value &#x3D; parseInt(this.value, 10) / 100;
+  var m &#x3D; time.start + (time.duration * value);
   vectorSource.forEachFeature(function(feature) {
-    var geometry = /** @type {ol.geom.LineString} */ (feature.getGeometry());
-    var coordinate = geometry.getCoordinateAtM(m, true);
-    var highlight = feature.get(&#x27;highlight&#x27;);
-    if (highlight === undefined) {
-      highlight = new ol.Feature(new ol.geom.Point(coordinate));
+    var geometry &#x3D; /** @type {ol.geom.LineString} */ (feature.getGeometry());
+    var coordinate &#x3D; geometry.getCoordinateAtM(m, true);
+    var highlight &#x3D; feature.get(&#x27;highlight&#x27;);
+    if (highlight &#x3D;&#x3D;&#x3D; undefined) {
+      highlight &#x3D; new ol.Feature(new ol.geom.Point(coordinate));
       feature.set(&#x27;highlight&#x27;, highlight);
       featureOverlay.getSource().addFeature(highlight);
     } else {
@@ -250,12 +250,12 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;input id=&quot;time&quot; type=&quot;range&quot; value=&quot;0&quot; steps=&quot;1&quot; /&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;input id&#x3D;&quot;time&quot; type&#x3D;&quot;range&quot; value&#x3D;&quot;0&quot; steps&#x3D;&quot;1&quot; /&gt;
+    &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
         &amp;nbsp;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -279,12 +279,12 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;input id=&quot;time&quot; type=&quot;range&quot; value=&quot;0&quot; steps=&quot;1&quot; /&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;input id&#x3D;&quot;time&quot; type&#x3D;&quot;range&quot; value&#x3D;&quot;0&quot; steps&#x3D;&quot;1&quot; /&gt;
+    &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
         &amp;nbsp;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -293,7 +293,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
 
 &lt;/div&gt;
 &lt;script&gt;
-var colors = {
+var colors &#x3D; {
   &#x27;Clement Latour&#x27;: &#x27;rgba(0, 0, 255, 0.7)&#x27;,
   &#x27;Damien de Baesnt&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;,
   &#x27;Sylvain Dhonneur&#x27;: &#x27;rgba(0, 165, 255, 0.7)&#x27;,
@@ -301,25 +301,25 @@ var colors = {
   &#x27;Ulrich Prinz&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;
 };
 
-var styleCache = {};
-var styleFunction = function(feature, resolution) {
-  var color = colors[feature.get(&#x27;PLT&#x27;)];
-  var styleArray = styleCache[color];
+var styleCache &#x3D; {};
+var styleFunction &#x3D; function(feature, resolution) {
+  var color &#x3D; colors[feature.get(&#x27;PLT&#x27;)];
+  var styleArray &#x3D; styleCache[color];
   if (!styleArray) {
-    styleArray = [new ol.style.Style({
+    styleArray &#x3D; [new ol.style.Style({
       stroke: new ol.style.Stroke({
         color: color,
         width: 3
       })
     })];
-    styleCache[color] = styleArray;
+    styleCache[color] &#x3D; styleArray;
   }
   return styleArray;
 };
 
-var vectorSource = new ol.source.Vector();
+var vectorSource &#x3D; new ol.source.Vector();
 
-var igcUrls = [
+var igcUrls &#x3D; [
   &#x27;data/igc/Clement-Latour.igc&#x27;,
   &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
   &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
@@ -328,44 +328,44 @@ var igcUrls = [
 ];
 
 function get(url, callback) {
-  var client = new XMLHttpRequest();
+  var client &#x3D; new XMLHttpRequest();
   client.open(&#x27;GET&#x27;, url);
-  client.onload = function() {
+  client.onload &#x3D; function() {
     callback(client.responseText);
   };
   client.send();
 }
 
-var igcFormat = new ol.format.IGC();
-for (var i = 0; i &lt; igcUrls.length; ++i) {
+var igcFormat &#x3D; new ol.format.IGC();
+for (var i &#x3D; 0; i &lt; igcUrls.length; ++i) {
   get(igcUrls[i], function(data) {
-    var features = igcFormat.readFeatures(data,
+    var features &#x3D; igcFormat.readFeatures(data,
         {featureProjection: &#x27;EPSG:3857&#x27;});
     vectorSource.addFeatures(features);
   });
 }
 
-var time = {
+var time &#x3D; {
   start: Infinity,
   stop: -Infinity,
   duration: 0
 };
 vectorSource.on(&#x27;addfeature&#x27;, function(event) {
-  var geometry = event.feature.getGeometry();
-  time.start = Math.min(time.start, geometry.getFirstCoordinate()[2]);
-  time.stop = Math.max(time.stop, geometry.getLastCoordinate()[2]);
-  time.duration = time.stop - time.start;
+  var geometry &#x3D; event.feature.getGeometry();
+  time.start &#x3D; Math.min(time.start, geometry.getFirstCoordinate()[2]);
+  time.stop &#x3D; Math.max(time.stop, geometry.getLastCoordinate()[2]);
+  time.duration &#x3D; time.stop - time.start;
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM({
         attributions: [
           new ol.Attribution({
             html: &#x27;All maps &amp;copy; &#x27; +
-                &#x27;&lt;a href=&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;
+                &#x27;&lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;
           }),
           ol.source.OSM.ATTRIBUTION
         ],
@@ -390,29 +390,29 @@ var map = new ol.Map({
 });
 
 
-var point = null;
-var line = null;
-var displaySnap = function(coordinate) {
-  var closestFeature = vectorSource.getClosestFeatureToCoordinate(coordinate);
-  var info = document.getElementById(&#x27;info&#x27;);
-  if (closestFeature === null) {
-    point = null;
-    line = null;
-    info.innerHTML = &#x27;&amp;nbsp;&#x27;;
+var point &#x3D; null;
+var line &#x3D; null;
+var displaySnap &#x3D; function(coordinate) {
+  var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+  var info &#x3D; document.getElementById(&#x27;info&#x27;);
+  if (closestFeature &#x3D;&#x3D;&#x3D; null) {
+    point &#x3D; null;
+    line &#x3D; null;
+    info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   } else {
-    var geometry = closestFeature.getGeometry();
-    var closestPoint = geometry.getClosestPoint(coordinate);
-    if (point === null) {
-      point = new ol.geom.Point(closestPoint);
+    var geometry &#x3D; closestFeature.getGeometry();
+    var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+    if (point &#x3D;&#x3D;&#x3D; null) {
+      point &#x3D; new ol.geom.Point(closestPoint);
     } else {
       point.setCoordinates(closestPoint);
     }
-    var date = new Date(closestPoint[2] * 1000);
-    info.innerHTML =
+    var date &#x3D; new Date(closestPoint[2] * 1000);
+    info.innerHTML &#x3D;
         closestFeature.get(&#x27;PLT&#x27;) + &#x27; (&#x27; + date.toUTCString() + &#x27;)&#x27;;
-    var coordinates = [coordinate, [closestPoint[0], closestPoint[1]]];
-    if (line === null) {
-      line = new ol.geom.LineString(coordinates);
+    var coordinates &#x3D; [coordinate, [closestPoint[0], closestPoint[1]]];
+    if (line &#x3D;&#x3D;&#x3D; null) {
+      line &#x3D; new ol.geom.LineString(coordinates);
     } else {
       line.setCoordinates(coordinates);
     }
@@ -424,7 +424,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate = map.getEventCoordinate(evt.originalEvent);
+  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displaySnap(coordinate);
 });
 
@@ -432,7 +432,7 @@ map.on(&#x27;click&#x27;, function(evt) {
   displaySnap(evt.coordinate);
 });
 
-var imageStyle = new ol.style.Circle({
+var imageStyle &#x3D; new ol.style.Circle({
   radius: 5,
   fill: null,
   stroke: new ol.style.Stroke({
@@ -440,23 +440,23 @@ var imageStyle = new ol.style.Circle({
     width: 1
   })
 });
-var strokeStyle = new ol.style.Stroke({
+var strokeStyle &#x3D; new ol.style.Stroke({
   color: &#x27;rgba(255,0,0,0.9)&#x27;,
   width: 1
 });
 map.on(&#x27;postcompose&#x27;, function(evt) {
-  var vectorContext = evt.vectorContext;
-  if (point !== null) {
+  var vectorContext &#x3D; evt.vectorContext;
+  if (point !&#x3D;&#x3D; null) {
     vectorContext.setImageStyle(imageStyle);
     vectorContext.drawPointGeometry(point);
   }
-  if (line !== null) {
+  if (line !&#x3D;&#x3D; null) {
     vectorContext.setFillStrokeStyle(null, strokeStyle);
     vectorContext.drawLineStringGeometry(line);
   }
 });
 
-var featureOverlay = new ol.layer.Vector({
+var featureOverlay &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector(),
   map: map,
   style: new ol.style.Style({
@@ -471,14 +471,14 @@ var featureOverlay = new ol.layer.Vector({
 });
 
 document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, function() {
-  var value = parseInt(this.value, 10) / 100;
-  var m = time.start + (time.duration * value);
+  var value &#x3D; parseInt(this.value, 10) / 100;
+  var m &#x3D; time.start + (time.duration * value);
   vectorSource.forEachFeature(function(feature) {
-    var geometry = /** @type {ol.geom.LineString} */ (feature.getGeometry());
-    var coordinate = geometry.getCoordinateAtM(m, true);
-    var highlight = feature.get(&#x27;highlight&#x27;);
-    if (highlight === undefined) {
-      highlight = new ol.Feature(new ol.geom.Point(coordinate));
+    var geometry &#x3D; /** @type {ol.geom.LineString} */ (feature.getGeometry());
+    var coordinate &#x3D; geometry.getCoordinateAtM(m, true);
+    var highlight &#x3D; feature.get(&#x27;highlight&#x27;);
+    if (highlight &#x3D;&#x3D;&#x3D; undefined) {
+      highlight &#x3D; new ol.Feature(new ol.geom.Point(coordinate));
       feature.set(&#x27;highlight&#x27;, highlight);
       featureOverlay.getSource().addFeature(highlight);
     } else {

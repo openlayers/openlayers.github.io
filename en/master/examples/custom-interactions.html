@@ -51,8 +51,8 @@
           <textarea class="hidden" name="js">/**
  * Define a namespace for the application.
  */
-window.app = {};
-var app = window.app;
+window.app &#x3D; {};
+var app &#x3D; window.app;
 
 
 
@@ -60,7 +60,7 @@ var app = window.app;
  * @constructor
  * @extends {ol.interaction.Pointer}
  */
-app.Drag = function() {
+app.Drag &#x3D; function() {
 
   ol.interaction.Pointer.call(this, {
     handleDownEvent: app.Drag.prototype.handleDownEvent,
@@ -73,25 +73,25 @@ app.Drag = function() {
    * @type {ol.Pixel}
    * @private
    */
-  this.coordinate_ = null;
+  this.coordinate_ &#x3D; null;
 
   /**
    * @type {string|undefined}
    * @private
    */
-  this.cursor_ = &#x27;pointer&#x27;;
+  this.cursor_ &#x3D; &#x27;pointer&#x27;;
 
   /**
    * @type {ol.Feature}
    * @private
    */
-  this.feature_ = null;
+  this.feature_ &#x3D; null;
 
   /**
    * @type {string|undefined}
    * @private
    */
-  this.previousCursor_ = undefined;
+  this.previousCursor_ &#x3D; undefined;
 
 };
 ol.inherits(app.Drag, ol.interaction.Pointer);
@@ -101,17 +101,17 @@ ol.inherits(app.Drag, ol.interaction.Pointer);
  * @param {ol.MapBrowserEvent} evt Map browser event.
  * @return {boolean} &#x60;true&#x60; to start the drag sequence.
  */
-app.Drag.prototype.handleDownEvent = function(evt) {
-  var map = evt.map;
+app.Drag.prototype.handleDownEvent &#x3D; function(evt) {
+  var map &#x3D; evt.map;
 
-  var feature = map.forEachFeatureAtPixel(evt.pixel,
+  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
       function(feature, layer) {
         return feature;
       });
 
   if (feature) {
-    this.coordinate_ = evt.coordinate;
-    this.feature_ = feature;
+    this.coordinate_ &#x3D; evt.coordinate;
+    this.feature_ &#x3D; feature;
   }
 
   return !!feature;
@@ -121,45 +121,45 @@ app.Drag.prototype.handleDownEvent = function(evt) {
 /**
  * @param {ol.MapBrowserEvent} evt Map browser event.
  */
-app.Drag.prototype.handleDragEvent = function(evt) {
-  var map = evt.map;
+app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
+  var map &#x3D; evt.map;
 
-  var feature = map.forEachFeatureAtPixel(evt.pixel,
+  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
       function(feature, layer) {
         return feature;
       });
 
-  var deltaX = evt.coordinate[0] - this.coordinate_[0];
-  var deltaY = evt.coordinate[1] - this.coordinate_[1];
+  var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
+  var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
-  var geometry = /** @type {ol.geom.SimpleGeometry} */
+  var geometry &#x3D; /** @type {ol.geom.SimpleGeometry} */
       (this.feature_.getGeometry());
   geometry.translate(deltaX, deltaY);
 
-  this.coordinate_[0] = evt.coordinate[0];
-  this.coordinate_[1] = evt.coordinate[1];
+  this.coordinate_[0] &#x3D; evt.coordinate[0];
+  this.coordinate_[1] &#x3D; evt.coordinate[1];
 };
 
 
 /**
  * @param {ol.MapBrowserEvent} evt Event.
  */
-app.Drag.prototype.handleMoveEvent = function(evt) {
+app.Drag.prototype.handleMoveEvent &#x3D; function(evt) {
   if (this.cursor_) {
-    var map = evt.map;
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
+    var map &#x3D; evt.map;
+    var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
         function(feature, layer) {
           return feature;
         });
-    var element = evt.map.getTargetElement();
+    var element &#x3D; evt.map.getTargetElement();
     if (feature) {
-      if (element.style.cursor != this.cursor_) {
-        this.previousCursor_ = element.style.cursor;
-        element.style.cursor = this.cursor_;
+      if (element.style.cursor !&#x3D; this.cursor_) {
+        this.previousCursor_ &#x3D; element.style.cursor;
+        element.style.cursor &#x3D; this.cursor_;
       }
-    } else if (this.previousCursor_ !== undefined) {
-      element.style.cursor = this.previousCursor_;
-      this.previousCursor_ = undefined;
+    } else if (this.previousCursor_ !&#x3D;&#x3D; undefined) {
+      element.style.cursor &#x3D; this.previousCursor_;
+      this.previousCursor_ &#x3D; undefined;
     }
   }
 };
@@ -169,24 +169,24 @@ app.Drag.prototype.handleMoveEvent = function(evt) {
  * @param {ol.MapBrowserEvent} evt Map browser event.
  * @return {boolean} &#x60;false&#x60; to stop the drag sequence.
  */
-app.Drag.prototype.handleUpEvent = function(evt) {
-  this.coordinate_ = null;
-  this.feature_ = null;
+app.Drag.prototype.handleUpEvent &#x3D; function(evt) {
+  this.coordinate_ &#x3D; null;
+  this.feature_ &#x3D; null;
   return false;
 };
 
 
-var pointFeature = new ol.Feature(new ol.geom.Point([0, 0]));
+var pointFeature &#x3D; new ol.Feature(new ol.geom.Point([0, 0]));
 
-var lineFeature = new ol.Feature(
+var lineFeature &#x3D; new ol.Feature(
     new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]]));
 
-var polygonFeature = new ol.Feature(
+var polygonFeature &#x3D; new ol.Feature(
     new ol.geom.Polygon([[[-3e6, -1e6], [-3e6, 1e6],
         [-1e6, 1e6], [-1e6, -1e6], [-3e6, -1e6]]]));
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([new app.Drag()]),
   layers: [
     new ol.layer.Tile({
@@ -224,9 +224,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -247,9 +247,9 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -258,8 +258,8 @@ var map = new ol.Map({
 /**
  * Define a namespace for the application.
  */
-window.app = {};
-var app = window.app;
+window.app &#x3D; {};
+var app &#x3D; window.app;
 
 
 
@@ -267,7 +267,7 @@ var app = window.app;
  * @constructor
  * @extends {ol.interaction.Pointer}
  */
-app.Drag = function() {
+app.Drag &#x3D; function() {
 
   ol.interaction.Pointer.call(this, {
     handleDownEvent: app.Drag.prototype.handleDownEvent,
@@ -280,25 +280,25 @@ app.Drag = function() {
    * @type {ol.Pixel}
    * @private
    */
-  this.coordinate_ = null;
+  this.coordinate_ &#x3D; null;
 
   /**
    * @type {string|undefined}
    * @private
    */
-  this.cursor_ = &#x27;pointer&#x27;;
+  this.cursor_ &#x3D; &#x27;pointer&#x27;;
 
   /**
    * @type {ol.Feature}
    * @private
    */
-  this.feature_ = null;
+  this.feature_ &#x3D; null;
 
   /**
    * @type {string|undefined}
    * @private
    */
-  this.previousCursor_ = undefined;
+  this.previousCursor_ &#x3D; undefined;
 
 };
 ol.inherits(app.Drag, ol.interaction.Pointer);
@@ -308,17 +308,17 @@ ol.inherits(app.Drag, ol.interaction.Pointer);
  * @param {ol.MapBrowserEvent} evt Map browser event.
  * @return {boolean} &#x60;true&#x60; to start the drag sequence.
  */
-app.Drag.prototype.handleDownEvent = function(evt) {
-  var map = evt.map;
+app.Drag.prototype.handleDownEvent &#x3D; function(evt) {
+  var map &#x3D; evt.map;
 
-  var feature = map.forEachFeatureAtPixel(evt.pixel,
+  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
       function(feature, layer) {
         return feature;
       });
 
   if (feature) {
-    this.coordinate_ = evt.coordinate;
-    this.feature_ = feature;
+    this.coordinate_ &#x3D; evt.coordinate;
+    this.feature_ &#x3D; feature;
   }
 
   return !!feature;
@@ -328,45 +328,45 @@ app.Drag.prototype.handleDownEvent = function(evt) {
 /**
  * @param {ol.MapBrowserEvent} evt Map browser event.
  */
-app.Drag.prototype.handleDragEvent = function(evt) {
-  var map = evt.map;
+app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
+  var map &#x3D; evt.map;
 
-  var feature = map.forEachFeatureAtPixel(evt.pixel,
+  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
       function(feature, layer) {
         return feature;
       });
 
-  var deltaX = evt.coordinate[0] - this.coordinate_[0];
-  var deltaY = evt.coordinate[1] - this.coordinate_[1];
+  var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
+  var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
-  var geometry = /** @type {ol.geom.SimpleGeometry} */
+  var geometry &#x3D; /** @type {ol.geom.SimpleGeometry} */
       (this.feature_.getGeometry());
   geometry.translate(deltaX, deltaY);
 
-  this.coordinate_[0] = evt.coordinate[0];
-  this.coordinate_[1] = evt.coordinate[1];
+  this.coordinate_[0] &#x3D; evt.coordinate[0];
+  this.coordinate_[1] &#x3D; evt.coordinate[1];
 };
 
 
 /**
  * @param {ol.MapBrowserEvent} evt Event.
  */
-app.Drag.prototype.handleMoveEvent = function(evt) {
+app.Drag.prototype.handleMoveEvent &#x3D; function(evt) {
   if (this.cursor_) {
-    var map = evt.map;
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
+    var map &#x3D; evt.map;
+    var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
         function(feature, layer) {
           return feature;
         });
-    var element = evt.map.getTargetElement();
+    var element &#x3D; evt.map.getTargetElement();
     if (feature) {
-      if (element.style.cursor != this.cursor_) {
-        this.previousCursor_ = element.style.cursor;
-        element.style.cursor = this.cursor_;
+      if (element.style.cursor !&#x3D; this.cursor_) {
+        this.previousCursor_ &#x3D; element.style.cursor;
+        element.style.cursor &#x3D; this.cursor_;
       }
-    } else if (this.previousCursor_ !== undefined) {
-      element.style.cursor = this.previousCursor_;
-      this.previousCursor_ = undefined;
+    } else if (this.previousCursor_ !&#x3D;&#x3D; undefined) {
+      element.style.cursor &#x3D; this.previousCursor_;
+      this.previousCursor_ &#x3D; undefined;
     }
   }
 };
@@ -376,24 +376,24 @@ app.Drag.prototype.handleMoveEvent = function(evt) {
  * @param {ol.MapBrowserEvent} evt Map browser event.
  * @return {boolean} &#x60;false&#x60; to stop the drag sequence.
  */
-app.Drag.prototype.handleUpEvent = function(evt) {
-  this.coordinate_ = null;
-  this.feature_ = null;
+app.Drag.prototype.handleUpEvent &#x3D; function(evt) {
+  this.coordinate_ &#x3D; null;
+  this.feature_ &#x3D; null;
   return false;
 };
 
 
-var pointFeature = new ol.Feature(new ol.geom.Point([0, 0]));
+var pointFeature &#x3D; new ol.Feature(new ol.geom.Point([0, 0]));
 
-var lineFeature = new ol.Feature(
+var lineFeature &#x3D; new ol.Feature(
     new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]]));
 
-var polygonFeature = new ol.Feature(
+var polygonFeature &#x3D; new ol.Feature(
     new ol.geom.Polygon([[[-3e6, -1e6], [-3e6, 1e6],
         [-1e6, 1e6], [-1e6, -1e6], [-3e6, -1e6]]]));
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([new app.Drag()]),
   layers: [
     new ol.layer.Tile({

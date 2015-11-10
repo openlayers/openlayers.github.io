@@ -59,7 +59,7 @@
   return ol.proj.transformExtent(extent, &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 }
 
-var extents = {
+var extents &#x3D; {
   northwest: transform([-180, 0, 0, 85]),
   northeast: transform([0, 0, 180, 85]),
   southeast: transform([0, -85, 180, 0]),
@@ -67,7 +67,7 @@ var extents = {
   world: transform([-180, -85, 180, 85])
 };
 
-var base = new ol.layer.Tile({
+var base &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/&#x27; +
         &#x27;mapbox.world-black.jsonp&#x27;,
@@ -75,7 +75,7 @@ var base = new ol.layer.Tile({
   })
 });
 
-var overlay = new ol.layer.Tile({
+var overlay &#x3D; new ol.layer.Tile({
   extent: extents.northwest,
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/&#x27; +
@@ -84,7 +84,7 @@ var overlay = new ol.layer.Tile({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [base, overlay],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -94,23 +94,23 @@ var map = new ol.Map({
 });
 
 for (var key in extents) {
-  document.getElementById(key).onclick = function(event) {
+  document.getElementById(key).onclick &#x3D; function(event) {
     overlay.setExtent(extents[event.target.id]);
   };
 }
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;btn-group&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;northwest&quot;&gt;northwest&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;northeast&quot;&gt;northeast&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;southeast&quot;&gt;southeast&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;southwest&quot;&gt;southwest&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;world&quot;&gt;world&lt;/button&gt;
+&lt;div class&#x3D;&quot;btn-group&quot;&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;northwest&quot;&gt;northwest&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;northeast&quot;&gt;northeast&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;southeast&quot;&gt;southeast&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;southwest&quot;&gt;southwest&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;world&quot;&gt;world&lt;/button&gt;
 &lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
@@ -130,17 +130,17 @@ for (var key in extents) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;btn-group&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;northwest&quot;&gt;northwest&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;northeast&quot;&gt;northeast&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;southeast&quot;&gt;southeast&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;southwest&quot;&gt;southwest&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;world&quot;&gt;world&lt;/button&gt;
+&lt;div class&#x3D;&quot;btn-group&quot;&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;northwest&quot;&gt;northwest&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;northeast&quot;&gt;northeast&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;southeast&quot;&gt;southeast&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;southwest&quot;&gt;southwest&lt;/button&gt;
+  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-default&quot; id&#x3D;&quot;world&quot;&gt;world&lt;/button&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
@@ -149,7 +149,7 @@ function transform(extent) {
   return ol.proj.transformExtent(extent, &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 }
 
-var extents = {
+var extents &#x3D; {
   northwest: transform([-180, 0, 0, 85]),
   northeast: transform([0, 0, 180, 85]),
   southeast: transform([0, -85, 180, 0]),
@@ -157,7 +157,7 @@ var extents = {
   world: transform([-180, -85, 180, 85])
 };
 
-var base = new ol.layer.Tile({
+var base &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/&#x27; +
         &#x27;mapbox.world-black.jsonp&#x27;,
@@ -165,7 +165,7 @@ var base = new ol.layer.Tile({
   })
 });
 
-var overlay = new ol.layer.Tile({
+var overlay &#x3D; new ol.layer.Tile({
   extent: extents.northwest,
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/&#x27; +
@@ -174,7 +174,7 @@ var overlay = new ol.layer.Tile({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [base, overlay],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -184,7 +184,7 @@ var map = new ol.Map({
 });
 
 for (var key in extents) {
-  document.getElementById(key).onclick = function(event) {
+  document.getElementById(key).onclick &#x3D; function(event) {
     overlay.setExtent(extents[event.target.id]);
   };
 }

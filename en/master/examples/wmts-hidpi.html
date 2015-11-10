@@ -48,16 +48,16 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var capabilitiesUrl = &#x27;http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml&#x27;;
+          <textarea class="hidden" name="js">var capabilitiesUrl &#x3D; &#x27;http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml&#x27;;
 
 // HiDPI support:
 // * Use &#x27;bmaphidpi&#x27; layer (pixel ratio 2) for device pixel ratio &gt; 1
-// * Use &#x27;geolandbasemap&#x27; layer (pixel ratio 1) for device pixel ratio == 1
-var hiDPI = ol.has.DEVICE_PIXEL_RATIO &gt; 1;
-var layer = hiDPI ? &#x27;bmaphidpi&#x27; : &#x27;geolandbasemap&#x27;;
-var tilePixelRatio = hiDPI ? 2 : 1;
+// * Use &#x27;geolandbasemap&#x27; layer (pixel ratio 1) for device pixel ratio &#x3D;&#x3D; 1
+var hiDPI &#x3D; ol.has.DEVICE_PIXEL_RATIO &gt; 1;
+var layer &#x3D; hiDPI ? &#x27;bmaphidpi&#x27; : &#x27;geolandbasemap&#x27;;
+var tilePixelRatio &#x3D; hiDPI ? 2 : 1;
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   target: &#x27;map&#x27;,
   view: new ol.View({
     center: [1823849, 6143760],
@@ -66,14 +66,14 @@ var map = new ol.Map({
 });
 
 $.ajax(capabilitiesUrl).then(function(response) {
-  var result = new ol.format.WMTSCapabilities().read(response);
-  var options = ol.source.WMTS.optionsFromCapabilities(result, {
+  var result &#x3D; new ol.format.WMTSCapabilities().read(response);
+  var options &#x3D; ol.source.WMTS.optionsFromCapabilities(result, {
     layer: layer,
     matrixSet: &#x27;google3857&#x27;,
     requestEncoding: &#x27;REST&#x27;,
     style: &#x27;normal&#x27;
   });
-  options.tilePixelRatio = tilePixelRatio;
+  options.tilePixelRatio &#x3D; tilePixelRatio;
   map.addLayer(new ol.layer.Tile({
     source: new ol.source.WMTS(options)
   }));
@@ -83,9 +83,9 @@ $.ajax(capabilitiesUrl).then(function(response) {
   background: white;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -112,24 +112,24 @@ $.ajax(capabilitiesUrl).then(function(response) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var capabilitiesUrl = &#x27;http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml&#x27;;
+var capabilitiesUrl &#x3D; &#x27;http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml&#x27;;
 
 // HiDPI support:
 // * Use &#x27;bmaphidpi&#x27; layer (pixel ratio 2) for device pixel ratio &gt; 1
-// * Use &#x27;geolandbasemap&#x27; layer (pixel ratio 1) for device pixel ratio == 1
-var hiDPI = ol.has.DEVICE_PIXEL_RATIO &gt; 1;
-var layer = hiDPI ? &#x27;bmaphidpi&#x27; : &#x27;geolandbasemap&#x27;;
-var tilePixelRatio = hiDPI ? 2 : 1;
+// * Use &#x27;geolandbasemap&#x27; layer (pixel ratio 1) for device pixel ratio &#x3D;&#x3D; 1
+var hiDPI &#x3D; ol.has.DEVICE_PIXEL_RATIO &gt; 1;
+var layer &#x3D; hiDPI ? &#x27;bmaphidpi&#x27; : &#x27;geolandbasemap&#x27;;
+var tilePixelRatio &#x3D; hiDPI ? 2 : 1;
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   target: &#x27;map&#x27;,
   view: new ol.View({
     center: [1823849, 6143760],
@@ -138,14 +138,14 @@ var map = new ol.Map({
 });
 
 $.ajax(capabilitiesUrl).then(function(response) {
-  var result = new ol.format.WMTSCapabilities().read(response);
-  var options = ol.source.WMTS.optionsFromCapabilities(result, {
+  var result &#x3D; new ol.format.WMTSCapabilities().read(response);
+  var options &#x3D; ol.source.WMTS.optionsFromCapabilities(result, {
     layer: layer,
     matrixSet: &#x27;google3857&#x27;,
     requestEncoding: &#x27;REST&#x27;,
     style: &#x27;normal&#x27;
   });
-  options.tilePixelRatio = tilePixelRatio;
+  options.tilePixelRatio &#x3D; tilePixelRatio;
   map.addLayer(new ol.layer.Tile({
     source: new ol.source.WMTS(options)
   }));

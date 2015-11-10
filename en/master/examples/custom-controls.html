@@ -51,8 +51,8 @@
           <textarea class="hidden" name="js">/**
  * Define a namespace for the application.
  */
-window.app = {};
-var app = window.app;
+window.app &#x3D; {};
+var app &#x3D; window.app;
 
 
 //
@@ -64,25 +64,25 @@ var app = window.app;
 /**
  * @constructor
  * @extends {ol.control.Control}
- * @param {Object=} opt_options Control options.
+ * @param {Object&#x3D;} opt_options Control options.
  */
-app.RotateNorthControl = function(opt_options) {
+app.RotateNorthControl &#x3D; function(opt_options) {
 
-  var options = opt_options || {};
+  var options &#x3D; opt_options || {};
 
-  var button = document.createElement(&#x27;button&#x27;);
-  button.innerHTML = &#x27;N&#x27;;
+  var button &#x3D; document.createElement(&#x27;button&#x27;);
+  button.innerHTML &#x3D; &#x27;N&#x27;;
 
-  var this_ = this;
-  var handleRotateNorth = function(e) {
+  var this_ &#x3D; this;
+  var handleRotateNorth &#x3D; function(e) {
     this_.getMap().getView().setRotation(0);
   };
 
   button.addEventListener(&#x27;click&#x27;, handleRotateNorth, false);
   button.addEventListener(&#x27;touchstart&#x27;, handleRotateNorth, false);
 
-  var element = document.createElement(&#x27;div&#x27;);
-  element.className = &#x27;rotate-north ol-unselectable ol-control&#x27;;
+  var element &#x3D; document.createElement(&#x27;div&#x27;);
+  element.className &#x3D; &#x27;rotate-north ol-unselectable ol-control&#x27;;
   element.appendChild(button);
 
   ol.control.Control.call(this, {
@@ -99,7 +99,7 @@ ol.inherits(app.RotateNorthControl, ol.control.Control);
 //
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
@@ -128,9 +128,9 @@ var map = new ol.Map({
   top: 80px;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -161,9 +161,9 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -172,8 +172,8 @@ var map = new ol.Map({
 /**
  * Define a namespace for the application.
  */
-window.app = {};
-var app = window.app;
+window.app &#x3D; {};
+var app &#x3D; window.app;
 
 
 //
@@ -185,25 +185,25 @@ var app = window.app;
 /**
  * @constructor
  * @extends {ol.control.Control}
- * @param {Object=} opt_options Control options.
+ * @param {Object&#x3D;} opt_options Control options.
  */
-app.RotateNorthControl = function(opt_options) {
+app.RotateNorthControl &#x3D; function(opt_options) {
 
-  var options = opt_options || {};
+  var options &#x3D; opt_options || {};
 
-  var button = document.createElement(&#x27;button&#x27;);
-  button.innerHTML = &#x27;N&#x27;;
+  var button &#x3D; document.createElement(&#x27;button&#x27;);
+  button.innerHTML &#x3D; &#x27;N&#x27;;
 
-  var this_ = this;
-  var handleRotateNorth = function(e) {
+  var this_ &#x3D; this;
+  var handleRotateNorth &#x3D; function(e) {
     this_.getMap().getView().setRotation(0);
   };
 
   button.addEventListener(&#x27;click&#x27;, handleRotateNorth, false);
   button.addEventListener(&#x27;touchstart&#x27;, handleRotateNorth, false);
 
-  var element = document.createElement(&#x27;div&#x27;);
-  element.className = &#x27;rotate-north ol-unselectable ol-control&#x27;;
+  var element &#x3D; document.createElement(&#x27;div&#x27;);
+  element.className &#x3D; &#x27;rotate-north ol-unselectable ol-control&#x27;;
   element.appendChild(button);
 
   ol.control.Control.call(this, {
@@ -220,7 +220,7 @@ ol.inherits(app.RotateNorthControl, ol.control.Control);
 //
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false

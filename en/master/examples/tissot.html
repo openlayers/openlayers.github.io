@@ -53,15 +53,15 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var vectorLayer4326 = new ol.layer.Vector({
+          <textarea class="hidden" name="js">var vectorLayer4326 &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector()
 });
 
-var vectorLayer3857 = new ol.layer.Vector({
+var vectorLayer3857 &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector()
 });
 
-var map4326 = new ol.Map({
+var map4326 &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.TileWMS({
@@ -82,7 +82,7 @@ var map4326 = new ol.Map({
   })
 });
 
-var map3857 = new ol.Map({
+var map3857 &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.TileWMS({
@@ -102,28 +102,28 @@ var map3857 = new ol.Map({
   })
 });
 
-var wgs84Sphere = new ol.Sphere(6378137);
+var wgs84Sphere &#x3D; new ol.Sphere(6378137);
 
-var radius = 800000;
+var radius &#x3D; 800000;
 var x, y;
-for (x = -180; x &lt; 180; x += 30) {
-  for (y = -90; y &lt; 90; y += 30) {
-    var circle4326 = ol.geom.Polygon.circular(wgs84Sphere, [x, y], radius, 64);
-    var circle3857 = circle4326.clone().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
+for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
+  for (y &#x3D; -90; y &lt; 90; y +&#x3D; 30) {
+    var circle4326 &#x3D; ol.geom.Polygon.circular(wgs84Sphere, [x, y], radius, 64);
+    var circle3857 &#x3D; circle4326.clone().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
     vectorLayer4326.getSource().addFeature(new ol.Feature(circle4326));
     vectorLayer3857.getSource().addFeature(new ol.Feature(circle3857));
   }
 }
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span6&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span6&quot;&gt;
     &lt;h4&gt;EPSG:4326&lt;/h4&gt;
-    &lt;div id=&quot;map4326&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map4326&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span6&quot;&gt;
+  &lt;div class&#x3D;&quot;span6&quot;&gt;
     &lt;h4&gt;EPSG:3857&lt;/h4&gt;
-    &lt;div id=&quot;map3857&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map3857&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -144,28 +144,28 @@ for (x = -180; x &lt; 180; x += 30) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span6&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span6&quot;&gt;
     &lt;h4&gt;EPSG:4326&lt;/h4&gt;
-    &lt;div id=&quot;map4326&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map4326&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;span6&quot;&gt;
+  &lt;div class&#x3D;&quot;span6&quot;&gt;
     &lt;h4&gt;EPSG:3857&lt;/h4&gt;
-    &lt;div id=&quot;map3857&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map3857&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var vectorLayer4326 = new ol.layer.Vector({
+var vectorLayer4326 &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector()
 });
 
-var vectorLayer3857 = new ol.layer.Vector({
+var vectorLayer3857 &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector()
 });
 
-var map4326 = new ol.Map({
+var map4326 &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.TileWMS({
@@ -186,7 +186,7 @@ var map4326 = new ol.Map({
   })
 });
 
-var map3857 = new ol.Map({
+var map3857 &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.TileWMS({
@@ -206,14 +206,14 @@ var map3857 = new ol.Map({
   })
 });
 
-var wgs84Sphere = new ol.Sphere(6378137);
+var wgs84Sphere &#x3D; new ol.Sphere(6378137);
 
-var radius = 800000;
+var radius &#x3D; 800000;
 var x, y;
-for (x = -180; x &lt; 180; x += 30) {
-  for (y = -90; y &lt; 90; y += 30) {
-    var circle4326 = ol.geom.Polygon.circular(wgs84Sphere, [x, y], radius, 64);
-    var circle3857 = circle4326.clone().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
+for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
+  for (y &#x3D; -90; y &lt; 90; y +&#x3D; 30) {
+    var circle4326 &#x3D; ol.geom.Polygon.circular(wgs84Sphere, [x, y], radius, 64);
+    var circle3857 &#x3D; circle4326.clone().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
     vectorLayer4326.getSource().addFeature(new ol.Feature(circle4326));
     vectorLayer3857.getSource().addFeature(new ol.Feature(circle3857));
   }

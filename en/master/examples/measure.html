@@ -56,15 +56,15 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var wgs84Sphere = new ol.Sphere(6378137);
+          <textarea class="hidden" name="js">var wgs84Sphere &#x3D; new ol.Sphere(6378137);
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var source = new ol.source.Vector();
+var source &#x3D; new ol.source.Vector();
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: source,
   style: new ol.style.Style({
     fill: new ol.style.Fill({
@@ -123,44 +123,44 @@ var measureTooltip;
  * Message to show when the user is drawing a polygon.
  * @type {string}
  */
-var continuePolygonMsg = &#x27;Click to continue drawing the polygon&#x27;;
+var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
 
 
 /**
  * Message to show when the user is drawing a line.
  * @type {string}
  */
-var continueLineMsg = &#x27;Click to continue drawing the line&#x27;;
+var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 
 /**
  * Handle pointer move.
  * @param {ol.MapBrowserEvent} evt
  */
-var pointerMoveHandler = function(evt) {
+var pointerMoveHandler &#x3D; function(evt) {
   if (evt.dragging) {
     return;
   }
   /** @type {string} */
-  var helpMsg = &#x27;Click to start drawing&#x27;;
+  var helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
   if (sketch) {
-    var geom = (sketch.getGeometry());
+    var geom &#x3D; (sketch.getGeometry());
     if (geom instanceof ol.geom.Polygon) {
-      helpMsg = continuePolygonMsg;
+      helpMsg &#x3D; continuePolygonMsg;
     } else if (geom instanceof ol.geom.LineString) {
-      helpMsg = continueLineMsg;
+      helpMsg &#x3D; continueLineMsg;
     }
   }
 
-  helpTooltipElement.innerHTML = helpMsg;
+  helpTooltipElement.innerHTML &#x3D; helpMsg;
   helpTooltip.setPosition(evt.coordinate);
 
   $(helpTooltipElement).removeClass(&#x27;hidden&#x27;);
 };
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -175,13 +175,13 @@ $(map.getViewport()).on(&#x27;mouseout&#x27;, function() {
   $(helpTooltipElement).addClass(&#x27;hidden&#x27;);
 });
 
-var typeSelect = document.getElementById(&#x27;type&#x27;);
-var geodesicCheckbox = document.getElementById(&#x27;geodesic&#x27;);
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+var geodesicCheckbox &#x3D; document.getElementById(&#x27;geodesic&#x27;);
 
 var draw; // global so we can remove it later
 function addInteraction() {
-  var type = (typeSelect.value == &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
-  draw = new ol.interaction.Draw({
+  var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
+  draw &#x3D; new ol.interaction.Draw({
     source: source,
     type: /** @type {ol.geom.GeometryType} */ (type),
     style: new ol.style.Style({
@@ -213,34 +213,34 @@ function addInteraction() {
   draw.on(&#x27;drawstart&#x27;,
       function(evt) {
         // set sketch
-        sketch = evt.feature;
+        sketch &#x3D; evt.feature;
 
         /** @type {ol.Coordinate|undefined} */
-        var tooltipCoord = evt.coordinate;
+        var tooltipCoord &#x3D; evt.coordinate;
 
-        listener = sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
-          var geom = evt.target;
+        listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
+          var geom &#x3D; evt.target;
           var output;
           if (geom instanceof ol.geom.Polygon) {
-            output = formatArea(/** @type {ol.geom.Polygon} */ (geom));
-            tooltipCoord = geom.getInteriorPoint().getCoordinates();
+            output &#x3D; formatArea(/** @type {ol.geom.Polygon} */ (geom));
+            tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
           } else if (geom instanceof ol.geom.LineString) {
-            output = formatLength( /** @type {ol.geom.LineString} */ (geom));
-            tooltipCoord = geom.getLastCoordinate();
+            output &#x3D; formatLength( /** @type {ol.geom.LineString} */ (geom));
+            tooltipCoord &#x3D; geom.getLastCoordinate();
           }
-          measureTooltipElement.innerHTML = output;
+          measureTooltipElement.innerHTML &#x3D; output;
           measureTooltip.setPosition(tooltipCoord);
         });
       }, this);
 
   draw.on(&#x27;drawend&#x27;,
       function(evt) {
-        measureTooltipElement.className = &#x27;tooltip tooltip-static&#x27;;
+        measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
         measureTooltip.setOffset([0, -7]);
         // unset sketch
-        sketch = null;
+        sketch &#x3D; null;
         // unset tooltip so that a new one can be created
-        measureTooltipElement = null;
+        measureTooltipElement &#x3D; null;
         createMeasureTooltip();
         ol.Observable.unByKey(listener);
       }, this);
@@ -254,9 +254,9 @@ function createHelpTooltip() {
   if (helpTooltipElement) {
     helpTooltipElement.parentNode.removeChild(helpTooltipElement);
   }
-  helpTooltipElement = document.createElement(&#x27;div&#x27;);
-  helpTooltipElement.className = &#x27;tooltip hidden&#x27;;
-  helpTooltip = new ol.Overlay({
+  helpTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
+  helpTooltipElement.className &#x3D; &#x27;tooltip hidden&#x27;;
+  helpTooltip &#x3D; new ol.Overlay({
     element: helpTooltipElement,
     offset: [15, 0],
     positioning: &#x27;center-left&#x27;
@@ -272,9 +272,9 @@ function createMeasureTooltip() {
   if (measureTooltipElement) {
     measureTooltipElement.parentNode.removeChild(measureTooltipElement);
   }
-  measureTooltipElement = document.createElement(&#x27;div&#x27;);
-  measureTooltipElement.className = &#x27;tooltip tooltip-measure&#x27;;
-  measureTooltip = new ol.Overlay({
+  measureTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
+  measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-measure&#x27;;
+  measureTooltip &#x3D; new ol.Overlay({
     element: measureTooltipElement,
     offset: [0, -15],
     positioning: &#x27;bottom-center&#x27;
@@ -287,7 +287,7 @@ function createMeasureTooltip() {
  * Let user change the geometry type.
  * @param {Event} e Change event.
  */
-typeSelect.onchange = function(e) {
+typeSelect.onchange &#x3D; function(e) {
   map.removeInteraction(draw);
   addInteraction();
 };
@@ -298,26 +298,26 @@ typeSelect.onchange = function(e) {
  * @param {ol.geom.LineString} line
  * @return {string}
  */
-var formatLength = function(line) {
+var formatLength &#x3D; function(line) {
   var length;
   if (geodesicCheckbox.checked) {
-    var coordinates = line.getCoordinates();
-    length = 0;
-    var sourceProj = map.getView().getProjection();
-    for (var i = 0, ii = coordinates.length - 1; i &lt; ii; ++i) {
-      var c1 = ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
-      var c2 = ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
-      length += wgs84Sphere.haversineDistance(c1, c2);
+    var coordinates &#x3D; line.getCoordinates();
+    length &#x3D; 0;
+    var sourceProj &#x3D; map.getView().getProjection();
+    for (var i &#x3D; 0, ii &#x3D; coordinates.length - 1; i &lt; ii; ++i) {
+      var c1 &#x3D; ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
+      var c2 &#x3D; ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
+      length +&#x3D; wgs84Sphere.haversineDistance(c1, c2);
     }
   } else {
-    length = Math.round(line.getLength() * 100) / 100;
+    length &#x3D; Math.round(line.getLength() * 100) / 100;
   }
   var output;
   if (length &gt; 100) {
-    output = (Math.round(length / 1000 * 100) / 100) +
+    output &#x3D; (Math.round(length / 1000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&#x27;;
   } else {
-    output = (Math.round(length * 100) / 100) +
+    output &#x3D; (Math.round(length * 100) / 100) +
         &#x27; &#x27; + &#x27;m&#x27;;
   }
   return output;
@@ -329,23 +329,23 @@ var formatLength = function(line) {
  * @param {ol.geom.Polygon} polygon
  * @return {string}
  */
-var formatArea = function(polygon) {
+var formatArea &#x3D; function(polygon) {
   var area;
   if (geodesicCheckbox.checked) {
-    var sourceProj = map.getView().getProjection();
-    var geom = /** @type {ol.geom.Polygon} */(polygon.clone().transform(
+    var sourceProj &#x3D; map.getView().getProjection();
+    var geom &#x3D; /** @type {ol.geom.Polygon} */(polygon.clone().transform(
         sourceProj, &#x27;EPSG:4326&#x27;));
-    var coordinates = geom.getLinearRing(0).getCoordinates();
-    area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
+    var coordinates &#x3D; geom.getLinearRing(0).getCoordinates();
+    area &#x3D; Math.abs(wgs84Sphere.geodesicArea(coordinates));
   } else {
-    area = polygon.getArea();
+    area &#x3D; polygon.getArea();
   }
   var output;
   if (area &gt; 10000) {
-    output = (Math.round(area / 1000000 * 100) / 100) +
+    output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
   } else {
-    output = (Math.round(area * 100) / 100) +
+    output &#x3D; (Math.round(area * 100) / 100) +
         &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
   }
   return output;
@@ -385,18 +385,18 @@ addInteraction();
 .tooltip-static:before {
   border-top-color: #ffcc33;
 }</textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;form class=&quot;form-inline&quot;&gt;
+&lt;form class&#x3D;&quot;form-inline&quot;&gt;
   &lt;label&gt;Geometry type &amp;nbsp;&lt;/label&gt;
-    &lt;select id=&quot;type&quot;&gt;
-      &lt;option value=&quot;length&quot;&gt;Length&lt;/option&gt;
-      &lt;option value=&quot;area&quot;&gt;Area&lt;/option&gt;
+    &lt;select id&#x3D;&quot;type&quot;&gt;
+      &lt;option value&#x3D;&quot;length&quot;&gt;Length&lt;/option&gt;
+      &lt;option value&#x3D;&quot;area&quot;&gt;Area&lt;/option&gt;
     &lt;/select&gt;
-    &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;geodesic&quot;/&gt;use geodesic measures&lt;/label&gt;
+    &lt;label class&#x3D;&quot;checkbox&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;geodesic&quot;/&gt;use geodesic measures&lt;/label&gt;
 &lt;/form&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
@@ -450,31 +450,31 @@ addInteraction();
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;form class=&quot;form-inline&quot;&gt;
+&lt;form class&#x3D;&quot;form-inline&quot;&gt;
   &lt;label&gt;Geometry type &amp;nbsp;&lt;/label&gt;
-    &lt;select id=&quot;type&quot;&gt;
-      &lt;option value=&quot;length&quot;&gt;Length&lt;/option&gt;
-      &lt;option value=&quot;area&quot;&gt;Area&lt;/option&gt;
+    &lt;select id&#x3D;&quot;type&quot;&gt;
+      &lt;option value&#x3D;&quot;length&quot;&gt;Length&lt;/option&gt;
+      &lt;option value&#x3D;&quot;area&quot;&gt;Area&lt;/option&gt;
     &lt;/select&gt;
-    &lt;label class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;geodesic&quot;/&gt;use geodesic measures&lt;/label&gt;
+    &lt;label class&#x3D;&quot;checkbox&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;geodesic&quot;/&gt;use geodesic measures&lt;/label&gt;
 &lt;/form&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var wgs84Sphere = new ol.Sphere(6378137);
+var wgs84Sphere &#x3D; new ol.Sphere(6378137);
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var source = new ol.source.Vector();
+var source &#x3D; new ol.source.Vector();
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: source,
   style: new ol.style.Style({
     fill: new ol.style.Fill({
@@ -533,44 +533,44 @@ var measureTooltip;
  * Message to show when the user is drawing a polygon.
  * @type {string}
  */
-var continuePolygonMsg = &#x27;Click to continue drawing the polygon&#x27;;
+var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
 
 
 /**
  * Message to show when the user is drawing a line.
  * @type {string}
  */
-var continueLineMsg = &#x27;Click to continue drawing the line&#x27;;
+var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 
 /**
  * Handle pointer move.
  * @param {ol.MapBrowserEvent} evt
  */
-var pointerMoveHandler = function(evt) {
+var pointerMoveHandler &#x3D; function(evt) {
   if (evt.dragging) {
     return;
   }
   /** @type {string} */
-  var helpMsg = &#x27;Click to start drawing&#x27;;
+  var helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
   if (sketch) {
-    var geom = (sketch.getGeometry());
+    var geom &#x3D; (sketch.getGeometry());
     if (geom instanceof ol.geom.Polygon) {
-      helpMsg = continuePolygonMsg;
+      helpMsg &#x3D; continuePolygonMsg;
     } else if (geom instanceof ol.geom.LineString) {
-      helpMsg = continueLineMsg;
+      helpMsg &#x3D; continueLineMsg;
     }
   }
 
-  helpTooltipElement.innerHTML = helpMsg;
+  helpTooltipElement.innerHTML &#x3D; helpMsg;
   helpTooltip.setPosition(evt.coordinate);
 
   $(helpTooltipElement).removeClass(&#x27;hidden&#x27;);
 };
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -585,13 +585,13 @@ $(map.getViewport()).on(&#x27;mouseout&#x27;, function() {
   $(helpTooltipElement).addClass(&#x27;hidden&#x27;);
 });
 
-var typeSelect = document.getElementById(&#x27;type&#x27;);
-var geodesicCheckbox = document.getElementById(&#x27;geodesic&#x27;);
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+var geodesicCheckbox &#x3D; document.getElementById(&#x27;geodesic&#x27;);
 
 var draw; // global so we can remove it later
 function addInteraction() {
-  var type = (typeSelect.value == &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
-  draw = new ol.interaction.Draw({
+  var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
+  draw &#x3D; new ol.interaction.Draw({
     source: source,
     type: /** @type {ol.geom.GeometryType} */ (type),
     style: new ol.style.Style({
@@ -623,34 +623,34 @@ function addInteraction() {
   draw.on(&#x27;drawstart&#x27;,
       function(evt) {
         // set sketch
-        sketch = evt.feature;
+        sketch &#x3D; evt.feature;
 
         /** @type {ol.Coordinate|undefined} */
-        var tooltipCoord = evt.coordinate;
+        var tooltipCoord &#x3D; evt.coordinate;
 
-        listener = sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
-          var geom = evt.target;
+        listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
+          var geom &#x3D; evt.target;
           var output;
           if (geom instanceof ol.geom.Polygon) {
-            output = formatArea(/** @type {ol.geom.Polygon} */ (geom));
-            tooltipCoord = geom.getInteriorPoint().getCoordinates();
+            output &#x3D; formatArea(/** @type {ol.geom.Polygon} */ (geom));
+            tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
           } else if (geom instanceof ol.geom.LineString) {
-            output = formatLength( /** @type {ol.geom.LineString} */ (geom));
-            tooltipCoord = geom.getLastCoordinate();
+            output &#x3D; formatLength( /** @type {ol.geom.LineString} */ (geom));
+            tooltipCoord &#x3D; geom.getLastCoordinate();
           }
-          measureTooltipElement.innerHTML = output;
+          measureTooltipElement.innerHTML &#x3D; output;
           measureTooltip.setPosition(tooltipCoord);
         });
       }, this);
 
   draw.on(&#x27;drawend&#x27;,
       function(evt) {
-        measureTooltipElement.className = &#x27;tooltip tooltip-static&#x27;;
+        measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
         measureTooltip.setOffset([0, -7]);
         // unset sketch
-        sketch = null;
+        sketch &#x3D; null;
         // unset tooltip so that a new one can be created
-        measureTooltipElement = null;
+        measureTooltipElement &#x3D; null;
         createMeasureTooltip();
         ol.Observable.unByKey(listener);
       }, this);
@@ -664,9 +664,9 @@ function createHelpTooltip() {
   if (helpTooltipElement) {
     helpTooltipElement.parentNode.removeChild(helpTooltipElement);
   }
-  helpTooltipElement = document.createElement(&#x27;div&#x27;);
-  helpTooltipElement.className = &#x27;tooltip hidden&#x27;;
-  helpTooltip = new ol.Overlay({
+  helpTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
+  helpTooltipElement.className &#x3D; &#x27;tooltip hidden&#x27;;
+  helpTooltip &#x3D; new ol.Overlay({
     element: helpTooltipElement,
     offset: [15, 0],
     positioning: &#x27;center-left&#x27;
@@ -682,9 +682,9 @@ function createMeasureTooltip() {
   if (measureTooltipElement) {
     measureTooltipElement.parentNode.removeChild(measureTooltipElement);
   }
-  measureTooltipElement = document.createElement(&#x27;div&#x27;);
-  measureTooltipElement.className = &#x27;tooltip tooltip-measure&#x27;;
-  measureTooltip = new ol.Overlay({
+  measureTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
+  measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-measure&#x27;;
+  measureTooltip &#x3D; new ol.Overlay({
     element: measureTooltipElement,
     offset: [0, -15],
     positioning: &#x27;bottom-center&#x27;
@@ -697,7 +697,7 @@ function createMeasureTooltip() {
  * Let user change the geometry type.
  * @param {Event} e Change event.
  */
-typeSelect.onchange = function(e) {
+typeSelect.onchange &#x3D; function(e) {
   map.removeInteraction(draw);
   addInteraction();
 };
@@ -708,26 +708,26 @@ typeSelect.onchange = function(e) {
  * @param {ol.geom.LineString} line
  * @return {string}
  */
-var formatLength = function(line) {
+var formatLength &#x3D; function(line) {
   var length;
   if (geodesicCheckbox.checked) {
-    var coordinates = line.getCoordinates();
-    length = 0;
-    var sourceProj = map.getView().getProjection();
-    for (var i = 0, ii = coordinates.length - 1; i &lt; ii; ++i) {
-      var c1 = ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
-      var c2 = ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
-      length += wgs84Sphere.haversineDistance(c1, c2);
+    var coordinates &#x3D; line.getCoordinates();
+    length &#x3D; 0;
+    var sourceProj &#x3D; map.getView().getProjection();
+    for (var i &#x3D; 0, ii &#x3D; coordinates.length - 1; i &lt; ii; ++i) {
+      var c1 &#x3D; ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
+      var c2 &#x3D; ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
+      length +&#x3D; wgs84Sphere.haversineDistance(c1, c2);
     }
   } else {
-    length = Math.round(line.getLength() * 100) / 100;
+    length &#x3D; Math.round(line.getLength() * 100) / 100;
   }
   var output;
   if (length &gt; 100) {
-    output = (Math.round(length / 1000 * 100) / 100) +
+    output &#x3D; (Math.round(length / 1000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&#x27;;
   } else {
-    output = (Math.round(length * 100) / 100) +
+    output &#x3D; (Math.round(length * 100) / 100) +
         &#x27; &#x27; + &#x27;m&#x27;;
   }
   return output;
@@ -739,23 +739,23 @@ var formatLength = function(line) {
  * @param {ol.geom.Polygon} polygon
  * @return {string}
  */
-var formatArea = function(polygon) {
+var formatArea &#x3D; function(polygon) {
   var area;
   if (geodesicCheckbox.checked) {
-    var sourceProj = map.getView().getProjection();
-    var geom = /** @type {ol.geom.Polygon} */(polygon.clone().transform(
+    var sourceProj &#x3D; map.getView().getProjection();
+    var geom &#x3D; /** @type {ol.geom.Polygon} */(polygon.clone().transform(
         sourceProj, &#x27;EPSG:4326&#x27;));
-    var coordinates = geom.getLinearRing(0).getCoordinates();
-    area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
+    var coordinates &#x3D; geom.getLinearRing(0).getCoordinates();
+    area &#x3D; Math.abs(wgs84Sphere.geodesicArea(coordinates));
   } else {
-    area = polygon.getArea();
+    area &#x3D; polygon.getArea();
   }
   var output;
   if (area &gt; 10000) {
-    output = (Math.round(area / 1000000 * 100) / 100) +
+    output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
   } else {
-    output = (Math.round(area * 100) / 100) +
+    output &#x3D; (Math.round(area * 100) / 100) +
         &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
   }
   return output;

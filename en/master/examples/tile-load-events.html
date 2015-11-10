@@ -55,17 +55,17 @@
  * @constructor
  */
 function Progress(el) {
-  this.el = el;
-  this.loading = 0;
-  this.loaded = 0;
+  this.el &#x3D; el;
+  this.loading &#x3D; 0;
+  this.loaded &#x3D; 0;
 }
 
 
 /**
  * Increment the count of loading tiles.
  */
-Progress.prototype.addLoading = function() {
-  if (this.loading === 0) {
+Progress.prototype.addLoading &#x3D; function() {
+  if (this.loading &#x3D;&#x3D;&#x3D; 0) {
     this.show();
   }
   ++this.loading;
@@ -76,8 +76,8 @@ Progress.prototype.addLoading = function() {
 /**
  * Increment the count of loaded tiles.
  */
-Progress.prototype.addLoaded = function() {
-  var this_ = this;
+Progress.prototype.addLoaded &#x3D; function() {
+  var this_ &#x3D; this;
   setTimeout(function() {
     ++this_.loaded;
     this_.update();
@@ -88,13 +88,13 @@ Progress.prototype.addLoaded = function() {
 /**
  * Update the progress bar.
  */
-Progress.prototype.update = function() {
-  var width = (this.loaded / this.loading * 100).toFixed(1) + &#x27;%&#x27;;
-  this.el.style.width = width;
-  if (this.loading === this.loaded) {
-    this.loading = 0;
-    this.loaded = 0;
-    var this_ = this;
+Progress.prototype.update &#x3D; function() {
+  var width &#x3D; (this.loaded / this.loading * 100).toFixed(1) + &#x27;%&#x27;;
+  this.el.style.width &#x3D; width;
+  if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
+    this.loading &#x3D; 0;
+    this.loaded &#x3D; 0;
+    var this_ &#x3D; this;
     setTimeout(function() {
       this_.hide();
     }, 500);
@@ -105,24 +105,24 @@ Progress.prototype.update = function() {
 /**
  * Show the progress bar.
  */
-Progress.prototype.show = function() {
-  this.el.style.visibility = &#x27;visible&#x27;;
+Progress.prototype.show &#x3D; function() {
+  this.el.style.visibility &#x3D; &#x27;visible&#x27;;
 };
 
 
 /**
  * Hide the progress bar.
  */
-Progress.prototype.hide = function() {
-  if (this.loading === this.loaded) {
-    this.el.style.visibility = &#x27;hidden&#x27;;
-    this.el.style.width = 0;
+Progress.prototype.hide &#x3D; function() {
+  if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
+    this.el.style.visibility &#x3D; &#x27;hidden&#x27;;
+    this.el.style.width &#x3D; 0;
   }
 };
 
-var progress = new Progress(document.getElementById(&#x27;progress&#x27;));
+var progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
 
-var source = new ol.source.TileJSON({
+var source &#x3D; new ol.source.TileJSON({
   url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.world-bright.jsonp&#x27;,
   crossOrigin: &#x27;anonymous&#x27;
 });
@@ -138,7 +138,7 @@ source.on(&#x27;tileloaderror&#x27;, function(event) {
   progress.addLoaded();
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   logo: false,
   layers: [
     new ol.layer.Tile({source: source})
@@ -165,10 +165,10 @@ var map = new ol.Map({
   width: 0;
   transition: width 250ms;
 }</textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12 wrapper&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;progress&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12 wrapper&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;progress&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -206,10 +206,10 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12 wrapper&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;progress&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12 wrapper&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;progress&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -221,17 +221,17 @@ var map = new ol.Map({
  * @constructor
  */
 function Progress(el) {
-  this.el = el;
-  this.loading = 0;
-  this.loaded = 0;
+  this.el &#x3D; el;
+  this.loading &#x3D; 0;
+  this.loaded &#x3D; 0;
 }
 
 
 /**
  * Increment the count of loading tiles.
  */
-Progress.prototype.addLoading = function() {
-  if (this.loading === 0) {
+Progress.prototype.addLoading &#x3D; function() {
+  if (this.loading &#x3D;&#x3D;&#x3D; 0) {
     this.show();
   }
   ++this.loading;
@@ -242,8 +242,8 @@ Progress.prototype.addLoading = function() {
 /**
  * Increment the count of loaded tiles.
  */
-Progress.prototype.addLoaded = function() {
-  var this_ = this;
+Progress.prototype.addLoaded &#x3D; function() {
+  var this_ &#x3D; this;
   setTimeout(function() {
     ++this_.loaded;
     this_.update();
@@ -254,13 +254,13 @@ Progress.prototype.addLoaded = function() {
 /**
  * Update the progress bar.
  */
-Progress.prototype.update = function() {
-  var width = (this.loaded / this.loading * 100).toFixed(1) + &#x27;%&#x27;;
-  this.el.style.width = width;
-  if (this.loading === this.loaded) {
-    this.loading = 0;
-    this.loaded = 0;
-    var this_ = this;
+Progress.prototype.update &#x3D; function() {
+  var width &#x3D; (this.loaded / this.loading * 100).toFixed(1) + &#x27;%&#x27;;
+  this.el.style.width &#x3D; width;
+  if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
+    this.loading &#x3D; 0;
+    this.loaded &#x3D; 0;
+    var this_ &#x3D; this;
     setTimeout(function() {
       this_.hide();
     }, 500);
@@ -271,24 +271,24 @@ Progress.prototype.update = function() {
 /**
  * Show the progress bar.
  */
-Progress.prototype.show = function() {
-  this.el.style.visibility = &#x27;visible&#x27;;
+Progress.prototype.show &#x3D; function() {
+  this.el.style.visibility &#x3D; &#x27;visible&#x27;;
 };
 
 
 /**
  * Hide the progress bar.
  */
-Progress.prototype.hide = function() {
-  if (this.loading === this.loaded) {
-    this.el.style.visibility = &#x27;hidden&#x27;;
-    this.el.style.width = 0;
+Progress.prototype.hide &#x3D; function() {
+  if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
+    this.el.style.visibility &#x3D; &#x27;hidden&#x27;;
+    this.el.style.width &#x3D; 0;
   }
 };
 
-var progress = new Progress(document.getElementById(&#x27;progress&#x27;));
+var progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
 
-var source = new ol.source.TileJSON({
+var source &#x3D; new ol.source.TileJSON({
   url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.world-bright.jsonp&#x27;,
   crossOrigin: &#x27;anonymous&#x27;
 });
@@ -304,7 +304,7 @@ source.on(&#x27;tileloaderror&#x27;, function(event) {
   progress.addLoaded();
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   logo: false,
   layers: [
     new ol.layer.Tile({source: source})

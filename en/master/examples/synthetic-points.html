@@ -47,11 +47,11 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var count = 20000;
-var features = new Array(count);
-var e = 18000000;
-for (var i = 0; i &lt; count; ++i) {
-  features[i] = new ol.Feature({
+          <textarea class="hidden" name="js">var count &#x3D; 20000;
+var features &#x3D; new Array(count);
+var e &#x3D; 18000000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
+  features[i] &#x3D; new ol.Feature({
     &#x27;geometry&#x27;: new ol.geom.Point(
         [2 * e * Math.random() - e, 2 * e * Math.random() - e]),
     &#x27;i&#x27;: i,
@@ -59,7 +59,7 @@ for (var i = 0; i &lt; count; ++i) {
   });
 }
 
-var styles = {
+var styles &#x3D; {
   &#x27;10&#x27;: [new ol.style.Style({
     image: new ol.style.Circle({
       radius: 5,
@@ -76,17 +76,17 @@ var styles = {
   })]
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   features: features
 });
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: function(feature, resolution) {
     return styles[feature.get(&#x27;size&#x27;)];
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -95,23 +95,23 @@ var map = new ol.Map({
   })
 });
 
-var point = null;
-var line = null;
-var displaySnap = function(coordinate) {
-  var closestFeature = vectorSource.getClosestFeatureToCoordinate(coordinate);
-  if (closestFeature === null) {
-    point = null;
-    line = null;
+var point &#x3D; null;
+var line &#x3D; null;
+var displaySnap &#x3D; function(coordinate) {
+  var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+  if (closestFeature &#x3D;&#x3D;&#x3D; null) {
+    point &#x3D; null;
+    line &#x3D; null;
   } else {
-    var geometry = closestFeature.getGeometry();
-    var closestPoint = geometry.getClosestPoint(coordinate);
-    if (point === null) {
-      point = new ol.geom.Point(closestPoint);
+    var geometry &#x3D; closestFeature.getGeometry();
+    var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+    if (point &#x3D;&#x3D;&#x3D; null) {
+      point &#x3D; new ol.geom.Point(closestPoint);
     } else {
       point.setCoordinates(closestPoint);
     }
-    if (line === null) {
-      line = new ol.geom.LineString([coordinate, closestPoint]);
+    if (line &#x3D;&#x3D;&#x3D; null) {
+      line &#x3D; new ol.geom.LineString([coordinate, closestPoint]);
     } else {
       line.setCoordinates([coordinate, closestPoint]);
     }
@@ -123,7 +123,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate = map.getEventCoordinate(evt.originalEvent);
+  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displaySnap(coordinate);
 });
 
@@ -131,7 +131,7 @@ map.on(&#x27;click&#x27;, function(evt) {
   displaySnap(evt.coordinate);
 });
 
-var imageStyle = new ol.style.Circle({
+var imageStyle &#x3D; new ol.style.Circle({
   radius: 10,
   fill: null,
   stroke: new ol.style.Stroke({
@@ -139,17 +139,17 @@ var imageStyle = new ol.style.Circle({
     width: 3
   })
 });
-var strokeStyle = new ol.style.Stroke({
+var strokeStyle &#x3D; new ol.style.Stroke({
   color: &#x27;rgba(255,255,0,0.9)&#x27;,
   width: 3
 });
 map.on(&#x27;postcompose&#x27;, function(evt) {
-  var vectorContext = evt.vectorContext;
-  if (point !== null) {
+  var vectorContext &#x3D; evt.vectorContext;
+  if (point !&#x3D;&#x3D; null) {
     vectorContext.setImageStyle(imageStyle);
     vectorContext.drawPointGeometry(point);
   }
-  if (line !== null) {
+  if (line !&#x3D;&#x3D; null) {
     vectorContext.setFillStrokeStyle(null, strokeStyle);
     vectorContext.drawLineStringGeometry(line);
   }
@@ -159,19 +159,19 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
-  var hit = map.hasFeatureAtPixel(pixel);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  var hit &#x3D; map.hasFeatureAtPixel(pixel);
   if (hit) {
-    map.getTarget().style.cursor = &#x27;pointer&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
-    map.getTarget().style.cursor = &#x27;&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
   }
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -192,19 +192,19 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var count = 20000;
-var features = new Array(count);
-var e = 18000000;
-for (var i = 0; i &lt; count; ++i) {
-  features[i] = new ol.Feature({
+var count &#x3D; 20000;
+var features &#x3D; new Array(count);
+var e &#x3D; 18000000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
+  features[i] &#x3D; new ol.Feature({
     &#x27;geometry&#x27;: new ol.geom.Point(
         [2 * e * Math.random() - e, 2 * e * Math.random() - e]),
     &#x27;i&#x27;: i,
@@ -212,7 +212,7 @@ for (var i = 0; i &lt; count; ++i) {
   });
 }
 
-var styles = {
+var styles &#x3D; {
   &#x27;10&#x27;: [new ol.style.Style({
     image: new ol.style.Circle({
       radius: 5,
@@ -229,17 +229,17 @@ var styles = {
   })]
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   features: features
 });
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: function(feature, resolution) {
     return styles[feature.get(&#x27;size&#x27;)];
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -248,23 +248,23 @@ var map = new ol.Map({
   })
 });
 
-var point = null;
-var line = null;
-var displaySnap = function(coordinate) {
-  var closestFeature = vectorSource.getClosestFeatureToCoordinate(coordinate);
-  if (closestFeature === null) {
-    point = null;
-    line = null;
+var point &#x3D; null;
+var line &#x3D; null;
+var displaySnap &#x3D; function(coordinate) {
+  var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+  if (closestFeature &#x3D;&#x3D;&#x3D; null) {
+    point &#x3D; null;
+    line &#x3D; null;
   } else {
-    var geometry = closestFeature.getGeometry();
-    var closestPoint = geometry.getClosestPoint(coordinate);
-    if (point === null) {
-      point = new ol.geom.Point(closestPoint);
+    var geometry &#x3D; closestFeature.getGeometry();
+    var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+    if (point &#x3D;&#x3D;&#x3D; null) {
+      point &#x3D; new ol.geom.Point(closestPoint);
     } else {
       point.setCoordinates(closestPoint);
     }
-    if (line === null) {
-      line = new ol.geom.LineString([coordinate, closestPoint]);
+    if (line &#x3D;&#x3D;&#x3D; null) {
+      line &#x3D; new ol.geom.LineString([coordinate, closestPoint]);
     } else {
       line.setCoordinates([coordinate, closestPoint]);
     }
@@ -276,7 +276,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate = map.getEventCoordinate(evt.originalEvent);
+  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displaySnap(coordinate);
 });
 
@@ -284,7 +284,7 @@ map.on(&#x27;click&#x27;, function(evt) {
   displaySnap(evt.coordinate);
 });
 
-var imageStyle = new ol.style.Circle({
+var imageStyle &#x3D; new ol.style.Circle({
   radius: 10,
   fill: null,
   stroke: new ol.style.Stroke({
@@ -292,17 +292,17 @@ var imageStyle = new ol.style.Circle({
     width: 3
   })
 });
-var strokeStyle = new ol.style.Stroke({
+var strokeStyle &#x3D; new ol.style.Stroke({
   color: &#x27;rgba(255,255,0,0.9)&#x27;,
   width: 3
 });
 map.on(&#x27;postcompose&#x27;, function(evt) {
-  var vectorContext = evt.vectorContext;
-  if (point !== null) {
+  var vectorContext &#x3D; evt.vectorContext;
+  if (point !&#x3D;&#x3D; null) {
     vectorContext.setImageStyle(imageStyle);
     vectorContext.drawPointGeometry(point);
   }
-  if (line !== null) {
+  if (line !&#x3D;&#x3D; null) {
     vectorContext.setFillStrokeStyle(null, strokeStyle);
     vectorContext.drawLineStringGeometry(line);
   }
@@ -312,12 +312,12 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
-  var hit = map.hasFeatureAtPixel(pixel);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  var hit &#x3D; map.hasFeatureAtPixel(pixel);
   if (hit) {
-    map.getTarget().style.cursor = &#x27;pointer&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
-    map.getTarget().style.cursor = &#x27;&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
   }
 });
 

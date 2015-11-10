@@ -56,20 +56,20 @@
           <textarea class="hidden" name="js">// Map views always need a projection.  Here we just want to map image
 // coordinates directly to map coordinates, so we create a projection that uses
 // the image extent in pixels.
-var extent = [0, 0, 1024, 968];
-var projection = new ol.proj.Projection({
+var extent &#x3D; [0, 0, 1024, 968];
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;xkcd-image&#x27;,
   units: &#x27;pixels&#x27;,
   extent: extent
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Image({
       source: new ol.source.ImageStatic({
         attributions: [
           new ol.Attribution({
-            html: &#x27;&amp;copy; &lt;a href=&quot;http://xkcd.com/license.html&quot;&gt;xkcd&lt;/a&gt;&#x27;
+            html: &#x27;&amp;copy; &lt;a href&#x3D;&quot;http://xkcd.com/license.html&quot;&gt;xkcd&lt;/a&gt;&#x27;
           })
         ],
         url: &#x27;http://imgs.xkcd.com/comics/online_communities.png&#x27;,
@@ -88,9 +88,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -111,9 +111,9 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -122,20 +122,20 @@ var map = new ol.Map({
 // Map views always need a projection.  Here we just want to map image
 // coordinates directly to map coordinates, so we create a projection that uses
 // the image extent in pixels.
-var extent = [0, 0, 1024, 968];
-var projection = new ol.proj.Projection({
+var extent &#x3D; [0, 0, 1024, 968];
+var projection &#x3D; new ol.proj.Projection({
   code: &#x27;xkcd-image&#x27;,
   units: &#x27;pixels&#x27;,
   extent: extent
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Image({
       source: new ol.source.ImageStatic({
         attributions: [
           new ol.Attribution({
-            html: &#x27;&amp;copy; &lt;a href=&quot;http://xkcd.com/license.html&quot;&gt;xkcd&lt;/a&gt;&#x27;
+            html: &#x27;&amp;copy; &lt;a href&#x3D;&quot;http://xkcd.com/license.html&quot;&gt;xkcd&lt;/a&gt;&#x27;
           })
         ],
         url: &#x27;http://imgs.xkcd.com/comics/online_communities.png&#x27;,

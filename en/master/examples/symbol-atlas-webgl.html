@@ -48,13 +48,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var atlasManager = new ol.style.AtlasManager({
+          <textarea class="hidden" name="js">var atlasManager &#x3D; new ol.style.AtlasManager({
   // we increase the initial size so that all symbols fit into
   // a single atlas image
   initialSize: 512
 });
 
-var symbolInfo = [{
+var symbolInfo &#x3D; [{
   opacity: 1.0,
   scale: 1.0,
   fillColor: &#x27;rgba(255, 153, 0, 0.4)&#x27;,
@@ -76,13 +76,13 @@ var symbolInfo = [{
   strokeColor: &#x27;rgba(145, 43, 20, 0.2)&#x27;
 }];
 
-var radiuses = [3, 6, 9, 15, 19, 25];
-var symbolCount = symbolInfo.length * radiuses.length * 2;
-var symbols = [];
+var radiuses &#x3D; [3, 6, 9, 15, 19, 25];
+var symbolCount &#x3D; symbolInfo.length * radiuses.length * 2;
+var symbols &#x3D; [];
 var i, j;
-for (i = 0; i &lt; symbolInfo.length; ++i) {
-  var info = symbolInfo[i];
-  for (j = 0; j &lt; radiuses.length; ++j) {
+for (i &#x3D; 0; i &lt; symbolInfo.length; ++i) {
+  var info &#x3D; symbolInfo[i];
+  for (j &#x3D; 0; j &lt; radiuses.length; ++j) {
     // circle symbol
     symbols.push(new ol.style.Circle({
       opacity: info.opacity,
@@ -120,37 +120,30 @@ for (i = 0; i &lt; symbolInfo.length; ++i) {
   }
 }
 
-var featureCount = 50000;
-var features = new Array(featureCount);
+var featureCount &#x3D; 50000;
+var features &#x3D; new Array(featureCount);
 var feature, geometry;
-var e = 25000000;
-for (i = 0; i &lt; featureCount; ++i) {
-  geometry = new ol.geom.Point(
+var e &#x3D; 25000000;
+for (i &#x3D; 0; i &lt; featureCount; ++i) {
+  geometry &#x3D; new ol.geom.Point(
       [2 * e * Math.random() - e, 2 * e * Math.random() - e]);
-  feature = new ol.Feature(geometry);
+  feature &#x3D; new ol.Feature(geometry);
   feature.setStyle(
       new ol.style.Style({
         image: symbols[i % symbolCount]
       })
   );
-  features[i] = feature;
+  features[i] &#x3D; feature;
 }
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   features: features
 });
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource
 });
 
-// Use the &quot;webgl&quot; renderer by default.
-var renderer = common.getRendererFromQueryString();
-if (!renderer) {
-  renderer = &#x27;webgl&#x27;;
-}
-
-var map = new ol.Map({
-  renderer: renderer,
+var map &#x3D; new ol.Map({
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -160,9 +153,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -183,21 +176,21 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var atlasManager = new ol.style.AtlasManager({
+var atlasManager &#x3D; new ol.style.AtlasManager({
   // we increase the initial size so that all symbols fit into
   // a single atlas image
   initialSize: 512
 });
 
-var symbolInfo = [{
+var symbolInfo &#x3D; [{
   opacity: 1.0,
   scale: 1.0,
   fillColor: &#x27;rgba(255, 153, 0, 0.4)&#x27;,
@@ -219,13 +212,13 @@ var symbolInfo = [{
   strokeColor: &#x27;rgba(145, 43, 20, 0.2)&#x27;
 }];
 
-var radiuses = [3, 6, 9, 15, 19, 25];
-var symbolCount = symbolInfo.length * radiuses.length * 2;
-var symbols = [];
+var radiuses &#x3D; [3, 6, 9, 15, 19, 25];
+var symbolCount &#x3D; symbolInfo.length * radiuses.length * 2;
+var symbols &#x3D; [];
 var i, j;
-for (i = 0; i &lt; symbolInfo.length; ++i) {
-  var info = symbolInfo[i];
-  for (j = 0; j &lt; radiuses.length; ++j) {
+for (i &#x3D; 0; i &lt; symbolInfo.length; ++i) {
+  var info &#x3D; symbolInfo[i];
+  for (j &#x3D; 0; j &lt; radiuses.length; ++j) {
     // circle symbol
     symbols.push(new ol.style.Circle({
       opacity: info.opacity,
@@ -263,37 +256,30 @@ for (i = 0; i &lt; symbolInfo.length; ++i) {
   }
 }
 
-var featureCount = 50000;
-var features = new Array(featureCount);
+var featureCount &#x3D; 50000;
+var features &#x3D; new Array(featureCount);
 var feature, geometry;
-var e = 25000000;
-for (i = 0; i &lt; featureCount; ++i) {
-  geometry = new ol.geom.Point(
+var e &#x3D; 25000000;
+for (i &#x3D; 0; i &lt; featureCount; ++i) {
+  geometry &#x3D; new ol.geom.Point(
       [2 * e * Math.random() - e, 2 * e * Math.random() - e]);
-  feature = new ol.Feature(geometry);
+  feature &#x3D; new ol.Feature(geometry);
   feature.setStyle(
       new ol.style.Style({
         image: symbols[i % symbolCount]
       })
   );
-  features[i] = feature;
+  features[i] &#x3D; feature;
 }
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   features: features
 });
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource
 });
 
-// Use the &quot;webgl&quot; renderer by default.
-var renderer = common.getRendererFromQueryString();
-if (!renderer) {
-  renderer = &#x27;webgl&#x27;;
-}
-
-var map = new ol.Map({
-  renderer: renderer,
+var map &#x3D; new ol.Map({
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({

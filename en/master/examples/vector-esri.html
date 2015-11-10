@@ -53,13 +53,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var serviceUrl = &#x27;http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
+          <textarea class="hidden" name="js">var serviceUrl &#x3D; &#x27;http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
     &#x27;Petroleum/KSFields/FeatureServer/&#x27;;
-var layer = &#x27;0&#x27;;
+var layer &#x3D; &#x27;0&#x27;;
 
-var esrijsonFormat = new ol.format.EsriJSON();
+var esrijsonFormat &#x3D; new ol.format.EsriJSON();
 
-var styleCache = {
+var styleCache &#x3D; {
   &#x27;ABANDONED&#x27;: [
     new ol.style.Style({
       fill: new ol.style.Fill({
@@ -106,22 +106,22 @@ var styleCache = {
   ]
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   loader: function(extent, resolution, projection) {
-    var url = serviceUrl + layer + &#x27;/query/?f=json&amp;&#x27; +
-        &#x27;returnGeometry=true&amp;spatialRel=esriSpatialRelIntersects&amp;geometry=&#x27; +
+    var url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
+        &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
         encodeURIComponent(&#x27;{&quot;xmin&quot;:&#x27; + extent[0] + &#x27;,&quot;ymin&quot;:&#x27; +
             extent[1] + &#x27;,&quot;xmax&quot;:&#x27; + extent[2] + &#x27;,&quot;ymax&quot;:&#x27; + extent[3] +
             &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;) +
-        &#x27;&amp;geometryType=esriGeometryEnvelope&amp;inSR=102100&amp;outFields=*&#x27; +
-        &#x27;&amp;outSR=102100&#x27;;
+        &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
+        &#x27;&amp;outSR&#x3D;102100&#x27;;
     $.ajax({url: url, dataType: &#x27;jsonp&#x27;, success: function(response) {
       if (response.error) {
         alert(response.error.message + &#x27;\n&#x27; +
             response.error.details.join(&#x27;\n&#x27;));
       } else {
         // dataProjection will be read from document
-        var features = esrijsonFormat.readFeatures(response, {
+        var features &#x3D; esrijsonFormat.readFeatures(response, {
           featureProjection: projection
         });
         if (features.length &gt; 0) {
@@ -135,21 +135,21 @@ var vectorSource = new ol.source.Vector({
   }))
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: function(feature, resolution) {
-    var classify = feature.get(&#x27;activeprod&#x27;);
+    var classify &#x3D; feature.get(&#x27;activeprod&#x27;);
     return styleCache[classify];
   }
 });
 
 
-var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
       &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     attributions: [attribution],
     url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
@@ -157,7 +157,7 @@ var raster = new ol.layer.Tile({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -166,22 +166,22 @@ var map = new ol.Map({
   })
 });
 
-var displayFeatureInfo = function(pixel) {
-  var features = [];
+var displayFeatureInfo &#x3D; function(pixel) {
+  var features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    var info = [];
+    var info &#x3D; [];
     var i, ii;
-    for (i = 0, ii = features.length; i &lt; ii; ++i) {
+    for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
       info.push(features[i].get(&#x27;field_name&#x27;));
     }
-    document.getElementById(&#x27;info&#x27;).innerHTML = info.join(&#x27;, &#x27;) || &#x27;(unknown)&#x27;;
-    map.getTarget().style.cursor = &#x27;pointer&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info.join(&#x27;, &#x27;) || &#x27;(unknown)&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
-    document.getElementById(&#x27;info&#x27;).innerHTML = &#x27;&amp;nbsp;&#x27;;
-    map.getTarget().style.cursor = &#x27;&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
   }
 };
 
@@ -189,7 +189,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 
@@ -198,11 +198,11 @@ map.on(&#x27;click&#x27;, function(evt) {
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
         &amp;nbsp;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -226,11 +226,11 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 offset4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span4 offset4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
         &amp;nbsp;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -239,13 +239,13 @@ map.on(&#x27;click&#x27;, function(evt) {
 
 &lt;/div&gt;
 &lt;script&gt;
-var serviceUrl = &#x27;http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
+var serviceUrl &#x3D; &#x27;http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
     &#x27;Petroleum/KSFields/FeatureServer/&#x27;;
-var layer = &#x27;0&#x27;;
+var layer &#x3D; &#x27;0&#x27;;
 
-var esrijsonFormat = new ol.format.EsriJSON();
+var esrijsonFormat &#x3D; new ol.format.EsriJSON();
 
-var styleCache = {
+var styleCache &#x3D; {
   &#x27;ABANDONED&#x27;: [
     new ol.style.Style({
       fill: new ol.style.Fill({
@@ -292,22 +292,22 @@ var styleCache = {
   ]
 };
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   loader: function(extent, resolution, projection) {
-    var url = serviceUrl + layer + &#x27;/query/?f=json&amp;&#x27; +
-        &#x27;returnGeometry=true&amp;spatialRel=esriSpatialRelIntersects&amp;geometry=&#x27; +
+    var url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
+        &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
         encodeURIComponent(&#x27;{&quot;xmin&quot;:&#x27; + extent[0] + &#x27;,&quot;ymin&quot;:&#x27; +
             extent[1] + &#x27;,&quot;xmax&quot;:&#x27; + extent[2] + &#x27;,&quot;ymax&quot;:&#x27; + extent[3] +
             &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;) +
-        &#x27;&amp;geometryType=esriGeometryEnvelope&amp;inSR=102100&amp;outFields=*&#x27; +
-        &#x27;&amp;outSR=102100&#x27;;
+        &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
+        &#x27;&amp;outSR&#x3D;102100&#x27;;
     $.ajax({url: url, dataType: &#x27;jsonp&#x27;, success: function(response) {
       if (response.error) {
         alert(response.error.message + &#x27;\n&#x27; +
             response.error.details.join(&#x27;\n&#x27;));
       } else {
         // dataProjection will be read from document
-        var features = esrijsonFormat.readFeatures(response, {
+        var features &#x3D; esrijsonFormat.readFeatures(response, {
           featureProjection: projection
         });
         if (features.length &gt; 0) {
@@ -321,21 +321,21 @@ var vectorSource = new ol.source.Vector({
   }))
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
   style: function(feature, resolution) {
-    var classify = feature.get(&#x27;activeprod&#x27;);
+    var classify &#x3D; feature.get(&#x27;activeprod&#x27;);
     return styleCache[classify];
   }
 });
 
 
-var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
       &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     attributions: [attribution],
     url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
@@ -343,7 +343,7 @@ var raster = new ol.layer.Tile({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -352,22 +352,22 @@ var map = new ol.Map({
   })
 });
 
-var displayFeatureInfo = function(pixel) {
-  var features = [];
+var displayFeatureInfo &#x3D; function(pixel) {
+  var features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    var info = [];
+    var info &#x3D; [];
     var i, ii;
-    for (i = 0, ii = features.length; i &lt; ii; ++i) {
+    for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
       info.push(features[i].get(&#x27;field_name&#x27;));
     }
-    document.getElementById(&#x27;info&#x27;).innerHTML = info.join(&#x27;, &#x27;) || &#x27;(unknown)&#x27;;
-    map.getTarget().style.cursor = &#x27;pointer&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info.join(&#x27;, &#x27;) || &#x27;(unknown)&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
-    document.getElementById(&#x27;info&#x27;).innerHTML = &#x27;&amp;nbsp;&#x27;;
-    map.getTarget().style.cursor = &#x27;&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
+    map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
   }
 };
 
@@ -375,7 +375,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 

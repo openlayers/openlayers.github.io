@@ -60,7 +60,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var mousePositionControl = new ol.control.MousePosition({
+          <textarea class="hidden" name="js">var mousePositionControl &#x3D; new ol.control.MousePosition({
   coordinateFormat: ol.coordinate.createStringXY(4),
   projection: &#x27;EPSG:4326&#x27;,
   // comment the following two lines to have the mouse position
@@ -70,7 +70,7 @@
   undefinedHTML: &#x27;&amp;nbsp;&#x27;
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
@@ -88,36 +88,36 @@ var map = new ol.Map({
   })
 });
 
-var projectionSelect = $(&#x27;#projection&#x27;);
+var projectionSelect &#x3D; $(&#x27;#projection&#x27;);
 projectionSelect.on(&#x27;change&#x27;, function() {
   mousePositionControl.setProjection(ol.proj.get(this.value));
 });
 projectionSelect.val(mousePositionControl.getProjection().getCode());
 
-var precisionInput = $(&#x27;#precision&#x27;);
+var precisionInput &#x3D; $(&#x27;#precision&#x27;);
 precisionInput.on(&#x27;change&#x27;, function() {
-  var format = ol.coordinate.createStringXY(this.valueAsNumber);
+  var format &#x3D; ol.coordinate.createStringXY(this.valueAsNumber);
   mousePositionControl.setCoordinateFormat(format);
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;span6&quot;&gt;
+&lt;div class&#x3D;&quot;span6&quot;&gt;
   &lt;form&gt;
     &lt;label&gt;Projection &lt;/label&gt;
-    &lt;select id=&quot;projection&quot;&gt;
-      &lt;option value=&quot;EPSG:4326&quot;&gt;EPSG:4326&lt;/option&gt;
-      &lt;option value=&quot;EPSG:3857&quot;&gt;EPSG:3857&lt;/option&gt;
+    &lt;select id&#x3D;&quot;projection&quot;&gt;
+      &lt;option value&#x3D;&quot;EPSG:4326&quot;&gt;EPSG:4326&lt;/option&gt;
+      &lt;option value&#x3D;&quot;EPSG:3857&quot;&gt;EPSG:3857&lt;/option&gt;
     &lt;/select&gt;
     &lt;label&gt;Precision &lt;/label&gt;
-    &lt;input id=&quot;precision&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;12&quot; value=&quot;4&quot;/&gt;
+    &lt;input id&#x3D;&quot;precision&quot; type&#x3D;&quot;number&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;12&quot; value&#x3D;&quot;4&quot;/&gt;
   &lt;/form&gt;
 &lt;/div&gt;
-&lt;div class=&quot;span6&quot; id=&quot;mouse-position&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div class&#x3D;&quot;span6&quot; id&#x3D;&quot;mouse-position&quot;&gt;&amp;nbsp;&lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
           <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,http://openlayers.org/en/v3.10.1/css/ol.css,http://openlayers.org/en/v3.10.1/build/ol.js">
@@ -136,27 +136,27 @@ precisionInput.on(&#x27;change&#x27;, function() {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;span6&quot;&gt;
+&lt;div class&#x3D;&quot;span6&quot;&gt;
   &lt;form&gt;
     &lt;label&gt;Projection &lt;/label&gt;
-    &lt;select id=&quot;projection&quot;&gt;
-      &lt;option value=&quot;EPSG:4326&quot;&gt;EPSG:4326&lt;/option&gt;
-      &lt;option value=&quot;EPSG:3857&quot;&gt;EPSG:3857&lt;/option&gt;
+    &lt;select id&#x3D;&quot;projection&quot;&gt;
+      &lt;option value&#x3D;&quot;EPSG:4326&quot;&gt;EPSG:4326&lt;/option&gt;
+      &lt;option value&#x3D;&quot;EPSG:3857&quot;&gt;EPSG:3857&lt;/option&gt;
     &lt;/select&gt;
     &lt;label&gt;Precision &lt;/label&gt;
-    &lt;input id=&quot;precision&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;12&quot; value=&quot;4&quot;/&gt;
+    &lt;input id&#x3D;&quot;precision&quot; type&#x3D;&quot;number&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;12&quot; value&#x3D;&quot;4&quot;/&gt;
   &lt;/form&gt;
 &lt;/div&gt;
-&lt;div class=&quot;span6&quot; id=&quot;mouse-position&quot;&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div class&#x3D;&quot;span6&quot; id&#x3D;&quot;mouse-position&quot;&gt;&amp;nbsp;&lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var mousePositionControl = new ol.control.MousePosition({
+var mousePositionControl &#x3D; new ol.control.MousePosition({
   coordinateFormat: ol.coordinate.createStringXY(4),
   projection: &#x27;EPSG:4326&#x27;,
   // comment the following two lines to have the mouse position
@@ -166,7 +166,7 @@ var mousePositionControl = new ol.control.MousePosition({
   undefinedHTML: &#x27;&amp;nbsp;&#x27;
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
@@ -184,15 +184,15 @@ var map = new ol.Map({
   })
 });
 
-var projectionSelect = $(&#x27;#projection&#x27;);
+var projectionSelect &#x3D; $(&#x27;#projection&#x27;);
 projectionSelect.on(&#x27;change&#x27;, function() {
   mousePositionControl.setProjection(ol.proj.get(this.value));
 });
 projectionSelect.val(mousePositionControl.getProjection().getCode());
 
-var precisionInput = $(&#x27;#precision&#x27;);
+var precisionInput &#x3D; $(&#x27;#precision&#x27;);
 precisionInput.on(&#x27;change&#x27;, function() {
-  var format = ol.coordinate.createStringXY(this.valueAsNumber);
+  var format &#x3D; ol.coordinate.createStringXY(this.valueAsNumber);
   mousePositionControl.setCoordinateFormat(format);
 });
 

@@ -52,18 +52,18 @@
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">if (!ol.has.WEBGL) {
-  var info = document.getElementById(&#x27;no-webgl&#x27;);
+  var info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
   /**
    * display error message
    */
-  info.style.display = &#x27;&#x27;;
+  info.style.display &#x3D; &#x27;&#x27;;
 } else {
 
-  var osm = new ol.layer.Tile({
+  var osm &#x3D; new ol.layer.Tile({
     source: new ol.source.OSM()
   });
 
-  var map = new ol.Map({
+  var map &#x3D; new ol.Map({
     layers: [osm],
     renderer: &#x27;webgl&#x27;,
     target: &#x27;map&#x27;,
@@ -78,31 +78,31 @@
     })
   });
 
-  var fragmentShaderSource = [
+  var fragmentShaderSource &#x3D; [
     &#x27;precision mediump float;&#x27;,
     &#x27;void main() {&#x27;,
     &#x27;}&#x27;
   ].join(&#x27;&#x27;);
 
-  var vertexShaderSource = [
+  var vertexShaderSource &#x3D; [
     &#x27;attribute vec2 a_position;&#x27;,
     &#x27;void main() {&#x27;,
-    &#x27;  gl_Position = vec4(a_position, 0, 1);&#x27;,
+    &#x27;  gl_Position &#x3D; vec4(a_position, 0, 1);&#x27;,
     &#x27;}&#x27;
   ].join(&#x27;&#x27;);
 
   osm.on(&#x27;precompose&#x27;, function(event) {
-    var context = event.glContext;
+    var context &#x3D; event.glContext;
 
-    var gl = context.getGL();
-    var program = gl.createProgram();
+    var gl &#x3D; context.getGL();
+    var program &#x3D; gl.createProgram();
 
-    var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    var vertexShader &#x3D; gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
     gl.compileShader(vertexShader);
     gl.attachShader(program, vertexShader);
 
-    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    var fragmentShader &#x3D; gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, fragmentShaderSource);
     gl.compileShader(fragmentShader);
     gl.attachShader(program, fragmentShader);
@@ -110,14 +110,14 @@
     gl.linkProgram(program);
     context.useProgram(program);
 
-    var positionLocation = gl.getAttribLocation(program, &#x27;a_position&#x27;);
+    var positionLocation &#x3D; gl.getAttribLocation(program, &#x27;a_position&#x27;);
 
     gl.enable(gl.STENCIL_TEST);
     gl.colorMask(false, false, false, false);
     gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
     gl.stencilFunc(gl.ALWAYS, 1, 0xff);
 
-    var buffer = gl.createBuffer();
+    var buffer &#x3D; gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
       // first band
@@ -147,20 +147,20 @@
   });
 
   osm.on(&#x27;postcompose&#x27;, function(event) {
-    var context = event.glContext;
-    var gl = context.getGL();
+    var context &#x3D; event.glContext;
+    var gl &#x3D; context.getGL();
     gl.disable(gl.STENCIL_TEST);
   });
 }
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&quot;no-webgl&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none&quot;&gt;
-  This example requires a browser that supports &lt;a href=&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+&lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
+  This example requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
 &lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
@@ -180,30 +180,30 @@
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&quot;no-webgl&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none&quot;&gt;
-  This example requires a browser that supports &lt;a href=&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+&lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
+  This example requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
 if (!ol.has.WEBGL) {
-  var info = document.getElementById(&#x27;no-webgl&#x27;);
+  var info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
   /**
    * display error message
    */
-  info.style.display = &#x27;&#x27;;
+  info.style.display &#x3D; &#x27;&#x27;;
 } else {
 
-  var osm = new ol.layer.Tile({
+  var osm &#x3D; new ol.layer.Tile({
     source: new ol.source.OSM()
   });
 
-  var map = new ol.Map({
+  var map &#x3D; new ol.Map({
     layers: [osm],
     renderer: &#x27;webgl&#x27;,
     target: &#x27;map&#x27;,
@@ -218,31 +218,31 @@ if (!ol.has.WEBGL) {
     })
   });
 
-  var fragmentShaderSource = [
+  var fragmentShaderSource &#x3D; [
     &#x27;precision mediump float;&#x27;,
     &#x27;void main() {&#x27;,
     &#x27;}&#x27;
   ].join(&#x27;&#x27;);
 
-  var vertexShaderSource = [
+  var vertexShaderSource &#x3D; [
     &#x27;attribute vec2 a_position;&#x27;,
     &#x27;void main() {&#x27;,
-    &#x27;  gl_Position = vec4(a_position, 0, 1);&#x27;,
+    &#x27;  gl_Position &#x3D; vec4(a_position, 0, 1);&#x27;,
     &#x27;}&#x27;
   ].join(&#x27;&#x27;);
 
   osm.on(&#x27;precompose&#x27;, function(event) {
-    var context = event.glContext;
+    var context &#x3D; event.glContext;
 
-    var gl = context.getGL();
-    var program = gl.createProgram();
+    var gl &#x3D; context.getGL();
+    var program &#x3D; gl.createProgram();
 
-    var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    var vertexShader &#x3D; gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
     gl.compileShader(vertexShader);
     gl.attachShader(program, vertexShader);
 
-    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    var fragmentShader &#x3D; gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, fragmentShaderSource);
     gl.compileShader(fragmentShader);
     gl.attachShader(program, fragmentShader);
@@ -250,14 +250,14 @@ if (!ol.has.WEBGL) {
     gl.linkProgram(program);
     context.useProgram(program);
 
-    var positionLocation = gl.getAttribLocation(program, &#x27;a_position&#x27;);
+    var positionLocation &#x3D; gl.getAttribLocation(program, &#x27;a_position&#x27;);
 
     gl.enable(gl.STENCIL_TEST);
     gl.colorMask(false, false, false, false);
     gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
     gl.stencilFunc(gl.ALWAYS, 1, 0xff);
 
-    var buffer = gl.createBuffer();
+    var buffer &#x3D; gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
       // first band
@@ -287,8 +287,8 @@ if (!ol.has.WEBGL) {
   });
 
   osm.on(&#x27;postcompose&#x27;, function(event) {
-    var context = event.glContext;
-    var gl = context.getGL();
+    var context &#x3D; event.glContext;
+    var gl &#x3D; context.getGL();
     gl.disable(gl.STENCIL_TEST);
   });
 }

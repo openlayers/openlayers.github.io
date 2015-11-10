@@ -55,28 +55,28 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var serviceUrl = &#x27;http://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
+          <textarea class="hidden" name="js">var serviceUrl &#x3D; &#x27;http://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
     &#x27;services/PDX_Pedestrian_Districts/FeatureServer/&#x27;;
-var layer = &#x27;0&#x27;;
+var layer &#x3D; &#x27;0&#x27;;
 
-var esrijsonFormat = new ol.format.EsriJSON();
+var esrijsonFormat &#x3D; new ol.format.EsriJSON();
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   loader: function(extent, resolution, projection) {
-    var url = serviceUrl + layer + &#x27;/query/?f=json&amp;&#x27; +
-        &#x27;returnGeometry=true&amp;spatialRel=esriSpatialRelIntersects&amp;geometry=&#x27; +
+    var url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
+        &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
         encodeURIComponent(&#x27;{&quot;xmin&quot;:&#x27; + extent[0] + &#x27;,&quot;ymin&quot;:&#x27; +
             extent[1] + &#x27;,&quot;xmax&quot;:&#x27; + extent[2] + &#x27;,&quot;ymax&quot;:&#x27; + extent[3] +
             &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;) +
-        &#x27;&amp;geometryType=esriGeometryEnvelope&amp;inSR=102100&amp;outFields=*&#x27; +
-        &#x27;&amp;outSR=102100&#x27;;
+        &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
+        &#x27;&amp;outSR&#x3D;102100&#x27;;
     $.ajax({url: url, dataType: &#x27;jsonp&#x27;, success: function(response) {
       if (response.error) {
         alert(response.error.message + &#x27;\n&#x27; +
             response.error.details.join(&#x27;\n&#x27;));
       } else {
         // dataProjection will be read from document
-        var features = esrijsonFormat.readFeatures(response, {
+        var features &#x3D; esrijsonFormat.readFeatures(response, {
           featureProjection: projection
         });
         if (features.length &gt; 0) {
@@ -90,59 +90,59 @@ var vectorSource = new ol.source.Vector({
   }))
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource
 });
 
-var draw = new ol.interaction.Draw({
+var draw &#x3D; new ol.interaction.Draw({
   source: vectorSource,
   type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
 });
 
-var select = new ol.interaction.Select();
+var select &#x3D; new ol.interaction.Select();
 select.setActive(false);
-var selected = select.getFeatures();
+var selected &#x3D; select.getFeatures();
 
-var modify = new ol.interaction.Modify({
+var modify &#x3D; new ol.interaction.Modify({
   features: selected
 });
 modify.setActive(false);
 
-var typeSelect = document.getElementById(&#x27;type&#x27;);
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 
 /**
  * Let user change the interaction type.
  * @param {Event} e Change event.
  */
-typeSelect.onchange = function(e) {
-  draw.setActive(typeSelect.value === &#x27;DRAW&#x27;);
-  select.setActive(typeSelect.value === &#x27;MODIFY&#x27;);
-  modify.setActive(typeSelect.value === &#x27;MODIFY&#x27;);
+typeSelect.onchange &#x3D; function(e) {
+  draw.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;DRAW&#x27;);
+  select.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
+  modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
 };
 
-var dirty = {};
+var dirty &#x3D; {};
 
 selected.on(&#x27;add&#x27;, function(evt) {
-  var feature = evt.element;
+  var feature &#x3D; evt.element;
   feature.on(&#x27;change&#x27;, function(evt) {
-    dirty[evt.target.getId()] = true;
+    dirty[evt.target.getId()] &#x3D; true;
   });
 });
 
 selected.on(&#x27;remove&#x27;, function(evt) {
-  var feature = evt.element;
-  var fid = feature.getId();
-  if (dirty[fid] === true) {
-    var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+  var feature &#x3D; evt.element;
+  var fid &#x3D; feature.getId();
+  if (dirty[fid] &#x3D;&#x3D;&#x3D; true) {
+    var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
       featureProjection: map.getView().getProjection()
     }) + &#x27;]&#x27;;
-    var url = serviceUrl + layer + &#x27;/updateFeatures&#x27;;
+    var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
     $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
-      var result = JSON.parse(data);
+      var result &#x3D; JSON.parse(data);
       if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
-        if (result.updateResults[0].success !== true) {
-          var error = result.updateResults[0].error;
+        if (result.updateResults[0].success !&#x3D;&#x3D; true) {
+          var error &#x3D; result.updateResults[0].error;
           alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
         } else {
           delete dirty[fid];
@@ -153,31 +153,31 @@ selected.on(&#x27;remove&#x27;, function(evt) {
 });
 
 draw.on(&#x27;drawend&#x27;, function(evt) {
-  var feature = evt.feature;
-  var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+  var feature &#x3D; evt.feature;
+  var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
     featureProjection: map.getView().getProjection()
   }) + &#x27;]&#x27;;
-  var url = serviceUrl + layer + &#x27;/addFeatures&#x27;;
+  var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
   $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
-    var result = JSON.parse(data);
+    var result &#x3D; JSON.parse(data);
     if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
-      if (result.addResults[0].success === true) {
+      if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
         feature.setId(result.addResults[0][&#x27;objectId&#x27;]);
         vectorSource.clear();
       } else {
-        var error = result.addResults[0].error;
+        var error &#x3D; result.addResults[0].error;
         alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
       }
     }
   });
 });
 
-var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
       &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     attributions: [attribution],
     url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
@@ -185,7 +185,7 @@ var raster = new ol.layer.Tile({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([draw, select, modify]),
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
@@ -196,14 +196,14 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;form class=&quot;form-inline&quot;&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form class&#x3D;&quot;form-inline&quot;&gt;
       &lt;label&gt;Draw or modify &amp;nbsp;&lt;/label&gt;
-      &lt;select id=&quot;type&quot;&gt;
-        &lt;option value=&quot;DRAW&quot;&gt;Draw&lt;/option&gt;
-        &lt;option value=&quot;MODIFY&quot;&gt;Modify&lt;/option&gt;
+      &lt;select id&#x3D;&quot;type&quot;&gt;
+        &lt;option value&#x3D;&quot;DRAW&quot;&gt;Draw&lt;/option&gt;
+        &lt;option value&#x3D;&quot;MODIFY&quot;&gt;Modify&lt;/option&gt;
       &lt;/select&gt;
     &lt;/form&gt;
   &lt;/div&gt;
@@ -226,14 +226,14 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;form class=&quot;form-inline&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form class&#x3D;&quot;form-inline&quot;&gt;
       &lt;label&gt;Draw or modify &amp;nbsp;&lt;/label&gt;
-      &lt;select id=&quot;type&quot;&gt;
-        &lt;option value=&quot;DRAW&quot;&gt;Draw&lt;/option&gt;
-        &lt;option value=&quot;MODIFY&quot;&gt;Modify&lt;/option&gt;
+      &lt;select id&#x3D;&quot;type&quot;&gt;
+        &lt;option value&#x3D;&quot;DRAW&quot;&gt;Draw&lt;/option&gt;
+        &lt;option value&#x3D;&quot;MODIFY&quot;&gt;Modify&lt;/option&gt;
       &lt;/select&gt;
     &lt;/form&gt;
   &lt;/div&gt;
@@ -241,28 +241,28 @@ var map = new ol.Map({
 
 &lt;/div&gt;
 &lt;script&gt;
-var serviceUrl = &#x27;http://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
+var serviceUrl &#x3D; &#x27;http://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
     &#x27;services/PDX_Pedestrian_Districts/FeatureServer/&#x27;;
-var layer = &#x27;0&#x27;;
+var layer &#x3D; &#x27;0&#x27;;
 
-var esrijsonFormat = new ol.format.EsriJSON();
+var esrijsonFormat &#x3D; new ol.format.EsriJSON();
 
-var vectorSource = new ol.source.Vector({
+var vectorSource &#x3D; new ol.source.Vector({
   loader: function(extent, resolution, projection) {
-    var url = serviceUrl + layer + &#x27;/query/?f=json&amp;&#x27; +
-        &#x27;returnGeometry=true&amp;spatialRel=esriSpatialRelIntersects&amp;geometry=&#x27; +
+    var url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
+        &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
         encodeURIComponent(&#x27;{&quot;xmin&quot;:&#x27; + extent[0] + &#x27;,&quot;ymin&quot;:&#x27; +
             extent[1] + &#x27;,&quot;xmax&quot;:&#x27; + extent[2] + &#x27;,&quot;ymax&quot;:&#x27; + extent[3] +
             &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;) +
-        &#x27;&amp;geometryType=esriGeometryEnvelope&amp;inSR=102100&amp;outFields=*&#x27; +
-        &#x27;&amp;outSR=102100&#x27;;
+        &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
+        &#x27;&amp;outSR&#x3D;102100&#x27;;
     $.ajax({url: url, dataType: &#x27;jsonp&#x27;, success: function(response) {
       if (response.error) {
         alert(response.error.message + &#x27;\n&#x27; +
             response.error.details.join(&#x27;\n&#x27;));
       } else {
         // dataProjection will be read from document
-        var features = esrijsonFormat.readFeatures(response, {
+        var features &#x3D; esrijsonFormat.readFeatures(response, {
           featureProjection: projection
         });
         if (features.length &gt; 0) {
@@ -276,59 +276,59 @@ var vectorSource = new ol.source.Vector({
   }))
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: vectorSource
 });
 
-var draw = new ol.interaction.Draw({
+var draw &#x3D; new ol.interaction.Draw({
   source: vectorSource,
   type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
 });
 
-var select = new ol.interaction.Select();
+var select &#x3D; new ol.interaction.Select();
 select.setActive(false);
-var selected = select.getFeatures();
+var selected &#x3D; select.getFeatures();
 
-var modify = new ol.interaction.Modify({
+var modify &#x3D; new ol.interaction.Modify({
   features: selected
 });
 modify.setActive(false);
 
-var typeSelect = document.getElementById(&#x27;type&#x27;);
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 
 /**
  * Let user change the interaction type.
  * @param {Event} e Change event.
  */
-typeSelect.onchange = function(e) {
-  draw.setActive(typeSelect.value === &#x27;DRAW&#x27;);
-  select.setActive(typeSelect.value === &#x27;MODIFY&#x27;);
-  modify.setActive(typeSelect.value === &#x27;MODIFY&#x27;);
+typeSelect.onchange &#x3D; function(e) {
+  draw.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;DRAW&#x27;);
+  select.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
+  modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
 };
 
-var dirty = {};
+var dirty &#x3D; {};
 
 selected.on(&#x27;add&#x27;, function(evt) {
-  var feature = evt.element;
+  var feature &#x3D; evt.element;
   feature.on(&#x27;change&#x27;, function(evt) {
-    dirty[evt.target.getId()] = true;
+    dirty[evt.target.getId()] &#x3D; true;
   });
 });
 
 selected.on(&#x27;remove&#x27;, function(evt) {
-  var feature = evt.element;
-  var fid = feature.getId();
-  if (dirty[fid] === true) {
-    var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+  var feature &#x3D; evt.element;
+  var fid &#x3D; feature.getId();
+  if (dirty[fid] &#x3D;&#x3D;&#x3D; true) {
+    var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
       featureProjection: map.getView().getProjection()
     }) + &#x27;]&#x27;;
-    var url = serviceUrl + layer + &#x27;/updateFeatures&#x27;;
+    var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
     $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
-      var result = JSON.parse(data);
+      var result &#x3D; JSON.parse(data);
       if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
-        if (result.updateResults[0].success !== true) {
-          var error = result.updateResults[0].error;
+        if (result.updateResults[0].success !&#x3D;&#x3D; true) {
+          var error &#x3D; result.updateResults[0].error;
           alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
         } else {
           delete dirty[fid];
@@ -339,31 +339,31 @@ selected.on(&#x27;remove&#x27;, function(evt) {
 });
 
 draw.on(&#x27;drawend&#x27;, function(evt) {
-  var feature = evt.feature;
-  var payload = &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+  var feature &#x3D; evt.feature;
+  var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
     featureProjection: map.getView().getProjection()
   }) + &#x27;]&#x27;;
-  var url = serviceUrl + layer + &#x27;/addFeatures&#x27;;
+  var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
   $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
-    var result = JSON.parse(data);
+    var result &#x3D; JSON.parse(data);
     if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
-      if (result.addResults[0].success === true) {
+      if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
         feature.setId(result.addResults[0][&#x27;objectId&#x27;]);
         vectorSource.clear();
       } else {
-        var error = result.addResults[0].error;
+        var error &#x3D; result.addResults[0].error;
         alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
       }
     }
   });
 });
 
-var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
       &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
 });
 
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
     attributions: [attribution],
     url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
@@ -371,7 +371,7 @@ var raster = new ol.layer.Tile({
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([draw, select, modify]),
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),

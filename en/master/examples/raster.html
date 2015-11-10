@@ -65,9 +65,9 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// NOCOMPILE
 // this example uses d3 for which we don&#x27;t have an externs file.
-var minVgi = 0;
-var maxVgi = 0.25;
-var bins = 10;
+var minVgi &#x3D; 0;
+var maxVgi &#x3D; 0.25;
+var bins &#x3D; 10;
 
 
 /**
@@ -77,9 +77,9 @@ var bins = 10;
  * @return {number} The VGI value for the given pixel.
  */
 function vgi(pixel) {
-  var r = pixel[0] / 255;
-  var g = pixel[1] / 255;
-  var b = pixel[2] / 255;
+  var r &#x3D; pixel[0] / 255;
+  var g &#x3D; pixel[1] / 255;
+  var b &#x3D; pixel[2] / 255;
   return (2 * g - r - b) / (2 * g + r + b);
 }
 
@@ -90,16 +90,16 @@ function vgi(pixel) {
  * @param {Object} counts An object for keeping track of VGI counts.
  */
 function summarize(value, counts) {
-  var min = counts.min;
-  var max = counts.max;
-  var num = counts.values.length;
+  var min &#x3D; counts.min;
+  var max &#x3D; counts.max;
+  var num &#x3D; counts.values.length;
   if (value &lt; min) {
     // do nothing
-  } else if (value &gt;= max) {
-    counts.values[num - 1] += 1;
+  } else if (value &gt;&#x3D; max) {
+    counts.values[num - 1] +&#x3D; 1;
   } else {
-    var index = Math.floor((value - min) / counts.delta);
-    counts.values[index] += 1;
+    var index &#x3D; Math.floor((value - min) / counts.delta);
+    counts.values[index] +&#x3D; 1;
   }
 }
 
@@ -107,7 +107,7 @@ function summarize(value, counts) {
 /**
  * Use aerial imagery as the input data for the raster source.
  */
-var bing = new ol.source.BingMaps({
+var bing &#x3D; new ol.source.BingMaps({
   key: &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;,
   imagerySet: &#x27;Aerial&#x27;
 });
@@ -117,19 +117,19 @@ var bing = new ol.source.BingMaps({
  * Create a raster source where pixels with VGI values above a threshold will
  * be colored green.
  */
-var raster = new ol.source.Raster({
+var raster &#x3D; new ol.source.Raster({
   sources: [bing],
   operation: function(pixels, data) {
-    var pixel = pixels[0];
-    var value = vgi(pixel);
+    var pixel &#x3D; pixels[0];
+    var value &#x3D; vgi(pixel);
     summarize(value, data.counts);
-    if (value &gt;= data.threshold) {
-      pixel[0] = 0;
-      pixel[1] = 255;
-      pixel[2] = 0;
-      pixel[3] = 128;
+    if (value &gt;&#x3D; data.threshold) {
+      pixel[0] &#x3D; 0;
+      pixel[1] &#x3D; 255;
+      pixel[2] &#x3D; 0;
+      pixel[3] &#x3D; 128;
     } else {
-      pixel[3] = 0;
+      pixel[3] &#x3D; 0;
     }
     return pixel;
   },
@@ -141,9 +141,9 @@ var raster = new ol.source.Raster({
 raster.set(&#x27;threshold&#x27;, 0.1);
 
 function createCounts(min, max, num) {
-  var values = new Array(num);
-  for (var i = 0; i &lt; num; ++i) {
-    values[i] = 0;
+  var values &#x3D; new Array(num);
+  for (var i &#x3D; 0; i &lt; num; ++i) {
+    values[i] &#x3D; 0;
   }
   return {
     min: min,
@@ -154,15 +154,15 @@ function createCounts(min, max, num) {
 }
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
-  event.data.counts = createCounts(minVgi, maxVgi, bins);
-  event.data.threshold = raster.get(&#x27;threshold&#x27;);
+  event.data.counts &#x3D; createCounts(minVgi, maxVgi, bins);
+  event.data.threshold &#x3D; raster.get(&#x27;threshold&#x27;);
 });
 
 raster.on(&#x27;afteroperations&#x27;, function(event) {
   schedulePlot(event.resolution, event.data.counts, event.data.threshold);
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: bing
@@ -181,38 +181,38 @@ var map = new ol.Map({
 });
 
 
-var timer = null;
+var timer &#x3D; null;
 function schedulePlot(resolution, counts, threshold) {
   if (timer) {
     clearTimeout(timer);
-    timer = null;
+    timer &#x3D; null;
   }
-  timer = setTimeout(plot.bind(null, resolution, counts, threshold), 1000 / 60);
+  timer &#x3D; setTimeout(plot.bind(null, resolution, counts, threshold), 1000 / 60);
 }
 
-var barWidth = 15;
-var plotHeight = 150;
-var chart = d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
+var barWidth &#x3D; 15;
+var plotHeight &#x3D; 150;
+var chart &#x3D; d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
     .attr(&#x27;width&#x27;, barWidth * bins)
     .attr(&#x27;height&#x27;, plotHeight);
 
-var chartRect = chart[0][0].getBoundingClientRect();
+var chartRect &#x3D; chart[0][0].getBoundingClientRect();
 
-var tip = d3.select(document.body).append(&#x27;div&#x27;)
+var tip &#x3D; d3.select(document.body).append(&#x27;div&#x27;)
     .attr(&#x27;class&#x27;, &#x27;tip&#x27;);
 
 function plot(resolution, counts, threshold) {
-  var yScale = d3.scale.linear()
+  var yScale &#x3D; d3.scale.linear()
       .domain([0, d3.max(counts.values)])
       .range([0, plotHeight]);
 
-  var bar = chart.selectAll(&#x27;rect&#x27;).data(counts.values);
+  var bar &#x3D; chart.selectAll(&#x27;rect&#x27;).data(counts.values);
 
   bar.enter().append(&#x27;rect&#x27;);
 
   bar.attr(&#x27;class&#x27;, function(count, index) {
-    var value = counts.min + (index * counts.delta);
-    return &#x27;bar&#x27; + (value &gt;= threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
+    var value &#x3D; counts.min + (index * counts.delta);
+    return &#x27;bar&#x27; + (value &gt;&#x3D; threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
   })
   .attr(&#x27;width&#x27;, barWidth - 2);
 
@@ -223,17 +223,17 @@ function plot(resolution, counts, threshold) {
   .attr(&#x27;height&#x27;, yScale);
 
   bar.on(&#x27;mousemove&#x27;, function(count, index) {
-    var threshold = counts.min + (index * counts.delta);
-    if (raster.get(&#x27;threshold&#x27;) !== threshold) {
+    var threshold &#x3D; counts.min + (index * counts.delta);
+    if (raster.get(&#x27;threshold&#x27;) !&#x3D;&#x3D; threshold) {
       raster.set(&#x27;threshold&#x27;, threshold);
       raster.changed();
     }
   });
 
   bar.on(&#x27;mouseover&#x27;, function(count, index) {
-    var area = 0;
-    for (var i = counts.values.length - 1; i &gt;= index; --i) {
-      area += resolution * resolution * counts.values[i];
+    var area &#x3D; 0;
+    for (var i &#x3D; counts.values.length - 1; i &gt;&#x3D; index; --i) {
+      area +&#x3D; resolution * resolution * counts.values[i];
     }
     tip.html(message(counts.min + (index * counts.delta), area));
     tip.style(&#x27;display&#x27;, &#x27;block&#x27;);
@@ -253,7 +253,7 @@ function plot(resolution, counts, threshold) {
 }
 
 function message(value, area) {
-  var acres = (area / 4046.86).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, &#x27;,&#x27;);
+  var acres &#x3D; (area / 4046.86).toFixed(0).replace(/\B(?&#x3D;(\d{3})+(?!\d))/g, &#x27;,&#x27;);
   return acres + &#x27; acres at&lt;br&gt;&#x27; + value.toFixed(2) + &#x27; VGI or above&#x27;;
 }
 </textarea>
@@ -289,10 +289,10 @@ function message(value, area) {
   opacity: 0;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12 rel&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;plot&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12 rel&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;plot&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -308,8 +308,8 @@ function message(value, area) {
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://d3js.org/d3.v3.min.js&quot;&gt;&lt;/script&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;http://openlayers.org/en/v3.10.1/examples/raster.css&quot;&gt;
+&lt;script src&#x3D;&quot;http://d3js.org/d3.v3.min.js&quot;&gt;&lt;/script&gt;
+&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;http://openlayers.org/en/v3.10.1/examples/raster.css&quot;&gt;
 &lt;style&gt;
 .rel {
   position: relative
@@ -348,10 +348,10 @@ function message(value, area) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12 rel&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id=&quot;plot&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12 rel&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;plot&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -359,9 +359,9 @@ function message(value, area) {
 &lt;script&gt;
 // NOCOMPILE
 // this example uses d3 for which we don&#x27;t have an externs file.
-var minVgi = 0;
-var maxVgi = 0.25;
-var bins = 10;
+var minVgi &#x3D; 0;
+var maxVgi &#x3D; 0.25;
+var bins &#x3D; 10;
 
 
 /**
@@ -371,9 +371,9 @@ var bins = 10;
  * @return {number} The VGI value for the given pixel.
  */
 function vgi(pixel) {
-  var r = pixel[0] / 255;
-  var g = pixel[1] / 255;
-  var b = pixel[2] / 255;
+  var r &#x3D; pixel[0] / 255;
+  var g &#x3D; pixel[1] / 255;
+  var b &#x3D; pixel[2] / 255;
   return (2 * g - r - b) / (2 * g + r + b);
 }
 
@@ -384,16 +384,16 @@ function vgi(pixel) {
  * @param {Object} counts An object for keeping track of VGI counts.
  */
 function summarize(value, counts) {
-  var min = counts.min;
-  var max = counts.max;
-  var num = counts.values.length;
+  var min &#x3D; counts.min;
+  var max &#x3D; counts.max;
+  var num &#x3D; counts.values.length;
   if (value &lt; min) {
     // do nothing
-  } else if (value &gt;= max) {
-    counts.values[num - 1] += 1;
+  } else if (value &gt;&#x3D; max) {
+    counts.values[num - 1] +&#x3D; 1;
   } else {
-    var index = Math.floor((value - min) / counts.delta);
-    counts.values[index] += 1;
+    var index &#x3D; Math.floor((value - min) / counts.delta);
+    counts.values[index] +&#x3D; 1;
   }
 }
 
@@ -401,7 +401,7 @@ function summarize(value, counts) {
 /**
  * Use aerial imagery as the input data for the raster source.
  */
-var bing = new ol.source.BingMaps({
+var bing &#x3D; new ol.source.BingMaps({
   key: &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;,
   imagerySet: &#x27;Aerial&#x27;
 });
@@ -411,19 +411,19 @@ var bing = new ol.source.BingMaps({
  * Create a raster source where pixels with VGI values above a threshold will
  * be colored green.
  */
-var raster = new ol.source.Raster({
+var raster &#x3D; new ol.source.Raster({
   sources: [bing],
   operation: function(pixels, data) {
-    var pixel = pixels[0];
-    var value = vgi(pixel);
+    var pixel &#x3D; pixels[0];
+    var value &#x3D; vgi(pixel);
     summarize(value, data.counts);
-    if (value &gt;= data.threshold) {
-      pixel[0] = 0;
-      pixel[1] = 255;
-      pixel[2] = 0;
-      pixel[3] = 128;
+    if (value &gt;&#x3D; data.threshold) {
+      pixel[0] &#x3D; 0;
+      pixel[1] &#x3D; 255;
+      pixel[2] &#x3D; 0;
+      pixel[3] &#x3D; 128;
     } else {
-      pixel[3] = 0;
+      pixel[3] &#x3D; 0;
     }
     return pixel;
   },
@@ -435,9 +435,9 @@ var raster = new ol.source.Raster({
 raster.set(&#x27;threshold&#x27;, 0.1);
 
 function createCounts(min, max, num) {
-  var values = new Array(num);
-  for (var i = 0; i &lt; num; ++i) {
-    values[i] = 0;
+  var values &#x3D; new Array(num);
+  for (var i &#x3D; 0; i &lt; num; ++i) {
+    values[i] &#x3D; 0;
   }
   return {
     min: min,
@@ -448,15 +448,15 @@ function createCounts(min, max, num) {
 }
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
-  event.data.counts = createCounts(minVgi, maxVgi, bins);
-  event.data.threshold = raster.get(&#x27;threshold&#x27;);
+  event.data.counts &#x3D; createCounts(minVgi, maxVgi, bins);
+  event.data.threshold &#x3D; raster.get(&#x27;threshold&#x27;);
 });
 
 raster.on(&#x27;afteroperations&#x27;, function(event) {
   schedulePlot(event.resolution, event.data.counts, event.data.threshold);
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: bing
@@ -475,38 +475,38 @@ var map = new ol.Map({
 });
 
 
-var timer = null;
+var timer &#x3D; null;
 function schedulePlot(resolution, counts, threshold) {
   if (timer) {
     clearTimeout(timer);
-    timer = null;
+    timer &#x3D; null;
   }
-  timer = setTimeout(plot.bind(null, resolution, counts, threshold), 1000 / 60);
+  timer &#x3D; setTimeout(plot.bind(null, resolution, counts, threshold), 1000 / 60);
 }
 
-var barWidth = 15;
-var plotHeight = 150;
-var chart = d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
+var barWidth &#x3D; 15;
+var plotHeight &#x3D; 150;
+var chart &#x3D; d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
     .attr(&#x27;width&#x27;, barWidth * bins)
     .attr(&#x27;height&#x27;, plotHeight);
 
-var chartRect = chart[0][0].getBoundingClientRect();
+var chartRect &#x3D; chart[0][0].getBoundingClientRect();
 
-var tip = d3.select(document.body).append(&#x27;div&#x27;)
+var tip &#x3D; d3.select(document.body).append(&#x27;div&#x27;)
     .attr(&#x27;class&#x27;, &#x27;tip&#x27;);
 
 function plot(resolution, counts, threshold) {
-  var yScale = d3.scale.linear()
+  var yScale &#x3D; d3.scale.linear()
       .domain([0, d3.max(counts.values)])
       .range([0, plotHeight]);
 
-  var bar = chart.selectAll(&#x27;rect&#x27;).data(counts.values);
+  var bar &#x3D; chart.selectAll(&#x27;rect&#x27;).data(counts.values);
 
   bar.enter().append(&#x27;rect&#x27;);
 
   bar.attr(&#x27;class&#x27;, function(count, index) {
-    var value = counts.min + (index * counts.delta);
-    return &#x27;bar&#x27; + (value &gt;= threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
+    var value &#x3D; counts.min + (index * counts.delta);
+    return &#x27;bar&#x27; + (value &gt;&#x3D; threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
   })
   .attr(&#x27;width&#x27;, barWidth - 2);
 
@@ -517,17 +517,17 @@ function plot(resolution, counts, threshold) {
   .attr(&#x27;height&#x27;, yScale);
 
   bar.on(&#x27;mousemove&#x27;, function(count, index) {
-    var threshold = counts.min + (index * counts.delta);
-    if (raster.get(&#x27;threshold&#x27;) !== threshold) {
+    var threshold &#x3D; counts.min + (index * counts.delta);
+    if (raster.get(&#x27;threshold&#x27;) !&#x3D;&#x3D; threshold) {
       raster.set(&#x27;threshold&#x27;, threshold);
       raster.changed();
     }
   });
 
   bar.on(&#x27;mouseover&#x27;, function(count, index) {
-    var area = 0;
-    for (var i = counts.values.length - 1; i &gt;= index; --i) {
-      area += resolution * resolution * counts.values[i];
+    var area &#x3D; 0;
+    for (var i &#x3D; counts.values.length - 1; i &gt;&#x3D; index; --i) {
+      area +&#x3D; resolution * resolution * counts.values[i];
     }
     tip.html(message(counts.min + (index * counts.delta), area));
     tip.style(&#x27;display&#x27;, &#x27;block&#x27;);
@@ -547,7 +547,7 @@ function plot(resolution, counts, threshold) {
 }
 
 function message(value, area) {
-  var acres = (area / 4046.86).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, &#x27;,&#x27;);
+  var acres &#x3D; (area / 4046.86).toFixed(0).replace(/\B(?&#x3D;(\d{3})+(?!\d))/g, &#x27;,&#x27;);
   return acres + &#x27; acres at&lt;br&gt;&#x27; + value.toFixed(2) + &#x27; VGI or above&#x27;;
 }
 

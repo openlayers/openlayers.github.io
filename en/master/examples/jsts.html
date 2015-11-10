@@ -51,21 +51,21 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
           <textarea class="hidden" name="js">// NOCOMPILE
 // this example uses JSTS for which we don&#x27;t have an externs file.
-var source = new ol.source.Vector();
+var source &#x3D; new ol.source.Vector();
 $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
-  var format = new ol.format.GeoJSON();
-  var features = format.readFeatures(response,
+  var format &#x3D; new ol.format.GeoJSON();
+  var features &#x3D; format.readFeatures(response,
       {featureProjection: &#x27;EPSG:3857&#x27;});
 
-  var parser = new jsts.io.olParser();
+  var parser &#x3D; new jsts.io.olParser();
 
-  for (var i = 0; i &lt; features.length; i++) {
-    var feature = features[i];
+  for (var i &#x3D; 0; i &lt; features.length; i++) {
+    var feature &#x3D; features[i];
     // convert the OpenLayers geometry to a JSTS geometry
-    var jstsGeom = parser.read(feature.getGeometry());
+    var jstsGeom &#x3D; parser.read(feature.getGeometry());
 
     // create a buffer of 40 meters around each line
-    var buffered = jstsGeom.buffer(40);
+    var buffered &#x3D; jstsGeom.buffer(40);
 
     // convert back from JSTS and replace the geometry on the feature
     feature.setGeometry(parser.write(buffered));
@@ -73,17 +73,17 @@ $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
 
   source.addFeatures(features);
 });
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var rasterLayer = new ol.layer.Tile({
+var rasterLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({
     layer: &#x27;osm&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -93,9 +93,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -111,15 +111,15 @@ var map = new ol.Map({
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/lib/0.16.0/javascript.util.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/lib/0.16.0/jsts.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/lib/0.16.0/javascript.util.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/lib/0.16.0/jsts.min.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -127,21 +127,21 @@ var map = new ol.Map({
 &lt;script&gt;
 // NOCOMPILE
 // this example uses JSTS for which we don&#x27;t have an externs file.
-var source = new ol.source.Vector();
+var source &#x3D; new ol.source.Vector();
 $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
-  var format = new ol.format.GeoJSON();
-  var features = format.readFeatures(response,
+  var format &#x3D; new ol.format.GeoJSON();
+  var features &#x3D; format.readFeatures(response,
       {featureProjection: &#x27;EPSG:3857&#x27;});
 
-  var parser = new jsts.io.olParser();
+  var parser &#x3D; new jsts.io.olParser();
 
-  for (var i = 0; i &lt; features.length; i++) {
-    var feature = features[i];
+  for (var i &#x3D; 0; i &lt; features.length; i++) {
+    var feature &#x3D; features[i];
     // convert the OpenLayers geometry to a JSTS geometry
-    var jstsGeom = parser.read(feature.getGeometry());
+    var jstsGeom &#x3D; parser.read(feature.getGeometry());
 
     // create a buffer of 40 meters around each line
-    var buffered = jstsGeom.buffer(40);
+    var buffered &#x3D; jstsGeom.buffer(40);
 
     // convert back from JSTS and replace the geometry on the feature
     feature.setGeometry(parser.write(buffered));
@@ -149,17 +149,17 @@ $.ajax(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
 
   source.addFeatures(features);
 });
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: source
 });
 
-var rasterLayer = new ol.layer.Tile({
+var rasterLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({
     layer: &#x27;osm&#x27;
   })
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({

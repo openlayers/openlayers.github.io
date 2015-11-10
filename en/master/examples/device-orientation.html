@@ -58,14 +58,14 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var projection = ol.proj.get(&#x27;EPSG:3857&#x27;);
-var view = new ol.View({
+          <textarea class="hidden" name="js">var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
+var view &#x3D; new ol.View({
   center: [0, 0],
   projection: projection,
   extent: projection.getExtent(),
   zoom: 2
 });
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -80,7 +80,7 @@ var map = new ol.Map({
   view: view
 });
 
-var deviceOrientation = new ol.DeviceOrientation();
+var deviceOrientation &#x3D; new ol.DeviceOrientation();
 
 function el(id) {
   return document.getElementById(id);
@@ -91,38 +91,38 @@ el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
 });
 
 deviceOrientation.on(&#x27;change&#x27;, function(event) {
-  el(&#x27;alpha&#x27;).innerText = deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
-  el(&#x27;beta&#x27;).innerText = deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
-  el(&#x27;gamma&#x27;).innerText = deviceOrientation.getGamma() + &#x27; [rad]&#x27;;
-  el(&#x27;heading&#x27;).innerText = deviceOrientation.getHeading() + &#x27; [rad]&#x27;;
+  el(&#x27;alpha&#x27;).innerText &#x3D; deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
+  el(&#x27;beta&#x27;).innerText &#x3D; deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
+  el(&#x27;gamma&#x27;).innerText &#x3D; deviceOrientation.getGamma() + &#x27; [rad]&#x27;;
+  el(&#x27;heading&#x27;).innerText &#x3D; deviceOrientation.getHeading() + &#x27; [rad]&#x27;;
 });
 
 // tilt the map
 deviceOrientation.on([&#x27;change:beta&#x27;, &#x27;change:gamma&#x27;], function(event) {
-  var center = view.getCenter();
-  var resolution = view.getResolution();
-  var beta = event.target.getBeta() || 0;
-  var gamma = event.target.getGamma() || 0;
+  var center &#x3D; view.getCenter();
+  var resolution &#x3D; view.getResolution();
+  var beta &#x3D; event.target.getBeta() || 0;
+  var gamma &#x3D; event.target.getGamma() || 0;
 
-  center[0] -= resolution * gamma * 25;
-  center[1] += resolution * beta * 25;
+  center[0] -&#x3D; resolution * gamma * 25;
+  center[1] +&#x3D; resolution * beta * 25;
 
   view.setCenter(view.constrainCenter(center));
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span12&quot;&gt;
-      &lt;h4 id=&quot;title&quot;&gt;Device orientation example&lt;/h4&gt;
-      &lt;label class=&quot;checkbox&quot; for=&quot;track&quot;&gt;
-        &lt;input id=&quot;track&quot; type=&quot;checkbox&quot;/&gt;track changes
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span12&quot;&gt;
+      &lt;h4 id&#x3D;&quot;title&quot;&gt;Device orientation example&lt;/h4&gt;
+      &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;track&quot;&gt;
+        &lt;input id&#x3D;&quot;track&quot; type&#x3D;&quot;checkbox&quot;/&gt;track changes
       &lt;/label&gt;
-      &lt;p&gt;&amp;alpha; : &lt;code id=&quot;alpha&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-      &lt;p&gt;&amp;beta; : &lt;code id=&quot;beta&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-      &lt;p&gt;&amp;gamma; : &lt;code id=&quot;gamma&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-      &lt;p&gt;heading : &lt;code id=&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;&amp;alpha; : &lt;code id&#x3D;&quot;alpha&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;&amp;beta; : &lt;code id&#x3D;&quot;beta&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;&amp;gamma; : &lt;code id&#x3D;&quot;gamma&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;heading : &lt;code id&#x3D;&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -144,32 +144,32 @@ deviceOrientation.on([&#x27;change:beta&#x27;, &#x27;change:gamma&#x27;], functi
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span12&quot;&gt;
-      &lt;h4 id=&quot;title&quot;&gt;Device orientation example&lt;/h4&gt;
-      &lt;label class=&quot;checkbox&quot; for=&quot;track&quot;&gt;
-        &lt;input id=&quot;track&quot; type=&quot;checkbox&quot;/&gt;track changes
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span12&quot;&gt;
+      &lt;h4 id&#x3D;&quot;title&quot;&gt;Device orientation example&lt;/h4&gt;
+      &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;track&quot;&gt;
+        &lt;input id&#x3D;&quot;track&quot; type&#x3D;&quot;checkbox&quot;/&gt;track changes
       &lt;/label&gt;
-      &lt;p&gt;&amp;alpha; : &lt;code id=&quot;alpha&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-      &lt;p&gt;&amp;beta; : &lt;code id=&quot;beta&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-      &lt;p&gt;&amp;gamma; : &lt;code id=&quot;gamma&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-      &lt;p&gt;heading : &lt;code id=&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;&amp;alpha; : &lt;code id&#x3D;&quot;alpha&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;&amp;beta; : &lt;code id&#x3D;&quot;beta&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;&amp;gamma; : &lt;code id&#x3D;&quot;gamma&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;heading : &lt;code id&#x3D;&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var projection = ol.proj.get(&#x27;EPSG:3857&#x27;);
-var view = new ol.View({
+var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
+var view &#x3D; new ol.View({
   center: [0, 0],
   projection: projection,
   extent: projection.getExtent(),
   zoom: 2
 });
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -184,7 +184,7 @@ var map = new ol.Map({
   view: view
 });
 
-var deviceOrientation = new ol.DeviceOrientation();
+var deviceOrientation &#x3D; new ol.DeviceOrientation();
 
 function el(id) {
   return document.getElementById(id);
@@ -195,21 +195,21 @@ el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
 });
 
 deviceOrientation.on(&#x27;change&#x27;, function(event) {
-  el(&#x27;alpha&#x27;).innerText = deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
-  el(&#x27;beta&#x27;).innerText = deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
-  el(&#x27;gamma&#x27;).innerText = deviceOrientation.getGamma() + &#x27; [rad]&#x27;;
-  el(&#x27;heading&#x27;).innerText = deviceOrientation.getHeading() + &#x27; [rad]&#x27;;
+  el(&#x27;alpha&#x27;).innerText &#x3D; deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
+  el(&#x27;beta&#x27;).innerText &#x3D; deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
+  el(&#x27;gamma&#x27;).innerText &#x3D; deviceOrientation.getGamma() + &#x27; [rad]&#x27;;
+  el(&#x27;heading&#x27;).innerText &#x3D; deviceOrientation.getHeading() + &#x27; [rad]&#x27;;
 });
 
 // tilt the map
 deviceOrientation.on([&#x27;change:beta&#x27;, &#x27;change:gamma&#x27;], function(event) {
-  var center = view.getCenter();
-  var resolution = view.getResolution();
-  var beta = event.target.getBeta() || 0;
-  var gamma = event.target.getGamma() || 0;
+  var center &#x3D; view.getCenter();
+  var resolution &#x3D; view.getResolution();
+  var beta &#x3D; event.target.getBeta() || 0;
+  var gamma &#x3D; event.target.getGamma() || 0;
 
-  center[0] -= resolution * gamma * 25;
-  center[1] += resolution * beta * 25;
+  center[0] -&#x3D; resolution * gamma * 25;
+  center[1] +&#x3D; resolution * beta * 25;
 
   view.setCenter(view.constrainCenter(center));
 });

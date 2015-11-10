@@ -16174,7 +16174,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 617
+            src/ol/map.js, line 618
         </div>
         
         
@@ -16266,8 +16266,9 @@ be configured through <code>opt_layerFilter</code>.</p>
     called with two arguments. The first argument is one
     <a href="ol.Feature.html"><code>feature</code></a> or
     <a href="ol.render.Feature.html"><code>render feature</code></a> at the pixel, the second is
-    the <a href="ol.layer.Layer.html"><code>layer</code></a> of the feature. To stop detection,
-    callback functions can return a truthy value.</p></td>
+    the <a href="ol.layer.Layer.html"><code>layer</code></a> of the feature and will be null for
+    unmanaged layers. To stop detection, callback functions can return a
+    truthy value.</p></td>
         </tr>
 	
 	
@@ -16418,7 +16419,7 @@ callback execution, or the first truthy callback return value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 655
+            src/ol/map.js, line 656
         </div>
         
         
@@ -16793,7 +16794,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 774
+            src/ol/map.js, line 775
         </div>
         
         
@@ -16878,7 +16879,7 @@ Controls.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 757
+            src/ol/map.js, line 758
         </div>
         
         
@@ -17010,7 +17011,7 @@ The coordinate for the pixel position.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 705
+            src/ol/map.js, line 706
         </div>
         
         
@@ -17141,7 +17142,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 716
+            src/ol/map.js, line 717
         </div>
         
         
@@ -17272,7 +17273,7 @@ Pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 812
+            src/ol/map.js, line 813
         </div>
         
         
@@ -17444,7 +17445,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 823
+            src/ol/map.js, line 824
         </div>
         
         
@@ -17528,7 +17529,7 @@ A layer group containing the layers in this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 833
+            src/ol/map.js, line 834
         </div>
         
         
@@ -17614,7 +17615,7 @@ Layers.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 798
+            src/ol/map.js, line 799
         </div>
         
         
@@ -17750,7 +17751,7 @@ Overlay.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 785
+            src/ol/map.js, line 786
         </div>
         
         
@@ -17835,7 +17836,7 @@ Overlays.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 846
+            src/ol/map.js, line 847
         </div>
         
         
@@ -18142,7 +18143,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 872
+            src/ol/map.js, line 873
         </div>
         
         
@@ -18226,7 +18227,7 @@ The size in pixels of the map in the DOM.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 731
+            src/ol/map.js, line 732
         </div>
         
         
@@ -18315,7 +18316,7 @@ The Element or id of the Element that the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 744
+            src/ol/map.js, line 745
         </div>
         
         
@@ -18401,7 +18402,7 @@ The element that the map is rendered in.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 884
+            src/ol/map.js, line 885
         </div>
         
         
@@ -18486,7 +18487,7 @@ The view that controls this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 894
+            src/ol/map.js, line 895
         </div>
         
         
@@ -18572,7 +18573,7 @@ Viewport.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 685
+            src/ol/map.js, line 686
         </div>
         
         
@@ -19131,7 +19132,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1233
+            src/ol/map.js, line 1234
         </div>
         
         
@@ -19263,7 +19264,7 @@ The removed control (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1247
+            src/ol/map.js, line 1248
         </div>
         
         
@@ -19395,7 +19396,7 @@ The removed interaction (or
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1262
+            src/ol/map.js, line 1263
         </div>
         
         
@@ -19527,7 +19528,7 @@ The removed layer (or undefined if the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1275
+            src/ol/map.js, line 1276
         </div>
         
         
@@ -19659,7 +19660,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1219
+            src/ol/map.js, line 1220
         </div>
         
         
@@ -19734,7 +19735,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1210
+            src/ol/map.js, line 1211
         </div>
         
         
@@ -19958,7 +19959,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1379
+            src/ol/map.js, line 1380
         </div>
         
         
@@ -20208,7 +20209,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1390
+            src/ol/map.js, line 1391
         </div>
         
         
@@ -20333,7 +20334,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1402
+            src/ol/map.js, line 1403
         </div>
         
         
@@ -20462,7 +20463,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1413
+            src/ol/map.js, line 1414
         </div>
         
         
@@ -21012,7 +21013,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1433
+            src/ol/map.js, line 1434
         </div>
         
         

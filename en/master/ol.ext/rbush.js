@@ -10,7 +10,7 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 /*
- (c) 2013, Vladimir Agafonkin
+ (c) 2015, Vladimir Agafonkin
  RBush, a JavaScript library for high-performance 2D spatial indexing of points and rectangles.
  https://github.com/mourner/rbush
 */
@@ -66,6 +66,33 @@ rbush.prototype = {
         }
 
         return result;
+    },
+
+    collides: function (bbox) {
+
+        var node = this.data,
+            toBBox = this.toBBox;
+
+        if (!intersects(bbox, node.bbox)) return false;
+
+        var nodesToSearch = [],
+            i, len, child, childBBox;
+
+        while (node) {
+            for (i = 0, len = node.children.length; i < len; i++) {
+
+                child = node.children[i];
+                childBBox = node.leaf ? toBBox(child) : child.bbox;
+
+                if (intersects(bbox, childBBox)) {
+                    if (node.leaf || contains(bbox, childBBox)) return true;
+                    nodesToSearch.push(child);
+                }
+            }
+            node = nodesToSearch.pop();
+        }
+
+        return false;
     },
 
     load: function (data) {
@@ -324,8 +351,10 @@ rbush.prototype = {
 
         this._chooseSplitAxis(node, m, M);
 
+        var splitIndex = this._chooseSplitIndex(node, m, M);
+
         var newNode = {
-            children: node.children.splice(this._chooseSplitIndex(node, m, M)),
+            children: node.children.splice(splitIndex, node.children.length - splitIndex),
             height: node.height
         };
 
@@ -540,7 +569,8 @@ function multiSelect(arr, left, right, n, compare) {
     }
 }
 
-// sort array between left and right (inclusive) so that the smallest k elements come first (unordered)
+// Floyd-Rivest selection algorithm:
+// sort an array between left and right (inclusive) so that the smallest k elements come first (unordered)
 function select(arr, left, right, k, compare) {
     var n, i, z, s, sd, newLeft, newRight, t, j;
 

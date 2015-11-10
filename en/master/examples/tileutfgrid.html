@@ -56,52 +56,52 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var mapLayer = new ol.layer.Tile({
+          <textarea class="hidden" name="js">var mapLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;
   })
 });
 
-var gridSource = new ol.source.TileUTFGrid({
+var gridSource &#x3D; new ol.source.TileUTFGrid({
   url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;
 });
 
-var gridLayer = new ol.layer.Tile({source: gridSource});
+var gridLayer &#x3D; new ol.layer.Tile({source: gridSource});
 
-var view = new ol.View({
+var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 1
 });
 
-var mapElement = document.getElementById(&#x27;map&#x27;);
-var map = new ol.Map({
+var mapElement &#x3D; document.getElementById(&#x27;map&#x27;);
+var map &#x3D; new ol.Map({
   layers: [mapLayer, gridLayer],
   target: mapElement,
   view: view
 });
 
-var infoElement = document.getElementById(&#x27;country-info&#x27;);
-var flagElement = document.getElementById(&#x27;country-flag&#x27;);
-var nameElement = document.getElementById(&#x27;country-name&#x27;);
+var infoElement &#x3D; document.getElementById(&#x27;country-info&#x27;);
+var flagElement &#x3D; document.getElementById(&#x27;country-flag&#x27;);
+var nameElement &#x3D; document.getElementById(&#x27;country-name&#x27;);
 
-var infoOverlay = new ol.Overlay({
+var infoOverlay &#x3D; new ol.Overlay({
   element: infoElement,
   offset: [15, 15],
   stopEvent: false
 });
 map.addOverlay(infoOverlay);
 
-var displayCountryInfo = function(coordinate) {
-  var viewResolution = /** @type {number} */ (view.getResolution());
+var displayCountryInfo &#x3D; function(coordinate) {
+  var viewResolution &#x3D; /** @type {number} */ (view.getResolution());
   gridSource.forDataAtCoordinateAndResolution(coordinate, viewResolution,
       function(data) {
         // If you want to use the template from the TileJSON,
         //  load the mustache.js library separately and call
-        //  info.innerHTML = Mustache.render(gridSource.getTemplate(), data);
-        mapElement.style.cursor = data ? &#x27;pointer&#x27; : &#x27;&#x27;;
+        //  info.innerHTML &#x3D; Mustache.render(gridSource.getTemplate(), data);
+        mapElement.style.cursor &#x3D; data ? &#x27;pointer&#x27; : &#x27;&#x27;;
         if (data) {
-          flagElement.src = &#x27;data:image/png;base64,&#x27; + data[&#x27;flag_png&#x27;];
-          nameElement.innerHTML = data[&#x27;admin&#x27;];
+          flagElement.src &#x3D; &#x27;data:image/png;base64,&#x27; + data[&#x27;flag_png&#x27;];
+          nameElement.innerHTML &#x3D; data[&#x27;admin&#x27;];
         }
         infoOverlay.setPosition(data ? coordinate : undefined);
       });
@@ -111,7 +111,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate = map.getEventCoordinate(evt.originalEvent);
+  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displayCountryInfo(coordinate);
 });
 
@@ -126,17 +126,17 @@ map.on(&#x27;click&#x27;, function(evt) {
   text-shadow: white 0.1em 0.1em 0.2em;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div style=&quot;display: none;&quot;&gt;
+&lt;div style&#x3D;&quot;display: none;&quot;&gt;
   &lt;!-- Overlay with the country info --&gt;
-  &lt;div id=&quot;country-info&quot;&gt;
-    &lt;div id=&quot;country-name&quot;&gt;&amp;nbsp;&lt;/div&gt;
-    &lt;img id=&quot;country-flag&quot; src=&quot;&quot; /&gt;
+  &lt;div id&#x3D;&quot;country-info&quot;&gt;
+    &lt;div id&#x3D;&quot;country-name&quot;&gt;&amp;nbsp;&lt;/div&gt;
+    &lt;img id&#x3D;&quot;country-flag&quot; src&#x3D;&quot;&quot; /&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -166,68 +166,68 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div style=&quot;display: none;&quot;&gt;
+&lt;div style&#x3D;&quot;display: none;&quot;&gt;
   &lt;!-- Overlay with the country info --&gt;
-  &lt;div id=&quot;country-info&quot;&gt;
-    &lt;div id=&quot;country-name&quot;&gt;&amp;nbsp;&lt;/div&gt;
-    &lt;img id=&quot;country-flag&quot; src=&quot;&quot; /&gt;
+  &lt;div id&#x3D;&quot;country-info&quot;&gt;
+    &lt;div id&#x3D;&quot;country-name&quot;&gt;&amp;nbsp;&lt;/div&gt;
+    &lt;img id&#x3D;&quot;country-flag&quot; src&#x3D;&quot;&quot; /&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var mapLayer = new ol.layer.Tile({
+var mapLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;
   })
 });
 
-var gridSource = new ol.source.TileUTFGrid({
+var gridSource &#x3D; new ol.source.TileUTFGrid({
   url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;
 });
 
-var gridLayer = new ol.layer.Tile({source: gridSource});
+var gridLayer &#x3D; new ol.layer.Tile({source: gridSource});
 
-var view = new ol.View({
+var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 1
 });
 
-var mapElement = document.getElementById(&#x27;map&#x27;);
-var map = new ol.Map({
+var mapElement &#x3D; document.getElementById(&#x27;map&#x27;);
+var map &#x3D; new ol.Map({
   layers: [mapLayer, gridLayer],
   target: mapElement,
   view: view
 });
 
-var infoElement = document.getElementById(&#x27;country-info&#x27;);
-var flagElement = document.getElementById(&#x27;country-flag&#x27;);
-var nameElement = document.getElementById(&#x27;country-name&#x27;);
+var infoElement &#x3D; document.getElementById(&#x27;country-info&#x27;);
+var flagElement &#x3D; document.getElementById(&#x27;country-flag&#x27;);
+var nameElement &#x3D; document.getElementById(&#x27;country-name&#x27;);
 
-var infoOverlay = new ol.Overlay({
+var infoOverlay &#x3D; new ol.Overlay({
   element: infoElement,
   offset: [15, 15],
   stopEvent: false
 });
 map.addOverlay(infoOverlay);
 
-var displayCountryInfo = function(coordinate) {
-  var viewResolution = /** @type {number} */ (view.getResolution());
+var displayCountryInfo &#x3D; function(coordinate) {
+  var viewResolution &#x3D; /** @type {number} */ (view.getResolution());
   gridSource.forDataAtCoordinateAndResolution(coordinate, viewResolution,
       function(data) {
         // If you want to use the template from the TileJSON,
         //  load the mustache.js library separately and call
-        //  info.innerHTML = Mustache.render(gridSource.getTemplate(), data);
-        mapElement.style.cursor = data ? &#x27;pointer&#x27; : &#x27;&#x27;;
+        //  info.innerHTML &#x3D; Mustache.render(gridSource.getTemplate(), data);
+        mapElement.style.cursor &#x3D; data ? &#x27;pointer&#x27; : &#x27;&#x27;;
         if (data) {
-          flagElement.src = &#x27;data:image/png;base64,&#x27; + data[&#x27;flag_png&#x27;];
-          nameElement.innerHTML = data[&#x27;admin&#x27;];
+          flagElement.src &#x3D; &#x27;data:image/png;base64,&#x27; + data[&#x27;flag_png&#x27;];
+          nameElement.innerHTML &#x3D; data[&#x27;admin&#x27;];
         }
         infoOverlay.setPosition(data ? coordinate : undefined);
       });
@@ -237,7 +237,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate = map.getEventCoordinate(evt.originalEvent);
+  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displayCountryInfo(coordinate);
 });
 

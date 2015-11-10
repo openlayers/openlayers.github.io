@@ -48,17 +48,17 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var key = &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
+          <textarea class="hidden" name="js">var key &#x3D; &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
 
-var roads = new ol.layer.Tile({
+var roads &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({key: key, imagerySet: &#x27;Road&#x27;})
 });
 
-var imagery = new ol.layer.Tile({
+var imagery &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [roads, imagery],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -67,39 +67,39 @@ var map = new ol.Map({
   })
 });
 
-var radius = 75;
+var radius &#x3D; 75;
 $(document).keydown(function(evt) {
-  if (evt.which === 38) {
-    radius = Math.min(radius + 5, 150);
+  if (evt.which &#x3D;&#x3D;&#x3D; 38) {
+    radius &#x3D; Math.min(radius + 5, 150);
     map.render();
-  } else if (evt.which === 40) {
-    radius = Math.max(radius - 5, 25);
+  } else if (evt.which &#x3D;&#x3D;&#x3D; 40) {
+    radius &#x3D; Math.max(radius - 5, 25);
     map.render();
   }
 });
 
 // get the pixel position with every move
-var mousePosition = null;
+var mousePosition &#x3D; null;
 $(map.getViewport()).on(&#x27;mousemove&#x27;, function(evt) {
-  mousePosition = map.getEventPixel(evt.originalEvent);
+  mousePosition &#x3D; map.getEventPixel(evt.originalEvent);
   map.render();
 }).on(&#x27;mouseout&#x27;, function() {
-  mousePosition = null;
+  mousePosition &#x3D; null;
   map.render();
 });
 
 // before rendering the layer, do some clipping
 imagery.on(&#x27;precompose&#x27;, function(event) {
-  var ctx = event.context;
-  var pixelRatio = event.frameState.pixelRatio;
+  var ctx &#x3D; event.context;
+  var pixelRatio &#x3D; event.frameState.pixelRatio;
   ctx.save();
   ctx.beginPath();
   if (mousePosition) {
     // only show a circle around the mouse
     ctx.arc(mousePosition[0] * pixelRatio, mousePosition[1] * pixelRatio,
         radius * pixelRatio, 0, 2 * Math.PI);
-    ctx.lineWidth = 5 * pixelRatio;
-    ctx.strokeStyle = &#x27;rgba(0,0,0,0.5)&#x27;;
+    ctx.lineWidth &#x3D; 5 * pixelRatio;
+    ctx.strokeStyle &#x3D; &#x27;rgba(0,0,0,0.5)&#x27;;
     ctx.stroke();
   }
   ctx.clip();
@@ -107,14 +107,14 @@ imagery.on(&#x27;precompose&#x27;, function(event) {
 
 // after rendering the layer, restore the canvas context
 imagery.on(&#x27;postcompose&#x27;, function(event) {
-  var ctx = event.context;
+  var ctx &#x3D; event.context;
   ctx.restore();
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -135,25 +135,25 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var key = &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
+var key &#x3D; &#x27;Your Bing Maps Key from http://bingmapsportal.com/ here&#x27;;
 
-var roads = new ol.layer.Tile({
+var roads &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({key: key, imagerySet: &#x27;Road&#x27;})
 });
 
-var imagery = new ol.layer.Tile({
+var imagery &#x3D; new ol.layer.Tile({
   source: new ol.source.BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [roads, imagery],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -162,39 +162,39 @@ var map = new ol.Map({
   })
 });
 
-var radius = 75;
+var radius &#x3D; 75;
 $(document).keydown(function(evt) {
-  if (evt.which === 38) {
-    radius = Math.min(radius + 5, 150);
+  if (evt.which &#x3D;&#x3D;&#x3D; 38) {
+    radius &#x3D; Math.min(radius + 5, 150);
     map.render();
-  } else if (evt.which === 40) {
-    radius = Math.max(radius - 5, 25);
+  } else if (evt.which &#x3D;&#x3D;&#x3D; 40) {
+    radius &#x3D; Math.max(radius - 5, 25);
     map.render();
   }
 });
 
 // get the pixel position with every move
-var mousePosition = null;
+var mousePosition &#x3D; null;
 $(map.getViewport()).on(&#x27;mousemove&#x27;, function(evt) {
-  mousePosition = map.getEventPixel(evt.originalEvent);
+  mousePosition &#x3D; map.getEventPixel(evt.originalEvent);
   map.render();
 }).on(&#x27;mouseout&#x27;, function() {
-  mousePosition = null;
+  mousePosition &#x3D; null;
   map.render();
 });
 
 // before rendering the layer, do some clipping
 imagery.on(&#x27;precompose&#x27;, function(event) {
-  var ctx = event.context;
-  var pixelRatio = event.frameState.pixelRatio;
+  var ctx &#x3D; event.context;
+  var pixelRatio &#x3D; event.frameState.pixelRatio;
   ctx.save();
   ctx.beginPath();
   if (mousePosition) {
     // only show a circle around the mouse
     ctx.arc(mousePosition[0] * pixelRatio, mousePosition[1] * pixelRatio,
         radius * pixelRatio, 0, 2 * Math.PI);
-    ctx.lineWidth = 5 * pixelRatio;
-    ctx.strokeStyle = &#x27;rgba(0,0,0,0.5)&#x27;;
+    ctx.lineWidth &#x3D; 5 * pixelRatio;
+    ctx.strokeStyle &#x3D; &#x27;rgba(0,0,0,0.5)&#x27;;
     ctx.stroke();
   }
   ctx.clip();
@@ -202,7 +202,7 @@ imagery.on(&#x27;precompose&#x27;, function(event) {
 
 // after rendering the layer, restore the canvas context
 imagery.on(&#x27;postcompose&#x27;, function(event) {
-  var ctx = event.context;
+  var ctx &#x3D; event.context;
   ctx.restore();
 });
 

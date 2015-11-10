@@ -48,24 +48,24 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var projection = ol.proj.get(&#x27;EPSG:3857&#x27;);
-var projectionExtent = projection.getExtent();
-var size = ol.extent.getWidth(projectionExtent) / 256;
-var resolutions = new Array(14);
-var matrixIds = new Array(14);
-for (var z = 0; z &lt; 14; ++z) {
+          <textarea class="hidden" name="js">var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
+var projectionExtent &#x3D; projection.getExtent();
+var size &#x3D; ol.extent.getWidth(projectionExtent) / 256;
+var resolutions &#x3D; new Array(14);
+var matrixIds &#x3D; new Array(14);
+for (var z &#x3D; 0; z &lt; 14; ++z) {
   // generate resolutions and matrixIds arrays for this WMTS
-  resolutions[z] = size / Math.pow(2, z);
-  matrixIds[z] = z;
+  resolutions[z] &#x3D; size / Math.pow(2, z);
+  matrixIds[z] &#x3D; z;
 }
 
-var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://services.arcgisonline.com/arcgis/rest/&#x27; +
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/arcgis/rest/&#x27; +
       &#x27;services/Demographics/USA_Population_Density/MapServer/&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM(),
@@ -104,9 +104,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -127,32 +127,32 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var projection = ol.proj.get(&#x27;EPSG:3857&#x27;);
-var projectionExtent = projection.getExtent();
-var size = ol.extent.getWidth(projectionExtent) / 256;
-var resolutions = new Array(14);
-var matrixIds = new Array(14);
-for (var z = 0; z &lt; 14; ++z) {
+var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
+var projectionExtent &#x3D; projection.getExtent();
+var size &#x3D; ol.extent.getWidth(projectionExtent) / 256;
+var resolutions &#x3D; new Array(14);
+var matrixIds &#x3D; new Array(14);
+for (var z &#x3D; 0; z &lt; 14; ++z) {
   // generate resolutions and matrixIds arrays for this WMTS
-  resolutions[z] = size / Math.pow(2, z);
-  matrixIds[z] = z;
+  resolutions[z] &#x3D; size / Math.pow(2, z);
+  matrixIds[z] &#x3D; z;
 }
 
-var attribution = new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href=&quot;http://services.arcgisonline.com/arcgis/rest/&#x27; +
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/arcgis/rest/&#x27; +
       &#x27;services/Demographics/USA_Population_Density/MapServer/&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
 });
 
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM(),

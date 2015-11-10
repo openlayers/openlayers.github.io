@@ -48,35 +48,35 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var raster = new ol.layer.Tile({
+          <textarea class="hidden" name="js">var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new ol.format.GeoJSON()
   })
 });
 
-var pointFeature = new ol.Feature(new ol.geom.Point([0, 0]));
+var pointFeature &#x3D; new ol.Feature(new ol.geom.Point([0, 0]));
 
-var lineFeature = new ol.Feature(
+var lineFeature &#x3D; new ol.Feature(
     new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]]));
 
-var vector2 = new ol.layer.Vector({
+var vector2 &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [pointFeature, lineFeature]
   })
 });
 
-var select = new ol.interaction.Select();
+var select &#x3D; new ol.interaction.Select();
 
-var translate = new ol.interaction.Translate({
+var translate &#x3D; new ol.interaction.Translate({
   features: select.getFeatures()
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([select, translate]),
   layers: [raster, vector, vector2],
   target: &#x27;map&#x27;,
@@ -87,9 +87,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -110,43 +110,43 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
 });
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new ol.format.GeoJSON()
   })
 });
 
-var pointFeature = new ol.Feature(new ol.geom.Point([0, 0]));
+var pointFeature &#x3D; new ol.Feature(new ol.geom.Point([0, 0]));
 
-var lineFeature = new ol.Feature(
+var lineFeature &#x3D; new ol.Feature(
     new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]]));
 
-var vector2 = new ol.layer.Vector({
+var vector2 &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [pointFeature, lineFeature]
   })
 });
 
-var select = new ol.interaction.Select();
+var select &#x3D; new ol.interaction.Select();
 
-var translate = new ol.interaction.Translate({
+var translate &#x3D; new ol.interaction.Translate({
   features: select.getFeatures()
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   interactions: ol.interaction.defaults().extend([select, translate]),
   layers: [raster, vector, vector2],
   target: &#x27;map&#x27;,

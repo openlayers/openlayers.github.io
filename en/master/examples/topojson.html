@@ -48,13 +48,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var raster = new ol.layer.Tile({
+          <textarea class="hidden" name="js">var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.world-dark.jsonp&#x27;
   })
 });
 
-var styleArray = [new ol.style.Style({
+var styleArray &#x3D; [new ol.style.Style({
   fill: new ol.style.Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -64,18 +64,18 @@ var styleArray = [new ol.style.Style({
   })
 })];
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/topojson/world-110m.json&#x27;,
     format: new ol.format.TopoJSON()
   }),
   style: function(feature, resolution) {
     // don&#x27;t want to render the full world polygon, which repeats all countries
-    return feature.getId() !== undefined ? styleArray : null;
+    return feature.getId() !&#x3D;&#x3D; undefined ? styleArray : null;
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -85,9 +85,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -108,21 +108,21 @@ var map = new ol.Map({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var raster = new ol.layer.Tile({
+var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
     url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.world-dark.jsonp&#x27;
   })
 });
 
-var styleArray = [new ol.style.Style({
+var styleArray &#x3D; [new ol.style.Style({
   fill: new ol.style.Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -132,18 +132,18 @@ var styleArray = [new ol.style.Style({
   })
 })];
 
-var vector = new ol.layer.Vector({
+var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/topojson/world-110m.json&#x27;,
     format: new ol.format.TopoJSON()
   }),
   style: function(feature, resolution) {
     // don&#x27;t want to render the full world polygon, which repeats all countries
-    return feature.getId() !== undefined ? styleArray : null;
+    return feature.getId() !&#x3D;&#x3D; undefined ? styleArray : null;
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new ol.View({

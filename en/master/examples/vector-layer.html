@@ -57,7 +57,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var style = new ol.style.Style({
+          <textarea class="hidden" name="js">var style &#x3D; new ol.style.Style({
   fill: new ol.style.Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -76,9 +76,9 @@
     })
   })
 });
-var styles = [style];
+var styles &#x3D; [style];
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new ol.format.GeoJSON()
@@ -89,7 +89,7 @@ var vectorLayer = new ol.layer.Vector({
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -103,15 +103,15 @@ var map = new ol.Map({
   })
 });
 
-var highlightStyleCache = {};
+var highlightStyleCache &#x3D; {};
 
-var featureOverlay = new ol.layer.Vector({
+var featureOverlay &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector(),
   map: map,
   style: function(feature, resolution) {
-    var text = resolution &lt; 5000 ? feature.get(&#x27;name&#x27;) : &#x27;&#x27;;
+    var text &#x3D; resolution &lt; 5000 ? feature.get(&#x27;name&#x27;) : &#x27;&#x27;;
     if (!highlightStyleCache[text]) {
-      highlightStyleCache[text] = [new ol.style.Style({
+      highlightStyleCache[text] &#x3D; [new ol.style.Style({
         stroke: new ol.style.Stroke({
           color: &#x27;#f00&#x27;,
           width: 1
@@ -137,27 +137,27 @@ var featureOverlay = new ol.layer.Vector({
 });
 
 var highlight;
-var displayFeatureInfo = function(pixel) {
+var displayFeatureInfo &#x3D; function(pixel) {
 
-  var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     return feature;
   });
 
-  var info = document.getElementById(&#x27;info&#x27;);
+  var info &#x3D; document.getElementById(&#x27;info&#x27;);
   if (feature) {
-    info.innerHTML = feature.getId() + &#x27;: &#x27; + feature.get(&#x27;name&#x27;);
+    info.innerHTML &#x3D; feature.getId() + &#x27;: &#x27; + feature.get(&#x27;name&#x27;);
   } else {
-    info.innerHTML = &#x27;&amp;nbsp;&#x27;;
+    info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   }
 
-  if (feature !== highlight) {
+  if (feature !&#x3D;&#x3D; highlight) {
     if (highlight) {
       featureOverlay.getSource().removeFeature(highlight);
     }
     if (feature) {
       featureOverlay.getSource().addFeature(feature);
     }
-    highlight = feature;
+    highlight &#x3D; feature;
   }
 
 };
@@ -166,7 +166,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 
@@ -175,16 +175,16 @@ map.on(&#x27;click&#x27;, function(evt) {
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span4&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;span4 offset4&quot;&gt;
-    &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;&lt;/div&gt;
+  &lt;div class&#x3D;&quot;span4 offset4&quot;&gt;
+    &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
       &amp;nbsp;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -207,16 +207,16 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span4&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;span4 offset4&quot;&gt;
-    &lt;div id=&quot;info&quot; class=&quot;alert alert-success&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span4&quot;&gt;&lt;/div&gt;
+  &lt;div class&#x3D;&quot;span4 offset4&quot;&gt;
+    &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-success&quot;&gt;
       &amp;nbsp;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -224,7 +224,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 
 &lt;/div&gt;
 &lt;script&gt;
-var style = new ol.style.Style({
+var style &#x3D; new ol.style.Style({
   fill: new ol.style.Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -243,9 +243,9 @@ var style = new ol.style.Style({
     })
   })
 });
-var styles = [style];
+var styles &#x3D; [style];
 
-var vectorLayer = new ol.layer.Vector({
+var vectorLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new ol.format.GeoJSON()
@@ -256,7 +256,7 @@ var vectorLayer = new ol.layer.Vector({
   }
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
@@ -270,15 +270,15 @@ var map = new ol.Map({
   })
 });
 
-var highlightStyleCache = {};
+var highlightStyleCache &#x3D; {};
 
-var featureOverlay = new ol.layer.Vector({
+var featureOverlay &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector(),
   map: map,
   style: function(feature, resolution) {
-    var text = resolution &lt; 5000 ? feature.get(&#x27;name&#x27;) : &#x27;&#x27;;
+    var text &#x3D; resolution &lt; 5000 ? feature.get(&#x27;name&#x27;) : &#x27;&#x27;;
     if (!highlightStyleCache[text]) {
-      highlightStyleCache[text] = [new ol.style.Style({
+      highlightStyleCache[text] &#x3D; [new ol.style.Style({
         stroke: new ol.style.Stroke({
           color: &#x27;#f00&#x27;,
           width: 1
@@ -304,27 +304,27 @@ var featureOverlay = new ol.layer.Vector({
 });
 
 var highlight;
-var displayFeatureInfo = function(pixel) {
+var displayFeatureInfo &#x3D; function(pixel) {
 
-  var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
     return feature;
   });
 
-  var info = document.getElementById(&#x27;info&#x27;);
+  var info &#x3D; document.getElementById(&#x27;info&#x27;);
   if (feature) {
-    info.innerHTML = feature.getId() + &#x27;: &#x27; + feature.get(&#x27;name&#x27;);
+    info.innerHTML &#x3D; feature.getId() + &#x27;: &#x27; + feature.get(&#x27;name&#x27;);
   } else {
-    info.innerHTML = &#x27;&amp;nbsp;&#x27;;
+    info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   }
 
-  if (feature !== highlight) {
+  if (feature !&#x3D;&#x3D; highlight) {
     if (highlight) {
       featureOverlay.getSource().removeFeature(highlight);
     }
     if (feature) {
       featureOverlay.getSource().addFeature(feature);
     }
-    highlight = feature;
+    highlight &#x3D; feature;
   }
 
 };
@@ -333,7 +333,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel = map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 

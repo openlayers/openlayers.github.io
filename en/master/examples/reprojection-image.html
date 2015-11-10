@@ -48,13 +48,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 &#x27; +
-    &#x27;+x_0=400000 +y_0=-100000 +ellps=airy &#x27; +
-    &#x27;+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
-    &#x27;+units=m +no_defs&#x27;);
-var imageExtent = [0, 0, 700000, 1300000];
+          <textarea class="hidden" name="js">proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
+    &#x27;+x_0&#x3D;400000 +y_0&#x3D;-100000 +ellps&#x3D;airy &#x27; +
+    &#x27;+towgs84&#x3D;446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
+    &#x27;+units&#x3D;m +no_defs&#x27;);
+var imageExtent &#x3D; [0, 0, 700000, 1300000];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
@@ -78,9 +78,9 @@ var map = new ol.Map({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -96,26 +96,26 @@ var map = new ol.Map({
 &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.10.1/css/ol.css" type="text/css"&gt;
 &lt;script src="http://openlayers.org/en/v3.10.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;script src=&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 &#x27; +
-    &#x27;+x_0=400000 +y_0=-100000 +ellps=airy &#x27; +
-    &#x27;+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
-    &#x27;+units=m +no_defs&#x27;);
-var imageExtent = [0, 0, 700000, 1300000];
+proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
+    &#x27;+x_0&#x3D;400000 +y_0&#x3D;-100000 +ellps&#x3D;airy &#x27; +
+    &#x27;+towgs84&#x3D;446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
+    &#x27;+units&#x3D;m +no_defs&#x27;);
+var imageExtent &#x3D; [0, 0, 700000, 1300000];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})

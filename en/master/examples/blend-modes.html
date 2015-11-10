@@ -103,7 +103,7 @@
 //
 // Every layer has one feature that is styled with a circle, together the
 // features form the corners of an equilateral triangle and their styles overlap
-var redLayer = new ol.layer.Vector({
+var redLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [new ol.Feature(new ol.geom.Point([0, 0]))]
   }),
@@ -120,7 +120,7 @@ var redLayer = new ol.layer.Vector({
     })
   })
 });
-var greenLayer = new ol.layer.Vector({
+var greenLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     // 433.013 is roughly 250 * Math.sqrt(3)
     features: [new ol.Feature(new ol.geom.Point([250, 433.013]))]
@@ -138,7 +138,7 @@ var greenLayer = new ol.layer.Vector({
     })
   })
 });
-var blueLayer = new ol.layer.Vector({
+var blueLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [new ol.Feature(new ol.geom.Point([500, 0]))]
   }),
@@ -158,7 +158,7 @@ var blueLayer = new ol.layer.Vector({
 
 // Create the map, the view is centered on the triangle. Zooming and panning is
 // restricted to a sane area
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     redLayer,
     greenLayer,
@@ -182,8 +182,8 @@ var map = new ol.Map({
  *
  * @param {ol.render.Event} evt The render event.
  */
-var setBlendModeFromSelect = function(evt) {
-  evt.context.globalCompositeOperation = select.value;
+var setBlendModeFromSelect &#x3D; function(evt) {
+  evt.context.globalCompositeOperation &#x3D; select.value;
 };
 
 
@@ -193,8 +193,8 @@ var setBlendModeFromSelect = function(evt) {
  *
  * @param {ol.render.Event} evt The render event.
  */
-var resetBlendModeFromSelect = function(evt) {
-  evt.context.globalCompositeOperation = &#x27;source-over&#x27;;
+var resetBlendModeFromSelect &#x3D; function(evt) {
+  evt.context.globalCompositeOperation &#x3D; &#x27;source-over&#x27;;
 };
 
 
@@ -203,7 +203,7 @@ var resetBlendModeFromSelect = function(evt) {
  *
  * @param {ol.layer.Vector} layer The layer to bind the handlers to.
  */
-var bindLayerListeners = function(layer) {
+var bindLayerListeners &#x3D; function(layer) {
   layer.on(&#x27;precompose&#x27;, setBlendModeFromSelect);
   layer.on(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
 };
@@ -214,7 +214,7 @@ var bindLayerListeners = function(layer) {
  *
  * @param {ol.layer.Vector} layer The layer to unbind the handlers from.
  */
-var unbindLayerListeners = function(layer) {
+var unbindLayerListeners &#x3D; function(layer) {
   layer.un(&#x27;precompose&#x27;, setBlendModeFromSelect);
   layer.un(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
 };
@@ -225,14 +225,14 @@ var unbindLayerListeners = function(layer) {
  *
  * @this {HTMLInputElement}
  */
-var affectLayerClicked = function() {
+var affectLayerClicked &#x3D; function() {
   var layer;
-  if (this.id == &#x27;affect-red&#x27;) {
-    layer = redLayer;
-  } else if (this.id == &#x27;affect-green&#x27;) {
-    layer = greenLayer;
+  if (this.id &#x3D;&#x3D; &#x27;affect-red&#x27;) {
+    layer &#x3D; redLayer;
+  } else if (this.id &#x3D;&#x3D; &#x27;affect-green&#x27;) {
+    layer &#x3D; greenLayer;
   } else {
-    layer = blueLayer;
+    layer &#x3D; blueLayer;
   }
   if (this.checked) {
     bindLayerListeners(layer);
@@ -244,10 +244,10 @@ var affectLayerClicked = function() {
 
 
 // Get the form elements and bind the listeners
-var select = document.getElementById(&#x27;blend-mode&#x27;);
-var affectRed = document.getElementById(&#x27;affect-red&#x27;);
-var affectGreen = document.getElementById(&#x27;affect-green&#x27;);
-var affectBlue = document.getElementById(&#x27;affect-blue&#x27;);
+var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
+var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
+var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
+var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
 // Rerender map when blend mode changes
 select.addEventListener(&#x27;change&#x27;, function() {
@@ -267,20 +267,20 @@ bindLayerListeners(blueLayer);
 </textarea>
           <textarea class="hidden" name="css">.map{
   background-repeat: repeat;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAApSURBVBiVY7x///5/BjSgqKjIiC7GhC6ACwygQgxHMzAwMGDz4FDwDAD5/wevjSk4mwAAAABJRU5ErkJggg==);
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAApSURBVBiVY7x///5/BjSgqKjIiC7GhC6ACwygQgxHMzAwMGDz4FDwDAD5/wevjSk4mwAAAABJRU5ErkJggg&#x3D;&#x3D;);
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;form class=&quot;form-horizontal&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;form class&#x3D;&quot;form-horizontal&quot;&gt;
       &lt;label&gt;
-        &lt;select id=&quot;blend-mode&quot; class=&quot;form-control&quot;&gt;
-          &lt;option value=&quot;source-over&quot;&gt;source-over (default)&lt;/option&gt;
+        &lt;select id&#x3D;&quot;blend-mode&quot; class&#x3D;&quot;form-control&quot;&gt;
+          &lt;option value&#x3D;&quot;source-over&quot;&gt;source-over (default)&lt;/option&gt;
           &lt;option&gt;source-in&lt;/option&gt;
           &lt;option&gt;source-out&lt;/option&gt;
           &lt;option&gt;source-atop&lt;/option&gt;
@@ -310,15 +310,15 @@ bindLayerListeners(blueLayer);
         Canvas compositing / blending mode
       &lt;/label&gt;
       &lt;label&gt;
-        &lt;input type=&quot;checkbox&quot; id=&quot;affect-red&quot; checked&gt;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;affect-red&quot; checked&gt;
         Red circle affected
       &lt;/label&gt;
       &lt;label&gt;
-        &lt;input type=&quot;checkbox&quot; id=&quot;affect-green&quot; checked&gt;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;affect-green&quot; checked&gt;
         Green circle affected
       &lt;/label&gt;
       &lt;label&gt;
-        &lt;input type=&quot;checkbox&quot; id=&quot;affect-blue&quot; checked&gt;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;affect-blue&quot; checked&gt;
         Blue circle affected
       &lt;/label&gt;
     &lt;/form&gt;
@@ -341,7 +341,7 @@ bindLayerListeners(blueLayer);
 &lt;style&gt;
 .map{
   background-repeat: repeat;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAApSURBVBiVY7x///5/BjSgqKjIiC7GhC6ACwygQgxHMzAwMGDz4FDwDAD5/wevjSk4mwAAAABJRU5ErkJggg==);
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAApSURBVBiVY7x///5/BjSgqKjIiC7GhC6ACwygQgxHMzAwMGDz4FDwDAD5/wevjSk4mwAAAABJRU5ErkJggg&#x3D;&#x3D;);
 }
 
 &lt;/style&gt;
@@ -349,17 +349,17 @@ bindLayerListeners(blueLayer);
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;form class=&quot;form-horizontal&quot;&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;form class&#x3D;&quot;form-horizontal&quot;&gt;
       &lt;label&gt;
-        &lt;select id=&quot;blend-mode&quot; class=&quot;form-control&quot;&gt;
-          &lt;option value=&quot;source-over&quot;&gt;source-over (default)&lt;/option&gt;
+        &lt;select id&#x3D;&quot;blend-mode&quot; class&#x3D;&quot;form-control&quot;&gt;
+          &lt;option value&#x3D;&quot;source-over&quot;&gt;source-over (default)&lt;/option&gt;
           &lt;option&gt;source-in&lt;/option&gt;
           &lt;option&gt;source-out&lt;/option&gt;
           &lt;option&gt;source-atop&lt;/option&gt;
@@ -389,15 +389,15 @@ bindLayerListeners(blueLayer);
         Canvas compositing / blending mode
       &lt;/label&gt;
       &lt;label&gt;
-        &lt;input type=&quot;checkbox&quot; id=&quot;affect-red&quot; checked&gt;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;affect-red&quot; checked&gt;
         Red circle affected
       &lt;/label&gt;
       &lt;label&gt;
-        &lt;input type=&quot;checkbox&quot; id=&quot;affect-green&quot; checked&gt;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;affect-green&quot; checked&gt;
         Green circle affected
       &lt;/label&gt;
       &lt;label&gt;
-        &lt;input type=&quot;checkbox&quot; id=&quot;affect-blue&quot; checked&gt;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;affect-blue&quot; checked&gt;
         Blue circle affected
       &lt;/label&gt;
     &lt;/form&gt;
@@ -410,7 +410,7 @@ bindLayerListeners(blueLayer);
 //
 // Every layer has one feature that is styled with a circle, together the
 // features form the corners of an equilateral triangle and their styles overlap
-var redLayer = new ol.layer.Vector({
+var redLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [new ol.Feature(new ol.geom.Point([0, 0]))]
   }),
@@ -427,7 +427,7 @@ var redLayer = new ol.layer.Vector({
     })
   })
 });
-var greenLayer = new ol.layer.Vector({
+var greenLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     // 433.013 is roughly 250 * Math.sqrt(3)
     features: [new ol.Feature(new ol.geom.Point([250, 433.013]))]
@@ -445,7 +445,7 @@ var greenLayer = new ol.layer.Vector({
     })
   })
 });
-var blueLayer = new ol.layer.Vector({
+var blueLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [new ol.Feature(new ol.geom.Point([500, 0]))]
   }),
@@ -465,7 +465,7 @@ var blueLayer = new ol.layer.Vector({
 
 // Create the map, the view is centered on the triangle. Zooming and panning is
 // restricted to a sane area
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     redLayer,
     greenLayer,
@@ -489,8 +489,8 @@ var map = new ol.Map({
  *
  * @param {ol.render.Event} evt The render event.
  */
-var setBlendModeFromSelect = function(evt) {
-  evt.context.globalCompositeOperation = select.value;
+var setBlendModeFromSelect &#x3D; function(evt) {
+  evt.context.globalCompositeOperation &#x3D; select.value;
 };
 
 
@@ -500,8 +500,8 @@ var setBlendModeFromSelect = function(evt) {
  *
  * @param {ol.render.Event} evt The render event.
  */
-var resetBlendModeFromSelect = function(evt) {
-  evt.context.globalCompositeOperation = &#x27;source-over&#x27;;
+var resetBlendModeFromSelect &#x3D; function(evt) {
+  evt.context.globalCompositeOperation &#x3D; &#x27;source-over&#x27;;
 };
 
 
@@ -510,7 +510,7 @@ var resetBlendModeFromSelect = function(evt) {
  *
  * @param {ol.layer.Vector} layer The layer to bind the handlers to.
  */
-var bindLayerListeners = function(layer) {
+var bindLayerListeners &#x3D; function(layer) {
   layer.on(&#x27;precompose&#x27;, setBlendModeFromSelect);
   layer.on(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
 };
@@ -521,7 +521,7 @@ var bindLayerListeners = function(layer) {
  *
  * @param {ol.layer.Vector} layer The layer to unbind the handlers from.
  */
-var unbindLayerListeners = function(layer) {
+var unbindLayerListeners &#x3D; function(layer) {
   layer.un(&#x27;precompose&#x27;, setBlendModeFromSelect);
   layer.un(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
 };
@@ -532,14 +532,14 @@ var unbindLayerListeners = function(layer) {
  *
  * @this {HTMLInputElement}
  */
-var affectLayerClicked = function() {
+var affectLayerClicked &#x3D; function() {
   var layer;
-  if (this.id == &#x27;affect-red&#x27;) {
-    layer = redLayer;
-  } else if (this.id == &#x27;affect-green&#x27;) {
-    layer = greenLayer;
+  if (this.id &#x3D;&#x3D; &#x27;affect-red&#x27;) {
+    layer &#x3D; redLayer;
+  } else if (this.id &#x3D;&#x3D; &#x27;affect-green&#x27;) {
+    layer &#x3D; greenLayer;
   } else {
-    layer = blueLayer;
+    layer &#x3D; blueLayer;
   }
   if (this.checked) {
     bindLayerListeners(layer);
@@ -551,10 +551,10 @@ var affectLayerClicked = function() {
 
 
 // Get the form elements and bind the listeners
-var select = document.getElementById(&#x27;blend-mode&#x27;);
-var affectRed = document.getElementById(&#x27;affect-red&#x27;);
-var affectGreen = document.getElementById(&#x27;affect-green&#x27;);
-var affectBlue = document.getElementById(&#x27;affect-blue&#x27;);
+var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
+var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
+var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
+var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
 // Rerender map when blend mode changes
 select.addEventListener(&#x27;change&#x27;, function() {

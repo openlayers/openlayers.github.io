@@ -59,12 +59,12 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var view = new ol.View({
+          <textarea class="hidden" name="js">var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 2
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -79,7 +79,7 @@ var map = new ol.Map({
   view: view
 });
 
-var geolocation = new ol.Geolocation({
+var geolocation &#x3D; new ol.Geolocation({
   projection: view.getProjection()
 });
 
@@ -93,26 +93,26 @@ el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
 
 // update the HTML page when the position changes.
 geolocation.on(&#x27;change&#x27;, function() {
-  el(&#x27;accuracy&#x27;).innerText = geolocation.getAccuracy() + &#x27; [m]&#x27;;
-  el(&#x27;altitude&#x27;).innerText = geolocation.getAltitude() + &#x27; [m]&#x27;;
-  el(&#x27;altitudeAccuracy&#x27;).innerText = geolocation.getAltitudeAccuracy() + &#x27; [m]&#x27;;
-  el(&#x27;heading&#x27;).innerText = geolocation.getHeading() + &#x27; [rad]&#x27;;
-  el(&#x27;speed&#x27;).innerText = geolocation.getSpeed() + &#x27; [m/s]&#x27;;
+  el(&#x27;accuracy&#x27;).innerText &#x3D; geolocation.getAccuracy() + &#x27; [m]&#x27;;
+  el(&#x27;altitude&#x27;).innerText &#x3D; geolocation.getAltitude() + &#x27; [m]&#x27;;
+  el(&#x27;altitudeAccuracy&#x27;).innerText &#x3D; geolocation.getAltitudeAccuracy() + &#x27; [m]&#x27;;
+  el(&#x27;heading&#x27;).innerText &#x3D; geolocation.getHeading() + &#x27; [rad]&#x27;;
+  el(&#x27;speed&#x27;).innerText &#x3D; geolocation.getSpeed() + &#x27; [m/s]&#x27;;
 });
 
 // handle geolocation error.
 geolocation.on(&#x27;error&#x27;, function(error) {
-  var info = document.getElementById(&#x27;info&#x27;);
-  info.innerHTML = error.message;
-  info.style.display = &#x27;&#x27;;
+  var info &#x3D; document.getElementById(&#x27;info&#x27;);
+  info.innerHTML &#x3D; error.message;
+  info.style.display &#x3D; &#x27;&#x27;;
 });
 
-var accuracyFeature = new ol.Feature();
+var accuracyFeature &#x3D; new ol.Feature();
 geolocation.on(&#x27;change:accuracyGeometry&#x27;, function() {
   accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
 });
 
-var positionFeature = new ol.Feature();
+var positionFeature &#x3D; new ol.Feature();
 positionFeature.setStyle(new ol.style.Style({
   image: new ol.style.Circle({
     radius: 6,
@@ -127,12 +127,12 @@ positionFeature.setStyle(new ol.style.Style({
 }));
 
 geolocation.on(&#x27;change:position&#x27;, function() {
-  var coordinates = geolocation.getPosition();
+  var coordinates &#x3D; geolocation.getPosition();
   positionFeature.setGeometry(coordinates ?
       new ol.geom.Point(coordinates) : null);
 });
 
-var featuresOverlay = new ol.layer.Vector({
+var featuresOverlay &#x3D; new ol.layer.Vector({
   map: map,
   source: new ol.source.Vector({
     features: [accuracyFeature, positionFeature]
@@ -140,20 +140,20 @@ var featuresOverlay = new ol.layer.Vector({
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none;&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
-    &lt;label class=&quot;checkbox&quot; for=&quot;track&quot;&gt;
-      &lt;input id=&quot;track&quot; type=&quot;checkbox&quot;/&gt;track position
+    &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;track&quot;&gt;
+      &lt;input id&#x3D;&quot;track&quot; type&#x3D;&quot;checkbox&quot;/&gt;track position
     &lt;/label&gt;
-    &lt;p&gt;position accuracy : &lt;code id=&quot;accuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;altitude : &lt;code id=&quot;altitude&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;altitude accuracy : &lt;code id=&quot;altitudeAccuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;heading : &lt;code id=&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;speed : &lt;code id=&quot;speed&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;position accuracy : &lt;code id&#x3D;&quot;accuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;altitude : &lt;code id&#x3D;&quot;altitude&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;altitude accuracy : &lt;code id&#x3D;&quot;altitudeAccuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;heading : &lt;code id&#x3D;&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;speed : &lt;code id&#x3D;&quot;speed&quot;&gt;&lt;/code&gt;&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -174,31 +174,31 @@ var featuresOverlay = new ol.layer.Vector({
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;span4 pull-right&quot;&gt;
-      &lt;div id=&quot;info&quot; class=&quot;alert alert-danger&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;span4 pull-right&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none;&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
-    &lt;label class=&quot;checkbox&quot; for=&quot;track&quot;&gt;
-      &lt;input id=&quot;track&quot; type=&quot;checkbox&quot;/&gt;track position
+    &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;track&quot;&gt;
+      &lt;input id&#x3D;&quot;track&quot; type&#x3D;&quot;checkbox&quot;/&gt;track position
     &lt;/label&gt;
-    &lt;p&gt;position accuracy : &lt;code id=&quot;accuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;altitude : &lt;code id=&quot;altitude&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;altitude accuracy : &lt;code id=&quot;altitudeAccuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;heading : &lt;code id=&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-    &lt;p&gt;speed : &lt;code id=&quot;speed&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;position accuracy : &lt;code id&#x3D;&quot;accuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;altitude : &lt;code id&#x3D;&quot;altitude&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;altitude accuracy : &lt;code id&#x3D;&quot;altitudeAccuracy&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;heading : &lt;code id&#x3D;&quot;heading&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+    &lt;p&gt;speed : &lt;code id&#x3D;&quot;speed&quot;&gt;&lt;/code&gt;&lt;/p&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var view = new ol.View({
+var view &#x3D; new ol.View({
   center: [0, 0],
   zoom: 2
 });
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -213,7 +213,7 @@ var map = new ol.Map({
   view: view
 });
 
-var geolocation = new ol.Geolocation({
+var geolocation &#x3D; new ol.Geolocation({
   projection: view.getProjection()
 });
 
@@ -227,26 +227,26 @@ el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
 
 // update the HTML page when the position changes.
 geolocation.on(&#x27;change&#x27;, function() {
-  el(&#x27;accuracy&#x27;).innerText = geolocation.getAccuracy() + &#x27; [m]&#x27;;
-  el(&#x27;altitude&#x27;).innerText = geolocation.getAltitude() + &#x27; [m]&#x27;;
-  el(&#x27;altitudeAccuracy&#x27;).innerText = geolocation.getAltitudeAccuracy() + &#x27; [m]&#x27;;
-  el(&#x27;heading&#x27;).innerText = geolocation.getHeading() + &#x27; [rad]&#x27;;
-  el(&#x27;speed&#x27;).innerText = geolocation.getSpeed() + &#x27; [m/s]&#x27;;
+  el(&#x27;accuracy&#x27;).innerText &#x3D; geolocation.getAccuracy() + &#x27; [m]&#x27;;
+  el(&#x27;altitude&#x27;).innerText &#x3D; geolocation.getAltitude() + &#x27; [m]&#x27;;
+  el(&#x27;altitudeAccuracy&#x27;).innerText &#x3D; geolocation.getAltitudeAccuracy() + &#x27; [m]&#x27;;
+  el(&#x27;heading&#x27;).innerText &#x3D; geolocation.getHeading() + &#x27; [rad]&#x27;;
+  el(&#x27;speed&#x27;).innerText &#x3D; geolocation.getSpeed() + &#x27; [m/s]&#x27;;
 });
 
 // handle geolocation error.
 geolocation.on(&#x27;error&#x27;, function(error) {
-  var info = document.getElementById(&#x27;info&#x27;);
-  info.innerHTML = error.message;
-  info.style.display = &#x27;&#x27;;
+  var info &#x3D; document.getElementById(&#x27;info&#x27;);
+  info.innerHTML &#x3D; error.message;
+  info.style.display &#x3D; &#x27;&#x27;;
 });
 
-var accuracyFeature = new ol.Feature();
+var accuracyFeature &#x3D; new ol.Feature();
 geolocation.on(&#x27;change:accuracyGeometry&#x27;, function() {
   accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
 });
 
-var positionFeature = new ol.Feature();
+var positionFeature &#x3D; new ol.Feature();
 positionFeature.setStyle(new ol.style.Style({
   image: new ol.style.Circle({
     radius: 6,
@@ -261,12 +261,12 @@ positionFeature.setStyle(new ol.style.Style({
 }));
 
 geolocation.on(&#x27;change:position&#x27;, function() {
-  var coordinates = geolocation.getPosition();
+  var coordinates &#x3D; geolocation.getPosition();
   positionFeature.setGeometry(coordinates ?
       new ol.geom.Point(coordinates) : null);
 });
 
-var featuresOverlay = new ol.layer.Vector({
+var featuresOverlay &#x3D; new ol.layer.Vector({
   map: map,
   source: new ol.source.Vector({
     features: [accuracyFeature, positionFeature]

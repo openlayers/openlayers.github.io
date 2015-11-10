@@ -48,10 +48,10 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var parser = new ol.format.WMTSCapabilities();
+          <textarea class="hidden" name="js">var parser &#x3D; new ol.format.WMTSCapabilities();
 
 $.ajax(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
-  var result = parser.read(response);
+  var result &#x3D; parser.read(response);
   $(&#x27;#log&#x27;).html(window.JSON.stringify(result, null, 2));
 });
 </textarea>
@@ -60,9 +60,9 @@ $.ajax(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
   overflow: scroll;
 }
 </textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;pre class=&quot;log-container&quot;&gt;&lt;code id=&quot;log&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;pre class&#x3D;&quot;log-container&quot;&gt;&lt;code id&#x3D;&quot;log&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -90,18 +90,18 @@ $.ajax(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;pre class=&quot;log-container&quot;&gt;&lt;code id=&quot;log&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;pre class&#x3D;&quot;log-container&quot;&gt;&lt;code id&#x3D;&quot;log&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var parser = new ol.format.WMTSCapabilities();
+var parser &#x3D; new ol.format.WMTSCapabilities();
 
 $.ajax(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
-  var result = parser.read(response);
+  var result &#x3D; parser.read(response);
   $(&#x27;#log&#x27;).html(window.JSON.stringify(result, null, 2));
 });
 

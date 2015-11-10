@@ -53,7 +53,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var layers = [
+          <textarea class="hidden" name="js">var layers &#x3D; [
   new ol.layer.Tile({
     style: &#x27;Road&#x27;,
     source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
@@ -77,7 +77,7 @@
   })
 ];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -88,22 +88,22 @@ var map = new ol.Map({
 });
 
 $(&#x27;#layer-select&#x27;).change(function() {
-  var style = $(this).find(&#x27;:selected&#x27;).val();
+  var style &#x3D; $(this).find(&#x27;:selected&#x27;).val();
   var i, ii;
-  for (i = 0, ii = layers.length; i &lt; ii; ++i) {
-    layers[i].set(&#x27;visible&#x27;, (layers[i].get(&#x27;style&#x27;) == style));
+  for (i &#x3D; 0, ii &#x3D; layers.length; i &lt; ii; ++i) {
+    layers[i].set(&#x27;visible&#x27;, (layers[i].get(&#x27;style&#x27;) &#x3D;&#x3D; style));
   }
 });
 $(&#x27;#layer-select&#x27;).trigger(&#x27;change&#x27;);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;select id=&quot;layer-select&quot;&gt;
-      &lt;option value=&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
-      &lt;option value=&quot;AerialWithLabels&quot;&gt;Aerial with labels&lt;/option&gt;
-      &lt;option value=&quot;Road&quot; selected&gt;Road&lt;/option&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;select id&#x3D;&quot;layer-select&quot;&gt;
+      &lt;option value&#x3D;&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
+      &lt;option value&#x3D;&quot;AerialWithLabels&quot;&gt;Aerial with labels&lt;/option&gt;
+      &lt;option value&#x3D;&quot;Road&quot; selected&gt;Road&lt;/option&gt;
     &lt;/select&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -125,20 +125,20 @@ $(&#x27;#layer-select&#x27;).trigger(&#x27;change&#x27;);
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;select id=&quot;layer-select&quot;&gt;
-      &lt;option value=&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
-      &lt;option value=&quot;AerialWithLabels&quot;&gt;Aerial with labels&lt;/option&gt;
-      &lt;option value=&quot;Road&quot; selected&gt;Road&lt;/option&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;select id&#x3D;&quot;layer-select&quot;&gt;
+      &lt;option value&#x3D;&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
+      &lt;option value&#x3D;&quot;AerialWithLabels&quot;&gt;Aerial with labels&lt;/option&gt;
+      &lt;option value&#x3D;&quot;Road&quot; selected&gt;Road&lt;/option&gt;
     &lt;/select&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var layers = [
+var layers &#x3D; [
   new ol.layer.Tile({
     style: &#x27;Road&#x27;,
     source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
@@ -162,7 +162,7 @@ var layers = [
   })
 ];
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -173,10 +173,10 @@ var map = new ol.Map({
 });
 
 $(&#x27;#layer-select&#x27;).change(function() {
-  var style = $(this).find(&#x27;:selected&#x27;).val();
+  var style &#x3D; $(this).find(&#x27;:selected&#x27;).val();
   var i, ii;
-  for (i = 0, ii = layers.length; i &lt; ii; ++i) {
-    layers[i].set(&#x27;visible&#x27;, (layers[i].get(&#x27;style&#x27;) == style));
+  for (i &#x3D; 0, ii &#x3D; layers.length; i &lt; ii; ++i) {
+    layers[i].set(&#x27;visible&#x27;, (layers[i].get(&#x27;style&#x27;) &#x3D;&#x3D; style));
   }
 });
 $(&#x27;#layer-select&#x27;).trigger(&#x27;change&#x27;);

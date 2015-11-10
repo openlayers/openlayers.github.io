@@ -48,7 +48,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -61,17 +61,17 @@
   })
 });
 
-var resolutions = [];
-var matrixIds = [];
-var proj3857 = ol.proj.get(&#x27;EPSG:3857&#x27;);
-var maxResolution = ol.extent.getWidth(proj3857.getExtent()) / 256;
+var resolutions &#x3D; [];
+var matrixIds &#x3D; [];
+var proj3857 &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
+var maxResolution &#x3D; ol.extent.getWidth(proj3857.getExtent()) / 256;
 
-for (var i = 0; i &lt; 18; i++) {
-  matrixIds[i] = i.toString();
-  resolutions[i] = maxResolution / Math.pow(2, i);
+for (var i &#x3D; 0; i &lt; 18; i++) {
+  matrixIds[i] &#x3D; i.toString();
+  resolutions[i] &#x3D; maxResolution / Math.pow(2, i);
 }
 
-var tileGrid = new ol.tilegrid.WMTS({
+var tileGrid &#x3D; new ol.tilegrid.WMTS({
   origin: [-20037508, 20037508],
   resolutions: resolutions,
   matrixIds: matrixIds
@@ -79,9 +79,9 @@ var tileGrid = new ol.tilegrid.WMTS({
 
 // API key valid for &#x27;openlayers.org&#x27; and &#x27;localhost&#x27;.
 // Expiration date is 06/29/2018.
-var key = &#x27;2mqbg0z6cx7ube8gsou10nrt&#x27;;
+var key &#x3D; &#x27;2mqbg0z6cx7ube8gsou10nrt&#x27;;
 
-var ign_source = new ol.source.WMTS({
+var ign_source &#x3D; new ol.source.WMTS({
   url: &#x27;http://wxs.ign.fr/&#x27; + key + &#x27;/wmts&#x27;,
   layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.MAPS&#x27;,
   matrixSet: &#x27;PM&#x27;,
@@ -90,22 +90,22 @@ var ign_source = new ol.source.WMTS({
   tileGrid: tileGrid,
   style: &#x27;normal&#x27;,
   attributions: [new ol.Attribution({
-    html: &#x27;&lt;a href=&quot;http://www.geoportail.fr/&quot; target=&quot;_blank&quot;&gt;&#x27; +
-        &#x27;&lt;img src=&quot;http://api.ign.fr/geoportail/api/js/latest/&#x27; +
+    html: &#x27;&lt;a href&#x3D;&quot;http://www.geoportail.fr/&quot; target&#x3D;&quot;_blank&quot;&gt;&#x27; +
+        &#x27;&lt;img src&#x3D;&quot;http://api.ign.fr/geoportail/api/js/latest/&#x27; +
         &#x27;theme/geoportal/img/logo_gp.gif&quot;&gt;&lt;/a&gt;&#x27;
   })]
 });
 
-var ign = new ol.layer.Tile({
+var ign &#x3D; new ol.layer.Tile({
   source: ign_source
 });
 
 map.addLayer(ign);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
@@ -126,15 +126,15 @@ map.addLayer(ign);
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -147,17 +147,17 @@ var map = new ol.Map({
   })
 });
 
-var resolutions = [];
-var matrixIds = [];
-var proj3857 = ol.proj.get(&#x27;EPSG:3857&#x27;);
-var maxResolution = ol.extent.getWidth(proj3857.getExtent()) / 256;
+var resolutions &#x3D; [];
+var matrixIds &#x3D; [];
+var proj3857 &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
+var maxResolution &#x3D; ol.extent.getWidth(proj3857.getExtent()) / 256;
 
-for (var i = 0; i &lt; 18; i++) {
-  matrixIds[i] = i.toString();
-  resolutions[i] = maxResolution / Math.pow(2, i);
+for (var i &#x3D; 0; i &lt; 18; i++) {
+  matrixIds[i] &#x3D; i.toString();
+  resolutions[i] &#x3D; maxResolution / Math.pow(2, i);
 }
 
-var tileGrid = new ol.tilegrid.WMTS({
+var tileGrid &#x3D; new ol.tilegrid.WMTS({
   origin: [-20037508, 20037508],
   resolutions: resolutions,
   matrixIds: matrixIds
@@ -165,9 +165,9 @@ var tileGrid = new ol.tilegrid.WMTS({
 
 // API key valid for &#x27;openlayers.org&#x27; and &#x27;localhost&#x27;.
 // Expiration date is 06/29/2018.
-var key = &#x27;2mqbg0z6cx7ube8gsou10nrt&#x27;;
+var key &#x3D; &#x27;2mqbg0z6cx7ube8gsou10nrt&#x27;;
 
-var ign_source = new ol.source.WMTS({
+var ign_source &#x3D; new ol.source.WMTS({
   url: &#x27;http://wxs.ign.fr/&#x27; + key + &#x27;/wmts&#x27;,
   layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.MAPS&#x27;,
   matrixSet: &#x27;PM&#x27;,
@@ -176,13 +176,13 @@ var ign_source = new ol.source.WMTS({
   tileGrid: tileGrid,
   style: &#x27;normal&#x27;,
   attributions: [new ol.Attribution({
-    html: &#x27;&lt;a href=&quot;http://www.geoportail.fr/&quot; target=&quot;_blank&quot;&gt;&#x27; +
-        &#x27;&lt;img src=&quot;http://api.ign.fr/geoportail/api/js/latest/&#x27; +
+    html: &#x27;&lt;a href&#x3D;&quot;http://www.geoportail.fr/&quot; target&#x3D;&quot;_blank&quot;&gt;&#x27; +
+        &#x27;&lt;img src&#x3D;&quot;http://api.ign.fr/geoportail/api/js/latest/&#x27; +
         &#x27;theme/geoportal/img/logo_gp.gif&quot;&gt;&lt;/a&gt;&#x27;
   })]
 });
 
-var ign = new ol.layer.Tile({
+var ign &#x3D; new ol.layer.Tile({
   source: ign_source
 });
 

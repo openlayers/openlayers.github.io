@@ -52,7 +52,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var map = new ol.Map({
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -71,20 +71,20 @@
 });
 
 function display(id, value) {
-  document.getElementById(id).value = value.toFixed(2);
+  document.getElementById(id).value &#x3D; value.toFixed(2);
 }
 
 function wrapLon(value) {
-  var worlds = Math.floor((value + 180) / 360);
+  var worlds &#x3D; Math.floor((value + 180) / 360);
   return value - (worlds * 360);
 }
 
 function onMoveEnd(evt) {
-  var map = evt.map;
-  var extent = map.getView().calculateExtent(map.getSize());
-  var bottomLeft = ol.proj.transform(ol.extent.getBottomLeft(extent),
+  var map &#x3D; evt.map;
+  var extent &#x3D; map.getView().calculateExtent(map.getSize());
+  var bottomLeft &#x3D; ol.proj.transform(ol.extent.getBottomLeft(extent),
       &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
-  var topRight = ol.proj.transform(ol.extent.getTopRight(extent),
+  var topRight &#x3D; ol.proj.transform(ol.extent.getTopRight(extent),
       &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
   display(&#x27;left&#x27;, wrapLon(bottomLeft[0]));
   display(&#x27;bottom&#x27;, bottomLeft[1]);
@@ -95,15 +95,15 @@ function onMoveEnd(evt) {
 map.on(&#x27;moveend&#x27;, onMoveEnd);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;label&gt;top&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;top&quot;&gt;
-&lt;label&gt;right&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;right&quot;&gt;
-&lt;label&gt;bottom&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;bottom&quot;&gt;
-&lt;label&gt;left&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;left&quot;&gt;
+&lt;label&gt;top&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;top&quot;&gt;
+&lt;label&gt;right&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;right&quot;&gt;
+&lt;label&gt;bottom&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;bottom&quot;&gt;
+&lt;label&gt;left&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;left&quot;&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
           <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,http://openlayers.org/en/v3.10.1/css/ol.css,http://openlayers.org/en/v3.10.1/build/ol.js">
@@ -122,19 +122,19 @@ map.on(&#x27;moveend&#x27;, onMoveEnd);
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;label&gt;top&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;top&quot;&gt;
-&lt;label&gt;right&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;right&quot;&gt;
-&lt;label&gt;bottom&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;bottom&quot;&gt;
-&lt;label&gt;left&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;left&quot;&gt;
+&lt;label&gt;top&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;top&quot;&gt;
+&lt;label&gt;right&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;right&quot;&gt;
+&lt;label&gt;bottom&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;bottom&quot;&gt;
+&lt;label&gt;left&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;left&quot;&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -153,20 +153,20 @@ var map = new ol.Map({
 });
 
 function display(id, value) {
-  document.getElementById(id).value = value.toFixed(2);
+  document.getElementById(id).value &#x3D; value.toFixed(2);
 }
 
 function wrapLon(value) {
-  var worlds = Math.floor((value + 180) / 360);
+  var worlds &#x3D; Math.floor((value + 180) / 360);
   return value - (worlds * 360);
 }
 
 function onMoveEnd(evt) {
-  var map = evt.map;
-  var extent = map.getView().calculateExtent(map.getSize());
-  var bottomLeft = ol.proj.transform(ol.extent.getBottomLeft(extent),
+  var map &#x3D; evt.map;
+  var extent &#x3D; map.getView().calculateExtent(map.getSize());
+  var bottomLeft &#x3D; ol.proj.transform(ol.extent.getBottomLeft(extent),
       &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
-  var topRight = ol.proj.transform(ol.extent.getTopRight(extent),
+  var topRight &#x3D; ol.proj.transform(ol.extent.getTopRight(extent),
       &#x27;EPSG:3857&#x27;, &#x27;EPSG:4326&#x27;);
   display(&#x27;left&#x27;, wrapLon(bottomLeft[0]));
   display(&#x27;bottom&#x27;, bottomLeft[1]);

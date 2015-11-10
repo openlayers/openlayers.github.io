@@ -62,9 +62,9 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
-          <textarea class="hidden" name="js">var stroke = new ol.style.Stroke({color: &#x27;black&#x27;, width: 1});
+          <textarea class="hidden" name="js">var stroke &#x3D; new ol.style.Stroke({color: &#x27;black&#x27;, width: 1});
 
-var styles = {
+var styles &#x3D; {
   &#x27;square&#x27;: [new ol.style.Style({
     image: new ol.style.RegularShape({
       fill: new ol.style.Fill({color: &#x27;blue&#x27;}),
@@ -98,14 +98,14 @@ var styles = {
 
 
 function createLayer(coordinates, styles, zIndex) {
-  var feature = new ol.Feature(new ol.geom.Point(coordinates));
+  var feature &#x3D; new ol.Feature(new ol.geom.Point(coordinates));
   feature.setStyle(styles);
 
-  var source = new ol.source.Vector({
+  var source &#x3D; new ol.source.Vector({
     features: [feature]
   });
 
-  var vectorLayer = new ol.layer.Vector({
+  var vectorLayer &#x3D; new ol.layer.Vector({
     source: source
   });
   vectorLayer.setZIndex(zIndex);
@@ -113,15 +113,15 @@ function createLayer(coordinates, styles, zIndex) {
   return vectorLayer;
 }
 
-var layer0 = createLayer([40, 40], styles[&#x27;star&#x27;], 0);
-var layer1 = createLayer([0, 0], styles[&#x27;square&#x27;], 1);
-var layer2 = createLayer([0, 40], styles[&#x27;triangle&#x27;], 0);
+var layer0 &#x3D; createLayer([40, 40], styles[&#x27;star&#x27;], 0);
+var layer1 &#x3D; createLayer([0, 0], styles[&#x27;square&#x27;], 1);
+var layer2 &#x3D; createLayer([0, 40], styles[&#x27;triangle&#x27;], 0);
 
-var layers = [];
+var layers &#x3D; [];
 layers.push(layer1);
 layers.push(layer2);
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -134,7 +134,7 @@ layer0.setMap(map);
 
 
 function bindInputs(id, layer) {
-  var idxInput = $(&#x27;#idx&#x27; + id);
+  var idxInput &#x3D; $(&#x27;#idx&#x27; + id);
   idxInput.on(&#x27;input change&#x27;, function() {
     layer.setZIndex(parseInt(this.value, 10) || 0);
   });
@@ -144,9 +144,9 @@ bindInputs(1, layer1);
 bindInputs(2, layer2);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;div&gt;
@@ -154,13 +154,13 @@ bindInputs(2, layer2);
   The Z-index determines the rendering order; with {square: 1, triangle: 0, star: unmanaged} indices, the rendering order is triangle, square and star on top.
 &lt;/div&gt;
 &lt;div&gt;
-  &lt;label for=&quot;idx1&quot;&gt;
-    &lt;input type=&quot;number&quot; id=&quot;idx1&quot;&gt;&lt;/input&gt;
+  &lt;label for&#x3D;&quot;idx1&quot;&gt;
+    &lt;input type&#x3D;&quot;number&quot; id&#x3D;&quot;idx1&quot;&gt;&lt;/input&gt;
     Square layer Z-index
   &lt;/label&gt;&lt;/br&gt;
 
-  &lt;label for=&quot;idx2&quot;&gt;
-    &lt;input type=&quot;number&quot; id=&quot;idx2&quot;&gt;&lt;/input&gt;
+  &lt;label for&#x3D;&quot;idx2&quot;&gt;
+    &lt;input type&#x3D;&quot;number&quot; id&#x3D;&quot;idx2&quot;&gt;&lt;/input&gt;
     Triangle layer Z-index
   &lt;/label&gt;
 &lt;/div&gt;
@@ -182,9 +182,9 @@ bindInputs(2, layer2);
 &lt;body&gt;
 &lt;div class="container-fluid"&gt;
 
-&lt;div class=&quot;row-fluid&quot;&gt;
-  &lt;div class=&quot;span12&quot;&gt;
-    &lt;div id=&quot;map&quot; class=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;div&gt;
@@ -192,22 +192,22 @@ bindInputs(2, layer2);
   The Z-index determines the rendering order; with {square: 1, triangle: 0, star: unmanaged} indices, the rendering order is triangle, square and star on top.
 &lt;/div&gt;
 &lt;div&gt;
-  &lt;label for=&quot;idx1&quot;&gt;
-    &lt;input type=&quot;number&quot; id=&quot;idx1&quot;&gt;&lt;/input&gt;
+  &lt;label for&#x3D;&quot;idx1&quot;&gt;
+    &lt;input type&#x3D;&quot;number&quot; id&#x3D;&quot;idx1&quot;&gt;&lt;/input&gt;
     Square layer Z-index
   &lt;/label&gt;&lt;/br&gt;
 
-  &lt;label for=&quot;idx2&quot;&gt;
-    &lt;input type=&quot;number&quot; id=&quot;idx2&quot;&gt;&lt;/input&gt;
+  &lt;label for&#x3D;&quot;idx2&quot;&gt;
+    &lt;input type&#x3D;&quot;number&quot; id&#x3D;&quot;idx2&quot;&gt;&lt;/input&gt;
     Triangle layer Z-index
   &lt;/label&gt;
 &lt;/div&gt;
 
 &lt;/div&gt;
 &lt;script&gt;
-var stroke = new ol.style.Stroke({color: &#x27;black&#x27;, width: 1});
+var stroke &#x3D; new ol.style.Stroke({color: &#x27;black&#x27;, width: 1});
 
-var styles = {
+var styles &#x3D; {
   &#x27;square&#x27;: [new ol.style.Style({
     image: new ol.style.RegularShape({
       fill: new ol.style.Fill({color: &#x27;blue&#x27;}),
@@ -241,14 +241,14 @@ var styles = {
 
 
 function createLayer(coordinates, styles, zIndex) {
-  var feature = new ol.Feature(new ol.geom.Point(coordinates));
+  var feature &#x3D; new ol.Feature(new ol.geom.Point(coordinates));
   feature.setStyle(styles);
 
-  var source = new ol.source.Vector({
+  var source &#x3D; new ol.source.Vector({
     features: [feature]
   });
 
-  var vectorLayer = new ol.layer.Vector({
+  var vectorLayer &#x3D; new ol.layer.Vector({
     source: source
   });
   vectorLayer.setZIndex(zIndex);
@@ -256,15 +256,15 @@ function createLayer(coordinates, styles, zIndex) {
   return vectorLayer;
 }
 
-var layer0 = createLayer([40, 40], styles[&#x27;star&#x27;], 0);
-var layer1 = createLayer([0, 0], styles[&#x27;square&#x27;], 1);
-var layer2 = createLayer([0, 40], styles[&#x27;triangle&#x27;], 0);
+var layer0 &#x3D; createLayer([40, 40], styles[&#x27;star&#x27;], 0);
+var layer1 &#x3D; createLayer([0, 0], styles[&#x27;square&#x27;], 1);
+var layer2 &#x3D; createLayer([0, 40], styles[&#x27;triangle&#x27;], 0);
 
-var layers = [];
+var layers &#x3D; [];
 layers.push(layer1);
 layers.push(layer2);
 
-var map = new ol.Map({
+var map &#x3D; new ol.Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -277,7 +277,7 @@ layer0.setMap(map);
 
 
 function bindInputs(id, layer) {
-  var idxInput = $(&#x27;#idx&#x27; + id);
+  var idxInput &#x3D; $(&#x27;#idx&#x27; + id);
   idxInput.on(&#x27;input change&#x27;, function() {
     layer.setZIndex(parseInt(this.value, 10) || 0);
   });
