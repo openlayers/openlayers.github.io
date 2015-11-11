@@ -1,9 +1,0 @@
-{
-  "name": "openlayers.github.io",
-  "version": "0.0.0",
-  "dependencies": {
-    "jquery": "1.11.2",
-    "bootstrap": "3.1.1",
-    "font-awesome": "3.2.1"
-  }
-}
