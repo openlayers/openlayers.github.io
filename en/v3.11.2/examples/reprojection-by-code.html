@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
+    
+    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <title>Reprojection with EPSG.io database search</title>
+  </head>
+  <body>
+
+    <header class="navbar" role="navigation">
+      <div class="container" id="navbar-inner-container">
+        <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers 3 Examples</a>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+
+      <div class="row-fluid">
+  <div class="span12">
+    <div id="map" class="map"></div>
+  </div>
+  <form class="form-inline">
+    <label for="epsg-query">Search projection:</label>
+    <input type="text" id="epsg-query" placeholder="4326, 27700, US National Atlas, Swiss, France, ..." class="form-control" size="50" />
+    <button id="epsg-search" class="btn">Search</button>
+    <span id="epsg-result"></span>
+    <div>
+      <label for="render-edges"><input type="checkbox" id="render-edges" />Render reprojection edges</label>
+    </div>
+  </form>
+</div>
+
+
+      <div class="row-fluid">
+        <div class="span12">
+          <h4 id="title">Reprojection with EPSG.io database search</h4>
+          <p id="shortdesc">Demonstrates client-side raster reprojection of MapQuest OSM to arbitrary projection</p>
+          <div id="docs"><p>This example shows client-side raster reprojection capabilities from MapQuest OSM (EPSG:3857) to arbitrary projection by searching in <a href="http://epsg.io/">EPSG.io</a> database.</p>
+</div>
+          <div id="tags">reprojection, projection, proj4js, mapquest, epsg.io</div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.extent.html" title="API documentation for ol.extent">ol.extent</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.MapQuest.html" title="API documentation for ol.source.MapQuest">ol.source.MapQuest</a></li>,<li><a href="../apidoc/ol.source.TileImage.html" title="API documentation for ol.source.TileImage">ol.source.TileImage</a></li></ul></div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div id="source-controls">
+          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
+          <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
+        </div>
+        <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/jquery/1.11.0/">
+          <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
+    })
+  ],
+  target: &#x27;map&#x27;,
+  view: new ol.View({
+    projection: &#x27;EPSG:3857&#x27;,
+    center: [0, 0],
+    zoom: 1
+  })
+});
+
+
+var queryInput &#x3D; document.getElementById(&#x27;epsg-query&#x27;);
+var searchButton &#x3D; document.getElementById(&#x27;epsg-search&#x27;);
+var resultSpan &#x3D; document.getElementById(&#x27;epsg-result&#x27;);
+var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+
+function setProjection(code, name, proj4def, bbox) {
+  if (code &#x3D;&#x3D;&#x3D; null || name &#x3D;&#x3D;&#x3D; null || proj4def &#x3D;&#x3D;&#x3D; null || bbox &#x3D;&#x3D;&#x3D; null) {
+    resultSpan.innerHTML &#x3D; &#x27;Nothing usable found, using EPSG:3857...&#x27;;
+    map.setView(new ol.View({
+      projection: &#x27;EPSG:3857&#x27;,
+      center: [0, 0],
+      zoom: 1
+    }));
+    return;
+  }
+
+  resultSpan.innerHTML &#x3D; &#x27;(&#x27; + code + &#x27;) &#x27; + name;
+
+  var newProjCode &#x3D; &#x27;EPSG:&#x27; + code;
+  proj4.defs(newProjCode, proj4def);
+  var newProj &#x3D; ol.proj.get(newProjCode);
+  var fromLonLat &#x3D; ol.proj.getTransform(&#x27;EPSG:4326&#x27;, newProj);
+
+  // very approximate calculation of projection extent
+  var extent &#x3D; ol.extent.applyTransform(
+      [bbox[1], bbox[2], bbox[3], bbox[0]], fromLonLat);
+  newProj.setExtent(extent);
+  var newView &#x3D; new ol.View({
+    projection: newProj
+  });
+  map.setView(newView);
+
+  var size &#x3D; map.getSize();
+  if (size) {
+    newView.fit(extent, size);
+  }
+}
+
+
+function search(query) {
+  resultSpan.innerHTML &#x3D; &#x27;Searching...&#x27;;
+  $.ajax({
+    url: &#x27;http://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query,
+    dataType: &#x27;jsonp&#x27;,
+    success: function(response) {
+      if (response) {
+        var results &#x3D; response[&#x27;results&#x27;];
+        if (results &amp;&amp; results.length &gt; 0) {
+          for (var i &#x3D; 0, ii &#x3D; results.length; i &lt; ii; i++) {
+            var result &#x3D; results[i];
+            if (result) {
+              var code &#x3D; result[&#x27;code&#x27;], name &#x3D; result[&#x27;name&#x27;],
+                  proj4def &#x3D; result[&#x27;proj4&#x27;], bbox &#x3D; result[&#x27;bbox&#x27;];
+              if (code &amp;&amp; code.length &gt; 0 &amp;&amp; proj4def &amp;&amp; proj4def.length &gt; 0 &amp;&amp;
+                  bbox &amp;&amp; bbox.length &#x3D;&#x3D; 4) {
+                setProjection(code, name, proj4def, bbox);
+                return;
+              }
+            }
+          }
+        }
+      }
+      setProjection(null, null, null, null);
+    }
+  });
+}
+
+
+/**
+ * @param {Event} e Change event.
+ */
+searchButton.onclick &#x3D; function(e) {
+  search(queryInput.value);
+  e.preventDefault();
+};
+
+
+/**
+ * @param {Event} e Change event.
+ */
+renderEdgesCheckbox.onchange &#x3D; function(e) {
+  map.getLayers().forEach(function(layer) {
+    if (layer instanceof ol.layer.Tile) {
+      var source &#x3D; layer.getSource();
+      if (source instanceof ol.source.TileImage) {
+        source.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
+      }
+    }
+  });
+};
+</textarea>
+          <textarea class="hidden" name="css"></textarea>
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+    &lt;label for&#x3D;&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
+    &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;epsg-query&quot; placeholder&#x3D;&quot;4326, 27700, US National Atlas, Swiss, France, ...&quot; class&#x3D;&quot;form-control&quot; size&#x3D;&quot;50&quot; /&gt;
+    &lt;button id&#x3D;&quot;epsg-search&quot; class&#x3D;&quot;btn&quot;&gt;Search&lt;/button&gt;
+    &lt;span id&#x3D;&quot;epsg-result&quot;&gt;&lt;/span&gt;
+    &lt;div&gt;
+      &lt;label for&#x3D;&quot;render-edges&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+</textarea>
+          <input type="hidden" name="wrap" value="l">
+          <input type="hidden" name="resources" value="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js,http://openlayers.org/en/v3.11.2/css/ol.css,http://openlayers.org/en/v3.11.2/build/ol.js,http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js">
+        </form>
+        <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Reprojection with EPSG.io database search&lt;/title&gt;
+&lt;script src="https://code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"&gt;
+&lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="http://openlayers.org/en/v3.11.2/css/ol.css" type="text/css"&gt;
+&lt;script src="http://openlayers.org/en/v3.11.2/build/ol.js"&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="container-fluid"&gt;
+
+&lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+  &lt;div class&#x3D;&quot;span12&quot;&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+    &lt;label for&#x3D;&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
+    &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;epsg-query&quot; placeholder&#x3D;&quot;4326, 27700, US National Atlas, Swiss, France, ...&quot; class&#x3D;&quot;form-control&quot; size&#x3D;&quot;50&quot; /&gt;
+    &lt;button id&#x3D;&quot;epsg-search&quot; class&#x3D;&quot;btn&quot;&gt;Search&lt;/button&gt;
+    &lt;span id&#x3D;&quot;epsg-result&quot;&gt;&lt;/span&gt;
+    &lt;div&gt;
+      &lt;label for&#x3D;&quot;render-edges&quot;&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;Render reprojection edges&lt;/label&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;script&gt;
+var map &#x3D; new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.MapQuest({layer: &#x27;osm&#x27;})
+    })
+  ],
+  target: &#x27;map&#x27;,
+  view: new ol.View({
+    projection: &#x27;EPSG:3857&#x27;,
+    center: [0, 0],
+    zoom: 1
+  })
+});
+
+
+var queryInput &#x3D; document.getElementById(&#x27;epsg-query&#x27;);
+var searchButton &#x3D; document.getElementById(&#x27;epsg-search&#x27;);
+var resultSpan &#x3D; document.getElementById(&#x27;epsg-result&#x27;);
+var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+
+function setProjection(code, name, proj4def, bbox) {
+  if (code &#x3D;&#x3D;&#x3D; null || name &#x3D;&#x3D;&#x3D; null || proj4def &#x3D;&#x3D;&#x3D; null || bbox &#x3D;&#x3D;&#x3D; null) {
+    resultSpan.innerHTML &#x3D; &#x27;Nothing usable found, using EPSG:3857...&#x27;;
+    map.setView(new ol.View({
+      projection: &#x27;EPSG:3857&#x27;,
+      center: [0, 0],
+      zoom: 1
+    }));
+    return;
+  }
+
+  resultSpan.innerHTML &#x3D; &#x27;(&#x27; + code + &#x27;) &#x27; + name;
+
+  var newProjCode &#x3D; &#x27;EPSG:&#x27; + code;
+  proj4.defs(newProjCode, proj4def);
+  var newProj &#x3D; ol.proj.get(newProjCode);
+  var fromLonLat &#x3D; ol.proj.getTransform(&#x27;EPSG:4326&#x27;, newProj);
+
+  // very approximate calculation of projection extent
+  var extent &#x3D; ol.extent.applyTransform(
+      [bbox[1], bbox[2], bbox[3], bbox[0]], fromLonLat);
+  newProj.setExtent(extent);
+  var newView &#x3D; new ol.View({
+    projection: newProj
+  });
+  map.setView(newView);
+
+  var size &#x3D; map.getSize();
+  if (size) {
+    newView.fit(extent, size);
+  }
+}
+
+
+function search(query) {
+  resultSpan.innerHTML &#x3D; &#x27;Searching...&#x27;;
+  $.ajax({
+    url: &#x27;http://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query,
+    dataType: &#x27;jsonp&#x27;,
+    success: function(response) {
+      if (response) {
+        var results &#x3D; response[&#x27;results&#x27;];
+        if (results &amp;&amp; results.length &gt; 0) {
+          for (var i &#x3D; 0, ii &#x3D; results.length; i &lt; ii; i++) {
+            var result &#x3D; results[i];
+            if (result) {
+              var code &#x3D; result[&#x27;code&#x27;], name &#x3D; result[&#x27;name&#x27;],
+                  proj4def &#x3D; result[&#x27;proj4&#x27;], bbox &#x3D; result[&#x27;bbox&#x27;];
+              if (code &amp;&amp; code.length &gt; 0 &amp;&amp; proj4def &amp;&amp; proj4def.length &gt; 0 &amp;&amp;
+                  bbox &amp;&amp; bbox.length &#x3D;&#x3D; 4) {
+                setProjection(code, name, proj4def, bbox);
+                return;
+              }
+            }
+          }
+        }
+      }
+      setProjection(null, null, null, null);
+    }
+  });
+}
+
+
+/**
+ * @param {Event} e Change event.
+ */
+searchButton.onclick &#x3D; function(e) {
+  search(queryInput.value);
+  e.preventDefault();
+};
+
+
+/**
+ * @param {Event} e Change event.
+ */
+renderEdgesCheckbox.onchange &#x3D; function(e) {
+  map.getLayers().forEach(function(layer) {
+    if (layer instanceof ol.layer.Tile) {
+      var source &#x3D; layer.getSource();
+      if (source instanceof ol.source.TileImage) {
+        source.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
+      }
+    }
+  });
+};
+
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
+    <script src="loader.js?id=reprojection-by-code"></script>
+
+  </body>
+</html>
