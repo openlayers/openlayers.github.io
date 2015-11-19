@@ -107,9 +107,7 @@ var map = new ol.Map({
   target: 'map',
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.TileJSON({
-        url: 'http://api.tiles.mapbox.com/v3/tschaub.miapgppd.jsonp'
-      })
+      source: new ol.source.OSM()
     }),
     new ol.layer.Image({
       opacity: 0.3,

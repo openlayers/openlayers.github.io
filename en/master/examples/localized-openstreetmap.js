@@ -1,6 +1,3 @@
-// tiles.openseamap.org does not set CORS headers, so we have to disable
-// crossOrigin and we cannot use WebGL.
-
 var openCycleMapLayer = new ol.layer.Tile({
   source: new ol.source.OSM({
     attributions: [

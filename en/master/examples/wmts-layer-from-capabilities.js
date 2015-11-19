@@ -1,8 +1,10 @@
 var parser = new ol.format.WMTSCapabilities();
 var map;
 
-$.ajax('data/WMTSCapabilities.xml').then(function(response) {
-  var result = parser.read(response);
+fetch('data/WMTSCapabilities.xml').then(function(response) {
+  return response.text();
+}).then(function(text) {
+  var result = parser.read(text);
   var options = ol.source.WMTS.optionsFromCapabilities(result,
       {layer: 'layer-7328', matrixSet: 'EPSG:3857'});
 

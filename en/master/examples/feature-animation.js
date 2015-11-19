@@ -67,7 +67,7 @@ function flash(feature) {
       return;
     }
     // tell OL3 to continue postcompose animation
-    frameState.animate = true;
+    map.render();
   }
   listenerKey = map.on('postcompose', animate);
 }

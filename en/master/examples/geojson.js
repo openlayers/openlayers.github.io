@@ -5,25 +5,25 @@ var image = new ol.style.Circle({
 });
 
 var styles = {
-  'Point': [new ol.style.Style({
+  'Point': new ol.style.Style({
     image: image
-  })],
-  'LineString': [new ol.style.Style({
+  }),
+  'LineString': new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
       width: 1
     })
-  })],
-  'MultiLineString': [new ol.style.Style({
+  }),
+  'MultiLineString': new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
       width: 1
     })
-  })],
-  'MultiPoint': [new ol.style.Style({
+  }),
+  'MultiPoint': new ol.style.Style({
     image: image
-  })],
-  'MultiPolygon': [new ol.style.Style({
+  }),
+  'MultiPolygon': new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'yellow',
       width: 1
@@ -31,8 +31,8 @@ var styles = {
     fill: new ol.style.Fill({
       color: 'rgba(255, 255, 0, 0.1)'
     })
-  })],
-  'Polygon': [new ol.style.Style({
+  }),
+  'Polygon': new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'blue',
       lineDash: [4],
@@ -41,8 +41,8 @@ var styles = {
     fill: new ol.style.Fill({
       color: 'rgba(0, 0, 255, 0.1)'
     })
-  })],
-  'GeometryCollection': [new ol.style.Style({
+  }),
+  'GeometryCollection': new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'magenta',
       width: 2
@@ -57,8 +57,8 @@ var styles = {
         color: 'magenta'
       })
     })
-  })],
-  'Circle': [new ol.style.Style({
+  }),
+  'Circle': new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'red',
       width: 2
@@ -66,7 +66,7 @@ var styles = {
     fill: new ol.style.Fill({
       color: 'rgba(255,0,0,0.2)'
     })
-  })]
+  })
 };
 
 var styleFunction = function(feature, resolution) {

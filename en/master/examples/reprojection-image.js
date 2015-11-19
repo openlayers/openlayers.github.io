@@ -22,8 +22,8 @@ var map = new ol.Map({
   renderer: common.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View({
-    center: ol.proj.transform(ol.extent.getCenter(imageExtent),
-                              'EPSG:27700', 'EPSG:3857'),
+    center: ol.proj.transform(
+        ol.extent.getCenter(imageExtent), 'EPSG:27700', 'EPSG:3857'),
     zoom: 4
   })
 });

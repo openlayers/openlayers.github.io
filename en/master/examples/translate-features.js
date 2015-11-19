@@ -9,17 +9,6 @@ var vector = new ol.layer.Vector({
   })
 });
 
-var pointFeature = new ol.Feature(new ol.geom.Point([0, 0]));
-
-var lineFeature = new ol.Feature(
-    new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]]));
-
-var vector2 = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    features: [pointFeature, lineFeature]
-  })
-});
-
 var select = new ol.interaction.Select();
 
 var translate = new ol.interaction.Translate({
@@ -28,7 +17,7 @@ var translate = new ol.interaction.Translate({
 
 var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([select, translate]),
-  layers: [raster, vector, vector2],
+  layers: [raster, vector],
   target: 'map',
   view: new ol.View({
     center: [0, 0],

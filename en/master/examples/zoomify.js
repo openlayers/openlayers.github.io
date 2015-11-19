@@ -1,14 +1,5 @@
-// This server does not support CORS, and so is incompatible with WebGL.
-//var imgWidth = 8001;
-//var imgHeight = 6943;
-//var url = 'http://mapy.mzk.cz/AA22/0103/';
-//var crossOrigin = undefined;
-
 var imgWidth = 9911;
 var imgHeight = 6100;
-var url = 'http://vips.vtech.fr/cgi-bin/iipsrv.fcgi?zoomify=' +
-        '/mnt/MD1/AD00/plan_CHU-4HD-01/FOND.TIF/';
-var crossOrigin = 'anonymous';
 
 var imgCenter = [imgWidth / 2, - imgHeight / 2];
 
@@ -22,9 +13,10 @@ var proj = new ol.proj.Projection({
 });
 
 var source = new ol.source.Zoomify({
-  url: url,
+  url: 'http://vips.vtech.fr/cgi-bin/iipsrv.fcgi?zoomify=' +
+      '/mnt/MD1/AD00/plan_CHU-4HD-01/FOND.TIF/',
   size: [imgWidth, imgHeight],
-  crossOrigin: crossOrigin
+  crossOrigin: 'anonymous'
 });
 
 var map = new ol.Map({
@@ -33,12 +25,11 @@ var map = new ol.Map({
       source: source
     })
   ],
-  renderer: common.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View({
     projection: proj,
     center: imgCenter,
-    zoom: 0,
+    zoom: 2,
     // constrain the center: center cannot be set outside
     // this extent
     extent: [0, -imgHeight, imgWidth, 0]

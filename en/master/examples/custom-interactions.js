@@ -1,8 +1,7 @@
 /**
  * Define a namespace for the application.
  */
-window.app = {};
-var app = window.app;
+var app = {};
 
 
 
