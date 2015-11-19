@@ -122,6 +122,18 @@ module.exports = function(grunt) {
           src: 'src/builder/builder.js',
           dest: dist + '/en/' + branch + '/builder/builder.js'
         }]
+      },
+      doc: {
+        files: [{
+          expand: true,
+          cwd: repo,
+          src: [
+            'doc/**/*.*',
+            '!doc/**/*.hbs',
+            '!doc/**/*.md',
+          ],
+          dest: dist + '/en/' + branch
+        }]
       }
     },
     assemble: {
@@ -151,7 +163,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: repo,
-          src: 'doc/**/*.*',
+          src: ['doc/**/*.hbs', 'doc/**/*.md'],
           dest: dist + '/en/' + branch
         }]
       }
