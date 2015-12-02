@@ -31,9 +31,9 @@
         <!-- menu items that get hidden below 768px width -->
         <nav class='collapse navbar-collapse navbar-responsive-collapse'>
           <ul class='nav navbar-nav pull-right'>
-            <li><a href='/en/v3.11.1/doc'>Docs</a></li>
-            <li><a href='/en/v3.11.1/examples'>Examples</a></li>
-            <li><a href='/en/v3.11.1/apidoc'>API</a></li>
+            <li><a href='/en/v3.11.2/doc'>Docs</a></li>
+            <li><a href='/en/v3.11.2/examples'>Examples</a></li>
+            <li><a href='/en/v3.11.2/apidoc'>API</a></li>
             <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
           </ul>
         </nav>
@@ -9538,7 +9538,7 @@ destination projection." data-placement="right" data-trigger="hover">getTransfor
 <li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.layer.Heatmap#setMap"/>
   
-    <label class="is-function" data-toggle="popover" title="ol.layer.Heatmap#setMap" data-content="Sets the layer to be rendered on a map. " data-placement="right" data-trigger="hover">setMap</label>
+    <label class="is-function" data-toggle="popover" title="ol.layer.Heatmap#setMap" data-content="Sets the layer to be rendered on top of other layers on a map. " data-placement="right" data-trigger="hover">setMap</label>
   
 </li> 
 
@@ -9762,7 +9762,7 @@ resolutions.
 <li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.layer.Image#setMap"/>
   
-    <label class="is-function" data-toggle="popover" title="ol.layer.Image#setMap" data-content="Sets the layer to be rendered on a map. " data-placement="right" data-trigger="hover">setMap</label>
+    <label class="is-function" data-toggle="popover" title="ol.layer.Image#setMap" data-content="Sets the layer to be rendered on top of other layers on a map. " data-placement="right" data-trigger="hover">setMap</label>
   
 </li> 
 
@@ -9986,7 +9986,7 @@ instantiated in apps.
 <li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.layer.Layer#setMap"/>
   
-    <label class="is-function" data-toggle="popover" title="ol.layer.Layer#setMap" data-content="Sets the layer to be rendered on a map. " data-placement="right" data-trigger="hover">setMap</label>
+    <label class="is-function" data-toggle="popover" title="ol.layer.Layer#setMap" data-content="Sets the layer to be rendered on top of other layers on a map. " data-placement="right" data-trigger="hover">setMap</label>
   
 </li> 
 
@@ -10659,7 +10659,7 @@ organized by zoom levels for specific resolutions.
 <li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.layer.Tile#setMap"/>
   
-    <label class="is-function" data-toggle="popover" title="ol.layer.Tile#setMap" data-content="Sets the layer to be rendered on a map. " data-placement="right" data-trigger="hover">setMap</label>
+    <label class="is-function" data-toggle="popover" title="ol.layer.Tile#setMap" data-content="Sets the layer to be rendered on top of other layers on a map. " data-placement="right" data-trigger="hover">setMap</label>
   
 </li> 
 
@@ -10903,7 +10903,7 @@ of this type. " data-placement="right" data-trigger="hover">dispatchEvent</label
 <li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.layer.Vector#setMap"/>
   
-    <label class="is-function" data-toggle="popover" title="ol.layer.Vector#setMap" data-content="Sets the layer to be rendered on a map. " data-placement="right" data-trigger="hover">setMap</label>
+    <label class="is-function" data-toggle="popover" title="ol.layer.Vector#setMap" data-content="Sets the layer to be rendered on top of other layers on a map. " data-placement="right" data-trigger="hover">setMap</label>
   
 </li> 
 
@@ -11175,7 +11175,7 @@ of this type. " data-placement="right" data-trigger="hover">dispatchEvent</label
 <li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.layer.VectorTile#setMap"/>
   
-    <label class="is-function" data-toggle="popover" title="ol.layer.VectorTile#setMap" data-content="Sets the layer to be rendered on a map. " data-placement="right" data-trigger="hover">setMap</label>
+    <label class="is-function" data-toggle="popover" title="ol.layer.VectorTile#setMap" data-content="Sets the layer to be rendered on top of other layers on a map. " data-placement="right" data-trigger="hover">setMap</label>
   
 </li> 
 
@@ -11420,6 +11420,13 @@ doubleclick) and eventually zooms the map." data-placement="right" data-trigger=
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DoubleClickZoom#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.DoubleClickZoom#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DoubleClickZoom#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.DoubleClickZoom#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -11544,6 +11551,13 @@ of this type. " data-placement="right" data-trigger="hover">dispatchEvent</label
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragAndDrop#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.DragAndDrop#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragAndDrop#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.DragAndDrop#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -11685,6 +11699,13 @@ it to when the shift or other key is held down. " data-placement="right" data-tr
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragBox#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.DragBox#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragBox#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.DragBox#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -11809,6 +11830,13 @@ of this type. " data-placement="right" data-trigger="hover">dispatchEvent</label
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragPan#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.DragPan#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragPan#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.DragPan#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -11942,6 +11970,13 @@ on the map. " data-placement="right" data-trigger="hover">
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragRotateAndZoom#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.DragRotateAndZoom#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragRotateAndZoom#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.DragRotateAndZoom#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -12069,6 +12104,13 @@ it to when the alt and shift keys are held down.
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragRotate#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.DragRotate#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragRotate#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.DragRotate#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -12207,6 +12249,13 @@ it to when a key, shift by default, is held down.
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragZoom#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.DragZoom#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.DragZoom#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.DragZoom#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -12379,6 +12428,13 @@ polygon with a user specified number of sides and start angle instead of an
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Draw#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.Draw#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Draw#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.Draw#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -12505,6 +12561,13 @@ instantiated in apps.
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Interaction#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.Interaction#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Interaction#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.Interaction#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -12655,6 +12718,13 @@ pressed)." data-placement="right" data-trigger="hover">handleEvent</label>
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.KeyboardPan#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.KeyboardPan#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.KeyboardPan#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.KeyboardPan#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -12794,6 +12864,13 @@ key pressed was &#x27;+&#x27; or &#x27;-&#x27;)." data-placement="right" data-tr
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.KeyboardZoom#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.KeyboardZoom#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.KeyboardZoom#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.KeyboardZoom#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -12927,6 +13004,13 @@ geometry." data-placement="right" data-trigger="hover">handleEvent</label>
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Modify#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.Modify#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Modify#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.Modify#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -13075,6 +13159,13 @@ mousewheel-event) and eventually zooms the map." data-placement="right" data-tri
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.MouseWheelZoom#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.MouseWheelZoom#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.MouseWheelZoom#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.MouseWheelZoom#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -13204,6 +13295,13 @@ on a touch screen." data-placement="right" data-trigger="hover">
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.PinchRotate#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.PinchRotate#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.PinchRotate#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.PinchRotate#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -13329,6 +13427,13 @@ on a touch screen." data-placement="right" data-trigger="hover">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.PinchZoom#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.PinchZoom#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.PinchZoom#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.PinchZoom#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -13467,6 +13572,13 @@ other functions, if event sequences like e.g. " data-placement="right" data-trig
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Pointer#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.Pointer#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Pointer#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.Pointer#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
@@ -13631,6 +13743,13 @@ map, if any. " data-placement="right" data-trigger="hover">setMap</label>
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Select#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.Select#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Select#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.Select#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -13773,6 +13892,13 @@ of this type. " data-placement="right" data-trigger="hover">dispatchEvent</label
 </li> 
 
 <li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Snap#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.Snap#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
+  
+</li> 
+
+<li class="mainClass">
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Snap#setActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.Snap#setActive" data-content="Activate or deactivate the interaction." data-placement="right" data-trigger="hover">setActive</label>
@@ -13897,6 +14023,13 @@ of this type. " data-placement="right" data-trigger="hover">dispatchEvent</label
   <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Translate#getActive"/>
   
     <label class="is-function" data-toggle="popover" title="ol.interaction.Translate#getActive" data-content="Return whether the interaction is currently active." data-placement="right" data-trigger="hover">getActive</label>
+  
+</li> 
+
+<li class="mainClass">
+  <input class="toggle-symbol " align="" type="checkbox" value="ol.interaction.Translate#getMap"/>
+  
+    <label class="is-function" data-toggle="popover" title="ol.interaction.Translate#getMap" data-content="Get the map associated with this interaction." data-placement="right" data-trigger="hover">getMap</label>
   
 </li> 
 
