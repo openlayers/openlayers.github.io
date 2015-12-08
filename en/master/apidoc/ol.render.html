@@ -9641,6 +9641,7 @@
             <span class="title">
                 <a href="ol.render.html">ol.render</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
@@ -9649,6 +9650,12 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.toContext" class="unstable">
+                    <a href="ol.render.html#.toContext">toContext</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -14572,6 +14579,258 @@
 
     
     
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id=".toContext">
+            ol.render.toContext<span class="signature">(context, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.render.canvas.Immediate.html">ol.render.canvas.Immediate</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/render.js, line 31
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Binds a Canvas Immediate API to a canvas context, to allow drawing geometries
+to the context's canvas.</p>
+<p>The units for geometry coordinates are css pixels relative to the top left
+corner of the canvas element.</p>
+<pre class="prettyprint source lang-js"><code>var canvas = document.createElement('canvas');
+var render = ol.render.toContext(canvas.getContext('2d'),
+    { size: [100, 100] });
+render.setFillStrokeStyle(new ol.style.Fill({ color: blue }));
+render.drawPolygonGeometry(
+    new ol.geom.Polygon([[[0, 0], [100, 100], [100, 0], [0, 0]]]));</code></pre><p>Note that <a href="ol.render.canvas.Immediate.html#drawAsync"><code>ol.render.canvas.Immediate#drawAsync</code></a> and
+<a href="ol.render.canvas.Immediate.html#drawFeature"><code>ol.render.canvas.Immediate#drawFeature</code></a> cannot be used.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>context</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">CanvasRenderingContext2D</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Canvas context.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            
+            
+            <td colspan=2 class="description last">
+                
+                <p>Options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Size">ol.Size</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Desired size of the canvas in css pixels. When provided, both canvas and css
+size will be set according to the <code>pixelRatio</code>. If not provided, the current
+canvas and css sizes will not be altered.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>pixelRatio</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Size">ol.Size</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Pixel ratio (canvas pixel to css pixel ratio) for the canvas. Default
+is the detected device pixel ratio.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Canvas Immediate.
+<br />
+
+    
+
+    
+</dd>
+
+        </dl>
     
     
     

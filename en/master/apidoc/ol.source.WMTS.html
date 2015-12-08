@@ -9641,6 +9641,7 @@
             <span class="title">
                 <a href="ol.render.html">ol.render</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
@@ -9649,6 +9650,12 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.toContext" class="unstable">
+                    <a href="ol.render.html#.toContext">toContext</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -15480,19 +15487,23 @@ each one separately in the <code>urls</code> option.</p></td>
                 
                 <p>Configuration properties for the layer.  Defaults for
                  the layer will apply if not provided.</p>
-<p>Required config properties:
-layer - {String} The layer identifier.</p>
-<p>Optional config properties:
-matrixSet - {String} The matrix set identifier, required if there is
-     more than one matrix set in the layer capabilities.
-projection - {String} The desired CRS when no matrixSet is specified.
-    eg: &quot;EPSG:3857&quot;. If the desired projection is not available,
-    an error is thrown.
-requestEncoding - {String} url encoding format for the layer. Default is the
-    first tile url format found in the GetCapabilities response.
-style - {String} The name of the style
-format - {String} Image format for the layer. Default is the first
-    format returned in the GetCapabilities response.</p></td>
+<p>Required config properties:</p>
+<ul>
+<li>layer - {string} The layer identifier.</li>
+</ul>
+<p>Optional config properties:</p>
+<ul>
+<li>matrixSet - {string} The matrix set identifier, required if there is
+   more than one matrix set in the layer capabilities.</li>
+<li>projection - {string} The desired CRS when no matrixSet is specified.
+   eg: &quot;EPSG:3857&quot;. If the desired projection is not available,
+   an error is thrown.</li>
+<li>requestEncoding - {string} url encoding format for the layer. Default is
+   the first tile url format found in the GetCapabilities response.</li>
+<li>style - {string} The name of the style</li>
+<li>format - {string} Image format for the layer. Default is the first
+   format returned in the GetCapabilities response.</li>
+</ul></td>
         </tr>
 	
 	

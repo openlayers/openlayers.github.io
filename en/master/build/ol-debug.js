@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.11.2-133-g612aa34
+// Version: v3.11.2-155-g3413f6d
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -19411,12 +19411,14 @@ ol.proj.get = function(projectionLike) {
 ol.proj.equivalent = function(projection1, projection2) {
   if (projection1 === projection2) {
     return true;
-  } else if (projection1.getCode() === projection2.getCode()) {
-    return projection1.getUnits() === projection2.getUnits();
+  }
+  var equalUnits = projection1.getUnits() === projection2.getUnits();
+  if (projection1.getCode() === projection2.getCode()) {
+    return equalUnits;
   } else {
     var transformFn = ol.proj.getTransformFromProjections(
         projection1, projection2);
-    return transformFn === ol.proj.cloneTransform;
+    return transformFn === ol.proj.cloneTransform && equalUnits;
   }
 };
 
@@ -51091,7 +51093,8 @@ ol.style.ImageOptions;
 /**
  * @classdesc
  * A base class used for creating subclasses and not instantiated in
- * apps. Base class for {@link ol.style.Icon} and {@link ol.style.Circle}.
+ * apps. Base class for {@link ol.style.Icon}, {@link ol.style.Circle} and
+ * {@link ol.style.RegularShape}.
  *
  * @constructor
  * @param {ol.style.ImageOptions} options Options.
@@ -51408,7 +51411,7 @@ ol.style.Icon = function(opt_options) {
       options.crossOrigin !== undefined ? options.crossOrigin : null;
 
   /**
-   * @type {Image}
+   * @type {Image|HTMLCanvasElement}
    */
   var image = options.img !== undefined ? options.img : null;
 
@@ -51432,7 +51435,7 @@ ol.style.Icon = function(opt_options) {
       'imgSize must be set when image is provided');
 
   if ((src === undefined || src.length === 0) && image) {
-    src = image.src;
+    src = image.src || goog.getUid(image).toString();
   }
   goog.asserts.assert(src !== undefined && src.length > 0,
       'must provide a defined and non-empty src or image');
@@ -51562,7 +51565,7 @@ ol.style.Icon.prototype.getAnchor = function() {
 /**
  * Get the image icon.
  * @param {number} pixelRatio Pixel ratio.
- * @return {Image} Image element.
+ * @return {Image|HTMLCanvasElement} Image or Canvas element.
  * @api
  */
 ol.style.Icon.prototype.getImage = function(pixelRatio) {
@@ -51686,7 +51689,7 @@ ol.style.Icon.prototype.unlistenImageChange = function(listener, thisArg) {
 
 /**
  * @constructor
- * @param {Image} image Image.
+ * @param {Image|HTMLCanvasElement} image Image.
  * @param {string|undefined} src Src.
  * @param {ol.Size} size Size.
  * @param {?string} crossOrigin Cross origin.
@@ -51706,7 +51709,7 @@ ol.style.IconImage_ = function(image, src, size, crossOrigin, imageState) {
 
   /**
    * @private
-   * @type {Image}
+   * @type {Image|HTMLCanvasElement}
    */
   this.image_ = !image ? new Image() : image;
 
@@ -51752,7 +51755,7 @@ goog.inherits(ol.style.IconImage_, goog.events.EventTarget);
 
 
 /**
- * @param {Image} image Image.
+ * @param {Image|HTMLCanvasElement} image Image.
  * @param {string} src Src.
  * @param {ol.Size} size Size.
  * @param {?string} crossOrigin Cross origin.
@@ -51817,7 +51820,7 @@ ol.style.IconImage_.prototype.handleImageLoad_ = function() {
 
 /**
  * @param {number} pixelRatio Pixel ratio.
- * @return {Image} Image element.
+ * @return {Image|HTMLCanvasElement} Image or Canvas element.
  */
 ol.style.IconImage_.prototype.getImage = function(pixelRatio) {
   return this.image_;
@@ -58475,11 +58478,10 @@ ol.render.canvas.Immediate.prototype.drawAsync = function(zIndex, callback) {
  * the current fill and stroke styles.
  *
  * @param {ol.geom.Circle} circleGeometry Circle geometry.
- * @param {ol.Feature} feature Feature,
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawCircleGeometry =
-    function(circleGeometry, feature) {
+    function(circleGeometry) {
   if (!ol.extent.intersects(this.extent_, circleGeometry.getExtent())) {
     return;
   }
@@ -58574,11 +58576,10 @@ ol.render.canvas.Immediate.prototype.drawGeometryCollectionGeometry =
  * the current style.
  *
  * @param {ol.geom.Point|ol.render.Feature} pointGeometry Point geometry.
- * @param {ol.Feature|ol.render.Feature} feature Feature.
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawPointGeometry =
-    function(pointGeometry, feature) {
+    function(pointGeometry) {
   var flatCoordinates = pointGeometry.getFlatCoordinates();
   var stride = pointGeometry.getStride();
   if (this.image_) {
@@ -58596,11 +58597,10 @@ ol.render.canvas.Immediate.prototype.drawPointGeometry =
  *
  * @param {ol.geom.MultiPoint|ol.render.Feature} multiPointGeometry MultiPoint
  *     geometry.
- * @param {ol.Feature|ol.render.Feature} feature Feature.
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawMultiPointGeometry =
-    function(multiPointGeometry, feature) {
+    function(multiPointGeometry) {
   var flatCoordinates = multiPointGeometry.getFlatCoordinates();
   var stride = multiPointGeometry.getStride();
   if (this.image_) {
@@ -58618,11 +58618,10 @@ ol.render.canvas.Immediate.prototype.drawMultiPointGeometry =
  *
  * @param {ol.geom.LineString|ol.render.Feature} lineStringGeometry Line
  *     string geometry.
- * @param {ol.Feature|ol.render.Feature} feature Feature.
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawLineStringGeometry =
-    function(lineStringGeometry, feature) {
+    function(lineStringGeometry) {
   if (!ol.extent.intersects(this.extent_, lineStringGeometry.getExtent())) {
     return;
   }
@@ -58648,11 +58647,10 @@ ol.render.canvas.Immediate.prototype.drawLineStringGeometry =
  *
  * @param {ol.geom.MultiLineString|ol.render.Feature} multiLineStringGeometry
  *     MultiLineString geometry.
- * @param {ol.Feature|ol.render.Feature} feature Feature.
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawMultiLineStringGeometry =
-    function(multiLineStringGeometry, feature) {
+    function(multiLineStringGeometry) {
   var geometryExtent = multiLineStringGeometry.getExtent();
   if (!ol.extent.intersects(this.extent_, geometryExtent)) {
     return;
@@ -58685,11 +58683,10 @@ ol.render.canvas.Immediate.prototype.drawMultiLineStringGeometry =
  *
  * @param {ol.geom.Polygon|ol.render.Feature} polygonGeometry Polygon
  *     geometry.
- * @param {ol.Feature|ol.render.Feature} feature Feature.
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawPolygonGeometry =
-    function(polygonGeometry, feature) {
+    function(polygonGeometry) {
   if (!ol.extent.intersects(this.extent_, polygonGeometry.getExtent())) {
     return;
   }
@@ -58722,11 +58719,10 @@ ol.render.canvas.Immediate.prototype.drawPolygonGeometry =
  * Render MultiPolygon geometry into the canvas.  Rendering is immediate and
  * uses the current style.
  * @param {ol.geom.MultiPolygon} multiPolygonGeometry MultiPolygon geometry.
- * @param {ol.Feature} feature Feature.
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawMultiPolygonGeometry =
-    function(multiPolygonGeometry, feature) {
+    function(multiPolygonGeometry) {
   if (!ol.extent.intersects(this.extent_, multiPolygonGeometry.getExtent())) {
     return;
   }
@@ -70396,6 +70392,9 @@ goog.require('goog.net.XhrIo');
 goog.require('goog.net.XhrIo.ResponseType');
 goog.require('ol.TileState');
 goog.require('ol.format.FormatType');
+goog.require('ol.proj');
+goog.require('ol.proj.Projection');
+goog.require('ol.proj.Units');
 goog.require('ol.xml');
 
 
@@ -70487,12 +70486,21 @@ ol.featureloader.loadFeaturesXhr = function(url, format, success, failure) {
                   goog.asserts.fail('unexpected format type');
                 }
                 if (source) {
-                  var features = format.readFeatures(source,
-                      {featureProjection: projection});
                   if (ol.ENABLE_VECTOR_TILE && success.length == 2) {
-                    success.call(this, features, format.readProjection(source));
+                    var dataProjection = format.readProjection(source);
+                    var units = dataProjection.getUnits();
+                    if (units === ol.proj.Units.TILE_PIXELS) {
+                      projection = new ol.proj.Projection({
+                        code: projection.getCode(),
+                        units: units
+                      });
+                      this.setProjection(projection);
+                    }
+                    success.call(this, format.readFeatures(source,
+                        {featureProjection: projection}), dataProjection);
                   } else {
-                    success.call(this, features);
+                    success.call(this, format.readFeatures(source,
+                        {featureProjection: projection}));
                   }
                 } else {
                   goog.asserts.fail('undefined or null source');
@@ -70529,7 +70537,9 @@ ol.featureloader.tile = function(url, format) {
        * @this {ol.VectorTile}
        */
       function(features, projection) {
-        this.setProjection(projection);
+        if (ol.proj.equivalent(projection, this.getProjection())) {
+          this.setProjection(projection);
+        }
         this.setFeatures(features);
       },
       /**
@@ -73767,6 +73777,7 @@ goog.require('ol.Tile');
 goog.require('ol.TileCoord');
 goog.require('ol.TileLoadFunctionType');
 goog.require('ol.TileState');
+goog.require('ol.proj.Projection');
 
 
 /**
@@ -73788,8 +73799,10 @@ ol.TileReplayState;
  * @param {string} src Data source url.
  * @param {ol.format.Feature} format Feature format.
  * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
+ * @param {ol.proj.Projection} projection Feature projection.
  */
-ol.VectorTile = function(tileCoord, state, src, format, tileLoadFunction) {
+ol.VectorTile =
+    function(tileCoord, state, src, format, tileLoadFunction, projection) {
 
   goog.base(this, tileCoord, state);
 
@@ -73815,7 +73828,7 @@ ol.VectorTile = function(tileCoord, state, src, format, tileLoadFunction) {
    * @private
    * @type {ol.proj.Projection}
    */
-  this.projection_ = null;
+  this.projection_ = projection;
 
   /**
    * @private
@@ -73887,7 +73900,7 @@ ol.VectorTile.prototype.getKey = function() {
 
 
 /**
- * @return {ol.proj.Projection} Projection.
+ * @return {ol.proj.Projection} Feature projection.
  */
 ol.VectorTile.prototype.getProjection = function() {
   return this.projection_;
@@ -73901,7 +73914,7 @@ ol.VectorTile.prototype.load = function() {
   if (this.state == ol.TileState.IDLE) {
     this.setState(ol.TileState.LOADING);
     this.tileLoadFunction_(this, this.url_);
-    this.loader_(null, NaN, null);
+    this.loader_(null, NaN, this.projection_);
   }
 };
 
@@ -73916,7 +73929,7 @@ ol.VectorTile.prototype.setFeatures = function(features) {
 
 
 /**
- * @param {ol.proj.Projection} projection Projection.
+ * @param {ol.proj.Projection} projection Feature projection.
  */
 ol.VectorTile.prototype.setProjection = function(projection) {
   this.projection_ = projection;
@@ -74359,7 +74372,7 @@ ol.source.VectorTile = function(options) {
   /**
    * @protected
    * @type {function(new: ol.VectorTile, ol.TileCoord, ol.TileState, string,
-   *        ol.format.Feature, ol.TileLoadFunctionType)}
+   *        ol.format.Feature, ol.TileLoadFunctionType, ol.proj.Projection)}
    */
   this.tileClass = options.tileClass ? options.tileClass : ol.VectorTile;
 
@@ -74386,8 +74399,7 @@ ol.source.VectorTile.prototype.getTile =
         tileCoord,
         tileUrl !== undefined ? ol.TileState.IDLE : ol.TileState.EMPTY,
         tileUrl !== undefined ? tileUrl : '',
-        this.format_,
-        this.tileLoadFunction);
+        this.format_, this.tileLoadFunction, projection);
     goog.events.listen(tile, goog.events.EventType.CHANGE,
         this.handleTileChange, false, this);
 
@@ -95476,7 +95488,6 @@ goog.provide('ol.format.IGC');
 goog.provide('ol.format.IGCZ');
 
 goog.require('goog.asserts');
-goog.require('goog.string');
 goog.require('goog.string.newlines');
 goog.require('ol.Feature');
 goog.require('ol.format.Feature');
@@ -114317,6 +114328,54 @@ goog.provide('ol.raster.Pixel');
  */
 ol.raster.Pixel;
 
+goog.provide('ol.render');
+
+goog.require('goog.vec.Mat4');
+goog.require('ol.render.canvas.Immediate');
+goog.require('ol.vec.Mat4');
+
+
+/**
+ * Binds a Canvas Immediate API to a canvas context, to allow drawing geometries
+ * to the context's canvas.
+ *
+ * The units for geometry coordinates are css pixels relative to the top left
+ * corner of the canvas element.
+ * ```js
+ * var canvas = document.createElement('canvas');
+ * var render = ol.render.toContext(canvas.getContext('2d'),
+ *     { size: [100, 100] });
+ * render.setFillStrokeStyle(new ol.style.Fill({ color: blue }));
+ * render.drawPolygonGeometry(
+ *     new ol.geom.Polygon([[[0, 0], [100, 100], [100, 0], [0, 0]]]));
+ * ```
+ *
+ * Note that {@link ol.render.canvas.Immediate#drawAsync} and
+ * {@link ol.render.canvas.Immediate#drawFeature} cannot be used.
+ *
+ * @param {CanvasRenderingContext2D} context Canvas context.
+ * @param {olx.render.ToContextOptions=} opt_options Options.
+ * @return {ol.render.canvas.Immediate} Canvas Immediate.
+ * @api
+ */
+ol.render.toContext = function(context, opt_options) {
+  var canvas = context.canvas;
+  var options = opt_options ? opt_options : {};
+  var pixelRatio = options.pixelRatio || ol.has.DEVICE_PIXEL_RATIO;
+  var size = options.size;
+  if (size) {
+    canvas.width = size[0] * pixelRatio;
+    canvas.height = size[1] * pixelRatio;
+    canvas.style.width = size[0] + 'px';
+    canvas.style.height = size[1] + 'px';
+  }
+  var extent = [0, 0, canvas.width, canvas.height];
+  var transform = ol.vec.Mat4.makeTransform2D(goog.vec.Mat4.createNumber(),
+      0, 0, pixelRatio, pixelRatio, 0, 0, 0);
+  return new ol.render.canvas.Immediate(context, pixelRatio, extent, transform,
+      0);
+};
+
 goog.provide('ol.reproj.Tile');
 goog.provide('ol.reproj.TileFunctionType');
 
@@ -119634,19 +119693,19 @@ ol.source.WMTS.prototype.updateDimensions = function(dimensions) {
  *                  the layer will apply if not provided.
  *
  * Required config properties:
- * layer - {String} The layer identifier.
+ *  - layer - {string} The layer identifier.
  *
  * Optional config properties:
- * matrixSet - {String} The matrix set identifier, required if there is
- *      more than one matrix set in the layer capabilities.
- * projection - {String} The desired CRS when no matrixSet is specified.
- *     eg: "EPSG:3857". If the desired projection is not available,
- *     an error is thrown.
- * requestEncoding - {String} url encoding format for the layer. Default is the
- *     first tile url format found in the GetCapabilities response.
- * style - {String} The name of the style
- * format - {String} Image format for the layer. Default is the first
- *     format returned in the GetCapabilities response.
+ *  - matrixSet - {string} The matrix set identifier, required if there is
+ *       more than one matrix set in the layer capabilities.
+ *  - projection - {string} The desired CRS when no matrixSet is specified.
+ *       eg: "EPSG:3857". If the desired projection is not available,
+ *       an error is thrown.
+ *  - requestEncoding - {string} url encoding format for the layer. Default is
+ *       the first tile url format found in the GetCapabilities response.
+ *  - style - {string} The name of the style
+ *  - format - {string} Image format for the layer. Default is the first
+ *       format returned in the GetCapabilities response.
  * @return {olx.source.WMTSOptions} WMTS source options object.
  * @api
  */
@@ -121178,6 +121237,7 @@ goog.require('ol.proj.Projection');
 goog.require('ol.proj.ProjectionLike');
 goog.require('ol.proj.Units');
 goog.require('ol.proj.common');
+goog.require('ol.render');
 goog.require('ol.render.Event');
 goog.require('ol.render.EventType');
 goog.require('ol.render.Feature');
@@ -122123,6 +122183,11 @@ goog.exportProperty(
     ol.Overlay.prototype,
     'setPositioning',
     ol.Overlay.prototype.setPositioning);
+
+goog.exportSymbol(
+    'ol.render.toContext',
+    ol.render.toContext,
+    OPENLAYERS);
 
 goog.exportSymbol(
     'ol.size.toSize',
