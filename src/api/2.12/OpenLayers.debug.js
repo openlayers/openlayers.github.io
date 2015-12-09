@@ -9,7 +9,7 @@
   Includes compressed code under the following licenses:
 
   (For uncompressed versions of the code used, please see the
-  OpenLayers Github repository: <https://github.com/openlayers/openlayers>)
+  OpenLayers Github repository: <https://github.com/openlayers/ol2>)
 
 */
 
@@ -56120,7 +56120,7 @@ OpenLayers.Renderer.SVG = OpenLayers.Class(OpenLayers.Renderer.Elements, {
                 if (style.graphicTitle) {
                     node.setAttributeNS(null, "title", style.graphicTitle);
                     //Standards-conformant SVG
-                    // Prevent duplicate nodes. See issue https://github.com/openlayers/openlayers/issues/92 
+                    // Prevent duplicate nodes. See issue https://github.com/openlayers/ol2/issues/92 
                     var titleNode = node.getElementsByTagName("title");
                     if (titleNode.length > 0) {
                         titleNode[0].firstChild.textContent = style.graphicTitle;
@@ -63093,7 +63093,7 @@ OpenLayers.Marker.Box = OpenLayers.Class(OpenLayers.Marker, {
     * sz - {<OpenLayers.Size>} 
     * 
     * Returns: 
-    * {DOMElement} A new DOM Image with this marker´s icon set at the 
+    * {DOMElement} A new DOM Image with this markerï¿½s icon set at the 
     *         location passed-in
     */
     draw: function(px, sz) {
@@ -71867,7 +71867,7 @@ OpenLayers.Control.PinchZoom = OpenLayers.Class(OpenLayers.Control, {
             // Force a reflow before calling setCenter. This is to work
             // around an issue occuring in iOS.
             //
-            // See https://github.com/openlayers/openlayers/pull/351.
+            // See https://github.com/openlayers/ol2/pull/351.
             //
             // Without a reflow setting the layer container div's top left
             // style properties to "0px" - as done in Map.moveTo when zoom
