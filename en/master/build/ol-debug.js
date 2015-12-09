@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.11.2-155-g3413f6d
+// Version: v3.11.2-161-g4f85cbe
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -113038,12 +113038,12 @@ ol.interaction.Select.prototype.setMap = function(map) {
   var currentMap = this.getMap();
   var selectedFeatures =
       this.featureOverlay_.getSource().getFeaturesCollection();
-  if (!goog.isNull(currentMap)) {
+  if (currentMap) {
     selectedFeatures.forEach(currentMap.unskipFeature, currentMap);
   }
   goog.base(this, 'setMap', map);
   this.featureOverlay_.setMap(map);
-  if (!goog.isNull(map)) {
+  if (map) {
     selectedFeatures.forEach(map.skipFeature, map);
   }
 };
@@ -113074,7 +113074,7 @@ ol.interaction.Select.prototype.addFeature_ = function(evt) {
   var map = this.getMap();
   goog.asserts.assertInstanceof(feature, ol.Feature,
       'feature should be an ol.Feature');
-  if (!goog.isNull(map)) {
+  if (map) {
     map.skipFeature(feature);
   }
 };
@@ -113089,7 +113089,7 @@ ol.interaction.Select.prototype.removeFeature_ = function(evt) {
   var map = this.getMap();
   goog.asserts.assertInstanceof(feature, ol.Feature,
       'feature should be an ol.Feature');
-  if (!goog.isNull(map)) {
+  if (map) {
     map.unskipFeature(feature);
   }
 };
@@ -119441,7 +119441,7 @@ ol.source.WMTS = function(options) {
 
   /**
    * @private
-   * @type {Object}
+   * @type {!Object}
    */
   this.dimensions_ = options.dimensions !== undefined ? options.dimensions : {};
 
@@ -119585,7 +119585,7 @@ goog.inherits(ol.source.WMTS, ol.source.TileImage);
  * Get the dimensions, i.e. those passed to the constructor through the
  * "dimensions" option, and possibly updated using the updateDimensions
  * method.
- * @return {Object} Dimensions.
+ * @return {!Object} Dimensions.
  * @api
  */
 ol.source.WMTS.prototype.getDimensions = function() {
