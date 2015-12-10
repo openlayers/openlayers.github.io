@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.11.2-161-g4f85cbe
+// Version: v3.11.2-168-gfc2c917
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -52514,6 +52514,7 @@ ol.structs.PriorityQueue.prototype.dequeue = function() {
 /**
  * Enqueue an element. O(log N).
  * @param {T} element Element.
+ * @return {boolean} The element was added to the queue.
  */
 ol.structs.PriorityQueue.prototype.enqueue = function(element) {
   goog.asserts.assert(!(this.keyFunction_(element) in this.queuedElements_),
@@ -52524,7 +52525,9 @@ ol.structs.PriorityQueue.prototype.enqueue = function(element) {
     this.priorities_.push(priority);
     this.queuedElements_[this.keyFunction_(element)] = true;
     this.siftDown_(0, this.elements_.length - 1);
+    return true;
   }
+  return false;
 };
 
 
@@ -52746,8 +52749,28 @@ ol.TileQueue = function(tilePriorityFunction, tileChangeCallback) {
    */
   this.tilesLoading_ = 0;
 
+  /**
+   * @private
+   * @type {Object.<string,boolean>}
+   */
+  this.tilesLoadingKeys_ = {};
+
 };
 goog.inherits(ol.TileQueue, ol.structs.PriorityQueue);
+
+
+/**
+ * @inheritDoc
+ */
+ol.TileQueue.prototype.enqueue = function(element) {
+  var added = goog.base(this, 'enqueue', element);
+  if (added) {
+    var tile = element[0];
+    goog.events.listen(tile, goog.events.EventType.CHANGE,
+        this.handleTileChange, false, this);
+  }
+  return added;
+};
 
 
 /**
@@ -52769,7 +52792,11 @@ ol.TileQueue.prototype.handleTileChange = function(event) {
       state === ol.TileState.EMPTY) {
     goog.events.unlisten(tile, goog.events.EventType.CHANGE,
         this.handleTileChange, false, this);
-    --this.tilesLoading_;
+    var tileKey = tile.getKey();
+    if (tileKey in this.tilesLoadingKeys_) {
+      delete this.tilesLoadingKeys_[tileKey];
+      --this.tilesLoading_;
+    }
     this.tileChangeCallback_();
   }
 };
@@ -52786,9 +52813,8 @@ ol.TileQueue.prototype.loadMoreTiles = function(maxTotalLoading, maxNewLoads) {
          this.getCount() > 0) {
     tile = /** @type {ol.Tile} */ (this.dequeue()[0]);
     if (tile.getState() === ol.TileState.IDLE) {
-      goog.events.listen(tile, goog.events.EventType.CHANGE,
-          this.handleTileChange, false, this);
       tile.load();
+      this.tilesLoadingKeys_[tile.getKey()] = true;
       ++this.tilesLoading_;
       ++newLoads;
     }
@@ -69347,6 +69373,212 @@ goog.debug.entryPointRegistry.register(
           transformer(goog.net.XhrIo.prototype.onReadyStateChangeEntryPoint_);
     });
 
+goog.provide('ol.TileLoadFunctionType');
+goog.provide('ol.TileVectorLoadFunctionType');
+
+
+/**
+ * A function that takes an {@link ol.Tile} for the tile and a
+ * `{string}` for the url as arguments.
+ *
+ * @typedef {function(ol.Tile, string)}
+ * @api
+ */
+ol.TileLoadFunctionType;
+
+
+/**
+ * A function that is called with a tile url for the features to load and
+ * a callback that takes the loaded features as argument.
+ *
+ * @typedef {function(string, function(Array.<ol.Feature>))}
+ * @api
+ */
+ol.TileVectorLoadFunctionType;
+
+goog.provide('ol.VectorTile');
+
+goog.require('ol.Tile');
+goog.require('ol.TileCoord');
+goog.require('ol.TileLoadFunctionType');
+goog.require('ol.TileState');
+goog.require('ol.proj.Projection');
+
+
+/**
+ * @typedef {{
+ *     dirty: boolean,
+ *     renderedRenderOrder: (null|function(ol.Feature, ol.Feature):number),
+ *     renderedRevision: number,
+ *     replayGroup: ol.render.IReplayGroup}}
+ */
+ol.TileReplayState;
+
+
+
+/**
+ * @constructor
+ * @extends {ol.Tile}
+ * @param {ol.TileCoord} tileCoord Tile coordinate.
+ * @param {ol.TileState} state State.
+ * @param {string} src Data source url.
+ * @param {ol.format.Feature} format Feature format.
+ * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
+ * @param {ol.proj.Projection} projection Feature projection.
+ */
+ol.VectorTile =
+    function(tileCoord, state, src, format, tileLoadFunction, projection) {
+
+  goog.base(this, tileCoord, state);
+
+  /**
+   * @private
+   * @type {ol.format.Feature}
+   */
+  this.format_ = format;
+
+  /**
+   * @private
+   * @type {Array.<ol.Feature>}
+   */
+  this.features_ = null;
+
+  /**
+   * @private
+   * @type {ol.FeatureLoader}
+   */
+  this.loader_;
+
+  /**
+   * @private
+   * @type {ol.proj.Projection}
+   */
+  this.projection_ = projection;
+
+  /**
+   * @private
+   * @type {ol.TileReplayState}
+   */
+  this.replayState_ = {
+    dirty: false,
+    renderedRenderOrder: null,
+    renderedRevision: -1,
+    replayGroup: null
+  };
+
+  /**
+   * @private
+   * @type {ol.TileLoadFunctionType}
+   */
+  this.tileLoadFunction_ = tileLoadFunction;
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.url_ = src;
+
+};
+goog.inherits(ol.VectorTile, ol.Tile);
+
+
+/**
+ * @inheritDoc
+ */
+ol.VectorTile.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+};
+
+
+/**
+ * Get the feature format assigned for reading this tile's features.
+ * @return {ol.format.Feature} Feature format.
+ * @api
+ */
+ol.VectorTile.prototype.getFormat = function() {
+  return this.format_;
+};
+
+
+/**
+ * @return {Array.<ol.Feature>} Features.
+ */
+ol.VectorTile.prototype.getFeatures = function() {
+  return this.features_;
+};
+
+
+/**
+ * @return {ol.TileReplayState}
+ */
+ol.VectorTile.prototype.getReplayState = function() {
+  return this.replayState_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.VectorTile.prototype.getKey = function() {
+  return this.url_;
+};
+
+
+/**
+ * @return {ol.proj.Projection} Feature projection.
+ */
+ol.VectorTile.prototype.getProjection = function() {
+  return this.projection_;
+};
+
+
+/**
+ * Load the tile.
+ */
+ol.VectorTile.prototype.load = function() {
+  if (this.state == ol.TileState.IDLE) {
+    this.setState(ol.TileState.LOADING);
+    this.tileLoadFunction_(this, this.url_);
+    this.loader_(null, NaN, this.projection_);
+  }
+};
+
+
+/**
+ * @param {Array.<ol.Feature>} features Features.
+ */
+ol.VectorTile.prototype.setFeatures = function(features) {
+  this.features_ = features;
+  this.setState(ol.TileState.LOADED);
+};
+
+
+/**
+ * @param {ol.proj.Projection} projection Feature projection.
+ */
+ol.VectorTile.prototype.setProjection = function(projection) {
+  this.projection_ = projection;
+};
+
+
+/**
+ * @param {ol.TileState} tileState Tile state.
+ */
+ol.VectorTile.prototype.setState = function(tileState) {
+  this.state = tileState;
+  this.changed();
+};
+
+
+/**
+ * Set the feature loader for reading this tile's features.
+ * @param {ol.FeatureLoader} loader Feature loader.
+ * @api
+ */
+ol.VectorTile.prototype.setLoader = function(loader) {
+  this.loader_ = loader;
+};
+
 goog.provide('ol.format.FormatType');
 
 
@@ -70391,6 +70623,7 @@ goog.require('goog.net.EventType');
 goog.require('goog.net.XhrIo');
 goog.require('goog.net.XhrIo.ResponseType');
 goog.require('ol.TileState');
+goog.require('ol.VectorTile');
 goog.require('ol.format.FormatType');
 goog.require('ol.proj');
 goog.require('ol.proj.Projection');
@@ -70486,22 +70719,18 @@ ol.featureloader.loadFeaturesXhr = function(url, format, success, failure) {
                   goog.asserts.fail('unexpected format type');
                 }
                 if (source) {
-                  if (ol.ENABLE_VECTOR_TILE && success.length == 2) {
-                    var dataProjection = format.readProjection(source);
-                    var units = dataProjection.getUnits();
-                    if (units === ol.proj.Units.TILE_PIXELS) {
+                  if (ol.ENABLE_VECTOR_TILE && this instanceof ol.VectorTile) {
+                    var dataUnits = format.readProjection(source).getUnits();
+                    if (dataUnits === ol.proj.Units.TILE_PIXELS) {
                       projection = new ol.proj.Projection({
                         code: projection.getCode(),
-                        units: units
+                        units: dataUnits
                       });
                       this.setProjection(projection);
                     }
-                    success.call(this, format.readFeatures(source,
-                        {featureProjection: projection}), dataProjection);
-                  } else {
-                    success.call(this, format.readFeatures(source,
-                        {featureProjection: projection}));
                   }
+                  success.call(this, format.readFeatures(source,
+                      {featureProjection: projection}));
                 } else {
                   goog.asserts.fail('undefined or null source');
                 }
@@ -70533,13 +70762,9 @@ ol.featureloader.tile = function(url, format) {
   return ol.featureloader.loadFeaturesXhr(url, format,
       /**
        * @param {Array.<ol.Feature>} features The loaded features.
-       * @param {ol.proj.Projection} projection Data projection.
        * @this {ol.VectorTile}
        */
-      function(features, projection) {
-        if (ol.proj.equivalent(projection, this.getProjection())) {
-          this.setProjection(projection);
-        }
+      function(features) {
         this.setFeatures(features);
       },
       /**
@@ -73746,212 +73971,6 @@ ol.renderer.canvas.VectorLayer.prototype.renderFeature =
         this.handleStyleImageChange_, this) || loading;
   }
   return loading;
-};
-
-goog.provide('ol.TileLoadFunctionType');
-goog.provide('ol.TileVectorLoadFunctionType');
-
-
-/**
- * A function that takes an {@link ol.Tile} for the tile and a
- * `{string}` for the url as arguments.
- *
- * @typedef {function(ol.Tile, string)}
- * @api
- */
-ol.TileLoadFunctionType;
-
-
-/**
- * A function that is called with a tile url for the features to load and
- * a callback that takes the loaded features as argument.
- *
- * @typedef {function(string, function(Array.<ol.Feature>))}
- * @api
- */
-ol.TileVectorLoadFunctionType;
-
-goog.provide('ol.VectorTile');
-
-goog.require('ol.Tile');
-goog.require('ol.TileCoord');
-goog.require('ol.TileLoadFunctionType');
-goog.require('ol.TileState');
-goog.require('ol.proj.Projection');
-
-
-/**
- * @typedef {{
- *     dirty: boolean,
- *     renderedRenderOrder: (null|function(ol.Feature, ol.Feature):number),
- *     renderedRevision: number,
- *     replayGroup: ol.render.IReplayGroup}}
- */
-ol.TileReplayState;
-
-
-
-/**
- * @constructor
- * @extends {ol.Tile}
- * @param {ol.TileCoord} tileCoord Tile coordinate.
- * @param {ol.TileState} state State.
- * @param {string} src Data source url.
- * @param {ol.format.Feature} format Feature format.
- * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
- * @param {ol.proj.Projection} projection Feature projection.
- */
-ol.VectorTile =
-    function(tileCoord, state, src, format, tileLoadFunction, projection) {
-
-  goog.base(this, tileCoord, state);
-
-  /**
-   * @private
-   * @type {ol.format.Feature}
-   */
-  this.format_ = format;
-
-  /**
-   * @private
-   * @type {Array.<ol.Feature>}
-   */
-  this.features_ = null;
-
-  /**
-   * @private
-   * @type {ol.FeatureLoader}
-   */
-  this.loader_;
-
-  /**
-   * @private
-   * @type {ol.proj.Projection}
-   */
-  this.projection_ = projection;
-
-  /**
-   * @private
-   * @type {ol.TileReplayState}
-   */
-  this.replayState_ = {
-    dirty: false,
-    renderedRenderOrder: null,
-    renderedRevision: -1,
-    replayGroup: null
-  };
-
-  /**
-   * @private
-   * @type {ol.TileLoadFunctionType}
-   */
-  this.tileLoadFunction_ = tileLoadFunction;
-
-  /**
-   * @private
-   * @type {string}
-   */
-  this.url_ = src;
-
-};
-goog.inherits(ol.VectorTile, ol.Tile);
-
-
-/**
- * @inheritDoc
- */
-ol.VectorTile.prototype.disposeInternal = function() {
-  goog.base(this, 'disposeInternal');
-};
-
-
-/**
- * Get the feature format assigned for reading this tile's features.
- * @return {ol.format.Feature} Feature format.
- * @api
- */
-ol.VectorTile.prototype.getFormat = function() {
-  return this.format_;
-};
-
-
-/**
- * @return {Array.<ol.Feature>} Features.
- */
-ol.VectorTile.prototype.getFeatures = function() {
-  return this.features_;
-};
-
-
-/**
- * @return {ol.TileReplayState}
- */
-ol.VectorTile.prototype.getReplayState = function() {
-  return this.replayState_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.VectorTile.prototype.getKey = function() {
-  return this.url_;
-};
-
-
-/**
- * @return {ol.proj.Projection} Feature projection.
- */
-ol.VectorTile.prototype.getProjection = function() {
-  return this.projection_;
-};
-
-
-/**
- * Load the tile.
- */
-ol.VectorTile.prototype.load = function() {
-  if (this.state == ol.TileState.IDLE) {
-    this.setState(ol.TileState.LOADING);
-    this.tileLoadFunction_(this, this.url_);
-    this.loader_(null, NaN, this.projection_);
-  }
-};
-
-
-/**
- * @param {Array.<ol.Feature>} features Features.
- */
-ol.VectorTile.prototype.setFeatures = function(features) {
-  this.features_ = features;
-  this.setState(ol.TileState.LOADED);
-};
-
-
-/**
- * @param {ol.proj.Projection} projection Feature projection.
- */
-ol.VectorTile.prototype.setProjection = function(projection) {
-  this.projection_ = projection;
-};
-
-
-/**
- * @param {ol.TileState} tileState Tile state.
- */
-ol.VectorTile.prototype.setState = function(tileState) {
-  this.state = tileState;
-  this.changed();
-};
-
-
-/**
- * Set the feature loader for reading this tile's features.
- * @param {ol.FeatureLoader} loader Feature loader.
- * @api
- */
-ol.VectorTile.prototype.setLoader = function(loader) {
-  this.loader_ = loader;
 };
 
 goog.provide('ol.TileUrlFunction');

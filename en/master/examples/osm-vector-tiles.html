@@ -57,18 +57,16 @@ var roadColor &#x3D; {
   &#x27;highway&#x27;: &#x27;#f39&#x27;
 };
 var landuseStyleCache &#x3D; {};
-var buildingStyle &#x3D; [
-  new ol.style.Style({
-    fill: new ol.style.Fill({
-      color: &#x27;#666&#x27;,
-      opacity: 0.4
-    }),
-    stroke: new ol.style.Stroke({
-      color: &#x27;#444&#x27;,
-      width: 1
-    })
+var buildingStyle &#x3D; new ol.style.Style({
+  fill: new ol.style.Fill({
+    color: &#x27;#666&#x27;,
+    opacity: 0.4
+  }),
+  stroke: new ol.style.Stroke({
+    color: &#x27;#444&#x27;,
+    width: 1
   })
-];
+});
 
 var map &#x3D; new ol.Map({
   layers: [
@@ -213,18 +211,16 @@ var map &#x3D; new ol.Map({
         &#x27;highway&#x27;: &#x27;#f39&#x27;
       };
       var landuseStyleCache &#x3D; {};
-      var buildingStyle &#x3D; [
-        new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: &#x27;#666&#x27;,
-            opacity: 0.4
-          }),
-          stroke: new ol.style.Stroke({
-            color: &#x27;#444&#x27;,
-            width: 1
-          })
+      var buildingStyle &#x3D; new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: &#x27;#666&#x27;,
+          opacity: 0.4
+        }),
+        stroke: new ol.style.Stroke({
+          color: &#x27;#444&#x27;,
+          width: 1
         })
-      ];
+      });
 
       var map &#x3D; new ol.Map({
         layers: [
