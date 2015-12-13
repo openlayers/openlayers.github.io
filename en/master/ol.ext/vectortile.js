@@ -191,7 +191,7 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
         type = 'MultiLineString';
     }
 
-    return {
+    var result = {
         type: "Feature",
         geometry: {
             type: type,
@@ -199,6 +199,12 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
         },
         properties: this.properties
     };
+
+    if ('_id' in this) {
+        result.id = this._id;
+    }
+
+    return result;
 };
 
 },{"point-geometry":5}],4:[function(_dereq_,module,exports){
