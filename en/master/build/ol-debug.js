@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.11.2-186-g9b1416d
+// Version: v3.12.1-22-gdad58ba
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -6795,6 +6795,18 @@ ol.array.binaryFindNearest = function(arr, target) {
       return right;
     }
   }
+};
+
+
+/**
+ * Compare function for array sort that is safe for numbers.
+ * @param {*} a The first object to be compared.
+ * @param {*} b The second object to be compared.
+ * @return {number} A negative number, zero, or a positive number as the first
+ *     argument is less than, equal to, or greater than the second.
+ */
+ol.array.numberSafeCompareFunction = function(a, b) {
+  return a > b ? 1 : a < b ? -1 : 0;
 };
 
 
@@ -21486,6 +21498,7 @@ ol.geom.flat.contains.linearRingssContainsXY =
 goog.provide('ol.geom.flat.interiorpoint');
 
 goog.require('goog.asserts');
+goog.require('ol.array');
 goog.require('ol.geom.flat.contains');
 
 
@@ -21525,7 +21538,7 @@ ol.geom.flat.interiorpoint.linearRings = function(flatCoordinates, offset,
   // inside the linear ring.
   var pointX = NaN;
   var maxSegmentLength = -Infinity;
-  intersections.sort();
+  intersections.sort(ol.array.numberSafeCompareFunction);
   x1 = intersections[0];
   for (i = 1, ii = intersections.length; i < ii; ++i) {
     x2 = intersections[i];
@@ -58082,6 +58095,7 @@ goog.provide('ol.render.canvas.Immediate');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('goog.vec.Mat4');
+goog.require('ol.array');
 goog.require('ol.color');
 goog.require('ol.extent');
 goog.require('ol.geom.flat.transform');
@@ -58796,7 +58810,7 @@ ol.render.canvas.Immediate.prototype.drawText = goog.abstractMethod;
 ol.render.canvas.Immediate.prototype.flush = function() {
   /** @type {Array.<number>} */
   var zs = Object.keys(this.callbacksByZIndex_).map(Number);
-  zs.sort();
+  zs.sort(ol.array.numberSafeCompareFunction);
   var i, ii, callbacks, j, jj;
   for (i = 0, ii = zs.length; i < ii; ++i) {
     callbacks = this.callbacksByZIndex_[zs[i].toString()];
@@ -59559,6 +59573,12 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
    * @type {!goog.vec.Mat4.Number}
    */
   this.tmpLocalTransform_ = goog.vec.Mat4.createNumber();
+
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.tmpLocalTransformInv_ = goog.vec.Mat4.createNumber();
 };
 goog.inherits(ol.render.canvas.Replay, ol.render.VectorContext);
 
@@ -59672,6 +59692,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
   var d = 0; // data index
   var dd; // end of per-instruction data
   var localTransform = this.tmpLocalTransform_;
+  var localTransformInv = this.tmpLocalTransformInv_;
   var prevX, prevY, roundX, roundY;
   while (i < ii) {
     var instruction = instructions[i];
@@ -59751,7 +59772,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
             ol.vec.Mat4.makeTransform2D(
                 localTransform, centerX, centerY, scale, scale,
                 rotation, -centerX, -centerY);
-            context.setTransform(
+            context.transform(
                 goog.vec.Mat4.getElement(localTransform, 0, 0),
                 goog.vec.Mat4.getElement(localTransform, 1, 0),
                 goog.vec.Mat4.getElement(localTransform, 0, 1),
@@ -59771,7 +59792,14 @@ ol.render.canvas.Replay.prototype.replay_ = function(
             context.globalAlpha = alpha;
           }
           if (scale != 1 || rotation !== 0) {
-            context.setTransform(1, 0, 0, 1, 0, 0);
+            goog.vec.Mat4.invert(localTransform, localTransformInv);
+            context.transform(
+                goog.vec.Mat4.getElement(localTransformInv, 0, 0),
+                goog.vec.Mat4.getElement(localTransformInv, 1, 0),
+                goog.vec.Mat4.getElement(localTransformInv, 0, 1),
+                goog.vec.Mat4.getElement(localTransformInv, 1, 1),
+                goog.vec.Mat4.getElement(localTransformInv, 0, 3),
+                goog.vec.Mat4.getElement(localTransformInv, 1, 3));
           }
         }
         ++i;
@@ -59810,7 +59838,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
           if (scale != 1 || rotation !== 0) {
             ol.vec.Mat4.makeTransform2D(
                 localTransform, x, y, scale, scale, rotation, -x, -y);
-            context.setTransform(
+            context.transform(
                 goog.vec.Mat4.getElement(localTransform, 0, 0),
                 goog.vec.Mat4.getElement(localTransform, 1, 0),
                 goog.vec.Mat4.getElement(localTransform, 0, 1),
@@ -59847,7 +59875,14 @@ ol.render.canvas.Replay.prototype.replay_ = function(
           }
 
           if (scale != 1 || rotation !== 0) {
-            context.setTransform(1, 0, 0, 1, 0, 0);
+            goog.vec.Mat4.invert(localTransform, localTransformInv);
+            context.transform(
+                goog.vec.Mat4.getElement(localTransformInv, 0, 0),
+                goog.vec.Mat4.getElement(localTransformInv, 1, 0),
+                goog.vec.Mat4.getElement(localTransformInv, 0, 1),
+                goog.vec.Mat4.getElement(localTransformInv, 1, 1),
+                goog.vec.Mat4.getElement(localTransformInv, 0, 3),
+                goog.vec.Mat4.getElement(localTransformInv, 1, 3));
           }
         }
         ++i;
@@ -61415,32 +61450,35 @@ ol.render.canvas.ReplayGroup.prototype.isEmpty = function() {
  * @param {number} viewRotation View rotation.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *     to skip.
+ * @param {boolean=} opt_clip Clip at `maxExtent`. Default is true.
  */
-ol.render.canvas.ReplayGroup.prototype.replay = function(
-    context, pixelRatio, transform, viewRotation, skippedFeaturesHash) {
+ol.render.canvas.ReplayGroup.prototype.replay = function(context, pixelRatio,
+    transform, viewRotation, skippedFeaturesHash, opt_clip) {
 
   /** @type {Array.<number>} */
   var zs = Object.keys(this.replaysByZIndex_).map(Number);
-  zs.sort();
+  zs.sort(ol.array.numberSafeCompareFunction);
 
-  // setup clipping so that the parts of over-simplified geometries are not
-  // visible outside the current extent when panning
-  var maxExtent = this.maxExtent_;
-  var minX = maxExtent[0];
-  var minY = maxExtent[1];
-  var maxX = maxExtent[2];
-  var maxY = maxExtent[3];
-  var flatClipCoords = [minX, minY, minX, maxY, maxX, maxY, maxX, minY];
-  ol.geom.flat.transform.transform2D(
-      flatClipCoords, 0, 8, 2, transform, flatClipCoords);
-  context.save();
-  context.beginPath();
-  context.moveTo(flatClipCoords[0], flatClipCoords[1]);
-  context.lineTo(flatClipCoords[2], flatClipCoords[3]);
-  context.lineTo(flatClipCoords[4], flatClipCoords[5]);
-  context.lineTo(flatClipCoords[6], flatClipCoords[7]);
-  context.closePath();
-  context.clip();
+  if (opt_clip !== false) {
+    // setup clipping so that the parts of over-simplified geometries are not
+    // visible outside the current extent when panning
+    var maxExtent = this.maxExtent_;
+    var minX = maxExtent[0];
+    var minY = maxExtent[1];
+    var maxX = maxExtent[2];
+    var maxY = maxExtent[3];
+    var flatClipCoords = [minX, minY, minX, maxY, maxX, maxY, maxX, minY];
+    ol.geom.flat.transform.transform2D(
+        flatClipCoords, 0, 8, 2, transform, flatClipCoords);
+    context.save();
+    context.beginPath();
+    context.moveTo(flatClipCoords[0], flatClipCoords[1]);
+    context.lineTo(flatClipCoords[2], flatClipCoords[3]);
+    context.lineTo(flatClipCoords[4], flatClipCoords[5]);
+    context.lineTo(flatClipCoords[6], flatClipCoords[7]);
+    context.closePath();
+    context.clip();
+  }
 
   var i, ii, j, jj, replays, replay;
   for (i = 0, ii = zs.length; i < ii; ++i) {
@@ -69424,6 +69462,7 @@ goog.require('ol.Tile');
 goog.require('ol.TileCoord');
 goog.require('ol.TileLoadFunctionType');
 goog.require('ol.TileState');
+goog.require('ol.dom');
 goog.require('ol.proj.Projection');
 
 
@@ -69452,6 +69491,12 @@ ol.VectorTile =
     function(tileCoord, state, src, format, tileLoadFunction, projection) {
 
   goog.base(this, tileCoord, state);
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.context_ = ol.dom.createCanvasContext2D();
 
   /**
    * @private
@@ -69502,6 +69547,14 @@ ol.VectorTile =
 
 };
 goog.inherits(ol.VectorTile, ol.Tile);
+
+
+/**
+ * @return {CanvasRenderingContext2D}
+ */
+ol.VectorTile.prototype.getContext = function() {
+  return this.context_;
+};
 
 
 /**
@@ -70904,7 +70957,8 @@ var define;
  https://github.com/mourner/rbush
 */
 
-(function () { 'use strict';
+(function () {
+'use strict';
 
 function rbush(maxEntries, format) {
 
@@ -71133,12 +71187,11 @@ rbush.prototype = {
             M = Math.ceil(N / Math.pow(M, height - 1));
         }
 
-        // TODO eliminate recursion?
-
         node = {
             children: [],
             height: height,
-            bbox: null
+            bbox: null,
+            leaf: false
         };
 
         // split the items into M mostly square tiles
@@ -71244,7 +71297,9 @@ rbush.prototype = {
 
         var newNode = {
             children: node.children.splice(splitIndex, node.children.length - splitIndex),
-            height: node.height
+            height: node.height,
+            bbox: null,
+            leaf: false
         };
 
         if (node.leaf) newNode.leaf = true;
@@ -71260,7 +71315,9 @@ rbush.prototype = {
         // split root node
         this.data = {
             children: [node, newNode],
-            height: node.height + 1
+            height: node.height + 1,
+            bbox: null,
+            leaf: false
         };
         calcBBox(this.data, this.toBBox);
     },
@@ -71509,7 +71566,7 @@ function swap(arr, i, j) {
 
 
 // export as AMD/CommonJS module or global variable
-if (typeof define === 'function' && define.amd) define('rbush', function() { return rbush; });
+if (typeof define === 'function' && define.amd) define('rbush', function () { return rbush; });
 else if (typeof module !== 'undefined') module.exports = rbush;
 else if (typeof self !== 'undefined') self.rbush = rbush;
 else window.rbush = rbush;
@@ -73172,6 +73229,7 @@ goog.require('goog.vec.Mat4');
 goog.require('ol.Size');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
+goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Tile');
@@ -73528,7 +73586,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame =
 
   /** @type {Array.<number>} */
   var zs = Object.keys(tilesToDrawByZ).map(Number);
-  zs.sort();
+  zs.sort(ol.array.numberSafeCompareFunction);
   var opaque = tileSource.getOpaque();
   var origin = ol.extent.getTopLeft(tileGrid.getTileCoordExtent(
       [z, canvasTileRange.minX, canvasTileRange.maxY],
@@ -74468,8 +74526,10 @@ goog.require('ol.TileRange');
 goog.require('ol.TileState');
 goog.require('ol.VectorTile');
 goog.require('ol.ViewHint');
+goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.extent');
+goog.require('ol.geom.flat.transform');
 goog.require('ol.layer.VectorTile');
 goog.require('ol.proj.Units');
 goog.require('ol.render.EventType');
@@ -74546,10 +74606,14 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame =
   var projection = viewState.projection;
   var resolution = viewState.resolution;
   var rotation = viewState.rotation;
+  var size = frameState.size;
+  var pixelScale = pixelRatio / resolution;
   var layer = this.getLayer();
   var source = layer.getSource();
   goog.asserts.assertInstanceof(source, ol.source.VectorTile,
       'Source is an ol.source.VectorTile');
+  var tilePixelRatio = source.getTilePixelRatio();
+  var maxScale = tilePixelRatio / pixelRatio;
 
   var transform = this.getTransform(frameState, 0);
 
@@ -74573,34 +74637,80 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame =
   var tilesToDraw = this.renderedTiles_;
   var tileGrid = source.getTileGrid();
 
-  var currentZ, i, ii, origin, tile, tileSize;
-  var tilePixelRatio, tilePixelResolution, tilePixelSize, tileResolution;
+  var currentZ, height, i, ii, insertPoint, insertTransform, offsetX, offsetY;
+  var origin, pixelSpace, replayState, scale, tile, tileCenter, tileContext;
+  var tileExtent, tilePixelResolution, tilePixelSize, tileResolution, tileSize;
+  var tileTransform, width;
   for (i = 0, ii = tilesToDraw.length; i < ii; ++i) {
     tile = tilesToDraw[i];
+    replayState = tile.getReplayState();
+    tileExtent = tileGrid.getTileCoordExtent(
+        tile.getTileCoord(), this.tmpExtent_);
     currentZ = tile.getTileCoord()[0];
-    tileSize = tileGrid.getTileSize(currentZ);
-    tilePixelSize = source.getTilePixelSize(currentZ, pixelRatio, projection);
-    tilePixelRatio = tilePixelSize[0] /
-        ol.size.toSize(tileSize, this.tmpSize_)[0];
+    tileSize = ol.size.toSize(tileGrid.getTileSize(currentZ), this.tmpSize_);
+    pixelSpace = tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS;
     tileResolution = tileGrid.getResolution(currentZ);
     tilePixelResolution = tileResolution / tilePixelRatio;
-    if (tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS) {
-      origin = ol.extent.getTopLeft(tileGrid.getTileCoordExtent(
-          tile.getTileCoord(), this.tmpExtent_));
-      transform = ol.vec.Mat4.makeTransform2D(this.tmpTransform_,
-          pixelRatio * frameState.size[0] / 2,
-          pixelRatio * frameState.size[1] / 2,
-          pixelRatio * tilePixelResolution / resolution,
-          pixelRatio * tilePixelResolution / resolution,
-          viewState.rotation,
-          (origin[0] - center[0]) / tilePixelResolution,
-          (center[1] - origin[1]) / tilePixelResolution);
+    scale = tileResolution / resolution;
+    offsetX = Math.round(pixelRatio * size[0] / 2);
+    offsetY = Math.round(pixelRatio * size[1] / 2);
+    width = tileSize[0] * pixelRatio * scale;
+    height = tileSize[1] * pixelRatio * scale;
+    if (width < 1 || scale > maxScale) {
+      if (pixelSpace) {
+        origin = ol.extent.getTopLeft(tileExtent);
+        tileTransform = ol.vec.Mat4.makeTransform2D(this.tmpTransform_,
+            offsetX, offsetY,
+            pixelScale * tilePixelResolution,
+            pixelScale * tilePixelResolution,
+            rotation,
+            (origin[0] - center[0]) / tilePixelResolution,
+            (center[1] - origin[1]) / tilePixelResolution);
+      } else {
+        tileTransform = transform;
+      }
+      replayState.replayGroup.replay(replayContext, pixelRatio,
+          tileTransform, rotation, skippedFeatureUids);
+    } else {
+      tilePixelSize = source.getTilePixelSize(currentZ, pixelRatio, projection);
+      if (pixelSpace) {
+        tileTransform = ol.vec.Mat4.makeTransform2D(this.tmpTransform_,
+            0, 0,
+            pixelScale * tilePixelResolution, pixelScale * tilePixelResolution,
+            rotation,
+            -tilePixelSize[0] / 2, -tilePixelSize[1] / 2);
+      } else {
+        tileCenter = ol.extent.getCenter(tileExtent);
+        tileTransform = ol.vec.Mat4.makeTransform2D(this.tmpTransform_,
+            0, 0,
+            pixelScale, -pixelScale,
+            -rotation,
+            -tileCenter[0], -tileCenter[1]);
+      }
+      tileContext = tile.getContext();
+      if (replayState.resolution !== resolution ||
+          replayState.rotation !== rotation) {
+        replayState.resolution = resolution;
+        replayState.rotation = rotation;
+        tileContext.canvas.width = width + 0.5;
+        tileContext.canvas.height = height + 0.5;
+        tileContext.translate(width / 2, height / 2);
+        tileContext.rotate(-rotation);
+        replayState.replayGroup.replay(tileContext, pixelRatio,
+            tileTransform, rotation, skippedFeatureUids, false);
+      }
+      insertTransform = ol.vec.Mat4.makeTransform2D(this.tmpTransform_,
+          0, 0, pixelScale, -pixelScale, 0, -center[0], -center[1]);
+      insertPoint = ol.geom.flat.transform.transform2D(
+          ol.extent.getTopLeft(tileExtent), 0, 1, 2, insertTransform);
+      replayContext.translate(offsetX, offsetY);
+      replayContext.rotate(rotation);
+      replayContext.drawImage(tileContext.canvas,
+          Math.round(insertPoint[0]), Math.round(insertPoint[1]));
+      replayContext.rotate(-rotation);
+      replayContext.translate(-offsetX, -offsetY);
     }
-    tile.getReplayState().replayGroup.replay(replayContext, pixelRatio,
-        transform, rotation, skippedFeatureUids);
   }
-
-  transform = this.getTransform(frameState, 0);
 
   if (replayContext != context) {
     this.dispatchRenderEvent(replayContext, frameState, transform);
@@ -74693,6 +74803,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
   replayState.renderedRevision = revision;
   replayState.renderedRenderOrder = renderOrder;
   replayState.replayGroup = replayGroup;
+  replayState.resolution = NaN;
 };
 
 
@@ -74865,7 +74976,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.prepareFrame =
 
   /** @type {Array.<number>} */
   var zs = Object.keys(tilesToDrawByZ).map(Number);
-  zs.sort();
+  zs.sort(ol.array.numberSafeCompareFunction);
   var replayables = [];
   var i, ii, currentZ, tileCoordKey, tilesToDraw;
   for (i = 0, ii = zs.length; i < ii; ++i) {
@@ -75353,6 +75464,7 @@ goog.require('ol.TileCoord');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
 goog.require('ol.ViewHint');
+goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Tile');
@@ -75517,7 +75629,7 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame =
 
   /** @type {Array.<number>} */
   var zs = Object.keys(tilesToDrawByZ).map(Number);
-  zs.sort();
+  zs.sort(ol.array.numberSafeCompareFunction);
 
   /** @type {Object.<number, boolean>} */
   var newTileLayerZKeys = {};
@@ -75543,7 +75655,7 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame =
 
   /** @type {Array.<number>} */
   var tileLayerZKeys = Object.keys(this.tileLayerZs_).map(Number);
-  tileLayerZKeys.sort();
+  tileLayerZKeys.sort(ol.array.numberSafeCompareFunction);
 
   var i, ii, j, origin, resolution;
   var transform = goog.vec.Mat4.createNumber();
@@ -80473,6 +80585,7 @@ ol.render.webgl.BATCH_CONSTRUCTORS_ = {
 ol.render.webgl.HIT_DETECTION_SIZE_ = [1, 1];
 
 goog.provide('ol.render.webgl.Immediate');
+goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.render.VectorContext');
 goog.require('ol.render.webgl.ImageReplay');
@@ -80553,7 +80666,7 @@ goog.inherits(ol.render.webgl.Immediate, ol.render.VectorContext);
 ol.render.webgl.Immediate.prototype.flush = function() {
   /** @type {Array.<number>} */
   var zs = Object.keys(this.callbacksByZIndex_).map(Number);
-  zs.sort();
+  zs.sort(ol.array.numberSafeCompareFunction);
   var i, ii, callbacks, j, jj;
   for (i = 0, ii = zs.length; i < ii; ++i) {
     callbacks = this.callbacksByZIndex_[zs[i].toString()];
@@ -81618,6 +81731,7 @@ goog.require('goog.vec.Vec4');
 goog.require('goog.webgl');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
+goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.layer.Tile');
 goog.require('ol.math');
@@ -81905,7 +82019,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame =
 
     /** @type {Array.<number>} */
     var zs = Object.keys(tilesToDrawByZ).map(Number);
-    zs.sort();
+    zs.sort(ol.array.numberSafeCompareFunction);
     var u_tileOffset = goog.vec.Vec4.createFloat32();
     var i, ii, sx, sy, tileKey, tilesToDraw, tx, ty;
     for (i = 0, ii = zs.length; i < ii; ++i) {
