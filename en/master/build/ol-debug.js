@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.12.1-61-g1300cde
+// Version: v3.12.1-69-g3d8adaa
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -18889,6 +18889,12 @@ ol.proj.Projection = function(options) {
    */
   this.defaultTileGrid_ = null;
 
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.metersPerUnit_ = options.metersPerUnit;
+
   var projections = ol.proj.projections_;
   var code = options.code;
   goog.asserts.assert(code !== undefined,
@@ -18901,16 +18907,11 @@ ol.proj.Projection = function(options) {
         if (def.axis !== undefined && options.axisOrientation === undefined) {
           this.axisOrientation_ = def.axis;
         }
+        if (options.metersPerUnit === undefined) {
+          this.metersPerUnit_ = def.to_meter;
+        }
         if (options.units === undefined) {
-          var units = def.units;
-          if (def.to_meter !== undefined) {
-            if (units === undefined ||
-                ol.proj.METERS_PER_UNIT[units] === undefined) {
-              units = def.to_meter.toString();
-              ol.proj.METERS_PER_UNIT[units] = def.to_meter;
-            }
-          }
-          this.units_ = units;
+          this.units_ = def.units;
         }
         var currentCode, currentDef, currentProj, proj4Transform;
         for (currentCode in projections) {
@@ -18973,12 +18974,13 @@ ol.proj.Projection.prototype.getUnits = function() {
 
 /**
  * Get the amount of meters per unit of this projection.  If the projection is
- * not configured with a units identifier, the return is `undefined`.
+ * not configured with `metersPerUnit` or a units identifier, the return is
+ * `undefined`.
  * @return {number|undefined} Meters.
  * @api stable
  */
 ol.proj.Projection.prototype.getMetersPerUnit = function() {
-  return ol.proj.METERS_PER_UNIT[this.units_];
+  return this.metersPerUnit_ || ol.proj.METERS_PER_UNIT[this.units_];
 };
 
 
@@ -54289,6 +54291,16 @@ ol.DragBoxEvent = function(type, coordinate, mapBrowserEvent) {
 goog.inherits(ol.DragBoxEvent, goog.events.Event);
 
 
+/**
+ * A function that takes a {@link ol.MapBrowserEvent} and two
+ * {@link ol.Pixel}s and returns a `{boolean}`. If the condition is met,
+ * true should be returned.
+ * @typedef {function(ol.MapBrowserEvent, ol.Pixel, ol.Pixel):boolean}
+ * @api
+ */
+ol.interaction.DragBoxEndConditionType;
+
+
 
 /**
  * @classdesc
@@ -54336,8 +54348,32 @@ ol.interaction.DragBox = function(opt_options) {
   this.condition_ = options.condition ?
       options.condition : ol.events.condition.always;
 
+  /**
+   * @private
+   * @type {ol.interaction.DragBoxEndConditionType}
+   */
+  this.boxEndCondition_ = options.boxEndCondition ?
+      options.boxEndCondition : ol.interaction.DragBox.defaultBoxEndCondition;
 };
 goog.inherits(ol.interaction.DragBox, ol.interaction.Pointer);
+
+
+/**
+ * The default condition for determining whether the boxend event
+ * should fire.
+ * @param  {ol.MapBrowserEvent} mapBrowserEvent The originating MapBrowserEvent
+ *  leading to the box end.
+ * @param  {ol.Pixel} startPixel      The starting pixel of the box.
+ * @param  {ol.Pixel} endPixel        The end pixel of the box.
+ * @return {boolean} Whether or not the boxend condition should be fired.
+ */
+ol.interaction.DragBox.defaultBoxEndCondition = function(mapBrowserEvent,
+    startPixel, endPixel) {
+  var width = endPixel[0] - startPixel[0];
+  var height = endPixel[1] - startPixel[1];
+  return width * width + height * height >=
+      ol.DRAG_BOX_HYSTERESIS_PIXELS_SQUARED;
+};
 
 
 /**
@@ -54386,11 +54422,8 @@ ol.interaction.DragBox.handleUpEvent_ = function(mapBrowserEvent) {
 
   this.box_.setMap(null);
 
-  var deltaX = mapBrowserEvent.pixel[0] - this.startPixel_[0];
-  var deltaY = mapBrowserEvent.pixel[1] - this.startPixel_[1];
-
-  if (deltaX * deltaX + deltaY * deltaY >=
-      ol.DRAG_BOX_HYSTERESIS_PIXELS_SQUARED) {
+  if (this.boxEndCondition_(mapBrowserEvent,
+      this.startPixel_, mapBrowserEvent.pixel)) {
     this.onBoxEnd(mapBrowserEvent);
     this.dispatchEvent(new ol.DragBoxEvent(ol.DragBoxEventType.BOXEND,
         mapBrowserEvent.coordinate, mapBrowserEvent));
@@ -55698,11 +55731,24 @@ ol.proj.EPSG3857.toEPSG4326 = function(input, opt_output, opt_dimension) {
   return output;
 };
 
+goog.provide('ol.sphere.WGS84');
+
+goog.require('ol.Sphere');
+
+
+/**
+ * A sphere with radius equal to the semi-major axis of the WGS84 ellipsoid.
+ * @const
+ * @type {ol.Sphere}
+ */
+ol.sphere.WGS84 = new ol.Sphere(6378137);
+
 goog.provide('ol.proj.EPSG4326');
 
 goog.require('ol.proj');
 goog.require('ol.proj.Projection');
 goog.require('ol.proj.Units');
+goog.require('ol.sphere.WGS84');
 
 
 
@@ -55727,6 +55773,7 @@ ol.proj.EPSG4326_ = function(code, opt_axisOrientation) {
     extent: ol.proj.EPSG4326.EXTENT,
     axisOrientation: opt_axisOrientation,
     global: true,
+    metersPerUnit: ol.proj.EPSG4326.METERS_PER_UNIT,
     worldExtent: ol.proj.EPSG4326.EXTENT
   });
 };
@@ -55748,6 +55795,13 @@ ol.proj.EPSG4326_.prototype.getPointResolution = function(resolution, point) {
  * @type {ol.Extent}
  */
 ol.proj.EPSG4326.EXTENT = [-180, -90, 180, 90];
+
+
+/**
+ * @const
+ * @type {number}
+ */
+ol.proj.EPSG4326.METERS_PER_UNIT = Math.PI * ol.sphere.WGS84.radius / 180;
 
 
 /**
@@ -106835,18 +106889,6 @@ ol.format.WMTSCapabilities.TM_PARSERS_ = ol.xml.makeStructureNS(
       'Identifier': ol.xml.makeObjectPropertySetter(
           ol.format.XSD.readString)
     }));
-
-goog.provide('ol.sphere.WGS84');
-
-goog.require('ol.Sphere');
-
-
-/**
- * A sphere with radius equal to the semi-major axis of the WGS84 ellipsoid.
- * @const
- * @type {ol.Sphere}
- */
-ol.sphere.WGS84 = new ol.Sphere(6378137);
 
 // FIXME handle geolocation not supported
 

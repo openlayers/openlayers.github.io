@@ -5742,6 +5742,10 @@
             
             <span class="subtitle">Typedefs</span>
             
+                <li data-name="ol.interaction.DragBoxEndConditionType" class="unstable">
+                    <a href="ol.interaction.html#.DragBoxEndConditionType">DragBoxEndConditionType</a>
+                </li>
+            
                 <li data-name="ol.interaction.DrawGeometryFunctionType" class="unstable">
                     <a href="ol.interaction.html#.DrawGeometryFunctionType">DrawGeometryFunctionType</a>
                 </li>
@@ -15386,6 +15390,49 @@
             <td class="description last"><p>A function that takes an <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and returns a boolean
 to indicate whether that event should be handled.
 Default is <a href="ol.events.condition.html#.always"><code>ol.events.condition.always</code></a>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>boxEndCondition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.interaction.html#.DragBoxEndConditionType">ol.interaction.DragBoxEndConditionType</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>A function that takes a <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and two
+<a href="ol.html#.Pixel"><code>ol.Pixel</code></a>s to indicate whether a boxend event should be fired.
+Default is:</p>
+<pre class="prettyprint source lang-js"><code>function(mapBrowserEvent,
+    startPixel, endPixel) {
+  var width = endPixel[0] - startPixel[0];
+  var height = endPixel[1] - startPixel[1];
+  return width * width + height * height >=
+    ol.DRAG_BOX_HYSTERESIS_PIXELS_SQUARED;
+}</code></pre></td>
         </tr>
 	
 	

@@ -143,7 +143,7 @@ goog.addDependency('../../../ol/ol/pointer/pointereventhandler.js', ['ol.pointer
 goog.addDependency('../../../ol/ol/pointer/touchsource.js', ['ol.pointer.TouchSource'], ['goog.array', 'goog.object', 'ol', 'ol.pointer.EventSource', 'ol.pointer.MouseSource'], false);
 goog.addDependency('../../../ol/ol/proj/common.js', ['ol.proj.common'], ['ol.proj', 'ol.proj.EPSG3857', 'ol.proj.EPSG4326'], false);
 goog.addDependency('../../../ol/ol/proj/epsg3857projection.js', ['ol.proj.EPSG3857'], ['goog.asserts', 'ol.math', 'ol.proj', 'ol.proj.Projection', 'ol.proj.Units'], false);
-goog.addDependency('../../../ol/ol/proj/epsg4326projection.js', ['ol.proj.EPSG4326'], ['ol.proj', 'ol.proj.Projection', 'ol.proj.Units'], false);
+goog.addDependency('../../../ol/ol/proj/epsg4326projection.js', ['ol.proj.EPSG4326'], ['ol.proj', 'ol.proj.Projection', 'ol.proj.Units', 'ol.sphere.WGS84'], false);
 goog.addDependency('../../../ol/ol/proj/proj.js', ['ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.ProjectionLike', 'ol.proj.Units'], ['goog.asserts', 'goog.object', 'ol', 'ol.Extent', 'ol.TransformFunction', 'ol.extent', 'ol.sphere.NORMAL'], false);
 goog.addDependency('../../../ol/ol/raster/operation.js', ['ol.raster.Operation', 'ol.raster.OperationType'], [], false);
 goog.addDependency('../../../ol/ol/raster/pixel.js', ['ol.raster.Pixel'], [], false);
