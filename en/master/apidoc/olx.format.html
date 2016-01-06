@@ -477,6 +477,8 @@
             
                 <li data-name="ol.DragBoxEvent#coordinate"><a href="ol.DragBoxEvent.html#coordinate">coordinate</a></li>
             
+                <li data-name="ol.DragBoxEvent#mapBrowserEvent"><a href="ol.DragBoxEvent.html#mapBrowserEvent">mapBrowserEvent</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -9554,6 +9556,10 @@
                     <a href="ol.proj.html#.getTransform">getTransform</a>
                 </li>
             
+                <li data-name="ol.proj.setProj4" class="unstable">
+                    <a href="ol.proj.html#.setProj4">setProj4</a>
+                </li>
+            
                 <li data-name="ol.proj.toLonLat" class="">
                     <a href="ol.proj.html#.toLonLat">toLonLat</a>
                 </li>
@@ -15214,6 +15220,8 @@ the default provided.</p></td>
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -15233,11 +15241,22 @@ the default provided.</p></td>
             
                 
 <span class="param-type">function</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
             </td>
             
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
             
             
             
@@ -15247,7 +15266,7 @@ To prevent memory leaks, this callback function must
 not store any references to the node. Note that the <code>extensions</code>
 node is not allowed in GPX 1.0. Moreover, only <code>extensions</code>
 nodes from <code>wpt</code>, <code>rte</code> and <code>trk</code> can be processed, as those are
-directly mapped to a feature. <span class="required-option">Required.</span></p></td>
+directly mapped to a feature.</p></td>
         </tr>
 	
 	
@@ -15879,6 +15898,9 @@ layers.</p></td>
             
                 
 <span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -15886,6 +15908,8 @@ layers.</p></td>
             
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
                     
                 
@@ -15895,7 +15919,7 @@ layers.</p></td>
             
             
             <td class="description last"><p>The factor by which the coordinates values will be scaled.
-Default is <code>1e5</code>. <span class="required-option">Required.</span></p></td>
+Default is <code>1e5</code>.</p></td>
         </tr>
 	
 	

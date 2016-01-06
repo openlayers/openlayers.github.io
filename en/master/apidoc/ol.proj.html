@@ -477,6 +477,8 @@
             
                 <li data-name="ol.DragBoxEvent#coordinate"><a href="ol.DragBoxEvent.html#coordinate">coordinate</a></li>
             
+                <li data-name="ol.DragBoxEvent#mapBrowserEvent"><a href="ol.DragBoxEvent.html#mapBrowserEvent">mapBrowserEvent</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -9554,6 +9556,10 @@
                     <a href="ol.proj.html#.getTransform">getTransform</a>
                 </li>
             
+                <li data-name="ol.proj.setProj4" class="unstable">
+                    <a href="ol.proj.html#.setProj4">setProj4</a>
+                </li>
+            
                 <li data-name="ol.proj.toLonLat" class="">
                     <a href="ol.proj.html#.toLonLat">toLonLat</a>
                 </li>
@@ -14681,7 +14687,7 @@ this.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 540
+            src/ol/proj/proj.js, line 571
         </div>
         
         
@@ -14890,7 +14896,7 @@ extents and coordinate arrays.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 415
+            src/ol/proj/proj.js, line 446
         </div>
         
         
@@ -15013,7 +15019,7 @@ to transform between projections with equal meaning.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 458
+            src/ol/proj/proj.js, line 489
         </div>
         
         
@@ -15136,7 +15142,7 @@ looked up by their code.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 619
+            src/ol/proj/proj.js, line 650
         </div>
         
         
@@ -15294,7 +15300,7 @@ Coordinate projected to the target projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 649
+            src/ol/proj/proj.js, line 680
         </div>
         
         
@@ -15427,7 +15433,7 @@ Projection object, or null if not in list.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 702
+            src/ol/proj/proj.js, line 736
         </div>
         
         
@@ -15574,6 +15580,135 @@ Transform function.
 
         
             
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id=".setProj4">
+            ol.proj.setProj4<span class="signature">(proj4)</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/proj/proj.js, line 431
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Register proj4. If not explicitly registered, it will be assumed that
+proj4js will be loaded in the global namespace. For example in a
+browserify ES6 environment you could use:</p>
+<pre class="prettyprint source"><code>import ol from 'openlayers';
+import proj4 from 'proj4';
+ol.proj.setProj4(proj4);</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>proj4</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">proj4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Proj4.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
 <dt class="">
     <div class="nameContainer">
         
@@ -15585,7 +15720,7 @@ Transform function.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 634
+            src/ol/proj/proj.js, line 665
         </div>
         
         
@@ -15743,7 +15878,7 @@ Coordinate as longitude and latitude, i.e. an array
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 790
+            src/ol/proj/proj.js, line 824
         </div>
         
         
@@ -15928,7 +16063,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 806
+            src/ol/proj/proj.js, line 840
         </div>
         
         

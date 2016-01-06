@@ -20,7 +20,6 @@ goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.renderer.vector');
 goog.require('ol.size');
 goog.require('ol.source.VectorTile');
-goog.require('ol.tilecoord');
 goog.require('ol.vec.Mat4');
 
 
@@ -94,7 +93,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame =
   var source = layer.getSource();
   goog.asserts.assertInstanceof(source, ol.source.VectorTile,
       'Source is an ol.source.VectorTile');
-  var tilePixelRatio = source.getTilePixelRatio();
+  var tilePixelRatio = source.getTilePixelRatio(pixelRatio);
   var maxScale = tilePixelRatio / pixelRatio;
 
   var transform = this.getTransform(frameState, 0);
@@ -240,7 +239,8 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
     extent = tileGrid.getTileCoordExtent(tileCoord);
   }
   var resolution = tileGrid.getResolution(tileCoord[0]);
-  var tileResolution = pixelSpace ? source.getTilePixelRatio() : resolution;
+  var tileResolution =
+      pixelSpace ? source.getTilePixelRatio(pixelRatio) : resolution;
   replayState.dirty = false;
   var replayGroup = new ol.render.canvas.ReplayGroup(0, extent,
       tileResolution, layer.getRenderBuffer());
@@ -294,6 +294,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
  */
 ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate =
     function(coordinate, frameState, callback, thisArg) {
+  var pixelRatio = frameState.pixelRatio;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var layer = this.getLayer();
@@ -319,7 +320,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate =
     }
     if (tile.getProjection().getUnits() === ol.proj.Units.TILE_PIXELS) {
       origin = ol.extent.getTopLeft(tileExtent);
-      tilePixelRatio = source.getTilePixelRatio();
+      tilePixelRatio = source.getTilePixelRatio(pixelRatio);
       tileResolution = tileGrid.getResolution(tileCoord[0]) / tilePixelRatio;
       tileSpaceCoordinate = [
         (coordinate[0] - origin[0]) / tileResolution,
@@ -437,7 +438,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.prepareFrame =
       if (tileState == ol.TileState.LOADED ||
           tileState == ol.TileState.EMPTY ||
           (tileState == ol.TileState.ERROR && !useInterimTilesOnError)) {
-        tilesToDrawByZ[z][ol.tilecoord.toString(tile.tileCoord)] = tile;
+        tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
         continue;
       }
 

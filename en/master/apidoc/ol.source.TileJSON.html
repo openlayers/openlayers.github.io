@@ -477,6 +477,8 @@
             
                 <li data-name="ol.DragBoxEvent#coordinate"><a href="ol.DragBoxEvent.html#coordinate">coordinate</a></li>
             
+                <li data-name="ol.DragBoxEvent#mapBrowserEvent"><a href="ol.DragBoxEvent.html#mapBrowserEvent">mapBrowserEvent</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -9554,6 +9556,10 @@
                     <a href="ol.proj.html#.getTransform">getTransform</a>
                 </li>
             
+                <li data-name="ol.proj.setProj4" class="unstable">
+                    <a href="ol.proj.html#.setProj4">setProj4</a>
+                </li>
+            
                 <li data-name="ol.proj.toLonLat" class="">
                     <a href="ol.proj.html#.toLonLat">toLonLat</a>
                 </li>
@@ -14525,7 +14531,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilejsonsource.js, line 31
+            src/ol/source/tilejsonsource.js, line 32
         </div>
         
         
@@ -14754,6 +14760,39 @@ Higher values can increase reprojection performance, but decrease precision.</p>
 
                 
                 <p>URL to the TileJSON file. <span class="required-option">Required.</span></p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>useXhr</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Use XmlHttpRequest to load the TileJSON. Default is <code>false</code>.</p></td>
         </tr>
 	
 	
