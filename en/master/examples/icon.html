@@ -79,7 +79,7 @@ var vectorLayer &#x3D; new ol.layer.Vector({
 
 var rasterLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
-    url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp&#x27;,
+    url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;,
     crossOrigin: &#x27;&#x27;
   })
 });
@@ -188,7 +188,7 @@ map.on(&#x27;pointermove&#x27;, function(e) {
 
       var rasterLayer &#x3D; new ol.layer.Tile({
         source: new ol.source.TileJSON({
-          url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp&#x27;,
+          url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;,
           crossOrigin: &#x27;&#x27;
         })
       });

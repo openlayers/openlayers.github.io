@@ -93,7 +93,7 @@ var map &#x3D; new ol.Map({
     new ol.layer.Tile({
       source: new ol.source.TileJSON({
         url: &#x27;http://api.tiles.mapbox.com/v3/&#x27; +
-            &#x27;mapbox.natural-earth-hypso-bathy.jsonp&#x27;,
+            &#x27;mapbox.natural-earth-hypso-bathy.json&#x27;,
         crossOrigin: &#x27;anonymous&#x27;
       })
     })
@@ -269,7 +269,7 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
           new ol.layer.Tile({
             source: new ol.source.TileJSON({
               url: &#x27;http://api.tiles.mapbox.com/v3/&#x27; +
-                  &#x27;mapbox.natural-earth-hypso-bathy.jsonp&#x27;,
+                  &#x27;mapbox.natural-earth-hypso-bathy.json&#x27;,
               crossOrigin: &#x27;anonymous&#x27;
             })
           })
