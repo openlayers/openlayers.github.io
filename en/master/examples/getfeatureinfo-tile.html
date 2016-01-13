@@ -88,7 +88,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     return;
   }
   var pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  var hit &#x3D; map.forEachLayerAtPixel(pixel, function(layer) {
+  var hit &#x3D; map.forEachLayerAtPixel(pixel, function() {
     return true;
   });
   map.getTargetElement().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
@@ -151,7 +151,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
           return;
         }
         var pixel &#x3D; map.getEventPixel(evt.originalEvent);
-        var hit &#x3D; map.forEachLayerAtPixel(pixel, function(layer) {
+        var hit &#x3D; map.forEachLayerAtPixel(pixel, function() {
           return true;
         });
         map.getTargetElement().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;

@@ -49,7 +49,7 @@
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
           <textarea class="hidden" name="js">var format &#x3D; new ol.format.TopoJSON();
-var tileGrid &#x3D; ol.tilegrid.createXYZ({ maxZoom: 19 });
+var tileGrid &#x3D; ol.tilegrid.createXYZ({maxZoom: 19});
 var roadStyleCache &#x3D; {};
 var roadColor &#x3D; {
   &#x27;major_road&#x27;: &#x27;#776&#x27;,
@@ -90,7 +90,7 @@ var map &#x3D; new ol.Map({
         url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
             &#x27;vectiles-highroad/{z}/{x}/{y}.topojson&#x27;
       }),
-      style: function(feature, resolution) {
+      style: function(feature) {
         var kind &#x3D; feature.get(&#x27;kind&#x27;);
         var railway &#x3D; feature.get(&#x27;railway&#x27;);
         var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
@@ -136,7 +136,7 @@ var map &#x3D; new ol.Map({
             &#x27;vectiles-land-usages/{z}/{x}/{y}.topojson&#x27;
       }),
       visible: false,
-      style: function(feature, resolution) {
+      style: function(feature) {
         var kind &#x3D; feature.get(&#x27;kind&#x27;);
         var styleKey &#x3D; kind;
         var style &#x3D; landuseStyleCache[styleKey];
@@ -203,7 +203,7 @@ var map &#x3D; new ol.Map({
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
       var format &#x3D; new ol.format.TopoJSON();
-      var tileGrid &#x3D; ol.tilegrid.createXYZ({ maxZoom: 19 });
+      var tileGrid &#x3D; ol.tilegrid.createXYZ({maxZoom: 19});
       var roadStyleCache &#x3D; {};
       var roadColor &#x3D; {
         &#x27;major_road&#x27;: &#x27;#776&#x27;,
@@ -244,7 +244,7 @@ var map &#x3D; new ol.Map({
               url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
                   &#x27;vectiles-highroad/{z}/{x}/{y}.topojson&#x27;
             }),
-            style: function(feature, resolution) {
+            style: function(feature) {
               var kind &#x3D; feature.get(&#x27;kind&#x27;);
               var railway &#x3D; feature.get(&#x27;railway&#x27;);
               var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
@@ -290,7 +290,7 @@ var map &#x3D; new ol.Map({
                   &#x27;vectiles-land-usages/{z}/{x}/{y}.topojson&#x27;
             }),
             visible: false,
-            style: function(feature, resolution) {
+            style: function(feature) {
               var kind &#x3D; feature.get(&#x27;kind&#x27;);
               var styleKey &#x3D; kind;
               var style &#x3D; landuseStyleCache[styleKey];

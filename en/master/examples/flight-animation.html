@@ -71,6 +71,14 @@ var defaultStyle &#x3D; new ol.style.Style({
   stroke: defaultStroke
 });
 
+var flightsSource;
+var addLater &#x3D; function(feature, timeout) {
+  window.setTimeout(function() {
+    feature.set(&#x27;start&#x27;, new Date().getTime());
+    flightsSource.addFeature(feature);
+  }, timeout);
+};
+
 var pointsPerMs &#x3D; 0.1;
 var animateFlights &#x3D; function(event) {
   var vectorContext &#x3D; event.vectorContext;
@@ -102,20 +110,13 @@ var animateFlights &#x3D; function(event) {
   map.render();
 };
 
-var addLater &#x3D; function(feature, timeout) {
-  window.setTimeout(function() {
-    feature.set(&#x27;start&#x27;, new Date().getTime());
-    flightsSource.addFeature(feature);
-  }, timeout);
-};
-
-var flightsSource &#x3D; new ol.source.Vector({
+flightsSource &#x3D; new ol.source.Vector({
   wrapX: false,
   attributions: [new ol.Attribution({
     html: &#x27;Flight data by &#x27; +
         &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;
   })],
-  loader: function(extent, resolution, projection) {
+  loader: function() {
     var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
     fetch(url).then(function(response) {
       return response.json();
@@ -152,7 +153,7 @@ var flightsSource &#x3D; new ol.source.Vector({
 
 var flightsLayer &#x3D; new ol.layer.Vector({
   source: flightsSource,
-  style: function(feature, resolution) {
+  style: function(feature) {
     // if the animation is still active for a feature, do not
     // render the feature with the layer style
     if (feature.get(&#x27;finished&#x27;)) {
@@ -204,6 +205,14 @@ map.addLayer(flightsLayer);
         stroke: defaultStroke
       });
 
+      var flightsSource;
+      var addLater &#x3D; function(feature, timeout) {
+        window.setTimeout(function() {
+          feature.set(&#x27;start&#x27;, new Date().getTime());
+          flightsSource.addFeature(feature);
+        }, timeout);
+      };
+
       var pointsPerMs &#x3D; 0.1;
       var animateFlights &#x3D; function(event) {
         var vectorContext &#x3D; event.vectorContext;
@@ -235,20 +244,13 @@ map.addLayer(flightsLayer);
         map.render();
       };
 
-      var addLater &#x3D; function(feature, timeout) {
-        window.setTimeout(function() {
-          feature.set(&#x27;start&#x27;, new Date().getTime());
-          flightsSource.addFeature(feature);
-        }, timeout);
-      };
-
-      var flightsSource &#x3D; new ol.source.Vector({
+      flightsSource &#x3D; new ol.source.Vector({
         wrapX: false,
         attributions: [new ol.Attribution({
           html: &#x27;Flight data by &#x27; +
               &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;
         })],
-        loader: function(extent, resolution, projection) {
+        loader: function() {
           var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
           fetch(url).then(function(response) {
             return response.json();
@@ -285,7 +287,7 @@ map.addLayer(flightsLayer);
 
       var flightsLayer &#x3D; new ol.layer.Vector({
         source: flightsSource,
-        style: function(feature, resolution) {
+        style: function(feature) {
           // if the animation is still active for a feature, do not
           // render the feature with the layer style
           if (feature.get(&#x27;finished&#x27;)) {

@@ -60,7 +60,6 @@ var app &#x3D; window.app;
 //
 
 
-
 /**
  * @constructor
  * @extends {ol.control.Control}
@@ -74,7 +73,7 @@ app.RotateNorthControl &#x3D; function(opt_options) {
   button.innerHTML &#x3D; &#x27;N&#x27;;
 
   var this_ &#x3D; this;
-  var handleRotateNorth &#x3D; function(e) {
+  var handleRotateNorth &#x3D; function() {
     this_.getMap().getView().setRotation(0);
   };
 
@@ -164,7 +163,6 @@ var map &#x3D; new ol.Map({
       //
 
 
-
       /**
        * @constructor
        * @extends {ol.control.Control}
@@ -178,7 +176,7 @@ var map &#x3D; new ol.Map({
         button.innerHTML &#x3D; &#x27;N&#x27;;
 
         var this_ &#x3D; this;
-        var handleRotateNorth &#x3D; function(e) {
+        var handleRotateNorth &#x3D; function() {
           this_.getMap().getView().setRotation(0);
         };
 

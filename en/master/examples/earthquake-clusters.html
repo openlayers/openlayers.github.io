@@ -87,7 +87,7 @@ function createEarthquakeStyle(feature) {
   });
 }
 
-var maxFeatureCount;
+var maxFeatureCount, vector;
 function calculateClusterInfo(resolution) {
   maxFeatureCount &#x3D; 0;
   var features &#x3D; vector.getSource().getFeatures();
@@ -96,7 +96,8 @@ function calculateClusterInfo(resolution) {
     feature &#x3D; features[i];
     var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
     var extent &#x3D; ol.extent.createEmpty();
-    for (var j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
+    var j, jj;
+    for (j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
       ol.extent.extend(extent, originalFeatures[j].getGeometry().getExtent());
     }
     maxFeatureCount &#x3D; Math.max(maxFeatureCount, jj);
@@ -135,7 +136,7 @@ function styleFunction(feature, resolution) {
   return style;
 }
 
-function selectStyleFunction(feature, resolution) {
+function selectStyleFunction(feature) {
   var styles &#x3D; [new ol.style.Style({
     image: new ol.style.Circle({
       radius: feature.get(&#x27;radius&#x27;),
@@ -151,7 +152,7 @@ function selectStyleFunction(feature, resolution) {
   return styles;
 }
 
-var vector &#x3D; new ol.layer.Vector({
+vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Cluster({
     distance: 40,
     source: new ol.source.Vector({
@@ -281,7 +282,7 @@ var map &#x3D; new ol.Map({
         });
       }
 
-      var maxFeatureCount;
+      var maxFeatureCount, vector;
       function calculateClusterInfo(resolution) {
         maxFeatureCount &#x3D; 0;
         var features &#x3D; vector.getSource().getFeatures();
@@ -290,7 +291,8 @@ var map &#x3D; new ol.Map({
           feature &#x3D; features[i];
           var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
           var extent &#x3D; ol.extent.createEmpty();
-          for (var j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
+          var j, jj;
+          for (j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
             ol.extent.extend(extent, originalFeatures[j].getGeometry().getExtent());
           }
           maxFeatureCount &#x3D; Math.max(maxFeatureCount, jj);
@@ -329,7 +331,7 @@ var map &#x3D; new ol.Map({
         return style;
       }
 
-      function selectStyleFunction(feature, resolution) {
+      function selectStyleFunction(feature) {
         var styles &#x3D; [new ol.style.Style({
           image: new ol.style.Circle({
             radius: feature.get(&#x27;radius&#x27;),
@@ -345,7 +347,7 @@ var map &#x3D; new ol.Map({
         return styles;
       }
 
-      var vector &#x3D; new ol.layer.Vector({
+      vector &#x3D; new ol.layer.Vector({
         source: new ol.source.Cluster({
           distance: 40,
           source: new ol.source.Vector({

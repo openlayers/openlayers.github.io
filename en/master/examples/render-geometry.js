@@ -1,8 +1,8 @@
 var canvas = document.getElementById('canvas');
 var render = ol.render.toContext(canvas.getContext('2d'), {size: [100, 100]});
 
-var fill = new ol.style.Fill({ color: 'blue' });
-var stroke = new ol.style.Stroke({ color: 'black' });
+var fill = new ol.style.Fill({color: 'blue'});
+var stroke = new ol.style.Stroke({color: 'black'});
 render.setFillStrokeStyle(fill, stroke);
 render.setImageStyle(new ol.style.Circle({
   radius: 10,

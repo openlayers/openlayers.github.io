@@ -1,5 +1,3 @@
-var projection = ol.proj.get('EPSG:3857');
-
 var raster = new ol.layer.Tile({
   source: new ol.source.BingMaps({
     imagerySet: 'Aerial',
@@ -39,7 +37,7 @@ var vector = new ol.layer.Vector({
     url: 'data/gpx/fells_loop.gpx',
     format: new ol.format.GPX()
   }),
-  style: function(feature, resolution) {
+  style: function(feature) {
     return style[feature.getGeometry().getType()];
   }
 });
@@ -55,7 +53,7 @@ var map = new ol.Map({
 
 var displayFeatureInfo = function(pixel) {
   var features = [];
-  map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  map.forEachFeatureAtPixel(pixel, function(feature) {
     features.push(feature);
   });
   if (features.length > 0) {

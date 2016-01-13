@@ -519,7 +519,8 @@ String.prototype.trunc &#x3D; String.prototype.trunc ||
 function stringDivider(str, width, spaceReplacer) {
   if (str.length &gt; width) {
     var p &#x3D; width;
-    for (; p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;); p--) {
+    while (p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;)) {
+      p--;
     }
     if (p &gt; 0) {
       var left;
@@ -1382,7 +1383,8 @@ function stringDivider(str, width, spaceReplacer) {
       function stringDivider(str, width, spaceReplacer) {
         if (str.length &gt; width) {
           var p &#x3D; width;
-          for (; p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;); p--) {
+          while (p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;)) {
+            p--;
           }
           if (p &gt; 0) {
             var left;

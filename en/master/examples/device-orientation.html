@@ -90,7 +90,7 @@ el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
   deviceOrientation.setTracking(this.checked);
 });
 
-deviceOrientation.on(&#x27;change&#x27;, function(event) {
+deviceOrientation.on(&#x27;change&#x27;, function() {
   el(&#x27;alpha&#x27;).innerText &#x3D; deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
   el(&#x27;beta&#x27;).innerText &#x3D; deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
   el(&#x27;gamma&#x27;).innerText &#x3D; deviceOrientation.getGamma() + &#x27; [rad]&#x27;;
@@ -178,7 +178,7 @@ deviceOrientation.on([&#x27;change:beta&#x27;, &#x27;change:gamma&#x27;], functi
         deviceOrientation.setTracking(this.checked);
       });
 
-      deviceOrientation.on(&#x27;change&#x27;, function(event) {
+      deviceOrientation.on(&#x27;change&#x27;, function() {
         el(&#x27;alpha&#x27;).innerText &#x3D; deviceOrientation.getAlpha() + &#x27; [rad]&#x27;;
         el(&#x27;beta&#x27;).innerText &#x3D; deviceOrientation.getBeta() + &#x27; [rad]&#x27;;
         el(&#x27;gamma&#x27;).innerText &#x3D; deviceOrientation.getGamma() + &#x27; [rad]&#x27;;

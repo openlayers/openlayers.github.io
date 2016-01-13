@@ -74,7 +74,7 @@ var vectorSource = new ol.source.Vector({
 
 var vector = new ol.layer.Vector({
   source: vectorSource,
-  style: function(feature, resolution) {
+  style: function(feature) {
     var classify = feature.get('activeprod');
     return styleCache[classify];
   }
@@ -105,7 +105,7 @@ var map = new ol.Map({
 
 var displayFeatureInfo = function(pixel) {
   var features = [];
-  map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  map.forEachFeatureAtPixel(pixel, function(feature) {
     features.push(feature);
   });
   if (features.length > 0) {

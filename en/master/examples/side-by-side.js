@@ -1,4 +1,4 @@
-var domMap = new ol.Map({
+var map1 = new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.MapQuest({layer: 'sat'})
@@ -12,12 +12,18 @@ var domMap = new ol.Map({
   })
 });
 
+var map2 = new ol.Map({
+  target: 'canvasMap',
+  layers: map1.getLayers(),
+  view: map1.getView()
+});
+
 if (ol.has.WEBGL) {
-  var webglMap = new ol.Map({
+  var map3 = new ol.Map({
     renderer: 'webgl',
     target: 'webglMap',
-    layers: domMap.getLayers(),
-    view: domMap.getView()
+    layers: map1.getLayers(),
+    view: map1.getView()
   });
 } else {
   var info = document.getElementById('no-webgl');
@@ -26,9 +32,3 @@ if (ol.has.WEBGL) {
    */
   info.style.display = '';
 }
-
-var canvasMap = new ol.Map({
-  target: 'canvasMap',
-  layers: domMap.getLayers(),
-  view: domMap.getView()
-});

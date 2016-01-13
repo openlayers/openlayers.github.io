@@ -103,6 +103,8 @@ var modify &#x3D; new ol.interaction.Modify({
 map.addInteraction(modify);
 
 var draw; // global so we can remove it later
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+
 function addInteraction() {
   draw &#x3D; new ol.interaction.Draw({
     features: features,
@@ -111,14 +113,11 @@ function addInteraction() {
   map.addInteraction(draw);
 }
 
-var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
-
 
 /**
- * Let user change the geometry type.
- * @param {Event} e Change event.
+ * Handle change event.
  */
-typeSelect.onchange &#x3D; function(e) {
+typeSelect.onchange &#x3D; function() {
   map.removeInteraction(draw);
   addInteraction();
 };
@@ -204,6 +203,8 @@ addInteraction();
       map.addInteraction(modify);
 
       var draw; // global so we can remove it later
+      var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+
       function addInteraction() {
         draw &#x3D; new ol.interaction.Draw({
           features: features,
@@ -212,14 +213,11 @@ addInteraction();
         map.addInteraction(draw);
       }
 
-      var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
-
 
       /**
-       * Let user change the geometry type.
-       * @param {Event} e Change event.
+       * Handle change event.
        */
-      typeSelect.onchange &#x3D; function(e) {
+      typeSelect.onchange &#x3D; function() {
         map.removeInteraction(draw);
         addInteraction();
       };

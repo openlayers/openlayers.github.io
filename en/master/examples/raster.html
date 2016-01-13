@@ -119,6 +119,12 @@ var bing &#x3D; new ol.source.BingMaps({
  */
 var raster &#x3D; new ol.source.Raster({
   sources: [bing],
+  /**
+   * Run calculations on pixel data.
+   * @param {Array} pixels List of pixels (one per source).
+   * @param {Object} data User data object.
+   * @return {Array} The output pixel.
+   */
   operation: function(pixels, data) {
     var pixel &#x3D; pixels[0];
     var value &#x3D; vgi(pixel);
@@ -399,6 +405,12 @@ function message(value, area) {
        */
       var raster &#x3D; new ol.source.Raster({
         sources: [bing],
+        /**
+         * Run calculations on pixel data.
+         * @param {Array} pixels List of pixels (one per source).
+         * @param {Object} data User data object.
+         * @return {Array} The output pixel.
+         */
         operation: function(pixels, data) {
           var pixel &#x3D; pixels[0];
           var value &#x3D; vgi(pixel);

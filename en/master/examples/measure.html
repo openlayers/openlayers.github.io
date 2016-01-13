@@ -138,7 +138,7 @@ var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 /**
  * Handle pointer move.
- * @param {ol.MapBrowserEvent} evt
+ * @param {ol.MapBrowserEvent} evt The event.
  */
 var pointerMoveHandler &#x3D; function(evt) {
   if (evt.dragging) {
@@ -182,6 +182,66 @@ var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 var geodesicCheckbox &#x3D; document.getElementById(&#x27;geodesic&#x27;);
 
 var draw; // global so we can remove it later
+
+
+/**
+ * Format length output.
+ * @param {ol.geom.LineString} line The line.
+ * @return {string} The formatted length.
+ */
+var formatLength &#x3D; function(line) {
+  var length;
+  if (geodesicCheckbox.checked) {
+    var coordinates &#x3D; line.getCoordinates();
+    length &#x3D; 0;
+    var sourceProj &#x3D; map.getView().getProjection();
+    for (var i &#x3D; 0, ii &#x3D; coordinates.length - 1; i &lt; ii; ++i) {
+      var c1 &#x3D; ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
+      var c2 &#x3D; ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
+      length +&#x3D; wgs84Sphere.haversineDistance(c1, c2);
+    }
+  } else {
+    length &#x3D; Math.round(line.getLength() * 100) / 100;
+  }
+  var output;
+  if (length &gt; 100) {
+    output &#x3D; (Math.round(length / 1000 * 100) / 100) +
+        &#x27; &#x27; + &#x27;km&#x27;;
+  } else {
+    output &#x3D; (Math.round(length * 100) / 100) +
+        &#x27; &#x27; + &#x27;m&#x27;;
+  }
+  return output;
+};
+
+
+/**
+ * Format length output.
+ * @param {ol.geom.Polygon} polygon The polygon.
+ * @return {string} Formatted area.
+ */
+var formatArea &#x3D; function(polygon) {
+  var area;
+  if (geodesicCheckbox.checked) {
+    var sourceProj &#x3D; map.getView().getProjection();
+    var geom &#x3D; /** @type {ol.geom.Polygon} */(polygon.clone().transform(
+        sourceProj, &#x27;EPSG:4326&#x27;));
+    var coordinates &#x3D; geom.getLinearRing(0).getCoordinates();
+    area &#x3D; Math.abs(wgs84Sphere.geodesicArea(coordinates));
+  } else {
+    area &#x3D; polygon.getArea();
+  }
+  var output;
+  if (area &gt; 10000) {
+    output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
+        &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
+  } else {
+    output &#x3D; (Math.round(area * 100) / 100) +
+        &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
+  }
+  return output;
+};
+
 function addInteraction() {
   var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
   draw &#x3D; new ol.interaction.Draw({
@@ -228,7 +288,7 @@ function addInteraction() {
             output &#x3D; formatArea(/** @type {ol.geom.Polygon} */ (geom));
             tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
           } else if (geom instanceof ol.geom.LineString) {
-            output &#x3D; formatLength( /** @type {ol.geom.LineString} */ (geom));
+            output &#x3D; formatLength(/** @type {ol.geom.LineString} */ (geom));
             tooltipCoord &#x3D; geom.getLastCoordinate();
           }
           measureTooltipElement.innerHTML &#x3D; output;
@@ -237,7 +297,7 @@ function addInteraction() {
       }, this);
 
   draw.on(&#x27;drawend&#x27;,
-      function(evt) {
+      function() {
         measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
         measureTooltip.setOffset([0, -7]);
         // unset sketch
@@ -288,70 +348,10 @@ function createMeasureTooltip() {
 
 /**
  * Let user change the geometry type.
- * @param {Event} e Change event.
  */
-typeSelect.onchange &#x3D; function(e) {
+typeSelect.onchange &#x3D; function() {
   map.removeInteraction(draw);
   addInteraction();
-};
-
-
-/**
- * format length output
- * @param {ol.geom.LineString} line
- * @return {string}
- */
-var formatLength &#x3D; function(line) {
-  var length;
-  if (geodesicCheckbox.checked) {
-    var coordinates &#x3D; line.getCoordinates();
-    length &#x3D; 0;
-    var sourceProj &#x3D; map.getView().getProjection();
-    for (var i &#x3D; 0, ii &#x3D; coordinates.length - 1; i &lt; ii; ++i) {
-      var c1 &#x3D; ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
-      var c2 &#x3D; ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
-      length +&#x3D; wgs84Sphere.haversineDistance(c1, c2);
-    }
-  } else {
-    length &#x3D; Math.round(line.getLength() * 100) / 100;
-  }
-  var output;
-  if (length &gt; 100) {
-    output &#x3D; (Math.round(length / 1000 * 100) / 100) +
-        &#x27; &#x27; + &#x27;km&#x27;;
-  } else {
-    output &#x3D; (Math.round(length * 100) / 100) +
-        &#x27; &#x27; + &#x27;m&#x27;;
-  }
-  return output;
-};
-
-
-/**
- * format length output
- * @param {ol.geom.Polygon} polygon
- * @return {string}
- */
-var formatArea &#x3D; function(polygon) {
-  var area;
-  if (geodesicCheckbox.checked) {
-    var sourceProj &#x3D; map.getView().getProjection();
-    var geom &#x3D; /** @type {ol.geom.Polygon} */(polygon.clone().transform(
-        sourceProj, &#x27;EPSG:4326&#x27;));
-    var coordinates &#x3D; geom.getLinearRing(0).getCoordinates();
-    area &#x3D; Math.abs(wgs84Sphere.geodesicArea(coordinates));
-  } else {
-    area &#x3D; polygon.getArea();
-  }
-  var output;
-  if (area &gt; 10000) {
-    output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
-        &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
-  } else {
-    output &#x3D; (Math.round(area * 100) / 100) +
-        &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
-  }
-  return output;
 };
 
 addInteraction();
@@ -538,7 +538,7 @@ addInteraction();
 
       /**
        * Handle pointer move.
-       * @param {ol.MapBrowserEvent} evt
+       * @param {ol.MapBrowserEvent} evt The event.
        */
       var pointerMoveHandler &#x3D; function(evt) {
         if (evt.dragging) {
@@ -582,6 +582,66 @@ addInteraction();
       var geodesicCheckbox &#x3D; document.getElementById(&#x27;geodesic&#x27;);
 
       var draw; // global so we can remove it later
+
+
+      /**
+       * Format length output.
+       * @param {ol.geom.LineString} line The line.
+       * @return {string} The formatted length.
+       */
+      var formatLength &#x3D; function(line) {
+        var length;
+        if (geodesicCheckbox.checked) {
+          var coordinates &#x3D; line.getCoordinates();
+          length &#x3D; 0;
+          var sourceProj &#x3D; map.getView().getProjection();
+          for (var i &#x3D; 0, ii &#x3D; coordinates.length - 1; i &lt; ii; ++i) {
+            var c1 &#x3D; ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
+            var c2 &#x3D; ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
+            length +&#x3D; wgs84Sphere.haversineDistance(c1, c2);
+          }
+        } else {
+          length &#x3D; Math.round(line.getLength() * 100) / 100;
+        }
+        var output;
+        if (length &gt; 100) {
+          output &#x3D; (Math.round(length / 1000 * 100) / 100) +
+              &#x27; &#x27; + &#x27;km&#x27;;
+        } else {
+          output &#x3D; (Math.round(length * 100) / 100) +
+              &#x27; &#x27; + &#x27;m&#x27;;
+        }
+        return output;
+      };
+
+
+      /**
+       * Format length output.
+       * @param {ol.geom.Polygon} polygon The polygon.
+       * @return {string} Formatted area.
+       */
+      var formatArea &#x3D; function(polygon) {
+        var area;
+        if (geodesicCheckbox.checked) {
+          var sourceProj &#x3D; map.getView().getProjection();
+          var geom &#x3D; /** @type {ol.geom.Polygon} */(polygon.clone().transform(
+              sourceProj, &#x27;EPSG:4326&#x27;));
+          var coordinates &#x3D; geom.getLinearRing(0).getCoordinates();
+          area &#x3D; Math.abs(wgs84Sphere.geodesicArea(coordinates));
+        } else {
+          area &#x3D; polygon.getArea();
+        }
+        var output;
+        if (area &gt; 10000) {
+          output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
+              &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
+        } else {
+          output &#x3D; (Math.round(area * 100) / 100) +
+              &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
+        }
+        return output;
+      };
+
       function addInteraction() {
         var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
         draw &#x3D; new ol.interaction.Draw({
@@ -628,7 +688,7 @@ addInteraction();
                   output &#x3D; formatArea(/** @type {ol.geom.Polygon} */ (geom));
                   tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
                 } else if (geom instanceof ol.geom.LineString) {
-                  output &#x3D; formatLength( /** @type {ol.geom.LineString} */ (geom));
+                  output &#x3D; formatLength(/** @type {ol.geom.LineString} */ (geom));
                   tooltipCoord &#x3D; geom.getLastCoordinate();
                 }
                 measureTooltipElement.innerHTML &#x3D; output;
@@ -637,7 +697,7 @@ addInteraction();
             }, this);
 
         draw.on(&#x27;drawend&#x27;,
-            function(evt) {
+            function() {
               measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
               measureTooltip.setOffset([0, -7]);
               // unset sketch
@@ -688,70 +748,10 @@ addInteraction();
 
       /**
        * Let user change the geometry type.
-       * @param {Event} e Change event.
        */
-      typeSelect.onchange &#x3D; function(e) {
+      typeSelect.onchange &#x3D; function() {
         map.removeInteraction(draw);
         addInteraction();
-      };
-
-
-      /**
-       * format length output
-       * @param {ol.geom.LineString} line
-       * @return {string}
-       */
-      var formatLength &#x3D; function(line) {
-        var length;
-        if (geodesicCheckbox.checked) {
-          var coordinates &#x3D; line.getCoordinates();
-          length &#x3D; 0;
-          var sourceProj &#x3D; map.getView().getProjection();
-          for (var i &#x3D; 0, ii &#x3D; coordinates.length - 1; i &lt; ii; ++i) {
-            var c1 &#x3D; ol.proj.transform(coordinates[i], sourceProj, &#x27;EPSG:4326&#x27;);
-            var c2 &#x3D; ol.proj.transform(coordinates[i + 1], sourceProj, &#x27;EPSG:4326&#x27;);
-            length +&#x3D; wgs84Sphere.haversineDistance(c1, c2);
-          }
-        } else {
-          length &#x3D; Math.round(line.getLength() * 100) / 100;
-        }
-        var output;
-        if (length &gt; 100) {
-          output &#x3D; (Math.round(length / 1000 * 100) / 100) +
-              &#x27; &#x27; + &#x27;km&#x27;;
-        } else {
-          output &#x3D; (Math.round(length * 100) / 100) +
-              &#x27; &#x27; + &#x27;m&#x27;;
-        }
-        return output;
-      };
-
-
-      /**
-       * format length output
-       * @param {ol.geom.Polygon} polygon
-       * @return {string}
-       */
-      var formatArea &#x3D; function(polygon) {
-        var area;
-        if (geodesicCheckbox.checked) {
-          var sourceProj &#x3D; map.getView().getProjection();
-          var geom &#x3D; /** @type {ol.geom.Polygon} */(polygon.clone().transform(
-              sourceProj, &#x27;EPSG:4326&#x27;));
-          var coordinates &#x3D; geom.getLinearRing(0).getCoordinates();
-          area &#x3D; Math.abs(wgs84Sphere.geodesicArea(coordinates));
-        } else {
-          area &#x3D; polygon.getArea();
-        }
-        var output;
-        if (area &gt; 10000) {
-          output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
-              &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
-        } else {
-          output &#x3D; (Math.round(area * 100) / 100) +
-              &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
-        }
-        return output;
       };
 
       addInteraction();

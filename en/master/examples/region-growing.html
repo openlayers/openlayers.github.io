@@ -94,7 +94,7 @@
       // As noted in the Raster source constructor, this function is provided
       // using the &#x60;lib&#x60; option. Other functions will NOT be visible unless
       // provided using the &#x60;lib&#x60; option.
-      var next &#x3D; nextEdges(edge[i]);
+      var next &#x3D; next4Edges(edge[i]);
       for (var j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
         var s &#x3D; next[j][0], t &#x3D; next[j][1];
         if (s &gt;&#x3D; 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;&#x3D; 0 &amp;&amp; t &lt; height) {
@@ -148,7 +148,7 @@ var raster &#x3D; new ol.source.Raster({
   // Functions in the &#x60;lib&#x60; object will be available to the operation run in
   // the web worker.
   lib: {
-    nextEdges: next4Edges
+    next4Edges: next4Edges
   }
 });
 
@@ -173,6 +173,8 @@ map.on(&#x27;click&#x27;, function(event) {
   raster.changed();
 });
 
+var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
+
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
   // the event.data object will be passed to operations
   var data &#x3D; event.data;
@@ -181,8 +183,6 @@ raster.on(&#x27;beforeoperations&#x27;, function(event) {
     data.pixel &#x3D; map.getPixelFromCoordinate(coordinate);
   }
 });
-
-var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
 
 function updateControlValue() {
   document.getElementById(&#x27;threshold-value&#x27;).innerText &#x3D; thresholdControl.value;
@@ -256,7 +256,7 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
             // As noted in the Raster source constructor, this function is provided
             // using the &#x60;lib&#x60; option. Other functions will NOT be visible unless
             // provided using the &#x60;lib&#x60; option.
-            var next &#x3D; nextEdges(edge[i]);
+            var next &#x3D; next4Edges(edge[i]);
             for (var j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
               var s &#x3D; next[j][0], t &#x3D; next[j][1];
               if (s &gt;&#x3D; 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;&#x3D; 0 &amp;&amp; t &lt; height) {
@@ -310,7 +310,7 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
         // Functions in the &#x60;lib&#x60; object will be available to the operation run in
         // the web worker.
         lib: {
-          nextEdges: next4Edges
+          next4Edges: next4Edges
         }
       });
 
@@ -335,6 +335,8 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
         raster.changed();
       });
 
+      var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
+
       raster.on(&#x27;beforeoperations&#x27;, function(event) {
         // the event.data object will be passed to operations
         var data &#x3D; event.data;
@@ -343,8 +345,6 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
           data.pixel &#x3D; map.getPixelFromCoordinate(coordinate);
         }
       });
-
-      var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
 
       function updateControlValue() {
         document.getElementById(&#x27;threshold-value&#x27;).innerText &#x3D; thresholdControl.value;

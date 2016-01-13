@@ -12,7 +12,6 @@ goog.require('ol.control.Control');
 goog.require('ol.css');
 
 
-
 /**
  * @classdesc
  * Provides a button that when clicked fills up the full screen with the map.
@@ -112,9 +111,7 @@ ol.control.FullScreen.prototype.handleFullScreen_ = function() {
   if (goog.dom.fullscreen.isFullScreen()) {
     goog.dom.fullscreen.exitFullScreen();
   } else {
-    var target = map.getTarget();
-    goog.asserts.assert(target, 'target should be defined');
-    var element = goog.dom.getElement(target);
+    var element = map.getTargetElement();
     goog.asserts.assert(element, 'element should be defined');
     if (this.keys_) {
       goog.dom.fullscreen.requestFullScreenWithKeys(element);

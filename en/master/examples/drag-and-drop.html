@@ -156,7 +156,7 @@ dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
 
 var displayFeatureInfo &#x3D; function(pixel) {
   var features &#x3D; [];
-  map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  map.forEachFeatureAtPixel(pixel, function(feature) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
@@ -308,7 +308,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 
       var displayFeatureInfo &#x3D; function(pixel) {
         var features &#x3D; [];
-        map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+        map.forEachFeatureAtPixel(pixel, function(feature) {
           features.push(feature);
         });
         if (features.length &gt; 0) {

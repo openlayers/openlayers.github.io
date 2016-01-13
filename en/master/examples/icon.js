@@ -10,7 +10,6 @@ var iconStyle = new ol.style.Style({
     anchor: [0.5, 46],
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
-    opacity: 0.75,
     src: 'data/icon.png'
   }))
 });
@@ -54,7 +53,7 @@ map.addOverlay(popup);
 // display popup on click
 map.on('click', function(evt) {
   var feature = map.forEachFeatureAtPixel(evt.pixel,
-      function(feature, layer) {
+      function(feature) {
         return feature;
       });
   if (feature) {

@@ -262,9 +262,9 @@ function updateViewProjection() {
 
 
 /**
- * @param {Event} e Change event.
+ * Handle change event.
  */
-viewProjSelect.onchange &#x3D; function(e) {
+viewProjSelect.onchange &#x3D; function() {
   updateViewProjection();
 };
 
@@ -281,9 +281,9 @@ var updateRenderEdgesOnLayer &#x3D; function(layer) {
 
 
 /**
- * @param {Event} e Change event.
+ * Handle change event.
  */
-baseLayerSelect.onchange &#x3D; function(e) {
+baseLayerSelect.onchange &#x3D; function() {
   var layer &#x3D; layers[baseLayerSelect.value];
   if (layer) {
     layer.setOpacity(1);
@@ -294,9 +294,9 @@ baseLayerSelect.onchange &#x3D; function(e) {
 
 
 /**
- * @param {Event} e Change event.
+ * Handle change event.
  */
-overlayLayerSelect.onchange &#x3D; function(e) {
+overlayLayerSelect.onchange &#x3D; function() {
   var layer &#x3D; layers[overlayLayerSelect.value];
   if (layer) {
     layer.setOpacity(0.7);
@@ -307,9 +307,9 @@ overlayLayerSelect.onchange &#x3D; function(e) {
 
 
 /**
- * @param {Event} e Change event.
+ * Handle change event.
  */
-renderEdgesCheckbox.onchange &#x3D; function(e) {
+renderEdgesCheckbox.onchange &#x3D; function() {
   renderEdges &#x3D; renderEdgesCheckbox.checked;
   map.getLayers().forEach(function(layer) {
     updateRenderEdgesOnLayer(layer);
@@ -583,9 +583,9 @@ renderEdgesCheckbox.onchange &#x3D; function(e) {
 
 
       /**
-       * @param {Event} e Change event.
+       * Handle change event.
        */
-      viewProjSelect.onchange &#x3D; function(e) {
+      viewProjSelect.onchange &#x3D; function() {
         updateViewProjection();
       };
 
@@ -602,9 +602,9 @@ renderEdgesCheckbox.onchange &#x3D; function(e) {
 
 
       /**
-       * @param {Event} e Change event.
+       * Handle change event.
        */
-      baseLayerSelect.onchange &#x3D; function(e) {
+      baseLayerSelect.onchange &#x3D; function() {
         var layer &#x3D; layers[baseLayerSelect.value];
         if (layer) {
           layer.setOpacity(1);
@@ -615,9 +615,9 @@ renderEdgesCheckbox.onchange &#x3D; function(e) {
 
 
       /**
-       * @param {Event} e Change event.
+       * Handle change event.
        */
-      overlayLayerSelect.onchange &#x3D; function(e) {
+      overlayLayerSelect.onchange &#x3D; function() {
         var layer &#x3D; layers[overlayLayerSelect.value];
         if (layer) {
           layer.setOpacity(0.7);
@@ -628,9 +628,9 @@ renderEdgesCheckbox.onchange &#x3D; function(e) {
 
 
       /**
-       * @param {Event} e Change event.
+       * Handle change event.
        */
-      renderEdgesCheckbox.onchange &#x3D; function(e) {
+      renderEdgesCheckbox.onchange &#x3D; function() {
         renderEdges &#x3D; renderEdgesCheckbox.checked;
         map.getLayers().forEach(function(layer) {
           updateRenderEdgesOnLayer(layer);

@@ -81,7 +81,7 @@ var vectorSource &#x3D; new ol.source.Vector({
 });
 var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
-  style: function(feature, resolution) {
+  style: function(feature) {
     return styles[feature.get(&#x27;size&#x27;)];
   }
 });
@@ -218,7 +218,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
       });
       var vector &#x3D; new ol.layer.Vector({
         source: vectorSource,
-        style: function(feature, resolution) {
+        style: function(feature) {
           return styles[feature.get(&#x27;size&#x27;)];
         }
       });

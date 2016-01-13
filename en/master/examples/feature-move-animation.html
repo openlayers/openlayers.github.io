@@ -148,11 +148,16 @@ var styles &#x3D; {
   })
 };
 
+var animating &#x3D; false;
+var speed, now;
+var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
+var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
+
 var vectorLayer &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     features: [routeFeature, geoMarker, startMarker, endMarker]
   }),
-  style: function(feature, resolution) {
+  style: function(feature) {
     // hide geoMarker if animation is active
     if (animating &amp;&amp; feature.get(&#x27;type&#x27;) &#x3D;&#x3D;&#x3D; &#x27;geoMarker&#x27;) {
       return null;
@@ -238,10 +243,6 @@ function stopAnimation(ended) {
   map.un(&#x27;postcompose&#x27;, moveFeature);
 }
 
-var speed, now;
-var animating &#x3D; false;
-var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
-var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
 startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 </textarea>
           <textarea class="hidden" name="css"></textarea>
@@ -365,11 +366,16 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         })
       };
 
+      var animating &#x3D; false;
+      var speed, now;
+      var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
+      var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
+
       var vectorLayer &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
           features: [routeFeature, geoMarker, startMarker, endMarker]
         }),
-        style: function(feature, resolution) {
+        style: function(feature) {
           // hide geoMarker if animation is active
           if (animating &amp;&amp; feature.get(&#x27;type&#x27;) &#x3D;&#x3D;&#x3D; &#x27;geoMarker&#x27;) {
             return null;
@@ -455,10 +461,6 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         map.un(&#x27;postcompose&#x27;, moveFeature);
       }
 
-      var speed, now;
-      var animating &#x3D; false;
-      var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
-      var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
       startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
     &lt;/script&gt;
   &lt;/body&gt;

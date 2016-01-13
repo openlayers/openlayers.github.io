@@ -117,7 +117,7 @@ var loaded &#x3D; 0;
 
 var exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
 
-exportButton.addEventListener(&#x27;click&#x27;, function(e) {
+exportButton.addEventListener(&#x27;click&#x27;, function() {
 
   exportButton.disabled &#x3D; true;
   document.body.style.cursor &#x3D; &#x27;progress&#x27;;
@@ -136,7 +136,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function(e) {
     ++loading;
   };
 
-  var tileLoadEnd &#x3D; function(callback) {
+  var tileLoadEnd &#x3D; function() {
     ++loaded;
     if (loading &#x3D;&#x3D;&#x3D; loaded) {
       var canvas &#x3D; this;
@@ -287,7 +287,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function(e) {
 
       var exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
 
-      exportButton.addEventListener(&#x27;click&#x27;, function(e) {
+      exportButton.addEventListener(&#x27;click&#x27;, function() {
 
         exportButton.disabled &#x3D; true;
         document.body.style.cursor &#x3D; &#x27;progress&#x27;;
@@ -306,7 +306,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function(e) {
           ++loading;
         };
 
-        var tileLoadEnd &#x3D; function(callback) {
+        var tileLoadEnd &#x3D; function() {
           ++loaded;
           if (loading &#x3D;&#x3D;&#x3D; loaded) {
             var canvas &#x3D; this;

@@ -130,7 +130,7 @@ var featureOverlay &#x3D; new ol.layer.Vector({
 var highlight;
 var displayFeatureInfo &#x3D; function(pixel) {
 
-  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature) {
     return feature;
   });
 
@@ -264,7 +264,7 @@ map.on(&#x27;click&#x27;, function(evt) {
       var highlight;
       var displayFeatureInfo &#x3D; function(pixel) {
 
-        var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+        var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature) {
           return feature;
         });
 

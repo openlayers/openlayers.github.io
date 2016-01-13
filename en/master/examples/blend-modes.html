@@ -170,8 +170,13 @@ var map &#x3D; new ol.Map({
   })
 });
 
+// Get the form elements and bind the listeners
+var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
+var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
+var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
+var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
-// Various helper methods and event handlers
+
 /**
  * This method sets the globalCompositeOperation to the value of the select
  * field and it is bound to the precompose event of the layers.
@@ -238,12 +243,6 @@ var affectLayerClicked &#x3D; function() {
   map.render();
 };
 
-
-// Get the form elements and bind the listeners
-var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
-var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
-var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
-var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
 // Rerender map when blend mode changes
 select.addEventListener(&#x27;change&#x27;, function() {
@@ -452,8 +451,13 @@ bindLayerListeners(blueLayer);
         })
       });
 
+      // Get the form elements and bind the listeners
+      var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
+      var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
+      var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
+      var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
-      // Various helper methods and event handlers
+
       /**
        * This method sets the globalCompositeOperation to the value of the select
        * field and it is bound to the precompose event of the layers.
@@ -520,12 +524,6 @@ bindLayerListeners(blueLayer);
         map.render();
       };
 
-
-      // Get the form elements and bind the listeners
-      var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
-      var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
-      var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
-      var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
       // Rerender map when blend mode changes
       select.addEventListener(&#x27;change&#x27;, function() {

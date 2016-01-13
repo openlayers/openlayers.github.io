@@ -135,7 +135,7 @@ for (i &#x3D; 0; i &lt; featureCount; i +&#x3D; 30) {
   overlayFeatures.push(clone);
 }
 
-var featureOverlay &#x3D; new ol.layer.Vector({
+new ol.layer.Vector({
   map: map,
   source: new ol.source.Vector({
     features: overlayFeatures
@@ -152,8 +152,8 @@ map.on(&#x27;click&#x27;, function(evt) {
 
   window.setTimeout(function() {
     var features &#x3D; [];
-    map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-      features.push(features);
+    map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+      features.push(feature);
       return false;
     });
 
@@ -280,7 +280,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         overlayFeatures.push(clone);
       }
 
-      var featureOverlay &#x3D; new ol.layer.Vector({
+      new ol.layer.Vector({
         map: map,
         source: new ol.source.Vector({
           features: overlayFeatures
@@ -297,8 +297,8 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 
         window.setTimeout(function() {
           var features &#x3D; [];
-          map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-            features.push(features);
+          map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+            features.push(feature);
             return false;
           });
 

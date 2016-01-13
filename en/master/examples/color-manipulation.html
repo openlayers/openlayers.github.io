@@ -197,6 +197,8 @@ var raster &#x3D; new ol.source.Raster({
   }
 });
 
+var controls &#x3D; {};
+
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
   var data &#x3D; event.data;
   for (var id in controls) {
@@ -219,7 +221,6 @@ var map &#x3D; new ol.Map({
 });
 
 var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
-var controls &#x3D; {};
 controlIds.forEach(function(id) {
   var control &#x3D; document.getElementById(id);
   var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
@@ -425,6 +426,8 @@ controlIds.forEach(function(id) {
         }
       });
 
+      var controls &#x3D; {};
+
       raster.on(&#x27;beforeoperations&#x27;, function(event) {
         var data &#x3D; event.data;
         for (var id in controls) {
@@ -447,7 +450,6 @@ controlIds.forEach(function(id) {
       });
 
       var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
-      var controls &#x3D; {};
       controlIds.forEach(function(id) {
         var control &#x3D; document.getElementById(id);
         var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);

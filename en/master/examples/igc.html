@@ -59,7 +59,7 @@
 };
 
 var styleCache &#x3D; {};
-var styleFunction &#x3D; function(feature, resolution) {
+var styleFunction &#x3D; function(feature) {
   var color &#x3D; colors[feature.get(&#x27;PLT&#x27;)];
   var style &#x3D; styleCache[color];
   if (!style) {
@@ -274,7 +274,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
       };
 
       var styleCache &#x3D; {};
-      var styleFunction &#x3D; function(feature, resolution) {
+      var styleFunction &#x3D; function(feature) {
         var color &#x3D; colors[feature.get(&#x27;PLT&#x27;)];
         var style &#x3D; styleCache[color];
         if (!style) {

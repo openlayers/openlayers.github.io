@@ -62,7 +62,6 @@ var iconStyle &#x3D; new ol.style.Style({
     anchor: [0.5, 46],
     anchorXUnits: &#x27;fraction&#x27;,
     anchorYUnits: &#x27;pixels&#x27;,
-    opacity: 0.75,
     src: &#x27;data/icon.png&#x27;
   }))
 });
@@ -105,7 +104,7 @@ map.addOverlay(popup);
 // display popup on click
 map.on(&#x27;click&#x27;, function(evt) {
   var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-      function(feature, layer) {
+      function(feature) {
         return feature;
       });
   if (feature) {
@@ -171,7 +170,6 @@ map.on(&#x27;pointermove&#x27;, function(e) {
           anchor: [0.5, 46],
           anchorXUnits: &#x27;fraction&#x27;,
           anchorYUnits: &#x27;pixels&#x27;,
-          opacity: 0.75,
           src: &#x27;data/icon.png&#x27;
         }))
       });
@@ -214,7 +212,7 @@ map.on(&#x27;pointermove&#x27;, function(e) {
       // display popup on click
       map.on(&#x27;click&#x27;, function(evt) {
         var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-            function(feature, layer) {
+            function(feature) {
               return feature;
             });
         if (feature) {

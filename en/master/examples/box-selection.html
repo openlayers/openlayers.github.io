@@ -87,7 +87,7 @@ map.addInteraction(dragBox);
 
 var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
-dragBox.on(&#x27;boxend&#x27;, function(e) {
+dragBox.on(&#x27;boxend&#x27;, function() {
   // features that intersect the box are added to the collection of
   // selected features, and their names are displayed in the &quot;info&quot;
   // div
@@ -103,7 +103,7 @@ dragBox.on(&#x27;boxend&#x27;, function(e) {
 });
 
 // clear selection when drawing a new box and when clicking on the map
-dragBox.on(&#x27;boxstart&#x27;, function(e) {
+dragBox.on(&#x27;boxstart&#x27;, function() {
   selectedFeatures.clear();
   infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
 });
@@ -178,7 +178,7 @@ map.on(&#x27;click&#x27;, function() {
 
       var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
-      dragBox.on(&#x27;boxend&#x27;, function(e) {
+      dragBox.on(&#x27;boxend&#x27;, function() {
         // features that intersect the box are added to the collection of
         // selected features, and their names are displayed in the &quot;info&quot;
         // div
@@ -194,7 +194,7 @@ map.on(&#x27;click&#x27;, function() {
       });
 
       // clear selection when drawing a new box and when clicking on the map
-      dragBox.on(&#x27;boxstart&#x27;, function(e) {
+      dragBox.on(&#x27;boxstart&#x27;, function() {
         selectedFeatures.clear();
         infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
       });

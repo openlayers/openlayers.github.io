@@ -54,7 +54,6 @@
 var app &#x3D; {};
 
 
-
 /**
  * @constructor
  * @extends {ol.interaction.Pointer}
@@ -104,7 +103,7 @@ app.Drag.prototype.handleDownEvent &#x3D; function(evt) {
   var map &#x3D; evt.map;
 
   var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-      function(feature, layer) {
+      function(feature) {
         return feature;
       });
 
@@ -121,13 +120,6 @@ app.Drag.prototype.handleDownEvent &#x3D; function(evt) {
  * @param {ol.MapBrowserEvent} evt Map browser event.
  */
 app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
-  var map &#x3D; evt.map;
-
-  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-      function(feature, layer) {
-        return feature;
-      });
-
   var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
   var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
@@ -147,7 +139,7 @@ app.Drag.prototype.handleMoveEvent &#x3D; function(evt) {
   if (this.cursor_) {
     var map &#x3D; evt.map;
     var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-        function(feature, layer) {
+        function(feature) {
           return feature;
         });
     var element &#x3D; evt.map.getTargetElement();
@@ -165,10 +157,9 @@ app.Drag.prototype.handleMoveEvent &#x3D; function(evt) {
 
 
 /**
- * @param {ol.MapBrowserEvent} evt Map browser event.
  * @return {boolean} &#x60;false&#x60; to stop the drag sequence.
  */
-app.Drag.prototype.handleUpEvent &#x3D; function(evt) {
+app.Drag.prototype.handleUpEvent &#x3D; function() {
   this.coordinate_ &#x3D; null;
   this.feature_ &#x3D; null;
   return false;
@@ -244,7 +235,6 @@ var map &#x3D; new ol.Map({
       var app &#x3D; {};
 
 
-
       /**
        * @constructor
        * @extends {ol.interaction.Pointer}
@@ -294,7 +284,7 @@ var map &#x3D; new ol.Map({
         var map &#x3D; evt.map;
 
         var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-            function(feature, layer) {
+            function(feature) {
               return feature;
             });
 
@@ -311,13 +301,6 @@ var map &#x3D; new ol.Map({
        * @param {ol.MapBrowserEvent} evt Map browser event.
        */
       app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
-        var map &#x3D; evt.map;
-
-        var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-            function(feature, layer) {
-              return feature;
-            });
-
         var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
         var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
@@ -337,7 +320,7 @@ var map &#x3D; new ol.Map({
         if (this.cursor_) {
           var map &#x3D; evt.map;
           var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-              function(feature, layer) {
+              function(feature) {
                 return feature;
               });
           var element &#x3D; evt.map.getTargetElement();
@@ -355,10 +338,9 @@ var map &#x3D; new ol.Map({
 
 
       /**
-       * @param {ol.MapBrowserEvent} evt Map browser event.
        * @return {boolean} &#x60;false&#x60; to stop the drag sequence.
        */
-      app.Drag.prototype.handleUpEvent &#x3D; function(evt) {
+      app.Drag.prototype.handleUpEvent &#x3D; function() {
         this.coordinate_ &#x3D; null;
         this.feature_ &#x3D; null;
         return false;

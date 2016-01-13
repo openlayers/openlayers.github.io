@@ -51,8 +51,8 @@
           <textarea class="hidden" name="js">var canvas &#x3D; document.getElementById(&#x27;canvas&#x27;);
 var render &#x3D; ol.render.toContext(canvas.getContext(&#x27;2d&#x27;), {size: [100, 100]});
 
-var fill &#x3D; new ol.style.Fill({ color: &#x27;blue&#x27; });
-var stroke &#x3D; new ol.style.Stroke({ color: &#x27;black&#x27; });
+var fill &#x3D; new ol.style.Fill({color: &#x27;blue&#x27;});
+var stroke &#x3D; new ol.style.Stroke({color: &#x27;black&#x27;});
 render.setFillStrokeStyle(fill, stroke);
 render.setImageStyle(new ol.style.Circle({
   radius: 10,
@@ -84,8 +84,8 @@ render.drawPointGeometry(new ol.geom.Point([88, 88]));
       var canvas &#x3D; document.getElementById(&#x27;canvas&#x27;);
       var render &#x3D; ol.render.toContext(canvas.getContext(&#x27;2d&#x27;), {size: [100, 100]});
 
-      var fill &#x3D; new ol.style.Fill({ color: &#x27;blue&#x27; });
-      var stroke &#x3D; new ol.style.Stroke({ color: &#x27;black&#x27; });
+      var fill &#x3D; new ol.style.Fill({color: &#x27;blue&#x27;});
+      var stroke &#x3D; new ol.style.Stroke({color: &#x27;black&#x27;});
       render.setFillStrokeStyle(fill, stroke);
       render.setImageStyle(new ol.style.Circle({
         radius: 10,

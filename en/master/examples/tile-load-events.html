@@ -129,14 +129,14 @@ var source &#x3D; new ol.source.TileJSON({
   crossOrigin: &#x27;anonymous&#x27;
 });
 
-source.on(&#x27;tileloadstart&#x27;, function(event) {
+source.on(&#x27;tileloadstart&#x27;, function() {
   progress.addLoading();
 });
 
-source.on(&#x27;tileloadend&#x27;, function(event) {
+source.on(&#x27;tileloadend&#x27;, function() {
   progress.addLoaded();
 });
-source.on(&#x27;tileloaderror&#x27;, function(event) {
+source.on(&#x27;tileloaderror&#x27;, function() {
   progress.addLoaded();
 });
 
@@ -282,14 +282,14 @@ var map &#x3D; new ol.Map({
         crossOrigin: &#x27;anonymous&#x27;
       });
 
-      source.on(&#x27;tileloadstart&#x27;, function(event) {
+      source.on(&#x27;tileloadstart&#x27;, function() {
         progress.addLoading();
       });
 
-      source.on(&#x27;tileloadend&#x27;, function(event) {
+      source.on(&#x27;tileloadend&#x27;, function() {
         progress.addLoaded();
       });
-      source.on(&#x27;tileloaderror&#x27;, function(event) {
+      source.on(&#x27;tileloaderror&#x27;, function() {
         progress.addLoaded();
       });
 

@@ -130,14 +130,14 @@ var source &#x3D; new ol.source.ImageWMS({
   serverType: &#x27;geoserver&#x27;
 });
 
-source.on(&#x27;imageloadstart&#x27;, function(event) {
+source.on(&#x27;imageloadstart&#x27;, function() {
   progress.addLoading();
 });
 
-source.on(&#x27;imageloadend&#x27;, function(event) {
+source.on(&#x27;imageloadend&#x27;, function() {
   progress.addLoaded();
 });
-source.on(&#x27;imageloaderror&#x27;, function(event) {
+source.on(&#x27;imageloaderror&#x27;, function() {
   progress.addLoaded();
 });
 
@@ -284,14 +284,14 @@ var map &#x3D; new ol.Map({
         serverType: &#x27;geoserver&#x27;
       });
 
-      source.on(&#x27;imageloadstart&#x27;, function(event) {
+      source.on(&#x27;imageloadstart&#x27;, function() {
         progress.addLoading();
       });
 
-      source.on(&#x27;imageloadend&#x27;, function(event) {
+      source.on(&#x27;imageloadend&#x27;, function() {
         progress.addLoaded();
       });
-      source.on(&#x27;imageloaderror&#x27;, function(event) {
+      source.on(&#x27;imageloaderror&#x27;, function() {
         progress.addLoaded();
       });
 

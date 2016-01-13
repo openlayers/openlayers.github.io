@@ -56,6 +56,7 @@ var Modify = {
 };
 Modify.init();
 
+var optionsForm = document.getElementById('options-form');
 
 var Draw = {
   init: function() {
@@ -94,8 +95,6 @@ var Draw = {
   }
 };
 Draw.init();
-
-var optionsForm = document.getElementById('options-form');
 
 
 /**

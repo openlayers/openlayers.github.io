@@ -49,7 +49,7 @@
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
           <textarea class="hidden" name="js">var styleCache &#x3D; {};
-var styleFunction &#x3D; function(feature, resolution) {
+var styleFunction &#x3D; function(feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
@@ -64,8 +64,8 @@ var styleFunction &#x3D; function(feature, resolution) {
         /** @type {CanvasRenderingContext2D} */ (canvas.getContext(&#x27;2d&#x27;)),
         {size: [size + 2, size + 2], pixelRatio: size / 10});
     render.setFillStrokeStyle(
-        new ol.style.Fill({ color: &#x27;rgba(255, 153, 0, 0.4)&#x27; }),
-        new ol.style.Stroke({ color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 1 }));
+        new ol.style.Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
+        new ol.style.Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 1}));
     render.drawPolygonGeometry(new ol.geom.Polygon(
         [[[0, 0], [4, 2], [6, 0], [10, 5], [6, 3], [4, 5], [0, 0]]]));
     style &#x3D; new ol.style.Style({
@@ -122,7 +122,7 @@ var map &#x3D; new ol.Map({
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
       var styleCache &#x3D; {};
-      var styleFunction &#x3D; function(feature, resolution) {
+      var styleFunction &#x3D; function(feature) {
         // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
         // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
         // the Placemark&#x27;s name instead.
@@ -137,8 +137,8 @@ var map &#x3D; new ol.Map({
               /** @type {CanvasRenderingContext2D} */ (canvas.getContext(&#x27;2d&#x27;)),
               {size: [size + 2, size + 2], pixelRatio: size / 10});
           render.setFillStrokeStyle(
-              new ol.style.Fill({ color: &#x27;rgba(255, 153, 0, 0.4)&#x27; }),
-              new ol.style.Stroke({ color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 1 }));
+              new ol.style.Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
+              new ol.style.Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 1}));
           render.drawPolygonGeometry(new ol.geom.Polygon(
               [[[0, 0], [4, 2], [6, 0], [10, 5], [6, 3], [4, 5], [0, 0]]]));
           style &#x3D; new ol.style.Style({

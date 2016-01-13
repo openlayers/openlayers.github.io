@@ -10,7 +10,6 @@ goog.require('ol.interaction.Interaction');
 goog.require('ol.interaction.Pointer');
 
 
-
 /**
  * @classdesc
  * Allows the user to zoom the map by pinching with two fingers
@@ -98,7 +97,6 @@ ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
   this.anchor_ = map.getCoordinateFromPixel(centroid);
 
   // scale, bypass the resolution constraint
-  map.render();
   ol.interaction.Interaction.zoomWithoutConstraints(
       map, view, resolution * scaleDelta, this.anchor_);
 
@@ -145,7 +143,6 @@ ol.interaction.PinchZoom.handleDownEvent_ = function(mapBrowserEvent) {
     if (!this.handlingDownUpSequence) {
       map.getView().setHint(ol.ViewHint.INTERACTING, 1);
     }
-    map.render();
     return true;
   } else {
     return false;

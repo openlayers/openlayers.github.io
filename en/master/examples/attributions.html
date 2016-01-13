@@ -57,7 +57,7 @@ var map &#x3D; new ol.Map({
       source: new ol.source.OSM()
     })
   ],
-  controls: ol.control.defaults({ attribution: false }).extend([attribution]),
+  controls: ol.control.defaults({attribution: false}).extend([attribution]),
   target: &#x27;map&#x27;,
   view: new ol.View({
     center: [0, 0],
@@ -99,7 +99,7 @@ checkSize();
             source: new ol.source.OSM()
           })
         ],
-        controls: ol.control.defaults({ attribution: false }).extend([attribution]),
+        controls: ol.control.defaults({attribution: false}).extend([attribution]),
         target: &#x27;map&#x27;,
         view: new ol.View({
           center: [0, 0],

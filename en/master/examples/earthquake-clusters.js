@@ -37,7 +37,7 @@ function createEarthquakeStyle(feature) {
   });
 }
 
-var maxFeatureCount;
+var maxFeatureCount, vector;
 function calculateClusterInfo(resolution) {
   maxFeatureCount = 0;
   var features = vector.getSource().getFeatures();
@@ -46,7 +46,8 @@ function calculateClusterInfo(resolution) {
     feature = features[i];
     var originalFeatures = feature.get('features');
     var extent = ol.extent.createEmpty();
-    for (var j = 0, jj = originalFeatures.length; j < jj; ++j) {
+    var j, jj;
+    for (j = 0, jj = originalFeatures.length; j < jj; ++j) {
       ol.extent.extend(extent, originalFeatures[j].getGeometry().getExtent());
     }
     maxFeatureCount = Math.max(maxFeatureCount, jj);
@@ -85,7 +86,7 @@ function styleFunction(feature, resolution) {
   return style;
 }
 
-function selectStyleFunction(feature, resolution) {
+function selectStyleFunction(feature) {
   var styles = [new ol.style.Style({
     image: new ol.style.Circle({
       radius: feature.get('radius'),
@@ -101,7 +102,7 @@ function selectStyleFunction(feature, resolution) {
   return styles;
 }
 
-var vector = new ol.layer.Vector({
+vector = new ol.layer.Vector({
   source: new ol.source.Cluster({
     distance: 40,
     source: new ol.source.Vector({

@@ -80,7 +80,7 @@
 var exportPNGElement &#x3D; document.getElementById(&#x27;export-png&#x27;);
 
 if (&#x27;download&#x27; in exportPNGElement) {
-  exportPNGElement.addEventListener(&#x27;click&#x27;, function(e) {
+  exportPNGElement.addEventListener(&#x27;click&#x27;, function() {
     map.once(&#x27;postcompose&#x27;, function(event) {
       var canvas &#x3D; event.context.canvas;
       exportPNGElement.href &#x3D; canvas.toDataURL(&#x27;image/png&#x27;);
@@ -148,7 +148,7 @@ if (&#x27;download&#x27; in exportPNGElement) {
       var exportPNGElement &#x3D; document.getElementById(&#x27;export-png&#x27;);
 
       if (&#x27;download&#x27; in exportPNGElement) {
-        exportPNGElement.addEventListener(&#x27;click&#x27;, function(e) {
+        exportPNGElement.addEventListener(&#x27;click&#x27;, function() {
           map.once(&#x27;postcompose&#x27;, function(event) {
             var canvas &#x3D; event.context.canvas;
             exportPNGElement.href &#x3D; canvas.toDataURL(&#x27;image/png&#x27;);

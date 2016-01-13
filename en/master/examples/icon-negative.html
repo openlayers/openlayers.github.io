@@ -65,11 +65,13 @@ iconFeature.set(&#x27;style&#x27;, createStyle(&#x27;data/icon.png&#x27;, undefi
 var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.Stamen({ layer: &#x27;watercolor&#x27; })
+      source: new ol.source.Stamen({layer: &#x27;watercolor&#x27;})
     }),
     new ol.layer.Vector({
-      style: function(feature) { return feature.get(&#x27;style&#x27;); },
-      source: new ol.source.Vector({ features: [iconFeature] })
+      style: function(feature) {
+        return feature.get(&#x27;style&#x27;);
+      },
+      source: new ol.source.Vector({features: [iconFeature]})
     })
   ],
   target: document.getElementById(&#x27;map&#x27;),
@@ -81,7 +83,7 @@ var map &#x3D; new ol.Map({
 
 var selectStyle &#x3D; {};
 var select &#x3D; new ol.interaction.Select({
-  style: function(feature, resolution) {
+  style: function(feature) {
     var image &#x3D; feature.get(&#x27;style&#x27;).getImage().getImage();
     if (!selectStyle[image.src]) {
       var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
@@ -140,11 +142,13 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
       var map &#x3D; new ol.Map({
         layers: [
           new ol.layer.Tile({
-            source: new ol.source.Stamen({ layer: &#x27;watercolor&#x27; })
+            source: new ol.source.Stamen({layer: &#x27;watercolor&#x27;})
           }),
           new ol.layer.Vector({
-            style: function(feature) { return feature.get(&#x27;style&#x27;); },
-            source: new ol.source.Vector({ features: [iconFeature] })
+            style: function(feature) {
+              return feature.get(&#x27;style&#x27;);
+            },
+            source: new ol.source.Vector({features: [iconFeature]})
           })
         ],
         target: document.getElementById(&#x27;map&#x27;),
@@ -156,7 +160,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 
       var selectStyle &#x3D; {};
       var select &#x3D; new ol.interaction.Select({
-        style: function(feature, resolution) {
+        style: function(feature) {
           var image &#x3D; feature.get(&#x27;style&#x27;).getImage().getImage();
           if (!selectStyle[image.src]) {
             var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);

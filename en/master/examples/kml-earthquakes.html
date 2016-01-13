@@ -51,7 +51,7 @@
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
           <textarea class="hidden" name="js">var styleCache &#x3D; {};
-var styleFunction &#x3D; function(feature, resolution) {
+var styleFunction &#x3D; function(feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
@@ -113,7 +113,7 @@ var displayFeatureInfo &#x3D; function(pixel) {
     left: pixel[0] + &#x27;px&#x27;,
     top: (pixel[1] - 15) + &#x27;px&#x27;
   });
-  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature) {
     return feature;
   });
   if (feature) {
@@ -198,7 +198,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;div id&#x3D;&quot;info&quot;&gt;&lt;/div&gt;&lt;/div&gt;
     &lt;script&gt;
       var styleCache &#x3D; {};
-      var styleFunction &#x3D; function(feature, resolution) {
+      var styleFunction &#x3D; function(feature) {
         // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
         // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
         // the Placemark&#x27;s name instead.
@@ -260,7 +260,7 @@ map.on(&#x27;click&#x27;, function(evt) {
           left: pixel[0] + &#x27;px&#x27;,
           top: (pixel[1] - 15) + &#x27;px&#x27;
         });
-        var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+        var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature) {
           return feature;
         });
         if (feature) {

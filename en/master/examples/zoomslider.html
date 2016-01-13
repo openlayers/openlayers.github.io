@@ -62,7 +62,7 @@
  * @return {ol.Map} The ol.Map instance.
  */
 var createMap &#x3D; function(divId) {
-  var source, layer, map, zoomslider, resolutions;
+  var source, layer, map, zoomslider;
 
   source &#x3D; new ol.source.MapQuest({layer: &#x27;sat&#x27;});
   layer &#x3D; new ol.layer.Tile({
@@ -244,7 +244,7 @@ var map3 &#x3D; createMap(&#x27;map3&#x27;);
        * @return {ol.Map} The ol.Map instance.
        */
       var createMap &#x3D; function(divId) {
-        var source, layer, map, zoomslider, resolutions;
+        var source, layer, map, zoomslider;
 
         source &#x3D; new ol.source.MapQuest({layer: &#x27;sat&#x27;});
         layer &#x3D; new ol.layer.Tile({

@@ -125,7 +125,7 @@ var vectorSource &#x3D; new ol.source.Vector({
 
 var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
-  style: function(feature, resolution) {
+  style: function(feature) {
     var classify &#x3D; feature.get(&#x27;activeprod&#x27;);
     return styleCache[classify];
   }
@@ -156,7 +156,7 @@ var map &#x3D; new ol.Map({
 
 var displayFeatureInfo &#x3D; function(pixel) {
   var features &#x3D; [];
-  map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  map.forEachFeatureAtPixel(pixel, function(feature) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
@@ -280,7 +280,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 
       var vector &#x3D; new ol.layer.Vector({
         source: vectorSource,
-        style: function(feature, resolution) {
+        style: function(feature) {
           var classify &#x3D; feature.get(&#x27;activeprod&#x27;);
           return styleCache[classify];
         }
@@ -311,7 +311,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 
       var displayFeatureInfo &#x3D; function(pixel) {
         var features &#x3D; [];
-        map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+        map.forEachFeatureAtPixel(pixel, function(feature) {
           features.push(feature);
         });
         if (features.length &gt; 0) {

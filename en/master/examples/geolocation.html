@@ -133,7 +133,7 @@ geolocation.on(&#x27;change:position&#x27;, function() {
       new ol.geom.Point(coordinates) : null);
 });
 
-var featuresOverlay &#x3D; new ol.layer.Vector({
+new ol.layer.Vector({
   map: map,
   source: new ol.source.Vector({
     features: [accuracyFeature, positionFeature]
@@ -253,7 +253,7 @@ var featuresOverlay &#x3D; new ol.layer.Vector({
             new ol.geom.Point(coordinates) : null);
       });
 
-      var featuresOverlay &#x3D; new ol.layer.Vector({
+      new ol.layer.Vector({
         map: map,
         source: new ol.source.Vector({
           features: [accuracyFeature, positionFeature]

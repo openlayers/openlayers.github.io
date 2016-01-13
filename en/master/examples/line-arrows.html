@@ -54,7 +54,7 @@
 
 var source &#x3D; new ol.source.Vector();
 
-var styleFunction &#x3D; function(feature, resolution) {
+var styleFunction &#x3D; function(feature) {
   var geometry &#x3D; feature.getGeometry();
   var styles &#x3D; [
     // linestring
@@ -125,7 +125,7 @@ map.addInteraction(new ol.interaction.Draw({
 
       var source &#x3D; new ol.source.Vector();
 
-      var styleFunction &#x3D; function(feature, resolution) {
+      var styleFunction &#x3D; function(feature) {
         var geometry &#x3D; feature.getGeometry();
         var styles &#x3D; [
           // linestring

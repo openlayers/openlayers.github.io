@@ -68,7 +68,7 @@ var clusterSource &#x3D; new ol.source.Cluster({
 var styleCache &#x3D; {};
 var clusters &#x3D; new ol.layer.Vector({
   source: clusterSource,
-  style: function(feature, resolution) {
+  style: function(feature) {
     var size &#x3D; feature.get(&#x27;features&#x27;).length;
     var style &#x3D; styleCache[size];
     if (!style) {
@@ -97,10 +97,6 @@ var clusters &#x3D; new ol.layer.Vector({
 
 var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
-});
-
-var raw &#x3D; new ol.layer.Vector({
-  source: source
 });
 
 var map &#x3D; new ol.Map({
@@ -149,7 +145,7 @@ var map &#x3D; new ol.Map({
       var styleCache &#x3D; {};
       var clusters &#x3D; new ol.layer.Vector({
         source: clusterSource,
-        style: function(feature, resolution) {
+        style: function(feature) {
           var size &#x3D; feature.get(&#x27;features&#x27;).length;
           var style &#x3D; styleCache[size];
           if (!style) {
@@ -178,10 +174,6 @@ var map &#x3D; new ol.Map({
 
       var raster &#x3D; new ol.layer.Tile({
         source: new ol.source.MapQuest({layer: &#x27;sat&#x27;})
-      });
-
-      var raw &#x3D; new ol.layer.Vector({
-        source: source
       });
 
       var map &#x3D; new ol.Map({

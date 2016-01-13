@@ -94,6 +94,19 @@ var vector &#x3D; new ol.layer.Vector({
   source: vectorSource
 });
 
+var attribution &#x3D; new ol.Attribution({
+  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+      &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
+});
+
+var raster &#x3D; new ol.layer.Tile({
+  source: new ol.source.XYZ({
+    attributions: [attribution],
+    url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
+        &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
+  })
+});
+
 var draw &#x3D; new ol.interaction.Draw({
   source: vectorSource,
   type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
@@ -108,14 +121,23 @@ var modify &#x3D; new ol.interaction.Modify({
 });
 modify.setActive(false);
 
+var map &#x3D; new ol.Map({
+  interactions: ol.interaction.defaults().extend([draw, select, modify]),
+  layers: [raster, vector],
+  target: document.getElementById(&#x27;map&#x27;),
+  view: new ol.View({
+    center: ol.proj.transform([-122.619, 45.512], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
+    zoom: 12
+  })
+});
+
 var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 
 /**
  * Let user change the interaction type.
- * @param {Event} e Change event.
  */
-typeSelect.onchange &#x3D; function(e) {
+typeSelect.onchange &#x3D; function() {
   draw.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;DRAW&#x27;);
   select.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
   modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
@@ -138,7 +160,7 @@ selected.on(&#x27;remove&#x27;, function(evt) {
       featureProjection: map.getView().getProjection()
     }) + &#x27;]&#x27;;
     var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
-    $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
+    $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
       var result &#x3D; JSON.parse(data);
       if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
         if (result.updateResults[0].success !&#x3D;&#x3D; true) {
@@ -158,7 +180,7 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
     featureProjection: map.getView().getProjection()
   }) + &#x27;]&#x27;;
   var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
-  $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
+  $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
     var result &#x3D; JSON.parse(data);
     if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
       if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
@@ -170,29 +192,6 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
       }
     }
   });
-});
-
-var attribution &#x3D; new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
-      &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
-});
-
-var raster &#x3D; new ol.layer.Tile({
-  source: new ol.source.XYZ({
-    attributions: [attribution],
-    url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
-        &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
-  })
-});
-
-var map &#x3D; new ol.Map({
-  interactions: ol.interaction.defaults().extend([draw, select, modify]),
-  layers: [raster, vector],
-  target: document.getElementById(&#x27;map&#x27;),
-  view: new ol.View({
-    center: ol.proj.transform([-122.619, 45.512], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
-    zoom: 12
-  })
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
@@ -265,6 +264,19 @@ var map &#x3D; new ol.Map({
         source: vectorSource
       });
 
+      var attribution &#x3D; new ol.Attribution({
+        html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+            &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
+      });
+
+      var raster &#x3D; new ol.layer.Tile({
+        source: new ol.source.XYZ({
+          attributions: [attribution],
+          url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
+              &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
+        })
+      });
+
       var draw &#x3D; new ol.interaction.Draw({
         source: vectorSource,
         type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
@@ -279,14 +291,23 @@ var map &#x3D; new ol.Map({
       });
       modify.setActive(false);
 
+      var map &#x3D; new ol.Map({
+        interactions: ol.interaction.defaults().extend([draw, select, modify]),
+        layers: [raster, vector],
+        target: document.getElementById(&#x27;map&#x27;),
+        view: new ol.View({
+          center: ol.proj.transform([-122.619, 45.512], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
+          zoom: 12
+        })
+      });
+
       var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 
       /**
        * Let user change the interaction type.
-       * @param {Event} e Change event.
        */
-      typeSelect.onchange &#x3D; function(e) {
+      typeSelect.onchange &#x3D; function() {
         draw.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;DRAW&#x27;);
         select.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
         modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
@@ -309,7 +330,7 @@ var map &#x3D; new ol.Map({
             featureProjection: map.getView().getProjection()
           }) + &#x27;]&#x27;;
           var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
-          $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
+          $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
             var result &#x3D; JSON.parse(data);
             if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
               if (result.updateResults[0].success !&#x3D;&#x3D; true) {
@@ -329,7 +350,7 @@ var map &#x3D; new ol.Map({
           featureProjection: map.getView().getProjection()
         }) + &#x27;]&#x27;;
         var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
-        $.post(url, { f: &#x27;json&#x27;, features: payload }).done(function(data) {
+        $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
           var result &#x3D; JSON.parse(data);
           if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
             if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
@@ -341,29 +362,6 @@ var map &#x3D; new ol.Map({
             }
           }
         });
-      });
-
-      var attribution &#x3D; new ol.Attribution({
-        html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
-            &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
-      });
-
-      var raster &#x3D; new ol.layer.Tile({
-        source: new ol.source.XYZ({
-          attributions: [attribution],
-          url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
-              &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
-        })
-      });
-
-      var map &#x3D; new ol.Map({
-        interactions: ol.interaction.defaults().extend([draw, select, modify]),
-        layers: [raster, vector],
-        target: document.getElementById(&#x27;map&#x27;),
-        view: new ol.View({
-          center: ol.proj.transform([-122.619, 45.512], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
-          zoom: 12
-        })
       });
     &lt;/script&gt;
   &lt;/body&gt;

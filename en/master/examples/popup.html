@@ -63,17 +63,6 @@ var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 
 
 /**
- * Add a click handler to hide the popup.
- * @return {boolean} Don&#x27;t follow the href.
- */
-closer.onclick &#x3D; function() {
-  overlay.setPosition(undefined);
-  closer.blur();
-  return false;
-};
-
-
-/**
  * Create an overlay to anchor the popup to the map.
  */
 var overlay &#x3D; new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
@@ -83,6 +72,17 @@ var overlay &#x3D; new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
     duration: 250
   }
 }));
+
+
+/**
+ * Add a click handler to hide the popup.
+ * @return {boolean} Don&#x27;t follow the href.
+ */
+closer.onclick &#x3D; function() {
+  overlay.setPosition(undefined);
+  closer.blur();
+  return false;
+};
 
 
 /**
@@ -239,17 +239,6 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
 
 
       /**
-       * Add a click handler to hide the popup.
-       * @return {boolean} Don&#x27;t follow the href.
-       */
-      closer.onclick &#x3D; function() {
-        overlay.setPosition(undefined);
-        closer.blur();
-        return false;
-      };
-
-
-      /**
        * Create an overlay to anchor the popup to the map.
        */
       var overlay &#x3D; new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
@@ -259,6 +248,17 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
           duration: 250
         }
       }));
+
+
+      /**
+       * Add a click handler to hide the popup.
+       * @return {boolean} Don&#x27;t follow the href.
+       */
+      closer.onclick &#x3D; function() {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+      };
 
 
       /**

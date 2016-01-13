@@ -57,7 +57,7 @@
  * currently midnight would have an opacity of 0.  This doesn&#x27;t account for
  * daylight savings, so don&#x27;t use it to plan your vacation.
  */
-var styleFunction &#x3D; function(feature, resolution) {
+var styleFunction &#x3D; function(feature) {
   var offset &#x3D; 0;
   var name &#x3D; feature.get(&#x27;name&#x27;); // e.g. GMT -08:30
   var match &#x3D; name.match(/([\-+]\d{2}):(\d{2})$/);
@@ -121,7 +121,7 @@ var displayFeatureInfo &#x3D; function(pixel) {
     left: pixel[0] + &#x27;px&#x27;,
     top: (pixel[1] - 15) + &#x27;px&#x27;
   });
-  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature) {
     return feature;
   });
   if (feature) {
@@ -192,7 +192,7 @@ map.on(&#x27;click&#x27;, function(evt) {
        * currently midnight would have an opacity of 0.  This doesn&#x27;t account for
        * daylight savings, so don&#x27;t use it to plan your vacation.
        */
-      var styleFunction &#x3D; function(feature, resolution) {
+      var styleFunction &#x3D; function(feature) {
         var offset &#x3D; 0;
         var name &#x3D; feature.get(&#x27;name&#x27;); // e.g. GMT -08:30
         var match &#x3D; name.match(/([\-+]\d{2}):(\d{2})$/);
@@ -256,7 +256,7 @@ map.on(&#x27;click&#x27;, function(evt) {
           left: pixel[0] + &#x27;px&#x27;,
           top: (pixel[1] - 15) + &#x27;px&#x27;
         });
-        var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+        var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature) {
           return feature;
         });
         if (feature) {
