@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.12.1-152-gcd308e4
+// Version: v3.12.1-162-g5b40190
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -54130,6 +54130,14 @@ ol.DragBoxEventType = {
    * @api stable
    */
   BOXSTART: 'boxstart',
+
+  /**
+   * Triggered on drag when box is active.
+   * @event ol.DragBoxEvent#boxdrag
+   * @api
+   */
+  BOXDRAG: 'boxdrag',
+
   /**
    * Triggered upon drag box end.
    * @event ol.DragBoxEvent#boxend
@@ -54268,6 +54276,9 @@ ol.interaction.DragBox.handleDragEvent_ = function(mapBrowserEvent) {
   }
 
   this.box_.setPixels(this.startPixel_, mapBrowserEvent.pixel);
+
+  this.dispatchEvent(new ol.DragBoxEvent(ol.DragBoxEventType.BOXDRAG,
+    mapBrowserEvent.coordinate, mapBrowserEvent));
 };
 
 
