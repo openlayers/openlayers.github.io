@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.12.1-162-g5b40190
+// Version: v3.12.1-166-g5961431
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -48483,7 +48483,7 @@ ol.pointer.TouchSource.prototype.removePrimaryPointer_ = function(inPointer) {
  */
 ol.pointer.TouchSource.prototype.resetClickCount_ = function() {
   this.resetId_ = goog.global.setTimeout(
-      goog.bind(this.resetClickCountHandler_, this),
+      this.resetClickCountHandler_.bind(this),
       ol.pointer.TouchSource.CLICK_COUNT_TIMEOUT);
 };
 
@@ -48903,7 +48903,7 @@ ol.pointer.PointerEventHandler.prototype.registerSource = function(name, source)
       var handler = s.getHandlerForEvent(e);
 
       if (handler) {
-        this.eventMap_[e] = goog.bind(handler, s);
+        this.eventMap_[e] = handler.bind(s);
       }
     }, this);
     this.eventSourceList_.push(s);
@@ -49500,12 +49500,12 @@ ol.MapBrowserEventHandler.prototype.emulateClick_ = function(pointerEvent) {
     this.dispatchEvent(newEvent);
   } else {
     // click
-    this.clickTimeoutId_ = goog.global.setTimeout(goog.bind(function() {
+    this.clickTimeoutId_ = goog.global.setTimeout(function() {
       this.clickTimeoutId_ = 0;
       var newEvent = new ol.MapBrowserPointerEvent(
           ol.MapBrowserEvent.EventType.SINGLECLICK, this.map_, pointerEvent);
       this.dispatchEvent(newEvent);
-    }, this), 250);
+    }.bind(this), 250);
   }
 };
 
@@ -52323,7 +52323,7 @@ ol.renderer.Map.prototype.scheduleRemoveUnusedLayerRenderers = function(frameSta
   for (layerKey in this.layerRenderers_) {
     if (!(layerKey in frameState.layerStates)) {
       frameState.postRenderFunctions.push(
-          goog.bind(this.removeUnusedLayerRenderers_, this));
+          this.removeUnusedLayerRenderers_.bind(this));
       return;
     }
   }
@@ -54726,7 +54726,7 @@ ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
 
     goog.global.clearTimeout(this.timeoutId_);
     this.timeoutId_ = goog.global.setTimeout(
-        goog.bind(this.doZoom_, this, map), timeLeft);
+        this.doZoom_.bind(this, map), timeLeft);
 
     mapBrowserEvent.preventDefault();
     stopEvent = true;
@@ -57216,12 +57216,12 @@ ol.style.Circle.prototype.render_ = function(atlasManager) {
     if (hasCustomHitDetectionImage) {
       // render the hit-detection image into a separate atlas image
       renderHitDetectionCallback =
-          goog.bind(this.drawHitDetectionCanvas_, this, renderOptions);
+          this.drawHitDetectionCanvas_.bind(this, renderOptions);
     }
 
     var id = this.getChecksum();
     var info = atlasManager.add(
-        id, size, size, goog.bind(this.draw_, this, renderOptions),
+        id, size, size, this.draw_.bind(this, renderOptions),
         renderHitDetectionCallback);
     goog.asserts.assert(info, 'circle radius is too large');
 
@@ -62017,7 +62017,7 @@ ol.ImageCanvas.prototype.load = function() {
     goog.asserts.assert(this.loader_, 'this.loader_ must be set');
     this.state = ol.ImageState.LOADING;
     this.changed();
-    this.loader_(goog.bind(this.handleLoad_, this));
+    this.loader_(this.handleLoad_.bind(this));
   }
 };
 
@@ -62982,10 +62982,10 @@ ol.source.Image.prototype.getImage = function(extent, resolution, pixelRatio, pr
 
     this.reprojectedImage_ = new ol.reproj.Image(
         sourceProjection, projection, extent, resolution, pixelRatio,
-        goog.bind(function(extent, resolution, pixelRatio) {
+        function(extent, resolution, pixelRatio) {
           return this.getImageInternal(extent, resolution,
               pixelRatio, sourceProjection);
-        }, this));
+        }.bind(this));
     this.reprojectedRevision_ = this.getRevision();
 
     return this.reprojectedImage_;
@@ -69501,6 +69501,7 @@ ol.VectorTile.prototype.load = function() {
 
 /**
  * @param {Array.<ol.Feature>} features Features.
+ * @api
  */
 ol.VectorTile.prototype.setFeatures = function(features) {
   this.features_ = features;
@@ -70672,18 +70673,9 @@ ol.featureloader.loadFeaturesXhr = function(url, format, success, failure) {
                   goog.asserts.fail('unexpected format type');
                 }
                 if (source) {
-                  if (ol.ENABLE_VECTOR_TILE && this instanceof ol.VectorTile) {
-                    var dataUnits = format.readProjection(source).getUnits();
-                    if (dataUnits === ol.proj.Units.TILE_PIXELS) {
-                      projection = new ol.proj.Projection({
-                        code: this.getProjection().getCode(),
-                        units: dataUnits
-                      });
-                      this.setProjection(projection);
-                    }
-                  }
                   success.call(this, format.readFeatures(source,
-                      {featureProjection: projection}));
+                      {featureProjection: projection}),
+                      format.readProjection(source));
                 } else {
                   goog.asserts.fail('undefined or null source');
                 }
@@ -70715,9 +70707,18 @@ ol.featureloader.tile = function(url, format) {
   return ol.featureloader.loadFeaturesXhr(url, format,
       /**
        * @param {Array.<ol.Feature>} features The loaded features.
+       * @param {ol.proj.Projection} dataProjection Data projection.
        * @this {ol.VectorTile}
        */
-      function(features) {
+      function(features, dataProjection) {
+        var dataUnits = dataProjection.getUnits();
+        if (dataUnits === ol.proj.Units.TILE_PIXELS) {
+          var projection = new ol.proj.Projection({
+            code: this.getProjection().getCode(),
+            units: dataUnits
+          });
+          this.setProjection(projection);
+        }
         this.setFeatures(features);
       },
       /**
@@ -70742,9 +70743,10 @@ ol.featureloader.xhr = function(url, format) {
   return ol.featureloader.loadFeaturesXhr(url, format,
       /**
        * @param {Array.<ol.Feature>} features The loaded features.
+       * @param {ol.proj.Projection} dataProjection Data projection.
        * @this {ol.source.Vector}
        */
-      function(features) {
+      function(features, dataProjection) {
         this.addFeatures(features);
       }, /* FIXME handle error */ ol.nullFunction);
 };
@@ -72645,7 +72647,7 @@ ol.source.ImageVector = function(options) {
 
   goog.base(this, {
     attributions: options.attributions,
-    canvasFunction: goog.bind(this.canvasFunctionInternal_, this),
+    canvasFunction: this.canvasFunctionInternal_.bind(this),
     logo: options.logo,
     projection: options.projection,
     ratio: options.ratio,
@@ -82351,20 +82353,19 @@ ol.renderer.webgl.Map = function(container, map) {
    * @type {ol.structs.PriorityQueue.<Array>}
    */
   this.tileTextureQueue_ = new ol.structs.PriorityQueue(
-      goog.bind(
-          /**
-           * @param {Array.<*>} element Element.
-           * @return {number} Priority.
-           * @this {ol.renderer.webgl.Map}
-           */
-          function(element) {
-            var tileCenter = /** @type {ol.Coordinate} */ (element[1]);
-            var tileResolution = /** @type {number} */ (element[2]);
-            var deltaX = tileCenter[0] - this.focus_[0];
-            var deltaY = tileCenter[1] - this.focus_[1];
-            return 65536 * Math.log(tileResolution) +
-                Math.sqrt(deltaX * deltaX + deltaY * deltaY) / tileResolution;
-          }, this),
+      /**
+       * @param {Array.<*>} element Element.
+       * @return {number} Priority.
+       * @this {ol.renderer.webgl.Map}
+       */
+      (function(element) {
+        var tileCenter = /** @type {ol.Coordinate} */ (element[1]);
+        var tileResolution = /** @type {number} */ (element[2]);
+        var deltaX = tileCenter[0] - this.focus_[0];
+        var deltaY = tileCenter[1] - this.focus_[1];
+        return 65536 * Math.log(tileResolution) +
+            Math.sqrt(deltaX * deltaX + deltaY * deltaY) / tileResolution;
+      }).bind(this),
       /**
        * @param {Array.<*>} element Element.
        * @return {string} Key.
@@ -82373,11 +82374,14 @@ ol.renderer.webgl.Map = function(container, map) {
         return /** @type {ol.Tile} */ (element[0]).getKey();
       });
 
-  /**
-   * @private
-   * @type {ol.PostRenderFunction}
-   */
-  this.loadNextTileTexture_ = goog.bind(
+
+ /**
+  * @param {ol.Map} map Map.
+  * @param {?olx.FrameState} frameState Frame state.
+  * @return {boolean} false.
+  * @this {ol.renderer.webgl.Map}
+  */
+  this.loadNextTileTexture_ =
       function(map, frameState) {
         if (!this.tileTextureQueue_.isEmpty()) {
           this.tileTextureQueue_.reprioritize();
@@ -82388,7 +82392,9 @@ ol.renderer.webgl.Map = function(container, map) {
           this.bindTileTexture(
               tile, tileSize, tileGutter, goog.webgl.LINEAR, goog.webgl.LINEAR);
         }
-      }, this);
+        return false;
+      }.bind(this);
+
 
   /**
    * @private
@@ -82737,7 +82743,7 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
 
   if (this.textureCache_.getCount() - this.textureCacheFrameMarkerCount_ >
       ol.WEBGL_TEXTURE_CACHE_HIGH_WATER_MARK) {
-    frameState.postRenderFunctions.push(goog.bind(this.expireCache_, this));
+    frameState.postRenderFunctions.push(this.expireCache_.bind(this));
   }
 
   if (!this.tileTextureQueue_.isEmpty()) {
@@ -83243,8 +83249,8 @@ ol.Map = function(options) {
    * @type {ol.TileQueue}
    */
   this.tileQueue_ = new ol.TileQueue(
-      goog.bind(this.getTilePriority, this),
-      goog.bind(this.handleTileChange_, this));
+      this.getTilePriority.bind(this),
+      this.handleTileChange_.bind(this));
 
   /**
    * Uids of features to skip at rendering time.
@@ -99089,8 +99095,8 @@ ol.format.KML.prototype.readDocumentOrFolder_ = function(node, objectStack) {
         'Document': ol.xml.makeArrayExtender(this.readDocumentOrFolder_, this),
         'Folder': ol.xml.makeArrayExtender(this.readDocumentOrFolder_, this),
         'Placemark': ol.xml.makeArrayPusher(this.readPlacemark_, this),
-        'Style': goog.bind(this.readSharedStyle_, this),
-        'StyleMap': goog.bind(this.readSharedStyleMap_, this)
+        'Style': this.readSharedStyle_.bind(this),
+        'StyleMap': this.readSharedStyleMap_.bind(this)
       });
   var features = ol.xml.pushParseAndPop(/** @type {Array.<ol.Feature>} */ ([]),
       parsersNS, node, objectStack, this);
@@ -106565,8 +106571,8 @@ ol.Geolocation.prototype.handleTrackingChanged_ = function() {
     var tracking = this.getTracking();
     if (tracking && this.watchId_ === undefined) {
       this.watchId_ = goog.global.navigator.geolocation.watchPosition(
-          goog.bind(this.positionChange_, this),
-          goog.bind(this.positionError_, this),
+          this.positionChange_.bind(this),
+          this.positionError_.bind(this),
           this.getTrackingOptions());
     } else if (!tracking && this.watchId_ !== undefined) {
       goog.global.navigator.geolocation.clearWatch(this.watchId_);
@@ -112960,7 +112966,7 @@ ol.interaction.Snap = function(opt_options) {
    * @type {function(ol.interaction.Snap.SegmentDataType, ol.interaction.Snap.SegmentDataType): number}
    * @private
    */
-  this.sortByDistance_ = goog.bind(ol.interaction.Snap.sortByDistance, this);
+  this.sortByDistance_ = ol.interaction.Snap.sortByDistance.bind(this);
 
 
   /**
@@ -113010,7 +113016,7 @@ ol.interaction.Snap.prototype.addFeature = function(feature, opt_listen) {
     if (listen) {
       this.geometryModifyListenerKeys_[feature_uid] = geometry.on(
           goog.events.EventType.CHANGE,
-          goog.bind(this.handleGeometryModify_, this, feature),
+          this.handleGeometryModify_.bind(this, feature),
           this);
       this.geometryChangeListenerKeys_[feature_uid] = feature.on(
           ol.Object.getChangeEventType(feature.getGeometryName()),
@@ -113810,7 +113816,7 @@ ol.layer.Heatmap = function(opt_options) {
   goog.asserts.assert(goog.isFunction(weightFunction),
       'weightFunction should be a function');
 
-  this.setStyle(goog.bind(function(feature, resolution) {
+  this.setStyle(function(feature, resolution) {
     goog.asserts.assert(this.styleCache_, 'this.styleCache_ expected');
     goog.asserts.assert(this.circleImage_ !== undefined,
         'this.circleImage_ should be defined');
@@ -113831,7 +113837,7 @@ ol.layer.Heatmap = function(opt_options) {
       this.styleCache_[index] = style;
     }
     return style;
-  }, this));
+  }.bind(this));
 
   // For performance reasons, don't sort the features before rendering.
   // The render order is not relevant for a heatmap representation.
@@ -114420,7 +114426,7 @@ ol.reproj.Tile.prototype.load = function() {
     });
 
     if (leftToLoad === 0) {
-      goog.global.setTimeout(goog.bind(this.reproject_, this), 0);
+      goog.global.setTimeout(this.reproject_.bind(this), 0);
     }
   }
 };
@@ -115393,9 +115399,9 @@ ol.source.TileImage.prototype.getTile = function(z, x, y, pixelRatio, projection
           sourceProjection, sourceTileGrid,
           projection, targetTileGrid,
           tileCoord, wrappedTileCoord, this.getTilePixelRatio(pixelRatio),
-          goog.bind(function(z, x, y, pixelRatio) {
+          function(z, x, y, pixelRatio) {
             return this.getTileInternal(z, x, y, pixelRatio, sourceProjection);
-          }, this), this.reprojectionErrorThreshold_,
+          }.bind(this), this.reprojectionErrorThreshold_,
           this.renderReprojectionEdges_);
 
       cache.set(tileCoordKey, tile);
@@ -115565,7 +115571,7 @@ ol.source.BingMaps = function(options) {
     'include': 'ImageryProviders',
     'uriScheme': 'https',
     'key': options.key
-  }, goog.bind(this.handleImageryMetadataResponse, this));
+  }, this.handleImageryMetadataResponse.bind(this));
 
 };
 goog.inherits(ol.source.BingMaps, ol.source.TileImage);
@@ -117181,7 +117187,7 @@ ol.source.Raster = function(options) {
       function() {
         return 1;
       },
-      goog.bind(this.changed, this));
+      this.changed.bind(this));
 
   var layerStatesArray = ol.source.Raster.getLayerStatesArray_(this.renderers_);
   var layerStates = {};
@@ -117805,7 +117811,7 @@ ol.source.TileArcGISRest = function(opt_options) {
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileGrid: options.tileGrid,
     tileLoadFunction: options.tileLoadFunction,
-    tileUrlFunction: goog.bind(this.tileUrlFunction_, this),
+    tileUrlFunction: this.tileUrlFunction_.bind(this),
     url: options.url,
     urls: options.urls,
     wrapX: options.wrapX !== undefined ? options.wrapX : true
@@ -118390,8 +118396,8 @@ ol.source.TileJSON = function(options) {
 
   if (options.jsonp) {
     var request = new goog.net.Jsonp(options.url);
-    request.send(undefined, goog.bind(this.handleTileJSONResponse, this),
-        goog.bind(this.handleTileJSONError, this));
+    request.send(undefined, this.handleTileJSONResponse.bind(this),
+        this.handleTileJSONError.bind(this));
   } else {
     var xhr = new goog.net.XhrIo(new goog.net.CorsXmlHttpFactory());
     goog.events.listen(xhr, goog.net.EventType.COMPLETE, function(e) {
@@ -118524,7 +118530,7 @@ ol.source.TileUTFGrid = function(options) {
   this.template_ = undefined;
 
   var request = new goog.net.Jsonp(options.url);
-  request.send(undefined, goog.bind(this.handleTileJSONResponse, this));
+  request.send(undefined, this.handleTileJSONResponse.bind(this));
 };
 goog.inherits(ol.source.TileUTFGrid, ol.source.Tile);
 
@@ -118835,8 +118841,8 @@ ol.source.TileUTFGridTile_.prototype.loadInternal_ = function() {
   if (this.state == ol.TileState.IDLE) {
     this.state = ol.TileState.LOADING;
     var request = new goog.net.Jsonp(this.src_);
-    request.send(undefined, goog.bind(this.handleLoad_, this),
-                 goog.bind(this.handleError_, this));
+    request.send(undefined, this.handleLoad_.bind(this),
+                 this.handleError_.bind(this));
   }
 };
 
@@ -118898,7 +118904,7 @@ ol.source.TileWMS = function(opt_options) {
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileGrid: options.tileGrid,
     tileLoadFunction: options.tileLoadFunction,
-    tileUrlFunction: goog.bind(this.tileUrlFunction_, this),
+    tileUrlFunction: this.tileUrlFunction_.bind(this),
     url: options.url,
     urls: options.urls,
     wrapX: options.wrapX !== undefined ? options.wrapX : true
@@ -120848,12 +120854,12 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
     if (hasCustomHitDetectionImage) {
       // render the hit-detection image into a separate atlas image
       renderHitDetectionCallback =
-          goog.bind(this.drawHitDetectionCanvas_, this, renderOptions);
+          this.drawHitDetectionCanvas_.bind(this, renderOptions);
     }
 
     var id = this.getChecksum();
     var info = atlasManager.add(
-        id, size, size, goog.bind(this.draw_, this, renderOptions),
+        id, size, size, this.draw_.bind(this, renderOptions),
         renderHitDetectionCallback);
     goog.asserts.assert(info, 'shape size is too large');
 
@@ -122163,6 +122169,11 @@ goog.exportProperty(
     ol.VectorTile.prototype,
     'getFormat',
     ol.VectorTile.prototype.getFormat);
+
+goog.exportProperty(
+    ol.VectorTile.prototype,
+    'setFeatures',
+    ol.VectorTile.prototype.setFeatures);
 
 goog.exportProperty(
     ol.VectorTile.prototype,
