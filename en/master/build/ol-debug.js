@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.12.1-175-g1ad3d4e
+// Version: v3.12.1-177-gb134b08
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -53751,6 +53751,7 @@ ol.interaction.DragPan.handleDragEvent_ = function(mapBrowserEvent) {
     ol.coordinate.rotate(center, viewState.rotation);
     ol.coordinate.add(center, viewState.center);
     center = view.constrainCenter(center);
+    map.render();
     view.setCenter(center);
   }
   this.lastCentroid = centroid;
@@ -53783,6 +53784,7 @@ ol.interaction.DragPan.handleUpEvent_ = function(mapBrowserEvent) {
       view.setCenter(dest);
     }
     view.setHint(ol.ViewHint.INTERACTING, -1);
+    map.render();
     return false;
   } else {
     this.lastCentroid = null;
@@ -53805,6 +53807,7 @@ ol.interaction.DragPan.handleDownEvent_ = function(mapBrowserEvent) {
     if (!this.handlingDownUpSequence) {
       view.setHint(ol.ViewHint.INTERACTING, 1);
     }
+    map.render();
     if (this.kineticPreRenderFn_ &&
         map.removePreRenderFunction(this.kineticPreRenderFn_)) {
       view.setCenter(mapBrowserEvent.frameState.viewState.center);
@@ -53902,6 +53905,7 @@ ol.interaction.DragRotate.handleDragEvent_ = function(mapBrowserEvent) {
     var delta = theta - this.lastAngle_;
     var view = map.getView();
     var rotation = view.getRotation();
+    map.render();
     ol.interaction.Interaction.rotateWithoutConstraints(
         map, view, rotation - delta);
   }
@@ -53945,6 +53949,7 @@ ol.interaction.DragRotate.handleDownEvent_ = function(mapBrowserEvent) {
   if (browserEvent.isMouseActionButton() && this.condition_(mapBrowserEvent)) {
     var map = mapBrowserEvent.map;
     map.getView().setHint(ol.ViewHint.INTERACTING, 1);
+    map.render();
     this.lastAngle_ = undefined;
     return true;
   } else {
@@ -54615,6 +54620,7 @@ ol.interaction.KeyboardZoom.handleEvent = function(mapBrowserEvent) {
         (charCode == '+'.charCodeAt(0) || charCode == '-'.charCodeAt(0))) {
       var map = mapBrowserEvent.map;
       var delta = (charCode == '+'.charCodeAt(0)) ? this.delta_ : -this.delta_;
+      map.render();
       var view = map.getView();
       goog.asserts.assert(view, 'map must have view');
       ol.interaction.Interaction.zoomByDelta(
@@ -54746,6 +54752,7 @@ ol.interaction.MouseWheelZoom.prototype.doZoom_ = function(map) {
   var view = map.getView();
   goog.asserts.assert(view, 'map must have view');
 
+  map.render();
   ol.interaction.Interaction.zoomByDelta(map, view, -delta, this.lastAnchor_,
       this.duration_);
 
@@ -54886,6 +54893,7 @@ ol.interaction.PinchRotate.handleDragEvent_ = function(mapBrowserEvent) {
   if (this.rotating_) {
     var view = map.getView();
     var rotation = view.getRotation();
+    map.render();
     ol.interaction.Interaction.rotateWithoutConstraints(map, view,
         rotation + rotationDelta, this.anchor_);
   }
@@ -54931,6 +54939,7 @@ ol.interaction.PinchRotate.handleDownEvent_ = function(mapBrowserEvent) {
     if (!this.handlingDownUpSequence) {
       map.getView().setHint(ol.ViewHint.INTERACTING, 1);
     }
+    map.render();
     return true;
   } else {
     return false;
@@ -55042,6 +55051,7 @@ ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
   this.anchor_ = map.getCoordinateFromPixel(centroid);
 
   // scale, bypass the resolution constraint
+  map.render();
   ol.interaction.Interaction.zoomWithoutConstraints(
       map, view, resolution * scaleDelta, this.anchor_);
 
@@ -55088,6 +55098,7 @@ ol.interaction.PinchZoom.handleDownEvent_ = function(mapBrowserEvent) {
     if (!this.handlingDownUpSequence) {
       map.getView().setHint(ol.ViewHint.INTERACTING, 1);
     }
+    map.render();
     return true;
   } else {
     return false;
@@ -110461,6 +110472,7 @@ ol.interaction.DragRotateAndZoom.handleDragEvent_ = function(mapBrowserEvent) {
   var theta = Math.atan2(delta.y, delta.x);
   var magnitude = delta.magnitude();
   var view = map.getView();
+  map.render();
   if (this.lastAngle_ !== undefined) {
     var angleDelta = theta - this.lastAngle_;
     ol.interaction.Interaction.rotateWithoutConstraints(
