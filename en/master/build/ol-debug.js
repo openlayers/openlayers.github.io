@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.12.1-177-gb134b08
+// Version: v3.12.1-180-g7277e29
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -74130,9 +74130,8 @@ ol.source.UrlTile = function(options) {
    * @protected
    * @type {ol.TileUrlFunctionType}
    */
-  this.tileUrlFunction = options.tileUrlFunction ?
-      options.tileUrlFunction :
-      ol.TileUrlFunction.nullTileUrlFunction;
+  this.tileUrlFunction =
+      this.fixedTileUrlFunction || ol.TileUrlFunction.nullTileUrlFunction;
 
   /**
    * @protected
@@ -74141,11 +74140,7 @@ ol.source.UrlTile = function(options) {
   this.urls = null;
 
   if (options.urls) {
-    if (options.tileUrlFunction) {
-      this.urls = options.urls;
-    } else {
-      this.setUrls(options.urls);
-    }
+    this.setUrls(options.urls);
   } else if (options.url) {
     this.setUrl(options.url);
   }
@@ -74156,6 +74151,12 @@ ol.source.UrlTile = function(options) {
 };
 goog.inherits(ol.source.UrlTile, ol.source.Tile);
 
+
+/**
+ * @type {ol.TileUrlFunctionType|undefined}
+ * @protected
+ */
+ol.source.UrlTile.prototype.fixedTileUrlFunction;
 
 /**
  * Return the tile load function of the source.
@@ -74248,9 +74249,10 @@ ol.source.UrlTile.prototype.setTileUrlFunction = function(tileUrlFunction) {
  * @api stable
  */
 ol.source.UrlTile.prototype.setUrl = function(url) {
-  this.setTileUrlFunction(ol.TileUrlFunction.createFromTemplates(
-      ol.TileUrlFunction.expandUrl(url), this.tileGrid));
   this.urls = [url];
+  var urls = ol.TileUrlFunction.expandUrl(url);
+  this.setTileUrlFunction(this.fixedTileUrlFunction ||
+      ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid));
 };
 
 
@@ -74260,9 +74262,9 @@ ol.source.UrlTile.prototype.setUrl = function(url) {
  * @api stable
  */
 ol.source.UrlTile.prototype.setUrls = function(urls) {
-  this.setTileUrlFunction(ol.TileUrlFunction.createFromTemplates(
-      urls, this.tileGrid));
   this.urls = urls;
+  this.setTileUrlFunction(this.fixedTileUrlFunction ||
+      ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid));
 };
 
 
@@ -117823,7 +117825,6 @@ ol.source.TileArcGISRest = function(opt_options) {
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileGrid: options.tileGrid,
     tileLoadFunction: options.tileLoadFunction,
-    tileUrlFunction: this.tileUrlFunction_.bind(this),
     url: options.url,
     urls: options.urls,
     wrapX: options.wrapX !== undefined ? options.wrapX : true
@@ -117919,13 +117920,9 @@ ol.source.TileArcGISRest.prototype.getTilePixelRatio = function(pixelRatio) {
 
 
 /**
- * @param {ol.TileCoord} tileCoord Tile coordinate.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {string|undefined} Tile URL.
- * @private
+ * @inheritDoc
  */
-ol.source.TileArcGISRest.prototype.tileUrlFunction_ = function(tileCoord, pixelRatio, projection) {
+ol.source.TileArcGISRest.prototype.fixedTileUrlFunction = function(tileCoord, pixelRatio, projection) {
 
   var tileGrid = this.getTileGrid();
   if (!tileGrid) {
@@ -118916,7 +118913,6 @@ ol.source.TileWMS = function(opt_options) {
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileGrid: options.tileGrid,
     tileLoadFunction: options.tileLoadFunction,
-    tileUrlFunction: this.tileUrlFunction_.bind(this),
     url: options.url,
     urls: options.urls,
     wrapX: options.wrapX !== undefined ? options.wrapX : true
@@ -119171,13 +119167,9 @@ ol.source.TileWMS.prototype.resetCoordKeyPrefix_ = function() {
 
 
 /**
- * @param {ol.TileCoord} tileCoord Tile coordinate.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {string|undefined} Tile URL.
- * @private
+ * @inheritDoc
  */
-ol.source.TileWMS.prototype.tileUrlFunction_ = function(tileCoord, pixelRatio, projection) {
+ol.source.TileWMS.prototype.fixedTileUrlFunction = function(tileCoord, pixelRatio, projection) {
 
   var tileGrid = this.getTileGrid();
   if (!tileGrid) {
