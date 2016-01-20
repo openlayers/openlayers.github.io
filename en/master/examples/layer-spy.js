@@ -1,4 +1,4 @@
-var key = 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3';
+var key = 'AkGbxXx6tDWf1swIhPJyoAVp06H0s0gDTYslNWWHZ6RoPqMpB9ld5FY1WutX8UoF';
 
 var roads = new ol.layer.Tile({
   source: new ol.source.BingMaps({key: key, imagerySet: 'Road'})
