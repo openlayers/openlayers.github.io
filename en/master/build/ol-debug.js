@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.0
+// Version: v3.13.0-9-gb9c3981
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -63133,8 +63133,7 @@ ol.source.ImageCanvas = function(options) {
     logo: options.logo,
     projection: options.projection,
     resolutions: options.resolutions,
-    state: options.state !== undefined ?
-        /** @type {ol.source.State} */ (options.state) : undefined
+    state: options.state
   });
 
   /**
@@ -74079,11 +74078,12 @@ goog.require('ol.source.TileEvent');
 
 /**
  * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ *            cacheSize: (number|undefined),
  *            extent: (ol.Extent|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
  *            opaque: (boolean|undefined),
  *            projection: ol.proj.ProjectionLike,
- *            state: (ol.source.State|string|undefined),
+ *            state: (ol.source.State|undefined),
  *            tileGrid: (ol.tilegrid.TileGrid|undefined),
  *            tileLoadFunction: ol.TileLoadFunctionType,
  *            tilePixelRatio: (number|undefined),
@@ -74113,8 +74113,7 @@ ol.source.UrlTile = function(options) {
     logo: options.logo,
     opaque: options.opaque,
     projection: options.projection,
-    state: options.state ?
-        /** @type {ol.source.State} */ (options.state) : undefined,
+    state: options.state,
     tileGrid: options.tileGrid,
     tilePixelRatio: options.tilePixelRatio,
     wrapX: options.wrapX
@@ -74130,8 +74129,9 @@ ol.source.UrlTile = function(options) {
    * @protected
    * @type {ol.TileUrlFunctionType}
    */
-  this.tileUrlFunction =
-      this.fixedTileUrlFunction || ol.TileUrlFunction.nullTileUrlFunction;
+  this.tileUrlFunction = this.fixedTileUrlFunction ?
+      this.fixedTileUrlFunction.bind(this) :
+      ol.TileUrlFunction.nullTileUrlFunction;
 
   /**
    * @protected
@@ -74251,7 +74251,8 @@ ol.source.UrlTile.prototype.setTileUrlFunction = function(tileUrlFunction) {
 ol.source.UrlTile.prototype.setUrl = function(url) {
   this.urls = [url];
   var urls = ol.TileUrlFunction.expandUrl(url);
-  this.setTileUrlFunction(this.fixedTileUrlFunction ||
+  this.setTileUrlFunction(this.fixedTileUrlFunction ?
+      this.fixedTileUrlFunction.bind(this) :
       ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid));
 };
 
@@ -74263,7 +74264,8 @@ ol.source.UrlTile.prototype.setUrl = function(url) {
  */
 ol.source.UrlTile.prototype.setUrls = function(urls) {
   this.urls = urls;
-  this.setTileUrlFunction(this.fixedTileUrlFunction ||
+  this.setTileUrlFunction(this.fixedTileUrlFunction ?
+      this.fixedTileUrlFunction.bind(this) :
       ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid));
 };
 
@@ -74314,8 +74316,7 @@ ol.source.VectorTile = function(options) {
     logo: options.logo,
     opaque: options.opaque,
     projection: options.projection,
-    state: options.state ?
-        /** @type {ol.source.State} */ (options.state) : undefined,
+    state: options.state,
     tileGrid: options.tileGrid,
     tileLoadFunction: options.tileLoadFunction ?
         options.tileLoadFunction : ol.source.VectorTile.defaultTileLoadFunction,
@@ -115214,8 +115215,7 @@ ol.source.TileImage = function(options) {
     logo: options.logo,
     opaque: options.opaque,
     projection: options.projection,
-    state: options.state !== undefined ?
-        /** @type {ol.source.State} */ (options.state) : undefined,
+    state: options.state,
     tileGrid: options.tileGrid,
     tileLoadFunction: options.tileLoadFunction ?
         options.tileLoadFunction : ol.source.TileImage.defaultTileLoadFunction,
@@ -120634,9 +120634,15 @@ ol.style.RegularShape = function(options) {
   var snapToPixel = options.snapToPixel !== undefined ?
       options.snapToPixel : true;
 
+  /**
+   * @type {boolean}
+   */
+  var rotateWithView = options.rotateWithView !== undefined ?
+      options.rotateWithView : false;
+
   goog.base(this, {
     opacity: 1,
-    rotateWithView: false,
+    rotateWithView: rotateWithView,
     rotation: options.rotation !== undefined ? options.rotation : 0,
     scale: 1,
     snapToPixel: snapToPixel
