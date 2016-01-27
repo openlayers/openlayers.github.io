@@ -125,10 +125,6 @@
                     <a href="ol.html#.TileUrlFunctionType">TileUrlFunctionType</a>
                 </li>
             
-                <li data-name="ol.TileVectorLoadFunctionType" class="unstable">
-                    <a href="ol.html#.TileVectorLoadFunctionType">TileVectorLoadFunctionType</a>
-                </li>
-            
                 <li data-name="ol.TransformFunction" class="">
                     <a href="ol.html#.TransformFunction">TransformFunction</a>
                 </li>
@@ -14807,7 +14803,10 @@ Higher values can increase reprojection performance, but decrease precision.</p>
 
 
                 
-                <p>Optional function to load a tile given a URL.</p></td>
+                <p>Optional function to load a tile given a URL. The default is</p>
+<pre class="prettyprint source lang-js"><code>function(imageTile, src) {
+  imageTile.getImage().src = src;
+};</code></pre></td>
         </tr>
 	
 	

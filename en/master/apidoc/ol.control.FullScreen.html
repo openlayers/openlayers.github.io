@@ -125,10 +125,6 @@
                     <a href="ol.html#.TileUrlFunctionType">TileUrlFunctionType</a>
                 </li>
             
-                <li data-name="ol.TileVectorLoadFunctionType" class="unstable">
-                    <a href="ol.html#.TileVectorLoadFunctionType">TileVectorLoadFunctionType</a>
-                </li>
-            
                 <li data-name="ol.TransformFunction" class="">
                     <a href="ol.html#.TransformFunction">TransformFunction</a>
                 </li>
@@ -14531,7 +14527,10 @@
     </h2>
     
         <div class="class-description"><p>Provides a button that when clicked fills up the full screen with the map.
-When in full screen mode, a close button is shown to exit full screen mode.
+The full screen source element is by default the element containing the map viewport unless
+overriden by providing the <code>source</code> option. In which case, the dom
+element introduced using this parameter will be displayed in full screen.</p>
+<p>When in full screen mode, a close button is shown to exit full screen mode.
 The <a href="http://www.w3.org/TR/fullscreen/">Fullscreen API</a> is used to
 toggle the map in full screen mode.</p></div>
     
@@ -14554,7 +14553,7 @@ toggle the map in full screen mode.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/control/fullscreencontrol.js, line 28
+            src/ol/control/fullscreencontrol.js, line 32
         </div>
         
         
@@ -14824,6 +14823,42 @@ Instead of text, also a Node (e.g. a <code>span</code> element) can be used.</p>
 
                 
                 <p>Target.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The element to be displayed fullscreen. When not provided, the element containing the map viewport will be displayed fullscreen.</p></td>
         </tr>
 	
 	

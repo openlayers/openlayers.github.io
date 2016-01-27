@@ -125,10 +125,6 @@
                     <a href="ol.html#.TileUrlFunctionType">TileUrlFunctionType</a>
                 </li>
             
-                <li data-name="ol.TileVectorLoadFunctionType" class="unstable">
-                    <a href="ol.html#.TileVectorLoadFunctionType">TileVectorLoadFunctionType</a>
-                </li>
-            
                 <li data-name="ol.TransformFunction" class="">
                     <a href="ol.html#.TransformFunction">TransformFunction</a>
                 </li>
@@ -14559,7 +14555,7 @@ editing.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectortilesource.js, line 28
+            src/ol/source/vectortilesource.js, line 27
         </div>
         
         
@@ -14654,8 +14650,7 @@ editing.</p></div>
 
 
                 
-                <p>/**
-Attributions.</p></td>
+                <p>Attributions.</p></td>
         </tr>
 	
 	
@@ -14920,7 +14915,11 @@ Attributions.</p></td>
 
 
                 
-                <p>Optional function to load a tile given a URL.</p></td>
+                <p>Optional function to load a tile given a URL. The default is</p>
+<pre class="prettyprint source lang-js"><code>function(tile, url) {
+  tile.setLoader(
+      ol.featureloader.tile(url, tile.getFormat()));
+};</code></pre></td>
         </tr>
 	
 	
