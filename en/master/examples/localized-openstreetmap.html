@@ -36,7 +36,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of a localized OpenStreetMap map with a custom tile server and a custom attribution.</p>
-          <div id="docs"><p>The base layer is <a href="http://www.opencyclemap.org/">OpenCycleMap</a> with an overlay from <a href="http://www.openseamap.org/">OpenSeaMap</a>. The OpenSeaMap tile server does not support <a href="http://enable-cors.org/">CORS</a> headers.</p>
+          <div id="docs"><p><p>The base layer is <a href="http://www.opencyclemap.org/">OpenCycleMap</a> with an overlay from <a href="http://www.openseamap.org/">OpenSeaMap</a>.</p>
 </div>
           <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Attribution.html" title="API documentation for ol.Attribution">ol.Attribution</a></li>,<li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li></ul></div>
         </div>
@@ -70,7 +70,7 @@ var openSeaMapLayer &#x3D; new ol.layer.Tile({
       }),
       ol.source.OSM.ATTRIBUTION
     ],
-    crossOrigin: null,
+    opaque: false,
     url: &#x27;http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png&#x27;
   })
 });
@@ -132,7 +132,7 @@ var map &#x3D; new ol.Map({
             }),
             ol.source.OSM.ATTRIBUTION
           ],
-          crossOrigin: null,
+          opaque: false,
           url: &#x27;http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png&#x27;
         })
       });

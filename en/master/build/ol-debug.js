@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.0-58-g39b9ba8
+// Version: v3.13.0-62-ga1fbe24
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -116737,7 +116737,7 @@ ol.source.OSM = function(opt_options) {
   goog.base(this, {
     attributions: attributions,
     crossOrigin: crossOrigin,
-    opaque: true,
+    opaque: options.opaque !== undefined ? options.opaque : true,
     maxZoom: options.maxZoom !== undefined ? options.maxZoom : 19,
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileLoadFunction: options.tileLoadFunction,
