@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.0-32-g398a292
+// Version: v3.13.0-58-g39b9ba8
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -58002,15 +58002,6 @@ ol.layer.VectorTile.prototype.getPreload = function() {
 
 
 /**
- * Return the associated {@link ol.source.VectorTile source} of the layer.
- * @function
- * @return {ol.source.VectorTile} Source.
- * @api
- */
-ol.layer.VectorTile.prototype.getSource;
-
-
-/**
  * Whether we use interim tiles on error.
  * @return {boolean} Use interim tiles on error.
  * @observable
@@ -72459,6 +72450,16 @@ ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
 
 
 /**
+ * @param {ol.Feature} feature Feature.
+ * @return {boolean} Feature is in source.
+ */
+ol.source.Vector.prototype.hasFeature = function(feature) {
+  var id = feature.getId();
+  return id ? id in this.idIndex_ : goog.getUid(feature) in this.undefIdIndex_;
+};
+
+
+/**
  * @return {boolean} Is empty.
  */
 ol.source.Vector.prototype.isEmpty = function() {
@@ -74466,7 +74467,6 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(frameState,
   goog.asserts.assertInstanceof(source, ol.source.VectorTile,
       'Source is an ol.source.VectorTile');
   var tilePixelRatio = source.getTilePixelRatio(pixelRatio);
-  var maxScale = tilePixelRatio / pixelRatio;
 
   var transform = this.getTransform(frameState, 0);
 
@@ -74491,9 +74491,9 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(frameState,
   var tileGrid = source.getTileGrid();
 
   var currentZ, height, i, ii, insertPoint, insertTransform, offsetX, offsetY;
-  var origin, pixelSpace, replayState, scale, tile, tileCenter, tileContext;
-  var tileExtent, tilePixelResolution, tilePixelSize, tileResolution, tileSize;
-  var tileTransform, width;
+  var origin, pixelSpace, replayState, resolutionRatio, tile, tileCenter;
+  var tileContext, tileExtent, tilePixelResolution, tilePixelSize;
+  var tileResolution, tileSize, tileTransform, width;
   for (i = 0, ii = tilesToDraw.length; i < ii; ++i) {
     tile = tilesToDraw[i];
     replayState = tile.getReplayState();
@@ -74504,12 +74504,13 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(frameState,
     pixelSpace = tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS;
     tileResolution = tileGrid.getResolution(currentZ);
     tilePixelResolution = tileResolution / tilePixelRatio;
-    scale = tileResolution / resolution;
+    resolutionRatio = tileResolution / resolution;
     offsetX = Math.round(pixelRatio * size[0] / 2);
     offsetY = Math.round(pixelRatio * size[1] / 2);
-    width = tileSize[0] * pixelRatio * scale;
-    height = tileSize[1] * pixelRatio * scale;
-    if (width < 1 || scale > maxScale) {
+    width = tileSize[0] * pixelRatio * resolutionRatio;
+    height = tileSize[1] * pixelRatio * resolutionRatio;
+    var unscaledPixelTileSize = tileSize[0] * pixelRatio;
+    if (width < unscaledPixelTileSize / 4 || width > unscaledPixelTileSize * 4) {
       if (pixelSpace) {
         origin = ol.extent.getTopLeft(tileExtent);
         tileTransform = ol.vec.Mat4.makeTransform2D(this.tmpTransform_,
@@ -112772,7 +112773,8 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
          * @param {ol.layer.Layer} layer Layer.
          */
         function(feature, layer) {
-          if (layer !== this.featureOverlay_) {
+          goog.asserts.assertInstanceof(feature, ol.Feature);
+          if (layer !== null) {
             if (add || toggle) {
               if (this.filter_(feature, layer) &&
                   !ol.array.includes(features.getArray(), feature) &&
@@ -112781,7 +112783,7 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
                 this.addFeatureLayerAssociation_(feature, layer);
               }
             }
-          } else {
+          } else if (this.featureOverlay_.getSource().hasFeature(feature)) {
             if (remove || toggle) {
               deselected.push(feature);
               this.removeFeatureLayerAssociation_(feature);
@@ -114397,21 +114399,25 @@ ol.reproj.Tile.prototype.reproject_ = function() {
   }, this);
   this.sourceTiles_.length = 0;
 
-  var z = this.wrappedTileCoord_[0];
-  var size = this.targetTileGrid_.getTileSize(z);
-  var width = goog.isNumber(size) ? size : size[0];
-  var height = goog.isNumber(size) ? size : size[1];
-  var targetResolution = this.targetTileGrid_.getResolution(z);
-  var sourceResolution = this.sourceTileGrid_.getResolution(this.sourceZ_);
+  if (sources.length === 0) {
+    this.state = ol.TileState.ERROR;
+  } else {
+    var z = this.wrappedTileCoord_[0];
+    var size = this.targetTileGrid_.getTileSize(z);
+    var width = goog.isNumber(size) ? size : size[0];
+    var height = goog.isNumber(size) ? size : size[1];
+    var targetResolution = this.targetTileGrid_.getResolution(z);
+    var sourceResolution = this.sourceTileGrid_.getResolution(this.sourceZ_);
 
-  var targetExtent = this.targetTileGrid_.getTileCoordExtent(
-      this.wrappedTileCoord_);
-  this.canvas_ = ol.reproj.render(width, height, this.pixelRatio_,
-      sourceResolution, this.sourceTileGrid_.getExtent(),
-      targetResolution, targetExtent, this.triangulation_, sources,
-      this.renderEdges_);
+    var targetExtent = this.targetTileGrid_.getTileCoordExtent(
+        this.wrappedTileCoord_);
+    this.canvas_ = ol.reproj.render(width, height, this.pixelRatio_,
+        sourceResolution, this.sourceTileGrid_.getExtent(),
+        targetResolution, targetExtent, this.triangulation_, sources,
+        this.renderEdges_);
 
-  this.state = ol.TileState.LOADED;
+    this.state = ol.TileState.LOADED;
+  }
   this.changed();
 };
 
@@ -123819,11 +123825,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.VectorTile.prototype,
-    'getSource',
-    ol.layer.VectorTile.prototype.getSource);
-
-goog.exportProperty(
-    ol.layer.VectorTile.prototype,
     'getUseInterimTilesOnError',
     ol.layer.VectorTile.prototype.getUseInterimTilesOnError);
 
@@ -130356,6 +130357,11 @@ goog.exportProperty(
     ol.layer.Tile.prototype,
     'unByKey',
     ol.layer.Tile.prototype.unByKey);
+
+goog.exportProperty(
+    ol.layer.VectorTile.prototype,
+    'getSource',
+    ol.layer.VectorTile.prototype.getSource);
 
 goog.exportProperty(
     ol.layer.VectorTile.prototype,
