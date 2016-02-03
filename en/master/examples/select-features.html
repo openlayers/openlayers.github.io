@@ -122,7 +122,7 @@ var changeInteraction &#x3D; function() {
   if (select !&#x3D;&#x3D; null) {
     map.addInteraction(select);
     select.on(&#x27;select&#x27;, function(e) {
-      document.getElementById(&#x27;status&#x27;).innerText &#x3D; &#x27;&amp;nbsp;&#x27; +
+      document.getElementById(&#x27;status&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27; +
           e.target.getFeatures().getLength() +
           &#x27; selected features (last operation selected &#x27; + e.selected.length +
           &#x27; and deselected &#x27; + e.deselected.length + &#x27; features)&#x27;;
@@ -238,7 +238,7 @@ changeInteraction();
         if (select !&#x3D;&#x3D; null) {
           map.addInteraction(select);
           select.on(&#x27;select&#x27;, function(e) {
-            document.getElementById(&#x27;status&#x27;).innerText &#x3D; &#x27;&amp;nbsp;&#x27; +
+            document.getElementById(&#x27;status&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27; +
                 e.target.getFeatures().getLength() +
                 &#x27; selected features (last operation selected &#x27; + e.selected.length +
                 &#x27; and deselected &#x27; + e.deselected.length + &#x27; features)&#x27;;
