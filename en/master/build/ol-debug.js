@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.0-90-gcf7d30d
+// Version: v3.13.0-94-gd87482e
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -106121,7 +106121,7 @@ ol.format.WMSGetFeatureInfo.layerIdentifier_ = '_layer';
  */
 ol.format.WMSGetFeatureInfo.prototype.readFeatures_ = function(node, objectStack) {
 
-  node.namespaceURI = this.featureNS_;
+  node.setAttribute('namespaceURI', this.featureNS_);
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
   var localName = ol.xml.getLocalName(node);
@@ -106162,7 +106162,7 @@ ol.format.WMSGetFeatureInfo.prototype.readFeatures_ = function(node, objectStack
           this.gmlFormat_.readFeatureElement, this.gmlFormat_);
       var parsersNS = ol.xml.makeStructureNS(
           [context['featureNS'], null], parsers);
-      layer.namespaceURI = this.featureNS_;
+      layer.setAttribute('namespaceURI', this.featureNS_);
       var layerFeatures = ol.xml.pushParseAndPop(
           [], parsersNS, layer, objectStack, this.gmlFormat_);
       if (layerFeatures) {
@@ -106697,6 +106697,7 @@ ol.GeolocationProperty = {
  *       window.console.log(geolocation.getPosition());
  *     });
  *
+ * @fires error
  * @constructor
  * @extends {ol.Object}
  * @param {olx.GeolocationOptions=} opt_options Options.
@@ -106822,6 +106823,11 @@ ol.Geolocation.prototype.positionChange_ = function(position) {
   this.changed();
 };
 
+/**
+ * Triggered when the Geolocation returns an error.
+ * @event error
+ * @api
+ */
 
 /**
  * @private
