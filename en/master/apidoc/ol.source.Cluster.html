@@ -3084,6 +3084,52 @@
                     <a href="ol.events.html#.ConditionType">ConditionType</a>
                 </li>
             
+                <li data-name="ol.events.Key" class="unstable">
+                    <a href="ol.events.html#.Key">Key</a>
+                </li>
+            
+                <li data-name="ol.events.ListenerFunctionType" class="unstable">
+                    <a href="ol.events.html#.ListenerFunctionType">ListenerFunctionType</a>
+                </li>
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.events.Event">
+            <span class="title">
+                <a href="ol.events.Event.html">ol.events.Event</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.events.EventTarget">
+            <span class="title">
+                <a href="ol.events.EventTarget.html">ol.events.EventTarget</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
             </ul>
             <ul class="methods itemMembers">
             
@@ -15181,7 +15227,7 @@ instead.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 271
+            src/ol/source/vectorsource.js, line 269
         </div>
         
         
@@ -15307,7 +15353,7 @@ instead.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 50
+            src/ol/observable.js, line 57
         </div>
         
         
@@ -15384,7 +15430,7 @@ instead.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 375
+            src/ol/source/vectorsource.js, line 373
         </div>
         
         
@@ -15510,7 +15556,7 @@ instead.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 72
+            src/ol/observable.js, line 81
         </div>
         
         
@@ -15562,7 +15608,13 @@ Object with a <code>type</code> property.</p>
             <td class="type">
             
                 
-<span class="param-type">goog.events.EventLike</span>
+<span class="param-type">Object</span>
+|
+
+<span class="param-type"><a href="ol.events.Event.html">ol.events.Event</a></span>
+|
+
+<span class="param-type">string</span>
 
 
             
@@ -15636,7 +15688,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 427
+            src/ol/source/vectorsource.js, line 425
         </div>
         
         
@@ -15799,7 +15851,7 @@ The return value from the last call to the callback.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 484
+            src/ol/source/vectorsource.js, line 482
         </div>
         
         
@@ -15992,7 +16044,7 @@ The return value from the last call to the callback.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 510
+            src/ol/source/vectorsource.js, line 508
         </div>
         
         
@@ -16399,7 +16451,7 @@ Attributions.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 607
+            src/ol/source/vectorsource.js, line 605
         </div>
         
         
@@ -16534,7 +16586,7 @@ Closest feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 660
+            src/ol/source/vectorsource.js, line 658
         </div>
         
         
@@ -16622,7 +16674,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 676
+            src/ol/source/vectorsource.js, line 674
         </div>
         
         
@@ -16760,7 +16812,7 @@ The feature (or <code>null</code> if not found).
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 548
+            src/ol/source/vectorsource.js, line 546
         </div>
         
         
@@ -16846,7 +16898,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 571
+            src/ol/source/vectorsource.js, line 569
         </div>
         
         
@@ -16981,7 +17033,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 538
+            src/ol/source/vectorsource.js, line 536
         </div>
         
         
@@ -17071,7 +17123,7 @@ The collection of features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 591
+            src/ol/source/vectorsource.js, line 589
         </div>
         
         
@@ -17556,7 +17608,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 81
+            src/ol/observable.js, line 90
         </div>
         
         
@@ -17808,7 +17860,7 @@ State.
     <div class="nameContainer inherited">
         
         <h4 class="name" id="on">
-            on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
+            on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.events.html#.Key">ol.events.Key</a>|Array.&lt;<a href="ol.events.html#.Key">ol.events.Key</a>>}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#on">inherited</a></span>
             
@@ -17817,7 +17869,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 94
+            src/ol/observable.js, line 105
         </div>
         
         
@@ -17980,7 +18032,9 @@ State.
 
 
 <h5>Returns:</h5>
-Unique key for the listener.
+Unique key for the listener. If
+    called with an array of event types as the first argument, the return
+    will be an array of keys.
 <br />
 
     
@@ -17994,7 +18048,7 @@ Unique key for the listener.
     <div class="nameContainer inherited">
         
         <h4 class="name" id="once">
-            once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
+            once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.events.html#.Key">ol.events.Key</a>|Array.&lt;<a href="ol.events.html#.Key">ol.events.Key</a>>}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#once">inherited</a></span>
             
@@ -18003,7 +18057,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 107
+            src/ol/observable.js, line 130
         </div>
         
         
@@ -18166,7 +18220,9 @@ Unique key for the listener.
 
 
 <h5>Returns:</h5>
-Unique key for the listener.
+Unique key for the listener. If
+    called with an array of event types as the first argument, the return
+    will be an array of keys.
 <br />
 
     
@@ -18189,7 +18245,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 796
+            src/ol/source/vectorsource.js, line 794
         </div>
         
         
@@ -18765,7 +18821,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 120
+            src/ol/observable.js, line 153
         </div>
         
         
@@ -18943,7 +18999,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 133
+            src/ol/observable.js, line 174
         </div>
         
         
@@ -18995,7 +19051,10 @@ be preferred.</p>
             <td class="type">
             
                 
-<span class="param-type">goog.events.Key</span>
+<span class="param-type"><a href="ol.events.html#.Key">ol.events.Key</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="ol.events.html#.Key">ol.events.Key</a>></span>
 
 
             
@@ -19006,7 +19065,8 @@ be preferred.</p>
             
             <td  class="description last">
                 
-                <p>The key returned by <code>on()</code> or <code>once()</code>.</p></td>
+                <p>The key returned by <code>on()</code>
+    or <code>once()</code> (or an array of keys).</p></td>
         </tr>
 	
 	

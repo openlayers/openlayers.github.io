@@ -3084,6 +3084,52 @@
                     <a href="ol.events.html#.ConditionType">ConditionType</a>
                 </li>
             
+                <li data-name="ol.events.Key" class="unstable">
+                    <a href="ol.events.html#.Key">Key</a>
+                </li>
+            
+                <li data-name="ol.events.ListenerFunctionType" class="unstable">
+                    <a href="ol.events.html#.ListenerFunctionType">ListenerFunctionType</a>
+                </li>
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.events.Event">
+            <span class="title">
+                <a href="ol.events.Event.html">ol.events.Event</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.events.EventTarget">
+            <span class="title">
+                <a href="ol.events.EventTarget.html">ol.events.EventTarget</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
             </ul>
             <ul class="methods itemMembers">
             
@@ -14644,7 +14690,7 @@ and unregistration. A generic <code>change</code> event is always available thro
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li>goog.events.EventTarget</li>
+            <li><a href="ol.events.EventTarget.html">ol.events.EventTarget</a></li>
         </ul>
     
     
@@ -14676,7 +14722,7 @@ and unregistration. A generic <code>change</code> event is always available thro
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 41
+            src/ol/observable.js, line 42
         </div>
         
         
@@ -14726,7 +14772,10 @@ and unregistration. A generic <code>change</code> event is always available thro
             <td class="type">
             
                 
-<span class="param-type">goog.events.Key</span>
+<span class="param-type"><a href="ol.events.html#.Key">ol.events.Key</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="ol.events.html#.Key">ol.events.Key</a>></span>
 
 
             
@@ -14737,7 +14786,8 @@ and unregistration. A generic <code>change</code> event is always available thro
             
             <td  class="description last">
                 
-                <p>The key returned by <code>on()</code> or <code>once()</code>.</p></td>
+                <p>The key returned by <code>on()</code>
+    or <code>once()</code> (or an array of keys).</p></td>
         </tr>
 	
 	
@@ -14800,7 +14850,7 @@ and unregistration. A generic <code>change</code> event is always available thro
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 50
+            src/ol/observable.js, line 57
         </div>
         
         
@@ -14877,7 +14927,7 @@ and unregistration. A generic <code>change</code> event is always available thro
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 72
+            src/ol/observable.js, line 81
         </div>
         
         
@@ -14929,7 +14979,13 @@ Object with a <code>type</code> property.</p>
             <td class="type">
             
                 
-<span class="param-type">goog.events.EventLike</span>
+<span class="param-type">Object</span>
+|
+
+<span class="param-type"><a href="ol.events.Event.html">ol.events.Event</a></span>
+|
+
+<span class="param-type">string</span>
 
 
             
@@ -15003,7 +15059,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 81
+            src/ol/observable.js, line 90
         </div>
         
         
@@ -15081,14 +15137,14 @@ Revision.
     <div class="nameContainer">
         
         <h4 class="name" id="on">
-            on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
+            on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.events.html#.Key">ol.events.Key</a>|Array.&lt;<a href="ol.events.html#.Key">ol.events.Key</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 94
+            src/ol/observable.js, line 105
         </div>
         
         
@@ -15251,7 +15307,9 @@ Revision.
 
 
 <h5>Returns:</h5>
-Unique key for the listener.
+Unique key for the listener. If
+    called with an array of event types as the first argument, the return
+    will be an array of keys.
 <br />
 
     
@@ -15265,14 +15323,14 @@ Unique key for the listener.
     <div class="nameContainer">
         
         <h4 class="name" id="once">
-            once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{goog.events.Key}</span>
+            once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.events.html#.Key">ol.events.Key</a>|Array.&lt;<a href="ol.events.html#.Key">ol.events.Key</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 107
+            src/ol/observable.js, line 130
         </div>
         
         
@@ -15435,7 +15493,9 @@ Unique key for the listener.
 
 
 <h5>Returns:</h5>
-Unique key for the listener.
+Unique key for the listener. If
+    called with an array of event types as the first argument, the return
+    will be an array of keys.
 <br />
 
     
@@ -15456,7 +15516,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 120
+            src/ol/observable.js, line 153
         </div>
         
         
@@ -15632,7 +15692,7 @@ Unique key for the listener.
         </h4>
         
         <div class="tag-source">
-            src/ol/observable.js, line 133
+            src/ol/observable.js, line 174
         </div>
         
         
@@ -15684,7 +15744,10 @@ be preferred.</p>
             <td class="type">
             
                 
-<span class="param-type">goog.events.Key</span>
+<span class="param-type"><a href="ol.events.html#.Key">ol.events.Key</a></span>
+|
+
+<span class="param-type">Array.&lt;<a href="ol.events.html#.Key">ol.events.Key</a>></span>
 
 
             
@@ -15695,7 +15758,8 @@ be preferred.</p>
             
             <td  class="description last">
                 
-                <p>The key returned by <code>on()</code> or <code>once()</code>.</p></td>
+                <p>The key returned by <code>on()</code>
+    or <code>once()</code> (or an array of keys).</p></td>
         </tr>
 	
 	
