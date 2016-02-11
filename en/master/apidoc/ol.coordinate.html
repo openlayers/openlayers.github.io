@@ -14950,7 +14950,7 @@ Coordinate format.
         </h4>
         
         <div class="tag-source">
-            src/ol/coordinate.js, line 166
+            src/ol/coordinate.js, line 169
         </div>
         
         
@@ -15147,7 +15147,7 @@ Formatted coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/coordinate.js, line 210
+            src/ol/coordinate.js, line 213
         </div>
         
         
@@ -15302,14 +15302,14 @@ Coordinate.
     <div class="nameContainer">
         
         <h4 class="name" id=".toStringHDMS">
-            ol.coordinate.toStringHDMS<span class="signature">(coordinate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
+            ol.coordinate.toStringHDMS<span class="signature">(coordinate, <span class="optional">opt_fractionDigits</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/coordinate.js, line 297
+            src/ol/coordinate.js, line 308
         </div>
         
         
@@ -15322,10 +15322,13 @@ Coordinate.
     <div class="description">
         <p>Format a geographic coordinate with the hemisphere, degrees, minutes, and
 seconds.</p>
-<p>Example:</p>
+<p>Example without specifying fractional digits:</p>
 <pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
 var out = ol.coordinate.toStringHDMS(coord);
-// out is now '47° 59′ 0″ N 7° 51′ 0″ E'</code></pre>
+// out is now '47° 58′ 60″ N 7° 50′ 60″ E'</code></pre><p>Example explicitly specifying 1 fractional digit:</p>
+<pre class="prettyprint source"><code>var coord = [7.85, 47.983333];
+var out = ol.coordinate.toStringHDMS(coord, 1);
+// out is now '47° 58′ 60.0″ N 7° 50′ 60.0″ E'</code></pre>
     </div>
     
 
@@ -15379,6 +15382,32 @@ var out = ol.coordinate.toStringHDMS(coord);
             <td  class="description last">
                 
                 <p>Coordinate.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>fractionDigits</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>The number of digits to include
+   after the decimal point. Default is <code>0</code>.</p></td>
         </tr>
 	
 	
@@ -15448,7 +15477,7 @@ Hemisphere, degrees, minutes and seconds.
         </h4>
         
         <div class="tag-source">
-            src/ol/coordinate.js, line 328
+            src/ol/coordinate.js, line 339
         </div>
         
         

@@ -77,7 +77,8 @@ var styles &#x3D; {
 };
 
 var vectorSource &#x3D; new ol.source.Vector({
-  features: features
+  features: features,
+  wrapX: false
 });
 var vector &#x3D; new ol.layer.Vector({
   source: vectorSource,
@@ -214,7 +215,8 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
       };
 
       var vectorSource &#x3D; new ol.source.Vector({
-        features: features
+        features: features,
+        wrapX: false
       });
       var vector &#x3D; new ol.layer.Vector({
         source: vectorSource,

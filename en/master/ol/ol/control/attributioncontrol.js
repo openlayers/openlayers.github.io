@@ -64,27 +64,27 @@ ol.control.Attribution = function(opt_options) {
     this.collapsed_ = false;
   }
 
-  var className = options.className ? options.className : 'ol-attribution';
+  var className = options.className !== undefined ? options.className : 'ol-attribution';
 
-  var tipLabel = options.tipLabel ? options.tipLabel : 'Attributions';
+  var tipLabel = options.tipLabel !== undefined ? options.tipLabel : 'Attributions';
 
-  var collapseLabel = options.collapseLabel ? options.collapseLabel : '\u00BB';
+  var collapseLabel = options.collapseLabel !== undefined ? options.collapseLabel : '\u00BB';
 
   /**
    * @private
    * @type {Node}
    */
-  this.collapseLabel_ = goog.isString(collapseLabel) ?
+  this.collapseLabel_ = typeof collapseLabel === 'string' ?
       goog.dom.createDom('SPAN', {}, collapseLabel) :
       collapseLabel;
 
-  var label = options.label ? options.label : 'i';
+  var label = options.label !== undefined ? options.label : 'i';
 
   /**
    * @private
    * @type {Node}
    */
-  this.label_ = goog.isString(label) ?
+  this.label_ = typeof label === 'string' ?
       goog.dom.createDom('SPAN', {}, label) :
       label;
 

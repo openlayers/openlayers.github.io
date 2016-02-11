@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.1-153-g57c5632
+// Version: v3.13.1-178-gd7e275a
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -6490,7 +6490,7 @@ ol.events.EventTarget.prototype.addEventListener = function(type, listener) {
  *     event object or if any of the listeners returned false.
  */
 ol.events.EventTarget.prototype.dispatchEvent = function(event) {
-  var evt = goog.isString(event) ? new ol.events.Event(event) : event;
+  var evt = typeof event === 'string' ? new ol.events.Event(event) : event;
   var type = evt.type;
   evt.target = this;
   var listeners = this.listeners_[type];
@@ -9295,14 +9295,17 @@ ol.coordinate.createStringXY = function(opt_fractionDigits) {
  * @private
  * @param {number} degrees Degrees.
  * @param {string} hemispheres Hemispheres.
+ * @param {number=} opt_fractionDigits The number of digits to include
+ *    after the decimal point. Default is `0`.
  * @return {string} String.
  */
-ol.coordinate.degreesToStringHDMS_ = function(degrees, hemispheres) {
+ol.coordinate.degreesToStringHDMS_ = function(degrees, hemispheres, opt_fractionDigits) {
   var normalizedDegrees = goog.math.modulo(degrees + 180, 360) - 180;
-  var x = Math.abs(Math.round(3600 * normalizedDegrees));
+  var x = Math.abs(3600 * normalizedDegrees);
+  var dflPrecision = opt_fractionDigits || 0;
   return Math.floor(x / 3600) + '\u00b0 ' +
       goog.string.padNumber(Math.floor((x / 60) % 60), 2) + '\u2032 ' +
-      goog.string.padNumber(Math.floor(x % 60), 2) + '\u2033 ' +
+      goog.string.padNumber((x % 60), 2, dflPrecision) + '\u2033 ' +
       hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0);
 };
 
@@ -9455,20 +9458,28 @@ ol.coordinate.squaredDistanceToSegment = function(coordinate, segment) {
  * Format a geographic coordinate with the hemisphere, degrees, minutes, and
  * seconds.
  *
- * Example:
+ * Example without specifying fractional digits:
  *
  *     var coord = [7.85, 47.983333];
  *     var out = ol.coordinate.toStringHDMS(coord);
- *     // out is now '47° 59′ 0″ N 7° 51′ 0″ E'
+ *     // out is now '47° 58′ 60″ N 7° 50′ 60″ E'
+ *
+ * Example explicitly specifying 1 fractional digit:
+ *
+ *     var coord = [7.85, 47.983333];
+ *     var out = ol.coordinate.toStringHDMS(coord, 1);
+ *     // out is now '47° 58′ 60.0″ N 7° 50′ 60.0″ E'
  *
  * @param {ol.Coordinate|undefined} coordinate Coordinate.
+ * @param {number=} opt_fractionDigits The number of digits to include
+ *    after the decimal point. Default is `0`.
  * @return {string} Hemisphere, degrees, minutes and seconds.
  * @api stable
  */
-ol.coordinate.toStringHDMS = function(coordinate) {
+ol.coordinate.toStringHDMS = function(coordinate, opt_fractionDigits) {
   if (coordinate) {
-    return ol.coordinate.degreesToStringHDMS_(coordinate[1], 'NS') + ' ' +
-        ol.coordinate.degreesToStringHDMS_(coordinate[0], 'EW');
+    return ol.coordinate.degreesToStringHDMS_(coordinate[1], 'NS', opt_fractionDigits) + ' ' +
+        ol.coordinate.degreesToStringHDMS_(coordinate[0], 'EW', opt_fractionDigits);
   } else {
     return '';
   }
@@ -14676,7 +14687,7 @@ ol.proj.clearAllProjections = function() {
 ol.proj.createProjection = function(projection, defaultCode) {
   if (!projection) {
     return ol.proj.get(defaultCode);
-  } else if (goog.isString(projection)) {
+  } else if (typeof projection === 'string') {
     return ol.proj.get(projection);
   } else {
     goog.asserts.assertInstanceof(projection, ol.proj.Projection,
@@ -14836,7 +14847,7 @@ ol.proj.get = function(projectionLike) {
   var projection;
   if (projectionLike instanceof ol.proj.Projection) {
     projection = projectionLike;
-  } else if (goog.isString(projectionLike)) {
+  } else if (typeof projectionLike === 'string') {
     var code = projectionLike;
     projection = ol.proj.projections_[code];
     if (ol.ENABLE_PROJ4JS) {
@@ -20605,7 +20616,7 @@ ol.color.asArray = function(color) {
   if (goog.isArray(color)) {
     return color;
   } else {
-    goog.asserts.assert(goog.isString(color), 'Color should be a string');
+    goog.asserts.assert(typeof color === 'string', 'Color should be a string');
     return ol.color.fromString(color);
   }
 };
@@ -20618,7 +20629,7 @@ ol.color.asArray = function(color) {
  * @api
  */
 ol.color.asString = function(color) {
-  if (goog.isString(color)) {
+  if (typeof color === 'string') {
     return color;
   } else {
     goog.asserts.assert(goog.isArray(color), 'Color should be an array');
@@ -20821,10 +20832,10 @@ ol.color.stringOrColorEquals = function(color1, color2) {
   if (color1 === color2 || color1 == color2) {
     return true;
   }
-  if (goog.isString(color1)) {
+  if (typeof color1 === 'string') {
     color1 = ol.color.fromString(color1);
   }
-  if (goog.isString(color2)) {
+  if (typeof color2 === 'string') {
     color2 = ol.color.fromString(color2);
   }
   return ol.color.equals(color1, color2);
@@ -35584,27 +35595,27 @@ ol.control.Attribution = function(opt_options) {
     this.collapsed_ = false;
   }
 
-  var className = options.className ? options.className : 'ol-attribution';
+  var className = options.className !== undefined ? options.className : 'ol-attribution';
 
-  var tipLabel = options.tipLabel ? options.tipLabel : 'Attributions';
+  var tipLabel = options.tipLabel !== undefined ? options.tipLabel : 'Attributions';
 
-  var collapseLabel = options.collapseLabel ? options.collapseLabel : '\u00BB';
+  var collapseLabel = options.collapseLabel !== undefined ? options.collapseLabel : '\u00BB';
 
   /**
    * @private
    * @type {Node}
    */
-  this.collapseLabel_ = goog.isString(collapseLabel) ?
+  this.collapseLabel_ = typeof collapseLabel === 'string' ?
       goog.dom.createDom('SPAN', {}, collapseLabel) :
       collapseLabel;
 
-  var label = options.label ? options.label : 'i';
+  var label = options.label !== undefined ? options.label : 'i';
 
   /**
    * @private
    * @type {Node}
    */
-  this.label_ = goog.isString(label) ?
+  this.label_ = typeof label === 'string' ?
       goog.dom.createDom('SPAN', {}, label) :
       label;
 
@@ -35950,9 +35961,9 @@ ol.control.Rotate = function(opt_options) {
 
   var options = opt_options ? opt_options : {};
 
-  var className = options.className ? options.className : 'ol-rotate';
+  var className = options.className !== undefined ? options.className : 'ol-rotate';
 
-  var label = options.label ? options.label : '\u21E7';
+  var label = options.label !== undefined ? options.label : '\u21E7';
 
   /**
    * @type {Element}
@@ -35960,7 +35971,7 @@ ol.control.Rotate = function(opt_options) {
    */
   this.label_ = null;
 
-  if (goog.isString(label)) {
+  if (typeof label === 'string') {
     this.label_ = goog.dom.createDom('SPAN',
         'ol-compass', label);
   } else {
@@ -36116,16 +36127,16 @@ ol.control.Zoom = function(opt_options) {
 
   var options = opt_options ? opt_options : {};
 
-  var className = options.className ? options.className : 'ol-zoom';
+  var className = options.className !== undefined ? options.className : 'ol-zoom';
 
-  var delta = options.delta ? options.delta : 1;
+  var delta = options.delta !== undefined ? options.delta : 1;
 
-  var zoomInLabel = options.zoomInLabel ? options.zoomInLabel : '+';
-  var zoomOutLabel = options.zoomOutLabel ? options.zoomOutLabel : '\u2212';
+  var zoomInLabel = options.zoomInLabel !== undefined ? options.zoomInLabel : '+';
+  var zoomOutLabel = options.zoomOutLabel !== undefined ? options.zoomOutLabel : '\u2212';
 
-  var zoomInTipLabel = options.zoomInTipLabel ?
+  var zoomInTipLabel = options.zoomInTipLabel !== undefined ?
       options.zoomInTipLabel : 'Zoom in';
-  var zoomOutTipLabel = options.zoomOutTipLabel ?
+  var zoomOutTipLabel = options.zoomOutTipLabel !== undefined ?
       options.zoomOutTipLabel : 'Zoom out';
 
   var inElement = goog.dom.createDom('BUTTON', {
@@ -36458,24 +36469,25 @@ ol.control.FullScreen = function(opt_options) {
    * @private
    * @type {string}
    */
-  this.cssClassName_ = options.className ? options.className : 'ol-full-screen';
+  this.cssClassName_ = options.className !== undefined ? options.className :
+      'ol-full-screen';
 
-  var label = options.label ? options.label : '\u2922';
+  var label = options.label !== undefined ? options.label : '\u2922';
 
   /**
    * @private
    * @type {Node}
    */
-  this.labelNode_ = goog.isString(label) ?
+  this.labelNode_ = typeof label === 'string' ?
       document.createTextNode(label) : label;
 
-  var labelActive = options.labelActive ? options.labelActive : '\u00d7';
+  var labelActive = options.labelActive !== undefined ? options.labelActive : '\u00d7';
 
   /**
    * @private
    * @type {Node}
    */
-  this.labelActiveNode_ = goog.isString(labelActive) ?
+  this.labelActiveNode_ = typeof labelActive === 'string' ?
       document.createTextNode(labelActive) : labelActive;
 
   var tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';
@@ -36627,7 +36639,8 @@ ol.control.MousePosition = function(opt_options) {
 
   var options = opt_options ? opt_options : {};
 
-  var className = options.className ? options.className : 'ol-mouse-position';
+  var className = options.className !== undefined ? options.className :
+      'ol-mouse-position';
 
   var element = goog.dom.createDom('DIV', className);
 
@@ -36655,7 +36668,7 @@ ol.control.MousePosition = function(opt_options) {
    * @private
    * @type {string}
    */
-  this.undefinedHTML_ = options.undefinedHTML ? options.undefinedHTML : '';
+  this.undefinedHTML_ = options.undefinedHTML !== undefined ? options.undefinedHTML : '';
 
   /**
    * @private
@@ -46796,7 +46809,7 @@ ol.renderer.Layer.prototype.updateAttributions = function(attributionsSet, attri
 ol.renderer.Layer.prototype.updateLogos = function(frameState, source) {
   var logo = source.getLogo();
   if (logo !== undefined) {
-    if (goog.isString(logo)) {
+    if (typeof logo === 'string') {
       frameState.logos[logo] = '';
     } else if (goog.isObject(logo)) {
       goog.asserts.assertString(logo.href, 'logo.href is a string');
@@ -53369,6 +53382,7 @@ goog.require('ol.style.Stroke');
  * feature or layer that uses the style is re-rendered.
  *
  * @constructor
+ * @struct
  * @param {olx.style.StyleOptions=} opt_options Style options.
  * @api
  */
@@ -53509,7 +53523,7 @@ ol.style.Style.prototype.getZIndex = function() {
 ol.style.Style.prototype.setGeometry = function(geometry) {
   if (goog.isFunction(geometry)) {
     this.geometryFunction_ = geometry;
-  } else if (goog.isString(geometry)) {
+  } else if (typeof geometry === 'string') {
     this.geometryFunction_ = function(feature) {
       var result = feature.get(geometry);
       if (result) {
@@ -55699,7 +55713,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         goog.asserts.assert(goog.isNumber(instruction[2]),
             '3rd instruction should be a number');
         dd = /** @type {number} */ (instruction[2]);
-        goog.asserts.assert(goog.isString(instruction[3]),
+        goog.asserts.assert(typeof instruction[3] === 'string',
             '4th instruction should be a string');
         text = /** @type {string} */ (instruction[3]);
         goog.asserts.assert(goog.isNumber(instruction[4]),
@@ -55820,19 +55834,19 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_FILL_STYLE:
-        goog.asserts.assert(goog.isString(instruction[1]),
+        goog.asserts.assert(typeof instruction[1] === 'string',
             '2nd instruction should be a string');
         context.fillStyle = /** @type {string} */ (instruction[1]);
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_STROKE_STYLE:
-        goog.asserts.assert(goog.isString(instruction[1]),
+        goog.asserts.assert(typeof instruction[1] === 'string',
             '2nd instruction should be a string');
         goog.asserts.assert(goog.isNumber(instruction[2]),
             '3rd instruction should be a number');
-        goog.asserts.assert(goog.isString(instruction[3]),
+        goog.asserts.assert(typeof instruction[3] === 'string',
             '4rd instruction should be a string');
-        goog.asserts.assert(goog.isString(instruction[4]),
+        goog.asserts.assert(typeof instruction[4] === 'string',
             '5th instruction should be a string');
         goog.asserts.assert(goog.isNumber(instruction[5]),
             '6th instruction should be a number');
@@ -55854,11 +55868,11 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_TEXT_STYLE:
-        goog.asserts.assert(goog.isString(instruction[1]),
+        goog.asserts.assert(typeof instruction[1] === 'string',
             '2nd instruction should be a string');
-        goog.asserts.assert(goog.isString(instruction[2]),
+        goog.asserts.assert(typeof instruction[2] === 'string',
             '3rd instruction should be a string');
-        goog.asserts.assert(goog.isString(instruction[3]),
+        goog.asserts.assert(typeof instruction[3] === 'string',
             '4th instruction should be a string');
         context.font = /** @type {string} */ (instruction[1]);
         context.textAlign = /** @type {string} */ (instruction[2]);
@@ -62999,6 +63013,9 @@ ol.source.ImageVector.prototype.renderFeature_ = function(feature, resolution, p
     return false;
   }
   var i, ii, loading = false;
+  if (!goog.isArray(styles)) {
+    styles = [styles];
+  }
   for (i = 0, ii = styles.length; i < ii; ++i) {
     loading = ol.renderer.vector.renderFeature(
         replayGroup, feature, styles[i],
@@ -74515,7 +74532,7 @@ ol.Map.createOptionsInternal = function(options) {
   if (options.keyboardEventTarget !== undefined) {
     // cannot use goog.dom.getElement because its argument cannot be
     // of type Document
-    keyboardEventTarget = goog.isString(options.keyboardEventTarget) ?
+    keyboardEventTarget = typeof options.keyboardEventTarget === 'string' ?
         document.getElementById(options.keyboardEventTarget) :
         options.keyboardEventTarget;
   }
@@ -74531,7 +74548,7 @@ ol.Map.createOptionsInternal = function(options) {
     logos[ol.OL3_LOGO_URL] = ol.OL3_URL;
   } else {
     var logo = options.logo;
-    if (goog.isString(logo)) {
+    if (typeof logo === 'string') {
       logos[logo] = '';
     } else if (goog.isObject(logo)) {
       goog.asserts.assertString(logo.href, 'logo.href should be a string');
@@ -74561,7 +74578,7 @@ ol.Map.createOptionsInternal = function(options) {
   if (options.renderer !== undefined) {
     if (goog.isArray(options.renderer)) {
       rendererTypes = options.renderer;
-    } else if (goog.isString(options.renderer)) {
+    } else if (typeof options.renderer === 'string') {
       rendererTypes = [options.renderer];
     } else {
       goog.asserts.fail('Incorrect format for renderer option');
@@ -75277,27 +75294,27 @@ ol.control.OverviewMap = function(opt_options) {
     this.collapsed_ = false;
   }
 
-  var className = options.className ? options.className : 'ol-overviewmap';
+  var className = options.className !== undefined ? options.className : 'ol-overviewmap';
 
-  var tipLabel = options.tipLabel ? options.tipLabel : 'Overview map';
+  var tipLabel = options.tipLabel !== undefined ? options.tipLabel : 'Overview map';
 
-  var collapseLabel = options.collapseLabel ? options.collapseLabel : '\u00AB';
+  var collapseLabel = options.collapseLabel !== undefined ? options.collapseLabel : '\u00AB';
 
   /**
    * @private
    * @type {Node}
    */
-  this.collapseLabel_ = goog.isString(collapseLabel) ?
+  this.collapseLabel_ = typeof collapseLabel === 'string' ?
       goog.dom.createDom('SPAN', {}, collapseLabel) :
       collapseLabel;
 
-  var label = options.label ? options.label : '\u00BB';
+  var label = options.label !== undefined ? options.label : '\u00BB';
 
   /**
    * @private
    * @type {Node}
    */
-  this.label_ = goog.isString(label) ?
+  this.label_ = typeof label === 'string' ?
       goog.dom.createDom('SPAN', {}, label) :
       label;
 
@@ -75811,7 +75828,7 @@ ol.control.ScaleLine = function(opt_options) {
 
   var options = opt_options ? opt_options : {};
 
-  var className = options.className ? options.className : 'ol-scale-line';
+  var className = options.className !== undefined ? options.className : 'ol-scale-line';
 
   /**
    * @private
@@ -76141,7 +76158,7 @@ ol.control.ZoomSlider = function(opt_options) {
    */
   this.duration_ = options.duration !== undefined ? options.duration : 200;
 
-  var className = options.className ? options.className : 'ol-zoomslider';
+  var className = options.className !== undefined ? options.className : 'ol-zoomslider';
   var thumbElement = goog.dom.createDom('BUTTON', {
     'type': 'button',
     'class': className + '-thumb ' + ol.css.CLASS_UNSELECTABLE
@@ -76456,11 +76473,11 @@ ol.control.ZoomToExtent = function(opt_options) {
    */
   this.extent_ = options.extent ? options.extent : null;
 
-  var className = options.className ? options.className :
+  var className = options.className !== undefined ? options.className :
       'ol-zoom-extent';
 
-  var label = options.label ? options.label : 'E';
-  var tipLabel = options.tipLabel ?
+  var label = options.label !== undefined ? options.label : 'E';
+  var tipLabel = options.tipLabel !== undefined ?
       options.tipLabel : 'Fit to extent';
   var button = goog.dom.createDom('BUTTON', {
     'type': 'button',
@@ -77315,7 +77332,7 @@ goog.inherits(ol.format.JSONFeature, ol.format.Feature);
 ol.format.JSONFeature.prototype.getObject_ = function(source) {
   if (goog.isObject(source)) {
     return source;
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var object = goog.json.parse(source);
     return object ? object : null;
   } else {
@@ -80593,7 +80610,7 @@ ol.format.XMLFeature.prototype.readFeature = function(source, opt_options) {
         /** @type {Document} */ (source), opt_options);
   } else if (ol.xml.isNode(source)) {
     return this.readFeatureFromNode(/** @type {Node} */ (source), opt_options);
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readFeatureFromDocument(doc, opt_options);
   } else {
@@ -80636,7 +80653,7 @@ ol.format.XMLFeature.prototype.readFeatures = function(source, opt_options) {
         /** @type {Document} */ (source), opt_options);
   } else if (ol.xml.isNode(source)) {
     return this.readFeaturesFromNode(/** @type {Node} */ (source), opt_options);
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readFeaturesFromDocument(doc, opt_options);
   } else {
@@ -80684,7 +80701,7 @@ ol.format.XMLFeature.prototype.readGeometry = function(source, opt_options) {
         /** @type {Document} */ (source), opt_options);
   } else if (ol.xml.isNode(source)) {
     return this.readGeometryFromNode(/** @type {Node} */ (source), opt_options);
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readGeometryFromDocument(doc, opt_options);
   } else {
@@ -80720,7 +80737,7 @@ ol.format.XMLFeature.prototype.readProjection = function(source) {
     return this.readProjectionFromDocument(/** @type {Document} */ (source));
   } else if (ol.xml.isNode(source)) {
     return this.readProjectionFromNode(/** @type {Node} */ (source));
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readProjectionFromDocument(doc);
   } else {
@@ -80952,7 +80969,7 @@ ol.format.GMLBase.prototype.readFeaturesInternal = function(node, objectStack) {
       context['featureType'] = featureType;
       context['featureNS'] = featureNS;
     }
-    if (goog.isString(featureNS)) {
+    if (typeof featureNS === 'string') {
       var ns = featureNS;
       featureNS = {};
       featureNS[defaultPrefix] = ns;
@@ -84288,7 +84305,7 @@ goog.inherits(ol.format.TextFeature, ol.format.Feature);
  * @return {string} Text.
  */
 ol.format.TextFeature.prototype.getText_ = function(source) {
-  if (goog.isString(source)) {
+  if (typeof source === 'string') {
     return source;
   } else {
     goog.asserts.fail();
@@ -87972,7 +87989,7 @@ ol.format.KML.createFeatureStyleFunction_ = function(style, styleUrl,
 ol.format.KML.findStyle_ = function(styleValue, defaultStyle, sharedStyles) {
   if (goog.isArray(styleValue)) {
     return styleValue;
-  } else if (goog.isString(styleValue)) {
+  } else if (typeof styleValue === 'string') {
     // KML files in the wild occasionally forget the leading `#` on styleUrls
     // defined in the same document.  Add a leading `#` if it enables to find
     // a style.
@@ -88815,7 +88832,7 @@ ol.format.KML.PlacemarkStyleMapParser_ = function(node, objectStack) {
       'placemarkObject should be an Object');
   if (goog.isArray(styleMapValue)) {
     placemarkObject['Style'] = styleMapValue;
-  } else if (goog.isString(styleMapValue)) {
+  } else if (typeof styleMapValue === 'string') {
     placemarkObject['styleUrl'] = styleMapValue;
   } else {
     goog.asserts.fail('styleMapValue has an unknown type');
@@ -89514,7 +89531,7 @@ ol.format.KML.prototype.readName = function(source) {
     return this.readNameFromDocument(/** @type {Document} */ (source));
   } else if (ol.xml.isNode(source)) {
     return this.readNameFromNode(/** @type {Node} */ (source));
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readNameFromDocument(doc);
   } else {
@@ -89586,7 +89603,7 @@ ol.format.KML.prototype.readNetworkLinks = function(source) {
   } else if (ol.xml.isNode(source)) {
     ol.array.extend(networkLinks, this.readNetworkLinksFromNode(
         /** @type {Node} */ (source)));
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     ol.array.extend(networkLinks, this.readNetworkLinksFromDocument(doc));
   } else {
@@ -89931,10 +89948,10 @@ ol.format.KML.writePlacemark_ = function(node, feature, objectStack) {
     // FIXME the styles returned by the style function are supposed to be
     // resolution-independent here
     var styles = styleFunction.call(feature, 0);
-    if (styles && styles.length > 0) {
-      var style = styles[0];
+    if (styles) {
+      var style = goog.isArray(styles) ? styles[0] : styles;
       if (this.writeStyles_) {
-        properties['Style'] = styles[0];
+        properties['Style'] = style;
       }
       var textStyle = style.getText();
       if (textStyle) {
@@ -92190,7 +92207,7 @@ ol.format.XML.prototype.read = function(source) {
     return this.readFromDocument(/** @type {Document} */ (source));
   } else if (ol.xml.isNode(source)) {
     return this.readFromNode(/** @type {Node} */ (source));
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readFromDocument(doc);
   } else {
@@ -93700,7 +93717,7 @@ ol.format.WFS.prototype.readTransactionResponse = function(source) {
         /** @type {Document} */ (source));
   } else if (ol.xml.isNode(source)) {
     return this.readTransactionResponseFromNode(/** @type {Node} */ (source));
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readTransactionResponseFromDocument(doc);
   } else {
@@ -93725,7 +93742,7 @@ ol.format.WFS.prototype.readFeatureCollectionMetadata = function(source) {
   } else if (ol.xml.isNode(source)) {
     return this.readFeatureCollectionMetadataFromNode(
         /** @type {Node} */ (source));
-  } else if (goog.isString(source)) {
+  } else if (typeof source === 'string') {
     var doc = ol.xml.parse(source);
     return this.readFeatureCollectionMetadataFromDocument(doc);
   } else {
@@ -101680,15 +101697,19 @@ ol.interaction.Snap.prototype.setMap = function(map) {
 
   if (map) {
     if (this.features_) {
-      keys.push(this.features_.on(ol.CollectionEventType.ADD,
-          this.handleFeatureAdd_, this));
-      keys.push(this.features_.on(ol.CollectionEventType.REMOVE,
-          this.handleFeatureRemove_, this));
+      keys.push(
+        ol.events.listen(this.features_, ol.CollectionEventType.ADD,
+            this.handleFeatureAdd_, this),
+        ol.events.listen(this.features_, ol.CollectionEventType.REMOVE,
+            this.handleFeatureRemove_, this)
+      );
     } else if (this.source_) {
-      keys.push(this.source_.on(ol.source.VectorEventType.ADDFEATURE,
-          this.handleFeatureAdd_, this));
-      keys.push(this.source_.on(ol.source.VectorEventType.REMOVEFEATURE,
-          this.handleFeatureRemove_, this));
+      keys.push(
+        ol.events.listen(this.source_, ol.source.VectorEventType.ADDFEATURE,
+            this.handleFeatureAdd_, this),
+        ol.events.listen(this.source_, ol.source.VectorEventType.REMOVEFEATURE,
+            this.handleFeatureRemove_, this)
+      );
     }
     features.forEach(this.forEachFeatureAdd_, this);
   }
@@ -102314,7 +102335,7 @@ ol.layer.Heatmap = function(opt_options) {
 
   var weight = options.weight ? options.weight : 'weight';
   var weightFunction;
-  if (goog.isString(weight)) {
+  if (typeof weight === 'string') {
     weightFunction = function(feature) {
       return feature.get(weight);
     };
@@ -106290,7 +106311,7 @@ ol.source.TileUTFGridTile_.prototype.getData = function(coordinate) {
 
   var row = this.grid_[Math.floor((1 - yRelative) * this.grid_.length)];
 
-  if (!goog.isString(row)) {
+  if (typeof row !== 'string') {
     return null;
   }
 

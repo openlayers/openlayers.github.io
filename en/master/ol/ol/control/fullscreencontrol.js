@@ -37,24 +37,25 @@ ol.control.FullScreen = function(opt_options) {
    * @private
    * @type {string}
    */
-  this.cssClassName_ = options.className ? options.className : 'ol-full-screen';
+  this.cssClassName_ = options.className !== undefined ? options.className :
+      'ol-full-screen';
 
-  var label = options.label ? options.label : '\u2922';
+  var label = options.label !== undefined ? options.label : '\u2922';
 
   /**
    * @private
    * @type {Node}
    */
-  this.labelNode_ = goog.isString(label) ?
+  this.labelNode_ = typeof label === 'string' ?
       document.createTextNode(label) : label;
 
-  var labelActive = options.labelActive ? options.labelActive : '\u00d7';
+  var labelActive = options.labelActive !== undefined ? options.labelActive : '\u00d7';
 
   /**
    * @private
    * @type {Node}
    */
-  this.labelActiveNode_ = goog.isString(labelActive) ?
+  this.labelActiveNode_ = typeof labelActive === 'string' ?
       document.createTextNode(labelActive) : labelActive;
 
   var tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';

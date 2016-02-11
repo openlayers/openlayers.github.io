@@ -26,9 +26,9 @@ ol.control.Rotate = function(opt_options) {
 
   var options = opt_options ? opt_options : {};
 
-  var className = options.className ? options.className : 'ol-rotate';
+  var className = options.className !== undefined ? options.className : 'ol-rotate';
 
-  var label = options.label ? options.label : '\u21E7';
+  var label = options.label !== undefined ? options.label : '\u21E7';
 
   /**
    * @type {Element}
@@ -36,7 +36,7 @@ ol.control.Rotate = function(opt_options) {
    */
   this.label_ = null;
 
-  if (goog.isString(label)) {
+  if (typeof label === 'string') {
     this.label_ = goog.dom.createDom('SPAN',
         'ol-compass', label);
   } else {

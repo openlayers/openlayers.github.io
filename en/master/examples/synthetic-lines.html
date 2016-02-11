@@ -29,63 +29,6 @@
         <div class="span12">
           <h4 id="title">Synthetic Lines</h4>
           <div id="map" class="map"></div>
-<p>Performance results:</p>
-<table border="1">
-  <thead>
-   <tr>
-     <th>Device/Browser</th>
-     <th>200 lines</th>
-     <th>500 lines</th>
-     <th>1000 lines</th>
-     <th>2000 lines</th>
-     <th>5000 lines</th>
-     <th>10000 lines</th>
-     <th>20000 lines</th>
-   </tr>
-  </thead>
-  <tbody>
-   <tr>
-     <td>Mac Book Air / Chrome 33 canary</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-   </tr>
-   <tr>
-     <td>Mac Book Air / FireFox 25</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>22 fps</td>
-     <td>6 fps</td>
-   </tr>
-   <tr>
-     <td>Mac Book Air / Safari 7</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>60 fps</td>
-     <td>40 fps</td>
-     <td>10 fps</td>
-     <td>N/A</td>
-     <td>N/A</td>
-   </tr>
-   <tr>
-     <td>iPhone 4S / iOS 7 / Safari</td>
-     <td>60 fps</td>
-     <td>33 fps</td>
-     <td>15 fps</td>
-     <td>5 fps</td>
-     <td>N/A</td>
-     <td>N/A</td>
-     <td>N/A</td>
-   </tr>
- </tbody>
-</table>
 
         </div>
       </div>
@@ -134,7 +77,8 @@ for (i &#x3D; 0; i &lt; count; ++i) {
 
 var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
-    features: features
+    features: features,
+    wrapX: false
   }),
   style: new ol.style.Style({
     stroke: new ol.style.Stroke({
@@ -157,63 +101,6 @@ var map &#x3D; new ol.Map({
 </textarea>
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-&lt;p&gt;Performance results:&lt;/p&gt;
-&lt;table border&#x3D;&quot;1&quot;&gt;
-  &lt;thead&gt;
-   &lt;tr&gt;
-     &lt;th&gt;Device/Browser&lt;/th&gt;
-     &lt;th&gt;200 lines&lt;/th&gt;
-     &lt;th&gt;500 lines&lt;/th&gt;
-     &lt;th&gt;1000 lines&lt;/th&gt;
-     &lt;th&gt;2000 lines&lt;/th&gt;
-     &lt;th&gt;5000 lines&lt;/th&gt;
-     &lt;th&gt;10000 lines&lt;/th&gt;
-     &lt;th&gt;20000 lines&lt;/th&gt;
-   &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-   &lt;tr&gt;
-     &lt;td&gt;Mac Book Air / Chrome 33 canary&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-   &lt;/tr&gt;
-   &lt;tr&gt;
-     &lt;td&gt;Mac Book Air / FireFox 25&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;22 fps&lt;/td&gt;
-     &lt;td&gt;6 fps&lt;/td&gt;
-   &lt;/tr&gt;
-   &lt;tr&gt;
-     &lt;td&gt;Mac Book Air / Safari 7&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;40 fps&lt;/td&gt;
-     &lt;td&gt;10 fps&lt;/td&gt;
-     &lt;td&gt;N/A&lt;/td&gt;
-     &lt;td&gt;N/A&lt;/td&gt;
-   &lt;/tr&gt;
-   &lt;tr&gt;
-     &lt;td&gt;iPhone 4S / iOS 7 / Safari&lt;/td&gt;
-     &lt;td&gt;60 fps&lt;/td&gt;
-     &lt;td&gt;33 fps&lt;/td&gt;
-     &lt;td&gt;15 fps&lt;/td&gt;
-     &lt;td&gt;5 fps&lt;/td&gt;
-     &lt;td&gt;N/A&lt;/td&gt;
-     &lt;td&gt;N/A&lt;/td&gt;
-     &lt;td&gt;N/A&lt;/td&gt;
-   &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
           <input type="hidden" name="resources" value="http://openlayers.org/en/v3.13.1/css/ol.css,http://openlayers.org/en/v3.13.1/build/ol.js">
@@ -227,63 +114,6 @@ var map &#x3D; new ol.Map({
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;p&gt;Performance results:&lt;/p&gt;
-    &lt;table border&#x3D;&quot;1&quot;&gt;
-      &lt;thead&gt;
-       &lt;tr&gt;
-         &lt;th&gt;Device/Browser&lt;/th&gt;
-         &lt;th&gt;200 lines&lt;/th&gt;
-         &lt;th&gt;500 lines&lt;/th&gt;
-         &lt;th&gt;1000 lines&lt;/th&gt;
-         &lt;th&gt;2000 lines&lt;/th&gt;
-         &lt;th&gt;5000 lines&lt;/th&gt;
-         &lt;th&gt;10000 lines&lt;/th&gt;
-         &lt;th&gt;20000 lines&lt;/th&gt;
-       &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-       &lt;tr&gt;
-         &lt;td&gt;Mac Book Air / Chrome 33 canary&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-       &lt;/tr&gt;
-       &lt;tr&gt;
-         &lt;td&gt;Mac Book Air / FireFox 25&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;22 fps&lt;/td&gt;
-         &lt;td&gt;6 fps&lt;/td&gt;
-       &lt;/tr&gt;
-       &lt;tr&gt;
-         &lt;td&gt;Mac Book Air / Safari 7&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;40 fps&lt;/td&gt;
-         &lt;td&gt;10 fps&lt;/td&gt;
-         &lt;td&gt;N/A&lt;/td&gt;
-         &lt;td&gt;N/A&lt;/td&gt;
-       &lt;/tr&gt;
-       &lt;tr&gt;
-         &lt;td&gt;iPhone 4S / iOS 7 / Safari&lt;/td&gt;
-         &lt;td&gt;60 fps&lt;/td&gt;
-         &lt;td&gt;33 fps&lt;/td&gt;
-         &lt;td&gt;15 fps&lt;/td&gt;
-         &lt;td&gt;5 fps&lt;/td&gt;
-         &lt;td&gt;N/A&lt;/td&gt;
-         &lt;td&gt;N/A&lt;/td&gt;
-         &lt;td&gt;N/A&lt;/td&gt;
-       &lt;/tr&gt;
-     &lt;/tbody&gt;
-    &lt;/table&gt;
     &lt;script&gt;
       var count &#x3D; 10000;
       var features &#x3D; new Array(count);
@@ -315,7 +145,8 @@ var map &#x3D; new ol.Map({
 
       var vector &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
-          features: features
+          features: features,
+          wrapX: false
         }),
         style: new ol.style.Style({
           stroke: new ol.style.Stroke({
