@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.1-184-gd15992b
+// Version: v3.13.1-205-g34392b4
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -43542,7 +43542,7 @@ ol.has.SAFARI = ua.indexOf('safari') !== -1 && ua.indexOf('chrom') === -1;
  * User agent string says we are dealing with a Mac as platform.
  * @type {boolean}
  */
-ol.has.MAC = ua.indexOf('Macintosh') !== -1;
+ol.has.MAC = ua.indexOf('macintosh') !== -1;
 
 
 /**
@@ -46201,7 +46201,7 @@ ol.layer.Layer = function(options) {
   var baseOptions = ol.object.assign({}, options);
   delete baseOptions.source;
 
-  goog.base(this, /** @type {olx.layer.LayerOptions} */ (baseOptions));
+  goog.base(this, /** @type {olx.layer.BaseOptions} */ (baseOptions));
 
   /**
    * @private
@@ -98336,19 +98336,11 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, event) {
   for (i = 0, ii = formatConstructors.length; i < ii; ++i) {
     var formatConstructor = formatConstructors[i];
     var format = new formatConstructor();
-    var readFeatures = this.tryReadFeatures_(format, result);
-    if (readFeatures) {
-      var featureProjection = format.readProjection(result);
-      var transform = ol.proj.getTransform(featureProjection, projection);
-      var j, jj;
-      for (j = 0, jj = readFeatures.length; j < jj; ++j) {
-        var feature = readFeatures[j];
-        var geometry = feature.getGeometry();
-        if (geometry) {
-          geometry.applyTransform(transform);
-        }
-        features.push(feature);
-      }
+    features = this.tryReadFeatures_(format, result, {
+      featureProjection: projection
+    });
+    if (features && features.length > 0) {
+      break;
     }
   }
   this.dispatchEvent(
@@ -98397,12 +98389,13 @@ ol.interaction.DragAndDrop.prototype.setMap = function(map) {
 /**
  * @param {ol.format.Feature} format Format.
  * @param {string} text Text.
+ * @param {olx.format.ReadOptions} options Read options.
  * @private
  * @return {Array.<ol.Feature>} Features.
  */
-ol.interaction.DragAndDrop.prototype.tryReadFeatures_ = function(format, text) {
+ol.interaction.DragAndDrop.prototype.tryReadFeatures_ = function(format, text, options) {
   try {
-    return format.readFeatures(text);
+    return format.readFeatures(text, options);
   } catch (e) {
     return null;
   }
@@ -105478,7 +105471,6 @@ goog.provide('ol.source.TileArcGISRest');
 
 goog.require('goog.asserts');
 goog.require('goog.math');
-goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('ol');
 goog.require('ol.TileCoord');
@@ -105585,20 +105577,13 @@ ol.source.TileArcGISRest.prototype.getRequestUrl_ = function(tileCoord, tileSize
     url = urls[index];
   }
 
-  if (!goog.string.endsWith(url, '/')) {
-    url = url + '/';
-  }
-
-  // If a MapServer, use export. If an ImageServer, use exportImage.
-  if (goog.string.endsWith(url, 'MapServer/')) {
-    url = url + 'export';
-  } else if (goog.string.endsWith(url, 'ImageServer/')) {
-    url = url + 'exportImage';
-  } else {
+  var modifiedUrl = url
+      .replace(/MapServer\/?$/, 'MapServer/export')
+      .replace(/ImageServer\/?$/, 'ImageServer/exportImage');
+  if (modifiedUrl == url) {
     goog.asserts.fail('Unknown Rest Service', url);
   }
-
-  return goog.uri.utils.appendParamsFromMap(url, params);
+  return goog.uri.utils.appendParamsFromMap(modifiedUrl, params);
 };
 
 
