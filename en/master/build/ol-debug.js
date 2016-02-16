@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.1-205-g34392b4
+// Version: v3.13.1-216-ga5e4634
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -20841,6 +20841,48 @@ ol.color.stringOrColorEquals = function(color1, color2) {
   return ol.color.equals(color1, color2);
 };
 
+goog.provide('ol.ColorLike');
+goog.provide('ol.colorlike');
+
+goog.require('ol.color');
+
+
+/**
+ * A type accepted by CanvasRenderingContext2D.fillStyle.
+ * Represents a color, pattern, or gradient.
+ *
+ * @typedef {string|CanvasPattern|CanvasGradient}
+ * @api
+ */
+ol.ColorLike;
+
+
+/**
+ * @param {ol.Color|ol.ColorLike} color Color.
+ * @return {ol.ColorLike} The color as an ol.ColorLike
+ * @api
+ */
+ol.colorlike.asColorLike = function(color) {
+  if (ol.colorlike.isColorLike(color)) {
+    return /** @type {string|CanvasPattern|CanvasGradient} */ (color);
+  } else {
+    return ol.color.asString(/** @type {ol.Color} */ (color));
+  }
+};
+
+
+/**
+ * @param {?} color The value that is potentially an ol.ColorLike
+ * @return {boolean} Whether the color is an ol.ColorLike
+ */
+ol.colorlike.isColorLike = function(color) {
+  return (
+      goog.isString(color) ||
+      color instanceof CanvasPattern ||
+      color instanceof CanvasGradient
+  );
+};
+
 // Copyright 2013 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -36601,7 +36643,6 @@ ol.Pixel;
 
 goog.provide('ol.control.MousePosition');
 
-goog.require('goog.dom');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.CoordinateFormatType');
@@ -36639,10 +36680,8 @@ ol.control.MousePosition = function(opt_options) {
 
   var options = opt_options ? opt_options : {};
 
-  var className = options.className !== undefined ? options.className :
-      'ol-mouse-position';
-
-  var element = goog.dom.createDom('DIV', className);
+  var element = document.createElement('DIV');
+  element.className = options.className !== undefined ? options.className : 'ol-mouse-position'
 
   var render = options.render ?
       options.render : ol.control.MousePosition.render;
@@ -51860,7 +51899,7 @@ goog.provide('ol.render.canvas');
 
 
 /**
- * @typedef {{fillStyle: string}}
+ * @typedef {{fillStyle: ol.ColorLike}}
  */
 ol.render.canvas.FillState;
 
@@ -51955,6 +51994,7 @@ ol.render.canvas.defaultLineWidth = 1;
 
 goog.provide('ol.style.Fill');
 
+goog.require('ol.ColorLike');
 goog.require('ol.color');
 
 
@@ -51972,7 +52012,7 @@ ol.style.Fill = function(opt_options) {
 
   /**
    * @private
-   * @type {ol.Color|string}
+   * @type {ol.Color|ol.ColorLike}
    */
   this.color_ = options.color !== undefined ? options.color : null;
 
@@ -51986,7 +52026,7 @@ ol.style.Fill = function(opt_options) {
 
 /**
  * Get the fill color.
- * @return {ol.Color|string} Color.
+ * @return {ol.Color|ol.ColorLike} Color.
  * @api
  */
 ol.style.Fill.prototype.getColor = function() {
@@ -51997,7 +52037,7 @@ ol.style.Fill.prototype.getColor = function() {
 /**
  * Set the color.
  *
- * @param {ol.Color|string} color Color.
+ * @param {ol.Color|ol.ColorLike} color Color.
  * @api
  */
 ol.style.Fill.prototype.setColor = function(color) {
@@ -52011,8 +52051,15 @@ ol.style.Fill.prototype.setColor = function(color) {
  */
 ol.style.Fill.prototype.getChecksum = function() {
   if (this.checksum_ === undefined) {
-    this.checksum_ = 'f' + (this.color_ ?
-        ol.color.asString(this.color_) : '-');
+    if (
+        this.color_ instanceof CanvasPattern ||
+        this.color_ instanceof CanvasGradient
+    ) {
+      this.checksum_ = goog.getUid(this.color_).toString();
+    } else {
+      this.checksum_ = 'f' + (this.color_ ?
+          ol.color.asString(this.color_) : '-');
+    }
   }
 
   return this.checksum_;
@@ -52927,6 +52974,7 @@ goog.provide('ol.style.Circle');
 goog.require('goog.asserts');
 goog.require('ol');
 goog.require('ol.color');
+goog.require('ol.colorlike');
 goog.require('ol.has');
 goog.require('ol.render.canvas');
 goog.require('ol.style.Fill');
@@ -53264,7 +53312,7 @@ ol.style.Circle.prototype.draw_ = function(renderOptions, context, x, y) {
       this.radius_, 0, 2 * Math.PI, true);
 
   if (this.fill_) {
-    context.fillStyle = ol.color.asString(this.fill_.getColor());
+    context.fillStyle = ol.colorlike.asColorLike(this.fill_.getColor());
     context.fill();
   }
   if (this.stroke_) {
@@ -54022,6 +54070,7 @@ goog.require('goog.asserts');
 goog.require('goog.vec.Mat4');
 goog.require('ol.array');
 goog.require('ol.color');
+goog.require('ol.colorlike');
 goog.require('ol.extent');
 goog.require('ol.geom.flat.transform');
 goog.require('ol.has');
@@ -54849,7 +54898,7 @@ ol.render.canvas.Immediate.prototype.setFillStrokeStyle = function(fillStyle, st
   } else {
     var fillStyleColor = fillStyle.getColor();
     this.fillState_ = {
-      fillStyle: ol.color.asString(fillStyleColor ?
+      fillStyle: ol.colorlike.asColorLike(fillStyleColor ?
           fillStyleColor : ol.render.canvas.defaultFillStyle)
     };
   }
@@ -54933,7 +54982,7 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function(textStyle) {
     } else {
       var textFillStyleColor = textFillStyle.getColor();
       this.textFillState_ = {
-        fillStyle: ol.color.asString(textFillStyleColor ?
+        fillStyle: ol.colorlike.asColorLike(textFillStyleColor ?
             textFillStyleColor : ol.render.canvas.defaultFillStyle)
       };
     }
@@ -55350,6 +55399,7 @@ goog.require('goog.vec.Mat4');
 goog.require('ol');
 goog.require('ol.array');
 goog.require('ol.color');
+goog.require('ol.colorlike');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.extent.Relationship');
@@ -55834,9 +55884,11 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_FILL_STYLE:
-        goog.asserts.assert(typeof instruction[1] === 'string',
-            '2nd instruction should be a string');
-        context.fillStyle = /** @type {string} */ (instruction[1]);
+        goog.asserts.assert(
+            ol.colorlike.isColorLike(instruction[1]),
+            '2nd instruction should be a string, ' +
+            'CanvasPattern, or CanvasGradient');
+        context.fillStyle = /** @type {ol.ColorLike} */ (instruction[1]);
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_STROKE_STYLE:
@@ -56517,14 +56569,14 @@ ol.render.canvas.PolygonReplay = function(tolerance, maxExtent, resolution) {
 
   /**
    * @private
-   * @type {{currentFillStyle: (string|undefined),
+   * @type {{currentFillStyle: (ol.ColorLike|undefined),
    *         currentStrokeStyle: (string|undefined),
    *         currentLineCap: (string|undefined),
    *         currentLineDash: Array.<number>,
    *         currentLineJoin: (string|undefined),
    *         currentLineWidth: (number|undefined),
    *         currentMiterLimit: (number|undefined),
-   *         fillStyle: (string|undefined),
+   *         fillStyle: (ol.ColorLike|undefined),
    *         strokeStyle: (string|undefined),
    *         lineCap: (string|undefined),
    *         lineDash: Array.<number>,
@@ -56772,7 +56824,7 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyle = function(fillStyle
   var state = this.state_;
   if (fillStyle) {
     var fillStyleColor = fillStyle.getColor();
-    state.fillStyle = ol.color.asString(fillStyleColor ?
+    state.fillStyle = ol.colorlike.asColorLike(fillStyleColor ?
         fillStyleColor : ol.render.canvas.defaultFillStyle);
   } else {
     state.fillStyle = undefined;
@@ -57079,7 +57131,7 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
       this.textFillState_ = null;
     } else {
       var textFillStyleColor = textFillStyle.getColor();
-      var fillStyle = ol.color.asString(textFillStyleColor ?
+      var fillStyle = ol.colorlike.asColorLike(textFillStyleColor ?
           textFillStyleColor : ol.render.canvas.defaultFillStyle);
       if (!this.textFillState_) {
         this.textFillState_ = {
@@ -75328,7 +75380,8 @@ ol.control.OverviewMap = function(opt_options) {
   ol.events.listen(button, ol.events.EventType.CLICK,
       this.handleClick_, this);
 
-  var ovmapDiv = goog.dom.createDom('DIV', 'ol-overviewmap-map');
+  var ovmapDiv = document.createElement('DIV');
+  ovmapDiv.className = 'ol-overviewmap-map';
 
   /**
    * @type {ol.Map}
@@ -75776,7 +75829,6 @@ goog.provide('ol.control.ScaleLineProperty');
 goog.provide('ol.control.ScaleLineUnits');
 
 goog.require('goog.asserts');
-goog.require('goog.dom');
 goog.require('ol.events');
 goog.require('goog.style');
 goog.require('ol');
@@ -75834,14 +75886,16 @@ ol.control.ScaleLine = function(opt_options) {
    * @private
    * @type {Element}
    */
-  this.innerElement_ = goog.dom.createDom('DIV', className + '-inner');
+  this.innerElement_ = document.createElement('DIV');
+  this.innerElement_.className = className + '-inner';
 
   /**
    * @private
    * @type {Element}
    */
-  this.element_ = goog.dom.createDom('DIV',
-      className + ' ' + ol.css.CLASS_UNSELECTABLE, this.innerElement_);
+  this.element_ = document.createElement('DIV');
+  this.element_.className = className + ' ' + ol.css.CLASS_UNSELECTABLE;
+  this.element_.appendChild(this.innerElement_);
 
   /**
    * @private
@@ -107906,6 +107960,7 @@ goog.provide('ol.style.RegularShape');
 goog.require('goog.asserts');
 goog.require('ol');
 goog.require('ol.color');
+goog.require('ol.colorlike');
 goog.require('ol.has');
 goog.require('ol.render.canvas');
 goog.require('ol.style.AtlasManager');
@@ -108336,7 +108391,7 @@ ol.style.RegularShape.prototype.draw_ = function(renderOptions, context, x, y) {
   }
 
   if (this.fill_) {
-    context.fillStyle = ol.color.asString(this.fill_.getColor());
+    context.fillStyle = ol.colorlike.asColorLike(this.fill_.getColor());
     context.fill();
   }
   if (this.stroke_) {
@@ -108483,6 +108538,7 @@ goog.require('ol.Collection');
 goog.require('ol.CollectionEvent');
 goog.require('ol.CollectionEventType');
 goog.require('ol.Color');
+goog.require('ol.ColorLike');
 goog.require('ol.Coordinate');
 goog.require('ol.CoordinateFormatType');
 goog.require('ol.DeviceOrientation');
@@ -108525,6 +108581,7 @@ goog.require('ol.ViewHint');
 goog.require('ol.ViewProperty');
 goog.require('ol.animation');
 goog.require('ol.color');
+goog.require('ol.colorlike');
 goog.require('ol.control');
 goog.require('ol.control.Attribution');
 goog.require('ol.control.Control');
@@ -108795,6 +108852,11 @@ goog.exportProperty(
     ol.Collection.prototype,
     'setAt',
     ol.Collection.prototype.setAt);
+
+goog.exportSymbol(
+    'ol.colorlike.asColorLike',
+    ol.colorlike.asColorLike,
+    OPENLAYERS);
 
 goog.exportSymbol(
     'ol.coordinate.add',
