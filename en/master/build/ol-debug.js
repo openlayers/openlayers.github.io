@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.1-216-ga5e4634
+// Version: v3.13.1-236-ga967557
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -13278,18 +13278,24 @@ ol.extent.getForViewAndSize = function(center, resolution, rotation, size, opt_e
   var dy = resolution * size[1] / 2;
   var cosRotation = Math.cos(rotation);
   var sinRotation = Math.sin(rotation);
-  /** @type {Array.<number>} */
-  var xs = [-dx, -dx, dx, dx];
-  /** @type {Array.<number>} */
-  var ys = [-dy, dy, -dy, dy];
-  var i, x, y;
-  for (i = 0; i < 4; ++i) {
-    x = xs[i];
-    y = ys[i];
-    xs[i] = center[0] + x * cosRotation - y * sinRotation;
-    ys[i] = center[1] + x * sinRotation + y * cosRotation;
-  }
-  return ol.extent.boundingExtentXYs_(xs, ys, opt_extent);
+  var xCos = dx * cosRotation;
+  var xSin = dx * sinRotation;
+  var yCos = dy * cosRotation;
+  var ySin = dy * sinRotation;
+  var x = center[0];
+  var y = center[1];
+  var x0 = x - xCos + ySin;
+  var x1 = x - xCos - ySin;
+  var x2 = x + xCos - ySin;
+  var x3 = x + xCos + ySin;
+  var y0 = y - xSin - yCos;
+  var y1 = y - xSin + yCos;
+  var y2 = y + xSin + yCos;
+  var y3 = y + xSin - yCos;
+  return ol.extent.createOrUpdate(
+      Math.min(x0, x1, x2, x3), Math.min(y0, y1, y2, y3),
+      Math.max(x0, x1, x2, x3), Math.max(y0, y1, y2, y3),
+      opt_extent);
 };
 
 
@@ -20877,7 +20883,7 @@ ol.colorlike.asColorLike = function(color) {
  */
 ol.colorlike.isColorLike = function(color) {
   return (
-      goog.isString(color) ||
+      typeof color === 'string' ||
       color instanceof CanvasPattern ||
       color instanceof CanvasGradient
   );
@@ -46924,7 +46930,6 @@ ol.renderer.Layer.prototype.manageTilePyramid = function(
   var tileSourceKey = goog.getUid(tileSource).toString();
   if (!(tileSourceKey in frameState.wantedTiles)) {
     frameState.wantedTiles[tileSourceKey] = {};
-    ++frameState.tileSourceCount;
   }
   var wantedTiles = frameState.wantedTiles[tileSourceKey];
   var tileQueue = frameState.tileQueue;
@@ -51992,6 +51997,21 @@ ol.render.canvas.defaultTextBaseline = 'middle';
  */
 ol.render.canvas.defaultLineWidth = 1;
 
+
+/**
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {number} rotation Rotation.
+ * @param {number} offsetX X offset.
+ * @param {number} offsetY Y offset.
+ */
+ol.render.canvas.rotateAtOffset = function(context, rotation, offsetX, offsetY) {
+  if (rotation !== 0) {
+    context.translate(offsetX, offsetY);
+    context.rotate(rotation);
+    context.translate(-offsetX, -offsetY);
+  }
+};
+
 goog.provide('ol.style.Fill');
 
 goog.require('ol.ColorLike');
@@ -55063,12 +55083,11 @@ goog.provide('ol.renderer.canvas.Layer');
 
 goog.require('goog.asserts');
 goog.require('goog.vec.Mat4');
-goog.require('ol.array');
-goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Layer');
 goog.require('ol.render.Event');
 goog.require('ol.render.EventType');
+goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Immediate');
 goog.require('ol.renderer.Layer');
 goog.require('ol.vec.Mat4');
@@ -55112,6 +55131,9 @@ ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerStat
       goog.asserts.assert(extent !== undefined,
           'layerState extent is defined');
       var pixelRatio = frameState.pixelRatio;
+      var width = frameState.size[0] * pixelRatio;
+      var height = frameState.size[1] * pixelRatio;
+      var rotation = frameState.viewState.rotation;
       var topLeft = ol.extent.getTopLeft(extent);
       var topRight = ol.extent.getTopRight(extent);
       var bottomRight = ol.extent.getBottomRight(extent);
@@ -55127,12 +55149,14 @@ ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerStat
           bottomLeft, bottomLeft);
 
       context.save();
+      ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
       context.beginPath();
       context.moveTo(topLeft[0] * pixelRatio, topLeft[1] * pixelRatio);
       context.lineTo(topRight[0] * pixelRatio, topRight[1] * pixelRatio);
       context.lineTo(bottomRight[0] * pixelRatio, bottomRight[1] * pixelRatio);
       context.lineTo(bottomLeft[0] * pixelRatio, bottomLeft[1] * pixelRatio);
       context.clip();
+      ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
     }
 
     var imageTransform = this.getImageTransform();
@@ -55144,24 +55168,12 @@ ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerStat
 
     // for performance reasons, context.setTransform is only used
     // when the view is rotated. see http://jsperf.com/canvas-transform
-    if (frameState.viewState.rotation === 0) {
-      var dx = goog.vec.Mat4.getElement(imageTransform, 0, 3);
-      var dy = goog.vec.Mat4.getElement(imageTransform, 1, 3);
-      var dw = image.width * goog.vec.Mat4.getElement(imageTransform, 0, 0);
-      var dh = image.height * goog.vec.Mat4.getElement(imageTransform, 1, 1);
-      context.drawImage(image, 0, 0, +image.width, +image.height,
-          Math.round(dx), Math.round(dy), Math.round(dw), Math.round(dh));
-    } else {
-      context.setTransform(
-          goog.vec.Mat4.getElement(imageTransform, 0, 0),
-          goog.vec.Mat4.getElement(imageTransform, 1, 0),
-          goog.vec.Mat4.getElement(imageTransform, 0, 1),
-          goog.vec.Mat4.getElement(imageTransform, 1, 1),
-          goog.vec.Mat4.getElement(imageTransform, 0, 3),
-          goog.vec.Mat4.getElement(imageTransform, 1, 3));
-      context.drawImage(image, 0, 0);
-      context.setTransform(1, 0, 0, 1, 0, 0);
-    }
+    var dx = goog.vec.Mat4.getElement(imageTransform, 0, 3);
+    var dy = goog.vec.Mat4.getElement(imageTransform, 1, 3);
+    var dw = image.width * goog.vec.Mat4.getElement(imageTransform, 0, 0);
+    var dh = image.height * goog.vec.Mat4.getElement(imageTransform, 1, 1);
+    context.drawImage(image, 0, 0, +image.width, +image.height,
+        Math.round(dx), Math.round(dy), Math.round(dw), Math.round(dh));
     context.globalAlpha = alpha;
 
     if (clipped) {
@@ -55184,6 +55196,10 @@ ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerStat
 ol.renderer.canvas.Layer.prototype.dispatchComposeEvent_ = function(type, context, frameState, opt_transform) {
   var layer = this.getLayer();
   if (layer.hasListener(type)) {
+    var width = frameState.size[0] * frameState.pixelRatio;
+    var height = frameState.size[1] * frameState.pixelRatio;
+    var rotation = frameState.viewState.rotation;
+    ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
     var transform = opt_transform !== undefined ?
         opt_transform : this.getTransform(frameState, 0);
     var render = new ol.render.canvas.Immediate(
@@ -55193,6 +55209,7 @@ ol.renderer.canvas.Layer.prototype.dispatchComposeEvent_ = function(type, contex
         context, null);
     layer.dispatchEvent(composeEvent);
     render.flush();
+    ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
   }
 };
 
@@ -55285,49 +55302,6 @@ ol.renderer.canvas.Layer.prototype.getPixelOnCanvas = function(pixelOnMap, image
   ol.vec.Mat4.multVec2(imageTransformInv, pixelOnMap, pixelOnCanvas);
   return pixelOnCanvas;
 };
-
-
-/**
- * @param {ol.Size} size Size.
- * @return {boolean} True when the canvas with the current size does not exceed
- *     the maximum dimensions.
- */
-ol.renderer.canvas.Layer.testCanvasSize = (function() {
-
-  /**
-   * @type {CanvasRenderingContext2D}
-   */
-  var context = null;
-
-  /**
-   * @type {ImageData}
-   */
-  var imageData = null;
-
-  return function(size) {
-    if (!context) {
-      context = ol.dom.createCanvasContext2D(1, 1);
-      imageData = context.createImageData(1, 1);
-      var data = imageData.data;
-      data[0] = 42;
-      data[1] = 84;
-      data[2] = 126;
-      data[3] = 255;
-    }
-    var canvas = context.canvas;
-    var good = size[0] <= canvas.width && size[1] <= canvas.height;
-    if (!good) {
-      canvas.width = size[0];
-      canvas.height = size[1];
-      var x = size[0] - 1;
-      var y = size[1] - 1;
-      context.putImageData(imageData, x, y);
-      var result = context.getImageData(x, y, 1, 1);
-      good = ol.array.equals(imageData.data, result.data);
-    }
-    return good;
-  };
-})();
 
 goog.provide('ol.render.IReplayGroup');
 
@@ -55778,10 +55752,10 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         goog.asserts.assert(goog.isNumber(instruction[7]),
             '8th instruction should be a number');
         scale = /** @type {number} */ (instruction[7]) * pixelRatio;
-        goog.asserts.assert(goog.isBoolean(instruction[8]),
+        goog.asserts.assert(typeof instruction[8] === 'boolean',
             '9th instruction should be a boolean');
         fill = /** @type {boolean} */ (instruction[8]);
-        goog.asserts.assert(goog.isBoolean(instruction[9]),
+        goog.asserts.assert(typeof instruction[9] === 'boolean',
             '10th instruction should be a boolean');
         stroke = /** @type {boolean} */ (instruction[9]);
         for (; d < dd; d += 2) {
@@ -63245,7 +63219,6 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
   var viewState = frameState.viewState;
   var viewCenter = viewState.center;
   var viewResolution = viewState.resolution;
-  var viewRotation = viewState.rotation;
 
   var image;
   var imageLayer = this.getLayer();
@@ -63293,7 +63266,7 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
         pixelRatio * frameState.size[0] / 2,
         pixelRatio * frameState.size[1] / 2,
         scale, scale,
-        viewRotation,
+        0,
         imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolution,
         imagePixelRatio * (viewCenter[1] - imageExtent[3]) / imageResolution);
     this.imageTransformInv_ = null;
@@ -63305,22 +63278,19 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
 };
 
 // FIXME find correct globalCompositeOperation
-// FIXME optimize :-)
 
 goog.provide('ol.renderer.canvas.TileLayer');
 
 goog.require('goog.asserts');
-goog.require('goog.vec.Mat4');
-goog.require('ol.Size');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
 goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Tile');
+goog.require('ol.render.EventType');
 goog.require('ol.renderer.canvas.Layer');
-goog.require('ol.size');
-goog.require('ol.vec.Mat4');
+goog.require('ol.source.Tile');
 
 
 /**
@@ -63334,63 +63304,15 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
 
   /**
    * @private
-   * @type {HTMLCanvasElement}
+   * @type {Object.<string, Array.<ol.Extent>>}
    */
-  this.canvas_ = null;
-
-  /**
-   * @private
-   * @type {ol.Size}
-   */
-  this.canvasSize_ = null;
-
-  /**
-   * @private
-   * @type {boolean}
-   */
-  this.canvasTooBig_ = false;
+  this.clipExtents_ = null;
 
   /**
    * @private
    * @type {CanvasRenderingContext2D}
    */
-  this.context_ = null;
-
-  /**
-   * @private
-   * @type {!goog.vec.Mat4.Number}
-   */
-  this.imageTransform_ = goog.vec.Mat4.createNumber();
-
-  /**
-   * @private
-   * @type {?goog.vec.Mat4.Number}
-   */
-  this.imageTransformInv_ = null;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.renderedCanvasZ_ = NaN;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.renderedTileWidth_ = NaN;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.renderedTileHeight_ = NaN;
-
-  /**
-   * @private
-   * @type {ol.TileRange}
-   */
-  this.renderedCanvasTileRange_ = null;
+  this.context_ = ol.dom.createCanvasContext2D();
 
   /**
    * @private
@@ -63400,9 +63322,9 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
 
   /**
    * @private
-   * @type {ol.Size}
+   * @type {ol.Extent}
    */
-  this.tmpSize_ = [0, 0];
+  this.tmpExtent_ = ol.extent.createEmpty();
 
 };
 goog.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
@@ -63411,86 +63333,120 @@ goog.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.TileLayer.prototype.getImage = function() {
-  return this.canvas_;
+ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
+    frameState, layerState, context) {
+  var pixelRatio = frameState.pixelRatio;
+  var viewState = frameState.viewState;
+  var center = viewState.center;
+  var projection = viewState.projection;
+  var resolution = viewState.resolution;
+  var size = frameState.size;
+  var pixelScale = pixelRatio / resolution;
+  var layer = this.getLayer();
+  var source = layer.getSource();
+  goog.asserts.assertInstanceof(source, ol.source.Tile,
+      'source is an ol.source.Tile');
+  var tileGutter = source.getGutter();
+  var opaque = source.getOpaque(projection);
+
+  var transform = this.getTransform(frameState, 0);
+
+  this.dispatchPreComposeEvent(context, frameState, transform);
+
+  var renderContext;
+  if (layer.hasListener(ol.render.EventType.RENDER)) {
+    // resize and clear
+    this.context_.canvas.width = context.canvas.width;
+    this.context_.canvas.height = context.canvas.height;
+    renderContext = this.context_;
+  } else {
+    renderContext = context;
+  }
+  var offsetX = Math.round(pixelRatio * size[0] / 2);
+  var offsetY = Math.round(pixelRatio * size[1] / 2);
+
+  // for performance reasons, context.save / context.restore is not used
+  // to save and restore the transformation matrix and the opacity.
+  // see http://jsperf.com/context-save-restore-versus-variable
+  var alpha = renderContext.globalAlpha;
+  renderContext.globalAlpha = layerState.opacity;
+
+  var tileGrid = source.getTileGridForProjection(projection);
+  var tilesToDraw = this.renderedTiles_;
+
+  var clipExtents, clipExtent, currentZ, i, ii, j, jj, insertPoint;
+  var origin, tile, tileExtent, tileHeight, tileOffsetX, tileOffsetY;
+  var tilePixelSize, tileWidth;
+  for (i = 0, ii = tilesToDraw.length; i < ii; ++i) {
+    tile = tilesToDraw[i];
+    tileExtent = tileGrid.getTileCoordExtent(
+        tile.getTileCoord(), this.tmpExtent_);
+    clipExtents = !opaque && this.clipExtents_[tile.tileCoord.toString()];
+    if (clipExtents) {
+      // Create a clip mask for regions in this low resolution tile that will be
+      // filled by a higher resolution tile
+      renderContext.save();
+      renderContext.beginPath();
+      renderContext.moveTo((tileExtent[0] - center[0]) * pixelScale + offsetX,
+          (center[1] - tileExtent[1]) * pixelScale + offsetY);
+      renderContext.lineTo((tileExtent[2] - center[0]) * pixelScale + offsetX,
+          (center[1] - tileExtent[1]) * pixelScale + offsetY);
+      renderContext.lineTo((tileExtent[2] - center[0]) * pixelScale + offsetX,
+          (center[1] - tileExtent[3]) * pixelScale + offsetY);
+      renderContext.lineTo((tileExtent[0] - center[0]) * pixelScale + offsetX,
+          (center[1] - tileExtent[3]) * pixelScale + offsetY);
+      renderContext.closePath();
+      for (j = 0, jj = clipExtents.length; j < jj; ++j) {
+        clipExtent = clipExtents[j];
+        renderContext.moveTo((clipExtent[0] - center[0]) * pixelScale + offsetX,
+            (center[1] - clipExtent[1]) * pixelScale + offsetY);
+        renderContext.lineTo((clipExtent[0] - center[0]) * pixelScale + offsetX,
+            (center[1] - clipExtent[3]) * pixelScale + offsetY);
+        renderContext.lineTo((clipExtent[2] - center[0]) * pixelScale + offsetX,
+            (center[1] - clipExtent[3]) * pixelScale + offsetY);
+        renderContext.lineTo((clipExtent[2] - center[0]) * pixelScale + offsetX,
+            (center[1] - clipExtent[1]) * pixelScale + offsetY);
+        renderContext.closePath();
+      }
+      renderContext.clip();
+    }
+    currentZ = tile.getTileCoord()[0];
+    tilePixelSize = source.getTilePixelSize(currentZ, pixelRatio, projection);
+    insertPoint = ol.extent.getTopLeft(tileExtent);
+    tileWidth = Math.round(ol.extent.getWidth(tileExtent) * pixelScale);
+    tileHeight = Math.round(ol.extent.getHeight(tileExtent) * pixelScale);
+    // Calculate all insert points from a common origin and tile widths to avoid
+    // gaps caused by rounding
+    origin = ol.extent.getBottomLeft(tileGrid.getTileCoordExtent(
+        tileGrid.getTileCoordForCoordAndZ(center, currentZ)));
+    tileOffsetX = offsetX + Math.round((origin[0] - center[0]) * pixelScale);
+    tileOffsetY = offsetY + Math.round((center[1] - origin[1]) * pixelScale);
+    renderContext.drawImage(tile.getImage(), tileGutter, tileGutter,
+        tilePixelSize[0], tilePixelSize[1],
+        Math.round((insertPoint[0] - origin[0]) * pixelScale / tileWidth) *
+            tileWidth + tileOffsetX,
+        Math.round((origin[1] - insertPoint[1]) * pixelScale / tileHeight) *
+            tileHeight + tileOffsetY, tileWidth, tileHeight);
+    if (clipExtents) {
+      renderContext.restore();
+    }
+  }
+
+  if (renderContext != context) {
+    this.dispatchRenderEvent(renderContext, frameState, transform);
+    context.drawImage(renderContext.canvas, 0, 0);
+  }
+  renderContext.globalAlpha = alpha;
+
+  this.dispatchPostComposeEvent(context, frameState, transform);
 };
 
 
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.TileLayer.prototype.getImageTransform = function() {
-  return this.imageTransform_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layerState) {
-
-  //
-  // Warning! You're entering a dangerous zone!
-  //
-  // The canvas tile layer renderering is highly optimized, hence
-  // the complexity of this function. For best performance we try
-  // to minimize the number of pixels to update on the canvas. This
-  // includes:
-  //
-  // - Only drawing pixels that will be visible.
-  // - Not re-drawing pixels/tiles that are already correct.
-  // - Minimizing calls to clearRect.
-  // - Never shrink the canvas. Just make it bigger when necessary.
-  //   Re-sizing the canvas also clears it, which further means
-  //   re-creating it (expensive).
-  //
-  // The various steps performed by this functions:
-  //
-  // - Create a canvas element if none has been created yet.
-  //
-  // - Make the canvas bigger if it's too small. Note that we never shrink
-  //   the canvas, we just make it bigger when necessary, when rotating for
-  //   example. Note also that the canvas always contains a whole number
-  //   of tiles.
-  //
-  // - Invalidate the canvas tile range (renderedCanvasTileRange_ = null)
-  //   if (1) the canvas has been enlarged, or (2) the zoom level changes,
-  //   or (3) the canvas tile range doesn't contain the required tile
-  //   range. This canvas tile range invalidation thing is related to
-  //   an optimization where we attempt to redraw as few pixels as
-  //   possible on each prepareFrame call.
-  //
-  // - If the canvas tile range has been invalidated we reset
-  //   renderedCanvasTileRange_ and reset the renderedTiles_ array.
-  //   The renderedTiles_ array is the structure used to determine
-  //   the canvas pixels that need not be redrawn from one prepareFrame
-  //   call to another. It records while tile has been rendered at
-  //   which position in the canvas.
-  //
-  // - We then determine the tiles to draw on the canvas. Tiles for
-  //   the target resolution may not be loaded yet. In that case we
-  //   use low-resolution/interim tiles if loaded already. And, if
-  //   for a non-yet-loaded tile we haven't found a corresponding
-  //   low-resolution tile we indicate that the pixels for that
-  //   tile must be cleared on the canvas. Note: determining the
-  //   interim tiles is based on tile extents instead of tile
-  //   coords, this is to be able to handler irregular tile grids.
-  //
-  // - We're now ready to render. We start by calling clearRect
-  //   for the tiles that aren't loaded yet and are not fully covered
-  //   by a low-resolution tile (if they're loaded, we'll draw them;
-  //   if they're fully covered by a low-resolution tile then there's
-  //   no need to clear). We then render the tiles "back to front",
-  //   i.e. starting with the low-resolution tiles.
-  //
-  // - After rendering some bookkeeping is performed (updateUsedTiles,
-  //   etc.). manageTilePyramid is what enqueue tiles in the tile
-  //   queue for loading.
-  //
-  // - The last step involves updating the image transform matrix,
-  //   which will be used by the map renderer for the final
-  //   composition and positioning.
-  //
+ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
+    frameState, layerState) {
 
   var pixelRatio = frameState.pixelRatio;
   var viewState = frameState.viewState;
@@ -63501,14 +63457,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
       'layer is an instance of ol.layer.Tile');
   var tileSource = tileLayer.getSource();
   var tileGrid = tileSource.getTileGridForProjection(projection);
-  var tileGutter = tileSource.getGutter();
   var z = tileGrid.getZForResolution(viewState.resolution);
-  var tilePixelSize =
-      tileSource.getTilePixelSize(z, frameState.pixelRatio, projection);
-  var tilePixelRatio = tilePixelSize[0] /
-      ol.size.toSize(tileGrid.getTileSize(z), this.tmpSize_)[0];
   var tileResolution = tileGrid.getResolution(z);
-  var tilePixelResolution = tileResolution / tilePixelRatio;
   var center = viewState.center;
   var extent;
   if (tileResolution == viewState.resolution) {
@@ -63530,87 +63480,11 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
   var tileRange = tileGrid.getTileRangeForExtentAndResolution(
       extent, tileResolution);
 
-  var canvasWidth = tilePixelSize[0] * tileRange.getWidth();
-  var canvasHeight = tilePixelSize[1] * tileRange.getHeight();
-
-  var canvas, context;
-  if (!this.canvas_) {
-    goog.asserts.assert(!this.canvasSize_,
-        'canvasSize is null (because canvas is null)');
-    goog.asserts.assert(!this.context_,
-        'context is null (because canvas is null)');
-    goog.asserts.assert(!this.renderedCanvasTileRange_,
-        'renderedCanvasTileRange is null (because canvas is null)');
-    context = ol.dom.createCanvasContext2D(canvasWidth, canvasHeight);
-    this.canvas_ = context.canvas;
-    this.canvasSize_ = [canvasWidth, canvasHeight];
-    this.context_ = context;
-    this.canvasTooBig_ =
-        !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
-  } else {
-    goog.asserts.assert(this.canvasSize_,
-        'non-null canvasSize (because canvas is not null)');
-    goog.asserts.assert(this.context_,
-        'non-null context (because canvas is not null)');
-    canvas = this.canvas_;
-    context = this.context_;
-    if (this.canvasSize_[0] < canvasWidth ||
-        this.canvasSize_[1] < canvasHeight ||
-        this.renderedTileWidth_ !== tilePixelSize[0] ||
-        this.renderedTileHeight_ !== tilePixelSize[1] ||
-        (this.canvasTooBig_ && (this.canvasSize_[0] > canvasWidth ||
-        this.canvasSize_[1] > canvasHeight))) {
-      // Canvas is too small or tileSize has changed, resize it.
-      // We never shrink the canvas, unless
-      // we know that the current canvas size exceeds the maximum size
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
-      this.canvasSize_ = [canvasWidth, canvasHeight];
-      this.canvasTooBig_ =
-          !ol.renderer.canvas.Layer.testCanvasSize(this.canvasSize_);
-      this.renderedCanvasTileRange_ = null;
-    } else {
-      canvasWidth = this.canvasSize_[0];
-      canvasHeight = this.canvasSize_[1];
-      if (z != this.renderedCanvasZ_ ||
-          !this.renderedCanvasTileRange_.containsTileRange(tileRange)) {
-        this.renderedCanvasTileRange_ = null;
-      }
-    }
-  }
-
-  var canvasTileRange, canvasTileRangeWidth, minX, minY;
-  if (!this.renderedCanvasTileRange_) {
-    canvasTileRangeWidth = canvasWidth / tilePixelSize[0];
-    var canvasTileRangeHeight = canvasHeight / tilePixelSize[1];
-    minX = tileRange.minX -
-        Math.floor((canvasTileRangeWidth - tileRange.getWidth()) / 2);
-    minY = tileRange.minY -
-        Math.floor((canvasTileRangeHeight - tileRange.getHeight()) / 2);
-    this.renderedCanvasZ_ = z;
-    this.renderedTileWidth_ = tilePixelSize[0];
-    this.renderedTileHeight_ = tilePixelSize[1];
-    this.renderedCanvasTileRange_ = new ol.TileRange(
-        minX, minX + canvasTileRangeWidth - 1,
-        minY, minY + canvasTileRangeHeight - 1);
-    this.renderedTiles_ =
-        new Array(canvasTileRangeWidth * canvasTileRangeHeight);
-    canvasTileRange = this.renderedCanvasTileRange_;
-  } else {
-    canvasTileRange = this.renderedCanvasTileRange_;
-    canvasTileRangeWidth = canvasTileRange.getWidth();
-  }
-
-  goog.asserts.assert(canvasTileRange.containsTileRange(tileRange),
-      'tileRange is contained in canvasTileRange');
-
   /**
    * @type {Object.<number, Object.<string, ol.Tile>>}
    */
   var tilesToDrawByZ = {};
   tilesToDrawByZ[z] = {};
-  /** @type {Array.<ol.Tile>} */
-  var tilesToClear = [];
 
   var findLoadedTiles = this.createLoadedTileFinder(
       tileSource, projection, tilesToDrawByZ);
@@ -63645,9 +63519,6 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
       fullyLoaded = tileGrid.forEachTileCoordParentTileRange(
           tile.tileCoord, findLoadedTiles, null, tmpTileRange, tmpExtent);
       if (!fullyLoaded) {
-        // FIXME we do not need to clear the tile if it is fully covered by its
-        //       children
-        tilesToClear.push(tile);
         childTileRange = tileGrid.getTileCoordChildTileRange(
             tile.tileCoord, tmpTileRange, tmpExtent);
         if (childTileRange) {
@@ -63658,85 +63529,48 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
     }
   }
 
-  var i, ii;
-  for (i = 0, ii = tilesToClear.length; i < ii; ++i) {
-    tile = tilesToClear[i];
-    x = tilePixelSize[0] * (tile.tileCoord[1] - canvasTileRange.minX);
-    y = tilePixelSize[1] * (canvasTileRange.maxY - tile.tileCoord[2]);
-    context.clearRect(x, y, tilePixelSize[0], tilePixelSize[1]);
-  }
-
   /** @type {Array.<number>} */
   var zs = Object.keys(tilesToDrawByZ).map(Number);
   zs.sort(ol.array.numberSafeCompareFunction);
-  var opaque = tileSource.getOpaque(projection);
-  var origin = ol.extent.getTopLeft(tileGrid.getTileCoordExtent(
-      [z, canvasTileRange.minX, canvasTileRange.maxY],
-      tmpExtent));
-  var currentZ, index, scale, tileCoordKey, tileExtent, tileState, tilesToDraw;
-  var ix, iy, interimTileRange, maxX, maxY;
-  var height, width;
+  var renderables = [];
+  var i, ii, currentZ, tileCoordKey, tilesToDraw;
   for (i = 0, ii = zs.length; i < ii; ++i) {
     currentZ = zs[i];
-    tilePixelSize =
-        tileSource.getTilePixelSize(currentZ, pixelRatio, projection);
     tilesToDraw = tilesToDrawByZ[currentZ];
-    if (currentZ == z) {
-      for (tileCoordKey in tilesToDraw) {
-        tile = tilesToDraw[tileCoordKey];
-        index =
-            (tile.tileCoord[2] - canvasTileRange.minY) * canvasTileRangeWidth +
-            (tile.tileCoord[1] - canvasTileRange.minX);
-        if (this.renderedTiles_[index] != tile) {
-          x = tilePixelSize[0] * (tile.tileCoord[1] - canvasTileRange.minX);
-          y = tilePixelSize[1] * (canvasTileRange.maxY - tile.tileCoord[2]);
-          tileState = tile.getState();
-          if (tileState == ol.TileState.EMPTY ||
-              (tileState == ol.TileState.ERROR && !useInterimTilesOnError) ||
-              !opaque) {
-            context.clearRect(x, y, tilePixelSize[0], tilePixelSize[1]);
-          }
-          if (tileState == ol.TileState.LOADED) {
-            context.drawImage(tile.getImage(),
-                tileGutter, tileGutter, tilePixelSize[0], tilePixelSize[1],
-                x, y, tilePixelSize[0], tilePixelSize[1]);
-          }
-          this.renderedTiles_[index] = tile;
-        }
-      }
-    } else {
-      scale = tileGrid.getResolution(currentZ) / tileResolution;
-      for (tileCoordKey in tilesToDraw) {
-        tile = tilesToDraw[tileCoordKey];
-        tileExtent = tileGrid.getTileCoordExtent(tile.tileCoord, tmpExtent);
-        x = (tileExtent[0] - origin[0]) / tilePixelResolution;
-        y = (origin[1] - tileExtent[3]) / tilePixelResolution;
-        width = scale * tilePixelSize[0];
-        height = scale * tilePixelSize[1];
-        tileState = tile.getState();
-        if (tileState == ol.TileState.EMPTY || !opaque) {
-          context.clearRect(x, y, width, height);
-        }
-        if (tileState == ol.TileState.LOADED) {
-          context.drawImage(tile.getImage(),
-              tileGutter, tileGutter, tilePixelSize[0], tilePixelSize[1],
-              x, y, width, height);
-        }
-        interimTileRange =
-            tileGrid.getTileRangeForExtentAndZ(tileExtent, z, tmpTileRange);
-        minX = Math.max(interimTileRange.minX, canvasTileRange.minX);
-        maxX = Math.min(interimTileRange.maxX, canvasTileRange.maxX);
-        minY = Math.max(interimTileRange.minY, canvasTileRange.minY);
-        maxY = Math.min(interimTileRange.maxY, canvasTileRange.maxY);
-        for (ix = minX; ix <= maxX; ++ix) {
-          for (iy = minY; iy <= maxY; ++iy) {
-            index = (iy - canvasTileRange.minY) * canvasTileRangeWidth +
-                    (ix - canvasTileRange.minX);
-            this.renderedTiles_[index] = undefined;
-          }
-        }
+    for (tileCoordKey in tilesToDraw) {
+      tile = tilesToDraw[tileCoordKey];
+      if (tile.getState() == ol.TileState.LOADED) {
+        renderables.push(tile);
       }
     }
+  }
+  this.renderedTiles_ = renderables;
+  if (!tileSource.getOpaque(projection)) {
+    var clipExtents = {};
+    var tileCoord;
+    for (i = renderables.length - 1; i >= 0; --i) {
+      tileCoord = renderables[i].getTileCoord();
+      tileGrid.forEachTileCoordParentTileRange(tileCoord,
+          function(z, tileRange) {
+            var tiles = tilesToDrawByZ[z];
+            if (tiles) {
+              var key, tile;
+              for (key in tiles) {
+                tile = tiles[key];
+                if (tileRange.contains(tile.getTileCoord()) &&
+                    tile.getState() == ol.TileState.LOADED) {
+                  if (!(key in clipExtents)) {
+                    clipExtents[key] = [];
+                  }
+                  clipExtents[key].push(tileGrid.getTileCoordExtent(tileCoord));
+                  return true;
+                }
+              }
+            }
+            return false;
+          }, this, tmpTileRange, tmpExtent);
+    }
+    this.clipExtents_ = clipExtents;
   }
 
   this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
@@ -63745,16 +63579,6 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
   this.scheduleExpireCache(frameState, tileSource);
   this.updateLogos(frameState, tileSource);
 
-  ol.vec.Mat4.makeTransform2D(this.imageTransform_,
-      pixelRatio * frameState.size[0] / 2,
-      pixelRatio * frameState.size[1] / 2,
-      pixelRatio * tilePixelResolution / viewState.resolution,
-      pixelRatio * tilePixelResolution / viewState.resolution,
-      viewState.rotation,
-      (origin[0] - center[0]) / tilePixelResolution,
-      (center[1] - origin[1]) / tilePixelResolution);
-  this.imageTransformInv_ = null;
-
   return true;
 };
 
@@ -63762,21 +63586,16 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.TileLayer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
-  if (!this.context_) {
-    return undefined;
-  }
-
-  if (!this.imageTransformInv_) {
-    this.imageTransformInv_ = goog.vec.Mat4.createNumber();
-    goog.vec.Mat4.invert(this.imageTransform_, this.imageTransformInv_);
-  }
-
-  var pixelOnCanvas =
-      this.getPixelOnCanvas(pixel, this.imageTransformInv_);
+ol.renderer.canvas.TileLayer.prototype.forEachLayerAtPixel = function(
+    pixel, frameState, callback, thisArg) {
+  var canvas = this.context_.canvas;
+  var size = frameState.size;
+  canvas.width = size[0];
+  canvas.height = size[1];
+  this.composeFrame(frameState, this.getLayer().getLayerState(), this.context_);
 
   var imageData = this.context_.getImageData(
-      pixelOnCanvas[0], pixelOnCanvas[1], 1, 1).data;
+      pixel[0], pixel[1], 1, 1).data;
 
   if (imageData[3] > 0) {
     return callback.call(thisArg, this.getLayer());
@@ -63794,6 +63613,7 @@ goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.layer.Vector');
 goog.require('ol.render.EventType');
+goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.ReplayGroup');
 goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.renderer.vector');
@@ -63893,6 +63713,10 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
     var alpha = replayContext.globalAlpha;
     replayContext.globalAlpha = layerState.opacity;
 
+    var width = frameState.size[0] * pixelRatio;
+    var height = frameState.size[1] * pixelRatio;
+    ol.render.canvas.rotateAtOffset(replayContext, -rotation,
+        width / 2, height / 2);
     replayGroup.replay(replayContext, pixelRatio, transform, rotation,
         skippedFeatureUids);
     if (vectorSource.getWrapX() && projection.canWrapX() &&
@@ -63922,6 +63746,8 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
       // restore original transform for render and compose events
       transform = this.getTransform(frameState, 0);
     }
+    ol.render.canvas.rotateAtOffset(replayContext, rotation,
+        width / 2, height / 2);
 
     if (replayContext != context) {
       this.dispatchRenderEvent(replayContext, frameState, transform);
@@ -64774,12 +64600,9 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(frameState,
           0, 0, pixelScale, -pixelScale, 0, -center[0], -center[1]);
       insertPoint = ol.geom.flat.transform.transform2D(
           ol.extent.getTopLeft(tileExtent), 0, 1, 2, insertTransform);
-      replayContext.translate(offsetX, offsetY);
-      replayContext.rotate(rotation);
       replayContext.drawImage(tileContext.canvas,
-          Math.round(insertPoint[0]), Math.round(insertPoint[1]));
-      replayContext.rotate(-rotation);
-      replayContext.translate(-offsetX, -offsetY);
+          Math.round(insertPoint[0] + offsetX),
+          Math.round(insertPoint[1]) + offsetY);
     }
   }
 
@@ -65120,6 +64943,7 @@ goog.require('ol.RendererType');
 goog.require('ol.array');
 goog.require('ol.css');
 goog.require('ol.dom');
+goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.layer.Layer');
 goog.require('ol.layer.Tile');
@@ -65156,6 +64980,12 @@ ol.renderer.canvas.Map = function(container, map) {
 
   /**
    * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.renderContext_ = ol.dom.createCanvasContext2D();
+
+  /**
+   * @private
    * @type {HTMLCanvasElement}
    */
   this.canvas_ = this.context_.canvas;
@@ -65164,6 +64994,24 @@ ol.renderer.canvas.Map = function(container, map) {
   this.canvas_.style.height = '100%';
   this.canvas_.className = ol.css.CLASS_UNSELECTABLE;
   goog.dom.insertChildAt(container, this.canvas_, 0);
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.renderCanvas_ = this.renderContext_.canvas;
+
+  /**
+   * @private
+   * @type {ol.Coordinate}
+   */
+  this.pixelCenter_ = [0, 0];
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.pixelExtent_ = ol.extent.createEmpty();
 
   /**
    * @private
@@ -65265,14 +65113,27 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
     return;
   }
 
-  var context = this.context_;
-  var width = frameState.size[0] * frameState.pixelRatio;
-  var height = frameState.size[1] * frameState.pixelRatio;
-  if (this.canvas_.width != width || this.canvas_.height != height) {
-    this.canvas_.width = width;
-    this.canvas_.height = height;
+  var context;
+  var pixelRatio = frameState.pixelRatio;
+  var width = frameState.size[0] * pixelRatio;
+  var height = frameState.size[1] * pixelRatio;
+  this.canvas_.width = width;
+  this.canvas_.height = height;
+
+  var rotation = frameState.viewState.rotation;
+  var pixelExtent;
+  if (rotation) {
+    context = this.renderContext_;
+    pixelExtent = ol.extent.getForViewAndSize(this.pixelCenter_, pixelRatio,
+        rotation, frameState.size, this.pixelExtent_);
+    var renderWidth = ol.extent.getWidth(pixelExtent);
+    var renderHeight = ol.extent.getHeight(pixelExtent);
+    this.renderCanvas_.width = renderWidth + 0.5;
+    this.renderCanvas_.height = renderHeight + 0.5;
+    this.renderContext_.translate(Math.round((renderWidth - width) / 2),
+        Math.round((renderHeight - height) / 2));
   } else {
-    context.clearRect(0, 0, this.canvas_.width, this.canvas_.height);
+    context = this.context_;
   }
 
   this.calculateMatrices2D(frameState);
@@ -65297,6 +65158,15 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
     if (layerRenderer.prepareFrame(frameState, layerState)) {
       layerRenderer.composeFrame(frameState, layerState, context);
     }
+  }
+
+  if (rotation) {
+    this.context_.translate(width / 2, height / 2);
+    this.context_.rotate(rotation);
+    this.context_.drawImage(this.renderCanvas_,
+        Math.round(pixelExtent[0]), Math.round(pixelExtent[1]));
+    this.context_.rotate(-rotation);
+    this.context_.translate(-width / 2, -height / 2);
   }
 
   this.dispatchComposeEvent_(
@@ -74105,7 +73975,6 @@ ol.Map.prototype.handlePostRender = function() {
   if (!tileQueue.isEmpty()) {
     var maxTotalLoading = 16;
     var maxNewLoads = maxTotalLoading;
-    var tileSourceCount = 0;
     if (frameState) {
       var hints = frameState.viewHints;
       if (hints[ol.ViewHint.ANIMATING]) {
@@ -74116,10 +73985,7 @@ ol.Map.prototype.handlePostRender = function() {
         maxTotalLoading = this.loadTilesWhileInteracting_ ? 8 : 0;
         maxNewLoads = 2;
       }
-      tileSourceCount = frameState.tileSourceCount;
     }
-    maxTotalLoading *= tileSourceCount;
-    maxNewLoads *= tileSourceCount;
     if (tileQueue.getTilesLoading() < maxTotalLoading) {
       tileQueue.reprioritize(); // FIXME only call if view has changed
       tileQueue.loadMoreTiles(maxTotalLoading, maxNewLoads);
@@ -74421,7 +74287,6 @@ ol.Map.prototype.renderFrame_ = function(time) {
       size: size,
       skippedFeatureUids: this.skippedFeatureUids_,
       tileQueue: this.tileQueue_,
-      tileSourceCount: 0,
       time: time,
       usedTiles: {},
       viewState: viewState,
@@ -74596,7 +74461,7 @@ ol.Map.createOptionsInternal = function(options) {
 
   var logos = {};
   if (options.logo === undefined ||
-      (goog.isBoolean(options.logo) && options.logo)) {
+      (typeof options.logo === 'boolean' && options.logo)) {
     logos[ol.OL3_LOGO_URL] = ol.OL3_URL;
   } else {
     var logo = options.logo;
@@ -76693,7 +76558,7 @@ ol.DeviceOrientation.prototype.orientationChange_ = function(originalEvent) {
     var alpha = ol.math.toRadians(event.alpha);
     this.set(ol.DeviceOrientationProperty.ALPHA, alpha);
     // event.absolute is undefined in iOS.
-    if (goog.isBoolean(event.absolute) && event.absolute) {
+    if (typeof event.absolute === 'boolean' && event.absolute) {
       this.set(ol.DeviceOrientationProperty.HEADING, alpha);
     } else if (goog.isNumber(event.webkitCompassHeading) &&
                event.webkitCompassAccuracy != -1) {
@@ -96787,7 +96652,7 @@ ol.Geolocation.prototype.positionChange_ = function(position) {
 ol.Geolocation.prototype.positionError_ = function(error) {
   error.type = ol.events.EventType.ERROR;
   this.setTracking(false);
-  this.dispatchEvent(/** @type {{type: string}} */ (error));
+  this.dispatchEvent(/** @type {{type: string, target: undefined}} */ (error));
 };
 
 
@@ -104982,7 +104847,6 @@ ol.source.Raster = function(options) {
     size: [0, 0],
     skippedFeatureUids: {},
     tileQueue: this.tileQueue_,
-    tileSourceCount: 0,
     time: Date.now(),
     usedTiles: {},
     viewState: /** @type {olx.ViewState} */ ({
@@ -105205,39 +105069,20 @@ ol.source.Raster.prototype.onWorkerComplete_ = function(frameState, callback, er
  */
 ol.source.Raster.getImageData_ = function(renderer, frameState, layerState) {
   renderer.prepareFrame(frameState, layerState);
-  // We should be able to call renderer.composeFrame(), but this is inefficient
-  // for tiled sources (we've already rendered to an intermediate canvas in the
-  // prepareFrame call and we don't need to render again to the output canvas).
-  // TODO: make all canvas renderers render to a single canvas
-  var image = renderer.getImage();
-  if (!image) {
-    return null;
-  }
-  var imageTransform = renderer.getImageTransform();
-  var dx = Math.round(goog.vec.Mat4.getElement(imageTransform, 0, 3));
-  var dy = Math.round(goog.vec.Mat4.getElement(imageTransform, 1, 3));
   var width = frameState.size[0];
   var height = frameState.size[1];
-  if (image instanceof Image) {
-    if (!ol.source.Raster.context_) {
+  if (!ol.source.Raster.context_) {
+    ol.source.Raster.context_ = ol.dom.createCanvasContext2D(width, height);
+  } else {
+    var canvas = ol.source.Raster.context_.canvas;
+    if (canvas.width !== width || canvas.height !== height) {
       ol.source.Raster.context_ = ol.dom.createCanvasContext2D(width, height);
     } else {
-      var canvas = ol.source.Raster.context_.canvas;
-      if (canvas.width !== width || canvas.height !== height) {
-        ol.source.Raster.context_ = ol.dom.createCanvasContext2D(width, height);
-      } else {
-        ol.source.Raster.context_.clearRect(0, 0, width, height);
-      }
+      ol.source.Raster.context_.clearRect(0, 0, width, height);
     }
-    var dw = Math.round(
-        image.width * goog.vec.Mat4.getElement(imageTransform, 0, 0));
-    var dh = Math.round(
-        image.height * goog.vec.Mat4.getElement(imageTransform, 1, 1));
-    ol.source.Raster.context_.drawImage(image, dx, dy, dw, dh);
-    return ol.source.Raster.context_.getImageData(0, 0, width, height);
-  } else {
-    return image.getContext('2d').getImageData(-dx, -dy, width, height);
   }
+  renderer.composeFrame(frameState, layerState, ol.source.Raster.context_);
+  return ol.source.Raster.context_.getImageData(0, 0, width, height);
 };
 
 
