@@ -208,6 +208,26 @@ module.exports = function(grunt) {
         only: 'en/' + branch
       },
       src: ['**/*']
+    },
+    zip: {
+      full: {
+        cwd: dist + '/en/',
+        src: [
+          dist + '/en/' + branch + '/**/*'
+        ],
+        dest: branch + '.zip'
+      },
+      dist: {
+        src: [
+          dist + '/en/' + branch + '/build/ol.js',
+          dist + '/en/' + branch + '/build/ol-debug.js',
+          dist + '/en/' + branch + '/css/ol.css'
+        ],
+        router: function(filepath) {
+          return branch + '-dist/' + path.basename(filepath);
+        },
+        dest: branch + '-dist.zip'
+      }
     }
   });
 
@@ -219,6 +239,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-zip');
 
   grunt.loadTasks('tasks');
 
@@ -236,6 +257,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('serve', 'Start the dev server without build.py first',
       ['concurrent']);
+
+  grunt.registerTask('archives', 'Create release archives',
+      ['build', 'zip']);
 
   grunt.registerTask('default', 'build');
 
