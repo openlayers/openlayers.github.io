@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.1-238-g6e7b130
+// Version: v3.13.1-259-g81750ea
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -35371,9 +35371,10 @@ ol.source.Tile.prototype.forEachLoadedTile = function(projection, z, tileRange, 
 
 
 /**
+ * @param {ol.proj.Projection} projection Projection.
  * @return {number} Gutter.
  */
-ol.source.Tile.prototype.getGutter = function() {
+ol.source.Tile.prototype.getGutter = function(projection) {
   return 0;
 };
 
@@ -45415,16 +45416,10 @@ ol.MapBrowserEventHandler = function(map) {
   this.dragging_ = false;
 
   /**
-   * @type {Array.<ol.events.Key>}
+   * @type {!Array.<ol.events.Key>}
    * @private
    */
-  this.dragListenerKeys_ = null;
-
-  /**
-   * @type {?ol.events.Key}
-   * @private
-   */
-  this.pointerdownListenerKey_ = null;
+  this.dragListenerKeys_ = [];
 
   /**
    * The most recent "down" type event (or null if none have occurred).
@@ -45466,10 +45461,18 @@ ol.MapBrowserEventHandler = function(map) {
    */
   this.documentPointerEventHandler_ = null;
 
+  /**
+   * @type {?ol.events.Key}
+   * @private
+   */
   this.pointerdownListenerKey_ = ol.events.listen(this.pointerEventHandler_,
       ol.pointer.EventType.POINTERDOWN,
       this.handlePointerDown_, this);
 
+  /**
+   * @type {?ol.events.Key}
+   * @private
+   */
   this.relayedListenerKey_ = ol.events.listen(this.pointerEventHandler_,
       ol.pointer.EventType.POINTERMOVE,
       this.relayEvent_, this);
@@ -45548,7 +45551,7 @@ ol.MapBrowserEventHandler.prototype.handlePointerUp_ = function(pointerEvent) {
       'this.activePointers_ should be equal to or larger than 0');
   if (this.activePointers_ === 0) {
     this.dragListenerKeys_.forEach(ol.events.unlistenByKey);
-    this.dragListenerKeys_ = null;
+    this.dragListenerKeys_.length = 0;
     this.dragging_ = false;
     this.down_ = null;
     goog.dispose(this.documentPointerEventHandler_);
@@ -45579,7 +45582,7 @@ ol.MapBrowserEventHandler.prototype.handlePointerDown_ = function(pointerEvent) 
 
   this.down_ = pointerEvent;
 
-  if (!this.dragListenerKeys_) {
+  if (this.dragListenerKeys_.length === 0) {
     /* Set up a pointer event handler on the `document`,
      * which is required when the pointer is moved outside
      * the viewport when dragging.
@@ -45587,7 +45590,7 @@ ol.MapBrowserEventHandler.prototype.handlePointerDown_ = function(pointerEvent) 
     this.documentPointerEventHandler_ =
         new ol.pointer.PointerEventHandler(document);
 
-    this.dragListenerKeys_ = [
+    this.dragListenerKeys_.push(
       ol.events.listen(this.documentPointerEventHandler_,
           ol.MapBrowserEvent.EventType.POINTERMOVE,
           this.handlePointerMove_, this),
@@ -45610,7 +45613,7 @@ ol.MapBrowserEventHandler.prototype.handlePointerDown_ = function(pointerEvent) 
       ol.events.listen(this.pointerEventHandler_,
           ol.MapBrowserEvent.EventType.POINTERCANCEL,
           this.handlePointerUp_, this)
-    ];
+    );
   }
 };
 
@@ -45677,10 +45680,10 @@ ol.MapBrowserEventHandler.prototype.disposeInternal = function() {
     ol.events.unlistenByKey(this.pointerdownListenerKey_);
     this.pointerdownListenerKey_ = null;
   }
-  if (this.dragListenerKeys_) {
-    this.dragListenerKeys_.forEach(ol.events.unlistenByKey);
-    this.dragListenerKeys_ = null;
-  }
+
+  this.dragListenerKeys_.forEach(ol.events.unlistenByKey);
+  this.dragListenerKeys_.length = 0;
+
   if (this.documentPointerEventHandler_) {
     goog.dispose(this.documentPointerEventHandler_);
     this.documentPointerEventHandler_ = null;
@@ -48086,19 +48089,17 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, fram
   var viewState = frameState.viewState;
   var viewResolution = viewState.resolution;
 
-  /** @type {Object.<string, boolean>} */
-  var features = {};
-
   /**
    * @param {ol.Feature|ol.render.Feature} feature Feature.
+   * @param {ol.layer.Layer} layer Layer.
    * @return {?} Callback result.
    */
-  function forEachFeatureAtCoordinate(feature) {
+  function forEachFeatureAtCoordinate(feature, layer) {
     goog.asserts.assert(feature !== undefined, 'received a feature');
     var key = goog.getUid(feature).toString();
-    if (!(key in features)) {
-      features[key] = true;
-      return callback.call(thisArg, feature, null);
+    var managed = frameState.layerStates[goog.getUid(layer)].managed;
+    if (!(key in frameState.skippedFeatureUids && !managed)) {
+      return callback.call(thisArg, feature, managed ? layer : null);
     }
   }
 
@@ -48127,9 +48128,7 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, fram
       if (layer.getSource()) {
         result = layerRenderer.forEachFeatureAtCoordinate(
             layer.getSource().getWrapX() ? translatedCoordinate : coordinate,
-            frameState,
-            layerState.managed ? callback : forEachFeatureAtCoordinate,
-            thisArg);
+            frameState, forEachFeatureAtCoordinate, thisArg);
       }
       if (result) {
         return result;
@@ -58157,12 +58156,13 @@ ol.reproj.enlargeClipPoint_ = function(centroidX, centroidY, x, y) {
  * @param {Array.<{extent: ol.Extent,
  *                 image: (HTMLCanvasElement|Image|HTMLVideoElement)}>} sources
  *             Array of sources.
+ * @param {number} gutter Gutter of the sources.
  * @param {boolean=} opt_renderEdges Render reprojection edges.
  * @return {HTMLCanvasElement} Canvas with reprojected data.
  */
 ol.reproj.render = function(width, height, pixelRatio,
     sourceResolution, sourceExtent, targetResolution, targetExtent,
-    triangulation, sources, opt_renderEdges) {
+    triangulation, sources, gutter, opt_renderEdges) {
 
   var context = ol.dom.createCanvasContext2D(Math.round(pixelRatio * width),
                                              Math.round(pixelRatio * height));
@@ -58184,17 +58184,20 @@ ol.reproj.render = function(width, height, pixelRatio,
       Math.round(pixelRatio * canvasWidthInUnits / sourceResolution),
       Math.round(pixelRatio * canvasHeightInUnits / sourceResolution));
 
-  stitchContext.scale(pixelRatio / sourceResolution,
-                      pixelRatio / sourceResolution);
-  stitchContext.translate(-sourceDataExtent[0], sourceDataExtent[3]);
+  var stitchScale = pixelRatio / sourceResolution;
 
   sources.forEach(function(src, i, arr) {
-    var xPos = src.extent[0];
-    var yPos = -src.extent[3];
+    var xPos = src.extent[0] - sourceDataExtent[0];
+    var yPos = -(src.extent[3] - sourceDataExtent[3]);
     var srcWidth = ol.extent.getWidth(src.extent);
     var srcHeight = ol.extent.getHeight(src.extent);
 
-    stitchContext.drawImage(src.image, xPos, yPos, srcWidth, srcHeight);
+    stitchContext.drawImage(
+        src.image,
+        gutter, gutter,
+        src.image.width - 2 * gutter, src.image.height - 2 * gutter,
+        xPos * stitchScale, yPos * stitchScale,
+        srcWidth * stitchScale, srcHeight * stitchScale);
   });
 
   var targetTopLeft = ol.extent.getTopLeft(targetExtent);
@@ -58819,7 +58822,7 @@ ol.reproj.Image.prototype.reproject_ = function() {
         this.targetResolution_, this.targetExtent_, this.triangulation_, [{
           extent: this.sourceImage_.getExtent(),
           image: this.sourceImage_.getImage()
-        }]);
+        }], 0);
   }
   this.state = sourceState;
   this.changed();
@@ -62639,16 +62642,6 @@ ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
 
 
 /**
- * @param {ol.Feature} feature Feature.
- * @return {boolean} Feature is in source.
- */
-ol.source.Vector.prototype.hasFeature = function(feature) {
-  var id = feature.getId();
-  return id ? id in this.idIndex_ : goog.getUid(feature) in this.undefIdIndex_;
-};
-
-
-/**
  * @return {boolean} Is empty.
  */
 ol.source.Vector.prototype.isEmpty = function() {
@@ -63346,7 +63339,7 @@ ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
   var source = layer.getSource();
   goog.asserts.assertInstanceof(source, ol.source.Tile,
       'source is an ol.source.Tile');
-  var tileGutter = source.getGutter();
+  var tileGutter = source.getGutter(projection);
   var opaque = source.getOpaque(projection);
 
   var transform = this.getTransform(frameState, 0);
@@ -63771,11 +63764,10 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate = function(c
     var resolution = frameState.viewState.resolution;
     var rotation = frameState.viewState.rotation;
     var layer = this.getLayer();
-    var layerState = frameState.layerStates[goog.getUid(layer)];
     /** @type {Object.<string, boolean>} */
     var features = {};
     return this.replayGroup_.forEachFeatureAtCoordinate(coordinate, resolution,
-        rotation, layerState.managed ? frameState.skippedFeatureUids : {},
+        rotation, {},
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @return {?} Callback result.
@@ -64723,7 +64715,6 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var layer = this.getLayer();
-  var layerState = frameState.layerStates[goog.getUid(layer)];
   /** @type {Object.<string, boolean>} */
   var features = {};
 
@@ -64757,8 +64748,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
     }
     replayGroup = tile.getReplayState().replayGroup;
     found = found || replayGroup.forEachFeatureAtCoordinate(
-        tileSpaceCoordinate, resolution, rotation,
-        layerState.managed ? frameState.skippedFeatureUids : {},
+        tileSpaceCoordinate, resolution, rotation, {},
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @return {?} Callback result.
@@ -65491,7 +65481,7 @@ ol.renderer.dom.TileLayer.prototype.prepareFrame = function(frameState, layerSta
       'layer is an instance of ol.layer.Tile');
   var tileSource = tileLayer.getSource();
   var tileGrid = tileSource.getTileGridForProjection(projection);
-  var tileGutter = tileSource.getGutter();
+  var tileGutter = tileSource.getGutter(projection);
   var z = tileGrid.getZForResolution(viewState.resolution);
   var tileResolution = tileGrid.getResolution(z);
   var center = viewState.center;
@@ -66027,11 +66017,10 @@ ol.renderer.dom.VectorLayer.prototype.forEachFeatureAtCoordinate = function(coor
     var resolution = frameState.viewState.resolution;
     var rotation = frameState.viewState.rotation;
     var layer = this.getLayer();
-    var layerState = frameState.layerStates[goog.getUid(layer)];
     /** @type {Object.<string, boolean>} */
     var features = {};
     return this.replayGroup_.forEachFeatureAtCoordinate(coordinate, resolution,
-        rotation, layerState.managed ? frameState.skippedFeatureUids : {},
+        rotation, {},
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @return {?} Callback result.
@@ -71773,7 +71762,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   var pixelRatio = tilePixelSize[0] /
       ol.size.toSize(tileGrid.getTileSize(z), this.tmpSize_)[0];
   var tilePixelResolution = tileResolution / pixelRatio;
-  var tileGutter = tileSource.getGutter();
+  var tileGutter = tileSource.getGutter(projection);
 
   var center = viewState.center;
   var extent;
@@ -72132,7 +72121,7 @@ ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate = function(co
     return this.replayGroup_.forEachFeatureAtCoordinate(coordinate,
         context, viewState.center, viewState.resolution, viewState.rotation,
         frameState.size, frameState.pixelRatio, layerState.opacity,
-        layerState.managed ? frameState.skippedFeatureUids : {},
+        {},
         /**
          * @param {ol.Feature} feature Feature.
          * @return {?} Callback result.
@@ -93764,6 +93753,7 @@ ol.format.WFS.writeOgcFidFilter_ = function(node, fid, objectStack) {
 ol.format.WFS.writeDelete_ = function(node, feature, objectStack) {
   var context = objectStack[objectStack.length - 1];
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
+  goog.asserts.assert(feature.getId() !== undefined, 'feature should have an id');
   var featureType = context['featureType'];
   var featurePrefix = context['featurePrefix'];
   featurePrefix = featurePrefix ? featurePrefix :
@@ -93773,7 +93763,7 @@ ol.format.WFS.writeDelete_ = function(node, feature, objectStack) {
   ol.xml.setAttributeNS(node, ol.format.WFS.XMLNS, 'xmlns:' + featurePrefix,
       featureNS);
   var fid = feature.getId();
-  if (fid) {
+  if (fid !== undefined) {
     ol.format.WFS.writeOgcFidFilter_(node, fid, objectStack);
   }
 };
@@ -93788,6 +93778,7 @@ ol.format.WFS.writeDelete_ = function(node, feature, objectStack) {
 ol.format.WFS.writeUpdate_ = function(node, feature, objectStack) {
   var context = objectStack[objectStack.length - 1];
   goog.asserts.assert(goog.isObject(context), 'context should be an Object');
+  goog.asserts.assert(feature.getId() !== undefined, 'feature should have an id');
   var featureType = context['featureType'];
   var featurePrefix = context['featurePrefix'];
   featurePrefix = featurePrefix ? featurePrefix :
@@ -93797,7 +93788,7 @@ ol.format.WFS.writeUpdate_ = function(node, feature, objectStack) {
   ol.xml.setAttributeNS(node, ol.format.WFS.XMLNS, 'xmlns:' + featurePrefix,
       featureNS);
   var fid = feature.getId();
-  if (fid) {
+  if (fid !== undefined) {
     var keys = feature.getKeys();
     var values = [];
     for (var i = 0, ii = keys.length; i < ii; i++) {
@@ -98199,6 +98190,12 @@ ol.interaction.DragAndDrop = function(opt_options) {
    */
   this.dropListenKeys_ = null;
 
+  /**
+   * @private
+   * @type {Element}
+   */
+  this.target = options.target ? options.target : null;
+
 };
 goog.inherits(ol.interaction.DragAndDrop, ol.interaction.Interaction);
 
@@ -98290,7 +98287,7 @@ ol.interaction.DragAndDrop.prototype.setMap = function(map) {
   }
   goog.base(this, 'setMap', map);
   if (map) {
-    var dropArea = map.getViewport();
+    var dropArea = this.target ? this.target : map.getViewport();
     this.dropListenKeys_ = [
       ol.events.listen(dropArea, ol.events.EventType.DROP,
           ol.interaction.DragAndDrop.handleDrop_, this),
@@ -100889,7 +100886,7 @@ ol.interaction.Select = function(opt_options) {
        */
       layerFilter = function(layer) {
         goog.asserts.assertFunction(options.layers);
-        return layer === featureOverlay || options.layers(layer);
+        return options.layers(layer);
       };
     } else {
       var layers = options.layers;
@@ -100898,7 +100895,7 @@ ol.interaction.Select = function(opt_options) {
        * @return {boolean} Include.
        */
       layerFilter = function(layer) {
-        return layer === featureOverlay || ol.array.includes(layers, layer);
+        return ol.array.includes(layers, layer);
       };
     }
   } else {
@@ -101032,23 +101029,20 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @param {ol.layer.Layer} layer Layer.
+         * @return {boolean|undefined} Continue to iterate over the features.
          */
         function(feature, layer) {
-          goog.asserts.assertInstanceof(feature, ol.Feature);
-          if (layer !== null) {
-            if (add || toggle) {
-              if (this.filter_(feature, layer) &&
-                  !ol.array.includes(features.getArray(), feature) &&
-                  !ol.array.includes(selected, feature)) {
-                selected.push(feature);
-                this.addFeatureLayerAssociation_(feature, layer);
-              }
-            }
-          } else if (this.featureOverlay_.getSource().hasFeature(feature)) {
-            if (remove || toggle) {
+          if (this.filter_(feature, layer)) {
+            if ((add || toggle) &&
+                !ol.array.includes(features.getArray(), feature)) {
+              selected.push(feature);
+              this.addFeatureLayerAssociation_(feature, layer);
+            } else if ((remove || toggle) &&
+                ol.array.includes(features.getArray(), feature)) {
               deselected.push(feature);
               this.removeFeatureLayerAssociation_(feature);
             }
+            return !this.multi_;
           }
         }, this, this.layerFilter_);
     var i;
@@ -102486,6 +102480,7 @@ ol.reproj.TileFunctionType;
  * @param {ol.TileCoord} tileCoord Coordinate of the tile.
  * @param {ol.TileCoord} wrappedTileCoord Coordinate of the tile wrapped in X.
  * @param {number} pixelRatio Pixel ratio.
+ * @param {number} gutter Gutter of the source tiles.
  * @param {ol.reproj.TileFunctionType} getTileFunction
  *     Function returning source tiles (z, x, y, pixelRatio).
  * @param {number=} opt_errorThreshold Acceptable reprojection error (in px).
@@ -102493,7 +102488,7 @@ ol.reproj.TileFunctionType;
  */
 ol.reproj.Tile = function(sourceProj, sourceTileGrid,
     targetProj, targetTileGrid, tileCoord, wrappedTileCoord,
-    pixelRatio, getTileFunction,
+    pixelRatio, gutter, getTileFunction,
     opt_errorThreshold,
     opt_renderEdges) {
   goog.base(this, tileCoord, ol.TileState.IDLE);
@@ -102509,6 +102504,12 @@ ol.reproj.Tile = function(sourceProj, sourceTileGrid,
    * @type {number}
    */
   this.pixelRatio_ = pixelRatio;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.gutter_ = gutter;
 
   /**
    * @private
@@ -102720,7 +102721,7 @@ ol.reproj.Tile.prototype.reproject_ = function() {
     this.canvas_ = ol.reproj.render(width, height, this.pixelRatio_,
         sourceResolution, this.sourceTileGrid_.getExtent(),
         targetResolution, targetExtent, this.triangulation_, sources,
-        this.renderEdges_);
+        this.gutter_, this.renderEdges_);
 
     this.state = ol.TileState.LOADED;
   }
@@ -102917,6 +102918,29 @@ ol.source.TileImage.prototype.expireCache = function(projection, usedTiles) {
 /**
  * @inheritDoc
  */
+ol.source.TileImage.prototype.getGutter = function(projection) {
+  if (ol.ENABLE_RASTER_REPROJECTION &&
+      this.getProjection() && projection &&
+      !ol.proj.equivalent(this.getProjection(), projection)) {
+    return 0;
+  } else {
+    return this.getGutterInternal();
+  }
+};
+
+
+/**
+ * @protected
+ * @return {number} Gutter.
+ */
+ol.source.TileImage.prototype.getGutterInternal = function() {
+  return 0;
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.source.TileImage.prototype.getOpaque = function(projection) {
   if (ol.ENABLE_RASTER_REPROJECTION &&
       this.getProjection() && projection &&
@@ -103024,6 +103048,7 @@ ol.source.TileImage.prototype.getTile = function(z, x, y, pixelRatio, projection
           sourceProjection, sourceTileGrid,
           projection, targetTileGrid,
           tileCoord, wrappedTileCoord, this.getTilePixelRatio(pixelRatio),
+          this.getGutterInternal(),
           function(z, x, y, pixelRatio) {
             return this.getTileInternal(z, x, y, pixelRatio, sourceProjection);
           }.bind(this), this.reprojectionErrorThreshold_,
@@ -106339,7 +106364,7 @@ ol.source.TileWMS.prototype.getGetFeatureInfoUrl = function(coordinate, resoluti
 /**
  * @inheritDoc
  */
-ol.source.TileWMS.prototype.getGutter = function() {
+ol.source.TileWMS.prototype.getGutterInternal = function() {
   return this.gutter_;
 };
 
