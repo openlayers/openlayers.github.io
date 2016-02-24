@@ -24,11 +24,9 @@
  * {'dataKey': 'value', 'otherDataKey': 'otherValue'}
  * </pre>
  *
- * To use injected data, you need to enable the soy-to-js compiler
- * option {@code --isUsingIjData}. The injected data can then be
- * referred to in any soy templates as part of a magic "ij"
- * parameter. For example, {@code $ij.dataKey} will evaluate to
- * 'value' with the above injected data.
+ * The injected data can then be referred to in any soy templates as
+ * part of a magic "ij" parameter. For example, {@code $ij.dataKey}
+ * will evaluate to 'value' with the above injected data.
  *
  * @author henrywong@google.com (Henry Wong)
  * @author chrishenry@google.com (Chris Henry)
@@ -88,17 +86,17 @@ goog.soy.Renderer.SavedTemplateRender;
  * Renders a Soy template into a single node or a document fragment.
  * Delegates to {@code goog.soy.renderAsFragment}.
  *
- * @param {null|function(ARG_TYPES, null=, Object<string, *>=):*} template
+ * @param {?function(ARG_TYPES, null=, Object<string, *>=):*} template
  *     The Soy template defining the element's content.
  * @param {ARG_TYPES=} opt_templateData The data for the template.
  * @return {!Node} The resulting node or document fragment.
  * @template ARG_TYPES
  */
-goog.soy.Renderer.prototype.renderAsFragment = function(template,
-                                                        opt_templateData) {
+goog.soy.Renderer.prototype.renderAsFragment = function(
+    template, opt_templateData) {
   this.saveTemplateRender_(template, opt_templateData);
-  var node = goog.soy.renderAsFragment(template, opt_templateData,
-                                       this.getInjectedData_(), this.dom_);
+  var node = goog.soy.renderAsFragment(
+      template, opt_templateData, this.getInjectedData_(), this.dom_);
   this.handleRender(node);
   return node;
 };
@@ -110,18 +108,18 @@ goog.soy.Renderer.prototype.renderAsFragment = function(template,
  * Otherwise, a DIV element is returned containing the rendered nodes.
  * Delegates to {@code goog.soy.renderAsElement}.
  *
- * @param {null|function(ARG_TYPES, null=, Object<string, *>=):*} template
+ * @param {?function(ARG_TYPES, null=, Object<string, *>=):*} template
  *     The Soy template defining the element's content.
  * @param {ARG_TYPES=} opt_templateData The data for the template.
  * @return {!Element} Rendered template contents, wrapped in a parent DIV
  *     element if necessary.
  * @template ARG_TYPES
  */
-goog.soy.Renderer.prototype.renderAsElement = function(template,
-                                                       opt_templateData) {
+goog.soy.Renderer.prototype.renderAsElement = function(
+    template, opt_templateData) {
   this.saveTemplateRender_(template, opt_templateData);
-  var element = goog.soy.renderAsElement(template, opt_templateData,
-                                         this.getInjectedData_(), this.dom_);
+  var element = goog.soy.renderAsElement(
+      template, opt_templateData, this.getInjectedData_(), this.dom_);
   this.handleRender(element);
   return element;
 };
@@ -132,13 +130,13 @@ goog.soy.Renderer.prototype.renderAsElement = function(template,
  * innerHTML of the given element. Delegates to {@code goog.soy.renderElement}.
  *
  * @param {Element} element The element whose content we are rendering.
- * @param {null|function(ARG_TYPES, null=, Object<string, *>=):*} template
+ * @param {?function(ARG_TYPES, null=, Object<string, *>=):*} template
  *     The Soy template defining the element's content.
  * @param {ARG_TYPES=} opt_templateData The data for the template.
  * @template ARG_TYPES
  */
-goog.soy.Renderer.prototype.renderElement = function(element, template,
-                                                     opt_templateData) {
+goog.soy.Renderer.prototype.renderElement = function(
+    element, template, opt_templateData) {
   this.saveTemplateRender_(template, opt_templateData);
   goog.soy.renderElement(
       element, template, opt_templateData, this.getInjectedData_());
@@ -152,17 +150,18 @@ goog.soy.Renderer.prototype.renderElement = function(element, template,
  * templates of other kinds, use {@code renderText} (for {@code kind="text"}) or
  * {@code renderStrict}.
  *
- * @param {null|function(ARG_TYPES, null=, Object<string, *>=):*} template
+ * @param {?function(ARG_TYPES, null=, Object<string, *>=):*} template
  *     The Soy template to render.
  * @param {ARG_TYPES=} opt_templateData The data for the template.
  * @return {string} The return value of rendering the template directly.
  * @template ARG_TYPES
  */
 goog.soy.Renderer.prototype.render = function(template, opt_templateData) {
-  var result = template(
-      opt_templateData || {}, undefined, this.getInjectedData_());
-  goog.asserts.assert(!(result instanceof goog.soy.data.SanitizedContent) ||
-      result.contentKind === goog.soy.data.SanitizedContentKind.HTML,
+  var result =
+      template(opt_templateData || {}, undefined, this.getInjectedData_());
+  goog.asserts.assert(
+      !(result instanceof goog.soy.data.SanitizedContent) ||
+          result.contentKind === goog.soy.data.SanitizedContentKind.HTML,
       'render was called with a strict template of kind other than "html"' +
           ' (consider using renderText or renderStrict)');
   this.saveTemplateRender_(template, opt_templateData);
@@ -176,16 +175,17 @@ goog.soy.Renderer.prototype.render = function(template, opt_templateData) {
  * It is an error to use renderText on non-strict templates, or strict templates
  * of kinds other than "text".
  *
- * @param {null|function(ARG_TYPES, null=, Object<string, *>=):
- *     goog.soy.data.SanitizedContent} template The Soy template to render.
+ * @param {?function(ARG_TYPES, null=, Object<string, *>=):
+ *     ?goog.soy.data.UnsanitizedText} template The Soy template to render.
  * @param {ARG_TYPES=} opt_templateData The data for the template.
  * @return {string} The return value of rendering the template directly.
  * @template ARG_TYPES
  */
 goog.soy.Renderer.prototype.renderText = function(template, opt_templateData) {
-  var result = template(
-      opt_templateData || {}, undefined, this.getInjectedData_());
-  goog.asserts.assertInstanceof(result, goog.soy.data.SanitizedContent,
+  var result =
+      template(opt_templateData || {}, undefined, this.getInjectedData_());
+  goog.asserts.assertInstanceof(
+      result, goog.soy.data.SanitizedContent,
       'renderText cannot be called on a non-strict soy template');
   goog.asserts.assert(
       result.contentKind === goog.soy.data.SanitizedContentKind.TEXT,
@@ -199,7 +199,7 @@ goog.soy.Renderer.prototype.renderText = function(template, opt_templateData) {
 /**
  * Renders a strict Soy template and returns the output SanitizedContent object.
  *
- * @param {null|function(ARG_TYPES, null=, Object<string, *>=):RETURN_TYPE}
+ * @param {?function(ARG_TYPES, null=, Object<string, *>=):RETURN_TYPE}
  *     template The Soy template to render.
  * @param {ARG_TYPES=} opt_templateData The data for the template.
  * @param {goog.soy.data.SanitizedContentKind=} opt_kind The output kind to
@@ -207,14 +207,15 @@ goog.soy.Renderer.prototype.renderText = function(template, opt_templateData) {
  *     defaults to goog.soy.data.SanitizedContentKind.HTML).
  * @return {RETURN_TYPE} The SanitizedContent object. This return type is
  *     generic based on the return type of the template, such as
- *     soy.SanitizedHtml.
+ *     soydata.SanitizedHtml.
  * @template ARG_TYPES, RETURN_TYPE
  */
 goog.soy.Renderer.prototype.renderStrict = function(
     template, opt_templateData, opt_kind) {
-  var result = template(
-      opt_templateData || {}, undefined, this.getInjectedData_());
-  goog.asserts.assertInstanceof(result, goog.soy.data.SanitizedContent,
+  var result =
+      template(opt_templateData || {}, undefined, this.getInjectedData_());
+  goog.asserts.assertInstanceof(
+      result, goog.soy.data.SanitizedContent,
       'renderStrict cannot be called on a non-strict soy template');
   goog.asserts.assert(
       result.contentKind ===
@@ -233,7 +234,7 @@ goog.soy.Renderer.prototype.renderStrict = function(
  * Rendering a template that is not a strict template of kind="html" results in
  * a runtime error.
  *
- * @param {null|function(ARG_TYPES, null=, Object<string, *>=):
+ * @param {?function(ARG_TYPES, null=, Object<string, *>=):
  *     goog.soy.data.SanitizedContent} template The Soy template to render.
  * @param {ARG_TYPES=} opt_templateData The data for the template.
  * @return {!goog.html.SafeHtml}
@@ -278,7 +279,7 @@ goog.soy.Renderer.prototype.saveTemplateRender_ = function(
   if (goog.DEBUG) {
     this.savedTemplateRenders_.push({
       template: template.soyTemplateName,
-      data: opt_templateData,
+      data: opt_templateData || null,
       ijData: this.getInjectedData_()
     });
   }
