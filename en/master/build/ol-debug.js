@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.13.1-259-g81750ea
+// Version: v3.13.1-291-g9f21f1d
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -46817,7 +46817,7 @@ ol.renderer.Layer.prototype.renderIfReadyAndVisible = function() {
 ol.renderer.Layer.prototype.scheduleExpireCache = function(frameState, tileSource) {
   if (tileSource.canExpireCache()) {
     frameState.postRenderFunctions.push(
-        goog.partial(
+        /** @type {ol.PostRenderFunction} */ (goog.partial(
             /**
              * @param {ol.source.Tile} tileSource Tile source.
              * @param {ol.Map} map Map.
@@ -46827,7 +46827,7 @@ ol.renderer.Layer.prototype.scheduleExpireCache = function(frameState, tileSourc
               var tileSourceKey = goog.getUid(tileSource).toString();
               tileSource.expireCache(frameState.viewState.projection,
                                      frameState.usedTiles[tileSourceKey]);
-            }, tileSource));
+            }, tileSource)));
   }
 };
 
@@ -48309,7 +48309,9 @@ ol.renderer.Map.prototype.removeUnusedLayerRenderers_ = function(map, frameState
  * @protected
  */
 ol.renderer.Map.prototype.scheduleExpireIconCache = function(frameState) {
-  frameState.postRenderFunctions.push(ol.renderer.Map.expireIconCache_);
+  frameState.postRenderFunctions.push(
+    /** @type {ol.PostRenderFunction} */ (ol.renderer.Map.expireIconCache_)
+  );
 };
 
 
@@ -48322,7 +48324,8 @@ ol.renderer.Map.prototype.scheduleRemoveUnusedLayerRenderers = function(frameSta
   for (layerKey in this.layerRenderers_) {
     if (!(layerKey in frameState.layerStates)) {
       frameState.postRenderFunctions.push(
-          this.removeUnusedLayerRenderers_.bind(this));
+        /** @type {ol.PostRenderFunction} */ (this.removeUnusedLayerRenderers_.bind(this))
+      );
       return;
     }
   }
@@ -58057,7 +58060,6 @@ goog.provide('ol.reproj');
 
 goog.require('goog.labs.userAgent.browser');
 goog.require('goog.labs.userAgent.platform');
-goog.require('goog.math');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.math');
@@ -58116,7 +58118,7 @@ ol.reproj.calculateSourceResolution = function(sourceProj, targetProj,
       sourceProj.getPointResolution(sourceResolution, sourceCenter) /
       sourceResolution;
 
-  if (goog.math.isFiniteNumber(compensationFactor) && compensationFactor > 0) {
+  if (isFinite(compensationFactor) && compensationFactor > 0) {
     sourceResolution /= compensationFactor;
   }
 
@@ -63267,7 +63269,7 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
     this.updateLogos(frameState, imageSource);
   }
 
-  return true;
+  return !!this.image_;
 };
 
 // FIXME find correct globalCompositeOperation
@@ -69503,7 +69505,7 @@ ol.render.webgl.ImageReplay = function(tolerance, maxExtent) {
 
   /**
    * Start index per feature (the feature).
-   * @type {Array.<ol.Feature>}
+   * @type {Array.<ol.Feature|ol.render.Feature>}
    * @private
    */
   this.startIndicesFeature_ = [];
@@ -69800,7 +69802,7 @@ ol.render.webgl.ImageReplay.prototype.createTextures_ = function(textures, image
  * @param {number} opacity Global opacity.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *  to skip.
- * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {function((ol.Feature|ol.render.Feature)): T|undefined} featureCallback Feature callback.
  * @param {boolean} oneByOne Draw features one-by-one for the hit-detecion.
  * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
  *  this extent are checked.
@@ -70035,7 +70037,7 @@ ol.render.webgl.ImageReplay.prototype.drawElements_ = function(
  * @param {ol.webgl.Context} context Context.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *  to skip.
- * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {function((ol.Feature|ol.render.Feature)): T|undefined} featureCallback Feature callback.
  * @param {boolean} oneByOne Draw features one-by-one for the hit-detecion.
  * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
  *  this extent are checked.
@@ -70062,7 +70064,7 @@ ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplay_ = function(gl, con
  * @param {ol.webgl.Context} context Context.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *  to skip.
- * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {function((ol.Feature|ol.render.Feature)): T|undefined} featureCallback Feature callback.
  * @return {T|undefined} Callback result.
  * @template T
  */
@@ -70086,7 +70088,7 @@ ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayAll_ = function(gl, 
  * @param {ol.webgl.Context} context Context.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *  to skip.
- * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {function((ol.Feature|ol.render.Feature)): T|undefined} featureCallback Feature callback.
  * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
  *  this extent are checked.
  * @return {T|undefined} Callback result.
@@ -70344,7 +70346,7 @@ ol.render.webgl.ReplayGroup.prototype.replay = function(context,
  * @param {number} opacity Global opacity.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *  to skip.
- * @param {function(ol.Feature): T|undefined} featureCallback Feature callback.
+ * @param {function((ol.Feature|ol.render.Feature)): T|undefined} featureCallback Feature callback.
  * @param {boolean} oneByOne Draw features one-by-one for the hit-detecion.
  * @param {ol.Extent=} opt_hitExtent Hit extent: Only features intersecting
  *  this extent are checked.
@@ -70381,7 +70383,7 @@ ol.render.webgl.ReplayGroup.prototype.replayHitDetection_ = function(context,
  * @param {number} opacity Global opacity.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *  to skip.
- * @param {function(ol.Feature): T|undefined} callback Feature callback.
+ * @param {function((ol.Feature|ol.render.Feature)): T|undefined} callback Feature callback.
  * @return {T|undefined} Callback result.
  * @template T
  */
@@ -70410,7 +70412,7 @@ ol.render.webgl.ReplayGroup.prototype.forEachFeatureAtCoordinate = function(
       coordinate, resolution, rotation, ol.render.webgl.HIT_DETECTION_SIZE_,
       pixelRatio, opacity, skippedFeaturesHash,
       /**
-       * @param {ol.Feature} feature Feature.
+       * @param {ol.Feature|ol.render.Feature} feature Feature.
        * @return {?} Callback result.
        */
       function(feature) {
@@ -70451,7 +70453,7 @@ ol.render.webgl.ReplayGroup.prototype.hasFeatureAtCoordinate = function(
       coordinate, resolution, rotation, ol.render.webgl.HIT_DETECTION_SIZE_,
       pixelRatio, opacity, skippedFeaturesHash,
       /**
-       * @param {ol.Feature} feature Feature.
+       * @param {ol.Feature|ol.render.Feature} feature Feature.
        * @return {boolean} Is there a feature?
        */
       function(feature) {
@@ -70999,7 +71001,7 @@ ol.renderer.webgl.Layer.prototype.bindFramebuffer = function(frameState, framebu
       this.framebufferDimension != framebufferDimension) {
 
     frameState.postRenderFunctions.push(
-        goog.partial(
+        /** @type {ol.PostRenderFunction} */ (goog.partial(
             /**
              * @param {WebGLRenderingContext} gl GL.
              * @param {WebGLFramebuffer} framebuffer Framebuffer.
@@ -71010,7 +71012,7 @@ ol.renderer.webgl.Layer.prototype.bindFramebuffer = function(frameState, framebu
                 gl.deleteFramebuffer(framebuffer);
                 gl.deleteTexture(texture);
               }
-            }, gl, this.framebuffer, this.texture));
+            }, gl, this.framebuffer, this.texture)));
 
     var texture = ol.webgl.Context.createEmptyTexture(
         gl, framebufferDimension, framebufferDimension);
@@ -71293,7 +71295,7 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame = function(frameState, layer
         texture = this.createTexture_(image_);
         if (this.texture) {
           frameState.postRenderFunctions.push(
-              goog.partial(
+              /** @type {ol.PostRenderFunction} */ (goog.partial(
                   /**
                    * @param {WebGLRenderingContext} gl GL.
                    * @param {WebGLTexture} texture Texture.
@@ -71302,7 +71304,7 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame = function(frameState, layer
                     if (!gl.isContextLost()) {
                       gl.deleteTexture(texture);
                     }
-                  }, gl, this.texture));
+                  }, gl, this.texture)));
         }
       }
     }
@@ -72123,7 +72125,7 @@ ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate = function(co
         frameState.size, frameState.pixelRatio, layerState.opacity,
         {},
         /**
-         * @param {ol.Feature} feature Feature.
+         * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @return {?} Callback result.
          */
         function(feature) {
@@ -72326,8 +72328,6 @@ goog.provide('ol.renderer.webgl.Map');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.log');
-goog.require('goog.log.Logger');
 goog.require('goog.style');
 goog.require('goog.webgl');
 goog.require('ol');
@@ -72749,14 +72749,6 @@ ol.renderer.webgl.Map.prototype.isTileTextureLoaded = function(tile) {
 
 
 /**
- * @private
- * @type {goog.log.Logger}
- */
-ol.renderer.webgl.Map.prototype.logger_ =
-    goog.log.getLogger('ol.renderer.webgl.Map');
-
-
-/**
  * @inheritDoc
  */
 ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
@@ -72834,7 +72826,9 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
 
   if (this.textureCache_.getCount() - this.textureCacheFrameMarkerCount_ >
       ol.WEBGL_TEXTURE_CACHE_HIGH_WATER_MARK) {
-    frameState.postRenderFunctions.push(this.expireCache_.bind(this));
+    frameState.postRenderFunctions.push(
+      /** @type {ol.PostRenderFunction} */ (this.expireCache_.bind(this))
+    );
   }
 
   if (!this.tileTextureQueue_.isEmpty()) {
@@ -73220,7 +73214,7 @@ ol.Map = function(options) {
 
   /**
    * @private
-   * @type {Element}
+   * @type {!Element}
    */
   this.overlayContainer_ = document.createElement('DIV');
   this.overlayContainer_.className = 'ol-overlaycontainer';
@@ -73228,7 +73222,7 @@ ol.Map = function(options) {
 
   /**
    * @private
-   * @type {Element}
+   * @type {!Element}
    */
   this.overlayContainerStopEvent_ = document.createElement('DIV');
   this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
@@ -73852,7 +73846,7 @@ ol.Map.prototype.getViewport = function() {
  * this container will let mousedown and touchstart events through to the map,
  * so clicks and gestures on an overlay will trigger {@link ol.MapBrowserEvent}
  * events.
- * @return {Element} The map's overlay container.
+ * @return {!Element} The map's overlay container.
  */
 ol.Map.prototype.getOverlayContainer = function() {
   return this.overlayContainer_;
@@ -73864,7 +73858,7 @@ ol.Map.prototype.getOverlayContainer = function() {
  * event propagation. Elements added to this container won't let mousedown and
  * touchstart events through to the map, so clicks and gestures on an overlay
  * don't trigger any {@link ol.MapBrowserEvent}.
- * @return {Element} The map's overlay container that stops events.
+ * @return {!Element} The map's overlay container that stops events.
  */
 ol.Map.prototype.getOverlayContainerStopEvent = function() {
   return this.overlayContainerStopEvent_;
@@ -74860,8 +74854,7 @@ ol.Overlay.prototype.handleMapChanged = function() {
     var container = this.stopEvent_ ?
         map.getOverlayContainerStopEvent() : map.getOverlayContainer();
     if (this.insertFirst_) {
-      goog.dom.insertChildAt(/** @type {!Element} */ (
-          container), this.element_, 0);
+      goog.dom.insertChildAt(container, this.element_, 0);
     } else {
       container.appendChild(this.element_);
     }
@@ -87334,7 +87327,6 @@ ol.style.Text.prototype.setTextBaseline = function(textBaseline) {
 
 // FIXME http://earth.google.com/kml/1.0 namespace?
 // FIXME why does node.getAttribute return an unknown type?
-// FIXME text
 // FIXME serialize arbitrary feature properties
 // FIXME don't parse style if extractStyles is false
 
@@ -87652,7 +87644,6 @@ ol.format.KML.ICON_ANCHOR_UNITS_MAP_ = {
  * @private
  */
 ol.format.KML.createNameStyleFunction_ = function(foundStyle, name) {
-  /** @type {?ol.style.Text} */
   var textStyle = null;
   var textOffset = [0, 0];
   var textAlign = 'start';
@@ -87712,7 +87703,6 @@ ol.format.KML.createFeatureStyleFunction_ = function(style, styleUrl,
         var drawName = showPointNames;
         /** @type {ol.style.Style|undefined} */
         var nameStyle;
-        /** @type {string} */
         var name = '';
         if (drawName) {
           if (this.getGeometry()) {
@@ -87722,7 +87712,7 @@ ol.format.KML.createFeatureStyleFunction_ = function(style, styleUrl,
         }
 
         if (drawName) {
-          name = /** @type {string} */ (this.getProperties()['name']);
+          name = /** @type {string} */ (this.get('name'));
           drawName = drawName && name;
         }
 
@@ -88336,9 +88326,7 @@ ol.format.KML.readMultiGeometry_ = function(node, objectStack) {
     }
   }
   if (homogeneous) {
-    /** @type {ol.geom.GeometryLayout} */
     var layout;
-    /** @type {Array.<number>} */
     var flatCoordinates;
     if (type == ol.geom.GeometryType.POINT) {
       var point = geometries[0];
@@ -100982,8 +100970,8 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
   var set = !add && !remove && !toggle;
   var map = mapBrowserEvent.map;
   var features = this.featureOverlay_.getSource().getFeaturesCollection();
-  var /** @type {!Array.<ol.Feature>} */ deselected = [];
-  var /** @type {!Array.<ol.Feature>} */ selected = [];
+  var deselected = [];
+  var selected = [];
   var change = false;
   if (set) {
     // Replace the currently selected feature(s) with the feature(s) at the
@@ -102447,7 +102435,6 @@ goog.provide('ol.reproj.Tile');
 goog.provide('ol.reproj.TileFunctionType');
 
 goog.require('goog.asserts');
-goog.require('goog.math');
 goog.require('ol.Tile');
 goog.require('ol.TileState');
 goog.require('ol.events');
@@ -102590,7 +102577,7 @@ ol.reproj.Tile = function(sourceProj, sourceTileGrid,
   var sourceResolution = ol.reproj.calculateSourceResolution(
       sourceProj, targetProj, targetCenter, targetResolution);
 
-  if (!goog.math.isFiniteNumber(sourceResolution) || sourceResolution <= 0) {
+  if (!isFinite(sourceResolution) || sourceResolution <= 0) {
     // invalid sourceResolution -> EMPTY
     // probably edges of the projections when no extent is defined
     this.state = ol.TileState.EMPTY;
@@ -105093,7 +105080,9 @@ ol.source.Raster.prototype.onWorkerComplete_ = function(frameState, callback, er
  * @private
  */
 ol.source.Raster.getImageData_ = function(renderer, frameState, layerState) {
-  renderer.prepareFrame(frameState, layerState);
+  if (!renderer.prepareFrame(frameState, layerState)) {
+    return null;
+  }
   var width = frameState.size[0];
   var height = frameState.size[1];
   if (!ol.source.Raster.context_) {
