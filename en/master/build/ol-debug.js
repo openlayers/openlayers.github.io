@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.0-11-gbd5c85a
+// Version: v3.14.0-14-g6808834
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -76163,7 +76163,6 @@ goog.provide('ol.control.ZoomSlider');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.math.Rect');
 goog.require('goog.style');
 goog.require('ol.events');
 goog.require('ol.events.Event');
@@ -76214,25 +76213,37 @@ ol.control.ZoomSlider = function(opt_options) {
 
   /**
    * @type {boolean}
+   * @private
    */
   this.dragging_;
+
   /**
    * @type {Array.<ol.events.Key>}
+   * @private
    */
   this.dragListenerKeys_;
 
   /**
-   * @type {goog.math.Rect}
+   * @type {number}
+   * @private
    */
-  this.limits_;
+  this.heightLimit_ = 0;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.widthLimit_ = 0;
 
   /**
    * @type {number|undefined}
+   * @private
    */
   this.previousX_;
 
   /**
    * @type {number|undefined}
+   * @private
    */
   this.previousY_;
 
@@ -76252,8 +76263,8 @@ ol.control.ZoomSlider = function(opt_options) {
   this.sliderInitialized_ = false;
 
   /**
-   * @private
    * @type {number}
+   * @private
    */
   this.duration_ = options.duration !== undefined ? options.duration : 200;
 
@@ -76333,18 +76344,13 @@ ol.control.ZoomSlider.prototype.initSlider_ = function() {
       thumbMargins.top + thumbMargins.bottom;
   this.thumbSize_ = [thumbWidth, thumbHeight];
 
-  var width = containerSize.width - thumbWidth;
-  var height = containerSize.height - thumbHeight;
-
-  var limits;
   if (containerSize.width > containerSize.height) {
     this.direction_ = ol.control.ZoomSlider.direction.HORIZONTAL;
-    limits = new goog.math.Rect(0, 0, width, 0);
+    this.widthLimit_ = containerSize.width - thumbWidth;
   } else {
     this.direction_ = ol.control.ZoomSlider.direction.VERTICAL;
-    limits = new goog.math.Rect(0, 0, 0, height);
+    this.heightLimit_ = containerSize.height - thumbHeight;
   }
-  this.limits_ = limits;
   this.sliderInitialized_ = true;
 };
 
@@ -76484,10 +76490,9 @@ ol.control.ZoomSlider.prototype.setThumbPosition_ = function(res) {
   var thumb = goog.dom.getFirstElementChild(this.element);
 
   if (this.direction_ == ol.control.ZoomSlider.direction.HORIZONTAL) {
-    thumb.style.left = this.limits_.left + this.limits_.width * position + 'px';
+    thumb.style.left = this.widthLimit_ * position + 'px';
   } else {
-    thumb.style.left = this.limits_.left + 'px';
-    thumb.style.top = this.limits_.top + this.limits_.height * position + 'px';
+    thumb.style.top = this.heightLimit_ * position + 'px';
   }
 };
 
@@ -76503,12 +76508,11 @@ ol.control.ZoomSlider.prototype.setThumbPosition_ = function(res) {
  * @private
  */
 ol.control.ZoomSlider.prototype.getRelativePosition_ = function(x, y) {
-  var draggerLimits = this.limits_;
   var amount;
   if (this.direction_ === ol.control.ZoomSlider.direction.HORIZONTAL) {
-    amount = (x - draggerLimits.left) / draggerLimits.width;
+    amount = x / this.widthLimit_;
   } else {
-    amount = (y - draggerLimits.top) / draggerLimits.height;
+    amount = y / this.heightLimit_;
   }
   return ol.math.clamp(amount, 0, 1);
 };
