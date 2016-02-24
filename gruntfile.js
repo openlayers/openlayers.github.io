@@ -215,18 +215,20 @@ module.exports = function(grunt) {
         src: [
           dist + '/en/' + branch + '/**/*'
         ],
-        dest: branch + '.zip'
+        dest: branch + '.zip',
+        compression: 'DEFLATE'
       },
       dist: {
         src: [
           dist + '/en/' + branch + '/build/ol.js',
           dist + '/en/' + branch + '/build/ol-debug.js',
-          dist + '/en/' + branch + '/css/ol.css'
+          dist + '/en/' + branch + '/css/ol.css',
         ],
         router: function(filepath) {
           return branch + '-dist/' + path.basename(filepath);
         },
-        dest: branch + '-dist.zip'
+        dest: branch + '-dist.zip',
+        compression: 'DEFLATE'
       }
     }
   });
