@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.0-16-g5ad42f3
+// Version: v3.14.0-24-gfa180cf
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -50992,7 +50992,6 @@ goog.provide('ol.interaction.PinchRotate');
 
 goog.require('goog.asserts');
 goog.require('goog.functions');
-goog.require('goog.style');
 goog.require('ol');
 goog.require('ol.Coordinate');
 goog.require('ol.ViewHint');
@@ -51094,11 +51093,10 @@ ol.interaction.PinchRotate.handleDragEvent_ = function(mapBrowserEvent) {
   // rotate anchor point.
   // FIXME: should be the intersection point between the lines:
   //     touch0,touch1 and previousTouch0,previousTouch1
-  var viewportPosition = goog.style.getClientPosition(map.getViewport());
-  var centroid =
-      ol.interaction.Pointer.centroid(this.targetPointers);
-  centroid[0] -= viewportPosition.x;
-  centroid[1] -= viewportPosition.y;
+  var viewportPosition = map.getViewport().getBoundingClientRect();
+  var centroid = ol.interaction.Pointer.centroid(this.targetPointers);
+  centroid[0] -= viewportPosition.left;
+  centroid[1] -= viewportPosition.top;
   this.anchor_ = map.getCoordinateFromPixel(centroid);
 
   // rotate
@@ -51168,7 +51166,6 @@ goog.provide('ol.interaction.PinchZoom');
 
 goog.require('goog.asserts');
 goog.require('goog.functions');
-goog.require('goog.style');
 goog.require('ol');
 goog.require('ol.Coordinate');
 goog.require('ol.ViewHint');
@@ -51255,11 +51252,10 @@ ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
   var resolution = view.getResolution();
 
   // scale anchor point.
-  var viewportPosition = goog.style.getClientPosition(map.getViewport());
-  var centroid =
-      ol.interaction.Pointer.centroid(this.targetPointers);
-  centroid[0] -= viewportPosition.x;
-  centroid[1] -= viewportPosition.y;
+  var viewportPosition = map.getViewport().getBoundingClientRect();
+  var centroid = ol.interaction.Pointer.centroid(this.targetPointers);
+  centroid[0] -= viewportPosition.left;
+  centroid[1] -= viewportPosition.top;
   this.anchor_ = map.getCoordinateFromPixel(centroid);
 
   // scale, bypass the resolution constraint
@@ -66132,6 +66128,16 @@ goog.inherits(ol.renderer.dom.VectorLayer, ol.renderer.dom.Layer);
 /**
  * @inheritDoc
  */
+ol.renderer.dom.VectorLayer.prototype.clearFrame = function() {
+  this.context_.canvas.width = 0;
+  this.context_.canvas.height = 0;
+  this.renderedRevision_ = 0;
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.renderer.dom.VectorLayer.prototype.composeFrame = function(frameState, layerState) {
 
   var vectorLayer = /** @type {ol.layer.Vector} */ (this.getLayer());
@@ -80582,14 +80588,13 @@ ol.format.GeoJSON.prototype.writeFeature;
  *
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Write options.
- * @return {GeoJSONObject} Object.
+ * @return {GeoJSONFeature} Object.
  * @api stable
  */
-ol.format.GeoJSON.prototype.writeFeatureObject = function(
-    feature, opt_options) {
+ol.format.GeoJSON.prototype.writeFeatureObject = function(feature, opt_options) {
   opt_options = this.adaptOptions(opt_options);
 
-  var object = /** @type {GeoJSONObject} */ ({
+  var object = /** @type {GeoJSONFeature} */ ({
     'type': 'Feature'
   });
   var id = feature.getId();
@@ -81437,14 +81442,14 @@ ol.format.GMLBase.prototype.readFlatCoordinatesFromNode_ = function(node, object
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GMLBase.prototype.MULTIPOINT_PARSERS_ = Object({
+ol.format.GMLBase.prototype.MULTIPOINT_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'pointMember': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.pointMemberParser_),
     'pointMembers': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.pointMemberParser_)
   }
-});
+};
 
 
 /**
@@ -81452,14 +81457,14 @@ ol.format.GMLBase.prototype.MULTIPOINT_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GMLBase.prototype.MULTILINESTRING_PARSERS_ = Object({
+ol.format.GMLBase.prototype.MULTILINESTRING_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'lineStringMember': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.lineStringMemberParser_),
     'lineStringMembers': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.lineStringMemberParser_)
   }
-});
+};
 
 
 /**
@@ -81467,14 +81472,14 @@ ol.format.GMLBase.prototype.MULTILINESTRING_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GMLBase.prototype.MULTIPOLYGON_PARSERS_ = Object({
+ol.format.GMLBase.prototype.MULTIPOLYGON_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'polygonMember': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.polygonMemberParser_),
     'polygonMembers': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.polygonMemberParser_)
   }
-});
+};
 
 
 /**
@@ -81482,12 +81487,12 @@ ol.format.GMLBase.prototype.MULTIPOLYGON_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GMLBase.prototype.POINTMEMBER_PARSERS_ = Object({
+ol.format.GMLBase.prototype.POINTMEMBER_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'Point': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readFlatCoordinatesFromNode_)
   }
-});
+};
 
 
 /**
@@ -81495,12 +81500,12 @@ ol.format.GMLBase.prototype.POINTMEMBER_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GMLBase.prototype.LINESTRINGMEMBER_PARSERS_ = Object({
+ol.format.GMLBase.prototype.LINESTRINGMEMBER_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'LineString': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readLineString)
   }
-});
+};
 
 
 /**
@@ -81508,12 +81513,12 @@ ol.format.GMLBase.prototype.LINESTRINGMEMBER_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GMLBase.prototype.POLYGONMEMBER_PARSERS_ = Object({
+ol.format.GMLBase.prototype.POLYGONMEMBER_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'Polygon': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readPolygon)
   }
-});
+};
 
 
 /**
@@ -81521,12 +81526,12 @@ ol.format.GMLBase.prototype.POLYGONMEMBER_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @protected
  */
-ol.format.GMLBase.prototype.RING_PARSERS = Object({
+ol.format.GMLBase.prototype.RING_PARSERS = {
   'http://www.opengis.net/gml' : {
     'LinearRing': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readFlatLinearRing_)
   }
-});
+};
 
 
 /**
@@ -81929,12 +81934,12 @@ ol.format.GML2.prototype.outerBoundaryIsParser_ = function(node, objectStack) {
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = Object({
+ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'coordinates': ol.xml.makeReplacer(
         ol.format.GML2.prototype.readFlatCoordinates_)
   }
-});
+};
 
 
 /**
@@ -81942,12 +81947,12 @@ ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = Object({
+ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'innerBoundaryIs': ol.format.GML2.prototype.innerBoundaryIsParser_,
     'outerBoundaryIs': ol.format.GML2.prototype.outerBoundaryIsParser_
   }
-});
+};
 
 
 /**
@@ -81955,12 +81960,12 @@ ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML2.prototype.BOX_PARSERS_ = Object({
+ol.format.GML2.prototype.BOX_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'coordinates': ol.xml.makeArrayPusher(
         ol.format.GML2.prototype.readFlatCoordinates_)
   }
-});
+};
 
 
 /**
@@ -81968,7 +81973,7 @@ ol.format.GML2.prototype.BOX_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML2.prototype.GEOMETRY_PARSERS_ = Object({
+ol.format.GML2.prototype.GEOMETRY_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'Point': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPoint),
     'MultiPoint': ol.xml.makeReplacer(
@@ -81984,7 +81989,7 @@ ol.format.GML2.prototype.GEOMETRY_PARSERS_ = Object({
         ol.format.GMLBase.prototype.readMultiPolygon),
     'Box': ol.xml.makeReplacer(ol.format.GML2.prototype.readBox_)
   }
-});
+};
 
 goog.provide('ol.format.GML');
 goog.provide('ol.format.GML3');
@@ -82441,12 +82446,12 @@ ol.format.GML3.prototype.readFlatPosList_ = function(node, objectStack) {
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = Object({
+ol.format.GML3.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'pos': ol.xml.makeReplacer(ol.format.GML3.prototype.readFlatPos_),
     'posList': ol.xml.makeReplacer(ol.format.GML3.prototype.readFlatPosList_)
   }
-});
+};
 
 
 /**
@@ -82454,12 +82459,12 @@ ol.format.GML3.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.FLAT_LINEAR_RINGS_PARSERS_ = Object({
+ol.format.GML3.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'interior': ol.format.GML3.prototype.interiorParser_,
     'exterior': ol.format.GML3.prototype.exteriorParser_
   }
-});
+};
 
 
 /**
@@ -82467,7 +82472,7 @@ ol.format.GML3.prototype.FLAT_LINEAR_RINGS_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.GEOMETRY_PARSERS_ = Object({
+ol.format.GML3.prototype.GEOMETRY_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'Point': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPoint),
     'MultiPoint': ol.xml.makeReplacer(
@@ -82489,7 +82494,7 @@ ol.format.GML3.prototype.GEOMETRY_PARSERS_ = Object({
         ol.format.GML3.prototype.readMultiCurve_),
     'Envelope': ol.xml.makeReplacer(ol.format.GML3.prototype.readEnvelope_)
   }
-});
+};
 
 
 /**
@@ -82497,14 +82502,14 @@ ol.format.GML3.prototype.GEOMETRY_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.MULTICURVE_PARSERS_ = Object({
+ol.format.GML3.prototype.MULTICURVE_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'curveMember': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.curveMemberParser_),
     'curveMembers': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.curveMemberParser_)
   }
-});
+};
 
 
 /**
@@ -82512,14 +82517,14 @@ ol.format.GML3.prototype.MULTICURVE_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.MULTISURFACE_PARSERS_ = Object({
+ol.format.GML3.prototype.MULTISURFACE_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'surfaceMember': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.surfaceMemberParser_),
     'surfaceMembers': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.surfaceMemberParser_)
   }
-});
+};
 
 
 /**
@@ -82527,13 +82532,13 @@ ol.format.GML3.prototype.MULTISURFACE_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.CURVEMEMBER_PARSERS_ = Object({
+ol.format.GML3.prototype.CURVEMEMBER_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'LineString': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readLineString),
     'Curve': ol.xml.makeArrayPusher(ol.format.GML3.prototype.readCurve_)
   }
-});
+};
 
 
 /**
@@ -82541,12 +82546,12 @@ ol.format.GML3.prototype.CURVEMEMBER_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.SURFACEMEMBER_PARSERS_ = Object({
+ol.format.GML3.prototype.SURFACEMEMBER_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'Polygon': ol.xml.makeArrayPusher(ol.format.GMLBase.prototype.readPolygon),
     'Surface': ol.xml.makeArrayPusher(ol.format.GML3.prototype.readSurface_)
   }
-});
+};
 
 
 /**
@@ -82554,11 +82559,11 @@ ol.format.GML3.prototype.SURFACEMEMBER_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.SURFACE_PARSERS_ = Object({
+ol.format.GML3.prototype.SURFACE_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'patches': ol.xml.makeReplacer(ol.format.GML3.prototype.readPatch_)
   }
-});
+};
 
 
 /**
@@ -82566,11 +82571,11 @@ ol.format.GML3.prototype.SURFACE_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.CURVE_PARSERS_ = Object({
+ol.format.GML3.prototype.CURVE_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'segments': ol.xml.makeReplacer(ol.format.GML3.prototype.readSegment_)
   }
-});
+};
 
 
 /**
@@ -82578,14 +82583,14 @@ ol.format.GML3.prototype.CURVE_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.ENVELOPE_PARSERS_ = Object({
+ol.format.GML3.prototype.ENVELOPE_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'lowerCorner': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.readFlatPosList_),
     'upperCorner': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.readFlatPosList_)
   }
-});
+};
 
 
 /**
@@ -82593,12 +82598,12 @@ ol.format.GML3.prototype.ENVELOPE_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.PATCHES_PARSERS_ = Object({
+ol.format.GML3.prototype.PATCHES_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'PolygonPatch': ol.xml.makeReplacer(
         ol.format.GML3.prototype.readPolygonPatch_)
   }
-});
+};
 
 
 /**
@@ -82606,12 +82611,12 @@ ol.format.GML3.prototype.PATCHES_PARSERS_ = Object({
  * @type {Object.<string, Object.<string, ol.xml.Parser>>}
  * @private
  */
-ol.format.GML3.prototype.SEGMENTS_PARSERS_ = Object({
+ol.format.GML3.prototype.SEGMENTS_PARSERS_ = {
   'http://www.opengis.net/gml' : {
     'LineStringSegment': ol.xml.makeReplacer(
         ol.format.GML3.prototype.readLineStringSegment_)
   }
-});
+};
 
 
 /**
