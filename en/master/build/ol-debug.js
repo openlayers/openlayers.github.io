@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.0-24-gfa180cf
+// Version: v3.14.0-28-gef42267
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -34733,6 +34733,15 @@ ol.source.Source.prototype.getWrapX = function() {
 
 
 /**
+ * Refreshes the source and finally dispatches a 'change' event.
+ * @api
+ */
+ol.source.Source.prototype.refresh = function() {
+  this.changed();
+};
+
+
+/**
  * Set the attributions of the source.
  * @param {Array.<ol.Attribution>} attributions Attributions.
  * @api
@@ -35680,6 +35689,15 @@ ol.source.Tile.prototype.getTileCoordForTileUrlFunction = function(tileCoord, op
     tileCoord = ol.tilecoord.wrapX(tileCoord, tileGrid, projection);
   }
   return ol.tilecoord.withinExtentAndZ(tileCoord, tileGrid) ? tileCoord : null;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.Tile.prototype.refresh = function() {
+  this.tileCache.clear();
+  this.changed();
 };
 
 
@@ -73864,8 +73882,12 @@ ol.Map.prototype.getEventCoordinate = function(event) {
  * @api stable
  */
 ol.Map.prototype.getEventPixel = function(event) {
-  var eventPosition = goog.style.getRelativePosition(event, this.viewport_);
-  return [eventPosition.x, eventPosition.y];
+  var viewportPosition = this.viewport_.getBoundingClientRect();
+  var eventPosition = event.changedTouches ? event.changedTouches[0] : event;
+  return [
+    eventPosition.clientX - viewportPosition.left,
+    eventPosition.clientY - viewportPosition.top
+  ];
 };
 
 
@@ -110563,6 +110585,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Source.prototype,
+    'refresh',
+    ol.source.Source.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.Source.prototype,
     'setAttributions',
     ol.source.Source.prototype.setAttributions);
 
@@ -113623,6 +113650,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Tile.prototype,
+    'refresh',
+    ol.source.Tile.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.Tile.prototype,
     'setAttributions',
     ol.source.Tile.prototype.setAttributions);
 
@@ -113695,6 +113727,11 @@ goog.exportProperty(
     ol.source.UrlTile.prototype,
     'getTileGrid',
     ol.source.UrlTile.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.UrlTile.prototype,
+    'refresh',
+    ol.source.UrlTile.prototype.refresh);
 
 goog.exportProperty(
     ol.source.UrlTile.prototype,
@@ -113825,6 +113862,11 @@ goog.exportProperty(
     ol.source.TileImage.prototype,
     'getTileGrid',
     ol.source.TileImage.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.TileImage.prototype,
+    'refresh',
+    ol.source.TileImage.prototype.refresh);
 
 goog.exportProperty(
     ol.source.TileImage.prototype,
@@ -113968,6 +114010,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.BingMaps.prototype,
+    'refresh',
+    ol.source.BingMaps.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.BingMaps.prototype,
     'getAttributions',
     ol.source.BingMaps.prototype.getAttributions);
 
@@ -114075,6 +114122,11 @@ goog.exportProperty(
     ol.source.Vector.prototype,
     'getState',
     ol.source.Vector.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'refresh',
+    ol.source.Vector.prototype.refresh);
 
 goog.exportProperty(
     ol.source.Vector.prototype,
@@ -114238,6 +114290,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
+    'refresh',
+    ol.source.Cluster.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
     'setAttributions',
     ol.source.Cluster.prototype.setAttributions);
 
@@ -114325,6 +114382,11 @@ goog.exportProperty(
     ol.source.Image.prototype,
     'getState',
     ol.source.Image.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Image.prototype,
+    'refresh',
+    ol.source.Image.prototype.refresh);
 
 goog.exportProperty(
     ol.source.Image.prototype,
@@ -114418,6 +114480,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageCanvas.prototype,
+    'refresh',
+    ol.source.ImageCanvas.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.ImageCanvas.prototype,
     'setAttributions',
     ol.source.ImageCanvas.prototype.setAttributions);
 
@@ -114505,6 +114572,11 @@ goog.exportProperty(
     ol.source.ImageMapGuide.prototype,
     'getState',
     ol.source.ImageMapGuide.prototype.getState);
+
+goog.exportProperty(
+    ol.source.ImageMapGuide.prototype,
+    'refresh',
+    ol.source.ImageMapGuide.prototype.refresh);
 
 goog.exportProperty(
     ol.source.ImageMapGuide.prototype,
@@ -114598,6 +114670,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageStatic.prototype,
+    'refresh',
+    ol.source.ImageStatic.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.ImageStatic.prototype,
     'setAttributions',
     ol.source.ImageStatic.prototype.setAttributions);
 
@@ -114688,6 +114765,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.ImageVector.prototype,
+    'refresh',
+    ol.source.ImageVector.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.ImageVector.prototype,
     'setAttributions',
     ol.source.ImageVector.prototype.setAttributions);
 
@@ -114775,6 +114857,11 @@ goog.exportProperty(
     ol.source.ImageWMS.prototype,
     'getState',
     ol.source.ImageWMS.prototype.getState);
+
+goog.exportProperty(
+    ol.source.ImageWMS.prototype,
+    'refresh',
+    ol.source.ImageWMS.prototype.refresh);
 
 goog.exportProperty(
     ol.source.ImageWMS.prototype,
@@ -114895,6 +114982,11 @@ goog.exportProperty(
     ol.source.XYZ.prototype,
     'getTileGrid',
     ol.source.XYZ.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'refresh',
+    ol.source.XYZ.prototype.refresh);
 
 goog.exportProperty(
     ol.source.XYZ.prototype,
@@ -115038,6 +115130,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.MapQuest.prototype,
+    'refresh',
+    ol.source.MapQuest.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.MapQuest.prototype,
     'getAttributions',
     ol.source.MapQuest.prototype.getAttributions);
 
@@ -115178,6 +115275,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.OSM.prototype,
+    'refresh',
+    ol.source.OSM.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.OSM.prototype,
     'getAttributions',
     ol.source.OSM.prototype.getAttributions);
 
@@ -115285,6 +115387,11 @@ goog.exportProperty(
     ol.source.Raster.prototype,
     'getState',
     ol.source.Raster.prototype.getState);
+
+goog.exportProperty(
+    ol.source.Raster.prototype,
+    'refresh',
+    ol.source.Raster.prototype.refresh);
 
 goog.exportProperty(
     ol.source.Raster.prototype,
@@ -115405,6 +115512,11 @@ goog.exportProperty(
     ol.source.Stamen.prototype,
     'getTileGrid',
     ol.source.Stamen.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.Stamen.prototype,
+    'refresh',
+    ol.source.Stamen.prototype.refresh);
 
 goog.exportProperty(
     ol.source.Stamen.prototype,
@@ -115548,6 +115660,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileArcGISRest.prototype,
+    'refresh',
+    ol.source.TileArcGISRest.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.TileArcGISRest.prototype,
     'getAttributions',
     ol.source.TileArcGISRest.prototype.getAttributions);
 
@@ -115640,6 +115757,11 @@ goog.exportProperty(
     ol.source.TileDebug.prototype,
     'getTileGrid',
     ol.source.TileDebug.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.TileDebug.prototype,
+    'refresh',
+    ol.source.TileDebug.prototype.refresh);
 
 goog.exportProperty(
     ol.source.TileDebug.prototype,
@@ -115783,6 +115905,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileJSON.prototype,
+    'refresh',
+    ol.source.TileJSON.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
     'getAttributions',
     ol.source.TileJSON.prototype.getAttributions);
 
@@ -115875,6 +116002,11 @@ goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
     'getTileGrid',
     ol.source.TileUTFGrid.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.TileUTFGrid.prototype,
+    'refresh',
+    ol.source.TileUTFGrid.prototype.refresh);
 
 goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
@@ -116018,6 +116150,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.TileWMS.prototype,
+    'refresh',
+    ol.source.TileWMS.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.TileWMS.prototype,
     'getAttributions',
     ol.source.TileWMS.prototype.getAttributions);
 
@@ -116145,6 +116282,11 @@ goog.exportProperty(
     ol.source.VectorTile.prototype,
     'getTileGrid',
     ol.source.VectorTile.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.VectorTile.prototype,
+    'refresh',
+    ol.source.VectorTile.prototype.refresh);
 
 goog.exportProperty(
     ol.source.VectorTile.prototype,
@@ -116288,6 +116430,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.WMTS.prototype,
+    'refresh',
+    ol.source.WMTS.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.WMTS.prototype,
     'getAttributions',
     ol.source.WMTS.prototype.getAttributions);
 
@@ -116425,6 +116572,11 @@ goog.exportProperty(
     ol.source.Zoomify.prototype,
     'getTileGrid',
     ol.source.Zoomify.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.Zoomify.prototype,
+    'refresh',
+    ol.source.Zoomify.prototype.refresh);
 
 goog.exportProperty(
     ol.source.Zoomify.prototype,
