@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.0-14-g6808834
+// Version: v3.14.0-16-g5ad42f3
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -14903,6 +14903,7 @@ ol.proj.get = function(projectionLike) {
  * @param {ol.proj.Projection} projection1 Projection 1.
  * @param {ol.proj.Projection} projection2 Projection 2.
  * @return {boolean} Equivalent.
+ * @api
  */
 ol.proj.equivalent = function(projection1, projection2) {
   if (projection1 === projection2) {
@@ -111118,6 +111119,11 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.proj.get',
     ol.proj.get,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.equivalent',
+    ol.proj.equivalent,
     OPENLAYERS);
 
 goog.exportSymbol(

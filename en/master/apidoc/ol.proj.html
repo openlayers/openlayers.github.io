@@ -9614,6 +9614,10 @@
                     <a href="ol.proj.html#.addProjection">addProjection</a>
                 </li>
             
+                <li data-name="ol.proj.equivalent" class="unstable">
+                    <a href="ol.proj.html#.equivalent">equivalent</a>
+                </li>
+            
                 <li data-name="ol.proj.fromLonLat" class="">
                     <a href="ol.proj.html#.fromLonLat">fromLonLat</a>
                 </li>
@@ -15201,6 +15205,166 @@ looked up by their code.</p>
 
         
             
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id=".equivalent">
+            ol.proj.equivalent<span class="signature">(projection1, projection2)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/proj/proj.js, line 711
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Checks if two projections are the same, that is every coordinate in one
+projection does represent the same geographic point as the same coordinate in
+the other projection.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>projection1</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.proj.Projection.html">ol.proj.Projection</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Projection 1.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>projection2</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.proj.Projection.html">ol.proj.Projection</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Projection 2.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Equivalent.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
 <dt class="">
     <div class="nameContainer">
         
@@ -15503,7 +15667,7 @@ Projection object, or null if not in list.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 735
+            src/ol/proj/proj.js, line 736
         </div>
         
         
@@ -15948,7 +16112,7 @@ Coordinate as longitude and latitude, i.e. an array
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 822
+            src/ol/proj/proj.js, line 823
         </div>
         
         
@@ -16133,7 +16297,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/proj.js, line 838
+            src/ol/proj/proj.js, line 839
         </div>
         
         
