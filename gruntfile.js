@@ -142,6 +142,17 @@ module.exports = function(grunt) {
         assets: assets,
         latest: latest
       },
+      robots: {
+        options: {
+          ext: '.txt'
+        },
+        files: [{
+          expand: true,
+          cwd: 'src',
+          src: 'robots.hbs',
+          dest: dist
+        }]
+      },
       pages: {
         files: [{
           expand: true,
