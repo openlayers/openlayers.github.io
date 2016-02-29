@@ -86,7 +86,7 @@
     "<span class="attribute">extra_annotation_name</span>": <span class="value">[
       <span class="string">"api"</span>, <span class="string">"observable"</span>
     ]</span>,
-    "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED_OPTIMIZATIONS"</span></span>,
+    "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED"</span></span>,
     "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span>
   </span>}
 </span>}</code></pre>
@@ -173,16 +173,19 @@ info ol Compiling 364 sources</code></pre>
 <pre><code class="language-json">{
   "<span class="attribute">exports</span>": <span class="value">[
     <span class="string">"ol.layer.Heatmap"</span>,
-    <span class="string">"ol.source.KML"</span>,
+    <span class="string">"ol.source.Vector"</span>,
+    <span class="string">"ol.format.KML"</span>,
     <span class="string">"ol.layer.Heatmap#getSource"</span>,
-    <span class="string">"ol.source.KML#on"</span>,
+    <span class="string">"ol.source.Vector#on"</span>,
     <span class="string">"ol.source.VectorEvent#feature"</span>,
     <span class="string">"ol.Feature#get"</span>,
     <span class="string">"ol.Feature#set"</span>,
     <span class="string">"ol.layer.Tile"</span>,
     <span class="string">"ol.source.Stamen"</span>,
     <span class="string">"ol.Map"</span>,
-    <span class="string">"ol.View"</span>
+    <span class="string">"ol.View"</span>,
+    <span class="string">"ol.layer.Heatmap#setRadius"</span>,
+    <span class="string">"ol.layer.Heatmap#setBlur"</span>
   ]</span>,
   "<span class="attribute">compile</span>": <span class="value">{
     "<span class="attribute">externs</span>": <span class="value">[
@@ -197,7 +200,7 @@ info ol Compiling 364 sources</code></pre>
       <span class="string">"goog.dom.ASSUME_STANDARDS_MODE=true"</span>,
       <span class="string">"goog.DEBUG=false"</span>
     ]</span>,
-    "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED_OPTIMIZATIONS"</span></span>,
+    "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED"</span></span>,
     "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span>
   </span>}
 </span>}</code></pre>

@@ -14688,7 +14688,9 @@
         <span class="ancestors"><a href="ol.html">ol</a><a href="ol.source.html">.source</a>.</span>Cluster
     </h2>
     
-        <div class="class-description"><p>Layer source to cluster vector data.</p></div>
+        <div class="class-description"><p>Layer source to cluster vector data. Works out of the box with point
+geometries. For other geometry types, or if not all geometries should be
+considered for clustering, a custom <code>geometryFunction</code> can be defined.</p></div>
     
 </header>  
 
@@ -14711,7 +14713,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/source/clustersource.js, line 24
+            src/ol/source/clustersource.js, line 26
         </div>
         
         
@@ -14873,6 +14875,47 @@
 
                 
                 <p>Extent.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>geometryFunction</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Function that takes an <a href="ol.Feature.html"><code>ol.Feature</code></a> as argument and returns an
+<a href="ol.geom.Point.html"><code>ol.geom.Point</code></a> as cluster calculation point for the feature. When a
+feature should not be considered for clustering, the function should return
+<code>null</code>. The default, which works when the underyling source contains point
+features only, is</p>
+<pre class="prettyprint source lang-js"><code>function(feature) {
+  return feature.getGeometry();
+}</code></pre><p>See <a href="ol.geom.Polygon.html#getInteriorPoint"><code>ol.geom.Polygon#getInteriorPoint</code></a> for a way to get a cluster
+calculation point for polygons.</p></td>
         </tr>
 	
 	
@@ -17807,7 +17850,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/clustersource.js, line 68
+            src/ol/source/clustersource.js, line 81
         </div>
         
         

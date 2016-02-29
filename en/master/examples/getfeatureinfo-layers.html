@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="../css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame"></script>
     <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
@@ -68,27 +68,26 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">$.ajax({
-  url: &#x27;./data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;,
-  success: function(response) {
+          <textarea class="hidden" name="js">fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
+  return response.text();
+}).then(function(response) {
 
-    // this is the standard way to read the features
-    var allFeatures &#x3D; new ol.format.WMSGetFeatureInfo().readFeatures(response);
-    $(&#x27;#all&#x27;).html(allFeatures.length.toString());
+  // this is the standard way to read the features
+  var allFeatures &#x3D; new ol.format.WMSGetFeatureInfo().readFeatures(response);
+  document.getElementById(&#x27;all&#x27;).innerText &#x3D; allFeatures.length.toString();
 
-    // when specifying the &#x27;layers&#x27; options, only the features of those
-    // layers are returned by the format
-    var hotelFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
-      layers: [&#x27;hotel&#x27;]
-    }).readFeatures(response);
-    $(&#x27;#hotel&#x27;).html(hotelFeatures.length.toString());
+  // when specifying the &#x27;layers&#x27; options, only the features of those
+  // layers are returned by the format
+  var hotelFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
+    layers: [&#x27;hotel&#x27;]
+  }).readFeatures(response);
+  document.getElementById(&#x27;hotel&#x27;).innerText &#x3D; hotelFeatures.length.toString();
 
-    var restaurantFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
-      layers: [&#x27;restaurant&#x27;]
-    }).readFeatures(response);
-    $(&#x27;#restaurant&#x27;).html(restaurantFeatures.length.toString());
+  var restaurantFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
+    layers: [&#x27;restaurant&#x27;]
+  }).readFeatures(response);
+  document.getElementById(&#x27;restaurant&#x27;).innerText &#x3D; restaurantFeatures.length.toString();
 
-  }
 });
 </textarea>
           <textarea class="hidden" name="css"></textarea>
@@ -108,7 +107,7 @@
 &lt;/table&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="http://openlayers.org/en/v3.14.0/css/ol.css,http://openlayers.org/en/v3.14.0/build/ol.js,https://code.jquery.com/jquery-1.11.2.min.js">
+          <input type="hidden" name="resources" value="http://openlayers.org/en/v3.14.0/css/ol.css,http://openlayers.org/en/v3.14.0/build/ol.js">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -116,7 +115,6 @@
     &lt;title&gt;WMS GetFeatureInfo (Layers)&lt;/title&gt;
     &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.14.0/css/ol.css" type="text/css"&gt;
     &lt;script src="http://openlayers.org/en/v3.14.0/build/ol.js"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-1.11.2.min.js&quot;&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;table id&#x3D;&quot;info&quot;&gt;
@@ -134,27 +132,26 @@
       &lt;/tr&gt;
     &lt;/table&gt;
     &lt;script&gt;
-      $.ajax({
-        url: &#x27;./data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;,
-        success: function(response) {
+      fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
+        return response.text();
+      }).then(function(response) {
 
-          // this is the standard way to read the features
-          var allFeatures &#x3D; new ol.format.WMSGetFeatureInfo().readFeatures(response);
-          $(&#x27;#all&#x27;).html(allFeatures.length.toString());
+        // this is the standard way to read the features
+        var allFeatures &#x3D; new ol.format.WMSGetFeatureInfo().readFeatures(response);
+        document.getElementById(&#x27;all&#x27;).innerText &#x3D; allFeatures.length.toString();
 
-          // when specifying the &#x27;layers&#x27; options, only the features of those
-          // layers are returned by the format
-          var hotelFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
-            layers: [&#x27;hotel&#x27;]
-          }).readFeatures(response);
-          $(&#x27;#hotel&#x27;).html(hotelFeatures.length.toString());
+        // when specifying the &#x27;layers&#x27; options, only the features of those
+        // layers are returned by the format
+        var hotelFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
+          layers: [&#x27;hotel&#x27;]
+        }).readFeatures(response);
+        document.getElementById(&#x27;hotel&#x27;).innerText &#x3D; hotelFeatures.length.toString();
 
-          var restaurantFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
-            layers: [&#x27;restaurant&#x27;]
-          }).readFeatures(response);
-          $(&#x27;#restaurant&#x27;).html(restaurantFeatures.length.toString());
+        var restaurantFeatures &#x3D; new ol.format.WMSGetFeatureInfo({
+          layers: [&#x27;restaurant&#x27;]
+        }).readFeatures(response);
+        document.getElementById(&#x27;restaurant&#x27;).innerText &#x3D; restaurantFeatures.length.toString();
 
-        }
       });
     &lt;/script&gt;
   &lt;/body&gt;

@@ -15208,6 +15208,48 @@ Higher values can increase reprojection performance, but decrease precision.</p>
 	
         <tr>
             
+                <td class="name"><code>geometryFunction</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Function that takes an <a href="ol.Feature.html"><code>ol.Feature</code></a> as argument and returns an
+<a href="ol.geom.Point.html"><code>ol.geom.Point</code></a> as cluster calculation point for the feature. When a
+feature should not be considered for clustering, the function should return
+<code>null</code>. The default, which works when the underyling source contains point
+features only, is</p>
+<pre class="prettyprint source lang-js"><code>function(feature) {
+  return feature.getGeometry();
+}</code></pre><p>See <a href="ol.geom.Polygon.html#getInteriorPoint"><code>ol.geom.Polygon#getInteriorPoint</code></a> for a way to get a cluster
+calculation point for polygons.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>format</code></td>
             
             
