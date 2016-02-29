@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.0-53-g8465875
+// Version: v3.14.0-55-gd5fb6dd
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -36807,7 +36807,7 @@ ol.control.FullScreen.prototype.handleFullScreen_ = function() {
 ol.control.FullScreen.prototype.handleFullScreenChange_ = function() {
   var opened = this.cssClassName_ + '-true';
   var closed = this.cssClassName_ + '-false';
-  var button = goog.dom.getFirstElementChild(this.element);
+  var button = this.element.firstElementChild;
   var map = this.getMap();
   if (goog.dom.fullscreen.isFullScreen()) {
     goog.dom.classlist.swap(button, closed, opened);
@@ -76366,7 +76366,7 @@ ol.control.ZoomSlider.prototype.initSlider_ = function() {
   var container = this.element;
   var containerSize = goog.style.getSize(container);
 
-  var thumb = goog.dom.getFirstElementChild(container);
+  var thumb = container.firstElementChild;
   var thumbMargins = goog.style.getMarginBox(thumb);
   var thumbBorderBoxSize = goog.style.getBorderBoxSize(thumb);
   var thumbWidth = thumbBorderBoxSize.width +
@@ -76518,7 +76518,7 @@ ol.control.ZoomSlider.prototype.handleDraggerEnd_ = function(event) {
  */
 ol.control.ZoomSlider.prototype.setThumbPosition_ = function(res) {
   var position = this.getPositionForResolution_(res);
-  var thumb = goog.dom.getFirstElementChild(this.element);
+  var thumb = this.element.firstElementChild;
 
   if (this.direction_ == ol.control.ZoomSlider.direction.HORIZONTAL) {
     thumb.style.left = this.widthLimit_ * position + 'px';
