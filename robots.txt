@@ -1,0 +1,3 @@
+user-agent: *
+disallow: /en/
+allow: /en/v3.14.1/
