@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Reference - Class: Event</title>
+    <title>OpenLayers 3 API Reference - Class: Disposable</title>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <script src="scripts/jquery.min.js"> </script>
@@ -14695,7 +14695,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="ol.render.Event.html">Class: Event</h1>
+        <h1 class="page-title" data-filename="ol.Disposable.html">Class: Disposable</h1>
         
 
 
@@ -14704,7 +14704,7 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.render.html">.render</a>.</span>Event
+        <span class="ancestors"><a href="ol.html">ol</a>.</span>Disposable
     </h2>
     
 </header>  
@@ -14724,6 +14724,10 @@
 <dd class="">
 
     
+    <div class="description">
+        <p>Objects that need to clean up after themselves.</p>
+    </div>
+    
 
     
 
@@ -14774,510 +14778,21 @@
     </div>
     
     
-
-    
-        <h3 class="subsection-title">Extends</h3>
-        
+        <h3 class="subsection-title">Subclasses</h3>
         <ul>
-            <li><a href="ol.events.Event.html">ol.events.Event</a></li>
+          <li><a href="ol.events.EventTarget.html">ol.events.EventTarget</a>
+            
+          </li>
+        
+          <li><a href="ol.webgl.Context.html">ol.webgl.Context</a>
+            
+          </li>
         </ul>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        <h4 class="name" id="context">
-            context<span class="type-signature type canvasrenderingcontext2d">{CanvasRenderingContext2D}</span> <span class="type-signature type null">{null}</span> <span class="type-signature type undefined">{undefined}</span> 
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    <div class="description">
-        <p>Canvas context. Only available when a Canvas renderer is used, null
-otherwise.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        <h4 class="name" id="frameState">
-            frameState<span class="type-signature type olx.framestate">{<a href="olx.html#.FrameState">olx.FrameState</a>}</span> <span class="type-signature type undefined">{undefined}</span> 
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    <div class="description">
-        <p>An object representing the current render frame state.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        <h4 class="name" id="glContext">
-            glContext<span class="type-signature type ol.webgl.context">{<a href="ol.webgl.Context.html">ol.webgl.Context</a>}</span> <span class="type-signature type null">{null}</span> <span class="type-signature type undefined">{undefined}</span> 
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    <div class="description">
-        <p>WebGL context. Only available when a WebGL renderer is used, null
-otherwise.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        <h4 class="name" id="vectorContext">
-            vectorContext<span class="type-signature type ol.render.vectorcontext">{<a href="ol.render.VectorContext.html">ol.render.VectorContext</a>}</span> <span class="type-signature type undefined">{undefined}</span> 
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    <div class="description">
-        <p>For canvas, this is an instance of <a href="ol.render.canvas.Immediate.html"><code>ol.render.canvas.Immediate</code></a>.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Events</h3>
-        
-        <dl>
-            
-<dt class="unstable">
-    <div class="nameContainer inherited">
-        
-        <h4 class="name" id="event:change">
-            change
-            
-                <span class="inherited"><a href="ol.events.Event.html#event:change">inherited</a></span>
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/events.js, line 13
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-    <div class="description">
-        <p>Generic change event.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="event:postcompose">
-            postcompose
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/render/renderevent.js, line 12
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="event:precompose">
-            precompose
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/render/renderevent.js, line 17
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
 
     
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        
-        <h4 class="name" id="event:render">
-            render
-            
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/render/renderevent.js, line 22
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="unstable">
-
-    
-
-    
-
-    
-
-    
     
     
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
     
     
     
@@ -15286,27 +14801,13 @@ otherwise.</p>
     
     
     
-    
-    
-    
-    
-</dl>
-
 
     
-
     
-
     
-
     
-
     
-
     
-</dd>
-
-        </dl>
     
 </article>
 

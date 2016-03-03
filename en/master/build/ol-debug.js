@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.0-55-gd5fb6dd
+// Version: v3.14.1-102-g9ba059a
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -2597,12 +2597,6 @@ ol.DEFAULT_MIN_ZOOM = 0;
  *     reprojection triangulation. Default is `0.5`.
  */
 ol.DEFAULT_RASTER_REPROJECTION_ERROR_THRESHOLD = 0.5;
-
-
-/**
- * @define {number} Default high water mark.
- */
-ol.DEFAULT_TILE_CACHE_HIGH_WATER_MARK = 2048;
 
 
 /**
@@ -6088,360 +6082,38 @@ ol.events.unlistenAll = function(target) {
   }
 };
 
-// Copyright 2011 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+goog.provide('ol.Disposable');
+
+goog.require('ol');
 
 /**
- * @fileoverview Definition of the disposable interface.  A disposable object
- * has a dispose method to to clean up references and resources.
- * @author nnaze@google.com (Nathan Naze)
- */
-
-
-goog.provide('goog.disposable.IDisposable');
-
-
-
-/**
- * Interface for a disposable object.  If a instance requires cleanup
- * (references COM objects, DOM notes, or other disposable objects), it should
- * implement this interface (it may subclass goog.Disposable).
- * @interface
- */
-goog.disposable.IDisposable = function() {};
-
-
-/**
- * Disposes of the object and its resources.
- * @return {void} Nothing.
- */
-goog.disposable.IDisposable.prototype.dispose = goog.abstractMethod;
-
-
-/**
- * @return {boolean} Whether the object has been disposed of.
- */
-goog.disposable.IDisposable.prototype.isDisposed = goog.abstractMethod;
-
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Implements the disposable interface. The dispose method is used
- * to clean up references and resources.
- * @author arv@google.com (Erik Arvidsson)
- */
-
-
-goog.provide('goog.Disposable');
-/** @suppress {extraProvide} */
-goog.provide('goog.dispose');
-/** @suppress {extraProvide} */
-goog.provide('goog.disposeAll');
-
-goog.require('goog.disposable.IDisposable');
-
-
-
-/**
- * Class that provides the basic implementation for disposable objects. If your
- * class holds one or more references to COM objects, DOM nodes, or other
- * disposable objects, it should extend this class or implement the disposable
- * interface (defined in goog.disposable.IDisposable).
+ * Objects that need to clean up after themselves.
  * @constructor
- * @implements {goog.disposable.IDisposable}
  */
-goog.Disposable = function() {
-  if (goog.Disposable.MONITORING_MODE != goog.Disposable.MonitoringMode.OFF) {
-    if (goog.Disposable.INCLUDE_STACK_ON_CREATION) {
-      this.creationStack = new Error().stack;
-    }
-    goog.Disposable.instances_[goog.getUid(this)] = this;
-  }
-  // Support sealing
-  this.disposed_ = this.disposed_;
-  this.onDisposeCallbacks_ = this.onDisposeCallbacks_;
-};
-
+ol.Disposable = function() {};
 
 /**
- * @enum {number} Different monitoring modes for Disposable.
- */
-goog.Disposable.MonitoringMode = {
-  /**
-   * No monitoring.
-   */
-  OFF: 0,
-  /**
-   * Creating and disposing the goog.Disposable instances is monitored. All
-   * disposable objects need to call the {@code goog.Disposable} base
-   * constructor. The PERMANENT mode must be switched on before creating any
-   * goog.Disposable instances.
-   */
-  PERMANENT: 1,
-  /**
-   * INTERACTIVE mode can be switched on and off on the fly without producing
-   * errors. It also doesn't warn if the disposable objects don't call the
-   * {@code goog.Disposable} base constructor.
-   */
-  INTERACTIVE: 2
-};
-
-
-/**
- * @define {number} The monitoring mode of the goog.Disposable
- *     instances. Default is OFF. Switching on the monitoring is only
- *     recommended for debugging because it has a significant impact on
- *     performance and memory usage. If switched off, the monitoring code
- *     compiles down to 0 bytes.
- */
-goog.define('goog.Disposable.MONITORING_MODE', 0);
-
-
-/**
- * @define {boolean} Whether to attach creation stack to each created disposable
- *     instance; This is only relevant for when MonitoringMode != OFF.
- */
-goog.define('goog.Disposable.INCLUDE_STACK_ON_CREATION', true);
-
-
-/**
- * Maps the unique ID of every undisposed {@code goog.Disposable} object to
- * the object itself.
- * @type {!Object<number, !goog.Disposable>}
- * @private
- */
-goog.Disposable.instances_ = {};
-
-
-/**
- * @return {!Array<!goog.Disposable>} All {@code goog.Disposable} objects that
- *     haven't been disposed of.
- */
-goog.Disposable.getUndisposedObjects = function() {
-  var ret = [];
-  for (var id in goog.Disposable.instances_) {
-    if (goog.Disposable.instances_.hasOwnProperty(id)) {
-      ret.push(goog.Disposable.instances_[Number(id)]);
-    }
-  }
-  return ret;
-};
-
-
-/**
- * Clears the registry of undisposed objects but doesn't dispose of them.
- */
-goog.Disposable.clearUndisposedObjects = function() {
-  goog.Disposable.instances_ = {};
-};
-
-
-/**
- * Whether the object has been disposed of.
+ * The object has already been disposed.
  * @type {boolean}
  * @private
  */
-goog.Disposable.prototype.disposed_ = false;
-
-
-/**
- * Callbacks to invoke when this object is disposed.
- * @type {Array<!Function>}
- * @private
- */
-goog.Disposable.prototype.onDisposeCallbacks_;
-
+ol.Disposable.prototype.disposed_ = false;
 
 /**
- * If monitoring the goog.Disposable instances is enabled, stores the creation
- * stack trace of the Disposable instance.
- * @const {string}
+ * Clean up.
  */
-goog.Disposable.prototype.creationStack;
-
-
-/**
- * @return {boolean} Whether the object has been disposed of.
- * @override
- */
-goog.Disposable.prototype.isDisposed = function() {
-  return this.disposed_;
-};
-
-
-/**
- * @return {boolean} Whether the object has been disposed of.
- * @deprecated Use {@link #isDisposed} instead.
- */
-goog.Disposable.prototype.getDisposed = goog.Disposable.prototype.isDisposed;
-
-
-/**
- * Disposes of the object. If the object hasn't already been disposed of, calls
- * {@link #disposeInternal}. Classes that extend {@code goog.Disposable} should
- * override {@link #disposeInternal} in order to delete references to COM
- * objects, DOM nodes, and other disposable objects. Reentrant.
- *
- * @return {void} Nothing.
- * @override
- */
-goog.Disposable.prototype.dispose = function() {
+ol.Disposable.prototype.dispose = function() {
   if (!this.disposed_) {
-    // Set disposed_ to true first, in case during the chain of disposal this
-    // gets disposed recursively.
     this.disposed_ = true;
     this.disposeInternal();
-    if (goog.Disposable.MONITORING_MODE != goog.Disposable.MonitoringMode.OFF) {
-      var uid = goog.getUid(this);
-      if (goog.Disposable.MONITORING_MODE ==
-              goog.Disposable.MonitoringMode.PERMANENT &&
-          !goog.Disposable.instances_.hasOwnProperty(uid)) {
-        throw Error(
-            this + ' did not call the goog.Disposable base ' +
-            'constructor or was disposed of after a clearUndisposedObjects ' +
-            'call');
-      }
-      delete goog.Disposable.instances_[uid];
-    }
   }
 };
 
-
 /**
- * Associates a disposable object with this object so that they will be disposed
- * together.
- * @param {goog.disposable.IDisposable} disposable that will be disposed when
- *     this object is disposed.
- */
-goog.Disposable.prototype.registerDisposable = function(disposable) {
-  this.addOnDisposeCallback(goog.partial(goog.dispose, disposable));
-};
-
-
-/**
- * Invokes a callback function when this object is disposed. Callbacks are
- * invoked in the order in which they were added. If a callback is added to
- * an already disposed Disposable, it will be called immediately.
- * @param {function(this:T):?} callback The callback function.
- * @param {T=} opt_scope An optional scope to call the callback in.
- * @template T
- */
-goog.Disposable.prototype.addOnDisposeCallback = function(callback, opt_scope) {
-  if (this.disposed_) {
-    callback.call(opt_scope);
-    return;
-  }
-  if (!this.onDisposeCallbacks_) {
-    this.onDisposeCallbacks_ = [];
-  }
-
-  this.onDisposeCallbacks_.push(
-      goog.isDef(opt_scope) ? goog.bind(callback, opt_scope) : callback);
-};
-
-
-/**
- * Deletes or nulls out any references to COM objects, DOM nodes, or other
- * disposable objects. Classes that extend {@code goog.Disposable} should
- * override this method.
- * Not reentrant. To avoid calling it twice, it must only be called from the
- * subclass' {@code disposeInternal} method. Everywhere else the public
- * {@code dispose} method must be used.
- * For example:
- * <pre>
- *   mypackage.MyClass = function() {
- *     mypackage.MyClass.base(this, 'constructor');
- *     // Constructor logic specific to MyClass.
- *     ...
- *   };
- *   goog.inherits(mypackage.MyClass, goog.Disposable);
- *
- *   mypackage.MyClass.prototype.disposeInternal = function() {
- *     // Dispose logic specific to MyClass.
- *     ...
- *     // Call superclass's disposeInternal at the end of the subclass's, like
- *     // in C++, to avoid hard-to-catch issues.
- *     mypackage.MyClass.base(this, 'disposeInternal');
- *   };
- * </pre>
+ * Extension point for disposable objects.
  * @protected
  */
-goog.Disposable.prototype.disposeInternal = function() {
-  if (this.onDisposeCallbacks_) {
-    while (this.onDisposeCallbacks_.length) {
-      this.onDisposeCallbacks_.shift()();
-    }
-  }
-};
-
-
-/**
- * Returns True if we can verify the object is disposed.
- * Calls {@code isDisposed} on the argument if it supports it.  If obj
- * is not an object with an isDisposed() method, return false.
- * @param {*} obj The object to investigate.
- * @return {boolean} True if we can verify the object is disposed.
- */
-goog.Disposable.isDisposed = function(obj) {
-  if (obj && typeof obj.isDisposed == 'function') {
-    return obj.isDisposed();
-  }
-  return false;
-};
-
-
-/**
- * Calls {@code dispose} on the argument if it supports it. If obj is not an
- *     object with a dispose() method, this is a no-op.
- * @param {*} obj The object to dispose of.
- */
-goog.dispose = function(obj) {
-  if (obj && typeof obj.dispose == 'function') {
-    obj.dispose();
-  }
-};
-
-
-/**
- * Calls {@code dispose} on each member of the list that supports it. (If the
- * member is an ArrayLike, then {@code goog.disposeAll()} will be called
- * recursively on each of its members.) If the member is not an object with a
- * {@code dispose()} method, then it is ignored.
- * @param {...*} var_args The list.
- */
-goog.disposeAll = function(var_args) {
-  for (var i = 0, len = arguments.length; i < len; ++i) {
-    var disposable = arguments[i];
-    if (goog.isArrayLike(disposable)) {
-      goog.disposeAll.apply(null, disposable);
-    } else {
-      goog.dispose(disposable);
-    }
-  }
-};
+ol.Disposable.prototype.disposeInternal = ol.nullFunction;
 
 goog.provide('ol.events.Event');
 
@@ -6506,7 +6178,7 @@ ol.events.Event.preventDefault = function(evt) {
 
 goog.provide('ol.events.EventTarget');
 
-goog.require('goog.Disposable');
+goog.require('ol.Disposable');
 goog.require('ol.events');
 goog.require('ol.events.Event');
 
@@ -6526,7 +6198,7 @@ goog.require('ol.events.Event');
  *    returns false.
  *
  * @constructor
- * @extends {goog.Disposable}
+ * @extends {ol.Disposable}
  */
 ol.events.EventTarget = function() {
 
@@ -6539,7 +6211,7 @@ ol.events.EventTarget = function() {
   this.listeners_ = {};
 
 };
-goog.inherits(ol.events.EventTarget, goog.Disposable);
+goog.inherits(ol.events.EventTarget, ol.Disposable);
 
 
 /**
@@ -6585,7 +6257,6 @@ ol.events.EventTarget.prototype.dispatchEvent = function(event) {
  */
 ol.events.EventTarget.prototype.disposeInternal = function() {
   ol.events.unlistenAll(this);
-  goog.base(this, 'disposeInternal');
 };
 
 
@@ -34399,7 +34070,6 @@ ol.structs.LRUCacheEntry;
 
 goog.provide('ol.TileCache');
 
-goog.require('ol');
 goog.require('ol.TileRange');
 goog.require('ol.structs.LRUCache');
 goog.require('ol.tilecoord');
@@ -34419,8 +34089,7 @@ ol.TileCache = function(opt_highWaterMark) {
    * @private
    * @type {number}
    */
-  this.highWaterMark_ = opt_highWaterMark !== undefined ?
-      opt_highWaterMark : ol.DEFAULT_TILE_CACHE_HIGH_WATER_MARK;
+  this.highWaterMark_ = opt_highWaterMark !== undefined ? opt_highWaterMark : 2048;
 
 };
 goog.inherits(ol.TileCache, ol.structs.LRUCache);
@@ -45751,7 +45420,7 @@ ol.MapBrowserEventHandler.prototype.handlePointerUp_ = function(pointerEvent) {
     this.dragListenerKeys_.length = 0;
     this.dragging_ = false;
     this.down_ = null;
-    goog.dispose(this.documentPointerEventHandler_);
+    this.documentPointerEventHandler_.dispose();
     this.documentPointerEventHandler_ = null;
   }
 };
@@ -45882,11 +45551,11 @@ ol.MapBrowserEventHandler.prototype.disposeInternal = function() {
   this.dragListenerKeys_.length = 0;
 
   if (this.documentPointerEventHandler_) {
-    goog.dispose(this.documentPointerEventHandler_);
+    this.documentPointerEventHandler_.dispose();
     this.documentPointerEventHandler_ = null;
   }
   if (this.pointerEventHandler_) {
-    goog.dispose(this.pointerEventHandler_);
+    this.pointerEventHandler_.dispose();
     this.pointerEventHandler_ = null;
   }
   goog.base(this, 'disposeInternal');
@@ -48156,12 +47825,11 @@ ol.style.IconImageCache.prototype.set = function(src, crossOrigin, color,
 goog.provide('ol.RendererType');
 goog.provide('ol.renderer.Map');
 
-goog.require('goog.Disposable');
 goog.require('goog.asserts');
-goog.require('goog.dispose');
 goog.require('goog.functions');
 goog.require('goog.vec.Mat4');
 goog.require('ol');
+goog.require('ol.Disposable');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.extent');
@@ -48185,7 +47853,7 @@ ol.RendererType = {
 
 /**
  * @constructor
- * @extends {goog.Disposable}
+ * @extends {ol.Disposable}
  * @param {Element} container Container.
  * @param {ol.Map} map Map.
  * @struct
@@ -48214,7 +47882,7 @@ ol.renderer.Map = function(container, map) {
   this.layerRendererListeners_ = {};
 
 };
-goog.inherits(ol.renderer.Map, goog.Disposable);
+goog.inherits(ol.renderer.Map, ol.Disposable);
 
 
 /**
@@ -48250,9 +47918,8 @@ ol.renderer.Map.prototype.createLayerRenderer = goog.abstractMethod;
  */
 ol.renderer.Map.prototype.disposeInternal = function() {
   for (var id in this.layerRenderers_) {
-    goog.dispose(this.layerRenderers_[id]);
+    this.layerRenderers_[id].dispose();
   }
-  goog.base(this, 'disposeInternal');
 };
 
 
@@ -48495,7 +48162,7 @@ ol.renderer.Map.prototype.removeUnusedLayerRenderers_ = function(map, frameState
   var layerKey;
   for (layerKey in this.layerRenderers_) {
     if (!frameState || !(layerKey in frameState.layerStates)) {
-      goog.dispose(this.removeLayerRendererByKey_(layerKey));
+      this.removeLayerRendererByKey_(layerKey).dispose();
     }
   }
 };
@@ -50182,14 +49849,14 @@ ol.interaction.DragRotate.prototype.shouldStopEvent = goog.functions.FALSE;
 
 goog.provide('ol.render.Box');
 
-goog.require('goog.Disposable');
 goog.require('goog.asserts');
+goog.require('ol.Disposable');
 goog.require('ol.geom.Polygon');
 
 
 /**
  * @constructor
- * @extends {goog.Disposable}
+ * @extends {ol.Disposable}
  * @param {string} className CSS class name.
  */
 ol.render.Box = function(className) {
@@ -50227,7 +49894,7 @@ ol.render.Box = function(className) {
   this.endPixel_ = null;
 
 };
-goog.inherits(ol.render.Box, goog.Disposable);
+goog.inherits(ol.render.Box, ol.Disposable);
 
 
 /**
@@ -50235,7 +49902,6 @@ goog.inherits(ol.render.Box, goog.Disposable);
  */
 ol.render.Box.prototype.disposeInternal = function() {
   this.setMap(null);
-  goog.base(this, 'disposeInternal');
 };
 
 
@@ -59970,274 +59636,10 @@ ol.format.FormatType = {
   XML: 'xml'
 };
 
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview
- * XML utilities.
- *
- */
-
-goog.provide('goog.dom.xml');
-
-goog.require('goog.dom');
-goog.require('goog.dom.NodeType');
-goog.require('goog.userAgent');
-
-
-/**
- * Max XML size for MSXML2.  Used to prevent potential DoS attacks.
- * @type {number}
- */
-goog.dom.xml.MAX_XML_SIZE_KB = 2 * 1024;  // In kB
-
-
-/**
- * Max XML size for MSXML2.  Used to prevent potential DoS attacks.
- * @type {number}
- */
-goog.dom.xml.MAX_ELEMENT_DEPTH = 256;  // Same default as MSXML6.
-
-
-/**
- * Check for ActiveXObject support by the browser.
- * @return {boolean} true if browser has ActiveXObject support.
- * @private
- */
-goog.dom.xml.hasActiveXObjectSupport_ = function() {
-  if (!goog.userAgent.IE) {
-    // Avoid raising useless exception in case code is not compiled
-    // and browser is not MSIE.
-    return false;
-  }
-  try {
-    // Due to lot of changes in IE 9, 10 & 11 behaviour and ActiveX being
-    // totally disableable using MSIE's security level, trying to create the
-    // ActiveXOjbect is a lot more reliable than testing for the existance of
-    // window.ActiveXObject
-    new ActiveXObject('MSXML2.DOMDocument');
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-
-/**
- * True if browser has ActiveXObject support.
- * Possible override if this test become wrong in coming IE versions.
- * @type {boolean}
- */
-goog.dom.xml.ACTIVEX_SUPPORT =
-    goog.userAgent.IE && goog.dom.xml.hasActiveXObjectSupport_();
-
-
-/**
- * Creates an XML document appropriate for the current JS runtime
- * @param {string=} opt_rootTagName The root tag name.
- * @param {string=} opt_namespaceUri Namespace URI of the document element.
- * @param {boolean=} opt_preferActiveX Whether to default to ActiveXObject to
- * create Document in IE. Use this if you need xpath support in IE (e.g.,
- * selectSingleNode or selectNodes), but be aware that the ActiveXObject does
- * not support various DOM-specific Document methods and attributes.
- * @return {Document} The new document.
- * @throws {Error} if browser does not support creating new documents or
- * namespace is provided without a root tag name.
- */
-goog.dom.xml.createDocument = function(
-    opt_rootTagName, opt_namespaceUri, opt_preferActiveX) {
-  if (opt_namespaceUri && !opt_rootTagName) {
-    throw Error("Can't create document with namespace and no root tag");
-  }
-  // If document.implementation.createDocument is available and they haven't
-  // explicitly opted to use ActiveXObject when possible.
-  if (document.implementation && document.implementation.createDocument &&
-      !(goog.dom.xml.ACTIVEX_SUPPORT && opt_preferActiveX)) {
-    return document.implementation.createDocument(
-        opt_namespaceUri || '', opt_rootTagName || '', null);
-  } else if (goog.dom.xml.ACTIVEX_SUPPORT) {
-    var doc = goog.dom.xml.createMsXmlDocument_();
-    if (doc) {
-      if (opt_rootTagName) {
-        doc.appendChild(
-            doc.createNode(
-                goog.dom.NodeType.ELEMENT, opt_rootTagName,
-                opt_namespaceUri || ''));
-      }
-      return doc;
-    }
-  }
-  throw Error('Your browser does not support creating new documents');
-};
-
-
-/**
- * Creates an XML document from a string
- * @param {string} xml The text.
- * @param {boolean=} opt_preferActiveX Whether to default to ActiveXObject to
- * create Document in IE. Use this if you need xpath support in IE (e.g.,
- * selectSingleNode or selectNodes), but be aware that the ActiveXObject does
- * not support various DOM-specific Document methods and attributes.
- * @return {Document} XML document from the text.
- * @throws {Error} if browser does not support loading XML documents.
- */
-goog.dom.xml.loadXml = function(xml, opt_preferActiveX) {
-  if (typeof DOMParser != 'undefined' &&
-      !(goog.dom.xml.ACTIVEX_SUPPORT && opt_preferActiveX)) {
-    return new DOMParser().parseFromString(xml, 'application/xml');
-  } else if (goog.dom.xml.ACTIVEX_SUPPORT) {
-    var doc = goog.dom.xml.createMsXmlDocument_();
-    doc.loadXML(xml);
-    return doc;
-  }
-  throw Error('Your browser does not support loading xml documents');
-};
-
-
-/**
- * Serializes an XML document or subtree to string.
- * @param {Document|Element} xml The document or the root node of the subtree.
- * @return {string} The serialized XML.
- * @throws {Error} if browser does not support XML serialization.
- */
-goog.dom.xml.serialize = function(xml) {
-  // Compatible with IE/ActiveXObject.
-  var text = xml.xml;
-  if (text) {
-    return text;
-  }
-  // Compatible with Firefox, Opera and WebKit.
-  if (typeof XMLSerializer != 'undefined') {
-    return new XMLSerializer().serializeToString(xml);
-  }
-  throw Error('Your browser does not support serializing XML documents');
-};
-
-
-/**
- * Selects a single node using an Xpath expression and a root node
- * @param {Node} node The root node.
- * @param {string} path Xpath selector.
- * @return {Node} The selected node, or null if no matching node.
- */
-goog.dom.xml.selectSingleNode = function(node, path) {
-  if (typeof node.selectSingleNode != 'undefined') {
-    var doc = goog.dom.getOwnerDocument(node);
-    if (typeof doc.setProperty != 'undefined') {
-      doc.setProperty('SelectionLanguage', 'XPath');
-    }
-    return node.selectSingleNode(path);
-  } else if (document.implementation.hasFeature('XPath', '3.0')) {
-    var doc = goog.dom.getOwnerDocument(node);
-    var resolver = doc.createNSResolver(doc.documentElement);
-    var result = doc.evaluate(
-        path, node, resolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-    return result.singleNodeValue;
-  }
-  // This browser does not support xpath for the given node. If IE, ensure XML
-  // Document was created using ActiveXObject
-  // TODO(joeltine): This should throw instead of return null.
-  return null;
-};
-
-
-/**
- * Selects multiple nodes using an Xpath expression and a root node
- * @param {Node} node The root node.
- * @param {string} path Xpath selector.
- * @return {(NodeList|Array<Node>)} The selected nodes, or empty array if no
- *     matching nodes.
- */
-goog.dom.xml.selectNodes = function(node, path) {
-  if (typeof node.selectNodes != 'undefined') {
-    var doc = goog.dom.getOwnerDocument(node);
-    if (typeof doc.setProperty != 'undefined') {
-      doc.setProperty('SelectionLanguage', 'XPath');
-    }
-    return node.selectNodes(path);
-  } else if (document.implementation.hasFeature('XPath', '3.0')) {
-    var doc = goog.dom.getOwnerDocument(node);
-    var resolver = doc.createNSResolver(doc.documentElement);
-    var nodes = doc.evaluate(
-        path, node, resolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    var results = [];
-    var count = nodes.snapshotLength;
-    for (var i = 0; i < count; i++) {
-      results.push(nodes.snapshotItem(i));
-    }
-    return results;
-  } else {
-    // This browser does not support xpath for the given node. If IE, ensure XML
-    // Document was created using ActiveXObject.
-    // TODO(joeltine): This should throw instead of return empty array.
-    return [];
-  }
-};
-
-
-/**
- * Sets multiple attributes on an element. Differs from goog.dom.setProperties
- * in that it exclusively uses the element's setAttributes method. Use this
- * when you need to ensure that the exact property is available as an attribute
- * and can be read later by the native getAttribute method.
- * @param {!Element} element XML or DOM element to set attributes on.
- * @param {!Object<string, string>} attributes Map of property:value pairs.
- */
-goog.dom.xml.setAttributes = function(element, attributes) {
-  for (var key in attributes) {
-    if (attributes.hasOwnProperty(key)) {
-      element.setAttribute(key, attributes[key]);
-    }
-  }
-};
-
-
-/**
- * Creates an instance of the MSXML2.DOMDocument.
- * @return {Document} The new document.
- * @private
- */
-goog.dom.xml.createMsXmlDocument_ = function() {
-  var doc = new ActiveXObject('MSXML2.DOMDocument');
-  if (doc) {
-    // Prevent potential vulnerabilities exposed by MSXML2, see
-    // http://b/1707300 and http://wiki/Main/ISETeamXMLAttacks for details.
-    doc.resolveExternals = false;
-    doc.validateOnParse = false;
-    // Add a try catch block because accessing these properties will throw an
-    // error on unsupported MSXML versions. This affects Windows machines
-    // running IE6 or IE7 that are on XP SP2 or earlier without MSXML updates.
-    // See http://msdn.microsoft.com/en-us/library/ms766391(VS.85).aspx for
-    // specific details on which MSXML versions support these properties.
-    try {
-      doc.setProperty('ProhibitDTD', true);
-      doc.setProperty('MaxXMLSize', goog.dom.xml.MAX_XML_SIZE_KB);
-      doc.setProperty('MaxElementDepth', goog.dom.xml.MAX_ELEMENT_DEPTH);
-    } catch (e) {
-      // No-op.
-    }
-  }
-  return doc;
-};
-
 goog.provide('ol.xml');
 
 goog.require('goog.asserts');
 goog.require('goog.dom.NodeType');
-goog.require('goog.dom.xml');
-goog.require('goog.userAgent');
 goog.require('ol.array');
 
 
@@ -60269,42 +59671,17 @@ ol.xml.Serializer;
  * @const
  * @type {Document}
  */
-ol.xml.DOCUMENT = goog.dom.xml.createDocument();
+ol.xml.DOCUMENT = document.implementation.createDocument('', '', null);
 
 
 /**
  * @param {string} namespaceURI Namespace URI.
  * @param {string} qualifiedName Qualified name.
  * @return {Node} Node.
- * @private
  */
-ol.xml.createElementNS_ = function(namespaceURI, qualifiedName) {
+ol.xml.createElementNS = function(namespaceURI, qualifiedName) {
   return ol.xml.DOCUMENT.createElementNS(namespaceURI, qualifiedName);
 };
-
-
-/**
- * @param {string} namespaceURI Namespace URI.
- * @param {string} qualifiedName Qualified name.
- * @return {Node} Node.
- * @private
- */
-ol.xml.createElementNSActiveX_ = function(namespaceURI, qualifiedName) {
-  if (!namespaceURI) {
-    namespaceURI = '';
-  }
-  return ol.xml.DOCUMENT.createNode(1, qualifiedName, namespaceURI);
-};
-
-
-/**
- * @param {string} namespaceURI Namespace URI.
- * @param {string} qualifiedName Qualified name.
- * @return {Node} Node.
- */
-ol.xml.createElementNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.createElementNS_ : ol.xml.createElementNSActiveX_;
 
 
 /**
@@ -60349,93 +59726,21 @@ ol.xml.getAllTextContent_ = function(node, normalizeWhitespace, accumulator) {
 
 
 /**
- * @param {Node} node Node.
- * @private
- * @return {string} Local name.
- */
-ol.xml.getLocalName_ = function(node) {
-  return node.localName;
-};
-
-
-/**
- * @param {Node} node Node.
- * @private
- * @return {string} Local name.
- */
-ol.xml.getLocalNameIE_ = function(node) {
-  var localName = node.localName;
-  if (localName !== undefined) {
-    return localName;
-  }
-  var baseName = node.baseName;
-  goog.asserts.assert(baseName,
-      'Failed to get localName/baseName of node %s', node);
-  return baseName;
-};
-
-
-/**
- * @param {Node} node Node.
- * @return {string} Local name.
- */
-ol.xml.getLocalName = goog.userAgent.IE ?
-    ol.xml.getLocalNameIE_ : ol.xml.getLocalName_;
-
-
-/**
  * @param {?} value Value.
- * @private
  * @return {boolean} Is document.
  */
-ol.xml.isDocument_ = function(value) {
+ol.xml.isDocument = function(value) {
   return value instanceof Document;
 };
 
 
 /**
  * @param {?} value Value.
- * @private
- * @return {boolean} Is document.
- */
-ol.xml.isDocumentIE_ = function(value) {
-  return goog.isObject(value) && value.nodeType == goog.dom.NodeType.DOCUMENT;
-};
-
-
-/**
- * @param {?} value Value.
- * @return {boolean} Is document.
- */
-ol.xml.isDocument = goog.userAgent.IE ?
-    ol.xml.isDocumentIE_ : ol.xml.isDocument_;
-
-
-/**
- * @param {?} value Value.
- * @private
  * @return {boolean} Is node.
  */
-ol.xml.isNode_ = function(value) {
+ol.xml.isNode = function(value) {
   return value instanceof Node;
 };
-
-
-/**
- * @param {?} value Value.
- * @private
- * @return {boolean} Is node.
- */
-ol.xml.isNodeIE_ = function(value) {
-  return goog.isObject(value) && value.nodeType !== undefined;
-};
-
-
-/**
- * @param {?} value Value.
- * @return {boolean} Is node.
- */
-ol.xml.isNode = goog.userAgent.IE ? ol.xml.isNodeIE_ : ol.xml.isNode_;
 
 
 /**
@@ -60443,9 +59748,8 @@ ol.xml.isNode = goog.userAgent.IE ? ol.xml.isNodeIE_ : ol.xml.isNode_;
  * @param {?string} namespaceURI Namespace URI.
  * @param {string} name Attribute name.
  * @return {string} Value
- * @private
  */
-ol.xml.getAttributeNS_ = function(node, namespaceURI, name) {
+ol.xml.getAttributeNS = function(node, namespaceURI, name) {
   return node.getAttributeNS(namespaceURI, name) || '';
 };
 
@@ -60454,38 +59758,9 @@ ol.xml.getAttributeNS_ = function(node, namespaceURI, name) {
  * @param {Node} node Node.
  * @param {?string} namespaceURI Namespace URI.
  * @param {string} name Attribute name.
- * @return {string} Value
- * @private
- */
-ol.xml.getAttributeNSActiveX_ = function(node, namespaceURI, name) {
-  var attributeValue = '';
-  var attributeNode = ol.xml.getAttributeNodeNS(node, namespaceURI, name);
-  if (attributeNode !== undefined) {
-    attributeValue = attributeNode.nodeValue;
-  }
-  return attributeValue;
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {string} Value
- */
-ol.xml.getAttributeNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.getAttributeNS_ : ol.xml.getAttributeNSActiveX_;
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
  * @return {?Node} Attribute node or null if none found.
- * @private
  */
-ol.xml.getAttributeNodeNS_ = function(node, namespaceURI, name) {
+ol.xml.getAttributeNodeNS = function(node, namespaceURI, name) {
   return node.getAttributeNodeNS(namespaceURI, name);
 };
 
@@ -60494,78 +59769,11 @@ ol.xml.getAttributeNodeNS_ = function(node, namespaceURI, name) {
  * @param {Node} node Node.
  * @param {?string} namespaceURI Namespace URI.
  * @param {string} name Attribute name.
- * @return {?Node} Attribute node or null if none found.
- * @private
- */
-ol.xml.getAttributeNodeNSActiveX_ = function(node, namespaceURI, name) {
-  var attributeNode = null;
-  var attributes = node.attributes;
-  var potentialNode, fullName;
-  for (var i = 0, len = attributes.length; i < len; ++i) {
-    potentialNode = attributes[i];
-    if (potentialNode.namespaceURI == namespaceURI) {
-      fullName = (potentialNode.prefix) ?
-          (potentialNode.prefix + ':' + name) : name;
-      if (fullName == potentialNode.nodeName) {
-        attributeNode = potentialNode;
-        break;
-      }
-    }
-  }
-  return attributeNode;
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @return {?Node} Attribute node or null if none found.
- */
-ol.xml.getAttributeNodeNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.getAttributeNodeNS_ : ol.xml.getAttributeNodeNSActiveX_;
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
  * @param {string|number} value Value.
- * @private
  */
-ol.xml.setAttributeNS_ = function(node, namespaceURI, name, value) {
+ol.xml.setAttributeNS = function(node, namespaceURI, name, value) {
   node.setAttributeNS(namespaceURI, name, value);
 };
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @param {string|number} value Value.
- * @private
- */
-ol.xml.setAttributeNSActiveX_ = function(node, namespaceURI, name, value) {
-  if (namespaceURI) {
-    var attribute = node.ownerDocument.createNode(2, name, namespaceURI);
-    attribute.nodeValue = value;
-    node.setAttributeNode(attribute);
-  } else {
-    node.setAttribute(name, value);
-  }
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
- * @param {string|number} value Value.
- */
-ol.xml.setAttributeNS =
-    (document.implementation && document.implementation.createDocument) ?
-        ol.xml.setAttributeNS_ : ol.xml.setAttributeNSActiveX_;
 
 
 /**
@@ -63513,12 +62721,6 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
 
   /**
    * @private
-   * @type {Object.<string, Array.<ol.Extent>>}
-   */
-  this.clipExtents_ = null;
-
-  /**
-   * @private
    * @type {CanvasRenderingContext2D}
    */
   this.context_ = ol.dom.createCanvasContext2D();
@@ -63556,7 +62758,6 @@ ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
   goog.asserts.assertInstanceof(source, ol.source.Tile,
       'source is an ol.source.Tile');
   var tileGutter = source.getGutter(projection);
-  var opaque = source.getOpaque(projection);
 
   var transform = this.getTransform(frameState, 0);
 
@@ -63583,60 +62784,56 @@ ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
   var tileGrid = source.getTileGridForProjection(projection);
   var tilesToDraw = this.renderedTiles_;
 
-  var clipExtents, clipExtent, currentZ, i, ii, j, jj, insertPoint;
-  var origin, tile, tileExtent, tileHeight, tileOffsetX, tileOffsetY;
-  var tilePixelSize, tileWidth;
-  for (i = 0, ii = tilesToDraw.length; i < ii; ++i) {
-    tile = tilesToDraw[i];
-    tileExtent = tileGrid.getTileCoordExtent(
-        tile.getTileCoord(), this.tmpExtent_);
-    clipExtents = !opaque && this.clipExtents_[tile.tileCoord.toString()];
-    if (clipExtents) {
-      // Create a clip mask for regions in this low resolution tile that will be
-      // filled by a higher resolution tile
-      renderContext.save();
-      renderContext.beginPath();
-      renderContext.moveTo((tileExtent[0] - center[0]) * pixelScale + offsetX,
-          (center[1] - tileExtent[1]) * pixelScale + offsetY);
-      renderContext.lineTo((tileExtent[2] - center[0]) * pixelScale + offsetX,
-          (center[1] - tileExtent[1]) * pixelScale + offsetY);
-      renderContext.lineTo((tileExtent[2] - center[0]) * pixelScale + offsetX,
-          (center[1] - tileExtent[3]) * pixelScale + offsetY);
-      renderContext.lineTo((tileExtent[0] - center[0]) * pixelScale + offsetX,
-          (center[1] - tileExtent[3]) * pixelScale + offsetY);
-      renderContext.closePath();
-      for (j = 0, jj = clipExtents.length; j < jj; ++j) {
-        clipExtent = clipExtents[j];
-        renderContext.moveTo((clipExtent[0] - center[0]) * pixelScale + offsetX,
-            (center[1] - clipExtent[1]) * pixelScale + offsetY);
-        renderContext.lineTo((clipExtent[0] - center[0]) * pixelScale + offsetX,
-            (center[1] - clipExtent[3]) * pixelScale + offsetY);
-        renderContext.lineTo((clipExtent[2] - center[0]) * pixelScale + offsetX,
-            (center[1] - clipExtent[3]) * pixelScale + offsetY);
-        renderContext.lineTo((clipExtent[2] - center[0]) * pixelScale + offsetX,
-            (center[1] - clipExtent[1]) * pixelScale + offsetY);
-        renderContext.closePath();
-      }
-      renderContext.clip();
-    }
-    currentZ = tile.getTileCoord()[0];
-    tilePixelSize = source.getTilePixelSize(currentZ, pixelRatio, projection);
-    insertPoint = ol.extent.getTopLeft(tileExtent);
-    tileWidth = Math.round(ol.extent.getWidth(tileExtent) * pixelScale);
-    tileHeight = Math.round(ol.extent.getHeight(tileExtent) * pixelScale);
-    // Calculate all insert points from a common origin and tile widths to avoid
+  var pixelExtents;
+  var opaque = source.getOpaque(projection) && layerState.opacity == 1;
+  if (!opaque) {
+    tilesToDraw.reverse();
+    pixelExtents = [];
+  }
+  for (var i = 0, ii = tilesToDraw.length; i < ii; ++i) {
+    var tile = tilesToDraw[i];
+    var tileCoord = tile.getTileCoord();
+    var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
+    var currentZ = tileCoord[0];
+    // Calculate all insert points by tile widths from a common origin to avoid
     // gaps caused by rounding
-    origin = ol.extent.getBottomLeft(tileGrid.getTileCoordExtent(
+    var origin = ol.extent.getBottomLeft(tileGrid.getTileCoordExtent(
         tileGrid.getTileCoordForCoordAndZ(center, currentZ)));
-    tileOffsetX = offsetX + Math.round((origin[0] - center[0]) * pixelScale);
-    tileOffsetY = offsetY + Math.round((center[1] - origin[1]) * pixelScale);
+    var w = Math.round(ol.extent.getWidth(tileExtent) * pixelScale);
+    var h = Math.round(ol.extent.getHeight(tileExtent) * pixelScale);
+    var left = Math.round((tileExtent[0] - origin[0]) * pixelScale / w) * w +
+        offsetX + Math.round((origin[0] - center[0]) * pixelScale);
+    var top = Math.round((origin[1] - tileExtent[3]) * pixelScale / h) * h +
+        offsetY + Math.round((center[1] - origin[1]) * pixelScale);
+    if (!opaque) {
+      var pixelExtent = [left, top, left + w, top + h];
+      // Create a clip mask for regions in this low resolution tile that are
+      // already filled by a higher resolution tile
+      renderContext.save();
+      for (var j = 0, jj = pixelExtents.length; j < jj; ++j) {
+        var clipExtent = pixelExtents[j];
+        if (ol.extent.intersects(pixelExtent, clipExtent)) {
+          renderContext.beginPath();
+          // counter-clockwise (outer ring) for current tile
+          renderContext.moveTo(pixelExtent[0], pixelExtent[1]);
+          renderContext.lineTo(pixelExtent[0], pixelExtent[3]);
+          renderContext.lineTo(pixelExtent[2], pixelExtent[3]);
+          renderContext.lineTo(pixelExtent[2], pixelExtent[1]);
+          // clockwise (inner ring) for higher resolution tile
+          renderContext.moveTo(clipExtent[0], clipExtent[1]);
+          renderContext.lineTo(clipExtent[2], clipExtent[1]);
+          renderContext.lineTo(clipExtent[2], clipExtent[3]);
+          renderContext.lineTo(clipExtent[0], clipExtent[3]);
+          renderContext.closePath();
+          renderContext.clip();
+        }
+      }
+      pixelExtents.push(pixelExtent);
+    }
+    var tilePixelSize = source.getTilePixelSize(currentZ, pixelRatio, projection);
     renderContext.drawImage(tile.getImage(), tileGutter, tileGutter,
-        tilePixelSize[0], tilePixelSize[1],
-        Math.round((insertPoint[0] - origin[0]) * pixelScale / tileWidth) *
-            tileWidth + tileOffsetX,
-        Math.round((origin[1] - insertPoint[1]) * pixelScale / tileHeight) *
-            tileHeight + tileOffsetY, tileWidth, tileHeight);
-    if (clipExtents) {
+        tilePixelSize[0], tilePixelSize[1], left, top, w, h);
+    if (!opaque) {
       renderContext.restore();
     }
   }
@@ -63754,33 +62951,6 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
     }
   }
   this.renderedTiles_ = renderables;
-  if (!tileSource.getOpaque(projection)) {
-    var clipExtents = {};
-    var tileCoord;
-    for (i = renderables.length - 1; i >= 0; --i) {
-      tileCoord = renderables[i].getTileCoord();
-      tileGrid.forEachTileCoordParentTileRange(tileCoord,
-          function(z, tileRange) {
-            var tiles = tilesToDrawByZ[z];
-            if (tiles) {
-              var key, tile;
-              for (key in tiles) {
-                tile = tiles[key];
-                if (tileRange.contains(tile.getTileCoord()) &&
-                    tile.getState() == ol.TileState.LOADED) {
-                  if (!(key in clipExtents)) {
-                    clipExtents[key] = [];
-                  }
-                  clipExtents[key].push(tileGrid.getTileCoordExtent(tileCoord));
-                  return true;
-                }
-              }
-            }
-            return false;
-          }, this, tmpTileRange, tmpExtent);
-    }
-    this.clipExtents_ = clipExtents;
-  }
 
   this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
   this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio,
@@ -64072,8 +63242,6 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
     return true;
   }
 
-  // FIXME dispose of old replayGroup in post render
-  goog.dispose(this.replayGroup_);
   this.replayGroup_ = null;
 
   this.dirty_ = false;
@@ -64555,7 +63723,7 @@ ol.source.VectorTile = function(options) {
 
   goog.base(this, {
     attributions: options.attributions,
-    cacheSize: ol.DEFAULT_TILE_CACHE_HIGH_WATER_MARK / 16,
+    cacheSize: options.cacheSize !== undefined ? options.cacheSize : 128,
     extent: options.extent,
     logo: options.logo,
     opaque: options.opaque,
@@ -64841,8 +64009,6 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
     return;
   }
 
-  // FIXME dispose of old replayGroup in post render
-  goog.dispose(replayState.replayGroup);
   replayState.replayGroup = null;
   replayState.dirty = false;
 
@@ -66322,8 +65488,6 @@ ol.renderer.dom.VectorLayer.prototype.prepareFrame = function(frameState, layerS
     return true;
   }
 
-  // FIXME dispose of old replayGroup in post render
-  goog.dispose(this.replayGroup_);
   this.replayGroup_ = null;
 
   this.dirty_ = false;
@@ -69122,6 +68286,7 @@ goog.provide('ol.webgl.Context');
 goog.require('goog.asserts');
 goog.require('goog.log');
 goog.require('ol');
+goog.require('ol.Disposable');
 goog.require('ol.array');
 goog.require('ol.events');
 goog.require('ol.object');
@@ -69141,7 +68306,7 @@ ol.webgl.BufferCacheEntry;
  * A WebGL context for accessing low-level WebGL capabilities.
  *
  * @constructor
- * @extends {ol.events.EventTarget}
+ * @extends {ol.Disposable}
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {WebGLRenderingContext} gl GL.
  */
@@ -69220,6 +68385,7 @@ ol.webgl.Context = function(canvas, gl) {
       this.handleWebGLContextRestored, this);
 
 };
+goog.inherits(ol.webgl.Context, ol.Disposable);
 
 
 /**
@@ -69280,6 +68446,7 @@ ol.webgl.Context.prototype.deleteBuffer = function(buf) {
  * @inheritDoc
  */
 ol.webgl.Context.prototype.disposeInternal = function() {
+  ol.events.unlistenAll(this.canvas_);
   var gl = this.getGL();
   if (!gl.isContextLost()) {
     var key;
@@ -72860,7 +72027,7 @@ ol.renderer.webgl.Map.prototype.disposeInternal = function() {
           }
         });
   }
-  goog.dispose(this.context_);
+  this.context_.dispose();
   goog.base(this, 'disposeInternal');
 };
 
@@ -73458,7 +72625,8 @@ ol.Map = function(options) {
     ol.events.EventType.TOUCHSTART,
     ol.events.EventType.MSPOINTERDOWN,
     ol.MapBrowserEvent.EventType.POINTERDOWN,
-    goog.userAgent.GECKO ? 'DOMMouseScroll' : ol.events.EventType.MOUSEWHEEL
+    ol.events.EventType.MOUSEWHEEL,
+    ol.events.EventType.WHEEL
   ];
   for (var i = 0, ii = overlayEvents.length; i < ii; ++i) {
     ol.events.listen(this.overlayContainerStopEvent_, overlayEvents[i],
@@ -73466,12 +72634,15 @@ ol.Map = function(options) {
   }
   this.viewport_.appendChild(this.overlayContainerStopEvent_);
 
-  var mapBrowserEventHandler = new ol.MapBrowserEventHandler(this);
+  /**
+   * @private
+   * @type {ol.MapBrowserEventHandler}
+   */
+  this.mapBrowserEventHandler_ = new ol.MapBrowserEventHandler(this);
   for (var key in ol.MapBrowserEvent.EventType) {
-    ol.events.listen(mapBrowserEventHandler, ol.MapBrowserEvent.EventType[key],
+    ol.events.listen(this.mapBrowserEventHandler_, ol.MapBrowserEvent.EventType[key],
         this.handleMapBrowserEvent, this);
   }
-  this.registerDisposable(mapBrowserEventHandler);
 
   /**
    * @private
@@ -73519,9 +72690,7 @@ ol.Map = function(options) {
    * @type {ol.renderer.Map}
    * @private
    */
-  this.renderer_ =
-      new optionsInternal.rendererConstructor(this.viewport_, this);
-  this.registerDisposable(this.renderer_);
+  this.renderer_ = new optionsInternal.rendererConstructor(this.viewport_, this);
 
   /**
    * @type {function(Event)|undefined}
@@ -73743,6 +72912,8 @@ ol.Map.prototype.removePreRenderFunction = function(preRenderFunction) {
  * @inheritDoc
  */
 ol.Map.prototype.disposeInternal = function() {
+  this.mapBrowserEventHandler_.dispose();
+  this.renderer_.dispose();
   ol.events.unlisten(this.viewport_, ol.events.EventType.WHEEL,
       this.handleBrowserEvent, this);
   ol.events.unlisten(this.viewport_, ol.events.EventType.MOUSEWHEEL,
@@ -76308,14 +75479,17 @@ ol.control.ZoomSlider = function(opt_options) {
       [className, ol.css.CLASS_UNSELECTABLE, ol.css.CLASS_CONTROL],
       thumbElement);
 
-  var dragger = new ol.pointer.PointerEventHandler(containerElement);
-  this.registerDisposable(dragger);
+  /**
+   * @type {ol.pointer.PointerEventHandler}
+   * @private
+   */
+  this.dragger_ = new ol.pointer.PointerEventHandler(containerElement);
 
-  ol.events.listen(dragger, ol.pointer.EventType.POINTERDOWN,
+  ol.events.listen(this.dragger_, ol.pointer.EventType.POINTERDOWN,
       this.handleDraggerStart_, this);
-  ol.events.listen(dragger, ol.pointer.EventType.POINTERMOVE,
+  ol.events.listen(this.dragger_, ol.pointer.EventType.POINTERMOVE,
       this.handleDraggerDrag_, this);
-  ol.events.listen(dragger, ol.pointer.EventType.POINTERUP,
+  ol.events.listen(this.dragger_, ol.pointer.EventType.POINTERUP,
       this.handleDraggerEnd_, this);
 
   ol.events.listen(containerElement, ol.events.EventType.CLICK,
@@ -76331,6 +75505,15 @@ ol.control.ZoomSlider = function(opt_options) {
   });
 };
 goog.inherits(ol.control.ZoomSlider, ol.control.Control);
+
+
+/**
+ * @inheritDoc
+ */
+ol.control.ZoomSlider.prototype.disposeInternal = function() {
+  this.dragger_.dispose();
+  goog.base(this, 'disposeInternal');
+};
 
 
 /**
@@ -80335,7 +79518,6 @@ goog.provide('ol.format.XMLFeature');
 
 goog.require('goog.asserts');
 goog.require('goog.dom.NodeType');
-goog.require('goog.dom.xml');
 goog.require('ol.array');
 goog.require('ol.format.Feature');
 goog.require('ol.format.FormatType');
@@ -80353,6 +79535,13 @@ goog.require('ol.xml');
  * @extends {ol.format.Feature}
  */
 ol.format.XMLFeature = function() {
+
+  /**
+   * @type {XMLSerializer}
+   * @private
+   */
+  this.xmlSerializer_ = new XMLSerializer();
+
   goog.base(this);
 };
 goog.inherits(ol.format.XMLFeature, ol.format.Feature);
@@ -80539,7 +79728,7 @@ ol.format.XMLFeature.prototype.writeFeature = function(feature, opt_options) {
   var node = this.writeFeatureNode(feature, opt_options);
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
-  return goog.dom.xml.serialize(/** @type {Element} */(node));
+  return this.xmlSerializer_.serializeToString(node);
 };
 
 
@@ -80559,7 +79748,7 @@ ol.format.XMLFeature.prototype.writeFeatures = function(features, opt_options) {
   var node = this.writeFeaturesNode(features, opt_options);
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
-  return goog.dom.xml.serialize(/** @type {Element} */(node));
+  return this.xmlSerializer_.serializeToString(node);
 };
 
 
@@ -80578,7 +79767,7 @@ ol.format.XMLFeature.prototype.writeGeometry = function(geometry, opt_options) {
   var node = this.writeGeometryNode(geometry, opt_options);
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
-  return goog.dom.xml.serialize(/** @type {Element} */(node));
+  return this.xmlSerializer_.serializeToString(node);
 };
 
 
@@ -80702,7 +79891,7 @@ ol.format.GMLBase.ONLY_WHITESPACE_RE_ = /^[\s\xa0]*$/;
 ol.format.GMLBase.prototype.readFeaturesInternal = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
-  var localName = ol.xml.getLocalName(node);
+  var localName = node.localName;
   var features;
   if (localName == 'FeatureCollection') {
     if (node.namespaceURI === 'http://www.opengis.net/wfs') {
@@ -80810,7 +79999,7 @@ ol.format.GMLBase.prototype.readFeatureElement = function(node, objectStack) {
       ol.xml.getAttributeNS(node, ol.format.GMLBase.GMLNS, 'id');
   var values = {}, geometryName;
   for (n = node.firstElementChild; n; n = n.nextElementSibling) {
-    var localName = ol.xml.getLocalName(n);
+    var localName = n.localName;
     // Assume attribute elements have one child node and that the child
     // is a text or CDATA node (to be treated as text).
     // Otherwise assume it is a geometry node.
@@ -88943,7 +88132,7 @@ ol.format.KML.prototype.getExtensions = function() {
 ol.format.KML.prototype.readDocumentOrFolder_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
-  var localName = ol.xml.getLocalName(node);
+  var localName = node.localName;
   goog.asserts.assert(localName == 'Document' || localName == 'Folder',
       'localName should be Document or Folder');
   // FIXME use scope somehow
@@ -89121,7 +88310,7 @@ ol.format.KML.prototype.readFeaturesFromNode = function(node, opt_options) {
     return [];
   }
   var features;
-  var localName = ol.xml.getLocalName(node);
+  var localName = node.localName;
   if (localName == 'Document' || localName == 'Folder') {
     features = this.readDocumentOrFolder_(
         node, [this.getReadOptions(node, opt_options)]);
@@ -89207,7 +88396,7 @@ ol.format.KML.prototype.readNameFromNode = function(node) {
     }
   }
   for (n = node.firstElementChild; n; n = n.nextElementSibling) {
-    var localName = ol.xml.getLocalName(n);
+    var localName = n.localName;
     if (ol.array.includes(ol.format.KML.NAMESPACE_URIS_, n.namespaceURI) &&
         (localName == 'Document' ||
          localName == 'Folder' ||
@@ -89278,7 +88467,7 @@ ol.format.KML.prototype.readNetworkLinksFromNode = function(node) {
     }
   }
   for (n = node.firstElementChild; n; n = n.nextElementSibling) {
-    var localName = ol.xml.getLocalName(n);
+    var localName = n.localName;
     if (ol.array.includes(ol.format.KML.NAMESPACE_URIS_, n.namespaceURI) &&
         (localName == 'Document' ||
          localName == 'Folder' ||
@@ -95791,7 +94980,7 @@ ol.format.WMSGetFeatureInfo.prototype.readFeatures_ = function(node, objectStack
   node.setAttribute('namespaceURI', this.featureNS_);
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
-  var localName = ol.xml.getLocalName(node);
+  var localName = node.localName;
   /** @type {Array.<ol.Feature>} */
   var features = [];
   if (node.childNodes.length === 0) {
@@ -97900,7 +97089,7 @@ ol.ImageTile.prototype.disposeInternal = function() {
     this.unlistenImage_();
   }
   if (this.interimTile) {
-    goog.dispose(this.interimTile);
+    this.interimTile.dispose();
   }
   goog.base(this, 'disposeInternal');
 };
@@ -102679,6 +101868,7 @@ ol.source.TileImage = function(options) {
 
   goog.base(this, {
     attributions: options.attributions,
+    cacheSize: options.cacheSize,
     extent: options.extent,
     logo: options.logo,
     opaque: options.opaque,
@@ -103049,6 +102239,7 @@ goog.require('ol.tilecoord');
 ol.source.BingMaps = function(options) {
 
   goog.base(this, {
+    cacheSize: options.cacheSize,
     crossOrigin: 'anonymous',
     opaque: true,
     projection: ol.proj.get('EPSG:3857'),
@@ -104157,6 +103348,7 @@ ol.source.XYZ = function(options) {
 
   goog.base(this, {
     attributions: options.attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: options.crossOrigin,
     logo: options.logo,
     opaque: options.opaque,
@@ -104208,6 +103400,7 @@ ol.source.OSM = function(opt_options) {
 
   goog.base(this, {
     attributions: attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: crossOrigin,
     opaque: options.opaque !== undefined ? options.opaque : true,
     maxZoom: options.maxZoom !== undefined ? options.maxZoom : 19,
@@ -104272,6 +103465,7 @@ ol.source.MapQuest = function(opt_options) {
 
   goog.base(this, {
     attributions: layerConfig.attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: 'anonymous',
     logo: 'https://developer.mapquest.com/content/osm/mq_logo.png',
     maxZoom: layerConfig.maxZoom,
@@ -104354,16 +103548,32 @@ var Processor = _dereq_('./processor');
 exports.Processor = Processor;
 
 },{"./processor":2}],2:[function(_dereq_,module,exports){
-/* eslint-disable dot-notation */
+var newImageData = _dereq_('./util').newImageData;
 
 /**
- * Create a function for running operations.
+ * Create a function for running operations.  This function is serialized for
+ * use in a worker.
  * @param {function(Array, Object):*} operation The operation.
  * @return {function(Object):ArrayBuffer} A function that takes an object with
  * buffers, meta, imageOps, width, and height properties and returns an array
  * buffer.
  */
 function createMinion(operation) {
+  var workerHasImageData = true;
+  try {
+    new ImageData(10, 10);
+  } catch (_) {
+    workerHasImageData = false;
+  }
+
+  function newWorkerImageData(data, width, height) {
+    if (workerHasImageData) {
+      return new ImageData(data, width, height);
+    } else {
+      return {data: data, width: width, height: height};
+    }
+  }
+
   return function(data) {
     // bracket notation for minification support
     var buffers = data['buffers'];
@@ -104379,7 +103589,7 @@ function createMinion(operation) {
     if (imageOps) {
       var images = new Array(numBuffers);
       for (b = 0; b < numBuffers; ++b) {
-        images[b] = new ImageData(
+        images[b] = newWorkerImageData(
             new Uint8ClampedArray(buffers[b]), width, height);
       }
       output = operation(images, meta).data;
@@ -104413,7 +103623,7 @@ function createMinion(operation) {
 /**
  * Create a worker for running operations.
  * @param {Object} config Configuration.
- * @param {function(Object)} onMessage Called with a message event.
+ * @param {function(MessageEvent)} onMessage Called with a message event.
  * @return {Worker} The worker.
  */
 function createWorker(config, onMessage) {
@@ -104422,12 +103632,10 @@ function createWorker(config, onMessage) {
   });
 
   var lines = lib.concat([
-    'var __minion__ = (' + createMinion.toString() + ')(',
-        config.operation.toString(),
-    ');',
-    'self.addEventListener("message", function(__event__) {',
-      'var buffer = __minion__(__event__.data);',
-      'self.postMessage({buffer: buffer, meta: __event__.data.meta}, [buffer]);',
+    'var __minion__ = (' + createMinion.toString() + ')(', config.operation.toString(), ');',
+    'self.addEventListener("message", function(event) {',
+    '  var buffer = __minion__(event.data);',
+    '  self.postMessage({buffer: buffer, meta: event.data.meta}, [buffer]);',
     '});'
   ]);
 
@@ -104441,7 +103649,7 @@ function createWorker(config, onMessage) {
 /**
  * Create a faux worker for running operations.
  * @param {Object} config Configuration.
- * @param {function(Object)} onMessage Called with a message event.
+ * @param {function(MessageEvent)} onMessage Called with a message event.
  * @return {Object} The faux worker.
  */
 function createFauxWorker(config, onMessage) {
@@ -104449,7 +103657,7 @@ function createFauxWorker(config, onMessage) {
   return {
     postMessage: function(data) {
       setTimeout(function() {
-        onMessage({data: {buffer: minion(data), meta: data.meta}});
+        onMessage({'data': {'buffer': minion(data), 'meta': data['meta']}});
       }, 0);
     }
   };
@@ -104570,7 +103778,7 @@ Processor.prototype._dispatch = function() {
 /**
  * Handle messages from the worker.
  * @param {number} index The worker index.
- * @param {Object} event The message event.
+ * @param {MessageEvent} event The message event.
  */
 Processor.prototype._onWorkerMessage = function(index, event) {
   if (this._destroyed) {
@@ -104609,11 +103817,33 @@ Processor.prototype._resolveJob = function() {
   this._job = null;
   this._dataLookup = {};
   job.callback(null,
-      new ImageData(data, job.inputs[0].width, job.inputs[0].height), meta);
+      newImageData(data, job.inputs[0].width, job.inputs[0].height), meta);
   this._dispatch();
 };
 
 module.exports = Processor;
+
+},{"./util":3}],3:[function(_dereq_,module,exports){
+var hasImageData = true;
+try {
+  new ImageData(10, 10);
+} catch (_) {
+  hasImageData = false;
+}
+
+var context = document.createElement('canvas').getContext('2d');
+
+function newImageData(data, width, height) {
+  if (hasImageData) {
+    return new ImageData(data, width, height);
+  } else {
+    var imageData = context.createImageData(width, height);
+    imageData.data.set(data);
+    return imageData;
+  }
+}
+
+exports.newImageData = newImageData;
 
 },{}]},{},[1])(1)
 });
@@ -105238,6 +104468,7 @@ ol.source.Stamen = function(options) {
 
   goog.base(this, {
     attributions: ol.source.Stamen.ATTRIBUTIONS,
+    cacheSize: options.cacheSize,
     crossOrigin: 'anonymous',
     maxZoom: providerConfig.maxZoom,
     // FIXME uncomment the following when tilegrid supports minZoom
@@ -105300,6 +104531,7 @@ ol.source.TileArcGISRest = function(opt_options) {
 
   goog.base(this, {
     attributions: options.attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: options.crossOrigin,
     logo: options.logo,
     projection: options.projection,
@@ -105592,6 +104824,7 @@ ol.source.TileJSON = function(options) {
 
   goog.base(this, {
     attributions: options.attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: options.crossOrigin,
     projection: ol.proj.get('EPSG:3857'),
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
@@ -105604,21 +104837,45 @@ ol.source.TileJSON = function(options) {
     ol.net.jsonp(options.url, this.handleTileJSONResponse.bind(this),
         this.handleTileJSONError.bind(this));
   } else {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', options.url, true);
-    xhr.onload = function(e) {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        var response = /** @type {TileJSON} */(JSON.parse(xhr.responseText));
-        this.handleTileJSONResponse(response);
-      } else {
-        this.handleTileJSONError();
-      }
-    }.bind(this);
-    xhr.send();
+    var client = new XMLHttpRequest();
+    client.addEventListener('load', this.onXHRLoad_.bind(this));
+    client.addEventListener('error', this.onXHRError_.bind(this));
+    client.open('GET', options.url);
+    client.send();
   }
 
 };
 goog.inherits(ol.source.TileJSON, ol.source.TileImage);
+
+
+/**
+ * @private
+ * @param {Event} event The load event.
+ */
+ol.source.TileJSON.prototype.onXHRLoad_ = function(event) {
+  var client = /** @type {XMLHttpRequest} */ (event.target);
+  if (client.status >= 200 && client.status < 300) {
+    var response;
+    try {
+      response = /** @type {TileJSON} */(JSON.parse(client.responseText));
+    } catch (err) {
+      this.handleTileJSONError();
+      return;
+    }
+    this.handleTileJSONResponse(response);
+  } else {
+    this.handleTileJSONError();
+  }
+};
+
+
+/**
+ * @private
+ * @param {Event} event The error event.
+ */
+ol.source.TileJSON.prototype.onXHRError_ = function(event) {
+  this.handleTileJSONError();
+};
 
 
 /**
@@ -106100,6 +105357,7 @@ ol.source.TileWMS = function(opt_options) {
 
   goog.base(this, {
     attributions: options.attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: options.crossOrigin,
     logo: options.logo,
     opaque: !transparent,
@@ -106764,6 +106022,7 @@ ol.source.WMTS = function(options) {
 
   goog.base(this, {
     attributions: options.attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: options.crossOrigin,
     logo: options.logo,
     projection: options.projection,
@@ -107197,6 +106456,7 @@ ol.source.Zoomify = function(opt_options) {
 
   goog.base(this, {
     attributions: options.attributions,
+    cacheSize: options.cacheSize,
     crossOrigin: options.crossOrigin,
     logo: options.logo,
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,

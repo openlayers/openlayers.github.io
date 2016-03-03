@@ -15,16 +15,32 @@ var Processor = _dereq_('./processor');
 exports.Processor = Processor;
 
 },{"./processor":2}],2:[function(_dereq_,module,exports){
-/* eslint-disable dot-notation */
+var newImageData = _dereq_('./util').newImageData;
 
 /**
- * Create a function for running operations.
+ * Create a function for running operations.  This function is serialized for
+ * use in a worker.
  * @param {function(Array, Object):*} operation The operation.
  * @return {function(Object):ArrayBuffer} A function that takes an object with
  * buffers, meta, imageOps, width, and height properties and returns an array
  * buffer.
  */
 function createMinion(operation) {
+  var workerHasImageData = true;
+  try {
+    new ImageData(10, 10);
+  } catch (_) {
+    workerHasImageData = false;
+  }
+
+  function newWorkerImageData(data, width, height) {
+    if (workerHasImageData) {
+      return new ImageData(data, width, height);
+    } else {
+      return {data: data, width: width, height: height};
+    }
+  }
+
   return function(data) {
     // bracket notation for minification support
     var buffers = data['buffers'];
@@ -40,7 +56,7 @@ function createMinion(operation) {
     if (imageOps) {
       var images = new Array(numBuffers);
       for (b = 0; b < numBuffers; ++b) {
-        images[b] = new ImageData(
+        images[b] = newWorkerImageData(
             new Uint8ClampedArray(buffers[b]), width, height);
       }
       output = operation(images, meta).data;
@@ -74,7 +90,7 @@ function createMinion(operation) {
 /**
  * Create a worker for running operations.
  * @param {Object} config Configuration.
- * @param {function(Object)} onMessage Called with a message event.
+ * @param {function(MessageEvent)} onMessage Called with a message event.
  * @return {Worker} The worker.
  */
 function createWorker(config, onMessage) {
@@ -83,12 +99,10 @@ function createWorker(config, onMessage) {
   });
 
   var lines = lib.concat([
-    'var __minion__ = (' + createMinion.toString() + ')(',
-        config.operation.toString(),
-    ');',
-    'self.addEventListener("message", function(__event__) {',
-      'var buffer = __minion__(__event__.data);',
-      'self.postMessage({buffer: buffer, meta: __event__.data.meta}, [buffer]);',
+    'var __minion__ = (' + createMinion.toString() + ')(', config.operation.toString(), ');',
+    'self.addEventListener("message", function(event) {',
+    '  var buffer = __minion__(event.data);',
+    '  self.postMessage({buffer: buffer, meta: event.data.meta}, [buffer]);',
     '});'
   ]);
 
@@ -102,7 +116,7 @@ function createWorker(config, onMessage) {
 /**
  * Create a faux worker for running operations.
  * @param {Object} config Configuration.
- * @param {function(Object)} onMessage Called with a message event.
+ * @param {function(MessageEvent)} onMessage Called with a message event.
  * @return {Object} The faux worker.
  */
 function createFauxWorker(config, onMessage) {
@@ -110,7 +124,7 @@ function createFauxWorker(config, onMessage) {
   return {
     postMessage: function(data) {
       setTimeout(function() {
-        onMessage({data: {buffer: minion(data), meta: data.meta}});
+        onMessage({'data': {'buffer': minion(data), 'meta': data['meta']}});
       }, 0);
     }
   };
@@ -231,7 +245,7 @@ Processor.prototype._dispatch = function() {
 /**
  * Handle messages from the worker.
  * @param {number} index The worker index.
- * @param {Object} event The message event.
+ * @param {MessageEvent} event The message event.
  */
 Processor.prototype._onWorkerMessage = function(index, event) {
   if (this._destroyed) {
@@ -270,11 +284,33 @@ Processor.prototype._resolveJob = function() {
   this._job = null;
   this._dataLookup = {};
   job.callback(null,
-      new ImageData(data, job.inputs[0].width, job.inputs[0].height), meta);
+      newImageData(data, job.inputs[0].width, job.inputs[0].height), meta);
   this._dispatch();
 };
 
 module.exports = Processor;
+
+},{"./util":3}],3:[function(_dereq_,module,exports){
+var hasImageData = true;
+try {
+  new ImageData(10, 10);
+} catch (_) {
+  hasImageData = false;
+}
+
+var context = document.createElement('canvas').getContext('2d');
+
+function newImageData(data, width, height) {
+  if (hasImageData) {
+    return new ImageData(data, width, height);
+  } else {
+    var imageData = context.createImageData(width, height);
+    imageData.data.set(data);
+    return imageData;
+  }
+}
+
+exports.newImageData = newImageData;
 
 },{}]},{},[1])(1)
 });
