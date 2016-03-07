@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.1-102-g9ba059a
+// Version: v3.14.2-120-g26078e1
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -53999,6 +53999,7 @@ goog.require('ol.vec.Mat4');
  * @struct
  */
 ol.render.canvas.Immediate = function(context, pixelRatio, extent, transform, viewRotation) {
+  goog.base(this);
 
   /**
    * @private
@@ -54200,6 +54201,7 @@ ol.render.canvas.Immediate = function(context, pixelRatio, extent, transform, vi
   this.tmpLocalTransform_ = goog.vec.Mat4.createNumber();
 
 };
+goog.inherits(ol.render.canvas.Immediate, ol.render.VectorContext);
 
 
 /**
@@ -54657,12 +54659,6 @@ ol.render.canvas.Immediate.prototype.drawMultiPolygonGeometry = function(multiPo
     this.drawText_(flatInteriorPoints, 0, flatInteriorPoints.length, 2);
   }
 };
-
-
-/**
- * @inheritDoc
- */
-ol.render.canvas.Immediate.prototype.drawText = goog.abstractMethod;
 
 
 /**
@@ -72927,7 +72923,7 @@ ol.Map.prototype.disposeInternal = function() {
     goog.global.cancelAnimationFrame(this.animationDelayKey_);
     this.animationDelayKey_ = undefined;
   }
-  goog.dom.removeNode(this.viewport_);
+  this.setTarget(null);
   goog.base(this, 'disposeInternal');
 };
 
