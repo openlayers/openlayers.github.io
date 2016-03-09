@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-120-g26078e1
+// Version: v3.14.2-146-gef2121b
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -6178,6 +6178,7 @@ ol.events.Event.preventDefault = function(evt) {
 
 goog.provide('ol.events.EventTarget');
 
+goog.require('goog.asserts');
 goog.require('ol.Disposable');
 goog.require('ol.events');
 goog.require('ol.events.Event');
@@ -6206,6 +6207,12 @@ ol.events.EventTarget = function() {
 
   /**
    * @private
+   * @type {!Object.<string, number>}
+   */
+  this.pendingRemovals_ = {};
+
+  /**
+   * @private
    * @type {!Object.<string, Array.<ol.events.ListenerFunctionType>>}
    */
   this.listeners_ = {};
@@ -6224,7 +6231,7 @@ ol.events.EventTarget.prototype.addEventListener = function(type, listener) {
     listeners = this.listeners_[type] = [];
   }
   if (listeners.indexOf(listener) === -1) {
-    listeners.unshift(listener);
+    listeners.push(listener);
   }
 };
 
@@ -6241,13 +6248,23 @@ ol.events.EventTarget.prototype.dispatchEvent = function(event) {
   var type = evt.type;
   evt.target = this;
   var listeners = this.listeners_[type];
+  var propagate;
   if (listeners) {
-    for (var i = listeners.length - 1; i >= 0; --i) {
-      if (listeners[i].call(this, evt) === false ||
-          evt.propagationStopped) {
-        return false;
+    if (!(type in this.pendingRemovals_)) {
+      this.pendingRemovals_[type] = 0;
+    }
+    for (var i = 0, ii = listeners.length; i < ii; ++i) {
+      if (listeners[i].call(this, evt) === false || evt.propagationStopped) {
+        propagate = false;
+        break;
       }
     }
+    var pendingRemovals = this.pendingRemovals_[type];
+    delete this.pendingRemovals_[type];
+    while (pendingRemovals--) {
+      this.removeEventListener(type, ol.nullFunction);
+    }
+    return propagate;
   }
 };
 
@@ -6262,7 +6279,7 @@ ol.events.EventTarget.prototype.disposeInternal = function() {
 
 /**
  * Get the listeners for a specified event type. Listeners are returned in the
- * opposite order that they will be called in.
+ * order that they will be called in.
  *
  * @param {string} type Type.
  * @return {Array.<ol.events.ListenerFunctionType>} Listeners.
@@ -6292,9 +6309,16 @@ ol.events.EventTarget.prototype.removeEventListener = function(type, listener) {
   var listeners = this.listeners_[type];
   if (listeners) {
     var index = listeners.indexOf(listener);
-    listeners.splice(index, 1);
-    if (listeners.length === 0) {
-      delete this.listeners_[type];
+    goog.asserts.assert(index != -1, 'listener not found');
+    if (type in this.pendingRemovals_) {
+      // make listener a no-op, and remove later in #dispatchEvent()
+      listeners[index] = ol.nullFunction;
+      ++this.pendingRemovals_[type];
+    } else {
+      listeners.splice(index, 1);
+      if (listeners.length === 0) {
+        delete this.listeners_[type];
+      }
     }
   }
 };
@@ -14897,6 +14921,16 @@ ol.geom.Geometry.prototype.getExtent = function(opt_extent) {
 
 
 /**
+ * Rotate the geometry around a given coordinate. This modifies the geometry
+ * coordinates in place.
+ * @param {number} angle Rotation angle in radians.
+ * @param {ol.Coordinate} anchor The rotation center.
+ * @api
+ */
+ol.geom.Geometry.prototype.rotate = goog.abstractMethod;
+
+
+/**
  * Create a simplified version of this geometry.  For linestrings, this uses
  * the the {@link
  * https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
@@ -15015,6 +15049,39 @@ ol.geom.flat.transform.transform2D = function(flatCoordinates, offset, end, stri
     var y = flatCoordinates[j + 1];
     dest[i++] = m00 * x + m01 * y + m03;
     dest[i++] = m10 * x + m11 * y + m13;
+  }
+  if (opt_dest && dest.length != i) {
+    dest.length = i;
+  }
+  return dest;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {number} angle Angle.
+ * @param {Array.<number>} anchor Rotation anchor point.
+ * @param {Array.<number>=} opt_dest Destination.
+ * @return {Array.<number>} Transformed coordinates.
+ */
+ol.geom.flat.transform.rotate = function(flatCoordinates, offset, end, stride, angle, anchor, opt_dest) {
+  var dest = opt_dest ? opt_dest : [];
+  var cos = Math.cos(angle);
+  var sin = Math.sin(angle);
+  var anchorX = anchor[0];
+  var anchorY = anchor[1];
+  var i = 0;
+  for (var j = offset; j < end; j += stride) {
+    var deltaX = flatCoordinates[j] - anchorX;
+    var deltaY = flatCoordinates[j + 1] - anchorY;
+    dest[i++] = anchorX + deltaX * cos - deltaY * sin;
+    dest[i++] = anchorY + deltaX * sin + deltaY * cos;
+    for (var k = j + 2; k < j + stride; ++k) {
+      dest[i++] = flatCoordinates[k];
+    }
   }
   if (opt_dest && dest.length != i) {
     dest.length = i;
@@ -15307,6 +15374,22 @@ ol.geom.SimpleGeometry.prototype.setLayout = function(layout, coordinates, nesti
 ol.geom.SimpleGeometry.prototype.applyTransform = function(transformFn) {
   if (this.flatCoordinates) {
     transformFn(this.flatCoordinates, this.flatCoordinates, this.stride);
+    this.changed();
+  }
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.SimpleGeometry.prototype.rotate = function(angle, anchor) {
+  var flatCoordinates = this.getFlatCoordinates();
+  if (flatCoordinates) {
+    var stride = this.getStride();
+    ol.geom.flat.transform.rotate(
+        flatCoordinates, 0, flatCoordinates.length,
+        stride, angle, anchor, flatCoordinates);
     this.changed();
   }
 };
@@ -20217,7 +20300,6 @@ goog.provide('ol.color');
 goog.require('goog.asserts');
 goog.require('goog.color');
 goog.require('goog.color.names');
-goog.require('goog.vec.Mat4');
 goog.require('ol');
 goog.require('ol.math');
 
@@ -20225,7 +20307,8 @@ goog.require('ol.math');
 /**
  * A color represented as a short array [red, green, blue, alpha].
  * red, green, and blue should be integers in the range 0..255 inclusive.
- * alpha should be a float in the range 0..1 inclusive.
+ * alpha should be a float in the range 0..1 inclusive. If no alpha value is
+ * given then `1` will be used.
  * @typedef {Array.<number>}
  * @api
  */
@@ -20262,48 +20345,6 @@ ol.color.rgbaColorRe_ =
 
 
 /**
- * @param {ol.Color} dst Destination.
- * @param {ol.Color} src Source.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Color.
- */
-ol.color.blend = function(dst, src, opt_color) {
-  // http://en.wikipedia.org/wiki/Alpha_compositing
-  // FIXME do we need to scale by 255?
-  var out = opt_color ? opt_color : [];
-  var dstA = dst[3];
-  var srcA = src[3];
-  if (dstA == 1) {
-    out[0] = (src[0] * srcA + dst[0] * (1 - srcA) + 0.5) | 0;
-    out[1] = (src[1] * srcA + dst[1] * (1 - srcA) + 0.5) | 0;
-    out[2] = (src[2] * srcA + dst[2] * (1 - srcA) + 0.5) | 0;
-    out[3] = 1;
-  } else if (srcA === 0) {
-    out[0] = dst[0];
-    out[1] = dst[1];
-    out[2] = dst[2];
-    out[3] = dstA;
-  } else {
-    var outA = srcA + dstA * (1 - srcA);
-    if (outA === 0) {
-      out[0] = 0;
-      out[1] = 0;
-      out[2] = 0;
-      out[3] = 0;
-    } else {
-      out[0] = ((src[0] * srcA + dst[0] * dstA * (1 - srcA)) / outA + 0.5) | 0;
-      out[1] = ((src[1] * srcA + dst[1] * dstA * (1 - srcA)) / outA + 0.5) | 0;
-      out[2] = ((src[2] * srcA + dst[2] * dstA * (1 - srcA)) / outA + 0.5) | 0;
-      out[3] = outA;
-    }
-  }
-  goog.asserts.assert(ol.color.isValid(out),
-      'Output color of blend should be a valid color');
-  return out;
-};
-
-
-/**
  * Return the color as an array. This function maintains a cache of calculated
  * arrays which means the result should not be modified.
  * @param {ol.Color|string} color Color.
@@ -20333,18 +20374,6 @@ ol.color.asString = function(color) {
     goog.asserts.assert(goog.isArray(color), 'Color should be an array');
     return ol.color.toString(color);
   }
-};
-
-
-/**
- * @param {ol.Color} color1 Color1.
- * @param {ol.Color} color2 Color2.
- * @return {boolean} Equals.
- */
-ol.color.equals = function(color1, color2) {
-  return color1 === color2 || (
-      color1[0] == color2[0] && color1[1] == color2[1] &&
-      color1[2] == color2[2] && color1[3] == color2[3]);
 };
 
 
@@ -20501,42 +20530,8 @@ ol.color.toString = function(color) {
   if (b != (b | 0)) {
     b = (b + 0.5) | 0;
   }
-  var a = color[3];
+  var a = color[3] === undefined ? 1 : color[3];
   return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-};
-
-
-/**
- * @param {!ol.Color} color Color.
- * @param {goog.vec.Mat4.Number} transform Transform.
- * @param {!ol.Color=} opt_color Color.
- * @return {ol.Color} Transformed color.
- */
-ol.color.transform = function(color, transform, opt_color) {
-  var result = opt_color ? opt_color : [];
-  result = goog.vec.Mat4.multVec3(transform, color, result);
-  goog.asserts.assert(goog.isArray(result), 'result should be an array');
-  result[3] = color[3];
-  return ol.color.normalize(result, result);
-};
-
-
-/**
- * @param {ol.Color|string} color1 Color2.
- * @param {ol.Color|string} color2 Color2.
- * @return {boolean} Equals.
- */
-ol.color.stringOrColorEquals = function(color1, color2) {
-  if (color1 === color2 || color1 == color2) {
-    return true;
-  }
-  if (typeof color1 === 'string') {
-    color1 = ol.color.fromString(color1);
-  }
-  if (typeof color2 === 'string') {
-    color2 = ol.color.fromString(color2);
-  }
-  return ol.color.equals(color1, color2);
 };
 
 goog.provide('ol.ColorLike');
@@ -43164,7 +43159,6 @@ goog.provide('ol.dom');
 goog.provide('ol.dom.BrowserFeature');
 
 goog.require('goog.asserts');
-goog.require('goog.dom');
 goog.require('goog.userAgent');
 goog.require('goog.vec.Mat4');
 goog.require('ol');
@@ -43221,7 +43215,7 @@ ol.dom.canUseCssTransform = (function() {
                 transforms[t]);
           }
         }
-        goog.dom.removeNode(el);
+        document.body.removeChild(el);
 
         canUseCssTransform = (has2d && has2d !== 'none');
       }
@@ -43264,7 +43258,7 @@ ol.dom.canUseCssTransform3D = (function() {
                 transforms[t]);
           }
         }
-        goog.dom.removeNode(el);
+        document.body.removeChild(el);
 
         canUseCssTransform3D = (has3d && has3d !== 'none');
       }
@@ -73518,31 +73512,6 @@ ol.Map.prototype.handleLayerGroupChanged_ = function() {
 
 
 /**
- * Returns `true` if the map is defined, `false` otherwise. The map is defined
- * if it is contained in `document`, visible, has non-zero height and width, and
- * has a defined view.
- * @return {boolean} Is defined.
- */
-ol.Map.prototype.isDef = function() {
-  if (!goog.dom.contains(document, this.viewport_)) {
-    return false;
-  }
-  if (!goog.style.isElementShown(this.viewport_)) {
-    return false;
-  }
-  var size = this.getSize();
-  if (!size || size[0] <= 0 || size[1] <= 0) {
-    return false;
-  }
-  var view = this.getView();
-  if (!view || !view.isDef()) {
-    return false;
-  }
-  return true;
-};
-
-
-/**
  * @return {boolean} Is rendered.
  */
 ol.Map.prototype.isRendered = function() {
@@ -78836,6 +78805,19 @@ ol.geom.GeometryCollection.prototype.intersectsExtent = function(extent) {
  */
 ol.geom.GeometryCollection.prototype.isEmpty = function() {
   return this.geometries_.length === 0;
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.GeometryCollection.prototype.rotate = function(angle, anchor) {
+  var geometries = this.geometries_;
+  for (var i = 0, ii = geometries.length; i < ii; ++i) {
+    geometries[i].rotate(angle, anchor);
+  }
+  this.changed();
 };
 
 
@@ -104818,6 +104800,12 @@ goog.require('ol.source.TileImage');
  */
 ol.source.TileJSON = function(options) {
 
+  /**
+   * @type {TileJSON}
+   * @private
+   */
+  this.tileJSON_ = null;
+
   goog.base(this, {
     attributions: options.attributions,
     cacheSize: options.cacheSize,
@@ -104875,6 +104863,15 @@ ol.source.TileJSON.prototype.onXHRError_ = function(event) {
 
 
 /**
+ * @return {TileJSON} The tilejson object.
+ * @api
+ */
+ol.source.TileJSON.prototype.getTileJSON = function() {
+  return this.tileJSON_;
+};
+
+
+/**
  * @protected
  * @param {TileJSON} tileJSON Tile JSON.
  */
@@ -104923,7 +104920,7 @@ ol.source.TileJSON.prototype.handleTileJSONResponse = function(tileJSON) {
       })
     ]);
   }
-
+  this.tileJSON_ = tileJSON;
   this.setState(ol.source.State.READY);
 
 };
@@ -109537,6 +109534,11 @@ goog.exportSymbol(
     ol.source.TileJSON,
     OPENLAYERS);
 
+goog.exportProperty(
+    ol.source.TileJSON.prototype,
+    'getTileJSON',
+    ol.source.TileJSON.prototype.getTileJSON);
+
 goog.exportSymbol(
     'ol.source.Tile',
     ol.source.Tile,
@@ -110641,6 +110643,11 @@ goog.exportProperty(
     ol.geom.Geometry.prototype,
     'getExtent',
     ol.geom.Geometry.prototype.getExtent);
+
+goog.exportProperty(
+    ol.geom.Geometry.prototype,
+    'rotate',
+    ol.geom.Geometry.prototype.rotate);
 
 goog.exportProperty(
     ol.geom.Geometry.prototype,
@@ -118679,6 +118686,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
+    'rotate',
+    ol.geom.SimpleGeometry.prototype.rotate);
+
+goog.exportProperty(
+    ol.geom.SimpleGeometry.prototype,
     'simplify',
     ol.geom.SimpleGeometry.prototype.simplify);
 
@@ -118766,6 +118778,11 @@ goog.exportProperty(
     ol.geom.Circle.prototype,
     'getLayout',
     ol.geom.Circle.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.Circle.prototype,
+    'rotate',
+    ol.geom.Circle.prototype.rotate);
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
@@ -118859,6 +118876,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
+    'rotate',
+    ol.geom.GeometryCollection.prototype.rotate);
+
+goog.exportProperty(
+    ol.geom.GeometryCollection.prototype,
     'simplify',
     ol.geom.GeometryCollection.prototype.simplify);
 
@@ -118946,6 +118968,11 @@ goog.exportProperty(
     ol.geom.LinearRing.prototype,
     'getLayout',
     ol.geom.LinearRing.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.LinearRing.prototype,
+    'rotate',
+    ol.geom.LinearRing.prototype.rotate);
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
@@ -119049,6 +119076,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
+    'rotate',
+    ol.geom.LineString.prototype.rotate);
+
+goog.exportProperty(
+    ol.geom.LineString.prototype,
     'getClosestPoint',
     ol.geom.LineString.prototype.getClosestPoint);
 
@@ -119146,6 +119178,11 @@ goog.exportProperty(
     ol.geom.MultiLineString.prototype,
     'getLayout',
     ol.geom.MultiLineString.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.MultiLineString.prototype,
+    'rotate',
+    ol.geom.MultiLineString.prototype.rotate);
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
@@ -119249,6 +119286,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
+    'rotate',
+    ol.geom.MultiPoint.prototype.rotate);
+
+goog.exportProperty(
+    ol.geom.MultiPoint.prototype,
     'getClosestPoint',
     ol.geom.MultiPoint.prototype.getClosestPoint);
 
@@ -119346,6 +119388,11 @@ goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
     'getLayout',
     ol.geom.MultiPolygon.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.MultiPolygon.prototype,
+    'rotate',
+    ol.geom.MultiPolygon.prototype.rotate);
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
@@ -119449,6 +119496,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Point.prototype,
+    'rotate',
+    ol.geom.Point.prototype.rotate);
+
+goog.exportProperty(
+    ol.geom.Point.prototype,
     'getClosestPoint',
     ol.geom.Point.prototype.getClosestPoint);
 
@@ -119546,6 +119598,11 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getLayout',
     ol.geom.Polygon.prototype.getLayout);
+
+goog.exportProperty(
+    ol.geom.Polygon.prototype,
+    'rotate',
+    ol.geom.Polygon.prototype.rotate);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
