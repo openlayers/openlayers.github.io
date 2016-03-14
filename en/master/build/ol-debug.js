@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-146-gef2121b
+// Version: v3.14.2-176-gc0b27bc
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -5818,7 +5818,13 @@ ol.events.EventTargetLike;
 /**
  * Key to use with {@link ol.Observable#unByKey}.
  *
- * @typedef {ol.events.ListenerObjType}
+ * @typedef {{bindTo: (Object|undefined),
+ *     boundListener: (ol.events.ListenerFunctionType|undefined),
+ *     callOnce: boolean,
+ *     deleteIndex: (number|undefined),
+ *     listener: ol.events.ListenerFunctionType,
+ *     target: (EventTarget|ol.events.EventTarget),
+ *     type: string}}
  * @api
  */
 ol.events.Key;
@@ -5835,19 +5841,7 @@ ol.events.ListenerFunctionType;
 
 
 /**
- * @typedef {{bindTo: (Object|undefined),
- *     boundListener: (ol.events.ListenerFunctionType|undefined),
- *     callOnce: boolean,
- *     deleteIndex: (number|undefined),
- *     listener: ol.events.ListenerFunctionType,
- *     target: (EventTarget|ol.events.EventTarget),
- *     type: string}}
- */
-ol.events.ListenerObjType;
-
-
-/**
- * @param {ol.events.ListenerObjType} listenerObj Listener object.
+ * @param {ol.events.Key} listenerObj Listener object.
  * @return {ol.events.ListenerFunctionType} Bound listener.
  */
 ol.events.bindListener_ = function(listenerObj) {
@@ -5865,15 +5859,15 @@ ol.events.bindListener_ = function(listenerObj) {
 
 
 /**
- * Finds the matching {@link ol.events.ListenerObjType} in the given listener
+ * Finds the matching {@link ol.events.Key} in the given listener
  * array.
  *
- * @param {!Array<!ol.events.ListenerObjType>} listeners Array of listeners.
+ * @param {!Array<!ol.events.Key>} listeners Array of listeners.
  * @param {!Function} listener The listener function.
  * @param {Object=} opt_this The `this` value inside the listener.
  * @param {boolean=} opt_setDeleteIndex Set the deleteIndex on the matching
  *     listener, for {@link ol.events.unlistenByKey}.
- * @return {ol.events.ListenerObjType|undefined} The matching listener object.
+ * @return {ol.events.Key|undefined} The matching listener object.
  * @private
  */
 ol.events.findListener_ = function(listeners, listener, opt_this,
@@ -5896,7 +5890,7 @@ ol.events.findListener_ = function(listeners, listener, opt_this,
 /**
  * @param {ol.events.EventTargetLike} target Target.
  * @param {string} type Type.
- * @return {Array.<ol.events.ListenerObjType>|undefined} Listeners.
+ * @return {Array.<ol.events.Key>|undefined} Listeners.
  */
 ol.events.getListeners = function(target, type) {
   var listenerMap = target[ol.events.LISTENER_MAP_PROP_];
@@ -5908,7 +5902,7 @@ ol.events.getListeners = function(target, type) {
  * Get the lookup of listeners.  If one does not exist on the target, it is
  * created.
  * @param {ol.events.EventTargetLike} target Target.
- * @return {!Object.<string, Array.<ol.events.ListenerObjType>>} Map of
+ * @return {!Object.<string, Array.<ol.events.Key>>} Map of
  *     listeners by event type.
  * @private
  */
@@ -5977,7 +5971,7 @@ ol.events.listen = function(target, type, listener, opt_this, opt_once) {
       listenerObj.callOnce = false;
     }
   } else {
-    listenerObj = /** @type {ol.events.ListenerObjType} */ ({
+    listenerObj = /** @type {ol.events.Key} */ ({
       bindTo: opt_this,
       callOnce: !!opt_once,
       listener: listener,
@@ -6129,6 +6123,7 @@ goog.provide('ol.events.Event');
  * {@link ol.events.EventTarget}.
  *
  * @constructor
+ * @implements {oli.events.Event}
  * @param {string} type Type.
  * @param {Object=} opt_target Target.
  */
@@ -6140,22 +6135,34 @@ ol.events.Event = function(type, opt_target) {
   this.propagationStopped;
 
   /**
+   * The event type.
    * @type {string}
+   * @api stable
    */
   this.type = type;
 
   /**
-   * @type {Object|undefined}
+   * The event target.
+   * @type {Object}
+   * @api stable
    */
-  this.target = opt_target;
+  this.target = opt_target || null;
 
 };
 
 
 /**
- * Stop event propagation
+ * Stop event propagation.
+ * @function
+ * @api stable
  */
 ol.events.Event.prototype.preventDefault =
+
+/**
+ * Stop event propagation.
+ * @function
+ * @api stable
+ */
 ol.events.Event.prototype.stopPropagation = function() {
   this.propagationStopped = true;
 };
@@ -14926,6 +14933,7 @@ ol.geom.Geometry.prototype.getExtent = function(opt_extent) {
  * @param {number} angle Rotation angle in radians.
  * @param {ol.Coordinate} anchor The rotation center.
  * @api
+ * @function
  */
 ol.geom.Geometry.prototype.rotate = goog.abstractMethod;
 
@@ -34268,7 +34276,7 @@ ol.source.State = {
 
 
 /**
- * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ * @typedef {{attributions: (olx.source.AttributionOption|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
  *            projection: ol.proj.ProjectionLike,
  *            state: (ol.source.State|undefined),
@@ -34304,8 +34312,7 @@ ol.source.Source = function(options) {
    * @private
    * @type {Array.<ol.Attribution>}
    */
-  this.attributions_ = options.attributions !== undefined ?
-      options.attributions : null;
+  this.attributions_ = ol.source.Source.toAttributionsArray_(options.attributions);
 
   /**
    * @private
@@ -34328,6 +34335,37 @@ ol.source.Source = function(options) {
 
 };
 goog.inherits(ol.source.Source, ol.Object);
+
+/**
+ * Turns various ways of defining an attribution to an array of `ol.Attributions`.
+ *
+ * @param {olx.source.AttributionOption|undefined}
+ *     attributionLike The attributions as string, array of strings,
+ *     `ol.Attribution`, array of `ol.Attribution` or undefined.
+ * @return {Array.<ol.Attribution>} The array of `ol.Attribution` or null if
+ *     `undefined` was given.
+ */
+ol.source.Source.toAttributionsArray_ = function(attributionLike) {
+  if (typeof attributionLike === 'string') {
+    return [new ol.Attribution({html: attributionLike})];
+  } else if (attributionLike instanceof ol.Attribution) {
+    return [attributionLike];
+  } else if (Array.isArray(attributionLike)) {
+    var len = attributionLike.length;
+    var attributions = new Array(len);
+    for (var i = 0; i < len; i++) {
+      var item = attributionLike[i];
+      if (typeof item === 'string') {
+        attributions[i] = new ol.Attribution({html: item});
+      } else {
+        attributions[i] = item;
+      }
+    }
+    return attributions;
+  } else {
+    return null;
+  }
+}
 
 
 /**
@@ -34408,11 +34446,13 @@ ol.source.Source.prototype.refresh = function() {
 
 /**
  * Set the attributions of the source.
- * @param {Array.<ol.Attribution>} attributions Attributions.
+ * @param {olx.source.AttributionOption|undefined} attributions Attributions.
+ *     Can be passed as `string`, `Array<string>`, `{@link ol.Attribution}`,
+ *     `Array<{@link ol.Attribution}>` or `undefined`.
  * @api
  */
 ol.source.Source.prototype.setAttributions = function(attributions) {
-  this.attributions_ = attributions;
+  this.attributions_ = ol.source.Source.toAttributionsArray_(attributions);
   this.changed();
 };
 
@@ -35072,7 +35112,6 @@ goog.provide('ol.source.TileOptions');
 goog.require('goog.asserts');
 goog.require('ol.events.Event');
 goog.require('ol');
-goog.require('ol.Attribution');
 goog.require('ol.Extent');
 goog.require('ol.TileCache');
 goog.require('ol.TileRange');
@@ -35085,7 +35124,7 @@ goog.require('ol.tilegrid.TileGrid');
 
 
 /**
- * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ * @typedef {{attributions: (olx.source.AttributionOption|undefined),
  *            cacheSize: (number|undefined),
  *            extent: (ol.Extent|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
@@ -58743,7 +58782,6 @@ goog.provide('ol.source.ImageEvent');
 
 goog.require('goog.asserts');
 goog.require('ol.events.Event');
-goog.require('ol.Attribution');
 goog.require('ol.ImageState');
 goog.require('ol.array');
 goog.require('ol.extent');
@@ -58753,7 +58791,7 @@ goog.require('ol.source.Source');
 
 
 /**
- * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ * @typedef {{attributions: (olx.source.AttributionOption|undefined),
  *            extent: (null|ol.Extent|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
  *            projection: ol.proj.ProjectionLike,
@@ -59588,7 +59626,9 @@ ol.VectorTile.prototype.setFeatures = function(features) {
 
 
 /**
+ * Set the projection of the features that were added with {@link #setFeatures}.
  * @param {ol.proj.Projection} projection Feature projection.
+ * @api
  */
 ol.VectorTile.prototype.setProjection = function(projection) {
   this.projection_ = projection;
@@ -63481,7 +63521,7 @@ goog.require('ol.source.TileEvent');
 
 
 /**
- * @typedef {{attributions: (Array.<ol.Attribution>|undefined),
+ * @typedef {{attributions: (olx.source.AttributionOption|undefined),
  *            cacheSize: (number|undefined),
  *            extent: (ol.Extent|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
@@ -74511,8 +74551,6 @@ goog.require('goog.dom');
 goog.require('goog.dom.classlist');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
-goog.require('goog.math.Size');
-goog.require('goog.style');
 goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.Map');
@@ -74617,7 +74655,9 @@ ol.control.OverviewMap = function(opt_options) {
         }, this);
   }
 
-  var box = goog.dom.createDom('DIV', 'ol-overviewmap-box');
+  var box = document.createElement('DIV');
+  box.className = 'ol-overviewmap-box';
+  box.style.boxSizing = 'border-box';
 
   /**
    * @type {ol.Overlay}
@@ -74788,17 +74828,17 @@ ol.control.OverviewMap.prototype.validateExtent_ = function() {
       ovmap.getPixelFromCoordinate(ol.extent.getTopLeft(extent));
   var bottomRightPixel =
       ovmap.getPixelFromCoordinate(ol.extent.getBottomRight(extent));
-  var boxSize = new goog.math.Size(
-      Math.abs(topLeftPixel[0] - bottomRightPixel[0]),
-      Math.abs(topLeftPixel[1] - bottomRightPixel[1]));
+
+  var boxWidth = Math.abs(topLeftPixel[0] - bottomRightPixel[0]);
+  var boxHeight = Math.abs(topLeftPixel[1] - bottomRightPixel[1]);
 
   var ovmapWidth = ovmapSize[0];
   var ovmapHeight = ovmapSize[1];
 
-  if (boxSize.width < ovmapWidth * ol.OVERVIEWMAP_MIN_RATIO ||
-      boxSize.height < ovmapHeight * ol.OVERVIEWMAP_MIN_RATIO ||
-      boxSize.width > ovmapWidth * ol.OVERVIEWMAP_MAX_RATIO ||
-      boxSize.height > ovmapHeight * ol.OVERVIEWMAP_MAX_RATIO) {
+  if (boxWidth < ovmapWidth * ol.OVERVIEWMAP_MIN_RATIO ||
+      boxHeight < ovmapHeight * ol.OVERVIEWMAP_MIN_RATIO ||
+      boxWidth > ovmapWidth * ol.OVERVIEWMAP_MAX_RATIO ||
+      boxHeight > ovmapHeight * ol.OVERVIEWMAP_MAX_RATIO) {
     this.resetExtent_();
   } else if (!ol.extent.containsExtent(ovextent, extent)) {
     this.recenter_();
@@ -74902,10 +74942,8 @@ ol.control.OverviewMap.prototype.updateBox_ = function() {
 
   // set box size calculated from map extent size and overview map resolution
   if (box) {
-    var boxWidth = Math.abs((bottomLeft[0] - topRight[0]) / ovresolution);
-    var boxHeight = Math.abs((topRight[1] - bottomLeft[1]) / ovresolution);
-    goog.style.setBorderBoxSize(box, new goog.math.Size(
-        boxWidth, boxHeight));
+    box.style.width = Math.abs((bottomLeft[0] - topRight[0]) / ovresolution) + 'px';
+    box.style.height = Math.abs((topRight[1] - bottomLeft[1]) / ovresolution) + 'px';
   }
 };
 
@@ -102810,10 +102848,6 @@ goog.require('ol.source.Image');
  * @api stable
  */
 ol.source.ImageStatic = function(options) {
-
-  var attributions = options.attributions !== undefined ?
-      options.attributions : null;
-
   var imageExtent = options.imageExtent;
 
   var crossOrigin = options.crossOrigin !== undefined ?
@@ -102824,7 +102858,7 @@ ol.source.ImageStatic = function(options) {
       options.imageLoadFunction : ol.source.Image.defaultImageLoadFunction;
 
   goog.base(this, {
-    attributions: attributions,
+    attributions: options.attributions,
     logo: options.logo,
     projection: ol.proj.get(options.projection)
   });
@@ -102833,7 +102867,7 @@ ol.source.ImageStatic = function(options) {
    * @private
    * @type {ol.Image}
    */
-  this.image_ = new ol.Image(imageExtent, undefined, 1, attributions,
+  this.image_ = new ol.Image(imageExtent, undefined, 1, this.getAttributions(),
       options.url, crossOrigin, imageLoadFunction);
 
   /**
@@ -107619,6 +107653,7 @@ goog.require('ol.control.ZoomToExtent');
 goog.require('ol.coordinate');
 goog.require('ol.easing');
 goog.require('ol.events.ConditionType');
+goog.require('ol.events.Event');
 goog.require('ol.events.condition');
 goog.require('ol.extent');
 goog.require('ol.extent.Corner');
@@ -108485,16 +108520,6 @@ goog.exportProperty(
     ol.MapBrowserEvent.prototype.dragging);
 
 goog.exportProperty(
-    ol.MapBrowserEvent.prototype,
-    'preventDefault',
-    ol.MapBrowserEvent.prototype.preventDefault);
-
-goog.exportProperty(
-    ol.MapBrowserEvent.prototype,
-    'stopPropagation',
-    ol.MapBrowserEvent.prototype.stopPropagation);
-
-goog.exportProperty(
     ol.MapEvent.prototype,
     'map',
     ol.MapEvent.prototype.map);
@@ -108683,6 +108708,11 @@ goog.exportProperty(
     ol.VectorTile.prototype,
     'setFeatures',
     ol.VectorTile.prototype.setFeatures);
+
+goog.exportProperty(
+    ol.VectorTile.prototype,
+    'setProjection',
+    ol.VectorTile.prototype.setProjection);
 
 goog.exportProperty(
     ol.VectorTile.prototype,
@@ -111574,6 +111604,26 @@ goog.exportSymbol(
     ol.events.condition.mouseOnly,
     OPENLAYERS);
 
+goog.exportProperty(
+    ol.events.Event.prototype,
+    'type',
+    ol.events.Event.prototype.type);
+
+goog.exportProperty(
+    ol.events.Event.prototype,
+    'target',
+    ol.events.Event.prototype.target);
+
+goog.exportProperty(
+    ol.events.Event.prototype,
+    'preventDefault',
+    ol.events.Event.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.events.Event.prototype,
+    'stopPropagation',
+    ol.events.Event.prototype.stopPropagation);
+
 goog.exportSymbol(
     'ol.control.Attribution',
     ol.control.Attribution,
@@ -111758,6 +111808,26 @@ goog.exportSymbol(
     'ol.color.asString',
     ol.color.asString,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.CollectionEvent.prototype,
+    'type',
+    ol.CollectionEvent.prototype.type);
+
+goog.exportProperty(
+    ol.CollectionEvent.prototype,
+    'target',
+    ol.CollectionEvent.prototype.target);
+
+goog.exportProperty(
+    ol.CollectionEvent.prototype,
+    'preventDefault',
+    ol.CollectionEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.CollectionEvent.prototype,
+    'stopPropagation',
+    ol.CollectionEvent.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.Object.prototype,
@@ -112125,6 +112195,26 @@ goog.exportProperty(
     ol.Map.prototype.unByKey);
 
 goog.exportProperty(
+    ol.MapEvent.prototype,
+    'type',
+    ol.MapEvent.prototype.type);
+
+goog.exportProperty(
+    ol.MapEvent.prototype,
+    'target',
+    ol.MapEvent.prototype.target);
+
+goog.exportProperty(
+    ol.MapEvent.prototype,
+    'preventDefault',
+    ol.MapEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.MapEvent.prototype,
+    'stopPropagation',
+    ol.MapEvent.prototype.stopPropagation);
+
+goog.exportProperty(
     ol.MapBrowserEvent.prototype,
     'map',
     ol.MapBrowserEvent.prototype.map);
@@ -112133,6 +112223,26 @@ goog.exportProperty(
     ol.MapBrowserEvent.prototype,
     'frameState',
     ol.MapBrowserEvent.prototype.frameState);
+
+goog.exportProperty(
+    ol.MapBrowserEvent.prototype,
+    'type',
+    ol.MapBrowserEvent.prototype.type);
+
+goog.exportProperty(
+    ol.MapBrowserEvent.prototype,
+    'target',
+    ol.MapBrowserEvent.prototype.target);
+
+goog.exportProperty(
+    ol.MapBrowserEvent.prototype,
+    'preventDefault',
+    ol.MapBrowserEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.MapBrowserEvent.prototype,
+    'stopPropagation',
+    ol.MapBrowserEvent.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.MapBrowserPointerEvent.prototype,
@@ -112156,6 +112266,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.MapBrowserPointerEvent.prototype,
+    'preventDefault',
+    ol.MapBrowserPointerEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.MapBrowserPointerEvent.prototype,
     'stopPropagation',
     ol.MapBrowserPointerEvent.prototype.stopPropagation);
 
@@ -112168,6 +112283,36 @@ goog.exportProperty(
     ol.MapBrowserPointerEvent.prototype,
     'frameState',
     ol.MapBrowserPointerEvent.prototype.frameState);
+
+goog.exportProperty(
+    ol.MapBrowserPointerEvent.prototype,
+    'type',
+    ol.MapBrowserPointerEvent.prototype.type);
+
+goog.exportProperty(
+    ol.MapBrowserPointerEvent.prototype,
+    'target',
+    ol.MapBrowserPointerEvent.prototype.target);
+
+goog.exportProperty(
+    ol.ObjectEvent.prototype,
+    'type',
+    ol.ObjectEvent.prototype.type);
+
+goog.exportProperty(
+    ol.ObjectEvent.prototype,
+    'target',
+    ol.ObjectEvent.prototype.target);
+
+goog.exportProperty(
+    ol.ObjectEvent.prototype,
+    'preventDefault',
+    ol.ObjectEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.ObjectEvent.prototype,
+    'stopPropagation',
+    ol.ObjectEvent.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.Overlay.prototype,
@@ -113555,6 +113700,26 @@ goog.exportProperty(
     ol.source.ImageMapGuide.prototype.unByKey);
 
 goog.exportProperty(
+    ol.source.ImageEvent.prototype,
+    'type',
+    ol.source.ImageEvent.prototype.type);
+
+goog.exportProperty(
+    ol.source.ImageEvent.prototype,
+    'target',
+    ol.source.ImageEvent.prototype.target);
+
+goog.exportProperty(
+    ol.source.ImageEvent.prototype,
+    'preventDefault',
+    ol.source.ImageEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.source.ImageEvent.prototype,
+    'stopPropagation',
+    ol.source.ImageEvent.prototype.stopPropagation);
+
+goog.exportProperty(
     ol.source.ImageStatic.prototype,
     'getAttributions',
     ol.source.ImageStatic.prototype.getAttributions);
@@ -114370,6 +114535,26 @@ goog.exportProperty(
     ol.source.Raster.prototype.unByKey);
 
 goog.exportProperty(
+    ol.source.RasterEvent.prototype,
+    'type',
+    ol.source.RasterEvent.prototype.type);
+
+goog.exportProperty(
+    ol.source.RasterEvent.prototype,
+    'target',
+    ol.source.RasterEvent.prototype.target);
+
+goog.exportProperty(
+    ol.source.RasterEvent.prototype,
+    'preventDefault',
+    ol.source.RasterEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.source.RasterEvent.prototype,
+    'stopPropagation',
+    ol.source.RasterEvent.prototype.stopPropagation);
+
+goog.exportProperty(
     ol.source.Stamen.prototype,
     'setRenderReprojectionEdges',
     ol.source.Stamen.prototype.setRenderReprojectionEdges);
@@ -114905,6 +115090,26 @@ goog.exportProperty(
     ol.source.TileJSON.prototype.unByKey);
 
 goog.exportProperty(
+    ol.source.TileEvent.prototype,
+    'type',
+    ol.source.TileEvent.prototype.type);
+
+goog.exportProperty(
+    ol.source.TileEvent.prototype,
+    'target',
+    ol.source.TileEvent.prototype.target);
+
+goog.exportProperty(
+    ol.source.TileEvent.prototype,
+    'preventDefault',
+    ol.source.TileEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.source.TileEvent.prototype,
+    'stopPropagation',
+    ol.source.TileEvent.prototype.stopPropagation);
+
+goog.exportProperty(
     ol.source.TileUTFGrid.prototype,
     'getTileGrid',
     ol.source.TileUTFGrid.prototype.getTileGrid);
@@ -115148,6 +115353,26 @@ goog.exportProperty(
     ol.source.TileWMS.prototype,
     'unByKey',
     ol.source.TileWMS.prototype.unByKey);
+
+goog.exportProperty(
+    ol.source.VectorEvent.prototype,
+    'type',
+    ol.source.VectorEvent.prototype.type);
+
+goog.exportProperty(
+    ol.source.VectorEvent.prototype,
+    'target',
+    ol.source.VectorEvent.prototype.target);
+
+goog.exportProperty(
+    ol.source.VectorEvent.prototype,
+    'preventDefault',
+    ol.source.VectorEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.source.VectorEvent.prototype,
+    'stopPropagation',
+    ol.source.VectorEvent.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.source.VectorTile.prototype,
@@ -116068,6 +116293,46 @@ goog.exportProperty(
     ol.renderer.canvas.VectorTileLayer.prototype,
     'unByKey',
     ol.renderer.canvas.VectorTileLayer.prototype.unByKey);
+
+goog.exportProperty(
+    ol.render.Event.prototype,
+    'type',
+    ol.render.Event.prototype.type);
+
+goog.exportProperty(
+    ol.render.Event.prototype,
+    'target',
+    ol.render.Event.prototype.target);
+
+goog.exportProperty(
+    ol.render.Event.prototype,
+    'preventDefault',
+    ol.render.Event.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.render.Event.prototype,
+    'stopPropagation',
+    ol.render.Event.prototype.stopPropagation);
+
+goog.exportProperty(
+    ol.pointer.PointerEvent.prototype,
+    'type',
+    ol.pointer.PointerEvent.prototype.type);
+
+goog.exportProperty(
+    ol.pointer.PointerEvent.prototype,
+    'target',
+    ol.pointer.PointerEvent.prototype.target);
+
+goog.exportProperty(
+    ol.pointer.PointerEvent.prototype,
+    'preventDefault',
+    ol.pointer.PointerEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.pointer.PointerEvent.prototype,
+    'stopPropagation',
+    ol.pointer.PointerEvent.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.layer.Base.prototype,
@@ -117325,6 +117590,46 @@ goog.exportProperty(
     ol.interaction.DragAndDrop.prototype.unByKey);
 
 goog.exportProperty(
+    ol.interaction.DragAndDropEvent.prototype,
+    'type',
+    ol.interaction.DragAndDropEvent.prototype.type);
+
+goog.exportProperty(
+    ol.interaction.DragAndDropEvent.prototype,
+    'target',
+    ol.interaction.DragAndDropEvent.prototype.target);
+
+goog.exportProperty(
+    ol.interaction.DragAndDropEvent.prototype,
+    'preventDefault',
+    ol.interaction.DragAndDropEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.interaction.DragAndDropEvent.prototype,
+    'stopPropagation',
+    ol.interaction.DragAndDropEvent.prototype.stopPropagation);
+
+goog.exportProperty(
+    ol.DragBoxEvent.prototype,
+    'type',
+    ol.DragBoxEvent.prototype.type);
+
+goog.exportProperty(
+    ol.DragBoxEvent.prototype,
+    'target',
+    ol.DragBoxEvent.prototype.target);
+
+goog.exportProperty(
+    ol.DragBoxEvent.prototype,
+    'preventDefault',
+    ol.DragBoxEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.DragBoxEvent.prototype,
+    'stopPropagation',
+    ol.DragBoxEvent.prototype.stopPropagation);
+
+goog.exportProperty(
     ol.interaction.Pointer.prototype,
     'getActive',
     ol.interaction.Pointer.prototype.getActive);
@@ -117810,6 +118115,26 @@ goog.exportProperty(
     ol.interaction.DragZoom.prototype.unByKey);
 
 goog.exportProperty(
+    ol.interaction.DrawEvent.prototype,
+    'type',
+    ol.interaction.DrawEvent.prototype.type);
+
+goog.exportProperty(
+    ol.interaction.DrawEvent.prototype,
+    'target',
+    ol.interaction.DrawEvent.prototype.target);
+
+goog.exportProperty(
+    ol.interaction.DrawEvent.prototype,
+    'preventDefault',
+    ol.interaction.DrawEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.interaction.DrawEvent.prototype,
+    'stopPropagation',
+    ol.interaction.DrawEvent.prototype.stopPropagation);
+
+goog.exportProperty(
     ol.interaction.Draw.prototype,
     'getActive',
     ol.interaction.Draw.prototype.getActive);
@@ -118048,6 +118373,26 @@ goog.exportProperty(
     ol.interaction.KeyboardZoom.prototype,
     'unByKey',
     ol.interaction.KeyboardZoom.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.ModifyEvent.prototype,
+    'type',
+    ol.interaction.ModifyEvent.prototype.type);
+
+goog.exportProperty(
+    ol.interaction.ModifyEvent.prototype,
+    'target',
+    ol.interaction.ModifyEvent.prototype.target);
+
+goog.exportProperty(
+    ol.interaction.ModifyEvent.prototype,
+    'preventDefault',
+    ol.interaction.ModifyEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.interaction.ModifyEvent.prototype,
+    'stopPropagation',
+    ol.interaction.ModifyEvent.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.interaction.Modify.prototype,
@@ -118370,6 +118715,26 @@ goog.exportProperty(
     ol.interaction.PinchZoom.prototype.unByKey);
 
 goog.exportProperty(
+    ol.interaction.SelectEvent.prototype,
+    'type',
+    ol.interaction.SelectEvent.prototype.type);
+
+goog.exportProperty(
+    ol.interaction.SelectEvent.prototype,
+    'target',
+    ol.interaction.SelectEvent.prototype.target);
+
+goog.exportProperty(
+    ol.interaction.SelectEvent.prototype,
+    'preventDefault',
+    ol.interaction.SelectEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.interaction.SelectEvent.prototype,
+    'stopPropagation',
+    ol.interaction.SelectEvent.prototype.stopPropagation);
+
+goog.exportProperty(
     ol.interaction.Select.prototype,
     'getActive',
     ol.interaction.Select.prototype.getActive);
@@ -118528,6 +118893,26 @@ goog.exportProperty(
     ol.interaction.Snap.prototype,
     'unByKey',
     ol.interaction.Snap.prototype.unByKey);
+
+goog.exportProperty(
+    ol.interaction.TranslateEvent.prototype,
+    'type',
+    ol.interaction.TranslateEvent.prototype.type);
+
+goog.exportProperty(
+    ol.interaction.TranslateEvent.prototype,
+    'target',
+    ol.interaction.TranslateEvent.prototype.target);
+
+goog.exportProperty(
+    ol.interaction.TranslateEvent.prototype,
+    'preventDefault',
+    ol.interaction.TranslateEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.interaction.TranslateEvent.prototype,
+    'stopPropagation',
+    ol.interaction.TranslateEvent.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.interaction.Translate.prototype,

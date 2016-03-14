@@ -128,10 +128,7 @@ var map &#x3D; new ol.Map({
     new ol.layer.Tile({
       source: new ol.source.OSM({
         attributions: [
-          new ol.Attribution({
-            html: &#x27;All maps &amp;copy; &#x27; +
-                &#x27;&lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;
-          }),
+          &#x27;All maps © &lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;,
           ol.source.OSM.ATTRIBUTION
         ],
         url: &#x27;http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png&#x27;
@@ -343,10 +340,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
           new ol.layer.Tile({
             source: new ol.source.OSM({
               attributions: [
-                new ol.Attribution({
-                  html: &#x27;All maps &amp;copy; &#x27; +
-                      &#x27;&lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;
-                }),
+                &#x27;All maps © &lt;a href&#x3D;&quot;http://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;,
                 ol.source.OSM.ATTRIBUTION
               ],
               url: &#x27;http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png&#x27;

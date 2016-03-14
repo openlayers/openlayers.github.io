@@ -88,11 +88,9 @@ var map &#x3D; new ol.Map({
     new ol.layer.VectorTile({
       preload: Infinity,
       source: new ol.source.VectorTile({
-        attributions: [new ol.Attribution({
-          html: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
-              &#x27;© &lt;a href&#x3D;&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
-              &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;
-        })],
+        attributions: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
+          &#x27;© &lt;a href&#x3D;&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
+          &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;,
         format: new ol.format.MVT(),
         tileGrid: new ol.tilegrid.TileGrid({
           extent: ol.proj.get(&#x27;EPSG:3857&#x27;).getExtent(),
@@ -172,11 +170,9 @@ var map &#x3D; new ol.Map({
           new ol.layer.VectorTile({
             preload: Infinity,
             source: new ol.source.VectorTile({
-              attributions: [new ol.Attribution({
-                html: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
-                    &#x27;© &lt;a href&#x3D;&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
-                    &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;
-              })],
+              attributions: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
+                &#x27;© &lt;a href&#x3D;&quot;http://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
+                &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;,
               format: new ol.format.MVT(),
               tileGrid: new ol.tilegrid.TileGrid({
                 extent: ol.proj.get(&#x27;EPSG:3857&#x27;).getExtent(),

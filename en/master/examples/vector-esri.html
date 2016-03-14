@@ -139,15 +139,10 @@ var vector &#x3D; new ol.layer.Vector({
   }
 });
 
-
-var attribution &#x3D; new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
-      &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
-});
-
 var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
-    attributions: [attribution],
+    attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+        &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
     url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
         &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
   })
@@ -294,15 +289,10 @@ map.on(&#x27;click&#x27;, function(evt) {
         }
       });
 
-
-      var attribution &#x3D; new ol.Attribution({
-        html: &#x27;Tiles &amp;copy; &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
-            &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;
-      });
-
       var raster &#x3D; new ol.layer.Tile({
         source: new ol.source.XYZ({
-          attributions: [attribution],
+          attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+              &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
           url: &#x27;http://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
               &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
         })

@@ -56,12 +56,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">var attribution &#x3D; new ol.Attribution({
-  html: &#x27;Tiles &amp;copy; USGS, rendered with &#x27; +
-      &#x27;&lt;a href&#x3D;&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;
-});
-
-var mapMinZoom &#x3D; 1;
+          <textarea class="hidden" name="js">var mapMinZoom &#x3D; 1;
 var mapMaxZoom &#x3D; 15;
 var mapExtent &#x3D; [-112.261791, 35.983744, -112.113981, 36.132062];
 
@@ -74,7 +69,8 @@ var map &#x3D; new ol.Map({
     new ol.layer.Tile({
       extent: ol.proj.transformExtent(mapExtent, &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
       source: new ol.source.XYZ({
-        attributions: [attribution],
+        attributions: &#x27;Tiles © USGS, rendered with &#x27; +
+            &#x27;&lt;a href&#x3D;&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;,
         url: &#x27;http://tileserver.maptiler.com/grandcanyon@2x/{z}/{x}/{y}.png&#x27;,
         tilePixelRatio: 2, // THIS IS IMPORTANT
         minZoom: mapMinZoom,
@@ -106,11 +102,6 @@ var map &#x3D; new ol.Map({
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      var attribution &#x3D; new ol.Attribution({
-        html: &#x27;Tiles &amp;copy; USGS, rendered with &#x27; +
-            &#x27;&lt;a href&#x3D;&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;
-      });
-
       var mapMinZoom &#x3D; 1;
       var mapMaxZoom &#x3D; 15;
       var mapExtent &#x3D; [-112.261791, 35.983744, -112.113981, 36.132062];
@@ -124,7 +115,8 @@ var map &#x3D; new ol.Map({
           new ol.layer.Tile({
             extent: ol.proj.transformExtent(mapExtent, &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
             source: new ol.source.XYZ({
-              attributions: [attribution],
+              attributions: &#x27;Tiles © USGS, rendered with &#x27; +
+                  &#x27;&lt;a href&#x3D;&quot;http://www.maptiler.com/&quot;&gt;MapTiler&lt;/a&gt;&#x27;,
               url: &#x27;http://tileserver.maptiler.com/grandcanyon@2x/{z}/{x}/{y}.png&#x27;,
               tilePixelRatio: 2, // THIS IS IMPORTANT
               minZoom: mapMinZoom,

@@ -164,7 +164,6 @@ file, that we will then pass as an input file to the <code>closure-util</code> c
       <span class="string">"node_modules/openlayers/externs/topojson.js"</span>
     ]</span>,
     "<span class="attribute">define</span>": <span class="value">[
-      <span class="string">"goog.dom.ASSUME_STANDARDS_MODE=true"</span>,
       <span class="string">"goog.DEBUG=false"</span>,
       <span class="string">"ol.ENABLE_DOM=false"</span>,
       <span class="string">"ol.ENABLE_WEBGL=false"</span>
@@ -172,9 +171,6 @@ file, that we will then pass as an input file to the <code>closure-util</code> c
     "<span class="attribute">js</span>": <span class="value">[
       <span class="string">"node_modules/openlayers/externs/olx.js"</span>,
       <span class="string">"node_modules/openlayers/externs/oli.js"</span>
-    ]</span>,
-    "<span class="attribute">jscomp_off</span>": <span class="value">[
-      <span class="string">"unknownDefines"</span>
     ]</span>,
     "<span class="attribute">extra_annotation_name</span>": <span class="value">[
       <span class="string">"api"</span>, <span class="string">"observable"</span>
@@ -220,41 +216,13 @@ the OpenLayers 3 code that the application code uses.</p>
       <span class="string">"node_modules/openlayers/externs/oli.js"</span>
     ]</span>,
     "<span class="attribute">jscomp_error</span>": <span class="value">[
-      <span class="string">"accessControls"</span>,
-      <span class="string">"ambiguousFunctionDecl"</span>,
-      <span class="string">"checkEventfulObjectDisposal"</span>,
-      <span class="string">"checkRegExp"</span>,
-      <span class="string">"checkTypes"</span>,
-      <span class="string">"checkVars"</span>,
-      <span class="string">"const"</span>,
-      <span class="string">"constantProperty"</span>,
-      <span class="string">"deprecated"</span>,
-      <span class="string">"duplicateMessage"</span>,
-      <span class="string">"es3"</span>,
-      <span class="string">"es5Strict"</span>,
-      <span class="string">"externsValidation"</span>,
-      <span class="string">"fileoverviewTags"</span>,
-      <span class="string">"globalThis"</span>,
-      <span class="string">"internetExplorerChecks"</span>,
-      <span class="string">"invalidCasts"</span>,
-      <span class="string">"misplacedTypeAnnotation"</span>,
-      <span class="string">"missingGetCssName"</span>,
-      <span class="string">"missingProperties"</span>,
-      <span class="string">"missingProvide"</span>,
-      <span class="string">"missingRequire"</span>,
-      <span class="string">"missingReturn"</span>,
-      <span class="string">"newCheckTypes"</span>,
-      <span class="string">"nonStandardJsDocs"</span>,
-      <span class="string">"suspiciousCode"</span>,
-      <span class="string">"strictModuleDepCheck"</span>,
-      <span class="string">"typeInvalidation"</span>,
-      <span class="string">"undefinedNames"</span>,
-      <span class="string">"undefinedVars"</span>,
-      <span class="string">"uselessCode"</span>,
-      <span class="string">"visibility"</span>
+      <span class="string">"*"</span>
     ]</span>,
     "<span class="attribute">jscomp_off</span>": <span class="value">[
       <span class="string">"unknownDefines"</span>
+      <span class="string">"useOfGoogBase"</span>,
+      <span class="string">"lintChecks"</span>,
+      <span class="string">"analyzerChecks"</span>
     ]</span>,
     "<span class="attribute">extra_annotation_name</span>": <span class="value">[
       <span class="string">"api"</span>, <span class="string">"observable"</span>

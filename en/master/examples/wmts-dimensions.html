@@ -85,13 +85,9 @@ var wmtsSource &#x3D; new ol.source.WMTS({
   format: &#x27;image/png&#x27;,
   matrixSet: &#x27;EPSG:3857&#x27;,
   attributions: [
-    new ol.Attribution({
-      html: &#x27;&lt;a href&#x3D;&quot;http://scalgo.com&quot;&gt;SCALGO&lt;/a&gt;&#x27;
-    }),
-    new ol.Attribution({
-      html: &#x27;&lt;a href&#x3D;&quot;http://www.cgiar-csi.org/data/&#x27; +
-          &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27;
-    })
+    &#x27;&lt;a href&#x3D;&quot;http://scalgo.com&quot;&gt;SCALGO&lt;/a&gt;&#x27;,
+    &#x27;&lt;a href&#x3D;&quot;http://www.cgiar-csi.org/data/&#x27; +
+        &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27;
   ],
   tileGrid: tileGrid,
   style: &#x27;default&#x27;,
@@ -179,13 +175,9 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
         format: &#x27;image/png&#x27;,
         matrixSet: &#x27;EPSG:3857&#x27;,
         attributions: [
-          new ol.Attribution({
-            html: &#x27;&lt;a href&#x3D;&quot;http://scalgo.com&quot;&gt;SCALGO&lt;/a&gt;&#x27;
-          }),
-          new ol.Attribution({
-            html: &#x27;&lt;a href&#x3D;&quot;http://www.cgiar-csi.org/data/&#x27; +
-                &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27;
-          })
+          &#x27;&lt;a href&#x3D;&quot;http://scalgo.com&quot;&gt;SCALGO&lt;/a&gt;&#x27;,
+          &#x27;&lt;a href&#x3D;&quot;http://www.cgiar-csi.org/data/&#x27; +
+              &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27;
         ],
         tileGrid: tileGrid,
         style: &#x27;default&#x27;,

@@ -120,10 +120,8 @@ var animateFlights &#x3D; function(event) {
 
 flightsSource &#x3D; new ol.source.Vector({
   wrapX: false,
-  attributions: [new ol.Attribution({
-    html: &#x27;Flight data by &#x27; +
-        &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;
-  })],
+  attributions: &#x27;Flight data by &#x27; +
+        &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
   loader: function() {
     var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
     fetch(url).then(function(response) {
@@ -254,10 +252,8 @@ map.addLayer(flightsLayer);
 
       flightsSource &#x3D; new ol.source.Vector({
         wrapX: false,
-        attributions: [new ol.Attribution({
-          html: &#x27;Flight data by &#x27; +
-              &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;
-        })],
+        attributions: &#x27;Flight data by &#x27; +
+              &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
         loader: function() {
           var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
           fetch(url).then(function(response) {

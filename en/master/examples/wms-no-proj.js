@@ -1,12 +1,8 @@
 var layers = [
   new ol.layer.Tile({
     source: new ol.source.TileWMS({
-      attributions: [new ol.Attribution({
-        html: '&copy; ' +
-            '<a href="http://www.geo.admin.ch/internet/geoportal/' +
-            'en/home.html">' +
-            'Pixelmap 1:1000000 / geo.admin.ch</a>'
-      })],
+      attributions: '© <a href="http://www.geo.admin.ch/internet/geoportal/' +
+          'en/home.html">Pixelmap 1:1000000 / geo.admin.ch</a>',
       crossOrigin: 'anonymous',
       params: {
         'LAYERS': 'ch.swisstopo.pixelkarte-farbe-pk1000.noscale',
@@ -17,12 +13,8 @@ var layers = [
   }),
   new ol.layer.Image({
     source: new ol.source.ImageWMS({
-      attributions: [new ol.Attribution({
-        html: '&copy; ' +
-            '<a href="http://www.geo.admin.ch/internet/geoportal/' +
-            'en/home.html">' +
-            'National parks / geo.admin.ch</a>'
-      })],
+      attributions: '© <a href="http://www.geo.admin.ch/internet/geoportal/' +
+          'en/home.html">National parks / geo.admin.ch</a>',
       crossOrigin: 'anonymous',
       params: {'LAYERS': 'ch.bafu.schutzgebiete-paerke_nationaler_bedeutung'},
       serverType: 'mapserver',
