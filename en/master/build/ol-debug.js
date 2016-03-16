@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-198-g4b5bb42
+// Version: v3.14.2-204-gdef755f
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -88916,7 +88916,9 @@ ol.format.KML.writePolyStyle_ = function(node, style, objectStack) {
  * @private
  */
 ol.format.KML.writeScaleTextNode_ = function(node, scale) {
-  ol.format.XSD.writeDecimalTextNode(node, scale * scale);
+  // the Math is to remove any excess decimals created by float arithmetic
+  ol.format.XSD.writeDecimalTextNode(node,
+      Math.round(scale * scale * 1e6) / 1e6);
 };
 
 

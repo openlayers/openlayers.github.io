@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-198-g4b5bb42
+// Version: v3.14.2-204-gdef755f
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -560,7 +560,7 @@ function Lr(a,c){var d;for(d=c.firstChild;d;d=d.nextSibling)if(1==d.nodeType){va
 l.fo=function(a){var c=[];Wl(a)?Ya(c,Nr(this,a)):Xl(a)?Ya(c,Or(this,a)):"string"===typeof a&&(a=Yl(a),Ya(c,Nr(this,a)));return c};function Nr(a,c){var d,e=[];for(d=c.firstChild;d;d=d.nextSibling)1==d.nodeType&&Ya(e,Or(a,d));return e}
 function Or(a,c){var d,e=[];for(d=c.firstElementChild;d;d=d.nextElementSibling)if(Va(Pq,d.namespaceURI)&&"NetworkLink"==d.localName){var f=R({},Gr,d,[]);e.push(f)}for(d=c.firstElementChild;d;d=d.nextElementSibling)f=d.localName,!Va(Pq,d.namespaceURI)||"Document"!=f&&"Folder"!=f&&"kml"!=f||Ya(e,Or(a,d));return e}function Pr(a,c){var d=Ve(c),d=[255*(4==d.length?d[3]:1),d[2],d[1],d[0]],e;for(e=0;4>e;++e){var f=parseInt(d[e],10).toString(16);d[e]=1==f.length?"0"+f:f}np(a,d.join(""))}
 function Qr(a,c,d){im({node:a},Rr,Sr,[c],d)}function Tr(a,c,d){var e={node:a};c.Ta()&&a.setAttribute("id",c.Ta());a=c.P();var f=c.cc();f&&(f=f.call(c,0))&&(f=fa(f)?f[0]:f,this.j&&(a.Style=f),(f=f.Ga())&&(a.name=f.Ga()));f=Ur[d[d.length-1].node.namespaceURI];a=gm(a,f);im(e,Vr,fm,a,d,f);a=d[0];(c=c.X())&&(c=Bo(c,!0,a));im(e,Vr,Wr,[c],d)}function Xr(a,c,d){var e=c.ga();a={node:a};a.layout=c.f;a.stride=c.pa();im(a,Yr,Zr,[e],d)}
-function $r(a,c,d){c=c.Vd();var e=c.shift();a={node:a};im(a,as,bs,c,d);im(a,as,cs,[e],d)}function ds(a,c){op(a,c*c)}
+function $r(a,c,d){c=c.Vd();var e=c.shift();a={node:a};im(a,as,bs,c,d);im(a,as,cs,[e],d)}function ds(a,c){op(a,Math.round(c*c*1E6)/1E6)}
 var es=Q(Pq,["Document","Placemark"]),hs=Q(Pq,{Document:P(function(a,c,d){im({node:a},fs,gs,c,d,void 0,this)}),Placemark:P(Tr)}),fs=Q(Pq,{Placemark:P(Tr)}),is={Point:"Point",LineString:"LineString",LinearRing:"LinearRing",Polygon:"Polygon",MultiPoint:"MultiGeometry",MultiLineString:"MultiGeometry",MultiPolygon:"MultiGeometry"},js=Q(Pq,["href"],Q(Oq,["x","y","w","h"])),ks=Q(Pq,{href:P(np)},Q(Oq,{x:P(op),y:P(op),w:P(op),h:P(op)})),ls=Q(Pq,["scale","heading","Icon","hotSpot"]),ns=Q(Pq,{Icon:P(function(a,
 c,d){a={node:a};var e=js[d[d.length-1].node.namespaceURI],f=gm(c,e);im(a,ks,fm,f,d,e);e=js[Oq[0]];f=gm(c,e);im(a,ks,ms,f,d,e)}),heading:P(op),hotSpot:P(function(a,c){a.setAttribute("x",c.x);a.setAttribute("y",c.y);a.setAttribute("xunits",c.Sf);a.setAttribute("yunits",c.Tf)}),scale:P(ds)}),os=Q(Pq,["color","scale"]),ps=Q(Pq,{color:P(Pr),scale:P(ds)}),qs=Q(Pq,["color","width"]),rs=Q(Pq,{color:P(Pr),width:P(op)}),Rr=Q(Pq,{LinearRing:P(Xr)}),ss=Q(Pq,{LineString:P(Xr),Point:P(Xr),Polygon:P($r)}),Ur=Q(Pq,
 "name open visibility address phoneNumber description styleUrl Style".split(" ")),Vr=Q(Pq,{MultiGeometry:P(function(a,c,d){a={node:a};var e=c.W(),f,g;"MultiPoint"==e?(f=c.ke(),g=ts):"MultiLineString"==e?(f=c.qd(),g=us):"MultiPolygon"==e&&(f=c.Wd(),g=vs);im(a,ss,g,f,d)}),LineString:P(Xr),LinearRing:P(Xr),Point:P(Xr),Polygon:P($r),Style:P(function(a,c,d){a={node:a};var e={},f=c.c,g=c.g,h=c.a;c=c.Ga();h instanceof Oi&&(e.IconStyle=h);c&&(e.LabelStyle=c);g&&(e.LineStyle=g);f&&(e.PolyStyle=f);c=ws[d[d.length-
