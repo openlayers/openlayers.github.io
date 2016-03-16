@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-178-g9db16bf
+// Version: v3.14.2-198-g4b5bb42
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -34157,7 +34157,8 @@ ol.TileState = {
   LOADING: 1,
   LOADED: 2,
   ERROR: 3,
-  EMPTY: 4
+  EMPTY: 4,
+  ABORT: 5
 };
 
 
@@ -43192,10 +43193,7 @@ ol.pointer.PointerEvent.HAS_BUTTONS = false;
   }
 })();
 
-// FIXME add tests for browser features (Modernizr?)
-
 goog.provide('ol.dom');
-goog.provide('ol.dom.BrowserFeature');
 
 goog.require('goog.asserts');
 goog.require('goog.userAgent');
@@ -43233,31 +43231,29 @@ ol.dom.canUseCssTransform = (function() {
     if (canUseCssTransform === undefined) {
       goog.asserts.assert(document.body,
           'document.body should not be null');
-      if (!goog.global.getComputedStyle) {
-        // this browser is ancient
-        canUseCssTransform = false;
-      } else {
-        var el = document.createElement('P'),
-            has2d,
-            transforms = {
-              'webkitTransform': '-webkit-transform',
-              'OTransform': '-o-transform',
-              'msTransform': '-ms-transform',
-              'MozTransform': '-moz-transform',
-              'transform': 'transform'
-            };
-        document.body.appendChild(el);
-        for (var t in transforms) {
-          if (t in el.style) {
-            el.style[t] = 'translate(1px,1px)';
-            has2d = goog.global.getComputedStyle(el).getPropertyValue(
-                transforms[t]);
-          }
-        }
-        document.body.removeChild(el);
+      goog.asserts.assert(goog.global.getComputedStyle,
+          'getComputedStyle is required (unsupported browser?)');
 
-        canUseCssTransform = (has2d && has2d !== 'none');
+      var el = document.createElement('P'),
+          has2d,
+          transforms = {
+            'webkitTransform': '-webkit-transform',
+            'OTransform': '-o-transform',
+            'msTransform': '-ms-transform',
+            'MozTransform': '-moz-transform',
+            'transform': 'transform'
+          };
+      document.body.appendChild(el);
+      for (var t in transforms) {
+        if (t in el.style) {
+          el.style[t] = 'translate(1px,1px)';
+          has2d = goog.global.getComputedStyle(el).getPropertyValue(
+              transforms[t]);
+        }
       }
+      document.body.removeChild(el);
+
+      canUseCssTransform = (has2d && has2d !== 'none');
     }
     return canUseCssTransform;
   };
@@ -43276,31 +43272,29 @@ ol.dom.canUseCssTransform3D = (function() {
     if (canUseCssTransform3D === undefined) {
       goog.asserts.assert(document.body,
           'document.body should not be null');
-      if (!goog.global.getComputedStyle) {
-        // this browser is ancient
-        canUseCssTransform3D = false;
-      } else {
-        var el = document.createElement('P'),
-            has3d,
-            transforms = {
-              'webkitTransform': '-webkit-transform',
-              'OTransform': '-o-transform',
-              'msTransform': '-ms-transform',
-              'MozTransform': '-moz-transform',
-              'transform': 'transform'
-            };
-        document.body.appendChild(el);
-        for (var t in transforms) {
-          if (t in el.style) {
-            el.style[t] = 'translate3d(1px,1px,1px)';
-            has3d = goog.global.getComputedStyle(el).getPropertyValue(
-                transforms[t]);
-          }
-        }
-        document.body.removeChild(el);
+      goog.asserts.assert(goog.global.getComputedStyle,
+          'getComputedStyle is required (unsupported browser?)');
 
-        canUseCssTransform3D = (has3d && has3d !== 'none');
+      var el = document.createElement('P'),
+          has3d,
+          transforms = {
+            'webkitTransform': '-webkit-transform',
+            'OTransform': '-o-transform',
+            'msTransform': '-ms-transform',
+            'MozTransform': '-moz-transform',
+            'transform': 'transform'
+          };
+      document.body.appendChild(el);
+      for (var t in transforms) {
+        if (t in el.style) {
+          el.style[t] = 'translate3d(1px,1px,1px)';
+          has3d = goog.global.getComputedStyle(el).getPropertyValue(
+              transforms[t]);
+        }
       }
+      document.body.removeChild(el);
+
+      canUseCssTransform3D = (has3d && has3d !== 'none');
     }
     return canUseCssTransform3D;
   };
@@ -43393,7 +43387,7 @@ ol.dom.transformElement2D = function(element, transform, opt_precision) {
  */
 ol.dom.outerWidth = function(element) {
   var width = element.offsetWidth;
-  var style = element.currentStyle || window.getComputedStyle(element);
+  var style = element.currentStyle || goog.global.getComputedStyle(element);
   width += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
 
   return width;
@@ -43409,7 +43403,7 @@ ol.dom.outerWidth = function(element) {
  */
 ol.dom.outerHeight = function(element) {
   var height = element.offsetHeight;
-  var style = element.currentStyle || window.getComputedStyle(element);
+  var style = element.currentStyle || goog.global.getComputedStyle(element);
   height += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
 
   return height;
@@ -47225,9 +47219,6 @@ ol.style.Icon = function(opt_options) {
   goog.asserts.assert(!(src !== undefined && image),
       'image and src can not provided at the same time');
   goog.asserts.assert(
-      src === undefined || (src !== undefined && !imgSize),
-      'imgSize should not be set when src is provided');
-  goog.asserts.assert(
       !image || (image && imgSize),
       'imgSize must be set when image is provided');
 
@@ -47631,6 +47622,10 @@ ol.style.IconImage_.prototype.handleImageError_ = function() {
  */
 ol.style.IconImage_.prototype.handleImageLoad_ = function() {
   this.imageState_ = ol.style.ImageState.LOADED;
+  if (this.size_) {
+    this.image_.width = this.size_[0];
+    this.image_.height = this.size_[1];
+  }
   this.size_ = [this.image_.width, this.image_.height];
   this.unlistenImage_();
   this.determineTainting_();
@@ -48542,6 +48537,7 @@ ol.structs.PriorityQueue.prototype.reprioritize = function() {
 goog.provide('ol.TilePriorityFunction');
 goog.provide('ol.TileQueue');
 
+goog.require('goog.asserts');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.Coordinate');
@@ -48597,7 +48593,7 @@ ol.TileQueue = function(tilePriorityFunction, tileChangeCallback) {
 
   /**
    * @private
-   * @type {Object.<string,boolean>}
+   * @type {!Object.<string,boolean>}
    */
   this.tilesLoadingKeys_ = {};
 
@@ -48635,7 +48631,7 @@ ol.TileQueue.prototype.handleTileChange = function(event) {
   var tile = /** @type {ol.Tile} */ (event.target);
   var state = tile.getState();
   if (state === ol.TileState.LOADED || state === ol.TileState.ERROR ||
-      state === ol.TileState.EMPTY) {
+      state === ol.TileState.EMPTY || state === ol.TileState.ABORT) {
     ol.events.unlisten(tile, ol.events.EventType.CHANGE,
         this.handleTileChange, this);
     var tileKey = tile.getKey();
@@ -48645,6 +48641,7 @@ ol.TileQueue.prototype.handleTileChange = function(event) {
     }
     this.tileChangeCallback_();
   }
+  goog.asserts.assert(Object.keys(this.tilesLoadingKeys_).length === this.tilesLoading_);
 };
 
 
@@ -48654,16 +48651,18 @@ ol.TileQueue.prototype.handleTileChange = function(event) {
  */
 ol.TileQueue.prototype.loadMoreTiles = function(maxTotalLoading, maxNewLoads) {
   var newLoads = 0;
-  var tile;
+  var tile, tileKey;
   while (this.tilesLoading_ < maxTotalLoading && newLoads < maxNewLoads &&
          this.getCount() > 0) {
     tile = /** @type {ol.Tile} */ (this.dequeue()[0]);
-    if (tile.getState() === ol.TileState.IDLE) {
-      this.tilesLoadingKeys_[tile.getKey()] = true;
+    tileKey = tile.getKey();
+    if (tile.getState() === ol.TileState.IDLE && !(tileKey in this.tilesLoadingKeys_)) {
+      this.tilesLoadingKeys_[tileKey] = true;
       ++this.tilesLoading_;
       ++newLoads;
       tile.load();
     }
+    goog.asserts.assert(Object.keys(this.tilesLoadingKeys_).length === this.tilesLoading_);
   }
 };
 
@@ -50303,6 +50302,12 @@ ol.interaction.DragZoom = function(opt_options) {
    */
   this.duration_ = options.duration !== undefined ? options.duration : 200;
 
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.out_ = options.out !== undefined ? options.out : false;
+
   goog.base(this, {
     condition: condition,
     className: options.className || 'ol-dragzoom'
@@ -50325,6 +50330,17 @@ ol.interaction.DragZoom.prototype.onBoxEnd = function() {
   goog.asserts.assert(size !== undefined, 'size should be defined');
 
   var extent = this.getGeometry().getExtent();
+
+  if (this.out_) {
+    var mapExtent = view.calculateExtent(size);
+    var boxPixelExtent = ol.extent.createOrUpdateFromCoordinates([
+      map.getPixelFromCoordinate(ol.extent.getBottomLeft(extent)),
+      map.getPixelFromCoordinate(ol.extent.getTopRight(extent))]);
+    var factor = view.getResolutionForExtent(boxPixelExtent, size);
+
+    ol.extent.scaleFromCenter(mapExtent, 1 / factor);
+    extent = mapExtent;
+  }
 
   var resolution = view.constrainResolution(
       view.getResolutionForExtent(extent, size));
@@ -83086,6 +83102,8 @@ ol.format.GPX.GPX_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * Encode an array of features in the GPX format.
+ * LineString geometries are output as routes (`<rte>`), and MultiLineString
+ * as tracks (`<trk>`).
  *
  * @function
  * @param {Array.<ol.Feature>} features Features.
@@ -83098,6 +83116,8 @@ ol.format.GPX.prototype.writeFeatures;
 
 /**
  * Encode an array of features in the GPX format as an XML node.
+ * LineString geometries are output as routes (`<rte>`), and MultiLineString
+ * as tracks (`<trk>`).
  *
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Options.
@@ -97116,6 +97136,8 @@ ol.ImageTile.prototype.disposeInternal = function() {
   if (this.interimTile) {
     this.interimTile.dispose();
   }
+  this.state = ol.TileState.ABORT;
+  this.changed();
   goog.base(this, 'disposeInternal');
 };
 

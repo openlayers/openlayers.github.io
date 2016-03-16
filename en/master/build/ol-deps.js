@@ -28,7 +28,7 @@ goog.addDependency('../../../ol/ol/coordinate.js', ['ol.Coordinate', 'ol.Coordin
 goog.addDependency('../../../ol/ol/css.js', ['ol.css'], [], false);
 goog.addDependency('../../../ol/ol/deviceorientation.js', ['ol.DeviceOrientation', 'ol.DeviceOrientationProperty'], ['ol', 'ol.Object', 'ol.events', 'ol.has', 'ol.math'], false);
 goog.addDependency('../../../ol/ol/disposable.js', ['ol.Disposable'], ['ol'], false);
-goog.addDependency('../../../ol/ol/dom/dom.js', ['ol.dom', 'ol.dom.BrowserFeature'], ['goog.asserts', 'goog.userAgent', 'goog.vec.Mat4', 'ol'], false);
+goog.addDependency('../../../ol/ol/dom/dom.js', ['ol.dom'], ['goog.asserts', 'goog.userAgent', 'goog.vec.Mat4', 'ol'], false);
 goog.addDependency('../../../ol/ol/easing.js', ['ol.easing'], [], false);
 goog.addDependency('../../../ol/ol/events.js', ['ol.events', 'ol.events.EventType', 'ol.events.KeyCode'], ['ol.object'], false);
 goog.addDependency('../../../ol/ol/events/condition.js', ['ol.events.ConditionType', 'ol.events.condition'], ['goog.asserts', 'goog.functions', 'ol.MapBrowserEvent.EventType', 'ol.MapBrowserPointerEvent'], false);
@@ -242,7 +242,7 @@ goog.addDependency('../../../ol/ol/tilecoord.js', ['ol.TileCoord', 'ol.tilecoord
 goog.addDependency('../../../ol/ol/tilegrid/tilegrid.js', ['ol.tilegrid.TileGrid'], ['goog.asserts', 'ol', 'ol.Coordinate', 'ol.TileCoord', 'ol.TileRange', 'ol.array', 'ol.extent', 'ol.extent.Corner', 'ol.math', 'ol.object', 'ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.Units', 'ol.size', 'ol.tilecoord'], false);
 goog.addDependency('../../../ol/ol/tilegrid/wmtstilegrid.js', ['ol.tilegrid.WMTS'], ['goog.asserts', 'ol.proj', 'ol.tilegrid.TileGrid'], false);
 goog.addDependency('../../../ol/ol/tileloadfunction.js', ['ol.TileLoadFunctionType'], [], false);
-goog.addDependency('../../../ol/ol/tilequeue.js', ['ol.TilePriorityFunction', 'ol.TileQueue'], ['ol.Coordinate', 'ol.TileState', 'ol.events', 'ol.events.EventType', 'ol.structs.PriorityQueue'], false);
+goog.addDependency('../../../ol/ol/tilequeue.js', ['ol.TilePriorityFunction', 'ol.TileQueue'], ['goog.asserts', 'ol.Coordinate', 'ol.TileState', 'ol.events', 'ol.events.EventType', 'ol.structs.PriorityQueue'], false);
 goog.addDependency('../../../ol/ol/tilerange.js', ['ol.TileRange'], ['goog.asserts', 'ol.Size', 'ol.TileCoord'], false);
 goog.addDependency('../../../ol/ol/tileurlfunction.js', ['ol.TileUrlFunction', 'ol.TileUrlFunctionType'], ['goog.asserts', 'goog.math', 'ol.TileCoord', 'ol.tilecoord'], false);
 goog.addDependency('../../../ol/ol/transformfunction.js', ['ol.TransformFunction'], [], false);

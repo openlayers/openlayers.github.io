@@ -15803,7 +15803,7 @@ Projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/gpxformat.js, line 878
+            src/ol/format/gpxformat.js, line 880
         </div>
         
         
@@ -15814,7 +15814,9 @@ Projection.
 
     
     <div class="description">
-        <p>Encode an array of features in the GPX format.</p>
+        <p>Encode an array of features in the GPX format.
+LineString geometries are output as routes (<code>&lt;rte&gt;</code>), and MultiLineString
+as tracks (<code>&lt;trk&gt;</code>).</p>
     </div>
     
 
@@ -16071,7 +16073,7 @@ Result.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/gpxformat.js, line 889
+            src/ol/format/gpxformat.js, line 893
         </div>
         
         
@@ -16082,7 +16084,9 @@ Result.
 
     
     <div class="description">
-        <p>Encode an array of features in the GPX format as an XML node.</p>
+        <p>Encode an array of features in the GPX format as an XML node.
+LineString geometries are output as routes (<code>&lt;rte&gt;</code>), and MultiLineString
+as tracks (<code>&lt;trk&gt;</code>).</p>
     </div>
     
 
