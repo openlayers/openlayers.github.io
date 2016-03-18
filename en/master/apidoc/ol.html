@@ -10476,6 +10476,10 @@
                     <a href="ol.source.Cluster.html#getFeaturesInExtent">getFeaturesInExtent</a>
                 </li>
             
+                <li data-name="ol.source.Cluster#getFormat" class="unstable">
+                    <a href="ol.source.Cluster.html#getFormat">getFormat</a>
+                </li>
+            
                 <li data-name="ol.source.Cluster#getKeys" class="">
                     <a href="ol.source.Cluster.html#getKeys">getKeys</a>
                 </li>
@@ -10502,6 +10506,10 @@
             
                 <li data-name="ol.source.Cluster#getState" class="unstable">
                     <a href="ol.source.Cluster.html#getState">getState</a>
+                </li>
+            
+                <li data-name="ol.source.Cluster#getUrl" class="unstable">
+                    <a href="ol.source.Cluster.html#getUrl">getUrl</a>
                 </li>
             
                 <li data-name="ol.source.Cluster#on" class="">
@@ -13355,6 +13363,10 @@
                     <a href="ol.source.Vector.html#getFeaturesInExtent">getFeaturesInExtent</a>
                 </li>
             
+                <li data-name="ol.source.Vector#getFormat" class="unstable">
+                    <a href="ol.source.Vector.html#getFormat">getFormat</a>
+                </li>
+            
                 <li data-name="ol.source.Vector#getKeys" class="">
                     <a href="ol.source.Vector.html#getKeys">getKeys</a>
                 </li>
@@ -13377,6 +13389,10 @@
             
                 <li data-name="ol.source.Vector#getState" class="unstable">
                     <a href="ol.source.Vector.html#getState">getState</a>
+                </li>
+            
+                <li data-name="ol.source.Vector#getUrl" class="unstable">
+                    <a href="ol.source.Vector.html#getUrl">getUrl</a>
                 </li>
             
                 <li data-name="ol.source.Vector#on" class="">
@@ -15184,7 +15200,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/ol.js, line 272
+            src/ol/ol.js, line 264
         </div>
         
         
@@ -15207,12 +15223,7 @@ function ChildClass(a, b, c) {
 ol.inherits(ChildClass, ParentClass);
 
 var child = new ChildClass('a', 'b', 'see');
-child.foo(); // This works.</code></pre><p>In addition, a superclass' implementation of a method can be invoked as
-follows:</p>
-<pre class="prettyprint source"><code>ChildClass.prototype.foo = function(a) {
-  ChildClass.base(this, 'foo', a);
-  // Other code here.
-};</code></pre>
+child.foo(); // This works.</code></pre>
     </div>
     
 

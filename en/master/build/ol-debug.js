@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-204-gdef755f
+// Version: v3.14.2-216-g109bda6
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -2819,14 +2819,6 @@ ol.WEBGL_EXTENSIONS; // value is set in `ol.has`
  *
  *     var child = new ChildClass('a', 'b', 'see');
  *     child.foo(); // This works.
- *
- * In addition, a superclass' implementation of a method can be invoked as
- * follows:
- *
- *     ChildClass.prototype.foo = function(a) {
- *       ChildClass.base(this, 'foo', a);
- *       // Other code here.
- *     };
  *
  * @param {!Function} childCtor Child constructor.
  * @param {!Function} parentCtor Parent constructor.
@@ -14977,7 +14969,7 @@ ol.geom.Geometry.prototype.getType = goog.abstractMethod;
 /**
  * Apply a transform function to each coordinate of the geometry.
  * The geometry is modified in place.
- * If you do not want the geometry modified in place, first clone() it and
+ * If you do not want the geometry modified in place, first `clone()` it and
  * then use this function on the clone.
  * @function
  * @param {ol.TransformFunction} transformFn Transform.
@@ -15008,7 +15000,7 @@ ol.geom.Geometry.prototype.translate = goog.abstractMethod;
  * Transform each coordinate of the geometry from one coordinate reference
  * system to another. The geometry is modified in place.
  * For example, a line will be transformed to a line and a circle to a circle.
- * If you do not want the geometry modified in place, first clone() it and
+ * If you do not want the geometry modified in place, first `clone()` it and
  * then use this function on the clone.
  *
  * @param {ol.proj.ProjectionLike} source The current projection.  Can be a
@@ -61466,13 +61458,25 @@ ol.source.Vector = function(opt_options) {
    */
   this.loader_ = ol.nullFunction;
 
+  /**
+   * @private
+   * @type {ol.format.Feature|undefined}
+   */
+  this.format_ = options.format;
+
+  /**
+   * @private
+   * @type {string|ol.FeatureUrlFunction|undefined}
+   */
+  this.url_ = options.url;
+
   if (options.loader !== undefined) {
     this.loader_ = options.loader;
-  } else if (options.url !== undefined) {
-    goog.asserts.assert(options.format !== undefined,
+  } else if (this.url_ !== undefined) {
+    goog.asserts.assert(this.format_ !== undefined,
         'format must be set when url is set');
     // create a XHR feature loader for "url" and "format"
-    this.loader_ = ol.featureloader.xhr(options.url, options.format);
+    this.loader_ = ol.featureloader.xhr(this.url_, this.format_);
   }
 
   /**
@@ -62048,6 +62052,28 @@ ol.source.Vector.prototype.getExtent = function() {
 ol.source.Vector.prototype.getFeatureById = function(id) {
   var feature = this.idIndex_[id.toString()];
   return feature !== undefined ? feature : null;
+};
+
+
+/**
+ * Get the format associated with this source.
+ *
+ * @return {ol.format.Feature|undefined} The feature format.
+ * @api
+ */
+ol.source.Vector.prototype.getFormat = function() {
+  return this.format_;
+};
+
+
+/**
+ * Get the url associated with this source.
+ *
+ * @return {string|ol.FeatureUrlFunction|undefined} The url.
+ * @api
+ */
+ol.source.Vector.prototype.getUrl = function() {
+  return this.url_;
 };
 
 
@@ -62745,6 +62771,7 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
 goog.provide('ol.renderer.canvas.TileLayer');
 
 goog.require('goog.asserts');
+goog.require('goog.vec.Mat4');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
 goog.require('ol.array');
@@ -62754,6 +62781,7 @@ goog.require('ol.layer.Tile');
 goog.require('ol.render.EventType');
 goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.source.Tile');
+goog.require('ol.vec.Mat4');
 
 
 /**
@@ -62783,6 +62811,12 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
    */
   this.tmpExtent_ = ol.extent.createEmpty();
 
+  /**
+   * @private
+   * @type {!goog.vec.Mat4.Number}
+   */
+  this.imageTransform_ = goog.vec.Mat4.createNumber();
+
 };
 goog.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
 
@@ -62797,7 +62831,10 @@ ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
   var center = viewState.center;
   var projection = viewState.projection;
   var resolution = viewState.resolution;
+  var rotation = viewState.rotation;
   var size = frameState.size;
+  var offsetX = Math.round(pixelRatio * size[0] / 2);
+  var offsetY = Math.round(pixelRatio * size[1] / 2);
   var pixelScale = pixelRatio / resolution;
   var layer = this.getLayer();
   var source = layer.getSource();
@@ -62809,17 +62846,29 @@ ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
 
   this.dispatchPreComposeEvent(context, frameState, transform);
 
-  var renderContext;
-  if (layer.hasListener(ol.render.EventType.RENDER)) {
-    // resize and clear
-    this.context_.canvas.width = context.canvas.width;
-    this.context_.canvas.height = context.canvas.height;
+  var renderContext = context;
+  var hasRenderListeners = layer.hasListener(ol.render.EventType.RENDER);
+  var drawOffsetX, drawOffsetY, drawScale, drawSize;
+  if (rotation || hasRenderListeners) {
     renderContext = this.context_;
-  } else {
-    renderContext = context;
+    var renderCanvas = renderContext.canvas;
+    var tilePixelRatio = source.getTilePixelRatio(pixelRatio);
+    drawScale = tilePixelRatio / pixelRatio;
+    var width = context.canvas.width * drawScale;
+    var height = context.canvas.height * drawScale;
+    // Make sure the canvas is big enough for all possible rotation angles
+    drawSize = Math.round(Math.sqrt(width * width + height * height));
+    if (renderCanvas.width != drawSize) {
+      renderCanvas.width = renderCanvas.height = drawSize;
+    } else {
+      renderContext.clearRect(0, 0, drawSize, drawSize);
+    }
+    drawOffsetX = (drawSize - width) / 2 / drawScale;
+    drawOffsetY = (drawSize - height) / 2 / drawScale;
+    pixelScale *= drawScale;
+    offsetX = Math.round(drawScale * (offsetX + drawOffsetX))
+    offsetY = Math.round(drawScale * (offsetY + drawOffsetY));
   }
-  var offsetX = Math.round(pixelRatio * size[0] / 2);
-  var offsetY = Math.round(pixelRatio * size[1] / 2);
 
   // for performance reasons, context.save / context.restore is not used
   // to save and restore the transformation matrix and the opacity.
@@ -62884,9 +62933,17 @@ ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
     }
   }
 
-  if (renderContext != context) {
-    this.dispatchRenderEvent(renderContext, frameState, transform);
-    context.drawImage(renderContext.canvas, 0, 0);
+  if (hasRenderListeners) {
+    var dX = drawOffsetX - offsetX / drawScale + offsetX;
+    var dY = drawOffsetY - offsetY / drawScale + offsetY;
+    var imageTransform = ol.vec.Mat4.makeTransform2D(this.imageTransform_,
+        drawSize / 2 - dX, drawSize / 2 - dY, pixelScale, -pixelScale,
+        -rotation, -center[0] + dX / pixelScale, -center[1] - dY / pixelScale);
+    this.dispatchRenderEvent(renderContext, frameState, imageTransform);
+  }
+  if (rotation || hasRenderListeners) {
+    context.drawImage(renderContext.canvas, -Math.round(drawOffsetX),
+        -Math.round(drawOffsetY), drawSize / drawScale, drawSize / drawScale);
   }
   renderContext.globalAlpha = alpha;
 
@@ -64369,6 +64426,7 @@ goog.require('ol.layer.Vector');
 goog.require('ol.layer.VectorTile');
 goog.require('ol.render.Event');
 goog.require('ol.render.EventType');
+goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Immediate');
 goog.require('ol.renderer.Map');
 goog.require('ol.renderer.canvas.ImageLayer');
@@ -64531,7 +64589,7 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
     return;
   }
 
-  var context;
+  var context = this.context_;
   var pixelRatio = frameState.pixelRatio;
   var width = Math.round(frameState.size[0] * pixelRatio);
   var height = Math.round(frameState.size[1] * pixelRatio);
@@ -64539,29 +64597,10 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
     this.canvas_.width = width;
     this.canvas_.height = height;
   } else {
-    this.context_.clearRect(0, 0, width, height);
+    context.clearRect(0, 0, width, height);
   }
 
   var rotation = frameState.viewState.rotation;
-  var pixelExtent;
-  if (rotation) {
-    context = this.renderContext_;
-    pixelExtent = ol.extent.getForViewAndSize(this.pixelCenter_, pixelRatio,
-        rotation, frameState.size, this.pixelExtent_);
-    var renderWidth = Math.round(ol.extent.getWidth(pixelExtent));
-    var renderHeight = Math.round(ol.extent.getHeight(pixelExtent));
-    var renderCanvas = this.renderCanvas_;
-    if (renderCanvas.width != renderWidth || renderCanvas.height != renderHeight) {
-      renderCanvas.width = renderWidth;
-      renderCanvas.height = renderHeight;
-      this.renderContext_.translate(Math.round((renderWidth - width) / 2),
-          Math.round((renderHeight - height) / 2));
-    } else {
-      this.renderContext_.clearRect(0, 0, renderWidth, renderHeight);
-    }
-  } else {
-    context = this.context_;
-  }
 
   this.calculateMatrices2D(frameState);
 
@@ -64569,6 +64608,8 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
 
   var layerStatesArray = frameState.layerStatesArray;
   ol.array.stableSort(layerStatesArray, ol.renderer.Map.sortByZIndex);
+
+  ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
 
   var viewResolution = frameState.viewState.resolution;
   var i, ii, layer, layerRenderer, layerState;
@@ -64587,14 +64628,7 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
     }
   }
 
-  if (rotation) {
-    this.context_.translate(width / 2, height / 2);
-    this.context_.rotate(rotation);
-    this.context_.drawImage(this.renderCanvas_,
-        Math.round(pixelExtent[0]), Math.round(pixelExtent[1]));
-    this.context_.rotate(-rotation);
-    this.context_.translate(-width / 2, -height / 2);
-  }
+  ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
 
   this.dispatchComposeEvent_(
       ol.render.EventType.POSTCOMPOSE, frameState);
@@ -98258,6 +98292,11 @@ ol.interaction.Draw.prototype.setMap = function(map) {
  * @api
  */
 ol.interaction.Draw.handleEvent = function(mapBrowserEvent) {
+  if ((this.mode_ === ol.interaction.DrawMode.LINE_STRING ||
+    this.mode_ === ol.interaction.DrawMode.POLYGON) &&
+    this.freehandCondition_(mapBrowserEvent)) {
+    this.freehand_ = true;
+  }
   var pass = !this.freehand_;
   if (this.freehand_ &&
       mapBrowserEvent.type === ol.MapBrowserEvent.EventType.POINTERDRAG) {
@@ -98283,11 +98322,8 @@ ol.interaction.Draw.handleDownEvent_ = function(event) {
   if (this.condition_(event)) {
     this.downPx_ = event.pixel;
     return true;
-  } else if ((this.mode_ === ol.interaction.DrawMode.LINE_STRING ||
-      this.mode_ === ol.interaction.DrawMode.POLYGON) &&
-      this.freehandCondition_(event)) {
+  } else if (this.freehand_) {
     this.downPx_ = event.pixel;
-    this.freehand_ = true;
     if (!this.finishCoordinate_) {
       this.startDrawing_(event);
     }
@@ -109759,6 +109795,16 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.source.Vector.prototype,
+    'getFormat',
+    ol.source.Vector.prototype.getFormat);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'getUrl',
+    ol.source.Vector.prototype.getUrl);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
     'removeFeature',
     ol.source.Vector.prototype.removeFeature);
 
@@ -113346,6 +113392,16 @@ goog.exportProperty(
     ol.source.Cluster.prototype,
     'getFeatureById',
     ol.source.Cluster.prototype.getFeatureById);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'getFormat',
+    ol.source.Cluster.prototype.getFormat);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'getUrl',
+    ol.source.Cluster.prototype.getUrl);
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
