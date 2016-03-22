@@ -140,27 +140,26 @@ map.on(&#x27;click&#x27;, function(evt) {
   displaySnap(evt.coordinate);
 });
 
-var imageStyle &#x3D; new ol.style.Circle({
-  radius: 10,
-  fill: null,
-  stroke: new ol.style.Stroke({
-    color: &#x27;rgba(255,255,0,0.9)&#x27;,
-    width: 3
-  })
-});
-var strokeStyle &#x3D; new ol.style.Stroke({
+var stroke &#x3D; new ol.style.Stroke({
   color: &#x27;rgba(255,255,0,0.9)&#x27;,
   width: 3
 });
+var style &#x3D; new ol.style.Style({
+  stroke: stroke,
+  image: new ol.style.Circle({
+    radius: 10,
+    stroke: stroke
+  })
+});
+
 map.on(&#x27;postcompose&#x27;, function(evt) {
   var vectorContext &#x3D; evt.vectorContext;
+  vectorContext.setStyle(style);
   if (point !&#x3D;&#x3D; null) {
-    vectorContext.setImageStyle(imageStyle);
-    vectorContext.drawPointGeometry(point);
+    vectorContext.drawGeometry(point);
   }
   if (line !&#x3D;&#x3D; null) {
-    vectorContext.setFillStrokeStyle(null, strokeStyle);
-    vectorContext.drawLineStringGeometry(line);
+    vectorContext.drawGeometry(line);
   }
 });
 
@@ -278,27 +277,26 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         displaySnap(evt.coordinate);
       });
 
-      var imageStyle &#x3D; new ol.style.Circle({
-        radius: 10,
-        fill: null,
-        stroke: new ol.style.Stroke({
-          color: &#x27;rgba(255,255,0,0.9)&#x27;,
-          width: 3
-        })
-      });
-      var strokeStyle &#x3D; new ol.style.Stroke({
+      var stroke &#x3D; new ol.style.Stroke({
         color: &#x27;rgba(255,255,0,0.9)&#x27;,
         width: 3
       });
+      var style &#x3D; new ol.style.Style({
+        stroke: stroke,
+        image: new ol.style.Circle({
+          radius: 10,
+          stroke: stroke
+        })
+      });
+
       map.on(&#x27;postcompose&#x27;, function(evt) {
         var vectorContext &#x3D; evt.vectorContext;
+        vectorContext.setStyle(style);
         if (point !&#x3D;&#x3D; null) {
-          vectorContext.setImageStyle(imageStyle);
-          vectorContext.drawPointGeometry(point);
+          vectorContext.drawGeometry(point);
         }
         if (line !&#x3D;&#x3D; null) {
-          vectorContext.setFillStrokeStyle(null, strokeStyle);
-          vectorContext.drawLineStringGeometry(line);
+          vectorContext.drawGeometry(line);
         }
       });
 

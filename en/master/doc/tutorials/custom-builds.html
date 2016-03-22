@@ -43,7 +43,7 @@
 <p>An alternative to creating custom builds is to compile your application code together with OpenLayers 3. See the <a href="closure.html">Compiling Application with Closure Compiler</a> tutorial for more information.</p>
 <p>This particular tutorial explains how to create custom builds of OpenLayers 3.</p>
 <h2 id="requirements">Requirements</h2>
-<p>OpenLayers 3&#39;s build tools use Node and Java, so you need to have Node and Java installed on your machine. You can run <code>node --version</code> and <code>java -version</code> to test that Node and Java are installed, respectively.</p>
+<p>OpenLayers 3&#39;s build tools use Node and Java, so you need to have Node and Java installed on your machine. You can run <code>node --version</code> and <code>java -version</code> to test that Node and Java are installed, respectively. See <a href="https://github.com/openlayers/ol3/blob/master/DEVELOPING.md">developing guide</a> for minimum version numbers required.</p>
 <h2 id="download-openlayers">Download OpenLayers</h2>
 <p>Obviously, creating a custom build requires the OpenLayers 3 source and specific build scripts.</p>
 <p>To get the OpenLayers 3 source and the build scripts you can clone the <code>ol3</code> <a href="https://github.com/openlayers/ol3">repository</a>, or you can download one of the release archives. You can also download the <code>openlayers</code> Node package from the Node package registry, using NPM (the Node Package Manager). This is the method we are going to use in this tutorial.</p>
@@ -200,6 +200,8 @@ info ol Compiling 364 sources</code></pre>
 </span>}</code></pre>
 <p>The exports are given here in the order in which they occur in the <code>heatmaps-earthquakes</code> example&#39;s JavaScript code. In this example we not only use the <code>ol.</code> functions and constructors, but also <code>prototype</code> methods where the <code>ol</code> namespace is not directly used. In the code, we have for example <code>vector.getSource().on()</code>. This means we are using the <code>getSource</code> method of <code>layer.Heatmap</code> and the <code>on</code> method of <code>source.KML</code>, so this is what has to be exported. Similarly, <code>event.feature.get()</code> means we are using the <code>feature</code> property of <code>source.VectorEvent</code> and the <code>get</code> method of <code>Feature</code>. If any of these names are left out, the compile will complete successfully, but the missing names will be obfuscated and you will get a &#39;property undefined&#39; error when you try and run the script.</p>
 <p>As this example uses a vector layer it is necessary to remove <code>&quot;ol.ENABLE_VECTOR=false&quot;</code> in the <code>define</code> section of the configuration.</p>
+<h2 id="maintaining-the-code">Maintaining the code</h2>
+<p>If you installed OpenLayers from the Node package, you can use <code>npm</code> to upgrade to the latest version. If you cloned the Github repo, simply pulling in the latest code may not be enough, as some of the packages used, for example, the compiler, may need upgrading too. Do this by using <code>npm install</code> rather than <code>npm update</code>.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>This tutorial should have given you the information you need to create custom builds, i.e. builds tailored to your application. See the <a href="https://github.com/openlayers/ol3/tree/master/tasks/readme.md">tasks readme</a> for more information on the build scripts and the properties you can use in the build configuration file.</p>
 

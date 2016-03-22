@@ -71,12 +71,11 @@
   })
 });
 
-var defaultStroke &#x3D; new ol.style.Stroke({
-  color: &#x27;#EAE911&#x27;,
-  width: 2
-});
-var defaultStyle &#x3D; new ol.style.Style({
-  stroke: defaultStroke
+var style &#x3D; new ol.style.Style({
+  stroke: new ol.style.Stroke({
+    color: &#x27;#EAE911&#x27;,
+    width: 2
+  })
 });
 
 var flightsSource;
@@ -91,14 +90,13 @@ var pointsPerMs &#x3D; 0.1;
 var animateFlights &#x3D; function(event) {
   var vectorContext &#x3D; event.vectorContext;
   var frameState &#x3D; event.frameState;
-  vectorContext.setFillStrokeStyle(null, defaultStroke);
+  vectorContext.setStyle(style);
 
   var features &#x3D; flightsSource.getFeatures();
   for (var i &#x3D; 0; i &lt; features.length; i++) {
     var feature &#x3D; features[i];
     if (!feature.get(&#x27;finished&#x27;)) {
-      // only draw the lines for which the animation has not
-      // finished yet
+      // only draw the lines for which the animation has not finished yet
       var coords &#x3D; feature.getGeometry().getCoordinates();
       var elapsedTime &#x3D; frameState.time - feature.get(&#x27;start&#x27;);
       var elapsedPoints &#x3D; elapsedTime * pointsPerMs;
@@ -111,10 +109,10 @@ var animateFlights &#x3D; function(event) {
       var currentLine &#x3D; new ol.geom.LineString(coords.slice(0, maxIndex));
 
       // directly draw the line with the vector context
-      vectorContext.drawLineStringGeometry(currentLine, feature);
+      vectorContext.drawGeometry(currentLine);
     }
   }
-  // tell OL3 to continue the postcompose animation
+  // tell OL3 to continue the animation
   map.render();
 };
 
@@ -163,7 +161,7 @@ var flightsLayer &#x3D; new ol.layer.Vector({
     // if the animation is still active for a feature, do not
     // render the feature with the layer style
     if (feature.get(&#x27;finished&#x27;)) {
-      return defaultStyle;
+      return style;
     } else {
       return null;
     }
@@ -203,12 +201,11 @@ map.addLayer(flightsLayer);
         })
       });
 
-      var defaultStroke &#x3D; new ol.style.Stroke({
-        color: &#x27;#EAE911&#x27;,
-        width: 2
-      });
-      var defaultStyle &#x3D; new ol.style.Style({
-        stroke: defaultStroke
+      var style &#x3D; new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: &#x27;#EAE911&#x27;,
+          width: 2
+        })
       });
 
       var flightsSource;
@@ -223,14 +220,13 @@ map.addLayer(flightsLayer);
       var animateFlights &#x3D; function(event) {
         var vectorContext &#x3D; event.vectorContext;
         var frameState &#x3D; event.frameState;
-        vectorContext.setFillStrokeStyle(null, defaultStroke);
+        vectorContext.setStyle(style);
 
         var features &#x3D; flightsSource.getFeatures();
         for (var i &#x3D; 0; i &lt; features.length; i++) {
           var feature &#x3D; features[i];
           if (!feature.get(&#x27;finished&#x27;)) {
-            // only draw the lines for which the animation has not
-            // finished yet
+            // only draw the lines for which the animation has not finished yet
             var coords &#x3D; feature.getGeometry().getCoordinates();
             var elapsedTime &#x3D; frameState.time - feature.get(&#x27;start&#x27;);
             var elapsedPoints &#x3D; elapsedTime * pointsPerMs;
@@ -243,10 +239,10 @@ map.addLayer(flightsLayer);
             var currentLine &#x3D; new ol.geom.LineString(coords.slice(0, maxIndex));
 
             // directly draw the line with the vector context
-            vectorContext.drawLineStringGeometry(currentLine, feature);
+            vectorContext.drawGeometry(currentLine);
           }
         }
-        // tell OL3 to continue the postcompose animation
+        // tell OL3 to continue the animation
         map.render();
       };
 
@@ -295,7 +291,7 @@ map.addLayer(flightsLayer);
           // if the animation is still active for a feature, do not
           // render the feature with the layer style
           if (feature.get(&#x27;finished&#x27;)) {
-            return defaultStyle;
+            return style;
           } else {
             return null;
           }

@@ -69,11 +69,13 @@
   })
 });
 
-var imageStyle &#x3D; new ol.style.Circle({
-  radius: 5,
-  snapToPixel: false,
-  fill: new ol.style.Fill({color: &#x27;yellow&#x27;}),
-  stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
+var imageStyle &#x3D; new ol.style.Style({
+  image: new ol.style.Circle({
+    radius: 5,
+    snapToPixel: false,
+    fill: new ol.style.Fill({color: &#x27;yellow&#x27;}),
+    stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
+  })
 });
 
 var headInnerImageStyle &#x3D; new ol.style.Style({
@@ -84,10 +86,12 @@ var headInnerImageStyle &#x3D; new ol.style.Style({
   })
 });
 
-var headOuterImageStyle &#x3D; new ol.style.Circle({
-  radius: 5,
-  snapToPixel: false,
-  fill: new ol.style.Fill({color: &#x27;black&#x27;})
+var headOuterImageStyle &#x3D; new ol.style.Style({
+  image: new ol.style.Circle({
+    radius: 5,
+    snapToPixel: false,
+    fill: new ol.style.Fill({color: &#x27;black&#x27;})
+  })
 });
 
 var n &#x3D; 200;
@@ -107,16 +111,16 @@ map.on(&#x27;postcompose&#x27;, function(event) {
     var y &#x3D; (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
     coordinates.push([x, y]);
   }
-  vectorContext.setImageStyle(imageStyle);
-  vectorContext.drawMultiPointGeometry(
-      new ol.geom.MultiPoint(coordinates), null);
+  vectorContext.setStyle(imageStyle);
+  vectorContext.drawGeometry(new ol.geom.MultiPoint(coordinates));
 
   var headPoint &#x3D; new ol.geom.Point(coordinates[coordinates.length - 1]);
-  var headFeature &#x3D; new ol.Feature(headPoint);
-  vectorContext.drawFeature(headFeature, headInnerImageStyle);
 
-  vectorContext.setImageStyle(headOuterImageStyle);
-  vectorContext.drawMultiPointGeometry(headPoint, null);
+  vectorContext.setStyle(headOuterImageStyle);
+  vectorContext.drawGeometry(headPoint);
+
+  vectorContext.setStyle(headInnerImageStyle);
+  vectorContext.drawGeometry(headPoint);
 
   map.render();
 });
@@ -151,11 +155,13 @@ map.render();
         })
       });
 
-      var imageStyle &#x3D; new ol.style.Circle({
-        radius: 5,
-        snapToPixel: false,
-        fill: new ol.style.Fill({color: &#x27;yellow&#x27;}),
-        stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
+      var imageStyle &#x3D; new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 5,
+          snapToPixel: false,
+          fill: new ol.style.Fill({color: &#x27;yellow&#x27;}),
+          stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
+        })
       });
 
       var headInnerImageStyle &#x3D; new ol.style.Style({
@@ -166,10 +172,12 @@ map.render();
         })
       });
 
-      var headOuterImageStyle &#x3D; new ol.style.Circle({
-        radius: 5,
-        snapToPixel: false,
-        fill: new ol.style.Fill({color: &#x27;black&#x27;})
+      var headOuterImageStyle &#x3D; new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 5,
+          snapToPixel: false,
+          fill: new ol.style.Fill({color: &#x27;black&#x27;})
+        })
       });
 
       var n &#x3D; 200;
@@ -189,16 +197,16 @@ map.render();
           var y &#x3D; (R + r) * Math.sin(t) + p * Math.sin((R + r) * t / r);
           coordinates.push([x, y]);
         }
-        vectorContext.setImageStyle(imageStyle);
-        vectorContext.drawMultiPointGeometry(
-            new ol.geom.MultiPoint(coordinates), null);
+        vectorContext.setStyle(imageStyle);
+        vectorContext.drawGeometry(new ol.geom.MultiPoint(coordinates));
 
         var headPoint &#x3D; new ol.geom.Point(coordinates[coordinates.length - 1]);
-        var headFeature &#x3D; new ol.Feature(headPoint);
-        vectorContext.drawFeature(headFeature, headInnerImageStyle);
 
-        vectorContext.setImageStyle(headOuterImageStyle);
-        vectorContext.drawMultiPointGeometry(headPoint, null);
+        vectorContext.setStyle(headOuterImageStyle);
+        vectorContext.drawGeometry(headPoint);
+
+        vectorContext.setStyle(headInnerImageStyle);
+        vectorContext.drawGeometry(headPoint);
 
         map.render();
       });
