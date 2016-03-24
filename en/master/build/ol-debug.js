@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-280-g35ac1c4
+// Version: v3.14.2-282-g2159a35
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -99905,6 +99905,7 @@ goog.require('ol.source.Tile');
  *
  * @constructor
  * @extends {ol.source.Image}
+ * @fires ol.source.RasterEvent
  * @param {olx.source.RasterOptions} options Options.
  * @api
  */
