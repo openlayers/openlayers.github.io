@@ -157,6 +157,20 @@ following method to transform a coordinate from WGS84 to your projection:</p>
 <pre><code class="language-javascript"><span class="comment">// assuming that OpenLayers knows about EPSG:21781, see above</span>
 <span class="keyword">var</span> swissCoord = ol.proj.transform([<span class="number">8.23</span>, <span class="number">46.86</span>], <span class="string">'EPSG:4326'</span>, <span class="string">'EPSG:21781'</span>);</code></pre>
 <h2 id="why-is-the-order-of-a-coordinate-lon-lat-and-not-lat-lon-">Why is the order of a coordinate [lon,lat], and not [lat,lon]?</h2>
+<p>Because of two different and incompatible conventions. Latitude and longitude
+are normally given in that order. Maps are 2D representations/projections
+of the earth&#39;s surface, with coordinates expressed in the <code>x,y</code> grid of the
+<a href="https://en.wikipedia.org/wiki/Cartesian_coordinate_system">Cartesian system</a>.
+As they are by convention drawn with west on the left and north at the top,
+this means that <code>x</code> represents longitude, and <code>y</code> latitude. As stated above,
+OpenLayers is designed to handle all projections, but the default view is in
+projected Cartesian coordinates. It would make no sense to have duplicate
+functions to handle coordinates in both the Cartesian <code>x,y</code> and <code>lat,lon</code>
+systems, so the degrees of latitude and longitude should be entered as though
+they were Cartesian, in other words, they are <code>lon,lat</code>.</p>
+<p>If you have difficulty remembering which way round it is, use the language code
+for English, <code>en</code>, as a mnemonic: East before North.</p>
+<h4 id="a-practical-example">A practical example</h4>
 <p>So you want to center your map on a certain place on the earth and obviously you
 need to have its coordinates for this. Let&#39;s assume you want your map centered
 on Schladming, a beautiful place in Austria. Head over to the wikipedia

@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-260-g14bed81
+// Version: v3.14.2-280-g35ac1c4
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -36431,10 +36431,6 @@ ol.control.FullScreen = function(opt_options) {
   ol.events.listen(button, ol.events.EventType.CLICK,
       this.handleClick_, this);
 
-  ol.events.listen(goog.global.document,
-      goog.dom.fullscreen.EventType.CHANGE,
-      this.handleFullScreenChange_, this);
-
   var cssClasses = this.cssClassName_ + ' ' + ol.css.CLASS_UNSELECTABLE +
       ' ' + ol.css.CLASS_CONTROL + ' ' +
       (!goog.dom.fullscreen.isSupported() ? ol.css.CLASS_UNSUPPORTED : '');
@@ -36514,6 +36510,21 @@ ol.control.FullScreen.prototype.handleFullScreenChange_ = function() {
   }
   if (map) {
     map.updateSize();
+  }
+};
+
+
+/**
+ * @inheritDoc
+ * @api stable
+ */
+ol.control.FullScreen.prototype.setMap = function(map) {
+  goog.base(this, 'setMap', map);
+  if (map) {
+    this.listenerKeys.push(
+        ol.events.listen(goog.global.document, goog.dom.fullscreen.EventType.CHANGE,
+          this.handleFullScreenChange_, this)
+    );
   }
 };
 
@@ -54053,17 +54064,6 @@ ol.xml.getAttributeNS = function(node, namespaceURI, name) {
  * @param {Node} node Node.
  * @param {?string} namespaceURI Namespace URI.
  * @param {string} name Attribute name.
- * @return {?Node} Attribute node or null if none found.
- */
-ol.xml.getAttributeNodeNS = function(node, namespaceURI, name) {
-  return node.getAttributeNodeNS(namespaceURI, name);
-};
-
-
-/**
- * @param {Node} node Node.
- * @param {?string} namespaceURI Namespace URI.
- * @param {string} name Attribute name.
  * @param {string|number} value Value.
  */
 ol.xml.setAttributeNS = function(node, namespaceURI, name, value) {
@@ -62856,7 +62856,7 @@ ol.webgl.Context.prototype.getShader = function(shaderObject) {
     goog.asserts.assert(
         gl.getShaderParameter(shader, goog.webgl.COMPILE_STATUS) ||
         gl.isContextLost(),
-        'illegal state, shader not compiled or context lost');
+        gl.getShaderInfoLog(shader) || 'illegal state, shader not compiled or context lost');
     this.shaderCache_[shaderKey] = shader;
     return shader;
   }
@@ -62886,7 +62886,7 @@ ol.webgl.Context.prototype.getProgram = function(
     goog.asserts.assert(
         gl.getProgramParameter(program, goog.webgl.LINK_STATUS) ||
         gl.isContextLost(),
-        'illegal state, shader not linked or context lost');
+        gl.getProgramInfoLog(program) || 'illegal state, shader not linked or context lost');
     this.programCache_[programKey] = program;
     return program;
   }
@@ -93715,305 +93715,8 @@ ol.interaction.DragAndDropEvent = function(type, target, file, opt_features, opt
 };
 goog.inherits(ol.interaction.DragAndDropEvent, ol.events.Event);
 
-// Copyright 2007 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Defines a 2-element vector class that can be used for
- * coordinate math, useful for animation systems and point manipulation.
- *
- * Vec2 objects inherit from goog.math.Coordinate and may be used wherever a
- * Coordinate is required. Where appropriate, Vec2 functions accept both Vec2
- * and Coordinate objects as input.
- *
- * @author brenneman@google.com (Shawn Brenneman)
- */
-
-goog.provide('goog.math.Vec2');
-
-goog.require('goog.math');
-goog.require('goog.math.Coordinate');
-
-
-
-/**
- * Class for a two-dimensional vector object and assorted functions useful for
- * manipulating points.
- *
- * @param {number} x The x coordinate for the vector.
- * @param {number} y The y coordinate for the vector.
- * @struct
- * @constructor
- * @extends {goog.math.Coordinate}
- */
-goog.math.Vec2 = function(x, y) {
-  /**
-   * X-value
-   * @type {number}
-   */
-  this.x = x;
-
-  /**
-   * Y-value
-   * @type {number}
-   */
-  this.y = y;
-};
-goog.inherits(goog.math.Vec2, goog.math.Coordinate);
-
-
-/**
- * @return {!goog.math.Vec2} A random unit-length vector.
- */
-goog.math.Vec2.randomUnit = function() {
-  var angle = Math.random() * Math.PI * 2;
-  return new goog.math.Vec2(Math.cos(angle), Math.sin(angle));
-};
-
-
-/**
- * @return {!goog.math.Vec2} A random vector inside the unit-disc.
- */
-goog.math.Vec2.random = function() {
-  var mag = Math.sqrt(Math.random());
-  var angle = Math.random() * Math.PI * 2;
-
-  return new goog.math.Vec2(Math.cos(angle) * mag, Math.sin(angle) * mag);
-};
-
-
-/**
- * Returns a new Vec2 object from a given coordinate.
- * @param {!goog.math.Coordinate} a The coordinate.
- * @return {!goog.math.Vec2} A new vector object.
- */
-goog.math.Vec2.fromCoordinate = function(a) {
-  return new goog.math.Vec2(a.x, a.y);
-};
-
-
-/**
- * @return {!goog.math.Vec2} A new vector with the same coordinates as this one.
- * @override
- */
-goog.math.Vec2.prototype.clone = function() {
-  return new goog.math.Vec2(this.x, this.y);
-};
-
-
-/**
- * Returns the magnitude of the vector measured from the origin.
- * @return {number} The length of the vector.
- */
-goog.math.Vec2.prototype.magnitude = function() {
-  return Math.sqrt(this.x * this.x + this.y * this.y);
-};
-
-
-/**
- * Returns the squared magnitude of the vector measured from the origin.
- * NOTE(brenneman): Leaving out the square root is not a significant
- * optimization in JavaScript.
- * @return {number} The length of the vector, squared.
- */
-goog.math.Vec2.prototype.squaredMagnitude = function() {
-  return this.x * this.x + this.y * this.y;
-};
-
-
-/**
- * @return {!goog.math.Vec2} This coordinate after scaling.
- * @override
- */
-goog.math.Vec2.prototype.scale =
-    /** @type {function(number, number=):!goog.math.Vec2} */
-    (goog.math.Coordinate.prototype.scale);
-
-
-/**
- * Reverses the sign of the vector. Equivalent to scaling the vector by -1.
- * @return {!goog.math.Vec2} The inverted vector.
- */
-goog.math.Vec2.prototype.invert = function() {
-  this.x = -this.x;
-  this.y = -this.y;
-  return this;
-};
-
-
-/**
- * Normalizes the current vector to have a magnitude of 1.
- * @return {!goog.math.Vec2} The normalized vector.
- */
-goog.math.Vec2.prototype.normalize = function() {
-  return this.scale(1 / this.magnitude());
-};
-
-
-/**
- * Adds another vector to this vector in-place.
- * @param {!goog.math.Coordinate} b The vector to add.
- * @return {!goog.math.Vec2}  This vector with {@code b} added.
- */
-goog.math.Vec2.prototype.add = function(b) {
-  this.x += b.x;
-  this.y += b.y;
-  return this;
-};
-
-
-/**
- * Subtracts another vector from this vector in-place.
- * @param {!goog.math.Coordinate} b The vector to subtract.
- * @return {!goog.math.Vec2} This vector with {@code b} subtracted.
- */
-goog.math.Vec2.prototype.subtract = function(b) {
-  this.x -= b.x;
-  this.y -= b.y;
-  return this;
-};
-
-
-/**
- * Rotates this vector in-place by a given angle, specified in radians.
- * @param {number} angle The angle, in radians.
- * @return {!goog.math.Vec2} This vector rotated {@code angle} radians.
- */
-goog.math.Vec2.prototype.rotate = function(angle) {
-  var cos = Math.cos(angle);
-  var sin = Math.sin(angle);
-  var newX = this.x * cos - this.y * sin;
-  var newY = this.y * cos + this.x * sin;
-  this.x = newX;
-  this.y = newY;
-  return this;
-};
-
-
-/**
- * Rotates a vector by a given angle, specified in radians, relative to a given
- * axis rotation point. The returned vector is a newly created instance - no
- * in-place changes are done.
- * @param {!goog.math.Vec2} v A vector.
- * @param {!goog.math.Vec2} axisPoint The rotation axis point.
- * @param {number} angle The angle, in radians.
- * @return {!goog.math.Vec2} The rotated vector in a newly created instance.
- */
-goog.math.Vec2.rotateAroundPoint = function(v, axisPoint, angle) {
-  var res = v.clone();
-  return res.subtract(axisPoint).rotate(angle).add(axisPoint);
-};
-
-
-/**
- * Compares this vector with another for equality.
- * @param {!goog.math.Vec2} b The other vector.
- * @return {boolean} Whether this vector has the same x and y as the given
- *     vector.
- */
-goog.math.Vec2.prototype.equals = function(b) {
-  return this == b || !!b && this.x == b.x && this.y == b.y;
-};
-
-
-/**
- * Returns the distance between two vectors.
- * @param {!goog.math.Coordinate} a The first vector.
- * @param {!goog.math.Coordinate} b The second vector.
- * @return {number} The distance.
- */
-goog.math.Vec2.distance = goog.math.Coordinate.distance;
-
-
-/**
- * Returns the squared distance between two vectors.
- * @param {!goog.math.Coordinate} a The first vector.
- * @param {!goog.math.Coordinate} b The second vector.
- * @return {number} The squared distance.
- */
-goog.math.Vec2.squaredDistance = goog.math.Coordinate.squaredDistance;
-
-
-/**
- * Compares vectors for equality.
- * @param {!goog.math.Coordinate} a The first vector.
- * @param {!goog.math.Coordinate} b The second vector.
- * @return {boolean} Whether the vectors have the same x and y coordinates.
- */
-goog.math.Vec2.equals = goog.math.Coordinate.equals;
-
-
-/**
- * Returns the sum of two vectors as a new Vec2.
- * @param {!goog.math.Coordinate} a The first vector.
- * @param {!goog.math.Coordinate} b The second vector.
- * @return {!goog.math.Vec2} The sum vector.
- */
-goog.math.Vec2.sum = function(a, b) {
-  return new goog.math.Vec2(a.x + b.x, a.y + b.y);
-};
-
-
-/**
- * Returns the difference between two vectors as a new Vec2.
- * @param {!goog.math.Coordinate} a The first vector.
- * @param {!goog.math.Coordinate} b The second vector.
- * @return {!goog.math.Vec2} The difference vector.
- */
-goog.math.Vec2.difference = function(a, b) {
-  return new goog.math.Vec2(a.x - b.x, a.y - b.y);
-};
-
-
-/**
- * Returns the dot-product of two vectors.
- * @param {!goog.math.Coordinate} a The first vector.
- * @param {!goog.math.Coordinate} b The second vector.
- * @return {number} The dot-product of the two vectors.
- */
-goog.math.Vec2.dot = function(a, b) {
-  return a.x * b.x + a.y * b.y;
-};
-
-
-/**
- * Returns the determinant of two vectors.
- * @param {!goog.math.Vec2} a The first vector.
- * @param {!goog.math.Vec2} b The second vector.
- * @return {number} The determinant of the two vectors.
- */
-goog.math.Vec2.determinant = function(a, b) {
-  return a.x * b.y - a.y * b.x;
-};
-
-
-/**
- * Returns a new Vec2 that is the linear interpolant between vectors a and b at
- * scale-value x.
- * @param {!goog.math.Coordinate} a Vector a.
- * @param {!goog.math.Coordinate} b Vector b.
- * @param {number} x The proportion between a and b.
- * @return {!goog.math.Vec2} The interpolated vector.
- */
-goog.math.Vec2.lerp = function(a, b, x) {
-  return new goog.math.Vec2(
-      goog.math.lerp(a.x, b.x, x), goog.math.lerp(a.y, b.y, x));
-};
-
 goog.provide('ol.interaction.DragRotateAndZoom');
 
-goog.require('goog.math.Vec2');
 goog.require('ol');
 goog.require('ol.ViewHint');
 goog.require('ol.events.ConditionType');
@@ -94095,11 +93798,10 @@ ol.interaction.DragRotateAndZoom.handleDragEvent_ = function(mapBrowserEvent) {
   var map = mapBrowserEvent.map;
   var size = map.getSize();
   var offset = mapBrowserEvent.pixel;
-  var delta = new goog.math.Vec2(
-      offset[0] - size[0] / 2,
-      size[1] / 2 - offset[1]);
-  var theta = Math.atan2(delta.y, delta.x);
-  var magnitude = delta.magnitude();
+  var deltaX = offset[0] - size[0] / 2;
+  var deltaY = size[1] / 2 - offset[1];
+  var theta = Math.atan2(deltaY, deltaX);
+  var magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
   var view = map.getView();
   map.render();
   if (this.lastAngle_ !== undefined) {
@@ -97701,7 +97403,7 @@ goog.provide('ol.net');
  *     appended.
  * @param {Function} callback Callback on success.
  * @param {function()=} opt_errback Callback on error.
- * @param {string=} opt_callbackParam Custom qurey parameter for the JSONP
+ * @param {string=} opt_callbackParam Custom query parameter for the JSONP
  *     callback. Default is 'callback'.
  */
 ol.net.jsonp = function(url, callback, opt_errback, opt_callbackParam) {
