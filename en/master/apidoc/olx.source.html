@@ -20658,13 +20658,16 @@ Default is <code>true</code>.</p></td>
 	
         <tr>
             
-                <td class="name"><code>url</code></td>
+                <td class="name"><code>tileJSON</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">TileJSON</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -20673,6 +20676,8 @@ Default is <code>true</code>.</p></td>
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
                     
                 
                 </td>
@@ -20680,7 +20685,43 @@ Default is <code>true</code>.</p></td>
             
             
             
-            <td class="description last"><p><span class="required-option">Required.</span></p></td>
+            <td class="description last"><p>TileJSON configuration for this source. If not provided, <code>url</code> must be
+configured.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>TileJSON endpoint that provides the configuration for this source. Request
+will be made through JSONP. If not provided, <code>tileJSON</code> must be configured.</p></td>
         </tr>
 	
 	

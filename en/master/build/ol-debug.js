@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-282-g2159a35
+// Version: v3.14.2-284-gf835364
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -101029,7 +101029,13 @@ ol.source.TileUTFGrid = function(options) {
    */
   this.template_ = undefined;
 
-  ol.net.jsonp(options.url, this.handleTileJSONResponse.bind(this));
+  if (options.url) {
+    ol.net.jsonp(options.url, this.handleTileJSONResponse.bind(this));
+  } else if (options.tileJSON) {
+    this.handleTileJSONResponse(options.tileJSON);
+  } else {
+    goog.asserts.fail('Either url or tileJSON options must be provided');
+  }
 };
 goog.inherits(ol.source.TileUTFGrid, ol.source.Tile);
 

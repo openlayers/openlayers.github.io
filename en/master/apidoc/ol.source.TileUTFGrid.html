@@ -15111,14 +15111,17 @@ Default is <code>true</code>.</p></td>
 	
         <tr class="unstable">
             
-                <td class="name"><code>url</code></td>
+                <td class="name"><code>tileJSON</code></td>
             
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">TileJSON</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -15134,7 +15137,42 @@ Default is <code>true</code>.</p></td>
 
 
                 
-                <p><span class="required-option">Required.</span></p></td>
+                <p>TileJSON configuration for this source. If not provided, <code>url</code> must be
+configured.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>url</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>TileJSON endpoint that provides the configuration for this source. Request
+will be made through JSONP. If not provided, <code>tileJSON</code> must be configured.</p></td>
         </tr>
 	
 	
@@ -15472,7 +15510,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileutfgridsource.js, line 80
+            src/ol/source/tileutfgridsource.js, line 86
         </div>
         
         
@@ -16441,7 +16479,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tileutfgridsource.js, line 62
+            src/ol/source/tileutfgridsource.js, line 68
         </div>
         
         
