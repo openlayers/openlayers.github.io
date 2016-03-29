@@ -15205,7 +15205,10 @@ the Canvas/renderer default black will be used.</p></td>
 
 
                 
-                <p>Line dash pattern. Default is <code>undefined</code> (no dash).</p></td>
+                <p>Line dash pattern. Default is <code>undefined</code> (no dash). Please note that
+Internet Explorer 10 and lower <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">do not support</a> the <code>setLineDash</code>
+method on the <code>CanvasRenderingContext2D</code> and therefore this option will
+have no visual effect in these browsers.</p></td>
         </tr>
 	
 	
@@ -16132,7 +16135,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/strokestyle.js, line 157
+            src/ol/style/strokestyle.js, line 163
         </div>
         
         
@@ -16144,6 +16147,9 @@ Width.
     
     <div class="description">
         <p>Set the line dash.</p>
+<p>Please note that Internet Explorer 10 and lower <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">do not support</a> the
+<code>setLineDash</code> method on the <code>CanvasRenderingContext2D</code> and therefore this
+property will have no visual effect in these browsers.</p>
     </div>
     
 
@@ -16256,7 +16262,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/strokestyle.js, line 169
+            src/ol/style/strokestyle.js, line 175
         </div>
         
         
@@ -16383,7 +16389,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/strokestyle.js, line 181
+            src/ol/style/strokestyle.js, line 187
         </div>
         
         
@@ -16510,7 +16516,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/strokestyle.js, line 193
+            src/ol/style/strokestyle.js, line 199
         </div>
         
         
