@@ -151,7 +151,7 @@ goog.iter.forEach = function(iterable, f, opt_obj) {
       // NOTES: this passes the index number to the second parameter
       // of the callback contrary to the documentation above.
       goog.array.forEach(
-          /** @type {goog.array.ArrayLike} */ (iterable), f, opt_obj);
+          /** @type {IArrayLike<?>} */ (iterable), f, opt_obj);
     } catch (ex) {
       if (ex !== goog.iter.StopIteration) {
         throw ex;
@@ -529,7 +529,7 @@ goog.iter.takeWhile = function(iterable, f, opt_obj) {
 goog.iter.toArray = function(iterable) {
   // Fast path for array-like.
   if (goog.isArrayLike(iterable)) {
-    return goog.array.toArray(/** @type {!goog.array.ArrayLike} */ (iterable));
+    return goog.array.toArray(/** @type {!IArrayLike<?>} */ (iterable));
   }
   iterable = goog.iter.toIterator(iterable);
   var array = [];
@@ -590,7 +590,7 @@ goog.iter.nextOrValue = function(iterable, defaultValue) {
  * combination of one element chosen from each set.  For example,
  * ([1, 2], [3, 4]) gives ([1, 3], [1, 4], [2, 3], [2, 4]).
  * @see http://docs.python.org/library/itertools.html#itertools.product
- * @param {...!goog.array.ArrayLike<VALUE>} var_args Zero or more sets, as
+ * @param {...!IArrayLike<VALUE>} var_args Zero or more sets, as
  *     arrays.
  * @return {!goog.iter.Iterator<!Array<VALUE>>} An iterator that gives each
  *     n-tuple (as an array).
@@ -882,7 +882,7 @@ goog.iter.compress = function(iterable, selectors) {
  * Implements the {@code goog.iter.groupBy} iterator.
  * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
  *     iterable to group.
- * @param {function(...VALUE): KEY=} opt_keyFunc  Optional function for
+ * @param {function(VALUE): KEY=} opt_keyFunc  Optional function for
  *     determining the key value for each group in the {@code iterable}. Default
  *     is the identity function.
  * @constructor
@@ -902,7 +902,7 @@ goog.iter.GroupByIterator_ = function(iterable, opt_keyFunc) {
    * A function for determining the key value for each element in the iterable.
    * If no function is provided, the identity function is used and returns the
    * element unchanged.
-   * @type {function(...VALUE): KEY}
+   * @type {function(VALUE): KEY}
    */
   this.keyFunc = opt_keyFunc || goog.functions.identity;
 
@@ -972,7 +972,7 @@ goog.iter.GroupByIterator_.prototype.groupItems_ = function(targetKey) {
  * @see http://docs.python.org/2/library/itertools.html#itertools.groupby
  * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
  *     iterable to group.
- * @param {function(...VALUE): KEY=} opt_keyFunc  Optional function for
+ * @param {function(VALUE): KEY=} opt_keyFunc  Optional function for
  *     determining the key value for each group in the {@code iterable}. Default
  *     is the identity function.
  * @return {!goog.iter.Iterator<!Array<?>>} A new iterator that returns
@@ -1163,7 +1163,7 @@ goog.iter.slice = function(iterable, start, opt_end) {
 
 /**
  * Checks an array for duplicate elements.
- * @param {Array<VALUE>|goog.array.ArrayLike} arr The array to check for
+ * @param {?IArrayLike<VALUE>} arr The array to check for
  *     duplicates.
  * @return {boolean} True, if the array contains duplicates, false otherwise.
  * @private

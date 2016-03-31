@@ -376,25 +376,41 @@ goog.html.SafeHtml.AttributeValue;
  * @throws {goog.asserts.AssertionError} If content for void tag is provided.
  */
 goog.html.SafeHtml.create = function(tagName, opt_attributes, opt_content) {
-  if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(tagName)) {
-    throw Error('Invalid tag name <' + tagName + '>.');
-  }
-  if (tagName.toUpperCase() in goog.html.SafeHtml.NOT_ALLOWED_TAG_NAMES_) {
-    throw Error('Tag name <' + tagName + '> is not allowed for SafeHtml.');
-  }
+  goog.html.SafeHtml.verifyTagName(tagName);
   return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
       tagName, opt_attributes, opt_content);
 };
 
 
 /**
+ * Verifies if the tag name is valid and if it doesn't change the context.
+ * E.g. STRONG is fine but SCRIPT throws because it changes context. See
+ * goog.html.SafeHtml.create for an explanation of allowed tags.
+ * @param {string} tagName
+ * @throws {Error} If invalid tag name is provided.
+ * @package
+ */
+goog.html.SafeHtml.verifyTagName = function(tagName) {
+  if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(tagName)) {
+    throw Error('Invalid tag name <' + tagName + '>.');
+  }
+  if (tagName.toUpperCase() in goog.html.SafeHtml.NOT_ALLOWED_TAG_NAMES_) {
+    throw Error('Tag name <' + tagName + '> is not allowed for SafeHtml.');
+  }
+};
+
+
+/**
  * Creates a SafeHtml representing an iframe tag.
  *
- * By default the sandbox attribute is set to an empty value, which is the most
- * secure option, as it confers the iframe the least privileges. If this
- * is too restrictive then granting individual privileges is the preferable
- * option. Unsetting the attribute entirely is the least secure option and
- * should never be done unless it's stricly necessary.
+ * This by default restricts the iframe as much as possible by setting the
+ * sandbox attribute to the empty string. If the iframe requires less
+ * restrictions, set the sandbox attribute as tight as possible, but do not rely
+ * on the sandbox as a security feature because it is not supported by older
+ * browsers. If a sandbox is essential to security (e.g. for third-party
+ * frames), use createSandboxIframe which checks for browser support.
+ *
+ * @see https://developer.mozilla.org/en/docs/Web/HTML/Element/iframe#attr-sandbox
  *
  * @param {goog.html.TrustedResourceUrl=} opt_src The value of the src
  *     attribute. If null or undefined src will not be set.
@@ -413,14 +429,111 @@ goog.html.SafeHtml.create = function(tagName, opt_attributes, opt_content) {
  */
 goog.html.SafeHtml.createIframe = function(
     opt_src, opt_srcdoc, opt_attributes, opt_content) {
+  if (opt_src) {
+    // Check whether this is really TrustedResourceUrl.
+    goog.html.TrustedResourceUrl.unwrap(opt_src);
+  }
+
   var fixedAttributes = {};
   fixedAttributes['src'] = opt_src || null;
-  fixedAttributes['srcdoc'] = opt_srcdoc || null;
+  fixedAttributes['srcdoc'] =
+      opt_srcdoc && goog.html.SafeHtml.unwrap(opt_srcdoc);
   var defaultAttributes = {'sandbox': ''};
   var attributes = goog.html.SafeHtml.combineAttributes(
       fixedAttributes, defaultAttributes, opt_attributes);
   return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
       'iframe', attributes, opt_content);
+};
+
+
+/**
+ * Creates a SafeHtml representing a sandboxed iframe tag.
+ *
+ * The sandbox attribute is enforced in its most restrictive mode, an empty
+ * string. Consequently, the security requirements for the src and srcdoc
+ * attributes are relaxed compared to SafeHtml.createIframe. This function
+ * will throw on browsers that do not support the sandbox attribute, as
+ * determined by SafeHtml.canUseSandboxIframe.
+ *
+ * The SafeHtml returned by this function can trigger downloads with no
+ * user interaction on Chrome (though only a few, further attempts are blocked).
+ * Firefox and IE will block all downloads from the sandbox.
+ *
+ * @see https://developer.mozilla.org/en/docs/Web/HTML/Element/iframe#attr-sandbox
+ * @see https://lists.w3.org/Archives/Public/public-whatwg-archive/2013Feb/0112.html
+ *
+ * @param {string|!goog.html.SafeUrl=} opt_src The value of the src
+ *     attribute. If null or undefined src will not be set.
+ * @param {string=} opt_srcdoc The value of the srcdoc attribute.
+ *     If null or undefined srcdoc will not be set. Will not be sanitized.
+ * @param {!Object<string, ?goog.html.SafeHtml.AttributeValue>=} opt_attributes
+ *     Mapping from attribute names to their values. Only attribute names
+ *     consisting of [a-zA-Z0-9-] are allowed. Value of null or undefined causes
+ *     the attribute to be omitted.
+ * @param {!goog.html.SafeHtml.TextOrHtml_|
+ *     !Array<!goog.html.SafeHtml.TextOrHtml_>=} opt_content Content to
+ *     HTML-escape and put inside the tag. Array elements are concatenated.
+ * @return {!goog.html.SafeHtml} The SafeHtml content with the tag.
+ * @throws {Error} If invalid tag name, attribute name, or attribute value is
+ *     provided. If opt_attributes contains the src, srcdoc or sandbox
+ *     attributes. If browser does not support the sandbox attribute on iframe.
+ */
+goog.html.SafeHtml.createSandboxIframe = function(
+    opt_src, opt_srcdoc, opt_attributes, opt_content) {
+  if (!goog.html.SafeHtml.canUseSandboxIframe()) {
+    throw new Error('The browser does not support sandboxed iframes.');
+  }
+
+  var fixedAttributes = {};
+  if (opt_src) {
+    // Note that sanitize is a no-op on SafeUrl.
+    fixedAttributes['src'] =
+        goog.html.SafeUrl.unwrap(goog.html.SafeUrl.sanitize(opt_src));
+  } else {
+    fixedAttributes['src'] = null;
+  }
+  fixedAttributes['srcdoc'] = opt_srcdoc || null;
+  fixedAttributes['sandbox'] = '';
+  var attributes =
+      goog.html.SafeHtml.combineAttributes(fixedAttributes, {}, opt_attributes);
+  return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
+      'iframe', attributes, opt_content);
+};
+
+
+/**
+ * Checks if the user agent supports sandboxed iframes.
+ * @return {boolean}
+ */
+goog.html.SafeHtml.canUseSandboxIframe = function() {
+  return goog.global['HTMLIFrameElement'] &&
+      ('sandbox' in goog.global['HTMLIFrameElement'].prototype);
+};
+
+
+/**
+ * Creates a SafeHtml representing a script tag with the src attribute.
+ * @param {!goog.html.TrustedResourceUrl} src The value of the src
+ * attribute.
+ * @param {!Object<string, ?goog.html.SafeHtml.AttributeValue>=}
+ * opt_attributes
+ *     Mapping from attribute names to their values. Only attribute names
+ *     consisting of [a-zA-Z0-9-] are allowed. Value of null or undefined
+ *     causes the attribute to be omitted.
+ * @return {!goog.html.SafeHtml} The SafeHtml content with the tag.
+ * @throws {Error} If invalid attribute name or value is provided. If
+ *     opt_attributes contains the src attribute.
+ */
+goog.html.SafeHtml.createScriptSrc = function(src, opt_attributes) {
+  // Check whether this is really TrustedResourceUrl.
+  goog.html.TrustedResourceUrl.unwrap(src);
+
+  var fixedAttributes = {'src': src};
+  var defaultAttributes = {};
+  var attributes = goog.html.SafeHtml.combineAttributes(
+      fixedAttributes, defaultAttributes, opt_attributes);
+  return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
+      'script', attributes);
 };
 
 
@@ -449,7 +562,8 @@ goog.html.SafeHtml.createStyle = function(styleSheet, opt_attributes) {
   for (var i = 0; i < styleSheet.length; i++) {
     content += goog.html.SafeStyleSheet.unwrap(styleSheet[i]);
   }
-  // Convert to SafeHtml so that it's not HTML-escaped.
+  // Convert to SafeHtml so that it's not HTML-escaped. This is safe because
+  // as part of its contract, SafeStyleSheet should have no dangerous '<'.
   var htmlContent =
       goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
           content, goog.i18n.bidi.Dir.NEUTRAL);
@@ -703,20 +817,7 @@ goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse = function(
     tagName, opt_attributes, opt_content) {
   var dir = null;
   var result = '<' + tagName;
-
-  if (opt_attributes) {
-    for (var name in opt_attributes) {
-      if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(name)) {
-        throw Error('Invalid attribute name "' + name + '".');
-      }
-      var value = opt_attributes[name];
-      if (!goog.isDefAndNotNull(value)) {
-        continue;
-      }
-      result +=
-          ' ' + goog.html.SafeHtml.getAttrNameAndValue_(tagName, name, value);
-    }
-  }
+  result += goog.html.SafeHtml.stringifyAttributes(tagName, opt_attributes);
 
   var content = opt_content;
   if (!goog.isDefAndNotNull(content)) {
@@ -749,6 +850,34 @@ goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse = function(
   return goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
       result, dir);
 };
+
+
+/**
+ * Creates a string with attributes to insert after tagName.
+ * @param {string} tagName
+ * @param {!Object<string, ?goog.html.SafeHtml.AttributeValue>=} opt_attributes
+ * @return {string} Returns an empty string if there are no attributes, returns
+ *     a string starting with a space otherwise.
+ * @throws {Error} If attribute value is unsafe for the given tag and attribute.
+ * @package
+ */
+goog.html.SafeHtml.stringifyAttributes = function(tagName, opt_attributes) {
+  var result = '';
+  if (opt_attributes) {
+    for (var name in opt_attributes) {
+      if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(name)) {
+        throw Error('Invalid attribute name "' + name + '".');
+      }
+      var value = opt_attributes[name];
+      if (!goog.isDefAndNotNull(value)) {
+        continue;
+      }
+      result +=
+          ' ' + goog.html.SafeHtml.getAttrNameAndValue_(tagName, name, value);
+    }
+  }
+  return result;
+}
 
 
 /**

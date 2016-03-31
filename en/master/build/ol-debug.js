@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-298-g8ef2307
+// Version: v3.14.2-306-gcf9e24f
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -283,6 +283,9 @@ goog.define('goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING', false);
  *     "goog.package.part".
  */
 goog.provide = function(name) {
+  if (goog.isInModuleLoader_()) {
+    throw Error('goog.provide can not be used within a goog.module.');
+  }
   if (!COMPILED) {
     // Ensure that the same namespace isn't provided twice.
     // A goog.module/goog.provide maps a goog.require to a specific file
@@ -2145,6 +2148,10 @@ if (!COMPILED && goog.global.CLOSURE_CSS_NAME_MAPPING) {
  * var MSG_NAME = goog.getMsg('Hello {$placeholder}', {'placeholder': 'world'});
  * </code>
  *
+ * This function produces a string which should be treated as plain text. Use
+ * {@link goog.html.SafeHtmlFormatter} in conjunction with goog.getMsg to
+ * produce SafeHtml.
+ *
  * @param {string} str Translatable string, places holders in the form {$foo}.
  * @param {Object<string, string>=} opt_values Maps place holder name to value.
  * @return {string} message with placeholders filled.
@@ -2365,6 +2372,9 @@ goog.base = function(me, opt_methodName, var_args) {
  *     (e.g. "var Timer = goog.Timer").
  */
 goog.scope = function(fn) {
+  if (goog.isInModuleLoader_()) {
+    throw Error('goog.scope is not supported within a goog.module.');
+  }
   fn.call(goog.global);
 };
 
@@ -4507,7 +4517,6 @@ goog.string.parseInt = function(value) {
  *     as zero.
  * @return {!Array<string>} The string, split.
  */
-
 goog.string.splitLimit = function(str, separator, limit) {
   var parts = str.split(separator);
   var returnVal = [];
@@ -4525,6 +4534,43 @@ goog.string.splitLimit = function(str, separator, limit) {
   }
 
   return returnVal;
+};
+
+
+/**
+ * Finds the characters to the right of the last instance of any separator
+ *
+ * This function is similar to goog.string.path.baseName, except it can take a
+ * list of characters to split the string on. It will return the rightmost
+ * grouping of characters to the right of any separator as a left-to-right
+ * oriented string.
+ *
+ * @see goog.string.path.baseName
+ * @param {string} str The string
+ * @param {string|!Array<string>} separators A list of separator characters
+ * @return {string} The last part of the string with respect to the separators
+ */
+goog.string.lastComponent = function(str, separators) {
+  if (!separators) {
+    return str;
+  } else if (typeof separators == 'string') {
+    separators = [separators];
+  }
+
+  var lastSeparatorIndex = -1;
+  for (var i = 0; i < separators.length; i++) {
+    if (separators[i] == '') {
+      continue;
+    }
+    var currentSeparatorIndex = str.lastIndexOf(separators[i]);
+    if (currentSeparatorIndex > lastSeparatorIndex) {
+      lastSeparatorIndex = currentSeparatorIndex;
+    }
+  }
+  if (lastSeparatorIndex == -1) {
+    return str;
+  }
+  return str.slice(lastSeparatorIndex + 1);
 };
 
 
@@ -6853,7 +6899,6 @@ ol.size.toSize = function(size, opt_size) {
 
 
 goog.provide('goog.array');
-goog.provide('goog.array.ArrayLike');
 
 goog.require('goog.asserts');
 
@@ -6885,15 +6930,9 @@ goog.define('goog.array.ASSUME_NATIVE_FUNCTIONS', false);
 
 
 /**
- * @typedef {Array|NodeList|Arguments|{length: number}}
- */
-goog.array.ArrayLike;
-
-
-/**
  * Returns the last element in an array without removing it.
  * Same as goog.array.last.
- * @param {Array<T>|goog.array.ArrayLike} array The array.
+ * @param {IArrayLike<T>|string} array The array.
  * @return {T} Last item in array.
  * @template T
  */
@@ -6905,7 +6944,7 @@ goog.array.peek = function(array) {
 /**
  * Returns the last element in an array without removing it.
  * Same as goog.array.peek.
- * @param {Array<T>|goog.array.ArrayLike} array The array.
+ * @param {IArrayLike<T>|string} array The array.
  * @return {T} Last item in array.
  * @template T
  */
@@ -6924,7 +6963,7 @@ goog.array.last = goog.array.peek;
  *
  * See {@link http://tinyurl.com/developer-mozilla-org-array-indexof}
  *
- * @param {Array<T>|goog.array.ArrayLike} arr The array to be searched.
+ * @param {IArrayLike<T>|string} arr The array to be searched.
  * @param {T} obj The object for which we are searching.
  * @param {number=} opt_fromIndex The index at which to start the search. If
  *     omitted the search starts at index 0.
@@ -6965,7 +7004,7 @@ goog.array.indexOf = goog.NATIVE_ARRAY_PROTOTYPES &&
  *
  * See {@link http://tinyurl.com/developer-mozilla-org-array-lastindexof}
  *
- * @param {!Array<T>|!goog.array.ArrayLike} arr The array to be searched.
+ * @param {!IArrayLike<T>|string} arr The array to be searched.
  * @param {T} obj The object for which we are searching.
  * @param {?number=} opt_fromIndex The index at which to start the search. If
  *     omitted the search starts at the end of the array.
@@ -7008,7 +7047,7 @@ goog.array.lastIndexOf = goog.NATIVE_ARRAY_PROTOTYPES &&
  * Calls a function for each element in an array. Skips holes in the array.
  * See {@link http://tinyurl.com/developer-mozilla-org-array-foreach}
  *
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array like object over
+ * @param {IArrayLike<T>|string} arr Array or array like object over
  *     which to iterate.
  * @param {?function(this: S, T, number, ?): ?} f The function to call for every
  *     element. This function takes 3 arguments (the element, the index and the
@@ -7038,7 +7077,7 @@ goog.array.forEach = goog.NATIVE_ARRAY_PROTOTYPES &&
  * Calls a function for each element in an array, starting from the last
  * element rather than the first.
  *
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this: S, T, number, ?): ?} f The function to call for every
  *     element. This function
@@ -7065,7 +7104,7 @@ goog.array.forEachRight = function(arr, f, opt_obj) {
  *
  * See {@link http://tinyurl.com/developer-mozilla-org-array-filter}
  *
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?):boolean} f The function to call for
  *     every element. This function
@@ -7108,7 +7147,7 @@ goog.array.filter = goog.NATIVE_ARRAY_PROTOTYPES &&
  *
  * See {@link http://tinyurl.com/developer-mozilla-org-array-map}
  *
- * @param {Array<VALUE>|goog.array.ArrayLike} arr Array or array like object
+ * @param {IArrayLike<VALUE>|string} arr Array or array like object
  *     over which to iterate.
  * @param {function(this:THIS, VALUE, number, ?): RESULT} f The function to call
  *     for every element. This function takes 3 arguments (the element,
@@ -7148,7 +7187,7 @@ goog.array.map = goog.NATIVE_ARRAY_PROTOTYPES &&
  * goog.array.reduce(a, function(r, v, i, arr) {return r + v;}, 0);
  * returns 10
  *
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {function(this:S, R, T, number, ?) : R} f The function to call for
  *     every element. This function
@@ -7191,7 +7230,7 @@ goog.array.reduce = goog.NATIVE_ARRAY_PROTOTYPES &&
  * goog.array.reduceRight(a, function(r, v, i, arr) {return r + v;}, '');
  * returns 'cba'
  *
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, R, T, number, ?) : R} f The function to call for
  *     every element. This function
@@ -7232,7 +7271,7 @@ goog.array.reduceRight = goog.NATIVE_ARRAY_PROTOTYPES &&
  *
  * See {@link http://tinyurl.com/developer-mozilla-org-array-some}
  *
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call for
  *     for every element. This function takes 3 arguments (the element, the
@@ -7268,7 +7307,7 @@ goog.array.some = goog.NATIVE_ARRAY_PROTOTYPES &&
  *
  * See {@link http://tinyurl.com/developer-mozilla-org-array-every}
  *
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call for
  *     for every element. This function takes 3 arguments (the element, the
@@ -7301,7 +7340,7 @@ goog.array.every = goog.NATIVE_ARRAY_PROTOTYPES &&
  * Counts the array elements that fulfill the predicate, i.e. for which the
  * callback function returns true. Skips holes in the array.
  *
- * @param {!(Array<T>|goog.array.ArrayLike)} arr Array or array like object
+ * @param {!IArrayLike<T>|string} arr Array or array like object
  *     over which to iterate.
  * @param {function(this: S, T, number, ?): boolean} f The function to call for
  *     every element. Takes 3 arguments (the element, the index and the array).
@@ -7323,7 +7362,7 @@ goog.array.count = function(arr, f, opt_obj) {
 /**
  * Search an array for the first element that satisfies a given condition and
  * return that element.
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call
  *     for every element. This function takes 3 arguments (the element, the
@@ -7342,7 +7381,7 @@ goog.array.find = function(arr, f, opt_obj) {
 /**
  * Search an array for the first element that satisfies a given condition and
  * return its index.
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call for
  *     every element. This function
@@ -7368,7 +7407,7 @@ goog.array.findIndex = function(arr, f, opt_obj) {
 /**
  * Search an array (in reverse order) for the last element that satisfies a
  * given condition and return that element.
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call
  *     for every element. This function
@@ -7388,7 +7427,7 @@ goog.array.findRight = function(arr, f, opt_obj) {
 /**
  * Search an array (in reverse order) for the last element that satisfies a
  * given condition and return its index.
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>|string} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call
  *     for every element. This function
@@ -7413,7 +7452,7 @@ goog.array.findIndexRight = function(arr, f, opt_obj) {
 
 /**
  * Whether the array contains the given object.
- * @param {goog.array.ArrayLike} arr The array to test for the presence of the
+ * @param {IArrayLike<?>|string} arr The array to test for the presence of the
  *     element.
  * @param {*} obj The object for which to test.
  * @return {boolean} true if obj is present.
@@ -7425,7 +7464,7 @@ goog.array.contains = function(arr, obj) {
 
 /**
  * Whether the array is empty.
- * @param {goog.array.ArrayLike} arr The array to test.
+ * @param {IArrayLike<?>|string} arr The array to test.
  * @return {boolean} true if empty.
  */
 goog.array.isEmpty = function(arr) {
@@ -7435,7 +7474,7 @@ goog.array.isEmpty = function(arr) {
 
 /**
  * Clears the array.
- * @param {goog.array.ArrayLike} arr Array or array like object to clear.
+ * @param {IArrayLike<?>} arr Array or array like object to clear.
  */
 goog.array.clear = function(arr) {
   // For non real arrays we don't have the magic length so we delete the
@@ -7464,7 +7503,7 @@ goog.array.insert = function(arr, obj) {
 
 /**
  * Inserts an object at the given index of the array.
- * @param {goog.array.ArrayLike} arr The array to modify.
+ * @param {IArrayLike<?>} arr The array to modify.
  * @param {*} obj The object to insert.
  * @param {number=} opt_i The index at which to insert the object. If omitted,
  *      treated as 0. A negative index is counted from the end of the array.
@@ -7476,8 +7515,8 @@ goog.array.insertAt = function(arr, obj, opt_i) {
 
 /**
  * Inserts at the given index of the array, all elements of another array.
- * @param {goog.array.ArrayLike} arr The array to modify.
- * @param {goog.array.ArrayLike} elementsToAdd The array of elements to add.
+ * @param {IArrayLike<?>} arr The array to modify.
+ * @param {IArrayLike<?>} elementsToAdd The array of elements to add.
  * @param {number=} opt_i The index at which to insert the object. If omitted,
  *      treated as 0. A negative index is counted from the end of the array.
  */
@@ -7506,7 +7545,7 @@ goog.array.insertBefore = function(arr, obj, opt_obj2) {
 
 /**
  * Removes the first occurrence of a particular value from an array.
- * @param {Array<T>|goog.array.ArrayLike} arr Array from which to remove
+ * @param {IArrayLike<T>} arr Array from which to remove
  *     value.
  * @param {T} obj Object to remove.
  * @return {boolean} True if an element was removed.
@@ -7523,8 +7562,25 @@ goog.array.remove = function(arr, obj) {
 
 
 /**
+ * Removes the last occurrence of a particular value from an array.
+ * @param {!IArrayLike<T>} arr Array from which to remove value.
+ * @param {T} obj Object to remove.
+ * @return {boolean} True if an element was removed.
+ * @template T
+ */
+goog.array.removeLast = function(arr, obj) {
+  var i = goog.array.lastIndexOf(arr, obj);
+  if (i >= 0) {
+    goog.array.removeAt(arr, i);
+    return true;
+  }
+  return false;
+};
+
+
+/**
  * Removes from an array the element at index i
- * @param {goog.array.ArrayLike} arr Array or array like object from which to
+ * @param {IArrayLike<?>} arr Array or array like object from which to
  *     remove value.
  * @param {number} i The index to remove.
  * @return {boolean} True if an element was removed.
@@ -7541,7 +7597,7 @@ goog.array.removeAt = function(arr, i) {
 
 /**
  * Removes the first value that satisfies the given condition.
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call
  *     for every element. This function
@@ -7563,7 +7619,7 @@ goog.array.removeIf = function(arr, f, opt_obj) {
 
 /**
  * Removes all values that satisfy the given condition.
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array
+ * @param {IArrayLike<T>} arr Array or array
  *     like object over which to iterate.
  * @param {?function(this:S, T, number, ?) : boolean} f The function to call
  *     for every element. This function
@@ -7631,7 +7687,7 @@ goog.array.join = function(var_args) {
 
 /**
  * Converts an object to an array.
- * @param {Array<T>|goog.array.ArrayLike} object  The object to convert to an
+ * @param {IArrayLike<T>|string} object  The object to convert to an
  *     array.
  * @return {!Array<T>} The object converted into an array. If object has a
  *     length property, every property indexed with a non-negative number
@@ -7658,7 +7714,7 @@ goog.array.toArray = function(object) {
 
 /**
  * Does a shallow copy of an array.
- * @param {Array<T>|goog.array.ArrayLike} arr  Array or array-like object to
+ * @param {IArrayLike<T>|string} arr  Array or array-like object to
  *     clone.
  * @return {!Array<T>} Clone of the input array.
  * @template T
@@ -7704,7 +7760,7 @@ goog.array.extend = function(arr1, var_args) {
  * splice. This means that it might work on other objects similar to arrays,
  * such as the arguments object.
  *
- * @param {Array<T>|goog.array.ArrayLike} arr The array to modify.
+ * @param {IArrayLike<T>} arr The array to modify.
  * @param {number|undefined} index The index at which to start changing the
  *     array. If not defined, treated as 0.
  * @param {number} howMany How many elements to remove (0 means no removal. A
@@ -7727,7 +7783,7 @@ goog.array.splice = function(arr, index, howMany, var_args) {
  * Array slice. This means that it might work on other objects similar to
  * arrays, such as the arguments object.
  *
- * @param {Array<T>|goog.array.ArrayLike} arr The array from
+ * @param {IArrayLike<T>|string} arr The array from
  * which to copy a segment.
  * @param {number} start The index of the first element to copy.
  * @param {number=} opt_end The index after the last element to copy.
@@ -7764,7 +7820,7 @@ goog.array.slice = function(arr, start, opt_end) {
  * Runtime: N,
  * Worstcase space: 2N (no dupes)
  *
- * @param {Array<T>|goog.array.ArrayLike} arr The array from which to remove
+ * @param {IArrayLike<T>} arr The array from which to remove
  *     duplicates.
  * @param {Array=} opt_rv An optional array in which to return the results,
  *     instead of performing the removal inplace.  If specified, the original
@@ -7810,7 +7866,7 @@ goog.array.removeDuplicates = function(arr, opt_rv, opt_hashFn) {
  *
  * Runtime: O(log n)
  *
- * @param {Array<VALUE>|goog.array.ArrayLike} arr The array to be searched.
+ * @param {IArrayLike<VALUE>} arr The array to be searched.
  * @param {TARGET} target The sought value.
  * @param {function(TARGET, VALUE): number=} opt_compareFn Optional comparison
  *     function by which the array is ordered. Should take 2 arguments to
@@ -7839,7 +7895,7 @@ goog.array.binarySearch = function(arr, target, opt_compareFn) {
  *
  * Runtime: O(log n)
  *
- * @param {Array<VALUE>|goog.array.ArrayLike} arr The array to be searched.
+ * @param {IArrayLike<VALUE>} arr The array to be searched.
  * @param {function(this:THIS, VALUE, number, ?): number} evaluator
  *     Evaluator function that receives 3 arguments (the element, the index and
  *     the array). Should return a negative number, zero, or a positive number
@@ -7873,7 +7929,7 @@ goog.array.binarySelect = function(arr, evaluator, opt_obj) {
  *
  * Runtime: O(log n)
  *
- * @param {Array<?>|goog.array.ArrayLike} arr The array to be searched.
+ * @param {IArrayLike<?>} arr The array to be searched.
  * @param {function(?, ?, ?): number | function(?, ?): number} compareFn
  *     Either an evaluator or a comparison function, as defined by binarySearch
  *     and binarySelect above.
@@ -7965,16 +8021,17 @@ goog.array.sort = function(arr, opt_compareFn) {
  * @template T
  */
 goog.array.stableSort = function(arr, opt_compareFn) {
+  var compArr = new Array(arr.length);
   for (var i = 0; i < arr.length; i++) {
-    arr[i] = {index: i, value: arr[i]};
+    compArr[i] = {index: i, value: arr[i]};
   }
   var valueCompareFn = opt_compareFn || goog.array.defaultCompare;
   function stableCompareFn(obj1, obj2) {
     return valueCompareFn(obj1.value, obj2.value) || obj1.index - obj2.index;
   }
-  goog.array.sort(arr, stableCompareFn);
+  goog.array.sort(compArr, stableCompareFn);
   for (var i = 0; i < arr.length; i++) {
-    arr[i] = arr[i].value;
+    arr[i] = compArr[i].value;
   }
 };
 
@@ -8050,8 +8107,8 @@ goog.array.isSorted = function(arr, opt_compareFn, opt_strict) {
  * have the same length and their corresponding elements are equal according to
  * the comparison function.
  *
- * @param {goog.array.ArrayLike} arr1 The first array to compare.
- * @param {goog.array.ArrayLike} arr2 The second array to compare.
+ * @param {IArrayLike<?>} arr1 The first array to compare.
+ * @param {IArrayLike<?>} arr2 The second array to compare.
  * @param {Function=} opt_equalsFn Optional comparison function.
  *     Should take 2 arguments to compare, and return true if the arguments
  *     are equal. Defaults to {@link goog.array.defaultCompareEquality} which
@@ -8076,9 +8133,9 @@ goog.array.equals = function(arr1, arr2, opt_equalsFn) {
 
 /**
  * 3-way array compare function.
- * @param {!Array<VALUE>|!goog.array.ArrayLike} arr1 The first array to
+ * @param {!IArrayLike<VALUE>} arr1 The first array to
  *     compare.
- * @param {!Array<VALUE>|!goog.array.ArrayLike} arr2 The second array to
+ * @param {!IArrayLike<VALUE>} arr2 The second array to
  *     compare.
  * @param {function(VALUE, VALUE): number=} opt_compareFn Optional comparison
  *     function by which the array is to be ordered. Should take 2 arguments to
@@ -8147,7 +8204,7 @@ goog.array.defaultCompareEquality = function(a, b) {
 /**
  * Inserts a value into a sorted array. The array is not modified if the
  * value is already present.
- * @param {Array<VALUE>|goog.array.ArrayLike} array The array to modify.
+ * @param {IArrayLike<VALUE>} array The array to modify.
  * @param {VALUE} value The object to insert.
  * @param {function(VALUE, VALUE): number=} opt_compareFn Optional comparison
  *     function by which the array is ordered. Should take 2 arguments to
@@ -8169,7 +8226,7 @@ goog.array.binaryInsert = function(array, value, opt_compareFn) {
 
 /**
  * Removes a value from a sorted array.
- * @param {!Array<VALUE>|!goog.array.ArrayLike} array The array to modify.
+ * @param {!IArrayLike<VALUE>} array The array to modify.
  * @param {VALUE} value The object to remove.
  * @param {function(VALUE, VALUE): number=} opt_compareFn Optional comparison
  *     function by which the array is ordered. Should take 2 arguments to
@@ -8219,7 +8276,7 @@ goog.array.bucket = function(array, sorter, opt_obj) {
 /**
  * Creates a new object built from the provided array and the key-generation
  * function.
- * @param {Array<T>|goog.array.ArrayLike} arr Array or array like object over
+ * @param {IArrayLike<T>} arr Array or array like object over
  *     which to iterate whose elements will be the values in the new object.
  * @param {?function(this:S, T, number, ?) : string} keyFunc The function to
  *     call for every element. This function takes 3 arguments (the element, the
@@ -8370,7 +8427,7 @@ goog.array.rotate = function(array, n) {
  * of the items. Example use case: keeping a list of JavaScript objects
  * synchronized with the corresponding list of DOM elements after one of the
  * elements has been dragged to a new position.
- * @param {!(Array|Arguments|{length:number})} arr The array to modify.
+ * @param {!IArrayLike<?>} arr The array to modify.
  * @param {number} fromIndex Index of the item to move between 0 and
  *     {@code arr.length - 1}.
  * @param {number} toIndex Target index between 0 and {@code arr.length - 1}.
@@ -8396,7 +8453,7 @@ goog.array.moveItem = function(arr, fromIndex, toIndex) {
  * This is similar to the zip() function in Python.  See {@link
  * http://docs.python.org/library/functions.html#zip}
  *
- * @param {...!goog.array.ArrayLike} var_args Arrays to be combined.
+ * @param {...!IArrayLike<?>} var_args Arrays to be combined.
  * @return {!Array<!Array<?>>} A new array of arrays created from
  *     provided arrays.
  */
@@ -8705,8 +8762,8 @@ goog.math.sign = Math.sign || function(x) {
  *
  * Returns the longest possible array that is subarray of both of given arrays.
  *
- * @param {Array<Object>} array1 First array of objects.
- * @param {Array<Object>} array2 Second array of objects.
+ * @param {IArrayLike<S>} array1 First array of objects.
+ * @param {IArrayLike<T>} array2 Second array of objects.
  * @param {Function=} opt_compareFn Function that acts as a custom comparator
  *     for the array ojects. Function should return true if objects are equal,
  *     otherwise false.
@@ -8714,9 +8771,10 @@ goog.math.sign = Math.sign || function(x) {
  *     as a result subsequence. It accepts 2 arguments: index of common element
  *     in the first array and index in the second. The default function returns
  *     element from the first array.
- * @return {!Array<Object>} A list of objects that are common to both arrays
+ * @return {!Array<S|T>} A list of objects that are common to both arrays
  *     such that there is no common subsequence with size greater than the
  *     length of the list.
+ * @template S,T
  */
 goog.math.longestCommonSubsequence = function(
     array1, array2, opt_compareFn, opt_collectorFn) {
@@ -18464,6 +18522,7 @@ ol.animation.bounce = function(options) {
       /**
        * @param {ol.Map} map Map.
        * @param {?olx.FrameState} frameState Frame state.
+       * @return {boolean} Run this function in the next frame.
        */
       function(map, frameState) {
         if (frameState.time < start) {
@@ -18502,6 +18561,7 @@ ol.animation.pan = function(options) {
       /**
        * @param {ol.Map} map Map.
        * @param {?olx.FrameState} frameState Frame state.
+       * @return {boolean} Run this function in the next frame.
        */
       function(map, frameState) {
         if (frameState.time < start) {
@@ -18543,6 +18603,7 @@ ol.animation.rotate = function(options) {
       /**
        * @param {ol.Map} map Map.
        * @param {?olx.FrameState} frameState Frame state.
+       * @return {boolean} Run this function in the next frame.
        */
       function(map, frameState) {
         if (frameState.time < start) {
@@ -18586,6 +18647,7 @@ ol.animation.zoom = function(options) {
       /**
        * @param {ol.Map} map Map.
        * @param {?olx.FrameState} frameState Frame state.
+       * @return {boolean} Run this function in the next frame.
        */
       function(map, frameState) {
         if (frameState.time < start) {
@@ -20964,7 +21026,7 @@ goog.object.getKeys = function(obj) {
  * Example usage: getValueByKeys(jsonObj, 'foo', 'entries', 3)
  *
  * @param {!Object} obj An object to get the value from.  Can be array-like.
- * @param {...(string|number|!Array<number|string>|!IArrayLike<number|string>)}
+ * @param {...(string|number|!IArrayLike<number|string>)}
  *     var_args A number of keys
  *     (as strings, or numbers, for array-like objects).  Can also be
  *     specified as a single array of keys.
@@ -22437,32 +22499,11 @@ goog.userAgent.IPAD = goog.userAgent.PLATFORM_KNOWN_ ?
 /**
  * @return {string} The string that describes the version number of the user
  *     agent.
- * Assumes user agent is opera.
- * @private
- */
-goog.userAgent.operaVersion_ = function() {
-  var version = goog.global.opera.version;
-  try {
-    return version();
-  } catch (e) {
-    return version;
-  }
-};
-
-
-/**
- * @return {string} The string that describes the version number of the user
- *     agent.
  * @private
  */
 goog.userAgent.determineVersion_ = function() {
   // All browsers have different ways to detect the version and they all have
   // different naming schemes.
-
-  if (goog.userAgent.OPERA && goog.global['opera']) {
-    return goog.userAgent.operaVersion_();
-  }
-
   // version is a string rather than a number because it may contain 'b', 'a',
   // and so on.
   var version = '';
@@ -22488,7 +22529,7 @@ goog.userAgent.determineVersion_ = function() {
 
 
 /**
- * @return {Array|undefined} The version regex matches from parsing the user
+ * @return {?Array|undefined} The version regex matches from parsing the user
  *     agent string. These regex statements must be executed inline so they can
  *     be compiled out by the closure compiler with the rest of the useragent
  *     detection logic when ASSUME_* is specified.
@@ -22509,6 +22550,12 @@ goog.userAgent.getVersionRegexResult_ = function() {
     // WebKit/125.4
     return /WebKit\/(\S+)/.exec(userAgent);
   }
+  if (goog.userAgent.OPERA) {
+    // If none of the above browsers were detected but the browser is Opera, the
+    // only string that is of interest is 'Version/<number>'.
+    return /(?:Version)[ \/]?(\S+)/.exec(userAgent);
+  }
+  return undefined;
 };
 
 
@@ -24884,6 +24931,7 @@ goog.require('goog.asserts');
 goog.require('goog.fs.url');
 goog.require('goog.i18n.bidi.Dir');
 goog.require('goog.i18n.bidi.DirectionalString');
+goog.require('goog.string');
 goog.require('goog.string.Const');
 goog.require('goog.string.TypedString');
 
@@ -25156,6 +25204,25 @@ goog.html.SafeUrl.fromDataUrl = function(dataUrl) {
   var valid = match && goog.html.SAFE_MIME_TYPE_PATTERN_.test(match[1]);
   return goog.html.SafeUrl.createSafeUrlSecurityPrivateDoNotAccessOrElse(
       valid ? dataUrl : goog.html.SafeUrl.INNOCUOUS_STRING);
+};
+
+
+/**
+ * Creates a SafeUrl wrapping a tel: URL.
+ *
+ * @param {string} telUrl A tel URL.
+ * @return {!goog.html.SafeUrl} A matching safe URL, or {@link INNOCUOUS_STRING}
+ *     wrapped as a SafeUrl if it does not pass.
+ */
+goog.html.SafeUrl.fromTelUrl = function(telUrl) {
+  // There's a risk that a tel: URL could immediately place a call once
+  // clicked, without requiring user confirmation. For that reason it is
+  // handled in this separate function.
+  if (!goog.string.caseInsensitiveStartsWith(telUrl, 'tel:')) {
+    telUrl = goog.html.SafeUrl.INNOCUOUS_STRING;
+  }
+  return goog.html.SafeUrl.createSafeUrlSecurityPrivateDoNotAccessOrElse(
+      telUrl);
 };
 
 
@@ -25446,6 +25513,27 @@ goog.html.TrustedResourceUrl.fromConstant = function(url) {
   return goog.html.TrustedResourceUrl
       .createTrustedResourceUrlSecurityPrivateDoNotAccessOrElse(
           goog.string.Const.unwrap(url));
+};
+
+
+/**
+ * Creates a TrustedResourceUrl object from a compile-time constant strings.
+ *
+ * Compile-time constant strings are inherently program-controlled and hence
+ * trusted.
+ *
+ * @param {!Array<!goog.string.Const>} parts Compile-time-constant strings from
+ *     which to create a TrustedResourceUrl.
+ * @return {!goog.html.TrustedResourceUrl} A TrustedResourceUrl object
+ *     initialized to concatenation of {@code parts}.
+ */
+goog.html.TrustedResourceUrl.fromConstants = function(parts) {
+  var unwrapped = '';
+  for (var i = 0; i < parts.length; i++) {
+    unwrapped += goog.string.Const.unwrap(parts[i]);
+  }
+  return goog.html.TrustedResourceUrl
+      .createTrustedResourceUrlSecurityPrivateDoNotAccessOrElse(unwrapped);
 };
 
 
@@ -25853,25 +25941,41 @@ goog.html.SafeHtml.AttributeValue;
  * @throws {goog.asserts.AssertionError} If content for void tag is provided.
  */
 goog.html.SafeHtml.create = function(tagName, opt_attributes, opt_content) {
-  if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(tagName)) {
-    throw Error('Invalid tag name <' + tagName + '>.');
-  }
-  if (tagName.toUpperCase() in goog.html.SafeHtml.NOT_ALLOWED_TAG_NAMES_) {
-    throw Error('Tag name <' + tagName + '> is not allowed for SafeHtml.');
-  }
+  goog.html.SafeHtml.verifyTagName(tagName);
   return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
       tagName, opt_attributes, opt_content);
 };
 
 
 /**
+ * Verifies if the tag name is valid and if it doesn't change the context.
+ * E.g. STRONG is fine but SCRIPT throws because it changes context. See
+ * goog.html.SafeHtml.create for an explanation of allowed tags.
+ * @param {string} tagName
+ * @throws {Error} If invalid tag name is provided.
+ * @package
+ */
+goog.html.SafeHtml.verifyTagName = function(tagName) {
+  if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(tagName)) {
+    throw Error('Invalid tag name <' + tagName + '>.');
+  }
+  if (tagName.toUpperCase() in goog.html.SafeHtml.NOT_ALLOWED_TAG_NAMES_) {
+    throw Error('Tag name <' + tagName + '> is not allowed for SafeHtml.');
+  }
+};
+
+
+/**
  * Creates a SafeHtml representing an iframe tag.
  *
- * By default the sandbox attribute is set to an empty value, which is the most
- * secure option, as it confers the iframe the least privileges. If this
- * is too restrictive then granting individual privileges is the preferable
- * option. Unsetting the attribute entirely is the least secure option and
- * should never be done unless it's stricly necessary.
+ * This by default restricts the iframe as much as possible by setting the
+ * sandbox attribute to the empty string. If the iframe requires less
+ * restrictions, set the sandbox attribute as tight as possible, but do not rely
+ * on the sandbox as a security feature because it is not supported by older
+ * browsers. If a sandbox is essential to security (e.g. for third-party
+ * frames), use createSandboxIframe which checks for browser support.
+ *
+ * @see https://developer.mozilla.org/en/docs/Web/HTML/Element/iframe#attr-sandbox
  *
  * @param {goog.html.TrustedResourceUrl=} opt_src The value of the src
  *     attribute. If null or undefined src will not be set.
@@ -25890,14 +25994,111 @@ goog.html.SafeHtml.create = function(tagName, opt_attributes, opt_content) {
  */
 goog.html.SafeHtml.createIframe = function(
     opt_src, opt_srcdoc, opt_attributes, opt_content) {
+  if (opt_src) {
+    // Check whether this is really TrustedResourceUrl.
+    goog.html.TrustedResourceUrl.unwrap(opt_src);
+  }
+
   var fixedAttributes = {};
   fixedAttributes['src'] = opt_src || null;
-  fixedAttributes['srcdoc'] = opt_srcdoc || null;
+  fixedAttributes['srcdoc'] =
+      opt_srcdoc && goog.html.SafeHtml.unwrap(opt_srcdoc);
   var defaultAttributes = {'sandbox': ''};
   var attributes = goog.html.SafeHtml.combineAttributes(
       fixedAttributes, defaultAttributes, opt_attributes);
   return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
       'iframe', attributes, opt_content);
+};
+
+
+/**
+ * Creates a SafeHtml representing a sandboxed iframe tag.
+ *
+ * The sandbox attribute is enforced in its most restrictive mode, an empty
+ * string. Consequently, the security requirements for the src and srcdoc
+ * attributes are relaxed compared to SafeHtml.createIframe. This function
+ * will throw on browsers that do not support the sandbox attribute, as
+ * determined by SafeHtml.canUseSandboxIframe.
+ *
+ * The SafeHtml returned by this function can trigger downloads with no
+ * user interaction on Chrome (though only a few, further attempts are blocked).
+ * Firefox and IE will block all downloads from the sandbox.
+ *
+ * @see https://developer.mozilla.org/en/docs/Web/HTML/Element/iframe#attr-sandbox
+ * @see https://lists.w3.org/Archives/Public/public-whatwg-archive/2013Feb/0112.html
+ *
+ * @param {string|!goog.html.SafeUrl=} opt_src The value of the src
+ *     attribute. If null or undefined src will not be set.
+ * @param {string=} opt_srcdoc The value of the srcdoc attribute.
+ *     If null or undefined srcdoc will not be set. Will not be sanitized.
+ * @param {!Object<string, ?goog.html.SafeHtml.AttributeValue>=} opt_attributes
+ *     Mapping from attribute names to their values. Only attribute names
+ *     consisting of [a-zA-Z0-9-] are allowed. Value of null or undefined causes
+ *     the attribute to be omitted.
+ * @param {!goog.html.SafeHtml.TextOrHtml_|
+ *     !Array<!goog.html.SafeHtml.TextOrHtml_>=} opt_content Content to
+ *     HTML-escape and put inside the tag. Array elements are concatenated.
+ * @return {!goog.html.SafeHtml} The SafeHtml content with the tag.
+ * @throws {Error} If invalid tag name, attribute name, or attribute value is
+ *     provided. If opt_attributes contains the src, srcdoc or sandbox
+ *     attributes. If browser does not support the sandbox attribute on iframe.
+ */
+goog.html.SafeHtml.createSandboxIframe = function(
+    opt_src, opt_srcdoc, opt_attributes, opt_content) {
+  if (!goog.html.SafeHtml.canUseSandboxIframe()) {
+    throw new Error('The browser does not support sandboxed iframes.');
+  }
+
+  var fixedAttributes = {};
+  if (opt_src) {
+    // Note that sanitize is a no-op on SafeUrl.
+    fixedAttributes['src'] =
+        goog.html.SafeUrl.unwrap(goog.html.SafeUrl.sanitize(opt_src));
+  } else {
+    fixedAttributes['src'] = null;
+  }
+  fixedAttributes['srcdoc'] = opt_srcdoc || null;
+  fixedAttributes['sandbox'] = '';
+  var attributes =
+      goog.html.SafeHtml.combineAttributes(fixedAttributes, {}, opt_attributes);
+  return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
+      'iframe', attributes, opt_content);
+};
+
+
+/**
+ * Checks if the user agent supports sandboxed iframes.
+ * @return {boolean}
+ */
+goog.html.SafeHtml.canUseSandboxIframe = function() {
+  return goog.global['HTMLIFrameElement'] &&
+      ('sandbox' in goog.global['HTMLIFrameElement'].prototype);
+};
+
+
+/**
+ * Creates a SafeHtml representing a script tag with the src attribute.
+ * @param {!goog.html.TrustedResourceUrl} src The value of the src
+ * attribute.
+ * @param {!Object<string, ?goog.html.SafeHtml.AttributeValue>=}
+ * opt_attributes
+ *     Mapping from attribute names to their values. Only attribute names
+ *     consisting of [a-zA-Z0-9-] are allowed. Value of null or undefined
+ *     causes the attribute to be omitted.
+ * @return {!goog.html.SafeHtml} The SafeHtml content with the tag.
+ * @throws {Error} If invalid attribute name or value is provided. If
+ *     opt_attributes contains the src attribute.
+ */
+goog.html.SafeHtml.createScriptSrc = function(src, opt_attributes) {
+  // Check whether this is really TrustedResourceUrl.
+  goog.html.TrustedResourceUrl.unwrap(src);
+
+  var fixedAttributes = {'src': src};
+  var defaultAttributes = {};
+  var attributes = goog.html.SafeHtml.combineAttributes(
+      fixedAttributes, defaultAttributes, opt_attributes);
+  return goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse(
+      'script', attributes);
 };
 
 
@@ -25926,7 +26127,8 @@ goog.html.SafeHtml.createStyle = function(styleSheet, opt_attributes) {
   for (var i = 0; i < styleSheet.length; i++) {
     content += goog.html.SafeStyleSheet.unwrap(styleSheet[i]);
   }
-  // Convert to SafeHtml so that it's not HTML-escaped.
+  // Convert to SafeHtml so that it's not HTML-escaped. This is safe because
+  // as part of its contract, SafeStyleSheet should have no dangerous '<'.
   var htmlContent =
       goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
           content, goog.i18n.bidi.Dir.NEUTRAL);
@@ -26180,20 +26382,7 @@ goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse = function(
     tagName, opt_attributes, opt_content) {
   var dir = null;
   var result = '<' + tagName;
-
-  if (opt_attributes) {
-    for (var name in opt_attributes) {
-      if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(name)) {
-        throw Error('Invalid attribute name "' + name + '".');
-      }
-      var value = opt_attributes[name];
-      if (!goog.isDefAndNotNull(value)) {
-        continue;
-      }
-      result +=
-          ' ' + goog.html.SafeHtml.getAttrNameAndValue_(tagName, name, value);
-    }
-  }
+  result += goog.html.SafeHtml.stringifyAttributes(tagName, opt_attributes);
 
   var content = opt_content;
   if (!goog.isDefAndNotNull(content)) {
@@ -26226,6 +26415,34 @@ goog.html.SafeHtml.createSafeHtmlTagSecurityPrivateDoNotAccessOrElse = function(
   return goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
       result, dir);
 };
+
+
+/**
+ * Creates a string with attributes to insert after tagName.
+ * @param {string} tagName
+ * @param {!Object<string, ?goog.html.SafeHtml.AttributeValue>=} opt_attributes
+ * @return {string} Returns an empty string if there are no attributes, returns
+ *     a string starting with a space otherwise.
+ * @throws {Error} If attribute value is unsafe for the given tag and attribute.
+ * @package
+ */
+goog.html.SafeHtml.stringifyAttributes = function(tagName, opt_attributes) {
+  var result = '';
+  if (opt_attributes) {
+    for (var name in opt_attributes) {
+      if (!goog.html.SafeHtml.VALID_NAMES_IN_TAG_.test(name)) {
+        throw Error('Invalid attribute name "' + name + '".');
+      }
+      var value = opt_attributes[name];
+      if (!goog.isDefAndNotNull(value)) {
+        continue;
+      }
+      result +=
+          ' ' + goog.html.SafeHtml.getAttrNameAndValue_(tagName, name, value);
+    }
+  }
+  return result;
+}
 
 
 /**
@@ -26666,6 +26883,184 @@ goog.dom.safe.openInWindow = function(
       // https://html.spec.whatwg.org/multipage/browsers.html#dom-open .
       opt_name ? goog.string.Const.unwrap(opt_name) : '', opt_specs,
       opt_replace);
+};
+
+// Copyright 2013 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Transitional utilities to unsafely trust random strings as
+ * goog.html types. Intended for temporary use when upgrading a library that
+ * used to accept plain strings to use safe types, but where it's not
+ * practical to transitively update callers.
+ *
+ * IMPORTANT: No new code should use the conversion functions in this file,
+ * they are intended for refactoring old code to use goog.html types. New code
+ * should construct goog.html types via their APIs, template systems or
+ * sanitizers. If that’s not possible it should use
+ * goog.html.uncheckedconversions and undergo security review.
+
+ *
+ * The semantics of the conversions in goog.html.legacyconversions are very
+ * different from the ones provided by goog.html.uncheckedconversions. The
+ * latter are for use in code where it has been established through manual
+ * security review that the value produced by a piece of code will always
+ * satisfy the SafeHtml contract (e.g., the output of a secure HTML sanitizer).
+ * In uses of goog.html.legacyconversions, this guarantee is not given -- the
+ * value in question originates in unreviewed legacy code and there is no
+ * guarantee that it satisfies the SafeHtml contract.
+ *
+ * There are only three valid uses of legacyconversions:
+ *
+ * 1. Introducing a goog.html version of a function which currently consumes
+ * string and passes that string to a DOM API which can execute script - and
+ * hence cause XSS - like innerHTML. For example, Dialog might expose a
+ * setContent method which takes a string and sets the innerHTML property of
+ * an element with it. In this case a setSafeHtmlContent function could be
+ * added, consuming goog.html.SafeHtml instead of string, and using
+ * goog.dom.safe.setInnerHtml instead of directly setting innerHTML.
+ * setContent could then internally use legacyconversions to create a SafeHtml
+ * from string and pass the SafeHtml to setSafeHtmlContent. In this scenario
+ * remember to document the use of legacyconversions in the modified setContent
+ * and consider deprecating it as well.
+ *
+ * 2. Automated refactoring of application code which handles HTML as string
+ * but needs to call a function which only takes goog.html types. For example,
+ * in the Dialog scenario from (1) an alternative option would be to refactor
+ * setContent to accept goog.html.SafeHtml instead of string and then refactor
+ * all current callers to use legacyconversions to pass SafeHtml. This is
+ * generally preferable to (1) because it keeps the library clean of
+ * legacyconversions, and makes code sites in application code that are
+ * potentially vulnerable to XSS more apparent.
+ *
+ * 3. Old code which needs to call APIs which consume goog.html types and for
+ * which it is prohibitively expensive to refactor to use goog.html types.
+ * Generally, this is code where safety from XSS is either hopeless or
+ * unimportant.
+ *
+ * @visibility {//closure/goog/html:approved_for_legacy_conversion}
+ * @visibility {//closure/goog/bin/sizetests:__pkg__}
+ */
+
+
+goog.provide('goog.html.legacyconversions');
+
+goog.require('goog.html.SafeHtml');
+goog.require('goog.html.SafeStyle');
+goog.require('goog.html.SafeStyleSheet');
+goog.require('goog.html.SafeUrl');
+goog.require('goog.html.TrustedResourceUrl');
+
+
+/**
+ * Performs an "unchecked conversion" from string to SafeHtml for legacy API
+ * purposes.
+ *
+ * Please read fileoverview documentation before using.
+ *
+ * @param {string} html A string to be converted to SafeHtml.
+ * @return {!goog.html.SafeHtml} The value of html, wrapped in a SafeHtml
+ *     object.
+ */
+goog.html.legacyconversions.safeHtmlFromString = function(html) {
+  goog.html.legacyconversions.reportCallback_();
+  return goog.html.SafeHtml.createSafeHtmlSecurityPrivateDoNotAccessOrElse(
+      html, null /* dir */);
+};
+
+
+/**
+ * Performs an "unchecked conversion" from string to SafeStyle for legacy API
+ * purposes.
+ *
+ * Please read fileoverview documentation before using.
+ *
+ * @param {string} style A string to be converted to SafeStyle.
+ * @return {!goog.html.SafeStyle} The value of style, wrapped in a SafeStyle
+ *     object.
+ */
+goog.html.legacyconversions.safeStyleFromString = function(style) {
+  goog.html.legacyconversions.reportCallback_();
+  return goog.html.SafeStyle.createSafeStyleSecurityPrivateDoNotAccessOrElse(
+      style);
+};
+
+
+/**
+ * Performs an "unchecked conversion" from string to SafeStyleSheet for legacy
+ * API purposes.
+ *
+ * Please read fileoverview documentation before using.
+ *
+ * @param {string} styleSheet A string to be converted to SafeStyleSheet.
+ * @return {!goog.html.SafeStyleSheet} The value of style sheet, wrapped in
+ *     a SafeStyleSheet object.
+ */
+goog.html.legacyconversions.safeStyleSheetFromString = function(styleSheet) {
+  goog.html.legacyconversions.reportCallback_();
+  return goog.html.SafeStyleSheet
+      .createSafeStyleSheetSecurityPrivateDoNotAccessOrElse(styleSheet);
+};
+
+
+/**
+ * Performs an "unchecked conversion" from string to SafeUrl for legacy API
+ * purposes.
+ *
+ * Please read fileoverview documentation before using.
+ *
+ * @param {string} url A string to be converted to SafeUrl.
+ * @return {!goog.html.SafeUrl} The value of url, wrapped in a SafeUrl
+ *     object.
+ */
+goog.html.legacyconversions.safeUrlFromString = function(url) {
+  goog.html.legacyconversions.reportCallback_();
+  return goog.html.SafeUrl.createSafeUrlSecurityPrivateDoNotAccessOrElse(url);
+};
+
+
+/**
+ * Performs an "unchecked conversion" from string to TrustedResourceUrl for
+ * legacy API purposes.
+ *
+ * Please read fileoverview documentation before using.
+ *
+ * @param {string} url A string to be converted to TrustedResourceUrl.
+ * @return {!goog.html.TrustedResourceUrl} The value of url, wrapped in a
+ *     TrustedResourceUrl object.
+ */
+goog.html.legacyconversions.trustedResourceUrlFromString = function(url) {
+  goog.html.legacyconversions.reportCallback_();
+  return goog.html.TrustedResourceUrl
+      .createTrustedResourceUrlSecurityPrivateDoNotAccessOrElse(url);
+};
+
+/**
+ * @private {function(): undefined}
+ */
+goog.html.legacyconversions.reportCallback_ = goog.nullFunction;
+
+
+/**
+ * Sets a function that will be called every time a legacy conversion is
+ * performed. The function is called with no parameters but it can use
+ * goog.debug.getStacktrace to get a stacktrace.
+ *
+ * @param {function(): undefined} callback Error callback as defined above.
+ */
+goog.html.legacyconversions.setReportCallback = function(callback) {
+  goog.html.legacyconversions.reportCallback_ = callback;
 };
 
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -27207,6 +27602,7 @@ goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
 goog.require('goog.dom.safe');
 goog.require('goog.html.SafeHtml');
+goog.require('goog.html.legacyconversions');
 goog.require('goog.math.Coordinate');
 goog.require('goog.math.Size');
 goog.require('goog.object');
@@ -27254,7 +27650,7 @@ goog.dom.getDomHelper = function(opt_element) {
 
 /**
  * Cached default DOM helper.
- * @type {goog.dom.DomHelper}
+ * @type {!goog.dom.DomHelper|undefined}
  * @private
  */
 goog.dom.defaultDomHelper_;
@@ -27358,7 +27754,7 @@ goog.dom.$ = goog.dom.getElement;
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  */
 goog.dom.getElementsByTagNameAndClass = function(opt_tag, opt_class, opt_el) {
@@ -27373,7 +27769,7 @@ goog.dom.getElementsByTagNameAndClass = function(opt_tag, opt_class, opt_el) {
  * @see {goog.dom.query}
  * @param {string} className the name of the class to look for.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } The items found with the class name provided.
+ * @return {!IArrayLike<!Element>} The items found with the class name provided.
  */
 goog.dom.getElementsByClass = function(className, opt_el) {
   var parent = opt_el || document;
@@ -27442,7 +27838,7 @@ goog.dom.canUseQuerySelector_ = function(parent) {
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  * @private
  */
@@ -27474,7 +27870,7 @@ goog.dom.getElementsByTagNameAndClass_ = function(
       }
       arrayLike.length = len;
 
-      return arrayLike;
+      return /** @type {!IArrayLike<!Element>} */ (arrayLike);
     } else {
       return els;
     }
@@ -27494,7 +27890,7 @@ goog.dom.getElementsByTagNameAndClass_ = function(
       }
     }
     arrayLike.length = len;
-    return arrayLike;
+    return /** @type {!IArrayLike<!Element>} */ (arrayLike);
   } else {
     return els;
   }
@@ -27506,7 +27902,7 @@ goog.dom.getElementsByTagNameAndClass_ = function(
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {Element=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  * @deprecated Use {@link goog.dom.getElementsByTagNameAndClass} instead.
  */
@@ -27554,6 +27950,7 @@ goog.dom.DIRECT_ATTRIBUTE_MAP_ = {
   'frameborder': 'frameBorder',
   'height': 'height',
   'maxlength': 'maxLength',
+  'nonce': 'nonce',
   'role': 'role',
   'rowspan': 'rowSpan',
   'type': 'type',
@@ -28084,35 +28481,17 @@ goog.dom.safeHtmlToNode_ = function(doc, html) {
  *
  * @param {string} htmlString The HTML string to convert.
  * @return {!Node} The resulting document fragment.
+ * @deprecated Use {@link goog.dom.safeHtmlToNode} instead.
  */
 goog.dom.htmlToDocumentFragment = function(htmlString) {
-  return goog.dom.htmlToDocumentFragment_(document, htmlString);
-};
-
-
-// TODO(jakubvrana): Merge with {@code safeHtmlToNode_}.
-/**
- * Helper for {@code htmlToDocumentFragment}.
- *
- * @param {!Document} doc The document.
- * @param {string} htmlString The HTML string to convert.
- * @return {!Node} The resulting document fragment.
- * @private
- */
-goog.dom.htmlToDocumentFragment_ = function(doc, htmlString) {
-  var tempDiv = doc.createElement(goog.dom.TagName.DIV);
-  if (goog.dom.BrowserFeature.INNER_HTML_NEEDS_SCOPED_ELEMENT) {
-    tempDiv.innerHTML = '<br>' + htmlString;
-    tempDiv.removeChild(tempDiv.firstChild);
-  } else {
-    tempDiv.innerHTML = htmlString;
-  }
-  return goog.dom.childrenToNode_(doc, tempDiv);
+  return goog.dom.safeHtmlToNode_(document,
+      // For now, we are blindly trusting that the HTML is safe.
+      goog.html.legacyconversions.safeHtmlFromString(htmlString));
 };
 
 
 /**
- * Helper for {@code htmlToDocumentFragment_}.
+ * Helper for {@code safeHtmlToNode_}.
  * @param {!Document} doc The document.
  * @param {!Node} tempDiv The input node.
  * @return {!Node} The resulting node.
@@ -28354,8 +28733,8 @@ goog.dom.flattenElement = function(element) {
 /**
  * Returns an array containing just the element children of the given element.
  * @param {Element} element The element whose element children we want.
- * @return {!(Array|NodeList)} An array or array-like list of just the element
- *     children of the given element.
+ * @return {!(Array<!Element>|NodeList<!Element>)} An array or array-like list
+ *     of just the element children of the given element.
  */
 goog.dom.getChildren = function(element) {
   // We check if the children attribute is supported for child elements
@@ -29497,7 +29876,7 @@ goog.dom.DomHelper.prototype.$ = goog.dom.DomHelper.prototype.getElement;
  * @param {?string=} opt_tag Element tag name or * for all tags.
  * @param {?string=} opt_class Optional class name.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  */
 goog.dom.DomHelper.prototype.getElementsByTagNameAndClass = function(
@@ -29512,7 +29891,7 @@ goog.dom.DomHelper.prototype.getElementsByTagNameAndClass = function(
  * @see {goog.dom.query}
  * @param {string} className the name of the class to look for.
  * @param {Element|Document=} opt_el Optional element to look in.
- * @return { {length: number} } The items found with the class name provided.
+ * @return {!IArrayLike<!Element>} The items found with the class name provided.
  */
 goog.dom.DomHelper.prototype.getElementsByClass = function(className, opt_el) {
   var doc = opt_el || this.document_;
@@ -29558,7 +29937,7 @@ goog.dom.DomHelper.prototype.getRequiredElementByClass = function(
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {Element=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  */
 goog.dom.DomHelper.prototype.$$ =
@@ -29703,9 +30082,11 @@ goog.dom.DomHelper.prototype.safeHtmlToNode = function(html) {
  *
  * @param {string} htmlString The HTML string to convert.
  * @return {!Node} The resulting node.
+ * @deprecated Use {@link goog.dom.DomHelper.prototype.safeHtmlToNode} instead.
  */
 goog.dom.DomHelper.prototype.htmlToDocumentFragment = function(htmlString) {
-  return goog.dom.htmlToDocumentFragment_(this.document_, htmlString);
+  return goog.dom.safeHtmlToNode_(this.document_,
+      goog.html.legacyconversions.safeHtmlFromString(htmlString));
 };
 
 
@@ -29852,8 +30233,8 @@ goog.dom.DomHelper.prototype.flattenElement = goog.dom.flattenElement;
 /**
  * Returns an array containing just the element children of the given element.
  * @param {Element} element The element whose element children we want.
- * @return {!(Array|NodeList)} An array or array-like list of just the element
- *     children of the given element.
+ * @return {!(Array<!Element>|NodeList<!Element>)} An array or array-like list
+ *     of just the element children of the given element.
  */
 goog.dom.DomHelper.prototype.getChildren = goog.dom.getChildren;
 
@@ -30227,7 +30608,7 @@ goog.define('goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST', false);
 /**
  * Gets an array-like object of class names on an element.
  * @param {Element} element DOM node to get the classes of.
- * @return {!goog.array.ArrayLike} Class names on {@code element}.
+ * @return {!IArrayLike<?>} Class names on {@code element}.
  */
 goog.dom.classlist.get = function(element) {
   if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
@@ -30291,7 +30672,7 @@ goog.dom.classlist.add = function(element, className) {
 /**
  * Convenience method to add a number of class names at once.
  * @param {Element} element The element to which to add classes.
- * @param {goog.array.ArrayLike<string>} classesToAdd An array-like object
+ * @param {IArrayLike<string>} classesToAdd An array-like object
  * containing a collection of class names to add to the element.
  * This method may throw a DOM exception if classesToAdd contains invalid
  * or empty class names.
@@ -30352,7 +30733,7 @@ goog.dom.classlist.remove = function(element, className) {
  * repeatedly calling {@code goog.dom.classlist.remove} if you want to remove
  * a large set of class names at once.
  * @param {Element} element The element from which to remove classes.
- * @param {goog.array.ArrayLike<string>} classesToRemove An array-like object
+ * @param {IArrayLike<string>} classesToRemove An array-like object
  * containing a collection of class names to remove from the element.
  * This method may throw a DOM exception if classesToRemove contains invalid
  * or empty class names.
@@ -30401,7 +30782,7 @@ goog.dom.classlist.enable = function(element, className, enabled) {
  * method may throw a DOM exception for an invalid or empty class name if
  * DOMTokenList is used.
  * @param {!Element} element DOM node to add or remove the class on.
- * @param {goog.array.ArrayLike<string>} classesToEnable An array-like object
+ * @param {?IArrayLike<string>} classesToEnable An array-like object
  *     containing a collection of class names to add or remove from the element.
  * @param {boolean} enabled Whether to add or remove the classes (true adds,
  *     false removes).
@@ -31486,7 +31867,9 @@ goog.reflect.object = function(type, object) {
  *     // Force a layout
  *     goog.reflect.sinkValue(dialog.offsetHeight);
  * </code>
- * @type {!Function}
+ * @param {T} x
+ * @return {T}
+ * @template T
  */
 goog.reflect.sinkValue = function(x) {
   goog.reflect.sinkValue[' '](x);
@@ -31516,6 +31899,45 @@ goog.reflect.canAccessProperty = function(obj, prop) {
   } catch (e) {
   }
   return false;
+};
+
+
+/**
+ * Retrieves a value from a cache given a key. The compiler provides special
+ * consideration for this call such that it is generally considered side-effect
+ * free. However, if the {@code opt_keyFn} or {@code valueFn} have side-effects
+ * then the entire call is considered to have side-effects.
+ *
+ * Conventionally storing the value on the cache would be considered a
+ * side-effect and preclude unused calls from being pruned, ie. even if
+ * the value was never used, it would still always be stored in the cache.
+ *
+ * Providing a side-effect free {@code valueFn} and {@code opt_keyFn}
+ * allows unused calls to {@code goog.cache} to be pruned.
+ *
+ * @param {!Object<K, V>} cacheObj The object that contains the cached values.
+ * @param {?} key The key to lookup in the cache. If it is not string or number
+ *     then a {@code opt_keyFn} should be provided. The key is also used as the
+ *     parameter to the {@code valueFn}.
+ * @param {!function(?):V} valueFn The value provider to use to calculate the
+ *     value to store in the cache. This function should be side-effect free
+ *     to take advantage of the optimization.
+ * @param {function(?):K=} opt_keyFn The key provider to determine the cache
+ *     map key. This should be used if the given key is not a string or number.
+ *     If not provided then the given key is used. This function should be
+ *     side-effect free to take advantage of the optimization.
+ * @return {V} The cached or calculated value.
+ * @template K
+ * @template V
+ */
+goog.reflect.cache = function(cacheObj, key, valueFn, opt_keyFn) {
+  var storedKey = opt_keyFn ? opt_keyFn(key) : key;
+
+  if (storedKey in cacheObj) {
+    return cacheObj[storedKey];
+  }
+
+  return (cacheObj[storedKey] = valueFn(key));
 };
 
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -31551,6 +31973,8 @@ goog.require('goog.dom');
 goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
 goog.require('goog.dom.vendor');
+goog.require('goog.html.SafeStyleSheet');
+goog.require('goog.html.legacyconversions');
 goog.require('goog.math.Box');
 goog.require('goog.math.Coordinate');
 goog.require('goog.math.Rect');
@@ -32799,9 +33223,25 @@ goog.style.isElementShown = function(el) {
  * @param {string} stylesString The style string to install.
  * @param {Node=} opt_node Node whose parent document should have the
  *     styles installed.
- * @return {Element|StyleSheet} The style element created.
+ * @return {!Element|!StyleSheet} The style element created.
+ * @deprecated Use {@link #installSafeStyleSheet} instead.
  */
 goog.style.installStyles = function(stylesString, opt_node) {
+  return goog.style.installSafeStyleSheet(
+      goog.html.legacyconversions.safeStyleSheetFromString(stylesString),
+      opt_node);
+};
+
+
+/**
+ * Installs the style sheet into the window that contains opt_node.  If
+ * opt_node is null, the main window is used.
+ * @param {!goog.html.SafeStyleSheet} safeStyleSheet The style sheet to install.
+ * @param {?Node=} opt_node Node whose parent document should have the
+ *     styles installed.
+ * @return {!Element|!StyleSheet} The style element created.
+ */
+goog.style.installSafeStyleSheet = function(safeStyleSheet, opt_node) {
   var dh = goog.dom.getDomHelper(opt_node);
   var styleSheet = null;
 
@@ -32810,7 +33250,7 @@ goog.style.installStyles = function(stylesString, opt_node) {
   var doc = dh.getDocument();
   if (goog.userAgent.IE && doc.createStyleSheet) {
     styleSheet = doc.createStyleSheet();
-    goog.style.setStyles(styleSheet, stylesString);
+    goog.style.setSafeStyleSheet(styleSheet, safeStyleSheet);
   } else {
     var head = dh.getElementsByTagNameAndClass(goog.dom.TagName.HEAD)[0];
 
@@ -32826,7 +33266,7 @@ goog.style.installStyles = function(stylesString, opt_node) {
     // to the head results in a nasty Webkit bug in certain scenarios. Please
     // refer to https://bugs.webkit.org/show_bug.cgi?id=26307 for additional
     // details.
-    goog.style.setStyles(styleSheet, stylesString);
+    goog.style.setSafeStyleSheet(styleSheet, safeStyleSheet);
     dh.appendChild(head, styleSheet);
   }
   return styleSheet;
@@ -32848,21 +33288,39 @@ goog.style.uninstallStyles = function(styleSheet) {
 /**
  * Sets the content of a style element.  The style element can be any valid
  * style element.  This element will have its content completely replaced by
- * the new stylesString.
+ * the stylesString.
  * @param {Element|StyleSheet} element A stylesheet element as returned by
  *     installStyles.
  * @param {string} stylesString The new content of the stylesheet.
+ * @deprecated Use {@link #setSafeStyleSheet} instead.
  */
 goog.style.setStyles = function(element, stylesString) {
+  goog.style.setSafeStyleSheet(/** @type {!Element|!StyleSheet} */ (element),
+      goog.html.legacyconversions.safeStyleSheetFromString(stylesString));
+};
+
+
+/**
+ * Sets the content of a style element.  The style element can be any valid
+ * style element.  This element will have its content completely replaced by
+ * the safeStyleSheet.
+ * @param {!Element|!StyleSheet} element A stylesheet element as returned by
+ *     installStyles.
+ * @param {!goog.html.SafeStyleSheet} safeStyleSheet The new content of the
+ *     stylesheet.
+ */
+goog.style.setSafeStyleSheet = function(element, safeStyleSheet) {
+  var stylesString = goog.html.SafeStyleSheet.unwrap(safeStyleSheet);
   if (goog.userAgent.IE && goog.isDef(element.cssText)) {
     // Adding the selectors individually caused the browser to hang if the
     // selector was invalid or there were CSS comments.  Setting the cssText of
     // the style node works fine and ignores CSS that IE doesn't understand.
     // However IE >= 11 doesn't support cssText any more, so we make sure that
-    // cssText is a defined property and otherwise fall back to innerHTML.
+    // cssText is a defined property and otherwise fall back to setTextContent.
     element.cssText = stylesString;
   } else {
-    element.innerHTML = stylesString;
+    // NOTE: We could also set textContent directly here.
+    goog.dom.setTextContent(/** @type {!Element} */ (element), stylesString);
   }
 };
 
@@ -69590,10 +70048,10 @@ ol.control.ZoomSlider = function(opt_options) {
   this.dragging_;
 
   /**
-   * @type {Array.<ol.events.Key>}
+   * @type {!Array.<ol.events.Key>}
    * @private
    */
-  this.dragListenerKeys_;
+  this.dragListenerKeys_ = [];
 
   /**
    * @type {number}
@@ -69798,17 +70256,17 @@ ol.control.ZoomSlider.prototype.handleDraggerStart_ = function(event) {
     this.previousY_ = event.clientY;
     this.dragging_ = true;
 
-    if (!this.dragListenerKeys_) {
+    if (this.dragListenerKeys_.length === 0) {
       var drag = this.handleDraggerDrag_;
       var end = this.handleDraggerEnd_;
-      this.dragListenerKeys_ = [
+      this.dragListenerKeys_.push(
         ol.events.listen(document, ol.events.EventType.MOUSEMOVE, drag, this),
         ol.events.listen(document, ol.events.EventType.TOUCHMOVE, drag, this),
         ol.events.listen(document, ol.pointer.EventType.POINTERMOVE, drag, this),
         ol.events.listen(document, ol.events.EventType.MOUSEUP, end, this),
         ol.events.listen(document, ol.events.EventType.TOUCHEND, end, this),
         ol.events.listen(document, ol.pointer.EventType.POINTERUP, end, this)
-      ];
+      );
     }
   }
 };
@@ -69858,7 +70316,7 @@ ol.control.ZoomSlider.prototype.handleDraggerEnd_ = function(event) {
     this.previousX_ = undefined;
     this.previousY_ = undefined;
     this.dragListenerKeys_.forEach(ol.events.unlistenByKey);
-    this.dragListenerKeys_ = null;
+    this.dragListenerKeys_.length = 0;
   }
 };
 
@@ -77857,7 +78315,7 @@ goog.structs.clear = function(col) {
   if (col.clear && typeof col.clear == 'function') {
     col.clear();
   } else if (goog.isArrayLike(col)) {
-    goog.array.clear(/** @type {goog.array.ArrayLike} */ (col));
+    goog.array.clear(/** @type {IArrayLike<?>} */ (col));
   } else {
     goog.object.clear(col);
   }
@@ -78213,7 +78671,7 @@ goog.iter.forEach = function(iterable, f, opt_obj) {
       // NOTES: this passes the index number to the second parameter
       // of the callback contrary to the documentation above.
       goog.array.forEach(
-          /** @type {goog.array.ArrayLike} */ (iterable), f, opt_obj);
+          /** @type {IArrayLike<?>} */ (iterable), f, opt_obj);
     } catch (ex) {
       if (ex !== goog.iter.StopIteration) {
         throw ex;
@@ -78591,7 +79049,7 @@ goog.iter.takeWhile = function(iterable, f, opt_obj) {
 goog.iter.toArray = function(iterable) {
   // Fast path for array-like.
   if (goog.isArrayLike(iterable)) {
-    return goog.array.toArray(/** @type {!goog.array.ArrayLike} */ (iterable));
+    return goog.array.toArray(/** @type {!IArrayLike<?>} */ (iterable));
   }
   iterable = goog.iter.toIterator(iterable);
   var array = [];
@@ -78652,7 +79110,7 @@ goog.iter.nextOrValue = function(iterable, defaultValue) {
  * combination of one element chosen from each set.  For example,
  * ([1, 2], [3, 4]) gives ([1, 3], [1, 4], [2, 3], [2, 4]).
  * @see http://docs.python.org/library/itertools.html#itertools.product
- * @param {...!goog.array.ArrayLike<VALUE>} var_args Zero or more sets, as
+ * @param {...!IArrayLike<VALUE>} var_args Zero or more sets, as
  *     arrays.
  * @return {!goog.iter.Iterator<!Array<VALUE>>} An iterator that gives each
  *     n-tuple (as an array).
@@ -78944,7 +79402,7 @@ goog.iter.compress = function(iterable, selectors) {
  * Implements the {@code goog.iter.groupBy} iterator.
  * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
  *     iterable to group.
- * @param {function(...VALUE): KEY=} opt_keyFunc  Optional function for
+ * @param {function(VALUE): KEY=} opt_keyFunc  Optional function for
  *     determining the key value for each group in the {@code iterable}. Default
  *     is the identity function.
  * @constructor
@@ -78964,7 +79422,7 @@ goog.iter.GroupByIterator_ = function(iterable, opt_keyFunc) {
    * A function for determining the key value for each element in the iterable.
    * If no function is provided, the identity function is used and returns the
    * element unchanged.
-   * @type {function(...VALUE): KEY}
+   * @type {function(VALUE): KEY}
    */
   this.keyFunc = opt_keyFunc || goog.functions.identity;
 
@@ -79034,7 +79492,7 @@ goog.iter.GroupByIterator_.prototype.groupItems_ = function(targetKey) {
  * @see http://docs.python.org/2/library/itertools.html#itertools.groupby
  * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
  *     iterable to group.
- * @param {function(...VALUE): KEY=} opt_keyFunc  Optional function for
+ * @param {function(VALUE): KEY=} opt_keyFunc  Optional function for
  *     determining the key value for each group in the {@code iterable}. Default
  *     is the identity function.
  * @return {!goog.iter.Iterator<!Array<?>>} A new iterator that returns
@@ -79225,7 +79683,7 @@ goog.iter.slice = function(iterable, start, opt_end) {
 
 /**
  * Checks an array for duplicate elements.
- * @param {Array<VALUE>|goog.array.ArrayLike} arr The array to check for
+ * @param {?IArrayLike<VALUE>} arr The array to check for
  *     duplicates.
  * @return {boolean} True, if the array contains duplicates, false otherwise.
  * @private

@@ -129,6 +129,16 @@ function testNegativePercentage() {
   assertEquals('-123,458%', str);
 }
 
+function testNegativePercentagePattern() {
+  var str;
+  var fmt = new goog.i18n.NumberFormat('#,##0.00%;(#,##0.00%)');
+  str = fmt.format(1234.56);
+  assertEquals('123,456.00%', str);
+
+  str = fmt.format(-1234.56);
+  assertEquals('(123,456.00%)', str);
+}
+
 function testCustomPercentage() {
   var fmt = new goog.i18n.NumberFormat(goog.i18n.NumberFormat.Format.PERCENT);
   fmt.setMaximumFractionDigits(1);
@@ -1051,6 +1061,16 @@ function testCompactWithoutSignificant2() {
   assertEquals('123.46K', fmt.format(123456.7));
   assertEquals('999.99K', fmt.format(999994));
   assertEquals('1M', fmt.format(999995));
+}
+
+function testCompactFallbacks() {
+  var cdfSymbols = {COMPACT_DECIMAL_SHORT_PATTERN: {'1000': {'other': '0K'}}};
+
+  goog.i18n.CompactNumberFormatSymbols = cdfSymbols;
+  var fmt =
+      new goog.i18n.NumberFormat(goog.i18n.NumberFormat.Format.COMPACT_LONG);
+  var str = fmt.format(220000000000000);
+  assertEquals('220,000,000,000K', str);
 }
 
 function testShowTrailingZerosWithSignificantDigits() {

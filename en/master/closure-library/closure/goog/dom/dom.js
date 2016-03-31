@@ -40,6 +40,7 @@ goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
 goog.require('goog.dom.safe');
 goog.require('goog.html.SafeHtml');
+goog.require('goog.html.legacyconversions');
 goog.require('goog.math.Coordinate');
 goog.require('goog.math.Size');
 goog.require('goog.object');
@@ -87,7 +88,7 @@ goog.dom.getDomHelper = function(opt_element) {
 
 /**
  * Cached default DOM helper.
- * @type {goog.dom.DomHelper}
+ * @type {!goog.dom.DomHelper|undefined}
  * @private
  */
 goog.dom.defaultDomHelper_;
@@ -191,7 +192,7 @@ goog.dom.$ = goog.dom.getElement;
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  */
 goog.dom.getElementsByTagNameAndClass = function(opt_tag, opt_class, opt_el) {
@@ -206,7 +207,7 @@ goog.dom.getElementsByTagNameAndClass = function(opt_tag, opt_class, opt_el) {
  * @see {goog.dom.query}
  * @param {string} className the name of the class to look for.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } The items found with the class name provided.
+ * @return {!IArrayLike<!Element>} The items found with the class name provided.
  */
 goog.dom.getElementsByClass = function(className, opt_el) {
   var parent = opt_el || document;
@@ -275,7 +276,7 @@ goog.dom.canUseQuerySelector_ = function(parent) {
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  * @private
  */
@@ -307,7 +308,7 @@ goog.dom.getElementsByTagNameAndClass_ = function(
       }
       arrayLike.length = len;
 
-      return arrayLike;
+      return /** @type {!IArrayLike<!Element>} */ (arrayLike);
     } else {
       return els;
     }
@@ -327,7 +328,7 @@ goog.dom.getElementsByTagNameAndClass_ = function(
       }
     }
     arrayLike.length = len;
-    return arrayLike;
+    return /** @type {!IArrayLike<!Element>} */ (arrayLike);
   } else {
     return els;
   }
@@ -339,7 +340,7 @@ goog.dom.getElementsByTagNameAndClass_ = function(
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {Element=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  * @deprecated Use {@link goog.dom.getElementsByTagNameAndClass} instead.
  */
@@ -387,6 +388,7 @@ goog.dom.DIRECT_ATTRIBUTE_MAP_ = {
   'frameborder': 'frameBorder',
   'height': 'height',
   'maxlength': 'maxLength',
+  'nonce': 'nonce',
   'role': 'role',
   'rowspan': 'rowSpan',
   'type': 'type',
@@ -917,35 +919,17 @@ goog.dom.safeHtmlToNode_ = function(doc, html) {
  *
  * @param {string} htmlString The HTML string to convert.
  * @return {!Node} The resulting document fragment.
+ * @deprecated Use {@link goog.dom.safeHtmlToNode} instead.
  */
 goog.dom.htmlToDocumentFragment = function(htmlString) {
-  return goog.dom.htmlToDocumentFragment_(document, htmlString);
-};
-
-
-// TODO(jakubvrana): Merge with {@code safeHtmlToNode_}.
-/**
- * Helper for {@code htmlToDocumentFragment}.
- *
- * @param {!Document} doc The document.
- * @param {string} htmlString The HTML string to convert.
- * @return {!Node} The resulting document fragment.
- * @private
- */
-goog.dom.htmlToDocumentFragment_ = function(doc, htmlString) {
-  var tempDiv = doc.createElement(goog.dom.TagName.DIV);
-  if (goog.dom.BrowserFeature.INNER_HTML_NEEDS_SCOPED_ELEMENT) {
-    tempDiv.innerHTML = '<br>' + htmlString;
-    tempDiv.removeChild(tempDiv.firstChild);
-  } else {
-    tempDiv.innerHTML = htmlString;
-  }
-  return goog.dom.childrenToNode_(doc, tempDiv);
+  return goog.dom.safeHtmlToNode_(document,
+      // For now, we are blindly trusting that the HTML is safe.
+      goog.html.legacyconversions.safeHtmlFromString(htmlString));
 };
 
 
 /**
- * Helper for {@code htmlToDocumentFragment_}.
+ * Helper for {@code safeHtmlToNode_}.
  * @param {!Document} doc The document.
  * @param {!Node} tempDiv The input node.
  * @return {!Node} The resulting node.
@@ -1187,8 +1171,8 @@ goog.dom.flattenElement = function(element) {
 /**
  * Returns an array containing just the element children of the given element.
  * @param {Element} element The element whose element children we want.
- * @return {!(Array|NodeList)} An array or array-like list of just the element
- *     children of the given element.
+ * @return {!(Array<!Element>|NodeList<!Element>)} An array or array-like list
+ *     of just the element children of the given element.
  */
 goog.dom.getChildren = function(element) {
   // We check if the children attribute is supported for child elements
@@ -2330,7 +2314,7 @@ goog.dom.DomHelper.prototype.$ = goog.dom.DomHelper.prototype.getElement;
  * @param {?string=} opt_tag Element tag name or * for all tags.
  * @param {?string=} opt_class Optional class name.
  * @param {(Document|Element)=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  */
 goog.dom.DomHelper.prototype.getElementsByTagNameAndClass = function(
@@ -2345,7 +2329,7 @@ goog.dom.DomHelper.prototype.getElementsByTagNameAndClass = function(
  * @see {goog.dom.query}
  * @param {string} className the name of the class to look for.
  * @param {Element|Document=} opt_el Optional element to look in.
- * @return { {length: number} } The items found with the class name provided.
+ * @return {!IArrayLike<!Element>} The items found with the class name provided.
  */
 goog.dom.DomHelper.prototype.getElementsByClass = function(className, opt_el) {
   var doc = opt_el || this.document_;
@@ -2391,7 +2375,7 @@ goog.dom.DomHelper.prototype.getRequiredElementByClass = function(
  * @param {?string=} opt_tag Element tag name.
  * @param {?string=} opt_class Optional class name.
  * @param {Element=} opt_el Optional element to look in.
- * @return { {length: number} } Array-like list of elements (only a length
+ * @return {!IArrayLike<!Element>} Array-like list of elements (only a length
  *     property and numerical indices are guaranteed to exist).
  */
 goog.dom.DomHelper.prototype.$$ =
@@ -2536,9 +2520,11 @@ goog.dom.DomHelper.prototype.safeHtmlToNode = function(html) {
  *
  * @param {string} htmlString The HTML string to convert.
  * @return {!Node} The resulting node.
+ * @deprecated Use {@link goog.dom.DomHelper.prototype.safeHtmlToNode} instead.
  */
 goog.dom.DomHelper.prototype.htmlToDocumentFragment = function(htmlString) {
-  return goog.dom.htmlToDocumentFragment_(this.document_, htmlString);
+  return goog.dom.safeHtmlToNode_(this.document_,
+      goog.html.legacyconversions.safeHtmlFromString(htmlString));
 };
 
 
@@ -2685,8 +2671,8 @@ goog.dom.DomHelper.prototype.flattenElement = goog.dom.flattenElement;
 /**
  * Returns an array containing just the element children of the given element.
  * @param {Element} element The element whose element children we want.
- * @return {!(Array|NodeList)} An array or array-like list of just the element
- *     children of the given element.
+ * @return {!(Array<!Element>|NodeList<!Element>)} An array or array-like list
+ *     of just the element children of the given element.
  */
 goog.dom.DomHelper.prototype.getChildren = goog.dom.getChildren;
 

@@ -27,6 +27,7 @@ goog.require('goog.events');
 goog.require('goog.events.EventTarget');
 goog.require('goog.object');
 
+goog.forwardDeclare('goog.ui.ac.RenderOptions');
 
 
 /**
@@ -53,6 +54,7 @@ goog.require('goog.object');
  *
  * @constructor
  * @extends {goog.events.EventTarget}
+ * @suppress {underscore}
  */
 goog.ui.ac.AutoComplete = function(matcher, renderer, selectionHandler) {
   goog.events.EventTarget.call(this);

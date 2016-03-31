@@ -20,6 +20,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.TagName');
 goog.require('goog.events');
 goog.require('goog.functions');
+goog.require('goog.html.SafeUrl');
 goog.require('goog.labs.userAgent.browser');
 goog.require('goog.labs.userAgent.engine');
 goog.require('goog.labs.userAgent.platform');
@@ -218,6 +219,37 @@ function testOpenTag() {
 }
 
 
+function testOpenWindowSanitization() {
+  var navigatedUrl;
+  var mockWin = {open: function(url) { navigatedUrl = url; }};
+
+  goog.window.open('javascript:evil();', {}, mockWin);
+  assertEquals(goog.html.SafeUrl.INNOCUOUS_STRING, navigatedUrl);
+
+  // Try the other code path
+  goog.window.open({href: 'javascript:evil();'}, {}, mockWin);
+  assertEquals(goog.html.SafeUrl.INNOCUOUS_STRING, navigatedUrl);
+
+  goog.window.open('javascript:\'\'', {}, mockWin);
+  assertEquals(goog.html.SafeUrl.INNOCUOUS_STRING, navigatedUrl);
+
+  goog.window.open('about:blank', {}, mockWin);
+  assertEquals(goog.html.SafeUrl.INNOCUOUS_STRING, navigatedUrl);
+}
+
+
+function testOpenWindowNoSanitization() {
+  var navigatedUrl;
+  var mockWin = {open: function(url) { navigatedUrl = url; }};
+
+  goog.window.open('', {}, mockWin);
+  assertEquals('', navigatedUrl);
+
+  goog.window.open(goog.html.SafeUrl.ABOUT_BLANK, {}, mockWin);
+  assertEquals('about:blank', navigatedUrl);
+}
+
+
 function testOpenBlank() {
   newWin = goog.window.openBlank('Loading...');
   var urlParam = 'bogus~';
@@ -285,7 +317,9 @@ function testOpenIosBlank() {
   assertUndefined(newWin.document);
 
   // Attributes.
-  assertEquals('http://google.com', attrs['href']);
+  // element.href is directly set through goog.dom.safe.setAnchorHref, not with
+  // element.setAttribute.
+  assertEquals('http://google.com', element.href);
   assertEquals('_blank', attrs['target']);
   assertEquals('', attrs['rel'] || '');
 
@@ -323,7 +357,9 @@ function testOpenIosBlankNoreferrer() {
   assertUndefined(newWin.document);
 
   // Attributes.
-  assertEquals('http://google.com', attrs['href']);
+  // element.href is directly set through goog.dom.safe.setAnchorHref, not with
+  // element.setAttribute.
+  assertEquals('http://google.com', element.href);
   assertEquals('_blank', attrs['target']);
   assertEquals('noreferrer', attrs['rel']);
 

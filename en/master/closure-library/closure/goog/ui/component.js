@@ -45,6 +45,7 @@ goog.require('goog.ui.IdGenerator');
  * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper.
  * @constructor
  * @extends {goog.events.EventTarget}
+ * @suppress {underscore}
  */
 goog.ui.Component = function(opt_domHelper) {
   goog.events.EventTarget.call(this);
@@ -507,7 +508,7 @@ goog.ui.Component.prototype.setElementInternal = function(element) {
  * Returns an array of all the elements in this component's DOM with the
  * provided className.
  * @param {string} className The name of the class to look for.
- * @return {!goog.array.ArrayLike} The items found with the class name provided.
+ * @return {!IArrayLike<!Element>} The items found with the class name provided.
  */
 goog.ui.Component.prototype.getElementsByClass = function(className) {
   return this.element_ ?

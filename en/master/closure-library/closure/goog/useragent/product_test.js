@@ -168,15 +168,6 @@ function testOpera() {
   replacer.set(goog.global, 'opera', opera);
   opera.version = '10.01';
   checkEachUserAgentDetected(userAgents, 'OPERA');
-  userAgents = [{
-    ua: 'Opera/9.63 (Windows NT 5.1; U; en) Presto/2.1.1',
-    versions: [
-      {num: 9, truth: true}, {num: '10.1', truth: false},
-      {num: '9.80', truth: false}, {num: '9.60', truth: true}
-    ]
-  }];
-  opera.version = '9.63';
-  checkEachUserAgentDetected(userAgents, 'OPERA');
 }
 
 function testFirefox() {
@@ -211,7 +202,6 @@ function testFirefox() {
   // Mozilla reported to us that they plan this UA format starting
   // in Firefox 13.
   // See bug at https://bugzilla.mozilla.org/show_bug.cgi?id=588909
-  // and thread at http://goto.google.com/pfltz
   mockAgent.setNavigator({product: 'Gecko'});
   assertBrowserAndVersion(
       'Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/6.0 Firefox/6.0', 'FIREFOX',

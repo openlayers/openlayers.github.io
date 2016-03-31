@@ -25,6 +25,7 @@ goog.require('goog.html.SafeUrl');
 goog.require('goog.html.TrustedResourceUrl');
 goog.require('goog.html.testing');
 goog.require('goog.i18n.bidi.Dir');
+goog.require('goog.labs.userAgent.browser');
 goog.require('goog.object');
 goog.require('goog.string.Const');
 goog.require('goog.testing.jsunit');
@@ -249,6 +250,7 @@ function testSafeHtmlCreate_urlAttributes() {
 }
 
 
+/** @suppress {checkTypes} */
 function testSafeHtmlCreateIframe() {
   // Setting src and srcdoc.
   var url = goog.html.TrustedResourceUrl.fromConstant(
@@ -277,11 +279,126 @@ function testSafeHtmlCreateIframe() {
     goog.html.SafeHtml.createIframe(null, null, {'Srcdoc': url});
   });
 
+  // Unsafe src and srcdoc.
+  assertThrows(function() {
+    goog.html.SafeHtml.createIframe('http://example.com');
+  });
+  assertThrows(function() {
+    goog.html.SafeHtml.createIframe(null, '<script>alert(1)</script>');
+  });
+
   // Can set content.
   assertSameHtml(
       '<iframe>&lt;</iframe>',
       goog.html.SafeHtml.createIframe(null, null, {'sandbox': null}, '<'));
 }
+
+/** @suppress {checkTypes} */
+function testSafeHtmlcreateSandboxIframe() {
+  function assertSameHtmlIfSupportsSandbox(referenceHtml, testedHtmlFunction) {
+    if (!goog.html.SafeHtml.canUseSandboxIframe()) {
+      assertThrows(testedHtmlFunction);
+    } else {
+      assertSameHtml(referenceHtml, testedHtmlFunction());
+    }
+  }
+
+  // Setting src and srcdoc.
+  var url = goog.html.SafeUrl.fromConstant(
+      goog.string.Const.from('https://google.com/trusted<'));
+  assertSameHtmlIfSupportsSandbox(
+      '<iframe src="https://google.com/trusted&lt;" sandbox=""></iframe>',
+      function() { return goog.html.SafeHtml.createSandboxIframe(url, null); });
+
+  // If set with a string, src is sanitized.
+  assertSameHtmlIfSupportsSandbox(
+      '<iframe src="' + goog.html.SafeUrl.INNOCUOUS_STRING +
+          '" sandbox=""></iframe>',
+      function() {
+        return goog.html.SafeHtml.createSandboxIframe(
+            "javascript:evil();", null);
+      });
+
+  var srcdoc = '<br>';
+  assertSameHtmlIfSupportsSandbox(
+      '<iframe srcdoc="&lt;br&gt;" sandbox=""></iframe>', function() {
+        return goog.html.SafeHtml.createSandboxIframe(null, srcdoc);
+      });
+
+  // Cannot override src, srcdoc.
+  assertThrows(function() {
+    goog.html.SafeHtml.createSandboxIframe(null, null, {'Src': url});
+  });
+  assertThrows(function() {
+    goog.html.SafeHtml.createSandboxIframe(null, null, {'Srcdoc': url});
+  });
+
+
+  // Sandboxed by default, and can't be overriden.
+  assertSameHtmlIfSupportsSandbox('<iframe sandbox=""></iframe>', function() {
+    return goog.html.SafeHtml.createSandboxIframe();
+  });
+
+  assertThrows(function() {
+    goog.html.SafeHtml.createSandboxIframe(null, null, {'sandbox': ''});
+  });
+  assertThrows(function() {
+    goog.html.SafeHtml.createSandboxIframe(
+        null, null, {'SaNdBoX': 'allow-scripts'});
+  });
+  assertThrows(function() {
+    goog.html.SafeHtml.createSandboxIframe(
+        null, null, {'sandbox': 'allow-same-origin allow-top-navigation'});
+  });
+
+  // Can set content.
+  assertSameHtmlIfSupportsSandbox(
+      '<iframe sandbox="">&lt;</iframe>', function() {
+        return goog.html.SafeHtml.createSandboxIframe(null, null, null, '<');
+      });
+}
+
+
+function testSafeHtmlCanUseIframeSandbox() {
+  // We know that the IE < 10 do not support the sandbox attribute, so use them
+  // as a reference.
+  if (goog.labs.userAgent.browser.isIE() &&
+      goog.labs.userAgent.browser.getVersion() < 10) {
+    assertEquals(false, goog.html.SafeHtml.canUseSandboxIframe());
+  } else {
+    assertEquals(true, goog.html.SafeHtml.canUseSandboxIframe());
+  }
+}
+
+/** @suppress {checkTypes} */
+function testSafeHtmlCreateScriptSrc() {
+  var url = goog.html.TrustedResourceUrl.fromConstant(
+      goog.string.Const.from('https://google.com/trusted<'));
+
+  assertSameHtml(
+      '<script src="https://google.com/trusted&lt;"></script>',
+      goog.html.SafeHtml.createScriptSrc(url));
+
+  assertSameHtml(
+      '<script src="https://google.com/trusted&lt;" defer="defer"></script>',
+      goog.html.SafeHtml.createScriptSrc(url, {'defer': 'defer'}));
+
+  // Unsafe src.
+  assertThrows(function() {
+    goog.html.SafeHtml.createScriptSrc('http://example.com');
+  });
+
+  // Unsafe attribute.
+  assertThrows(function() {
+    goog.html.SafeHtml.createScriptSrc(url, {'onerror': 'alert(1)'});
+  });
+
+  // Cannot override src.
+  assertThrows(function() {
+    goog.html.SafeHtml.createScriptSrc(url, {'Src': url});
+  });
+}
+
 
 function testSafeHtmlCreateMeta() {
   var url = goog.html.SafeUrl.fromConstant(
