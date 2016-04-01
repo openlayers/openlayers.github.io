@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-306-gcf9e24f
+// Version: v3.14.2-325-gcc9d4d8
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -30582,283 +30582,6 @@ goog.dom.DomHelper.prototype.getAncestor = goog.dom.getAncestor;
 // limitations under the License.
 
 /**
- * @fileoverview Utilities for detecting, adding and removing classes.  Prefer
- * this over goog.dom.classes for new code since it attempts to use classList
- * (DOMTokenList: http://dom.spec.whatwg.org/#domtokenlist) which is faster
- * and requires less code.
- *
- * Note: these utilities are meant to operate on HTMLElements
- * and may have unexpected behavior on elements with differing interfaces
- * (such as SVGElements).
- */
-
-
-goog.provide('goog.dom.classlist');
-
-goog.require('goog.array');
-
-
-/**
- * Override this define at build-time if you know your target supports it.
- * @define {boolean} Whether to use the classList property (DOMTokenList).
- */
-goog.define('goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST', false);
-
-
-/**
- * Gets an array-like object of class names on an element.
- * @param {Element} element DOM node to get the classes of.
- * @return {!IArrayLike<?>} Class names on {@code element}.
- */
-goog.dom.classlist.get = function(element) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    return element.classList;
-  }
-
-  var className = element.className;
-  // Some types of elements don't have a className in IE (e.g. iframes).
-  // Furthermore, in Firefox, className is not a string when the element is
-  // an SVG element.
-  return goog.isString(className) && className.match(/\S+/g) || [];
-};
-
-
-/**
- * Sets the entire class name of an element.
- * @param {Element} element DOM node to set class of.
- * @param {string} className Class name(s) to apply to element.
- */
-goog.dom.classlist.set = function(element, className) {
-  element.className = className;
-};
-
-
-/**
- * Returns true if an element has a class.  This method may throw a DOM
- * exception for an invalid or empty class name if DOMTokenList is used.
- * @param {Element} element DOM node to test.
- * @param {string} className Class name to test for.
- * @return {boolean} Whether element has the class.
- */
-goog.dom.classlist.contains = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    return element.classList.contains(className);
-  }
-  return goog.array.contains(goog.dom.classlist.get(element), className);
-};
-
-
-/**
- * Adds a class to an element.  Does not add multiples of class names.  This
- * method may throw a DOM exception for an invalid or empty class name if
- * DOMTokenList is used.
- * @param {Element} element DOM node to add class to.
- * @param {string} className Class name to add.
- */
-goog.dom.classlist.add = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    element.classList.add(className);
-    return;
-  }
-
-  if (!goog.dom.classlist.contains(element, className)) {
-    // Ensure we add a space if this is not the first class name added.
-    element.className +=
-        element.className.length > 0 ? (' ' + className) : className;
-  }
-};
-
-
-/**
- * Convenience method to add a number of class names at once.
- * @param {Element} element The element to which to add classes.
- * @param {IArrayLike<string>} classesToAdd An array-like object
- * containing a collection of class names to add to the element.
- * This method may throw a DOM exception if classesToAdd contains invalid
- * or empty class names.
- */
-goog.dom.classlist.addAll = function(element, classesToAdd) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    goog.array.forEach(classesToAdd, function(className) {
-      goog.dom.classlist.add(element, className);
-    });
-    return;
-  }
-
-  var classMap = {};
-
-  // Get all current class names into a map.
-  goog.array.forEach(goog.dom.classlist.get(element), function(className) {
-    classMap[className] = true;
-  });
-
-  // Add new class names to the map.
-  goog.array.forEach(
-      classesToAdd, function(className) { classMap[className] = true; });
-
-  // Flatten the keys of the map into the className.
-  element.className = '';
-  for (var className in classMap) {
-    element.className +=
-        element.className.length > 0 ? (' ' + className) : className;
-  }
-};
-
-
-/**
- * Removes a class from an element.  This method may throw a DOM exception
- * for an invalid or empty class name if DOMTokenList is used.
- * @param {Element} element DOM node to remove class from.
- * @param {string} className Class name to remove.
- */
-goog.dom.classlist.remove = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    element.classList.remove(className);
-    return;
-  }
-
-  if (goog.dom.classlist.contains(element, className)) {
-    // Filter out the class name.
-    element.className = goog.array
-                            .filter(
-                                goog.dom.classlist.get(element),
-                                function(c) { return c != className; })
-                            .join(' ');
-  }
-};
-
-
-/**
- * Removes a set of classes from an element.  Prefer this call to
- * repeatedly calling {@code goog.dom.classlist.remove} if you want to remove
- * a large set of class names at once.
- * @param {Element} element The element from which to remove classes.
- * @param {IArrayLike<string>} classesToRemove An array-like object
- * containing a collection of class names to remove from the element.
- * This method may throw a DOM exception if classesToRemove contains invalid
- * or empty class names.
- */
-goog.dom.classlist.removeAll = function(element, classesToRemove) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    goog.array.forEach(classesToRemove, function(className) {
-      goog.dom.classlist.remove(element, className);
-    });
-    return;
-  }
-  // Filter out those classes in classesToRemove.
-  element.className =
-      goog.array
-          .filter(
-              goog.dom.classlist.get(element),
-              function(className) {
-                // If this class is not one we are trying to remove,
-                // add it to the array of new class names.
-                return !goog.array.contains(classesToRemove, className);
-              })
-          .join(' ');
-};
-
-
-/**
- * Adds or removes a class depending on the enabled argument.  This method
- * may throw a DOM exception for an invalid or empty class name if DOMTokenList
- * is used.
- * @param {Element} element DOM node to add or remove the class on.
- * @param {string} className Class name to add or remove.
- * @param {boolean} enabled Whether to add or remove the class (true adds,
- *     false removes).
- */
-goog.dom.classlist.enable = function(element, className, enabled) {
-  if (enabled) {
-    goog.dom.classlist.add(element, className);
-  } else {
-    goog.dom.classlist.remove(element, className);
-  }
-};
-
-
-/**
- * Adds or removes a set of classes depending on the enabled argument.  This
- * method may throw a DOM exception for an invalid or empty class name if
- * DOMTokenList is used.
- * @param {!Element} element DOM node to add or remove the class on.
- * @param {?IArrayLike<string>} classesToEnable An array-like object
- *     containing a collection of class names to add or remove from the element.
- * @param {boolean} enabled Whether to add or remove the classes (true adds,
- *     false removes).
- */
-goog.dom.classlist.enableAll = function(element, classesToEnable, enabled) {
-  var f = enabled ? goog.dom.classlist.addAll : goog.dom.classlist.removeAll;
-  f(element, classesToEnable);
-};
-
-
-/**
- * Switches a class on an element from one to another without disturbing other
- * classes. If the fromClass isn't removed, the toClass won't be added.  This
- * method may throw a DOM exception if the class names are empty or invalid.
- * @param {Element} element DOM node to swap classes on.
- * @param {string} fromClass Class to remove.
- * @param {string} toClass Class to add.
- * @return {boolean} Whether classes were switched.
- */
-goog.dom.classlist.swap = function(element, fromClass, toClass) {
-  if (goog.dom.classlist.contains(element, fromClass)) {
-    goog.dom.classlist.remove(element, fromClass);
-    goog.dom.classlist.add(element, toClass);
-    return true;
-  }
-  return false;
-};
-
-
-/**
- * Removes a class if an element has it, and adds it the element doesn't have
- * it.  Won't affect other classes on the node.  This method may throw a DOM
- * exception if the class name is empty or invalid.
- * @param {Element} element DOM node to toggle class on.
- * @param {string} className Class to toggle.
- * @return {boolean} True if class was added, false if it was removed
- *     (in other words, whether element has the class after this function has
- *     been called).
- */
-goog.dom.classlist.toggle = function(element, className) {
-  var add = !goog.dom.classlist.contains(element, className);
-  goog.dom.classlist.enable(element, className, add);
-  return add;
-};
-
-
-/**
- * Adds and removes a class of an element.  Unlike
- * {@link goog.dom.classlist.swap}, this method adds the classToAdd regardless
- * of whether the classToRemove was present and had been removed.  This method
- * may throw a DOM exception if the class names are empty or invalid.
- *
- * @param {Element} element DOM node to swap classes on.
- * @param {string} classToRemove Class to remove.
- * @param {string} classToAdd Class to add.
- */
-goog.dom.classlist.addRemove = function(element, classToRemove, classToAdd) {
-  goog.dom.classlist.remove(element, classToRemove);
-  goog.dom.classlist.add(element, classToAdd);
-};
-
-// Copyright 2012 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
  * @fileoverview Vendor prefix getters.
  */
 
@@ -35926,7 +35649,6 @@ goog.provide('ol.control.Attribution');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.classlist');
 goog.require('goog.style');
 goog.require('ol');
 goog.require('ol.Attribution');
@@ -36197,9 +35919,9 @@ ol.control.Attribution.prototype.updateElement_ = function(frameState) {
   }
   if (renderVisible &&
       ol.object.isEmpty(this.attributionElementRenderedVisible_)) {
-    goog.dom.classlist.add(this.element, 'ol-logo-only');
+    this.element.classList.add('ol-logo-only');
   } else {
-    goog.dom.classlist.remove(this.element, 'ol-logo-only');
+    this.element.classList.remove('ol-logo-only');
   }
 
   this.insertLogos_(frameState);
@@ -36262,7 +35984,7 @@ ol.control.Attribution.prototype.handleClick_ = function(event) {
  * @private
  */
 ol.control.Attribution.prototype.handleToggle_ = function() {
-  goog.dom.classlist.toggle(this.element, 'ol-collapsed');
+  this.element.classList.toggle('ol-collapsed');
   if (this.collapsed_) {
     goog.dom.replaceNode(this.collapseLabel_, this.label_);
   } else {
@@ -36292,7 +36014,7 @@ ol.control.Attribution.prototype.setCollapsible = function(collapsible) {
     return;
   }
   this.collapsible_ = collapsible;
-  goog.dom.classlist.toggle(this.element, 'ol-uncollapsible');
+  this.element.classList.toggle('ol-uncollapsible');
   if (!collapsible && this.collapsed_) {
     this.handleToggle_();
   }
@@ -36327,7 +36049,6 @@ ol.control.Attribution.prototype.getCollapsed = function() {
 goog.provide('ol.control.Rotate');
 
 goog.require('goog.dom');
-goog.require('goog.dom.classlist');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol');
@@ -36367,7 +36088,7 @@ ol.control.Rotate = function(opt_options) {
         'ol-compass', label);
   } else {
     this.label_ = label;
-    goog.dom.classlist.add(this.label_, 'ol-compass');
+    this.label_.classList.add(this.label_, 'ol-compass');
   }
 
   var tipLabel = options.tipLabel ? options.tipLabel : 'Reset rotation';
@@ -36414,7 +36135,7 @@ ol.control.Rotate = function(opt_options) {
   this.rotation_ = undefined;
 
   if (this.autoHide_) {
-    goog.dom.classlist.add(this.element, ol.css.CLASS_HIDDEN);
+    this.element.classList.add(ol.css.CLASS_HIDDEN);
   }
 
 };
@@ -36482,8 +36203,12 @@ ol.control.Rotate.render = function(mapEvent) {
   if (rotation != this.rotation_) {
     var transform = 'rotate(' + rotation + 'rad)';
     if (this.autoHide_) {
-      goog.dom.classlist.enable(
-          this.element, ol.css.CLASS_HIDDEN, rotation === 0);
+      var contains = this.element.classList.contains(ol.css.CLASS_HIDDEN);
+      if (!contains && rotation === 0) {
+        this.element.classList.add(ol.css.CLASS_HIDDEN);
+      } else if (contains && rotation !== 0) {
+        this.element.classList.remove(ol.css.CLASS_HIDDEN);
+      }
     }
     this.label_.style.msTransform = transform;
     this.label_.style.webkitTransform = transform;
@@ -69173,7 +68898,6 @@ goog.provide('ol.control.OverviewMap');
 
 goog.require('goog.asserts');
 goog.require('goog.dom');
-goog.require('goog.dom.classlist');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol');
@@ -69615,7 +69339,7 @@ ol.control.OverviewMap.prototype.handleClick_ = function(event) {
  * @private
  */
 ol.control.OverviewMap.prototype.handleToggle_ = function() {
-  goog.dom.classlist.toggle(this.element, 'ol-collapsed');
+  this.element.classList.toggle('ol-collapsed');
   if (this.collapsed_) {
     goog.dom.replaceNode(this.collapseLabel_, this.label_);
   } else {
@@ -69658,7 +69382,7 @@ ol.control.OverviewMap.prototype.setCollapsible = function(collapsible) {
     return;
   }
   this.collapsible_ = collapsible;
-  goog.dom.classlist.toggle(this.element, 'ol-uncollapsible');
+  this.element.classList.toggle('ol-uncollapsible');
   if (!collapsible && this.collapsed_) {
     this.handleToggle_();
   }
@@ -86171,6 +85895,92 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pbf = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+},{}],2:[function(_dereq_,module,exports){
 'use strict';
 
 // lightweight Buffer shim for pbf browser build
@@ -86331,7 +86141,7 @@ function encodeString(str) {
     return bytes;
 }
 
-},{"ieee754":3}],2:[function(_dereq_,module,exports){
+},{"ieee754":1}],3:[function(_dereq_,module,exports){
 (function (global){
 'use strict';
 
@@ -86761,93 +86571,7 @@ function writePackedFixed64(arr, pbf)  { for (var i = 0; i < arr.length; i++) pb
 function writePackedSFixed64(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed64(arr[i]); }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./buffer":1}],3:[function(_dereq_,module,exports){
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-},{}]},{},[2])(2)
+},{"./buffer":2}]},{},[3])(3)
 });
 ol.ext.pbf = module.exports;
 })();
@@ -86864,11 +86588,144 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.vectortile = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = Point;
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
+
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
+
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+},{}],2:[function(_dereq_,module,exports){
 module.exports.VectorTile = _dereq_('./lib/vectortile.js');
 module.exports.VectorTileFeature = _dereq_('./lib/vectortilefeature.js');
 module.exports.VectorTileLayer = _dereq_('./lib/vectortilelayer.js');
 
-},{"./lib/vectortile.js":2,"./lib/vectortilefeature.js":3,"./lib/vectortilelayer.js":4}],2:[function(_dereq_,module,exports){
+},{"./lib/vectortile.js":3,"./lib/vectortilefeature.js":4,"./lib/vectortilelayer.js":5}],3:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileLayer = _dereq_('./vectortilelayer');
@@ -86887,7 +86744,7 @@ function readTile(tag, layers, pbf) {
 }
 
 
-},{"./vectortilelayer":4}],3:[function(_dereq_,module,exports){
+},{"./vectortilelayer":5}],4:[function(_dereq_,module,exports){
 'use strict';
 
 var Point = _dereq_('point-geometry');
@@ -87061,7 +86918,7 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
     return result;
 };
 
-},{"point-geometry":5}],4:[function(_dereq_,module,exports){
+},{"point-geometry":1}],5:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileFeature = _dereq_('./vectortilefeature.js');
@@ -87124,140 +86981,7 @@ VectorTileLayer.prototype.feature = function(i) {
     return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
 };
 
-},{"./vectortilefeature.js":3}],5:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = Point;
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
-
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
-
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
-
-},{}]},{},[1])(1)
+},{"./vectortilefeature.js":4}]},{},[2])(2)
 });
 ol.ext.vectortile = module.exports;
 })();
@@ -98898,6 +98622,197 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse = function(response) 
 
 };
 
+goog.provide('ol.source.XYZ');
+
+goog.require('ol.source.TileImage');
+
+
+/**
+ * @classdesc
+ * Layer source for tile data with URLs in a set XYZ format that are
+ * defined in a URL template. By default, this follows the widely-used
+ * Google grid where `x` 0 and `y` 0 are in the top left. Grids like
+ * TMS where `x` 0 and `y` 0 are in the bottom left can be used by
+ * using the `{-y}` placeholder in the URL template, so long as the
+ * source does not have a custom tile grid. In this case,
+ * {@link ol.source.TileImage} can be used with a `tileUrlFunction`
+ * such as:
+ *
+ *  tileUrlFunction: function(coordinate) {
+ *    return 'http://mapserver.com/' + coordinate[0] + '/' +
+ *        coordinate[1] + '/' + coordinate[2] + '.png';
+ *    }
+ *
+ *
+ * @constructor
+ * @extends {ol.source.TileImage}
+ * @param {olx.source.XYZOptions} options XYZ options.
+ * @api stable
+ */
+ol.source.XYZ = function(options) {
+  var projection = options.projection !== undefined ?
+      options.projection : 'EPSG:3857';
+
+  var tileGrid = options.tileGrid !== undefined ? options.tileGrid :
+      ol.tilegrid.createXYZ({
+        extent: ol.tilegrid.extentFromProjection(projection),
+        maxZoom: options.maxZoom,
+        tileSize: options.tileSize
+      });
+
+  goog.base(this, {
+    attributions: options.attributions,
+    cacheSize: options.cacheSize,
+    crossOrigin: options.crossOrigin,
+    logo: options.logo,
+    opaque: options.opaque,
+    projection: projection,
+    reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+    tileGrid: tileGrid,
+    tileLoadFunction: options.tileLoadFunction,
+    tilePixelRatio: options.tilePixelRatio,
+    tileUrlFunction: options.tileUrlFunction,
+    url: options.url,
+    urls: options.urls,
+    wrapX: options.wrapX !== undefined ? options.wrapX : true
+  });
+
+};
+goog.inherits(ol.source.XYZ, ol.source.TileImage);
+
+goog.provide('ol.source.CartoDB');
+
+goog.require('ol.source.State');
+goog.require('ol.source.XYZ');
+
+
+/**
+ * @classdesc
+ * Layer source for the CartoDB tiles.
+ *
+ * @constructor
+ * @extends {ol.source.XYZ}
+ * @param {olx.source.CartoDBOptions} options CartoDB options.
+ * @api
+ */
+ol.source.CartoDB = function(options) {
+  this.account_ = options.account;
+  this.mapId_ = options.map || '';
+  this.config_ = options.config || {};
+  this.templateCache_ = {};
+  delete options.map;
+  goog.base(this, options);
+  this.initializeMap_();
+};
+goog.inherits(ol.source.CartoDB, ol.source.XYZ);
+
+
+/**
+ * Returns the current config.
+ * @return {Object} The current configuration.
+ * @api
+ */
+ol.source.CartoDB.prototype.getConfig = function() {
+  return this.config_;
+};
+
+
+/**
+ * Updates the carto db config.
+ * @param {Object} config a key-value lookup. Values will replace current values
+ *     in the config.
+ * @api
+ */
+ol.source.CartoDB.prototype.updateConfig = function(config) {
+  for (var key in config) {
+    this.config_[key] = config[key];
+  }
+  this.initializeMap_();
+};
+
+
+/**
+ * Sets the CartoDB config
+ * @param {Object} config In the case of anonymous maps, a CartoDB configuration
+ *     object.
+ * If using named maps, a key-value lookup with the template parameters.
+ */
+ol.source.CartoDB.prototype.setConfig = function(config) {
+  this.config_ = config || {};
+  this.initializeMap_();
+};
+
+
+/**
+ * Issue a request to initialize the CartoDB map.
+ * @private
+ */
+ol.source.CartoDB.prototype.initializeMap_ = function() {
+  var paramHash = JSON.stringify(this.config_);
+  if (this.templateCache_[paramHash]) {
+    this.applyTemplate_(this.templateCache_[paramHash]);
+    return;
+  }
+  var mapUrl = 'https://' + this.account_ +
+      '.cartodb.com/api/v1/map';
+
+  if (this.mapId_) {
+    mapUrl += '/named/' + this.mapId_;
+  }
+
+  var client = new XMLHttpRequest();
+  client.addEventListener('load', this.handleInitResponse_.bind(this, paramHash));
+  client.addEventListener('error', this.handleInitError_.bind(this));
+  client.open('POST', mapUrl);
+  client.setRequestHeader('Content-type', 'application/json');
+  client.send(JSON.stringify(this.config_));
+};
+
+
+/**
+ * Handle map initialization response.
+ * @param {string} paramHash a hash representing the parameter set that was used
+ *     for the request
+ * @param {Event} event Event.
+ * @private
+ */
+ol.source.CartoDB.prototype.handleInitResponse_ = function(paramHash, event) {
+  var client = /** @type {XMLHttpRequest} */ (event.target);
+  if (client.status >= 200 && client.status < 300) {
+    var response;
+    try {
+      response = /** @type {Object} */(JSON.parse(client.responseText));
+    } catch (err) {
+      this.setState(ol.source.State.ERROR);
+      return;
+    }
+    this.applyTemplate_(response);
+    this.templateCache_[paramHash] = response;
+  } else {
+    this.setState(ol.source.State.ERROR);
+  }
+};
+
+/**
+ * @private
+ * @param {Event} event Event.
+ */
+ol.source.CartoDB.prototype.handleInitError_ = function(event) {
+  this.setState(ol.source.State.ERROR);
+}
+
+/**
+ * Apply the new tile urls returned by carto db
+ * @param {Object} data Result of carto db call.
+ * @private
+ */
+ol.source.CartoDB.prototype.applyTemplate_ = function(data) {
+  var layerId = data['layergroupid'];
+  var tilesUrl = 'https://' + data['cdn_url']['https'] + '/' + this.account_ +
+      '/api/v1/map/' + layerId + '/{z}/{x}/{y}.png';
+  this.setUrl(tilesUrl);
+};
+
 // FIXME keep cluster cache by resolution ?
 // FIXME distance not respected because of the centroid
 
@@ -99813,64 +99728,6 @@ ol.source.ImageWMS.prototype.updateV13_ = function() {
   var version = this.params_['VERSION'] || ol.DEFAULT_WMS_VERSION;
   this.v13_ = goog.string.compareVersions(version, '1.3') >= 0;
 };
-
-goog.provide('ol.source.XYZ');
-
-goog.require('ol.source.TileImage');
-
-
-/**
- * @classdesc
- * Layer source for tile data with URLs in a set XYZ format that are
- * defined in a URL template. By default, this follows the widely-used
- * Google grid where `x` 0 and `y` 0 are in the top left. Grids like
- * TMS where `x` 0 and `y` 0 are in the bottom left can be used by
- * using the `{-y}` placeholder in the URL template, so long as the
- * source does not have a custom tile grid. In this case,
- * {@link ol.source.TileImage} can be used with a `tileUrlFunction`
- * such as:
- *
- *  tileUrlFunction: function(coordinate) {
- *    return 'http://mapserver.com/' + coordinate[0] + '/' +
- *        coordinate[1] + '/' + coordinate[2] + '.png';
- *    }
- *
- *
- * @constructor
- * @extends {ol.source.TileImage}
- * @param {olx.source.XYZOptions} options XYZ options.
- * @api stable
- */
-ol.source.XYZ = function(options) {
-  var projection = options.projection !== undefined ?
-      options.projection : 'EPSG:3857';
-
-  var tileGrid = options.tileGrid !== undefined ? options.tileGrid :
-      ol.tilegrid.createXYZ({
-        extent: ol.tilegrid.extentFromProjection(projection),
-        maxZoom: options.maxZoom,
-        tileSize: options.tileSize
-      });
-
-  goog.base(this, {
-    attributions: options.attributions,
-    cacheSize: options.cacheSize,
-    crossOrigin: options.crossOrigin,
-    logo: options.logo,
-    opaque: options.opaque,
-    projection: projection,
-    reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-    tileGrid: tileGrid,
-    tileLoadFunction: options.tileLoadFunction,
-    tilePixelRatio: options.tilePixelRatio,
-    tileUrlFunction: options.tileUrlFunction,
-    url: options.url,
-    urls: options.urls,
-    wrapX: options.wrapX !== undefined ? options.wrapX : true
-  });
-
-};
-goog.inherits(ol.source.XYZ, ol.source.TileImage);
 
 goog.provide('ol.source.OSM');
 
@@ -104252,6 +104109,7 @@ goog.require('ol.render.canvas.Immediate');
 goog.require('ol.render.webgl.Immediate');
 goog.require('ol.size');
 goog.require('ol.source.BingMaps');
+goog.require('ol.source.CartoDB');
 goog.require('ol.source.Cluster');
 goog.require('ol.source.Image');
 goog.require('ol.source.ImageCanvas');
@@ -105819,6 +105677,21 @@ goog.exportSymbol(
     'ol.source.BingMaps.TOS_ATTRIBUTION',
     ol.source.BingMaps.TOS_ATTRIBUTION,
     OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.source.CartoDB',
+    ol.source.CartoDB,
+    OPENLAYERS);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getConfig',
+    ol.source.CartoDB.prototype.getConfig);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'updateConfig',
+    ol.source.CartoDB.prototype.updateConfig);
 
 goog.exportSymbol(
     'ol.source.Cluster',
@@ -109571,6 +109444,296 @@ goog.exportProperty(
     ol.source.BingMaps.prototype.unByKey);
 
 goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setRenderReprojectionEdges',
+    ol.source.XYZ.prototype.setRenderReprojectionEdges);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setTileGridForProjection',
+    ol.source.XYZ.prototype.setTileGridForProjection);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getTileLoadFunction',
+    ol.source.XYZ.prototype.getTileLoadFunction);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getTileUrlFunction',
+    ol.source.XYZ.prototype.getTileUrlFunction);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getUrls',
+    ol.source.XYZ.prototype.getUrls);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setTileLoadFunction',
+    ol.source.XYZ.prototype.setTileLoadFunction);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setTileUrlFunction',
+    ol.source.XYZ.prototype.setTileUrlFunction);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setUrl',
+    ol.source.XYZ.prototype.setUrl);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setUrls',
+    ol.source.XYZ.prototype.setUrls);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getTileGrid',
+    ol.source.XYZ.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'refresh',
+    ol.source.XYZ.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getAttributions',
+    ol.source.XYZ.prototype.getAttributions);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getLogo',
+    ol.source.XYZ.prototype.getLogo);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getProjection',
+    ol.source.XYZ.prototype.getProjection);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getState',
+    ol.source.XYZ.prototype.getState);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setAttributions',
+    ol.source.XYZ.prototype.setAttributions);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'get',
+    ol.source.XYZ.prototype.get);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getKeys',
+    ol.source.XYZ.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getProperties',
+    ol.source.XYZ.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'set',
+    ol.source.XYZ.prototype.set);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'setProperties',
+    ol.source.XYZ.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'unset',
+    ol.source.XYZ.prototype.unset);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'changed',
+    ol.source.XYZ.prototype.changed);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'dispatchEvent',
+    ol.source.XYZ.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'getRevision',
+    ol.source.XYZ.prototype.getRevision);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'on',
+    ol.source.XYZ.prototype.on);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'once',
+    ol.source.XYZ.prototype.once);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'un',
+    ol.source.XYZ.prototype.un);
+
+goog.exportProperty(
+    ol.source.XYZ.prototype,
+    'unByKey',
+    ol.source.XYZ.prototype.unByKey);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setRenderReprojectionEdges',
+    ol.source.CartoDB.prototype.setRenderReprojectionEdges);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setTileGridForProjection',
+    ol.source.CartoDB.prototype.setTileGridForProjection);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getTileLoadFunction',
+    ol.source.CartoDB.prototype.getTileLoadFunction);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getTileUrlFunction',
+    ol.source.CartoDB.prototype.getTileUrlFunction);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getUrls',
+    ol.source.CartoDB.prototype.getUrls);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setTileLoadFunction',
+    ol.source.CartoDB.prototype.setTileLoadFunction);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setTileUrlFunction',
+    ol.source.CartoDB.prototype.setTileUrlFunction);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setUrl',
+    ol.source.CartoDB.prototype.setUrl);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setUrls',
+    ol.source.CartoDB.prototype.setUrls);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getTileGrid',
+    ol.source.CartoDB.prototype.getTileGrid);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'refresh',
+    ol.source.CartoDB.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getAttributions',
+    ol.source.CartoDB.prototype.getAttributions);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getLogo',
+    ol.source.CartoDB.prototype.getLogo);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getProjection',
+    ol.source.CartoDB.prototype.getProjection);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getState',
+    ol.source.CartoDB.prototype.getState);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setAttributions',
+    ol.source.CartoDB.prototype.setAttributions);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'get',
+    ol.source.CartoDB.prototype.get);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getKeys',
+    ol.source.CartoDB.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getProperties',
+    ol.source.CartoDB.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'set',
+    ol.source.CartoDB.prototype.set);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setProperties',
+    ol.source.CartoDB.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'unset',
+    ol.source.CartoDB.prototype.unset);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'changed',
+    ol.source.CartoDB.prototype.changed);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'dispatchEvent',
+    ol.source.CartoDB.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'getRevision',
+    ol.source.CartoDB.prototype.getRevision);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'on',
+    ol.source.CartoDB.prototype.on);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'once',
+    ol.source.CartoDB.prototype.once);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'un',
+    ol.source.CartoDB.prototype.un);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'unByKey',
+    ol.source.CartoDB.prototype.unByKey);
+
+goog.exportProperty(
     ol.source.Vector.prototype,
     'getAttributions',
     ol.source.Vector.prototype.getAttributions);
@@ -110429,151 +110592,6 @@ goog.exportProperty(
     ol.source.ImageWMS.prototype,
     'unByKey',
     ol.source.ImageWMS.prototype.unByKey);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setRenderReprojectionEdges',
-    ol.source.XYZ.prototype.setRenderReprojectionEdges);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setTileGridForProjection',
-    ol.source.XYZ.prototype.setTileGridForProjection);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getTileLoadFunction',
-    ol.source.XYZ.prototype.getTileLoadFunction);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getTileUrlFunction',
-    ol.source.XYZ.prototype.getTileUrlFunction);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getUrls',
-    ol.source.XYZ.prototype.getUrls);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setTileLoadFunction',
-    ol.source.XYZ.prototype.setTileLoadFunction);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setTileUrlFunction',
-    ol.source.XYZ.prototype.setTileUrlFunction);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setUrl',
-    ol.source.XYZ.prototype.setUrl);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setUrls',
-    ol.source.XYZ.prototype.setUrls);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getTileGrid',
-    ol.source.XYZ.prototype.getTileGrid);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'refresh',
-    ol.source.XYZ.prototype.refresh);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getAttributions',
-    ol.source.XYZ.prototype.getAttributions);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getLogo',
-    ol.source.XYZ.prototype.getLogo);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getProjection',
-    ol.source.XYZ.prototype.getProjection);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getState',
-    ol.source.XYZ.prototype.getState);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setAttributions',
-    ol.source.XYZ.prototype.setAttributions);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'get',
-    ol.source.XYZ.prototype.get);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getKeys',
-    ol.source.XYZ.prototype.getKeys);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getProperties',
-    ol.source.XYZ.prototype.getProperties);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'set',
-    ol.source.XYZ.prototype.set);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'setProperties',
-    ol.source.XYZ.prototype.setProperties);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'unset',
-    ol.source.XYZ.prototype.unset);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'changed',
-    ol.source.XYZ.prototype.changed);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'dispatchEvent',
-    ol.source.XYZ.prototype.dispatchEvent);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'getRevision',
-    ol.source.XYZ.prototype.getRevision);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'on',
-    ol.source.XYZ.prototype.on);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'once',
-    ol.source.XYZ.prototype.once);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'un',
-    ol.source.XYZ.prototype.un);
-
-goog.exportProperty(
-    ol.source.XYZ.prototype,
-    'unByKey',
-    ol.source.XYZ.prototype.unByKey);
 
 goog.exportProperty(
     ol.source.MapQuest.prototype,
