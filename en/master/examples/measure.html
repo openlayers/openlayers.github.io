@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="../css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    
     <link rel="stylesheet" href="measure.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList"></script>
     <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
@@ -170,7 +170,7 @@ var pointerMoveHandler &#x3D; function(evt) {
   helpTooltipElement.innerHTML &#x3D; helpMsg;
   helpTooltip.setPosition(evt.coordinate);
 
-  $(helpTooltipElement).removeClass(&#x27;hidden&#x27;);
+  helpTooltipElement.classList.remove(&#x27;hidden&#x27;);
 };
 
 
@@ -185,8 +185,8 @@ var map &#x3D; new ol.Map({
 
 map.on(&#x27;pointermove&#x27;, pointerMoveHandler);
 
-$(map.getViewport()).on(&#x27;mouseout&#x27;, function() {
-  $(helpTooltipElement).addClass(&#x27;hidden&#x27;);
+map.getViewport().addEventListener(&#x27;mouseout&#x27;, function() {
+  helpTooltipElement.classList.add(&#x27;hidden&#x27;);
 });
 
 var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
@@ -413,15 +413,14 @@ addInteraction();
 &lt;/form&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="http://openlayers.org/en/v3.14.2/css/ol.css,http://openlayers.org/en/v3.14.2/build/ol.js,https://code.jquery.com/jquery-1.11.2.min.js">
+          <input type="hidden" name="resources" value="http://openlayers.org/en/v3.15.0/css/ol.css,http://openlayers.org/en/v3.15.0/build/ol.js">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Measure&lt;/title&gt;
-    &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.14.2/css/ol.css" type="text/css"&gt;
-    &lt;script src="http://openlayers.org/en/v3.14.2/build/ol.js"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-1.11.2.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.15.0/css/ol.css" type="text/css"&gt;
+    &lt;script src="http://openlayers.org/en/v3.15.0/build/ol.js"&gt;&lt;/script&gt;
     &lt;style&gt;
       .tooltip {
         position: relative;
@@ -570,7 +569,7 @@ addInteraction();
         helpTooltipElement.innerHTML &#x3D; helpMsg;
         helpTooltip.setPosition(evt.coordinate);
 
-        $(helpTooltipElement).removeClass(&#x27;hidden&#x27;);
+        helpTooltipElement.classList.remove(&#x27;hidden&#x27;);
       };
 
 
@@ -585,8 +584,8 @@ addInteraction();
 
       map.on(&#x27;pointermove&#x27;, pointerMoveHandler);
 
-      $(map.getViewport()).on(&#x27;mouseout&#x27;, function() {
-        $(helpTooltipElement).addClass(&#x27;hidden&#x27;);
+      map.getViewport().addEventListener(&#x27;mouseout&#x27;, function() {
+        helpTooltipElement.classList.add(&#x27;hidden&#x27;);
       });
 
       var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);

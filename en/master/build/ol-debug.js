@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.14.2-351-g2ee1969
+// Version: v3.15.0-8-gf20e446
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -98757,6 +98757,7 @@ goog.inherits(ol.source.XYZ, ol.source.TileImage);
 
 goog.provide('ol.source.CartoDB');
 
+goog.require('ol.object');
 goog.require('ol.source.State');
 goog.require('ol.source.XYZ');
 
@@ -98785,7 +98786,7 @@ ol.source.CartoDB = function(options) {
   this.mapId_ = options.map || '';
 
   /**
-   * @type {Object}
+   * @type {!Object}
    * @private
    */
   this.config_ = options.config || {};
@@ -98804,6 +98805,7 @@ ol.source.CartoDB = function(options) {
     maxZoom: options.maxZoom !== undefined ? options.maxZoom : 18,
     minZoom: options.minZoom,
     projection: options.projection,
+    state: ol.source.State.LOADING,
     wrapX: options.wrapX
   });
   this.initializeMap_();
@@ -98813,7 +98815,7 @@ goog.inherits(ol.source.CartoDB, ol.source.XYZ);
 
 /**
  * Returns the current config.
- * @return {Object} The current configuration.
+ * @return {!Object} The current configuration.
  * @api
  */
 ol.source.CartoDB.prototype.getConfig = function() {
@@ -98828,9 +98830,7 @@ ol.source.CartoDB.prototype.getConfig = function() {
  * @api
  */
 ol.source.CartoDB.prototype.updateConfig = function(config) {
-  for (var key in config) {
-    this.config_[key] = config[key];
-  }
+  ol.object.assign(this.config_, config);
   this.initializeMap_();
 };
 
@@ -98857,8 +98857,7 @@ ol.source.CartoDB.prototype.initializeMap_ = function() {
     this.applyTemplate_(this.templateCache_[paramHash]);
     return;
   }
-  var mapUrl = 'https://' + this.account_ +
-      '.cartodb.com/api/v1/map';
+  var mapUrl = 'https://' + this.account_ + '.cartodb.com/api/v1/map';
 
   if (this.mapId_) {
     mapUrl += '/named/' + this.mapId_;
@@ -98892,6 +98891,7 @@ ol.source.CartoDB.prototype.handleInitResponse_ = function(paramHash, event) {
     }
     this.applyTemplate_(response);
     this.templateCache_[paramHash] = response;
+    this.setState(ol.source.State.READY);
   } else {
     this.setState(ol.source.State.ERROR);
   }

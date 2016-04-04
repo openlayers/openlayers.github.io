@@ -196,7 +196,7 @@ goog.addDependency('../../../ol/ol/resolutionconstraint.js', ['ol.ResolutionCons
 goog.addDependency('../../../ol/ol/rotationconstraint.js', ['ol.RotationConstraint', 'ol.RotationConstraintType'], ['ol.math'], false);
 goog.addDependency('../../../ol/ol/size.js', ['ol.Size', 'ol.size'], ['goog.asserts'], false);
 goog.addDependency('../../../ol/ol/source/bingmapssource.js', ['ol.source.BingMaps'], ['goog.asserts', 'ol.Attribution', 'ol.TileRange', 'ol.TileUrlFunction', 'ol.extent', 'ol.net', 'ol.proj', 'ol.source.State', 'ol.source.TileImage', 'ol.tilecoord'], false);
-goog.addDependency('../../../ol/ol/source/cartodb.js', ['ol.source.CartoDB'], ['ol.source.State', 'ol.source.XYZ'], false);
+goog.addDependency('../../../ol/ol/source/cartodb.js', ['ol.source.CartoDB'], ['ol.object', 'ol.source.State', 'ol.source.XYZ'], false);
 goog.addDependency('../../../ol/ol/source/clustersource.js', ['ol.source.Cluster'], ['goog.asserts', 'ol.Feature', 'ol.coordinate', 'ol.events.EventType', 'ol.extent', 'ol.geom.Point', 'ol.source.Vector'], false);
 goog.addDependency('../../../ol/ol/source/imagecanvassource.js', ['ol.source.ImageCanvas'], ['ol.CanvasFunctionType', 'ol.ImageCanvas', 'ol.extent', 'ol.source.Image'], false);
 goog.addDependency('../../../ol/ol/source/imagemapguidesource.js', ['ol.source.ImageMapGuide'], ['goog.uri.utils', 'ol.Image', 'ol.ImageLoadFunctionType', 'ol.events', 'ol.events.EventType', 'ol.extent', 'ol.object', 'ol.source.Image'], false);
