@@ -41,10 +41,10 @@
           <h4 id="title">Measure</h4>
           <div id="map" class="map"></div>
 <form class="form-inline">
-  <label>Geometry type &nbsp;</label>
+  <label>Measurement type &nbsp;</label>
     <select id="type">
-      <option value="length">Length</option>
-      <option value="area">Area</option>
+      <option value="length">Length (LineString)</option>
+      <option value="area">Area (Polygon)</option>
     </select>
     <label class="checkbox">
       <input type="checkbox" id="geodesic">
@@ -57,8 +57,8 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Example of using the ol.interaction.Draw interaction for creating simple measuring application.</p>
-          <div id="docs"><p><i>NOTE: If use geodesic measures is not checked, measure is done in simple way on projected plane. Earth curvature is not taken into account</i></p>
+          <p id="shortdesc">Example of using the ol.interaction.Draw interaction to create a simple measuring application.</p>
+          <div id="docs"><p><i>NOTE: By default, length and area are calculated using the projected coordinates. This is not accurate for projections like Mercator where the projected meters do not correspond to meters on the ground. To get a standarized measurement across all projections, use the geodesic measures.</i></p>
 </div>
           <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.Observable.html" title="API documentation for ol.Observable">ol.Observable</a></li>,<li><a href="../apidoc/ol.Overlay.html" title="API documentation for ol.Overlay">ol.Overlay</a></li>,<li><a href="../apidoc/ol.Sphere.html" title="API documentation for ol.Sphere">ol.Sphere</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.geom.LineString.html" title="API documentation for ol.geom.LineString">ol.geom.LineString</a></li>,<li><a href="../apidoc/ol.geom.Polygon.html" title="API documentation for ol.geom.Polygon">ol.geom.Polygon</a></li>,<li><a href="../apidoc/ol.interaction.Draw.html" title="API documentation for ol.interaction.Draw">ol.interaction.Draw</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.MapQuest.html" title="API documentation for ol.source.MapQuest">ol.source.MapQuest</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Circle.html" title="API documentation for ol.style.Circle">ol.style.Circle</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li></ul></div>
         </div>
@@ -227,7 +227,7 @@ var formatLength &#x3D; function(line) {
 
 
 /**
- * Format length output.
+ * Format area output.
  * @param {ol.geom.Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
@@ -401,10 +401,10 @@ addInteraction();
 }</textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
 &lt;form class&#x3D;&quot;form-inline&quot;&gt;
-  &lt;label&gt;Geometry type &amp;nbsp;&lt;/label&gt;
+  &lt;label&gt;Measurement type &amp;nbsp;&lt;/label&gt;
     &lt;select id&#x3D;&quot;type&quot;&gt;
-      &lt;option value&#x3D;&quot;length&quot;&gt;Length&lt;/option&gt;
-      &lt;option value&#x3D;&quot;area&quot;&gt;Area&lt;/option&gt;
+      &lt;option value&#x3D;&quot;length&quot;&gt;Length (LineString)&lt;/option&gt;
+      &lt;option value&#x3D;&quot;area&quot;&gt;Area (Polygon)&lt;/option&gt;
     &lt;/select&gt;
     &lt;label class&#x3D;&quot;checkbox&quot;&gt;
       &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;geodesic&quot;&gt;
@@ -459,10 +459,10 @@ addInteraction();
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;form class&#x3D;&quot;form-inline&quot;&gt;
-      &lt;label&gt;Geometry type &amp;nbsp;&lt;/label&gt;
+      &lt;label&gt;Measurement type &amp;nbsp;&lt;/label&gt;
         &lt;select id&#x3D;&quot;type&quot;&gt;
-          &lt;option value&#x3D;&quot;length&quot;&gt;Length&lt;/option&gt;
-          &lt;option value&#x3D;&quot;area&quot;&gt;Area&lt;/option&gt;
+          &lt;option value&#x3D;&quot;length&quot;&gt;Length (LineString)&lt;/option&gt;
+          &lt;option value&#x3D;&quot;area&quot;&gt;Area (Polygon)&lt;/option&gt;
         &lt;/select&gt;
         &lt;label class&#x3D;&quot;checkbox&quot;&gt;
           &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;geodesic&quot;&gt;
@@ -627,7 +627,7 @@ addInteraction();
 
 
       /**
-       * Format length output.
+       * Format area output.
        * @param {ol.geom.Polygon} polygon The polygon.
        * @return {string} Formatted area.
        */

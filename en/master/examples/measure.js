@@ -155,7 +155,7 @@ var formatLength = function(line) {
 
 
 /**
- * Format length output.
+ * Format area output.
  * @param {ol.geom.Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
