@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.15.0-8-gf20e446
+// Version: v3.15.0-27-gfe33910
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -16500,6 +16500,13 @@ goog.provide('ol.Attribution');
 
 goog.require('ol.TileRange');
 goog.require('ol.math');
+
+
+/**
+ * @typedef {string|Array.<string>|ol.Attribution|Array.<ol.Attribution>}
+ * @api
+ */
+ol.AttributionLike;
 
 
 /**
@@ -34034,7 +34041,7 @@ ol.source.State = {
 
 
 /**
- * @typedef {{attributions: (olx.source.AttributionOption|undefined),
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
  *            projection: ol.proj.ProjectionLike,
  *            state: (ol.source.State|undefined),
@@ -34097,7 +34104,7 @@ goog.inherits(ol.source.Source, ol.Object);
 /**
  * Turns various ways of defining an attribution to an array of `ol.Attributions`.
  *
- * @param {olx.source.AttributionOption|undefined}
+ * @param {ol.AttributionLike|undefined}
  *     attributionLike The attributions as string, array of strings,
  *     `ol.Attribution`, array of `ol.Attribution` or undefined.
  * @return {Array.<ol.Attribution>} The array of `ol.Attribution` or null if
@@ -34204,7 +34211,7 @@ ol.source.Source.prototype.refresh = function() {
 
 /**
  * Set the attributions of the source.
- * @param {olx.source.AttributionOption|undefined} attributions Attributions.
+ * @param {ol.AttributionLike|undefined} attributions Attributions.
  *     Can be passed as `string`, `Array<string>`, `{@link ol.Attribution}`,
  *     `Array<{@link ol.Attribution}>` or `undefined`.
  * @api
@@ -34882,7 +34889,7 @@ goog.require('ol.tilegrid.TileGrid');
 
 
 /**
- * @typedef {{attributions: (olx.source.AttributionOption|undefined),
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
  *            cacheSize: (number|undefined),
  *            extent: (ol.Extent|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
@@ -44934,8 +44941,8 @@ ol.interaction.KeyboardPan = function(opt_options) {
    * @return {boolean} Combined condition result.
    */
   this.defaultCondition_ = function(mapBrowserEvent) {
-    return ol.events.condition.noModifierKeys.call(this, mapBrowserEvent) &&
-      ol.events.condition.targetNotEditable.call(this, mapBrowserEvent)
+    return ol.events.condition.noModifierKeys(mapBrowserEvent) &&
+      ol.events.condition.targetNotEditable(mapBrowserEvent);
   }
 
   /**
@@ -47462,6 +47469,7 @@ goog.require('goog.asserts');
 goog.require('ol');
 goog.require('ol.color');
 goog.require('ol.colorlike');
+goog.require('ol.dom');
 goog.require('ol.has');
 goog.require('ol.render.canvas');
 goog.require('ol.style.Fill');
@@ -47726,18 +47734,14 @@ ol.style.Circle.prototype.render_ = function(atlasManager) {
 
   if (atlasManager === undefined) {
     // no atlas manager is used, create a new canvas
-    this.canvas_ = /** @type {HTMLCanvasElement} */
-        (document.createElement('CANVAS'));
-    this.canvas_.height = size;
-    this.canvas_.width = size;
+    var context = ol.dom.createCanvasContext2D(size, size);
+    this.canvas_ = context.canvas;
 
     // canvas.width and height are rounded to the closest integer
     size = this.canvas_.width;
     imageSize = size;
 
     // draw the circle on the canvas
-    var context = /** @type {CanvasRenderingContext2D} */
-        (this.canvas_.getContext('2d'));
     this.draw_(renderOptions, context, 0, 0);
 
     this.createHitDetectionCanvas_(renderOptions);
@@ -47827,15 +47831,9 @@ ol.style.Circle.prototype.createHitDetectionCanvas_ = function(renderOptions) {
 
   // if no fill style is set, create an extra hit-detection image with a
   // default fill style
-  this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
-      (document.createElement('CANVAS'));
-  var canvas = this.hitDetectionCanvas_;
+  var context = ol.dom.createCanvasContext2D(renderOptions.size, renderOptions.size);
+  this.hitDetectionCanvas_ = context.canvas;
 
-  canvas.height = renderOptions.size;
-  canvas.width = renderOptions.size;
-
-  var context = /** @type {CanvasRenderingContext2D} */
-      (canvas.getContext('2d'));
   this.drawHitDetectionCanvas_(renderOptions, context, 0, 0);
 };
 
@@ -49935,10 +49933,11 @@ goog.inherits(ol.render.canvas.Replay, ol.render.VectorContext);
  * @param {number} offset Offset.
  * @param {number} end End.
  * @param {number} stride Stride.
+ * @param {boolean} close Close.
  * @protected
  * @return {number} My end.
  */
-ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinates, offset, end, stride) {
+ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinates, offset, end, stride, close) {
 
   var myEnd = this.coordinates.length;
   var extent = this.getBufferedMaxExtent();
@@ -49977,6 +49976,10 @@ ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinat
     this.coordinates[myEnd++] = lastCoord[1];
   }
 
+  if (close) {
+    this.coordinates[myEnd++] = flatCoordinates[offset];
+    this.coordinates[myEnd++] = flatCoordinates[offset + 1];
+  }
   return myEnd;
 };
 
@@ -50548,7 +50551,8 @@ goog.inherits(ol.render.canvas.ImageReplay, ol.render.canvas.Replay);
  * @return {number} My end.
  */
 ol.render.canvas.ImageReplay.prototype.drawCoordinates_ = function(flatCoordinates, offset, end, stride) {
-  return this.appendFlatCoordinates(flatCoordinates, offset, end, stride);
+  return this.appendFlatCoordinates(
+      flatCoordinates, offset, end, stride, false);
 };
 
 
@@ -50769,7 +50773,8 @@ goog.inherits(ol.render.canvas.LineStringReplay, ol.render.canvas.Replay);
  */
 ol.render.canvas.LineStringReplay.prototype.drawFlatCoordinates_ = function(flatCoordinates, offset, end, stride) {
   var myBegin = this.coordinates.length;
-  var myEnd = this.appendFlatCoordinates(flatCoordinates, offset, end, stride);
+  var myEnd = this.appendFlatCoordinates(
+      flatCoordinates, offset, end, stride, false);
   var moveToLineToInstruction =
       [ol.render.canvas.Instruction.MOVE_TO_LINE_TO, myBegin, myEnd];
   this.instructions.push(moveToLineToInstruction);
@@ -50971,9 +50976,7 @@ ol.render.canvas.PolygonReplay = function(tolerance, maxExtent, resolution) {
    *         lineDash: Array.<number>,
    *         lineJoin: (string|undefined),
    *         lineWidth: (number|undefined),
-   *         miterLimit: (number|undefined),
-   *         pendingFill: number,
-   *         pendingStroke: number}|null}
+   *         miterLimit: (number|undefined)}|null}
    */
   this.state_ = {
     currentFillStyle: undefined,
@@ -50989,9 +50992,7 @@ ol.render.canvas.PolygonReplay = function(tolerance, maxExtent, resolution) {
     lineDash: null,
     lineJoin: undefined,
     lineWidth: undefined,
-    miterLimit: undefined,
-    pendingFill: 0,
-    pendingStroke: 0
+    miterLimit: undefined
   };
 
 };
@@ -51008,19 +51009,15 @@ goog.inherits(ol.render.canvas.PolygonReplay, ol.render.canvas.Replay);
  */
 ol.render.canvas.PolygonReplay.prototype.drawFlatCoordinatess_ = function(flatCoordinates, offset, ends, stride) {
   var state = this.state_;
-  if (state.pendingFill > 200 || state.pendingStroke > 200) {
-    this.fillStroke_();
-  }
   var beginPathInstruction = [ol.render.canvas.Instruction.BEGIN_PATH];
-  if (!state.pendingFill && !state.pendingStroke) {
-    this.instructions.push(beginPathInstruction);
-  }
+  this.instructions.push(beginPathInstruction);
   this.hitDetectionInstructions.push(beginPathInstruction);
   var i, ii;
   for (i = 0, ii = ends.length; i < ii; ++i) {
     var end = ends[i];
     var myBegin = this.coordinates.length;
-    var myEnd = this.appendFlatCoordinates(flatCoordinates, offset, end, stride);
+    var myEnd = this.appendFlatCoordinates(
+        flatCoordinates, offset, end, stride, true);
     var moveToLineToInstruction =
         [ol.render.canvas.Instruction.MOVE_TO_LINE_TO, myBegin, myEnd];
     var closePathInstruction = [ol.render.canvas.Instruction.CLOSE_PATH];
@@ -51029,15 +51026,19 @@ ol.render.canvas.PolygonReplay.prototype.drawFlatCoordinatess_ = function(flatCo
         closePathInstruction);
     offset = end;
   }
-  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.FILL]);
+  // FIXME is it quicker to fill and stroke each polygon individually,
+  // FIXME or all polygons together?
+  var fillInstruction = [ol.render.canvas.Instruction.FILL];
+  this.hitDetectionInstructions.push(fillInstruction);
   if (state.fillStyle !== undefined) {
-    state.pendingFill++;
+    this.instructions.push(fillInstruction);
   }
   if (state.strokeStyle !== undefined) {
     goog.asserts.assert(state.lineWidth !== undefined,
         'state.lineWidth should be defined');
-    state.pendingStroke++;
-    this.hitDetectionInstructions.push([ol.render.canvas.Instruction.STROKE]);
+    var strokeInstruction = [ol.render.canvas.Instruction.STROKE];
+    this.instructions.push(strokeInstruction);
+    this.hitDetectionInstructions.push(strokeInstruction);
   }
   return offset;
 };
@@ -51074,23 +51075,22 @@ ol.render.canvas.PolygonReplay.prototype.drawCircle = function(circleGeometry, f
   var stride = circleGeometry.getStride();
   var myBegin = this.coordinates.length;
   this.appendFlatCoordinates(
-      flatCoordinates, 0, flatCoordinates.length, stride);
+      flatCoordinates, 0, flatCoordinates.length, stride, false);
   var beginPathInstruction = [ol.render.canvas.Instruction.BEGIN_PATH];
   var circleInstruction = [ol.render.canvas.Instruction.CIRCLE, myBegin];
-  if (!state.pendingFill && !state.pendingStroke) {
-    this.instructions.push(beginPathInstruction);
-  }
-  this.instructions.push(circleInstruction);
-  this.hitDetectionInstructions.push(circleInstruction, beginPathInstruction);
-  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.FILL]);
+  this.instructions.push(beginPathInstruction, circleInstruction);
+  this.hitDetectionInstructions.push(beginPathInstruction, circleInstruction);
+  var fillInstruction = [ol.render.canvas.Instruction.FILL];
+  this.hitDetectionInstructions.push(fillInstruction);
   if (state.fillStyle !== undefined) {
-    state.pendingFill++;
+    this.instructions.push(fillInstruction);
   }
   if (state.strokeStyle !== undefined) {
     goog.asserts.assert(state.lineWidth !== undefined,
         'state.lineWidth should be defined');
-    state.pendingStroke++;
-    this.hitDetectionInstructions.push([ol.render.canvas.Instruction.STROKE]);
+    var strokeInstruction = [ol.render.canvas.Instruction.STROKE];
+    this.instructions.push(strokeInstruction);
+    this.hitDetectionInstructions.push(strokeInstruction);
   }
   this.endGeometry(circleGeometry, feature);
 };
@@ -51172,27 +51172,12 @@ ol.render.canvas.PolygonReplay.prototype.drawMultiPolygon = function(multiPolygo
 
 
 /**
- * @private
- */
-ol.render.canvas.PolygonReplay.prototype.fillStroke_ = function() {
-  var state = this.state_;
-  if (state.pendingFill) {
-    this.instructions.push([ol.render.canvas.Instruction.FILL]);
-    state.pendingFill = 0;
-  }
-  if (state.pendingStroke) {
-    this.instructions.push([ol.render.canvas.Instruction.STROKE]);
-    state.pendingStroke = 0;
-  }
-};
-
-
-/**
  * @inheritDoc
  */
 ol.render.canvas.PolygonReplay.prototype.finish = function() {
   goog.asserts.assert(this.state_, 'this.state_ should not be null');
   this.reverseHitDetectionInstructions_();
+  this.state_ = null;
   // We want to preserve topology when drawing polygons.  Polygons are
   // simplified using quantization and point elimination. However, we might
   // have received a mix of quantized and non-quantized geometries, so ensure
@@ -51205,8 +51190,6 @@ ol.render.canvas.PolygonReplay.prototype.finish = function() {
       coordinates[i] = ol.geom.flat.simplify.snap(coordinates[i], tolerance);
     }
   }
-  this.fillStroke_();
-  this.state_ = null;
 };
 
 
@@ -51289,7 +51272,6 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function() {
   var lineWidth = state.lineWidth;
   var miterLimit = state.miterLimit;
   if (fillStyle !== undefined && state.currentFillStyle != fillStyle) {
-    this.fillStroke_();
     this.instructions.push(
         [ol.render.canvas.Instruction.SET_FILL_STYLE, fillStyle]);
     state.currentFillStyle = state.fillStyle;
@@ -51307,7 +51289,6 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function() {
         state.currentLineJoin != lineJoin ||
         state.currentLineWidth != lineWidth ||
         state.currentMiterLimit != miterLimit) {
-      this.fillStroke_();
       this.instructions.push(
           [ol.render.canvas.Instruction.SET_STROKE_STYLE,
            strokeStyle, lineWidth, lineCap, lineJoin, miterLimit, lineDash]);
@@ -51422,7 +51403,8 @@ ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offse
   this.setReplayTextState_(this.textState_);
   this.beginGeometry(geometry, feature);
   var myBegin = this.coordinates.length;
-  var myEnd = this.appendFlatCoordinates(flatCoordinates, offset, end, stride);
+  var myEnd =
+      this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false);
   var fill = !!this.textFillState_;
   var stroke = !!this.textStrokeState_;
   var drawTextInstruction = [
@@ -52494,8 +52476,6 @@ ol.ImageCanvasLoader;
 
 goog.provide('ol.reproj');
 
-goog.require('goog.labs.userAgent.browser');
-goog.require('goog.labs.userAgent.platform');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.math');
@@ -52512,8 +52492,18 @@ goog.require('ol.proj');
  * @type {boolean}
  * @private
  */
-ol.reproj.browserAntialiasesClip_ = !goog.labs.userAgent.browser.isChrome() ||
-                                    goog.labs.userAgent.platform.isIos();
+ol.reproj.browserAntialiasesClip_ = (function(winNav, winChrome) {
+  // Adapted from http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
+  var isOpera = winNav.userAgent.indexOf('OPR') > -1;
+  var isIEedge = winNav.userAgent.indexOf('Edge') > -1;
+  return !(
+    !winNav.userAgent.match('CriOS') &&  // Not Chrome on iOS
+    winChrome !== null && winChrome !== undefined && // Has chrome in window
+    winNav.vendor === 'Google Inc.' && // Vendor is Google.
+    isOpera == false && // Not Opera
+    isIEedge == false // Not Edge
+  );
+})(goog.global.navigator, goog.global.chrome)
 
 
 /**
@@ -53319,7 +53309,7 @@ goog.require('ol.source.Source');
 
 
 /**
- * @typedef {{attributions: (olx.source.AttributionOption|undefined),
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
  *            extent: (null|ol.Extent|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
  *            projection: ol.proj.ProjectionLike,
@@ -58103,7 +58093,7 @@ goog.require('ol.source.TileEvent');
 
 
 /**
- * @typedef {{attributions: (olx.source.AttributionOption|undefined),
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
  *            cacheSize: (number|undefined),
  *            extent: (ol.Extent|undefined),
  *            logo: (string|olx.LogoOptions|undefined),
@@ -95022,7 +95012,6 @@ goog.require('goog.asserts');
 goog.require('ol.events');
 goog.require('ol.events.Event');
 goog.require('ol.events.EventType');
-goog.require('goog.functions');
 goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.CollectionEventType');
@@ -95130,14 +95119,21 @@ ol.interaction.Modify = function(options) {
   });
 
   /**
+   * @private
+   * @param {ol.MapBrowserEvent} mapBrowserEvent Browser event.
+   * @return {boolean} Combined condition result.
+   */
+  this.defaultDeleteCondition_ = function(mapBrowserEvent) {
+    return ol.events.condition.noModifierKeys(mapBrowserEvent) &&
+      ol.events.condition.singleClick(mapBrowserEvent);
+  }
+
+  /**
    * @type {ol.events.ConditionType}
    * @private
    */
   this.deleteCondition_ = options.deleteCondition ?
-      options.deleteCondition :
-      /** @type {ol.events.ConditionType} */ (goog.functions.and(
-          ol.events.condition.noModifierKeys,
-          ol.events.condition.singleClick));
+      options.deleteCondition : this.defaultDeleteCondition_;
 
   /**
    * Editing vertex.
@@ -95900,93 +95896,111 @@ ol.interaction.Modify.prototype.removeVertex_ = function() {
   var dragSegments = this.dragSegments_;
   var segmentsByFeature = {};
   var component, coordinates, dragSegment, geometry, i, index, left;
-  var newIndex, newSegment, right, segmentData, uid, deleted;
+  var newIndex, right, segmentData, uid, deleted;
   for (i = dragSegments.length - 1; i >= 0; --i) {
     dragSegment = dragSegments[i];
     segmentData = dragSegment[0];
-    geometry = segmentData.geometry;
-    coordinates = geometry.getCoordinates();
     uid = goog.getUid(segmentData.feature);
     if (segmentData.depth) {
       // separate feature components
       uid += '-' + segmentData.depth.join('-');
     }
-    left = right = index = undefined;
-    if (dragSegment[1] === 0) {
-      right = segmentData;
-      index = segmentData.index;
-    } else if (dragSegment[1] == 1) {
-      left = segmentData;
-      index = segmentData.index + 1;
-    }
     if (!(uid in segmentsByFeature)) {
-      segmentsByFeature[uid] = [left, right, index];
+      segmentsByFeature[uid] = {};
     }
-    newSegment = segmentsByFeature[uid];
+    if (dragSegment[1] === 0) {
+      segmentsByFeature[uid].right = segmentData;
+      segmentsByFeature[uid].index = segmentData.index;
+    } else if (dragSegment[1] == 1) {
+      segmentsByFeature[uid].left = segmentData;
+      segmentsByFeature[uid].index = segmentData.index + 1;
+    }
+
+  }
+  for (uid in segmentsByFeature) {
+    right = segmentsByFeature[uid].right;
+    left = segmentsByFeature[uid].left;
+    index = segmentsByFeature[uid].index;
+    newIndex = index - 1;
     if (left !== undefined) {
-      newSegment[0] = left;
+      segmentData = left;
+    } else {
+      segmentData = right;
     }
-    if (right !== undefined) {
-      newSegment[1] = right;
+    if (newIndex < 0) {
+      newIndex = 0;
     }
-    if (newSegment[0] !== undefined && newSegment[1] !== undefined) {
-      component = coordinates;
-      deleted = false;
-      newIndex = index - 1;
-      switch (geometry.getType()) {
-        case ol.geom.GeometryType.MULTI_LINE_STRING:
+    geometry = segmentData.geometry;
+    coordinates = geometry.getCoordinates();
+    component = coordinates;
+    deleted = false;
+    switch (geometry.getType()) {
+      case ol.geom.GeometryType.MULTI_LINE_STRING:
+        if (coordinates[segmentData.depth[0]].length > 2) {
           coordinates[segmentData.depth[0]].splice(index, 1);
           deleted = true;
-          break;
-        case ol.geom.GeometryType.LINE_STRING:
+        }
+        break;
+      case ol.geom.GeometryType.LINE_STRING:
+        if (coordinates.length > 2) {
           coordinates.splice(index, 1);
           deleted = true;
-          break;
-        case ol.geom.GeometryType.MULTI_POLYGON:
-          component = component[segmentData.depth[1]];
-          /* falls through */
-        case ol.geom.GeometryType.POLYGON:
-          component = component[segmentData.depth[0]];
-          if (component.length > 4) {
-            if (index == component.length - 1) {
-              index = 0;
-            }
-            component.splice(index, 1);
-            deleted = true;
-            if (index === 0) {
-              // close the ring again
-              component.pop();
-              component.push(component[0]);
-              newIndex = component.length - 1;
-            }
+        }
+        break;
+      case ol.geom.GeometryType.MULTI_POLYGON:
+        component = component[segmentData.depth[1]];
+        /* falls through */
+      case ol.geom.GeometryType.POLYGON:
+        component = component[segmentData.depth[0]];
+        if (component.length > 4) {
+          if (index == component.length - 1) {
+            index = 0;
           }
-          break;
-        default:
-          // pass
-      }
+          component.splice(index, 1);
+          deleted = true;
+          if (index === 0) {
+            // close the ring again
+            component.pop();
+            component.push(component[0]);
+            newIndex = component.length - 1;
+          }
+        }
+        break;
+      default:
+        // pass
+    }
 
-      if (deleted) {
-        this.rBush_.remove(newSegment[0]);
-        this.rBush_.remove(newSegment[1]);
-        this.setGeometryCoordinates_(geometry, coordinates);
+    if (deleted) {
+      this.setGeometryCoordinates_(geometry, coordinates);
+      var segments = [];
+      if (left !== undefined) {
+        this.rBush_.remove(left);
+        segments.push(left.segment[0]);
+      }
+      if (right !== undefined) {
+        this.rBush_.remove(right);
+        segments.push(right.segment[1]);
+      }
+      if (left !== undefined && right !== undefined) {
         goog.asserts.assert(newIndex >= 0, 'newIndex should be larger than 0');
+
         var newSegmentData = /** @type {ol.interaction.SegmentDataType} */ ({
           depth: segmentData.depth,
           feature: segmentData.feature,
           geometry: segmentData.geometry,
           index: newIndex,
-          segment: [newSegment[0].segment[0], newSegment[1].segment[1]]
+          segment: segments
         });
         this.rBush_.insert(ol.extent.boundingExtent(newSegmentData.segment),
             newSegmentData);
-        this.updateSegmentIndices_(geometry, index, segmentData.depth, -1);
-
-        if (this.vertexFeature_) {
-          this.overlay_.getSource().removeFeature(this.vertexFeature_);
-          this.vertexFeature_ = null;
-        }
+      }
+      this.updateSegmentIndices_(geometry, index, segmentData.depth, -1);
+      if (this.vertexFeature_) {
+        this.overlay_.getSource().removeFeature(this.vertexFeature_);
+        this.vertexFeature_ = null;
       }
     }
+
   }
   return true;
 };
@@ -99347,6 +99361,7 @@ goog.require('ol.events.EventType');
 goog.require('ol.Image');
 goog.require('ol.ImageLoadFunctionType');
 goog.require('ol.ImageState');
+goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.proj');
 goog.require('ol.source.Image');
@@ -99420,17 +99435,16 @@ ol.source.ImageStatic.prototype.handleImageChange = function(evt) {
       imageWidth = this.imageSize_[0];
       imageHeight = this.imageSize_[1];
     } else {
-      imageWidth = image.width;
-      imageHeight = image.height;
+      // TODO: remove the type cast when a closure-compiler > 20160315 is used.
+      // see: https://github.com/google/closure-compiler/pull/1664
+      imageWidth = /** @type {number} */ (image.width);
+      imageHeight = /** @type {number} */ (image.height);
     }
     var resolution = ol.extent.getHeight(imageExtent) / imageHeight;
     var targetWidth = Math.ceil(ol.extent.getWidth(imageExtent) / resolution);
     if (targetWidth != imageWidth) {
-      var canvas = /** @type {HTMLCanvasElement} */
-          (document.createElement('canvas'));
-      canvas.width = targetWidth;
-      canvas.height = /** @type {number} */ (imageHeight);
-      var context = canvas.getContext('2d');
+      var context = ol.dom.createCanvasContext2D(targetWidth, imageHeight);
+      var canvas = context.canvas;
       context.drawImage(image, 0, 0, imageWidth, imageHeight,
           0, 0, canvas.width, canvas.height);
       this.image_.setImage(canvas);
@@ -103016,6 +103030,7 @@ goog.provide('ol.style.AtlasManager');
 
 goog.require('goog.asserts');
 goog.require('ol');
+goog.require('ol.dom');
 
 /**
  * Provides information for an image inside an atlas manager.
@@ -103299,19 +103314,15 @@ ol.style.Atlas = function(size, space) {
 
   /**
    * @private
-   * @type {HTMLCanvasElement}
+   * @type {CanvasRenderingContext2D}
    */
-  this.canvas_ = /** @type {HTMLCanvasElement} */
-      (document.createElement('CANVAS'));
-  this.canvas_.width = size;
-  this.canvas_.height = size;
+  this.context_ = ol.dom.createCanvasContext2D(size, size);
 
   /**
    * @private
-   * @type {CanvasRenderingContext2D}
+   * @type {HTMLCanvasElement}
    */
-  this.context_ = /** @type {CanvasRenderingContext2D} */
-      (this.canvas_.getContext('2d'));
+  this.canvas_ = this.context_.canvas;
 };
 
 
@@ -103452,6 +103463,7 @@ goog.require('goog.asserts');
 goog.require('ol');
 goog.require('ol.color');
 goog.require('ol.colorlike');
+goog.require('ol.dom');
 goog.require('ol.has');
 goog.require('ol.render.canvas');
 goog.require('ol.style.AtlasManager');
@@ -103802,18 +103814,13 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
 
   if (atlasManager === undefined) {
     // no atlas manager is used, create a new canvas
-    this.canvas_ = /** @type {HTMLCanvasElement} */
-        (document.createElement('CANVAS'));
-
-    this.canvas_.height = size;
-    this.canvas_.width = size;
+    var context = ol.dom.createCanvasContext2D(size, size);
+    this.canvas_ = context.canvas;
 
     // canvas.width and height are rounded to the closest integer
     size = this.canvas_.width;
     imageSize = size;
 
-    var context = /** @type {CanvasRenderingContext2D} */
-        (this.canvas_.getContext('2d'));
     this.draw_(renderOptions, context, 0, 0);
 
     this.createHitDetectionCanvas_(renderOptions);
@@ -103913,15 +103920,9 @@ ol.style.RegularShape.prototype.createHitDetectionCanvas_ = function(renderOptio
 
   // if no fill style is set, create an extra hit-detection image with a
   // default fill style
-  this.hitDetectionCanvas_ = /** @type {HTMLCanvasElement} */
-      (document.createElement('CANVAS'));
-  var canvas = this.hitDetectionCanvas_;
+  var context = ol.dom.createCanvasContext2D(renderOptions.size, renderOptions.size);
+  this.hitDetectionCanvas_ = context.canvas;
 
-  canvas.height = renderOptions.size;
-  canvas.width = renderOptions.size;
-
-  var context = /** @type {CanvasRenderingContext2D} */
-      (canvas.getContext('2d'));
   this.drawHitDetectionCanvas_(renderOptions, context, 0, 0);
 };
 
