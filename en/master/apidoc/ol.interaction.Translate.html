@@ -15179,7 +15179,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/translateinteraction.js, line 79
+            src/ol/interaction/translateinteraction.js, line 80
         </div>
         
         
@@ -15276,6 +15276,46 @@
                 
                 <p>Only features contained in this collection will be able to be translated. If
 not specified, all features on the map will be able to be translated.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>layers</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">Array.&lt;<a href="ol.layer.Layer.html">ol.layer.Layer</a>></span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>A list of layers from which features should be
+translated. Alternatively, a filter function can be provided. The
+function will be called for each layer in the map and should return
+<code>true</code> for layers that you want to be translatable. If the option is
+absent, all visible layers will be considered translatable.</p></td>
         </tr>
 	
 	

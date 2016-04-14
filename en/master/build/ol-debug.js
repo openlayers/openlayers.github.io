@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.15.1-60-g8562c9a
+// Version: v3.15.1-70-ge46c837
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -7307,6 +7307,2170 @@ ol.coordinate.fromProjectedArray = function(array, axis) {
   }
 };
 
+goog.provide('ol.TransformFunction');
+
+
+/**
+ * A transform function accepts an array of input coordinate values, an optional
+ * output array, and an optional dimension (default should be 2).  The function
+ * transforms the input coordinate values, populates the output array, and
+ * returns the output array.
+ *
+ * @typedef {function(Array.<number>, Array.<number>=, number=): Array.<number>}
+ * @api stable
+ */
+ol.TransformFunction;
+
+goog.provide('ol.Extent');
+goog.provide('ol.extent');
+goog.provide('ol.extent.Corner');
+goog.provide('ol.extent.Relationship');
+
+goog.require('goog.asserts');
+goog.require('ol.Coordinate');
+goog.require('ol.Size');
+goog.require('ol.TransformFunction');
+
+
+/**
+ * An array of numbers representing an extent: `[minx, miny, maxx, maxy]`.
+ * @typedef {Array.<number>}
+ * @api stable
+ */
+ol.Extent;
+
+
+/**
+ * Extent corner.
+ * @enum {string}
+ */
+ol.extent.Corner = {
+  BOTTOM_LEFT: 'bottom-left',
+  BOTTOM_RIGHT: 'bottom-right',
+  TOP_LEFT: 'top-left',
+  TOP_RIGHT: 'top-right'
+};
+
+
+/**
+ * Relationship to an extent.
+ * @enum {number}
+ */
+ol.extent.Relationship = {
+  UNKNOWN: 0,
+  INTERSECTING: 1,
+  ABOVE: 2,
+  RIGHT: 4,
+  BELOW: 8,
+  LEFT: 16
+};
+
+
+/**
+ * Build an extent that includes all given coordinates.
+ *
+ * @param {Array.<ol.Coordinate>} coordinates Coordinates.
+ * @return {ol.Extent} Bounding extent.
+ * @api stable
+ */
+ol.extent.boundingExtent = function(coordinates) {
+  var extent = ol.extent.createEmpty();
+  for (var i = 0, ii = coordinates.length; i < ii; ++i) {
+    ol.extent.extendCoordinate(extent, coordinates[i]);
+  }
+  return extent;
+};
+
+
+/**
+ * @param {Array.<number>} xs Xs.
+ * @param {Array.<number>} ys Ys.
+ * @param {ol.Extent=} opt_extent Destination extent.
+ * @private
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.boundingExtentXYs_ = function(xs, ys, opt_extent) {
+  goog.asserts.assert(xs.length > 0, 'xs length should be larger than 0');
+  goog.asserts.assert(ys.length > 0, 'ys length should be larger than 0');
+  var minX = Math.min.apply(null, xs);
+  var minY = Math.min.apply(null, ys);
+  var maxX = Math.max.apply(null, xs);
+  var maxY = Math.max.apply(null, ys);
+  return ol.extent.createOrUpdate(minX, minY, maxX, maxY, opt_extent);
+};
+
+
+/**
+ * Return extent increased by the provided value.
+ * @param {ol.Extent} extent Extent.
+ * @param {number} value The amount by which the extent should be buffered.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ * @api stable
+ */
+ol.extent.buffer = function(extent, value, opt_extent) {
+  if (opt_extent) {
+    opt_extent[0] = extent[0] - value;
+    opt_extent[1] = extent[1] - value;
+    opt_extent[2] = extent[2] + value;
+    opt_extent[3] = extent[3] + value;
+    return opt_extent;
+  } else {
+    return [
+      extent[0] - value,
+      extent[1] - value,
+      extent[2] + value,
+      extent[3] + value
+    ];
+  }
+};
+
+
+/**
+ * Creates a clone of an extent.
+ *
+ * @param {ol.Extent} extent Extent to clone.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} The clone.
+ */
+ol.extent.clone = function(extent, opt_extent) {
+  if (opt_extent) {
+    opt_extent[0] = extent[0];
+    opt_extent[1] = extent[1];
+    opt_extent[2] = extent[2];
+    opt_extent[3] = extent[3];
+    return opt_extent;
+  } else {
+    return extent.slice();
+  }
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @return {number} Closest squared distance.
+ */
+ol.extent.closestSquaredDistanceXY = function(extent, x, y) {
+  var dx, dy;
+  if (x < extent[0]) {
+    dx = extent[0] - x;
+  } else if (extent[2] < x) {
+    dx = x - extent[2];
+  } else {
+    dx = 0;
+  }
+  if (y < extent[1]) {
+    dy = extent[1] - y;
+  } else if (extent[3] < y) {
+    dy = y - extent[3];
+  } else {
+    dy = 0;
+  }
+  return dx * dx + dy * dy;
+};
+
+
+/**
+ * Check if the passed coordinate is contained or on the edge of the extent.
+ *
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {boolean} The coordinate is contained in the extent.
+ * @api stable
+ */
+ol.extent.containsCoordinate = function(extent, coordinate) {
+  return ol.extent.containsXY(extent, coordinate[0], coordinate[1]);
+};
+
+
+/**
+ * Check if one extent contains another.
+ *
+ * An extent is deemed contained if it lies completely within the other extent,
+ * including if they share one or more edges.
+ *
+ * @param {ol.Extent} extent1 Extent 1.
+ * @param {ol.Extent} extent2 Extent 2.
+ * @return {boolean} The second extent is contained by or on the edge of the
+ *     first.
+ * @api stable
+ */
+ol.extent.containsExtent = function(extent1, extent2) {
+  return extent1[0] <= extent2[0] && extent2[2] <= extent1[2] &&
+      extent1[1] <= extent2[1] && extent2[3] <= extent1[3];
+};
+
+
+/**
+ * Check if the passed coordinate is contained or on the edge of the extent.
+ *
+ * @param {ol.Extent} extent Extent.
+ * @param {number} x X coordinate.
+ * @param {number} y Y coordinate.
+ * @return {boolean} The x, y values are contained in the extent.
+ * @api stable
+ */
+ol.extent.containsXY = function(extent, x, y) {
+  return extent[0] <= x && x <= extent[2] && extent[1] <= y && y <= extent[3];
+};
+
+
+/**
+ * Get the relationship between a coordinate and extent.
+ * @param {ol.Extent} extent The extent.
+ * @param {ol.Coordinate} coordinate The coordinate.
+ * @return {number} The relationship (bitwise compare with
+ *     ol.extent.Relationship).
+ */
+ol.extent.coordinateRelationship = function(extent, coordinate) {
+  var minX = extent[0];
+  var minY = extent[1];
+  var maxX = extent[2];
+  var maxY = extent[3];
+  var x = coordinate[0];
+  var y = coordinate[1];
+  var relationship = ol.extent.Relationship.UNKNOWN;
+  if (x < minX) {
+    relationship = relationship | ol.extent.Relationship.LEFT;
+  } else if (x > maxX) {
+    relationship = relationship | ol.extent.Relationship.RIGHT;
+  }
+  if (y < minY) {
+    relationship = relationship | ol.extent.Relationship.BELOW;
+  } else if (y > maxY) {
+    relationship = relationship | ol.extent.Relationship.ABOVE;
+  }
+  if (relationship === ol.extent.Relationship.UNKNOWN) {
+    relationship = ol.extent.Relationship.INTERSECTING;
+  }
+  return relationship;
+};
+
+
+/**
+ * Create an empty extent.
+ * @return {ol.Extent} Empty extent.
+ * @api stable
+ */
+ol.extent.createEmpty = function() {
+  return [Infinity, Infinity, -Infinity, -Infinity];
+};
+
+
+/**
+ * Create a new extent or update the provided extent.
+ * @param {number} minX Minimum X.
+ * @param {number} minY Minimum Y.
+ * @param {number} maxX Maximum X.
+ * @param {number} maxY Maximum Y.
+ * @param {ol.Extent=} opt_extent Destination extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.createOrUpdate = function(minX, minY, maxX, maxY, opt_extent) {
+  if (opt_extent) {
+    opt_extent[0] = minX;
+    opt_extent[1] = minY;
+    opt_extent[2] = maxX;
+    opt_extent[3] = maxY;
+    return opt_extent;
+  } else {
+    return [minX, minY, maxX, maxY];
+  }
+};
+
+
+/**
+ * Create a new empty extent or make the provided one empty.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.createOrUpdateEmpty = function(opt_extent) {
+  return ol.extent.createOrUpdate(
+      Infinity, Infinity, -Infinity, -Infinity, opt_extent);
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.createOrUpdateFromCoordinate = function(coordinate, opt_extent) {
+  var x = coordinate[0];
+  var y = coordinate[1];
+  return ol.extent.createOrUpdate(x, y, x, y, opt_extent);
+};
+
+
+/**
+ * @param {Array.<ol.Coordinate>} coordinates Coordinates.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.createOrUpdateFromCoordinates = function(coordinates, opt_extent) {
+  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
+  return ol.extent.extendCoordinates(extent, coordinates);
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.createOrUpdateFromFlatCoordinates = function(flatCoordinates, offset, end, stride, opt_extent) {
+  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
+  return ol.extent.extendFlatCoordinates(
+      extent, flatCoordinates, offset, end, stride);
+};
+
+
+/**
+ * @param {Array.<Array.<ol.Coordinate>>} rings Rings.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.createOrUpdateFromRings = function(rings, opt_extent) {
+  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
+  return ol.extent.extendRings(extent, rings);
+};
+
+
+/**
+ * Empty an extent in place.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.empty = function(extent) {
+  extent[0] = extent[1] = Infinity;
+  extent[2] = extent[3] = -Infinity;
+  return extent;
+};
+
+
+/**
+ * Determine if two extents are equivalent.
+ * @param {ol.Extent} extent1 Extent 1.
+ * @param {ol.Extent} extent2 Extent 2.
+ * @return {boolean} The two extents are equivalent.
+ * @api stable
+ */
+ol.extent.equals = function(extent1, extent2) {
+  return extent1[0] == extent2[0] && extent1[2] == extent2[2] &&
+      extent1[1] == extent2[1] && extent1[3] == extent2[3];
+};
+
+
+/**
+ * Modify an extent to include another extent.
+ * @param {ol.Extent} extent1 The extent to be modified.
+ * @param {ol.Extent} extent2 The extent that will be included in the first.
+ * @return {ol.Extent} A reference to the first (extended) extent.
+ * @api stable
+ */
+ol.extent.extend = function(extent1, extent2) {
+  if (extent2[0] < extent1[0]) {
+    extent1[0] = extent2[0];
+  }
+  if (extent2[2] > extent1[2]) {
+    extent1[2] = extent2[2];
+  }
+  if (extent2[1] < extent1[1]) {
+    extent1[1] = extent2[1];
+  }
+  if (extent2[3] > extent1[3]) {
+    extent1[3] = extent2[3];
+  }
+  return extent1;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.Coordinate} coordinate Coordinate.
+ */
+ol.extent.extendCoordinate = function(extent, coordinate) {
+  if (coordinate[0] < extent[0]) {
+    extent[0] = coordinate[0];
+  }
+  if (coordinate[0] > extent[2]) {
+    extent[2] = coordinate[0];
+  }
+  if (coordinate[1] < extent[1]) {
+    extent[1] = coordinate[1];
+  }
+  if (coordinate[1] > extent[3]) {
+    extent[3] = coordinate[1];
+  }
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {Array.<ol.Coordinate>} coordinates Coordinates.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.extendCoordinates = function(extent, coordinates) {
+  var i, ii;
+  for (i = 0, ii = coordinates.length; i < ii; ++i) {
+    ol.extent.extendCoordinate(extent, coordinates[i]);
+  }
+  return extent;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.extendFlatCoordinates = function(extent, flatCoordinates, offset, end, stride) {
+  for (; offset < end; offset += stride) {
+    ol.extent.extendXY(
+        extent, flatCoordinates[offset], flatCoordinates[offset + 1]);
+  }
+  return extent;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {Array.<Array.<ol.Coordinate>>} rings Rings.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.extendRings = function(extent, rings) {
+  var i, ii;
+  for (i = 0, ii = rings.length; i < ii; ++i) {
+    ol.extent.extendCoordinates(extent, rings[i]);
+  }
+  return extent;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} x X.
+ * @param {number} y Y.
+ */
+ol.extent.extendXY = function(extent, x, y) {
+  extent[0] = Math.min(extent[0], x);
+  extent[1] = Math.min(extent[1], y);
+  extent[2] = Math.max(extent[2], x);
+  extent[3] = Math.max(extent[3], y);
+};
+
+
+/**
+ * This function calls `callback` for each corner of the extent. If the
+ * callback returns a truthy value the function returns that value
+ * immediately. Otherwise the function returns `false`.
+ * @param {ol.Extent} extent Extent.
+ * @param {function(this:T, ol.Coordinate): S} callback Callback.
+ * @param {T=} opt_this Value to use as `this` when executing `callback`.
+ * @return {S|boolean} Value.
+ * @template S, T
+ */
+ol.extent.forEachCorner = function(extent, callback, opt_this) {
+  var val;
+  val = callback.call(opt_this, ol.extent.getBottomLeft(extent));
+  if (val) {
+    return val;
+  }
+  val = callback.call(opt_this, ol.extent.getBottomRight(extent));
+  if (val) {
+    return val;
+  }
+  val = callback.call(opt_this, ol.extent.getTopRight(extent));
+  if (val) {
+    return val;
+  }
+  val = callback.call(opt_this, ol.extent.getTopLeft(extent));
+  if (val) {
+    return val;
+  }
+  return false;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @return {number} Area.
+ */
+ol.extent.getArea = function(extent) {
+  var area = 0;
+  if (!ol.extent.isEmpty(extent)) {
+    area = ol.extent.getWidth(extent) * ol.extent.getHeight(extent);
+  }
+  return area;
+};
+
+
+/**
+ * Get the bottom left coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Coordinate} Bottom left coordinate.
+ * @api stable
+ */
+ol.extent.getBottomLeft = function(extent) {
+  return [extent[0], extent[1]];
+};
+
+
+/**
+ * Get the bottom right coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Coordinate} Bottom right coordinate.
+ * @api stable
+ */
+ol.extent.getBottomRight = function(extent) {
+  return [extent[2], extent[1]];
+};
+
+
+/**
+ * Get the center coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Coordinate} Center.
+ * @api stable
+ */
+ol.extent.getCenter = function(extent) {
+  return [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
+};
+
+
+/**
+ * Get a corner coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.extent.Corner} corner Corner.
+ * @return {ol.Coordinate} Corner coordinate.
+ */
+ol.extent.getCorner = function(extent, corner) {
+  var coordinate;
+  if (corner === ol.extent.Corner.BOTTOM_LEFT) {
+    coordinate = ol.extent.getBottomLeft(extent);
+  } else if (corner === ol.extent.Corner.BOTTOM_RIGHT) {
+    coordinate = ol.extent.getBottomRight(extent);
+  } else if (corner === ol.extent.Corner.TOP_LEFT) {
+    coordinate = ol.extent.getTopLeft(extent);
+  } else if (corner === ol.extent.Corner.TOP_RIGHT) {
+    coordinate = ol.extent.getTopRight(extent);
+  } else {
+    goog.asserts.fail('Invalid corner: %s', corner);
+  }
+  goog.asserts.assert(coordinate, 'coordinate should be defined');
+  return coordinate;
+};
+
+
+/**
+ * @param {ol.Extent} extent1 Extent 1.
+ * @param {ol.Extent} extent2 Extent 2.
+ * @return {number} Enlarged area.
+ */
+ol.extent.getEnlargedArea = function(extent1, extent2) {
+  var minX = Math.min(extent1[0], extent2[0]);
+  var minY = Math.min(extent1[1], extent2[1]);
+  var maxX = Math.max(extent1[2], extent2[2]);
+  var maxY = Math.max(extent1[3], extent2[3]);
+  return (maxX - minX) * (maxY - minY);
+};
+
+
+/**
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {ol.Size} size Size.
+ * @param {ol.Extent=} opt_extent Destination extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.getForViewAndSize = function(center, resolution, rotation, size, opt_extent) {
+  var dx = resolution * size[0] / 2;
+  var dy = resolution * size[1] / 2;
+  var cosRotation = Math.cos(rotation);
+  var sinRotation = Math.sin(rotation);
+  var xCos = dx * cosRotation;
+  var xSin = dx * sinRotation;
+  var yCos = dy * cosRotation;
+  var ySin = dy * sinRotation;
+  var x = center[0];
+  var y = center[1];
+  var x0 = x - xCos + ySin;
+  var x1 = x - xCos - ySin;
+  var x2 = x + xCos - ySin;
+  var x3 = x + xCos + ySin;
+  var y0 = y - xSin - yCos;
+  var y1 = y - xSin + yCos;
+  var y2 = y + xSin + yCos;
+  var y3 = y + xSin - yCos;
+  return ol.extent.createOrUpdate(
+      Math.min(x0, x1, x2, x3), Math.min(y0, y1, y2, y3),
+      Math.max(x0, x1, x2, x3), Math.max(y0, y1, y2, y3),
+      opt_extent);
+};
+
+
+/**
+ * Get the height of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {number} Height.
+ * @api stable
+ */
+ol.extent.getHeight = function(extent) {
+  return extent[3] - extent[1];
+};
+
+
+/**
+ * @param {ol.Extent} extent1 Extent 1.
+ * @param {ol.Extent} extent2 Extent 2.
+ * @return {number} Intersection area.
+ */
+ol.extent.getIntersectionArea = function(extent1, extent2) {
+  var intersection = ol.extent.getIntersection(extent1, extent2);
+  return ol.extent.getArea(intersection);
+};
+
+
+/**
+ * Get the intersection of two extents.
+ * @param {ol.Extent} extent1 Extent 1.
+ * @param {ol.Extent} extent2 Extent 2.
+ * @param {ol.Extent=} opt_extent Optional extent to populate with intersection.
+ * @return {ol.Extent} Intersecting extent.
+ * @api stable
+ */
+ol.extent.getIntersection = function(extent1, extent2, opt_extent) {
+  var intersection = opt_extent ? opt_extent : ol.extent.createEmpty();
+  if (ol.extent.intersects(extent1, extent2)) {
+    if (extent1[0] > extent2[0]) {
+      intersection[0] = extent1[0];
+    } else {
+      intersection[0] = extent2[0];
+    }
+    if (extent1[1] > extent2[1]) {
+      intersection[1] = extent1[1];
+    } else {
+      intersection[1] = extent2[1];
+    }
+    if (extent1[2] < extent2[2]) {
+      intersection[2] = extent1[2];
+    } else {
+      intersection[2] = extent2[2];
+    }
+    if (extent1[3] < extent2[3]) {
+      intersection[3] = extent1[3];
+    } else {
+      intersection[3] = extent2[3];
+    }
+  }
+  return intersection;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @return {number} Margin.
+ */
+ol.extent.getMargin = function(extent) {
+  return ol.extent.getWidth(extent) + ol.extent.getHeight(extent);
+};
+
+
+/**
+ * Get the size (width, height) of an extent.
+ * @param {ol.Extent} extent The extent.
+ * @return {ol.Size} The extent size.
+ * @api stable
+ */
+ol.extent.getSize = function(extent) {
+  return [extent[2] - extent[0], extent[3] - extent[1]];
+};
+
+
+/**
+ * Get the top left coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Coordinate} Top left coordinate.
+ * @api stable
+ */
+ol.extent.getTopLeft = function(extent) {
+  return [extent[0], extent[3]];
+};
+
+
+/**
+ * Get the top right coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Coordinate} Top right coordinate.
+ * @api stable
+ */
+ol.extent.getTopRight = function(extent) {
+  return [extent[2], extent[3]];
+};
+
+
+/**
+ * Get the width of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {number} Width.
+ * @api stable
+ */
+ol.extent.getWidth = function(extent) {
+  return extent[2] - extent[0];
+};
+
+
+/**
+ * Determine if one extent intersects another.
+ * @param {ol.Extent} extent1 Extent 1.
+ * @param {ol.Extent} extent2 Extent.
+ * @return {boolean} The two extents intersect.
+ * @api stable
+ */
+ol.extent.intersects = function(extent1, extent2) {
+  return extent1[0] <= extent2[2] &&
+      extent1[2] >= extent2[0] &&
+      extent1[1] <= extent2[3] &&
+      extent1[3] >= extent2[1];
+};
+
+
+/**
+ * Determine if an extent is empty.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} Is empty.
+ * @api stable
+ */
+ol.extent.isEmpty = function(extent) {
+  return extent[2] < extent[0] || extent[3] < extent[1];
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} Is infinite.
+ */
+ol.extent.isInfinite = function(extent) {
+  return extent[0] == -Infinity || extent[1] == -Infinity ||
+      extent[2] == Infinity || extent[3] == Infinity;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {ol.Coordinate} Coordinate.
+ */
+ol.extent.normalize = function(extent, coordinate) {
+  return [
+    (coordinate[0] - extent[0]) / (extent[2] - extent[0]),
+    (coordinate[1] - extent[1]) / (extent[3] - extent[1])
+  ];
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} Extent.
+ */
+ol.extent.returnOrUpdate = function(extent, opt_extent) {
+  if (opt_extent) {
+    opt_extent[0] = extent[0];
+    opt_extent[1] = extent[1];
+    opt_extent[2] = extent[2];
+    opt_extent[3] = extent[3];
+    return opt_extent;
+  } else {
+    return extent;
+  }
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} value Value.
+ */
+ol.extent.scaleFromCenter = function(extent, value) {
+  var deltaX = ((extent[2] - extent[0]) / 2) * (value - 1);
+  var deltaY = ((extent[3] - extent[1]) / 2) * (value - 1);
+  extent[0] -= deltaX;
+  extent[2] += deltaX;
+  extent[1] -= deltaY;
+  extent[3] += deltaY;
+};
+
+
+/**
+ * Determine if the segment between two coordinates intersects (crosses,
+ * touches, or is contained by) the provided extent.
+ * @param {ol.Extent} extent The extent.
+ * @param {ol.Coordinate} start Segment start coordinate.
+ * @param {ol.Coordinate} end Segment end coordinate.
+ * @return {boolean} The segment intersects the extent.
+ */
+ol.extent.intersectsSegment = function(extent, start, end) {
+  var intersects = false;
+  var startRel = ol.extent.coordinateRelationship(extent, start);
+  var endRel = ol.extent.coordinateRelationship(extent, end);
+  if (startRel === ol.extent.Relationship.INTERSECTING ||
+      endRel === ol.extent.Relationship.INTERSECTING) {
+    intersects = true;
+  } else {
+    var minX = extent[0];
+    var minY = extent[1];
+    var maxX = extent[2];
+    var maxY = extent[3];
+    var startX = start[0];
+    var startY = start[1];
+    var endX = end[0];
+    var endY = end[1];
+    var slope = (endY - startY) / (endX - startX);
+    var x, y;
+    if (!!(endRel & ol.extent.Relationship.ABOVE) &&
+        !(startRel & ol.extent.Relationship.ABOVE)) {
+      // potentially intersects top
+      x = endX - ((endY - maxY) / slope);
+      intersects = x >= minX && x <= maxX;
+    }
+    if (!intersects && !!(endRel & ol.extent.Relationship.RIGHT) &&
+        !(startRel & ol.extent.Relationship.RIGHT)) {
+      // potentially intersects right
+      y = endY - ((endX - maxX) * slope);
+      intersects = y >= minY && y <= maxY;
+    }
+    if (!intersects && !!(endRel & ol.extent.Relationship.BELOW) &&
+        !(startRel & ol.extent.Relationship.BELOW)) {
+      // potentially intersects bottom
+      x = endX - ((endY - minY) / slope);
+      intersects = x >= minX && x <= maxX;
+    }
+    if (!intersects && !!(endRel & ol.extent.Relationship.LEFT) &&
+        !(startRel & ol.extent.Relationship.LEFT)) {
+      // potentially intersects left
+      y = endY - ((endX - minX) * slope);
+      intersects = y >= minY && y <= maxY;
+    }
+
+  }
+  return intersects;
+};
+
+
+/**
+ * @param {ol.Extent} extent1 Extent 1.
+ * @param {ol.Extent} extent2 Extent 2.
+ * @return {boolean} Touches.
+ */
+ol.extent.touches = function(extent1, extent2) {
+  var intersects = ol.extent.intersects(extent1, extent2);
+  return intersects &&
+      (extent1[0] == extent2[2] || extent1[2] == extent2[0] ||
+       extent1[1] == extent2[3] || extent1[3] == extent2[1]);
+};
+
+
+/**
+ * Apply a transform function to the extent.
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.TransformFunction} transformFn Transform function.  Called with
+ * [minX, minY, maxX, maxY] extent coordinates.
+ * @param {ol.Extent=} opt_extent Destination extent.
+ * @return {ol.Extent} Extent.
+ * @api stable
+ */
+ol.extent.applyTransform = function(extent, transformFn, opt_extent) {
+  var coordinates = [
+    extent[0], extent[1],
+    extent[0], extent[3],
+    extent[2], extent[1],
+    extent[2], extent[3]
+  ];
+  transformFn(coordinates, coordinates, 2);
+  var xs = [coordinates[0], coordinates[2], coordinates[4], coordinates[6]];
+  var ys = [coordinates[1], coordinates[3], coordinates[5], coordinates[7]];
+  return ol.extent.boundingExtentXYs_(xs, ys, opt_extent);
+};
+
+goog.provide('ol.functions');
+
+/**
+ * Always returns true.
+ * @returns {boolean} true.
+ */
+ol.functions.TRUE = function() {
+  return true;
+};
+
+/**
+ * Always returns false.
+ * @returns {boolean} false.
+ */
+ol.functions.FALSE = function() {
+  return false;
+};
+
+/**
+ * @license
+ * Latitude/longitude spherical geodesy formulae taken from
+ * http://www.movable-type.co.uk/scripts/latlong.html
+ * Licensed under CC-BY-3.0.
+ */
+
+goog.provide('ol.Sphere');
+
+goog.require('ol.math');
+
+
+/**
+ * @classdesc
+ * Class to create objects that can be used with {@link
+ * ol.geom.Polygon.circular}.
+ *
+ * For example to create a sphere whose radius is equal to the semi-major
+ * axis of the WGS84 ellipsoid:
+ *
+ * ```js
+ * var wgs84Sphere= new ol.Sphere(6378137);
+ * ```
+ *
+ * @constructor
+ * @param {number} radius Radius.
+ * @api
+ */
+ol.Sphere = function(radius) {
+
+  /**
+   * @type {number}
+   */
+  this.radius = radius;
+
+};
+
+
+/**
+ * Returns the geodesic area for a list of coordinates.
+ *
+ * [Reference](http://trs-new.jpl.nasa.gov/dspace/handle/2014/40409)
+ * Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for
+ * Polygons on a Sphere", JPL Publication 07-03, Jet Propulsion
+ * Laboratory, Pasadena, CA, June 2007
+ *
+ * @param {Array.<ol.Coordinate>} coordinates List of coordinates of a linear
+ * ring. If the ring is oriented clockwise, the area will be positive,
+ * otherwise it will be negative.
+ * @return {number} Area.
+ * @api
+ */
+ol.Sphere.prototype.geodesicArea = function(coordinates) {
+  var area = 0, len = coordinates.length;
+  var x1 = coordinates[len - 1][0];
+  var y1 = coordinates[len - 1][1];
+  for (var i = 0; i < len; i++) {
+    var x2 = coordinates[i][0], y2 = coordinates[i][1];
+    area += ol.math.toRadians(x2 - x1) *
+        (2 + Math.sin(ol.math.toRadians(y1)) +
+        Math.sin(ol.math.toRadians(y2)));
+    x1 = x2;
+    y1 = y2;
+  }
+  return area * this.radius * this.radius / 2.0;
+};
+
+
+/**
+ * Returns the distance from c1 to c2 using the haversine formula.
+ *
+ * @param {ol.Coordinate} c1 Coordinate 1.
+ * @param {ol.Coordinate} c2 Coordinate 2.
+ * @return {number} Haversine distance.
+ * @api
+ */
+ol.Sphere.prototype.haversineDistance = function(c1, c2) {
+  var lat1 = ol.math.toRadians(c1[1]);
+  var lat2 = ol.math.toRadians(c2[1]);
+  var deltaLatBy2 = (lat2 - lat1) / 2;
+  var deltaLonBy2 = ol.math.toRadians(c2[0] - c1[0]) / 2;
+  var a = Math.sin(deltaLatBy2) * Math.sin(deltaLatBy2) +
+      Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) *
+      Math.cos(lat1) * Math.cos(lat2);
+  return 2 * this.radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+
+/**
+ * Returns the coordinate at the given distance and bearing from `c1`.
+ *
+ * @param {ol.Coordinate} c1 The origin point (`[lon, lat]` in degrees).
+ * @param {number} distance The great-circle distance between the origin
+ *     point and the target point.
+ * @param {number} bearing The bearing (in radians).
+ * @return {ol.Coordinate} The target point.
+ */
+ol.Sphere.prototype.offset = function(c1, distance, bearing) {
+  var lat1 = ol.math.toRadians(c1[1]);
+  var lon1 = ol.math.toRadians(c1[0]);
+  var dByR = distance / this.radius;
+  var lat = Math.asin(
+      Math.sin(lat1) * Math.cos(dByR) +
+      Math.cos(lat1) * Math.sin(dByR) * Math.cos(bearing));
+  var lon = lon1 + Math.atan2(
+      Math.sin(bearing) * Math.sin(dByR) * Math.cos(lat1),
+      Math.cos(dByR) - Math.sin(lat1) * Math.sin(lat));
+  return [ol.math.toDegrees(lon), ol.math.toDegrees(lat)];
+};
+
+goog.provide('ol.sphere.NORMAL');
+
+goog.require('ol.Sphere');
+
+
+/**
+ * The normal sphere.
+ * @const
+ * @type {ol.Sphere}
+ */
+ol.sphere.NORMAL = new ol.Sphere(6370997);
+
+goog.provide('ol.proj');
+goog.provide('ol.proj.METERS_PER_UNIT');
+goog.provide('ol.proj.Projection');
+goog.provide('ol.proj.ProjectionLike');
+goog.provide('ol.proj.Units');
+
+goog.require('goog.asserts');
+goog.require('ol');
+goog.require('ol.Extent');
+goog.require('ol.TransformFunction');
+goog.require('ol.extent');
+goog.require('ol.object');
+goog.require('ol.sphere.NORMAL');
+
+
+/**
+ * A projection as {@link ol.proj.Projection}, SRS identifier string or
+ * undefined.
+ * @typedef {ol.proj.Projection|string|undefined} ol.proj.ProjectionLike
+ * @api stable
+ */
+ol.proj.ProjectionLike;
+
+
+/**
+ * Projection units: `'degrees'`, `'ft'`, `'m'`, `'pixels'`, `'tile-pixels'` or
+ * `'us-ft'`.
+ * @enum {string}
+ * @api stable
+ */
+ol.proj.Units = {
+  DEGREES: 'degrees',
+  FEET: 'ft',
+  METERS: 'm',
+  PIXELS: 'pixels',
+  TILE_PIXELS: 'tile-pixels',
+  USFEET: 'us-ft'
+};
+
+
+/**
+ * Meters per unit lookup table.
+ * @const
+ * @type {Object.<ol.proj.Units, number>}
+ * @api stable
+ */
+ol.proj.METERS_PER_UNIT = {};
+ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] =
+    2 * Math.PI * ol.sphere.NORMAL.radius / 360;
+ol.proj.METERS_PER_UNIT[ol.proj.Units.FEET] = 0.3048;
+ol.proj.METERS_PER_UNIT[ol.proj.Units.METERS] = 1;
+ol.proj.METERS_PER_UNIT[ol.proj.Units.USFEET] = 1200 / 3937;
+
+
+/**
+ * @classdesc
+ * Projection definition class. One of these is created for each projection
+ * supported in the application and stored in the {@link ol.proj} namespace.
+ * You can use these in applications, but this is not required, as API params
+ * and options use {@link ol.proj.ProjectionLike} which means the simple string
+ * code will suffice.
+ *
+ * You can use {@link ol.proj.get} to retrieve the object for a particular
+ * projection.
+ *
+ * The library includes definitions for `EPSG:4326` and `EPSG:3857`, together
+ * with the following aliases:
+ * * `EPSG:4326`: CRS:84, urn:ogc:def:crs:EPSG:6.6:4326,
+ *     urn:ogc:def:crs:OGC:1.3:CRS84, urn:ogc:def:crs:OGC:2:84,
+ *     http://www.opengis.net/gml/srs/epsg.xml#4326,
+ *     urn:x-ogc:def:crs:EPSG:4326
+ * * `EPSG:3857`: EPSG:102100, EPSG:102113, EPSG:900913,
+ *     urn:ogc:def:crs:EPSG:6.18:3:3857,
+ *     http://www.opengis.net/gml/srs/epsg.xml#3857
+ *
+ * If you use proj4js, aliases can be added using `proj4.defs()`; see
+ * [documentation](https://github.com/proj4js/proj4js). To set an alternative
+ * namespace for proj4, use {@link ol.proj.setProj4}.
+ *
+ * @constructor
+ * @param {olx.ProjectionOptions} options Projection options.
+ * @struct
+ * @api stable
+ */
+ol.proj.Projection = function(options) {
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.code_ = options.code;
+
+  /**
+   * @private
+   * @type {ol.proj.Units}
+   */
+  this.units_ = /** @type {ol.proj.Units} */ (options.units);
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.extent_ = options.extent !== undefined ? options.extent : null;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.worldExtent_ = options.worldExtent !== undefined ?
+      options.worldExtent : null;
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.axisOrientation_ = options.axisOrientation !== undefined ?
+      options.axisOrientation : 'enu';
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.global_ = options.global !== undefined ? options.global : false;
+
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.canWrapX_ = !!(this.global_ && this.extent_);
+
+  /**
+  * @private
+  * @type {function(number, ol.Coordinate):number}
+  */
+  this.getPointResolutionFunc_ = options.getPointResolution !== undefined ?
+      options.getPointResolution : this.getPointResolution_;
+
+  /**
+   * @private
+   * @type {ol.tilegrid.TileGrid}
+   */
+  this.defaultTileGrid_ = null;
+
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+  this.metersPerUnit_ = options.metersPerUnit;
+
+  var projections = ol.proj.projections_;
+  var code = options.code;
+  goog.asserts.assert(code !== undefined,
+      'Option "code" is required for constructing instance');
+  if (ol.ENABLE_PROJ4JS) {
+    var proj4js = ol.proj.proj4_ || ol.global['proj4'];
+    if (typeof proj4js == 'function' && projections[code] === undefined) {
+      var def = proj4js.defs(code);
+      if (def !== undefined) {
+        if (def.axis !== undefined && options.axisOrientation === undefined) {
+          this.axisOrientation_ = def.axis;
+        }
+        if (options.metersPerUnit === undefined) {
+          this.metersPerUnit_ = def.to_meter;
+        }
+        if (options.units === undefined) {
+          this.units_ = def.units;
+        }
+        var currentCode, currentDef, currentProj, proj4Transform;
+        for (currentCode in projections) {
+          currentDef = proj4js.defs(currentCode);
+          if (currentDef !== undefined) {
+            currentProj = ol.proj.get(currentCode);
+            if (currentDef === def) {
+              ol.proj.addEquivalentProjections([currentProj, this]);
+            } else {
+              proj4Transform = proj4js(currentCode, code);
+              ol.proj.addCoordinateTransforms(currentProj, this,
+                  proj4Transform.forward, proj4Transform.inverse);
+            }
+          }
+        }
+      }
+    }
+  }
+
+};
+
+
+/**
+ * @return {boolean} The projection is suitable for wrapping the x-axis
+ */
+ol.proj.Projection.prototype.canWrapX = function() {
+  return this.canWrapX_;
+};
+
+
+/**
+ * Get the code for this projection, e.g. 'EPSG:4326'.
+ * @return {string} Code.
+ * @api stable
+ */
+ol.proj.Projection.prototype.getCode = function() {
+  return this.code_;
+};
+
+
+/**
+ * Get the validity extent for this projection.
+ * @return {ol.Extent} Extent.
+ * @api stable
+ */
+ol.proj.Projection.prototype.getExtent = function() {
+  return this.extent_;
+};
+
+
+/**
+ * Get the units of this projection.
+ * @return {ol.proj.Units} Units.
+ * @api stable
+ */
+ol.proj.Projection.prototype.getUnits = function() {
+  return this.units_;
+};
+
+
+/**
+ * Get the amount of meters per unit of this projection.  If the projection is
+ * not configured with `metersPerUnit` or a units identifier, the return is
+ * `undefined`.
+ * @return {number|undefined} Meters.
+ * @api stable
+ */
+ol.proj.Projection.prototype.getMetersPerUnit = function() {
+  return this.metersPerUnit_ || ol.proj.METERS_PER_UNIT[this.units_];
+};
+
+
+/**
+ * Get the world extent for this projection.
+ * @return {ol.Extent} Extent.
+ * @api
+ */
+ol.proj.Projection.prototype.getWorldExtent = function() {
+  return this.worldExtent_;
+};
+
+
+/**
+ * Get the axis orientation of this projection.
+ * Example values are:
+ * enu - the default easting, northing, elevation.
+ * neu - northing, easting, up - useful for "lat/long" geographic coordinates,
+ *     or south orientated transverse mercator.
+ * wnu - westing, northing, up - some planetary coordinate systems have
+ *     "west positive" coordinate systems
+ * @return {string} Axis orientation.
+ */
+ol.proj.Projection.prototype.getAxisOrientation = function() {
+  return this.axisOrientation_;
+};
+
+
+/**
+ * Is this projection a global projection which spans the whole world?
+ * @return {boolean} Whether the projection is global.
+ * @api stable
+ */
+ol.proj.Projection.prototype.isGlobal = function() {
+  return this.global_;
+};
+
+
+/**
+* Set if the projection is a global projection which spans the whole world
+* @param {boolean} global Whether the projection is global.
+* @api stable
+*/
+ol.proj.Projection.prototype.setGlobal = function(global) {
+  this.global_ = global;
+  this.canWrapX_ = !!(global && this.extent_);
+};
+
+
+/**
+ * @return {ol.tilegrid.TileGrid} The default tile grid.
+ */
+ol.proj.Projection.prototype.getDefaultTileGrid = function() {
+  return this.defaultTileGrid_;
+};
+
+
+/**
+ * @param {ol.tilegrid.TileGrid} tileGrid The default tile grid.
+ */
+ol.proj.Projection.prototype.setDefaultTileGrid = function(tileGrid) {
+  this.defaultTileGrid_ = tileGrid;
+};
+
+
+/**
+ * Set the validity extent for this projection.
+ * @param {ol.Extent} extent Extent.
+ * @api stable
+ */
+ol.proj.Projection.prototype.setExtent = function(extent) {
+  this.extent_ = extent;
+  this.canWrapX_ = !!(this.global_ && extent);
+};
+
+
+/**
+ * Set the world extent for this projection.
+ * @param {ol.Extent} worldExtent World extent
+ *     [minlon, minlat, maxlon, maxlat].
+ * @api
+ */
+ol.proj.Projection.prototype.setWorldExtent = function(worldExtent) {
+  this.worldExtent_ = worldExtent;
+};
+
+
+/**
+* Set the getPointResolution function for this projection.
+* @param {function(number, ol.Coordinate):number} func Function
+* @api
+*/
+ol.proj.Projection.prototype.setGetPointResolution = function(func) {
+  this.getPointResolutionFunc_ = func;
+};
+
+
+/**
+* Default version.
+* Get the resolution of the point in degrees or distance units.
+* For projections with degrees as the unit this will simply return the
+* provided resolution. For other projections the point resolution is
+* estimated by transforming the 'point' pixel to EPSG:4326,
+* measuring its width and height on the normal sphere,
+* and taking the average of the width and height.
+* @param {number} resolution Nominal resolution in projection units.
+* @param {ol.Coordinate} point Point to find adjusted resolution at.
+* @return {number} Point resolution at point in projection units.
+* @private
+*/
+ol.proj.Projection.prototype.getPointResolution_ = function(resolution, point) {
+  var units = this.getUnits();
+  if (units == ol.proj.Units.DEGREES) {
+    return resolution;
+  } else {
+    // Estimate point resolution by transforming the center pixel to EPSG:4326,
+    // measuring its width and height on the normal sphere, and taking the
+    // average of the width and height.
+    var toEPSG4326 = ol.proj.getTransformFromProjections(
+        this, ol.proj.get('EPSG:4326'));
+    var vertices = [
+      point[0] - resolution / 2, point[1],
+      point[0] + resolution / 2, point[1],
+      point[0], point[1] - resolution / 2,
+      point[0], point[1] + resolution / 2
+    ];
+    vertices = toEPSG4326(vertices, vertices, 2);
+    var width = ol.sphere.NORMAL.haversineDistance(
+        vertices.slice(0, 2), vertices.slice(2, 4));
+    var height = ol.sphere.NORMAL.haversineDistance(
+        vertices.slice(4, 6), vertices.slice(6, 8));
+    var pointResolution = (width + height) / 2;
+    var metersPerUnit = this.getMetersPerUnit();
+    if (metersPerUnit !== undefined) {
+      pointResolution /= metersPerUnit;
+    }
+    return pointResolution;
+  }
+};
+
+
+/**
+ * Get the resolution of the point in degrees or distance units.
+ * For projections with degrees as the unit this will simply return the
+ * provided resolution. The default for other projections is to estimate
+ * the point resolution by transforming the 'point' pixel to EPSG:4326,
+ * measuring its width and height on the normal sphere,
+ * and taking the average of the width and height.
+ * An alternative implementation may be given when constructing a
+ * projection. For many local projections,
+ * such a custom function will return the resolution unchanged.
+ * @param {number} resolution Resolution in projection units.
+ * @param {ol.Coordinate} point Point.
+ * @return {number} Point resolution in projection units.
+ * @api
+ */
+ol.proj.Projection.prototype.getPointResolution = function(resolution, point) {
+  return this.getPointResolutionFunc_(resolution, point);
+};
+
+
+/**
+ * @private
+ * @type {Object.<string, ol.proj.Projection>}
+ */
+ol.proj.projections_ = {};
+
+
+/**
+ * @private
+ * @type {Object.<string, Object.<string, ol.TransformFunction>>}
+ */
+ol.proj.transforms_ = {};
+
+
+/**
+ * @private
+ * @type {proj4}
+ */
+ol.proj.proj4_ = null;
+
+
+if (ol.ENABLE_PROJ4JS) {
+  /**
+   * Register proj4. If not explicitly registered, it will be assumed that
+   * proj4js will be loaded in the global namespace. For example in a
+   * browserify ES6 environment you could use:
+   *
+   *     import ol from 'openlayers';
+   *     import proj4 from 'proj4';
+   *     ol.proj.setProj4(proj4);
+   *
+   * @param {proj4} proj4 Proj4.
+   * @api
+   */
+  ol.proj.setProj4 = function(proj4) {
+    goog.asserts.assert(typeof proj4 == 'function',
+        'proj4 argument should be a function');
+    ol.proj.proj4_ = proj4;
+  };
+}
+
+
+/**
+ * Registers transformation functions that don't alter coordinates. Those allow
+ * to transform between projections with equal meaning.
+ *
+ * @param {Array.<ol.proj.Projection>} projections Projections.
+ * @api
+ */
+ol.proj.addEquivalentProjections = function(projections) {
+  ol.proj.addProjections(projections);
+  projections.forEach(function(source) {
+    projections.forEach(function(destination) {
+      if (source !== destination) {
+        ol.proj.addTransform(source, destination, ol.proj.cloneTransform);
+      }
+    });
+  });
+};
+
+
+/**
+ * Registers transformation functions to convert coordinates in any projection
+ * in projection1 to any projection in projection2.
+ *
+ * @param {Array.<ol.proj.Projection>} projections1 Projections with equal
+ *     meaning.
+ * @param {Array.<ol.proj.Projection>} projections2 Projections with equal
+ *     meaning.
+ * @param {ol.TransformFunction} forwardTransform Transformation from any
+ *   projection in projection1 to any projection in projection2.
+ * @param {ol.TransformFunction} inverseTransform Transform from any projection
+ *   in projection2 to any projection in projection1..
+ */
+ol.proj.addEquivalentTransforms = function(projections1, projections2, forwardTransform, inverseTransform) {
+  projections1.forEach(function(projection1) {
+    projections2.forEach(function(projection2) {
+      ol.proj.addTransform(projection1, projection2, forwardTransform);
+      ol.proj.addTransform(projection2, projection1, inverseTransform);
+    });
+  });
+};
+
+
+/**
+ * Add a Projection object to the list of supported projections that can be
+ * looked up by their code.
+ *
+ * @param {ol.proj.Projection} projection Projection instance.
+ * @api stable
+ */
+ol.proj.addProjection = function(projection) {
+  ol.proj.projections_[projection.getCode()] = projection;
+  ol.proj.addTransform(projection, projection, ol.proj.cloneTransform);
+};
+
+
+/**
+ * @param {Array.<ol.proj.Projection>} projections Projections.
+ */
+ol.proj.addProjections = function(projections) {
+  var addedProjections = [];
+  projections.forEach(function(projection) {
+    addedProjections.push(ol.proj.addProjection(projection));
+  });
+};
+
+
+/**
+ * FIXME empty description for jsdoc
+ */
+ol.proj.clearAllProjections = function() {
+  ol.proj.projections_ = {};
+  ol.proj.transforms_ = {};
+};
+
+
+/**
+ * @param {ol.proj.Projection|string|undefined} projection Projection.
+ * @param {string} defaultCode Default code.
+ * @return {ol.proj.Projection} Projection.
+ */
+ol.proj.createProjection = function(projection, defaultCode) {
+  if (!projection) {
+    return ol.proj.get(defaultCode);
+  } else if (typeof projection === 'string') {
+    return ol.proj.get(projection);
+  } else {
+    goog.asserts.assertInstanceof(projection, ol.proj.Projection,
+        'projection should be an ol.proj.Projection');
+    return projection;
+  }
+};
+
+
+/**
+ * Registers a conversion function to convert coordinates from the source
+ * projection to the destination projection.
+ *
+ * @param {ol.proj.Projection} source Source.
+ * @param {ol.proj.Projection} destination Destination.
+ * @param {ol.TransformFunction} transformFn Transform.
+ */
+ol.proj.addTransform = function(source, destination, transformFn) {
+  var sourceCode = source.getCode();
+  var destinationCode = destination.getCode();
+  var transforms = ol.proj.transforms_;
+  if (!(sourceCode in transforms)) {
+    transforms[sourceCode] = {};
+  }
+  transforms[sourceCode][destinationCode] = transformFn;
+};
+
+
+/**
+ * Registers coordinate transform functions to convert coordinates between the
+ * source projection and the destination projection.
+ * The forward and inverse functions convert coordinate pairs; this function
+ * converts these into the functions used internally which also handle
+ * extents and coordinate arrays.
+ *
+ * @param {ol.proj.ProjectionLike} source Source projection.
+ * @param {ol.proj.ProjectionLike} destination Destination projection.
+ * @param {function(ol.Coordinate): ol.Coordinate} forward The forward transform
+ *     function (that is, from the source projection to the destination
+ *     projection) that takes a {@link ol.Coordinate} as argument and returns
+ *     the transformed {@link ol.Coordinate}.
+ * @param {function(ol.Coordinate): ol.Coordinate} inverse The inverse transform
+ *     function (that is, from the destination projection to the source
+ *     projection) that takes a {@link ol.Coordinate} as argument and returns
+ *     the transformed {@link ol.Coordinate}.
+ * @api stable
+ */
+ol.proj.addCoordinateTransforms = function(source, destination, forward, inverse) {
+  var sourceProj = ol.proj.get(source);
+  var destProj = ol.proj.get(destination);
+  ol.proj.addTransform(sourceProj, destProj,
+      ol.proj.createTransformFromCoordinateTransform(forward));
+  ol.proj.addTransform(destProj, sourceProj,
+      ol.proj.createTransformFromCoordinateTransform(inverse));
+};
+
+
+/**
+ * Creates a {@link ol.TransformFunction} from a simple 2D coordinate transform
+ * function.
+ * @param {function(ol.Coordinate): ol.Coordinate} transform Coordinate
+ *     transform.
+ * @return {ol.TransformFunction} Transform function.
+ */
+ol.proj.createTransformFromCoordinateTransform = function(transform) {
+  return (
+      /**
+       * @param {Array.<number>} input Input.
+       * @param {Array.<number>=} opt_output Output.
+       * @param {number=} opt_dimension Dimension.
+       * @return {Array.<number>} Output.
+       */
+      function(input, opt_output, opt_dimension) {
+        var length = input.length;
+        var dimension = opt_dimension !== undefined ? opt_dimension : 2;
+        var output = opt_output !== undefined ? opt_output : new Array(length);
+        var point, i, j;
+        for (i = 0; i < length; i += dimension) {
+          point = transform([input[i], input[i + 1]]);
+          output[i] = point[0];
+          output[i + 1] = point[1];
+          for (j = dimension - 1; j >= 2; --j) {
+            output[i + j] = input[i + j];
+          }
+        }
+        return output;
+      });
+};
+
+
+/**
+ * Unregisters the conversion function to convert coordinates from the source
+ * projection to the destination projection.  This method is used to clean up
+ * cached transforms during testing.
+ *
+ * @param {ol.proj.Projection} source Source projection.
+ * @param {ol.proj.Projection} destination Destination projection.
+ * @return {ol.TransformFunction} transformFn The unregistered transform.
+ */
+ol.proj.removeTransform = function(source, destination) {
+  var sourceCode = source.getCode();
+  var destinationCode = destination.getCode();
+  var transforms = ol.proj.transforms_;
+  goog.asserts.assert(sourceCode in transforms,
+      'sourceCode should be in transforms');
+  goog.asserts.assert(destinationCode in transforms[sourceCode],
+      'destinationCode should be in transforms of sourceCode');
+  var transform = transforms[sourceCode][destinationCode];
+  delete transforms[sourceCode][destinationCode];
+  if (ol.object.isEmpty(transforms[sourceCode])) {
+    delete transforms[sourceCode];
+  }
+  return transform;
+};
+
+
+/**
+ * Transforms a coordinate from longitude/latitude to a different projection.
+ * @param {ol.Coordinate} coordinate Coordinate as longitude and latitude, i.e.
+ *     an array with longitude as 1st and latitude as 2nd element.
+ * @param {ol.proj.ProjectionLike=} opt_projection Target projection. The
+ *     default is Web Mercator, i.e. 'EPSG:3857'.
+ * @return {ol.Coordinate} Coordinate projected to the target projection.
+ * @api stable
+ */
+ol.proj.fromLonLat = function(coordinate, opt_projection) {
+  return ol.proj.transform(coordinate, 'EPSG:4326',
+      opt_projection !== undefined ? opt_projection : 'EPSG:3857');
+};
+
+
+/**
+ * Transforms a coordinate to longitude/latitude.
+ * @param {ol.Coordinate} coordinate Projected coordinate.
+ * @param {ol.proj.ProjectionLike=} opt_projection Projection of the coordinate.
+ *     The default is Web Mercator, i.e. 'EPSG:3857'.
+ * @return {ol.Coordinate} Coordinate as longitude and latitude, i.e. an array
+ *     with longitude as 1st and latitude as 2nd element.
+ * @api stable
+ */
+ol.proj.toLonLat = function(coordinate, opt_projection) {
+  return ol.proj.transform(coordinate,
+      opt_projection !== undefined ? opt_projection : 'EPSG:3857', 'EPSG:4326');
+};
+
+
+/**
+ * Fetches a Projection object for the code specified.
+ *
+ * @param {ol.proj.ProjectionLike} projectionLike Either a code string which is
+ *     a combination of authority and identifier such as "EPSG:4326", or an
+ *     existing projection object, or undefined.
+ * @return {ol.proj.Projection} Projection object, or null if not in list.
+ * @api stable
+ */
+ol.proj.get = function(projectionLike) {
+  var projection;
+  if (projectionLike instanceof ol.proj.Projection) {
+    projection = projectionLike;
+  } else if (typeof projectionLike === 'string') {
+    var code = projectionLike;
+    projection = ol.proj.projections_[code];
+    if (ol.ENABLE_PROJ4JS) {
+      var proj4js = ol.proj.proj4_ || ol.global['proj4'];
+      if (projection === undefined && typeof proj4js == 'function' &&
+          proj4js.defs(code) !== undefined) {
+        projection = new ol.proj.Projection({code: code});
+        ol.proj.addProjection(projection);
+      }
+    }
+  } else {
+    projection = null;
+  }
+  return projection;
+};
+
+
+/**
+ * Checks if two projections are the same, that is every coordinate in one
+ * projection does represent the same geographic point as the same coordinate in
+ * the other projection.
+ *
+ * @param {ol.proj.Projection} projection1 Projection 1.
+ * @param {ol.proj.Projection} projection2 Projection 2.
+ * @return {boolean} Equivalent.
+ * @api
+ */
+ol.proj.equivalent = function(projection1, projection2) {
+  if (projection1 === projection2) {
+    return true;
+  }
+  var equalUnits = projection1.getUnits() === projection2.getUnits();
+  if (projection1.getCode() === projection2.getCode()) {
+    return equalUnits;
+  } else {
+    var transformFn = ol.proj.getTransformFromProjections(
+        projection1, projection2);
+    return transformFn === ol.proj.cloneTransform && equalUnits;
+  }
+};
+
+
+/**
+ * Given the projection-like objects, searches for a transformation
+ * function to convert a coordinates array from the source projection to the
+ * destination projection.
+ *
+ * @param {ol.proj.ProjectionLike} source Source.
+ * @param {ol.proj.ProjectionLike} destination Destination.
+ * @return {ol.TransformFunction} Transform function.
+ * @api stable
+ */
+ol.proj.getTransform = function(source, destination) {
+  var sourceProjection = ol.proj.get(source);
+  var destinationProjection = ol.proj.get(destination);
+  return ol.proj.getTransformFromProjections(
+      sourceProjection, destinationProjection);
+};
+
+
+/**
+ * Searches in the list of transform functions for the function for converting
+ * coordinates from the source projection to the destination projection.
+ *
+ * @param {ol.proj.Projection} sourceProjection Source Projection object.
+ * @param {ol.proj.Projection} destinationProjection Destination Projection
+ *     object.
+ * @return {ol.TransformFunction} Transform function.
+ */
+ol.proj.getTransformFromProjections = function(sourceProjection, destinationProjection) {
+  var transforms = ol.proj.transforms_;
+  var sourceCode = sourceProjection.getCode();
+  var destinationCode = destinationProjection.getCode();
+  var transform;
+  if (sourceCode in transforms && destinationCode in transforms[sourceCode]) {
+    transform = transforms[sourceCode][destinationCode];
+  }
+  if (transform === undefined) {
+    goog.asserts.assert(transform !== undefined, 'transform should be defined');
+    transform = ol.proj.identityTransform;
+  }
+  return transform;
+};
+
+
+/**
+ * @param {Array.<number>} input Input coordinate array.
+ * @param {Array.<number>=} opt_output Output array of coordinate values.
+ * @param {number=} opt_dimension Dimension.
+ * @return {Array.<number>} Input coordinate array (same array as input).
+ */
+ol.proj.identityTransform = function(input, opt_output, opt_dimension) {
+  if (opt_output !== undefined && input !== opt_output) {
+    // TODO: consider making this a warning instead
+    goog.asserts.fail('This should not be used internally.');
+    for (var i = 0, ii = input.length; i < ii; ++i) {
+      opt_output[i] = input[i];
+    }
+    input = opt_output;
+  }
+  return input;
+};
+
+
+/**
+ * @param {Array.<number>} input Input coordinate array.
+ * @param {Array.<number>=} opt_output Output array of coordinate values.
+ * @param {number=} opt_dimension Dimension.
+ * @return {Array.<number>} Output coordinate array (new array, same coordinate
+ *     values).
+ */
+ol.proj.cloneTransform = function(input, opt_output, opt_dimension) {
+  var output;
+  if (opt_output !== undefined) {
+    for (var i = 0, ii = input.length; i < ii; ++i) {
+      opt_output[i] = input[i];
+    }
+    output = opt_output;
+  } else {
+    output = input.slice();
+  }
+  return output;
+};
+
+
+/**
+ * Transforms a coordinate from source projection to destination projection.
+ * This returns a new coordinate (and does not modify the original).
+ *
+ * See {@link ol.proj.transformExtent} for extent transformation.
+ * See the transform method of {@link ol.geom.Geometry} and its subclasses for
+ * geometry transforms.
+ *
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {ol.proj.ProjectionLike} source Source projection-like.
+ * @param {ol.proj.ProjectionLike} destination Destination projection-like.
+ * @return {ol.Coordinate} Coordinate.
+ * @api stable
+ */
+ol.proj.transform = function(coordinate, source, destination) {
+  var transformFn = ol.proj.getTransform(source, destination);
+  return transformFn(coordinate, undefined, coordinate.length);
+};
+
+
+/**
+ * Transforms an extent from source projection to destination projection.  This
+ * returns a new extent (and does not modify the original).
+ *
+ * @param {ol.Extent} extent The extent to transform.
+ * @param {ol.proj.ProjectionLike} source Source projection-like.
+ * @param {ol.proj.ProjectionLike} destination Destination projection-like.
+ * @return {ol.Extent} The transformed extent.
+ * @api stable
+ */
+ol.proj.transformExtent = function(extent, source, destination) {
+  var transformFn = ol.proj.getTransform(source, destination);
+  return ol.extent.applyTransform(extent, transformFn);
+};
+
+
+/**
+ * Transforms the given point to the destination projection.
+ *
+ * @param {ol.Coordinate} point Point.
+ * @param {ol.proj.Projection} sourceProjection Source projection.
+ * @param {ol.proj.Projection} destinationProjection Destination projection.
+ * @return {ol.Coordinate} Point.
+ */
+ol.proj.transformWithProjections = function(point, sourceProjection, destinationProjection) {
+  var transformFn = ol.proj.getTransformFromProjections(
+      sourceProjection, destinationProjection);
+  return transformFn(point);
+};
+
+goog.provide('ol.geom.Geometry');
+goog.provide('ol.geom.GeometryLayout');
+goog.provide('ol.geom.GeometryType');
+
+goog.require('goog.asserts');
+goog.require('ol.functions');
+goog.require('ol.Object');
+goog.require('ol.extent');
+goog.require('ol.proj');
+goog.require('ol.proj.Units');
+
+
+/**
+ * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
+ * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
+ * `'GeometryCollection'`, `'Circle'`.
+ * @enum {string}
+ * @api stable
+ */
+ol.geom.GeometryType = {
+  POINT: 'Point',
+  LINE_STRING: 'LineString',
+  LINEAR_RING: 'LinearRing',
+  POLYGON: 'Polygon',
+  MULTI_POINT: 'MultiPoint',
+  MULTI_LINE_STRING: 'MultiLineString',
+  MULTI_POLYGON: 'MultiPolygon',
+  GEOMETRY_COLLECTION: 'GeometryCollection',
+  CIRCLE: 'Circle'
+};
+
+
+/**
+ * The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z')
+ * or measure ('M') coordinate is available. Supported values are `'XY'`,
+ * `'XYZ'`, `'XYM'`, `'XYZM'`.
+ * @enum {string}
+ * @api stable
+ */
+ol.geom.GeometryLayout = {
+  XY: 'XY',
+  XYZ: 'XYZ',
+  XYM: 'XYM',
+  XYZM: 'XYZM'
+};
+
+
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for vector geometries.
+ *
+ * To get notified of changes to the geometry, register a listener for the
+ * generic `change` event on your geometry instance.
+ *
+ * @constructor
+ * @extends {ol.Object}
+ * @api stable
+ */
+ol.geom.Geometry = function() {
+
+  goog.base(this);
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.extent_ = ol.extent.createEmpty();
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.extentRevision_ = -1;
+
+  /**
+   * @protected
+   * @type {Object.<string, ol.geom.Geometry>}
+   */
+  this.simplifiedGeometryCache = {};
+
+  /**
+   * @protected
+   * @type {number}
+   */
+  this.simplifiedGeometryMaxMinSquaredTolerance = 0;
+
+  /**
+   * @protected
+   * @type {number}
+   */
+  this.simplifiedGeometryRevision = 0;
+
+};
+goog.inherits(ol.geom.Geometry, ol.Object);
+
+
+/**
+ * Make a complete copy of the geometry.
+ * @function
+ * @return {!ol.geom.Geometry} Clone.
+ */
+ol.geom.Geometry.prototype.clone = goog.abstractMethod;
+
+
+/**
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @param {ol.Coordinate} closestPoint Closest point.
+ * @param {number} minSquaredDistance Minimum squared distance.
+ * @return {number} Minimum squared distance.
+ */
+ol.geom.Geometry.prototype.closestPointXY = goog.abstractMethod;
+
+
+/**
+ * Return the closest point of the geometry to the passed point as
+ * {@link ol.Coordinate coordinate}.
+ * @param {ol.Coordinate} point Point.
+ * @param {ol.Coordinate=} opt_closestPoint Closest point.
+ * @return {ol.Coordinate} Closest point.
+ * @api stable
+ */
+ol.geom.Geometry.prototype.getClosestPoint = function(point, opt_closestPoint) {
+  var closestPoint = opt_closestPoint ? opt_closestPoint : [NaN, NaN];
+  this.closestPointXY(point[0], point[1], closestPoint, Infinity);
+  return closestPoint;
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @return {boolean} Contains coordinate.
+ */
+ol.geom.Geometry.prototype.containsCoordinate = function(coordinate) {
+  return this.containsXY(coordinate[0], coordinate[1]);
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @protected
+ * @return {ol.Extent} extent Extent.
+ */
+ol.geom.Geometry.prototype.computeExtent = goog.abstractMethod;
+
+
+/**
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @return {boolean} Contains (x, y).
+ */
+ol.geom.Geometry.prototype.containsXY = ol.functions.FALSE;
+
+
+/**
+ * Get the extent of the geometry.
+ * @param {ol.Extent=} opt_extent Extent.
+ * @return {ol.Extent} extent Extent.
+ * @api stable
+ */
+ol.geom.Geometry.prototype.getExtent = function(opt_extent) {
+  if (this.extentRevision_ != this.getRevision()) {
+    this.extent_ = this.computeExtent(this.extent_);
+    this.extentRevision_ = this.getRevision();
+  }
+  return ol.extent.returnOrUpdate(this.extent_, opt_extent);
+};
+
+
+/**
+ * Rotate the geometry around a given coordinate. This modifies the geometry
+ * coordinates in place.
+ * @param {number} angle Rotation angle in radians.
+ * @param {ol.Coordinate} anchor The rotation center.
+ * @api
+ * @function
+ */
+ol.geom.Geometry.prototype.rotate = goog.abstractMethod;
+
+
+/**
+ * Create a simplified version of this geometry.  For linestrings, this uses
+ * the the {@link
+ * https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
+ * Douglas Peucker} algorithm.  For polygons, a quantization-based
+ * simplification is used to preserve topology.
+ * @function
+ * @param {number} tolerance The tolerance distance for simplification.
+ * @return {ol.geom.Geometry} A new, simplified version of the original
+ *     geometry.
+ * @api
+ */
+ol.geom.Geometry.prototype.simplify = function(tolerance) {
+  return this.getSimplifiedGeometry(tolerance * tolerance);
+};
+
+
+/**
+ * Create a simplified version of this geometry using the Douglas Peucker
+ * algorithm.
+ * @see https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
+ * @function
+ * @param {number} squaredTolerance Squared tolerance.
+ * @return {ol.geom.Geometry} Simplified geometry.
+ */
+ol.geom.Geometry.prototype.getSimplifiedGeometry = goog.abstractMethod;
+
+
+/**
+ * Get the type of this geometry.
+ * @function
+ * @return {ol.geom.GeometryType} Geometry type.
+ */
+ol.geom.Geometry.prototype.getType = goog.abstractMethod;
+
+
+/**
+ * Apply a transform function to each coordinate of the geometry.
+ * The geometry is modified in place.
+ * If you do not want the geometry modified in place, first `clone()` it and
+ * then use this function on the clone.
+ * @function
+ * @param {ol.TransformFunction} transformFn Transform.
+ */
+ol.geom.Geometry.prototype.applyTransform = goog.abstractMethod;
+
+
+/**
+ * Test if the geometry and the passed extent intersect.
+ * @param {ol.Extent} extent Extent.
+ * @return {boolean} `true` if the geometry and the extent intersect.
+ * @function
+ */
+ol.geom.Geometry.prototype.intersectsExtent = goog.abstractMethod;
+
+
+/**
+ * Translate the geometry.  This modifies the geometry coordinates in place.  If
+ * instead you want a new geometry, first `clone()` this geometry.
+ * @param {number} deltaX Delta X.
+ * @param {number} deltaY Delta Y.
+ * @function
+ */
+ol.geom.Geometry.prototype.translate = goog.abstractMethod;
+
+
+/**
+ * Transform each coordinate of the geometry from one coordinate reference
+ * system to another. The geometry is modified in place.
+ * For example, a line will be transformed to a line and a circle to a circle.
+ * If you do not want the geometry modified in place, first `clone()` it and
+ * then use this function on the clone.
+ *
+ * @param {ol.proj.ProjectionLike} source The current projection.  Can be a
+ *     string identifier or a {@link ol.proj.Projection} object.
+ * @param {ol.proj.ProjectionLike} destination The desired projection.  Can be a
+ *     string identifier or a {@link ol.proj.Projection} object.
+ * @return {ol.geom.Geometry} This geometry.  Note that original geometry is
+ *     modified in place.
+ * @api stable
+ */
+ol.geom.Geometry.prototype.transform = function(source, destination) {
+  goog.asserts.assert(
+      ol.proj.get(source).getUnits() !== ol.proj.Units.TILE_PIXELS &&
+      ol.proj.get(destination).getUnits() !== ol.proj.Units.TILE_PIXELS,
+      'cannot transform geometries with TILE_PIXELS units');
+  this.applyTransform(ol.proj.getTransform(source, destination));
+  return this;
+};
+
 // Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -10408,2205 +12572,6 @@ goog.vec.Mat4.tmpVec4_ = [
  * @private
  */
 goog.vec.Mat4.tmpMat4_ = [goog.vec.Mat4.createFloat64()];
-
-goog.provide('ol.TransformFunction');
-
-
-/**
- * A transform function accepts an array of input coordinate values, an optional
- * output array, and an optional dimension (default should be 2).  The function
- * transforms the input coordinate values, populates the output array, and
- * returns the output array.
- *
- * @typedef {function(Array.<number>, Array.<number>=, number=): Array.<number>}
- * @api stable
- */
-ol.TransformFunction;
-
-goog.provide('ol.Extent');
-goog.provide('ol.extent');
-goog.provide('ol.extent.Corner');
-goog.provide('ol.extent.Relationship');
-
-goog.require('goog.asserts');
-goog.require('goog.vec.Mat4');
-goog.require('ol.Coordinate');
-goog.require('ol.Size');
-goog.require('ol.TransformFunction');
-
-
-/**
- * An array of numbers representing an extent: `[minx, miny, maxx, maxy]`.
- * @typedef {Array.<number>}
- * @api stable
- */
-ol.Extent;
-
-
-/**
- * Extent corner.
- * @enum {string}
- */
-ol.extent.Corner = {
-  BOTTOM_LEFT: 'bottom-left',
-  BOTTOM_RIGHT: 'bottom-right',
-  TOP_LEFT: 'top-left',
-  TOP_RIGHT: 'top-right'
-};
-
-
-/**
- * Relationship to an extent.
- * @enum {number}
- */
-ol.extent.Relationship = {
-  UNKNOWN: 0,
-  INTERSECTING: 1,
-  ABOVE: 2,
-  RIGHT: 4,
-  BELOW: 8,
-  LEFT: 16
-};
-
-
-/**
- * Build an extent that includes all given coordinates.
- *
- * @param {Array.<ol.Coordinate>} coordinates Coordinates.
- * @return {ol.Extent} Bounding extent.
- * @api stable
- */
-ol.extent.boundingExtent = function(coordinates) {
-  var extent = ol.extent.createEmpty();
-  for (var i = 0, ii = coordinates.length; i < ii; ++i) {
-    ol.extent.extendCoordinate(extent, coordinates[i]);
-  }
-  return extent;
-};
-
-
-/**
- * @param {Array.<number>} xs Xs.
- * @param {Array.<number>} ys Ys.
- * @param {ol.Extent=} opt_extent Destination extent.
- * @private
- * @return {ol.Extent} Extent.
- */
-ol.extent.boundingExtentXYs_ = function(xs, ys, opt_extent) {
-  goog.asserts.assert(xs.length > 0, 'xs length should be larger than 0');
-  goog.asserts.assert(ys.length > 0, 'ys length should be larger than 0');
-  var minX = Math.min.apply(null, xs);
-  var minY = Math.min.apply(null, ys);
-  var maxX = Math.max.apply(null, xs);
-  var maxY = Math.max.apply(null, ys);
-  return ol.extent.createOrUpdate(minX, minY, maxX, maxY, opt_extent);
-};
-
-
-/**
- * Return extent increased by the provided value.
- * @param {ol.Extent} extent Extent.
- * @param {number} value The amount by which the extent should be buffered.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- * @api stable
- */
-ol.extent.buffer = function(extent, value, opt_extent) {
-  if (opt_extent) {
-    opt_extent[0] = extent[0] - value;
-    opt_extent[1] = extent[1] - value;
-    opt_extent[2] = extent[2] + value;
-    opt_extent[3] = extent[3] + value;
-    return opt_extent;
-  } else {
-    return [
-      extent[0] - value,
-      extent[1] - value,
-      extent[2] + value,
-      extent[3] + value
-    ];
-  }
-};
-
-
-/**
- * Creates a clone of an extent.
- *
- * @param {ol.Extent} extent Extent to clone.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} The clone.
- */
-ol.extent.clone = function(extent, opt_extent) {
-  if (opt_extent) {
-    opt_extent[0] = extent[0];
-    opt_extent[1] = extent[1];
-    opt_extent[2] = extent[2];
-    opt_extent[3] = extent[3];
-    return opt_extent;
-  } else {
-    return extent.slice();
-  }
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} x X.
- * @param {number} y Y.
- * @return {number} Closest squared distance.
- */
-ol.extent.closestSquaredDistanceXY = function(extent, x, y) {
-  var dx, dy;
-  if (x < extent[0]) {
-    dx = extent[0] - x;
-  } else if (extent[2] < x) {
-    dx = x - extent[2];
-  } else {
-    dx = 0;
-  }
-  if (y < extent[1]) {
-    dy = extent[1] - y;
-  } else if (extent[3] < y) {
-    dy = y - extent[3];
-  } else {
-    dy = 0;
-  }
-  return dx * dx + dy * dy;
-};
-
-
-/**
- * Check if the passed coordinate is contained or on the edge of the extent.
- *
- * @param {ol.Extent} extent Extent.
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {boolean} The coordinate is contained in the extent.
- * @api stable
- */
-ol.extent.containsCoordinate = function(extent, coordinate) {
-  return ol.extent.containsXY(extent, coordinate[0], coordinate[1]);
-};
-
-
-/**
- * Check if one extent contains another.
- *
- * An extent is deemed contained if it lies completely within the other extent,
- * including if they share one or more edges.
- *
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent 2.
- * @return {boolean} The second extent is contained by or on the edge of the
- *     first.
- * @api stable
- */
-ol.extent.containsExtent = function(extent1, extent2) {
-  return extent1[0] <= extent2[0] && extent2[2] <= extent1[2] &&
-      extent1[1] <= extent2[1] && extent2[3] <= extent1[3];
-};
-
-
-/**
- * Check if the passed coordinate is contained or on the edge of the extent.
- *
- * @param {ol.Extent} extent Extent.
- * @param {number} x X coordinate.
- * @param {number} y Y coordinate.
- * @return {boolean} The x, y values are contained in the extent.
- * @api stable
- */
-ol.extent.containsXY = function(extent, x, y) {
-  return extent[0] <= x && x <= extent[2] && extent[1] <= y && y <= extent[3];
-};
-
-
-/**
- * Get the relationship between a coordinate and extent.
- * @param {ol.Extent} extent The extent.
- * @param {ol.Coordinate} coordinate The coordinate.
- * @return {number} The relationship (bitwise compare with
- *     ol.extent.Relationship).
- */
-ol.extent.coordinateRelationship = function(extent, coordinate) {
-  var minX = extent[0];
-  var minY = extent[1];
-  var maxX = extent[2];
-  var maxY = extent[3];
-  var x = coordinate[0];
-  var y = coordinate[1];
-  var relationship = ol.extent.Relationship.UNKNOWN;
-  if (x < minX) {
-    relationship = relationship | ol.extent.Relationship.LEFT;
-  } else if (x > maxX) {
-    relationship = relationship | ol.extent.Relationship.RIGHT;
-  }
-  if (y < minY) {
-    relationship = relationship | ol.extent.Relationship.BELOW;
-  } else if (y > maxY) {
-    relationship = relationship | ol.extent.Relationship.ABOVE;
-  }
-  if (relationship === ol.extent.Relationship.UNKNOWN) {
-    relationship = ol.extent.Relationship.INTERSECTING;
-  }
-  return relationship;
-};
-
-
-/**
- * Create an empty extent.
- * @return {ol.Extent} Empty extent.
- * @api stable
- */
-ol.extent.createEmpty = function() {
-  return [Infinity, Infinity, -Infinity, -Infinity];
-};
-
-
-/**
- * Create a new extent or update the provided extent.
- * @param {number} minX Minimum X.
- * @param {number} minY Minimum Y.
- * @param {number} maxX Maximum X.
- * @param {number} maxY Maximum Y.
- * @param {ol.Extent=} opt_extent Destination extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.createOrUpdate = function(minX, minY, maxX, maxY, opt_extent) {
-  if (opt_extent) {
-    opt_extent[0] = minX;
-    opt_extent[1] = minY;
-    opt_extent[2] = maxX;
-    opt_extent[3] = maxY;
-    return opt_extent;
-  } else {
-    return [minX, minY, maxX, maxY];
-  }
-};
-
-
-/**
- * Create a new empty extent or make the provided one empty.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.createOrUpdateEmpty = function(opt_extent) {
-  return ol.extent.createOrUpdate(
-      Infinity, Infinity, -Infinity, -Infinity, opt_extent);
-};
-
-
-/**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.createOrUpdateFromCoordinate = function(coordinate, opt_extent) {
-  var x = coordinate[0];
-  var y = coordinate[1];
-  return ol.extent.createOrUpdate(x, y, x, y, opt_extent);
-};
-
-
-/**
- * @param {Array.<ol.Coordinate>} coordinates Coordinates.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.createOrUpdateFromCoordinates = function(coordinates, opt_extent) {
-  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
-  return ol.extent.extendCoordinates(extent, coordinates);
-};
-
-
-/**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.createOrUpdateFromFlatCoordinates = function(flatCoordinates, offset, end, stride, opt_extent) {
-  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
-  return ol.extent.extendFlatCoordinates(
-      extent, flatCoordinates, offset, end, stride);
-};
-
-
-/**
- * @param {Array.<Array.<ol.Coordinate>>} rings Rings.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.createOrUpdateFromRings = function(rings, opt_extent) {
-  var extent = ol.extent.createOrUpdateEmpty(opt_extent);
-  return ol.extent.extendRings(extent, rings);
-};
-
-
-/**
- * Empty an extent in place.
- * @param {ol.Extent} extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.empty = function(extent) {
-  extent[0] = extent[1] = Infinity;
-  extent[2] = extent[3] = -Infinity;
-  return extent;
-};
-
-
-/**
- * Determine if two extents are equivalent.
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent 2.
- * @return {boolean} The two extents are equivalent.
- * @api stable
- */
-ol.extent.equals = function(extent1, extent2) {
-  return extent1[0] == extent2[0] && extent1[2] == extent2[2] &&
-      extent1[1] == extent2[1] && extent1[3] == extent2[3];
-};
-
-
-/**
- * Modify an extent to include another extent.
- * @param {ol.Extent} extent1 The extent to be modified.
- * @param {ol.Extent} extent2 The extent that will be included in the first.
- * @return {ol.Extent} A reference to the first (extended) extent.
- * @api stable
- */
-ol.extent.extend = function(extent1, extent2) {
-  if (extent2[0] < extent1[0]) {
-    extent1[0] = extent2[0];
-  }
-  if (extent2[2] > extent1[2]) {
-    extent1[2] = extent2[2];
-  }
-  if (extent2[1] < extent1[1]) {
-    extent1[1] = extent2[1];
-  }
-  if (extent2[3] > extent1[3]) {
-    extent1[3] = extent2[3];
-  }
-  return extent1;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {ol.Coordinate} coordinate Coordinate.
- */
-ol.extent.extendCoordinate = function(extent, coordinate) {
-  if (coordinate[0] < extent[0]) {
-    extent[0] = coordinate[0];
-  }
-  if (coordinate[0] > extent[2]) {
-    extent[2] = coordinate[0];
-  }
-  if (coordinate[1] < extent[1]) {
-    extent[1] = coordinate[1];
-  }
-  if (coordinate[1] > extent[3]) {
-    extent[3] = coordinate[1];
-  }
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {Array.<ol.Coordinate>} coordinates Coordinates.
- * @return {ol.Extent} Extent.
- */
-ol.extent.extendCoordinates = function(extent, coordinates) {
-  var i, ii;
-  for (i = 0, ii = coordinates.length; i < ii; ++i) {
-    ol.extent.extendCoordinate(extent, coordinates[i]);
-  }
-  return extent;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
- * @return {ol.Extent} Extent.
- */
-ol.extent.extendFlatCoordinates = function(extent, flatCoordinates, offset, end, stride) {
-  for (; offset < end; offset += stride) {
-    ol.extent.extendXY(
-        extent, flatCoordinates[offset], flatCoordinates[offset + 1]);
-  }
-  return extent;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {Array.<Array.<ol.Coordinate>>} rings Rings.
- * @return {ol.Extent} Extent.
- */
-ol.extent.extendRings = function(extent, rings) {
-  var i, ii;
-  for (i = 0, ii = rings.length; i < ii; ++i) {
-    ol.extent.extendCoordinates(extent, rings[i]);
-  }
-  return extent;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} x X.
- * @param {number} y Y.
- */
-ol.extent.extendXY = function(extent, x, y) {
-  extent[0] = Math.min(extent[0], x);
-  extent[1] = Math.min(extent[1], y);
-  extent[2] = Math.max(extent[2], x);
-  extent[3] = Math.max(extent[3], y);
-};
-
-
-/**
- * This function calls `callback` for each corner of the extent. If the
- * callback returns a truthy value the function returns that value
- * immediately. Otherwise the function returns `false`.
- * @param {ol.Extent} extent Extent.
- * @param {function(this:T, ol.Coordinate): S} callback Callback.
- * @param {T=} opt_this Value to use as `this` when executing `callback`.
- * @return {S|boolean} Value.
- * @template S, T
- */
-ol.extent.forEachCorner = function(extent, callback, opt_this) {
-  var val;
-  val = callback.call(opt_this, ol.extent.getBottomLeft(extent));
-  if (val) {
-    return val;
-  }
-  val = callback.call(opt_this, ol.extent.getBottomRight(extent));
-  if (val) {
-    return val;
-  }
-  val = callback.call(opt_this, ol.extent.getTopRight(extent));
-  if (val) {
-    return val;
-  }
-  val = callback.call(opt_this, ol.extent.getTopLeft(extent));
-  if (val) {
-    return val;
-  }
-  return false;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @return {number} Area.
- */
-ol.extent.getArea = function(extent) {
-  var area = 0;
-  if (!ol.extent.isEmpty(extent)) {
-    area = ol.extent.getWidth(extent) * ol.extent.getHeight(extent);
-  }
-  return area;
-};
-
-
-/**
- * Get the bottom left coordinate of an extent.
- * @param {ol.Extent} extent Extent.
- * @return {ol.Coordinate} Bottom left coordinate.
- * @api stable
- */
-ol.extent.getBottomLeft = function(extent) {
-  return [extent[0], extent[1]];
-};
-
-
-/**
- * Get the bottom right coordinate of an extent.
- * @param {ol.Extent} extent Extent.
- * @return {ol.Coordinate} Bottom right coordinate.
- * @api stable
- */
-ol.extent.getBottomRight = function(extent) {
-  return [extent[2], extent[1]];
-};
-
-
-/**
- * Get the center coordinate of an extent.
- * @param {ol.Extent} extent Extent.
- * @return {ol.Coordinate} Center.
- * @api stable
- */
-ol.extent.getCenter = function(extent) {
-  return [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
-};
-
-
-/**
- * Get a corner coordinate of an extent.
- * @param {ol.Extent} extent Extent.
- * @param {ol.extent.Corner} corner Corner.
- * @return {ol.Coordinate} Corner coordinate.
- */
-ol.extent.getCorner = function(extent, corner) {
-  var coordinate;
-  if (corner === ol.extent.Corner.BOTTOM_LEFT) {
-    coordinate = ol.extent.getBottomLeft(extent);
-  } else if (corner === ol.extent.Corner.BOTTOM_RIGHT) {
-    coordinate = ol.extent.getBottomRight(extent);
-  } else if (corner === ol.extent.Corner.TOP_LEFT) {
-    coordinate = ol.extent.getTopLeft(extent);
-  } else if (corner === ol.extent.Corner.TOP_RIGHT) {
-    coordinate = ol.extent.getTopRight(extent);
-  } else {
-    goog.asserts.fail('Invalid corner: %s', corner);
-  }
-  goog.asserts.assert(coordinate, 'coordinate should be defined');
-  return coordinate;
-};
-
-
-/**
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent 2.
- * @return {number} Enlarged area.
- */
-ol.extent.getEnlargedArea = function(extent1, extent2) {
-  var minX = Math.min(extent1[0], extent2[0]);
-  var minY = Math.min(extent1[1], extent2[1]);
-  var maxX = Math.max(extent1[2], extent2[2]);
-  var maxY = Math.max(extent1[3], extent2[3]);
-  return (maxX - minX) * (maxY - minY);
-};
-
-
-/**
- * @param {ol.Coordinate} center Center.
- * @param {number} resolution Resolution.
- * @param {number} rotation Rotation.
- * @param {ol.Size} size Size.
- * @param {ol.Extent=} opt_extent Destination extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.getForViewAndSize = function(center, resolution, rotation, size, opt_extent) {
-  var dx = resolution * size[0] / 2;
-  var dy = resolution * size[1] / 2;
-  var cosRotation = Math.cos(rotation);
-  var sinRotation = Math.sin(rotation);
-  var xCos = dx * cosRotation;
-  var xSin = dx * sinRotation;
-  var yCos = dy * cosRotation;
-  var ySin = dy * sinRotation;
-  var x = center[0];
-  var y = center[1];
-  var x0 = x - xCos + ySin;
-  var x1 = x - xCos - ySin;
-  var x2 = x + xCos - ySin;
-  var x3 = x + xCos + ySin;
-  var y0 = y - xSin - yCos;
-  var y1 = y - xSin + yCos;
-  var y2 = y + xSin + yCos;
-  var y3 = y + xSin - yCos;
-  return ol.extent.createOrUpdate(
-      Math.min(x0, x1, x2, x3), Math.min(y0, y1, y2, y3),
-      Math.max(x0, x1, x2, x3), Math.max(y0, y1, y2, y3),
-      opt_extent);
-};
-
-
-/**
- * Get the height of an extent.
- * @param {ol.Extent} extent Extent.
- * @return {number} Height.
- * @api stable
- */
-ol.extent.getHeight = function(extent) {
-  return extent[3] - extent[1];
-};
-
-
-/**
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent 2.
- * @return {number} Intersection area.
- */
-ol.extent.getIntersectionArea = function(extent1, extent2) {
-  var intersection = ol.extent.getIntersection(extent1, extent2);
-  return ol.extent.getArea(intersection);
-};
-
-
-/**
- * Get the intersection of two extents.
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent 2.
- * @param {ol.Extent=} opt_extent Optional extent to populate with intersection.
- * @return {ol.Extent} Intersecting extent.
- * @api stable
- */
-ol.extent.getIntersection = function(extent1, extent2, opt_extent) {
-  var intersection = opt_extent ? opt_extent : ol.extent.createEmpty();
-  if (ol.extent.intersects(extent1, extent2)) {
-    if (extent1[0] > extent2[0]) {
-      intersection[0] = extent1[0];
-    } else {
-      intersection[0] = extent2[0];
-    }
-    if (extent1[1] > extent2[1]) {
-      intersection[1] = extent1[1];
-    } else {
-      intersection[1] = extent2[1];
-    }
-    if (extent1[2] < extent2[2]) {
-      intersection[2] = extent1[2];
-    } else {
-      intersection[2] = extent2[2];
-    }
-    if (extent1[3] < extent2[3]) {
-      intersection[3] = extent1[3];
-    } else {
-      intersection[3] = extent2[3];
-    }
-  }
-  return intersection;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @return {number} Margin.
- */
-ol.extent.getMargin = function(extent) {
-  return ol.extent.getWidth(extent) + ol.extent.getHeight(extent);
-};
-
-
-/**
- * Get the size (width, height) of an extent.
- * @param {ol.Extent} extent The extent.
- * @return {ol.Size} The extent size.
- * @api stable
- */
-ol.extent.getSize = function(extent) {
-  return [extent[2] - extent[0], extent[3] - extent[1]];
-};
-
-
-/**
- * Get the top left coordinate of an extent.
- * @param {ol.Extent} extent Extent.
- * @return {ol.Coordinate} Top left coordinate.
- * @api stable
- */
-ol.extent.getTopLeft = function(extent) {
-  return [extent[0], extent[3]];
-};
-
-
-/**
- * Get the top right coordinate of an extent.
- * @param {ol.Extent} extent Extent.
- * @return {ol.Coordinate} Top right coordinate.
- * @api stable
- */
-ol.extent.getTopRight = function(extent) {
-  return [extent[2], extent[3]];
-};
-
-
-/**
- * Get the width of an extent.
- * @param {ol.Extent} extent Extent.
- * @return {number} Width.
- * @api stable
- */
-ol.extent.getWidth = function(extent) {
-  return extent[2] - extent[0];
-};
-
-
-/**
- * Determine if one extent intersects another.
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent.
- * @return {boolean} The two extents intersect.
- * @api stable
- */
-ol.extent.intersects = function(extent1, extent2) {
-  return extent1[0] <= extent2[2] &&
-      extent1[2] >= extent2[0] &&
-      extent1[1] <= extent2[3] &&
-      extent1[3] >= extent2[1];
-};
-
-
-/**
- * Determine if an extent is empty.
- * @param {ol.Extent} extent Extent.
- * @return {boolean} Is empty.
- * @api stable
- */
-ol.extent.isEmpty = function(extent) {
-  return extent[2] < extent[0] || extent[3] < extent[1];
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @return {boolean} Is infinite.
- */
-ol.extent.isInfinite = function(extent) {
-  return extent[0] == -Infinity || extent[1] == -Infinity ||
-      extent[2] == Infinity || extent[3] == Infinity;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {ol.Coordinate} Coordinate.
- */
-ol.extent.normalize = function(extent, coordinate) {
-  return [
-    (coordinate[0] - extent[0]) / (extent[2] - extent[0]),
-    (coordinate[1] - extent[1]) / (extent[3] - extent[1])
-  ];
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} Extent.
- */
-ol.extent.returnOrUpdate = function(extent, opt_extent) {
-  if (opt_extent) {
-    opt_extent[0] = extent[0];
-    opt_extent[1] = extent[1];
-    opt_extent[2] = extent[2];
-    opt_extent[3] = extent[3];
-    return opt_extent;
-  } else {
-    return extent;
-  }
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} value Value.
- */
-ol.extent.scaleFromCenter = function(extent, value) {
-  var deltaX = ((extent[2] - extent[0]) / 2) * (value - 1);
-  var deltaY = ((extent[3] - extent[1]) / 2) * (value - 1);
-  extent[0] -= deltaX;
-  extent[2] += deltaX;
-  extent[1] -= deltaY;
-  extent[3] += deltaY;
-};
-
-
-/**
- * Determine if the segment between two coordinates intersects (crosses,
- * touches, or is contained by) the provided extent.
- * @param {ol.Extent} extent The extent.
- * @param {ol.Coordinate} start Segment start coordinate.
- * @param {ol.Coordinate} end Segment end coordinate.
- * @return {boolean} The segment intersects the extent.
- */
-ol.extent.intersectsSegment = function(extent, start, end) {
-  var intersects = false;
-  var startRel = ol.extent.coordinateRelationship(extent, start);
-  var endRel = ol.extent.coordinateRelationship(extent, end);
-  if (startRel === ol.extent.Relationship.INTERSECTING ||
-      endRel === ol.extent.Relationship.INTERSECTING) {
-    intersects = true;
-  } else {
-    var minX = extent[0];
-    var minY = extent[1];
-    var maxX = extent[2];
-    var maxY = extent[3];
-    var startX = start[0];
-    var startY = start[1];
-    var endX = end[0];
-    var endY = end[1];
-    var slope = (endY - startY) / (endX - startX);
-    var x, y;
-    if (!!(endRel & ol.extent.Relationship.ABOVE) &&
-        !(startRel & ol.extent.Relationship.ABOVE)) {
-      // potentially intersects top
-      x = endX - ((endY - maxY) / slope);
-      intersects = x >= minX && x <= maxX;
-    }
-    if (!intersects && !!(endRel & ol.extent.Relationship.RIGHT) &&
-        !(startRel & ol.extent.Relationship.RIGHT)) {
-      // potentially intersects right
-      y = endY - ((endX - maxX) * slope);
-      intersects = y >= minY && y <= maxY;
-    }
-    if (!intersects && !!(endRel & ol.extent.Relationship.BELOW) &&
-        !(startRel & ol.extent.Relationship.BELOW)) {
-      // potentially intersects bottom
-      x = endX - ((endY - minY) / slope);
-      intersects = x >= minX && x <= maxX;
-    }
-    if (!intersects && !!(endRel & ol.extent.Relationship.LEFT) &&
-        !(startRel & ol.extent.Relationship.LEFT)) {
-      // potentially intersects left
-      y = endY - ((endX - minX) * slope);
-      intersects = y >= minY && y <= maxY;
-    }
-
-  }
-  return intersects;
-};
-
-
-/**
- * @param {ol.Extent} extent1 Extent 1.
- * @param {ol.Extent} extent2 Extent 2.
- * @return {boolean} Touches.
- */
-ol.extent.touches = function(extent1, extent2) {
-  var intersects = ol.extent.intersects(extent1, extent2);
-  return intersects &&
-      (extent1[0] == extent2[2] || extent1[2] == extent2[0] ||
-       extent1[1] == extent2[3] || extent1[3] == extent2[1]);
-};
-
-
-/**
- * Apply a transform function to the extent.
- * @param {ol.Extent} extent Extent.
- * @param {ol.TransformFunction} transformFn Transform function.  Called with
- * [minX, minY, maxX, maxY] extent coordinates.
- * @param {ol.Extent=} opt_extent Destination extent.
- * @return {ol.Extent} Extent.
- * @api stable
- */
-ol.extent.applyTransform = function(extent, transformFn, opt_extent) {
-  var coordinates = [
-    extent[0], extent[1],
-    extent[0], extent[3],
-    extent[2], extent[1],
-    extent[2], extent[3]
-  ];
-  transformFn(coordinates, coordinates, 2);
-  var xs = [coordinates[0], coordinates[2], coordinates[4], coordinates[6]];
-  var ys = [coordinates[1], coordinates[3], coordinates[5], coordinates[7]];
-  return ol.extent.boundingExtentXYs_(xs, ys, opt_extent);
-};
-
-
-/**
- * Apply a 2d transform to an extent.
- * @param {ol.Extent} extent Input extent.
- * @param {goog.vec.Mat4.Number} transform The transform matrix.
- * @param {ol.Extent=} opt_extent Optional extent for return values.
- * @return {ol.Extent} The transformed extent.
- */
-ol.extent.transform2D = function(extent, transform, opt_extent) {
-  var dest = opt_extent ? opt_extent : [];
-  var m00 = goog.vec.Mat4.getElement(transform, 0, 0);
-  var m10 = goog.vec.Mat4.getElement(transform, 1, 0);
-  var m01 = goog.vec.Mat4.getElement(transform, 0, 1);
-  var m11 = goog.vec.Mat4.getElement(transform, 1, 1);
-  var m03 = goog.vec.Mat4.getElement(transform, 0, 3);
-  var m13 = goog.vec.Mat4.getElement(transform, 1, 3);
-  var xi = [0, 2, 0, 2];
-  var yi = [1, 1, 3, 3];
-  var xs = [];
-  var ys = [];
-  var i, x, y;
-  for (i = 0; i < 4; ++i) {
-    x = extent[xi[i]];
-    y = extent[yi[i]];
-    xs[i] = m00 * x + m01 * y + m03;
-    ys[i] = m10 * x + m11 * y + m13;
-  }
-  dest[0] = Math.min.apply(null, xs);
-  dest[1] = Math.min.apply(null, ys);
-  dest[2] = Math.max.apply(null, xs);
-  dest[3] = Math.max.apply(null, ys);
-  return dest;
-};
-
-goog.provide('ol.functions');
-
-/**
- * Always returns true.
- * @returns {boolean} true.
- */
-ol.functions.TRUE = function() {
-  return true;
-};
-
-/**
- * Always returns false.
- * @returns {boolean} false.
- */
-ol.functions.FALSE = function() {
-  return false;
-};
-
-/**
- * @license
- * Latitude/longitude spherical geodesy formulae taken from
- * http://www.movable-type.co.uk/scripts/latlong.html
- * Licensed under CC-BY-3.0.
- */
-
-goog.provide('ol.Sphere');
-
-goog.require('ol.math');
-
-
-/**
- * @classdesc
- * Class to create objects that can be used with {@link
- * ol.geom.Polygon.circular}.
- *
- * For example to create a sphere whose radius is equal to the semi-major
- * axis of the WGS84 ellipsoid:
- *
- * ```js
- * var wgs84Sphere= new ol.Sphere(6378137);
- * ```
- *
- * @constructor
- * @param {number} radius Radius.
- * @api
- */
-ol.Sphere = function(radius) {
-
-  /**
-   * @type {number}
-   */
-  this.radius = radius;
-
-};
-
-
-/**
- * Returns the geodesic area for a list of coordinates.
- *
- * [Reference](http://trs-new.jpl.nasa.gov/dspace/handle/2014/40409)
- * Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for
- * Polygons on a Sphere", JPL Publication 07-03, Jet Propulsion
- * Laboratory, Pasadena, CA, June 2007
- *
- * @param {Array.<ol.Coordinate>} coordinates List of coordinates of a linear
- * ring. If the ring is oriented clockwise, the area will be positive,
- * otherwise it will be negative.
- * @return {number} Area.
- * @api
- */
-ol.Sphere.prototype.geodesicArea = function(coordinates) {
-  var area = 0, len = coordinates.length;
-  var x1 = coordinates[len - 1][0];
-  var y1 = coordinates[len - 1][1];
-  for (var i = 0; i < len; i++) {
-    var x2 = coordinates[i][0], y2 = coordinates[i][1];
-    area += ol.math.toRadians(x2 - x1) *
-        (2 + Math.sin(ol.math.toRadians(y1)) +
-        Math.sin(ol.math.toRadians(y2)));
-    x1 = x2;
-    y1 = y2;
-  }
-  return area * this.radius * this.radius / 2.0;
-};
-
-
-/**
- * Returns the distance from c1 to c2 using the haversine formula.
- *
- * @param {ol.Coordinate} c1 Coordinate 1.
- * @param {ol.Coordinate} c2 Coordinate 2.
- * @return {number} Haversine distance.
- * @api
- */
-ol.Sphere.prototype.haversineDistance = function(c1, c2) {
-  var lat1 = ol.math.toRadians(c1[1]);
-  var lat2 = ol.math.toRadians(c2[1]);
-  var deltaLatBy2 = (lat2 - lat1) / 2;
-  var deltaLonBy2 = ol.math.toRadians(c2[0] - c1[0]) / 2;
-  var a = Math.sin(deltaLatBy2) * Math.sin(deltaLatBy2) +
-      Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) *
-      Math.cos(lat1) * Math.cos(lat2);
-  return 2 * this.radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-};
-
-
-/**
- * Returns the coordinate at the given distance and bearing from `c1`.
- *
- * @param {ol.Coordinate} c1 The origin point (`[lon, lat]` in degrees).
- * @param {number} distance The great-circle distance between the origin
- *     point and the target point.
- * @param {number} bearing The bearing (in radians).
- * @return {ol.Coordinate} The target point.
- */
-ol.Sphere.prototype.offset = function(c1, distance, bearing) {
-  var lat1 = ol.math.toRadians(c1[1]);
-  var lon1 = ol.math.toRadians(c1[0]);
-  var dByR = distance / this.radius;
-  var lat = Math.asin(
-      Math.sin(lat1) * Math.cos(dByR) +
-      Math.cos(lat1) * Math.sin(dByR) * Math.cos(bearing));
-  var lon = lon1 + Math.atan2(
-      Math.sin(bearing) * Math.sin(dByR) * Math.cos(lat1),
-      Math.cos(dByR) - Math.sin(lat1) * Math.sin(lat));
-  return [ol.math.toDegrees(lon), ol.math.toDegrees(lat)];
-};
-
-goog.provide('ol.sphere.NORMAL');
-
-goog.require('ol.Sphere');
-
-
-/**
- * The normal sphere.
- * @const
- * @type {ol.Sphere}
- */
-ol.sphere.NORMAL = new ol.Sphere(6370997);
-
-goog.provide('ol.proj');
-goog.provide('ol.proj.METERS_PER_UNIT');
-goog.provide('ol.proj.Projection');
-goog.provide('ol.proj.ProjectionLike');
-goog.provide('ol.proj.Units');
-
-goog.require('goog.asserts');
-goog.require('ol');
-goog.require('ol.Extent');
-goog.require('ol.TransformFunction');
-goog.require('ol.extent');
-goog.require('ol.object');
-goog.require('ol.sphere.NORMAL');
-
-
-/**
- * A projection as {@link ol.proj.Projection}, SRS identifier string or
- * undefined.
- * @typedef {ol.proj.Projection|string|undefined} ol.proj.ProjectionLike
- * @api stable
- */
-ol.proj.ProjectionLike;
-
-
-/**
- * Projection units: `'degrees'`, `'ft'`, `'m'`, `'pixels'`, `'tile-pixels'` or
- * `'us-ft'`.
- * @enum {string}
- * @api stable
- */
-ol.proj.Units = {
-  DEGREES: 'degrees',
-  FEET: 'ft',
-  METERS: 'm',
-  PIXELS: 'pixels',
-  TILE_PIXELS: 'tile-pixels',
-  USFEET: 'us-ft'
-};
-
-
-/**
- * Meters per unit lookup table.
- * @const
- * @type {Object.<ol.proj.Units, number>}
- * @api stable
- */
-ol.proj.METERS_PER_UNIT = {};
-ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] =
-    2 * Math.PI * ol.sphere.NORMAL.radius / 360;
-ol.proj.METERS_PER_UNIT[ol.proj.Units.FEET] = 0.3048;
-ol.proj.METERS_PER_UNIT[ol.proj.Units.METERS] = 1;
-ol.proj.METERS_PER_UNIT[ol.proj.Units.USFEET] = 1200 / 3937;
-
-
-/**
- * @classdesc
- * Projection definition class. One of these is created for each projection
- * supported in the application and stored in the {@link ol.proj} namespace.
- * You can use these in applications, but this is not required, as API params
- * and options use {@link ol.proj.ProjectionLike} which means the simple string
- * code will suffice.
- *
- * You can use {@link ol.proj.get} to retrieve the object for a particular
- * projection.
- *
- * The library includes definitions for `EPSG:4326` and `EPSG:3857`, together
- * with the following aliases:
- * * `EPSG:4326`: CRS:84, urn:ogc:def:crs:EPSG:6.6:4326,
- *     urn:ogc:def:crs:OGC:1.3:CRS84, urn:ogc:def:crs:OGC:2:84,
- *     http://www.opengis.net/gml/srs/epsg.xml#4326,
- *     urn:x-ogc:def:crs:EPSG:4326
- * * `EPSG:3857`: EPSG:102100, EPSG:102113, EPSG:900913,
- *     urn:ogc:def:crs:EPSG:6.18:3:3857,
- *     http://www.opengis.net/gml/srs/epsg.xml#3857
- *
- * If you use proj4js, aliases can be added using `proj4.defs()`; see
- * [documentation](https://github.com/proj4js/proj4js). To set an alternative
- * namespace for proj4, use {@link ol.proj.setProj4}.
- *
- * @constructor
- * @param {olx.ProjectionOptions} options Projection options.
- * @struct
- * @api stable
- */
-ol.proj.Projection = function(options) {
-
-  /**
-   * @private
-   * @type {string}
-   */
-  this.code_ = options.code;
-
-  /**
-   * @private
-   * @type {ol.proj.Units}
-   */
-  this.units_ = /** @type {ol.proj.Units} */ (options.units);
-
-  /**
-   * @private
-   * @type {ol.Extent}
-   */
-  this.extent_ = options.extent !== undefined ? options.extent : null;
-
-  /**
-   * @private
-   * @type {ol.Extent}
-   */
-  this.worldExtent_ = options.worldExtent !== undefined ?
-      options.worldExtent : null;
-
-  /**
-   * @private
-   * @type {string}
-   */
-  this.axisOrientation_ = options.axisOrientation !== undefined ?
-      options.axisOrientation : 'enu';
-
-  /**
-   * @private
-   * @type {boolean}
-   */
-  this.global_ = options.global !== undefined ? options.global : false;
-
-
-  /**
-   * @private
-   * @type {boolean}
-   */
-  this.canWrapX_ = !!(this.global_ && this.extent_);
-
-  /**
-  * @private
-  * @type {function(number, ol.Coordinate):number}
-  */
-  this.getPointResolutionFunc_ = options.getPointResolution !== undefined ?
-      options.getPointResolution : this.getPointResolution_;
-
-  /**
-   * @private
-   * @type {ol.tilegrid.TileGrid}
-   */
-  this.defaultTileGrid_ = null;
-
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-  this.metersPerUnit_ = options.metersPerUnit;
-
-  var projections = ol.proj.projections_;
-  var code = options.code;
-  goog.asserts.assert(code !== undefined,
-      'Option "code" is required for constructing instance');
-  if (ol.ENABLE_PROJ4JS) {
-    var proj4js = ol.proj.proj4_ || ol.global['proj4'];
-    if (typeof proj4js == 'function' && projections[code] === undefined) {
-      var def = proj4js.defs(code);
-      if (def !== undefined) {
-        if (def.axis !== undefined && options.axisOrientation === undefined) {
-          this.axisOrientation_ = def.axis;
-        }
-        if (options.metersPerUnit === undefined) {
-          this.metersPerUnit_ = def.to_meter;
-        }
-        if (options.units === undefined) {
-          this.units_ = def.units;
-        }
-        var currentCode, currentDef, currentProj, proj4Transform;
-        for (currentCode in projections) {
-          currentDef = proj4js.defs(currentCode);
-          if (currentDef !== undefined) {
-            currentProj = ol.proj.get(currentCode);
-            if (currentDef === def) {
-              ol.proj.addEquivalentProjections([currentProj, this]);
-            } else {
-              proj4Transform = proj4js(currentCode, code);
-              ol.proj.addCoordinateTransforms(currentProj, this,
-                  proj4Transform.forward, proj4Transform.inverse);
-            }
-          }
-        }
-      }
-    }
-  }
-
-};
-
-
-/**
- * @return {boolean} The projection is suitable for wrapping the x-axis
- */
-ol.proj.Projection.prototype.canWrapX = function() {
-  return this.canWrapX_;
-};
-
-
-/**
- * Get the code for this projection, e.g. 'EPSG:4326'.
- * @return {string} Code.
- * @api stable
- */
-ol.proj.Projection.prototype.getCode = function() {
-  return this.code_;
-};
-
-
-/**
- * Get the validity extent for this projection.
- * @return {ol.Extent} Extent.
- * @api stable
- */
-ol.proj.Projection.prototype.getExtent = function() {
-  return this.extent_;
-};
-
-
-/**
- * Get the units of this projection.
- * @return {ol.proj.Units} Units.
- * @api stable
- */
-ol.proj.Projection.prototype.getUnits = function() {
-  return this.units_;
-};
-
-
-/**
- * Get the amount of meters per unit of this projection.  If the projection is
- * not configured with `metersPerUnit` or a units identifier, the return is
- * `undefined`.
- * @return {number|undefined} Meters.
- * @api stable
- */
-ol.proj.Projection.prototype.getMetersPerUnit = function() {
-  return this.metersPerUnit_ || ol.proj.METERS_PER_UNIT[this.units_];
-};
-
-
-/**
- * Get the world extent for this projection.
- * @return {ol.Extent} Extent.
- * @api
- */
-ol.proj.Projection.prototype.getWorldExtent = function() {
-  return this.worldExtent_;
-};
-
-
-/**
- * Get the axis orientation of this projection.
- * Example values are:
- * enu - the default easting, northing, elevation.
- * neu - northing, easting, up - useful for "lat/long" geographic coordinates,
- *     or south orientated transverse mercator.
- * wnu - westing, northing, up - some planetary coordinate systems have
- *     "west positive" coordinate systems
- * @return {string} Axis orientation.
- */
-ol.proj.Projection.prototype.getAxisOrientation = function() {
-  return this.axisOrientation_;
-};
-
-
-/**
- * Is this projection a global projection which spans the whole world?
- * @return {boolean} Whether the projection is global.
- * @api stable
- */
-ol.proj.Projection.prototype.isGlobal = function() {
-  return this.global_;
-};
-
-
-/**
-* Set if the projection is a global projection which spans the whole world
-* @param {boolean} global Whether the projection is global.
-* @api stable
-*/
-ol.proj.Projection.prototype.setGlobal = function(global) {
-  this.global_ = global;
-  this.canWrapX_ = !!(global && this.extent_);
-};
-
-
-/**
- * @return {ol.tilegrid.TileGrid} The default tile grid.
- */
-ol.proj.Projection.prototype.getDefaultTileGrid = function() {
-  return this.defaultTileGrid_;
-};
-
-
-/**
- * @param {ol.tilegrid.TileGrid} tileGrid The default tile grid.
- */
-ol.proj.Projection.prototype.setDefaultTileGrid = function(tileGrid) {
-  this.defaultTileGrid_ = tileGrid;
-};
-
-
-/**
- * Set the validity extent for this projection.
- * @param {ol.Extent} extent Extent.
- * @api stable
- */
-ol.proj.Projection.prototype.setExtent = function(extent) {
-  this.extent_ = extent;
-  this.canWrapX_ = !!(this.global_ && extent);
-};
-
-
-/**
- * Set the world extent for this projection.
- * @param {ol.Extent} worldExtent World extent
- *     [minlon, minlat, maxlon, maxlat].
- * @api
- */
-ol.proj.Projection.prototype.setWorldExtent = function(worldExtent) {
-  this.worldExtent_ = worldExtent;
-};
-
-
-/**
-* Set the getPointResolution function for this projection.
-* @param {function(number, ol.Coordinate):number} func Function
-* @api
-*/
-ol.proj.Projection.prototype.setGetPointResolution = function(func) {
-  this.getPointResolutionFunc_ = func;
-};
-
-
-/**
-* Default version.
-* Get the resolution of the point in degrees or distance units.
-* For projections with degrees as the unit this will simply return the
-* provided resolution. For other projections the point resolution is
-* estimated by transforming the 'point' pixel to EPSG:4326,
-* measuring its width and height on the normal sphere,
-* and taking the average of the width and height.
-* @param {number} resolution Nominal resolution in projection units.
-* @param {ol.Coordinate} point Point to find adjusted resolution at.
-* @return {number} Point resolution at point in projection units.
-* @private
-*/
-ol.proj.Projection.prototype.getPointResolution_ = function(resolution, point) {
-  var units = this.getUnits();
-  if (units == ol.proj.Units.DEGREES) {
-    return resolution;
-  } else {
-    // Estimate point resolution by transforming the center pixel to EPSG:4326,
-    // measuring its width and height on the normal sphere, and taking the
-    // average of the width and height.
-    var toEPSG4326 = ol.proj.getTransformFromProjections(
-        this, ol.proj.get('EPSG:4326'));
-    var vertices = [
-      point[0] - resolution / 2, point[1],
-      point[0] + resolution / 2, point[1],
-      point[0], point[1] - resolution / 2,
-      point[0], point[1] + resolution / 2
-    ];
-    vertices = toEPSG4326(vertices, vertices, 2);
-    var width = ol.sphere.NORMAL.haversineDistance(
-        vertices.slice(0, 2), vertices.slice(2, 4));
-    var height = ol.sphere.NORMAL.haversineDistance(
-        vertices.slice(4, 6), vertices.slice(6, 8));
-    var pointResolution = (width + height) / 2;
-    var metersPerUnit = this.getMetersPerUnit();
-    if (metersPerUnit !== undefined) {
-      pointResolution /= metersPerUnit;
-    }
-    return pointResolution;
-  }
-};
-
-
-/**
- * Get the resolution of the point in degrees or distance units.
- * For projections with degrees as the unit this will simply return the
- * provided resolution. The default for other projections is to estimate
- * the point resolution by transforming the 'point' pixel to EPSG:4326,
- * measuring its width and height on the normal sphere,
- * and taking the average of the width and height.
- * An alternative implementation may be given when constructing a
- * projection. For many local projections,
- * such a custom function will return the resolution unchanged.
- * @param {number} resolution Resolution in projection units.
- * @param {ol.Coordinate} point Point.
- * @return {number} Point resolution in projection units.
- * @api
- */
-ol.proj.Projection.prototype.getPointResolution = function(resolution, point) {
-  return this.getPointResolutionFunc_(resolution, point);
-};
-
-
-/**
- * @private
- * @type {Object.<string, ol.proj.Projection>}
- */
-ol.proj.projections_ = {};
-
-
-/**
- * @private
- * @type {Object.<string, Object.<string, ol.TransformFunction>>}
- */
-ol.proj.transforms_ = {};
-
-
-/**
- * @private
- * @type {proj4}
- */
-ol.proj.proj4_ = null;
-
-
-if (ol.ENABLE_PROJ4JS) {
-  /**
-   * Register proj4. If not explicitly registered, it will be assumed that
-   * proj4js will be loaded in the global namespace. For example in a
-   * browserify ES6 environment you could use:
-   *
-   *     import ol from 'openlayers';
-   *     import proj4 from 'proj4';
-   *     ol.proj.setProj4(proj4);
-   *
-   * @param {proj4} proj4 Proj4.
-   * @api
-   */
-  ol.proj.setProj4 = function(proj4) {
-    goog.asserts.assert(typeof proj4 == 'function',
-        'proj4 argument should be a function');
-    ol.proj.proj4_ = proj4;
-  };
-}
-
-
-/**
- * Registers transformation functions that don't alter coordinates. Those allow
- * to transform between projections with equal meaning.
- *
- * @param {Array.<ol.proj.Projection>} projections Projections.
- * @api
- */
-ol.proj.addEquivalentProjections = function(projections) {
-  ol.proj.addProjections(projections);
-  projections.forEach(function(source) {
-    projections.forEach(function(destination) {
-      if (source !== destination) {
-        ol.proj.addTransform(source, destination, ol.proj.cloneTransform);
-      }
-    });
-  });
-};
-
-
-/**
- * Registers transformation functions to convert coordinates in any projection
- * in projection1 to any projection in projection2.
- *
- * @param {Array.<ol.proj.Projection>} projections1 Projections with equal
- *     meaning.
- * @param {Array.<ol.proj.Projection>} projections2 Projections with equal
- *     meaning.
- * @param {ol.TransformFunction} forwardTransform Transformation from any
- *   projection in projection1 to any projection in projection2.
- * @param {ol.TransformFunction} inverseTransform Transform from any projection
- *   in projection2 to any projection in projection1..
- */
-ol.proj.addEquivalentTransforms = function(projections1, projections2, forwardTransform, inverseTransform) {
-  projections1.forEach(function(projection1) {
-    projections2.forEach(function(projection2) {
-      ol.proj.addTransform(projection1, projection2, forwardTransform);
-      ol.proj.addTransform(projection2, projection1, inverseTransform);
-    });
-  });
-};
-
-
-/**
- * Add a Projection object to the list of supported projections that can be
- * looked up by their code.
- *
- * @param {ol.proj.Projection} projection Projection instance.
- * @api stable
- */
-ol.proj.addProjection = function(projection) {
-  ol.proj.projections_[projection.getCode()] = projection;
-  ol.proj.addTransform(projection, projection, ol.proj.cloneTransform);
-};
-
-
-/**
- * @param {Array.<ol.proj.Projection>} projections Projections.
- */
-ol.proj.addProjections = function(projections) {
-  var addedProjections = [];
-  projections.forEach(function(projection) {
-    addedProjections.push(ol.proj.addProjection(projection));
-  });
-};
-
-
-/**
- * FIXME empty description for jsdoc
- */
-ol.proj.clearAllProjections = function() {
-  ol.proj.projections_ = {};
-  ol.proj.transforms_ = {};
-};
-
-
-/**
- * @param {ol.proj.Projection|string|undefined} projection Projection.
- * @param {string} defaultCode Default code.
- * @return {ol.proj.Projection} Projection.
- */
-ol.proj.createProjection = function(projection, defaultCode) {
-  if (!projection) {
-    return ol.proj.get(defaultCode);
-  } else if (typeof projection === 'string') {
-    return ol.proj.get(projection);
-  } else {
-    goog.asserts.assertInstanceof(projection, ol.proj.Projection,
-        'projection should be an ol.proj.Projection');
-    return projection;
-  }
-};
-
-
-/**
- * Registers a conversion function to convert coordinates from the source
- * projection to the destination projection.
- *
- * @param {ol.proj.Projection} source Source.
- * @param {ol.proj.Projection} destination Destination.
- * @param {ol.TransformFunction} transformFn Transform.
- */
-ol.proj.addTransform = function(source, destination, transformFn) {
-  var sourceCode = source.getCode();
-  var destinationCode = destination.getCode();
-  var transforms = ol.proj.transforms_;
-  if (!(sourceCode in transforms)) {
-    transforms[sourceCode] = {};
-  }
-  transforms[sourceCode][destinationCode] = transformFn;
-};
-
-
-/**
- * Registers coordinate transform functions to convert coordinates between the
- * source projection and the destination projection.
- * The forward and inverse functions convert coordinate pairs; this function
- * converts these into the functions used internally which also handle
- * extents and coordinate arrays.
- *
- * @param {ol.proj.ProjectionLike} source Source projection.
- * @param {ol.proj.ProjectionLike} destination Destination projection.
- * @param {function(ol.Coordinate): ol.Coordinate} forward The forward transform
- *     function (that is, from the source projection to the destination
- *     projection) that takes a {@link ol.Coordinate} as argument and returns
- *     the transformed {@link ol.Coordinate}.
- * @param {function(ol.Coordinate): ol.Coordinate} inverse The inverse transform
- *     function (that is, from the destination projection to the source
- *     projection) that takes a {@link ol.Coordinate} as argument and returns
- *     the transformed {@link ol.Coordinate}.
- * @api stable
- */
-ol.proj.addCoordinateTransforms = function(source, destination, forward, inverse) {
-  var sourceProj = ol.proj.get(source);
-  var destProj = ol.proj.get(destination);
-  ol.proj.addTransform(sourceProj, destProj,
-      ol.proj.createTransformFromCoordinateTransform(forward));
-  ol.proj.addTransform(destProj, sourceProj,
-      ol.proj.createTransformFromCoordinateTransform(inverse));
-};
-
-
-/**
- * Creates a {@link ol.TransformFunction} from a simple 2D coordinate transform
- * function.
- * @param {function(ol.Coordinate): ol.Coordinate} transform Coordinate
- *     transform.
- * @return {ol.TransformFunction} Transform function.
- */
-ol.proj.createTransformFromCoordinateTransform = function(transform) {
-  return (
-      /**
-       * @param {Array.<number>} input Input.
-       * @param {Array.<number>=} opt_output Output.
-       * @param {number=} opt_dimension Dimension.
-       * @return {Array.<number>} Output.
-       */
-      function(input, opt_output, opt_dimension) {
-        var length = input.length;
-        var dimension = opt_dimension !== undefined ? opt_dimension : 2;
-        var output = opt_output !== undefined ? opt_output : new Array(length);
-        var point, i, j;
-        for (i = 0; i < length; i += dimension) {
-          point = transform([input[i], input[i + 1]]);
-          output[i] = point[0];
-          output[i + 1] = point[1];
-          for (j = dimension - 1; j >= 2; --j) {
-            output[i + j] = input[i + j];
-          }
-        }
-        return output;
-      });
-};
-
-
-/**
- * Unregisters the conversion function to convert coordinates from the source
- * projection to the destination projection.  This method is used to clean up
- * cached transforms during testing.
- *
- * @param {ol.proj.Projection} source Source projection.
- * @param {ol.proj.Projection} destination Destination projection.
- * @return {ol.TransformFunction} transformFn The unregistered transform.
- */
-ol.proj.removeTransform = function(source, destination) {
-  var sourceCode = source.getCode();
-  var destinationCode = destination.getCode();
-  var transforms = ol.proj.transforms_;
-  goog.asserts.assert(sourceCode in transforms,
-      'sourceCode should be in transforms');
-  goog.asserts.assert(destinationCode in transforms[sourceCode],
-      'destinationCode should be in transforms of sourceCode');
-  var transform = transforms[sourceCode][destinationCode];
-  delete transforms[sourceCode][destinationCode];
-  if (ol.object.isEmpty(transforms[sourceCode])) {
-    delete transforms[sourceCode];
-  }
-  return transform;
-};
-
-
-/**
- * Transforms a coordinate from longitude/latitude to a different projection.
- * @param {ol.Coordinate} coordinate Coordinate as longitude and latitude, i.e.
- *     an array with longitude as 1st and latitude as 2nd element.
- * @param {ol.proj.ProjectionLike=} opt_projection Target projection. The
- *     default is Web Mercator, i.e. 'EPSG:3857'.
- * @return {ol.Coordinate} Coordinate projected to the target projection.
- * @api stable
- */
-ol.proj.fromLonLat = function(coordinate, opt_projection) {
-  return ol.proj.transform(coordinate, 'EPSG:4326',
-      opt_projection !== undefined ? opt_projection : 'EPSG:3857');
-};
-
-
-/**
- * Transforms a coordinate to longitude/latitude.
- * @param {ol.Coordinate} coordinate Projected coordinate.
- * @param {ol.proj.ProjectionLike=} opt_projection Projection of the coordinate.
- *     The default is Web Mercator, i.e. 'EPSG:3857'.
- * @return {ol.Coordinate} Coordinate as longitude and latitude, i.e. an array
- *     with longitude as 1st and latitude as 2nd element.
- * @api stable
- */
-ol.proj.toLonLat = function(coordinate, opt_projection) {
-  return ol.proj.transform(coordinate,
-      opt_projection !== undefined ? opt_projection : 'EPSG:3857', 'EPSG:4326');
-};
-
-
-/**
- * Fetches a Projection object for the code specified.
- *
- * @param {ol.proj.ProjectionLike} projectionLike Either a code string which is
- *     a combination of authority and identifier such as "EPSG:4326", or an
- *     existing projection object, or undefined.
- * @return {ol.proj.Projection} Projection object, or null if not in list.
- * @api stable
- */
-ol.proj.get = function(projectionLike) {
-  var projection;
-  if (projectionLike instanceof ol.proj.Projection) {
-    projection = projectionLike;
-  } else if (typeof projectionLike === 'string') {
-    var code = projectionLike;
-    projection = ol.proj.projections_[code];
-    if (ol.ENABLE_PROJ4JS) {
-      var proj4js = ol.proj.proj4_ || ol.global['proj4'];
-      if (projection === undefined && typeof proj4js == 'function' &&
-          proj4js.defs(code) !== undefined) {
-        projection = new ol.proj.Projection({code: code});
-        ol.proj.addProjection(projection);
-      }
-    }
-  } else {
-    projection = null;
-  }
-  return projection;
-};
-
-
-/**
- * Checks if two projections are the same, that is every coordinate in one
- * projection does represent the same geographic point as the same coordinate in
- * the other projection.
- *
- * @param {ol.proj.Projection} projection1 Projection 1.
- * @param {ol.proj.Projection} projection2 Projection 2.
- * @return {boolean} Equivalent.
- * @api
- */
-ol.proj.equivalent = function(projection1, projection2) {
-  if (projection1 === projection2) {
-    return true;
-  }
-  var equalUnits = projection1.getUnits() === projection2.getUnits();
-  if (projection1.getCode() === projection2.getCode()) {
-    return equalUnits;
-  } else {
-    var transformFn = ol.proj.getTransformFromProjections(
-        projection1, projection2);
-    return transformFn === ol.proj.cloneTransform && equalUnits;
-  }
-};
-
-
-/**
- * Given the projection-like objects, searches for a transformation
- * function to convert a coordinates array from the source projection to the
- * destination projection.
- *
- * @param {ol.proj.ProjectionLike} source Source.
- * @param {ol.proj.ProjectionLike} destination Destination.
- * @return {ol.TransformFunction} Transform function.
- * @api stable
- */
-ol.proj.getTransform = function(source, destination) {
-  var sourceProjection = ol.proj.get(source);
-  var destinationProjection = ol.proj.get(destination);
-  return ol.proj.getTransformFromProjections(
-      sourceProjection, destinationProjection);
-};
-
-
-/**
- * Searches in the list of transform functions for the function for converting
- * coordinates from the source projection to the destination projection.
- *
- * @param {ol.proj.Projection} sourceProjection Source Projection object.
- * @param {ol.proj.Projection} destinationProjection Destination Projection
- *     object.
- * @return {ol.TransformFunction} Transform function.
- */
-ol.proj.getTransformFromProjections = function(sourceProjection, destinationProjection) {
-  var transforms = ol.proj.transforms_;
-  var sourceCode = sourceProjection.getCode();
-  var destinationCode = destinationProjection.getCode();
-  var transform;
-  if (sourceCode in transforms && destinationCode in transforms[sourceCode]) {
-    transform = transforms[sourceCode][destinationCode];
-  }
-  if (transform === undefined) {
-    goog.asserts.assert(transform !== undefined, 'transform should be defined');
-    transform = ol.proj.identityTransform;
-  }
-  return transform;
-};
-
-
-/**
- * @param {Array.<number>} input Input coordinate array.
- * @param {Array.<number>=} opt_output Output array of coordinate values.
- * @param {number=} opt_dimension Dimension.
- * @return {Array.<number>} Input coordinate array (same array as input).
- */
-ol.proj.identityTransform = function(input, opt_output, opt_dimension) {
-  if (opt_output !== undefined && input !== opt_output) {
-    // TODO: consider making this a warning instead
-    goog.asserts.fail('This should not be used internally.');
-    for (var i = 0, ii = input.length; i < ii; ++i) {
-      opt_output[i] = input[i];
-    }
-    input = opt_output;
-  }
-  return input;
-};
-
-
-/**
- * @param {Array.<number>} input Input coordinate array.
- * @param {Array.<number>=} opt_output Output array of coordinate values.
- * @param {number=} opt_dimension Dimension.
- * @return {Array.<number>} Output coordinate array (new array, same coordinate
- *     values).
- */
-ol.proj.cloneTransform = function(input, opt_output, opt_dimension) {
-  var output;
-  if (opt_output !== undefined) {
-    for (var i = 0, ii = input.length; i < ii; ++i) {
-      opt_output[i] = input[i];
-    }
-    output = opt_output;
-  } else {
-    output = input.slice();
-  }
-  return output;
-};
-
-
-/**
- * Transforms a coordinate from source projection to destination projection.
- * This returns a new coordinate (and does not modify the original).
- *
- * See {@link ol.proj.transformExtent} for extent transformation.
- * See the transform method of {@link ol.geom.Geometry} and its subclasses for
- * geometry transforms.
- *
- * @param {ol.Coordinate} coordinate Coordinate.
- * @param {ol.proj.ProjectionLike} source Source projection-like.
- * @param {ol.proj.ProjectionLike} destination Destination projection-like.
- * @return {ol.Coordinate} Coordinate.
- * @api stable
- */
-ol.proj.transform = function(coordinate, source, destination) {
-  var transformFn = ol.proj.getTransform(source, destination);
-  return transformFn(coordinate, undefined, coordinate.length);
-};
-
-
-/**
- * Transforms an extent from source projection to destination projection.  This
- * returns a new extent (and does not modify the original).
- *
- * @param {ol.Extent} extent The extent to transform.
- * @param {ol.proj.ProjectionLike} source Source projection-like.
- * @param {ol.proj.ProjectionLike} destination Destination projection-like.
- * @return {ol.Extent} The transformed extent.
- * @api stable
- */
-ol.proj.transformExtent = function(extent, source, destination) {
-  var transformFn = ol.proj.getTransform(source, destination);
-  return ol.extent.applyTransform(extent, transformFn);
-};
-
-
-/**
- * Transforms the given point to the destination projection.
- *
- * @param {ol.Coordinate} point Point.
- * @param {ol.proj.Projection} sourceProjection Source projection.
- * @param {ol.proj.Projection} destinationProjection Destination projection.
- * @return {ol.Coordinate} Point.
- */
-ol.proj.transformWithProjections = function(point, sourceProjection, destinationProjection) {
-  var transformFn = ol.proj.getTransformFromProjections(
-      sourceProjection, destinationProjection);
-  return transformFn(point);
-};
-
-goog.provide('ol.geom.Geometry');
-goog.provide('ol.geom.GeometryLayout');
-goog.provide('ol.geom.GeometryType');
-
-goog.require('goog.asserts');
-goog.require('ol.functions');
-goog.require('ol.Object');
-goog.require('ol.extent');
-goog.require('ol.proj');
-goog.require('ol.proj.Units');
-
-
-/**
- * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
- * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
- * `'GeometryCollection'`, `'Circle'`.
- * @enum {string}
- * @api stable
- */
-ol.geom.GeometryType = {
-  POINT: 'Point',
-  LINE_STRING: 'LineString',
-  LINEAR_RING: 'LinearRing',
-  POLYGON: 'Polygon',
-  MULTI_POINT: 'MultiPoint',
-  MULTI_LINE_STRING: 'MultiLineString',
-  MULTI_POLYGON: 'MultiPolygon',
-  GEOMETRY_COLLECTION: 'GeometryCollection',
-  CIRCLE: 'Circle'
-};
-
-
-/**
- * The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z')
- * or measure ('M') coordinate is available. Supported values are `'XY'`,
- * `'XYZ'`, `'XYM'`, `'XYZM'`.
- * @enum {string}
- * @api stable
- */
-ol.geom.GeometryLayout = {
-  XY: 'XY',
-  XYZ: 'XYZ',
-  XYM: 'XYM',
-  XYZM: 'XYZM'
-};
-
-
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for vector geometries.
- *
- * To get notified of changes to the geometry, register a listener for the
- * generic `change` event on your geometry instance.
- *
- * @constructor
- * @extends {ol.Object}
- * @api stable
- */
-ol.geom.Geometry = function() {
-
-  goog.base(this);
-
-  /**
-   * @private
-   * @type {ol.Extent}
-   */
-  this.extent_ = ol.extent.createEmpty();
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.extentRevision_ = -1;
-
-  /**
-   * @protected
-   * @type {Object.<string, ol.geom.Geometry>}
-   */
-  this.simplifiedGeometryCache = {};
-
-  /**
-   * @protected
-   * @type {number}
-   */
-  this.simplifiedGeometryMaxMinSquaredTolerance = 0;
-
-  /**
-   * @protected
-   * @type {number}
-   */
-  this.simplifiedGeometryRevision = 0;
-
-};
-goog.inherits(ol.geom.Geometry, ol.Object);
-
-
-/**
- * Make a complete copy of the geometry.
- * @function
- * @return {!ol.geom.Geometry} Clone.
- */
-ol.geom.Geometry.prototype.clone = goog.abstractMethod;
-
-
-/**
- * @param {number} x X.
- * @param {number} y Y.
- * @param {ol.Coordinate} closestPoint Closest point.
- * @param {number} minSquaredDistance Minimum squared distance.
- * @return {number} Minimum squared distance.
- */
-ol.geom.Geometry.prototype.closestPointXY = goog.abstractMethod;
-
-
-/**
- * Return the closest point of the geometry to the passed point as
- * {@link ol.Coordinate coordinate}.
- * @param {ol.Coordinate} point Point.
- * @param {ol.Coordinate=} opt_closestPoint Closest point.
- * @return {ol.Coordinate} Closest point.
- * @api stable
- */
-ol.geom.Geometry.prototype.getClosestPoint = function(point, opt_closestPoint) {
-  var closestPoint = opt_closestPoint ? opt_closestPoint : [NaN, NaN];
-  this.closestPointXY(point[0], point[1], closestPoint, Infinity);
-  return closestPoint;
-};
-
-
-/**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @return {boolean} Contains coordinate.
- */
-ol.geom.Geometry.prototype.containsCoordinate = function(coordinate) {
-  return this.containsXY(coordinate[0], coordinate[1]);
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @protected
- * @return {ol.Extent} extent Extent.
- */
-ol.geom.Geometry.prototype.computeExtent = goog.abstractMethod;
-
-
-/**
- * @param {number} x X.
- * @param {number} y Y.
- * @return {boolean} Contains (x, y).
- */
-ol.geom.Geometry.prototype.containsXY = ol.functions.FALSE;
-
-
-/**
- * Get the extent of the geometry.
- * @param {ol.Extent=} opt_extent Extent.
- * @return {ol.Extent} extent Extent.
- * @api stable
- */
-ol.geom.Geometry.prototype.getExtent = function(opt_extent) {
-  if (this.extentRevision_ != this.getRevision()) {
-    this.extent_ = this.computeExtent(this.extent_);
-    this.extentRevision_ = this.getRevision();
-  }
-  return ol.extent.returnOrUpdate(this.extent_, opt_extent);
-};
-
-
-/**
- * Rotate the geometry around a given coordinate. This modifies the geometry
- * coordinates in place.
- * @param {number} angle Rotation angle in radians.
- * @param {ol.Coordinate} anchor The rotation center.
- * @api
- * @function
- */
-ol.geom.Geometry.prototype.rotate = goog.abstractMethod;
-
-
-/**
- * Create a simplified version of this geometry.  For linestrings, this uses
- * the the {@link
- * https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
- * Douglas Peucker} algorithm.  For polygons, a quantization-based
- * simplification is used to preserve topology.
- * @function
- * @param {number} tolerance The tolerance distance for simplification.
- * @return {ol.geom.Geometry} A new, simplified version of the original
- *     geometry.
- * @api
- */
-ol.geom.Geometry.prototype.simplify = function(tolerance) {
-  return this.getSimplifiedGeometry(tolerance * tolerance);
-};
-
-
-/**
- * Create a simplified version of this geometry using the Douglas Peucker
- * algorithm.
- * @see https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
- * @function
- * @param {number} squaredTolerance Squared tolerance.
- * @return {ol.geom.Geometry} Simplified geometry.
- */
-ol.geom.Geometry.prototype.getSimplifiedGeometry = goog.abstractMethod;
-
-
-/**
- * Get the type of this geometry.
- * @function
- * @return {ol.geom.GeometryType} Geometry type.
- */
-ol.geom.Geometry.prototype.getType = goog.abstractMethod;
-
-
-/**
- * Apply a transform function to each coordinate of the geometry.
- * The geometry is modified in place.
- * If you do not want the geometry modified in place, first `clone()` it and
- * then use this function on the clone.
- * @function
- * @param {ol.TransformFunction} transformFn Transform.
- */
-ol.geom.Geometry.prototype.applyTransform = goog.abstractMethod;
-
-
-/**
- * Test if the geometry and the passed extent intersect.
- * @param {ol.Extent} extent Extent.
- * @return {boolean} `true` if the geometry and the extent intersect.
- * @function
- */
-ol.geom.Geometry.prototype.intersectsExtent = goog.abstractMethod;
-
-
-/**
- * Translate the geometry.  This modifies the geometry coordinates in place.  If
- * instead you want a new geometry, first `clone()` this geometry.
- * @param {number} deltaX Delta X.
- * @param {number} deltaY Delta Y.
- * @function
- */
-ol.geom.Geometry.prototype.translate = goog.abstractMethod;
-
-
-/**
- * Transform each coordinate of the geometry from one coordinate reference
- * system to another. The geometry is modified in place.
- * For example, a line will be transformed to a line and a circle to a circle.
- * If you do not want the geometry modified in place, first `clone()` it and
- * then use this function on the clone.
- *
- * @param {ol.proj.ProjectionLike} source The current projection.  Can be a
- *     string identifier or a {@link ol.proj.Projection} object.
- * @param {ol.proj.ProjectionLike} destination The desired projection.  Can be a
- *     string identifier or a {@link ol.proj.Projection} object.
- * @return {ol.geom.Geometry} This geometry.  Note that original geometry is
- *     modified in place.
- * @api stable
- */
-ol.geom.Geometry.prototype.transform = function(source, destination) {
-  goog.asserts.assert(
-      ol.proj.get(source).getUnits() !== ol.proj.Units.TILE_PIXELS &&
-      ol.proj.get(destination).getUnits() !== ol.proj.Units.TILE_PIXELS,
-      'cannot transform geometries with TILE_PIXELS units');
-  this.applyTransform(ol.proj.getTransform(source, destination));
-  return this;
-};
 
 goog.provide('ol.geom.flat.transform');
 
@@ -34280,15 +34245,6 @@ ol.source.Source.prototype.setState = function(state) {
   this.changed();
 };
 
-
-/**
- * Set the projection of the source.
- * @param {ol.proj.Projection} projection Projection.
- */
-ol.source.Source.prototype.setProjection = function(projection) {
-  this.projection_ = projection;
-};
-
 goog.provide('ol.tilegrid.TileGrid');
 
 goog.require('goog.asserts');
@@ -34407,6 +34363,12 @@ ol.tilegrid.TileGrid = function(options) {
    */
   this.fullTileRanges_ = null;
 
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.tmpSize_ = [0, 0];
+
   if (options.sizes !== undefined) {
     goog.asserts.assert(options.sizes.length == this.resolutions_.length,
         'number of sizes and resolutions must be equal');
@@ -34426,12 +34388,6 @@ ol.tilegrid.TileGrid = function(options) {
   } else if (extent) {
     this.calculateTileRanges_(extent);
   }
-
-  /**
-   * @private
-   * @type {ol.Size}
-   */
-  this.tmpSize_ = [0, 0];
 
 };
 
@@ -85285,11 +85241,12 @@ ol.format.KML.writeLineStyle_ = function(node, style, objectStack) {
  */
 ol.format.KML.writeMultiGeometry_ = function(node, geometry, objectStack) {
   goog.asserts.assert(
+      (geometry instanceof ol.geom.GeometryCollection) ||
       (geometry instanceof ol.geom.MultiPoint) ||
       (geometry instanceof ol.geom.MultiLineString) ||
       (geometry instanceof ol.geom.MultiPolygon),
-      'geometry should be one of: ol.geom.MultiPoint, ' +
-      'ol.geom.MultiLineString or ol.geom.MultiPolygon');
+      'geometry should be one of: ol.geom.GeometryCollection, ' +
+      'ol.geom.MultiPoint, ol.geom.MultiLineString or ol.geom.MultiPolygon');
   /** @type {ol.xml.NodeStackItem} */
   var context = {node: node};
   var type = geometry.getType();
@@ -85297,7 +85254,10 @@ ol.format.KML.writeMultiGeometry_ = function(node, geometry, objectStack) {
   var geometries;
   /** @type {function(*, Array.<*>, string=): (Node|undefined)} */
   var factory;
-  if (type == ol.geom.GeometryType.MULTI_POINT) {
+  if (type == ol.geom.GeometryType.GEOMETRY_COLLECTION) {
+    geometries = geometry.getGeometries();
+    factory = ol.format.KML.GEOMETRY_NODE_FACTORY_;
+  } else if (type == ol.geom.GeometryType.MULTI_POINT) {
     geometries =
         (/** @type {ol.geom.MultiPoint} */ (geometry)).getPoints();
     factory = ol.format.KML.POINT_NODE_FACTORY_;
@@ -85554,7 +85514,8 @@ ol.format.KML.GEOMETRY_TYPE_TO_NODENAME_ = {
   'Polygon': 'Polygon',
   'MultiPoint': 'MultiGeometry',
   'MultiLineString': 'MultiGeometry',
-  'MultiPolygon': 'MultiGeometry'
+  'MultiPolygon': 'MultiGeometry',
+  'GeometryCollection': 'MultiGeometry'
 };
 
 
@@ -85683,7 +85644,9 @@ ol.format.KML.MULTI_GEOMETRY_SERIALIZERS_ = ol.xml.makeStructureNS(
           ol.format.KML.writePrimitiveGeometry_),
       'Point': ol.xml.makeChildAppender(
           ol.format.KML.writePrimitiveGeometry_),
-      'Polygon': ol.xml.makeChildAppender(ol.format.KML.writePolygon_)
+      'Polygon': ol.xml.makeChildAppender(ol.format.KML.writePolygon_),
+      'GeometryCollection': ol.xml.makeChildAppender(
+          ol.format.KML.writeMultiGeometry_)
     });
 
 
@@ -97159,6 +97122,7 @@ ol.interaction.Snap.sortByDistance = function(a, b) {
 goog.provide('ol.interaction.Translate');
 goog.provide('ol.interaction.TranslateEvent');
 
+goog.require('goog.asserts');
 goog.require('ol.events');
 goog.require('ol.events.Event');
 goog.require('ol.array');
@@ -97263,6 +97227,37 @@ ol.interaction.Translate = function(options) {
    * @private
    */
   this.features_ = options.features !== undefined ? options.features : null;
+
+  var layerFilter;
+  if (options.layers) {
+    if (goog.isFunction(options.layers)) {
+      /**
+       * @param {ol.layer.Layer} layer Layer.
+       * @return {boolean} Include.
+       */
+      layerFilter = function(layer) {
+        goog.asserts.assertFunction(options.layers);
+        return options.layers(layer);
+      };
+    } else {
+      var layers = options.layers;
+      /**
+       * @param {ol.layer.Layer} layer Layer.
+       * @return {boolean} Include.
+       */
+      layerFilter = function(layer) {
+        return ol.array.includes(layers, layer);
+      };
+    }
+  } else {
+    layerFilter = ol.functions.TRUE;
+  }
+
+  /**
+   * @private
+   * @type {function(ol.layer.Layer): boolean}
+   */
+  this.layerFilter_ = layerFilter;
 
   /**
    * @type {ol.Feature}
@@ -97400,7 +97395,7 @@ ol.interaction.Translate.prototype.featuresAtPixel_ = function(pixel, map) {
   var intersectingFeature = map.forEachFeatureAtPixel(pixel,
       function(feature) {
         return feature;
-      });
+      }, this, this.layerFilter_);
 
   if (this.features_ &&
       ol.array.includes(this.features_.getArray(), intersectingFeature)) {
