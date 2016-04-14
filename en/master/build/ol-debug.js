@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.15.0-27-gfe33910
+// Version: v3.15.1-60-g8562c9a
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -2847,6 +2847,9 @@ ol.inherits =
  */
 ol.nullFunction = function() {};
 
+
+ol.global = Function('return this')();
+
 // FIXME factor out common code between usedTiles and wantedTiles
 
 goog.provide('ol.PostRenderFunction');
@@ -5415,7 +5418,7 @@ ol.array.flatten = function(arr) {
 
 
 /**
- * @param {Array.<VALUE>} arr  The array to modify.
+ * @param {Array.<VALUE>} arr The array to modify.
  * @param {Array.<VALUE>|VALUE} data The elements or arrays of elements
  *     to add to arr.
  * @template VALUE
@@ -5431,7 +5434,7 @@ ol.array.extend = function(arr, data) {
 
 
 /**
- * @param {Array.<VALUE>} arr  The array to modify.
+ * @param {Array.<VALUE>} arr The array to modify.
  * @param {VALUE} obj The element to remove.
  * @template VALUE
  * @return {boolean} If the element was removed.
@@ -5447,7 +5450,7 @@ ol.array.remove = function(arr, obj) {
 
 
 /**
- * @param {Array.<VALUE>} arr  The array to search in.
+ * @param {Array.<VALUE>} arr The array to search in.
  * @param {function(VALUE, number, ?) : boolean} func The function to compare.
  * @template VALUE
  * @return {VALUE} The element found.
@@ -5467,9 +5470,9 @@ ol.array.find = function(arr, func) {
 
 
 /**
-* @param {Array|Uint8ClampedArray} arr1 The first array to compare.
-* @param {Array|Uint8ClampedArray} arr2 The second array to compare.
-* @return {boolean} Whether the two arrays are equal.
+ * @param {Array|Uint8ClampedArray} arr1 The first array to compare.
+ * @param {Array|Uint8ClampedArray} arr2 The second array to compare.
+ * @return {boolean} Whether the two arrays are equal.
  */
 ol.array.equals = function(arr1, arr2) {
   var len1 = arr1.length;
@@ -5486,8 +5489,8 @@ ol.array.equals = function(arr1, arr2) {
 
 
 /**
-* @param {Array.<*>} arr The array to sort (modifies original).
-* @param {Function} compareFnc Comparison function.
+ * @param {Array.<*>} arr The array to sort (modifies original).
+ * @param {Function} compareFnc Comparison function.
  */
 ol.array.stableSort = function(arr, compareFnc) {
   var length = arr.length;
@@ -5506,9 +5509,9 @@ ol.array.stableSort = function(arr, compareFnc) {
 
 
 /**
-* @param {Array.<*>} arr The array to search in.
-* @param {Function} func Comparison function.
-* @return {number} Return index.
+ * @param {Array.<*>} arr The array to search in.
+ * @param {Function} func Comparison function.
+ * @return {number} Return index.
  */
 ol.array.findIndex = function(arr, func) {
   var index;
@@ -5521,10 +5524,10 @@ ol.array.findIndex = function(arr, func) {
 
 
 /**
-* @param {Array.<*>} arr The array to test.
-* @param {Function=} opt_func Comparison function.
-* @param {boolean=} opt_strict Strictly sorted (default false).
-* @return {boolean} Return index.
+ * @param {Array.<*>} arr The array to test.
+ * @param {Function=} opt_func Comparison function.
+ * @param {boolean=} opt_strict Strictly sorted (default false).
+ * @return {boolean} Return index.
  */
 ol.array.isSorted = function(arr, opt_func, opt_strict) {
   var compare = opt_func || ol.array.numberSafeCompareFunction;
@@ -6901,12 +6904,48 @@ ol.size.toSize = function(size, opt_size) {
   }
 };
 
+goog.provide('ol.string');
+
+/**
+ * @param {number} number Number to be formatted
+ * @param {number} width The desired width
+ * @param {number=} opt_precision Precision of the output string (i.e. number of decimal places)
+ * @returns {string} Formatted string
+*/
+ol.string.padNumber = function(number, width, opt_precision) {
+  var numberString = opt_precision !== undefined ? number.toFixed(opt_precision) : '' + number;
+  var decimal = numberString.indexOf('.');
+  decimal = decimal === -1 ? numberString.length : decimal;
+  return decimal > width ? numberString : new Array(1 + width - decimal).join('0') + numberString;
+};
+
+/**
+ * Adapted from https://github.com/omichelsen/compare-versions/blob/master/index.js
+ * @param {string|number} v1 First version
+ * @param {string|number} v2 Second version
+ * @returns {number} Value
+ */
+ol.string.compareVersions = function(v1, v2) {
+  var s1 = ('' + v1).split('.');
+  var s2 = ('' + v2).split('.');
+
+  for (var i = 0; i < Math.max(s1.length, s2.length); i++) {
+    var n1 = parseInt(s1[i] || '0', 10);
+    var n2 = parseInt(s2[i] || '0', 10);
+
+    if (n1 > n2) return 1;
+    if (n2 > n1) return -1;
+  }
+
+  return 0;
+};
+
 goog.provide('ol.Coordinate');
 goog.provide('ol.CoordinateFormatType');
 goog.provide('ol.coordinate');
 
-goog.require('goog.string');
 goog.require('ol.math');
+goog.require('ol.string');
 
 
 /**
@@ -7036,8 +7075,8 @@ ol.coordinate.degreesToStringHDMS_ = function(degrees, hemispheres, opt_fraction
   var x = Math.abs(3600 * normalizedDegrees);
   var dflPrecision = opt_fractionDigits || 0;
   return Math.floor(x / 3600) + '\u00b0 ' +
-      goog.string.padNumber(Math.floor((x / 60) % 60), 2) + '\u2032 ' +
-      goog.string.padNumber((x % 60), 2, dflPrecision) + '\u2033 ' +
+      ol.string.padNumber(Math.floor((x / 60) % 60), 2) + '\u2032 ' +
+      ol.string.padNumber((x % 60), 2, dflPrecision) + '\u2033 ' +
       hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0);
 };
 
@@ -11594,7 +11633,7 @@ ol.proj.Projection = function(options) {
   goog.asserts.assert(code !== undefined,
       'Option "code" is required for constructing instance');
   if (ol.ENABLE_PROJ4JS) {
-    var proj4js = ol.proj.proj4_ || goog.global['proj4'];
+    var proj4js = ol.proj.proj4_ || ol.global['proj4'];
     if (typeof proj4js == 'function' && projections[code] === undefined) {
       var def = proj4js.defs(code);
       if (def !== undefined) {
@@ -12125,7 +12164,7 @@ ol.proj.get = function(projectionLike) {
     var code = projectionLike;
     projection = ol.proj.projections_[code];
     if (ol.ENABLE_PROJ4JS) {
-      var proj4js = ol.proj.proj4_ || goog.global['proj4'];
+      var proj4js = ol.proj.proj4_ || ol.global['proj4'];
       if (projection === undefined && typeof proj4js == 'function' &&
           proj4js.defs(code) !== undefined) {
         projection = new ol.proj.Projection({code: code});
@@ -35679,7 +35718,7 @@ ol.control.Rotate = function(opt_options) {
         'ol-compass', label);
   } else {
     this.label_ = label;
-    this.label_.classList.add(this.label_, 'ol-compass');
+    this.label_.classList.add('ol-compass');
   }
 
   var tipLabel = options.tipLabel ? options.tipLabel : 'Reset rotation';
@@ -36293,7 +36332,7 @@ ol.control.FullScreen.prototype.setMap = function(map) {
   goog.base(this, 'setMap', map);
   if (map) {
     this.listenerKeys.push(
-        ol.events.listen(goog.global.document, goog.dom.fullscreen.EventType.CHANGE,
+        ol.events.listen(ol.global.document, goog.dom.fullscreen.EventType.CHANGE,
           this.handleFullScreenChange_, this)
     );
   }
@@ -37755,7 +37794,7 @@ ol.dom.canUseCssTransform = (function() {
     if (canUseCssTransform === undefined) {
       goog.asserts.assert(document.body,
           'document.body should not be null');
-      goog.asserts.assert(goog.global.getComputedStyle,
+      goog.asserts.assert(ol.global.getComputedStyle,
           'getComputedStyle is required (unsupported browser?)');
 
       var el = document.createElement('P'),
@@ -37771,7 +37810,7 @@ ol.dom.canUseCssTransform = (function() {
       for (var t in transforms) {
         if (t in el.style) {
           el.style[t] = 'translate(1px,1px)';
-          has2d = goog.global.getComputedStyle(el).getPropertyValue(
+          has2d = ol.global.getComputedStyle(el).getPropertyValue(
               transforms[t]);
         }
       }
@@ -37796,7 +37835,7 @@ ol.dom.canUseCssTransform3D = (function() {
     if (canUseCssTransform3D === undefined) {
       goog.asserts.assert(document.body,
           'document.body should not be null');
-      goog.asserts.assert(goog.global.getComputedStyle,
+      goog.asserts.assert(ol.global.getComputedStyle,
           'getComputedStyle is required (unsupported browser?)');
 
       var el = document.createElement('P'),
@@ -37812,7 +37851,7 @@ ol.dom.canUseCssTransform3D = (function() {
       for (var t in transforms) {
         if (t in el.style) {
           el.style[t] = 'translate3d(1px,1px,1px)';
-          has3d = goog.global.getComputedStyle(el).getPropertyValue(
+          has3d = ol.global.getComputedStyle(el).getPropertyValue(
               transforms[t]);
         }
       }
@@ -37911,7 +37950,7 @@ ol.dom.transformElement2D = function(element, transform, opt_precision) {
  */
 ol.dom.outerWidth = function(element) {
   var width = element.offsetWidth;
-  var style = element.currentStyle || goog.global.getComputedStyle(element);
+  var style = element.currentStyle || ol.global.getComputedStyle(element);
   width += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
 
   return width;
@@ -37927,7 +37966,7 @@ ol.dom.outerWidth = function(element) {
  */
 ol.dom.outerHeight = function(element) {
   var height = element.offsetHeight;
-  var style = element.currentStyle || goog.global.getComputedStyle(element);
+  var style = element.currentStyle || ol.global.getComputedStyle(element);
   height += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
 
   return height;
@@ -38015,7 +38054,7 @@ ol.has.MAC = ua.indexOf('macintosh') !== -1;
  * @type {number}
  * @api stable
  */
-ol.has.DEVICE_PIXEL_RATIO = goog.global.devicePixelRatio || 1;
+ol.has.DEVICE_PIXEL_RATIO = ol.global.devicePixelRatio || 1;
 
 
 /**
@@ -38037,7 +38076,7 @@ ol.has.CANVAS = ol.ENABLE_CANVAS && (
      * @return {boolean} Canvas supported.
      */
     function() {
-      if (!('HTMLCanvasElement' in goog.global)) {
+      if (!('HTMLCanvasElement' in ol.global)) {
         return false;
       }
       try {
@@ -38062,7 +38101,7 @@ ol.has.CANVAS = ol.ENABLE_CANVAS && (
  * @type {boolean}
  * @api stable
  */
-ol.has.DEVICE_ORIENTATION = 'DeviceOrientationEvent' in goog.global;
+ol.has.DEVICE_ORIENTATION = 'DeviceOrientationEvent' in ol.global;
 
 
 /**
@@ -38079,7 +38118,7 @@ ol.has.DOM = ol.ENABLE_DOM;
  * @type {boolean}
  * @api stable
  */
-ol.has.GEOLOCATION = 'geolocation' in goog.global.navigator;
+ol.has.GEOLOCATION = 'geolocation' in ol.global.navigator;
 
 
 /**
@@ -38088,7 +38127,7 @@ ol.has.GEOLOCATION = 'geolocation' in goog.global.navigator;
  * @type {boolean}
  * @api stable
  */
-ol.has.TOUCH = ol.ASSUME_TOUCH || 'ontouchstart' in goog.global;
+ol.has.TOUCH = ol.ASSUME_TOUCH || 'ontouchstart' in ol.global;
 
 
 /**
@@ -38096,7 +38135,7 @@ ol.has.TOUCH = ol.ASSUME_TOUCH || 'ontouchstart' in goog.global;
  * @const
  * @type {boolean}
  */
-ol.has.POINTER = 'PointerEvent' in goog.global;
+ol.has.POINTER = 'PointerEvent' in ol.global;
 
 
 /**
@@ -38104,7 +38143,7 @@ ol.has.POINTER = 'PointerEvent' in goog.global;
  * @const
  * @type {boolean}
  */
-ol.has.MSPOINTER = !!(goog.global.navigator.msPointerEnabled);
+ol.has.MSPOINTER = !!(ol.global.navigator.msPointerEnabled);
 
 
 /**
@@ -38123,7 +38162,7 @@ ol.has.WEBGL;
     var textureSize;
     var /** @type {Array.<string>} */ extensions = [];
 
-    if ('WebGLRenderingContext' in goog.global) {
+    if ('WebGLRenderingContext' in ol.global) {
       try {
         var canvas = /** @type {HTMLCanvasElement} */
             (document.createElement('CANVAS'));
@@ -38926,7 +38965,7 @@ ol.pointer.TouchSource.prototype.removePrimaryPointer_ = function(inPointer) {
  * @private
  */
 ol.pointer.TouchSource.prototype.resetClickCount_ = function() {
-  this.resetId_ = goog.global.setTimeout(
+  this.resetId_ = ol.global.setTimeout(
       this.resetClickCountHandler_.bind(this),
       ol.pointer.TouchSource.CLICK_COUNT_TIMEOUT);
 };
@@ -38946,7 +38985,7 @@ ol.pointer.TouchSource.prototype.resetClickCountHandler_ = function() {
  */
 ol.pointer.TouchSource.prototype.cancelResetClickCount_ = function() {
   if (this.resetId_ !== undefined) {
-    goog.global.clearTimeout(this.resetId_);
+    ol.global.clearTimeout(this.resetId_);
   }
 };
 
@@ -39218,7 +39257,7 @@ ol.pointer.TouchSource.prototype.dedupSynthMouse_ = function(inEvent) {
     var lt = [t.clientX, t.clientY];
     lts.push(lt);
 
-    goog.global.setTimeout(function() {
+    ol.global.setTimeout(function() {
       // remove touch after timeout
       ol.array.remove(lts, lt);
     }, ol.pointer.TouchSource.DEDUP_TIMEOUT);
@@ -39909,14 +39948,14 @@ ol.MapBrowserEventHandler.prototype.emulateClick_ = function(pointerEvent) {
   this.dispatchEvent(newEvent);
   if (this.clickTimeoutId_ !== 0) {
     // double-click
-    goog.global.clearTimeout(this.clickTimeoutId_);
+    ol.global.clearTimeout(this.clickTimeoutId_);
     this.clickTimeoutId_ = 0;
     newEvent = new ol.MapBrowserPointerEvent(
         ol.MapBrowserEvent.EventType.DBLCLICK, this.map_, pointerEvent);
     this.dispatchEvent(newEvent);
   } else {
     // click
-    this.clickTimeoutId_ = goog.global.setTimeout(function() {
+    this.clickTimeoutId_ = ol.global.setTimeout(function() {
       this.clickTimeoutId_ = 0;
       var newEvent = new ol.MapBrowserPointerEvent(
           ol.MapBrowserEvent.EventType.SINGLECLICK, this.map_, pointerEvent);
@@ -45192,10 +45231,10 @@ ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
     if (mapBrowserEvent.type == ol.events.EventType.WHEEL) {
       delta = wheelEvent.deltaY;
       if (ol.has.FIREFOX &&
-          wheelEvent.deltaMode === goog.global.WheelEvent.DOM_DELTA_PIXEL) {
+          wheelEvent.deltaMode === ol.global.WheelEvent.DOM_DELTA_PIXEL) {
         delta /= ol.has.DEVICE_PIXEL_RATIO;
       }
-      if (wheelEvent.deltaMode === goog.global.WheelEvent.DOM_DELTA_LINE) {
+      if (wheelEvent.deltaMode === ol.global.WheelEvent.DOM_DELTA_LINE) {
         delta *= 40;
       }
     } else if (mapBrowserEvent.type == ol.events.EventType.MOUSEWHEEL) {
@@ -45214,8 +45253,8 @@ ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
     var duration = ol.MOUSEWHEELZOOM_TIMEOUT_DURATION;
     var timeLeft = Math.max(duration - (Date.now() - this.startTime_), 0);
 
-    goog.global.clearTimeout(this.timeoutId_);
-    this.timeoutId_ = goog.global.setTimeout(
+    ol.global.clearTimeout(this.timeoutId_);
+    this.timeoutId_ = ol.global.setTimeout(
         this.doZoom_.bind(this, map), timeLeft);
 
     mapBrowserEvent.preventDefault();
@@ -48091,8 +48130,8 @@ ol.style.Style.prototype.setZIndex = function(zIndex) {
 
 /**
  * A function that takes an {@link ol.Feature} and a `{number}` representing
- * the view's resolution. The function should return an array of
- * {@link ol.style.Style}. This way e.g. a vector layer can be styled.
+ * the view's resolution. The function should return a {@link ol.style.Style}
+ * or an array of them. This way e.g. a vector layer can be styled.
  *
  * @typedef {function((ol.Feature|ol.render.Feature), number):
  *     (ol.style.Style|Array.<ol.style.Style>)}
@@ -56476,10 +56515,13 @@ ol.source.Vector.prototype.getFeaturesInExtent = function(extent) {
  * This method is not available when the source is configured with
  * `useSpatialIndex` set to `false`.
  * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {function(ol.Feature):boolean=} opt_filter Feature filter function.
+ *     The filter function will receive one argument, the {@link ol.Feature feature}
+ *     and it should return a boolean value. By default, no filtering is made.
  * @return {ol.Feature} Closest feature.
  * @api stable
  */
-ol.source.Vector.prototype.getClosestFeatureToCoordinate = function(coordinate) {
+ol.source.Vector.prototype.getClosestFeatureToCoordinate = function(coordinate, opt_filter) {
   // Find the closest feature using branch and bound.  We start searching an
   // infinite extent, and find the distance from the first feature found.  This
   // becomes the closest feature.  We then compute a smaller extent which any
@@ -56496,28 +56538,31 @@ ol.source.Vector.prototype.getClosestFeatureToCoordinate = function(coordinate) 
   goog.asserts.assert(this.featuresRtree_,
       'getClosestFeatureToCoordinate does not work with useSpatialIndex set ' +
       'to false');
+  var filter = opt_filter ? opt_filter : ol.functions.TRUE;
   this.featuresRtree_.forEachInExtent(extent,
       /**
        * @param {ol.Feature} feature Feature.
        */
       function(feature) {
-        var geometry = feature.getGeometry();
-        goog.asserts.assert(geometry,
-            'feature geometry is defined and not null');
-        var previousMinSquaredDistance = minSquaredDistance;
-        minSquaredDistance = geometry.closestPointXY(
-            x, y, closestPoint, minSquaredDistance);
-        if (minSquaredDistance < previousMinSquaredDistance) {
-          closestFeature = feature;
-          // This is sneaky.  Reduce the extent that it is currently being
-          // searched while the R-Tree traversal using this same extent object
-          // is still in progress.  This is safe because the new extent is
-          // strictly contained by the old extent.
-          var minDistance = Math.sqrt(minSquaredDistance);
-          extent[0] = x - minDistance;
-          extent[1] = y - minDistance;
-          extent[2] = x + minDistance;
-          extent[3] = y + minDistance;
+        if (filter(feature)) {
+          var geometry = feature.getGeometry();
+          goog.asserts.assert(geometry,
+              'feature geometry is defined and not null');
+          var previousMinSquaredDistance = minSquaredDistance;
+          minSquaredDistance = geometry.closestPointXY(
+              x, y, closestPoint, minSquaredDistance);
+          if (minSquaredDistance < previousMinSquaredDistance) {
+            closestFeature = feature;
+            // This is sneaky.  Reduce the extent that it is currently being
+            // searched while the R-Tree traversal using this same extent object
+            // is still in progress.  This is safe because the new extent is
+            // strictly contained by the old extent.
+            var minDistance = Math.sqrt(minSquaredDistance);
+            extent[0] = x - minDistance;
+            extent[1] = y - minDistance;
+            extent[2] = x + minDistance;
+            extent[3] = y + minDistance;
+          }
         }
       });
   return closestFeature;
@@ -57312,6 +57357,12 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
 
   /**
    * @private
+   * @type {ol.TileCoord}
+   */
+  this.tmpTileCoord_ = [0, 0, 0];
+
+  /**
+   * @private
    * @type {!goog.vec.Mat4.Number}
    */
   this.imageTransform_ = goog.vec.Mat4.createNumber();
@@ -57392,7 +57443,7 @@ ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
     // Calculate all insert points by tile widths from a common origin to avoid
     // gaps caused by rounding
     var origin = ol.extent.getBottomLeft(tileGrid.getTileCoordExtent(
-        tileGrid.getTileCoordForCoordAndZ(center, currentZ)));
+        tileGrid.getTileCoordForCoordAndZ(center, currentZ, this.tmpTileCoord_)));
     var w = Math.round(ol.extent.getWidth(tileExtent) * pixelScale);
     var h = Math.round(ol.extent.getHeight(tileExtent) * pixelScale);
     var left = Math.round((tileExtent[0] - origin[0]) * pixelScale / w) * w +
@@ -58917,7 +58968,6 @@ goog.require('ol.RendererType');
 goog.require('ol.array');
 goog.require('ol.css');
 goog.require('ol.dom');
-goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.layer.Layer');
 goog.require('ol.layer.Tile');
@@ -58955,12 +59005,6 @@ ol.renderer.canvas.Map = function(container, map) {
 
   /**
    * @private
-   * @type {CanvasRenderingContext2D}
-   */
-  this.renderContext_ = ol.dom.createCanvasContext2D();
-
-  /**
-   * @private
    * @type {HTMLCanvasElement}
    */
   this.canvas_ = this.context_.canvas;
@@ -58969,24 +59013,6 @@ ol.renderer.canvas.Map = function(container, map) {
   this.canvas_.style.height = '100%';
   this.canvas_.className = ol.css.CLASS_UNSELECTABLE;
   goog.dom.insertChildAt(container, this.canvas_, 0);
-
-  /**
-   * @private
-   * @type {HTMLCanvasElement}
-   */
-  this.renderCanvas_ = this.renderContext_.canvas;
-
-  /**
-   * @private
-   * @type {ol.Coordinate}
-   */
-  this.pixelCenter_ = [0, 0];
-
-  /**
-   * @private
-   * @type {ol.Extent}
-   */
-  this.pixelExtent_ = ol.extent.createEmpty();
 
   /**
    * @private
@@ -67365,12 +67391,12 @@ ol.Map.prototype.disposeInternal = function() {
   ol.events.unlisten(this.viewport_, ol.events.EventType.MOUSEWHEEL,
       this.handleBrowserEvent, this);
   if (this.handleResize_ !== undefined) {
-    goog.global.removeEventListener(ol.events.EventType.RESIZE,
+    ol.global.removeEventListener(ol.events.EventType.RESIZE,
         this.handleResize_, false);
     this.handleResize_ = undefined;
   }
   if (this.animationDelayKey_) {
-    goog.global.cancelAnimationFrame(this.animationDelayKey_);
+    ol.global.cancelAnimationFrame(this.animationDelayKey_);
     this.animationDelayKey_ = undefined;
   }
   this.setTarget(null);
@@ -67864,7 +67890,7 @@ ol.Map.prototype.handleTargetChanged_ = function() {
   if (!targetElement) {
     goog.dom.removeNode(this.viewport_);
     if (this.handleResize_ !== undefined) {
-      goog.global.removeEventListener(ol.events.EventType.RESIZE,
+      ol.global.removeEventListener(ol.events.EventType.RESIZE,
           this.handleResize_, false);
       this.handleResize_ = undefined;
     }
@@ -67882,7 +67908,7 @@ ol.Map.prototype.handleTargetChanged_ = function() {
 
     if (!this.handleResize_) {
       this.handleResize_ = this.updateSize.bind(this);
-      goog.global.addEventListener(ol.events.EventType.RESIZE,
+      ol.global.addEventListener(ol.events.EventType.RESIZE,
           this.handleResize_, false);
     }
   }
@@ -67986,7 +68012,7 @@ ol.Map.prototype.isRendered = function() {
  */
 ol.Map.prototype.renderSync = function() {
   if (this.animationDelayKey_) {
-    goog.global.cancelAnimationFrame(this.animationDelayKey_);
+    ol.global.cancelAnimationFrame(this.animationDelayKey_);
   }
   this.animationDelay_();
 };
@@ -67998,7 +68024,7 @@ ol.Map.prototype.renderSync = function() {
  */
 ol.Map.prototype.render = function() {
   if (this.animationDelayKey_ === undefined) {
-    this.animationDelayKey_ = goog.global.requestAnimationFrame(
+    this.animationDelayKey_ = ol.global.requestAnimationFrame(
         this.animationDelay_);
   }
 };
@@ -70460,7 +70486,7 @@ ol.DeviceOrientation.prototype.handleTrackingChanged_ = function() {
   if (ol.has.DEVICE_ORIENTATION) {
     var tracking = this.getTracking();
     if (tracking && !this.listenerKey_) {
-      this.listenerKey_ = ol.events.listen(goog.global, 'deviceorientation',
+      this.listenerKey_ = ol.events.listen(ol.global, 'deviceorientation',
           this.orientationChange_, this);
     } else if (!tracking && this.listenerKey_ !== null) {
       ol.events.unlistenByKey(this.listenerKey_);
@@ -74879,9 +74905,9 @@ ol.format.GMLBase.prototype.readProjectionFromNode = function(node) {
 goog.provide('ol.format.XSD');
 
 goog.require('goog.asserts');
-goog.require('goog.string');
 goog.require('ol');
 goog.require('ol.xml');
+goog.require('ol.string');
 
 
 /**
@@ -75020,11 +75046,11 @@ ol.format.XSD.writeBooleanTextNode = function(node, bool) {
 ol.format.XSD.writeDateTimeTextNode = function(node, dateTime) {
   var date = new Date(dateTime * 1000);
   var string = date.getUTCFullYear() + '-' +
-      goog.string.padNumber(date.getUTCMonth() + 1, 2) + '-' +
-      goog.string.padNumber(date.getUTCDate(), 2) + 'T' +
-      goog.string.padNumber(date.getUTCHours(), 2) + ':' +
-      goog.string.padNumber(date.getUTCMinutes(), 2) + ':' +
-      goog.string.padNumber(date.getUTCSeconds(), 2) + 'Z';
+      ol.string.padNumber(date.getUTCMonth() + 1, 2) + '-' +
+      ol.string.padNumber(date.getUTCDate(), 2) + 'T' +
+      ol.string.padNumber(date.getUTCHours(), 2) + ':' +
+      ol.string.padNumber(date.getUTCMinutes(), 2) + ':' +
+      ol.string.padNumber(date.getUTCSeconds(), 2) + 'Z';
   node.appendChild(ol.xml.DOCUMENT.createTextNode(string));
 };
 
@@ -91615,10 +91641,7 @@ ol.format.WMSGetFeatureInfo.prototype.readFeatures;
  * @inheritDoc
  */
 ol.format.WMSGetFeatureInfo.prototype.readFeaturesFromNode = function(node, opt_options) {
-  var options = {
-    'featureType': this.featureType,
-    'featureNS': this.featureNS
-  };
+  var options = {};
   if (opt_options) {
     ol.object.assign(options, this.getReadOptions(node, opt_options));
   }
@@ -92197,12 +92220,12 @@ ol.Geolocation.prototype.handleTrackingChanged_ = function() {
   if (ol.has.GEOLOCATION) {
     var tracking = this.getTracking();
     if (tracking && this.watchId_ === undefined) {
-      this.watchId_ = goog.global.navigator.geolocation.watchPosition(
+      this.watchId_ = ol.global.navigator.geolocation.watchPosition(
           this.positionChange_.bind(this),
           this.positionError_.bind(this),
           this.getTrackingOptions());
     } else if (!tracking && this.watchId_ !== undefined) {
-      goog.global.navigator.geolocation.clearWatch(this.watchId_);
+      ol.global.navigator.geolocation.clearWatch(this.watchId_);
       this.watchId_ = undefined;
     }
   }
@@ -97703,27 +97726,27 @@ goog.provide('ol.net');
  *     callback. Default is 'callback'.
  */
 ol.net.jsonp = function(url, callback, opt_errback, opt_callbackParam) {
-  var script = goog.global.document.createElement('script');
+  var script = ol.global.document.createElement('script');
   var key = 'olc_' + goog.getUid(callback);
   function cleanup() {
-    delete goog.global[key];
+    delete ol.global[key];
     script.parentNode.removeChild(script);
   }
   script.async = true;
   script.src = url + (url.indexOf('?') == -1 ? '?' : '&') +
       (opt_callbackParam || 'callback') + '=' + key;
-  var timer = goog.global.setTimeout(function() {
+  var timer = ol.global.setTimeout(function() {
     cleanup();
     if (opt_errback) {
       opt_errback();
     }
   }, 10000);
-  goog.global[key] = function(data) {
-    goog.global.clearTimeout(timer);
+  ol.global[key] = function(data) {
+    ol.global.clearTimeout(timer);
     cleanup();
     callback(data);
   };
-  goog.global.document.getElementsByTagName('head')[0].appendChild(script);
+  ol.global.document.getElementsByTagName('head')[0].appendChild(script);
 };
 
 goog.provide('ol.raster.Operation');
@@ -98147,7 +98170,7 @@ ol.reproj.Tile.prototype.load = function() {
     });
 
     if (leftToLoad === 0) {
-      goog.global.setTimeout(this.reproject_.bind(this), 0);
+      ol.global.setTimeout(this.reproject_.bind(this), 0);
     }
   }
 };
@@ -98854,6 +98877,7 @@ ol.source.CartoDB.prototype.updateConfig = function(config) {
  * @param {Object} config In the case of anonymous maps, a CartoDB configuration
  *     object.
  * If using named maps, a key-value lookup with the template parameters.
+ * @api
  */
 ol.source.CartoDB.prototype.setConfig = function(config) {
   this.config_ = config || {};
@@ -99476,7 +99500,6 @@ ol.source.wms.ServerType = {
 goog.provide('ol.source.ImageWMS');
 
 goog.require('goog.asserts');
-goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('ol');
 goog.require('ol.Image');
@@ -99489,6 +99512,7 @@ goog.require('ol.proj');
 goog.require('ol.source.Image');
 goog.require('ol.source.wms');
 goog.require('ol.source.wms.ServerType');
+goog.require('ol.string');
 
 
 /**
@@ -99845,7 +99869,7 @@ ol.source.ImageWMS.prototype.updateParams = function(params) {
  */
 ol.source.ImageWMS.prototype.updateV13_ = function() {
   var version = this.params_['VERSION'] || ol.DEFAULT_WMS_VERSION;
-  this.v13_ = goog.string.compareVersions(version, '1.3') >= 0;
+  this.v13_ = ol.string.compareVersions(version, '1.3') >= 0;
 };
 
 goog.provide('ol.source.OSM');
@@ -101826,7 +101850,6 @@ ol.source.TileUTFGridTile_.prototype.load = function() {
 goog.provide('ol.source.TileWMS');
 
 goog.require('goog.asserts');
-goog.require('goog.string');
 goog.require('goog.uri.utils');
 goog.require('ol');
 goog.require('ol.TileCoord');
@@ -101839,6 +101862,7 @@ goog.require('ol.source.TileImage');
 goog.require('ol.source.wms');
 goog.require('ol.source.wms.ServerType');
 goog.require('ol.tilecoord');
+goog.require('ol.string');
 
 
 /**
@@ -102211,7 +102235,7 @@ ol.source.TileWMS.prototype.updateParams = function(params) {
  */
 ol.source.TileWMS.prototype.updateV13_ = function() {
   var version = this.params_['VERSION'] || ol.DEFAULT_WMS_VERSION;
-  this.v13_ = goog.string.compareVersions(version, '1.3') >= 0;
+  this.v13_ = ol.string.compareVersions(version, '1.3') >= 0;
 };
 
 goog.provide('ol.tilegrid.WMTS');
@@ -105795,6 +105819,11 @@ goog.exportProperty(
     ol.source.CartoDB.prototype,
     'updateConfig',
     ol.source.CartoDB.prototype.updateConfig);
+
+goog.exportProperty(
+    ol.source.CartoDB.prototype,
+    'setConfig',
+    ol.source.CartoDB.prototype.setConfig);
 
 goog.exportSymbol(
     'ol.source.Cluster',

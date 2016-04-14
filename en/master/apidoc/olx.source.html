@@ -10474,6 +10474,10 @@
                     <a href="ol.source.CartoDB.html#setAttributions">setAttributions</a>
                 </li>
             
+                <li data-name="ol.source.CartoDB#setConfig" class="unstable">
+                    <a href="ol.source.CartoDB.html#setConfig">setConfig</a>
+                </li>
+            
                 <li data-name="ol.source.CartoDB#setProperties" class="">
                     <a href="ol.source.CartoDB.html#setProperties">setProperties</a>
                 </li>
@@ -22167,8 +22171,8 @@ Required if <code>url</code> is set, otherwise ignored. Default is <code>undefin
             
             
             <td class="description last"><p>The loader function used to load features, from a remote source for example.
-Note that the source will create and use an XHR feature loader when <code>url</code> is
-set.</p></td>
+If this is not set and <code>url</code> is set, the source will create and use an XHR
+feature loader.</p></td>
         </tr>
 	
 	

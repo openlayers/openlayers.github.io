@@ -10474,6 +10474,10 @@
                     <a href="ol.source.CartoDB.html#setAttributions">setAttributions</a>
                 </li>
             
+                <li data-name="ol.source.CartoDB#setConfig" class="unstable">
+                    <a href="ol.source.CartoDB.html#setConfig">setConfig</a>
+                </li>
+            
                 <li data-name="ol.source.CartoDB#setProperties" class="">
                     <a href="ol.source.CartoDB.html#setProperties">setProperties</a>
                 </li>
@@ -15371,8 +15375,8 @@ Required if <code>url</code> is set, otherwise ignored. Default is <code>undefin
 
                 
                 <p>The loader function used to load features, from a remote source for example.
-Note that the source will create and use an XHR feature loader when <code>url</code> is
-set.</p></td>
+If this is not set and <code>url</code> is set, the source will create and use an XHR
+feature loader.</p></td>
         </tr>
 	
 	
@@ -17085,14 +17089,14 @@ Attributions.
     <div class="nameContainer">
         
         <h4 class="name" id="getClosestFeatureToCoordinate">
-            getClosestFeatureToCoordinate<span class="signature">(coordinate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Feature.html">ol.Feature</a>}</span>
+            getClosestFeatureToCoordinate<span class="signature">(coordinate, opt_filter)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Feature.html">ol.Feature</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 618
+            src/ol/source/vectorsource.js, line 621
         </div>
         
         
@@ -17156,6 +17160,33 @@ Attributions.
             <td  class="description last">
                 
                 <p>Coordinate.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>filter</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Feature filter function.
+    The filter function will receive one argument, the <a href="ol.Feature.html"><code>feature</code></a>
+    and it should return a boolean value. By default, no filtering is made.</p></td>
         </tr>
 	
 	
@@ -17225,7 +17256,7 @@ Closest feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 671
+            src/ol/source/vectorsource.js, line 677
         </div>
         
         
@@ -17311,7 +17342,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 687
+            src/ol/source/vectorsource.js, line 693
         </div>
         
         
@@ -17889,7 +17920,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 699
+            src/ol/source/vectorsource.js, line 705
         </div>
         
         
@@ -18498,7 +18529,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 710
+            src/ol/source/vectorsource.js, line 716
         </div>
         
         
@@ -19037,7 +19068,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectorsource.js, line 819
+            src/ol/source/vectorsource.js, line 825
         </div>
         
         
