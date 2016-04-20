@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.15.1-73-gb7278f1
+// Version: v3.15.1-76-g18a29ea
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -99140,6 +99140,275 @@ ol.source.Cluster.prototype.createCluster_ = function(features) {
   return cluster;
 };
 
+goog.provide('ol.source.ImageArcGISRest');
+
+goog.require('goog.asserts');
+goog.require('goog.uri.utils');
+goog.require('ol');
+goog.require('ol.Image');
+goog.require('ol.ImageLoadFunctionType');
+goog.require('ol.events');
+goog.require('ol.events.EventType');
+goog.require('ol.extent');
+goog.require('ol.object');
+goog.require('ol.proj');
+goog.require('ol.source.Image');
+
+
+/**
+ * @classdesc
+ * Source for data from ArcGIS Rest services providing single, untiled images.
+ * Useful when underlying map service has labels.
+ *
+ * If underlying map service is not using labels,
+ * take advantage of ol image caching and use
+ * {@link ol.source.TileArcGISRest} data source.
+ *
+ * @constructor
+ * @fires ol.source.ImageEvent
+ * @extends {ol.source.Image}
+ * @param {olx.source.ImageArcGISRestOptions=} opt_options Image ArcGIS Rest Options.
+ * @api
+ */
+ol.source.ImageArcGISRest = function(opt_options) {
+
+  var options = opt_options || {};
+
+  goog.base(this, {
+    attributions: options.attributions,
+    logo: options.logo,
+    projection: options.projection,
+    resolutions: options.resolutions
+  });
+
+  /**
+   * @private
+   * @type {?string}
+   */
+  this.crossOrigin_ =
+      options.crossOrigin !== undefined ? options.crossOrigin : null;
+
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+  this.url_ = options.url;
+
+  /**
+   * @private
+   * @type {ol.ImageLoadFunctionType}
+   */
+  this.imageLoadFunction_ = options.imageLoadFunction !== undefined ?
+      options.imageLoadFunction : ol.source.Image.defaultImageLoadFunction;
+
+
+  /**
+   * @private
+   * @type {!Object}
+   */
+  this.params_ = options.params || {};
+
+  /**
+   * @private
+   * @type {ol.Image}
+   */
+  this.image_ = null;
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.imageSize_ = [0, 0];
+
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedRevision_ = 0;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.ratio_ = options.ratio !== undefined ? options.ratio : 1.5;
+
+};
+goog.inherits(ol.source.ImageArcGISRest, ol.source.Image);
+
+
+/**
+ * Get the user-provided params, i.e. those passed to the constructor through
+ * the "params" option, and possibly updated using the updateParams method.
+ * @return {Object} Params.
+ * @api stable
+ */
+ol.source.ImageArcGISRest.prototype.getParams = function() {
+  return this.params_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.ImageArcGISRest.prototype.getImageInternal = function(extent, resolution, pixelRatio, projection) {
+
+  if (this.url_ === undefined) {
+    return null;
+  }
+
+  resolution = this.findNearestResolution(resolution);
+
+  var image = this.image_;
+  if (image &&
+      this.renderedRevision_ == this.getRevision() &&
+      image.getResolution() == resolution &&
+      image.getPixelRatio() == pixelRatio &&
+      ol.extent.containsExtent(image.getExtent(), extent)) {
+    return image;
+  }
+
+  var params = {
+    'F': 'image',
+    'FORMAT': 'PNG32',
+    'TRANSPARENT': true
+  };
+  ol.object.assign(params, this.params_);
+
+  extent = extent.slice();
+  var centerX = (extent[0] + extent[2]) / 2;
+  var centerY = (extent[1] + extent[3]) / 2;
+  if (this.ratio_ != 1) {
+    var halfWidth = this.ratio_ * ol.extent.getWidth(extent) / 2;
+    var halfHeight = this.ratio_ * ol.extent.getHeight(extent) / 2;
+    extent[0] = centerX - halfWidth;
+    extent[1] = centerY - halfHeight;
+    extent[2] = centerX + halfWidth;
+    extent[3] = centerY + halfHeight;
+  }
+
+  var imageResolution = resolution / pixelRatio;
+
+  // Compute an integer width and height.
+  var width = Math.ceil(ol.extent.getWidth(extent) / imageResolution);
+  var height = Math.ceil(ol.extent.getHeight(extent) / imageResolution);
+
+  // Modify the extent to match the integer width and height.
+  extent[0] = centerX - imageResolution * width / 2;
+  extent[2] = centerX + imageResolution * width / 2;
+  extent[1] = centerY - imageResolution * height / 2;
+  extent[3] = centerY + imageResolution * height / 2;
+
+  this.imageSize_[0] = width;
+  this.imageSize_[1] = height;
+
+  var url = this.getRequestUrl_(extent, this.imageSize_, pixelRatio,
+      projection, params);
+
+  this.image_ = new ol.Image(extent, resolution, pixelRatio,
+      this.getAttributions(), url, this.crossOrigin_, this.imageLoadFunction_);
+
+  this.renderedRevision_ = this.getRevision();
+
+  ol.events.listen(this.image_, ol.events.EventType.CHANGE,
+      this.handleImageChange, this);
+
+  return this.image_;
+
+};
+
+
+/**
+ * Return the image load function of the source.
+ * @return {ol.ImageLoadFunctionType} The image load function.
+ * @api
+ */
+ol.source.ImageArcGISRest.prototype.getImageLoadFunction = function() {
+  return this.imageLoadFunction_;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.Size} size Size.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @param {Object} params Params.
+ * @return {string} Request URL.
+ * @private
+ */
+ol.source.ImageArcGISRest.prototype.getRequestUrl_ = function(extent, size, pixelRatio, projection, params) {
+
+  goog.asserts.assert(this.url_ !== undefined, 'url is defined');
+
+  // ArcGIS Server only wants the numeric portion of the projection ID.
+  var srid = projection.getCode().split(':').pop();
+
+  params['SIZE'] = size[0] + ',' + size[1];
+  params['BBOX'] = extent.join(',');
+  params['BBOXSR'] = srid;
+  params['IMAGESR'] = srid;
+  params['DPI'] = 90 * pixelRatio;
+
+  var url = this.url_;
+
+  var modifiedUrl = url
+    .replace(/MapServer\/?$/, 'MapServer/export')
+    .replace(/ImageServer\/?$/, 'ImageServer/exportImage');
+  if (modifiedUrl == url) {
+    goog.asserts.fail('Unknown Rest Service', url);
+  }
+  return goog.uri.utils.appendParamsFromMap(modifiedUrl, params);
+};
+
+
+/**
+ * Return the URL used for this ArcGIS source.
+ * @return {string|undefined} URL.
+ * @api stable
+ */
+ol.source.ImageArcGISRest.prototype.getUrl = function() {
+  return this.url_;
+};
+
+
+/**
+ * Set the image load function of the source.
+ * @param {ol.ImageLoadFunctionType} imageLoadFunction Image load function.
+ * @api
+ */
+ol.source.ImageArcGISRest.prototype.setImageLoadFunction = function(imageLoadFunction) {
+  this.image_ = null;
+  this.imageLoadFunction_ = imageLoadFunction;
+  this.changed();
+};
+
+
+/**
+ * Set the URL to use for requests.
+ * @param {string|undefined} url URL.
+ * @api stable
+ */
+ol.source.ImageArcGISRest.prototype.setUrl = function(url) {
+  if (url != this.url_) {
+    this.url_ = url;
+    this.image_ = null;
+    this.changed();
+  }
+};
+
+
+/**
+ * Update the user-provided params.
+ * @param {Object} params Params.
+ * @api stable
+ */
+ol.source.ImageArcGISRest.prototype.updateParams = function(params) {
+  ol.object.assign(this.params_, params);
+  this.image_ = null;
+  this.changed();
+};
+
 goog.provide('ol.source.ImageMapGuide');
 
 goog.require('ol.events');
@@ -104242,6 +104511,7 @@ goog.require('ol.source.BingMaps');
 goog.require('ol.source.CartoDB');
 goog.require('ol.source.Cluster');
 goog.require('ol.source.Image');
+goog.require('ol.source.ImageArcGISRest');
 goog.require('ol.source.ImageCanvas');
 goog.require('ol.source.ImageEvent');
 goog.require('ol.source.ImageMapGuide');
@@ -105837,6 +106107,41 @@ goog.exportProperty(
     ol.source.Cluster.prototype,
     'getSource',
     ol.source.Cluster.prototype.getSource);
+
+goog.exportSymbol(
+    'ol.source.ImageArcGISRest',
+    ol.source.ImageArcGISRest,
+    OPENLAYERS);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getParams',
+    ol.source.ImageArcGISRest.prototype.getParams);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getImageLoadFunction',
+    ol.source.ImageArcGISRest.prototype.getImageLoadFunction);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getUrl',
+    ol.source.ImageArcGISRest.prototype.getUrl);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'setImageLoadFunction',
+    ol.source.ImageArcGISRest.prototype.setImageLoadFunction);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'setUrl',
+    ol.source.ImageArcGISRest.prototype.setUrl);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'updateParams',
+    ol.source.ImageArcGISRest.prototype.updateParams);
 
 goog.exportSymbol(
     'ol.source.ImageCanvas',
@@ -110232,6 +110537,101 @@ goog.exportProperty(
     ol.source.Image.prototype,
     'unByKey',
     ol.source.Image.prototype.unByKey);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getAttributions',
+    ol.source.ImageArcGISRest.prototype.getAttributions);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getLogo',
+    ol.source.ImageArcGISRest.prototype.getLogo);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getProjection',
+    ol.source.ImageArcGISRest.prototype.getProjection);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getState',
+    ol.source.ImageArcGISRest.prototype.getState);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'refresh',
+    ol.source.ImageArcGISRest.prototype.refresh);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'setAttributions',
+    ol.source.ImageArcGISRest.prototype.setAttributions);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'get',
+    ol.source.ImageArcGISRest.prototype.get);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getKeys',
+    ol.source.ImageArcGISRest.prototype.getKeys);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getProperties',
+    ol.source.ImageArcGISRest.prototype.getProperties);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'set',
+    ol.source.ImageArcGISRest.prototype.set);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'setProperties',
+    ol.source.ImageArcGISRest.prototype.setProperties);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'unset',
+    ol.source.ImageArcGISRest.prototype.unset);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'changed',
+    ol.source.ImageArcGISRest.prototype.changed);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'dispatchEvent',
+    ol.source.ImageArcGISRest.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'getRevision',
+    ol.source.ImageArcGISRest.prototype.getRevision);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'on',
+    ol.source.ImageArcGISRest.prototype.on);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'once',
+    ol.source.ImageArcGISRest.prototype.once);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'un',
+    ol.source.ImageArcGISRest.prototype.un);
+
+goog.exportProperty(
+    ol.source.ImageArcGISRest.prototype,
+    'unByKey',
+    ol.source.ImageArcGISRest.prototype.unByKey);
 
 goog.exportProperty(
     ol.source.ImageCanvas.prototype,
