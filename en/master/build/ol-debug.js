@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.15.1-76-g18a29ea
+// Version: v3.15.1-99-g762aa30
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -85954,6 +85954,92 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pbf = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+},{}],2:[function(_dereq_,module,exports){
 'use strict';
 
 // lightweight Buffer shim for pbf browser build
@@ -86114,7 +86200,7 @@ function encodeString(str) {
     return bytes;
 }
 
-},{"ieee754":3}],2:[function(_dereq_,module,exports){
+},{"ieee754":1}],3:[function(_dereq_,module,exports){
 (function (global){
 'use strict';
 
@@ -86544,93 +86630,7 @@ function writePackedFixed64(arr, pbf)  { for (var i = 0; i < arr.length; i++) pb
 function writePackedSFixed64(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed64(arr[i]); }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./buffer":1}],3:[function(_dereq_,module,exports){
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-},{}]},{},[2])(2)
+},{"./buffer":2}]},{},[3])(3)
 });
 ol.ext.pbf = module.exports;
 })();
@@ -86647,11 +86647,144 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.vectortile = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = Point;
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
+
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
+
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+},{}],2:[function(_dereq_,module,exports){
 module.exports.VectorTile = _dereq_('./lib/vectortile.js');
 module.exports.VectorTileFeature = _dereq_('./lib/vectortilefeature.js');
 module.exports.VectorTileLayer = _dereq_('./lib/vectortilelayer.js');
 
-},{"./lib/vectortile.js":2,"./lib/vectortilefeature.js":3,"./lib/vectortilelayer.js":4}],2:[function(_dereq_,module,exports){
+},{"./lib/vectortile.js":3,"./lib/vectortilefeature.js":4,"./lib/vectortilelayer.js":5}],3:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileLayer = _dereq_('./vectortilelayer');
@@ -86670,7 +86803,7 @@ function readTile(tag, layers, pbf) {
 }
 
 
-},{"./vectortilelayer":4}],3:[function(_dereq_,module,exports){
+},{"./vectortilelayer":5}],4:[function(_dereq_,module,exports){
 'use strict';
 
 var Point = _dereq_('point-geometry');
@@ -86844,7 +86977,7 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
     return result;
 };
 
-},{"point-geometry":5}],4:[function(_dereq_,module,exports){
+},{"point-geometry":1}],5:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileFeature = _dereq_('./vectortilefeature.js');
@@ -86907,140 +87040,7 @@ VectorTileLayer.prototype.feature = function(i) {
     return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
 };
 
-},{"./vectortilefeature.js":3}],5:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = Point;
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
-
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
-
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
-
-},{}]},{},[1])(1)
+},{"./vectortilefeature.js":4}]},{},[2])(2)
 });
 ol.ext.vectortile = module.exports;
 })();
@@ -87194,6 +87194,7 @@ ol.format.MVT.prototype.readRenderFeature_ = function(rawFeature, layer) {
 
 /**
  * @inheritDoc
+ * @api
  */
 ol.format.MVT.prototype.readFeatures = function(source, opt_options) {
   goog.asserts.assertInstanceof(source, ArrayBuffer);
@@ -87227,6 +87228,7 @@ ol.format.MVT.prototype.readFeatures = function(source, opt_options) {
 
 /**
  * @inheritDoc
+ * @api
  */
 ol.format.MVT.prototype.readProjection = function(source) {
   return this.defaultDataProjection;
@@ -87303,6 +87305,644 @@ ol.format.MVT.readGeometry_ = function(rawFeature) {
 
   return geom;
 };
+
+goog.provide('ol.format.ogc.filter');
+goog.provide('ol.format.ogc.filter.Filter');
+goog.provide('ol.format.ogc.filter.Logical');
+goog.provide('ol.format.ogc.filter.LogicalBinary');
+goog.provide('ol.format.ogc.filter.And');
+goog.provide('ol.format.ogc.filter.Or');
+goog.provide('ol.format.ogc.filter.Not');
+goog.provide('ol.format.ogc.filter.Bbox');
+goog.provide('ol.format.ogc.filter.Comparison');
+goog.provide('ol.format.ogc.filter.ComparisonBinary');
+goog.provide('ol.format.ogc.filter.EqualTo');
+goog.provide('ol.format.ogc.filter.NotEqualTo');
+goog.provide('ol.format.ogc.filter.LessThan');
+goog.provide('ol.format.ogc.filter.LessThanOrEqualTo');
+goog.provide('ol.format.ogc.filter.GreaterThan');
+goog.provide('ol.format.ogc.filter.GreaterThanOrEqualTo');
+goog.provide('ol.format.ogc.filter.IsNull');
+goog.provide('ol.format.ogc.filter.IsBetween');
+goog.provide('ol.format.ogc.filter.IsLike');
+
+goog.require('ol.Object');
+
+
+/**
+ * Create a logical `<And>` operator between two filter conditions.
+ *
+ * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
+ * @returns {!ol.format.ogc.filter.And} `<And>` operator.
+ * @api
+ */
+ol.format.ogc.filter.and = function(conditionA, conditionB) {
+  return new ol.format.ogc.filter.And(conditionA, conditionB);
+};
+
+
+/**
+ * Create a logical `<Or>` operator between two filter conditions.
+ *
+ * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
+ * @returns {!ol.format.ogc.filter.Or} `<Or>` operator.
+ * @api
+ */
+ol.format.ogc.filter.or = function(conditionA, conditionB) {
+  return new ol.format.ogc.filter.Or(conditionA, conditionB);
+};
+
+
+/**
+ * Represents a logical `<Not>` operator for a filter condition.
+ *
+ * @param {!ol.format.ogc.filter.Filter} condition Filter condition.
+ * @returns {!ol.format.ogc.filter.Not} `<Not>` operator.
+ * @api
+ */
+ol.format.ogc.filter.not = function(condition) {
+  return new ol.format.ogc.filter.Not(condition);
+};
+
+
+/**
+ * Create a `<BBOX>` operator to test whether a geometry-valued property
+ * intersects a fixed bounding box
+ *
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.Extent} extent Extent.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @returns {!ol.format.ogc.filter.Bbox} `<BBOX>` operator.
+ * @api
+ */
+ol.format.ogc.filter.bbox = function(geometryName, extent, opt_srsName) {
+  return new ol.format.ogc.filter.Bbox(geometryName, extent, opt_srsName);
+};
+
+
+/**
+ * Creates a `<PropertyIsEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @returns {!ol.format.ogc.filter.EqualTo} `<PropertyIsEqualTo>` operator.
+ * @api
+ */
+ol.format.ogc.filter.equalTo = function(propertyName, expression, opt_matchCase) {
+  return new ol.format.ogc.filter.EqualTo(propertyName, expression, opt_matchCase);
+};
+
+
+/**
+ * Creates a `<PropertyIsNotEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @returns {!ol.format.ogc.filter.NotEqualTo} `<PropertyIsNotEqualTo>` operator.
+ * @api
+ */
+ol.format.ogc.filter.notEqualTo = function(propertyName, expression, opt_matchCase) {
+  return new ol.format.ogc.filter.NotEqualTo(propertyName, expression, opt_matchCase);
+};
+
+
+/**
+ * Creates a `<PropertyIsLessThan>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.ogc.filter.LessThan} `<PropertyIsLessThan>` operator.
+ * @api
+ */
+ol.format.ogc.filter.lessThan = function(propertyName, expression) {
+  return new ol.format.ogc.filter.LessThan(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsLessThanOrEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.ogc.filter.LessThanOrEqualTo} `<PropertyIsLessThanOrEqualTo>` operator.
+ * @api
+ */
+ol.format.ogc.filter.lessThanOrEqualTo = function(propertyName, expression) {
+  return new ol.format.ogc.filter.LessThanOrEqualTo(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsGreaterThan>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.ogc.filter.GreaterThan} `<PropertyIsGreaterThan>` operator.
+ * @api
+ */
+ol.format.ogc.filter.greaterThan = function(propertyName, expression) {
+  return new ol.format.ogc.filter.GreaterThan(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsGreaterThanOrEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.ogc.filter.GreaterThanOrEqualTo} `<PropertyIsGreaterThanOrEqualTo>` operator.
+ * @api
+ */
+ol.format.ogc.filter.greaterThanOrEqualTo = function(propertyName, expression) {
+  return new ol.format.ogc.filter.GreaterThanOrEqualTo(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsNull>` comparison operator to test whether a property value
+ * is null.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @returns {!ol.format.ogc.filter.IsNull} `<PropertyIsNull>` operator.
+ * @api
+ */
+ol.format.ogc.filter.isNull = function(propertyName) {
+  return new ol.format.ogc.filter.IsNull(propertyName);
+};
+
+
+/**
+ * Creates a `<PropertyIsBetween>` comparison operator to test whether an expression
+ * value lies within a range given by a lower and upper bound (inclusive).
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} lowerBoundary The lower bound of the range.
+ * @param {!number} upperBoundary The upper bound of the range.
+ * @returns {!ol.format.ogc.filter.IsBetween} `<PropertyIsBetween>` operator.
+ * @api
+ */
+ol.format.ogc.filter.between = function(propertyName, lowerBoundary, upperBoundary) {
+  return new ol.format.ogc.filter.IsBetween(propertyName, lowerBoundary, upperBoundary);
+};
+
+
+/**
+ * Represents a `<PropertyIsLike>` comparison operator that matches a string property
+ * value against a text pattern.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!string} pattern Text pattern.
+ * @param {string=} opt_wildCard Pattern character which matches any sequence of
+ *    zero or more string characters. Default is '*'.
+ * @param {string=} opt_singleChar pattern character which matches any single
+ *    string character. Default is '.'.
+ * @param {string=} opt_escapeChar Escape character which can be used to escape
+ *    the pattern characters. Default is '!'.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @returns {!ol.format.ogc.filter.IsLike} `<PropertyIsLike>` operator.
+ * @api
+ */
+ol.format.ogc.filter.like = function(propertyName, pattern,
+    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
+  return new ol.format.ogc.filter.IsLike(propertyName, pattern,
+    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase);
+};
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @extends {ol.Object}
+ * @api
+ */
+ol.format.ogc.filter.Filter = function(tagName) {
+
+  goog.base(this);
+
+  /**
+   * @private
+   * @type {!string}
+   */
+  this.tagName_ = tagName;
+};
+goog.inherits(ol.format.ogc.filter.Filter, ol.Object);
+
+/**
+ * The XML tag name for a filter.
+ * @returns {!string} Name.
+ */
+ol.format.ogc.filter.Filter.prototype.getTagName = function() {
+  return this.tagName_;
+};
+
+
+// Logical filters
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature logical filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @extends {ol.format.ogc.filter.Filter}
+ */
+ol.format.ogc.filter.Logical = function(tagName) {
+  goog.base(this, tagName);
+};
+goog.inherits(ol.format.ogc.filter.Logical, ol.format.ogc.filter.Filter);
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature binary logical filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
+ * @extends {ol.format.ogc.filter.Logical}
+ */
+ol.format.ogc.filter.LogicalBinary = function(tagName, conditionA, conditionB) {
+
+  goog.base(this, tagName);
+
+  /**
+   * @public
+   * @type {!ol.format.ogc.filter.Filter}
+   */
+  this.conditionA = conditionA;
+
+  /**
+   * @public
+   * @type {!ol.format.ogc.filter.Filter}
+   */
+  this.conditionB = conditionB;
+
+};
+goog.inherits(ol.format.ogc.filter.LogicalBinary, ol.format.ogc.filter.Logical);
+
+
+/**
+ * @classdesc
+ * Represents a logical `<And>` operator between two filter conditions.
+ *
+ * @constructor
+ * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
+ * @extends {ol.format.ogc.filter.LogicalBinary}
+ * @api
+ */
+ol.format.ogc.filter.And = function(conditionA, conditionB) {
+  goog.base(this, 'And', conditionA, conditionB);
+};
+goog.inherits(ol.format.ogc.filter.And, ol.format.ogc.filter.LogicalBinary);
+
+
+/**
+ * @classdesc
+ * Represents a logical `<Or>` operator between two filter conditions.
+ *
+ * @constructor
+ * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
+ * @extends {ol.format.ogc.filter.LogicalBinary}
+ * @api
+ */
+ol.format.ogc.filter.Or = function(conditionA, conditionB) {
+  goog.base(this, 'Or', conditionA, conditionB);
+};
+goog.inherits(ol.format.ogc.filter.Or, ol.format.ogc.filter.LogicalBinary);
+
+
+/**
+ * @classdesc
+ * Represents a logical `<Not>` operator for a filter condition.
+ *
+ * @constructor
+ * @param {!ol.format.ogc.filter.Filter} condition Filter condition.
+ * @extends {ol.format.ogc.filter.Logical}
+ * @api
+ */
+ol.format.ogc.filter.Not = function(condition) {
+
+  goog.base(this, 'Not');
+
+  /**
+   * @public
+   * @type {!ol.format.ogc.filter.Filter}
+   */
+  this.condition = condition;
+};
+goog.inherits(ol.format.ogc.filter.Not, ol.format.ogc.filter.Logical);
+
+
+// Spatial filters
+
+
+/**
+ * @classdesc
+ * Represents a `<BBOX>` operator to test whether a geometry-valued property
+ * intersects a fixed bounding box
+ *
+ * @constructor
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.Extent} extent Extent.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @extends {ol.format.ogc.filter.Filter}
+ * @api
+ */
+ol.format.ogc.filter.Bbox = function(geometryName, extent, opt_srsName) {
+
+  goog.base(this, 'BBOX');
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.geometryName = geometryName;
+
+  /**
+   * @public
+   * @type {!ol.Extent}
+   */
+  this.extent = extent;
+
+  /**
+   * @public
+   * @type {string|undefined}
+   */
+  this.srsName = opt_srsName;
+};
+goog.inherits(ol.format.ogc.filter.Bbox, ol.format.ogc.filter.Filter);
+
+
+// Property comparison filters
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature property comparison filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @param {!string} propertyName Name of the context property to compare.
+ * @extends {ol.format.ogc.filter.Filter}
+ * @api
+ */
+ol.format.ogc.filter.Comparison = function(tagName, propertyName) {
+
+  goog.base(this, tagName);
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.propertyName = propertyName;
+};
+goog.inherits(ol.format.ogc.filter.Comparison, ol.format.ogc.filter.Filter);
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature property binary comparison filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.ogc.filter.Comparison}
+ * @api
+ */
+ol.format.ogc.filter.ComparisonBinary = function(
+    tagName, propertyName, expression, opt_matchCase) {
+
+  goog.base(this, tagName, propertyName);
+
+  /**
+   * @public
+   * @type {!(string|number)}
+   */
+  this.expression = expression;
+
+  /**
+   * @public
+   * @type {boolean|undefined}
+   */
+  this.matchCase = opt_matchCase;
+};
+goog.inherits(ol.format.ogc.filter.ComparisonBinary, ol.format.ogc.filter.Comparison);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.ogc.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.ogc.filter.EqualTo = function(propertyName, expression, opt_matchCase) {
+  goog.base(this, 'PropertyIsEqualTo', propertyName, expression, opt_matchCase);
+};
+goog.inherits(ol.format.ogc.filter.EqualTo, ol.format.ogc.filter.ComparisonBinary);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsNotEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.ogc.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.ogc.filter.NotEqualTo = function(propertyName, expression, opt_matchCase) {
+  goog.base(this, 'PropertyIsNotEqualTo', propertyName, expression, opt_matchCase);
+};
+goog.inherits(ol.format.ogc.filter.NotEqualTo, ol.format.ogc.filter.ComparisonBinary);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsLessThan>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.ogc.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.ogc.filter.LessThan = function(propertyName, expression) {
+  goog.base(this, 'PropertyIsLessThan', propertyName, expression);
+};
+goog.inherits(ol.format.ogc.filter.LessThan, ol.format.ogc.filter.ComparisonBinary);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsLessThanOrEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.ogc.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.ogc.filter.LessThanOrEqualTo = function(propertyName, expression) {
+  goog.base(this, 'PropertyIsLessThanOrEqualTo', propertyName, expression);
+};
+goog.inherits(ol.format.ogc.filter.LessThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsGreaterThan>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.ogc.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.ogc.filter.GreaterThan = function(propertyName, expression) {
+  goog.base(this, 'PropertyIsGreaterThan', propertyName, expression);
+};
+goog.inherits(ol.format.ogc.filter.GreaterThan, ol.format.ogc.filter.ComparisonBinary);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsGreaterThanOrEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.ogc.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.ogc.filter.GreaterThanOrEqualTo = function(propertyName, expression) {
+  goog.base(this, 'PropertyIsGreaterThanOrEqualTo', propertyName, expression);
+};
+goog.inherits(ol.format.ogc.filter.GreaterThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsNull>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @extends {ol.format.ogc.filter.Comparison}
+ * @api
+ */
+ol.format.ogc.filter.IsNull = function(propertyName) {
+  goog.base(this, 'PropertyIsNull', propertyName);
+};
+goog.inherits(ol.format.ogc.filter.IsNull, ol.format.ogc.filter.Comparison);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsBetween>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} lowerBoundary The lower bound of the range.
+ * @param {!number} upperBoundary The upper bound of the range.
+ * @extends {ol.format.ogc.filter.Comparison}
+ * @api
+ */
+ol.format.ogc.filter.IsBetween = function(propertyName, lowerBoundary, upperBoundary) {
+  goog.base(this, 'PropertyIsBetween', propertyName);
+
+  /**
+   * @public
+   * @type {!number}
+   */
+  this.lowerBoundary = lowerBoundary;
+
+  /**
+   * @public
+   * @type {!number}
+   */
+  this.upperBoundary = upperBoundary;
+};
+goog.inherits(ol.format.ogc.filter.IsBetween, ol.format.ogc.filter.Comparison);
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsLike>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!string} pattern Text pattern.
+ * @param {string=} opt_wildCard Pattern character which matches any sequence of
+ *    zero or more string characters. Default is '*'.
+ * @param {string=} opt_singleChar pattern character which matches any single
+ *    string character. Default is '.'.
+ * @param {string=} opt_escapeChar Escape character which can be used to escape
+ *    the pattern characters. Default is '!'.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.ogc.filter.Comparison}
+ * @api
+ */
+ol.format.ogc.filter.IsLike = function(propertyName, pattern,
+    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
+  goog.base(this, 'PropertyIsLike', propertyName);
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.pattern = pattern;
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.wildCard = (opt_wildCard !== undefined) ? opt_wildCard : '*';
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.singleChar = (opt_singleChar !== undefined) ? opt_singleChar : '.';
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.escapeChar = (opt_escapeChar !== undefined) ? opt_escapeChar : '!';
+
+  /**
+   * @public
+   * @type {boolean|undefined}
+   */
+  this.matchCase = opt_matchCase;
+};
+goog.inherits(ol.format.ogc.filter.IsLike, ol.format.ogc.filter.Comparison);
 
 // FIXME add typedef for stack state objects
 goog.provide('ol.format.OSMXML');
@@ -88954,6 +89594,14 @@ goog.require('goog.dom.NodeType');
 goog.require('ol');
 goog.require('ol.format.GML3');
 goog.require('ol.format.GMLBase');
+goog.require('ol.format.ogc.filter');
+goog.require('ol.format.ogc.filter.Bbox');
+goog.require('ol.format.ogc.filter.ComparisonBinary');
+goog.require('ol.format.ogc.filter.LogicalBinary');
+goog.require('ol.format.ogc.filter.Not');
+goog.require('ol.format.ogc.filter.IsBetween');
+goog.require('ol.format.ogc.filter.IsNull');
+goog.require('ol.format.ogc.filter.IsLike');
 goog.require('ol.format.XMLFeature');
 goog.require('ol.format.XSD');
 goog.require('ol.geom.Geometry');
@@ -89500,24 +90148,163 @@ ol.format.WFS.writeQuery_ = function(node, featureType, objectStack) {
       ol.format.WFS.QUERY_SERIALIZERS_,
       ol.xml.makeSimpleNodeFactory('PropertyName'), propertyNames,
       objectStack);
-  var bbox = context['bbox'];
-  if (bbox) {
+  var filter = context['filter'];
+  if (filter) {
     var child = ol.xml.createElementNS('http://www.opengis.net/ogc', 'Filter');
-    ol.format.WFS.writeOgcBBOX_(child, bbox, objectStack);
     node.appendChild(child);
+    ol.format.WFS.writeFilterCondition_(child, filter, objectStack);
   }
 };
 
 
 /**
  * @param {Node} node Node.
- * @param {string} value PropertyName value.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
-ol.format.WFS.writeOgcPropertyName_ = function(node, value, objectStack) {
-  var property = ol.xml.createElementNS('http://www.opengis.net/ogc',
-      'PropertyName');
+ol.format.WFS.writeFilterCondition_ = function(node, filter, objectStack) {
+  var item = {node: node};
+  ol.xml.pushSerializeAndPop(item,
+      ol.format.WFS.GETFEATURE_SERIALIZERS_,
+      ol.xml.makeSimpleNodeFactory(filter.getTagName()),
+      [filter], objectStack);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeBboxFilter_ = function(node, filter, objectStack) {
+  goog.asserts.assertInstanceof(filter, ol.format.ogc.filter.Bbox,
+    'must be bbox filter');
+
+  var context = objectStack[objectStack.length - 1];
+  goog.asserts.assert(goog.isObject(context), 'context should be an Object');
+  context.srsName = filter.srsName;
+
+  ol.format.WFS.writeOgcPropertyName_(node, filter.geometryName);
+  ol.format.GML3.prototype.writeGeometryElement(node, filter.extent, objectStack);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeLogicalFilter_ = function(node, filter, objectStack) {
+  goog.asserts.assertInstanceof(filter, ol.format.ogc.filter.LogicalBinary,
+    'must be logical filter');
+  var item = {node: node};
+  var conditionA = filter.conditionA;
+  ol.xml.pushSerializeAndPop(item,
+      ol.format.WFS.GETFEATURE_SERIALIZERS_,
+      ol.xml.makeSimpleNodeFactory(conditionA.getTagName()),
+      [conditionA], objectStack);
+  var conditionB = filter.conditionB;
+  ol.xml.pushSerializeAndPop(item,
+      ol.format.WFS.GETFEATURE_SERIALIZERS_,
+      ol.xml.makeSimpleNodeFactory(conditionB.getTagName()),
+      [conditionB], objectStack);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeNotFilter_ = function(node, filter, objectStack) {
+  goog.asserts.assertInstanceof(filter, ol.format.ogc.filter.Not,
+    'must be Not filter');
+  var item = {node: node};
+  var condition = filter.condition;
+  ol.xml.pushSerializeAndPop(item,
+      ol.format.WFS.GETFEATURE_SERIALIZERS_,
+      ol.xml.makeSimpleNodeFactory(condition.getTagName()),
+      [condition], objectStack);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeComparisonFilter_ = function(node, filter, objectStack) {
+  goog.asserts.assertInstanceof(filter, ol.format.ogc.filter.ComparisonBinary,
+    'must be binary comparison filter');
+  if (filter.matchCase !== undefined) {
+    node.setAttribute('matchCase', filter.matchCase.toString());
+  }
+  ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
+  ol.format.WFS.writeOgcLiteral_(node, '' + filter.expression);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeIsNullFilter_ = function(node, filter, objectStack) {
+  goog.asserts.assertInstanceof(filter, ol.format.ogc.filter.IsNull,
+    'must be IsNull comparison filter');
+  ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeIsBetweenFilter_ = function(node, filter, objectStack) {
+  goog.asserts.assertInstanceof(filter, ol.format.ogc.filter.IsBetween,
+    'must be IsBetween comparison filter');
+  ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
+  ol.format.WFS.writeOgcExpression_('LowerBoundary', node, '' + filter.lowerBoundary);
+  ol.format.WFS.writeOgcExpression_('UpperBoundary', node, '' + filter.upperBoundary);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeIsLikeFilter_ = function(node, filter, objectStack) {
+  goog.asserts.assertInstanceof(filter, ol.format.ogc.filter.IsLike,
+    'must be IsLike comparison filter');
+  node.setAttribute('wildCard', filter.wildCard);
+  node.setAttribute('singleChar', filter.singleChar);
+  node.setAttribute('escapeChar', filter.escapeChar);
+  if (filter.matchCase !== undefined) {
+    node.setAttribute('matchCase', filter.matchCase.toString());
+  }
+  ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
+  ol.format.WFS.writeOgcLiteral_(node, '' + filter.pattern);
+};
+
+
+/**
+ * @param {string} tagName Tag name.
+ * @param {Node} node Node.
+ * @param {string} value Value.
+ * @private
+ */
+ol.format.WFS.writeOgcExpression_ = function(tagName, node, value) {
+  var property = ol.xml.createElementNS('http://www.opengis.net/ogc', tagName);
   ol.format.XSD.writeStringTextNode(property, value);
   node.appendChild(property);
 };
@@ -89525,18 +90312,21 @@ ol.format.WFS.writeOgcPropertyName_ = function(node, value, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.Extent} bbox Bounding box.
- * @param {Array.<*>} objectStack Node stack.
+ * @param {string} value PropertyName value.
  * @private
  */
-ol.format.WFS.writeOgcBBOX_ = function(node, bbox, objectStack) {
-  var context = objectStack[objectStack.length - 1];
-  goog.asserts.assert(goog.isObject(context), 'context should be an Object');
-  var geometryName = context['geometryName'];
-  var bboxNode = ol.xml.createElementNS('http://www.opengis.net/ogc', 'BBOX');
-  node.appendChild(bboxNode);
-  ol.format.WFS.writeOgcPropertyName_(bboxNode, geometryName, objectStack);
-  ol.format.GML3.prototype.writeGeometryElement(bboxNode, bbox, objectStack);
+ol.format.WFS.writeOgcPropertyName_ = function(node, value) {
+  ol.format.WFS.writeOgcExpression_('PropertyName', node, value);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {string} value PropertyName value.
+ * @private
+ */
+ol.format.WFS.writeOgcLiteral_ = function(node, value) {
+  ol.format.WFS.writeOgcExpression_('Literal', node, value);
 };
 
 
@@ -89546,8 +90336,22 @@ ol.format.WFS.writeOgcBBOX_ = function(node, bbox, objectStack) {
  */
 ol.format.WFS.GETFEATURE_SERIALIZERS_ = {
   'http://www.opengis.net/wfs': {
-    'Query': ol.xml.makeChildAppender(
-        ol.format.WFS.writeQuery_)
+    'Query': ol.xml.makeChildAppender(ol.format.WFS.writeQuery_)
+  },
+  'http://www.opengis.net/ogc': {
+    'And': ol.xml.makeChildAppender(ol.format.WFS.writeLogicalFilter_),
+    'Or': ol.xml.makeChildAppender(ol.format.WFS.writeLogicalFilter_),
+    'Not': ol.xml.makeChildAppender(ol.format.WFS.writeNotFilter_),
+    'BBOX': ol.xml.makeChildAppender(ol.format.WFS.writeBboxFilter_),
+    'PropertyIsEqualTo': ol.xml.makeChildAppender(ol.format.WFS.writeComparisonFilter_),
+    'PropertyIsNotEqualTo': ol.xml.makeChildAppender(ol.format.WFS.writeComparisonFilter_),
+    'PropertyIsLessThan': ol.xml.makeChildAppender(ol.format.WFS.writeComparisonFilter_),
+    'PropertyIsLessThanOrEqualTo': ol.xml.makeChildAppender(ol.format.WFS.writeComparisonFilter_),
+    'PropertyIsGreaterThan': ol.xml.makeChildAppender(ol.format.WFS.writeComparisonFilter_),
+    'PropertyIsGreaterThanOrEqualTo': ol.xml.makeChildAppender(ol.format.WFS.writeComparisonFilter_),
+    'PropertyIsNull': ol.xml.makeChildAppender(ol.format.WFS.writeIsNullFilter_),
+    'PropertyIsBetween': ol.xml.makeChildAppender(ol.format.WFS.writeIsBetweenFilter_),
+    'PropertyIsLike': ol.xml.makeChildAppender(ol.format.WFS.writeIsLikeFilter_)
   }
 };
 
@@ -89582,6 +90386,7 @@ ol.format.WFS.prototype.writeGetFeature = function(options) {
       'GetFeature');
   node.setAttribute('service', 'WFS');
   node.setAttribute('version', '1.1.0');
+  var filter;
   if (options) {
     if (options.handle) {
       node.setAttribute('handle', options.handle);
@@ -89601,6 +90406,19 @@ ol.format.WFS.prototype.writeGetFeature = function(options) {
     if (options.count !== undefined) {
       node.setAttribute('count', options.count);
     }
+    filter = options.filter;
+    if (options.bbox) {
+      goog.asserts.assert(options.geometryName,
+        'geometryName must be set when using bbox filter');
+      var bbox = ol.format.ogc.filter.bbox(
+          options.geometryName, options.bbox, options.srsName);
+      if (filter) {
+        // if bbox and filter are both set, combine the two into a single filter
+        filter = ol.format.ogc.filter.and(filter, bbox);
+      } else {
+        filter = bbox;
+      }
+    }
   }
   ol.xml.setAttributeNS(node, 'http://www.w3.org/2001/XMLSchema-instance',
       'xsi:schemaLocation', this.schemaLocation_);
@@ -89610,7 +90428,7 @@ ol.format.WFS.prototype.writeGetFeature = function(options) {
     featureNS: options.featureNS ? options.featureNS : this.featureNS_,
     featurePrefix: options.featurePrefix,
     geometryName: options.geometryName,
-    bbox: options.bbox,
+    filter: filter,
     propertyNames: options.propertyNames ? options.propertyNames : []
   };
   goog.asserts.assert(Array.isArray(options.featureTypes),
@@ -94291,6 +95109,13 @@ ol.interaction.Draw = function(options) {
    */
   this.maxPoints_ = options.maxPoints ? options.maxPoints : Infinity;
 
+  /**
+   * A function to decide if a potential finish coordinate is permissable
+   * @private
+   * @type {ol.events.ConditionType}
+   */
+  this.finishCondition_ = options.finishCondition ? options.finishCondition : ol.functions.TRUE;
+
   var geometryFunction = options.geometryFunction;
   if (!geometryFunction) {
     if (this.type_ === ol.geom.GeometryType.CIRCLE) {
@@ -94535,7 +95360,9 @@ ol.interaction.Draw.handleUpEvent_ = function(event) {
     } else if (this.mode_ === ol.interaction.DrawMode.CIRCLE) {
       this.finishDrawing();
     } else if (this.atFinish_(event)) {
-      this.finishDrawing();
+      if (this.finishCondition_(event)) {
+        this.finishDrawing();
+      }
     } else {
       this.addToDrawing_(event);
     }
@@ -95195,7 +96022,7 @@ ol.interaction.Modify = function(options) {
    * @type {Array}
    * @private
    */
-  this.dragSegments_ = null;
+  this.dragSegments_ = [];
 
   /**
    * Draw overlay where sketch features are drawn.
@@ -95548,7 +96375,7 @@ ol.interaction.Modify.compareIndexes_ = function(a, b) {
  */
 ol.interaction.Modify.handleDownEvent_ = function(evt) {
   this.handlePointerAtPixel_(evt.pixel, evt.map);
-  this.dragSegments_ = [];
+  this.dragSegments_.length = 0;
   this.modified_ = false;
   var vertexFeature = this.vertexFeature_;
   if (vertexFeature) {
@@ -96324,6 +97151,7 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
     // Replace the currently selected feature(s) with the feature(s) at the
     // pixel, or clear the selected feature(s) if there is no feature at
     // the pixel.
+    ol.object.clear(this.featureLayerAssociation_);
     map.forEachFeatureAtPixel(mapBrowserEvent.pixel,
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
@@ -96347,16 +97175,6 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
         features.clear();
       }
       features.extend(selected);
-      // Modify object this.featureLayerAssociation_
-      if (selected.length === 0) {
-        ol.object.clear(this.featureLayerAssociation_);
-      } else {
-        if (deselected.length > 0) {
-          deselected.forEach(function(feature) {
-            this.removeFeatureLayerAssociation_(feature);
-          }, this);
-        }
-      }
     }
   } else {
     // Modify the currently selected feature(s).
@@ -104436,6 +105254,25 @@ goog.require('ol.format.WKT');
 goog.require('ol.format.WMSCapabilities');
 goog.require('ol.format.WMSGetFeatureInfo');
 goog.require('ol.format.WMTSCapabilities');
+goog.require('ol.format.ogc.filter');
+goog.require('ol.format.ogc.filter.And');
+goog.require('ol.format.ogc.filter.Bbox');
+goog.require('ol.format.ogc.filter.Comparison');
+goog.require('ol.format.ogc.filter.ComparisonBinary');
+goog.require('ol.format.ogc.filter.EqualTo');
+goog.require('ol.format.ogc.filter.Filter');
+goog.require('ol.format.ogc.filter.GreaterThan');
+goog.require('ol.format.ogc.filter.GreaterThanOrEqualTo');
+goog.require('ol.format.ogc.filter.IsBetween');
+goog.require('ol.format.ogc.filter.IsLike');
+goog.require('ol.format.ogc.filter.IsNull');
+goog.require('ol.format.ogc.filter.LessThan');
+goog.require('ol.format.ogc.filter.LessThanOrEqualTo');
+goog.require('ol.format.ogc.filter.Logical');
+goog.require('ol.format.ogc.filter.LogicalBinary');
+goog.require('ol.format.ogc.filter.Not');
+goog.require('ol.format.ogc.filter.NotEqualTo');
+goog.require('ol.format.ogc.filter.Or');
 goog.require('ol.geom.Circle');
 goog.require('ol.geom.Geometry');
 goog.require('ol.geom.GeometryCollection');
@@ -108040,6 +108877,16 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.format.MVT.prototype,
+    'readFeatures',
+    ol.format.MVT.prototype.readFeatures);
+
+goog.exportProperty(
+    ol.format.MVT.prototype,
+    'readProjection',
+    ol.format.MVT.prototype.readProjection);
+
+goog.exportProperty(
+    ol.format.MVT.prototype,
     'setLayers',
     ol.format.MVT.prototype.setLayers);
 
@@ -108222,6 +109069,151 @@ goog.exportProperty(
     ol.format.WMTSCapabilities.prototype,
     'read',
     ol.format.WMTSCapabilities.prototype.read);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.and',
+    ol.format.ogc.filter.and,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.or',
+    ol.format.ogc.filter.or,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.not',
+    ol.format.ogc.filter.not,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.bbox',
+    ol.format.ogc.filter.bbox,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.equalTo',
+    ol.format.ogc.filter.equalTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.notEqualTo',
+    ol.format.ogc.filter.notEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.lessThan',
+    ol.format.ogc.filter.lessThan,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.lessThanOrEqualTo',
+    ol.format.ogc.filter.lessThanOrEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.greaterThan',
+    ol.format.ogc.filter.greaterThan,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.greaterThanOrEqualTo',
+    ol.format.ogc.filter.greaterThanOrEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.isNull',
+    ol.format.ogc.filter.isNull,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.between',
+    ol.format.ogc.filter.between,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.like',
+    ol.format.ogc.filter.like,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.Filter',
+    ol.format.ogc.filter.Filter,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.And',
+    ol.format.ogc.filter.And,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.Or',
+    ol.format.ogc.filter.Or,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.Not',
+    ol.format.ogc.filter.Not,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.Bbox',
+    ol.format.ogc.filter.Bbox,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.Comparison',
+    ol.format.ogc.filter.Comparison,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.ComparisonBinary',
+    ol.format.ogc.filter.ComparisonBinary,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.EqualTo',
+    ol.format.ogc.filter.EqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.NotEqualTo',
+    ol.format.ogc.filter.NotEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.LessThan',
+    ol.format.ogc.filter.LessThan,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.LessThanOrEqualTo',
+    ol.format.ogc.filter.LessThanOrEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.GreaterThan',
+    ol.format.ogc.filter.GreaterThan,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.GreaterThanOrEqualTo',
+    ol.format.ogc.filter.GreaterThanOrEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.IsNull',
+    ol.format.ogc.filter.IsNull,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.IsBetween',
+    ol.format.ogc.filter.IsBetween,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.ogc.filter.IsLike',
+    ol.format.ogc.filter.IsLike,
+    OPENLAYERS);
 
 goog.exportSymbol(
     'ol.format.GML2',
@@ -117052,6 +118044,1176 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'unByKey',
     ol.geom.Polygon.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'get',
+    ol.format.ogc.filter.Filter.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'getKeys',
+    ol.format.ogc.filter.Filter.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'getProperties',
+    ol.format.ogc.filter.Filter.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'set',
+    ol.format.ogc.filter.Filter.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'setProperties',
+    ol.format.ogc.filter.Filter.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'unset',
+    ol.format.ogc.filter.Filter.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'changed',
+    ol.format.ogc.filter.Filter.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.Filter.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'getRevision',
+    ol.format.ogc.filter.Filter.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'on',
+    ol.format.ogc.filter.Filter.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'once',
+    ol.format.ogc.filter.Filter.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'un',
+    ol.format.ogc.filter.Filter.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Filter.prototype,
+    'unByKey',
+    ol.format.ogc.filter.Filter.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'get',
+    ol.format.ogc.filter.Logical.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'getKeys',
+    ol.format.ogc.filter.Logical.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'getProperties',
+    ol.format.ogc.filter.Logical.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'set',
+    ol.format.ogc.filter.Logical.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'setProperties',
+    ol.format.ogc.filter.Logical.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'unset',
+    ol.format.ogc.filter.Logical.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'changed',
+    ol.format.ogc.filter.Logical.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.Logical.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'getRevision',
+    ol.format.ogc.filter.Logical.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'on',
+    ol.format.ogc.filter.Logical.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'once',
+    ol.format.ogc.filter.Logical.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'un',
+    ol.format.ogc.filter.Logical.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Logical.prototype,
+    'unByKey',
+    ol.format.ogc.filter.Logical.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'get',
+    ol.format.ogc.filter.LogicalBinary.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'getKeys',
+    ol.format.ogc.filter.LogicalBinary.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'getProperties',
+    ol.format.ogc.filter.LogicalBinary.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'set',
+    ol.format.ogc.filter.LogicalBinary.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'setProperties',
+    ol.format.ogc.filter.LogicalBinary.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'unset',
+    ol.format.ogc.filter.LogicalBinary.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'changed',
+    ol.format.ogc.filter.LogicalBinary.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.LogicalBinary.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'getRevision',
+    ol.format.ogc.filter.LogicalBinary.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'on',
+    ol.format.ogc.filter.LogicalBinary.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'once',
+    ol.format.ogc.filter.LogicalBinary.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'un',
+    ol.format.ogc.filter.LogicalBinary.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LogicalBinary.prototype,
+    'unByKey',
+    ol.format.ogc.filter.LogicalBinary.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'get',
+    ol.format.ogc.filter.And.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'getKeys',
+    ol.format.ogc.filter.And.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'getProperties',
+    ol.format.ogc.filter.And.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'set',
+    ol.format.ogc.filter.And.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'setProperties',
+    ol.format.ogc.filter.And.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'unset',
+    ol.format.ogc.filter.And.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'changed',
+    ol.format.ogc.filter.And.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.And.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'getRevision',
+    ol.format.ogc.filter.And.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'on',
+    ol.format.ogc.filter.And.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'once',
+    ol.format.ogc.filter.And.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'un',
+    ol.format.ogc.filter.And.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.And.prototype,
+    'unByKey',
+    ol.format.ogc.filter.And.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'get',
+    ol.format.ogc.filter.Or.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'getKeys',
+    ol.format.ogc.filter.Or.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'getProperties',
+    ol.format.ogc.filter.Or.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'set',
+    ol.format.ogc.filter.Or.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'setProperties',
+    ol.format.ogc.filter.Or.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'unset',
+    ol.format.ogc.filter.Or.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'changed',
+    ol.format.ogc.filter.Or.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.Or.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'getRevision',
+    ol.format.ogc.filter.Or.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'on',
+    ol.format.ogc.filter.Or.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'once',
+    ol.format.ogc.filter.Or.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'un',
+    ol.format.ogc.filter.Or.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Or.prototype,
+    'unByKey',
+    ol.format.ogc.filter.Or.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'get',
+    ol.format.ogc.filter.Not.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'getKeys',
+    ol.format.ogc.filter.Not.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'getProperties',
+    ol.format.ogc.filter.Not.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'set',
+    ol.format.ogc.filter.Not.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'setProperties',
+    ol.format.ogc.filter.Not.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'unset',
+    ol.format.ogc.filter.Not.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'changed',
+    ol.format.ogc.filter.Not.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.Not.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'getRevision',
+    ol.format.ogc.filter.Not.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'on',
+    ol.format.ogc.filter.Not.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'once',
+    ol.format.ogc.filter.Not.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'un',
+    ol.format.ogc.filter.Not.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Not.prototype,
+    'unByKey',
+    ol.format.ogc.filter.Not.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'get',
+    ol.format.ogc.filter.Bbox.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'getKeys',
+    ol.format.ogc.filter.Bbox.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'getProperties',
+    ol.format.ogc.filter.Bbox.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'set',
+    ol.format.ogc.filter.Bbox.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'setProperties',
+    ol.format.ogc.filter.Bbox.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'unset',
+    ol.format.ogc.filter.Bbox.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'changed',
+    ol.format.ogc.filter.Bbox.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.Bbox.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'getRevision',
+    ol.format.ogc.filter.Bbox.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'on',
+    ol.format.ogc.filter.Bbox.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'once',
+    ol.format.ogc.filter.Bbox.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'un',
+    ol.format.ogc.filter.Bbox.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Bbox.prototype,
+    'unByKey',
+    ol.format.ogc.filter.Bbox.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'get',
+    ol.format.ogc.filter.Comparison.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'getKeys',
+    ol.format.ogc.filter.Comparison.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'getProperties',
+    ol.format.ogc.filter.Comparison.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'set',
+    ol.format.ogc.filter.Comparison.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'setProperties',
+    ol.format.ogc.filter.Comparison.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'unset',
+    ol.format.ogc.filter.Comparison.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'changed',
+    ol.format.ogc.filter.Comparison.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.Comparison.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'getRevision',
+    ol.format.ogc.filter.Comparison.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'on',
+    ol.format.ogc.filter.Comparison.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'once',
+    ol.format.ogc.filter.Comparison.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'un',
+    ol.format.ogc.filter.Comparison.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.Comparison.prototype,
+    'unByKey',
+    ol.format.ogc.filter.Comparison.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'get',
+    ol.format.ogc.filter.ComparisonBinary.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'getKeys',
+    ol.format.ogc.filter.ComparisonBinary.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'getProperties',
+    ol.format.ogc.filter.ComparisonBinary.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'set',
+    ol.format.ogc.filter.ComparisonBinary.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'setProperties',
+    ol.format.ogc.filter.ComparisonBinary.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'unset',
+    ol.format.ogc.filter.ComparisonBinary.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'changed',
+    ol.format.ogc.filter.ComparisonBinary.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.ComparisonBinary.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'getRevision',
+    ol.format.ogc.filter.ComparisonBinary.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'on',
+    ol.format.ogc.filter.ComparisonBinary.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'once',
+    ol.format.ogc.filter.ComparisonBinary.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'un',
+    ol.format.ogc.filter.ComparisonBinary.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.ComparisonBinary.prototype,
+    'unByKey',
+    ol.format.ogc.filter.ComparisonBinary.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'get',
+    ol.format.ogc.filter.EqualTo.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'getKeys',
+    ol.format.ogc.filter.EqualTo.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'getProperties',
+    ol.format.ogc.filter.EqualTo.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'set',
+    ol.format.ogc.filter.EqualTo.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'setProperties',
+    ol.format.ogc.filter.EqualTo.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'unset',
+    ol.format.ogc.filter.EqualTo.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'changed',
+    ol.format.ogc.filter.EqualTo.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.EqualTo.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'getRevision',
+    ol.format.ogc.filter.EqualTo.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'on',
+    ol.format.ogc.filter.EqualTo.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'once',
+    ol.format.ogc.filter.EqualTo.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'un',
+    ol.format.ogc.filter.EqualTo.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.EqualTo.prototype,
+    'unByKey',
+    ol.format.ogc.filter.EqualTo.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'get',
+    ol.format.ogc.filter.NotEqualTo.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'getKeys',
+    ol.format.ogc.filter.NotEqualTo.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'getProperties',
+    ol.format.ogc.filter.NotEqualTo.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'set',
+    ol.format.ogc.filter.NotEqualTo.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'setProperties',
+    ol.format.ogc.filter.NotEqualTo.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'unset',
+    ol.format.ogc.filter.NotEqualTo.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'changed',
+    ol.format.ogc.filter.NotEqualTo.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.NotEqualTo.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'getRevision',
+    ol.format.ogc.filter.NotEqualTo.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'on',
+    ol.format.ogc.filter.NotEqualTo.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'once',
+    ol.format.ogc.filter.NotEqualTo.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'un',
+    ol.format.ogc.filter.NotEqualTo.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.NotEqualTo.prototype,
+    'unByKey',
+    ol.format.ogc.filter.NotEqualTo.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'get',
+    ol.format.ogc.filter.LessThan.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'getKeys',
+    ol.format.ogc.filter.LessThan.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'getProperties',
+    ol.format.ogc.filter.LessThan.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'set',
+    ol.format.ogc.filter.LessThan.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'setProperties',
+    ol.format.ogc.filter.LessThan.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'unset',
+    ol.format.ogc.filter.LessThan.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'changed',
+    ol.format.ogc.filter.LessThan.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.LessThan.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'getRevision',
+    ol.format.ogc.filter.LessThan.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'on',
+    ol.format.ogc.filter.LessThan.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'once',
+    ol.format.ogc.filter.LessThan.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'un',
+    ol.format.ogc.filter.LessThan.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThan.prototype,
+    'unByKey',
+    ol.format.ogc.filter.LessThan.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'get',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'getKeys',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'getProperties',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'set',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'setProperties',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'unset',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'changed',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'getRevision',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'on',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'once',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'un',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype,
+    'unByKey',
+    ol.format.ogc.filter.LessThanOrEqualTo.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'get',
+    ol.format.ogc.filter.GreaterThan.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'getKeys',
+    ol.format.ogc.filter.GreaterThan.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'getProperties',
+    ol.format.ogc.filter.GreaterThan.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'set',
+    ol.format.ogc.filter.GreaterThan.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'setProperties',
+    ol.format.ogc.filter.GreaterThan.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'unset',
+    ol.format.ogc.filter.GreaterThan.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'changed',
+    ol.format.ogc.filter.GreaterThan.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.GreaterThan.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'getRevision',
+    ol.format.ogc.filter.GreaterThan.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'on',
+    ol.format.ogc.filter.GreaterThan.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'once',
+    ol.format.ogc.filter.GreaterThan.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'un',
+    ol.format.ogc.filter.GreaterThan.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThan.prototype,
+    'unByKey',
+    ol.format.ogc.filter.GreaterThan.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'get',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'getKeys',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'getProperties',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'set',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'setProperties',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'unset',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'changed',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'getRevision',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'on',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'once',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'un',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype,
+    'unByKey',
+    ol.format.ogc.filter.GreaterThanOrEqualTo.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'get',
+    ol.format.ogc.filter.IsNull.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'getKeys',
+    ol.format.ogc.filter.IsNull.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'getProperties',
+    ol.format.ogc.filter.IsNull.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'set',
+    ol.format.ogc.filter.IsNull.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'setProperties',
+    ol.format.ogc.filter.IsNull.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'unset',
+    ol.format.ogc.filter.IsNull.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'changed',
+    ol.format.ogc.filter.IsNull.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.IsNull.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'getRevision',
+    ol.format.ogc.filter.IsNull.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'on',
+    ol.format.ogc.filter.IsNull.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'once',
+    ol.format.ogc.filter.IsNull.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'un',
+    ol.format.ogc.filter.IsNull.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsNull.prototype,
+    'unByKey',
+    ol.format.ogc.filter.IsNull.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'get',
+    ol.format.ogc.filter.IsBetween.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'getKeys',
+    ol.format.ogc.filter.IsBetween.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'getProperties',
+    ol.format.ogc.filter.IsBetween.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'set',
+    ol.format.ogc.filter.IsBetween.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'setProperties',
+    ol.format.ogc.filter.IsBetween.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'unset',
+    ol.format.ogc.filter.IsBetween.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'changed',
+    ol.format.ogc.filter.IsBetween.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.IsBetween.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'getRevision',
+    ol.format.ogc.filter.IsBetween.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'on',
+    ol.format.ogc.filter.IsBetween.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'once',
+    ol.format.ogc.filter.IsBetween.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'un',
+    ol.format.ogc.filter.IsBetween.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsBetween.prototype,
+    'unByKey',
+    ol.format.ogc.filter.IsBetween.prototype.unByKey);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'get',
+    ol.format.ogc.filter.IsLike.prototype.get);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'getKeys',
+    ol.format.ogc.filter.IsLike.prototype.getKeys);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'getProperties',
+    ol.format.ogc.filter.IsLike.prototype.getProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'set',
+    ol.format.ogc.filter.IsLike.prototype.set);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'setProperties',
+    ol.format.ogc.filter.IsLike.prototype.setProperties);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'unset',
+    ol.format.ogc.filter.IsLike.prototype.unset);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'changed',
+    ol.format.ogc.filter.IsLike.prototype.changed);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'dispatchEvent',
+    ol.format.ogc.filter.IsLike.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'getRevision',
+    ol.format.ogc.filter.IsLike.prototype.getRevision);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'on',
+    ol.format.ogc.filter.IsLike.prototype.on);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'once',
+    ol.format.ogc.filter.IsLike.prototype.once);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'un',
+    ol.format.ogc.filter.IsLike.prototype.un);
+
+goog.exportProperty(
+    ol.format.ogc.filter.IsLike.prototype,
+    'unByKey',
+    ol.format.ogc.filter.IsLike.prototype.unByKey);
 
 goog.exportProperty(
     ol.format.GML2.prototype,
