@@ -8880,6 +8880,10 @@
                     <a href="ol.interaction.Modify.html#once">once</a>
                 </li>
             
+                <li data-name="ol.interaction.Modify#removePoint" class="unstable">
+                    <a href="ol.interaction.Modify.html#removePoint">removePoint</a>
+                </li>
+            
                 <li data-name="ol.interaction.Modify#set" class="">
                     <a href="ol.interaction.Modify.html#set">set</a>
                 </li>
@@ -9800,11 +9804,18 @@
             <span class="title">
                 <a href="ol.layer.html">ol.layer</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
             </ul>
             <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li data-name="ol.layer.VectorTileRenderType" class="unstable">
+                    <a href="ol.layer.html#.VectorTileRenderType">VectorTileRenderType</a>
+                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -16925,7 +16936,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vectortilelayer.js, line 28
+            src/ol/layer/vectortilelayer.js, line 49
         </div>
         
         
@@ -17026,6 +17037,53 @@ Recommended value: Vector tiles are usually generated with a buffer, so this
 value should match the largest possible buffer of the used tiles. It should
 be at least the size of the largest point symbol or line width.
 Default is 100 pixels.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>renderMode</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.layer.html#.VectorTileRenderType">ol.layer.VectorTileRenderType</a></span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Render mode for vector tiles:</p>
+<ul>
+<li><code>'image'</code>: Vector tiles are rendered as images. Great performance, but
+point symbols and texts are always rotated with the view and pixels are
+scaled during zoom animations.</li>
+<li><code>'hybrid'</code>: Polygon and line elements are rendered as images, so pixels
+are scaled during zoom animations. Point symbols and texts are accurately
+rendered as vectors and can stay upright on rotated views.</li>
+<li><code>'vector'</code>: Vector tiles are rendered as vectors. Most accurate rendering
+even during animations, but slower performance than the other options.
+The default is <code>'hybrid'</code>.</li>
+</ul></td>
         </tr>
 	
 	
@@ -18613,7 +18671,7 @@ The opacity of the layer.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vectortilelayer.js, line 51
+            src/ol/layer/vectortilelayer.js, line 84
         </div>
         
         
@@ -19133,7 +19191,7 @@ Layer style function.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vectortilelayer.js, line 62
+            src/ol/layer/vectortilelayer.js, line 103
         </div>
         
         
@@ -20576,7 +20634,7 @@ use <code>#setMap(null)</code>.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vectortilelayer.js, line 74
+            src/ol/layer/vectortilelayer.js, line 115
         </div>
         
         
@@ -21115,7 +21173,7 @@ that have their own styles will be rendered in the layer. See
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vectortilelayer.js, line 85
+            src/ol/layer/vectortilelayer.js, line 126
         </div>
         
         

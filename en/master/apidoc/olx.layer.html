@@ -8880,6 +8880,10 @@
                     <a href="ol.interaction.Modify.html#once">once</a>
                 </li>
             
+                <li data-name="ol.interaction.Modify#removePoint" class="unstable">
+                    <a href="ol.interaction.Modify.html#removePoint">removePoint</a>
+                </li>
+            
                 <li data-name="ol.interaction.Modify#set" class="">
                     <a href="ol.interaction.Modify.html#set">set</a>
                 </li>
@@ -9800,11 +9804,18 @@
             <span class="title">
                 <a href="ol.layer.html">ol.layer</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
             </ul>
             <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li data-name="ol.layer.VectorTileRenderType" class="unstable">
+                    <a href="ol.layer.html#.VectorTileRenderType">VectorTileRenderType</a>
+                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -19596,6 +19607,54 @@ Recommended value: Vector tiles are usually generated with a buffer, so this
 value should match the largest possible buffer of the used tiles. It should
 be at least the size of the largest point symbol or line width.
 Default is 100 pixels.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>renderMode</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.layer.html#.VectorTileRenderType">ol.layer.VectorTileRenderType</a></span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Render mode for vector tiles:</p>
+<ul>
+<li><code>'image'</code>: Vector tiles are rendered as images. Great performance, but
+point symbols and texts are always rotated with the view and pixels are
+scaled during zoom animations.</li>
+<li><code>'hybrid'</code>: Polygon and line elements are rendered as images, so pixels
+are scaled during zoom animations. Point symbols and texts are accurately
+rendered as vectors and can stay upright on rotated views.</li>
+<li><code>'vector'</code>: Vector tiles are rendered as vectors. Most accurate rendering
+even during animations, but slower performance than the other options.
+The default is <code>'hybrid'</code>.</li>
+</ul></td>
         </tr>
 	
 	

@@ -28,6 +28,7 @@ function tileUrlFunction(tileCoord) {
 var map = new ol.Map({
   layers: [
     new ol.layer.VectorTile({
+      renderMode: 'vector',
       preload: Infinity,
       source: new ol.source.VectorTile({
         attributions: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +

@@ -89,6 +89,7 @@ function tileUrlFunction(tileCoord) {
 var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.VectorTile({
+      renderMode: &#x27;vector&#x27;,
       preload: Infinity,
       source: new ol.source.VectorTile({
         attributions: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
@@ -171,6 +172,7 @@ var map &#x3D; new ol.Map({
       var map &#x3D; new ol.Map({
         layers: [
           new ol.layer.VectorTile({
+            renderMode: &#x27;vector&#x27;,
             preload: Infinity,
             source: new ol.source.VectorTile({
               attributions: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +

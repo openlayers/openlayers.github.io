@@ -8880,6 +8880,10 @@
                     <a href="ol.interaction.Modify.html#once">once</a>
                 </li>
             
+                <li data-name="ol.interaction.Modify#removePoint" class="unstable">
+                    <a href="ol.interaction.Modify.html#removePoint">removePoint</a>
+                </li>
+            
                 <li data-name="ol.interaction.Modify#set" class="">
                     <a href="ol.interaction.Modify.html#set">set</a>
                 </li>
@@ -9800,11 +9804,18 @@
             <span class="title">
                 <a href="ol.layer.html">ol.layer</a>
                 
+                
             </span>
             <ul class="members itemMembers">
             
             </ul>
             <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li data-name="ol.layer.VectorTileRenderType" class="unstable">
+                    <a href="ol.layer.html#.VectorTileRenderType">VectorTileRenderType</a>
+                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -16984,6 +16995,70 @@
     
     
     
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+        
+        <dl>
+                
+<dt class="unstable">
+    <div class="nameContainer">
+        <h4 class="name" id=".VectorTileRenderType">
+            ol.layer.VectorTileRenderType<span class="type-signature type string">{string}</span> 
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="unstable">
+    
+    <div class="description">
+        <p>Render mode for vector tiles:</p>
+<ul>
+<li><code>'image'</code>: Vector tiles are rendered as images. Great performance, but
+point symbols and texts are always rotated with the view and pixels are
+scaled during zoom animations.</li>
+<li><code>'hybrid'</code>: Polygon and line elements are rendered as images, so pixels
+are scaled during zoom animations. Point symbols and texts are accurately
+rendered as vectors and can stay upright on rotated views.</li>
+<li><code>'vector'</code>: Vector tiles are rendered as vectors. Most accurate rendering
+even during animations, but slower performance than the other options.</li>
+</ul>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            </dl>
     
     
     
