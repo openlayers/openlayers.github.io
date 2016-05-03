@@ -17212,7 +17212,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 1880
+            src/ol/format/kmlformat.js, line 1882
         </div>
         
         
@@ -17223,7 +17223,9 @@
 
     
     <div class="description">
-        <p>Read the first feature from a KML source.</p>
+        <p>Read the first feature from a KML source. MultiGeometries are converted into
+GeometryCollections if they are a mix of geometry types, and into MultiPoint/
+MultiLineString/MultiPolygon if they are all of the same type.</p>
     </div>
     
 
@@ -17449,7 +17451,7 @@ Feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 1913
+            src/ol/format/kmlformat.js, line 1917
         </div>
         
         
@@ -17460,7 +17462,9 @@ Feature.
 
     
     <div class="description">
-        <p>Read all features from a KML source.</p>
+        <p>Read all features from a KML source. MultiGeometries are converted into
+GeometryCollections if they are a mix of geometry types, and into MultiPoint/
+MultiLineString/MultiPolygon if they are all of the same type.</p>
     </div>
     
 
@@ -17686,7 +17690,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 1966
+            src/ol/format/kmlformat.js, line 1970
         </div>
         
         
@@ -17825,7 +17829,7 @@ Name.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2035
+            src/ol/format/kmlformat.js, line 2039
         </div>
         
         
@@ -17962,7 +17966,7 @@ Network links.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2103
+            src/ol/format/kmlformat.js, line 2107
         </div>
         
         
@@ -18102,7 +18106,7 @@ Projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2972
+            src/ol/format/kmlformat.js, line 2977
         </div>
         
         
@@ -18113,7 +18117,8 @@ Projection.
 
     
     <div class="description">
-        <p>Encode an array of features in the KML format.</p>
+        <p>Encode an array of features in the KML format. GeometryCollections, MultiPoints,
+MultiLineStrings, and MultiPolygons are output as MultiGeometries.</p>
     </div>
     
 
@@ -18408,7 +18413,7 @@ Result.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2983
+            src/ol/format/kmlformat.js, line 2989
         </div>
         
         
@@ -18419,7 +18424,8 @@ Result.
 
     
     <div class="description">
-        <p>Encode an array of features in the KML format as an XML node.</p>
+        <p>Encode an array of features in the KML format as an XML node. GeometryCollections,
+MultiPoints, MultiLineStrings, and MultiPolygons are output as MultiGeometries.</p>
     </div>
     
 

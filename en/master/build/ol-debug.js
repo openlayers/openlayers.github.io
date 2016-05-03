@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.15.1-120-g36b8f31
+// Version: v3.15.1-132-ga6a0c88
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -35859,9 +35859,8 @@ ol.control.Zoom = function(opt_options) {
     'title': zoomInTipLabel
   }, zoomInLabel);
 
-  ol.events.listen(inElement,
-      ol.events.EventType.CLICK, goog.partial(
-          ol.control.Zoom.prototype.handleClick_, delta), this);
+  ol.events.listen(inElement, ol.events.EventType.CLICK,
+      ol.control.Zoom.prototype.handleClick_.bind(this, delta));
 
   var outElement = goog.dom.createDom('BUTTON', {
     'class': className + '-out',
@@ -35869,9 +35868,8 @@ ol.control.Zoom = function(opt_options) {
     'title': zoomOutTipLabel
   }, zoomOutLabel);
 
-  ol.events.listen(outElement,
-      ol.events.EventType.CLICK, goog.partial(
-          ol.control.Zoom.prototype.handleClick_, -delta), this);
+  ol.events.listen(outElement, ol.events.EventType.CLICK,
+      ol.control.Zoom.prototype.handleClick_.bind(this, -delta));
 
   var cssClasses = className + ' ' + ol.css.CLASS_UNSELECTABLE + ' ' +
       ol.css.CLASS_CONTROL;
@@ -41245,18 +41243,20 @@ ol.renderer.Layer.prototype.renderIfReadyAndVisible = function() {
  */
 ol.renderer.Layer.prototype.scheduleExpireCache = function(frameState, tileSource) {
   if (tileSource.canExpireCache()) {
+    /**
+     * @param {ol.source.Tile} tileSource Tile source.
+     * @param {ol.Map} map Map.
+     * @param {olx.FrameState} frameState Frame state.
+     */
+    var postRenderFunction = function(tileSource, map, frameState) {
+      var tileSourceKey = goog.getUid(tileSource).toString();
+      tileSource.expireCache(frameState.viewState.projection,
+                             frameState.usedTiles[tileSourceKey]);
+    }.bind(null, tileSource);
+
     frameState.postRenderFunctions.push(
-        /** @type {ol.PostRenderFunction} */ (goog.partial(
-            /**
-             * @param {ol.source.Tile} tileSource Tile source.
-             * @param {ol.Map} map Map.
-             * @param {olx.FrameState} frameState Frame state.
-             */
-            function(tileSource, map, frameState) {
-              var tileSourceKey = goog.getUid(tileSource).toString();
-              tileSource.expireCache(frameState.viewState.projection,
-                                     frameState.usedTiles[tileSourceKey]);
-            }, tileSource)));
+      /** @type {ol.PostRenderFunction} */ (postRenderFunction)
+    );
   }
 };
 
@@ -64856,20 +64856,21 @@ ol.renderer.webgl.Layer.prototype.bindFramebuffer = function(frameState, framebu
 
   if (this.framebufferDimension === undefined ||
       this.framebufferDimension != framebufferDimension) {
+    /**
+     * @param {WebGLRenderingContext} gl GL.
+     * @param {WebGLFramebuffer} framebuffer Framebuffer.
+     * @param {WebGLTexture} texture Texture.
+     */
+    var postRenderFunction = function(gl, framebuffer, texture) {
+      if (!gl.isContextLost()) {
+        gl.deleteFramebuffer(framebuffer);
+        gl.deleteTexture(texture);
+      }
+    }.bind(null, gl, this.framebuffer, this.texture);
 
     frameState.postRenderFunctions.push(
-        /** @type {ol.PostRenderFunction} */ (goog.partial(
-            /**
-             * @param {WebGLRenderingContext} gl GL.
-             * @param {WebGLFramebuffer} framebuffer Framebuffer.
-             * @param {WebGLTexture} texture Texture.
-             */
-            function(gl, framebuffer, texture) {
-              if (!gl.isContextLost()) {
-                gl.deleteFramebuffer(framebuffer);
-                gl.deleteTexture(texture);
-              }
-            }, gl, this.framebuffer, this.texture)));
+      /** @type {ol.PostRenderFunction} */ (postRenderFunction)
+    );
 
     var texture = ol.webgl.Context.createEmptyTexture(
         gl, framebufferDimension, framebufferDimension);
@@ -65151,17 +65152,18 @@ ol.renderer.webgl.ImageLayer.prototype.prepareFrame = function(frameState, layer
         image = image_;
         texture = this.createTexture_(image_);
         if (this.texture) {
+          /**
+           * @param {WebGLRenderingContext} gl GL.
+           * @param {WebGLTexture} texture Texture.
+           */
+          var postRenderFunction = function(gl, texture) {
+            if (!gl.isContextLost()) {
+              gl.deleteTexture(texture);
+            }
+          }.bind(null, gl, this.texture);
           frameState.postRenderFunctions.push(
-              /** @type {ol.PostRenderFunction} */ (goog.partial(
-                  /**
-                   * @param {WebGLRenderingContext} gl GL.
-                   * @param {WebGLTexture} texture Texture.
-                   */
-                  function(gl, texture) {
-                    if (!gl.isContextLost()) {
-                      gl.deleteTexture(texture);
-                    }
-                  }, gl, this.texture)));
+            /** @type {ol.PostRenderFunction} */ (postRenderFunction)
+          );
         }
       }
     }
@@ -84826,7 +84828,9 @@ ol.format.KML.prototype.readSharedStyleMap_ = function(node, objectStack) {
 
 
 /**
- * Read the first feature from a KML source.
+ * Read the first feature from a KML source. MultiGeometries are converted into
+ * GeometryCollections if they are a mix of geometry types, and into MultiPoint/
+ * MultiLineString/MultiPolygon if they are all of the same type.
  *
  * @function
  * @param {Document|Node|Object|string} source Source.
@@ -84859,7 +84863,9 @@ ol.format.KML.prototype.readFeatureFromNode = function(node, opt_options) {
 
 
 /**
- * Read all features from a KML source.
+ * Read all features from a KML source. MultiGeometries are converted into
+ * GeometryCollections if they are a mix of geometry types, and into MultiPoint/
+ * MultiLineString/MultiPolygon if they are all of the same type.
  *
  * @function
  * @param {Document|Node|Object|string} source Source.
@@ -85918,7 +85924,8 @@ ol.format.KML.OUTER_BOUNDARY_NODE_FACTORY_ =
 
 
 /**
- * Encode an array of features in the KML format.
+ * Encode an array of features in the KML format. GeometryCollections, MultiPoints,
+ * MultiLineStrings, and MultiPolygons are output as MultiGeometries.
  *
  * @function
  * @param {Array.<ol.Feature>} features Features.
@@ -85930,7 +85937,8 @@ ol.format.KML.prototype.writeFeatures;
 
 
 /**
- * Encode an array of features in the KML format as an XML node.
+ * Encode an array of features in the KML format as an XML node. GeometryCollections,
+ * MultiPoints, MultiLineStrings, and MultiPolygons are output as MultiGeometries.
  *
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Options.
@@ -94657,7 +94665,7 @@ ol.interaction.DragAndDrop.handleDrop_ = function(event) {
     file = files.item(i);
     var reader = new FileReader();
     reader.addEventListener(ol.events.EventType.LOAD,
-        goog.partial(this.handleResult_, file).bind(this));
+        this.handleResult_.bind(this, file));
     reader.readAsText(file);
   }
 };
@@ -96738,7 +96746,7 @@ ol.interaction.Modify.prototype.insertVertex_ = function(segmentData, vertex) {
  */
 ol.interaction.Modify.prototype.removePoint = function() {
   var handled = false;
-  if (this.lastPointerEvent_) {
+  if (this.lastPointerEvent_ && this.lastPointerEvent_.type != ol.MapBrowserEvent.EventType.POINTERDRAG) {
     var evt = this.lastPointerEvent_;
     this.willModifyFeatures_(evt);
     handled = this.removeVertex_();
