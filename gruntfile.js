@@ -104,6 +104,9 @@ module.exports = function(grunt) {
           src: 'theme/img/**/*.*',
           dest: assets
         }, {
+          src: 'src/robots.txt',
+          dest: dist + '/robots.txt'
+        }, {
           expand: true,
           cwd: 'src/two',
           src: '**/*.*',
@@ -134,6 +137,14 @@ module.exports = function(grunt) {
           ],
           dest: dist + '/en/' + branch
         }]
+      },
+      latest: {
+        files: [{
+          expand: true,
+          cwd: dist + '/en/' + branch,
+          src: '**/*',
+          dest: dist + '/en/latest'
+        }]
       }
     },
     assemble: {
@@ -141,17 +152,6 @@ module.exports = function(grunt) {
         layoutdir: 'src/layouts',
         assets: assets,
         latest: latest
-      },
-      robots: {
-        options: {
-          ext: '.txt'
-        },
-        files: [{
-          expand: true,
-          cwd: 'src',
-          src: 'robots.hbs',
-          dest: dist
-        }]
       },
       pages: {
         files: [{
@@ -256,9 +256,17 @@ module.exports = function(grunt) {
 
   grunt.loadTasks('tasks');
 
+  grunt.registerTask('copyLatest', 'copy:latest');
+
+  grunt.registerTask('maybeCopyLatest', function() {
+    if (branch === latest) {
+      grunt.task.run('copyLatest')
+    }
+  });
+
   grunt.registerTask('build', 'Build the website', [
     'checkout', 'install', 'make:examples', 'make:apidoc', 'clean:dist',
-    'move', 'less', 'copy', 'assemble']);
+    'move', 'less', 'copy:all', 'copy:doc', 'assemble', 'maybeCopyLatest']);
 
 
   grunt.registerTask('deploy', 'Deploy the site', function() {
