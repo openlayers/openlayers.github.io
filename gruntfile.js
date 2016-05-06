@@ -121,9 +121,6 @@ module.exports = function(grunt) {
           cwd: 'src/images',
           src: '**/*.*',
           dest: dist + '/images/'
-        }, {
-          src: 'src/builder/builder.js',
-          dest: dist + '/en/' + branch + '/builder/builder.js'
         }]
       },
       doc: {
@@ -162,13 +159,12 @@ module.exports = function(grunt) {
         }]
       },
       builder: {
-        options: {
-          data: repo + '/build/info.json',
-          partials: 'src/builder/**/*.partial.hbs',
-          helpers: ['src/builder/*.hlpr.js']
-        },
-        src: 'src/builder/index.hbs',
-        dest: dist + '/en/' + branch + '/builder/index.html'
+        files: [{
+          expand: true,
+          cwd: 'src/builder',
+          src: '**/index.hbs',
+          dest: dist + '/builder'
+        }]
       },
       doc: {
         files: [{
@@ -187,10 +183,6 @@ module.exports = function(grunt) {
       server: {}
     },
     watch: {
-      builder: {
-        files: 'src/builder/**/*',
-        tasks: ['assemble:builder', 'copy:all']
-      },
       layouts: {
         files: 'src/layouts/**/*',
         tasks: ['assemble']
@@ -265,8 +257,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', 'Build the website', [
-    'checkout', 'install', 'make:examples', 'make:apidoc', 'clean:dist',
-    'move', 'less', 'copy:all', 'copy:doc', 'assemble', 'maybeCopyLatest']);
+    // 'checkout', 'install', 'make:examples', 'make:apidoc', 'clean:dist',
+    /* 'move', */ 'less', 'copy:all', 'copy:doc', 'assemble', 'maybeCopyLatest']);
 
 
   grunt.registerTask('deploy', 'Deploy the site', function() {
