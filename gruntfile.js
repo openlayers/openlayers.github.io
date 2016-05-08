@@ -257,8 +257,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', 'Build the website', [
-    // 'checkout', 'install', 'make:examples', 'make:apidoc', 'clean:dist',
-    /* 'move', */ 'less', 'copy:all', 'copy:doc', 'assemble', 'maybeCopyLatest']);
+    'checkout', 'install', 'make:examples', 'make:apidoc', 'clean:dist',
+    'move', 'less', 'copy:all', 'copy:doc', 'assemble', 'maybeCopyLatest']);
 
 
   grunt.registerTask('deploy', 'Deploy the site', function() {
