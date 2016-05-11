@@ -1,10 +1,10 @@
 goog.provide('ol.LoadingStrategy');
 goog.provide('ol.loadingstrategy');
 
-goog.require('ol.TileCoord');
-
 
 /**
+ * One of `all`, `bbox`, `tile`.
+ *
  * @typedef {function(ol.Extent, number): Array.<ol.Extent>}
  * @api
  */

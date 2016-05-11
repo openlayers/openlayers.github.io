@@ -67,9 +67,7 @@
         &#x27;outputFormat&#x3D;application/json&amp;srsname&#x3D;EPSG:3857&amp;&#x27; +
         &#x27;bbox&#x3D;&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
   },
-  strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
-    maxZoom: 19
-  }))
+  strategy: ol.loadingstrategy.bbox
 });
 
 
@@ -124,9 +122,7 @@ var map &#x3D; new ol.Map({
               &#x27;outputFormat&#x3D;application/json&amp;srsname&#x3D;EPSG:3857&amp;&#x27; +
               &#x27;bbox&#x3D;&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
         },
-        strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
-          maxZoom: 19
-        }))
+        strategy: ol.loadingstrategy.bbox
       });
 
 
