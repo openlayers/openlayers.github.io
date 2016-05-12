@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers 3 API Reference - Namespace: condition</title>
+    <title>OpenLayers v3.15.1 API - Namespace: condition</title>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <script src="scripts/jquery.min.js"> </script>
@@ -35,7 +37,6 @@
     
 <div class="navigation">
     <div class="search">
-        <h4 class='package-version'>v</h4>
         <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentation">
     </div>
     <ul class="list">
@@ -3326,6 +3327,10 @@
             
                 <li data-name="ol.events.condition.pointerMove" class="unstable">
                     <a href="ol.events.condition.html#.pointerMove">pointerMove</a>
+                </li>
+            
+                <li data-name="ol.events.condition.primaryAction" class="unstable">
+                    <a href="ol.events.condition.html#.primaryAction">primaryAction</a>
                 </li>
             
                 <li data-name="ol.events.condition.shiftKeyOnly" class="">
@@ -16900,6 +16905,10 @@
 
     <div class="main">
         <h1 class="page-title" data-filename="ol.events.condition.html">Namespace: condition</h1>
+        <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+          <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          This documentation is for OpenLayers v<span id="package-version">3.15.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        </div>
         
 
 
@@ -18280,6 +18289,147 @@ otherwise.</p>
 
 <h5>Returns:</h5>
 True if the browser event is a <code>pointermove</code> event.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id=".primaryAction">
+            ol.events.condition.primaryAction<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/events/condition.js, line 234
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Return <code>true</code> if the event originates from a primary pointer in
+contact with the surface or if the left mouse button is pressed.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>mapBrowserEvent</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.MapBrowserEvent.html">ol.MapBrowserEvent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Map browser event.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="http://www.w3.org/TR/pointerevents/#button-states">http://www.w3.org/TR/pointerevents/#button-states</a></li>
+        </ul>
+    </dd>
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+True if the event originates from a primary pointer.
 <br />
 
     
