@@ -16958,7 +16958,26 @@ Interactions for <a href="ol.Feature.html">vector features</a>
 <td><a href="ol.DeviceOrientation.html">ol.DeviceOrientation</a><br>
 <a href="ol.Geolocation.html">ol.Geolocation</a><br>
 <a href="ol.Overlay.html">ol.Overlay</a><br></td>
-</tr></table></article>
+</tr></table>
+
+<p>&nbsp;</p>
+<h4>API change policy</h4><p>The OpenLayers 3.x API consists of</p>
+<ul>
+<li>names of classes, class methods and properties</li>
+<li>names of static functions and constants</li>
+<li>order and types of function arguments</li>
+<li>types of function return values</li>
+</ul>
+<p>API elements marked as <code>experimental</code> provide stable and functioning code, but may change.
+Any changes will be documented in upgrade notes so application code can be changed appropriately
+before using the new version of the library. All other API elements will remain compatible throughout the 3.x releases so that no changes to existing application code are necessary when upgrading to a later version.</p>
+<p><em>Note</em>: The API change policy does not cover CSS class names that are used to theme the
+OpenLayers UI.</p>
+<p><em>Note for Closure Compiler users compiling their application code together with OpenLayers</em>:
+The names of types other than those in the list above (e.g. <code>ol.Pixel</code>) are subject to change. It
+is therefore recommended to either use the resolved type as listed in the API docs (e.g.
+<code>Array.&lt;number&gt;</code> instead of <code>ol.Pixel</code>), or pay attention to the upgrade notes, which will list
+the changes for those types.</p></article>
     </section>
 
 
