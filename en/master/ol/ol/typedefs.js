@@ -4,14 +4,11 @@
  * These look like vars (or var properties), but in fact are simply identifiers
  * for the Closure compiler. Originally they were included in the appropriate
  * namespace file, but with the move away from Closure namespaces and towards
- * self-contained standard modules are now all in this file, with two exceptions.
+ * self-contained standard modules are now all in this file.
  * Unlike the other type definitions - enums and constructor functions - they
  * are not code and so are not imported or exported. They are only referred to
  * in type-defining comments used by the Closure compiler, and so should not
  * appear in module code.
- *
- * The 2 exceptions are the WFS typedefs which are in a sub-sub-namespace and
- * are API. These have been put in their own separate file.
  *
  * When the code is converted to ES6 modules, the namespace structure will
  * disappear, and these typedefs will have to be renamed accordingly, but the
@@ -27,19 +24,10 @@
 goog.provide('ol.Extent');
 goog.provide('ol.events.EventTargetLike');
 
-goog.provide('ol.format.KMLVec2_');
 goog.provide('ol.interaction.DragBoxEndConditionType');
-goog.provide('ol.layer.LayerState');
 goog.provide('ol.proj.ProjectionLike');
 goog.provide('ol.raster.Operation');
-goog.provide('ol.render.canvas.FillState');
-goog.provide('ol.renderer.webgl.TextureCacheEntry');
-goog.provide('ol.reproj.ImageFunctionType');
-goog.provide('ol.source.ImageOptions');
-goog.provide('ol.structs.LRUCacheEntry');
 goog.provide('ol.style.AtlasBlock');
-goog.provide('ol.webgl.BufferCacheEntry');
-goog.provide('ol.xml.NodeStackItem');
 
 
 /**
@@ -47,6 +35,12 @@ goog.provide('ol.xml.NodeStackItem');
  * @api
  */
 ol.AttributionLike;
+
+
+/**
+ * @typedef {{fillStyle: ol.ColorLike}}
+ */
+ol.CanvasFillState;
 
 
 /**
@@ -63,6 +57,25 @@ ol.AttributionLike;
  * @api
  */
 ol.CanvasFunctionType;
+
+
+/**
+ * @typedef {{lineCap: string,
+ *            lineDash: Array.<number>,
+ *            lineJoin: string,
+ *            lineWidth: number,
+ *            miterLimit: number,
+ *            strokeStyle: string}}
+ */
+ol.CanvasStrokeState;
+
+
+/**
+ * @typedef {{font: string,
+ *            textAlign: string,
+ *            textBaseline: string}}
+ */
+ol.CanvasTextState;
 
 
 /**
@@ -194,12 +207,49 @@ ol.ImageLoadFunctionType;
 
 
 /**
+ * @typedef {{x: number, xunits: (ol.style.IconAnchorUnits|undefined),
+ *            y: number, yunits: (ol.style.IconAnchorUnits|undefined)}}
+ */
+ol.KMLVec2_;
+
+
+/**
+ * @typedef {{flatCoordinates: Array.<number>,
+ *            whens: Array.<number>}}
+ */
+ol.KMLGxTrackObject_;
+
+
+/**
+ * @typedef {{layer: ol.layer.Layer,
+ *            opacity: number,
+ *            sourceState: ol.source.State,
+ *            visible: boolean,
+ *            managed: boolean,
+ *            extent: (ol.Extent|undefined),
+ *            zIndex: number,
+ *            maxResolution: number,
+ *            minResolution: number}}
+ */
+ol.LayerState;
+
+
+/**
  * One of `all`, `bbox`, `tile`.
  *
  * @typedef {function(ol.Extent, number): Array.<ol.Extent>}
  * @api
  */
 ol.LoadingStrategy;
+
+
+/**
+ * @typedef {{key_: string,
+ *            newer: ol.LRUCacheEntry,
+ *            older: ol.LRUCacheEntry,
+ *            value_: *}}
+ */
+ol.LRUCacheEntry;
 
 
 /**
@@ -242,6 +292,27 @@ ol.PreRenderFunction;
 
 
 /**
+ * @typedef {function(ol.Extent, number, number) : ol.ImageBase}
+ */
+ol.ReprojImageFunctionType;
+
+
+/**
+ * @typedef {function(number, number, number, number) : ol.Tile}
+ */
+ol.ReprojTileFunctionType;
+
+
+/**
+ * Single triangle; consists of 3 source points and 3 target points.
+ *
+ * @typedef {{source: Array.<ol.Coordinate>,
+ *            target: Array.<ol.Coordinate>}}
+ */
+ol.ReprojTriangle;
+
+
+/**
  * @typedef {function((number|undefined), number, number): (number|undefined)}
  */
 ol.ResolutionConstraintType;
@@ -259,6 +330,69 @@ ol.RotationConstraintType;
  * @api stable
  */
 ol.Size;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            extent: (null|ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            resolutions: (Array.<number>|undefined),
+ *            state: (ol.source.State|undefined)}}
+ */
+ol.SourceImageOptions;
+
+
+/**
+ * @typedef {{revision: number,
+ *            resolution: number,
+ *            extent: ol.Extent}}
+ */
+ol.SourceRasterRenderedState;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            state: (ol.source.State|undefined),
+ *            wrapX: (boolean|undefined)}}
+ */
+ol.SourceSourceOptions;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            cacheSize: (number|undefined),
+ *            extent: (ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            opaque: (boolean|undefined),
+ *            tilePixelRatio: (number|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            state: (ol.source.State|undefined),
+ *            tileGrid: (ol.tilegrid.TileGrid|undefined),
+ *            wrapX: (boolean|undefined)}}
+ */
+ol.SourceTileOptions;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            cacheSize: (number|undefined),
+ *            extent: (ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            opaque: (boolean|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            state: (ol.source.State|undefined),
+ *            tileGrid: (ol.tilegrid.TileGrid|undefined),
+ *            tileLoadFunction: ol.TileLoadFunctionType,
+ *            tilePixelRatio: (number|undefined),
+ *            tileUrlFunction: (ol.TileUrlFunctionType|undefined),
+ *            url: (string|undefined),
+ *            urls: (Array.<string>|undefined),
+ *            wrapX: (boolean|undefined)}}
+ */
+ol.SourceUrlTileOptions;
 
 
 /**
@@ -328,6 +462,66 @@ ol.TransformFunction;
 
 
 /**
+ * @typedef {{buf: ol.webgl.Buffer,
+ *            buffer: WebGLBuffer}}
+ */
+ol.WebglBufferCacheEntry;
+
+
+/**
+ * @typedef {{magFilter: number, minFilter: number, texture: WebGLTexture}}
+ */
+ol.WebglTextureCacheEntry;
+
+
+/**
+ * Number of features; bounds/extent.
+ * @typedef {{numberOfFeatures: number,
+ *            bounds: ol.Extent}}
+ * @api stable
+ */
+ol.WFSFeatureCollectionMetadata;
+
+
+/**
+ * Total deleted; total inserted; total updated; array of insert ids.
+ * @typedef {{totalDeleted: number,
+ *            totalInserted: number,
+ *            totalUpdated: number,
+ *            insertIds: Array.<string>}}
+ * @api stable
+ */
+ol.WFSTransactionResponse;
+
+
+/**
+ * @typedef {{type: number, value: (number|string|undefined), position: number}}
+ */
+ol.WKTToken;
+
+
+/**
+ * When using {@link ol.xml.makeChildAppender} or
+ * {@link ol.xml.makeSimpleNodeFactory}, the top `objectStack` item needs to
+ * have this structure.
+ * @typedef {{node:Node}}
+ */
+ol.XmlNodeStackItem;
+
+
+/**
+ * @typedef {function(Node, Array.<*>)}
+ */
+ol.XmlParser;
+
+
+/**
+ * @typedef {function(Node, *, Array.<*>)}
+ */
+ol.XmlSerializer;
+
+
+/**
  * A function that takes an {@link ol.MapBrowserEvent} and returns a
  * `{boolean}`. If the condition is met, true should be returned.
  *
@@ -369,26 +563,6 @@ ol.events.Key;
  * @api
  */
 ol.events.ListenerFunctionType;
-
-
-/**
- * @typedef {{x: number, xunits: (ol.style.IconAnchorUnits|undefined),
- *            y: number, yunits: (ol.style.IconAnchorUnits|undefined)}}
- */
-ol.format.KMLVec2_;
-
-
-/**
- * @typedef {{flatCoordinates: Array.<number>,
- *            whens: Array.<number>}}
- */
-ol.format.KMLGxTrackObject_;
-
-
-/**
- * @typedef {{type: number, value: (number|string|undefined), position: number}}
- */
-ol.format.WKTToken;
 
 
 /**
@@ -455,20 +629,6 @@ ol.interaction.SnapSegmentDataType;
 
 
 /**
- * @typedef {{layer: ol.layer.Layer,
- *            opacity: number,
- *            sourceState: ol.source.State,
- *            visible: boolean,
- *            managed: boolean,
- *            extent: (ol.Extent|undefined),
- *            zIndex: number,
- *            maxResolution: number,
- *            minResolution: number}}
- */
-ol.layer.LayerState;
-
-
-/**
  * A projection as {@link ol.proj.Projection}, SRS identifier string or
  * undefined.
  * @typedef {ol.proj.Projection|string|undefined} ol.proj.ProjectionLike
@@ -502,130 +662,6 @@ ol.raster.Operation;
  * @api
  */
 ol.raster.Pixel;
-
-
-/**
- * @typedef {{fillStyle: ol.ColorLike}}
- */
-ol.render.canvasFillState;
-
-
-/**
- * @typedef {{lineCap: string,
- *            lineDash: Array.<number>,
- *            lineJoin: string,
- *            lineWidth: number,
- *            miterLimit: number,
- *            strokeStyle: string}}
- */
-ol.render.canvasStrokeState;
-
-
-/**
- * @typedef {{font: string,
- *            textAlign: string,
- *            textBaseline: string}}
- */
-ol.render.canvasTextState;
-
-
-/**
- * @typedef {{magFilter: number, minFilter: number, texture: WebGLTexture}}
- */
-ol.renderer.webglTextureCacheEntry;
-
-
-/**
- * @typedef {function(ol.Extent, number, number) : ol.ImageBase}
- */
-ol.reproj.ImageFunctionType;
-
-
-/**
- * @typedef {function(number, number, number, number) : ol.Tile}
- */
-ol.reproj.TileFunctionType;
-
-
-/**
- * Single triangle; consists of 3 source points and 3 target points.
- *
- * @typedef {{source: Array.<ol.Coordinate>,
- *            target: Array.<ol.Coordinate>}}
- */
-ol.reproj.Triangle;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            extent: (null|ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            resolutions: (Array.<number>|undefined),
- *            state: (ol.source.State|undefined)}}
- */
-ol.source.ImageOptions;
-
-
-/**
- * @typedef {{revision: number,
- *            resolution: number,
- *            extent: ol.Extent}}
- */
-ol.source.RasterRenderedState;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            state: (ol.source.State|undefined),
- *            wrapX: (boolean|undefined)}}
- */
-ol.source.SourceOptions;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            cacheSize: (number|undefined),
- *            extent: (ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            opaque: (boolean|undefined),
- *            tilePixelRatio: (number|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            state: (ol.source.State|undefined),
- *            tileGrid: (ol.tilegrid.TileGrid|undefined),
- *            wrapX: (boolean|undefined)}}
- */
-ol.source.TileOptions;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            cacheSize: (number|undefined),
- *            extent: (ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            opaque: (boolean|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            state: (ol.source.State|undefined),
- *            tileGrid: (ol.tilegrid.TileGrid|undefined),
- *            tileLoadFunction: ol.TileLoadFunctionType,
- *            tilePixelRatio: (number|undefined),
- *            tileUrlFunction: (ol.TileUrlFunctionType|undefined),
- *            url: (string|undefined),
- *            urls: (Array.<string>|undefined),
- *            wrapX: (boolean|undefined)}}
- */
-ol.source.UrlTileOptions;
-
-
-/**
- * @typedef {{key_: string,
- *            newer: ol.structs.LRUCacheEntry,
- *            older: ol.structs.LRUCacheEntry,
- *            value_: *}}
- */
-ol.structs.LRUCacheEntry;
 
 
 /**
@@ -706,31 +742,3 @@ ol.style.RegularShapeRenderOptions;
  * @api
  */
 ol.style.StyleFunction;
-
-
-/**
- * @typedef {{buf: ol.webgl.Buffer,
- *            buffer: WebGLBuffer}}
- */
-ol.webgl.BufferCacheEntry;
-
-
-/**
- * When using {@link ol.xml.makeChildAppender} or
- * {@link ol.xml.makeSimpleNodeFactory}, the top `objectStack` item needs to
- * have this structure.
- * @typedef {{node:Node}}
- */
-ol.xml.NodeStackItem;
-
-
-/**
- * @typedef {function(Node, Array.<*>)}
- */
-ol.xml.Parser;
-
-
-/**
- * @typedef {function(Node, *, Array.<*>)}
- */
-ol.xml.Serializer;

@@ -138,6 +138,14 @@
                     <a href="ol.html#.TransformFunction">TransformFunction</a>
                 </li>
             
+                <li data-name="ol.WFSFeatureCollectionMetadata" class="">
+                    <a href="ol.html#.WFSFeatureCollectionMetadata">WFSFeatureCollectionMetadata</a>
+                </li>
+            
+                <li data-name="ol.WFSTransactionResponse" class="">
+                    <a href="ol.html#.WFSTransactionResponse">WFSTransactionResponse</a>
+                </li>
+            
             </ul>
             <ul class="methods itemMembers">
             
@@ -1835,6 +1843,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutions" class="">
+                    <a href="ol.View.html#getResolutions">getResolutions</a>
                 </li>
             
                 <li data-name="ol.View#getRevision" class="unstable">
@@ -4086,16 +4098,6 @@
             
             </ul>
             <ul class="typedefs itemMembers">
-            
-            <span class="subtitle">Typedefs</span>
-            
-                <li data-name="ol.format.WFS.FeatureCollectionMetadata" class="">
-                    <a href="ol.format.WFS.html#.FeatureCollectionMetadata">FeatureCollectionMetadata</a>
-                </li>
-            
-                <li data-name="ol.format.WFS.TransactionResponse" class="">
-                    <a href="ol.format.WFS.html#.TransactionResponse">TransactionResponse</a>
-                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -17348,7 +17350,7 @@ child.foo(); // This works.</code></pre>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 65
+            src/ol/typedefs.js, line 59
         </div>
         
         
@@ -17581,7 +17583,7 @@ Represents a color, pattern, or gradient.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 110
+            src/ol/typedefs.js, line 123
         </div>
         
         
@@ -17707,7 +17709,7 @@ Represents a color, pattern, or gradient.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 136
+            src/ol/typedefs.js, line 149
         </div>
         
         
@@ -17789,7 +17791,7 @@ source.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 148
+            src/ol/typedefs.js, line 161
         </div>
         
         
@@ -17868,7 +17870,7 @@ resolution. The <code>this</code> keyword inside the function references the
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 162
+            src/ol/typedefs.js, line 175
         </div>
         
         
@@ -17950,7 +17952,7 @@ a <code>{number}</code> representing the resolution (map units per pixel) and an
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 193
+            src/ol/typedefs.js, line 206
         </div>
         
         
@@ -18035,7 +18037,7 @@ image element would be set to a data URI when the content is loaded.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 202
+            src/ol/typedefs.js, line 243
         </div>
         
         
@@ -18211,7 +18213,7 @@ x-coordinate, the second the y-coordinate of the pixel.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 241
+            src/ol/typedefs.js, line 291
         </div>
         
         
@@ -18438,7 +18440,7 @@ grid. The order is <code>z</code>, <code>x</code>, and <code>y</code>. <code>z</
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 280
+            src/ol/typedefs.js, line 414
         </div>
         
         
@@ -18516,7 +18518,7 @@ the url as arguments.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 315
+            src/ol/typedefs.js, line 449
         </div>
         
         
@@ -18597,7 +18599,7 @@ coordinate.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 327
+            src/ol/typedefs.js, line 461
         </div>
         
         
@@ -18659,6 +18661,102 @@ returns the output array.</p>
 
     
 
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <h4 class="name" id=".WFSFeatureCollectionMetadata">
+            ol.WFSFeatureCollectionMetadata<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Number of features; bounds/extent.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <h4 class="name" id=".WFSTransactionResponse">
+            ol.WFSTransactionResponse<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Total deleted; total inserted; total updated; array of insert ids.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
     
 </dd>
 

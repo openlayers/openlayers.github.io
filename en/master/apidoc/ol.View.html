@@ -138,6 +138,14 @@
                     <a href="ol.html#.TransformFunction">TransformFunction</a>
                 </li>
             
+                <li data-name="ol.WFSFeatureCollectionMetadata" class="">
+                    <a href="ol.html#.WFSFeatureCollectionMetadata">WFSFeatureCollectionMetadata</a>
+                </li>
+            
+                <li data-name="ol.WFSTransactionResponse" class="">
+                    <a href="ol.html#.WFSTransactionResponse">WFSTransactionResponse</a>
+                </li>
+            
             </ul>
             <ul class="methods itemMembers">
             
@@ -1835,6 +1843,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutions" class="">
+                    <a href="ol.View.html#getResolutions">getResolutions</a>
                 </li>
             
                 <li data-name="ol.View#getRevision" class="unstable">
@@ -4086,16 +4098,6 @@
             
             </ul>
             <ul class="typedefs itemMembers">
-            
-            <span class="subtitle">Typedefs</span>
-            
-                <li data-name="ol.format.WFS.FeatureCollectionMetadata" class="">
-                    <a href="ol.format.WFS.html#.FeatureCollectionMetadata">FeatureCollectionMetadata</a>
-                </li>
-            
-                <li data-name="ol.format.WFS.TransactionResponse" class="">
-                    <a href="ol.format.WFS.html#.TransactionResponse">TransactionResponse</a>
-                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -17740,7 +17742,7 @@ the <code>ol.View#constrainResolution</code> method.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 280
+            src/ol/view.js, line 286
         </div>
         
         
@@ -17876,7 +17878,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 534
+            src/ol/view.js, line 551
         </div>
         
         
@@ -18129,7 +18131,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 210
+            src/ol/view.js, line 216
         </div>
         
         
@@ -18265,7 +18267,7 @@ Constrained center.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 223
+            src/ol/view.js, line 229
         </div>
         
         
@@ -18451,7 +18453,7 @@ Constrained resolution.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 238
+            src/ol/view.js, line 244
         </div>
         
         
@@ -18746,7 +18748,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 453
+            src/ol/view.js, line 470
         </div>
         
         
@@ -19235,7 +19237,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 250
+            src/ol/view.js, line 256
         </div>
         
         
@@ -19405,7 +19407,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 299
+            src/ol/view.js, line 305
         </div>
         
         
@@ -19575,7 +19577,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 310
+            src/ol/view.js, line 316
         </div>
         
         
@@ -19639,6 +19641,91 @@ Object.
 
 <h5>Returns:</h5>
 The resolution of the view.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="getResolutions">
+            getResolutions<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;number>|undefined}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/view.js, line 328
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get the resolutions for the view. This returns the array of resolutions
+passed to the constructor of the {ol.View}, or undefined if none were given.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The resolutions of the view.
 <br />
 
     
@@ -19748,7 +19835,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 363
+            src/ol/view.js, line 380
         </div>
         
         
@@ -19832,7 +19919,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 423
+            src/ol/view.js, line 440
         </div>
         
         
@@ -20293,7 +20380,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 568
+            src/ol/view.js, line 585
         </div>
         
         
@@ -20614,7 +20701,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 583
+            src/ol/view.js, line 600
         </div>
         
         
@@ -20889,7 +20976,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 609
+            src/ol/view.js, line 626
         </div>
         
         
@@ -21014,7 +21101,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 620
+            src/ol/view.js, line 637
         </div>
         
         
@@ -21136,7 +21223,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 630
+            src/ol/view.js, line 647
         </div>
         
         

@@ -138,6 +138,14 @@
                     <a href="ol.html#.TransformFunction">TransformFunction</a>
                 </li>
             
+                <li data-name="ol.WFSFeatureCollectionMetadata" class="">
+                    <a href="ol.html#.WFSFeatureCollectionMetadata">WFSFeatureCollectionMetadata</a>
+                </li>
+            
+                <li data-name="ol.WFSTransactionResponse" class="">
+                    <a href="ol.html#.WFSTransactionResponse">WFSTransactionResponse</a>
+                </li>
+            
             </ul>
             <ul class="methods itemMembers">
             
@@ -1835,6 +1843,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutions" class="">
+                    <a href="ol.View.html#getResolutions">getResolutions</a>
                 </li>
             
                 <li data-name="ol.View#getRevision" class="unstable">
@@ -4086,16 +4098,6 @@
             
             </ul>
             <ul class="typedefs itemMembers">
-            
-            <span class="subtitle">Typedefs</span>
-            
-                <li data-name="ol.format.WFS.FeatureCollectionMetadata" class="">
-                    <a href="ol.format.WFS.html#.FeatureCollectionMetadata">FeatureCollectionMetadata</a>
-                </li>
-            
-                <li data-name="ol.format.WFS.TransactionResponse" class="">
-                    <a href="ol.format.WFS.html#.TransactionResponse">TransactionResponse</a>
-                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -17851,7 +17853,7 @@ each one separately in the <code>urls</code> option.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 322
+            src/ol/source/wmtssource.js, line 309
         </div>
         
         
@@ -18459,7 +18461,7 @@ Attributions.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 201
+            src/ol/source/wmtssource.js, line 196
         </div>
         
         
@@ -18547,7 +18549,7 @@ Dimensions.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 211
+            src/ol/source/wmtssource.js, line 206
         </div>
         
         
@@ -18719,7 +18721,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 229
+            src/ol/source/wmtssource.js, line 216
         </div>
         
         
@@ -18891,7 +18893,7 @@ Logo.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 239
+            src/ol/source/wmtssource.js, line 226
         </div>
         
         
@@ -19151,7 +19153,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 249
+            src/ol/source/wmtssource.js, line 236
         </div>
         
         
@@ -19414,7 +19416,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 259
+            src/ol/source/wmtssource.js, line 246
         </div>
         
         
@@ -19500,7 +19502,7 @@ Style.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilesource.js, line 194
+            src/ol/source/tilesource.js, line 212
         </div>
         
         
@@ -19852,7 +19854,7 @@ URLs.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 269
+            src/ol/source/wmtssource.js, line 256
         </div>
         
         
@@ -21246,7 +21248,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
     <div class="nameContainer inherited">
         
         <h4 class="name" id="setTileUrlFunction">
-            setTileUrlFunction<span class="signature">(tileUrlFunction)</span>
+            setTileUrlFunction<span class="signature">(tileUrlFunction, <span class="optional">opt_key</span>)</span>
             
                 <span class="inherited"><a href="ol.source.UrlTile.html#setTileUrlFunction">inherited</a></span>
             
@@ -21257,7 +21259,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltilesource.js, line 148
+            src/ol/source/urltilesource.js, line 149
         </div>
         
         
@@ -21322,6 +21324,31 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </tr>
 	
 	
+	
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Optional new tile key for the source.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -21381,7 +21408,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltilesource.js, line 163
+            src/ol/source/urltilesource.js, line 164
         </div>
         
         
@@ -21505,7 +21532,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltilesource.js, line 176
+            src/ol/source/urltilesource.js, line 177
         </div>
         
         
@@ -22086,7 +22113,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmtssource.js, line 292
+            src/ol/source/wmtssource.js, line 280
         </div>
         
         

@@ -244,8 +244,7 @@ goog.addDependency('../../../ol/ol/tilegrid/wmtstilegrid.js', ['ol.tilegrid.WMTS
 goog.addDependency('../../../ol/ol/tilequeue.js', ['ol.TileQueue'], ['goog.asserts', 'ol.TileState', 'ol.events', 'ol.events.EventType', 'ol.structs.PriorityQueue'], false);
 goog.addDependency('../../../ol/ol/tilerange.js', ['ol.TileRange'], ['goog.asserts'], false);
 goog.addDependency('../../../ol/ol/tileurlfunction.js', ['ol.TileUrlFunction'], ['goog.asserts', 'ol.math', 'ol.tilecoord'], false);
-goog.addDependency('../../../ol/ol/typedefs-wfs.js', ['ol.format.WFS.FeatureCollectionMetadata', 'ol.format.WFS.TransactionResponse'], [], false);
-goog.addDependency('../../../ol/ol/typedefs.js', ['ol.Extent', 'ol.events.EventTargetLike', 'ol.format.KMLVec2_', 'ol.interaction.DragBoxEndConditionType', 'ol.layer.LayerState', 'ol.proj.ProjectionLike', 'ol.raster.Operation', 'ol.render.canvas.FillState', 'ol.renderer.webgl.TextureCacheEntry', 'ol.reproj.ImageFunctionType', 'ol.source.ImageOptions', 'ol.structs.LRUCacheEntry', 'ol.style.AtlasBlock', 'ol.webgl.BufferCacheEntry', 'ol.xml.NodeStackItem'], [], false);
+goog.addDependency('../../../ol/ol/typedefs.js', ['ol.Extent', 'ol.events.EventTargetLike', 'ol.interaction.DragBoxEndConditionType', 'ol.proj.ProjectionLike', 'ol.raster.Operation', 'ol.style.AtlasBlock'], [], false);
 goog.addDependency('../../../ol/ol/vec/mat4.js', ['ol.vec.Mat4', 'ol.vec.Mat4.Number'], ['goog.vec.Mat4'], false);
 goog.addDependency('../../../ol/ol/vectortile.js', ['ol.VectorTile'], ['ol.Tile', 'ol.TileState', 'ol.dom', 'ol.proj.Projection'], false);
 goog.addDependency('../../../ol/ol/view.js', ['ol.View', 'ol.ViewHint', 'ol.ViewProperty'], ['goog.asserts', 'ol', 'ol.CenterConstraint', 'ol.Constraints', 'ol.Object', 'ol.ResolutionConstraint', 'ol.RotationConstraint', 'ol.coordinate', 'ol.extent', 'ol.geom.Polygon', 'ol.geom.SimpleGeometry', 'ol.proj', 'ol.proj.METERS_PER_UNIT', 'ol.proj.Projection', 'ol.proj.Units'], false);

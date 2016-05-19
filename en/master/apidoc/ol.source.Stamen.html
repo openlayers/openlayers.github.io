@@ -138,6 +138,14 @@
                     <a href="ol.html#.TransformFunction">TransformFunction</a>
                 </li>
             
+                <li data-name="ol.WFSFeatureCollectionMetadata" class="">
+                    <a href="ol.html#.WFSFeatureCollectionMetadata">WFSFeatureCollectionMetadata</a>
+                </li>
+            
+                <li data-name="ol.WFSTransactionResponse" class="">
+                    <a href="ol.html#.WFSTransactionResponse">WFSTransactionResponse</a>
+                </li>
+            
             </ul>
             <ul class="methods itemMembers">
             
@@ -1835,6 +1843,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutions" class="">
+                    <a href="ol.View.html#getResolutions">getResolutions</a>
                 </li>
             
                 <li data-name="ol.View#getRevision" class="unstable">
@@ -4086,16 +4098,6 @@
             
             </ul>
             <ul class="typedefs itemMembers">
-            
-            <span class="subtitle">Typedefs</span>
-            
-                <li data-name="ol.format.WFS.FeatureCollectionMetadata" class="">
-                    <a href="ol.format.WFS.html#.FeatureCollectionMetadata">FeatureCollectionMetadata</a>
-                </li>
-            
-                <li data-name="ol.format.WFS.TransactionResponse" class="">
-                    <a href="ol.format.WFS.html#.TransactionResponse">TransactionResponse</a>
-                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -18383,7 +18385,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tilesource.js, line 194
+            src/ol/source/tilesource.js, line 212
         </div>
         
         
@@ -20043,7 +20045,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
     <div class="nameContainer inherited">
         
         <h4 class="name" id="setTileUrlFunction">
-            setTileUrlFunction<span class="signature">(tileUrlFunction)</span>
+            setTileUrlFunction<span class="signature">(tileUrlFunction, <span class="optional">opt_key</span>)</span>
             
                 <span class="inherited"><a href="ol.source.UrlTile.html#setTileUrlFunction">inherited</a></span>
             
@@ -20054,7 +20056,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltilesource.js, line 148
+            src/ol/source/urltilesource.js, line 149
         </div>
         
         
@@ -20119,6 +20121,31 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </tr>
 	
 	
+	
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Optional new tile key for the source.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -20178,7 +20205,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltilesource.js, line 163
+            src/ol/source/urltilesource.js, line 164
         </div>
         
         
@@ -20302,7 +20329,7 @@ for optimization reasons (custom tile size, resolutions, ...).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltilesource.js, line 176
+            src/ol/source/urltilesource.js, line 177
         </div>
         
         

@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.15.1-212-g7a1756d
+// Version: v3.15.1-238-g50408d7
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -5314,14 +5314,11 @@ ol.object.isEmpty = function(object) {
  * These look like vars (or var properties), but in fact are simply identifiers
  * for the Closure compiler. Originally they were included in the appropriate
  * namespace file, but with the move away from Closure namespaces and towards
- * self-contained standard modules are now all in this file, with two exceptions.
+ * self-contained standard modules are now all in this file.
  * Unlike the other type definitions - enums and constructor functions - they
  * are not code and so are not imported or exported. They are only referred to
  * in type-defining comments used by the Closure compiler, and so should not
  * appear in module code.
- *
- * The 2 exceptions are the WFS typedefs which are in a sub-sub-namespace and
- * are API. These have been put in their own separate file.
  *
  * When the code is converted to ES6 modules, the namespace structure will
  * disappear, and these typedefs will have to be renamed accordingly, but the
@@ -5337,19 +5334,10 @@ ol.object.isEmpty = function(object) {
 goog.provide('ol.Extent');
 goog.provide('ol.events.EventTargetLike');
 
-goog.provide('ol.format.KMLVec2_');
 goog.provide('ol.interaction.DragBoxEndConditionType');
-goog.provide('ol.layer.LayerState');
 goog.provide('ol.proj.ProjectionLike');
 goog.provide('ol.raster.Operation');
-goog.provide('ol.render.canvas.FillState');
-goog.provide('ol.renderer.webgl.TextureCacheEntry');
-goog.provide('ol.reproj.ImageFunctionType');
-goog.provide('ol.source.ImageOptions');
-goog.provide('ol.structs.LRUCacheEntry');
 goog.provide('ol.style.AtlasBlock');
-goog.provide('ol.webgl.BufferCacheEntry');
-goog.provide('ol.xml.NodeStackItem');
 
 
 /**
@@ -5357,6 +5345,12 @@ goog.provide('ol.xml.NodeStackItem');
  * @api
  */
 ol.AttributionLike;
+
+
+/**
+ * @typedef {{fillStyle: ol.ColorLike}}
+ */
+ol.CanvasFillState;
 
 
 /**
@@ -5373,6 +5367,25 @@ ol.AttributionLike;
  * @api
  */
 ol.CanvasFunctionType;
+
+
+/**
+ * @typedef {{lineCap: string,
+ *            lineDash: Array.<number>,
+ *            lineJoin: string,
+ *            lineWidth: number,
+ *            miterLimit: number,
+ *            strokeStyle: string}}
+ */
+ol.CanvasStrokeState;
+
+
+/**
+ * @typedef {{font: string,
+ *            textAlign: string,
+ *            textBaseline: string}}
+ */
+ol.CanvasTextState;
 
 
 /**
@@ -5504,12 +5517,49 @@ ol.ImageLoadFunctionType;
 
 
 /**
+ * @typedef {{x: number, xunits: (ol.style.IconAnchorUnits|undefined),
+ *            y: number, yunits: (ol.style.IconAnchorUnits|undefined)}}
+ */
+ol.KMLVec2_;
+
+
+/**
+ * @typedef {{flatCoordinates: Array.<number>,
+ *            whens: Array.<number>}}
+ */
+ol.KMLGxTrackObject_;
+
+
+/**
+ * @typedef {{layer: ol.layer.Layer,
+ *            opacity: number,
+ *            sourceState: ol.source.State,
+ *            visible: boolean,
+ *            managed: boolean,
+ *            extent: (ol.Extent|undefined),
+ *            zIndex: number,
+ *            maxResolution: number,
+ *            minResolution: number}}
+ */
+ol.LayerState;
+
+
+/**
  * One of `all`, `bbox`, `tile`.
  *
  * @typedef {function(ol.Extent, number): Array.<ol.Extent>}
  * @api
  */
 ol.LoadingStrategy;
+
+
+/**
+ * @typedef {{key_: string,
+ *            newer: ol.LRUCacheEntry,
+ *            older: ol.LRUCacheEntry,
+ *            value_: *}}
+ */
+ol.LRUCacheEntry;
 
 
 /**
@@ -5552,6 +5602,27 @@ ol.PreRenderFunction;
 
 
 /**
+ * @typedef {function(ol.Extent, number, number) : ol.ImageBase}
+ */
+ol.ReprojImageFunctionType;
+
+
+/**
+ * @typedef {function(number, number, number, number) : ol.Tile}
+ */
+ol.ReprojTileFunctionType;
+
+
+/**
+ * Single triangle; consists of 3 source points and 3 target points.
+ *
+ * @typedef {{source: Array.<ol.Coordinate>,
+ *            target: Array.<ol.Coordinate>}}
+ */
+ol.ReprojTriangle;
+
+
+/**
  * @typedef {function((number|undefined), number, number): (number|undefined)}
  */
 ol.ResolutionConstraintType;
@@ -5569,6 +5640,69 @@ ol.RotationConstraintType;
  * @api stable
  */
 ol.Size;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            extent: (null|ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            resolutions: (Array.<number>|undefined),
+ *            state: (ol.source.State|undefined)}}
+ */
+ol.SourceImageOptions;
+
+
+/**
+ * @typedef {{revision: number,
+ *            resolution: number,
+ *            extent: ol.Extent}}
+ */
+ol.SourceRasterRenderedState;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            state: (ol.source.State|undefined),
+ *            wrapX: (boolean|undefined)}}
+ */
+ol.SourceSourceOptions;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            cacheSize: (number|undefined),
+ *            extent: (ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            opaque: (boolean|undefined),
+ *            tilePixelRatio: (number|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            state: (ol.source.State|undefined),
+ *            tileGrid: (ol.tilegrid.TileGrid|undefined),
+ *            wrapX: (boolean|undefined)}}
+ */
+ol.SourceTileOptions;
+
+
+/**
+ * @typedef {{attributions: (ol.AttributionLike|undefined),
+ *            cacheSize: (number|undefined),
+ *            extent: (ol.Extent|undefined),
+ *            logo: (string|olx.LogoOptions|undefined),
+ *            opaque: (boolean|undefined),
+ *            projection: ol.proj.ProjectionLike,
+ *            state: (ol.source.State|undefined),
+ *            tileGrid: (ol.tilegrid.TileGrid|undefined),
+ *            tileLoadFunction: ol.TileLoadFunctionType,
+ *            tilePixelRatio: (number|undefined),
+ *            tileUrlFunction: (ol.TileUrlFunctionType|undefined),
+ *            url: (string|undefined),
+ *            urls: (Array.<string>|undefined),
+ *            wrapX: (boolean|undefined)}}
+ */
+ol.SourceUrlTileOptions;
 
 
 /**
@@ -5638,6 +5772,66 @@ ol.TransformFunction;
 
 
 /**
+ * @typedef {{buf: ol.webgl.Buffer,
+ *            buffer: WebGLBuffer}}
+ */
+ol.WebglBufferCacheEntry;
+
+
+/**
+ * @typedef {{magFilter: number, minFilter: number, texture: WebGLTexture}}
+ */
+ol.WebglTextureCacheEntry;
+
+
+/**
+ * Number of features; bounds/extent.
+ * @typedef {{numberOfFeatures: number,
+ *            bounds: ol.Extent}}
+ * @api stable
+ */
+ol.WFSFeatureCollectionMetadata;
+
+
+/**
+ * Total deleted; total inserted; total updated; array of insert ids.
+ * @typedef {{totalDeleted: number,
+ *            totalInserted: number,
+ *            totalUpdated: number,
+ *            insertIds: Array.<string>}}
+ * @api stable
+ */
+ol.WFSTransactionResponse;
+
+
+/**
+ * @typedef {{type: number, value: (number|string|undefined), position: number}}
+ */
+ol.WKTToken;
+
+
+/**
+ * When using {@link ol.xml.makeChildAppender} or
+ * {@link ol.xml.makeSimpleNodeFactory}, the top `objectStack` item needs to
+ * have this structure.
+ * @typedef {{node:Node}}
+ */
+ol.XmlNodeStackItem;
+
+
+/**
+ * @typedef {function(Node, Array.<*>)}
+ */
+ol.XmlParser;
+
+
+/**
+ * @typedef {function(Node, *, Array.<*>)}
+ */
+ol.XmlSerializer;
+
+
+/**
  * A function that takes an {@link ol.MapBrowserEvent} and returns a
  * `{boolean}`. If the condition is met, true should be returned.
  *
@@ -5679,26 +5873,6 @@ ol.events.Key;
  * @api
  */
 ol.events.ListenerFunctionType;
-
-
-/**
- * @typedef {{x: number, xunits: (ol.style.IconAnchorUnits|undefined),
- *            y: number, yunits: (ol.style.IconAnchorUnits|undefined)}}
- */
-ol.format.KMLVec2_;
-
-
-/**
- * @typedef {{flatCoordinates: Array.<number>,
- *            whens: Array.<number>}}
- */
-ol.format.KMLGxTrackObject_;
-
-
-/**
- * @typedef {{type: number, value: (number|string|undefined), position: number}}
- */
-ol.format.WKTToken;
 
 
 /**
@@ -5765,20 +5939,6 @@ ol.interaction.SnapSegmentDataType;
 
 
 /**
- * @typedef {{layer: ol.layer.Layer,
- *            opacity: number,
- *            sourceState: ol.source.State,
- *            visible: boolean,
- *            managed: boolean,
- *            extent: (ol.Extent|undefined),
- *            zIndex: number,
- *            maxResolution: number,
- *            minResolution: number}}
- */
-ol.layer.LayerState;
-
-
-/**
  * A projection as {@link ol.proj.Projection}, SRS identifier string or
  * undefined.
  * @typedef {ol.proj.Projection|string|undefined} ol.proj.ProjectionLike
@@ -5812,130 +5972,6 @@ ol.raster.Operation;
  * @api
  */
 ol.raster.Pixel;
-
-
-/**
- * @typedef {{fillStyle: ol.ColorLike}}
- */
-ol.render.canvasFillState;
-
-
-/**
- * @typedef {{lineCap: string,
- *            lineDash: Array.<number>,
- *            lineJoin: string,
- *            lineWidth: number,
- *            miterLimit: number,
- *            strokeStyle: string}}
- */
-ol.render.canvasStrokeState;
-
-
-/**
- * @typedef {{font: string,
- *            textAlign: string,
- *            textBaseline: string}}
- */
-ol.render.canvasTextState;
-
-
-/**
- * @typedef {{magFilter: number, minFilter: number, texture: WebGLTexture}}
- */
-ol.renderer.webglTextureCacheEntry;
-
-
-/**
- * @typedef {function(ol.Extent, number, number) : ol.ImageBase}
- */
-ol.reproj.ImageFunctionType;
-
-
-/**
- * @typedef {function(number, number, number, number) : ol.Tile}
- */
-ol.reproj.TileFunctionType;
-
-
-/**
- * Single triangle; consists of 3 source points and 3 target points.
- *
- * @typedef {{source: Array.<ol.Coordinate>,
- *            target: Array.<ol.Coordinate>}}
- */
-ol.reproj.Triangle;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            extent: (null|ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            resolutions: (Array.<number>|undefined),
- *            state: (ol.source.State|undefined)}}
- */
-ol.source.ImageOptions;
-
-
-/**
- * @typedef {{revision: number,
- *            resolution: number,
- *            extent: ol.Extent}}
- */
-ol.source.RasterRenderedState;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            state: (ol.source.State|undefined),
- *            wrapX: (boolean|undefined)}}
- */
-ol.source.SourceOptions;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            cacheSize: (number|undefined),
- *            extent: (ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            opaque: (boolean|undefined),
- *            tilePixelRatio: (number|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            state: (ol.source.State|undefined),
- *            tileGrid: (ol.tilegrid.TileGrid|undefined),
- *            wrapX: (boolean|undefined)}}
- */
-ol.source.TileOptions;
-
-
-/**
- * @typedef {{attributions: (ol.AttributionLike|undefined),
- *            cacheSize: (number|undefined),
- *            extent: (ol.Extent|undefined),
- *            logo: (string|olx.LogoOptions|undefined),
- *            opaque: (boolean|undefined),
- *            projection: ol.proj.ProjectionLike,
- *            state: (ol.source.State|undefined),
- *            tileGrid: (ol.tilegrid.TileGrid|undefined),
- *            tileLoadFunction: ol.TileLoadFunctionType,
- *            tilePixelRatio: (number|undefined),
- *            tileUrlFunction: (ol.TileUrlFunctionType|undefined),
- *            url: (string|undefined),
- *            urls: (Array.<string>|undefined),
- *            wrapX: (boolean|undefined)}}
- */
-ol.source.UrlTileOptions;
-
-
-/**
- * @typedef {{key_: string,
- *            newer: ol.structs.LRUCacheEntry,
- *            older: ol.structs.LRUCacheEntry,
- *            value_: *}}
- */
-ol.structs.LRUCacheEntry;
 
 
 /**
@@ -6016,34 +6052,6 @@ ol.style.RegularShapeRenderOptions;
  * @api
  */
 ol.style.StyleFunction;
-
-
-/**
- * @typedef {{buf: ol.webgl.Buffer,
- *            buffer: WebGLBuffer}}
- */
-ol.webgl.BufferCacheEntry;
-
-
-/**
- * When using {@link ol.xml.makeChildAppender} or
- * {@link ol.xml.makeSimpleNodeFactory}, the top `objectStack` item needs to
- * have this structure.
- * @typedef {{node:Node}}
- */
-ol.xml.NodeStackItem;
-
-
-/**
- * @typedef {function(Node, Array.<*>)}
- */
-ol.xml.Parser;
-
-
-/**
- * @typedef {function(Node, *, Array.<*>)}
- */
-ol.xml.Serializer;
 
 goog.provide('ol.events');
 goog.provide('ol.events.EventType');
@@ -15829,6 +15837,12 @@ ol.View = function(opt_options) {
 
   /**
    * @private
+   * @type {Array.<number>|undefined}
+   */
+  this.resolutions_ = options.resolutions;
+
+  /**
+   * @private
    * @type {number}
    */
   this.minZoom_ = resolutionConstraintInfo.minZoom;
@@ -16003,6 +16017,17 @@ ol.View.prototype.getProjection = function() {
 ol.View.prototype.getResolution = function() {
   return /** @type {number|undefined} */ (
       this.get(ol.ViewProperty.RESOLUTION));
+};
+
+
+/**
+ * Get the resolutions for the view. This returns the array of resolutions
+ * passed to the constructor of the {ol.View}, or undefined if none were given.
+ * @return {Array.<number>|undefined} The resolutions of the view.
+ * @api stable
+ */
+ol.View.prototype.getResolutions = function() {
+  return this.resolutions_;
 };
 
 
@@ -33910,19 +33935,19 @@ ol.structs.LRUCache = function() {
 
   /**
    * @private
-   * @type {!Object.<string, ol.structs.LRUCacheEntry>}
+   * @type {!Object.<string, ol.LRUCacheEntry>}
    */
   this.entries_ = {};
 
   /**
    * @private
-   * @type {?ol.structs.LRUCacheEntry}
+   * @type {?ol.LRUCacheEntry}
    */
   this.oldest_ = null;
 
   /**
    * @private
-   * @type {?ol.structs.LRUCacheEntry}
+   * @type {?ol.LRUCacheEntry}
    */
   this.newest_ = null;
 
@@ -34590,7 +34615,7 @@ ol.source.State = {
  *
  * @constructor
  * @extends {ol.Object}
- * @param {ol.source.SourceOptions} options Source options.
+ * @param {ol.SourceSourceOptions} options Source options.
  * @api stable
  */
 ol.source.Source = function(options) {
@@ -35418,7 +35443,7 @@ goog.require('ol.tilegrid.TileGrid');
  *
  * @constructor
  * @extends {ol.source.Source}
- * @param {ol.source.TileOptions} options Tile source options.
+ * @param {ol.SourceTileOptions} options Tile source options.
  * @api
  */
 ol.source.Tile = function(options) {
@@ -35462,6 +35487,12 @@ ol.source.Tile = function(options) {
    * @type {ol.Size}
    */
   this.tmpSize = [0, 0];
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.key_ = '';
 
 };
 goog.inherits(ol.source.Tile, ol.source.Source);
@@ -35534,13 +35565,25 @@ ol.source.Tile.prototype.getGutter = function(projection) {
 
 
 /**
- * Return the "parameters" key, a string composed of the source's
- * parameters/dimensions.
- * @return {string} The parameters key.
+ * Return the key to be used for all tiles in the source.
+ * @return {string} The key for all tiles.
  * @protected
  */
-ol.source.Tile.prototype.getKeyParams = function() {
-  return '';
+ol.source.Tile.prototype.getKey = function() {
+  return this.key_;
+};
+
+
+/**
+ * Set the value to be used as the key for all tiles in the source.
+ * @param {string} key The key for tiles.
+ * @protected
+ */
+ol.source.Tile.prototype.setKey = function(key) {
+  if (this.key_ !== key) {
+    this.key_ = key;
+    this.changed();
+  }
 };
 
 
@@ -40720,7 +40763,7 @@ goog.inherits(ol.layer.Base, ol.Object);
 
 
 /**
- * @return {ol.layer.LayerState} Layer state.
+ * @return {ol.LayerState} Layer state.
  */
 ol.layer.Base.prototype.getLayerState = function() {
   var opacity = this.getOpacity();
@@ -40753,9 +40796,9 @@ ol.layer.Base.prototype.getLayersArray = goog.abstractMethod;
 
 
 /**
- * @param {Array.<ol.layer.LayerState>=} opt_states Optional list of layer
+ * @param {Array.<ol.LayerState>=} opt_states Optional list of layer
  *     states (to be modified in place).
- * @return {Array.<ol.layer.LayerState>} List of layer states.
+ * @return {Array.<ol.LayerState>} List of layer states.
  */
 ol.layer.Base.prototype.getLayerStatesArray = goog.abstractMethod;
 
@@ -41187,7 +41230,7 @@ goog.inherits(ol.layer.Layer, ol.layer.Base);
  * Return `true` if the layer is visible, and if the passed resolution is
  * between the layer's minResolution and maxResolution. The comparison is
  * inclusive for `minResolution` and exclusive for `maxResolution`.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @param {number} resolution Resolution.
  * @return {boolean} The layer is visible at the given resolution.
  */
@@ -43223,8 +43266,8 @@ ol.renderer.Map.prototype.scheduleRemoveUnusedLayerRenderers = function(frameSta
 
 
 /**
- * @param {ol.layer.LayerState} state1 First layer state.
- * @param {ol.layer.LayerState} state2 Second layer state.
+ * @param {ol.LayerState} state1 First layer state.
+ * @param {ol.LayerState} state2 Second layer state.
  * @return {number} The zIndex difference.
  */
 ol.renderer.Map.sortByZIndex = function(state1, state2) {
@@ -49045,31 +49088,31 @@ ol.render.canvas.Immediate = function(context, pixelRatio, extent, transform, vi
 
   /**
    * @private
-   * @type {?ol.render.canvasFillState}
+   * @type {?ol.CanvasFillState}
    */
   this.contextFillState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasStrokeState}
+   * @type {?ol.CanvasStrokeState}
    */
   this.contextStrokeState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasTextState}
+   * @type {?ol.CanvasTextState}
    */
   this.contextTextState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasFillState}
+   * @type {?ol.CanvasFillState}
    */
   this.fillState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasStrokeState}
+   * @type {?ol.CanvasStrokeState}
    */
   this.strokeState_ = null;
 
@@ -49177,19 +49220,19 @@ ol.render.canvas.Immediate = function(context, pixelRatio, extent, transform, vi
 
   /**
    * @private
-   * @type {?ol.render.canvasFillState}
+   * @type {?ol.CanvasFillState}
    */
   this.textFillState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasStrokeState}
+   * @type {?ol.CanvasStrokeState}
    */
   this.textStrokeState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasTextState}
+   * @type {?ol.CanvasTextState}
    */
   this.textState_ = null;
 
@@ -49674,7 +49717,7 @@ ol.render.canvas.Immediate.prototype.drawMultiPolygon = function(geometry) {
 
 
 /**
- * @param {ol.render.canvasFillState} fillState Fill state.
+ * @param {ol.CanvasFillState} fillState Fill state.
  * @private
  */
 ol.render.canvas.Immediate.prototype.setContextFillState_ = function(fillState) {
@@ -49694,7 +49737,7 @@ ol.render.canvas.Immediate.prototype.setContextFillState_ = function(fillState) 
 
 
 /**
- * @param {ol.render.canvasStrokeState} strokeState Stroke state.
+ * @param {ol.CanvasStrokeState} strokeState Stroke state.
  * @private
  */
 ol.render.canvas.Immediate.prototype.setContextStrokeState_ = function(strokeState) {
@@ -49746,7 +49789,7 @@ ol.render.canvas.Immediate.prototype.setContextStrokeState_ = function(strokeSta
 
 
 /**
- * @param {ol.render.canvasTextState} textState Text state.
+ * @param {ol.CanvasTextState} textState Text state.
  * @private
  */
 ol.render.canvas.Immediate.prototype.setContextTextState_ = function(textState) {
@@ -49962,7 +50005,7 @@ goog.inherits(ol.renderer.canvas.Layer, ol.renderer.Layer);
 
 /**
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @param {CanvasRenderingContext2D} context Context.
  */
 ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerState, context) {
@@ -50131,7 +50174,7 @@ ol.renderer.canvas.Layer.prototype.getTransform = function(frameState, offsetX) 
 
 /**
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @return {boolean} whether composeFrame should be called.
  */
 ol.renderer.canvas.Layer.prototype.prepareFrame = goog.abstractMethod;
@@ -51745,19 +51788,19 @@ ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution) {
 
   /**
    * @private
-   * @type {?ol.render.canvasFillState}
+   * @type {?ol.CanvasFillState}
    */
   this.replayFillState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasStrokeState}
+   * @type {?ol.CanvasStrokeState}
    */
   this.replayStrokeState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasTextState}
+   * @type {?ol.CanvasTextState}
    */
   this.replayTextState_ = null;
 
@@ -51793,19 +51836,19 @@ ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution) {
 
   /**
    * @private
-   * @type {?ol.render.canvasFillState}
+   * @type {?ol.CanvasFillState}
    */
   this.textFillState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasStrokeState}
+   * @type {?ol.CanvasStrokeState}
    */
   this.textStrokeState_ = null;
 
   /**
    * @private
-   * @type {?ol.render.canvasTextState}
+   * @type {?ol.CanvasTextState}
    */
   this.textState_ = null;
 
@@ -51845,7 +51888,7 @@ ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offse
 
 
 /**
- * @param {ol.render.canvasFillState} fillState Fill state.
+ * @param {ol.CanvasFillState} fillState Fill state.
  * @private
  */
 ol.render.canvas.TextReplay.prototype.setReplayFillState_ = function(fillState) {
@@ -51869,7 +51912,7 @@ ol.render.canvas.TextReplay.prototype.setReplayFillState_ = function(fillState) 
 
 
 /**
- * @param {ol.render.canvasStrokeState} strokeState Stroke state.
+ * @param {ol.CanvasStrokeState} strokeState Stroke state.
  * @private
  */
 ol.render.canvas.TextReplay.prototype.setReplayStrokeState_ = function(strokeState) {
@@ -51911,7 +51954,7 @@ ol.render.canvas.TextReplay.prototype.setReplayStrokeState_ = function(strokeSta
 
 
 /**
- * @param {ol.render.canvasTextState} textState Text state.
+ * @param {ol.CanvasTextState} textState Text state.
  * @private
  */
 ol.render.canvas.TextReplay.prototype.setReplayTextState_ = function(textState) {
@@ -53225,7 +53268,7 @@ ol.reproj.Triangulation = function(sourceProj, targetProj, targetExtent,
   this.errorThresholdSquared_ = errorThreshold * errorThreshold;
 
   /**
-   * @type {Array.<ol.reproj.Triangle>}
+   * @type {Array.<ol.ReprojTriangle>}
    * @private
    */
   this.triangles_ = [];
@@ -53486,7 +53529,7 @@ ol.reproj.Triangulation.prototype.calculateSourceExtent = function() {
 
 
 /**
- * @return {Array.<ol.reproj.Triangle>} Array of the calculated triangles.
+ * @return {Array.<ol.ReprojTriangle>} Array of the calculated triangles.
  */
 ol.reproj.Triangulation.prototype.getTriangles = function() {
   return this.triangles_;
@@ -53517,7 +53560,7 @@ goog.require('ol.reproj.Triangulation');
  * @param {ol.Extent} targetExtent Target extent.
  * @param {number} targetResolution Target resolution.
  * @param {number} pixelRatio Pixel ratio.
- * @param {ol.reproj.ImageFunctionType} getImageFunction
+ * @param {ol.ReprojImageFunctionType} getImageFunction
  *     Function returning source images (extent, resolution, pixelRatio).
  */
 ol.reproj.Image = function(sourceProj, targetProj,
@@ -53716,7 +53759,7 @@ goog.require('ol.source.Source');
  *
  * @constructor
  * @extends {ol.source.Source}
- * @param {ol.source.ImageOptions} options Single image source options.
+ * @param {ol.SourceImageOptions} options Single image source options.
  * @api
  */
 ol.source.Image = function(options) {
@@ -54663,7 +54706,7 @@ ol.xml.parse = function(xml) {
  * @param {function(this: T, Node, Array.<*>): (Array.<*>|undefined)}
  *     valueReader Value reader.
  * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
+ * @return {ol.XmlParser} Parser.
  * @template T
  */
 ol.xml.makeArrayExtender = function(valueReader, opt_this) {
@@ -54692,7 +54735,7 @@ ol.xml.makeArrayExtender = function(valueReader, opt_this) {
  * object stack.
  * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
  * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
+ * @return {ol.XmlParser} Parser.
  * @template T
  */
 ol.xml.makeArrayPusher = function(valueReader, opt_this) {
@@ -54719,7 +54762,7 @@ ol.xml.makeArrayPusher = function(valueReader, opt_this) {
  * top of the stack.
  * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
  * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
+ * @return {ol.XmlParser} Parser.
  * @template T
  */
 ol.xml.makeReplacer = function(valueReader, opt_this) {
@@ -54744,7 +54787,7 @@ ol.xml.makeReplacer = function(valueReader, opt_this) {
  * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
  * @param {string=} opt_property Property.
  * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
+ * @return {ol.XmlParser} Parser.
  * @template T
  */
 ol.xml.makeObjectPropertyPusher = function(valueReader, opt_property, opt_this) {
@@ -54782,7 +54825,7 @@ ol.xml.makeObjectPropertyPusher = function(valueReader, opt_property, opt_this) 
  * @param {function(this: T, Node, Array.<*>): *} valueReader Value reader.
  * @param {string=} opt_property Property.
  * @param {T=} opt_this The object to use as `this` in `valueReader`.
- * @return {ol.xml.Parser} Parser.
+ * @return {ol.XmlParser} Parser.
  * @template T
  */
 ol.xml.makeObjectPropertySetter = function(valueReader, opt_property, opt_this) {
@@ -54812,11 +54855,11 @@ ol.xml.makeObjectPropertySetter = function(valueReader, opt_property, opt_this) 
 /**
  * Create a serializer that appends nodes written by its `nodeWriter` to its
  * designated parent. The parent is the `node` of the
- * {@link ol.xml.NodeStackItem} at the top of the `objectStack`.
+ * {@link ol.XmlNodeStackItem} at the top of the `objectStack`.
  * @param {function(this: T, Node, V, Array.<*>)}
  *     nodeWriter Node writer.
  * @param {T=} opt_this The object to use as `this` in `nodeWriter`.
- * @return {ol.xml.Serializer} Serializer.
+ * @return {ol.XmlSerializer} Serializer.
  * @template T, V
  */
 ol.xml.makeChildAppender = function(nodeWriter, opt_this) {
@@ -54845,7 +54888,7 @@ ol.xml.makeChildAppender = function(nodeWriter, opt_this) {
  * @param {function(this: T, Node, V, Array.<*>)}
  *     nodeWriter Node writer.
  * @param {T=} opt_this The object to use as `this` in `nodeWriter`.
- * @return {ol.xml.Serializer} Serializer.
+ * @return {ol.XmlSerializer} Serializer.
  * @template T, V
  */
 ol.xml.makeArraySerializer = function(nodeWriter, opt_this) {
@@ -54962,7 +55005,7 @@ ol.xml.makeStructureNS = function(namespaceURIs, structure, opt_structureNS) {
 
 /**
  * Parse a node using the parsers and object stack.
- * @param {Object.<string, Object.<string, ol.xml.Parser>>} parsersNS
+ * @param {Object.<string, Object.<string, ol.XmlParser>>} parsersNS
  *     Parsers by namespace.
  * @param {Node} node Node.
  * @param {Array.<*>} objectStack Object stack.
@@ -54985,7 +55028,7 @@ ol.xml.parseNode = function(parsersNS, node, objectStack, opt_this) {
 /**
  * Push an object on top of the stack, parse and return the popped object.
  * @param {T} object Object.
- * @param {Object.<string, Object.<string, ol.xml.Parser>>} parsersNS
+ * @param {Object.<string, Object.<string, ol.XmlParser>>} parsersNS
  *     Parsers by namespace.
  * @param {Node} node Node.
  * @param {Array.<*>} objectStack Object stack.
@@ -55003,7 +55046,7 @@ ol.xml.pushParseAndPop = function(
 
 /**
  * Walk through an array of `values` and call a serializer for each value.
- * @param {Object.<string, Object.<string, ol.xml.Serializer>>} serializersNS
+ * @param {Object.<string, Object.<string, ol.XmlSerializer>>} serializersNS
  *     Namespaced serializers.
  * @param {function(this: T, *, Array.<*>, (string|undefined)): (Node|undefined)} nodeFactory
  *     Node factory. The `nodeFactory` creates the node whose namespace and name
@@ -55043,7 +55086,7 @@ ol.xml.serialize = function(
 
 /**
  * @param {O} object Object.
- * @param {Object.<string, Object.<string, ol.xml.Serializer>>} serializersNS
+ * @param {Object.<string, Object.<string, ol.XmlSerializer>>} serializersNS
  *     Namespaced serializers.
  * @param {function(this: T, *, Array.<*>, (string|undefined)): (Node|undefined)} nodeFactory
  *     Node factory. The `nodeFactory` creates the node whose namespace and name
@@ -57771,7 +57814,7 @@ ol.renderer.canvas.TileLayer.prototype.forEachLayerAtPixel = function(
 /**
  * @param {CanvasRenderingContext2D} context Context.
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @protected
  */
 ol.renderer.canvas.TileLayer.prototype.renderTileImages = function(context, frameState, layerState) {
@@ -58386,7 +58429,7 @@ goog.require('ol.source.TileEvent');
  * @constructor
  * @fires ol.source.TileEvent
  * @extends {ol.source.Tile}
- * @param {ol.source.UrlTileOptions} options Image tile options.
+ * @param {ol.SourceUrlTileOptions} options Image tile options.
  */
 ol.source.UrlTile = function(options) {
 
@@ -58515,15 +58558,16 @@ ol.source.UrlTile.prototype.setTileLoadFunction = function(tileLoadFunction) {
 /**
  * Set the tile URL function of the source.
  * @param {ol.TileUrlFunctionType} tileUrlFunction Tile URL function.
+ * @param {string=} opt_key Optional new tile key for the source.
  * @api
  */
-ol.source.UrlTile.prototype.setTileUrlFunction = function(tileUrlFunction) {
-  // FIXME It should be possible to be more intelligent and avoid clearing the
-  // FIXME cache.  The tile URL function would need to be incorporated into the
-  // FIXME cache key somehow.
-  this.tileCache.clear();
+ol.source.UrlTile.prototype.setTileUrlFunction = function(tileUrlFunction, opt_key) {
   this.tileUrlFunction = tileUrlFunction;
-  this.changed();
+  if (typeof opt_key !== 'undefined') {
+    this.setKey(opt_key);
+  } else {
+    this.changed();
+  }
 };
 
 
@@ -58536,7 +58580,7 @@ ol.source.UrlTile.prototype.setUrl = function(url) {
   var urls = this.urls = ol.TileUrlFunction.expandUrl(url);
   this.setTileUrlFunction(this.fixedTileUrlFunction ?
       this.fixedTileUrlFunction.bind(this) :
-      ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid));
+      ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid), url);
 };
 
 
@@ -58547,9 +58591,10 @@ ol.source.UrlTile.prototype.setUrl = function(url) {
  */
 ol.source.UrlTile.prototype.setUrls = function(urls) {
   this.urls = urls;
+  var key = urls.join('\n');
   this.setTileUrlFunction(this.fixedTileUrlFunction ?
       this.fixedTileUrlFunction.bind(this) :
-      ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid));
+      ol.TileUrlFunction.createFromTemplates(urls, this.tileGrid), key);
 };
 
 
@@ -58763,7 +58808,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(
 /**
  * @param {CanvasRenderingContext2D} context Context.
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @private
  */
 ol.renderer.canvas.VectorTileLayer.prototype.renderTileReplays_ = function(
@@ -59060,7 +59105,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderFeature = function(feature, s
 /**
  * @param {ol.VectorTile} tile Tile.
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @param {Array.<string>} skippedFeatures Skipped features.
  * @private
  */
@@ -59365,7 +59410,7 @@ ol.renderer.dom.Layer.prototype.clearFrame = ol.nullFunction;
 
 /**
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  */
 ol.renderer.dom.Layer.prototype.composeFrame = ol.nullFunction;
 
@@ -59380,7 +59425,7 @@ ol.renderer.dom.Layer.prototype.getTarget = function() {
 
 /**
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @return {boolean} whether composeFrame should be called.
  */
 ol.renderer.dom.Layer.prototype.prepareFrame = goog.abstractMethod;
@@ -63091,7 +63136,7 @@ ol.webgl.Context = function(canvas, gl) {
 
   /**
    * @private
-   * @type {Object.<string, ol.webgl.BufferCacheEntry>}
+   * @type {Object.<string, ol.WebglBufferCacheEntry>}
    */
   this.bufferCache_ = {};
 
@@ -65065,7 +65110,7 @@ ol.renderer.webgl.Layer.prototype.bindFramebuffer = function(frameState, framebu
 
 /**
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @param {ol.webgl.Context} context Context.
  */
 ol.renderer.webgl.Layer.prototype.composeFrame = function(frameState, layerState, context) {
@@ -65178,7 +65223,7 @@ ol.renderer.webgl.Layer.prototype.handleWebGLContextLost = function() {
 
 /**
  * @param {olx.FrameState} frameState Frame state.
- * @param {ol.layer.LayerState} layerState Layer state.
+ * @param {ol.LayerState} layerState Layer state.
  * @param {ol.webgl.Context} context Context.
  * @return {boolean} whether composeFrame should be called.
  */
@@ -66097,7 +66142,7 @@ ol.renderer.webgl.VectorLayer = function(mapRenderer, vectorLayer) {
   /**
    * The last layer state.
    * @private
-   * @type {?ol.layer.LayerState}
+   * @type {?ol.LayerState}
    */
   this.layerState_ = null;
 
@@ -66457,7 +66502,7 @@ ol.renderer.webgl.Map = function(container, map) {
 
   /**
    * @private
-   * @type {ol.structs.LRUCache.<ol.renderer.webglTextureCacheEntry|null>}
+   * @type {ol.structs.LRUCache.<ol.WebglTextureCacheEntry|null>}
    */
   this.textureCache_ = new ol.structs.LRUCache();
 
@@ -66647,7 +66692,7 @@ ol.renderer.webgl.Map.prototype.disposeInternal = function() {
   if (!gl.isContextLost()) {
     this.textureCache_.forEach(
         /**
-         * @param {?ol.renderer.webglTextureCacheEntry} textureCacheEntry
+         * @param {?ol.WebglTextureCacheEntry} textureCacheEntry
          *     Texture cache entry.
          */
         function(textureCacheEntry) {
@@ -66796,7 +66841,7 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
 
   this.dispatchComposeEvent_(ol.render.EventType.PRECOMPOSE, frameState);
 
-  /** @type {Array.<ol.layer.LayerState>} */
+  /** @type {Array.<ol.LayerState>} */
   var layerStatesToDraw = [];
   var layerStatesArray = frameState.layerStatesArray;
   ol.array.stableSort(layerStatesArray, ol.renderer.Map.sortByZIndex);
@@ -74903,7 +74948,7 @@ ol.format.GMLBase.prototype.readFlatCoordinatesFromNode_ = function(node, object
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GMLBase.prototype.MULTIPOINT_PARSERS_ = {
@@ -74918,7 +74963,7 @@ ol.format.GMLBase.prototype.MULTIPOINT_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GMLBase.prototype.MULTILINESTRING_PARSERS_ = {
@@ -74933,7 +74978,7 @@ ol.format.GMLBase.prototype.MULTILINESTRING_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GMLBase.prototype.MULTIPOLYGON_PARSERS_ = {
@@ -74948,7 +74993,7 @@ ol.format.GMLBase.prototype.MULTIPOLYGON_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GMLBase.prototype.POINTMEMBER_PARSERS_ = {
@@ -74961,7 +75006,7 @@ ol.format.GMLBase.prototype.POINTMEMBER_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GMLBase.prototype.LINESTRINGMEMBER_PARSERS_ = {
@@ -74974,7 +75019,7 @@ ol.format.GMLBase.prototype.LINESTRINGMEMBER_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GMLBase.prototype.POLYGONMEMBER_PARSERS_ = {
@@ -74987,7 +75032,7 @@ ol.format.GMLBase.prototype.POLYGONMEMBER_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @protected
  */
 ol.format.GMLBase.prototype.RING_PARSERS = {
@@ -75396,7 +75441,7 @@ ol.format.GML2.prototype.outerBoundaryIsParser_ = function(node, objectStack) {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
@@ -75409,7 +75454,7 @@ ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
@@ -75422,7 +75467,7 @@ ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML2.prototype.BOX_PARSERS_ = {
@@ -75435,7 +75480,7 @@ ol.format.GML2.prototype.BOX_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML2.prototype.GEOMETRY_PARSERS_ = {
@@ -75908,7 +75953,7 @@ ol.format.GML3.prototype.readFlatPosList_ = function(node, objectStack) {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
@@ -75921,7 +75966,7 @@ ol.format.GML3.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
@@ -75934,7 +75979,7 @@ ol.format.GML3.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.GEOMETRY_PARSERS_ = {
@@ -75964,7 +76009,7 @@ ol.format.GML3.prototype.GEOMETRY_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.MULTICURVE_PARSERS_ = {
@@ -75979,7 +76024,7 @@ ol.format.GML3.prototype.MULTICURVE_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.MULTISURFACE_PARSERS_ = {
@@ -75994,7 +76039,7 @@ ol.format.GML3.prototype.MULTISURFACE_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.CURVEMEMBER_PARSERS_ = {
@@ -76008,7 +76053,7 @@ ol.format.GML3.prototype.CURVEMEMBER_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.SURFACEMEMBER_PARSERS_ = {
@@ -76021,7 +76066,7 @@ ol.format.GML3.prototype.SURFACEMEMBER_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.SURFACE_PARSERS_ = {
@@ -76033,7 +76078,7 @@ ol.format.GML3.prototype.SURFACE_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.CURVE_PARSERS_ = {
@@ -76045,7 +76090,7 @@ ol.format.GML3.prototype.CURVE_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.ENVELOPE_PARSERS_ = {
@@ -76060,7 +76105,7 @@ ol.format.GML3.prototype.ENVELOPE_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.PATCHES_PARSERS_ = {
@@ -76073,7 +76118,7 @@ ol.format.GML3.prototype.PATCHES_PARSERS_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GML3.prototype.SEGMENTS_PARSERS_ = {
@@ -76170,7 +76215,7 @@ ol.format.GML3.prototype.writePoint_ = function(node, geometry, objectStack) {
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GML3.ENVELOPE_SERIALIZERS_ = {
@@ -76196,7 +76241,7 @@ ol.format.GML3.prototype.writeEnvelope = function(node, extent, objectStack) {
   }
   var keys = ['lowerCorner', 'upperCorner'];
   var values = [extent[0] + ' ' + extent[1], extent[2] + ' ' + extent[3]];
-  ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */
+  ol.xml.pushSerializeAndPop(/** @type {ol.XmlNodeStackItem} */
       ({node: node}), ol.format.GML3.ENVELOPE_SERIALIZERS_,
       ol.xml.OBJECT_PROPERTY_NODE_FACTORY,
       values,
@@ -76477,7 +76522,7 @@ ol.format.GML3.prototype.writeGeometryElement = function(node, geometry, objectS
     value =
         ol.format.Feature.transformWithOptions(geometry, true, context);
   }
-  ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */
+  ol.xml.pushSerializeAndPop(/** @type {ol.XmlNodeStackItem} */
       (item), ol.format.GML3.GEOMETRY_SERIALIZERS_,
       this.GEOMETRY_NODE_FACTORY_, [value],
       objectStack, undefined, this);
@@ -76524,7 +76569,7 @@ ol.format.GML3.prototype.writeFeatureElement = function(node, feature, objectSta
   }
   var item = ol.object.assign({}, context);
   item.node = node;
-  ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */
+  ol.xml.pushSerializeAndPop(/** @type {ol.XmlNodeStackItem} */
       (item), context.serializers,
       ol.xml.makeSimpleNodeFactory(undefined, featureNS),
       values,
@@ -76549,7 +76594,7 @@ ol.format.GML3.prototype.writeFeatureMembers_ = function(node, features, objectS
       this.writeFeatureElement, this);
   var item = ol.object.assign({}, context);
   item.node = node;
-  ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */
+  ol.xml.pushSerializeAndPop(/** @type {ol.XmlNodeStackItem} */
       (item),
       serializers,
       ol.xml.makeSimpleNodeFactory(featureType, featureNS), features,
@@ -76558,7 +76603,7 @@ ol.format.GML3.prototype.writeFeatureMembers_ = function(node, features, objectS
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GML3.SURFACEORPOLYGONMEMBER_SERIALIZERS_ = {
@@ -76572,7 +76617,7 @@ ol.format.GML3.SURFACEORPOLYGONMEMBER_SERIALIZERS_ = {
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GML3.POINTMEMBER_SERIALIZERS_ = {
@@ -76584,7 +76629,7 @@ ol.format.GML3.POINTMEMBER_SERIALIZERS_ = {
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GML3.LINESTRINGORCURVEMEMBER_SERIALIZERS_ = {
@@ -76598,7 +76643,7 @@ ol.format.GML3.LINESTRINGORCURVEMEMBER_SERIALIZERS_ = {
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GML3.RING_SERIALIZERS_ = {
@@ -76610,7 +76655,7 @@ ol.format.GML3.RING_SERIALIZERS_ = {
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GML3.GEOMETRY_SERIALIZERS_ = {
@@ -77096,7 +77141,7 @@ ol.format.GPX.FEATURE_READER_ = {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.GPX_PARSERS_ = ol.xml.makeStructureNS(
@@ -77109,7 +77154,7 @@ ol.format.GPX.GPX_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.LINK_PARSERS_ = ol.xml.makeStructureNS(
@@ -77123,7 +77168,7 @@ ol.format.GPX.LINK_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.RTE_PARSERS_ = ol.xml.makeStructureNS(
@@ -77143,7 +77188,7 @@ ol.format.GPX.RTE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.RTEPT_PARSERS_ = ol.xml.makeStructureNS(
@@ -77155,7 +77200,7 @@ ol.format.GPX.RTEPT_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.TRK_PARSERS_ = ol.xml.makeStructureNS(
@@ -77175,7 +77220,7 @@ ol.format.GPX.TRK_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.TRKSEG_PARSERS_ = ol.xml.makeStructureNS(
@@ -77186,7 +77231,7 @@ ol.format.GPX.TRKSEG_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.TRKPT_PARSERS_ = ol.xml.makeStructureNS(
@@ -77198,7 +77243,7 @@ ol.format.GPX.TRKPT_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.GPX.WPT_PARSERS_ = ol.xml.makeStructureNS(
@@ -77343,7 +77388,7 @@ ol.format.GPX.writeLink_ = function(node, value, objectStack) {
     properties['linkText'],
     properties['linkType']
   ];
-  ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */ ({node: node}),
+  ol.xml.pushSerializeAndPop(/** @type {ol.XmlNodeStackItem} */ ({node: node}),
       ol.format.GPX.LINK_SERIALIZERS_, ol.xml.OBJECT_PROPERTY_NODE_FACTORY,
       link, objectStack, ol.format.GPX.LINK_SEQUENCE_);
 };
@@ -77388,7 +77433,7 @@ ol.format.GPX.writeWptType_ = function(node, coordinate, objectStack) {
   }
   var orderedKeys = ol.format.GPX.WPT_TYPE_SEQUENCE_[namespaceURI];
   var values = ol.xml.makeSequence(properties, orderedKeys);
-  ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */
+  ol.xml.pushSerializeAndPop(/** @type {ol.XmlNodeStackItem} */
       ({node: node, 'properties': properties}),
       ol.format.GPX.WPT_TYPE_SERIALIZERS_, ol.xml.OBJECT_PROPERTY_NODE_FACTORY,
       values, objectStack, orderedKeys);
@@ -77432,7 +77477,7 @@ ol.format.GPX.writeRte_ = function(node, feature, objectStack) {
 ol.format.GPX.writeTrk_ = function(node, feature, objectStack) {
   var options = /** @type {olx.format.WriteOptions} */ (objectStack[0]);
   var properties = feature.getProperties();
-  /** @type {ol.xml.NodeStackItem} */
+  /** @type {ol.XmlNodeStackItem} */
   var context = {node: node, 'properties': properties};
   var geometry = feature.getGeometry();
   if (geometry) {
@@ -77458,7 +77503,7 @@ ol.format.GPX.writeTrk_ = function(node, feature, objectStack) {
  * @private
  */
 ol.format.GPX.writeTrkSeg_ = function(node, lineString, objectStack) {
-  /** @type {ol.xml.NodeStackItem} */
+  /** @type {ol.XmlNodeStackItem} */
   var context = {node: node, 'geometryLayout': lineString.getLayout(),
     'properties': {}};
   ol.xml.pushSerializeAndPop(context,
@@ -77499,7 +77544,7 @@ ol.format.GPX.LINK_SEQUENCE_ = ['text', 'type'];
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GPX.LINK_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -77522,7 +77567,7 @@ ol.format.GPX.RTE_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GPX.RTE_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -77553,7 +77598,7 @@ ol.format.GPX.TRK_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GPX.TRK_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -77581,7 +77626,7 @@ ol.format.GPX.TRKSEG_NODE_FACTORY_ = ol.xml.makeSimpleNodeFactory('trkpt');
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GPX.TRKSEG_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -77604,7 +77649,7 @@ ol.format.GPX.WPT_TYPE_SEQUENCE_ = ol.xml.makeStructureNS(
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GPX.WPT_TYPE_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -77672,7 +77717,7 @@ ol.format.GPX.GPX_NODE_FACTORY_ = function(value, objectStack, opt_nodeName) {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.GPX.GPX_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -77712,7 +77757,7 @@ ol.format.GPX.prototype.writeFeaturesNode = function(features, opt_options) {
   //FIXME Serialize metadata
   var gpx = ol.xml.createElementNS('http://www.topografix.com/GPX/1/1', 'gpx');
 
-  ol.xml.pushSerializeAndPop(/** @type {ol.xml.NodeStackItem} */
+  ol.xml.pushSerializeAndPop(/** @type {ol.XmlNodeStackItem} */
       ({node: gpx}), ol.format.GPX.GPX_SERIALIZERS_,
       ol.format.GPX.GPX_NODE_FACTORY_, features, [opt_options]);
   return gpx;
@@ -78061,7 +78106,6 @@ ol.format.IGC.prototype.readFeatureFromText = function(text, opt_options) {
         m = ol.format.IGC.H_RECORD_RE_.exec(line);
         if (m) {
           properties[m[1]] = m[2].trim();
-          m = ol.format.IGC.HFDTE_RECORD_RE_.exec(line);
         }
       }
     }
@@ -83628,7 +83672,7 @@ ol.format.KML.readURI_ = function(node) {
 /**
  * @param {Node} node Node.
  * @private
- * @return {ol.format.KMLVec2_} Vec2.
+ * @return {ol.KMLVec2_} Vec2.
  */
 ol.format.KML.readVec2_ = function(node) {
   var xunits = node.getAttribute('xunits');
@@ -83703,7 +83747,7 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
     src = ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_;
   }
   var anchor, anchorXUnits, anchorYUnits;
-  var hotSpot = /** @type {ol.format.KMLVec2_|undefined} */
+  var hotSpot = /** @type {ol.KMLVec2_|undefined} */
       (object['hotSpot']);
   if (hotSpot) {
     anchor = [hotSpot.x, hotSpot.y];
@@ -83897,7 +83941,7 @@ ol.format.KML.gxCoordParser_ = function(node, objectStack) {
       ol.format.KML.GX_NAMESPACE_URIS_, node.namespaceURI),
       'namespaceURI of the node should be known to the KML parser');
   goog.asserts.assert(node.localName == 'coord', 'localName should be coord');
-  var gxTrackObject = /** @type {ol.format.KMLGxTrackObject_} */
+  var gxTrackObject = /** @type {ol.KMLGxTrackObject_} */
       (objectStack[objectStack.length - 1]);
   goog.asserts.assert(goog.isObject(gxTrackObject),
       'gxTrackObject should be an Object');
@@ -83956,7 +84000,7 @@ ol.format.KML.readGxTrack_ = function(node, objectStack) {
       'namespaceURI of the node should be known to the KML parser');
   goog.asserts.assert(node.localName == 'Track', 'localName should be Track');
   var gxTrackObject = ol.xml.pushParseAndPop(
-      /** @type {ol.format.KMLGxTrackObject_} */ ({
+      /** @type {ol.KMLGxTrackObject_} */ ({
         flatCoordinates: [],
         whens: []
       }), ol.format.KML.GX_TRACK_PARSERS_, node, objectStack);
@@ -84482,7 +84526,7 @@ ol.format.KML.whenParser_ = function(node, objectStack) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
       'node.nodeType should be ELEMENT');
   goog.asserts.assert(node.localName == 'when', 'localName should be when');
-  var gxTrackObject = /** @type {ol.format.KMLGxTrackObject_} */
+  var gxTrackObject = /** @type {ol.KMLGxTrackObject_} */
       (objectStack[objectStack.length - 1]);
   goog.asserts.assert(goog.isObject(gxTrackObject),
       'gxTrackObject should be an Object');
@@ -84515,7 +84559,7 @@ ol.format.KML.whenParser_ = function(node, objectStack) {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.DATA_PARSERS_ = ol.xml.makeStructureNS(
@@ -84526,7 +84570,7 @@ ol.format.KML.DATA_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.EXTENDED_DATA_PARSERS_ = ol.xml.makeStructureNS(
@@ -84538,7 +84582,7 @@ ol.format.KML.EXTENDED_DATA_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.EXTRUDE_AND_ALTITUDE_MODE_PARSERS_ = ol.xml.makeStructureNS(
@@ -84550,7 +84594,7 @@ ol.format.KML.EXTRUDE_AND_ALTITUDE_MODE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.FLAT_LINEAR_RING_PARSERS_ = ol.xml.makeStructureNS(
@@ -84561,7 +84605,7 @@ ol.format.KML.FLAT_LINEAR_RING_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.FLAT_LINEAR_RINGS_PARSERS_ = ol.xml.makeStructureNS(
@@ -84573,7 +84617,7 @@ ol.format.KML.FLAT_LINEAR_RINGS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.GX_TRACK_PARSERS_ = ol.xml.makeStructureNS(
@@ -84587,7 +84631,7 @@ ol.format.KML.GX_TRACK_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.GEOMETRY_FLAT_COORDINATES_PARSERS_ = ol.xml.makeStructureNS(
@@ -84598,7 +84642,7 @@ ol.format.KML.GEOMETRY_FLAT_COORDINATES_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.ICON_PARSERS_ = ol.xml.makeStructureNS(
@@ -84615,7 +84659,7 @@ ol.format.KML.ICON_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.ICON_STYLE_PARSERS_ = ol.xml.makeStructureNS(
@@ -84629,7 +84673,7 @@ ol.format.KML.ICON_STYLE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.INNER_BOUNDARY_IS_PARSERS_ = ol.xml.makeStructureNS(
@@ -84640,7 +84684,7 @@ ol.format.KML.INNER_BOUNDARY_IS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.LABEL_STYLE_PARSERS_ = ol.xml.makeStructureNS(
@@ -84652,7 +84696,7 @@ ol.format.KML.LABEL_STYLE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.LINE_STYLE_PARSERS_ = ol.xml.makeStructureNS(
@@ -84664,7 +84708,7 @@ ol.format.KML.LINE_STYLE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.MULTI_GEOMETRY_PARSERS_ = ol.xml.makeStructureNS(
@@ -84679,7 +84723,7 @@ ol.format.KML.MULTI_GEOMETRY_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.GX_MULTITRACK_GEOMETRY_PARSERS_ = ol.xml.makeStructureNS(
@@ -84690,7 +84734,7 @@ ol.format.KML.GX_MULTITRACK_GEOMETRY_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.NETWORK_LINK_PARSERS_ = ol.xml.makeStructureNS(
@@ -84708,7 +84752,7 @@ ol.format.KML.NETWORK_LINK_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.LINK_PARSERS_ = ol.xml.makeStructureNS(
@@ -84719,7 +84763,7 @@ ol.format.KML.LINK_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.OUTER_BOUNDARY_IS_PARSERS_ = ol.xml.makeStructureNS(
@@ -84730,7 +84774,7 @@ ol.format.KML.OUTER_BOUNDARY_IS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.PAIR_PARSERS_ = ol.xml.makeStructureNS(
@@ -84743,7 +84787,7 @@ ol.format.KML.PAIR_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.PLACEMARK_PARSERS_ = ol.xml.makeStructureNS(
@@ -84780,7 +84824,7 @@ ol.format.KML.PLACEMARK_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.POLY_STYLE_PARSERS_ = ol.xml.makeStructureNS(
@@ -84793,7 +84837,7 @@ ol.format.KML.POLY_STYLE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.SCHEMA_DATA_PARSERS_ = ol.xml.makeStructureNS(
@@ -84804,7 +84848,7 @@ ol.format.KML.SCHEMA_DATA_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.STYLE_PARSERS_ = ol.xml.makeStructureNS(
@@ -84818,7 +84862,7 @@ ol.format.KML.STYLE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.KML.STYLE_MAP_PARSERS_ = ol.xml.makeStructureNS(
@@ -85275,7 +85319,7 @@ ol.format.KML.writeCoordinatesTextNode_ = function(node, coordinates, objectStac
  * @private
  */
 ol.format.KML.writeDocument_ = function(node, features, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   ol.xml.pushSerializeAndPop(context, ol.format.KML.DOCUMENT_SERIALIZERS_,
       ol.format.KML.DOCUMENT_NODE_FACTORY_, features, objectStack, undefined,
       this);
@@ -85289,7 +85333,7 @@ ol.format.KML.writeDocument_ = function(node, features, objectStack) {
  * @private
  */
 ol.format.KML.writeIcon_ = function(node, icon, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   var parentNode = objectStack[objectStack.length - 1].node;
   var orderedKeys = ol.format.KML.ICON_SEQUENCE_[parentNode.namespaceURI];
   var values = ol.xml.makeSequence(icon, orderedKeys);
@@ -85311,7 +85355,7 @@ ol.format.KML.writeIcon_ = function(node, icon, objectStack) {
  * @private
  */
 ol.format.KML.writeIconStyle_ = function(node, style, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   var properties = {};
   var src = style.getSrc();
   var size = style.getSize();
@@ -85332,7 +85376,7 @@ ol.format.KML.writeIconStyle_ = function(node, style, objectStack) {
     }
 
     if (anchor && anchor[0] !== 0 && anchor[1] !== size[1]) {
-      var /** @type {ol.format.KMLVec2_} */ hotSpot = {
+      var /** @type {ol.KMLVec2_} */ hotSpot = {
         x: anchor[0],
         xunits: ol.style.IconAnchorUnits.PIXELS,
         y: size[1] - anchor[1],
@@ -85369,7 +85413,7 @@ ol.format.KML.writeIconStyle_ = function(node, style, objectStack) {
  * @private
  */
 ol.format.KML.writeLabelStyle_ = function(node, style, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   var properties = {};
   var fill = style.getFill();
   if (fill) {
@@ -85395,7 +85439,7 @@ ol.format.KML.writeLabelStyle_ = function(node, style, objectStack) {
  * @private
  */
 ol.format.KML.writeLineStyle_ = function(node, style, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   var properties = {
     'color': style.getColor(),
     'width': style.getWidth()
@@ -85422,7 +85466,7 @@ ol.format.KML.writeMultiGeometry_ = function(node, geometry, objectStack) {
       (geometry instanceof ol.geom.MultiPolygon),
       'geometry should be one of: ol.geom.GeometryCollection, ' +
       'ol.geom.MultiPoint, ol.geom.MultiLineString or ol.geom.MultiPolygon');
-  /** @type {ol.xml.NodeStackItem} */
+  /** @type {ol.XmlNodeStackItem} */
   var context = {node: node};
   var type = geometry.getType();
   /** @type {Array.<ol.geom.Geometry>} */
@@ -85460,7 +85504,7 @@ ol.format.KML.writeMultiGeometry_ = function(node, geometry, objectStack) {
  * @private
  */
 ol.format.KML.writeBoundaryIs_ = function(node, linearRing, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   ol.xml.pushSerializeAndPop(context,
       ol.format.KML.BOUNDARY_IS_SERIALIZERS_,
       ol.format.KML.LINEAR_RING_NODE_FACTORY_, [linearRing], objectStack);
@@ -85477,7 +85521,7 @@ ol.format.KML.writeBoundaryIs_ = function(node, linearRing, objectStack) {
  * @private
  */
 ol.format.KML.writePlacemark_ = function(node, feature, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
 
   // set id
   if (feature.getId()) {
@@ -85535,7 +85579,7 @@ ol.format.KML.writePrimitiveGeometry_ = function(node, geometry, objectStack) {
       'geometry should be one of ol.geom.Point, ol.geom.LineString ' +
       'or ol.geom.LinearRing');
   var flatCoordinates = geometry.getFlatCoordinates();
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   context['layout'] = geometry.getLayout();
   context['stride'] = geometry.getStride();
   ol.xml.pushSerializeAndPop(context,
@@ -85558,7 +85602,7 @@ ol.format.KML.writePolygon_ = function(node, polygon, objectStack) {
   goog.asserts.assert(linearRings.length > 0,
       'linearRings should not be empty');
   var outerRing = linearRings.shift();
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   // inner rings
   ol.xml.pushSerializeAndPop(context,
       ol.format.KML.POLYGON_SERIALIZERS_,
@@ -85579,7 +85623,7 @@ ol.format.KML.writePolygon_ = function(node, polygon, objectStack) {
  * @private
  */
 ol.format.KML.writePolyStyle_ = function(node, style, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   ol.xml.pushSerializeAndPop(context, ol.format.KML.POLY_STYLE_SERIALIZERS_,
       ol.format.KML.COLOR_NODE_FACTORY_, [style.getColor()], objectStack);
 };
@@ -85604,7 +85648,7 @@ ol.format.KML.writeScaleTextNode_ = function(node, scale) {
  * @private
  */
 ol.format.KML.writeStyle_ = function(node, style, objectStack) {
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: node};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   var properties = {};
   var fillStyle = style.getFill();
   var strokeStyle = style.getStroke();
@@ -85632,7 +85676,7 @@ ol.format.KML.writeStyle_ = function(node, style, objectStack) {
 
 /**
  * @param {Node} node Node to append a TextNode with the Vec2 to.
- * @param {ol.format.KMLVec2_} vec2 Vec2.
+ * @param {ol.KMLVec2_} vec2 Vec2.
  * @private
  */
 ol.format.KML.writeVec2_ = function(node, vec2) {
@@ -85656,7 +85700,7 @@ ol.format.KML.KML_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.KML_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85668,7 +85712,7 @@ ol.format.KML.KML_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.DOCUMENT_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85710,7 +85754,7 @@ ol.format.KML.ICON_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.ICON_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85738,7 +85782,7 @@ ol.format.KML.ICON_STYLE_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.ICON_STYLE_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85763,7 +85807,7 @@ ol.format.KML.LABEL_STYLE_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.LABEL_STYLE_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85786,7 +85830,7 @@ ol.format.KML.LINE_STYLE_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.LINE_STYLE_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85798,7 +85842,7 @@ ol.format.KML.LINE_STYLE_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.BOUNDARY_IS_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85810,7 +85854,7 @@ ol.format.KML.BOUNDARY_IS_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.MULTI_GEOMETRY_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85839,7 +85883,7 @@ ol.format.KML.PLACEMARK_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.PLACEMARK_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85869,7 +85913,7 @@ ol.format.KML.PLACEMARK_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.PRIMITIVE_GEOMETRY_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85881,7 +85925,7 @@ ol.format.KML.PRIMITIVE_GEOMETRY_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.POLYGON_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85895,7 +85939,7 @@ ol.format.KML.POLYGON_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.POLY_STYLE_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -85917,7 +85961,7 @@ ol.format.KML.STYLE_SEQUENCE_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.STYLE_SERIALIZERS_ = ol.xml.makeStructureNS(
@@ -86096,7 +86140,7 @@ ol.format.KML.prototype.writeFeaturesNode = function(features, opt_options) {
   ol.xml.setAttributeNS(kml, xmlSchemaInstanceUri, 'xsi:schemaLocation',
       ol.format.KML.SCHEMA_LOCATION_);
 
-  var /** @type {ol.xml.NodeStackItem} */ context = {node: kml};
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: kml};
   var properties = {};
   if (features.length > 1) {
     properties['Document'] = features;
@@ -87106,10 +87150,10 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
         x0 = this.extent * x,
         y0 = this.extent * y,
         coords = this.loadGeometry(),
-        type = VectorTileFeature.types[this.type];
+        type = VectorTileFeature.types[this.type],
+        i, j;
 
-    for (var i = 0; i < coords.length; i++) {
-        var line = coords[i];
+    function project(line) {
         for (var j = 0; j < line.length; j++) {
             var p = line[j], y2 = 180 - (p.y + y0) * 360 / size;
             line[j] = [
@@ -87119,15 +87163,36 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
         }
     }
 
-    if (type === 'Point' && coords.length === 1) {
-        coords = coords[0][0];
-    } else if (type === 'Point') {
+    switch (this.type) {
+    case 1:
+        var points = [];
+        for (i = 0; i < coords.length; i++) {
+            points[i] = coords[i][0];
+        }
+        coords = points;
+        project(coords);
+        break;
+
+    case 2:
+        for (i = 0; i < coords.length; i++) {
+            project(coords[i]);
+        }
+        break;
+
+    case 3:
+        coords = classifyRings(coords);
+        for (i = 0; i < coords.length; i++) {
+            for (j = 0; j < coords[i].length; j++) {
+                project(coords[i][j]);
+            }
+        }
+        break;
+    }
+
+    if (coords.length === 1) {
         coords = coords[0];
-        type = 'MultiPoint';
-    } else if (type === 'LineString' && coords.length === 1) {
-        coords = coords[0];
-    } else if (type === 'LineString') {
-        type = 'MultiLineString';
+    } else {
+        type = 'Multi' + type;
     }
 
     var result = {
@@ -87145,6 +87210,46 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
 
     return result;
 };
+
+// classifies an array of rings into polygons with outer rings and holes
+
+function classifyRings(rings) {
+    var len = rings.length;
+
+    if (len <= 1) return [rings];
+
+    var polygons = [],
+        polygon,
+        ccw;
+
+    for (var i = 0; i < len; i++) {
+        var area = signedArea(rings[i]);
+        if (area === 0) continue;
+
+        if (ccw === undefined) ccw = area < 0;
+
+        if (ccw === area < 0) {
+            if (polygon) polygons.push(polygon);
+            polygon = [rings[i]];
+
+        } else {
+            polygon.push(rings[i]);
+        }
+    }
+    if (polygon) polygons.push(polygon);
+
+    return polygons;
+}
+
+function signedArea(ring) {
+    var sum = 0;
+    for (var i = 0, len = ring.length, j = len - 1, p1, p2; i < len; j = i++) {
+        p1 = ring[i];
+        p2 = ring[j];
+        sum += (p2.x - p1.x) * (p1.y + p2.y);
+    }
+    return sum;
+}
 
 },{"point-geometry":1}],5:[function(_dereq_,module,exports){
 'use strict';
@@ -88281,7 +88386,7 @@ ol.format.OSMXML.NAMESPACE_URIS_ = [
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OSMXML.WAY_PARSERS_ = ol.xml.makeStructureNS(
@@ -88293,7 +88398,7 @@ ol.format.OSMXML.WAY_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OSMXML.PARSERS_ = ol.xml.makeStructureNS(
@@ -88305,7 +88410,7 @@ ol.format.OSMXML.PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OSMXML.NODE_PARSERS_ = ol.xml.makeStructureNS(
@@ -88727,7 +88832,7 @@ ol.format.OWS.NAMESPACE_URIS_ = [
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.PARSERS_ = ol.xml.makeStructureNS(
@@ -88743,7 +88848,7 @@ ol.format.OWS.PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.ADDRESS_PARSERS_ = ol.xml.makeStructureNS(
@@ -88762,7 +88867,7 @@ ol.format.OWS.ADDRESS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.ALLOWED_VALUES_PARSERS_ = ol.xml.makeStructureNS(
@@ -88773,7 +88878,7 @@ ol.format.OWS.ALLOWED_VALUES_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.CONSTRAINT_PARSERS_ = ol.xml.makeStructureNS(
@@ -88785,7 +88890,7 @@ ol.format.OWS.CONSTRAINT_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.CONTACT_INFO_PARSERS_ = ol.xml.makeStructureNS(
@@ -88797,7 +88902,7 @@ ol.format.OWS.CONTACT_INFO_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.DCP_PARSERS_ = ol.xml.makeStructureNS(
@@ -88808,7 +88913,7 @@ ol.format.OWS.DCP_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.HTTP_PARSERS_ = ol.xml.makeStructureNS(
@@ -88820,7 +88925,7 @@ ol.format.OWS.HTTP_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.OPERATION_PARSERS_ = ol.xml.makeStructureNS(
@@ -88831,7 +88936,7 @@ ol.format.OWS.OPERATION_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.OPERATIONS_METADATA_PARSERS_ = ol.xml.makeStructureNS(
@@ -88842,7 +88947,7 @@ ol.format.OWS.OPERATIONS_METADATA_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.PHONE_PARSERS_ = ol.xml.makeStructureNS(
@@ -88854,7 +88959,7 @@ ol.format.OWS.PHONE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.REQUEST_METHOD_PARSERS_ = ol.xml.makeStructureNS(
@@ -88866,7 +88971,7 @@ ol.format.OWS.REQUEST_METHOD_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.SERVICE_CONTACT_PARSERS_ =
@@ -88882,7 +88987,7 @@ ol.format.OWS.SERVICE_CONTACT_PARSERS_ =
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.SERVICE_IDENTIFICATION_PARSERS_ =
@@ -88897,7 +89002,7 @@ ol.format.OWS.SERVICE_IDENTIFICATION_PARSERS_ =
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.OWS.SERVICE_PROVIDER_PARSERS_ =
@@ -89889,7 +89994,7 @@ ol.format.WFS.prototype.readFeaturesFromNode = function(node, opt_options) {
  * Read transaction response of the source.
  *
  * @param {Document|Node|Object|string} source Source.
- * @return {ol.format.WFS.TransactionResponse|undefined} Transaction response.
+ * @return {ol.WFSTransactionResponse|undefined} Transaction response.
  * @api stable
  */
 ol.format.WFS.prototype.readTransactionResponse = function(source) {
@@ -89912,7 +90017,7 @@ ol.format.WFS.prototype.readTransactionResponse = function(source) {
  * Read feature collection metadata of the source.
  *
  * @param {Document|Node|Object|string} source Source.
- * @return {ol.format.WFS.FeatureCollectionMetadata|undefined}
+ * @return {ol.WFSFeatureCollectionMetadata|undefined}
  *     FeatureCollection metadata.
  * @api stable
  */
@@ -89935,7 +90040,7 @@ ol.format.WFS.prototype.readFeatureCollectionMetadata = function(source) {
 
 /**
  * @param {Document} doc Document.
- * @return {ol.format.WFS.FeatureCollectionMetadata|undefined}
+ * @return {ol.WFSFeatureCollectionMetadata|undefined}
  *     FeatureCollection metadata.
  */
 ol.format.WFS.prototype.readFeatureCollectionMetadataFromDocument = function(doc) {
@@ -89952,7 +90057,7 @@ ol.format.WFS.prototype.readFeatureCollectionMetadataFromDocument = function(doc
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WFS.FEATURE_COLLECTION_PARSERS_ = {
@@ -89965,7 +90070,7 @@ ol.format.WFS.FEATURE_COLLECTION_PARSERS_ = {
 
 /**
  * @param {Node} node Node.
- * @return {ol.format.WFS.FeatureCollectionMetadata|undefined}
+ * @return {ol.WFSFeatureCollectionMetadata|undefined}
  *     FeatureCollection metadata.
  */
 ol.format.WFS.prototype.readFeatureCollectionMetadataFromNode = function(node) {
@@ -89978,14 +90083,14 @@ ol.format.WFS.prototype.readFeatureCollectionMetadataFromNode = function(node) {
       node.getAttribute('numberOfFeatures'));
   result['numberOfFeatures'] = value;
   return ol.xml.pushParseAndPop(
-      /** @type {ol.format.WFS.FeatureCollectionMetadata} */ (result),
+      /** @type {ol.WFSFeatureCollectionMetadata} */ (result),
       ol.format.WFS.FEATURE_COLLECTION_PARSERS_, node, [], this.gmlFormat_);
 };
 
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WFS.TRANSACTION_SUMMARY_PARSERS_ = {
@@ -90014,7 +90119,7 @@ ol.format.WFS.readTransactionSummary_ = function(node, objectStack) {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WFS.OGC_FID_PARSERS_ = {
@@ -90038,7 +90143,7 @@ ol.format.WFS.fidParser_ = function(node, objectStack) {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WFS.INSERT_RESULTS_PARSERS_ = {
@@ -90062,7 +90167,7 @@ ol.format.WFS.readInsertResults_ = function(node, objectStack) {
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WFS.TRANSACTION_RESPONSE_PARSERS_ = {
@@ -90077,7 +90182,7 @@ ol.format.WFS.TRANSACTION_RESPONSE_PARSERS_ = {
 
 /**
  * @param {Document} doc Document.
- * @return {ol.format.WFS.TransactionResponse|undefined} Transaction response.
+ * @return {ol.WFSTransactionResponse|undefined} Transaction response.
  */
 ol.format.WFS.prototype.readTransactionResponseFromDocument = function(doc) {
   goog.asserts.assert(doc.nodeType == goog.dom.NodeType.DOCUMENT,
@@ -90093,7 +90198,7 @@ ol.format.WFS.prototype.readTransactionResponseFromDocument = function(doc) {
 
 /**
  * @param {Node} node Node.
- * @return {ol.format.WFS.TransactionResponse|undefined} Transaction response.
+ * @return {ol.WFSTransactionResponse|undefined} Transaction response.
  */
 ol.format.WFS.prototype.readTransactionResponseFromNode = function(node) {
   goog.asserts.assert(node.nodeType == goog.dom.NodeType.ELEMENT,
@@ -90101,13 +90206,13 @@ ol.format.WFS.prototype.readTransactionResponseFromNode = function(node) {
   goog.asserts.assert(node.localName == 'TransactionResponse',
       'localName should be TransactionResponse');
   return ol.xml.pushParseAndPop(
-      /** @type {ol.format.WFS.TransactionResponse} */({}),
+      /** @type {ol.WFSTransactionResponse} */({}),
       ol.format.WFS.TRANSACTION_RESPONSE_PARSERS_, node, []);
 };
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.WFS.QUERY_SERIALIZERS_ = {
@@ -90256,7 +90361,7 @@ ol.format.WFS.writeNative_ = function(node, nativeElement, objectStack) {
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.WFS.TRANSACTION_SERIALIZERS_ = {
@@ -90481,7 +90586,7 @@ ol.format.WFS.writeOgcLiteral_ = function(node, value) {
 
 
 /**
- * @type {Object.<string, Object.<string, ol.xml.Serializer>>}
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.WFS.GETFEATURE_SERIALIZERS_ = {
@@ -91149,7 +91254,7 @@ ol.format.WKT.Lexer.prototype.nextChar_ = function() {
 
 /**
  * Fetch and return the next token.
- * @return {!ol.format.WKTToken} Next string token.
+ * @return {!ol.WKTToken} Next string token.
  */
 ol.format.WKT.Lexer.prototype.nextToken = function() {
   var c = this.nextChar_();
@@ -91235,7 +91340,7 @@ ol.format.WKT.Parser = function(lexer) {
   this.lexer_ = lexer;
 
   /**
-   * @type {ol.format.WKTToken}
+   * @type {ol.WKTToken}
    * @private
    */
   this.token_;
@@ -92132,7 +92237,7 @@ ol.format.WMSCapabilities.NAMESPACE_URIS_ = [
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.PARSERS_ = ol.xml.makeStructureNS(
@@ -92146,7 +92251,7 @@ ol.format.WMSCapabilities.PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.CAPABILITY_PARSERS_ = ol.xml.makeStructureNS(
@@ -92162,7 +92267,7 @@ ol.format.WMSCapabilities.CAPABILITY_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.SERVICE_PARSERS_ = ol.xml.makeStructureNS(
@@ -92190,7 +92295,7 @@ ol.format.WMSCapabilities.SERVICE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.CONTACT_INFORMATION_PARSERS_ = ol.xml.makeStructureNS(
@@ -92212,7 +92317,7 @@ ol.format.WMSCapabilities.CONTACT_INFORMATION_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.CONTACT_PERSON_PARSERS_ = ol.xml.makeStructureNS(
@@ -92226,7 +92331,7 @@ ol.format.WMSCapabilities.CONTACT_PERSON_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.CONTACT_ADDRESS_PARSERS_ = ol.xml.makeStructureNS(
@@ -92243,7 +92348,7 @@ ol.format.WMSCapabilities.CONTACT_ADDRESS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.EXCEPTION_PARSERS_ = ol.xml.makeStructureNS(
@@ -92254,7 +92359,7 @@ ol.format.WMSCapabilities.EXCEPTION_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.LAYER_PARSERS_ = ol.xml.makeStructureNS(
@@ -92295,7 +92400,7 @@ ol.format.WMSCapabilities.LAYER_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.ATTRIBUTION_PARSERS_ = ol.xml.makeStructureNS(
@@ -92310,7 +92415,7 @@ ol.format.WMSCapabilities.ATTRIBUTION_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.EX_GEOGRAPHIC_BOUNDING_BOX_PARSERS_ =
@@ -92328,7 +92433,7 @@ ol.format.WMSCapabilities.EX_GEOGRAPHIC_BOUNDING_BOX_PARSERS_ =
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.REQUEST_PARSERS_ = ol.xml.makeStructureNS(
@@ -92344,7 +92449,7 @@ ol.format.WMSCapabilities.REQUEST_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.OPERATIONTYPE_PARSERS_ = ol.xml.makeStructureNS(
@@ -92357,7 +92462,7 @@ ol.format.WMSCapabilities.OPERATIONTYPE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.DCPTYPE_PARSERS_ = ol.xml.makeStructureNS(
@@ -92369,7 +92474,7 @@ ol.format.WMSCapabilities.DCPTYPE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.HTTP_PARSERS_ = ol.xml.makeStructureNS(
@@ -92383,7 +92488,7 @@ ol.format.WMSCapabilities.HTTP_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.STYLE_PARSERS_ = ol.xml.makeStructureNS(
@@ -92402,7 +92507,7 @@ ol.format.WMSCapabilities.STYLE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.FORMAT_ONLINERESOURCE_PARSERS_ =
@@ -92415,7 +92520,7 @@ ol.format.WMSCapabilities.FORMAT_ONLINERESOURCE_PARSERS_ =
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMSCapabilities.KEYWORDLIST_PARSERS_ = ol.xml.makeStructureNS(
@@ -92860,7 +92965,7 @@ ol.format.WMTSCapabilities.OWS_NAMESPACE_URIS_ = [
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.PARSERS_ = ol.xml.makeStructureNS(
@@ -92872,7 +92977,7 @@ ol.format.WMTSCapabilities.PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.CONTENTS_PARSERS_ = ol.xml.makeStructureNS(
@@ -92886,7 +92991,7 @@ ol.format.WMTSCapabilities.CONTENTS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.LAYER_PARSERS_ = ol.xml.makeStructureNS(
@@ -92915,7 +93020,7 @@ ol.format.WMTSCapabilities.LAYER_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.STYLE_PARSERS_ = ol.xml.makeStructureNS(
@@ -92932,7 +93037,7 @@ ol.format.WMTSCapabilities.STYLE_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.TMS_LINKS_PARSERS_ = ol.xml.makeStructureNS(
@@ -92944,7 +93049,7 @@ ol.format.WMTSCapabilities.TMS_LINKS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.DIMENSION_PARSERS_ = ol.xml.makeStructureNS(
@@ -92961,7 +93066,7 @@ ol.format.WMTSCapabilities.DIMENSION_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.WGS84_BBOX_READERS_ = ol.xml.makeStructureNS(
@@ -92975,7 +93080,7 @@ ol.format.WMTSCapabilities.WGS84_BBOX_READERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.TMS_PARSERS_ = ol.xml.makeStructureNS(
@@ -92994,7 +93099,7 @@ ol.format.WMTSCapabilities.TMS_PARSERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
- * @type {Object.<string, Object.<string, ol.xml.Parser>>}
+ * @type {Object.<string, Object.<string, ol.XmlParser>>}
  * @private
  */
 ol.format.WMTSCapabilities.TM_PARSERS_ = ol.xml.makeStructureNS(
@@ -98756,7 +98861,7 @@ goog.require('ol.reproj.Triangulation');
  * @param {ol.TileCoord} wrappedTileCoord Coordinate of the tile wrapped in X.
  * @param {number} pixelRatio Pixel ratio.
  * @param {number} gutter Gutter of the source tiles.
- * @param {ol.reproj.TileFunctionType} getTileFunction
+ * @param {ol.ReprojTileFunctionType} getTileFunction
  *     Function returning source tiles (z, x, y, pixelRatio).
  * @param {number=} opt_errorThreshold Acceptable reprojection error (in px).
  * @param {boolean=} opt_renderEdges Render reprojection edges.
@@ -99349,19 +99454,19 @@ ol.source.TileImage.prototype.getTile = function(z, x, y, pixelRatio, projection
 ol.source.TileImage.prototype.getTileInternal = function(z, x, y, pixelRatio, projection) {
   var /** @type {ol.Tile} */ tile = null;
   var tileCoordKey = this.getKeyZXY(z, x, y);
-  var paramsKey = this.getKeyParams();
+  var key = this.getKey();
   if (!this.tileCache.containsKey(tileCoordKey)) {
     goog.asserts.assert(projection, 'argument projection is truthy');
-    tile = this.createTile_(z, x, y, pixelRatio, projection, paramsKey);
+    tile = this.createTile_(z, x, y, pixelRatio, projection, key);
     this.tileCache.set(tileCoordKey, tile);
   } else {
     tile = /** @type {!ol.Tile} */ (this.tileCache.get(tileCoordKey));
-    if (tile.key != paramsKey) {
+    if (tile.key != key) {
       // The source's params changed. If the tile has an interim tile and if we
       // can use it then we use it. Otherwise we create a new tile.  In both
       // cases we attempt to assign an interim tile to the new tile.
       var /** @type {ol.Tile} */ interimTile = tile;
-      if (tile.interimTile && tile.interimTile.key == paramsKey) {
+      if (tile.interimTile && tile.interimTile.key == key) {
         goog.asserts.assert(tile.interimTile.getState() == ol.TileState.LOADED);
         goog.asserts.assert(tile.interimTile.interimTile === null);
         tile = tile.interimTile;
@@ -99369,7 +99474,7 @@ ol.source.TileImage.prototype.getTileInternal = function(z, x, y, pixelRatio, pr
           tile.interimTile = interimTile;
         }
       } else {
-        tile = this.createTile_(z, x, y, pixelRatio, projection, paramsKey);
+        tile = this.createTile_(z, x, y, pixelRatio, projection, key);
         if (interimTile.getState() == ol.TileState.LOADED) {
           tile.interimTile = interimTile;
         } else if (interimTile.interimTile &&
@@ -99639,10 +99744,11 @@ goog.require('ol.source.TileImage');
  *
  * @constructor
  * @extends {ol.source.TileImage}
- * @param {olx.source.XYZOptions} options XYZ options.
+ * @param {olx.source.XYZOptions=} opt_options XYZ options.
  * @api stable
  */
-ol.source.XYZ = function(options) {
+ol.source.XYZ = function(opt_options) {
+  var options = opt_options || {};
   var projection = options.projection !== undefined ?
       options.projection : 'EPSG:3857';
 
@@ -101596,7 +101702,7 @@ ol.source.Raster = function(options) {
 
   /**
    * The most recently rendered state.
-   * @type {?ol.source.RasterRenderedState}
+   * @type {?ol.SourceRasterRenderedState}
    * @private
    */
   this.renderedState_ = null;
@@ -101845,7 +101951,7 @@ ol.source.Raster.prototype.onWorkerComplete_ = function(frameState, callback, er
  * Get image data from a renderer.
  * @param {ol.renderer.canvas.Layer} renderer Layer renderer.
  * @param {olx.FrameState} frameState The frame state.
- * @param {ol.layer.LayerState} layerState The layer state.
+ * @param {ol.LayerState} layerState The layer state.
  * @return {ImageData} The image data.
  * @private
  */
@@ -101881,7 +101987,7 @@ ol.source.Raster.context_ = null;
 /**
  * Get a list of layer states from a list of renderers.
  * @param {Array.<ol.renderer.canvas.Layer>} renderers Layer renderers.
- * @return {Array.<ol.layer.LayerState>} The layer states.
+ * @return {Array.<ol.LayerState>} The layer states.
  * @private
  */
 ol.source.Raster.getLayerStatesArray_ = function(renderers) {
@@ -103158,13 +103264,6 @@ ol.source.TileWMS = function(opt_options) {
 
   /**
    * @private
-   * @type {string}
-   */
-  this.paramsKey_ = '';
-  this.resetParamsKey_();
-
-  /**
-   * @private
    * @type {boolean}
    */
   this.v13_ = true;
@@ -103196,6 +103295,7 @@ ol.source.TileWMS = function(opt_options) {
   this.tmpExtent_ = ol.extent.createEmpty();
 
   this.updateV13_();
+  this.setKey(this.getKeyForParams_());
 
 };
 goog.inherits(ol.source.TileWMS, ol.source.TileImage);
@@ -103272,14 +103372,6 @@ ol.source.TileWMS.prototype.getGetFeatureInfoUrl = function(coordinate, resoluti
  */
 ol.source.TileWMS.prototype.getGutterInternal = function() {
   return this.gutter_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.source.TileWMS.prototype.getKeyParams = function() {
-  return this.paramsKey_;
 };
 
 
@@ -103404,14 +103496,15 @@ ol.source.TileWMS.prototype.resetCoordKeyPrefix_ = function() {
 
 /**
  * @private
+ * @return {string} The key for the current params.
  */
-ol.source.TileWMS.prototype.resetParamsKey_ = function() {
+ol.source.TileWMS.prototype.getKeyForParams_ = function() {
   var i = 0;
   var res = [];
   for (var key in this.params_) {
     res[i++] = key + '-' + this.params_[key];
   }
-  this.paramsKey_ = res.join('/');
+  return res.join('/');
 };
 
 
@@ -103471,9 +103564,8 @@ ol.source.TileWMS.prototype.fixedTileUrlFunction = function(tileCoord, pixelRati
 ol.source.TileWMS.prototype.updateParams = function(params) {
   ol.object.assign(this.params_, params);
   this.resetCoordKeyPrefix_();
-  this.resetParamsKey_();
   this.updateV13_();
-  this.changed();
+  this.setKey(this.getKeyForParams_());
 };
 
 
@@ -103680,13 +103772,6 @@ ol.source.WMTS = function(options) {
    * @private
    * @type {string}
    */
-  this.dimensionsKey_ = '';
-  this.resetDimensionsKey_();
-
-  /**
-   * @private
-   * @type {string}
-   */
   this.layer_ = options.layer;
 
   /**
@@ -103809,6 +103894,8 @@ ol.source.WMTS = function(options) {
     wrapX: options.wrapX !== undefined ? options.wrapX : false
   });
 
+  this.setKey(this.getKeyForDimensions_());
+
 };
 goog.inherits(ol.source.WMTS, ol.source.TileImage);
 
@@ -103832,14 +103919,6 @@ ol.source.WMTS.prototype.getDimensions = function() {
  */
 ol.source.WMTS.prototype.getFormat = function() {
   return this.format_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.source.WMTS.prototype.getKeyParams = function() {
-  return this.dimensionsKey_;
 };
 
 
@@ -103895,14 +103974,15 @@ ol.source.WMTS.prototype.getVersion = function() {
 
 /**
  * @private
+ * @return {string} The key for the current dimensions.
  */
-ol.source.WMTS.prototype.resetDimensionsKey_ = function() {
+ol.source.WMTS.prototype.getKeyForDimensions_ = function() {
   var i = 0;
   var res = [];
   for (var key in this.dimensions_) {
     res[i++] = key + '-' + this.dimensions_[key];
   }
-  this.dimensionsKey_ = res.join('/');
+  return res.join('/');
 };
 
 
@@ -103913,8 +103993,7 @@ ol.source.WMTS.prototype.resetDimensionsKey_ = function() {
  */
 ol.source.WMTS.prototype.updateDimensions = function(dimensions) {
   ol.object.assign(this.dimensions_, dimensions);
-  this.resetDimensionsKey_();
-  this.changed();
+  this.setKey(this.getKeyForDimensions_());
 };
 
 
@@ -105227,33 +105306,6 @@ ol.style.RegularShape.prototype.getChecksum = function() {
   return this.checksums_[0];
 };
 
-/**
- * typedefs for the WFS sub-sub-namespace
- * See typedefs.js for more details
- */
-goog.provide('ol.format.WFS.FeatureCollectionMetadata');
-goog.provide('ol.format.WFS.TransactionResponse');
-
-
-/**
- * Number of features; bounds/extent.
- * @typedef {{numberOfFeatures: number,
- *            bounds: ol.Extent}}
- * @api stable
- */
-ol.format.WFS.FeatureCollectionMetadata;
-
-
-/**
- * Total deleted; total inserted; total updated; array of insert ids.
- * @typedef {{totalDeleted: number,
- *            totalInserted: number,
- *            totalUpdated: number,
- *            insertIds: Array.<string>}}
- * @api stable
- */
-ol.format.WFS.TransactionResponse;
-
 // Copyright 2009 The Closure Library Authors.
 // All Rights Reserved.
 //
@@ -106479,6 +106531,11 @@ goog.exportProperty(
     ol.View.prototype,
     'getResolution',
     ol.View.prototype.getResolution);
+
+goog.exportProperty(
+    ol.View.prototype,
+    'getResolutions',
+    ol.View.prototype.getResolutions);
 
 goog.exportProperty(
     ol.View.prototype,
