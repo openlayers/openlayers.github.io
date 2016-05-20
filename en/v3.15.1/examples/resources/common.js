@@ -1,4 +1,48 @@
 (function() {
+
+  // show outdated version warning
+  var container = document.getElementsByClassName('container-fluid')[0];
+  var div = document.createElement('div');
+  div.id = 'latest-check';
+  div.className = 'alert alert-warning alert-dismissible';
+  div.setAttribute('role', 'alert');
+  div.style.display = 'none';
+  div.innerHTML = '<button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+      '<span aria-hidden="true">&times;</span></button>' +
+      'This example uses OpenLayers <span id="current-version"></span>. ' +
+      'The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.';
+  container.insertBefore(div, container.firstChild);
+  var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', packageUrl);
+  xhr.onload = function(response) {
+    var json = JSON.parse(xhr.responseText);
+    var latestVersion = json.version;
+    document.getElementById('latest-version').innerHTML = latestVersion;
+    var url = window.location.href;
+    var branchSearch = url.match(/\/([^\/]*)\/examples\//);
+    var cookieText = 'dismissed=-' + latestVersion + '-';
+    var dismissed = document.cookie.indexOf(cookieText) != -1;
+    if (branchSearch[1] !== ('v' + latestVersion) && !dismissed) {
+      document.getElementById('current-version').innerHTML = branchSearch[1];
+      var link = url.replace(branchSearch[0], '/latest/examples/');
+      var linkXhr = new XMLHttpRequest();
+      linkXhr.open('HEAD', link);
+      linkXhr.onload = function(response) {
+        var a = document.getElementById('latest-link');
+        a.href = linkXhr.status == 200 ? link : '../../latest/examples/';
+      };
+      linkXhr.send();
+      var latestCheck = document.getElementById('latest-check');
+      latestCheck.style.display = '';
+      document.getElementById('latest-dismiss').onclick = function() {
+        latestCheck.style.display = 'none';
+        document.cookie = cookieText;
+      }
+    }
+  };
+  xhr.send();
+
   var copyButton = document.getElementById('copy-button');
   if (copyButton) {
     var data = document.getElementById('example-source').textContent;
