@@ -40,10 +40,6 @@
  * progress event. Additionally, a DOWNLOAD_PROGRESS or UPLOAD_PROGRESS event
  * will be fired for download and upload progress respectively.
  *
- * Tested = IE6, FF1.5, Safari, Opera 8.5
- *
- * TODO(user): Error cases aren't playing nicely in Safari.
- *
  */
 
 
@@ -248,7 +244,7 @@ goog.net.XhrIo.ResponseType = {
 
 /**
  * A reference to the XhrIo logger
- * @private {goog.debug.Logger}
+ * @private {?goog.log.Logger}
  * @const
  */
 goog.net.XhrIo.prototype.logger_ = goog.log.getLogger('goog.net.XhrIo');
@@ -1057,7 +1053,7 @@ goog.net.XhrIo.prototype.getStatus = function() {
 goog.net.XhrIo.prototype.getStatusText = function() {
   /**
    * IE doesn't like you checking status until the readystate is greater than 2
-   * (i.e. it is recieving or complete).  The try/catch is used for when the
+   * (i.e. it is receiving or complete).  The try/catch is used for when the
    * page is unloading and an ERROR_NOT_AVAILABLE may occur when accessing xhr_.
    * @preserveTry
    */

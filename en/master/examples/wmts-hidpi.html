@@ -88,7 +88,6 @@ fetch(capabilitiesUrl).then(function(response) {
   var options &#x3D; ol.source.WMTS.optionsFromCapabilities(result, {
     layer: layer,
     matrixSet: &#x27;google3857&#x27;,
-    requestEncoding: &#x27;REST&#x27;,
     style: &#x27;normal&#x27;
   });
   options.tilePixelRatio &#x3D; tilePixelRatio;
@@ -145,7 +144,6 @@ fetch(capabilitiesUrl).then(function(response) {
         var options &#x3D; ol.source.WMTS.optionsFromCapabilities(result, {
           layer: layer,
           matrixSet: &#x27;google3857&#x27;,
-          requestEncoding: &#x27;REST&#x27;,
           style: &#x27;normal&#x27;
         });
         options.tilePixelRatio &#x3D; tilePixelRatio;
