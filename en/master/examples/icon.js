@@ -46,7 +46,8 @@ var element = document.getElementById('popup');
 var popup = new ol.Overlay({
   element: element,
   positioning: 'bottom-center',
-  stopEvent: false
+  stopEvent: false,
+  offset: [0, -50]
 });
 map.addOverlay(popup);
 
@@ -57,7 +58,8 @@ map.on('click', function(evt) {
         return feature;
       });
   if (feature) {
-    popup.setPosition(evt.coordinate);
+    var coordinates = feature.getGeometry().getCoordinates();
+    popup.setPosition(coordinates);
     $(element).popover({
       'placement': 'top',
       'html': true,

@@ -113,7 +113,8 @@ var element &#x3D; document.getElementById(&#x27;popup&#x27;);
 var popup &#x3D; new ol.Overlay({
   element: element,
   positioning: &#x27;bottom-center&#x27;,
-  stopEvent: false
+  stopEvent: false,
+  offset: [0, -50]
 });
 map.addOverlay(popup);
 
@@ -124,7 +125,8 @@ map.on(&#x27;click&#x27;, function(evt) {
         return feature;
       });
   if (feature) {
-    popup.setPosition(evt.coordinate);
+    var coordinates &#x3D; feature.getGeometry().getCoordinates();
+    popup.setPosition(coordinates);
     $(element).popover({
       &#x27;placement&#x27;: &#x27;top&#x27;,
       &#x27;html&#x27;: true,
@@ -221,7 +223,8 @@ map.on(&#x27;pointermove&#x27;, function(e) {
       var popup &#x3D; new ol.Overlay({
         element: element,
         positioning: &#x27;bottom-center&#x27;,
-        stopEvent: false
+        stopEvent: false,
+        offset: [0, -50]
       });
       map.addOverlay(popup);
 
@@ -232,7 +235,8 @@ map.on(&#x27;pointermove&#x27;, function(e) {
               return feature;
             });
         if (feature) {
-          popup.setPosition(evt.coordinate);
+          var coordinates &#x3D; feature.getGeometry().getCoordinates();
+          popup.setPosition(coordinates);
           $(element).popover({
             &#x27;placement&#x27;: &#x27;top&#x27;,
             &#x27;html&#x27;: true,

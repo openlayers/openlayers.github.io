@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.16.0-24-ga9df8800
+// Version: v3.16.0-38-gde9c338
 
 (function (root, factory) {
   if (typeof exports === "object") {
