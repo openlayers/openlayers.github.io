@@ -1,3 +1,4 @@
+goog.provide('ol.RasterOperationType');
 goog.provide('ol.source.Raster');
 goog.provide('ol.source.RasterEvent');
 goog.provide('ol.source.RasterEventType');
@@ -15,7 +16,6 @@ goog.require('ol.extent');
 goog.require('ol.layer.Image');
 goog.require('ol.layer.Tile');
 goog.require('ol.object');
-goog.require('ol.raster.OperationType');
 goog.require('ol.renderer.canvas.ImageLayer');
 goog.require('ol.renderer.canvas.TileLayer');
 goog.require('ol.source.Image');
@@ -24,9 +24,19 @@ goog.require('ol.source.Tile');
 
 
 /**
+ * Raster operation type. Supported values are `'pixel'` and `'image'`.
+ * @enum {string}
+ */
+ol.RasterOperationType = {
+  PIXEL: 'pixel',
+  IMAGE: 'image'
+};
+
+
+/**
  * @classdesc
  * A source that transforms data from any number of input sources using an array
- * of {@link ol.raster.Operation} functions to transform input pixel values into
+ * of {@link ol.RasterOperation} functions to transform input pixel values into
  * output pixel values.
  *
  * @constructor
@@ -45,10 +55,10 @@ ol.source.Raster = function(options) {
 
   /**
    * @private
-   * @type {ol.raster.OperationType}
+   * @type {ol.RasterOperationType}
    */
   this.operationType_ = options.operationType !== undefined ?
-      options.operationType : ol.raster.OperationType.PIXEL;
+      options.operationType : ol.RasterOperationType.PIXEL;
 
   /**
    * @private
@@ -132,19 +142,19 @@ ol.source.Raster = function(options) {
     wantedTiles: {}
   };
 
-  goog.base(this, {});
+  ol.source.Image.call(this, {});
 
   if (options.operation !== undefined) {
     this.setOperation(options.operation, options.lib);
   }
 
 };
-goog.inherits(ol.source.Raster, ol.source.Image);
+ol.inherits(ol.source.Raster, ol.source.Image);
 
 
 /**
  * Set the operation.
- * @param {ol.raster.Operation} operation New operation.
+ * @param {ol.RasterOperation} operation New operation.
  * @param {Object=} opt_lib Functions that will be available to operations run
  *     in a worker.
  * @api
@@ -152,7 +162,7 @@ goog.inherits(ol.source.Raster, ol.source.Image);
 ol.source.Raster.prototype.setOperation = function(operation, opt_lib) {
   this.worker_ = new ol.ext.pixelworks.Processor({
     operation: operation,
-    imageOps: this.operationType_ === ol.raster.OperationType.IMAGE,
+    imageOps: this.operationType_ === ol.RasterOperationType.IMAGE,
     queue: 1,
     lib: opt_lib,
     threads: this.threads_
@@ -458,7 +468,7 @@ ol.source.Raster.createTileRenderer_ = function(source) {
  * @param {Object} data An object made available to operations.
  */
 ol.source.RasterEvent = function(type, frameState, data) {
-  goog.base(this, type);
+  ol.events.Event.call(this, type);
 
   /**
    * The raster extent.
@@ -483,7 +493,7 @@ ol.source.RasterEvent = function(type, frameState, data) {
   this.data = data;
 
 };
-goog.inherits(ol.source.RasterEvent, ol.events.Event);
+ol.inherits(ol.source.RasterEvent, ol.events.Event);
 
 
 /**

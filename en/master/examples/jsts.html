@@ -66,7 +66,7 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
           <textarea class="hidden" name="js">// this example uses JSTS for which we don&#x27;t have an externs file.
 var source &#x3D; new ol.source.Vector();
-fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
+fetch(&#x27;http://openlayers.org/en/v3.16.0/examples/data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
   return response.json();
 }).then(function(json) {
   var format &#x3D; new ol.format.GeoJSON();
@@ -126,7 +126,7 @@ var map &#x3D; new ol.Map({
     &lt;script&gt;
       // this example uses JSTS for which we don&#x27;t have an externs file.
       var source &#x3D; new ol.source.Vector();
-      fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
+      fetch(&#x27;http://openlayers.org/en/v3.16.0/examples/data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
         return response.json();
       }).then(function(json) {
         var format &#x3D; new ol.format.GeoJSON();

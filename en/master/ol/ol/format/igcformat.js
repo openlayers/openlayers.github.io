@@ -13,7 +13,6 @@ goog.require('ol.proj');
 /**
  * IGC altitude/z. One of 'barometric', 'gps', 'none'.
  * @enum {string}
- * @api
  */
 ol.format.IGCZ = {
   BAROMETRIC: 'barometric',
@@ -35,7 +34,7 @@ ol.format.IGC = function(opt_options) {
 
   var options = opt_options ? opt_options : {};
 
-  goog.base(this);
+  ol.format.TextFeature.call(this);
 
   /**
    * @inheritDoc
@@ -50,7 +49,7 @@ ol.format.IGC = function(opt_options) {
       options.altitudeMode : ol.format.IGCZ.NONE;
 
 };
-goog.inherits(ol.format.IGC, ol.format.TextFeature);
+ol.inherits(ol.format.IGC, ol.format.TextFeature);
 
 
 /**

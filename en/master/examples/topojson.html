@@ -82,7 +82,7 @@ var style &#x3D; new ol.style.Style({
 
 var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
-    url: &#x27;data/topojson/world-110m.json&#x27;,
+    url: &#x27;http://openlayers.org/en/v3.16.0/examples/data/topojson/world-110m.json&#x27;,
     format: new ol.format.TopoJSON()
   }),
   style: function(feature) {
@@ -134,7 +134,7 @@ var map &#x3D; new ol.Map({
 
       var vector &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
-          url: &#x27;data/topojson/world-110m.json&#x27;,
+          url: &#x27;http://openlayers.org/en/v3.16.0/examples/data/topojson/world-110m.json&#x27;,
           format: new ol.format.TopoJSON()
         }),
         style: function(feature) {

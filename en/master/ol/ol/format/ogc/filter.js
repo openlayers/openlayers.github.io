@@ -18,9 +18,6 @@ goog.provide('ol.format.ogc.filter.IsNull');
 goog.provide('ol.format.ogc.filter.IsBetween');
 goog.provide('ol.format.ogc.filter.IsLike');
 
-goog.require('ol.Extent');
-goog.require('ol.Object');
-
 
 /**
  * Create a logical `<And>` operator between two filter conditions.
@@ -214,12 +211,10 @@ ol.format.ogc.filter.like = function(propertyName, pattern,
  *
  * @constructor
  * @param {!string} tagName The XML tag name for this filter.
- * @extends {ol.Object}
+ * @struct
  * @api
  */
 ol.format.ogc.filter.Filter = function(tagName) {
-
-  goog.base(this);
 
   /**
    * @private
@@ -227,7 +222,6 @@ ol.format.ogc.filter.Filter = function(tagName) {
    */
   this.tagName_ = tagName;
 };
-goog.inherits(ol.format.ogc.filter.Filter, ol.Object);
 
 /**
  * The XML tag name for a filter.
@@ -251,9 +245,9 @@ ol.format.ogc.filter.Filter.prototype.getTagName = function() {
  * @extends {ol.format.ogc.filter.Filter}
  */
 ol.format.ogc.filter.Logical = function(tagName) {
-  goog.base(this, tagName);
+  ol.format.ogc.filter.Filter.call(this, tagName);
 };
-goog.inherits(ol.format.ogc.filter.Logical, ol.format.ogc.filter.Filter);
+ol.inherits(ol.format.ogc.filter.Logical, ol.format.ogc.filter.Filter);
 
 
 /**
@@ -269,7 +263,7 @@ goog.inherits(ol.format.ogc.filter.Logical, ol.format.ogc.filter.Filter);
  */
 ol.format.ogc.filter.LogicalBinary = function(tagName, conditionA, conditionB) {
 
-  goog.base(this, tagName);
+  ol.format.ogc.filter.Logical.call(this, tagName);
 
   /**
    * @public
@@ -284,7 +278,7 @@ ol.format.ogc.filter.LogicalBinary = function(tagName, conditionA, conditionB) {
   this.conditionB = conditionB;
 
 };
-goog.inherits(ol.format.ogc.filter.LogicalBinary, ol.format.ogc.filter.Logical);
+ol.inherits(ol.format.ogc.filter.LogicalBinary, ol.format.ogc.filter.Logical);
 
 
 /**
@@ -298,9 +292,9 @@ goog.inherits(ol.format.ogc.filter.LogicalBinary, ol.format.ogc.filter.Logical);
  * @api
  */
 ol.format.ogc.filter.And = function(conditionA, conditionB) {
-  goog.base(this, 'And', conditionA, conditionB);
+  ol.format.ogc.filter.LogicalBinary.call(this, 'And', conditionA, conditionB);
 };
-goog.inherits(ol.format.ogc.filter.And, ol.format.ogc.filter.LogicalBinary);
+ol.inherits(ol.format.ogc.filter.And, ol.format.ogc.filter.LogicalBinary);
 
 
 /**
@@ -314,9 +308,9 @@ goog.inherits(ol.format.ogc.filter.And, ol.format.ogc.filter.LogicalBinary);
  * @api
  */
 ol.format.ogc.filter.Or = function(conditionA, conditionB) {
-  goog.base(this, 'Or', conditionA, conditionB);
+  ol.format.ogc.filter.LogicalBinary.call(this, 'Or', conditionA, conditionB);
 };
-goog.inherits(ol.format.ogc.filter.Or, ol.format.ogc.filter.LogicalBinary);
+ol.inherits(ol.format.ogc.filter.Or, ol.format.ogc.filter.LogicalBinary);
 
 
 /**
@@ -330,7 +324,7 @@ goog.inherits(ol.format.ogc.filter.Or, ol.format.ogc.filter.LogicalBinary);
  */
 ol.format.ogc.filter.Not = function(condition) {
 
-  goog.base(this, 'Not');
+  ol.format.ogc.filter.Logical.call(this, 'Not');
 
   /**
    * @public
@@ -338,7 +332,7 @@ ol.format.ogc.filter.Not = function(condition) {
    */
   this.condition = condition;
 };
-goog.inherits(ol.format.ogc.filter.Not, ol.format.ogc.filter.Logical);
+ol.inherits(ol.format.ogc.filter.Not, ol.format.ogc.filter.Logical);
 
 
 // Spatial filters
@@ -359,7 +353,7 @@ goog.inherits(ol.format.ogc.filter.Not, ol.format.ogc.filter.Logical);
  */
 ol.format.ogc.filter.Bbox = function(geometryName, extent, opt_srsName) {
 
-  goog.base(this, 'BBOX');
+  ol.format.ogc.filter.Filter.call(this, 'BBOX');
 
   /**
    * @public
@@ -369,7 +363,7 @@ ol.format.ogc.filter.Bbox = function(geometryName, extent, opt_srsName) {
 
   /**
    * @public
-   * @type {!ol.Extent}
+   * @type {ol.Extent}
    */
   this.extent = extent;
 
@@ -379,7 +373,7 @@ ol.format.ogc.filter.Bbox = function(geometryName, extent, opt_srsName) {
    */
   this.srsName = opt_srsName;
 };
-goog.inherits(ol.format.ogc.filter.Bbox, ol.format.ogc.filter.Filter);
+ol.inherits(ol.format.ogc.filter.Bbox, ol.format.ogc.filter.Filter);
 
 
 // Property comparison filters
@@ -398,7 +392,7 @@ goog.inherits(ol.format.ogc.filter.Bbox, ol.format.ogc.filter.Filter);
  */
 ol.format.ogc.filter.Comparison = function(tagName, propertyName) {
 
-  goog.base(this, tagName);
+  ol.format.ogc.filter.Filter.call(this, tagName);
 
   /**
    * @public
@@ -406,7 +400,7 @@ ol.format.ogc.filter.Comparison = function(tagName, propertyName) {
    */
   this.propertyName = propertyName;
 };
-goog.inherits(ol.format.ogc.filter.Comparison, ol.format.ogc.filter.Filter);
+ol.inherits(ol.format.ogc.filter.Comparison, ol.format.ogc.filter.Filter);
 
 
 /**
@@ -425,7 +419,7 @@ goog.inherits(ol.format.ogc.filter.Comparison, ol.format.ogc.filter.Filter);
 ol.format.ogc.filter.ComparisonBinary = function(
     tagName, propertyName, expression, opt_matchCase) {
 
-  goog.base(this, tagName, propertyName);
+  ol.format.ogc.filter.Comparison.call(this, tagName, propertyName);
 
   /**
    * @public
@@ -439,7 +433,7 @@ ol.format.ogc.filter.ComparisonBinary = function(
    */
   this.matchCase = opt_matchCase;
 };
-goog.inherits(ol.format.ogc.filter.ComparisonBinary, ol.format.ogc.filter.Comparison);
+ol.inherits(ol.format.ogc.filter.ComparisonBinary, ol.format.ogc.filter.Comparison);
 
 
 /**
@@ -454,9 +448,9 @@ goog.inherits(ol.format.ogc.filter.ComparisonBinary, ol.format.ogc.filter.Compar
  * @api
  */
 ol.format.ogc.filter.EqualTo = function(propertyName, expression, opt_matchCase) {
-  goog.base(this, 'PropertyIsEqualTo', propertyName, expression, opt_matchCase);
+  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsEqualTo', propertyName, expression, opt_matchCase);
 };
-goog.inherits(ol.format.ogc.filter.EqualTo, ol.format.ogc.filter.ComparisonBinary);
+ol.inherits(ol.format.ogc.filter.EqualTo, ol.format.ogc.filter.ComparisonBinary);
 
 
 /**
@@ -471,9 +465,9 @@ goog.inherits(ol.format.ogc.filter.EqualTo, ol.format.ogc.filter.ComparisonBinar
  * @api
  */
 ol.format.ogc.filter.NotEqualTo = function(propertyName, expression, opt_matchCase) {
-  goog.base(this, 'PropertyIsNotEqualTo', propertyName, expression, opt_matchCase);
+  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsNotEqualTo', propertyName, expression, opt_matchCase);
 };
-goog.inherits(ol.format.ogc.filter.NotEqualTo, ol.format.ogc.filter.ComparisonBinary);
+ol.inherits(ol.format.ogc.filter.NotEqualTo, ol.format.ogc.filter.ComparisonBinary);
 
 
 /**
@@ -487,9 +481,9 @@ goog.inherits(ol.format.ogc.filter.NotEqualTo, ol.format.ogc.filter.ComparisonBi
  * @api
  */
 ol.format.ogc.filter.LessThan = function(propertyName, expression) {
-  goog.base(this, 'PropertyIsLessThan', propertyName, expression);
+  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsLessThan', propertyName, expression);
 };
-goog.inherits(ol.format.ogc.filter.LessThan, ol.format.ogc.filter.ComparisonBinary);
+ol.inherits(ol.format.ogc.filter.LessThan, ol.format.ogc.filter.ComparisonBinary);
 
 
 /**
@@ -503,9 +497,9 @@ goog.inherits(ol.format.ogc.filter.LessThan, ol.format.ogc.filter.ComparisonBina
  * @api
  */
 ol.format.ogc.filter.LessThanOrEqualTo = function(propertyName, expression) {
-  goog.base(this, 'PropertyIsLessThanOrEqualTo', propertyName, expression);
+  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsLessThanOrEqualTo', propertyName, expression);
 };
-goog.inherits(ol.format.ogc.filter.LessThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
+ol.inherits(ol.format.ogc.filter.LessThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
 
 
 /**
@@ -519,9 +513,9 @@ goog.inherits(ol.format.ogc.filter.LessThanOrEqualTo, ol.format.ogc.filter.Compa
  * @api
  */
 ol.format.ogc.filter.GreaterThan = function(propertyName, expression) {
-  goog.base(this, 'PropertyIsGreaterThan', propertyName, expression);
+  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsGreaterThan', propertyName, expression);
 };
-goog.inherits(ol.format.ogc.filter.GreaterThan, ol.format.ogc.filter.ComparisonBinary);
+ol.inherits(ol.format.ogc.filter.GreaterThan, ol.format.ogc.filter.ComparisonBinary);
 
 
 /**
@@ -535,9 +529,9 @@ goog.inherits(ol.format.ogc.filter.GreaterThan, ol.format.ogc.filter.ComparisonB
  * @api
  */
 ol.format.ogc.filter.GreaterThanOrEqualTo = function(propertyName, expression) {
-  goog.base(this, 'PropertyIsGreaterThanOrEqualTo', propertyName, expression);
+  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsGreaterThanOrEqualTo', propertyName, expression);
 };
-goog.inherits(ol.format.ogc.filter.GreaterThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
+ol.inherits(ol.format.ogc.filter.GreaterThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
 
 
 /**
@@ -550,9 +544,9 @@ goog.inherits(ol.format.ogc.filter.GreaterThanOrEqualTo, ol.format.ogc.filter.Co
  * @api
  */
 ol.format.ogc.filter.IsNull = function(propertyName) {
-  goog.base(this, 'PropertyIsNull', propertyName);
+  ol.format.ogc.filter.Comparison.call(this, 'PropertyIsNull', propertyName);
 };
-goog.inherits(ol.format.ogc.filter.IsNull, ol.format.ogc.filter.Comparison);
+ol.inherits(ol.format.ogc.filter.IsNull, ol.format.ogc.filter.Comparison);
 
 
 /**
@@ -567,7 +561,7 @@ goog.inherits(ol.format.ogc.filter.IsNull, ol.format.ogc.filter.Comparison);
  * @api
  */
 ol.format.ogc.filter.IsBetween = function(propertyName, lowerBoundary, upperBoundary) {
-  goog.base(this, 'PropertyIsBetween', propertyName);
+  ol.format.ogc.filter.Comparison.call(this, 'PropertyIsBetween', propertyName);
 
   /**
    * @public
@@ -581,7 +575,7 @@ ol.format.ogc.filter.IsBetween = function(propertyName, lowerBoundary, upperBoun
    */
   this.upperBoundary = upperBoundary;
 };
-goog.inherits(ol.format.ogc.filter.IsBetween, ol.format.ogc.filter.Comparison);
+ol.inherits(ol.format.ogc.filter.IsBetween, ol.format.ogc.filter.Comparison);
 
 
 /**
@@ -603,7 +597,7 @@ goog.inherits(ol.format.ogc.filter.IsBetween, ol.format.ogc.filter.Comparison);
  */
 ol.format.ogc.filter.IsLike = function(propertyName, pattern,
     opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
-  goog.base(this, 'PropertyIsLike', propertyName);
+  ol.format.ogc.filter.Comparison.call(this, 'PropertyIsLike', propertyName);
 
   /**
    * @public
@@ -635,4 +629,4 @@ ol.format.ogc.filter.IsLike = function(propertyName, pattern,
    */
   this.matchCase = opt_matchCase;
 };
-goog.inherits(ol.format.ogc.filter.IsLike, ol.format.ogc.filter.Comparison);
+ol.inherits(ol.format.ogc.filter.IsLike, ol.format.ogc.filter.Comparison);

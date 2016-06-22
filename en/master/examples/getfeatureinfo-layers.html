@@ -78,7 +78,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
+          <textarea class="hidden" name="js">fetch(&#x27;http://openlayers.org/en/v3.16.0/examples/data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
   return response.text();
 }).then(function(response) {
 
@@ -142,7 +142,7 @@
       &lt;/tr&gt;
     &lt;/table&gt;
     &lt;script&gt;
-      fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
+      fetch(&#x27;http://openlayers.org/en/v3.16.0/examples/data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
         return response.text();
       }).then(function(response) {
 

@@ -97,8 +97,8 @@ var twoPi &#x3D; 2 * Math.PI;
 
 /**
  * Convert an RGB pixel into an HCL pixel.
- * @param {ol.raster.Pixel} pixel A pixel in RGB space.
- * @return {ol.raster.Pixel} A pixel in HCL space.
+ * @param {Array.&lt;number&gt;} pixel A pixel in RGB space.
+ * @return {Array.&lt;number&gt;} A pixel in HCL space.
  */
 function rgb2hcl(pixel) {
   var red &#x3D; rgb2xyz(pixel[0]);
@@ -132,8 +132,8 @@ function rgb2hcl(pixel) {
 
 /**
  * Convert an HCL pixel into an RGB pixel.
- * @param {ol.raster.Pixel} pixel A pixel in HCL space.
- * @return {ol.raster.Pixel} A pixel in RGB space.
+ * @param {Array.&lt;number&gt;} pixel A pixel in HCL space.
+ * @return {Array.&lt;number&gt;} A pixel in RGB space.
  */
 function hcl2rgb(pixel) {
   var h &#x3D; pixel[0];
@@ -326,8 +326,8 @@ controlIds.forEach(function(id) {
 
       /**
        * Convert an RGB pixel into an HCL pixel.
-       * @param {ol.raster.Pixel} pixel A pixel in RGB space.
-       * @return {ol.raster.Pixel} A pixel in HCL space.
+       * @param {Array.&lt;number&gt;} pixel A pixel in RGB space.
+       * @return {Array.&lt;number&gt;} A pixel in HCL space.
        */
       function rgb2hcl(pixel) {
         var red &#x3D; rgb2xyz(pixel[0]);
@@ -361,8 +361,8 @@ controlIds.forEach(function(id) {
 
       /**
        * Convert an HCL pixel into an RGB pixel.
-       * @param {ol.raster.Pixel} pixel A pixel in HCL space.
-       * @return {ol.raster.Pixel} A pixel in RGB space.
+       * @param {Array.&lt;number&gt;} pixel A pixel in HCL space.
+       * @return {Array.&lt;number&gt;} A pixel in RGB space.
        */
       function hcl2rgb(pixel) {
         var h &#x3D; pixel[0];

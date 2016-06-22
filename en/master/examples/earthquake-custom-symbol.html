@@ -64,7 +64,13 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">var styleCache &#x3D; {};
+          <textarea class="hidden" name="js">var symbol &#x3D; [[0, 0], [4, 2], [6, 0], [10, 5], [6, 3], [4, 5], [0, 0]];
+var scale;
+var scaleFunction &#x3D; function(coordinate) {
+  return [coordinate[0] * scale, coordinate[1] * scale];
+};
+
+var styleCache &#x3D; {};
 var styleFunction &#x3D; function(feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
@@ -72,23 +78,23 @@ var styleFunction &#x3D; function(feature) {
   var name &#x3D; feature.get(&#x27;name&#x27;);
   var magnitude &#x3D; parseFloat(name.substr(2));
   var size &#x3D; parseInt(10 + 40 * (magnitude - 5), 10);
+  scale &#x3D; size / 10;
   var style &#x3D; styleCache[size];
   if (!style) {
     var canvas &#x3D;
         /** @type {HTMLCanvasElement} */ (document.createElement(&#x27;canvas&#x27;));
     var vectorContext &#x3D; ol.render.toContext(
         /** @type {CanvasRenderingContext2D} */ (canvas.getContext(&#x27;2d&#x27;)),
-        {size: [size + 2, size + 2], pixelRatio: size / 10});
+        {size: [size, size], pixelRatio: 1});
     vectorContext.setStyle(new ol.style.Style({
       fill: new ol.style.Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
-      stroke: new ol.style.Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 1})
+      stroke: new ol.style.Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 2})
     }));
-    vectorContext.drawGeometry(new ol.geom.Polygon(
-        [[[0, 0], [4, 2], [6, 0], [10, 5], [6, 3], [4, 5], [0, 0]]]));
+    vectorContext.drawGeometry(new ol.geom.Polygon([symbol.map(scaleFunction)]));
     style &#x3D; new ol.style.Style({
       image: new ol.style.Icon({
         img: canvas,
-        imgSize: [canvas.width, canvas.height],
+        imgSize: [size, size],
         rotation: 1.2
       })
     });
@@ -99,7 +105,7 @@ var styleFunction &#x3D; function(feature) {
 
 var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
-    url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
+    url: &#x27;http://openlayers.org/en/v3.16.0/examples/data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new ol.format.KML({
       extractStyles: false
     })
@@ -138,6 +144,12 @@ var map &#x3D; new ol.Map({
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
+      var symbol &#x3D; [[0, 0], [4, 2], [6, 0], [10, 5], [6, 3], [4, 5], [0, 0]];
+      var scale;
+      var scaleFunction &#x3D; function(coordinate) {
+        return [coordinate[0] * scale, coordinate[1] * scale];
+      };
+
       var styleCache &#x3D; {};
       var styleFunction &#x3D; function(feature) {
         // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
@@ -146,23 +158,23 @@ var map &#x3D; new ol.Map({
         var name &#x3D; feature.get(&#x27;name&#x27;);
         var magnitude &#x3D; parseFloat(name.substr(2));
         var size &#x3D; parseInt(10 + 40 * (magnitude - 5), 10);
+        scale &#x3D; size / 10;
         var style &#x3D; styleCache[size];
         if (!style) {
           var canvas &#x3D;
               /** @type {HTMLCanvasElement} */ (document.createElement(&#x27;canvas&#x27;));
           var vectorContext &#x3D; ol.render.toContext(
               /** @type {CanvasRenderingContext2D} */ (canvas.getContext(&#x27;2d&#x27;)),
-              {size: [size + 2, size + 2], pixelRatio: size / 10});
+              {size: [size, size], pixelRatio: 1});
           vectorContext.setStyle(new ol.style.Style({
             fill: new ol.style.Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
-            stroke: new ol.style.Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 1})
+            stroke: new ol.style.Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 2})
           }));
-          vectorContext.drawGeometry(new ol.geom.Polygon(
-              [[[0, 0], [4, 2], [6, 0], [10, 5], [6, 3], [4, 5], [0, 0]]]));
+          vectorContext.drawGeometry(new ol.geom.Polygon([symbol.map(scaleFunction)]));
           style &#x3D; new ol.style.Style({
             image: new ol.style.Icon({
               img: canvas,
-              imgSize: [canvas.width, canvas.height],
+              imgSize: [size, size],
               rotation: 1.2
             })
           });
@@ -173,7 +185,7 @@ var map &#x3D; new ol.Map({
 
       var vector &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
-          url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
+          url: &#x27;http://openlayers.org/en/v3.16.0/examples/data/kml/2012_Earthquakes_Mag5.kml&#x27;,
           format: new ol.format.KML({
             extractStyles: false
           })

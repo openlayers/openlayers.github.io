@@ -23,7 +23,7 @@ goog.require('ol.vec.Mat4');
  */
 ol.renderer.canvas.TileLayer = function(tileLayer) {
 
-  goog.base(this, tileLayer);
+  ol.renderer.canvas.Layer.call(this, tileLayer);
 
   /**
    * @protected
@@ -62,7 +62,7 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
   this.zDirection = 0;
 
 };
-goog.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
+ol.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
 
 
 /**
@@ -259,7 +259,7 @@ ol.renderer.canvas.TileLayer.prototype.renderTileImages = function(context, fram
     drawOffsetX = (drawSize - width) / 2 / drawScale;
     drawOffsetY = (drawSize - height) / 2 / drawScale;
     pixelScale *= drawScale;
-    offsetX = Math.round(drawScale * (offsetX + drawOffsetX))
+    offsetX = Math.round(drawScale * (offsetX + drawOffsetX));
     offsetY = Math.round(drawScale * (offsetY + drawOffsetY));
   }
   // for performance reasons, context.save / context.restore is not used

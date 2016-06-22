@@ -84,7 +84,7 @@
 /**
  * Load the topojson data and create an ol.layer.Image for that data.
  */
-d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
+d3.json(&#x27;http://openlayers.org/en/v3.16.0/examples/data/topojson/us.json&#x27;, function(error, us) {
   var features &#x3D; topojson.feature(us, us.objects.counties);
 
   /**
@@ -186,7 +186,7 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
       /**
        * Load the topojson data and create an ol.layer.Image for that data.
        */
-      d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
+      d3.json(&#x27;http://openlayers.org/en/v3.16.0/examples/data/topojson/us.json&#x27;, function(error, us) {
         var features &#x3D; topojson.feature(us, us.objects.counties);
 
         /**

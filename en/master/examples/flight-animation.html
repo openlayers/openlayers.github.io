@@ -129,7 +129,7 @@ flightsSource &#x3D; new ol.source.Vector({
   attributions: &#x27;Flight data by &#x27; +
         &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
   loader: function() {
-    var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
+    var url &#x3D; &#x27;http://openlayers.org/en/v3.16.0/examples/data/openflights/flights.json&#x27;;
     fetch(url).then(function(response) {
       return response.json();
     }).then(function(json) {
@@ -259,7 +259,7 @@ map.addLayer(flightsLayer);
         attributions: &#x27;Flight data by &#x27; +
               &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
         loader: function() {
-          var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
+          var url &#x3D; &#x27;http://openlayers.org/en/v3.16.0/examples/data/openflights/flights.json&#x27;;
           fetch(url).then(function(response) {
             return response.json();
           }).then(function(json) {

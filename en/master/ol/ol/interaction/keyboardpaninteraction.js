@@ -28,7 +28,7 @@ goog.require('ol.interaction.Interaction');
  */
 ol.interaction.KeyboardPan = function(opt_options) {
 
-  goog.base(this, {
+  ol.interaction.Interaction.call(this, {
     handleEvent: ol.interaction.KeyboardPan.handleEvent
   });
 
@@ -42,14 +42,14 @@ ol.interaction.KeyboardPan = function(opt_options) {
   this.defaultCondition_ = function(mapBrowserEvent) {
     return ol.events.condition.noModifierKeys(mapBrowserEvent) &&
       ol.events.condition.targetNotEditable(mapBrowserEvent);
-  }
+  };
 
   /**
    * @private
-   * @type {ol.events.ConditionType}
+   * @type {ol.EventsConditionType}
    */
   this.condition_ = options.condition !== undefined ?
-      options.condition : this.defaultCondition_
+      options.condition : this.defaultCondition_;
 
   /**
    * @private
@@ -65,7 +65,7 @@ ol.interaction.KeyboardPan = function(opt_options) {
       options.pixelDelta : 128;
 
 };
-goog.inherits(ol.interaction.KeyboardPan, ol.interaction.Interaction);
+ol.inherits(ol.interaction.KeyboardPan, ol.interaction.Interaction);
 
 /**
  * Handles the {@link ol.MapBrowserEvent map browser event} if it was a

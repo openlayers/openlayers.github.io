@@ -76,7 +76,7 @@
 }
 
 var iconFeature &#x3D; new ol.Feature(new ol.geom.Point([0, 0]));
-iconFeature.set(&#x27;style&#x27;, createStyle(&#x27;data/icon.png&#x27;, undefined));
+iconFeature.set(&#x27;style&#x27;, createStyle(&#x27;http://openlayers.org/en/v3.16.0/examples/data/icon.png&#x27;, undefined));
 
 var map &#x3D; new ol.Map({
   layers: [
@@ -153,7 +153,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
       }
 
       var iconFeature &#x3D; new ol.Feature(new ol.geom.Point([0, 0]));
-      iconFeature.set(&#x27;style&#x27;, createStyle(&#x27;data/icon.png&#x27;, undefined));
+      iconFeature.set(&#x27;style&#x27;, createStyle(&#x27;http://openlayers.org/en/v3.16.0/examples/data/icon.png&#x27;, undefined));
 
       var map &#x3D; new ol.Map({
         layers: [
