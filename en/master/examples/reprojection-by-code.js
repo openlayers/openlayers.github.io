@@ -1,7 +1,7 @@
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.MapQuest({layer: 'osm'})
+      source: new ol.source.OSM()
     })
   ],
   renderer: common.getRendererFromQueryString(),

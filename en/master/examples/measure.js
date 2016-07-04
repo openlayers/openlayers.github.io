@@ -1,7 +1,7 @@
 var wgs84Sphere = new ol.Sphere(6378137);
 
 var raster = new ol.layer.Tile({
-  source: new ol.source.MapQuest({layer: 'sat'})
+  source: new ol.source.OSM()
 });
 
 var source = new ol.source.Vector();

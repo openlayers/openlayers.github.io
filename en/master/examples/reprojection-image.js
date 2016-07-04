@@ -7,7 +7,7 @@ var imageExtent = [0, 0, 700000, 1300000];
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.MapQuest({layer: 'osm'})
+      source: new ol.source.OSM()
     }),
     new ol.layer.Image({
       source: new ol.source.ImageStatic({

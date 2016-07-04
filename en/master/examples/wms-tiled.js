@@ -1,6 +1,6 @@
 var layers = [
   new ol.layer.Tile({
-    source: new ol.source.MapQuest({layer: 'sat'})
+    source: new ol.source.OSM()
   }),
   new ol.layer.Tile({
     extent: [-13884991, 2870341, -7455066, 6338219],

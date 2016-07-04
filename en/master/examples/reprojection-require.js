@@ -5,7 +5,7 @@ goog.require('ol.extent');
 goog.require('ol.format.WMTSCapabilities');
 goog.require('ol.layer.Tile');
 goog.require('ol.proj');
-goog.require('ol.source.MapQuest');
+goog.require('ol.source.OSM');
 goog.require('ol.source.TileImage');
 goog.require('ol.source.TileWMS');
 goog.require('ol.source.WMTS');

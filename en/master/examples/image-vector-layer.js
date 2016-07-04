@@ -1,7 +1,7 @@
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.MapQuest({layer: 'sat'})
+      source: new ol.source.OSM()
     }),
     new ol.layer.Image({
       source: new ol.source.ImageVector({

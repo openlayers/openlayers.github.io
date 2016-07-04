@@ -7,7 +7,7 @@
 var createMap = function(divId) {
   var source, layer, map, zoomslider;
 
-  source = new ol.source.MapQuest({layer: 'sat'});
+  source = new ol.source.OSM();
   layer = new ol.layer.Tile({
     source: source
   });

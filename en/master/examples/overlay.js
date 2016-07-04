@@ -1,5 +1,5 @@
 var layer = new ol.layer.Tile({
-  source: new ol.source.MapQuest({layer: 'sat'})
+  source: new ol.source.OSM()
 });
 
 var map = new ol.Map({

@@ -1,4 +1,4 @@
-var source = new ol.source.MapQuest({layer: 'sat'});
+var source = new ol.source.OSM();
 
 var layer = new ol.layer.Tile();
 

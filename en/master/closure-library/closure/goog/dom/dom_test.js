@@ -19,15 +19,19 @@
 /** @suppress {extraProvide} */
 goog.provide('goog.dom.dom_test');
 
+goog.require('goog.array');
+goog.require('goog.asserts');
 goog.require('goog.dom');
 goog.require('goog.dom.BrowserFeature');
 goog.require('goog.dom.DomHelper');
 goog.require('goog.dom.InputType');
 goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
+goog.require('goog.dom.TypedTagName');
 goog.require('goog.functions');
 goog.require('goog.html.testing');
 goog.require('goog.object');
+goog.require('goog.string.Const');
 goog.require('goog.string.Unicode');
 goog.require('goog.testing.PropertyReplacer');
 goog.require('goog.testing.asserts');
@@ -465,6 +469,14 @@ function testCreateDomWithClassName() {
 
   el = goog.dom.createDom(goog.dom.TagName.DIV, '');
   assertEquals('ClassName should be empty', '', el.className);
+}
+
+function testCreateTypedDom() {
+  var a = goog.dom.createDom(goog.dom.TypedTagName.A);
+  goog.asserts.assertInstanceof(a, HTMLAnchorElement);
+
+  a = goog.dom.getDomHelper().createDom(goog.dom.TypedTagName.A);
+  goog.asserts.assertInstanceof(a, HTMLAnchorElement);
 }
 
 function testCompareNodeOrder() {
@@ -1532,6 +1544,87 @@ function testSafeHtmlToNode() {
   } else {
     assertNull(div.parentNode);
   }
+}
+
+/**
+ * Assert that the given goog.string.Const, when converted to a Node,
+ * stringifies in one of the specified ways.
+ *
+ * @param{!Array<string>} potentialStringifications
+ * @param{...!goog.string.Const} var_args The constants to use.
+ */
+function assertConstHtmlToNodeStringifiesToOneOf(
+    potentialStringifications, var_args) {
+  var node =
+      goog.dom.constHtmlToNode.apply(undefined, goog.array.slice(arguments, 1));
+  var stringified = goog.dom.getOuterHtml(node);
+  if (goog.array.find(potentialStringifications, function(element) {
+        return element == stringified;
+      }) === null) {
+    fail(
+        'Unexpected stringification for a node built from "' +
+        goog.array.map(goog.array.slice(arguments, 1), goog.string.Const.unwrap)
+            .join('') +
+        '": "' + stringified + '"');
+  }
+}
+
+function testRegularConstHtmlToNodeStringifications() {
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['<b>foo</b>', '<B>foo</B>'], goog.string.Const.from('<b>foo</b>'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['<br>', '<BR>'], goog.string.Const.from('<br>'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      [
+        '<SVG></B>', '<svg></svg>', '<svg xmlns="http://www.w3.org/2000/svg" />'
+      ],
+      goog.string.Const.from('<svg></b>'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['<unknown></unknown>', '<unknown>', '<UNKNOWN />'],
+      goog.string.Const.from('<unknown />'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['&lt;"&amp;', '&lt;"'], goog.string.Const.from('<"&'));
+}
+
+function testConcatenatedConstHtmlToNodeStringifications() {
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['<b>foo</b>', '<B>foo</B>'], goog.string.Const.from('<b>foo<'),
+      goog.string.Const.from('/b>'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['<b>foo</b>', '<B>foo</B>'], goog.string.Const.from('<b>foo</b>'),
+      goog.string.Const.from(''));
+
+  assertConstHtmlToNodeStringifiesToOneOf(['']);
+}
+
+function testSpecialConstHtmlToNodeStringifications() {
+  // body one is IE8, \r\n is opera.
+  assertConstHtmlToNodeStringifiesToOneOf(
+      [
+        '<script></script>', '<SCRIPT></SCRIPT>', '<script></body></script>',
+        '\r\n' +
+            '<SCRIPT></SCRIPT>'
+      ],
+      goog.string.Const.from('<script>'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['&lt;% %&gt;', '<% %>'], goog.string.Const.from('<% %>'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['&lt;% <script> %></script>', '<% <script> %>'],
+      goog.string.Const.from('<% <script> %>'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['</ hi />', '<!-- hi /-->', ''], goog.string.Const.from('</ hi />'));
+
+  assertConstHtmlToNodeStringifiesToOneOf(
+      ['<!-- <script --> /&gt;', '</ <script>/&gt;', ' /&gt;'],
+      goog.string.Const.from('</ <script > />'));
 }
 
 function testAppend() {

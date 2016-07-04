@@ -31,9 +31,7 @@ var vectorLayer = new ol.layer.Vector({
 });
 
 var rasterLayer = new ol.layer.Tile({
-  source: new ol.source.MapQuest({
-    layer: 'osm'
-  })
+  source: new ol.source.OSM()
 });
 
 var map = new ol.Map({
