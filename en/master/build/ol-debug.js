@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.17.1-28-g2845f50
+// Version: v3.17.1-52-gfa4f29e
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -3019,7 +3019,16 @@ ol.inherits = function(childCtor, parentCtor) {
 ol.nullFunction = function() {};
 
 
-ol.global = Function('return this')();
+/**
+ * @see https://github.com/tc39/proposal-global
+ */
+if (typeof window !== 'undefined') {
+  ol.global = window;
+} else if (typeof global !== 'undefined') {
+  ol.global = global;
+} else if (typeof self !== 'undefined') {
+  ol.global = self;
+}
 
 // Copyright 2009 The Closure Library Authors. All Rights Reserved.
 //
@@ -5827,9 +5836,8 @@ goog.provide('ol.events.Event');
  * @constructor
  * @implements {oli.events.Event}
  * @param {string} type Type.
- * @param {Object=} opt_target Target.
  */
-ol.events.Event = function(type, opt_target) {
+ol.events.Event = function(type) {
 
   /**
    * @type {boolean}
@@ -5848,7 +5856,7 @@ ol.events.Event = function(type, opt_target) {
    * @type {Object}
    * @api stable
    */
-  this.target = opt_target || null;
+  this.target = null;
 
 };
 
@@ -6649,7 +6657,7 @@ ol.array.flatten = function(arr) {
  */
 ol.array.extend = function(arr, data) {
   var i;
-  var extension = goog.isArrayLike(data) ? data : [data];
+  var extension = Array.isArray(data) ? data : [data];
   var length = extension.length;
   for (i = 0; i < length; i++) {
     arr[arr.length] = extension[i];
@@ -13363,11 +13371,10 @@ ol.CollectionEventType = {
  * @implements {oli.CollectionEvent}
  * @param {ol.CollectionEventType} type Type.
  * @param {*=} opt_element Element.
- * @param {Object=} opt_target Target.
  */
-ol.CollectionEvent = function(type, opt_element, opt_target) {
+ol.CollectionEvent = function(type, opt_element) {
 
-  ol.events.Event.call(this, type, opt_target);
+  ol.events.Event.call(this, type);
 
   /**
    * The element that is added to or removed from the collection.
@@ -13505,7 +13512,7 @@ ol.Collection.prototype.insertAt = function(index, elem) {
   this.array_.splice(index, 0, elem);
   this.updateLength_();
   this.dispatchEvent(
-      new ol.CollectionEvent(ol.CollectionEventType.ADD, elem, this));
+      new ol.CollectionEvent(ol.CollectionEventType.ADD, elem));
 };
 
 
@@ -13563,7 +13570,7 @@ ol.Collection.prototype.removeAt = function(index) {
   this.array_.splice(index, 1);
   this.updateLength_();
   this.dispatchEvent(
-      new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev, this));
+      new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev));
   return prev;
 };
 
@@ -13580,9 +13587,9 @@ ol.Collection.prototype.setAt = function(index, elem) {
     var prev = this.array_[index];
     this.array_[index] = elem;
     this.dispatchEvent(
-        new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev, this));
+        new ol.CollectionEvent(ol.CollectionEventType.REMOVE, prev));
     this.dispatchEvent(
-        new ol.CollectionEvent(ol.CollectionEventType.ADD, elem, this));
+        new ol.CollectionEvent(ol.CollectionEventType.ADD, elem));
   } else {
     var j;
     for (j = n; j < index; ++j) {
@@ -27107,17 +27114,16 @@ ol.render.EventType = {
  * @extends {ol.events.Event}
  * @implements {oli.render.Event}
  * @param {ol.render.EventType} type Type.
- * @param {Object=} opt_target Target.
  * @param {ol.render.VectorContext=} opt_vectorContext Vector context.
  * @param {olx.FrameState=} opt_frameState Frame state.
  * @param {?CanvasRenderingContext2D=} opt_context Context.
  * @param {?ol.webgl.Context=} opt_glContext WebGL Context.
  */
 ol.render.Event = function(
-    type, opt_target, opt_vectorContext, opt_frameState, opt_context,
+    type, opt_vectorContext, opt_frameState, opt_context,
     opt_glContext) {
 
-  ol.events.Event.call(this, type, opt_target);
+  ol.events.Event.call(this, type);
 
   /**
    * For canvas, this is an instance of {@link ol.render.canvas.Immediate}.
@@ -27924,8 +27930,8 @@ ol.style.Image.prototype.getSnapToPixel = function() {
 
 
 /**
- * Get the anchor point.  The anchor determines the center point for the
- * symbolizer.  Its units are determined by `anchorXUnits` and `anchorYUnits`.
+ * Get the anchor point in pixels. The anchor determines the center point for the
+ * symbolizer.
  * @function
  * @return {Array.<number>} Anchor.
  */
@@ -35989,7 +35995,7 @@ ol.renderer.canvas.Layer.prototype.dispatchComposeEvent_ = function(type, contex
     var render = new ol.render.canvas.Immediate(
         context, frameState.pixelRatio, frameState.extent, transform,
         frameState.viewState.rotation);
-    var composeEvent = new ol.render.Event(type, layer, render, frameState,
+    var composeEvent = new ol.render.Event(type, render, frameState,
         context, null);
     layer.dispatchEvent(composeEvent);
     ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
@@ -45188,7 +45194,7 @@ ol.renderer.canvas.Map.prototype.dispatchComposeEvent_ = function(type, frameSta
 
     var vectorContext = new ol.render.canvas.Immediate(context, pixelRatio,
         extent, transform, rotation);
-    var composeEvent = new ol.render.Event(type, map, vectorContext,
+    var composeEvent = new ol.render.Event(type, vectorContext,
         frameState, context, null);
     map.dispatchEvent(composeEvent);
   }
@@ -46117,8 +46123,7 @@ ol.renderer.dom.VectorLayer.prototype.dispatchEvent_ = function(type, frameState
     var render = new ol.render.canvas.Immediate(
         context, frameState.pixelRatio, frameState.extent, transform,
         frameState.viewState.rotation);
-    var event = new ol.render.Event(type, layer, render, frameState,
-        context, null);
+    var event = new ol.render.Event(type, render, frameState, context, null);
     layer.dispatchEvent(event);
   }
 };
@@ -46432,7 +46437,7 @@ ol.renderer.dom.Map.prototype.dispatchComposeEvent_ = function(type, frameState)
 
     var vectorContext = new ol.render.canvas.Immediate(context, pixelRatio,
         extent, transform, rotation);
-    var composeEvent = new ol.render.Event(type, map, vectorContext,
+    var composeEvent = new ol.render.Event(type, vectorContext,
         frameState, context, null);
     map.dispatchEvent(composeEvent);
   }
@@ -48899,7 +48904,7 @@ ol.renderer.webgl.Layer.prototype.dispatchComposeEvent_ = function(type, context
     var render = new ol.render.webgl.Immediate(
         context, center, resolution, rotation, size, extent, pixelRatio);
     var composeEvent = new ol.render.Event(
-        type, layer, render, frameState, null, context);
+        type, render, frameState, null, context);
     layer.dispatchEvent(composeEvent);
   }
 };
@@ -50371,7 +50376,7 @@ ol.renderer.webgl.Map.prototype.dispatchComposeEvent_ = function(type, frameStat
 
     var vectorContext = new ol.render.webgl.Immediate(context,
         center, resolution, rotation, size, extent, pixelRatio);
-    var composeEvent = new ol.render.Event(type, map, vectorContext,
+    var composeEvent = new ol.render.Event(type, vectorContext,
         frameState, null, context);
     map.dispatchEvent(composeEvent);
   }
@@ -53405,6 +53410,7 @@ ol.control.OverviewMap.prototype.getOverviewMap = function() {
 };
 
 goog.provide('ol.control.ScaleLine');
+goog.provide('ol.control.ScaleLineUnits');
 
 goog.require('goog.asserts');
 goog.require('ol.events');
@@ -61672,6 +61678,7 @@ ol.format.TextFeature.prototype.writeGeometry = function(
 ol.format.TextFeature.prototype.writeGeometryText = goog.abstractMethod;
 
 goog.provide('ol.format.IGC');
+goog.provide('ol.format.IGCZ');
 
 goog.require('goog.asserts');
 goog.require('ol.Feature');
@@ -78648,7 +78655,7 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, event) {
   }
   this.dispatchEvent(
       new ol.interaction.DragAndDropEvent(
-          ol.interaction.DragAndDropEventType.ADD_FEATURES, this, file,
+          ol.interaction.DragAndDropEventType.ADD_FEATURES, file,
           features, projection));
 };
 
@@ -78727,14 +78734,13 @@ ol.interaction.DragAndDropEventType = {
  * @extends {ol.events.Event}
  * @implements {oli.interaction.DragAndDropEvent}
  * @param {ol.interaction.DragAndDropEventType} type Type.
- * @param {Object} target Target.
  * @param {File} file File.
  * @param {Array.<ol.Feature>=} opt_features Features.
  * @param {ol.proj.Projection=} opt_projection Projection.
  */
-ol.interaction.DragAndDropEvent = function(type, target, file, opt_features, opt_projection) {
+ol.interaction.DragAndDropEvent = function(type, file, opt_features, opt_projection) {
 
-  ol.events.Event.call(this, type, target);
+  ol.events.Event.call(this, type);
 
   /**
    * The features parsed from dropped data.
@@ -87370,6 +87376,7 @@ ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet = function(matrixSet, opt_exten
 };
 
 goog.provide('ol.source.WMTS');
+goog.provide('ol.source.WMTSRequestEncoding');
 
 goog.require('goog.asserts');
 goog.require('ol.TileUrlFunction');
@@ -89065,6 +89072,7 @@ goog.require('ol.control.MousePosition');
 goog.require('ol.control.OverviewMap');
 goog.require('ol.control.Rotate');
 goog.require('ol.control.ScaleLine');
+goog.require('ol.control.ScaleLineUnits');
 goog.require('ol.control.Zoom');
 goog.require('ol.control.ZoomSlider');
 goog.require('ol.control.ZoomToExtent');
@@ -89085,6 +89093,7 @@ goog.require('ol.format.GMLBase');
 goog.require('ol.format.GPX');
 goog.require('ol.format.GeoJSON');
 goog.require('ol.format.IGC');
+goog.require('ol.format.IGCZ');
 goog.require('ol.format.KML');
 goog.require('ol.format.MVT');
 goog.require('ol.format.OSMXML');
@@ -89213,6 +89222,7 @@ goog.require('ol.source.VectorEvent');
 goog.require('ol.source.VectorEventType');
 goog.require('ol.source.VectorTile');
 goog.require('ol.source.WMTS');
+goog.require('ol.source.WMTSRequestEncoding');
 goog.require('ol.source.XYZ');
 goog.require('ol.source.Zoomify');
 goog.require('ol.style.Atlas');

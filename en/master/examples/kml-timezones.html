@@ -182,6 +182,8 @@ map.on(&#x27;click&#x27;, function(evt) {
   &lt;head&gt;
     &lt;title&gt;Timezones in KML&lt;/title&gt;
     &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.17.1/css/ol.css" type="text/css"&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="http://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"&gt;&lt;/script&gt;
     &lt;script src="http://openlayers.org/en/v3.17.1/build/ol.js"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-2.2.3.min.js&quot;&gt;&lt;/script&gt;
     &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&quot;&gt;

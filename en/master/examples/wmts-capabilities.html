@@ -88,6 +88,8 @@ fetch(&#x27;http://openlayers.org/en/v3.17.1/examples/data/WMTSCapabilities.xml&
   &lt;head&gt;
     &lt;title&gt;WMTS Capabilities Parsing&lt;/title&gt;
     &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.17.1/css/ol.css" type="text/css"&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="http://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"&gt;&lt;/script&gt;
     &lt;script src="http://openlayers.org/en/v3.17.1/build/ol.js"&gt;&lt;/script&gt;
     &lt;style&gt;
       .log-container {
