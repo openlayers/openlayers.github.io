@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.17.1-52-gfa4f29e
+// Version: v3.17.1-64-g2b21cb0
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -2823,16 +2823,6 @@ ol.ENABLE_IMAGE = true;
 
 
 /**
- * @define {boolean} Enable Closure named colors (`goog.color.names`).
- *     Enabling these colors adds about 3KB uncompressed / 1.5KB compressed to
- *     the final build size.  Default is `false`. This setting has no effect
- *     with Canvas renderer, which uses its own names, whether this is true or
- *     false.
- */
-ol.ENABLE_NAMED_COLORS = false;
-
-
-/**
  * @define {boolean} Enable integration with the Proj4js library.  Default is
  *     `true`.
  */
@@ -5501,7 +5491,7 @@ goog.require('ol.object');
  */
 ol.events.EventType = {
   /**
-   * Generic change event.
+   * Generic change event. Triggered when the revision counter is increased.
    * @event ol.events.Event#change
    * @api
    */
@@ -6070,7 +6060,7 @@ goog.require('ol.events.EventType');
  *
  * @constructor
  * @extends {ol.events.EventTarget}
- * @fires change
+ * @fires ol.events.Event
  * @struct
  * @api stable
  */
@@ -6113,13 +6103,6 @@ ol.Observable.prototype.changed = function() {
   ++this.revision_;
   this.dispatchEvent(ol.events.EventType.CHANGE);
 };
-
-
-/**
- * Triggered when the revision counter is increased.
- * @event change
- * @api
- */
 
 
 /**
@@ -13607,183 +13590,283 @@ ol.Collection.prototype.updateLength_ = function() {
   this.set(ol.CollectionProperty.LENGTH, this.array_.length);
 };
 
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+goog.provide('ol.color');
 
-/**
- * @fileoverview Names of standard colors with their associated hex values.
- */
-
-goog.provide('goog.color.names');
+goog.require('goog.asserts');
+goog.require('ol');
+goog.require('ol.math');
 
 
 /**
- * A map that contains a lot of colors that are recognised by various browsers.
- * This list is way larger than the minimal one dictated by W3C.
- * The keys of this map are the lowercase "readable" names of the colors, while
- * the values are the "hex" values.
- *
- * @type {!Object<string, string>}
+ * This RegExp matches # followed by 3 or 6 hex digits.
+ * @const
+ * @type {RegExp}
+ * @private
  */
-goog.color.names = {
-  'aliceblue': '#f0f8ff',
-  'antiquewhite': '#faebd7',
-  'aqua': '#00ffff',
-  'aquamarine': '#7fffd4',
-  'azure': '#f0ffff',
-  'beige': '#f5f5dc',
-  'bisque': '#ffe4c4',
-  'black': '#000000',
-  'blanchedalmond': '#ffebcd',
-  'blue': '#0000ff',
-  'blueviolet': '#8a2be2',
-  'brown': '#a52a2a',
-  'burlywood': '#deb887',
-  'cadetblue': '#5f9ea0',
-  'chartreuse': '#7fff00',
-  'chocolate': '#d2691e',
-  'coral': '#ff7f50',
-  'cornflowerblue': '#6495ed',
-  'cornsilk': '#fff8dc',
-  'crimson': '#dc143c',
-  'cyan': '#00ffff',
-  'darkblue': '#00008b',
-  'darkcyan': '#008b8b',
-  'darkgoldenrod': '#b8860b',
-  'darkgray': '#a9a9a9',
-  'darkgreen': '#006400',
-  'darkgrey': '#a9a9a9',
-  'darkkhaki': '#bdb76b',
-  'darkmagenta': '#8b008b',
-  'darkolivegreen': '#556b2f',
-  'darkorange': '#ff8c00',
-  'darkorchid': '#9932cc',
-  'darkred': '#8b0000',
-  'darksalmon': '#e9967a',
-  'darkseagreen': '#8fbc8f',
-  'darkslateblue': '#483d8b',
-  'darkslategray': '#2f4f4f',
-  'darkslategrey': '#2f4f4f',
-  'darkturquoise': '#00ced1',
-  'darkviolet': '#9400d3',
-  'deeppink': '#ff1493',
-  'deepskyblue': '#00bfff',
-  'dimgray': '#696969',
-  'dimgrey': '#696969',
-  'dodgerblue': '#1e90ff',
-  'firebrick': '#b22222',
-  'floralwhite': '#fffaf0',
-  'forestgreen': '#228b22',
-  'fuchsia': '#ff00ff',
-  'gainsboro': '#dcdcdc',
-  'ghostwhite': '#f8f8ff',
-  'gold': '#ffd700',
-  'goldenrod': '#daa520',
-  'gray': '#808080',
-  'green': '#008000',
-  'greenyellow': '#adff2f',
-  'grey': '#808080',
-  'honeydew': '#f0fff0',
-  'hotpink': '#ff69b4',
-  'indianred': '#cd5c5c',
-  'indigo': '#4b0082',
-  'ivory': '#fffff0',
-  'khaki': '#f0e68c',
-  'lavender': '#e6e6fa',
-  'lavenderblush': '#fff0f5',
-  'lawngreen': '#7cfc00',
-  'lemonchiffon': '#fffacd',
-  'lightblue': '#add8e6',
-  'lightcoral': '#f08080',
-  'lightcyan': '#e0ffff',
-  'lightgoldenrodyellow': '#fafad2',
-  'lightgray': '#d3d3d3',
-  'lightgreen': '#90ee90',
-  'lightgrey': '#d3d3d3',
-  'lightpink': '#ffb6c1',
-  'lightsalmon': '#ffa07a',
-  'lightseagreen': '#20b2aa',
-  'lightskyblue': '#87cefa',
-  'lightslategray': '#778899',
-  'lightslategrey': '#778899',
-  'lightsteelblue': '#b0c4de',
-  'lightyellow': '#ffffe0',
-  'lime': '#00ff00',
-  'limegreen': '#32cd32',
-  'linen': '#faf0e6',
-  'magenta': '#ff00ff',
-  'maroon': '#800000',
-  'mediumaquamarine': '#66cdaa',
-  'mediumblue': '#0000cd',
-  'mediumorchid': '#ba55d3',
-  'mediumpurple': '#9370db',
-  'mediumseagreen': '#3cb371',
-  'mediumslateblue': '#7b68ee',
-  'mediumspringgreen': '#00fa9a',
-  'mediumturquoise': '#48d1cc',
-  'mediumvioletred': '#c71585',
-  'midnightblue': '#191970',
-  'mintcream': '#f5fffa',
-  'mistyrose': '#ffe4e1',
-  'moccasin': '#ffe4b5',
-  'navajowhite': '#ffdead',
-  'navy': '#000080',
-  'oldlace': '#fdf5e6',
-  'olive': '#808000',
-  'olivedrab': '#6b8e23',
-  'orange': '#ffa500',
-  'orangered': '#ff4500',
-  'orchid': '#da70d6',
-  'palegoldenrod': '#eee8aa',
-  'palegreen': '#98fb98',
-  'paleturquoise': '#afeeee',
-  'palevioletred': '#db7093',
-  'papayawhip': '#ffefd5',
-  'peachpuff': '#ffdab9',
-  'peru': '#cd853f',
-  'pink': '#ffc0cb',
-  'plum': '#dda0dd',
-  'powderblue': '#b0e0e6',
-  'purple': '#800080',
-  'red': '#ff0000',
-  'rosybrown': '#bc8f8f',
-  'royalblue': '#4169e1',
-  'saddlebrown': '#8b4513',
-  'salmon': '#fa8072',
-  'sandybrown': '#f4a460',
-  'seagreen': '#2e8b57',
-  'seashell': '#fff5ee',
-  'sienna': '#a0522d',
-  'silver': '#c0c0c0',
-  'skyblue': '#87ceeb',
-  'slateblue': '#6a5acd',
-  'slategray': '#708090',
-  'slategrey': '#708090',
-  'snow': '#fffafa',
-  'springgreen': '#00ff7f',
-  'steelblue': '#4682b4',
-  'tan': '#d2b48c',
-  'teal': '#008080',
-  'thistle': '#d8bfd8',
-  'tomato': '#ff6347',
-  'turquoise': '#40e0d0',
-  'violet': '#ee82ee',
-  'wheat': '#f5deb3',
-  'white': '#ffffff',
-  'whitesmoke': '#f5f5f5',
-  'yellow': '#ffff00',
-  'yellowgreen': '#9acd32'
+ol.color.hexColorRe_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
+
+
+/**
+ * Regular expression for matching and capturing RGB style strings.
+ * @const
+ * @type {RegExp}
+ * @private
+ */
+ol.color.rgbColorRe_ =
+    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
+
+
+/**
+ * Regular expression for matching and capturing RGBA style strings.
+ * @const
+ * @type {RegExp}
+ * @private
+ */
+ol.color.rgbaColorRe_ =
+    /^(?:rgba)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|1|0\.\d{0,10})\)$/i;
+
+
+/**
+ * Regular expression for matching potential named color style strings.
+ * @const
+ * @type {RegExp}
+ * @private
+ */
+ol.color.namedColorRe_ =
+    /^([a-z]*)$/i;
+
+
+/**
+ * Return the color as an array. This function maintains a cache of calculated
+ * arrays which means the result should not be modified.
+ * @param {ol.Color|string} color Color.
+ * @return {ol.Color} Color.
+ * @api
+ */
+ol.color.asArray = function(color) {
+  if (Array.isArray(color)) {
+    return color;
+  } else {
+    goog.asserts.assert(typeof color === 'string', 'Color should be a string');
+    return ol.color.fromString(color);
+  }
+};
+
+
+/**
+ * Return the color as an rgba string.
+ * @param {ol.Color|string} color Color.
+ * @return {string} Rgba string.
+ * @api
+ */
+ol.color.asString = function(color) {
+  if (typeof color === 'string') {
+    return color;
+  } else {
+    goog.asserts.assert(Array.isArray(color), 'Color should be an array');
+    return ol.color.toString(color);
+  }
+};
+
+/**
+ * Return named color as an rgba string.
+ * @param {string} color Named color.
+ * @return {string} Rgb string.
+ */
+ol.color.fromNamed = function(color) {
+  var el = document.createElement('div');
+  el.style.color = color;
+  document.body.appendChild(el);
+  var rgb = window.getComputedStyle(el).color;
+  document.body.removeChild(el);
+  return rgb;
+};
+
+
+/**
+ * @param {string} s String.
+ * @return {ol.Color} Color.
+ */
+ol.color.fromString = (
+    function() {
+
+      // We maintain a small cache of parsed strings.  To provide cheap LRU-like
+      // semantics, whenever the cache grows too large we simply delete an
+      // arbitrary 25% of the entries.
+
+      /**
+       * @const
+       * @type {number}
+       */
+      var MAX_CACHE_SIZE = 1024;
+
+      /**
+       * @type {Object.<string, ol.Color>}
+       */
+      var cache = {};
+
+      /**
+       * @type {number}
+       */
+      var cacheSize = 0;
+
+      return (
+          /**
+           * @param {string} s String.
+           * @return {ol.Color} Color.
+           */
+          function(s) {
+            var color;
+            if (cache.hasOwnProperty(s)) {
+              color = cache[s];
+            } else {
+              if (cacheSize >= MAX_CACHE_SIZE) {
+                var i = 0;
+                var key;
+                for (key in cache) {
+                  if ((i++ & 3) === 0) {
+                    delete cache[key];
+                    --cacheSize;
+                  }
+                }
+              }
+              color = ol.color.fromStringInternal_(s);
+              cache[s] = color;
+              ++cacheSize;
+            }
+            return color;
+          });
+
+    })();
+
+
+/**
+ * @param {string} s String.
+ * @private
+ * @return {ol.Color} Color.
+ */
+ol.color.fromStringInternal_ = function(s) {
+  var r, g, b, a, color, match;
+
+  if (ol.color.namedColorRe_.exec(s)) {
+    s = ol.color.fromNamed(s);
+  }
+
+  if (ol.color.hexColorRe_.exec(s)) { // hex
+    var n = s.length - 1; // number of hex digits
+    goog.asserts.assert(n == 3 || n == 6,
+        'Color string length should be 3 or 6');
+    var d = n == 3 ? 1 : 2; // number of digits per channel
+    r = parseInt(s.substr(1 + 0 * d, d), 16);
+    g = parseInt(s.substr(1 + 1 * d, d), 16);
+    b = parseInt(s.substr(1 + 2 * d, d), 16);
+    if (d == 1) {
+      r = (r << 4) + r;
+      g = (g << 4) + g;
+      b = (b << 4) + b;
+    }
+    a = 1;
+    color = [r, g, b, a];
+    goog.asserts.assert(ol.color.isValid(color),
+        'Color should be a valid color');
+    return color;
+  } else if ((match = ol.color.rgbaColorRe_.exec(s))) { // rgba()
+    r = Number(match[1]);
+    g = Number(match[2]);
+    b = Number(match[3]);
+    a = Number(match[4]);
+    color = [r, g, b, a];
+    return ol.color.normalize(color, color);
+  } else if ((match = ol.color.rgbColorRe_.exec(s))) { // rgb()
+    r = Number(match[1]);
+    g = Number(match[2]);
+    b = Number(match[3]);
+    color = [r, g, b, 1];
+    return ol.color.normalize(color, color);
+  } else {
+    goog.asserts.fail(s + ' is not a valid color');
+  }
+
+};
+
+
+/**
+ * @param {ol.Color} color Color.
+ * @return {boolean} Is valid.
+ */
+ol.color.isValid = function(color) {
+  return 0 <= color[0] && color[0] < 256 &&
+      0 <= color[1] && color[1] < 256 &&
+      0 <= color[2] && color[2] < 256 &&
+      0 <= color[3] && color[3] <= 1;
+};
+
+
+/**
+ * @param {ol.Color} color Color.
+ * @param {ol.Color=} opt_color Color.
+ * @return {ol.Color} Clamped color.
+ */
+ol.color.normalize = function(color, opt_color) {
+  var result = opt_color || [];
+  result[0] = ol.math.clamp((color[0] + 0.5) | 0, 0, 255);
+  result[1] = ol.math.clamp((color[1] + 0.5) | 0, 0, 255);
+  result[2] = ol.math.clamp((color[2] + 0.5) | 0, 0, 255);
+  result[3] = ol.math.clamp(color[3], 0, 1);
+  return result;
+};
+
+
+/**
+ * @param {ol.Color} color Color.
+ * @return {string} String.
+ */
+ol.color.toString = function(color) {
+  var r = color[0];
+  if (r != (r | 0)) {
+    r = (r + 0.5) | 0;
+  }
+  var g = color[1];
+  if (g != (g | 0)) {
+    g = (g + 0.5) | 0;
+  }
+  var b = color[2];
+  if (b != (b | 0)) {
+    b = (b + 0.5) | 0;
+  }
+  var a = color[3] === undefined ? 1 : color[3];
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+};
+
+goog.provide('ol.colorlike');
+
+goog.require('ol.color');
+
+
+/**
+ * @param {ol.Color|ol.ColorLike} color Color.
+ * @return {ol.ColorLike} The color as an ol.ColorLike
+ * @api
+ */
+ol.colorlike.asColorLike = function(color) {
+  if (ol.colorlike.isColorLike(color)) {
+    return /** @type {string|CanvasPattern|CanvasGradient} */ (color);
+  } else {
+    return ol.color.asString(/** @type {ol.Color} */ (color));
+  }
+};
+
+
+/**
+ * @param {?} color The value that is potentially an ol.ColorLike
+ * @return {boolean} Whether the color is an ol.ColorLike
+ */
+ol.colorlike.isColorLike = function(color) {
+  return (
+      typeof color === 'string' ||
+      color instanceof CanvasPattern ||
+      color instanceof CanvasGradient
+  );
 };
 
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
@@ -15450,1490 +15533,6 @@ goog.array.copyByIndex = function(arr, index_arr) {
  */
 goog.array.concatMap = function(arr, f, opt_obj) {
   return goog.array.concat.apply([], goog.array.map(arr, f, opt_obj));
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Additional mathematical functions.
- */
-
-goog.provide('goog.math');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-
-
-/**
- * Returns a random integer greater than or equal to 0 and less than {@code a}.
- * @param {number} a  The upper bound for the random integer (exclusive).
- * @return {number} A random integer N such that 0 <= N < a.
- */
-goog.math.randomInt = function(a) {
-  return Math.floor(Math.random() * a);
-};
-
-
-/**
- * Returns a random number greater than or equal to {@code a} and less than
- * {@code b}.
- * @param {number} a  The lower bound for the random number (inclusive).
- * @param {number} b  The upper bound for the random number (exclusive).
- * @return {number} A random number N such that a <= N < b.
- */
-goog.math.uniformRandom = function(a, b) {
-  return a + Math.random() * (b - a);
-};
-
-
-/**
- * Takes a number and clamps it to within the provided bounds.
- * @param {number} value The input number.
- * @param {number} min The minimum value to return.
- * @param {number} max The maximum value to return.
- * @return {number} The input number if it is within bounds, or the nearest
- *     number within the bounds.
- */
-goog.math.clamp = function(value, min, max) {
-  return Math.min(Math.max(value, min), max);
-};
-
-
-/**
- * The % operator in JavaScript returns the remainder of a / b, but differs from
- * some other languages in that the result will have the same sign as the
- * dividend. For example, -1 % 8 == -1, whereas in some other languages
- * (such as Python) the result would be 7. This function emulates the more
- * correct modulo behavior, which is useful for certain applications such as
- * calculating an offset index in a circular list.
- *
- * @param {number} a The dividend.
- * @param {number} b The divisor.
- * @return {number} a % b where the result is between 0 and b (either 0 <= x < b
- *     or b < x <= 0, depending on the sign of b).
- */
-goog.math.modulo = function(a, b) {
-  var r = a % b;
-  // If r and b differ in sign, add b to wrap the result to the correct sign.
-  return (r * b < 0) ? r + b : r;
-};
-
-
-/**
- * Performs linear interpolation between values a and b. Returns the value
- * between a and b proportional to x (when x is between 0 and 1. When x is
- * outside this range, the return value is a linear extrapolation).
- * @param {number} a A number.
- * @param {number} b A number.
- * @param {number} x The proportion between a and b.
- * @return {number} The interpolated value between a and b.
- */
-goog.math.lerp = function(a, b, x) {
-  return a + x * (b - a);
-};
-
-
-/**
- * Tests whether the two values are equal to each other, within a certain
- * tolerance to adjust for floating point errors.
- * @param {number} a A number.
- * @param {number} b A number.
- * @param {number=} opt_tolerance Optional tolerance range. Defaults
- *     to 0.000001. If specified, should be greater than 0.
- * @return {boolean} Whether {@code a} and {@code b} are nearly equal.
- */
-goog.math.nearlyEquals = function(a, b, opt_tolerance) {
-  return Math.abs(a - b) <= (opt_tolerance || 0.000001);
-};
-
-
-// TODO(user): Rename to normalizeAngle, retaining old name as deprecated
-// alias.
-/**
- * Normalizes an angle to be in range [0-360). Angles outside this range will
- * be normalized to be the equivalent angle with that range.
- * @param {number} angle Angle in degrees.
- * @return {number} Standardized angle.
- */
-goog.math.standardAngle = function(angle) {
-  return goog.math.modulo(angle, 360);
-};
-
-
-/**
- * Normalizes an angle to be in range [0-2*PI). Angles outside this range will
- * be normalized to be the equivalent angle with that range.
- * @param {number} angle Angle in radians.
- * @return {number} Standardized angle.
- */
-goog.math.standardAngleInRadians = function(angle) {
-  return goog.math.modulo(angle, 2 * Math.PI);
-};
-
-
-/**
- * Converts degrees to radians.
- * @param {number} angleDegrees Angle in degrees.
- * @return {number} Angle in radians.
- */
-goog.math.toRadians = function(angleDegrees) {
-  return angleDegrees * Math.PI / 180;
-};
-
-
-/**
- * Converts radians to degrees.
- * @param {number} angleRadians Angle in radians.
- * @return {number} Angle in degrees.
- */
-goog.math.toDegrees = function(angleRadians) {
-  return angleRadians * 180 / Math.PI;
-};
-
-
-/**
- * For a given angle and radius, finds the X portion of the offset.
- * @param {number} degrees Angle in degrees (zero points in +X direction).
- * @param {number} radius Radius.
- * @return {number} The x-distance for the angle and radius.
- */
-goog.math.angleDx = function(degrees, radius) {
-  return radius * Math.cos(goog.math.toRadians(degrees));
-};
-
-
-/**
- * For a given angle and radius, finds the Y portion of the offset.
- * @param {number} degrees Angle in degrees (zero points in +X direction).
- * @param {number} radius Radius.
- * @return {number} The y-distance for the angle and radius.
- */
-goog.math.angleDy = function(degrees, radius) {
-  return radius * Math.sin(goog.math.toRadians(degrees));
-};
-
-
-/**
- * Computes the angle between two points (x1,y1) and (x2,y2).
- * Angle zero points in the +X direction, 90 degrees points in the +Y
- * direction (down) and from there we grow clockwise towards 360 degrees.
- * @param {number} x1 x of first point.
- * @param {number} y1 y of first point.
- * @param {number} x2 x of second point.
- * @param {number} y2 y of second point.
- * @return {number} Standardized angle in degrees of the vector from
- *     x1,y1 to x2,y2.
- */
-goog.math.angle = function(x1, y1, x2, y2) {
-  return goog.math.standardAngle(
-      goog.math.toDegrees(Math.atan2(y2 - y1, x2 - x1)));
-};
-
-
-/**
- * Computes the difference between startAngle and endAngle (angles in degrees).
- * @param {number} startAngle  Start angle in degrees.
- * @param {number} endAngle  End angle in degrees.
- * @return {number} The number of degrees that when added to
- *     startAngle will result in endAngle. Positive numbers mean that the
- *     direction is clockwise. Negative numbers indicate a counter-clockwise
- *     direction.
- *     The shortest route (clockwise vs counter-clockwise) between the angles
- *     is used.
- *     When the difference is 180 degrees, the function returns 180 (not -180)
- *     angleDifference(30, 40) is 10, and angleDifference(40, 30) is -10.
- *     angleDifference(350, 10) is 20, and angleDifference(10, 350) is -20.
- */
-goog.math.angleDifference = function(startAngle, endAngle) {
-  var d =
-      goog.math.standardAngle(endAngle) - goog.math.standardAngle(startAngle);
-  if (d > 180) {
-    d = d - 360;
-  } else if (d <= -180) {
-    d = 360 + d;
-  }
-  return d;
-};
-
-
-/**
- * Returns the sign of a number as per the "sign" or "signum" function.
- * @param {number} x The number to take the sign of.
- * @return {number} -1 when negative, 1 when positive, 0 when 0. Preserves
- *     signed zeros and NaN.
- */
-goog.math.sign = Math.sign || function(x) {
-  if (x > 0) {
-    return 1;
-  }
-  if (x < 0) {
-    return -1;
-  }
-  return x;  // Preserves signed zeros and NaN.
-};
-
-
-/**
- * JavaScript implementation of Longest Common Subsequence problem.
- * http://en.wikipedia.org/wiki/Longest_common_subsequence
- *
- * Returns the longest possible array that is subarray of both of given arrays.
- *
- * @param {IArrayLike<S>} array1 First array of objects.
- * @param {IArrayLike<T>} array2 Second array of objects.
- * @param {Function=} opt_compareFn Function that acts as a custom comparator
- *     for the array ojects. Function should return true if objects are equal,
- *     otherwise false.
- * @param {Function=} opt_collectorFn Function used to decide what to return
- *     as a result subsequence. It accepts 2 arguments: index of common element
- *     in the first array and index in the second. The default function returns
- *     element from the first array.
- * @return {!Array<S|T>} A list of objects that are common to both arrays
- *     such that there is no common subsequence with size greater than the
- *     length of the list.
- * @template S,T
- */
-goog.math.longestCommonSubsequence = function(
-    array1, array2, opt_compareFn, opt_collectorFn) {
-
-  var compare = opt_compareFn || function(a, b) { return a == b; };
-
-  var collect = opt_collectorFn || function(i1, i2) { return array1[i1]; };
-
-  var length1 = array1.length;
-  var length2 = array2.length;
-
-  var arr = [];
-  for (var i = 0; i < length1 + 1; i++) {
-    arr[i] = [];
-    arr[i][0] = 0;
-  }
-
-  for (var j = 0; j < length2 + 1; j++) {
-    arr[0][j] = 0;
-  }
-
-  for (i = 1; i <= length1; i++) {
-    for (j = 1; j <= length2; j++) {
-      if (compare(array1[i - 1], array2[j - 1])) {
-        arr[i][j] = arr[i - 1][j - 1] + 1;
-      } else {
-        arr[i][j] = Math.max(arr[i - 1][j], arr[i][j - 1]);
-      }
-    }
-  }
-
-  // Backtracking
-  var result = [];
-  var i = length1, j = length2;
-  while (i > 0 && j > 0) {
-    if (compare(array1[i - 1], array2[j - 1])) {
-      result.unshift(collect(i - 1, j - 1));
-      i--;
-      j--;
-    } else {
-      if (arr[i - 1][j] > arr[i][j - 1]) {
-        i--;
-      } else {
-        j--;
-      }
-    }
-  }
-
-  return result;
-};
-
-
-/**
- * Returns the sum of the arguments.
- * @param {...number} var_args Numbers to add.
- * @return {number} The sum of the arguments (0 if no arguments were provided,
- *     {@code NaN} if any of the arguments is not a valid number).
- */
-goog.math.sum = function(var_args) {
-  return /** @type {number} */ (
-      goog.array.reduce(
-          arguments, function(sum, value) { return sum + value; }, 0));
-};
-
-
-/**
- * Returns the arithmetic mean of the arguments.
- * @param {...number} var_args Numbers to average.
- * @return {number} The average of the arguments ({@code NaN} if no arguments
- *     were provided or any of the arguments is not a valid number).
- */
-goog.math.average = function(var_args) {
-  return goog.math.sum.apply(null, arguments) / arguments.length;
-};
-
-
-/**
- * Returns the unbiased sample variance of the arguments. For a definition,
- * see e.g. http://en.wikipedia.org/wiki/Variance
- * @param {...number} var_args Number samples to analyze.
- * @return {number} The unbiased sample variance of the arguments (0 if fewer
- *     than two samples were provided, or {@code NaN} if any of the samples is
- *     not a valid number).
- */
-goog.math.sampleVariance = function(var_args) {
-  var sampleSize = arguments.length;
-  if (sampleSize < 2) {
-    return 0;
-  }
-
-  var mean = goog.math.average.apply(null, arguments);
-  var variance =
-      goog.math.sum.apply(null, goog.array.map(arguments, function(val) {
-        return Math.pow(val - mean, 2);
-      })) / (sampleSize - 1);
-
-  return variance;
-};
-
-
-/**
- * Returns the sample standard deviation of the arguments.  For a definition of
- * sample standard deviation, see e.g.
- * http://en.wikipedia.org/wiki/Standard_deviation
- * @param {...number} var_args Number samples to analyze.
- * @return {number} The sample standard deviation of the arguments (0 if fewer
- *     than two samples were provided, or {@code NaN} if any of the samples is
- *     not a valid number).
- */
-goog.math.standardDeviation = function(var_args) {
-  return Math.sqrt(goog.math.sampleVariance.apply(null, arguments));
-};
-
-
-/**
- * Returns whether the supplied number represents an integer, i.e. that is has
- * no fractional component.  No range-checking is performed on the number.
- * @param {number} num The number to test.
- * @return {boolean} Whether {@code num} is an integer.
- */
-goog.math.isInt = function(num) {
-  return isFinite(num) && num % 1 == 0;
-};
-
-
-/**
- * Returns whether the supplied number is finite and not NaN.
- * @param {number} num The number to test.
- * @return {boolean} Whether {@code num} is a finite number.
- */
-goog.math.isFiniteNumber = function(num) {
-  return isFinite(num) && !isNaN(num);
-};
-
-
-/**
- * @param {number} num The number to test.
- * @return {boolean} Whether it is negative zero.
- */
-goog.math.isNegativeZero = function(num) {
-  return num == 0 && 1 / num < 0;
-};
-
-
-/**
- * Returns the precise value of floor(log10(num)).
- * Simpler implementations didn't work because of floating point rounding
- * errors. For example
- * <ul>
- * <li>Math.floor(Math.log(num) / Math.LN10) is off by one for num == 1e+3.
- * <li>Math.floor(Math.log(num) * Math.LOG10E) is off by one for num == 1e+15.
- * <li>Math.floor(Math.log10(num)) is off by one for num == 1e+15 - 1.
- * </ul>
- * @param {number} num A floating point number.
- * @return {number} Its logarithm to base 10 rounded down to the nearest
- *     integer if num > 0. -Infinity if num == 0. NaN if num < 0.
- */
-goog.math.log10Floor = function(num) {
-  if (num > 0) {
-    var x = Math.round(Math.log(num) * Math.LOG10E);
-    return x - (parseFloat('1e' + x) > num ? 1 : 0);
-  }
-  return num == 0 ? -Infinity : NaN;
-};
-
-
-/**
- * A tweaked variant of {@code Math.floor} which tolerates if the passed number
- * is infinitesimally smaller than the closest integer. It often happens with
- * the results of floating point calculations because of the finite precision
- * of the intermediate results. For example {@code Math.floor(Math.log(1000) /
- * Math.LN10) == 2}, not 3 as one would expect.
- * @param {number} num A number.
- * @param {number=} opt_epsilon An infinitesimally small positive number, the
- *     rounding error to tolerate.
- * @return {number} The largest integer less than or equal to {@code num}.
- */
-goog.math.safeFloor = function(num, opt_epsilon) {
-  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
-  return Math.floor(num + (opt_epsilon || 2e-15));
-};
-
-
-/**
- * A tweaked variant of {@code Math.ceil}. See {@code goog.math.safeFloor} for
- * details.
- * @param {number} num A number.
- * @param {number=} opt_epsilon An infinitesimally small positive number, the
- *     rounding error to tolerate.
- * @return {number} The smallest integer greater than or equal to {@code num}.
- */
-goog.math.safeCeil = function(num, opt_epsilon) {
-  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
-  return Math.ceil(num - (opt_epsilon || 2e-15));
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities related to color and color conversion.
- */
-
-goog.provide('goog.color');
-goog.provide('goog.color.Hsl');
-goog.provide('goog.color.Hsv');
-goog.provide('goog.color.Rgb');
-
-goog.require('goog.color.names');
-goog.require('goog.math');
-
-
-/**
- * RGB color representation. An array containing three elements [r, g, b],
- * each an integer in [0, 255], representing the red, green, and blue components
- * of the color respectively.
- * @typedef {Array<number>}
- */
-goog.color.Rgb;
-
-
-/**
- * HSV color representation. An array containing three elements [h, s, v]:
- * h (hue) must be an integer in [0, 360], cyclic.
- * s (saturation) must be a number in [0, 1].
- * v (value/brightness) must be an integer in [0, 255].
- * @typedef {Array<number>}
- */
-goog.color.Hsv;
-
-
-/**
- * HSL color representation. An array containing three elements [h, s, l]:
- * h (hue) must be an integer in [0, 360], cyclic.
- * s (saturation) must be a number in [0, 1].
- * l (lightness) must be a number in [0, 1].
- * @typedef {Array<number>}
- */
-goog.color.Hsl;
-
-
-/**
- * Parses a color out of a string.
- * @param {string} str Color in some format.
- * @return {{hex: string, type: string}} 'hex' is a string containing a hex
- *     representation of the color, 'type' is a string containing the type
- *     of color format passed in ('hex', 'rgb', 'named').
- */
-goog.color.parse = function(str) {
-  var result = {};
-  str = String(str);
-
-  var maybeHex = goog.color.prependHashIfNecessaryHelper(str);
-  if (goog.color.isValidHexColor_(maybeHex)) {
-    result.hex = goog.color.normalizeHex(maybeHex);
-    result.type = 'hex';
-    return result;
-  } else {
-    var rgb = goog.color.isValidRgbColor_(str);
-    if (rgb.length) {
-      result.hex = goog.color.rgbArrayToHex(rgb);
-      result.type = 'rgb';
-      return result;
-    } else if (goog.color.names) {
-      var hex = goog.color.names[str.toLowerCase()];
-      if (hex) {
-        result.hex = hex;
-        result.type = 'named';
-        return result;
-      }
-    }
-  }
-  throw Error(str + ' is not a valid color string');
-};
-
-
-/**
- * Determines if the given string can be parsed as a color.
- *     {@see goog.color.parse}.
- * @param {string} str Potential color string.
- * @return {boolean} True if str is in a format that can be parsed to a color.
- */
-goog.color.isValidColor = function(str) {
-  var maybeHex = goog.color.prependHashIfNecessaryHelper(str);
-  return !!(
-      goog.color.isValidHexColor_(maybeHex) ||
-      goog.color.isValidRgbColor_(str).length ||
-      goog.color.names && goog.color.names[str.toLowerCase()]);
-};
-
-
-/**
- * Parses red, green, blue components out of a valid rgb color string.
- * Throws Error if the color string is invalid.
- * @param {string} str RGB representation of a color.
- *    {@see goog.color.isValidRgbColor_}.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.parseRgb = function(str) {
-  var rgb = goog.color.isValidRgbColor_(str);
-  if (!rgb.length) {
-    throw Error(str + ' is not a valid RGB color');
-  }
-  return rgb;
-};
-
-
-/**
- * Converts a hex representation of a color to RGB.
- * @param {string} hexColor Color to convert.
- * @return {string} string of the form 'rgb(R,G,B)' which can be used in
- *    styles.
- */
-goog.color.hexToRgbStyle = function(hexColor) {
-  return goog.color.rgbStyle_(goog.color.hexToRgb(hexColor));
-};
-
-
-/**
- * Regular expression for extracting the digits in a hex color triplet.
- * @type {RegExp}
- * @private
- */
-goog.color.hexTripletRe_ = /#(.)(.)(.)/;
-
-
-/**
- * Normalize an hex representation of a color
- * @param {string} hexColor an hex color string.
- * @return {string} hex color in the format '#rrggbb' with all lowercase
- *     literals.
- */
-goog.color.normalizeHex = function(hexColor) {
-  if (!goog.color.isValidHexColor_(hexColor)) {
-    throw Error("'" + hexColor + "' is not a valid hex color");
-  }
-  if (hexColor.length == 4) {  // of the form #RGB
-    hexColor = hexColor.replace(goog.color.hexTripletRe_, '#$1$1$2$2$3$3');
-  }
-  return hexColor.toLowerCase();
-};
-
-
-/**
- * Converts a hex representation of a color to RGB.
- * @param {string} hexColor Color to convert.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hexToRgb = function(hexColor) {
-  hexColor = goog.color.normalizeHex(hexColor);
-  var r = parseInt(hexColor.substr(1, 2), 16);
-  var g = parseInt(hexColor.substr(3, 2), 16);
-  var b = parseInt(hexColor.substr(5, 2), 16);
-
-  return [r, g, b];
-};
-
-
-/**
- * Converts a color from RGB to hex representation.
- * @param {number} r Amount of red, int between 0 and 255.
- * @param {number} g Amount of green, int between 0 and 255.
- * @param {number} b Amount of blue, int between 0 and 255.
- * @return {string} hex representation of the color.
- */
-goog.color.rgbToHex = function(r, g, b) {
-  r = Number(r);
-  g = Number(g);
-  b = Number(b);
-  if (r != (r & 255) || g != (g & 255) || b != (b & 255)) {
-    throw Error('"(' + r + ',' + g + ',' + b + '") is not a valid RGB color');
-  }
-  var hexR = goog.color.prependZeroIfNecessaryHelper(r.toString(16));
-  var hexG = goog.color.prependZeroIfNecessaryHelper(g.toString(16));
-  var hexB = goog.color.prependZeroIfNecessaryHelper(b.toString(16));
-  return '#' + hexR + hexG + hexB;
-};
-
-
-/**
- * Converts a color from RGB to hex representation.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {string} hex representation of the color.
- */
-goog.color.rgbArrayToHex = function(rgb) {
-  return goog.color.rgbToHex(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Converts a color from RGB color space to HSL color space.
- * Modified from {@link http://en.wikipedia.org/wiki/HLS_color_space}.
- * @param {number} r Value of red, in [0, 255].
- * @param {number} g Value of green, in [0, 255].
- * @param {number} b Value of blue, in [0, 255].
- * @return {!goog.color.Hsl} hsl representation of the color.
- */
-goog.color.rgbToHsl = function(r, g, b) {
-  // First must normalize r, g, b to be between 0 and 1.
-  var normR = r / 255;
-  var normG = g / 255;
-  var normB = b / 255;
-  var max = Math.max(normR, normG, normB);
-  var min = Math.min(normR, normG, normB);
-  var h = 0;
-  var s = 0;
-
-  // Luminosity is the average of the max and min rgb color intensities.
-  var l = 0.5 * (max + min);
-
-  // The hue and saturation are dependent on which color intensity is the max.
-  // If max and min are equal, the color is gray and h and s should be 0.
-  if (max != min) {
-    if (max == normR) {
-      h = 60 * (normG - normB) / (max - min);
-    } else if (max == normG) {
-      h = 60 * (normB - normR) / (max - min) + 120;
-    } else if (max == normB) {
-      h = 60 * (normR - normG) / (max - min) + 240;
-    }
-
-    if (0 < l && l <= 0.5) {
-      s = (max - min) / (2 * l);
-    } else {
-      s = (max - min) / (2 - 2 * l);
-    }
-  }
-
-  // Make sure the hue falls between 0 and 360.
-  return [Math.round(h + 360) % 360, s, l];
-};
-
-
-/**
- * Converts a color from RGB color space to HSL color space.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {!goog.color.Hsl} hsl representation of the color.
- */
-goog.color.rgbArrayToHsl = function(rgb) {
-  return goog.color.rgbToHsl(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Helper for hslToRgb.
- * @param {number} v1 Helper variable 1.
- * @param {number} v2 Helper variable 2.
- * @param {number} vH Helper variable 3.
- * @return {number} Appropriate RGB value, given the above.
- * @private
- */
-goog.color.hueToRgb_ = function(v1, v2, vH) {
-  if (vH < 0) {
-    vH += 1;
-  } else if (vH > 1) {
-    vH -= 1;
-  }
-  if ((6 * vH) < 1) {
-    return (v1 + (v2 - v1) * 6 * vH);
-  } else if (2 * vH < 1) {
-    return v2;
-  } else if (3 * vH < 2) {
-    return (v1 + (v2 - v1) * ((2 / 3) - vH) * 6);
-  }
-  return v1;
-};
-
-
-/**
- * Converts a color from HSL color space to RGB color space.
- * Modified from {@link http://www.easyrgb.com/math.html}
- * @param {number} h Hue, in [0, 360].
- * @param {number} s Saturation, in [0, 1].
- * @param {number} l Luminosity, in [0, 1].
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hslToRgb = function(h, s, l) {
-  var r = 0;
-  var g = 0;
-  var b = 0;
-  var normH = h / 360;  // normalize h to fall in [0, 1]
-
-  if (s == 0) {
-    r = g = b = l * 255;
-  } else {
-    var temp1 = 0;
-    var temp2 = 0;
-    if (l < 0.5) {
-      temp2 = l * (1 + s);
-    } else {
-      temp2 = l + s - (s * l);
-    }
-    temp1 = 2 * l - temp2;
-    r = 255 * goog.color.hueToRgb_(temp1, temp2, normH + (1 / 3));
-    g = 255 * goog.color.hueToRgb_(temp1, temp2, normH);
-    b = 255 * goog.color.hueToRgb_(temp1, temp2, normH - (1 / 3));
-  }
-
-  return [Math.round(r), Math.round(g), Math.round(b)];
-};
-
-
-/**
- * Converts a color from HSL color space to RGB color space.
- * @param {goog.color.Hsl} hsl hsl representation of the color.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hslArrayToRgb = function(hsl) {
-  return goog.color.hslToRgb(hsl[0], hsl[1], hsl[2]);
-};
-
-
-/**
- * Helper for isValidHexColor_.
- * @type {RegExp}
- * @private
- */
-goog.color.validHexColorRe_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
-
-
-/**
- * Checks if a string is a valid hex color.  We expect strings of the format
- * #RRGGBB (ex: #1b3d5f) or #RGB (ex: #3CA == #33CCAA).
- * @param {string} str String to check.
- * @return {boolean} Whether the string is a valid hex color.
- * @private
- */
-goog.color.isValidHexColor_ = function(str) {
-  return goog.color.validHexColorRe_.test(str);
-};
-
-
-/**
- * Helper for isNormalizedHexColor_.
- * @type {RegExp}
- * @private
- */
-goog.color.normalizedHexColorRe_ = /^#[0-9a-f]{6}$/;
-
-
-/**
- * Checks if a string is a normalized hex color.
- * We expect strings of the format #RRGGBB (ex: #1b3d5f)
- * using only lowercase letters.
- * @param {string} str String to check.
- * @return {boolean} Whether the string is a normalized hex color.
- * @private
- */
-goog.color.isNormalizedHexColor_ = function(str) {
-  return goog.color.normalizedHexColorRe_.test(str);
-};
-
-
-/**
- * Regular expression for matching and capturing RGB style strings. Helper for
- * isValidRgbColor_.
- * @type {RegExp}
- * @private
- */
-goog.color.rgbColorRe_ =
-    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
-
-
-/**
- * Checks if a string is a valid rgb color.  We expect strings of the format
- * '(r, g, b)', or 'rgb(r, g, b)', where each color component is an int in
- * [0, 255].
- * @param {string} str String to check.
- * @return {!goog.color.Rgb} the rgb representation of the color if it is
- *     a valid color, or the empty array otherwise.
- * @private
- */
-goog.color.isValidRgbColor_ = function(str) {
-  // Each component is separate (rather than using a repeater) so we can
-  // capture the match. Also, we explicitly set each component to be either 0,
-  // or start with a non-zero, to prevent octal numbers from slipping through.
-  var regExpResultArray = str.match(goog.color.rgbColorRe_);
-  if (regExpResultArray) {
-    var r = Number(regExpResultArray[1]);
-    var g = Number(regExpResultArray[2]);
-    var b = Number(regExpResultArray[3]);
-    if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
-      return [r, g, b];
-    }
-  }
-  return [];
-};
-
-
-/**
- * Takes a hex value and prepends a zero if it's a single digit.
- * Small helper method for use by goog.color and friends.
- * @param {string} hex Hex value to prepend if single digit.
- * @return {string} hex value prepended with zero if it was single digit,
- *     otherwise the same value that was passed in.
- */
-goog.color.prependZeroIfNecessaryHelper = function(hex) {
-  return hex.length == 1 ? '0' + hex : hex;
-};
-
-
-/**
- * Takes a string a prepends a '#' sign if one doesn't exist.
- * Small helper method for use by goog.color and friends.
- * @param {string} str String to check.
- * @return {string} The value passed in, prepended with a '#' if it didn't
- *     already have one.
- */
-goog.color.prependHashIfNecessaryHelper = function(str) {
-  return str.charAt(0) == '#' ? str : '#' + str;
-};
-
-
-/**
- * Takes an array of [r, g, b] and converts it into a string appropriate for
- * CSS styles.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {string} string of the form 'rgb(r,g,b)'.
- * @private
- */
-goog.color.rgbStyle_ = function(rgb) {
-  return 'rgb(' + rgb.join(',') + ')';
-};
-
-
-/**
- * Converts an HSV triplet to an RGB array.  V is brightness because b is
- *   reserved for blue in RGB.
- * @param {number} h Hue value in [0, 360].
- * @param {number} s Saturation value in [0, 1].
- * @param {number} brightness brightness in [0, 255].
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hsvToRgb = function(h, s, brightness) {
-  var red = 0;
-  var green = 0;
-  var blue = 0;
-  if (s == 0) {
-    red = brightness;
-    green = brightness;
-    blue = brightness;
-  } else {
-    var sextant = Math.floor(h / 60);
-    var remainder = (h / 60) - sextant;
-    var val1 = brightness * (1 - s);
-    var val2 = brightness * (1 - (s * remainder));
-    var val3 = brightness * (1 - (s * (1 - remainder)));
-    switch (sextant) {
-      case 1:
-        red = val2;
-        green = brightness;
-        blue = val1;
-        break;
-      case 2:
-        red = val1;
-        green = brightness;
-        blue = val3;
-        break;
-      case 3:
-        red = val1;
-        green = val2;
-        blue = brightness;
-        break;
-      case 4:
-        red = val3;
-        green = val1;
-        blue = brightness;
-        break;
-      case 5:
-        red = brightness;
-        green = val1;
-        blue = val2;
-        break;
-      case 6:
-      case 0:
-        red = brightness;
-        green = val3;
-        blue = val1;
-        break;
-    }
-  }
-
-  return [Math.floor(red), Math.floor(green), Math.floor(blue)];
-};
-
-
-/**
- * Converts from RGB values to an array of HSV values.
- * @param {number} red Red value in [0, 255].
- * @param {number} green Green value in [0, 255].
- * @param {number} blue Blue value in [0, 255].
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.rgbToHsv = function(red, green, blue) {
-
-  var max = Math.max(Math.max(red, green), blue);
-  var min = Math.min(Math.min(red, green), blue);
-  var hue;
-  var saturation;
-  var value = max;
-  if (min == max) {
-    hue = 0;
-    saturation = 0;
-  } else {
-    var delta = (max - min);
-    saturation = delta / max;
-
-    if (red == max) {
-      hue = (green - blue) / delta;
-    } else if (green == max) {
-      hue = 2 + ((blue - red) / delta);
-    } else {
-      hue = 4 + ((red - green) / delta);
-    }
-    hue *= 60;
-    if (hue < 0) {
-      hue += 360;
-    }
-    if (hue > 360) {
-      hue -= 360;
-    }
-  }
-
-  return [hue, saturation, value];
-};
-
-
-/**
- * Converts from an array of RGB values to an array of HSV values.
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.rgbArrayToHsv = function(rgb) {
-  return goog.color.rgbToHsv(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Converts an HSV triplet to an RGB array.
- * @param {goog.color.Hsv} hsv hsv representation of the color.
- * @return {!goog.color.Rgb} rgb representation of the color.
- */
-goog.color.hsvArrayToRgb = function(hsv) {
-  return goog.color.hsvToRgb(hsv[0], hsv[1], hsv[2]);
-};
-
-
-/**
- * Converts a hex representation of a color to HSL.
- * @param {string} hex Color to convert.
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.hexToHsl = function(hex) {
-  var rgb = goog.color.hexToRgb(hex);
-  return goog.color.rgbToHsl(rgb[0], rgb[1], rgb[2]);
-};
-
-
-/**
- * Converts from h,s,l values to a hex string
- * @param {number} h Hue, in [0, 360].
- * @param {number} s Saturation, in [0, 1].
- * @param {number} l Luminosity, in [0, 1].
- * @return {string} hex representation of the color.
- */
-goog.color.hslToHex = function(h, s, l) {
-  return goog.color.rgbArrayToHex(goog.color.hslToRgb(h, s, l));
-};
-
-
-/**
- * Converts from an hsl array to a hex string
- * @param {goog.color.Hsl} hsl hsl representation of the color.
- * @return {string} hex representation of the color.
- */
-goog.color.hslArrayToHex = function(hsl) {
-  return goog.color.rgbArrayToHex(goog.color.hslToRgb(hsl[0], hsl[1], hsl[2]));
-};
-
-
-/**
- * Converts a hex representation of a color to HSV
- * @param {string} hex Color to convert.
- * @return {!goog.color.Hsv} hsv representation of the color.
- */
-goog.color.hexToHsv = function(hex) {
-  return goog.color.rgbArrayToHsv(goog.color.hexToRgb(hex));
-};
-
-
-/**
- * Converts from h,s,v values to a hex string
- * @param {number} h Hue, in [0, 360].
- * @param {number} s Saturation, in [0, 1].
- * @param {number} v Value, in [0, 255].
- * @return {string} hex representation of the color.
- */
-goog.color.hsvToHex = function(h, s, v) {
-  return goog.color.rgbArrayToHex(goog.color.hsvToRgb(h, s, v));
-};
-
-
-/**
- * Converts from an HSV array to a hex string
- * @param {goog.color.Hsv} hsv hsv representation of the color.
- * @return {string} hex representation of the color.
- */
-goog.color.hsvArrayToHex = function(hsv) {
-  return goog.color.hsvToHex(hsv[0], hsv[1], hsv[2]);
-};
-
-
-/**
- * Calculates the Euclidean distance between two color vectors on an HSL sphere.
- * A demo of the sphere can be found at:
- * http://en.wikipedia.org/wiki/HSL_color_space
- * In short, a vector for color (H, S, L) in this system can be expressed as
- * (S*L'*cos(2*PI*H), S*L'*sin(2*PI*H), L), where L' = abs(L - 0.5), and we
- * simply calculate the 1-2 distance using these coordinates
- * @param {goog.color.Hsl} hsl1 First color in hsl representation.
- * @param {goog.color.Hsl} hsl2 Second color in hsl representation.
- * @return {number} Distance between the two colors, in the range [0, 1].
- */
-goog.color.hslDistance = function(hsl1, hsl2) {
-  var sl1, sl2;
-  if (hsl1[2] <= 0.5) {
-    sl1 = hsl1[1] * hsl1[2];
-  } else {
-    sl1 = hsl1[1] * (1.0 - hsl1[2]);
-  }
-
-  if (hsl2[2] <= 0.5) {
-    sl2 = hsl2[1] * hsl2[2];
-  } else {
-    sl2 = hsl2[1] * (1.0 - hsl2[2]);
-  }
-
-  var h1 = hsl1[0] / 360.0;
-  var h2 = hsl2[0] / 360.0;
-  var dh = (h1 - h2) * 2.0 * Math.PI;
-  return (hsl1[2] - hsl2[2]) * (hsl1[2] - hsl2[2]) + sl1 * sl1 + sl2 * sl2 -
-      2 * sl1 * sl2 * Math.cos(dh);
-};
-
-
-/**
- * Blend two colors together, using the specified factor to indicate the weight
- * given to the first color
- * @param {goog.color.Rgb} rgb1 First color represented in rgb.
- * @param {goog.color.Rgb} rgb2 Second color represented in rgb.
- * @param {number} factor The weight to be given to rgb1 over rgb2. Values
- *     should be in the range [0, 1]. If less than 0, factor will be set to 0.
- *     If greater than 1, factor will be set to 1.
- * @return {!goog.color.Rgb} Combined color represented in rgb.
- */
-goog.color.blend = function(rgb1, rgb2, factor) {
-  factor = goog.math.clamp(factor, 0, 1);
-
-  return [
-    Math.round(factor * rgb1[0] + (1.0 - factor) * rgb2[0]),
-    Math.round(factor * rgb1[1] + (1.0 - factor) * rgb2[1]),
-    Math.round(factor * rgb1[2] + (1.0 - factor) * rgb2[2])
-  ];
-};
-
-
-/**
- * Adds black to the specified color, darkening it
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @param {number} factor Number in the range [0, 1]. 0 will do nothing, while
- *     1 will return black. If less than 0, factor will be set to 0. If greater
- *     than 1, factor will be set to 1.
- * @return {!goog.color.Rgb} Combined rgb color.
- */
-goog.color.darken = function(rgb, factor) {
-  var black = [0, 0, 0];
-  return goog.color.blend(black, rgb, factor);
-};
-
-
-/**
- * Adds white to the specified color, lightening it
- * @param {goog.color.Rgb} rgb rgb representation of the color.
- * @param {number} factor Number in the range [0, 1].  0 will do nothing, while
- *     1 will return white. If less than 0, factor will be set to 0. If greater
- *     than 1, factor will be set to 1.
- * @return {!goog.color.Rgb} Combined rgb color.
- */
-goog.color.lighten = function(rgb, factor) {
-  var white = [255, 255, 255];
-  return goog.color.blend(white, rgb, factor);
-};
-
-
-/**
- * Find the "best" (highest-contrast) of the suggested colors for the prime
- * color. Uses W3C formula for judging readability and visual accessibility:
- * http://www.w3.org/TR/AERT#color-contrast
- * @param {goog.color.Rgb} prime Color represented as a rgb array.
- * @param {Array<goog.color.Rgb>} suggestions Array of colors,
- *     each representing a rgb array.
- * @return {!goog.color.Rgb} Highest-contrast color represented by an array..
- */
-goog.color.highContrast = function(prime, suggestions) {
-  var suggestionsWithDiff = [];
-  for (var i = 0; i < suggestions.length; i++) {
-    suggestionsWithDiff.push({
-      color: suggestions[i],
-      diff: goog.color.yiqBrightnessDiff_(suggestions[i], prime) +
-          goog.color.colorDiff_(suggestions[i], prime)
-    });
-  }
-  suggestionsWithDiff.sort(function(a, b) { return b.diff - a.diff; });
-  return suggestionsWithDiff[0].color;
-};
-
-
-/**
- * Calculate brightness of a color according to YIQ formula (brightness is Y).
- * More info on YIQ here: http://en.wikipedia.org/wiki/YIQ. Helper method for
- * goog.color.highContrast()
- * @param {goog.color.Rgb} rgb Color represented by a rgb array.
- * @return {number} brightness (Y).
- * @private
- */
-goog.color.yiqBrightness_ = function(rgb) {
-  return Math.round((rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000);
-};
-
-
-/**
- * Calculate difference in brightness of two colors. Helper method for
- * goog.color.highContrast()
- * @param {goog.color.Rgb} rgb1 Color represented by a rgb array.
- * @param {goog.color.Rgb} rgb2 Color represented by a rgb array.
- * @return {number} Brightness difference.
- * @private
- */
-goog.color.yiqBrightnessDiff_ = function(rgb1, rgb2) {
-  return Math.abs(
-      goog.color.yiqBrightness_(rgb1) - goog.color.yiqBrightness_(rgb2));
-};
-
-
-/**
- * Calculate color difference between two colors. Helper method for
- * goog.color.highContrast()
- * @param {goog.color.Rgb} rgb1 Color represented by a rgb array.
- * @param {goog.color.Rgb} rgb2 Color represented by a rgb array.
- * @return {number} Color difference.
- * @private
- */
-goog.color.colorDiff_ = function(rgb1, rgb2) {
-  return Math.abs(rgb1[0] - rgb2[0]) + Math.abs(rgb1[1] - rgb2[1]) +
-      Math.abs(rgb1[2] - rgb2[2]);
-};
-
-// We can't use goog.color or goog.color.alpha because they interally use a hex
-// string representation that encodes each channel in a single byte.  This
-// causes occasional loss of precision and rounding errors, especially in the
-// alpha channel.
-
-goog.provide('ol.color');
-
-goog.require('goog.asserts');
-goog.require('goog.color');
-goog.require('goog.color.names');
-goog.require('ol');
-goog.require('ol.math');
-
-
-/**
- * This RegExp matches # followed by 3 or 6 hex digits.
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.hexColorRe_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
-
-
-/**
- * @see goog.color.rgbColorRe_
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.rgbColorRe_ =
-    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
-
-
-/**
- * @see goog.color.alpha.rgbaColorRe_
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.rgbaColorRe_ =
-    /^(?:rgba)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|1|0\.\d{0,10})\)$/i;
-
-
-/**
- * Return the color as an array. This function maintains a cache of calculated
- * arrays which means the result should not be modified.
- * @param {ol.Color|string} color Color.
- * @return {ol.Color} Color.
- * @api
- */
-ol.color.asArray = function(color) {
-  if (Array.isArray(color)) {
-    return color;
-  } else {
-    goog.asserts.assert(typeof color === 'string', 'Color should be a string');
-    return ol.color.fromString(color);
-  }
-};
-
-
-/**
- * Return the color as an rgba string.
- * @param {ol.Color|string} color Color.
- * @return {string} Rgba string.
- * @api
- */
-ol.color.asString = function(color) {
-  if (typeof color === 'string') {
-    return color;
-  } else {
-    goog.asserts.assert(Array.isArray(color), 'Color should be an array');
-    return ol.color.toString(color);
-  }
-};
-
-
-/**
- * @param {string} s String.
- * @return {ol.Color} Color.
- */
-ol.color.fromString = (
-    function() {
-
-      // We maintain a small cache of parsed strings.  To provide cheap LRU-like
-      // semantics, whenever the cache grows too large we simply delete an
-      // arbitrary 25% of the entries.
-
-      /**
-       * @const
-       * @type {number}
-       */
-      var MAX_CACHE_SIZE = 1024;
-
-      /**
-       * @type {Object.<string, ol.Color>}
-       */
-      var cache = {};
-
-      /**
-       * @type {number}
-       */
-      var cacheSize = 0;
-
-      return (
-          /**
-           * @param {string} s String.
-           * @return {ol.Color} Color.
-           */
-          function(s) {
-            var color;
-            if (cache.hasOwnProperty(s)) {
-              color = cache[s];
-            } else {
-              if (cacheSize >= MAX_CACHE_SIZE) {
-                var i = 0;
-                var key;
-                for (key in cache) {
-                  if ((i++ & 3) === 0) {
-                    delete cache[key];
-                    --cacheSize;
-                  }
-                }
-              }
-              color = ol.color.fromStringInternal_(s);
-              cache[s] = color;
-              ++cacheSize;
-            }
-            return color;
-          });
-
-    })();
-
-
-/**
- * @param {string} s String.
- * @private
- * @return {ol.Color} Color.
- */
-ol.color.fromStringInternal_ = function(s) {
-
-  var isHex = false;
-  if (ol.ENABLE_NAMED_COLORS && goog.color.names.hasOwnProperty(s)) {
-    s = goog.color.names[s];
-    isHex = true;
-  }
-
-  var r, g, b, a, color, match;
-  if (isHex || (match = ol.color.hexColorRe_.exec(s))) { // hex
-    var n = s.length - 1; // number of hex digits
-    goog.asserts.assert(n == 3 || n == 6,
-        'Color string length should be 3 or 6');
-    var d = n == 3 ? 1 : 2; // number of digits per channel
-    r = parseInt(s.substr(1 + 0 * d, d), 16);
-    g = parseInt(s.substr(1 + 1 * d, d), 16);
-    b = parseInt(s.substr(1 + 2 * d, d), 16);
-    if (d == 1) {
-      r = (r << 4) + r;
-      g = (g << 4) + g;
-      b = (b << 4) + b;
-    }
-    a = 1;
-    color = [r, g, b, a];
-    goog.asserts.assert(ol.color.isValid(color),
-        'Color should be a valid color');
-    return color;
-  } else if ((match = ol.color.rgbaColorRe_.exec(s))) { // rgba()
-    r = Number(match[1]);
-    g = Number(match[2]);
-    b = Number(match[3]);
-    a = Number(match[4]);
-    color = [r, g, b, a];
-    return ol.color.normalize(color, color);
-  } else if ((match = ol.color.rgbColorRe_.exec(s))) { // rgb()
-    r = Number(match[1]);
-    g = Number(match[2]);
-    b = Number(match[3]);
-    color = [r, g, b, 1];
-    return ol.color.normalize(color, color);
-  } else {
-    goog.asserts.fail(s + ' is not a valid color');
-  }
-
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @return {boolean} Is valid.
- */
-ol.color.isValid = function(color) {
-  return 0 <= color[0] && color[0] < 256 &&
-      0 <= color[1] && color[1] < 256 &&
-      0 <= color[2] && color[2] < 256 &&
-      0 <= color[3] && color[3] <= 1;
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @param {ol.Color=} opt_color Color.
- * @return {ol.Color} Clamped color.
- */
-ol.color.normalize = function(color, opt_color) {
-  var result = opt_color || [];
-  result[0] = ol.math.clamp((color[0] + 0.5) | 0, 0, 255);
-  result[1] = ol.math.clamp((color[1] + 0.5) | 0, 0, 255);
-  result[2] = ol.math.clamp((color[2] + 0.5) | 0, 0, 255);
-  result[3] = ol.math.clamp(color[3], 0, 1);
-  return result;
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @return {string} String.
- */
-ol.color.toString = function(color) {
-  var r = color[0];
-  if (r != (r | 0)) {
-    r = (r + 0.5) | 0;
-  }
-  var g = color[1];
-  if (g != (g | 0)) {
-    g = (g + 0.5) | 0;
-  }
-  var b = color[2];
-  if (b != (b | 0)) {
-    b = (b + 0.5) | 0;
-  }
-  var a = color[3] === undefined ? 1 : color[3];
-  return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-};
-
-goog.provide('ol.colorlike');
-
-goog.require('ol.color');
-
-
-/**
- * @param {ol.Color|ol.ColorLike} color Color.
- * @return {ol.ColorLike} The color as an ol.ColorLike
- * @api
- */
-ol.colorlike.asColorLike = function(color) {
-  if (ol.colorlike.isColorLike(color)) {
-    return /** @type {string|CanvasPattern|CanvasGradient} */ (color);
-  } else {
-    return ol.color.asString(/** @type {ol.Color} */ (color));
-  }
-};
-
-
-/**
- * @param {?} color The value that is potentially an ol.ColorLike
- * @return {boolean} Whether the color is an ol.ColorLike
- */
-ol.colorlike.isColorLike = function(color) {
-  return (
-      typeof color === 'string' ||
-      color instanceof CanvasPattern ||
-      color instanceof CanvasGradient
-  );
 };
 
 // Copyright 2013 The Closure Library Authors. All Rights Reserved.
@@ -20084,7 +18683,7 @@ ol.Tile.prototype.getImage = goog.abstractMethod;
  * @return {string} Key.
  */
 ol.Tile.prototype.getKey = function() {
-  return goog.getUid(this).toString();
+  return this.key + '/' + this.tileCoord;
 };
 
 
@@ -27802,7 +26401,7 @@ ol.renderer.Layer.prototype.manageTilePyramid = function(
         if (currentZ - z <= preload) {
           tile = tileSource.getTile(z, x, y, pixelRatio, projection);
           if (tile.getState() == ol.TileState.IDLE) {
-            wantedTiles[tile.tileCoord.toString()] = true;
+            wantedTiles[tile.getKey()] = true;
             if (!tileQueue.isKeyQueued(tile.getKey())) {
               tileQueue.enqueue([tile, tileSourceKey,
                 tileGrid.getTileCoordCenter(tile.tileCoord), tileResolution]);
@@ -43042,6 +41641,12 @@ ol.source.ImageVector = function(options) {
 
   /**
    * @private
+   * @type {number}
+   */
+  this.renderBuffer_ = options.renderBuffer == undefined ? 100 : options.renderBuffer;
+
+  /**
+   * @private
    * @type {ol.render.canvas.ReplayGroup}
    */
   this.replayGroup_ = null;
@@ -43092,7 +41697,7 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resol
 
   var replayGroup = new ol.render.canvas.ReplayGroup(
       ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-      resolution);
+      resolution, this.renderBuffer_);
 
   this.source_.loadFeatures(extent, resolution, projection);
 
@@ -51644,8 +50249,7 @@ ol.Map.prototype.getTilePriority = function(tile, tileSourceKey, tileCenter, til
   if (!frameState || !(tileSourceKey in frameState.wantedTiles)) {
     return ol.structs.PriorityQueue.DROP;
   }
-  var coordKey = tile.tileCoord.toString();
-  if (!frameState.wantedTiles[tileSourceKey][coordKey]) {
+  if (!frameState.wantedTiles[tileSourceKey][tile.getKey()]) {
     return ol.structs.PriorityQueue.DROP;
   }
   // Prioritize the highest zoom level tiles closest to the focus.
@@ -62266,6 +60870,454 @@ goog.structs.every = function(col, f, opt_obj) {
   return true;
 };
 
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Additional mathematical functions.
+ */
+
+goog.provide('goog.math');
+
+goog.require('goog.array');
+goog.require('goog.asserts');
+
+
+/**
+ * Returns a random integer greater than or equal to 0 and less than {@code a}.
+ * @param {number} a  The upper bound for the random integer (exclusive).
+ * @return {number} A random integer N such that 0 <= N < a.
+ */
+goog.math.randomInt = function(a) {
+  return Math.floor(Math.random() * a);
+};
+
+
+/**
+ * Returns a random number greater than or equal to {@code a} and less than
+ * {@code b}.
+ * @param {number} a  The lower bound for the random number (inclusive).
+ * @param {number} b  The upper bound for the random number (exclusive).
+ * @return {number} A random number N such that a <= N < b.
+ */
+goog.math.uniformRandom = function(a, b) {
+  return a + Math.random() * (b - a);
+};
+
+
+/**
+ * Takes a number and clamps it to within the provided bounds.
+ * @param {number} value The input number.
+ * @param {number} min The minimum value to return.
+ * @param {number} max The maximum value to return.
+ * @return {number} The input number if it is within bounds, or the nearest
+ *     number within the bounds.
+ */
+goog.math.clamp = function(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+};
+
+
+/**
+ * The % operator in JavaScript returns the remainder of a / b, but differs from
+ * some other languages in that the result will have the same sign as the
+ * dividend. For example, -1 % 8 == -1, whereas in some other languages
+ * (such as Python) the result would be 7. This function emulates the more
+ * correct modulo behavior, which is useful for certain applications such as
+ * calculating an offset index in a circular list.
+ *
+ * @param {number} a The dividend.
+ * @param {number} b The divisor.
+ * @return {number} a % b where the result is between 0 and b (either 0 <= x < b
+ *     or b < x <= 0, depending on the sign of b).
+ */
+goog.math.modulo = function(a, b) {
+  var r = a % b;
+  // If r and b differ in sign, add b to wrap the result to the correct sign.
+  return (r * b < 0) ? r + b : r;
+};
+
+
+/**
+ * Performs linear interpolation between values a and b. Returns the value
+ * between a and b proportional to x (when x is between 0 and 1. When x is
+ * outside this range, the return value is a linear extrapolation).
+ * @param {number} a A number.
+ * @param {number} b A number.
+ * @param {number} x The proportion between a and b.
+ * @return {number} The interpolated value between a and b.
+ */
+goog.math.lerp = function(a, b, x) {
+  return a + x * (b - a);
+};
+
+
+/**
+ * Tests whether the two values are equal to each other, within a certain
+ * tolerance to adjust for floating point errors.
+ * @param {number} a A number.
+ * @param {number} b A number.
+ * @param {number=} opt_tolerance Optional tolerance range. Defaults
+ *     to 0.000001. If specified, should be greater than 0.
+ * @return {boolean} Whether {@code a} and {@code b} are nearly equal.
+ */
+goog.math.nearlyEquals = function(a, b, opt_tolerance) {
+  return Math.abs(a - b) <= (opt_tolerance || 0.000001);
+};
+
+
+// TODO(user): Rename to normalizeAngle, retaining old name as deprecated
+// alias.
+/**
+ * Normalizes an angle to be in range [0-360). Angles outside this range will
+ * be normalized to be the equivalent angle with that range.
+ * @param {number} angle Angle in degrees.
+ * @return {number} Standardized angle.
+ */
+goog.math.standardAngle = function(angle) {
+  return goog.math.modulo(angle, 360);
+};
+
+
+/**
+ * Normalizes an angle to be in range [0-2*PI). Angles outside this range will
+ * be normalized to be the equivalent angle with that range.
+ * @param {number} angle Angle in radians.
+ * @return {number} Standardized angle.
+ */
+goog.math.standardAngleInRadians = function(angle) {
+  return goog.math.modulo(angle, 2 * Math.PI);
+};
+
+
+/**
+ * Converts degrees to radians.
+ * @param {number} angleDegrees Angle in degrees.
+ * @return {number} Angle in radians.
+ */
+goog.math.toRadians = function(angleDegrees) {
+  return angleDegrees * Math.PI / 180;
+};
+
+
+/**
+ * Converts radians to degrees.
+ * @param {number} angleRadians Angle in radians.
+ * @return {number} Angle in degrees.
+ */
+goog.math.toDegrees = function(angleRadians) {
+  return angleRadians * 180 / Math.PI;
+};
+
+
+/**
+ * For a given angle and radius, finds the X portion of the offset.
+ * @param {number} degrees Angle in degrees (zero points in +X direction).
+ * @param {number} radius Radius.
+ * @return {number} The x-distance for the angle and radius.
+ */
+goog.math.angleDx = function(degrees, radius) {
+  return radius * Math.cos(goog.math.toRadians(degrees));
+};
+
+
+/**
+ * For a given angle and radius, finds the Y portion of the offset.
+ * @param {number} degrees Angle in degrees (zero points in +X direction).
+ * @param {number} radius Radius.
+ * @return {number} The y-distance for the angle and radius.
+ */
+goog.math.angleDy = function(degrees, radius) {
+  return radius * Math.sin(goog.math.toRadians(degrees));
+};
+
+
+/**
+ * Computes the angle between two points (x1,y1) and (x2,y2).
+ * Angle zero points in the +X direction, 90 degrees points in the +Y
+ * direction (down) and from there we grow clockwise towards 360 degrees.
+ * @param {number} x1 x of first point.
+ * @param {number} y1 y of first point.
+ * @param {number} x2 x of second point.
+ * @param {number} y2 y of second point.
+ * @return {number} Standardized angle in degrees of the vector from
+ *     x1,y1 to x2,y2.
+ */
+goog.math.angle = function(x1, y1, x2, y2) {
+  return goog.math.standardAngle(
+      goog.math.toDegrees(Math.atan2(y2 - y1, x2 - x1)));
+};
+
+
+/**
+ * Computes the difference between startAngle and endAngle (angles in degrees).
+ * @param {number} startAngle  Start angle in degrees.
+ * @param {number} endAngle  End angle in degrees.
+ * @return {number} The number of degrees that when added to
+ *     startAngle will result in endAngle. Positive numbers mean that the
+ *     direction is clockwise. Negative numbers indicate a counter-clockwise
+ *     direction.
+ *     The shortest route (clockwise vs counter-clockwise) between the angles
+ *     is used.
+ *     When the difference is 180 degrees, the function returns 180 (not -180)
+ *     angleDifference(30, 40) is 10, and angleDifference(40, 30) is -10.
+ *     angleDifference(350, 10) is 20, and angleDifference(10, 350) is -20.
+ */
+goog.math.angleDifference = function(startAngle, endAngle) {
+  var d =
+      goog.math.standardAngle(endAngle) - goog.math.standardAngle(startAngle);
+  if (d > 180) {
+    d = d - 360;
+  } else if (d <= -180) {
+    d = 360 + d;
+  }
+  return d;
+};
+
+
+/**
+ * Returns the sign of a number as per the "sign" or "signum" function.
+ * @param {number} x The number to take the sign of.
+ * @return {number} -1 when negative, 1 when positive, 0 when 0. Preserves
+ *     signed zeros and NaN.
+ */
+goog.math.sign = Math.sign || function(x) {
+  if (x > 0) {
+    return 1;
+  }
+  if (x < 0) {
+    return -1;
+  }
+  return x;  // Preserves signed zeros and NaN.
+};
+
+
+/**
+ * JavaScript implementation of Longest Common Subsequence problem.
+ * http://en.wikipedia.org/wiki/Longest_common_subsequence
+ *
+ * Returns the longest possible array that is subarray of both of given arrays.
+ *
+ * @param {IArrayLike<S>} array1 First array of objects.
+ * @param {IArrayLike<T>} array2 Second array of objects.
+ * @param {Function=} opt_compareFn Function that acts as a custom comparator
+ *     for the array ojects. Function should return true if objects are equal,
+ *     otherwise false.
+ * @param {Function=} opt_collectorFn Function used to decide what to return
+ *     as a result subsequence. It accepts 2 arguments: index of common element
+ *     in the first array and index in the second. The default function returns
+ *     element from the first array.
+ * @return {!Array<S|T>} A list of objects that are common to both arrays
+ *     such that there is no common subsequence with size greater than the
+ *     length of the list.
+ * @template S,T
+ */
+goog.math.longestCommonSubsequence = function(
+    array1, array2, opt_compareFn, opt_collectorFn) {
+
+  var compare = opt_compareFn || function(a, b) { return a == b; };
+
+  var collect = opt_collectorFn || function(i1, i2) { return array1[i1]; };
+
+  var length1 = array1.length;
+  var length2 = array2.length;
+
+  var arr = [];
+  for (var i = 0; i < length1 + 1; i++) {
+    arr[i] = [];
+    arr[i][0] = 0;
+  }
+
+  for (var j = 0; j < length2 + 1; j++) {
+    arr[0][j] = 0;
+  }
+
+  for (i = 1; i <= length1; i++) {
+    for (j = 1; j <= length2; j++) {
+      if (compare(array1[i - 1], array2[j - 1])) {
+        arr[i][j] = arr[i - 1][j - 1] + 1;
+      } else {
+        arr[i][j] = Math.max(arr[i - 1][j], arr[i][j - 1]);
+      }
+    }
+  }
+
+  // Backtracking
+  var result = [];
+  var i = length1, j = length2;
+  while (i > 0 && j > 0) {
+    if (compare(array1[i - 1], array2[j - 1])) {
+      result.unshift(collect(i - 1, j - 1));
+      i--;
+      j--;
+    } else {
+      if (arr[i - 1][j] > arr[i][j - 1]) {
+        i--;
+      } else {
+        j--;
+      }
+    }
+  }
+
+  return result;
+};
+
+
+/**
+ * Returns the sum of the arguments.
+ * @param {...number} var_args Numbers to add.
+ * @return {number} The sum of the arguments (0 if no arguments were provided,
+ *     {@code NaN} if any of the arguments is not a valid number).
+ */
+goog.math.sum = function(var_args) {
+  return /** @type {number} */ (
+      goog.array.reduce(
+          arguments, function(sum, value) { return sum + value; }, 0));
+};
+
+
+/**
+ * Returns the arithmetic mean of the arguments.
+ * @param {...number} var_args Numbers to average.
+ * @return {number} The average of the arguments ({@code NaN} if no arguments
+ *     were provided or any of the arguments is not a valid number).
+ */
+goog.math.average = function(var_args) {
+  return goog.math.sum.apply(null, arguments) / arguments.length;
+};
+
+
+/**
+ * Returns the unbiased sample variance of the arguments. For a definition,
+ * see e.g. http://en.wikipedia.org/wiki/Variance
+ * @param {...number} var_args Number samples to analyze.
+ * @return {number} The unbiased sample variance of the arguments (0 if fewer
+ *     than two samples were provided, or {@code NaN} if any of the samples is
+ *     not a valid number).
+ */
+goog.math.sampleVariance = function(var_args) {
+  var sampleSize = arguments.length;
+  if (sampleSize < 2) {
+    return 0;
+  }
+
+  var mean = goog.math.average.apply(null, arguments);
+  var variance =
+      goog.math.sum.apply(null, goog.array.map(arguments, function(val) {
+        return Math.pow(val - mean, 2);
+      })) / (sampleSize - 1);
+
+  return variance;
+};
+
+
+/**
+ * Returns the sample standard deviation of the arguments.  For a definition of
+ * sample standard deviation, see e.g.
+ * http://en.wikipedia.org/wiki/Standard_deviation
+ * @param {...number} var_args Number samples to analyze.
+ * @return {number} The sample standard deviation of the arguments (0 if fewer
+ *     than two samples were provided, or {@code NaN} if any of the samples is
+ *     not a valid number).
+ */
+goog.math.standardDeviation = function(var_args) {
+  return Math.sqrt(goog.math.sampleVariance.apply(null, arguments));
+};
+
+
+/**
+ * Returns whether the supplied number represents an integer, i.e. that is has
+ * no fractional component.  No range-checking is performed on the number.
+ * @param {number} num The number to test.
+ * @return {boolean} Whether {@code num} is an integer.
+ */
+goog.math.isInt = function(num) {
+  return isFinite(num) && num % 1 == 0;
+};
+
+
+/**
+ * Returns whether the supplied number is finite and not NaN.
+ * @param {number} num The number to test.
+ * @return {boolean} Whether {@code num} is a finite number.
+ */
+goog.math.isFiniteNumber = function(num) {
+  return isFinite(num) && !isNaN(num);
+};
+
+
+/**
+ * @param {number} num The number to test.
+ * @return {boolean} Whether it is negative zero.
+ */
+goog.math.isNegativeZero = function(num) {
+  return num == 0 && 1 / num < 0;
+};
+
+
+/**
+ * Returns the precise value of floor(log10(num)).
+ * Simpler implementations didn't work because of floating point rounding
+ * errors. For example
+ * <ul>
+ * <li>Math.floor(Math.log(num) / Math.LN10) is off by one for num == 1e+3.
+ * <li>Math.floor(Math.log(num) * Math.LOG10E) is off by one for num == 1e+15.
+ * <li>Math.floor(Math.log10(num)) is off by one for num == 1e+15 - 1.
+ * </ul>
+ * @param {number} num A floating point number.
+ * @return {number} Its logarithm to base 10 rounded down to the nearest
+ *     integer if num > 0. -Infinity if num == 0. NaN if num < 0.
+ */
+goog.math.log10Floor = function(num) {
+  if (num > 0) {
+    var x = Math.round(Math.log(num) * Math.LOG10E);
+    return x - (parseFloat('1e' + x) > num ? 1 : 0);
+  }
+  return num == 0 ? -Infinity : NaN;
+};
+
+
+/**
+ * A tweaked variant of {@code Math.floor} which tolerates if the passed number
+ * is infinitesimally smaller than the closest integer. It often happens with
+ * the results of floating point calculations because of the finite precision
+ * of the intermediate results. For example {@code Math.floor(Math.log(1000) /
+ * Math.LN10) == 2}, not 3 as one would expect.
+ * @param {number} num A number.
+ * @param {number=} opt_epsilon An infinitesimally small positive number, the
+ *     rounding error to tolerate.
+ * @return {number} The largest integer less than or equal to {@code num}.
+ */
+goog.math.safeFloor = function(num, opt_epsilon) {
+  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
+  return Math.floor(num + (opt_epsilon || 2e-15));
+};
+
+
+/**
+ * A tweaked variant of {@code Math.ceil}. See {@code goog.math.safeFloor} for
+ * details.
+ * @param {number} num A number.
+ * @param {number=} opt_epsilon An infinitesimally small positive number, the
+ *     rounding error to tolerate.
+ * @return {number} The smallest integer greater than or equal to {@code num}.
+ */
+goog.math.safeCeil = function(num, opt_epsilon) {
+  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
+  return Math.ceil(num - (opt_epsilon || 2e-15));
+};
+
 // Copyright 2007 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -69916,92 +68968,6 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pbf = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-},{}],2:[function(_dereq_,module,exports){
 'use strict';
 
 // lightweight Buffer shim for pbf browser build
@@ -70162,7 +69128,7 @@ function encodeString(str) {
     return bytes;
 }
 
-},{"ieee754":1}],3:[function(_dereq_,module,exports){
+},{"ieee754":3}],2:[function(_dereq_,module,exports){
 (function (global){
 'use strict';
 
@@ -70588,7 +69554,93 @@ function writePackedFixed64(arr, pbf)  { for (var i = 0; i < arr.length; i++) pb
 function writePackedSFixed64(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed64(arr[i]); }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./buffer":2}]},{},[3])(3)
+},{"./buffer":1}],3:[function(_dereq_,module,exports){
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+},{}]},{},[2])(2)
 });
 ol.ext.pbf = module.exports;
 })();
@@ -70605,144 +69657,11 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.vectortile = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = Point;
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
-
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
-
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
-
-},{}],2:[function(_dereq_,module,exports){
 module.exports.VectorTile = _dereq_('./lib/vectortile.js');
 module.exports.VectorTileFeature = _dereq_('./lib/vectortilefeature.js');
 module.exports.VectorTileLayer = _dereq_('./lib/vectortilelayer.js');
 
-},{"./lib/vectortile.js":3,"./lib/vectortilefeature.js":4,"./lib/vectortilelayer.js":5}],3:[function(_dereq_,module,exports){
+},{"./lib/vectortile.js":2,"./lib/vectortilefeature.js":3,"./lib/vectortilelayer.js":4}],2:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileLayer = _dereq_('./vectortilelayer');
@@ -70761,7 +69680,7 @@ function readTile(tag, layers, pbf) {
 }
 
 
-},{"./vectortilelayer":5}],4:[function(_dereq_,module,exports){
+},{"./vectortilelayer":4}],3:[function(_dereq_,module,exports){
 'use strict';
 
 var Point = _dereq_('point-geometry');
@@ -70996,7 +69915,7 @@ function signedArea(ring) {
     return sum;
 }
 
-},{"point-geometry":1}],5:[function(_dereq_,module,exports){
+},{"point-geometry":5}],4:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileFeature = _dereq_('./vectortilefeature.js');
@@ -71059,7 +69978,140 @@ VectorTileLayer.prototype.feature = function(i) {
     return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
 };
 
-},{"./vectortilefeature.js":4}]},{},[2])(2)
+},{"./vectortilefeature.js":3}],5:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = Point;
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
+
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
+
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+},{}]},{},[1])(1)
 });
 ol.ext.vectortile = module.exports;
 })();

@@ -9,7 +9,7 @@ goog.addDependency('../../../ol/ol/array.js', ['ol.array'], ['goog.asserts'], fa
 goog.addDependency('../../../ol/ol/attribution.js', ['ol.Attribution'], ['ol.TileRange', 'ol.math'], false);
 goog.addDependency('../../../ol/ol/centerconstraint.js', ['ol.CenterConstraint'], ['ol.math'], false);
 goog.addDependency('../../../ol/ol/collection.js', ['ol.Collection', 'ol.CollectionEvent', 'ol.CollectionEventType'], ['ol.Object', 'ol.events.Event'], false);
-goog.addDependency('../../../ol/ol/color/color.js', ['ol.color'], ['goog.asserts', 'goog.color', 'goog.color.names', 'ol', 'ol.math'], false);
+goog.addDependency('../../../ol/ol/color/color.js', ['ol.color'], ['goog.asserts', 'ol', 'ol.math'], false);
 goog.addDependency('../../../ol/ol/colorlike.js', ['ol.colorlike'], ['ol.color'], false);
 goog.addDependency('../../../ol/ol/constraints.js', ['ol.Constraints'], [], false);
 goog.addDependency('../../../ol/ol/control/attributioncontrol.js', ['ol.control.Attribution'], ['goog.asserts', 'ol', 'ol.Attribution', 'ol.control.Control', 'ol.css', 'ol.dom', 'ol.events', 'ol.events.EventType', 'ol.object', 'ol.source.Tile'], false);
