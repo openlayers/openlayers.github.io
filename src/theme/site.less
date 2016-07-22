@@ -65,6 +65,14 @@ footer a:focus {
   color: white;
 }
 
+/* Move anchor targets down so they are not covered by the navbar */
+:target:before {
+  content: "";
+  display: block;
+  height: 50px;
+  margin-top: -50px;
+}
+
 h1,
 h2,
 h3,
