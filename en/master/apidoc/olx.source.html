@@ -1763,10 +1763,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.Tile#load"><a href="ol.Tile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1777,6 +1773,10 @@
             
                 <li data-name="ol.Tile#getTileCoord" class="unstable">
                     <a href="ol.Tile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.Tile#load" class="unstable">
+                    <a href="ol.Tile.html#load">load</a>
                 </li>
             
             </ul>
@@ -1792,10 +1792,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.VectorTile#load"><a href="ol.VectorTile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1810,6 +1806,10 @@
             
                 <li data-name="ol.VectorTile#getTileCoord" class="unstable">
                     <a href="ol.VectorTile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.VectorTile#load" class="unstable">
+                    <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
                 <li data-name="ol.VectorTile#setFeatures" class="unstable">
@@ -3980,12 +3980,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.format.MVT#readFeatures"><a href="ol.format.MVT.html#readFeatures">readFeatures</a></li>
-            
-                <li data-name="ol.format.MVT#readProjection"><a href="ol.format.MVT.html#readProjection">readProjection</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -3993,6 +3987,14 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#readFeatures" class="unstable">
+                    <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.MVT#readProjection" class="unstable">
+                    <a href="ol.format.MVT.html#readProjection">readProjection</a>
+                </li>
             
                 <li data-name="ol.format.MVT#setLayers" class="unstable">
                     <a href="ol.format.MVT.html#setLayers">setLayers</a>
@@ -10623,10 +10625,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.render.webgl.Immediate#drawFeature"><a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -10634,6 +10632,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.webgl.Immediate#drawFeature" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a>
+                </li>
             
                 <li data-name="ol.render.webgl.Immediate#drawGeometry" class="unstable">
                     <a href="ol.render.webgl.Immediate.html#drawGeometry">drawGeometry</a>
@@ -23092,8 +23094,8 @@ strategy is used, a one-off strategy which loads all features at once.</p></td>
             
             
             
-            <td class="description last"><p>Setting this option instructs the source to use an XHR loader (see
-<a href="ol.featureloader.html#.xhr"><code>ol.featureloader.xhr</code></a>). Use a <code>string</code> and an
+            <td class="description last"><p>Setting this option instructs the source to load features using an XHR loader
+(see <a href="ol.featureloader.html#.xhr"><code>ol.featureloader.xhr</code></a>). Use a <code>string</code> and an
 <a href="ol.loadingstrategy.html#.all"><code>ol.loadingstrategy.all</code></a> for a one-off download of all features from
 the given URL. Use a <a href="ol.html#.FeatureUrlFunction"><code>ol.FeatureUrlFunction</code></a> to generate the url with
 other loading strategies.
@@ -23103,7 +23105,9 @@ be transformed from the data projection to the view projection
 during parsing. If your remote data source does not advertise its projection
 properly, this transformation will be incorrect. For some formats, the
 default projection (usually EPSG:4326) can be overridden by setting the
-defaultDataProjection constructor option on the format.</p></td>
+defaultDataProjection constructor option on the format.
+Note that if a source contains non-feature data, such as a GeoJSON geometry
+or a KML NetworkLink, these will be ignored. Use a custom loader to load these.</p></td>
         </tr>
 	
 	

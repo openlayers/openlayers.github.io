@@ -5,7 +5,6 @@
 
 goog.provide('ol.format.KML');
 
-goog.require('goog.Uri');
 goog.require('goog.asserts');
 goog.require('goog.object');
 goog.require('ol');
@@ -43,6 +42,9 @@ goog.require('ol.xml');
 /**
  * @classdesc
  * Feature format for reading and writing data in the KML format.
+ *
+ * Note that the KML format uses the URL() constructor. Older browsers such as IE
+ * which do not support this will need a URL polyfill to be loaded before use.
  *
  * @constructor
  * @extends {ol.format.XMLFeature}
@@ -482,30 +484,15 @@ ol.format.KML.readFlatCoordinates_ = function(node) {
 /**
  * @param {Node} node Node.
  * @private
- * @return {string|undefined} Style URL.
- */
-ol.format.KML.readStyleUrl_ = function(node) {
-  var s = ol.xml.getAllTextContent(node, false).trim();
-  if (node.baseURI) {
-    return goog.Uri.resolve(node.baseURI, s).toString();
-  } else {
-    return s;
-  }
-
-};
-
-
-/**
- * @param {Node} node Node.
- * @private
  * @return {string} URI.
  */
 ol.format.KML.readURI_ = function(node) {
-  var s = ol.xml.getAllTextContent(node, false);
+  var s = ol.xml.getAllTextContent(node, false).trim();
   if (node.baseURI) {
-    return goog.Uri.resolve(node.baseURI, s.trim()).toString();
+    var url = new URL(s, node.baseURI);
+    return url.href;
   } else {
-    return s.trim();
+    return s;
   }
 };
 
@@ -1373,28 +1360,8 @@ ol.format.KML.whenParser_ = function(node, objectStack) {
       'gxTrackObject should be an Object');
   var whens = gxTrackObject.whens;
   var s = ol.xml.getAllTextContent(node, false);
-  var re =
-      /^\s*(\d{4})($|-(\d{2})($|-(\d{2})($|T(\d{2}):(\d{2}):(\d{2})(Z|(?:([+\-])(\d{2})(?::(\d{2}))?)))))\s*$/;
-  var m = re.exec(s);
-  if (m) {
-    var year = parseInt(m[1], 10);
-    var month = m[3] ? parseInt(m[3], 10) - 1 : 0;
-    var day = m[5] ? parseInt(m[5], 10) : 1;
-    var hour = m[7] ? parseInt(m[7], 10) : 0;
-    var minute = m[8] ? parseInt(m[8], 10) : 0;
-    var second = m[9] ? parseInt(m[9], 10) : 0;
-    var when = Date.UTC(year, month, day, hour, minute, second);
-    if (m[10] && m[10] != 'Z') {
-      var sign = m[11] == '-' ? -1 : 1;
-      when += sign * 60 * parseInt(m[12], 10);
-      if (m[13]) {
-        when += sign * 60 * 60 * parseInt(m[13], 10);
-      }
-    }
-    whens.push(when);
-  } else {
-    whens.push(0);
-  }
+  var when = Date.parse(s);
+  whens.push(isNaN(when) ? 0 : when);
 };
 
 
@@ -1622,7 +1589,7 @@ ol.format.KML.PAIR_PARSERS_ = ol.xml.makeStructureNS(
     ol.format.KML.NAMESPACE_URIS_, {
       'Style': ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_),
       'key': ol.xml.makeObjectPropertySetter(ol.format.XSD.readString),
-      'styleUrl': ol.xml.makeObjectPropertySetter(ol.format.KML.readStyleUrl_)
+      'styleUrl': ol.xml.makeObjectPropertySetter(ol.format.KML.readURI_)
     });
 
 
@@ -1814,7 +1781,8 @@ ol.format.KML.prototype.readSharedStyle_ = function(node, objectStack) {
     if (style) {
       var styleUri;
       if (node.baseURI) {
-        styleUri = goog.Uri.resolve(node.baseURI, '#' + id).toString();
+        var url = new URL('#' + id, node.baseURI);
+        styleUri = url.href;
       } else {
         styleUri = '#' + id;
       }
@@ -1844,7 +1812,8 @@ ol.format.KML.prototype.readSharedStyleMap_ = function(node, objectStack) {
   }
   var styleUri;
   if (node.baseURI) {
-    styleUri = goog.Uri.resolve(node.baseURI, '#' + id).toString();
+    var url = new URL('#' + id, node.baseURI);
+    styleUri = url.href;
   } else {
     styleUri = '#' + id;
   }

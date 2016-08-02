@@ -1763,10 +1763,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.Tile#load"><a href="ol.Tile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1777,6 +1773,10 @@
             
                 <li data-name="ol.Tile#getTileCoord" class="unstable">
                     <a href="ol.Tile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.Tile#load" class="unstable">
+                    <a href="ol.Tile.html#load">load</a>
                 </li>
             
             </ul>
@@ -1792,10 +1792,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.VectorTile#load"><a href="ol.VectorTile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1810,6 +1806,10 @@
             
                 <li data-name="ol.VectorTile#getTileCoord" class="unstable">
                     <a href="ol.VectorTile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.VectorTile#load" class="unstable">
+                    <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
                 <li data-name="ol.VectorTile#setFeatures" class="unstable">
@@ -3980,12 +3980,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.format.MVT#readFeatures"><a href="ol.format.MVT.html#readFeatures">readFeatures</a></li>
-            
-                <li data-name="ol.format.MVT#readProjection"><a href="ol.format.MVT.html#readProjection">readProjection</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -3993,6 +3987,14 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#readFeatures" class="unstable">
+                    <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.MVT#readProjection" class="unstable">
+                    <a href="ol.format.MVT.html#readProjection">readProjection</a>
+                </li>
             
                 <li data-name="ol.format.MVT#setLayers" class="unstable">
                     <a href="ol.format.MVT.html#setLayers">setLayers</a>
@@ -10623,10 +10625,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.render.webgl.Immediate#drawFeature"><a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -10634,6 +10632,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.webgl.Immediate#drawFeature" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a>
+                </li>
             
                 <li data-name="ol.render.webgl.Immediate#drawGeometry" class="unstable">
                     <a href="ol.render.webgl.Immediate.html#drawGeometry">drawGeometry</a>
@@ -15612,7 +15614,9 @@
         <span class="ancestors"><a href="ol.html">ol</a><a href="ol.format.html">.format</a>.</span>KML
     </h2>
     
-        <div class="class-description"><p>Feature format for reading and writing data in the KML format.</p></div>
+        <div class="class-description"><p>Feature format for reading and writing data in the KML format.</p>
+<p>Note that the KML format uses the URL() constructor. Older browsers such as IE
+which do not support this will need a URL polyfill to be loaded before use.</p></div>
     
 </header>  
 
@@ -15633,7 +15637,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 52
+            src/ol/format/kmlformat.js, line 54
         </div>
         
         
@@ -15914,7 +15918,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 1866
+            src/ol/format/kmlformat.js, line 1835
         </div>
         
         
@@ -16153,7 +16157,7 @@ Feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 1901
+            src/ol/format/kmlformat.js, line 1870
         </div>
         
         
@@ -16392,7 +16396,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 1954
+            src/ol/format/kmlformat.js, line 1923
         </div>
         
         
@@ -16531,7 +16535,7 @@ Name.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2023
+            src/ol/format/kmlformat.js, line 1992
         </div>
         
         
@@ -16668,7 +16672,7 @@ Network links.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2091
+            src/ol/format/kmlformat.js, line 2060
         </div>
         
         
@@ -16808,7 +16812,7 @@ Projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2961
+            src/ol/format/kmlformat.js, line 2930
         </div>
         
         
@@ -17115,7 +17119,7 @@ Result.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kmlformat.js, line 2973
+            src/ol/format/kmlformat.js, line 2942
         </div>
         
         

@@ -1763,10 +1763,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.Tile#load"><a href="ol.Tile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1777,6 +1773,10 @@
             
                 <li data-name="ol.Tile#getTileCoord" class="unstable">
                     <a href="ol.Tile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.Tile#load" class="unstable">
+                    <a href="ol.Tile.html#load">load</a>
                 </li>
             
             </ul>
@@ -1792,10 +1792,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.VectorTile#load"><a href="ol.VectorTile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1810,6 +1806,10 @@
             
                 <li data-name="ol.VectorTile#getTileCoord" class="unstable">
                     <a href="ol.VectorTile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.VectorTile#load" class="unstable">
+                    <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
                 <li data-name="ol.VectorTile#setFeatures" class="unstable">
@@ -3980,12 +3980,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.format.MVT#readFeatures"><a href="ol.format.MVT.html#readFeatures">readFeatures</a></li>
-            
-                <li data-name="ol.format.MVT#readProjection"><a href="ol.format.MVT.html#readProjection">readProjection</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -3993,6 +3987,14 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#readFeatures" class="unstable">
+                    <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.MVT#readProjection" class="unstable">
+                    <a href="ol.format.MVT.html#readProjection">readProjection</a>
+                </li>
             
                 <li data-name="ol.format.MVT#setLayers" class="unstable">
                     <a href="ol.format.MVT.html#setLayers">setLayers</a>
@@ -10623,10 +10625,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.render.webgl.Immediate#drawFeature"><a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -10634,6 +10632,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.webgl.Immediate#drawFeature" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a>
+                </li>
             
                 <li data-name="ol.render.webgl.Immediate#drawGeometry" class="unstable">
                     <a href="ol.render.webgl.Immediate.html#drawGeometry">drawGeometry</a>
@@ -16987,7 +16989,7 @@ image element would be set to a data URI when the content is loaded.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 307
+            src/ol/typedefs.js, line 309
         </div>
         
         
@@ -16998,7 +17000,9 @@ image element would be set to a data URI when the content is loaded.</p>
 
     
     <div class="description">
-        <p>One of <code>all</code>, <code>bbox</code>, <code>tile</code>.</p>
+        <p>A function that takes an <a href="ol.html#.Extent"><code>ol.Extent</code></a> and a resolution as arguments, and
+returns an array of <a href="ol.html#.Extent"><code>ol.Extent</code></a> with the extents to load. Usually this
+is one of the standard <a href="ol.loadingstrategy.html"><code>ol.loadingstrategy</code></a> strategies.</p>
     </div>
     
 
@@ -17161,7 +17165,7 @@ x-coordinate, the second the y-coordinate of the pixel.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 371
+            src/ol/typedefs.js, line 373
         </div>
         
         
@@ -17288,7 +17292,7 @@ undefined.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 399
+            src/ol/typedefs.js, line 401
         </div>
         
         
@@ -17469,7 +17473,7 @@ data object is accessible from raster events, where it can be initialized in
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 456
+            src/ol/typedefs.js, line 458
         </div>
         
         
@@ -17594,7 +17598,7 @@ or <code>false</code> otherwise.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 556
+            src/ol/typedefs.js, line 558
         </div>
         
         
@@ -17671,7 +17675,7 @@ or an array of them. This way e.g. a vector layer can be styled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 566
+            src/ol/typedefs.js, line 568
         </div>
         
         
@@ -17796,7 +17800,7 @@ grid. The order is <code>z</code>, <code>x</code>, and <code>y</code>. <code>z</
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 593
+            src/ol/typedefs.js, line 595
         </div>
         
         
@@ -17872,7 +17876,7 @@ the url as arguments.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 627
+            src/ol/typedefs.js, line 629
         </div>
         
         
@@ -17953,7 +17957,7 @@ coordinate.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 638
+            src/ol/typedefs.js, line 640
         </div>
         
         

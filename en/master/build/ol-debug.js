@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.17.1-64-g2b21cb0
+// Version: v3.17.1-128-gab9e386
 
 (function (root, factory) {
   if (typeof exports === "object") {
@@ -3010,6 +3010,28 @@ ol.nullFunction = function() {};
 
 
 /**
+ * Gets a unique ID for an object. This mutates the object so that further calls
+ * with the same object as a parameter returns the same value. Adapted from
+ * goog.getUid.
+ *
+ * @param {Object} obj The object to get the unique ID for.
+ * @return {number} The unique ID for the object.
+ */
+ol.getUid = function(obj) {
+  return obj.ol_uid ||
+      (obj.ol_uid = ++ol.uidCounter_);
+};
+
+
+/**
+ * Counter for getUid.
+ * @type {number}
+ * @private
+ */
+ol.uidCounter_ = 0;
+
+
+/**
  * @see https://github.com/tc39/proposal-global
  */
 if (typeof window !== 'undefined') {
@@ -5533,15 +5555,6 @@ ol.events.KeyCode = {
 
 
 /**
- * Property name on an event target for the listener map associated with the
- * event target.
- * @const {string}
- * @private
- */
-ol.events.LISTENER_MAP_PROP_ = 'olm_' + ((Math.random() * 1e4) | 0);
-
-
-/**
  * @param {ol.EventsKey} listenerObj Listener object.
  * @return {ol.EventsListenerFunctionType} Bound listener.
  */
@@ -5594,7 +5607,7 @@ ol.events.findListener_ = function(listeners, listener, opt_this,
  * @return {Array.<ol.EventsKey>|undefined} Listeners.
  */
 ol.events.getListeners = function(target, type) {
-  var listenerMap = target[ol.events.LISTENER_MAP_PROP_];
+  var listenerMap = target.ol_lm;
   return listenerMap ? listenerMap[type] : undefined;
 };
 
@@ -5608,9 +5621,9 @@ ol.events.getListeners = function(target, type) {
  * @private
  */
 ol.events.getListenerMap_ = function(target) {
-  var listenerMap = target[ol.events.LISTENER_MAP_PROP_];
+  var listenerMap = target.ol_lm;
   if (!listenerMap) {
-    listenerMap = target[ol.events.LISTENER_MAP_PROP_] = {};
+    listenerMap = target.ol_lm = {};
   }
   return listenerMap;
 };
@@ -5632,11 +5645,11 @@ ol.events.removeListeners_ = function(target, type) {
       ol.object.clear(listeners[i]);
     }
     listeners.length = 0;
-    var listenerMap = target[ol.events.LISTENER_MAP_PROP_];
+    var listenerMap = target.ol_lm;
     if (listenerMap) {
       delete listenerMap[type];
       if (Object.keys(listenerMap).length === 0) {
-        delete target[ol.events.LISTENER_MAP_PROP_];
+        delete target.ol_lm;
       }
     }
   }
@@ -6315,11 +6328,11 @@ ol.inherits(ol.ObjectEvent, ol.events.Event);
 ol.Object = function(opt_values) {
   ol.Observable.call(this);
 
-  // Call goog.getUid to ensure that the order of objects' ids is the same as
+  // Call ol.getUid to ensure that the order of objects' ids is the same as
   // the order in which they were created.  This also helps to ensure that
   // object properties are always added in the same order, which helps many
   // JavaScript engines generate faster code.
-  goog.getUid(this);
+  ol.getUid(this);
 
   /**
    * @private
@@ -9238,20 +9251,21 @@ ol.inherits(ol.geom.Geometry, ol.Object);
 
 /**
  * Make a complete copy of the geometry.
- * @function
+ * @abstract
  * @return {!ol.geom.Geometry} Clone.
  */
-ol.geom.Geometry.prototype.clone = goog.abstractMethod;
+ol.geom.Geometry.prototype.clone = function() {};
 
 
 /**
+ * @abstract
  * @param {number} x X.
  * @param {number} y Y.
  * @param {ol.Coordinate} closestPoint Closest point.
  * @param {number} minSquaredDistance Minimum squared distance.
  * @return {number} Minimum squared distance.
  */
-ol.geom.Geometry.prototype.closestPointXY = goog.abstractMethod;
+ol.geom.Geometry.prototype.closestPointXY = function(x, y, closestPoint, minSquaredDistance) {};
 
 
 /**
@@ -9279,11 +9293,12 @@ ol.geom.Geometry.prototype.containsCoordinate = function(coordinate) {
 
 
 /**
+ * @abstract
  * @param {ol.Extent} extent Extent.
  * @protected
  * @return {ol.Extent} extent Extent.
  */
-ol.geom.Geometry.prototype.computeExtent = goog.abstractMethod;
+ol.geom.Geometry.prototype.computeExtent = function(extent) {};
 
 
 /**
@@ -9312,12 +9327,12 @@ ol.geom.Geometry.prototype.getExtent = function(opt_extent) {
 /**
  * Rotate the geometry around a given coordinate. This modifies the geometry
  * coordinates in place.
+ * @abstract
  * @param {number} angle Rotation angle in radians.
  * @param {ol.Coordinate} anchor The rotation center.
  * @api
- * @function
  */
-ol.geom.Geometry.prototype.rotate = goog.abstractMethod;
+ol.geom.Geometry.prototype.rotate = function(angle, anchor) {};
 
 
 /**
@@ -9341,19 +9356,19 @@ ol.geom.Geometry.prototype.simplify = function(tolerance) {
  * Create a simplified version of this geometry using the Douglas Peucker
  * algorithm.
  * @see https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
- * @function
+ * @abstract
  * @param {number} squaredTolerance Squared tolerance.
  * @return {ol.geom.Geometry} Simplified geometry.
  */
-ol.geom.Geometry.prototype.getSimplifiedGeometry = goog.abstractMethod;
+ol.geom.Geometry.prototype.getSimplifiedGeometry = function(squaredTolerance) {};
 
 
 /**
  * Get the type of this geometry.
- * @function
+ * @abstract
  * @return {ol.geom.GeometryType} Geometry type.
  */
-ol.geom.Geometry.prototype.getType = goog.abstractMethod;
+ol.geom.Geometry.prototype.getType = function() {};
 
 
 /**
@@ -9361,29 +9376,29 @@ ol.geom.Geometry.prototype.getType = goog.abstractMethod;
  * The geometry is modified in place.
  * If you do not want the geometry modified in place, first `clone()` it and
  * then use this function on the clone.
- * @function
+ * @abstract
  * @param {ol.TransformFunction} transformFn Transform.
  */
-ol.geom.Geometry.prototype.applyTransform = goog.abstractMethod;
+ol.geom.Geometry.prototype.applyTransform = function(transformFn) {};
 
 
 /**
  * Test if the geometry and the passed extent intersect.
+ * @abstract
  * @param {ol.Extent} extent Extent.
  * @return {boolean} `true` if the geometry and the extent intersect.
- * @function
  */
-ol.geom.Geometry.prototype.intersectsExtent = goog.abstractMethod;
+ol.geom.Geometry.prototype.intersectsExtent = function(extent) {};
 
 
 /**
  * Translate the geometry.  This modifies the geometry coordinates in place.  If
  * instead you want a new geometry, first `clone()` this geometry.
+ * @abstract
  * @param {number} deltaX Delta X.
  * @param {number} deltaY Delta Y.
- * @function
  */
-ol.geom.Geometry.prototype.translate = goog.abstractMethod;
+ol.geom.Geometry.prototype.translate = function(deltaX, deltaY) {};
 
 
 /**
@@ -9599,9 +9614,10 @@ ol.geom.SimpleGeometry.prototype.computeExtent = function(extent) {
 
 
 /**
+ * @abstract
  * @return {Array} Coordinates.
  */
-ol.geom.SimpleGeometry.prototype.getCoordinates = goog.abstractMethod;
+ol.geom.SimpleGeometry.prototype.getCoordinates = function() {};
 
 
 /**
@@ -9713,10 +9729,11 @@ ol.geom.SimpleGeometry.prototype.setFlatCoordinatesInternal = function(layout, f
 
 
 /**
+ * @abstract
  * @param {Array} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
  */
-ol.geom.SimpleGeometry.prototype.setCoordinates = goog.abstractMethod;
+ol.geom.SimpleGeometry.prototype.setCoordinates = function(coordinates, opt_layout) {};
 
 
 /**
@@ -18672,11 +18689,11 @@ ol.Tile.prototype.changed = function() {
 
 /**
  * Get the HTML image element for this tile (may be a Canvas, Image, or Video).
- * @function
+ * @abstract
  * @param {Object=} opt_context Object.
  * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
  */
-ol.Tile.prototype.getImage = goog.abstractMethod;
+ol.Tile.prototype.getImage = function(opt_context) {};
 
 
 /**
@@ -18709,9 +18726,10 @@ ol.Tile.prototype.getState = function() {
  * Load the image or retry if loading previously failed.
  * Loading is taken care of by the tile queue, and calling this method is
  * only needed for preloading or for reloading in case of an error.
+ * @abstract
  * @api
  */
-ol.Tile.prototype.load = goog.abstractMethod;
+ol.Tile.prototype.load = function() {};
 
 goog.provide('ol.size');
 
@@ -18946,9 +18964,10 @@ ol.source.Source.prototype.getProjection = function() {
 
 
 /**
+ * @abstract
  * @return {Array.<number>|undefined} Resolutions.
  */
-ol.source.Source.prototype.getResolutions = goog.abstractMethod;
+ol.source.Source.prototype.getResolutions = function() {};
 
 
 /**
@@ -19848,6 +19867,7 @@ ol.source.Tile.prototype.getResolutions = function() {
 
 
 /**
+ * @abstract
  * @param {number} z Tile coordinate z.
  * @param {number} x Tile coordinate x.
  * @param {number} y Tile coordinate y.
@@ -19855,7 +19875,7 @@ ol.source.Tile.prototype.getResolutions = function() {
  * @param {ol.proj.Projection} projection Projection.
  * @return {!ol.Tile} Tile.
  */
-ol.source.Tile.prototype.getTile = goog.abstractMethod;
+ol.source.Tile.prototype.getTile = function(z, x, y, pixelRatio, projection) {};
 
 
 /**
@@ -20186,14 +20206,14 @@ ol.control.Attribution.prototype.getSourceAttributions = function(frameState) {
     if (!source) {
       continue;
     }
-    sourceKey = goog.getUid(source).toString();
+    sourceKey = ol.getUid(source).toString();
     sourceAttributions = source.getAttributions();
     if (!sourceAttributions) {
       continue;
     }
     for (j = 0, jj = sourceAttributions.length; j < jj; j++) {
       sourceAttribution = sourceAttributions[j];
-      sourceAttributionKey = goog.getUid(sourceAttribution).toString();
+      sourceAttributionKey = ol.getUid(sourceAttribution).toString();
       if (sourceAttributionKey in attributions) {
         continue;
       }
@@ -25393,19 +25413,21 @@ ol.layer.Base.prototype.getLayerState = function() {
 
 
 /**
+ * @abstract
  * @param {Array.<ol.layer.Layer>=} opt_array Array of layers (to be
  *     modified in place).
  * @return {Array.<ol.layer.Layer>} Array of layers.
  */
-ol.layer.Base.prototype.getLayersArray = goog.abstractMethod;
+ol.layer.Base.prototype.getLayersArray = function(opt_array) {};
 
 
 /**
+ * @abstract
  * @param {Array.<ol.LayerState>=} opt_states Optional list of layer
  *     states (to be modified in place).
  * @return {Array.<ol.LayerState>} List of layer states.
  */
-ol.layer.Base.prototype.getLayerStatesArray = goog.abstractMethod;
+ol.layer.Base.prototype.getLayerStatesArray = function(opt_states) {};
 
 
 /**
@@ -25457,9 +25479,10 @@ ol.layer.Base.prototype.getOpacity = function() {
 
 
 /**
+ * @abstract
  * @return {ol.source.State} Source state.
  */
-ol.layer.Base.prototype.getSourceState = goog.abstractMethod;
+ol.layer.Base.prototype.getSourceState = function() {};
 
 
 /**
@@ -25569,88 +25592,100 @@ ol.render.VectorContext = function() {
 /**
  * Render a geometry.
  *
+ * @abstract
  * @param {ol.geom.Geometry} geometry The geometry to render.
  */
-ol.render.VectorContext.prototype.drawGeometry = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawGeometry = function(geometry) {};
 
 
 /**
  * Set the rendering style.
  *
+ * @abstract
  * @param {ol.style.Style} style The rendering style.
  */
-ol.render.VectorContext.prototype.setStyle = goog.abstractMethod;
+ol.render.VectorContext.prototype.setStyle = function(style) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.Circle} circleGeometry Circle geometry.
  * @param {ol.Feature} feature Feature,
  */
-ol.render.VectorContext.prototype.drawCircle = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawCircle = function(circleGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.Feature} feature Feature.
  * @param {ol.style.Style} style Style.
  */
-ol.render.VectorContext.prototype.drawFeature = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawFeature = function(feature, style) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.GeometryCollection} geometryCollectionGeometry Geometry
  *     collection.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawGeometryCollection = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawGeometryCollection = function(geometryCollectionGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.LineString|ol.render.Feature} lineStringGeometry Line
  *     string geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawLineString = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawLineString = function(lineStringGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.MultiLineString|ol.render.Feature} multiLineStringGeometry
  *     MultiLineString geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawMultiLineString = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawMultiLineString = function(multiLineStringGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.MultiPoint|ol.render.Feature} multiPointGeometry MultiPoint
  *     geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawMultiPoint = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawMultiPoint = function(multiPointGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.MultiPolygon} multiPolygonGeometry MultiPolygon geometry.
  * @param {ol.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawMultiPolygon = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawMultiPolygon = function(multiPolygonGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.Point|ol.render.Feature} pointGeometry Point geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawPoint = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawPoint = function(pointGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.geom.Polygon|ol.render.Feature} polygonGeometry Polygon
  *     geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawPolygon = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawPolygon = function(polygonGeometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {Array.<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
  * @param {number} end End.
@@ -25658,26 +25693,29 @@ ol.render.VectorContext.prototype.drawPolygon = goog.abstractMethod;
  * @param {ol.geom.Geometry|ol.render.Feature} geometry Geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawText = goog.abstractMethod;
+ol.render.VectorContext.prototype.drawText = function(flatCoordinates, offset, end, stride, geometry, feature) {};
 
 
 /**
+ * @abstract
  * @param {ol.style.Fill} fillStyle Fill style.
  * @param {ol.style.Stroke} strokeStyle Stroke style.
  */
-ol.render.VectorContext.prototype.setFillStrokeStyle = goog.abstractMethod;
+ol.render.VectorContext.prototype.setFillStrokeStyle = function(fillStyle, strokeStyle) {};
 
 
 /**
+ * @abstract
  * @param {ol.style.Image} imageStyle Image style.
  */
-ol.render.VectorContext.prototype.setImageStyle = goog.abstractMethod;
+ol.render.VectorContext.prototype.setImageStyle = function(imageStyle) {};
 
 
 /**
+ * @abstract
  * @param {ol.style.Text} textStyle Text style.
  */
-ol.render.VectorContext.prototype.setTextStyle = goog.abstractMethod;
+ol.render.VectorContext.prototype.setTextStyle = function(textStyle) {};
 
 goog.provide('ol.render.Event');
 goog.provide('ol.render.EventType');
@@ -25941,7 +25979,7 @@ ol.layer.Layer.prototype.setMap = function(map) {
           layerState.managed = false;
           layerState.zIndex = Infinity;
           evt.frameState.layerStatesArray.push(layerState);
-          evt.frameState.layerStates[goog.getUid(this)] = layerState;
+          evt.frameState.layerStates[ol.getUid(this)] = layerState;
         }, this);
     this.mapRenderKey_ = ol.events.listen(
         this, ol.events.EventType.CHANGE, map.render, map);
@@ -26052,10 +26090,11 @@ ol.ImageBase.prototype.getExtent = function() {
 
 
 /**
+ * @abstract
  * @param {Object=} opt_context Object.
  * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
  */
-ol.ImageBase.prototype.getImage = goog.abstractMethod;
+ol.ImageBase.prototype.getImage = function(opt_context) {};
 
 
 /**
@@ -26085,8 +26124,9 @@ ol.ImageBase.prototype.getState = function() {
 
 /**
  * Load not yet loaded URI.
+ * @abstract
  */
-ol.ImageBase.prototype.load = goog.abstractMethod;
+ol.ImageBase.prototype.load = function() {};
 
 goog.provide('ol.renderer.Layer');
 
@@ -26275,7 +26315,7 @@ ol.renderer.Layer.prototype.scheduleExpireCache = function(frameState, tileSourc
      * @param {olx.FrameState} frameState Frame state.
      */
     var postRenderFunction = function(tileSource, map, frameState) {
-      var tileSourceKey = goog.getUid(tileSource).toString();
+      var tileSourceKey = ol.getUid(tileSource).toString();
       tileSource.expireCache(frameState.viewState.projection,
                              frameState.usedTiles[tileSourceKey]);
     }.bind(null, tileSource);
@@ -26298,7 +26338,7 @@ ol.renderer.Layer.prototype.updateAttributions = function(attributionsSet, attri
     var attribution, i, ii;
     for (i = 0, ii = attributions.length; i < ii; ++i) {
       attribution = attributions[i];
-      attributionsSet[goog.getUid(attribution).toString()] = attribution;
+      attributionsSet[ol.getUid(attribution).toString()] = attribution;
     }
   }
 };
@@ -26314,7 +26354,7 @@ ol.renderer.Layer.prototype.updateLogos = function(frameState, source) {
   if (logo !== undefined) {
     if (typeof logo === 'string') {
       frameState.logos[logo] = '';
-    } else if (goog.isObject(logo)) {
+    } else if (logo !== null) {
       goog.asserts.assertString(logo.href, 'logo.href is a string');
       goog.asserts.assertString(logo.src, 'logo.src is a string');
       frameState.logos[logo.src] = logo.href;
@@ -26332,7 +26372,7 @@ ol.renderer.Layer.prototype.updateLogos = function(frameState, source) {
  */
 ol.renderer.Layer.prototype.updateUsedTiles = function(usedTiles, tileSource, z, tileRange) {
   // FIXME should we use tilesToDrawByZ instead?
-  var tileSourceKey = goog.getUid(tileSource).toString();
+  var tileSourceKey = ol.getUid(tileSource).toString();
   var zKey = z.toString();
   if (tileSourceKey in usedTiles) {
     if (zKey in usedTiles[tileSourceKey]) {
@@ -26385,7 +26425,7 @@ ol.renderer.Layer.prototype.snapCenterToPixel = function(center, resolution, siz
 ol.renderer.Layer.prototype.manageTilePyramid = function(
     frameState, tileSource, tileGrid, pixelRatio, projection, extent,
     currentZ, preload, opt_tileCallback, opt_this) {
-  var tileSourceKey = goog.getUid(tileSource).toString();
+  var tileSourceKey = ol.getUid(tileSource).toString();
   if (!(tileSourceKey in frameState.wantedTiles)) {
     frameState.wantedTiles[tileSourceKey] = {};
   }
@@ -26531,60 +26571,64 @@ ol.style.Image.prototype.getSnapToPixel = function() {
 /**
  * Get the anchor point in pixels. The anchor determines the center point for the
  * symbolizer.
- * @function
+ * @abstract
  * @return {Array.<number>} Anchor.
  */
-ol.style.Image.prototype.getAnchor = goog.abstractMethod;
+ol.style.Image.prototype.getAnchor = function() {};
 
 
 /**
  * Get the image element for the symbolizer.
- * @function
+ * @abstract
  * @param {number} pixelRatio Pixel ratio.
  * @return {HTMLCanvasElement|HTMLVideoElement|Image} Image element.
  */
-ol.style.Image.prototype.getImage = goog.abstractMethod;
+ol.style.Image.prototype.getImage = function(pixelRatio) {};
 
 
 /**
+ * @abstract
  * @param {number} pixelRatio Pixel ratio.
  * @return {HTMLCanvasElement|HTMLVideoElement|Image} Image element.
  */
-ol.style.Image.prototype.getHitDetectionImage = goog.abstractMethod;
+ol.style.Image.prototype.getHitDetectionImage = function(pixelRatio) {};
 
 
 /**
+ * @abstract
  * @return {ol.style.ImageState} Image state.
  */
-ol.style.Image.prototype.getImageState = goog.abstractMethod;
+ol.style.Image.prototype.getImageState = function() {};
 
 
 /**
+ * @abstract
  * @return {ol.Size} Image size.
  */
-ol.style.Image.prototype.getImageSize = goog.abstractMethod;
+ol.style.Image.prototype.getImageSize = function() {};
 
 
 /**
+ * @abstract
  * @return {ol.Size} Size of the hit-detection image.
  */
-ol.style.Image.prototype.getHitDetectionImageSize = goog.abstractMethod;
+ol.style.Image.prototype.getHitDetectionImageSize = function() {};
 
 
 /**
  * Get the origin of the symbolizer.
- * @function
+ * @abstract
  * @return {Array.<number>} Origin.
  */
-ol.style.Image.prototype.getOrigin = goog.abstractMethod;
+ol.style.Image.prototype.getOrigin = function() {};
 
 
 /**
  * Get the size of the symbolizer (in pixels).
- * @function
+ * @abstract
  * @return {ol.Size} Size.
  */
-ol.style.Image.prototype.getSize = goog.abstractMethod;
+ol.style.Image.prototype.getSize = function() {};
 
 
 /**
@@ -26641,26 +26685,29 @@ ol.style.Image.prototype.setSnapToPixel = function(snapToPixel) {
 
 
 /**
+ * @abstract
  * @param {function(this: T, ol.events.Event)} listener Listener function.
  * @param {T} thisArg Value to use as `this` when executing `listener`.
  * @return {ol.EventsKey|undefined} Listener key.
  * @template T
  */
-ol.style.Image.prototype.listenImageChange = goog.abstractMethod;
+ol.style.Image.prototype.listenImageChange = function(listener, thisArg) {};
 
 
 /**
  * Load not yet loaded URI.
+ * @abstract
  */
-ol.style.Image.prototype.load = goog.abstractMethod;
+ol.style.Image.prototype.load = function() {};
 
 
 /**
+ * @abstract
  * @param {function(this: T, ol.events.Event)} listener Listener function.
  * @param {T} thisArg Value to use as `this` when executing `listener`.
  * @template T
  */
-ol.style.Image.prototype.unlistenImageChange = goog.abstractMethod;
+ol.style.Image.prototype.unlistenImageChange = function(listener, thisArg) {};
 
 goog.provide('ol.style.Icon');
 goog.provide('ol.style.IconAnchorUnits');
@@ -26773,7 +26820,7 @@ ol.style.Icon = function(opt_options) {
       'imgSize must be set when image is provided');
 
   if ((src === undefined || src.length === 0) && image) {
-    src = image.src || goog.getUid(image).toString();
+    src = image.src || ol.getUid(image).toString();
   }
   goog.asserts.assert(src !== undefined && src.length > 0,
       'must provide a defined and non-empty src or image');
@@ -27484,11 +27531,12 @@ ol.renderer.Map.prototype.calculateMatrices2D = function(frameState) {
 
 
 /**
+ * @abstract
  * @param {ol.layer.Layer} layer Layer.
  * @protected
  * @return {ol.renderer.Layer} layerRenderer Layer renderer.
  */
-ol.renderer.Map.prototype.createLayerRenderer = goog.abstractMethod;
+ol.renderer.Map.prototype.createLayerRenderer = function(layer) {};
 
 
 /**
@@ -27538,8 +27586,8 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, fram
    */
   function forEachFeatureAtCoordinate(feature, layer) {
     goog.asserts.assert(feature !== undefined, 'received a feature');
-    var key = goog.getUid(feature).toString();
-    var managed = frameState.layerStates[goog.getUid(layer)].managed;
+    var key = ol.getUid(feature).toString();
+    var managed = frameState.layerStates[ol.getUid(layer)].managed;
     if (!(key in frameState.skippedFeatureUids && !managed)) {
       return callback.call(thisArg, feature, managed ? layer : null);
     }
@@ -27646,7 +27694,7 @@ ol.renderer.Map.prototype.hasFeatureAtCoordinate = function(coordinate, frameSta
  * @return {ol.renderer.Layer} Layer renderer.
  */
 ol.renderer.Map.prototype.getLayerRenderer = function(layer) {
-  var layerKey = goog.getUid(layer).toString();
+  var layerKey = ol.getUid(layer).toString();
   if (layerKey in this.layerRenderers_) {
     return this.layerRenderers_[layerKey];
   } else {
@@ -27690,9 +27738,10 @@ ol.renderer.Map.prototype.getMap = function() {
 
 
 /**
+ * @abstract
  * @return {string} Type
  */
-ol.renderer.Map.prototype.getType = goog.abstractMethod;
+ol.renderer.Map.prototype.getType = function() {};
 
 
 /**
@@ -30814,7 +30863,7 @@ ol.layer.Group.prototype.handleLayersChanged_ = function(event) {
   var i, ii, layer;
   for (i = 0, ii = layersArray.length; i < ii; i++) {
     layer = layersArray[i];
-    this.listenerKeys_[goog.getUid(layer).toString()] = [
+    this.listenerKeys_[ol.getUid(layer).toString()] = [
       ol.events.listen(layer, ol.ObjectEventType.PROPERTYCHANGE,
           this.handleLayerChange_, this),
       ol.events.listen(layer, ol.events.EventType.CHANGE,
@@ -30832,7 +30881,7 @@ ol.layer.Group.prototype.handleLayersChanged_ = function(event) {
  */
 ol.layer.Group.prototype.handleLayersAdd_ = function(collectionEvent) {
   var layer = /** @type {ol.layer.Base} */ (collectionEvent.element);
-  var key = goog.getUid(layer).toString();
+  var key = ol.getUid(layer).toString();
   goog.asserts.assert(!(key in this.listenerKeys_),
       'listeners already registered');
   this.listenerKeys_[key] = [
@@ -30851,7 +30900,7 @@ ol.layer.Group.prototype.handleLayersAdd_ = function(collectionEvent) {
  */
 ol.layer.Group.prototype.handleLayersRemove_ = function(collectionEvent) {
   var layer = /** @type {ol.layer.Base} */ (collectionEvent.element);
-  var key = goog.getUid(layer).toString();
+  var key = ol.getUid(layer).toString();
   goog.asserts.assert(key in this.listenerKeys_, 'no listeners to unregister');
   this.listenerKeys_[key].forEach(ol.events.unlistenByKey);
   delete this.listenerKeys_[key];
@@ -31495,7 +31544,7 @@ ol.style.Fill.prototype.getChecksum = function() {
         this.color_ instanceof CanvasPattern ||
         this.color_ instanceof CanvasGradient
     ) {
-      this.checksum_ = goog.getUid(this.color_).toString();
+      this.checksum_ = ol.getUid(this.color_).toString();
     } else {
       this.checksum_ = 'f' + (this.color_ ?
           ol.color.asString(this.color_) : '-');
@@ -34639,15 +34688,17 @@ ol.renderer.canvas.Layer.prototype.dispatchRenderEvent = function(context, frame
 
 
 /**
+ * @abstract
  * @return {HTMLCanvasElement|HTMLVideoElement|Image} Canvas.
  */
-ol.renderer.canvas.Layer.prototype.getImage = goog.abstractMethod;
+ol.renderer.canvas.Layer.prototype.getImage = function() {};
 
 
 /**
+ * @abstract
  * @return {!ol.Transform} Image transform.
  */
-ol.renderer.canvas.Layer.prototype.getImageTransform = goog.abstractMethod;
+ol.renderer.canvas.Layer.prototype.getImageTransform = function() {};
 
 
 /**
@@ -34671,11 +34722,12 @@ ol.renderer.canvas.Layer.prototype.getTransform = function(frameState, offsetX) 
 
 
 /**
+ * @abstract
  * @param {olx.FrameState} frameState Frame state.
  * @param {ol.LayerState} layerState Layer state.
  * @return {boolean} whether composeFrame should be called.
  */
-ol.renderer.canvas.Layer.prototype.prepareFrame = goog.abstractMethod;
+ol.renderer.canvas.Layer.prototype.prepareFrame = function(frameState, layerState) {};
 
 
 /**
@@ -35011,12 +35063,12 @@ ol.render.canvas.Replay.prototype.replay_ = function(
       case ol.render.canvas.Instruction.BEGIN_GEOMETRY:
         feature = /** @type {ol.Feature|ol.render.Feature} */ (instruction[1]);
         if ((skipFeatures &&
-            skippedFeaturesHash[goog.getUid(feature).toString()]) ||
+            skippedFeaturesHash[ol.getUid(feature).toString()]) ||
             !feature.getGeometry()) {
           i = /** @type {number} */ (instruction[2]);
         } else if (opt_hitExtent !== undefined && !ol.extent.intersects(
             opt_hitExtent, feature.getGeometry().getExtent())) {
-          i = /** @type {number} */ (instruction[2]);
+          i = /** @type {number} */ (instruction[2]) + 1;
         } else {
           ++i;
         }
@@ -36995,7 +37047,7 @@ goog.require('ol.style.Style');
  * @return {number} Order.
  */
 ol.renderer.vector.defaultOrder = function(feature1, feature2) {
-  return goog.getUid(feature1) - goog.getUid(feature2);
+  return ol.getUid(feature1) - ol.getUid(feature2);
 };
 
 
@@ -38339,6 +38391,7 @@ ol.source.Image.prototype.getImage = function(extent, resolution, pixelRatio, pr
 
 
 /**
+ * @abstract
  * @param {ol.Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {number} pixelRatio Pixel ratio.
@@ -38346,7 +38399,7 @@ ol.source.Image.prototype.getImage = function(extent, resolution, pixelRatio, pr
  * @return {ol.ImageBase} Single image.
  * @protected
  */
-ol.source.Image.prototype.getImageInternal = goog.abstractMethod;
+ol.source.Image.prototype.getImageInternal = function(extent, resolution, pixelRatio, projection) {};
 
 
 /**
@@ -39626,7 +39679,8 @@ ol.featureloader.loadFeaturesXhr = function(url, format, success, failure) {
          * @private
          */
         xhr.onload = function(event) {
-          if (xhr.status >= 200 && xhr.status < 300) {
+          // status will be 0 for file:// urls
+          if (!xhr.status || xhr.status >= 200 && xhr.status < 300) {
             var type = format.getType();
             /** @type {Document|Node|Object|string|undefined} */
             var source;
@@ -40471,9 +40525,9 @@ ol.structs.RBush.prototype.insert = function(extent, value) {
 
   this.rbush_.insert(item);
   // remember the object that was added to the internal rbush
-  goog.asserts.assert(!(goog.getUid(value) in this.items_),
-      'uid (%s) of value (%s) already exists', goog.getUid(value), value);
-  this.items_[goog.getUid(value)] = item;
+  goog.asserts.assert(!(ol.getUid(value) in this.items_),
+      'uid (%s) of value (%s) already exists', ol.getUid(value), value);
+  this.items_[ol.getUid(value)] = item;
 };
 
 
@@ -40504,9 +40558,9 @@ ol.structs.RBush.prototype.load = function(extents, values) {
       value: value
     };
     items[i] = item;
-    goog.asserts.assert(!(goog.getUid(value) in this.items_),
-        'uid (%s) of value (%s) already exists', goog.getUid(value), value);
-    this.items_[goog.getUid(value)] = item;
+    goog.asserts.assert(!(ol.getUid(value) in this.items_),
+        'uid (%s) of value (%s) already exists', ol.getUid(value), value);
+    this.items_[ol.getUid(value)] = item;
   }
   this.rbush_.load(items);
 };
@@ -40521,7 +40575,7 @@ ol.structs.RBush.prototype.remove = function(value) {
   if (goog.DEBUG && this.readers_) {
     throw new Error('Can not remove value while reading');
   }
-  var uid = goog.getUid(value);
+  var uid = ol.getUid(value);
   goog.asserts.assert(uid in this.items_,
       'uid (%s) of value (%s) does not exist', uid, value);
 
@@ -40539,7 +40593,7 @@ ol.structs.RBush.prototype.remove = function(value) {
  * @param {T} value Value.
  */
 ol.structs.RBush.prototype.update = function(extent, value) {
-  var uid = goog.getUid(value);
+  var uid = ol.getUid(value);
   goog.asserts.assert(uid in this.items_,
       'uid (%s) of value (%s) does not exist', uid, value);
 
@@ -40828,7 +40882,7 @@ ol.source.Vector = function(opt_options) {
   this.idIndex_ = {};
 
   /**
-   * A lookup of features without id (keyed by goog.getUid(feature)).
+   * A lookup of features without id (keyed by ol.getUid(feature)).
    * @private
    * @type {Object.<string, ol.Feature>}
    */
@@ -40886,7 +40940,7 @@ ol.source.Vector.prototype.addFeature = function(feature) {
  * @protected
  */
 ol.source.Vector.prototype.addFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
+  var featureKey = ol.getUid(feature).toString();
 
   if (!this.addToIndex_(featureKey, feature)) {
     return;
@@ -40976,7 +41030,7 @@ ol.source.Vector.prototype.addFeaturesInternal = function(features) {
 
   for (i = 0, length = features.length; i < length; i++) {
     feature = features[i];
-    featureKey = goog.getUid(feature).toString();
+    featureKey = ol.getUid(feature).toString();
     if (this.addToIndex_(featureKey, feature)) {
       newFeatures.push(feature);
     }
@@ -40984,7 +41038,7 @@ ol.source.Vector.prototype.addFeaturesInternal = function(features) {
 
   for (i = 0, length = newFeatures.length; i < length; i++) {
     feature = newFeatures[i];
-    featureKey = goog.getUid(feature).toString();
+    featureKey = ol.getUid(feature).toString();
     this.setupChangeEvents_(featureKey, feature);
 
     var geometry = feature.getGeometry();
@@ -41402,7 +41456,7 @@ ol.source.Vector.prototype.getUrl = function() {
  */
 ol.source.Vector.prototype.handleFeatureChange_ = function(event) {
   var feature = /** @type {ol.Feature} */ (event.target);
-  var featureKey = goog.getUid(feature).toString();
+  var featureKey = ol.getUid(feature).toString();
   var geometry = feature.getGeometry();
   if (!geometry) {
     if (!(featureKey in this.nullGeometryFeatures_)) {
@@ -41501,7 +41555,7 @@ ol.source.Vector.prototype.loadFeatures = function(
  * @api stable
  */
 ol.source.Vector.prototype.removeFeature = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
+  var featureKey = ol.getUid(feature).toString();
   if (featureKey in this.nullGeometryFeatures_) {
     delete this.nullGeometryFeatures_[featureKey];
   } else {
@@ -41520,7 +41574,7 @@ ol.source.Vector.prototype.removeFeature = function(feature) {
  * @protected
  */
 ol.source.Vector.prototype.removeFeatureInternal = function(feature) {
-  var featureKey = goog.getUid(feature).toString();
+  var featureKey = ol.getUid(feature).toString();
   goog.asserts.assert(featureKey in this.featureChangeKeys_,
       'featureKey exists in featureChangeKeys');
   this.featureChangeKeys_[featureKey].forEach(ol.events.unlistenByKey);
@@ -41753,7 +41807,7 @@ ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
          */
         function(feature) {
           goog.asserts.assert(feature !== undefined, 'passed a feature');
-          var key = goog.getUid(feature).toString();
+          var key = ol.getUid(feature).toString();
           if (!(key in features)) {
             features[key] = true;
             return callback(feature);
@@ -42652,7 +42706,7 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate = function(c
          */
         function(feature) {
           goog.asserts.assert(feature !== undefined, 'received a feature');
-          var key = goog.getUid(feature).toString();
+          var key = ol.getUid(feature).toString();
           if (!(key in features)) {
             features[key] = true;
             return callback.call(thisArg, feature, layer);
@@ -43564,7 +43618,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
          */
         function(feature) {
           goog.asserts.assert(feature, 'received a feature');
-          var key = goog.getUid(feature).toString();
+          var key = ol.getUid(feature).toString();
           if (!(key in features)) {
             features[key] = true;
             return callback.call(thisArg, feature, layer);
@@ -43947,11 +44001,12 @@ ol.renderer.dom.Layer.prototype.getTarget = function() {
 
 
 /**
+ * @abstract
  * @param {olx.FrameState} frameState Frame state.
  * @param {ol.LayerState} layerState Layer state.
  * @return {boolean} whether composeFrame should be called.
  */
-ol.renderer.dom.Layer.prototype.prepareFrame = goog.abstractMethod;
+ol.renderer.dom.Layer.prototype.prepareFrame = function(frameState, layerState) {};
 
 goog.provide('ol.renderer.dom.ImageLayer');
 
@@ -44754,7 +44809,7 @@ ol.renderer.dom.VectorLayer.prototype.forEachFeatureAtCoordinate = function(coor
          */
         function(feature) {
           goog.asserts.assert(feature !== undefined, 'received a feature');
-          var key = goog.getUid(feature).toString();
+          var key = ol.getUid(feature).toString();
           if (!(key in features)) {
             features[key] = true;
             return callback.call(thisArg, feature, layer);
@@ -45153,9 +45208,10 @@ ol.webgl.Shader = function(source) {
 
 
 /**
+ * @abstract
  * @return {number} Type.
  */
-ol.webgl.Shader.prototype.getType = goog.abstractMethod;
+ol.webgl.Shader.prototype.getType = function() {};
 
 
 /**
@@ -45524,7 +45580,7 @@ ol.inherits(ol.webgl.Context, ol.Disposable);
 ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
   var gl = this.getGL();
   var arr = buf.getArray();
-  var bufferKey = String(goog.getUid(buf));
+  var bufferKey = String(ol.getUid(buf));
   if (bufferKey in this.bufferCache_) {
     var bufferCacheEntry = this.bufferCache_[bufferKey];
     gl.bindBuffer(target, bufferCacheEntry.buffer);
@@ -45557,7 +45613,7 @@ ol.webgl.Context.prototype.bindBuffer = function(target, buf) {
  */
 ol.webgl.Context.prototype.deleteBuffer = function(buf) {
   var gl = this.getGL();
-  var bufferKey = String(goog.getUid(buf));
+  var bufferKey = String(ol.getUid(buf));
   goog.asserts.assert(bufferKey in this.bufferCache_,
       'attempted to delete uncached buffer');
   var bufferCacheEntry = this.bufferCache_[bufferKey];
@@ -45630,7 +45686,7 @@ ol.webgl.Context.prototype.getHitDetectionFramebuffer = function() {
  * @return {WebGLShader} Shader.
  */
 ol.webgl.Context.prototype.getShader = function(shaderObject) {
-  var shaderKey = String(goog.getUid(shaderObject));
+  var shaderKey = String(ol.getUid(shaderObject));
   if (shaderKey in this.shaderCache_) {
     return this.shaderCache_[shaderKey];
   } else {
@@ -45659,7 +45715,7 @@ ol.webgl.Context.prototype.getShader = function(shaderObject) {
 ol.webgl.Context.prototype.getProgram = function(
     fragmentShaderObject, vertexShaderObject) {
   var programKey =
-      goog.getUid(fragmentShaderObject) + '/' + goog.getUid(vertexShaderObject);
+      ol.getUid(fragmentShaderObject) + '/' + ol.getUid(vertexShaderObject);
   if (programKey in this.programCache_) {
     return this.programCache_[programKey];
   } else {
@@ -46278,7 +46334,7 @@ ol.render.webgl.ImageReplay.prototype.createTextures_ = function(textures, image
   for (i = 0; i < ii; ++i) {
     image = images[i];
 
-    uid = goog.getUid(image).toString();
+    uid = ol.getUid(image).toString();
     if (uid in texturePerImage) {
       texture = texturePerImage[uid];
     } else {
@@ -46484,7 +46540,7 @@ ol.render.webgl.ImageReplay.prototype.drawReplaySkipping_ = function(gl, skipped
         this.startIndices_[featureIndex] <= groupEnd) {
       var feature = this.startIndicesFeature_[featureIndex];
 
-      var featureUid = goog.getUid(feature).toString();
+      var featureUid = ol.getUid(feature).toString();
       if (skippedFeaturesHash[featureUid] !== undefined) {
         // feature should be skipped
         if (start !== end) {
@@ -46612,7 +46668,7 @@ ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayOneByOne_ = function
         this.startIndices_[featureIndex] >= groupStart) {
       start = this.startIndices_[featureIndex];
       feature = this.startIndicesFeature_[featureIndex];
-      featureUid = goog.getUid(feature).toString();
+      featureUid = ol.getUid(feature).toString();
 
       if (skippedFeaturesHash[featureUid] === undefined &&
           feature.getGeometry() &&
@@ -46638,8 +46694,9 @@ ol.render.webgl.ImageReplay.prototype.drawHitDetectionReplayOneByOne_ = function
 
 /**
  * @inheritDoc
+ * @abstract
  */
-ol.render.webgl.ImageReplay.prototype.setFillStrokeStyle = goog.abstractMethod;
+ol.render.webgl.ImageReplay.prototype.setFillStrokeStyle = function() {};
 
 
 /**
@@ -46678,7 +46735,7 @@ ol.render.webgl.ImageReplay.prototype.setImageStyle = function(imageStyle) {
     this.images_.push(image);
   } else {
     currentImage = this.images_[this.images_.length - 1];
-    if (goog.getUid(currentImage) != goog.getUid(image)) {
+    if (ol.getUid(currentImage) != ol.getUid(image)) {
       this.groupIndices_.push(this.indices_.length);
       goog.asserts.assert(this.groupIndices_.length === this.images_.length,
           'number of groupIndices and images match');
@@ -46691,7 +46748,7 @@ ol.render.webgl.ImageReplay.prototype.setImageStyle = function(imageStyle) {
   } else {
     currentImage =
         this.hitDetectionImages_[this.hitDetectionImages_.length - 1];
-    if (goog.getUid(currentImage) != goog.getUid(hitDetectionImage)) {
+    if (ol.getUid(currentImage) != ol.getUid(hitDetectionImage)) {
       this.hitDetectionGroupIndices_.push(this.indices_.length);
       goog.asserts.assert(this.hitDetectionGroupIndices_.length ===
           this.hitDetectionImages_.length,
@@ -47550,12 +47607,13 @@ ol.renderer.webgl.Layer.prototype.handleWebGLContextLost = function() {
 
 
 /**
+ * @abstract
  * @param {olx.FrameState} frameState Frame state.
  * @param {ol.LayerState} layerState Layer state.
  * @param {ol.webgl.Context} context Context.
  * @return {boolean} whether composeFrame should be called.
  */
-ol.renderer.webgl.Layer.prototype.prepareFrame = goog.abstractMethod;
+ol.renderer.webgl.Layer.prototype.prepareFrame = function(frameState, layerState, context) {};
 
 goog.provide('ol.renderer.webgl.ImageLayer');
 
@@ -48512,7 +48570,7 @@ ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate = function(co
          */
         function(feature) {
           goog.asserts.assert(feature !== undefined, 'received a feature');
-          var key = goog.getUid(feature).toString();
+          var key = ol.getUid(feature).toString();
           if (!(key in features)) {
             features[key] = true;
             return callback.call(thisArg, feature, layer);
@@ -50601,7 +50659,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
     var layerStatesArray = this.getLayerGroup().getLayerStatesArray();
     var layerStates = {};
     for (i = 0, ii = layerStatesArray.length; i < ii; ++i) {
-      layerStates[goog.getUid(layerStatesArray[i].layer)] = layerStatesArray[i];
+      layerStates[ol.getUid(layerStatesArray[i].layer)] = layerStatesArray[i];
     }
     viewState = view.getState();
     frameState = /** @type {olx.FrameState} */ ({
@@ -50723,7 +50781,7 @@ ol.Map.prototype.setView = function(view) {
  * @param {ol.Feature} feature Feature.
  */
 ol.Map.prototype.skipFeature = function(feature) {
-  var featureUid = goog.getUid(feature).toString();
+  var featureUid = ol.getUid(feature).toString();
   this.skippedFeatureUids_[featureUid] = true;
   this.render();
 };
@@ -50761,7 +50819,7 @@ ol.Map.prototype.updateSize = function() {
  * @param {ol.Feature} feature Feature.
  */
 ol.Map.prototype.unskipFeature = function(feature) {
-  var featureUid = goog.getUid(feature).toString();
+  var featureUid = ol.getUid(feature).toString();
   delete this.skippedFeatureUids_[featureUid];
   this.render();
 };
@@ -50797,8 +50855,8 @@ ol.Map.createOptionsInternal = function(options) {
     if (typeof logo === 'string') {
       logos[logo] = '';
     } else if (logo instanceof HTMLElement) {
-      logos[goog.getUid(logo).toString()] = logo;
-    } else if (goog.isObject(logo)) {
+      logos[ol.getUid(logo).toString()] = logo;
+    } else if (logo !== null) {
       goog.asserts.assertString(logo.href, 'logo.href should be a string');
       goog.asserts.assertString(logo.src, 'logo.src should be a string');
       logos[logo.src] = logo.href;
@@ -53037,9 +53095,10 @@ ol.format.Feature = function() {
 
 
 /**
+ * @abstract
  * @return {Array.<string>} Extensions.
  */
-ol.format.Feature.prototype.getExtensions = goog.abstractMethod;
+ol.format.Feature.prototype.getExtensions = function() {};
 
 
 /**
@@ -53089,78 +53148,86 @@ ol.format.Feature.prototype.adaptOptions = function(options) {
 
 
 /**
+ * @abstract
  * @return {ol.format.FormatType} Format.
  */
-ol.format.Feature.prototype.getType = goog.abstractMethod;
+ol.format.Feature.prototype.getType = function() {};
 
 
 /**
  * Read a single feature from a source.
  *
+ * @abstract
  * @param {Document|Node|Object|string} source Source.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @return {ol.Feature} Feature.
  */
-ol.format.Feature.prototype.readFeature = goog.abstractMethod;
+ol.format.Feature.prototype.readFeature = function(source, opt_options) {};
 
 
 /**
  * Read all features from a source.
  *
+ * @abstract
  * @param {Document|Node|ArrayBuffer|Object|string} source Source.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @return {Array.<ol.Feature>} Features.
  */
-ol.format.Feature.prototype.readFeatures = goog.abstractMethod;
+ol.format.Feature.prototype.readFeatures = function(source, opt_options) {};
 
 
 /**
  * Read a single geometry from a source.
  *
+ * @abstract
  * @param {Document|Node|Object|string} source Source.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @return {ol.geom.Geometry} Geometry.
  */
-ol.format.Feature.prototype.readGeometry = goog.abstractMethod;
+ol.format.Feature.prototype.readGeometry = function(source, opt_options) {};
 
 
 /**
  * Read the projection from a source.
  *
+ * @abstract
  * @param {Document|Node|Object|string} source Source.
  * @return {ol.proj.Projection} Projection.
  */
-ol.format.Feature.prototype.readProjection = goog.abstractMethod;
+ol.format.Feature.prototype.readProjection = function(source) {};
 
 
 /**
  * Encode a feature in this format.
  *
+ * @abstract
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} Result.
  */
-ol.format.Feature.prototype.writeFeature = goog.abstractMethod;
+ol.format.Feature.prototype.writeFeature = function(feature, opt_options) {};
 
 
 /**
  * Encode an array of features in this format.
  *
+ * @abstract
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} Result.
  */
-ol.format.Feature.prototype.writeFeatures = goog.abstractMethod;
+ol.format.Feature.prototype.writeFeatures = function(features, opt_options) {};
 
 
 /**
  * Write a single geometry in this format.
  *
+ * @abstract
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} Result.
  */
-ol.format.Feature.prototype.writeGeometry = goog.abstractMethod;
+ol.format.Feature.prototype.writeGeometry = function(geometry, opt_options) {};
 
 
 /**
@@ -53248,11 +53315,11 @@ ol.inherits(ol.format.JSONFeature, ol.format.Feature);
  * @return {Object} Object.
  */
 ol.format.JSONFeature.prototype.getObject_ = function(source) {
-  if (goog.isObject(source)) {
-    return source;
-  } else if (typeof source === 'string') {
+  if (typeof source === 'string') {
     var object = JSON.parse(source);
     return object ? /** @type {Object} */ (object) : null;
+  } else if (source !== null) {
+    return source;
   } else {
     goog.asserts.fail();
     return null;
@@ -53287,21 +53354,23 @@ ol.format.JSONFeature.prototype.readFeatures = function(source, opt_options) {
 
 
 /**
+ * @abstract
  * @param {Object} object Object.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @protected
  * @return {ol.Feature} Feature.
  */
-ol.format.JSONFeature.prototype.readFeatureFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.readFeatureFromObject = function(object, opt_options) {};
 
 
 /**
+ * @abstract
  * @param {Object} object Object.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @protected
  * @return {Array.<ol.Feature>} Features.
  */
-ol.format.JSONFeature.prototype.readFeaturesFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.readFeaturesFromObject = function(object, opt_options) {};
 
 
 /**
@@ -53314,12 +53383,13 @@ ol.format.JSONFeature.prototype.readGeometry = function(source, opt_options) {
 
 
 /**
+ * @abstract
  * @param {Object} object Object.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @protected
  * @return {ol.geom.Geometry} Geometry.
  */
-ol.format.JSONFeature.prototype.readGeometryFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.readGeometryFromObject = function(object, opt_options) {};
 
 
 /**
@@ -53331,11 +53401,12 @@ ol.format.JSONFeature.prototype.readProjection = function(source) {
 
 
 /**
+ * @abstract
  * @param {Object} object Object.
  * @protected
  * @return {ol.proj.Projection} Projection.
  */
-ol.format.JSONFeature.prototype.readProjectionFromObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.readProjectionFromObject = function(object) {};
 
 
 /**
@@ -53347,11 +53418,12 @@ ol.format.JSONFeature.prototype.writeFeature = function(feature, opt_options) {
 
 
 /**
+ * @abstract
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {Object} Object.
  */
-ol.format.JSONFeature.prototype.writeFeatureObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.writeFeatureObject = function(feature, opt_options) {};
 
 
 /**
@@ -53363,11 +53435,12 @@ ol.format.JSONFeature.prototype.writeFeatures = function(features, opt_options) 
 
 
 /**
+ * @abstract
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {Object} Object.
  */
-ol.format.JSONFeature.prototype.writeFeaturesObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.writeFeaturesObject = function(features, opt_options) {};
 
 
 /**
@@ -53379,11 +53452,12 @@ ol.format.JSONFeature.prototype.writeGeometry = function(geometry, opt_options) 
 
 
 /**
+ * @abstract
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {Object} Object.
  */
-ol.format.JSONFeature.prototype.writeGeometryObject = goog.abstractMethod;
+ol.format.JSONFeature.prototype.writeGeometryObject = function(geometry, opt_options) {};
 
 goog.provide('ol.geom.flat.interpolate');
 
@@ -56572,11 +56646,12 @@ ol.format.XMLFeature.prototype.readFeatureFromDocument = function(
 
 
 /**
+ * @abstract
  * @param {Node} node Node.
  * @param {olx.format.ReadOptions=} opt_options Options.
  * @return {ol.Feature} Feature.
  */
-ol.format.XMLFeature.prototype.readFeatureFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readFeatureFromNode = function(node, opt_options) {};
 
 
 /**
@@ -56619,12 +56694,13 @@ ol.format.XMLFeature.prototype.readFeaturesFromDocument = function(
 
 
 /**
+ * @abstract
  * @param {Node} node Node.
  * @param {olx.format.ReadOptions=} opt_options Options.
  * @protected
  * @return {Array.<ol.Feature>} Features.
  */
-ol.format.XMLFeature.prototype.readFeaturesFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readFeaturesFromNode = function(node, opt_options) {};
 
 
 /**
@@ -56647,21 +56723,23 @@ ol.format.XMLFeature.prototype.readGeometry = function(source, opt_options) {
 
 
 /**
+ * @abstract
  * @param {Document} doc Document.
  * @param {olx.format.ReadOptions=} opt_options Options.
  * @protected
  * @return {ol.geom.Geometry} Geometry.
  */
-ol.format.XMLFeature.prototype.readGeometryFromDocument = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readGeometryFromDocument = function(doc, opt_options) {};
 
 
 /**
+ * @abstract
  * @param {Node} node Node.
  * @param {olx.format.ReadOptions=} opt_options Options.
  * @protected
  * @return {ol.geom.Geometry} Geometry.
  */
-ol.format.XMLFeature.prototype.readGeometryFromNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.readGeometryFromNode = function(node, opt_options) {};
 
 
 /**
@@ -56714,12 +56792,13 @@ ol.format.XMLFeature.prototype.writeFeature = function(feature, opt_options) {
 
 
 /**
+ * @abstract
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @protected
  * @return {Node} Node.
  */
-ol.format.XMLFeature.prototype.writeFeatureNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.writeFeatureNode = function(feature, opt_options) {};
 
 
 /**
@@ -56734,11 +56813,12 @@ ol.format.XMLFeature.prototype.writeFeatures = function(features, opt_options) {
 
 
 /**
+ * @abstract
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
  */
-ol.format.XMLFeature.prototype.writeFeaturesNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.writeFeaturesNode = function(features, opt_options) {};
 
 
 /**
@@ -56753,11 +56833,12 @@ ol.format.XMLFeature.prototype.writeGeometry = function(geometry, opt_options) {
 
 
 /**
+ * @abstract
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
  */
-ol.format.XMLFeature.prototype.writeGeometryNode = goog.abstractMethod;
+ol.format.XMLFeature.prototype.writeGeometryNode = function(geometry, opt_options) {};
 
 // FIXME Envelopes should not be treated as geometries! readEnvelope_ is part
 // of GEOMETRY_PARSERS_ and methods using GEOMETRY_PARSERS_ do not expect
@@ -57453,28 +57534,8 @@ ol.format.XSD.readBooleanString = function(string) {
  */
 ol.format.XSD.readDateTime = function(node) {
   var s = ol.xml.getAllTextContent(node, false);
-  var re =
-      /^\s*(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|(?:([+\-])(\d{2})(?::(\d{2}))?))\s*$/;
-  var m = re.exec(s);
-  if (m) {
-    var year = parseInt(m[1], 10);
-    var month = parseInt(m[2], 10) - 1;
-    var day = parseInt(m[3], 10);
-    var hour = parseInt(m[4], 10);
-    var minute = parseInt(m[5], 10);
-    var second = parseInt(m[6], 10);
-    var dateTime = Date.UTC(year, month, day, hour, minute, second) / 1000;
-    if (m[7] != 'Z') {
-      var sign = m[8] == '-' ? -1 : 1;
-      dateTime += sign * 60 * parseInt(m[9], 10);
-      if (m[10] !== undefined) {
-        dateTime += sign * 60 * 60 * parseInt(m[10], 10);
-      }
-    }
-    return dateTime;
-  } else {
-    return undefined;
-  }
+  var dateTime = Date.parse(s);
+  return isNaN(dateTime) ? undefined : dateTime / 1000;
 };
 
 
@@ -60167,12 +60228,13 @@ ol.format.TextFeature.prototype.readFeature = function(source, opt_options) {
 
 
 /**
+ * @abstract
  * @param {string} text Text.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @protected
  * @return {ol.Feature} Feature.
  */
-ol.format.TextFeature.prototype.readFeatureFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.readFeatureFromText = function(text, opt_options) {};
 
 
 /**
@@ -60185,12 +60247,13 @@ ol.format.TextFeature.prototype.readFeatures = function(source, opt_options) {
 
 
 /**
+ * @abstract
  * @param {string} text Text.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @protected
  * @return {Array.<ol.Feature>} Features.
  */
-ol.format.TextFeature.prototype.readFeaturesFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.readFeaturesFromText = function(text, opt_options) {};
 
 
 /**
@@ -60203,12 +60266,13 @@ ol.format.TextFeature.prototype.readGeometry = function(source, opt_options) {
 
 
 /**
+ * @abstract
  * @param {string} text Text.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @protected
  * @return {ol.geom.Geometry} Geometry.
  */
-ol.format.TextFeature.prototype.readGeometryFromText = goog.abstractMethod;
+ol.format.TextFeature.prototype.readGeometryFromText = function(text, opt_options) {};
 
 
 /**
@@ -60238,12 +60302,13 @@ ol.format.TextFeature.prototype.writeFeature = function(feature, opt_options) {
 
 
 /**
+ * @abstract
  * @param {ol.Feature} feature Features.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @protected
  * @return {string} Text.
  */
-ol.format.TextFeature.prototype.writeFeatureText = goog.abstractMethod;
+ol.format.TextFeature.prototype.writeFeatureText = function(feature, opt_options) {};
 
 
 /**
@@ -60256,12 +60321,13 @@ ol.format.TextFeature.prototype.writeFeatures = function(
 
 
 /**
+ * @abstract
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @protected
  * @return {string} Text.
  */
-ol.format.TextFeature.prototype.writeFeaturesText = goog.abstractMethod;
+ol.format.TextFeature.prototype.writeFeaturesText = function(features, opt_options) {};
 
 
 /**
@@ -60274,12 +60340,13 @@ ol.format.TextFeature.prototype.writeGeometry = function(
 
 
 /**
+ * @abstract
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @protected
  * @return {string} Text.
  */
-ol.format.TextFeature.prototype.writeGeometryText = goog.abstractMethod;
+ol.format.TextFeature.prototype.writeGeometryText = function(geometry, opt_options) {};
 
 goog.provide('ol.format.IGC');
 goog.provide('ol.format.IGCZ');
@@ -60513,5150 +60580,6 @@ ol.format.IGC.prototype.readFeaturesFromText = function(text, opt_options) {
  * @api
  */
 ol.format.IGC.prototype.readProjection;
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Generics method for collection-like classes and objects.
- *
- * @author arv@google.com (Erik Arvidsson)
- *
- * This file contains functions to work with collections. It supports using
- * Map, Set, Array and Object and other classes that implement collection-like
- * methods.
- */
-
-
-goog.provide('goog.structs');
-
-goog.require('goog.array');
-goog.require('goog.object');
-
-
-// We treat an object as a dictionary if it has getKeys or it is an object that
-// isn't arrayLike.
-
-
-/**
- * Returns the number of values in the collection-like object.
- * @param {Object} col The collection-like object.
- * @return {number} The number of values in the collection-like object.
- */
-goog.structs.getCount = function(col) {
-  if (col.getCount && typeof col.getCount == 'function') {
-    return col.getCount();
-  }
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    return col.length;
-  }
-  return goog.object.getCount(col);
-};
-
-
-/**
- * Returns the values of the collection-like object.
- * @param {Object} col The collection-like object.
- * @return {!Array<?>} The values in the collection-like object.
- */
-goog.structs.getValues = function(col) {
-  if (col.getValues && typeof col.getValues == 'function') {
-    return col.getValues();
-  }
-  if (goog.isString(col)) {
-    return col.split('');
-  }
-  if (goog.isArrayLike(col)) {
-    var rv = [];
-    var l = col.length;
-    for (var i = 0; i < l; i++) {
-      rv.push(col[i]);
-    }
-    return rv;
-  }
-  return goog.object.getValues(col);
-};
-
-
-/**
- * Returns the keys of the collection. Some collections have no notion of
- * keys/indexes and this function will return undefined in those cases.
- * @param {Object} col The collection-like object.
- * @return {!Array|undefined} The keys in the collection.
- */
-goog.structs.getKeys = function(col) {
-  if (col.getKeys && typeof col.getKeys == 'function') {
-    return col.getKeys();
-  }
-  // if we have getValues but no getKeys we know this is a key-less collection
-  if (col.getValues && typeof col.getValues == 'function') {
-    return undefined;
-  }
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    var rv = [];
-    var l = col.length;
-    for (var i = 0; i < l; i++) {
-      rv.push(i);
-    }
-    return rv;
-  }
-
-  return goog.object.getKeys(col);
-};
-
-
-/**
- * Whether the collection contains the given value. This is O(n) and uses
- * equals (==) to test the existence.
- * @param {Object} col The collection-like object.
- * @param {*} val The value to check for.
- * @return {boolean} True if the map contains the value.
- */
-goog.structs.contains = function(col, val) {
-  if (col.contains && typeof col.contains == 'function') {
-    return col.contains(val);
-  }
-  if (col.containsValue && typeof col.containsValue == 'function') {
-    return col.containsValue(val);
-  }
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    return goog.array.contains(/** @type {!Array<?>} */ (col), val);
-  }
-  return goog.object.containsValue(col, val);
-};
-
-
-/**
- * Whether the collection is empty.
- * @param {Object} col The collection-like object.
- * @return {boolean} True if empty.
- */
-goog.structs.isEmpty = function(col) {
-  if (col.isEmpty && typeof col.isEmpty == 'function') {
-    return col.isEmpty();
-  }
-
-  // We do not use goog.string.isEmptyOrWhitespace because here we treat the
-  // string as
-  // collection and as such even whitespace matters
-
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    return goog.array.isEmpty(/** @type {!Array<?>} */ (col));
-  }
-  return goog.object.isEmpty(col);
-};
-
-
-/**
- * Removes all the elements from the collection.
- * @param {Object} col The collection-like object.
- */
-goog.structs.clear = function(col) {
-  // NOTE(arv): This should not contain strings because strings are immutable
-  if (col.clear && typeof col.clear == 'function') {
-    col.clear();
-  } else if (goog.isArrayLike(col)) {
-    goog.array.clear(/** @type {IArrayLike<?>} */ (col));
-  } else {
-    goog.object.clear(col);
-  }
-};
-
-
-/**
- * Calls a function for each value in a collection. The function takes
- * three arguments; the value, the key and the collection.
- *
- * NOTE: This will be deprecated soon! Please use a more specific method if
- * possible, e.g. goog.array.forEach, goog.object.forEach, etc.
- *
- * @param {S} col The collection-like object.
- * @param {function(this:T,?,?,S):?} f The function to call for every value.
- *     This function takes
- *     3 arguments (the value, the key or undefined if the collection has no
- *     notion of keys, and the collection) and the return value is irrelevant.
- * @param {T=} opt_obj The object to be used as the value of 'this'
- *     within {@code f}.
- * @template T,S
- */
-goog.structs.forEach = function(col, f, opt_obj) {
-  if (col.forEach && typeof col.forEach == 'function') {
-    col.forEach(f, opt_obj);
-  } else if (goog.isArrayLike(col) || goog.isString(col)) {
-    goog.array.forEach(/** @type {!Array<?>} */ (col), f, opt_obj);
-  } else {
-    var keys = goog.structs.getKeys(col);
-    var values = goog.structs.getValues(col);
-    var l = values.length;
-    for (var i = 0; i < l; i++) {
-      f.call(/** @type {?} */ (opt_obj), values[i], keys && keys[i], col);
-    }
-  }
-};
-
-
-/**
- * Calls a function for every value in the collection. When a call returns true,
- * adds the value to a new collection (Array is returned by default).
- *
- * @param {S} col The collection-like object.
- * @param {function(this:T,?,?,S):boolean} f The function to call for every
- *     value. This function takes
- *     3 arguments (the value, the key or undefined if the collection has no
- *     notion of keys, and the collection) and should return a Boolean. If the
- *     return value is true the value is added to the result collection. If it
- *     is false the value is not included.
- * @param {T=} opt_obj The object to be used as the value of 'this'
- *     within {@code f}.
- * @return {!Object|!Array<?>} A new collection where the passed values are
- *     present. If col is a key-less collection an array is returned.  If col
- *     has keys and values a plain old JS object is returned.
- * @template T,S
- */
-goog.structs.filter = function(col, f, opt_obj) {
-  if (typeof col.filter == 'function') {
-    return col.filter(f, opt_obj);
-  }
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    return goog.array.filter(/** @type {!Array<?>} */ (col), f, opt_obj);
-  }
-
-  var rv;
-  var keys = goog.structs.getKeys(col);
-  var values = goog.structs.getValues(col);
-  var l = values.length;
-  if (keys) {
-    rv = {};
-    for (var i = 0; i < l; i++) {
-      if (f.call(/** @type {?} */ (opt_obj), values[i], keys[i], col)) {
-        rv[keys[i]] = values[i];
-      }
-    }
-  } else {
-    // We should not use goog.array.filter here since we want to make sure that
-    // the index is undefined as well as make sure that col is passed to the
-    // function.
-    rv = [];
-    for (var i = 0; i < l; i++) {
-      if (f.call(opt_obj, values[i], undefined, col)) {
-        rv.push(values[i]);
-      }
-    }
-  }
-  return rv;
-};
-
-
-/**
- * Calls a function for every value in the collection and adds the result into a
- * new collection (defaults to creating a new Array).
- *
- * @param {S} col The collection-like object.
- * @param {function(this:T,?,?,S):V} f The function to call for every value.
- *     This function takes 3 arguments (the value, the key or undefined if the
- *     collection has no notion of keys, and the collection) and should return
- *     something. The result will be used as the value in the new collection.
- * @param {T=} opt_obj  The object to be used as the value of 'this'
- *     within {@code f}.
- * @return {!Object<V>|!Array<V>} A new collection with the new values.  If
- *     col is a key-less collection an array is returned.  If col has keys and
- *     values a plain old JS object is returned.
- * @template T,S,V
- */
-goog.structs.map = function(col, f, opt_obj) {
-  if (typeof col.map == 'function') {
-    return col.map(f, opt_obj);
-  }
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    return goog.array.map(/** @type {!Array<?>} */ (col), f, opt_obj);
-  }
-
-  var rv;
-  var keys = goog.structs.getKeys(col);
-  var values = goog.structs.getValues(col);
-  var l = values.length;
-  if (keys) {
-    rv = {};
-    for (var i = 0; i < l; i++) {
-      rv[keys[i]] = f.call(/** @type {?} */ (opt_obj), values[i], keys[i], col);
-    }
-  } else {
-    // We should not use goog.array.map here since we want to make sure that
-    // the index is undefined as well as make sure that col is passed to the
-    // function.
-    rv = [];
-    for (var i = 0; i < l; i++) {
-      rv[i] = f.call(/** @type {?} */ (opt_obj), values[i], undefined, col);
-    }
-  }
-  return rv;
-};
-
-
-/**
- * Calls f for each value in a collection. If any call returns true this returns
- * true (without checking the rest). If all returns false this returns false.
- *
- * @param {S} col The collection-like object.
- * @param {function(this:T,?,?,S):boolean} f The function to call for every
- *     value. This function takes 3 arguments (the value, the key or undefined
- *     if the collection has no notion of keys, and the collection) and should
- *     return a boolean.
- * @param {T=} opt_obj  The object to be used as the value of 'this'
- *     within {@code f}.
- * @return {boolean} True if any value passes the test.
- * @template T,S
- */
-goog.structs.some = function(col, f, opt_obj) {
-  if (typeof col.some == 'function') {
-    return col.some(f, opt_obj);
-  }
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    return goog.array.some(/** @type {!Array<?>} */ (col), f, opt_obj);
-  }
-  var keys = goog.structs.getKeys(col);
-  var values = goog.structs.getValues(col);
-  var l = values.length;
-  for (var i = 0; i < l; i++) {
-    if (f.call(/** @type {?} */ (opt_obj), values[i], keys && keys[i], col)) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Calls f for each value in a collection. If all calls return true this return
- * true this returns true. If any returns false this returns false at this point
- *  and does not continue to check the remaining values.
- *
- * @param {S} col The collection-like object.
- * @param {function(this:T,?,?,S):boolean} f The function to call for every
- *     value. This function takes 3 arguments (the value, the key or
- *     undefined if the collection has no notion of keys, and the collection)
- *     and should return a boolean.
- * @param {T=} opt_obj  The object to be used as the value of 'this'
- *     within {@code f}.
- * @return {boolean} True if all key-value pairs pass the test.
- * @template T,S
- */
-goog.structs.every = function(col, f, opt_obj) {
-  if (typeof col.every == 'function') {
-    return col.every(f, opt_obj);
-  }
-  if (goog.isArrayLike(col) || goog.isString(col)) {
-    return goog.array.every(/** @type {!Array<?>} */ (col), f, opt_obj);
-  }
-  var keys = goog.structs.getKeys(col);
-  var values = goog.structs.getValues(col);
-  var l = values.length;
-  for (var i = 0; i < l; i++) {
-    if (!f.call(/** @type {?} */ (opt_obj), values[i], keys && keys[i], col)) {
-      return false;
-    }
-  }
-  return true;
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Additional mathematical functions.
- */
-
-goog.provide('goog.math');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-
-
-/**
- * Returns a random integer greater than or equal to 0 and less than {@code a}.
- * @param {number} a  The upper bound for the random integer (exclusive).
- * @return {number} A random integer N such that 0 <= N < a.
- */
-goog.math.randomInt = function(a) {
-  return Math.floor(Math.random() * a);
-};
-
-
-/**
- * Returns a random number greater than or equal to {@code a} and less than
- * {@code b}.
- * @param {number} a  The lower bound for the random number (inclusive).
- * @param {number} b  The upper bound for the random number (exclusive).
- * @return {number} A random number N such that a <= N < b.
- */
-goog.math.uniformRandom = function(a, b) {
-  return a + Math.random() * (b - a);
-};
-
-
-/**
- * Takes a number and clamps it to within the provided bounds.
- * @param {number} value The input number.
- * @param {number} min The minimum value to return.
- * @param {number} max The maximum value to return.
- * @return {number} The input number if it is within bounds, or the nearest
- *     number within the bounds.
- */
-goog.math.clamp = function(value, min, max) {
-  return Math.min(Math.max(value, min), max);
-};
-
-
-/**
- * The % operator in JavaScript returns the remainder of a / b, but differs from
- * some other languages in that the result will have the same sign as the
- * dividend. For example, -1 % 8 == -1, whereas in some other languages
- * (such as Python) the result would be 7. This function emulates the more
- * correct modulo behavior, which is useful for certain applications such as
- * calculating an offset index in a circular list.
- *
- * @param {number} a The dividend.
- * @param {number} b The divisor.
- * @return {number} a % b where the result is between 0 and b (either 0 <= x < b
- *     or b < x <= 0, depending on the sign of b).
- */
-goog.math.modulo = function(a, b) {
-  var r = a % b;
-  // If r and b differ in sign, add b to wrap the result to the correct sign.
-  return (r * b < 0) ? r + b : r;
-};
-
-
-/**
- * Performs linear interpolation between values a and b. Returns the value
- * between a and b proportional to x (when x is between 0 and 1. When x is
- * outside this range, the return value is a linear extrapolation).
- * @param {number} a A number.
- * @param {number} b A number.
- * @param {number} x The proportion between a and b.
- * @return {number} The interpolated value between a and b.
- */
-goog.math.lerp = function(a, b, x) {
-  return a + x * (b - a);
-};
-
-
-/**
- * Tests whether the two values are equal to each other, within a certain
- * tolerance to adjust for floating point errors.
- * @param {number} a A number.
- * @param {number} b A number.
- * @param {number=} opt_tolerance Optional tolerance range. Defaults
- *     to 0.000001. If specified, should be greater than 0.
- * @return {boolean} Whether {@code a} and {@code b} are nearly equal.
- */
-goog.math.nearlyEquals = function(a, b, opt_tolerance) {
-  return Math.abs(a - b) <= (opt_tolerance || 0.000001);
-};
-
-
-// TODO(user): Rename to normalizeAngle, retaining old name as deprecated
-// alias.
-/**
- * Normalizes an angle to be in range [0-360). Angles outside this range will
- * be normalized to be the equivalent angle with that range.
- * @param {number} angle Angle in degrees.
- * @return {number} Standardized angle.
- */
-goog.math.standardAngle = function(angle) {
-  return goog.math.modulo(angle, 360);
-};
-
-
-/**
- * Normalizes an angle to be in range [0-2*PI). Angles outside this range will
- * be normalized to be the equivalent angle with that range.
- * @param {number} angle Angle in radians.
- * @return {number} Standardized angle.
- */
-goog.math.standardAngleInRadians = function(angle) {
-  return goog.math.modulo(angle, 2 * Math.PI);
-};
-
-
-/**
- * Converts degrees to radians.
- * @param {number} angleDegrees Angle in degrees.
- * @return {number} Angle in radians.
- */
-goog.math.toRadians = function(angleDegrees) {
-  return angleDegrees * Math.PI / 180;
-};
-
-
-/**
- * Converts radians to degrees.
- * @param {number} angleRadians Angle in radians.
- * @return {number} Angle in degrees.
- */
-goog.math.toDegrees = function(angleRadians) {
-  return angleRadians * 180 / Math.PI;
-};
-
-
-/**
- * For a given angle and radius, finds the X portion of the offset.
- * @param {number} degrees Angle in degrees (zero points in +X direction).
- * @param {number} radius Radius.
- * @return {number} The x-distance for the angle and radius.
- */
-goog.math.angleDx = function(degrees, radius) {
-  return radius * Math.cos(goog.math.toRadians(degrees));
-};
-
-
-/**
- * For a given angle and radius, finds the Y portion of the offset.
- * @param {number} degrees Angle in degrees (zero points in +X direction).
- * @param {number} radius Radius.
- * @return {number} The y-distance for the angle and radius.
- */
-goog.math.angleDy = function(degrees, radius) {
-  return radius * Math.sin(goog.math.toRadians(degrees));
-};
-
-
-/**
- * Computes the angle between two points (x1,y1) and (x2,y2).
- * Angle zero points in the +X direction, 90 degrees points in the +Y
- * direction (down) and from there we grow clockwise towards 360 degrees.
- * @param {number} x1 x of first point.
- * @param {number} y1 y of first point.
- * @param {number} x2 x of second point.
- * @param {number} y2 y of second point.
- * @return {number} Standardized angle in degrees of the vector from
- *     x1,y1 to x2,y2.
- */
-goog.math.angle = function(x1, y1, x2, y2) {
-  return goog.math.standardAngle(
-      goog.math.toDegrees(Math.atan2(y2 - y1, x2 - x1)));
-};
-
-
-/**
- * Computes the difference between startAngle and endAngle (angles in degrees).
- * @param {number} startAngle  Start angle in degrees.
- * @param {number} endAngle  End angle in degrees.
- * @return {number} The number of degrees that when added to
- *     startAngle will result in endAngle. Positive numbers mean that the
- *     direction is clockwise. Negative numbers indicate a counter-clockwise
- *     direction.
- *     The shortest route (clockwise vs counter-clockwise) between the angles
- *     is used.
- *     When the difference is 180 degrees, the function returns 180 (not -180)
- *     angleDifference(30, 40) is 10, and angleDifference(40, 30) is -10.
- *     angleDifference(350, 10) is 20, and angleDifference(10, 350) is -20.
- */
-goog.math.angleDifference = function(startAngle, endAngle) {
-  var d =
-      goog.math.standardAngle(endAngle) - goog.math.standardAngle(startAngle);
-  if (d > 180) {
-    d = d - 360;
-  } else if (d <= -180) {
-    d = 360 + d;
-  }
-  return d;
-};
-
-
-/**
- * Returns the sign of a number as per the "sign" or "signum" function.
- * @param {number} x The number to take the sign of.
- * @return {number} -1 when negative, 1 when positive, 0 when 0. Preserves
- *     signed zeros and NaN.
- */
-goog.math.sign = Math.sign || function(x) {
-  if (x > 0) {
-    return 1;
-  }
-  if (x < 0) {
-    return -1;
-  }
-  return x;  // Preserves signed zeros and NaN.
-};
-
-
-/**
- * JavaScript implementation of Longest Common Subsequence problem.
- * http://en.wikipedia.org/wiki/Longest_common_subsequence
- *
- * Returns the longest possible array that is subarray of both of given arrays.
- *
- * @param {IArrayLike<S>} array1 First array of objects.
- * @param {IArrayLike<T>} array2 Second array of objects.
- * @param {Function=} opt_compareFn Function that acts as a custom comparator
- *     for the array ojects. Function should return true if objects are equal,
- *     otherwise false.
- * @param {Function=} opt_collectorFn Function used to decide what to return
- *     as a result subsequence. It accepts 2 arguments: index of common element
- *     in the first array and index in the second. The default function returns
- *     element from the first array.
- * @return {!Array<S|T>} A list of objects that are common to both arrays
- *     such that there is no common subsequence with size greater than the
- *     length of the list.
- * @template S,T
- */
-goog.math.longestCommonSubsequence = function(
-    array1, array2, opt_compareFn, opt_collectorFn) {
-
-  var compare = opt_compareFn || function(a, b) { return a == b; };
-
-  var collect = opt_collectorFn || function(i1, i2) { return array1[i1]; };
-
-  var length1 = array1.length;
-  var length2 = array2.length;
-
-  var arr = [];
-  for (var i = 0; i < length1 + 1; i++) {
-    arr[i] = [];
-    arr[i][0] = 0;
-  }
-
-  for (var j = 0; j < length2 + 1; j++) {
-    arr[0][j] = 0;
-  }
-
-  for (i = 1; i <= length1; i++) {
-    for (j = 1; j <= length2; j++) {
-      if (compare(array1[i - 1], array2[j - 1])) {
-        arr[i][j] = arr[i - 1][j - 1] + 1;
-      } else {
-        arr[i][j] = Math.max(arr[i - 1][j], arr[i][j - 1]);
-      }
-    }
-  }
-
-  // Backtracking
-  var result = [];
-  var i = length1, j = length2;
-  while (i > 0 && j > 0) {
-    if (compare(array1[i - 1], array2[j - 1])) {
-      result.unshift(collect(i - 1, j - 1));
-      i--;
-      j--;
-    } else {
-      if (arr[i - 1][j] > arr[i][j - 1]) {
-        i--;
-      } else {
-        j--;
-      }
-    }
-  }
-
-  return result;
-};
-
-
-/**
- * Returns the sum of the arguments.
- * @param {...number} var_args Numbers to add.
- * @return {number} The sum of the arguments (0 if no arguments were provided,
- *     {@code NaN} if any of the arguments is not a valid number).
- */
-goog.math.sum = function(var_args) {
-  return /** @type {number} */ (
-      goog.array.reduce(
-          arguments, function(sum, value) { return sum + value; }, 0));
-};
-
-
-/**
- * Returns the arithmetic mean of the arguments.
- * @param {...number} var_args Numbers to average.
- * @return {number} The average of the arguments ({@code NaN} if no arguments
- *     were provided or any of the arguments is not a valid number).
- */
-goog.math.average = function(var_args) {
-  return goog.math.sum.apply(null, arguments) / arguments.length;
-};
-
-
-/**
- * Returns the unbiased sample variance of the arguments. For a definition,
- * see e.g. http://en.wikipedia.org/wiki/Variance
- * @param {...number} var_args Number samples to analyze.
- * @return {number} The unbiased sample variance of the arguments (0 if fewer
- *     than two samples were provided, or {@code NaN} if any of the samples is
- *     not a valid number).
- */
-goog.math.sampleVariance = function(var_args) {
-  var sampleSize = arguments.length;
-  if (sampleSize < 2) {
-    return 0;
-  }
-
-  var mean = goog.math.average.apply(null, arguments);
-  var variance =
-      goog.math.sum.apply(null, goog.array.map(arguments, function(val) {
-        return Math.pow(val - mean, 2);
-      })) / (sampleSize - 1);
-
-  return variance;
-};
-
-
-/**
- * Returns the sample standard deviation of the arguments.  For a definition of
- * sample standard deviation, see e.g.
- * http://en.wikipedia.org/wiki/Standard_deviation
- * @param {...number} var_args Number samples to analyze.
- * @return {number} The sample standard deviation of the arguments (0 if fewer
- *     than two samples were provided, or {@code NaN} if any of the samples is
- *     not a valid number).
- */
-goog.math.standardDeviation = function(var_args) {
-  return Math.sqrt(goog.math.sampleVariance.apply(null, arguments));
-};
-
-
-/**
- * Returns whether the supplied number represents an integer, i.e. that is has
- * no fractional component.  No range-checking is performed on the number.
- * @param {number} num The number to test.
- * @return {boolean} Whether {@code num} is an integer.
- */
-goog.math.isInt = function(num) {
-  return isFinite(num) && num % 1 == 0;
-};
-
-
-/**
- * Returns whether the supplied number is finite and not NaN.
- * @param {number} num The number to test.
- * @return {boolean} Whether {@code num} is a finite number.
- */
-goog.math.isFiniteNumber = function(num) {
-  return isFinite(num) && !isNaN(num);
-};
-
-
-/**
- * @param {number} num The number to test.
- * @return {boolean} Whether it is negative zero.
- */
-goog.math.isNegativeZero = function(num) {
-  return num == 0 && 1 / num < 0;
-};
-
-
-/**
- * Returns the precise value of floor(log10(num)).
- * Simpler implementations didn't work because of floating point rounding
- * errors. For example
- * <ul>
- * <li>Math.floor(Math.log(num) / Math.LN10) is off by one for num == 1e+3.
- * <li>Math.floor(Math.log(num) * Math.LOG10E) is off by one for num == 1e+15.
- * <li>Math.floor(Math.log10(num)) is off by one for num == 1e+15 - 1.
- * </ul>
- * @param {number} num A floating point number.
- * @return {number} Its logarithm to base 10 rounded down to the nearest
- *     integer if num > 0. -Infinity if num == 0. NaN if num < 0.
- */
-goog.math.log10Floor = function(num) {
-  if (num > 0) {
-    var x = Math.round(Math.log(num) * Math.LOG10E);
-    return x - (parseFloat('1e' + x) > num ? 1 : 0);
-  }
-  return num == 0 ? -Infinity : NaN;
-};
-
-
-/**
- * A tweaked variant of {@code Math.floor} which tolerates if the passed number
- * is infinitesimally smaller than the closest integer. It often happens with
- * the results of floating point calculations because of the finite precision
- * of the intermediate results. For example {@code Math.floor(Math.log(1000) /
- * Math.LN10) == 2}, not 3 as one would expect.
- * @param {number} num A number.
- * @param {number=} opt_epsilon An infinitesimally small positive number, the
- *     rounding error to tolerate.
- * @return {number} The largest integer less than or equal to {@code num}.
- */
-goog.math.safeFloor = function(num, opt_epsilon) {
-  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
-  return Math.floor(num + (opt_epsilon || 2e-15));
-};
-
-
-/**
- * A tweaked variant of {@code Math.ceil}. See {@code goog.math.safeFloor} for
- * details.
- * @param {number} num A number.
- * @param {number=} opt_epsilon An infinitesimally small positive number, the
- *     rounding error to tolerate.
- * @return {number} The smallest integer greater than or equal to {@code num}.
- */
-goog.math.safeCeil = function(num, opt_epsilon) {
-  goog.asserts.assert(!goog.isDef(opt_epsilon) || opt_epsilon > 0);
-  return Math.ceil(num - (opt_epsilon || 2e-15));
-};
-
-// Copyright 2007 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Python style iteration utilities.
- * @author arv@google.com (Erik Arvidsson)
- */
-
-
-goog.provide('goog.iter');
-goog.provide('goog.iter.Iterable');
-goog.provide('goog.iter.Iterator');
-goog.provide('goog.iter.StopIteration');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.functions');
-goog.require('goog.math');
-
-
-/**
- * @typedef {goog.iter.Iterator|{length:number}|{__iterator__}}
- */
-goog.iter.Iterable;
-
-
-/**
- * Singleton Error object that is used to terminate iterations.
- * @const {!Error}
- */
-goog.iter.StopIteration = ('StopIteration' in goog.global) ?
-    // For script engines that support legacy iterators.
-    goog.global['StopIteration'] :
-    {message: 'StopIteration', stack: ''};
-
-
-
-/**
- * Class/interface for iterators.  An iterator needs to implement a {@code next}
- * method and it needs to throw a {@code goog.iter.StopIteration} when the
- * iteration passes beyond the end.  Iterators have no {@code hasNext} method.
- * It is recommended to always use the helper functions to iterate over the
- * iterator or in case you are only targeting JavaScript 1.7 for in loops.
- * @constructor
- * @template VALUE
- */
-goog.iter.Iterator = function() {};
-
-
-/**
- * Returns the next value of the iteration.  This will throw the object
- * {@see goog.iter#StopIteration} when the iteration passes the end.
- * @return {VALUE} Any object or value.
- */
-goog.iter.Iterator.prototype.next = function() {
-  throw goog.iter.StopIteration;
-};
-
-
-/**
- * Returns the {@code Iterator} object itself.  This is used to implement
- * the iterator protocol in JavaScript 1.7
- * @param {boolean=} opt_keys  Whether to return the keys or values. Default is
- *     to only return the values.  This is being used by the for-in loop (true)
- *     and the for-each-in loop (false).  Even though the param gives a hint
- *     about what the iterator will return there is no guarantee that it will
- *     return the keys when true is passed.
- * @return {!goog.iter.Iterator<VALUE>} The object itself.
- */
-goog.iter.Iterator.prototype.__iterator__ = function(opt_keys) {
-  return this;
-};
-
-
-/**
- * Returns an iterator that knows how to iterate over the values in the object.
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable  If the
- *     object is an iterator it will be returned as is.  If the object has an
- *     {@code __iterator__} method that will be called to get the value
- *     iterator.  If the object is an array-like object we create an iterator
- *     for that.
- * @return {!goog.iter.Iterator<VALUE>} An iterator that knows how to iterate
- *     over the values in {@code iterable}.
- * @template VALUE
- */
-goog.iter.toIterator = function(iterable) {
-  if (iterable instanceof goog.iter.Iterator) {
-    return iterable;
-  }
-  if (typeof iterable.__iterator__ == 'function') {
-    return iterable.__iterator__(false);
-  }
-  if (goog.isArrayLike(iterable)) {
-    var i = 0;
-    var newIter = new goog.iter.Iterator;
-    newIter.next = function() {
-      while (true) {
-        if (i >= iterable.length) {
-          throw goog.iter.StopIteration;
-        }
-        // Don't include deleted elements.
-        if (!(i in iterable)) {
-          i++;
-          continue;
-        }
-        return iterable[i++];
-      }
-    };
-    return newIter;
-  }
-
-
-  // TODO(arv): Should we fall back on goog.structs.getValues()?
-  throw Error('Not implemented');
-};
-
-
-/**
- * Calls a function for each element in the iterator with the element of the
- * iterator passed as argument.
- *
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable  The iterator
- *     to iterate over. If the iterable is an object {@code toIterator} will be
- *     called on it.
- * @param {function(this:THIS,VALUE,?,!goog.iter.Iterator<VALUE>)} f
- *     The function to call for every element.  This function takes 3 arguments
- *     (the element, undefined, and the iterator) and the return value is
- *     irrelevant.  The reason for passing undefined as the second argument is
- *     so that the same function can be used in {@see goog.array#forEach} as
- *     well as others.  The third parameter is of type "number" for
- *     arraylike objects, undefined, otherwise.
- * @param {THIS=} opt_obj  The object to be used as the value of 'this' within
- *     {@code f}.
- * @template THIS, VALUE
- */
-goog.iter.forEach = function(iterable, f, opt_obj) {
-  if (goog.isArrayLike(iterable)) {
-    /** @preserveTry */
-    try {
-      // NOTES: this passes the index number to the second parameter
-      // of the callback contrary to the documentation above.
-      goog.array.forEach(
-          /** @type {IArrayLike<?>} */ (iterable), f, opt_obj);
-    } catch (ex) {
-      if (ex !== goog.iter.StopIteration) {
-        throw ex;
-      }
-    }
-  } else {
-    iterable = goog.iter.toIterator(iterable);
-    /** @preserveTry */
-    try {
-      while (true) {
-        f.call(opt_obj, iterable.next(), undefined, iterable);
-      }
-    } catch (ex) {
-      if (ex !== goog.iter.StopIteration) {
-        throw ex;
-      }
-    }
-  }
-};
-
-
-/**
- * Calls a function for every element in the iterator, and if the function
- * returns true adds the element to a new iterator.
- *
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     to iterate over.
- * @param {
- *     function(this:THIS,VALUE,undefined,!goog.iter.Iterator<VALUE>):boolean} f
- *     The function to call for every element. This function takes 3 arguments
- *     (the element, undefined, and the iterator) and should return a boolean.
- *     If the return value is true the element will be included in the returned
- *     iterator.  If it is false the element is not included.
- * @param {THIS=} opt_obj The object to be used as the value of 'this' within
- *     {@code f}.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator in which only elements
- *     that passed the test are present.
- * @template THIS, VALUE
- */
-goog.iter.filter = function(iterable, f, opt_obj) {
-  var iterator = goog.iter.toIterator(iterable);
-  var newIter = new goog.iter.Iterator;
-  newIter.next = function() {
-    while (true) {
-      var val = iterator.next();
-      if (f.call(opt_obj, val, undefined, iterator)) {
-        return val;
-      }
-    }
-  };
-  return newIter;
-};
-
-
-/**
- * Calls a function for every element in the iterator, and if the function
- * returns false adds the element to a new iterator.
- *
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     to iterate over.
- * @param {
- *     function(this:THIS,VALUE,undefined,!goog.iter.Iterator<VALUE>):boolean} f
- *     The function to call for every element. This function takes 3 arguments
- *     (the element, undefined, and the iterator) and should return a boolean.
- *     If the return value is false the element will be included in the returned
- *     iterator.  If it is true the element is not included.
- * @param {THIS=} opt_obj The object to be used as the value of 'this' within
- *     {@code f}.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator in which only elements
- *     that did not pass the test are present.
- * @template THIS, VALUE
- */
-goog.iter.filterFalse = function(iterable, f, opt_obj) {
-  return goog.iter.filter(iterable, goog.functions.not(f), opt_obj);
-};
-
-
-/**
- * Creates a new iterator that returns the values in a range.  This function
- * can take 1, 2 or 3 arguments:
- * <pre>
- * range(5) same as range(0, 5, 1)
- * range(2, 5) same as range(2, 5, 1)
- * </pre>
- *
- * @param {number} startOrStop  The stop value if only one argument is provided.
- *     The start value if 2 or more arguments are provided.  If only one
- *     argument is used the start value is 0.
- * @param {number=} opt_stop  The stop value.  If left out then the first
- *     argument is used as the stop value.
- * @param {number=} opt_step  The number to increment with between each call to
- *     next.  This can be negative.
- * @return {!goog.iter.Iterator<number>} A new iterator that returns the values
- *     in the range.
- */
-goog.iter.range = function(startOrStop, opt_stop, opt_step) {
-  var start = 0;
-  var stop = startOrStop;
-  var step = opt_step || 1;
-  if (arguments.length > 1) {
-    start = startOrStop;
-    stop = opt_stop;
-  }
-  if (step == 0) {
-    throw Error('Range step argument must not be zero');
-  }
-
-  var newIter = new goog.iter.Iterator;
-  newIter.next = function() {
-    if (step > 0 && start >= stop || step < 0 && start <= stop) {
-      throw goog.iter.StopIteration;
-    }
-    var rv = start;
-    start += step;
-    return rv;
-  };
-  return newIter;
-};
-
-
-/**
- * Joins the values in a iterator with a delimiter.
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     to get the values from.
- * @param {string} deliminator  The text to put between the values.
- * @return {string} The joined value string.
- * @template VALUE
- */
-goog.iter.join = function(iterable, deliminator) {
-  return goog.iter.toArray(iterable).join(deliminator);
-};
-
-
-/**
- * For every element in the iterator call a function and return a new iterator
- * with that value.
- *
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterator to iterate over.
- * @param {
- *     function(this:THIS,VALUE,undefined,!goog.iter.Iterator<VALUE>):RESULT} f
- *     The function to call for every element.  This function takes 3 arguments
- *     (the element, undefined, and the iterator) and should return a new value.
- * @param {THIS=} opt_obj The object to be used as the value of 'this' within
- *     {@code f}.
- * @return {!goog.iter.Iterator<RESULT>} A new iterator that returns the
- *     results of applying the function to each element in the original
- *     iterator.
- * @template THIS, VALUE, RESULT
- */
-goog.iter.map = function(iterable, f, opt_obj) {
-  var iterator = goog.iter.toIterator(iterable);
-  var newIter = new goog.iter.Iterator;
-  newIter.next = function() {
-    var val = iterator.next();
-    return f.call(opt_obj, val, undefined, iterator);
-  };
-  return newIter;
-};
-
-
-/**
- * Passes every element of an iterator into a function and accumulates the
- * result.
- *
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     to iterate over.
- * @param {function(this:THIS,VALUE,VALUE):VALUE} f The function to call for
- *     every element. This function takes 2 arguments (the function's previous
- *     result or the initial value, and the value of the current element).
- *     function(previousValue, currentElement) : newValue.
- * @param {VALUE} val The initial value to pass into the function on the first
- *     call.
- * @param {THIS=} opt_obj  The object to be used as the value of 'this' within
- *     f.
- * @return {VALUE} Result of evaluating f repeatedly across the values of
- *     the iterator.
- * @template THIS, VALUE
- */
-goog.iter.reduce = function(iterable, f, val, opt_obj) {
-  var rval = val;
-  goog.iter.forEach(
-      iterable, function(val) { rval = f.call(opt_obj, rval, val); });
-  return rval;
-};
-
-
-/**
- * Goes through the values in the iterator. Calls f for each of these, and if
- * any of them returns true, this returns true (without checking the rest). If
- * all return false this will return false.
- *
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     object.
- * @param {
- *     function(this:THIS,VALUE,undefined,!goog.iter.Iterator<VALUE>):boolean} f
- *     The function to call for every value. This function takes 3 arguments
- *     (the value, undefined, and the iterator) and should return a boolean.
- * @param {THIS=} opt_obj The object to be used as the value of 'this' within
- *     {@code f}.
- * @return {boolean} true if any value passes the test.
- * @template THIS, VALUE
- */
-goog.iter.some = function(iterable, f, opt_obj) {
-  iterable = goog.iter.toIterator(iterable);
-  /** @preserveTry */
-  try {
-    while (true) {
-      if (f.call(opt_obj, iterable.next(), undefined, iterable)) {
-        return true;
-      }
-    }
-  } catch (ex) {
-    if (ex !== goog.iter.StopIteration) {
-      throw ex;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Goes through the values in the iterator. Calls f for each of these and if any
- * of them returns false this returns false (without checking the rest). If all
- * return true this will return true.
- *
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     object.
- * @param {
- *     function(this:THIS,VALUE,undefined,!goog.iter.Iterator<VALUE>):boolean} f
- *     The function to call for every value. This function takes 3 arguments
- *     (the value, undefined, and the iterator) and should return a boolean.
- * @param {THIS=} opt_obj The object to be used as the value of 'this' within
- *     {@code f}.
- * @return {boolean} true if every value passes the test.
- * @template THIS, VALUE
- */
-goog.iter.every = function(iterable, f, opt_obj) {
-  iterable = goog.iter.toIterator(iterable);
-  /** @preserveTry */
-  try {
-    while (true) {
-      if (!f.call(opt_obj, iterable.next(), undefined, iterable)) {
-        return false;
-      }
-    }
-  } catch (ex) {
-    if (ex !== goog.iter.StopIteration) {
-      throw ex;
-    }
-  }
-  return true;
-};
-
-
-/**
- * Takes zero or more iterables and returns one iterator that will iterate over
- * them in the order chained.
- * @param {...!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} var_args Any
- *     number of iterable objects.
- * @return {!goog.iter.Iterator<VALUE>} Returns a new iterator that will
- *     iterate over all the given iterables' contents.
- * @template VALUE
- */
-goog.iter.chain = function(var_args) {
-  return goog.iter.chainFromIterable(arguments);
-};
-
-
-/**
- * Takes a single iterable containing zero or more iterables and returns one
- * iterator that will iterate over each one in the order given.
- * @see https://goo.gl/5NRp5d
- * @param {goog.iter.Iterable} iterable The iterable of iterables to chain.
- * @return {!goog.iter.Iterator<VALUE>} Returns a new iterator that will
- *     iterate over all the contents of the iterables contained within
- *     {@code iterable}.
- * @template VALUE
- */
-goog.iter.chainFromIterable = function(iterable) {
-  var iterator = goog.iter.toIterator(iterable);
-  var iter = new goog.iter.Iterator();
-  var current = null;
-
-  iter.next = function() {
-    while (true) {
-      if (current == null) {
-        var it = iterator.next();
-        current = goog.iter.toIterator(it);
-      }
-      try {
-        return current.next();
-      } catch (ex) {
-        if (ex !== goog.iter.StopIteration) {
-          throw ex;
-        }
-        current = null;
-      }
-    }
-  };
-
-  return iter;
-};
-
-
-/**
- * Builds a new iterator that iterates over the original, but skips elements as
- * long as a supplied function returns true.
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     object.
- * @param {
- *     function(this:THIS,VALUE,undefined,!goog.iter.Iterator<VALUE>):boolean} f
- *     The function to call for every value. This function takes 3 arguments
- *     (the value, undefined, and the iterator) and should return a boolean.
- * @param {THIS=} opt_obj The object to be used as the value of 'this' within
- *     {@code f}.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator that drops elements from
- *     the original iterator as long as {@code f} is true.
- * @template THIS, VALUE
- */
-goog.iter.dropWhile = function(iterable, f, opt_obj) {
-  var iterator = goog.iter.toIterator(iterable);
-  var newIter = new goog.iter.Iterator;
-  var dropping = true;
-  newIter.next = function() {
-    while (true) {
-      var val = iterator.next();
-      if (dropping && f.call(opt_obj, val, undefined, iterator)) {
-        continue;
-      } else {
-        dropping = false;
-      }
-      return val;
-    }
-  };
-  return newIter;
-};
-
-
-/**
- * Builds a new iterator that iterates over the original, but only as long as a
- * supplied function returns true.
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     object.
- * @param {
- *     function(this:THIS,VALUE,undefined,!goog.iter.Iterator<VALUE>):boolean} f
- *     The function to call for every value. This function takes 3 arguments
- *     (the value, undefined, and the iterator) and should return a boolean.
- * @param {THIS=} opt_obj This is used as the 'this' object in f when called.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator that keeps elements in
- *     the original iterator as long as the function is true.
- * @template THIS, VALUE
- */
-goog.iter.takeWhile = function(iterable, f, opt_obj) {
-  var iterator = goog.iter.toIterator(iterable);
-  var iter = new goog.iter.Iterator();
-  iter.next = function() {
-    var val = iterator.next();
-    if (f.call(opt_obj, val, undefined, iterator)) {
-      return val;
-    }
-    throw goog.iter.StopIteration;
-  };
-  return iter;
-};
-
-
-/**
- * Converts the iterator to an array
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterator
- *     to convert to an array.
- * @return {!Array<VALUE>} An array of the elements the iterator iterates over.
- * @template VALUE
- */
-goog.iter.toArray = function(iterable) {
-  // Fast path for array-like.
-  if (goog.isArrayLike(iterable)) {
-    return goog.array.toArray(/** @type {!IArrayLike<?>} */ (iterable));
-  }
-  iterable = goog.iter.toIterator(iterable);
-  var array = [];
-  goog.iter.forEach(iterable, function(val) { array.push(val); });
-  return array;
-};
-
-
-/**
- * Iterates over two iterables and returns true if they contain the same
- * sequence of elements and have the same length.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable1 The first
- *     iterable object.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable2 The second
- *     iterable object.
- * @param {function(VALUE,VALUE):boolean=} opt_equalsFn Optional comparison
- *     function.
- *     Should take two arguments to compare, and return true if the arguments
- *     are equal. Defaults to {@link goog.array.defaultCompareEquality} which
- *     compares the elements using the built-in '===' operator.
- * @return {boolean} true if the iterables contain the same sequence of elements
- *     and have the same length.
- * @template VALUE
- */
-goog.iter.equals = function(iterable1, iterable2, opt_equalsFn) {
-  var fillValue = {};
-  var pairs = goog.iter.zipLongest(fillValue, iterable1, iterable2);
-  var equalsFn = opt_equalsFn || goog.array.defaultCompareEquality;
-  return goog.iter.every(
-      pairs, function(pair) { return equalsFn(pair[0], pair[1]); });
-};
-
-
-/**
- * Advances the iterator to the next position, returning the given default value
- * instead of throwing an exception if the iterator has no more entries.
- * @param {goog.iter.Iterator<VALUE>|goog.iter.Iterable} iterable The iterable
- *     object.
- * @param {VALUE} defaultValue The value to return if the iterator is empty.
- * @return {VALUE} The next item in the iteration, or defaultValue if the
- *     iterator was empty.
- * @template VALUE
- */
-goog.iter.nextOrValue = function(iterable, defaultValue) {
-  try {
-    return goog.iter.toIterator(iterable).next();
-  } catch (e) {
-    if (e != goog.iter.StopIteration) {
-      throw e;
-    }
-    return defaultValue;
-  }
-};
-
-
-/**
- * Cartesian product of zero or more sets.  Gives an iterator that gives every
- * combination of one element chosen from each set.  For example,
- * ([1, 2], [3, 4]) gives ([1, 3], [1, 4], [2, 3], [2, 4]).
- * @see http://docs.python.org/library/itertools.html#itertools.product
- * @param {...!IArrayLike<VALUE>} var_args Zero or more sets, as
- *     arrays.
- * @return {!goog.iter.Iterator<!Array<VALUE>>} An iterator that gives each
- *     n-tuple (as an array).
- * @template VALUE
- */
-goog.iter.product = function(var_args) {
-  var someArrayEmpty =
-      goog.array.some(arguments, function(arr) { return !arr.length; });
-
-  // An empty set in a cartesian product gives an empty set.
-  if (someArrayEmpty || !arguments.length) {
-    return new goog.iter.Iterator();
-  }
-
-  var iter = new goog.iter.Iterator();
-  var arrays = arguments;
-
-  // The first indices are [0, 0, ...]
-  var indicies = goog.array.repeat(0, arrays.length);
-
-  iter.next = function() {
-
-    if (indicies) {
-      var retVal = goog.array.map(indicies, function(valueIndex, arrayIndex) {
-        return arrays[arrayIndex][valueIndex];
-      });
-
-      // Generate the next-largest indices for the next call.
-      // Increase the rightmost index. If it goes over, increase the next
-      // rightmost (like carry-over addition).
-      for (var i = indicies.length - 1; i >= 0; i--) {
-        // Assertion prevents compiler warning below.
-        goog.asserts.assert(indicies);
-        if (indicies[i] < arrays[i].length - 1) {
-          indicies[i]++;
-          break;
-        }
-
-        // We're at the last indices (the last element of every array), so
-        // the iteration is over on the next call.
-        if (i == 0) {
-          indicies = null;
-          break;
-        }
-        // Reset the index in this column and loop back to increment the
-        // next one.
-        indicies[i] = 0;
-      }
-      return retVal;
-    }
-
-    throw goog.iter.StopIteration;
-  };
-
-  return iter;
-};
-
-
-/**
- * Create an iterator to cycle over the iterable's elements indefinitely.
- * For example, ([1, 2, 3]) would return : 1, 2, 3, 1, 2, 3, ...
- * @see: http://docs.python.org/library/itertools.html#itertools.cycle.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable object.
- * @return {!goog.iter.Iterator<VALUE>} An iterator that iterates indefinitely
- *     over the values in {@code iterable}.
- * @template VALUE
- */
-goog.iter.cycle = function(iterable) {
-  var baseIterator = goog.iter.toIterator(iterable);
-
-  // We maintain a cache to store the iterable elements as we iterate
-  // over them. The cache is used to return elements once we have
-  // iterated over the iterable once.
-  var cache = [];
-  var cacheIndex = 0;
-
-  var iter = new goog.iter.Iterator();
-
-  // This flag is set after the iterable is iterated over once
-  var useCache = false;
-
-  iter.next = function() {
-    var returnElement = null;
-
-    // Pull elements off the original iterator if not using cache
-    if (!useCache) {
-      try {
-        // Return the element from the iterable
-        returnElement = baseIterator.next();
-        cache.push(returnElement);
-        return returnElement;
-      } catch (e) {
-        // If an exception other than StopIteration is thrown
-        // or if there are no elements to iterate over (the iterable was empty)
-        // throw an exception
-        if (e != goog.iter.StopIteration || goog.array.isEmpty(cache)) {
-          throw e;
-        }
-        // set useCache to true after we know that a 'StopIteration' exception
-        // was thrown and the cache is not empty (to handle the 'empty iterable'
-        // use case)
-        useCache = true;
-      }
-    }
-
-    returnElement = cache[cacheIndex];
-    cacheIndex = (cacheIndex + 1) % cache.length;
-
-    return returnElement;
-  };
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that counts indefinitely from a starting value.
- * @see http://docs.python.org/2/library/itertools.html#itertools.count
- * @param {number=} opt_start The starting value. Default is 0.
- * @param {number=} opt_step The number to increment with between each call to
- *     next. Negative and floating point numbers are allowed. Default is 1.
- * @return {!goog.iter.Iterator<number>} A new iterator that returns the values
- *     in the series.
- */
-goog.iter.count = function(opt_start, opt_step) {
-  var counter = opt_start || 0;
-  var step = goog.isDef(opt_step) ? opt_step : 1;
-  var iter = new goog.iter.Iterator();
-
-  iter.next = function() {
-    var returnValue = counter;
-    counter += step;
-    return returnValue;
-  };
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that returns the same object or value repeatedly.
- * @param {VALUE} value Any object or value to repeat.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator that returns the
- *     repeated value.
- * @template VALUE
- */
-goog.iter.repeat = function(value) {
-  var iter = new goog.iter.Iterator();
-
-  iter.next = goog.functions.constant(value);
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that returns running totals from the numbers in
- * {@code iterable}. For example, the array {@code [1, 2, 3, 4, 5]} yields
- * {@code 1 -> 3 -> 6 -> 10 -> 15}.
- * @see http://docs.python.org/3.2/library/itertools.html#itertools.accumulate
- * @param {!goog.iter.Iterable<number>} iterable The iterable of numbers to
- *     accumulate.
- * @return {!goog.iter.Iterator<number>} A new iterator that returns the
- *     numbers in the series.
- */
-goog.iter.accumulate = function(iterable) {
-  var iterator = goog.iter.toIterator(iterable);
-  var total = 0;
-  var iter = new goog.iter.Iterator();
-
-  iter.next = function() {
-    total += iterator.next();
-    return total;
-  };
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that returns arrays containing the ith elements from the
- * provided iterables. The returned arrays will be the same size as the number
- * of iterables given in {@code var_args}. Once the shortest iterable is
- * exhausted, subsequent calls to {@code next()} will throw
- * {@code goog.iter.StopIteration}.
- * @see http://docs.python.org/2/library/itertools.html#itertools.izip
- * @param {...!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} var_args Any
- *     number of iterable objects.
- * @return {!goog.iter.Iterator<!Array<VALUE>>} A new iterator that returns
- *     arrays of elements from the provided iterables.
- * @template VALUE
- */
-goog.iter.zip = function(var_args) {
-  var args = arguments;
-  var iter = new goog.iter.Iterator();
-
-  if (args.length > 0) {
-    var iterators = goog.array.map(args, goog.iter.toIterator);
-    iter.next = function() {
-      var arr = goog.array.map(iterators, function(it) { return it.next(); });
-      return arr;
-    };
-  }
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that returns arrays containing the ith elements from the
- * provided iterables. The returned arrays will be the same size as the number
- * of iterables given in {@code var_args}. Shorter iterables will be extended
- * with {@code fillValue}. Once the longest iterable is exhausted, subsequent
- * calls to {@code next()} will throw {@code goog.iter.StopIteration}.
- * @see http://docs.python.org/2/library/itertools.html#itertools.izip_longest
- * @param {VALUE} fillValue The object or value used to fill shorter iterables.
- * @param {...!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} var_args Any
- *     number of iterable objects.
- * @return {!goog.iter.Iterator<!Array<VALUE>>} A new iterator that returns
- *     arrays of elements from the provided iterables.
- * @template VALUE
- */
-goog.iter.zipLongest = function(fillValue, var_args) {
-  var args = goog.array.slice(arguments, 1);
-  var iter = new goog.iter.Iterator();
-
-  if (args.length > 0) {
-    var iterators = goog.array.map(args, goog.iter.toIterator);
-
-    iter.next = function() {
-      var iteratorsHaveValues = false;  // false when all iterators are empty.
-      var arr = goog.array.map(iterators, function(it) {
-        var returnValue;
-        try {
-          returnValue = it.next();
-          // Iterator had a value, so we've not exhausted the iterators.
-          // Set flag accordingly.
-          iteratorsHaveValues = true;
-        } catch (ex) {
-          if (ex !== goog.iter.StopIteration) {
-            throw ex;
-          }
-          returnValue = fillValue;
-        }
-        return returnValue;
-      });
-
-      if (!iteratorsHaveValues) {
-        throw goog.iter.StopIteration;
-      }
-      return arr;
-    };
-  }
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that filters {@code iterable} based on a series of
- * {@code selectors}. On each call to {@code next()}, one item is taken from
- * both the {@code iterable} and {@code selectors} iterators. If the item from
- * {@code selectors} evaluates to true, the item from {@code iterable} is given.
- * Otherwise, it is skipped. Once either {@code iterable} or {@code selectors}
- * is exhausted, subsequent calls to {@code next()} will throw
- * {@code goog.iter.StopIteration}.
- * @see http://docs.python.org/2/library/itertools.html#itertools.compress
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to filter.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} selectors An
- *     iterable of items to be evaluated in a boolean context to determine if
- *     the corresponding element in {@code iterable} should be included in the
- *     result.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator that returns the
- *     filtered values.
- * @template VALUE
- */
-goog.iter.compress = function(iterable, selectors) {
-  var selectorIterator = goog.iter.toIterator(selectors);
-
-  return goog.iter.filter(
-      iterable, function() { return !!selectorIterator.next(); });
-};
-
-
-
-/**
- * Implements the {@code goog.iter.groupBy} iterator.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to group.
- * @param {function(VALUE): KEY=} opt_keyFunc  Optional function for
- *     determining the key value for each group in the {@code iterable}. Default
- *     is the identity function.
- * @constructor
- * @extends {goog.iter.Iterator<!Array<?>>}
- * @template KEY, VALUE
- * @private
- */
-goog.iter.GroupByIterator_ = function(iterable, opt_keyFunc) {
-
-  /**
-   * The iterable to group, coerced to an iterator.
-   * @type {!goog.iter.Iterator}
-   */
-  this.iterator = goog.iter.toIterator(iterable);
-
-  /**
-   * A function for determining the key value for each element in the iterable.
-   * If no function is provided, the identity function is used and returns the
-   * element unchanged.
-   * @type {function(VALUE): KEY}
-   */
-  this.keyFunc = opt_keyFunc || goog.functions.identity;
-
-  /**
-   * The target key for determining the start of a group.
-   * @type {KEY}
-   */
-  this.targetKey;
-
-  /**
-   * The current key visited during iteration.
-   * @type {KEY}
-   */
-  this.currentKey;
-
-  /**
-   * The current value being added to the group.
-   * @type {VALUE}
-   */
-  this.currentValue;
-};
-goog.inherits(goog.iter.GroupByIterator_, goog.iter.Iterator);
-
-
-/** @override */
-goog.iter.GroupByIterator_.prototype.next = function() {
-  while (this.currentKey == this.targetKey) {
-    this.currentValue = this.iterator.next();  // Exits on StopIteration
-    this.currentKey = this.keyFunc(this.currentValue);
-  }
-  this.targetKey = this.currentKey;
-  return [this.currentKey, this.groupItems_(this.targetKey)];
-};
-
-
-/**
- * Performs the grouping of objects using the given key.
- * @param {KEY} targetKey  The target key object for the group.
- * @return {!Array<VALUE>} An array of grouped objects.
- * @private
- */
-goog.iter.GroupByIterator_.prototype.groupItems_ = function(targetKey) {
-  var arr = [];
-  while (this.currentKey == targetKey) {
-    arr.push(this.currentValue);
-    try {
-      this.currentValue = this.iterator.next();
-    } catch (ex) {
-      if (ex !== goog.iter.StopIteration) {
-        throw ex;
-      }
-      break;
-    }
-    this.currentKey = this.keyFunc(this.currentValue);
-  }
-  return arr;
-};
-
-
-/**
- * Creates an iterator that returns arrays containing elements from the
- * {@code iterable} grouped by a key value. For iterables with repeated
- * elements (i.e. sorted according to a particular key function), this function
- * has a {@code uniq}-like effect. For example, grouping the array:
- * {@code [A, B, B, C, C, A]} produces
- * {@code [A, [A]], [B, [B, B]], [C, [C, C]], [A, [A]]}.
- * @see http://docs.python.org/2/library/itertools.html#itertools.groupby
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to group.
- * @param {function(VALUE): KEY=} opt_keyFunc  Optional function for
- *     determining the key value for each group in the {@code iterable}. Default
- *     is the identity function.
- * @return {!goog.iter.Iterator<!Array<?>>} A new iterator that returns
- *     arrays of consecutive key and groups.
- * @template KEY, VALUE
- */
-goog.iter.groupBy = function(iterable, opt_keyFunc) {
-  return new goog.iter.GroupByIterator_(iterable, opt_keyFunc);
-};
-
-
-/**
- * Gives an iterator that gives the result of calling the given function
- * <code>f</code> with the arguments taken from the next element from
- * <code>iterable</code> (the elements are expected to also be iterables).
- *
- * Similar to {@see goog.iter#map} but allows the function to accept multiple
- * arguments from the iterable.
- *
- * @param {!goog.iter.Iterable<!goog.iter.Iterable>} iterable The iterable of
- *     iterables to iterate over.
- * @param {function(this:THIS,...*):RESULT} f The function to call for every
- *     element.  This function takes N+2 arguments, where N represents the
- *     number of items from the next element of the iterable. The two
- *     additional arguments passed to the function are undefined and the
- *     iterator itself. The function should return a new value.
- * @param {THIS=} opt_obj The object to be used as the value of 'this' within
- *     {@code f}.
- * @return {!goog.iter.Iterator<RESULT>} A new iterator that returns the
- *     results of applying the function to each element in the original
- *     iterator.
- * @template THIS, RESULT
- */
-goog.iter.starMap = function(iterable, f, opt_obj) {
-  var iterator = goog.iter.toIterator(iterable);
-  var iter = new goog.iter.Iterator();
-
-  iter.next = function() {
-    var args = goog.iter.toArray(iterator.next());
-    return f.apply(opt_obj, goog.array.concat(args, undefined, iterator));
-  };
-
-  return iter;
-};
-
-
-/**
- * Returns an array of iterators each of which can iterate over the values in
- * {@code iterable} without advancing the others.
- * @see http://docs.python.org/2/library/itertools.html#itertools.tee
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to tee.
- * @param {number=} opt_num  The number of iterators to create. Default is 2.
- * @return {!Array<goog.iter.Iterator<VALUE>>} An array of iterators.
- * @template VALUE
- */
-goog.iter.tee = function(iterable, opt_num) {
-  var iterator = goog.iter.toIterator(iterable);
-  var num = goog.isNumber(opt_num) ? opt_num : 2;
-  var buffers =
-      goog.array.map(goog.array.range(num), function() { return []; });
-
-  var addNextIteratorValueToBuffers = function() {
-    var val = iterator.next();
-    goog.array.forEach(buffers, function(buffer) { buffer.push(val); });
-  };
-
-  var createIterator = function(buffer) {
-    // Each tee'd iterator has an associated buffer (initially empty). When a
-    // tee'd iterator's buffer is empty, it calls
-    // addNextIteratorValueToBuffers(), adding the next value to all tee'd
-    // iterators' buffers, and then returns that value. This allows each
-    // iterator to be advanced independently.
-    var iter = new goog.iter.Iterator();
-
-    iter.next = function() {
-      if (goog.array.isEmpty(buffer)) {
-        addNextIteratorValueToBuffers();
-      }
-      goog.asserts.assert(!goog.array.isEmpty(buffer));
-      return buffer.shift();
-    };
-
-    return iter;
-  };
-
-  return goog.array.map(buffers, createIterator);
-};
-
-
-/**
- * Creates an iterator that returns arrays containing a count and an element
- * obtained from the given {@code iterable}.
- * @see http://docs.python.org/2/library/functions.html#enumerate
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to enumerate.
- * @param {number=} opt_start  Optional starting value. Default is 0.
- * @return {!goog.iter.Iterator<!Array<?>>} A new iterator containing
- *     count/item pairs.
- * @template VALUE
- */
-goog.iter.enumerate = function(iterable, opt_start) {
-  return goog.iter.zip(goog.iter.count(opt_start), iterable);
-};
-
-
-/**
- * Creates an iterator that returns the first {@code limitSize} elements from an
- * iterable. If this number is greater than the number of elements in the
- * iterable, all the elements are returned.
- * @see http://goo.gl/V0sihp Inspired by the limit iterator in Guava.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to limit.
- * @param {number} limitSize  The maximum number of elements to return.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator containing
- *     {@code limitSize} elements.
- * @template VALUE
- */
-goog.iter.limit = function(iterable, limitSize) {
-  goog.asserts.assert(goog.math.isInt(limitSize) && limitSize >= 0);
-
-  var iterator = goog.iter.toIterator(iterable);
-
-  var iter = new goog.iter.Iterator();
-  var remaining = limitSize;
-
-  iter.next = function() {
-    if (remaining-- > 0) {
-      return iterator.next();
-    }
-    throw goog.iter.StopIteration;
-  };
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that is advanced {@code count} steps ahead. Consumed
- * values are silently discarded. If {@code count} is greater than the number
- * of elements in {@code iterable}, an empty iterator is returned. Subsequent
- * calls to {@code next()} will throw {@code goog.iter.StopIteration}.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to consume.
- * @param {number} count  The number of elements to consume from the iterator.
- * @return {!goog.iter.Iterator<VALUE>} An iterator advanced zero or more steps
- *     ahead.
- * @template VALUE
- */
-goog.iter.consume = function(iterable, count) {
-  goog.asserts.assert(goog.math.isInt(count) && count >= 0);
-
-  var iterator = goog.iter.toIterator(iterable);
-
-  while (count-- > 0) {
-    goog.iter.nextOrValue(iterator, null);
-  }
-
-  return iterator;
-};
-
-
-/**
- * Creates an iterator that returns a range of elements from an iterable.
- * Similar to {@see goog.array#slice} but does not support negative indexes.
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to slice.
- * @param {number} start  The index of the first element to return.
- * @param {number=} opt_end  The index after the last element to return. If
- *     defined, must be greater than or equal to {@code start}.
- * @return {!goog.iter.Iterator<VALUE>} A new iterator containing a slice of
- *     the original.
- * @template VALUE
- */
-goog.iter.slice = function(iterable, start, opt_end) {
-  goog.asserts.assert(goog.math.isInt(start) && start >= 0);
-
-  var iterator = goog.iter.consume(iterable, start);
-
-  if (goog.isNumber(opt_end)) {
-    goog.asserts.assert(goog.math.isInt(opt_end) && opt_end >= start);
-    iterator = goog.iter.limit(iterator, opt_end - start /* limitSize */);
-  }
-
-  return iterator;
-};
-
-
-/**
- * Checks an array for duplicate elements.
- * @param {?IArrayLike<VALUE>} arr The array to check for
- *     duplicates.
- * @return {boolean} True, if the array contains duplicates, false otherwise.
- * @private
- * @template VALUE
- */
-// TODO(user): Consider moving this into goog.array as a public function.
-goog.iter.hasDuplicates_ = function(arr) {
-  var deduped = [];
-  goog.array.removeDuplicates(arr, deduped);
-  return arr.length != deduped.length;
-};
-
-
-/**
- * Creates an iterator that returns permutations of elements in
- * {@code iterable}.
- *
- * Permutations are obtained by taking the Cartesian product of
- * {@code opt_length} iterables and filtering out those with repeated
- * elements. For example, the permutations of {@code [1,2,3]} are
- * {@code [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]}.
- * @see http://docs.python.org/2/library/itertools.html#itertools.permutations
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable from which to generate permutations.
- * @param {number=} opt_length Length of each permutation. If omitted, defaults
- *     to the length of {@code iterable}.
- * @return {!goog.iter.Iterator<!Array<VALUE>>} A new iterator containing the
- *     permutations of {@code iterable}.
- * @template VALUE
- */
-goog.iter.permutations = function(iterable, opt_length) {
-  var elements = goog.iter.toArray(iterable);
-  var length = goog.isNumber(opt_length) ? opt_length : elements.length;
-
-  var sets = goog.array.repeat(elements, length);
-  var product = goog.iter.product.apply(undefined, sets);
-
-  return goog.iter.filter(
-      product, function(arr) { return !goog.iter.hasDuplicates_(arr); });
-};
-
-
-/**
- * Creates an iterator that returns combinations of elements from
- * {@code iterable}.
- *
- * Combinations are obtained by taking the {@see goog.iter#permutations} of
- * {@code iterable} and filtering those whose elements appear in the order they
- * are encountered in {@code iterable}. For example, the 3-length combinations
- * of {@code [0,1,2,3]} are {@code [[0,1,2], [0,1,3], [0,2,3], [1,2,3]]}.
- * @see http://docs.python.org/2/library/itertools.html#itertools.combinations
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable from which to generate combinations.
- * @param {number} length The length of each combination.
- * @return {!goog.iter.Iterator<!Array<VALUE>>} A new iterator containing
- *     combinations from the {@code iterable}.
- * @template VALUE
- */
-goog.iter.combinations = function(iterable, length) {
-  var elements = goog.iter.toArray(iterable);
-  var indexes = goog.iter.range(elements.length);
-  var indexIterator = goog.iter.permutations(indexes, length);
-  // sortedIndexIterator will now give arrays of with the given length that
-  // indicate what indexes into "elements" should be returned on each iteration.
-  var sortedIndexIterator = goog.iter.filter(
-      indexIterator, function(arr) { return goog.array.isSorted(arr); });
-
-  var iter = new goog.iter.Iterator();
-
-  function getIndexFromElements(index) { return elements[index]; }
-
-  iter.next = function() {
-    return goog.array.map(sortedIndexIterator.next(), getIndexFromElements);
-  };
-
-  return iter;
-};
-
-
-/**
- * Creates an iterator that returns combinations of elements from
- * {@code iterable}, with repeated elements possible.
- *
- * Combinations are obtained by taking the Cartesian product of {@code length}
- * iterables and filtering those whose elements appear in the order they are
- * encountered in {@code iterable}. For example, the 2-length combinations of
- * {@code [1,2,3]} are {@code [[1,1], [1,2], [1,3], [2,2], [2,3], [3,3]]}.
- * @see https://goo.gl/C0yXe4
- * @see https://goo.gl/djOCsk
- * @param {!goog.iter.Iterator<VALUE>|!goog.iter.Iterable} iterable The
- *     iterable to combine.
- * @param {number} length The length of each combination.
- * @return {!goog.iter.Iterator<!Array<VALUE>>} A new iterator containing
- *     combinations from the {@code iterable}.
- * @template VALUE
- */
-goog.iter.combinationsWithReplacement = function(iterable, length) {
-  var elements = goog.iter.toArray(iterable);
-  var indexes = goog.array.range(elements.length);
-  var sets = goog.array.repeat(indexes, length);
-  var indexIterator = goog.iter.product.apply(undefined, sets);
-  // sortedIndexIterator will now give arrays of with the given length that
-  // indicate what indexes into "elements" should be returned on each iteration.
-  var sortedIndexIterator = goog.iter.filter(
-      indexIterator, function(arr) { return goog.array.isSorted(arr); });
-
-  var iter = new goog.iter.Iterator();
-
-  function getIndexFromElements(index) { return elements[index]; }
-
-  iter.next = function() {
-    return goog.array.map(
-        /** @type {!Array<number>} */
-        (sortedIndexIterator.next()), getIndexFromElements);
-  };
-
-  return iter;
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Datastructure: Hash Map.
- *
- * @author arv@google.com (Erik Arvidsson)
- *
- * This file contains an implementation of a Map structure. It implements a lot
- * of the methods used in goog.structs so those functions work on hashes. This
- * is best suited for complex key types. For simple keys such as numbers and
- * strings consider using the lighter-weight utilities in goog.object.
- */
-
-
-goog.provide('goog.structs.Map');
-
-goog.require('goog.iter.Iterator');
-goog.require('goog.iter.StopIteration');
-goog.require('goog.object');
-
-
-
-/**
- * Class for Hash Map datastructure.
- * @param {*=} opt_map Map or Object to initialize the map with.
- * @param {...*} var_args If 2 or more arguments are present then they
- *     will be used as key-value pairs.
- * @constructor
- * @template K, V
- */
-goog.structs.Map = function(opt_map, var_args) {
-
-  /**
-   * Underlying JS object used to implement the map.
-   * @private {!Object}
-   */
-  this.map_ = {};
-
-  /**
-   * An array of keys. This is necessary for two reasons:
-   *   1. Iterating the keys using for (var key in this.map_) allocates an
-   *      object for every key in IE which is really bad for IE6 GC perf.
-   *   2. Without a side data structure, we would need to escape all the keys
-   *      as that would be the only way we could tell during iteration if the
-   *      key was an internal key or a property of the object.
-   *
-   * This array can contain deleted keys so it's necessary to check the map
-   * as well to see if the key is still in the map (this doesn't require a
-   * memory allocation in IE).
-   * @private {!Array<string>}
-   */
-  this.keys_ = [];
-
-  /**
-   * The number of key value pairs in the map.
-   * @private {number}
-   */
-  this.count_ = 0;
-
-  /**
-   * Version used to detect changes while iterating.
-   * @private {number}
-   */
-  this.version_ = 0;
-
-  var argLength = arguments.length;
-
-  if (argLength > 1) {
-    if (argLength % 2) {
-      throw Error('Uneven number of arguments');
-    }
-    for (var i = 0; i < argLength; i += 2) {
-      this.set(arguments[i], arguments[i + 1]);
-    }
-  } else if (opt_map) {
-    this.addAll(/** @type {Object} */ (opt_map));
-  }
-};
-
-
-/**
- * @return {number} The number of key-value pairs in the map.
- */
-goog.structs.Map.prototype.getCount = function() {
-  return this.count_;
-};
-
-
-/**
- * Returns the values of the map.
- * @return {!Array<V>} The values in the map.
- */
-goog.structs.Map.prototype.getValues = function() {
-  this.cleanupKeysArray_();
-
-  var rv = [];
-  for (var i = 0; i < this.keys_.length; i++) {
-    var key = this.keys_[i];
-    rv.push(this.map_[key]);
-  }
-  return rv;
-};
-
-
-/**
- * Returns the keys of the map.
- * @return {!Array<string>} Array of string values.
- */
-goog.structs.Map.prototype.getKeys = function() {
-  this.cleanupKeysArray_();
-  return /** @type {!Array<string>} */ (this.keys_.concat());
-};
-
-
-/**
- * Whether the map contains the given key.
- * @param {*} key The key to check for.
- * @return {boolean} Whether the map contains the key.
- */
-goog.structs.Map.prototype.containsKey = function(key) {
-  return goog.structs.Map.hasKey_(this.map_, key);
-};
-
-
-/**
- * Whether the map contains the given value. This is O(n).
- * @param {V} val The value to check for.
- * @return {boolean} Whether the map contains the value.
- */
-goog.structs.Map.prototype.containsValue = function(val) {
-  for (var i = 0; i < this.keys_.length; i++) {
-    var key = this.keys_[i];
-    if (goog.structs.Map.hasKey_(this.map_, key) && this.map_[key] == val) {
-      return true;
-    }
-  }
-  return false;
-};
-
-
-/**
- * Whether this map is equal to the argument map.
- * @param {goog.structs.Map} otherMap The map against which to test equality.
- * @param {function(V, V): boolean=} opt_equalityFn Optional equality function
- *     to test equality of values. If not specified, this will test whether
- *     the values contained in each map are identical objects.
- * @return {boolean} Whether the maps are equal.
- */
-goog.structs.Map.prototype.equals = function(otherMap, opt_equalityFn) {
-  if (this === otherMap) {
-    return true;
-  }
-
-  if (this.count_ != otherMap.getCount()) {
-    return false;
-  }
-
-  var equalityFn = opt_equalityFn || goog.structs.Map.defaultEquals;
-
-  this.cleanupKeysArray_();
-  for (var key, i = 0; key = this.keys_[i]; i++) {
-    if (!equalityFn(this.get(key), otherMap.get(key))) {
-      return false;
-    }
-  }
-
-  return true;
-};
-
-
-/**
- * Default equality test for values.
- * @param {*} a The first value.
- * @param {*} b The second value.
- * @return {boolean} Whether a and b reference the same object.
- */
-goog.structs.Map.defaultEquals = function(a, b) {
-  return a === b;
-};
-
-
-/**
- * @return {boolean} Whether the map is empty.
- */
-goog.structs.Map.prototype.isEmpty = function() {
-  return this.count_ == 0;
-};
-
-
-/**
- * Removes all key-value pairs from the map.
- */
-goog.structs.Map.prototype.clear = function() {
-  this.map_ = {};
-  this.keys_.length = 0;
-  this.count_ = 0;
-  this.version_ = 0;
-};
-
-
-/**
- * Removes a key-value pair based on the key. This is O(logN) amortized due to
- * updating the keys array whenever the count becomes half the size of the keys
- * in the keys array.
- * @param {*} key  The key to remove.
- * @return {boolean} Whether object was removed.
- */
-goog.structs.Map.prototype.remove = function(key) {
-  if (goog.structs.Map.hasKey_(this.map_, key)) {
-    delete this.map_[key];
-    this.count_--;
-    this.version_++;
-
-    // clean up the keys array if the threshold is hit
-    if (this.keys_.length > 2 * this.count_) {
-      this.cleanupKeysArray_();
-    }
-
-    return true;
-  }
-  return false;
-};
-
-
-/**
- * Cleans up the temp keys array by removing entries that are no longer in the
- * map.
- * @private
- */
-goog.structs.Map.prototype.cleanupKeysArray_ = function() {
-  if (this.count_ != this.keys_.length) {
-    // First remove keys that are no longer in the map.
-    var srcIndex = 0;
-    var destIndex = 0;
-    while (srcIndex < this.keys_.length) {
-      var key = this.keys_[srcIndex];
-      if (goog.structs.Map.hasKey_(this.map_, key)) {
-        this.keys_[destIndex++] = key;
-      }
-      srcIndex++;
-    }
-    this.keys_.length = destIndex;
-  }
-
-  if (this.count_ != this.keys_.length) {
-    // If the count still isn't correct, that means we have duplicates. This can
-    // happen when the same key is added and removed multiple times. Now we have
-    // to allocate one extra Object to remove the duplicates. This could have
-    // been done in the first pass, but in the common case, we can avoid
-    // allocating an extra object by only doing this when necessary.
-    var seen = {};
-    var srcIndex = 0;
-    var destIndex = 0;
-    while (srcIndex < this.keys_.length) {
-      var key = this.keys_[srcIndex];
-      if (!(goog.structs.Map.hasKey_(seen, key))) {
-        this.keys_[destIndex++] = key;
-        seen[key] = 1;
-      }
-      srcIndex++;
-    }
-    this.keys_.length = destIndex;
-  }
-};
-
-
-/**
- * Returns the value for the given key.  If the key is not found and the default
- * value is not given this will return {@code undefined}.
- * @param {*} key The key to get the value for.
- * @param {DEFAULT=} opt_val The value to return if no item is found for the
- *     given key, defaults to undefined.
- * @return {V|DEFAULT} The value for the given key.
- * @template DEFAULT
- */
-goog.structs.Map.prototype.get = function(key, opt_val) {
-  if (goog.structs.Map.hasKey_(this.map_, key)) {
-    return this.map_[key];
-  }
-  return opt_val;
-};
-
-
-/**
- * Adds a key-value pair to the map.
- * @param {*} key The key.
- * @param {V} value The value to add.
- * @return {*} Some subclasses return a value.
- */
-goog.structs.Map.prototype.set = function(key, value) {
-  if (!(goog.structs.Map.hasKey_(this.map_, key))) {
-    this.count_++;
-    // TODO(johnlenz): This class lies, it claims to return an array of string
-    // keys, but instead returns the original object used.
-    this.keys_.push(/** @type {?} */ (key));
-    // Only change the version if we add a new key.
-    this.version_++;
-  }
-  this.map_[key] = value;
-};
-
-
-/**
- * Adds multiple key-value pairs from another goog.structs.Map or Object.
- * @param {Object} map  Object containing the data to add.
- */
-goog.structs.Map.prototype.addAll = function(map) {
-  var keys, values;
-  if (map instanceof goog.structs.Map) {
-    keys = map.getKeys();
-    values = map.getValues();
-  } else {
-    keys = goog.object.getKeys(map);
-    values = goog.object.getValues(map);
-  }
-  // we could use goog.array.forEach here but I don't want to introduce that
-  // dependency just for this.
-  for (var i = 0; i < keys.length; i++) {
-    this.set(keys[i], values[i]);
-  }
-};
-
-
-/**
- * Calls the given function on each entry in the map.
- * @param {function(this:T, V, K, goog.structs.Map<K,V>)} f
- * @param {T=} opt_obj The value of "this" inside f.
- * @template T
- */
-goog.structs.Map.prototype.forEach = function(f, opt_obj) {
-  var keys = this.getKeys();
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    var value = this.get(key);
-    f.call(opt_obj, value, key, this);
-  }
-};
-
-
-/**
- * Clones a map and returns a new map.
- * @return {!goog.structs.Map} A new map with the same key-value pairs.
- */
-goog.structs.Map.prototype.clone = function() {
-  return new goog.structs.Map(this);
-};
-
-
-/**
- * Returns a new map in which all the keys and values are interchanged
- * (keys become values and values become keys). If multiple keys map to the
- * same value, the chosen transposed value is implementation-dependent.
- *
- * It acts very similarly to {goog.object.transpose(Object)}.
- *
- * @return {!goog.structs.Map} The transposed map.
- */
-goog.structs.Map.prototype.transpose = function() {
-  var transposed = new goog.structs.Map();
-  for (var i = 0; i < this.keys_.length; i++) {
-    var key = this.keys_[i];
-    var value = this.map_[key];
-    transposed.set(value, key);
-  }
-
-  return transposed;
-};
-
-
-/**
- * @return {!Object} Object representation of the map.
- */
-goog.structs.Map.prototype.toObject = function() {
-  this.cleanupKeysArray_();
-  var obj = {};
-  for (var i = 0; i < this.keys_.length; i++) {
-    var key = this.keys_[i];
-    obj[key] = this.map_[key];
-  }
-  return obj;
-};
-
-
-/**
- * Returns an iterator that iterates over the keys in the map.  Removal of keys
- * while iterating might have undesired side effects.
- * @return {!goog.iter.Iterator} An iterator over the keys in the map.
- */
-goog.structs.Map.prototype.getKeyIterator = function() {
-  return this.__iterator__(true);
-};
-
-
-/**
- * Returns an iterator that iterates over the values in the map.  Removal of
- * keys while iterating might have undesired side effects.
- * @return {!goog.iter.Iterator} An iterator over the values in the map.
- */
-goog.structs.Map.prototype.getValueIterator = function() {
-  return this.__iterator__(false);
-};
-
-
-/**
- * Returns an iterator that iterates over the values or the keys in the map.
- * This throws an exception if the map was mutated since the iterator was
- * created.
- * @param {boolean=} opt_keys True to iterate over the keys. False to iterate
- *     over the values.  The default value is false.
- * @return {!goog.iter.Iterator} An iterator over the values or keys in the map.
- */
-goog.structs.Map.prototype.__iterator__ = function(opt_keys) {
-  // Clean up keys to minimize the risk of iterating over dead keys.
-  this.cleanupKeysArray_();
-
-  var i = 0;
-  var version = this.version_;
-  var selfObj = this;
-
-  var newIter = new goog.iter.Iterator;
-  newIter.next = function() {
-    if (version != selfObj.version_) {
-      throw Error('The map has changed since the iterator was created');
-    }
-    if (i >= selfObj.keys_.length) {
-      throw goog.iter.StopIteration;
-    }
-    var key = selfObj.keys_[i++];
-    return opt_keys ? key : selfObj.map_[key];
-  };
-  return newIter;
-};
-
-
-/**
- * Safe way to test for hasOwnProperty.  It even allows testing for
- * 'hasOwnProperty'.
- * @param {Object} obj The object to test for presence of the given key.
- * @param {*} key The key to check for.
- * @return {boolean} Whether the object has the key.
- * @private
- */
-goog.structs.Map.hasKey_ = function(obj, key) {
-  return Object.prototype.hasOwnProperty.call(obj, key);
-};
-
-// Copyright 2008 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Simple utilities for dealing with URI strings.
- *
- * This is intended to be a lightweight alternative to constructing goog.Uri
- * objects.  Whereas goog.Uri adds several kilobytes to the binary regardless
- * of how much of its functionality you use, this is designed to be a set of
- * mostly-independent utilities so that the compiler includes only what is
- * necessary for the task.  Estimated savings of porting is 5k pre-gzip and
- * 1.5k post-gzip.  To ensure the savings remain, future developers should
- * avoid adding new functionality to existing functions, but instead create
- * new ones and factor out shared code.
- *
- * Many of these utilities have limited functionality, tailored to common
- * cases.  The query parameter utilities assume that the parameter keys are
- * already encoded, since most keys are compile-time alphanumeric strings.  The
- * query parameter mutation utilities also do not tolerate fragment identifiers.
- *
- * By design, these functions can be slower than goog.Uri equivalents.
- * Repeated calls to some of functions may be quadratic in behavior for IE,
- * although the effect is somewhat limited given the 2kb limit.
- *
- * One advantage of the limited functionality here is that this approach is
- * less sensitive to differences in URI encodings than goog.Uri, since these
- * functions operate on strings directly, rather than decoding them and
- * then re-encoding.
- *
- * Uses features of RFC 3986 for parsing/formatting URIs:
- *   http://www.ietf.org/rfc/rfc3986.txt
- *
- * @author gboyer@google.com (Garrett Boyer) - The "lightened" design.
- */
-
-goog.provide('goog.uri.utils');
-goog.provide('goog.uri.utils.ComponentIndex');
-goog.provide('goog.uri.utils.QueryArray');
-goog.provide('goog.uri.utils.QueryValue');
-goog.provide('goog.uri.utils.StandardQueryParam');
-
-goog.require('goog.asserts');
-goog.require('goog.string');
-
-
-/**
- * Character codes inlined to avoid object allocations due to charCode.
- * @enum {number}
- * @private
- */
-goog.uri.utils.CharCode_ = {
-  AMPERSAND: 38,
-  EQUAL: 61,
-  HASH: 35,
-  QUESTION: 63
-};
-
-
-/**
- * Builds a URI string from already-encoded parts.
- *
- * No encoding is performed.  Any component may be omitted as either null or
- * undefined.
- *
- * @param {?string=} opt_scheme The scheme such as 'http'.
- * @param {?string=} opt_userInfo The user name before the '@'.
- * @param {?string=} opt_domain The domain such as 'www.google.com', already
- *     URI-encoded.
- * @param {(string|number|null)=} opt_port The port number.
- * @param {?string=} opt_path The path, already URI-encoded.  If it is not
- *     empty, it must begin with a slash.
- * @param {?string=} opt_queryData The URI-encoded query data.
- * @param {?string=} opt_fragment The URI-encoded fragment identifier.
- * @return {string} The fully combined URI.
- */
-goog.uri.utils.buildFromEncodedParts = function(
-    opt_scheme, opt_userInfo, opt_domain, opt_port, opt_path, opt_queryData,
-    opt_fragment) {
-  var out = '';
-
-  if (opt_scheme) {
-    out += opt_scheme + ':';
-  }
-
-  if (opt_domain) {
-    out += '//';
-
-    if (opt_userInfo) {
-      out += opt_userInfo + '@';
-    }
-
-    out += opt_domain;
-
-    if (opt_port) {
-      out += ':' + opt_port;
-    }
-  }
-
-  if (opt_path) {
-    out += opt_path;
-  }
-
-  if (opt_queryData) {
-    out += '?' + opt_queryData;
-  }
-
-  if (opt_fragment) {
-    out += '#' + opt_fragment;
-  }
-
-  return out;
-};
-
-
-/**
- * A regular expression for breaking a URI into its component parts.
- *
- * {@link http://www.ietf.org/rfc/rfc3986.txt} says in Appendix B
- * As the "first-match-wins" algorithm is identical to the "greedy"
- * disambiguation method used by POSIX regular expressions, it is natural and
- * commonplace to use a regular expression for parsing the potential five
- * components of a URI reference.
- *
- * The following line is the regular expression for breaking-down a
- * well-formed URI reference into its components.
- *
- * <pre>
- * ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
- *  12            3  4          5       6  7        8 9
- * </pre>
- *
- * The numbers in the second line above are only to assist readability; they
- * indicate the reference points for each subexpression (i.e., each paired
- * parenthesis). We refer to the value matched for subexpression <n> as $<n>.
- * For example, matching the above expression to
- * <pre>
- *     http://www.ics.uci.edu/pub/ietf/uri/#Related
- * </pre>
- * results in the following subexpression matches:
- * <pre>
- *    $1 = http:
- *    $2 = http
- *    $3 = //www.ics.uci.edu
- *    $4 = www.ics.uci.edu
- *    $5 = /pub/ietf/uri/
- *    $6 = <undefined>
- *    $7 = <undefined>
- *    $8 = #Related
- *    $9 = Related
- * </pre>
- * where <undefined> indicates that the component is not present, as is the
- * case for the query component in the above example. Therefore, we can
- * determine the value of the five components as
- * <pre>
- *    scheme    = $2
- *    authority = $4
- *    path      = $5
- *    query     = $7
- *    fragment  = $9
- * </pre>
- *
- * The regular expression has been modified slightly to expose the
- * userInfo, domain, and port separately from the authority.
- * The modified version yields
- * <pre>
- *    $1 = http              scheme
- *    $2 = <undefined>       userInfo -\
- *    $3 = www.ics.uci.edu   domain     | authority
- *    $4 = <undefined>       port     -/
- *    $5 = /pub/ietf/uri/    path
- *    $6 = <undefined>       query without ?
- *    $7 = Related           fragment without #
- * </pre>
- * @type {!RegExp}
- * @private
- */
-goog.uri.utils.splitRe_ = new RegExp(
-    '^' +
-    '(?:' +
-    '([^:/?#.]+)' +  // scheme - ignore special characters
-                     // used by other URL parts such as :,
-                     // ?, /, #, and .
-    ':)?' +
-    '(?://' +
-    '(?:([^/?#]*)@)?' +  // userInfo
-    '([^/#?]*?)' +       // domain
-    '(?::([0-9]+))?' +   // port
-    '(?=[/#?]|$)' +      // authority-terminating character
-    ')?' +
-    '([^?#]+)?' +        // path
-    '(?:\\?([^#]*))?' +  // query
-    '(?:#(.*))?' +       // fragment
-    '$');
-
-
-/**
- * The index of each URI component in the return value of goog.uri.utils.split.
- * @enum {number}
- */
-goog.uri.utils.ComponentIndex = {
-  SCHEME: 1,
-  USER_INFO: 2,
-  DOMAIN: 3,
-  PORT: 4,
-  PATH: 5,
-  QUERY_DATA: 6,
-  FRAGMENT: 7
-};
-
-
-/**
- * Splits a URI into its component parts.
- *
- * Each component can be accessed via the component indices; for example:
- * <pre>
- * goog.uri.utils.split(someStr)[goog.uri.utils.CompontentIndex.QUERY_DATA];
- * </pre>
- *
- * @param {string} uri The URI string to examine.
- * @return {!Array<string|undefined>} Each component still URI-encoded.
- *     Each component that is present will contain the encoded value, whereas
- *     components that are not present will be undefined or empty, depending
- *     on the browser's regular expression implementation.  Never null, since
- *     arbitrary strings may still look like path names.
- */
-goog.uri.utils.split = function(uri) {
-  // See @return comment -- never null.
-  return /** @type {!Array<string|undefined>} */ (
-      uri.match(goog.uri.utils.splitRe_));
-};
-
-
-/**
- * @param {?string} uri A possibly null string.
- * @param {boolean=} opt_preserveReserved If true, percent-encoding of RFC-3986
- *     reserved characters will not be removed.
- * @return {?string} The string URI-decoded, or null if uri is null.
- * @private
- */
-goog.uri.utils.decodeIfPossible_ = function(uri, opt_preserveReserved) {
-  if (!uri) {
-    return uri;
-  }
-
-  return opt_preserveReserved ? decodeURI(uri) : decodeURIComponent(uri);
-};
-
-
-/**
- * Gets a URI component by index.
- *
- * It is preferred to use the getPathEncoded() variety of functions ahead,
- * since they are more readable.
- *
- * @param {goog.uri.utils.ComponentIndex} componentIndex The component index.
- * @param {string} uri The URI to examine.
- * @return {?string} The still-encoded component, or null if the component
- *     is not present.
- * @private
- */
-goog.uri.utils.getComponentByIndex_ = function(componentIndex, uri) {
-  // Convert undefined, null, and empty string into null.
-  return goog.uri.utils.split(uri)[componentIndex] || null;
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The protocol or scheme, or null if none.  Does not
- *     include trailing colons or slashes.
- */
-goog.uri.utils.getScheme = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.SCHEME, uri);
-};
-
-
-/**
- * Gets the effective scheme for the URL.  If the URL is relative then the
- * scheme is derived from the page's location.
- * @param {string} uri The URI to examine.
- * @return {string} The protocol or scheme, always lower case.
- */
-goog.uri.utils.getEffectiveScheme = function(uri) {
-  var scheme = goog.uri.utils.getScheme(uri);
-  if (!scheme && goog.global.self && goog.global.self.location) {
-    var protocol = goog.global.self.location.protocol;
-    scheme = protocol.substr(0, protocol.length - 1);
-  }
-  // NOTE: When called from a web worker in Firefox 3.5, location maybe null.
-  // All other browsers with web workers support self.location from the worker.
-  return scheme ? scheme.toLowerCase() : '';
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The user name still encoded, or null if none.
- */
-goog.uri.utils.getUserInfoEncoded = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.USER_INFO, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded user info, or null if none.
- */
-goog.uri.utils.getUserInfo = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getUserInfoEncoded(uri));
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The domain name still encoded, or null if none.
- */
-goog.uri.utils.getDomainEncoded = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.DOMAIN, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded domain, or null if none.
- */
-goog.uri.utils.getDomain = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getDomainEncoded(uri), true /* opt_preserveReserved */);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?number} The port number, or null if none.
- */
-goog.uri.utils.getPort = function(uri) {
-  // Coerce to a number.  If the result of getComponentByIndex_ is null or
-  // non-numeric, the number coersion yields NaN.  This will then return
-  // null for all non-numeric cases (though also zero, which isn't a relevant
-  // port number).
-  return Number(
-             goog.uri.utils.getComponentByIndex_(
-                 goog.uri.utils.ComponentIndex.PORT, uri)) ||
-      null;
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The path still encoded, or null if none. Includes the
- *     leading slash, if any.
- */
-goog.uri.utils.getPathEncoded = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.PATH, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded path, or null if none.  Includes the leading
- *     slash, if any.
- */
-goog.uri.utils.getPath = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getPathEncoded(uri), true /* opt_preserveReserved */);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The query data still encoded, or null if none.  Does not
- *     include the question mark itself.
- */
-goog.uri.utils.getQueryData = function(uri) {
-  return goog.uri.utils.getComponentByIndex_(
-      goog.uri.utils.ComponentIndex.QUERY_DATA, uri);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The fragment identifier, or null if none.  Does not
- *     include the hash mark itself.
- */
-goog.uri.utils.getFragmentEncoded = function(uri) {
-  // The hash mark may not appear in any other part of the URL.
-  var hashIndex = uri.indexOf('#');
-  return hashIndex < 0 ? null : uri.substr(hashIndex + 1);
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @param {?string} fragment The encoded fragment identifier, or null if none.
- *     Does not include the hash mark itself.
- * @return {string} The URI with the fragment set.
- */
-goog.uri.utils.setFragmentEncoded = function(uri, fragment) {
-  return goog.uri.utils.removeFragment(uri) + (fragment ? '#' + fragment : '');
-};
-
-
-/**
- * @param {string} uri The URI to examine.
- * @return {?string} The decoded fragment identifier, or null if none.  Does
- *     not include the hash mark.
- */
-goog.uri.utils.getFragment = function(uri) {
-  return goog.uri.utils.decodeIfPossible_(
-      goog.uri.utils.getFragmentEncoded(uri));
-};
-
-
-/**
- * Extracts everything up to the port of the URI.
- * @param {string} uri The URI string.
- * @return {string} Everything up to and including the port.
- */
-goog.uri.utils.getHost = function(uri) {
-  var pieces = goog.uri.utils.split(uri);
-  return goog.uri.utils.buildFromEncodedParts(
-      pieces[goog.uri.utils.ComponentIndex.SCHEME],
-      pieces[goog.uri.utils.ComponentIndex.USER_INFO],
-      pieces[goog.uri.utils.ComponentIndex.DOMAIN],
-      pieces[goog.uri.utils.ComponentIndex.PORT]);
-};
-
-
-/**
- * Extracts the path of the URL and everything after.
- * @param {string} uri The URI string.
- * @return {string} The URI, starting at the path and including the query
- *     parameters and fragment identifier.
- */
-goog.uri.utils.getPathAndAfter = function(uri) {
-  var pieces = goog.uri.utils.split(uri);
-  return goog.uri.utils.buildFromEncodedParts(
-      null, null, null, null, pieces[goog.uri.utils.ComponentIndex.PATH],
-      pieces[goog.uri.utils.ComponentIndex.QUERY_DATA],
-      pieces[goog.uri.utils.ComponentIndex.FRAGMENT]);
-};
-
-
-/**
- * Gets the URI with the fragment identifier removed.
- * @param {string} uri The URI to examine.
- * @return {string} Everything preceding the hash mark.
- */
-goog.uri.utils.removeFragment = function(uri) {
-  // The hash mark may not appear in any other part of the URL.
-  var hashIndex = uri.indexOf('#');
-  return hashIndex < 0 ? uri : uri.substr(0, hashIndex);
-};
-
-
-/**
- * Ensures that two URI's have the exact same domain, scheme, and port.
- *
- * Unlike the version in goog.Uri, this checks protocol, and therefore is
- * suitable for checking against the browser's same-origin policy.
- *
- * @param {string} uri1 The first URI.
- * @param {string} uri2 The second URI.
- * @return {boolean} Whether they have the same scheme, domain and port.
- */
-goog.uri.utils.haveSameDomain = function(uri1, uri2) {
-  var pieces1 = goog.uri.utils.split(uri1);
-  var pieces2 = goog.uri.utils.split(uri2);
-  return pieces1[goog.uri.utils.ComponentIndex.DOMAIN] ==
-      pieces2[goog.uri.utils.ComponentIndex.DOMAIN] &&
-      pieces1[goog.uri.utils.ComponentIndex.SCHEME] ==
-      pieces2[goog.uri.utils.ComponentIndex.SCHEME] &&
-      pieces1[goog.uri.utils.ComponentIndex.PORT] ==
-      pieces2[goog.uri.utils.ComponentIndex.PORT];
-};
-
-
-/**
- * Asserts that there are no fragment or query identifiers, only in uncompiled
- * mode.
- * @param {string} uri The URI to examine.
- * @private
- */
-goog.uri.utils.assertNoFragmentsOrQueries_ = function(uri) {
-  // NOTE: would use goog.asserts here, but jscompiler doesn't know that
-  // indexOf has no side effects.
-  if (goog.DEBUG && (uri.indexOf('#') >= 0 || uri.indexOf('?') >= 0)) {
-    throw Error(
-        'goog.uri.utils: Fragment or query identifiers are not ' +
-        'supported: [' + uri + ']');
-  }
-};
-
-
-/**
- * Supported query parameter values by the parameter serializing utilities.
- *
- * If a value is null or undefined, the key-value pair is skipped, as an easy
- * way to omit parameters conditionally.  Non-array parameters are converted
- * to a string and URI encoded.  Array values are expanded into multiple
- * &key=value pairs, with each element stringized and URI-encoded.
- *
- * @typedef {*}
- */
-goog.uri.utils.QueryValue;
-
-
-/**
- * An array representing a set of query parameters with alternating keys
- * and values.
- *
- * Keys are assumed to be URI encoded already and live at even indices.  See
- * goog.uri.utils.QueryValue for details on how parameter values are encoded.
- *
- * Example:
- * <pre>
- * var data = [
- *   // Simple param: ?name=BobBarker
- *   'name', 'BobBarker',
- *   // Conditional param -- may be omitted entirely.
- *   'specialDietaryNeeds', hasDietaryNeeds() ? getDietaryNeeds() : null,
- *   // Multi-valued param: &house=LosAngeles&house=NewYork&house=null
- *   'house', ['LosAngeles', 'NewYork', null]
- * ];
- * </pre>
- *
- * @typedef {!Array<string|goog.uri.utils.QueryValue>}
- */
-goog.uri.utils.QueryArray;
-
-
-/**
- * Parses encoded query parameters and calls callback function for every
- * parameter found in the string.
- *
- * Missing value of parameter (e.g. “…&key&…”) is treated as if the value was an
- * empty string.  Keys may be empty strings (e.g. “…&=value&…”) which also means
- * that “…&=&…” and “…&&…” will result in an empty key and value.
- *
- * @param {string} encodedQuery Encoded query string excluding question mark at
- *     the beginning.
- * @param {function(string, string)} callback Function called for every
- *     parameter found in query string.  The first argument (name) will not be
- *     urldecoded (so the function is consistent with buildQueryData), but the
- *     second will.  If the parameter has no value (i.e. “=” was not present)
- *     the second argument (value) will be an empty string.
- */
-goog.uri.utils.parseQueryData = function(encodedQuery, callback) {
-  if (!encodedQuery) {
-    return;
-  }
-  var pairs = encodedQuery.split('&');
-  for (var i = 0; i < pairs.length; i++) {
-    var indexOfEquals = pairs[i].indexOf('=');
-    var name = null;
-    var value = null;
-    if (indexOfEquals >= 0) {
-      name = pairs[i].substring(0, indexOfEquals);
-      value = pairs[i].substring(indexOfEquals + 1);
-    } else {
-      name = pairs[i];
-    }
-    callback(name, value ? goog.string.urlDecode(value) : '');
-  }
-};
-
-
-/**
- * Appends a URI and query data in a string buffer with special preconditions.
- *
- * Internal implementation utility, performing very few object allocations.
- *
- * @param {!Array<string|undefined>} buffer A string buffer.  The first element
- *     must be the base URI, and may have a fragment identifier.  If the array
- *     contains more than one element, the second element must be an ampersand,
- *     and may be overwritten, depending on the base URI.  Undefined elements
- *     are treated as empty-string.
- * @return {string} The concatenated URI and query data.
- * @private
- */
-goog.uri.utils.appendQueryData_ = function(buffer) {
-  if (buffer[1]) {
-    // At least one query parameter was added.  We need to check the
-    // punctuation mark, which is currently an ampersand, and also make sure
-    // there aren't any interfering fragment identifiers.
-    var baseUri = /** @type {string} */ (buffer[0]);
-    var hashIndex = baseUri.indexOf('#');
-    if (hashIndex >= 0) {
-      // Move the fragment off the base part of the URI into the end.
-      buffer.push(baseUri.substr(hashIndex));
-      buffer[0] = baseUri = baseUri.substr(0, hashIndex);
-    }
-    var questionIndex = baseUri.indexOf('?');
-    if (questionIndex < 0) {
-      // No question mark, so we need a question mark instead of an ampersand.
-      buffer[1] = '?';
-    } else if (questionIndex == baseUri.length - 1) {
-      // Question mark is the very last character of the existing URI, so don't
-      // append an additional delimiter.
-      buffer[1] = undefined;
-    }
-  }
-
-  return buffer.join('');
-};
-
-
-/**
- * Appends key=value pairs to an array, supporting multi-valued objects.
- * @param {string} key The key prefix.
- * @param {goog.uri.utils.QueryValue} value The value to serialize.
- * @param {!Array<string>} pairs The array to which the 'key=value' strings
- *     should be appended.
- * @private
- */
-goog.uri.utils.appendKeyValuePairs_ = function(key, value, pairs) {
-  if (goog.isArray(value)) {
-    // Convince the compiler it's an array.
-    goog.asserts.assertArray(value);
-    for (var j = 0; j < value.length; j++) {
-      // Convert to string explicitly, to short circuit the null and array
-      // logic in this function -- this ensures that null and undefined get
-      // written as literal 'null' and 'undefined', and arrays don't get
-      // expanded out but instead encoded in the default way.
-      goog.uri.utils.appendKeyValuePairs_(key, String(value[j]), pairs);
-    }
-  } else if (value != null) {
-    // Skip a top-level null or undefined entirely.
-    pairs.push(
-        '&', key,
-        // Check for empty string. Zero gets encoded into the url as literal
-        // strings.  For empty string, skip the equal sign, to be consistent
-        // with UriBuilder.java.
-        value === '' ? '' : '=', goog.string.urlEncode(value));
-  }
-};
-
-
-/**
- * Builds a buffer of query data from a sequence of alternating keys and values.
- *
- * @param {!Array<string|undefined>} buffer A string buffer to append to.  The
- *     first element appended will be an '&', and may be replaced by the caller.
- * @param {!goog.uri.utils.QueryArray|!Arguments} keysAndValues An array with
- *     alternating keys and values -- see the typedef.
- * @param {number=} opt_startIndex A start offset into the arary, defaults to 0.
- * @return {!Array<string|undefined>} The buffer argument.
- * @private
- */
-goog.uri.utils.buildQueryDataBuffer_ = function(
-    buffer, keysAndValues, opt_startIndex) {
-  goog.asserts.assert(
-      Math.max(keysAndValues.length - (opt_startIndex || 0), 0) % 2 == 0,
-      'goog.uri.utils: Key/value lists must be even in length.');
-
-  for (var i = opt_startIndex || 0; i < keysAndValues.length; i += 2) {
-    goog.uri.utils.appendKeyValuePairs_(
-        keysAndValues[i], keysAndValues[i + 1], buffer);
-  }
-
-  return buffer;
-};
-
-
-/**
- * Builds a query data string from a sequence of alternating keys and values.
- * Currently generates "&key&" for empty args.
- *
- * @param {goog.uri.utils.QueryArray} keysAndValues Alternating keys and
- *     values.  See the typedef.
- * @param {number=} opt_startIndex A start offset into the arary, defaults to 0.
- * @return {string} The encoded query string, in the form 'a=1&b=2'.
- */
-goog.uri.utils.buildQueryData = function(keysAndValues, opt_startIndex) {
-  var buffer =
-      goog.uri.utils.buildQueryDataBuffer_([], keysAndValues, opt_startIndex);
-  buffer[0] = '';  // Remove the leading ampersand.
-  return buffer.join('');
-};
-
-
-/**
- * Builds a buffer of query data from a map.
- *
- * @param {!Array<string|undefined>} buffer A string buffer to append to.  The
- *     first element appended will be an '&', and may be replaced by the caller.
- * @param {!Object<string, goog.uri.utils.QueryValue>} map An object where keys
- *     are URI-encoded parameter keys, and the values conform to the contract
- *     specified in the goog.uri.utils.QueryValue typedef.
- * @return {!Array<string|undefined>} The buffer argument.
- * @private
- */
-goog.uri.utils.buildQueryDataBufferFromMap_ = function(buffer, map) {
-  for (var key in map) {
-    goog.uri.utils.appendKeyValuePairs_(key, map[key], buffer);
-  }
-
-  return buffer;
-};
-
-
-/**
- * Builds a query data string from a map.
- * Currently generates "&key&" for empty args.
- *
- * @param {!Object<string, goog.uri.utils.QueryValue>} map An object where keys
- *     are URI-encoded parameter keys, and the values are arbitrary types
- *     or arrays. Keys with a null value are dropped.
- * @return {string} The encoded query string, in the form 'a=1&b=2'.
- */
-goog.uri.utils.buildQueryDataFromMap = function(map) {
-  var buffer = goog.uri.utils.buildQueryDataBufferFromMap_([], map);
-  buffer[0] = '';
-  return buffer.join('');
-};
-
-
-/**
- * Appends URI parameters to an existing URI.
- *
- * The variable arguments may contain alternating keys and values.  Keys are
- * assumed to be already URI encoded.  The values should not be URI-encoded,
- * and will instead be encoded by this function.
- * <pre>
- * appendParams('http://www.foo.com?existing=true',
- *     'key1', 'value1',
- *     'key2', 'value?willBeEncoded',
- *     'key3', ['valueA', 'valueB', 'valueC'],
- *     'key4', null);
- * result: 'http://www.foo.com?existing=true&' +
- *     'key1=value1&' +
- *     'key2=value%3FwillBeEncoded&' +
- *     'key3=valueA&key3=valueB&key3=valueC'
- * </pre>
- *
- * A single call to this function will not exhibit quadratic behavior in IE,
- * whereas multiple repeated calls may, although the effect is limited by
- * fact that URL's generally can't exceed 2kb.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {...(goog.uri.utils.QueryArray|string|goog.uri.utils.QueryValue)}
- * var_args
- *     An array or argument list conforming to goog.uri.utils.QueryArray.
- * @return {string} The URI with all query parameters added.
- */
-goog.uri.utils.appendParams = function(uri, var_args) {
-  return goog.uri.utils.appendQueryData_(
-      arguments.length == 2 ?
-          goog.uri.utils.buildQueryDataBuffer_([uri], arguments[1], 0) :
-          goog.uri.utils.buildQueryDataBuffer_([uri], arguments, 1));
-};
-
-
-/**
- * Appends query parameters from a map.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {!Object<goog.uri.utils.QueryValue>} map An object where keys are
- *     URI-encoded parameter keys, and the values are arbitrary types or arrays.
- *     Keys with a null value are dropped.
- * @return {string} The new parameters.
- */
-goog.uri.utils.appendParamsFromMap = function(uri, map) {
-  return goog.uri.utils.appendQueryData_(
-      goog.uri.utils.buildQueryDataBufferFromMap_([uri], map));
-};
-
-
-/**
- * Appends a single URI parameter.
- *
- * Repeated calls to this can exhibit quadratic behavior in IE6 due to the
- * way string append works, though it should be limited given the 2kb limit.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {string} key The key, which must already be URI encoded.
- * @param {*=} opt_value The value, which will be stringized and encoded
- *     (assumed not already to be encoded).  If omitted, undefined, or null, the
- *     key will be added as a valueless parameter.
- * @return {string} The URI with the query parameter added.
- */
-goog.uri.utils.appendParam = function(uri, key, opt_value) {
-  var paramArr = [uri, '&', key];
-  if (goog.isDefAndNotNull(opt_value)) {
-    paramArr.push('=', goog.string.urlEncode(opt_value));
-  }
-  return goog.uri.utils.appendQueryData_(paramArr);
-};
-
-
-/**
- * Finds the next instance of a query parameter with the specified name.
- *
- * Does not instantiate any objects.
- *
- * @param {string} uri The URI to search.  May contain a fragment identifier
- *     if opt_hashIndex is specified.
- * @param {number} startIndex The index to begin searching for the key at.  A
- *     match may be found even if this is one character after the ampersand.
- * @param {string} keyEncoded The URI-encoded key.
- * @param {number} hashOrEndIndex Index to stop looking at.  If a hash
- *     mark is present, it should be its index, otherwise it should be the
- *     length of the string.
- * @return {number} The position of the first character in the key's name,
- *     immediately after either a question mark or a dot.
- * @private
- */
-goog.uri.utils.findParam_ = function(
-    uri, startIndex, keyEncoded, hashOrEndIndex) {
-  var index = startIndex;
-  var keyLength = keyEncoded.length;
-
-  // Search for the key itself and post-filter for surronuding punctuation,
-  // rather than expensively building a regexp.
-  while ((index = uri.indexOf(keyEncoded, index)) >= 0 &&
-         index < hashOrEndIndex) {
-    var precedingChar = uri.charCodeAt(index - 1);
-    // Ensure that the preceding character is '&' or '?'.
-    if (precedingChar == goog.uri.utils.CharCode_.AMPERSAND ||
-        precedingChar == goog.uri.utils.CharCode_.QUESTION) {
-      // Ensure the following character is '&', '=', '#', or NaN
-      // (end of string).
-      var followingChar = uri.charCodeAt(index + keyLength);
-      if (!followingChar || followingChar == goog.uri.utils.CharCode_.EQUAL ||
-          followingChar == goog.uri.utils.CharCode_.AMPERSAND ||
-          followingChar == goog.uri.utils.CharCode_.HASH) {
-        return index;
-      }
-    }
-    index += keyLength + 1;
-  }
-
-  return -1;
-};
-
-
-/**
- * Regular expression for finding a hash mark or end of string.
- * @type {RegExp}
- * @private
- */
-goog.uri.utils.hashOrEndRe_ = /#|$/;
-
-
-/**
- * Determines if the URI contains a specific key.
- *
- * Performs no object instantiations.
- *
- * @param {string} uri The URI to process.  May contain a fragment
- *     identifier.
- * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
- * @return {boolean} Whether the key is present.
- */
-goog.uri.utils.hasParam = function(uri, keyEncoded) {
-  return goog.uri.utils.findParam_(
-             uri, 0, keyEncoded, uri.search(goog.uri.utils.hashOrEndRe_)) >= 0;
-};
-
-
-/**
- * Gets the first value of a query parameter.
- * @param {string} uri The URI to process.  May contain a fragment.
- * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
- * @return {?string} The first value of the parameter (URI-decoded), or null
- *     if the parameter is not found.
- */
-goog.uri.utils.getParamValue = function(uri, keyEncoded) {
-  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
-  var foundIndex =
-      goog.uri.utils.findParam_(uri, 0, keyEncoded, hashOrEndIndex);
-
-  if (foundIndex < 0) {
-    return null;
-  } else {
-    var endPosition = uri.indexOf('&', foundIndex);
-    if (endPosition < 0 || endPosition > hashOrEndIndex) {
-      endPosition = hashOrEndIndex;
-    }
-    // Progress forth to the end of the "key=" or "key&" substring.
-    foundIndex += keyEncoded.length + 1;
-    // Use substr, because it (unlike substring) will return empty string
-    // if foundIndex > endPosition.
-    return goog.string.urlDecode(
-        uri.substr(foundIndex, endPosition - foundIndex));
-  }
-};
-
-
-/**
- * Gets all values of a query parameter.
- * @param {string} uri The URI to process.  May contain a fragment.
- * @param {string} keyEncoded The URI-encoded key.  Case-sensitive.
- * @return {!Array<string>} All URI-decoded values with the given key.
- *     If the key is not found, this will have length 0, but never be null.
- */
-goog.uri.utils.getParamValues = function(uri, keyEncoded) {
-  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
-  var position = 0;
-  var foundIndex;
-  var result = [];
-
-  while ((foundIndex = goog.uri.utils.findParam_(
-              uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
-    // Find where this parameter ends, either the '&' or the end of the
-    // query parameters.
-    position = uri.indexOf('&', foundIndex);
-    if (position < 0 || position > hashOrEndIndex) {
-      position = hashOrEndIndex;
-    }
-
-    // Progress forth to the end of the "key=" or "key&" substring.
-    foundIndex += keyEncoded.length + 1;
-    // Use substr, because it (unlike substring) will return empty string
-    // if foundIndex > position.
-    result.push(
-        goog.string.urlDecode(uri.substr(foundIndex, position - foundIndex)));
-  }
-
-  return result;
-};
-
-
-/**
- * Regexp to find trailing question marks and ampersands.
- * @type {RegExp}
- * @private
- */
-goog.uri.utils.trailingQueryPunctuationRe_ = /[?&]($|#)/;
-
-
-/**
- * Removes all instances of a query parameter.
- * @param {string} uri The URI to process.  Must not contain a fragment.
- * @param {string} keyEncoded The URI-encoded key.
- * @return {string} The URI with all instances of the parameter removed.
- */
-goog.uri.utils.removeParam = function(uri, keyEncoded) {
-  var hashOrEndIndex = uri.search(goog.uri.utils.hashOrEndRe_);
-  var position = 0;
-  var foundIndex;
-  var buffer = [];
-
-  // Look for a query parameter.
-  while ((foundIndex = goog.uri.utils.findParam_(
-              uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
-    // Get the portion of the query string up to, but not including, the ?
-    // or & starting the parameter.
-    buffer.push(uri.substring(position, foundIndex));
-    // Progress to immediately after the '&'.  If not found, go to the end.
-    // Avoid including the hash mark.
-    position = Math.min(
-        (uri.indexOf('&', foundIndex) + 1) || hashOrEndIndex, hashOrEndIndex);
-  }
-
-  // Append everything that is remaining.
-  buffer.push(uri.substr(position));
-
-  // Join the buffer, and remove trailing punctuation that remains.
-  return buffer.join('').replace(
-      goog.uri.utils.trailingQueryPunctuationRe_, '$1');
-};
-
-
-/**
- * Replaces all existing definitions of a parameter with a single definition.
- *
- * Repeated calls to this can exhibit quadratic behavior due to the need to
- * find existing instances and reconstruct the string, though it should be
- * limited given the 2kb limit.  Consider using appendParams to append multiple
- * parameters in bulk.
- *
- * @param {string} uri The original URI, which may already have query data.
- * @param {string} keyEncoded The key, which must already be URI encoded.
- * @param {*} value The value, which will be stringized and encoded (assumed
- *     not already to be encoded).
- * @return {string} The URI with the query parameter added.
- */
-goog.uri.utils.setParam = function(uri, keyEncoded, value) {
-  return goog.uri.utils.appendParam(
-      goog.uri.utils.removeParam(uri, keyEncoded), keyEncoded, value);
-};
-
-
-/**
- * Generates a URI path using a given URI and a path with checks to
- * prevent consecutive "//". The baseUri passed in must not contain
- * query or fragment identifiers. The path to append may not contain query or
- * fragment identifiers.
- *
- * @param {string} baseUri URI to use as the base.
- * @param {string} path Path to append.
- * @return {string} Updated URI.
- */
-goog.uri.utils.appendPath = function(baseUri, path) {
-  goog.uri.utils.assertNoFragmentsOrQueries_(baseUri);
-
-  // Remove any trailing '/'
-  if (goog.string.endsWith(baseUri, '/')) {
-    baseUri = baseUri.substr(0, baseUri.length - 1);
-  }
-  // Remove any leading '/'
-  if (goog.string.startsWith(path, '/')) {
-    path = path.substr(1);
-  }
-  return goog.string.buildString(baseUri, '/', path);
-};
-
-
-/**
- * Replaces the path.
- * @param {string} uri URI to use as the base.
- * @param {string} path New path.
- * @return {string} Updated URI.
- */
-goog.uri.utils.setPath = function(uri, path) {
-  // Add any missing '/'.
-  if (!goog.string.startsWith(path, '/')) {
-    path = '/' + path;
-  }
-  var parts = goog.uri.utils.split(uri);
-  return goog.uri.utils.buildFromEncodedParts(
-      parts[goog.uri.utils.ComponentIndex.SCHEME],
-      parts[goog.uri.utils.ComponentIndex.USER_INFO],
-      parts[goog.uri.utils.ComponentIndex.DOMAIN],
-      parts[goog.uri.utils.ComponentIndex.PORT], path,
-      parts[goog.uri.utils.ComponentIndex.QUERY_DATA],
-      parts[goog.uri.utils.ComponentIndex.FRAGMENT]);
-};
-
-
-/**
- * Standard supported query parameters.
- * @enum {string}
- */
-goog.uri.utils.StandardQueryParam = {
-
-  /** Unused parameter for unique-ifying. */
-  RANDOM: 'zx'
-};
-
-
-/**
- * Sets the zx parameter of a URI to a random value.
- * @param {string} uri Any URI.
- * @return {string} That URI with the "zx" parameter added or replaced to
- *     contain a random string.
- */
-goog.uri.utils.makeUnique = function(uri) {
-  return goog.uri.utils.setParam(
-      uri, goog.uri.utils.StandardQueryParam.RANDOM,
-      goog.string.getRandomString());
-};
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Class for parsing and formatting URIs.
- *
- * Use goog.Uri(string) to parse a URI string.  Use goog.Uri.create(...) to
- * create a new instance of the goog.Uri object from Uri parts.
- *
- * e.g: <code>var myUri = new goog.Uri(window.location);</code>
- *
- * Implements RFC 3986 for parsing/formatting URIs.
- * http://www.ietf.org/rfc/rfc3986.txt
- *
- * Some changes have been made to the interface (more like .NETs), though the
- * internal representation is now of un-encoded parts, this will change the
- * behavior slightly.
- *
- */
-
-goog.provide('goog.Uri');
-goog.provide('goog.Uri.QueryData');
-
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.string');
-goog.require('goog.structs');
-goog.require('goog.structs.Map');
-goog.require('goog.uri.utils');
-goog.require('goog.uri.utils.ComponentIndex');
-goog.require('goog.uri.utils.StandardQueryParam');
-
-
-
-/**
- * This class contains setters and getters for the parts of the URI.
- * The <code>getXyz</code>/<code>setXyz</code> methods return the decoded part
- * -- so<code>goog.Uri.parse('/foo%20bar').getPath()</code> will return the
- * decoded path, <code>/foo bar</code>.
- *
- * Reserved characters (see RFC 3986 section 2.2) can be present in
- * their percent-encoded form in scheme, domain, and path URI components and
- * will not be auto-decoded. For example:
- * <code>goog.Uri.parse('rel%61tive/path%2fto/resource').getPath()</code> will
- * return <code>relative/path%2fto/resource</code>.
- *
- * The constructor accepts an optional unparsed, raw URI string.  The parser
- * is relaxed, so special characters that aren't escaped but don't cause
- * ambiguities will not cause parse failures.
- *
- * All setters return <code>this</code> and so may be chained, a la
- * <code>goog.Uri.parse('/foo').setFragment('part').toString()</code>.
- *
- * @param {*=} opt_uri Optional string URI to parse
- *        (use goog.Uri.create() to create a URI from parts), or if
- *        a goog.Uri is passed, a clone is created.
- * @param {boolean=} opt_ignoreCase If true, #getParameterValue will ignore
- * the case of the parameter name.
- *
- * @throws URIError If opt_uri is provided and URI is malformed (that is,
- *     if decodeURIComponent fails on any of the URI components).
- * @constructor
- * @struct
- */
-goog.Uri = function(opt_uri, opt_ignoreCase) {
-  /**
-   * Scheme such as "http".
-   * @private {string}
-   */
-  this.scheme_ = '';
-
-  /**
-   * User credentials in the form "username:password".
-   * @private {string}
-   */
-  this.userInfo_ = '';
-
-  /**
-   * Domain part, e.g. "www.google.com".
-   * @private {string}
-   */
-  this.domain_ = '';
-
-  /**
-   * Port, e.g. 8080.
-   * @private {?number}
-   */
-  this.port_ = null;
-
-  /**
-   * Path, e.g. "/tests/img.png".
-   * @private {string}
-   */
-  this.path_ = '';
-
-  /**
-   * The fragment without the #.
-   * @private {string}
-   */
-  this.fragment_ = '';
-
-  /**
-   * Whether or not this Uri should be treated as Read Only.
-   * @private {boolean}
-   */
-  this.isReadOnly_ = false;
-
-  /**
-   * Whether or not to ignore case when comparing query params.
-   * @private {boolean}
-   */
-  this.ignoreCase_ = false;
-
-  /**
-   * Object representing query data.
-   * @private {!goog.Uri.QueryData}
-   */
-  this.queryData_;
-
-  // Parse in the uri string
-  var m;
-  if (opt_uri instanceof goog.Uri) {
-    this.ignoreCase_ =
-        goog.isDef(opt_ignoreCase) ? opt_ignoreCase : opt_uri.getIgnoreCase();
-    this.setScheme(opt_uri.getScheme());
-    this.setUserInfo(opt_uri.getUserInfo());
-    this.setDomain(opt_uri.getDomain());
-    this.setPort(opt_uri.getPort());
-    this.setPath(opt_uri.getPath());
-    this.setQueryData(opt_uri.getQueryData().clone());
-    this.setFragment(opt_uri.getFragment());
-  } else if (opt_uri && (m = goog.uri.utils.split(String(opt_uri)))) {
-    this.ignoreCase_ = !!opt_ignoreCase;
-
-    // Set the parts -- decoding as we do so.
-    // COMPATIBILITY NOTE - In IE, unmatched fields may be empty strings,
-    // whereas in other browsers they will be undefined.
-    this.setScheme(m[goog.uri.utils.ComponentIndex.SCHEME] || '', true);
-    this.setUserInfo(m[goog.uri.utils.ComponentIndex.USER_INFO] || '', true);
-    this.setDomain(m[goog.uri.utils.ComponentIndex.DOMAIN] || '', true);
-    this.setPort(m[goog.uri.utils.ComponentIndex.PORT]);
-    this.setPath(m[goog.uri.utils.ComponentIndex.PATH] || '', true);
-    this.setQueryData(m[goog.uri.utils.ComponentIndex.QUERY_DATA] || '', true);
-    this.setFragment(m[goog.uri.utils.ComponentIndex.FRAGMENT] || '', true);
-
-  } else {
-    this.ignoreCase_ = !!opt_ignoreCase;
-    this.queryData_ = new goog.Uri.QueryData(null, null, this.ignoreCase_);
-  }
-};
-
-
-/**
- * If true, we preserve the type of query parameters set programmatically.
- *
- * This means that if you set a parameter to a boolean, and then call
- * getParameterValue, you will get a boolean back.
- *
- * If false, we will coerce parameters to strings, just as they would
- * appear in real URIs.
- *
- * TODO(nicksantos): Remove this once people have time to fix all tests.
- *
- * @type {boolean}
- */
-goog.Uri.preserveParameterTypesCompatibilityFlag = false;
-
-
-/**
- * Parameter name added to stop caching.
- * @type {string}
- */
-goog.Uri.RANDOM_PARAM = goog.uri.utils.StandardQueryParam.RANDOM;
-
-
-/**
- * @return {string} The string form of the url.
- * @override
- */
-goog.Uri.prototype.toString = function() {
-  var out = [];
-
-  var scheme = this.getScheme();
-  if (scheme) {
-    out.push(
-        goog.Uri.encodeSpecialChars_(
-            scheme, goog.Uri.reDisallowedInSchemeOrUserInfo_, true),
-        ':');
-  }
-
-  var domain = this.getDomain();
-  if (domain || scheme == 'file') {
-    out.push('//');
-
-    var userInfo = this.getUserInfo();
-    if (userInfo) {
-      out.push(
-          goog.Uri.encodeSpecialChars_(
-              userInfo, goog.Uri.reDisallowedInSchemeOrUserInfo_, true),
-          '@');
-    }
-
-    out.push(goog.Uri.removeDoubleEncoding_(goog.string.urlEncode(domain)));
-
-    var port = this.getPort();
-    if (port != null) {
-      out.push(':', String(port));
-    }
-  }
-
-  var path = this.getPath();
-  if (path) {
-    if (this.hasDomain() && path.charAt(0) != '/') {
-      out.push('/');
-    }
-    out.push(
-        goog.Uri.encodeSpecialChars_(
-            path, path.charAt(0) == '/' ? goog.Uri.reDisallowedInAbsolutePath_ :
-                                          goog.Uri.reDisallowedInRelativePath_,
-            true));
-  }
-
-  var query = this.getEncodedQuery();
-  if (query) {
-    out.push('?', query);
-  }
-
-  var fragment = this.getFragment();
-  if (fragment) {
-    out.push(
-        '#', goog.Uri.encodeSpecialChars_(
-                 fragment, goog.Uri.reDisallowedInFragment_));
-  }
-  return out.join('');
-};
-
-
-/**
- * Resolves the given relative URI (a goog.Uri object), using the URI
- * represented by this instance as the base URI.
- *
- * There are several kinds of relative URIs:<br>
- * 1. foo - replaces the last part of the path, the whole query and fragment<br>
- * 2. /foo - replaces the the path, the query and fragment<br>
- * 3. //foo - replaces everything from the domain on.  foo is a domain name<br>
- * 4. ?foo - replace the query and fragment<br>
- * 5. #foo - replace the fragment only
- *
- * Additionally, if relative URI has a non-empty path, all ".." and "."
- * segments will be resolved, as described in RFC 3986.
- *
- * @param {!goog.Uri} relativeUri The relative URI to resolve.
- * @return {!goog.Uri} The resolved URI.
- */
-goog.Uri.prototype.resolve = function(relativeUri) {
-
-  var absoluteUri = this.clone();
-
-  // we satisfy these conditions by looking for the first part of relativeUri
-  // that is not blank and applying defaults to the rest
-
-  var overridden = relativeUri.hasScheme();
-
-  if (overridden) {
-    absoluteUri.setScheme(relativeUri.getScheme());
-  } else {
-    overridden = relativeUri.hasUserInfo();
-  }
-
-  if (overridden) {
-    absoluteUri.setUserInfo(relativeUri.getUserInfo());
-  } else {
-    overridden = relativeUri.hasDomain();
-  }
-
-  if (overridden) {
-    absoluteUri.setDomain(relativeUri.getDomain());
-  } else {
-    overridden = relativeUri.hasPort();
-  }
-
-  var path = relativeUri.getPath();
-  if (overridden) {
-    absoluteUri.setPort(relativeUri.getPort());
-  } else {
-    overridden = relativeUri.hasPath();
-    if (overridden) {
-      // resolve path properly
-      if (path.charAt(0) != '/') {
-        // path is relative
-        if (this.hasDomain() && !this.hasPath()) {
-          // RFC 3986, section 5.2.3, case 1
-          path = '/' + path;
-        } else {
-          // RFC 3986, section 5.2.3, case 2
-          var lastSlashIndex = absoluteUri.getPath().lastIndexOf('/');
-          if (lastSlashIndex != -1) {
-            path = absoluteUri.getPath().substr(0, lastSlashIndex + 1) + path;
-          }
-        }
-      }
-      path = goog.Uri.removeDotSegments(path);
-    }
-  }
-
-  if (overridden) {
-    absoluteUri.setPath(path);
-  } else {
-    overridden = relativeUri.hasQuery();
-  }
-
-  if (overridden) {
-    absoluteUri.setQueryData(relativeUri.getDecodedQuery());
-  } else {
-    overridden = relativeUri.hasFragment();
-  }
-
-  if (overridden) {
-    absoluteUri.setFragment(relativeUri.getFragment());
-  }
-
-  return absoluteUri;
-};
-
-
-/**
- * Clones the URI instance.
- * @return {!goog.Uri} New instance of the URI object.
- */
-goog.Uri.prototype.clone = function() {
-  return new goog.Uri(this);
-};
-
-
-/**
- * @return {string} The encoded scheme/protocol for the URI.
- */
-goog.Uri.prototype.getScheme = function() {
-  return this.scheme_;
-};
-
-
-/**
- * Sets the scheme/protocol.
- * @throws URIError If opt_decode is true and newScheme is malformed (that is,
- *     if decodeURIComponent fails).
- * @param {string} newScheme New scheme value.
- * @param {boolean=} opt_decode Optional param for whether to decode new value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setScheme = function(newScheme, opt_decode) {
-  this.enforceReadOnly();
-  this.scheme_ =
-      opt_decode ? goog.Uri.decodeOrEmpty_(newScheme, true) : newScheme;
-
-  // remove an : at the end of the scheme so somebody can pass in
-  // window.location.protocol
-  if (this.scheme_) {
-    this.scheme_ = this.scheme_.replace(/:$/, '');
-  }
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether the scheme has been set.
- */
-goog.Uri.prototype.hasScheme = function() {
-  return !!this.scheme_;
-};
-
-
-/**
- * @return {string} The decoded user info.
- */
-goog.Uri.prototype.getUserInfo = function() {
-  return this.userInfo_;
-};
-
-
-/**
- * Sets the userInfo.
- * @throws URIError If opt_decode is true and newUserInfo is malformed (that is,
- *     if decodeURIComponent fails).
- * @param {string} newUserInfo New userInfo value.
- * @param {boolean=} opt_decode Optional param for whether to decode new value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setUserInfo = function(newUserInfo, opt_decode) {
-  this.enforceReadOnly();
-  this.userInfo_ =
-      opt_decode ? goog.Uri.decodeOrEmpty_(newUserInfo) : newUserInfo;
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether the user info has been set.
- */
-goog.Uri.prototype.hasUserInfo = function() {
-  return !!this.userInfo_;
-};
-
-
-/**
- * @return {string} The decoded domain.
- */
-goog.Uri.prototype.getDomain = function() {
-  return this.domain_;
-};
-
-
-/**
- * Sets the domain.
- * @throws URIError If opt_decode is true and newDomain is malformed (that is,
- *     if decodeURIComponent fails).
- * @param {string} newDomain New domain value.
- * @param {boolean=} opt_decode Optional param for whether to decode new value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setDomain = function(newDomain, opt_decode) {
-  this.enforceReadOnly();
-  this.domain_ =
-      opt_decode ? goog.Uri.decodeOrEmpty_(newDomain, true) : newDomain;
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether the domain has been set.
- */
-goog.Uri.prototype.hasDomain = function() {
-  return !!this.domain_;
-};
-
-
-/**
- * @return {?number} The port number.
- */
-goog.Uri.prototype.getPort = function() {
-  return this.port_;
-};
-
-
-/**
- * Sets the port number.
- * @param {*} newPort Port number. Will be explicitly casted to a number.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setPort = function(newPort) {
-  this.enforceReadOnly();
-
-  if (newPort) {
-    newPort = Number(newPort);
-    if (isNaN(newPort) || newPort < 0) {
-      throw Error('Bad port number ' + newPort);
-    }
-    this.port_ = newPort;
-  } else {
-    this.port_ = null;
-  }
-
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether the port has been set.
- */
-goog.Uri.prototype.hasPort = function() {
-  return this.port_ != null;
-};
-
-
-/**
-  * @return {string} The decoded path.
- */
-goog.Uri.prototype.getPath = function() {
-  return this.path_;
-};
-
-
-/**
- * Sets the path.
- * @throws URIError If opt_decode is true and newPath is malformed (that is,
- *     if decodeURIComponent fails).
- * @param {string} newPath New path value.
- * @param {boolean=} opt_decode Optional param for whether to decode new value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setPath = function(newPath, opt_decode) {
-  this.enforceReadOnly();
-  this.path_ = opt_decode ? goog.Uri.decodeOrEmpty_(newPath, true) : newPath;
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether the path has been set.
- */
-goog.Uri.prototype.hasPath = function() {
-  return !!this.path_;
-};
-
-
-/**
- * @return {boolean} Whether the query string has been set.
- */
-goog.Uri.prototype.hasQuery = function() {
-  return this.queryData_.toString() !== '';
-};
-
-
-/**
- * Sets the query data.
- * @param {goog.Uri.QueryData|string|undefined} queryData QueryData object.
- * @param {boolean=} opt_decode Optional param for whether to decode new value.
- *     Applies only if queryData is a string.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setQueryData = function(queryData, opt_decode) {
-  this.enforceReadOnly();
-
-  if (queryData instanceof goog.Uri.QueryData) {
-    this.queryData_ = queryData;
-    this.queryData_.setIgnoreCase(this.ignoreCase_);
-  } else {
-    if (!opt_decode) {
-      // QueryData accepts encoded query string, so encode it if
-      // opt_decode flag is not true.
-      queryData = goog.Uri.encodeSpecialChars_(
-          queryData, goog.Uri.reDisallowedInQuery_);
-    }
-    this.queryData_ = new goog.Uri.QueryData(queryData, null, this.ignoreCase_);
-  }
-
-  return this;
-};
-
-
-/**
- * Sets the URI query.
- * @param {string} newQuery New query value.
- * @param {boolean=} opt_decode Optional param for whether to decode new value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setQuery = function(newQuery, opt_decode) {
-  return this.setQueryData(newQuery, opt_decode);
-};
-
-
-/**
- * @return {string} The encoded URI query, not including the ?.
- */
-goog.Uri.prototype.getEncodedQuery = function() {
-  return this.queryData_.toString();
-};
-
-
-/**
- * @return {string} The decoded URI query, not including the ?.
- */
-goog.Uri.prototype.getDecodedQuery = function() {
-  return this.queryData_.toDecodedString();
-};
-
-
-/**
- * Returns the query data.
- * @return {!goog.Uri.QueryData} QueryData object.
- */
-goog.Uri.prototype.getQueryData = function() {
-  return this.queryData_;
-};
-
-
-/**
- * @return {string} The encoded URI query, not including the ?.
- *
- * Warning: This method, unlike other getter methods, returns encoded
- * value, instead of decoded one.
- */
-goog.Uri.prototype.getQuery = function() {
-  return this.getEncodedQuery();
-};
-
-
-/**
- * Sets the value of the named query parameters, clearing previous values for
- * that key.
- *
- * @param {string} key The parameter to set.
- * @param {*} value The new value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setParameterValue = function(key, value) {
-  this.enforceReadOnly();
-  this.queryData_.set(key, value);
-  return this;
-};
-
-
-/**
- * Sets the values of the named query parameters, clearing previous values for
- * that key.  Not new values will currently be moved to the end of the query
- * string.
- *
- * So, <code>goog.Uri.parse('foo?a=b&c=d&e=f').setParameterValues('c', ['new'])
- * </code> yields <tt>foo?a=b&e=f&c=new</tt>.</p>
- *
- * @param {string} key The parameter to set.
- * @param {*} values The new values. If values is a single
- *     string then it will be treated as the sole value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setParameterValues = function(key, values) {
-  this.enforceReadOnly();
-
-  if (!goog.isArray(values)) {
-    values = [String(values)];
-  }
-
-  this.queryData_.setValues(key, values);
-
-  return this;
-};
-
-
-/**
- * Returns the value<b>s</b> for a given cgi parameter as a list of decoded
- * query parameter values.
- * @param {string} name The parameter to get values for.
- * @return {!Array<?>} The values for a given cgi parameter as a list of
- *     decoded query parameter values.
- */
-goog.Uri.prototype.getParameterValues = function(name) {
-  return this.queryData_.getValues(name);
-};
-
-
-/**
- * Returns the first value for a given cgi parameter or undefined if the given
- * parameter name does not appear in the query string.
- * @param {string} paramName Unescaped parameter name.
- * @return {string|undefined} The first value for a given cgi parameter or
- *     undefined if the given parameter name does not appear in the query
- *     string.
- */
-goog.Uri.prototype.getParameterValue = function(paramName) {
-  // NOTE(nicksantos): This type-cast is a lie when
-  // preserveParameterTypesCompatibilityFlag is set to true.
-  // But this should only be set to true in tests.
-  return /** @type {string|undefined} */ (this.queryData_.get(paramName));
-};
-
-
-/**
- * @return {string} The URI fragment, not including the #.
- */
-goog.Uri.prototype.getFragment = function() {
-  return this.fragment_;
-};
-
-
-/**
- * Sets the URI fragment.
- * @throws URIError If opt_decode is true and newFragment is malformed (that is,
- *     if decodeURIComponent fails).
- * @param {string} newFragment New fragment value.
- * @param {boolean=} opt_decode Optional param for whether to decode new value.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.setFragment = function(newFragment, opt_decode) {
-  this.enforceReadOnly();
-  this.fragment_ =
-      opt_decode ? goog.Uri.decodeOrEmpty_(newFragment) : newFragment;
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether the URI has a fragment set.
- */
-goog.Uri.prototype.hasFragment = function() {
-  return !!this.fragment_;
-};
-
-
-/**
- * Returns true if this has the same domain as that of uri2.
- * @param {!goog.Uri} uri2 The URI object to compare to.
- * @return {boolean} true if same domain; false otherwise.
- */
-goog.Uri.prototype.hasSameDomainAs = function(uri2) {
-  return ((!this.hasDomain() && !uri2.hasDomain()) ||
-          this.getDomain() == uri2.getDomain()) &&
-      ((!this.hasPort() && !uri2.hasPort()) ||
-       this.getPort() == uri2.getPort());
-};
-
-
-/**
- * Adds a random parameter to the Uri.
- * @return {!goog.Uri} Reference to this Uri object.
- */
-goog.Uri.prototype.makeUnique = function() {
-  this.enforceReadOnly();
-  this.setParameterValue(goog.Uri.RANDOM_PARAM, goog.string.getRandomString());
-
-  return this;
-};
-
-
-/**
- * Removes the named query parameter.
- *
- * @param {string} key The parameter to remove.
- * @return {!goog.Uri} Reference to this URI object.
- */
-goog.Uri.prototype.removeParameter = function(key) {
-  this.enforceReadOnly();
-  this.queryData_.remove(key);
-  return this;
-};
-
-
-/**
- * Sets whether Uri is read only. If this goog.Uri is read-only,
- * enforceReadOnly_ will be called at the start of any function that may modify
- * this Uri.
- * @param {boolean} isReadOnly whether this goog.Uri should be read only.
- * @return {!goog.Uri} Reference to this Uri object.
- */
-goog.Uri.prototype.setReadOnly = function(isReadOnly) {
-  this.isReadOnly_ = isReadOnly;
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether the URI is read only.
- */
-goog.Uri.prototype.isReadOnly = function() {
-  return this.isReadOnly_;
-};
-
-
-/**
- * Checks if this Uri has been marked as read only, and if so, throws an error.
- * This should be called whenever any modifying function is called.
- */
-goog.Uri.prototype.enforceReadOnly = function() {
-  if (this.isReadOnly_) {
-    throw Error('Tried to modify a read-only Uri');
-  }
-};
-
-
-/**
- * Sets whether to ignore case.
- * NOTE: If there are already key/value pairs in the QueryData, and
- * ignoreCase_ is set to false, the keys will all be lower-cased.
- * @param {boolean} ignoreCase whether this goog.Uri should ignore case.
- * @return {!goog.Uri} Reference to this Uri object.
- */
-goog.Uri.prototype.setIgnoreCase = function(ignoreCase) {
-  this.ignoreCase_ = ignoreCase;
-  if (this.queryData_) {
-    this.queryData_.setIgnoreCase(ignoreCase);
-  }
-  return this;
-};
-
-
-/**
- * @return {boolean} Whether to ignore case.
- */
-goog.Uri.prototype.getIgnoreCase = function() {
-  return this.ignoreCase_;
-};
-
-
-//==============================================================================
-// Static members
-//==============================================================================
-
-
-/**
- * Creates a uri from the string form.  Basically an alias of new goog.Uri().
- * If a Uri object is passed to parse then it will return a clone of the object.
- *
- * @throws URIError If parsing the URI is malformed. The passed URI components
- *     should all be parseable by decodeURIComponent.
- * @param {*} uri Raw URI string or instance of Uri
- *     object.
- * @param {boolean=} opt_ignoreCase Whether to ignore the case of parameter
- * names in #getParameterValue.
- * @return {!goog.Uri} The new URI object.
- */
-goog.Uri.parse = function(uri, opt_ignoreCase) {
-  return uri instanceof goog.Uri ? uri.clone() :
-                                   new goog.Uri(uri, opt_ignoreCase);
-};
-
-
-/**
- * Creates a new goog.Uri object from unencoded parts.
- *
- * @param {?string=} opt_scheme Scheme/protocol or full URI to parse.
- * @param {?string=} opt_userInfo username:password.
- * @param {?string=} opt_domain www.google.com.
- * @param {?number=} opt_port 9830.
- * @param {?string=} opt_path /some/path/to/a/file.html.
- * @param {string|goog.Uri.QueryData=} opt_query a=1&b=2.
- * @param {?string=} opt_fragment The fragment without the #.
- * @param {boolean=} opt_ignoreCase Whether to ignore parameter name case in
- *     #getParameterValue.
- *
- * @return {!goog.Uri} The new URI object.
- */
-goog.Uri.create = function(
-    opt_scheme, opt_userInfo, opt_domain, opt_port, opt_path, opt_query,
-    opt_fragment, opt_ignoreCase) {
-
-  var uri = new goog.Uri(null, opt_ignoreCase);
-
-  // Only set the parts if they are defined and not empty strings.
-  opt_scheme && uri.setScheme(opt_scheme);
-  opt_userInfo && uri.setUserInfo(opt_userInfo);
-  opt_domain && uri.setDomain(opt_domain);
-  opt_port && uri.setPort(opt_port);
-  opt_path && uri.setPath(opt_path);
-  opt_query && uri.setQueryData(opt_query);
-  opt_fragment && uri.setFragment(opt_fragment);
-
-  return uri;
-};
-
-
-/**
- * Resolves a relative Uri against a base Uri, accepting both strings and
- * Uri objects.
- *
- * @param {*} base Base Uri.
- * @param {*} rel Relative Uri.
- * @return {!goog.Uri} Resolved uri.
- */
-goog.Uri.resolve = function(base, rel) {
-  if (!(base instanceof goog.Uri)) {
-    base = goog.Uri.parse(base);
-  }
-
-  if (!(rel instanceof goog.Uri)) {
-    rel = goog.Uri.parse(rel);
-  }
-
-  return base.resolve(rel);
-};
-
-
-/**
- * Removes dot segments in given path component, as described in
- * RFC 3986, section 5.2.4.
- *
- * @param {string} path A non-empty path component.
- * @return {string} Path component with removed dot segments.
- */
-goog.Uri.removeDotSegments = function(path) {
-  if (path == '..' || path == '.') {
-    return '';
-
-  } else if (
-      !goog.string.contains(path, './') && !goog.string.contains(path, '/.')) {
-    // This optimization detects uris which do not contain dot-segments,
-    // and as a consequence do not require any processing.
-    return path;
-
-  } else {
-    var leadingSlash = goog.string.startsWith(path, '/');
-    var segments = path.split('/');
-    var out = [];
-
-    for (var pos = 0; pos < segments.length;) {
-      var segment = segments[pos++];
-
-      if (segment == '.') {
-        if (leadingSlash && pos == segments.length) {
-          out.push('');
-        }
-      } else if (segment == '..') {
-        if (out.length > 1 || out.length == 1 && out[0] != '') {
-          out.pop();
-        }
-        if (leadingSlash && pos == segments.length) {
-          out.push('');
-        }
-      } else {
-        out.push(segment);
-        leadingSlash = true;
-      }
-    }
-
-    return out.join('/');
-  }
-};
-
-
-/**
- * Decodes a value or returns the empty string if it isn't defined or empty.
- * @throws URIError If decodeURIComponent fails to decode val.
- * @param {string|undefined} val Value to decode.
- * @param {boolean=} opt_preserveReserved If true, restricted characters will
- *     not be decoded.
- * @return {string} Decoded value.
- * @private
- */
-goog.Uri.decodeOrEmpty_ = function(val, opt_preserveReserved) {
-  // Don't use UrlDecode() here because val is not a query parameter.
-  if (!val) {
-    return '';
-  }
-
-  // decodeURI has the same output for '%2f' and '%252f'. We double encode %25
-  // so that we can distinguish between the 2 inputs. This is later undone by
-  // removeDoubleEncoding_.
-  return opt_preserveReserved ? decodeURI(val.replace(/%25/g, '%2525')) :
-                                decodeURIComponent(val);
-};
-
-
-/**
- * If unescapedPart is non null, then escapes any characters in it that aren't
- * valid characters in a url and also escapes any special characters that
- * appear in extra.
- *
- * @param {*} unescapedPart The string to encode.
- * @param {RegExp} extra A character set of characters in [\01-\177].
- * @param {boolean=} opt_removeDoubleEncoding If true, remove double percent
- *     encoding.
- * @return {?string} null iff unescapedPart == null.
- * @private
- */
-goog.Uri.encodeSpecialChars_ = function(
-    unescapedPart, extra, opt_removeDoubleEncoding) {
-  if (goog.isString(unescapedPart)) {
-    var encoded = encodeURI(unescapedPart).replace(extra, goog.Uri.encodeChar_);
-    if (opt_removeDoubleEncoding) {
-      // encodeURI double-escapes %XX sequences used to represent restricted
-      // characters in some URI components, remove the double escaping here.
-      encoded = goog.Uri.removeDoubleEncoding_(encoded);
-    }
-    return encoded;
-  }
-  return null;
-};
-
-
-/**
- * Converts a character in [\01-\177] to its unicode character equivalent.
- * @param {string} ch One character string.
- * @return {string} Encoded string.
- * @private
- */
-goog.Uri.encodeChar_ = function(ch) {
-  var n = ch.charCodeAt(0);
-  return '%' + ((n >> 4) & 0xf).toString(16) + (n & 0xf).toString(16);
-};
-
-
-/**
- * Removes double percent-encoding from a string.
- * @param  {string} doubleEncodedString String
- * @return {string} String with double encoding removed.
- * @private
- */
-goog.Uri.removeDoubleEncoding_ = function(doubleEncodedString) {
-  return doubleEncodedString.replace(/%25([0-9a-fA-F]{2})/g, '%$1');
-};
-
-
-/**
- * Regular expression for characters that are disallowed in the scheme or
- * userInfo part of the URI.
- * @type {RegExp}
- * @private
- */
-goog.Uri.reDisallowedInSchemeOrUserInfo_ = /[#\/\?@]/g;
-
-
-/**
- * Regular expression for characters that are disallowed in a relative path.
- * Colon is included due to RFC 3986 3.3.
- * @type {RegExp}
- * @private
- */
-goog.Uri.reDisallowedInRelativePath_ = /[\#\?:]/g;
-
-
-/**
- * Regular expression for characters that are disallowed in an absolute path.
- * @type {RegExp}
- * @private
- */
-goog.Uri.reDisallowedInAbsolutePath_ = /[\#\?]/g;
-
-
-/**
- * Regular expression for characters that are disallowed in the query.
- * @type {RegExp}
- * @private
- */
-goog.Uri.reDisallowedInQuery_ = /[\#\?@]/g;
-
-
-/**
- * Regular expression for characters that are disallowed in the fragment.
- * @type {RegExp}
- * @private
- */
-goog.Uri.reDisallowedInFragment_ = /#/g;
-
-
-/**
- * Checks whether two URIs have the same domain.
- * @param {string} uri1String First URI string.
- * @param {string} uri2String Second URI string.
- * @return {boolean} true if the two URIs have the same domain; false otherwise.
- */
-goog.Uri.haveSameDomain = function(uri1String, uri2String) {
-  // Differs from goog.uri.utils.haveSameDomain, since this ignores scheme.
-  // TODO(gboyer): Have this just call goog.uri.util.haveSameDomain.
-  var pieces1 = goog.uri.utils.split(uri1String);
-  var pieces2 = goog.uri.utils.split(uri2String);
-  return pieces1[goog.uri.utils.ComponentIndex.DOMAIN] ==
-      pieces2[goog.uri.utils.ComponentIndex.DOMAIN] &&
-      pieces1[goog.uri.utils.ComponentIndex.PORT] ==
-      pieces2[goog.uri.utils.ComponentIndex.PORT];
-};
-
-
-
-/**
- * Class used to represent URI query parameters.  It is essentially a hash of
- * name-value pairs, though a name can be present more than once.
- *
- * Has the same interface as the collections in goog.structs.
- *
- * @param {?string=} opt_query Optional encoded query string to parse into
- *     the object.
- * @param {goog.Uri=} opt_uri Optional uri object that should have its
- *     cache invalidated when this object updates. Deprecated -- this
- *     is no longer required.
- * @param {boolean=} opt_ignoreCase If true, ignore the case of the parameter
- *     name in #get.
- * @constructor
- * @struct
- * @final
- */
-goog.Uri.QueryData = function(opt_query, opt_uri, opt_ignoreCase) {
-  /**
-   * The map containing name/value or name/array-of-values pairs.
-   * May be null if it requires parsing from the query string.
-   *
-   * We need to use a Map because we cannot guarantee that the key names will
-   * not be problematic for IE.
-   *
-   * @private {goog.structs.Map<string, !Array<*>>}
-   */
-  this.keyMap_ = null;
-
-  /**
-   * The number of params, or null if it requires computing.
-   * @private {?number}
-   */
-  this.count_ = null;
-
-  /**
-   * Encoded query string, or null if it requires computing from the key map.
-   * @private {?string}
-   */
-  this.encodedQuery_ = opt_query || null;
-
-  /**
-   * If true, ignore the case of the parameter name in #get.
-   * @private {boolean}
-   */
-  this.ignoreCase_ = !!opt_ignoreCase;
-};
-
-
-/**
- * If the underlying key map is not yet initialized, it parses the
- * query string and fills the map with parsed data.
- * @private
- */
-goog.Uri.QueryData.prototype.ensureKeyMapInitialized_ = function() {
-  if (!this.keyMap_) {
-    this.keyMap_ = new goog.structs.Map();
-    this.count_ = 0;
-    if (this.encodedQuery_) {
-      var self = this;
-      goog.uri.utils.parseQueryData(this.encodedQuery_, function(name, value) {
-        self.add(goog.string.urlDecode(name), value);
-      });
-    }
-  }
-};
-
-
-/**
- * Creates a new query data instance from a map of names and values.
- *
- * @param {!goog.structs.Map<string, ?>|!Object} map Map of string parameter
- *     names to parameter value. If parameter value is an array, it is
- *     treated as if the key maps to each individual value in the
- *     array.
- * @param {goog.Uri=} opt_uri URI object that should have its cache
- *     invalidated when this object updates.
- * @param {boolean=} opt_ignoreCase If true, ignore the case of the parameter
- *     name in #get.
- * @return {!goog.Uri.QueryData} The populated query data instance.
- */
-goog.Uri.QueryData.createFromMap = function(map, opt_uri, opt_ignoreCase) {
-  var keys = goog.structs.getKeys(map);
-  if (typeof keys == 'undefined') {
-    throw Error('Keys are undefined');
-  }
-
-  var queryData = new goog.Uri.QueryData(null, null, opt_ignoreCase);
-  var values = goog.structs.getValues(map);
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    var value = values[i];
-    if (!goog.isArray(value)) {
-      queryData.add(key, value);
-    } else {
-      queryData.setValues(key, value);
-    }
-  }
-  return queryData;
-};
-
-
-/**
- * Creates a new query data instance from parallel arrays of parameter names
- * and values. Allows for duplicate parameter names. Throws an error if the
- * lengths of the arrays differ.
- *
- * @param {!Array<string>} keys Parameter names.
- * @param {!Array<?>} values Parameter values.
- * @param {goog.Uri=} opt_uri URI object that should have its cache
- *     invalidated when this object updates.
- * @param {boolean=} opt_ignoreCase If true, ignore the case of the parameter
- *     name in #get.
- * @return {!goog.Uri.QueryData} The populated query data instance.
- */
-goog.Uri.QueryData.createFromKeysValues = function(
-    keys, values, opt_uri, opt_ignoreCase) {
-  if (keys.length != values.length) {
-    throw Error('Mismatched lengths for keys/values');
-  }
-  var queryData = new goog.Uri.QueryData(null, null, opt_ignoreCase);
-  for (var i = 0; i < keys.length; i++) {
-    queryData.add(keys[i], values[i]);
-  }
-  return queryData;
-};
-
-
-/**
- * @return {?number} The number of parameters.
- */
-goog.Uri.QueryData.prototype.getCount = function() {
-  this.ensureKeyMapInitialized_();
-  return this.count_;
-};
-
-
-/**
- * Adds a key value pair.
- * @param {string} key Name.
- * @param {*} value Value.
- * @return {!goog.Uri.QueryData} Instance of this object.
- */
-goog.Uri.QueryData.prototype.add = function(key, value) {
-  this.ensureKeyMapInitialized_();
-  this.invalidateCache_();
-
-  key = this.getKeyName_(key);
-  var values = this.keyMap_.get(key);
-  if (!values) {
-    this.keyMap_.set(key, (values = []));
-  }
-  values.push(value);
-  this.count_ = goog.asserts.assertNumber(this.count_) + 1;
-  return this;
-};
-
-
-/**
- * Removes all the params with the given key.
- * @param {string} key Name.
- * @return {boolean} Whether any parameter was removed.
- */
-goog.Uri.QueryData.prototype.remove = function(key) {
-  this.ensureKeyMapInitialized_();
-
-  key = this.getKeyName_(key);
-  if (this.keyMap_.containsKey(key)) {
-    this.invalidateCache_();
-
-    // Decrement parameter count.
-    this.count_ =
-        goog.asserts.assertNumber(this.count_) - this.keyMap_.get(key).length;
-    return this.keyMap_.remove(key);
-  }
-  return false;
-};
-
-
-/**
- * Clears the parameters.
- */
-goog.Uri.QueryData.prototype.clear = function() {
-  this.invalidateCache_();
-  this.keyMap_ = null;
-  this.count_ = 0;
-};
-
-
-/**
- * @return {boolean} Whether we have any parameters.
- */
-goog.Uri.QueryData.prototype.isEmpty = function() {
-  this.ensureKeyMapInitialized_();
-  return this.count_ == 0;
-};
-
-
-/**
- * Whether there is a parameter with the given name
- * @param {string} key The parameter name to check for.
- * @return {boolean} Whether there is a parameter with the given name.
- */
-goog.Uri.QueryData.prototype.containsKey = function(key) {
-  this.ensureKeyMapInitialized_();
-  key = this.getKeyName_(key);
-  return this.keyMap_.containsKey(key);
-};
-
-
-/**
- * Whether there is a parameter with the given value.
- * @param {*} value The value to check for.
- * @return {boolean} Whether there is a parameter with the given value.
- */
-goog.Uri.QueryData.prototype.containsValue = function(value) {
-  // NOTE(arv): This solution goes through all the params even if it was the
-  // first param. We can get around this by not reusing code or by switching to
-  // iterators.
-  var vals = this.getValues();
-  return goog.array.contains(vals, value);
-};
-
-
-/**
- * Returns all the keys of the parameters. If a key is used multiple times
- * it will be included multiple times in the returned array
- * @return {!Array<string>} All the keys of the parameters.
- */
-goog.Uri.QueryData.prototype.getKeys = function() {
-  this.ensureKeyMapInitialized_();
-  // We need to get the values to know how many keys to add.
-  var vals = this.keyMap_.getValues();
-  var keys = this.keyMap_.getKeys();
-  var rv = [];
-  for (var i = 0; i < keys.length; i++) {
-    var val = vals[i];
-    for (var j = 0; j < val.length; j++) {
-      rv.push(keys[i]);
-    }
-  }
-  return rv;
-};
-
-
-/**
- * Returns all the values of the parameters with the given name. If the query
- * data has no such key this will return an empty array. If no key is given
- * all values wil be returned.
- * @param {string=} opt_key The name of the parameter to get the values for.
- * @return {!Array<?>} All the values of the parameters with the given name.
- */
-goog.Uri.QueryData.prototype.getValues = function(opt_key) {
-  this.ensureKeyMapInitialized_();
-  var rv = [];
-  if (goog.isString(opt_key)) {
-    if (this.containsKey(opt_key)) {
-      rv = goog.array.concat(rv, this.keyMap_.get(this.getKeyName_(opt_key)));
-    }
-  } else {
-    // Return all values.
-    var values = this.keyMap_.getValues();
-    for (var i = 0; i < values.length; i++) {
-      rv = goog.array.concat(rv, values[i]);
-    }
-  }
-  return rv;
-};
-
-
-/**
- * Sets a key value pair and removes all other keys with the same value.
- *
- * @param {string} key Name.
- * @param {*} value Value.
- * @return {!goog.Uri.QueryData} Instance of this object.
- */
-goog.Uri.QueryData.prototype.set = function(key, value) {
-  this.ensureKeyMapInitialized_();
-  this.invalidateCache_();
-
-  // TODO(chrishenry): This could be better written as
-  // this.remove(key), this.add(key, value), but that would reorder
-  // the key (since the key is first removed and then added at the
-  // end) and we would have to fix unit tests that depend on key
-  // ordering.
-  key = this.getKeyName_(key);
-  if (this.containsKey(key)) {
-    this.count_ =
-        goog.asserts.assertNumber(this.count_) - this.keyMap_.get(key).length;
-  }
-  this.keyMap_.set(key, [value]);
-  this.count_ = goog.asserts.assertNumber(this.count_) + 1;
-  return this;
-};
-
-
-/**
- * Returns the first value associated with the key. If the query data has no
- * such key this will return undefined or the optional default.
- * @param {string} key The name of the parameter to get the value for.
- * @param {*=} opt_default The default value to return if the query data
- *     has no such key.
- * @return {*} The first string value associated with the key, or opt_default
- *     if there's no value.
- */
-goog.Uri.QueryData.prototype.get = function(key, opt_default) {
-  var values = key ? this.getValues(key) : [];
-  if (goog.Uri.preserveParameterTypesCompatibilityFlag) {
-    return values.length > 0 ? values[0] : opt_default;
-  } else {
-    return values.length > 0 ? String(values[0]) : opt_default;
-  }
-};
-
-
-/**
- * Sets the values for a key. If the key already exists, this will
- * override all of the existing values that correspond to the key.
- * @param {string} key The key to set values for.
- * @param {!Array<?>} values The values to set.
- */
-goog.Uri.QueryData.prototype.setValues = function(key, values) {
-  this.remove(key);
-
-  if (values.length > 0) {
-    this.invalidateCache_();
-    this.keyMap_.set(this.getKeyName_(key), goog.array.clone(values));
-    this.count_ = goog.asserts.assertNumber(this.count_) + values.length;
-  }
-};
-
-
-/**
- * @return {string} Encoded query string.
- * @override
- */
-goog.Uri.QueryData.prototype.toString = function() {
-  if (this.encodedQuery_) {
-    return this.encodedQuery_;
-  }
-
-  if (!this.keyMap_) {
-    return '';
-  }
-
-  var sb = [];
-
-  // In the past, we use this.getKeys() and this.getVals(), but that
-  // generates a lot of allocations as compared to simply iterating
-  // over the keys.
-  var keys = this.keyMap_.getKeys();
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    var encodedKey = goog.string.urlEncode(key);
-    var val = this.getValues(key);
-    for (var j = 0; j < val.length; j++) {
-      var param = encodedKey;
-      // Ensure that null and undefined are encoded into the url as
-      // literal strings.
-      if (val[j] !== '') {
-        param += '=' + goog.string.urlEncode(val[j]);
-      }
-      sb.push(param);
-    }
-  }
-
-  return this.encodedQuery_ = sb.join('&');
-};
-
-
-/**
- * @throws URIError If URI is malformed (that is, if decodeURIComponent fails on
- *     any of the URI components).
- * @return {string} Decoded query string.
- */
-goog.Uri.QueryData.prototype.toDecodedString = function() {
-  return goog.Uri.decodeOrEmpty_(this.toString());
-};
-
-
-/**
- * Invalidate the cache.
- * @private
- */
-goog.Uri.QueryData.prototype.invalidateCache_ = function() {
-  this.encodedQuery_ = null;
-};
-
-
-/**
- * Removes all keys that are not in the provided list. (Modifies this object.)
- * @param {Array<string>} keys The desired keys.
- * @return {!goog.Uri.QueryData} a reference to this object.
- */
-goog.Uri.QueryData.prototype.filterKeys = function(keys) {
-  this.ensureKeyMapInitialized_();
-  this.keyMap_.forEach(function(value, key) {
-    if (!goog.array.contains(keys, key)) {
-      this.remove(key);
-    }
-  }, this);
-  return this;
-};
-
-
-/**
- * Clone the query data instance.
- * @return {!goog.Uri.QueryData} New instance of the QueryData object.
- */
-goog.Uri.QueryData.prototype.clone = function() {
-  var rv = new goog.Uri.QueryData();
-  rv.encodedQuery_ = this.encodedQuery_;
-  if (this.keyMap_) {
-    rv.keyMap_ = this.keyMap_.clone();
-    rv.count_ = this.count_;
-  }
-  return rv;
-};
-
-
-/**
- * Helper function to get the key name from a JavaScript object. Converts
- * the object to a string, and to lower case if necessary.
- * @private
- * @param {*} arg The object to get a key name from.
- * @return {string} valid key name which can be looked up in #keyMap_.
- */
-goog.Uri.QueryData.prototype.getKeyName_ = function(arg) {
-  var keyName = String(arg);
-  if (this.ignoreCase_) {
-    keyName = keyName.toLowerCase();
-  }
-  return keyName;
-};
-
-
-/**
- * Ignore case in parameter names.
- * NOTE: If there are already key/value pairs in the QueryData, and
- * ignoreCase_ is set to false, the keys will all be lower-cased.
- * @param {boolean} ignoreCase whether this goog.Uri should ignore case.
- */
-goog.Uri.QueryData.prototype.setIgnoreCase = function(ignoreCase) {
-  var resetKeys = ignoreCase && !this.ignoreCase_;
-  if (resetKeys) {
-    this.ensureKeyMapInitialized_();
-    this.invalidateCache_();
-    this.keyMap_.forEach(function(value, key) {
-      var lowerCase = key.toLowerCase();
-      if (key != lowerCase) {
-        this.remove(key);
-        this.setValues(lowerCase, value);
-      }
-    }, this);
-  }
-  this.ignoreCase_ = ignoreCase;
-};
-
-
-/**
- * Extends a query data object with another query data or map like object. This
- * operates 'in-place', it does not create a new QueryData object.
- *
- * @param {...(goog.Uri.QueryData|goog.structs.Map<?, ?>|Object)} var_args
- *     The object from which key value pairs will be copied.
- */
-goog.Uri.QueryData.prototype.extend = function(var_args) {
-  for (var i = 0; i < arguments.length; i++) {
-    var data = arguments[i];
-    goog.structs.forEach(
-        data, function(value, key) { this.add(key, value); }, this);
-  }
-};
 
 goog.provide('ol.style.Text');
 
@@ -65965,7 +60888,6 @@ ol.style.Text.prototype.setTextBaseline = function(textBaseline) {
 
 goog.provide('ol.format.KML');
 
-goog.require('goog.Uri');
 goog.require('goog.asserts');
 goog.require('goog.object');
 goog.require('ol');
@@ -66003,6 +60925,9 @@ goog.require('ol.xml');
 /**
  * @classdesc
  * Feature format for reading and writing data in the KML format.
+ *
+ * Note that the KML format uses the URL() constructor. Older browsers such as IE
+ * which do not support this will need a URL polyfill to be loaded before use.
  *
  * @constructor
  * @extends {ol.format.XMLFeature}
@@ -66442,30 +61367,15 @@ ol.format.KML.readFlatCoordinates_ = function(node) {
 /**
  * @param {Node} node Node.
  * @private
- * @return {string|undefined} Style URL.
- */
-ol.format.KML.readStyleUrl_ = function(node) {
-  var s = ol.xml.getAllTextContent(node, false).trim();
-  if (node.baseURI) {
-    return goog.Uri.resolve(node.baseURI, s).toString();
-  } else {
-    return s;
-  }
-
-};
-
-
-/**
- * @param {Node} node Node.
- * @private
  * @return {string} URI.
  */
 ol.format.KML.readURI_ = function(node) {
-  var s = ol.xml.getAllTextContent(node, false);
+  var s = ol.xml.getAllTextContent(node, false).trim();
   if (node.baseURI) {
-    return goog.Uri.resolve(node.baseURI, s.trim()).toString();
+    var url = new URL(s, node.baseURI);
+    return url.href;
   } else {
-    return s.trim();
+    return s;
   }
 };
 
@@ -67333,28 +62243,8 @@ ol.format.KML.whenParser_ = function(node, objectStack) {
       'gxTrackObject should be an Object');
   var whens = gxTrackObject.whens;
   var s = ol.xml.getAllTextContent(node, false);
-  var re =
-      /^\s*(\d{4})($|-(\d{2})($|-(\d{2})($|T(\d{2}):(\d{2}):(\d{2})(Z|(?:([+\-])(\d{2})(?::(\d{2}))?)))))\s*$/;
-  var m = re.exec(s);
-  if (m) {
-    var year = parseInt(m[1], 10);
-    var month = m[3] ? parseInt(m[3], 10) - 1 : 0;
-    var day = m[5] ? parseInt(m[5], 10) : 1;
-    var hour = m[7] ? parseInt(m[7], 10) : 0;
-    var minute = m[8] ? parseInt(m[8], 10) : 0;
-    var second = m[9] ? parseInt(m[9], 10) : 0;
-    var when = Date.UTC(year, month, day, hour, minute, second);
-    if (m[10] && m[10] != 'Z') {
-      var sign = m[11] == '-' ? -1 : 1;
-      when += sign * 60 * parseInt(m[12], 10);
-      if (m[13]) {
-        when += sign * 60 * 60 * parseInt(m[13], 10);
-      }
-    }
-    whens.push(when);
-  } else {
-    whens.push(0);
-  }
+  var when = Date.parse(s);
+  whens.push(isNaN(when) ? 0 : when);
 };
 
 
@@ -67582,7 +62472,7 @@ ol.format.KML.PAIR_PARSERS_ = ol.xml.makeStructureNS(
     ol.format.KML.NAMESPACE_URIS_, {
       'Style': ol.xml.makeObjectPropertySetter(ol.format.KML.readStyle_),
       'key': ol.xml.makeObjectPropertySetter(ol.format.XSD.readString),
-      'styleUrl': ol.xml.makeObjectPropertySetter(ol.format.KML.readStyleUrl_)
+      'styleUrl': ol.xml.makeObjectPropertySetter(ol.format.KML.readURI_)
     });
 
 
@@ -67774,7 +62664,8 @@ ol.format.KML.prototype.readSharedStyle_ = function(node, objectStack) {
     if (style) {
       var styleUri;
       if (node.baseURI) {
-        styleUri = goog.Uri.resolve(node.baseURI, '#' + id).toString();
+        var url = new URL('#' + id, node.baseURI);
+        styleUri = url.href;
       } else {
         styleUri = '#' + id;
       }
@@ -67804,7 +62695,8 @@ ol.format.KML.prototype.readSharedStyleMap_ = function(node, objectStack) {
   }
   var styleUri;
   if (node.baseURI) {
-    styleUri = goog.Uri.resolve(node.baseURI, '#' + id).toString();
+    var url = new URL('#' + id, node.baseURI);
+    styleUri = url.href;
   } else {
     styleUri = '#' + id;
   }
@@ -69703,7 +64595,7 @@ function VectorTileFeature(pbf, end, extent, keys, values) {
 }
 
 function readFeature(tag, feature, pbf) {
-    if (tag == 1) feature._id = pbf.readVarint();
+    if (tag == 1) feature.id = pbf.readVarint();
     else if (tag == 2) readTag(pbf, feature);
     else if (tag == 3) feature.type = pbf.readVarint();
     else if (tag == 4) feature._geometry = pbf.pos;
@@ -69868,8 +64760,8 @@ VectorTileFeature.prototype.toGeoJSON = function(x, y, z) {
         properties: this.properties
     };
 
-    if ('_id' in this) {
-        result.id = this._id;
+    if ('id' in this) {
+        result.id = this.id;
     }
 
     return result;
@@ -70213,6 +65105,7 @@ ol.format.MVT.prototype.getType = function() {
 ol.format.MVT.prototype.readFeature_ = function(
     rawFeature, layer, opt_options) {
   var feature = new this.featureClass_();
+  var id = rawFeature.id;
   var values = rawFeature.properties;
   values[this.layerName_] = layer;
   var geometry = ol.format.Feature.transformWithOptions(
@@ -70222,6 +65115,7 @@ ol.format.MVT.prototype.readFeature_ = function(
     goog.asserts.assertInstanceof(geometry, ol.geom.Geometry);
     values[this.geometryName_] = geometry;
   }
+  feature.setId(id);
   feature.setProperties(values);
   feature.setGeometryName(this.geometryName_);
   return feature;
@@ -71306,17 +66200,19 @@ ol.format.XML.prototype.read = function(source) {
 
 
 /**
+ * @abstract
  * @param {Document} doc Document.
- * @return {Object}
+ * @return {Object} Object
  */
-ol.format.XML.prototype.readFromDocument = goog.abstractMethod;
+ol.format.XML.prototype.readFromDocument = function(doc) {};
 
 
 /**
+ * @abstract
  * @param {Node} node Node.
- * @return {Object}
+ * @return {Object} Object
  */
-ol.format.XML.prototype.readFromNode = goog.abstractMethod;
+ol.format.XML.prototype.readFromNode = function(node) {};
 
 goog.provide('ol.format.OWS');
 
@@ -77325,7 +72221,7 @@ ol.inherits(ol.Image, ol.ImageBase);
 ol.Image.prototype.getImage = function(opt_context) {
   if (opt_context !== undefined) {
     var image;
-    var key = goog.getUid(opt_context);
+    var key = ol.getUid(opt_context);
     if (key in this.imageByContext_) {
       return this.imageByContext_[key];
     } else if (ol.object.isEmpty(this.imageByContext_)) {
@@ -77497,7 +72393,7 @@ ol.ImageTile.prototype.disposeInternal = function() {
 ol.ImageTile.prototype.getImage = function(opt_context) {
   if (opt_context !== undefined) {
     var image;
-    var key = goog.getUid(opt_context);
+    var key = ol.getUid(opt_context);
     if (key in this.imageByContext_) {
       return this.imageByContext_[key];
     } else if (ol.object.isEmpty(this.imageByContext_)) {
@@ -79401,7 +74297,7 @@ ol.interaction.Modify.handleDownEvent_ = function(evt) {
     for (var i = 0, ii = segmentDataMatches.length; i < ii; ++i) {
       var segmentDataMatch = segmentDataMatches[i];
       var segment = segmentDataMatch.segment;
-      var uid = goog.getUid(segmentDataMatch.feature);
+      var uid = ol.getUid(segmentDataMatch.feature);
       var depth = segmentDataMatch.depth;
       if (depth) {
         uid += '-' + depth.join('-'); // separate feature components
@@ -79428,7 +74324,7 @@ ol.interaction.Modify.handleDownEvent_ = function(evt) {
 
         this.dragSegments_.push([segmentDataMatch, 1]);
         componentSegments[uid][1] = segmentDataMatch;
-      } else if (goog.getUid(segment) in this.vertexSegments_ &&
+      } else if (ol.getUid(segment) in this.vertexSegments_ &&
           (!componentSegments[uid][0] && !componentSegments[uid][1])) {
         insertVertices.push([segmentDataMatch, vertex]);
       }
@@ -79616,7 +74512,7 @@ ol.interaction.Modify.prototype.handlePointerAtPixel_ = function(pixel, map) {
       }
       this.createOrUpdateVertexFeature_(vertex);
       var vertexSegments = {};
-      vertexSegments[goog.getUid(closestSegment)] = true;
+      vertexSegments[ol.getUid(closestSegment)] = true;
       var segment;
       for (var i = 1, ii = nodes.length; i < ii; ++i) {
         segment = nodes[i].segment;
@@ -79624,7 +74520,7 @@ ol.interaction.Modify.prototype.handlePointerAtPixel_ = function(pixel, map) {
             ol.coordinate.equals(closestSegment[1], segment[1]) ||
             (ol.coordinate.equals(closestSegment[0], segment[1]) &&
             ol.coordinate.equals(closestSegment[1], segment[0])))) {
-          vertexSegments[goog.getUid(segment)] = true;
+          vertexSegments[ol.getUid(segment)] = true;
         } else {
           break;
         }
@@ -79748,7 +74644,7 @@ ol.interaction.Modify.prototype.removeVertex_ = function() {
   for (i = dragSegments.length - 1; i >= 0; --i) {
     dragSegment = dragSegments[i];
     segmentData = dragSegment[0];
-    uid = goog.getUid(segmentData.feature);
+    uid = ol.getUid(segmentData.feature);
     if (segmentData.depth) {
       // separate feature components
       uid += '-' + segmentData.depth.join('-');
@@ -80109,7 +75005,7 @@ ol.inherits(ol.interaction.Select, ol.interaction.Interaction);
  * @private
  */
 ol.interaction.Select.prototype.addFeatureLayerAssociation_ = function(feature, layer) {
-  var key = goog.getUid(feature);
+  var key = ol.getUid(feature);
   this.featureLayerAssociation_[key] = layer;
 };
 
@@ -80136,7 +75032,7 @@ ol.interaction.Select.prototype.getFeatures = function() {
 ol.interaction.Select.prototype.getLayer = function(feature) {
   goog.asserts.assertInstanceof(feature, ol.Feature,
       'feature should be an ol.Feature');
-  var key = goog.getUid(feature);
+  var key = ol.getUid(feature);
   return /** @type {ol.layer.Vector} */ (this.featureLayerAssociation_[key]);
 };
 
@@ -80298,7 +75194,7 @@ ol.interaction.Select.prototype.removeFeature_ = function(evt) {
  * @private
  */
 ol.interaction.Select.prototype.removeFeatureLayerAssociation_ = function(feature) {
-  var key = goog.getUid(feature);
+  var key = ol.getUid(feature);
   delete this.featureLayerAssociation_[key];
 };
 
@@ -80475,7 +75371,7 @@ ol.inherits(ol.interaction.Snap, ol.interaction.Pointer);
  */
 ol.interaction.Snap.prototype.addFeature = function(feature, opt_listen) {
   var listen = opt_listen !== undefined ? opt_listen : true;
-  var feature_uid = goog.getUid(feature);
+  var feature_uid = ol.getUid(feature);
   var geometry = feature.getGeometry();
   if (geometry) {
     var segmentWriter = this.SEGMENT_WRITERS_[geometry.getType()];
@@ -80590,7 +75486,7 @@ ol.interaction.Snap.prototype.handleGeometryChange_ = function(evt) {
  */
 ol.interaction.Snap.prototype.handleGeometryModify_ = function(feature, evt) {
   if (this.handlingDownUpSequence) {
-    var uid = goog.getUid(feature);
+    var uid = ol.getUid(feature);
     if (!(uid in this.pendingFeatures_)) {
       this.pendingFeatures_[uid] = feature;
     }
@@ -80609,7 +75505,7 @@ ol.interaction.Snap.prototype.handleGeometryModify_ = function(feature, evt) {
  */
 ol.interaction.Snap.prototype.removeFeature = function(feature, opt_unlisten) {
   var unlisten = opt_unlisten !== undefined ? opt_unlisten : true;
-  var feature_uid = goog.getUid(feature);
+  var feature_uid = ol.getUid(feature);
   var extent = this.indexedFeaturesExtents_[feature_uid];
   if (extent) {
     var rBush = this.rBush_;
@@ -81544,7 +76440,7 @@ goog.provide('ol.net');
  */
 ol.net.jsonp = function(url, callback, opt_errback, opt_callbackParam) {
   var script = ol.global.document.createElement('script');
-  var key = 'olc_' + goog.getUid(callback);
+  var key = 'olc_' + ol.getUid(callback);
   function cleanup() {
     delete ol.global[key];
     script.parentNode.removeChild(script);
@@ -81833,7 +76729,7 @@ ol.reproj.Tile.prototype.disposeInternal = function() {
 ol.reproj.Tile.prototype.getImage = function(opt_context) {
   if (opt_context !== undefined) {
     var image;
-    var key = goog.getUid(opt_context);
+    var key = ol.getUid(opt_context);
     if (key in this.canvasByContext_) {
       return this.canvasByContext_[key];
     } else if (ol.object.isEmpty(this.canvasByContext_)) {
@@ -82123,7 +77019,7 @@ ol.source.TileImage.prototype.getTileGridForProjection = function(projection) {
       (!thisProj || ol.proj.equivalent(thisProj, projection))) {
     return this.tileGrid;
   } else {
-    var projKey = goog.getUid(projection).toString();
+    var projKey = ol.getUid(projection).toString();
     if (!(projKey in this.tileGridForProjection)) {
       this.tileGridForProjection[projKey] =
           ol.tilegrid.getForProjection(projection);
@@ -82144,7 +77040,7 @@ ol.source.TileImage.prototype.getTileCacheForProjection = function(projection) {
   if (!thisProj || ol.proj.equivalent(thisProj, projection)) {
     return this.tileCache;
   } else {
-    var projKey = goog.getUid(projection).toString();
+    var projKey = ol.getUid(projection).toString();
     if (!(projKey in this.tileCacheForProjection)) {
       this.tileCacheForProjection[projKey] = new ol.TileCache();
     }
@@ -82317,7 +77213,7 @@ ol.source.TileImage.prototype.setTileGridForProjection = function(projection, ti
   if (ol.ENABLE_RASTER_REPROJECTION) {
     var proj = ol.proj.get(projection);
     if (proj) {
-      var projKey = goog.getUid(proj).toString();
+      var projKey = ol.getUid(proj).toString();
       if (!(projKey in this.tileGridForProjection)) {
         this.tileGridForProjection[projKey] = tilegrid;
       }
@@ -82696,7 +77592,8 @@ ol.source.CartoDB.prototype.initializeMap_ = function() {
  */
 ol.source.CartoDB.prototype.handleInitResponse_ = function(paramHash, event) {
   var client = /** @type {XMLHttpRequest} */ (event.target);
-  if (client.status >= 200 && client.status < 300) {
+  // status will be 0 for file:// urls
+  if (!client.status || client.status >= 200 && client.status < 300) {
     var response;
     try {
       response = /** @type {CartoDBLayerInfo} */(JSON.parse(client.responseText));
@@ -82864,7 +77761,7 @@ ol.source.Cluster.prototype.cluster_ = function() {
 
   for (var i = 0, ii = features.length; i < ii; i++) {
     var feature = features[i];
-    if (!(goog.getUid(feature).toString() in clustered)) {
+    if (!(ol.getUid(feature).toString() in clustered)) {
       var geometry = this.geometryFunction_(feature);
       if (geometry) {
         var coordinates = geometry.getCoordinates();
@@ -82874,7 +77771,7 @@ ol.source.Cluster.prototype.cluster_ = function() {
         var neighbors = this.source_.getFeaturesInExtent(extent);
         goog.asserts.assert(neighbors.length >= 1, 'at least one neighbor found');
         neighbors = neighbors.filter(function(neighbor) {
-          var uid = goog.getUid(neighbor).toString();
+          var uid = ol.getUid(neighbor).toString();
           if (!(uid in clustered)) {
             clustered[uid] = true;
             return true;
@@ -84413,7 +79310,7 @@ ol.source.Raster = function(options) {
   var layerStatesArray = ol.source.Raster.getLayerStatesArray_(this.renderers_);
   var layerStates = {};
   for (var i = 0, ii = layerStatesArray.length; i < ii; ++i) {
-    layerStates[goog.getUid(layerStatesArray[i].layer)] = layerStatesArray[i];
+    layerStates[ol.getUid(layerStatesArray[i].layer)] = layerStatesArray[i];
   }
 
   /**
@@ -85188,7 +80085,7 @@ ol.inherits(ol.DebugTile_, ol.Tile);
  * @return {HTMLCanvasElement} Image.
  */
 ol.DebugTile_.prototype.getImage = function(opt_context) {
-  var key = opt_context !== undefined ? goog.getUid(opt_context) : -1;
+  var key = opt_context !== undefined ? ol.getUid(opt_context) : -1;
   if (key in this.canvasByContext_) {
     return this.canvasByContext_[key];
   } else {
@@ -85326,7 +80223,8 @@ ol.inherits(ol.source.TileJSON, ol.source.TileImage);
  */
 ol.source.TileJSON.prototype.onXHRLoad_ = function(event) {
   var client = /** @type {XMLHttpRequest} */ (event.target);
-  if (client.status >= 200 && client.status < 300) {
+  // status will be 0 for file:// urls
+  if (!client.status || client.status >= 200 && client.status < 300) {
     var response;
     try {
       response = /** @type {TileJSON} */(JSON.parse(client.responseText));
@@ -85504,7 +80402,8 @@ ol.inherits(ol.source.TileUTFGrid, ol.source.Tile);
  */
 ol.source.TileUTFGrid.prototype.onXHRLoad_ = function(event) {
   var client = /** @type {XMLHttpRequest} */ (event.target);
-  if (client.status >= 200 && client.status < 300) {
+  // status will be 0 for file:// urls
+  if (!client.status || client.status >= 200 && client.status < 300) {
     var response;
     try {
       response = /** @type {TileJSON} */(JSON.parse(client.responseText));
@@ -85880,7 +80779,8 @@ ol.source.TileUTFGridTile_.prototype.loadInternal_ = function() {
  */
 ol.source.TileUTFGridTile_.prototype.onXHRLoad_ = function(event) {
   var client = /** @type {XMLHttpRequest} */ (event.target);
-  if (client.status >= 200 && client.status < 300) {
+  // status will be 0 for file:// urls
+  if (!client.status || client.status >= 200 && client.status < 300) {
     var response;
     try {
       response = /** @type {!UTFGridJSON} */(JSON.parse(client.responseText));
@@ -86268,6 +81168,14 @@ ol.source.TileWMS.prototype.fixedTileUrlFunction = function(tileCoord, pixelRati
 
   return this.getRequestUrl_(tileCoord, tileSize, tileExtent,
       pixelRatio, projection, baseParams);
+};
+
+/**
+ * @inheritDoc
+ */
+ol.source.TileWMS.prototype.setUrls = function(urls) {
+  ol.source.TileImage.prototype.setUrls.call(this, urls);
+  this.resetCoordKeyPrefix_();
 };
 
 
@@ -87073,7 +81981,7 @@ ol.inherits(ol.source.ZoomifyTile_, ol.ImageTile);
 ol.source.ZoomifyTile_.prototype.getImage = function(opt_context) {
   var tileSize = ol.DEFAULT_TILE_SIZE;
   var key = opt_context !== undefined ?
-      goog.getUid(opt_context).toString() : '';
+      ol.getUid(opt_context).toString() : '';
   if (key in this.zoomifyImageByContext_) {
     return this.zoomifyImageByContext_[key];
   } else {

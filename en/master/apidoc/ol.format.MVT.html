@@ -1763,10 +1763,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.Tile#load"><a href="ol.Tile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1777,6 +1773,10 @@
             
                 <li data-name="ol.Tile#getTileCoord" class="unstable">
                     <a href="ol.Tile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.Tile#load" class="unstable">
+                    <a href="ol.Tile.html#load">load</a>
                 </li>
             
             </ul>
@@ -1792,10 +1792,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.VectorTile#load"><a href="ol.VectorTile.html#load">load</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -1810,6 +1806,10 @@
             
                 <li data-name="ol.VectorTile#getTileCoord" class="unstable">
                     <a href="ol.VectorTile.html#getTileCoord">getTileCoord</a>
+                </li>
+            
+                <li data-name="ol.VectorTile#load" class="unstable">
+                    <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
                 <li data-name="ol.VectorTile#setFeatures" class="unstable">
@@ -3980,12 +3980,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.format.MVT#readFeatures"><a href="ol.format.MVT.html#readFeatures">readFeatures</a></li>
-            
-                <li data-name="ol.format.MVT#readProjection"><a href="ol.format.MVT.html#readProjection">readProjection</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -3993,6 +3987,14 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#readFeatures" class="unstable">
+                    <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
+                </li>
+            
+                <li data-name="ol.format.MVT#readProjection" class="unstable">
+                    <a href="ol.format.MVT.html#readProjection">readProjection</a>
+                </li>
             
                 <li data-name="ol.format.MVT#setLayers" class="unstable">
                     <a href="ol.format.MVT.html#setLayers">setLayers</a>
@@ -10623,10 +10625,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="ol.render.webgl.Immediate#drawFeature"><a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -10634,6 +10632,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.render.webgl.Immediate#drawFeature" class="unstable">
+                    <a href="ol.render.webgl.Immediate.html#drawFeature">drawFeature</a>
+                </li>
             
                 <li data-name="ol.render.webgl.Immediate#drawGeometry" class="unstable">
                     <a href="ol.render.webgl.Immediate.html#drawGeometry">drawGeometry</a>
@@ -15914,115 +15916,395 @@ layers.</p></td>
     
 
     
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        <h4 class="name" id="readFeatures">
-            readFeatures
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    <div class="description">
-        <p>Read all features from a source.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt class="unstable">
-    <div class="nameContainer">
-        <h4 class="name" id="readProjection">
-            readProjection
-            
-<span class="stability experimental">experimental</span>
-
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="unstable">
-    
-    <div class="description">
-        <p>Read the projection from a source.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
     
     
         <h3 class="subsection-title">Methods</h3>
         
         <dl>
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="readFeatures">
+            readFeatures<span class="signature">(source, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;<a href="ol.Feature.html">ol.Feature</a>>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/format/mvtformat.js, line 154
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Read all features from a source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">ArrayBuffer</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            
+            
+            <td colspan=2 class="description last">
+                
+                <p>Read options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>dataProjection</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.ProjectionLike">ol.ProjectionLike</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Projection of the data we are reading. If not provided, the projection will
+be derived from the data (where possible) or the <code>defaultDataProjection</code> of
+the format is assigned (where set). If the projection can not be derived from
+the data and if no <code>defaultDataProjection</code> is set for a format, the features
+will not be reprojected.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>featureProjection</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.ProjectionLike">ol.ProjectionLike</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Projection of the feature geometries created by the format reader. If not
+provided, features will be returned in the <code>dataProjection</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Features.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="readProjection">
+            readProjection<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.proj.Projection.html">ol.proj.Projection</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/format/mvtformat.js, line 188
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Read the projection from a source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Node</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Projection.
+<br />
+
+    
+
+    
+</dd>
+
+        
             
 <dt class="unstable">
     <div class="nameContainer">
@@ -16037,7 +16319,7 @@ layers.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/mvtformat.js, line 196
+            src/ol/format/mvtformat.js, line 198
         </div>
         
         
