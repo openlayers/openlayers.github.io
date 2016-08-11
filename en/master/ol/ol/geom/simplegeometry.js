@@ -1,12 +1,11 @@
 goog.provide('ol.geom.SimpleGeometry');
 
-goog.require('goog.asserts');
 goog.require('ol.functions');
 goog.require('ol.extent');
 goog.require('ol.geom.Geometry');
 goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.flat.transform');
-goog.require('ol.object');
+goog.require('ol.obj');
 
 
 /**
@@ -50,15 +49,16 @@ ol.inherits(ol.geom.SimpleGeometry, ol.geom.Geometry);
  * @return {ol.geom.GeometryLayout} layout Layout.
  */
 ol.geom.SimpleGeometry.getLayoutForStride_ = function(stride) {
+  var layout;
   if (stride == 2) {
-    return ol.geom.GeometryLayout.XY;
+    layout = ol.geom.GeometryLayout.XY;
   } else if (stride == 3) {
-    return ol.geom.GeometryLayout.XYZ;
+    layout = ol.geom.GeometryLayout.XYZ;
   } else if (stride == 4) {
-    return ol.geom.GeometryLayout.XYZM;
-  } else {
-    goog.asserts.fail('unsupported stride: ' + stride);
+    layout = ol.geom.GeometryLayout.XYZM;
   }
+  goog.DEBUG && console.assert(layout, 'unsupported stride: ' + stride);
+  return /** @type {ol.geom.GeometryLayout} */ (layout);
 };
 
 
@@ -67,17 +67,16 @@ ol.geom.SimpleGeometry.getLayoutForStride_ = function(stride) {
  * @return {number} Stride.
  */
 ol.geom.SimpleGeometry.getStrideForLayout = function(layout) {
+  var stride;
   if (layout == ol.geom.GeometryLayout.XY) {
-    return 2;
-  } else if (layout == ol.geom.GeometryLayout.XYZ) {
-    return 3;
-  } else if (layout == ol.geom.GeometryLayout.XYM) {
-    return 3;
+    stride = 2;
+  } else if (layout == ol.geom.GeometryLayout.XYZ || layout == ol.geom.GeometryLayout.XYM) {
+    stride = 3;
   } else if (layout == ol.geom.GeometryLayout.XYZM) {
-    return 4;
-  } else {
-    goog.asserts.fail('unsupported layout: ' + layout);
+    stride = 4;
   }
+  goog.DEBUG && console.assert(stride, 'unsupported layout: ' + layout);
+  return /** @type {number} */ (stride);
 };
 
 
@@ -147,7 +146,7 @@ ol.geom.SimpleGeometry.prototype.getLayout = function() {
  */
 ol.geom.SimpleGeometry.prototype.getSimplifiedGeometry = function(squaredTolerance) {
   if (this.simplifiedGeometryRevision != this.getRevision()) {
-    ol.object.clear(this.simplifiedGeometryCache);
+    ol.obj.clear(this.simplifiedGeometryCache);
     this.simplifiedGeometryMaxMinSquaredTolerance = 0;
     this.simplifiedGeometryRevision = this.getRevision();
   }
@@ -273,6 +272,30 @@ ol.geom.SimpleGeometry.prototype.rotate = function(angle, anchor) {
     ol.geom.flat.transform.rotate(
         flatCoordinates, 0, flatCoordinates.length,
         stride, angle, anchor, flatCoordinates);
+    this.changed();
+  }
+};
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.geom.SimpleGeometry.prototype.scale = function(sx, opt_sy, opt_anchor) {
+  var sy = opt_sy;
+  if (sy === undefined) {
+    sy = sx;
+  }
+  var anchor = opt_anchor;
+  if (!anchor) {
+    anchor = ol.extent.getCenter(this.getExtent());
+  }
+  var flatCoordinates = this.getFlatCoordinates();
+  if (flatCoordinates) {
+    var stride = this.getStride();
+    ol.geom.flat.transform.scale(
+        flatCoordinates, 0, flatCoordinates.length,
+        stride, sx, sy, anchor, flatCoordinates);
     this.changed();
   }
 };

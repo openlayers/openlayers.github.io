@@ -1,8 +1,5 @@
 goog.provide('ol.tilecoord');
 
-goog.require('goog.asserts');
-goog.require('ol.extent');
-
 
 /**
  * @enum {number}
@@ -22,7 +19,7 @@ ol.QuadKeyCharCode = {
  */
 ol.tilecoord.createFromString = function(str) {
   var v = str.split('/');
-  goog.asserts.assert(v.length === 3,
+  goog.DEBUG && console.assert(v.length === 3,
       'must provide a string in "z/x/y" format, got "%s"', str);
   return v.map(function(e) {
     return parseInt(e, 10);
@@ -90,27 +87,6 @@ ol.tilecoord.quadKey = function(tileCoord) {
     mask >>= 1;
   }
   return digits.join('');
-};
-
-
-/**
- * @param {ol.TileCoord} tileCoord Tile coordinate.
- * @param {ol.tilegrid.TileGrid} tileGrid Tile grid.
- * @param {ol.proj.Projection} projection Projection.
- * @return {ol.TileCoord} Tile coordinate.
- */
-ol.tilecoord.wrapX = function(tileCoord, tileGrid, projection) {
-  var z = tileCoord[0];
-  var center = tileGrid.getTileCoordCenter(tileCoord);
-  var projectionExtent = ol.tilegrid.extentFromProjection(projection);
-  if (!ol.extent.containsCoordinate(projectionExtent, center)) {
-    var worldWidth = ol.extent.getWidth(projectionExtent);
-    var worldsAway = Math.ceil((projectionExtent[0] - center[0]) / worldWidth);
-    center[0] += worldWidth * worldsAway;
-    return tileGrid.getTileCoordForCoordAndZ(center, z);
-  } else {
-    return tileCoord;
-  }
 };
 
 

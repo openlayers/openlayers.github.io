@@ -54,7 +54,7 @@
           <p id="shortdesc">Example of a Mapbox vector tiles map with custom tile grid.</p>
           <div id="docs"><p>A vector tiles map which reuses the same tiles for subsequent zoom levels to save bandwith on mobile devices. <strong>Note</strong>: No map will be visible when the access token has expired.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Attribution.html" title="API documentation for ol.Attribution">ol.Attribution</a></li>,<li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.MVT.html" title="API documentation for ol.format.MVT">ol.format.MVT</a></li>,<li><a href="../apidoc/ol.layer.VectorTile.html" title="API documentation for ol.layer.VectorTile">ol.layer.VectorTile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.VectorTile.html" title="API documentation for ol.source.VectorTile">ol.source.VectorTile</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Icon.html" title="API documentation for ol.style.Icon">ol.style.Icon</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.style.Text.html" title="API documentation for ol.style.Text">ol.style.Text</a></li>,<li><a href="../apidoc/ol.tilegrid.TileGrid.html" title="API documentation for ol.tilegrid.TileGrid">ol.tilegrid.TileGrid</a></li></ul></div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.MVT.html" title="API documentation for ol.format.MVT">ol.format.MVT</a></li>,<li><a href="../apidoc/ol.layer.VectorTile.html" title="API documentation for ol.layer.VectorTile">ol.layer.VectorTile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.VectorTile.html" title="API documentation for ol.source.VectorTile">ol.source.VectorTile</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Icon.html" title="API documentation for ol.style.Icon">ol.style.Icon</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.style.Text.html" title="API documentation for ol.style.Text">ol.style.Text</a></li>,<li><a href="../apidoc/ol.tilegrid.TileGrid.html" title="API documentation for ol.tilegrid.TileGrid">ol.tilegrid.TileGrid</a></li></ul></div>
         </div>
       </div>
 
@@ -64,7 +64,8 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
+          <textarea class="hidden" name="js">/* eslint-disable openlayers-internal/no-unused-requires */
+var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
 
 // For how many zoom levels do we want to use the same vector tiles?
 // 1 means &quot;use tiles from all zoom levels&quot;. 2 means &quot;use the same tiles for 2
@@ -149,6 +150,7 @@ var map &#x3D; new ol.Map({
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
+      /* eslint-disable openlayers-internal/no-unused-requires */
       var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
 
       // For how many zoom levels do we want to use the same vector tiles?

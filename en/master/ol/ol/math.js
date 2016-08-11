@@ -1,7 +1,5 @@
 goog.provide('ol.math');
 
-goog.require('goog.asserts');
-
 
 /**
  * Takes a number and clamps it to within the provided bounds.
@@ -48,7 +46,7 @@ ol.math.cosh = (function() {
  * @return {number} The smallest power of two greater than or equal to x.
  */
 ol.math.roundUpToPowerOfTwo = function(x) {
-  goog.asserts.assert(0 < x, 'x should be larger than 0');
+  ol.assert(0 < x, 29); // `x` must be greater than `0`
   return Math.pow(2, Math.ceil(Math.log(x) / Math.LN2));
 };
 
@@ -106,9 +104,9 @@ ol.math.squaredDistance = function(x1, y1, x2, y2) {
 ol.math.solveLinearSystem = function(mat) {
   var n = mat.length;
 
-  if (goog.asserts.ENABLE_ASSERTS) {
+  if (goog.DEBUG) {
     for (var row = 0; row < n; row++) {
-      goog.asserts.assert(mat[row].length == n + 1,
+      console.assert(mat[row].length == n + 1,
                           'every row should have correct number of columns');
     }
   }

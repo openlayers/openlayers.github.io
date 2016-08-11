@@ -119,7 +119,7 @@
       })
     ]</code></pre>
 <p>Layers in OpenLayers 3 are defined with a type (Image, Tile or Vector) which contains a source. The source is the protocol used to get the map tiles. You can consult the list of <a href="/en/v3.17.1/apidoc/ol.source.html">available layer sources here</a></p>
-<p>The next part of the <code>Map</code> object is the <code>View</code>. The view allow to specify the center, resolution, and rotation of the map. The simplest way to define a view is to define a center point and a zoom level.  Note that zoom level 0 is zoomed out.</p>
+<p>The next part of the <code>Map</code> object is the <code>View</code>. The view allows to specify the center, resolution, and rotation of the map. The simplest way to define a view is to define a center point and a zoom level.  Note that zoom level 0 is zoomed out.</p>
 <pre><code class="language-js">    view: <span class="keyword">new</span> ol.View({
       center: ol.proj.fromLonLat([<span class="number">37.41</span>, <span class="number">8.82</span>]),
       zoom: <span class="number">4</span>

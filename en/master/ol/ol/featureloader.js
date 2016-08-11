@@ -1,11 +1,7 @@
 goog.provide('ol.featureloader');
 
-goog.require('goog.asserts');
 goog.require('ol.TileState');
-goog.require('ol.VectorTile');
 goog.require('ol.format.FormatType');
-goog.require('ol.proj');
-goog.require('ol.proj.Projection');
 goog.require('ol.xml');
 
 
@@ -56,15 +52,13 @@ ol.featureloader.loadFeaturesXhr = function(url, format, success, failure) {
               }
             } else if (type == ol.format.FormatType.ARRAY_BUFFER) {
               source = /** @type {ArrayBuffer} */ (xhr.response);
-            } else {
-              goog.asserts.fail('unexpected format type');
             }
             if (source) {
               success.call(this, format.readFeatures(source,
                   {featureProjection: projection}),
                   format.readProjection(source));
             } else {
-              goog.asserts.fail('undefined or null source');
+              failure.call(this);
             }
           } else {
             failure.call(this);

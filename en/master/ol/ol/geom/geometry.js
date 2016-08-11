@@ -2,7 +2,6 @@ goog.provide('ol.geom.Geometry');
 goog.provide('ol.geom.GeometryLayout');
 goog.provide('ol.geom.GeometryType');
 
-goog.require('goog.asserts');
 goog.require('ol.functions');
 goog.require('ol.Object');
 goog.require('ol.extent');
@@ -181,6 +180,20 @@ ol.geom.Geometry.prototype.rotate = function(angle, anchor) {};
 
 
 /**
+ * Scale the geometry (with an optional origin).  This modifies the geometry
+ * coordinates in place.
+ * @abstract
+ * @param {number} sx The scaling factor in the x-direction.
+ * @param {number=} opt_sy The scaling factor in the y-direction (defaults to
+ *     sx).
+ * @param {ol.Coordinate=} opt_anchor The scale origin (defaults to the center
+ *     of the geometry extent).
+ * @api
+ */
+ol.geom.Geometry.prototype.scale = function(sx, opt_sy, opt_anchor) {};
+
+
+/**
  * Create a simplified version of this geometry.  For linestrings, this uses
  * the the {@link
  * https://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
@@ -262,7 +275,7 @@ ol.geom.Geometry.prototype.translate = function(deltaX, deltaY) {};
  * @api stable
  */
 ol.geom.Geometry.prototype.transform = function(source, destination) {
-  goog.asserts.assert(
+  goog.DEBUG && console.assert(
       ol.proj.get(source).getUnits() !== ol.proj.Units.TILE_PIXELS &&
       ol.proj.get(destination).getUnits() !== ol.proj.Units.TILE_PIXELS,
       'cannot transform geometries with TILE_PIXELS units');
