@@ -1,9 +1,10 @@
 goog.provide('ol.interaction.DragPan');
 
-goog.require('ol.ViewHint');
+goog.require('ol');
+goog.require('ol.View');
 goog.require('ol.coordinate');
-goog.require('ol.functions');
 goog.require('ol.events.condition');
+goog.require('ol.functions');
 goog.require('ol.interaction.Pointer');
 
 
@@ -84,7 +85,6 @@ ol.interaction.DragPan.handleDragEvent_ = function(mapBrowserEvent) {
     ol.coordinate.rotate(center, viewState.rotation);
     ol.coordinate.add(center, viewState.center);
     center = view.constrainCenter(center);
-    map.render();
     view.setCenter(center);
   }
   this.lastCentroid = centroid;
@@ -115,8 +115,7 @@ ol.interaction.DragPan.handleUpEvent_ = function(mapBrowserEvent) {
       dest = view.constrainCenter(dest);
       view.setCenter(dest);
     }
-    view.setHint(ol.ViewHint.INTERACTING, -1);
-    map.render();
+    view.setHint(ol.View.Hint.INTERACTING, -1);
     return false;
   } else {
     this.lastCentroid = null;
@@ -137,9 +136,8 @@ ol.interaction.DragPan.handleDownEvent_ = function(mapBrowserEvent) {
     var view = map.getView();
     this.lastCentroid = null;
     if (!this.handlingDownUpSequence) {
-      view.setHint(ol.ViewHint.INTERACTING, 1);
+      view.setHint(ol.View.Hint.INTERACTING, 1);
     }
-    map.render();
     if (this.kineticPreRenderFn_ &&
         map.removePreRenderFunction(this.kineticPreRenderFn_)) {
       view.setCenter(mapBrowserEvent.frameState.viewState.center);

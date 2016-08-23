@@ -1,13 +1,14 @@
 goog.provide('ol.renderer.canvas.ImageLayer');
 
-goog.require('ol.transform');
-goog.require('ol.functions');
-goog.require('ol.ViewHint');
+goog.require('ol');
+goog.require('ol.View');
 goog.require('ol.dom');
 goog.require('ol.extent');
+goog.require('ol.functions');
 goog.require('ol.proj');
 goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.source.ImageVector');
+goog.require('ol.transform');
 
 
 /**
@@ -69,7 +70,13 @@ ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtCoordinate = function(co
 
 
 /**
- * @inheritDoc
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {olx.FrameState} frameState FrameState.
+ * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ *     callback.
+ * @param {S} thisArg Value to use as `this` when executing `callback`.
+ * @return {T|undefined} Callback result.
+ * @template S,T,U
  */
 ol.renderer.canvas.ImageLayer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
   if (!this.getImage()) {
@@ -85,7 +92,7 @@ ol.renderer.canvas.ImageLayer.prototype.forEachLayerAtPixel = function(pixel, fr
         coordinate, frameState, ol.functions.TRUE, this);
 
     if (hasFeature) {
-      return callback.call(thisArg, this.getLayer());
+      return callback.call(thisArg, this.getLayer(), null);
     } else {
       return undefined;
     }
@@ -108,7 +115,7 @@ ol.renderer.canvas.ImageLayer.prototype.forEachLayerAtPixel = function(pixel, fr
 
     var imageData = this.hitCanvasContext_.getImageData(0, 0, 1, 1).data;
     if (imageData[3] > 0) {
-      return callback.call(thisArg, this.getLayer());
+      return callback.call(thisArg, this.getLayer(),  imageData);
     } else {
       return undefined;
     }
@@ -154,7 +161,7 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
         renderedExtent, layerState.extent);
   }
 
-  if (!hints[ol.ViewHint.ANIMATING] && !hints[ol.ViewHint.INTERACTING] &&
+  if (!hints[ol.View.Hint.ANIMATING] && !hints[ol.View.Hint.INTERACTING] &&
       !ol.extent.isEmpty(renderedExtent)) {
     var projection = viewState.projection;
     if (!ol.ENABLE_RASTER_REPROJECTION) {

@@ -3,6 +3,7 @@ goog.provide('ol.interaction.DrawEvent');
 goog.provide('ol.interaction.DrawEventType');
 goog.provide('ol.interaction.DrawMode');
 
+goog.require('ol');
 goog.require('ol.events');
 goog.require('ol.events.Event');
 goog.require('ol.Feature');
@@ -23,6 +24,7 @@ goog.require('ol.interaction.InteractionProperty');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
+goog.require('ol.style.Style');
 
 
 /**
@@ -312,7 +314,7 @@ ol.inherits(ol.interaction.Draw, ol.interaction.Pointer);
  * @return {ol.StyleFunction} Styles.
  */
 ol.interaction.Draw.getDefaultStyleFunction = function() {
-  var styles = ol.style.createDefaultEditingStyles();
+  var styles = ol.style.Style.createDefaultEditing();
   return function(feature, resolution) {
     return styles[feature.getGeometry().getType()];
   };

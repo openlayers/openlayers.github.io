@@ -3,15 +3,16 @@
 
 goog.provide('ol.renderer.webgl.TileLayer');
 
-goog.require('ol.transform');
+goog.require('ol');
+goog.require('ol.Tile');
 goog.require('ol.TileRange');
-goog.require('ol.TileState');
 goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.math');
 goog.require('ol.renderer.webgl.Layer');
 goog.require('ol.renderer.webgl.tilelayershader');
 goog.require('ol.size');
+goog.require('ol.transform');
 goog.require('ol.webgl');
 goog.require('ol.webgl.Buffer');
 
@@ -160,7 +161,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   var pixelRatio = tilePixelSize[0] /
       ol.size.toSize(tileGrid.getTileSize(z), this.tmpSize_)[0];
   var tilePixelResolution = tileResolution / pixelRatio;
-  var tileGutter = tileSource.getGutter(projection);
+  var tileGutter = frameState.pixelRatio * tileSource.getGutter(projection);
 
   var center = viewState.center;
   var extent;
@@ -248,20 +249,20 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
           }
         }
         tileState = tile.getState();
-        drawable = tileState == ol.TileState.LOADED ||
-            tileState == ol.TileState.EMPTY ||
-            tileState == ol.TileState.ERROR && !useInterimTilesOnError;
+        drawable = tileState == ol.Tile.State.LOADED ||
+            tileState == ol.Tile.State.EMPTY ||
+            tileState == ol.Tile.State.ERROR && !useInterimTilesOnError;
         if (!drawable && tile.interimTile) {
           tile = tile.interimTile;
         }
         tileState = tile.getState();
-        if (tileState == ol.TileState.LOADED) {
+        if (tileState == ol.Tile.State.LOADED) {
           if (mapRenderer.isTileTextureLoaded(tile)) {
             tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
             continue;
           }
-        } else if (tileState == ol.TileState.EMPTY ||
-                   (tileState == ol.TileState.ERROR &&
+        } else if (tileState == ol.Tile.State.EMPTY ||
+                   (tileState == ol.Tile.State.ERROR &&
                     !useInterimTilesOnError)) {
           continue;
         }
@@ -328,7 +329,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
        * @param {ol.Tile} tile Tile.
        */
       function(tile) {
-        if (tile.getState() == ol.TileState.LOADED &&
+        if (tile.getState() == ol.Tile.State.LOADED &&
             !mapRenderer.isTileTextureLoaded(tile) &&
             !tileTextureQueue.isKeyQueued(tile.getKey())) {
           tileTextureQueue.enqueue([
@@ -364,7 +365,13 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
 
 
 /**
- * @inheritDoc
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {olx.FrameState} frameState FrameState.
+ * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ *     callback.
+ * @param {S} thisArg Value to use as `this` when executing `callback`.
+ * @return {T|undefined} Callback result.
+ * @template S,T,U
  */
 ol.renderer.webgl.TileLayer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
   if (!this.framebuffer) {
@@ -388,7 +395,7 @@ ol.renderer.webgl.TileLayer.prototype.forEachLayerAtPixel = function(pixel, fram
       gl.RGBA, gl.UNSIGNED_BYTE, imageData);
 
   if (imageData[3] > 0) {
-    return callback.call(thisArg, this.getLayer());
+    return callback.call(thisArg, this.getLayer(),  imageData);
   } else {
     return undefined;
   }

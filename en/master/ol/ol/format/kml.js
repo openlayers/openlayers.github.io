@@ -9,6 +9,7 @@ goog.require('goog.object');
 goog.require('ol');
 goog.require('ol.Feature');
 goog.require('ol.array');
+goog.require('ol.asserts');
 goog.require('ol.color');
 goog.require('ol.format.Feature');
 goog.require('ol.format.XMLFeature');
@@ -981,7 +982,7 @@ ol.format.KML.readMultiGeometry_ = function(node, objectStack) {
     } else if (type == ol.geom.GeometryType.GEOMETRY_COLLECTION) {
       multiGeometry = new ol.geom.GeometryCollection(geometries);
     } else {
-      ol.assert(false, 37); // Unknown geometry type found
+      ol.asserts.assert(false, 37); // Unknown geometry type found
     }
   } else {
     multiGeometry = new ol.geom.GeometryCollection(geometries);
@@ -1217,7 +1218,7 @@ ol.format.KML.PlacemarkStyleMapParser_ = function(node, objectStack) {
   } else if (typeof styleMapValue === 'string') {
     placemarkObject['styleUrl'] = styleMapValue;
   } else {
-    ol.assert(false, 38); // `styleMapValue` has an unknown type
+    ol.asserts.assert(false, 38); // `styleMapValue` has an unknown type
   }
 };
 
@@ -2067,7 +2068,7 @@ ol.format.KML.writeCoordinatesTextNode_ = function(node, coordinates, objectStac
       layout == ol.geom.GeometryLayout.XYZM) {
     dimension = 3;
   } else {
-    ol.assert(false, 34); // Invalid geometry layout
+    ol.asserts.assert(false, 34); // Invalid geometry layout
   }
 
   var d, i;
@@ -2259,7 +2260,7 @@ ol.format.KML.writeMultiGeometry_ = function(node, geometry, objectStack) {
         (/** @type {ol.geom.MultiPolygon} */ (geometry)).getPolygons();
     factory = ol.format.KML.POLYGON_NODE_FACTORY_;
   } else {
-    ol.assert(false, 39); // Unknown geometry type
+    ol.asserts.assert(false, 39); // Unknown geometry type
   }
   ol.xml.pushSerializeAndPop(context,
       ol.format.KML.MULTI_GEOMETRY_SERIALIZERS_, factory,

@@ -1,5 +1,7 @@
 goog.provide('ol.math');
 
+goog.require('ol.asserts');
+
 
 /**
  * Takes a number and clamps it to within the provided bounds.
@@ -46,7 +48,7 @@ ol.math.cosh = (function() {
  * @return {number} The smallest power of two greater than or equal to x.
  */
 ol.math.roundUpToPowerOfTwo = function(x) {
-  ol.assert(0 < x, 29); // `x` must be greater than `0`
+  ol.asserts.assert(0 < x, 29); // `x` must be greater than `0`
   return Math.pow(2, Math.ceil(Math.log(x) / Math.LN2));
 };
 

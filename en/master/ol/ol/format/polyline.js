@@ -1,5 +1,7 @@
 goog.provide('ol.format.Polyline');
 
+goog.require('ol');
+goog.require('ol.asserts');
 goog.require('ol.Feature');
 goog.require('ol.format.Feature');
 goog.require('ol.format.TextFeature');
@@ -355,7 +357,7 @@ ol.format.Polyline.prototype.writeFeatureText = function(feature, opt_options) {
   if (geometry) {
     return this.writeGeometryText(geometry, opt_options);
   } else {
-    ol.assert(false, 40); // Expected `feature` to have a geometry
+    ol.asserts.assert(false, 40); // Expected `feature` to have a geometry
     return '';
   }
 };

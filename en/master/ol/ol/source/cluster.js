@@ -3,6 +3,8 @@
 
 goog.provide('ol.source.Cluster');
 
+goog.require('ol');
+goog.require('ol.asserts');
 goog.require('ol.Feature');
 goog.require('ol.coordinate');
 goog.require('ol.events.EventType');
@@ -55,7 +57,7 @@ ol.source.Cluster = function(options) {
    */
   this.geometryFunction_ = options.geometryFunction || function(feature) {
     var geometry = /** @type {ol.geom.Point} */ (feature.getGeometry());
-    ol.assert(geometry instanceof ol.geom.Point,
+    ol.asserts.assert(geometry instanceof ol.geom.Point,
         10); // The default `geometryFunction` can only handle `ol.geom.Point` geometries
     return geometry;
   };
@@ -67,7 +69,7 @@ ol.source.Cluster = function(options) {
   this.source_ = options.source;
 
   this.source_.on(ol.events.EventType.CHANGE,
-      ol.source.Cluster.prototype.onSourceChange_, this);
+      ol.source.Cluster.prototype.refresh_, this);
 };
 ol.inherits(ol.source.Cluster, ol.source.Vector);
 
@@ -98,10 +100,21 @@ ol.source.Cluster.prototype.loadFeatures = function(extent, resolution,
 
 
 /**
+ * Set the distance in pixels between clusters.
+ * @param {number} distance The distance in pixels.
+ * @api
+ */
+ol.source.Cluster.prototype.setDistance = function(distance) {
+  this.distance_ = distance;
+  this.refresh_();
+};
+
+
+/**
  * handle the source changing
  * @private
  */
-ol.source.Cluster.prototype.onSourceChange_ = function() {
+ol.source.Cluster.prototype.refresh_ = function() {
   this.clear();
   this.cluster_();
   this.addFeatures(this.features_);

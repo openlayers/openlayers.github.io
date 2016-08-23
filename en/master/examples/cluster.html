@@ -45,6 +45,10 @@
         <div class="span12">
           <h4 id="title">Clustered Features</h4>
           <div id="map" class="map"></div>
+<form>
+  <label>cluster distance</label>
+  <input id="distance" type="range" min="0" max="100" step="1" value="40"/>
+</form>
 
         </div>
       </div>
@@ -64,7 +68,9 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">var count &#x3D; 20000;
+          <textarea class="hidden" name="js">var distance &#x3D; document.getElementById(&#x27;distance&#x27;);
+
+var count &#x3D; 20000;
 var features &#x3D; new Array(count);
 var e &#x3D; 4500000;
 for (var i &#x3D; 0; i &lt; count; ++i) {
@@ -77,7 +83,7 @@ var source &#x3D; new ol.source.Vector({
 });
 
 var clusterSource &#x3D; new ol.source.Cluster({
-  distance: 40,
+  distance: parseInt(distance.value, 10),
   source: source
 });
 
@@ -124,9 +130,17 @@ var map &#x3D; new ol.Map({
     zoom: 2
   })
 });
+
+distance.addEventListener(&#x27;input&#x27;, function() {
+  clusterSource.setDistance(parseInt(distance.value, 10));
+});
 </textarea>
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+&lt;form&gt;
+  &lt;label&gt;cluster distance&lt;/label&gt;
+  &lt;input id&#x3D;&quot;distance&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;40&quot;/&gt;
+&lt;/form&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
           <input type="hidden" name="resources" value="http://openlayers.org/en/v3.17.1/css/ol.css,http://openlayers.org/en/v3.17.1/build/ol.js">
@@ -142,7 +156,13 @@ var map &#x3D; new ol.Map({
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form&gt;
+      &lt;label&gt;cluster distance&lt;/label&gt;
+      &lt;input id&#x3D;&quot;distance&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;40&quot;/&gt;
+    &lt;/form&gt;
     &lt;script&gt;
+      var distance &#x3D; document.getElementById(&#x27;distance&#x27;);
+
       var count &#x3D; 20000;
       var features &#x3D; new Array(count);
       var e &#x3D; 4500000;
@@ -156,7 +176,7 @@ var map &#x3D; new ol.Map({
       });
 
       var clusterSource &#x3D; new ol.source.Cluster({
-        distance: 40,
+        distance: parseInt(distance.value, 10),
         source: source
       });
 
@@ -202,6 +222,10 @@ var map &#x3D; new ol.Map({
           center: [0, 0],
           zoom: 2
         })
+      });
+
+      distance.addEventListener(&#x27;input&#x27;, function() {
+        clusterSource.setDistance(parseInt(distance.value, 10));
       });
     &lt;/script&gt;
   &lt;/body&gt;

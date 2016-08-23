@@ -1,5 +1,7 @@
 goog.provide('ol.layer.Group');
 
+goog.require('ol');
+goog.require('ol.asserts');
 goog.require('ol.Collection');
 goog.require('ol.Object');
 goog.require('ol.ObjectEventType');
@@ -61,7 +63,7 @@ ol.layer.Group = function(opt_options) {
     if (Array.isArray(layers)) {
       layers = new ol.Collection(layers.slice());
     } else {
-      ol.assert(layers instanceof ol.Collection,
+      ol.asserts.assert(layers instanceof ol.Collection,
           43); // Expected `layers` to be an array or an `ol.Collection`
       layers = layers;
     }

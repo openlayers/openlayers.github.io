@@ -52,6 +52,7 @@ free to ping us or to send a pull request enhancing this document.</p>
 <li><a href="#why-is-the-order-of-a-coordinate-lon-lat-and-not-lat-lon-">Why is the order of a coordinate [lon,lat], and not [lat,lon]?</a></li>
 <li><a href="#why-aren-t-there-any-features-in-my-source-">Why aren&#39;t there any features in my source?</a></li>
 <li><a href="#how-do-i-force-a-re-render-of-the-map-">How do I force a re-render of the map?</a></li>
+<li><a href="#why-are-my-features-not-found-">Why are my features not found?</a></li>
 <li><a href="#how-do-i-create-a-custom-build-of-openlayers-">How do I create a custom build of OpenLayers?</a></li>
 <li><a href="#do-i-need-to-write-my-own-code-using-closure-library-">Do I need to write my own code using Closure library?</a></li>
 <li><a href="#do-i-need-to-compress-my-code-with-closure-compiler-">Do I need to compress my code with Closure compiler?</a></li>
@@ -269,6 +270,18 @@ when a remote source has loaded).</p>
 <pre><code class="language-javascript">map.render();</code></pre>
 <p>...or its companion method</p>
 <pre><code class="language-javascript">map.renderSync();</code></pre>
+<h2 id="why-are-my-features-not-found-">Why are my features not found?</h2>
+<p>You are using <code>ol.Map#forEachFeatureAtPixel</code> or <code>ol.Map#hasFeatureAtPixel</code>, but
+it sometimes does not work for large icons or labels? The <em>hit detection</em> only
+checks features that are within a certain distance of the given position. For large
+icons, the actual geometry of a feature might be too far away and is not considered.</p>
+<p>In this case, set the <code>renderBuffer</code> property of <code>ol.layer.Vector</code> (the default
+value is 100px):</p>
+<pre><code class="language-javascript"><span class="keyword">var</span> vectorLayer = <span class="keyword">new</span> ol.layer.Vector({
+  ...
+  renderBuffer: <span class="number">200</span>
+});</code></pre>
+<p>The recommended value is the size of the largest symbol, line width or label.</p>
 <h2 id="how-do-i-create-a-custom-build-of-openlayers-">How do I create a custom build of OpenLayers?</h2>
 <p>Please refer to the <a href="tutorials/custom-builds.html">official create custom builds tutorial</a>
 which explains how to create a custom build of OpenLayers with just those parts

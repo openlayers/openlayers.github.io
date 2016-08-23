@@ -1,14 +1,15 @@
 goog.provide('ol.renderer.Layer');
 
-goog.require('ol.events');
-goog.require('ol.events.EventType');
 goog.require('ol');
-goog.require('ol.functions');
 goog.require('ol.ImageState');
 goog.require('ol.Observable');
-goog.require('ol.TileState');
-goog.require('ol.transform');
+goog.require('ol.Tile');
+goog.require('ol.asserts');
+goog.require('ol.events');
+goog.require('ol.events.EventType');
+goog.require('ol.functions');
 goog.require('ol.source.State');
+goog.require('ol.transform');
 
 
 /**
@@ -47,7 +48,7 @@ ol.renderer.Layer.prototype.forEachFeatureAtCoordinate = ol.nullFunction;
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState Frame state.
- * @param {function(this: S, ol.layer.Layer): T} callback Layer callback.
+ * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
  * @template S,T
@@ -60,7 +61,7 @@ ol.renderer.Layer.prototype.forEachLayerAtPixel = function(pixel, frameState, ca
       coordinate, frameState, ol.functions.TRUE, this);
 
   if (hasFeature) {
-    return callback.call(thisArg, this.layer_);
+    return callback.call(thisArg, this.layer_, null);
   } else {
     return undefined;
   }
@@ -221,8 +222,8 @@ ol.renderer.Layer.prototype.updateLogos = function(frameState, source) {
     if (typeof logo === 'string') {
       frameState.logos[logo] = '';
     } else if (logo) {
-      ol.assert(typeof logo.href == 'string', 44); // `logo.href` should be a string.
-      ol.assert(typeof logo.src == 'string', 45); // `logo.src` should be a string.
+      ol.asserts.assert(typeof logo.href == 'string', 44); // `logo.href` should be a string.
+      ol.asserts.assert(typeof logo.src == 'string', 45); // `logo.src` should be a string.
       frameState.logos[logo.src] = logo.href;
     }
   }
@@ -306,7 +307,7 @@ ol.renderer.Layer.prototype.manageTilePyramid = function(
       for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
         if (currentZ - z <= preload) {
           tile = tileSource.getTile(z, x, y, pixelRatio, projection);
-          if (tile.getState() == ol.TileState.IDLE) {
+          if (tile.getState() == ol.Tile.State.IDLE) {
             wantedTiles[tile.getKey()] = true;
             if (!tileQueue.isKeyQueued(tile.getKey())) {
               tileQueue.enqueue([tile, tileSourceKey,

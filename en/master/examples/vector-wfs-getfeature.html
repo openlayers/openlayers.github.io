@@ -93,16 +93,15 @@ var map &#x3D; new ol.Map({
 });
 
 // generate a GetFeature request
-var f &#x3D; ol.format.ogc.filter;
 var featureRequest &#x3D; new ol.format.WFS().writeGetFeature({
   srsName: &#x27;EPSG:3857&#x27;,
   featureNS: &#x27;http://openstreemap.org&#x27;,
   featurePrefix: &#x27;osm&#x27;,
   featureTypes: [&#x27;water_areas&#x27;],
   outputFormat: &#x27;application/json&#x27;,
-  filter: f.and(
-    f.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
-    f.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
+  filter: ol.format.ogc.filter.and(
+    ol.format.ogc.filter.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
+    ol.format.ogc.filter.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
   )
 });
 
@@ -165,16 +164,15 @@ fetch(&#x27;http://demo.boundlessgeo.com/geoserver/wfs&#x27;, {
       });
 
       // generate a GetFeature request
-      var f &#x3D; ol.format.ogc.filter;
       var featureRequest &#x3D; new ol.format.WFS().writeGetFeature({
         srsName: &#x27;EPSG:3857&#x27;,
         featureNS: &#x27;http://openstreemap.org&#x27;,
         featurePrefix: &#x27;osm&#x27;,
         featureTypes: [&#x27;water_areas&#x27;],
         outputFormat: &#x27;application/json&#x27;,
-        filter: f.and(
-          f.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
-          f.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
+        filter: ol.format.ogc.filter.and(
+          ol.format.ogc.filter.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
+          ol.format.ogc.filter.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
         )
       });
 

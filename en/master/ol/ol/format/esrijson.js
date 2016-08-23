@@ -1,7 +1,9 @@
 goog.provide('ol.format.EsriJSON');
 
+goog.require('ol');
 goog.require('ol.Feature');
 goog.require('ol.array');
+goog.require('ol.asserts');
 goog.require('ol.extent');
 goog.require('ol.format.Feature');
 goog.require('ol.format.JSONFeature');
@@ -254,9 +256,9 @@ ol.format.EsriJSON.readPolygonGeometry_ = function(object) {
  * @return {EsriJSONGeometry} EsriJSON geometry.
  */
 ol.format.EsriJSON.writePointGeometry_ = function(geometry, opt_options) {
-  var coordinates = /** @type ol.geom.Point */ (geometry).getCoordinates();
+  var coordinates = /** @type {ol.geom.Point} */ (geometry).getCoordinates();
   var esriJSON;
-  var layout = /** @type ol.geom.Point */ (geometry).getLayout();
+  var layout = /** @type {ol.geom.Point} */ (geometry).getLayout();
   if (layout === ol.geom.GeometryLayout.XYZ) {
     esriJSON = /** @type {EsriJSONPoint} */ ({
       x: coordinates[0],
@@ -282,7 +284,7 @@ ol.format.EsriJSON.writePointGeometry_ = function(geometry, opt_options) {
       y: coordinates[1]
     });
   } else {
-    ol.assert(false, 34); // Invalid geometry layout
+    ol.asserts.assert(false, 34); // Invalid geometry layout
   }
   return /** @type {EsriJSONGeometry} */ (esriJSON);
 };

@@ -1,5 +1,6 @@
 goog.provide('ol.geom.SimpleGeometry');
 
+goog.require('ol');
 goog.require('ol.functions');
 goog.require('ol.extent');
 goog.require('ol.geom.Geometry');
@@ -323,7 +324,7 @@ ol.geom.SimpleGeometry.prototype.translate = function(deltaX, deltaY) {
  * @param {Array.<number>=} opt_dest Destination.
  * @return {Array.<number>} Transformed flat coordinates.
  */
-ol.geom.transformSimpleGeometry2D = function(simpleGeometry, transform, opt_dest) {
+ol.geom.SimpleGeometry.transform2D = function(simpleGeometry, transform, opt_dest) {
   var flatCoordinates = simpleGeometry.getFlatCoordinates();
   if (!flatCoordinates) {
     return null;

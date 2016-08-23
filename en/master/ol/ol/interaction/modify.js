@@ -1,17 +1,17 @@
 goog.provide('ol.interaction.Modify');
 goog.provide('ol.interaction.ModifyEvent');
 
-goog.require('ol.events');
-goog.require('ol.events.Event');
-goog.require('ol.events.EventType');
 goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.Feature');
 goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.MapBrowserPointerEvent');
-goog.require('ol.ViewHint');
+goog.require('ol.View');
 goog.require('ol.array');
 goog.require('ol.coordinate');
+goog.require('ol.events');
+goog.require('ol.events.Event');
+goog.require('ol.events.EventType');
 goog.require('ol.events.condition');
 goog.require('ol.extent');
 goog.require('ol.geom.GeometryType');
@@ -20,6 +20,7 @@ goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
 goog.require('ol.structs.RBush');
+goog.require('ol.style.Style');
 
 
 /**
@@ -696,7 +697,7 @@ ol.interaction.Modify.handleEvent = function(mapBrowserEvent) {
   this.lastPointerEvent_ = mapBrowserEvent;
 
   var handled;
-  if (!mapBrowserEvent.map.getView().getHints()[ol.ViewHint.INTERACTING] &&
+  if (!mapBrowserEvent.map.getView().getHints()[ol.View.Hint.INTERACTING] &&
       mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERMOVE &&
       !this.handlingDownUpSequence) {
     this.handlePointerMove_(mapBrowserEvent);
@@ -1034,7 +1035,7 @@ ol.interaction.Modify.prototype.updateSegmentIndices_ = function(
  * @return {ol.StyleFunction} Styles.
  */
 ol.interaction.Modify.getDefaultStyleFunction = function() {
-  var style = ol.style.createDefaultEditingStyles();
+  var style = ol.style.Style.createDefaultEditing();
   return function(feature, resolution) {
     return style[ol.geom.GeometryType.POINT];
   };
