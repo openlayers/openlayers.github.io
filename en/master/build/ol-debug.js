@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.17.1-365-g79ded2a
+// Version: v3.17.1-375-g3fcb064
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -27156,6 +27156,9 @@ ol.interaction.DragPan.handleUpEvent_ = function(mapBrowserEvent) {
       ]);
       dest = view.constrainCenter(dest);
       view.setCenter(dest);
+    } else {
+      // the view is not updated, force a render
+      map.render();
     }
     view.setHint(ol.View.Hint.INTERACTING, -1);
     return false;
@@ -32003,6 +32006,12 @@ ol.render.canvas.Immediate = function(context, pixelRatio, extent, transform, vi
 
   /**
    * @private
+   * @type {boolean}
+   */
+  this.textRotateWithView_ = false;
+
+  /**
+   * @private
    * @type {number}
    */
   this.textRotation_ = 0;
@@ -32130,14 +32139,18 @@ ol.render.canvas.Immediate.prototype.drawText_ = function(flatCoordinates, offse
       flatCoordinates, offset, end, stride, this.transform_,
       this.pixelCoordinates_);
   var context = this.context_;
+  var rotation = this.textRotation_;
+  if (this.textRotateWithView_) {
+    rotation += this.viewRotation_;
+  }
   for (; offset < end; offset += stride) {
     var x = pixelCoordinates[offset] + this.textOffsetX_;
     var y = pixelCoordinates[offset + 1] + this.textOffsetY_;
-    if (this.textRotation_ !== 0 || this.textScale_ != 1) {
+    if (rotation !== 0 || this.textScale_ != 1) {
       var localTransform = ol.transform.compose(this.tmpLocalTransform_,
           x, y,
           this.textScale_, this.textScale_,
-          this.textRotation_,
+          rotation,
           -x, -y);
       context.setTransform.apply(context, localTransform);
     }
@@ -32148,7 +32161,7 @@ ol.render.canvas.Immediate.prototype.drawText_ = function(flatCoordinates, offse
       context.fillText(this.text_, x, y);
     }
   }
-  if (this.textRotation_ !== 0 || this.textScale_ != 1) {
+  if (rotation !== 0 || this.textScale_ != 1) {
     context.setTransform(1, 0, 0, 1, 0, 0);
   }
 };
@@ -32730,6 +32743,7 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function(textStyle) {
     var textFont = textStyle.getFont();
     var textOffsetX = textStyle.getOffsetX();
     var textOffsetY = textStyle.getOffsetY();
+    var textRotateWithView = textStyle.getRotateWithView();
     var textRotation = textStyle.getRotation();
     var textScale = textStyle.getScale();
     var textText = textStyle.getText();
@@ -32748,6 +32762,7 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function(textStyle) {
         textOffsetX !== undefined ? (this.pixelRatio_ * textOffsetX) : 0;
     this.textOffsetY_ =
         textOffsetY !== undefined ? (this.pixelRatio_ * textOffsetY) : 0;
+    this.textRotateWithView_ = textRotateWithView !== undefined ? textRotateWithView : false;
     this.textRotation_ = textRotation !== undefined ? textRotation : 0;
     this.textScale_ = this.pixelRatio_ * (textScale !== undefined ?
         textScale : 1);
@@ -33866,6 +33881,10 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         goog.DEBUG && console.assert(typeof instruction[9] === 'boolean',
             '10th instruction should be a boolean');
         stroke = /** @type {boolean} */ (instruction[9]);
+        rotateWithView = /** @type {boolean} */ (instruction[10]);
+        if (rotateWithView) {
+          rotation += viewRotation;
+        }
         for (; d < dd; d += 2) {
           x = pixelCoordinates[d] + offsetX;
           y = pixelCoordinates[d + 1] + offsetY;
@@ -35029,6 +35048,12 @@ ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution) {
 
   /**
    * @private
+   * @type {boolean|undefined}
+   */
+  this.textRotateWithView_ = undefined;
+
+  /**
+   * @private
    * @type {number}
    */
   this.textRotation_ = 0;
@@ -35085,7 +35110,7 @@ ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offse
   var drawTextInstruction = [
     ol.render.canvas.Instruction.DRAW_TEXT, myBegin, myEnd, this.text_,
     this.textOffsetX_, this.textOffsetY_, this.textRotation_, this.textScale_,
-    fill, stroke];
+    fill, stroke, this.textRotateWithView_];
   this.instructions.push(drawTextInstruction);
   this.hitDetectionInstructions.push(drawTextInstruction);
   this.endGeometry(geometry, feature);
@@ -35255,6 +35280,7 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
     var textFont = textStyle.getFont();
     var textOffsetX = textStyle.getOffsetX();
     var textOffsetY = textStyle.getOffsetY();
+    var textRotateWithView = textStyle.getRotateWithView();
     var textRotation = textStyle.getRotation();
     var textScale = textStyle.getScale();
     var textText = textStyle.getText();
@@ -35281,6 +35307,7 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
     this.text_ = textText !== undefined ? textText : '';
     this.textOffsetX_ = textOffsetX !== undefined ? textOffsetX : 0;
     this.textOffsetY_ = textOffsetY !== undefined ? textOffsetY : 0;
+    this.textRotateWithView_ = textRotateWithView !== undefined ? textRotateWithView : false;
     this.textRotation_ = textRotation !== undefined ? textRotation : 0;
     this.textScale_ = textScale !== undefined ? textScale : 1;
   }
@@ -57373,6 +57400,12 @@ ol.style.Text = function(opt_options) {
 
   /**
    * @private
+   * @type {boolean|undefined}
+   */
+  this.rotateWithView_ = options.rotateWithView;
+
+  /**
+   * @private
    * @type {number|undefined}
    */
   this.scale_ = options.scale;
@@ -57469,6 +57502,16 @@ ol.style.Text.prototype.getOffsetY = function() {
  */
 ol.style.Text.prototype.getFill = function() {
   return this.fill_;
+};
+
+
+/**
+ * Determine whether the text rotates with the map.
+ * @return {boolean|undefined} Rotate with map.
+ * @api
+ */
+ol.style.Text.prototype.getRotateWithView = function() {
+  return this.rotateWithView_;
 };
 
 
@@ -72861,7 +72904,7 @@ ol.inherits(ol.interaction.Modify, ol.interaction.Pointer);
  */
 ol.interaction.Modify.prototype.addFeature_ = function(feature) {
   var geometry = feature.getGeometry();
-  if (geometry.getType() in this.SEGMENT_WRITERS_) {
+  if (geometry && geometry.getType() in this.SEGMENT_WRITERS_) {
     this.SEGMENT_WRITERS_[geometry.getType()].call(this, feature, geometry);
   }
   var map = this.getMap();
@@ -84529,6 +84572,11 @@ goog.exportProperty(
     ol.style.Text.prototype,
     'getFill',
     ol.style.Text.prototype.getFill);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
+    'getRotateWithView',
+    ol.style.Text.prototype.getRotateWithView);
 
 goog.exportProperty(
     ol.style.Text.prototype,
@@ -96509,7 +96557,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.17.1-365-g79ded2a';
+ol.VERSION = 'v3.17.1-375-g3fcb064';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

@@ -20,7 +20,7 @@ var map = new ol.Map({
       source: new ol.source.WMTS({
         attributions: 'Tiles © <a href="http://services.arcgisonline.com/arcgis/rest/' +
             'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</a>',
-        url: 'http://services.arcgisonline.com/arcgis/rest/' +
+        url: 'https://services.arcgisonline.com/arcgis/rest/' +
             'services/Demographics/USA_Population_Density/MapServer/WMTS/',
         layer: '0',
         matrixSet: 'EPSG:3857',

@@ -63,7 +63,7 @@
           <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
-        <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
+        <form method="POST" id="jsfiddle-form" target="_blank" action="https://jsfiddle.net/api/post/library/pure/">
           <textarea class="hidden" name="js">var layers &#x3D; [
   new ol.layer.Tile({
     source: new ol.source.TileWMS({
@@ -74,7 +74,7 @@
         &#x27;LAYERS&#x27;: &#x27;ch.swisstopo.pixelkarte-farbe-pk1000.noscale&#x27;,
         &#x27;FORMAT&#x27;: &#x27;image/jpeg&#x27;
       },
-      url: &#x27;http://wms.geo.admin.ch/&#x27;
+      url: &#x27;https://wms.geo.admin.ch/&#x27;
     })
   }),
   new ol.layer.Image({
@@ -84,7 +84,7 @@
       crossOrigin: &#x27;anonymous&#x27;,
       params: {&#x27;LAYERS&#x27;: &#x27;ch.bafu.schutzgebiete-paerke_nationaler_bedeutung&#x27;},
       serverType: &#x27;mapserver&#x27;,
-      url: &#x27;http://wms.geo.admin.ch/&#x27;
+      url: &#x27;https://wms.geo.admin.ch/&#x27;
     })
   })
 ];
@@ -137,7 +137,7 @@ var map &#x3D; new ol.Map({
               &#x27;LAYERS&#x27;: &#x27;ch.swisstopo.pixelkarte-farbe-pk1000.noscale&#x27;,
               &#x27;FORMAT&#x27;: &#x27;image/jpeg&#x27;
             },
-            url: &#x27;http://wms.geo.admin.ch/&#x27;
+            url: &#x27;https://wms.geo.admin.ch/&#x27;
           })
         }),
         new ol.layer.Image({
@@ -147,7 +147,7 @@ var map &#x3D; new ol.Map({
             crossOrigin: &#x27;anonymous&#x27;,
             params: {&#x27;LAYERS&#x27;: &#x27;ch.bafu.schutzgebiete-paerke_nationaler_bedeutung&#x27;},
             serverType: &#x27;mapserver&#x27;,
-            url: &#x27;http://wms.geo.admin.ch/&#x27;
+            url: &#x27;https://wms.geo.admin.ch/&#x27;
           })
         })
       ];

@@ -63,7 +63,7 @@
           <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
-        <form method="POST" id="jsfiddle-form" target="_blank" action="http://jsfiddle.net/api/post/library/pure/">
+        <form method="POST" id="jsfiddle-form" target="_blank" action="https://jsfiddle.net/api/post/library/pure/">
           <textarea class="hidden" name="js">var rome &#x3D; new ol.Feature({
   geometry: new ol.geom.Point(ol.proj.fromLonLat([12.5, 41.9]))
 });
@@ -108,7 +108,7 @@ var vectorLayer &#x3D; new ol.layer.Vector({
 
 var rasterLayer &#x3D; new ol.layer.Tile({
   source: new ol.source.TileJSON({
-    url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;,
+    url: &#x27;https://api.tiles.mapbox.com/v3/mapbox.geography-class.json?secure&#x27;,
     crossOrigin: &#x27;&#x27;
   })
 });
@@ -192,7 +192,7 @@ var map &#x3D; new ol.Map({
 
       var rasterLayer &#x3D; new ol.layer.Tile({
         source: new ol.source.TileJSON({
-          url: &#x27;http://api.tiles.mapbox.com/v3/mapbox.geography-class.json&#x27;,
+          url: &#x27;https://api.tiles.mapbox.com/v3/mapbox.geography-class.json?secure&#x27;,
           crossOrigin: &#x27;&#x27;
         })
       });
