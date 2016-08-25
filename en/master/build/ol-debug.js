@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.17.1-375-g3fcb064
+// Version: v3.17.1-395-ge301ea4
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -7203,10 +7203,13 @@ ol.geom.Geometry.prototype.getClosestPoint = function(point, opt_closestPoint) {
 
 
 /**
+ * Returns true if this geometry includes the specified coordinate. If the
+ * coordinate is on the boundary of the geometry, returns false.
  * @param {ol.Coordinate} coordinate Coordinate.
  * @return {boolean} Contains coordinate.
+ * @api
  */
-ol.geom.Geometry.prototype.containsCoordinate = function(coordinate) {
+ol.geom.Geometry.prototype.intersectsCoordinate = function(coordinate) {
   return this.containsXY(coordinate[0], coordinate[1]);
 };
 
@@ -33257,6 +33260,39 @@ ol.inherits(ol.renderer.canvas.Layer, ol.renderer.Layer);
 
 
 /**
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.Extent} extent Clip extent.
+ * @protected
+ */
+ol.renderer.canvas.Layer.prototype.clip = function(context, frameState, extent) {
+  var pixelRatio = frameState.pixelRatio;
+  var width = frameState.size[0] * pixelRatio;
+  var height = frameState.size[1] * pixelRatio;
+  var rotation = frameState.viewState.rotation;
+  var topLeft = ol.extent.getTopLeft(/** @type {ol.Extent} */ (extent));
+  var topRight = ol.extent.getTopRight(/** @type {ol.Extent} */ (extent));
+  var bottomRight = ol.extent.getBottomRight(/** @type {ol.Extent} */ (extent));
+  var bottomLeft = ol.extent.getBottomLeft(/** @type {ol.Extent} */ (extent));
+
+  ol.transform.apply(frameState.coordinateToPixelTransform, topLeft);
+  ol.transform.apply(frameState.coordinateToPixelTransform, topRight);
+  ol.transform.apply(frameState.coordinateToPixelTransform, bottomRight);
+  ol.transform.apply(frameState.coordinateToPixelTransform, bottomLeft);
+
+  context.save();
+  ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
+  context.beginPath();
+  context.moveTo(topLeft[0] * pixelRatio, topLeft[1] * pixelRatio);
+  context.lineTo(topRight[0] * pixelRatio, topRight[1] * pixelRatio);
+  context.lineTo(bottomRight[0] * pixelRatio, bottomRight[1] * pixelRatio);
+  context.lineTo(bottomLeft[0] * pixelRatio, bottomLeft[1] * pixelRatio);
+  context.clip();
+  ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
+};
+
+
+/**
  * @param {olx.FrameState} frameState Frame state.
  * @param {ol.LayerState} layerState Layer state.
  * @param {CanvasRenderingContext2D} context Context.
@@ -33272,29 +33308,7 @@ ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerStat
     var extent = layerState.extent;
     var clipped = extent !== undefined;
     if (clipped) {
-      var pixelRatio = frameState.pixelRatio;
-      var width = frameState.size[0] * pixelRatio;
-      var height = frameState.size[1] * pixelRatio;
-      var rotation = frameState.viewState.rotation;
-      var topLeft = ol.extent.getTopLeft(/** @type {ol.Extent} */ (extent));
-      var topRight = ol.extent.getTopRight(/** @type {ol.Extent} */ (extent));
-      var bottomRight = ol.extent.getBottomRight(/** @type {ol.Extent} */ (extent));
-      var bottomLeft = ol.extent.getBottomLeft(/** @type {ol.Extent} */ (extent));
-
-      ol.transform.apply(frameState.coordinateToPixelTransform, topLeft);
-      ol.transform.apply(frameState.coordinateToPixelTransform, topRight);
-      ol.transform.apply(frameState.coordinateToPixelTransform, bottomRight);
-      ol.transform.apply(frameState.coordinateToPixelTransform, bottomLeft);
-
-      context.save();
-      ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
-      context.beginPath();
-      context.moveTo(topLeft[0] * pixelRatio, topLeft[1] * pixelRatio);
-      context.lineTo(topRight[0] * pixelRatio, topRight[1] * pixelRatio);
-      context.lineTo(bottomRight[0] * pixelRatio, bottomRight[1] * pixelRatio);
-      context.lineTo(bottomLeft[0] * pixelRatio, bottomLeft[1] * pixelRatio);
-      context.clip();
-      ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
+      this.clip(context, frameState, /** @type {ol.Extent} */ (extent));
     }
 
     var imageTransform = this.getImageTransform();
@@ -33549,10 +33563,11 @@ ol.render.canvas.Instruction = {
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Maximum extent.
  * @param {number} resolution Resolution.
+ * @param {boolean} overlaps The replay can have overlapping geometries.
  * @protected
  * @struct
  */
-ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
+ol.render.canvas.Replay = function(tolerance, maxExtent, resolution, overlaps) {
   ol.render.VectorContext.call(this);
 
   /**
@@ -33567,6 +33582,12 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution) {
    * @type {ol.Extent}
    */
   this.maxExtent = maxExtent;
+
+  /**
+   * @protected
+   * @type {boolean}
+   */
+  this.overlaps = overlaps;
 
   /**
    * @private
@@ -33754,6 +33775,12 @@ ol.render.canvas.Replay.prototype.replay_ = function(
   var localTransform = this.tmpLocalTransform_;
   var localTransformInv = this.tmpLocalTransformInv_;
   var prevX, prevY, roundX, roundY;
+  var pendingFill = 0;
+  var pendingStroke = 0;
+  // When the batch size gets too big, performance decreases. 200 is a good
+  // balance between batch size and number of fill/stroke instructions.
+  var batchSize =
+      this.instructions != instructions || this.overlaps ? 0 : 200;
   while (i < ii) {
     var instruction = instructions[i];
     var type = /** @type {ol.render.canvas.Instruction} */ (instruction[0]);
@@ -33773,7 +33800,17 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         }
         break;
       case ol.render.canvas.Instruction.BEGIN_PATH:
-        context.beginPath();
+        if (pendingFill > batchSize) {
+          context.fill();
+          pendingFill = 0;
+        }
+        if (pendingStroke > batchSize) {
+          context.stroke();
+          pendingStroke = 0;
+        }
+        if (!pendingFill && !pendingStroke) {
+          context.beginPath();
+        }
         ++i;
         break;
       case ol.render.canvas.Instruction.CIRCLE:
@@ -33787,6 +33824,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         var dx = x2 - x1;
         var dy = y2 - y1;
         var r = Math.sqrt(dx * dx + dy * dy);
+        context.moveTo(x2, y2);
         context.arc(x1, y1, r, 0, 2 * Math.PI, true);
         ++i;
         break;
@@ -33939,7 +33977,11 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         ++i;
         break;
       case ol.render.canvas.Instruction.FILL:
-        context.fill();
+        if (batchSize) {
+          pendingFill++;
+        } else {
+          context.fill();
+        }
         ++i;
         break;
       case ol.render.canvas.Instruction.MOVE_TO_LINE_TO:
@@ -33976,6 +34018,11 @@ ol.render.canvas.Replay.prototype.replay_ = function(
             ol.colorlike.isColorLike(instruction[1]),
             '2nd instruction should be a string, ' +
             'CanvasPattern, or CanvasGradient');
+        if (pendingFill) {
+          context.fill();
+          pendingFill = 0;
+        }
+
         context.fillStyle = /** @type {ol.ColorLike} */ (instruction[1]);
         ++i;
         break;
@@ -33995,6 +34042,10 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         var usePixelRatio = instruction[7] !== undefined ?
             instruction[7] : true;
         var lineWidth = /** @type {number} */ (instruction[2]);
+        if (pendingStroke) {
+          context.stroke();
+          pendingStroke = 0;
+        }
         context.strokeStyle = /** @type {string} */ (instruction[1]);
         context.lineWidth = usePixelRatio ? lineWidth * pixelRatio : lineWidth;
         context.lineCap = /** @type {string} */ (instruction[3]);
@@ -34020,7 +34071,11 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         ++i;
         break;
       case ol.render.canvas.Instruction.STROKE:
-        context.stroke();
+        if (batchSize) {
+          pendingStroke++;
+        } else {
+          context.stroke();
+        }
         ++i;
         break;
       default:
@@ -34028,6 +34083,12 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         ++i; // consume the instruction anyway, to avoid an infinite loop
         break;
     }
+  }
+  if (pendingFill) {
+    context.fill();
+  }
+  if (pendingStroke) {
+    context.stroke();
   }
   // assert that all instructions were consumed
   goog.DEBUG && console.assert(i == instructions.length,
@@ -34048,7 +34109,7 @@ ol.render.canvas.Replay.prototype.replay = function(
     context, pixelRatio, transform, viewRotation, skippedFeaturesHash) {
   var instructions = this.instructions;
   this.replay_(context, pixelRatio, transform, viewRotation,
-      skippedFeaturesHash, instructions, undefined);
+      skippedFeaturesHash, instructions, undefined, undefined);
 };
 
 
@@ -34148,11 +34209,12 @@ ol.render.canvas.Replay.prototype.getBufferedMaxExtent = function() {
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Maximum extent.
  * @param {number} resolution Resolution.
+ * @param {boolean} overlaps The replay can have overlapping geometries.
  * @protected
  * @struct
  */
-ol.render.canvas.ImageReplay = function(tolerance, maxExtent, resolution) {
-  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution);
+ol.render.canvas.ImageReplay = function(tolerance, maxExtent, resolution, overlaps) {
+  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution, overlaps);
 
   /**
    * @private
@@ -34414,12 +34476,13 @@ ol.render.canvas.ImageReplay.prototype.setImageStyle = function(imageStyle) {
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Maximum extent.
  * @param {number} resolution Resolution.
+ * @param {boolean} overlaps The replay can have overlapping geometries.
  * @protected
  * @struct
  */
-ol.render.canvas.LineStringReplay = function(tolerance, maxExtent, resolution) {
+ol.render.canvas.LineStringReplay = function(tolerance, maxExtent, resolution, overlaps) {
 
-  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution);
+  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution, overlaps);
 
   /**
    * @private
@@ -34648,12 +34711,13 @@ ol.render.canvas.LineStringReplay.prototype.setFillStrokeStyle = function(fillSt
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Maximum extent.
  * @param {number} resolution Resolution.
+ * @param {boolean} overlaps The replay can have overlapping geometries.
  * @protected
  * @struct
  */
-ol.render.canvas.PolygonReplay = function(tolerance, maxExtent, resolution) {
+ol.render.canvas.PolygonReplay = function(tolerance, maxExtent, resolution, overlaps) {
 
-  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution);
+  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution, overlaps);
 
   /**
    * @private
@@ -34703,31 +34767,41 @@ ol.inherits(ol.render.canvas.PolygonReplay, ol.render.canvas.Replay);
  */
 ol.render.canvas.PolygonReplay.prototype.drawFlatCoordinatess_ = function(flatCoordinates, offset, ends, stride) {
   var state = this.state_;
+  var fill = state.fillStyle !== undefined;
+  var stroke = state.strokeStyle != undefined;
+  var numEnds = ends.length;
+  if (!fill && !stroke) {
+    return ends[numEnds - 1];
+  }
   var beginPathInstruction = [ol.render.canvas.Instruction.BEGIN_PATH];
   this.instructions.push(beginPathInstruction);
   this.hitDetectionInstructions.push(beginPathInstruction);
-  var i, ii;
-  for (i = 0, ii = ends.length; i < ii; ++i) {
+  for (var i = 0; i < numEnds; ++i) {
     var end = ends[i];
     var myBegin = this.coordinates.length;
-    var myEnd = this.appendFlatCoordinates(
-        flatCoordinates, offset, end, stride, true);
+    var myEnd = this.appendFlatCoordinates(flatCoordinates, offset, end, stride,
+        // Performance optimization: only close the ring when we do not have a
+        // stroke. Otherwise closePath() will take care of that.
+        !stroke);
     var moveToLineToInstruction =
         [ol.render.canvas.Instruction.MOVE_TO_LINE_TO, myBegin, myEnd];
-    var closePathInstruction = [ol.render.canvas.Instruction.CLOSE_PATH];
-    this.instructions.push(moveToLineToInstruction, closePathInstruction);
-    this.hitDetectionInstructions.push(moveToLineToInstruction,
-        closePathInstruction);
+    this.instructions.push(moveToLineToInstruction);
+    this.hitDetectionInstructions.push(moveToLineToInstruction);
+    if (stroke) {
+      // Performance optimization: only call closePath() when we have a stroke.
+      // Otherwise the ring is closed already (see appendFlatCoordinates above).
+      var closePathInstruction = [ol.render.canvas.Instruction.CLOSE_PATH];
+      this.instructions.push(closePathInstruction);
+      this.hitDetectionInstructions.push(closePathInstruction);
+    }
     offset = end;
   }
-  // FIXME is it quicker to fill and stroke each polygon individually,
-  // FIXME or all polygons together?
   var fillInstruction = [ol.render.canvas.Instruction.FILL];
   this.hitDetectionInstructions.push(fillInstruction);
-  if (state.fillStyle !== undefined) {
+  if (fill) {
     this.instructions.push(fillInstruction);
   }
-  if (state.strokeStyle !== undefined) {
+  if (stroke) {
     goog.DEBUG && console.assert(state.lineWidth !== undefined,
         'state.lineWidth should be defined');
     var strokeInstruction = [ol.render.canvas.Instruction.STROKE];
@@ -35003,12 +35077,13 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function() {
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Maximum extent.
  * @param {number} resolution Resolution.
+ * @param {boolean} overlaps The replay can have overlapping geometries.
  * @protected
  * @struct
  */
-ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution) {
+ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution, overlaps) {
 
-  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution);
+  ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution, overlaps);
 
   /**
    * @private
@@ -35320,10 +35395,12 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
  * @param {number} tolerance Tolerance.
  * @param {ol.Extent} maxExtent Max extent.
  * @param {number} resolution Resolution.
+ * @param {boolean} overlaps The replay group can have overlapping geometries.
  * @param {number=} opt_renderBuffer Optional rendering buffer.
  * @struct
  */
-ol.render.canvas.ReplayGroup = function(tolerance, maxExtent, resolution, opt_renderBuffer) {
+ol.render.canvas.ReplayGroup = function(
+    tolerance, maxExtent, resolution, overlaps, opt_renderBuffer) {
   ol.render.ReplayGroup.call(this);
 
   /**
@@ -35337,6 +35414,12 @@ ol.render.canvas.ReplayGroup = function(tolerance, maxExtent, resolution, opt_re
    * @type {ol.Extent}
    */
   this.maxExtent_ = maxExtent;
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.overlaps_ = overlaps;
 
   /**
    * @private
@@ -35457,7 +35540,7 @@ ol.render.canvas.ReplayGroup.prototype.getReplay = function(zIndex, replayType) 
         replayType +
         ' constructor missing from ol.render.canvas.BATCH_CONSTRUCTORS_');
     replay = new Constructor(this.tolerance_, this.maxExtent_,
-        this.resolution_);
+        this.resolution_, this.overlaps_);
     replays[replayType] = replay;
   }
   return replay;
@@ -35505,7 +35588,6 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(context, pixelRatio,
   context.lineTo(flatClipCoords[2], flatClipCoords[3]);
   context.lineTo(flatClipCoords[4], flatClipCoords[5]);
   context.lineTo(flatClipCoords[6], flatClipCoords[7]);
-  context.closePath();
   context.clip();
 
   var replayTypes = opt_replayTypes ? opt_replayTypes : ol.render.replay.ORDER;
@@ -35571,7 +35653,7 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ = function(
  * @private
  * @type {Object.<ol.render.ReplayType,
  *                function(new: ol.render.canvas.Replay, number, ol.Extent,
- *                number)>}
+ *                number, boolean)>}
  */
 ol.render.canvas.BATCH_CONSTRUCTORS_ = {
   'Image': ol.render.canvas.ImageReplay,
@@ -36216,15 +36298,14 @@ ol.reproj.render = function(width, height, pixelRatio,
       var p1 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u1, v1);
       var p2 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u2, v2);
 
-      context.moveTo(p0[0], p0[1]);
-      context.lineTo(p1[0], p1[1]);
+      context.moveTo(p1[0], p1[1]);
+      context.lineTo(p0[0], p0[1]);
       context.lineTo(p2[0], p2[1]);
     } else {
-      context.moveTo(u0, v0);
-      context.lineTo(u1, v1);
+      context.moveTo(u1, v1);
+      context.lineTo(u0, v0);
       context.lineTo(u2, v2);
     }
-    context.closePath();
     context.clip();
 
     context.transform(
@@ -36256,8 +36337,8 @@ ol.reproj.render = function(width, height, pixelRatio,
           v2 = -(target[2][1] - targetTopLeft[1]) / targetResolution;
 
       context.beginPath();
-      context.moveTo(u0, v0);
-      context.lineTo(u1, v1);
+      context.moveTo(u1, v1);
+      context.lineTo(u0, v0);
       context.lineTo(u2, v2);
       context.closePath();
       context.stroke();
@@ -37242,7 +37323,7 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resol
 
   var replayGroup = new ol.render.canvas.ReplayGroup(
       ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-      resolution, this.renderBuffer_);
+      resolution, this.source_.getOverlaps(), this.renderBuffer_);
 
   this.source_.loadFeatures(extent, resolution, projection);
 
@@ -38109,6 +38190,12 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
 
   this.dispatchPreComposeEvent(context, frameState, transform);
 
+  // clipped rendering if layer extent is set
+  var clipExtent = layerState.extent;
+  var clipped = clipExtent !== undefined;
+  if (clipped) {
+    this.clip(context, frameState,  /** @type {ol.Extent} */ (clipExtent));
+  }
   var replayGroup = this.replayGroup_;
   if (replayGroup && !replayGroup.isEmpty()) {
     var layer = this.getLayer();
@@ -38184,6 +38271,9 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
     replayContext.globalAlpha = alpha;
   }
 
+  if (clipped) {
+    context.restore();
+  }
   this.dispatchPostComposeEvent(context, frameState, transform);
 
 };
@@ -38295,7 +38385,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
   var replayGroup =
       new ol.render.canvas.ReplayGroup(
           ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-          resolution, vectorLayer.getRenderBuffer());
+          resolution, vectorSource.getOverlaps(), vectorLayer.getRenderBuffer());
   vectorSource.loadFeatures(extent, resolution, projection);
   /**
    * @param {ol.Feature} feature Feature.
@@ -38449,6 +38539,14 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(
     frameState, layerState, context) {
   var transform = this.getTransform(frameState, 0);
   this.dispatchPreComposeEvent(context, frameState, transform);
+
+  // clipped rendering if layer extent is set
+  var extent = layerState.extent;
+  var clipped = extent !== undefined;
+  if (clipped) {
+    this.clip(context, frameState,  /** @type {ol.Extent} */ (extent));
+  }
+
   var renderMode = this.getLayer().getRenderMode();
   if (renderMode !== ol.layer.VectorTileRenderType.VECTOR) {
     this.renderTileImages(context, frameState, layerState);
@@ -38456,6 +38554,11 @@ ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(
   if (renderMode !== ol.layer.VectorTileRenderType.IMAGE) {
     this.renderTileReplays_(context, frameState, layerState);
   }
+
+  if (clipped) {
+    context.restore();
+  }
+
   this.dispatchPostComposeEvent(context, frameState, transform);
 };
 
@@ -38584,7 +38687,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
   }
   replayState.dirty = false;
   var replayGroup = new ol.render.canvas.ReplayGroup(0, extent,
-      tileResolution, layer.getRenderBuffer());
+      tileResolution, source.getOverlaps(), layer.getRenderBuffer());
   var squaredTolerance = ol.renderer.vector.getSquaredTolerance(
       tileResolution, pixelRatio);
 
@@ -39922,7 +40025,7 @@ ol.renderer.dom.VectorLayer.prototype.prepareFrame = function(frameState, layerS
   var replayGroup =
       new ol.render.canvas.ReplayGroup(
           ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-          resolution, vectorLayer.getRenderBuffer());
+          resolution, vectorSource.getOverlaps(), vectorLayer.getRenderBuffer());
   vectorSource.loadFeatures(extent, resolution, projection);
   /**
    * @param {ol.Feature} feature Feature.
@@ -68428,7 +68531,7 @@ ol.geom.Circle.prototype.intersectsExtent = function(extent) {
       return true;
     }
 
-    return ol.extent.forEachCorner(extent, this.containsCoordinate, this);
+    return ol.extent.forEachCorner(extent, this.intersectsCoordinate, this);
   }
   return false;
 
@@ -71020,6 +71123,12 @@ ol.source.Vector = function(opt_options) {
 
   /**
    * @private
+   * @type {boolean}
+   */
+  this.overlaps_ = options.overlaps == undefined ? true : options.overlaps;
+
+  /**
+   * @private
    * @type {string|ol.FeatureUrlFunction|undefined}
    */
   this.url_ = options.url;
@@ -71376,7 +71485,7 @@ ol.source.Vector.prototype.forEachFeatureAtCoordinateDirect = function(coordinat
   return this.forEachFeatureInExtent(extent, function(feature) {
     var geometry = feature.getGeometry();
     goog.DEBUG && console.assert(geometry, 'feature geometry is defined and not null');
-    if (geometry.containsCoordinate(coordinate)) {
+    if (geometry.intersectsCoordinate(coordinate)) {
       return callback.call(opt_this, feature);
     } else {
       return undefined;
@@ -71616,6 +71725,14 @@ ol.source.Vector.prototype.getFeatureById = function(id) {
  */
 ol.source.Vector.prototype.getFormat = function() {
   return this.format_;
+};
+
+
+/**
+ * @return {boolean} The source can have overlapping geometries.
+ */
+ol.source.Vector.prototype.getOverlaps = function() {
+  return this.overlaps_;
 };
 
 
@@ -81066,6 +81183,12 @@ ol.source.VectorTile = function(options) {
   this.format_ = options.format ? options.format : null;
 
   /**
+   * @private
+   * @type {boolean}
+   */
+  this.overlaps_ = options.overlaps == undefined ? true : options.overlaps;
+
+  /**
    * @protected
    * @type {function(new: ol.VectorTile, ol.TileCoord, ol.Tile.State, string,
    *        ol.format.Feature, ol.TileLoadFunctionType)}
@@ -81074,6 +81197,14 @@ ol.source.VectorTile = function(options) {
 
 };
 ol.inherits(ol.source.VectorTile, ol.source.UrlTile);
+
+
+/**
+ * @return {boolean} The source can have overlapping geometries.
+ */
+ol.source.VectorTile.prototype.getOverlaps = function() {
+  return this.overlaps_;
+};
 
 
 /**
@@ -86002,6 +86133,11 @@ goog.exportProperty(
     ol.geom.Geometry.prototype,
     'getClosestPoint',
     ol.geom.Geometry.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.Geometry.prototype,
+    'intersectsCoordinate',
+    ol.geom.Geometry.prototype.intersectsCoordinate);
 
 goog.exportProperty(
     ol.geom.Geometry.prototype,
@@ -94700,6 +94836,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.SimpleGeometry.prototype,
+    'intersectsCoordinate',
+    ol.geom.SimpleGeometry.prototype.intersectsCoordinate);
+
+goog.exportProperty(
+    ol.geom.SimpleGeometry.prototype,
     'getExtent',
     ol.geom.SimpleGeometry.prototype.getExtent);
 
@@ -94820,6 +94961,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Circle.prototype,
+    'intersectsCoordinate',
+    ol.geom.Circle.prototype.intersectsCoordinate);
+
+goog.exportProperty(
+    ol.geom.Circle.prototype,
     'getExtent',
     ol.geom.Circle.prototype.getExtent);
 
@@ -94897,6 +95043,11 @@ goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
     'getClosestPoint',
     ol.geom.GeometryCollection.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.GeometryCollection.prototype,
+    'intersectsCoordinate',
+    ol.geom.GeometryCollection.prototype.intersectsCoordinate);
 
 goog.exportProperty(
     ol.geom.GeometryCollection.prototype,
@@ -95020,6 +95171,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.LinearRing.prototype,
+    'intersectsCoordinate',
+    ol.geom.LinearRing.prototype.intersectsCoordinate);
+
+goog.exportProperty(
+    ol.geom.LinearRing.prototype,
     'getExtent',
     ol.geom.LinearRing.prototype.getExtent);
 
@@ -95127,6 +95283,11 @@ goog.exportProperty(
     ol.geom.LineString.prototype,
     'getClosestPoint',
     ol.geom.LineString.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.LineString.prototype,
+    'intersectsCoordinate',
+    ol.geom.LineString.prototype.intersectsCoordinate);
 
 goog.exportProperty(
     ol.geom.LineString.prototype,
@@ -95240,6 +95401,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiLineString.prototype,
+    'intersectsCoordinate',
+    ol.geom.MultiLineString.prototype.intersectsCoordinate);
+
+goog.exportProperty(
+    ol.geom.MultiLineString.prototype,
     'getExtent',
     ol.geom.MultiLineString.prototype.getExtent);
 
@@ -95347,6 +95513,11 @@ goog.exportProperty(
     ol.geom.MultiPoint.prototype,
     'getClosestPoint',
     ol.geom.MultiPoint.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.MultiPoint.prototype,
+    'intersectsCoordinate',
+    ol.geom.MultiPoint.prototype.intersectsCoordinate);
 
 goog.exportProperty(
     ol.geom.MultiPoint.prototype,
@@ -95460,6 +95631,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.MultiPolygon.prototype,
+    'intersectsCoordinate',
+    ol.geom.MultiPolygon.prototype.intersectsCoordinate);
+
+goog.exportProperty(
+    ol.geom.MultiPolygon.prototype,
     'getExtent',
     ol.geom.MultiPolygon.prototype.getExtent);
 
@@ -95570,6 +95746,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.geom.Point.prototype,
+    'intersectsCoordinate',
+    ol.geom.Point.prototype.intersectsCoordinate);
+
+goog.exportProperty(
+    ol.geom.Point.prototype,
     'getExtent',
     ol.geom.Point.prototype.getExtent);
 
@@ -95677,6 +95858,11 @@ goog.exportProperty(
     ol.geom.Polygon.prototype,
     'getClosestPoint',
     ol.geom.Polygon.prototype.getClosestPoint);
+
+goog.exportProperty(
+    ol.geom.Polygon.prototype,
+    'intersectsCoordinate',
+    ol.geom.Polygon.prototype.intersectsCoordinate);
 
 goog.exportProperty(
     ol.geom.Polygon.prototype,
@@ -96557,7 +96743,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.17.1-375-g3fcb064';
+ol.VERSION = 'v3.17.1-395-ge301ea4';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenLayers 3 - 3rd party</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='../assets/theme/site.css' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/x-icon" href="../assets/theme/img/favicon.ico" />
+    
+  </head>
+  <body>
+    <header class='navbar navbar-fixed-top' role='navigation'>
+      <div class='container'>
+
+        <!-- button that shows up below 768px width -->
+        <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+        </button>
+
+        <a href='/' class='navbar-brand'><img src='../assets/theme/img/logo70.png'>&nbsp;OpenLayers 3</a>
+
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class='nav navbar-nav pull-right'>
+            <li><a href='/en/latest/doc/'>Docs</a></li>
+            <li><a href='/en/latest/examples/'>Examples</a></li>
+            <li><a href='/en/latest/apidoc/'>API</a></li>
+            <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+
+<div class="container">
+
+  <div class="row">
+    <h3 class="col-sm-12">Useful 3rd party libraries</h3>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <p>
+        The libraries below provide additional functionality by extending OpenLayers or integrating well with it.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-hover">
+        <tbody>
+          <tr><th>Library</th><th>Description</th><th>Maintainer</th></tr>
+          <tr>
+            <td><a href="https://github.com/openlayers/ol3-cesium">OL3-Cesium</a></td>
+            <td>Cesium integration library.</td>
+            <td><a href="https://github.com/openlayers">OpenLayers</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/walkermatt/ol3-layerswitcher">OL3-LayerSwitcher</a></td>
+            <td>Layer control for OpenLayers 3.</td>
+            <td><a href="https://github.com/walkermatt">Matt Walker</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/walkermatt/ol3-popup">OL3-Popup</a></td>
+            <td>Basic popup overlay for OpenLayers 3.</td>
+            <td><a href="https://github.com/walkermatt">Matt Walker</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/bjornharrtell/jsts">JSTS</a></td>
+            <td>JavaScript Topology Suite.</td>
+            <td><a href="https://github.com/bjornharrtell">Björn Harrtell</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/jonataswalker/ol3-geocoder">OL3-Geocoder</a></td>
+            <td>Geocoder Nominatim for OpenLayers 3.</td>
+            <td><a href="https://github.com/jonataswalker">Jonatas Walker</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/webgeodatavore/ol3-photon">OL3-Photon</a></td>
+            <td>Photon geocoder for OpenLayers 3.</td>
+            <td><a href="https://github.com/ThomasG77">Thomas Gratier</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/jonataswalker/ol3-contextmenu">OL3-ContextMenu</a></td>
+            <td>Custom Context Menu for Openlayers 3.</td>
+            <td><a href="https://github.com/jonataswalker">Jonatas Walker</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mapgears/ol3-google-maps">OL3-Google-Maps</a></td>
+            <td>Google Maps integration library.</td>
+            <td><a href="https://github.com/mapgears">Mapgears</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mapgears/ol3-panzoom">OL3-PanZoom</a></td>
+            <td>PanZoom and PanZoomBar controls for OpenLayers 3.</td>
+            <td><a href="https://github.com/mapgears">Mapgears</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/Viglino/ol3-ext">OL3-Ext</a></td>
+            <td>Miscellanous classes and functions for OpenLayers 3.</td>
+            <td><a href="https://github.com/Viglino">Jean-Marc Viglino</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/Viglino/ol3-ext">OL3-AnimatedCluster</a></td>
+            <td>A cluster layer for OpenLayers 3 that animates clusters on zoom change and a select interaction that spread out cluster to allow feature selection in it.</td>
+            <td><a href="https://github.com/Viglino">Jean-Marc Viglino</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/nsidc/ol3-projection-switcher">OL3-Projection-Switcher</a></td>
+            <td>An OpenLayers 3 Control to switch between projections.</td>
+            <td><a href="https://github.com/nsidc">NSIDC</a></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/boundlessgeo/ole">Olé</a></td>
+            <td>Integration of OpenLayers 3 and Esri ArcGIS REST services.</td>
+            <td><a href="https://github.com/boundlessgeo">Boundless</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+    <footer>
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='/sponsors.html'>sponsors</a>.
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>

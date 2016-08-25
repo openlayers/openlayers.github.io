@@ -85,6 +85,12 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
 
   this.dispatchPreComposeEvent(context, frameState, transform);
 
+  // clipped rendering if layer extent is set
+  var clipExtent = layerState.extent;
+  var clipped = clipExtent !== undefined;
+  if (clipped) {
+    this.clip(context, frameState,  /** @type {ol.Extent} */ (clipExtent));
+  }
   var replayGroup = this.replayGroup_;
   if (replayGroup && !replayGroup.isEmpty()) {
     var layer = this.getLayer();
@@ -160,6 +166,9 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
     replayContext.globalAlpha = alpha;
   }
 
+  if (clipped) {
+    context.restore();
+  }
   this.dispatchPostComposeEvent(context, frameState, transform);
 
 };
@@ -271,7 +280,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
   var replayGroup =
       new ol.render.canvas.ReplayGroup(
           ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-          resolution, vectorLayer.getRenderBuffer());
+          resolution, vectorSource.getOverlaps(), vectorLayer.getRenderBuffer());
   vectorSource.loadFeatures(extent, resolution, projection);
   /**
    * @param {ol.Feature} feature Feature.

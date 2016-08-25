@@ -96,6 +96,12 @@ ol.source.Vector = function(opt_options) {
 
   /**
    * @private
+   * @type {boolean}
+   */
+  this.overlaps_ = options.overlaps == undefined ? true : options.overlaps;
+
+  /**
+   * @private
    * @type {string|ol.FeatureUrlFunction|undefined}
    */
   this.url_ = options.url;
@@ -452,7 +458,7 @@ ol.source.Vector.prototype.forEachFeatureAtCoordinateDirect = function(coordinat
   return this.forEachFeatureInExtent(extent, function(feature) {
     var geometry = feature.getGeometry();
     goog.DEBUG && console.assert(geometry, 'feature geometry is defined and not null');
-    if (geometry.containsCoordinate(coordinate)) {
+    if (geometry.intersectsCoordinate(coordinate)) {
       return callback.call(opt_this, feature);
     } else {
       return undefined;
@@ -692,6 +698,14 @@ ol.source.Vector.prototype.getFeatureById = function(id) {
  */
 ol.source.Vector.prototype.getFormat = function() {
   return this.format_;
+};
+
+
+/**
+ * @return {boolean} The source can have overlapping geometries.
+ */
+ol.source.Vector.prototype.getOverlaps = function() {
+  return this.overlaps_;
 };
 
 

@@ -147,6 +147,7 @@ var map &#x3D; new ol.Map({
     new ol.layer.VectorTile({
       source: new ol.source.VectorTile({
         format: format,
+        overlaps: false,
         tileGrid: tileGrid,
         url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
             &#x27;vectiles-land-usages/{z}/{x}/{y}.topojson&#x27;
@@ -303,6 +304,7 @@ var map &#x3D; new ol.Map({
           new ol.layer.VectorTile({
             source: new ol.source.VectorTile({
               format: format,
+              overlaps: false,
               tileGrid: tileGrid,
               url: &#x27;http://{a-c}.tile.openstreetmap.us/&#x27; +
                   &#x27;vectiles-land-usages/{z}/{x}/{y}.topojson&#x27;
