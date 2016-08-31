@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.18.0-1-g0d0f2d4
+// Version: v3.18.1-36-g784c19a
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -12541,7 +12541,7 @@ ol.color.fromNamed = function(color) {
   var el = document.createElement('div');
   el.style.color = color;
   document.body.appendChild(el);
-  var rgb = window.getComputedStyle(el).color;
+  var rgb = ol.global.getComputedStyle(el).color;
   document.body.removeChild(el);
   return rgb;
 };
@@ -24188,6 +24188,16 @@ ol.layer.Base = function(options) {
       options.minResolution !== undefined ? options.minResolution : 0;
 
   this.setProperties(properties);
+
+  /**
+   * @type {ol.LayerState}
+   * @private
+   */
+  this.state_ = /** @type {ol.LayerState} */ ({
+    layer: /** @type {ol.layer.Layer} */ (this),
+    managed: true
+  });
+
 };
 ol.inherits(ol.layer.Base, ol.Object);
 
@@ -24196,24 +24206,15 @@ ol.inherits(ol.layer.Base, ol.Object);
  * @return {ol.LayerState} Layer state.
  */
 ol.layer.Base.prototype.getLayerState = function() {
-  var opacity = this.getOpacity();
-  var sourceState = this.getSourceState();
-  var visible = this.getVisible();
-  var extent = this.getExtent();
-  var zIndex = this.getZIndex();
-  var maxResolution = this.getMaxResolution();
-  var minResolution = this.getMinResolution();
-  return {
-    layer: /** @type {ol.layer.Layer} */ (this),
-    opacity: ol.math.clamp(opacity, 0, 1),
-    sourceState: sourceState,
-    visible: visible,
-    managed: true,
-    extent: extent,
-    zIndex: zIndex,
-    maxResolution: maxResolution,
-    minResolution: Math.max(minResolution, 0)
-  };
+  this.state_.opacity = ol.math.clamp(this.getOpacity(), 0, 1);
+  this.state_.sourceState = this.getSourceState();
+  this.state_.visible = this.getVisible();
+  this.state_.extent = this.getExtent();
+  this.state_.zIndex = this.getZIndex();
+  this.state_.maxResolution = this.getMaxResolution();
+  this.state_.minResolution = Math.max(this.getMinResolution(), 0);
+
+  return this.state_;
 };
 
 
@@ -29256,6 +29257,298 @@ ol.layer.Tile.prototype.setUseInterimTilesOnError = function(useInterimTilesOnEr
       ol.layer.TileProperty.USE_INTERIM_TILES_ON_ERROR, useInterimTilesOnError);
 };
 
+goog.provide('ol.ImageBase');
+
+goog.require('ol');
+goog.require('ol.events.EventTarget');
+goog.require('ol.events.EventType');
+
+
+/**
+ * @constructor
+ * @extends {ol.events.EventTarget}
+ * @param {ol.Extent} extent Extent.
+ * @param {number|undefined} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.Image.State} state State.
+ * @param {Array.<ol.Attribution>} attributions Attributions.
+ */
+ol.ImageBase = function(extent, resolution, pixelRatio, state, attributions) {
+
+  ol.events.EventTarget.call(this);
+
+  /**
+   * @private
+   * @type {Array.<ol.Attribution>}
+   */
+  this.attributions_ = attributions;
+
+  /**
+   * @protected
+   * @type {ol.Extent}
+   */
+  this.extent = extent;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.pixelRatio_ = pixelRatio;
+
+  /**
+   * @protected
+   * @type {number|undefined}
+   */
+  this.resolution = resolution;
+
+  /**
+   * @protected
+   * @type {ol.Image.State}
+   */
+  this.state = state;
+
+};
+ol.inherits(ol.ImageBase, ol.events.EventTarget);
+
+
+/**
+ * @protected
+ */
+ol.ImageBase.prototype.changed = function() {
+  this.dispatchEvent(ol.events.EventType.CHANGE);
+};
+
+
+/**
+ * @return {Array.<ol.Attribution>} Attributions.
+ */
+ol.ImageBase.prototype.getAttributions = function() {
+  return this.attributions_;
+};
+
+
+/**
+ * @return {ol.Extent} Extent.
+ */
+ol.ImageBase.prototype.getExtent = function() {
+  return this.extent;
+};
+
+
+/**
+ * @abstract
+ * @param {Object=} opt_context Object.
+ * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
+ */
+ol.ImageBase.prototype.getImage = function(opt_context) {};
+
+
+/**
+ * @return {number} PixelRatio.
+ */
+ol.ImageBase.prototype.getPixelRatio = function() {
+  return this.pixelRatio_;
+};
+
+
+/**
+ * @return {number} Resolution.
+ */
+ol.ImageBase.prototype.getResolution = function() {
+  goog.DEBUG && console.assert(this.resolution !== undefined, 'resolution not yet set');
+  return /** @type {number} */ (this.resolution);
+};
+
+
+/**
+ * @return {ol.Image.State} State.
+ */
+ol.ImageBase.prototype.getState = function() {
+  return this.state;
+};
+
+
+/**
+ * Load not yet loaded URI.
+ * @abstract
+ */
+ol.ImageBase.prototype.load = function() {};
+
+goog.provide('ol.Image');
+
+goog.require('ol');
+goog.require('ol.Image');
+goog.require('ol.ImageBase');
+goog.require('ol.events');
+goog.require('ol.events.EventType');
+goog.require('ol.extent');
+goog.require('ol.obj');
+
+
+/**
+ * @constructor
+ * @extends {ol.ImageBase}
+ * @param {ol.Extent} extent Extent.
+ * @param {number|undefined} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {Array.<ol.Attribution>} attributions Attributions.
+ * @param {string} src Image source URI.
+ * @param {?string} crossOrigin Cross origin.
+ * @param {ol.ImageLoadFunctionType} imageLoadFunction Image load function.
+ */
+ol.Image = function(extent, resolution, pixelRatio, attributions, src,
+    crossOrigin, imageLoadFunction) {
+
+  ol.ImageBase.call(this, extent, resolution, pixelRatio, ol.Image.State.IDLE,
+      attributions);
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.src_ = src;
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement|Image|HTMLVideoElement}
+   */
+  this.image_ = new Image();
+  if (crossOrigin !== null) {
+    this.image_.crossOrigin = crossOrigin;
+  }
+
+  /**
+   * @private
+   * @type {Object.<number, (HTMLCanvasElement|Image|HTMLVideoElement)>}
+   */
+  this.imageByContext_ = {};
+
+  /**
+   * @private
+   * @type {Array.<ol.EventsKey>}
+   */
+  this.imageListenerKeys_ = null;
+
+  /**
+   * @protected
+   * @type {ol.Image.State}
+   */
+  this.state = ol.Image.State.IDLE;
+
+  /**
+   * @private
+   * @type {ol.ImageLoadFunctionType}
+   */
+  this.imageLoadFunction_ = imageLoadFunction;
+
+};
+ol.inherits(ol.Image, ol.ImageBase);
+
+
+/**
+ * Get the HTML image element (may be a Canvas, Image, or Video).
+ * @param {Object=} opt_context Object.
+ * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
+ * @api
+ */
+ol.Image.prototype.getImage = function(opt_context) {
+  if (opt_context !== undefined) {
+    var image;
+    var key = ol.getUid(opt_context);
+    if (key in this.imageByContext_) {
+      return this.imageByContext_[key];
+    } else if (ol.obj.isEmpty(this.imageByContext_)) {
+      image = this.image_;
+    } else {
+      image = /** @type {Image} */ (this.image_.cloneNode(false));
+    }
+    this.imageByContext_[key] = image;
+    return image;
+  } else {
+    return this.image_;
+  }
+};
+
+
+/**
+ * Tracks loading or read errors.
+ *
+ * @private
+ */
+ol.Image.prototype.handleImageError_ = function() {
+  this.state = ol.Image.State.ERROR;
+  this.unlistenImage_();
+  this.changed();
+};
+
+
+/**
+ * Tracks successful image load.
+ *
+ * @private
+ */
+ol.Image.prototype.handleImageLoad_ = function() {
+  if (this.resolution === undefined) {
+    this.resolution = ol.extent.getHeight(this.extent) / this.image_.height;
+  }
+  this.state = ol.Image.State.LOADED;
+  this.unlistenImage_();
+  this.changed();
+};
+
+
+/**
+ * Load the image or retry if loading previously failed.
+ * Loading is taken care of by the tile queue, and calling this method is
+ * only needed for preloading or for reloading in case of an error.
+ * @api
+ */
+ol.Image.prototype.load = function() {
+  if (this.state == ol.Image.State.IDLE || this.state == ol.Image.State.ERROR) {
+    this.state = ol.Image.State.LOADING;
+    this.changed();
+    goog.DEBUG && console.assert(!this.imageListenerKeys_,
+        'this.imageListenerKeys_ should be null');
+    this.imageListenerKeys_ = [
+      ol.events.listenOnce(this.image_, ol.events.EventType.ERROR,
+          this.handleImageError_, this),
+      ol.events.listenOnce(this.image_, ol.events.EventType.LOAD,
+          this.handleImageLoad_, this)
+    ];
+    this.imageLoadFunction_(this, this.src_);
+  }
+};
+
+
+/**
+ * @param {HTMLCanvasElement|Image|HTMLVideoElement} image Image.
+ */
+ol.Image.prototype.setImage = function(image) {
+  this.image_ = image;
+};
+
+
+/**
+ * Discards event handlers which listen for load completion or errors.
+ *
+ * @private
+ */
+ol.Image.prototype.unlistenImage_ = function() {
+  this.imageListenerKeys_.forEach(ol.events.unlistenByKey);
+  this.imageListenerKeys_ = null;
+};
+
+
+/**
+ * @enum {number}
+ */
+ol.Image.State = {
+  IDLE: 0,
+  LOADING: 1,
+  LOADED: 2,
+  ERROR: 3
+};
+
 goog.provide('ol.render.canvas');
 
 
@@ -29344,18 +29637,6 @@ ol.render.canvas.rotateAtOffset = function(context, rotation, offsetX, offsetY) 
 };
 
 goog.provide('ol.style.Image');
-goog.provide('ol.style.ImageState');
-
-
-/**
- * @enum {number}
- */
-ol.style.ImageState = {
-  IDLE: 0,
-  LOADING: 1,
-  LOADED: 2,
-  ERROR: 3
-};
 
 
 /**
@@ -29481,7 +29762,7 @@ ol.style.Image.prototype.getHitDetectionImage = function(pixelRatio) {};
 
 /**
  * @abstract
- * @return {ol.style.ImageState} Image state.
+ * @return {ol.Image.State} Image state.
  */
 ol.style.Image.prototype.getImageState = function() {};
 
@@ -29601,9 +29882,9 @@ goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.dom');
 goog.require('ol.has');
+goog.require('ol.Image');
 goog.require('ol.render.canvas');
 goog.require('ol.style.Image');
-goog.require('ol.style.ImageState');
 
 
 /**
@@ -29746,7 +30027,7 @@ ol.style.Circle.prototype.getImage = function(pixelRatio) {
  * @inheritDoc
  */
 ol.style.Circle.prototype.getImageState = function() {
-  return ol.style.ImageState.LOADED;
+  return ol.Image.State.LOADED;
 };
 
 
@@ -32772,139 +33053,10 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function(textStyle) {
   }
 };
 
-goog.provide('ol.ImageBase');
-goog.provide('ol.ImageState');
-
-goog.require('ol');
-goog.require('ol.events.EventTarget');
-goog.require('ol.events.EventType');
-
-
-/**
- * @enum {number}
- */
-ol.ImageState = {
-  IDLE: 0,
-  LOADING: 1,
-  LOADED: 2,
-  ERROR: 3
-};
-
-
-/**
- * @constructor
- * @extends {ol.events.EventTarget}
- * @param {ol.Extent} extent Extent.
- * @param {number|undefined} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.ImageState} state State.
- * @param {Array.<ol.Attribution>} attributions Attributions.
- */
-ol.ImageBase = function(extent, resolution, pixelRatio, state, attributions) {
-
-  ol.events.EventTarget.call(this);
-
-  /**
-   * @private
-   * @type {Array.<ol.Attribution>}
-   */
-  this.attributions_ = attributions;
-
-  /**
-   * @protected
-   * @type {ol.Extent}
-   */
-  this.extent = extent;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.pixelRatio_ = pixelRatio;
-
-  /**
-   * @protected
-   * @type {number|undefined}
-   */
-  this.resolution = resolution;
-
-  /**
-   * @protected
-   * @type {ol.ImageState}
-   */
-  this.state = state;
-
-};
-ol.inherits(ol.ImageBase, ol.events.EventTarget);
-
-
-/**
- * @protected
- */
-ol.ImageBase.prototype.changed = function() {
-  this.dispatchEvent(ol.events.EventType.CHANGE);
-};
-
-
-/**
- * @return {Array.<ol.Attribution>} Attributions.
- */
-ol.ImageBase.prototype.getAttributions = function() {
-  return this.attributions_;
-};
-
-
-/**
- * @return {ol.Extent} Extent.
- */
-ol.ImageBase.prototype.getExtent = function() {
-  return this.extent;
-};
-
-
-/**
- * @abstract
- * @param {Object=} opt_context Object.
- * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
- */
-ol.ImageBase.prototype.getImage = function(opt_context) {};
-
-
-/**
- * @return {number} PixelRatio.
- */
-ol.ImageBase.prototype.getPixelRatio = function() {
-  return this.pixelRatio_;
-};
-
-
-/**
- * @return {number} Resolution.
- */
-ol.ImageBase.prototype.getResolution = function() {
-  goog.DEBUG && console.assert(this.resolution !== undefined, 'resolution not yet set');
-  return /** @type {number} */ (this.resolution);
-};
-
-
-/**
- * @return {ol.ImageState} State.
- */
-ol.ImageBase.prototype.getState = function() {
-  return this.state;
-};
-
-
-/**
- * Load not yet loaded URI.
- * @abstract
- */
-ol.ImageBase.prototype.load = function() {};
-
 goog.provide('ol.renderer.Layer');
 
 goog.require('ol');
-goog.require('ol.ImageState');
+goog.require('ol.Image');
 goog.require('ol.Observable');
 goog.require('ol.Tile');
 goog.require('ol.asserts');
@@ -33024,7 +33176,7 @@ ol.renderer.Layer.prototype.getLayer = function() {
  */
 ol.renderer.Layer.prototype.handleImageChange_ = function(event) {
   var image = /** @type {ol.Image} */ (event.target);
-  if (image.getState() === ol.ImageState.LOADED) {
+  if (image.getState() === ol.Image.State.LOADED) {
     this.renderIfReadyAndVisible();
   }
 };
@@ -33040,24 +33192,24 @@ ol.renderer.Layer.prototype.handleImageChange_ = function(event) {
  */
 ol.renderer.Layer.prototype.loadImage = function(image) {
   var imageState = image.getState();
-  if (imageState != ol.ImageState.LOADED &&
-      imageState != ol.ImageState.ERROR) {
+  if (imageState != ol.Image.State.LOADED &&
+      imageState != ol.Image.State.ERROR) {
     // the image is either "idle" or "loading", register the change
     // listener (a noop if the listener was already registered)
-    goog.DEBUG && console.assert(imageState == ol.ImageState.IDLE ||
-        imageState == ol.ImageState.LOADING,
+    goog.DEBUG && console.assert(imageState == ol.Image.State.IDLE ||
+        imageState == ol.Image.State.LOADING,
         'imageState is "idle" or "loading"');
     ol.events.listen(image, ol.events.EventType.CHANGE,
         this.handleImageChange_, this);
   }
-  if (imageState == ol.ImageState.IDLE) {
+  if (imageState == ol.Image.State.IDLE) {
     image.load();
     imageState = image.getState();
-    goog.DEBUG && console.assert(imageState == ol.ImageState.LOADING ||
-        imageState == ol.ImageState.LOADED,
+    goog.DEBUG && console.assert(imageState == ol.Image.State.LOADING ||
+        imageState == ol.Image.State.LOADED,
         'imageState is "loading" or "loaded"');
   }
-  return imageState == ol.ImageState.LOADED;
+  return imageState == ol.Image.State.LOADED;
 };
 
 
@@ -33824,7 +33976,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         var dx = x2 - x1;
         var dy = y2 - y1;
         var r = Math.sqrt(dx * dx + dy * dy);
-        context.moveTo(x2, y2);
+        context.moveTo(x1 + r, y1);
         context.arc(x1, y1, r, 0, 2 * Math.PI, true);
         ++i;
         break;
@@ -35665,8 +35817,8 @@ ol.render.canvas.BATCH_CONSTRUCTORS_ = {
 goog.provide('ol.renderer.vector');
 
 goog.require('ol');
+goog.require('ol.Image');
 goog.require('ol.render.ReplayType');
-goog.require('ol.style.ImageState');
 
 
 /**
@@ -35743,15 +35895,15 @@ ol.renderer.vector.renderFeature = function(
   imageStyle = style.getImage();
   if (imageStyle) {
     imageState = imageStyle.getImageState();
-    if (imageState == ol.style.ImageState.LOADED ||
-        imageState == ol.style.ImageState.ERROR) {
+    if (imageState == ol.Image.State.LOADED ||
+        imageState == ol.Image.State.ERROR) {
       imageStyle.unlistenImageChange(listener, thisArg);
     } else {
-      if (imageState == ol.style.ImageState.IDLE) {
+      if (imageState == ol.Image.State.IDLE) {
         imageStyle.load();
       }
       imageState = imageStyle.getImageState();
-      goog.DEBUG && console.assert(imageState == ol.style.ImageState.LOADING,
+      goog.DEBUG && console.assert(imageState == ol.Image.State.LOADING,
           'imageState should be LOADING');
       imageStyle.listenImageChange(listener, thisArg);
       loading = true;
@@ -35891,7 +36043,7 @@ ol.renderer.vector.renderMultiPolygonGeometry_ = function(replayGroup, geometry,
 ol.renderer.vector.renderPointGeometry_ = function(replayGroup, geometry, style, feature) {
   var imageStyle = style.getImage();
   if (imageStyle) {
-    if (imageStyle.getImageState() != ol.style.ImageState.LOADED) {
+    if (imageStyle.getImageState() != ol.Image.State.LOADED) {
       return;
     }
     var imageReplay = replayGroup.getReplay(
@@ -35920,7 +36072,7 @@ ol.renderer.vector.renderPointGeometry_ = function(replayGroup, geometry, style,
 ol.renderer.vector.renderMultiPointGeometry_ = function(replayGroup, geometry, style, feature) {
   var imageStyle = style.getImage();
   if (imageStyle) {
-    if (imageStyle.getImageState() != ol.style.ImageState.LOADED) {
+    if (imageStyle.getImageState() != ol.Image.State.LOADED) {
       return;
     }
     var imageReplay = replayGroup.getReplay(
@@ -35988,8 +36140,8 @@ ol.renderer.vector.GEOMETRY_RENDERERS_ = {
 goog.provide('ol.ImageCanvas');
 
 goog.require('ol');
+goog.require('ol.Image');
 goog.require('ol.ImageBase');
-goog.require('ol.ImageState');
 
 
 /**
@@ -36014,7 +36166,7 @@ ol.ImageCanvas = function(extent, resolution, pixelRatio, attributions,
   this.loader_ = opt_loader !== undefined ? opt_loader : null;
 
   var state = opt_loader !== undefined ?
-      ol.ImageState.IDLE : ol.ImageState.LOADED;
+      ol.Image.State.IDLE : ol.Image.State.LOADED;
 
   ol.ImageBase.call(this, extent, resolution, pixelRatio, state, attributions);
 
@@ -36051,9 +36203,9 @@ ol.ImageCanvas.prototype.getError = function() {
 ol.ImageCanvas.prototype.handleLoad_ = function(err) {
   if (err) {
     this.error_ = err;
-    this.state = ol.ImageState.ERROR;
+    this.state = ol.Image.State.ERROR;
   } else {
-    this.state = ol.ImageState.LOADED;
+    this.state = ol.Image.State.LOADED;
   }
   this.changed();
 };
@@ -36063,9 +36215,9 @@ ol.ImageCanvas.prototype.handleLoad_ = function(err) {
  * Trigger drawing on canvas.
  */
 ol.ImageCanvas.prototype.load = function() {
-  if (this.state == ol.ImageState.IDLE) {
+  if (this.state == ol.Image.State.IDLE) {
     goog.DEBUG && console.assert(this.loader_, 'this.loader_ must be set');
-    this.state = ol.ImageState.LOADING;
+    this.state = ol.Image.State.LOADING;
     this.changed();
     this.loader_(this.handleLoad_.bind(this));
   }
@@ -36684,8 +36836,8 @@ ol.reproj.Triangulation.prototype.getTriangles = function() {
 goog.provide('ol.reproj.Image');
 
 goog.require('ol');
+goog.require('ol.Image');
 goog.require('ol.ImageBase');
-goog.require('ol.ImageState');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.extent');
@@ -36782,11 +36934,11 @@ ol.reproj.Image = function(sourceProj, targetProj,
   this.sourceListenerKey_ = null;
 
 
-  var state = ol.ImageState.LOADED;
+  var state = ol.Image.State.LOADED;
   var attributions = [];
 
   if (this.sourceImage_) {
-    state = ol.ImageState.IDLE;
+    state = ol.Image.State.IDLE;
     attributions = this.sourceImage_.getAttributions();
   }
 
@@ -36800,7 +36952,7 @@ ol.inherits(ol.reproj.Image, ol.ImageBase);
  * @inheritDoc
  */
 ol.reproj.Image.prototype.disposeInternal = function() {
-  if (this.state == ol.ImageState.LOADING) {
+  if (this.state == ol.Image.State.LOADING) {
     this.unlistenSource_();
   }
   ol.ImageBase.prototype.disposeInternal.call(this);
@@ -36828,7 +36980,7 @@ ol.reproj.Image.prototype.getProjection = function() {
  */
 ol.reproj.Image.prototype.reproject_ = function() {
   var sourceState = this.sourceImage_.getState();
-  if (sourceState == ol.ImageState.LOADED) {
+  if (sourceState == ol.Image.State.LOADED) {
     var width = ol.extent.getWidth(this.targetExtent_) / this.targetResolution_;
     var height =
         ol.extent.getHeight(this.targetExtent_) / this.targetResolution_;
@@ -36849,20 +37001,20 @@ ol.reproj.Image.prototype.reproject_ = function() {
  * @inheritDoc
  */
 ol.reproj.Image.prototype.load = function() {
-  if (this.state == ol.ImageState.IDLE) {
-    this.state = ol.ImageState.LOADING;
+  if (this.state == ol.Image.State.IDLE) {
+    this.state = ol.Image.State.LOADING;
     this.changed();
 
     var sourceState = this.sourceImage_.getState();
-    if (sourceState == ol.ImageState.LOADED ||
-        sourceState == ol.ImageState.ERROR) {
+    if (sourceState == ol.Image.State.LOADED ||
+        sourceState == ol.Image.State.ERROR) {
       this.reproject_();
     } else {
       this.sourceListenerKey_ = ol.events.listen(this.sourceImage_,
           ol.events.EventType.CHANGE, function(e) {
             var sourceState = this.sourceImage_.getState();
-            if (sourceState == ol.ImageState.LOADED ||
-                sourceState == ol.ImageState.ERROR) {
+            if (sourceState == ol.Image.State.LOADED ||
+                sourceState == ol.Image.State.ERROR) {
               this.unlistenSource_();
               this.reproject_();
             }
@@ -36887,7 +37039,7 @@ goog.provide('ol.source.Image');
 goog.provide('ol.source.ImageEvent');
 
 goog.require('ol');
-goog.require('ol.ImageState');
+goog.require('ol.Image');
 goog.require('ol.array');
 goog.require('ol.events.Event');
 goog.require('ol.extent');
@@ -37033,17 +37185,17 @@ ol.source.Image.prototype.getImageInternal = function(extent, resolution, pixelR
 ol.source.Image.prototype.handleImageChange = function(event) {
   var image = /** @type {ol.Image} */ (event.target);
   switch (image.getState()) {
-    case ol.ImageState.LOADING:
+    case ol.Image.State.LOADING:
       this.dispatchEvent(
           new ol.source.ImageEvent(ol.source.ImageEventType.IMAGELOADSTART,
               image));
       break;
-    case ol.ImageState.LOADED:
+    case ol.Image.State.LOADED:
       this.dispatchEvent(
           new ol.source.ImageEvent(ol.source.ImageEventType.IMAGELOADEND,
               image));
       break;
-    case ol.ImageState.ERROR:
+    case ol.Image.State.ERROR:
       this.dispatchEvent(
           new ol.source.ImageEvent(ol.source.ImageEventType.IMAGELOADERROR,
               image));
@@ -38584,7 +38736,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileReplays_ = function(
   var size = frameState.size;
   var pixelScale = pixelRatio / resolution;
   var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
-  var tilePixelRatio = source.getTilePixelRatio(pixelRatio);
+  var tilePixelRatio = source.getTilePixelRatio();
 
   var transform = this.getTransform(frameState, 0);
 
@@ -38674,7 +38826,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
   var resolution = tileGrid.getResolution(tileCoord[0]);
   var extent, reproject, tileResolution;
   if (pixelSpace) {
-    var tilePixelRatio = tileResolution = source.getTilePixelRatio(pixelRatio);
+    var tilePixelRatio = tileResolution = source.getTilePixelRatio();
     var tileSize = ol.size.toSize(tileGrid.getTileSize(tileCoord[0]));
     extent = [0, 0, tileSize[0] * tilePixelRatio, tileSize[1] * tilePixelRatio];
   } else {
@@ -38743,7 +38895,6 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
  * @inheritDoc
  */
 ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
-  var pixelRatio = frameState.pixelRatio;
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var layer = this.getLayer();
@@ -38766,7 +38917,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
     }
     if (tile.getProjection().getUnits() === ol.proj.Units.TILE_PIXELS) {
       origin = ol.extent.getTopLeft(tileExtent);
-      tilePixelRatio = source.getTilePixelRatio(pixelRatio);
+      tilePixelRatio = source.getTilePixelRatio();
       tileResolution = tileGrid.getResolution(tileCoord[0]) / tilePixelRatio;
       tileSpaceCoordinate = [
         (coordinate[0] - origin[0]) / tileResolution,
@@ -38888,7 +39039,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
     tileContext.translate(width / 2, height / 2);
     var pixelSpace = tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS;
     var pixelScale = pixelRatio / resolution;
-    var tilePixelRatio = source.getTilePixelRatio(pixelRatio);
+    var tilePixelRatio = source.getTilePixelRatio();
     var tilePixelResolution = tileResolution / tilePixelRatio;
     var tileExtent = tileGrid.getTileCoordExtent(
         tile.getTileCoord(), this.tmpExtent);
@@ -56832,8 +56983,8 @@ goog.require('ol.dom');
 goog.require('ol.events');
 goog.require('ol.events.EventTarget');
 goog.require('ol.events.EventType');
+goog.require('ol.Image');
 goog.require('ol.style');
-goog.require('ol.style.ImageState');
 
 
 /**
@@ -56842,7 +56993,7 @@ goog.require('ol.style.ImageState');
  * @param {string|undefined} src Src.
  * @param {ol.Size} size Size.
  * @param {?string} crossOrigin Cross origin.
- * @param {ol.style.ImageState} imageState Image state.
+ * @param {ol.Image.State} imageState Image state.
  * @param {ol.Color} color Color.
  * @extends {ol.events.EventTarget}
  */
@@ -56889,7 +57040,7 @@ ol.style.IconImage = function(image, src, size, crossOrigin, imageState,
 
   /**
    * @private
-   * @type {ol.style.ImageState}
+   * @type {ol.Image.State}
    */
   this.imageState_ = imageState;
 
@@ -56910,7 +57061,7 @@ ol.style.IconImage = function(image, src, size, crossOrigin, imageState,
    * @type {boolean}
    */
   this.tainting_ = false;
-  if (this.imageState_ == ol.style.ImageState.LOADED) {
+  if (this.imageState_ == ol.Image.State.LOADED) {
     this.determineTainting_();
   }
 
@@ -56923,7 +57074,7 @@ ol.inherits(ol.style.IconImage, ol.events.EventTarget);
  * @param {string} src Src.
  * @param {ol.Size} size Size.
  * @param {?string} crossOrigin Cross origin.
- * @param {ol.style.ImageState} imageState Image state.
+ * @param {ol.Image.State} imageState Image state.
  * @param {ol.Color} color Color.
  * @return {ol.style.IconImage} Icon image.
  */
@@ -56966,7 +57117,7 @@ ol.style.IconImage.prototype.dispatchChangeEvent_ = function() {
  * @private
  */
 ol.style.IconImage.prototype.handleImageError_ = function() {
-  this.imageState_ = ol.style.ImageState.ERROR;
+  this.imageState_ = ol.Image.State.ERROR;
   this.unlistenImage_();
   this.dispatchChangeEvent_();
 };
@@ -56976,7 +57127,7 @@ ol.style.IconImage.prototype.handleImageError_ = function() {
  * @private
  */
 ol.style.IconImage.prototype.handleImageLoad_ = function() {
-  this.imageState_ = ol.style.ImageState.LOADED;
+  this.imageState_ = ol.Image.State.LOADED;
   if (this.size_) {
     this.image_.width = this.size_[0];
     this.image_.height = this.size_[1];
@@ -56999,7 +57150,7 @@ ol.style.IconImage.prototype.getImage = function(pixelRatio) {
 
 
 /**
- * @return {ol.style.ImageState} Image state.
+ * @return {ol.Image.State} Image state.
  */
 ol.style.IconImage.prototype.getImageState = function() {
   return this.imageState_;
@@ -57046,12 +57197,12 @@ ol.style.IconImage.prototype.getSrc = function() {
  * Load not yet loaded URI.
  */
 ol.style.IconImage.prototype.load = function() {
-  if (this.imageState_ == ol.style.ImageState.IDLE) {
+  if (this.imageState_ == ol.Image.State.IDLE) {
     goog.DEBUG && console.assert(this.src_ !== undefined,
         'this.src_ must not be undefined');
     goog.DEBUG && console.assert(!this.imageListenerKeys_,
         'no listener keys existing');
-    this.imageState_ = ol.style.ImageState.LOADING;
+    this.imageState_ = ol.Image.State.LOADING;
     this.imageListenerKeys_ = [
       ol.events.listenOnce(this.image_, ol.events.EventType.ERROR,
           this.handleImageError_, this),
@@ -57115,9 +57266,9 @@ goog.require('ol.asserts');
 goog.require('ol.color');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
+goog.require('ol.Image');
 goog.require('ol.style.IconImage');
 goog.require('ol.style.Image');
-goog.require('ol.style.ImageState');
 
 
 /**
@@ -57221,10 +57372,10 @@ ol.style.Icon = function(opt_options) {
       6); // A defined and non-empty `src` or `image` must be provided
 
   /**
-   * @type {ol.style.ImageState}
+   * @type {ol.Image.State}
    */
   var imageState = options.src !== undefined ?
-      ol.style.ImageState.IDLE : ol.style.ImageState.LOADED;
+      ol.Image.State.IDLE : ol.Image.State.LOADED;
 
   /**
    * @type {ol.Color}
@@ -57794,7 +57945,6 @@ ol.style.Text.prototype.setTextBaseline = function(textBaseline) {
 
 goog.provide('ol.format.KML');
 
-goog.require('goog.object');
 goog.require('ol');
 goog.require('ol.Feature');
 goog.require('ol.array');
@@ -57814,7 +57964,6 @@ goog.require('ol.geom.MultiPolygon');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
 goog.require('ol.math');
-goog.require('ol.obj');
 goog.require('ol.proj');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Icon');
@@ -58014,6 +58163,13 @@ ol.format.KML.createStyleDefaults_ = function() {
 
   /**
    * @const
+   * @type {string}
+   * @private
+   */
+  ol.format.KML.DEFAULT_NO_IMAGE_STYLE_ = 'NO_IMAGE';
+
+  /**
+   * @const
    * @type {ol.style.Stroke}
    * @private
    */
@@ -58091,27 +58247,45 @@ ol.format.KML.createNameStyleFunction_ = function(foundStyle, name) {
   var textAlign = 'start';
   if (foundStyle.getImage()) {
     var imageSize = foundStyle.getImage().getImageSize();
-    if (imageSize && imageSize.length == 2) {
+    if (imageSize === null) {
+      imageSize = ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_;
+    }
+    var imageScale = foundStyle.getImage().getScale();
+    if (isNaN(imageScale)) {
+      imageScale = ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
+    }
+    if (imageSize.length == 2) {
       // Offset the label to be centered to the right of the icon, if there is
       // one.
-      textOffset[0] = foundStyle.getImage().getScale() * imageSize[0] / 2;
-      textOffset[1] = -foundStyle.getImage().getScale() * imageSize[1] / 2;
+      textOffset[0] = imageScale * imageSize[0] / 2;
+      textOffset[1] = -imageScale * imageSize[1] / 2;
       textAlign = 'left';
     }
   }
-  if (!ol.obj.isEmpty(foundStyle.getText())) {
-    textStyle = /** @type {ol.style.Text} */
-        (goog.object.clone(foundStyle.getText()));
-    textStyle.setText(name);
-    textStyle.setTextAlign(textAlign);
-    textStyle.setOffsetX(textOffset[0]);
-    textStyle.setOffsetY(textOffset[1]);
+  if (foundStyle.getText() !== null) {
+	// clone the text style, customizing it with name, alignments and offset.
+    // Note that kml does not support many text options that OpenLayers does (rotation, textBaseline).
+    var foundText = foundStyle.getText();
+    textStyle = new ol.style.Text({
+      text: name,
+      textAlign: textAlign,
+      offsetX: textOffset[0],
+      offsetY: textOffset[1],
+      font: foundText.getFont() || ol.format.KML.DEFAULT_TEXT_STYLE_.getFont(),
+      scale: foundText.getScale() || ol.format.KML.DEFAULT_TEXT_STYLE_.getScale(),
+      fill: foundText.getFill() || ol.format.KML.DEFAULT_TEXT_STYLE_.getFill(),
+      stroke: foundText.getStroke() || ol.format.KML.DEFAULT_TEXT_STROKE_STYLE_
+    });
   } else {
     textStyle = new ol.style.Text({
       text: name,
       offsetX: textOffset[0],
       offsetY: textOffset[1],
-      textAlign: textAlign
+      textAlign: textAlign,
+      font: ol.format.KML.DEFAULT_TEXT_STYLE_.getFont(),
+      scale: ol.format.KML.DEFAULT_TEXT_STYLE_.getScale(),
+      fill: ol.format.KML.DEFAULT_TEXT_STYLE_.getFill(),
+      stroke: ol.format.KML.DEFAULT_TEXT_STROKE_STYLE_
     });
   }
   var nameStyle = new ol.style.Style({
@@ -58303,12 +58477,7 @@ ol.format.KML.readVec2_ = function(node) {
  * @return {number|undefined} Scale.
  */
 ol.format.KML.readScale_ = function(node) {
-  var number = ol.format.XSD.readDecimal(node);
-  if (number !== undefined) {
-    return Math.sqrt(number);
-  } else {
-    return undefined;
-  }
+  return ol.format.XSD.readDecimal(node);
 };
 
 
@@ -58347,12 +58516,13 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
   }
   var styleObject = /** @type {Object} */ (objectStack[objectStack.length - 1]);
   var IconObject = 'Icon' in object ? object['Icon'] : {};
+  var drawIcon = (!('Icon' in object) || Object.keys(IconObject).length > 0);
   var src;
   var href = /** @type {string|undefined} */
       (IconObject['href']);
   if (href) {
     src = href;
-  } else {
+  } else if (drawIcon) {
     src = ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_;
   }
   var anchor, anchorXUnits, anchorYUnits;
@@ -58399,27 +58569,38 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
 
   var scale = /** @type {number|undefined} */
       (object['scale']);
-  if (src == ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_) {
-    size = ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_;
-    if (scale === undefined) {
-      scale = ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
-    }
+  if (isNaN(scale) || scale === undefined) {
+    scale = ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
+  } else {
+    scale = scale * ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
   }
 
-  var imageStyle = new ol.style.Icon({
-    anchor: anchor,
-    anchorOrigin: ol.style.IconOrigin.BOTTOM_LEFT,
-    anchorXUnits: anchorXUnits,
-    anchorYUnits: anchorYUnits,
-    crossOrigin: 'anonymous', // FIXME should this be configurable?
-    offset: offset,
-    offsetOrigin: ol.style.IconOrigin.BOTTOM_LEFT,
-    rotation: rotation,
-    scale: scale,
-    size: size,
-    src: src
-  });
-  styleObject['imageStyle'] = imageStyle;
+  if (drawIcon) {
+    if (src == ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_) {
+      size = ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_;
+      if (scale === undefined) {
+        scale = ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
+      }
+    }
+
+    var imageStyle = new ol.style.Icon({
+      anchor: anchor,
+      anchorOrigin: ol.style.IconOrigin.BOTTOM_LEFT,
+      anchorXUnits: anchorXUnits,
+      anchorYUnits: anchorYUnits,
+      crossOrigin: 'anonymous', // FIXME should this be configurable?
+      offset: offset,
+      offsetOrigin: ol.style.IconOrigin.BOTTOM_LEFT,
+      rotation: rotation,
+      scale: scale,
+      size: size,
+      src: src
+    });
+    styleObject['imageStyle'] = imageStyle;
+  } else {
+    // handle the case when we explicitly want to draw no icon.
+    styleObject['imageStyle'] = ol.format.KML.DEFAULT_NO_IMAGE_STYLE_;
+  }
 };
 
 
@@ -58868,6 +59049,9 @@ ol.format.KML.readStyle_ = function(node, objectStack) {
   var imageStyle = /** @type {ol.style.Image} */
       ('imageStyle' in styleObject ?
           styleObject['imageStyle'] : ol.format.KML.DEFAULT_IMAGE_STYLE_);
+  if (imageStyle == ol.format.KML.DEFAULT_NO_IMAGE_STYLE_) {
+    imageStyle = undefined;
+  }
   var textStyle = /** @type {ol.style.Text} */
       ('textStyle' in styleObject ?
           styleObject['textStyle'] : ol.format.KML.DEFAULT_TEXT_STYLE_);
@@ -60721,6 +60905,623 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pbf = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = Pbf;
+
+var ieee754 = _dereq_('ieee754');
+
+function Pbf(buf) {
+    this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
+    this.pos = 0;
+    this.length = this.buf.length;
+}
+
+Pbf.Varint  = 0; // varint: int32, int64, uint32, uint64, sint32, sint64, bool, enum
+Pbf.Fixed64 = 1; // 64-bit: double, fixed64, sfixed64
+Pbf.Bytes   = 2; // length-delimited: string, bytes, embedded messages, packed repeated fields
+Pbf.Fixed32 = 5; // 32-bit: float, fixed32, sfixed32
+
+var SHIFT_LEFT_32 = (1 << 16) * (1 << 16),
+    SHIFT_RIGHT_32 = 1 / SHIFT_LEFT_32;
+
+Pbf.prototype = {
+
+    destroy: function() {
+        this.buf = null;
+    },
+
+    // === READING =================================================================
+
+    readFields: function(readField, result, end) {
+        end = end || this.length;
+
+        while (this.pos < end) {
+            var val = this.readVarint(),
+                tag = val >> 3,
+                startPos = this.pos;
+
+            readField(tag, result, this);
+
+            if (this.pos === startPos) this.skip(val);
+        }
+        return result;
+    },
+
+    readMessage: function(readField, result) {
+        return this.readFields(readField, result, this.readVarint() + this.pos);
+    },
+
+    readFixed32: function() {
+        var val = readUInt32(this.buf, this.pos);
+        this.pos += 4;
+        return val;
+    },
+
+    readSFixed32: function() {
+        var val = readInt32(this.buf, this.pos);
+        this.pos += 4;
+        return val;
+    },
+
+    // 64-bit int handling is based on github.com/dpw/node-buffer-more-ints (MIT-licensed)
+
+    readFixed64: function() {
+        var val = readUInt32(this.buf, this.pos) + readUInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
+        this.pos += 8;
+        return val;
+    },
+
+    readSFixed64: function() {
+        var val = readUInt32(this.buf, this.pos) + readInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
+        this.pos += 8;
+        return val;
+    },
+
+    readFloat: function() {
+        var val = ieee754.read(this.buf, this.pos, true, 23, 4);
+        this.pos += 4;
+        return val;
+    },
+
+    readDouble: function() {
+        var val = ieee754.read(this.buf, this.pos, true, 52, 8);
+        this.pos += 8;
+        return val;
+    },
+
+    readVarint: function(isSigned) {
+        var buf = this.buf,
+            val, b;
+
+        b = buf[this.pos++]; val  =  b & 0x7f;        if (b < 0x80) return val;
+        b = buf[this.pos++]; val |= (b & 0x7f) << 7;  if (b < 0x80) return val;
+        b = buf[this.pos++]; val |= (b & 0x7f) << 14; if (b < 0x80) return val;
+        b = buf[this.pos++]; val |= (b & 0x7f) << 21; if (b < 0x80) return val;
+        b = buf[this.pos];   val |= (b & 0x0f) << 28;
+
+        return readVarintRemainder(val, isSigned, this);
+    },
+
+    readVarint64: function() { // for compatibility with v2.0.1
+        return this.readVarint(true);
+    },
+
+    readSVarint: function() {
+        var num = this.readVarint();
+        return num % 2 === 1 ? (num + 1) / -2 : num / 2; // zigzag encoding
+    },
+
+    readBoolean: function() {
+        return Boolean(this.readVarint());
+    },
+
+    readString: function() {
+        var end = this.readVarint() + this.pos,
+            str = readUtf8(this.buf, this.pos, end);
+        this.pos = end;
+        return str;
+    },
+
+    readBytes: function() {
+        var end = this.readVarint() + this.pos,
+            buffer = this.buf.subarray(this.pos, end);
+        this.pos = end;
+        return buffer;
+    },
+
+    // verbose for performance reasons; doesn't affect gzipped size
+
+    readPackedVarint: function(arr, isSigned) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readVarint(isSigned));
+        return arr;
+    },
+    readPackedSVarint: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readSVarint());
+        return arr;
+    },
+    readPackedBoolean: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readBoolean());
+        return arr;
+    },
+    readPackedFloat: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readFloat());
+        return arr;
+    },
+    readPackedDouble: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readDouble());
+        return arr;
+    },
+    readPackedFixed32: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readFixed32());
+        return arr;
+    },
+    readPackedSFixed32: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readSFixed32());
+        return arr;
+    },
+    readPackedFixed64: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readFixed64());
+        return arr;
+    },
+    readPackedSFixed64: function(arr) {
+        var end = readPackedEnd(this);
+        arr = arr || [];
+        while (this.pos < end) arr.push(this.readSFixed64());
+        return arr;
+    },
+
+    skip: function(val) {
+        var type = val & 0x7;
+        if (type === Pbf.Varint) while (this.buf[this.pos++] > 0x7f) {}
+        else if (type === Pbf.Bytes) this.pos = this.readVarint() + this.pos;
+        else if (type === Pbf.Fixed32) this.pos += 4;
+        else if (type === Pbf.Fixed64) this.pos += 8;
+        else throw new Error('Unimplemented type: ' + type);
+    },
+
+    // === WRITING =================================================================
+
+    writeTag: function(tag, type) {
+        this.writeVarint((tag << 3) | type);
+    },
+
+    realloc: function(min) {
+        var length = this.length || 16;
+
+        while (length < this.pos + min) length *= 2;
+
+        if (length !== this.length) {
+            var buf = new Uint8Array(length);
+            buf.set(this.buf);
+            this.buf = buf;
+            this.length = length;
+        }
+    },
+
+    finish: function() {
+        this.length = this.pos;
+        this.pos = 0;
+        return this.buf.subarray(0, this.length);
+    },
+
+    writeFixed32: function(val) {
+        this.realloc(4);
+        writeInt32(this.buf, val, this.pos);
+        this.pos += 4;
+    },
+
+    writeSFixed32: function(val) {
+        this.realloc(4);
+        writeInt32(this.buf, val, this.pos);
+        this.pos += 4;
+    },
+
+    writeFixed64: function(val) {
+        this.realloc(8);
+        writeInt32(this.buf, val & -1, this.pos);
+        writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
+        this.pos += 8;
+    },
+
+    writeSFixed64: function(val) {
+        this.realloc(8);
+        writeInt32(this.buf, val & -1, this.pos);
+        writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
+        this.pos += 8;
+    },
+
+    writeVarint: function(val) {
+        val = +val || 0;
+
+        if (val > 0xfffffff || val < 0) {
+            writeBigVarint(val, this);
+            return;
+        }
+
+        this.realloc(4);
+
+        this.buf[this.pos++] =           val & 0x7f  | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
+        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
+        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
+        this.buf[this.pos++] =   (val >>> 7) & 0x7f;
+    },
+
+    writeSVarint: function(val) {
+        this.writeVarint(val < 0 ? -val * 2 - 1 : val * 2);
+    },
+
+    writeBoolean: function(val) {
+        this.writeVarint(Boolean(val));
+    },
+
+    writeString: function(str) {
+        str = String(str);
+        this.realloc(str.length * 4);
+
+        this.pos++; // reserve 1 byte for short string length
+
+        // write the string directly to the buffer and see how much was written
+        var newPos = writeUtf8(this.buf, str, this.pos);
+        var len = newPos - this.pos;
+
+        if (len >= 0x80) makeRoomForExtraLength(this.pos, len, this);
+
+        // finally, write the message length in the reserved place and restore the position
+        this.pos--;
+        this.writeVarint(len);
+        this.pos += len;
+    },
+
+    writeFloat: function(val) {
+        this.realloc(4);
+        ieee754.write(this.buf, val, this.pos, true, 23, 4);
+        this.pos += 4;
+    },
+
+    writeDouble: function(val) {
+        this.realloc(8);
+        ieee754.write(this.buf, val, this.pos, true, 52, 8);
+        this.pos += 8;
+    },
+
+    writeBytes: function(buffer) {
+        var len = buffer.length;
+        this.writeVarint(len);
+        this.realloc(len);
+        for (var i = 0; i < len; i++) this.buf[this.pos++] = buffer[i];
+    },
+
+    writeRawMessage: function(fn, obj) {
+        this.pos++; // reserve 1 byte for short message length
+
+        // write the message directly to the buffer and see how much was written
+        var startPos = this.pos;
+        fn(obj, this);
+        var len = this.pos - startPos;
+
+        if (len >= 0x80) makeRoomForExtraLength(startPos, len, this);
+
+        // finally, write the message length in the reserved place and restore the position
+        this.pos = startPos - 1;
+        this.writeVarint(len);
+        this.pos += len;
+    },
+
+    writeMessage: function(tag, fn, obj) {
+        this.writeTag(tag, Pbf.Bytes);
+        this.writeRawMessage(fn, obj);
+    },
+
+    writePackedVarint:   function(tag, arr) { this.writeMessage(tag, writePackedVarint, arr);   },
+    writePackedSVarint:  function(tag, arr) { this.writeMessage(tag, writePackedSVarint, arr);  },
+    writePackedBoolean:  function(tag, arr) { this.writeMessage(tag, writePackedBoolean, arr);  },
+    writePackedFloat:    function(tag, arr) { this.writeMessage(tag, writePackedFloat, arr);    },
+    writePackedDouble:   function(tag, arr) { this.writeMessage(tag, writePackedDouble, arr);   },
+    writePackedFixed32:  function(tag, arr) { this.writeMessage(tag, writePackedFixed32, arr);  },
+    writePackedSFixed32: function(tag, arr) { this.writeMessage(tag, writePackedSFixed32, arr); },
+    writePackedFixed64:  function(tag, arr) { this.writeMessage(tag, writePackedFixed64, arr);  },
+    writePackedSFixed64: function(tag, arr) { this.writeMessage(tag, writePackedSFixed64, arr); },
+
+    writeBytesField: function(tag, buffer) {
+        this.writeTag(tag, Pbf.Bytes);
+        this.writeBytes(buffer);
+    },
+    writeFixed32Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed32);
+        this.writeFixed32(val);
+    },
+    writeSFixed32Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed32);
+        this.writeSFixed32(val);
+    },
+    writeFixed64Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed64);
+        this.writeFixed64(val);
+    },
+    writeSFixed64Field: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed64);
+        this.writeSFixed64(val);
+    },
+    writeVarintField: function(tag, val) {
+        this.writeTag(tag, Pbf.Varint);
+        this.writeVarint(val);
+    },
+    writeSVarintField: function(tag, val) {
+        this.writeTag(tag, Pbf.Varint);
+        this.writeSVarint(val);
+    },
+    writeStringField: function(tag, str) {
+        this.writeTag(tag, Pbf.Bytes);
+        this.writeString(str);
+    },
+    writeFloatField: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed32);
+        this.writeFloat(val);
+    },
+    writeDoubleField: function(tag, val) {
+        this.writeTag(tag, Pbf.Fixed64);
+        this.writeDouble(val);
+    },
+    writeBooleanField: function(tag, val) {
+        this.writeVarintField(tag, Boolean(val));
+    }
+};
+
+function readVarintRemainder(l, s, p) {
+    var buf = p.buf,
+        h, b;
+
+    b = buf[p.pos++]; h  = (b & 0x70) >> 4;  if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 3;  if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 10; if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 17; if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x7f) << 24; if (b < 0x80) return toNum(l, h, s);
+    b = buf[p.pos++]; h |= (b & 0x01) << 31; if (b < 0x80) return toNum(l, h, s);
+
+    throw new Error('Expected varint not more than 10 bytes');
+}
+
+function readPackedEnd(pbf) {
+    return (pbf.buf[pbf.pos - 1] & 0x7) === Pbf.Bytes ?
+        pbf.readVarint() + pbf.pos : pbf.pos + 1;
+}
+
+function toNum(low, high, isSigned) {
+    if (isSigned) {
+        return high * 0x100000000 + (low >>> 0);
+    }
+
+    return ((high >>> 0) * 0x100000000) + (low >>> 0);
+}
+
+function writeBigVarint(val, pbf) {
+    var low, high;
+
+    if (val >= 0) {
+        low  = (val % 0x100000000) | 0;
+        high = (val / 0x100000000) | 0;
+    } else {
+        low  = ~(-val % 0x100000000);
+        high = ~(-val / 0x100000000);
+
+        if (low ^ 0xffffffff) {
+            low = (low + 1) | 0;
+        } else {
+            low = 0;
+            high = (high + 1) | 0;
+        }
+    }
+
+    if (val >= 0x10000000000000000 || val < -0x10000000000000000) {
+        throw new Error('Given varint doesn\'t fit into 10 bytes');
+    }
+
+    pbf.realloc(10);
+
+    writeBigVarintLow(low, high, pbf);
+    writeBigVarintHigh(high, pbf);
+}
+
+function writeBigVarintLow(low, high, pbf) {
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos++] = low & 0x7f | 0x80; low >>>= 7;
+    pbf.buf[pbf.pos]   = low & 0x7f;
+}
+
+function writeBigVarintHigh(high, pbf) {
+    var lsb = (high & 0x07) << 4;
+
+    pbf.buf[pbf.pos++] |= lsb         | ((high >>>= 3) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f | ((high >>>= 7) ? 0x80 : 0); if (!high) return;
+    pbf.buf[pbf.pos++]  = high & 0x7f;
+}
+
+function makeRoomForExtraLength(startPos, len, pbf) {
+    var extraLen =
+        len <= 0x3fff ? 1 :
+        len <= 0x1fffff ? 2 :
+        len <= 0xfffffff ? 3 : Math.ceil(Math.log(len) / (Math.LN2 * 7));
+
+    // if 1 byte isn't enough for encoding message length, shift the data to the right
+    pbf.realloc(extraLen);
+    for (var i = pbf.pos - 1; i >= startPos; i--) pbf.buf[i + extraLen] = pbf.buf[i];
+}
+
+function writePackedVarint(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeVarint(arr[i]);   }
+function writePackedSVarint(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeSVarint(arr[i]);  }
+function writePackedFloat(arr, pbf)    { for (var i = 0; i < arr.length; i++) pbf.writeFloat(arr[i]);    }
+function writePackedDouble(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeDouble(arr[i]);   }
+function writePackedBoolean(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeBoolean(arr[i]);  }
+function writePackedFixed32(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed32(arr[i]);  }
+function writePackedSFixed32(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed32(arr[i]); }
+function writePackedFixed64(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed64(arr[i]);  }
+function writePackedSFixed64(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed64(arr[i]); }
+
+// Buffer code below from https://github.com/feross/buffer, MIT-licensed
+
+function readUInt32(buf, pos) {
+    return ((buf[pos]) |
+        (buf[pos + 1] << 8) |
+        (buf[pos + 2] << 16)) +
+        (buf[pos + 3] * 0x1000000);
+}
+
+function writeInt32(buf, val, pos) {
+    buf[pos] = val;
+    buf[pos + 1] = (val >>> 8);
+    buf[pos + 2] = (val >>> 16);
+    buf[pos + 3] = (val >>> 24);
+}
+
+function readInt32(buf, pos) {
+    return ((buf[pos]) |
+        (buf[pos + 1] << 8) |
+        (buf[pos + 2] << 16)) +
+        (buf[pos + 3] << 24);
+}
+
+function readUtf8(buf, pos, end) {
+    var str = '';
+    var i = pos;
+
+    while (i < end) {
+        var b0 = buf[i];
+        var c = null; // codepoint
+        var bytesPerSequence =
+            b0 > 0xEF ? 4 :
+            b0 > 0xDF ? 3 :
+            b0 > 0xBF ? 2 : 1;
+
+        if (i + bytesPerSequence > end) break;
+
+        var b1, b2, b3;
+
+        if (bytesPerSequence === 1) {
+            if (b0 < 0x80) {
+                c = b0;
+            }
+        } else if (bytesPerSequence === 2) {
+            b1 = buf[i + 1];
+            if ((b1 & 0xC0) === 0x80) {
+                c = (b0 & 0x1F) << 0x6 | (b1 & 0x3F);
+                if (c <= 0x7F) {
+                    c = null;
+                }
+            }
+        } else if (bytesPerSequence === 3) {
+            b1 = buf[i + 1];
+            b2 = buf[i + 2];
+            if ((b1 & 0xC0) === 0x80 && (b2 & 0xC0) === 0x80) {
+                c = (b0 & 0xF) << 0xC | (b1 & 0x3F) << 0x6 | (b2 & 0x3F);
+                if (c <= 0x7FF || (c >= 0xD800 && c <= 0xDFFF)) {
+                    c = null;
+                }
+            }
+        } else if (bytesPerSequence === 4) {
+            b1 = buf[i + 1];
+            b2 = buf[i + 2];
+            b3 = buf[i + 3];
+            if ((b1 & 0xC0) === 0x80 && (b2 & 0xC0) === 0x80 && (b3 & 0xC0) === 0x80) {
+                c = (b0 & 0xF) << 0x12 | (b1 & 0x3F) << 0xC | (b2 & 0x3F) << 0x6 | (b3 & 0x3F);
+                if (c <= 0xFFFF || c >= 0x110000) {
+                    c = null;
+                }
+            }
+        }
+
+        if (c === null) {
+            c = 0xFFFD;
+            bytesPerSequence = 1;
+
+        } else if (c > 0xFFFF) {
+            c -= 0x10000;
+            str += String.fromCharCode(c >>> 10 & 0x3FF | 0xD800);
+            c = 0xDC00 | c & 0x3FF;
+        }
+
+        str += String.fromCharCode(c);
+        i += bytesPerSequence;
+    }
+
+    return str;
+}
+
+function writeUtf8(buf, str, pos) {
+    for (var i = 0, c, lead; i < str.length; i++) {
+        c = str.charCodeAt(i); // code point
+
+        if (c > 0xD7FF && c < 0xE000) {
+            if (lead) {
+                if (c < 0xDC00) {
+                    buf[pos++] = 0xEF;
+                    buf[pos++] = 0xBF;
+                    buf[pos++] = 0xBD;
+                    lead = c;
+                    continue;
+                } else {
+                    c = lead - 0xD800 << 10 | c - 0xDC00 | 0x10000;
+                    lead = null;
+                }
+            } else {
+                if (c > 0xDBFF || (i + 1 === str.length)) {
+                    buf[pos++] = 0xEF;
+                    buf[pos++] = 0xBF;
+                    buf[pos++] = 0xBD;
+                } else {
+                    lead = c;
+                }
+                continue;
+            }
+        } else if (lead) {
+            buf[pos++] = 0xEF;
+            buf[pos++] = 0xBF;
+            buf[pos++] = 0xBD;
+            lead = null;
+        }
+
+        if (c < 0x80) {
+            buf[pos++] = c;
+        } else {
+            if (c < 0x800) {
+                buf[pos++] = c >> 0x6 | 0xC0;
+            } else {
+                if (c < 0x10000) {
+                    buf[pos++] = c >> 0xC | 0xE0;
+                } else {
+                    buf[pos++] = c >> 0x12 | 0xF0;
+                    buf[pos++] = c >> 0xC & 0x3F | 0x80;
+                }
+                buf[pos++] = c >> 0x6 & 0x3F | 0x80;
+            }
+            buf[pos++] = c & 0x3F | 0x80;
+        }
+    }
+    return pos;
+}
+
+},{"ieee754":2}],2:[function(_dereq_,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -60806,594 +61607,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],2:[function(_dereq_,module,exports){
-'use strict';
-
-// lightweight Buffer shim for pbf browser build
-// based on code from github.com/feross/buffer (MIT-licensed)
-
-module.exports = Buffer;
-
-var ieee754 = _dereq_('ieee754');
-
-var BufferMethods;
-
-function Buffer(length) {
-    var arr;
-    if (length && length.length) {
-        arr = length;
-        length = arr.length;
-    }
-    var buf = new Uint8Array(length || 0);
-    if (arr) buf.set(arr);
-
-    buf.readUInt32LE = BufferMethods.readUInt32LE;
-    buf.writeUInt32LE = BufferMethods.writeUInt32LE;
-    buf.readInt32LE = BufferMethods.readInt32LE;
-    buf.writeInt32LE = BufferMethods.writeInt32LE;
-    buf.readFloatLE = BufferMethods.readFloatLE;
-    buf.writeFloatLE = BufferMethods.writeFloatLE;
-    buf.readDoubleLE = BufferMethods.readDoubleLE;
-    buf.writeDoubleLE = BufferMethods.writeDoubleLE;
-    buf.toString = BufferMethods.toString;
-    buf.write = BufferMethods.write;
-    buf.slice = BufferMethods.slice;
-    buf.copy = BufferMethods.copy;
-
-    buf._isBuffer = true;
-    return buf;
-}
-
-var lastStr, lastStrEncoded;
-
-BufferMethods = {
-    readUInt32LE: function(pos) {
-        return ((this[pos]) |
-            (this[pos + 1] << 8) |
-            (this[pos + 2] << 16)) +
-            (this[pos + 3] * 0x1000000);
-    },
-
-    writeUInt32LE: function(val, pos) {
-        this[pos] = val;
-        this[pos + 1] = (val >>> 8);
-        this[pos + 2] = (val >>> 16);
-        this[pos + 3] = (val >>> 24);
-    },
-
-    readInt32LE: function(pos) {
-        return ((this[pos]) |
-            (this[pos + 1] << 8) |
-            (this[pos + 2] << 16)) +
-            (this[pos + 3] << 24);
-    },
-
-    readFloatLE:  function(pos) { return ieee754.read(this, pos, true, 23, 4); },
-    readDoubleLE: function(pos) { return ieee754.read(this, pos, true, 52, 8); },
-
-    writeFloatLE:  function(val, pos) { return ieee754.write(this, val, pos, true, 23, 4); },
-    writeDoubleLE: function(val, pos) { return ieee754.write(this, val, pos, true, 52, 8); },
-
-    toString: function(encoding, start, end) {
-        var str = '',
-            tmp = '';
-
-        start = start || 0;
-        end = Math.min(this.length, end || this.length);
-
-        for (var i = start; i < end; i++) {
-            var ch = this[i];
-            if (ch <= 0x7F) {
-                str += decodeURIComponent(tmp) + String.fromCharCode(ch);
-                tmp = '';
-            } else {
-                tmp += '%' + ch.toString(16);
-            }
-        }
-
-        str += decodeURIComponent(tmp);
-
-        return str;
-    },
-
-    write: function(str, pos) {
-        var bytes = str === lastStr ? lastStrEncoded : encodeString(str);
-        for (var i = 0; i < bytes.length; i++) {
-            this[pos + i] = bytes[i];
-        }
-    },
-
-    slice: function(start, end) {
-        return this.subarray(start, end);
-    },
-
-    copy: function(buf, pos) {
-        pos = pos || 0;
-        for (var i = 0; i < this.length; i++) {
-            buf[pos + i] = this[i];
-        }
-    }
-};
-
-BufferMethods.writeInt32LE = BufferMethods.writeUInt32LE;
-
-Buffer.byteLength = function(str) {
-    lastStr = str;
-    lastStrEncoded = encodeString(str);
-    return lastStrEncoded.length;
-};
-
-Buffer.isBuffer = function(buf) {
-    return !!(buf && buf._isBuffer);
-};
-
-function encodeString(str) {
-    var length = str.length,
-        bytes = [];
-
-    for (var i = 0, c, lead; i < length; i++) {
-        c = str.charCodeAt(i); // code point
-
-        if (c > 0xD7FF && c < 0xE000) {
-
-            if (lead) {
-                if (c < 0xDC00) {
-                    bytes.push(0xEF, 0xBF, 0xBD);
-                    lead = c;
-                    continue;
-
-                } else {
-                    c = lead - 0xD800 << 10 | c - 0xDC00 | 0x10000;
-                    lead = null;
-                }
-
-            } else {
-                if (c > 0xDBFF || (i + 1 === length)) bytes.push(0xEF, 0xBF, 0xBD);
-                else lead = c;
-
-                continue;
-            }
-
-        } else if (lead) {
-            bytes.push(0xEF, 0xBF, 0xBD);
-            lead = null;
-        }
-
-        if (c < 0x80) bytes.push(c);
-        else if (c < 0x800) bytes.push(c >> 0x6 | 0xC0, c & 0x3F | 0x80);
-        else if (c < 0x10000) bytes.push(c >> 0xC | 0xE0, c >> 0x6 & 0x3F | 0x80, c & 0x3F | 0x80);
-        else bytes.push(c >> 0x12 | 0xF0, c >> 0xC & 0x3F | 0x80, c >> 0x6 & 0x3F | 0x80, c & 0x3F | 0x80);
-    }
-    return bytes;
-}
-
-},{"ieee754":1}],3:[function(_dereq_,module,exports){
-(function (global){
-'use strict';
-
-module.exports = Pbf;
-
-var Buffer = global.Buffer || _dereq_('./buffer');
-
-function Pbf(buf) {
-    this.buf = !Buffer.isBuffer(buf) ? new Buffer(buf || 0) : buf;
-    this.pos = 0;
-    this.length = this.buf.length;
-}
-
-Pbf.Varint  = 0; // varint: int32, int64, uint32, uint64, sint32, sint64, bool, enum
-Pbf.Fixed64 = 1; // 64-bit: double, fixed64, sfixed64
-Pbf.Bytes   = 2; // length-delimited: string, bytes, embedded messages, packed repeated fields
-Pbf.Fixed32 = 5; // 32-bit: float, fixed32, sfixed32
-
-var SHIFT_LEFT_32 = (1 << 16) * (1 << 16),
-    SHIFT_RIGHT_32 = 1 / SHIFT_LEFT_32,
-    POW_2_63 = Math.pow(2, 63);
-
-Pbf.prototype = {
-
-    destroy: function() {
-        this.buf = null;
-    },
-
-    // === READING =================================================================
-
-    readFields: function(readField, result, end) {
-        end = end || this.length;
-
-        while (this.pos < end) {
-            var val = this.readVarint(),
-                tag = val >> 3,
-                startPos = this.pos;
-
-            readField(tag, result, this);
-
-            if (this.pos === startPos) this.skip(val);
-        }
-        return result;
-    },
-
-    readMessage: function(readField, result) {
-        return this.readFields(readField, result, this.readVarint() + this.pos);
-    },
-
-    readFixed32: function() {
-        var val = this.buf.readUInt32LE(this.pos);
-        this.pos += 4;
-        return val;
-    },
-
-    readSFixed32: function() {
-        var val = this.buf.readInt32LE(this.pos);
-        this.pos += 4;
-        return val;
-    },
-
-    // 64-bit int handling is based on github.com/dpw/node-buffer-more-ints (MIT-licensed)
-
-    readFixed64: function() {
-        var val = this.buf.readUInt32LE(this.pos) + this.buf.readUInt32LE(this.pos + 4) * SHIFT_LEFT_32;
-        this.pos += 8;
-        return val;
-    },
-
-    readSFixed64: function() {
-        var val = this.buf.readUInt32LE(this.pos) + this.buf.readInt32LE(this.pos + 4) * SHIFT_LEFT_32;
-        this.pos += 8;
-        return val;
-    },
-
-    readFloat: function() {
-        var val = this.buf.readFloatLE(this.pos);
-        this.pos += 4;
-        return val;
-    },
-
-    readDouble: function() {
-        var val = this.buf.readDoubleLE(this.pos);
-        this.pos += 8;
-        return val;
-    },
-
-    readVarint: function() {
-        var buf = this.buf,
-            val, b;
-
-        b = buf[this.pos++]; val  =  b & 0x7f;        if (b < 0x80) return val;
-        b = buf[this.pos++]; val |= (b & 0x7f) << 7;  if (b < 0x80) return val;
-        b = buf[this.pos++]; val |= (b & 0x7f) << 14; if (b < 0x80) return val;
-        b = buf[this.pos++]; val |= (b & 0x7f) << 21; if (b < 0x80) return val;
-
-        return readVarintRemainder(val, this);
-    },
-
-    readVarint64: function() {
-        var startPos = this.pos,
-            val = this.readVarint();
-
-        if (val < POW_2_63) return val;
-
-        var pos = this.pos - 2;
-        while (this.buf[pos] === 0xff) pos--;
-        if (pos < startPos) pos = startPos;
-
-        val = 0;
-        for (var i = 0; i < pos - startPos + 1; i++) {
-            var b = ~this.buf[startPos + i] & 0x7f;
-            val += i < 4 ? b << i * 7 : b * Math.pow(2, i * 7);
-        }
-
-        return -val - 1;
-    },
-
-    readSVarint: function() {
-        var num = this.readVarint();
-        return num % 2 === 1 ? (num + 1) / -2 : num / 2; // zigzag encoding
-    },
-
-    readBoolean: function() {
-        return Boolean(this.readVarint());
-    },
-
-    readString: function() {
-        var end = this.readVarint() + this.pos,
-            str = this.buf.toString('utf8', this.pos, end);
-        this.pos = end;
-        return str;
-    },
-
-    readBytes: function() {
-        var end = this.readVarint() + this.pos,
-            buffer = this.buf.slice(this.pos, end);
-        this.pos = end;
-        return buffer;
-    },
-
-    // verbose for performance reasons; doesn't affect gzipped size
-
-    readPackedVarint: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readVarint());
-        return arr;
-    },
-    readPackedSVarint: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readSVarint());
-        return arr;
-    },
-    readPackedBoolean: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readBoolean());
-        return arr;
-    },
-    readPackedFloat: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readFloat());
-        return arr;
-    },
-    readPackedDouble: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readDouble());
-        return arr;
-    },
-    readPackedFixed32: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readFixed32());
-        return arr;
-    },
-    readPackedSFixed32: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readSFixed32());
-        return arr;
-    },
-    readPackedFixed64: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readFixed64());
-        return arr;
-    },
-    readPackedSFixed64: function() {
-        var end = this.readVarint() + this.pos, arr = [];
-        while (this.pos < end) arr.push(this.readSFixed64());
-        return arr;
-    },
-
-    skip: function(val) {
-        var type = val & 0x7;
-        if (type === Pbf.Varint) while (this.buf[this.pos++] > 0x7f) {}
-        else if (type === Pbf.Bytes) this.pos = this.readVarint() + this.pos;
-        else if (type === Pbf.Fixed32) this.pos += 4;
-        else if (type === Pbf.Fixed64) this.pos += 8;
-        else throw new Error('Unimplemented type: ' + type);
-    },
-
-    // === WRITING =================================================================
-
-    writeTag: function(tag, type) {
-        this.writeVarint((tag << 3) | type);
-    },
-
-    realloc: function(min) {
-        var length = this.length || 16;
-
-        while (length < this.pos + min) length *= 2;
-
-        if (length !== this.length) {
-            var buf = new Buffer(length);
-            this.buf.copy(buf);
-            this.buf = buf;
-            this.length = length;
-        }
-    },
-
-    finish: function() {
-        this.length = this.pos;
-        this.pos = 0;
-        return this.buf.slice(0, this.length);
-    },
-
-    writeFixed32: function(val) {
-        this.realloc(4);
-        this.buf.writeUInt32LE(val, this.pos);
-        this.pos += 4;
-    },
-
-    writeSFixed32: function(val) {
-        this.realloc(4);
-        this.buf.writeInt32LE(val, this.pos);
-        this.pos += 4;
-    },
-
-    writeFixed64: function(val) {
-        this.realloc(8);
-        this.buf.writeInt32LE(val & -1, this.pos);
-        this.buf.writeUInt32LE(Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
-        this.pos += 8;
-    },
-
-    writeSFixed64: function(val) {
-        this.realloc(8);
-        this.buf.writeInt32LE(val & -1, this.pos);
-        this.buf.writeInt32LE(Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
-        this.pos += 8;
-    },
-
-    writeVarint: function(val) {
-        val = +val;
-
-        if (val > 0xfffffff) {
-            writeBigVarint(val, this);
-            return;
-        }
-
-        this.realloc(4);
-
-        this.buf[this.pos++] =           val & 0x7f  | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
-        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
-        this.buf[this.pos++] = ((val >>>= 7) & 0x7f) | (val > 0x7f ? 0x80 : 0); if (val <= 0x7f) return;
-        this.buf[this.pos++] =   (val >>> 7) & 0x7f;
-    },
-
-    writeSVarint: function(val) {
-        this.writeVarint(val < 0 ? -val * 2 - 1 : val * 2);
-    },
-
-    writeBoolean: function(val) {
-        this.writeVarint(Boolean(val));
-    },
-
-    writeString: function(str) {
-        str = String(str);
-        var bytes = Buffer.byteLength(str);
-        this.writeVarint(bytes);
-        this.realloc(bytes);
-        this.buf.write(str, this.pos);
-        this.pos += bytes;
-    },
-
-    writeFloat: function(val) {
-        this.realloc(4);
-        this.buf.writeFloatLE(val, this.pos);
-        this.pos += 4;
-    },
-
-    writeDouble: function(val) {
-        this.realloc(8);
-        this.buf.writeDoubleLE(val, this.pos);
-        this.pos += 8;
-    },
-
-    writeBytes: function(buffer) {
-        var len = buffer.length;
-        this.writeVarint(len);
-        this.realloc(len);
-        for (var i = 0; i < len; i++) this.buf[this.pos++] = buffer[i];
-    },
-
-    writeRawMessage: function(fn, obj) {
-        this.pos++; // reserve 1 byte for short message length
-
-        // write the message directly to the buffer and see how much was written
-        var startPos = this.pos;
-        fn(obj, this);
-        var len = this.pos - startPos;
-
-        if (len >= 0x80) reallocForRawMessage(startPos, len, this);
-
-        // finally, write the message length in the reserved place and restore the position
-        this.pos = startPos - 1;
-        this.writeVarint(len);
-        this.pos += len;
-    },
-
-    writeMessage: function(tag, fn, obj) {
-        this.writeTag(tag, Pbf.Bytes);
-        this.writeRawMessage(fn, obj);
-    },
-
-    writePackedVarint:   function(tag, arr) { this.writeMessage(tag, writePackedVarint, arr);   },
-    writePackedSVarint:  function(tag, arr) { this.writeMessage(tag, writePackedSVarint, arr);  },
-    writePackedBoolean:  function(tag, arr) { this.writeMessage(tag, writePackedBoolean, arr);  },
-    writePackedFloat:    function(tag, arr) { this.writeMessage(tag, writePackedFloat, arr);    },
-    writePackedDouble:   function(tag, arr) { this.writeMessage(tag, writePackedDouble, arr);   },
-    writePackedFixed32:  function(tag, arr) { this.writeMessage(tag, writePackedFixed32, arr);  },
-    writePackedSFixed32: function(tag, arr) { this.writeMessage(tag, writePackedSFixed32, arr); },
-    writePackedFixed64:  function(tag, arr) { this.writeMessage(tag, writePackedFixed64, arr);  },
-    writePackedSFixed64: function(tag, arr) { this.writeMessage(tag, writePackedSFixed64, arr); },
-
-    writeBytesField: function(tag, buffer) {
-        this.writeTag(tag, Pbf.Bytes);
-        this.writeBytes(buffer);
-    },
-    writeFixed32Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed32);
-        this.writeFixed32(val);
-    },
-    writeSFixed32Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed32);
-        this.writeSFixed32(val);
-    },
-    writeFixed64Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed64);
-        this.writeFixed64(val);
-    },
-    writeSFixed64Field: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed64);
-        this.writeSFixed64(val);
-    },
-    writeVarintField: function(tag, val) {
-        this.writeTag(tag, Pbf.Varint);
-        this.writeVarint(val);
-    },
-    writeSVarintField: function(tag, val) {
-        this.writeTag(tag, Pbf.Varint);
-        this.writeSVarint(val);
-    },
-    writeStringField: function(tag, str) {
-        this.writeTag(tag, Pbf.Bytes);
-        this.writeString(str);
-    },
-    writeFloatField: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed32);
-        this.writeFloat(val);
-    },
-    writeDoubleField: function(tag, val) {
-        this.writeTag(tag, Pbf.Fixed64);
-        this.writeDouble(val);
-    },
-    writeBooleanField: function(tag, val) {
-        this.writeVarintField(tag, Boolean(val));
-    }
-};
-
-function readVarintRemainder(val, pbf) {
-    var buf = pbf.buf, b;
-
-    b = buf[pbf.pos++]; val += (b & 0x7f) * 0x10000000;         if (b < 0x80) return val;
-    b = buf[pbf.pos++]; val += (b & 0x7f) * 0x800000000;        if (b < 0x80) return val;
-    b = buf[pbf.pos++]; val += (b & 0x7f) * 0x40000000000;      if (b < 0x80) return val;
-    b = buf[pbf.pos++]; val += (b & 0x7f) * 0x2000000000000;    if (b < 0x80) return val;
-    b = buf[pbf.pos++]; val += (b & 0x7f) * 0x100000000000000;  if (b < 0x80) return val;
-    b = buf[pbf.pos++]; val += (b & 0x7f) * 0x8000000000000000; if (b < 0x80) return val;
-
-    throw new Error('Expected varint not more than 10 bytes');
-}
-
-function writeBigVarint(val, pbf) {
-    pbf.realloc(10);
-
-    var maxPos = pbf.pos + 10;
-
-    while (val >= 1) {
-        if (pbf.pos >= maxPos) throw new Error('Given varint doesn\'t fit into 10 bytes');
-        var b = val & 0xff;
-        pbf.buf[pbf.pos++] = b | (val >= 0x80 ? 0x80 : 0);
-        val /= 0x80;
-    }
-}
-
-function reallocForRawMessage(startPos, len, pbf) {
-    var extraLen =
-        len <= 0x3fff ? 1 :
-        len <= 0x1fffff ? 2 :
-        len <= 0xfffffff ? 3 : Math.ceil(Math.log(len) / (Math.LN2 * 7));
-
-    // if 1 byte isn't enough for encoding message length, shift the data to the right
-    pbf.realloc(extraLen);
-    for (var i = pbf.pos - 1; i >= startPos; i--) pbf.buf[i + extraLen] = pbf.buf[i];
-}
-
-function writePackedVarint(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeVarint(arr[i]);   }
-function writePackedSVarint(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeSVarint(arr[i]);  }
-function writePackedFloat(arr, pbf)    { for (var i = 0; i < arr.length; i++) pbf.writeFloat(arr[i]);    }
-function writePackedDouble(arr, pbf)   { for (var i = 0; i < arr.length; i++) pbf.writeDouble(arr[i]);   }
-function writePackedBoolean(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeBoolean(arr[i]);  }
-function writePackedFixed32(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed32(arr[i]);  }
-function writePackedSFixed32(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed32(arr[i]); }
-function writePackedFixed64(arr, pbf)  { for (var i = 0; i < arr.length; i++) pbf.writeFixed64(arr[i]);  }
-function writePackedSFixed64(arr, pbf) { for (var i = 0; i < arr.length; i++) pbf.writeSFixed64(arr[i]); }
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./buffer":2}]},{},[3])(3)
+},{}]},{},[1])(1)
 });
 ol.ext.pbf = module.exports;
 })();
@@ -61410,144 +61624,11 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.vectortile = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = Point;
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
-
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
-
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
-
-},{}],2:[function(_dereq_,module,exports){
 module.exports.VectorTile = _dereq_('./lib/vectortile.js');
 module.exports.VectorTileFeature = _dereq_('./lib/vectortilefeature.js');
 module.exports.VectorTileLayer = _dereq_('./lib/vectortilelayer.js');
 
-},{"./lib/vectortile.js":3,"./lib/vectortilefeature.js":4,"./lib/vectortilelayer.js":5}],3:[function(_dereq_,module,exports){
+},{"./lib/vectortile.js":2,"./lib/vectortilefeature.js":3,"./lib/vectortilelayer.js":4}],2:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileLayer = _dereq_('./vectortilelayer');
@@ -61566,7 +61647,7 @@ function readTile(tag, layers, pbf) {
 }
 
 
-},{"./vectortilelayer":5}],4:[function(_dereq_,module,exports){
+},{"./vectortilelayer":4}],3:[function(_dereq_,module,exports){
 'use strict';
 
 var Point = _dereq_('point-geometry');
@@ -61801,7 +61882,7 @@ function signedArea(ring) {
     return sum;
 }
 
-},{"point-geometry":1}],5:[function(_dereq_,module,exports){
+},{"point-geometry":5}],4:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileFeature = _dereq_('./vectortilefeature.js');
@@ -61864,7 +61945,140 @@ VectorTileLayer.prototype.feature = function(i) {
     return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
 };
 
-},{"./vectortilefeature.js":4}]},{},[2])(2)
+},{"./vectortilefeature.js":3}],5:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = Point;
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
+
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
+
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+},{}]},{},[1])(1)
 });
 ol.ext.vectortile = module.exports;
 })();
@@ -64840,6 +65054,20 @@ ol.format.WFS.XMLNS = 'http://www.w3.org/2000/xmlns/';
  * @const
  * @type {string}
  */
+ol.format.WFS.OGCNS = 'http://www.opengis.net/ogc';
+
+
+/**
+ * @const
+ * @type {string}
+ */
+ol.format.WFS.WFSNS = 'http://www.opengis.net/wfs';
+
+
+/**
+ * @const
+ * @type {string}
+ */
 ol.format.WFS.SCHEMA_LOCATION = 'http://www.opengis.net/wfs ' +
     'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd';
 
@@ -65133,8 +65361,8 @@ ol.format.WFS.writeFeature_ = function(node, feature, objectStack) {
  * @private
  */
 ol.format.WFS.writeOgcFidFilter_ = function(node, fid, objectStack) {
-  var filter = ol.xml.createElementNS('http://www.opengis.net/ogc', 'Filter');
-  var child = ol.xml.createElementNS('http://www.opengis.net/ogc', 'FeatureId');
+  var filter = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'Filter');
+  var child = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'FeatureId');
   filter.appendChild(child);
   child.setAttribute('fid', fid);
   node.appendChild(filter);
@@ -65209,11 +65437,11 @@ ol.format.WFS.writeUpdate_ = function(node, feature, objectStack) {
  * @private
  */
 ol.format.WFS.writeProperty_ = function(node, pair, objectStack) {
-  var name = ol.xml.createElementNS('http://www.opengis.net/wfs', 'Name');
+  var name = ol.xml.createElementNS(ol.format.WFS.WFSNS, 'Name');
   node.appendChild(name);
   ol.format.XSD.writeStringTextNode(name, pair.name);
   if (pair.value !== undefined && pair.value !== null) {
-    var value = ol.xml.createElementNS('http://www.opengis.net/wfs', 'Value');
+    var value = ol.xml.createElementNS(ol.format.WFS.WFSNS, 'Value');
     node.appendChild(value);
     if (pair.value instanceof ol.geom.Geometry) {
       ol.format.GML3.prototype.writeGeometryElement(value,
@@ -65289,7 +65517,7 @@ ol.format.WFS.writeQuery_ = function(node, featureType, objectStack) {
       objectStack);
   var filter = context['filter'];
   if (filter) {
-    var child = ol.xml.createElementNS('http://www.opengis.net/ogc', 'Filter');
+    var child = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'Filter');
     node.appendChild(child);
     ol.format.WFS.writeFilterCondition_(child, filter, objectStack);
   }
@@ -65430,8 +65658,14 @@ ol.format.WFS.writeIsNullFilter_ = function(node, filter, objectStack) {
  */
 ol.format.WFS.writeIsBetweenFilter_ = function(node, filter, objectStack) {
   ol.format.WFS.writeOgcPropertyName_(node, filter.propertyName);
-  ol.format.WFS.writeOgcExpression_('LowerBoundary', node, '' + filter.lowerBoundary);
-  ol.format.WFS.writeOgcExpression_('UpperBoundary', node, '' + filter.upperBoundary);
+
+  var lowerBoundary = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'LowerBoundary');
+  node.appendChild(lowerBoundary);
+  ol.format.WFS.writeOgcLiteral_(lowerBoundary, '' + filter.lowerBoundary);
+
+  var upperBoundary = ol.xml.createElementNS(ol.format.WFS.OGCNS, 'UpperBoundary');
+  node.appendChild(upperBoundary);
+  ol.format.WFS.writeOgcLiteral_(upperBoundary, '' + filter.upperBoundary);
 };
 
 
@@ -65460,7 +65694,7 @@ ol.format.WFS.writeIsLikeFilter_ = function(node, filter, objectStack) {
  * @private
  */
 ol.format.WFS.writeOgcExpression_ = function(tagName, node, value) {
-  var property = ol.xml.createElementNS('http://www.opengis.net/ogc', tagName);
+  var property = ol.xml.createElementNS(ol.format.WFS.OGCNS, tagName);
   ol.format.XSD.writeStringTextNode(property, value);
   node.appendChild(property);
 };
@@ -65539,8 +65773,7 @@ ol.format.WFS.writeGetFeature_ = function(node, featureTypes, objectStack) {
  * @api stable
  */
 ol.format.WFS.prototype.writeGetFeature = function(options) {
-  var node = ol.xml.createElementNS('http://www.opengis.net/wfs',
-      'GetFeature');
+  var node = ol.xml.createElementNS(ol.format.WFS.WFSNS, 'GetFeature');
   node.setAttribute('service', 'WFS');
   node.setAttribute('version', '1.1.0');
   var filter;
@@ -65609,8 +65842,7 @@ ol.format.WFS.prototype.writeGetFeature = function(options) {
 ol.format.WFS.prototype.writeTransaction = function(inserts, updates, deletes,
     options) {
   var objectStack = [];
-  var node = ol.xml.createElementNS('http://www.opengis.net/wfs',
-      'Transaction');
+  var node = ol.xml.createElementNS(ol.format.WFS.WFSNS, 'Transaction');
   node.setAttribute('service', 'WFS');
   node.setAttribute('version', '1.1.0');
   var baseObj;
@@ -69342,170 +69574,6 @@ ol.Graticule.prototype.setMap = function(map) {
   this.map_ = map;
 };
 
-goog.provide('ol.Image');
-
-goog.require('ol');
-goog.require('ol.ImageBase');
-goog.require('ol.ImageState');
-goog.require('ol.events');
-goog.require('ol.events.EventType');
-goog.require('ol.extent');
-goog.require('ol.obj');
-
-
-/**
- * @constructor
- * @extends {ol.ImageBase}
- * @param {ol.Extent} extent Extent.
- * @param {number|undefined} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {Array.<ol.Attribution>} attributions Attributions.
- * @param {string} src Image source URI.
- * @param {?string} crossOrigin Cross origin.
- * @param {ol.ImageLoadFunctionType} imageLoadFunction Image load function.
- */
-ol.Image = function(extent, resolution, pixelRatio, attributions, src,
-    crossOrigin, imageLoadFunction) {
-
-  ol.ImageBase.call(this, extent, resolution, pixelRatio, ol.ImageState.IDLE,
-      attributions);
-
-  /**
-   * @private
-   * @type {string}
-   */
-  this.src_ = src;
-
-  /**
-   * @private
-   * @type {HTMLCanvasElement|Image|HTMLVideoElement}
-   */
-  this.image_ = new Image();
-  if (crossOrigin !== null) {
-    this.image_.crossOrigin = crossOrigin;
-  }
-
-  /**
-   * @private
-   * @type {Object.<number, (HTMLCanvasElement|Image|HTMLVideoElement)>}
-   */
-  this.imageByContext_ = {};
-
-  /**
-   * @private
-   * @type {Array.<ol.EventsKey>}
-   */
-  this.imageListenerKeys_ = null;
-
-  /**
-   * @protected
-   * @type {ol.ImageState}
-   */
-  this.state = ol.ImageState.IDLE;
-
-  /**
-   * @private
-   * @type {ol.ImageLoadFunctionType}
-   */
-  this.imageLoadFunction_ = imageLoadFunction;
-
-};
-ol.inherits(ol.Image, ol.ImageBase);
-
-
-/**
- * Get the HTML image element (may be a Canvas, Image, or Video).
- * @param {Object=} opt_context Object.
- * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
- * @api
- */
-ol.Image.prototype.getImage = function(opt_context) {
-  if (opt_context !== undefined) {
-    var image;
-    var key = ol.getUid(opt_context);
-    if (key in this.imageByContext_) {
-      return this.imageByContext_[key];
-    } else if (ol.obj.isEmpty(this.imageByContext_)) {
-      image = this.image_;
-    } else {
-      image = /** @type {Image} */ (this.image_.cloneNode(false));
-    }
-    this.imageByContext_[key] = image;
-    return image;
-  } else {
-    return this.image_;
-  }
-};
-
-
-/**
- * Tracks loading or read errors.
- *
- * @private
- */
-ol.Image.prototype.handleImageError_ = function() {
-  this.state = ol.ImageState.ERROR;
-  this.unlistenImage_();
-  this.changed();
-};
-
-
-/**
- * Tracks successful image load.
- *
- * @private
- */
-ol.Image.prototype.handleImageLoad_ = function() {
-  if (this.resolution === undefined) {
-    this.resolution = ol.extent.getHeight(this.extent) / this.image_.height;
-  }
-  this.state = ol.ImageState.LOADED;
-  this.unlistenImage_();
-  this.changed();
-};
-
-
-/**
- * Load the image or retry if loading previously failed.
- * Loading is taken care of by the tile queue, and calling this method is
- * only needed for preloading or for reloading in case of an error.
- * @api
- */
-ol.Image.prototype.load = function() {
-  if (this.state == ol.ImageState.IDLE || this.state == ol.ImageState.ERROR) {
-    this.state = ol.ImageState.LOADING;
-    this.changed();
-    goog.DEBUG && console.assert(!this.imageListenerKeys_,
-        'this.imageListenerKeys_ should be null');
-    this.imageListenerKeys_ = [
-      ol.events.listenOnce(this.image_, ol.events.EventType.ERROR,
-          this.handleImageError_, this),
-      ol.events.listenOnce(this.image_, ol.events.EventType.LOAD,
-          this.handleImageLoad_, this)
-    ];
-    this.imageLoadFunction_(this, this.src_);
-  }
-};
-
-
-/**
- * @param {HTMLCanvasElement|Image|HTMLVideoElement} image Image.
- */
-ol.Image.prototype.setImage = function(image) {
-  this.image_ = image;
-};
-
-
-/**
- * Discards event handlers which listen for load completion or errors.
- *
- * @private
- */
-ol.Image.prototype.unlistenImage_ = function() {
-  this.imageListenerKeys_.forEach(ol.events.unlistenByKey);
-  this.imageListenerKeys_ = null;
-};
-
 goog.provide('ol.ImageTile');
 
 goog.require('ol');
@@ -70129,68 +70197,6 @@ var define;
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.rbush = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 
-module.exports = partialSort;
-
-// Floyd-Rivest selection algorithm:
-// Rearrange items so that all items in the [left, k] range are smaller than all items in (k, right];
-// The k-th element will have the (k - left + 1)th smallest value in [left, right]
-
-function partialSort(arr, k, left, right, compare) {
-    left = left || 0;
-    right = right || (arr.length - 1);
-    compare = compare || defaultCompare;
-
-    while (right > left) {
-        if (right - left > 600) {
-            var n = right - left + 1;
-            var m = k - left + 1;
-            var z = Math.log(n);
-            var s = 0.5 * Math.exp(2 * z / 3);
-            var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
-            var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
-            var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
-            partialSort(arr, k, newLeft, newRight, compare);
-        }
-
-        var t = arr[k];
-        var i = left;
-        var j = right;
-
-        swap(arr, left, k);
-        if (compare(arr[right], t) > 0) swap(arr, left, right);
-
-        while (i < j) {
-            swap(arr, i, j);
-            i++;
-            j--;
-            while (compare(arr[i], t) < 0) i++;
-            while (compare(arr[j], t) > 0) j--;
-        }
-
-        if (compare(arr[left], t) === 0) swap(arr, left, j);
-        else {
-            j++;
-            swap(arr, j, right);
-        }
-
-        if (j <= k) left = j + 1;
-        if (k <= j) right = j - 1;
-    }
-}
-
-function swap(arr, i, j) {
-    var tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-}
-
-function defaultCompare(a, b) {
-    return a < b ? -1 : a > b ? 1 : 0;
-}
-
-},{}],2:[function(_dereq_,module,exports){
-'use strict';
-
 module.exports = rbush;
 
 var quickselect = _dereq_('quickselect');
@@ -70751,7 +70757,69 @@ function multiSelect(arr, left, right, n, compare) {
     }
 }
 
-},{"quickselect":1}]},{},[2])(2)
+},{"quickselect":2}],2:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = partialSort;
+
+// Floyd-Rivest selection algorithm:
+// Rearrange items so that all items in the [left, k] range are smaller than all items in (k, right];
+// The k-th element will have the (k - left + 1)th smallest value in [left, right]
+
+function partialSort(arr, k, left, right, compare) {
+    left = left || 0;
+    right = right || (arr.length - 1);
+    compare = compare || defaultCompare;
+
+    while (right > left) {
+        if (right - left > 600) {
+            var n = right - left + 1;
+            var m = k - left + 1;
+            var z = Math.log(n);
+            var s = 0.5 * Math.exp(2 * z / 3);
+            var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
+            var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
+            var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
+            partialSort(arr, k, newLeft, newRight, compare);
+        }
+
+        var t = arr[k];
+        var i = left;
+        var j = right;
+
+        swap(arr, left, k);
+        if (compare(arr[right], t) > 0) swap(arr, left, right);
+
+        while (i < j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+            while (compare(arr[i], t) < 0) i++;
+            while (compare(arr[j], t) > 0) j--;
+        }
+
+        if (compare(arr[left], t) === 0) swap(arr, left, j);
+        else {
+            j++;
+            swap(arr, j, right);
+        }
+
+        if (j <= k) left = j + 1;
+        if (k <= j) right = j - 1;
+    }
+}
+
+function swap(arr, i, j) {
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+}
+
+function defaultCompare(a, b) {
+    return a < b ? -1 : a > b ? 1 : 0;
+}
+
+},{}]},{},[1])(1)
 });
 ol.ext.rbush = module.exports;
 })();
@@ -71575,7 +71643,7 @@ ol.source.Vector.prototype.getFeaturesCollection = function() {
 
 
 /**
- * Get all features on the source.
+ * Get all features on the source in random order.
  * @return {Array.<ol.Feature>} Features.
  * @api stable
  */
@@ -71610,9 +71678,9 @@ ol.source.Vector.prototype.getFeaturesAtCoordinate = function(coordinate) {
 
 
 /**
- * Get all features in the provided extent.  Note that this returns all features
- * whose bounding boxes intersect the given extent (so it may include features
- * whose geometries do not intersect the extent).
+ * Get all features in the provided extent.  Note that this returns an array of
+ * all features intersecting the given extent in random order (so it may include
+ * features whose geometries do not intersect the extent).
  *
  * This method is not available when the source is configured with
  * `useSpatialIndex` set to `false`.
@@ -72280,7 +72348,7 @@ ol.interaction.Draw.handleEvent = function(mapBrowserEvent) {
   }
   var pass = !this.freehand_;
   if (this.freehand_ &&
-      mapBrowserEvent.type === ol.MapBrowserEvent.EventType.POINTERDRAG) {
+      mapBrowserEvent.type === ol.MapBrowserEvent.EventType.POINTERDRAG && this.sketchFeature_ !== null) {
     this.addToDrawing_(mapBrowserEvent);
     pass = false;
   } else if (mapBrowserEvent.type ===
@@ -72769,6 +72837,513 @@ ol.interaction.DrawMode = {
   LINE_STRING: 'LineString',
   POLYGON: 'Polygon',
   CIRCLE: 'Circle'
+};
+
+goog.provide('ol.interaction.Extent');
+goog.provide('ol.interaction.ExtentEvent');
+goog.provide('ol.interaction.ExtentEventType');
+
+goog.require('ol');
+goog.require('ol.Feature');
+goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserPointerEvent');
+goog.require('ol.coordinate');
+goog.require('ol.events.Event');
+goog.require('ol.extent');
+goog.require('ol.geom.GeometryType');
+goog.require('ol.geom.Point');
+goog.require('ol.geom.Polygon');
+goog.require('ol.interaction.Pointer');
+goog.require('ol.layer.Vector');
+goog.require('ol.source.Vector');
+goog.require('ol.style.Style');
+
+
+/**
+ * @enum {string}
+ */
+ol.interaction.ExtentEventType = {
+  /**
+   * Triggered after the extent is changed
+   * @event ol.interaction.ExtentEvent
+   * @api
+   */
+  EXTENTCHANGED: 'extentchanged'
+};
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.interaction.Extent} instances are instances of
+ * this type.
+ *
+ * @constructor
+ * @param {ol.Extent} extent the new extent
+ * @extends {ol.events.Event}
+ */
+ol.interaction.ExtentEvent = function(extent) {
+  ol.events.Event.call(this, ol.interaction.ExtentEventType.EXTENTCHANGED);
+
+  /**
+   * The current extent.
+   * @type {ol.Extent}
+   * @api
+   */
+  this.extent_ = extent;
+};
+
+ol.inherits(ol.interaction.ExtentEvent, ol.events.Event);
+
+/**
+ * @classdesc
+ * Allows the user to draw a vector box by clicking and dragging on the map.
+ * Once drawn, the vector box can be modified by dragging its vertices or edges.
+ * This interaction is only supported for mouse devices.
+ *
+ * @constructor
+ * @extends {ol.interaction.Pointer}
+ * @fires ol.interaction.ExtentEvent
+ * @param {olx.interaction.ExtentOptions} opt_options Options.
+ * @api
+ */
+ol.interaction.Extent = function(opt_options) {
+
+  /**
+   * Extent of the drawn box
+   * @type {ol.Extent}
+   * @private
+   */
+  this.extent_ = null;
+
+  /**
+   * Handler for pointer move events
+   * @type {function (ol.Coordinate): ol.Extent|null}
+   * @private
+   */
+  this.pointerHandler_ = null;
+
+  /**
+   * Pixel threshold to snap to extent
+   * @type {number}
+   * @private
+   */
+  this.pixelTolerance_ = 10;
+
+  /**
+   * Last known pixel coordinate of the pointer
+   * @type {ol.Pixel}
+   * @private
+   */
+  this.lastPixel_ = null;
+
+  /**
+   * Is the pointer snapped to an extent vertex
+   * @type {boolean}
+   * @private
+   */
+  this.snappedToVertex_ = false;
+
+  /**
+   * Feature for displaying the visible extent
+   * @type {ol.Feature}
+   * @private
+   */
+  this.extentFeature_ = null;
+
+  /**
+   * Feature for displaying the visible pointer
+   * @type {ol.Feature}
+   * @private
+   */
+  this.vertexFeature_ = null;
+
+  if (!opt_options) {
+    opt_options = {};
+  }
+
+  if (opt_options.extent) {
+    this.setExtent(opt_options.extent);
+  }
+
+  /* Inherit ol.interaction.Pointer */
+  ol.interaction.Pointer.call(this, {
+    handleDownEvent: ol.interaction.Extent.handleDownEvent_,
+    handleDragEvent: ol.interaction.Extent.handleDragEvent_,
+    handleEvent: ol.interaction.Extent.handleEvent_,
+    handleUpEvent: ol.interaction.Extent.handleUpEvent_
+  });
+
+  /**
+   * Layer for the extentFeature
+   * @type {ol.layer.Vector}
+   * @private
+   */
+  this.extentOverlay_ = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      useSpatialIndex: false,
+      wrapX: !!opt_options.wrapX
+    }),
+    style: opt_options.boxStyle ? opt_options.boxStyle : ol.interaction.Extent.getDefaultExtentStyleFunction_(),
+    updateWhileAnimating: true,
+    updateWhileInteracting: true
+  });
+
+  /**
+   * Layer for the vertexFeature
+   * @type {ol.layer.Vector}
+   * @private
+   */
+  this.vertexOverlay_ = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      useSpatialIndex: false,
+      wrapX: !!opt_options.wrapX
+    }),
+    style: opt_options.pointerStyle ? opt_options.pointerStyle : ol.interaction.Extent.getDefaultPointerStyleFunction_(),
+    updateWhileAnimating: true,
+    updateWhileInteracting: true
+  });
+};
+
+ol.inherits(ol.interaction.Extent, ol.interaction.Pointer);
+
+/**
+ * @param {ol.MapBrowserEvent} mapBrowserEvent Event.
+ * @return {boolean} Propagate event?
+ * @this {ol.interaction.Extent}
+ * @private
+ */
+ol.interaction.Extent.handleEvent_ = function(mapBrowserEvent) {
+  if (!(mapBrowserEvent instanceof ol.MapBrowserPointerEvent)) {
+    return true;
+  }
+  //display pointer (if not dragging)
+  if (mapBrowserEvent.type == ol.MapBrowserEvent.EventType.POINTERMOVE && !this.handlingDownUpSequence) {
+    this.handlePointerMove_(mapBrowserEvent);
+  }
+  //call pointer to determine up/down/drag
+  ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent);
+  //return false to stop propagation
+  return false;
+};
+
+/**
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Event handled?
+ * @this {ol.interaction.Extent}
+ * @private
+ */
+ol.interaction.Extent.handleDownEvent_ = function(mapBrowserEvent) {
+  var pixel = mapBrowserEvent.pixel;
+  var map = mapBrowserEvent.map;
+
+  var extent = this.getExtent();
+  var vertex = this.snapToVertex_(pixel, map);
+
+  //find the extent corner opposite the passed corner
+  var getOpposingPoint = function(point) {
+    var x_ = null;
+    var y_ = null;
+    if (point[0] == extent[0]) {
+      x_ = extent[2];
+    } else if (point[0] == extent[2]) {
+      x_ = extent[0];
+    }
+    if (point[1] == extent[1]) {
+      y_ = extent[3];
+    } else if (point[1] == extent[3]) {
+      y_ = extent[1];
+    }
+    if (x_ !== null && y_ !== null) {
+      return [x_, y_];
+    }
+    return null;
+  };
+  if (vertex && extent) {
+    var x = (vertex[0] == extent[0] || vertex[0] == extent[2]) ? vertex[0] : null;
+    var y = (vertex[1] == extent[1] || vertex[1] == extent[3]) ? vertex[1] : null;
+
+    //snap to point
+    if (x !== null && y !== null) {
+      this.pointerHandler_ = ol.interaction.Extent.getPointHandler_(getOpposingPoint(vertex));
+    //snap to edge
+    } else if (x !== null) {
+      this.pointerHandler_ = ol.interaction.Extent.getEdgeHandler_(
+        getOpposingPoint([x, extent[1]]),
+        getOpposingPoint([x, extent[3]])
+      );
+    } else if (y !== null) {
+      this.pointerHandler_ = ol.interaction.Extent.getEdgeHandler_(
+        getOpposingPoint([extent[0], y]),
+        getOpposingPoint([extent[2], y])
+      );
+    }
+  //no snap - new bbox
+  } else {
+    vertex = map.getCoordinateFromPixel(pixel);
+    this.setExtent([vertex[0], vertex[1], vertex[0], vertex[1]]);
+    this.pointerHandler_ = ol.interaction.Extent.getPointHandler_(vertex);
+  }
+  return true; //event handled; start downup sequence
+};
+
+/**
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Event handled?
+ * @this {ol.interaction.Extent}
+ * @private
+ */
+ol.interaction.Extent.handleDragEvent_ = function(mapBrowserEvent) {
+  this.lastPixel_ = mapBrowserEvent.pixel;
+  if (this.pointerHandler_) {
+    var pixelCoordinate = mapBrowserEvent.coordinate;
+    this.setExtent(this.pointerHandler_(pixelCoordinate));
+    this.createOrUpdatePointerFeature_(pixelCoordinate);
+  }
+  return true;
+};
+
+/**
+ * @param {ol.MapBrowserPointerEvent} mapBrowserEvent Event.
+ * @return {boolean} Stop drag sequence?
+ * @this {ol.interaction.Extent}
+ * @private
+ */
+ol.interaction.Extent.handleUpEvent_ = function(mapBrowserEvent) {
+  this.pointerHandler_ = null;
+  //If bbox is zero area, set to null;
+  var extent = this.getExtent();
+  if (!extent || ol.extent.getArea(extent) === 0) {
+    this.setExtent(null);
+  }
+  return false; //Stop handling downup sequence
+};
+
+/**
+ * Returns the default style for the drawn bbox
+ *
+ * @return {ol.StyleFunction} Default Extent style
+ * @private
+ */
+ol.interaction.Extent.getDefaultExtentStyleFunction_ = function() {
+  var style = ol.style.Style.createDefaultEditing();
+  return function(feature, resolution) {
+    return style[ol.geom.GeometryType.POLYGON];
+  };
+};
+
+/**
+ * Returns the default style for the pointer
+ *
+ * @return {ol.StyleFunction} Default pointer style
+ * @private
+ */
+ol.interaction.Extent.getDefaultPointerStyleFunction_ = function() {
+  var style = ol.style.Style.createDefaultEditing();
+  return function(feature, resolution) {
+    return style[ol.geom.GeometryType.POINT];
+  };
+};
+
+/**
+ * @param {ol.Coordinate} fixedPoint corner that will be unchanged in the new extent
+ * @returns {function (ol.Coordinate): ol.Extent} event handler
+ * @private
+ */
+ol.interaction.Extent.getPointHandler_ = function(fixedPoint) {
+  return function(point) {
+    return ol.extent.boundingExtent([fixedPoint, point]);
+  };
+};
+
+/**
+ * @param {ol.Coordinate} fixedP1 first corner that will be unchanged in the new extent
+ * @param {ol.Coordinate} fixedP2 second corner that will be unchanged in the new extent
+ * @returns {function (ol.Coordinate): ol.Extent|null} event handler
+ * @private
+ */
+ol.interaction.Extent.getEdgeHandler_ = function(fixedP1, fixedP2) {
+  if (fixedP1[0] == fixedP2[0]) {
+    return function(point) {
+      return ol.extent.boundingExtent([fixedP1, [point[0], fixedP2[1]]]);
+    };
+  } else if (fixedP1[1] == fixedP2[1]) {
+    return function(point) {
+      return ol.extent.boundingExtent([fixedP1, [fixedP2[0], point[1]]]);
+    };
+  } else {
+    return null;
+  }
+};
+
+/**
+ * @param {ol.Extent} extent extent
+ * @returns {Array<Array<ol.Coordinate>>} extent line segments
+ * @private
+ */
+ol.interaction.Extent.getSegments_ = function(extent) {
+  return [
+    [[extent[0], extent[1]], [extent[0], extent[3]]],
+    [[extent[0], extent[3]], [extent[2], extent[3]]],
+    [[extent[2], extent[3]], [extent[2], extent[1]]],
+    [[extent[2], extent[1]], [extent[0], extent[1]]]
+  ];
+};
+
+/**
+ * @param {ol.Pixel} pixel cursor location
+ * @param {ol.Map} map map
+ * @returns {ol.Coordinate|null} snapped vertex on extent
+ * @private
+ */
+ol.interaction.Extent.prototype.snapToVertex_ = function(pixel, map) {
+  var pixelCoordinate = map.getCoordinateFromPixel(pixel);
+  var sortByDistance = function(a, b) {
+    return ol.coordinate.squaredDistanceToSegment(pixelCoordinate, a) -
+        ol.coordinate.squaredDistanceToSegment(pixelCoordinate, b);
+  };
+  var extent = this.getExtent();
+  if (extent) {
+    //convert extents to line segments and find the segment closest to pixelCoordinate
+    var segments = ol.interaction.Extent.getSegments_(extent);
+    segments.sort(sortByDistance);
+    var closestSegment = segments[0];
+
+    var vertex = (ol.coordinate.closestOnSegment(pixelCoordinate,
+        closestSegment));
+    var vertexPixel = map.getPixelFromCoordinate(vertex);
+
+    //if the distance is within tolerance, snap to the segment
+    if (Math.sqrt(ol.coordinate.squaredDistance(pixel, vertexPixel)) <=
+        this.pixelTolerance_) {
+
+      //test if we should further snap to a vertex
+      var pixel1 = map.getPixelFromCoordinate(closestSegment[0]);
+      var pixel2 = map.getPixelFromCoordinate(closestSegment[1]);
+      var squaredDist1 = ol.coordinate.squaredDistance(vertexPixel, pixel1);
+      var squaredDist2 = ol.coordinate.squaredDistance(vertexPixel, pixel2);
+      var dist = Math.sqrt(Math.min(squaredDist1, squaredDist2));
+      this.snappedToVertex_ = dist <= this.pixelTolerance_;
+      if (this.snappedToVertex_) {
+        vertex = squaredDist1 > squaredDist2 ?
+            closestSegment[1] : closestSegment[0];
+      }
+      return vertex;
+    }
+  }
+  return null;
+};
+
+/**
+ * @param {ol.MapBrowserEvent} mapBrowserEvent pointer move event
+ * @private
+ */
+ol.interaction.Extent.prototype.handlePointerMove_ = function(mapBrowserEvent) {
+  var pixel = mapBrowserEvent.pixel;
+  var map = mapBrowserEvent.map;
+
+  var vertex = this.snapToVertex_(pixel, map);
+  if (!vertex) {
+    vertex = map.getCoordinateFromPixel(pixel);
+  }
+  this.createOrUpdatePointerFeature_(vertex);
+};
+
+/**
+ * @param {ol.Extent} extent extent
+ * @returns {ol.Feature} extent as featrue
+ * @private
+ */
+ol.interaction.Extent.prototype.createOrUpdateExtentFeature_ = function(extent) {
+  var extentFeature = this.extentFeature_;
+
+  if (!extentFeature) {
+    if (!extent) {
+      extentFeature = new ol.Feature({});
+    } else {
+      extentFeature = new ol.Feature(ol.geom.Polygon.fromExtent(extent));
+    }
+    this.extentFeature_ = extentFeature;
+    this.extentOverlay_.getSource().addFeature(extentFeature);
+  } else {
+    if (!extent) {
+      extentFeature.setGeometry(undefined);
+    } else {
+      extentFeature.setGeometry(ol.geom.Polygon.fromExtent(extent));
+    }
+  }
+  return extentFeature;
+};
+
+/**
+ * @this {ol.interaction.Extent}
+ * @private
+ */
+ol.interaction.Extent.prototype.removeExtentFeature_ = function() {
+  var extentFeature = this.extentFeature_;
+  if (extentFeature) {
+    this.extentOverlay_.getSource().removeFeature(extentFeature);
+    this.extentFeature_ = null;
+  }
+};
+
+/**
+ * @param {ol.Coordinate} vertex location of feature
+ * @returns {ol.Feature} vertex as feature
+ * @private
+ */
+ol.interaction.Extent.prototype.createOrUpdatePointerFeature_ = function(vertex) {
+  var vertexFeature = this.vertexFeature_;
+  if (!vertexFeature) {
+    vertexFeature = new ol.Feature(new ol.geom.Point(vertex));
+    this.vertexFeature_ = vertexFeature;
+    this.vertexOverlay_.getSource().addFeature(vertexFeature);
+  } else {
+    var geometry = /** @type {ol.geom.Point} */ (vertexFeature.getGeometry());
+    geometry.setCoordinates(vertex);
+  }
+  return vertexFeature;
+};
+
+/**
+ * @private
+ */
+ol.interaction.Extent.prototype.removePointerFeature_ = function() {
+  var vertexFeature = this.vertexFeature_;
+  if (vertexFeature) {
+    this.vertexOverlay_.getSource().removeFeature(vertexFeature);
+    this.vertexFeature_ = null;
+  }
+};
+
+/**
+ * @inheritDoc
+ */
+ol.interaction.Extent.prototype.setMap = function(map) {
+  this.extentOverlay_.setMap(map);
+  this.vertexOverlay_.setMap(map);
+  ol.interaction.Pointer.prototype.setMap.call(this, map);
+};
+
+/**
+ * Returns the current drawn extent in the view projection
+ *
+ * @return {ol.Extent} Drawn extent in the view projection.
+ * @api
+ */
+ol.interaction.Extent.prototype.getExtent = function() {
+  return this.extent_;
+};
+
+/**
+ * Manually sets the drawn extent, using the view projection.
+ *
+ * @param {ol.Extent} extent Extent
+ * @api
+ */
+ol.interaction.Extent.prototype.setExtent = function(extent) {
+  //Null extent means no bbox
+  this.extent_ = extent ? extent : null;
+  this.createOrUpdateExtentFeature_(extent);
+  this.dispatchEvent(new ol.interaction.ExtentEvent(this.extent_));
 };
 
 goog.provide('ol.interaction.Modify');
@@ -76253,10 +76828,14 @@ ol.source.Tile.prototype.getTileCacheForProjection = function(projection) {
 
 
 /**
- * @param {number} pixelRatio Pixel ratio.
+ * Get the tile pixel ratio for this source. Subclasses may override this
+ * method, which is meant to return a supported pixel ratio that matches the
+ * provided `opt_pixelRatio` as close as possible. When no `opt_pixelRatio` is
+ * provided, it is meant to return `this.tilePixelRatio_`.
+ * @param {number=} opt_pixelRatio Pixel ratio.
  * @return {number} Tile pixel ratio.
  */
-ol.source.Tile.prototype.getTilePixelRatio = function(pixelRatio) {
+ol.source.Tile.prototype.getTilePixelRatio = function(opt_pixelRatio) {
   return this.tilePixelRatio_;
 };
 
@@ -78084,7 +78663,6 @@ goog.provide('ol.source.ImageStatic');
 
 goog.require('ol');
 goog.require('ol.Image');
-goog.require('ol.ImageState');
 goog.require('ol.dom');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
@@ -78153,7 +78731,7 @@ ol.source.ImageStatic.prototype.getImageInternal = function(extent, resolution, 
  * @inheritDoc
  */
 ol.source.ImageStatic.prototype.handleImageChange = function(evt) {
-  if (this.image_.getState() == ol.ImageState.LOADED) {
+  if (this.image_.getState() == ol.Image.State.LOADED) {
     var imageExtent = this.image_.getExtent();
     var image = this.image_.getImage();
     var imageWidth, imageHeight;
@@ -79724,7 +80302,7 @@ ol.source.TileArcGISRest.prototype.getRequestUrl_ = function(tileCoord, tileSize
  * @inheritDoc
  */
 ol.source.TileArcGISRest.prototype.getTilePixelRatio = function(pixelRatio) {
-  return pixelRatio;
+  return /** @type {number} */ (pixelRatio);
 };
 
 
@@ -80826,7 +81404,8 @@ ol.source.TileWMS.prototype.getRequestUrl_ = function(tileCoord, tileSize, tileE
  * @inheritDoc
  */
 ol.source.TileWMS.prototype.getTilePixelRatio = function(pixelRatio) {
-  return (!this.hidpi_ || this.serverType_ === undefined) ? 1 : pixelRatio;
+  return (!this.hidpi_ || this.serverType_ === undefined) ? 1 :
+      /** @type {number} */ (pixelRatio);
 };
 
 
@@ -81237,9 +81816,19 @@ ol.source.VectorTile.prototype.getTile = function(z, x, y, pixelRatio, projectio
 /**
  * @inheritDoc
  */
+ol.source.VectorTile.prototype.getTilePixelRatio = function(opt_pixelRatio) {
+  return opt_pixelRatio == undefined ?
+      ol.source.UrlTile.prototype.getTilePixelRatio.call(this, opt_pixelRatio) :
+      opt_pixelRatio;
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.source.VectorTile.prototype.getTilePixelSize = function(z, pixelRatio, projection) {
   var tileSize = ol.size.toSize(this.tileGrid.getTileSize(z));
-  return [tileSize[0] * pixelRatio, tileSize[1] * pixelRatio];
+  return [Math.round(tileSize[0] * pixelRatio), Math.round(tileSize[1] * pixelRatio)];
 };
 
 
@@ -82462,9 +83051,9 @@ goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.dom');
 goog.require('ol.has');
+goog.require('ol.Image');
 goog.require('ol.render.canvas');
 goog.require('ol.style.Image');
-goog.require('ol.style.ImageState');
 
 
 /**
@@ -82662,7 +83251,7 @@ ol.style.RegularShape.prototype.getHitDetectionImageSize = function() {
  * @inheritDoc
  */
 ol.style.RegularShape.prototype.getImageState = function() {
-  return ol.style.ImageState.LOADED;
+  return ol.Image.State.LOADED;
 };
 
 
@@ -83148,6 +83737,9 @@ goog.require('ol.interaction.Draw');
 goog.require('ol.interaction.DrawEvent');
 goog.require('ol.interaction.DrawEventType');
 goog.require('ol.interaction.DrawMode');
+goog.require('ol.interaction.Extent');
+goog.require('ol.interaction.ExtentEvent');
+goog.require('ol.interaction.ExtentEventType');
 goog.require('ol.interaction.Interaction');
 goog.require('ol.interaction.InteractionProperty');
 goog.require('ol.interaction.KeyboardPan');
@@ -83231,7 +83823,6 @@ goog.require('ol.style.Icon');
 goog.require('ol.style.IconAnchorUnits');
 goog.require('ol.style.IconOrigin');
 goog.require('ol.style.Image');
-goog.require('ol.style.ImageState');
 goog.require('ol.style.RegularShape');
 goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');
@@ -85898,6 +86489,26 @@ goog.exportSymbol(
     'ol.interaction.Draw.createRegularPolygon',
     ol.interaction.Draw.createRegularPolygon,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.interaction.ExtentEvent.prototype,
+    'extent_',
+    ol.interaction.ExtentEvent.prototype.extent_);
+
+goog.exportSymbol(
+    'ol.interaction.Extent',
+    ol.interaction.Extent,
+    OPENLAYERS);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'getExtent',
+    ol.interaction.Extent.prototype.getExtent);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'setExtent',
+    ol.interaction.Extent.prototype.setExtent);
 
 goog.exportSymbol(
     'ol.interaction.defaults',
@@ -93985,6 +94596,106 @@ goog.exportProperty(
     ol.interaction.Draw.prototype.unByKey);
 
 goog.exportProperty(
+    ol.interaction.ExtentEvent.prototype,
+    'type',
+    ol.interaction.ExtentEvent.prototype.type);
+
+goog.exportProperty(
+    ol.interaction.ExtentEvent.prototype,
+    'target',
+    ol.interaction.ExtentEvent.prototype.target);
+
+goog.exportProperty(
+    ol.interaction.ExtentEvent.prototype,
+    'preventDefault',
+    ol.interaction.ExtentEvent.prototype.preventDefault);
+
+goog.exportProperty(
+    ol.interaction.ExtentEvent.prototype,
+    'stopPropagation',
+    ol.interaction.ExtentEvent.prototype.stopPropagation);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'getActive',
+    ol.interaction.Extent.prototype.getActive);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'getMap',
+    ol.interaction.Extent.prototype.getMap);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'setActive',
+    ol.interaction.Extent.prototype.setActive);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'get',
+    ol.interaction.Extent.prototype.get);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'getKeys',
+    ol.interaction.Extent.prototype.getKeys);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'getProperties',
+    ol.interaction.Extent.prototype.getProperties);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'set',
+    ol.interaction.Extent.prototype.set);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'setProperties',
+    ol.interaction.Extent.prototype.setProperties);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'unset',
+    ol.interaction.Extent.prototype.unset);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'changed',
+    ol.interaction.Extent.prototype.changed);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'dispatchEvent',
+    ol.interaction.Extent.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'getRevision',
+    ol.interaction.Extent.prototype.getRevision);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'on',
+    ol.interaction.Extent.prototype.on);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'once',
+    ol.interaction.Extent.prototype.once);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'un',
+    ol.interaction.Extent.prototype.un);
+
+goog.exportProperty(
+    ol.interaction.Extent.prototype,
+    'unByKey',
+    ol.interaction.Extent.prototype.unByKey);
+
+goog.exportProperty(
     ol.interaction.KeyboardPan.prototype,
     'getActive',
     ol.interaction.KeyboardPan.prototype.getActive);
@@ -96743,7 +97454,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.18.0-1-g0d0f2d4';
+ol.VERSION = 'v3.18.1-36-g784c19a';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
