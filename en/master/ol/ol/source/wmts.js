@@ -1,5 +1,4 @@
 goog.provide('ol.source.WMTS');
-goog.provide('ol.source.WMTSRequestEncoding');
 
 goog.require('ol');
 goog.require('ol.TileUrlFunction');
@@ -10,16 +9,6 @@ goog.require('ol.proj');
 goog.require('ol.source.TileImage');
 goog.require('ol.tilegrid.WMTS');
 goog.require('ol.uri');
-
-
-/**
- * Request encoding. One of 'KVP', 'REST'.
- * @enum {string}
- */
-ol.source.WMTSRequestEncoding = {
-  KVP: 'KVP',  // see spec §8
-  REST: 'REST' // see spec §10
-};
 
 
 /**
@@ -81,11 +70,11 @@ ol.source.WMTS = function(options) {
 
   /**
    * @private
-   * @type {ol.source.WMTSRequestEncoding}
+   * @type {ol.source.WMTS.RequestEncoding}
    */
   this.requestEncoding_ = options.requestEncoding !== undefined ?
-      /** @type {ol.source.WMTSRequestEncoding} */ (options.requestEncoding) :
-      ol.source.WMTSRequestEncoding.KVP;
+      /** @type {ol.source.WMTS.RequestEncoding} */ (options.requestEncoding) :
+      ol.source.WMTS.RequestEncoding.KVP;
 
   var requestEncoding = this.requestEncoding_;
 
@@ -101,7 +90,7 @@ ol.source.WMTS = function(options) {
     'tilematrixset': this.matrixSet_
   };
 
-  if (requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
+  if (requestEncoding == ol.source.WMTS.RequestEncoding.KVP) {
     ol.obj.assign(context, {
       'Service': 'WMTS',
       'Request': 'GetTile',
@@ -122,7 +111,7 @@ ol.source.WMTS = function(options) {
     // order conforms to wmts spec guidance, and so that we can avoid to escape
     // special template params
 
-    template = (requestEncoding == ol.source.WMTSRequestEncoding.KVP) ?
+    template = (requestEncoding == ol.source.WMTS.RequestEncoding.KVP) ?
         ol.uri.appendParams(template, context) :
         template.replace(/\{(\w+?)\}/g, function(m, p) {
           return (p.toLowerCase() in context) ? context[p.toLowerCase()] : m;
@@ -146,7 +135,7 @@ ol.source.WMTS = function(options) {
             };
             ol.obj.assign(localContext, dimensions);
             var url = template;
-            if (requestEncoding == ol.source.WMTSRequestEncoding.KVP) {
+            if (requestEncoding == ol.source.WMTS.RequestEncoding.KVP) {
               url = ol.uri.appendParams(url, localContext);
             } else {
               url = url.replace(/\{(\w+?)\}/g, function(m, p) {
@@ -229,7 +218,7 @@ ol.source.WMTS.prototype.getMatrixSet = function() {
 
 /**
  * Return the request encoding, either "KVP" or "REST".
- * @return {ol.source.WMTSRequestEncoding} Request encoding.
+ * @return {ol.source.WMTS.RequestEncoding} Request encoding.
  * @api
  */
 ol.source.WMTS.prototype.getRequestEncoding = function() {
@@ -308,16 +297,16 @@ ol.source.WMTS.prototype.updateDimensions = function(dimensions) {
 ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
 
   // TODO: add support for TileMatrixLimits
-  goog.DEBUG && console.assert(config['layer'],
+  ol.DEBUG && console.assert(config['layer'],
       'config "layer" must not be null');
 
   var layers = wmtsCap['Contents']['Layer'];
   var l = ol.array.find(layers, function(elt, index, array) {
     return elt['Identifier'] == config['layer'];
   });
-  goog.DEBUG && console.assert(l, 'found a matching layer in Contents/Layer');
+  ol.DEBUG && console.assert(l, 'found a matching layer in Contents/Layer');
 
-  goog.DEBUG && console.assert(l['TileMatrixSetLink'].length > 0,
+  ol.DEBUG && console.assert(l['TileMatrixSetLink'].length > 0,
       'layer has TileMatrixSetLink');
   var tileMatrixSets = wmtsCap['Contents']['TileMatrixSet'];
   var idx, matrixSet;
@@ -347,7 +336,7 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   matrixSet = /** @type {string} */
       (l['TileMatrixSetLink'][idx]['TileMatrixSet']);
 
-  goog.DEBUG && console.assert(matrixSet, 'TileMatrixSet must not be null');
+  ol.DEBUG && console.assert(matrixSet, 'TileMatrixSet must not be null');
 
   var format = /** @type {string} */ (l['Format'][0]);
   if ('format' in config) {
@@ -371,12 +360,12 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
       var key = elt['Identifier'];
       var value = elt['Default'];
       if (value !== undefined) {
-        goog.DEBUG && console.assert(ol.array.includes(elt['Value'], value),
+        ol.DEBUG && console.assert(ol.array.includes(elt['Value'], value),
             'default value contained in values');
       } else {
         value = elt['Value'][0];
       }
-      goog.DEBUG && console.assert(value !== undefined, 'value could be found');
+      ol.DEBUG && console.assert(value !== undefined, 'value could be found');
       dimensions[key] = value;
     });
   }
@@ -385,7 +374,7 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   var matrixSetObj = ol.array.find(matrixSets, function(elt, index, array) {
     return elt['Identifier'] == matrixSet;
   });
-  goog.DEBUG && console.assert(matrixSetObj,
+  ol.DEBUG && console.assert(matrixSetObj,
       'found matrixSet in Contents/TileMatrixSet');
 
   var projection;
@@ -422,28 +411,28 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   var requestEncoding = config['requestEncoding'];
   requestEncoding = requestEncoding !== undefined ? requestEncoding : '';
 
-  goog.DEBUG && console.assert(
+  ol.DEBUG && console.assert(
       ol.array.includes(['REST', 'RESTful', 'KVP', ''], requestEncoding),
       'requestEncoding (%s) is one of "REST", "RESTful", "KVP" or ""',
       requestEncoding);
 
   if ('OperationsMetadata' in wmtsCap && 'GetTile' in wmtsCap['OperationsMetadata']) {
     var gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
-    goog.DEBUG && console.assert(gets.length >= 1);
+    ol.DEBUG && console.assert(gets.length >= 1);
 
     for (var i = 0, ii = gets.length; i < ii; ++i) {
       var constraint = ol.array.find(gets[i]['Constraint'], function(element) {
         return element['name'] == 'GetEncoding';
       });
       var encodings = constraint['AllowedValues']['Value'];
-      goog.DEBUG && console.assert(encodings.length >= 1);
+      ol.DEBUG && console.assert(encodings.length >= 1);
 
       if (requestEncoding === '') {
         // requestEncoding not provided, use the first encoding from the list
         requestEncoding = encodings[0];
       }
-      if (requestEncoding === ol.source.WMTSRequestEncoding.KVP) {
-        if (ol.array.includes(encodings, ol.source.WMTSRequestEncoding.KVP)) {
+      if (requestEncoding === ol.source.WMTS.RequestEncoding.KVP) {
+        if (ol.array.includes(encodings, ol.source.WMTS.RequestEncoding.KVP)) {
           urls.push(/** @type {string} */ (gets[i]['href']));
         }
       } else {
@@ -452,7 +441,7 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
     }
   }
   if (urls.length === 0) {
-    requestEncoding = ol.source.WMTSRequestEncoding.REST;
+    requestEncoding = ol.source.WMTS.RequestEncoding.REST;
     l['ResourceURL'].forEach(function(element) {
       if (element['resourceType'] === 'tile') {
         format = element['format'];
@@ -460,7 +449,7 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
       }
     });
   }
-  goog.DEBUG && console.assert(urls.length > 0, 'At least one URL found');
+  ol.DEBUG && console.assert(urls.length > 0, 'At least one URL found');
 
   return {
     urls: urls,
@@ -475,4 +464,14 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
     wrapX: wrapX
   };
 
+};
+
+
+/**
+ * Request encoding. One of 'KVP', 'REST'.
+ * @enum {string}
+ */
+ol.source.WMTS.RequestEncoding = {
+  KVP: 'KVP',  // see spec §8
+  REST: 'REST' // see spec §10
 };

@@ -6,7 +6,6 @@ goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.extent');
 goog.require('ol.math');
-goog.require('ol.obj');
 goog.require('ol.reproj');
 goog.require('ol.reproj.Triangulation');
 
@@ -61,12 +60,6 @@ ol.reproj.Tile = function(sourceProj, sourceTileGrid,
    * @type {HTMLCanvasElement}
    */
   this.canvas_ = null;
-
-  /**
-   * @private
-   * @type {Object.<number, HTMLCanvasElement>}
-   */
-  this.canvasByContext_ = {};
 
   /**
    * @private
@@ -180,7 +173,7 @@ ol.reproj.Tile = function(sourceProj, sourceTileGrid,
         sourceExtent, this.sourceZ_);
 
     var tilesRequired = sourceRange.getWidth() * sourceRange.getHeight();
-    if (goog.DEBUG && !(tilesRequired < ol.RASTER_REPROJECTION_MAX_SOURCE_TILES)) {
+    if (ol.DEBUG && !(tilesRequired < ol.RASTER_REPROJECTION_MAX_SOURCE_TILES)) {
       console.assert(false, 'reasonable number of tiles is required');
       this.state = ol.Tile.State.ERROR;
       return;
@@ -216,22 +209,8 @@ ol.reproj.Tile.prototype.disposeInternal = function() {
 /**
  * @inheritDoc
  */
-ol.reproj.Tile.prototype.getImage = function(opt_context) {
-  if (opt_context !== undefined) {
-    var image;
-    var key = ol.getUid(opt_context);
-    if (key in this.canvasByContext_) {
-      return this.canvasByContext_[key];
-    } else if (ol.obj.isEmpty(this.canvasByContext_)) {
-      image = this.canvas_;
-    } else {
-      image = /** @type {HTMLCanvasElement} */ (this.canvas_.cloneNode(false));
-    }
-    this.canvasByContext_[key] = image;
-    return image;
-  } else {
-    return this.canvas_;
-  }
+ol.reproj.Tile.prototype.getImage = function() {
+  return this.canvas_;
 };
 
 
@@ -283,7 +262,7 @@ ol.reproj.Tile.prototype.load = function() {
 
     var leftToLoad = 0;
 
-    goog.DEBUG && console.assert(!this.sourcesListenerKeys_,
+    ol.DEBUG && console.assert(!this.sourcesListenerKeys_,
         'this.sourcesListenerKeys_ should be null');
 
     this.sourcesListenerKeys_ = [];
@@ -301,7 +280,7 @@ ol.reproj.Tile.prototype.load = function() {
                   state == ol.Tile.State.EMPTY) {
                 ol.events.unlistenByKey(sourceListenKey);
                 leftToLoad--;
-                goog.DEBUG && console.assert(leftToLoad >= 0,
+                ol.DEBUG && console.assert(leftToLoad >= 0,
                     'leftToLoad should not be negative');
                 if (leftToLoad === 0) {
                   this.unlistenSources_();
@@ -321,8 +300,7 @@ ol.reproj.Tile.prototype.load = function() {
     });
 
     if (leftToLoad === 0) {
-      var global = ol.global;
-      global.setTimeout(this.reproject_.bind(this), 0);
+      setTimeout(this.reproject_.bind(this), 0);
     }
   }
 };

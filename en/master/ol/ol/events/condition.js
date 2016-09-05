@@ -1,8 +1,9 @@
 goog.provide('ol.events.condition');
 
+goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.asserts');
 goog.require('ol.functions');
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.has');
 
 
 /**
@@ -74,7 +75,7 @@ ol.events.condition.click = function(mapBrowserEvent) {
 ol.events.condition.mouseActionButton = function(mapBrowserEvent) {
   var originalEvent = mapBrowserEvent.originalEvent;
   return originalEvent.button == 0 &&
-      !(goog.userAgent.WEBKIT && ol.has.MAC && originalEvent.ctrlKey);
+      !(ol.has.WEBKIT && ol.has.MAC && originalEvent.ctrlKey);
 };
 
 

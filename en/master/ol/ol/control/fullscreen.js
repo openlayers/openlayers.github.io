@@ -1,11 +1,11 @@
 goog.provide('ol.control.FullScreen');
 
-goog.require('ol.events');
-goog.require('ol.events.EventType');
 goog.require('ol');
 goog.require('ol.control.Control');
-goog.require('ol.dom');
 goog.require('ol.css');
+goog.require('ol.dom');
+goog.require('ol.events');
+goog.require('ol.events.EventType');
 
 
 /**
@@ -160,7 +160,7 @@ ol.control.FullScreen.prototype.handleFullScreenChange_ = function() {
 ol.control.FullScreen.prototype.setMap = function(map) {
   ol.control.Control.prototype.setMap.call(this, map);
   if (map) {
-    this.listenerKeys.push(ol.events.listen(ol.global.document,
+    this.listenerKeys.push(ol.events.listen(document,
         ol.control.FullScreen.getChangeType_(),
         this.handleFullScreenChange_, this)
     );

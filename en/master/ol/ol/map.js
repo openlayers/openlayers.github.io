@@ -5,7 +5,6 @@
 goog.provide('ol.Map');
 goog.provide('ol.MapProperty');
 
-goog.require('goog.async.nextTick');
 goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.MapBrowserEvent');
@@ -34,7 +33,6 @@ goog.require('ol.obj');
 goog.require('ol.proj.common');
 goog.require('ol.renderer.Map');
 goog.require('ol.renderer.canvas.Map');
-goog.require('ol.renderer.dom.Map');
 goog.require('ol.renderer.webgl.Map');
 goog.require('ol.size');
 goog.require('ol.structs.PriorityQueue');
@@ -82,8 +80,7 @@ ol.OL3_LOGO_URL = 'data:image/png;base64,' +
  */
 ol.DEFAULT_RENDERER_TYPES = [
   ol.RendererType.CANVAS,
-  ol.RendererType.WEBGL,
-  ol.RendererType.DOM
+  ol.RendererType.WEBGL
 ];
 
 
@@ -126,8 +123,7 @@ ol.MapProperty = {
  * `ol-overlaycontainer-stopevent` for controls and some overlays, and one with
  * CSS class name `ol-overlaycontainer` for other overlays (see the `stopEvent`
  * option of {@link ol.Overlay} for the difference). The map itself is placed in
- * a further element within the viewport, either DOM or Canvas, depending on the
- * renderer.
+ * a further element within the viewport.
  *
  * Layers are stored as a `ol.Collection` in layerGroups. A top-level group is
  * provided by the library. This is what is accessed by `getLayerGroup` and
@@ -561,12 +557,12 @@ ol.Map.prototype.disposeInternal = function() {
   ol.events.unlisten(this.viewport_, ol.events.EventType.MOUSEWHEEL,
       this.handleBrowserEvent, this);
   if (this.handleResize_ !== undefined) {
-    ol.global.removeEventListener(ol.events.EventType.RESIZE,
+    window.removeEventListener(ol.events.EventType.RESIZE,
         this.handleResize_, false);
     this.handleResize_ = undefined;
   }
   if (this.animationDelayKey_) {
-    ol.global.cancelAnimationFrame(this.animationDelayKey_);
+    cancelAnimationFrame(this.animationDelayKey_);
     this.animationDelayKey_ = undefined;
   }
   this.setTarget(null);
@@ -1048,7 +1044,7 @@ ol.Map.prototype.handleTargetChanged_ = function() {
   var targetElement;
   if (this.getTarget()) {
     targetElement = this.getTargetElement();
-    goog.DEBUG && console.assert(targetElement !== null,
+    ol.DEBUG && console.assert(targetElement !== null,
         'expects a non-null value for targetElement');
   }
 
@@ -1062,7 +1058,7 @@ ol.Map.prototype.handleTargetChanged_ = function() {
   if (!targetElement) {
     ol.dom.removeNode(this.viewport_);
     if (this.handleResize_ !== undefined) {
-      ol.global.removeEventListener(ol.events.EventType.RESIZE,
+      window.removeEventListener(ol.events.EventType.RESIZE,
           this.handleResize_, false);
       this.handleResize_ = undefined;
     }
@@ -1080,7 +1076,7 @@ ol.Map.prototype.handleTargetChanged_ = function() {
 
     if (!this.handleResize_) {
       this.handleResize_ = this.updateSize.bind(this);
-      ol.global.addEventListener(ol.events.EventType.RESIZE,
+      window.addEventListener(ol.events.EventType.RESIZE,
           this.handleResize_, false);
     }
   }
@@ -1162,7 +1158,7 @@ ol.Map.prototype.isRendered = function() {
  */
 ol.Map.prototype.renderSync = function() {
   if (this.animationDelayKey_) {
-    ol.global.cancelAnimationFrame(this.animationDelayKey_);
+    cancelAnimationFrame(this.animationDelayKey_);
   }
   this.animationDelay_();
 };
@@ -1174,7 +1170,7 @@ ol.Map.prototype.renderSync = function() {
  */
 ol.Map.prototype.render = function() {
   if (this.animationDelayKey_ === undefined) {
-    this.animationDelayKey_ = ol.global.requestAnimationFrame(
+    this.animationDelayKey_ = requestAnimationFrame(
         this.animationDelay_);
   }
 };
@@ -1314,7 +1310,7 @@ ol.Map.prototype.renderFrame_ = function(time) {
   this.dispatchEvent(
       new ol.MapEvent(ol.MapEventType.POSTRENDER, this, frameState));
 
-  goog.async.nextTick(this.handlePostRender, this);
+  setTimeout(this.handlePostRender.bind(this), 0);
 
 };
 
@@ -1386,7 +1382,7 @@ ol.Map.prototype.updateSize = function() {
   if (!targetElement) {
     this.setSize(undefined);
   } else {
-    var computedStyle = ol.global.getComputedStyle(targetElement);
+    var computedStyle = getComputedStyle(targetElement);
     this.setSize([
       targetElement.offsetWidth -
           parseFloat(computedStyle['borderLeftWidth']) -
@@ -1477,6 +1473,10 @@ ol.Map.createOptionsInternal = function(options) {
     } else {
       ol.asserts.assert(false, 46); // Incorrect format for `renderer` option
     }
+    if (rendererTypes.indexOf(/** @type {ol.RendererType} */ ('dom')) >= 0) {
+      ol.DEBUG && console.assert(false, 'The DOM render has been removed');
+      rendererTypes = rendererTypes.concat(ol.DEFAULT_RENDERER_TYPES);
+    }
   } else {
     rendererTypes = ol.DEFAULT_RENDERER_TYPES;
   }
@@ -1488,11 +1488,6 @@ ol.Map.createOptionsInternal = function(options) {
     if (ol.ENABLE_CANVAS && rendererType == ol.RendererType.CANVAS) {
       if (ol.has.CANVAS) {
         rendererConstructor = ol.renderer.canvas.Map;
-        break;
-      }
-    } else if (ol.ENABLE_DOM && rendererType == ol.RendererType.DOM) {
-      if (ol.has.DOM) {
-        rendererConstructor = ol.renderer.dom.Map;
         break;
       }
     } else if (ol.ENABLE_WEBGL && rendererType == ol.RendererType.WEBGL) {

@@ -2,6 +2,7 @@ goog.provide('ol.interaction.MouseWheelZoom');
 
 goog.require('ol');
 goog.require('ol.events.EventType');
+goog.require('ol.has');
 goog.require('ol.interaction.Interaction');
 goog.require('ol.math');
 
@@ -89,10 +90,10 @@ ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
     if (mapBrowserEvent.type == ol.events.EventType.WHEEL) {
       delta = wheelEvent.deltaY;
       if (ol.has.FIREFOX &&
-          wheelEvent.deltaMode === ol.global.WheelEvent.DOM_DELTA_PIXEL) {
+          wheelEvent.deltaMode === WheelEvent.DOM_DELTA_PIXEL) {
         delta /= ol.has.DEVICE_PIXEL_RATIO;
       }
-      if (wheelEvent.deltaMode === ol.global.WheelEvent.DOM_DELTA_LINE) {
+      if (wheelEvent.deltaMode === WheelEvent.DOM_DELTA_LINE) {
         delta *= 40;
       }
     } else if (mapBrowserEvent.type == ol.events.EventType.MOUSEWHEEL) {
@@ -111,8 +112,8 @@ ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
     var duration = ol.MOUSEWHEELZOOM_TIMEOUT_DURATION;
     var timeLeft = Math.max(duration - (Date.now() - this.startTime_), 0);
 
-    ol.global.clearTimeout(this.timeoutId_);
-    this.timeoutId_ = ol.global.setTimeout(
+    clearTimeout(this.timeoutId_);
+    this.timeoutId_ = setTimeout(
         this.doZoom_.bind(this, map), timeLeft);
 
     mapBrowserEvent.preventDefault();

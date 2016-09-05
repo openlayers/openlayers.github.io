@@ -136,10 +136,10 @@ ol.proj.Projection = function(options) {
 
   var projections = ol.proj.projections_;
   var code = options.code;
-  goog.DEBUG && console.assert(code !== undefined,
+  ol.DEBUG && console.assert(code !== undefined,
       'Option "code" is required for constructing instance');
   if (ol.ENABLE_PROJ4JS) {
-    var proj4js = ol.proj.proj4_ || ol.global['proj4'];
+    var proj4js = ol.proj.proj4_ || window['proj4'];
     if (typeof proj4js == 'function' && projections[code] === undefined) {
       var def = proj4js.defs(code);
       if (def !== undefined) {
@@ -416,7 +416,7 @@ if (ol.ENABLE_PROJ4JS) {
    * @api
    */
   ol.proj.setProj4 = function(proj4) {
-    goog.DEBUG && console.assert(typeof proj4 == 'function',
+    ol.DEBUG && console.assert(typeof proj4 == 'function',
         'proj4 argument should be a function');
     ol.proj.proj4_ = proj4;
   };
@@ -608,9 +608,9 @@ ol.proj.removeTransform = function(source, destination) {
   var sourceCode = source.getCode();
   var destinationCode = destination.getCode();
   var transforms = ol.proj.transforms_;
-  goog.DEBUG && console.assert(sourceCode in transforms,
+  ol.DEBUG && console.assert(sourceCode in transforms,
       'sourceCode should be in transforms');
-  goog.DEBUG && console.assert(destinationCode in transforms[sourceCode],
+  ol.DEBUG && console.assert(destinationCode in transforms[sourceCode],
       'destinationCode should be in transforms of sourceCode');
   var transform = transforms[sourceCode][destinationCode];
   delete transforms[sourceCode][destinationCode];
@@ -668,7 +668,7 @@ ol.proj.get = function(projectionLike) {
     var code = projectionLike;
     projection = ol.proj.projections_[code];
     if (ol.ENABLE_PROJ4JS) {
-      var proj4js = ol.proj.proj4_ || ol.global['proj4'];
+      var proj4js = ol.proj.proj4_ || window['proj4'];
       if (projection === undefined && typeof proj4js == 'function' &&
           proj4js.defs(code) !== undefined) {
         projection = new ol.proj.Projection({code: code});
@@ -741,7 +741,7 @@ ol.proj.getTransformFromProjections = function(sourceProjection, destinationProj
     transform = transforms[sourceCode][destinationCode];
   }
   if (transform === undefined) {
-    goog.DEBUG && console.assert(transform !== undefined, 'transform should be defined');
+    ol.DEBUG && console.assert(transform !== undefined, 'transform should be defined');
     transform = ol.proj.identityTransform;
   }
   return transform;
@@ -757,7 +757,7 @@ ol.proj.getTransformFromProjections = function(sourceProjection, destinationProj
 ol.proj.identityTransform = function(input, opt_output, opt_dimension) {
   if (opt_output !== undefined && input !== opt_output) {
     // TODO: consider making this a warning instead
-    goog.DEBUG && console.assert(false, 'This should not be used internally.');
+    ol.DEBUG && console.assert(false, 'This should not be used internally.');
     for (var i = 0, ii = input.length; i < ii; ++i) {
       opt_output[i] = input[i];
     }

@@ -1,7 +1,6 @@
 goog.provide('ol.Image');
 
 goog.require('ol');
-goog.require('ol.Image');
 goog.require('ol.ImageBase');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
@@ -131,7 +130,7 @@ ol.Image.prototype.load = function() {
   if (this.state == ol.Image.State.IDLE || this.state == ol.Image.State.ERROR) {
     this.state = ol.Image.State.LOADING;
     this.changed();
-    goog.DEBUG && console.assert(!this.imageListenerKeys_,
+    ol.DEBUG && console.assert(!this.imageListenerKeys_,
         'this.imageListenerKeys_ should be null');
     this.imageListenerKeys_ = [
       ol.events.listenOnce(this.image_, ol.events.EventType.ERROR,

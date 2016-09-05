@@ -8,6 +8,12 @@ goog.provide('ol');
  */
 
 
+ /**
+  * @define {boolean} Enable debug mode. Default is `true`.
+  */
+ol.DEBUG = true;
+
+
 /**
  * @define {boolean} Assume touch.  Default is `false`.
  */
@@ -59,15 +65,6 @@ ol.DRAG_BOX_HYSTERESIS_PIXELS = 8;
  *     supporting the Canvas renderer from the build.
  */
 ol.ENABLE_CANVAS = true;
-
-
-/**
- * @define {boolean} Enable the DOM renderer (used as a fallback where Canvas is
- *     not available).  Default is `true`. Setting this to false at compile time
- *     in advanced mode removes all code supporting the DOM renderer from the
- *     build.
- */
-ol.ENABLE_DOM = true;
 
 
 /**
@@ -273,8 +270,8 @@ ol.nullFunction = function() {};
 
 /**
  * Gets a unique ID for an object. This mutates the object so that further calls
- * with the same object as a parameter returns the same value. Adapted from
- * goog.getUid.
+ * with the same object as a parameter returns the same value. Unique IDs are generated
+ * as a strictly increasing sequence. Adapted from goog.getUid.
  *
  * @param {Object} obj The object to get the unique ID for.
  * @return {number} The unique ID for the object.
@@ -291,15 +288,3 @@ ol.getUid = function(obj) {
  * @private
  */
 ol.uidCounter_ = 0;
-
-
-/**
- * @see https://github.com/tc39/proposal-global
- */
-if (typeof window !== 'undefined') {
-  ol.global = window;
-} else if (typeof global !== 'undefined') {
-  ol.global = global;
-} else if (typeof self !== 'undefined') {
-  ol.global = self;
-}
