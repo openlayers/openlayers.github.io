@@ -1,18 +1,3 @@
-var createPattern = function() {
-  var canvas = document.createElement('canvas');
-  var context = canvas.getContext('2d');
-  canvas.width = 4;
-  canvas.height = 4;
-
-  context.fillStyle = 'rgba(255,0,0,0.3)';
-  for (var i = 0; i < canvas.width; i++) {
-    context.fillRect(i, i, 1, 1);
-  }
-
-  return context.createPattern(canvas, 'repeat');
-};
-
-
 var style = new ol.style.Style({
   fill: new ol.style.Fill({
     color: 'rgba(255, 255, 255, 0.6)'
@@ -72,7 +57,7 @@ var featureOverlay = new ol.layer.Vector({
           width: 1
         }),
         fill: new ol.style.Fill({
-          color: createPattern()
+          color: 'rgba(255,0,0,0.1)'
         }),
         text: new ol.style.Text({
           font: '12px Calibri,sans-serif',

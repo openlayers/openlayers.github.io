@@ -2,21 +2,6 @@ goog.provide('ol.tilecoord');
 
 
 /**
- * @param {string} str String that follows pattern “z/x/y” where x, y and z are
- *   numbers.
- * @return {ol.TileCoord} Tile coord.
- */
-ol.tilecoord.createFromString = function(str) {
-  var v = str.split('/');
-  ol.DEBUG && console.assert(v.length === 3,
-      'must provide a string in "z/x/y" format, got "%s"', str);
-  return v.map(function(e) {
-    return parseInt(e, 10);
-  });
-};
-
-
-/**
  * @param {number} z Z.
  * @param {number} x X.
  * @param {number} y Y.

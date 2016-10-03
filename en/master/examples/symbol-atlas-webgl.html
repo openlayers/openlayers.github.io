@@ -160,6 +160,7 @@ var vector &#x3D; new ol.layer.Vector({
 });
 
 var map &#x3D; new ol.Map({
+  renderer: /** @type {ol.renderer.Type} */ (&#x27;webgl&#x27;),
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new ol.View({
@@ -282,6 +283,7 @@ var map &#x3D; new ol.Map({
       });
 
       var map &#x3D; new ol.Map({
+        renderer: /** @type {ol.renderer.Type} */ (&#x27;webgl&#x27;),
         layers: [vector],
         target: document.getElementById(&#x27;map&#x27;),
         view: new ol.View({

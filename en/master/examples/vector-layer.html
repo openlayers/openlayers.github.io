@@ -65,22 +65,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="https://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">var createPattern &#x3D; function() {
-  var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-  var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
-  canvas.width &#x3D; 4;
-  canvas.height &#x3D; 4;
-
-  context.fillStyle &#x3D; &#x27;rgba(255,0,0,0.3)&#x27;;
-  for (var i &#x3D; 0; i &lt; canvas.width; i++) {
-    context.fillRect(i, i, 1, 1);
-  }
-
-  return context.createPattern(canvas, &#x27;repeat&#x27;);
-};
-
-
-var style &#x3D; new ol.style.Style({
+          <textarea class="hidden" name="js">var style &#x3D; new ol.style.Style({
   fill: new ol.style.Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -139,7 +124,7 @@ var featureOverlay &#x3D; new ol.layer.Vector({
           width: 1
         }),
         fill: new ol.style.Fill({
-          color: createPattern()
+          color: &#x27;rgba(255,0,0,0.1)&#x27;
         }),
         text: new ol.style.Text({
           font: &#x27;12px Calibri,sans-serif&#x27;,
@@ -216,21 +201,6 @@ map.on(&#x27;click&#x27;, function(evt) {
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
     &lt;script&gt;
-      var createPattern &#x3D; function() {
-        var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-        var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
-        canvas.width &#x3D; 4;
-        canvas.height &#x3D; 4;
-
-        context.fillStyle &#x3D; &#x27;rgba(255,0,0,0.3)&#x27;;
-        for (var i &#x3D; 0; i &lt; canvas.width; i++) {
-          context.fillRect(i, i, 1, 1);
-        }
-
-        return context.createPattern(canvas, &#x27;repeat&#x27;);
-      };
-
-
       var style &#x3D; new ol.style.Style({
         fill: new ol.style.Fill({
           color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
@@ -290,7 +260,7 @@ map.on(&#x27;click&#x27;, function(evt) {
                 width: 1
               }),
               fill: new ol.style.Fill({
-                color: createPattern()
+                color: &#x27;rgba(255,0,0,0.1)&#x27;
               }),
               text: new ol.style.Text({
                 font: &#x27;12px Calibri,sans-serif&#x27;,

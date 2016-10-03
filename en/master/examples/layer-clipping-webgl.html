@@ -81,7 +81,7 @@
 
   var map &#x3D; new ol.Map({
     layers: [osm],
-    renderer: &#x27;webgl&#x27;,
+    renderer: /** @type {ol.renderer.Type} */ (&#x27;webgl&#x27;),
     target: &#x27;map&#x27;,
     controls: ol.control.defaults({
       attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
@@ -207,7 +207,7 @@
 
         var map &#x3D; new ol.Map({
           layers: [osm],
-          renderer: &#x27;webgl&#x27;,
+          renderer: /** @type {ol.renderer.Type} */ (&#x27;webgl&#x27;),
           target: &#x27;map&#x27;,
           controls: ol.control.defaults({
             attributionOptions: /** @type {olx.control.AttributionOptions} */ ({

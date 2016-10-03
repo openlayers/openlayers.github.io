@@ -25,6 +25,12 @@ ol.style.Circle = function(opt_options) {
 
   /**
    * @private
+   * @type {ol.style.AtlasManager|undefined}
+   */
+  this.atlasManager_ = options.atlasManager;
+
+  /**
+   * @private
    * @type {Array.<string>}
    */
   this.checksums_ = null;
@@ -89,7 +95,7 @@ ol.style.Circle = function(opt_options) {
    */
   this.hitDetectionImageSize_ = null;
 
-  this.render_(options.atlasManager);
+  this.render_(this.atlasManager_);
 
   /**
    * @type {boolean}
@@ -107,6 +113,25 @@ ol.style.Circle = function(opt_options) {
 
 };
 ol.inherits(ol.style.Circle, ol.style.Image);
+
+
+/**
+ * Clones the style.  If an atlasmanger was provided to the original style it will be used in the cloned style, too.
+ * @return {ol.style.Image} The cloned style.
+ * @api
+ */
+ol.style.Circle.prototype.clone = function() {
+  var style = new ol.style.Circle({
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
+    radius: this.getRadius(),
+    snapToPixel: this.getSnapToPixel(),
+    atlasManager: this.atlasManager_
+  });
+  style.setOpacity(this.getOpacity());
+  style.setScale(this.getScale());
+  return style;
+};
 
 
 /**
@@ -207,6 +232,18 @@ ol.style.Circle.prototype.getStroke = function() {
 
 
 /**
+ * Set the circle radius.
+ *
+ * @param {number} radius Circle radius.
+ * @api
+ */
+ol.style.Circle.prototype.setRadius = function(radius) {
+  this.radius_ = radius;
+  this.render_(this.atlasManager_);
+};
+
+
+/**
  * @inheritDoc
  */
 ol.style.Circle.prototype.listenImageChange = ol.nullFunction;
@@ -235,7 +272,7 @@ ol.style.Circle.prototype.render_ = function(atlasManager) {
   var strokeWidth = 0;
 
   if (this.stroke_) {
-    strokeStyle = ol.color.asString(this.stroke_.getColor());
+    strokeStyle = ol.colorlike.asColorLike(this.stroke_.getColor());
     strokeWidth = this.stroke_.getWidth();
     if (strokeWidth === undefined) {
       strokeWidth = ol.render.canvas.defaultLineWidth;

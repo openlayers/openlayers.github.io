@@ -31,9 +31,9 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
 
   /**
    * @protected
-   * @type {Array.<ol.Tile|undefined>}
+   * @type {!Array.<ol.Tile|undefined>}
    */
-  this.renderedTiles = null;
+  this.renderedTiles = [];
 
   /**
    * @protected
@@ -90,15 +90,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
   var tileGrid = tileSource.getTileGridForProjection(projection);
   var z = tileGrid.getZForResolution(viewState.resolution, this.zDirection);
   var tileResolution = tileGrid.getResolution(z);
-  var center = viewState.center;
-  var extent;
-  if (tileResolution == viewState.resolution) {
-    center = this.snapCenterToPixel(center, tileResolution, frameState.size);
-    extent = ol.extent.getForViewAndSize(
-        center, tileResolution, viewState.rotation, frameState.size);
-  } else {
-    extent = frameState.extent;
-  }
+  var extent = frameState.extent;
 
   if (layerState.extent !== undefined) {
     extent = ol.extent.getIntersection(extent, layerState.extent);
@@ -122,7 +114,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
 
   var useInterimTilesOnError = tileLayer.getUseInterimTilesOnError();
 
-  var tmpExtent = ol.extent.createEmpty();
+  var tmpExtent = this.tmpExtent;
   var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
   var childTileRange, fullyLoaded, tile, x, y;
   var drawableTile = (
@@ -162,7 +154,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
   /** @type {Array.<number>} */
   var zs = Object.keys(tilesToDrawByZ).map(Number);
   zs.sort(ol.array.numberSafeCompareFunction);
-  var renderables = [];
+  var renderables = this.renderedTiles;
+  renderables.length = 0;
   var i, ii, currentZ, tileCoordKey, tilesToDraw;
   for (i = 0, ii = zs.length; i < ii; ++i) {
     currentZ = zs[i];
@@ -174,7 +167,6 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
       }
     }
   }
-  this.renderedTiles = renderables;
 
   this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
   this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio,
@@ -189,7 +181,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
  *     callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.

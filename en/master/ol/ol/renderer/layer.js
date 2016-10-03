@@ -48,7 +48,7 @@ ol.renderer.Layer.prototype.forEachFeatureAtCoordinate = ol.nullFunction;
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState Frame state.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer callback.
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
  * @template S,T
@@ -251,21 +251,6 @@ ol.renderer.Layer.prototype.updateUsedTiles = function(usedTiles, tileSource, z,
     usedTiles[tileSourceKey] = {};
     usedTiles[tileSourceKey][zKey] = tileRange;
   }
-};
-
-
-/**
- * @param {ol.Coordinate} center Center.
- * @param {number} resolution Resolution.
- * @param {ol.Size} size Size.
- * @protected
- * @return {ol.Coordinate} Snapped center.
- */
-ol.renderer.Layer.prototype.snapCenterToPixel = function(center, resolution, size) {
-  return [
-    resolution * (Math.round(center[0] / resolution) + (size[0] % 2) / 2),
-    resolution * (Math.round(center[1] / resolution) + (size[1] % 2) / 2)
-  ];
 };
 
 

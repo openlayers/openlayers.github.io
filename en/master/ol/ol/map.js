@@ -442,7 +442,8 @@ ol.Map = function(options) {
        * @param {ol.Collection.Event} event Collection event.
        */
       function(event) {
-        var id = event.element.getId();
+        var overlay = /** @type {ol.Overlay} */ (event.element);
+        var id = overlay.getId();
         if (id !== undefined) {
           delete this.overlayIdIndex_[id.toString()];
         }
@@ -603,11 +604,12 @@ ol.Map.prototype.forEachFeatureAtPixel = function(pixel, callback, opt_this, opt
  * execute a callback with each matching layer. Layers included in the
  * detection can be configured through `opt_layerFilter`.
  * @param {ol.Pixel} pixel Pixel.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
- *     callback. This callback will recieve two arguments: first is the
- *     {@link ol.layer.Layer layer}, second argument is {@link ol.Color}
- *     and will be null for layer types that do not currently support this
- *     argument. To stop detection callback functions can return a truthy value.
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback
+ *     Layer callback. This callback will recieve two arguments: first is the
+ *     {@link ol.layer.Layer layer}, second argument is an array representing
+ *     [R, G, B, A] pixel values (0 - 255) and will be `null` for layer types
+ *     that do not currently support this argument. To stop detection, callback
+ *     functions can return a truthy value.
  * @param {S=} opt_this Value to use as `this` when executing `callback`.
  * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
  *     filter function. The filter function will receive one argument, the

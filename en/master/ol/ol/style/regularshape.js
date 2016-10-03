@@ -1,7 +1,6 @@
 goog.provide('ol.style.RegularShape');
 
 goog.require('ol');
-goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.dom');
 goog.require('ol.has');
@@ -113,7 +112,13 @@ ol.style.RegularShape = function(options) {
    */
   this.hitDetectionImageSize_ = null;
 
-  this.render_(options.atlasManager);
+  /**
+   * @private
+   * @type {ol.style.AtlasManager|undefined}
+   */
+  this.atlasManager_ = options.atlasManager;
+
+  this.render_(this.atlasManager_);
 
   /**
    * @type {boolean}
@@ -137,6 +142,30 @@ ol.style.RegularShape = function(options) {
 
 };
 ol.inherits(ol.style.RegularShape, ol.style.Image);
+
+
+/**
+ * Clones the style. If an atlasmanger was provided to the original style it will be used in the cloned style, too.
+ * @return {ol.style.RegularShape} The cloned style.
+ * @api
+ */
+ol.style.RegularShape.prototype.clone = function() {
+  var style = new ol.style.RegularShape({
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    points: this.getRadius2() !== this.getRadius() ? this.getPoints() / 2 : this.getPoints(),
+    radius: this.getRadius(),
+    radius2: this.getRadius2(),
+    angle: this.getAngle(),
+    snapToPixel: this.getSnapToPixel(),
+    stroke: this.getStroke() ?  this.getStroke().clone() : undefined,
+    rotation: this.getRotation(),
+    rotateWithView: this.getRotateWithView(),
+    atlasManager: this.atlasManager_
+  });
+  style.setOpacity(this.getOpacity());
+  style.setScale(this.getScale());
+  return style;
+};
 
 
 /**
@@ -299,7 +328,7 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
   var strokeWidth = 0;
 
   if (this.stroke_) {
-    strokeStyle = ol.color.asString(this.stroke_.getColor());
+    strokeStyle = ol.colorlike.asColorLike(this.stroke_.getColor());
     strokeWidth = this.stroke_.getWidth();
     if (strokeWidth === undefined) {
       strokeWidth = ol.render.canvas.defaultLineWidth;

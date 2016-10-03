@@ -88,7 +88,7 @@ var map1 &#x3D; new ol.Map({
 if (ol.has.WEBGL) {
   var map2 &#x3D; new ol.Map({
     target: &#x27;webglMap&#x27;,
-    renderer: &#x27;webgl&#x27;,
+    renderer: /** @type {ol.renderer.Type} */ (&#x27;webgl&#x27;),
     layers: [layer],
     view: view
   });
@@ -148,7 +148,7 @@ if (ol.has.WEBGL) {
       if (ol.has.WEBGL) {
         var map2 &#x3D; new ol.Map({
           target: &#x27;webglMap&#x27;,
-          renderer: &#x27;webgl&#x27;,
+          renderer: /** @type {ol.renderer.Type} */ (&#x27;webgl&#x27;),
           layers: [layer],
           view: view
         });

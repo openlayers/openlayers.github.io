@@ -1,6 +1,6 @@
 // OpenLayers 3. See http://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.18.2-147-g5f9855b
+// Version: v3.18.2-263-g74466a3
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -2751,9 +2751,9 @@ goog.provide('ol');
  */
 
 
- /**
-  * @define {boolean} Enable debug mode. Default is `true`.
-  */
+/**
+ * @define {boolean} Enable debug mode. Default is `true`.
+ */
 ol.DEBUG = true;
 
 
@@ -3086,6 +3086,7 @@ ol.asserts.assert = function(assertion, errorCode) {
 
 goog.provide('ol.math');
 
+goog.require('ol');
 goog.require('ol.asserts');
 
 
@@ -4381,6 +4382,8 @@ ol.Object.prototype.unset = function(key, opt_silent) {
 
 goog.provide('ol.array');
 
+goog.require('ol');
+
 
 /**
  * Performs a binary search on the provided sorted list and returns the index of the item if found. If it can't be found it'll return -1.
@@ -4415,38 +4418,6 @@ ol.array.binarySearch = function(haystack, needle, opt_comparator) {
 
   /* Key not found. */
   return found ? low : ~low;
-};
-
-/**
- * @param {Array.<number>} arr Array.
- * @param {number} target Target.
- * @return {number} Index.
- */
-ol.array.binaryFindNearest = function(arr, target) {
-  var index = ol.array.binarySearch(arr, target,
-      /**
-       * @param {number} a A.
-       * @param {number} b B.
-       * @return {number} b minus a.
-       */
-      function(a, b) {
-        return b - a;
-      });
-  if (index >= 0) {
-    return index;
-  } else if (index == -1) {
-    return 0;
-  } else if (index == -arr.length - 1) {
-    return arr.length - 1;
-  } else {
-    var left = -index - 2;
-    var right = -index - 1;
-    if (arr[left] - target < target - arr[right]) {
-      return left;
-    } else {
-      return right;
-    }
-  }
 };
 
 
@@ -5184,35 +5155,11 @@ ol.coordinate.toStringXY = function(coordinate, opt_fractionDigits) {
   return ol.coordinate.format(coordinate, '{x}, {y}', opt_fractionDigits);
 };
 
-
-/**
- * Create an ol.Coordinate from an Array and take into account axis order.
- *
- * Examples:
- *
- *     var northCoord = ol.coordinate.fromProjectedArray([1, 2], 'n');
- *     // northCoord is now [2, 1]
- *
- *     var eastCoord = ol.coordinate.fromProjectedArray([1, 2], 'e');
- *     // eastCoord is now [1, 2]
- *
- * @param {Array} array The array with coordinates.
- * @param {string} axis the axis info.
- * @return {ol.Coordinate} The coordinate created.
- */
-ol.coordinate.fromProjectedArray = function(array, axis) {
-  var firstAxis = axis.charAt(0);
-  if (firstAxis === 'n' || firstAxis === 's') {
-    return [array[1], array[0]];
-  } else {
-    return array;
-  }
-};
-
 goog.provide('ol.extent');
 goog.provide('ol.extent.Corner');
 goog.provide('ol.extent.Relationship');
 
+goog.require('ol');
 goog.require('ol.asserts');
 
 
@@ -7870,6 +7817,7 @@ ol.geom.flat.area.linearRingss = function(flatCoordinates, offset, endss, stride
 
 goog.provide('ol.geom.flat.closest');
 
+goog.require('ol');
 goog.require('ol.math');
 
 
@@ -8124,6 +8072,8 @@ ol.geom.flat.closest.getssClosestPoint = function(flatCoordinates, offset,
 };
 
 goog.provide('ol.geom.flat.deflate');
+
+goog.require('ol');
 
 
 /**
@@ -8965,6 +8915,7 @@ ol.geom.Point.prototype.setFlatCoordinates = function(layout, flatCoordinates) {
 
 goog.provide('ol.geom.flat.contains');
 
+goog.require('ol');
 goog.require('ol.extent');
 
 
@@ -9076,6 +9027,7 @@ ol.geom.flat.contains.linearRingssContainsXY = function(flatCoordinates, offset,
 
 goog.provide('ol.geom.flat.interiorpoint');
 
+goog.require('ol');
 goog.require('ol.array');
 goog.require('ol.geom.flat.contains');
 
@@ -9204,6 +9156,7 @@ ol.geom.flat.segments.forEach = function(flatCoordinates, offset, end, stride, c
 
 goog.provide('ol.geom.flat.intersectsextent');
 
+goog.require('ol');
 goog.require('ol.extent');
 goog.require('ol.geom.flat.contains');
 goog.require('ol.geom.flat.segments');
@@ -11026,8 +10979,6 @@ ol.animation.zoom = function(options) {
 
 goog.provide('ol.TileRange');
 
-goog.require('ol.asserts');
-
 
 /**
  * A representation of a contiguous block of tiles.  A tile range is specified
@@ -11062,34 +11013,6 @@ ol.TileRange = function(minX, maxX, minY, maxY) {
    */
   this.maxY = maxY;
 
-};
-
-
-/**
- * @param {...ol.TileCoord} var_args Tile coordinates.
- * @return {!ol.TileRange} Bounding tile box.
- */
-ol.TileRange.boundingTileRange = function(var_args) {
-  var tileCoord0 = /** @type {ol.TileCoord} */ (arguments[0]);
-  var tileCoord0Z = tileCoord0[0];
-  var tileCoord0X = tileCoord0[1];
-  var tileCoord0Y = tileCoord0[2];
-  var tileRange = new ol.TileRange(tileCoord0X, tileCoord0X,
-                                   tileCoord0Y, tileCoord0Y);
-  var i, ii, tileCoord, tileCoordX, tileCoordY, tileCoordZ;
-  for (i = 1, ii = arguments.length; i < ii; ++i) {
-    tileCoord = /** @type {ol.TileCoord} */ (arguments[i]);
-    tileCoordZ = tileCoord[0];
-    tileCoordX = tileCoord[1];
-    tileCoordY = tileCoord[2];
-    ol.asserts.assert(tileCoordZ == tileCoord0Z,
-        23); // The passed `ol.TileCoord`s must all have the same `z` value
-    tileRange.minX = Math.min(tileRange.minX, tileCoordX);
-    tileRange.maxX = Math.max(tileRange.maxX, tileCoordX);
-    tileRange.minY = Math.min(tileRange.minY, tileCoordY);
-    tileRange.maxY = Math.max(tileRange.maxY, tileCoordY);
-  }
-  return tileRange;
 };
 
 
@@ -11228,17 +11151,6 @@ ol.size.buffer = function(size, buffer, opt_size) {
 
 
 /**
- * Compares sizes for equality.
- * @param {ol.Size} a Size.
- * @param {ol.Size} b Size.
- * @return {boolean} Equals.
- */
-ol.size.equals = function(a, b) {
-  return a[0] == b[0] && a[1] == b[1];
-};
-
-
-/**
  * Determines if a size has a positive area.
  * @param {ol.Size} size The size to test.
  * @return {boolean} The size has a positive area.
@@ -11288,21 +11200,6 @@ ol.size.toSize = function(size, opt_size) {
 };
 
 goog.provide('ol.tilecoord');
-
-
-/**
- * @param {string} str String that follows pattern “z/x/y” where x, y and z are
- *   numbers.
- * @return {ol.TileCoord} Tile coord.
- */
-ol.tilecoord.createFromString = function(str) {
-  var v = str.split('/');
-  ol.DEBUG && console.assert(v.length === 3,
-      'must provide a string in "z/x/y" format, got "%s"', str);
-  return v.map(function(e) {
-    return parseInt(e, 10);
-  });
-};
 
 
 /**
@@ -12618,18 +12515,6 @@ ol.color.fromStringInternal_ = function(s) {
     ol.asserts.assert(false, 14); // Invalid color
   }
   return /** @type {ol.Color} */ (color);
-};
-
-
-/**
- * @param {ol.Color} color Color.
- * @return {boolean} Is valid.
- */
-ol.color.isValid = function(color) {
-  return 0 <= color[0] && color[0] < 256 &&
-      0 <= color[1] && color[1] < 256 &&
-      0 <= color[2] && color[2] < 256 &&
-      0 <= color[3] && color[3] <= 1;
 };
 
 
@@ -17200,6 +17085,7 @@ ol.Tile.State = {
 
 goog.provide('ol.structs.PriorityQueue');
 
+goog.require('ol');
 goog.require('ol.asserts');
 goog.require('ol.obj');
 
@@ -21170,6 +21056,7 @@ ol.layer.Layer.prototype.setSource = function(source) {
 
 goog.provide('ol.style.IconImageCache');
 
+goog.require('ol');
 goog.require('ol.color');
 
 
@@ -21675,7 +21562,7 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, fram
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
  *     callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @param {function(this: U, ol.layer.Layer): boolean} layerFilter Layer filter
@@ -22654,6 +22541,12 @@ ol.style.Circle = function(opt_options) {
 
   /**
    * @private
+   * @type {ol.style.AtlasManager|undefined}
+   */
+  this.atlasManager_ = options.atlasManager;
+
+  /**
+   * @private
    * @type {Array.<string>}
    */
   this.checksums_ = null;
@@ -22718,7 +22611,7 @@ ol.style.Circle = function(opt_options) {
    */
   this.hitDetectionImageSize_ = null;
 
-  this.render_(options.atlasManager);
+  this.render_(this.atlasManager_);
 
   /**
    * @type {boolean}
@@ -22736,6 +22629,25 @@ ol.style.Circle = function(opt_options) {
 
 };
 ol.inherits(ol.style.Circle, ol.style.Image);
+
+
+/**
+ * Clones the style.  If an atlasmanger was provided to the original style it will be used in the cloned style, too.
+ * @return {ol.style.Image} The cloned style.
+ * @api
+ */
+ol.style.Circle.prototype.clone = function() {
+  var style = new ol.style.Circle({
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
+    radius: this.getRadius(),
+    snapToPixel: this.getSnapToPixel(),
+    atlasManager: this.atlasManager_
+  });
+  style.setOpacity(this.getOpacity());
+  style.setScale(this.getScale());
+  return style;
+};
 
 
 /**
@@ -22836,6 +22748,18 @@ ol.style.Circle.prototype.getStroke = function() {
 
 
 /**
+ * Set the circle radius.
+ *
+ * @param {number} radius Circle radius.
+ * @api
+ */
+ol.style.Circle.prototype.setRadius = function(radius) {
+  this.radius_ = radius;
+  this.render_(this.atlasManager_);
+};
+
+
+/**
  * @inheritDoc
  */
 ol.style.Circle.prototype.listenImageChange = ol.nullFunction;
@@ -22864,7 +22788,7 @@ ol.style.Circle.prototype.render_ = function(atlasManager) {
   var strokeWidth = 0;
 
   if (this.stroke_) {
-    strokeStyle = ol.color.asString(this.stroke_.getColor());
+    strokeStyle = ol.colorlike.asColorLike(this.stroke_.getColor());
     strokeWidth = this.stroke_.getWidth();
     if (strokeWidth === undefined) {
       strokeWidth = ol.render.canvas.defaultLineWidth;
@@ -23081,6 +23005,19 @@ ol.style.Fill = function(opt_options) {
 
 
 /**
+ * Clones the style. The color is not cloned if it is an {@link ol.ColorLike}.
+ * @return {ol.style.Fill} The cloned style.
+ * @api
+ */
+ol.style.Fill.prototype.clone = function() {
+  var color = this.getColor();
+  return new ol.style.Fill({
+    color: (color && color.slice) ? color.slice() : color || undefined
+  });
+};
+
+
+/**
  * Get the fill color.
  * @return {ol.Color|ol.ColorLike} Color.
  * @api
@@ -23123,8 +23060,6 @@ ol.style.Fill.prototype.getChecksum = function() {
 
 goog.provide('ol.style.Stroke');
 
-goog.require('ol.color');
-
 
 /**
  * @classdesc
@@ -23143,7 +23078,7 @@ ol.style.Stroke = function(opt_options) {
 
   /**
    * @private
-   * @type {ol.Color|string}
+   * @type {ol.Color|ol.ColorLike}
    */
   this.color_ = options.color !== undefined ? options.color : null;
 
@@ -23186,8 +23121,26 @@ ol.style.Stroke = function(opt_options) {
 
 
 /**
+ * Clones the style.
+ * @return {ol.style.Stroke} The cloned style.
+ * @api
+ */
+ol.style.Stroke.prototype.clone = function() {
+  var color = this.getColor();
+  return new ol.style.Stroke({
+    color: (color && color.slice) ? color.slice() : color || undefined,
+    lineCap: this.getLineCap(),
+    lineDash: this.getLineDash() ? this.getLineDash().slice() : undefined,
+    lineJoin: this.getLineJoin(),
+    miterLimit: this.getMiterLimit(),
+    width: this.getWidth()
+  });
+};
+
+
+/**
  * Get the stroke color.
- * @return {ol.Color|string} Color.
+ * @return {ol.Color|ol.ColorLike} Color.
  * @api
  */
 ol.style.Stroke.prototype.getColor = function() {
@@ -23248,7 +23201,7 @@ ol.style.Stroke.prototype.getWidth = function() {
 /**
  * Set the color.
  *
- * @param {ol.Color|string} color Color.
+ * @param {ol.Color|ol.ColorLike} color Color.
  * @api
  */
 ol.style.Stroke.prototype.setColor = function(color) {
@@ -23328,9 +23281,17 @@ ol.style.Stroke.prototype.setWidth = function(width) {
  */
 ol.style.Stroke.prototype.getChecksum = function() {
   if (this.checksum_ === undefined) {
-    this.checksum_ = 's' +
-        (this.color_ ?
-            ol.color.asString(this.color_) : '-') + ',' +
+    this.checksum_ = 's';
+    if (this.color_) {
+      if (typeof this.color_ === 'string') {
+        this.checksum_ += this.color_;
+      } else {
+        this.checksum_ += ol.getUid(this.color_).toString();
+      }
+    } else {
+      this.checksum_ += '-';
+    }
+    this.checksum_ += ',' +
         (this.lineCap_ !== undefined ?
             this.lineCap_.toString() : '-') + ',' +
         (this.lineDash_ ?
@@ -23416,6 +23377,27 @@ ol.style.Style = function(opt_options) {
    */
   this.zIndex_ = options.zIndex;
 
+};
+
+
+/**
+ * Clones the style.
+ * @return {ol.style.Style} The cloned style.
+ * @api
+ */
+ol.style.Style.prototype.clone = function() {
+  var geometry = this.getGeometry();
+  if (geometry && geometry.clone) {
+    geometry = geometry.clone();
+  }
+  return new ol.style.Style({
+    geometry: geometry,
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    image: this.getImage() ? this.getImage().clone() : undefined,
+    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
+    text: this.getText() ? this.getText().clone() : undefined,
+    zIndex: this.getZIndex()
+  });
 };
 
 
@@ -24153,7 +24135,6 @@ goog.provide('ol.render.canvas.Immediate');
 
 goog.require('ol');
 goog.require('ol.array');
-goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.extent');
 goog.require('ol.geom.GeometryType');
@@ -24829,16 +24810,16 @@ ol.render.canvas.Immediate.prototype.drawMultiPolygon = function(geometry) {
     var endss = geometry.getEndss();
     var stride = geometry.getStride();
     var i, ii;
+    context.beginPath();
     for (i = 0, ii = endss.length; i < ii; ++i) {
       var ends = endss[i];
-      context.beginPath();
       offset = this.drawRings_(flatCoordinates, offset, ends, stride);
-      if (this.fillState_) {
-        context.fill();
-      }
-      if (this.strokeState_) {
-        context.stroke();
-      }
+    }
+    if (this.fillState_) {
+      context.fill();
+    }
+    if (this.strokeState_) {
+      context.stroke();
     }
   }
   if (this.text_ !== '') {
@@ -24988,7 +24969,7 @@ ol.render.canvas.Immediate.prototype.setFillStrokeStyle = function(fillStyle, st
           strokeStyleWidth : ol.render.canvas.defaultLineWidth),
       miterLimit: strokeStyleMiterLimit !== undefined ?
           strokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit,
-      strokeStyle: ol.color.asString(strokeStyleColor ?
+      strokeStyle: ol.colorlike.asColorLike(strokeStyleColor ?
           strokeStyleColor : ol.render.canvas.defaultStrokeStyle)
     };
   }
@@ -25068,7 +25049,7 @@ ol.render.canvas.Immediate.prototype.setTextStyle = function(textStyle) {
             textStrokeStyleWidth : ol.render.canvas.defaultLineWidth,
         miterLimit: textStrokeStyleMiterLimit !== undefined ?
             textStrokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit,
-        strokeStyle: ol.color.asString(textStrokeStyleColor ?
+        strokeStyle: ol.colorlike.asColorLike(textStrokeStyleColor ?
             textStrokeStyleColor : ol.render.canvas.defaultStrokeStyle)
       };
     }
@@ -25151,7 +25132,7 @@ ol.renderer.Layer.prototype.forEachFeatureAtCoordinate = ol.nullFunction;
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState Frame state.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer callback.
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
  * @template S,T
@@ -25354,21 +25335,6 @@ ol.renderer.Layer.prototype.updateUsedTiles = function(usedTiles, tileSource, z,
     usedTiles[tileSourceKey] = {};
     usedTiles[tileSourceKey][zKey] = tileRange;
   }
-};
-
-
-/**
- * @param {ol.Coordinate} center Center.
- * @param {number} resolution Resolution.
- * @param {ol.Size} size Size.
- * @protected
- * @return {ol.Coordinate} Snapped center.
- */
-ol.renderer.Layer.prototype.snapCenterToPixel = function(center, resolution, size) {
-  return [
-    resolution * (Math.round(center[0] / resolution) + (size[0] % 2) / 2),
-    resolution * (Math.round(center[1] / resolution) + (size[1] % 2) / 2)
-  ];
 };
 
 
@@ -25823,14 +25789,18 @@ ol.inherits(ol.render.canvas.Replay, ol.render.VectorContext);
  * @param {number} offset Offset.
  * @param {number} end End.
  * @param {number} stride Stride.
- * @param {boolean} close Close.
+ * @param {boolean} closed Last input coordinate equals first.
+ * @param {boolean} skipFirst Skip first coordinate.
  * @protected
  * @return {number} My end.
  */
-ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinates, offset, end, stride, close) {
+ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinates, offset, end, stride, closed, skipFirst) {
 
   var myEnd = this.coordinates.length;
   var extent = this.getBufferedMaxExtent();
+  if (skipFirst) {
+    offset += stride;
+  }
   var lastCoord = [flatCoordinates[offset], flatCoordinates[offset + 1]];
   var nextCoord = [NaN, NaN];
   var skipped = true;
@@ -25860,15 +25830,10 @@ ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinat
     lastRel = nextRel;
   }
 
-  // handle case where there is only one point to append
-  if (i === offset + stride) {
+  // Last coordinate equals first or only one point to append:
+  if ((closed && skipped) || i === offset + stride) {
     this.coordinates[myEnd++] = lastCoord[0];
     this.coordinates[myEnd++] = lastCoord[1];
-  }
-
-  if (close) {
-    this.coordinates[myEnd++] = flatCoordinates[offset];
-    this.coordinates[myEnd++] = flatCoordinates[offset + 1];
   }
   return myEnd;
 };
@@ -26180,8 +26145,8 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_STROKE_STYLE:
-        ol.DEBUG && console.assert(typeof instruction[1] === 'string',
-            '2nd instruction should be a string');
+        ol.DEBUG && console.assert(ol.colorlike.isColorLike(instruction[1]),
+            '2nd instruction should be a string, CanvasPattern, or CanvasGradient');
         ol.DEBUG && console.assert(typeof instruction[2] === 'number',
             '3rd instruction should be a number');
         ol.DEBUG && console.assert(typeof instruction[3] === 'string',
@@ -26199,7 +26164,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
           context.stroke();
           pendingStroke = 0;
         }
-        context.strokeStyle = /** @type {string} */ (instruction[1]);
+        context.strokeStyle = /** @type {ol.ColorLike} */ (instruction[1]);
         context.lineWidth = usePixelRatio ? lineWidth * pixelRatio : lineWidth;
         context.lineCap = /** @type {string} */ (instruction[3]);
         context.lineJoin = /** @type {string} */ (instruction[4]);
@@ -26466,7 +26431,7 @@ ol.inherits(ol.render.canvas.ImageReplay, ol.render.canvas.Replay);
  */
 ol.render.canvas.ImageReplay.prototype.drawCoordinates_ = function(flatCoordinates, offset, end, stride) {
   return this.appendFlatCoordinates(
-      flatCoordinates, offset, end, stride, false);
+      flatCoordinates, offset, end, stride, false, false);
 };
 
 
@@ -26631,7 +26596,7 @@ goog.provide('ol.render.canvas.LineStringReplay');
 
 goog.require('ol');
 goog.require('ol.array');
-goog.require('ol.color');
+goog.require('ol.colorlike');
 goog.require('ol.extent');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Instruction');
@@ -26659,14 +26624,14 @@ ol.render.canvas.LineStringReplay = function(tolerance, maxExtent, resolution, o
 
   /**
    * @private
-   * @type {{currentStrokeStyle: (string|undefined),
+   * @type {{currentStrokeStyle: (ol.ColorLike|undefined),
    *         currentLineCap: (string|undefined),
    *         currentLineDash: Array.<number>,
    *         currentLineJoin: (string|undefined),
    *         currentLineWidth: (number|undefined),
    *         currentMiterLimit: (number|undefined),
    *         lastStroke: number,
-   *         strokeStyle: (string|undefined),
+   *         strokeStyle: (ol.ColorLike|undefined),
    *         lineCap: (string|undefined),
    *         lineDash: Array.<number>,
    *         lineJoin: (string|undefined),
@@ -26704,7 +26669,7 @@ ol.inherits(ol.render.canvas.LineStringReplay, ol.render.canvas.Replay);
 ol.render.canvas.LineStringReplay.prototype.drawFlatCoordinates_ = function(flatCoordinates, offset, end, stride) {
   var myBegin = this.coordinates.length;
   var myEnd = this.appendFlatCoordinates(
-      flatCoordinates, offset, end, stride, false);
+      flatCoordinates, offset, end, stride, false, false);
   var moveToLineToInstruction =
       [ol.render.canvas.Instruction.MOVE_TO_LINE_TO, myBegin, myEnd];
   this.instructions.push(moveToLineToInstruction);
@@ -26852,7 +26817,7 @@ ol.render.canvas.LineStringReplay.prototype.setFillStrokeStyle = function(fillSt
   ol.DEBUG && console.assert(!fillStyle, 'fillStyle should be null');
   ol.DEBUG && console.assert(strokeStyle, 'strokeStyle should not be null');
   var strokeStyleColor = strokeStyle.getColor();
-  this.state_.strokeStyle = ol.color.asString(strokeStyleColor ?
+  this.state_.strokeStyle = ol.colorlike.asColorLike(strokeStyleColor ?
       strokeStyleColor : ol.render.canvas.defaultStrokeStyle);
   var strokeStyleLineCap = strokeStyle.getLineCap();
   this.state_.lineCap = strokeStyleLineCap !== undefined ?
@@ -26911,14 +26876,14 @@ ol.render.canvas.PolygonReplay = function(tolerance, maxExtent, resolution, over
   /**
    * @private
    * @type {{currentFillStyle: (ol.ColorLike|undefined),
-   *         currentStrokeStyle: (string|undefined),
+   *         currentStrokeStyle: (ol.ColorLike|undefined),
    *         currentLineCap: (string|undefined),
    *         currentLineDash: Array.<number>,
    *         currentLineJoin: (string|undefined),
    *         currentLineWidth: (number|undefined),
    *         currentMiterLimit: (number|undefined),
    *         fillStyle: (ol.ColorLike|undefined),
-   *         strokeStyle: (string|undefined),
+   *         strokeStyle: (ol.ColorLike|undefined),
    *         lineCap: (string|undefined),
    *         lineDash: Array.<number>,
    *         lineJoin: (string|undefined),
@@ -26959,9 +26924,6 @@ ol.render.canvas.PolygonReplay.prototype.drawFlatCoordinatess_ = function(flatCo
   var fill = state.fillStyle !== undefined;
   var stroke = state.strokeStyle != undefined;
   var numEnds = ends.length;
-  if (!fill && !stroke) {
-    return ends[numEnds - 1];
-  }
   var beginPathInstruction = [ol.render.canvas.Instruction.BEGIN_PATH];
   this.instructions.push(beginPathInstruction);
   this.hitDetectionInstructions.push(beginPathInstruction);
@@ -26969,7 +26931,7 @@ ol.render.canvas.PolygonReplay.prototype.drawFlatCoordinatess_ = function(flatCo
     var end = ends[i];
     var myBegin = this.coordinates.length;
     var myEnd = this.appendFlatCoordinates(
-        flatCoordinates, offset, end, stride, true);
+        flatCoordinates, offset, end, stride, true, !stroke);
     var moveToLineToInstruction =
         [ol.render.canvas.Instruction.MOVE_TO_LINE_TO, myBegin, myEnd];
     this.instructions.push(moveToLineToInstruction);
@@ -27030,7 +26992,7 @@ ol.render.canvas.PolygonReplay.prototype.drawCircle = function(circleGeometry, f
   var stride = circleGeometry.getStride();
   var myBegin = this.coordinates.length;
   this.appendFlatCoordinates(
-      flatCoordinates, 0, flatCoordinates.length, stride, false);
+      flatCoordinates, 0, flatCoordinates.length, stride, false, false);
   var beginPathInstruction = [ol.render.canvas.Instruction.BEGIN_PATH];
   var circleInstruction = [ol.render.canvas.Instruction.CIRCLE, myBegin];
   this.instructions.push(beginPathInstruction, circleInstruction);
@@ -27057,11 +27019,9 @@ ol.render.canvas.PolygonReplay.prototype.drawCircle = function(circleGeometry, f
 ol.render.canvas.PolygonReplay.prototype.drawPolygon = function(polygonGeometry, feature) {
   var state = this.state_;
   ol.DEBUG && console.assert(state, 'state should not be null');
-  var fillStyle = state.fillStyle;
   var strokeStyle = state.strokeStyle;
-  if (fillStyle === undefined && strokeStyle === undefined) {
-    return;
-  }
+  ol.DEBUG && console.assert(state.fillStyle !== undefined || strokeStyle !== undefined,
+      'fillStyle or strokeStyle should be defined');
   if (strokeStyle !== undefined) {
     ol.DEBUG && console.assert(state.lineWidth !== undefined,
         'state.lineWidth should be defined');
@@ -27180,7 +27140,7 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyle = function(fillStyle
   }
   if (strokeStyle) {
     var strokeStyleColor = strokeStyle.getColor();
-    state.strokeStyle = ol.color.asString(strokeStyleColor ?
+    state.strokeStyle = ol.colorlike.asColorLike(strokeStyleColor ?
         strokeStyleColor : ol.render.canvas.defaultStrokeStyle);
     var strokeStyleLineCap = strokeStyle.getLineCap();
     state.lineCap = strokeStyleLineCap !== undefined ?
@@ -27260,7 +27220,6 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function() {
 goog.provide('ol.render.canvas.TextReplay');
 
 goog.require('ol');
-goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Instruction');
@@ -27374,7 +27333,7 @@ ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offse
   this.beginGeometry(geometry, feature);
   var myBegin = this.coordinates.length;
   var myEnd =
-      this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false);
+      this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false, false);
   var fill = !!this.textFillState_;
   var stroke = !!this.textStrokeState_;
   var drawTextInstruction = [
@@ -27526,7 +27485,7 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
           textStrokeStyleWidth : ol.render.canvas.defaultLineWidth;
       var miterLimit = textStrokeStyleMiterLimit !== undefined ?
           textStrokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit;
-      var strokeStyle = ol.color.asString(textStrokeStyleColor ?
+      var strokeStyle = ol.colorlike.asColorLike(textStrokeStyleColor ?
           textStrokeStyleColor : ol.render.canvas.defaultStrokeStyle);
       if (!this.textStrokeState_) {
         this.textStrokeState_ = {
@@ -30025,7 +29984,7 @@ ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtCoordinate = function(co
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
  *     callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
@@ -30191,9 +30150,9 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
 
   /**
    * @protected
-   * @type {Array.<ol.Tile|undefined>}
+   * @type {!Array.<ol.Tile|undefined>}
    */
-  this.renderedTiles = null;
+  this.renderedTiles = [];
 
   /**
    * @protected
@@ -30250,15 +30209,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
   var tileGrid = tileSource.getTileGridForProjection(projection);
   var z = tileGrid.getZForResolution(viewState.resolution, this.zDirection);
   var tileResolution = tileGrid.getResolution(z);
-  var center = viewState.center;
-  var extent;
-  if (tileResolution == viewState.resolution) {
-    center = this.snapCenterToPixel(center, tileResolution, frameState.size);
-    extent = ol.extent.getForViewAndSize(
-        center, tileResolution, viewState.rotation, frameState.size);
-  } else {
-    extent = frameState.extent;
-  }
+  var extent = frameState.extent;
 
   if (layerState.extent !== undefined) {
     extent = ol.extent.getIntersection(extent, layerState.extent);
@@ -30282,7 +30233,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
 
   var useInterimTilesOnError = tileLayer.getUseInterimTilesOnError();
 
-  var tmpExtent = ol.extent.createEmpty();
+  var tmpExtent = this.tmpExtent;
   var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
   var childTileRange, fullyLoaded, tile, x, y;
   var drawableTile = (
@@ -30322,7 +30273,8 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
   /** @type {Array.<number>} */
   var zs = Object.keys(tilesToDrawByZ).map(Number);
   zs.sort(ol.array.numberSafeCompareFunction);
-  var renderables = [];
+  var renderables = this.renderedTiles;
+  renderables.length = 0;
   var i, ii, currentZ, tileCoordKey, tilesToDraw;
   for (i = 0, ii = zs.length; i < ii; ++i) {
     currentZ = zs[i];
@@ -30334,7 +30286,6 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
       }
     }
   }
-  this.renderedTiles = renderables;
 
   this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
   this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio,
@@ -30349,7 +30300,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
  *     callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
@@ -34248,7 +34199,7 @@ ol.renderer.webgl.ImageLayer.prototype.hasFeatureAtCoordinate = function(coordin
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
  *     callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
@@ -34623,14 +34574,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   var tileGutter = frameState.pixelRatio * tileSource.getGutter(projection);
 
   var center = viewState.center;
-  var extent;
-  if (tileResolution == viewState.resolution) {
-    center = this.snapCenterToPixel(center, tileResolution, frameState.size);
-    extent = ol.extent.getForViewAndSize(
-        center, tileResolution, viewState.rotation, frameState.size);
-  } else {
-    extent = frameState.extent;
-  }
+  var extent = frameState.extent;
   var tileRange = tileGrid.getTileRangeForExtentAndResolution(
       extent, tileResolution);
 
@@ -34805,9 +34749,9 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   var texCoordMatrix = this.texCoordMatrix;
   ol.transform.reset(texCoordMatrix);
   ol.transform.translate(texCoordMatrix,
-      (center[0] - framebufferExtent[0]) /
+      (Math.round(center[0] / tileResolution) * tileResolution - framebufferExtent[0]) /
           (framebufferExtent[2] - framebufferExtent[0]),
-      (center[1] - framebufferExtent[1]) /
+      (Math.round(center[1] / tileResolution) * tileResolution - framebufferExtent[1]) /
           (framebufferExtent[3] - framebufferExtent[1]));
   if (viewState.rotation !== 0) {
     ol.transform.rotate(texCoordMatrix, viewState.rotation);
@@ -34826,7 +34770,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
  *     callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
@@ -34854,7 +34798,7 @@ ol.renderer.webgl.TileLayer.prototype.forEachLayerAtPixel = function(pixel, fram
       gl.RGBA, gl.UNSIGNED_BYTE, imageData);
 
   if (imageData[3] > 0) {
-    return callback.call(thisArg, this.getLayer(),  imageData);
+    return callback.call(thisArg, this.getLayer(), imageData);
   } else {
     return undefined;
   }
@@ -35012,7 +34956,7 @@ ol.renderer.webgl.VectorLayer.prototype.hasFeatureAtCoordinate = function(coordi
 /**
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
  *     callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
  * @return {T|undefined} Callback result.
@@ -35178,6 +35122,7 @@ ol.renderer.webgl.VectorLayer.prototype.renderFeature = function(feature, resolu
 
 goog.provide('ol.structs.LRUCache');
 
+goog.require('ol');
 goog.require('ol.asserts');
 goog.require('ol.obj');
 
@@ -36483,7 +36428,8 @@ ol.Map = function(options) {
        * @param {ol.Collection.Event} event Collection event.
        */
       function(event) {
-        var id = event.element.getId();
+        var overlay = /** @type {ol.Overlay} */ (event.element);
+        var id = overlay.getId();
         if (id !== undefined) {
           delete this.overlayIdIndex_[id.toString()];
         }
@@ -36644,11 +36590,12 @@ ol.Map.prototype.forEachFeatureAtPixel = function(pixel, callback, opt_this, opt
  * execute a callback with each matching layer. Layers included in the
  * detection can be configured through `opt_layerFilter`.
  * @param {ol.Pixel} pixel Pixel.
- * @param {function(this: S, ol.layer.Layer, ol.Color): T} callback Layer
- *     callback. This callback will recieve two arguments: first is the
- *     {@link ol.layer.Layer layer}, second argument is {@link ol.Color}
- *     and will be null for layer types that do not currently support this
- *     argument. To stop detection callback functions can return a truthy value.
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback
+ *     Layer callback. This callback will recieve two arguments: first is the
+ *     {@link ol.layer.Layer layer}, second argument is an array representing
+ *     [R, G, B, A] pixel values (0 - 255) and will be `null` for layer types
+ *     that do not currently support this argument. To stop detection, callback
+ *     functions can return a truthy value.
  * @param {S=} opt_this Value to use as `this` when executing `callback`.
  * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
  *     filter function. The filter function will receive one argument, the
@@ -40627,6 +40574,7 @@ ol.featureloader.xhr = function(url, format) {
 goog.provide('ol.format.Feature');
 
 goog.require('ol.geom.Geometry');
+goog.require('ol.obj');
 goog.require('ol.proj');
 
 
@@ -40649,6 +40597,12 @@ ol.format.Feature = function() {
    * @type {ol.proj.Projection}
    */
   this.defaultDataProjection = null;
+
+  /**
+   * @protected
+   * @type {ol.proj.Projection}
+   */
+  this.defaultFeatureProjection = null;
 
 };
 
@@ -40690,19 +40644,10 @@ ol.format.Feature.prototype.getReadOptions = function(source, opt_options) {
  *     Updated options.
  */
 ol.format.Feature.prototype.adaptOptions = function(options) {
-  var updatedOptions;
-  if (options) {
-    updatedOptions = {
-      featureProjection: options.featureProjection,
-      dataProjection: options.dataProjection ?
-          options.dataProjection : this.defaultDataProjection,
-      rightHanded: options.rightHanded
-    };
-    if (options.decimals) {
-      updatedOptions.decimals = options.decimals;
-    }
-  }
-  return updatedOptions;
+  return ol.obj.assign({
+    dataProjection: this.defaultDataProjection,
+    featureProjection: this.defaultFeatureProjection
+  }, options);
 };
 
 
@@ -41019,6 +40964,7 @@ ol.format.JSONFeature.prototype.writeGeometryObject = function(geometry, opt_opt
 
 goog.provide('ol.geom.flat.interpolate');
 
+goog.require('ol');
 goog.require('ol.array');
 goog.require('ol.math');
 
@@ -43193,6 +43139,843 @@ ol.format.EsriJSON.prototype.writeFeaturesObject = function(features, opt_option
   });
 };
 
+goog.provide('ol.format.filter.Filter');
+
+goog.require('ol');
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @struct
+ * @api
+ */
+ol.format.filter.Filter = function(tagName) {
+
+  /**
+   * @private
+   * @type {!string}
+   */
+  this.tagName_ = tagName;
+};
+
+/**
+ * The XML tag name for a filter.
+ * @returns {!string} Name.
+ */
+ol.format.filter.Filter.prototype.getTagName = function() {
+  return this.tagName_;
+};
+
+goog.provide('ol.format.filter.Logical');
+
+goog.require('ol');
+goog.require('ol.format.filter.Filter');
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature logical filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @extends {ol.format.filter.Filter}
+ */
+ol.format.filter.Logical = function(tagName) {
+  ol.format.filter.Filter.call(this, tagName);
+};
+ol.inherits(ol.format.filter.Logical, ol.format.filter.Filter);
+
+goog.provide('ol.format.filter.LogicalBinary');
+
+goog.require('ol');
+goog.require('ol.format.filter.Logical');
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature binary logical filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @param {!ol.format.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.filter.Filter} conditionB Second filter condition.
+ * @extends {ol.format.filter.Logical}
+ */
+ol.format.filter.LogicalBinary = function(tagName, conditionA, conditionB) {
+
+  ol.format.filter.Logical.call(this, tagName);
+
+  /**
+   * @public
+   * @type {!ol.format.filter.Filter}
+   */
+  this.conditionA = conditionA;
+
+  /**
+   * @public
+   * @type {!ol.format.filter.Filter}
+   */
+  this.conditionB = conditionB;
+
+};
+ol.inherits(ol.format.filter.LogicalBinary, ol.format.filter.Logical);
+
+goog.provide('ol.format.filter.And');
+
+goog.require('ol');
+goog.require('ol.format.filter.LogicalBinary');
+
+/**
+ * @classdesc
+ * Represents a logical `<And>` operator between two filter conditions.
+ *
+ * @constructor
+ * @param {!ol.format.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.filter.Filter} conditionB Second filter condition.
+ * @extends {ol.format.filter.LogicalBinary}
+ * @api
+ */
+ol.format.filter.And = function(conditionA, conditionB) {
+  ol.format.filter.LogicalBinary.call(this, 'And', conditionA, conditionB);
+};
+ol.inherits(ol.format.filter.And, ol.format.filter.LogicalBinary);
+
+goog.provide('ol.format.filter.Bbox');
+
+goog.require('ol');
+goog.require('ol.format.filter.Filter');
+
+
+/**
+ * @classdesc
+ * Represents a `<BBOX>` operator to test whether a geometry-valued property
+ * intersects a fixed bounding box
+ *
+ * @constructor
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.Extent} extent Extent.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @extends {ol.format.filter.Filter}
+ * @api
+ */
+ol.format.filter.Bbox = function(geometryName, extent, opt_srsName) {
+
+  ol.format.filter.Filter.call(this, 'BBOX');
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.geometryName = geometryName;
+
+  /**
+   * @public
+   * @type {ol.Extent}
+   */
+  this.extent = extent;
+
+  /**
+   * @public
+   * @type {string|undefined}
+   */
+  this.srsName = opt_srsName;
+};
+ol.inherits(ol.format.filter.Bbox, ol.format.filter.Filter);
+
+goog.provide('ol.format.filter.Comparison');
+
+goog.require('ol');
+goog.require('ol.format.filter.Filter');
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature property comparison filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @param {!string} propertyName Name of the context property to compare.
+ * @extends {ol.format.filter.Filter}
+ * @api
+ */
+ol.format.filter.Comparison = function(tagName, propertyName) {
+
+  ol.format.filter.Filter.call(this, tagName);
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.propertyName = propertyName;
+};
+ol.inherits(ol.format.filter.Comparison, ol.format.filter.Filter);
+
+goog.provide('ol.format.filter.ComparisonBinary');
+
+goog.require('ol');
+goog.require('ol.format.filter.Comparison');
+
+
+/**
+ * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
+ * Base class for WFS GetFeature property binary comparison filters.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.filter.Comparison}
+ * @api
+ */
+ol.format.filter.ComparisonBinary = function(
+    tagName, propertyName, expression, opt_matchCase) {
+
+  ol.format.filter.Comparison.call(this, tagName, propertyName);
+
+  /**
+   * @public
+   * @type {!(string|number)}
+   */
+  this.expression = expression;
+
+  /**
+   * @public
+   * @type {boolean|undefined}
+   */
+  this.matchCase = opt_matchCase;
+};
+ol.inherits(ol.format.filter.ComparisonBinary, ol.format.filter.Comparison);
+
+goog.provide('ol.format.filter.EqualTo');
+
+goog.require('ol');
+goog.require('ol.format.filter.ComparisonBinary');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.filter.EqualTo = function(propertyName, expression, opt_matchCase) {
+  ol.format.filter.ComparisonBinary.call(this, 'PropertyIsEqualTo', propertyName, expression, opt_matchCase);
+};
+ol.inherits(ol.format.filter.EqualTo, ol.format.filter.ComparisonBinary);
+
+goog.provide('ol.format.filter.GreaterThan');
+
+goog.require('ol');
+goog.require('ol.format.filter.ComparisonBinary');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsGreaterThan>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.filter.GreaterThan = function(propertyName, expression) {
+  ol.format.filter.ComparisonBinary.call(this, 'PropertyIsGreaterThan', propertyName, expression);
+};
+ol.inherits(ol.format.filter.GreaterThan, ol.format.filter.ComparisonBinary);
+
+goog.provide('ol.format.filter.GreaterThanOrEqualTo');
+
+goog.require('ol');
+goog.require('ol.format.filter.ComparisonBinary');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsGreaterThanOrEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.filter.GreaterThanOrEqualTo = function(propertyName, expression) {
+  ol.format.filter.ComparisonBinary.call(this, 'PropertyIsGreaterThanOrEqualTo', propertyName, expression);
+};
+ol.inherits(ol.format.filter.GreaterThanOrEqualTo, ol.format.filter.ComparisonBinary);
+
+goog.provide('ol.format.filter.Spatial');
+
+goog.require('ol');
+goog.require('ol.format.filter.Filter');
+
+
+/**
+ * @classdesc
+ * Represents a spatial operator to test whether a geometry-valued property
+ * relates to a given geometry.
+ *
+ * @constructor
+ * @param {!string} tagName The XML tag name for this filter.
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.geom.Geometry} geometry Geometry.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @extends {ol.format.filter.Filter}
+ * @api
+ */
+ol.format.filter.Spatial = function(tagName, geometryName, geometry, opt_srsName) {
+
+  ol.format.filter.Filter.call(this, tagName);
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.geometryName = geometryName || 'the_geom';
+
+  /**
+   * @public
+   * @type {ol.geom.Geometry}
+   */
+  this.geometry = geometry;
+
+  /**
+   * @public
+   * @type {string|undefined}
+   */
+  this.srsName = opt_srsName;
+};
+ol.inherits(ol.format.filter.Spatial, ol.format.filter.Filter);
+
+goog.provide('ol.format.filter.Intersects');
+
+goog.require('ol');
+goog.require('ol.format.filter.Spatial');
+
+
+/**
+ * @classdesc
+ * Represents a `<Intersects>` operator to test whether a geometry-valued property
+ * intersects a given geometry.
+ *
+ * @constructor
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.geom.Geometry} geometry Geometry.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @extends {ol.format.filter.Spatial}
+ * @api
+ */
+ol.format.filter.Intersects = function(geometryName, geometry, opt_srsName) {
+
+  ol.format.filter.Spatial.call(this, 'Intersects', geometryName, geometry, opt_srsName);
+
+};
+ol.inherits(ol.format.filter.Intersects, ol.format.filter.Spatial);
+
+goog.provide('ol.format.filter.IsBetween');
+
+goog.require('ol');
+goog.require('ol.format.filter.Comparison');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsBetween>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} lowerBoundary The lower bound of the range.
+ * @param {!number} upperBoundary The upper bound of the range.
+ * @extends {ol.format.filter.Comparison}
+ * @api
+ */
+ol.format.filter.IsBetween = function(propertyName, lowerBoundary, upperBoundary) {
+  ol.format.filter.Comparison.call(this, 'PropertyIsBetween', propertyName);
+
+  /**
+   * @public
+   * @type {!number}
+   */
+  this.lowerBoundary = lowerBoundary;
+
+  /**
+   * @public
+   * @type {!number}
+   */
+  this.upperBoundary = upperBoundary;
+};
+ol.inherits(ol.format.filter.IsBetween, ol.format.filter.Comparison);
+
+goog.provide('ol.format.filter.IsLike');
+
+goog.require('ol');
+goog.require('ol.format.filter.Comparison');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsLike>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!string} pattern Text pattern.
+ * @param {string=} opt_wildCard Pattern character which matches any sequence of
+ *    zero or more string characters. Default is '*'.
+ * @param {string=} opt_singleChar pattern character which matches any single
+ *    string character. Default is '.'.
+ * @param {string=} opt_escapeChar Escape character which can be used to escape
+ *    the pattern characters. Default is '!'.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.filter.Comparison}
+ * @api
+ */
+ol.format.filter.IsLike = function(propertyName, pattern,
+    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
+  ol.format.filter.Comparison.call(this, 'PropertyIsLike', propertyName);
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.pattern = pattern;
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.wildCard = (opt_wildCard !== undefined) ? opt_wildCard : '*';
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.singleChar = (opt_singleChar !== undefined) ? opt_singleChar : '.';
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.escapeChar = (opt_escapeChar !== undefined) ? opt_escapeChar : '!';
+
+  /**
+   * @public
+   * @type {boolean|undefined}
+   */
+  this.matchCase = opt_matchCase;
+};
+ol.inherits(ol.format.filter.IsLike, ol.format.filter.Comparison);
+
+goog.provide('ol.format.filter.IsNull');
+
+goog.require('ol');
+goog.require('ol.format.filter.Comparison');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsNull>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @extends {ol.format.filter.Comparison}
+ * @api
+ */
+ol.format.filter.IsNull = function(propertyName) {
+  ol.format.filter.Comparison.call(this, 'PropertyIsNull', propertyName);
+};
+ol.inherits(ol.format.filter.IsNull, ol.format.filter.Comparison);
+
+goog.provide('ol.format.filter.LessThan');
+
+goog.require('ol');
+goog.require('ol.format.filter.ComparisonBinary');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsLessThan>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.filter.LessThan = function(propertyName, expression) {
+  ol.format.filter.ComparisonBinary.call(this, 'PropertyIsLessThan', propertyName, expression);
+};
+ol.inherits(ol.format.filter.LessThan, ol.format.filter.ComparisonBinary);
+
+goog.provide('ol.format.filter.LessThanOrEqualTo');
+
+goog.require('ol');
+goog.require('ol.format.filter.ComparisonBinary');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsLessThanOrEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @extends {ol.format.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.filter.LessThanOrEqualTo = function(propertyName, expression) {
+  ol.format.filter.ComparisonBinary.call(this, 'PropertyIsLessThanOrEqualTo', propertyName, expression);
+};
+ol.inherits(ol.format.filter.LessThanOrEqualTo, ol.format.filter.ComparisonBinary);
+
+goog.provide('ol.format.filter.Not');
+
+goog.require('ol');
+goog.require('ol.format.filter.Logical');
+
+
+/**
+ * @classdesc
+ * Represents a logical `<Not>` operator for a filter condition.
+ *
+ * @constructor
+ * @param {!ol.format.filter.Filter} condition Filter condition.
+ * @extends {ol.format.filter.Logical}
+ * @api
+ */
+ol.format.filter.Not = function(condition) {
+
+  ol.format.filter.Logical.call(this, 'Not');
+
+  /**
+   * @public
+   * @type {!ol.format.filter.Filter}
+   */
+  this.condition = condition;
+};
+ol.inherits(ol.format.filter.Not, ol.format.filter.Logical);
+
+goog.provide('ol.format.filter.NotEqualTo');
+
+goog.require('ol');
+goog.require('ol.format.filter.ComparisonBinary');
+
+
+/**
+ * @classdesc
+ * Represents a `<PropertyIsNotEqualTo>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @extends {ol.format.filter.ComparisonBinary}
+ * @api
+ */
+ol.format.filter.NotEqualTo = function(propertyName, expression, opt_matchCase) {
+  ol.format.filter.ComparisonBinary.call(this, 'PropertyIsNotEqualTo', propertyName, expression, opt_matchCase);
+};
+ol.inherits(ol.format.filter.NotEqualTo, ol.format.filter.ComparisonBinary);
+
+goog.provide('ol.format.filter.Or');
+
+goog.require('ol');
+goog.require('ol.format.filter.LogicalBinary');
+
+
+/**
+ * @classdesc
+ * Represents a logical `<Or>` operator between two filter conditions.
+ *
+ * @constructor
+ * @param {!ol.format.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.filter.Filter} conditionB Second filter condition.
+ * @extends {ol.format.filter.LogicalBinary}
+ * @api
+ */
+ol.format.filter.Or = function(conditionA, conditionB) {
+  ol.format.filter.LogicalBinary.call(this, 'Or', conditionA, conditionB);
+};
+ol.inherits(ol.format.filter.Or, ol.format.filter.LogicalBinary);
+
+goog.provide('ol.format.filter.Within');
+
+goog.require('ol');
+goog.require('ol.format.filter.Spatial');
+
+
+/**
+ * @classdesc
+ * Represents a `<Within>` operator to test whether a geometry-valued property
+ * is within a given geometry.
+ *
+ * @constructor
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.geom.Geometry} geometry Geometry.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @extends {ol.format.filter.Spatial}
+ * @api
+ */
+ol.format.filter.Within = function(geometryName, geometry, opt_srsName) {
+
+  ol.format.filter.Spatial.call(this, 'Within', geometryName, geometry, opt_srsName);
+
+};
+ol.inherits(ol.format.filter.Within, ol.format.filter.Spatial);
+
+goog.provide('ol.format.filter');
+
+goog.require('ol');
+goog.require('ol.format.filter.And');
+goog.require('ol.format.filter.Bbox');
+goog.require('ol.format.filter.EqualTo');
+goog.require('ol.format.filter.GreaterThan');
+goog.require('ol.format.filter.GreaterThanOrEqualTo');
+goog.require('ol.format.filter.Intersects');
+goog.require('ol.format.filter.IsBetween');
+goog.require('ol.format.filter.IsLike');
+goog.require('ol.format.filter.IsNull');
+goog.require('ol.format.filter.LessThan');
+goog.require('ol.format.filter.LessThanOrEqualTo');
+goog.require('ol.format.filter.Not');
+goog.require('ol.format.filter.NotEqualTo');
+goog.require('ol.format.filter.Or');
+goog.require('ol.format.filter.Within');
+
+
+/**
+ * Create a logical `<And>` operator between two filter conditions.
+ *
+ * @param {!ol.format.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.filter.Filter} conditionB Second filter condition.
+ * @returns {!ol.format.filter.And} `<And>` operator.
+ * @api
+ */
+ol.format.filter.and = function(conditionA, conditionB) {
+  return new ol.format.filter.And(conditionA, conditionB);
+};
+
+
+/**
+ * Create a logical `<Or>` operator between two filter conditions.
+ *
+ * @param {!ol.format.filter.Filter} conditionA First filter condition.
+ * @param {!ol.format.filter.Filter} conditionB Second filter condition.
+ * @returns {!ol.format.filter.Or} `<Or>` operator.
+ * @api
+ */
+ol.format.filter.or = function(conditionA, conditionB) {
+  return new ol.format.filter.Or(conditionA, conditionB);
+};
+
+
+/**
+ * Represents a logical `<Not>` operator for a filter condition.
+ *
+ * @param {!ol.format.filter.Filter} condition Filter condition.
+ * @returns {!ol.format.filter.Not} `<Not>` operator.
+ * @api
+ */
+ol.format.filter.not = function(condition) {
+  return new ol.format.filter.Not(condition);
+};
+
+
+/**
+ * Create a `<BBOX>` operator to test whether a geometry-valued property
+ * intersects a fixed bounding box
+ *
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.Extent} extent Extent.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @returns {!ol.format.filter.Bbox} `<BBOX>` operator.
+ * @api
+ */
+ol.format.filter.bbox = function(geometryName, extent, opt_srsName) {
+  return new ol.format.filter.Bbox(geometryName, extent, opt_srsName);
+};
+
+/**
+ * Create a `<Intersects>` operator to test whether a geometry-valued property
+ * intersects a given geometry.
+ *
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.geom.Geometry} geometry Geometry.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @returns {!ol.format.filter.Intersects} `<Intersects>` operator.
+ * @api
+ */
+ol.format.filter.intersects = function(geometryName, geometry, opt_srsName) {
+  return new ol.format.filter.Intersects(geometryName, geometry, opt_srsName);
+};
+
+/**
+ * Create a `<Within>` operator to test whether a geometry-valued property
+ * is within a given geometry.
+ *
+ * @param {!string} geometryName Geometry name to use.
+ * @param {!ol.geom.Geometry} geometry Geometry.
+ * @param {string=} opt_srsName SRS name. No srsName attribute will be
+ *    set on geometries when this is not provided.
+ * @returns {!ol.format.filter.Within} `<Within>` operator.
+ * @api
+ */
+ol.format.filter.within = function(geometryName, geometry, opt_srsName) {
+  return new ol.format.filter.Within(geometryName, geometry, opt_srsName);
+};
+
+
+/**
+ * Creates a `<PropertyIsEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @returns {!ol.format.filter.EqualTo} `<PropertyIsEqualTo>` operator.
+ * @api
+ */
+ol.format.filter.equalTo = function(propertyName, expression, opt_matchCase) {
+  return new ol.format.filter.EqualTo(propertyName, expression, opt_matchCase);
+};
+
+
+/**
+ * Creates a `<PropertyIsNotEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!(string|number)} expression The value to compare.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @returns {!ol.format.filter.NotEqualTo} `<PropertyIsNotEqualTo>` operator.
+ * @api
+ */
+ol.format.filter.notEqualTo = function(propertyName, expression, opt_matchCase) {
+  return new ol.format.filter.NotEqualTo(propertyName, expression, opt_matchCase);
+};
+
+
+/**
+ * Creates a `<PropertyIsLessThan>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.filter.LessThan} `<PropertyIsLessThan>` operator.
+ * @api
+ */
+ol.format.filter.lessThan = function(propertyName, expression) {
+  return new ol.format.filter.LessThan(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsLessThanOrEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.filter.LessThanOrEqualTo} `<PropertyIsLessThanOrEqualTo>` operator.
+ * @api
+ */
+ol.format.filter.lessThanOrEqualTo = function(propertyName, expression) {
+  return new ol.format.filter.LessThanOrEqualTo(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsGreaterThan>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.filter.GreaterThan} `<PropertyIsGreaterThan>` operator.
+ * @api
+ */
+ol.format.filter.greaterThan = function(propertyName, expression) {
+  return new ol.format.filter.GreaterThan(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsGreaterThanOrEqualTo>` comparison operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} expression The value to compare.
+ * @returns {!ol.format.filter.GreaterThanOrEqualTo} `<PropertyIsGreaterThanOrEqualTo>` operator.
+ * @api
+ */
+ol.format.filter.greaterThanOrEqualTo = function(propertyName, expression) {
+  return new ol.format.filter.GreaterThanOrEqualTo(propertyName, expression);
+};
+
+
+/**
+ * Creates a `<PropertyIsNull>` comparison operator to test whether a property value
+ * is null.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @returns {!ol.format.filter.IsNull} `<PropertyIsNull>` operator.
+ * @api
+ */
+ol.format.filter.isNull = function(propertyName) {
+  return new ol.format.filter.IsNull(propertyName);
+};
+
+
+/**
+ * Creates a `<PropertyIsBetween>` comparison operator to test whether an expression
+ * value lies within a range given by a lower and upper bound (inclusive).
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!number} lowerBoundary The lower bound of the range.
+ * @param {!number} upperBoundary The upper bound of the range.
+ * @returns {!ol.format.filter.IsBetween} `<PropertyIsBetween>` operator.
+ * @api
+ */
+ol.format.filter.between = function(propertyName, lowerBoundary, upperBoundary) {
+  return new ol.format.filter.IsBetween(propertyName, lowerBoundary, upperBoundary);
+};
+
+
+/**
+ * Represents a `<PropertyIsLike>` comparison operator that matches a string property
+ * value against a text pattern.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!string} pattern Text pattern.
+ * @param {string=} opt_wildCard Pattern character which matches any sequence of
+ *    zero or more string characters. Default is '*'.
+ * @param {string=} opt_singleChar pattern character which matches any single
+ *    string character. Default is '.'.
+ * @param {string=} opt_escapeChar Escape character which can be used to escape
+ *    the pattern characters. Default is '!'.
+ * @param {boolean=} opt_matchCase Case-sensitive?
+ * @returns {!ol.format.filter.IsLike} `<PropertyIsLike>` operator.
+ * @api
+ */
+ol.format.filter.like = function(propertyName, pattern,
+    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
+  return new ol.format.filter.IsLike(propertyName, pattern,
+    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase);
+};
+
 goog.provide('ol.geom.GeometryCollection');
 
 goog.require('ol');
@@ -43560,6 +44343,10 @@ ol.format.GeoJSON = function(opt_options) {
       options.defaultDataProjection ?
           options.defaultDataProjection : 'EPSG:4326');
 
+
+  if (options.featureProjection) {
+    this.defaultFeatureProjection = ol.proj.get(options.featureProjection);
+  }
 
   /**
    * Name of the geometry attribute for features.
@@ -48418,9 +49205,10 @@ ol.style.Icon = function(opt_options) {
       options.anchorYUnits : ol.style.Icon.AnchorUnits.FRACTION;
 
   /**
+   * @private
    * @type {?string}
    */
-  var crossOrigin =
+  this.crossOrigin_ =
       options.crossOrigin !== undefined ? options.crossOrigin : null;
 
   /**
@@ -48456,9 +49244,10 @@ ol.style.Icon = function(opt_options) {
       ol.Image.State.IDLE : ol.Image.State.LOADED;
 
   /**
+   * @private
    * @type {ol.Color}
    */
-  var color = options.color !== undefined ? ol.color.asArray(options.color) :
+  this.color_ = options.color !== undefined ? ol.color.asArray(options.color) :
       null;
 
   /**
@@ -48466,7 +49255,7 @@ ol.style.Icon = function(opt_options) {
    * @type {ol.style.IconImage}
    */
   this.iconImage_ = ol.style.IconImage.get(
-      image, /** @type {string} */ (src), imgSize, crossOrigin, imageState, color);
+      image, /** @type {string} */ (src), imgSize, this.crossOrigin_, imageState, this.color_);
 
   /**
    * @private
@@ -48530,6 +49319,47 @@ ol.style.Icon = function(opt_options) {
 
 };
 ol.inherits(ol.style.Icon, ol.style.Image);
+
+
+/**
+ * Clones the style.
+ * @return {ol.style.Icon} The cloned style.
+ * @api
+ */
+ol.style.Icon.prototype.clone = function() {
+  var oldImage = this.getImage(1);
+  var newImage;
+  if (this.iconImage_.getImageState() === ol.Image.State.LOADED) {
+    if (oldImage.tagName.toUpperCase() === 'IMG') {
+      newImage = /** @type {Image} */ (oldImage.cloneNode(true));
+    } else {
+      newImage = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
+      var context = newImage.getContext('2d');
+      newImage.width = oldImage.width;
+      newImage.height = oldImage.height;
+      context.drawImage(oldImage, 0, 0);
+    }
+  }
+  return new ol.style.Icon({
+    anchor: this.anchor_.slice(),
+    anchorOrigin: this.anchorOrigin_,
+    anchorXUnits: this.anchorXUnits_,
+    anchorYUnits: this.anchorYUnits_,
+    crossOrigin: this.crossOrigin_,
+    color: (this.color_ && this.color_.slice) ? this.color_.slice() : this.color_ || undefined,
+    img: newImage ? newImage : undefined,
+    imgSize: newImage ? this.iconImage_.getSize().slice() : undefined,
+    src: newImage ? undefined : this.getSrc(),
+    offset: this.offset_.slice(),
+    offsetOrigin: this.offsetOrigin_,
+    size: this.size_ !== null ? this.size_.slice() : undefined,
+    opacity: this.getOpacity(),
+    scale: this.getScale(),
+    snapToPixel: this.getSnapToPixel(),
+    rotation: this.getRotation(),
+    rotateWithView: this.getRotateWithView()
+  });
+};
 
 
 /**
@@ -48817,6 +49647,28 @@ ol.style.Text = function(opt_options) {
  * @private
  */
 ol.style.Text.DEFAULT_FILL_COLOR_ = '#333';
+
+
+/**
+ * Clones the style.
+ * @return {ol.style.Text} The cloned style.
+ * @api
+ */
+ol.style.Text.prototype.clone = function() {
+  return new ol.style.Text({
+    font: this.getFont(),
+    rotation: this.getRotation(),
+    rotateWithView: this.getRotateWithView(),
+    scale: this.getScale(),
+    text: this.getText(),
+    textAlign: this.getTextAlign(),
+    textBaseline: this.getTextBaseline(),
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
+    offsetX: this.getOffsetX(),
+    offsetY: this.getOffsetY()
+  });
+};
 
 
 /**
@@ -49361,31 +50213,22 @@ ol.format.KML.createNameStyleFunction_ = function(foundStyle, name) {
     }
   }
   if (foundStyle.getText() !== null) {
-	// clone the text style, customizing it with name, alignments and offset.
+    // clone the text style, customizing it with name, alignments and offset.
     // Note that kml does not support many text options that OpenLayers does (rotation, textBaseline).
     var foundText = foundStyle.getText();
-    textStyle = new ol.style.Text({
-      text: name,
-      textAlign: textAlign,
-      offsetX: textOffset[0],
-      offsetY: textOffset[1],
-      font: foundText.getFont() || ol.format.KML.DEFAULT_TEXT_STYLE_.getFont(),
-      scale: foundText.getScale() || ol.format.KML.DEFAULT_TEXT_STYLE_.getScale(),
-      fill: foundText.getFill() || ol.format.KML.DEFAULT_TEXT_STYLE_.getFill(),
-      stroke: foundText.getStroke() || ol.format.KML.DEFAULT_TEXT_STROKE_STYLE_
-    });
+    textStyle = foundText.clone();
+    textStyle.setFont(foundText.getFont() || ol.format.KML.DEFAULT_TEXT_STYLE_.getFont());
+    textStyle.setScale(foundText.getScale() || ol.format.KML.DEFAULT_TEXT_STYLE_.getScale());
+    textStyle.setFill(foundText.getFill() || ol.format.KML.DEFAULT_TEXT_STYLE_.getFill());
+    textStyle.setStroke(foundText.getStroke() || ol.format.KML.DEFAULT_TEXT_STROKE_STYLE_);
   } else {
-    textStyle = new ol.style.Text({
-      text: name,
-      offsetX: textOffset[0],
-      offsetY: textOffset[1],
-      textAlign: textAlign,
-      font: ol.format.KML.DEFAULT_TEXT_STYLE_.getFont(),
-      scale: ol.format.KML.DEFAULT_TEXT_STYLE_.getScale(),
-      fill: ol.format.KML.DEFAULT_TEXT_STYLE_.getFill(),
-      stroke: ol.format.KML.DEFAULT_TEXT_STROKE_STYLE_
-    });
+    textStyle = ol.format.KML.DEFAULT_TEXT_STYLE_.clone();
   }
+  textStyle.setText(name);
+  textStyle.setOffsetX(textOffset[0]);
+  textStyle.setOffsetY(textOffset[1]);
+  textStyle.setTextAlign(textAlign);
+
   var nameStyle = new ol.style.Style({
     text: textStyle
   });
@@ -52012,6 +52855,7 @@ var ieee754 = _dereq_('ieee754');
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
     this.pos = 0;
+    this.type = 0;
     this.length = this.buf.length;
 }
 
@@ -52039,6 +52883,7 @@ Pbf.prototype = {
                 tag = val >> 3,
                 startPos = this.pos;
 
+            this.type = val & 0x7;
             readField(tag, result, this);
 
             if (this.pos === startPos) this.skip(val);
@@ -52275,14 +53120,15 @@ Pbf.prototype = {
 
         this.pos++; // reserve 1 byte for short string length
 
+        var startPos = this.pos;
         // write the string directly to the buffer and see how much was written
-        var newPos = writeUtf8(this.buf, str, this.pos);
-        var len = newPos - this.pos;
+        this.pos = writeUtf8(this.buf, str, this.pos);
+        var len = this.pos - startPos;
 
-        if (len >= 0x80) makeRoomForExtraLength(this.pos, len, this);
+        if (len >= 0x80) makeRoomForExtraLength(startPos, len, this);
 
         // finally, write the message length in the reserved place and restore the position
-        this.pos--;
+        this.pos = startPos - 1;
         this.writeVarint(len);
         this.pos += len;
     },
@@ -52397,7 +53243,7 @@ function readVarintRemainder(l, s, p) {
 }
 
 function readPackedEnd(pbf) {
-    return (pbf.buf[pbf.pos - 1] & 0x7) === Pbf.Bytes ?
+    return pbf.type === Pbf.Bytes ?
         pbf.readVarint() + pbf.pos : pbf.pos + 1;
 }
 
@@ -53599,843 +54445,6 @@ ol.format.MVT.readGeometry_ = function(rawFeature) {
       ends);
 
   return geom;
-};
-
-goog.provide('ol.format.ogc.filter.Filter');
-
-goog.require('ol');
-
-
-/**
- * @classdesc
- * Abstract class; normally only used for creating subclasses and not instantiated in apps.
- * Base class for WFS GetFeature filters.
- *
- * @constructor
- * @param {!string} tagName The XML tag name for this filter.
- * @struct
- * @api
- */
-ol.format.ogc.filter.Filter = function(tagName) {
-
-  /**
-   * @private
-   * @type {!string}
-   */
-  this.tagName_ = tagName;
-};
-
-/**
- * The XML tag name for a filter.
- * @returns {!string} Name.
- */
-ol.format.ogc.filter.Filter.prototype.getTagName = function() {
-  return this.tagName_;
-};
-
-goog.provide('ol.format.ogc.filter.Logical');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Filter');
-
-
-/**
- * @classdesc
- * Abstract class; normally only used for creating subclasses and not instantiated in apps.
- * Base class for WFS GetFeature logical filters.
- *
- * @constructor
- * @param {!string} tagName The XML tag name for this filter.
- * @extends {ol.format.ogc.filter.Filter}
- */
-ol.format.ogc.filter.Logical = function(tagName) {
-  ol.format.ogc.filter.Filter.call(this, tagName);
-};
-ol.inherits(ol.format.ogc.filter.Logical, ol.format.ogc.filter.Filter);
-
-goog.provide('ol.format.ogc.filter.LogicalBinary');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Logical');
-
-
-/**
- * @classdesc
- * Abstract class; normally only used for creating subclasses and not instantiated in apps.
- * Base class for WFS GetFeature binary logical filters.
- *
- * @constructor
- * @param {!string} tagName The XML tag name for this filter.
- * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
- * @extends {ol.format.ogc.filter.Logical}
- */
-ol.format.ogc.filter.LogicalBinary = function(tagName, conditionA, conditionB) {
-
-  ol.format.ogc.filter.Logical.call(this, tagName);
-
-  /**
-   * @public
-   * @type {!ol.format.ogc.filter.Filter}
-   */
-  this.conditionA = conditionA;
-
-  /**
-   * @public
-   * @type {!ol.format.ogc.filter.Filter}
-   */
-  this.conditionB = conditionB;
-
-};
-ol.inherits(ol.format.ogc.filter.LogicalBinary, ol.format.ogc.filter.Logical);
-
-goog.provide('ol.format.ogc.filter.And');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.LogicalBinary');
-
-/**
- * @classdesc
- * Represents a logical `<And>` operator between two filter conditions.
- *
- * @constructor
- * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
- * @extends {ol.format.ogc.filter.LogicalBinary}
- * @api
- */
-ol.format.ogc.filter.And = function(conditionA, conditionB) {
-  ol.format.ogc.filter.LogicalBinary.call(this, 'And', conditionA, conditionB);
-};
-ol.inherits(ol.format.ogc.filter.And, ol.format.ogc.filter.LogicalBinary);
-
-goog.provide('ol.format.ogc.filter.Bbox');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Filter');
-
-
-/**
- * @classdesc
- * Represents a `<BBOX>` operator to test whether a geometry-valued property
- * intersects a fixed bounding box
- *
- * @constructor
- * @param {!string} geometryName Geometry name to use.
- * @param {!ol.Extent} extent Extent.
- * @param {string=} opt_srsName SRS name. No srsName attribute will be
- *    set on geometries when this is not provided.
- * @extends {ol.format.ogc.filter.Filter}
- * @api
- */
-ol.format.ogc.filter.Bbox = function(geometryName, extent, opt_srsName) {
-
-  ol.format.ogc.filter.Filter.call(this, 'BBOX');
-
-  /**
-   * @public
-   * @type {!string}
-   */
-  this.geometryName = geometryName;
-
-  /**
-   * @public
-   * @type {ol.Extent}
-   */
-  this.extent = extent;
-
-  /**
-   * @public
-   * @type {string|undefined}
-   */
-  this.srsName = opt_srsName;
-};
-ol.inherits(ol.format.ogc.filter.Bbox, ol.format.ogc.filter.Filter);
-
-goog.provide('ol.format.ogc.filter.Comparison');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Filter');
-
-
-/**
- * @classdesc
- * Abstract class; normally only used for creating subclasses and not instantiated in apps.
- * Base class for WFS GetFeature property comparison filters.
- *
- * @constructor
- * @param {!string} tagName The XML tag name for this filter.
- * @param {!string} propertyName Name of the context property to compare.
- * @extends {ol.format.ogc.filter.Filter}
- * @api
- */
-ol.format.ogc.filter.Comparison = function(tagName, propertyName) {
-
-  ol.format.ogc.filter.Filter.call(this, tagName);
-
-  /**
-   * @public
-   * @type {!string}
-   */
-  this.propertyName = propertyName;
-};
-ol.inherits(ol.format.ogc.filter.Comparison, ol.format.ogc.filter.Filter);
-
-goog.provide('ol.format.ogc.filter.ComparisonBinary');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Comparison');
-
-
-/**
- * @classdesc
- * Abstract class; normally only used for creating subclasses and not instantiated in apps.
- * Base class for WFS GetFeature property binary comparison filters.
- *
- * @constructor
- * @param {!string} tagName The XML tag name for this filter.
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!(string|number)} expression The value to compare.
- * @param {boolean=} opt_matchCase Case-sensitive?
- * @extends {ol.format.ogc.filter.Comparison}
- * @api
- */
-ol.format.ogc.filter.ComparisonBinary = function(
-    tagName, propertyName, expression, opt_matchCase) {
-
-  ol.format.ogc.filter.Comparison.call(this, tagName, propertyName);
-
-  /**
-   * @public
-   * @type {!(string|number)}
-   */
-  this.expression = expression;
-
-  /**
-   * @public
-   * @type {boolean|undefined}
-   */
-  this.matchCase = opt_matchCase;
-};
-ol.inherits(ol.format.ogc.filter.ComparisonBinary, ol.format.ogc.filter.Comparison);
-
-goog.provide('ol.format.ogc.filter.EqualTo');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.ComparisonBinary');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsEqualTo>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!(string|number)} expression The value to compare.
- * @param {boolean=} opt_matchCase Case-sensitive?
- * @extends {ol.format.ogc.filter.ComparisonBinary}
- * @api
- */
-ol.format.ogc.filter.EqualTo = function(propertyName, expression, opt_matchCase) {
-  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsEqualTo', propertyName, expression, opt_matchCase);
-};
-ol.inherits(ol.format.ogc.filter.EqualTo, ol.format.ogc.filter.ComparisonBinary);
-
-goog.provide('ol.format.ogc.filter.GreaterThan');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.ComparisonBinary');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsGreaterThan>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @extends {ol.format.ogc.filter.ComparisonBinary}
- * @api
- */
-ol.format.ogc.filter.GreaterThan = function(propertyName, expression) {
-  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsGreaterThan', propertyName, expression);
-};
-ol.inherits(ol.format.ogc.filter.GreaterThan, ol.format.ogc.filter.ComparisonBinary);
-
-goog.provide('ol.format.ogc.filter.GreaterThanOrEqualTo');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.ComparisonBinary');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsGreaterThanOrEqualTo>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @extends {ol.format.ogc.filter.ComparisonBinary}
- * @api
- */
-ol.format.ogc.filter.GreaterThanOrEqualTo = function(propertyName, expression) {
-  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsGreaterThanOrEqualTo', propertyName, expression);
-};
-ol.inherits(ol.format.ogc.filter.GreaterThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
-
-goog.provide('ol.format.ogc.filter.Spatial');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Filter');
-
-
-/**
- * @classdesc
- * Represents a spatial operator to test whether a geometry-valued property
- * relates to a given geometry.
- *
- * @constructor
- * @param {!string} tagName The XML tag name for this filter.
- * @param {!string} geometryName Geometry name to use.
- * @param {!ol.geom.Geometry} geometry Geometry.
- * @param {string=} opt_srsName SRS name. No srsName attribute will be
- *    set on geometries when this is not provided.
- * @extends {ol.format.ogc.filter.Filter}
- * @api
- */
-ol.format.ogc.filter.Spatial = function(tagName, geometryName, geometry, opt_srsName) {
-
-  ol.format.ogc.filter.Filter.call(this, tagName);
-
-  /**
-   * @public
-   * @type {!string}
-   */
-  this.geometryName = geometryName || 'the_geom';
-
-  /**
-   * @public
-   * @type {ol.geom.Geometry}
-   */
-  this.geometry = geometry;
-
-  /**
-   * @public
-   * @type {string|undefined}
-   */
-  this.srsName = opt_srsName;
-};
-ol.inherits(ol.format.ogc.filter.Spatial, ol.format.ogc.filter.Filter);
-
-goog.provide('ol.format.ogc.filter.Intersects');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Spatial');
-
-
-/**
- * @classdesc
- * Represents a `<Intersects>` operator to test whether a geometry-valued property
- * intersects a given geometry.
- *
- * @constructor
- * @param {!string} geometryName Geometry name to use.
- * @param {!ol.geom.Geometry} geometry Geometry.
- * @param {string=} opt_srsName SRS name. No srsName attribute will be
- *    set on geometries when this is not provided.
- * @extends {ol.format.ogc.filter.Spatial}
- * @api
- */
-ol.format.ogc.filter.Intersects = function(geometryName, geometry, opt_srsName) {
-
-  ol.format.ogc.filter.Spatial.call(this, 'Intersects', geometryName, geometry, opt_srsName);
-
-};
-ol.inherits(ol.format.ogc.filter.Intersects, ol.format.ogc.filter.Spatial);
-
-goog.provide('ol.format.ogc.filter.IsBetween');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Comparison');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsBetween>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} lowerBoundary The lower bound of the range.
- * @param {!number} upperBoundary The upper bound of the range.
- * @extends {ol.format.ogc.filter.Comparison}
- * @api
- */
-ol.format.ogc.filter.IsBetween = function(propertyName, lowerBoundary, upperBoundary) {
-  ol.format.ogc.filter.Comparison.call(this, 'PropertyIsBetween', propertyName);
-
-  /**
-   * @public
-   * @type {!number}
-   */
-  this.lowerBoundary = lowerBoundary;
-
-  /**
-   * @public
-   * @type {!number}
-   */
-  this.upperBoundary = upperBoundary;
-};
-ol.inherits(ol.format.ogc.filter.IsBetween, ol.format.ogc.filter.Comparison);
-
-goog.provide('ol.format.ogc.filter.IsLike');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Comparison');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsLike>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!string} pattern Text pattern.
- * @param {string=} opt_wildCard Pattern character which matches any sequence of
- *    zero or more string characters. Default is '*'.
- * @param {string=} opt_singleChar pattern character which matches any single
- *    string character. Default is '.'.
- * @param {string=} opt_escapeChar Escape character which can be used to escape
- *    the pattern characters. Default is '!'.
- * @param {boolean=} opt_matchCase Case-sensitive?
- * @extends {ol.format.ogc.filter.Comparison}
- * @api
- */
-ol.format.ogc.filter.IsLike = function(propertyName, pattern,
-    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
-  ol.format.ogc.filter.Comparison.call(this, 'PropertyIsLike', propertyName);
-
-  /**
-   * @public
-   * @type {!string}
-   */
-  this.pattern = pattern;
-
-  /**
-   * @public
-   * @type {!string}
-   */
-  this.wildCard = (opt_wildCard !== undefined) ? opt_wildCard : '*';
-
-  /**
-   * @public
-   * @type {!string}
-   */
-  this.singleChar = (opt_singleChar !== undefined) ? opt_singleChar : '.';
-
-  /**
-   * @public
-   * @type {!string}
-   */
-  this.escapeChar = (opt_escapeChar !== undefined) ? opt_escapeChar : '!';
-
-  /**
-   * @public
-   * @type {boolean|undefined}
-   */
-  this.matchCase = opt_matchCase;
-};
-ol.inherits(ol.format.ogc.filter.IsLike, ol.format.ogc.filter.Comparison);
-
-goog.provide('ol.format.ogc.filter.IsNull');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Comparison');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsNull>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @extends {ol.format.ogc.filter.Comparison}
- * @api
- */
-ol.format.ogc.filter.IsNull = function(propertyName) {
-  ol.format.ogc.filter.Comparison.call(this, 'PropertyIsNull', propertyName);
-};
-ol.inherits(ol.format.ogc.filter.IsNull, ol.format.ogc.filter.Comparison);
-
-goog.provide('ol.format.ogc.filter.LessThan');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.ComparisonBinary');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsLessThan>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @extends {ol.format.ogc.filter.ComparisonBinary}
- * @api
- */
-ol.format.ogc.filter.LessThan = function(propertyName, expression) {
-  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsLessThan', propertyName, expression);
-};
-ol.inherits(ol.format.ogc.filter.LessThan, ol.format.ogc.filter.ComparisonBinary);
-
-goog.provide('ol.format.ogc.filter.LessThanOrEqualTo');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.ComparisonBinary');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsLessThanOrEqualTo>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @extends {ol.format.ogc.filter.ComparisonBinary}
- * @api
- */
-ol.format.ogc.filter.LessThanOrEqualTo = function(propertyName, expression) {
-  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsLessThanOrEqualTo', propertyName, expression);
-};
-ol.inherits(ol.format.ogc.filter.LessThanOrEqualTo, ol.format.ogc.filter.ComparisonBinary);
-
-goog.provide('ol.format.ogc.filter.Not');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Logical');
-
-
-/**
- * @classdesc
- * Represents a logical `<Not>` operator for a filter condition.
- *
- * @constructor
- * @param {!ol.format.ogc.filter.Filter} condition Filter condition.
- * @extends {ol.format.ogc.filter.Logical}
- * @api
- */
-ol.format.ogc.filter.Not = function(condition) {
-
-  ol.format.ogc.filter.Logical.call(this, 'Not');
-
-  /**
-   * @public
-   * @type {!ol.format.ogc.filter.Filter}
-   */
-  this.condition = condition;
-};
-ol.inherits(ol.format.ogc.filter.Not, ol.format.ogc.filter.Logical);
-
-goog.provide('ol.format.ogc.filter.NotEqualTo');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.ComparisonBinary');
-
-
-/**
- * @classdesc
- * Represents a `<PropertyIsNotEqualTo>` comparison operator.
- *
- * @constructor
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!(string|number)} expression The value to compare.
- * @param {boolean=} opt_matchCase Case-sensitive?
- * @extends {ol.format.ogc.filter.ComparisonBinary}
- * @api
- */
-ol.format.ogc.filter.NotEqualTo = function(propertyName, expression, opt_matchCase) {
-  ol.format.ogc.filter.ComparisonBinary.call(this, 'PropertyIsNotEqualTo', propertyName, expression, opt_matchCase);
-};
-ol.inherits(ol.format.ogc.filter.NotEqualTo, ol.format.ogc.filter.ComparisonBinary);
-
-goog.provide('ol.format.ogc.filter.Or');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.LogicalBinary');
-
-
-/**
- * @classdesc
- * Represents a logical `<Or>` operator between two filter conditions.
- *
- * @constructor
- * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
- * @extends {ol.format.ogc.filter.LogicalBinary}
- * @api
- */
-ol.format.ogc.filter.Or = function(conditionA, conditionB) {
-  ol.format.ogc.filter.LogicalBinary.call(this, 'Or', conditionA, conditionB);
-};
-ol.inherits(ol.format.ogc.filter.Or, ol.format.ogc.filter.LogicalBinary);
-
-goog.provide('ol.format.ogc.filter.Within');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.Spatial');
-
-
-/**
- * @classdesc
- * Represents a `<Within>` operator to test whether a geometry-valued property
- * is within a given geometry.
- *
- * @constructor
- * @param {!string} geometryName Geometry name to use.
- * @param {!ol.geom.Geometry} geometry Geometry.
- * @param {string=} opt_srsName SRS name. No srsName attribute will be
- *    set on geometries when this is not provided.
- * @extends {ol.format.ogc.filter.Spatial}
- * @api
- */
-ol.format.ogc.filter.Within = function(geometryName, geometry, opt_srsName) {
-
-  ol.format.ogc.filter.Spatial.call(this, 'Within', geometryName, geometry, opt_srsName);
-
-};
-ol.inherits(ol.format.ogc.filter.Within, ol.format.ogc.filter.Spatial);
-
-goog.provide('ol.format.ogc.filter');
-
-goog.require('ol');
-goog.require('ol.format.ogc.filter.And');
-goog.require('ol.format.ogc.filter.Bbox');
-goog.require('ol.format.ogc.filter.EqualTo');
-goog.require('ol.format.ogc.filter.GreaterThan');
-goog.require('ol.format.ogc.filter.GreaterThanOrEqualTo');
-goog.require('ol.format.ogc.filter.Intersects');
-goog.require('ol.format.ogc.filter.IsBetween');
-goog.require('ol.format.ogc.filter.IsLike');
-goog.require('ol.format.ogc.filter.IsNull');
-goog.require('ol.format.ogc.filter.LessThan');
-goog.require('ol.format.ogc.filter.LessThanOrEqualTo');
-goog.require('ol.format.ogc.filter.Not');
-goog.require('ol.format.ogc.filter.NotEqualTo');
-goog.require('ol.format.ogc.filter.Or');
-goog.require('ol.format.ogc.filter.Within');
-
-
-/**
- * Create a logical `<And>` operator between two filter conditions.
- *
- * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
- * @returns {!ol.format.ogc.filter.And} `<And>` operator.
- * @api
- */
-ol.format.ogc.filter.and = function(conditionA, conditionB) {
-  return new ol.format.ogc.filter.And(conditionA, conditionB);
-};
-
-
-/**
- * Create a logical `<Or>` operator between two filter conditions.
- *
- * @param {!ol.format.ogc.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.ogc.filter.Filter} conditionB Second filter condition.
- * @returns {!ol.format.ogc.filter.Or} `<Or>` operator.
- * @api
- */
-ol.format.ogc.filter.or = function(conditionA, conditionB) {
-  return new ol.format.ogc.filter.Or(conditionA, conditionB);
-};
-
-
-/**
- * Represents a logical `<Not>` operator for a filter condition.
- *
- * @param {!ol.format.ogc.filter.Filter} condition Filter condition.
- * @returns {!ol.format.ogc.filter.Not} `<Not>` operator.
- * @api
- */
-ol.format.ogc.filter.not = function(condition) {
-  return new ol.format.ogc.filter.Not(condition);
-};
-
-
-/**
- * Create a `<BBOX>` operator to test whether a geometry-valued property
- * intersects a fixed bounding box
- *
- * @param {!string} geometryName Geometry name to use.
- * @param {!ol.Extent} extent Extent.
- * @param {string=} opt_srsName SRS name. No srsName attribute will be
- *    set on geometries when this is not provided.
- * @returns {!ol.format.ogc.filter.Bbox} `<BBOX>` operator.
- * @api
- */
-ol.format.ogc.filter.bbox = function(geometryName, extent, opt_srsName) {
-  return new ol.format.ogc.filter.Bbox(geometryName, extent, opt_srsName);
-};
-
-/**
- * Create a `<Intersects>` operator to test whether a geometry-valued property
- * intersects a given geometry.
- *
- * @param {!string} geometryName Geometry name to use.
- * @param {!ol.geom.Geometry} geometry Geometry.
- * @param {string=} opt_srsName SRS name. No srsName attribute will be
- *    set on geometries when this is not provided.
- * @returns {!ol.format.ogc.filter.Intersects} `<Intersects>` operator.
- * @api
- */
-ol.format.ogc.filter.intersects = function(geometryName, geometry, opt_srsName) {
-  return new ol.format.ogc.filter.Intersects(geometryName, geometry, opt_srsName);
-};
-
-/**
- * Create a `<Within>` operator to test whether a geometry-valued property
- * is within a given geometry.
- *
- * @param {!string} geometryName Geometry name to use.
- * @param {!ol.geom.Geometry} geometry Geometry.
- * @param {string=} opt_srsName SRS name. No srsName attribute will be
- *    set on geometries when this is not provided.
- * @returns {!ol.format.ogc.filter.Within} `<Within>` operator.
- * @api
- */
-ol.format.ogc.filter.within = function(geometryName, geometry, opt_srsName) {
-  return new ol.format.ogc.filter.Within(geometryName, geometry, opt_srsName);
-};
-
-
-/**
- * Creates a `<PropertyIsEqualTo>` comparison operator.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!(string|number)} expression The value to compare.
- * @param {boolean=} opt_matchCase Case-sensitive?
- * @returns {!ol.format.ogc.filter.EqualTo} `<PropertyIsEqualTo>` operator.
- * @api
- */
-ol.format.ogc.filter.equalTo = function(propertyName, expression, opt_matchCase) {
-  return new ol.format.ogc.filter.EqualTo(propertyName, expression, opt_matchCase);
-};
-
-
-/**
- * Creates a `<PropertyIsNotEqualTo>` comparison operator.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!(string|number)} expression The value to compare.
- * @param {boolean=} opt_matchCase Case-sensitive?
- * @returns {!ol.format.ogc.filter.NotEqualTo} `<PropertyIsNotEqualTo>` operator.
- * @api
- */
-ol.format.ogc.filter.notEqualTo = function(propertyName, expression, opt_matchCase) {
-  return new ol.format.ogc.filter.NotEqualTo(propertyName, expression, opt_matchCase);
-};
-
-
-/**
- * Creates a `<PropertyIsLessThan>` comparison operator.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @returns {!ol.format.ogc.filter.LessThan} `<PropertyIsLessThan>` operator.
- * @api
- */
-ol.format.ogc.filter.lessThan = function(propertyName, expression) {
-  return new ol.format.ogc.filter.LessThan(propertyName, expression);
-};
-
-
-/**
- * Creates a `<PropertyIsLessThanOrEqualTo>` comparison operator.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @returns {!ol.format.ogc.filter.LessThanOrEqualTo} `<PropertyIsLessThanOrEqualTo>` operator.
- * @api
- */
-ol.format.ogc.filter.lessThanOrEqualTo = function(propertyName, expression) {
-  return new ol.format.ogc.filter.LessThanOrEqualTo(propertyName, expression);
-};
-
-
-/**
- * Creates a `<PropertyIsGreaterThan>` comparison operator.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @returns {!ol.format.ogc.filter.GreaterThan} `<PropertyIsGreaterThan>` operator.
- * @api
- */
-ol.format.ogc.filter.greaterThan = function(propertyName, expression) {
-  return new ol.format.ogc.filter.GreaterThan(propertyName, expression);
-};
-
-
-/**
- * Creates a `<PropertyIsGreaterThanOrEqualTo>` comparison operator.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} expression The value to compare.
- * @returns {!ol.format.ogc.filter.GreaterThanOrEqualTo} `<PropertyIsGreaterThanOrEqualTo>` operator.
- * @api
- */
-ol.format.ogc.filter.greaterThanOrEqualTo = function(propertyName, expression) {
-  return new ol.format.ogc.filter.GreaterThanOrEqualTo(propertyName, expression);
-};
-
-
-/**
- * Creates a `<PropertyIsNull>` comparison operator to test whether a property value
- * is null.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @returns {!ol.format.ogc.filter.IsNull} `<PropertyIsNull>` operator.
- * @api
- */
-ol.format.ogc.filter.isNull = function(propertyName) {
-  return new ol.format.ogc.filter.IsNull(propertyName);
-};
-
-
-/**
- * Creates a `<PropertyIsBetween>` comparison operator to test whether an expression
- * value lies within a range given by a lower and upper bound (inclusive).
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!number} lowerBoundary The lower bound of the range.
- * @param {!number} upperBoundary The upper bound of the range.
- * @returns {!ol.format.ogc.filter.IsBetween} `<PropertyIsBetween>` operator.
- * @api
- */
-ol.format.ogc.filter.between = function(propertyName, lowerBoundary, upperBoundary) {
-  return new ol.format.ogc.filter.IsBetween(propertyName, lowerBoundary, upperBoundary);
-};
-
-
-/**
- * Represents a `<PropertyIsLike>` comparison operator that matches a string property
- * value against a text pattern.
- *
- * @param {!string} propertyName Name of the context property to compare.
- * @param {!string} pattern Text pattern.
- * @param {string=} opt_wildCard Pattern character which matches any sequence of
- *    zero or more string characters. Default is '*'.
- * @param {string=} opt_singleChar pattern character which matches any single
- *    string character. Default is '.'.
- * @param {string=} opt_escapeChar Escape character which can be used to escape
- *    the pattern characters. Default is '!'.
- * @param {boolean=} opt_matchCase Case-sensitive?
- * @returns {!ol.format.ogc.filter.IsLike} `<PropertyIsLike>` operator.
- * @api
- */
-ol.format.ogc.filter.like = function(propertyName, pattern,
-    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
-  return new ol.format.ogc.filter.IsLike(propertyName, pattern,
-    opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase);
 };
 
 // FIXME add typedef for stack state objects
@@ -56078,7 +56087,7 @@ goog.require('ol');
 goog.require('ol.asserts');
 goog.require('ol.format.GML3');
 goog.require('ol.format.GMLBase');
-goog.require('ol.format.ogc.filter');
+goog.require('ol.format.filter');
 goog.require('ol.format.XMLFeature');
 goog.require('ol.format.XSD');
 goog.require('ol.geom.Geometry');
@@ -56624,7 +56633,7 @@ ol.format.WFS.writeQuery_ = function(node, featureType, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.Filter} filter Filter.
+ * @param {ol.format.filter.Filter} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56640,7 +56649,7 @@ ol.format.WFS.writeFilterCondition_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.Bbox} filter Filter.
+ * @param {ol.format.filter.Bbox} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56655,7 +56664,7 @@ ol.format.WFS.writeBboxFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.Intersects} filter Filter.
+ * @param {ol.format.filter.Intersects} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56670,7 +56679,7 @@ ol.format.WFS.writeIntersectsFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.Within} filter Filter.
+ * @param {ol.format.filter.Within} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56685,7 +56694,7 @@ ol.format.WFS.writeWithinFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.LogicalBinary} filter Filter.
+ * @param {ol.format.filter.LogicalBinary} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56707,7 +56716,7 @@ ol.format.WFS.writeLogicalFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.Not} filter Filter.
+ * @param {ol.format.filter.Not} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56724,7 +56733,7 @@ ol.format.WFS.writeNotFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.ComparisonBinary} filter Filter.
+ * @param {ol.format.filter.ComparisonBinary} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56739,7 +56748,7 @@ ol.format.WFS.writeComparisonFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.IsNull} filter Filter.
+ * @param {ol.format.filter.IsNull} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56750,7 +56759,7 @@ ol.format.WFS.writeIsNullFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.IsBetween} filter Filter.
+ * @param {ol.format.filter.IsBetween} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56769,7 +56778,7 @@ ol.format.WFS.writeIsBetweenFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.ogc.filter.IsLike} filter Filter.
+ * @param {ol.format.filter.IsLike} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
@@ -56898,11 +56907,11 @@ ol.format.WFS.prototype.writeGetFeature = function(options) {
     if (options.bbox) {
       ol.asserts.assert(options.geometryName,
           12); // `options.geometryName` must also be provided when `options.bbox` is set
-      var bbox = ol.format.ogc.filter.bbox(
+      var bbox = ol.format.filter.bbox(
           /** @type {string} */ (options.geometryName), options.bbox, options.srsName);
       if (filter) {
         // if bbox and filter are both set, combine the two into a single filter
-        filter = ol.format.ogc.filter.and(filter, bbox);
+        filter = ol.format.filter.and(filter, bbox);
       } else {
         filter = bbox;
       }
@@ -59966,6 +59975,7 @@ ol.geom.Circle.prototype.transform;
 
 goog.provide('ol.geom.flat.geodesic');
 
+goog.require('ol');
 goog.require('ol.math');
 goog.require('ol.proj');
 
@@ -60142,6 +60152,7 @@ ol.geom.flat.geodesic.parallel = function(lat, lon1, lon2, projection, squaredTo
 
 goog.provide('ol.Graticule');
 
+goog.require('ol');
 goog.require('ol.extent');
 goog.require('ol.geom.GeometryLayout');
 goog.require('ol.geom.LineString');
@@ -65647,14 +65658,19 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
             return !this.multi_;
           }
         }, this, this.layerFilter_);
-    if (selected.length > 0 && features.getLength() == 1 && features.item(0) == selected[0]) {
-      // No change; an already selected feature is selected again
-      selected.length = 0;
-    } else {
-      if (features.getLength() !== 0) {
-        deselected = Array.prototype.concat(features.getArray());
-        features.clear();
+    var i;
+    for (i = features.getLength() - 1; i >= 0; --i) {
+      var feature = features.item(i);
+      var index = selected.indexOf(feature);
+      if (index > -1) {
+        // feature is already selected
+        selected.splice(index, 1);
+      } else {
+        features.remove(feature);
+        deselected.push(feature);
       }
+    }
+    if (selected.length !== 0) {
       features.extend(selected);
     }
   } else {
@@ -65679,9 +65695,9 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
             return !this.multi_;
           }
         }, this, this.layerFilter_);
-    var i;
-    for (i = deselected.length - 1; i >= 0; --i) {
-      features.remove(deselected[i]);
+    var j;
+    for (j = deselected.length - 1; j >= 0; --j) {
+      features.remove(deselected[j]);
     }
     features.extend(selected);
   }
@@ -65726,6 +65742,9 @@ ol.interaction.Select.getDefaultStyleFunction = function() {
       styles[ol.geom.GeometryType.LINE_STRING]);
 
   return function(feature, resolution) {
+    if (!feature.getGeometry()) {
+      return null;
+    }
     return styles[feature.getGeometry().getType()];
   };
 };
@@ -67408,6 +67427,7 @@ ol.reproj.Tile.prototype.unlistenSources_ = function() {
 
 goog.provide('ol.TileUrlFunction');
 
+goog.require('ol');
 goog.require('ol.asserts');
 goog.require('ol.math');
 goog.require('ol.tilecoord');
@@ -67514,17 +67534,27 @@ ol.TileUrlFunction.nullTileUrlFunction = function(tileCoord, pixelRatio, project
  */
 ol.TileUrlFunction.expandUrl = function(url) {
   var urls = [];
-  var match = /\{(\d)-(\d)\}/.exec(url) || /\{([a-z])-([a-z])\}/.exec(url);
+  var match = /\{([a-z])-([a-z])\}/.exec(url);
   if (match) {
+    // char range
     var startCharCode = match[1].charCodeAt(0);
     var stopCharCode = match[2].charCodeAt(0);
     var charCode;
     for (charCode = startCharCode; charCode <= stopCharCode; ++charCode) {
       urls.push(url.replace(match[0], String.fromCharCode(charCode)));
     }
-  } else {
-    urls.push(url);
+    return urls;
   }
+  match = match = /\{(\d+)-(\d+)\}/.exec(url);
+  if (match) {
+    // number range
+    var stop = parseInt(match[2], 10);
+    for (var i = parseInt(match[1], 10); i <= stop; i++) {
+      urls.push(url.replace(match[0], i.toString()));
+    }
+    return urls;
+  }
+  urls.push(url);
   return urls;
 };
 
@@ -67532,7 +67562,6 @@ goog.provide('ol.TileCache');
 
 goog.require('ol');
 goog.require('ol.structs.LRUCache');
-goog.require('ol.tilecoord');
 
 
 /**
@@ -67575,24 +67604,6 @@ ol.TileCache.prototype.expireCache = function(usedTiles) {
       break;
     } else {
       this.pop().dispose();
-    }
-  }
-};
-
-
-/**
- * Remove a tile range from the cache, e.g. to invalidate tiles.
- * @param {ol.TileRange} tileRange The tile range to prune.
- */
-ol.TileCache.prototype.pruneTileRange = function(tileRange) {
-  var i = this.getCount(),
-      key;
-  while (i--) {
-    key = this.peekLastKey();
-    if (tileRange.contains(ol.tilecoord.createFromString(key))) {
-      this.pop().dispose();
-    } else {
-      this.get(key);
     }
   }
 };
@@ -70532,8 +70543,6 @@ ol.ext.pixelworks = module.exports;
 
 goog.provide('ol.source.Raster');
 goog.provide('ol.RasterOperationType');
-goog.provide('ol.source.RasterEvent');
-goog.provide('ol.source.RasterEventType');
 
 goog.require('ol');
 goog.require('ol.transform');
@@ -70573,7 +70582,7 @@ ol.RasterOperationType = {
  *
  * @constructor
  * @extends {ol.source.Image}
- * @fires ol.source.RasterEvent
+ * @fires ol.source.Raster.Event
  * @param {olx.source.RasterOptions} options Options.
  * @api
  */
@@ -70837,8 +70846,8 @@ ol.source.Raster.prototype.composeFrame_ = function(frameState, callback) {
   }
 
   var data = {};
-  this.dispatchEvent(new ol.source.RasterEvent(
-      ol.source.RasterEventType.BEFOREOPERATIONS, frameState, data));
+  this.dispatchEvent(new ol.source.Raster.Event(
+      ol.source.Raster.EventType.BEFOREOPERATIONS, frameState, data));
 
   this.worker_.process(imageDatas, data,
       this.onWorkerComplete_.bind(this, frameState, callback));
@@ -70866,8 +70875,8 @@ ol.source.Raster.prototype.onWorkerComplete_ = function(frameState, callback, er
     return;
   }
 
-  this.dispatchEvent(new ol.source.RasterEvent(
-      ol.source.RasterEventType.AFTEROPERATIONS, frameState, data));
+  this.dispatchEvent(new ol.source.Raster.Event(
+      ol.source.Raster.EventType.AFTEROPERATIONS, frameState, data));
 
   var resolution = frameState.viewState.resolution / frameState.pixelRatio;
   if (!this.isDirty_(frameState.extent, resolution)) {
@@ -70999,7 +71008,7 @@ ol.source.Raster.createTileRenderer_ = function(source) {
  * @param {olx.FrameState} frameState The frame state.
  * @param {Object} data An object made available to operations.
  */
-ol.source.RasterEvent = function(type, frameState, data) {
+ol.source.Raster.Event = function(type, frameState, data) {
   ol.events.Event.call(this, type);
 
   /**
@@ -71025,23 +71034,23 @@ ol.source.RasterEvent = function(type, frameState, data) {
   this.data = data;
 
 };
-ol.inherits(ol.source.RasterEvent, ol.events.Event);
+ol.inherits(ol.source.Raster.Event, ol.events.Event);
 
 
 /**
  * @enum {string}
  */
-ol.source.RasterEventType = {
+ol.source.Raster.EventType = {
   /**
    * Triggered before operations are run.
-   * @event ol.source.RasterEvent#beforeoperations
+   * @event ol.source.Raster.Event#beforeoperations
    * @api
    */
   BEFOREOPERATIONS: 'beforeoperations',
 
   /**
    * Triggered after operations are run.
-   * @event ol.source.RasterEvent#afteroperations
+   * @event ol.source.Raster.Event#afteroperations
    * @api
    */
   AFTEROPERATIONS: 'afteroperations'
@@ -71056,9 +71065,63 @@ goog.require('ol.source.XYZ');
 
 
 /**
+ * @classdesc
+ * Layer source for the Stamen tile server.
+ *
+ * @constructor
+ * @extends {ol.source.XYZ}
+ * @param {olx.source.StamenOptions} options Stamen options.
+ * @api stable
+ */
+ol.source.Stamen = function(options) {
+
+  var i = options.layer.indexOf('-');
+  var provider = i == -1 ? options.layer : options.layer.slice(0, i);
+  ol.DEBUG && console.assert(provider in ol.source.Stamen.ProviderConfig,
+      'known provider configured');
+  var providerConfig = ol.source.Stamen.ProviderConfig[provider];
+
+  ol.DEBUG && console.assert(options.layer in ol.source.Stamen.LayerConfig,
+      'known layer configured');
+  var layerConfig = ol.source.Stamen.LayerConfig[options.layer];
+
+  var url = options.url !== undefined ? options.url :
+      'https://stamen-tiles-{a-d}.a.ssl.fastly.net/' + options.layer +
+      '/{z}/{x}/{y}.' + layerConfig.extension;
+
+  ol.source.XYZ.call(this, {
+    attributions: ol.source.Stamen.ATTRIBUTIONS,
+    cacheSize: options.cacheSize,
+    crossOrigin: 'anonymous',
+    maxZoom: options.maxZoom != undefined ? options.maxZoom : providerConfig.maxZoom,
+    minZoom: options.minZoom != undefined ? options.minZoom : providerConfig.minZoom,
+    opaque: layerConfig.opaque,
+    reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+    tileLoadFunction: options.tileLoadFunction,
+    url: url
+  });
+
+};
+ol.inherits(ol.source.Stamen, ol.source.XYZ);
+
+
+/**
+ * @const
+ * @type {Array.<ol.Attribution>}
+ */
+ol.source.Stamen.ATTRIBUTIONS = [
+  new ol.Attribution({
+    html: 'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, ' +
+        'under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY' +
+        ' 3.0</a>.'
+  }),
+  ol.source.OSM.ATTRIBUTION
+];
+
+/**
  * @type {Object.<string, {extension: string, opaque: boolean}>}
  */
-ol.source.StamenLayerConfig = {
+ol.source.Stamen.LayerConfig = {
   'terrain': {
     extension: 'jpg',
     opaque: true
@@ -71105,11 +71168,10 @@ ol.source.StamenLayerConfig = {
   }
 };
 
-
 /**
  * @type {Object.<string, {minZoom: number, maxZoom: number}>}
  */
-ol.source.StamenProviderConfig = {
+ol.source.Stamen.ProviderConfig = {
   'terrain': {
     minZoom: 4,
     maxZoom: 18
@@ -71123,61 +71185,6 @@ ol.source.StamenProviderConfig = {
     maxZoom: 16
   }
 };
-
-
-/**
- * @classdesc
- * Layer source for the Stamen tile server.
- *
- * @constructor
- * @extends {ol.source.XYZ}
- * @param {olx.source.StamenOptions} options Stamen options.
- * @api stable
- */
-ol.source.Stamen = function(options) {
-
-  var i = options.layer.indexOf('-');
-  var provider = i == -1 ? options.layer : options.layer.slice(0, i);
-  ol.DEBUG && console.assert(provider in ol.source.StamenProviderConfig,
-      'known provider configured');
-  var providerConfig = ol.source.StamenProviderConfig[provider];
-
-  ol.DEBUG && console.assert(options.layer in ol.source.StamenLayerConfig,
-      'known layer configured');
-  var layerConfig = ol.source.StamenLayerConfig[options.layer];
-
-  var url = options.url !== undefined ? options.url :
-      'https://stamen-tiles-{a-d}.a.ssl.fastly.net/' + options.layer +
-      '/{z}/{x}/{y}.' + layerConfig.extension;
-
-  ol.source.XYZ.call(this, {
-    attributions: ol.source.Stamen.ATTRIBUTIONS,
-    cacheSize: options.cacheSize,
-    crossOrigin: 'anonymous',
-    maxZoom: options.maxZoom != undefined ? options.maxZoom : providerConfig.maxZoom,
-    minZoom: options.minZoom != undefined ? options.minZoom : providerConfig.minZoom,
-    opaque: layerConfig.opaque,
-    reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-    tileLoadFunction: options.tileLoadFunction,
-    url: url
-  });
-
-};
-ol.inherits(ol.source.Stamen, ol.source.XYZ);
-
-
-/**
- * @const
- * @type {Array.<ol.Attribution>}
- */
-ol.source.Stamen.ATTRIBUTIONS = [
-  new ol.Attribution({
-    html: 'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, ' +
-        'under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY' +
-        ' 3.0</a>.'
-  }),
-  ol.source.OSM.ATTRIBUTION
-];
 
 goog.provide('ol.source.TileArcGISRest');
 
@@ -74037,7 +74044,6 @@ ol.style.AtlasManager.prototype.add_ = function(isHitAtlas, id, width, height,
 goog.provide('ol.style.RegularShape');
 
 goog.require('ol');
-goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.dom');
 goog.require('ol.has');
@@ -74149,7 +74155,13 @@ ol.style.RegularShape = function(options) {
    */
   this.hitDetectionImageSize_ = null;
 
-  this.render_(options.atlasManager);
+  /**
+   * @private
+   * @type {ol.style.AtlasManager|undefined}
+   */
+  this.atlasManager_ = options.atlasManager;
+
+  this.render_(this.atlasManager_);
 
   /**
    * @type {boolean}
@@ -74173,6 +74185,30 @@ ol.style.RegularShape = function(options) {
 
 };
 ol.inherits(ol.style.RegularShape, ol.style.Image);
+
+
+/**
+ * Clones the style. If an atlasmanger was provided to the original style it will be used in the cloned style, too.
+ * @return {ol.style.RegularShape} The cloned style.
+ * @api
+ */
+ol.style.RegularShape.prototype.clone = function() {
+  var style = new ol.style.RegularShape({
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    points: this.getRadius2() !== this.getRadius() ? this.getPoints() / 2 : this.getPoints(),
+    radius: this.getRadius(),
+    radius2: this.getRadius2(),
+    angle: this.getAngle(),
+    snapToPixel: this.getSnapToPixel(),
+    stroke: this.getStroke() ?  this.getStroke().clone() : undefined,
+    rotation: this.getRotation(),
+    rotateWithView: this.getRotateWithView(),
+    atlasManager: this.atlasManager_
+  });
+  style.setOpacity(this.getOpacity());
+  style.setScale(this.getScale());
+  return style;
+};
 
 
 /**
@@ -74335,7 +74371,7 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
   var strokeWidth = 0;
 
   if (this.stroke_) {
-    strokeStyle = ol.color.asString(this.stroke_.getColor());
+    strokeStyle = ol.colorlike.asColorLike(this.stroke_.getColor());
     strokeWidth = this.stroke_.getWidth();
     if (strokeWidth === undefined) {
       strokeWidth = ol.render.canvas.defaultLineWidth;
@@ -74675,26 +74711,26 @@ goog.require('ol.format.WKT');
 goog.require('ol.format.WMSCapabilities');
 goog.require('ol.format.WMSGetFeatureInfo');
 goog.require('ol.format.WMTSCapabilities');
-goog.require('ol.format.ogc.filter');
-goog.require('ol.format.ogc.filter.And');
-goog.require('ol.format.ogc.filter.Bbox');
-goog.require('ol.format.ogc.filter.Comparison');
-goog.require('ol.format.ogc.filter.ComparisonBinary');
-goog.require('ol.format.ogc.filter.EqualTo');
-goog.require('ol.format.ogc.filter.Filter');
-goog.require('ol.format.ogc.filter.GreaterThan');
-goog.require('ol.format.ogc.filter.GreaterThanOrEqualTo');
-goog.require('ol.format.ogc.filter.Intersects');
-goog.require('ol.format.ogc.filter.IsBetween');
-goog.require('ol.format.ogc.filter.IsLike');
-goog.require('ol.format.ogc.filter.IsNull');
-goog.require('ol.format.ogc.filter.LessThan');
-goog.require('ol.format.ogc.filter.LessThanOrEqualTo');
-goog.require('ol.format.ogc.filter.Not');
-goog.require('ol.format.ogc.filter.NotEqualTo');
-goog.require('ol.format.ogc.filter.Or');
-goog.require('ol.format.ogc.filter.Spatial');
-goog.require('ol.format.ogc.filter.Within');
+goog.require('ol.format.filter');
+goog.require('ol.format.filter.And');
+goog.require('ol.format.filter.Bbox');
+goog.require('ol.format.filter.Comparison');
+goog.require('ol.format.filter.ComparisonBinary');
+goog.require('ol.format.filter.EqualTo');
+goog.require('ol.format.filter.Filter');
+goog.require('ol.format.filter.GreaterThan');
+goog.require('ol.format.filter.GreaterThanOrEqualTo');
+goog.require('ol.format.filter.Intersects');
+goog.require('ol.format.filter.IsBetween');
+goog.require('ol.format.filter.IsLike');
+goog.require('ol.format.filter.IsNull');
+goog.require('ol.format.filter.LessThan');
+goog.require('ol.format.filter.LessThanOrEqualTo');
+goog.require('ol.format.filter.Not');
+goog.require('ol.format.filter.NotEqualTo');
+goog.require('ol.format.filter.Or');
+goog.require('ol.format.filter.Spatial');
+goog.require('ol.format.filter.Within');
 goog.require('ol.geom.Circle');
 goog.require('ol.geom.Geometry');
 goog.require('ol.geom.GeometryCollection');
@@ -74766,8 +74802,6 @@ goog.require('ol.source.ImageVector');
 goog.require('ol.source.ImageWMS');
 goog.require('ol.source.OSM');
 goog.require('ol.source.Raster');
-goog.require('ol.source.RasterEvent');
-goog.require('ol.source.RasterEventType');
 goog.require('ol.source.Source');
 goog.require('ol.source.Stamen');
 goog.require('ol.source.Tile');
@@ -75951,6 +75985,11 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.style.Circle.prototype,
+    'clone',
+    ol.style.Circle.prototype.clone);
+
+goog.exportProperty(
+    ol.style.Circle.prototype,
     'getFill',
     ol.style.Circle.prototype.getFill);
 
@@ -75969,10 +76008,20 @@ goog.exportProperty(
     'getStroke',
     ol.style.Circle.prototype.getStroke);
 
+goog.exportProperty(
+    ol.style.Circle.prototype,
+    'setRadius',
+    ol.style.Circle.prototype.setRadius);
+
 goog.exportSymbol(
     'ol.style.Fill',
     ol.style.Fill,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.style.Fill.prototype,
+    'clone',
+    ol.style.Fill.prototype.clone);
 
 goog.exportProperty(
     ol.style.Fill.prototype,
@@ -75988,6 +76037,11 @@ goog.exportSymbol(
     'ol.style.Icon',
     ol.style.Icon,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.style.Icon.prototype,
+    'clone',
+    ol.style.Icon.prototype.clone);
 
 goog.exportProperty(
     ol.style.Icon.prototype,
@@ -76071,6 +76125,11 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.style.RegularShape.prototype,
+    'clone',
+    ol.style.RegularShape.prototype.clone);
+
+goog.exportProperty(
+    ol.style.RegularShape.prototype,
     'getAnchor',
     ol.style.RegularShape.prototype.getAnchor);
 
@@ -76123,6 +76182,11 @@ goog.exportSymbol(
     'ol.style.Stroke',
     ol.style.Stroke,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.style.Stroke.prototype,
+    'clone',
+    ol.style.Stroke.prototype.clone);
 
 goog.exportProperty(
     ol.style.Stroke.prototype,
@@ -76191,6 +76255,11 @@ goog.exportSymbol(
 
 goog.exportProperty(
     ol.style.Style.prototype,
+    'clone',
+    ol.style.Style.prototype.clone);
+
+goog.exportProperty(
+    ol.style.Style.prototype,
     'getGeometry',
     ol.style.Style.prototype.getGeometry);
 
@@ -76238,6 +76307,11 @@ goog.exportSymbol(
     'ol.style.Text',
     ol.style.Text,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
+    'clone',
+    ol.style.Text.prototype.clone);
 
 goog.exportProperty(
     ol.style.Text.prototype,
@@ -76570,19 +76644,19 @@ goog.exportProperty(
     ol.source.Raster.prototype.setOperation);
 
 goog.exportProperty(
-    ol.source.RasterEvent.prototype,
+    ol.source.Raster.Event.prototype,
     'extent',
-    ol.source.RasterEvent.prototype.extent);
+    ol.source.Raster.Event.prototype.extent);
 
 goog.exportProperty(
-    ol.source.RasterEvent.prototype,
+    ol.source.Raster.Event.prototype,
     'resolution',
-    ol.source.RasterEvent.prototype.resolution);
+    ol.source.Raster.Event.prototype.resolution);
 
 goog.exportProperty(
-    ol.source.RasterEvent.prototype,
+    ol.source.Raster.Event.prototype,
     'data',
-    ol.source.RasterEvent.prototype.data);
+    ol.source.Raster.Event.prototype.data);
 
 goog.exportSymbol(
     'ol.source.Source',
@@ -78600,173 +78674,173 @@ goog.exportProperty(
     ol.format.WMTSCapabilities.prototype.read);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.And',
-    ol.format.ogc.filter.And,
+    'ol.format.filter.And',
+    ol.format.filter.And,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Bbox',
-    ol.format.ogc.filter.Bbox,
+    'ol.format.filter.Bbox',
+    ol.format.filter.Bbox,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Comparison',
-    ol.format.ogc.filter.Comparison,
+    'ol.format.filter.Comparison',
+    ol.format.filter.Comparison,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.ComparisonBinary',
-    ol.format.ogc.filter.ComparisonBinary,
+    'ol.format.filter.ComparisonBinary',
+    ol.format.filter.ComparisonBinary,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.EqualTo',
-    ol.format.ogc.filter.EqualTo,
+    'ol.format.filter.EqualTo',
+    ol.format.filter.EqualTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Filter',
-    ol.format.ogc.filter.Filter,
+    'ol.format.filter.Filter',
+    ol.format.filter.Filter,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.GreaterThan',
-    ol.format.ogc.filter.GreaterThan,
+    'ol.format.filter.GreaterThan',
+    ol.format.filter.GreaterThan,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.GreaterThanOrEqualTo',
-    ol.format.ogc.filter.GreaterThanOrEqualTo,
+    'ol.format.filter.GreaterThanOrEqualTo',
+    ol.format.filter.GreaterThanOrEqualTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.and',
-    ol.format.ogc.filter.and,
+    'ol.format.filter.and',
+    ol.format.filter.and,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.or',
-    ol.format.ogc.filter.or,
+    'ol.format.filter.or',
+    ol.format.filter.or,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.not',
-    ol.format.ogc.filter.not,
+    'ol.format.filter.not',
+    ol.format.filter.not,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.bbox',
-    ol.format.ogc.filter.bbox,
+    'ol.format.filter.bbox',
+    ol.format.filter.bbox,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.intersects',
-    ol.format.ogc.filter.intersects,
+    'ol.format.filter.intersects',
+    ol.format.filter.intersects,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.within',
-    ol.format.ogc.filter.within,
+    'ol.format.filter.within',
+    ol.format.filter.within,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.equalTo',
-    ol.format.ogc.filter.equalTo,
+    'ol.format.filter.equalTo',
+    ol.format.filter.equalTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.notEqualTo',
-    ol.format.ogc.filter.notEqualTo,
+    'ol.format.filter.notEqualTo',
+    ol.format.filter.notEqualTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.lessThan',
-    ol.format.ogc.filter.lessThan,
+    'ol.format.filter.lessThan',
+    ol.format.filter.lessThan,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.lessThanOrEqualTo',
-    ol.format.ogc.filter.lessThanOrEqualTo,
+    'ol.format.filter.lessThanOrEqualTo',
+    ol.format.filter.lessThanOrEqualTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.greaterThan',
-    ol.format.ogc.filter.greaterThan,
+    'ol.format.filter.greaterThan',
+    ol.format.filter.greaterThan,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.greaterThanOrEqualTo',
-    ol.format.ogc.filter.greaterThanOrEqualTo,
+    'ol.format.filter.greaterThanOrEqualTo',
+    ol.format.filter.greaterThanOrEqualTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.isNull',
-    ol.format.ogc.filter.isNull,
+    'ol.format.filter.isNull',
+    ol.format.filter.isNull,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.between',
-    ol.format.ogc.filter.between,
+    'ol.format.filter.between',
+    ol.format.filter.between,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.like',
-    ol.format.ogc.filter.like,
+    'ol.format.filter.like',
+    ol.format.filter.like,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Intersects',
-    ol.format.ogc.filter.Intersects,
+    'ol.format.filter.Intersects',
+    ol.format.filter.Intersects,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.IsBetween',
-    ol.format.ogc.filter.IsBetween,
+    'ol.format.filter.IsBetween',
+    ol.format.filter.IsBetween,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.IsLike',
-    ol.format.ogc.filter.IsLike,
+    'ol.format.filter.IsLike',
+    ol.format.filter.IsLike,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.IsNull',
-    ol.format.ogc.filter.IsNull,
+    'ol.format.filter.IsNull',
+    ol.format.filter.IsNull,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.LessThan',
-    ol.format.ogc.filter.LessThan,
+    'ol.format.filter.LessThan',
+    ol.format.filter.LessThan,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.LessThanOrEqualTo',
-    ol.format.ogc.filter.LessThanOrEqualTo,
+    'ol.format.filter.LessThanOrEqualTo',
+    ol.format.filter.LessThanOrEqualTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Not',
-    ol.format.ogc.filter.Not,
+    'ol.format.filter.Not',
+    ol.format.filter.Not,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.NotEqualTo',
-    ol.format.ogc.filter.NotEqualTo,
+    'ol.format.filter.NotEqualTo',
+    ol.format.filter.NotEqualTo,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Or',
-    ol.format.ogc.filter.Or,
+    'ol.format.filter.Or',
+    ol.format.filter.Or,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Spatial',
-    ol.format.ogc.filter.Spatial,
+    'ol.format.filter.Spatial',
+    ol.format.filter.Spatial,
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.ogc.filter.Within',
-    ol.format.ogc.filter.Within,
+    'ol.format.filter.Within',
+    ol.format.filter.Within,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -81875,24 +81949,24 @@ goog.exportProperty(
     ol.source.Raster.prototype.unByKey);
 
 goog.exportProperty(
-    ol.source.RasterEvent.prototype,
+    ol.source.Raster.Event.prototype,
     'type',
-    ol.source.RasterEvent.prototype.type);
+    ol.source.Raster.Event.prototype.type);
 
 goog.exportProperty(
-    ol.source.RasterEvent.prototype,
+    ol.source.Raster.Event.prototype,
     'target',
-    ol.source.RasterEvent.prototype.target);
+    ol.source.Raster.Event.prototype.target);
 
 goog.exportProperty(
-    ol.source.RasterEvent.prototype,
+    ol.source.Raster.Event.prototype,
     'preventDefault',
-    ol.source.RasterEvent.prototype.preventDefault);
+    ol.source.Raster.Event.prototype.preventDefault);
 
 goog.exportProperty(
-    ol.source.RasterEvent.prototype,
+    ol.source.Raster.Event.prototype,
     'stopPropagation',
-    ol.source.RasterEvent.prototype.stopPropagation);
+    ol.source.Raster.Event.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.source.Stamen.prototype,
@@ -88278,7 +88352,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.18.2-147-g5f9855b';
+ol.VERSION = 'v3.18.2-263-g74466a3';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

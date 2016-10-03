@@ -8,7 +8,6 @@ var map = new ol.Map({
     })
   ],
   controls: ol.control.defaults({attribution: false}).extend([attribution]),
-  renderer: common.getRendererFromQueryString(),
   target: 'map',
   view: new ol.View({
     center: [0, 0],

@@ -19,6 +19,7 @@ var ieee754 = _dereq_('ieee754');
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
     this.pos = 0;
+    this.type = 0;
     this.length = this.buf.length;
 }
 
@@ -46,6 +47,7 @@ Pbf.prototype = {
                 tag = val >> 3,
                 startPos = this.pos;
 
+            this.type = val & 0x7;
             readField(tag, result, this);
 
             if (this.pos === startPos) this.skip(val);
@@ -282,14 +284,15 @@ Pbf.prototype = {
 
         this.pos++; // reserve 1 byte for short string length
 
+        var startPos = this.pos;
         // write the string directly to the buffer and see how much was written
-        var newPos = writeUtf8(this.buf, str, this.pos);
-        var len = newPos - this.pos;
+        this.pos = writeUtf8(this.buf, str, this.pos);
+        var len = this.pos - startPos;
 
-        if (len >= 0x80) makeRoomForExtraLength(this.pos, len, this);
+        if (len >= 0x80) makeRoomForExtraLength(startPos, len, this);
 
         // finally, write the message length in the reserved place and restore the position
-        this.pos--;
+        this.pos = startPos - 1;
         this.writeVarint(len);
         this.pos += len;
     },
@@ -404,7 +407,7 @@ function readVarintRemainder(l, s, p) {
 }
 
 function readPackedEnd(pbf) {
-    return (pbf.buf[pbf.pos - 1] & 0x7) === Pbf.Bytes ?
+    return pbf.type === Pbf.Bytes ?
         pbf.readVarint() + pbf.pos : pbf.pos + 1;
 }
 

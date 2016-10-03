@@ -1,6 +1,6 @@
 goog.require('ol.Map');
 goog.require('ol.View');
-goog.require('ol.format.ogc.filter');
+goog.require('ol.format.filter');
 goog.require('ol.format.WFS');
 goog.require('ol.format.GeoJSON');
 goog.require('ol.layer.Tile');

@@ -1,7 +1,6 @@
 goog.provide('ol.render.canvas.TextReplay');
 
 goog.require('ol');
-goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Instruction');
@@ -115,7 +114,7 @@ ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offse
   this.beginGeometry(geometry, feature);
   var myBegin = this.coordinates.length;
   var myEnd =
-      this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false);
+      this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false, false);
   var fill = !!this.textFillState_;
   var stroke = !!this.textStrokeState_;
   var drawTextInstruction = [
@@ -267,7 +266,7 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
           textStrokeStyleWidth : ol.render.canvas.defaultLineWidth;
       var miterLimit = textStrokeStyleMiterLimit !== undefined ?
           textStrokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit;
-      var strokeStyle = ol.color.asString(textStrokeStyleColor ?
+      var strokeStyle = ol.colorlike.asColorLike(textStrokeStyleColor ?
           textStrokeStyleColor : ol.render.canvas.defaultStrokeStyle);
       if (!this.textStrokeState_) {
         this.textStrokeState_ = {
