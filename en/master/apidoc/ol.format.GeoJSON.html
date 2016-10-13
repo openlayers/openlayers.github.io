@@ -11062,8 +11062,16 @@
                     <a href="ol.source.BingMaps.html#get">get</a>
                 </li>
             
+                <li data-name="ol.source.BingMaps#getApiKey" class="unstable">
+                    <a href="ol.source.BingMaps.html#getApiKey">getApiKey</a>
+                </li>
+            
                 <li data-name="ol.source.BingMaps#getAttributions" class="">
                     <a href="ol.source.BingMaps.html#getAttributions">getAttributions</a>
+                </li>
+            
+                <li data-name="ol.source.BingMaps#getImagerySet" class="unstable">
+                    <a href="ol.source.BingMaps.html#getImagerySet">getImagerySet</a>
                 </li>
             
                 <li data-name="ol.source.BingMaps#getKeys" class="">
@@ -16249,7 +16257,7 @@ read or write methods will take precedence.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 369
+            src/ol/format/geojson.js, line 370
         </div>
         
         
@@ -16260,8 +16268,9 @@ read or write methods will take precedence.</p></td>
 
     
     <div class="description">
-        <p>Read a feature from a GeoJSON Feature source.  Only works for Feature,
-use <code>readFeatures</code> to read FeatureCollection source.</p>
+        <p>Read a feature from a GeoJSON Feature source.  Only works for Feature or
+geometry types.  Use <a href="ol.format.GeoJSON.html#readFeatures"><code>ol.format.GeoJSON#readFeatures</code></a> to read
+FeatureCollection source.</p>
     </div>
     
 
@@ -16487,7 +16496,7 @@ Feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 382
+            src/ol/format/geojson.js, line 384
         </div>
         
         
@@ -16498,8 +16507,9 @@ Feature.
 
     
     <div class="description">
-        <p>Read all features from a GeoJSON source.  Works with both Feature and
-FeatureCollection sources.</p>
+        <p>Read all features from a GeoJSON source.  Works for all GeoJSON types.
+If the source includes only geometries, features will be created with those
+geometries.</p>
     </div>
     
 
@@ -16725,7 +16735,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 446
+            src/ol/format/geojson.js, line 458
         </div>
         
         
@@ -16962,7 +16972,7 @@ Geometry.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 467
+            src/ol/format/geojson.js, line 479
         </div>
         
         
@@ -17102,7 +17112,7 @@ Projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 505
+            src/ol/format/geojson.js, line 517
         </div>
         
         
@@ -17406,7 +17416,7 @@ GeoJSON.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 516
+            src/ol/format/geojson.js, line 528
         </div>
         
         
@@ -17710,7 +17720,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 553
+            src/ol/format/geojson.js, line 565
         </div>
         
         
@@ -18014,7 +18024,7 @@ GeoJSON.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 564
+            src/ol/format/geojson.js, line 576
         </div>
         
         
@@ -18318,7 +18328,7 @@ GeoJSON Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 587
+            src/ol/format/geojson.js, line 599
         </div>
         
         
@@ -18622,7 +18632,7 @@ GeoJSON.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 598
+            src/ol/format/geojson.js, line 610
         </div>
         
         

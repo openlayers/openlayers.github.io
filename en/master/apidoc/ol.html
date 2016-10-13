@@ -11062,8 +11062,16 @@
                     <a href="ol.source.BingMaps.html#get">get</a>
                 </li>
             
+                <li data-name="ol.source.BingMaps#getApiKey" class="unstable">
+                    <a href="ol.source.BingMaps.html#getApiKey">getApiKey</a>
+                </li>
+            
                 <li data-name="ol.source.BingMaps#getAttributions" class="">
                     <a href="ol.source.BingMaps.html#getAttributions">getAttributions</a>
+                </li>
+            
+                <li data-name="ol.source.BingMaps#getImagerySet" class="unstable">
+                    <a href="ol.source.BingMaps.html#getImagerySet">getImagerySet</a>
                 </li>
             
                 <li data-name="ol.source.BingMaps#getKeys" class="">
@@ -16361,6 +16369,17 @@ child.foo(); // This works.</code></pre>
 </dt>
 <dd class="">
     
+    <div class="description">
+        <p>A type that can be used to provide attribution information for data sources.</p>
+<p>It represents either</p>
+<ul>
+<li>a simple string (e.g. <code>'© Acme Inc.'</code>),</li>
+<li>an array of simple strings (e.g. <code>['© Acme Inc.', '© Bacme Inc.']</code>),</li>
+<li>an instance of <code><a href="ol.Attribution.html"><code>ol.Attribution</code></a></code>,</li>
+<li>or an array with multiple <code><a href="ol.Attribution.html"><code>ol.Attribution</code></a></code> instances.</li>
+</ul>
+    </div>
+    
     
     
 <dl class="details">
@@ -16404,7 +16423,7 @@ child.foo(); // This works.</code></pre>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 69
+            src/ol/typedefs.js, line 76
         </div>
         
         
@@ -16634,7 +16653,7 @@ Represents a color, pattern, or gradient.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 137
+            src/ol/typedefs.js, line 144
         </div>
         
         
@@ -16710,7 +16729,7 @@ Represents a color, pattern, or gradient.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 146
+            src/ol/typedefs.js, line 153
         </div>
         
         
@@ -16787,7 +16806,7 @@ true should be returned.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 158
+            src/ol/typedefs.js, line 165
         </div>
         
         
@@ -16865,7 +16884,7 @@ argument.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 167
+            src/ol/typedefs.js, line 174
         </div>
         
         
@@ -17037,7 +17056,7 @@ argument.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 220
+            src/ol/typedefs.js, line 227
         </div>
         
         
@@ -17119,7 +17138,7 @@ source.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 231
+            src/ol/typedefs.js, line 238
         </div>
         
         
@@ -17196,7 +17215,7 @@ resolution. The <code>this</code> keyword inside the function references the
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 244
+            src/ol/typedefs.js, line 251
         </div>
         
         
@@ -17276,7 +17295,7 @@ a <code>{number}</code> representing the resolution (map units per pixel) and an
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 274
+            src/ol/typedefs.js, line 281
         </div>
         
         
@@ -17359,7 +17378,7 @@ image element would be set to a data URI when the content is loaded.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 312
+            src/ol/typedefs.js, line 319
         </div>
         
         
@@ -17485,7 +17504,7 @@ x-coordinate, the second the y-coordinate of the pixel.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 376
+            src/ol/typedefs.js, line 383
         </div>
         
         
@@ -17612,7 +17631,7 @@ undefined.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 404
+            src/ol/typedefs.js, line 411
         </div>
         
         
@@ -17745,7 +17764,7 @@ data object is accessible from raster events, where it can be initialized in
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 461
+            src/ol/typedefs.js, line 468
         </div>
         
         
@@ -17870,7 +17889,7 @@ or <code>false</code> otherwise.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 561
+            src/ol/typedefs.js, line 568
         </div>
         
         
@@ -17947,7 +17966,7 @@ or an array of them. This way e.g. a vector layer can be styled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 571
+            src/ol/typedefs.js, line 578
         </div>
         
         
@@ -18072,7 +18091,7 @@ grid. The order is <code>z</code>, <code>x</code>, and <code>y</code>. <code>z</
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 598
+            src/ol/typedefs.js, line 605
         </div>
         
         
@@ -18148,7 +18167,7 @@ the url as arguments.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 632
+            src/ol/typedefs.js, line 639
         </div>
         
         
@@ -18229,7 +18248,7 @@ coordinate.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 643
+            src/ol/typedefs.js, line 650
         </div>
         
         

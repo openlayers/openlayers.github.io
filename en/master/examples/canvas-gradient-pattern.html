@@ -54,7 +54,7 @@
           <p id="shortdesc">Example showing the countries vector layer styled with patterns and gradients.</p>
           <div id="docs"><p>First this example creates a reusable <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern"><code>CanvasPattern</code></a> and a <a href="https://developer.mozilla.org/en/docs/Web/API/CanvasGradient"><code>CanvasGradient</code></a>. The countries are loaded from a GeoJSON file. A style function determines for each country whether to use a fill with the pregenerated CanvasGradient (rainbow colors) or a CanvasPattern (repeating stacked circles).</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.GeoJSON.html" title="API documentation for ol.format.GeoJSON">ol.format.GeoJSON</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li></ul></div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.GeoJSON.html" title="API documentation for ol.format.GeoJSON">ol.format.GeoJSON</a></li>,<li><a href="../apidoc/ol.has.html" title="API documentation for ol.has">ol.has</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li></ul></div>
         </div>
       </div>
 
@@ -64,14 +64,22 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="https://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">// Will contain ol.Style instances key by country.
-var styleLookup &#x3D; {};
+          <textarea class="hidden" name="js">var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+
+// Gradient and pattern are in canvas pixel space, so we adjust for the
+// renderer&#x27;s pixel ratio
+var pixelRatio &#x3D; ol.has.DEVICE_PIXEL_RATIO;
 
 // Generate a rainbow gradient
-var gradient &#x3D; (function() {
-  var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-  var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
-  var grad &#x3D; context.createLinearGradient(0,0,1000,0);
+function gradient(feature, resolution) {
+  var extent &#x3D; feature.getGeometry().getExtent();
+  // Gradient starts on the left edge of each feature, and ends on the right.
+  // Coordinate origin is [0, 0], so we just divide by resolution and multiply
+  // with pixelRatio to match the renderer&#x27;s pixel coordinate system.
+  var grad &#x3D; context.createLinearGradient(
+      extent[0] / resolution * pixelRatio, 0,
+      extent[2] / resolution * pixelRatio, 0);
   grad.addColorStop(0, &#x27;red&#x27;);
   grad.addColorStop(1 / 6, &#x27;orange&#x27;);
   grad.addColorStop(2 / 6, &#x27;yellow&#x27;);
@@ -80,33 +88,35 @@ var gradient &#x3D; (function() {
   grad.addColorStop(5 / 6, &#x27;blue&#x27;);
   grad.addColorStop(1, &#x27;purple&#x27;);
   return grad;
-}());
+}
 
-// Generate a canvasPattern with two circles
+// Generate a canvasPattern with two circles on white background
 var pattern &#x3D; (function() {
-  var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-  var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
-  canvas.width &#x3D; 11;
-  canvas.height &#x3D; 11;
+  canvas.width &#x3D; 11 * pixelRatio;
+  canvas.height &#x3D; 11 * pixelRatio;
+  // white background
+  context.fillStyle &#x3D; &#x27;white&#x27;;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  // outer circle
   context.fillStyle &#x3D; &#x27;rgba(102, 0, 102, 0.5)&#x27;;
   context.beginPath();
-  context.arc(5, 5, 4, 0, 2 * Math.PI);
+  context.arc(5 * pixelRatio, 5 * pixelRatio, 4 * pixelRatio, 0, 2 * Math.PI);
   context.fill();
+  // inner circle
   context.fillStyle &#x3D; &#x27;rgb(55, 0, 170)&#x27;;
   context.beginPath();
-  context.arc(5, 5, 2, 0, 2 * Math.PI);
+  context.arc(5 * pixelRatio, 5 * pixelRatio, 2 * pixelRatio, 0, 2 * Math.PI);
   context.fill();
   return context.createPattern(canvas, &#x27;repeat&#x27;);
 }());
 
-// Generate a background style that all features will reuse
-var backgroundStyle &#x3D; new ol.style.Style({
+// Generate style for gradient or pattern fill
+var fill &#x3D; new ol.style.Fill();
+var style &#x3D; new ol.style.Style({
+  fill: fill,
   stroke: new ol.style.Stroke({
     color: &#x27;#333&#x27;,
     width: 2
-  }),
-  fill: new ol.style.Fill({
-    color: &#x27;#fff&#x27;
   })
 });
 
@@ -114,33 +124,14 @@ var backgroundStyle &#x3D; new ol.style.Style({
  * The styling function for the vector layer, will return an array of styles
  * which either contains the aboove gradient or pattern.
  *
- * @param {ol.Feature} feature the feature to style.
- * @return {Array&lt;ol.style.Style&gt;} the styles to use for the feature.
+ * @param {ol.Feature} feature The feature to style.
+ * @param {number} resolution Resolution.
+ * @return {ol.style.Style} The style to use for the feature.
  */
-var getStackedStyle &#x3D; function(feature) {
+var getStackedStyle &#x3D; function(feature, resolution) {
   var id &#x3D; feature.getId();
-  if (!styleLookup[id]) {
-    var patternOrGradient;
-    if (id &gt; &#x27;J&#x27;) { // some shall get the gradient, others the pattern.
-      patternOrGradient &#x3D; gradient;
-    } else {
-      patternOrGradient &#x3D; pattern;
-    }
-    // Store the style in the lookup, next call will just return the stored
-    // style for the feature.
-    styleLookup[id] &#x3D; [
-      // 1. Use the common background style
-      //    (white fill and blackish stroke)
-      backgroundStyle,
-      // 2. On top of that, draw the pattern or gradient
-      new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: patternOrGradient
-        })
-      })
-    ];
-  }
-  return styleLookup[id];
+  fill.setColor(id &gt; &#x27;J&#x27; ? gradient(feature, resolution) : pattern);
+  return style;
 };
 
 // Create a vector layer that makes use of the style function above…
@@ -194,14 +185,22 @@ var map &#x3D; new ol.Map({
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      // Will contain ol.Style instances key by country.
-      var styleLookup &#x3D; {};
+      var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+      var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+
+      // Gradient and pattern are in canvas pixel space, so we adjust for the
+      // renderer&#x27;s pixel ratio
+      var pixelRatio &#x3D; ol.has.DEVICE_PIXEL_RATIO;
 
       // Generate a rainbow gradient
-      var gradient &#x3D; (function() {
-        var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-        var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
-        var grad &#x3D; context.createLinearGradient(0,0,1000,0);
+      function gradient(feature, resolution) {
+        var extent &#x3D; feature.getGeometry().getExtent();
+        // Gradient starts on the left edge of each feature, and ends on the right.
+        // Coordinate origin is [0, 0], so we just divide by resolution and multiply
+        // with pixelRatio to match the renderer&#x27;s pixel coordinate system.
+        var grad &#x3D; context.createLinearGradient(
+            extent[0] / resolution * pixelRatio, 0,
+            extent[2] / resolution * pixelRatio, 0);
         grad.addColorStop(0, &#x27;red&#x27;);
         grad.addColorStop(1 / 6, &#x27;orange&#x27;);
         grad.addColorStop(2 / 6, &#x27;yellow&#x27;);
@@ -210,33 +209,35 @@ var map &#x3D; new ol.Map({
         grad.addColorStop(5 / 6, &#x27;blue&#x27;);
         grad.addColorStop(1, &#x27;purple&#x27;);
         return grad;
-      }());
+      }
 
-      // Generate a canvasPattern with two circles
+      // Generate a canvasPattern with two circles on white background
       var pattern &#x3D; (function() {
-        var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-        var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
-        canvas.width &#x3D; 11;
-        canvas.height &#x3D; 11;
+        canvas.width &#x3D; 11 * pixelRatio;
+        canvas.height &#x3D; 11 * pixelRatio;
+        // white background
+        context.fillStyle &#x3D; &#x27;white&#x27;;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        // outer circle
         context.fillStyle &#x3D; &#x27;rgba(102, 0, 102, 0.5)&#x27;;
         context.beginPath();
-        context.arc(5, 5, 4, 0, 2 * Math.PI);
+        context.arc(5 * pixelRatio, 5 * pixelRatio, 4 * pixelRatio, 0, 2 * Math.PI);
         context.fill();
+        // inner circle
         context.fillStyle &#x3D; &#x27;rgb(55, 0, 170)&#x27;;
         context.beginPath();
-        context.arc(5, 5, 2, 0, 2 * Math.PI);
+        context.arc(5 * pixelRatio, 5 * pixelRatio, 2 * pixelRatio, 0, 2 * Math.PI);
         context.fill();
         return context.createPattern(canvas, &#x27;repeat&#x27;);
       }());
 
-      // Generate a background style that all features will reuse
-      var backgroundStyle &#x3D; new ol.style.Style({
+      // Generate style for gradient or pattern fill
+      var fill &#x3D; new ol.style.Fill();
+      var style &#x3D; new ol.style.Style({
+        fill: fill,
         stroke: new ol.style.Stroke({
           color: &#x27;#333&#x27;,
           width: 2
-        }),
-        fill: new ol.style.Fill({
-          color: &#x27;#fff&#x27;
         })
       });
 
@@ -244,33 +245,14 @@ var map &#x3D; new ol.Map({
        * The styling function for the vector layer, will return an array of styles
        * which either contains the aboove gradient or pattern.
        *
-       * @param {ol.Feature} feature the feature to style.
-       * @return {Array&lt;ol.style.Style&gt;} the styles to use for the feature.
+       * @param {ol.Feature} feature The feature to style.
+       * @param {number} resolution Resolution.
+       * @return {ol.style.Style} The style to use for the feature.
        */
-      var getStackedStyle &#x3D; function(feature) {
+      var getStackedStyle &#x3D; function(feature, resolution) {
         var id &#x3D; feature.getId();
-        if (!styleLookup[id]) {
-          var patternOrGradient;
-          if (id &gt; &#x27;J&#x27;) { // some shall get the gradient, others the pattern.
-            patternOrGradient &#x3D; gradient;
-          } else {
-            patternOrGradient &#x3D; pattern;
-          }
-          // Store the style in the lookup, next call will just return the stored
-          // style for the feature.
-          styleLookup[id] &#x3D; [
-            // 1. Use the common background style
-            //    (white fill and blackish stroke)
-            backgroundStyle,
-            // 2. On top of that, draw the pattern or gradient
-            new ol.style.Style({
-              fill: new ol.style.Fill({
-                color: patternOrGradient
-              })
-            })
-          ];
-        }
-        return styleLookup[id];
+        fill.setColor(id &gt; &#x27;J&#x27; ? gradient(feature, resolution) : pattern);
+        return style;
       };
 
       // Create a vector layer that makes use of the style function above…
