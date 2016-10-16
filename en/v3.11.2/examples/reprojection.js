@@ -83,7 +83,7 @@ layers['wms21781'] = new ol.layer.Tile({
 });
 
 var parser = new ol.format.WMTSCapabilities();
-$.ajax('http://map1.vis.earthdata.nasa.gov/wmts-arctic/' +
+$.ajax('https://map1.vis.earthdata.nasa.gov/wmts-arctic/' +
     'wmts.cgi?SERVICE=WMTS&request=GetCapabilities').then(function(response) {
   var result = parser.read(response);
   var options = ol.source.WMTS.optionsFromCapabilities(result,
