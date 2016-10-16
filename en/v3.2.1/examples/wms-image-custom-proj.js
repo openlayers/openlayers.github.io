@@ -8,7 +8,7 @@
 // registered transparently.
 var projection = ol.proj.get('EPSG:21781');
 // The extent is used to determine zoom level 0. Recommended values for a
-// projection's validity extent can be found at http://epsg.io/.
+// projection's validity extent can be found at https://epsg.io/.
 projection.setExtent([485869.5728, 76443.1884, 837076.5648, 299941.7864]);
 
 var extent = [420000, 30000, 900000, 350000];

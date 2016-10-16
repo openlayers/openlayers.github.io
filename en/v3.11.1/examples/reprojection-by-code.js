@@ -56,7 +56,7 @@ function setProjection(code, name, proj4def, bbox) {
 function search(query) {
   resultSpan.innerHTML = 'Searching...';
   $.ajax({
-    url: 'http://epsg.io/?format=json&q=' + query,
+    url: 'https://epsg.io/?format=json&q=' + query,
     dataType: 'jsonp',
     success: function(response) {
       if (response) {
