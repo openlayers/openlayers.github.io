@@ -3,7 +3,7 @@ var openCycleMapLayer = new ol.layer.Tile({
     attributions: [
       new ol.Attribution({
         html: 'All maps &copy; ' +
-            '<a href="http://www.opencyclemap.org/">OpenCycleMap</a>'
+            '<a href="https://www.opencyclemap.org/">OpenCycleMap</a>'
       }),
       ol.source.OSM.ATTRIBUTION
     ],
