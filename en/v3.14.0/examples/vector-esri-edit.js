@@ -1,4 +1,4 @@
-var serviceUrl = 'http://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/' +
+var serviceUrl = 'https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/' +
     'services/PDX_Pedestrian_Districts/FeatureServer/';
 var layer = '0';
 
