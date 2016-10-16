@@ -1,4 +1,4 @@
-var serviceUrl = 'http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/' +
+var serviceUrl = 'https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/' +
     'Petroleum/KSFields/FeatureServer/';
 var layer = '0';
 
