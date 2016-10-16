@@ -8,7 +8,7 @@
   Includes compressed code under the following licenses:
 
   (For uncompressed versions of the code used please see the
-  OpenLayers SVN repository: <http://openlayers.org/>)
+  OpenLayers SVN repository: <https://openlayers.org/>)
 
 */
 
