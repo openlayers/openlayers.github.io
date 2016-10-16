@@ -1,9 +1,9 @@
 var logoElement = document.createElement('a');
-logoElement.href = 'http://www.osgeo.org/';
+logoElement.href = 'https://www.osgeo.org/';
 logoElement.target = '_blank';
 
 var logoImage = document.createElement('img');
-logoImage.src = 'http://www.osgeo.org/sites/all/themes/osgeo/logo.png';
+logoImage.src = 'https://www.osgeo.org/sites/all/themes/osgeo/logo.png';
 
 logoElement.appendChild(logoImage);
 

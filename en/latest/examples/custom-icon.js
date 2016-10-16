@@ -1,5 +1,5 @@
 var logoElement = document.createElement('a');
-logoElement.href = 'http://www.osgeo.org/';
+logoElement.href = 'https://www.osgeo.org/';
 logoElement.target = '_blank';
 
 var logoImage = document.createElement('img');
