@@ -4,7 +4,7 @@
 
   Copyright (c) 2006-2012 by OpenLayers Contributors
   Published under the 2-clause BSD license.
-  See http://openlayers.org/dev/license.txt for the full text of the license, and http://openlayers.org/dev/authors.txt for full list of contributors.
+  See https://openlayers.org/dev/license.txt for the full text of the license, and https://openlayers.org/dev/authors.txt for full list of contributors.
 
   Includes compressed code under the following licenses:
 

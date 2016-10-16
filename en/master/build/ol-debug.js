@@ -1,4 +1,4 @@
-// OpenLayers 3. See http://openlayers.org/
+// OpenLayers 3. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
 // Version: v3.18.2-296-g74450f4
 ;(function (root, factory) {
@@ -3051,12 +3051,12 @@ ol.AssertionError = function(code) {
    * @type {string}
    */
   this.message = 'Assertion failed. See ' +
-      (ol.VERSION ? 'http://openlayers.org/en/' + ol.VERSION.split('-')[0] : '') +
+      (ol.VERSION ? 'https://openlayers.org/en/' + ol.VERSION.split('-')[0] : '') +
       '/doc/errors/#' + code + ' for details.';
 
   /**
    * Error code. The meaning of the code can be found on
-   * {@link http://openlayers.org/en/latest/errors.html} (replace `latest` with
+   * {@link https://openlayers.org/en/latest/errors.html} (replace `latest` with
    * the version found in the OpenLayers script's header comment if a version
    * other than the latest is used).
    * @type {number}
@@ -36076,7 +36076,7 @@ goog.require('ol.transform');
  * @const
  * @type {string}
  */
-ol.OL3_URL = 'http://openlayers.org/';
+ol.OL3_URL = 'https://openlayers.org/';
 
 
 /**

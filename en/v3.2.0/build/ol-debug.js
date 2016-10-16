@@ -1,4 +1,4 @@
-// OpenLayers 3. See http://openlayers.org/
+// OpenLayers 3. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
 // Version: v3.2.0
 
@@ -74428,7 +74428,7 @@ goog.require('ol.vec.Mat4');
  * @const
  * @type {string}
  */
-ol.OL3_URL = 'http://openlayers.org/';
+ol.OL3_URL = 'https://openlayers.org/';
 
 
 /**

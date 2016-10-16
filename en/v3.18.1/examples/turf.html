@@ -66,7 +66,7 @@
         <form method="POST" id="jsfiddle-form" target="_blank" action="https://jsfiddle.net/api/post/library/pure/">
           <textarea class="hidden" name="js">// this example uses turf.js for which we don&#x27;t have an externs file.
 var source &#x3D; new ol.source.Vector();
-fetch(&#x27;http://openlayers.org/en/v3.18.1/examples/data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
+fetch(&#x27;https://openlayers.org/en/v3.18.1/examples/data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
   return response.json();
 }).then(function(json) {
   var format &#x3D; new ol.format.GeoJSON();
@@ -114,16 +114,16 @@ var map &#x3D; new ol.Map({
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="http://openlayers.org/en/v3.18.1/css/ol.css,http://openlayers.org/en/v3.18.1/build/ol.js,https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js">
+          <input type="hidden" name="resources" value="https://openlayers.org/en/v3.18.1/css/ol.css,https://openlayers.org/en/v3.18.1/build/ol.js,https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;turf.js&lt;/title&gt;
-    &lt;link rel="stylesheet" href="http://openlayers.org/en/v3.18.1/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v3.18.1/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="http://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="http://openlayers.org/en/v3.18.1/build/ol.js"&gt;&lt;/script&gt;
+    &lt;script src="https://openlayers.org/en/v3.18.1/build/ol.js"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js&quot;&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -131,7 +131,7 @@ var map &#x3D; new ol.Map({
     &lt;script&gt;
       // this example uses turf.js for which we don&#x27;t have an externs file.
       var source &#x3D; new ol.source.Vector();
-      fetch(&#x27;http://openlayers.org/en/v3.18.1/examples/data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
+      fetch(&#x27;https://openlayers.org/en/v3.18.1/examples/data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
         return response.json();
       }).then(function(json) {
         var format &#x3D; new ol.format.GeoJSON();

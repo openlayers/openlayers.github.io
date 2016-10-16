@@ -55,7 +55,7 @@ goog.require('ol.vec.Mat4');
  * @const
  * @type {string}
  */
-ol.OL3_URL = 'http://openlayers.org/';
+ol.OL3_URL = 'https://openlayers.org/';
 
 
 /**
