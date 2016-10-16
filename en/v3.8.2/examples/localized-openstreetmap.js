@@ -24,7 +24,7 @@ var openSeaMapLayer = new ol.layer.Tile({
       ol.source.OSM.ATTRIBUTION
     ],
     crossOrigin: null,
-    url: 'http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png'
+    url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png'
   })
 });
 
