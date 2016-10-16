@@ -6,7 +6,7 @@ var map = new ol.Map({
       source: new ol.source.VectorTile({
         attributions: [new ol.Attribution({
           html: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +
-              '© <a href="http://www.openstreetmap.org/copyright">' +
+              '© <a href="https://www.openstreetmap.org/copyright">' +
               'OpenStreetMap contributors</a>'
         })],
         format: new ol.format.MVT(),
