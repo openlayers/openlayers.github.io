@@ -7436,6 +7436,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.interaction.Draw.createBox" class="unstable">
+                    <a href="ol.interaction.Draw.html#.createBox">createBox</a>
+                </li>
+            
                 <li data-name="ol.interaction.Draw.createRegularPolygon" class="unstable">
                     <a href="ol.interaction.Draw.html#.createRegularPolygon">createRegularPolygon</a>
                 </li>
@@ -16012,7 +16016,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 37
+            src/ol/interaction/draw.js, line 38
         </div>
         
         
@@ -16788,8 +16792,8 @@ activates freehand drawing.</p></td>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".createRegularPolygon">
-            ol.interaction.Draw.createRegularPolygon<span class="signature">(<span class="optional">opt_sides</span>, <span class="optional">opt_angle</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.DrawGeometryFunctionType">ol.DrawGeometryFunctionType</a>}</span>
+        <h4 class="name" id=".createBox">
+            ol.interaction.Draw.createBox<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.DrawGeometryFunctionType">ol.DrawGeometryFunctionType</a>}</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -16798,7 +16802,7 @@ activates freehand drawing.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 746
+            src/ol/interaction/draw.js, line 777
         </div>
         
         
@@ -16809,7 +16813,95 @@ activates freehand drawing.</p></td>
 
     
     <div class="description">
-        <p>Create a <code>geometryFunction</code> for <code>mode: 'Circle'</code> that will create a regular
+        <p>Create a <code>geometryFunction</code> that will create a box-shaped polygon (aligned
+with the coordinate system axes).  Use this with the draw interaction and
+<code>type: 'Circle'</code> to return a box instead of a circle geometry.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Function that draws a box-shaped polygon.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id=".createRegularPolygon">
+            ol.interaction.Draw.createRegularPolygon<span class="signature">(<span class="optional">opt_sides</span>, <span class="optional">opt_angle</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.DrawGeometryFunctionType">ol.DrawGeometryFunctionType</a>}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/interaction/draw.js, line 747
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Create a <code>geometryFunction</code> for <code>type: 'Circle'</code> that will create a regular
 polygon with a user specified number of sides and start angle instead of an
 <code>ol.geom.Circle</code> geometry.</p>
     </div>
@@ -16962,7 +17054,7 @@ Function that draws a
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 298
+            src/ol/interaction/draw.js, line 299
         </div>
         
         
@@ -17312,7 +17404,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 675
+            src/ol/interaction/draw.js, line 676
         </div>
         
         
@@ -17438,7 +17530,7 @@ extend lines by adding points to the end of the coordinates array.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 610
+            src/ol/interaction/draw.js, line 611
         </div>
         
         
@@ -18463,7 +18555,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 581
+            src/ol/interaction/draw.js, line 582
         </div>
         
         
