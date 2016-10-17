@@ -51,7 +51,7 @@
           <textarea class="hidden" name="js">var vectorSource = new ol.source.Vector({
   format: new ol.format.GeoJSON(),
   url: function(extent, resolution, projection) {
-    return &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
+    return &#x27;https://ahocevar.com/geoserver/wfs?service=WFS&amp;&#x27; +
         &#x27;version=1.1.0&amp;request=GetFeature&amp;typename=osm:water_areas&amp;&#x27; +
         &#x27;outputFormat=application/json&amp;srsname=EPSG:3857&amp;&#x27; +
         &#x27;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;
@@ -124,7 +124,7 @@ var map = new ol.Map({
 var vectorSource = new ol.source.Vector({
   format: new ol.format.GeoJSON(),
   url: function(extent, resolution, projection) {
-    return &#x27;http://demo.boundlessgeo.com/geoserver/wfs?service=WFS&amp;&#x27; +
+    return &#x27;https://ahocevar.com/geoserver/wfs?service=WFS&amp;&#x27; +
         &#x27;version=1.1.0&amp;request=GetFeature&amp;typename=osm:water_areas&amp;&#x27; +
         &#x27;outputFormat=application/json&amp;srsname=EPSG:3857&amp;&#x27; +
         &#x27;bbox=&#x27; + extent.join(&#x27;,&#x27;) + &#x27;,EPSG:3857&#x27;;

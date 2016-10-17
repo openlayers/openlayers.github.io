@@ -106,7 +106,7 @@ var featureRequest &#x3D; new ol.format.WFS().writeGetFeature({
 });
 
 // then post the request and add the received features to a layer
-fetch(&#x27;http://demo.boundlessgeo.com/geoserver/wfs&#x27;, {
+fetch(&#x27;https://ahocevar.com/geoserver/wfs&#x27;, {
   method: &#x27;POST&#x27;,
   body: new XMLSerializer().serializeToString(featureRequest)
 }).then(function(response) {
@@ -177,7 +177,7 @@ fetch(&#x27;http://demo.boundlessgeo.com/geoserver/wfs&#x27;, {
       });
 
       // then post the request and add the received features to a layer
-      fetch(&#x27;http://demo.boundlessgeo.com/geoserver/wfs&#x27;, {
+      fetch(&#x27;https://ahocevar.com/geoserver/wfs&#x27;, {
         method: &#x27;POST&#x27;,
         body: new XMLSerializer().serializeToString(featureRequest)
       }).then(function(response) {
