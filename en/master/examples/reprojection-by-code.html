@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="../css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.14/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
@@ -64,7 +64,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Demonstrates client-side raster reprojection of OSM to arbitrary projection</p>
-          <div id="docs"><p>This example shows client-side raster reprojection capabilities from OSM (EPSG:3857) to arbitrary projection by searching in <a href="http://epsg.io/">EPSG.io</a> database.</p>
+          <div id="docs"><p>This example shows client-side raster reprojection capabilities from OSM (EPSG:3857) to arbitrary projection by searching in <a href="https://epsg.io/">EPSG.io</a> database.</p>
 </div>
           <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.extent.html" title="API documentation for ol.extent">ol.extent</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.TileImage.html" title="API documentation for ol.source.TileImage">ol.source.TileImage</a></li></ul></div>
         </div>
@@ -132,7 +132,7 @@ function setProjection(code, name, proj4def, bbox) {
 
 function search(query) {
   resultSpan.innerHTML &#x3D; &#x27;Searching ...&#x27;;
-  fetch(&#x27;http://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query).then(function(response) {
+  fetch(&#x27;https://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query).then(function(response) {
     return response.json();
   }).then(function(json) {
     var results &#x3D; json[&#x27;results&#x27;];
@@ -195,7 +195,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
 &lt;/form&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v3.18.2/css/ol.css,https://openlayers.org/en/v3.18.2/build/ol.js,https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.14/proj4.js">
+          <input type="hidden" name="resources" value="https://openlayers.org/en/v3.18.2/css/ol.css,https://openlayers.org/en/v3.18.2/build/ol.js,https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -205,7 +205,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src="https://openlayers.org/en/v3.18.2/build/ol.js"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.14/proj4.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js&quot;&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -278,7 +278,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
 
       function search(query) {
         resultSpan.innerHTML &#x3D; &#x27;Searching ...&#x27;;
-        fetch(&#x27;http://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query).then(function(response) {
+        fetch(&#x27;https://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query).then(function(response) {
           return response.json();
         }).then(function(json) {
           var results &#x3D; json[&#x27;results&#x27;];

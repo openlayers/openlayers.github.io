@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="../css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.14/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
@@ -181,7 +181,7 @@ layers[&#x27;wms21781&#x27;] &#x3D; new ol.layer.Tile({
 });
 
 var parser &#x3D; new ol.format.WMTSCapabilities();
-var url &#x3D; &#x27;http://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
+var url &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
     &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;;
 fetch(url).then(function(response) {
   return response.text();
@@ -366,7 +366,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
 &lt;/form&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v3.18.2/css/ol.css,https://openlayers.org/en/v3.18.2/build/ol.js,https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.14/proj4.js">
+          <input type="hidden" name="resources" value="https://openlayers.org/en/v3.18.2/css/ol.css,https://openlayers.org/en/v3.18.2/build/ol.js,https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -376,7 +376,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src="https://openlayers.org/en/v3.18.2/build/ol.js"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.14/proj4.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js&quot;&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -498,7 +498,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
       });
 
       var parser &#x3D; new ol.format.WMTSCapabilities();
-      var url &#x3D; &#x27;http://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
+      var url &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
           &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;;
       fetch(url).then(function(response) {
         return response.text();

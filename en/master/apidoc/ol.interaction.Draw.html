@@ -16491,6 +16491,41 @@ vertex or deactivates freehand drawing.</p></td>
 	
         <tr class="unstable">
             
+                <td class="name"><code>freehand</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Operate in freehand mode for lines, polygons, and circles.  This makes the
+interaction always operate in freehand mode and takes precedence over any
+<code>freehandCondition</code> option.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
                 <td class="name"><code>freehandCondition</code></td>
             
             
@@ -16763,7 +16798,7 @@ activates freehand drawing.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 732
+            src/ol/interaction/draw.js, line 746
         </div>
         
         
@@ -16918,7 +16953,7 @@ Function that draws a
     <div class="nameContainer">
         
         <h4 class="name" id=".handleEvent">
-            ol.interaction.Draw.handleEvent<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+            ol.interaction.Draw.handleEvent<span class="signature">(event)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -16927,7 +16962,7 @@ Function that draws a
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 293
+            src/ol/interaction/draw.js, line 298
         </div>
         
         
@@ -16974,7 +17009,7 @@ draw or finish the drawing.</p>
 	
         <tr class="">
             
-                <td class="name"><code>mapBrowserEvent</code></td>
+                <td class="name"><code>event</code></td>
             
             
             
@@ -17277,7 +17312,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 661
+            src/ol/interaction/draw.js, line 675
         </div>
         
         
@@ -17403,7 +17438,7 @@ extend lines by adding points to the end of the coordinates array.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 596
+            src/ol/interaction/draw.js, line 610
         </div>
         
         
@@ -17617,7 +17652,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/interaction.js, line 64
+            src/ol/interaction/interaction.js, line 55
         </div>
         
         
@@ -17791,7 +17826,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/interaction.js, line 75
+            src/ol/interaction/interaction.js, line 66
         </div>
         
         
@@ -18428,7 +18463,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/draw.js, line 567
+            src/ol/interaction/draw.js, line 581
         </div>
         
         
@@ -18681,7 +18716,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/interaction.js, line 86
+            src/ol/interaction/interaction.js, line 77
         </div>
         
         

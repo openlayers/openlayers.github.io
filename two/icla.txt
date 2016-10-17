@@ -1,5 +1,5 @@
 OpenLayers Individual Contributor License Agreement ("Agreement") v1.1
-http://www.openlayers.org/icla.txt
+https://openlayers.org/two/icla.txt
 
 Thank you for your interest in the OpenLayers project, which is
 presently maintained by the OSGeo Foundation. (the "Maintainer").  In
@@ -9,7 +9,7 @@ Contributor License Agreement ("CLA") on file that has been signed by
 each Contributor, indicating agreement to the license terms below.
 This license is for your protection as a Contributor as well as the
 protection of the OpenLayers project and its users; it does not change
-your rights to use your own Contributions for any other purpose.  
+your rights to use your own Contributions for any other purpose.
 
 If you have not already done so, please complete and send an Agreement to:
 
@@ -25,7 +25,7 @@ your records.
 
   Mailing Address: ______________________  Telephone: ___________________
 
-  _______________________________________  
+  _______________________________________
 
   _______________________________________  Country:   ___________________
 

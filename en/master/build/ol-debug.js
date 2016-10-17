@@ -1,6 +1,6 @@
 // OpenLayers 3. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.18.2-296-g74450f4
+// Version: v3.18.2-342-g884e05b
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -11969,7 +11969,7 @@ goog.require('ol.tilegrid');
  *       attributions: [
  *         new ol.Attribution({
  *           html: 'All maps &copy; ' +
- *               '<a href="http://www.opencyclemap.org/">OpenCycleMap</a>'
+ *               '<a href="https://www.opencyclemap.org/">OpenCycleMap</a>'
  *         }),
  *         ol.source.OSM.ATTRIBUTION
  *       ],
@@ -17671,20 +17671,11 @@ ol.Kinetic.prototype.getAngle = function() {
 // FIXME factor out key precondition (shift et. al)
 
 goog.provide('ol.interaction.Interaction');
-goog.provide('ol.interaction.InteractionProperty');
 
 goog.require('ol');
 goog.require('ol.Object');
 goog.require('ol.animation');
 goog.require('ol.easing');
-
-
-/**
- * @enum {string}
- */
-ol.interaction.InteractionProperty = {
-  ACTIVE: 'active'
-};
 
 
 /**
@@ -17733,7 +17724,7 @@ ol.inherits(ol.interaction.Interaction, ol.Object);
  */
 ol.interaction.Interaction.prototype.getActive = function() {
   return /** @type {boolean} */ (
-      this.get(ol.interaction.InteractionProperty.ACTIVE));
+      this.get(ol.interaction.Interaction.Property.ACTIVE));
 };
 
 
@@ -17754,7 +17745,7 @@ ol.interaction.Interaction.prototype.getMap = function() {
  * @api
  */
 ol.interaction.Interaction.prototype.setActive = function(active) {
-  this.set(ol.interaction.InteractionProperty.ACTIVE, active);
+  this.set(ol.interaction.Interaction.Property.ACTIVE, active);
 };
 
 
@@ -17907,6 +17898,14 @@ ol.interaction.Interaction.zoomWithoutConstraints = function(map, view, resoluti
     }
     view.setResolution(resolution);
   }
+};
+
+
+/**
+ * @enum {string}
+ */
+ol.interaction.Interaction.Property = {
+  ACTIVE: 'active'
 };
 
 goog.provide('ol.interaction.DoubleClickZoom');
@@ -20781,39 +20780,16 @@ ol.renderer.Type = {
 };
 
 goog.provide('ol.render.Event');
-goog.provide('ol.render.EventType');
 
 goog.require('ol');
 goog.require('ol.events.Event');
 
 
 /**
- * @enum {string}
- */
-ol.render.EventType = {
-  /**
-   * @event ol.render.Event#postcompose
-   * @api
-   */
-  POSTCOMPOSE: 'postcompose',
-  /**
-   * @event ol.render.Event#precompose
-   * @api
-   */
-  PRECOMPOSE: 'precompose',
-  /**
-   * @event ol.render.Event#render
-   * @api
-   */
-  RENDER: 'render'
-};
-
-
-/**
  * @constructor
  * @extends {ol.events.Event}
  * @implements {oli.render.Event}
- * @param {ol.render.EventType} type Type.
+ * @param {ol.render.Event.Type} type Type.
  * @param {ol.render.VectorContext=} opt_vectorContext Vector context.
  * @param {olx.FrameState=} opt_frameState Frame state.
  * @param {?CanvasRenderingContext2D=} opt_context Context.
@@ -20858,6 +20834,28 @@ ol.render.Event = function(
 };
 ol.inherits(ol.render.Event, ol.events.Event);
 
+
+/**
+ * @enum {string}
+ */
+ol.render.Event.Type = {
+  /**
+   * @event ol.render.Event#postcompose
+   * @api
+   */
+  POSTCOMPOSE: 'postcompose',
+  /**
+   * @event ol.render.Event#precompose
+   * @api
+   */
+  PRECOMPOSE: 'precompose',
+  /**
+   * @event ol.render.Event#render
+   * @api
+   */
+  RENDER: 'render'
+};
+
 goog.provide('ol.layer.Layer');
 
 goog.require('ol.events');
@@ -20867,7 +20865,7 @@ goog.require('ol.Object');
 goog.require('ol.layer.Base');
 goog.require('ol.layer.LayerProperty');
 goog.require('ol.obj');
-goog.require('ol.render.EventType');
+goog.require('ol.render.Event');
 goog.require('ol.source.State');
 
 
@@ -21037,7 +21035,7 @@ ol.layer.Layer.prototype.setMap = function(map) {
   }
   if (map) {
     this.mapPrecomposeKey_ = ol.events.listen(
-        map, ol.render.EventType.PRECOMPOSE, function(evt) {
+        map, ol.render.Event.Type.PRECOMPOSE, function(evt) {
           var layerState = this.getLayerState();
           layerState.managed = false;
           layerState.zIndex = Infinity;
@@ -23067,6 +23065,8 @@ ol.style.Fill.prototype.getChecksum = function() {
 
 goog.provide('ol.style.Stroke');
 
+goog.require('ol');
+
 
 /**
  * @classdesc
@@ -23683,14 +23683,6 @@ goog.require('ol.style.Style');
 
 
 /**
- * @enum {string}
- */
-ol.layer.VectorProperty = {
-  RENDER_ORDER: 'renderOrder'
-};
-
-
-/**
  * @classdesc
  * Vector data that is rendered client-side.
  * Note that any property set in the options is set as a {@link ol.Object}
@@ -23776,7 +23768,7 @@ ol.layer.Vector.prototype.getRenderBuffer = function() {
  */
 ol.layer.Vector.prototype.getRenderOrder = function() {
   return /** @type {function(ol.Feature, ol.Feature):number|null|undefined} */ (
-      this.get(ol.layer.VectorProperty.RENDER_ORDER));
+      this.get(ol.layer.Vector.Property.RENDER_ORDER));
 };
 
 
@@ -23838,7 +23830,7 @@ ol.layer.Vector.prototype.setRenderOrder = function(renderOrder) {
       renderOrder === undefined || !renderOrder ||
       typeof renderOrder === 'function',
       'renderOrder must be a comparator function');
-  this.set(ol.layer.VectorProperty.RENDER_ORDER, renderOrder);
+  this.set(ol.layer.Vector.Property.RENDER_ORDER, renderOrder);
 };
 
 
@@ -23860,6 +23852,14 @@ ol.layer.Vector.prototype.setStyle = function(style) {
   this.changed();
 };
 
+
+/**
+ * @enum {string}
+ */
+ol.layer.Vector.Property = {
+  RENDER_ORDER: 'renderOrder'
+};
+
 goog.provide('ol.layer.VectorTile');
 
 goog.require('ol');
@@ -23867,15 +23867,6 @@ goog.require('ol.asserts');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
 goog.require('ol.obj');
-
-
-/**
- * @enum {string}
- */
-ol.layer.VectorTileProperty = {
-  PRELOAD: 'preload',
-  USE_INTERIM_TILES_ON_ERROR: 'useInterimTilesOnError'
-};
 
 
 /**
@@ -23926,7 +23917,7 @@ ol.inherits(ol.layer.VectorTile, ol.layer.Vector);
  * @api
  */
 ol.layer.VectorTile.prototype.getPreload = function() {
-  return /** @type {number} */ (this.get(ol.layer.VectorTileProperty.PRELOAD));
+  return /** @type {number} */ (this.get(ol.layer.VectorTile.Property.PRELOAD));
 };
 
 
@@ -23946,7 +23937,7 @@ ol.layer.VectorTile.prototype.getRenderMode = function() {
  */
 ol.layer.VectorTile.prototype.getUseInterimTilesOnError = function() {
   return /** @type {boolean} */ (
-      this.get(ol.layer.VectorTileProperty.USE_INTERIM_TILES_ON_ERROR));
+      this.get(ol.layer.VectorTile.Property.USE_INTERIM_TILES_ON_ERROR));
 };
 
 
@@ -23970,6 +23961,15 @@ ol.layer.VectorTile.prototype.setPreload = function(preload) {
 ol.layer.VectorTile.prototype.setUseInterimTilesOnError = function(useInterimTilesOnError) {
   this.set(
       ol.layer.Tile.Property.USE_INTERIM_TILES_ON_ERROR, useInterimTilesOnError);
+};
+
+
+/**
+ * @enum {string}
+ */
+ol.layer.VectorTile.Property = {
+  PRELOAD: 'preload',
+  USE_INTERIM_TILES_ON_ERROR: 'useInterimTilesOnError'
 };
 
 
@@ -25406,7 +25406,6 @@ goog.provide('ol.renderer.canvas.Layer');
 goog.require('ol');
 goog.require('ol.extent');
 goog.require('ol.render.Event');
-goog.require('ol.render.EventType');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Immediate');
 goog.require('ol.renderer.Layer');
@@ -25512,7 +25511,7 @@ ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerStat
 
 
 /**
- * @param {ol.render.EventType} type Event type.
+ * @param {ol.render.Event.Type} type Event type.
  * @param {CanvasRenderingContext2D} context Context.
  * @param {olx.FrameState} frameState Frame state.
  * @param {ol.Transform=} opt_transform Transform.
@@ -25545,7 +25544,7 @@ ol.renderer.canvas.Layer.prototype.dispatchComposeEvent_ = function(type, contex
  * @protected
  */
 ol.renderer.canvas.Layer.prototype.dispatchPostComposeEvent = function(context, frameState, opt_transform) {
-  this.dispatchComposeEvent_(ol.render.EventType.POSTCOMPOSE, context,
+  this.dispatchComposeEvent_(ol.render.Event.Type.POSTCOMPOSE, context,
       frameState, opt_transform);
 };
 
@@ -25557,7 +25556,7 @@ ol.renderer.canvas.Layer.prototype.dispatchPostComposeEvent = function(context, 
  * @protected
  */
 ol.renderer.canvas.Layer.prototype.dispatchPreComposeEvent = function(context, frameState, opt_transform) {
-  this.dispatchComposeEvent_(ol.render.EventType.PRECOMPOSE, context,
+  this.dispatchComposeEvent_(ol.render.Event.Type.PRECOMPOSE, context,
       frameState, opt_transform);
 };
 
@@ -25569,7 +25568,7 @@ ol.renderer.canvas.Layer.prototype.dispatchPreComposeEvent = function(context, f
  * @protected
  */
 ol.renderer.canvas.Layer.prototype.dispatchRenderEvent = function(context, frameState, opt_transform) {
-  this.dispatchComposeEvent_(ol.render.EventType.RENDER, context,
+  this.dispatchComposeEvent_(ol.render.Event.Type.RENDER, context,
       frameState, opt_transform);
 };
 
@@ -25792,7 +25791,7 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution, overlaps) {
    * @private
    * @type {ol.Transform}
    */
-  this.tmpLocalTransformInv_ = ol.transform.create();
+  this.resetTransform_ = ol.transform.create();
 };
 ol.inherits(ol.render.canvas.Replay, ol.render.VectorContext);
 
@@ -25867,6 +25866,12 @@ ol.render.canvas.Replay.prototype.beginGeometry = function(geometry, feature) {
 };
 
 
+/**
+ * @private
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {ol.Transform} transform Transform.
+ * @param {number} rotation Rotation.
+ */
 ol.render.canvas.Replay.prototype.fill_ = function(context, transform, rotation) {
   if (this.alignFill_) {
     context.translate(transform[4], transform[5]);
@@ -25917,7 +25922,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
   var d = 0; // data index
   var dd; // end of per-instruction data
   var localTransform = this.tmpLocalTransform_;
-  var localTransformInv = this.tmpLocalTransformInv_;
+  var resetTransform = this.resetTransform_;
   var prevX, prevY, roundX, roundY;
   var pendingFill = 0;
   var pendingStroke = 0;
@@ -26012,7 +26017,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
             var centerY = y + anchorY;
             ol.transform.compose(localTransform,
                 centerX, centerY, scale, scale, rotation, -centerX, -centerY);
-            context.transform.apply(context, localTransform);
+            context.setTransform.apply(context, localTransform);
           }
           var alpha = context.globalAlpha;
           if (opacity != 1) {
@@ -26029,8 +26034,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
             context.globalAlpha = alpha;
           }
           if (scale != 1 || rotation !== 0) {
-            ol.transform.invert(ol.transform.setFromArray(localTransformInv, localTransform));
-            context.transform.apply(context, localTransformInv);
+            context.setTransform.apply(context, resetTransform);
           }
         }
         ++i;
@@ -26072,7 +26076,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
           y = pixelCoordinates[d + 1] + offsetY;
           if (scale != 1 || rotation !== 0) {
             ol.transform.compose(localTransform, x, y, scale, scale, rotation, -x, -y);
-            context.transform.apply(context, localTransform);
+            context.setTransform.apply(context, localTransform);
           }
 
           // Support multiple lines separated by \n
@@ -26103,8 +26107,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
           }
 
           if (scale != 1 || rotation !== 0) {
-            ol.transform.invert(ol.transform.setFromArray(localTransformInv, localTransform));
-            context.transform.apply(context, localTransformInv);
+            context.setTransform.apply(context, resetTransform);
           }
         }
         ++i;
@@ -30157,7 +30160,7 @@ goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.render.canvas');
-goog.require('ol.render.EventType');
+goog.require('ol.render.Event');
 goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.size');
 
@@ -30382,7 +30385,7 @@ ol.renderer.canvas.TileLayer.prototype.renderTileImages = function(context, fram
   var tileGutter = pixelRatio * source.getGutter(projection);
   var tileGrid = source.getTileGridForProjection(projection);
 
-  var hasRenderListeners = layer.hasListener(ol.render.EventType.RENDER);
+  var hasRenderListeners = layer.hasListener(ol.render.Event.Type.RENDER);
   var renderContext = context;
   var drawScale = 1;
   var drawOffsetX, drawOffsetY, drawSize;
@@ -30549,7 +30552,7 @@ goog.require('ol');
 goog.require('ol.View');
 goog.require('ol.dom');
 goog.require('ol.extent');
-goog.require('ol.render.EventType');
+goog.require('ol.render.Event');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.ReplayGroup');
 goog.require('ol.renderer.canvas.Layer');
@@ -30642,7 +30645,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
     var drawOffsetX = 0;
     var drawOffsetY = 0;
     var replayContext;
-    if (layer.hasListener(ol.render.EventType.RENDER)) {
+    if (layer.hasListener(ol.render.Event.Type.RENDER)) {
       var drawWidth = context.canvas.width;
       var drawHeight = context.canvas.height;
       if (rotation) {
@@ -30913,7 +30916,7 @@ goog.require('ol.extent');
 goog.require('ol.proj');
 goog.require('ol.proj.Units');
 goog.require('ol.layer.VectorTile');
-goog.require('ol.render.EventType');
+goog.require('ol.render.Event');
 goog.require('ol.render.ReplayType');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.ReplayGroup');
@@ -31030,7 +31033,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileReplays_ = function(
   var transform = this.getTransform(frameState, 0);
 
   var replayContext;
-  if (layer.hasListener(ol.render.EventType.RENDER)) {
+  if (layer.hasListener(ol.render.Event.Type.RENDER)) {
     // resize and clear
     this.context.canvas.width = context.canvas.width;
     this.context.canvas.height = context.canvas.height;
@@ -31364,7 +31367,6 @@ goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
 goog.require('ol.layer.VectorTile');
 goog.require('ol.render.Event');
-goog.require('ol.render.EventType');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Immediate');
 goog.require('ol.renderer.Map');
@@ -31439,7 +31441,7 @@ ol.renderer.canvas.Map.prototype.createLayerRenderer = function(layer) {
 
 
 /**
- * @param {ol.render.EventType} type Event type.
+ * @param {ol.render.Event.Type} type Event type.
  * @param {olx.FrameState} frameState Frame state.
  * @private
  */
@@ -31517,7 +31519,7 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
 
   this.calculateMatrices2D(frameState);
 
-  this.dispatchComposeEvent_(ol.render.EventType.PRECOMPOSE, frameState);
+  this.dispatchComposeEvent_(ol.render.Event.Type.PRECOMPOSE, frameState);
 
   var layerStatesArray = frameState.layerStatesArray;
   ol.array.stableSort(layerStatesArray, ol.renderer.Map.sortByZIndex);
@@ -31542,7 +31544,7 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
   ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
 
   this.dispatchComposeEvent_(
-      ol.render.EventType.POSTCOMPOSE, frameState);
+      ol.render.Event.Type.POSTCOMPOSE, frameState);
 
   if (!this.renderedVisible_) {
     this.canvas_.style.display = '';
@@ -33774,7 +33776,6 @@ goog.provide('ol.renderer.webgl.Layer');
 
 goog.require('ol');
 goog.require('ol.render.Event');
-goog.require('ol.render.EventType');
 goog.require('ol.render.webgl.Immediate');
 goog.require('ol.renderer.Layer');
 goog.require('ol.renderer.webgl.defaultmapshader');
@@ -33912,7 +33913,7 @@ ol.renderer.webgl.Layer.prototype.bindFramebuffer = function(frameState, framebu
 ol.renderer.webgl.Layer.prototype.composeFrame = function(frameState, layerState, context) {
 
   this.dispatchComposeEvent_(
-      ol.render.EventType.PRECOMPOSE, context, frameState);
+      ol.render.Event.Type.PRECOMPOSE, context, frameState);
 
   context.bindBuffer(ol.webgl.ARRAY_BUFFER, this.arrayBuffer_);
 
@@ -33951,13 +33952,13 @@ ol.renderer.webgl.Layer.prototype.composeFrame = function(frameState, layerState
   gl.drawArrays(ol.webgl.TRIANGLE_STRIP, 0, 4);
 
   this.dispatchComposeEvent_(
-      ol.render.EventType.POSTCOMPOSE, context, frameState);
+      ol.render.Event.Type.POSTCOMPOSE, context, frameState);
 
 };
 
 
 /**
- * @param {ol.render.EventType} type Event type.
+ * @param {ol.render.Event.Type} type Event type.
  * @param {ol.webgl.Context} context WebGL context.
  * @param {olx.FrameState} frameState Frame state.
  * @private
@@ -35449,7 +35450,6 @@ goog.require('ol.layer.Layer');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
 goog.require('ol.render.Event');
-goog.require('ol.render.EventType');
 goog.require('ol.render.webgl.Immediate');
 goog.require('ol.renderer.Map');
 goog.require('ol.renderer.Type');
@@ -35688,7 +35688,7 @@ ol.renderer.webgl.Map.prototype.createLayerRenderer = function(layer) {
 
 
 /**
- * @param {ol.render.EventType} type Event type.
+ * @param {ol.render.Event.Type} type Event type.
  * @param {olx.FrameState} frameState Frame state.
  * @private
  */
@@ -35870,7 +35870,7 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
   this.textureCache_.set((-frameState.index).toString(), null);
   ++this.textureCacheFrameMarkerCount_;
 
-  this.dispatchComposeEvent_(ol.render.EventType.PRECOMPOSE, frameState);
+  this.dispatchComposeEvent_(ol.render.Event.Type.PRECOMPOSE, frameState);
 
   /** @type {Array.<ol.LayerState>} */
   var layerStatesToDraw = [];
@@ -35929,7 +35929,7 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
     frameState.animate = true;
   }
 
-  this.dispatchComposeEvent_(ol.render.EventType.POSTCOMPOSE, frameState);
+  this.dispatchComposeEvent_(ol.render.Event.Type.POSTCOMPOSE, frameState);
 
   this.scheduleRemoveUnusedLayerRenderers(frameState);
   this.scheduleExpireIconCache(frameState);
@@ -60220,7 +60220,7 @@ goog.require('ol.geom.LineString');
 goog.require('ol.geom.flat.geodesic');
 goog.require('ol.math');
 goog.require('ol.proj');
-goog.require('ol.render.EventType');
+goog.require('ol.render.Event');
 goog.require('ol.style.Stroke');
 
 
@@ -60732,12 +60732,12 @@ ol.Graticule.prototype.updateProjectionInfo_ = function(projection) {
  */
 ol.Graticule.prototype.setMap = function(map) {
   if (this.map_) {
-    this.map_.un(ol.render.EventType.POSTCOMPOSE,
+    this.map_.un(ol.render.Event.Type.POSTCOMPOSE,
         this.handlePostCompose_, this);
     this.map_.render();
   }
   if (map) {
-    map.on(ol.render.EventType.POSTCOMPOSE,
+    map.on(ol.render.Event.Type.POSTCOMPOSE,
         this.handlePostCompose_, this);
     map.render();
   }
@@ -63165,7 +63165,7 @@ goog.require('ol.geom.MultiPoint');
 goog.require('ol.geom.MultiPolygon');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
-goog.require('ol.interaction.InteractionProperty');
+goog.require('ol.interaction.Interaction');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
@@ -63399,11 +63399,16 @@ ol.interaction.Draw = function(options) {
    * @private
    * @type {ol.EventsConditionType}
    */
-  this.freehandCondition_ = options.freehandCondition ?
-      options.freehandCondition : ol.events.condition.shiftKeyOnly;
+  this.freehandCondition_;
+  if (options.freehand) {
+    this.freehandCondition_ = ol.events.condition.always;
+  } else {
+    this.freehandCondition_ = options.freehandCondition ?
+        options.freehandCondition : ol.events.condition.shiftKeyOnly;
+  }
 
   ol.events.listen(this,
-      ol.Object.getChangeEventType(ol.interaction.InteractionProperty.ACTIVE),
+      ol.Object.getChangeEventType(ol.interaction.Interaction.Property.ACTIVE),
       this.updateState_, this);
 
 };
@@ -63433,29 +63438,25 @@ ol.interaction.Draw.prototype.setMap = function(map) {
 /**
  * Handles the {@link ol.MapBrowserEvent map browser event} and may actually
  * draw or finish the drawing.
- * @param {ol.MapBrowserEvent} mapBrowserEvent Map browser event.
+ * @param {ol.MapBrowserEvent} event Map browser event.
  * @return {boolean} `false` to stop event propagation.
  * @this {ol.interaction.Draw}
  * @api
  */
-ol.interaction.Draw.handleEvent = function(mapBrowserEvent) {
-  if ((this.mode_ === ol.interaction.Draw.Mode.LINE_STRING ||
-    this.mode_ === ol.interaction.Draw.Mode.POLYGON) &&
-    this.freehandCondition_(mapBrowserEvent)) {
-    this.freehand_ = true;
-  }
+ol.interaction.Draw.handleEvent = function(event) {
+  this.freehand_ = this.mode_ !== ol.interaction.Draw.Mode.POINT && this.freehandCondition_(event);
   var pass = !this.freehand_;
   if (this.freehand_ &&
-      mapBrowserEvent.type === ol.MapBrowserEvent.EventType.POINTERDRAG && this.sketchFeature_ !== null) {
-    this.addToDrawing_(mapBrowserEvent);
+      event.type === ol.MapBrowserEvent.EventType.POINTERDRAG && this.sketchFeature_ !== null) {
+    this.addToDrawing_(event);
     pass = false;
-  } else if (mapBrowserEvent.type ===
+  } else if (event.type ===
       ol.MapBrowserEvent.EventType.POINTERMOVE) {
-    pass = this.handlePointerMove_(mapBrowserEvent);
-  } else if (mapBrowserEvent.type === ol.MapBrowserEvent.EventType.DBLCLICK) {
+    pass = this.handlePointerMove_(event);
+  } else if (event.type === ol.MapBrowserEvent.EventType.DBLCLICK) {
     pass = false;
   }
-  return ol.interaction.Pointer.handleEvent.call(this, mapBrowserEvent) && pass;
+  return ol.interaction.Pointer.handleEvent.call(this, event) && pass;
 };
 
 
@@ -63466,14 +63467,14 @@ ol.interaction.Draw.handleEvent = function(mapBrowserEvent) {
  * @private
  */
 ol.interaction.Draw.handleDownEvent_ = function(event) {
-  if (this.condition_(event)) {
-    this.downPx_ = event.pixel;
-    return true;
-  } else if (this.freehand_) {
+  if (this.freehand_) {
     this.downPx_ = event.pixel;
     if (!this.finishCoordinate_) {
       this.startDrawing_(event);
     }
+    return true;
+  } else if (this.condition_(event)) {
+    this.downPx_ = event.pixel;
     return true;
   } else {
     return false;
@@ -63488,21 +63489,23 @@ ol.interaction.Draw.handleDownEvent_ = function(event) {
  * @private
  */
 ol.interaction.Draw.handleUpEvent_ = function(event) {
-  this.freehand_ = false;
   var downPx = this.downPx_;
   var clickPx = event.pixel;
   var dx = downPx[0] - clickPx[0];
   var dy = downPx[1] - clickPx[1];
   var squaredDistance = dx * dx + dy * dy;
   var pass = true;
-  if (squaredDistance <= this.squaredClickTolerance_) {
+  var shouldHandle = this.freehand_ ?
+      squaredDistance > this.squaredClickTolerance_ :
+      squaredDistance <= this.squaredClickTolerance_;
+  if (shouldHandle) {
     this.handlePointerMove_(event);
     if (!this.finishCoordinate_) {
       this.startDrawing_(event);
       if (this.mode_ === ol.interaction.Draw.Mode.POINT) {
         this.finishDrawing();
       }
-    } else if (this.mode_ === ol.interaction.Draw.Mode.CIRCLE) {
+    } else if (this.freehand_ || this.mode_ === ol.interaction.Draw.Mode.CIRCLE) {
       this.finishDrawing();
     } else if (this.atFinish_(event)) {
       if (this.finishCondition_(event)) {
@@ -63560,8 +63563,7 @@ ol.interaction.Draw.prototype.atFinish_ = function(event) {
         var pixel = event.pixel;
         var dx = pixel[0] - finishPixel[0];
         var dy = pixel[1] - finishPixel[1];
-        var freehand = this.freehand_ && this.freehandCondition_(event);
-        var snapTolerance = freehand ? 1 : this.snapTolerance_;
+        var snapTolerance = this.freehand_ ? 1 : this.snapTolerance_;
         at = Math.sqrt(dx * dx + dy * dy) <= snapTolerance;
         if (at) {
           this.finishCoordinate_ = finishCoordinate;
@@ -63689,13 +63691,25 @@ ol.interaction.Draw.prototype.addToDrawing_ = function(event) {
   if (this.mode_ === ol.interaction.Draw.Mode.LINE_STRING) {
     this.finishCoordinate_ = coordinate.slice();
     coordinates = this.sketchCoords_;
+    if (coordinates.length >= this.maxPoints_) {
+      if (this.freehand_) {
+        coordinates.pop();
+      } else {
+        done = true;
+      }
+    }
     coordinates.push(coordinate.slice());
-    done = coordinates.length > this.maxPoints_;
     this.geometryFunction_(coordinates, geometry);
   } else if (this.mode_ === ol.interaction.Draw.Mode.POLYGON) {
     coordinates = this.sketchCoords_[0];
+    if (coordinates.length >= this.maxPoints_) {
+      if (this.freehand_) {
+        coordinates.pop();
+      } else {
+        done = true;
+      }
+    }
     coordinates.push(coordinate.slice());
-    done = coordinates.length > this.maxPoints_;
     if (done) {
       this.finishCoordinate_ = coordinates[0];
     }
@@ -65503,10 +65517,8 @@ ol.interaction.Modify.EventType = {
 goog.provide('ol.interaction.Select');
 
 goog.require('ol');
-goog.require('ol.asserts');
 goog.require('ol.functions');
 goog.require('ol.Collection');
-goog.require('ol.Feature');
 goog.require('ol.array');
 goog.require('ol.events');
 goog.require('ol.events.Event');
@@ -65674,8 +65686,6 @@ ol.interaction.Select.prototype.getFeatures = function() {
  * @api
  */
 ol.interaction.Select.prototype.getLayer = function(feature) {
-  ol.asserts.assert(feature instanceof ol.Feature,
-      42); // Expected an `ol.Feature`, but got an `ol.RenderFeature`
   var key = ol.getUid(feature);
   return /** @type {ol.layer.Vector} */ (this.featureLayerAssociation_[key]);
 };
@@ -66795,7 +66805,7 @@ goog.require('ol.dom');
 goog.require('ol.layer.Vector');
 goog.require('ol.math');
 goog.require('ol.obj');
-goog.require('ol.render.EventType');
+goog.require('ol.render.Event');
 goog.require('ol.style.Icon');
 goog.require('ol.style.Style');
 
@@ -66908,7 +66918,7 @@ ol.layer.Heatmap = function(opt_options) {
   // The render order is not relevant for a heatmap representation.
   this.setRenderOrder(null);
 
-  ol.events.listen(this, ol.render.EventType.RENDER, this.handleRender_, this);
+  ol.events.listen(this, ol.render.Event.Type.RENDER, this.handleRender_, this);
 
 };
 ol.inherits(ol.layer.Heatmap, ol.layer.Vector);
@@ -67024,7 +67034,7 @@ ol.layer.Heatmap.prototype.handleStyleChanged_ = function() {
  * @private
  */
 ol.layer.Heatmap.prototype.handleRender_ = function(event) {
-  ol.DEBUG && console.assert(event.type == ol.render.EventType.RENDER,
+  ol.DEBUG && console.assert(event.type == ol.render.Event.Type.RENDER,
       'event.type should be RENDER');
   ol.DEBUG && console.assert(this.gradient_, 'this.gradient_ expected');
   var context = event.context;
@@ -70313,7 +70323,7 @@ ol.inherits(ol.source.OSM, ol.source.XYZ);
  */
 ol.source.OSM.ATTRIBUTION = new ol.Attribution({
   html: '&copy; ' +
-      '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
+      '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
       'contributors.'
 });
 
@@ -74851,7 +74861,6 @@ goog.require('ol.interaction.DragZoom');
 goog.require('ol.interaction.Draw');
 goog.require('ol.interaction.Extent');
 goog.require('ol.interaction.Interaction');
-goog.require('ol.interaction.InteractionProperty');
 goog.require('ol.interaction.KeyboardPan');
 goog.require('ol.interaction.KeyboardZoom');
 goog.require('ol.interaction.Modify');
@@ -74879,7 +74888,6 @@ goog.require('ol.proj.Units');
 goog.require('ol.proj.common');
 goog.require('ol.render');
 goog.require('ol.render.Event');
-goog.require('ol.render.EventType');
 goog.require('ol.render.Feature');
 goog.require('ol.render.VectorContext');
 goog.require('ol.render.canvas.Immediate');
@@ -88457,7 +88465,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.18.2-296-g74450f4';
+ol.VERSION = 'v3.18.2-342-g884e05b';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

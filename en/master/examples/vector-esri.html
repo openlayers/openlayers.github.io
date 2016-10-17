@@ -65,7 +65,7 @@
           <a id="jsfiddle-button"><i class="fa fa-jsfiddle"></i> Edit</a>
         </div>
         <form method="POST" id="jsfiddle-form" target="_blank" action="https://jsfiddle.net/api/post/library/pure/">
-          <textarea class="hidden" name="js">var serviceUrl &#x3D; &#x27;http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
+          <textarea class="hidden" name="js">var serviceUrl &#x3D; &#x27;https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
     &#x27;Petroleum/KSFields/FeatureServer/&#x27;;
 var layer &#x3D; &#x27;0&#x27;;
 
@@ -149,7 +149,7 @@ var vector &#x3D; new ol.layer.Vector({
 
 var raster &#x3D; new ol.layer.Tile({
   source: new ol.source.XYZ({
-    attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+    attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
         &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
     url: &#x27;https://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
         &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
@@ -217,7 +217,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
     &lt;script&gt;
-      var serviceUrl &#x3D; &#x27;http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
+      var serviceUrl &#x3D; &#x27;https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
           &#x27;Petroleum/KSFields/FeatureServer/&#x27;;
       var layer &#x3D; &#x27;0&#x27;;
 
@@ -301,7 +301,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 
       var raster &#x3D; new ol.layer.Tile({
         source: new ol.source.XYZ({
-          attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;http://services.arcgisonline.com/ArcGIS/&#x27; +
+          attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
               &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
           url: &#x27;https://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
               &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;

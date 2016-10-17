@@ -131,7 +131,7 @@ var vectorSource &#x3D; new ol.source.Vector({
   url: function(extent, resolution, projection) {
     var epsg4326Extent &#x3D;
         ol.proj.transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
-    return &#x27;http://overpass-api.de/api/xapi?map?bbox&#x3D;&#x27; +
+    return &#x27;https://overpass-api.de/api/xapi?map?bbox&#x3D;&#x27; +
         epsg4326Extent.join(&#x27;,&#x27;);
   },
   strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
@@ -263,7 +263,7 @@ var map &#x3D; new ol.Map({
         url: function(extent, resolution, projection) {
           var epsg4326Extent &#x3D;
               ol.proj.transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
-          return &#x27;http://overpass-api.de/api/xapi?map?bbox&#x3D;&#x27; +
+          return &#x27;https://overpass-api.de/api/xapi?map?bbox&#x3D;&#x27; +
               epsg4326Extent.join(&#x27;,&#x27;);
         },
         strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({

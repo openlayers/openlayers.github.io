@@ -55,7 +55,7 @@ background: none;
 border: none;
 color: black;
 text-decoration: none;
-background: #333 url(http://trac.openlayers.org/chrome/common/topbar_gradient2.png)  0 0 repeat-x;
+background: #333 url(https://trac.openlayers.org/chrome/common/topbar_gradient2.png)  0 0 repeat-x;
  border-top: none;
    color: #eee;
 }

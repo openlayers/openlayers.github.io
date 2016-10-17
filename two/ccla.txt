@@ -1,5 +1,5 @@
 OpenLayers Corporate Contributor License Agreement ("Agreement") v1.0
-http://www.openlayers.org/ccla.txt
+https://openlayers.org/two/ccla.txt
 
 Thank you for your interest in the OpenLayers project, which is
 presently maintained by the OSGeo Foundation (the "Maintainer"). In order
