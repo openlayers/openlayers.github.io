@@ -1,6 +1,6 @@
 // OpenLayers 3. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.18.2-350-g74bf0df
+// Version: v3.19.0
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -30382,7 +30382,7 @@ ol.renderer.canvas.TileLayer.prototype.renderTileImages = function(context, fram
   var pixelScale = pixelRatio / resolution;
   var layer = this.getLayer();
   var source = /** @type {ol.source.Tile} */ (layer.getSource());
-  var tileGutter = pixelRatio * source.getGutter(projection);
+  var tileGutter = source.getTilePixelRatio(pixelRatio) * source.getGutter(projection);
   var tileGrid = source.getTileGridForProjection(projection);
 
   var hasRenderListeners = layer.hasListener(ol.render.Event.Type.RENDER);
@@ -34621,7 +34621,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
   var pixelRatio = tilePixelSize[0] /
       ol.size.toSize(tileGrid.getTileSize(z), this.tmpSize_)[0];
   var tilePixelResolution = tileResolution / pixelRatio;
-  var tileGutter = frameState.pixelRatio * tileSource.getGutter(projection);
+  var tileGutter = tileSource.getTilePixelRatio(pixelRatio) * tileSource.getGutter(projection);
 
   var center = viewState.center;
   var extent = frameState.extent;
@@ -64766,6 +64766,18 @@ ol.interaction.Modify.prototype.removeFeatureSegmentData_ = function(feature) {
 /**
  * @inheritDoc
  */
+ol.interaction.Modify.prototype.setActive = function(active) {
+  if (this.vertexFeature_ && !active) {
+    this.overlay_.getSource().removeFeature(this.vertexFeature_);
+    this.vertexFeature_ = null;
+  }
+  ol.interaction.Pointer.prototype.setActive.call(this, active);
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.interaction.Modify.prototype.setMap = function(map) {
   this.overlay_.setMap(map);
   ol.interaction.Pointer.prototype.setMap.call(this, map);
@@ -88501,7 +88513,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.18.2-350-g74bf0df';
+ol.VERSION = 'v3.19.0';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

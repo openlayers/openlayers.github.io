@@ -29,7 +29,7 @@ var map = new ol.Map({
         attributions: attribution,
         format: format,
         tileGrid: tileGrid,
-        url: 'https://vector.mapzen.com/osm/water/{z}/{x}/{y}.topojson?api_key=' + key
+        url: 'https://tile.mapzen.com/mapzen/vector/v1/water/{z}/{x}/{y}.topojson?api_key=' + key
       }),
       style: new ol.style.Style({
         fill: new ol.style.Fill({
@@ -42,7 +42,7 @@ var map = new ol.Map({
         attributions: attribution,
         format: format,
         tileGrid: tileGrid,
-        url: 'https://vector.mapzen.com/osm/roads/{z}/{x}/{y}.topojson?api_key=' + key
+        url: 'https://tile.mapzen.com/mapzen/vector/v1/roads/{z}/{x}/{y}.topojson?api_key=' + key
       }),
       style: function(feature) {
         var kind = feature.get('kind');
@@ -76,7 +76,7 @@ var map = new ol.Map({
         attributions: attribution,
         format: format,
         tileGrid: tileGrid,
-        url: 'https://vector.mapzen.com/osm/buildings/{z}/{x}/{y}.topojson?api_key=' + key
+        url: 'https://tile.mapzen.com/mapzen/vector/v1/buildings/{z}/{x}/{y}.topojson?api_key=' + key
       }),
       style: function(f, resolution) {
         return (resolution < 10) ? buildingStyle : null;

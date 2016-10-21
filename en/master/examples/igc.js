@@ -71,7 +71,7 @@ var map = new ol.Map({
           'All maps © <a href="https://www.opencyclemap.org/">OpenCycleMap</a>',
           ol.source.OSM.ATTRIBUTION
         ],
-        url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+        url: 'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png'
       })
     }),
     new ol.layer.Vector({
