@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenLayers 3 - Errors</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='../../../../assets/theme/site.css' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/x-icon" href="../../../../assets/theme/img/favicon.ico" />
+    
+  </head>
+  <body>
+    <header class='navbar navbar-fixed-top' role='navigation'>
+      <div class='container'>
+
+        <!-- button that shows up below 768px width -->
+        <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+        </button>
+
+        <a href='/' class='navbar-brand'><img src='../../../../assets/theme/img/logo70.png'>&nbsp;OpenLayers 3</a>
+
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class='nav navbar-nav pull-right'>
+            <li><a href='/en/latest/doc/'class="active">Docs</a></li>
+            <li><a href='/en/latest/examples/'>Examples</a></li>
+            <li><a href='/en/latest/apidoc/'>API</a></li>
+            <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+
+<div class='container'>
+<h1 id="errors">Errors</h1>
+<h3 id="1">1</h3>
+<p>The view center is not defined.</p>
+<h3 id="2">2</h3>
+<p>The view resolution is not defined.</p>
+<h3 id="3">3</h3>
+<p>The view rotation is not defined.</p>
+<h3 id="4">4</h3>
+<p><code>image</code> and <code>src</code> cannot be provided at the same time.</p>
+<h3 id="5">5</h3>
+<p><code>imgSize</code> must be set when <code>image</code> is provided.</p>
+<h3 id="6">6</h3>
+<p>A defined and non-empty <code>src</code> or <code>image</code> must be provided.</p>
+<h3 id="7">7</h3>
+<p><code>format</code> must be set when <code>url</code> is set.</p>
+<h3 id="8">8</h3>
+<p>Unknown <code>serverType</code> configured.</p>
+<h3 id="9">9</h3>
+<p><code>url</code> must be configured or set using <code>#setUrl()</code>.</p>
+<h3 id="10">10</h3>
+<p>The default <code>geometryFunction</code> can only handle <code>ol.geom.Point</code> geometries.</p>
+<h3 id="11">11</h3>
+<p><code>options.featureTypes</code> should be an Array.</p>
+<h3 id="12">12</h3>
+<p><code>options.geometryName</code> must also be provided when <code>options.bbox</code> is set.</p>
+<h3 id="13">13</h3>
+<p>Invalid corner. Valid corners are <code>top-left</code>, <code>top-right</code>, <code>bottom-right</code> and <code>bottom-left</code>.</p>
+<h3 id="14">14</h3>
+<p>Invalid color. Valid colors are all <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color">CSS colors</a>.</p>
+<h3 id="15">15</h3>
+<p>Tried to get a value for a key that does not exist in the cache.</p>
+<h3 id="16">16</h3>
+<p>Tried to set a value for a key that is used already.</p>
+<h3 id="17">17</h3>
+<p><code>resolutions</code> must be sorted in descending order.</p>
+<h3 id="18">18</h3>
+<p>Either <code>origin</code> or <code>origins</code> must be configured, never both.</p>
+<h3 id="19">19</h3>
+<p>Number of <code>tileSizes</code> and <code>resolutions</code> must be equal.</p>
+<h3 id="20">20</h3>
+<p>Number of <code>origins</code> and <code>resolutions</code> must be equal.</p>
+<h3 id="22">22</h3>
+<p>Either <code>tileSize</code> or <code>tileSizes</code> must be configured, never both.</p>
+<h3 id="23">23</h3>
+<p>The passed <code>ol.TileCoord</code>s must all have the same <code>z</code> value.</p>
+<h3 id="24">24</h3>
+<p>Invalid extent or geometry provided as <code>geometry</code>.</p>
+<h3 id="25">25</h3>
+<p>Cannot fit empty extent provided as <code>geometry</code>.</p>
+<h3 id="26">26</h3>
+<p>Features for <code>deletes</code> must have an id set by the feature reader or  <code>ol.Feature#setId()</code>.</p>
+<h3 id="27">27</h3>
+<p>Features for <code>updates</code> must have an id set by the feature reader or <code>ol.Feature#setId()</code>.</p>
+<h3 id="28">28</h3>
+<p><code>renderMode</code> must be <code>&#39;image&#39;</code>, <code>&#39;hybrid&#39;</code> or <code>&#39;vector&#39;</code>.</p>
+<h3 id="29">29</h3>
+<p><code>x</code> must be greater than <code>0</code>.</p>
+<h3 id="30">30</h3>
+<p>The passed <code>feature</code> was already added to the source.</p>
+<h3 id="31">31</h3>
+<p>Tried to enqueue an <code>element</code> that was already added to the queue.</p>
+<h3 id="32">32</h3>
+<p>Transformation matrix cannot be inverted.</p>
+<h3 id="33">33</h3>
+<p>Invalid <code>units</code>. <code>&#39;degrees&#39;</code>, <code>&#39;imperial&#39;</code>, <code>&#39;nautical&#39;</code>, <code>&#39;metric&#39;</code> or <code>&#39;us&#39;</code> required.</p>
+<h3 id="34">34</h3>
+<p>Invalid geometry layout. Must be <code>XY</code>, <code>XYZ</code>, <code>XYM</code> or <code>XYZM</code>.</p>
+<h3 id="36">36</h3>
+<p>Unknown SRS type. Expected <code>&quot;name&quot;</code> or <code>&quot;EPSG&quot;</code>.</p>
+<h3 id="37">37</h3>
+<p>Unknown geometry type found. Expected <code>&#39;Point&#39;</code>, <code>&#39;LineString&#39;</code>, <code>&#39;Polygon&#39;</code> or <code>&#39;GeometryCollection&#39;</code>.</p>
+<h3 id="38">38</h3>
+<p><code>styleMapValue</code> has an unknown type.</p>
+<h3 id="39">39</h3>
+<p>Unknown geometry type found. Expected <code>&#39;GeometryCollection&#39;</code>, <code>&#39;MultiPoint&#39;</code>, <code>&#39;MultiLineString&#39;</code> or <code>&#39;MultiPolygon&#39;</code>.</p>
+<h3 id="40">40</h3>
+<p>Expected <code>feature</code> to have a geometry.</p>
+<h3 id="41">41</h3>
+<p>Expected an <code>ol.style.Style</code> or an array of <code>ol.style.Style</code>.</p>
+<h3 id="43">43</h3>
+<p>Expected <code>layers</code> to be an array or an <code>ol.Collection</code>.</p>
+<h3 id="44">44</h3>
+<p><code>logo.href</code> should be a string.</p>
+<h3 id="45">45</h3>
+<p><code>logo.src</code> should be a string.</p>
+<h3 id="46">46</h3>
+<p>Incorrect format for <code>renderer</code> option.</p>
+<h3 id="47">47</h3>
+<p>Expected <code>controls</code> to be an array or an <code>ol.Collection</code>.</p>
+<h3 id="48">48</h3>
+<p>Expected <code>interactions</code> to be an array or an <code>ol.Collection</code>.</p>
+<h3 id="49">49</h3>
+<p>Expected <code>overlays</code> to be an array or an <code>ol.Collection</code>.</p>
+<h3 id="50">50</h3>
+<p>Cannot determine Rest Service from url.</p>
+<h3 id="51">51</h3>
+<p>Either <code>url</code> or <code>tileJSON</code> options must be provided.</p>
+<h3 id="52">52</h3>
+<p>Unknown <code>serverType</code> configured.</p>
+<h3 id="53">53</h3>
+<p>Unknown <code>tierSizeCalculation</code> configured.</p>
+<h3 id="54">54</h3>
+<p>Hex color should have 3 or 6 digits.</p>
+<h3 id="55">55</h3>
+<p>The <code>{-y}</code> placeholder requires a tile grid with extent.</p>
+<h3 id="56">56</h3>
+<p><code>mapBrowserEvent</code> must originate from a pointer event.</p>
+
+</div>
+
+    <footer>
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='/sponsors.html'>sponsors</a>.
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>
