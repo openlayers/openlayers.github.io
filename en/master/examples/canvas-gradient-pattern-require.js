@@ -1,5 +1,6 @@
 goog.require('ol.Map');
 goog.require('ol.View');
+goog.require('ol.extent');
 goog.require('ol.format.GeoJSON');
 goog.require('ol.has');
 goog.require('ol.layer.Vector');
