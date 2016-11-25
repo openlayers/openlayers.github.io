@@ -92,7 +92,7 @@ var styleFunction &#x3D; function(feature) {
       image: new ol.style.Icon({
         src: &#x27;https://openlayers.org/en/v3.19.1/examples/data/arrow.png&#x27;,
         anchor: [0.75, 0.5],
-        rotateWithView: false,
+        rotateWithView: true,
         rotation: -rotation
       })
     }));
@@ -165,7 +165,7 @@ map.addInteraction(new ol.interaction.Draw({
             image: new ol.style.Icon({
               src: &#x27;https://openlayers.org/en/v3.19.1/examples/data/arrow.png&#x27;,
               anchor: [0.75, 0.5],
-              rotateWithView: false,
+              rotateWithView: true,
               rotation: -rotation
             })
           }));

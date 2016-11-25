@@ -1827,6 +1827,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.View#animate" class="unstable">
+                    <a href="ol.View.html#animate">animate</a>
+                </li>
+            
                 <li data-name="ol.View#calculateExtent" class="">
                     <a href="ol.View.html#calculateExtent">calculateExtent</a>
                 </li>
@@ -3516,10 +3520,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ol.featureloader.tile" class="unstable">
-                    <a href="ol.featureloader.html#.tile">tile</a>
-                </li>
-            
                 <li data-name="ol.featureloader.xhr" class="unstable">
                     <a href="ol.featureloader.html#.xhr">xhr</a>
                 </li>
@@ -3942,6 +3942,14 @@
             
                 <li data-name="ol.format.KML#readProjection" class="">
                     <a href="ol.format.KML.html#readProjection">readProjection</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegion" class="unstable">
+                    <a href="ol.format.KML.html#readRegion">readRegion</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegionFromNode" class="unstable">
+                    <a href="ol.format.KML.html#readRegionFromNode">readRegionFromNode</a>
                 </li>
             
                 <li data-name="ol.format.KML#writeFeatures" class="">
@@ -10946,6 +10954,25 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.render.webgl">
+            <span class="title">
+                <a href="ol.render.webgl.html">ol.render.webgl</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.render.webgl.Immediate">
             <span class="title">
                 <a href="ol.render.webgl.Immediate.html">ol.render.webgl.Immediate</a>
@@ -15207,6 +15234,14 @@
                     <a href="ol.style.Circle.html#clone">clone</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getAnchor" class="unstable">
+                    <a href="ol.style.Circle.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getAngle" class="unstable">
+                    <a href="ol.style.Circle.html#getAngle">getAngle</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getFill" class="unstable">
                     <a href="ol.style.Circle.html#getFill">getFill</a>
                 </li>
@@ -15219,8 +15254,20 @@
                     <a href="ol.style.Circle.html#getOpacity">getOpacity</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getOrigin" class="unstable">
+                    <a href="ol.style.Circle.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getPoints" class="unstable">
+                    <a href="ol.style.Circle.html#getPoints">getPoints</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getRadius" class="unstable">
                     <a href="ol.style.Circle.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getRadius2" class="unstable">
+                    <a href="ol.style.Circle.html#getRadius2">getRadius2</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getRotateWithView" class="unstable">
@@ -15233,6 +15280,10 @@
             
                 <li data-name="ol.style.Circle#getScale" class="unstable">
                     <a href="ol.style.Circle.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getSize" class="unstable">
+                    <a href="ol.style.Circle.html#getSize">getSize</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getSnapToPixel" class="unstable">
@@ -15329,6 +15380,10 @@
             
                 <li data-name="ol.style.Icon#getAnchor" class="unstable">
                     <a href="ol.style.Icon.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Icon#getColor" class="unstable">
+                    <a href="ol.style.Icon.html#getColor">getColor</a>
                 </li>
             
                 <li data-name="ol.style.Icon#getImage" class="unstable">
@@ -15659,8 +15714,24 @@
                     <a href="ol.style.Style.html#getZIndex">getZIndex</a>
                 </li>
             
+                <li data-name="ol.style.Style#setFill" class="unstable">
+                    <a href="ol.style.Style.html#setFill">setFill</a>
+                </li>
+            
                 <li data-name="ol.style.Style#setGeometry" class="unstable">
                     <a href="ol.style.Style.html#setGeometry">setGeometry</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setImage" class="unstable">
+                    <a href="ol.style.Style.html#setImage">setImage</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setStroke" class="unstable">
+                    <a href="ol.style.Style.html#setStroke">setStroke</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setText" class="unstable">
+                    <a href="ol.style.Style.html#setText">setText</a>
                 </li>
             
                 <li data-name="ol.style.Style#setZIndex" class="unstable">
@@ -16018,7 +16089,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/style/circle.js, line 22
+            src/ol/style/circle.js, line 16
         </div>
         
         
@@ -16309,7 +16380,7 @@ By default no atlas manager is used.</p></td>
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="ol.style.Image.html">ol.style.Image</a></li>
+            <li><a href="ol.style.RegularShape.html">ol.style.RegularShape</a></li>
         </ul>
     
     
@@ -16334,7 +16405,7 @@ By default no atlas manager is used.</p></td>
     <div class="nameContainer">
         
         <h4 class="name" id="clone">
-            clone<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.style.Image.html">ol.style.Image</a>}</span>
+            clone<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.style.Circle.html">ol.style.Circle</a>}</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -16343,7 +16414,7 @@ By default no atlas manager is used.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/style/circle.js, line 123
+            src/ol/style/circle.js, line 38
         </div>
         
         
@@ -16354,7 +16425,7 @@ By default no atlas manager is used.</p></td>
 
     
     <div class="description">
-        <p>Clones the style.  If an atlasmanger was provided to the original style it will be used in the cloned style, too.</p>
+        <p>Clones the style.  If an atlasmanager was provided to the original style it will be used in the cloned style, too.</p>
     </div>
     
 
@@ -16417,10 +16488,12 @@ The cloned style.
         
             
 <dt class="unstable">
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         
-        <h4 class="name" id="getFill">
-            getFill<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.style.Fill.html">ol.style.Fill</a>}</span>
+        <h4 class="name" id="getAnchor">
+            getAnchor<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;number>}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getAnchor">inherited</a></span>
             
             
 <span class="stability experimental">experimental</span>
@@ -16429,7 +16502,7 @@ The cloned style.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/circle.js, line 150
+            src/ol/style/regularshape.js, line 175
         </div>
         
         
@@ -16440,7 +16513,184 @@ The cloned style.
 
     
     <div class="description">
-        <p>Get the fill style for the circle.</p>
+        <p>Get the anchor point in pixels. The anchor determines the center point for the
+symbolizer.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Anchor.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer inherited">
+        
+        <h4 class="name" id="getAngle">
+            getAngle<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getAngle">inherited</a></span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/regularshape.js, line 185
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Get the angle used in generating the shape.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Shape's rotation in radians.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer inherited">
+        
+        <h4 class="name" id="getFill">
+            getFill<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.style.Fill.html">ol.style.Fill</a>}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getFill">inherited</a></span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/regularshape.js, line 195
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Get the fill style for the shape.</p>
     </div>
     
 
@@ -16503,10 +16753,12 @@ Fill style.
         
             
 <dt class="unstable">
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         
         <h4 class="name" id="getImage">
-            getImage<span class="signature">(pixelRatio)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{HTMLCanvasElement}</span>
+            getImage<span class="signature">(pixelRatio)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{HTMLCanvasElement|HTMLVideoElement|Image}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getImage">inherited</a></span>
             
             
 <span class="stability experimental">experimental</span>
@@ -16515,7 +16767,7 @@ Fill style.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/circle.js, line 169
+            src/ol/style/regularshape.js, line 212
         </div>
         
         
@@ -16526,7 +16778,7 @@ Fill style.
 
     
     <div class="description">
-        <p>Get the image used to render the circle.</p>
+        <p>Get the image element for the symbolizer.</p>
     </div>
     
 
@@ -16625,7 +16877,7 @@ Fill style.
 
 
 <h5>Returns:</h5>
-Canvas element.
+Image element.
 <br />
 
     
@@ -16724,10 +16976,12 @@ Opacity.
         
             
 <dt class="unstable">
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         
-        <h4 class="name" id="getRadius">
-            getRadius<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+        <h4 class="name" id="getOrigin">
+            getOrigin<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;number>}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getOrigin">inherited</a></span>
             
             
 <span class="stability experimental">experimental</span>
@@ -16736,7 +16990,7 @@ Opacity.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/circle.js, line 211
+            src/ol/style/regularshape.js, line 245
         </div>
         
         
@@ -16747,7 +17001,183 @@ Opacity.
 
     
     <div class="description">
-        <p>Get the circle radius.</p>
+        <p>Get the origin of the symbolizer.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Origin.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer inherited">
+        
+        <h4 class="name" id="getPoints">
+            getPoints<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getPoints">inherited</a></span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/regularshape.js, line 255
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Get the number of points for generating the shape.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Number of points for stars and regular polygons.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer inherited">
+        
+        <h4 class="name" id="getRadius">
+            getRadius<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getRadius">inherited</a></span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/regularshape.js, line 265
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Get the (primary) radius for the shape.</p>
     </div>
     
 
@@ -16800,6 +17230,94 @@ Opacity.
 
 <h5>Returns:</h5>
 Radius.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer inherited">
+        
+        <h4 class="name" id="getRadius2">
+            getRadius2<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getRadius2">inherited</a></span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/regularshape.js, line 275
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Get the secondary radius for the shape.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Radius2.
 <br />
 
     
@@ -17076,6 +17594,94 @@ Scale.
 <dt class="unstable">
     <div class="nameContainer inherited">
         
+        <h4 class="name" id="getSize">
+            getSize<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Size">ol.Size</a>}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getSize">inherited</a></span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/regularshape.js, line 284
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Get the size of the symbolizer (in pixels).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Size.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer inherited">
+        
         <h4 class="name" id="getSnapToPixel">
             getSnapToPixel<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
@@ -17162,10 +17768,12 @@ The symbolizer should snap to a pixel.
         
             
 <dt class="unstable">
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         
         <h4 class="name" id="getStroke">
             getStroke<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.style.Stroke.html">ol.style.Stroke</a>}</span>
+            
+                <span class="inherited"><a href="ol.style.RegularShape.html#getStroke">inherited</a></span>
             
             
 <span class="stability experimental">experimental</span>
@@ -17174,7 +17782,7 @@ The symbolizer should snap to a pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/circle.js, line 229
+            src/ol/style/regularshape.js, line 294
         </div>
         
         
@@ -17185,7 +17793,7 @@ The symbolizer should snap to a pixel.
 
     
     <div class="description">
-        <p>Get the stroke style for the circle.</p>
+        <p>Get the stroke style for the shape.</p>
     </div>
     
 
@@ -17386,7 +17994,7 @@ Stroke style.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/circle.js, line 240
+            src/ol/style/circle.js, line 58
         </div>
         
         

@@ -1827,6 +1827,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.View#animate" class="unstable">
+                    <a href="ol.View.html#animate">animate</a>
+                </li>
+            
                 <li data-name="ol.View#calculateExtent" class="">
                     <a href="ol.View.html#calculateExtent">calculateExtent</a>
                 </li>
@@ -3516,10 +3520,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ol.featureloader.tile" class="unstable">
-                    <a href="ol.featureloader.html#.tile">tile</a>
-                </li>
-            
                 <li data-name="ol.featureloader.xhr" class="unstable">
                     <a href="ol.featureloader.html#.xhr">xhr</a>
                 </li>
@@ -3942,6 +3942,14 @@
             
                 <li data-name="ol.format.KML#readProjection" class="">
                     <a href="ol.format.KML.html#readProjection">readProjection</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegion" class="unstable">
+                    <a href="ol.format.KML.html#readRegion">readRegion</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegionFromNode" class="unstable">
+                    <a href="ol.format.KML.html#readRegionFromNode">readRegionFromNode</a>
                 </li>
             
                 <li data-name="ol.format.KML#writeFeatures" class="">
@@ -10946,6 +10954,25 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.render.webgl">
+            <span class="title">
+                <a href="ol.render.webgl.html">ol.render.webgl</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.render.webgl.Immediate">
             <span class="title">
                 <a href="ol.render.webgl.Immediate.html">ol.render.webgl.Immediate</a>
@@ -15207,6 +15234,14 @@
                     <a href="ol.style.Circle.html#clone">clone</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getAnchor" class="unstable">
+                    <a href="ol.style.Circle.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getAngle" class="unstable">
+                    <a href="ol.style.Circle.html#getAngle">getAngle</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getFill" class="unstable">
                     <a href="ol.style.Circle.html#getFill">getFill</a>
                 </li>
@@ -15219,8 +15254,20 @@
                     <a href="ol.style.Circle.html#getOpacity">getOpacity</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getOrigin" class="unstable">
+                    <a href="ol.style.Circle.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getPoints" class="unstable">
+                    <a href="ol.style.Circle.html#getPoints">getPoints</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getRadius" class="unstable">
                     <a href="ol.style.Circle.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getRadius2" class="unstable">
+                    <a href="ol.style.Circle.html#getRadius2">getRadius2</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getRotateWithView" class="unstable">
@@ -15233,6 +15280,10 @@
             
                 <li data-name="ol.style.Circle#getScale" class="unstable">
                     <a href="ol.style.Circle.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getSize" class="unstable">
+                    <a href="ol.style.Circle.html#getSize">getSize</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getSnapToPixel" class="unstable">
@@ -15329,6 +15380,10 @@
             
                 <li data-name="ol.style.Icon#getAnchor" class="unstable">
                     <a href="ol.style.Icon.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Icon#getColor" class="unstable">
+                    <a href="ol.style.Icon.html#getColor">getColor</a>
                 </li>
             
                 <li data-name="ol.style.Icon#getImage" class="unstable">
@@ -15659,8 +15714,24 @@
                     <a href="ol.style.Style.html#getZIndex">getZIndex</a>
                 </li>
             
+                <li data-name="ol.style.Style#setFill" class="unstable">
+                    <a href="ol.style.Style.html#setFill">setFill</a>
+                </li>
+            
                 <li data-name="ol.style.Style#setGeometry" class="unstable">
                     <a href="ol.style.Style.html#setGeometry">setGeometry</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setImage" class="unstable">
+                    <a href="ol.style.Style.html#setImage">setImage</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setStroke" class="unstable">
+                    <a href="ol.style.Style.html#setStroke">setStroke</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setText" class="unstable">
+                    <a href="ol.style.Style.html#setText">setText</a>
                 </li>
             
                 <li data-name="ol.style.Style#setZIndex" class="unstable">
@@ -16050,7 +16121,7 @@ default the center is not constrained at all.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 77
+            src/ol/view.js, line 78
         </div>
         
         
@@ -16807,6 +16878,393 @@ the <code>ol.View#constrainResolution</code> method.</p></td>
         
         <dl>
             
+<dt class="unstable">
+    <div class="nameContainer">
+        
+        <h4 class="name" id="animate">
+            animate<span class="signature">(var_args)</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/view.js, line 206
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Animate the view.  The view's center, zoom (or resolution), and rotation
+can be animated for smooth transitions between view states.  For example,
+to animate the view to a new zoom level:</p>
+<pre class="prettyprint source"><code>view.animate({zoom: view.getZoom() + 1});</code></pre><p>By default, the animation lasts one second and uses in-and-out easing.  You
+can customize this behavior by including <code>duration</code> (in milliseconds) and
+<code>easing</code> options (see <a href="ol.easing.html"><code>ol.easing</code></a>).</p>
+<p>To chain together multiple animations, call the method with multiple
+animation objects.  For example, to first zoom and then pan:</p>
+<pre class="prettyprint source"><code>view.animate({zoom: 10}, {center: [0, 0]});</code></pre><p>If you provide a function as the last argument to the animate method, it
+will get called at the end of an animation series.  The callback will be
+called with <code>true</code> if the animation series completed on its own or <code>false</code>
+if it was cancelled.</p>
+<p>Animations are cancelled by user interactions (e.g. dragging the map) or by
+calling <code>view.setCenter()</code>, <code>view.setResolution()</code>, or <code>view.setRotation()</code>
+(or another method that calls one of these).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>var_args</code></td>
+            
+            
+            
+            
+            <td colspan=2 class="description last">
+                
+                <p>Animation
+    options.  Multiple animations can be run in series by passing multiple
+    options objects.  To run multiple animations in parallel, call the method
+    multiple times.  An optional callback can be provided as a final
+    argument.  The callback will be called with a boolean indicating whether
+    the animation completed without being cancelled.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>center</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Coordinate">ol.Coordinate</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The center of the view at the end of the animation.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>zoom</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The zoom level of the view at the end of the animation.  This takes
+precedence over <code>resolution</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>resolution</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The resolution of the view at the end of the animation.  If <code>zoom</code> is also
+provided, this option will be ignored.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>rotation</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The rotation of the view at the end of the animation.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>anchor</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Coordinate">ol.Coordinate</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Optional anchor to remained fixed during a rotation or resolution animation.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The duration of the animation in milliseconds (defaults to <code>1000</code>).</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
+                <td class="name"><code>easing</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>The easing function used during the animation (defaults to <a href="ol.easing.html#.inAndOut"><code>ol.easing.inAndOut</code></a>).
+The function will be called for each frame with a number representing a
+fraction of the animation's duration.  The function should return a number
+between 0 and 1 representing the progress toward the destination state. <span class="required-option">Required.</span></p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
 <dt class="">
     <div class="nameContainer">
         
@@ -16818,7 +17276,7 @@ the <code>ol.View#constrainResolution</code> method.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 271
+            src/ol/view.js, line 476
         </div>
         
         
@@ -16954,7 +17412,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 555
+            src/ol/view.js, line 760
         </div>
         
         
@@ -17207,7 +17665,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 201
+            src/ol/view.js, line 406
         </div>
         
         
@@ -17343,7 +17801,7 @@ Constrained center.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 214
+            src/ol/view.js, line 419
         </div>
         
         
@@ -17529,7 +17987,7 @@ Constrained resolution.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 229
+            src/ol/view.js, line 434
         </div>
         
         
@@ -17824,7 +18282,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 474
+            src/ol/view.js, line 679
         </div>
         
         
@@ -18313,7 +18771,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 241
+            src/ol/view.js, line 446
         </div>
         
         
@@ -18485,7 +18943,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 288
+            src/ol/view.js, line 493
         </div>
         
         
@@ -18571,7 +19029,7 @@ The maximum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 298
+            src/ol/view.js, line 503
         </div>
         
         
@@ -18655,7 +19113,7 @@ The minimum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 308
+            src/ol/view.js, line 513
         </div>
         
         
@@ -18825,7 +19283,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 319
+            src/ol/view.js, line 524
         </div>
         
         
@@ -18909,7 +19367,7 @@ The resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 331
+            src/ol/view.js, line 536
         </div>
         
         
@@ -19083,7 +19541,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 383
+            src/ol/view.js, line 588
         </div>
         
         
@@ -19167,7 +19625,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 439
+            src/ol/view.js, line 644
         </div>
         
         
@@ -19628,7 +20086,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 589
+            src/ol/view.js, line 794
         </div>
         
         
@@ -19949,7 +20407,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 604
+            src/ol/view.js, line 809
         </div>
         
         
@@ -20224,7 +20682,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 630
+            src/ol/view.js, line 839
         </div>
         
         
@@ -20349,7 +20807,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 641
+            src/ol/view.js, line 853
         </div>
         
         
@@ -20471,7 +20929,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 651
+            src/ol/view.js, line 866
         </div>
         
         

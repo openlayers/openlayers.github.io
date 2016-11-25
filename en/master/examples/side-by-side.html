@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
-    
+    <link rel="stylesheet" href="side-by-side.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
     <title>Shared Views</title>
@@ -44,12 +44,16 @@
       <div class="row-fluid">
         <div class="span12">
           <h4 id="title">Shared Views</h4>
-          <h4>Canvas</h4>
-<div id="canvasMap" class="map"></div>
-<h4>WebGL</h4>
-<div id="webglMap" class="map"></div>
-<div id="no-webgl" class="alert alert-danger" style="display: none">
-  This map requires a browser that supports <a href="http://get.webgl.org/">WebGL</a>.
+          <div class="half">
+  <h4>Canvas</h4>
+  <div id="canvasMap" class="map"></div>
+</div>
+<div class="half">
+  <h4>WebGL</h4>
+  <div id="webglMap" class="map"></div>
+  <div id="no-webgl" class="alert alert-danger" style="display: none">
+    This map requires a browser that supports <a href="http://get.webgl.org/">WebGL</a>.
+  </div>
 </div>
 
         </div>
@@ -100,13 +104,24 @@ if (ol.has.WEBGL) {
   info.style.display &#x3D; &#x27;&#x27;;
 }
 </textarea>
-          <textarea class="hidden" name="css"></textarea>
-          <textarea class="hidden" name="html">&lt;h4&gt;Canvas&lt;/h4&gt;
-&lt;div id&#x3D;&quot;canvasMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-&lt;h4&gt;WebGL&lt;/h4&gt;
-&lt;div id&#x3D;&quot;webglMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-&lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
-  This map requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+          <textarea class="hidden" name="css">@media (min-width: 800px) {
+  .half {
+    padding: 0 10px;
+    width: 50%;
+    float: left;
+  }
+}
+</textarea>
+          <textarea class="hidden" name="html">&lt;div class&#x3D;&quot;half&quot;&gt;
+  &lt;h4&gt;Canvas&lt;/h4&gt;
+  &lt;div id&#x3D;&quot;canvasMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class&#x3D;&quot;half&quot;&gt;
+  &lt;h4&gt;WebGL&lt;/h4&gt;
+  &lt;div id&#x3D;&quot;webglMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+  &lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
+    This map requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+  &lt;/div&gt;
 &lt;/div&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
@@ -120,14 +135,27 @@ if (ol.has.WEBGL) {
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src="https://openlayers.org/en/v3.19.1/build/ol.js"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      @media (min-width: 800px) {
+        .half {
+          padding: 0 10px;
+          width: 50%;
+          float: left;
+        }
+      }
+    &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;h4&gt;Canvas&lt;/h4&gt;
-    &lt;div id&#x3D;&quot;canvasMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;h4&gt;WebGL&lt;/h4&gt;
-    &lt;div id&#x3D;&quot;webglMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
-      This map requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+    &lt;div class&#x3D;&quot;half&quot;&gt;
+      &lt;h4&gt;Canvas&lt;/h4&gt;
+      &lt;div id&#x3D;&quot;canvasMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;half&quot;&gt;
+      &lt;h4&gt;WebGL&lt;/h4&gt;
+      &lt;div id&#x3D;&quot;webglMap&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+      &lt;div id&#x3D;&quot;no-webgl&quot; class&#x3D;&quot;alert alert-danger&quot; style&#x3D;&quot;display: none&quot;&gt;
+        This map requires a browser that supports &lt;a href&#x3D;&quot;http://get.webgl.org/&quot;&gt;WebGL&lt;/a&gt;.
+      &lt;/div&gt;
     &lt;/div&gt;
     &lt;script&gt;
       var layer &#x3D; new ol.layer.Tile({

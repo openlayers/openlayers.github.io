@@ -1827,6 +1827,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.View#animate" class="unstable">
+                    <a href="ol.View.html#animate">animate</a>
+                </li>
+            
                 <li data-name="ol.View#calculateExtent" class="">
                     <a href="ol.View.html#calculateExtent">calculateExtent</a>
                 </li>
@@ -3516,10 +3520,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ol.featureloader.tile" class="unstable">
-                    <a href="ol.featureloader.html#.tile">tile</a>
-                </li>
-            
                 <li data-name="ol.featureloader.xhr" class="unstable">
                     <a href="ol.featureloader.html#.xhr">xhr</a>
                 </li>
@@ -3942,6 +3942,14 @@
             
                 <li data-name="ol.format.KML#readProjection" class="">
                     <a href="ol.format.KML.html#readProjection">readProjection</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegion" class="unstable">
+                    <a href="ol.format.KML.html#readRegion">readRegion</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegionFromNode" class="unstable">
+                    <a href="ol.format.KML.html#readRegionFromNode">readRegionFromNode</a>
                 </li>
             
                 <li data-name="ol.format.KML#writeFeatures" class="">
@@ -10946,6 +10954,25 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.render.webgl">
+            <span class="title">
+                <a href="ol.render.webgl.html">ol.render.webgl</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.render.webgl.Immediate">
             <span class="title">
                 <a href="ol.render.webgl.Immediate.html">ol.render.webgl.Immediate</a>
@@ -15207,6 +15234,14 @@
                     <a href="ol.style.Circle.html#clone">clone</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getAnchor" class="unstable">
+                    <a href="ol.style.Circle.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getAngle" class="unstable">
+                    <a href="ol.style.Circle.html#getAngle">getAngle</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getFill" class="unstable">
                     <a href="ol.style.Circle.html#getFill">getFill</a>
                 </li>
@@ -15219,8 +15254,20 @@
                     <a href="ol.style.Circle.html#getOpacity">getOpacity</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getOrigin" class="unstable">
+                    <a href="ol.style.Circle.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getPoints" class="unstable">
+                    <a href="ol.style.Circle.html#getPoints">getPoints</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getRadius" class="unstable">
                     <a href="ol.style.Circle.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getRadius2" class="unstable">
+                    <a href="ol.style.Circle.html#getRadius2">getRadius2</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getRotateWithView" class="unstable">
@@ -15233,6 +15280,10 @@
             
                 <li data-name="ol.style.Circle#getScale" class="unstable">
                     <a href="ol.style.Circle.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getSize" class="unstable">
+                    <a href="ol.style.Circle.html#getSize">getSize</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getSnapToPixel" class="unstable">
@@ -15329,6 +15380,10 @@
             
                 <li data-name="ol.style.Icon#getAnchor" class="unstable">
                     <a href="ol.style.Icon.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Icon#getColor" class="unstable">
+                    <a href="ol.style.Icon.html#getColor">getColor</a>
                 </li>
             
                 <li data-name="ol.style.Icon#getImage" class="unstable">
@@ -15659,8 +15714,24 @@
                     <a href="ol.style.Style.html#getZIndex">getZIndex</a>
                 </li>
             
+                <li data-name="ol.style.Style#setFill" class="unstable">
+                    <a href="ol.style.Style.html#setFill">setFill</a>
+                </li>
+            
                 <li data-name="ol.style.Style#setGeometry" class="unstable">
                     <a href="ol.style.Style.html#setGeometry">setGeometry</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setImage" class="unstable">
+                    <a href="ol.style.Style.html#setImage">setImage</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setStroke" class="unstable">
+                    <a href="ol.style.Style.html#setStroke">setStroke</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setText" class="unstable">
+                    <a href="ol.style.Style.html#setText">setText</a>
                 </li>
             
                 <li data-name="ol.style.Style#setZIndex" class="unstable">
@@ -16089,6 +16160,318 @@
         <h3 class="subsection-title">Type Definitions</h3>
         
         <dl>
+                
+<dt class="">
+    <div class="nameContainer">
+        <h4 class="name" id=".AnimationOptions">
+            olx.AnimationOptions<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>center</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Coordinate">ol.Coordinate</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The center of the view at the end of the animation.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>zoom</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The zoom level of the view at the end of the animation.  This takes
+precedence over <code>resolution</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>resolution</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The resolution of the view at the end of the animation.  If <code>zoom</code> is also
+provided, this option will be ignored.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>rotation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The rotation of the view at the end of the animation.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>anchor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Coordinate">ol.Coordinate</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Optional anchor to remained fixed during a rotation or resolution animation.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The duration of the animation in milliseconds (defaults to <code>1000</code>).</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>easing</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The easing function used during the animation (defaults to <a href="ol.easing.html#.inAndOut"><code>ol.easing.inAndOut</code></a>).
+The function will be called for each frame with a number representing a
+fraction of the animation's duration.  The function should return a number
+between 0 and 1 representing the progress toward the destination state. <span class="required-option">Required.</span></p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
                 
 <dt class="">
     <div class="nameContainer">
@@ -17840,7 +18223,7 @@ The default is <code>false</code>.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="olx.animation.html#.PanOptions">olx.animation.PanOptions</a></span>
+<span class="param-type"><a href="olx.html#.OverlayPanOptions">olx.OverlayPanOptions</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -17861,9 +18244,9 @@ The default is <code>false</code>.</p></td>
             
             
             
-            <td class="description last"><p>The options used to create a <code>ol.animation.pan</code> animation. This animation
-is only used when <code>autoPan</code> is enabled. By default the default options for
-<code>ol.animation.pan</code> are used. If set to <code>null</code> the panning is not animated.</p></td>
+            <td class="description last"><p>The animation options used to pan the overlay into view. This animation
+is only used when <code>autoPan</code> is enabled. A <code>duration</code> and <code>easing</code> may be
+provided to customize the animation.</p></td>
         </tr>
 	
 	
@@ -17899,6 +18282,128 @@ is only used when <code>autoPan</code> is enabled. By default the default option
             
             <td class="description last"><p>The margin (in pixels) between the overlay and the borders of the map when
 autopanning. The default is <code>20</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <h4 class="name" id=".OverlayPanOptions">
+            olx.OverlayPanOptions<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The duration of the animation in milliseconds. Default is <code>1000</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>easing</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The easing function to use. Can be an <a href="ol.easing.html"><code>ol.easing</code></a> or a custom function.
+Default is <a href="ol.easing.html#.inAndOut"><code>ol.easing.inAndOut</code></a>. <span class="required-option">Required.</span></p></td>
         </tr>
 	
 	

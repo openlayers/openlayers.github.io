@@ -1827,6 +1827,10 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.View#animate" class="unstable">
+                    <a href="ol.View.html#animate">animate</a>
+                </li>
+            
                 <li data-name="ol.View#calculateExtent" class="">
                     <a href="ol.View.html#calculateExtent">calculateExtent</a>
                 </li>
@@ -3516,10 +3520,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ol.featureloader.tile" class="unstable">
-                    <a href="ol.featureloader.html#.tile">tile</a>
-                </li>
-            
                 <li data-name="ol.featureloader.xhr" class="unstable">
                     <a href="ol.featureloader.html#.xhr">xhr</a>
                 </li>
@@ -3942,6 +3942,14 @@
             
                 <li data-name="ol.format.KML#readProjection" class="">
                     <a href="ol.format.KML.html#readProjection">readProjection</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegion" class="unstable">
+                    <a href="ol.format.KML.html#readRegion">readRegion</a>
+                </li>
+            
+                <li data-name="ol.format.KML#readRegionFromNode" class="unstable">
+                    <a href="ol.format.KML.html#readRegionFromNode">readRegionFromNode</a>
                 </li>
             
                 <li data-name="ol.format.KML#writeFeatures" class="">
@@ -10946,6 +10954,25 @@
             </ul>
         </li>
     
+        <li class="item" data-name="ol.render.webgl">
+            <span class="title">
+                <a href="ol.render.webgl.html">ol.render.webgl</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="ol.render.webgl.Immediate">
             <span class="title">
                 <a href="ol.render.webgl.Immediate.html">ol.render.webgl.Immediate</a>
@@ -15207,6 +15234,14 @@
                     <a href="ol.style.Circle.html#clone">clone</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getAnchor" class="unstable">
+                    <a href="ol.style.Circle.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getAngle" class="unstable">
+                    <a href="ol.style.Circle.html#getAngle">getAngle</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getFill" class="unstable">
                     <a href="ol.style.Circle.html#getFill">getFill</a>
                 </li>
@@ -15219,8 +15254,20 @@
                     <a href="ol.style.Circle.html#getOpacity">getOpacity</a>
                 </li>
             
+                <li data-name="ol.style.Circle#getOrigin" class="unstable">
+                    <a href="ol.style.Circle.html#getOrigin">getOrigin</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getPoints" class="unstable">
+                    <a href="ol.style.Circle.html#getPoints">getPoints</a>
+                </li>
+            
                 <li data-name="ol.style.Circle#getRadius" class="unstable">
                     <a href="ol.style.Circle.html#getRadius">getRadius</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getRadius2" class="unstable">
+                    <a href="ol.style.Circle.html#getRadius2">getRadius2</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getRotateWithView" class="unstable">
@@ -15233,6 +15280,10 @@
             
                 <li data-name="ol.style.Circle#getScale" class="unstable">
                     <a href="ol.style.Circle.html#getScale">getScale</a>
+                </li>
+            
+                <li data-name="ol.style.Circle#getSize" class="unstable">
+                    <a href="ol.style.Circle.html#getSize">getSize</a>
                 </li>
             
                 <li data-name="ol.style.Circle#getSnapToPixel" class="unstable">
@@ -15329,6 +15380,10 @@
             
                 <li data-name="ol.style.Icon#getAnchor" class="unstable">
                     <a href="ol.style.Icon.html#getAnchor">getAnchor</a>
+                </li>
+            
+                <li data-name="ol.style.Icon#getColor" class="unstable">
+                    <a href="ol.style.Icon.html#getColor">getColor</a>
                 </li>
             
                 <li data-name="ol.style.Icon#getImage" class="unstable">
@@ -15659,8 +15714,24 @@
                     <a href="ol.style.Style.html#getZIndex">getZIndex</a>
                 </li>
             
+                <li data-name="ol.style.Style#setFill" class="unstable">
+                    <a href="ol.style.Style.html#setFill">setFill</a>
+                </li>
+            
                 <li data-name="ol.style.Style#setGeometry" class="unstable">
                     <a href="ol.style.Style.html#setGeometry">setGeometry</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setImage" class="unstable">
+                    <a href="ol.style.Style.html#setImage">setImage</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setStroke" class="unstable">
+                    <a href="ol.style.Style.html#setStroke">setStroke</a>
+                </li>
+            
+                <li data-name="ol.style.Style#setText" class="unstable">
+                    <a href="ol.style.Style.html#setText">setText</a>
                 </li>
             
                 <li data-name="ol.style.Style#setZIndex" class="unstable">
@@ -16077,7 +16148,7 @@ map.getView().setResolution(map.getView().getResolution() * 2);</code></pre></di
         </h4>
         
         <div class="tag-source">
-            src/ol/animation.js, line 16
+            src/ol/animation.js, line 17
         </div>
         
         
@@ -16088,7 +16159,8 @@ map.getView().setResolution(map.getView().getResolution() * 2);</code></pre></di
 
     
     <div class="description">
-        <p>Generate an animated transition that will &quot;bounce&quot; the resolution as it
+        <p>Deprecated (use <a href="ol.View.html#animate"><code>ol.View#animate</code></a> instead).
+Generate an animated transition that will &quot;bounce&quot; the resolution as it
 approaches the final value.</p>
     </div>
     
@@ -16350,7 +16422,7 @@ Pre-render function.
         </h4>
         
         <div class="tag-source">
-            src/ol/animation.js, line 53
+            src/ol/animation.js, line 56
         </div>
         
         
@@ -16361,7 +16433,8 @@ Pre-render function.
 
     
     <div class="description">
-        <p>Generate an animated transition while updating the view center.</p>
+        <p>Deprecated (use <a href="ol.View.html#animate"><code>ol.View#animate</code></a> instead).
+Generate an animated transition while updating the view center.</p>
     </div>
     
 
@@ -16621,7 +16694,7 @@ Pre-render function.
         </h4>
         
         <div class="tag-source">
-            src/ol/animation.js, line 94
+            src/ol/animation.js, line 99
         </div>
         
         
@@ -16632,7 +16705,8 @@ Pre-render function.
 
     
     <div class="description">
-        <p>Generate an animated transition while updating the view rotation.</p>
+        <p>Deprecated (use <a href="ol.View.html#animate"><code>ol.View#animate</code></a> instead).
+Generate an animated transition while updating the view rotation.</p>
     </div>
     
 
@@ -16930,7 +17004,7 @@ Pre-render function.
         </h4>
         
         <div class="tag-source">
-            src/ol/animation.js, line 141
+            src/ol/animation.js, line 148
         </div>
         
         
@@ -16941,7 +17015,8 @@ Pre-render function.
 
     
     <div class="description">
-        <p>Generate an animated transition while updating the view resolution.</p>
+        <p>Deprecated (use <a href="ol.View.html#animate"><code>ol.View#animate</code></a> instead).
+Generate an animated transition while updating the view resolution.</p>
     </div>
     
 
