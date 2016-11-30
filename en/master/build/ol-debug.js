@@ -1,6 +1,6 @@
 // OpenLayers 3. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.19.1-233-g0e95905
+// Version: v3.19.1-255-g7946287
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -6330,20 +6330,6 @@ ol.proj.Projection = function(options) {
         if (options.units === undefined) {
           this.units_ = def.units;
         }
-        var currentCode, currentDef, currentProj, proj4Transform;
-        for (currentCode in projections) {
-          currentDef = proj4js.defs(currentCode);
-          if (currentDef !== undefined) {
-            currentProj = ol.proj.get(currentCode);
-            if (currentDef === def) {
-              ol.proj.addEquivalentProjections([currentProj, this]);
-            } else {
-              proj4Transform = proj4js(currentCode, code);
-              ol.proj.addCoordinateTransforms(currentProj, this,
-                  proj4Transform.forward, proj4Transform.inverse);
-            }
-          }
-        }
       }
     }
   }
@@ -6915,10 +6901,26 @@ ol.proj.getTransformFromProjections = function(sourceProjection, destinationProj
   var sourceCode = sourceProjection.getCode();
   var destinationCode = destinationProjection.getCode();
   var transform;
+  if (ol.ENABLE_PROJ4JS && !(sourceCode in transforms && destinationCode in transforms[sourceCode])) {
+    var proj4js = ol.proj.proj4_ || window['proj4'];
+    if (typeof proj4js == 'function') {
+      var sourceDef = proj4js.defs(sourceCode);
+      var destinationDef = proj4js.defs(destinationCode);
+
+      if (sourceDef !== undefined && destinationDef !== undefined) {
+        if (sourceDef === destinationDef) {
+          ol.proj.addEquivalentProjections([destinationProjection, sourceProjection]);
+        } else {
+          var proj4Transform = proj4js(destinationCode, sourceCode);
+          ol.proj.addCoordinateTransforms(destinationProjection, sourceProjection,
+              proj4Transform.forward, proj4Transform.inverse);
+        }
+      }
+    }
+  }
   if (sourceCode in transforms && destinationCode in transforms[sourceCode]) {
     transform = transforms[sourceCode][destinationCode];
-  }
-  if (transform === undefined) {
+  } else {
     ol.DEBUG && console.assert(transform !== undefined, 'transform should be defined');
     transform = ol.proj.identityTransform;
   }
@@ -12516,33 +12518,12 @@ ol.color.HEX_COLOR_RE_ = /^#(?:[0-9a-f]{3}){1,2}$/i;
 
 
 /**
- * Regular expression for matching and capturing RGB style strings.
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.RGB_COLOR_RE_ =
-    /^(?:rgb)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2})\)$/i;
-
-
-/**
- * Regular expression for matching and capturing RGBA style strings.
- * @const
- * @type {RegExp}
- * @private
- */
-ol.color.RGBA_COLOR_RE_ =
-    /^(?:rgba)?\((0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|[1-9]\d{0,2}),\s?(0|1|0\.\d{0,16})\)$/i;
-
-
-/**
  * Regular expression for matching potential named color style strings.
  * @const
  * @type {RegExp}
  * @private
  */
-ol.color.NAMED_COLOR_RE_ =
-    /^([a-z]*)$/i;
+ol.color.NAMED_COLOR_RE_ = /^([a-z]*)$/i;
 
 
 /**
@@ -12653,7 +12634,7 @@ ol.color.fromString = (
  * @return {ol.Color} Color.
  */
 ol.color.fromStringInternal_ = function(s) {
-  var r, g, b, a, color, match;
+  var r, g, b, a, color, parts;
 
   if (ol.color.NAMED_COLOR_RE_.exec(s)) {
     s = ol.color.fromNamed(s);
@@ -12673,17 +12654,13 @@ ol.color.fromStringInternal_ = function(s) {
     }
     a = 1;
     color = [r, g, b, a];
-  } else if ((match = ol.color.RGBA_COLOR_RE_.exec(s))) { // rgba()
-    r = Number(match[1]);
-    g = Number(match[2]);
-    b = Number(match[3]);
-    a = Number(match[4]);
-    color = ol.color.normalize([r, g, b, a]);
-  } else if ((match = ol.color.RGB_COLOR_RE_.exec(s))) { // rgb()
-    r = Number(match[1]);
-    g = Number(match[2]);
-    b = Number(match[3]);
-    color = ol.color.normalize([r, g, b, 1]);
+  } else if (s.indexOf('rgba(') == 0) { // rgba()
+    parts = s.slice(5, -1).split(',').map(Number);
+    color = ol.color.normalize(parts);
+  } else if (s.indexOf('rgb(') == 0) { // rgb()
+    parts = s.slice(4, -1).split(',').map(Number);
+    parts.push(1);
+    color = ol.color.normalize(parts);
   } else {
     ol.asserts.assert(false, 14); // Invalid color
   }
@@ -33969,7 +33946,8 @@ ol.render.webgl.ImageReplay.prototype.drawCoordinates_ = function(flatCoordinate
   var originX = /** @type {number} */ (this.originX_);
   var originY = /** @type {number} */ (this.originY_);
   var rotateWithView = this.rotateWithView_ ? 1.0 : 0.0;
-  var rotation = /** @type {number} */ (this.rotation_);
+  // this.rotation_ is anti-clockwise, but rotation is clockwise
+  var rotation = /** @type {number} */ (-this.rotation_);
   var scale = /** @type {number} */ (this.scale_);
   var width = /** @type {number} */ (this.width_);
   var cos = Math.cos(rotation);
@@ -37709,6 +37687,9 @@ goog.provide('ol.render.webgl.ReplayGroup');
 
 goog.require('ol');
 goog.require('ol.array');
+goog.require('ol.extent');
+goog.require('ol.obj');
+goog.require('ol.render.replay');
 goog.require('ol.render.ReplayGroup');
 goog.require('ol.render.webgl');
 goog.require('ol.render.webgl.CircleReplay');
@@ -40769,7 +40750,6 @@ goog.require('ol.Object');
 goog.require('ol.ObjectEventType');
 goog.require('ol.TileQueue');
 goog.require('ol.View');
-goog.require('ol.array');
 goog.require('ol.asserts');
 goog.require('ol.control');
 goog.require('ol.dom');
@@ -41284,15 +41264,6 @@ ol.Map.prototype.beforeRender = function(var_args) {
   ol.DEBUG && console.warn('map.beforeRender() is deprecated.  Use view.animate() instead.');
   this.render();
   Array.prototype.push.apply(this.preRenderFunctions_, arguments);
-};
-
-
-/**
- * @param {ol.PreRenderFunction} preRenderFunction Pre-render function.
- * @return {boolean} Whether the preRenderFunction has been found and removed.
- */
-ol.Map.prototype.removePreRenderFunction = function(preRenderFunction) {
-  return ol.array.remove(this.preRenderFunctions_, preRenderFunction);
 };
 
 
@@ -55035,11 +55006,8 @@ ol.format.KML.createNameStyleFunction_ = function(foundStyle, name) {
     if (imageSize === null) {
       imageSize = ol.format.KML.DEFAULT_IMAGE_STYLE_SIZE_;
     }
-    var imageScale = foundStyle.getImage().getScale();
-    if (isNaN(imageScale)) {
-      imageScale = ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
-    }
     if (imageSize.length == 2) {
+      var imageScale = foundStyle.getImage().getScale();
       // Offset the label to be centered to the right of the icon, if there is
       // one.
       textOffset[0] = imageScale * imageSize[0] / 2;
@@ -55343,11 +55311,6 @@ ol.format.KML.IconStyleParser_ = function(node, objectStack) {
 
   var scale = /** @type {number|undefined} */
       (object['scale']);
-  if (isNaN(scale) || scale === undefined) {
-    scale = ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
-  } else {
-    scale = scale * ol.format.KML.DEFAULT_IMAGE_SCALE_MULTIPLIER_;
-  }
 
   if (drawIcon) {
     if (src == ol.format.KML.DEFAULT_IMAGE_STYLE_SRC_) {
@@ -57326,7 +57289,7 @@ ol.format.KML.writePolyStyle_ = function(node, style, objectStack) {
 ol.format.KML.writeScaleTextNode_ = function(node, scale) {
   // the Math is to remove any excess decimals created by float arithmetic
   ol.format.XSD.writeDecimalTextNode(node,
-      Math.round(scale * scale * 1e6) / 1e6);
+      Math.round(scale * 1e6) / 1e6);
 };
 
 
@@ -77217,6 +77180,7 @@ ol.source.VectorTile.prototype.getTilePixelSize = function(z, pixelRatio, projec
 goog.provide('ol.tilegrid.WMTS');
 
 goog.require('ol');
+goog.require('ol.array');
 goog.require('ol.proj');
 goog.require('ol.tilegrid.TileGrid');
 
@@ -92263,7 +92227,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.19.1-233-g0e95905';
+ol.VERSION = 'v3.19.1-255-g7946287';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
