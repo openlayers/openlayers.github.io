@@ -1,6 +1,6 @@
 // OpenLayers 3. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.19.1-255-g7946287
+// Version: v3.19.1-320-ge95778e
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -4135,59 +4135,11 @@ ol.Observable.prototype.un = function(type, listener, opt_this) {
 ol.Observable.prototype.unByKey = ol.Observable.unByKey;
 
 goog.provide('ol.Object');
-goog.provide('ol.ObjectEvent');
-goog.provide('ol.ObjectEventType');
 
 goog.require('ol');
 goog.require('ol.Observable');
 goog.require('ol.events.Event');
 goog.require('ol.obj');
-
-
-/**
- * @enum {string}
- */
-ol.ObjectEventType = {
-  /**
-   * Triggered when a property is changed.
-   * @event ol.ObjectEvent#propertychange
-   * @api stable
-   */
-  PROPERTYCHANGE: 'propertychange'
-};
-
-
-/**
- * @classdesc
- * Events emitted by {@link ol.Object} instances are instances of this type.
- *
- * @param {string} type The event type.
- * @param {string} key The property name.
- * @param {*} oldValue The old value for `key`.
- * @extends {ol.events.Event}
- * @implements {oli.ObjectEvent}
- * @constructor
- */
-ol.ObjectEvent = function(type, key, oldValue) {
-  ol.events.Event.call(this, type);
-
-  /**
-   * The name of the property whose value is changing.
-   * @type {string}
-   * @api stable
-   */
-  this.key = key;
-
-  /**
-   * The old value. To get the new value use `e.target.get(e.key)` where
-   * `e` is the event object.
-   * @type {*}
-   * @api stable
-   */
-  this.oldValue = oldValue;
-
-};
-ol.inherits(ol.ObjectEvent, ol.events.Event);
 
 
 /**
@@ -4232,7 +4184,7 @@ ol.inherits(ol.ObjectEvent, ol.events.Event);
  * @constructor
  * @extends {ol.Observable}
  * @param {Object.<string, *>=} opt_values An object with key-value pairs.
- * @fires ol.ObjectEvent
+ * @fires ol.Object.Event
  * @api
  */
 ol.Object = function(opt_values) {
@@ -4317,9 +4269,9 @@ ol.Object.prototype.getProperties = function() {
 ol.Object.prototype.notify = function(key, oldValue) {
   var eventType;
   eventType = ol.Object.getChangeEventType(key);
-  this.dispatchEvent(new ol.ObjectEvent(eventType, key, oldValue));
-  eventType = ol.ObjectEventType.PROPERTYCHANGE;
-  this.dispatchEvent(new ol.ObjectEvent(eventType, key, oldValue));
+  this.dispatchEvent(new ol.Object.Event(eventType, key, oldValue));
+  eventType = ol.Object.EventType.PROPERTYCHANGE;
+  this.dispatchEvent(new ol.Object.Event(eventType, key, oldValue));
 };
 
 
@@ -4373,6 +4325,52 @@ ol.Object.prototype.unset = function(key, opt_silent) {
     }
   }
 };
+
+
+/**
+ * @enum {string}
+ */
+ol.Object.EventType = {
+  /**
+   * Triggered when a property is changed.
+   * @event ol.Object.Event#propertychange
+   * @api stable
+   */
+  PROPERTYCHANGE: 'propertychange'
+};
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.Object} instances are instances of this type.
+ *
+ * @param {string} type The event type.
+ * @param {string} key The property name.
+ * @param {*} oldValue The old value for `key`.
+ * @extends {ol.events.Event}
+ * @implements {oli.Object.Event}
+ * @constructor
+ */
+ol.Object.Event = function(type, key, oldValue) {
+  ol.events.Event.call(this, type);
+
+  /**
+   * The name of the property whose value is changing.
+   * @type {string}
+   * @api stable
+   */
+  this.key = key;
+
+  /**
+   * The old value. To get the new value use `e.target.get(e.key)` where
+   * `e` is the event object.
+   * @type {*}
+   * @api stable
+   */
+  this.oldValue = oldValue;
+
+};
+ol.inherits(ol.Object.Event, ol.events.Event);
 
 goog.provide('ol.array');
 
@@ -5216,13 +5214,7 @@ ol.easing.upAndDown = function(t) {
   }
 };
 
-goog.provide('ol.extent');
 goog.provide('ol.extent.Corner');
-goog.provide('ol.extent.Relationship');
-
-goog.require('ol');
-goog.require('ol.asserts');
-
 
 /**
  * Extent corner.
@@ -5234,6 +5226,8 @@ ol.extent.Corner = {
   TOP_LEFT: 'top-left',
   TOP_RIGHT: 'top-right'
 };
+
+goog.provide('ol.extent.Relationship');
 
 
 /**
@@ -5248,6 +5242,13 @@ ol.extent.Relationship = {
   BELOW: 8,
   LEFT: 16
 };
+
+goog.provide('ol.extent');
+
+goog.require('ol');
+goog.require('ol.asserts');
+goog.require('ol.extent.Corner');
+goog.require('ol.extent.Relationship');
 
 
 /**
@@ -6036,6 +6037,43 @@ ol.extent.applyTransform = function(extent, transformFn, opt_extent) {
   return ol.extent.boundingExtentXYs_(xs, ys, opt_extent);
 };
 
+goog.provide('ol.geom.GeometryLayout');
+
+
+/**
+ * The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z')
+ * or measure ('M') coordinate is available. Supported values are `'XY'`,
+ * `'XYZ'`, `'XYM'`, `'XYZM'`.
+ * @enum {string}
+ */
+ol.geom.GeometryLayout = {
+  XY: 'XY',
+  XYZ: 'XYZ',
+  XYM: 'XYM',
+  XYZM: 'XYZM'
+};
+
+goog.provide('ol.geom.GeometryType');
+
+
+/**
+ * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
+ * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
+ * `'GeometryCollection'`, `'Circle'`.
+ * @enum {string}
+ */
+ol.geom.GeometryType = {
+  POINT: 'Point',
+  LINE_STRING: 'LineString',
+  LINEAR_RING: 'LinearRing',
+  POLYGON: 'Polygon',
+  MULTI_POINT: 'MultiPoint',
+  MULTI_LINE_STRING: 'MultiLineString',
+  MULTI_POLYGON: 'MultiPolygon',
+  GEOMETRY_COLLECTION: 'GeometryCollection',
+  CIRCLE: 'Circle'
+};
+
 goog.provide('ol.functions');
 
 /**
@@ -6176,14 +6214,8 @@ goog.require('ol.Sphere');
  */
 ol.sphere.NORMAL = new ol.Sphere(6370997);
 
-goog.provide('ol.proj');
-goog.provide('ol.proj.METERS_PER_UNIT');
-goog.provide('ol.proj.Projection');
 goog.provide('ol.proj.Units');
 
-goog.require('ol');
-goog.require('ol.extent');
-goog.require('ol.obj');
 goog.require('ol.sphere.NORMAL');
 
 
@@ -6208,12 +6240,45 @@ ol.proj.Units = {
  * @type {Object.<ol.proj.Units, number>}
  * @api stable
  */
-ol.proj.METERS_PER_UNIT = {};
-ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES] =
+ol.proj.Units.METERS_PER_UNIT = {};
+ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.DEGREES] =
     2 * Math.PI * ol.sphere.NORMAL.radius / 360;
-ol.proj.METERS_PER_UNIT[ol.proj.Units.FEET] = 0.3048;
-ol.proj.METERS_PER_UNIT[ol.proj.Units.METERS] = 1;
-ol.proj.METERS_PER_UNIT[ol.proj.Units.USFEET] = 1200 / 3937;
+ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.FEET] = 0.3048;
+ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.METERS] = 1;
+ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.USFEET] = 1200 / 3937;
+
+goog.provide('ol.proj.proj4');
+
+
+/**
+ * @private
+ * @type {proj4}
+ */
+ol.proj.proj4.cache_ = null;
+
+
+/**
+ * Store the proj4 function.
+ * @param {proj4} proj4 The proj4 function.
+ */
+ol.proj.proj4.set = function(proj4) {
+  ol.proj.proj4.cache_ = proj4;
+};
+
+
+/**
+ * Get proj4.
+ * @return {proj4} The proj4 function set above or available globally.
+ */
+ol.proj.proj4.get = function() {
+  return ol.proj.proj4.cache_ || window['proj4'];
+};
+
+goog.provide('ol.proj.Projection');
+
+goog.require('ol');
+goog.require('ol.proj.Units');
+goog.require('ol.proj.proj4');
 
 
 /**
@@ -6286,7 +6351,6 @@ ol.proj.Projection = function(options) {
    */
   this.global_ = options.global !== undefined ? options.global : false;
 
-
   /**
    * @private
    * @type {boolean}
@@ -6295,10 +6359,9 @@ ol.proj.Projection = function(options) {
 
   /**
   * @private
-  * @type {function(number, ol.Coordinate):number}
+  * @type {function(number, ol.Coordinate):number|undefined}
   */
-  this.getPointResolutionFunc_ = options.getPointResolution !== undefined ?
-      options.getPointResolution : this.getPointResolution_;
+  this.getPointResolutionFunc_ = options.getPointResolution;
 
   /**
    * @private
@@ -6312,13 +6375,12 @@ ol.proj.Projection = function(options) {
    */
   this.metersPerUnit_ = options.metersPerUnit;
 
-  var projections = ol.proj.projections_;
   var code = options.code;
   ol.DEBUG && console.assert(code !== undefined,
       'Option "code" is required for constructing instance');
   if (ol.ENABLE_PROJ4JS) {
-    var proj4js = ol.proj.proj4_ || window['proj4'];
-    if (typeof proj4js == 'function' && projections[code] === undefined) {
+    var proj4js = ol.proj.proj4.get();
+    if (typeof proj4js == 'function') {
       var def = proj4js.defs(code);
       if (def !== undefined) {
         if (def.axis !== undefined && options.axisOrientation === undefined) {
@@ -6383,7 +6445,7 @@ ol.proj.Projection.prototype.getUnits = function() {
  * @api stable
  */
 ol.proj.Projection.prototype.getMetersPerUnit = function() {
-  return this.metersPerUnit_ || ol.proj.METERS_PER_UNIT[this.units_];
+  return this.metersPerUnit_ || ol.proj.Units.METERS_PER_UNIT[this.units_];
 };
 
 
@@ -6472,98 +6534,163 @@ ol.proj.Projection.prototype.setWorldExtent = function(worldExtent) {
 
 
 /**
-* Set the getPointResolution function for this projection.
-* @param {function(number, ol.Coordinate):number} func Function
-* @api
-*/
+ * Set the getPointResolution function for this projection.
+ * @param {function(number, ol.Coordinate):number} func Function
+ * @api
+ */
 ol.proj.Projection.prototype.setGetPointResolution = function(func) {
   this.getPointResolutionFunc_ = func;
 };
 
 
 /**
-* Default version.
-* Get the resolution of the point in degrees or distance units.
-* For projections with degrees as the unit this will simply return the
-* provided resolution. For other projections the point resolution is
-* estimated by transforming the 'point' pixel to EPSG:4326,
-* measuring its width and height on the normal sphere,
-* and taking the average of the width and height.
-* @param {number} resolution Nominal resolution in projection units.
-* @param {ol.Coordinate} point Point to find adjusted resolution at.
-* @return {number} Point resolution at point in projection units.
-* @private
-*/
-ol.proj.Projection.prototype.getPointResolution_ = function(resolution, point) {
-  var units = this.getUnits();
-  if (units == ol.proj.Units.DEGREES) {
-    return resolution;
-  } else {
-    // Estimate point resolution by transforming the center pixel to EPSG:4326,
-    // measuring its width and height on the normal sphere, and taking the
-    // average of the width and height.
-    var toEPSG4326 = ol.proj.getTransformFromProjections(
-        this, ol.proj.get('EPSG:4326'));
-    var vertices = [
-      point[0] - resolution / 2, point[1],
-      point[0] + resolution / 2, point[1],
-      point[0], point[1] - resolution / 2,
-      point[0], point[1] + resolution / 2
-    ];
-    vertices = toEPSG4326(vertices, vertices, 2);
-    var width = ol.sphere.NORMAL.haversineDistance(
-        vertices.slice(0, 2), vertices.slice(2, 4));
-    var height = ol.sphere.NORMAL.haversineDistance(
-        vertices.slice(4, 6), vertices.slice(6, 8));
-    var pointResolution = (width + height) / 2;
-    var metersPerUnit = this.getMetersPerUnit();
-    if (metersPerUnit !== undefined) {
-      pointResolution /= metersPerUnit;
-    }
-    return pointResolution;
-  }
-};
-
-
-/**
- * Get the resolution of the point in degrees or distance units.
- * For projections with degrees as the unit this will simply return the
- * provided resolution. The default for other projections is to estimate
- * the point resolution by transforming the 'point' pixel to EPSG:4326,
- * measuring its width and height on the normal sphere,
- * and taking the average of the width and height.
- * An alternative implementation may be given when constructing a
- * projection. For many local projections,
- * such a custom function will return the resolution unchanged.
- * @param {number} resolution Resolution in projection units.
- * @param {ol.Coordinate} point Point.
- * @return {number} Point resolution in projection units.
- * @api
+ * Get the custom point resolution function for this projection (if set).
+ * @return {function(number, ol.Coordinate):number|undefined} The custom point
+ * resolution function (if set).
  */
-ol.proj.Projection.prototype.getPointResolution = function(resolution, point) {
-  return this.getPointResolutionFunc_(resolution, point);
+ol.proj.Projection.prototype.getPointResolutionFunc = function() {
+  return this.getPointResolutionFunc_;
 };
+
+goog.provide('ol.proj.projections');
 
 
 /**
  * @private
  * @type {Object.<string, ol.proj.Projection>}
  */
-ol.proj.projections_ = {};
+ol.proj.projections.cache_ = {};
+
+
+/**
+ * Clear the projections cache.
+ */
+ol.proj.projections.clear = function() {
+  ol.proj.projections.cache_ = {};
+};
+
+
+/**
+ * Get a cached projection by code.
+ * @param {string} code The code for the projection.
+ * @return {ol.proj.Projection} The projection (if cached).
+ */
+ol.proj.projections.get = function(code) {
+  var projections = ol.proj.projections.cache_;
+  return projections[code] || null;
+};
+
+
+/**
+ * Add a projection to the cache.
+ * @param {string} code The projection code.
+ * @param {ol.proj.Projection} projection The projection to cache.
+ */
+ol.proj.projections.add = function(code, projection) {
+  var projections = ol.proj.projections.cache_;
+  projections[code] = projection;
+};
+
+goog.provide('ol.proj.transforms');
+
+goog.require('ol');
+goog.require('ol.obj');
 
 
 /**
  * @private
  * @type {Object.<string, Object.<string, ol.TransformFunction>>}
  */
-ol.proj.transforms_ = {};
+ol.proj.transforms.cache_ = {};
 
 
 /**
- * @private
- * @type {proj4}
+ * Clear the transform cache.
  */
-ol.proj.proj4_ = null;
+ol.proj.transforms.clear = function() {
+  ol.proj.transforms.cache_ = {};
+};
+
+
+/**
+ * Registers a conversion function to convert coordinates from the source
+ * projection to the destination projection.
+ *
+ * @param {ol.proj.Projection} source Source.
+ * @param {ol.proj.Projection} destination Destination.
+ * @param {ol.TransformFunction} transformFn Transform.
+ */
+ol.proj.transforms.add = function(source, destination, transformFn) {
+  var sourceCode = source.getCode();
+  var destinationCode = destination.getCode();
+  var transforms = ol.proj.transforms.cache_;
+  if (!(sourceCode in transforms)) {
+    transforms[sourceCode] = {};
+  }
+  transforms[sourceCode][destinationCode] = transformFn;
+};
+
+
+/**
+ * Unregisters the conversion function to convert coordinates from the source
+ * projection to the destination projection.  This method is used to clean up
+ * cached transforms during testing.
+ *
+ * @param {ol.proj.Projection} source Source projection.
+ * @param {ol.proj.Projection} destination Destination projection.
+ * @return {ol.TransformFunction} transformFn The unregistered transform.
+ */
+ol.proj.transforms.remove = function(source, destination) {
+  var sourceCode = source.getCode();
+  var destinationCode = destination.getCode();
+  var transforms = ol.proj.transforms.cache_;
+  ol.DEBUG && console.assert(sourceCode in transforms,
+      'sourceCode should be in transforms');
+  ol.DEBUG && console.assert(destinationCode in transforms[sourceCode],
+      'destinationCode should be in transforms of sourceCode');
+  var transform = transforms[sourceCode][destinationCode];
+  delete transforms[sourceCode][destinationCode];
+  if (ol.obj.isEmpty(transforms[sourceCode])) {
+    delete transforms[sourceCode];
+  }
+  return transform;
+};
+
+
+/**
+ * Get a transform given a source code and a destination code.
+ * @param {string} sourceCode The code for the source projection.
+ * @param {string} destinationCode The code for the destination projection.
+ * @return {ol.TransformFunction|undefined} The transform function (if found).
+ */
+ol.proj.transforms.get = function(sourceCode, destinationCode) {
+  var transform;
+  var transforms = ol.proj.transforms.cache_;
+  if (sourceCode in transforms && destinationCode in transforms[sourceCode]) {
+    transform = transforms[sourceCode][destinationCode];
+  }
+  return transform;
+};
+
+goog.provide('ol.proj');
+
+goog.require('ol');
+goog.require('ol.extent');
+goog.require('ol.proj.Projection');
+goog.require('ol.proj.Units');
+goog.require('ol.proj.proj4');
+goog.require('ol.proj.projections');
+goog.require('ol.proj.transforms');
+goog.require('ol.sphere.NORMAL');
+
+
+/**
+ * Meters per unit lookup table.
+ * @const
+ * @type {Object.<ol.proj.Units, number>}
+ * @api stable
+ */
+ol.proj.METERS_PER_UNIT = ol.proj.Units.METERS_PER_UNIT;
 
 
 if (ol.ENABLE_PROJ4JS) {
@@ -6582,9 +6709,58 @@ if (ol.ENABLE_PROJ4JS) {
   ol.proj.setProj4 = function(proj4) {
     ol.DEBUG && console.assert(typeof proj4 == 'function',
         'proj4 argument should be a function');
-    ol.proj.proj4_ = proj4;
+    ol.proj.proj4.set(proj4);
   };
 }
+
+
+/**
+ * Get the resolution of the point in degrees or distance units.
+ * For projections with degrees as the unit this will simply return the
+ * provided resolution. For other projections the point resolution is
+ * estimated by transforming the 'point' pixel to EPSG:4326,
+ * measuring its width and height on the normal sphere,
+ * and taking the average of the width and height.
+ * @param {ol.proj.Projection} projection The projection.
+ * @param {number} resolution Nominal resolution in projection units.
+ * @param {ol.Coordinate} point Point to find adjusted resolution at.
+ * @return {number} Point resolution at point in projection units.
+ * @api
+ */
+ol.proj.getPointResolution = function(projection, resolution, point) {
+  var pointResolution;
+  var getter = projection.getPointResolutionFunc();
+  if (getter) {
+    pointResolution = getter(resolution, point);
+  } else {
+    var units = projection.getUnits();
+    if (units == ol.proj.Units.DEGREES) {
+      pointResolution = resolution;
+    } else {
+      // Estimate point resolution by transforming the center pixel to EPSG:4326,
+      // measuring its width and height on the normal sphere, and taking the
+      // average of the width and height.
+      var toEPSG4326 = ol.proj.getTransformFromProjections(projection, ol.proj.get('EPSG:4326'));
+      var vertices = [
+        point[0] - resolution / 2, point[1],
+        point[0] + resolution / 2, point[1],
+        point[0], point[1] - resolution / 2,
+        point[0], point[1] + resolution / 2
+      ];
+      vertices = toEPSG4326(vertices, vertices, 2);
+      var width = ol.sphere.NORMAL.haversineDistance(
+          vertices.slice(0, 2), vertices.slice(2, 4));
+      var height = ol.sphere.NORMAL.haversineDistance(
+          vertices.slice(4, 6), vertices.slice(6, 8));
+      pointResolution = (width + height) / 2;
+      var metersPerUnit = projection.getMetersPerUnit();
+      if (metersPerUnit !== undefined) {
+        pointResolution /= metersPerUnit;
+      }
+    }
+  }
+  return pointResolution;
+};
 
 
 /**
@@ -6599,7 +6775,7 @@ ol.proj.addEquivalentProjections = function(projections) {
   projections.forEach(function(source) {
     projections.forEach(function(destination) {
       if (source !== destination) {
-        ol.proj.addTransform(source, destination, ol.proj.cloneTransform);
+        ol.proj.transforms.add(source, destination, ol.proj.cloneTransform);
       }
     });
   });
@@ -6622,8 +6798,8 @@ ol.proj.addEquivalentProjections = function(projections) {
 ol.proj.addEquivalentTransforms = function(projections1, projections2, forwardTransform, inverseTransform) {
   projections1.forEach(function(projection1) {
     projections2.forEach(function(projection2) {
-      ol.proj.addTransform(projection1, projection2, forwardTransform);
-      ol.proj.addTransform(projection2, projection1, inverseTransform);
+      ol.proj.transforms.add(projection1, projection2, forwardTransform);
+      ol.proj.transforms.add(projection2, projection1, inverseTransform);
     });
   });
 };
@@ -6637,8 +6813,8 @@ ol.proj.addEquivalentTransforms = function(projections1, projections2, forwardTr
  * @api stable
  */
 ol.proj.addProjection = function(projection) {
-  ol.proj.projections_[projection.getCode()] = projection;
-  ol.proj.addTransform(projection, projection, ol.proj.cloneTransform);
+  ol.proj.projections.add(projection.getCode(), projection);
+  ol.proj.transforms.add(projection, projection, ol.proj.cloneTransform);
 };
 
 
@@ -6654,11 +6830,11 @@ ol.proj.addProjections = function(projections) {
 
 
 /**
- * FIXME empty description for jsdoc
+ * Clear all cached projections and transforms.
  */
 ol.proj.clearAllProjections = function() {
-  ol.proj.projections_ = {};
-  ol.proj.transforms_ = {};
+  ol.proj.projections.clear();
+  ol.proj.transforms.clear();
 };
 
 
@@ -6675,25 +6851,6 @@ ol.proj.createProjection = function(projection, defaultCode) {
   } else {
     return /** @type {ol.proj.Projection} */ (projection);
   }
-};
-
-
-/**
- * Registers a conversion function to convert coordinates from the source
- * projection to the destination projection.
- *
- * @param {ol.proj.Projection} source Source.
- * @param {ol.proj.Projection} destination Destination.
- * @param {ol.TransformFunction} transformFn Transform.
- */
-ol.proj.addTransform = function(source, destination, transformFn) {
-  var sourceCode = source.getCode();
-  var destinationCode = destination.getCode();
-  var transforms = ol.proj.transforms_;
-  if (!(sourceCode in transforms)) {
-    transforms[sourceCode] = {};
-  }
-  transforms[sourceCode][destinationCode] = transformFn;
 };
 
 
@@ -6719,9 +6876,9 @@ ol.proj.addTransform = function(source, destination, transformFn) {
 ol.proj.addCoordinateTransforms = function(source, destination, forward, inverse) {
   var sourceProj = ol.proj.get(source);
   var destProj = ol.proj.get(destination);
-  ol.proj.addTransform(sourceProj, destProj,
+  ol.proj.transforms.add(sourceProj, destProj,
       ol.proj.createTransformFromCoordinateTransform(forward));
-  ol.proj.addTransform(destProj, sourceProj,
+  ol.proj.transforms.add(destProj, sourceProj,
       ol.proj.createTransformFromCoordinateTransform(inverse));
 };
 
@@ -6756,32 +6913,6 @@ ol.proj.createTransformFromCoordinateTransform = function(transform) {
         }
         return output;
       });
-};
-
-
-/**
- * Unregisters the conversion function to convert coordinates from the source
- * projection to the destination projection.  This method is used to clean up
- * cached transforms during testing.
- *
- * @param {ol.proj.Projection} source Source projection.
- * @param {ol.proj.Projection} destination Destination projection.
- * @return {ol.TransformFunction} transformFn The unregistered transform.
- */
-ol.proj.removeTransform = function(source, destination) {
-  var sourceCode = source.getCode();
-  var destinationCode = destination.getCode();
-  var transforms = ol.proj.transforms_;
-  ol.DEBUG && console.assert(sourceCode in transforms,
-      'sourceCode should be in transforms');
-  ol.DEBUG && console.assert(destinationCode in transforms[sourceCode],
-      'destinationCode should be in transforms of sourceCode');
-  var transform = transforms[sourceCode][destinationCode];
-  delete transforms[sourceCode][destinationCode];
-  if (ol.obj.isEmpty(transforms[sourceCode])) {
-    delete transforms[sourceCode];
-  }
-  return transform;
 };
 
 
@@ -6825,22 +6956,22 @@ ol.proj.toLonLat = function(coordinate, opt_projection) {
  * @api stable
  */
 ol.proj.get = function(projectionLike) {
-  var projection;
+  var projection = null;
   if (projectionLike instanceof ol.proj.Projection) {
     projection = projectionLike;
   } else if (typeof projectionLike === 'string') {
     var code = projectionLike;
-    projection = ol.proj.projections_[code];
+    projection = ol.proj.projections.get(code);
     if (ol.ENABLE_PROJ4JS) {
-      var proj4js = ol.proj.proj4_ || window['proj4'];
-      if (projection === undefined && typeof proj4js == 'function' &&
+      var proj4js = ol.proj.proj4.get();
+      if (!projection && typeof proj4js == 'function' &&
           proj4js.defs(code) !== undefined) {
         projection = new ol.proj.Projection({code: code});
         ol.proj.addProjection(projection);
       }
     }
   }
-  return projection || null;
+  return projection;
 };
 
 
@@ -6897,12 +7028,11 @@ ol.proj.getTransform = function(source, destination) {
  * @return {ol.TransformFunction} Transform function.
  */
 ol.proj.getTransformFromProjections = function(sourceProjection, destinationProjection) {
-  var transforms = ol.proj.transforms_;
   var sourceCode = sourceProjection.getCode();
   var destinationCode = destinationProjection.getCode();
-  var transform;
-  if (ol.ENABLE_PROJ4JS && !(sourceCode in transforms && destinationCode in transforms[sourceCode])) {
-    var proj4js = ol.proj.proj4_ || window['proj4'];
+  var transform = ol.proj.transforms.get(sourceCode, destinationCode);
+  if (ol.ENABLE_PROJ4JS && !transform) {
+    var proj4js = ol.proj.proj4.get();
     if (typeof proj4js == 'function') {
       var sourceDef = proj4js.defs(sourceCode);
       var destinationDef = proj4js.defs(destinationCode);
@@ -6915,13 +7045,12 @@ ol.proj.getTransformFromProjections = function(sourceProjection, destinationProj
           ol.proj.addCoordinateTransforms(destinationProjection, sourceProjection,
               proj4Transform.forward, proj4Transform.inverse);
         }
+        transform = ol.proj.transforms.get(sourceCode, destinationCode);
       }
     }
   }
-  if (sourceCode in transforms && destinationCode in transforms[sourceCode]) {
-    transform = transforms[sourceCode][destinationCode];
-  } else {
-    ol.DEBUG && console.assert(transform !== undefined, 'transform should be defined');
+  if (!transform) {
+    ol.DEBUG && console.assert(transform, 'transform should be defined');
     transform = ol.proj.identityTransform;
   }
   return transform;
@@ -7019,48 +7148,13 @@ ol.proj.transformWithProjections = function(point, sourceProjection, destination
 };
 
 goog.provide('ol.geom.Geometry');
-goog.provide('ol.geom.GeometryLayout');
-goog.provide('ol.geom.GeometryType');
 
 goog.require('ol');
-goog.require('ol.functions');
 goog.require('ol.Object');
 goog.require('ol.extent');
+goog.require('ol.functions');
 goog.require('ol.proj');
 goog.require('ol.proj.Units');
-
-
-/**
- * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
- * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
- * `'GeometryCollection'`, `'Circle'`.
- * @enum {string}
- */
-ol.geom.GeometryType = {
-  POINT: 'Point',
-  LINE_STRING: 'LineString',
-  LINEAR_RING: 'LinearRing',
-  POLYGON: 'Polygon',
-  MULTI_POINT: 'MultiPoint',
-  MULTI_LINE_STRING: 'MultiLineString',
-  MULTI_POLYGON: 'MultiPolygon',
-  GEOMETRY_COLLECTION: 'GeometryCollection',
-  CIRCLE: 'Circle'
-};
-
-
-/**
- * The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z')
- * or measure ('M') coordinate is available. Supported values are `'XY'`,
- * `'XYZ'`, `'XYM'`, `'XYZM'`.
- * @enum {string}
- */
-ol.geom.GeometryLayout = {
-  XY: 'XY',
-  XYZ: 'XYZ',
-  XYM: 'XYM',
-  XYZM: 'XYZM'
-};
 
 
 /**
@@ -8966,22 +9060,30 @@ ol.geom.flat.contains.linearRingContainsExtent = function(flatCoordinates, offse
  * @return {boolean} Contains (x, y).
  */
 ol.geom.flat.contains.linearRingContainsXY = function(flatCoordinates, offset, end, stride, x, y) {
-  // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-  var contains = false;
+  // http://geomalgorithms.com/a03-_inclusion.html
+  // Copyright 2000 softSurfer, 2012 Dan Sunday
+  // This code may be freely used and modified for any purpose
+  // providing that this copyright notice is included with it.
+  // SoftSurfer makes no warranty for this code, and cannot be held
+  // liable for any real or imagined damage resulting from its use.
+  // Users of this code must verify correctness for their application.
+  var wn = 0;
   var x1 = flatCoordinates[end - stride];
   var y1 = flatCoordinates[end - stride + 1];
   for (; offset < end; offset += stride) {
     var x2 = flatCoordinates[offset];
     var y2 = flatCoordinates[offset + 1];
-    var intersect = ((y1 > y) != (y2 > y)) &&
-        (x < (x2 - x1) * (y - y1) / (y2 - y1) + x1);
-    if (intersect) {
-      contains = !contains;
+    if (y1 <= y) {
+      if (y2 > y && ((x2 - x1) * (y - y1)) - ((x - x1) * (y2 - y1)) > 0) {
+        wn++;
+      }
+    } else if (y2 <= y && ((x2 - x1) * (y - y1)) - ((x - x1) * (y2 - y1)) < 0) {
+      wn--;
     }
     x1 = x2;
     y1 = y2;
   }
-  return contains;
+  return wn !== 0;
 };
 
 
@@ -9976,7 +10078,6 @@ goog.require('ol.extent');
 goog.require('ol.geom.Polygon');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.proj');
-goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Units');
 
 
@@ -10184,7 +10285,7 @@ ol.View.prototype.animate = function(var_args) {
       start: start,
       complete: false,
       anchor: options.anchor,
-      duration: options.duration || 1000,
+      duration: options.duration !== undefined ? options.duration : 1000,
       easing: options.easing || ol.easing.inAndOut
     });
 
@@ -10200,7 +10301,7 @@ ol.View.prototype.animate = function(var_args) {
             this.maxResolution_, options.zoom - this.minZoom_, 0);
       resolution = animation.targetResolution;
     } else if (options.resolution) {
-      animation.sourceResolution = this.getResolution();
+      animation.sourceResolution = resolution;
       animation.targetResolution = options.resolution;
       resolution = animation.targetResolution;
     }
@@ -10266,7 +10367,7 @@ ol.View.prototype.updateAnimations_ = function() {
         continue;
       }
       var elapsed = now - animation.start;
-      var fraction = elapsed / animation.duration;
+      var fraction = animation.duration > 0 ? elapsed / animation.duration : 1;
       if (fraction >= 1) {
         animation.complete = true;
         fraction = 1;
@@ -10697,7 +10798,6 @@ ol.View.prototype.fit = function(geometry, size, opt_options) {
     }
     resolution = constrainedResolution;
   }
-  this.setResolution(resolution);
 
   // calculate center
   sinAngle = -sinAngle; // go back to original rotation
@@ -10707,8 +10807,19 @@ ol.View.prototype.fit = function(geometry, size, opt_options) {
   centerRotY += (padding[0] - padding[2]) / 2 * resolution;
   var centerX = centerRotX * cosAngle - centerRotY * sinAngle;
   var centerY = centerRotY * cosAngle + centerRotX * sinAngle;
+  var center = [centerX, centerY];
 
-  this.setCenter([centerX, centerY]);
+  if (options.duration !== undefined) {
+    this.animate({
+      resolution: resolution,
+      center: center,
+      duration: options.duration,
+      easing: options.easing
+    });
+  } else {
+    this.setResolution(resolution);
+    this.setCenter(center);
+  }
 };
 
 
@@ -11977,7 +12088,6 @@ goog.require('ol.extent');
 goog.require('ol.extent.Corner');
 goog.require('ol.obj');
 goog.require('ol.proj');
-goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Units');
 goog.require('ol.tilegrid.TileGrid');
 
@@ -12372,13 +12482,13 @@ ol.Collection.prototype.pop = function() {
 /**
  * Insert the provided element at the end of the collection.
  * @param {T} elem Element.
- * @return {number} Length.
+ * @return {number} New length of the collection.
  * @api stable
  */
 ol.Collection.prototype.push = function(elem) {
-  var n = this.array_.length;
+  var n = this.getLength();
   this.insertAt(n, elem);
-  return n;
+  return this.getLength();
 };
 
 
@@ -14309,6 +14419,173 @@ ol.control.MousePosition.Property = {
   PROJECTION: 'projection',
   COORDINATE_FORMAT: 'coordinateFormat'
 };
+
+goog.provide('ol.MapBrowserEvent');
+
+goog.require('ol');
+goog.require('ol.MapEvent');
+goog.require('ol.events.EventType');
+
+
+/**
+ * @classdesc
+ * Events emitted as map browser events are instances of this type.
+ * See {@link ol.Map} for which events trigger a map browser event.
+ *
+ * @constructor
+ * @extends {ol.MapEvent}
+ * @implements {oli.MapBrowserEvent}
+ * @param {string} type Event type.
+ * @param {ol.Map} map Map.
+ * @param {Event} browserEvent Browser event.
+ * @param {boolean=} opt_dragging Is the map currently being dragged?
+ * @param {?olx.FrameState=} opt_frameState Frame state.
+ */
+ol.MapBrowserEvent = function(type, map, browserEvent, opt_dragging,
+    opt_frameState) {
+
+  ol.MapEvent.call(this, type, map, opt_frameState);
+
+  /**
+   * The original browser event.
+   * @const
+   * @type {Event}
+   * @api stable
+   */
+  this.originalEvent = browserEvent;
+
+  /**
+   * The map pixel relative to the viewport corresponding to the original browser event.
+   * @type {ol.Pixel}
+   * @api stable
+   */
+  this.pixel = map.getEventPixel(browserEvent);
+
+  /**
+   * The coordinate in view projection corresponding to the original browser event.
+   * @type {ol.Coordinate}
+   * @api stable
+   */
+  this.coordinate = map.getCoordinateFromPixel(this.pixel);
+
+  /**
+   * Indicates if the map is currently being dragged. Only set for
+   * `POINTERDRAG` and `POINTERMOVE` events. Default is `false`.
+   *
+   * @type {boolean}
+   * @api stable
+   */
+  this.dragging = opt_dragging !== undefined ? opt_dragging : false;
+
+};
+ol.inherits(ol.MapBrowserEvent, ol.MapEvent);
+
+
+/**
+ * Prevents the default browser action.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/event.preventDefault
+ * @override
+ * @api stable
+ */
+ol.MapBrowserEvent.prototype.preventDefault = function() {
+  ol.MapEvent.prototype.preventDefault.call(this);
+  this.originalEvent.preventDefault();
+};
+
+
+/**
+ * Prevents further propagation of the current event.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/event.stopPropagation
+ * @override
+ * @api stable
+ */
+ol.MapBrowserEvent.prototype.stopPropagation = function() {
+  ol.MapEvent.prototype.stopPropagation.call(this);
+  this.originalEvent.stopPropagation();
+};
+
+
+/**
+ * Constants for event names.
+ * @enum {string}
+ */
+ol.MapBrowserEvent.EventType = {
+
+  /**
+   * A true single click with no dragging and no double click. Note that this
+   * event is delayed by 250 ms to ensure that it is not a double click.
+   * @event ol.MapBrowserEvent#singleclick
+   * @api stable
+   */
+  SINGLECLICK: 'singleclick',
+
+  /**
+   * A click with no dragging. A double click will fire two of this.
+   * @event ol.MapBrowserEvent#click
+   * @api stable
+   */
+  CLICK: ol.events.EventType.CLICK,
+
+  /**
+   * A true double click, with no dragging.
+   * @event ol.MapBrowserEvent#dblclick
+   * @api stable
+   */
+  DBLCLICK: ol.events.EventType.DBLCLICK,
+
+  /**
+   * Triggered when a pointer is dragged.
+   * @event ol.MapBrowserEvent#pointerdrag
+   * @api
+   */
+  POINTERDRAG: 'pointerdrag',
+
+  /**
+   * Triggered when a pointer is moved. Note that on touch devices this is
+   * triggered when the map is panned, so is not the same as mousemove.
+   * @event ol.MapBrowserEvent#pointermove
+   * @api stable
+   */
+  POINTERMOVE: 'pointermove',
+
+  POINTERDOWN: 'pointerdown',
+  POINTERUP: 'pointerup',
+  POINTEROVER: 'pointerover',
+  POINTEROUT: 'pointerout',
+  POINTERENTER: 'pointerenter',
+  POINTERLEAVE: 'pointerleave',
+  POINTERCANCEL: 'pointercancel'
+};
+
+goog.provide('ol.MapBrowserPointerEvent');
+
+goog.require('ol');
+goog.require('ol.MapBrowserEvent');
+
+
+/**
+ * @constructor
+ * @extends {ol.MapBrowserEvent}
+ * @param {string} type Event type.
+ * @param {ol.Map} map Map.
+ * @param {ol.pointer.PointerEvent} pointerEvent Pointer event.
+ * @param {boolean=} opt_dragging Is the map currently being dragged?
+ * @param {?olx.FrameState=} opt_frameState Frame state.
+ */
+ol.MapBrowserPointerEvent = function(type, map, pointerEvent, opt_dragging,
+    opt_frameState) {
+
+  ol.MapBrowserEvent.call(this, type, map, pointerEvent.originalEvent, opt_dragging,
+      opt_frameState);
+
+  /**
+   * @const
+   * @type {ol.pointer.PointerEvent}
+   */
+  this.pointerEvent = pointerEvent;
+
+};
+ol.inherits(ol.MapBrowserPointerEvent, ol.MapBrowserEvent);
 
 goog.provide('ol.pointer.EventType');
 
@@ -16346,9 +16623,9 @@ ol.pointer.PointerEventHandler.prototype.removeEvents_ = function(events) {
  */
 ol.pointer.PointerEventHandler.prototype.cloneEvent = function(event, inEvent) {
   var eventCopy = {}, p;
-  for (var i = 0, ii = ol.pointer.CLONE_PROPS.length; i < ii; i++) {
-    p = ol.pointer.CLONE_PROPS[i][0];
-    eventCopy[p] = event[p] || inEvent[p] || ol.pointer.CLONE_PROPS[i][1];
+  for (var i = 0, ii = ol.pointer.PointerEventHandler.CLONE_PROPS.length; i < ii; i++) {
+    p = ol.pointer.PointerEventHandler.CLONE_PROPS[i][0];
+    eventCopy[p] = event[p] || inEvent[p] || ol.pointer.PointerEventHandler.CLONE_PROPS[i][1];
   }
 
   return eventCopy;
@@ -16548,7 +16825,7 @@ ol.pointer.PointerEventHandler.prototype.disposeInternal = function() {
  * Properties to copy when cloning an event, with default values.
  * @type {Array.<Array>}
  */
-ol.pointer.CLONE_PROPS = [
+ol.pointer.PointerEventHandler.CLONE_PROPS = [
   // MouseEvent
   ['bubbles', false],
   ['cancelable', false],
@@ -16583,121 +16860,15 @@ ol.pointer.CLONE_PROPS = [
   ['which', 0]
 ];
 
-goog.provide('ol.MapBrowserEvent');
-goog.provide('ol.MapBrowserEvent.EventType');
 goog.provide('ol.MapBrowserEventHandler');
-goog.provide('ol.MapBrowserPointerEvent');
 
 goog.require('ol');
-goog.require('ol.MapEvent');
+goog.require('ol.MapBrowserEvent');
+goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.events');
 goog.require('ol.events.EventTarget');
-goog.require('ol.events.EventType');
 goog.require('ol.pointer.EventType');
 goog.require('ol.pointer.PointerEventHandler');
-
-
-/**
- * @classdesc
- * Events emitted as map browser events are instances of this type.
- * See {@link ol.Map} for which events trigger a map browser event.
- *
- * @constructor
- * @extends {ol.MapEvent}
- * @implements {oli.MapBrowserEvent}
- * @param {string} type Event type.
- * @param {ol.Map} map Map.
- * @param {Event} browserEvent Browser event.
- * @param {boolean=} opt_dragging Is the map currently being dragged?
- * @param {?olx.FrameState=} opt_frameState Frame state.
- */
-ol.MapBrowserEvent = function(type, map, browserEvent, opt_dragging,
-    opt_frameState) {
-
-  ol.MapEvent.call(this, type, map, opt_frameState);
-
-  /**
-   * The original browser event.
-   * @const
-   * @type {Event}
-   * @api stable
-   */
-  this.originalEvent = browserEvent;
-
-  /**
-   * The map pixel relative to the viewport corresponding to the original browser event.
-   * @type {ol.Pixel}
-   * @api stable
-   */
-  this.pixel = map.getEventPixel(browserEvent);
-
-  /**
-   * The coordinate in view projection corresponding to the original browser event.
-   * @type {ol.Coordinate}
-   * @api stable
-   */
-  this.coordinate = map.getCoordinateFromPixel(this.pixel);
-
-  /**
-   * Indicates if the map is currently being dragged. Only set for
-   * `POINTERDRAG` and `POINTERMOVE` events. Default is `false`.
-   *
-   * @type {boolean}
-   * @api stable
-   */
-  this.dragging = opt_dragging !== undefined ? opt_dragging : false;
-
-};
-ol.inherits(ol.MapBrowserEvent, ol.MapEvent);
-
-
-/**
- * Prevents the default browser action.
- * @see https://developer.mozilla.org/en-US/docs/Web/API/event.preventDefault
- * @override
- * @api stable
- */
-ol.MapBrowserEvent.prototype.preventDefault = function() {
-  ol.MapEvent.prototype.preventDefault.call(this);
-  this.originalEvent.preventDefault();
-};
-
-
-/**
- * Prevents further propagation of the current event.
- * @see https://developer.mozilla.org/en-US/docs/Web/API/event.stopPropagation
- * @override
- * @api stable
- */
-ol.MapBrowserEvent.prototype.stopPropagation = function() {
-  ol.MapEvent.prototype.stopPropagation.call(this);
-  this.originalEvent.stopPropagation();
-};
-
-
-/**
- * @constructor
- * @extends {ol.MapBrowserEvent}
- * @param {string} type Event type.
- * @param {ol.Map} map Map.
- * @param {ol.pointer.PointerEvent} pointerEvent Pointer event.
- * @param {boolean=} opt_dragging Is the map currently being dragged?
- * @param {?olx.FrameState=} opt_frameState Frame state.
- */
-ol.MapBrowserPointerEvent = function(type, map, pointerEvent, opt_dragging,
-    opt_frameState) {
-
-  ol.MapBrowserEvent.call(this, type, map, pointerEvent.originalEvent, opt_dragging,
-      opt_frameState);
-
-  /**
-   * @const
-   * @type {ol.pointer.PointerEvent}
-   */
-  this.pointerEvent = pointerEvent;
-
-};
-ol.inherits(ol.MapBrowserPointerEvent, ol.MapBrowserEvent);
 
 
 /**
@@ -17005,59 +17176,6 @@ ol.MapBrowserEventHandler.prototype.disposeInternal = function() {
     this.pointerEventHandler_ = null;
   }
   ol.events.EventTarget.prototype.disposeInternal.call(this);
-};
-
-
-/**
- * Constants for event names.
- * @enum {string}
- */
-ol.MapBrowserEvent.EventType = {
-
-  /**
-   * A true single click with no dragging and no double click. Note that this
-   * event is delayed by 250 ms to ensure that it is not a double click.
-   * @event ol.MapBrowserEvent#singleclick
-   * @api stable
-   */
-  SINGLECLICK: 'singleclick',
-
-  /**
-   * A click with no dragging. A double click will fire two of this.
-   * @event ol.MapBrowserEvent#click
-   * @api stable
-   */
-  CLICK: ol.events.EventType.CLICK,
-
-  /**
-   * A true double click, with no dragging.
-   * @event ol.MapBrowserEvent#dblclick
-   * @api stable
-   */
-  DBLCLICK: ol.events.EventType.DBLCLICK,
-
-  /**
-   * Triggered when a pointer is dragged.
-   * @event ol.MapBrowserEvent#pointerdrag
-   * @api
-   */
-  POINTERDRAG: 'pointerdrag',
-
-  /**
-   * Triggered when a pointer is moved. Note that on touch devices this is
-   * triggered when the map is panned, so is not the same as mousemove.
-   * @event ol.MapBrowserEvent#pointermove
-   * @api stable
-   */
-  POINTERMOVE: 'pointermove',
-
-  POINTERDOWN: 'pointerdown',
-  POINTERUP: 'pointerup',
-  POINTEROVER: 'pointerover',
-  POINTEROUT: 'pointerout',
-  POINTERENTER: 'pointerenter',
-  POINTERLEAVE: 'pointerleave',
-  POINTERCANCEL: 'pointercancel'
 };
 
 goog.provide('ol.Tile');
@@ -18024,7 +18142,7 @@ ol.interaction.Interaction.Property = {
 goog.provide('ol.interaction.DoubleClickZoom');
 
 goog.require('ol');
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserEvent');
 goog.require('ol.interaction.Interaction');
 
 
@@ -18087,7 +18205,7 @@ ol.interaction.DoubleClickZoom.handleEvent = function(mapBrowserEvent) {
 
 goog.provide('ol.events.condition');
 
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserEvent');
 goog.require('ol.asserts');
 goog.require('ol.functions');
 goog.require('ol.has');
@@ -18316,7 +18434,7 @@ goog.provide('ol.interaction.Pointer');
 
 goog.require('ol');
 goog.require('ol.functions');
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.interaction.Interaction');
 goog.require('ol.obj');
@@ -20189,26 +20307,11 @@ ol.interaction.defaults = function(opt_options) {
 };
 
 goog.provide('ol.layer.Base');
-goog.provide('ol.layer.LayerProperty');
 
 goog.require('ol');
 goog.require('ol.Object');
 goog.require('ol.math');
 goog.require('ol.obj');
-
-
-/**
- * @enum {string}
- */
-ol.layer.LayerProperty = {
-  OPACITY: 'opacity',
-  VISIBLE: 'visible',
-  EXTENT: 'extent',
-  Z_INDEX: 'zIndex',
-  MAX_RESOLUTION: 'maxResolution',
-  MIN_RESOLUTION: 'minResolution',
-  SOURCE: 'source'
-};
 
 
 /**
@@ -20232,15 +20335,15 @@ ol.layer.Base = function(options) {
    * @type {Object.<string, *>}
    */
   var properties = ol.obj.assign({}, options);
-  properties[ol.layer.LayerProperty.OPACITY] =
+  properties[ol.layer.Base.Property.OPACITY] =
       options.opacity !== undefined ? options.opacity : 1;
-  properties[ol.layer.LayerProperty.VISIBLE] =
+  properties[ol.layer.Base.Property.VISIBLE] =
       options.visible !== undefined ? options.visible : true;
-  properties[ol.layer.LayerProperty.Z_INDEX] =
+  properties[ol.layer.Base.Property.Z_INDEX] =
       options.zIndex !== undefined ? options.zIndex : 0;
-  properties[ol.layer.LayerProperty.MAX_RESOLUTION] =
+  properties[ol.layer.Base.Property.MAX_RESOLUTION] =
       options.maxResolution !== undefined ? options.maxResolution : Infinity;
-  properties[ol.layer.LayerProperty.MIN_RESOLUTION] =
+  properties[ol.layer.Base.Property.MIN_RESOLUTION] =
       options.minResolution !== undefined ? options.minResolution : 0;
 
   this.setProperties(properties);
@@ -20301,7 +20404,7 @@ ol.layer.Base.prototype.getLayerStatesArray = function(opt_states) {};
  */
 ol.layer.Base.prototype.getExtent = function() {
   return /** @type {ol.Extent|undefined} */ (
-      this.get(ol.layer.LayerProperty.EXTENT));
+      this.get(ol.layer.Base.Property.EXTENT));
 };
 
 
@@ -20313,7 +20416,7 @@ ol.layer.Base.prototype.getExtent = function() {
  */
 ol.layer.Base.prototype.getMaxResolution = function() {
   return /** @type {number} */ (
-      this.get(ol.layer.LayerProperty.MAX_RESOLUTION));
+      this.get(ol.layer.Base.Property.MAX_RESOLUTION));
 };
 
 
@@ -20325,7 +20428,7 @@ ol.layer.Base.prototype.getMaxResolution = function() {
  */
 ol.layer.Base.prototype.getMinResolution = function() {
   return /** @type {number} */ (
-      this.get(ol.layer.LayerProperty.MIN_RESOLUTION));
+      this.get(ol.layer.Base.Property.MIN_RESOLUTION));
 };
 
 
@@ -20336,7 +20439,7 @@ ol.layer.Base.prototype.getMinResolution = function() {
  * @api stable
  */
 ol.layer.Base.prototype.getOpacity = function() {
-  return /** @type {number} */ (this.get(ol.layer.LayerProperty.OPACITY));
+  return /** @type {number} */ (this.get(ol.layer.Base.Property.OPACITY));
 };
 
 
@@ -20354,7 +20457,7 @@ ol.layer.Base.prototype.getSourceState = function() {};
  * @api stable
  */
 ol.layer.Base.prototype.getVisible = function() {
-  return /** @type {boolean} */ (this.get(ol.layer.LayerProperty.VISIBLE));
+  return /** @type {boolean} */ (this.get(ol.layer.Base.Property.VISIBLE));
 };
 
 
@@ -20366,7 +20469,7 @@ ol.layer.Base.prototype.getVisible = function() {
  * @api
  */
 ol.layer.Base.prototype.getZIndex = function() {
-  return /** @type {number} */ (this.get(ol.layer.LayerProperty.Z_INDEX));
+  return /** @type {number} */ (this.get(ol.layer.Base.Property.Z_INDEX));
 };
 
 
@@ -20378,7 +20481,7 @@ ol.layer.Base.prototype.getZIndex = function() {
  * @api stable
  */
 ol.layer.Base.prototype.setExtent = function(extent) {
-  this.set(ol.layer.LayerProperty.EXTENT, extent);
+  this.set(ol.layer.Base.Property.EXTENT, extent);
 };
 
 
@@ -20389,7 +20492,7 @@ ol.layer.Base.prototype.setExtent = function(extent) {
  * @api stable
  */
 ol.layer.Base.prototype.setMaxResolution = function(maxResolution) {
-  this.set(ol.layer.LayerProperty.MAX_RESOLUTION, maxResolution);
+  this.set(ol.layer.Base.Property.MAX_RESOLUTION, maxResolution);
 };
 
 
@@ -20400,7 +20503,7 @@ ol.layer.Base.prototype.setMaxResolution = function(maxResolution) {
  * @api stable
  */
 ol.layer.Base.prototype.setMinResolution = function(minResolution) {
-  this.set(ol.layer.LayerProperty.MIN_RESOLUTION, minResolution);
+  this.set(ol.layer.Base.Property.MIN_RESOLUTION, minResolution);
 };
 
 
@@ -20411,7 +20514,7 @@ ol.layer.Base.prototype.setMinResolution = function(minResolution) {
  * @api stable
  */
 ol.layer.Base.prototype.setOpacity = function(opacity) {
-  this.set(ol.layer.LayerProperty.OPACITY, opacity);
+  this.set(ol.layer.Base.Property.OPACITY, opacity);
 };
 
 
@@ -20422,7 +20525,7 @@ ol.layer.Base.prototype.setOpacity = function(opacity) {
  * @api stable
  */
 ol.layer.Base.prototype.setVisible = function(visible) {
-  this.set(ol.layer.LayerProperty.VISIBLE, visible);
+  this.set(ol.layer.Base.Property.VISIBLE, visible);
 };
 
 
@@ -20434,7 +20537,21 @@ ol.layer.Base.prototype.setVisible = function(visible) {
  * @api
  */
 ol.layer.Base.prototype.setZIndex = function(zindex) {
-  this.set(ol.layer.LayerProperty.Z_INDEX, zindex);
+  this.set(ol.layer.Base.Property.Z_INDEX, zindex);
+};
+
+
+/**
+ * @enum {string}
+ */
+ol.layer.Base.Property = {
+  OPACITY: 'opacity',
+  VISIBLE: 'visible',
+  EXTENT: 'extent',
+  Z_INDEX: 'zIndex',
+  MAX_RESOLUTION: 'maxResolution',
+  MIN_RESOLUTION: 'minResolution',
+  SOURCE: 'source'
 };
 
 goog.provide('ol.source.State');
@@ -20458,7 +20575,6 @@ goog.require('ol');
 goog.require('ol.asserts');
 goog.require('ol.Collection');
 goog.require('ol.Object');
-goog.require('ol.ObjectEventType');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.extent');
@@ -20558,7 +20674,7 @@ ol.layer.Group.prototype.handleLayersChanged_ = function(event) {
   for (i = 0, ii = layersArray.length; i < ii; i++) {
     layer = layersArray[i];
     this.listenerKeys_[ol.getUid(layer).toString()] = [
-      ol.events.listen(layer, ol.ObjectEventType.PROPERTYCHANGE,
+      ol.events.listen(layer, ol.Object.EventType.PROPERTYCHANGE,
           this.handleLayerChange_, this),
       ol.events.listen(layer, ol.events.EventType.CHANGE,
           this.handleLayerChange_, this)
@@ -20579,7 +20695,7 @@ ol.layer.Group.prototype.handleLayersAdd_ = function(collectionEvent) {
   ol.DEBUG && console.assert(!(key in this.listenerKeys_),
       'listeners already registered');
   this.listenerKeys_[key] = [
-    ol.events.listen(layer, ol.ObjectEventType.PROPERTYCHANGE,
+    ol.events.listen(layer, ol.Object.EventType.PROPERTYCHANGE,
         this.handleLayerChange_, this),
     ol.events.listen(layer, ol.events.EventType.CHANGE,
         this.handleLayerChange_, this)
@@ -20715,18 +20831,13 @@ ol.proj.EPSG3857_ = function(code) {
     units: ol.proj.Units.METERS,
     extent: ol.proj.EPSG3857.EXTENT,
     global: true,
-    worldExtent: ol.proj.EPSG3857.WORLD_EXTENT
+    worldExtent: ol.proj.EPSG3857.WORLD_EXTENT,
+    getPointResolution: function(resolution, point) {
+      return resolution / ol.math.cosh(point[1] / ol.proj.EPSG3857.RADIUS);
+    }
   });
 };
 ol.inherits(ol.proj.EPSG3857_, ol.proj.Projection);
-
-
-/**
- * @inheritDoc
- */
-ol.proj.EPSG3857_.prototype.getPointResolution = function(resolution, point) {
-  return resolution / ol.math.cosh(point[1] / ol.proj.EPSG3857.RADIUS);
-};
 
 
 /**
@@ -20905,14 +21016,6 @@ ol.inherits(ol.proj.EPSG4326_, ol.proj.Projection);
 
 
 /**
- * @inheritDoc
- */
-ol.proj.EPSG4326_.prototype.getPointResolution = function(resolution, point) {
-  return resolution;
-};
-
-
-/**
  * Extent of the EPSG:4326 projection which is the whole world.
  *
  * @const
@@ -21066,7 +21169,6 @@ goog.require('ol.events.EventType');
 goog.require('ol');
 goog.require('ol.Object');
 goog.require('ol.layer.Base');
-goog.require('ol.layer.LayerProperty');
 goog.require('ol.obj');
 goog.require('ol.render.Event');
 goog.require('ol.source.State');
@@ -21123,7 +21225,7 @@ ol.layer.Layer = function(options) {
   }
 
   ol.events.listen(this,
-      ol.Object.getChangeEventType(ol.layer.LayerProperty.SOURCE),
+      ol.Object.getChangeEventType(ol.layer.Base.Property.SOURCE),
       this.handleSourcePropertyChange_, this);
 
   var source = options.source ? options.source : null;
@@ -21173,7 +21275,7 @@ ol.layer.Layer.prototype.getLayerStatesArray = function(opt_states) {
  * @api stable
  */
 ol.layer.Layer.prototype.getSource = function() {
-  var source = this.get(ol.layer.LayerProperty.SOURCE);
+  var source = this.get(ol.layer.Base.Property.SOURCE);
   return /** @type {ol.source.Source} */ (source) || null;
 };
 
@@ -21259,7 +21361,7 @@ ol.layer.Layer.prototype.setMap = function(map) {
  * @api stable
  */
 ol.layer.Layer.prototype.setSource = function(source) {
-  this.set(ol.layer.LayerProperty.SOURCE, source);
+  this.set(ol.layer.Base.Property.SOURCE, source);
 };
 
 goog.provide('ol.style.IconImageCache');
@@ -21768,6 +21870,7 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, fram
 
 
 /**
+ * @abstract
  * @param {ol.Pixel} pixel Pixel.
  * @param {olx.FrameState} frameState FrameState.
  * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
@@ -21782,29 +21885,7 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, fram
  * @template S,T,U
  */
 ol.renderer.Map.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg,
-        layerFilter, thisArg2) {
-  var result;
-  var viewState = frameState.viewState;
-  var viewResolution = viewState.resolution;
-
-  var layerStates = frameState.layerStatesArray;
-  var numLayers = layerStates.length;
-  var i;
-  for (i = numLayers - 1; i >= 0; --i) {
-    var layerState = layerStates[i];
-    var layer = layerState.layer;
-    if (ol.layer.Layer.visibleAtResolution(layerState, viewResolution) &&
-        layerFilter.call(thisArg2, layer)) {
-      var layerRenderer = this.getLayerRenderer(layer);
-      result = layerRenderer.forEachLayerAtPixel(
-          pixel, frameState, callback, thisArg);
-      if (result) {
-        return result;
-      }
-    }
-  }
-  return undefined;
-};
+        layerFilter, thisArg2) {};
 
 
 /**
@@ -25513,7 +25594,6 @@ goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.functions');
 goog.require('ol.source.State');
-goog.require('ol.transform');
 
 
 /**
@@ -25547,29 +25627,6 @@ ol.inherits(ol.renderer.Layer, ol.Observable);
  * @template S,T
  */
 ol.renderer.Layer.prototype.forEachFeatureAtCoordinate = ol.nullFunction;
-
-
-/**
- * @param {ol.Pixel} pixel Pixel.
- * @param {olx.FrameState} frameState Frame state.
- * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer callback.
- * @param {S} thisArg Value to use as `this` when executing `callback`.
- * @return {T|undefined} Callback result.
- * @template S,T
- */
-ol.renderer.Layer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
-  var coordinate = ol.transform.apply(
-      frameState.pixelToCoordinateTransform, pixel.slice());
-
-  var hasFeature = this.forEachFeatureAtCoordinate(
-      coordinate, frameState, ol.functions.TRUE, this);
-
-  if (hasFeature) {
-    return callback.call(thisArg, this.layer_, null);
-  } else {
-    return undefined;
-  }
-};
 
 
 /**
@@ -25818,6 +25875,7 @@ goog.provide('ol.renderer.canvas.Layer');
 
 goog.require('ol');
 goog.require('ol.extent');
+goog.require('ol.functions');
 goog.require('ol.render.Event');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Immediate');
@@ -25833,6 +25891,12 @@ goog.require('ol.transform');
 ol.renderer.canvas.Layer = function(layer) {
 
   ol.renderer.Layer.call(this, layer);
+
+  /**
+   * @protected
+   * @type {number}
+   */
+  this.renderedResolution;
 
   /**
    * @private
@@ -25878,13 +25942,172 @@ ol.renderer.canvas.Layer.prototype.clip = function(context, frameState, extent) 
 
 
 /**
+ * @param {ol.render.Event.Type} type Event type.
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.Transform=} opt_transform Transform.
+ * @private
+ */
+ol.renderer.canvas.Layer.prototype.dispatchComposeEvent_ = function(type, context, frameState, opt_transform) {
+  var layer = this.getLayer();
+  if (layer.hasListener(type)) {
+    var width = frameState.size[0] * frameState.pixelRatio;
+    var height = frameState.size[1] * frameState.pixelRatio;
+    var rotation = frameState.viewState.rotation;
+    ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
+    var transform = opt_transform !== undefined ?
+        opt_transform : this.getTransform(frameState, 0);
+    var render = new ol.render.canvas.Immediate(
+        context, frameState.pixelRatio, frameState.extent, transform,
+        frameState.viewState.rotation);
+    var composeEvent = new ol.render.Event(type, render, frameState,
+        context, null);
+    layer.dispatchEvent(composeEvent);
+    ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
+  }
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {olx.FrameState} frameState FrameState.
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
+ *     callback.
+ * @param {S} thisArg Value to use as `this` when executing `callback`.
+ * @return {T|undefined} Callback result.
+ * @template S,T,U
+ */
+ol.renderer.canvas.Layer.prototype.forEachLayerAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+  var hasFeature = this.forEachFeatureAtCoordinate(
+      coordinate, frameState, ol.functions.TRUE, this);
+
+  if (hasFeature) {
+    return callback.call(thisArg, this.getLayer(), null);
+  } else {
+    return undefined;
+  }
+};
+
+
+/**
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.LayerState} layerState Layer state.
+ * @param {ol.Transform=} opt_transform Transform.
+ * @protected
+ */
+ol.renderer.canvas.Layer.prototype.postCompose = function(context, frameState, layerState, opt_transform) {
+  this.dispatchComposeEvent_(ol.render.Event.Type.POSTCOMPOSE, context,
+      frameState, opt_transform);
+};
+
+
+/**
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.Transform=} opt_transform Transform.
+ * @protected
+ */
+ol.renderer.canvas.Layer.prototype.preCompose = function(context, frameState, opt_transform) {
+  this.dispatchComposeEvent_(ol.render.Event.Type.PRECOMPOSE, context,
+      frameState, opt_transform);
+};
+
+
+/**
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.Transform=} opt_transform Transform.
+ * @protected
+ */
+ol.renderer.canvas.Layer.prototype.dispatchRenderEvent = function(context, frameState, opt_transform) {
+  this.dispatchComposeEvent_(ol.render.Event.Type.RENDER, context,
+      frameState, opt_transform);
+};
+
+
+/**
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {number} offsetX Offset on the x-axis in view coordinates.
+ * @protected
+ * @return {!ol.Transform} Transform.
+ */
+ol.renderer.canvas.Layer.prototype.getTransform = function(frameState, offsetX) {
+  var viewState = frameState.viewState;
+  var pixelRatio = frameState.pixelRatio;
+  var dx1 = pixelRatio * frameState.size[0] / 2;
+  var dy1 = pixelRatio * frameState.size[1] / 2;
+  var sx = pixelRatio / viewState.resolution;
+  var sy = -sx;
+  var angle = -viewState.rotation;
+  var dx2 = -viewState.center[0] + offsetX;
+  var dy2 = -viewState.center[1];
+  return ol.transform.compose(this.transform_, dx1, dy1, sx, sy, angle, dx2, dy2);
+};
+
+
+/**
+ * @abstract
  * @param {olx.FrameState} frameState Frame state.
  * @param {ol.LayerState} layerState Layer state.
  * @param {CanvasRenderingContext2D} context Context.
  */
-ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerState, context) {
+ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerState, context) {};
 
-  this.dispatchPreComposeEvent(context, frameState);
+/**
+ * @abstract
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.LayerState} layerState Layer state.
+ * @return {boolean} whether composeFrame should be called.
+ */
+ol.renderer.canvas.Layer.prototype.prepareFrame = function(frameState, layerState) {};
+
+goog.provide('ol.renderer.canvas.IntermediateCanvas');
+
+goog.require('ol');
+goog.require('ol.coordinate');
+goog.require('ol.dom');
+goog.require('ol.renderer.canvas.Layer');
+goog.require('ol.transform');
+
+
+/**
+ * @constructor
+ * @extends {ol.renderer.canvas.Layer}
+ * @param {ol.layer.Layer} layer Layer.
+ */
+ol.renderer.canvas.IntermediateCanvas = function(layer) {
+
+  ol.renderer.canvas.Layer.call(this, layer);
+
+  /**
+   * @protected
+   * @type {ol.Transform}
+   */
+  this.coordinateToCanvasPixelTransform = ol.transform.create();
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.hitCanvasContext_ = null;
+
+  /**
+   * @protected
+   * @type {number}
+   */
+  this.renderedResolution;
+
+};
+ol.inherits(ol.renderer.canvas.IntermediateCanvas, ol.renderer.canvas.Layer);
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.IntermediateCanvas.prototype.composeFrame = function(frameState, layerState, context) {
+
+  this.preCompose(context, frameState);
 
   var image = this.getImage();
   if (image) {
@@ -25918,71 +26141,7 @@ ol.renderer.canvas.Layer.prototype.composeFrame = function(frameState, layerStat
     }
   }
 
-  this.dispatchPostComposeEvent(context, frameState);
-
-};
-
-
-/**
- * @param {ol.render.Event.Type} type Event type.
- * @param {CanvasRenderingContext2D} context Context.
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.Transform=} opt_transform Transform.
- * @private
- */
-ol.renderer.canvas.Layer.prototype.dispatchComposeEvent_ = function(type, context, frameState, opt_transform) {
-  var layer = this.getLayer();
-  if (layer.hasListener(type)) {
-    var width = frameState.size[0] * frameState.pixelRatio;
-    var height = frameState.size[1] * frameState.pixelRatio;
-    var rotation = frameState.viewState.rotation;
-    ol.render.canvas.rotateAtOffset(context, -rotation, width / 2, height / 2);
-    var transform = opt_transform !== undefined ?
-        opt_transform : this.getTransform(frameState, 0);
-    var render = new ol.render.canvas.Immediate(
-        context, frameState.pixelRatio, frameState.extent, transform,
-        frameState.viewState.rotation);
-    var composeEvent = new ol.render.Event(type, render, frameState,
-        context, null);
-    layer.dispatchEvent(composeEvent);
-    ol.render.canvas.rotateAtOffset(context, rotation, width / 2, height / 2);
-  }
-};
-
-
-/**
- * @param {CanvasRenderingContext2D} context Context.
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.Transform=} opt_transform Transform.
- * @protected
- */
-ol.renderer.canvas.Layer.prototype.dispatchPostComposeEvent = function(context, frameState, opt_transform) {
-  this.dispatchComposeEvent_(ol.render.Event.Type.POSTCOMPOSE, context,
-      frameState, opt_transform);
-};
-
-
-/**
- * @param {CanvasRenderingContext2D} context Context.
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.Transform=} opt_transform Transform.
- * @protected
- */
-ol.renderer.canvas.Layer.prototype.dispatchPreComposeEvent = function(context, frameState, opt_transform) {
-  this.dispatchComposeEvent_(ol.render.Event.Type.PRECOMPOSE, context,
-      frameState, opt_transform);
-};
-
-
-/**
- * @param {CanvasRenderingContext2D} context Context.
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.Transform=} opt_transform Transform.
- * @protected
- */
-ol.renderer.canvas.Layer.prototype.dispatchRenderEvent = function(context, frameState, opt_transform) {
-  this.dispatchComposeEvent_(ol.render.Event.Type.RENDER, context,
-      frameState, opt_transform);
+  this.postCompose(context, frameState, layerState);
 };
 
 
@@ -25990,54 +26149,468 @@ ol.renderer.canvas.Layer.prototype.dispatchRenderEvent = function(context, frame
  * @abstract
  * @return {HTMLCanvasElement|HTMLVideoElement|Image} Canvas.
  */
-ol.renderer.canvas.Layer.prototype.getImage = function() {};
+ol.renderer.canvas.IntermediateCanvas.prototype.getImage = function() {};
 
 
 /**
  * @abstract
  * @return {!ol.Transform} Image transform.
  */
-ol.renderer.canvas.Layer.prototype.getImageTransform = function() {};
+ol.renderer.canvas.IntermediateCanvas.prototype.getImageTransform = function() {};
 
 
 /**
- * @param {olx.FrameState} frameState Frame state.
- * @param {number} offsetX Offset on the x-axis in view coordinates.
- * @protected
- * @return {!ol.Transform} Transform.
+ * @inheritDoc
  */
-ol.renderer.canvas.Layer.prototype.getTransform = function(frameState, offsetX) {
-  var viewState = frameState.viewState;
-  var pixelRatio = frameState.pixelRatio;
-  var dx1 = pixelRatio * frameState.size[0] / 2;
-  var dy1 = pixelRatio * frameState.size[1] / 2;
-  var sx = pixelRatio / viewState.resolution;
-  var sy = -sx;
-  var angle = -viewState.rotation;
-  var dx2 = -viewState.center[0] + offsetX;
-  var dy2 = -viewState.center[1];
-  return ol.transform.compose(this.transform_, dx1, dy1, sx, sy, angle, dx2, dy2);
+ol.renderer.canvas.IntermediateCanvas.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+  var layer = this.getLayer();
+  var source = layer.getSource();
+  var resolution = frameState.viewState.resolution;
+  var rotation = frameState.viewState.rotation;
+  var skippedFeatureUids = frameState.skippedFeatureUids;
+  return source.forEachFeatureAtCoordinate(
+      coordinate, resolution, rotation, skippedFeatureUids,
+      /**
+       * @param {ol.Feature|ol.render.Feature} feature Feature.
+       * @return {?} Callback result.
+       */
+      function(feature) {
+        return callback.call(thisArg, feature, layer);
+      });
 };
 
 
 /**
- * @abstract
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.LayerState} layerState Layer state.
- * @return {boolean} whether composeFrame should be called.
+ * @inheritDoc
  */
-ol.renderer.canvas.Layer.prototype.prepareFrame = function(frameState, layerState) {};
+ol.renderer.canvas.IntermediateCanvas.prototype.forEachLayerAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+  if (!this.getImage()) {
+    return undefined;
+  }
+
+  if (this.getLayer().getSource().forEachFeatureAtCoordinate !== ol.nullFunction) {
+    // for ImageVector sources use the original hit-detection logic,
+    // so that for example also transparent polygons are detected
+    return ol.renderer.canvas.Layer.prototype.forEachLayerAtCoordinate.apply(this, arguments);
+  } else {
+    var pixel = ol.transform.apply(this.coordinateToCanvasPixelTransform, coordinate);
+    ol.coordinate.scale(pixel, frameState.viewState.resolution / this.renderedResolution);
+
+    if (!this.hitCanvasContext_) {
+      this.hitCanvasContext_ = ol.dom.createCanvasContext2D(1, 1);
+    }
+
+    this.hitCanvasContext_.clearRect(0, 0, 1, 1);
+    this.hitCanvasContext_.drawImage(this.getImage(), pixel[0], pixel[1], 1, 1, 0, 0, 1, 1);
+
+    var imageData = this.hitCanvasContext_.getImageData(0, 0, 1, 1).data;
+    if (imageData[3] > 0) {
+      return callback.call(thisArg, this.getLayer(),  imageData);
+    } else {
+      return undefined;
+    }
+  }
+};
+
+goog.provide('ol.renderer.canvas.ImageLayer');
+
+goog.require('ol');
+goog.require('ol.View');
+goog.require('ol.extent');
+goog.require('ol.proj');
+goog.require('ol.renderer.canvas.IntermediateCanvas');
+goog.require('ol.transform');
 
 
 /**
- * @param {ol.Pixel} pixelOnMap Pixel.
- * @param {ol.Transform} imageTransformInv The transformation matrix
- *        to convert from a map pixel to a canvas pixel.
- * @return {ol.Pixel} The pixel.
- * @protected
+ * @constructor
+ * @extends {ol.renderer.canvas.IntermediateCanvas}
+ * @param {ol.layer.Image} imageLayer Single image layer.
  */
-ol.renderer.canvas.Layer.prototype.getPixelOnCanvas = function(pixelOnMap, imageTransformInv) {
-  return ol.transform.apply(imageTransformInv, pixelOnMap.slice());
+ol.renderer.canvas.ImageLayer = function(imageLayer) {
+
+  ol.renderer.canvas.IntermediateCanvas.call(this, imageLayer);
+
+  /**
+   * @private
+   * @type {?ol.ImageBase}
+   */
+  this.image_ = null;
+
+  /**
+   * @private
+   * @type {ol.Transform}
+   */
+  this.imageTransform_ = ol.transform.create();
+
+};
+ol.inherits(ol.renderer.canvas.ImageLayer, ol.renderer.canvas.IntermediateCanvas);
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.getImage = function() {
+  return !this.image_ ? null : this.image_.getImage();
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.getImageTransform = function() {
+  return this.imageTransform_;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, layerState) {
+
+  var pixelRatio = frameState.pixelRatio;
+  var size = frameState.size;
+  var viewState = frameState.viewState;
+  var viewCenter = viewState.center;
+  var viewResolution = viewState.resolution;
+
+  var image;
+  var imageLayer = /** @type {ol.layer.Image} */ (this.getLayer());
+  var imageSource = imageLayer.getSource();
+
+  var hints = frameState.viewHints;
+
+  var renderedExtent = frameState.extent;
+  if (layerState.extent !== undefined) {
+    renderedExtent = ol.extent.getIntersection(
+        renderedExtent, layerState.extent);
+  }
+
+  if (!hints[ol.View.Hint.ANIMATING] && !hints[ol.View.Hint.INTERACTING] &&
+      !ol.extent.isEmpty(renderedExtent)) {
+    var projection = viewState.projection;
+    if (!ol.ENABLE_RASTER_REPROJECTION) {
+      var sourceProjection = imageSource.getProjection();
+      if (sourceProjection) {
+        ol.DEBUG && console.assert(ol.proj.equivalent(projection, sourceProjection),
+            'projection and sourceProjection are equivalent');
+        projection = sourceProjection;
+      }
+    }
+    image = imageSource.getImage(
+        renderedExtent, viewResolution, pixelRatio, projection);
+    if (image) {
+      var loaded = this.loadImage(image);
+      if (loaded) {
+        this.image_ = image;
+        this.renderedResolution = viewResolution;
+      }
+    }
+  }
+
+  if (this.image_) {
+    image = this.image_;
+    var imageExtent = image.getExtent();
+    var imageResolution = image.getResolution();
+    var imagePixelRatio = image.getPixelRatio();
+    var scale = pixelRatio * imageResolution /
+        (viewResolution * imagePixelRatio);
+    var transform = ol.transform.compose(this.imageTransform_,
+        pixelRatio * size[0] / 2, pixelRatio * size[1] / 2,
+        scale, scale,
+        0,
+        imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolution,
+        imagePixelRatio * (viewCenter[1] - imageExtent[3]) / imageResolution);
+    ol.transform.compose(this.coordinateToCanvasPixelTransform,
+        pixelRatio * size[0] / 2 - transform[4], pixelRatio * size[1] / 2 - transform[5],
+        pixelRatio / viewResolution, -pixelRatio / viewResolution,
+        0,
+        -viewCenter[0], -viewCenter[1]);
+
+    this.updateAttributions(frameState.attributions, image.getAttributions());
+    this.updateLogos(frameState, imageSource);
+  }
+
+  return !!this.image_;
+};
+
+// FIXME find correct globalCompositeOperation
+
+goog.provide('ol.renderer.canvas.TileLayer');
+
+goog.require('ol');
+goog.require('ol.transform');
+goog.require('ol.TileRange');
+goog.require('ol.Tile');
+goog.require('ol.array');
+goog.require('ol.dom');
+goog.require('ol.extent');
+goog.require('ol.renderer.canvas.IntermediateCanvas');
+
+
+/**
+ * @constructor
+ * @extends {ol.renderer.canvas.IntermediateCanvas}
+ * @param {ol.layer.Tile|ol.layer.VectorTile} tileLayer Tile layer.
+ */
+ol.renderer.canvas.TileLayer = function(tileLayer) {
+
+  ol.renderer.canvas.IntermediateCanvas.call(this, tileLayer);
+
+  /**
+   * @protected
+   * @type {CanvasRenderingContext2D}
+   */
+  this.context = ol.dom.createCanvasContext2D();
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.renderedExtent_ = null;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedRevision_;
+
+  /**
+   * @protected
+   * @type {!Array.<ol.Tile>}
+   */
+  this.renderedTiles = [];
+
+  /**
+   * @protected
+   * @type {ol.Extent}
+   */
+  this.tmpExtent = ol.extent.createEmpty();
+
+  /**
+   * @private
+   * @type {ol.TileCoord}
+   */
+  this.tmpTileCoord_ = [0, 0, 0];
+
+  /**
+   * @private
+   * @type {ol.TileRange}
+   */
+  this.tmpTileRange_ = new ol.TileRange(0, 0, 0, 0);
+
+  /**
+   * @private
+   * @type {ol.Transform}
+   */
+  this.imageTransform_ = ol.transform.create();
+
+  /**
+   * @protected
+   * @type {number}
+   */
+  this.zDirection = 0;
+
+};
+ol.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.IntermediateCanvas);
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layerState) {
+
+  var pixelRatio = frameState.pixelRatio;
+  var size = frameState.size;
+  var viewState = frameState.viewState;
+  var projection = viewState.projection;
+  var viewResolution = viewState.resolution;
+  var viewCenter = viewState.center;
+
+  var tileLayer = this.getLayer();
+  var tileSource = /** @type {ol.source.Tile} */ (tileLayer.getSource());
+  var sourceRevision = tileSource.getRevision();
+  var tileGrid = tileSource.getTileGridForProjection(projection);
+  var z = tileGrid.getZForResolution(viewResolution, this.zDirection);
+  var tileResolution = tileGrid.getResolution(z);
+  var extent = frameState.extent;
+
+  if (layerState.extent !== undefined) {
+    extent = ol.extent.getIntersection(extent, layerState.extent);
+  }
+  if (ol.extent.isEmpty(extent)) {
+    // Return false to prevent the rendering of the layer.
+    return false;
+  }
+
+  var tileRange = tileGrid.getTileRangeForExtentAndResolution(
+      extent, tileResolution);
+  var imageExtent = tileGrid.getTileRangeExtent(z, tileRange);
+
+  var tilePixelRatio = tileSource.getTilePixelRatio(pixelRatio);
+
+  /**
+   * @type {Object.<number, Object.<string, ol.Tile>>}
+   */
+  var tilesToDrawByZ = {};
+  tilesToDrawByZ[z] = {};
+
+  var findLoadedTiles = this.createLoadedTileFinder(
+      tileSource, projection, tilesToDrawByZ);
+
+  var useInterimTilesOnError = tileLayer.getUseInterimTilesOnError();
+  var tmpExtent = this.tmpExtent;
+  var tmpTileRange = this.tmpTileRange_;
+  var newTiles = false;
+  var tile, x, y;
+  for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
+    for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
+      tile = tileSource.getTile(z, x, y, pixelRatio, projection);
+      var tileState = tile.getState();
+      var drawable = tileState == ol.Tile.State.LOADED ||
+          tileState == ol.Tile.State.EMPTY ||
+          tileState == ol.Tile.State.ERROR && !useInterimTilesOnError;
+      if (!drawable) {
+        tile = tile.getInterimTile();
+      } else {
+        if (tileState == ol.Tile.State.LOADED) {
+          tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
+          if (!newTiles && this.renderedTiles.indexOf(tile) == -1) {
+            newTiles = true;
+          }
+        }
+        continue;
+      }
+
+      var fullyLoaded = tileGrid.forEachTileCoordParentTileRange(
+          tile.tileCoord, findLoadedTiles, null, tmpTileRange, tmpExtent);
+      if (!fullyLoaded) {
+        var childTileRange = tileGrid.getTileCoordChildTileRange(
+            tile.tileCoord, tmpTileRange, tmpExtent);
+        if (childTileRange) {
+          findLoadedTiles(z + 1, childTileRange);
+        }
+      }
+
+    }
+  }
+
+  var hints = frameState.viewHints;
+  if (!(this.renderedResolution && Date.now() - frameState.time > 16 &&
+      (hints[ol.View.Hint.ANIMATING] || hints[ol.View.Hint.INTERACTING])) &&
+      (newTiles || !(this.renderedExtent_ &&
+      ol.extent.equals(this.renderedExtent_, imageExtent)) ||
+      this.renderedRevision_ != sourceRevision)) {
+
+    var tilePixelSize = tileSource.getTilePixelSize(z, pixelRatio, projection);
+    var width = tileRange.getWidth() * tilePixelSize[0];
+    var height = tileRange.getHeight() * tilePixelSize[0];
+    var context = this.context;
+    var canvas = context.canvas;
+    var opaque = tileSource.getOpaque(projection);
+    if (canvas.width != width || canvas.height != height) {
+      canvas.width = width;
+      canvas.height = height;
+    } else {
+      context.clearRect(0, 0, width, height);
+    }
+
+    this.renderedTiles.length = 0;
+    /** @type {Array.<number>} */
+    var zs = Object.keys(tilesToDrawByZ).map(Number);
+    zs.sort(ol.array.numberSafeCompareFunction);
+    var currentResolution, currentScale, currentTilePixelSize, currentZ, i, ii;
+    var tileExtent, tileGutter, tilesToDraw, w, h;
+    for (i = 0, ii = zs.length; i < ii; ++i) {
+      currentZ = zs[i];
+      currentTilePixelSize = tileSource.getTilePixelSize(currentZ, pixelRatio, projection);
+      currentResolution = tileGrid.getResolution(currentZ);
+      currentScale = currentResolution / tileResolution;
+      tileGutter = tilePixelRatio * tileSource.getGutter(projection);
+      tilesToDraw = tilesToDrawByZ[currentZ];
+      for (var tileCoordKey in tilesToDraw) {
+        tile = tilesToDraw[tileCoordKey];
+        tileExtent = tileGrid.getTileCoordExtent(tile.getTileCoord(), tmpExtent);
+        x = (tileExtent[0] - imageExtent[0]) / tileResolution * tilePixelRatio;
+        y = (imageExtent[3] - tileExtent[3]) / tileResolution * tilePixelRatio;
+        w = currentTilePixelSize[0] * currentScale;
+        h = currentTilePixelSize[1] * currentScale;
+        if (!opaque) {
+          context.clearRect(x, y, w, h);
+        }
+        this.drawTileImage(tile, frameState, layerState, x, y, w, h, tileGutter);
+        this.renderedTiles.push(tile);
+      }
+    }
+
+    this.renderedRevision_ = sourceRevision;
+    this.renderedResolution = tileResolution;
+    this.renderedExtent_ = imageExtent;
+  }
+
+  var scale = pixelRatio / tilePixelRatio * this.renderedResolution / viewResolution;
+  var transform = ol.transform.compose(this.imageTransform_,
+      pixelRatio * size[0] / 2, pixelRatio * size[1] / 2,
+      scale, scale,
+      0,
+      tilePixelRatio * (this.renderedExtent_[0] - viewCenter[0]) / this.renderedResolution,
+      tilePixelRatio * (viewCenter[1] - this.renderedExtent_[3]) / this.renderedResolution);
+  ol.transform.compose(this.coordinateToCanvasPixelTransform,
+      pixelRatio * size[0] / 2 - transform[4], pixelRatio * size[1] / 2 - transform[5],
+      pixelRatio / viewResolution, -pixelRatio / viewResolution,
+      0,
+      -viewCenter[0], -viewCenter[1]);
+
+
+  this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
+  this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio,
+      projection, extent, z, tileLayer.getPreload());
+  this.scheduleExpireCache(frameState, tileSource);
+  this.updateLogos(frameState, tileSource);
+
+  return this.renderedTiles.length > 0;
+};
+
+
+/**
+ * @param {ol.Tile} tile Tile.
+ * @param {olx.FrameState} frameState Frame state.
+ * @param {ol.LayerState} layerState Layer state.
+ * @param {number} x Left of the tile.
+ * @param {number} y Top of the tile.
+ * @param {number} w Width of the tile.
+ * @param {number} h Height of the tile.
+ * @param {number} gutter Tile gutter.
+ */
+ol.renderer.canvas.TileLayer.prototype.drawTileImage = function(tile, frameState, layerState, x, y, w, h, gutter) {
+  var image = tile.getImage();
+  if (image) {
+    this.context.drawImage(image, gutter, gutter,
+        image.width - 2 * gutter, image.height - 2 * gutter, x, y, w, h);
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.TileLayer.prototype.getImage = function() {
+  return this.context.canvas;
+};
+
+
+/**
+ * @function
+ * @return {ol.layer.Tile|ol.layer.VectorTile}
+ */
+ol.renderer.canvas.TileLayer.prototype.getLayer;
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.TileLayer.prototype.getImageTransform = function() {
+  return this.imageTransform_;
 };
 
 goog.provide('ol.render.ReplayGroup');
@@ -26600,8 +27173,12 @@ ol.render.canvas.Replay.prototype.replay_ = function(
             '6th instruction should be a number');
         ol.DEBUG && console.assert(instruction[6],
             '7th instruction should not be null');
+        ol.DEBUG && console.assert(typeof instruction[8] === 'number',
+            '9th instruction should be a number');
         var usePixelRatio = instruction[7] !== undefined ?
             instruction[7] : true;
+        var renderedPixelRatio = instruction[8];
+
         var lineWidth = /** @type {number} */ (instruction[2]);
         if (pendingStroke) {
           context.stroke();
@@ -26613,7 +27190,15 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         context.lineJoin = /** @type {string} */ (instruction[4]);
         context.miterLimit = /** @type {number} */ (instruction[5]);
         if (ol.has.CANVAS_LINE_DASH) {
-          context.setLineDash(/** @type {Array.<number>} */ (instruction[6]));
+          var lineDash = /** @type {Array.<number>} */ (instruction[6]);
+          if (usePixelRatio && pixelRatio !== renderedPixelRatio) {
+            lineDash = lineDash.map(function(dash) {
+              return dash * pixelRatio / renderedPixelRatio;
+            });
+            instruction[6] = lineDash;
+            instruction[8] = pixelRatio;
+          }
+          context.setLineDash(lineDash);
         }
         prevX = NaN;
         prevY = NaN;
@@ -27166,7 +27751,7 @@ ol.render.canvas.LineStringReplay.prototype.setStrokeStyle_ = function() {
     }
     this.instructions.push([
       ol.render.canvas.Instruction.SET_STROKE_STYLE,
-      strokeStyle, lineWidth, lineCap, lineJoin, miterLimit, lineDash
+      strokeStyle, lineWidth, lineCap, lineJoin, miterLimit, lineDash, true, 1
     ], [
       ol.render.canvas.Instruction.BEGIN_PATH
     ]);
@@ -27196,7 +27781,7 @@ ol.render.canvas.LineStringReplay.prototype.drawLineString = function(lineString
   this.hitDetectionInstructions.push([
     ol.render.canvas.Instruction.SET_STROKE_STYLE,
     state.strokeStyle, state.lineWidth, state.lineCap, state.lineJoin,
-    state.miterLimit, state.lineDash
+    state.miterLimit, state.lineDash, true, 1
   ], [
     ol.render.canvas.Instruction.BEGIN_PATH
   ]);
@@ -27224,7 +27809,7 @@ ol.render.canvas.LineStringReplay.prototype.drawMultiLineString = function(multi
   this.hitDetectionInstructions.push([
     ol.render.canvas.Instruction.SET_STROKE_STYLE,
     state.strokeStyle, state.lineWidth, state.lineCap, state.lineJoin,
-    state.miterLimit, state.lineDash
+    state.miterLimit, state.lineDash, true, 1
   ], [
     ol.render.canvas.Instruction.BEGIN_PATH
   ]);
@@ -27292,6 +27877,7 @@ ol.render.canvas.LineStringReplay.prototype.setFillStrokeStyle = function(fillSt
 goog.provide('ol.render.canvas.PolygonReplay');
 
 goog.require('ol');
+goog.require('ol.array');
 goog.require('ol.color');
 goog.require('ol.colorlike');
 goog.require('ol.extent');
@@ -27434,7 +28020,7 @@ ol.render.canvas.PolygonReplay.prototype.drawCircle = function(circleGeometry, f
     this.hitDetectionInstructions.push([
       ol.render.canvas.Instruction.SET_STROKE_STYLE,
       state.strokeStyle, state.lineWidth, state.lineCap, state.lineJoin,
-      state.miterLimit, state.lineDash
+      state.miterLimit, state.lineDash, true, 1
     ]);
   }
   var flatCoordinates = circleGeometry.getFlatCoordinates();
@@ -27486,7 +28072,7 @@ ol.render.canvas.PolygonReplay.prototype.drawPolygon = function(polygonGeometry,
     this.hitDetectionInstructions.push([
       ol.render.canvas.Instruction.SET_STROKE_STYLE,
       state.strokeStyle, state.lineWidth, state.lineCap, state.lineJoin,
-      state.miterLimit, state.lineDash
+      state.miterLimit, state.lineDash, true, 1
     ]);
   }
   var ends = polygonGeometry.getEnds();
@@ -27523,7 +28109,7 @@ ol.render.canvas.PolygonReplay.prototype.drawMultiPolygon = function(multiPolygo
     this.hitDetectionInstructions.push([
       ol.render.canvas.Instruction.SET_STROKE_STYLE,
       state.strokeStyle, state.lineWidth, state.lineCap, state.lineJoin,
-      state.miterLimit, state.lineDash
+      state.miterLimit, state.lineDash, true, 1
     ]);
   }
   var endss = multiPolygonGeometry.getEndss();
@@ -27658,13 +28244,13 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function(geometr
         'miterLimit should be defined');
     if (state.currentStrokeStyle != strokeStyle ||
         state.currentLineCap != lineCap ||
-        state.currentLineDash != lineDash ||
+        !ol.array.equals(state.currentLineDash, lineDash) ||
         state.currentLineJoin != lineJoin ||
         state.currentLineWidth != lineWidth ||
         state.currentMiterLimit != miterLimit) {
       this.instructions.push([
         ol.render.canvas.Instruction.SET_STROKE_STYLE,
-        strokeStyle, lineWidth, lineCap, lineJoin, miterLimit, lineDash
+        strokeStyle, lineWidth, lineCap, lineJoin, miterLimit, lineDash, true, 1
       ]);
       state.currentStrokeStyle = strokeStyle;
       state.currentLineCap = lineCap;
@@ -27847,7 +28433,7 @@ ol.render.canvas.TextReplay.prototype.setReplayStrokeState_ = function(strokeSta
   var setStrokeStyleInstruction = [
     ol.render.canvas.Instruction.SET_STROKE_STYLE, strokeState.strokeStyle,
     strokeState.lineWidth, strokeState.lineCap, strokeState.lineJoin,
-    strokeState.miterLimit, strokeState.lineDash, false
+    strokeState.miterLimit, strokeState.lineDash, false, 1
   ];
   this.instructions.push(setStrokeStyleInstruction);
   this.hitDetectionInstructions.push(setStrokeStyleInstruction);
@@ -28184,6 +28770,23 @@ ol.render.canvas.ReplayGroup.prototype.forEachFeatureAtCoordinate = function(
 
 
 /**
+ * @param {ol.Transform} transform Transform.
+ * @return {Array.<number>} Clip coordinates.
+ */
+ol.render.canvas.ReplayGroup.prototype.getClipCoords = function(transform) {
+  var maxExtent = this.maxExtent_;
+  var minX = maxExtent[0];
+  var minY = maxExtent[1];
+  var maxX = maxExtent[2];
+  var maxY = maxExtent[3];
+  var flatClipCoords = [minX, minY, minX, maxY, maxX, maxY, maxX, minY];
+  ol.geom.flat.transform.transform2D(
+      flatClipCoords, 0, 8, 2, transform, flatClipCoords);
+  return flatClipCoords;
+};
+
+
+/**
  * @inheritDoc
  */
 ol.render.canvas.ReplayGroup.prototype.getReplay = function(zIndex, replayType) {
@@ -28234,14 +28837,7 @@ ol.render.canvas.ReplayGroup.prototype.replay = function(context, pixelRatio,
 
   // setup clipping so that the parts of over-simplified geometries are not
   // visible outside the current extent when panning
-  var maxExtent = this.maxExtent_;
-  var minX = maxExtent[0];
-  var minY = maxExtent[1];
-  var maxX = maxExtent[2];
-  var maxY = maxExtent[3];
-  var flatClipCoords = [minX, minY, minX, maxY, maxX, maxY, maxX, minY];
-  ol.geom.flat.transform.transform2D(
-      flatClipCoords, 0, 8, 2, transform, flatClipCoords);
+  var flatClipCoords = this.getClipCoords(transform);
   context.save();
   context.beginPath();
   context.moveTo(flatClipCoords[0], flatClipCoords[1]);
@@ -28646,2319 +29242,6 @@ ol.renderer.vector.GEOMETRY_RENDERERS_ = {
   'Circle': ol.renderer.vector.renderCircleGeometry_
 };
 
-goog.provide('ol.ImageCanvas');
-
-goog.require('ol');
-goog.require('ol.Image');
-goog.require('ol.ImageBase');
-
-
-/**
- * @constructor
- * @extends {ol.ImageBase}
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {Array.<ol.Attribution>} attributions Attributions.
- * @param {HTMLCanvasElement} canvas Canvas.
- * @param {ol.ImageCanvasLoader=} opt_loader Optional loader function to
- *     support asynchronous canvas drawing.
- */
-ol.ImageCanvas = function(extent, resolution, pixelRatio, attributions,
-    canvas, opt_loader) {
-
-  /**
-   * Optional canvas loader function.
-   * @type {?ol.ImageCanvasLoader}
-   * @private
-   */
-  this.loader_ = opt_loader !== undefined ? opt_loader : null;
-
-  var state = opt_loader !== undefined ?
-      ol.Image.State.IDLE : ol.Image.State.LOADED;
-
-  ol.ImageBase.call(this, extent, resolution, pixelRatio, state, attributions);
-
-  /**
-   * @private
-   * @type {HTMLCanvasElement}
-   */
-  this.canvas_ = canvas;
-
-  /**
-   * @private
-   * @type {Error}
-   */
-  this.error_ = null;
-
-};
-ol.inherits(ol.ImageCanvas, ol.ImageBase);
-
-
-/**
- * Get any error associated with asynchronous rendering.
- * @return {Error} Any error that occurred during rendering.
- */
-ol.ImageCanvas.prototype.getError = function() {
-  return this.error_;
-};
-
-
-/**
- * Handle async drawing complete.
- * @param {Error} err Any error during drawing.
- * @private
- */
-ol.ImageCanvas.prototype.handleLoad_ = function(err) {
-  if (err) {
-    this.error_ = err;
-    this.state = ol.Image.State.ERROR;
-  } else {
-    this.state = ol.Image.State.LOADED;
-  }
-  this.changed();
-};
-
-
-/**
- * Trigger drawing on canvas.
- */
-ol.ImageCanvas.prototype.load = function() {
-  if (this.state == ol.Image.State.IDLE) {
-    ol.DEBUG && console.assert(this.loader_, 'this.loader_ must be set');
-    this.state = ol.Image.State.LOADING;
-    this.changed();
-    this.loader_(this.handleLoad_.bind(this));
-  }
-};
-
-
-/**
- * @inheritDoc
- */
-ol.ImageCanvas.prototype.getImage = function(opt_context) {
-  return this.canvas_;
-};
-
-goog.provide('ol.reproj');
-
-goog.require('ol');
-goog.require('ol.dom');
-goog.require('ol.extent');
-goog.require('ol.math');
-goog.require('ol.proj');
-
-
-/**
- * We need to employ more sophisticated solution
- * if the web browser antialiases clipping edges on canvas.
- *
- * Currently only Chrome does not antialias the edges, but this is probably
- * going to be "fixed" in the future: http://crbug.com/424291
- *
- * @type {boolean}
- * @private
- */
-ol.reproj.browserAntialiasesClip_ = (function() {
-  // Adapted from http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
-  var isOpera = navigator.userAgent.indexOf('OPR') > -1;
-  var isIEedge = navigator.userAgent.indexOf('Edge') > -1;
-  return !(
-    !navigator.userAgent.match('CriOS') &&  // Not Chrome on iOS
-    'chrome' in window && // Has chrome in window
-    navigator.vendor === 'Google Inc.' && // Vendor is Google.
-    isOpera == false && // Not Opera
-    isIEedge == false // Not Edge
-  );
-})();
-
-
-/**
- * Calculates ideal resolution to use from the source in order to achieve
- * pixel mapping as close as possible to 1:1 during reprojection.
- * The resolution is calculated regardless of what resolutions
- * are actually available in the dataset (TileGrid, Image, ...).
- *
- * @param {ol.proj.Projection} sourceProj Source projection.
- * @param {ol.proj.Projection} targetProj Target projection.
- * @param {ol.Coordinate} targetCenter Target center.
- * @param {number} targetResolution Target resolution.
- * @return {number} The best resolution to use. Can be +-Infinity, NaN or 0.
- */
-ol.reproj.calculateSourceResolution = function(sourceProj, targetProj,
-    targetCenter, targetResolution) {
-
-  var sourceCenter = ol.proj.transform(targetCenter, targetProj, sourceProj);
-
-  // calculate the ideal resolution of the source data
-  var sourceResolution =
-      targetProj.getPointResolution(targetResolution, targetCenter);
-
-  var targetMetersPerUnit = targetProj.getMetersPerUnit();
-  if (targetMetersPerUnit !== undefined) {
-    sourceResolution *= targetMetersPerUnit;
-  }
-  var sourceMetersPerUnit = sourceProj.getMetersPerUnit();
-  if (sourceMetersPerUnit !== undefined) {
-    sourceResolution /= sourceMetersPerUnit;
-  }
-
-  // Based on the projection properties, the point resolution at the specified
-  // coordinates may be slightly different. We need to reverse-compensate this
-  // in order to achieve optimal results.
-
-  var compensationFactor =
-      sourceProj.getPointResolution(sourceResolution, sourceCenter) /
-      sourceResolution;
-
-  if (isFinite(compensationFactor) && compensationFactor > 0) {
-    sourceResolution /= compensationFactor;
-  }
-
-  return sourceResolution;
-};
-
-
-/**
- * Enlarge the clipping triangle point by 1 pixel to ensure the edges overlap
- * in order to mask gaps caused by antialiasing.
- *
- * @param {number} centroidX Centroid of the triangle (x coordinate in pixels).
- * @param {number} centroidY Centroid of the triangle (y coordinate in pixels).
- * @param {number} x X coordinate of the point (in pixels).
- * @param {number} y Y coordinate of the point (in pixels).
- * @return {ol.Coordinate} New point 1 px farther from the centroid.
- * @private
- */
-ol.reproj.enlargeClipPoint_ = function(centroidX, centroidY, x, y) {
-  var dX = x - centroidX, dY = y - centroidY;
-  var distance = Math.sqrt(dX * dX + dY * dY);
-  return [Math.round(x + dX / distance), Math.round(y + dY / distance)];
-};
-
-
-/**
- * Renders the source data into new canvas based on the triangulation.
- *
- * @param {number} width Width of the canvas.
- * @param {number} height Height of the canvas.
- * @param {number} pixelRatio Pixel ratio.
- * @param {number} sourceResolution Source resolution.
- * @param {ol.Extent} sourceExtent Extent of the data source.
- * @param {number} targetResolution Target resolution.
- * @param {ol.Extent} targetExtent Target extent.
- * @param {ol.reproj.Triangulation} triangulation Calculated triangulation.
- * @param {Array.<{extent: ol.Extent,
- *                 image: (HTMLCanvasElement|Image|HTMLVideoElement)}>} sources
- *             Array of sources.
- * @param {number} gutter Gutter of the sources.
- * @param {boolean=} opt_renderEdges Render reprojection edges.
- * @return {HTMLCanvasElement} Canvas with reprojected data.
- */
-ol.reproj.render = function(width, height, pixelRatio,
-    sourceResolution, sourceExtent, targetResolution, targetExtent,
-    triangulation, sources, gutter, opt_renderEdges) {
-
-  var context = ol.dom.createCanvasContext2D(Math.round(pixelRatio * width),
-                                             Math.round(pixelRatio * height));
-
-  if (sources.length === 0) {
-    return context.canvas;
-  }
-
-  context.scale(pixelRatio, pixelRatio);
-
-  var sourceDataExtent = ol.extent.createEmpty();
-  sources.forEach(function(src, i, arr) {
-    ol.extent.extend(sourceDataExtent, src.extent);
-  });
-
-  var canvasWidthInUnits = ol.extent.getWidth(sourceDataExtent);
-  var canvasHeightInUnits = ol.extent.getHeight(sourceDataExtent);
-  var stitchContext = ol.dom.createCanvasContext2D(
-      Math.round(pixelRatio * canvasWidthInUnits / sourceResolution),
-      Math.round(pixelRatio * canvasHeightInUnits / sourceResolution));
-
-  var stitchScale = pixelRatio / sourceResolution;
-
-  sources.forEach(function(src, i, arr) {
-    var xPos = src.extent[0] - sourceDataExtent[0];
-    var yPos = -(src.extent[3] - sourceDataExtent[3]);
-    var srcWidth = ol.extent.getWidth(src.extent);
-    var srcHeight = ol.extent.getHeight(src.extent);
-
-    stitchContext.drawImage(
-        src.image,
-        gutter, gutter,
-        src.image.width - 2 * gutter, src.image.height - 2 * gutter,
-        xPos * stitchScale, yPos * stitchScale,
-        srcWidth * stitchScale, srcHeight * stitchScale);
-  });
-
-  var targetTopLeft = ol.extent.getTopLeft(targetExtent);
-
-  triangulation.getTriangles().forEach(function(triangle, i, arr) {
-    /* Calculate affine transform (src -> dst)
-     * Resulting matrix can be used to transform coordinate
-     * from `sourceProjection` to destination pixels.
-     *
-     * To optimize number of context calls and increase numerical stability,
-     * we also do the following operations:
-     * trans(-topLeftExtentCorner), scale(1 / targetResolution), scale(1, -1)
-     * here before solving the linear system so [ui, vi] are pixel coordinates.
-     *
-     * Src points: xi, yi
-     * Dst points: ui, vi
-     * Affine coefficients: aij
-     *
-     * | x0 y0 1  0  0 0 |   |a00|   |u0|
-     * | x1 y1 1  0  0 0 |   |a01|   |u1|
-     * | x2 y2 1  0  0 0 | x |a02| = |u2|
-     * |  0  0 0 x0 y0 1 |   |a10|   |v0|
-     * |  0  0 0 x1 y1 1 |   |a11|   |v1|
-     * |  0  0 0 x2 y2 1 |   |a12|   |v2|
-     */
-    var source = triangle.source, target = triangle.target;
-    var x0 = source[0][0], y0 = source[0][1],
-        x1 = source[1][0], y1 = source[1][1],
-        x2 = source[2][0], y2 = source[2][1];
-    var u0 = (target[0][0] - targetTopLeft[0]) / targetResolution,
-        v0 = -(target[0][1] - targetTopLeft[1]) / targetResolution;
-    var u1 = (target[1][0] - targetTopLeft[0]) / targetResolution,
-        v1 = -(target[1][1] - targetTopLeft[1]) / targetResolution;
-    var u2 = (target[2][0] - targetTopLeft[0]) / targetResolution,
-        v2 = -(target[2][1] - targetTopLeft[1]) / targetResolution;
-
-    // Shift all the source points to improve numerical stability
-    // of all the subsequent calculations. The [x0, y0] is used here.
-    // This is also used to simplify the linear system.
-    var sourceNumericalShiftX = x0, sourceNumericalShiftY = y0;
-    x0 = 0;
-    y0 = 0;
-    x1 -= sourceNumericalShiftX;
-    y1 -= sourceNumericalShiftY;
-    x2 -= sourceNumericalShiftX;
-    y2 -= sourceNumericalShiftY;
-
-    var augmentedMatrix = [
-      [x1, y1, 0, 0, u1 - u0],
-      [x2, y2, 0, 0, u2 - u0],
-      [0, 0, x1, y1, v1 - v0],
-      [0, 0, x2, y2, v2 - v0]
-    ];
-    var affineCoefs = ol.math.solveLinearSystem(augmentedMatrix);
-    if (!affineCoefs) {
-      return;
-    }
-
-    context.save();
-    context.beginPath();
-    if (ol.reproj.browserAntialiasesClip_) {
-      var centroidX = (u0 + u1 + u2) / 3, centroidY = (v0 + v1 + v2) / 3;
-      var p0 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u0, v0);
-      var p1 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u1, v1);
-      var p2 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u2, v2);
-
-      context.moveTo(p1[0], p1[1]);
-      context.lineTo(p0[0], p0[1]);
-      context.lineTo(p2[0], p2[1]);
-    } else {
-      context.moveTo(u1, v1);
-      context.lineTo(u0, v0);
-      context.lineTo(u2, v2);
-    }
-    context.clip();
-
-    context.transform(
-        affineCoefs[0], affineCoefs[2], affineCoefs[1], affineCoefs[3], u0, v0);
-
-    context.translate(sourceDataExtent[0] - sourceNumericalShiftX,
-                      sourceDataExtent[3] - sourceNumericalShiftY);
-
-    context.scale(sourceResolution / pixelRatio,
-                  -sourceResolution / pixelRatio);
-
-    context.drawImage(stitchContext.canvas, 0, 0);
-    context.restore();
-  });
-
-  if (opt_renderEdges) {
-    context.save();
-
-    context.strokeStyle = 'black';
-    context.lineWidth = 1;
-
-    triangulation.getTriangles().forEach(function(triangle, i, arr) {
-      var target = triangle.target;
-      var u0 = (target[0][0] - targetTopLeft[0]) / targetResolution,
-          v0 = -(target[0][1] - targetTopLeft[1]) / targetResolution;
-      var u1 = (target[1][0] - targetTopLeft[0]) / targetResolution,
-          v1 = -(target[1][1] - targetTopLeft[1]) / targetResolution;
-      var u2 = (target[2][0] - targetTopLeft[0]) / targetResolution,
-          v2 = -(target[2][1] - targetTopLeft[1]) / targetResolution;
-
-      context.beginPath();
-      context.moveTo(u1, v1);
-      context.lineTo(u0, v0);
-      context.lineTo(u2, v2);
-      context.closePath();
-      context.stroke();
-    });
-
-    context.restore();
-  }
-  return context.canvas;
-};
-
-goog.provide('ol.reproj.Triangulation');
-
-goog.require('ol');
-goog.require('ol.extent');
-goog.require('ol.math');
-goog.require('ol.proj');
-
-
-/**
- * @classdesc
- * Class containing triangulation of the given target extent.
- * Used for determining source data and the reprojection itself.
- *
- * @param {ol.proj.Projection} sourceProj Source projection.
- * @param {ol.proj.Projection} targetProj Target projection.
- * @param {ol.Extent} targetExtent Target extent to triangulate.
- * @param {ol.Extent} maxSourceExtent Maximal source extent that can be used.
- * @param {number} errorThreshold Acceptable error (in source units).
- * @constructor
- */
-ol.reproj.Triangulation = function(sourceProj, targetProj, targetExtent,
-    maxSourceExtent, errorThreshold) {
-
-  /**
-   * @type {ol.proj.Projection}
-   * @private
-   */
-  this.sourceProj_ = sourceProj;
-
-  /**
-   * @type {ol.proj.Projection}
-   * @private
-   */
-  this.targetProj_ = targetProj;
-
-  /** @type {!Object.<string, ol.Coordinate>} */
-  var transformInvCache = {};
-  var transformInv = ol.proj.getTransform(this.targetProj_, this.sourceProj_);
-
-  /**
-   * @param {ol.Coordinate} c A coordinate.
-   * @return {ol.Coordinate} Transformed coordinate.
-   * @private
-   */
-  this.transformInv_ = function(c) {
-    var key = c[0] + '/' + c[1];
-    if (!transformInvCache[key]) {
-      transformInvCache[key] = transformInv(c);
-    }
-    return transformInvCache[key];
-  };
-
-  /**
-   * @type {ol.Extent}
-   * @private
-   */
-  this.maxSourceExtent_ = maxSourceExtent;
-
-  /**
-   * @type {number}
-   * @private
-   */
-  this.errorThresholdSquared_ = errorThreshold * errorThreshold;
-
-  /**
-   * @type {Array.<ol.ReprojTriangle>}
-   * @private
-   */
-  this.triangles_ = [];
-
-  /**
-   * Indicates that the triangulation crosses edge of the source projection.
-   * @type {boolean}
-   * @private
-   */
-  this.wrapsXInSource_ = false;
-
-  /**
-   * @type {boolean}
-   * @private
-   */
-  this.canWrapXInSource_ = this.sourceProj_.canWrapX() &&
-      !!maxSourceExtent &&
-      !!this.sourceProj_.getExtent() &&
-      (ol.extent.getWidth(maxSourceExtent) ==
-       ol.extent.getWidth(this.sourceProj_.getExtent()));
-
-  /**
-   * @type {?number}
-   * @private
-   */
-  this.sourceWorldWidth_ = this.sourceProj_.getExtent() ?
-      ol.extent.getWidth(this.sourceProj_.getExtent()) : null;
-
-  /**
-   * @type {?number}
-   * @private
-   */
-  this.targetWorldWidth_ = this.targetProj_.getExtent() ?
-      ol.extent.getWidth(this.targetProj_.getExtent()) : null;
-
-  var destinationTopLeft = ol.extent.getTopLeft(targetExtent);
-  var destinationTopRight = ol.extent.getTopRight(targetExtent);
-  var destinationBottomRight = ol.extent.getBottomRight(targetExtent);
-  var destinationBottomLeft = ol.extent.getBottomLeft(targetExtent);
-  var sourceTopLeft = this.transformInv_(destinationTopLeft);
-  var sourceTopRight = this.transformInv_(destinationTopRight);
-  var sourceBottomRight = this.transformInv_(destinationBottomRight);
-  var sourceBottomLeft = this.transformInv_(destinationBottomLeft);
-
-  this.addQuad_(
-      destinationTopLeft, destinationTopRight,
-      destinationBottomRight, destinationBottomLeft,
-      sourceTopLeft, sourceTopRight, sourceBottomRight, sourceBottomLeft,
-      ol.RASTER_REPROJECTION_MAX_SUBDIVISION);
-
-  if (this.wrapsXInSource_) {
-    // Fix coordinates (ol.proj returns wrapped coordinates, "unwrap" here).
-    // This significantly simplifies the rest of the reprojection process.
-
-    ol.DEBUG && console.assert(this.sourceWorldWidth_ !== null);
-    var leftBound = Infinity;
-    this.triangles_.forEach(function(triangle, i, arr) {
-      leftBound = Math.min(leftBound,
-          triangle.source[0][0], triangle.source[1][0], triangle.source[2][0]);
-    });
-
-    // Shift triangles to be as close to `leftBound` as possible
-    // (if the distance is more than `worldWidth / 2` it can be closer.
-    this.triangles_.forEach(function(triangle) {
-      if (Math.max(triangle.source[0][0], triangle.source[1][0],
-          triangle.source[2][0]) - leftBound > this.sourceWorldWidth_ / 2) {
-        var newTriangle = [[triangle.source[0][0], triangle.source[0][1]],
-                           [triangle.source[1][0], triangle.source[1][1]],
-                           [triangle.source[2][0], triangle.source[2][1]]];
-        if ((newTriangle[0][0] - leftBound) > this.sourceWorldWidth_ / 2) {
-          newTriangle[0][0] -= this.sourceWorldWidth_;
-        }
-        if ((newTriangle[1][0] - leftBound) > this.sourceWorldWidth_ / 2) {
-          newTriangle[1][0] -= this.sourceWorldWidth_;
-        }
-        if ((newTriangle[2][0] - leftBound) > this.sourceWorldWidth_ / 2) {
-          newTriangle[2][0] -= this.sourceWorldWidth_;
-        }
-
-        // Rarely (if the extent contains both the dateline and prime meridian)
-        // the shift can in turn break some triangles.
-        // Detect this here and don't shift in such cases.
-        var minX = Math.min(
-            newTriangle[0][0], newTriangle[1][0], newTriangle[2][0]);
-        var maxX = Math.max(
-            newTriangle[0][0], newTriangle[1][0], newTriangle[2][0]);
-        if ((maxX - minX) < this.sourceWorldWidth_ / 2) {
-          triangle.source = newTriangle;
-        }
-      }
-    }, this);
-  }
-
-  transformInvCache = {};
-};
-
-
-/**
- * Adds triangle to the triangulation.
- * @param {ol.Coordinate} a The target a coordinate.
- * @param {ol.Coordinate} b The target b coordinate.
- * @param {ol.Coordinate} c The target c coordinate.
- * @param {ol.Coordinate} aSrc The source a coordinate.
- * @param {ol.Coordinate} bSrc The source b coordinate.
- * @param {ol.Coordinate} cSrc The source c coordinate.
- * @private
- */
-ol.reproj.Triangulation.prototype.addTriangle_ = function(a, b, c,
-    aSrc, bSrc, cSrc) {
-  this.triangles_.push({
-    source: [aSrc, bSrc, cSrc],
-    target: [a, b, c]
-  });
-};
-
-
-/**
- * Adds quad (points in clock-wise order) to the triangulation
- * (and reprojects the vertices) if valid.
- * Performs quad subdivision if needed to increase precision.
- *
- * @param {ol.Coordinate} a The target a coordinate.
- * @param {ol.Coordinate} b The target b coordinate.
- * @param {ol.Coordinate} c The target c coordinate.
- * @param {ol.Coordinate} d The target d coordinate.
- * @param {ol.Coordinate} aSrc The source a coordinate.
- * @param {ol.Coordinate} bSrc The source b coordinate.
- * @param {ol.Coordinate} cSrc The source c coordinate.
- * @param {ol.Coordinate} dSrc The source d coordinate.
- * @param {number} maxSubdivision Maximal allowed subdivision of the quad.
- * @private
- */
-ol.reproj.Triangulation.prototype.addQuad_ = function(a, b, c, d,
-    aSrc, bSrc, cSrc, dSrc, maxSubdivision) {
-
-  var sourceQuadExtent = ol.extent.boundingExtent([aSrc, bSrc, cSrc, dSrc]);
-  var sourceCoverageX = this.sourceWorldWidth_ ?
-      ol.extent.getWidth(sourceQuadExtent) / this.sourceWorldWidth_ : null;
-  var sourceWorldWidth = /** @type {number} */ (this.sourceWorldWidth_);
-
-  // when the quad is wrapped in the source projection
-  // it covers most of the projection extent, but not fully
-  var wrapsX = this.sourceProj_.canWrapX() &&
-               sourceCoverageX > 0.5 && sourceCoverageX < 1;
-
-  var needsSubdivision = false;
-
-  if (maxSubdivision > 0) {
-    if (this.targetProj_.isGlobal() && this.targetWorldWidth_) {
-      var targetQuadExtent = ol.extent.boundingExtent([a, b, c, d]);
-      var targetCoverageX =
-          ol.extent.getWidth(targetQuadExtent) / this.targetWorldWidth_;
-      needsSubdivision |=
-          targetCoverageX > ol.RASTER_REPROJECTION_MAX_TRIANGLE_WIDTH;
-    }
-    if (!wrapsX && this.sourceProj_.isGlobal() && sourceCoverageX) {
-      needsSubdivision |=
-          sourceCoverageX > ol.RASTER_REPROJECTION_MAX_TRIANGLE_WIDTH;
-    }
-  }
-
-  if (!needsSubdivision && this.maxSourceExtent_) {
-    if (!ol.extent.intersects(sourceQuadExtent, this.maxSourceExtent_)) {
-      // whole quad outside source projection extent -> ignore
-      return;
-    }
-  }
-
-  if (!needsSubdivision) {
-    if (!isFinite(aSrc[0]) || !isFinite(aSrc[1]) ||
-        !isFinite(bSrc[0]) || !isFinite(bSrc[1]) ||
-        !isFinite(cSrc[0]) || !isFinite(cSrc[1]) ||
-        !isFinite(dSrc[0]) || !isFinite(dSrc[1])) {
-      if (maxSubdivision > 0) {
-        needsSubdivision = true;
-      } else {
-        return;
-      }
-    }
-  }
-
-  if (maxSubdivision > 0) {
-    if (!needsSubdivision) {
-      var center = [(a[0] + c[0]) / 2, (a[1] + c[1]) / 2];
-      var centerSrc = this.transformInv_(center);
-
-      var dx;
-      if (wrapsX) {
-        var centerSrcEstimX =
-            (ol.math.modulo(aSrc[0], sourceWorldWidth) +
-             ol.math.modulo(cSrc[0], sourceWorldWidth)) / 2;
-        dx = centerSrcEstimX -
-            ol.math.modulo(centerSrc[0], sourceWorldWidth);
-      } else {
-        dx = (aSrc[0] + cSrc[0]) / 2 - centerSrc[0];
-      }
-      var dy = (aSrc[1] + cSrc[1]) / 2 - centerSrc[1];
-      var centerSrcErrorSquared = dx * dx + dy * dy;
-      needsSubdivision = centerSrcErrorSquared > this.errorThresholdSquared_;
-    }
-    if (needsSubdivision) {
-      if (Math.abs(a[0] - c[0]) <= Math.abs(a[1] - c[1])) {
-        // split horizontally (top & bottom)
-        var bc = [(b[0] + c[0]) / 2, (b[1] + c[1]) / 2];
-        var bcSrc = this.transformInv_(bc);
-        var da = [(d[0] + a[0]) / 2, (d[1] + a[1]) / 2];
-        var daSrc = this.transformInv_(da);
-
-        this.addQuad_(
-            a, b, bc, da, aSrc, bSrc, bcSrc, daSrc, maxSubdivision - 1);
-        this.addQuad_(
-            da, bc, c, d, daSrc, bcSrc, cSrc, dSrc, maxSubdivision - 1);
-      } else {
-        // split vertically (left & right)
-        var ab = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-        var abSrc = this.transformInv_(ab);
-        var cd = [(c[0] + d[0]) / 2, (c[1] + d[1]) / 2];
-        var cdSrc = this.transformInv_(cd);
-
-        this.addQuad_(
-            a, ab, cd, d, aSrc, abSrc, cdSrc, dSrc, maxSubdivision - 1);
-        this.addQuad_(
-            ab, b, c, cd, abSrc, bSrc, cSrc, cdSrc, maxSubdivision - 1);
-      }
-      return;
-    }
-  }
-
-  if (wrapsX) {
-    if (!this.canWrapXInSource_) {
-      return;
-    }
-    this.wrapsXInSource_ = true;
-  }
-
-  this.addTriangle_(a, c, d, aSrc, cSrc, dSrc);
-  this.addTriangle_(a, b, c, aSrc, bSrc, cSrc);
-};
-
-
-/**
- * Calculates extent of the 'source' coordinates from all the triangles.
- *
- * @return {ol.Extent} Calculated extent.
- */
-ol.reproj.Triangulation.prototype.calculateSourceExtent = function() {
-  var extent = ol.extent.createEmpty();
-
-  this.triangles_.forEach(function(triangle, i, arr) {
-    var src = triangle.source;
-    ol.extent.extendCoordinate(extent, src[0]);
-    ol.extent.extendCoordinate(extent, src[1]);
-    ol.extent.extendCoordinate(extent, src[2]);
-  });
-
-  return extent;
-};
-
-
-/**
- * @return {Array.<ol.ReprojTriangle>} Array of the calculated triangles.
- */
-ol.reproj.Triangulation.prototype.getTriangles = function() {
-  return this.triangles_;
-};
-
-goog.provide('ol.reproj.Image');
-
-goog.require('ol');
-goog.require('ol.Image');
-goog.require('ol.ImageBase');
-goog.require('ol.events');
-goog.require('ol.events.EventType');
-goog.require('ol.extent');
-goog.require('ol.reproj');
-goog.require('ol.reproj.Triangulation');
-
-
-/**
- * @classdesc
- * Class encapsulating single reprojected image.
- * See {@link ol.source.Image}.
- *
- * @constructor
- * @extends {ol.ImageBase}
- * @param {ol.proj.Projection} sourceProj Source projection (of the data).
- * @param {ol.proj.Projection} targetProj Target projection.
- * @param {ol.Extent} targetExtent Target extent.
- * @param {number} targetResolution Target resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.ReprojImageFunctionType} getImageFunction
- *     Function returning source images (extent, resolution, pixelRatio).
- */
-ol.reproj.Image = function(sourceProj, targetProj,
-    targetExtent, targetResolution, pixelRatio, getImageFunction) {
-
-  /**
-   * @private
-   * @type {ol.proj.Projection}
-   */
-  this.targetProj_ = targetProj;
-
-  /**
-   * @private
-   * @type {ol.Extent}
-   */
-  this.maxSourceExtent_ = sourceProj.getExtent();
-  var maxTargetExtent = targetProj.getExtent();
-
-  var limitedTargetExtent = maxTargetExtent ?
-      ol.extent.getIntersection(targetExtent, maxTargetExtent) : targetExtent;
-
-  var targetCenter = ol.extent.getCenter(limitedTargetExtent);
-  var sourceResolution = ol.reproj.calculateSourceResolution(
-      sourceProj, targetProj, targetCenter, targetResolution);
-
-  var errorThresholdInPixels = ol.DEFAULT_RASTER_REPROJECTION_ERROR_THRESHOLD;
-
-  /**
-   * @private
-   * @type {!ol.reproj.Triangulation}
-   */
-  this.triangulation_ = new ol.reproj.Triangulation(
-      sourceProj, targetProj, limitedTargetExtent, this.maxSourceExtent_,
-      sourceResolution * errorThresholdInPixels);
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.targetResolution_ = targetResolution;
-
-  /**
-   * @private
-   * @type {ol.Extent}
-   */
-  this.targetExtent_ = targetExtent;
-
-  var sourceExtent = this.triangulation_.calculateSourceExtent();
-
-  /**
-   * @private
-   * @type {ol.ImageBase}
-   */
-  this.sourceImage_ =
-      getImageFunction(sourceExtent, sourceResolution, pixelRatio);
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.sourcePixelRatio_ =
-      this.sourceImage_ ? this.sourceImage_.getPixelRatio() : 1;
-
-  /**
-   * @private
-   * @type {HTMLCanvasElement}
-   */
-  this.canvas_ = null;
-
-  /**
-   * @private
-   * @type {?ol.EventsKey}
-   */
-  this.sourceListenerKey_ = null;
-
-
-  var state = ol.Image.State.LOADED;
-  var attributions = [];
-
-  if (this.sourceImage_) {
-    state = ol.Image.State.IDLE;
-    attributions = this.sourceImage_.getAttributions();
-  }
-
-  ol.ImageBase.call(this, targetExtent, targetResolution, this.sourcePixelRatio_,
-            state, attributions);
-};
-ol.inherits(ol.reproj.Image, ol.ImageBase);
-
-
-/**
- * @inheritDoc
- */
-ol.reproj.Image.prototype.disposeInternal = function() {
-  if (this.state == ol.Image.State.LOADING) {
-    this.unlistenSource_();
-  }
-  ol.ImageBase.prototype.disposeInternal.call(this);
-};
-
-
-/**
- * @inheritDoc
- */
-ol.reproj.Image.prototype.getImage = function(opt_context) {
-  return this.canvas_;
-};
-
-
-/**
- * @return {ol.proj.Projection} Projection.
- */
-ol.reproj.Image.prototype.getProjection = function() {
-  return this.targetProj_;
-};
-
-
-/**
- * @private
- */
-ol.reproj.Image.prototype.reproject_ = function() {
-  var sourceState = this.sourceImage_.getState();
-  if (sourceState == ol.Image.State.LOADED) {
-    var width = ol.extent.getWidth(this.targetExtent_) / this.targetResolution_;
-    var height =
-        ol.extent.getHeight(this.targetExtent_) / this.targetResolution_;
-
-    this.canvas_ = ol.reproj.render(width, height, this.sourcePixelRatio_,
-        this.sourceImage_.getResolution(), this.maxSourceExtent_,
-        this.targetResolution_, this.targetExtent_, this.triangulation_, [{
-          extent: this.sourceImage_.getExtent(),
-          image: this.sourceImage_.getImage()
-        }], 0);
-  }
-  this.state = sourceState;
-  this.changed();
-};
-
-
-/**
- * @inheritDoc
- */
-ol.reproj.Image.prototype.load = function() {
-  if (this.state == ol.Image.State.IDLE) {
-    this.state = ol.Image.State.LOADING;
-    this.changed();
-
-    var sourceState = this.sourceImage_.getState();
-    if (sourceState == ol.Image.State.LOADED ||
-        sourceState == ol.Image.State.ERROR) {
-      this.reproject_();
-    } else {
-      this.sourceListenerKey_ = ol.events.listen(this.sourceImage_,
-          ol.events.EventType.CHANGE, function(e) {
-            var sourceState = this.sourceImage_.getState();
-            if (sourceState == ol.Image.State.LOADED ||
-                sourceState == ol.Image.State.ERROR) {
-              this.unlistenSource_();
-              this.reproject_();
-            }
-          }, this);
-      this.sourceImage_.load();
-    }
-  }
-};
-
-
-/**
- * @private
- */
-ol.reproj.Image.prototype.unlistenSource_ = function() {
-  ol.DEBUG && console.assert(this.sourceListenerKey_,
-      'this.sourceListenerKey_ should not be null');
-  ol.events.unlistenByKey(/** @type {!ol.EventsKey} */ (this.sourceListenerKey_));
-  this.sourceListenerKey_ = null;
-};
-
-goog.provide('ol.source.Source');
-
-goog.require('ol');
-goog.require('ol.Attribution');
-goog.require('ol.Object');
-goog.require('ol.proj');
-goog.require('ol.source.State');
-
-
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for {@link ol.layer.Layer} sources.
- *
- * A generic `change` event is triggered when the state of the source changes.
- *
- * @constructor
- * @extends {ol.Object}
- * @param {ol.SourceSourceOptions} options Source options.
- * @api stable
- */
-ol.source.Source = function(options) {
-
-  ol.Object.call(this);
-
-  /**
-   * @private
-   * @type {ol.proj.Projection}
-   */
-  this.projection_ = ol.proj.get(options.projection);
-
-  /**
-   * @private
-   * @type {Array.<ol.Attribution>}
-   */
-  this.attributions_ = ol.source.Source.toAttributionsArray_(options.attributions);
-
-  /**
-   * @private
-   * @type {string|olx.LogoOptions|undefined}
-   */
-  this.logo_ = options.logo;
-
-  /**
-   * @private
-   * @type {ol.source.State}
-   */
-  this.state_ = options.state !== undefined ?
-      options.state : ol.source.State.READY;
-
-  /**
-   * @private
-   * @type {boolean}
-   */
-  this.wrapX_ = options.wrapX !== undefined ? options.wrapX : false;
-
-};
-ol.inherits(ol.source.Source, ol.Object);
-
-/**
- * Turns various ways of defining an attribution to an array of `ol.Attributions`.
- *
- * @param {ol.AttributionLike|undefined}
- *     attributionLike The attributions as string, array of strings,
- *     `ol.Attribution`, array of `ol.Attribution` or undefined.
- * @return {Array.<ol.Attribution>} The array of `ol.Attribution` or null if
- *     `undefined` was given.
- */
-ol.source.Source.toAttributionsArray_ = function(attributionLike) {
-  if (typeof attributionLike === 'string') {
-    return [new ol.Attribution({html: attributionLike})];
-  } else if (attributionLike instanceof ol.Attribution) {
-    return [attributionLike];
-  } else if (Array.isArray(attributionLike)) {
-    var len = attributionLike.length;
-    var attributions = new Array(len);
-    for (var i = 0; i < len; i++) {
-      var item = attributionLike[i];
-      if (typeof item === 'string') {
-        attributions[i] = new ol.Attribution({html: item});
-      } else {
-        attributions[i] = item;
-      }
-    }
-    return attributions;
-  } else {
-    return null;
-  }
-};
-
-
-/**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @param {number} resolution Resolution.
- * @param {number} rotation Rotation.
- * @param {Object.<string, boolean>} skippedFeatureUids Skipped feature uids.
- * @param {function((ol.Feature|ol.render.Feature)): T} callback Feature
- *     callback.
- * @return {T|undefined} Callback result.
- * @template T
- */
-ol.source.Source.prototype.forEachFeatureAtCoordinate = ol.nullFunction;
-
-
-/**
- * Get the attributions of the source.
- * @return {Array.<ol.Attribution>} Attributions.
- * @api stable
- */
-ol.source.Source.prototype.getAttributions = function() {
-  return this.attributions_;
-};
-
-
-/**
- * Get the logo of the source.
- * @return {string|olx.LogoOptions|undefined} Logo.
- * @api stable
- */
-ol.source.Source.prototype.getLogo = function() {
-  return this.logo_;
-};
-
-
-/**
- * Get the projection of the source.
- * @return {ol.proj.Projection} Projection.
- * @api
- */
-ol.source.Source.prototype.getProjection = function() {
-  return this.projection_;
-};
-
-
-/**
- * @abstract
- * @return {Array.<number>|undefined} Resolutions.
- */
-ol.source.Source.prototype.getResolutions = function() {};
-
-
-/**
- * Get the state of the source, see {@link ol.source.State} for possible states.
- * @return {ol.source.State} State.
- * @api
- */
-ol.source.Source.prototype.getState = function() {
-  return this.state_;
-};
-
-
-/**
- * @return {boolean|undefined} Wrap X.
- */
-ol.source.Source.prototype.getWrapX = function() {
-  return this.wrapX_;
-};
-
-
-/**
- * Refreshes the source and finally dispatches a 'change' event.
- * @api
- */
-ol.source.Source.prototype.refresh = function() {
-  this.changed();
-};
-
-
-/**
- * Set the attributions of the source.
- * @param {ol.AttributionLike|undefined} attributions Attributions.
- *     Can be passed as `string`, `Array<string>`, `{@link ol.Attribution}`,
- *     `Array<{@link ol.Attribution}>` or `undefined`.
- * @api
- */
-ol.source.Source.prototype.setAttributions = function(attributions) {
-  this.attributions_ = ol.source.Source.toAttributionsArray_(attributions);
-  this.changed();
-};
-
-
-/**
- * Set the logo of the source.
- * @param {string|olx.LogoOptions|undefined} logo Logo.
- */
-ol.source.Source.prototype.setLogo = function(logo) {
-  this.logo_ = logo;
-};
-
-
-/**
- * Set the state of the source.
- * @param {ol.source.State} state State.
- * @protected
- */
-ol.source.Source.prototype.setState = function(state) {
-  this.state_ = state;
-  this.changed();
-};
-
-goog.provide('ol.source.Image');
-
-goog.require('ol');
-goog.require('ol.Image');
-goog.require('ol.array');
-goog.require('ol.events.Event');
-goog.require('ol.extent');
-goog.require('ol.proj');
-goog.require('ol.reproj.Image');
-goog.require('ol.source.Source');
-
-
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for sources providing a single image.
- *
- * @constructor
- * @extends {ol.source.Source}
- * @param {ol.SourceImageOptions} options Single image source options.
- * @api
- */
-ol.source.Image = function(options) {
-
-  ol.source.Source.call(this, {
-    attributions: options.attributions,
-    extent: options.extent,
-    logo: options.logo,
-    projection: options.projection,
-    state: options.state
-  });
-
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-  this.resolutions_ = options.resolutions !== undefined ?
-      options.resolutions : null;
-  ol.DEBUG && console.assert(!this.resolutions_ ||
-      ol.array.isSorted(this.resolutions_,
-          function(a, b) {
-            return b - a;
-          }, true), 'resolutions must be null or sorted in descending order');
-
-
-  /**
-   * @private
-   * @type {ol.reproj.Image}
-   */
-  this.reprojectedImage_ = null;
-
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.reprojectedRevision_ = 0;
-
-};
-ol.inherits(ol.source.Image, ol.source.Source);
-
-
-/**
- * @return {Array.<number>} Resolutions.
- */
-ol.source.Image.prototype.getResolutions = function() {
-  return this.resolutions_;
-};
-
-
-/**
- * @protected
- * @param {number} resolution Resolution.
- * @return {number} Resolution.
- */
-ol.source.Image.prototype.findNearestResolution = function(resolution) {
-  if (this.resolutions_) {
-    var idx = ol.array.linearFindNearest(this.resolutions_, resolution, 0);
-    resolution = this.resolutions_[idx];
-  }
-  return resolution;
-};
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {ol.ImageBase} Single image.
- */
-ol.source.Image.prototype.getImage = function(extent, resolution, pixelRatio, projection) {
-  var sourceProjection = this.getProjection();
-  if (!ol.ENABLE_RASTER_REPROJECTION ||
-      !sourceProjection ||
-      !projection ||
-      ol.proj.equivalent(sourceProjection, projection)) {
-    if (sourceProjection) {
-      projection = sourceProjection;
-    }
-    return this.getImageInternal(extent, resolution, pixelRatio, projection);
-  } else {
-    if (this.reprojectedImage_) {
-      if (this.reprojectedRevision_ == this.getRevision() &&
-          ol.proj.equivalent(
-              this.reprojectedImage_.getProjection(), projection) &&
-          this.reprojectedImage_.getResolution() == resolution &&
-          this.reprojectedImage_.getPixelRatio() == pixelRatio &&
-          ol.extent.equals(this.reprojectedImage_.getExtent(), extent)) {
-        return this.reprojectedImage_;
-      }
-      this.reprojectedImage_.dispose();
-      this.reprojectedImage_ = null;
-    }
-
-    this.reprojectedImage_ = new ol.reproj.Image(
-        sourceProjection, projection, extent, resolution, pixelRatio,
-        function(extent, resolution, pixelRatio) {
-          return this.getImageInternal(extent, resolution,
-              pixelRatio, sourceProjection);
-        }.bind(this));
-    this.reprojectedRevision_ = this.getRevision();
-
-    return this.reprojectedImage_;
-  }
-};
-
-
-/**
- * @abstract
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {ol.ImageBase} Single image.
- * @protected
- */
-ol.source.Image.prototype.getImageInternal = function(extent, resolution, pixelRatio, projection) {};
-
-
-/**
- * Handle image change events.
- * @param {ol.events.Event} event Event.
- * @protected
- */
-ol.source.Image.prototype.handleImageChange = function(event) {
-  var image = /** @type {ol.Image} */ (event.target);
-  switch (image.getState()) {
-    case ol.Image.State.LOADING:
-      this.dispatchEvent(
-          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADSTART,
-              image));
-      break;
-    case ol.Image.State.LOADED:
-      this.dispatchEvent(
-          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADEND,
-              image));
-      break;
-    case ol.Image.State.ERROR:
-      this.dispatchEvent(
-          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADERROR,
-              image));
-      break;
-    default:
-      // pass
-  }
-};
-
-
-/**
- * Default image load function for image sources that use ol.Image image
- * instances.
- * @param {ol.Image} image Image.
- * @param {string} src Source.
- */
-ol.source.Image.defaultImageLoadFunction = function(image, src) {
-  image.getImage().src = src;
-};
-
-
-/**
- * @classdesc
- * Events emitted by {@link ol.source.Image} instances are instances of this
- * type.
- *
- * @constructor
- * @extends {ol.events.Event}
- * @implements {oli.source.ImageEvent}
- * @param {string} type Type.
- * @param {ol.Image} image The image.
- */
-ol.source.Image.Event = function(type, image) {
-
-  ol.events.Event.call(this, type);
-
-  /**
-   * The image related to the event.
-   * @type {ol.Image}
-   * @api
-   */
-  this.image = image;
-
-};
-ol.inherits(ol.source.Image.Event, ol.events.Event);
-
-
-/**
- * @enum {string}
- */
-ol.source.Image.EventType = {
-
-  /**
-   * Triggered when an image starts loading.
-   * @event ol.source.Image.Event#imageloadstart
-   * @api
-   */
-  IMAGELOADSTART: 'imageloadstart',
-
-  /**
-   * Triggered when an image finishes loading.
-   * @event ol.source.Image.Event#imageloadend
-   * @api
-   */
-  IMAGELOADEND: 'imageloadend',
-
-  /**
-   * Triggered if image loading results in an error.
-   * @event ol.source.Image.Event#imageloaderror
-   * @api
-   */
-  IMAGELOADERROR: 'imageloaderror'
-
-};
-
-goog.provide('ol.source.ImageCanvas');
-
-goog.require('ol');
-goog.require('ol.ImageCanvas');
-goog.require('ol.extent');
-goog.require('ol.source.Image');
-
-
-/**
- * @classdesc
- * Base class for image sources where a canvas element is the image.
- *
- * @constructor
- * @extends {ol.source.Image}
- * @param {olx.source.ImageCanvasOptions} options Constructor options.
- * @api
- */
-ol.source.ImageCanvas = function(options) {
-
-  ol.source.Image.call(this, {
-    attributions: options.attributions,
-    logo: options.logo,
-    projection: options.projection,
-    resolutions: options.resolutions,
-    state: options.state
-  });
-
-  /**
-   * @private
-   * @type {ol.CanvasFunctionType}
-   */
-  this.canvasFunction_ = options.canvasFunction;
-
-  /**
-   * @private
-   * @type {ol.ImageCanvas}
-   */
-  this.canvas_ = null;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.renderedRevision_ = 0;
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.ratio_ = options.ratio !== undefined ?
-      options.ratio : 1.5;
-
-};
-ol.inherits(ol.source.ImageCanvas, ol.source.Image);
-
-
-/**
- * @inheritDoc
- */
-ol.source.ImageCanvas.prototype.getImageInternal = function(extent, resolution, pixelRatio, projection) {
-  resolution = this.findNearestResolution(resolution);
-
-  var canvas = this.canvas_;
-  if (canvas &&
-      this.renderedRevision_ == this.getRevision() &&
-      canvas.getResolution() == resolution &&
-      canvas.getPixelRatio() == pixelRatio &&
-      ol.extent.containsExtent(canvas.getExtent(), extent)) {
-    return canvas;
-  }
-
-  extent = extent.slice();
-  ol.extent.scaleFromCenter(extent, this.ratio_);
-  var width = ol.extent.getWidth(extent) / resolution;
-  var height = ol.extent.getHeight(extent) / resolution;
-  var size = [width * pixelRatio, height * pixelRatio];
-
-  var canvasElement = this.canvasFunction_(
-      extent, resolution, pixelRatio, size, projection);
-  if (canvasElement) {
-    canvas = new ol.ImageCanvas(extent, resolution, pixelRatio,
-        this.getAttributions(), canvasElement);
-  }
-  this.canvas_ = canvas;
-  this.renderedRevision_ = this.getRevision();
-
-  return canvas;
-};
-
-goog.provide('ol.source.ImageVector');
-
-goog.require('ol');
-goog.require('ol.dom');
-goog.require('ol.events');
-goog.require('ol.events.EventType');
-goog.require('ol.extent');
-goog.require('ol.render.canvas.ReplayGroup');
-goog.require('ol.renderer.vector');
-goog.require('ol.source.ImageCanvas');
-goog.require('ol.style.Style');
-goog.require('ol.transform');
-
-
-/**
- * @classdesc
- * An image source whose images are canvas elements into which vector features
- * read from a vector source (`ol.source.Vector`) are drawn. An
- * `ol.source.ImageVector` object is to be used as the `source` of an image
- * layer (`ol.layer.Image`). Image layers are rotated, scaled, and translated,
- * as opposed to being re-rendered, during animations and interactions. So, like
- * any other image layer, an image layer configured with an
- * `ol.source.ImageVector` will exhibit this behaviour. This is in contrast to a
- * vector layer, where vector features are re-drawn during animations and
- * interactions.
- *
- * @constructor
- * @extends {ol.source.ImageCanvas}
- * @param {olx.source.ImageVectorOptions} options Options.
- * @api
- */
-ol.source.ImageVector = function(options) {
-
-  /**
-   * @private
-   * @type {ol.source.Vector}
-   */
-  this.source_ = options.source;
-
-  /**
-   * @private
-   * @type {ol.Transform}
-   */
-  this.transform_ = ol.transform.create();
-
-  /**
-   * @private
-   * @type {CanvasRenderingContext2D}
-   */
-  this.canvasContext_ = ol.dom.createCanvasContext2D();
-
-  /**
-   * @private
-   * @type {ol.Size}
-   */
-  this.canvasSize_ = [0, 0];
-
-  /**
-   * @private
-   * @type {number}
-   */
-  this.renderBuffer_ = options.renderBuffer == undefined ? 100 : options.renderBuffer;
-
-  /**
-   * @private
-   * @type {ol.render.canvas.ReplayGroup}
-   */
-  this.replayGroup_ = null;
-
-  ol.source.ImageCanvas.call(this, {
-    attributions: options.attributions,
-    canvasFunction: this.canvasFunctionInternal_.bind(this),
-    logo: options.logo,
-    projection: options.projection,
-    ratio: options.ratio,
-    resolutions: options.resolutions,
-    state: this.source_.getState()
-  });
-
-  /**
-   * User provided style.
-   * @type {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
-   * @private
-   */
-  this.style_ = null;
-
-  /**
-   * Style function for use within the library.
-   * @type {ol.StyleFunction|undefined}
-   * @private
-   */
-  this.styleFunction_ = undefined;
-
-  this.setStyle(options.style);
-
-  ol.events.listen(this.source_, ol.events.EventType.CHANGE,
-      this.handleSourceChange_, this);
-
-};
-ol.inherits(ol.source.ImageVector, ol.source.ImageCanvas);
-
-
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.Size} size Size.
- * @param {ol.proj.Projection} projection Projection;
- * @return {HTMLCanvasElement} Canvas element.
- * @private
- */
-ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resolution, pixelRatio, size, projection) {
-
-  var replayGroup = new ol.render.canvas.ReplayGroup(
-      ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-      resolution, this.source_.getOverlaps(), this.renderBuffer_);
-
-  this.source_.loadFeatures(extent, resolution, projection);
-
-  var loading = false;
-  this.source_.forEachFeatureInExtent(extent,
-      /**
-       * @param {ol.Feature} feature Feature.
-       */
-      function(feature) {
-        loading = loading ||
-            this.renderFeature_(feature, resolution, pixelRatio, replayGroup);
-      }, this);
-  replayGroup.finish();
-
-  if (loading) {
-    return null;
-  }
-
-  if (this.canvasSize_[0] != size[0] || this.canvasSize_[1] != size[1]) {
-    this.canvasContext_.canvas.width = size[0];
-    this.canvasContext_.canvas.height = size[1];
-    this.canvasSize_[0] = size[0];
-    this.canvasSize_[1] = size[1];
-  } else {
-    this.canvasContext_.clearRect(0, 0, size[0], size[1]);
-  }
-
-  var transform = this.getTransform_(ol.extent.getCenter(extent),
-      resolution, pixelRatio, size);
-  replayGroup.replay(this.canvasContext_, pixelRatio, transform, 0, {});
-
-  this.replayGroup_ = replayGroup;
-
-  return this.canvasContext_.canvas;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
-    coordinate, resolution, rotation, skippedFeatureUids, callback) {
-  if (!this.replayGroup_) {
-    return undefined;
-  } else {
-    /** @type {Object.<string, boolean>} */
-    var features = {};
-    return this.replayGroup_.forEachFeatureAtCoordinate(
-        coordinate, resolution, 0, skippedFeatureUids,
-        /**
-         * @param {ol.Feature|ol.render.Feature} feature Feature.
-         * @return {?} Callback result.
-         */
-        function(feature) {
-          var key = ol.getUid(feature).toString();
-          if (!(key in features)) {
-            features[key] = true;
-            return callback(feature);
-          }
-        });
-  }
-};
-
-
-/**
- * Get a reference to the wrapped source.
- * @return {ol.source.Vector} Source.
- * @api
- */
-ol.source.ImageVector.prototype.getSource = function() {
-  return this.source_;
-};
-
-
-/**
- * Get the style for features.  This returns whatever was passed to the `style`
- * option at construction or to the `setStyle` method.
- * @return {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
- *     Layer style.
- * @api stable
- */
-ol.source.ImageVector.prototype.getStyle = function() {
-  return this.style_;
-};
-
-
-/**
- * Get the style function.
- * @return {ol.StyleFunction|undefined} Layer style function.
- * @api stable
- */
-ol.source.ImageVector.prototype.getStyleFunction = function() {
-  return this.styleFunction_;
-};
-
-
-/**
- * @param {ol.Coordinate} center Center.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.Size} size Size.
- * @return {!ol.Transform} Transform.
- * @private
- */
-ol.source.ImageVector.prototype.getTransform_ = function(center, resolution, pixelRatio, size) {
-  var dx1 = size[0] / 2;
-  var dy1 = size[1] / 2;
-  var sx = pixelRatio / resolution;
-  var sy = -sx;
-  var dx2 = -center[0];
-  var dy2 = -center[1];
-
-  return ol.transform.compose(this.transform_, dx1, dy1, sx, sy, 0, dx2, dy2);
-};
-
-
-/**
- * Handle changes in image style state.
- * @param {ol.events.Event} event Image style change event.
- * @private
- */
-ol.source.ImageVector.prototype.handleImageChange_ = function(event) {
-  this.changed();
-};
-
-
-/**
- * @private
- */
-ol.source.ImageVector.prototype.handleSourceChange_ = function() {
-  // setState will trigger a CHANGE event, so we always rely
-  // change events by calling setState.
-  this.setState(this.source_.getState());
-};
-
-
-/**
- * @param {ol.Feature} feature Feature.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.render.canvas.ReplayGroup} replayGroup Replay group.
- * @return {boolean} `true` if an image is loading.
- * @private
- */
-ol.source.ImageVector.prototype.renderFeature_ = function(feature, resolution, pixelRatio, replayGroup) {
-  var styles;
-  var styleFunction = feature.getStyleFunction();
-  if (styleFunction) {
-    styles = styleFunction.call(feature, resolution);
-  } else if (this.styleFunction_) {
-    styles = this.styleFunction_(feature, resolution);
-  }
-  if (!styles) {
-    return false;
-  }
-  var i, ii, loading = false;
-  if (!Array.isArray(styles)) {
-    styles = [styles];
-  }
-  for (i = 0, ii = styles.length; i < ii; ++i) {
-    loading = ol.renderer.vector.renderFeature(
-        replayGroup, feature, styles[i],
-        ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
-        this.handleImageChange_, this) || loading;
-  }
-  return loading;
-};
-
-
-/**
- * Set the style for features.  This can be a single style object, an array
- * of styles, or a function that takes a feature and resolution and returns
- * an array of styles. If it is `undefined` the default style is used. If
- * it is `null` the layer has no style (a `null` style), so only features
- * that have their own styles will be rendered in the layer. See
- * {@link ol.style} for information on the default style.
- * @param {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction|undefined}
- *     style Layer style.
- * @api stable
- */
-ol.source.ImageVector.prototype.setStyle = function(style) {
-  this.style_ = style !== undefined ? style : ol.style.Style.defaultFunction;
-  this.styleFunction_ = !style ?
-      undefined : ol.style.Style.createFunction(this.style_);
-  this.changed();
-};
-
-goog.provide('ol.renderer.canvas.ImageLayer');
-
-goog.require('ol');
-goog.require('ol.View');
-goog.require('ol.dom');
-goog.require('ol.extent');
-goog.require('ol.functions');
-goog.require('ol.proj');
-goog.require('ol.renderer.canvas.Layer');
-goog.require('ol.source.ImageVector');
-goog.require('ol.transform');
-
-
-/**
- * @constructor
- * @extends {ol.renderer.canvas.Layer}
- * @param {ol.layer.Image} imageLayer Single image layer.
- */
-ol.renderer.canvas.ImageLayer = function(imageLayer) {
-
-  ol.renderer.canvas.Layer.call(this, imageLayer);
-
-  /**
-   * @private
-   * @type {?ol.ImageBase}
-   */
-  this.image_ = null;
-
-  /**
-   * @private
-   * @type {ol.Transform}
-   */
-  this.imageTransform_ = ol.transform.create();
-
-  /**
-   * @private
-   * @type {?ol.Transform}
-   */
-  this.imageTransformInv_ = null;
-
-  /**
-   * @private
-   * @type {CanvasRenderingContext2D}
-   */
-  this.hitCanvasContext_ = null;
-
-};
-ol.inherits(ol.renderer.canvas.ImageLayer, ol.renderer.canvas.Layer);
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
-  var layer = this.getLayer();
-  var source = layer.getSource();
-  var resolution = frameState.viewState.resolution;
-  var rotation = frameState.viewState.rotation;
-  var skippedFeatureUids = frameState.skippedFeatureUids;
-  return source.forEachFeatureAtCoordinate(
-      coordinate, resolution, rotation, skippedFeatureUids,
-      /**
-       * @param {ol.Feature|ol.render.Feature} feature Feature.
-       * @return {?} Callback result.
-       */
-      function(feature) {
-        return callback.call(thisArg, feature, layer);
-      });
-};
-
-
-/**
- * @param {ol.Pixel} pixel Pixel.
- * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
- *     callback.
- * @param {S} thisArg Value to use as `this` when executing `callback`.
- * @return {T|undefined} Callback result.
- * @template S,T,U
- */
-ol.renderer.canvas.ImageLayer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
-  if (!this.getImage()) {
-    return undefined;
-  }
-
-  if (this.getLayer().getSource() instanceof ol.source.ImageVector) {
-    // for ImageVector sources use the original hit-detection logic,
-    // so that for example also transparent polygons are detected
-    var coordinate = ol.transform.apply(
-        frameState.pixelToCoordinateTransform, pixel.slice());
-    var hasFeature = this.forEachFeatureAtCoordinate(
-        coordinate, frameState, ol.functions.TRUE, this);
-
-    if (hasFeature) {
-      return callback.call(thisArg, this.getLayer(), null);
-    } else {
-      return undefined;
-    }
-  } else {
-    // for all other image sources directly check the image
-    if (!this.imageTransformInv_) {
-      this.imageTransformInv_ = ol.transform.invert(this.imageTransform_.slice());
-    }
-
-    var pixelOnCanvas =
-        this.getPixelOnCanvas(pixel, this.imageTransformInv_);
-
-    if (!this.hitCanvasContext_) {
-      this.hitCanvasContext_ = ol.dom.createCanvasContext2D(1, 1);
-    }
-
-    this.hitCanvasContext_.clearRect(0, 0, 1, 1);
-    this.hitCanvasContext_.drawImage(
-        this.getImage(), pixelOnCanvas[0], pixelOnCanvas[1], 1, 1, 0, 0, 1, 1);
-
-    var imageData = this.hitCanvasContext_.getImageData(0, 0, 1, 1).data;
-    if (imageData[3] > 0) {
-      return callback.call(thisArg, this.getLayer(),  imageData);
-    } else {
-      return undefined;
-    }
-  }
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.getImage = function() {
-  return !this.image_ ? null : this.image_.getImage();
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.getImageTransform = function() {
-  return this.imageTransform_;
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, layerState) {
-
-  var pixelRatio = frameState.pixelRatio;
-  var viewState = frameState.viewState;
-  var viewCenter = viewState.center;
-  var viewResolution = viewState.resolution;
-
-  var image;
-  var imageLayer = /** @type {ol.layer.Image} */ (this.getLayer());
-  var imageSource = imageLayer.getSource();
-
-  var hints = frameState.viewHints;
-
-  var renderedExtent = frameState.extent;
-  if (layerState.extent !== undefined) {
-    renderedExtent = ol.extent.getIntersection(
-        renderedExtent, layerState.extent);
-  }
-
-  if (!hints[ol.View.Hint.ANIMATING] && !hints[ol.View.Hint.INTERACTING] &&
-      !ol.extent.isEmpty(renderedExtent)) {
-    var projection = viewState.projection;
-    if (!ol.ENABLE_RASTER_REPROJECTION) {
-      var sourceProjection = imageSource.getProjection();
-      if (sourceProjection) {
-        ol.DEBUG && console.assert(ol.proj.equivalent(projection, sourceProjection),
-            'projection and sourceProjection are equivalent');
-        projection = sourceProjection;
-      }
-    }
-    image = imageSource.getImage(
-        renderedExtent, viewResolution, pixelRatio, projection);
-    if (image) {
-      var loaded = this.loadImage(image);
-      if (loaded) {
-        this.image_ = image;
-      }
-    }
-  }
-
-  if (this.image_) {
-    image = this.image_;
-    var imageExtent = image.getExtent();
-    var imageResolution = image.getResolution();
-    var imagePixelRatio = image.getPixelRatio();
-    var scale = pixelRatio * imageResolution /
-        (viewResolution * imagePixelRatio);
-    var transform = ol.transform.reset(this.imageTransform_);
-    ol.transform.translate(transform,
-        pixelRatio * frameState.size[0] / 2,
-        pixelRatio * frameState.size[1] / 2);
-    ol.transform.scale(transform, scale, scale);
-    ol.transform.translate(transform,
-        imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolution,
-        imagePixelRatio * (viewCenter[1] - imageExtent[3]) / imageResolution);
-    this.imageTransformInv_ = null;
-    this.updateAttributions(frameState.attributions, image.getAttributions());
-    this.updateLogos(frameState, imageSource);
-  }
-
-  return !!this.image_;
-};
-
-// FIXME find correct globalCompositeOperation
-
-goog.provide('ol.renderer.canvas.TileLayer');
-
-goog.require('ol');
-goog.require('ol.transform');
-goog.require('ol.TileRange');
-goog.require('ol.Tile');
-goog.require('ol.array');
-goog.require('ol.dom');
-goog.require('ol.extent');
-goog.require('ol.render.canvas');
-goog.require('ol.render.Event');
-goog.require('ol.renderer.canvas.Layer');
-
-
-/**
- * @constructor
- * @extends {ol.renderer.canvas.Layer}
- * @param {ol.layer.Tile|ol.layer.VectorTile} tileLayer Tile layer.
- */
-ol.renderer.canvas.TileLayer = function(tileLayer) {
-
-  ol.renderer.canvas.Layer.call(this, tileLayer);
-
-  /**
-   * @protected
-   * @type {CanvasRenderingContext2D}
-   */
-  this.context = ol.dom.createCanvasContext2D();
-
-  /**
-   * @protected
-   * @type {!Array.<ol.Tile|undefined>}
-   */
-  this.renderedTiles = [];
-
-  /**
-   * @protected
-   * @type {ol.Extent}
-   */
-  this.tmpExtent = ol.extent.createEmpty();
-
-  /**
-   * @private
-   * @type {ol.TileCoord}
-   */
-  this.tmpTileCoord_ = [0, 0, 0];
-
-  /**
-   * @private
-   * @type {ol.Transform}
-   */
-  this.imageTransform_ = ol.transform.create();
-
-  /**
-   * @protected
-   * @type {number}
-   */
-  this.zDirection = 0;
-
-};
-ol.inherits(ol.renderer.canvas.TileLayer, ol.renderer.canvas.Layer);
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.TileLayer.prototype.composeFrame = function(
-    frameState, layerState, context) {
-  var transform = this.getTransform(frameState, 0);
-  this.dispatchPreComposeEvent(context, frameState, transform);
-  this.renderTileImages(context, frameState, layerState);
-  this.dispatchPostComposeEvent(context, frameState, transform);
-};
-
-
-/**
- * @inheritDoc
- */
-ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(
-    frameState, layerState) {
-
-  var pixelRatio = frameState.pixelRatio;
-  var viewState = frameState.viewState;
-  var projection = viewState.projection;
-
-  var tileLayer = this.getLayer();
-  var tileSource = /** @type {ol.source.Tile} */ (tileLayer.getSource());
-  var tileGrid = tileSource.getTileGridForProjection(projection);
-  var z = tileGrid.getZForResolution(viewState.resolution, this.zDirection);
-  var tileResolution = tileGrid.getResolution(z);
-  var extent = frameState.extent;
-
-  if (layerState.extent !== undefined) {
-    extent = ol.extent.getIntersection(extent, layerState.extent);
-  }
-  if (ol.extent.isEmpty(extent)) {
-    // Return false to prevent the rendering of the layer.
-    return false;
-  }
-
-  var tileRange = tileGrid.getTileRangeForExtentAndResolution(
-      extent, tileResolution);
-
-  /**
-   * @type {Object.<number, Object.<string, ol.Tile>>}
-   */
-  var tilesToDrawByZ = {};
-  tilesToDrawByZ[z] = {};
-
-  var findLoadedTiles = this.createLoadedTileFinder(
-      tileSource, projection, tilesToDrawByZ);
-
-  var useInterimTilesOnError = tileLayer.getUseInterimTilesOnError();
-
-  var tmpExtent = this.tmpExtent;
-  var tmpTileRange = new ol.TileRange(0, 0, 0, 0);
-  var childTileRange, fullyLoaded, tile, x, y;
-  var drawableTile = (
-      /**
-       * @param {!ol.Tile} tile Tile.
-       * @return {boolean} Tile is selected.
-       */
-      function(tile) {
-        var tileState = tile.getState();
-        return tileState == ol.Tile.State.LOADED ||
-            tileState == ol.Tile.State.EMPTY ||
-            tileState == ol.Tile.State.ERROR && !useInterimTilesOnError;
-      });
-  for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
-    for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
-      tile = tileSource.getTile(z, x, y, pixelRatio, projection);
-      if (!drawableTile(tile)) {
-        tile = tile.getInterimTile();
-      }
-      if (drawableTile(tile)) {
-        tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
-        continue;
-      }
-      fullyLoaded = tileGrid.forEachTileCoordParentTileRange(
-          tile.tileCoord, findLoadedTiles, null, tmpTileRange, tmpExtent);
-      if (!fullyLoaded) {
-        childTileRange = tileGrid.getTileCoordChildTileRange(
-            tile.tileCoord, tmpTileRange, tmpExtent);
-        if (childTileRange) {
-          findLoadedTiles(z + 1, childTileRange);
-        }
-      }
-
-    }
-  }
-
-  /** @type {Array.<number>} */
-  var zs = Object.keys(tilesToDrawByZ).map(Number);
-  zs.sort(ol.array.numberSafeCompareFunction);
-  var renderables = this.renderedTiles;
-  renderables.length = 0;
-  var i, ii, currentZ, tileCoordKey, tilesToDraw;
-  for (i = 0, ii = zs.length; i < ii; ++i) {
-    currentZ = zs[i];
-    tilesToDraw = tilesToDrawByZ[currentZ];
-    for (tileCoordKey in tilesToDraw) {
-      tile = tilesToDraw[tileCoordKey];
-      if (tile.getState() == ol.Tile.State.LOADED) {
-        renderables.push(tile);
-      }
-    }
-  }
-
-  this.updateUsedTiles(frameState.usedTiles, tileSource, z, tileRange);
-  this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio,
-      projection, extent, z, tileLayer.getPreload());
-  this.scheduleExpireCache(frameState, tileSource);
-  this.updateLogos(frameState, tileSource);
-
-  return true;
-};
-
-
-/**
- * @param {ol.Pixel} pixel Pixel.
- * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
- *     callback.
- * @param {S} thisArg Value to use as `this` when executing `callback`.
- * @return {T|undefined} Callback result.
- * @template S,T,U
- */
-ol.renderer.canvas.TileLayer.prototype.forEachLayerAtPixel = function(
-    pixel, frameState, callback, thisArg) {
-  var canvas = this.context.canvas;
-  var size = frameState.size;
-  var pixelRatio = frameState.pixelRatio;
-  canvas.width = size[0] * pixelRatio;
-  canvas.height = size[1] * pixelRatio;
-  this.composeFrame(frameState, this.getLayer().getLayerState(), this.context);
-
-  var imageData = this.context.getImageData(
-      pixel[0], pixel[1], 1, 1).data;
-
-  if (imageData[3] > 0) {
-    return callback.call(thisArg, this.getLayer(),  imageData);
-  } else {
-    return undefined;
-  }
-};
-
-
-/**
- * @param {CanvasRenderingContext2D} context Context.
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.LayerState} layerState Layer state.
- * @protected
- */
-ol.renderer.canvas.TileLayer.prototype.renderTileImages = function(context, frameState, layerState) {
-  var tilesToDraw = this.renderedTiles;
-  if (tilesToDraw.length === 0) {
-    return;
-  }
-
-  var pixelRatio = frameState.pixelRatio;
-  var viewState = frameState.viewState;
-  var center = viewState.center;
-  var projection = viewState.projection;
-  var resolution = viewState.resolution;
-  var rotation = viewState.rotation;
-  var size = frameState.size;
-  var offsetX = Math.round(pixelRatio * size[0] / 2);
-  var offsetY = Math.round(pixelRatio * size[1] / 2);
-  var pixelScale = pixelRatio / resolution;
-  var layer = this.getLayer();
-  var source = /** @type {ol.source.Tile} */ (layer.getSource());
-  var tileGutter = source.getTilePixelRatio(pixelRatio) * source.getGutter(projection);
-  var tileGrid = source.getTileGridForProjection(projection);
-
-  var hasRenderListeners = layer.hasListener(ol.render.Event.Type.RENDER);
-  var renderContext = context;
-  var drawScale = 1;
-  var drawOffsetX, drawOffsetY, drawSize;
-  if (rotation || hasRenderListeners) {
-    renderContext = this.context;
-    var renderCanvas = renderContext.canvas;
-    drawScale = source.getTilePixelRatio(pixelRatio) / pixelRatio;
-    var width = context.canvas.width * drawScale;
-    var height = context.canvas.height * drawScale;
-    // Make sure the canvas is big enough for all possible rotation angles
-    drawSize = Math.round(Math.sqrt(width * width + height * height));
-    if (renderCanvas.width != drawSize) {
-      renderCanvas.width = renderCanvas.height = drawSize;
-    } else {
-      renderContext.clearRect(0, 0, drawSize, drawSize);
-    }
-    drawOffsetX = (drawSize - width) / 2 / drawScale;
-    drawOffsetY = (drawSize - height) / 2 / drawScale;
-    pixelScale *= drawScale;
-    offsetX = Math.round(drawScale * (offsetX + drawOffsetX));
-    offsetY = Math.round(drawScale * (offsetY + drawOffsetY));
-  }
-  // for performance reasons, context.save / context.restore is not used
-  // to save and restore the transformation matrix and the opacity.
-  // see http://jsperf.com/context-save-restore-versus-variable
-  var alpha = renderContext.globalAlpha;
-  renderContext.globalAlpha = layerState.opacity;
-
-  var pixelExtents;
-  var opaque = source.getOpaque(projection) && layerState.opacity == 1;
-  if (!opaque) {
-    tilesToDraw.reverse();
-    pixelExtents = [];
-  }
-
-  var extent = layerState.extent;
-  var clipped = extent !== undefined;
-  if (clipped) {
-    var topLeft = ol.extent.getTopLeft(/** @type {ol.Extent} */ (extent));
-    var topRight = ol.extent.getTopRight(/** @type {ol.Extent} */ (extent));
-    var bottomRight = ol.extent.getBottomRight(/** @type {ol.Extent} */ (extent));
-    var bottomLeft = ol.extent.getBottomLeft(/** @type {ol.Extent} */ (extent));
-
-    ol.transform.apply(frameState.coordinateToPixelTransform, topLeft);
-    ol.transform.apply(frameState.coordinateToPixelTransform, topRight);
-    ol.transform.apply(frameState.coordinateToPixelTransform, bottomRight);
-    ol.transform.apply(frameState.coordinateToPixelTransform, bottomLeft);
-
-    var ox = drawOffsetX || 0;
-    var oy = drawOffsetY || 0;
-    renderContext.save();
-    var cx = (renderContext.canvas.width) / 2;
-    var cy = (renderContext.canvas.height) / 2;
-    ol.render.canvas.rotateAtOffset(renderContext, -rotation, cx, cy);
-    renderContext.beginPath();
-    renderContext.moveTo(drawScale * (topLeft[0] * pixelRatio + ox),
-        drawScale * (topLeft[1] * pixelRatio + oy));
-    renderContext.lineTo(drawScale * (topRight[0] * pixelRatio + ox),
-        drawScale * (topRight[1] * pixelRatio + oy));
-    renderContext.lineTo(drawScale * (bottomRight[0] * pixelRatio + ox),
-        drawScale * (bottomRight[1] * pixelRatio + oy));
-    renderContext.lineTo(drawScale * (bottomLeft[0] * pixelRatio + ox),
-        drawScale * (bottomLeft[1] * pixelRatio + oy));
-    renderContext.clip();
-    ol.render.canvas.rotateAtOffset(renderContext, rotation, cx, cy);
-  }
-
-  for (var i = 0, ii = tilesToDraw.length; i < ii; ++i) {
-    var tile = tilesToDraw[i];
-    var tileCoord = tile.getTileCoord();
-    var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent);
-    var currentZ = tileCoord[0];
-    // Calculate all insert points by tile widths from a common origin to avoid
-    // gaps caused by rounding
-    var origin = ol.extent.getBottomLeft(tileGrid.getTileCoordExtent(
-        tileGrid.getTileCoordForCoordAndZ(center, currentZ, this.tmpTileCoord_)));
-    var w = Math.round(ol.extent.getWidth(tileExtent) * pixelScale);
-    var h = Math.round(ol.extent.getHeight(tileExtent) * pixelScale);
-    var left = Math.round((tileExtent[0] - origin[0]) * pixelScale / w) * w +
-        offsetX + Math.round((origin[0] - center[0]) * pixelScale);
-    var top = Math.round((origin[1] - tileExtent[3]) * pixelScale / h) * h +
-        offsetY + Math.round((center[1] - origin[1]) * pixelScale);
-    if (!opaque) {
-      var pixelExtent = [left, top, left + w, top + h];
-      // Create a clip mask for regions in this low resolution tile that are
-      // already filled by a higher resolution tile
-      renderContext.save();
-      for (var j = 0, jj = pixelExtents.length; j < jj; ++j) {
-        var clipExtent = pixelExtents[j];
-        if (ol.extent.intersects(pixelExtent, clipExtent)) {
-          renderContext.beginPath();
-          // counter-clockwise (outer ring) for current tile
-          renderContext.moveTo(pixelExtent[0], pixelExtent[1]);
-          renderContext.lineTo(pixelExtent[0], pixelExtent[3]);
-          renderContext.lineTo(pixelExtent[2], pixelExtent[3]);
-          renderContext.lineTo(pixelExtent[2], pixelExtent[1]);
-          // clockwise (inner ring) for higher resolution tile
-          renderContext.moveTo(clipExtent[0], clipExtent[1]);
-          renderContext.lineTo(clipExtent[2], clipExtent[1]);
-          renderContext.lineTo(clipExtent[2], clipExtent[3]);
-          renderContext.lineTo(clipExtent[0], clipExtent[3]);
-          renderContext.closePath();
-          renderContext.clip();
-        }
-      }
-      pixelExtents.push(pixelExtent);
-    }
-    var tilePixelSize = source.getTilePixelSize(currentZ, pixelRatio, projection);
-    renderContext.drawImage(tile.getImage(), tileGutter, tileGutter,
-        tilePixelSize[0], tilePixelSize[1], left, top, w, h);
-    if (!opaque) {
-      renderContext.restore();
-    }
-  }
-
-  if (clipped) {
-    renderContext.restore();
-  }
-
-  if (hasRenderListeners) {
-    var dX = drawOffsetX - offsetX / drawScale + offsetX;
-    var dY = drawOffsetY - offsetY / drawScale + offsetY;
-    var imageTransform = ol.transform.compose(this.imageTransform_,
-        drawSize / 2 - dX, drawSize / 2 - dY,
-        pixelScale, -pixelScale,
-        -rotation,
-        -center[0] + dX / pixelScale, -center[1] - dY / pixelScale);
-    this.dispatchRenderEvent(renderContext, frameState, imageTransform);
-  }
-  if (rotation || hasRenderListeners) {
-    context.drawImage(renderContext.canvas, -Math.round(drawOffsetX),
-        -Math.round(drawOffsetY), drawSize / drawScale, drawSize / drawScale);
-  }
-  renderContext.globalAlpha = alpha;
-};
-
-
-/**
- * @function
- * @return {ol.layer.Tile|ol.layer.VectorTile}
- */
-ol.renderer.canvas.TileLayer.prototype.getLayer;
-
 goog.provide('ol.renderer.canvas.VectorLayer');
 
 goog.require('ol');
@@ -31044,7 +29327,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
 
   var transform = this.getTransform(frameState, 0);
 
-  this.dispatchPreComposeEvent(context, frameState, transform);
+  this.preCompose(context, frameState, transform);
 
   // clipped rendering if layer extent is set
   var clipExtent = layerState.extent;
@@ -31130,7 +29413,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
   if (clipped) {
     context.restore();
   }
-  this.dispatchPostComposeEvent(context, frameState, transform);
+  this.postCompose(context, frameState, layerState, transform);
 
 };
 
@@ -31324,12 +29607,10 @@ ol.renderer.canvas.VectorLayer.prototype.renderFeature = function(feature, resol
 goog.provide('ol.renderer.canvas.VectorTileLayer');
 
 goog.require('ol');
-goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.proj');
 goog.require('ol.proj.Units');
 goog.require('ol.layer.VectorTile');
-goog.require('ol.render.Event');
 goog.require('ol.render.ReplayType');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.ReplayGroup');
@@ -31390,125 +29671,11 @@ ol.renderer.canvas.VectorTileLayer.VECTOR_REPLAYS = {
 
 
 /**
- * @inheritDoc
- */
-ol.renderer.canvas.VectorTileLayer.prototype.composeFrame = function(
-    frameState, layerState, context) {
-  var transform = this.getTransform(frameState, 0);
-  this.dispatchPreComposeEvent(context, frameState, transform);
-
-  // clipped rendering if layer extent is set
-  var extent = layerState.extent;
-  var clipped = extent !== undefined;
-  if (clipped) {
-    this.clip(context, frameState,  /** @type {ol.Extent} */ (extent));
-  }
-
-  var renderMode = this.getLayer().getRenderMode();
-  if (renderMode !== ol.layer.VectorTile.RenderType.VECTOR) {
-    this.renderTileImages(context, frameState, layerState);
-  }
-  if (renderMode !== ol.layer.VectorTile.RenderType.IMAGE) {
-    this.renderTileReplays_(context, frameState, layerState);
-  }
-
-  if (clipped) {
-    context.restore();
-  }
-
-  this.dispatchPostComposeEvent(context, frameState, transform);
-};
-
-
-/**
- * @param {CanvasRenderingContext2D} context Context.
- * @param {olx.FrameState} frameState Frame state.
- * @param {ol.LayerState} layerState Layer state.
- * @private
- */
-ol.renderer.canvas.VectorTileLayer.prototype.renderTileReplays_ = function(
-    context, frameState, layerState) {
-
-  var layer = this.getLayer();
-  var replays = ol.renderer.canvas.VectorTileLayer.VECTOR_REPLAYS[layer.getRenderMode()];
-  var pixelRatio = frameState.pixelRatio;
-  var skippedFeatureUids = layerState.managed ?
-      frameState.skippedFeatureUids : {};
-  var viewState = frameState.viewState;
-  var center = viewState.center;
-  var resolution = viewState.resolution;
-  var rotation = viewState.rotation;
-  var size = frameState.size;
-  var pixelScale = pixelRatio / resolution;
-  var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
-  var tilePixelRatio = source.getTilePixelRatio();
-
-  var transform = this.getTransform(frameState, 0);
-
-  var replayContext;
-  if (layer.hasListener(ol.render.Event.Type.RENDER)) {
-    // resize and clear
-    this.context.canvas.width = context.canvas.width;
-    this.context.canvas.height = context.canvas.height;
-    replayContext = this.context;
-  } else {
-    replayContext = context;
-  }
-  // for performance reasons, context.save / context.restore is not used
-  // to save and restore the transformation matrix and the opacity.
-  // see http://jsperf.com/context-save-restore-versus-variable
-  var alpha = replayContext.globalAlpha;
-  replayContext.globalAlpha = layerState.opacity;
-
-  /** @type {Array.<ol.VectorTile>} */
-  var tilesToDraw = this.renderedTiles;
-
-  var tileGrid = source.getTileGrid();
-
-  var currentZ, i, ii, offsetX, offsetY, origin, pixelSpace, replayState;
-  var tile, tileExtent, tilePixelResolution, tileResolution, tileTransform;
-  for (i = 0, ii = tilesToDraw.length; i < ii; ++i) {
-    tile = tilesToDraw[i];
-    replayState = tile.getReplayState();
-    tileExtent = tileGrid.getTileCoordExtent(
-        tile.getTileCoord(), this.tmpExtent);
-    currentZ = tile.getTileCoord()[0];
-    pixelSpace = tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS;
-    tileResolution = tileGrid.getResolution(currentZ);
-    tilePixelResolution = tileResolution / tilePixelRatio;
-    offsetX = Math.round(pixelRatio * size[0] / 2);
-    offsetY = Math.round(pixelRatio * size[1] / 2);
-
-    if (pixelSpace) {
-      origin = ol.extent.getTopLeft(tileExtent);
-      tileTransform = ol.transform.reset(this.tmpTransform_);
-      tileTransform = ol.transform.compose(this.tmpTransform_,
-          offsetX, offsetY,
-          pixelScale * tilePixelResolution, pixelScale * tilePixelResolution,
-          rotation,
-          (origin[0] - center[0]) / tilePixelResolution, (center[1] - origin[1]) / tilePixelResolution);
-    } else {
-      tileTransform = transform;
-    }
-    ol.render.canvas.rotateAtOffset(replayContext, -rotation, offsetX, offsetY);
-    replayState.replayGroup.replay(replayContext, pixelRatio,
-        tileTransform, rotation, skippedFeatureUids, replays);
-    ol.render.canvas.rotateAtOffset(replayContext, rotation, offsetX, offsetY);
-  }
-
-  if (replayContext != context) {
-    this.dispatchRenderEvent(replayContext, frameState, transform);
-    context.drawImage(replayContext.canvas, 0, 0);
-  }
-  replayContext.globalAlpha = alpha;
-};
-
-
-/**
  * @param {ol.VectorTile} tile Tile.
  * @param {olx.FrameState} frameState Frame state.
+ * @private
  */
-ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
+ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(tile,
     frameState) {
   var layer = this.getLayer();
   var pixelRatio = frameState.pixelRatio;
@@ -31527,12 +29694,11 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
 
   var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
   var tileGrid = source.getTileGrid();
-  var tileCoord = tile.getTileCoord();
+  var tileCoord = tile.tileCoord;
   var tileProjection = tile.getProjection();
-  var pixelSpace = tileProjection.getUnits() == ol.proj.Units.TILE_PIXELS;
   var resolution = tileGrid.getResolution(tileCoord[0]);
   var extent, reproject, tileResolution;
-  if (pixelSpace) {
+  if (tileProjection.getUnits() == ol.proj.Units.TILE_PIXELS) {
     var tilePixelRatio = tileResolution = source.getTilePixelRatio();
     var tileSize = ol.size.toSize(tileGrid.getTileSize(tileCoord[0]));
     extent = [0, 0, tileSize[0] * tilePixelRatio, tileSize[1] * tilePixelRatio];
@@ -31601,6 +29767,21 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup = function(tile,
 /**
  * @inheritDoc
  */
+ol.renderer.canvas.VectorTileLayer.prototype.drawTileImage = function(
+    tile, frameState, layerState, x, y, w, h, gutter) {
+  var vectorTile = /** @type {ol.VectorTile} */ (tile);
+  this.createReplayGroup_(vectorTile, frameState);
+  var layer = this.getLayer();
+  if (layer.getRenderMode() != ol.layer.VectorTile.RenderType.VECTOR) {
+    this.renderTileImage_(vectorTile, frameState, layerState);
+  }
+  ol.renderer.canvas.TileLayer.prototype.drawTileImage.apply(this, arguments);
+};
+
+
+/**
+ * @inheritDoc
+ */
 ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
@@ -31618,9 +29799,8 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
   var tile, tileCoord, tileExtent, tilePixelRatio, tileResolution;
   for (i = 0, ii = replayables.length; i < ii; ++i) {
     tile = replayables[i];
-    tileCoord = tile.getTileCoord();
-    tileExtent = source.getTileGrid().getTileCoordExtent(tileCoord,
-        this.tmpExtent);
+    tileCoord = tile.tileCoord;
+    tileExtent = source.getTileGrid().getTileCoordExtent(tileCoord, this.tmpExtent);
     if (!ol.extent.containsCoordinate(tileExtent, coordinate)) {
       continue;
     }
@@ -31656,6 +29836,41 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
 
 
 /**
+ * @param {ol.Tile} tile Tile.
+ * @param {olx.FrameState} frameState Frame state.
+ * @return {ol.Transform} transform Transform.
+ * @private
+ */
+ol.renderer.canvas.VectorTileLayer.prototype.getReplayTransform_ = function(tile, frameState) {
+  if (tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS) {
+    var layer = this.getLayer();
+    var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
+    var tileGrid = source.getTileGrid();
+    var tileCoord = tile.tileCoord;
+    var tileResolution =
+        tileGrid.getResolution(tileCoord[0]) / source.getTilePixelRatio();
+    var viewState = frameState.viewState;
+    var pixelRatio = frameState.pixelRatio;
+    var renderResolution = viewState.resolution / pixelRatio;
+    var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent);
+    var center = viewState.center;
+    var origin = ol.extent.getTopLeft(tileExtent);
+    var size = frameState.size;
+    var offsetX = Math.round(pixelRatio * size[0] / 2);
+    var offsetY = Math.round(pixelRatio * size[1] / 2);
+    return ol.transform.compose(this.tmpTransform_,
+        offsetX, offsetY,
+        tileResolution / renderResolution, tileResolution / renderResolution,
+        viewState.rotation,
+        (origin[0] - center[0]) / tileResolution,
+        (center[1] - origin[1]) / tileResolution);
+  } else {
+    return this.getTransform(frameState, 0);
+  }
+};
+
+
+/**
  * Handle changes in image style state.
  * @param {ol.events.Event} event Image style change event.
  * @private
@@ -31668,17 +29883,53 @@ ol.renderer.canvas.VectorTileLayer.prototype.handleStyleImageChange_ = function(
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.VectorTileLayer.prototype.prepareFrame = function(frameState, layerState) {
-  var prepared = ol.renderer.canvas.TileLayer.prototype.prepareFrame.call(this, frameState, layerState);
-  if (prepared) {
-    var skippedFeatures = Object.keys(frameState.skippedFeatureUids_ || {});
-    for (var i = 0, ii = this.renderedTiles.length; i < ii; ++i) {
-      var tile = /** @type {ol.VectorTile} */ (this.renderedTiles[i]);
-      this.createReplayGroup(tile, frameState);
-      this.renderTileImage_(tile, frameState, layerState, skippedFeatures);
+ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, frameState, layerState) {
+  var renderMode = this.getLayer().getRenderMode();
+  var replays = ol.renderer.canvas.VectorTileLayer.VECTOR_REPLAYS[renderMode];
+  if (replays) {
+    var pixelRatio = frameState.pixelRatio;
+    var rotation = frameState.viewState.rotation;
+    var size = frameState.size;
+    var offsetX = Math.round(pixelRatio * size[0] / 2);
+    var offsetY = Math.round(pixelRatio * size[1] / 2);
+    var tiles = this.renderedTiles;
+    var clips = [];
+    var zs = [];
+    for (var i = tiles.length - 1; i >= 0; --i) {
+      var tile = /** @type {ol.VectorTile} */ (tiles[i]);
+      // Create a clip mask for regions in this low resolution tile that are
+      // already filled by a higher resolution tile
+      var transform = this.getReplayTransform_(tile, frameState);
+      var currentClip = tile.getReplayState().replayGroup.getClipCoords(transform);
+      var currentZ = tile.tileCoord[0];
+      context.save();
+      context.globalAlpha = layerState.opacity;
+      ol.render.canvas.rotateAtOffset(context, -rotation, offsetX, offsetY);
+      for (var j = 0, jj = clips.length; j < jj; ++j) {
+        var clip = clips[j];
+        if (currentZ < zs[j]) {
+          context.beginPath();
+          // counter-clockwise (outer ring) for current tile
+          context.moveTo(currentClip[0], currentClip[1]);
+          context.lineTo(currentClip[2], currentClip[3]);
+          context.lineTo(currentClip[4], currentClip[5]);
+          context.lineTo(currentClip[6], currentClip[7]);
+          // clockwise (inner ring) for higher resolution tile
+          context.moveTo(clip[6], clip[7]);
+          context.lineTo(clip[4], clip[5]);
+          context.lineTo(clip[2], clip[3]);
+          context.lineTo(clip[0], clip[1]);
+          context.clip();
+        }
+      }
+      var replayGroup = tile.getReplayState().replayGroup;
+      replayGroup.replay(context, pixelRatio, transform, rotation, {}, replays);
+      context.restore();
+      clips.push(currentClip);
+      zs.push(currentZ);
     }
   }
-  return prepared;
+  ol.renderer.canvas.TileLayer.prototype.postCompose.apply(this, arguments);
 };
 
 
@@ -31714,58 +29965,39 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderFeature = function(feature, s
  * @param {ol.VectorTile} tile Tile.
  * @param {olx.FrameState} frameState Frame state.
  * @param {ol.LayerState} layerState Layer state.
- * @param {Array.<string>} skippedFeatures Skipped features.
  * @private
  */
 ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
-    tile, frameState, layerState, skippedFeatures) {
+    tile, frameState, layerState) {
   var layer = this.getLayer();
-  var replays = ol.renderer.canvas.VectorTileLayer.IMAGE_REPLAYS[layer.getRenderMode()];
-  if (!replays) {
-    // do not create an image in 'vector' mode
-    return;
-  }
-  var pixelRatio = frameState.pixelRatio;
   var replayState = tile.getReplayState();
   var revision = layer.getRevision();
-  if (!ol.array.equals(replayState.skippedFeatures, skippedFeatures) ||
-      replayState.renderedTileRevision !== revision) {
-    replayState.skippedFeatures = skippedFeatures;
+  var replays = ol.renderer.canvas.VectorTileLayer.IMAGE_REPLAYS[layer.getRenderMode()];
+  if (replays && replayState.renderedTileRevision !== revision) {
     replayState.renderedTileRevision = revision;
-    var tileContext = tile.getContext();
+    var tileCoord = tile.tileCoord;
+    var z = tile.tileCoord[0];
+    var pixelRatio = frameState.pixelRatio;
     var source = layer.getSource();
     var tileGrid = source.getTileGrid();
-    var currentZ = tile.getTileCoord()[0];
-    var resolution = tileGrid.getResolution(currentZ);
-    var tileSize = ol.size.toSize(tileGrid.getTileSize(currentZ));
-    var tileResolution = tileGrid.getResolution(currentZ);
-    var resolutionRatio = tileResolution / resolution;
-    var width = tileSize[0] * pixelRatio * resolutionRatio;
-    var height = tileSize[1] * pixelRatio * resolutionRatio;
-    tileContext.canvas.width = width / resolutionRatio + 0.5;
-    tileContext.canvas.height = height / resolutionRatio + 0.5;
-    tileContext.scale(1 / resolutionRatio, 1 / resolutionRatio);
-    tileContext.translate(width / 2, height / 2);
-    var pixelSpace = tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS;
-    var pixelScale = pixelRatio / resolution;
     var tilePixelRatio = source.getTilePixelRatio();
-    var tilePixelResolution = tileResolution / tilePixelRatio;
-    var tileExtent = tileGrid.getTileCoordExtent(
-        tile.getTileCoord(), this.tmpExtent);
-    var tileTransform = ol.transform.reset(this.tmpTransform_);
-    if (pixelSpace) {
-      ol.transform.scale(tileTransform,
-          pixelScale * tilePixelResolution, pixelScale * tilePixelResolution);
-      ol.transform.translate(tileTransform,
-          -tileSize[0] * tilePixelRatio / 2, -tileSize[1] * tilePixelRatio / 2);
+    var transform = ol.transform.reset(this.tmpTransform_);
+    if (tile.getProjection().getUnits() == ol.proj.Units.TILE_PIXELS) {
+      var renderPixelRatio = pixelRatio / tilePixelRatio;
+      ol.transform.scale(transform, renderPixelRatio, renderPixelRatio);
     } else {
-      var tileCenter = ol.extent.getCenter(tileExtent);
-      ol.transform.scale(tileTransform, pixelScale, -pixelScale);
-      ol.transform.translate(tileTransform, -tileCenter[0], -tileCenter[1]);
+      var resolution = tileGrid.getResolution(z);
+      var pixelScale = pixelRatio / resolution;
+      var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent);
+      ol.transform.scale(transform, pixelScale, -pixelScale);
+      ol.transform.translate(transform, -tileExtent[0], -tileExtent[3]);
     }
 
-    replayState.replayGroup.replay(tileContext, pixelRatio,
-        tileTransform, 0, frameState.skippedFeatureUids || {}, replays);
+    var context = tile.getContext();
+    var size = source.getTilePixelSize(z, pixelRatio, frameState.viewState.projection);
+    context.canvas.width = size[0];
+    context.canvas.height = size[1];
+    replayState.replayGroup.replay(context, pixelRatio, transform, 0, {}, replays);
   }
 };
 
@@ -31970,6 +30202,39 @@ ol.renderer.canvas.Map.prototype.renderFrame = function(frameState) {
 
   this.scheduleRemoveUnusedLayerRenderers(frameState);
   this.scheduleExpireIconCache(frameState);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.Map.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg,
+        layerFilter, thisArg2) {
+  var result;
+  var viewState = frameState.viewState;
+  var viewResolution = viewState.resolution;
+
+  var layerStates = frameState.layerStatesArray;
+  var numLayers = layerStates.length;
+
+  var coordinate = ol.transform.apply(
+      frameState.pixelToCoordinateTransform, pixel.slice());
+
+  var i;
+  for (i = numLayers - 1; i >= 0; --i) {
+    var layerState = layerStates[i];
+    var layer = layerState.layer;
+    if (ol.layer.Layer.visibleAtResolution(layerState, viewResolution) &&
+        layerFilter.call(thisArg2, layer)) {
+      var layerRenderer = /** @type {ol.renderer.canvas.Layer} */ (this.getLayerRenderer(layer));
+      result = layerRenderer.forEachLayerAtCoordinate(
+          coordinate, frameState, callback, thisArg);
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return undefined;
 };
 
 goog.provide('ol.render.webgl');
@@ -38721,6 +36986,1745 @@ ol.renderer.webgl.Layer.prototype.handleWebGLContextLost = function() {
  */
 ol.renderer.webgl.Layer.prototype.prepareFrame = function(frameState, layerState, context) {};
 
+
+/**
+ * @abstract
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {olx.FrameState} frameState FrameState.
+ * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
+ *     callback.
+ * @param {S} thisArg Value to use as `this` when executing `callback`.
+ * @return {T|undefined} Callback result.
+ * @template S,T,U
+ */
+ol.renderer.webgl.Layer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {};
+
+goog.provide('ol.ImageCanvas');
+
+goog.require('ol');
+goog.require('ol.Image');
+goog.require('ol.ImageBase');
+
+
+/**
+ * @constructor
+ * @extends {ol.ImageBase}
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {Array.<ol.Attribution>} attributions Attributions.
+ * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {ol.ImageCanvasLoader=} opt_loader Optional loader function to
+ *     support asynchronous canvas drawing.
+ */
+ol.ImageCanvas = function(extent, resolution, pixelRatio, attributions,
+    canvas, opt_loader) {
+
+  /**
+   * Optional canvas loader function.
+   * @type {?ol.ImageCanvasLoader}
+   * @private
+   */
+  this.loader_ = opt_loader !== undefined ? opt_loader : null;
+
+  var state = opt_loader !== undefined ?
+      ol.Image.State.IDLE : ol.Image.State.LOADED;
+
+  ol.ImageBase.call(this, extent, resolution, pixelRatio, state, attributions);
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.canvas_ = canvas;
+
+  /**
+   * @private
+   * @type {Error}
+   */
+  this.error_ = null;
+
+};
+ol.inherits(ol.ImageCanvas, ol.ImageBase);
+
+
+/**
+ * Get any error associated with asynchronous rendering.
+ * @return {Error} Any error that occurred during rendering.
+ */
+ol.ImageCanvas.prototype.getError = function() {
+  return this.error_;
+};
+
+
+/**
+ * Handle async drawing complete.
+ * @param {Error} err Any error during drawing.
+ * @private
+ */
+ol.ImageCanvas.prototype.handleLoad_ = function(err) {
+  if (err) {
+    this.error_ = err;
+    this.state = ol.Image.State.ERROR;
+  } else {
+    this.state = ol.Image.State.LOADED;
+  }
+  this.changed();
+};
+
+
+/**
+ * Trigger drawing on canvas.
+ */
+ol.ImageCanvas.prototype.load = function() {
+  if (this.state == ol.Image.State.IDLE) {
+    ol.DEBUG && console.assert(this.loader_, 'this.loader_ must be set');
+    this.state = ol.Image.State.LOADING;
+    this.changed();
+    this.loader_(this.handleLoad_.bind(this));
+  }
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.ImageCanvas.prototype.getImage = function(opt_context) {
+  return this.canvas_;
+};
+
+goog.provide('ol.reproj');
+
+goog.require('ol');
+goog.require('ol.dom');
+goog.require('ol.extent');
+goog.require('ol.math');
+goog.require('ol.proj');
+
+
+/**
+ * We need to employ more sophisticated solution
+ * if the web browser antialiases clipping edges on canvas.
+ *
+ * Currently only Chrome does not antialias the edges, but this is probably
+ * going to be "fixed" in the future: http://crbug.com/424291
+ *
+ * @type {boolean}
+ * @private
+ */
+ol.reproj.browserAntialiasesClip_ = (function() {
+  // Adapted from http://stackoverflow.com/questions/4565112/javascript-how-to-find-out-if-the-user-browser-is-chrome
+  var isOpera = navigator.userAgent.indexOf('OPR') > -1;
+  var isIEedge = navigator.userAgent.indexOf('Edge') > -1;
+  return !(
+    !navigator.userAgent.match('CriOS') &&  // Not Chrome on iOS
+    'chrome' in window && // Has chrome in window
+    navigator.vendor === 'Google Inc.' && // Vendor is Google.
+    isOpera == false && // Not Opera
+    isIEedge == false // Not Edge
+  );
+})();
+
+
+/**
+ * Calculates ideal resolution to use from the source in order to achieve
+ * pixel mapping as close as possible to 1:1 during reprojection.
+ * The resolution is calculated regardless of what resolutions
+ * are actually available in the dataset (TileGrid, Image, ...).
+ *
+ * @param {ol.proj.Projection} sourceProj Source projection.
+ * @param {ol.proj.Projection} targetProj Target projection.
+ * @param {ol.Coordinate} targetCenter Target center.
+ * @param {number} targetResolution Target resolution.
+ * @return {number} The best resolution to use. Can be +-Infinity, NaN or 0.
+ */
+ol.reproj.calculateSourceResolution = function(sourceProj, targetProj,
+    targetCenter, targetResolution) {
+
+  var sourceCenter = ol.proj.transform(targetCenter, targetProj, sourceProj);
+
+  // calculate the ideal resolution of the source data
+  var sourceResolution =
+      ol.proj.getPointResolution(targetProj, targetResolution, targetCenter);
+
+  var targetMetersPerUnit = targetProj.getMetersPerUnit();
+  if (targetMetersPerUnit !== undefined) {
+    sourceResolution *= targetMetersPerUnit;
+  }
+  var sourceMetersPerUnit = sourceProj.getMetersPerUnit();
+  if (sourceMetersPerUnit !== undefined) {
+    sourceResolution /= sourceMetersPerUnit;
+  }
+
+  // Based on the projection properties, the point resolution at the specified
+  // coordinates may be slightly different. We need to reverse-compensate this
+  // in order to achieve optimal results.
+
+  var compensationFactor =
+      ol.proj.getPointResolution(sourceProj, sourceResolution, sourceCenter) /
+      sourceResolution;
+
+  if (isFinite(compensationFactor) && compensationFactor > 0) {
+    sourceResolution /= compensationFactor;
+  }
+
+  return sourceResolution;
+};
+
+
+/**
+ * Enlarge the clipping triangle point by 1 pixel to ensure the edges overlap
+ * in order to mask gaps caused by antialiasing.
+ *
+ * @param {number} centroidX Centroid of the triangle (x coordinate in pixels).
+ * @param {number} centroidY Centroid of the triangle (y coordinate in pixels).
+ * @param {number} x X coordinate of the point (in pixels).
+ * @param {number} y Y coordinate of the point (in pixels).
+ * @return {ol.Coordinate} New point 1 px farther from the centroid.
+ * @private
+ */
+ol.reproj.enlargeClipPoint_ = function(centroidX, centroidY, x, y) {
+  var dX = x - centroidX, dY = y - centroidY;
+  var distance = Math.sqrt(dX * dX + dY * dY);
+  return [Math.round(x + dX / distance), Math.round(y + dY / distance)];
+};
+
+
+/**
+ * Renders the source data into new canvas based on the triangulation.
+ *
+ * @param {number} width Width of the canvas.
+ * @param {number} height Height of the canvas.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} sourceResolution Source resolution.
+ * @param {ol.Extent} sourceExtent Extent of the data source.
+ * @param {number} targetResolution Target resolution.
+ * @param {ol.Extent} targetExtent Target extent.
+ * @param {ol.reproj.Triangulation} triangulation Calculated triangulation.
+ * @param {Array.<{extent: ol.Extent,
+ *                 image: (HTMLCanvasElement|Image|HTMLVideoElement)}>} sources
+ *             Array of sources.
+ * @param {number} gutter Gutter of the sources.
+ * @param {boolean=} opt_renderEdges Render reprojection edges.
+ * @return {HTMLCanvasElement} Canvas with reprojected data.
+ */
+ol.reproj.render = function(width, height, pixelRatio,
+    sourceResolution, sourceExtent, targetResolution, targetExtent,
+    triangulation, sources, gutter, opt_renderEdges) {
+
+  var context = ol.dom.createCanvasContext2D(Math.round(pixelRatio * width),
+                                             Math.round(pixelRatio * height));
+
+  if (sources.length === 0) {
+    return context.canvas;
+  }
+
+  context.scale(pixelRatio, pixelRatio);
+
+  var sourceDataExtent = ol.extent.createEmpty();
+  sources.forEach(function(src, i, arr) {
+    ol.extent.extend(sourceDataExtent, src.extent);
+  });
+
+  var canvasWidthInUnits = ol.extent.getWidth(sourceDataExtent);
+  var canvasHeightInUnits = ol.extent.getHeight(sourceDataExtent);
+  var stitchContext = ol.dom.createCanvasContext2D(
+      Math.round(pixelRatio * canvasWidthInUnits / sourceResolution),
+      Math.round(pixelRatio * canvasHeightInUnits / sourceResolution));
+
+  var stitchScale = pixelRatio / sourceResolution;
+
+  sources.forEach(function(src, i, arr) {
+    var xPos = src.extent[0] - sourceDataExtent[0];
+    var yPos = -(src.extent[3] - sourceDataExtent[3]);
+    var srcWidth = ol.extent.getWidth(src.extent);
+    var srcHeight = ol.extent.getHeight(src.extent);
+
+    stitchContext.drawImage(
+        src.image,
+        gutter, gutter,
+        src.image.width - 2 * gutter, src.image.height - 2 * gutter,
+        xPos * stitchScale, yPos * stitchScale,
+        srcWidth * stitchScale, srcHeight * stitchScale);
+  });
+
+  var targetTopLeft = ol.extent.getTopLeft(targetExtent);
+
+  triangulation.getTriangles().forEach(function(triangle, i, arr) {
+    /* Calculate affine transform (src -> dst)
+     * Resulting matrix can be used to transform coordinate
+     * from `sourceProjection` to destination pixels.
+     *
+     * To optimize number of context calls and increase numerical stability,
+     * we also do the following operations:
+     * trans(-topLeftExtentCorner), scale(1 / targetResolution), scale(1, -1)
+     * here before solving the linear system so [ui, vi] are pixel coordinates.
+     *
+     * Src points: xi, yi
+     * Dst points: ui, vi
+     * Affine coefficients: aij
+     *
+     * | x0 y0 1  0  0 0 |   |a00|   |u0|
+     * | x1 y1 1  0  0 0 |   |a01|   |u1|
+     * | x2 y2 1  0  0 0 | x |a02| = |u2|
+     * |  0  0 0 x0 y0 1 |   |a10|   |v0|
+     * |  0  0 0 x1 y1 1 |   |a11|   |v1|
+     * |  0  0 0 x2 y2 1 |   |a12|   |v2|
+     */
+    var source = triangle.source, target = triangle.target;
+    var x0 = source[0][0], y0 = source[0][1],
+        x1 = source[1][0], y1 = source[1][1],
+        x2 = source[2][0], y2 = source[2][1];
+    var u0 = (target[0][0] - targetTopLeft[0]) / targetResolution,
+        v0 = -(target[0][1] - targetTopLeft[1]) / targetResolution;
+    var u1 = (target[1][0] - targetTopLeft[0]) / targetResolution,
+        v1 = -(target[1][1] - targetTopLeft[1]) / targetResolution;
+    var u2 = (target[2][0] - targetTopLeft[0]) / targetResolution,
+        v2 = -(target[2][1] - targetTopLeft[1]) / targetResolution;
+
+    // Shift all the source points to improve numerical stability
+    // of all the subsequent calculations. The [x0, y0] is used here.
+    // This is also used to simplify the linear system.
+    var sourceNumericalShiftX = x0, sourceNumericalShiftY = y0;
+    x0 = 0;
+    y0 = 0;
+    x1 -= sourceNumericalShiftX;
+    y1 -= sourceNumericalShiftY;
+    x2 -= sourceNumericalShiftX;
+    y2 -= sourceNumericalShiftY;
+
+    var augmentedMatrix = [
+      [x1, y1, 0, 0, u1 - u0],
+      [x2, y2, 0, 0, u2 - u0],
+      [0, 0, x1, y1, v1 - v0],
+      [0, 0, x2, y2, v2 - v0]
+    ];
+    var affineCoefs = ol.math.solveLinearSystem(augmentedMatrix);
+    if (!affineCoefs) {
+      return;
+    }
+
+    context.save();
+    context.beginPath();
+    if (ol.reproj.browserAntialiasesClip_) {
+      var centroidX = (u0 + u1 + u2) / 3, centroidY = (v0 + v1 + v2) / 3;
+      var p0 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u0, v0);
+      var p1 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u1, v1);
+      var p2 = ol.reproj.enlargeClipPoint_(centroidX, centroidY, u2, v2);
+
+      context.moveTo(p1[0], p1[1]);
+      context.lineTo(p0[0], p0[1]);
+      context.lineTo(p2[0], p2[1]);
+    } else {
+      context.moveTo(u1, v1);
+      context.lineTo(u0, v0);
+      context.lineTo(u2, v2);
+    }
+    context.clip();
+
+    context.transform(
+        affineCoefs[0], affineCoefs[2], affineCoefs[1], affineCoefs[3], u0, v0);
+
+    context.translate(sourceDataExtent[0] - sourceNumericalShiftX,
+                      sourceDataExtent[3] - sourceNumericalShiftY);
+
+    context.scale(sourceResolution / pixelRatio,
+                  -sourceResolution / pixelRatio);
+
+    context.drawImage(stitchContext.canvas, 0, 0);
+    context.restore();
+  });
+
+  if (opt_renderEdges) {
+    context.save();
+
+    context.strokeStyle = 'black';
+    context.lineWidth = 1;
+
+    triangulation.getTriangles().forEach(function(triangle, i, arr) {
+      var target = triangle.target;
+      var u0 = (target[0][0] - targetTopLeft[0]) / targetResolution,
+          v0 = -(target[0][1] - targetTopLeft[1]) / targetResolution;
+      var u1 = (target[1][0] - targetTopLeft[0]) / targetResolution,
+          v1 = -(target[1][1] - targetTopLeft[1]) / targetResolution;
+      var u2 = (target[2][0] - targetTopLeft[0]) / targetResolution,
+          v2 = -(target[2][1] - targetTopLeft[1]) / targetResolution;
+
+      context.beginPath();
+      context.moveTo(u1, v1);
+      context.lineTo(u0, v0);
+      context.lineTo(u2, v2);
+      context.closePath();
+      context.stroke();
+    });
+
+    context.restore();
+  }
+  return context.canvas;
+};
+
+goog.provide('ol.reproj.Triangulation');
+
+goog.require('ol');
+goog.require('ol.extent');
+goog.require('ol.math');
+goog.require('ol.proj');
+
+
+/**
+ * @classdesc
+ * Class containing triangulation of the given target extent.
+ * Used for determining source data and the reprojection itself.
+ *
+ * @param {ol.proj.Projection} sourceProj Source projection.
+ * @param {ol.proj.Projection} targetProj Target projection.
+ * @param {ol.Extent} targetExtent Target extent to triangulate.
+ * @param {ol.Extent} maxSourceExtent Maximal source extent that can be used.
+ * @param {number} errorThreshold Acceptable error (in source units).
+ * @constructor
+ */
+ol.reproj.Triangulation = function(sourceProj, targetProj, targetExtent,
+    maxSourceExtent, errorThreshold) {
+
+  /**
+   * @type {ol.proj.Projection}
+   * @private
+   */
+  this.sourceProj_ = sourceProj;
+
+  /**
+   * @type {ol.proj.Projection}
+   * @private
+   */
+  this.targetProj_ = targetProj;
+
+  /** @type {!Object.<string, ol.Coordinate>} */
+  var transformInvCache = {};
+  var transformInv = ol.proj.getTransform(this.targetProj_, this.sourceProj_);
+
+  /**
+   * @param {ol.Coordinate} c A coordinate.
+   * @return {ol.Coordinate} Transformed coordinate.
+   * @private
+   */
+  this.transformInv_ = function(c) {
+    var key = c[0] + '/' + c[1];
+    if (!transformInvCache[key]) {
+      transformInvCache[key] = transformInv(c);
+    }
+    return transformInvCache[key];
+  };
+
+  /**
+   * @type {ol.Extent}
+   * @private
+   */
+  this.maxSourceExtent_ = maxSourceExtent;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.errorThresholdSquared_ = errorThreshold * errorThreshold;
+
+  /**
+   * @type {Array.<ol.ReprojTriangle>}
+   * @private
+   */
+  this.triangles_ = [];
+
+  /**
+   * Indicates that the triangulation crosses edge of the source projection.
+   * @type {boolean}
+   * @private
+   */
+  this.wrapsXInSource_ = false;
+
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.canWrapXInSource_ = this.sourceProj_.canWrapX() &&
+      !!maxSourceExtent &&
+      !!this.sourceProj_.getExtent() &&
+      (ol.extent.getWidth(maxSourceExtent) ==
+       ol.extent.getWidth(this.sourceProj_.getExtent()));
+
+  /**
+   * @type {?number}
+   * @private
+   */
+  this.sourceWorldWidth_ = this.sourceProj_.getExtent() ?
+      ol.extent.getWidth(this.sourceProj_.getExtent()) : null;
+
+  /**
+   * @type {?number}
+   * @private
+   */
+  this.targetWorldWidth_ = this.targetProj_.getExtent() ?
+      ol.extent.getWidth(this.targetProj_.getExtent()) : null;
+
+  var destinationTopLeft = ol.extent.getTopLeft(targetExtent);
+  var destinationTopRight = ol.extent.getTopRight(targetExtent);
+  var destinationBottomRight = ol.extent.getBottomRight(targetExtent);
+  var destinationBottomLeft = ol.extent.getBottomLeft(targetExtent);
+  var sourceTopLeft = this.transformInv_(destinationTopLeft);
+  var sourceTopRight = this.transformInv_(destinationTopRight);
+  var sourceBottomRight = this.transformInv_(destinationBottomRight);
+  var sourceBottomLeft = this.transformInv_(destinationBottomLeft);
+
+  this.addQuad_(
+      destinationTopLeft, destinationTopRight,
+      destinationBottomRight, destinationBottomLeft,
+      sourceTopLeft, sourceTopRight, sourceBottomRight, sourceBottomLeft,
+      ol.RASTER_REPROJECTION_MAX_SUBDIVISION);
+
+  if (this.wrapsXInSource_) {
+    // Fix coordinates (ol.proj returns wrapped coordinates, "unwrap" here).
+    // This significantly simplifies the rest of the reprojection process.
+
+    ol.DEBUG && console.assert(this.sourceWorldWidth_ !== null);
+    var leftBound = Infinity;
+    this.triangles_.forEach(function(triangle, i, arr) {
+      leftBound = Math.min(leftBound,
+          triangle.source[0][0], triangle.source[1][0], triangle.source[2][0]);
+    });
+
+    // Shift triangles to be as close to `leftBound` as possible
+    // (if the distance is more than `worldWidth / 2` it can be closer.
+    this.triangles_.forEach(function(triangle) {
+      if (Math.max(triangle.source[0][0], triangle.source[1][0],
+          triangle.source[2][0]) - leftBound > this.sourceWorldWidth_ / 2) {
+        var newTriangle = [[triangle.source[0][0], triangle.source[0][1]],
+                           [triangle.source[1][0], triangle.source[1][1]],
+                           [triangle.source[2][0], triangle.source[2][1]]];
+        if ((newTriangle[0][0] - leftBound) > this.sourceWorldWidth_ / 2) {
+          newTriangle[0][0] -= this.sourceWorldWidth_;
+        }
+        if ((newTriangle[1][0] - leftBound) > this.sourceWorldWidth_ / 2) {
+          newTriangle[1][0] -= this.sourceWorldWidth_;
+        }
+        if ((newTriangle[2][0] - leftBound) > this.sourceWorldWidth_ / 2) {
+          newTriangle[2][0] -= this.sourceWorldWidth_;
+        }
+
+        // Rarely (if the extent contains both the dateline and prime meridian)
+        // the shift can in turn break some triangles.
+        // Detect this here and don't shift in such cases.
+        var minX = Math.min(
+            newTriangle[0][0], newTriangle[1][0], newTriangle[2][0]);
+        var maxX = Math.max(
+            newTriangle[0][0], newTriangle[1][0], newTriangle[2][0]);
+        if ((maxX - minX) < this.sourceWorldWidth_ / 2) {
+          triangle.source = newTriangle;
+        }
+      }
+    }, this);
+  }
+
+  transformInvCache = {};
+};
+
+
+/**
+ * Adds triangle to the triangulation.
+ * @param {ol.Coordinate} a The target a coordinate.
+ * @param {ol.Coordinate} b The target b coordinate.
+ * @param {ol.Coordinate} c The target c coordinate.
+ * @param {ol.Coordinate} aSrc The source a coordinate.
+ * @param {ol.Coordinate} bSrc The source b coordinate.
+ * @param {ol.Coordinate} cSrc The source c coordinate.
+ * @private
+ */
+ol.reproj.Triangulation.prototype.addTriangle_ = function(a, b, c,
+    aSrc, bSrc, cSrc) {
+  this.triangles_.push({
+    source: [aSrc, bSrc, cSrc],
+    target: [a, b, c]
+  });
+};
+
+
+/**
+ * Adds quad (points in clock-wise order) to the triangulation
+ * (and reprojects the vertices) if valid.
+ * Performs quad subdivision if needed to increase precision.
+ *
+ * @param {ol.Coordinate} a The target a coordinate.
+ * @param {ol.Coordinate} b The target b coordinate.
+ * @param {ol.Coordinate} c The target c coordinate.
+ * @param {ol.Coordinate} d The target d coordinate.
+ * @param {ol.Coordinate} aSrc The source a coordinate.
+ * @param {ol.Coordinate} bSrc The source b coordinate.
+ * @param {ol.Coordinate} cSrc The source c coordinate.
+ * @param {ol.Coordinate} dSrc The source d coordinate.
+ * @param {number} maxSubdivision Maximal allowed subdivision of the quad.
+ * @private
+ */
+ol.reproj.Triangulation.prototype.addQuad_ = function(a, b, c, d,
+    aSrc, bSrc, cSrc, dSrc, maxSubdivision) {
+
+  var sourceQuadExtent = ol.extent.boundingExtent([aSrc, bSrc, cSrc, dSrc]);
+  var sourceCoverageX = this.sourceWorldWidth_ ?
+      ol.extent.getWidth(sourceQuadExtent) / this.sourceWorldWidth_ : null;
+  var sourceWorldWidth = /** @type {number} */ (this.sourceWorldWidth_);
+
+  // when the quad is wrapped in the source projection
+  // it covers most of the projection extent, but not fully
+  var wrapsX = this.sourceProj_.canWrapX() &&
+               sourceCoverageX > 0.5 && sourceCoverageX < 1;
+
+  var needsSubdivision = false;
+
+  if (maxSubdivision > 0) {
+    if (this.targetProj_.isGlobal() && this.targetWorldWidth_) {
+      var targetQuadExtent = ol.extent.boundingExtent([a, b, c, d]);
+      var targetCoverageX =
+          ol.extent.getWidth(targetQuadExtent) / this.targetWorldWidth_;
+      needsSubdivision |=
+          targetCoverageX > ol.RASTER_REPROJECTION_MAX_TRIANGLE_WIDTH;
+    }
+    if (!wrapsX && this.sourceProj_.isGlobal() && sourceCoverageX) {
+      needsSubdivision |=
+          sourceCoverageX > ol.RASTER_REPROJECTION_MAX_TRIANGLE_WIDTH;
+    }
+  }
+
+  if (!needsSubdivision && this.maxSourceExtent_) {
+    if (!ol.extent.intersects(sourceQuadExtent, this.maxSourceExtent_)) {
+      // whole quad outside source projection extent -> ignore
+      return;
+    }
+  }
+
+  if (!needsSubdivision) {
+    if (!isFinite(aSrc[0]) || !isFinite(aSrc[1]) ||
+        !isFinite(bSrc[0]) || !isFinite(bSrc[1]) ||
+        !isFinite(cSrc[0]) || !isFinite(cSrc[1]) ||
+        !isFinite(dSrc[0]) || !isFinite(dSrc[1])) {
+      if (maxSubdivision > 0) {
+        needsSubdivision = true;
+      } else {
+        return;
+      }
+    }
+  }
+
+  if (maxSubdivision > 0) {
+    if (!needsSubdivision) {
+      var center = [(a[0] + c[0]) / 2, (a[1] + c[1]) / 2];
+      var centerSrc = this.transformInv_(center);
+
+      var dx;
+      if (wrapsX) {
+        var centerSrcEstimX =
+            (ol.math.modulo(aSrc[0], sourceWorldWidth) +
+             ol.math.modulo(cSrc[0], sourceWorldWidth)) / 2;
+        dx = centerSrcEstimX -
+            ol.math.modulo(centerSrc[0], sourceWorldWidth);
+      } else {
+        dx = (aSrc[0] + cSrc[0]) / 2 - centerSrc[0];
+      }
+      var dy = (aSrc[1] + cSrc[1]) / 2 - centerSrc[1];
+      var centerSrcErrorSquared = dx * dx + dy * dy;
+      needsSubdivision = centerSrcErrorSquared > this.errorThresholdSquared_;
+    }
+    if (needsSubdivision) {
+      if (Math.abs(a[0] - c[0]) <= Math.abs(a[1] - c[1])) {
+        // split horizontally (top & bottom)
+        var bc = [(b[0] + c[0]) / 2, (b[1] + c[1]) / 2];
+        var bcSrc = this.transformInv_(bc);
+        var da = [(d[0] + a[0]) / 2, (d[1] + a[1]) / 2];
+        var daSrc = this.transformInv_(da);
+
+        this.addQuad_(
+            a, b, bc, da, aSrc, bSrc, bcSrc, daSrc, maxSubdivision - 1);
+        this.addQuad_(
+            da, bc, c, d, daSrc, bcSrc, cSrc, dSrc, maxSubdivision - 1);
+      } else {
+        // split vertically (left & right)
+        var ab = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+        var abSrc = this.transformInv_(ab);
+        var cd = [(c[0] + d[0]) / 2, (c[1] + d[1]) / 2];
+        var cdSrc = this.transformInv_(cd);
+
+        this.addQuad_(
+            a, ab, cd, d, aSrc, abSrc, cdSrc, dSrc, maxSubdivision - 1);
+        this.addQuad_(
+            ab, b, c, cd, abSrc, bSrc, cSrc, cdSrc, maxSubdivision - 1);
+      }
+      return;
+    }
+  }
+
+  if (wrapsX) {
+    if (!this.canWrapXInSource_) {
+      return;
+    }
+    this.wrapsXInSource_ = true;
+  }
+
+  this.addTriangle_(a, c, d, aSrc, cSrc, dSrc);
+  this.addTriangle_(a, b, c, aSrc, bSrc, cSrc);
+};
+
+
+/**
+ * Calculates extent of the 'source' coordinates from all the triangles.
+ *
+ * @return {ol.Extent} Calculated extent.
+ */
+ol.reproj.Triangulation.prototype.calculateSourceExtent = function() {
+  var extent = ol.extent.createEmpty();
+
+  this.triangles_.forEach(function(triangle, i, arr) {
+    var src = triangle.source;
+    ol.extent.extendCoordinate(extent, src[0]);
+    ol.extent.extendCoordinate(extent, src[1]);
+    ol.extent.extendCoordinate(extent, src[2]);
+  });
+
+  return extent;
+};
+
+
+/**
+ * @return {Array.<ol.ReprojTriangle>} Array of the calculated triangles.
+ */
+ol.reproj.Triangulation.prototype.getTriangles = function() {
+  return this.triangles_;
+};
+
+goog.provide('ol.reproj.Image');
+
+goog.require('ol');
+goog.require('ol.Image');
+goog.require('ol.ImageBase');
+goog.require('ol.events');
+goog.require('ol.events.EventType');
+goog.require('ol.extent');
+goog.require('ol.reproj');
+goog.require('ol.reproj.Triangulation');
+
+
+/**
+ * @classdesc
+ * Class encapsulating single reprojected image.
+ * See {@link ol.source.Image}.
+ *
+ * @constructor
+ * @extends {ol.ImageBase}
+ * @param {ol.proj.Projection} sourceProj Source projection (of the data).
+ * @param {ol.proj.Projection} targetProj Target projection.
+ * @param {ol.Extent} targetExtent Target extent.
+ * @param {number} targetResolution Target resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.ReprojImageFunctionType} getImageFunction
+ *     Function returning source images (extent, resolution, pixelRatio).
+ */
+ol.reproj.Image = function(sourceProj, targetProj,
+    targetExtent, targetResolution, pixelRatio, getImageFunction) {
+
+  /**
+   * @private
+   * @type {ol.proj.Projection}
+   */
+  this.targetProj_ = targetProj;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.maxSourceExtent_ = sourceProj.getExtent();
+  var maxTargetExtent = targetProj.getExtent();
+
+  var limitedTargetExtent = maxTargetExtent ?
+      ol.extent.getIntersection(targetExtent, maxTargetExtent) : targetExtent;
+
+  var targetCenter = ol.extent.getCenter(limitedTargetExtent);
+  var sourceResolution = ol.reproj.calculateSourceResolution(
+      sourceProj, targetProj, targetCenter, targetResolution);
+
+  var errorThresholdInPixels = ol.DEFAULT_RASTER_REPROJECTION_ERROR_THRESHOLD;
+
+  /**
+   * @private
+   * @type {!ol.reproj.Triangulation}
+   */
+  this.triangulation_ = new ol.reproj.Triangulation(
+      sourceProj, targetProj, limitedTargetExtent, this.maxSourceExtent_,
+      sourceResolution * errorThresholdInPixels);
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.targetResolution_ = targetResolution;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.targetExtent_ = targetExtent;
+
+  var sourceExtent = this.triangulation_.calculateSourceExtent();
+
+  /**
+   * @private
+   * @type {ol.ImageBase}
+   */
+  this.sourceImage_ =
+      getImageFunction(sourceExtent, sourceResolution, pixelRatio);
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.sourcePixelRatio_ =
+      this.sourceImage_ ? this.sourceImage_.getPixelRatio() : 1;
+
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+  this.canvas_ = null;
+
+  /**
+   * @private
+   * @type {?ol.EventsKey}
+   */
+  this.sourceListenerKey_ = null;
+
+
+  var state = ol.Image.State.LOADED;
+  var attributions = [];
+
+  if (this.sourceImage_) {
+    state = ol.Image.State.IDLE;
+    attributions = this.sourceImage_.getAttributions();
+  }
+
+  ol.ImageBase.call(this, targetExtent, targetResolution, this.sourcePixelRatio_,
+            state, attributions);
+};
+ol.inherits(ol.reproj.Image, ol.ImageBase);
+
+
+/**
+ * @inheritDoc
+ */
+ol.reproj.Image.prototype.disposeInternal = function() {
+  if (this.state == ol.Image.State.LOADING) {
+    this.unlistenSource_();
+  }
+  ol.ImageBase.prototype.disposeInternal.call(this);
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.reproj.Image.prototype.getImage = function(opt_context) {
+  return this.canvas_;
+};
+
+
+/**
+ * @return {ol.proj.Projection} Projection.
+ */
+ol.reproj.Image.prototype.getProjection = function() {
+  return this.targetProj_;
+};
+
+
+/**
+ * @private
+ */
+ol.reproj.Image.prototype.reproject_ = function() {
+  var sourceState = this.sourceImage_.getState();
+  if (sourceState == ol.Image.State.LOADED) {
+    var width = ol.extent.getWidth(this.targetExtent_) / this.targetResolution_;
+    var height =
+        ol.extent.getHeight(this.targetExtent_) / this.targetResolution_;
+
+    this.canvas_ = ol.reproj.render(width, height, this.sourcePixelRatio_,
+        this.sourceImage_.getResolution(), this.maxSourceExtent_,
+        this.targetResolution_, this.targetExtent_, this.triangulation_, [{
+          extent: this.sourceImage_.getExtent(),
+          image: this.sourceImage_.getImage()
+        }], 0);
+  }
+  this.state = sourceState;
+  this.changed();
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.reproj.Image.prototype.load = function() {
+  if (this.state == ol.Image.State.IDLE) {
+    this.state = ol.Image.State.LOADING;
+    this.changed();
+
+    var sourceState = this.sourceImage_.getState();
+    if (sourceState == ol.Image.State.LOADED ||
+        sourceState == ol.Image.State.ERROR) {
+      this.reproject_();
+    } else {
+      this.sourceListenerKey_ = ol.events.listen(this.sourceImage_,
+          ol.events.EventType.CHANGE, function(e) {
+            var sourceState = this.sourceImage_.getState();
+            if (sourceState == ol.Image.State.LOADED ||
+                sourceState == ol.Image.State.ERROR) {
+              this.unlistenSource_();
+              this.reproject_();
+            }
+          }, this);
+      this.sourceImage_.load();
+    }
+  }
+};
+
+
+/**
+ * @private
+ */
+ol.reproj.Image.prototype.unlistenSource_ = function() {
+  ol.DEBUG && console.assert(this.sourceListenerKey_,
+      'this.sourceListenerKey_ should not be null');
+  ol.events.unlistenByKey(/** @type {!ol.EventsKey} */ (this.sourceListenerKey_));
+  this.sourceListenerKey_ = null;
+};
+
+goog.provide('ol.source.Source');
+
+goog.require('ol');
+goog.require('ol.Attribution');
+goog.require('ol.Object');
+goog.require('ol.proj');
+goog.require('ol.source.State');
+
+
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for {@link ol.layer.Layer} sources.
+ *
+ * A generic `change` event is triggered when the state of the source changes.
+ *
+ * @constructor
+ * @extends {ol.Object}
+ * @param {ol.SourceSourceOptions} options Source options.
+ * @api stable
+ */
+ol.source.Source = function(options) {
+
+  ol.Object.call(this);
+
+  /**
+   * @private
+   * @type {ol.proj.Projection}
+   */
+  this.projection_ = ol.proj.get(options.projection);
+
+  /**
+   * @private
+   * @type {Array.<ol.Attribution>}
+   */
+  this.attributions_ = ol.source.Source.toAttributionsArray_(options.attributions);
+
+  /**
+   * @private
+   * @type {string|olx.LogoOptions|undefined}
+   */
+  this.logo_ = options.logo;
+
+  /**
+   * @private
+   * @type {ol.source.State}
+   */
+  this.state_ = options.state !== undefined ?
+      options.state : ol.source.State.READY;
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.wrapX_ = options.wrapX !== undefined ? options.wrapX : false;
+
+};
+ol.inherits(ol.source.Source, ol.Object);
+
+/**
+ * Turns various ways of defining an attribution to an array of `ol.Attributions`.
+ *
+ * @param {ol.AttributionLike|undefined}
+ *     attributionLike The attributions as string, array of strings,
+ *     `ol.Attribution`, array of `ol.Attribution` or undefined.
+ * @return {Array.<ol.Attribution>} The array of `ol.Attribution` or null if
+ *     `undefined` was given.
+ */
+ol.source.Source.toAttributionsArray_ = function(attributionLike) {
+  if (typeof attributionLike === 'string') {
+    return [new ol.Attribution({html: attributionLike})];
+  } else if (attributionLike instanceof ol.Attribution) {
+    return [attributionLike];
+  } else if (Array.isArray(attributionLike)) {
+    var len = attributionLike.length;
+    var attributions = new Array(len);
+    for (var i = 0; i < len; i++) {
+      var item = attributionLike[i];
+      if (typeof item === 'string') {
+        attributions[i] = new ol.Attribution({html: item});
+      } else {
+        attributions[i] = item;
+      }
+    }
+    return attributions;
+  } else {
+    return null;
+  }
+};
+
+
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {Object.<string, boolean>} skippedFeatureUids Skipped feature uids.
+ * @param {function((ol.Feature|ol.render.Feature)): T} callback Feature
+ *     callback.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+ol.source.Source.prototype.forEachFeatureAtCoordinate = ol.nullFunction;
+
+
+/**
+ * Get the attributions of the source.
+ * @return {Array.<ol.Attribution>} Attributions.
+ * @api stable
+ */
+ol.source.Source.prototype.getAttributions = function() {
+  return this.attributions_;
+};
+
+
+/**
+ * Get the logo of the source.
+ * @return {string|olx.LogoOptions|undefined} Logo.
+ * @api stable
+ */
+ol.source.Source.prototype.getLogo = function() {
+  return this.logo_;
+};
+
+
+/**
+ * Get the projection of the source.
+ * @return {ol.proj.Projection} Projection.
+ * @api
+ */
+ol.source.Source.prototype.getProjection = function() {
+  return this.projection_;
+};
+
+
+/**
+ * @abstract
+ * @return {Array.<number>|undefined} Resolutions.
+ */
+ol.source.Source.prototype.getResolutions = function() {};
+
+
+/**
+ * Get the state of the source, see {@link ol.source.State} for possible states.
+ * @return {ol.source.State} State.
+ * @api
+ */
+ol.source.Source.prototype.getState = function() {
+  return this.state_;
+};
+
+
+/**
+ * @return {boolean|undefined} Wrap X.
+ */
+ol.source.Source.prototype.getWrapX = function() {
+  return this.wrapX_;
+};
+
+
+/**
+ * Refreshes the source and finally dispatches a 'change' event.
+ * @api
+ */
+ol.source.Source.prototype.refresh = function() {
+  this.changed();
+};
+
+
+/**
+ * Set the attributions of the source.
+ * @param {ol.AttributionLike|undefined} attributions Attributions.
+ *     Can be passed as `string`, `Array<string>`, `{@link ol.Attribution}`,
+ *     `Array<{@link ol.Attribution}>` or `undefined`.
+ * @api
+ */
+ol.source.Source.prototype.setAttributions = function(attributions) {
+  this.attributions_ = ol.source.Source.toAttributionsArray_(attributions);
+  this.changed();
+};
+
+
+/**
+ * Set the logo of the source.
+ * @param {string|olx.LogoOptions|undefined} logo Logo.
+ */
+ol.source.Source.prototype.setLogo = function(logo) {
+  this.logo_ = logo;
+};
+
+
+/**
+ * Set the state of the source.
+ * @param {ol.source.State} state State.
+ * @protected
+ */
+ol.source.Source.prototype.setState = function(state) {
+  this.state_ = state;
+  this.changed();
+};
+
+goog.provide('ol.source.Image');
+
+goog.require('ol');
+goog.require('ol.Image');
+goog.require('ol.array');
+goog.require('ol.events.Event');
+goog.require('ol.extent');
+goog.require('ol.proj');
+goog.require('ol.reproj.Image');
+goog.require('ol.source.Source');
+
+
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for sources providing a single image.
+ *
+ * @constructor
+ * @extends {ol.source.Source}
+ * @param {ol.SourceImageOptions} options Single image source options.
+ * @api
+ */
+ol.source.Image = function(options) {
+
+  ol.source.Source.call(this, {
+    attributions: options.attributions,
+    extent: options.extent,
+    logo: options.logo,
+    projection: options.projection,
+    state: options.state
+  });
+
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+  this.resolutions_ = options.resolutions !== undefined ?
+      options.resolutions : null;
+  ol.DEBUG && console.assert(!this.resolutions_ ||
+      ol.array.isSorted(this.resolutions_,
+          function(a, b) {
+            return b - a;
+          }, true), 'resolutions must be null or sorted in descending order');
+
+
+  /**
+   * @private
+   * @type {ol.reproj.Image}
+   */
+  this.reprojectedImage_ = null;
+
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.reprojectedRevision_ = 0;
+
+};
+ol.inherits(ol.source.Image, ol.source.Source);
+
+
+/**
+ * @return {Array.<number>} Resolutions.
+ */
+ol.source.Image.prototype.getResolutions = function() {
+  return this.resolutions_;
+};
+
+
+/**
+ * @protected
+ * @param {number} resolution Resolution.
+ * @return {number} Resolution.
+ */
+ol.source.Image.prototype.findNearestResolution = function(resolution) {
+  if (this.resolutions_) {
+    var idx = ol.array.linearFindNearest(this.resolutions_, resolution, 0);
+    resolution = this.resolutions_[idx];
+  }
+  return resolution;
+};
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {ol.ImageBase} Single image.
+ */
+ol.source.Image.prototype.getImage = function(extent, resolution, pixelRatio, projection) {
+  var sourceProjection = this.getProjection();
+  if (!ol.ENABLE_RASTER_REPROJECTION ||
+      !sourceProjection ||
+      !projection ||
+      ol.proj.equivalent(sourceProjection, projection)) {
+    if (sourceProjection) {
+      projection = sourceProjection;
+    }
+    return this.getImageInternal(extent, resolution, pixelRatio, projection);
+  } else {
+    if (this.reprojectedImage_) {
+      if (this.reprojectedRevision_ == this.getRevision() &&
+          ol.proj.equivalent(
+              this.reprojectedImage_.getProjection(), projection) &&
+          this.reprojectedImage_.getResolution() == resolution &&
+          this.reprojectedImage_.getPixelRatio() == pixelRatio &&
+          ol.extent.equals(this.reprojectedImage_.getExtent(), extent)) {
+        return this.reprojectedImage_;
+      }
+      this.reprojectedImage_.dispose();
+      this.reprojectedImage_ = null;
+    }
+
+    this.reprojectedImage_ = new ol.reproj.Image(
+        sourceProjection, projection, extent, resolution, pixelRatio,
+        function(extent, resolution, pixelRatio) {
+          return this.getImageInternal(extent, resolution,
+              pixelRatio, sourceProjection);
+        }.bind(this));
+    this.reprojectedRevision_ = this.getRevision();
+
+    return this.reprojectedImage_;
+  }
+};
+
+
+/**
+ * @abstract
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {ol.ImageBase} Single image.
+ * @protected
+ */
+ol.source.Image.prototype.getImageInternal = function(extent, resolution, pixelRatio, projection) {};
+
+
+/**
+ * Handle image change events.
+ * @param {ol.events.Event} event Event.
+ * @protected
+ */
+ol.source.Image.prototype.handleImageChange = function(event) {
+  var image = /** @type {ol.Image} */ (event.target);
+  switch (image.getState()) {
+    case ol.Image.State.LOADING:
+      this.dispatchEvent(
+          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADSTART,
+              image));
+      break;
+    case ol.Image.State.LOADED:
+      this.dispatchEvent(
+          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADEND,
+              image));
+      break;
+    case ol.Image.State.ERROR:
+      this.dispatchEvent(
+          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADERROR,
+              image));
+      break;
+    default:
+      // pass
+  }
+};
+
+
+/**
+ * Default image load function for image sources that use ol.Image image
+ * instances.
+ * @param {ol.Image} image Image.
+ * @param {string} src Source.
+ */
+ol.source.Image.defaultImageLoadFunction = function(image, src) {
+  image.getImage().src = src;
+};
+
+
+/**
+ * @classdesc
+ * Events emitted by {@link ol.source.Image} instances are instances of this
+ * type.
+ *
+ * @constructor
+ * @extends {ol.events.Event}
+ * @implements {oli.source.ImageEvent}
+ * @param {string} type Type.
+ * @param {ol.Image} image The image.
+ */
+ol.source.Image.Event = function(type, image) {
+
+  ol.events.Event.call(this, type);
+
+  /**
+   * The image related to the event.
+   * @type {ol.Image}
+   * @api
+   */
+  this.image = image;
+
+};
+ol.inherits(ol.source.Image.Event, ol.events.Event);
+
+
+/**
+ * @enum {string}
+ */
+ol.source.Image.EventType = {
+
+  /**
+   * Triggered when an image starts loading.
+   * @event ol.source.Image.Event#imageloadstart
+   * @api
+   */
+  IMAGELOADSTART: 'imageloadstart',
+
+  /**
+   * Triggered when an image finishes loading.
+   * @event ol.source.Image.Event#imageloadend
+   * @api
+   */
+  IMAGELOADEND: 'imageloadend',
+
+  /**
+   * Triggered if image loading results in an error.
+   * @event ol.source.Image.Event#imageloaderror
+   * @api
+   */
+  IMAGELOADERROR: 'imageloaderror'
+
+};
+
+goog.provide('ol.source.ImageCanvas');
+
+goog.require('ol');
+goog.require('ol.ImageCanvas');
+goog.require('ol.extent');
+goog.require('ol.source.Image');
+
+
+/**
+ * @classdesc
+ * Base class for image sources where a canvas element is the image.
+ *
+ * @constructor
+ * @extends {ol.source.Image}
+ * @param {olx.source.ImageCanvasOptions} options Constructor options.
+ * @api
+ */
+ol.source.ImageCanvas = function(options) {
+
+  ol.source.Image.call(this, {
+    attributions: options.attributions,
+    logo: options.logo,
+    projection: options.projection,
+    resolutions: options.resolutions,
+    state: options.state
+  });
+
+  /**
+   * @private
+   * @type {ol.CanvasFunctionType}
+   */
+  this.canvasFunction_ = options.canvasFunction;
+
+  /**
+   * @private
+   * @type {ol.ImageCanvas}
+   */
+  this.canvas_ = null;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderedRevision_ = 0;
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.ratio_ = options.ratio !== undefined ?
+      options.ratio : 1.5;
+
+};
+ol.inherits(ol.source.ImageCanvas, ol.source.Image);
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.ImageCanvas.prototype.getImageInternal = function(extent, resolution, pixelRatio, projection) {
+  resolution = this.findNearestResolution(resolution);
+
+  var canvas = this.canvas_;
+  if (canvas &&
+      this.renderedRevision_ == this.getRevision() &&
+      canvas.getResolution() == resolution &&
+      canvas.getPixelRatio() == pixelRatio &&
+      ol.extent.containsExtent(canvas.getExtent(), extent)) {
+    return canvas;
+  }
+
+  extent = extent.slice();
+  ol.extent.scaleFromCenter(extent, this.ratio_);
+  var width = ol.extent.getWidth(extent) / resolution;
+  var height = ol.extent.getHeight(extent) / resolution;
+  var size = [width * pixelRatio, height * pixelRatio];
+
+  var canvasElement = this.canvasFunction_(
+      extent, resolution, pixelRatio, size, projection);
+  if (canvasElement) {
+    canvas = new ol.ImageCanvas(extent, resolution, pixelRatio,
+        this.getAttributions(), canvasElement);
+  }
+  this.canvas_ = canvas;
+  this.renderedRevision_ = this.getRevision();
+
+  return canvas;
+};
+
+goog.provide('ol.source.ImageVector');
+
+goog.require('ol');
+goog.require('ol.dom');
+goog.require('ol.events');
+goog.require('ol.events.EventType');
+goog.require('ol.extent');
+goog.require('ol.render.canvas.ReplayGroup');
+goog.require('ol.renderer.vector');
+goog.require('ol.source.ImageCanvas');
+goog.require('ol.style.Style');
+goog.require('ol.transform');
+
+
+/**
+ * @classdesc
+ * An image source whose images are canvas elements into which vector features
+ * read from a vector source (`ol.source.Vector`) are drawn. An
+ * `ol.source.ImageVector` object is to be used as the `source` of an image
+ * layer (`ol.layer.Image`). Image layers are rotated, scaled, and translated,
+ * as opposed to being re-rendered, during animations and interactions. So, like
+ * any other image layer, an image layer configured with an
+ * `ol.source.ImageVector` will exhibit this behaviour. This is in contrast to a
+ * vector layer, where vector features are re-drawn during animations and
+ * interactions.
+ *
+ * @constructor
+ * @extends {ol.source.ImageCanvas}
+ * @param {olx.source.ImageVectorOptions} options Options.
+ * @api
+ */
+ol.source.ImageVector = function(options) {
+
+  /**
+   * @private
+   * @type {ol.source.Vector}
+   */
+  this.source_ = options.source;
+
+  /**
+   * @private
+   * @type {ol.Transform}
+   */
+  this.transform_ = ol.transform.create();
+
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+  this.canvasContext_ = ol.dom.createCanvasContext2D();
+
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.canvasSize_ = [0, 0];
+
+  /**
+   * @private
+   * @type {number}
+   */
+  this.renderBuffer_ = options.renderBuffer == undefined ? 100 : options.renderBuffer;
+
+  /**
+   * @private
+   * @type {ol.render.canvas.ReplayGroup}
+   */
+  this.replayGroup_ = null;
+
+  ol.source.ImageCanvas.call(this, {
+    attributions: options.attributions,
+    canvasFunction: this.canvasFunctionInternal_.bind(this),
+    logo: options.logo,
+    projection: options.projection,
+    ratio: options.ratio,
+    resolutions: options.resolutions,
+    state: this.source_.getState()
+  });
+
+  /**
+   * User provided style.
+   * @type {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
+   * @private
+   */
+  this.style_ = null;
+
+  /**
+   * Style function for use within the library.
+   * @type {ol.StyleFunction|undefined}
+   * @private
+   */
+  this.styleFunction_ = undefined;
+
+  this.setStyle(options.style);
+
+  ol.events.listen(this.source_, ol.events.EventType.CHANGE,
+      this.handleSourceChange_, this);
+
+};
+ol.inherits(ol.source.ImageVector, ol.source.ImageCanvas);
+
+
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.Size} size Size.
+ * @param {ol.proj.Projection} projection Projection;
+ * @return {HTMLCanvasElement} Canvas element.
+ * @private
+ */
+ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resolution, pixelRatio, size, projection) {
+
+  var replayGroup = new ol.render.canvas.ReplayGroup(
+      ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
+      resolution, this.source_.getOverlaps(), this.renderBuffer_);
+
+  this.source_.loadFeatures(extent, resolution, projection);
+
+  var loading = false;
+  this.source_.forEachFeatureInExtent(extent,
+      /**
+       * @param {ol.Feature} feature Feature.
+       */
+      function(feature) {
+        loading = loading ||
+            this.renderFeature_(feature, resolution, pixelRatio, replayGroup);
+      }, this);
+  replayGroup.finish();
+
+  if (loading) {
+    return null;
+  }
+
+  if (this.canvasSize_[0] != size[0] || this.canvasSize_[1] != size[1]) {
+    this.canvasContext_.canvas.width = size[0];
+    this.canvasContext_.canvas.height = size[1];
+    this.canvasSize_[0] = size[0];
+    this.canvasSize_[1] = size[1];
+  } else {
+    this.canvasContext_.clearRect(0, 0, size[0], size[1]);
+  }
+
+  var transform = this.getTransform_(ol.extent.getCenter(extent),
+      resolution, pixelRatio, size);
+  replayGroup.replay(this.canvasContext_, pixelRatio, transform, 0, {});
+
+  this.replayGroup_ = replayGroup;
+
+  return this.canvasContext_.canvas;
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
+    coordinate, resolution, rotation, skippedFeatureUids, callback) {
+  if (!this.replayGroup_) {
+    return undefined;
+  } else {
+    /** @type {Object.<string, boolean>} */
+    var features = {};
+    return this.replayGroup_.forEachFeatureAtCoordinate(
+        coordinate, resolution, 0, skippedFeatureUids,
+        /**
+         * @param {ol.Feature|ol.render.Feature} feature Feature.
+         * @return {?} Callback result.
+         */
+        function(feature) {
+          var key = ol.getUid(feature).toString();
+          if (!(key in features)) {
+            features[key] = true;
+            return callback(feature);
+          }
+        });
+  }
+};
+
+
+/**
+ * Get a reference to the wrapped source.
+ * @return {ol.source.Vector} Source.
+ * @api
+ */
+ol.source.ImageVector.prototype.getSource = function() {
+  return this.source_;
+};
+
+
+/**
+ * Get the style for features.  This returns whatever was passed to the `style`
+ * option at construction or to the `setStyle` method.
+ * @return {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
+ *     Layer style.
+ * @api stable
+ */
+ol.source.ImageVector.prototype.getStyle = function() {
+  return this.style_;
+};
+
+
+/**
+ * Get the style function.
+ * @return {ol.StyleFunction|undefined} Layer style function.
+ * @api stable
+ */
+ol.source.ImageVector.prototype.getStyleFunction = function() {
+  return this.styleFunction_;
+};
+
+
+/**
+ * @param {ol.Coordinate} center Center.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.Size} size Size.
+ * @return {!ol.Transform} Transform.
+ * @private
+ */
+ol.source.ImageVector.prototype.getTransform_ = function(center, resolution, pixelRatio, size) {
+  var dx1 = size[0] / 2;
+  var dy1 = size[1] / 2;
+  var sx = pixelRatio / resolution;
+  var sy = -sx;
+  var dx2 = -center[0];
+  var dy2 = -center[1];
+
+  return ol.transform.compose(this.transform_, dx1, dy1, sx, sy, 0, dx2, dy2);
+};
+
+
+/**
+ * Handle changes in image style state.
+ * @param {ol.events.Event} event Image style change event.
+ * @private
+ */
+ol.source.ImageVector.prototype.handleImageChange_ = function(event) {
+  this.changed();
+};
+
+
+/**
+ * @private
+ */
+ol.source.ImageVector.prototype.handleSourceChange_ = function() {
+  // setState will trigger a CHANGE event, so we always rely
+  // change events by calling setState.
+  this.setState(this.source_.getState());
+};
+
+
+/**
+ * @param {ol.Feature} feature Feature.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.render.canvas.ReplayGroup} replayGroup Replay group.
+ * @return {boolean} `true` if an image is loading.
+ * @private
+ */
+ol.source.ImageVector.prototype.renderFeature_ = function(feature, resolution, pixelRatio, replayGroup) {
+  var styles;
+  var styleFunction = feature.getStyleFunction();
+  if (styleFunction) {
+    styles = styleFunction.call(feature, resolution);
+  } else if (this.styleFunction_) {
+    styles = this.styleFunction_(feature, resolution);
+  }
+  if (!styles) {
+    return false;
+  }
+  var i, ii, loading = false;
+  if (!Array.isArray(styles)) {
+    styles = [styles];
+  }
+  for (i = 0, ii = styles.length; i < ii; ++i) {
+    loading = ol.renderer.vector.renderFeature(
+        replayGroup, feature, styles[i],
+        ol.renderer.vector.getSquaredTolerance(resolution, pixelRatio),
+        this.handleImageChange_, this) || loading;
+  }
+  return loading;
+};
+
+
+/**
+ * Set the style for features.  This can be a single style object, an array
+ * of styles, or a function that takes a feature and resolution and returns
+ * an array of styles. If it is `undefined` the default style is used. If
+ * it is `null` the layer has no style (a `null` style), so only features
+ * that have their own styles will be rendered in the layer. See
+ * {@link ol.style} for information on the default style.
+ * @param {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction|undefined}
+ *     style Layer style.
+ * @api stable
+ */
+ol.source.ImageVector.prototype.setStyle = function(style) {
+  this.style_ = style !== undefined ? style : ol.style.Style.defaultFunction;
+  this.styleFunction_ = !style ?
+      undefined : ol.style.Style.createFunction(this.style_);
+  this.changed();
+};
+
 goog.provide('ol.renderer.webgl.ImageLayer');
 
 goog.require('ol');
@@ -38942,13 +38946,7 @@ ol.renderer.webgl.ImageLayer.prototype.hasFeatureAtCoordinate = function(coordin
 
 
 /**
- * @param {ol.Pixel} pixel Pixel.
- * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
- *     callback.
- * @param {S} thisArg Value to use as `this` when executing `callback`.
- * @return {T|undefined} Callback result.
- * @template S,T,U
+ * @inheritDoc
  */
 ol.renderer.webgl.ImageLayer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
   if (!this.image_ || !this.image_.getImage()) {
@@ -39513,13 +39511,7 @@ ol.renderer.webgl.TileLayer.prototype.prepareFrame = function(frameState, layerS
 
 
 /**
- * @param {ol.Pixel} pixel Pixel.
- * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
- *     callback.
- * @param {S} thisArg Value to use as `this` when executing `callback`.
- * @return {T|undefined} Callback result.
- * @template S,T,U
+ * @inheritDoc
  */
 ol.renderer.webgl.TileLayer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
   if (!this.framebuffer) {
@@ -39705,13 +39697,7 @@ ol.renderer.webgl.VectorLayer.prototype.hasFeatureAtCoordinate = function(coordi
 
 
 /**
- * @param {ol.Pixel} pixel Pixel.
- * @param {olx.FrameState} frameState FrameState.
- * @param {function(this: S, ol.layer.Layer, (Uint8ClampedArray|Uint8Array)): T} callback Layer
- *     callback.
- * @param {S} thisArg Value to use as `this` when executing `callback`.
- * @return {T|undefined} Callback result.
- * @template S,T,U
+ * @inheritDoc
  */
 ol.renderer.webgl.VectorLayer.prototype.forEachLayerAtPixel = function(pixel, frameState, callback, thisArg) {
   var coordinate = ol.transform.apply(
@@ -40723,7 +40709,7 @@ ol.renderer.webgl.Map.prototype.forEachLayerAtPixel = function(pixel, frameState
     var layer = layerState.layer;
     if (ol.layer.Layer.visibleAtResolution(layerState, viewState.resolution) &&
         layerFilter.call(thisArg, layer)) {
-      var layerRenderer = this.getLayerRenderer(layer);
+      var layerRenderer = /** @type {ol.renderer.webgl.Layer} */ (this.getLayerRenderer(layer));
       result = layerRenderer.forEachLayerAtPixel(
           pixel, frameState, callback, thisArg);
       if (result) {
@@ -40743,11 +40729,9 @@ goog.provide('ol.Map');
 goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.MapBrowserEvent');
-goog.require('ol.MapBrowserEvent.EventType');
 goog.require('ol.MapBrowserEventHandler');
 goog.require('ol.MapEvent');
 goog.require('ol.Object');
-goog.require('ol.ObjectEventType');
 goog.require('ol.TileQueue');
 goog.require('ol.View');
 goog.require('ol.asserts');
@@ -41841,7 +41825,7 @@ ol.Map.prototype.handleViewChanged_ = function() {
   var view = this.getView();
   if (view) {
     this.viewPropertyListenerKey_ = ol.events.listen(
-        view, ol.ObjectEventType.PROPERTYCHANGE,
+        view, ol.Object.EventType.PROPERTYCHANGE,
         this.handleViewPropertyChanged_, this);
     this.viewChangeListenerKey_ = ol.events.listen(
         view, ol.events.EventType.CHANGE,
@@ -41863,7 +41847,7 @@ ol.Map.prototype.handleLayerGroupChanged_ = function() {
   if (layerGroup) {
     this.layerGroupPropertyListenerKeys_ = [
       ol.events.listen(
-          layerGroup, ol.ObjectEventType.PROPERTYCHANGE,
+          layerGroup, ol.Object.EventType.PROPERTYCHANGE,
           this.render, this),
       ol.events.listen(
           layerGroup, ol.events.EventType.CHANGE,
@@ -42850,7 +42834,6 @@ goog.require('ol.Collection');
 goog.require('ol.Map');
 goog.require('ol.MapEvent');
 goog.require('ol.Object');
-goog.require('ol.ObjectEventType');
 goog.require('ol.Overlay');
 goog.require('ol.View');
 goog.require('ol.control.Control');
@@ -43011,7 +42994,7 @@ ol.control.OverviewMap.prototype.setMap = function(map) {
 
   if (map) {
     this.listenerKeys.push(ol.events.listen(
-        map, ol.ObjectEventType.PROPERTYCHANGE,
+        map, ol.Object.EventType.PROPERTYCHANGE,
         this.handleMapPropertyChange_, this));
 
     // TODO: to really support map switching, this would need to be reworked
@@ -43033,7 +43016,7 @@ ol.control.OverviewMap.prototype.setMap = function(map) {
 
 /**
  * Handle map property changes.  This only deals with changes to the map's view.
- * @param {ol.ObjectEvent} event The propertychange event.
+ * @param {ol.Object.Event} event The propertychange event.
  * @private
  */
 ol.control.OverviewMap.prototype.handleMapPropertyChange_ = function(event) {
@@ -43368,7 +43351,7 @@ goog.require('ol.asserts');
 goog.require('ol.control.Control');
 goog.require('ol.css');
 goog.require('ol.events');
-goog.require('ol.proj.METERS_PER_UNIT');
+goog.require('ol.proj');
 goog.require('ol.proj.Units');
 
 
@@ -43531,7 +43514,7 @@ ol.control.ScaleLine.prototype.updateElement_ = function() {
   var projection = viewState.projection;
   var metersPerUnit = projection.getMetersPerUnit();
   var pointResolution =
-      projection.getPointResolution(viewState.resolution, center) *
+      ol.proj.getPointResolution(projection, viewState.resolution, center) *
       metersPerUnit;
 
   var nominalCount = this.minWidth_ * pointResolution;
@@ -45765,7 +45748,7 @@ ol.geom.flat.interpolate.lineString = function(flatCoordinates, offset, end, str
  * @param {boolean} extrapolate Extrapolate.
  * @return {ol.Coordinate} Coordinate.
  */
-ol.geom.flat.lineStringCoordinateAtM = function(flatCoordinates, offset, end, stride, m, extrapolate) {
+ol.geom.flat.interpolate.lineStringCoordinateAtM = function(flatCoordinates, offset, end, stride, m, extrapolate) {
   if (end == offset) {
     return null;
   }
@@ -45832,10 +45815,10 @@ ol.geom.flat.lineStringCoordinateAtM = function(flatCoordinates, offset, end, st
  * @param {boolean} interpolate Interpolate.
  * @return {ol.Coordinate} Coordinate.
  */
-ol.geom.flat.lineStringsCoordinateAtM = function(
+ol.geom.flat.interpolate.lineStringsCoordinateAtM = function(
     flatCoordinates, offset, ends, stride, m, extrapolate, interpolate) {
   if (interpolate) {
-    return ol.geom.flat.lineStringCoordinateAtM(
+    return ol.geom.flat.interpolate.lineStringCoordinateAtM(
         flatCoordinates, offset, ends[ends.length - 1], stride, m, extrapolate);
   }
   var coordinate;
@@ -45866,13 +45849,13 @@ ol.geom.flat.lineStringsCoordinateAtM = function(
     if (m < flatCoordinates[offset + stride - 1]) {
       return null;
     } else if (m <= flatCoordinates[end - 1]) {
-      return ol.geom.flat.lineStringCoordinateAtM(
+      return ol.geom.flat.interpolate.lineStringCoordinateAtM(
           flatCoordinates, offset, end, stride, m, false);
     }
     offset = end;
   }
   ol.DEBUG && console.assert(false,
-      'ol.geom.flat.lineStringsCoordinateAtM should have returned');
+      'ol.geom.flat.interpolate.lineStringsCoordinateAtM should have returned');
   return null;
 };
 
@@ -46067,7 +46050,7 @@ ol.geom.LineString.prototype.getCoordinateAtM = function(m, opt_extrapolate) {
     return null;
   }
   var extrapolate = opt_extrapolate !== undefined ? opt_extrapolate : false;
-  return ol.geom.flat.lineStringCoordinateAtM(this.flatCoordinates, 0,
+  return ol.geom.flat.interpolate.lineStringCoordinateAtM(this.flatCoordinates, 0,
       this.flatCoordinates.length, this.stride, m, extrapolate);
 };
 
@@ -46324,7 +46307,7 @@ ol.geom.MultiLineString.prototype.getCoordinateAtM = function(m, opt_extrapolate
   }
   var extrapolate = opt_extrapolate !== undefined ? opt_extrapolate : false;
   var interpolate = opt_interpolate !== undefined ? opt_interpolate : false;
-  return ol.geom.flat.lineStringsCoordinateAtM(this.flatCoordinates, 0,
+  return ol.geom.flat.interpolate.lineStringsCoordinateAtM(this.flatCoordinates, 0,
       this.ends_, this.stride, m, extrapolate, interpolate);
 };
 
@@ -57822,7 +57805,7 @@ module.exports = Pbf;
 var ieee754 = _dereq_('ieee754');
 
 function Pbf(buf) {
-    this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
+    this.buf = ArrayBuffer.isView && ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
     this.pos = 0;
     this.type = 0;
     this.length = this.buf.length;
@@ -66388,7 +66371,7 @@ goog.provide('ol.source.Vector');
 
 goog.require('ol');
 goog.require('ol.Collection');
-goog.require('ol.ObjectEventType');
+goog.require('ol.Object');
 goog.require('ol.array');
 goog.require('ol.asserts');
 goog.require('ol.events');
@@ -66588,7 +66571,7 @@ ol.source.Vector.prototype.setupChangeEvents_ = function(featureKey, feature) {
   this.featureChangeKeys_[featureKey] = [
     ol.events.listen(feature, ol.events.EventType.CHANGE,
         this.handleFeatureChange_, this),
-    ol.events.listen(feature, ol.ObjectEventType.PROPERTYCHANGE,
+    ol.events.listen(feature, ol.Object.EventType.PROPERTYCHANGE,
         this.handleFeatureChange_, this)
   ];
 };
@@ -67293,7 +67276,7 @@ goog.require('ol.events');
 goog.require('ol.extent');
 goog.require('ol.events.Event');
 goog.require('ol.Feature');
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserEvent');
 goog.require('ol.Object');
 goog.require('ol.coordinate');
 goog.require('ol.functions');
@@ -68175,7 +68158,7 @@ goog.provide('ol.interaction.Extent');
 
 goog.require('ol');
 goog.require('ol.Feature');
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.coordinate');
 goog.require('ol.events.Event');
@@ -68653,7 +68636,7 @@ goog.provide('ol.interaction.Modify');
 goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.Feature');
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.View');
 goog.require('ol.array');
@@ -68848,7 +68831,7 @@ ol.interaction.Modify.prototype.addFeature_ = function(feature) {
     this.SEGMENT_WRITERS_[geometry.getType()].call(this, feature, geometry);
   }
   var map = this.getMap();
-  if (map) {
+  if (map && map.isRendered()) {
     this.handlePointerAtPixel_(this.lastPixel_, map);
   }
   ol.events.listen(feature, ol.events.EventType.CHANGE,
@@ -69230,7 +69213,7 @@ ol.interaction.Modify.handleDragEvent_ = function(evt) {
     var index = dragSegment[1];
 
     while (vertex.length < geometry.getStride()) {
-      vertex.push(0);
+      vertex.push(segment[index][vertex.length]);
     }
 
     switch (geometry.getType()) {
@@ -74843,7 +74826,6 @@ ol.ext.pixelworks = module.exports;
 })();
 
 goog.provide('ol.source.Raster');
-goog.provide('ol.RasterOperationType');
 
 goog.require('ol');
 goog.require('ol.transform');
@@ -74863,16 +74845,6 @@ goog.require('ol.renderer.canvas.TileLayer');
 goog.require('ol.source.Image');
 goog.require('ol.source.State');
 goog.require('ol.source.Tile');
-
-
-/**
- * Raster operation type. Supported values are `'pixel'` and `'image'`.
- * @enum {string}
- */
-ol.RasterOperationType = {
-  PIXEL: 'pixel',
-  IMAGE: 'image'
-};
 
 
 /**
@@ -74897,10 +74869,10 @@ ol.source.Raster = function(options) {
 
   /**
    * @private
-   * @type {ol.RasterOperationType}
+   * @type {ol.source.Raster.OperationType}
    */
   this.operationType_ = options.operationType !== undefined ?
-      options.operationType : ol.RasterOperationType.PIXEL;
+      options.operationType : ol.source.Raster.OperationType.PIXEL;
 
   /**
    * @private
@@ -75004,7 +74976,7 @@ ol.inherits(ol.source.Raster, ol.source.Image);
 ol.source.Raster.prototype.setOperation = function(operation, opt_lib) {
   this.worker_ = new ol.ext.pixelworks.Processor({
     operation: operation,
-    imageOps: this.operationType_ === ol.RasterOperationType.IMAGE,
+    imageOps: this.operationType_ === ol.source.Raster.OperationType.IMAGE,
     queue: 1,
     lib: opt_lib,
     threads: this.threads_
@@ -75357,6 +75329,16 @@ ol.source.Raster.EventType = {
   AFTEROPERATIONS: 'afteroperations'
 };
 
+
+/**
+ * Raster operation type. Supported values are `'pixel'` and `'image'`.
+ * @enum {string}
+ */
+ol.source.Raster.OperationType = {
+  PIXEL: 'pixel',
+  IMAGE: 'image'
+};
+
 goog.provide('ol.source.Stamen');
 
 goog.require('ol');
@@ -75490,7 +75472,6 @@ ol.source.Stamen.ProviderConfig = {
 goog.provide('ol.source.TileArcGISRest');
 
 goog.require('ol');
-goog.require('ol.asserts');
 goog.require('ol.extent');
 goog.require('ol.math');
 goog.require('ol.obj');
@@ -75614,9 +75595,6 @@ ol.source.TileArcGISRest.prototype.getRequestUrl_ = function(tileCoord, tileSize
   var modifiedUrl = url
       .replace(/MapServer\/?$/, 'MapServer/export')
       .replace(/ImageServer\/?$/, 'ImageServer/exportImage');
-  if (modifiedUrl == url) {
-    ol.asserts.assert(false, 50); // Cannot determine Rest Service from url
-  }
   return ol.uri.appendParams(modifiedUrl, params);
 };
 
@@ -76893,8 +76871,7 @@ ol.VectorTile = function(tileCoord, state, src, format, tileLoadFunction) {
     renderedRenderOrder: null,
     renderedRevision: -1,
     renderedTileRevision: -1,
-    replayGroup: null,
-    skippedFeatures: []
+    replayGroup: null
   };
 
   /**
@@ -78473,16 +78450,10 @@ goog.require('ol.ImageTile');
 goog.require('ol.Kinetic');
 goog.require('ol.Map');
 goog.require('ol.MapBrowserEvent');
-goog.require('ol.MapBrowserEvent.EventType');
-goog.require('ol.MapBrowserEventHandler');
-goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.MapEvent');
 goog.require('ol.Object');
-goog.require('ol.ObjectEvent');
-goog.require('ol.ObjectEventType');
 goog.require('ol.Observable');
 goog.require('ol.Overlay');
-goog.require('ol.RasterOperationType');
 goog.require('ol.Sphere');
 goog.require('ol.Tile');
 goog.require('ol.VectorTile');
@@ -78506,8 +78477,6 @@ goog.require('ol.easing');
 goog.require('ol.events.Event');
 goog.require('ol.events.condition');
 goog.require('ol.extent');
-goog.require('ol.extent.Corner');
-goog.require('ol.extent.Relationship');
 goog.require('ol.featureloader');
 goog.require('ol.format.EsriJSON');
 goog.require('ol.format.Feature');
@@ -78551,8 +78520,6 @@ goog.require('ol.format.filter.Within');
 goog.require('ol.geom.Circle');
 goog.require('ol.geom.Geometry');
 goog.require('ol.geom.GeometryCollection');
-goog.require('ol.geom.GeometryLayout');
-goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.LineString');
 goog.require('ol.geom.LinearRing');
 goog.require('ol.geom.MultiLineString');
@@ -78588,13 +78555,11 @@ goog.require('ol.layer.Group');
 goog.require('ol.layer.Heatmap');
 goog.require('ol.layer.Image');
 goog.require('ol.layer.Layer');
-goog.require('ol.layer.LayerProperty');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
 goog.require('ol.layer.VectorTile');
 goog.require('ol.loadingstrategy');
 goog.require('ol.proj');
-goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Projection');
 goog.require('ol.proj.Units');
 goog.require('ol.proj.common');
@@ -78646,6 +78611,7 @@ goog.require('ol.tilegrid.TileGrid');
 goog.require('ol.tilegrid.WMTS');
 goog.require('ol.webgl.Context');
 goog.require('ol.xml');
+
 
 
 goog.exportSymbol(
@@ -78856,106 +78822,6 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.easing.upAndDown',
     ol.easing.upAndDown,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.boundingExtent',
-    ol.extent.boundingExtent,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.buffer',
-    ol.extent.buffer,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.containsCoordinate',
-    ol.extent.containsCoordinate,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.containsExtent',
-    ol.extent.containsExtent,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.containsXY',
-    ol.extent.containsXY,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.createEmpty',
-    ol.extent.createEmpty,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.equals',
-    ol.extent.equals,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.extend',
-    ol.extent.extend,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getBottomLeft',
-    ol.extent.getBottomLeft,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getBottomRight',
-    ol.extent.getBottomRight,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getCenter',
-    ol.extent.getCenter,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getHeight',
-    ol.extent.getHeight,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getIntersection',
-    ol.extent.getIntersection,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getSize',
-    ol.extent.getSize,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getTopLeft',
-    ol.extent.getTopLeft,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getTopRight',
-    ol.extent.getTopRight,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getWidth',
-    ol.extent.getWidth,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.intersects',
-    ol.extent.intersects,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.isEmpty',
-    ol.extent.isEmpty,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.applyTransform',
-    ol.extent.applyTransform,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -79393,16 +79259,6 @@ goog.exportProperty(
     'frameState',
     ol.MapEvent.prototype.frameState);
 
-goog.exportProperty(
-    ol.ObjectEvent.prototype,
-    'key',
-    ol.ObjectEvent.prototype.key);
-
-goog.exportProperty(
-    ol.ObjectEvent.prototype,
-    'oldValue',
-    ol.ObjectEvent.prototype.oldValue);
-
 goog.exportSymbol(
     'ol.Object',
     ol.Object,
@@ -79437,6 +79293,16 @@ goog.exportProperty(
     ol.Object.prototype,
     'unset',
     ol.Object.prototype.unset);
+
+goog.exportProperty(
+    ol.Object.Event.prototype,
+    'key',
+    ol.Object.Event.prototype.key);
+
+goog.exportProperty(
+    ol.Object.Event.prototype,
+    'oldValue',
+    ol.Object.Event.prototype.oldValue);
 
 goog.exportSymbol(
     'ol.Observable',
@@ -80909,6 +80775,66 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
+    'ol.proj.setProj4',
+    ol.proj.setProj4,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.getPointResolution',
+    ol.proj.getPointResolution,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.addEquivalentProjections',
+    ol.proj.addEquivalentProjections,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.addProjection',
+    ol.proj.addProjection,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.addCoordinateTransforms',
+    ol.proj.addCoordinateTransforms,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.fromLonLat',
+    ol.proj.fromLonLat,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.toLonLat',
+    ol.proj.toLonLat,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.get',
+    ol.proj.get,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.equivalent',
+    ol.proj.equivalent,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.getTransform',
+    ol.proj.getTransform,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.transform',
+    ol.proj.transform,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.transformExtent',
+    ol.proj.transformExtent,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.proj.Projection',
     ol.proj.Projection,
     OPENLAYERS);
@@ -80963,64 +80889,9 @@ goog.exportProperty(
     'setGetPointResolution',
     ol.proj.Projection.prototype.setGetPointResolution);
 
-goog.exportProperty(
-    ol.proj.Projection.prototype,
-    'getPointResolution',
-    ol.proj.Projection.prototype.getPointResolution);
-
 goog.exportSymbol(
-    'ol.proj.setProj4',
-    ol.proj.setProj4,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.addEquivalentProjections',
-    ol.proj.addEquivalentProjections,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.addProjection',
-    ol.proj.addProjection,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.addCoordinateTransforms',
-    ol.proj.addCoordinateTransforms,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.fromLonLat',
-    ol.proj.fromLonLat,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.toLonLat',
-    ol.proj.toLonLat,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.get',
-    ol.proj.get,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.equivalent',
-    ol.proj.equivalent,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.getTransform',
-    ol.proj.getTransform,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.transform',
-    ol.proj.transform,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.transformExtent',
-    ol.proj.transformExtent,
+    'ol.proj.Units.METERS_PER_UNIT',
+    ol.proj.Units.METERS_PER_UNIT,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -82689,6 +82560,106 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
+    'ol.extent.boundingExtent',
+    ol.extent.boundingExtent,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.buffer',
+    ol.extent.buffer,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.containsCoordinate',
+    ol.extent.containsCoordinate,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.containsExtent',
+    ol.extent.containsExtent,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.containsXY',
+    ol.extent.containsXY,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.createEmpty',
+    ol.extent.createEmpty,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.equals',
+    ol.extent.equals,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.extend',
+    ol.extent.extend,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getBottomLeft',
+    ol.extent.getBottomLeft,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getBottomRight',
+    ol.extent.getBottomRight,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getCenter',
+    ol.extent.getCenter,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getHeight',
+    ol.extent.getHeight,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getIntersection',
+    ol.extent.getIntersection,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getSize',
+    ol.extent.getSize,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getTopLeft',
+    ol.extent.getTopLeft,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getTopRight',
+    ol.extent.getTopRight,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getWidth',
+    ol.extent.getWidth,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.intersects',
+    ol.extent.intersects,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.isEmpty',
+    ol.extent.isEmpty,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.applyTransform',
+    ol.extent.applyTransform,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.events.condition.altKeyOnly',
     ol.events.condition.altKeyOnly,
     OPENLAYERS);
@@ -83439,24 +83410,24 @@ goog.exportProperty(
     ol.MapBrowserPointerEvent.prototype.target);
 
 goog.exportProperty(
-    ol.ObjectEvent.prototype,
+    ol.Object.Event.prototype,
     'type',
-    ol.ObjectEvent.prototype.type);
+    ol.Object.Event.prototype.type);
 
 goog.exportProperty(
-    ol.ObjectEvent.prototype,
+    ol.Object.Event.prototype,
     'target',
-    ol.ObjectEvent.prototype.target);
+    ol.Object.Event.prototype.target);
 
 goog.exportProperty(
-    ol.ObjectEvent.prototype,
+    ol.Object.Event.prototype,
     'preventDefault',
-    ol.ObjectEvent.prototype.preventDefault);
+    ol.Object.Event.prototype.preventDefault);
 
 goog.exportProperty(
-    ol.ObjectEvent.prototype,
+    ol.Object.Event.prototype,
     'stopPropagation',
-    ol.ObjectEvent.prototype.stopPropagation);
+    ol.Object.Event.prototype.stopPropagation);
 
 goog.exportProperty(
     ol.Overlay.prototype,
@@ -87307,6 +87278,41 @@ goog.exportProperty(
     ol.renderer.canvas.Layer.prototype,
     'unByKey',
     ol.renderer.canvas.Layer.prototype.unByKey);
+
+goog.exportProperty(
+    ol.renderer.canvas.IntermediateCanvas.prototype,
+    'changed',
+    ol.renderer.canvas.IntermediateCanvas.prototype.changed);
+
+goog.exportProperty(
+    ol.renderer.canvas.IntermediateCanvas.prototype,
+    'dispatchEvent',
+    ol.renderer.canvas.IntermediateCanvas.prototype.dispatchEvent);
+
+goog.exportProperty(
+    ol.renderer.canvas.IntermediateCanvas.prototype,
+    'getRevision',
+    ol.renderer.canvas.IntermediateCanvas.prototype.getRevision);
+
+goog.exportProperty(
+    ol.renderer.canvas.IntermediateCanvas.prototype,
+    'on',
+    ol.renderer.canvas.IntermediateCanvas.prototype.on);
+
+goog.exportProperty(
+    ol.renderer.canvas.IntermediateCanvas.prototype,
+    'once',
+    ol.renderer.canvas.IntermediateCanvas.prototype.once);
+
+goog.exportProperty(
+    ol.renderer.canvas.IntermediateCanvas.prototype,
+    'un',
+    ol.renderer.canvas.IntermediateCanvas.prototype.un);
+
+goog.exportProperty(
+    ol.renderer.canvas.IntermediateCanvas.prototype,
+    'unByKey',
+    ol.renderer.canvas.IntermediateCanvas.prototype.unByKey);
 
 goog.exportProperty(
     ol.renderer.canvas.ImageLayer.prototype,
@@ -92227,7 +92233,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.19.1-255-g7946287';
+ol.VERSION = 'v3.19.1-320-ge95778e';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

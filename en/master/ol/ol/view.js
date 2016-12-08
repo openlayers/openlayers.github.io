@@ -14,7 +14,6 @@ goog.require('ol.extent');
 goog.require('ol.geom.Polygon');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.proj');
-goog.require('ol.proj.METERS_PER_UNIT');
 goog.require('ol.proj.Units');
 
 
@@ -222,7 +221,7 @@ ol.View.prototype.animate = function(var_args) {
       start: start,
       complete: false,
       anchor: options.anchor,
-      duration: options.duration || 1000,
+      duration: options.duration !== undefined ? options.duration : 1000,
       easing: options.easing || ol.easing.inAndOut
     });
 
@@ -238,7 +237,7 @@ ol.View.prototype.animate = function(var_args) {
             this.maxResolution_, options.zoom - this.minZoom_, 0);
       resolution = animation.targetResolution;
     } else if (options.resolution) {
-      animation.sourceResolution = this.getResolution();
+      animation.sourceResolution = resolution;
       animation.targetResolution = options.resolution;
       resolution = animation.targetResolution;
     }
@@ -304,7 +303,7 @@ ol.View.prototype.updateAnimations_ = function() {
         continue;
       }
       var elapsed = now - animation.start;
-      var fraction = elapsed / animation.duration;
+      var fraction = animation.duration > 0 ? elapsed / animation.duration : 1;
       if (fraction >= 1) {
         animation.complete = true;
         fraction = 1;
@@ -735,7 +734,6 @@ ol.View.prototype.fit = function(geometry, size, opt_options) {
     }
     resolution = constrainedResolution;
   }
-  this.setResolution(resolution);
 
   // calculate center
   sinAngle = -sinAngle; // go back to original rotation
@@ -745,8 +743,19 @@ ol.View.prototype.fit = function(geometry, size, opt_options) {
   centerRotY += (padding[0] - padding[2]) / 2 * resolution;
   var centerX = centerRotX * cosAngle - centerRotY * sinAngle;
   var centerY = centerRotY * cosAngle + centerRotX * sinAngle;
+  var center = [centerX, centerY];
 
-  this.setCenter([centerX, centerY]);
+  if (options.duration !== undefined) {
+    this.animate({
+      resolution: resolution,
+      center: center,
+      duration: options.duration,
+      easing: options.easing
+    });
+  } else {
+    this.setResolution(resolution);
+    this.setCenter(center);
+  }
 };
 
 

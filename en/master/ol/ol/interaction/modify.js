@@ -3,7 +3,7 @@ goog.provide('ol.interaction.Modify');
 goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.Feature');
-goog.require('ol.MapBrowserEvent.EventType');
+goog.require('ol.MapBrowserEvent');
 goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.View');
 goog.require('ol.array');
@@ -198,7 +198,7 @@ ol.interaction.Modify.prototype.addFeature_ = function(feature) {
     this.SEGMENT_WRITERS_[geometry.getType()].call(this, feature, geometry);
   }
   var map = this.getMap();
-  if (map) {
+  if (map && map.isRendered()) {
     this.handlePointerAtPixel_(this.lastPixel_, map);
   }
   ol.events.listen(feature, ol.events.EventType.CHANGE,
@@ -580,7 +580,7 @@ ol.interaction.Modify.handleDragEvent_ = function(evt) {
     var index = dragSegment[1];
 
     while (vertex.length < geometry.getStride()) {
-      vertex.push(0);
+      vertex.push(segment[index][vertex.length]);
     }
 
     switch (geometry.getType()) {
