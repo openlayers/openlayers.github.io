@@ -12,8 +12,10 @@ var latest = 'v' + require('./package.json').version;
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
-  var treeish = grunt.option('treeish') ||
-      process.env.treeish || 'origin/master';
+  var treeish = grunt.option('treeish') || process.env.treeish || 'origin/master';
+  if (treeish === 'latest') {
+    treeish = latest;
+  }
 
   var branch = treeish.split('/').pop(); // may not always be a local branch
 
