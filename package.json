@@ -26,6 +26,7 @@
   "scripts": {
     "start": "grunt start",
     "build": "grunt build",
-    "deploy": "grunt deploy"
+    "deploy": "grunt deploy",
+    "zip": "grunt zip"
   }
 }
