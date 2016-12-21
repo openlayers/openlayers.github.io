@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v3.19.1 API - Class: Tile</title>
+    <title>OpenLayers v3.20.1 API - Class: Tile</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1855,7 +1855,7 @@
                     <a href="ol.View.html#dispatchEvent">dispatchEvent</a>
                 </li>
             
-                <li data-name="ol.View#fit" class="unstable">
+                <li data-name="ol.View#fit" class="">
                     <a href="ol.View.html#fit">fit</a>
                 </li>
             
@@ -8647,6 +8647,10 @@
                     <a href="ol.interaction.Select.html#getFeatures">getFeatures</a>
                 </li>
             
+                <li data-name="ol.interaction.Select#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
                 </li>
@@ -8681,6 +8685,10 @@
             
                 <li data-name="ol.interaction.Select#setActive" class="unstable">
                     <a href="ol.interaction.Select.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#setMap" class="">
@@ -8906,6 +8914,10 @@
                     <a href="ol.interaction.Translate.html#getActive">getActive</a>
                 </li>
             
+                <li data-name="ol.interaction.Translate#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Translate#getKeys" class="">
                     <a href="ol.interaction.Translate.html#getKeys">getKeys</a>
                 </li>
@@ -8936,6 +8948,10 @@
             
                 <li data-name="ol.interaction.Translate#setActive" class="unstable">
                     <a href="ol.interaction.Translate.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Translate#setProperties" class="">
@@ -16055,7 +16071,7 @@
         <h1 class="page-title" data-filename="ol.layer.Tile.html">Class: Tile</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">3.19.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">3.20.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16085,7 +16101,9 @@ options means that <code>title</code> is observable, and has get/set accessors.<
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="Tile">
+        <div class="anchor" id="Tile">
+        </div>
+        <h4 class="name">
             new ol.layer.Tile<span class="signature">(<span class="optional">opt_options</span>)</span>
             
             
@@ -16862,7 +16880,9 @@ outside of this extent.</p></td>
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="changed">
+        <div class="anchor" id="changed">
+        </div>
+        <h4 class="name">
             changed<span class="signature">()</span>
             
                 <span class="inherited"><a href="ol.Observable.html#changed">inherited</a></span>
@@ -16941,7 +16961,9 @@ outside of this extent.</p></td>
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="dispatchEvent">
+        <div class="anchor" id="dispatchEvent">
+        </div>
+        <h4 class="name">
             dispatchEvent<span class="signature">(event)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#dispatchEvent">inherited</a></span>
@@ -17075,7 +17097,9 @@ Object with a <code>type</code> property.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="get">
+        <div class="anchor" id="get">
+        </div>
+        <h4 class="name">
             get<span class="signature">(key)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
             
                 <span class="inherited"><a href="ol.Object.html#get">inherited</a></span>
@@ -17208,7 +17232,9 @@ Value.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getExtent">
+        <div class="anchor" id="getExtent">
+        </div>
+        <h4 class="name">
             getExtent<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>|undefined}</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#getExtent">inherited</a></span>
@@ -17295,7 +17321,9 @@ The layer extent.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getKeys">
+        <div class="anchor" id="getKeys">
+        </div>
+        <h4 class="name">
             getKeys<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
             
                 <span class="inherited"><a href="ol.Object.html#getKeys">inherited</a></span>
@@ -17381,7 +17409,9 @@ List of property names.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getMaxResolution">
+        <div class="anchor" id="getMaxResolution">
+        </div>
+        <h4 class="name">
             getMaxResolution<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#getMaxResolution">inherited</a></span>
@@ -17467,7 +17497,9 @@ The maximum resolution of the layer.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getMinResolution">
+        <div class="anchor" id="getMinResolution">
+        </div>
+        <h4 class="name">
             getMinResolution<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#getMinResolution">inherited</a></span>
@@ -17553,7 +17585,9 @@ The minimum resolution of the layer.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getOpacity">
+        <div class="anchor" id="getOpacity">
+        </div>
+        <h4 class="name">
             getOpacity<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#getOpacity">inherited</a></span>
@@ -17639,7 +17673,9 @@ The opacity of the layer.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="getPreload">
+        <div class="anchor" id="getPreload">
+        </div>
+        <h4 class="name">
             getPreload<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
             
@@ -17725,7 +17761,9 @@ The level to preload tiles up to.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getProperties">
+        <div class="anchor" id="getProperties">
+        </div>
+        <h4 class="name">
             getProperties<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object.&lt;string, *>}</span>
             
                 <span class="inherited"><a href="ol.Object.html#getProperties">inherited</a></span>
@@ -17811,7 +17849,9 @@ Object.
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getRevision">
+        <div class="anchor" id="getRevision">
+        </div>
+        <h4 class="name">
             getRevision<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#getRevision">inherited</a></span>
@@ -17900,7 +17940,9 @@ Revision.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getSource">
+        <div class="anchor" id="getSource">
+        </div>
+        <h4 class="name">
             getSource<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.source.Tile.html">ol.source.Tile</a>}</span>
             
             
@@ -17984,7 +18026,9 @@ Source.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="getUseInterimTilesOnError">
+        <div class="anchor" id="getUseInterimTilesOnError">
+        </div>
+        <h4 class="name">
             getUseInterimTilesOnError<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -18070,7 +18114,9 @@ Use interim tiles on error.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getVisible">
+        <div class="anchor" id="getVisible">
+        </div>
+        <h4 class="name">
             getVisible<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#getVisible">inherited</a></span>
@@ -18156,7 +18202,9 @@ The visibility of the layer.
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getZIndex">
+        <div class="anchor" id="getZIndex">
+        </div>
+        <h4 class="name">
             getZIndex<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#getZIndex">inherited</a></span>
@@ -18245,7 +18293,9 @@ The Z-index of the layer.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="on">
+        <div class="anchor" id="on">
+        </div>
+        <h4 class="name">
             on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.EventsKey">ol.EventsKey</a>|Array.&lt;<a href="ol.html#.EventsKey">ol.EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#on">inherited</a></span>
@@ -18433,7 +18483,9 @@ Unique key for the listener. If
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="once">
+        <div class="anchor" id="once">
+        </div>
+        <h4 class="name">
             once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.EventsKey">ol.EventsKey</a>|Array.&lt;<a href="ol.html#.EventsKey">ol.EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#once">inherited</a></span>
@@ -18621,7 +18673,9 @@ Unique key for the listener. If
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="set">
+        <div class="anchor" id="set">
+        </div>
+        <h4 class="name">
             set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
             
                 <span class="inherited"><a href="ol.Object.html#set">inherited</a></span>
@@ -18795,7 +18849,9 @@ Unique key for the listener. If
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setExtent">
+        <div class="anchor" id="setExtent">
+        </div>
+        <h4 class="name">
             setExtent<span class="signature">(extent)</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#setExtent">inherited</a></span>
@@ -18923,7 +18979,9 @@ will be visible at all extents.</p>
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setMap">
+        <div class="anchor" id="setMap">
+        </div>
+        <h4 class="name">
             setMap<span class="signature">(map)</span>
             
                 <span class="inherited"><a href="ol.layer.Layer.html#setMap">inherited</a></span>
@@ -19055,7 +19113,9 @@ use <code>#setMap(null)</code>.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setMaxResolution">
+        <div class="anchor" id="setMaxResolution">
+        </div>
+        <h4 class="name">
             setMaxResolution<span class="signature">(maxResolution)</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#setMaxResolution">inherited</a></span>
@@ -19179,7 +19239,9 @@ use <code>#setMap(null)</code>.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setMinResolution">
+        <div class="anchor" id="setMinResolution">
+        </div>
+        <h4 class="name">
             setMinResolution<span class="signature">(minResolution)</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#setMinResolution">inherited</a></span>
@@ -19303,7 +19365,9 @@ use <code>#setMap(null)</code>.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setOpacity">
+        <div class="anchor" id="setOpacity">
+        </div>
+        <h4 class="name">
             setOpacity<span class="signature">(opacity)</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#setOpacity">inherited</a></span>
@@ -19427,7 +19491,9 @@ use <code>#setMap(null)</code>.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="setPreload">
+        <div class="anchor" id="setPreload">
+        </div>
+        <h4 class="name">
             setPreload<span class="signature">(preload)</span>
             
             
@@ -19551,7 +19617,9 @@ use <code>#setMap(null)</code>.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setProperties">
+        <div class="anchor" id="setProperties">
+        </div>
+        <h4 class="name">
             setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
             
                 <span class="inherited"><a href="ol.Object.html#setProperties">inherited</a></span>
@@ -19701,7 +19769,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setSource">
+        <div class="anchor" id="setSource">
+        </div>
+        <h4 class="name">
             setSource<span class="signature">(source)</span>
             
                 <span class="inherited"><a href="ol.layer.Layer.html#setSource">inherited</a></span>
@@ -19825,7 +19895,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="setUseInterimTilesOnError">
+        <div class="anchor" id="setUseInterimTilesOnError">
+        </div>
+        <h4 class="name">
             setUseInterimTilesOnError<span class="signature">(useInterimTilesOnError)</span>
             
             
@@ -19949,7 +20021,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setVisible">
+        <div class="anchor" id="setVisible">
+        </div>
+        <h4 class="name">
             setVisible<span class="signature">(visible)</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#setVisible">inherited</a></span>
@@ -20073,7 +20147,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setZIndex">
+        <div class="anchor" id="setZIndex">
+        </div>
+        <h4 class="name">
             setZIndex<span class="signature">(zindex)</span>
             
                 <span class="inherited"><a href="ol.layer.Base.html#setZIndex">inherited</a></span>
@@ -20200,7 +20276,9 @@ The default Z-index is 0.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="un">
+        <div class="anchor" id="un">
+        </div>
+        <h4 class="name">
             un<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#un">inherited</a></span>
@@ -20378,7 +20456,9 @@ The default Z-index is 0.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="unByKey">
+        <div class="anchor" id="unByKey">
+        </div>
+        <h4 class="name">
             unByKey<span class="signature">(key)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#unByKey">inherited</a></span>
@@ -20508,7 +20588,9 @@ be preferred.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="unset">
+        <div class="anchor" id="unset">
+        </div>
+        <h4 class="name">
             unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
             
                 <span class="inherited"><a href="ol.Object.html#unset">inherited</a></span>

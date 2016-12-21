@@ -98,14 +98,14 @@ ol.renderer.canvas.IntermediateCanvas.prototype.getImageTransform = function() {
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.IntermediateCanvas.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+ol.renderer.canvas.IntermediateCanvas.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtCoordinate(
-      coordinate, resolution, rotation, skippedFeatureUids,
+      coordinate, resolution, rotation, hitTolerance, skippedFeatureUids,
       /**
        * @param {ol.Feature|ol.render.Feature} feature Feature.
        * @return {?} Callback result.
@@ -129,7 +129,7 @@ ol.renderer.canvas.IntermediateCanvas.prototype.forEachLayerAtCoordinate = funct
     // so that for example also transparent polygons are detected
     return ol.renderer.canvas.Layer.prototype.forEachLayerAtCoordinate.apply(this, arguments);
   } else {
-    var pixel = ol.transform.apply(this.coordinateToCanvasPixelTransform, coordinate);
+    var pixel = ol.transform.apply(this.coordinateToCanvasPixelTransform, coordinate.slice());
     ol.coordinate.scale(pixel, frameState.viewState.resolution / this.renderedResolution);
 
     if (!this.hitCanvasContext_) {

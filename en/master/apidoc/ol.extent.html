@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v3.19.1 API - Namespace: extent</title>
+    <title>OpenLayers v3.20.1 API - Namespace: extent</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1855,7 +1855,7 @@
                     <a href="ol.View.html#dispatchEvent">dispatchEvent</a>
                 </li>
             
-                <li data-name="ol.View#fit" class="unstable">
+                <li data-name="ol.View#fit" class="">
                     <a href="ol.View.html#fit">fit</a>
                 </li>
             
@@ -8647,6 +8647,10 @@
                     <a href="ol.interaction.Select.html#getFeatures">getFeatures</a>
                 </li>
             
+                <li data-name="ol.interaction.Select#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
                 </li>
@@ -8681,6 +8685,10 @@
             
                 <li data-name="ol.interaction.Select#setActive" class="unstable">
                     <a href="ol.interaction.Select.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#setMap" class="">
@@ -8906,6 +8914,10 @@
                     <a href="ol.interaction.Translate.html#getActive">getActive</a>
                 </li>
             
+                <li data-name="ol.interaction.Translate#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Translate#getKeys" class="">
                     <a href="ol.interaction.Translate.html#getKeys">getKeys</a>
                 </li>
@@ -8936,6 +8948,10 @@
             
                 <li data-name="ol.interaction.Translate#setActive" class="unstable">
                     <a href="ol.interaction.Translate.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Translate#setProperties" class="">
@@ -16055,7 +16071,7 @@
         <h1 class="page-title" data-filename="ol.extent.html">Namespace: extent</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">3.19.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">3.20.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16131,7 +16147,9 @@
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".applyTransform">
+        <div class="anchor" id=".applyTransform">
+        </div>
+        <h4 class="name">
             ol.extent.applyTransform<span class="signature">(extent, transformFn, <span class="optional">opt_extent</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
             
             
@@ -16139,7 +16157,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 782
+            src/ol/extent.js, line 782
         </div>
         
         
@@ -16313,7 +16331,9 @@ Extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".boundingExtent">
+        <div class="anchor" id=".boundingExtent">
+        </div>
+        <h4 class="name">
             ol.extent.boundingExtent<span class="signature">(coordinates)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
             
             
@@ -16321,7 +16341,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 16
+            src/ol/extent.js, line 16
         </div>
         
         
@@ -16444,7 +16464,9 @@ Bounding extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".buffer">
+        <div class="anchor" id=".buffer">
+        </div>
+        <h4 class="name">
             ol.extent.buffer<span class="signature">(extent, value, <span class="optional">opt_extent</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
             
             
@@ -16452,7 +16474,7 @@ Bounding extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 51
+            src/ol/extent.js, line 51
         </div>
         
         
@@ -16625,7 +16647,9 @@ Extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".containsCoordinate">
+        <div class="anchor" id=".containsCoordinate">
+        </div>
+        <h4 class="name">
             ol.extent.containsCoordinate<span class="signature">(extent, coordinate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16633,7 +16657,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 123
+            src/ol/extent.js, line 123
         </div>
         
         
@@ -16781,7 +16805,9 @@ The coordinate is contained in the extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".containsExtent">
+        <div class="anchor" id=".containsExtent">
+        </div>
+        <h4 class="name">
             ol.extent.containsExtent<span class="signature">(extent1, extent2)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16789,7 +16815,7 @@ The coordinate is contained in the extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 140
+            src/ol/extent.js, line 140
         </div>
         
         
@@ -16940,7 +16966,9 @@ The second extent is contained by or on the edge of the
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".containsXY">
+        <div class="anchor" id=".containsXY">
+        </div>
+        <h4 class="name">
             ol.extent.containsXY<span class="signature">(extent, x, y)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16948,7 +16976,7 @@ The second extent is contained by or on the edge of the
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 155
+            src/ol/extent.js, line 155
         </div>
         
         
@@ -17121,7 +17149,9 @@ The x, y values are contained in the extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".createEmpty">
+        <div class="anchor" id=".createEmpty">
+        </div>
+        <h4 class="name">
             ol.extent.createEmpty<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
             
             
@@ -17129,7 +17159,7 @@ The x, y values are contained in the extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 197
+            src/ol/extent.js, line 197
         </div>
         
         
@@ -17205,7 +17235,9 @@ Empty extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".equals">
+        <div class="anchor" id=".equals">
+        </div>
+        <h4 class="name">
             ol.extent.equals<span class="signature">(extent1, extent2)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17213,7 +17245,7 @@ Empty extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 291
+            src/ol/extent.js, line 291
         </div>
         
         
@@ -17361,7 +17393,9 @@ The two extents are equivalent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".extend">
+        <div class="anchor" id=".extend">
+        </div>
+        <h4 class="name">
             ol.extent.extend<span class="signature">(extent1, extent2)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
             
             
@@ -17369,7 +17403,7 @@ The two extents are equivalent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 304
+            src/ol/extent.js, line 304
         </div>
         
         
@@ -17517,7 +17551,9 @@ A reference to the first (extended) extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getBottomLeft">
+        <div class="anchor" id=".getBottomLeft">
+        </div>
+        <h4 class="name">
             ol.extent.getBottomLeft<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span>
             
             
@@ -17525,7 +17561,7 @@ A reference to the first (extended) extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 450
+            src/ol/extent.js, line 450
         </div>
         
         
@@ -17648,7 +17684,9 @@ Bottom left coordinate.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getBottomRight">
+        <div class="anchor" id=".getBottomRight">
+        </div>
+        <h4 class="name">
             ol.extent.getBottomRight<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span>
             
             
@@ -17656,7 +17694,7 @@ Bottom left coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 461
+            src/ol/extent.js, line 461
         </div>
         
         
@@ -17779,7 +17817,9 @@ Bottom right coordinate.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getCenter">
+        <div class="anchor" id=".getCenter">
+        </div>
+        <h4 class="name">
             ol.extent.getCenter<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span>
             
             
@@ -17787,7 +17827,7 @@ Bottom right coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 472
+            src/ol/extent.js, line 472
         </div>
         
         
@@ -17910,7 +17950,9 @@ Center.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getHeight">
+        <div class="anchor" id=".getHeight">
+        </div>
+        <h4 class="name">
             ol.extent.getHeight<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
             
@@ -17918,7 +17960,7 @@ Center.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 554
+            src/ol/extent.js, line 554
         </div>
         
         
@@ -18041,7 +18083,9 @@ Height.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getIntersection">
+        <div class="anchor" id=".getIntersection">
+        </div>
+        <h4 class="name">
             ol.extent.getIntersection<span class="signature">(extent1, extent2, <span class="optional">opt_extent</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
             
             
@@ -18049,7 +18093,7 @@ Height.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 578
+            src/ol/extent.js, line 578
         </div>
         
         
@@ -18222,7 +18266,9 @@ Intersecting extent.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getSize">
+        <div class="anchor" id=".getSize">
+        </div>
+        <h4 class="name">
             ol.extent.getSize<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Size">ol.Size</a>}</span>
             
             
@@ -18230,7 +18276,7 @@ Intersecting extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 621
+            src/ol/extent.js, line 621
         </div>
         
         
@@ -18353,7 +18399,9 @@ The extent size.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getTopLeft">
+        <div class="anchor" id=".getTopLeft">
+        </div>
+        <h4 class="name">
             ol.extent.getTopLeft<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span>
             
             
@@ -18361,7 +18409,7 @@ The extent size.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 632
+            src/ol/extent.js, line 632
         </div>
         
         
@@ -18484,7 +18532,9 @@ Top left coordinate.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getTopRight">
+        <div class="anchor" id=".getTopRight">
+        </div>
+        <h4 class="name">
             ol.extent.getTopRight<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span>
             
             
@@ -18492,7 +18542,7 @@ Top left coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 643
+            src/ol/extent.js, line 643
         </div>
         
         
@@ -18615,7 +18665,9 @@ Top right coordinate.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".getWidth">
+        <div class="anchor" id=".getWidth">
+        </div>
+        <h4 class="name">
             ol.extent.getWidth<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
             
@@ -18623,7 +18675,7 @@ Top right coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 654
+            src/ol/extent.js, line 654
         </div>
         
         
@@ -18746,7 +18798,9 @@ Width.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".intersects">
+        <div class="anchor" id=".intersects">
+        </div>
+        <h4 class="name">
             ol.extent.intersects<span class="signature">(extent1, extent2)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -18754,7 +18808,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 666
+            src/ol/extent.js, line 666
         </div>
         
         
@@ -18902,7 +18956,9 @@ The two extents intersect.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".isEmpty">
+        <div class="anchor" id=".isEmpty">
+        </div>
+        <h4 class="name">
             ol.extent.isEmpty<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -18910,7 +18966,7 @@ The two extents intersect.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent/index.js, line 680
+            src/ol/extent.js, line 680
         </div>
         
         

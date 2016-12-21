@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v3.19.1 API - Class: Map</title>
+    <title>OpenLayers v3.20.1 API - Class: Map</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1855,7 +1855,7 @@
                     <a href="ol.View.html#dispatchEvent">dispatchEvent</a>
                 </li>
             
-                <li data-name="ol.View#fit" class="unstable">
+                <li data-name="ol.View#fit" class="">
                     <a href="ol.View.html#fit">fit</a>
                 </li>
             
@@ -8647,6 +8647,10 @@
                     <a href="ol.interaction.Select.html#getFeatures">getFeatures</a>
                 </li>
             
+                <li data-name="ol.interaction.Select#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
                 </li>
@@ -8681,6 +8685,10 @@
             
                 <li data-name="ol.interaction.Select#setActive" class="unstable">
                     <a href="ol.interaction.Select.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#setMap" class="">
@@ -8906,6 +8914,10 @@
                     <a href="ol.interaction.Translate.html#getActive">getActive</a>
                 </li>
             
+                <li data-name="ol.interaction.Translate#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Translate#getKeys" class="">
                     <a href="ol.interaction.Translate.html#getKeys">getKeys</a>
                 </li>
@@ -8936,6 +8948,10 @@
             
                 <li data-name="ol.interaction.Translate#setActive" class="unstable">
                     <a href="ol.interaction.Translate.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Translate#setProperties" class="">
@@ -16055,7 +16071,7 @@
         <h1 class="page-title" data-filename="ol.Map.html">Class: Map</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">3.19.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">3.20.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16111,7 +16127,9 @@ contain further groups, and so on.</p></div>
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="Map">
+        <div class="anchor" id="Map">
+        </div>
+        <h4 class="name">
             new ol.Map<span class="signature">(options)</span>
             
             
@@ -17002,7 +17020,9 @@ event is delayed by 250 ms to ensure that it is not a double click.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="addControl">
+        <div class="anchor" id="addControl">
+        </div>
+        <h4 class="name">
             addControl<span class="signature">(control)</span>
             
             
@@ -17124,7 +17144,9 @@ event is delayed by 250 ms to ensure that it is not a double click.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="addInteraction">
+        <div class="anchor" id="addInteraction">
+        </div>
+        <h4 class="name">
             addInteraction<span class="signature">(interaction)</span>
             
             
@@ -17246,7 +17268,9 @@ event is delayed by 250 ms to ensure that it is not a double click.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="addLayer">
+        <div class="anchor" id="addLayer">
+        </div>
+        <h4 class="name">
             addLayer<span class="signature">(layer)</span>
             
             
@@ -17370,7 +17394,9 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="addOverlay">
+        <div class="anchor" id="addOverlay">
+        </div>
+        <h4 class="name">
             addOverlay<span class="signature">(overlay)</span>
             
             
@@ -17492,7 +17518,9 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="beforeRender">
+        <div class="anchor" id="beforeRender">
+        </div>
+        <h4 class="name">
             beforeRender<span class="signature">(var_args)</span>
             
             
@@ -17619,7 +17647,9 @@ namespace provides several static methods for creating prerender functions.</p>
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="changed">
+        <div class="anchor" id="changed">
+        </div>
+        <h4 class="name">
             changed<span class="signature">()</span>
             
                 <span class="inherited"><a href="ol.Observable.html#changed">inherited</a></span>
@@ -17698,7 +17728,9 @@ namespace provides several static methods for creating prerender functions.</p>
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="dispatchEvent">
+        <div class="anchor" id="dispatchEvent">
+        </div>
+        <h4 class="name">
             dispatchEvent<span class="signature">(event)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#dispatchEvent">inherited</a></span>
@@ -17832,15 +17864,17 @@ Object with a <code>type</code> property.</p>
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="forEachFeatureAtPixel">
-            forEachFeatureAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_this</span>, <span class="optional">opt_layerFilter</span>, <span class="optional">opt_this2</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{T|undefined}</span>
+        <div class="anchor" id="forEachFeatureAtPixel">
+        </div>
+        <h4 class="name">
+            forEachFeatureAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{T|undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 583
+            src/ol/map.js, line 576
         </div>
         
         
@@ -17941,27 +17975,32 @@ be configured through <code>opt_layerFilter</code>.</p>
 	
         <tr class="">
             
-                <td class="name"><code>this</code></td>
+                <td class="name"><code>options</code></td>
             
             
             
-            <td class="type">
             
+            <td colspan=2 class="description last">
                 
-<span class="param-type">S</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
+                <p>Optional options.</p>
                 
-                <p>Value to use as <code>this</code> when executing <code>callback</code>.</p></td>
-        </tr>
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
 	
+	<tbody>
 	
 	
         <tr class="">
@@ -17974,6 +18013,9 @@ be configured through <code>opt_layerFilter</code>.</p>
             
                 
 <span class="param-type">function</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -17984,26 +18026,30 @@ be configured through <code>opt_layerFilter</code>.</p>
             
             <td  class="description last">
                 
-                <p>Layer
-    filter function. The filter function will receive one argument, the
-    <a href="ol.layer.Layer.html"><code>layer-candidate</code></a> and it should return a boolean
-    value. Only layers which are visible and for which this function returns
-    <code>true</code> will be tested for features. By default, all visible layers will
-    be tested.</p></td>
+                    
+
+                
+                <p>Layer filter function. The filter function will receive one argument, the
+<a href="ol.layer.Layer.html"><code>layer-candidate</code></a> and it should return a boolean value.
+Only layers which are visible and for which this function returns <code>true</code>
+will be tested for features. By default, all visible layers will be tested.</p></td>
         </tr>
 	
 	
 	
-        <tr class="">
+        <tr class="unstable">
             
-                <td class="name"><code>this2</code></td>
+                <td class="name"><code>hitTolerance</code></td>
             
             
             
             <td class="type">
             
                 
-<span class="param-type">U</span>
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -18014,7 +18060,20 @@ be configured through <code>opt_layerFilter</code>.</p>
             
             <td  class="description last">
                 
-                <p>Value to use as <code>this</code> when executing <code>layerFilter</code>.</p></td>
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Hit-detection tolerance in pixels. Pixels inside the radius around the given position
+will be checked for features. This only works for the canvas renderer and
+not for WebGL. Default is <code>0</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 	
 	
@@ -18077,7 +18136,9 @@ callback execution, or the first truthy callback return value.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="forEachLayerAtPixel">
+        <div class="anchor" id="forEachLayerAtPixel">
+        </div>
+        <h4 class="name">
             forEachLayerAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_this</span>, <span class="optional">opt_layerFilter</span>, <span class="optional">opt_this2</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{T|undefined}</span>
             
             
@@ -18085,7 +18146,7 @@ callback execution, or the first truthy callback return value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 622
+            src/ol/map.js, line 616
         </div>
         
         
@@ -18320,7 +18381,9 @@ callback execution, or the first truthy callback return value.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="get">
+        <div class="anchor" id="get">
+        </div>
+        <h4 class="name">
             get<span class="signature">(key)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
             
                 <span class="inherited"><a href="ol.Object.html#get">inherited</a></span>
@@ -18453,7 +18516,9 @@ Value.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getControls">
+        <div class="anchor" id="getControls">
+        </div>
+        <h4 class="name">
             getControls<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.control.Control.html">ol.control.Control</a>>}</span>
             
             
@@ -18461,7 +18526,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 748
+            src/ol/map.js, line 738
         </div>
         
         
@@ -18538,7 +18603,9 @@ Controls.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getCoordinateFromPixel">
+        <div class="anchor" id="getCoordinateFromPixel">
+        </div>
+        <h4 class="name">
             getCoordinateFromPixel<span class="signature">(pixel)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span>
             
             
@@ -18546,7 +18613,7 @@ Controls.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 732
+            src/ol/map.js, line 722
         </div>
         
         
@@ -18670,7 +18737,9 @@ The coordinate for the pixel position.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getEventCoordinate">
+        <div class="anchor" id="getEventCoordinate">
+        </div>
+        <h4 class="name">
             getEventCoordinate<span class="signature">(event)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Coordinate">ol.Coordinate</a>}</span>
             
             
@@ -18678,7 +18747,7 @@ The coordinate for the pixel position.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 670
+            src/ol/map.js, line 660
         </div>
         
         
@@ -18801,7 +18870,9 @@ Coordinate.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getEventPixel">
+        <div class="anchor" id="getEventPixel">
+        </div>
+        <h4 class="name">
             getEventPixel<span class="signature">(event)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Pixel">ol.Pixel</a>}</span>
             
             
@@ -18809,7 +18880,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 681
+            src/ol/map.js, line 671
         </div>
         
         
@@ -18932,7 +19003,9 @@ Pixel.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getInteractions">
+        <div class="anchor" id="getInteractions">
+        </div>
+        <h4 class="name">
             getInteractions<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.interaction.Interaction.html">ol.interaction.Interaction</a>>}</span>
             
             
@@ -18940,7 +19013,7 @@ Pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 786
+            src/ol/map.js, line 776
         </div>
         
         
@@ -19018,7 +19091,9 @@ Interactions.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getKeys">
+        <div class="anchor" id="getKeys">
+        </div>
+        <h4 class="name">
             getKeys<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
             
                 <span class="inherited"><a href="ol.Object.html#getKeys">inherited</a></span>
@@ -19104,7 +19179,9 @@ List of property names.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getLayerGroup">
+        <div class="anchor" id="getLayerGroup">
+        </div>
+        <h4 class="name">
             getLayerGroup<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.layer.Group.html">ol.layer.Group</a>}</span>
             
             
@@ -19112,7 +19189,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 797
+            src/ol/map.js, line 787
         </div>
         
         
@@ -19188,7 +19265,9 @@ A layer group containing the layers in this map.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getLayers">
+        <div class="anchor" id="getLayers">
+        </div>
+        <h4 class="name">
             getLayers<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.layer.Base.html">ol.layer.Base</a>>}</span>
             
             
@@ -19196,7 +19275,7 @@ A layer group containing the layers in this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 807
+            src/ol/map.js, line 797
         </div>
         
         
@@ -19272,7 +19351,9 @@ Layers.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="getOverlayById">
+        <div class="anchor" id="getOverlayById">
+        </div>
+        <h4 class="name">
             getOverlayById<span class="signature">(id)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Overlay.html">ol.Overlay</a>}</span>
             
             
@@ -19282,7 +19363,7 @@ Layers.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 772
+            src/ol/map.js, line 762
         </div>
         
         
@@ -19410,7 +19491,9 @@ Overlay.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getOverlays">
+        <div class="anchor" id="getOverlays">
+        </div>
+        <h4 class="name">
             getOverlays<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.Overlay.html">ol.Overlay</a>>}</span>
             
             
@@ -19418,7 +19501,7 @@ Overlay.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 759
+            src/ol/map.js, line 749
         </div>
         
         
@@ -19495,7 +19578,9 @@ Overlays.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getPixelFromCoordinate">
+        <div class="anchor" id="getPixelFromCoordinate">
+        </div>
+        <h4 class="name">
             getPixelFromCoordinate<span class="signature">(coordinate)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Pixel">ol.Pixel</a>}</span>
             
             
@@ -19503,7 +19588,7 @@ Overlays.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 820
+            src/ol/map.js, line 810
         </div>
         
         
@@ -19627,7 +19712,9 @@ A pixel position in the map viewport.
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getProperties">
+        <div class="anchor" id="getProperties">
+        </div>
+        <h4 class="name">
             getProperties<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object.&lt;string, *>}</span>
             
                 <span class="inherited"><a href="ol.Object.html#getProperties">inherited</a></span>
@@ -19713,7 +19800,9 @@ Object.
 <dt class="unstable">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="getRevision">
+        <div class="anchor" id="getRevision">
+        </div>
+        <h4 class="name">
             getRevision<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#getRevision">inherited</a></span>
@@ -19802,7 +19891,9 @@ Revision.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getSize">
+        <div class="anchor" id="getSize">
+        </div>
+        <h4 class="name">
             getSize<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Size">ol.Size</a>|undefined}</span>
             
             
@@ -19810,7 +19901,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 846
+            src/ol/map.js, line 836
         </div>
         
         
@@ -19886,7 +19977,9 @@ The size in pixels of the map in the DOM.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getTarget">
+        <div class="anchor" id="getTarget">
+        </div>
+        <h4 class="name">
             getTarget<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Element|string|undefined}</span>
             
             
@@ -19894,7 +19987,7 @@ The size in pixels of the map in the DOM.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 700
+            src/ol/map.js, line 690
         </div>
         
         
@@ -19973,7 +20066,9 @@ The Element or id of the Element that the
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="getTargetElement">
+        <div class="anchor" id="getTargetElement">
+        </div>
+        <h4 class="name">
             getTargetElement<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Element}</span>
             
             
@@ -19983,7 +20078,7 @@ The Element or id of the Element that the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 713
+            src/ol/map.js, line 703
         </div>
         
         
@@ -20061,7 +20156,9 @@ The element that the map is rendered in.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getView">
+        <div class="anchor" id="getView">
+        </div>
+        <h4 class="name">
             getView<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.View.html">ol.View</a>}</span>
             
             
@@ -20069,7 +20166,7 @@ The element that the map is rendered in.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 858
+            src/ol/map.js, line 848
         </div>
         
         
@@ -20146,7 +20243,9 @@ The view that controls this map.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="getViewport">
+        <div class="anchor" id="getViewport">
+        </div>
+        <h4 class="name">
             getViewport<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Element}</span>
             
             
@@ -20154,7 +20253,7 @@ The view that controls this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 868
+            src/ol/map.js, line 858
         </div>
         
         
@@ -20230,8 +20329,10 @@ Viewport.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="hasFeatureAtPixel">
-            hasFeatureAtPixel<span class="signature">(pixel, <span class="optional">opt_layerFilter</span>, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+        <div class="anchor" id="hasFeatureAtPixel">
+        </div>
+        <h4 class="name">
+            hasFeatureAtPixel<span class="signature">(pixel, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -20240,7 +20341,7 @@ Viewport.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 651
+            src/ol/map.js, line 639
         </div>
         
         
@@ -20309,6 +20410,36 @@ detection can be configured through <code>opt_layerFilter</code>.</p>
 	
         <tr class="">
             
+                <td class="name"><code>options</code></td>
+            
+            
+            
+            
+            <td colspan=2 class="description last">
+                
+                <p>Optional options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
                 <td class="name"><code>layerFilter</code></td>
             
             
@@ -20317,6 +20448,9 @@ detection can be configured through <code>opt_layerFilter</code>.</p>
             
                 
 <span class="param-type">function</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -20327,26 +20461,30 @@ detection can be configured through <code>opt_layerFilter</code>.</p>
             
             <td  class="description last">
                 
-                <p>Layer
-    filter function. The filter function will receive one argument, the
-    <a href="ol.layer.Layer.html"><code>layer-candidate</code></a> and it should return a boolean
-    value. Only layers which are visible and for which this function returns
-    <code>true</code> will be tested for features. By default, all visible layers will
-    be tested.</p></td>
+                    
+
+                
+                <p>Layer filter function. The filter function will receive one argument, the
+<a href="ol.layer.Layer.html"><code>layer-candidate</code></a> and it should return a boolean value.
+Only layers which are visible and for which this function returns <code>true</code>
+will be tested for features. By default, all visible layers will be tested.</p></td>
         </tr>
 	
 	
 	
-        <tr class="">
+        <tr class="unstable">
             
-                <td class="name"><code>this</code></td>
+                <td class="name"><code>hitTolerance</code></td>
             
             
             
             <td class="type">
             
                 
-<span class="param-type">U</span>
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -20357,7 +20495,20 @@ detection can be configured through <code>opt_layerFilter</code>.</p>
             
             <td  class="description last">
                 
-                <p>Value to use as <code>this</code> when executing <code>layerFilter</code>.</p></td>
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Hit-detection tolerance in pixels. Pixels inside the radius around the given position
+will be checked for features. This only works for the canvas renderer and
+not for WebGL. Default is <code>0</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 	
 	
@@ -20419,7 +20570,9 @@ Is there a feature at the given pixel?
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="on">
+        <div class="anchor" id="on">
+        </div>
+        <h4 class="name">
             on<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.EventsKey">ol.EventsKey</a>|Array.&lt;<a href="ol.html#.EventsKey">ol.EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#on">inherited</a></span>
@@ -20607,7 +20760,9 @@ Unique key for the listener. If
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="once">
+        <div class="anchor" id="once">
+        </div>
+        <h4 class="name">
             once<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.EventsKey">ol.EventsKey</a>|Array.&lt;<a href="ol.html#.EventsKey">ol.EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="ol.Observable.html#once">inherited</a></span>
@@ -20795,7 +20950,9 @@ Unique key for the listener. If
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="removeControl">
+        <div class="anchor" id="removeControl">
+        </div>
+        <h4 class="name">
             removeControl<span class="signature">(control)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.control.Control.html">ol.control.Control</a>|undefined}</span>
             
             
@@ -20803,7 +20960,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1178
+            src/ol/map.js, line 1169
         </div>
         
         
@@ -20927,7 +21084,9 @@ The removed control (or undefined
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="removeInteraction">
+        <div class="anchor" id="removeInteraction">
+        </div>
+        <h4 class="name">
             removeInteraction<span class="signature">(interaction)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.interaction.Interaction.html">ol.interaction.Interaction</a>|undefined}</span>
             
             
@@ -20935,7 +21094,7 @@ The removed control (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1190
+            src/ol/map.js, line 1181
         </div>
         
         
@@ -21059,7 +21218,9 @@ The removed interaction (or
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="removeLayer">
+        <div class="anchor" id="removeLayer">
+        </div>
+        <h4 class="name">
             removeLayer<span class="signature">(layer)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.layer.Base.html">ol.layer.Base</a>|undefined}</span>
             
             
@@ -21067,7 +21228,7 @@ The removed interaction (or
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1202
+            src/ol/map.js, line 1193
         </div>
         
         
@@ -21191,7 +21352,9 @@ The removed layer (or undefined if the
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="removeOverlay">
+        <div class="anchor" id="removeOverlay">
+        </div>
+        <h4 class="name">
             removeOverlay<span class="signature">(overlay)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Overlay.html">ol.Overlay</a>|undefined}</span>
             
             
@@ -21199,7 +21362,7 @@ The removed layer (or undefined if the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1215
+            src/ol/map.js, line 1206
         </div>
         
         
@@ -21323,7 +21486,9 @@ The removed overlay (or undefined
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="render">
+        <div class="anchor" id="render">
+        </div>
+        <h4 class="name">
             render<span class="signature">()</span>
             
             
@@ -21331,7 +21496,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1163
+            src/ol/map.js, line 1154
         </div>
         
         
@@ -21398,7 +21563,9 @@ The removed overlay (or undefined
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="renderSync">
+        <div class="anchor" id="renderSync">
+        </div>
+        <h4 class="name">
             renderSync<span class="signature">()</span>
             
             
@@ -21406,7 +21573,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1151
+            src/ol/map.js, line 1142
         </div>
         
         
@@ -21473,7 +21640,9 @@ The removed overlay (or undefined
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="set">
+        <div class="anchor" id="set">
+        </div>
+        <h4 class="name">
             set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
             
                 <span class="inherited"><a href="ol.Object.html#set">inherited</a></span>
@@ -21647,7 +21816,9 @@ The removed overlay (or undefined
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="setLayerGroup">
+        <div class="anchor" id="setLayerGroup">
+        </div>
+        <h4 class="name">
             setLayerGroup<span class="signature">(layerGroup)</span>
             
             
@@ -21655,7 +21826,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1316
+            src/ol/map.js, line 1307
         </div>
         
         
@@ -21770,7 +21941,9 @@ The removed overlay (or undefined
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="setProperties">
+        <div class="anchor" id="setProperties">
+        </div>
+        <h4 class="name">
             setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
             
                 <span class="inherited"><a href="ol.Object.html#setProperties">inherited</a></span>
@@ -21920,7 +22093,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="setSize">
+        <div class="anchor" id="setSize">
+        </div>
+        <h4 class="name">
             setSize<span class="signature">(size)</span>
             
             
@@ -21930,7 +22105,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1327
+            src/ol/map.js, line 1318
         </div>
         
         
@@ -22047,7 +22222,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="setTarget">
+        <div class="anchor" id="setTarget">
+        </div>
+        <h4 class="name">
             setTarget<span class="signature">(target)</span>
             
             
@@ -22055,7 +22232,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1339
+            src/ol/map.js, line 1330
         </div>
         
         
@@ -22176,7 +22353,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="setView">
+        <div class="anchor" id="setView">
+        </div>
+        <h4 class="name">
             setView<span class="signature">(view)</span>
             
             
@@ -22184,7 +22363,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1350
+            src/ol/map.js, line 1341
         </div>
         
         
@@ -22298,7 +22477,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="un">
+        <div class="anchor" id="un">
+        </div>
+        <h4 class="name">
             un<span class="signature">(type, listener, <span class="optional">opt_this</span>)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#un">inherited</a></span>
@@ -22476,7 +22657,9 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="unByKey">
+        <div class="anchor" id="unByKey">
+        </div>
+        <h4 class="name">
             unByKey<span class="signature">(key)</span>
             
                 <span class="inherited"><a href="ol.Observable.html#unByKey">inherited</a></span>
@@ -22606,7 +22789,9 @@ be preferred.</p>
 <dt class="">
     <div class="nameContainer inherited">
         
-        <h4 class="name" id="unset">
+        <div class="anchor" id="unset">
+        </div>
+        <h4 class="name">
             unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
             
                 <span class="inherited"><a href="ol.Object.html#unset">inherited</a></span>
@@ -22755,7 +22940,9 @@ be preferred.</p>
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="updateSize">
+        <div class="anchor" id="updateSize">
+        </div>
+        <h4 class="name">
             updateSize<span class="signature">()</span>
             
             
@@ -22763,7 +22950,7 @@ be preferred.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1370
+            src/ol/map.js, line 1361
         </div>
         
         

@@ -1,6 +1,6 @@
 // OpenLayers 3. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/ol3/master/LICENSE.md
-// Version: v3.19.1-320-ge95778e
+// Version: v3.20.0-45-gf975262
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -10734,21 +10734,35 @@ ol.View.prototype.getZoom = function() {
  * The size is pixel dimensions of the box to fit the extent into.
  * In most cases you will want to use the map size, that is `map.getSize()`.
  * Takes care of the map angle.
- * @param {ol.geom.SimpleGeometry|ol.Extent} geometry Geometry.
- * @param {ol.Size} size Box pixel size.
+ * @param {ol.geom.SimpleGeometry|ol.Extent} geometryOrExtent The geometry or
+ *     extent to fit the view to.
  * @param {olx.view.FitOptions=} opt_options Options.
- * @api
+ * @api stable
  */
-ol.View.prototype.fit = function(geometry, size, opt_options) {
-  if (!(geometry instanceof ol.geom.SimpleGeometry)) {
-    ol.asserts.assert(Array.isArray(geometry),
-        24); // Invalid extent or geometry provided as `geometry`
-    ol.asserts.assert(!ol.extent.isEmpty(geometry),
-        25); // Cannot fit empty extent provided as `geometry`
-    geometry = ol.geom.Polygon.fromExtent(geometry);
-  }
-
+ol.View.prototype.fit = function(geometryOrExtent, opt_options) {
   var options = opt_options || {};
+  var size = options.size;
+  if (!size) {
+    size = [100, 100];
+    var selector = '.ol-viewport[data-view="' + ol.getUid(this) + '"]';
+    var element = document.querySelector(selector);
+    if (element) {
+      var metrics = getComputedStyle(element);
+      size[0] = parseInt(metrics.width, 10);
+      size[1] = parseInt(metrics.height, 10);
+    }
+  }
+  /** @type {ol.geom.SimpleGeometry} */
+  var geometry;
+  if (!(geometryOrExtent instanceof ol.geom.SimpleGeometry)) {
+    ol.asserts.assert(Array.isArray(geometryOrExtent),
+        24); // Invalid extent or geometry provided as `geometry`
+    ol.asserts.assert(!ol.extent.isEmpty(geometryOrExtent),
+        25); // Cannot fit empty extent provided as `geometry`
+    geometry = ol.geom.Polygon.fromExtent(geometryOrExtent);
+  } else {
+    geometry = geometryOrExtent;
+  }
 
   var padding = options.padding !== undefined ? options.padding : [0, 0, 0, 0];
   var constrainResolution = options.constrainResolution !== undefined ?
@@ -13325,6 +13339,7 @@ ol.control.Attribution.prototype.getSourceAttributions = function(frameState) {
   var attributions = ol.obj.assign({}, frameState.attributions);
   /** @type {Object.<string, ol.Attribution>} */
   var hiddenAttributions = {};
+  var uniqueAttributions = {};
   var projection = /** @type {!ol.proj.Projection} */ (frameState.viewState.projection);
   for (i = 0, ii = layerStatesArray.length; i < ii; i++) {
     source = layerStatesArray[i].layer.getSource();
@@ -13354,7 +13369,11 @@ ol.control.Attribution.prototype.getSourceAttributions = function(frameState) {
         if (sourceAttributionKey in hiddenAttributions) {
           delete hiddenAttributions[sourceAttributionKey];
         }
-        attributions[sourceAttributionKey] = sourceAttribution;
+        var html = sourceAttribution.getHTML();
+        if (!(html in uniqueAttributions)) {
+          uniqueAttributions[html] = true;
+          attributions[sourceAttributionKey] = sourceAttribution;
+        }
       } else {
         hiddenAttributions[sourceAttributionKey] = sourceAttribution;
       }
@@ -13570,266 +13589,6 @@ ol.control.Attribution.prototype.setCollapsed = function(collapsed) {
 ol.control.Attribution.prototype.getCollapsed = function() {
   return this.collapsed_;
 };
-
-goog.provide('ol.control.FullScreen');
-
-goog.require('ol');
-goog.require('ol.control.Control');
-goog.require('ol.css');
-goog.require('ol.dom');
-goog.require('ol.events');
-goog.require('ol.events.EventType');
-
-
-/**
- * @classdesc
- * Provides a button that when clicked fills up the full screen with the map.
- * The full screen source element is by default the element containing the map viewport unless
- * overriden by providing the `source` option. In which case, the dom
- * element introduced using this parameter will be displayed in full screen.
- *
- * When in full screen mode, a close button is shown to exit full screen mode.
- * The [Fullscreen API](http://www.w3.org/TR/fullscreen/) is used to
- * toggle the map in full screen mode.
- *
- *
- * @constructor
- * @extends {ol.control.Control}
- * @param {olx.control.FullScreenOptions=} opt_options Options.
- * @api stable
- */
-ol.control.FullScreen = function(opt_options) {
-
-  var options = opt_options ? opt_options : {};
-
-  /**
-   * @private
-   * @type {string}
-   */
-  this.cssClassName_ = options.className !== undefined ? options.className :
-      'ol-full-screen';
-
-  var label = options.label !== undefined ? options.label : '\u2922';
-
-  /**
-   * @private
-   * @type {Node}
-   */
-  this.labelNode_ = typeof label === 'string' ?
-      document.createTextNode(label) : label;
-
-  var labelActive = options.labelActive !== undefined ? options.labelActive : '\u00d7';
-
-  /**
-   * @private
-   * @type {Node}
-   */
-  this.labelActiveNode_ = typeof labelActive === 'string' ?
-      document.createTextNode(labelActive) : labelActive;
-
-  var tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';
-  var button = document.createElement('button');
-  button.className = this.cssClassName_ + '-' + ol.control.FullScreen.isFullScreen();
-  button.setAttribute('type', 'button');
-  button.title = tipLabel;
-  button.appendChild(this.labelNode_);
-
-  ol.events.listen(button, ol.events.EventType.CLICK,
-      this.handleClick_, this);
-
-  var cssClasses = this.cssClassName_ + ' ' + ol.css.CLASS_UNSELECTABLE +
-      ' ' + ol.css.CLASS_CONTROL + ' ' +
-      (!ol.control.FullScreen.isFullScreenSupported() ? ol.css.CLASS_UNSUPPORTED : '');
-  var element = document.createElement('div');
-  element.className = cssClasses;
-  element.appendChild(button);
-
-  ol.control.Control.call(this, {
-    element: element,
-    target: options.target
-  });
-
-  /**
-   * @private
-   * @type {boolean}
-   */
-  this.keys_ = options.keys !== undefined ? options.keys : false;
-
-  /**
-   * @private
-   * @type {Element|string|undefined}
-   */
-  this.source_ = options.source;
-
-};
-ol.inherits(ol.control.FullScreen, ol.control.Control);
-
-
-/**
- * @param {Event} event The event to handle
- * @private
- */
-ol.control.FullScreen.prototype.handleClick_ = function(event) {
-  event.preventDefault();
-  this.handleFullScreen_();
-};
-
-
-/**
- * @private
- */
-ol.control.FullScreen.prototype.handleFullScreen_ = function() {
-  if (!ol.control.FullScreen.isFullScreenSupported()) {
-    return;
-  }
-  var map = this.getMap();
-  if (!map) {
-    return;
-  }
-  if (ol.control.FullScreen.isFullScreen()) {
-    ol.control.FullScreen.exitFullScreen();
-  } else {
-    var element;
-    if (this.source_) {
-      element = typeof this.source_ === 'string' ?
-        document.getElementById(this.source_) :
-        this.source_;
-    } else {
-      element = map.getTargetElement();
-    }
-    if (this.keys_) {
-      ol.control.FullScreen.requestFullScreenWithKeys(element);
-
-    } else {
-      ol.control.FullScreen.requestFullScreen(element);
-    }
-  }
-};
-
-
-/**
- * @private
- */
-ol.control.FullScreen.prototype.handleFullScreenChange_ = function() {
-  var button = this.element.firstElementChild;
-  var map = this.getMap();
-  if (ol.control.FullScreen.isFullScreen()) {
-    button.className = this.cssClassName_ + '-true';
-    ol.dom.replaceNode(this.labelActiveNode_, this.labelNode_);
-  } else {
-    button.className = this.cssClassName_ + '-false';
-    ol.dom.replaceNode(this.labelNode_, this.labelActiveNode_);
-  }
-  if (map) {
-    map.updateSize();
-  }
-};
-
-
-/**
- * @inheritDoc
- * @api stable
- */
-ol.control.FullScreen.prototype.setMap = function(map) {
-  ol.control.Control.prototype.setMap.call(this, map);
-  if (map) {
-    this.listenerKeys.push(ol.events.listen(document,
-        ol.control.FullScreen.getChangeType_(),
-        this.handleFullScreenChange_, this)
-    );
-  }
-};
-
-/**
- * @return {boolean} Fullscreen is supported by the current platform.
- */
-ol.control.FullScreen.isFullScreenSupported = function() {
-  var body = document.body;
-  return !!(
-    body.webkitRequestFullscreen ||
-    (body.mozRequestFullScreen && document.mozFullScreenEnabled) ||
-    (body.msRequestFullscreen && document.msFullscreenEnabled) ||
-    (body.requestFullscreen && document.fullscreenEnabled)
-  );
-};
-
-/**
- * @return {boolean} Element is currently in fullscreen.
- */
-ol.control.FullScreen.isFullScreen = function() {
-  return !!(
-    document.webkitIsFullScreen || document.mozFullScreen ||
-    document.msFullscreenElement || document.fullscreenElement
-  );
-};
-
-/**
- * Request to fullscreen an element.
- * @param {Node} element Element to request fullscreen
- */
-ol.control.FullScreen.requestFullScreen = function(element) {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  }
-};
-
-/**
- * Request to fullscreen an element with keyboard input.
- * @param {Node} element Element to request fullscreen
- */
-ol.control.FullScreen.requestFullScreenWithKeys = function(element) {
-  if (element.mozRequestFullScreenWithKeys) {
-    element.mozRequestFullScreenWithKeys();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-  } else {
-    ol.control.FullScreen.requestFullScreen(element);
-  }
-};
-
-/**
- * Exit fullscreen.
- */
-ol.control.FullScreen.exitFullScreen = function() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  }
-};
-
-/**
- * @return {string} Change type.
- * @private
- */
-ol.control.FullScreen.getChangeType_ = (function() {
-  var changeType;
-  return function() {
-    if (!changeType) {
-      var body = document.body;
-      if (body.webkitRequestFullscreen) {
-        changeType = 'webkitfullscreenchange';
-      } else if (body.mozRequestFullScreen) {
-        changeType = 'mozfullscreenchange';
-      } else if (body.msRequestFullscreen) {
-        changeType = 'MSFullscreenChange';
-      } else if (body.requestFullscreen) {
-        changeType = 'fullscreenchange';
-      }
-    }
-    return changeType;
-  };
-})();
 
 goog.provide('ol.control.Rotate');
 
@@ -14172,6 +13931,266 @@ ol.control.defaults = function(opt_options) {
   return controls;
 
 };
+
+goog.provide('ol.control.FullScreen');
+
+goog.require('ol');
+goog.require('ol.control.Control');
+goog.require('ol.css');
+goog.require('ol.dom');
+goog.require('ol.events');
+goog.require('ol.events.EventType');
+
+
+/**
+ * @classdesc
+ * Provides a button that when clicked fills up the full screen with the map.
+ * The full screen source element is by default the element containing the map viewport unless
+ * overriden by providing the `source` option. In which case, the dom
+ * element introduced using this parameter will be displayed in full screen.
+ *
+ * When in full screen mode, a close button is shown to exit full screen mode.
+ * The [Fullscreen API](http://www.w3.org/TR/fullscreen/) is used to
+ * toggle the map in full screen mode.
+ *
+ *
+ * @constructor
+ * @extends {ol.control.Control}
+ * @param {olx.control.FullScreenOptions=} opt_options Options.
+ * @api stable
+ */
+ol.control.FullScreen = function(opt_options) {
+
+  var options = opt_options ? opt_options : {};
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.cssClassName_ = options.className !== undefined ? options.className :
+      'ol-full-screen';
+
+  var label = options.label !== undefined ? options.label : '\u2922';
+
+  /**
+   * @private
+   * @type {Node}
+   */
+  this.labelNode_ = typeof label === 'string' ?
+      document.createTextNode(label) : label;
+
+  var labelActive = options.labelActive !== undefined ? options.labelActive : '\u00d7';
+
+  /**
+   * @private
+   * @type {Node}
+   */
+  this.labelActiveNode_ = typeof labelActive === 'string' ?
+      document.createTextNode(labelActive) : labelActive;
+
+  var tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';
+  var button = document.createElement('button');
+  button.className = this.cssClassName_ + '-' + ol.control.FullScreen.isFullScreen();
+  button.setAttribute('type', 'button');
+  button.title = tipLabel;
+  button.appendChild(this.labelNode_);
+
+  ol.events.listen(button, ol.events.EventType.CLICK,
+      this.handleClick_, this);
+
+  var cssClasses = this.cssClassName_ + ' ' + ol.css.CLASS_UNSELECTABLE +
+      ' ' + ol.css.CLASS_CONTROL + ' ' +
+      (!ol.control.FullScreen.isFullScreenSupported() ? ol.css.CLASS_UNSUPPORTED : '');
+  var element = document.createElement('div');
+  element.className = cssClasses;
+  element.appendChild(button);
+
+  ol.control.Control.call(this, {
+    element: element,
+    target: options.target
+  });
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.keys_ = options.keys !== undefined ? options.keys : false;
+
+  /**
+   * @private
+   * @type {Element|string|undefined}
+   */
+  this.source_ = options.source;
+
+};
+ol.inherits(ol.control.FullScreen, ol.control.Control);
+
+
+/**
+ * @param {Event} event The event to handle
+ * @private
+ */
+ol.control.FullScreen.prototype.handleClick_ = function(event) {
+  event.preventDefault();
+  this.handleFullScreen_();
+};
+
+
+/**
+ * @private
+ */
+ol.control.FullScreen.prototype.handleFullScreen_ = function() {
+  if (!ol.control.FullScreen.isFullScreenSupported()) {
+    return;
+  }
+  var map = this.getMap();
+  if (!map) {
+    return;
+  }
+  if (ol.control.FullScreen.isFullScreen()) {
+    ol.control.FullScreen.exitFullScreen();
+  } else {
+    var element;
+    if (this.source_) {
+      element = typeof this.source_ === 'string' ?
+        document.getElementById(this.source_) :
+        this.source_;
+    } else {
+      element = map.getTargetElement();
+    }
+    if (this.keys_) {
+      ol.control.FullScreen.requestFullScreenWithKeys(element);
+
+    } else {
+      ol.control.FullScreen.requestFullScreen(element);
+    }
+  }
+};
+
+
+/**
+ * @private
+ */
+ol.control.FullScreen.prototype.handleFullScreenChange_ = function() {
+  var button = this.element.firstElementChild;
+  var map = this.getMap();
+  if (ol.control.FullScreen.isFullScreen()) {
+    button.className = this.cssClassName_ + '-true';
+    ol.dom.replaceNode(this.labelActiveNode_, this.labelNode_);
+  } else {
+    button.className = this.cssClassName_ + '-false';
+    ol.dom.replaceNode(this.labelNode_, this.labelActiveNode_);
+  }
+  if (map) {
+    map.updateSize();
+  }
+};
+
+
+/**
+ * @inheritDoc
+ * @api stable
+ */
+ol.control.FullScreen.prototype.setMap = function(map) {
+  ol.control.Control.prototype.setMap.call(this, map);
+  if (map) {
+    this.listenerKeys.push(ol.events.listen(document,
+        ol.control.FullScreen.getChangeType_(),
+        this.handleFullScreenChange_, this)
+    );
+  }
+};
+
+/**
+ * @return {boolean} Fullscreen is supported by the current platform.
+ */
+ol.control.FullScreen.isFullScreenSupported = function() {
+  var body = document.body;
+  return !!(
+    body.webkitRequestFullscreen ||
+    (body.mozRequestFullScreen && document.mozFullScreenEnabled) ||
+    (body.msRequestFullscreen && document.msFullscreenEnabled) ||
+    (body.requestFullscreen && document.fullscreenEnabled)
+  );
+};
+
+/**
+ * @return {boolean} Element is currently in fullscreen.
+ */
+ol.control.FullScreen.isFullScreen = function() {
+  return !!(
+    document.webkitIsFullScreen || document.mozFullScreen ||
+    document.msFullscreenElement || document.fullscreenElement
+  );
+};
+
+/**
+ * Request to fullscreen an element.
+ * @param {Node} element Element to request fullscreen
+ */
+ol.control.FullScreen.requestFullScreen = function(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  }
+};
+
+/**
+ * Request to fullscreen an element with keyboard input.
+ * @param {Node} element Element to request fullscreen
+ */
+ol.control.FullScreen.requestFullScreenWithKeys = function(element) {
+  if (element.mozRequestFullScreenWithKeys) {
+    element.mozRequestFullScreenWithKeys();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+  } else {
+    ol.control.FullScreen.requestFullScreen(element);
+  }
+};
+
+/**
+ * Exit fullscreen.
+ */
+ol.control.FullScreen.exitFullScreen = function() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+};
+
+/**
+ * @return {string} Change type.
+ * @private
+ */
+ol.control.FullScreen.getChangeType_ = (function() {
+  var changeType;
+  return function() {
+    if (!changeType) {
+      var body = document.body;
+      if (body.webkitRequestFullscreen) {
+        changeType = 'webkitfullscreenchange';
+      } else if (body.mozRequestFullScreen) {
+        changeType = 'mozfullscreenchange';
+      } else if (body.msRequestFullscreen) {
+        changeType = 'MSFullscreenChange';
+      } else if (body.requestFullscreen) {
+        changeType = 'fullscreenchange';
+      }
+    }
+    return changeType;
+  };
+})();
 
 // FIXME should listen on appropriate pane, once it is defined
 
@@ -20072,6 +20091,12 @@ ol.interaction.PinchZoom = function(opt_options) {
 
   /**
    * @private
+   * @type {boolean}
+   */
+  this.constrainResolution_ = options.constrainResolution || false;
+
+  /**
+   * @private
    * @type {ol.Coordinate}
    */
   this.anchor_ = null;
@@ -20154,13 +20179,15 @@ ol.interaction.PinchZoom.handleUpEvent_ = function(mapBrowserEvent) {
     var map = mapBrowserEvent.map;
     var view = map.getView();
     view.setHint(ol.View.Hint.INTERACTING, -1);
-    var resolution = view.getResolution();
-    // Zoom to final resolution, with an animation, and provide a
-    // direction not to zoom out/in if user was pinching in/out.
-    // Direction is > 0 if pinching out, and < 0 if pinching in.
-    var direction = this.lastScaleDelta_ - 1;
-    ol.interaction.Interaction.zoom(map, view, resolution,
-        this.anchor_, this.duration_, direction);
+    if (this.constrainResolution_) {
+      var resolution = view.getResolution();
+      // Zoom to final resolution, with an animation, and provide a
+      // direction not to zoom out/in if user was pinching in/out.
+      // Direction is > 0 if pinching out, and < 0 if pinching in.
+      var direction = this.lastScaleDelta_ - 1;
+      ol.interaction.Interaction.zoom(map, view, resolution,
+          this.anchor_, this.duration_, direction);
+    }
     return false;
   } else {
     return true;
@@ -21803,6 +21830,7 @@ ol.renderer.Map.expireIconCache_ = function(map, frameState) {
 /**
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {olx.FrameState} frameState FrameState.
+ * @param {number} hitTolerance Hit tolerance in pixels.
  * @param {function(this: S, (ol.Feature|ol.render.Feature),
  *     ol.layer.Layer): T} callback Feature callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
@@ -21814,7 +21842,7 @@ ol.renderer.Map.expireIconCache_ = function(map, frameState) {
  * @return {T|undefined} Callback result.
  * @template S,T,U
  */
-ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg,
+ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg,
         layerFilter, thisArg2) {
   var result;
   var viewState = frameState.viewState;
@@ -21858,7 +21886,7 @@ ol.renderer.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, fram
       if (layer.getSource()) {
         result = layerRenderer.forEachFeatureAtCoordinate(
             layer.getSource().getWrapX() ? translatedCoordinate : coordinate,
-            frameState, forEachFeatureAtCoordinate, thisArg);
+            frameState, hitTolerance, forEachFeatureAtCoordinate, thisArg);
       }
       if (result) {
         return result;
@@ -21891,6 +21919,7 @@ ol.renderer.Map.prototype.forEachLayerAtPixel = function(pixel, frameState, call
 /**
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {olx.FrameState} frameState FrameState.
+ * @param {number} hitTolerance Hit tolerance in pixels.
  * @param {function(this: U, ol.layer.Layer): boolean} layerFilter Layer filter
  *     function, only layers which are visible and for which this function
  *     returns `true` will be tested for features.  By default, all visible
@@ -21899,9 +21928,9 @@ ol.renderer.Map.prototype.forEachLayerAtPixel = function(pixel, frameState, call
  * @return {boolean} Is there a feature at the given coordinate?
  * @template U
  */
-ol.renderer.Map.prototype.hasFeatureAtCoordinate = function(coordinate, frameState, layerFilter, thisArg) {
+ol.renderer.Map.prototype.hasFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, layerFilter, thisArg) {
   var hasFeature = this.forEachFeatureAtCoordinate(
-      coordinate, frameState, ol.functions.TRUE, this, layerFilter, thisArg);
+      coordinate, frameState, hitTolerance, ol.functions.TRUE, this, layerFilter, thisArg);
 
   return hasFeature !== undefined;
 };
@@ -25620,6 +25649,7 @@ ol.inherits(ol.renderer.Layer, ol.Observable);
 /**
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {olx.FrameState} frameState Frame state.
+ * @param {number} hitTolerance Hit tolerance in pixels.
  * @param {function(this: S, (ol.Feature|ol.render.Feature), ol.layer.Layer): T}
  *     callback Feature callback.
  * @param {S} thisArg Value to use as `this` when executing `callback`.
@@ -25979,7 +26009,7 @@ ol.renderer.canvas.Layer.prototype.dispatchComposeEvent_ = function(type, contex
  */
 ol.renderer.canvas.Layer.prototype.forEachLayerAtCoordinate = function(coordinate, frameState, callback, thisArg) {
   var hasFeature = this.forEachFeatureAtCoordinate(
-      coordinate, frameState, ol.functions.TRUE, this);
+      coordinate, frameState, 0, ol.functions.TRUE, this);
 
   if (hasFeature) {
     return callback.call(thisArg, this.getLayer(), null);
@@ -26162,14 +26192,14 @@ ol.renderer.canvas.IntermediateCanvas.prototype.getImageTransform = function() {
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.IntermediateCanvas.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+ol.renderer.canvas.IntermediateCanvas.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtCoordinate(
-      coordinate, resolution, rotation, skippedFeatureUids,
+      coordinate, resolution, rotation, hitTolerance, skippedFeatureUids,
       /**
        * @param {ol.Feature|ol.render.Feature} feature Feature.
        * @return {?} Callback result.
@@ -26193,7 +26223,7 @@ ol.renderer.canvas.IntermediateCanvas.prototype.forEachLayerAtCoordinate = funct
     // so that for example also transparent polygons are detected
     return ol.renderer.canvas.Layer.prototype.forEachLayerAtCoordinate.apply(this, arguments);
   } else {
-    var pixel = ol.transform.apply(this.coordinateToCanvasPixelTransform, coordinate);
+    var pixel = ol.transform.apply(this.coordinateToCanvasPixelTransform, coordinate.slice());
     ol.coordinate.scale(pixel, frameState.viewState.resolution / this.renderedResolution);
 
     if (!this.hitCanvasContext_) {
@@ -26303,7 +26333,6 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
       var loaded = this.loadImage(image);
       if (loaded) {
         this.image_ = image;
-        this.renderedResolution = viewResolution;
       }
     }
   }
@@ -26329,6 +26358,7 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
 
     this.updateAttributions(frameState.attributions, image.getAttributions());
     this.updateLogos(frameState, imageSource);
+    this.renderedResolution = viewResolution * pixelRatio / imagePixelRatio;
   }
 
   return !!this.image_;
@@ -26342,6 +26372,7 @@ goog.require('ol');
 goog.require('ol.transform');
 goog.require('ol.TileRange');
 goog.require('ol.Tile');
+goog.require('ol.View');
 goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.extent');
@@ -26370,10 +26401,10 @@ ol.renderer.canvas.TileLayer = function(tileLayer) {
   this.renderedExtent_ = null;
 
   /**
-   * @private
+   * @protected
    * @type {number}
    */
-  this.renderedRevision_;
+  this.renderedRevision;
 
   /**
    * @protected
@@ -26500,7 +26531,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
       (hints[ol.View.Hint.ANIMATING] || hints[ol.View.Hint.INTERACTING])) &&
       (newTiles || !(this.renderedExtent_ &&
       ol.extent.equals(this.renderedExtent_, imageExtent)) ||
-      this.renderedRevision_ != sourceRevision)) {
+      this.renderedRevision != sourceRevision)) {
 
     var tilePixelSize = tileSource.getTilePixelSize(z, pixelRatio, projection);
     var width = tileRange.getWidth() * tilePixelSize[0];
@@ -26543,18 +26574,18 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
       }
     }
 
-    this.renderedRevision_ = sourceRevision;
-    this.renderedResolution = tileResolution;
+    this.renderedRevision = sourceRevision;
+    this.renderedResolution = tileResolution * pixelRatio / tilePixelRatio;
     this.renderedExtent_ = imageExtent;
   }
 
-  var scale = pixelRatio / tilePixelRatio * this.renderedResolution / viewResolution;
+  var scale = this.renderedResolution / viewResolution;
   var transform = ol.transform.compose(this.imageTransform_,
       pixelRatio * size[0] / 2, pixelRatio * size[1] / 2,
       scale, scale,
       0,
-      tilePixelRatio * (this.renderedExtent_[0] - viewCenter[0]) / this.renderedResolution,
-      tilePixelRatio * (viewCenter[1] - this.renderedExtent_[3]) / this.renderedResolution);
+      (this.renderedExtent_[0] - viewCenter[0]) / this.renderedResolution * pixelRatio,
+      (viewCenter[1] - this.renderedExtent_[3]) / this.renderedResolution * pixelRatio);
   ol.transform.compose(this.coordinateToCanvasPixelTransform,
       pixelRatio * size[0] / 2 - transform[4], pixelRatio * size[1] / 2 - transform[5],
       pixelRatio / viewResolution, -pixelRatio / viewResolution,
@@ -28697,10 +28728,89 @@ ol.render.canvas.ReplayGroup = function(
    * @type {ol.Transform}
    */
   this.hitDetectionTransform_ = ol.transform.create();
-
 };
 ol.inherits(ol.render.canvas.ReplayGroup, ol.render.ReplayGroup);
 
+
+/**
+ * This cache is used for storing calculated pixel circles for increasing performance.
+ * It is a static property to allow each Replaygroup to access it.
+ * @type {Object.<number, Array.<Array.<(boolean|undefined)>>>}
+ * @private
+ */
+ol.render.canvas.ReplayGroup.circleArrayCache_ = {
+  0: [[true]]
+};
+
+
+/**
+ * This method fills a row in the array from the given coordinate to the
+ * middle with `true`.
+ * @param {Array.<Array.<(boolean|undefined)>>} array The array that will be altered.
+ * @param {number} x X coordinate.
+ * @param {number} y Y coordinate.
+ * @private
+ */
+ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_ = function(array, x, y) {
+  var i;
+  var radius = Math.floor(array.length / 2);
+  if (x >= radius) {
+    for (i = radius; i < x; i++) {
+      array[i][y] = true;
+    }
+  } else if (x < radius) {
+    for (i = x + 1; i < radius; i++) {
+      array[i][y] = true;
+    }
+  }
+};
+
+
+/**
+ * This methods creates a circle inside a fitting array. Points inside the
+ * circle are marked by true, points on the outside are undefined.
+ * It uses the midpoint circle algorithm.
+ * A cache is used to increase performance.
+ * @param {number} radius Radius.
+ * @returns {Array.<Array.<(boolean|undefined)>>} An array with marked circle points.
+ * @private
+ */
+ol.render.canvas.ReplayGroup.getCircleArray_ = function(radius) {
+  if (ol.render.canvas.ReplayGroup.circleArrayCache_[radius] !== undefined) {
+    return ol.render.canvas.ReplayGroup.circleArrayCache_[radius];
+  }
+
+  var arraySize = radius * 2 + 1;
+  var arr = new Array(arraySize);
+  for (var i = 0; i < arraySize; i++) {
+    arr[i] = new Array(arraySize);
+  }
+
+  var x = radius;
+  var y = 0;
+  var error = 0;
+
+  while (x >= y) {
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius + x, radius + y);
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius + y, radius + x);
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius - y, radius + x);
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius - x, radius + y);
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius - x, radius - y);
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius - y, radius - x);
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius + y, radius - x);
+    ol.render.canvas.ReplayGroup.fillCircleArrayRowToMiddle_(arr, radius + x, radius - y);
+
+    y++;
+    error += 1 + 2 * y;
+    if (2 * (error - x) + 1 > 0) {
+      x -= 1;
+      error += 1 - 2 * x;
+    }
+  }
+
+  ol.render.canvas.ReplayGroup.circleArrayCache_[radius] = arr;
+  return arr;
+};
 
 /**
  * FIXME empty description for jsdoc
@@ -28721,6 +28831,7 @@ ol.render.canvas.ReplayGroup.prototype.finish = function() {
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
+ * @param {number} hitTolerance Hit tolerance in pixels.
  * @param {Object.<string, boolean>} skippedFeaturesHash Ids of features
  *     to skip.
  * @param {function((ol.Feature|ol.render.Feature)): T} callback Feature
@@ -28729,16 +28840,23 @@ ol.render.canvas.ReplayGroup.prototype.finish = function() {
  * @template T
  */
 ol.render.canvas.ReplayGroup.prototype.forEachFeatureAtCoordinate = function(
-    coordinate, resolution, rotation, skippedFeaturesHash, callback) {
+    coordinate, resolution, rotation, hitTolerance, skippedFeaturesHash, callback) {
 
+  hitTolerance = Math.round(hitTolerance);
+  var contextSize = hitTolerance * 2 + 1;
   var transform = ol.transform.compose(this.hitDetectionTransform_,
-      0.5, 0.5,
+      hitTolerance + 0.5, hitTolerance + 0.5,
       1 / resolution, -1 / resolution,
       -rotation,
       -coordinate[0], -coordinate[1]);
-
   var context = this.hitDetectionContext_;
-  context.clearRect(0, 0, 1, 1);
+
+  if (context.canvas.width !== contextSize || context.canvas.height !== contextSize) {
+    context.canvas.width = contextSize;
+    context.canvas.height = contextSize;
+  } else {
+    context.clearRect(0, 0, contextSize, contextSize);
+  }
 
   /**
    * @type {ol.Extent}
@@ -28747,8 +28865,10 @@ ol.render.canvas.ReplayGroup.prototype.forEachFeatureAtCoordinate = function(
   if (this.renderBuffer_ !== undefined) {
     hitExtent = ol.extent.createEmpty();
     ol.extent.extendCoordinate(hitExtent, coordinate);
-    ol.extent.buffer(hitExtent, resolution * this.renderBuffer_, hitExtent);
+    ol.extent.buffer(hitExtent, resolution * (this.renderBuffer_ + hitTolerance), hitExtent);
   }
+
+  var mask = ol.render.canvas.ReplayGroup.getCircleArray_(hitTolerance);
 
   return this.replayHitDetection_(context, transform, rotation,
       skippedFeaturesHash,
@@ -28757,13 +28877,21 @@ ol.render.canvas.ReplayGroup.prototype.forEachFeatureAtCoordinate = function(
        * @return {?} Callback result.
        */
       function(feature) {
-        var imageData = context.getImageData(0, 0, 1, 1).data;
-        if (imageData[3] > 0) {
-          var result = callback(feature);
-          if (result) {
-            return result;
+        var imageData = context.getImageData(0, 0, contextSize, contextSize).data;
+        for (var i = 0; i < contextSize; i++) {
+          for (var j = 0; j < contextSize; j++) {
+            if (mask[i][j]) {
+              if (imageData[(j * contextSize + i) * 4 + 3] > 0) {
+                var result = callback(feature);
+                if (result) {
+                  return result;
+                } else {
+                  context.clearRect(0, 0, contextSize, contextSize);
+                  return undefined;
+                }
+              }
+            }
           }
-          context.clearRect(0, 0, 1, 1);
         }
       }, hitExtent);
 };
@@ -29421,7 +29549,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg) {
   if (!this.replayGroup_) {
     return undefined;
   } else {
@@ -29431,7 +29559,7 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate = function(c
     /** @type {Object.<string, boolean>} */
     var features = {};
     return this.replayGroup_.forEachFeatureAtCoordinate(coordinate, resolution,
-        rotation, {},
+        rotation, hitTolerance, {},
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @return {?} Callback result.
@@ -29638,6 +29766,12 @@ ol.renderer.canvas.VectorTileLayer = function(layer) {
 
   /**
    * @private
+   * @type {number}
+   */
+  this.renderedLayerRevision_;
+
+  /**
+   * @private
    * @type {ol.Transform}
    */
   this.tmpTransform_ = ol.transform.create();
@@ -29667,6 +29801,19 @@ ol.renderer.canvas.VectorTileLayer.IMAGE_REPLAYS = {
 ol.renderer.canvas.VectorTileLayer.VECTOR_REPLAYS = {
   'hybrid': [ol.render.ReplayType.IMAGE, ol.render.ReplayType.TEXT],
   'vector': ol.render.replay.ORDER
+};
+
+
+/**
+ * @inheritDoc
+ */
+ol.renderer.canvas.VectorTileLayer.prototype.prepareFrame = function(frameState, layerState) {
+  var layerRevision = this.getLayer().getRevision();
+  if (this.renderedLayerRevision_ != layerRevision) {
+    this.renderedTiles.length = 0;
+  }
+  this.renderedLayerRevision_ = layerRevision;
+  return ol.renderer.canvas.TileLayer.prototype.prepareFrame.apply(this, arguments);
 };
 
 
@@ -29782,9 +29929,10 @@ ol.renderer.canvas.VectorTileLayer.prototype.drawTileImage = function(
 /**
  * @inheritDoc
  */
-ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg) {
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
+  hitTolerance = hitTolerance == undefined ? 0 : hitTolerance;
   var layer = this.getLayer();
   /** @type {Object.<string, boolean>} */
   var features = {};
@@ -29801,7 +29949,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
     tile = replayables[i];
     tileCoord = tile.tileCoord;
     tileExtent = source.getTileGrid().getTileCoordExtent(tileCoord, this.tmpExtent);
-    if (!ol.extent.containsCoordinate(tileExtent, coordinate)) {
+    if (!ol.extent.containsCoordinate(ol.extent.buffer(tileExtent, hitTolerance * resolution), coordinate)) {
       continue;
     }
     if (tile.getProjection().getUnits() === ol.proj.Units.TILE_PIXELS) {
@@ -29818,7 +29966,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
     }
     replayGroup = tile.getReplayState().replayGroup;
     found = found || replayGroup.forEachFeatureAtCoordinate(
-        tileSpaceCoordinate, resolution, rotation, {},
+        tileSpaceCoordinate, resolution, rotation, hitTolerance, {},
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @return {?} Callback result.
@@ -30292,7 +30440,7 @@ ol.render.webgl.lineStringInstruction = {
   BEGIN_LINE: 3,
   END_LINE: 5,
   BEGIN_LINE_CAP: 7,
-  END_LINE_CAP : 11,
+  END_LINE_CAP: 11,
   BEVEL_FIRST: 13,
   BEVEL_SECOND: 17,
   MITER_BOTTOM: 19,
@@ -37993,6 +38141,7 @@ ol.source.Source.toAttributionsArray_ = function(attributionLike) {
  * @param {ol.Coordinate} coordinate Coordinate.
  * @param {number} resolution Resolution.
  * @param {number} rotation Rotation.
+ * @param {number} hitTolerance Hit tolerance in pixels.
  * @param {Object.<string, boolean>} skippedFeatureUids Skipped feature uids.
  * @param {function((ol.Feature|ol.render.Feature)): T} callback Feature
  *     callback.
@@ -38579,14 +38728,14 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resol
  * @inheritDoc
  */
 ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
-    coordinate, resolution, rotation, skippedFeatureUids, callback) {
+    coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
   if (!this.replayGroup_) {
     return undefined;
   } else {
     /** @type {Object.<string, boolean>} */
     var features = {};
     return this.replayGroup_.forEachFeatureAtCoordinate(
-        coordinate, resolution, 0, skippedFeatureUids,
+        coordinate, resolution, 0, hitTolerance, skippedFeatureUids,
         /**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @return {?} Callback result.
@@ -38795,14 +38944,14 @@ ol.renderer.webgl.ImageLayer.prototype.createTexture_ = function(image) {
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+ol.renderer.webgl.ImageLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg) {
   var layer = this.getLayer();
   var source = layer.getSource();
   var resolution = frameState.viewState.resolution;
   var rotation = frameState.viewState.rotation;
   var skippedFeatureUids = frameState.skippedFeatureUids;
   return source.forEachFeatureAtCoordinate(
-      coordinate, resolution, rotation, skippedFeatureUids,
+      coordinate, resolution, rotation, hitTolerance, skippedFeatureUids,
 
       /**
        * @param {ol.Feature|ol.render.Feature} feature Feature.
@@ -38940,7 +39089,7 @@ ol.renderer.webgl.ImageLayer.prototype.updateProjectionMatrix_ = function(canvas
  */
 ol.renderer.webgl.ImageLayer.prototype.hasFeatureAtCoordinate = function(coordinate, frameState) {
   var hasFeature = this.forEachFeatureAtCoordinate(
-      coordinate, frameState, ol.functions.TRUE, this);
+      coordinate, frameState, 0, ol.functions.TRUE, this);
   return hasFeature !== undefined;
 };
 
@@ -38959,7 +39108,7 @@ ol.renderer.webgl.ImageLayer.prototype.forEachLayerAtPixel = function(pixel, fra
     var coordinate = ol.transform.apply(
         frameState.pixelToCoordinateTransform, pixel.slice());
     var hasFeature = this.forEachFeatureAtCoordinate(
-        coordinate, frameState, ol.functions.TRUE, this);
+        coordinate, frameState, 0, ol.functions.TRUE, this);
 
     if (hasFeature) {
       return callback.call(thisArg, this.getLayer(), null);
@@ -39649,7 +39798,7 @@ ol.renderer.webgl.VectorLayer.prototype.disposeInternal = function() {
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg) {
+ol.renderer.webgl.VectorLayer.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg) {
   if (!this.replayGroup_ || !this.layerState_) {
     return undefined;
   } else {
@@ -40627,7 +40776,7 @@ ol.renderer.webgl.Map.prototype.renderFrame = function(frameState) {
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, callback, thisArg,
+ol.renderer.webgl.Map.prototype.forEachFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, callback, thisArg,
         layerFilter, thisArg2) {
   var result;
 
@@ -40647,7 +40796,7 @@ ol.renderer.webgl.Map.prototype.forEachFeatureAtCoordinate = function(coordinate
         layerFilter.call(thisArg2, layer)) {
       var layerRenderer = this.getLayerRenderer(layer);
       result = layerRenderer.forEachFeatureAtCoordinate(
-          coordinate, frameState, callback, thisArg);
+          coordinate, frameState, hitTolerance, callback, thisArg);
       if (result) {
         return result;
       }
@@ -40660,7 +40809,7 @@ ol.renderer.webgl.Map.prototype.forEachFeatureAtCoordinate = function(coordinate
 /**
  * @inheritDoc
  */
-ol.renderer.webgl.Map.prototype.hasFeatureAtCoordinate = function(coordinate, frameState, layerFilter, thisArg) {
+ol.renderer.webgl.Map.prototype.hasFeatureAtCoordinate = function(coordinate, frameState, hitTolerance, layerFilter, thisArg) {
   var hasFeature = false;
 
   if (this.getGL().isContextLost()) {
@@ -41289,31 +41438,25 @@ ol.Map.prototype.disposeInternal = function() {
  *     the {@link ol.layer.Layer layer} of the feature and will be null for
  *     unmanaged layers. To stop detection, callback functions can return a
  *     truthy value.
- * @param {S=} opt_this Value to use as `this` when executing `callback`.
- * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
- *     filter function. The filter function will receive one argument, the
- *     {@link ol.layer.Layer layer-candidate} and it should return a boolean
- *     value. Only layers which are visible and for which this function returns
- *     `true` will be tested for features. By default, all visible layers will
- *     be tested.
- * @param {U=} opt_this2 Value to use as `this` when executing `layerFilter`.
+ * @param {olx.AtPixelOptions=} opt_options Optional options.
  * @return {T|undefined} Callback result, i.e. the return value of last
  * callback execution, or the first truthy callback return value.
- * @template S,T,U
+ * @template S,T
  * @api stable
  */
-ol.Map.prototype.forEachFeatureAtPixel = function(pixel, callback, opt_this, opt_layerFilter, opt_this2) {
+ol.Map.prototype.forEachFeatureAtPixel = function(pixel, callback, opt_options) {
   if (!this.frameState_) {
     return;
   }
   var coordinate = this.getCoordinateFromPixel(pixel);
-  var thisArg = opt_this !== undefined ? opt_this : null;
-  var layerFilter = opt_layerFilter !== undefined ?
-      opt_layerFilter : ol.functions.TRUE;
-  var thisArg2 = opt_this2 !== undefined ? opt_this2 : null;
+  opt_options = opt_options !== undefined ? opt_options : {};
+  var hitTolerance = opt_options.hitTolerance !== undefined ?
+    opt_options.hitTolerance * this.frameState_.pixelRatio : 0;
+  var layerFilter = opt_options.layerFilter !== undefined ?
+    opt_options.layerFilter : ol.functions.TRUE;
   return this.renderer_.forEachFeatureAtCoordinate(
-      coordinate, this.frameState_, callback, thisArg,
-      layerFilter, thisArg2);
+      coordinate, this.frameState_, hitTolerance, callback, null,
+      layerFilter, null);
 };
 
 
@@ -41359,27 +41502,23 @@ ol.Map.prototype.forEachLayerAtPixel = function(pixel, callback, opt_this, opt_l
  * Detect if features intersect a pixel on the viewport. Layers included in the
  * detection can be configured through `opt_layerFilter`.
  * @param {ol.Pixel} pixel Pixel.
- * @param {(function(this: U, ol.layer.Layer): boolean)=} opt_layerFilter Layer
- *     filter function. The filter function will receive one argument, the
- *     {@link ol.layer.Layer layer-candidate} and it should return a boolean
- *     value. Only layers which are visible and for which this function returns
- *     `true` will be tested for features. By default, all visible layers will
- *     be tested.
- * @param {U=} opt_this Value to use as `this` when executing `layerFilter`.
+ * @param {olx.AtPixelOptions=} opt_options Optional options.
  * @return {boolean} Is there a feature at the given pixel?
  * @template U
  * @api
  */
-ol.Map.prototype.hasFeatureAtPixel = function(pixel, opt_layerFilter, opt_this) {
+ol.Map.prototype.hasFeatureAtPixel = function(pixel, opt_options) {
   if (!this.frameState_) {
     return false;
   }
   var coordinate = this.getCoordinateFromPixel(pixel);
-  var layerFilter = opt_layerFilter !== undefined ?
-      opt_layerFilter : ol.functions.TRUE;
-  var thisArg = opt_this !== undefined ? opt_this : null;
+  opt_options = opt_options !== undefined ? opt_options : {};
+  var layerFilter = opt_options.layerFilter !== undefined ?
+      opt_options.layerFilter : ol.functions.TRUE;
+  var hitTolerance = opt_options.hitTolerance !== undefined ?
+    opt_options.hitTolerance * this.frameState_.pixelRatio : 0;
   return this.renderer_.hasFeatureAtCoordinate(
-      coordinate, this.frameState_, layerFilter, thisArg);
+      coordinate, this.frameState_, hitTolerance, layerFilter, null);
 };
 
 
@@ -41824,6 +41963,7 @@ ol.Map.prototype.handleViewChanged_ = function() {
   }
   var view = this.getView();
   if (view) {
+    this.viewport_.setAttribute('data-view', ol.getUid(view));
     this.viewPropertyListenerKey_ = ol.events.listen(
         view, ol.Object.EventType.PROPERTYCHANGE,
         this.handleViewPropertyChanged_, this);
@@ -43147,8 +43287,6 @@ ol.control.OverviewMap.prototype.resetExtent_ = function() {
   var view = map.getView();
   var extent = view.calculateExtent(mapSize);
 
-  var ovmapSize = /** @type {ol.Size} */ (ovmap.getSize());
-
   var ovview = ovmap.getView();
 
   // get how many times the current map overview could hold different
@@ -43158,7 +43296,7 @@ ol.control.OverviewMap.prototype.resetExtent_ = function() {
       ol.OVERVIEWMAP_MAX_RATIO / ol.OVERVIEWMAP_MIN_RATIO) / Math.LN2;
   var ratio = 1 / (Math.pow(2, steps / 2) * ol.OVERVIEWMAP_MIN_RATIO);
   ol.extent.scaleFromCenter(extent, ratio);
-  ovview.fit(extent, ovmapSize);
+  ovview.fit(extent);
 };
 
 
@@ -44096,8 +44234,7 @@ ol.control.ZoomToExtent.prototype.handleZoomToExtent_ = function() {
   var map = this.getMap();
   var view = map.getView();
   var extent = !this.extent_ ? view.getProjection().getExtent() : this.extent_;
-  var size = /** @type {ol.Size} */ (map.getSize());
-  view.fit(extent, size);
+  view.fit(extent);
 };
 
 goog.provide('ol.DeviceOrientation');
@@ -50393,7 +50530,7 @@ ol.format.GMLBase.prototype.readFlatCoordinatesFromNode_ = function(node, object
  * @private
  */
 ol.format.GMLBase.prototype.MULTIPOINT_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'pointMember': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.pointMemberParser_),
     'pointMembers': ol.xml.makeArrayPusher(
@@ -50408,7 +50545,7 @@ ol.format.GMLBase.prototype.MULTIPOINT_PARSERS_ = {
  * @private
  */
 ol.format.GMLBase.prototype.MULTILINESTRING_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'lineStringMember': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.lineStringMemberParser_),
     'lineStringMembers': ol.xml.makeArrayPusher(
@@ -50423,7 +50560,7 @@ ol.format.GMLBase.prototype.MULTILINESTRING_PARSERS_ = {
  * @private
  */
 ol.format.GMLBase.prototype.MULTIPOLYGON_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'polygonMember': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.polygonMemberParser_),
     'polygonMembers': ol.xml.makeArrayPusher(
@@ -50438,7 +50575,7 @@ ol.format.GMLBase.prototype.MULTIPOLYGON_PARSERS_ = {
  * @private
  */
 ol.format.GMLBase.prototype.POINTMEMBER_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'Point': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readFlatCoordinatesFromNode_)
   }
@@ -50451,7 +50588,7 @@ ol.format.GMLBase.prototype.POINTMEMBER_PARSERS_ = {
  * @private
  */
 ol.format.GMLBase.prototype.LINESTRINGMEMBER_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'LineString': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readLineString)
   }
@@ -50464,7 +50601,7 @@ ol.format.GMLBase.prototype.LINESTRINGMEMBER_PARSERS_ = {
  * @private
  */
 ol.format.GMLBase.prototype.POLYGONMEMBER_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'Polygon': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readPolygon)
   }
@@ -50477,7 +50614,7 @@ ol.format.GMLBase.prototype.POLYGONMEMBER_PARSERS_ = {
  * @protected
  */
 ol.format.GMLBase.prototype.RING_PARSERS = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'LinearRing': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readFlatLinearRing_)
   }
@@ -50643,6 +50780,15 @@ ol.format.XSD.readString = function(node) {
  */
 ol.format.XSD.writeBooleanTextNode = function(node, bool) {
   ol.format.XSD.writeStringTextNode(node, (bool) ? '1' : '0');
+};
+
+
+/**
+ * @param {Node} node Node to append a CDATA Section with the string to.
+ * @param {string} string String.
+ */
+ol.format.XSD.writeCDATASection = function(node, string) {
+  node.appendChild(ol.xml.DOCUMENT.createCDATASection(string));
 };
 
 
@@ -51141,7 +51287,7 @@ ol.format.GML3.prototype.readFlatPosList_ = function(node, objectStack) {
  * @private
  */
 ol.format.GML3.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'pos': ol.xml.makeReplacer(ol.format.GML3.prototype.readFlatPos_),
     'posList': ol.xml.makeReplacer(ol.format.GML3.prototype.readFlatPosList_)
   }
@@ -51154,7 +51300,7 @@ ol.format.GML3.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'interior': ol.format.GML3.prototype.interiorParser_,
     'exterior': ol.format.GML3.prototype.exteriorParser_
   }
@@ -51167,7 +51313,7 @@ ol.format.GML3.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.GEOMETRY_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'Point': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPoint),
     'MultiPoint': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readMultiPoint),
@@ -51175,7 +51321,7 @@ ol.format.GML3.prototype.GEOMETRY_PARSERS_ = {
         ol.format.GMLBase.prototype.readLineString),
     'MultiLineString': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readMultiLineString),
-    'LinearRing' : ol.xml.makeReplacer(
+    'LinearRing': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readLinearRing),
     'Polygon': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPolygon),
     'MultiPolygon': ol.xml.makeReplacer(
@@ -51197,7 +51343,7 @@ ol.format.GML3.prototype.GEOMETRY_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.MULTICURVE_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'curveMember': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.curveMemberParser_),
     'curveMembers': ol.xml.makeArrayPusher(
@@ -51212,7 +51358,7 @@ ol.format.GML3.prototype.MULTICURVE_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.MULTISURFACE_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'surfaceMember': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.surfaceMemberParser_),
     'surfaceMembers': ol.xml.makeArrayPusher(
@@ -51227,7 +51373,7 @@ ol.format.GML3.prototype.MULTISURFACE_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.CURVEMEMBER_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'LineString': ol.xml.makeArrayPusher(
         ol.format.GMLBase.prototype.readLineString),
     'Curve': ol.xml.makeArrayPusher(ol.format.GML3.prototype.readCurve_)
@@ -51241,7 +51387,7 @@ ol.format.GML3.prototype.CURVEMEMBER_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.SURFACEMEMBER_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'Polygon': ol.xml.makeArrayPusher(ol.format.GMLBase.prototype.readPolygon),
     'Surface': ol.xml.makeArrayPusher(ol.format.GML3.prototype.readSurface_)
   }
@@ -51254,7 +51400,7 @@ ol.format.GML3.prototype.SURFACEMEMBER_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.SURFACE_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'patches': ol.xml.makeReplacer(ol.format.GML3.prototype.readPatch_)
   }
 };
@@ -51266,7 +51412,7 @@ ol.format.GML3.prototype.SURFACE_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.CURVE_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'segments': ol.xml.makeReplacer(ol.format.GML3.prototype.readSegment_)
   }
 };
@@ -51278,7 +51424,7 @@ ol.format.GML3.prototype.CURVE_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.ENVELOPE_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'lowerCorner': ol.xml.makeArrayPusher(
         ol.format.GML3.prototype.readFlatPosList_),
     'upperCorner': ol.xml.makeArrayPusher(
@@ -51293,7 +51439,7 @@ ol.format.GML3.prototype.ENVELOPE_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.PATCHES_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'PolygonPatch': ol.xml.makeReplacer(
         ol.format.GML3.prototype.readPolygonPatch_)
   }
@@ -51306,7 +51452,7 @@ ol.format.GML3.prototype.PATCHES_PARSERS_ = {
  * @private
  */
 ol.format.GML3.prototype.SEGMENTS_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'LineStringSegment': ol.xml.makeReplacer(
         ol.format.GML3.prototype.readLineStringSegment_)
   }
@@ -52195,7 +52341,7 @@ ol.format.GML2.prototype.outerBoundaryIsParser_ = function(node, objectStack) {
  * @private
  */
 ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'coordinates': ol.xml.makeReplacer(
         ol.format.GML2.prototype.readFlatCoordinates_)
   }
@@ -52208,7 +52354,7 @@ ol.format.GML2.prototype.GEOMETRY_FLAT_COORDINATES_PARSERS_ = {
  * @private
  */
 ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'innerBoundaryIs': ol.format.GML2.prototype.innerBoundaryIsParser_,
     'outerBoundaryIs': ol.format.GML2.prototype.outerBoundaryIsParser_
   }
@@ -52221,7 +52367,7 @@ ol.format.GML2.prototype.FLAT_LINEAR_RINGS_PARSERS_ = {
  * @private
  */
 ol.format.GML2.prototype.BOX_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'coordinates': ol.xml.makeArrayPusher(
         ol.format.GML2.prototype.readFlatCoordinates_)
   }
@@ -52234,7 +52380,7 @@ ol.format.GML2.prototype.BOX_PARSERS_ = {
  * @private
  */
 ol.format.GML2.prototype.GEOMETRY_PARSERS_ = {
-  'http://www.opengis.net/gml' : {
+  'http://www.opengis.net/gml': {
     'Point': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPoint),
     'MultiPoint': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readMultiPoint),
@@ -52242,7 +52388,7 @@ ol.format.GML2.prototype.GEOMETRY_PARSERS_ = {
         ol.format.GMLBase.prototype.readLineString),
     'MultiLineString': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readMultiLineString),
-    'LinearRing' : ol.xml.makeReplacer(
+    'LinearRing': ol.xml.makeReplacer(
         ol.format.GMLBase.prototype.readLinearRing),
     'Polygon': ol.xml.makeReplacer(ol.format.GMLBase.prototype.readPolygon),
     'MultiPolygon': ol.xml.makeReplacer(
@@ -56958,6 +57104,54 @@ ol.format.KML.writeCoordinatesTextNode_ = function(node, coordinates, objectStac
 
 /**
  * @param {Node} node Node.
+ * @param {{name: *, value: *}} pair Name value pair.
+ * @param {Array.<*>} objectStack Object stack.
+ * @private
+ */
+ol.format.KML.writeDataNode_ = function(node, pair, objectStack) {
+  node.setAttribute('name', pair.name);
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
+  var value = pair.value;
+
+  if (typeof value == 'object') {
+    if (value !== null && value.displayName) {
+      ol.xml.pushSerializeAndPop(context, ol.format.KML.EXTENDEDDATA_NODE_SERIALIZERS_,
+        ol.xml.OBJECT_PROPERTY_NODE_FACTORY, [value.displayName], objectStack, ['displayName']);
+    }
+
+    if (value !== null && value.value) {
+      ol.xml.pushSerializeAndPop(context, ol.format.KML.EXTENDEDDATA_NODE_SERIALIZERS_,
+        ol.xml.OBJECT_PROPERTY_NODE_FACTORY, [value.value], objectStack, ['value']);
+    }
+  } else {
+    ol.xml.pushSerializeAndPop(context, ol.format.KML.EXTENDEDDATA_NODE_SERIALIZERS_,
+     ol.xml.OBJECT_PROPERTY_NODE_FACTORY, [value], objectStack, ['value']);
+  }
+};
+
+
+/**
+ * @param {Node} node Node to append a TextNode with the name to.
+ * @param {string} name DisplayName.
+ * @private
+ */
+ol.format.KML.writeDataNodeName_ = function(node, name) {
+  ol.format.XSD.writeCDATASection(node, name);
+};
+
+
+/**
+ * @param {Node} node Node to append a CDATA Section with the value to.
+ * @param {string} value Value.
+ * @private
+ */
+ol.format.KML.writeDataNodeValue_ = function(node, value) {
+  ol.format.XSD.writeStringTextNode(node, value);
+};
+
+
+/**
+ * @param {Node} node Node.
  * @param {Array.<ol.Feature>} features Features.
  * @param {Array.<*>} objectStack Object stack.
  * @this {ol.format.KML}
@@ -56968,6 +57162,24 @@ ol.format.KML.writeDocument_ = function(node, features, objectStack) {
   ol.xml.pushSerializeAndPop(context, ol.format.KML.DOCUMENT_SERIALIZERS_,
       ol.format.KML.DOCUMENT_NODE_FACTORY_, features, objectStack, undefined,
       this);
+};
+
+
+/**
+ * @param {Node} node Node.
+ * @param {{names: Array<string>, values: (Array<*>)}} namesAndValues Names and values.
+ * @param {Array.<*>} objectStack Object stack.
+ * @private
+ */
+ol.format.KML.writeExtendedData_ = function(node, namesAndValues, objectStack) {
+  var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
+  var names = namesAndValues.names, values = namesAndValues.values;
+  var length = names.length;
+
+  for (var i = 0; i < length; i++) {
+    ol.xml.pushSerializeAndPop(context, ol.format.KML.EXTENDEDDATA_NODE_SERIALIZERS_,
+      ol.format.KML.DATA_NODE_FACTORY_, [{name: names[i], value: values[i]}], objectStack);
+  }
 };
 
 
@@ -57168,6 +57380,21 @@ ol.format.KML.writePlacemark_ = function(node, feature, objectStack) {
   // serialize properties (properties unknown to KML are not serialized)
   var properties = feature.getProperties();
 
+  // don't export these to ExtendedData
+  var filter = {'address': 1, 'description': 1, 'name': 1, 'open': 1,
+    'phoneNumber': 1, 'styleUrl': 1, 'visibility': 1};
+  filter[feature.getGeometryName()] = 1;
+  var keys = Object.keys(properties || {}).sort().filter(function(v) {
+    return !filter[v];
+  });
+
+  if (keys.length > 0) {
+    var sequence = ol.xml.makeSequence(properties, keys);
+    var namesAndValues = {names: keys, values: sequence};
+    ol.xml.pushSerializeAndPop(context, ol.format.KML.PLACEMARK_SERIALIZERS_,
+      ol.format.KML.EXTENDEDDATA_NODE_FACTORY_, [namesAndValues], objectStack);
+  }
+
   var styleFunction = feature.getStyleFunction();
   if (styleFunction) {
     // FIXME the styles returned by the style function are supposed to be
@@ -57358,6 +57585,19 @@ ol.format.KML.DOCUMENT_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
+ * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
+ * @private
+ */
+ol.format.KML.EXTENDEDDATA_NODE_SERIALIZERS_ = ol.xml.makeStructureNS(
+    ol.format.KML.NAMESPACE_URIS_, {
+      'Data': ol.xml.makeChildAppender(ol.format.KML.writeDataNode_),
+      'value': ol.xml.makeChildAppender(ol.format.KML.writeDataNodeValue_),
+      'displayName': ol.xml.makeChildAppender(ol.format.KML.writeDataNodeName_)
+    });
+
+
+/**
+ * @const
  * @type {Object.<string, string>}
  * @private
  */
@@ -57523,6 +57763,8 @@ ol.format.KML.PLACEMARK_SEQUENCE_ = ol.xml.makeStructureNS(
  */
 ol.format.KML.PLACEMARK_SERIALIZERS_ = ol.xml.makeStructureNS(
     ol.format.KML.NAMESPACE_URIS_, {
+      'ExtendedData': ol.xml.makeChildAppender(
+          ol.format.KML.writeExtendedData_),
       'MultiGeometry': ol.xml.makeChildAppender(
           ol.format.KML.writeMultiGeometry_),
       'LineString': ol.xml.makeChildAppender(
@@ -57676,6 +57918,26 @@ ol.format.KML.COLOR_NODE_FACTORY_ = ol.xml.makeSimpleNodeFactory('color');
  */
 ol.format.KML.COORDINATES_NODE_FACTORY_ =
     ol.xml.makeSimpleNodeFactory('coordinates');
+
+
+/**
+ * A factory for creating Data nodes.
+ * @const
+ * @type {function(*, Array.<*>): (Node|undefined)}
+ * @private
+ */
+ol.format.KML.DATA_NODE_FACTORY_ =
+    ol.xml.makeSimpleNodeFactory('Data');
+
+
+/**
+ * A factory for creating ExtendedData nodes.
+ * @const
+ * @type {function(*, Array.<*>): (Node|undefined)}
+ * @private
+ */
+ol.format.KML.EXTENDEDDATA_NODE_FACTORY_ =
+    ol.xml.makeSimpleNodeFactory('ExtendedData');
 
 
 /**
@@ -59197,10 +59459,9 @@ ol.format.MVT = function(opt_options) {
 
   /**
    * @private
-   * @type {string}
+   * @type {string|undefined}
    */
-  this.geometryName_ = options.geometryName ?
-      options.geometryName : 'geometry';
+  this.geometryName_ = options.geometryName;
 
   /**
    * @private
@@ -59239,15 +59500,15 @@ ol.format.MVT.prototype.readFeature_ = function(
   var id = rawFeature.id;
   var values = rawFeature.properties;
   values[this.layerName_] = layer;
+  if (this.geometryName_) {
+    feature.setGeometryName(this.geometryName_);
+  }
   var geometry = ol.format.Feature.transformWithOptions(
       ol.format.MVT.readGeometry_(rawFeature), false,
       this.adaptOptions(opt_options));
-  if (geometry) {
-    values[this.geometryName_] = geometry;
-  }
+  feature.setGeometry(geometry);
   feature.setId(id);
   feature.setProperties(values);
-  feature.setGeometryName(this.geometryName_);
   return feature;
 };
 
@@ -69456,16 +69717,16 @@ ol.interaction.Modify.prototype.insertVertex_ = function(segmentData, vertex) {
  * @api
  */
 ol.interaction.Modify.prototype.removePoint = function() {
-  var handled = false;
   if (this.lastPointerEvent_ && this.lastPointerEvent_.type != ol.MapBrowserEvent.EventType.POINTERDRAG) {
     var evt = this.lastPointerEvent_;
     this.willModifyFeatures_(evt);
-    handled = this.removeVertex_();
+    this.removeVertex_();
     this.dispatchEvent(new ol.interaction.Modify.Event(
         ol.interaction.Modify.EventType.MODIFYEND, this.features_, evt));
     this.modified_ = false;
+    return true;
   }
-  return handled;
+  return false;
 };
 
 /**
@@ -69767,6 +70028,12 @@ ol.interaction.Select = function(opt_options) {
   this.filter_ = options.filter ? options.filter :
       ol.functions.TRUE;
 
+  /**
+   * @private
+   * @type {number}
+   */
+  this.hitTolerance_ = options.hitTolerance ? options.hitTolerance : 0;
+
   var featureOverlay = new ol.layer.Vector({
     source: new ol.source.Vector({
       useSpatialIndex: false,
@@ -69846,6 +70113,16 @@ ol.interaction.Select.prototype.getFeatures = function() {
 
 
 /**
+ * Returns the Hit-detection tolerance.
+ * @returns {number} Hit tolerance in pixels.
+ * @api
+ */
+ol.interaction.Select.prototype.getHitTolerance = function() {
+  return this.hitTolerance_;
+};
+
+
+/**
  * Returns the associated {@link ol.layer.Vector vectorlayer} of
  * the (last) selected feature. Note that this will not work with any
  * programmatic method like pushing features to
@@ -69886,7 +70163,7 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
     // the pixel.
     ol.obj.clear(this.featureLayerAssociation_);
     map.forEachFeatureAtPixel(mapBrowserEvent.pixel,
-        /**
+      (/**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @param {ol.layer.Layer} layer Layer.
          * @return {boolean|undefined} Continue to iterate over the features.
@@ -69897,7 +70174,10 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
             this.addFeatureLayerAssociation_(feature, layer);
             return !this.multi_;
           }
-        }, this, this.layerFilter_);
+        }).bind(this), {
+          layerFilter: this.layerFilter_,
+          hitTolerance: this.hitTolerance_
+        });
     var i;
     for (i = features.getLength() - 1; i >= 0; --i) {
       var feature = features.item(i);
@@ -69916,7 +70196,7 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
   } else {
     // Modify the currently selected feature(s).
     map.forEachFeatureAtPixel(mapBrowserEvent.pixel,
-        /**
+      (/**
          * @param {ol.Feature|ol.render.Feature} feature Feature.
          * @param {ol.layer.Layer} layer Layer.
          * @return {boolean|undefined} Continue to iterate over the features.
@@ -69934,7 +70214,10 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
             }
             return !this.multi_;
           }
-        }, this, this.layerFilter_);
+        }).bind(this), {
+          layerFilter: this.layerFilter_,
+          hitTolerance: this.hitTolerance_
+        });
     var j;
     for (j = deselected.length - 1; j >= 0; --j) {
       features.remove(deselected[j]);
@@ -69947,6 +70230,18 @@ ol.interaction.Select.handleEvent = function(mapBrowserEvent) {
             selected, deselected, mapBrowserEvent));
   }
   return ol.events.condition.pointerMove(mapBrowserEvent);
+};
+
+
+/**
+ * Hit-detection tolerance. Pixels inside the radius around the given position
+ * will be checked for features. This only works for the canvas renderer and
+ * not for WebGL.
+ * @param {number} hitTolerance Hit tolerance in pixels.
+ * @api
+ */
+ol.interaction.Select.prototype.setHitTolerance = function(hitTolerance) {
+  this.hitTolerance_ = hitTolerance;
 };
 
 
@@ -70775,6 +71070,12 @@ ol.interaction.Translate = function(opt_options) {
   this.layerFilter_ = layerFilter;
 
   /**
+   * @private
+   * @type {number}
+   */
+  this.hitTolerance_ = options.hitTolerance ? options.hitTolerance : 0;
+
+  /**
    * @type {ol.Feature}
    * @private
    */
@@ -70901,7 +71202,32 @@ ol.interaction.Translate.prototype.featuresAtPixel_ = function(pixel, map) {
             ol.array.includes(this.features_.getArray(), feature)) {
           return feature;
         }
-      }, this, this.layerFilter_);
+      }.bind(this), {
+        layerFilter: this.layerFilter_,
+        hitTolerance: this.hitTolerance_
+      });
+};
+
+
+/**
+ * Returns the Hit-detection tolerance.
+ * @returns {number} Hit tolerance in pixels.
+ * @api
+ */
+ol.interaction.Translate.prototype.getHitTolerance = function() {
+  return this.hitTolerance_;
+};
+
+
+/**
+ * Hit-detection tolerance. Pixels inside the radius around the given position
+ * will be checked for features. This only works for the canvas renderer and
+ * not for WebGL.
+ * @param {number} hitTolerance Hit tolerance in pixels.
+ * @api
+ */
+ol.interaction.Translate.prototype.setHitTolerance = function(hitTolerance) {
+  this.hitTolerance_ = hitTolerance;
 };
 
 
@@ -75114,16 +75440,19 @@ ol.source.Raster.prototype.composeFrame_ = function(frameState, callback) {
       imageDatas[i] = imageData;
     } else {
       // image not yet ready
-      return;
+      imageDatas = null;
+      break;
     }
   }
 
-  var data = {};
-  this.dispatchEvent(new ol.source.Raster.Event(
-      ol.source.Raster.EventType.BEFOREOPERATIONS, frameState, data));
+  if (imageDatas) {
+    var data = {};
+    this.dispatchEvent(new ol.source.Raster.Event(
+        ol.source.Raster.EventType.BEFOREOPERATIONS, frameState, data));
 
-  this.worker_.process(imageDatas, data,
-      this.onWorkerComplete_.bind(this, frameState, callback));
+    this.worker_.process(imageDatas, data,
+        this.onWorkerComplete_.bind(this, frameState, callback));
+  }
 
   frameState.tileQueue.loadMoreTiles(16, 16);
 };
@@ -78735,6 +79064,11 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
+    'ol.control.defaults',
+    ol.control.defaults,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.coordinate.add',
     ol.coordinate.add,
     OPENLAYERS);
@@ -78822,6 +79156,106 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.easing.upAndDown',
     ol.easing.upAndDown,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.boundingExtent',
+    ol.extent.boundingExtent,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.buffer',
+    ol.extent.buffer,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.containsCoordinate',
+    ol.extent.containsCoordinate,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.containsExtent',
+    ol.extent.containsExtent,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.containsXY',
+    ol.extent.containsXY,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.createEmpty',
+    ol.extent.createEmpty,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.equals',
+    ol.extent.equals,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.extend',
+    ol.extent.extend,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getBottomLeft',
+    ol.extent.getBottomLeft,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getBottomRight',
+    ol.extent.getBottomRight,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getCenter',
+    ol.extent.getCenter,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getHeight',
+    ol.extent.getHeight,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getIntersection',
+    ol.extent.getIntersection,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getSize',
+    ol.extent.getSize,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getTopLeft',
+    ol.extent.getTopLeft,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getTopRight',
+    ol.extent.getTopRight,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.getWidth',
+    ol.extent.getWidth,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.intersects',
+    ol.extent.intersects,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.isEmpty',
+    ol.extent.isEmpty,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.extent.applyTransform',
+    ol.extent.applyTransform,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -79032,6 +79466,11 @@ goog.exportProperty(
 goog.exportSymbol(
     'ol.inherits',
     ol.inherits,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.interaction.defaults',
+    ol.interaction.defaults,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -79410,6 +79849,71 @@ goog.exportProperty(
     ol.Overlay.prototype.setPositioning);
 
 goog.exportSymbol(
+    'ol.proj.METERS_PER_UNIT',
+    ol.proj.METERS_PER_UNIT,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.setProj4',
+    ol.proj.setProj4,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.getPointResolution',
+    ol.proj.getPointResolution,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.addEquivalentProjections',
+    ol.proj.addEquivalentProjections,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.addProjection',
+    ol.proj.addProjection,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.addCoordinateTransforms',
+    ol.proj.addCoordinateTransforms,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.fromLonLat',
+    ol.proj.fromLonLat,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.toLonLat',
+    ol.proj.toLonLat,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.get',
+    ol.proj.get,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.equivalent',
+    ol.proj.equivalent,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.getTransform',
+    ol.proj.getTransform,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.transform',
+    ol.proj.transform,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.proj.transformExtent',
+    ol.proj.transformExtent,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.render.toContext',
     ol.render.toContext,
     OPENLAYERS);
@@ -79418,6 +79922,21 @@ goog.exportSymbol(
     'ol.size.toSize',
     ol.size.toSize,
     OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.Sphere',
+    ol.Sphere,
+    OPENLAYERS);
+
+goog.exportProperty(
+    ol.Sphere.prototype,
+    'geodesicArea',
+    ol.Sphere.prototype.geodesicArea);
+
+goog.exportProperty(
+    ol.Sphere.prototype,
+    'haversineDistance',
+    ol.Sphere.prototype.haversineDistance);
 
 goog.exportProperty(
     ol.Tile.prototype,
@@ -79428,6 +79947,11 @@ goog.exportProperty(
     ol.Tile.prototype,
     'load',
     ol.Tile.prototype.load);
+
+goog.exportSymbol(
+    'ol.tilegrid.createXYZ',
+    ol.tilegrid.createXYZ,
+    OPENLAYERS);
 
 goog.exportProperty(
     ol.VectorTile.prototype,
@@ -79573,11 +80097,6 @@ goog.exportProperty(
     ol.webgl.Context.prototype,
     'useProgram',
     ol.webgl.Context.prototype.useProgram);
-
-goog.exportSymbol(
-    'ol.tilegrid.createXYZ',
-    ol.tilegrid.createXYZ,
-    OPENLAYERS);
 
 goog.exportSymbol(
     'ol.tilegrid.TileGrid',
@@ -80103,21 +80622,6 @@ goog.exportProperty(
     ol.style.Text.prototype,
     'setTextBaseline',
     ol.style.Text.prototype.setTextBaseline);
-
-goog.exportSymbol(
-    'ol.Sphere',
-    ol.Sphere,
-    OPENLAYERS);
-
-goog.exportProperty(
-    ol.Sphere.prototype,
-    'geodesicArea',
-    ol.Sphere.prototype.geodesicArea);
-
-goog.exportProperty(
-    ol.Sphere.prototype,
-    'haversineDistance',
-    ol.Sphere.prototype.haversineDistance);
 
 goog.exportSymbol(
     'ol.source.BingMaps',
@@ -80770,71 +81274,6 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.proj.METERS_PER_UNIT',
-    ol.proj.METERS_PER_UNIT,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.setProj4',
-    ol.proj.setProj4,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.getPointResolution',
-    ol.proj.getPointResolution,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.addEquivalentProjections',
-    ol.proj.addEquivalentProjections,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.addProjection',
-    ol.proj.addProjection,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.addCoordinateTransforms',
-    ol.proj.addCoordinateTransforms,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.fromLonLat',
-    ol.proj.fromLonLat,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.toLonLat',
-    ol.proj.toLonLat,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.get',
-    ol.proj.get,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.equivalent',
-    ol.proj.equivalent,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.getTransform',
-    ol.proj.getTransform,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.transform',
-    ol.proj.transform,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.proj.transformExtent',
-    ol.proj.transformExtent,
-    OPENLAYERS);
-
-goog.exportSymbol(
     'ol.proj.Projection',
     ol.proj.Projection,
     OPENLAYERS);
@@ -81255,11 +81694,6 @@ goog.exportProperty(
     ol.interaction.Extent.Event.prototype.extent_);
 
 goog.exportSymbol(
-    'ol.interaction.defaults',
-    ol.interaction.defaults,
-    OPENLAYERS);
-
-goog.exportSymbol(
     'ol.interaction.Interaction',
     ol.interaction.Interaction,
     OPENLAYERS);
@@ -81371,6 +81805,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Select.prototype,
+    'getHitTolerance',
+    ol.interaction.Select.prototype.getHitTolerance);
+
+goog.exportProperty(
+    ol.interaction.Select.prototype,
     'getLayer',
     ol.interaction.Select.prototype.getLayer);
 
@@ -81378,6 +81817,11 @@ goog.exportSymbol(
     'ol.interaction.Select.handleEvent',
     ol.interaction.Select.handleEvent,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.interaction.Select.prototype,
+    'setHitTolerance',
+    ol.interaction.Select.prototype.setHitTolerance);
 
 goog.exportProperty(
     ol.interaction.Select.prototype,
@@ -81418,6 +81862,16 @@ goog.exportSymbol(
     'ol.interaction.Translate',
     ol.interaction.Translate,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.interaction.Translate.prototype,
+    'getHitTolerance',
+    ol.interaction.Translate.prototype.getHitTolerance);
+
+goog.exportProperty(
+    ol.interaction.Translate.prototype,
+    'setHitTolerance',
+    ol.interaction.Translate.prototype.setHitTolerance);
 
 goog.exportProperty(
     ol.interaction.Translate.Event.prototype,
@@ -81990,6 +82444,81 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
+    'ol.format.filter.and',
+    ol.format.filter.and,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.or',
+    ol.format.filter.or,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.not',
+    ol.format.filter.not,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.bbox',
+    ol.format.filter.bbox,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.intersects',
+    ol.format.filter.intersects,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.within',
+    ol.format.filter.within,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.equalTo',
+    ol.format.filter.equalTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.notEqualTo',
+    ol.format.filter.notEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.lessThan',
+    ol.format.filter.lessThan,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.lessThanOrEqualTo',
+    ol.format.filter.lessThanOrEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.greaterThan',
+    ol.format.filter.greaterThan,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.greaterThanOrEqualTo',
+    ol.format.filter.greaterThanOrEqualTo,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.isNull',
+    ol.format.filter.isNull,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.between',
+    ol.format.filter.between,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.like',
+    ol.format.filter.like,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.format.GeoJSON',
     ol.format.GeoJSON,
     OPENLAYERS);
@@ -82430,81 +82959,6 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
-    'ol.format.filter.and',
-    ol.format.filter.and,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.or',
-    ol.format.filter.or,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.not',
-    ol.format.filter.not,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.bbox',
-    ol.format.filter.bbox,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.intersects',
-    ol.format.filter.intersects,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.within',
-    ol.format.filter.within,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.equalTo',
-    ol.format.filter.equalTo,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.notEqualTo',
-    ol.format.filter.notEqualTo,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.lessThan',
-    ol.format.filter.lessThan,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.lessThanOrEqualTo',
-    ol.format.filter.lessThanOrEqualTo,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.greaterThan',
-    ol.format.filter.greaterThan,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.greaterThanOrEqualTo',
-    ol.format.filter.greaterThanOrEqualTo,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.isNull',
-    ol.format.filter.isNull,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.between',
-    ol.format.filter.between,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.format.filter.like',
-    ol.format.filter.like,
-    OPENLAYERS);
-
-goog.exportSymbol(
     'ol.format.filter.Intersects',
     ol.format.filter.Intersects,
     OPENLAYERS);
@@ -82557,106 +83011,6 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.format.filter.Within',
     ol.format.filter.Within,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.boundingExtent',
-    ol.extent.boundingExtent,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.buffer',
-    ol.extent.buffer,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.containsCoordinate',
-    ol.extent.containsCoordinate,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.containsExtent',
-    ol.extent.containsExtent,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.containsXY',
-    ol.extent.containsXY,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.createEmpty',
-    ol.extent.createEmpty,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.equals',
-    ol.extent.equals,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.extend',
-    ol.extent.extend,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getBottomLeft',
-    ol.extent.getBottomLeft,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getBottomRight',
-    ol.extent.getBottomRight,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getCenter',
-    ol.extent.getCenter,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getHeight',
-    ol.extent.getHeight,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getIntersection',
-    ol.extent.getIntersection,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getSize',
-    ol.extent.getSize,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getTopLeft',
-    ol.extent.getTopLeft,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getTopRight',
-    ol.extent.getTopRight,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.getWidth',
-    ol.extent.getWidth,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.intersects',
-    ol.extent.intersects,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.isEmpty',
-    ol.extent.isEmpty,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.extent.applyTransform',
-    ol.extent.applyTransform,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -82802,11 +83156,6 @@ goog.exportProperty(
 goog.exportSymbol(
     'ol.control.FullScreen',
     ol.control.FullScreen,
-    OPENLAYERS);
-
-goog.exportSymbol(
-    'ol.control.defaults',
-    ol.control.defaults,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -92233,7 +92582,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.19.1-320-ge95778e';
+ol.VERSION = 'v3.20.0-45-gf975262';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

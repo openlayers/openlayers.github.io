@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v3.19.1 API - Namespace: condition</title>
+    <title>OpenLayers v3.20.1 API - Namespace: condition</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1855,7 +1855,7 @@
                     <a href="ol.View.html#dispatchEvent">dispatchEvent</a>
                 </li>
             
-                <li data-name="ol.View#fit" class="unstable">
+                <li data-name="ol.View#fit" class="">
                     <a href="ol.View.html#fit">fit</a>
                 </li>
             
@@ -8647,6 +8647,10 @@
                     <a href="ol.interaction.Select.html#getFeatures">getFeatures</a>
                 </li>
             
+                <li data-name="ol.interaction.Select#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
                 </li>
@@ -8681,6 +8685,10 @@
             
                 <li data-name="ol.interaction.Select#setActive" class="unstable">
                     <a href="ol.interaction.Select.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#setMap" class="">
@@ -8906,6 +8914,10 @@
                     <a href="ol.interaction.Translate.html#getActive">getActive</a>
                 </li>
             
+                <li data-name="ol.interaction.Translate#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Translate#getKeys" class="">
                     <a href="ol.interaction.Translate.html#getKeys">getKeys</a>
                 </li>
@@ -8936,6 +8948,10 @@
             
                 <li data-name="ol.interaction.Translate#setActive" class="unstable">
                     <a href="ol.interaction.Translate.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Translate#setProperties" class="">
@@ -16055,7 +16071,7 @@
         <h1 class="page-title" data-filename="ol.events.condition.html">Namespace: condition</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">3.19.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">3.20.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16131,7 +16147,9 @@
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".altKeyOnly">
+        <div class="anchor" id=".altKeyOnly">
+        </div>
+        <h4 class="name">
             ol.events.condition.altKeyOnly<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16263,7 +16281,9 @@ True if only the alt key is pressed.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".altShiftKeysOnly">
+        <div class="anchor" id=".altShiftKeysOnly">
+        </div>
+        <h4 class="name">
             ol.events.condition.altShiftKeysOnly<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16395,7 +16415,9 @@ True if only the alt and shift keys are pressed.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".always">
+        <div class="anchor" id=".always">
+        </div>
+        <h4 class="name">
             ol.events.condition.always<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16526,7 +16548,9 @@ True.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".click">
+        <div class="anchor" id=".click">
+        </div>
+        <h4 class="name">
             ol.events.condition.click<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16657,7 +16681,9 @@ True if the event is a map <code>click</code> event.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".doubleClick">
+        <div class="anchor" id=".doubleClick">
+        </div>
+        <h4 class="name">
             ol.events.condition.doubleClick<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16788,7 +16814,9 @@ True if the event is a map <code>dblclick</code> event.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".mouseOnly">
+        <div class="anchor" id=".mouseOnly">
+        </div>
+        <h4 class="name">
             ol.events.condition.mouseOnly<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -16919,7 +16947,9 @@ True if the event originates from a mouse device.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".never">
+        <div class="anchor" id=".never">
+        </div>
+        <h4 class="name">
             ol.events.condition.never<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17050,7 +17080,9 @@ False.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".noModifierKeys">
+        <div class="anchor" id=".noModifierKeys">
+        </div>
+        <h4 class="name">
             ol.events.condition.noModifierKeys<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17182,7 +17214,9 @@ True only if there no modifier keys are pressed.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".platformModifierKeyOnly">
+        <div class="anchor" id=".platformModifierKeyOnly">
+        </div>
+        <h4 class="name">
             ol.events.condition.platformModifierKeyOnly<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17315,7 +17349,9 @@ True if only the platform modifier key is pressed.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".pointerMove">
+        <div class="anchor" id=".pointerMove">
+        </div>
+        <h4 class="name">
             ol.events.condition.pointerMove<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17449,7 +17485,9 @@ True if the browser event is a <code>pointermove</code> event.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".primaryAction">
+        <div class="anchor" id=".primaryAction">
+        </div>
+        <h4 class="name">
             ol.events.condition.primaryAction<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17590,7 +17628,9 @@ True if the event originates from a primary pointer.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".shiftKeyOnly">
+        <div class="anchor" id=".shiftKeyOnly">
+        </div>
+        <h4 class="name">
             ol.events.condition.shiftKeyOnly<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17722,7 +17762,9 @@ True if only the shift key is pressed.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id=".singleClick">
+        <div class="anchor" id=".singleClick">
+        </div>
+        <h4 class="name">
             ol.events.condition.singleClick<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
@@ -17853,7 +17895,9 @@ True if the event is a map <code>singleclick</code> event.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".targetNotEditable">
+        <div class="anchor" id=".targetNotEditable">
+        </div>
+        <h4 class="name">
             ol.events.condition.targetNotEditable<span class="signature">(mapBrowserEvent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
             
             

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v3.19.1 API - Namespace: filter</title>
+    <title>OpenLayers v3.20.1 API - Namespace: filter</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1855,7 +1855,7 @@
                     <a href="ol.View.html#dispatchEvent">dispatchEvent</a>
                 </li>
             
-                <li data-name="ol.View#fit" class="unstable">
+                <li data-name="ol.View#fit" class="">
                     <a href="ol.View.html#fit">fit</a>
                 </li>
             
@@ -8647,6 +8647,10 @@
                     <a href="ol.interaction.Select.html#getFeatures">getFeatures</a>
                 </li>
             
+                <li data-name="ol.interaction.Select#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
                 </li>
@@ -8681,6 +8685,10 @@
             
                 <li data-name="ol.interaction.Select#setActive" class="unstable">
                     <a href="ol.interaction.Select.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#setMap" class="">
@@ -8906,6 +8914,10 @@
                     <a href="ol.interaction.Translate.html#getActive">getActive</a>
                 </li>
             
+                <li data-name="ol.interaction.Translate#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Translate#getKeys" class="">
                     <a href="ol.interaction.Translate.html#getKeys">getKeys</a>
                 </li>
@@ -8936,6 +8948,10 @@
             
                 <li data-name="ol.interaction.Translate#setActive" class="unstable">
                     <a href="ol.interaction.Translate.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Translate#setProperties" class="">
@@ -16055,7 +16071,7 @@
         <h1 class="page-title" data-filename="ol.format.filter.html">Namespace: filter</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">3.19.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">3.20.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16220,7 +16236,9 @@
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".and">
+        <div class="anchor" id=".and">
+        </div>
+        <h4 class="name">
             ol.format.filter.and<span class="signature">(conditionA, conditionB)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.And.html">ol.format.filter.And</a>}</span>
             
             
@@ -16230,7 +16248,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 29
+            src/ol/format/filter.js, line 29
         </div>
         
         
@@ -16378,7 +16396,9 @@
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".bbox">
+        <div class="anchor" id=".bbox">
+        </div>
+        <h4 class="name">
             ol.format.filter.bbox<span class="signature">(geometryName, extent, <span class="optional">opt_srsName</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Bbox.html">ol.format.filter.Bbox</a>}</span>
             
             
@@ -16388,7 +16408,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 70
+            src/ol/format/filter.js, line 70
         </div>
         
         
@@ -16563,7 +16583,9 @@ intersects a fixed bounding box</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".between">
+        <div class="anchor" id=".between">
+        </div>
+        <h4 class="name">
             ol.format.filter.between<span class="signature">(propertyName, lowerBoundary, upperBoundary)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.IsBetween.html">ol.format.filter.IsBetween</a>}</span>
             
             
@@ -16573,7 +16595,7 @@ intersects a fixed bounding box</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 208
+            src/ol/format/filter.js, line 208
         </div>
         
         
@@ -16747,7 +16769,9 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".equalTo">
+        <div class="anchor" id=".equalTo">
+        </div>
+        <h4 class="name">
             ol.format.filter.equalTo<span class="signature">(propertyName, expression, <span class="optional">opt_matchCase</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.EqualTo.html">ol.format.filter.EqualTo</a>}</span>
             
             
@@ -16757,7 +16781,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 114
+            src/ol/format/filter.js, line 114
         </div>
         
         
@@ -16933,7 +16957,9 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".greaterThan">
+        <div class="anchor" id=".greaterThan">
+        </div>
+        <h4 class="name">
             ol.format.filter.greaterThan<span class="signature">(propertyName, expression)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.GreaterThan.html">ol.format.filter.GreaterThan</a>}</span>
             
             
@@ -16943,7 +16969,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 167
+            src/ol/format/filter.js, line 167
         </div>
         
         
@@ -17091,7 +17117,9 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".greaterThanOrEqualTo">
+        <div class="anchor" id=".greaterThanOrEqualTo">
+        </div>
+        <h4 class="name">
             ol.format.filter.greaterThanOrEqualTo<span class="signature">(propertyName, expression)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.GreaterThanOrEqualTo.html">ol.format.filter.GreaterThanOrEqualTo</a>}</span>
             
             
@@ -17101,7 +17129,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 180
+            src/ol/format/filter.js, line 180
         </div>
         
         
@@ -17249,7 +17277,9 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".intersects">
+        <div class="anchor" id=".intersects">
+        </div>
+        <h4 class="name">
             ol.format.filter.intersects<span class="signature">(geometryName, geometry, <span class="optional">opt_srsName</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Intersects.html">ol.format.filter.Intersects</a>}</span>
             
             
@@ -17259,7 +17289,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 85
+            src/ol/format/filter.js, line 85
         </div>
         
         
@@ -17434,7 +17464,9 @@ intersects a given geometry.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".isNull">
+        <div class="anchor" id=".isNull">
+        </div>
+        <h4 class="name">
             ol.format.filter.isNull<span class="signature">(propertyName)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.IsNull.html">ol.format.filter.IsNull</a>}</span>
             
             
@@ -17444,7 +17476,7 @@ intersects a given geometry.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 193
+            src/ol/format/filter.js, line 193
         </div>
         
         
@@ -17568,7 +17600,9 @@ is null.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".lessThan">
+        <div class="anchor" id=".lessThan">
+        </div>
+        <h4 class="name">
             ol.format.filter.lessThan<span class="signature">(propertyName, expression)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.LessThan.html">ol.format.filter.LessThan</a>}</span>
             
             
@@ -17578,7 +17612,7 @@ is null.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 141
+            src/ol/format/filter.js, line 141
         </div>
         
         
@@ -17726,7 +17760,9 @@ is null.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".lessThanOrEqualTo">
+        <div class="anchor" id=".lessThanOrEqualTo">
+        </div>
+        <h4 class="name">
             ol.format.filter.lessThanOrEqualTo<span class="signature">(propertyName, expression)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.LessThanOrEqualTo.html">ol.format.filter.LessThanOrEqualTo</a>}</span>
             
             
@@ -17736,7 +17772,7 @@ is null.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 154
+            src/ol/format/filter.js, line 154
         </div>
         
         
@@ -17884,7 +17920,9 @@ is null.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".like">
+        <div class="anchor" id=".like">
+        </div>
+        <h4 class="name">
             ol.format.filter.like<span class="signature">(propertyName, pattern, <span class="optional">opt_wildCard</span>, <span class="optional">opt_singleChar</span>, <span class="optional">opt_escapeChar</span>, <span class="optional">opt_matchCase</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.IsLike.html">ol.format.filter.IsLike</a>}</span>
             
             
@@ -17894,7 +17932,7 @@ is null.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 229
+            src/ol/format/filter.js, line 229
         </div>
         
         
@@ -18146,7 +18184,9 @@ value against a text pattern.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".not">
+        <div class="anchor" id=".not">
+        </div>
+        <h4 class="name">
             ol.format.filter.not<span class="signature">(condition)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Not.html">ol.format.filter.Not</a>}</span>
             
             
@@ -18156,7 +18196,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 54
+            src/ol/format/filter.js, line 54
         </div>
         
         
@@ -18279,7 +18319,9 @@ value against a text pattern.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".notEqualTo">
+        <div class="anchor" id=".notEqualTo">
+        </div>
+        <h4 class="name">
             ol.format.filter.notEqualTo<span class="signature">(propertyName, expression, <span class="optional">opt_matchCase</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.NotEqualTo.html">ol.format.filter.NotEqualTo</a>}</span>
             
             
@@ -18289,7 +18331,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 128
+            src/ol/format/filter.js, line 128
         </div>
         
         
@@ -18465,7 +18507,9 @@ value against a text pattern.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".or">
+        <div class="anchor" id=".or">
+        </div>
+        <h4 class="name">
             ol.format.filter.or<span class="signature">(conditionA, conditionB)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Or.html">ol.format.filter.Or</a>}</span>
             
             
@@ -18475,7 +18519,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 42
+            src/ol/format/filter.js, line 42
         </div>
         
         
@@ -18623,7 +18667,9 @@ value against a text pattern.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id=".within">
+        <div class="anchor" id=".within">
+        </div>
+        <h4 class="name">
             ol.format.filter.within<span class="signature">(geometryName, geometry, <span class="optional">opt_srsName</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Within.html">ol.format.filter.Within</a>}</span>
             
             
@@ -18633,7 +18679,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter/index.js, line 100
+            src/ol/format/filter.js, line 100
         </div>
         
         

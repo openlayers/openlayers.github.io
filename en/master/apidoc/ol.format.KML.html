@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v3.19.1 API - Class: KML</title>
+    <title>OpenLayers v3.20.1 API - Class: KML</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1855,7 +1855,7 @@
                     <a href="ol.View.html#dispatchEvent">dispatchEvent</a>
                 </li>
             
-                <li data-name="ol.View#fit" class="unstable">
+                <li data-name="ol.View#fit" class="">
                     <a href="ol.View.html#fit">fit</a>
                 </li>
             
@@ -8647,6 +8647,10 @@
                     <a href="ol.interaction.Select.html#getFeatures">getFeatures</a>
                 </li>
             
+                <li data-name="ol.interaction.Select#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Select#getKeys" class="">
                     <a href="ol.interaction.Select.html#getKeys">getKeys</a>
                 </li>
@@ -8681,6 +8685,10 @@
             
                 <li data-name="ol.interaction.Select#setActive" class="unstable">
                     <a href="ol.interaction.Select.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Select#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Select.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Select#setMap" class="">
@@ -8906,6 +8914,10 @@
                     <a href="ol.interaction.Translate.html#getActive">getActive</a>
                 </li>
             
+                <li data-name="ol.interaction.Translate#getHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#getHitTolerance">getHitTolerance</a>
+                </li>
+            
                 <li data-name="ol.interaction.Translate#getKeys" class="">
                     <a href="ol.interaction.Translate.html#getKeys">getKeys</a>
                 </li>
@@ -8936,6 +8948,10 @@
             
                 <li data-name="ol.interaction.Translate#setActive" class="unstable">
                     <a href="ol.interaction.Translate.html#setActive">setActive</a>
+                </li>
+            
+                <li data-name="ol.interaction.Translate#setHitTolerance" class="unstable">
+                    <a href="ol.interaction.Translate.html#setHitTolerance">setHitTolerance</a>
                 </li>
             
                 <li data-name="ol.interaction.Translate#setProperties" class="">
@@ -16055,7 +16071,7 @@
         <h1 class="page-title" data-filename="ol.format.KML.html">Class: KML</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">3.19.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">3.20.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16083,7 +16099,9 @@ which do not support this will need a URL polyfill to be loaded before use.</p><
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="KML">
+        <div class="anchor" id="KML">
+        </div>
+        <h4 class="name">
             new ol.format.KML<span class="signature">(<span class="optional">opt_options</span>)</span>
             
             
@@ -16364,7 +16382,9 @@ which do not support this will need a URL polyfill to be loaded before use.</p><
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="readFeature">
+        <div class="anchor" id="readFeature">
+        </div>
+        <h4 class="name">
             readFeature<span class="signature">(source, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.Feature.html">ol.Feature</a>}</span>
             
             
@@ -16603,7 +16623,9 @@ Feature.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="readFeatures">
+        <div class="anchor" id="readFeatures">
+        </div>
+        <h4 class="name">
             readFeatures<span class="signature">(source, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;<a href="ol.Feature.html">ol.Feature</a>>}</span>
             
             
@@ -16842,7 +16864,9 @@ Features.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="readName">
+        <div class="anchor" id="readName">
+        </div>
+        <h4 class="name">
             readName<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string|undefined}</span>
             
             
@@ -16979,7 +17003,9 @@ Name.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="readNetworkLinks">
+        <div class="anchor" id="readNetworkLinks">
+        </div>
+        <h4 class="name">
             readNetworkLinks<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;Object>}</span>
             
             
@@ -17118,7 +17144,9 @@ Network links.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="readProjection">
+        <div class="anchor" id="readProjection">
+        </div>
+        <h4 class="name">
             readProjection<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.proj.Projection.html">ol.proj.Projection</a>}</span>
             
             
@@ -17258,7 +17286,9 @@ Projection.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="readRegion">
+        <div class="anchor" id="readRegion">
+        </div>
+        <h4 class="name">
             readRegion<span class="signature">(source)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;Object>}</span>
             
             
@@ -17397,7 +17427,9 @@ Regions.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="readRegionFromNode">
+        <div class="anchor" id="readRegionFromNode">
+        </div>
+        <h4 class="name">
             readRegionFromNode<span class="signature">(node)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;Object>}</span>
             
             
@@ -17526,7 +17558,9 @@ Region.
 <dt class="">
     <div class="nameContainer">
         
-        <h4 class="name" id="writeFeatures">
+        <div class="anchor" id="writeFeatures">
+        </div>
+        <h4 class="name">
             writeFeatures<span class="signature">(features, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
             
             
@@ -17534,7 +17568,7 @@ Region.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kml.js, line 3073
+            src/ol/format/kml.js, line 3189
         </div>
         
         
@@ -17831,7 +17865,9 @@ Result.
 <dt class="unstable">
     <div class="nameContainer">
         
-        <h4 class="name" id="writeFeaturesNode">
+        <div class="anchor" id="writeFeaturesNode">
+        </div>
+        <h4 class="name">
             writeFeaturesNode<span class="signature">(features, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Node}</span>
             
             
@@ -17841,7 +17877,7 @@ Result.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/kml.js, line 3085
+            src/ol/format/kml.js, line 3201
         </div>
         
         

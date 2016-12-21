@@ -670,21 +670,35 @@ ol.View.prototype.getZoom = function() {
  * The size is pixel dimensions of the box to fit the extent into.
  * In most cases you will want to use the map size, that is `map.getSize()`.
  * Takes care of the map angle.
- * @param {ol.geom.SimpleGeometry|ol.Extent} geometry Geometry.
- * @param {ol.Size} size Box pixel size.
+ * @param {ol.geom.SimpleGeometry|ol.Extent} geometryOrExtent The geometry or
+ *     extent to fit the view to.
  * @param {olx.view.FitOptions=} opt_options Options.
- * @api
+ * @api stable
  */
-ol.View.prototype.fit = function(geometry, size, opt_options) {
-  if (!(geometry instanceof ol.geom.SimpleGeometry)) {
-    ol.asserts.assert(Array.isArray(geometry),
-        24); // Invalid extent or geometry provided as `geometry`
-    ol.asserts.assert(!ol.extent.isEmpty(geometry),
-        25); // Cannot fit empty extent provided as `geometry`
-    geometry = ol.geom.Polygon.fromExtent(geometry);
-  }
-
+ol.View.prototype.fit = function(geometryOrExtent, opt_options) {
   var options = opt_options || {};
+  var size = options.size;
+  if (!size) {
+    size = [100, 100];
+    var selector = '.ol-viewport[data-view="' + ol.getUid(this) + '"]';
+    var element = document.querySelector(selector);
+    if (element) {
+      var metrics = getComputedStyle(element);
+      size[0] = parseInt(metrics.width, 10);
+      size[1] = parseInt(metrics.height, 10);
+    }
+  }
+  /** @type {ol.geom.SimpleGeometry} */
+  var geometry;
+  if (!(geometryOrExtent instanceof ol.geom.SimpleGeometry)) {
+    ol.asserts.assert(Array.isArray(geometryOrExtent),
+        24); // Invalid extent or geometry provided as `geometry`
+    ol.asserts.assert(!ol.extent.isEmpty(geometryOrExtent),
+        25); // Cannot fit empty extent provided as `geometry`
+    geometry = ol.geom.Polygon.fromExtent(geometryOrExtent);
+  } else {
+    geometry = geometryOrExtent;
+  }
 
   var padding = options.padding !== undefined ? options.padding : [0, 0, 0, 0];
   var constrainResolution = options.constrainResolution !== undefined ?
