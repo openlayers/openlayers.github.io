@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenLayers 3 - Raster Reprojection</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='../../../../assets/theme/site.css' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/x-icon" href="../../../../assets/theme/img/favicon.ico" />
+    
+  </head>
+  <body>
+    <header class='navbar navbar-fixed-top' role='navigation'>
+      <div class='container'>
+
+        <!-- button that shows up below 768px width -->
+        <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+        </button>
+
+        <a href='/' class='navbar-brand'><img src='../../../../assets/theme/img/logo70.png'>&nbsp;OpenLayers 3</a>
+
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class='nav navbar-nav pull-right'>
+            <li><a href='/en/latest/doc/'class="active">Docs</a></li>
+            <li><a href='/en/latest/examples/'>Examples</a></li>
+            <li><a href='/en/latest/apidoc/'>API</a></li>
+            <li><a href='https://github.com/openlayers/ol3'>Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+
+<div class='container'>
+<h1 id="raster-reprojection">Raster Reprojection</h1>
+<p>OpenLayers 3 has an ability to display raster data from WMS, WMTS, static images and many other sources in a different coordinate system than delivered from the server.
+Transformation of the map projections of the image happens directly in a web browser.
+The view in any Proj4js supported coordinate reference system is possible and previously incompatible layers can now be combined and overlaid.</p>
+<h1 id="usage">Usage</h1>
+<p>The API usage is very simple. Just specify proper projection (using <a href="https://epsg.io">EPSG</a> code) on <code>ol.View</code>:</p>
+<pre><code class="language-javascript"><span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
+  target: <span class="string">'map'</span>,
+  view: <span class="keyword">new</span> ol.View({
+    projection: <span class="string">'EPSG:3857'</span>, <span class="comment">//HERE IS THE VIEW PROJECTION</span>
+    center: [<span class="number">0</span>, <span class="number">0</span>],
+    zoom: <span class="number">2</span>
+  }),
+  layers: [
+    <span class="keyword">new</span> ol.layer.Tile({
+      source: <span class="keyword">new</span> ol.source.TileWMS({
+        projection: <span class="string">'EPSG:4326'</span>, <span class="comment">//HERE IS THE DATA SOURCE PROJECTION</span>
+        url: <span class="string">'http://demo.boundlessgeo.com/geoserver/wms'</span>,
+        params: {
+          <span class="string">'LAYERS'</span>: <span class="string">'ne:NE1_HR_LC_SR_W_DR'</span>
+        }
+      })
+    })
+  ]
+});</code></pre>
+<p>If a source (based on <code>ol.source.TileImage</code> or <code>ol.source.Image</code>) has a projection different from the current <code>ol.View</code>’s projection then the reprojection happens automatically under the hood.</p>
+<h3 id="examples">Examples</h3>
+<ul>
+<li><a href="https://openlayers.org/en/master/examples/reprojection.html">Raster reprojection demo</a></li>
+<li><a href="https://openlayers.org/en/master/examples/reprojection-wgs84.html">OpenStreetMap to WGS84 reprojection</a></li>
+<li><a href="https://openlayers.org/en/master/examples/reprojection-by-code.html">Reprojection with EPSG.io database search</a></li>
+<li><a href="https://openlayers.org/en/master/examples/reprojection-image.html">Image reprojection</a></li>
+</ul>
+<h3 id="custom-projection">Custom projection</h3>
+<p>The easiest way to use a custom projection is to add the <a href="http://proj4js.org/">Proj4js</a> library to your project and then define the projection using a proj4 definition string.
+Following example shows definition of a <a href="https://epsg.io/27700">British National Grid</a>:</p>
+<pre><code class="language-html">&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.14/proj4.js&quot;&gt;&lt;/script&gt;</code></pre>
+<pre><code class="language-javascript">proj4.defs(<span class="string">'EPSG:27700'</span>, <span class="string">'+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 '</span> +
+    <span class="string">'+x_0=400000 +y_0=-100000 +ellps=airy '</span> +
+    <span class="string">'+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 '</span> +
+    <span class="string">'+units=m +no_defs'</span>);
+<span class="keyword">var</span> proj27700 = ol.proj.get(<span class="string">'EPSG:27700'</span>);
+proj27700.setExtent([<span class="number">0</span>, <span class="number">0</span>, <span class="number">700000</span>, <span class="number">1300000</span>]);</code></pre>
+<h3 id="change-of-the-view-projection">Change of the view projection</h3>
+<p>To switch the projection used to display the map you have to set a new <code>ol.View</code> with selected projection on the <code>ol.Map</code>:</p>
+<pre><code class="language-javascript">map.setView(<span class="keyword">new</span> ol.View({
+    projection: <span class="string">'EPSG:27700'</span>,
+    center: [<span class="number">400000</span>, <span class="number">650000</span>],
+    zoom: <span class="number">4</span>
+  }));</code></pre>
+<h2 id="tilegrid-and-extents">TileGrid and Extents</h2>
+<p>When reprojection is needed, new tiles (in the target projection) are under the hood created from the original source tiles.
+The TileGrid of the reprojected tiles is by default internally constructed using <code>ol.tilegrid.getForProjection(projection)</code>.
+The projection should have extent defined (see above) for this to work properly.</p>
+<p>Alternatively, a custom target TileGrid can be constructed manually and set on the source instance using <code>ol.source.TileImage#setTileGridForProjection(projection, tilegrid)</code>.
+This TileGrid will then be used when reprojecting to the specified projection instead of creating the default one.
+In certain cases, this can be used to optimize performance (by tweaking tile sizes) or visual quality (by specifying resolutions).</p>
+<h1 id="how-it-works">How it works</h1>
+<p>The reprojection process is based on triangles -- the target raster is divided into a limited number of triangles with vertices transformed using <code>ol.proj</code> capabilities (<a href="http://proj4js.org/">proj4js</a> is usually utilized to define custom transformations).
+The reprojection of pixels inside the triangle is approximated with an affine transformation (with rendering hardware-accelerated by the canvas 2d context):</p>
+<p><img src="raster-reprojection-resources/how-it-works.jpg" alt="How it works" width="600" /></p>
+<p>This way we can support a wide range of projections from proj4js (or even custom transformation functions) on almost any hardware (with canvas 2d support) with a relatively small number of actual transformation calculations.</p>
+<p>The precision of the reprojection is then limited by the number of triangles.</p>
+<p>The reprojection process preserves transparency on the raster data supplied from the source (png or gif) and the gaps and no-data pixels generated by reprojection are automatically transparent.</p>
+<h3 id="dynamic-triangulation">Dynamic triangulation</h3>
+<p>The above image above shows a noticeable error (especially on the edges) when the original image (left; EPSG:27700) is transformed with only a limited number of triangles (right; EPSG:3857).
+The error can be minimized by increasing the number of triangles used.</p>
+<p>Since some transformations require a more detail triangulation network, the dynamic triangulation process automatically measures reprojection error and iteratively subdivides to meet a specific error threshold:</p>
+<p><img src="raster-reprojection-resources/iterative-triangulation.png" alt="Iterative triangulation" width="600" /></p>
+<p>For debugging, rendering of the reprojection edges can be enabled by <code>ol.source.TileImage#setRenderReprojectionEdges(true)</code>.</p>
+<h1 id="advanced">Advanced</h1>
+<h3 id="disabling-reprojection">Disabling reprojection</h3>
+<p>In case you are creating a custom build of OpenLayers and do not need the reprojection code, you can reduce the build size by setting <code>ol.ENABLE_RASTER_REPROJECTION</code> to <code>false</code>, which completely disables the reprojection support.
+See <a href="custom-builds.html#defines">Custom builds</a> tutorial on how to do this.</p>
+<h3 id="triangulation-precision-threshold">Triangulation precision threshold</h3>
+<p>The default <a href="#dynamic-triangulation">triangulation error threshold</a> in pixels is given by <code>ol.DEFAULT_RASTER_REPROJECTION_ERROR_THRESHOLD</code> (0.5 pixel).
+In case a different threshold needs to be defined for different sources, the <code>reprojectionErrorThreshold</code> option can be passed when constructing the tile image source.</p>
+<h3 id="limiting-visibility-of-reprojected-map-by-extent">Limiting visibility of reprojected map by extent</h3>
+<p>The reprojection algorithm uses inverse transformation (from <em>view projection</em> to <em>data projection</em>).
+For certain coordinate systems this can result in a &quot;double occurrence&quot; of the source data on a map.
+For example, when reprojecting a map of Switzerland from EPSG:21781 to EPSG:3857, it is displayed twice: once at the proper place in Europe, but also in the Pacific Ocean near New Zealand, on the opposite side of the globe.</p>
+<p><img src="raster-reprojection-resources/double-occurrence.jpg" alt="Double occurrence of a reprojected map" width="600" /></p>
+<p>Although this is mathematically correct behavior of the inverse transformation, visibility of the layer on multiple places is not expected by users.
+A possible general solution would be to calculate the forward transformation for every vertex as well - but this would significantly decrease performance (especially for computationally expensive transformations).</p>
+<p>Therefore a recommended workaround is to define a proper visibility extent on the <code>ol.layer.Tile</code> in the view projection.
+Setting such a limit is demonstrated in the <a href="https://openlayers.org/en/master/examples/reprojection.html">reprojection demo example</a>.</p>
+<h3 id="resolution-calculation">Resolution calculation</h3>
+<p>When determining source tiles to load, the ideal source resolution needs to be calculated.
+The <code>ol.reproj.calculateSourceResolution(sourceProj, targetProj, targetCenter, targetResolution)</code> function calculates the ideal value in order to achieve pixel mapping as close as possible to 1:1 during reprojection, which is then used to select proper zoom level from the source.</p>
+<p>It is, however, generally not practical to use the same source zoom level for the whole target zoom level -- different projections can have significantly different resolutions in different parts of the world (e.g. polar regions in EPSG:3857 vs EPSG:4326) and enforcing a single resolution for the whole zoom level would result in some tiles being scaled up/down, possibly requiring a huge number of source tiles to be loaded.
+Therefore, the resolution mapping is calculated separately for each reprojected tile (in the middle of the tile extent).</p>
+
+</div>
+
+    <footer>
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='/sponsors.html'>sponsors</a>.
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>
