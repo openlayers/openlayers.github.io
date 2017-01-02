@@ -2,7 +2,7 @@
 
 ## Updating the site with changes from master
 
-Requires that you have [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/) installed.  Currently, building the website also requires all the ol3 [development dependencies](https://github.com/openlayers/ol3/blob/master/CONTRIBUTING.md) as well.
+Requires that you have [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/) installed.  Currently, building the website also requires all the ol3 [development dependencies](https://github.com/openlayers/openlayers/blob/master/CONTRIBUTING.md) as well.
 
 ```shell
 # only once: clone
