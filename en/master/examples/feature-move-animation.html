@@ -28,7 +28,7 @@
             <li><a href="../doc">Docs</a></li>
             <li><a class="active" href="index.html">Examples</a></li>
             <li><a href="../apidoc">API</a></li>
-            <li><a href="https://github.com/openlayers/ol3">Code</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
           </ul>
         </nav>
       </div>
@@ -222,7 +222,7 @@ var moveFeature &#x3D; function(event) {
     var feature &#x3D; new ol.Feature(currentPoint);
     vectorContext.drawFeature(feature, styles.geoMarker);
   }
-  // tell OL3 to continue the postcompose animation
+  // tell OpenLayers to continue the postcompose animation
   map.render();
 };
 
@@ -442,7 +442,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
           var feature &#x3D; new ol.Feature(currentPoint);
           vectorContext.drawFeature(feature, styles.geoMarker);
         }
-        // tell OL3 to continue the postcompose animation
+        // tell OpenLayers to continue the postcompose animation
         map.render();
       };
 

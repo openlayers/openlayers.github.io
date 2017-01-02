@@ -100,8 +100,6 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, event) {
   if (!projection) {
     var view = map.getView();
     projection = view.getProjection();
-    ol.DEBUG && console.assert(projection !== undefined,
-        'projection should be defined');
   }
   var formatConstructors = this.formatConstructors_;
   var features = [];
@@ -118,7 +116,7 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, event) {
   }
   this.dispatchEvent(
       new ol.interaction.DragAndDrop.Event(
-          ol.interaction.DragAndDrop.EventType.ADD_FEATURES, file,
+          ol.interaction.DragAndDrop.EventType_.ADD_FEATURES, file,
           features, projection));
 };
 
@@ -177,8 +175,9 @@ ol.interaction.DragAndDrop.prototype.tryReadFeatures_ = function(format, text, o
 
 /**
  * @enum {string}
+ * @private
  */
-ol.interaction.DragAndDrop.EventType = {
+ol.interaction.DragAndDrop.EventType_ = {
   /**
    * Triggered when features are added
    * @event ol.interaction.DragAndDrop.Event#addfeatures
@@ -196,7 +195,7 @@ ol.interaction.DragAndDrop.EventType = {
  * @constructor
  * @extends {ol.events.Event}
  * @implements {oli.interaction.DragAndDropEvent}
- * @param {ol.interaction.DragAndDrop.EventType} type Type.
+ * @param {ol.interaction.DragAndDrop.EventType_} type Type.
  * @param {File} file File.
  * @param {Array.<ol.Feature>=} opt_features Features.
  * @param {ol.proj.Projection=} opt_projection Projection.

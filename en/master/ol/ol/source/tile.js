@@ -1,8 +1,8 @@
 goog.provide('ol.source.Tile');
 
 goog.require('ol');
-goog.require('ol.Tile');
 goog.require('ol.TileCache');
+goog.require('ol.TileState');
 goog.require('ol.events.Event');
 goog.require('ol.proj');
 goog.require('ol.size');
@@ -117,7 +117,7 @@ ol.source.Tile.prototype.forEachLoadedTile = function(projection, z, tileRange, 
       loaded = false;
       if (tileCache.containsKey(tileCoordKey)) {
         tile = /** @type {!ol.Tile} */ (tileCache.get(tileCoordKey));
-        loaded = tile.getState() === ol.Tile.State.LOADED;
+        loaded = tile.getState() === ol.TileState.LOADED;
         if (loaded) {
           loaded = (callback(tile) !== false);
         }
@@ -334,32 +334,3 @@ ol.source.Tile.Event = function(type, tile) {
 
 };
 ol.inherits(ol.source.Tile.Event, ol.events.Event);
-
-
-/**
- * @enum {string}
- */
-ol.source.Tile.EventType = {
-
-  /**
-   * Triggered when a tile starts loading.
-   * @event ol.source.Tile.Event#tileloadstart
-   * @api stable
-   */
-  TILELOADSTART: 'tileloadstart',
-
-  /**
-   * Triggered when a tile finishes loading.
-   * @event ol.source.Tile.Event#tileloadend
-   * @api stable
-   */
-  TILELOADEND: 'tileloadend',
-
-  /**
-   * Triggered if tile loading results in an error.
-   * @event ol.source.Tile.Event#tileloaderror
-   * @api stable
-   */
-  TILELOADERROR: 'tileloaderror'
-
-};

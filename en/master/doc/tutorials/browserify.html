@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>OpenLayers 3 - Basic project setup using NPM and Browserify</title>
+    <title>OpenLayers - Basic project setup using NPM and Browserify</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -22,7 +22,7 @@
           <span class='icon-bar'></span>
         </button>
 
-        <a href='/' class='navbar-brand'><img src='../../../../assets/theme/img/logo70.png'>&nbsp;OpenLayers 3</a>
+        <a href='/' class='navbar-brand'><img src='../../../../assets/theme/img/logo70.png'>&nbsp;OpenLayers</a>
 
         <!-- menu items that get hidden below 768px width -->
         <nav class='collapse navbar-collapse navbar-responsive-collapse'>
@@ -41,11 +41,11 @@
 <h1 id="introduction">Introduction</h1>
 <p>When going beyond modifying existing examples you might be looking for a
 way to setup your own code with dependency management together with external
-dependencies like OpenLayers 3.</p>
+dependencies like OpenLayers.</p>
 <p>This tutorial serves as a suggested project setup using NPM and Browserify
 for the most basic needs. There are several other options and in particular
 you might be interested in 
-<a href="closure.html">compiling your own code together with OpenLayers 3</a>.</p>
+<a href="closure.html">compiling your own code together with OpenLayers</a>.</p>
 <h2 id="initial-steps">Initial steps</h2>
 <p>Create a new empty directory for your project and navigate to it by running
 <code>mkdir new-project &amp;&amp; cd new-project</code>. Initialize your project using <code>npm init</code>
@@ -99,8 +99,8 @@ to the script section in <code>package.json</code>:</p>
   &quot;build&quot;: &quot;browserify index.js | uglifyjs --compress --output bundle.js&quot;
 }</code></pre>
 <p>Note that <code>bundle.js</code> will contain your application code and all dependencies
-used in your application, in this case the official full build of OpenLayers 3.
-If you only need parts of OpenLayers 3 you can create
+used in your application, in this case the official full build of OpenLayers.
+If you only need parts of OpenLayers you can create
 <a href="../../builder">custom builds</a>.</p>
 
 </div>

@@ -1,7 +1,7 @@
 goog.provide('ol.interaction.MouseWheelZoom');
 
 goog.require('ol');
-goog.require('ol.View');
+goog.require('ol.ViewHint');
 goog.require('ol.easing');
 goog.require('ol.events.EventType');
 goog.require('ol.has');
@@ -70,7 +70,7 @@ ol.interaction.MouseWheelZoom = function(opt_options) {
 
   /**
    * @private
-   * @type {ol.interaction.MouseWheelZoom.Mode|undefined}
+   * @type {ol.interaction.MouseWheelZoom.Mode_|undefined}
    */
   this.mode_ = undefined;
 
@@ -158,16 +158,16 @@ ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
 
   if (!this.mode_ || now - this.startTime_ > this.trackpadEventGap_) {
     this.mode_ = Math.abs(delta) < 4 ?
-        ol.interaction.MouseWheelZoom.Mode.TRACKPAD :
-        ol.interaction.MouseWheelZoom.Mode.WHEEL;
+        ol.interaction.MouseWheelZoom.Mode_.TRACKPAD :
+        ol.interaction.MouseWheelZoom.Mode_.WHEEL;
   }
 
-  if (this.mode_ === ol.interaction.MouseWheelZoom.Mode.TRACKPAD) {
+  if (this.mode_ === ol.interaction.MouseWheelZoom.Mode_.TRACKPAD) {
     var view = map.getView();
     if (this.trackpadTimeoutId_) {
       clearTimeout(this.trackpadTimeoutId_);
     } else {
-      view.setHint(ol.View.Hint.INTERACTING, 1);
+      view.setHint(ol.ViewHint.INTERACTING, 1);
     }
     this.trackpadTimeoutId_ = setTimeout(this.decrementInteractingHint_.bind(this), this.trackpadEventGap_);
     var resolution = view.getResolution() * Math.pow(2, delta / this.trackpadDeltaPerZoom_);
@@ -222,7 +222,7 @@ ol.interaction.MouseWheelZoom.handleEvent = function(mapBrowserEvent) {
 ol.interaction.MouseWheelZoom.prototype.decrementInteractingHint_ = function() {
   this.trackpadTimeoutId_ = undefined;
   var view = this.getMap().getView();
-  view.setHint(ol.View.Hint.INTERACTING, -1);
+  view.setHint(ol.ViewHint.INTERACTING, -1);
 };
 
 
@@ -263,8 +263,9 @@ ol.interaction.MouseWheelZoom.prototype.setMouseAnchor = function(useAnchor) {
 
 /**
  * @enum {string}
+ * @private
  */
-ol.interaction.MouseWheelZoom.Mode = {
+ol.interaction.MouseWheelZoom.Mode_ = {
   TRACKPAD: 'trackpad',
   WHEEL: 'wheel'
 };

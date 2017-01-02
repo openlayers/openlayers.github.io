@@ -9,12 +9,6 @@ goog.provide('ol');
 
 
 /**
- * @define {boolean} Enable debug mode. Default is `true`.
- */
-ol.DEBUG = true;
-
-
-/**
  * @define {boolean} Assume touch.  Default is `false`.
  */
 ol.ASSUME_TOUCH = false;
@@ -22,7 +16,7 @@ ol.ASSUME_TOUCH = false;
 
 /**
  * TODO: rename this to something having to do with tile grids
- * see https://github.com/openlayers/ol3/issues/2076
+ * see https://github.com/openlayers/openlayers/issues/2076
  * @define {number} Default maximum zoom for default tile grids.
  */
 ol.DEFAULT_MAX_ZOOM = 42;
@@ -68,14 +62,6 @@ ol.ENABLE_CANVAS = true;
 
 
 /**
- * @define {boolean} Enable rendering of ol.layer.Image based layers.  Default
- *     is `true`. Setting this to false at compile time in advanced mode removes
- *     all code supporting Image layers from the build.
- */
-ol.ENABLE_IMAGE = true;
-
-
-/**
  * @define {boolean} Enable integration with the Proj4js library.  Default is
  *     `true`.
  */
@@ -87,30 +73,6 @@ ol.ENABLE_PROJ4JS = true;
  *     `true`.
  */
 ol.ENABLE_RASTER_REPROJECTION = true;
-
-
-/**
- * @define {boolean} Enable rendering of ol.layer.Tile based layers.  Default is
- *     `true`. Setting this to false at compile time in advanced mode removes
- *     all code supporting Tile layers from the build.
- */
-ol.ENABLE_TILE = true;
-
-
-/**
- * @define {boolean} Enable rendering of ol.layer.Vector based layers.  Default
- *     is `true`. Setting this to false at compile time in advanced mode removes
- *     all code supporting Vector layers from the build.
- */
-ol.ENABLE_VECTOR = true;
-
-
-/**
- * @define {boolean} Enable rendering of ol.layer.VectorTile based layers.
- *     Default is `true`. Setting this to false at compile time in advanced mode
- *     removes all code supporting VectorTile layers from the build.
- */
-ol.ENABLE_VECTOR_TILE = true;
 
 
 /**
@@ -164,7 +126,7 @@ ol.OVERVIEWMAP_MIN_RATIO = 0.1;
  *     This can happen if the developer defines projections improperly and/or
  *     with unlimited extents.
  *     If too many tiles are required, no tiles are loaded and
- *     `ol.Tile.State.ERROR` state is set. Default is `100`.
+ *     `ol.TileState.ERROR` state is set. Default is `100`.
  */
 ol.RASTER_REPROJECTION_MAX_SOURCE_TILES = 100;
 

@@ -101,7 +101,7 @@ ol.interaction.Translate.handleDownEvent_ = function(event) {
 
     this.dispatchEvent(
         new ol.interaction.Translate.Event(
-            ol.interaction.Translate.EventType.TRANSLATESTART, features,
+            ol.interaction.Translate.EventType_.TRANSLATESTART, features,
             event.coordinate));
     return true;
   }
@@ -124,7 +124,7 @@ ol.interaction.Translate.handleUpEvent_ = function(event) {
 
     this.dispatchEvent(
         new ol.interaction.Translate.Event(
-            ol.interaction.Translate.EventType.TRANSLATEEND, features,
+            ol.interaction.Translate.EventType_.TRANSLATEEND, features,
             event.coordinate));
     return true;
   }
@@ -154,7 +154,7 @@ ol.interaction.Translate.handleDragEvent_ = function(event) {
     this.lastCoordinate_ = newCoordinate;
     this.dispatchEvent(
         new ol.interaction.Translate.Event(
-            ol.interaction.Translate.EventType.TRANSLATING, features,
+            ol.interaction.Translate.EventType_.TRANSLATING, features,
             newCoordinate));
   }
 };
@@ -171,7 +171,8 @@ ol.interaction.Translate.handleMoveEvent_ = function(event) {
   // Change the cursor to grab/grabbing if hovering any of the features managed
   // by the interaction
   if (this.featuresAtPixel_(event.pixel, event.map)) {
-    this.previousCursor_ = elem.style.cursor;
+    this.previousCursor_ = this.previousCursor_ !== undefined ?
+        this.previousCursor_ : elem.style.cursor;
     // WebKit browsers don't support the grab icons without a prefix
     elem.style.cursor = this.lastCoordinate_ ?
         '-webkit-grabbing' : '-webkit-grab';
@@ -179,9 +180,8 @@ ol.interaction.Translate.handleMoveEvent_ = function(event) {
     // Thankfully, attempting to set the standard ones will silently fail,
     // keeping the prefixed icons
     elem.style.cursor = this.lastCoordinate_ ?  'grabbing' : 'grab';
-  } else {
-    elem.style.cursor = this.previousCursor_ !== undefined ?
-        this.previousCursor_ : '';
+  } else if (this.previousCursor_ !== undefined) {
+    elem.style.cursor = this.previousCursor_;
     this.previousCursor_ = undefined;
   }
 };
@@ -240,7 +240,7 @@ ol.interaction.Translate.prototype.setHitTolerance = function(hitTolerance) {
  * @constructor
  * @extends {ol.events.Event}
  * @implements {oli.interaction.TranslateEvent}
- * @param {ol.interaction.Translate.EventType} type Type.
+ * @param {ol.interaction.Translate.EventType_} type Type.
  * @param {ol.Collection.<ol.Feature>} features The features translated.
  * @param {ol.Coordinate} coordinate The event coordinate.
  */
@@ -268,8 +268,9 @@ ol.inherits(ol.interaction.Translate.Event, ol.events.Event);
 
 /**
  * @enum {string}
+ * @private
  */
-ol.interaction.Translate.EventType = {
+ol.interaction.Translate.EventType_ = {
   /**
    * Triggered upon feature translation start.
    * @event ol.interaction.Translate.Event#translatestart

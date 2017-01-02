@@ -28,7 +28,7 @@
             <li><a href="../doc">Docs</a></li>
             <li><a class="active" href="index.html">Examples</a></li>
             <li><a href="../apidoc">API</a></li>
-            <li><a href="https://github.com/openlayers/ol3">Code</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
           </ul>
         </nav>
       </div>
@@ -133,7 +133,7 @@ function flash(feature) {
       ol.Observable.unByKey(listenerKey);
       return;
     }
-    // tell OL3 to continue postcompose animation
+    // tell OpenLayers to continue postcompose animation
     map.render();
   }
   listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);
@@ -232,7 +232,7 @@ window.setInterval(addRandomFeature, 1000);
             ol.Observable.unByKey(listenerKey);
             return;
           }
-          // tell OL3 to continue postcompose animation
+          // tell OpenLayers to continue postcompose animation
           map.render();
         }
         listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);

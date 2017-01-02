@@ -1,9 +1,9 @@
 goog.provide('ol.renderer.Layer');
 
 goog.require('ol');
-goog.require('ol.Image');
+goog.require('ol.ImageState');
 goog.require('ol.Observable');
-goog.require('ol.Tile');
+goog.require('ol.TileState');
 goog.require('ol.asserts');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
@@ -98,7 +98,7 @@ ol.renderer.Layer.prototype.getLayer = function() {
  */
 ol.renderer.Layer.prototype.handleImageChange_ = function(event) {
   var image = /** @type {ol.Image} */ (event.target);
-  if (image.getState() === ol.Image.State.LOADED) {
+  if (image.getState() === ol.ImageState.LOADED) {
     this.renderIfReadyAndVisible();
   }
 };
@@ -114,24 +114,16 @@ ol.renderer.Layer.prototype.handleImageChange_ = function(event) {
  */
 ol.renderer.Layer.prototype.loadImage = function(image) {
   var imageState = image.getState();
-  if (imageState != ol.Image.State.LOADED &&
-      imageState != ol.Image.State.ERROR) {
-    // the image is either "idle" or "loading", register the change
-    // listener (a noop if the listener was already registered)
-    ol.DEBUG && console.assert(imageState == ol.Image.State.IDLE ||
-        imageState == ol.Image.State.LOADING,
-        'imageState is "idle" or "loading"');
+  if (imageState != ol.ImageState.LOADED &&
+      imageState != ol.ImageState.ERROR) {
     ol.events.listen(image, ol.events.EventType.CHANGE,
         this.handleImageChange_, this);
   }
-  if (imageState == ol.Image.State.IDLE) {
+  if (imageState == ol.ImageState.IDLE) {
     image.load();
     imageState = image.getState();
-    ol.DEBUG && console.assert(imageState == ol.Image.State.LOADING ||
-        imageState == ol.Image.State.LOADED,
-        'imageState is "loading" or "loaded"');
   }
-  return imageState == ol.Image.State.LOADED;
+  return imageState == ol.ImageState.LOADED;
 };
 
 
@@ -269,7 +261,7 @@ ol.renderer.Layer.prototype.manageTilePyramid = function(
       for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
         if (currentZ - z <= preload) {
           tile = tileSource.getTile(z, x, y, pixelRatio, projection);
-          if (tile.getState() == ol.Tile.State.IDLE) {
+          if (tile.getState() == ol.TileState.IDLE) {
             wantedTiles[tile.getKey()] = true;
             if (!tileQueue.isKeyQueued(tile.getKey())) {
               tileQueue.enqueue([tile, tileSourceKey,

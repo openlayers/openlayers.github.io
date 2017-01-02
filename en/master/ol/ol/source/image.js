@@ -1,7 +1,7 @@
 goog.provide('ol.source.Image');
 
 goog.require('ol');
-goog.require('ol.Image');
+goog.require('ol.ImageState');
 goog.require('ol.array');
 goog.require('ol.events.Event');
 goog.require('ol.extent');
@@ -22,7 +22,6 @@ goog.require('ol.source.Source');
  * @api
  */
 ol.source.Image = function(options) {
-
   ol.source.Source.call(this, {
     attributions: options.attributions,
     extent: options.extent,
@@ -37,11 +36,6 @@ ol.source.Image = function(options) {
    */
   this.resolutions_ = options.resolutions !== undefined ?
       options.resolutions : null;
-  ol.DEBUG && console.assert(!this.resolutions_ ||
-      ol.array.isSorted(this.resolutions_,
-          function(a, b) {
-            return b - a;
-          }, true), 'resolutions must be null or sorted in descending order');
 
 
   /**
@@ -56,7 +50,6 @@ ol.source.Image = function(options) {
    * @type {number}
    */
   this.reprojectedRevision_ = 0;
-
 };
 ol.inherits(ol.source.Image, ol.source.Source);
 
@@ -147,19 +140,19 @@ ol.source.Image.prototype.getImageInternal = function(extent, resolution, pixelR
 ol.source.Image.prototype.handleImageChange = function(event) {
   var image = /** @type {ol.Image} */ (event.target);
   switch (image.getState()) {
-    case ol.Image.State.LOADING:
+    case ol.ImageState.LOADING:
       this.dispatchEvent(
-          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADSTART,
+          new ol.source.Image.Event(ol.source.Image.EventType_.IMAGELOADSTART,
               image));
       break;
-    case ol.Image.State.LOADED:
+    case ol.ImageState.LOADED:
       this.dispatchEvent(
-          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADEND,
+          new ol.source.Image.Event(ol.source.Image.EventType_.IMAGELOADEND,
               image));
       break;
-    case ol.Image.State.ERROR:
+    case ol.ImageState.ERROR:
       this.dispatchEvent(
-          new ol.source.Image.Event(ol.source.Image.EventType.IMAGELOADERROR,
+          new ol.source.Image.Event(ol.source.Image.EventType_.IMAGELOADERROR,
               image));
       break;
     default:
@@ -207,8 +200,9 @@ ol.inherits(ol.source.Image.Event, ol.events.Event);
 
 /**
  * @enum {string}
+ * @private
  */
-ol.source.Image.EventType = {
+ol.source.Image.EventType_ = {
 
   /**
    * Triggered when an image starts loading.
