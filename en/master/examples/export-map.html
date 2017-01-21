@@ -93,9 +93,13 @@ var map &#x3D; new ol.Map({
 document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x27;, function() {
   map.once(&#x27;postcompose&#x27;, function(event) {
     var canvas &#x3D; event.context.canvas;
-    canvas.toBlob(function(blob) {
-      saveAs(blob, &#x27;map.png&#x27;);
-    });
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(canvas.msToBlob(), &#x27;map.png&#x27;);
+    } else {
+      canvas.toBlob(function(blob) {
+        saveAs(blob, &#x27;map.png&#x27;);
+      });
+    }
   });
   map.renderSync();
 });
@@ -149,9 +153,13 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
       document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x27;, function() {
         map.once(&#x27;postcompose&#x27;, function(event) {
           var canvas &#x3D; event.context.canvas;
-          canvas.toBlob(function(blob) {
-            saveAs(blob, &#x27;map.png&#x27;);
-          });
+          if (navigator.msSaveBlob) {
+            navigator.msSaveBlob(canvas.msToBlob(), &#x27;map.png&#x27;);
+          } else {
+            canvas.toBlob(function(blob) {
+              saveAs(blob, &#x27;map.png&#x27;);
+            });
+          }
         });
         map.renderSync();
       });

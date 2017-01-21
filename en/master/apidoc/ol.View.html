@@ -15636,6 +15636,10 @@
                     <a href="ol.style.Stroke.html#getLineDash">getLineDash</a>
                 </li>
             
+                <li data-name="ol.style.Stroke#getLineDashOffset" class="unstable">
+                    <a href="ol.style.Stroke.html#getLineDashOffset">getLineDashOffset</a>
+                </li>
+            
                 <li data-name="ol.style.Stroke#getLineJoin" class="unstable">
                     <a href="ol.style.Stroke.html#getLineJoin">getLineJoin</a>
                 </li>
@@ -15658,6 +15662,10 @@
             
                 <li data-name="ol.style.Stroke#setLineDash" class="unstable">
                     <a href="ol.style.Stroke.html#setLineDash">setLineDash</a>
+                </li>
+            
+                <li data-name="ol.style.Stroke#setLineDashOffset" class="unstable">
+                    <a href="ol.style.Stroke.html#setLineDashOffset">setLineDashOffset</a>
                 </li>
             
                 <li data-name="ol.style.Stroke#setLineJoin" class="unstable">
@@ -17289,14 +17297,14 @@ between 0 and 1 representing the progress toward the destination state.</p></td>
         <div class="anchor" id="calculateExtent">
         </div>
         <h4 class="name">
-            calculateExtent<span class="signature">(size)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
+            calculateExtent<span class="signature">(<span class="optional">opt_size</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 477
+            src/ol/view.js, line 495
         </div>
         
         
@@ -17360,7 +17368,8 @@ that is <code>map.getSize()</code>.</p>
             
             <td  class="description last">
                 
-                <p>Box pixel size.</p></td>
+                <p>Box pixel size. If not provided, the size of the
+first map that uses this view will be used.</p></td>
         </tr>
 	
 	
@@ -17434,7 +17443,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 776
+            src/ol/view.js, line 788
         </div>
         
         
@@ -17691,7 +17700,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 407
+            src/ol/view.js, line 424
         </div>
         
         
@@ -17829,7 +17838,7 @@ Constrained center.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 420
+            src/ol/view.js, line 437
         </div>
         
         
@@ -18017,7 +18026,7 @@ Constrained resolution.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 435
+            src/ol/view.js, line 452
         </div>
         
         
@@ -18314,7 +18323,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 672
+            src/ol/view.js, line 691
         </div>
         
         
@@ -18888,7 +18897,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 447
+            src/ol/view.js, line 464
         </div>
         
         
@@ -19064,7 +19073,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 494
+            src/ol/view.js, line 513
         </div>
         
         
@@ -19152,7 +19161,7 @@ The maximum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 504
+            src/ol/view.js, line 523
         </div>
         
         
@@ -19238,7 +19247,7 @@ The minimum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 514
+            src/ol/view.js, line 533
         </div>
         
         
@@ -19412,7 +19421,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 525
+            src/ol/view.js, line 544
         </div>
         
         
@@ -19498,7 +19507,7 @@ The resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 537
+            src/ol/view.js, line 556
         </div>
         
         
@@ -19676,7 +19685,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 585
+            src/ol/view.js, line 604
         </div>
         
         
@@ -19762,7 +19771,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 637
+            src/ol/view.js, line 656
         </div>
         
         
@@ -20229,7 +20238,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 810
+            src/ol/view.js, line 822
         </div>
         
         
@@ -20554,7 +20563,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 825
+            src/ol/view.js, line 837
         </div>
         
         
@@ -20833,7 +20842,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 851
+            src/ol/view.js, line 863
         </div>
         
         
@@ -20960,7 +20969,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 865
+            src/ol/view.js, line 877
         </div>
         
         
@@ -21084,7 +21093,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 878
+            src/ol/view.js, line 890
         </div>
         
         

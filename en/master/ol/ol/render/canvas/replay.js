@@ -89,7 +89,7 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution, overlaps) {
 
   /**
    * @private
-   * @type {ol.Transform}
+   * @type {!ol.Transform}
    */
   this.renderedTransform_ = ol.transform.create();
 
@@ -103,17 +103,17 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution, overlaps) {
    * @private
    * @type {Array.<number>}
    */
-  this.pixelCoordinates_ = [];
+  this.pixelCoordinates_ = null;
 
   /**
    * @private
-   * @type {ol.Transform}
+   * @type {!ol.Transform}
    */
   this.tmpLocalTransform_ = ol.transform.create();
 
   /**
    * @private
-   * @type {ol.Transform}
+   * @type {!ol.Transform}
    */
   this.resetTransform_ = ol.transform.create();
 };
@@ -229,9 +229,12 @@ ol.render.canvas.Replay.prototype.replay_ = function(
     instructions, featureCallback, opt_hitExtent) {
   /** @type {Array.<number>} */
   var pixelCoordinates;
-  if (ol.array.equals(transform, this.renderedTransform_)) {
+  if (this.pixelCoordinates_ && ol.array.equals(transform, this.renderedTransform_)) {
     pixelCoordinates = this.pixelCoordinates_;
   } else {
+    if (!this.pixelCoordinates_) {
+      this.pixelCoordinates_ = [];
+    }
     pixelCoordinates = ol.geom.flat.transform.transform2D(
         this.coordinates, 0, this.coordinates.length, 2,
         transform, this.pixelCoordinates_);
@@ -280,6 +283,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         }
         if (!pendingFill && !pendingStroke) {
           context.beginPath();
+          prevX = prevY = NaN;
         }
         ++i;
         break;
@@ -459,15 +463,19 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         if (pendingFill) {
           this.fill_(context, viewRotation);
           pendingFill = 0;
+          if (pendingStroke) {
+            context.stroke();
+            pendingStroke = 0;
+          }
         }
 
         context.fillStyle = /** @type {ol.ColorLike} */ (instruction[1]);
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_STROKE_STYLE:
-        var usePixelRatio = instruction[7] !== undefined ?
-            instruction[7] : true;
-        var renderedPixelRatio = instruction[8];
+        var usePixelRatio = instruction[8] !== undefined ?
+            instruction[8] : true;
+        var renderedPixelRatio = instruction[9];
 
         var lineWidth = /** @type {number} */ (instruction[2]);
         if (pendingStroke) {
@@ -481,17 +489,19 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         context.miterLimit = /** @type {number} */ (instruction[5]);
         if (ol.has.CANVAS_LINE_DASH) {
           var lineDash = /** @type {Array.<number>} */ (instruction[6]);
+          var lineDashOffset = /** @type {number} */ (instruction[7]);
           if (usePixelRatio && pixelRatio !== renderedPixelRatio) {
             lineDash = lineDash.map(function(dash) {
               return dash * pixelRatio / renderedPixelRatio;
             });
+            lineDashOffset *= pixelRatio / renderedPixelRatio;
             instruction[6] = lineDash;
-            instruction[8] = pixelRatio;
+            instruction[7] = lineDashOffset;
+            instruction[9] = pixelRatio;
           }
+          context.lineDashOffset = lineDashOffset;
           context.setLineDash(lineDash);
         }
-        prevX = NaN;
-        prevY = NaN;
         ++i;
         break;
       case ol.render.canvas.Instruction.SET_TEXT_STYLE:

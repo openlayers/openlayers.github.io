@@ -99,7 +99,7 @@ ol.interaction.PinchZoom.handleDragEvent_ = function(mapBrowserEvent) {
   // scale, bypass the resolution constraint
   map.render();
   ol.interaction.Interaction.zoomWithoutConstraints(
-      map, view, resolution * scaleDelta, this.anchor_);
+      view, resolution * scaleDelta, this.anchor_);
 };
 
 
@@ -114,13 +114,15 @@ ol.interaction.PinchZoom.handleUpEvent_ = function(mapBrowserEvent) {
     var map = mapBrowserEvent.map;
     var view = map.getView();
     view.setHint(ol.ViewHint.INTERACTING, -1);
-    if (this.constrainResolution_) {
-      var resolution = view.getResolution();
+    var resolution = view.getResolution();
+    if (this.constrainResolution_ ||
+        resolution < view.getMinResolution() ||
+        resolution > view.getMaxResolution()) {
       // Zoom to final resolution, with an animation, and provide a
       // direction not to zoom out/in if user was pinching in/out.
       // Direction is > 0 if pinching out, and < 0 if pinching in.
       var direction = this.lastScaleDelta_ - 1;
-      ol.interaction.Interaction.zoom(map, view, resolution,
+      ol.interaction.Interaction.zoom(view, resolution,
           this.anchor_, this.duration_, direction);
     }
     return false;

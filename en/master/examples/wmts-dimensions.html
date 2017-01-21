@@ -88,8 +88,8 @@ var tileGrid &#x3D; new ol.tilegrid.WMTS({
 var scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
 
 var wmtsSource &#x3D; new ol.source.WMTS({
-  url: &#x27;http://ts2.scalgo.com/global/wmts?token&#x3D;&#x27; + scalgoToken,
-  layer: &#x27;hydrosheds:sea-levels&#x27;,
+  url: &#x27;http://ts2.scalgo.com/olpatch/wmts?token&#x3D;&#x27; + scalgoToken,
+  layer: &#x27;SRTM_4_1:SRTM_4_1_flooded_sealevels&#x27;,
   format: &#x27;image/png&#x27;,
   matrixSet: &#x27;EPSG:3857&#x27;,
   attributions: [
@@ -180,8 +180,8 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
       var scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
 
       var wmtsSource &#x3D; new ol.source.WMTS({
-        url: &#x27;http://ts2.scalgo.com/global/wmts?token&#x3D;&#x27; + scalgoToken,
-        layer: &#x27;hydrosheds:sea-levels&#x27;,
+        url: &#x27;http://ts2.scalgo.com/olpatch/wmts?token&#x3D;&#x27; + scalgoToken,
+        layer: &#x27;SRTM_4_1:SRTM_4_1_flooded_sealevels&#x27;,
         format: &#x27;image/png&#x27;,
         matrixSet: &#x27;EPSG:3857&#x27;,
         attributions: [

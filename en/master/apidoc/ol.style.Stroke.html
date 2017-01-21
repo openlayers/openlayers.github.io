@@ -15636,6 +15636,10 @@
                     <a href="ol.style.Stroke.html#getLineDash">getLineDash</a>
                 </li>
             
+                <li data-name="ol.style.Stroke#getLineDashOffset" class="unstable">
+                    <a href="ol.style.Stroke.html#getLineDashOffset">getLineDashOffset</a>
+                </li>
+            
                 <li data-name="ol.style.Stroke#getLineJoin" class="unstable">
                     <a href="ol.style.Stroke.html#getLineJoin">getLineJoin</a>
                 </li>
@@ -15658,6 +15662,10 @@
             
                 <li data-name="ol.style.Stroke#setLineDash" class="unstable">
                     <a href="ol.style.Stroke.html#setLineDash">setLineDash</a>
+                </li>
+            
+                <li data-name="ol.style.Stroke#setLineDashOffset" class="unstable">
+                    <a href="ol.style.Stroke.html#setLineDashOffset">setLineDashOffset</a>
                 </li>
             
                 <li data-name="ol.style.Stroke#setLineJoin" class="unstable">
@@ -16314,6 +16322,39 @@ have no visual effect in these browsers.</p></td>
 	
         <tr class="unstable">
             
+                <td class="name"><code>lineDashOffset</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+<span class="stability experimental">experimental</span>
+
+
+                
+                <p>Line dash offset. Default is '0'.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="unstable">
+            
                 <td class="name"><code>miterLimit</code></td>
             
             
@@ -16466,7 +16507,7 @@ have no visual effect in these browsers.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 70
+            src/ol/style/stroke.js, line 76
         </div>
         
         
@@ -16554,7 +16595,7 @@ The cloned style.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 88
+            src/ol/style/stroke.js, line 95
         </div>
         
         
@@ -16642,7 +16683,7 @@ Color.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 98
+            src/ol/style/stroke.js, line 105
         </div>
         
         
@@ -16730,7 +16771,7 @@ Line cap.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 108
+            src/ol/style/stroke.js, line 115
         </div>
         
         
@@ -16806,6 +16847,94 @@ Line dash.
 <dt class="unstable">
     <div class="nameContainer">
         
+        <div class="anchor" id="getLineDashOffset">
+        </div>
+        <h4 class="name">
+            getLineDashOffset<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number|undefined}</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/stroke.js, line 125
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Get the line dash offset for the stroke.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Line dash offset.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
         <div class="anchor" id="getLineJoin">
         </div>
         <h4 class="name">
@@ -16818,7 +16947,7 @@ Line dash.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 118
+            src/ol/style/stroke.js, line 135
         </div>
         
         
@@ -16906,7 +17035,7 @@ Line join.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 128
+            src/ol/style/stroke.js, line 145
         </div>
         
         
@@ -16994,7 +17123,7 @@ Miter limit.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 138
+            src/ol/style/stroke.js, line 155
         </div>
         
         
@@ -17082,7 +17211,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 149
+            src/ol/style/stroke.js, line 166
         </div>
         
         
@@ -17211,7 +17340,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 161
+            src/ol/style/stroke.js, line 178
         </div>
         
         
@@ -17340,7 +17469,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 179
+            src/ol/style/stroke.js, line 196
         </div>
         
         
@@ -17457,6 +17586,135 @@ property will have no visual effect in these browsers.</p>
 <dt class="unstable">
     <div class="nameContainer">
         
+        <div class="anchor" id="setLineDashOffset">
+        </div>
+        <h4 class="name">
+            setLineDashOffset<span class="signature">(lineDashOffset)</span>
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/style/stroke.js, line 208
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="unstable">
+
+    
+    <div class="description">
+        <p>Set the line dash offset.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>lineDashOffset</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Line dash offset.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="unstable">
+    <div class="nameContainer">
+        
         <div class="anchor" id="setLineJoin">
         </div>
         <h4 class="name">
@@ -17469,7 +17727,7 @@ property will have no visual effect in these browsers.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 191
+            src/ol/style/stroke.js, line 220
         </div>
         
         
@@ -17598,7 +17856,7 @@ property will have no visual effect in these browsers.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 203
+            src/ol/style/stroke.js, line 232
         </div>
         
         
@@ -17727,7 +17985,7 @@ property will have no visual effect in these browsers.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/style/stroke.js, line 215
+            src/ol/style/stroke.js, line 244
         </div>
         
         

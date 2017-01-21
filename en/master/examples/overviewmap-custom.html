@@ -70,7 +70,8 @@
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM({
-        &#x27;url&#x27;: &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27;
+        &#x27;url&#x27;: &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
+            &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;
       })
     })
   ],
@@ -188,7 +189,8 @@ var map &#x3D; new ol.Map({
         layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM({
-              &#x27;url&#x27;: &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27;
+              &#x27;url&#x27;: &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
+                  &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;
             })
           })
         ],

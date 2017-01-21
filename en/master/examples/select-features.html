@@ -55,14 +55,6 @@
       <option value="none">None</option>
     </select>
   <span id="status">&nbsp;0 selected features</span>
-  <br />
-  <label>Hit tolerance for selecting features </label>
-    <select id="hitTolerance" class="form-control">
-      <option value="0" selected>0 Pixels</option>
-      <option value="5">5 Pixels</option>
-      <option value="10">10 Pixels</option>
-    </select>
-    <canvas id="circle" style="vertical-align: middle"/>
 </form>
 
         </div>
@@ -106,28 +98,23 @@ var map &#x3D; new ol.Map({
 var select &#x3D; null;  // ref to currently selected interaction
 
 // select interaction working on &quot;singleclick&quot;
-var selectSingleClick &#x3D; new ol.interaction.Select({
-  multi: true // multi is used in this example if hitTolerance &gt; 0
-});
+var selectSingleClick &#x3D; new ol.interaction.Select();
 
 // select interaction working on &quot;click&quot;
 var selectClick &#x3D; new ol.interaction.Select({
-  condition: ol.events.condition.click,
-  multi: true
+  condition: ol.events.condition.click
 });
 
 // select interaction working on &quot;pointermove&quot;
 var selectPointerMove &#x3D; new ol.interaction.Select({
-  condition: ol.events.condition.pointerMove,
-  multi: true
+  condition: ol.events.condition.pointerMove
 });
 
 var selectAltClick &#x3D; new ol.interaction.Select({
   condition: function(mapBrowserEvent) {
     return ol.events.condition.click(mapBrowserEvent) &amp;&amp;
         ol.events.condition.altKeyOnly(mapBrowserEvent);
-  },
-  multi: true
+  }
 });
 
 var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
@@ -165,30 +152,6 @@ var changeInteraction &#x3D; function() {
  */
 selectElement.onchange &#x3D; changeInteraction;
 changeInteraction();
-
-var selectHitToleranceElement &#x3D; document.getElementById(&#x27;hitTolerance&#x27;);
-var circleCanvas &#x3D; document.getElementById(&#x27;circle&#x27;);
-
-var changeHitTolerance &#x3D; function() {
-  var value &#x3D; parseInt(selectHitToleranceElement.value, 10);
-  selectSingleClick.setHitTolerance(value);
-  selectClick.setHitTolerance(value);
-  selectPointerMove.setHitTolerance(value);
-  selectAltClick.setHitTolerance(value);
-
-  var size &#x3D; 2 * value + 2;
-  circleCanvas.width &#x3D; size;
-  circleCanvas.height &#x3D; size;
-  var ctx &#x3D; circleCanvas.getContext(&#x27;2d&#x27;);
-  ctx.clearRect(0, 0, size, size);
-  ctx.beginPath();
-  ctx.arc(value + 1, value + 1, value + 0.5, 0, 2 * Math.PI);
-  ctx.fill();
-  ctx.stroke();
-};
-
-selectHitToleranceElement.onchange &#x3D; changeHitTolerance;
-changeHitTolerance();
 </textarea>
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -202,14 +165,6 @@ changeHitTolerance();
       &lt;option value&#x3D;&quot;none&quot;&gt;None&lt;/option&gt;
     &lt;/select&gt;
   &lt;span id&#x3D;&quot;status&quot;&gt;&amp;nbsp;0 selected features&lt;/span&gt;
-  &lt;br /&gt;
-  &lt;label&gt;Hit tolerance for selecting features &lt;/label&gt;
-    &lt;select id&#x3D;&quot;hitTolerance&quot; class&#x3D;&quot;form-control&quot;&gt;
-      &lt;option value&#x3D;&quot;0&quot; selected&gt;0 Pixels&lt;/option&gt;
-      &lt;option value&#x3D;&quot;5&quot;&gt;5 Pixels&lt;/option&gt;
-      &lt;option value&#x3D;&quot;10&quot;&gt;10 Pixels&lt;/option&gt;
-    &lt;/select&gt;
-    &lt;canvas id&#x3D;&quot;circle&quot; style&#x3D;&quot;vertical-align: middle&quot;/&gt;
 &lt;/form&gt;
 </textarea>
           <input type="hidden" name="wrap" value="l">
@@ -236,14 +191,6 @@ changeHitTolerance();
           &lt;option value&#x3D;&quot;none&quot;&gt;None&lt;/option&gt;
         &lt;/select&gt;
       &lt;span id&#x3D;&quot;status&quot;&gt;&amp;nbsp;0 selected features&lt;/span&gt;
-      &lt;br /&gt;
-      &lt;label&gt;Hit tolerance for selecting features &lt;/label&gt;
-        &lt;select id&#x3D;&quot;hitTolerance&quot; class&#x3D;&quot;form-control&quot;&gt;
-          &lt;option value&#x3D;&quot;0&quot; selected&gt;0 Pixels&lt;/option&gt;
-          &lt;option value&#x3D;&quot;5&quot;&gt;5 Pixels&lt;/option&gt;
-          &lt;option value&#x3D;&quot;10&quot;&gt;10 Pixels&lt;/option&gt;
-        &lt;/select&gt;
-        &lt;canvas id&#x3D;&quot;circle&quot; style&#x3D;&quot;vertical-align: middle&quot;/&gt;
     &lt;/form&gt;
     &lt;script&gt;
       var raster &#x3D; new ol.layer.Tile({
@@ -269,28 +216,23 @@ changeHitTolerance();
       var select &#x3D; null;  // ref to currently selected interaction
 
       // select interaction working on &quot;singleclick&quot;
-      var selectSingleClick &#x3D; new ol.interaction.Select({
-        multi: true // multi is used in this example if hitTolerance &gt; 0
-      });
+      var selectSingleClick &#x3D; new ol.interaction.Select();
 
       // select interaction working on &quot;click&quot;
       var selectClick &#x3D; new ol.interaction.Select({
-        condition: ol.events.condition.click,
-        multi: true
+        condition: ol.events.condition.click
       });
 
       // select interaction working on &quot;pointermove&quot;
       var selectPointerMove &#x3D; new ol.interaction.Select({
-        condition: ol.events.condition.pointerMove,
-        multi: true
+        condition: ol.events.condition.pointerMove
       });
 
       var selectAltClick &#x3D; new ol.interaction.Select({
         condition: function(mapBrowserEvent) {
           return ol.events.condition.click(mapBrowserEvent) &amp;&amp;
               ol.events.condition.altKeyOnly(mapBrowserEvent);
-        },
-        multi: true
+        }
       });
 
       var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
@@ -328,30 +270,6 @@ changeHitTolerance();
        */
       selectElement.onchange &#x3D; changeInteraction;
       changeInteraction();
-
-      var selectHitToleranceElement &#x3D; document.getElementById(&#x27;hitTolerance&#x27;);
-      var circleCanvas &#x3D; document.getElementById(&#x27;circle&#x27;);
-
-      var changeHitTolerance &#x3D; function() {
-        var value &#x3D; parseInt(selectHitToleranceElement.value, 10);
-        selectSingleClick.setHitTolerance(value);
-        selectClick.setHitTolerance(value);
-        selectPointerMove.setHitTolerance(value);
-        selectAltClick.setHitTolerance(value);
-
-        var size &#x3D; 2 * value + 2;
-        circleCanvas.width &#x3D; size;
-        circleCanvas.height &#x3D; size;
-        var ctx &#x3D; circleCanvas.getContext(&#x27;2d&#x27;);
-        ctx.clearRect(0, 0, size, size);
-        ctx.beginPath();
-        ctx.arc(value + 1, value + 1, value + 0.5, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.stroke();
-      };
-
-      selectHitToleranceElement.onchange &#x3D; changeHitTolerance;
-      changeHitTolerance();
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
