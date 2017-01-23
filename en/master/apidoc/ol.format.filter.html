@@ -687,14 +687,6 @@
                     change:geometry
                 </li>
             
-                <li data-name="ol.Object.Event#event:change:id" class="">
-                    change:id
-                </li>
-            
-                <li data-name="ol.Object.Event#event:change:style" class="">
-                    change:style
-                </li>
-            
                 <li data-name="ol.Object.Event#event:propertychange" class="">
                     <a href="ol.Object.Event.html#event:propertychange">propertychange</a>
                 </li>
@@ -4675,28 +4667,9 @@
             </ul>
         </li>
     
-        <li class="item" data-name="ol.format.filter.Logical">
+        <li class="item" data-name="ol.format.filter.LogicalNary">
             <span class="title">
-                <a href="ol.format.filter.Logical.html">ol.format.filter.Logical</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="ol.format.filter.LogicalBinary">
-            <span class="title">
-                <a href="ol.format.filter.LogicalBinary.html">ol.format.filter.LogicalBinary</a>
+                <a href="ol.format.filter.LogicalNary.html">ol.format.filter.LogicalNary</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -16200,10 +16173,7 @@
             <dt><a href="ol.format.filter.LessThanOrEqualTo.html">LessThanOrEqualTo</a></dt>
             <dd></dd>
         
-            <dt><a href="ol.format.filter.Logical.html">Logical</a></dt>
-            <dd></dd>
-        
-            <dt><a href="ol.format.filter.LogicalBinary.html">LogicalBinary</a></dt>
+            <dt><a href="ol.format.filter.LogicalNary.html">LogicalNary</a></dt>
             <dd></dd>
         
             <dt><a href="ol.format.filter.Not.html">Not</a></dt>
@@ -16240,7 +16210,7 @@
         <div class="anchor" id=".and">
         </div>
         <h4 class="name">
-            ol.format.filter.and<span class="signature">(conditionA, conditionB)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.And.html">ol.format.filter.And</a>}</span>
+            ol.format.filter.and<span class="signature">(conditions)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.And.html">ol.format.filter.And</a>}</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -16249,7 +16219,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 29
+            src/ol/format/filter.js, line 28
         </div>
         
         
@@ -16260,7 +16230,7 @@
 
     
     <div class="description">
-        <p>Create a logical <code>&lt;And&gt;</code> operator between two filter conditions.</p>
+        <p>Create a logical <code>&lt;And&gt;</code> operator between two or more filter conditions.</p>
     </div>
     
 
@@ -16292,7 +16262,7 @@
 	
         <tr class="">
             
-                <td class="name"><code>conditionA</code></td>
+                <td class="name"><code>conditions</code></td>
             
             
             
@@ -16310,32 +16280,7 @@
             
             <td  class="description last">
                 
-                <p>First filter condition.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>conditionB</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.format.filter.Filter.html">ol.format.filter.Filter</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Second filter condition.</p></td>
+                <p>Filter conditions.</p></td>
         </tr>
 	
 	
@@ -18511,7 +18456,7 @@ value against a text pattern.</p>
         <div class="anchor" id=".or">
         </div>
         <h4 class="name">
-            ol.format.filter.or<span class="signature">(conditionA, conditionB)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Or.html">ol.format.filter.Or</a>}</span>
+            ol.format.filter.or<span class="signature">(conditions)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Or.html">ol.format.filter.Or</a>}</span>
             
             
 <span class="stability experimental">experimental</span>
@@ -18520,7 +18465,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 42
+            src/ol/format/filter.js, line 41
         </div>
         
         
@@ -18531,7 +18476,7 @@ value against a text pattern.</p>
 
     
     <div class="description">
-        <p>Create a logical <code>&lt;Or&gt;</code> operator between two filter conditions.</p>
+        <p>Create a logical <code>&lt;Or&gt;</code> operator between two or more filter conditions.</p>
     </div>
     
 
@@ -18563,7 +18508,7 @@ value against a text pattern.</p>
 	
         <tr class="">
             
-                <td class="name"><code>conditionA</code></td>
+                <td class="name"><code>conditions</code></td>
             
             
             
@@ -18581,32 +18526,7 @@ value against a text pattern.</p>
             
             <td  class="description last">
                 
-                <p>First filter condition.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>conditionB</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.format.filter.Filter.html">ol.format.filter.Filter</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                <p>Second filter condition.</p></td>
+                <p>Filter conditions.</p></td>
         </tr>
 	
 	

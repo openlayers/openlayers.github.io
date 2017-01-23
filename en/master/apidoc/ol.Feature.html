@@ -687,14 +687,6 @@
                     change:geometry
                 </li>
             
-                <li data-name="ol.Object.Event#event:change:id" class="">
-                    change:id
-                </li>
-            
-                <li data-name="ol.Object.Event#event:change:style" class="">
-                    change:style
-                </li>
-            
                 <li data-name="ol.Object.Event#event:propertychange" class="">
                     <a href="ol.Object.Event.html#event:propertychange">propertychange</a>
                 </li>
@@ -4675,28 +4667,9 @@
             </ul>
         </li>
     
-        <li class="item" data-name="ol.format.filter.Logical">
+        <li class="item" data-name="ol.format.filter.LogicalNary">
             <span class="title">
-                <a href="ol.format.filter.Logical.html">ol.format.filter.Logical</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="ol.format.filter.LogicalBinary">
-            <span class="title">
-                <a href="ol.format.filter.LogicalBinary.html">ol.format.filter.LogicalBinary</a>
+                <a href="ol.format.filter.LogicalNary.html">ol.format.filter.LogicalNary</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -16262,28 +16235,6 @@ var point = feature.getGeometry();</code></pre></div>
         </li>
     
         <li class="">
-            <code>change:id</code>
-            
-                (<a href="ol.Object.Event.html">ol.Object.Event</a>)
-              
-            
-            
-
-            
-        </li>
-    
-        <li class="">
-            <code>change:style</code>
-            
-                (<a href="ol.Object.Event.html">ol.Object.Event</a>)
-              
-            
-            
-
-            
-        </li>
-    
-        <li class="">
             <code><a href="ol.Object.Event.html#event:propertychange">propertychange</a></code>
             
                 (<a href="ol.Object.Event.html">ol.Object.Event</a>)
@@ -16364,50 +16315,6 @@ var point = feature.getGeometry();</code></pre></div>
       <td class="setter">yes</td>
       <td class="event"><code>change:geometry</code></td>
       <td class="description last"><p>The default geometry for the feature.</p></td>
-    </tr>
-    
-
-    <tr class="">
-      <td class="name"><code>id</code></td>
-      <td class="type">
-      
-      
-<span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-      
-      </td>
-      <td class="setter">yes</td>
-      <td class="event"><code>change:id</code></td>
-      <td class="description last"><p>Id.</p></td>
-    </tr>
-    
-
-    <tr class="">
-      <td class="name"><code>style</code></td>
-      <td class="type">
-      
-      
-<span class="param-type"><a href="ol.style.Style.html">ol.style.Style</a></span>
-|
-
-<span class="param-type">Array.&lt;<a href="ol.style.Style.html">ol.style.Style</a>></span>
-|
-
-<span class="param-type"><a href="ol.html#.FeatureStyleFunction">ol.FeatureStyleFunction</a></span>
-
-
-      
-      </td>
-      <td class="setter">yes</td>
-      <td class="event"><code>change:style</code></td>
-      <td class="description last"><p>The feature style.</p></td>
     </tr>
     
   </tbody>
@@ -16963,7 +16870,7 @@ The default geometry for the feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 167
+            src/ol/feature.js, line 166
         </div>
         
         
@@ -17051,7 +16958,7 @@ Get the property name associated with the default geometry
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 155
+            src/ol/feature.js, line 154
         </div>
         
         
@@ -17406,7 +17313,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 180
+            src/ol/feature.js, line 178
         </div>
         
         
@@ -17493,7 +17400,7 @@ The feature style.
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 191
+            src/ol/feature.js, line 189
         </div>
         
         
@@ -18136,7 +18043,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 228
+            src/ol/feature.js, line 226
         </div>
         
         
@@ -18264,7 +18171,7 @@ with the name returned by <a href="ol.Feature.html#getGeometryName"><code>ol.Fea
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 272
+            src/ol/feature.js, line 270
         </div>
         
         
@@ -18390,7 +18297,7 @@ this name will be returned.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 259
+            src/ol/feature.js, line 257
         </div>
         
         
@@ -18495,6 +18402,24 @@ method.</p>
 </dl>
 
 
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li class="unstable">
+            <code><a href="ol.events.Event.html#event:change">change</a></code>
+            
+                (<a href="ol.events.Event.html">ol.events.Event</a>)
+              
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+             -
+            Generic change event. Triggered when the revision counter is increased.
+            
+        </li>
+    </ul>
     
 
     
@@ -18675,7 +18600,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/feature.js, line 242
+            src/ol/feature.js, line 240
         </div>
         
         
@@ -18779,6 +18704,24 @@ styles. If it is <code>null</code> the feature has no style (a <code>null</code>
 </dl>
 
 
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li class="unstable">
+            <code><a href="ol.events.Event.html#event:change">change</a></code>
+            
+                (<a href="ol.events.Event.html">ol.events.Event</a>)
+              
+            
+            
+<span class="stability experimental">experimental</span>
+
+
+             -
+            Generic change event. Triggered when the revision counter is increased.
+            
+        </li>
+    </ul>
     
 
     

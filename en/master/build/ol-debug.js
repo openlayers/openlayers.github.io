@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v3.20.0-205-ga993cf4
+// Version: v3.20.0-214-gfb5a626
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -3692,11 +3692,11 @@ goog.require('ol.easing');
 
 
 /**
- * Deprecated (use {@link ol.View#animate} instead).
  * Generate an animated transition that will "bounce" the resolution as it
  * approaches the final value.
  * @param {olx.animation.BounceOptions} options Bounce options.
  * @return {ol.PreRenderFunction} Pre-render function.
+ * @deprecated Use {@link ol.View#animate} instead.
  * @api
  */
 ol.animation.bounce = function(options) {
@@ -3731,10 +3731,10 @@ ol.animation.bounce = function(options) {
 
 
 /**
- * Deprecated (use {@link ol.View#animate} instead).
  * Generate an animated transition while updating the view center.
  * @param {olx.animation.PanOptions} options Pan options.
  * @return {ol.PreRenderFunction} Pre-render function.
+ * @deprecated Use {@link ol.View#animate} instead.
  * @api
  */
 ol.animation.pan = function(options) {
@@ -3773,10 +3773,10 @@ ol.animation.pan = function(options) {
 
 
 /**
- * Deprecated (use {@link ol.View#animate} instead).
  * Generate an animated transition while updating the view rotation.
  * @param {olx.animation.RotateOptions} options Rotate options.
  * @return {ol.PreRenderFunction} Pre-render function.
+ * @deprecated Use {@link ol.View#animate} instead.
  * @api
  */
 ol.animation.rotate = function(options) {
@@ -3821,10 +3821,10 @@ ol.animation.rotate = function(options) {
 
 
 /**
- * Deprecated (use {@link ol.View#animate} instead).
  * Generate an animated transition while updating the view resolution.
  * @param {olx.animation.ZoomOptions} options Zoom options.
  * @return {ol.PreRenderFunction} Pre-render function.
+ * @deprecated Use {@link ol.View#animate} instead.
  * @api
  */
 ol.animation.zoom = function(options) {
@@ -18518,7 +18518,9 @@ ol.interaction.DragPan.handleDownEvent_ = function(mapBrowserEvent) {
       view.setHint(ol.ViewHint.INTERACTING, 1);
     }
     // stop any current animation
-    view.setCenter(mapBrowserEvent.frameState.viewState.center);
+    if (view.getHints()[ol.ViewHint.ANIMATING]) {
+      view.setCenter(mapBrowserEvent.frameState.viewState.center);
+    }
     if (this.kinetic_) {
       this.kinetic_.begin();
     }
@@ -27176,68 +27178,6 @@ var define;
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.rbush = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 
-module.exports = partialSort;
-
-// Floyd-Rivest selection algorithm:
-// Rearrange items so that all items in the [left, k] range are smaller than all items in (k, right];
-// The k-th element will have the (k - left + 1)th smallest value in [left, right]
-
-function partialSort(arr, k, left, right, compare) {
-    left = left || 0;
-    right = right || (arr.length - 1);
-    compare = compare || defaultCompare;
-
-    while (right > left) {
-        if (right - left > 600) {
-            var n = right - left + 1;
-            var m = k - left + 1;
-            var z = Math.log(n);
-            var s = 0.5 * Math.exp(2 * z / 3);
-            var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
-            var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
-            var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
-            partialSort(arr, k, newLeft, newRight, compare);
-        }
-
-        var t = arr[k];
-        var i = left;
-        var j = right;
-
-        swap(arr, left, k);
-        if (compare(arr[right], t) > 0) swap(arr, left, right);
-
-        while (i < j) {
-            swap(arr, i, j);
-            i++;
-            j--;
-            while (compare(arr[i], t) < 0) i++;
-            while (compare(arr[j], t) > 0) j--;
-        }
-
-        if (compare(arr[left], t) === 0) swap(arr, left, j);
-        else {
-            j++;
-            swap(arr, j, right);
-        }
-
-        if (j <= k) left = j + 1;
-        if (k <= j) right = j - 1;
-    }
-}
-
-function swap(arr, i, j) {
-    var tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-}
-
-function defaultCompare(a, b) {
-    return a < b ? -1 : a > b ? 1 : 0;
-}
-
-},{}],2:[function(_dereq_,module,exports){
-'use strict';
-
 module.exports = rbush;
 
 var quickselect = _dereq_('quickselect');
@@ -27798,7 +27738,69 @@ function multiSelect(arr, left, right, n, compare) {
     }
 }
 
-},{"quickselect":1}]},{},[2])(2)
+},{"quickselect":2}],2:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = partialSort;
+
+// Floyd-Rivest selection algorithm:
+// Rearrange items so that all items in the [left, k] range are smaller than all items in (k, right];
+// The k-th element will have the (k - left + 1)th smallest value in [left, right]
+
+function partialSort(arr, k, left, right, compare) {
+    left = left || 0;
+    right = right || (arr.length - 1);
+    compare = compare || defaultCompare;
+
+    while (right > left) {
+        if (right - left > 600) {
+            var n = right - left + 1;
+            var m = k - left + 1;
+            var z = Math.log(n);
+            var s = 0.5 * Math.exp(2 * z / 3);
+            var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
+            var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
+            var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
+            partialSort(arr, k, newLeft, newRight, compare);
+        }
+
+        var t = arr[k];
+        var i = left;
+        var j = right;
+
+        swap(arr, left, k);
+        if (compare(arr[right], t) > 0) swap(arr, left, right);
+
+        while (i < j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+            while (compare(arr[i], t) < 0) i++;
+            while (compare(arr[j], t) > 0) j--;
+        }
+
+        if (compare(arr[left], t) === 0) swap(arr, left, j);
+        else {
+            j++;
+            swap(arr, j, right);
+        }
+
+        if (j <= k) left = j + 1;
+        if (k <= j) right = j - 1;
+    }
+}
+
+function swap(arr, i, j) {
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+}
+
+function defaultCompare(a, b) {
+    return a < b ? -1 : a > b ? 1 : 0;
+}
+
+},{}]},{},[1])(1)
 });
 ol.ext.rbush = module.exports;
 })();
@@ -31084,11 +31086,11 @@ ol.Map.prototype.addOverlayInternal_ = function(overlay) {
 
 
 /**
- * Deprecated (use {@link ol.View#animate} instead).
  * Add functions to be called before rendering. This can be used for attaching
  * animations before updating the map's view.  The {@link ol.animation}
  * namespace provides several static methods for creating prerender functions.
  * @param {...ol.PreRenderFunction} var_args Any number of pre-render functions.
+ * @deprecated Use {@link ol.View#animate} instead.
  * @api
  */
 ol.Map.prototype.beforeRender = function(var_args) {
@@ -35672,7 +35674,6 @@ ol.Feature.prototype.getGeometry = function() {
  * calling {@link ol.Feature#setId}.
  * @return {number|string|undefined} Id.
  * @api stable
- * @observable
  */
 ol.Feature.prototype.getId = function() {
   return this.id_;
@@ -35697,7 +35698,6 @@ ol.Feature.prototype.getGeometryName = function() {
  * @return {ol.style.Style|Array.<ol.style.Style>|
  *     ol.FeatureStyleFunction} The feature style.
  * @api stable
- * @observable
  */
 ol.Feature.prototype.getStyle = function() {
   return this.style_;
@@ -35759,7 +35759,7 @@ ol.Feature.prototype.setGeometry = function(geometry) {
  * @param {ol.style.Style|Array.<ol.style.Style>|
  *     ol.FeatureStyleFunction} style Style for this feature.
  * @api stable
- * @observable
+ * @fires ol.events.Event#event:change
  */
 ol.Feature.prototype.setStyle = function(style) {
   this.style_ = style;
@@ -35776,7 +35776,7 @@ ol.Feature.prototype.setStyle = function(style) {
  * method.
  * @param {number|string|undefined} id The feature id.
  * @api stable
- * @observable
+ * @fires ol.events.Event#event:change
  */
 ol.Feature.prototype.setId = function(id) {
   this.id_ = id;
@@ -38973,7 +38973,7 @@ ol.format.filter.Filter.prototype.getTagName = function() {
   return this.tagName_;
 };
 
-goog.provide('ol.format.filter.Logical');
+goog.provide('ol.format.filter.LogicalNary');
 
 goog.require('ol');
 goog.require('ol.format.filter.Filter');
@@ -38982,72 +38982,45 @@ goog.require('ol.format.filter.Filter');
 /**
  * @classdesc
  * Abstract class; normally only used for creating subclasses and not instantiated in apps.
- * Base class for WFS GetFeature logical filters.
+ * Base class for WFS GetFeature n-ary logical filters.
  *
  * @constructor
  * @param {!string} tagName The XML tag name for this filter.
+ * @param {...ol.format.filter.Filter} conditions Conditions.
  * @extends {ol.format.filter.Filter}
  */
-ol.format.filter.Logical = function(tagName) {
+ol.format.filter.LogicalNary = function(tagName, conditions) {
+
   ol.format.filter.Filter.call(this, tagName);
-};
-ol.inherits(ol.format.filter.Logical, ol.format.filter.Filter);
-
-goog.provide('ol.format.filter.LogicalBinary');
-
-goog.require('ol');
-goog.require('ol.format.filter.Logical');
-
-
-/**
- * @classdesc
- * Abstract class; normally only used for creating subclasses and not instantiated in apps.
- * Base class for WFS GetFeature binary logical filters.
- *
- * @constructor
- * @param {!string} tagName The XML tag name for this filter.
- * @param {!ol.format.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.filter.Filter} conditionB Second filter condition.
- * @extends {ol.format.filter.Logical}
- */
-ol.format.filter.LogicalBinary = function(tagName, conditionA, conditionB) {
-
-  ol.format.filter.Logical.call(this, tagName);
 
   /**
    * @public
-   * @type {!ol.format.filter.Filter}
+   * @type {Array.<ol.format.filter.Filter>}
    */
-  this.conditionA = conditionA;
-
-  /**
-   * @public
-   * @type {!ol.format.filter.Filter}
-   */
-  this.conditionB = conditionB;
-
+  this.conditions = Array.prototype.slice.call(arguments, 1);
+  ol.asserts.assert(this.conditions.length >= 2, 57); // At least 2 conditions are required.
 };
-ol.inherits(ol.format.filter.LogicalBinary, ol.format.filter.Logical);
+ol.inherits(ol.format.filter.LogicalNary, ol.format.filter.Filter);
 
 goog.provide('ol.format.filter.And');
 
 goog.require('ol');
-goog.require('ol.format.filter.LogicalBinary');
+goog.require('ol.format.filter.LogicalNary');
 
 /**
  * @classdesc
- * Represents a logical `<And>` operator between two filter conditions.
+ * Represents a logical `<And>` operator between two or more filter conditions.
  *
  * @constructor
- * @param {!ol.format.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.filter.Filter} conditionB Second filter condition.
- * @extends {ol.format.filter.LogicalBinary}
+ * @param {...ol.format.filter.Filter} conditions Conditions.
+ * @extends {ol.format.filter.LogicalNary}
  * @api
  */
-ol.format.filter.And = function(conditionA, conditionB) {
-  ol.format.filter.LogicalBinary.call(this, 'And', conditionA, conditionB);
+ol.format.filter.And = function(conditions) {
+  var params = ['And'].concat(Array.prototype.slice.call(arguments));
+  ol.format.filter.LogicalNary.apply(this, params);
 };
-ol.inherits(ol.format.filter.And, ol.format.filter.LogicalBinary);
+ol.inherits(ol.format.filter.And, ol.format.filter.LogicalNary);
 
 goog.provide('ol.format.filter.Bbox');
 
@@ -39451,7 +39424,7 @@ ol.inherits(ol.format.filter.LessThanOrEqualTo, ol.format.filter.ComparisonBinar
 goog.provide('ol.format.filter.Not');
 
 goog.require('ol');
-goog.require('ol.format.filter.Logical');
+goog.require('ol.format.filter.Filter');
 
 
 /**
@@ -39460,12 +39433,12 @@ goog.require('ol.format.filter.Logical');
  *
  * @constructor
  * @param {!ol.format.filter.Filter} condition Filter condition.
- * @extends {ol.format.filter.Logical}
+ * @extends {ol.format.filter.Filter}
  * @api
  */
 ol.format.filter.Not = function(condition) {
 
-  ol.format.filter.Logical.call(this, 'Not');
+  ol.format.filter.Filter.call(this, 'Not');
 
   /**
    * @public
@@ -39473,7 +39446,7 @@ ol.format.filter.Not = function(condition) {
    */
   this.condition = condition;
 };
-ol.inherits(ol.format.filter.Not, ol.format.filter.Logical);
+ol.inherits(ol.format.filter.Not, ol.format.filter.Filter);
 
 goog.provide('ol.format.filter.NotEqualTo');
 
@@ -39500,23 +39473,23 @@ ol.inherits(ol.format.filter.NotEqualTo, ol.format.filter.ComparisonBinary);
 goog.provide('ol.format.filter.Or');
 
 goog.require('ol');
-goog.require('ol.format.filter.LogicalBinary');
+goog.require('ol.format.filter.LogicalNary');
 
 
 /**
  * @classdesc
- * Represents a logical `<Or>` operator between two filter conditions.
+ * Represents a logical `<Or>` operator between two ore more filter conditions.
  *
  * @constructor
- * @param {!ol.format.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.filter.Filter} conditionB Second filter condition.
- * @extends {ol.format.filter.LogicalBinary}
+ * @param {...ol.format.filter.Filter} conditions Conditions.
+ * @extends {ol.format.filter.LogicalNary}
  * @api
  */
-ol.format.filter.Or = function(conditionA, conditionB) {
-  ol.format.filter.LogicalBinary.call(this, 'Or', conditionA, conditionB);
+ol.format.filter.Or = function(conditions) {
+  var params = ['Or'].concat(Array.prototype.slice.call(arguments));
+  ol.format.filter.LogicalNary.apply(this, params);
 };
-ol.inherits(ol.format.filter.Or, ol.format.filter.LogicalBinary);
+ol.inherits(ol.format.filter.Or, ol.format.filter.LogicalNary);
 
 goog.provide('ol.format.filter.Within');
 
@@ -39565,28 +39538,28 @@ goog.require('ol.format.filter.Within');
 
 
 /**
- * Create a logical `<And>` operator between two filter conditions.
+ * Create a logical `<And>` operator between two or more filter conditions.
  *
- * @param {!ol.format.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.filter.Filter} conditionB Second filter condition.
+ * @param {...ol.format.filter.Filter} conditions Filter conditions.
  * @returns {!ol.format.filter.And} `<And>` operator.
  * @api
  */
-ol.format.filter.and = function(conditionA, conditionB) {
-  return new ol.format.filter.And(conditionA, conditionB);
+ol.format.filter.and = function(conditions) {
+  var params = [null].concat(Array.prototype.slice.call(arguments));
+  return new (Function.prototype.bind.apply(ol.format.filter.And, params));
 };
 
 
 /**
- * Create a logical `<Or>` operator between two filter conditions.
+ * Create a logical `<Or>` operator between two or more filter conditions.
  *
- * @param {!ol.format.filter.Filter} conditionA First filter condition.
- * @param {!ol.format.filter.Filter} conditionB Second filter condition.
+ * @param {...ol.format.filter.Filter} conditions Filter conditions.
  * @returns {!ol.format.filter.Or} `<Or>` operator.
  * @api
  */
-ol.format.filter.or = function(conditionA, conditionB) {
-  return new ol.format.filter.Or(conditionA, conditionB);
+ol.format.filter.or = function(conditions) {
+  var params = [null].concat(Array.prototype.slice.call(arguments));
+  return new (Function.prototype.bind.apply(ol.format.filter.Or, params));
 };
 
 
@@ -48612,92 +48585,6 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pbf = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-},{}],2:[function(_dereq_,module,exports){
 'use strict';
 
 module.exports = Pbf;
@@ -49317,7 +49204,93 @@ function writeUtf8(buf, str, pos) {
     return pos;
 }
 
-},{"ieee754":1}]},{},[2])(2)
+},{"ieee754":2}],2:[function(_dereq_,module,exports){
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+},{}]},{},[1])(1)
 });
 ol.ext.pbf = module.exports;
 })();
@@ -49334,144 +49307,11 @@ var define;
  * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.vectortile = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = Point;
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
-
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
-
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
-
-},{}],2:[function(_dereq_,module,exports){
 module.exports.VectorTile = _dereq_('./lib/vectortile.js');
 module.exports.VectorTileFeature = _dereq_('./lib/vectortilefeature.js');
 module.exports.VectorTileLayer = _dereq_('./lib/vectortilelayer.js');
 
-},{"./lib/vectortile.js":3,"./lib/vectortilefeature.js":4,"./lib/vectortilelayer.js":5}],3:[function(_dereq_,module,exports){
+},{"./lib/vectortile.js":2,"./lib/vectortilefeature.js":3,"./lib/vectortilelayer.js":4}],2:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileLayer = _dereq_('./vectortilelayer');
@@ -49490,7 +49330,7 @@ function readTile(tag, layers, pbf) {
 }
 
 
-},{"./vectortilelayer":5}],4:[function(_dereq_,module,exports){
+},{"./vectortilelayer":4}],3:[function(_dereq_,module,exports){
 'use strict';
 
 var Point = _dereq_('point-geometry');
@@ -49725,7 +49565,7 @@ function signedArea(ring) {
     return sum;
 }
 
-},{"point-geometry":1}],5:[function(_dereq_,module,exports){
+},{"point-geometry":5}],4:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileFeature = _dereq_('./vectortilefeature.js');
@@ -49788,7 +49628,140 @@ VectorTileLayer.prototype.feature = function(i) {
     return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
 };
 
-},{"./vectortilefeature.js":4}]},{},[2])(2)
+},{"./vectortilefeature.js":3}],5:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = Point;
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
+
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
+
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+},{}]},{},[1])(1)
 });
 ol.ext.vectortile = module.exports;
 })();
@@ -52335,23 +52308,19 @@ ol.format.WFS.writeWithinFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
- * @param {ol.format.filter.LogicalBinary} filter Filter.
+ * @param {ol.format.filter.LogicalNary} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
  */
 ol.format.WFS.writeLogicalFilter_ = function(node, filter, objectStack) {
   /** @type {ol.XmlNodeStackItem} */
   var item = {node: node};
-  var conditionA = filter.conditionA;
-  ol.xml.pushSerializeAndPop(item,
-      ol.format.WFS.GETFEATURE_SERIALIZERS_,
-      ol.xml.makeSimpleNodeFactory(conditionA.getTagName()),
-      [conditionA], objectStack);
-  var conditionB = filter.conditionB;
-  ol.xml.pushSerializeAndPop(item,
-      ol.format.WFS.GETFEATURE_SERIALIZERS_,
-      ol.xml.makeSimpleNodeFactory(conditionB.getTagName()),
-      [conditionB], objectStack);
+  filter.conditions.forEach(function(condition) {
+    ol.xml.pushSerializeAndPop(item,
+        ol.format.WFS.GETFEATURE_SERIALIZERS_,
+        ol.xml.makeSimpleNodeFactory(condition.getTagName()),
+        [condition], objectStack);
+  });
 };
 
 
@@ -91275,7 +91244,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.20.0-205-ga993cf4';
+ol.VERSION = 'v3.20.0-214-gfb5a626';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

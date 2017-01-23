@@ -47,7 +47,7 @@ goog.addDependency('../../../ol/ol/featureloader.js', ['ol.featureloader'], ['ol
 goog.addDependency('../../../ol/ol/format/esrijson.js', ['ol.format.EsriJSON'], ['ol', 'ol.Feature', 'ol.asserts', 'ol.extent', 'ol.format.Feature', 'ol.format.JSONFeature', 'ol.geom.GeometryLayout', 'ol.geom.GeometryType', 'ol.geom.LineString', 'ol.geom.LinearRing', 'ol.geom.MultiLineString', 'ol.geom.MultiPoint', 'ol.geom.MultiPolygon', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.geom.flat.deflate', 'ol.geom.flat.orient', 'ol.obj', 'ol.proj'], false);
 goog.addDependency('../../../ol/ol/format/feature.js', ['ol.format.Feature'], ['ol.geom.Geometry', 'ol.obj', 'ol.proj'], false);
 goog.addDependency('../../../ol/ol/format/filter.js', ['ol.format.filter'], ['ol', 'ol.format.filter.And', 'ol.format.filter.Bbox', 'ol.format.filter.EqualTo', 'ol.format.filter.GreaterThan', 'ol.format.filter.GreaterThanOrEqualTo', 'ol.format.filter.Intersects', 'ol.format.filter.IsBetween', 'ol.format.filter.IsLike', 'ol.format.filter.IsNull', 'ol.format.filter.LessThan', 'ol.format.filter.LessThanOrEqualTo', 'ol.format.filter.Not', 'ol.format.filter.NotEqualTo', 'ol.format.filter.Or', 'ol.format.filter.Within'], false);
-goog.addDependency('../../../ol/ol/format/filter/and.js', ['ol.format.filter.And'], ['ol', 'ol.format.filter.LogicalBinary'], false);
+goog.addDependency('../../../ol/ol/format/filter/and.js', ['ol.format.filter.And'], ['ol', 'ol.format.filter.LogicalNary'], false);
 goog.addDependency('../../../ol/ol/format/filter/bbox.js', ['ol.format.filter.Bbox'], ['ol', 'ol.format.filter.Filter'], false);
 goog.addDependency('../../../ol/ol/format/filter/comparison.js', ['ol.format.filter.Comparison'], ['ol', 'ol.format.filter.Filter'], false);
 goog.addDependency('../../../ol/ol/format/filter/comparisonbinary.js', ['ol.format.filter.ComparisonBinary'], ['ol', 'ol.format.filter.Comparison'], false);
@@ -61,11 +61,10 @@ goog.addDependency('../../../ol/ol/format/filter/islike.js', ['ol.format.filter.
 goog.addDependency('../../../ol/ol/format/filter/isnull.js', ['ol.format.filter.IsNull'], ['ol', 'ol.format.filter.Comparison'], false);
 goog.addDependency('../../../ol/ol/format/filter/lessthan.js', ['ol.format.filter.LessThan'], ['ol', 'ol.format.filter.ComparisonBinary'], false);
 goog.addDependency('../../../ol/ol/format/filter/lessthanorequalto.js', ['ol.format.filter.LessThanOrEqualTo'], ['ol', 'ol.format.filter.ComparisonBinary'], false);
-goog.addDependency('../../../ol/ol/format/filter/logical.js', ['ol.format.filter.Logical'], ['ol', 'ol.format.filter.Filter'], false);
-goog.addDependency('../../../ol/ol/format/filter/logicalbinary.js', ['ol.format.filter.LogicalBinary'], ['ol', 'ol.format.filter.Logical'], false);
-goog.addDependency('../../../ol/ol/format/filter/not.js', ['ol.format.filter.Not'], ['ol', 'ol.format.filter.Logical'], false);
+goog.addDependency('../../../ol/ol/format/filter/logicalnary.js', ['ol.format.filter.LogicalNary'], ['ol', 'ol.format.filter.Filter'], false);
+goog.addDependency('../../../ol/ol/format/filter/not.js', ['ol.format.filter.Not'], ['ol', 'ol.format.filter.Filter'], false);
 goog.addDependency('../../../ol/ol/format/filter/notequalto.js', ['ol.format.filter.NotEqualTo'], ['ol', 'ol.format.filter.ComparisonBinary'], false);
-goog.addDependency('../../../ol/ol/format/filter/or.js', ['ol.format.filter.Or'], ['ol', 'ol.format.filter.LogicalBinary'], false);
+goog.addDependency('../../../ol/ol/format/filter/or.js', ['ol.format.filter.Or'], ['ol', 'ol.format.filter.LogicalNary'], false);
 goog.addDependency('../../../ol/ol/format/filter/spatial.js', ['ol.format.filter.Spatial'], ['ol', 'ol.format.filter.Filter'], false);
 goog.addDependency('../../../ol/ol/format/filter/within.js', ['ol.format.filter.Within'], ['ol', 'ol.format.filter.Spatial'], false);
 goog.addDependency('../../../ol/ol/format/formattype.js', ['ol.format.FormatType'], [], false);
