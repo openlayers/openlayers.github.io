@@ -130,7 +130,7 @@ for (i &#x3D; 0, ii &#x3D; hereLayers.length; i &lt; ii; ++i) {
     preload: Infinity,
     source: new ol.source.XYZ({
       url: createUrl(urlTpl, layerDesc),
-      attributions: &#x27;Map Tiles &amp;copy; 2016 &#x27; +
+      attributions: &#x27;Map Tiles &amp;copy; &#x27; + new Date().getFullYear() + &#x27; &#x27; +
         &#x27;&lt;a href&#x3D;&quot;http://developer.here.com&quot;&gt;HERE&lt;/a&gt;&#x27;
     })
   }));
@@ -259,7 +259,7 @@ onChange();
           preload: Infinity,
           source: new ol.source.XYZ({
             url: createUrl(urlTpl, layerDesc),
-            attributions: &#x27;Map Tiles &amp;copy; 2016 &#x27; +
+            attributions: &#x27;Map Tiles &amp;copy; &#x27; + new Date().getFullYear() + &#x27; &#x27; +
               &#x27;&lt;a href&#x3D;&quot;http://developer.here.com&quot;&gt;HERE&lt;/a&gt;&#x27;
           })
         }));
