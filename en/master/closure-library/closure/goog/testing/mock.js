@@ -278,7 +278,7 @@ goog.testing.Mock.prototype.$threwException_ = null;
  */
 goog.testing.Mock.prototype.$initializeFunctions_ = function(objectToMock) {
   // Gets the object properties.
-  var enumerableProperties = goog.object.getKeys(objectToMock);
+  var enumerableProperties = goog.object.getAllPropertyNames(objectToMock);
 
   // The non enumerable properties are added if they override the ones in the
   // Object prototype. This is due to the fact that IE8 does not enumerate any

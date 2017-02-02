@@ -86,7 +86,8 @@ goog.style.setStyle_ = function(element, value, style) {
   var propertyName = goog.style.getVendorJsStyleName_(element, style);
 
   if (propertyName) {
-    element.style[propertyName] = value;
+    // TODO(johnlenz): coerce to string?
+    element.style[propertyName] = /** @type {?} */ (value);
   }
 };
 
@@ -621,11 +622,9 @@ goog.style.getContainerOffsetToScrollInto = function(
   // How much the element can move in the container, i.e. the difference between
   // the element's bottom-right-most and top-left-most position where it's
   // fully visible.
-  var spaceX = container.clientWidth -
-      /** @type {HTMLElement} */ (element).offsetWidth;
-  var spaceY = container.clientHeight -
-      /** @type {HTMLElement} */ (element).offsetHeight;
-
+  var elementSize = goog.style.getSizeWithDisplay_(element);
+  var spaceX = container.clientWidth - elementSize.width;
+  var spaceY = container.clientHeight - elementSize.height;
   var scrollLeft = container.scrollLeft;
   var scrollTop = container.scrollTop;
   if (opt_center) {
@@ -1671,7 +1670,7 @@ goog.style.getIePixelValue_ = function(element, value, name, pixelName) {
     // restore
     element.style[name] = oldStyleValue;
     element.runtimeStyle[name] = oldRuntimeValue;
-    return pixelValue;
+    return +pixelValue;
   }
 };
 

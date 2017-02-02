@@ -79,7 +79,8 @@
       <span class="string">"api"</span>, <span class="string">"observable"</span>
     ]</span>,
     "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED"</span></span>,
-    "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span>
+    "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span></span>,
+    "<span class="attribute">rewrite_polyfills</span>": <span class="value"><span class="literal">false</span>
   </span>}
 </span>}</code></pre>
 <p>Create a file named <code>ol-custom.json</code> with that content, and save it under the <code>node_modules/openlayers/build</code> directory. (You can save it to any location really.)</p>
@@ -105,7 +106,7 @@
 <p>You are now ready to create your first OpenLayers build. Use the following command to create the build:</p>
 <pre><code>$ cd node_modules/openlayers
 $ node tasks/build.js build/ol-custom.json build/ol-custom.js</code></pre>
-<p>The build command may take some time, but it should end with the following output in the console:</p>
+<p>The build command may take some time, but it should end with an output in the console such as the following:</p>
 <pre><code>info ol Parsing dependencies
 info ol Compiling 364 sources</code></pre>
 <p>The build command should have created an <code>ol-custom.js</code> file in the <code>node_modules/openlayers/build</code> directory. You can verify that the file was created. You can even open it in your editor if you&#39;re curious.</p>
@@ -157,7 +158,7 @@ info ol Compiling 364 sources</code></pre>
 <p>The Closure documentation explains that &quot;externs&quot; are for external names used in the code being compiled. The compiler includes externs for built-ins such as <code>document</code>. The <code>externs</code> directory of the OpenLayers code includes files for all those used in some part of the library. For example, if you use Bing Maps, you should include the Bing externs file in the <code>externs</code> section of the config file.</p>
 <p><code>oli.js</code> and <code>olx.js</code> are externs files for the OpenLayers API. For example <code>olx.js</code> includes extern definitions for OpenLayers&#39;s constructor options. <code>closure-compiler.js</code> fixes any issues that may arise with a specific compiler version. You should always use these three files as externs when creating custom builds.</p>
 <h3 id="other-compiler-options">Other compiler options</h3>
-<p>There are a couple of other compiler options in the config file above. <code>manage_closure_dependencies</code> should always be used.</p>
+<p>There are a couple of other compiler options in the config file above. <code>manage_closure_dependencies</code> and <code>rewrite_polyfills</code> should always be used.</p>
 <p>You can specify any of the other compiler options here as needed, such as the renaming reports, output manifest, or source maps. There is a full list of available options in <a href="https://github.com/openlayers/closure-util/blob/master/compiler-options.txt">closure-util</a>.</p>
 <p>Note that <code>build.js</code> currently requires you to enter an output file and will write the output from the compiler to it; it does not use the <code>js_output_file</code> compiler option. If you specify this in the config file, there will be no compiler output, so <code>build.js</code>&#39;s output file will be empty.</p>
 <h2 id="a-more-complicated-example">A more complicated example</h2>
@@ -191,7 +192,8 @@ info ol Compiling 364 sources</code></pre>
       <span class="string">"ol.ENABLE_RASTER_REPROJECTION=false"</span>
     ]</span>,
     "<span class="attribute">compilation_level</span>": <span class="value"><span class="string">"ADVANCED"</span></span>,
-    "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span>
+    "<span class="attribute">manage_closure_dependencies</span>": <span class="value"><span class="literal">true</span></span>,
+    "<span class="attribute">rewrite_polyfills</span>": <span class="value"><span class="literal">false</span>
   </span>}
 </span>}</code></pre>
 <p>The exports are given here in the order in which they occur in the <code>heatmaps-earthquakes</code> example&#39;s JavaScript code. In this example we not only use the <code>ol.</code> functions and constructors, but also <code>prototype</code> methods where the <code>ol</code> namespace is not directly used. In the code, we have for example <code>vector.getSource().on()</code>. This means we are using the <code>getSource</code> method of <code>layer.Heatmap</code> and the <code>on</code> method of <code>source.KML</code>, so this is what has to be exported. Similarly, <code>event.feature.get()</code> means we are using the <code>feature</code> property of <code>source.Vector.Event</code> and the <code>get</code> method of <code>Feature</code>. If any of these names are left out, the compile will complete successfully, but the missing names will be obfuscated and you will get a &#39;property undefined&#39; error when you try and run the script.</p>

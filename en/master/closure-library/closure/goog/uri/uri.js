@@ -27,6 +27,7 @@
  * internal representation is now of un-encoded parts, this will change the
  * behavior slightly.
  *
+ * @author msamuel@google.com (Mike Samuel)
  */
 
 goog.provide('goog.Uri');
@@ -321,7 +322,7 @@ goog.Uri.prototype.resolve = function(relativeUri) {
   }
 
   if (overridden) {
-    absoluteUri.setQueryData(relativeUri.getDecodedQuery());
+    absoluteUri.setQueryData(relativeUri.getQueryData().clone());
   } else {
     overridden = relativeUri.hasFragment();
   }

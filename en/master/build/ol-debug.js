@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v3.20.0-218-g8c2b407
+// Version: v3.21.0-beta.1-2-g9af1000
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -360,6 +360,7 @@ goog.VALID_MODULE_RE_ = /^[a-zA-Z_$][a-zA-Z0-9._$]*$/;
  *
  * @param {string} name Namespace provided by this file in the form
  *     "goog.package.part", is expected but not required.
+ * @return {void}
  */
 goog.module = function(name) {
   if (!goog.isString(name) || !name ||
@@ -367,7 +368,13 @@ goog.module = function(name) {
     throw Error('Invalid module identifier');
   }
   if (!goog.isInModuleLoader_()) {
-    throw Error('Module ' + name + ' has been loaded incorrectly.');
+    throw Error(
+        'Module ' + name + ' has been loaded incorrectly. Note, ' +
+        'modules cannot be loaded as normal scripts. They require some kind of ' +
+        'pre-processing step. You\'re likely trying to load a module via a ' +
+        'script tag or as a part of a concatenated bundle without rewriting the ' +
+        'module. For more info see: ' +
+        'https://github.com/google/closure-library/wiki/goog.module:-an-ES6-module-like-alternative-to-goog.provide.');
   }
   if (goog.moduleLoaderState_.moduleName) {
     throw Error('goog.module may only be called once per module.');
@@ -408,14 +415,14 @@ goog.module.get = function(name) {
  */
 goog.module.getInternal_ = function(name) {
   if (!COMPILED) {
-    if (goog.isProvided_(name)) {
-      // goog.require only return a value with-in goog.module files.
-      return name in goog.loadedModules_ ? goog.loadedModules_[name] :
-                                           goog.getObjectByName(name);
-    } else {
-      return null;
+    if (name in goog.loadedModules_) {
+      return goog.loadedModules_[name];
+    } else if (!goog.implicitNamespaces_[name]) {
+      var ns = goog.getObjectByName(name);
+      return ns != null ? ns : null;
     }
   }
+  return null;
 };
 
 
@@ -488,6 +495,9 @@ goog.setTestOnly = function(opt_message) {
  * into the JavaScript binary. If it is required elsewhere, it will be type
  * checked as normal.
  *
+ * Before using goog.forwardDeclare, please read the documentation at
+ * https://github.com/google/closure-compiler/wiki/Bad-Type-Annotation to
+ * understand the options and tradeoffs when working with forward declarations.
  *
  * @param {string} name The namespace to forward declare in the form of
  *     "goog.package.part".
@@ -677,23 +687,20 @@ goog.require = function(name) {
     if (goog.isProvided_(name)) {
       if (goog.isInModuleLoader_()) {
         return goog.module.getInternal_(name);
-      } else {
-        return null;
       }
-    }
-
-    if (goog.ENABLE_DEBUG_LOADER) {
+    } else if (goog.ENABLE_DEBUG_LOADER) {
       var path = goog.getPathFromDeps_(name);
       if (path) {
         goog.writeScripts_(path);
-        return null;
+      } else {
+        var errorMessage = 'goog.require could not find: ' + name;
+        goog.logToConsole_(errorMessage);
+
+        throw Error(errorMessage);
       }
     }
 
-    var errorMessage = 'goog.require could not find: ' + name;
-    goog.logToConsole_(errorMessage);
-
-    throw Error(errorMessage);
+    return null;
   }
 };
 
@@ -764,6 +771,10 @@ goog.abstractMethod = function() {
  *     method to.
  */
 goog.addSingletonGetter = function(ctor) {
+  // instance_ is immediately set to prevent issues with sealed constructors
+  // such as are encountered when a constructor is returned as the export object
+  // of a goog.module in unoptimized code.
+  ctor.instance_ = undefined;
   ctor.getInstance = function() {
     if (ctor.instance_) {
       return ctor.instance_;
@@ -1043,8 +1054,9 @@ if (goog.DEPENDENCIES_ENABLED) {
   goog.isDeferredModule_ = function(name) {
     var path = goog.getPathFromDeps_(name);
     var loadFlags = path && goog.dependencies_.loadFlags[path] || {};
+    var languageLevel = loadFlags['lang'] || 'es3';
     if (path && (loadFlags['module'] == 'goog' ||
-                 goog.needsTranspile_(loadFlags['lang']))) {
+                 goog.needsTranspile_(languageLevel))) {
       var abspath = goog.basePath + path;
       return (abspath) in goog.dependencies_.deferred;
     }
@@ -1199,8 +1211,8 @@ if (goog.DEPENDENCIES_ENABLED) {
             goog.writeScriptSrcNode_(src);
           }
         } else {
-          var state = " onreadystatechange='goog.onScriptLoad_(this, " +
-              ++goog.lastNonModuleScriptIndex_ + ")' ";
+          var state = ' onreadystatechange=\'goog.onScriptLoad_(this, ' +
+              ++goog.lastNonModuleScriptIndex_ + ')\' ';
           doc.write(
               '<script type="text/javascript" src="' + src + '"' + state +
               '></' +
@@ -1208,7 +1220,8 @@ if (goog.DEPENDENCIES_ENABLED) {
         }
       } else {
         doc.write(
-            '<script type="text/javascript">' + opt_sourceText + '</' +
+            '<script type="text/javascript">' +
+            goog.protectScriptTag_(opt_sourceText) + '</' +
             'script>');
       }
       return true;
@@ -1217,6 +1230,17 @@ if (goog.DEPENDENCIES_ENABLED) {
     }
   };
 
+  /**
+   * Rewrites closing script tags in input to avoid ending an enclosing script
+   * tag.
+   *
+   * @param {string} str
+   * @return {string}
+   * @private
+   */
+  goog.protectScriptTag_ = function(str) {
+    return str.replace(/<\/(SCRIPT)/ig, '\\x3c\\$1');
+  };
 
   /**
    * Determines whether the given language needs to be transpiled.
@@ -1229,53 +1253,18 @@ if (goog.DEPENDENCIES_ENABLED) {
       return true;
     } else if (goog.TRANSPILE == 'never') {
       return false;
-    } else if (!goog.transpiledLanguages_) {
-      goog.transpiledLanguages_ = {'es5': true, 'es6': true, 'es6-impl': true};
-      /** @preserveTry */
-      try {
-        // Perform some quick conformance checks, to distinguish
-        // between browsers that support es5, es6-impl, or es6.
-
-        // Identify ES3-only browsers by their incorrect treatment of commas.
-        goog.transpiledLanguages_['es5'] = eval('[1,].length!=1');
-
-        // As browsers mature, features will be moved from the full test
-        // into the impl test.  This must happen before the corresponding
-        // features are changed in the Closure Compiler's FeatureSet object.
-
-        // Test 1: es6-impl [FF49, Edge 13, Chrome 49]
-        //   (a) let/const keyword, (b) class expressions, (c) Map object,
-        //   (d) iterable arguments, (e) spread operator
-        var es6implTest =
-            'let a={};const X=class{constructor(){}x(z){return new Map([' +
-            '...arguments]).get(z[0])==3}};return new X().x([a,3])';
-
-        // Test 2: es6 [FF50 (?), Edge 14 (?), Chrome 50]
-        //   (a) default params (specifically shadowing locals),
-        //   (b) destructuring, (c) block-scoped functions,
-        //   (d) for-of (const), (e) new.target/Reflect.construct
-        var es6fullTest =
-            'class X{constructor(){if(new.target!=String)throw 1;this.x=42}}' +
-            'let q=Reflect.construct(X,[],String);if(q.x!=42||!(q instanceof ' +
-            'String))throw 1;for(const a of[2,3]){if(a==2)continue;function ' +
-            'f(z={a}){let a=0;return z.a}{function f(){return 0;}}return f()' +
-            '==3}';
-
-        if (eval('(()=>{"use strict";' + es6implTest + '})()')) {
-          goog.transpiledLanguages_['es6-impl'] = false;
-        }
-        if (eval('(()=>{"use strict";' + es6fullTest + '})()')) {
-          goog.transpiledLanguages_['es6'] = false;
-        }
-      } catch (err) {
-      }
+    } else if (!goog.requiresTranspilation_) {
+      goog.requiresTranspilation_ = goog.createRequiresTranspilation_();
     }
-    return !!goog.transpiledLanguages_[lang];
+    if (lang in goog.requiresTranspilation_) {
+      return goog.requiresTranspilation_[lang];
+    } else {
+      throw new Error('Unknown language mode: ' + lang);
+    }
   };
 
-
   /** @private {?Object<string, boolean>} */
-  goog.transpiledLanguages_ = null;
+  goog.requiresTranspilation_ = null;
 
 
   /** @private {number} */
@@ -1364,7 +1353,8 @@ if (goog.DEPENDENCIES_ENABLED) {
       var path = scripts[i];
       if (path) {
         var loadFlags = deps.loadFlags[path] || {};
-        var needsTranspile = goog.needsTranspile_(loadFlags['lang']);
+        var languageLevel = loadFlags['lang'] || 'es3';
+        var needsTranspile = goog.needsTranspile_(languageLevel);
         if (loadFlags['module'] == 'goog' || needsTranspile) {
           goog.importProcessedScript_(
               goog.basePath + path, loadFlags['module'] == 'goog',
@@ -1440,7 +1430,8 @@ goog.loadModule = function(moduleDef) {
     // another namespace
     if (goog.moduleLoaderState_.declareLegacyNamespace) {
       goog.constructNamespace_(moduleName, exports);
-    } else if (goog.SEAL_MODULE_EXPORTS && Object.seal) {
+    } else if (
+        goog.SEAL_MODULE_EXPORTS && Object.seal && goog.isObject(exports)) {
       Object.seal(exports);
     }
 
@@ -1586,7 +1577,20 @@ goog.transpile_ = function(code, path) {
       // need it, we're about to load and write the ES6 code synchronously,
       // so a normal script-tag load will be too slow.
       eval(transpilerCode + '\n//# sourceURL=' + transpilerPath);
-      // Note: transpile.js reassigns goog.global['$jscomp'] so pull it again.
+      // Even though the transpiler is optional, if $gwtExport is found, it's
+      // a sign the transpiler was loaded and the $jscomp.transpile *should*
+      // be there.
+      if (goog.global['$gwtExport'] && goog.global['$gwtExport']['$jscomp'] &&
+          !goog.global['$gwtExport']['$jscomp']['transpile']) {
+        throw new Error(
+            'The transpiler did not properly export the "transpile" ' +
+            'method. $gwtExport: ' + JSON.stringify(goog.global['$gwtExport']));
+      }
+      // transpile.js only exports a single $jscomp function, transpile. We
+      // grab just that and add it to the existing definition of $jscomp which
+      // contains the polyfills.
+      goog.global['$jscomp'].transpile =
+          goog.global['$gwtExport']['$jscomp']['transpile'];
       jscomp = goog.global['$jscomp'];
       transpile = jscomp.transpile;
     }
@@ -1993,7 +1997,9 @@ goog.bindJs_ = function(fn, selfObj, var_args) {
     };
 
   } else {
-    return function() { return fn.apply(selfObj, arguments); };
+    return function() {
+      return fn.apply(selfObj, arguments);
+    };
   }
 };
 
@@ -2205,6 +2211,15 @@ goog.cssNameMappingStyle_;
  *     the modifier.
  */
 goog.getCssName = function(className, opt_modifier) {
+  // String() is used for compatibility with compiled soy where the passed
+  // className can be non-string objects like here
+  // http://google3/java/com/google/privacy/accountcentral/common/ui/client/cards/popupcard.soy?l=74&rcl=94079467
+  if (String(className).charAt(0) == '.') {
+    throw new Error(
+        'className passed in goog.getCssName must not start with ".".' +
+        ' You passed: ' + className);
+  }
+
   var getMapping = function(cssName) {
     return goog.cssNameMapping_[cssName] || cssName;
   };
@@ -2224,14 +2239,21 @@ goog.getCssName = function(className, opt_modifier) {
     rename =
         goog.cssNameMappingStyle_ == 'BY_WHOLE' ? getMapping : renameByParts;
   } else {
-    rename = function(a) { return a; };
+    rename = function(a) {
+      return a;
+    };
   }
 
-  if (opt_modifier) {
-    return className + '-' + rename(opt_modifier);
-  } else {
-    return rename(className);
+  var result =
+      opt_modifier ? className + '-' + rename(opt_modifier) : rename(className);
+
+  // The special CLOSURE_CSS_NAME_MAP_FN allows users to specify further
+  // processing of the class name.
+  if (goog.global.CLOSURE_CSS_NAME_MAP_FN) {
+    return goog.global.CLOSURE_CSS_NAME_MAP_FN(result);
   }
+
+  return result;
 };
 
 
@@ -2608,7 +2630,6 @@ goog.defineClass = function(superClass, def) {
  *   constructor: (!Function|undefined),
  *   statics: (Object|undefined|function(Function):void)
  * }}
- * @suppress {missingProvide}
  */
 goog.defineClass.ClassDescriptor;
 
@@ -2667,7 +2688,7 @@ goog.defineClass.createSealingConstructor_ = function(ctr, superClass) {
 
 /**
  * @param {Function} ctr The constructor to test.
- * @returns {boolean} Whether the constructor has been tagged as unsealable
+ * @return {boolean} Whether the constructor has been tagged as unsealable
  *     using goog.tagUnsealableClass.
  * @private
  */
@@ -2740,6 +2761,89 @@ goog.tagUnsealableClass = function(ctr) {
  * @const @private {string}
  */
 goog.UNSEALABLE_CONSTRUCTOR_PROPERTY_ = 'goog_defineClass_legacy_unsealable';
+
+
+/**
+ * Returns a newly created map from language mode string to a boolean
+ * indicating whether transpilation should be done for that mode.
+ *
+ * Guaranteed invariant:
+ * For any two modes, l1 and l2 where l2 is a newer mode than l1,
+ * `map[l1] == true` implies that `map[l2] == true`.
+ * @private
+ * @return {!Object<string, boolean>}
+ */
+goog.createRequiresTranspilation_ = function() {
+  var /** !Object<string, boolean> */ requiresTranspilation = {'es3': false};
+  var transpilationRequiredForAllLaterModes = false;
+
+  /**
+   * Adds an entry to requiresTranspliation for the given language mode.
+   *
+   * IMPORTANT: Calls must be made in order from oldest to newest language
+   * mode.
+   * @param {string} modeName
+   * @param {function(): boolean} isSupported Returns true if the JS engine
+   *     supports the given mode.
+   */
+  function addNewerLanguageTranspilationCheck(modeName, isSupported) {
+    if (transpilationRequiredForAllLaterModes) {
+      requiresTranspilation[modeName] = true;
+    } else if (isSupported()) {
+      requiresTranspilation[modeName] = false;
+    } else {
+      requiresTranspilation[modeName] = true;
+      transpilationRequiredForAllLaterModes = true;
+    }
+  }
+
+  /**
+   * Does the given code evaluate without syntax errors and return a truthy
+   * result?
+   */
+  function /** boolean */ evalCheck(/** string */ code) {
+    try {
+      return !!eval(code);
+    } catch (ignored) {
+      return false;
+    }
+  }
+
+  // Identify ES3-only browsers by their incorrect treatment of commas.
+  addNewerLanguageTranspilationCheck('es5', function() {
+    return evalCheck('[1,].length==1');
+  });
+  addNewerLanguageTranspilationCheck('es6', function() {
+    // Test es6: [FF50 (?), Edge 14 (?), Chrome 50]
+    //   (a) default params (specifically shadowing locals),
+    //   (b) destructuring, (c) block-scoped functions,
+    //   (d) for-of (const), (e) new.target/Reflect.construct
+    var es6fullTest =
+        'class X{constructor(){if(new.target!=String)throw 1;this.x=42}}' +
+        'let q=Reflect.construct(X,[],String);if(q.x!=42||!(q instanceof ' +
+        'String))throw 1;for(const a of[2,3]){if(a==2)continue;function ' +
+        'f(z={a}){let a=0;return z.a}{function f(){return 0;}}return f()' +
+        '==3}';
+
+    return evalCheck('(()=>{"use strict";' + es6fullTest + '})()');
+  });
+  // TODO(joeltine): Remove es6-impl references for b/31340605.
+  // Consider es6-impl (widely-implemented es6 features) to be supported
+  // whenever es6 is supported. Technically es6-impl is a lower level of
+  // support than es6, but we don't have tests specifically for it.
+  addNewerLanguageTranspilationCheck('es6-impl', function() {
+    return true;
+  });
+  // ** and **= are the only new features in 'es7'
+  addNewerLanguageTranspilationCheck('es7', function() {
+    return evalCheck('2 ** 2 == 4');
+  });
+  // async functions are the only new features in 'es8'
+  addNewerLanguageTranspilationCheck('es8', function() {
+    return evalCheck('async () => 1, true');
+  });
+  return requiresTranspilation;
+};
 
 goog.provide('ol');
 
@@ -7481,6 +7585,7 @@ ol.events.Event = function(type) {
 /**
  * Stop event propagation.
  * @function
+ * @override
  * @api stable
  */
 ol.events.Event.prototype.preventDefault =
@@ -7488,6 +7593,7 @@ ol.events.Event.prototype.preventDefault =
 /**
  * Stop event propagation.
  * @function
+ * @override
  * @api stable
  */
 ol.events.Event.prototype.stopPropagation = function() {
@@ -8829,6 +8935,7 @@ ol.control.Control.prototype.getMap = function() {
  * Subclasses may set up event handlers to get notified about changes to
  * the map here.
  * @param {ol.Map} map Map.
+ * @override
  * @api stable
  */
 ol.control.Control.prototype.setMap = function(map) {
@@ -13625,6 +13732,7 @@ goog.require('ol.proj');
  * generic `change` event on your geometry instance.
  *
  * @constructor
+ * @abstract
  * @extends {ol.Object}
  * @api stable
  */
@@ -13994,6 +14102,7 @@ goog.require('ol.obj');
  * in apps, as cannot be rendered.
  *
  * @constructor
+ * @abstract
  * @extends {ol.geom.Geometry}
  * @api stable
  */
@@ -15237,6 +15346,7 @@ ol.inherits(ol.geom.LinearRing, ol.geom.SimpleGeometry);
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.LinearRing} Clone.
+ * @override
  * @api stable
  */
 ol.geom.LinearRing.prototype.clone = function() {
@@ -15279,6 +15389,7 @@ ol.geom.LinearRing.prototype.getArea = function() {
 /**
  * Return the coordinates of the linear ring.
  * @return {Array.<ol.Coordinate>} Coordinates.
+ * @override
  * @api stable
  */
 ol.geom.LinearRing.prototype.getCoordinates = function() {
@@ -15312,9 +15423,16 @@ ol.geom.LinearRing.prototype.getType = function() {
 
 
 /**
+ * @inheritDoc
+ */
+ol.geom.LinearRing.prototype.intersectsExtent = function(extent) {};
+
+
+/**
  * Set the coordinates of the linear ring.
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
+ * @override
  * @api stable
  */
 ol.geom.LinearRing.prototype.setCoordinates = function(coordinates, opt_layout) {
@@ -15372,6 +15490,7 @@ ol.inherits(ol.geom.Point, ol.geom.SimpleGeometry);
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.Point} Clone.
+ * @override
  * @api stable
  */
 ol.geom.Point.prototype.clone = function() {
@@ -15405,6 +15524,7 @@ ol.geom.Point.prototype.closestPointXY = function(x, y, closestPoint, minSquared
 /**
  * Return the coordinate of the point.
  * @return {ol.Coordinate} Coordinates.
+ * @override
  * @api stable
  */
 ol.geom.Point.prototype.getCoordinates = function() {
@@ -15440,9 +15560,7 @@ ol.geom.Point.prototype.intersectsExtent = function(extent) {
 
 
 /**
- * Set the coordinate of the point.
- * @param {ol.Coordinate} coordinates Coordinates.
- * @param {ol.geom.GeometryLayout=} opt_layout Layout.
+ * @inheritDoc
  * @api stable
  */
 ol.geom.Point.prototype.setCoordinates = function(coordinates, opt_layout) {
@@ -16136,6 +16254,7 @@ ol.geom.Polygon.prototype.appendLinearRing = function(linearRing) {
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.Polygon} Clone.
+ * @override
  * @api stable
  */
 ol.geom.Polygon.prototype.clone = function() {
@@ -16196,6 +16315,7 @@ ol.geom.Polygon.prototype.getArea = function() {
  *     By default, coordinate orientation will depend on how the geometry was
  *     constructed.
  * @return {Array.<Array.<ol.Coordinate>>} Coordinates.
+ * @override
  * @api stable
  */
 ol.geom.Polygon.prototype.getCoordinates = function(opt_right) {
@@ -16363,6 +16483,7 @@ ol.geom.Polygon.prototype.intersectsExtent = function(extent) {
  * Set the coordinates of the polygon.
  * @param {Array.<Array.<ol.Coordinate>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
+ * @override
  * @api stable
  */
 ol.geom.Polygon.prototype.setCoordinates = function(coordinates, opt_layout) {
@@ -17197,6 +17318,10 @@ ol.View.prototype.fit = function(geometryOrExtent, opt_options) {
     ol.asserts.assert(!ol.extent.isEmpty(geometryOrExtent),
         25); // Cannot fit empty extent provided as `geometry`
     geometry = ol.geom.Polygon.fromExtent(geometryOrExtent);
+  } else if (geometryOrExtent.getType() === ol.geom.GeometryType.CIRCLE) {
+    geometryOrExtent = geometryOrExtent.getExtent();
+    geometry = ol.geom.Polygon.fromExtent(geometryOrExtent);
+    geometry.rotate(this.getRotation(), ol.extent.getCenter(geometryOrExtent));
   } else {
     geometry = geometryOrExtent;
   }
@@ -20082,6 +20207,7 @@ goog.require('ol.obj');
  * is observable, and has get/set accessors.
  *
  * @constructor
+ * @abstract
  * @extends {ol.Object}
  * @param {olx.layer.BaseOptions} options Layer options.
  * @api stable
@@ -20393,6 +20519,12 @@ ol.layer.Group = function(opt_options) {
 
 };
 ol.inherits(ol.layer.Group, ol.layer.Base);
+
+
+/**
+ * @inheritDoc
+ */
+ol.layer.Group.prototype.createRenderer = function(mapRenderer) {};
 
 
 /**
@@ -20875,6 +21007,7 @@ goog.require('ol.source.State');
  * A generic `change` event is fired when the state of the source changes.
  *
  * @constructor
+ * @abstract
  * @extends {ol.layer.Base}
  * @fires ol.render.Event
  * @param {olx.layer.LayerOptions} options Layer options.
@@ -21399,6 +21532,7 @@ goog.require('ol.transform');
 
 /**
  * @constructor
+ * @abstract
  * @extends {ol.Disposable}
  * @param {Element} container Container.
  * @param {ol.Map} map Map.
@@ -21887,6 +22021,7 @@ goog.provide('ol.render.VectorContext');
  * Context for drawing geometries.  A vector context is available on render
  * events and does not need to be constructed directly.
  * @constructor
+ * @abstract
  * @struct
  * @api
  */
@@ -21897,7 +22032,6 @@ ol.render.VectorContext = function() {
 /**
  * Render a geometry.
  *
- * @abstract
  * @param {ol.geom.Geometry} geometry The geometry to render.
  */
 ol.render.VectorContext.prototype.drawGeometry = function(geometry) {};
@@ -21906,22 +22040,19 @@ ol.render.VectorContext.prototype.drawGeometry = function(geometry) {};
 /**
  * Set the rendering style.
  *
- * @abstract
  * @param {ol.style.Style} style The rendering style.
  */
 ol.render.VectorContext.prototype.setStyle = function(style) {};
 
 
 /**
- * @abstract
  * @param {ol.geom.Circle} circleGeometry Circle geometry.
- * @param {ol.Feature} feature Feature,
+ * @param {ol.Feature} feature Feature.
  */
 ol.render.VectorContext.prototype.drawCircle = function(circleGeometry, feature) {};
 
 
 /**
- * @abstract
  * @param {ol.Feature} feature Feature.
  * @param {ol.style.Style} style Style.
  */
@@ -21929,7 +22060,6 @@ ol.render.VectorContext.prototype.drawFeature = function(feature, style) {};
 
 
 /**
- * @abstract
  * @param {ol.geom.GeometryCollection} geometryCollectionGeometry Geometry
  *     collection.
  * @param {ol.Feature} feature Feature.
@@ -21938,7 +22068,6 @@ ol.render.VectorContext.prototype.drawGeometryCollection = function(geometryColl
 
 
 /**
- * @abstract
  * @param {ol.geom.LineString|ol.render.Feature} lineStringGeometry Line
  *     string geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
@@ -21947,7 +22076,6 @@ ol.render.VectorContext.prototype.drawLineString = function(lineStringGeometry, 
 
 
 /**
- * @abstract
  * @param {ol.geom.MultiLineString|ol.render.Feature} multiLineStringGeometry
  *     MultiLineString geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
@@ -21956,7 +22084,6 @@ ol.render.VectorContext.prototype.drawMultiLineString = function(multiLineString
 
 
 /**
- * @abstract
  * @param {ol.geom.MultiPoint|ol.render.Feature} multiPointGeometry MultiPoint
  *     geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
@@ -21965,7 +22092,6 @@ ol.render.VectorContext.prototype.drawMultiPoint = function(multiPointGeometry, 
 
 
 /**
- * @abstract
  * @param {ol.geom.MultiPolygon} multiPolygonGeometry MultiPolygon geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
@@ -21973,7 +22099,6 @@ ol.render.VectorContext.prototype.drawMultiPolygon = function(multiPolygonGeomet
 
 
 /**
- * @abstract
  * @param {ol.geom.Point|ol.render.Feature} pointGeometry Point geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
@@ -21981,7 +22106,6 @@ ol.render.VectorContext.prototype.drawPoint = function(pointGeometry, feature) {
 
 
 /**
- * @abstract
  * @param {ol.geom.Polygon|ol.render.Feature} polygonGeometry Polygon
  *     geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
@@ -21990,7 +22114,6 @@ ol.render.VectorContext.prototype.drawPolygon = function(polygonGeometry, featur
 
 
 /**
- * @abstract
  * @param {Array.<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
  * @param {number} end End.
@@ -22002,7 +22125,6 @@ ol.render.VectorContext.prototype.drawText = function(flatCoordinates, offset, e
 
 
 /**
- * @abstract
  * @param {ol.style.Fill} fillStyle Fill style.
  * @param {ol.style.Stroke} strokeStyle Stroke style.
  */
@@ -22010,14 +22132,12 @@ ol.render.VectorContext.prototype.setFillStrokeStyle = function(fillStyle, strok
 
 
 /**
- * @abstract
  * @param {ol.style.Image} imageStyle Image style.
  */
 ol.render.VectorContext.prototype.setImageStyle = function(imageStyle) {};
 
 
 /**
- * @abstract
  * @param {ol.style.Text} textStyle Text style.
  */
 ol.render.VectorContext.prototype.setTextStyle = function(textStyle) {};
@@ -22421,6 +22541,7 @@ ol.render.canvas.Immediate.prototype.drawRings_ = function(flatCoordinates, offs
  * the current fill and stroke styles.
  *
  * @param {ol.geom.Circle} geometry Circle geometry.
+ * @override
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawCircle = function(geometry) {
@@ -22461,6 +22582,7 @@ ol.render.canvas.Immediate.prototype.drawCircle = function(geometry) {
  * any `zIndex` on the provided style will be ignored.
  *
  * @param {ol.style.Style} style The rendering style.
+ * @override
  * @api
  */
 ol.render.canvas.Immediate.prototype.setStyle = function(style) {
@@ -22475,6 +22597,7 @@ ol.render.canvas.Immediate.prototype.setStyle = function(style) {
  * {@link ol.render.canvas.Immediate#setStyle} first to set the rendering style.
  *
  * @param {ol.geom.Geometry|ol.render.Feature} geometry The geometry to render.
+ * @override
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawGeometry = function(geometry) {
@@ -22517,6 +22640,7 @@ ol.render.canvas.Immediate.prototype.drawGeometry = function(geometry) {
  *
  * @param {ol.Feature} feature Feature.
  * @param {ol.style.Style} style Style.
+ * @override
  * @api
  */
 ol.render.canvas.Immediate.prototype.drawFeature = function(feature, style) {
@@ -22535,6 +22659,7 @@ ol.render.canvas.Immediate.prototype.drawFeature = function(feature, style) {
  * uses the current styles appropriate for each geometry in the collection.
  *
  * @param {ol.geom.GeometryCollection} geometry Geometry collection.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.drawGeometryCollection = function(geometry) {
   var geometries = geometry.getGeometriesArray();
@@ -22550,6 +22675,7 @@ ol.render.canvas.Immediate.prototype.drawGeometryCollection = function(geometry)
  * the current style.
  *
  * @param {ol.geom.Point|ol.render.Feature} geometry Point geometry.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.drawPoint = function(geometry) {
   var flatCoordinates = geometry.getFlatCoordinates();
@@ -22568,6 +22694,7 @@ ol.render.canvas.Immediate.prototype.drawPoint = function(geometry) {
  * uses the current style.
  *
  * @param {ol.geom.MultiPoint|ol.render.Feature} geometry MultiPoint geometry.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.drawMultiPoint = function(geometry) {
   var flatCoordinates = geometry.getFlatCoordinates();
@@ -22586,6 +22713,7 @@ ol.render.canvas.Immediate.prototype.drawMultiPoint = function(geometry) {
  * the current style.
  *
  * @param {ol.geom.LineString|ol.render.Feature} geometry LineString geometry.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.drawLineString = function(geometry) {
   if (!ol.extent.intersects(this.extent_, geometry.getExtent())) {
@@ -22613,6 +22741,7 @@ ol.render.canvas.Immediate.prototype.drawLineString = function(geometry) {
  *
  * @param {ol.geom.MultiLineString|ol.render.Feature} geometry MultiLineString
  *     geometry.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.drawMultiLineString = function(geometry) {
   var geometryExtent = geometry.getExtent();
@@ -22646,6 +22775,7 @@ ol.render.canvas.Immediate.prototype.drawMultiLineString = function(geometry) {
  * the current style.
  *
  * @param {ol.geom.Polygon|ol.render.Feature} geometry Polygon geometry.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.drawPolygon = function(geometry) {
   if (!ol.extent.intersects(this.extent_, geometry.getExtent())) {
@@ -22680,6 +22810,7 @@ ol.render.canvas.Immediate.prototype.drawPolygon = function(geometry) {
  * Render MultiPolygon geometry into the canvas.  Rendering is immediate and
  * uses the current style.
  * @param {ol.geom.MultiPolygon} geometry MultiPolygon geometry.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.drawMultiPolygon = function(geometry) {
   if (!ol.extent.intersects(this.extent_, geometry.getExtent())) {
@@ -22826,6 +22957,7 @@ ol.render.canvas.Immediate.prototype.setContextTextState_ = function(textState) 
  *
  * @param {ol.style.Fill} fillStyle Fill style.
  * @param {ol.style.Stroke} strokeStyle Stroke style.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.setFillStrokeStyle = function(fillStyle, strokeStyle) {
   if (!fillStyle) {
@@ -22872,6 +23004,7 @@ ol.render.canvas.Immediate.prototype.setFillStrokeStyle = function(fillStyle, st
  * the image style.
  *
  * @param {ol.style.Image} imageStyle Image style.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.setImageStyle = function(imageStyle) {
   if (!imageStyle) {
@@ -22903,6 +23036,7 @@ ol.render.canvas.Immediate.prototype.setImageStyle = function(imageStyle) {
  * remove the text style.
  *
  * @param {ol.style.Text} textStyle Text style.
+ * @override
  */
 ol.render.canvas.Immediate.prototype.setTextStyle = function(textStyle) {
   if (!textStyle) {
@@ -23222,6 +23356,7 @@ goog.provide('ol.render.ReplayGroup');
 /**
  * Base class for replay groups.
  * @constructor
+ * @abstract
  */
 ol.render.ReplayGroup = function() {};
 
@@ -23331,6 +23466,7 @@ if (ol.ENABLE_WEBGL) {
 
   /**
    * @constructor
+   * @abstract
    * @param {string} source Source.
    * @struct
    */
@@ -23633,6 +23769,7 @@ if (ol.ENABLE_WEBGL) {
 
   /**
    * @constructor
+   * @abstract
    * @extends {ol.render.VectorContext}
    * @param {number} tolerance Tolerance.
    * @param {ol.Extent} maxExtent Max extent.
@@ -27173,9 +27310,71 @@ var module = {exports: exports};
 var define;
 /**
  * @fileoverview
- * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
+ * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, unusedLocalVariables, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.rbush = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = partialSort;
+
+// Floyd-Rivest selection algorithm:
+// Rearrange items so that all items in the [left, k] range are smaller than all items in (k, right];
+// The k-th element will have the (k - left + 1)th smallest value in [left, right]
+
+function partialSort(arr, k, left, right, compare) {
+    left = left || 0;
+    right = right || (arr.length - 1);
+    compare = compare || defaultCompare;
+
+    while (right > left) {
+        if (right - left > 600) {
+            var n = right - left + 1;
+            var m = k - left + 1;
+            var z = Math.log(n);
+            var s = 0.5 * Math.exp(2 * z / 3);
+            var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
+            var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
+            var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
+            partialSort(arr, k, newLeft, newRight, compare);
+        }
+
+        var t = arr[k];
+        var i = left;
+        var j = right;
+
+        swap(arr, left, k);
+        if (compare(arr[right], t) > 0) swap(arr, left, right);
+
+        while (i < j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+            while (compare(arr[i], t) < 0) i++;
+            while (compare(arr[j], t) > 0) j--;
+        }
+
+        if (compare(arr[left], t) === 0) swap(arr, left, j);
+        else {
+            j++;
+            swap(arr, j, right);
+        }
+
+        if (j <= k) left = j + 1;
+        if (k <= j) right = j - 1;
+    }
+}
+
+function swap(arr, i, j) {
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+}
+
+function defaultCompare(a, b) {
+    return a < b ? -1 : a > b ? 1 : 0;
+}
+
+},{}],2:[function(_dereq_,module,exports){
 'use strict';
 
 module.exports = rbush;
@@ -27738,69 +27937,7 @@ function multiSelect(arr, left, right, n, compare) {
     }
 }
 
-},{"quickselect":2}],2:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = partialSort;
-
-// Floyd-Rivest selection algorithm:
-// Rearrange items so that all items in the [left, k] range are smaller than all items in (k, right];
-// The k-th element will have the (k - left + 1)th smallest value in [left, right]
-
-function partialSort(arr, k, left, right, compare) {
-    left = left || 0;
-    right = right || (arr.length - 1);
-    compare = compare || defaultCompare;
-
-    while (right > left) {
-        if (right - left > 600) {
-            var n = right - left + 1;
-            var m = k - left + 1;
-            var z = Math.log(n);
-            var s = 0.5 * Math.exp(2 * z / 3);
-            var sd = 0.5 * Math.sqrt(z * s * (n - s) / n) * (m - n / 2 < 0 ? -1 : 1);
-            var newLeft = Math.max(left, Math.floor(k - m * s / n + sd));
-            var newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
-            partialSort(arr, k, newLeft, newRight, compare);
-        }
-
-        var t = arr[k];
-        var i = left;
-        var j = right;
-
-        swap(arr, left, k);
-        if (compare(arr[right], t) > 0) swap(arr, left, right);
-
-        while (i < j) {
-            swap(arr, i, j);
-            i++;
-            j--;
-            while (compare(arr[i], t) < 0) i++;
-            while (compare(arr[j], t) > 0) j--;
-        }
-
-        if (compare(arr[left], t) === 0) swap(arr, left, j);
-        else {
-            j++;
-            swap(arr, j, right);
-        }
-
-        if (j <= k) left = j + 1;
-        if (k <= j) right = j - 1;
-    }
-}
-
-function swap(arr, i, j) {
-    var tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-}
-
-function defaultCompare(a, b) {
-    return a < b ? -1 : a > b ? 1 : 0;
-}
-
-},{}]},{},[1])(1)
+},{"quickselect":1}]},{},[2])(2)
 });
 ol.ext.rbush = module.exports;
 })();
@@ -29055,6 +29192,7 @@ if (ol.ENABLE_WEBGL) {
 
   /**
    * @constructor
+   * @abstract
    * @param {number} tolerance Tolerance.
    * @param {ol.Extent} maxExtent Max extent.
    * @struct
@@ -29228,6 +29366,9 @@ if (ol.ENABLE_WEBGL) {
     }
     var replay = replays[replayType];
     if (replay === undefined) {
+      /**
+       * @type {Function}
+       */
       var Constructor = ol.render.webgl.ReplayGroup.BATCH_CONSTRUCTORS_[replayType];
       replay = new Constructor(this.tolerance_, this.maxExtent_);
       replays[replayType] = replay;
@@ -29531,6 +29672,7 @@ if (ol.ENABLE_WEBGL) {
    * any `zIndex` on the provided style will be ignored.
    *
    * @param {ol.style.Style} style The rendering style.
+   * @override
    * @api
    */
   ol.render.webgl.Immediate.prototype.setStyle = function(style) {
@@ -29544,6 +29686,7 @@ if (ol.ENABLE_WEBGL) {
    * {@link ol.render.webgl.Immediate#setStyle} first to set the rendering style.
    *
    * @param {ol.geom.Geometry|ol.render.Feature} geometry The geometry to render.
+   * @override
    * @api
    */
   ol.render.webgl.Immediate.prototype.drawGeometry = function(geometry) {
@@ -30896,7 +31039,7 @@ ol.Map = function(options) {
    * @type {ol.renderer.Map}
    * @private
    */
-  this.renderer_ = new optionsInternal.rendererConstructor(this.viewport_, this);
+  this.renderer_ = new /** @type {Function} */ (optionsInternal.rendererConstructor)(this.viewport_, this);
 
   /**
    * @type {function(Event)|undefined}
@@ -32393,7 +32536,7 @@ ol.Overlay.prototype.handleOffsetChanged = function() {
  */
 ol.Overlay.prototype.handlePositionChanged = function() {
   this.updatePixelPosition();
-  if (this.get(ol.Overlay.Property_.POSITION) !== undefined && this.autoPan) {
+  if (this.get(ol.Overlay.Property_.POSITION) && this.autoPan) {
     this.panIntoView_();
   }
 };
@@ -32461,7 +32604,7 @@ ol.Overlay.prototype.setPosition = function(position) {
 ol.Overlay.prototype.panIntoView_ = function() {
   var map = this.getMap();
 
-  if (map === undefined || !map.getTargetElement()) {
+  if (!map || !map.getTargetElement()) {
     return;
   }
 
@@ -32564,7 +32707,7 @@ ol.Overlay.prototype.setVisible = function(visible) {
 ol.Overlay.prototype.updatePixelPosition = function() {
   var map = this.getMap();
   var position = this.getPosition();
-  if (map === undefined || !map.isRendered() || position === undefined) {
+  if (!map || !map.isRendered() || !position) {
     this.setVisible(false);
     return;
   }
@@ -33521,12 +33664,6 @@ ol.control.ZoomSlider = function(opt_options) {
   this.dragging_;
 
   /**
-   * @type {!Array.<ol.EventsKey>}
-   * @private
-   */
-  this.dragListenerKeys_ = [];
-
-  /**
    * @type {number}
    * @private
    */
@@ -33720,25 +33857,11 @@ ol.control.ZoomSlider.prototype.handleContainerClick_ = function(event) {
  * @private
  */
 ol.control.ZoomSlider.prototype.handleDraggerStart_ = function(event) {
-  if (!this.dragging_ &&
-      event.originalEvent.target === this.element.firstElementChild) {
+  if (!this.dragging_ && event.originalEvent.target === this.element.firstElementChild) {
     this.getMap().getView().setHint(ol.ViewHint.INTERACTING, 1);
     this.previousX_ = event.clientX;
     this.previousY_ = event.clientY;
     this.dragging_ = true;
-
-    if (this.dragListenerKeys_.length === 0) {
-      var drag = this.handleDraggerDrag_;
-      var end = this.handleDraggerEnd_;
-      this.dragListenerKeys_.push(
-        ol.events.listen(document, ol.events.EventType.MOUSEMOVE, drag, this),
-        ol.events.listen(document, ol.events.EventType.TOUCHMOVE, drag, this),
-        ol.events.listen(document, ol.pointer.EventType.POINTERMOVE, drag, this),
-        ol.events.listen(document, ol.events.EventType.MOUSEUP, end, this),
-        ol.events.listen(document, ol.events.EventType.TOUCHEND, end, this),
-        ol.events.listen(document, ol.pointer.EventType.POINTERUP, end, this)
-      );
-    }
   }
 };
 
@@ -33783,8 +33906,6 @@ ol.control.ZoomSlider.prototype.handleDraggerEnd_ = function(event) {
     this.dragging_ = false;
     this.previousX_ = undefined;
     this.previousY_ = undefined;
-    this.dragListenerKeys_.forEach(ol.events.unlistenByKey);
-    this.dragListenerKeys_.length = 0;
   }
 };
 
@@ -34186,6 +34307,7 @@ goog.provide('ol.style.Image');
  * {@link ol.style.RegularShape}.
  *
  * @constructor
+ * @abstract
  * @param {ol.StyleImageOptions} options Options.
  * @api
  */
@@ -34710,19 +34832,19 @@ ol.style.RegularShape.prototype.getStroke = function() {
 /**
  * @inheritDoc
  */
-ol.style.RegularShape.prototype.listenImageChange = ol.nullFunction;
+ol.style.RegularShape.prototype.listenImageChange = function(listener, thisArg) {};
 
 
 /**
  * @inheritDoc
  */
-ol.style.RegularShape.prototype.load = ol.nullFunction;
+ol.style.RegularShape.prototype.load = function() {};
 
 
 /**
  * @inheritDoc
  */
-ol.style.RegularShape.prototype.unlistenImageChange = ol.nullFunction;
+ol.style.RegularShape.prototype.unlistenImageChange = function(listener, thisArg) {};
 
 
 /**
@@ -35009,6 +35131,7 @@ ol.inherits(ol.style.Circle, ol.style.RegularShape);
 /**
  * Clones the style.  If an atlasmanager was provided to the original style it will be used in the cloned style, too.
  * @return {ol.style.Circle} The cloned style.
+ * @override
  * @api
  */
 ol.style.Circle.prototype.clone = function() {
@@ -35696,7 +35819,7 @@ ol.Feature.prototype.getGeometryName = function() {
  * Get the feature's style. Will return what was provided to the
  * {@link ol.Feature#setStyle} method.
  * @return {ol.style.Style|Array.<ol.style.Style>|
- *     ol.FeatureStyleFunction} The feature style.
+ *     ol.FeatureStyleFunction|ol.StyleFunction} The feature style.
  * @api stable
  */
 ol.Feature.prototype.getStyle = function() {
@@ -35757,7 +35880,7 @@ ol.Feature.prototype.setGeometry = function(geometry) {
  * of styles, or a function that takes a resolution and returns an array of
  * styles. If it is `null` the feature has no style (a `null` style).
  * @param {ol.style.Style|Array.<ol.style.Style>|
- *     ol.FeatureStyleFunction} style Style for this feature.
+ *     ol.FeatureStyleFunction|ol.StyleFunction} style Style for this feature.
  * @api stable
  * @fires ol.events.Event#event:change
  */
@@ -35815,7 +35938,13 @@ ol.Feature.createStyleFunction = function(obj) {
   var styleFunction;
 
   if (typeof obj === 'function') {
-    styleFunction = obj;
+    if (obj.length == 2) {
+      styleFunction = function(resolution) {
+        return /** @type {ol.StyleFunction} */ (obj)(this, resolution);
+      };
+    } else {
+      styleFunction = obj;
+    }
   } else {
     /**
      * @type {Array.<ol.style.Style>}
@@ -36467,6 +36596,7 @@ goog.require('ol.proj');
  * file formats.  See the documentation for each format for more details.
  *
  * @constructor
+ * @abstract
  * @api stable
  */
 ol.format.Feature = function() {
@@ -36677,6 +36807,7 @@ goog.require('ol.format.FormatType');
  * Base class for JSON feature formats.
  *
  * @constructor
+ * @abstract
  * @extends {ol.format.Feature}
  */
 ol.format.JSONFeature = function() {
@@ -37137,6 +37268,7 @@ ol.geom.LineString.prototype.appendCoordinate = function(coordinate) {
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.LineString} Clone.
+ * @override
  * @api stable
  */
 ol.geom.LineString.prototype.clone = function() {
@@ -37212,6 +37344,7 @@ ol.geom.LineString.prototype.getCoordinateAtM = function(m, opt_extrapolate) {
 /**
  * Return the coordinates of the linestring.
  * @return {Array.<ol.Coordinate>} Coordinates.
+ * @override
  * @api stable
  */
 ol.geom.LineString.prototype.getCoordinates = function() {
@@ -37299,6 +37432,7 @@ ol.geom.LineString.prototype.intersectsExtent = function(extent) {
  * Set the coordinates of the linestring.
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
+ * @override
  * @api stable
  */
 ol.geom.LineString.prototype.setCoordinates = function(coordinates, opt_layout) {
@@ -37400,6 +37534,7 @@ ol.geom.MultiLineString.prototype.appendLineString = function(lineString) {
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.MultiLineString} Clone.
+ * @override
  * @api stable
  */
 ol.geom.MultiLineString.prototype.clone = function() {
@@ -37467,6 +37602,7 @@ ol.geom.MultiLineString.prototype.getCoordinateAtM = function(m, opt_extrapolate
 /**
  * Return the coordinates of the multilinestring.
  * @return {Array.<Array.<ol.Coordinate>>} Coordinates.
+ * @override
  * @api stable
  */
 ol.geom.MultiLineString.prototype.getCoordinates = function() {
@@ -37584,6 +37720,7 @@ ol.geom.MultiLineString.prototype.intersectsExtent = function(extent) {
  * Set the coordinates of the multilinestring.
  * @param {Array.<Array.<ol.Coordinate>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
+ * @override
  * @api stable
  */
 ol.geom.MultiLineString.prototype.setCoordinates = function(coordinates, opt_layout) {
@@ -37682,6 +37819,7 @@ ol.geom.MultiPoint.prototype.appendPoint = function(point) {
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.MultiPoint} Clone.
+ * @override
  * @api stable
  */
 ol.geom.MultiPoint.prototype.clone = function() {
@@ -37720,6 +37858,7 @@ ol.geom.MultiPoint.prototype.closestPointXY = function(x, y, closestPoint, minSq
 /**
  * Return the coordinates of the multipoint.
  * @return {Array.<ol.Coordinate>} Coordinates.
+ * @override
  * @api stable
  */
 ol.geom.MultiPoint.prototype.getCoordinates = function() {
@@ -37800,6 +37939,7 @@ ol.geom.MultiPoint.prototype.intersectsExtent = function(extent) {
  * Set the coordinates of the multipoint.
  * @param {Array.<ol.Coordinate>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
+ * @override
  * @api stable
  */
 ol.geom.MultiPoint.prototype.setCoordinates = function(coordinates, opt_layout) {
@@ -37965,6 +38105,7 @@ ol.geom.MultiPolygon.prototype.appendPolygon = function(polygon) {
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.MultiPolygon} Clone.
+ * @override
  * @api stable
  */
 ol.geom.MultiPolygon.prototype.clone = function() {
@@ -38032,6 +38173,7 @@ ol.geom.MultiPolygon.prototype.getArea = function() {
  *     By default, coordinate orientation will depend on how the geometry was
  *     constructed.
  * @return {Array.<Array.<Array.<ol.Coordinate>>>} Coordinates.
+ * @override
  * @api stable
  */
 ol.geom.MultiPolygon.prototype.getCoordinates = function(opt_right) {
@@ -38209,6 +38351,7 @@ ol.geom.MultiPolygon.prototype.intersectsExtent = function(extent) {
  * Set the coordinates of the multipolygon.
  * @param {Array.<Array.<Array.<ol.Coordinate>>>} coordinates Coordinates.
  * @param {ol.geom.GeometryLayout=} opt_layout Layout.
+ * @override
  * @api stable
  */
 ol.geom.MultiPolygon.prototype.setCoordinates = function(coordinates, opt_layout) {
@@ -38854,6 +38997,7 @@ ol.format.EsriJSON.prototype.writeGeometry;
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {EsriJSONGeometry} Object.
+ * @override
  * @api
  */
 ol.format.EsriJSON.prototype.writeGeometryObject = function(geometry,
@@ -38881,6 +39025,7 @@ ol.format.EsriJSON.prototype.writeFeature;
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {Object} Object.
+ * @override
  * @api
  */
 ol.format.EsriJSON.prototype.writeFeatureObject = function(
@@ -38927,6 +39072,7 @@ ol.format.EsriJSON.prototype.writeFeatures;
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {Object} EsriJSON Object.
+ * @override
  * @api
  */
 ol.format.EsriJSON.prototype.writeFeaturesObject = function(features, opt_options) {
@@ -38976,6 +39122,7 @@ ol.format.filter.Filter.prototype.getTagName = function() {
 goog.provide('ol.format.filter.LogicalNary');
 
 goog.require('ol');
+goog.require('ol.asserts');
 goog.require('ol.format.filter.Filter');
 
 
@@ -39836,6 +39983,7 @@ ol.geom.GeometryCollection.prototype.listenGeometriesChange_ = function() {
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.GeometryCollection} Clone.
+ * @override
  * @api stable
  */
 ol.geom.GeometryCollection.prototype.clone = function() {
@@ -40055,6 +40203,7 @@ ol.geom.GeometryCollection.prototype.applyTransform = function(transformFn) {
  * Translate the geometry.
  * @param {number} deltaX Delta X.
  * @param {number} deltaY Delta Y.
+ * @override
  * @api
  */
 ol.geom.GeometryCollection.prototype.translate = function(deltaX, deltaY) {
@@ -40556,6 +40705,7 @@ ol.format.GeoJSON.prototype.readProjectionFromObject = function(object) {
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} GeoJSON.
+ * @override
  * @api stable
  */
 ol.format.GeoJSON.prototype.writeFeature;
@@ -40567,6 +40717,7 @@ ol.format.GeoJSON.prototype.writeFeature;
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {GeoJSONFeature} Object.
+ * @override
  * @api stable
  */
 ol.format.GeoJSON.prototype.writeFeatureObject = function(feature, opt_options) {
@@ -40615,6 +40766,7 @@ ol.format.GeoJSON.prototype.writeFeatures;
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {GeoJSONFeatureCollection} GeoJSON Object.
+ * @override
  * @api stable
  */
 ol.format.GeoJSON.prototype.writeFeaturesObject = function(features, opt_options) {
@@ -40649,6 +40801,7 @@ ol.format.GeoJSON.prototype.writeGeometry;
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {GeoJSONGeometry|GeoJSONGeometryCollection} Object.
+ * @override
  * @api stable
  */
 ol.format.GeoJSON.prototype.writeGeometryObject = function(geometry,
@@ -40673,6 +40826,7 @@ goog.require('ol.xml');
  * Base class for XML feature formats.
  *
  * @constructor
+ * @abstract
  * @extends {ol.format.Feature}
  */
 ol.format.XMLFeature = function() {
@@ -40731,12 +40885,13 @@ ol.format.XMLFeature.prototype.readFeatureFromDocument = function(
 
 
 /**
- * @abstract
  * @param {Node} node Node.
  * @param {olx.format.ReadOptions=} opt_options Options.
  * @return {ol.Feature} Feature.
  */
-ol.format.XMLFeature.prototype.readFeatureFromNode = function(node, opt_options) {};
+ol.format.XMLFeature.prototype.readFeatureFromNode = function(node, opt_options) {
+  return null; // not implemented
+};
 
 
 /**
@@ -40806,23 +40961,25 @@ ol.format.XMLFeature.prototype.readGeometry = function(source, opt_options) {
 
 
 /**
- * @abstract
  * @param {Document} doc Document.
  * @param {olx.format.ReadOptions=} opt_options Options.
  * @protected
  * @return {ol.geom.Geometry} Geometry.
  */
-ol.format.XMLFeature.prototype.readGeometryFromDocument = function(doc, opt_options) {};
+ol.format.XMLFeature.prototype.readGeometryFromDocument = function(doc, opt_options) {
+  return null; // not implemented
+};
 
 
 /**
- * @abstract
  * @param {Node} node Node.
  * @param {olx.format.ReadOptions=} opt_options Options.
  * @protected
  * @return {ol.geom.Geometry} Geometry.
  */
-ol.format.XMLFeature.prototype.readGeometryFromNode = function(node, opt_options) {};
+ol.format.XMLFeature.prototype.readGeometryFromNode = function(node, opt_options) {
+  return null; // not implemented
+};
 
 
 /**
@@ -40872,13 +41029,14 @@ ol.format.XMLFeature.prototype.writeFeature = function(feature, opt_options) {
 
 
 /**
- * @abstract
  * @param {ol.Feature} feature Feature.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @protected
  * @return {Node} Node.
  */
-ol.format.XMLFeature.prototype.writeFeatureNode = function(feature, opt_options) {};
+ol.format.XMLFeature.prototype.writeFeatureNode = function(feature, opt_options) {
+  return null; // not implemented
+};
 
 
 /**
@@ -40891,12 +41049,13 @@ ol.format.XMLFeature.prototype.writeFeatures = function(features, opt_options) {
 
 
 /**
- * @abstract
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
  */
-ol.format.XMLFeature.prototype.writeFeaturesNode = function(features, opt_options) {};
+ol.format.XMLFeature.prototype.writeFeaturesNode = function(features, opt_options) {
+  return null; // not implemented
+};
 
 
 /**
@@ -40909,12 +41068,13 @@ ol.format.XMLFeature.prototype.writeGeometry = function(geometry, opt_options) {
 
 
 /**
- * @abstract
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
  */
-ol.format.XMLFeature.prototype.writeGeometryNode = function(geometry, opt_options) {};
+ol.format.XMLFeature.prototype.writeGeometryNode = function(geometry, opt_options) {
+  return null; // not implemented
+};
 
 // FIXME Envelopes should not be treated as geometries! readEnvelope_ is part
 // of GEOMETRY_PARSERS_ and methods using GEOMETRY_PARSERS_ do not expect
@@ -40949,6 +41109,7 @@ goog.require('ol.xml');
  * ol.format.GML3.
  *
  * @constructor
+ * @abstract
  * @param {olx.format.GMLOptions=} opt_options
  *     Optional configuration object.
  * @extends {ol.format.XMLFeature}
@@ -42843,6 +43004,7 @@ ol.format.GML3.prototype.GEOMETRY_NODE_FACTORY_ = function(value, objectStack, o
  * @param {ol.geom.Geometry} geometry Geometry.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
+ * @override
  * @api
  */
 ol.format.GML3.prototype.writeGeometryNode = function(geometry, opt_options) {
@@ -42877,6 +43039,7 @@ ol.format.GML3.prototype.writeFeatures;
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
+ * @override
  * @api
  */
 ol.format.GML3.prototype.writeFeaturesNode = function(features, opt_options) {
@@ -44079,6 +44242,7 @@ ol.format.GPX.prototype.writeFeatures;
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
+ * @override
  * @api
  */
 ol.format.GPX.prototype.writeFeaturesNode = function(features, opt_options) {
@@ -44125,6 +44289,7 @@ goog.require('ol.format.FormatType');
  * Base class for text feature formats.
  *
  * @constructor
+ * @abstract
  * @extends {ol.format.Feature}
  */
 ol.format.TextFeature = function() {
@@ -44489,6 +44654,34 @@ ol.format.IGC.prototype.readFeaturesFromText = function(text, opt_options) {
  * @api
  */
 ol.format.IGC.prototype.readProjection;
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.IGC.prototype.writeFeatureText = function(feature, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.IGC.prototype.writeFeaturesText = function(features, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.IGC.prototype.writeGeometryText = function(geometry, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.IGC.prototype.readGeometryFromText = function(text, opt_options) {};
 
 goog.provide('ol.style.IconAnchorUnits');
 
@@ -45068,6 +45261,7 @@ ol.style.Icon.prototype.getColor = function() {
  * Get the image icon.
  * @param {number} pixelRatio Pixel ratio.
  * @return {Image|HTMLCanvasElement} Image or Canvas element.
+ * @override
  * @api
  */
 ol.style.Icon.prototype.getImage = function(pixelRatio) {
@@ -45076,8 +45270,7 @@ ol.style.Icon.prototype.getImage = function(pixelRatio) {
 
 
 /**
- * Real Image size used.
- * @return {ol.Size} Size.
+ * @override
  */
 ol.style.Icon.prototype.getImageSize = function() {
   return this.iconImage_.getSize();
@@ -45085,7 +45278,7 @@ ol.style.Icon.prototype.getImageSize = function() {
 
 
 /**
- * @inheritDoc
+ * @override
  */
 ol.style.Icon.prototype.getHitDetectionImageSize = function() {
   return this.getImageSize();
@@ -45093,7 +45286,7 @@ ol.style.Icon.prototype.getHitDetectionImageSize = function() {
 
 
 /**
- * @inheritDoc
+ * @override
  */
 ol.style.Icon.prototype.getImageState = function() {
   return this.iconImage_.getImageState();
@@ -45101,7 +45294,7 @@ ol.style.Icon.prototype.getImageState = function() {
 
 
 /**
- * @inheritDoc
+ * @override
  */
 ol.style.Icon.prototype.getHitDetectionImage = function(pixelRatio) {
   return this.iconImage_.getHitDetectionImage(pixelRatio);
@@ -45159,7 +45352,7 @@ ol.style.Icon.prototype.getSize = function() {
 
 
 /**
- * @inheritDoc
+ * @override
  */
 ol.style.Icon.prototype.listenImageChange = function(listener, thisArg) {
   return ol.events.listen(this.iconImage_, ol.events.EventType.CHANGE,
@@ -45172,6 +45365,7 @@ ol.style.Icon.prototype.listenImageChange = function(listener, thisArg) {
  * When rendering a feature with an icon style, the vector renderer will
  * automatically call this method. However, you might want to call this
  * method yourself for preloading or other purposes.
+ * @override
  * @api
  */
 ol.style.Icon.prototype.load = function() {
@@ -45180,7 +45374,7 @@ ol.style.Icon.prototype.load = function() {
 
 
 /**
- * @inheritDoc
+ * @override
  */
 ol.style.Icon.prototype.unlistenImageChange = function(listener, thisArg) {
   ol.events.unlisten(this.iconImage_, ol.events.EventType.CHANGE,
@@ -48545,6 +48739,7 @@ ol.format.KML.prototype.writeFeatures;
  * @param {Array.<ol.Feature>} features Features.
  * @param {olx.format.WriteOptions=} opt_options Options.
  * @return {Node} Node.
+ * @override
  * @api
  */
 ol.format.KML.prototype.writeFeaturesNode = function(features, opt_options) {
@@ -48582,9 +48777,95 @@ var module = {exports: exports};
 var define;
 /**
  * @fileoverview
- * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
+ * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, unusedLocalVariables, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pbf = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+},{}],2:[function(_dereq_,module,exports){
 'use strict';
 
 module.exports = Pbf;
@@ -49204,93 +49485,7 @@ function writeUtf8(buf, str, pos) {
     return pos;
 }
 
-},{"ieee754":2}],2:[function(_dereq_,module,exports){
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-},{}]},{},[1])(1)
+},{"ieee754":1}]},{},[2])(2)
 });
 ol.ext.pbf = module.exports;
 })();
@@ -49304,14 +49499,147 @@ var module = {exports: exports};
 var define;
 /**
  * @fileoverview
- * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
+ * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, unusedLocalVariables, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.vectortile = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+'use strict';
+
+module.exports = Point;
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
+
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
+
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+},{}],2:[function(_dereq_,module,exports){
 module.exports.VectorTile = _dereq_('./lib/vectortile.js');
 module.exports.VectorTileFeature = _dereq_('./lib/vectortilefeature.js');
 module.exports.VectorTileLayer = _dereq_('./lib/vectortilelayer.js');
 
-},{"./lib/vectortile.js":2,"./lib/vectortilefeature.js":3,"./lib/vectortilelayer.js":4}],2:[function(_dereq_,module,exports){
+},{"./lib/vectortile.js":3,"./lib/vectortilefeature.js":4,"./lib/vectortilelayer.js":5}],3:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileLayer = _dereq_('./vectortilelayer');
@@ -49330,7 +49658,7 @@ function readTile(tag, layers, pbf) {
 }
 
 
-},{"./vectortilelayer":4}],3:[function(_dereq_,module,exports){
+},{"./vectortilelayer":5}],4:[function(_dereq_,module,exports){
 'use strict';
 
 var Point = _dereq_('point-geometry');
@@ -49565,7 +49893,7 @@ function signedArea(ring) {
     return sum;
 }
 
-},{"point-geometry":5}],4:[function(_dereq_,module,exports){
+},{"point-geometry":1}],5:[function(_dereq_,module,exports){
 'use strict';
 
 var VectorTileFeature = _dereq_('./vectortilefeature.js');
@@ -49628,140 +49956,7 @@ VectorTileLayer.prototype.feature = function(i) {
     return new VectorTileFeature(this._pbf, end, this.extent, this._keys, this._values);
 };
 
-},{"./vectortilefeature.js":3}],5:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = Point;
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
-
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
-
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
-
-},{}]},{},[1])(1)
+},{"./vectortilefeature.js":4}]},{},[2])(2)
 });
 ol.ext.vectortile = module.exports;
 })();
@@ -50176,6 +50371,41 @@ ol.format.MVT.readGeometry_ = function(rawFeature) {
   return geom;
 };
 
+
+/**
+ * Not implemented.
+ * @override
+ */
+ol.format.MVT.prototype.readFeature = function() {};
+
+
+/**
+ * Not implemented.
+ * @override
+ */
+ol.format.MVT.prototype.readGeometry = function() {};
+
+
+/**
+ * Not implemented.
+ * @override
+ */
+ol.format.MVT.prototype.writeFeature = function() {};
+
+
+/**
+ * Not implemented.
+ * @override
+ */
+ol.format.MVT.prototype.writeGeometry = function() {};
+
+
+/**
+ * Not implemented.
+ * @override
+ */
+ol.format.MVT.prototype.writeFeatures = function() {};
+
 // FIXME add typedef for stack state objects
 goog.provide('ol.format.OSMXML');
 
@@ -50387,6 +50617,27 @@ ol.format.OSMXML.prototype.readFeaturesFromNode = function(node, opt_options) {
  */
 ol.format.OSMXML.prototype.readProjection;
 
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.OSMXML.prototype.writeFeatureNode = function(feature, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.OSMXML.prototype.writeFeaturesNode = function(features, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.OSMXML.prototype.writeGeometryNode = function(geometry, opt_options) {};
+
 goog.provide('ol.format.XLink');
 
 
@@ -50415,6 +50666,7 @@ goog.require('ol.xml');
  * Generic format for reading non-feature XML data
  *
  * @constructor
+ * @abstract
  * @struct
  */
 ol.format.XML = function() {
@@ -50474,8 +50726,7 @@ ol.inherits(ol.format.OWS, ol.format.XML);
 
 
 /**
- * @param {Document} doc Document.
- * @return {Object} OWS object.
+ * @inheritDoc
  */
 ol.format.OWS.prototype.readFromDocument = function(doc) {
   for (var n = doc.firstChild; n; n = n.nextSibling) {
@@ -50488,8 +50739,7 @@ ol.format.OWS.prototype.readFromDocument = function(doc) {
 
 
 /**
- * @param {Node} node Node.
- * @return {Object} OWS object.
+ * @inheritDoc
  */
 ol.format.OWS.prototype.readFromNode = function(node) {
   var owsObject = ol.xml.pushParseAndPop({},
@@ -51683,12 +51933,18 @@ ol.format.TopoJSON.transformVertex_ = function(vertex, scale, translate) {
 /**
  * Read the projection from a TopoJSON source.
  *
- * @function
  * @param {Document|Node|Object|string} object Source.
  * @return {ol.proj.Projection} Projection.
+ * @override
  * @api stable
  */
-ol.format.TopoJSON.prototype.readProjection = function(object) {
+ol.format.TopoJSON.prototype.readProjection;
+
+
+/**
+ * @inheritDoc
+ */
+ol.format.TopoJSON.prototype.readProjectionFromObject = function(object) {
   return this.defaultDataProjection;
 };
 
@@ -51706,6 +51962,41 @@ ol.format.TopoJSON.GEOMETRY_READERS_ = {
   'MultiLineString': ol.format.TopoJSON.readMultiLineStringGeometry_,
   'MultiPolygon': ol.format.TopoJSON.readMultiPolygonGeometry_
 };
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.TopoJSON.prototype.writeFeatureObject = function(feature, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.TopoJSON.prototype.writeFeaturesObject = function(features, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.TopoJSON.prototype.writeGeometryObject = function(geometry, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @override
+ */
+ol.format.TopoJSON.prototype.readGeometryFromObject = function() {};
+
+
+/**
+ * Not implemented.
+ * @override
+ */
+ol.format.TopoJSON.prototype.readFeatureFromObject = function() {};
 
 goog.provide('ol.format.WFS');
 
@@ -53638,8 +53929,7 @@ ol.format.WMSCapabilities.prototype.read;
 
 
 /**
- * @param {Document} doc Document.
- * @return {Object} WMS Capability object.
+ * @inheritDoc
  */
 ol.format.WMSCapabilities.prototype.readFromDocument = function(doc) {
   for (var n = doc.firstChild; n; n = n.nextSibling) {
@@ -53652,8 +53942,7 @@ ol.format.WMSCapabilities.prototype.readFromDocument = function(doc) {
 
 
 /**
- * @param {Node} node Node.
- * @return {Object} WMS Capability object.
+ * @inheritDoc
  */
 ol.format.WMSCapabilities.prototype.readFromNode = function(node) {
   this.version = node.getAttribute('version').trim();
@@ -54517,6 +54806,27 @@ ol.format.WMSGetFeatureInfo.prototype.readFeaturesFromNode = function(node, opt_
   return this.readFeatures_(node, [options]);
 };
 
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.WMSGetFeatureInfo.prototype.writeFeatureNode = function(feature, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.WMSGetFeatureInfo.prototype.writeFeaturesNode = function(features, opt_options) {};
+
+
+/**
+ * Not implemented.
+ * @inheritDoc
+ */
+ol.format.WMSGetFeatureInfo.prototype.writeGeometryNode = function(geometry, opt_options) {};
+
 goog.provide('ol.format.WMTSCapabilities');
 
 goog.require('ol');
@@ -54560,8 +54870,7 @@ ol.format.WMTSCapabilities.prototype.read;
 
 
 /**
- * @param {Document} doc Document.
- * @return {Object} WMTS Capability object.
+ * @inheritDoc
  */
 ol.format.WMTSCapabilities.prototype.readFromDocument = function(doc) {
   for (var n = doc.firstChild; n; n = n.nextSibling) {
@@ -54574,8 +54883,7 @@ ol.format.WMTSCapabilities.prototype.readFromDocument = function(doc) {
 
 
 /**
- * @param {Node} node Node.
- * @return {Object} WMTS Capability object.
+ * @inheritDoc
  */
 ol.format.WMTSCapabilities.prototype.readFromNode = function(node) {
   var version = node.getAttribute('version').trim();
@@ -54995,12 +55303,32 @@ ol.format.WMTSCapabilities.TM_PARSERS_ = ol.xml.makeStructureNS(
           ol.format.XSD.readString)
     }));
 
+goog.provide('ol.GeolocationProperty');
+
+
+/**
+ * @enum {string}
+ */
+ol.GeolocationProperty = {
+  ACCURACY: 'accuracy',
+  ACCURACY_GEOMETRY: 'accuracyGeometry',
+  ALTITUDE: 'altitude',
+  ALTITUDE_ACCURACY: 'altitudeAccuracy',
+  HEADING: 'heading',
+  POSITION: 'position',
+  PROJECTION: 'projection',
+  SPEED: 'speed',
+  TRACKING: 'tracking',
+  TRACKING_OPTIONS: 'trackingOptions'
+};
+
 // FIXME handle geolocation not supported
 
 goog.provide('ol.Geolocation');
 
 goog.require('ol');
 goog.require('ol.Object');
+goog.require('ol.GeolocationProperty');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.geom.Polygon');
@@ -55062,10 +55390,10 @@ ol.Geolocation = function(opt_options) {
   this.watchId_ = undefined;
 
   ol.events.listen(
-      this, ol.Object.getChangeEventType(ol.Geolocation.Property_.PROJECTION),
+      this, ol.Object.getChangeEventType(ol.GeolocationProperty.PROJECTION),
       this.handleProjectionChanged_, this);
   ol.events.listen(
-      this, ol.Object.getChangeEventType(ol.Geolocation.Property_.TRACKING),
+      this, ol.Object.getChangeEventType(ol.GeolocationProperty.TRACKING),
       this.handleTrackingChanged_, this);
 
   if (options.projection !== undefined) {
@@ -55100,7 +55428,7 @@ ol.Geolocation.prototype.handleProjectionChanged_ = function() {
         ol.proj.get('EPSG:4326'), projection);
     if (this.position_) {
       this.set(
-          ol.Geolocation.Property_.POSITION, this.transform_(this.position_));
+          ol.GeolocationProperty.POSITION, this.transform_(this.position_));
     }
   }
 };
@@ -55131,13 +55459,13 @@ ol.Geolocation.prototype.handleTrackingChanged_ = function() {
  */
 ol.Geolocation.prototype.positionChange_ = function(position) {
   var coords = position.coords;
-  this.set(ol.Geolocation.Property_.ACCURACY, coords.accuracy);
-  this.set(ol.Geolocation.Property_.ALTITUDE,
+  this.set(ol.GeolocationProperty.ACCURACY, coords.accuracy);
+  this.set(ol.GeolocationProperty.ALTITUDE,
       coords.altitude === null ? undefined : coords.altitude);
-  this.set(ol.Geolocation.Property_.ALTITUDE_ACCURACY,
+  this.set(ol.GeolocationProperty.ALTITUDE_ACCURACY,
       coords.altitudeAccuracy === null ?
       undefined : coords.altitudeAccuracy);
-  this.set(ol.Geolocation.Property_.HEADING, coords.heading === null ?
+  this.set(ol.GeolocationProperty.HEADING, coords.heading === null ?
       undefined : ol.math.toRadians(coords.heading));
   if (!this.position_) {
     this.position_ = [coords.longitude, coords.latitude];
@@ -55146,13 +55474,13 @@ ol.Geolocation.prototype.positionChange_ = function(position) {
     this.position_[1] = coords.latitude;
   }
   var projectedPosition = this.transform_(this.position_);
-  this.set(ol.Geolocation.Property_.POSITION, projectedPosition);
-  this.set(ol.Geolocation.Property_.SPEED,
+  this.set(ol.GeolocationProperty.POSITION, projectedPosition);
+  this.set(ol.GeolocationProperty.SPEED,
       coords.speed === null ? undefined : coords.speed);
   var geometry = ol.geom.Polygon.circular(
       ol.sphere.WGS84, this.position_, coords.accuracy);
   geometry.applyTransform(this.transform_);
-  this.set(ol.Geolocation.Property_.ACCURACY_GEOMETRY, geometry);
+  this.set(ol.GeolocationProperty.ACCURACY_GEOMETRY, geometry);
   this.changed();
 };
 
@@ -55182,7 +55510,7 @@ ol.Geolocation.prototype.positionError_ = function(error) {
  */
 ol.Geolocation.prototype.getAccuracy = function() {
   return /** @type {number|undefined} */ (
-      this.get(ol.Geolocation.Property_.ACCURACY));
+      this.get(ol.GeolocationProperty.ACCURACY));
 };
 
 
@@ -55194,7 +55522,7 @@ ol.Geolocation.prototype.getAccuracy = function() {
  */
 ol.Geolocation.prototype.getAccuracyGeometry = function() {
   return /** @type {?ol.geom.Geometry} */ (
-      this.get(ol.Geolocation.Property_.ACCURACY_GEOMETRY) || null);
+      this.get(ol.GeolocationProperty.ACCURACY_GEOMETRY) || null);
 };
 
 
@@ -55207,7 +55535,7 @@ ol.Geolocation.prototype.getAccuracyGeometry = function() {
  */
 ol.Geolocation.prototype.getAltitude = function() {
   return /** @type {number|undefined} */ (
-      this.get(ol.Geolocation.Property_.ALTITUDE));
+      this.get(ol.GeolocationProperty.ALTITUDE));
 };
 
 
@@ -55220,7 +55548,7 @@ ol.Geolocation.prototype.getAltitude = function() {
  */
 ol.Geolocation.prototype.getAltitudeAccuracy = function() {
   return /** @type {number|undefined} */ (
-      this.get(ol.Geolocation.Property_.ALTITUDE_ACCURACY));
+      this.get(ol.GeolocationProperty.ALTITUDE_ACCURACY));
 };
 
 
@@ -55232,7 +55560,7 @@ ol.Geolocation.prototype.getAltitudeAccuracy = function() {
  */
 ol.Geolocation.prototype.getHeading = function() {
   return /** @type {number|undefined} */ (
-      this.get(ol.Geolocation.Property_.HEADING));
+      this.get(ol.GeolocationProperty.HEADING));
 };
 
 
@@ -55245,7 +55573,7 @@ ol.Geolocation.prototype.getHeading = function() {
  */
 ol.Geolocation.prototype.getPosition = function() {
   return /** @type {ol.Coordinate|undefined} */ (
-      this.get(ol.Geolocation.Property_.POSITION));
+      this.get(ol.GeolocationProperty.POSITION));
 };
 
 
@@ -55258,7 +55586,7 @@ ol.Geolocation.prototype.getPosition = function() {
  */
 ol.Geolocation.prototype.getProjection = function() {
   return /** @type {ol.proj.Projection|undefined} */ (
-      this.get(ol.Geolocation.Property_.PROJECTION));
+      this.get(ol.GeolocationProperty.PROJECTION));
 };
 
 
@@ -55271,7 +55599,7 @@ ol.Geolocation.prototype.getProjection = function() {
  */
 ol.Geolocation.prototype.getSpeed = function() {
   return /** @type {number|undefined} */ (
-      this.get(ol.Geolocation.Property_.SPEED));
+      this.get(ol.GeolocationProperty.SPEED));
 };
 
 
@@ -55283,7 +55611,7 @@ ol.Geolocation.prototype.getSpeed = function() {
  */
 ol.Geolocation.prototype.getTracking = function() {
   return /** @type {boolean} */ (
-      this.get(ol.Geolocation.Property_.TRACKING));
+      this.get(ol.GeolocationProperty.TRACKING));
 };
 
 
@@ -55298,7 +55626,7 @@ ol.Geolocation.prototype.getTracking = function() {
  */
 ol.Geolocation.prototype.getTrackingOptions = function() {
   return /** @type {GeolocationPositionOptions|undefined} */ (
-      this.get(ol.Geolocation.Property_.TRACKING_OPTIONS));
+      this.get(ol.GeolocationProperty.TRACKING_OPTIONS));
 };
 
 
@@ -55310,7 +55638,7 @@ ol.Geolocation.prototype.getTrackingOptions = function() {
  * @api stable
  */
 ol.Geolocation.prototype.setProjection = function(projection) {
-  this.set(ol.Geolocation.Property_.PROJECTION, projection);
+  this.set(ol.GeolocationProperty.PROJECTION, projection);
 };
 
 
@@ -55321,7 +55649,7 @@ ol.Geolocation.prototype.setProjection = function(projection) {
  * @api stable
  */
 ol.Geolocation.prototype.setTracking = function(tracking) {
-  this.set(ol.Geolocation.Property_.TRACKING, tracking);
+  this.set(ol.GeolocationProperty.TRACKING, tracking);
 };
 
 
@@ -55335,25 +55663,7 @@ ol.Geolocation.prototype.setTracking = function(tracking) {
  * @api stable
  */
 ol.Geolocation.prototype.setTrackingOptions = function(options) {
-  this.set(ol.Geolocation.Property_.TRACKING_OPTIONS, options);
-};
-
-
-/**
- * @enum {string}
- * @private
- */
-ol.Geolocation.Property_ = {
-  ACCURACY: 'accuracy',
-  ACCURACY_GEOMETRY: 'accuracyGeometry',
-  ALTITUDE: 'altitude',
-  ALTITUDE_ACCURACY: 'altitudeAccuracy',
-  HEADING: 'heading',
-  POSITION: 'position',
-  PROJECTION: 'projection',
-  SPEED: 'speed',
-  TRACKING: 'tracking',
-  TRACKING_OPTIONS: 'trackingOptions'
+  this.set(ol.GeolocationProperty.TRACKING_OPTIONS, options);
 };
 
 goog.provide('ol.geom.Circle');
@@ -55388,6 +55698,7 @@ ol.inherits(ol.geom.Circle, ol.geom.SimpleGeometry);
 /**
  * Make a complete copy of the geometry.
  * @return {!ol.geom.Circle} Clone.
+ * @override
  * @api
  */
 ol.geom.Circle.prototype.clone = function() {
@@ -55561,6 +55872,18 @@ ol.geom.Circle.prototype.setCenterAndRadius = function(center, radius, opt_layou
     this.changed();
   }
 };
+
+
+/**
+ * @inheritDoc
+ */
+ol.geom.Circle.prototype.getCoordinates = function() {};
+
+
+/**
+ * @inheritDoc
+ */
+ol.geom.Circle.prototype.setCoordinates = function(coordinates, opt_layout) {};
 
 
 /**
@@ -56294,6 +56617,7 @@ goog.require('ol.events.EventType');
 
 /**
  * @constructor
+ * @abstract
  * @extends {ol.events.EventTarget}
  * @param {ol.Extent} extent Extent.
  * @param {number|undefined} resolution Resolution.
@@ -56473,9 +56797,7 @@ ol.inherits(ol.Image, ol.ImageBase);
 
 
 /**
- * Get the HTML image element (may be a Canvas, Image, or Video).
- * @param {Object=} opt_context Object.
- * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
+ * @inheritDoc
  * @api
  */
 ol.Image.prototype.getImage = function(opt_context) {
@@ -56528,6 +56850,7 @@ ol.Image.prototype.handleImageLoad_ = function() {
  * Load the image or retry if loading previously failed.
  * Loading is taken care of by the tile queue, and calling this method is
  * only needed for preloading or for reloading in case of an error.
+ * @override
  * @api
  */
 ol.Image.prototype.load = function() {
@@ -56638,7 +56961,7 @@ ol.ImageCanvas.prototype.handleLoad_ = function(err) {
 
 
 /**
- * Trigger drawing on canvas.
+ * @inheritDoc
  */
 ol.ImageCanvas.prototype.load = function() {
   if (this.state == ol.ImageState.IDLE) {
@@ -56669,6 +56992,7 @@ goog.require('ol.events.EventType');
  * Base class for tiles.
  *
  * @constructor
+ * @abstract
  * @extends {ol.events.EventTarget}
  * @param {ol.TileCoord} tileCoord Tile coordinate.
  * @param {ol.TileState} state State.
@@ -56938,9 +57262,7 @@ ol.ImageTile.prototype.handleImageLoad_ = function() {
 
 
 /**
- * Load the image or retry if loading previously failed.
- * Loading is taken care of by the tile queue, and calling this method is
- * only needed for preloading or for reloading in case of an error.
+ * @inheritDoc
  * @api
  */
 ol.ImageTile.prototype.load = function() {
@@ -57071,11 +57393,19 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, event) {
     var view = map.getView();
     projection = view.getProjection();
   }
+
   var formatConstructors = this.formatConstructors_;
   var features = [];
   var i, ii;
   for (i = 0, ii = formatConstructors.length; i < ii; ++i) {
+    /**
+     * Avoid "cannot instantiate abstract class" error.
+     * @type {Function}
+     */
     var formatConstructor = formatConstructors[i];
+    /**
+     * @type {ol.format.Feature}
+     */
     var format = new formatConstructor();
     features = this.tryReadFeatures_(format, result, {
       featureProjection: projection
@@ -57344,6 +57674,27 @@ ol.interaction.DragRotateAndZoom.handleDownEvent_ = function(mapBrowserEvent) {
   } else {
     return false;
   }
+};
+
+goog.provide('ol.interaction.DrawEventType');
+
+
+/**
+ * @enum {string}
+ */
+ol.interaction.DrawEventType = {
+  /**
+   * Triggered upon feature draw start
+   * @event ol.interaction.Draw.Event#drawstart
+   * @api stable
+   */
+  DRAWSTART: 'drawstart',
+  /**
+   * Triggered upon feature draw end
+   * @event ol.interaction.Draw.Event#drawend
+   * @api stable
+   */
+  DRAWEND: 'drawend'
 };
 
 goog.provide('ol.render.canvas.Instruction');
@@ -59867,6 +60218,7 @@ goog.require('ol.transform');
 
 /**
  * @constructor
+ * @abstract
  * @extends {ol.renderer.Layer}
  * @param {ol.layer.Layer} layer Layer.
  */
@@ -60876,6 +61228,7 @@ if (ol.ENABLE_WEBGL) {
 
   /**
    * @constructor
+   * @abstract
    * @extends {ol.renderer.Layer}
    * @param {ol.renderer.webgl.Map} mapRenderer Map renderer.
    * @param {ol.layer.Layer} layer Layer.
@@ -61720,6 +62073,7 @@ goog.require('ol.source.State');
  * A generic `change` event is triggered when the state of the source changes.
  *
  * @constructor
+ * @abstract
  * @extends {ol.Object}
  * @param {ol.SourceSourceOptions} options Source options.
  * @api stable
@@ -62595,6 +62949,12 @@ ol.source.Vector.prototype.getOverlaps = function() {
 
 
 /**
+ * @override
+ */
+ol.source.Vector.prototype.getResolutions = function() {};
+
+
+/**
  * Get the url associated with this source.
  *
  * @return {string|ol.FeatureUrlFunction|undefined} The url.
@@ -62800,6 +63160,7 @@ goog.require('ol.geom.MultiPoint');
 goog.require('ol.geom.MultiPolygon');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
+goog.require('ol.interaction.DrawEventType');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.interaction.Property');
 goog.require('ol.layer.Vector');
@@ -63265,7 +63626,7 @@ ol.interaction.Draw.prototype.startDrawing_ = function(event) {
   this.sketchFeature_.setGeometry(geometry);
   this.updateSketchFeatures_();
   this.dispatchEvent(new ol.interaction.Draw.Event(
-      ol.interaction.Draw.EventType_.DRAWSTART, this.sketchFeature_));
+      ol.interaction.DrawEventType.DRAWSTART, this.sketchFeature_));
 };
 
 
@@ -63391,7 +63752,7 @@ ol.interaction.Draw.prototype.removeLastPoint = function() {
 
 /**
  * Stop drawing and add the sketch feature to the target layer.
- * The {@link ol.interaction.Draw.EventType_.DRAWEND} event is dispatched before
+ * The {@link ol.interaction.DrawEventType.DRAWEND} event is dispatched before
  * inserting the feature.
  * @api
  */
@@ -63421,7 +63782,7 @@ ol.interaction.Draw.prototype.finishDrawing = function() {
 
   // First dispatch event to allow full set up of feature
   this.dispatchEvent(new ol.interaction.Draw.Event(
-      ol.interaction.Draw.EventType_.DRAWEND, sketchFeature));
+      ol.interaction.DrawEventType.DRAWEND, sketchFeature));
 
   // Then insert feature
   if (this.features_) {
@@ -63468,7 +63829,7 @@ ol.interaction.Draw.prototype.extend = function(feature) {
   this.sketchCoords_.push(last.slice());
   this.updateSketchFeatures_();
   this.dispatchEvent(new ol.interaction.Draw.Event(
-      ol.interaction.Draw.EventType_.DRAWSTART, this.sketchFeature_));
+      ol.interaction.DrawEventType.DRAWSTART, this.sketchFeature_));
 };
 
 
@@ -63624,7 +63985,7 @@ ol.interaction.Draw.Mode_ = {
  * @constructor
  * @extends {ol.events.Event}
  * @implements {oli.DrawEvent}
- * @param {ol.interaction.Draw.EventType_} type Type.
+ * @param {ol.interaction.DrawEventType} type Type.
  * @param {ol.Feature} feature The feature drawn.
  */
 ol.interaction.Draw.Event = function(type, feature) {
@@ -63640,26 +64001,6 @@ ol.interaction.Draw.Event = function(type, feature) {
 
 };
 ol.inherits(ol.interaction.Draw.Event, ol.events.Event);
-
-
-/**
- * @enum {string}
- * @private
- */
-ol.interaction.Draw.EventType_ = {
-  /**
-   * Triggered upon feature draw start
-   * @event ol.interaction.Draw.Event#drawstart
-   * @api stable
-   */
-  DRAWSTART: 'drawstart',
-  /**
-   * Triggered upon feature draw end
-   * @event ol.interaction.Draw.Event#drawend
-   * @api stable
-   */
-  DRAWEND: 'drawend'
-};
 
 goog.provide('ol.interaction.Extent');
 
@@ -64139,6 +64480,27 @@ ol.interaction.Extent.EventType_ = {
   EXTENTCHANGED: 'extentchanged'
 };
 
+goog.provide('ol.interaction.ModifyEventType');
+
+
+/**
+ * @enum {string}
+ */
+ol.interaction.ModifyEventType = {
+  /**
+   * Triggered upon feature modification start
+   * @event ol.interaction.Modify.Event#modifystart
+   * @api
+   */
+  MODIFYSTART: 'modifystart',
+  /**
+   * Triggered upon feature modification end
+   * @event ol.interaction.Modify.Event#modifyend
+   * @api
+   */
+  MODIFYEND: 'modifyend'
+};
+
 goog.provide('ol.interaction.Modify');
 
 goog.require('ol');
@@ -64156,6 +64518,7 @@ goog.require('ol.events.condition');
 goog.require('ol.extent');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.Point');
+goog.require('ol.interaction.ModifyEventType');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
@@ -64355,7 +64718,7 @@ ol.interaction.Modify.prototype.willModifyFeatures_ = function(evt) {
   if (!this.modified_) {
     this.modified_ = true;
     this.dispatchEvent(new ol.interaction.Modify.Event(
-        ol.interaction.Modify.EventType_.MODIFYSTART, this.features_, evt));
+        ol.interaction.ModifyEventType.MODIFYSTART, this.features_, evt));
   }
 };
 
@@ -64774,7 +65137,7 @@ ol.interaction.Modify.handleUpEvent_ = function(evt) {
   }
   if (this.modified_) {
     this.dispatchEvent(new ol.interaction.Modify.Event(
-        ol.interaction.Modify.EventType_.MODIFYEND, this.features_, evt));
+        ol.interaction.ModifyEventType.MODIFYEND, this.features_, evt));
     this.modified_ = false;
   }
   return false;
@@ -64969,7 +65332,7 @@ ol.interaction.Modify.prototype.removePoint = function() {
     this.willModifyFeatures_(evt);
     this.removeVertex_();
     this.dispatchEvent(new ol.interaction.Modify.Event(
-        ol.interaction.Modify.EventType_.MODIFYEND, this.features_, evt));
+        ol.interaction.ModifyEventType.MODIFYEND, this.features_, evt));
     this.modified_ = false;
     return true;
   }
@@ -65145,7 +65508,7 @@ ol.interaction.Modify.getDefaultStyleFunction = function() {
  * @constructor
  * @extends {ol.events.Event}
  * @implements {oli.ModifyEvent}
- * @param {ol.interaction.Modify.EventType_} type Type.
+ * @param {ol.interaction.ModifyEventType} type Type.
  * @param {ol.Collection.<ol.Feature>} features The features modified.
  * @param {ol.MapBrowserPointerEvent} mapBrowserPointerEvent Associated
  *     {@link ol.MapBrowserPointerEvent}.
@@ -65169,26 +65532,6 @@ ol.interaction.Modify.Event = function(type, features, mapBrowserPointerEvent) {
   this.mapBrowserEvent = mapBrowserPointerEvent;
 };
 ol.inherits(ol.interaction.Modify.Event, ol.events.Event);
-
-
-/**
- * @enum {string}
- * @private
- */
-ol.interaction.Modify.EventType_ = {
-  /**
-   * Triggered upon feature modification start
-   * @event ol.interaction.Modify.Event#modifystart
-   * @api
-   */
-  MODIFYSTART: 'modifystart',
-  /**
-   * Triggered upon feature modification end
-   * @event ol.interaction.Modify.Event#modifyend
-   * @api
-   */
-  MODIFYEND: 'modifyend'
-};
 
 goog.provide('ol.interaction.Select');
 
@@ -65495,6 +65838,7 @@ ol.interaction.Select.prototype.setHitTolerance = function(hitTolerance) {
  * Remove the interaction from its current map, if any,  and attach it to a new
  * map, if any. Pass `null` to just remove the interaction from the current map.
  * @param {ol.Map} map Map.
+ * @override
  * @api stable
  */
 ol.interaction.Select.prototype.setMap = function(map) {
@@ -66215,6 +66559,33 @@ ol.interaction.Snap.sortByDistance = function(a, b) {
       this.pixelCoordinate_, b.segment);
 };
 
+goog.provide('ol.interaction.TranslateEventType');
+
+
+/**
+ * @enum {string}
+ */
+ol.interaction.TranslateEventType = {
+  /**
+   * Triggered upon feature translation start.
+   * @event ol.interaction.Translate.Event#translatestart
+   * @api
+   */
+  TRANSLATESTART: 'translatestart',
+  /**
+   * Triggered upon feature translation.
+   * @event ol.interaction.Translate.Event#translating
+   * @api
+   */
+  TRANSLATING: 'translating',
+  /**
+   * Triggered upon feature translation end.
+   * @event ol.interaction.Translate.Event#translateend
+   * @api
+   */
+  TRANSLATEEND: 'translateend'
+};
+
 goog.provide('ol.interaction.Translate');
 
 goog.require('ol');
@@ -66223,6 +66594,7 @@ goog.require('ol.events.Event');
 goog.require('ol.functions');
 goog.require('ol.array');
 goog.require('ol.interaction.Pointer');
+goog.require('ol.interaction.TranslateEventType');
 
 
 /**
@@ -66318,7 +66690,7 @@ ol.interaction.Translate.handleDownEvent_ = function(event) {
 
     this.dispatchEvent(
         new ol.interaction.Translate.Event(
-            ol.interaction.Translate.EventType_.TRANSLATESTART, features,
+            ol.interaction.TranslateEventType.TRANSLATESTART, features,
             event.coordinate));
     return true;
   }
@@ -66341,7 +66713,7 @@ ol.interaction.Translate.handleUpEvent_ = function(event) {
 
     this.dispatchEvent(
         new ol.interaction.Translate.Event(
-            ol.interaction.Translate.EventType_.TRANSLATEEND, features,
+            ol.interaction.TranslateEventType.TRANSLATEEND, features,
             event.coordinate));
     return true;
   }
@@ -66371,7 +66743,7 @@ ol.interaction.Translate.handleDragEvent_ = function(event) {
     this.lastCoordinate_ = newCoordinate;
     this.dispatchEvent(
         new ol.interaction.Translate.Event(
-            ol.interaction.Translate.EventType_.TRANSLATING, features,
+            ol.interaction.TranslateEventType.TRANSLATING, features,
             newCoordinate));
   }
 };
@@ -66457,7 +66829,7 @@ ol.interaction.Translate.prototype.setHitTolerance = function(hitTolerance) {
  * @constructor
  * @extends {ol.events.Event}
  * @implements {oli.interaction.TranslateEvent}
- * @param {ol.interaction.Translate.EventType_} type Type.
+ * @param {ol.interaction.TranslateEventType} type Type.
  * @param {ol.Collection.<ol.Feature>} features The features translated.
  * @param {ol.Coordinate} coordinate The event coordinate.
  */
@@ -66481,32 +66853,6 @@ ol.interaction.Translate.Event = function(type, features, coordinate) {
   this.coordinate = coordinate;
 };
 ol.inherits(ol.interaction.Translate.Event, ol.events.Event);
-
-
-/**
- * @enum {string}
- * @private
- */
-ol.interaction.Translate.EventType_ = {
-  /**
-   * Triggered upon feature translation start.
-   * @event ol.interaction.Translate.Event#translatestart
-   * @api
-   */
-  TRANSLATESTART: 'translatestart',
-  /**
-   * Triggered upon feature translation.
-   * @event ol.interaction.Translate.Event#translating
-   * @api
-   */
-  TRANSLATING: 'translating',
-  /**
-   * Triggered upon feature translation end.
-   * @event ol.interaction.Translate.Event#translateend
-   * @api
-   */
-  TRANSLATEEND: 'translateend'
-};
 
 goog.provide('ol.layer.Heatmap');
 
@@ -66809,6 +67155,7 @@ goog.require('ol.transform');
 
 /**
  * @constructor
+ * @abstract
  * @extends {ol.renderer.canvas.Layer}
  * @param {ol.layer.Layer} layer Layer.
  */
@@ -67854,6 +68201,7 @@ goog.require('ol.source.Source');
  * Base class for sources providing a single image.
  *
  * @constructor
+ * @abstract
  * @extends {ol.source.Source}
  * @param {ol.SourceImageOptions} options Single image source options.
  * @api
@@ -67893,6 +68241,7 @@ ol.inherits(ol.source.Image, ol.source.Source);
 
 /**
  * @return {Array.<number>} Resolutions.
+ * @override
  */
 ol.source.Image.prototype.getResolutions = function() {
   return this.resolutions_;
@@ -69329,15 +69678,7 @@ if (ol.ENABLE_WEBGL) {
 
 
   /**
-   * Create a function that adds loaded tiles to the tile lookup.
-   * @param {ol.source.Tile} source Tile source.
-   * @param {ol.proj.Projection} projection Projection of the tiles.
-   * @param {Object.<number, Object.<string, ol.Tile>>} tiles Lookup of loaded
-   *     tiles by zoom level.
-   * @return {function(number, ol.TileRange):boolean} A function that can be
-   *     called with a zoom level and a tile range to add loaded tiles to the
-   *     lookup.
-   * @protected
+   * @inheritDoc
    */
   ol.renderer.webgl.TileLayer.prototype.createLoadedTileFinder = function(source, projection, tiles) {
     var mapRenderer = this.mapRenderer;
@@ -70892,6 +71233,7 @@ goog.require('ol.tilegrid');
  * Base class for sources providing images divided into a tile grid.
  *
  * @constructor
+ * @abstract
  * @extends {ol.source.Source}
  * @param {ol.SourceTileOptions} options Tile source options.
  * @api
@@ -71253,6 +71595,7 @@ goog.require('ol.source.TileEventType');
  * Base class for sources providing tiles divided into a tile grid over http.
  *
  * @constructor
+ * @abstract
  * @fires ol.source.Tile.Event
  * @extends {ol.source.Tile}
  * @param {ol.SourceUrlTileOptions} options Image tile options.
@@ -73282,39 +73625,25 @@ ol.source.ImageWMS.prototype.getImageInternal = function(extent, resolution, pix
     pixelRatio = 1;
   }
 
-  extent = extent.slice();
-  var centerX = (extent[0] + extent[2]) / 2;
-  var centerY = (extent[1] + extent[3]) / 2;
-
   var imageResolution = resolution / pixelRatio;
-  var imageWidth = Math.ceil(ol.extent.getWidth(extent) / imageResolution);
-  var imageHeight = Math.ceil(ol.extent.getHeight(extent) / imageResolution);
 
-  var halfWidth = imageWidth * imageResolution / 2;
-  var halfHeight = imageHeight * imageResolution / 2;
-
-  extent[0] = centerX - halfWidth;
-  extent[1] = centerY - halfHeight;
-  extent[2] = centerX + halfWidth;
-  extent[3] = centerY + halfHeight;
+  var center = ol.extent.getCenter(extent);
+  var viewWidth = Math.ceil(ol.extent.getWidth(extent) / imageResolution);
+  var viewHeight = Math.ceil(ol.extent.getHeight(extent) / imageResolution);
+  var viewExtent = ol.extent.getForViewAndSize(center, resolution, 0,
+      [viewWidth, viewHeight]);
+  var requestWidth = Math.ceil(this.ratio_ * ol.extent.getWidth(extent) / imageResolution);
+  var requestHeight = Math.ceil(this.ratio_ * ol.extent.getHeight(extent) / imageResolution);
+  var requestExtent = ol.extent.getForViewAndSize(center, resolution, 0,
+      [requestWidth, requestHeight]);
 
   var image = this.image_;
   if (image &&
       this.renderedRevision_ == this.getRevision() &&
       image.getResolution() == resolution &&
       image.getPixelRatio() == pixelRatio &&
-      ol.extent.containsExtent(image.getExtent(), extent)) {
+      ol.extent.containsExtent(image.getExtent(), viewExtent)) {
     return image;
-  }
-
-  if (this.ratio_ != 1) {
-    halfWidth *= this.ratio_;
-    halfHeight *= this.ratio_;
-
-    extent[0] = centerX - halfWidth;
-    extent[1] = centerY - halfHeight;
-    extent[2] = centerX + halfWidth;
-    extent[3] = centerY + halfHeight;
   }
 
   var params = {
@@ -73326,13 +73655,13 @@ ol.source.ImageWMS.prototype.getImageInternal = function(extent, resolution, pix
   };
   ol.obj.assign(params, this.params_);
 
-  this.imageSize_[0] = imageWidth * this.ratio_;
-  this.imageSize_[1] = imageHeight * this.ratio_;
+  this.imageSize_[0] = Math.round(ol.extent.getWidth(requestExtent) / imageResolution);
+  this.imageSize_[1] = Math.round(ol.extent.getHeight(requestExtent) / imageResolution);
 
-  var url = this.getRequestUrl_(extent, this.imageSize_, pixelRatio,
+  var url = this.getRequestUrl_(requestExtent, this.imageSize_, pixelRatio,
       projection, params);
 
-  this.image_ = new ol.Image(extent, resolution, pixelRatio,
+  this.image_ = new ol.Image(requestExtent, resolution, pixelRatio,
       this.getAttributions(), url, this.crossOrigin_, this.imageLoadFunction_);
 
   this.renderedRevision_ = this.getRevision();
@@ -73542,7 +73871,7 @@ var module = {exports: exports};
 var define;
 /**
  * @fileoverview
- * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, uselessCode, visibility}
+ * @suppress {accessControls, ambiguousFunctionDecl, checkDebuggerStatement, checkRegExp, checkTypes, checkVars, const, constantProperty, deprecated, duplicate, es5Strict, fileoverviewTags, missingProperties, nonStandardJsDocs, strictModuleDepCheck, suspiciousCode, undefinedNames, undefinedVars, unknownDefines, unusedLocalVariables, uselessCode, visibility}
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pixelworks = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 var Processor = _dereq_('./processor');
@@ -74351,6 +74680,14 @@ ol.inherits(ol.source.Raster.Event, ol.events.Event);
 
 
 /**
+ * @override
+ */
+ol.source.Raster.prototype.getImageInternal = function() {
+  return null; // not implemented
+};
+
+
+/**
  * @enum {string}
  * @private
  */
@@ -74771,6 +75108,7 @@ ol.inherits(ol.source.TileDebug.Tile_, ol.Tile);
 /**
  * Get the image element for this tile.
  * @return {HTMLCanvasElement} Image.
+ * @override
  */
 ol.source.TileDebug.Tile_.prototype.getImage = function() {
   if (this.canvas_) {
@@ -74792,6 +75130,12 @@ ol.source.TileDebug.Tile_.prototype.getImage = function() {
     return context.canvas;
   }
 };
+
+
+/**
+ * @override
+ */
+ol.source.TileDebug.Tile_.prototype.load = function() {};
 
 // FIXME check order of async callbacks
 
@@ -75276,6 +75620,7 @@ ol.inherits(ol.source.TileUTFGrid.Tile_, ol.Tile);
 /**
  * Get the image element for this tile.
  * @return {Image} Image.
+ * @override
  */
 ol.source.TileUTFGrid.Tile_.prototype.getImage = function() {
   return null;
@@ -75435,7 +75780,7 @@ ol.source.TileUTFGrid.Tile_.prototype.onXHRError_ = function(event) {
 
 
 /**
- * Load not yet loaded URI.
+ * @override
  */
 ol.source.TileUTFGrid.Tile_.prototype.load = function() {
   if (this.preemptive_) {
@@ -75916,7 +76261,7 @@ ol.VectorTile.prototype.getContext = function() {
 
 
 /**
- * @inheritDoc
+ * @override
  */
 ol.VectorTile.prototype.getImage = function() {
   return this.replayState_.renderedTileRevision == -1 ?
@@ -75967,7 +76312,7 @@ ol.VectorTile.prototype.getProjection = function() {
 
 
 /**
- * Load the tile.
+ * @inheritDoc
  */
 ol.VectorTile.prototype.load = function() {
   if (this.state == ol.TileState.IDLE) {
@@ -78110,11 +78455,6 @@ goog.exportProperty(
     'getImage',
     ol.ImageTile.prototype.getImage);
 
-goog.exportProperty(
-    ol.ImageTile.prototype,
-    'load',
-    ol.ImageTile.prototype.load);
-
 goog.exportSymbol(
     'ol.inherits',
     ol.inherits,
@@ -78834,11 +79174,6 @@ goog.exportSymbol(
     'ol.style.Circle',
     ol.style.Circle,
     OPENLAYERS);
-
-goog.exportProperty(
-    ol.style.Circle.prototype,
-    'clone',
-    ol.style.Circle.prototype.clone);
 
 goog.exportProperty(
     ol.style.Circle.prototype,
@@ -82256,6 +82591,11 @@ goog.exportProperty(
     ol.ImageTile.prototype.getTileCoord);
 
 goog.exportProperty(
+    ol.ImageTile.prototype,
+    'load',
+    ol.ImageTile.prototype.load);
+
+goog.exportProperty(
     ol.Map.prototype,
     'get',
     ol.Map.prototype.get);
@@ -82511,6 +82851,11 @@ goog.exportProperty(
     ol.VectorTile.prototype.getTileCoord);
 
 goog.exportProperty(
+    ol.VectorTile.prototype,
+    'load',
+    ol.VectorTile.prototype.load);
+
+goog.exportProperty(
     ol.View.prototype,
     'get',
     ol.View.prototype.get);
@@ -82669,6 +83014,11 @@ goog.exportProperty(
     ol.style.RegularShape.prototype,
     'setScale',
     ol.style.RegularShape.prototype.setScale);
+
+goog.exportProperty(
+    ol.style.Circle.prototype,
+    'clone',
+    ol.style.Circle.prototype.clone);
 
 goog.exportProperty(
     ol.style.Circle.prototype,
@@ -91244,7 +91594,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'unByKey',
     ol.control.ZoomToExtent.prototype.unByKey);
-ol.VERSION = 'v3.20.0-218-g8c2b407';
+ol.VERSION = 'v3.21.0-beta.1-2-g9af1000';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
