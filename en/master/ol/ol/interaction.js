@@ -1,6 +1,5 @@
 goog.provide('ol.interaction');
 
-goog.require('ol');
 goog.require('ol.Collection');
 goog.require('ol.Kinetic');
 goog.require('ol.interaction.DoubleClickZoom');
@@ -35,7 +34,7 @@ goog.require('ol.interaction.PinchZoom');
  * @param {olx.interaction.DefaultsOptions=} opt_options Defaults options.
  * @return {ol.Collection.<ol.interaction.Interaction>} A collection of
  * interactions to be used with the ol.Map constructor's interactions option.
- * @api stable
+ * @api
  */
 ol.interaction.defaults = function(opt_options) {
 
