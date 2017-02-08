@@ -2,7 +2,7 @@
 
 ## Updating the site with changes from master
 
-Requires that you have [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/) installed.  Currently, building the website also requires all the ol3 [development dependencies](https://github.com/openlayers/openlayers/blob/master/CONTRIBUTING.md) as well.
+Requires that you have [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/) installed.  Currently, building the website also requires all the openlayers [development dependencies](https://github.com/openlayers/openlayers/blob/master/CONTRIBUTING.md) as well.
 
 ```shell
 # only once: clone
@@ -14,7 +14,7 @@ npm install
 npm run deploy
 ```
 
-Future updates only require that you run `npm run deploy`.  This will update the site documentation and examples from the `master` branch of the `ol3` repository.  To deploy the site for other branches/tags, see below.
+Future updates only require that you run `npm run deploy`.  This will update the site documentation and examples from the `master` branch of the `openlayers` repository.  To deploy the site for other branches/tags, see below.
 
 Note that the `build` branch of this repository is the default branch.  The build tasks and resources are in this branch.  The `master` branch of this repository contains the build artifacts, and this is what is deployed at https://openlayers.org/.  The build tasks modify the contents of the `master` branch and push changes.
 
