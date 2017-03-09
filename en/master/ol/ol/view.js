@@ -264,6 +264,7 @@ ol.View.prototype.animate = function(var_args) {
 /**
  * Determine if the view is being animated.
  * @return {boolean} The view is being animated.
+ * @api
  */
 ol.View.prototype.getAnimating = function() {
   return this.getHints()[ol.ViewHint.ANIMATING] > 0;
@@ -272,6 +273,7 @@ ol.View.prototype.getAnimating = function() {
 
 /**
  * Cancel any ongoing animations.
+ * @api
  */
 ol.View.prototype.cancelAnimations = function() {
   this.setHint(ol.ViewHint.ANIMATING, -this.getHints()[ol.ViewHint.ANIMATING]);
@@ -323,18 +325,20 @@ ol.View.prototype.updateAnimations_ = function() {
         var y = y0 + progress * (y1 - y0);
         this.set(ol.ViewProperty.CENTER, [x, y]);
       }
-      if (animation.sourceResolution) {
-        var resolution = animation.sourceResolution +
-            progress * (animation.targetResolution - animation.sourceResolution);
+      if (animation.sourceResolution && animation.targetResolution) {
+        var resolution = progress === 1 ?
+            animation.targetResolution :
+            animation.sourceResolution + progress * (animation.targetResolution - animation.sourceResolution);
         if (animation.anchor) {
           this.set(ol.ViewProperty.CENTER,
               this.calculateCenterZoom(resolution, animation.anchor));
         }
         this.set(ol.ViewProperty.RESOLUTION, resolution);
       }
-      if (animation.sourceRotation !== undefined) {
-        var rotation = animation.sourceRotation +
-            progress * (animation.targetRotation - animation.sourceRotation);
+      if (animation.sourceRotation !== undefined && animation.targetRotation !== undefined) {
+        var rotation = progress === 1 ?
+            animation.targetRotation :
+            animation.sourceRotation + progress * (animation.targetRotation - animation.sourceRotation);
         if (animation.anchor) {
           this.set(ol.ViewProperty.CENTER,
               this.calculateCenterRotate(rotation, animation.anchor));
@@ -527,6 +531,26 @@ ol.View.prototype.getMinResolution = function() {
 
 
 /**
+ * Get the maximum zoom level for the view.
+ * @return {number} The maximum zoom level.
+ * @api
+ */
+ol.View.prototype.getMaxZoom = function() {
+  return /** @type {number} */ (this.getZoomForResolution(this.minResolution_));
+};
+
+
+/**
+ * Get the minimum zoom level for the view.
+ * @return {number} The minimum zoom level.
+ * @api
+ */
+ol.View.prototype.getMinZoom = function() {
+  return /** @type {number} */ (this.getZoomForResolution(this.maxResolution_));
+};
+
+
+/**
  * Get the view projection.
  * @return {ol.proj.Projection} The projection of the view.
  * @api
@@ -657,8 +681,22 @@ ol.View.prototype.getState = function() {
 ol.View.prototype.getZoom = function() {
   var zoom;
   var resolution = this.getResolution();
-  if (resolution !== undefined &&
-      resolution >= this.minResolution_ && resolution <= this.maxResolution_) {
+  if (resolution !== undefined) {
+    zoom = this.getZoomForResolution(resolution);
+  }
+  return zoom;
+};
+
+
+/**
+ * Get the zoom level for a resolution.
+ * @param {number} resolution The resolution.
+ * @return {number|undefined} The zoom level for the provided resolution.
+ * @api
+ */
+ol.View.prototype.getZoomForResolution = function(resolution) {
+  var zoom;
+  if (resolution >= this.minResolution_ && resolution <= this.maxResolution_) {
     var offset = this.minZoom_ || 0;
     var max, zoomFactor;
     if (this.resolutions_) {
