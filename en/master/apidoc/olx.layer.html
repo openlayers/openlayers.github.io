@@ -131,6 +131,10 @@
                     <a href="ol.html#.RasterOperation">RasterOperation</a>
                 </li>
             
+                <li data-name="ol.RenderOrderFunction" class="">
+                    <a href="ol.html#.RenderOrderFunction">RenderOrderFunction</a>
+                </li>
+            
                 <li data-name="ol.SelectFilterFunction" class="">
                     <a href="ol.html#.SelectFilterFunction">SelectFilterFunction</a>
                 </li>
@@ -1892,6 +1896,14 @@
             
                 <li data-name="ol.View#setCenter" class="">
                     <a href="ol.View.html#setCenter">setCenter</a>
+                </li>
+            
+                <li data-name="ol.View#setMaxZoom" class="">
+                    <a href="ol.View.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
+                <li data-name="ol.View#setMinZoom" class="">
+                    <a href="ol.View.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="ol.View#setProperties" class="">
@@ -4025,6 +4037,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.WFS.writeFilter" class="">
+                    <a href="ol.format.WFS.html#.writeFilter">writeFilter</a>
+                </li>
             
                 <li data-name="ol.format.WFS#readFeatureCollectionMetadata" class="">
                     <a href="ol.format.WFS.html#readFeatureCollectionMetadata">readFeatureCollectionMetadata</a>
@@ -17865,7 +17881,13 @@ outside of this extent.</p></td>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="ol.html#.RenderOrderFunction">ol.RenderOrderFunction</a></span>
+|
+
+<span class="param-type">null</span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -17873,6 +17895,8 @@ outside of this extent.</p></td>
             
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
                     
                 
@@ -17883,7 +17907,7 @@ outside of this extent.</p></td>
             
             <td class="description last"><p>Render order. Function to be used when sorting features before rendering. By
 default features are drawn in the order that they are created. Use <code>null</code> to
-avoid the sort, but get an undefined draw order. <span class="required-option">Required.</span></p></td>
+avoid the sort, but get an undefined draw order.</p></td>
         </tr>
 	
 	
@@ -18446,7 +18470,10 @@ even during animations, but slower performance than the other options.</li>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="ol.html#.RenderOrderFunction">ol.RenderOrderFunction</a></span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -18454,6 +18481,8 @@ even during animations, but slower performance than the other options.</li>
             
             
                 <td class="attributes">
+                
+                    &lt;optional><br>
                 
                     
                 
@@ -18463,7 +18492,7 @@ even during animations, but slower performance than the other options.</li>
             
             
             <td class="description last"><p>Render order. Function to be used when sorting features before rendering. By
-default features are drawn in the order that they are created. <span class="required-option">Required.</span></p></td>
+default features are drawn in the order that they are created.</p></td>
         </tr>
 	
 	

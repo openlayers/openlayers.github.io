@@ -131,6 +131,10 @@
                     <a href="ol.html#.RasterOperation">RasterOperation</a>
                 </li>
             
+                <li data-name="ol.RenderOrderFunction" class="">
+                    <a href="ol.html#.RenderOrderFunction">RenderOrderFunction</a>
+                </li>
+            
                 <li data-name="ol.SelectFilterFunction" class="">
                     <a href="ol.html#.SelectFilterFunction">SelectFilterFunction</a>
                 </li>
@@ -1892,6 +1896,14 @@
             
                 <li data-name="ol.View#setCenter" class="">
                     <a href="ol.View.html#setCenter">setCenter</a>
+                </li>
+            
+                <li data-name="ol.View#setMaxZoom" class="">
+                    <a href="ol.View.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
+                <li data-name="ol.View#setMinZoom" class="">
+                    <a href="ol.View.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="ol.View#setProperties" class="">
@@ -4025,6 +4037,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.WFS.writeFilter" class="">
+                    <a href="ol.format.WFS.html#.writeFilter">writeFilter</a>
+                </li>
             
                 <li data-name="ol.format.WFS#readFeatureCollectionMetadata" class="">
                     <a href="ol.format.WFS.html#readFeatureCollectionMetadata">readFeatureCollectionMetadata</a>
@@ -15746,7 +15762,7 @@ default the center is not constrained at all.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 80
+            src/ol/view.js, line 81
         </div>
         
         
@@ -16508,7 +16524,7 @@ the <code>ol.View#constrainResolution</code> method.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 208
+            src/ol/view.js, line 254
         </div>
         
         
@@ -16884,7 +16900,7 @@ between 0 and 1 representing the progress toward the destination state.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 500
+            src/ol/view.js, line 546
         </div>
         
         
@@ -17021,7 +17037,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 278
+            src/ol/view.js, line 324
         </div>
         
         
@@ -17098,7 +17114,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 831
+            src/ol/view.js, line 897
         </div>
         
         
@@ -17351,7 +17367,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 429
+            src/ol/view.js, line 475
         </div>
         
         
@@ -17487,7 +17503,7 @@ Constrained center.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 442
+            src/ol/view.js, line 488
         </div>
         
         
@@ -17673,7 +17689,7 @@ Constrained resolution.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 457
+            src/ol/view.js, line 503
         </div>
         
         
@@ -17968,7 +17984,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 730
+            src/ol/view.js, line 796
         </div>
         
         
@@ -18526,7 +18542,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 269
+            src/ol/view.js, line 315
         </div>
         
         
@@ -18612,7 +18628,7 @@ The view is being animated.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 469
+            src/ol/view.js, line 515
         </div>
         
         
@@ -18786,7 +18802,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 518
+            src/ol/view.js, line 564
         </div>
         
         
@@ -18872,7 +18888,7 @@ The maximum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 538
+            src/ol/view.js, line 584
         </div>
         
         
@@ -18958,7 +18974,7 @@ The maximum zoom level.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 528
+            src/ol/view.js, line 574
         </div>
         
         
@@ -19044,7 +19060,7 @@ The minimum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 548
+            src/ol/view.js, line 604
         </div>
         
         
@@ -19130,7 +19146,7 @@ The minimum zoom level.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 558
+            src/ol/view.js, line 624
         </div>
         
         
@@ -19304,7 +19320,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 569
+            src/ol/view.js, line 635
         </div>
         
         
@@ -19390,7 +19406,7 @@ The resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 581
+            src/ol/view.js, line 647
         </div>
         
         
@@ -19566,7 +19582,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 629
+            src/ol/view.js, line 695
         </div>
         
         
@@ -19652,7 +19668,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 681
+            src/ol/view.js, line 747
         </div>
         
         
@@ -19739,7 +19755,7 @@ Zoom.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 697
+            src/ol/view.js, line 763
         </div>
         
         
@@ -20252,7 +20268,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 865
+            src/ol/view.js, line 931
         </div>
         
         
@@ -20577,7 +20593,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 880
+            src/ol/view.js, line 946
         </div>
         
         
@@ -20642,6 +20658,254 @@ Unique key for the listener. If
             <td  class="description last">
                 
                 <p>The center of the view.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
+        <div class="anchor" id="setMaxZoom">
+        </div>
+        <h4 class="name">
+            setMaxZoom<span class="signature">(zoom)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/view.js, line 594
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Set a new maximum zoom level for the view.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>zoom</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>The maximum zoom level.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
+        <div class="anchor" id="setMinZoom">
+        </div>
+        <h4 class="name">
+            setMinZoom<span class="signature">(zoom)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/view.js, line 614
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Set a new minimum zoom level for the view.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>zoom</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>The minimum zoom level.</p></td>
         </tr>
 	
 	
@@ -20856,7 +21120,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 906
+            src/ol/view.js, line 972
         </div>
         
         
@@ -20983,7 +21247,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 920
+            src/ol/view.js, line 986
         </div>
         
         
@@ -21107,7 +21371,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 933
+            src/ol/view.js, line 999
         </div>
         
         

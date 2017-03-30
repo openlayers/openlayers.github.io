@@ -131,6 +131,10 @@
                     <a href="ol.html#.RasterOperation">RasterOperation</a>
                 </li>
             
+                <li data-name="ol.RenderOrderFunction" class="">
+                    <a href="ol.html#.RenderOrderFunction">RenderOrderFunction</a>
+                </li>
+            
                 <li data-name="ol.SelectFilterFunction" class="">
                     <a href="ol.html#.SelectFilterFunction">SelectFilterFunction</a>
                 </li>
@@ -1892,6 +1896,14 @@
             
                 <li data-name="ol.View#setCenter" class="">
                     <a href="ol.View.html#setCenter">setCenter</a>
+                </li>
+            
+                <li data-name="ol.View#setMaxZoom" class="">
+                    <a href="ol.View.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
+                <li data-name="ol.View#setMinZoom" class="">
+                    <a href="ol.View.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="ol.View#setProperties" class="">
@@ -4025,6 +4037,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.WFS.writeFilter" class="">
+                    <a href="ol.format.WFS.html#.writeFilter">writeFilter</a>
+                </li>
             
                 <li data-name="ol.format.WFS#readFeatureCollectionMetadata" class="">
                     <a href="ol.format.WFS.html#readFeatureCollectionMetadata">readFeatureCollectionMetadata</a>
@@ -15715,7 +15731,7 @@ Also see <a href="ol.format.GMLBase.html"><code>ol.format.GMLBase</code></a> whi
         </h4>
         
         <div class="tag-source">
-            src/ol/format/wfs.js, line 29
+            src/ol/format/wfs.js, line 30
         </div>
         
         
@@ -15995,6 +16011,139 @@ default.</p></td>
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id=".writeFilter">
+        </div>
+        <h4 class="name">
+            ol.format.WFS.writeFilter<span class="signature">(filter)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Node}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/format/wfs.js, line 792
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Encode filter as WFS <code>Filter</code> and return the Node.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>filter</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.format.filter.Filter.html">ol.format.filter.Filter</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Filter.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Result.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="readFeatureCollectionMetadata">
         </div>
         <h4 class="name">
@@ -16005,7 +16154,7 @@ default.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/wfs.js, line 165
+            src/ol/format/wfs.js, line 178
         </div>
         
         
@@ -16147,7 +16296,7 @@ FeatureCollection metadata.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/wfs.js, line 108
+            src/ol/format/wfs.js, line 121
         </div>
         
         
@@ -16386,7 +16535,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/wfs.js, line 915
+            src/ol/format/wfs.js, line 959
         </div>
         
         
@@ -16528,7 +16677,7 @@ Projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/wfs.js, line 142
+            src/ol/format/wfs.js, line 155
         </div>
         
         
@@ -16670,7 +16819,7 @@ Transaction response.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/wfs.js, line 783
+            src/ol/format/wfs.js, line 823
         </div>
         
         
@@ -17244,7 +17393,7 @@ Result.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/wfs.js, line 850
+            src/ol/format/wfs.js, line 890
         </div>
         
         
@@ -17592,6 +17741,38 @@ provided.</p></td>
 
                 
                 <p>GML options for the WFS transaction writer.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>version</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>WFS version to use for the transaction. Can be either <code>1.0.0</code> or <code>1.1.0</code>.
+Default is <code>1.1.0</code>.</p></td>
         </tr>
 	
 	

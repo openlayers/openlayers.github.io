@@ -3,7 +3,8 @@ var layers = [
     source: new ol.source.TileWMS({
       url: 'https://ahocevar.com/geoserver/wms',
       params: {
-        'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'
+        'LAYERS': 'ne:NE1_HR_LC_SR_W_DR',
+        'TILED': true
       }
     })
   })

@@ -131,6 +131,10 @@
                     <a href="ol.html#.RasterOperation">RasterOperation</a>
                 </li>
             
+                <li data-name="ol.RenderOrderFunction" class="">
+                    <a href="ol.html#.RenderOrderFunction">RenderOrderFunction</a>
+                </li>
+            
                 <li data-name="ol.SelectFilterFunction" class="">
                     <a href="ol.html#.SelectFilterFunction">SelectFilterFunction</a>
                 </li>
@@ -1892,6 +1896,14 @@
             
                 <li data-name="ol.View#setCenter" class="">
                     <a href="ol.View.html#setCenter">setCenter</a>
+                </li>
+            
+                <li data-name="ol.View#setMaxZoom" class="">
+                    <a href="ol.View.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
+                <li data-name="ol.View#setMinZoom" class="">
+                    <a href="ol.View.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="ol.View#setProperties" class="">
@@ -4025,6 +4037,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.WFS.writeFilter" class="">
+                    <a href="ol.format.WFS.html#.writeFilter">writeFilter</a>
+                </li>
             
                 <li data-name="ol.format.WFS#readFeatureCollectionMetadata" class="">
                     <a href="ol.format.WFS.html#readFeatureCollectionMetadata">readFeatureCollectionMetadata</a>
@@ -16568,7 +16584,7 @@ each one separately in the <code>urls</code> option.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/wmts.js, line 298
+            src/ol/source/wmts.js, line 299
         </div>
         
         
@@ -16672,6 +16688,7 @@ each one separately in the <code>urls</code> option.</p></td>
 <li>style - {string} The name of the style</li>
 <li>format - {string} Image format for the layer. Default is the first
    format returned in the GetCapabilities response.</li>
+<li>crossOrigin - {string|null|undefined} Cross origin. Default is <code>undefined</code>.</li>
 </ul></td>
         </tr>
 	

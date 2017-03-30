@@ -1,6 +1,6 @@
 var wmsSource = new ol.source.TileWMS({
   url: 'https://ahocevar.com/geoserver/wms',
-  params: {'LAYERS': 'ne:ne'},
+  params: {'LAYERS': 'ne:ne', 'TILED': true},
   serverType: 'geoserver',
   crossOrigin: 'anonymous'
 });

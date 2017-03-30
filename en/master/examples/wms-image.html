@@ -75,6 +75,7 @@
     source: new ol.source.ImageWMS({
       url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
       params: {&#x27;LAYERS&#x27;: &#x27;topp:states&#x27;},
+      ratio: 1,
       serverType: &#x27;geoserver&#x27;
     })
   })
@@ -115,6 +116,7 @@ var map &#x3D; new ol.Map({
           source: new ol.source.ImageWMS({
             url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
             params: {&#x27;LAYERS&#x27;: &#x27;topp:states&#x27;},
+            ratio: 1,
             serverType: &#x27;geoserver&#x27;
           })
         })

@@ -83,7 +83,8 @@ var map4326 &#x3D; new ol.Map({
       source: new ol.source.TileWMS({
         url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
         params: {
-          &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;
+          &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;,
+          &#x27;TILED&#x27;: true
         }
       })
     }),
@@ -103,7 +104,8 @@ var map3857 &#x3D; new ol.Map({
       source: new ol.source.TileWMS({
         url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
         params: {
-          &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;
+          &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;,
+          &#x27;TILED&#x27;: true
         }
       })
     }),
@@ -167,7 +169,8 @@ for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
             source: new ol.source.TileWMS({
               url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
               params: {
-                &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;
+                &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;,
+                &#x27;TILED&#x27;: true
               }
             })
           }),
@@ -187,7 +190,8 @@ for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
             source: new ol.source.TileWMS({
               url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
               params: {
-                &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;
+                &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;,
+                &#x27;TILED&#x27;: true
               }
             })
           }),
