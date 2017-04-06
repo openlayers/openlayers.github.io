@@ -70,6 +70,7 @@
   return new ol.style.Style({
     image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 0.96],
+      crossOrigin: &#x27;anonymous&#x27;,
       src: src,
       img: img,
       imgSize: img ? [img.width, img.height] : undefined
@@ -149,6 +150,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         return new ol.style.Style({
           image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
             anchor: [0.5, 0.96],
+            crossOrigin: &#x27;anonymous&#x27;,
             src: src,
             img: img,
             imgSize: img ? [img.width, img.height] : undefined
