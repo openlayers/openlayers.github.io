@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.0.1 API - Namespace: interaction</title>
+    <title>OpenLayers v4.1.0 API - Namespace: interaction</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -11199,6 +11199,10 @@
                     <a href="ol.source.Cluster.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a>
                 </li>
             
+                <li data-name="ol.source.Cluster#getDistance" class="">
+                    <a href="ol.source.Cluster.html#getDistance">getDistance</a>
+                </li>
+            
                 <li data-name="ol.source.Cluster#getExtent" class="">
                     <a href="ol.source.Cluster.html#getExtent">getExtent</a>
                 </li>
@@ -15692,7 +15696,7 @@
         <h1 class="page-title" data-filename="ol.interaction.html">Namespace: interaction</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.1.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -15957,6 +15961,38 @@ a different order for interactions, you will need to create your own
 
                 
                 <p>Whether Alt-Shift-drag rotate is desired. Default is <code>true</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>constrainResolution</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Zoom to the closest integer zoom level after the wheel/trackpad or
+pinch gesture ends. Default is <code>false</code>.</p></td>
         </tr>
 	
 	

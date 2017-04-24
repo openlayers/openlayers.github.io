@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.0.1 API - Class: DragBox</title>
+    <title>OpenLayers v4.1.0 API - Class: DragBox</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -11199,6 +11199,10 @@
                     <a href="ol.source.Cluster.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a>
                 </li>
             
+                <li data-name="ol.source.Cluster#getDistance" class="">
+                    <a href="ol.source.Cluster.html#getDistance">getDistance</a>
+                </li>
+            
                 <li data-name="ol.source.Cluster#getExtent" class="">
                     <a href="ol.source.Cluster.html#getExtent">getExtent</a>
                 </li>
@@ -15692,7 +15696,7 @@
         <h1 class="page-title" data-filename="ol.interaction.DragBox.html">Class: DragBox</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.1.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -15734,7 +15738,7 @@ for zooming to a specific area of the map
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/dragbox.js, line 37
+            src/ol/interaction/dragbox.js, line 28
         </div>
         
         
@@ -15867,6 +15871,38 @@ Default is <a href="ol.events.condition.html#.always"><code>ol.events.condition.
 	
         <tr class="">
             
+                <td class="name"><code>minArea</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>The minimum area of the box in pixel, this value is used by the default
+<code>boxEndCondition</code> function. Default is <code>64</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
                 <td class="name"><code>boxEndCondition</code></td>
             
             
@@ -15892,15 +15928,8 @@ Default is <a href="ol.events.condition.html#.always"><code>ol.events.condition.
 
                 
                 <p>A function that takes a <a href="ol.MapBrowserEvent.html"><code>ol.MapBrowserEvent</code></a> and two
-<a href="ol.html#.Pixel"><code>ol.Pixel</code></a>s to indicate whether a boxend event should be fired.
-Default is:</p>
-<pre class="prettyprint source lang-js"><code>function(mapBrowserEvent,
-    startPixel, endPixel) {
-  var width = endPixel[0] - startPixel[0];
-  var height = endPixel[1] - startPixel[1];
-  return width * width + height * height >=
-    ol.DRAG_BOX_HYSTERESIS_PIXELS_SQUARED;
-}</code></pre></td>
+<a href="ol.html#.Pixel"><code>ol.Pixel</code></a>s to indicate whether a <code>boxend</code> event should be fired.
+Default is <code>true</code> if the area of the box is bigger than the <code>minArea</code> option.</p></td>
         </tr>
 	
 	
@@ -16563,7 +16592,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/dragbox.js, line 116
+            src/ol/interaction/dragbox.js, line 112
         </div>
         
         

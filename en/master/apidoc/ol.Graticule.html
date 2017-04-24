@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.0.1 API - Class: Graticule</title>
+    <title>OpenLayers v4.1.0 API - Class: Graticule</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -11199,6 +11199,10 @@
                     <a href="ol.source.Cluster.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a>
                 </li>
             
+                <li data-name="ol.source.Cluster#getDistance" class="">
+                    <a href="ol.source.Cluster.html#getDistance">getDistance</a>
+                </li>
+            
                 <li data-name="ol.source.Cluster#getExtent" class="">
                     <a href="ol.source.Cluster.html#getExtent">getExtent</a>
                 </li>
@@ -15692,7 +15696,7 @@
         <h1 class="page-title" data-filename="ol.Graticule.html">Class: Graticule</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.1.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -15726,7 +15730,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/graticule.js, line 19
+            src/ol/graticule.js, line 23
         </div>
         
         
@@ -15927,6 +15931,256 @@ value is 100 pixels.</p></td>
         </tr>
 	
 	
+	
+        <tr class="">
+            
+                <td class="name"><code>showLabels</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Render a label with the respective latitude/longitude for each graticule
+line. Default is false.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>lonLabelFormatter</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Label formatter for longitudes. This function is called with the longitude as
+argument, and should return a formatted string representing the longitude.
+By default, labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>latLabelFormatter</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Label formatter for latitudes. This function is called with the latitude as
+argument, and should return a formatted string representing the latitude.
+By default, labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>lonLabelPosition</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Longitude label position in fractions (0..1) of view extent. 0 means at the
+bottom of the viewport, 1 means at the top. Default is 0.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>latLabelPosition</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Latitude label position in fractions (0..1) of view extent. 0 means at the
+left of the viewport, 1 means at the right. Default is 1.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>lonLabelStyle</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Text.html">ol.style.Text</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Longitude label text style. The default is</p>
+<pre class="prettyprint source lang-js"><code>new ol.style.Text({
+  font: '12px Calibri,sans-serif',
+  textBaseline: 'bottom',
+  fill: new ol.style.Fill({
+    color: 'rgba(0,0,0,1)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: 'rgba(255,255,255,1)',
+    width: 3
+  })
+});</code></pre><p>Note that the default's <code>textBaseline</code> configuration will not work well for
+<code>lonLabelPosition</code> configurations that position labels close to the top of
+the viewport.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>latLabelStyle</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Text.html">ol.style.Text</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Latitude label text style. The default is</p>
+<pre class="prettyprint source lang-js"><code>new ol.style.Text({
+  font: '12px Calibri,sans-serif',
+  textAlign: 'end',
+  fill: new ol.style.Fill({
+    color: 'rgba(0,0,0,1)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: 'rgba(255,255,255,1)',
+    width: 3
+  })
+});</code></pre><p>Note that the default's <code>textAlign</code> configuration will not work well for
+<code>latLabelPosition</code> configurations that position labels close to the left of
+the viewport.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
             </td>
@@ -16014,7 +16268,7 @@ value is 100 pixels.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/graticule.js, line 317
+            src/ol/graticule.js, line 475
         </div>
         
         
@@ -16100,7 +16354,7 @@ The map.
         </h4>
         
         <div class="tag-source">
-            src/ol/graticule.js, line 347
+            src/ol/graticule.js, line 505
         </div>
         
         
@@ -16186,7 +16440,7 @@ The meridians.
         </h4>
         
         <div class="tag-source">
-            src/ol/graticule.js, line 377
+            src/ol/graticule.js, line 535
         </div>
         
         
@@ -16272,7 +16526,7 @@ The parallels.
         </h4>
         
         <div class="tag-source">
-            src/ol/graticule.js, line 490
+            src/ol/graticule.js, line 665
         </div>
         
         

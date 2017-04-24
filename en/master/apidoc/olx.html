@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.0.1 API - Namespace: olx</title>
+    <title>OpenLayers v4.1.0 API - Namespace: olx</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -11199,6 +11199,10 @@
                     <a href="ol.source.Cluster.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a>
                 </li>
             
+                <li data-name="ol.source.Cluster#getDistance" class="">
+                    <a href="ol.source.Cluster.html#getDistance">getDistance</a>
+                </li>
+            
                 <li data-name="ol.source.Cluster#getExtent" class="">
                     <a href="ol.source.Cluster.html#getExtent">getExtent</a>
                 </li>
@@ -15692,7 +15696,7 @@
         <h1 class="page-title" data-filename="olx.html">Namespace: olx</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.1.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16372,6 +16376,117 @@ not for WebGL. Default is <code>0</code>.</p></td>
                 
 <dt class="">
     <div class="nameContainer">
+        <div class="anchor" id=".CollectionOptions">
+        </div>
+        <h4 class="name">
+            olx.CollectionOptions<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>unique</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Disallow the same item from being added to the collection twice.  Default is
+false.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
         <div class="anchor" id=".DeviceOrientationOptions">
         </div>
         <h4 class="name">
@@ -16981,6 +17096,277 @@ lines will be drawn with <code>rgba(0,0,0,0.2)</code>, a not fully opaque black.
             
             <td class="description last"><p>The target size of the graticule cells, in pixels. Default
 value is 100 pixels.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>showLabels</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Render a label with the respective latitude/longitude for each graticule
+line. Default is false.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>lonLabelFormatter</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Label formatter for longitudes. This function is called with the longitude as
+argument, and should return a formatted string representing the longitude.
+By default, labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>latLabelFormatter</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">undefined</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Label formatter for latitudes. This function is called with the latitude as
+argument, and should return a formatted string representing the latitude.
+By default, labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>lonLabelPosition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Longitude label position in fractions (0..1) of view extent. 0 means at the
+bottom of the viewport, 1 means at the top. Default is 0.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>latLabelPosition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Latitude label position in fractions (0..1) of view extent. 0 means at the
+left of the viewport, 1 means at the right. Default is 1.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>lonLabelStyle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Text.html">ol.style.Text</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Longitude label text style. The default is</p>
+<pre class="prettyprint source lang-js"><code>new ol.style.Text({
+  font: '12px Calibri,sans-serif',
+  textBaseline: 'bottom',
+  fill: new ol.style.Fill({
+    color: 'rgba(0,0,0,1)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: 'rgba(255,255,255,1)',
+    width: 3
+  })
+});</code></pre><p>Note that the default's <code>textBaseline</code> configuration will not work well for
+<code>lonLabelPosition</code> configurations that position labels close to the top of
+the viewport.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>latLabelStyle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Text.html">ol.style.Text</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Latitude label text style. The default is</p>
+<pre class="prettyprint source lang-js"><code>new ol.style.Text({
+  font: '12px Calibri,sans-serif',
+  textAlign: 'end',
+  fill: new ol.style.Fill({
+    color: 'rgba(0,0,0,1)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: 'rgba(255,255,255,1)',
+    width: 3
+  })
+});</code></pre><p>Note that the default's <code>textAlign</code> configuration will not work well for
+<code>latLabelPosition</code> configurations that position labels close to the left of
+the viewport.</p></td>
         </tr>
 	
 	

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.0.1 API - Class: Collection</title>
+    <title>OpenLayers v4.1.0 API - Class: Collection</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -11199,6 +11199,10 @@
                     <a href="ol.source.Cluster.html#getClosestFeatureToCoordinate">getClosestFeatureToCoordinate</a>
                 </li>
             
+                <li data-name="ol.source.Cluster#getDistance" class="">
+                    <a href="ol.source.Cluster.html#getDistance">getDistance</a>
+                </li>
+            
                 <li data-name="ol.source.Cluster#getExtent" class="">
                     <a href="ol.source.Cluster.html#getExtent">getExtent</a>
                 </li>
@@ -15692,7 +15696,7 @@
         <h1 class="page-title" data-filename="ol.Collection.html">Class: Collection</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.1.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -15725,14 +15729,14 @@ Collection as a whole.</p></div>
         <div class="anchor" id="Collection">
         </div>
         <h4 class="name">
-            new ol.Collection<span class="signature">(<span class="optional">opt_array</span>)</span>
+            new ol.Collection<span class="signature">(<span class="optional">opt_array</span>, <span class="optional">opt_options</span>)</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 29
+            src/ol/collection.js, line 31
         </div>
         
         
@@ -15790,6 +15794,74 @@ Collection as a whole.</p></div>
             <td  class="description last">
                 
                 <p>Array.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            
+            
+            <td colspan=2 class="description last">
+                
+                <p>Collection options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>unique</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Disallow the same item from being added to the collection twice.  Default is
+false.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 	
 	
@@ -16069,7 +16141,7 @@ Collection as a whole.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 49
+            src/ol/collection.js, line 65
         </div>
         
         
@@ -16280,7 +16352,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 63
+            src/ol/collection.js, line 79
         </div>
         
         
@@ -16414,7 +16486,7 @@ This collection.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 81
+            src/ol/collection.js, line 97
         </div>
         
         
@@ -16700,7 +16772,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 94
+            src/ol/collection.js, line 110
         </div>
         
         
@@ -16877,7 +16949,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 116
+            src/ol/collection.js, line 132
         </div>
         
         
@@ -17140,7 +17212,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 127
+            src/ol/collection.js, line 143
         </div>
         
         
@@ -17289,7 +17361,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 105
+            src/ol/collection.js, line 121
         </div>
         
         
@@ -17802,7 +17874,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 141
+            src/ol/collection.js, line 160
         </div>
         
         
@@ -17889,7 +17961,7 @@ Element.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 152
+            src/ol/collection.js, line 171
         </div>
         
         
@@ -18022,7 +18094,7 @@ New length of the collection.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 165
+            src/ol/collection.js, line 187
         </div>
         
         
@@ -18155,7 +18227,7 @@ The removed element or undefined if none found.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 184
+            src/ol/collection.js, line 206
         </div>
         
         
@@ -18465,7 +18537,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/collection.js, line 200
+            src/ol/collection.js, line 222
         </div>
         
         
