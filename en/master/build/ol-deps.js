@@ -242,7 +242,7 @@ goog.addDependency('../../../ol/ol/renderer/canvas/layer.js', ['ol.renderer.canv
 goog.addDependency('../../../ol/ol/renderer/canvas/map.js', ['ol.renderer.canvas.Map'], ['ol', 'ol.array', 'ol.css', 'ol.dom', 'ol.layer.Layer', 'ol.render.Event', 'ol.render.EventType', 'ol.render.canvas', 'ol.render.canvas.Immediate', 'ol.renderer.Map', 'ol.renderer.Type', 'ol.source.State', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/renderer/canvas/tilelayer.js', ['ol.renderer.canvas.TileLayer'], ['ol', 'ol.TileRange', 'ol.TileState', 'ol.ViewHint', 'ol.array', 'ol.dom', 'ol.extent', 'ol.renderer.canvas.IntermediateCanvas', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/renderer/canvas/vectorlayer.js', ['ol.renderer.canvas.VectorLayer'], ['ol', 'ol.ViewHint', 'ol.dom', 'ol.extent', 'ol.render.EventType', 'ol.render.canvas', 'ol.render.canvas.ReplayGroup', 'ol.renderer.canvas.Layer', 'ol.renderer.vector'], false);
-goog.addDependency('../../../ol/ol/renderer/canvas/vectortilelayer.js', ['ol.renderer.canvas.VectorTileLayer'], ['ol', 'ol.dom', 'ol.extent', 'ol.layer.VectorTileRenderType', 'ol.proj', 'ol.proj.Units', 'ol.render.ReplayType', 'ol.render.canvas', 'ol.render.canvas.ReplayGroup', 'ol.render.replay', 'ol.renderer.canvas.TileLayer', 'ol.renderer.vector', 'ol.size', 'ol.transform'], false);
+goog.addDependency('../../../ol/ol/renderer/canvas/vectortilelayer.js', ['ol.renderer.canvas.VectorTileLayer'], ['ol', 'ol.TileState', 'ol.dom', 'ol.extent', 'ol.layer.VectorTileRenderType', 'ol.proj', 'ol.proj.Units', 'ol.render.ReplayType', 'ol.render.canvas', 'ol.render.canvas.ReplayGroup', 'ol.render.replay', 'ol.renderer.canvas.TileLayer', 'ol.renderer.vector', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/renderer/layer.js', ['ol.renderer.Layer'], ['ol', 'ol.ImageState', 'ol.Observable', 'ol.TileState', 'ol.asserts', 'ol.events', 'ol.events.EventType', 'ol.functions', 'ol.source.State'], false);
 goog.addDependency('../../../ol/ol/renderer/map.js', ['ol.renderer.Map'], ['ol', 'ol.Disposable', 'ol.events', 'ol.events.EventType', 'ol.extent', 'ol.functions', 'ol.layer.Layer', 'ol.style', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/renderer/type.js', ['ol.renderer.Type'], [], false);
@@ -288,7 +288,7 @@ goog.addDependency('../../../ol/ol/source/tilewms.js', ['ol.source.TileWMS'], ['
 goog.addDependency('../../../ol/ol/source/urltile.js', ['ol.source.UrlTile'], ['ol', 'ol.TileState', 'ol.TileUrlFunction', 'ol.source.Tile', 'ol.source.TileEventType'], false);
 goog.addDependency('../../../ol/ol/source/vector.js', ['ol.source.Vector'], ['ol', 'ol.Collection', 'ol.CollectionEventType', 'ol.ObjectEventType', 'ol.array', 'ol.asserts', 'ol.events', 'ol.events.Event', 'ol.events.EventType', 'ol.extent', 'ol.featureloader', 'ol.functions', 'ol.loadingstrategy', 'ol.obj', 'ol.source.Source', 'ol.source.State', 'ol.source.VectorEventType', 'ol.structs.RBush'], false);
 goog.addDependency('../../../ol/ol/source/vectoreventtype.js', ['ol.source.VectorEventType'], [], false);
-goog.addDependency('../../../ol/ol/source/vectortile.js', ['ol.source.VectorTile'], ['ol', 'ol.TileState', 'ol.VectorTile', 'ol.events', 'ol.events.EventType', 'ol.size', 'ol.source.UrlTile'], false);
+goog.addDependency('../../../ol/ol/source/vectortile.js', ['ol.source.VectorTile'], ['ol', 'ol.TileState', 'ol.VectorImageTile', 'ol.VectorTile', 'ol.events', 'ol.events.EventType', 'ol.proj', 'ol.size', 'ol.source.UrlTile', 'ol.tilegrid'], false);
 goog.addDependency('../../../ol/ol/source/wmsservertype.js', ['ol.source.WMSServerType'], [], false);
 goog.addDependency('../../../ol/ol/source/wmts.js', ['ol.source.WMTS'], ['ol', 'ol.TileUrlFunction', 'ol.array', 'ol.extent', 'ol.obj', 'ol.proj', 'ol.source.TileImage', 'ol.source.WMTSRequestEncoding', 'ol.tilegrid.WMTS', 'ol.uri'], false);
 goog.addDependency('../../../ol/ol/source/wmtsrequestencoding.js', ['ol.source.WMTSRequestEncoding'], [], false);
@@ -330,7 +330,8 @@ goog.addDependency('../../../ol/ol/tileurlfunction.js', ['ol.TileUrlFunction'], 
 goog.addDependency('../../../ol/ol/transform.js', ['ol.transform'], ['ol.asserts'], false);
 goog.addDependency('../../../ol/ol/uri.js', ['ol.uri'], [], false);
 goog.addDependency('../../../ol/ol/vec/mat4.js', ['ol.vec.Mat4'], [], false);
-goog.addDependency('../../../ol/ol/vectortile.js', ['ol.VectorTile'], ['ol', 'ol.Tile', 'ol.TileState', 'ol.dom', 'ol.featureloader'], false);
+goog.addDependency('../../../ol/ol/vectorimagetile.js', ['ol.VectorImageTile'], ['ol', 'ol.Tile', 'ol.TileState', 'ol.array', 'ol.dom', 'ol.events', 'ol.events.EventType', 'ol.extent', 'ol.featureloader'], false);
+goog.addDependency('../../../ol/ol/vectortile.js', ['ol.VectorTile'], ['ol', 'ol.Tile', 'ol.TileState'], false);
 goog.addDependency('../../../ol/ol/view.js', ['ol.View'], ['ol', 'ol.CenterConstraint', 'ol.Constraints', 'ol.Object', 'ol.ResolutionConstraint', 'ol.RotationConstraint', 'ol.ViewHint', 'ol.ViewProperty', 'ol.array', 'ol.asserts', 'ol.coordinate', 'ol.easing', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.Polygon', 'ol.geom.SimpleGeometry', 'ol.obj', 'ol.proj', 'ol.proj.Units'], false);
 goog.addDependency('../../../ol/ol/viewhint.js', ['ol.ViewHint'], [], false);
 goog.addDependency('../../../ol/ol/viewproperty.js', ['ol.ViewProperty'], [], false);

@@ -276,7 +276,13 @@ var select &#x3D; new ol.interaction.Select({
 
 var modify &#x3D; new ol.interaction.Modify({
   features: select.getFeatures(),
-  style: overlayStyle
+  style: overlayStyle,
+  insertVertexCondition: function() {
+    // prevent new vertices to be added to the polygons
+    return !this.features_.getArray().every(function(feature) {
+      return feature.getGeometry().getType().match(/Polygon/);
+    });
+  }
 });
 
 var map &#x3D; new ol.Map({
@@ -525,7 +531,13 @@ var map &#x3D; new ol.Map({
 
       var modify &#x3D; new ol.interaction.Modify({
         features: select.getFeatures(),
-        style: overlayStyle
+        style: overlayStyle,
+        insertVertexCondition: function() {
+          // prevent new vertices to be added to the polygons
+          return !this.features_.getArray().every(function(feature) {
+            return feature.getGeometry().getType().match(/Polygon/);
+          });
+        }
       });
 
       var map &#x3D; new ol.Map({
