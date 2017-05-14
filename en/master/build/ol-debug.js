@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.1.1-94-g9b9ac03
+// Version: v4.1.1-106-gc611891
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -10210,111 +10210,6 @@ ol.MapBrowserEvent.prototype.stopPropagation = function() {
   this.originalEvent.stopPropagation();
 };
 
-goog.provide('ol.MapBrowserEventType');
-
-goog.require('ol.events.EventType');
-
-
-/**
- * Constants for event names.
- * @enum {string}
- */
-ol.MapBrowserEventType = {
-
-  /**
-   * A true single click with no dragging and no double click. Note that this
-   * event is delayed by 250 ms to ensure that it is not a double click.
-   * @event ol.MapBrowserEvent#singleclick
-   * @api
-   */
-  SINGLECLICK: 'singleclick',
-
-  /**
-   * A click with no dragging. A double click will fire two of this.
-   * @event ol.MapBrowserEvent#click
-   * @api
-   */
-  CLICK: ol.events.EventType.CLICK,
-
-  /**
-   * A true double click, with no dragging.
-   * @event ol.MapBrowserEvent#dblclick
-   * @api
-   */
-  DBLCLICK: ol.events.EventType.DBLCLICK,
-
-  /**
-   * Triggered when a pointer is dragged.
-   * @event ol.MapBrowserEvent#pointerdrag
-   * @api
-   */
-  POINTERDRAG: 'pointerdrag',
-
-  /**
-   * Triggered when a pointer is moved. Note that on touch devices this is
-   * triggered when the map is panned, so is not the same as mousemove.
-   * @event ol.MapBrowserEvent#pointermove
-   * @api
-   */
-  POINTERMOVE: 'pointermove',
-
-  POINTERDOWN: 'pointerdown',
-  POINTERUP: 'pointerup',
-  POINTEROVER: 'pointerover',
-  POINTEROUT: 'pointerout',
-  POINTERENTER: 'pointerenter',
-  POINTERLEAVE: 'pointerleave',
-  POINTERCANCEL: 'pointercancel'
-};
-
-goog.provide('ol.MapBrowserPointerEvent');
-
-goog.require('ol');
-goog.require('ol.MapBrowserEvent');
-
-
-/**
- * @constructor
- * @extends {ol.MapBrowserEvent}
- * @param {string} type Event type.
- * @param {ol.Map} map Map.
- * @param {ol.pointer.PointerEvent} pointerEvent Pointer event.
- * @param {boolean=} opt_dragging Is the map currently being dragged?
- * @param {?olx.FrameState=} opt_frameState Frame state.
- */
-ol.MapBrowserPointerEvent = function(type, map, pointerEvent, opt_dragging,
-    opt_frameState) {
-
-  ol.MapBrowserEvent.call(this, type, map, pointerEvent.originalEvent, opt_dragging,
-      opt_frameState);
-
-  /**
-   * @const
-   * @type {ol.pointer.PointerEvent}
-   */
-  this.pointerEvent = pointerEvent;
-
-};
-ol.inherits(ol.MapBrowserPointerEvent, ol.MapBrowserEvent);
-
-goog.provide('ol.pointer.EventType');
-
-
-/**
- * Constants for event names.
- * @enum {string}
- */
-ol.pointer.EventType = {
-  POINTERMOVE: 'pointermove',
-  POINTERDOWN: 'pointerdown',
-  POINTERUP: 'pointerup',
-  POINTEROVER: 'pointerover',
-  POINTEROUT: 'pointerout',
-  POINTERENTER: 'pointerenter',
-  POINTERLEAVE: 'pointerleave',
-  POINTERCANCEL: 'pointercancel'
-};
-
 goog.provide('ol.webgl');
 
 goog.require('ol');
@@ -10772,6 +10667,111 @@ ol.has.WEBGL;
     ol.WEBGL_MAX_TEXTURE_SIZE = textureSize;
   }
 })();
+
+goog.provide('ol.MapBrowserEventType');
+
+goog.require('ol.events.EventType');
+
+
+/**
+ * Constants for event names.
+ * @enum {string}
+ */
+ol.MapBrowserEventType = {
+
+  /**
+   * A true single click with no dragging and no double click. Note that this
+   * event is delayed by 250 ms to ensure that it is not a double click.
+   * @event ol.MapBrowserEvent#singleclick
+   * @api
+   */
+  SINGLECLICK: 'singleclick',
+
+  /**
+   * A click with no dragging. A double click will fire two of this.
+   * @event ol.MapBrowserEvent#click
+   * @api
+   */
+  CLICK: ol.events.EventType.CLICK,
+
+  /**
+   * A true double click, with no dragging.
+   * @event ol.MapBrowserEvent#dblclick
+   * @api
+   */
+  DBLCLICK: ol.events.EventType.DBLCLICK,
+
+  /**
+   * Triggered when a pointer is dragged.
+   * @event ol.MapBrowserEvent#pointerdrag
+   * @api
+   */
+  POINTERDRAG: 'pointerdrag',
+
+  /**
+   * Triggered when a pointer is moved. Note that on touch devices this is
+   * triggered when the map is panned, so is not the same as mousemove.
+   * @event ol.MapBrowserEvent#pointermove
+   * @api
+   */
+  POINTERMOVE: 'pointermove',
+
+  POINTERDOWN: 'pointerdown',
+  POINTERUP: 'pointerup',
+  POINTEROVER: 'pointerover',
+  POINTEROUT: 'pointerout',
+  POINTERENTER: 'pointerenter',
+  POINTERLEAVE: 'pointerleave',
+  POINTERCANCEL: 'pointercancel'
+};
+
+goog.provide('ol.MapBrowserPointerEvent');
+
+goog.require('ol');
+goog.require('ol.MapBrowserEvent');
+
+
+/**
+ * @constructor
+ * @extends {ol.MapBrowserEvent}
+ * @param {string} type Event type.
+ * @param {ol.Map} map Map.
+ * @param {ol.pointer.PointerEvent} pointerEvent Pointer event.
+ * @param {boolean=} opt_dragging Is the map currently being dragged?
+ * @param {?olx.FrameState=} opt_frameState Frame state.
+ */
+ol.MapBrowserPointerEvent = function(type, map, pointerEvent, opt_dragging,
+    opt_frameState) {
+
+  ol.MapBrowserEvent.call(this, type, map, pointerEvent.originalEvent, opt_dragging,
+      opt_frameState);
+
+  /**
+   * @const
+   * @type {ol.pointer.PointerEvent}
+   */
+  this.pointerEvent = pointerEvent;
+
+};
+ol.inherits(ol.MapBrowserPointerEvent, ol.MapBrowserEvent);
+
+goog.provide('ol.pointer.EventType');
+
+
+/**
+ * Constants for event names.
+ * @enum {string}
+ */
+ol.pointer.EventType = {
+  POINTERMOVE: 'pointermove',
+  POINTERDOWN: 'pointerdown',
+  POINTERUP: 'pointerup',
+  POINTEROVER: 'pointerover',
+  POINTEROUT: 'pointerout',
+  POINTERENTER: 'pointerenter',
+  POINTERLEAVE: 'pointerleave',
+  POINTERCANCEL: 'pointercancel'
+};
 
 goog.provide('ol.pointer.EventSource');
 
@@ -12579,6 +12579,7 @@ ol.pointer.PointerEventHandler.CLONE_PROPS = [
 goog.provide('ol.MapBrowserEventHandler');
 
 goog.require('ol');
+goog.require('ol.has');
 goog.require('ol.MapBrowserEventType');
 goog.require('ol.MapBrowserPointerEvent');
 goog.require('ol.events');
@@ -12620,6 +12621,12 @@ ol.MapBrowserEventHandler = function(map) {
    * @private
    */
   this.dragListenerKeys_ = [];
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.moveTolerance_ = ol.has.DEVICE_PIXEL_RATIO;
 
   /**
    * The most recent "down" type event (or null if none have occurred).
@@ -12819,11 +12826,9 @@ ol.MapBrowserEventHandler.prototype.handlePointerDown_ = function(pointerEvent) 
  * @private
  */
 ol.MapBrowserEventHandler.prototype.handlePointerMove_ = function(pointerEvent) {
-  // Fix IE10 on windows Surface : When you tap the tablet, it triggers
-  // multiple pointermove events between pointerdown and pointerup with
-  // the exact same coordinates of the pointerdown event. To avoid a
-  // 'false' touchmove event to be dispatched , we test if the pointer
-  // effectively moved.
+  // Between pointerdown and pointerup, pointermove events are triggered.
+  // To avoid a 'false' touchmove event to be dispatched, we test if the pointer
+  // moved a significant distance.
   if (this.isMoving_(pointerEvent)) {
     this.dragging_ = true;
     var newEvent = new ol.MapBrowserPointerEvent(
@@ -12859,8 +12864,8 @@ ol.MapBrowserEventHandler.prototype.relayEvent_ = function(pointerEvent) {
  * @private
  */
 ol.MapBrowserEventHandler.prototype.isMoving_ = function(pointerEvent) {
-  return pointerEvent.clientX != this.down_.clientX ||
-      pointerEvent.clientY != this.down_.clientY;
+  return Math.abs(pointerEvent.clientX - this.down_.clientX) > this.moveTolerance_ ||
+      Math.abs(pointerEvent.clientY - this.down_.clientY) > this.moveTolerance_;
 };
 
 
@@ -39177,6 +39182,40 @@ ol.format.filter.Comparison = function(tagName, propertyName) {
 };
 ol.inherits(ol.format.filter.Comparison, ol.format.filter.Filter);
 
+goog.provide('ol.format.filter.During');
+
+goog.require('ol');
+goog.require('ol.format.filter.Comparison');
+
+
+/**
+ * @classdesc
+ * Represents a `<During>` comparison operator.
+ *
+ * @constructor
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!string} begin The begin date in ISO-8601 format.
+ * @param {!string} end The end date in ISO-8601 format.
+ * @extends {ol.format.filter.Comparison}
+ * @api
+ */
+ol.format.filter.During = function(propertyName, begin, end) {
+  ol.format.filter.Comparison.call(this, 'During', propertyName);
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.begin = begin;
+
+  /**
+   * @public
+   * @type {!string}
+   */
+  this.end = end;
+};
+ol.inherits(ol.format.filter.During, ol.format.filter.Comparison);
+
 goog.provide('ol.format.filter.ComparisonBinary');
 
 goog.require('ol');
@@ -39604,6 +39643,7 @@ goog.provide('ol.format.filter');
 
 goog.require('ol.format.filter.And');
 goog.require('ol.format.filter.Bbox');
+goog.require('ol.format.filter.During');
 goog.require('ol.format.filter.EqualTo');
 goog.require('ol.format.filter.GreaterThan');
 goog.require('ol.format.filter.GreaterThanOrEqualTo');
@@ -39831,6 +39871,20 @@ ol.format.filter.like = function(propertyName, pattern,
     opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase) {
   return new ol.format.filter.IsLike(propertyName, pattern,
     opt_wildCard, opt_singleChar, opt_escapeChar, opt_matchCase);
+};
+
+
+/**
+ * Create a `<During>` temporal operator.
+ *
+ * @param {!string} propertyName Name of the context property to compare.
+ * @param {!string} begin The begin date in ISO-8601 format.
+ * @param {!string} end The end date in ISO-8601 format.
+ * @returns {!ol.format.filter.During} `<During>` operator.
+ * @api
+ */
+ol.format.filter.during = function(propertyName, begin, end) {
+  return new ol.format.filter.During(propertyName, begin, end);
 };
 
 goog.provide('ol.geom.GeometryCollection');
@@ -40490,7 +40544,8 @@ ol.format.GeoJSON.GEOMETRY_WRITERS_ = {
 /**
  * Read a feature from a GeoJSON Feature source.  Only works for Feature or
  * geometry types.  Use {@link ol.format.GeoJSON#readFeatures} to read
- * FeatureCollection source.
+ * FeatureCollection source. If feature at source has an id, it will be used
+ * as Feature id by calling {@link ol.Feature#setId} internally.
  *
  * @function
  * @param {Document|Node|Object|string} source Source.
@@ -50330,13 +50385,20 @@ goog.require('ol.geom.GeometryType');
  *     to be right-handed for polygons.
  * @param {Array.<number>|Array.<Array.<number>>} ends Ends or Endss.
  * @param {Object.<string, *>} properties Properties.
+ * @param {number|string|undefined} id Feature id.
  */
-ol.render.Feature = function(type, flatCoordinates, ends, properties) {
+ol.render.Feature = function(type, flatCoordinates, ends, properties, id) {
   /**
    * @private
    * @type {ol.Extent|undefined}
    */
   this.extent_;
+
+  /**
+   * @private
+   * @type {number|string|undefined}
+   */
+  this.id_ = id;
 
   /**
    * @private
@@ -50399,6 +50461,16 @@ ol.render.Feature.prototype.getExtent = function() {
   return this.extent_;
 };
 
+/**
+ * Get the feature identifier.  This is a stable identifier for the feature and
+ * is set when reading data from a remote source.
+ * @return {number|string|undefined} Id.
+ * @api
+ */
+ol.render.Feature.prototype.getId = function() {
+  return this.id_;
+};
+
 
 /**
  * @return {Array.<number>} Flat coordinates.
@@ -50418,7 +50490,6 @@ ol.render.Feature.prototype.getFlatCoordinates =
 /**
  * Get the feature for working with its geometry.
  * @return {ol.render.Feature} Feature.
- * @api
  */
 ol.render.Feature.prototype.getGeometry = function() {
   return this;
@@ -50512,9 +50583,9 @@ ol.format.MVT = function(opt_options) {
 
   /**
    * @private
-   * @type {function((ol.geom.Geometry|Object.<string, *>)=)|
+   * @type {function((ol.geom.Geometry|Object.<string,*>)=)|
    *     function(ol.geom.GeometryType,Array.<number>,
-   *         (Array.<number>|Array.<Array.<number>>),Object.<string, *>)}
+   *         (Array.<number>|Array.<Array.<number>>),Object.<string,*>,number)}
    */
   this.featureClass_ = options.featureClass ?
       options.featureClass : ol.render.Feature;
@@ -50605,8 +50676,9 @@ ol.format.MVT.prototype.readRenderFeature_ = function(rawFeature, layer) {
 
   var values = rawFeature.properties;
   values[this.layerName_] = layer;
+  var id = rawFeature.id;
 
-  return new this.featureClass_(geometryType, flatCoordinates, ends, values);
+  return new this.featureClass_(geometryType, flatCoordinates, ends, values, id);
 };
 
 
@@ -52443,6 +52515,13 @@ ol.format.WFS.WFSNS = 'http://www.opengis.net/wfs';
 
 /**
  * @const
+ * @type {string}
+ */
+ol.format.WFS.FESNS = 'http://www.opengis.net/fes';
+
+
+/**
+ * @const
  * @type {Object.<string, string>}
  */
 ol.format.WFS.SCHEMA_LOCATIONS = {
@@ -52999,6 +53078,32 @@ ol.format.WFS.writeWithinFilter_ = function(node, filter, objectStack) {
 
 /**
  * @param {Node} node Node.
+ * @param {ol.format.filter.During} filter Filter.
+ * @param {Array.<*>} objectStack Node stack.
+ * @private
+ */
+ol.format.WFS.writeDuringFilter_ = function(node, filter, objectStack) {
+
+  var valueReference = ol.xml.createElementNS(ol.format.WFS.FESNS, 'ValueReference');
+  ol.format.XSD.writeStringTextNode(valueReference, filter.propertyName);
+  node.appendChild(valueReference);
+
+  var timePeriod = ol.xml.createElementNS(ol.format.GMLBase.GMLNS, 'TimePeriod');
+
+  node.appendChild(timePeriod);
+
+  var begin = ol.xml.createElementNS(ol.format.GMLBase.GMLNS, 'begin');
+  timePeriod.appendChild(begin);
+  ol.format.WFS.writeTimeInstant_(begin, filter.begin);
+
+  var end = ol.xml.createElementNS(ol.format.GMLBase.GMLNS, 'end');
+  timePeriod.appendChild(end);
+  ol.format.WFS.writeTimeInstant_(end, filter.end);
+};
+
+
+/**
+ * @param {Node} node Node.
  * @param {ol.format.filter.LogicalNary} filter Filter.
  * @param {Array.<*>} objectStack Node stack.
  * @private
@@ -53129,6 +53234,21 @@ ol.format.WFS.writeOgcLiteral_ = function(node, value) {
 
 
 /**
+ * @param {Node} node Node.
+ * @param {string} time PropertyName value.
+ * @private
+ */
+ol.format.WFS.writeTimeInstant_ = function(node, time) {
+  var timeInstant = ol.xml.createElementNS(ol.format.GMLBase.GMLNS, 'TimeInstant');
+  node.appendChild(timeInstant);
+
+  var timePosition = ol.xml.createElementNS(ol.format.GMLBase.GMLNS, 'timePosition');
+  timeInstant.appendChild(timePosition);
+  ol.format.XSD.writeStringTextNode(timePosition, time);
+};
+
+
+/**
  * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
@@ -53137,6 +53257,7 @@ ol.format.WFS.GETFEATURE_SERIALIZERS_ = {
     'Query': ol.xml.makeChildAppender(ol.format.WFS.writeQuery_)
   },
   'http://www.opengis.net/ogc': {
+    'During': ol.xml.makeChildAppender(ol.format.WFS.writeDuringFilter_),
     'And': ol.xml.makeChildAppender(ol.format.WFS.writeLogicalFilter_),
     'Or': ol.xml.makeChildAppender(ol.format.WFS.writeLogicalFilter_),
     'Not': ol.xml.makeChildAppender(ol.format.WFS.writeNotFilter_),
@@ -63036,7 +63157,9 @@ ol.inherits(ol.source.Vector, ol.source.Source);
 /**
  * Add a single feature to the source.  If you want to add a batch of features
  * at once, call {@link ol.source.Vector#addFeatures source.addFeatures()}
- * instead.
+ * instead. A feature will not be added to the source if feature with
+ * the same id is already there. The reason for this behavior is to avoid
+ * feature duplication when using bbox or tile loading strategies.
  * @param {ol.Feature} feature Feature to add.
  * @api
  */
@@ -76992,12 +77115,6 @@ ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
 
   /**
    * @private
-   * @type {ol.format.Feature}
-   */
-  this.format_ = format;
-
-  /**
-   * @private
    * @type {ol.FeatureLoader}
    */
   this.loader_;
@@ -77120,16 +77237,6 @@ ol.VectorImageTile.prototype.getImage = function() {
 
 
 /**
- * Get the feature format assigned for reading this tile's features.
- * @return {ol.format.Feature} Feature format.
- * @api
- */
-ol.VectorImageTile.prototype.getFormat = function() {
-  return this.format_;
-};
-
-
-/**
  * @return {ol.TileReplayState} The replay state.
  */
 ol.VectorImageTile.prototype.getReplayState = function() {
@@ -77204,16 +77311,6 @@ ol.VectorImageTile.prototype.load = function() {
           (errors ? ol.TileState.ERROR : ol.TileState.EMPTY));
     }.bind(this), 0);
   }
-};
-
-
-/**
- * @param {Array.<ol.Feature>} features Features.
- * @api
- */
-ol.VectorImageTile.prototype.setFeatures = function(features) {
-  this.features_ = features;
-  this.setState(ol.TileState.LOADED);
 };
 
 
@@ -78917,6 +79014,7 @@ goog.require('ol.format.filter.And');
 goog.require('ol.format.filter.Bbox');
 goog.require('ol.format.filter.Comparison');
 goog.require('ol.format.filter.ComparisonBinary');
+goog.require('ol.format.filter.During');
 goog.require('ol.format.filter.EqualTo');
 goog.require('ol.format.filter.Filter');
 goog.require('ol.format.filter.GreaterThan');
@@ -80008,16 +80106,6 @@ goog.exportProperty(
     ol.VectorImageTile.prototype,
     'getImage',
     ol.VectorImageTile.prototype.getImage);
-
-goog.exportProperty(
-    ol.VectorImageTile.prototype,
-    'getFormat',
-    ol.VectorImageTile.prototype.getFormat);
-
-goog.exportProperty(
-    ol.VectorImageTile.prototype,
-    'setFeatures',
-    ol.VectorImageTile.prototype.setFeatures);
 
 goog.exportProperty(
     ol.VectorTile.prototype,
@@ -81331,8 +81419,8 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.render.Feature.prototype,
-    'getGeometry',
-    ol.render.Feature.prototype.getGeometry);
+    'getId',
+    ol.render.Feature.prototype.getId);
 
 goog.exportProperty(
     ol.render.Feature.prototype,
@@ -82635,6 +82723,11 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportSymbol(
+    'ol.format.filter.during',
+    ol.format.filter.during,
+    OPENLAYERS);
+
+goog.exportSymbol(
     'ol.format.GeoJSON',
     ol.format.GeoJSON,
     OPENLAYERS);
@@ -83057,6 +83150,11 @@ goog.exportSymbol(
 goog.exportSymbol(
     'ol.format.filter.ComparisonBinary',
     ol.format.filter.ComparisonBinary,
+    OPENLAYERS);
+
+goog.exportSymbol(
+    'ol.format.filter.During',
+    ol.format.filter.During,
     OPENLAYERS);
 
 goog.exportSymbol(
@@ -92253,7 +92351,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.1.1-94-g9b9ac03';
+ol.VERSION = 'v4.1.1-106-gc611891';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

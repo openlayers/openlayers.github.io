@@ -1729,10 +1729,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ol.VectorImageTile#getFormat" class="">
-                    <a href="ol.VectorImageTile.html#getFormat">getFormat</a>
-                </li>
-            
                 <li data-name="ol.VectorImageTile#getImage" class="">
                     <a href="ol.VectorImageTile.html#getImage">getImage</a>
                 </li>
@@ -1743,10 +1739,6 @@
             
                 <li data-name="ol.VectorImageTile#load" class="">
                     <a href="ol.VectorImageTile.html#load">load</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#setFeatures" class="">
-                    <a href="ol.VectorImageTile.html#setFeatures">setFeatures</a>
                 </li>
             
             </ul>
@@ -4303,6 +4295,10 @@
                     <a href="ol.format.filter.html#.between">between</a>
                 </li>
             
+                <li data-name="ol.format.filter.during" class="">
+                    <a href="ol.format.filter.html#.during">during</a>
+                </li>
+            
                 <li data-name="ol.format.filter.equalTo" class="">
                     <a href="ol.format.filter.html#.equalTo">equalTo</a>
                 </li>
@@ -4417,6 +4413,25 @@
         <li class="item" data-name="ol.format.filter.ComparisonBinary">
             <span class="title">
                 <a href="ol.format.filter.ComparisonBinary.html">ol.format.filter.ComparisonBinary</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.filter.During">
+            <span class="title">
+                <a href="ol.format.filter.During.html">ol.format.filter.During</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -10642,8 +10657,8 @@
                     <a href="ol.render.Feature.html#getExtent">getExtent</a>
                 </li>
             
-                <li data-name="ol.render.Feature#getGeometry" class="">
-                    <a href="ol.render.Feature.html#getGeometry">getGeometry</a>
+                <li data-name="ol.render.Feature#getId" class="">
+                    <a href="ol.render.Feature.html#getId">getId</a>
                 </li>
             
                 <li data-name="ol.render.Feature#getProperties" class="">
@@ -15860,7 +15875,7 @@ API is limited to getting the type and extent of the geometry.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/render/feature.js, line 59
+            src/ol/render/feature.js, line 66
         </div>
         
         
@@ -15993,7 +16008,7 @@ Value for the requested key.
         </h4>
         
         <div class="tag-source">
-            src/ol/render/feature.js, line 77
+            src/ol/render/feature.js, line 84
         </div>
         
         
@@ -16069,17 +16084,17 @@ Extent.
 <dt class="">
     <div class="nameContainer">
         
-        <div class="anchor" id="getGeometry">
+        <div class="anchor" id="getId">
         </div>
         <h4 class="name">
-            getGeometry<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.render.Feature.html">ol.render.Feature</a>}</span>
+            getId<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number|string|undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/render/feature.js, line 109
+            src/ol/render/feature.js, line 101
         </div>
         
         
@@ -16090,7 +16105,8 @@ Extent.
 
     
     <div class="description">
-        <p>Get the feature for working with its geometry.</p>
+        <p>Get the feature identifier.  This is a stable identifier for the feature and
+is set when reading data from a remote source.</p>
     </div>
     
 
@@ -16142,7 +16158,7 @@ Extent.
 
 
 <h5>Returns:</h5>
-Feature.
+Id.
 <br />
 
     
@@ -16165,7 +16181,7 @@ Feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/render/feature.js, line 119
+            src/ol/render/feature.js, line 135
         </div>
         
         
@@ -16251,7 +16267,7 @@ Feature properties.
         </h4>
         
         <div class="tag-source">
-            src/ol/render/feature.js, line 151
+            src/ol/render/feature.js, line 167
         </div>
         
         

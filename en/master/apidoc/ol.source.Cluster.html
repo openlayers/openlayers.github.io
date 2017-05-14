@@ -1729,10 +1729,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ol.VectorImageTile#getFormat" class="">
-                    <a href="ol.VectorImageTile.html#getFormat">getFormat</a>
-                </li>
-            
                 <li data-name="ol.VectorImageTile#getImage" class="">
                     <a href="ol.VectorImageTile.html#getImage">getImage</a>
                 </li>
@@ -1743,10 +1739,6 @@
             
                 <li data-name="ol.VectorImageTile#load" class="">
                     <a href="ol.VectorImageTile.html#load">load</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#setFeatures" class="">
-                    <a href="ol.VectorImageTile.html#setFeatures">setFeatures</a>
                 </li>
             
             </ul>
@@ -4303,6 +4295,10 @@
                     <a href="ol.format.filter.html#.between">between</a>
                 </li>
             
+                <li data-name="ol.format.filter.during" class="">
+                    <a href="ol.format.filter.html#.during">during</a>
+                </li>
+            
                 <li data-name="ol.format.filter.equalTo" class="">
                     <a href="ol.format.filter.html#.equalTo">equalTo</a>
                 </li>
@@ -4417,6 +4413,25 @@
         <li class="item" data-name="ol.format.filter.ComparisonBinary">
             <span class="title">
                 <a href="ol.format.filter.ComparisonBinary.html">ol.format.filter.ComparisonBinary</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.filter.During">
+            <span class="title">
+                <a href="ol.format.filter.During.html">ol.format.filter.During</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -10642,8 +10657,8 @@
                     <a href="ol.render.Feature.html#getExtent">getExtent</a>
                 </li>
             
-                <li data-name="ol.render.Feature#getGeometry" class="">
-                    <a href="ol.render.Feature.html#getGeometry">getGeometry</a>
+                <li data-name="ol.render.Feature#getId" class="">
+                    <a href="ol.render.Feature.html#getId">getId</a>
                 </li>
             
                 <li data-name="ol.render.Feature#getProperties" class="">
@@ -16303,7 +16318,7 @@ See <a href="ol.source.Vector.html#clear"><code>source.clear()</code></a> for ex
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 164
+            src/ol/source/vector.js, line 166
         </div>
         
         
@@ -16316,7 +16331,9 @@ See <a href="ol.source.Vector.html#clear"><code>source.clear()</code></a> for ex
     <div class="description">
         <p>Add a single feature to the source.  If you want to add a batch of features
 at once, call <a href="ol.source.Vector.html#addFeatures"><code>source.addFeatures()</code></a>
-instead.</p>
+instead. A feature will not be added to the source if feature with
+the same id is already there. The reason for this behavior is to avoid
+feature duplication when using bbox or tile loading strategies.</p>
     </div>
     
 
@@ -16431,7 +16448,7 @@ instead.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 244
+            src/ol/source/vector.js, line 246
         </div>
         
         
@@ -16636,7 +16653,7 @@ instead.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 342
+            src/ol/source/vector.js, line 344
         </div>
         
         
@@ -16896,7 +16913,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 389
+            src/ol/source/vector.js, line 391
         </div>
         
         
@@ -17059,7 +17076,7 @@ The return value from the last call to the callback.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 445
+            src/ol/source/vector.js, line 447
         </div>
         
         
@@ -17252,7 +17269,7 @@ The return value from the last call to the callback.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 471
+            src/ol/source/vector.js, line 473
         </div>
         
         
@@ -17665,7 +17682,7 @@ Attributions.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 565
+            src/ol/source/vector.js, line 567
         </div>
         
         
@@ -17915,7 +17932,7 @@ Distance.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 618
+            src/ol/source/vector.js, line 620
         </div>
         
         
@@ -18053,7 +18070,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 632
+            src/ol/source/vector.js, line 634
         </div>
         
         
@@ -18193,7 +18210,7 @@ The feature (or <code>null</code> if not found).
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 507
+            src/ol/source/vector.js, line 509
         </div>
         
         
@@ -18281,7 +18298,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 528
+            src/ol/source/vector.js, line 530
         </div>
         
         
@@ -18416,7 +18433,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 497
+            src/ol/source/vector.js, line 499
         </div>
         
         
@@ -18506,7 +18523,7 @@ The collection of features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 548
+            src/ol/source/vector.js, line 550
         </div>
         
         
@@ -18645,7 +18662,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 644
+            src/ol/source/vector.js, line 646
         </div>
         
         
@@ -19348,7 +19365,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 669
+            src/ol/source/vector.js, line 671
         </div>
         
         
@@ -19895,7 +19912,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vector.js, line 770
+            src/ol/source/vector.js, line 772
         </div>
         
         

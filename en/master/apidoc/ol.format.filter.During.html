@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.1.1 API - Namespace: tilegrid</title>
+    <title>OpenLayers v4.1.1 API - Class: During</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -15753,7 +15753,7 @@
 </div>
 
     <div class="main">
-        <h1 class="page-title" data-filename="olx.tilegrid.html">Namespace: tilegrid</h1>
+        <h1 class="page-title" data-filename="ol.format.filter.During.html">Class: During</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           This documentation is for OpenLayers v<span id="package-version">4.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
@@ -15766,8 +15766,10 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="olx.html">olx</a>.</span>tilegrid
+        <span class="ancestors"><a href="ol.html">ol</a><a href="ol.format.html">.format</a><a href="ol.format.filter.html">.filter</a>.</span>During
     </h2>
+    
+        <div class="class-description"><p>Represents a <code>&lt;During&gt;</code> comparison operator.</p></div>
     
 </header>  
 
@@ -15777,84 +15779,39 @@
     
     
         
-        
-        
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-        
-        
-    
-    </div>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-        
-        <dl>
-                
 <dt class="">
     <div class="nameContainer">
-        <div class="anchor" id=".TileGridOptions">
+        
+        <div class="anchor" id="During">
         </div>
         <h4 class="name">
-            olx.tilegrid.TileGridOptions<span class="type-signature type object">{Object}</span> 
+            new ol.format.filter.During<span class="signature">(propertyName, begin, end)</span>
+            
             
 
         </h4>
+        
+        <div class="tag-source">
+            src/ol/format/filter/during.js, line 18
+        </div>
+        
+        
     </div>
     
 </dt>
 <dd class="">
-    
-    
-    
-<dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
 
-<table class="props">
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
     <thead>
 	<tr>
 		
@@ -15862,10 +15819,6 @@
 		
 		
 		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -15876,655 +15829,89 @@
 	<tbody>
 	
 	
-        <tr>
+        <tr class="">
             
-                <td class="name"><code>extent</code></td>
+                <td class="name"><code>propertyName</code></td>
+            
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.html#.Extent">ol.Extent</a></span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
             
-                <td class="attributes">
+            
+            
+            <td  class="description last">
                 
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Extent for the tile grid. No tiles outside this extent will be requested by
-<a href="ol.source.Tile.html"><code>ol.source.Tile</code></a> sources. When no <code>origin</code> or <code>origins</code> are
-configured, the <code>origin</code> will be set to the top-left corner of the extent.</p></td>
+                <p>Name of the context property to compare.</p></td>
         </tr>
 	
 	
 	
-        <tr>
+        <tr class="">
             
-                <td class="name"><code>minZoom</code></td>
+                <td class="name"><code>begin</code></td>
+            
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
             
-                <td class="attributes">
+            
+            
+            <td  class="description last">
                 
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Minimum zoom. Default is 0.</p></td>
+                <p>The begin date in ISO-8601 format.</p></td>
         </tr>
 	
 	
 	
-        <tr>
+        <tr class="">
             
-                <td class="name"><code>origin</code></td>
+                <td class="name"><code>end</code></td>
+            
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.html#.Coordinate">ol.Coordinate</a></span>
-|
-
-<span class="param-type">undefined</span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
             
-                <td class="attributes">
+            
+            
+            <td  class="description last">
                 
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The tile grid origin, i.e. where the <code>x</code> and <code>y</code> axes meet (<code>[z, 0, 0]</code>).
-Tile coordinates increase left to right and upwards. If not specified,
-<code>extent</code> or <code>origins</code> must be provided.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>origins</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="ol.html#.Coordinate">ol.Coordinate</a>></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Tile grid origins, i.e. where the <code>x</code> and <code>y</code> axes meet (<code>[z, 0, 0]</code>), for
-each zoom level. If given, the array length should match the length of the
-<code>resolutions</code> array, i.e. each resolution can have a different origin. Tile
-coordinates increase left to right and upwards. If not specified, <code>extent</code>
-or <code>origin</code> must be provided.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>resolutions</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Resolutions. The array index of each resolution needs to match the zoom
-level. This means that even if a <code>minZoom</code> is configured, the resolutions
-array will have a length of <code>maxZoom + 1</code>. <span class="required-option">Required.</span></p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>tileSize</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type"><a href="ol.html#.Size">ol.Size</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Tile size. Default is <code>[256, 256]</code>.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>tileSizes</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;(number|<a href="ol.html#.Size">ol.Size</a>)></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Tile sizes. If given, the array length should match the length of the
-<code>resolutions</code> array, i.e. each resolution can have a different tile size.</p></td>
+                <p>The end date in ISO-8601 format.</p></td>
         </tr>
 	
 	
 	</tbody>
-</table></dl>
-        
-    
-        
-    
+</table>
     
     
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-            
-                
-<dt class="">
-    <div class="nameContainer">
-        <div class="anchor" id=".WMTSOptions">
-        </div>
-        <h4 class="name">
-            olx.tilegrid.WMTSOptions<span class="type-signature type object">{Object}</span> 
-            
-
-        </h4>
-    </div>
-    
-</dt>
-<dd class="">
-    
-    
     
 <dl class="details">
     
         
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#.Extent">ol.Extent</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Extent for the tile grid. No tiles outside this extent will be requested by
-<a href="ol.source.Tile.html"><code>ol.source.Tile</code></a> sources. When no <code>origin</code> or <code>origins</code> are
-configured, the <code>origin</code> will be set to the top-left corner of the extent.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>origin</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#.Coordinate">ol.Coordinate</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>The tile grid origin, i.e. where the <code>x</code> and <code>y</code> axes meet (<code>[z, 0, 0]</code>).
-Tile coordinates increase left to right and upwards. If not specified,
-<code>extent</code> or <code>origins</code> must be provided.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>origins</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="ol.html#.Coordinate">ol.Coordinate</a>></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Tile grid origins, i.e. where the <code>x</code> and <code>y</code> axes meet (<code>[z, 0, 0]</code>), for
-each zoom level. If given, the array length should match the length of the
-<code>resolutions</code> array, i.e. each resolution can have a different origin. Tile
-coordinates increase left to right and upwards. If not specified, <code>extent</code> or
-<code>origin</code> must be provided.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>resolutions</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Resolutions. The array index of each resolution needs to match the zoom
-level. This means that even if a <code>minZoom</code> is configured, the resolutions
-array will have a length of <code>maxZoom + 1</code> <span class="required-option">Required.</span></p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>matrixIds</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>matrix IDs. The length of this array needs to match the length of the
-<code>resolutions</code> array. <span class="required-option">Required.</span></p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>sizes</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="ol.html#.Size">ol.Size</a>></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Number of tile rows and columns of the grid for each zoom level. The values
-here are the <code>TileMatrixWidth</code> and <code>TileMatrixHeight</code> advertised in the
-GetCapabilities response of the WMTS, and define the grid's extent together
-with the <code>origin</code>. An <code>extent</code> can be configured in addition, and will
-further limit the extent for which tile requests are made by sources. Note
-that when the top-left corner of the <code>extent</code> is used as <code>origin</code> or
-<code>origins</code>, then the <code>y</code> value must be negative because OpenLayers tile
-coordinates increase upwards.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>tileSize</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type"><a href="ol.html#.Size">ol.Size</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Tile size.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>tileSizes</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;(number|<a href="ol.html#.Size">ol.Size</a>)></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Tile sizes. The length of this array needs to match the length of the
-<code>resolutions</code> array.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>widths</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Number of tile columns that cover the grid's extent for each zoom level. Only
-required when used with a source that has <code>wrapX</code> set to <code>true</code>, and only
-when the grid's origin differs from the one of the projection's extent. The
-array length has to match the length of the <code>resolutions</code> array, i.e. each
-resolution will have a matching entry here.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
-    
-        
     
     
     
@@ -16546,205 +15933,39 @@ resolution will have a matching entry here.</p></td>
     
 </dl>
 
+
     
+
+    
+
+    
+
+    
+
+    
+
     
 </dd>
 
-            
-                
-<dt class="">
-    <div class="nameContainer">
-        <div class="anchor" id=".XYZOptions">
-        </div>
-        <h4 class="name">
-            olx.tilegrid.XYZOptions<span class="type-signature type object">{Object}</span> 
-            
-
-        </h4>
+    
     </div>
     
-</dt>
-<dd class="">
     
+
     
-    
-<dl class="details">
-    
+        <h3 class="subsection-title">Extends</h3>
         
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ol.html#.Extent">ol.Extent</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Extent for the tile grid.  The origin for an XYZ tile grid is the top-left
-corner of the extent.  The zero level of the grid is defined by the
-resolution at which one tile fits in the provided extent.  If not provided,
-the extent of the EPSG:3857 projection is used.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>maxZoom</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Maximum zoom.  The default is <code>ol.DEFAULT_MAX_ZOOM</code>.  This determines the
-number of levels in the grid set.  For example, a <code>maxZoom</code> of 21 means there
-are 22 levels in the grid set.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>minZoom</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Minimum zoom. Default is 0.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>tileSize</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type"><a href="ol.html#.Size">ol.Size</a></span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"><p>Tile size in pixels. Default is <code>[256, 256]</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
+        <ul>
+            <li><a href="ol.format.filter.Comparison.html">ol.format.filter.Comparison</a></li>
+        </ul>
     
-        
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -16753,24 +15974,6 @@ are 22 levels in the grid set.</p></td>
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-            </dl>
     
     
     

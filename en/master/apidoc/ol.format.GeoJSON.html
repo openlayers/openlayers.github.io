@@ -1729,10 +1729,6 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="ol.VectorImageTile#getFormat" class="">
-                    <a href="ol.VectorImageTile.html#getFormat">getFormat</a>
-                </li>
-            
                 <li data-name="ol.VectorImageTile#getImage" class="">
                     <a href="ol.VectorImageTile.html#getImage">getImage</a>
                 </li>
@@ -1743,10 +1739,6 @@
             
                 <li data-name="ol.VectorImageTile#load" class="">
                     <a href="ol.VectorImageTile.html#load">load</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#setFeatures" class="">
-                    <a href="ol.VectorImageTile.html#setFeatures">setFeatures</a>
                 </li>
             
             </ul>
@@ -4303,6 +4295,10 @@
                     <a href="ol.format.filter.html#.between">between</a>
                 </li>
             
+                <li data-name="ol.format.filter.during" class="">
+                    <a href="ol.format.filter.html#.during">during</a>
+                </li>
+            
                 <li data-name="ol.format.filter.equalTo" class="">
                     <a href="ol.format.filter.html#.equalTo">equalTo</a>
                 </li>
@@ -4417,6 +4413,25 @@
         <li class="item" data-name="ol.format.filter.ComparisonBinary">
             <span class="title">
                 <a href="ol.format.filter.ComparisonBinary.html">ol.format.filter.ComparisonBinary</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.filter.During">
+            <span class="title">
+                <a href="ol.format.filter.During.html">ol.format.filter.During</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -10642,8 +10657,8 @@
                     <a href="ol.render.Feature.html#getExtent">getExtent</a>
                 </li>
             
-                <li data-name="ol.render.Feature#getGeometry" class="">
-                    <a href="ol.render.Feature.html#getGeometry">getGeometry</a>
+                <li data-name="ol.render.Feature#getId" class="">
+                    <a href="ol.render.Feature.html#getId">getId</a>
                 </li>
             
                 <li data-name="ol.render.Feature#getProperties" class="">
@@ -16024,7 +16039,7 @@ read or write methods will take precedence.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 340
+            src/ol/format/geojson.js, line 341
         </div>
         
         
@@ -16037,7 +16052,8 @@ read or write methods will take precedence.</p></td>
     <div class="description">
         <p>Read a feature from a GeoJSON Feature source.  Only works for Feature or
 geometry types.  Use <a href="ol.format.GeoJSON.html#readFeatures"><code>ol.format.GeoJSON#readFeatures</code></a> to read
-FeatureCollection source.</p>
+FeatureCollection source. If feature at source has an id, it will be used
+as Feature id by calling <a href="ol.Feature.html#setId"><code>ol.Feature#setId</code></a> internally.</p>
     </div>
     
 
@@ -16265,7 +16281,7 @@ Feature.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 354
+            src/ol/format/geojson.js, line 355
         </div>
         
         
@@ -16506,7 +16522,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 425
+            src/ol/format/geojson.js, line 426
         </div>
         
         
@@ -16745,7 +16761,7 @@ Geometry.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 446
+            src/ol/format/geojson.js, line 447
         </div>
         
         
@@ -16887,7 +16903,7 @@ Projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 485
+            src/ol/format/geojson.js, line 486
         </div>
         
         
@@ -17191,7 +17207,7 @@ GeoJSON.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 497
+            src/ol/format/geojson.js, line 498
         </div>
         
         
@@ -17495,7 +17511,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 534
+            src/ol/format/geojson.js, line 535
         </div>
         
         
@@ -17799,7 +17815,7 @@ GeoJSON.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 546
+            src/ol/format/geojson.js, line 547
         </div>
         
         
@@ -18103,7 +18119,7 @@ GeoJSON Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 569
+            src/ol/format/geojson.js, line 570
         </div>
         
         
@@ -18407,7 +18423,7 @@ GeoJSON.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/geojson.js, line 581
+            src/ol/format/geojson.js, line 582
         </div>
         
         
