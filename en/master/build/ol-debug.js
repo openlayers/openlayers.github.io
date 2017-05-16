@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.1.1-106-gc611891
+// Version: v4.1.1-111-gddbe198
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -50488,8 +50488,10 @@ ol.render.Feature.prototype.getFlatCoordinates =
 
 
 /**
- * Get the feature for working with its geometry.
+ * For API compatibility with {@link ol.Feature}, this method is useful when
+ * determining the geometry type in style function (see {@link #getType}).
  * @return {ol.render.Feature} Feature.
+ * @api
  */
 ol.render.Feature.prototype.getGeometry = function() {
   return this;
@@ -81424,6 +81426,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.render.Feature.prototype,
+    'getGeometry',
+    ol.render.Feature.prototype.getGeometry);
+
+goog.exportProperty(
+    ol.render.Feature.prototype,
     'getProperties',
     ol.render.Feature.prototype.getProperties);
 
@@ -92351,7 +92358,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.1.1-106-gc611891';
+ol.VERSION = 'v4.1.1-111-gddbe198';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
