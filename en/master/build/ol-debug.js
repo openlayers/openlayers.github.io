@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.1.1-111-gddbe198
+// Version: v4.1.1-128-g8b9f994
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -52002,7 +52002,6 @@ goog.require('ol.geom.MultiPoint');
 goog.require('ol.geom.MultiPolygon');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
-goog.require('ol.obj');
 goog.require('ol.proj');
 
 
@@ -52020,6 +52019,18 @@ ol.format.TopoJSON = function(opt_options) {
   var options = opt_options ? opt_options : {};
 
   ol.format.JSONFeature.call(this);
+
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+  this.layerName_ = options.layerName;
+
+  /**
+   * @private
+   * @type {Array.<string>}
+   */
+  this.layers_ = options.layers ? options.layers : null;
 
   /**
    * @inheritDoc
@@ -52194,18 +52205,21 @@ ol.format.TopoJSON.readMultiPolygonGeometry_ = function(object, arcs) {
  * @param {Array.<Array.<ol.Coordinate>>} arcs Array of arcs.
  * @param {Array.<number>} scale Scale for each dimension.
  * @param {Array.<number>} translate Translation for each dimension.
+ * @param {string|undefined} property Property to set the `GeometryCollection`'s parent
+ *     object to.
+ * @param {string} name Name of the `Topology`'s child object.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @return {Array.<ol.Feature>} Array of features.
  * @private
  */
 ol.format.TopoJSON.readFeaturesFromGeometryCollection_ = function(
-    collection, arcs, scale, translate, opt_options) {
+    collection, arcs, scale, translate, property, name, opt_options) {
   var geometries = collection.geometries;
   var features = [];
   var i, ii;
   for (i = 0, ii = geometries.length; i < ii; ++i) {
     features[i] = ol.format.TopoJSON.readFeatureFromGeometry_(
-        geometries[i], arcs, scale, translate, opt_options);
+        geometries[i], arcs, scale, translate, property, name, opt_options);
   }
   return features;
 };
@@ -52218,12 +52232,15 @@ ol.format.TopoJSON.readFeaturesFromGeometryCollection_ = function(
  * @param {Array.<Array.<ol.Coordinate>>} arcs Array of arcs.
  * @param {Array.<number>} scale Scale for each dimension.
  * @param {Array.<number>} translate Translation for each dimension.
+ * @param {string|undefined} property Property to set the `GeometryCollection`'s parent
+ *     object to.
+ * @param {string} name Name of the `Topology`'s child object.
  * @param {olx.format.ReadOptions=} opt_options Read options.
  * @return {ol.Feature} Feature.
  * @private
  */
 ol.format.TopoJSON.readFeatureFromGeometry_ = function(object, arcs,
-    scale, translate, opt_options) {
+    scale, translate, property, name, opt_options) {
   var geometry;
   var type = object.type;
   var geometryReader = ol.format.TopoJSON.GEOMETRY_READERS_[type];
@@ -52238,8 +52255,15 @@ ol.format.TopoJSON.readFeatureFromGeometry_ = function(object, arcs,
   if (object.id !== undefined) {
     feature.setId(object.id);
   }
-  if (object.properties) {
-    feature.setProperties(object.properties);
+  var properties = object.properties;
+  if (property) {
+    if (!properties) {
+      properties = {};
+    }
+    properties[property] = name;
+  }
+  if (properties) {
+    feature.setProperties(properties);
   }
   return feature;
 };
@@ -52275,21 +52299,24 @@ ol.format.TopoJSON.prototype.readFeaturesFromObject = function(
     }
     /** @type {Array.<ol.Feature>} */
     var features = [];
-    var topoJSONFeatures = ol.obj.getValues(topoJSONTopology.objects);
-    var i, ii;
-    var feature;
-    for (i = 0, ii = topoJSONFeatures.length; i < ii; ++i) {
-      if (topoJSONFeatures[i].type === 'GeometryCollection') {
+    var topoJSONFeatures = topoJSONTopology.objects;
+    var property = this.layerName_;
+    var objectName, feature;
+    for (objectName in topoJSONFeatures) {
+      if (this.layers_ && this.layers_.indexOf(objectName) == -1) {
+        continue;
+      }
+      if (topoJSONFeatures[objectName].type === 'GeometryCollection') {
         feature = /** @type {TopoJSONGeometryCollection} */
-            (topoJSONFeatures[i]);
+            (topoJSONFeatures[objectName]);
         features.push.apply(features,
             ol.format.TopoJSON.readFeaturesFromGeometryCollection_(
-                feature, arcs, scale, translate, opt_options));
+                feature, arcs, scale, translate, property, objectName, opt_options));
       } else {
         feature = /** @type {TopoJSONGeometry} */
-            (topoJSONFeatures[i]);
+            (topoJSONFeatures[objectName]);
         features.push(ol.format.TopoJSON.readFeatureFromGeometry_(
-            feature, arcs, scale, translate, opt_options));
+            feature, arcs, scale, translate, property, objectName, opt_options));
       }
     }
     return features;
@@ -71142,7 +71169,8 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
   var pixelRatio = frameState.pixelRatio;
   var projection = frameState.viewState.projection;
   var revision = layer.getRevision();
-  var renderOrder = layer.getRenderOrder() || null;
+  var renderOrder = /** @type {ol.RenderOrderFunction} */
+      (layer.getRenderOrder()) || null;
 
   var replayState = tile.getReplayState();
   if (!replayState.dirty && replayState.renderedRevision == revision &&
@@ -76049,6 +76077,7 @@ goog.provide('ol.source.TileJSON');
 goog.require('ol');
 goog.require('ol.Attribution');
 goog.require('ol.TileUrlFunction');
+goog.require('ol.asserts');
 goog.require('ol.extent');
 goog.require('ol.net');
 goog.require('ol.proj');
@@ -76085,15 +76114,21 @@ ol.source.TileJSON = function(options) {
     wrapX: options.wrapX !== undefined ? options.wrapX : true
   });
 
-  if (options.jsonp) {
-    ol.net.jsonp(options.url, this.handleTileJSONResponse.bind(this),
-        this.handleTileJSONError.bind(this));
+  if (options.url) {
+    if (options.jsonp) {
+      ol.net.jsonp(options.url, this.handleTileJSONResponse.bind(this),
+          this.handleTileJSONError.bind(this));
+    } else {
+      var client = new XMLHttpRequest();
+      client.addEventListener('load', this.onXHRLoad_.bind(this));
+      client.addEventListener('error', this.onXHRError_.bind(this));
+      client.open('GET', options.url);
+      client.send();
+    }
+  } else if (options.tileJSON) {
+    this.handleTileJSONResponse(options.tileJSON);
   } else {
-    var client = new XMLHttpRequest();
-    client.addEventListener('load', this.onXHRLoad_.bind(this));
-    client.addEventListener('error', this.onXHRError_.bind(this));
-    client.open('GET', options.url);
-    client.send();
+    ol.asserts.assert(false, 51); // Either `url` or `tileJSON` options must be provided
   }
 
 };
@@ -77102,10 +77137,12 @@ goog.require('ol.featureloader');
  * @param {function(new: ol.VectorTile, ol.TileCoord, ol.TileState, string,
  *     ol.format.Feature, ol.TileLoadFunctionType)} tileClass Class to
  *     instantiate for source tiles.
+ * @param {function(this: ol.source.VectorTile, ol.events.Event)} handleTileChange
+ *     Function to call when a source tile's state changes.
  */
 ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
     urlTileCoord, tileUrlFunction, sourceTileGrid, tileGrid, sourceTiles,
-    pixelRatio, projection, tileClass) {
+    pixelRatio, projection, tileClass, handleTileChange) {
 
   ol.Tile.call(this, tileCoord, state);
 
@@ -77159,6 +77196,11 @@ ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
    */
   this.loadListenerKeys_ = [];
 
+  /**
+   * @type {Array.<ol.EventsKey>}
+   */
+  this.sourceTileListenerKeys_ = [];
+
   if (urlTileCoord) {
     var extent = tileGrid.getTileCoordExtent(urlTileCoord);
     var resolution = tileGrid.getResolution(tileCoord[0]);
@@ -77177,6 +77219,8 @@ ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
               tileUrl == undefined ? ol.TileState.EMPTY : ol.TileState.IDLE,
               tileUrl == undefined ? '' : tileUrl,
               format, tileLoadFunction);
+          this.sourceTileListenerKeys_.push(
+              ol.events.listen(sourceTile, ol.events.EventType.CHANGE, handleTileChange));
         }
         sourceTile.consumers++;
         this.tileKeys.push(sourceTileKey);
@@ -77212,6 +77256,8 @@ ol.VectorImageTile.prototype.disposeInternal = function() {
   }
   this.state = ol.TileState.ABORT;
   this.changed();
+  this.sourceTileListenerKeys_.forEach(ol.events.unlistenByKey);
+  this.sourceTileListenerKeys_.length = 0;
   ol.Tile.prototype.disposeInternal.call(this);
 };
 
@@ -77230,7 +77276,6 @@ ol.VectorImageTile.prototype.getContext = function() {
 /**
  * Get the Canvas for this tile.
  * @return {HTMLCanvasElement} Canvas.
- * @api
  */
 ol.VectorImageTile.prototype.getImage = function() {
   return this.replayState_.renderedTileRevision == -1 ?
@@ -77406,6 +77451,18 @@ ol.inherits(ol.VectorTile, ol.Tile);
 
 
 /**
+ * @inheritDoc
+ */
+ol.VectorTile.prototype.disposeInternal = function() {
+  this.features_ = null;
+  this.replayGroups_ = {};
+  this.state = ol.TileState.ABORT;
+  this.changed();
+  ol.Tile.prototype.disposeInternal.call(this);
+};
+
+
+/**
  * Get the feature format assigned for reading this tile's features.
  * @return {ol.format.Feature} Feature format.
  * @api
@@ -77416,7 +77473,10 @@ ol.VectorTile.prototype.getFormat = function() {
 
 
 /**
- * @return {Array.<ol.Feature>} Features.
+ * Get the features for this tile. Geometries will be in the projection returned
+ * by {@link #getProjection}.
+ * @return {Array.<ol.Feature|ol.render.Feature>} Features.
+ * @api
  */
 ol.VectorTile.prototype.getFeatures = function() {
   return this.features_;
@@ -77432,7 +77492,9 @@ ol.VectorTile.prototype.getKey = function() {
 
 
 /**
+ * Get the feature projection of features returned by {@link #getFeatures}.
  * @return {ol.proj.Projection} Feature projection.
+ * @api
  */
 ol.VectorTile.prototype.getProjection = function() {
   return this.projection_;
@@ -77524,8 +77586,6 @@ goog.require('ol');
 goog.require('ol.TileState');
 goog.require('ol.VectorImageTile');
 goog.require('ol.VectorTile');
-goog.require('ol.events');
-goog.require('ol.events.EventType');
 goog.require('ol.proj');
 goog.require('ol.size');
 goog.require('ol.tilegrid');
@@ -77634,9 +77694,8 @@ ol.source.VectorTile.prototype.getTile = function(z, x, y, pixelRatio, projectio
         tileUrl !== undefined ? tileUrl : '',
         this.format_, this.tileLoadFunction, urlTileCoord, this.tileUrlFunction,
         this.tileGrid, this.getTileGridForProjection(projection),
-        this.sourceTiles_, pixelRatio, projection, this.tileClass);
-    ol.events.listen(tile, ol.events.EventType.CHANGE,
-        this.handleTileChange, this);
+        this.sourceTiles_, pixelRatio, projection, this.tileClass,
+        this.handleTileChange.bind(this));
 
     this.tileCache.set(tileCoordKey, tile);
     return tile;
@@ -78970,7 +79029,6 @@ goog.require('ol.Observable');
 goog.require('ol.Overlay');
 goog.require('ol.Sphere');
 goog.require('ol.Tile');
-goog.require('ol.VectorImageTile');
 goog.require('ol.VectorTile');
 goog.require('ol.View');
 goog.require('ol.color');
@@ -80105,14 +80163,19 @@ goog.exportSymbol(
     OPENLAYERS);
 
 goog.exportProperty(
-    ol.VectorImageTile.prototype,
-    'getImage',
-    ol.VectorImageTile.prototype.getImage);
-
-goog.exportProperty(
     ol.VectorTile.prototype,
     'getFormat',
     ol.VectorTile.prototype.getFormat);
+
+goog.exportProperty(
+    ol.VectorTile.prototype,
+    'getFeatures',
+    ol.VectorTile.prototype.getFeatures);
+
+goog.exportProperty(
+    ol.VectorTile.prototype,
+    'getProjection',
+    ol.VectorTile.prototype.getProjection);
 
 goog.exportProperty(
     ol.VectorTile.prototype,
@@ -92358,7 +92421,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.1.1-111-gddbe198';
+ol.VERSION = 'v4.1.1-128-g8b9f994';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

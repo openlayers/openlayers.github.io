@@ -85,13 +85,14 @@ var style &#x3D; new ol.style.Style({
 var vector &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
     url: &#x27;https://openlayers.org/en/v4.1.1/examples/data/topojson/world-110m.json&#x27;,
-    format: new ol.format.TopoJSON(),
+    format: new ol.format.TopoJSON({
+      // don&#x27;t want to render the full world polygon (stored as &#x27;land&#x27; layer),
+      // which repeats all countries
+      layers: [&#x27;countries&#x27;]
+    }),
     overlaps: false
   }),
-  style: function(feature) {
-    // don&#x27;t want to render the full world polygon, which repeats all countries
-    return feature.getId() !&#x3D;&#x3D; undefined ? style : null;
-  }
+  style: style
 });
 
 var map &#x3D; new ol.Map({
@@ -140,13 +141,14 @@ var map &#x3D; new ol.Map({
       var vector &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
           url: &#x27;https://openlayers.org/en/v4.1.1/examples/data/topojson/world-110m.json&#x27;,
-          format: new ol.format.TopoJSON(),
+          format: new ol.format.TopoJSON({
+            // don&#x27;t want to render the full world polygon (stored as &#x27;land&#x27; layer),
+            // which repeats all countries
+            layers: [&#x27;countries&#x27;]
+          }),
           overlaps: false
         }),
-        style: function(feature) {
-          // don&#x27;t want to render the full world polygon, which repeats all countries
-          return feature.getId() !&#x3D;&#x3D; undefined ? style : null;
-        }
+        style: style
       });
 
       var map &#x3D; new ol.Map({

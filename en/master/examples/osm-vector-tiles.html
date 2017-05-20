@@ -52,9 +52,9 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Using OpenStreetMap vector tiles.</p>
-          <div id="docs"><p>A simple vector tiles map with Mapzen vector tiles. <strong>Note</strong>: TopoJSON vector tiles are not optimized for rendering - they might clip geometries exactly at the tile boundary instead of adding a buffer, and use geographic coordinates instead of tile relative pixel coordinates in view projection.</p>
+          <div id="docs"><p>A simple vector tiles map with Mapzen vector tiles. This example uses the TopoJSON format&#39;s <code>layerName</code> option to determine the layer (&quot;water&quot;, &quot;roads&quot;, &quot;buildings&quot;) for styling. <strong>Note</strong>: <a href="../apidoc/ol.format.MVT.html"><code>ol.format.MVT</code></a> is an even more efficient format for vector tiles.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Attribution.html" title="API documentation for ol.Attribution">ol.Attribution</a></li>,<li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.TopoJSON.html" title="API documentation for ol.format.TopoJSON">ol.format.TopoJSON</a></li>,<li><a href="../apidoc/ol.layer.VectorTile.html" title="API documentation for ol.layer.VectorTile">ol.layer.VectorTile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.VectorTile.html" title="API documentation for ol.source.VectorTile">ol.source.VectorTile</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.tilegrid.html" title="API documentation for ol.tilegrid">ol.tilegrid</a></li></ul></div>
+          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.TopoJSON.html" title="API documentation for ol.format.TopoJSON">ol.format.TopoJSON</a></li>,<li><a href="../apidoc/ol.layer.VectorTile.html" title="API documentation for ol.layer.VectorTile">ol.layer.VectorTile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.VectorTile.html" title="API documentation for ol.source.VectorTile">ol.source.VectorTile</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.tilegrid.html" title="API documentation for ol.tilegrid">ol.tilegrid</a></li></ul></div>
         </div>
       </div>
 
@@ -68,11 +68,6 @@
           <textarea class="hidden" name="description">Using OpenStreetMap vector tiles.</textarea>
           <textarea class="hidden" name="js">var key &#x3D; &#x27;Your Mapzen API key from https://mapzen.com/developers&#x27;;
 
-var attribution &#x3D; [new ol.Attribution({
-  html: &#x27;&amp;copy; OpenStreetMap contributors, Who’s On First, Natural Earth, and openstreetmapdata.com&#x27;
-})];
-var format &#x3D; new ol.format.TopoJSON();
-var tileGrid &#x3D; ol.tilegrid.createXYZ({maxZoom: 19});
 var roadStyleCache &#x3D; {};
 var roadColor &#x3D; {
   &#x27;major_road&#x27;: &#x27;#776&#x27;,
@@ -89,65 +84,58 @@ var buildingStyle &#x3D; new ol.style.Style({
     width: 1
   })
 });
+var waterStyle &#x3D; new ol.style.Style({
+  fill: new ol.style.Fill({
+    color: &#x27;#9db9e8&#x27;
+  })
+});
+var roadStyle &#x3D; function(feature) {
+  var kind &#x3D; feature.get(&#x27;kind&#x27;);
+  var railway &#x3D; feature.get(&#x27;railway&#x27;);
+  var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
+  var styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
+  var style &#x3D; roadStyleCache[styleKey];
+  if (!style) {
+    var color, width;
+    if (railway) {
+      color &#x3D; &#x27;#7de&#x27;;
+      width &#x3D; 1;
+    } else {
+      color &#x3D; roadColor[kind];
+      width &#x3D; kind &#x3D;&#x3D; &#x27;highway&#x27; ? 1.5 : 1;
+    }
+    style &#x3D; new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: color,
+        width: width
+      }),
+      zIndex: sort_key
+    });
+    roadStyleCache[styleKey] &#x3D; style;
+  }
+  return style;
+};
 
 var map &#x3D; new ol.Map({
   layers: [
     new ol.layer.VectorTile({
       source: new ol.source.VectorTile({
-        attributions: attribution,
-        format: format,
-        tileGrid: tileGrid,
-        url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/water/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
+        attributions: &#x27;&amp;copy; OpenStreetMap contributors, Who’s On First, &#x27; +
+            &#x27;Natural Earth, and openstreetmapdata.com&#x27;,
+        format: new ol.format.TopoJSON({
+          layerName: &#x27;layer&#x27;,
+          layers: [&#x27;water&#x27;, &#x27;roads&#x27;, &#x27;buildings&#x27;]
+        }),
+        tileGrid: ol.tilegrid.createXYZ({maxZoom: 19}),
+        url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
       }),
-      style: new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: &#x27;#9db9e8&#x27;
-        })
-      })
-    }),
-    new ol.layer.VectorTile({
-      source: new ol.source.VectorTile({
-        attributions: attribution,
-        format: format,
-        tileGrid: tileGrid,
-        url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/roads/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
-      }),
-      style: function(feature) {
-        var kind &#x3D; feature.get(&#x27;kind&#x27;);
-        var railway &#x3D; feature.get(&#x27;railway&#x27;);
-        var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
-        var styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
-        var style &#x3D; roadStyleCache[styleKey];
-        if (!style) {
-          var color, width;
-          if (railway) {
-            color &#x3D; &#x27;#7de&#x27;;
-            width &#x3D; 1;
-          } else {
-            color &#x3D; roadColor[kind];
-            width &#x3D; kind &#x3D;&#x3D; &#x27;highway&#x27; ? 1.5 : 1;
-          }
-          style &#x3D; new ol.style.Style({
-            stroke: new ol.style.Stroke({
-              color: color,
-              width: width
-            }),
-            zIndex: sort_key
-          });
-          roadStyleCache[styleKey] &#x3D; style;
+      style: function(feature, resolution) {
+        switch (feature.get(&#x27;layer&#x27;)) {
+          case &#x27;water&#x27;: return waterStyle;
+          case &#x27;roads&#x27;: return roadStyle(feature);
+          case &#x27;buildings&#x27;: return (resolution &lt; 10) ? buildingStyle : null;
+          default: return null;
         }
-        return style;
-      }
-    }),
-    new ol.layer.VectorTile({
-      source: new ol.source.VectorTile({
-        attributions: attribution,
-        format: format,
-        tileGrid: tileGrid,
-        url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/buildings/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
-      }),
-      style: function(f, resolution) {
-        return (resolution &lt; 10) ? buildingStyle : null;
       }
     })
   ],
@@ -187,11 +175,6 @@ var map &#x3D; new ol.Map({
     &lt;script&gt;
       var key &#x3D; &#x27;Your Mapzen API key from https://mapzen.com/developers&#x27;;
 
-      var attribution &#x3D; [new ol.Attribution({
-        html: &#x27;&amp;copy; OpenStreetMap contributors, Who’s On First, Natural Earth, and openstreetmapdata.com&#x27;
-      })];
-      var format &#x3D; new ol.format.TopoJSON();
-      var tileGrid &#x3D; ol.tilegrid.createXYZ({maxZoom: 19});
       var roadStyleCache &#x3D; {};
       var roadColor &#x3D; {
         &#x27;major_road&#x27;: &#x27;#776&#x27;,
@@ -208,65 +191,58 @@ var map &#x3D; new ol.Map({
           width: 1
         })
       });
+      var waterStyle &#x3D; new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: &#x27;#9db9e8&#x27;
+        })
+      });
+      var roadStyle &#x3D; function(feature) {
+        var kind &#x3D; feature.get(&#x27;kind&#x27;);
+        var railway &#x3D; feature.get(&#x27;railway&#x27;);
+        var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
+        var styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
+        var style &#x3D; roadStyleCache[styleKey];
+        if (!style) {
+          var color, width;
+          if (railway) {
+            color &#x3D; &#x27;#7de&#x27;;
+            width &#x3D; 1;
+          } else {
+            color &#x3D; roadColor[kind];
+            width &#x3D; kind &#x3D;&#x3D; &#x27;highway&#x27; ? 1.5 : 1;
+          }
+          style &#x3D; new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: color,
+              width: width
+            }),
+            zIndex: sort_key
+          });
+          roadStyleCache[styleKey] &#x3D; style;
+        }
+        return style;
+      };
 
       var map &#x3D; new ol.Map({
         layers: [
           new ol.layer.VectorTile({
             source: new ol.source.VectorTile({
-              attributions: attribution,
-              format: format,
-              tileGrid: tileGrid,
-              url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/water/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
+              attributions: &#x27;&amp;copy; OpenStreetMap contributors, Who’s On First, &#x27; +
+                  &#x27;Natural Earth, and openstreetmapdata.com&#x27;,
+              format: new ol.format.TopoJSON({
+                layerName: &#x27;layer&#x27;,
+                layers: [&#x27;water&#x27;, &#x27;roads&#x27;, &#x27;buildings&#x27;]
+              }),
+              tileGrid: ol.tilegrid.createXYZ({maxZoom: 19}),
+              url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
             }),
-            style: new ol.style.Style({
-              fill: new ol.style.Fill({
-                color: &#x27;#9db9e8&#x27;
-              })
-            })
-          }),
-          new ol.layer.VectorTile({
-            source: new ol.source.VectorTile({
-              attributions: attribution,
-              format: format,
-              tileGrid: tileGrid,
-              url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/roads/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
-            }),
-            style: function(feature) {
-              var kind &#x3D; feature.get(&#x27;kind&#x27;);
-              var railway &#x3D; feature.get(&#x27;railway&#x27;);
-              var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
-              var styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
-              var style &#x3D; roadStyleCache[styleKey];
-              if (!style) {
-                var color, width;
-                if (railway) {
-                  color &#x3D; &#x27;#7de&#x27;;
-                  width &#x3D; 1;
-                } else {
-                  color &#x3D; roadColor[kind];
-                  width &#x3D; kind &#x3D;&#x3D; &#x27;highway&#x27; ? 1.5 : 1;
-                }
-                style &#x3D; new ol.style.Style({
-                  stroke: new ol.style.Stroke({
-                    color: color,
-                    width: width
-                  }),
-                  zIndex: sort_key
-                });
-                roadStyleCache[styleKey] &#x3D; style;
+            style: function(feature, resolution) {
+              switch (feature.get(&#x27;layer&#x27;)) {
+                case &#x27;water&#x27;: return waterStyle;
+                case &#x27;roads&#x27;: return roadStyle(feature);
+                case &#x27;buildings&#x27;: return (resolution &lt; 10) ? buildingStyle : null;
+                default: return null;
               }
-              return style;
-            }
-          }),
-          new ol.layer.VectorTile({
-            source: new ol.source.VectorTile({
-              attributions: attribution,
-              format: format,
-              tileGrid: tileGrid,
-              url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/buildings/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
-            }),
-            style: function(f, resolution) {
-              return (resolution &lt; 10) ? buildingStyle : null;
             }
           })
         ],

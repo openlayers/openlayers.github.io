@@ -1714,39 +1714,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="ol.VectorImageTile">
-            <span class="title">
-                <a href="ol.VectorImageTile.html">ol.VectorImageTile</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="ol.VectorImageTile#getImage" class="">
-                    <a href="ol.VectorImageTile.html#getImage">getImage</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#getTileCoord" class="">
-                    <a href="ol.VectorImageTile.html#getTileCoord">getTileCoord</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#load" class="">
-                    <a href="ol.VectorImageTile.html#load">load</a>
-                </li>
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="ol.VectorTile">
             <span class="title">
                 <a href="ol.VectorTile.html">ol.VectorTile</a>
@@ -1762,8 +1729,16 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.VectorTile#getFeatures" class="">
+                    <a href="ol.VectorTile.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="ol.VectorTile#getFormat" class="">
                     <a href="ol.VectorTile.html#getFormat">getFormat</a>
+                </li>
+            
+                <li data-name="ol.VectorTile#getProjection" class="">
+                    <a href="ol.VectorTile.html#getProjection">getProjection</a>
                 </li>
             
                 <li data-name="ol.VectorTile#getTileCoord" class="">
@@ -15869,6 +15844,93 @@
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="getFeatures">
+        </div>
+        <h4 class="name">
+            getFeatures<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;(<a href="ol.Feature.html">ol.Feature</a>|<a href="ol.render.Feature.html">ol.render.Feature</a>)>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/vectortile.js, line 97
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get the features for this tile. Geometries will be in the projection returned
+by <code>#getProjection</code>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Features.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="getFormat">
         </div>
         <h4 class="name">
@@ -15879,7 +15941,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 74
+            src/ol/vectortile.js, line 86
         </div>
         
         
@@ -15943,6 +16005,92 @@
 
 <h5>Returns:</h5>
 Feature format.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
+        <div class="anchor" id="getProjection">
+        </div>
+        <h4 class="name">
+            getProjection<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.proj.Projection.html">ol.proj.Projection</a>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/vectortile.js, line 115
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get the feature projection of features returned by <code>#getFeatures</code>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Feature projection.
 <br />
 
     
@@ -16134,7 +16282,7 @@ only needed for preloading or for reloading in case of an error.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 143
+            src/ol/vectortile.js, line 160
         </div>
         
         
@@ -16254,7 +16402,7 @@ only needed for preloading or for reloading in case of an error.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 178
+            src/ol/vectortile.js, line 195
         </div>
         
         
@@ -16378,7 +16526,7 @@ only needed for preloading or for reloading in case of an error.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 154
+            src/ol/vectortile.js, line 171
         </div>
         
         

@@ -1714,39 +1714,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="ol.VectorImageTile">
-            <span class="title">
-                <a href="ol.VectorImageTile.html">ol.VectorImageTile</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="ol.VectorImageTile#getImage" class="">
-                    <a href="ol.VectorImageTile.html#getImage">getImage</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#getTileCoord" class="">
-                    <a href="ol.VectorImageTile.html#getTileCoord">getTileCoord</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#load" class="">
-                    <a href="ol.VectorImageTile.html#load">load</a>
-                </li>
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="ol.VectorTile">
             <span class="title">
                 <a href="ol.VectorTile.html">ol.VectorTile</a>
@@ -1762,8 +1729,16 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.VectorTile#getFeatures" class="">
+                    <a href="ol.VectorTile.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="ol.VectorTile#getFormat" class="">
                     <a href="ol.VectorTile.html#getFormat">getFormat</a>
+                </li>
+            
+                <li data-name="ol.VectorTile#getProjection" class="">
+                    <a href="ol.VectorTile.html#getProjection">getProjection</a>
                 </li>
             
                 <li data-name="ol.VectorTile#getTileCoord" class="">
@@ -15883,9 +15858,6 @@
             <dt><a href="ol.Tile.html">Tile</a></dt>
             <dd></dd>
         
-            <dt><a href="ol.VectorImageTile.html">VectorImageTile</a></dt>
-            <dd></dd>
-        
             <dt><a href="ol.VectorTile.html">VectorTile</a></dt>
             <dd></dd>
         
@@ -17511,7 +17483,7 @@ data object is accessible from raster events, where it can be initialized in
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 460
+            src/ol/typedefs.js, line 462
         </div>
         
         
@@ -17523,7 +17495,8 @@ data object is accessible from raster events, where it can be initialized in
     
     <div class="description">
         <p>A function to be used when sorting features before rendering.
-It takes two instances of <a href="ol.Feature.html"><code>ol.Feature</code></a> and returns a <code>{number}</code>.</p>
+It takes two instances of <a href="ol.Feature.html"><code>ol.Feature</code></a> or <a href="ol.render.Feature.html"><code>ol.render.Feature</code></a> and
+returns a <code>{number}</code>.</p>
     </div>
     
 
@@ -17589,7 +17562,7 @@ It takes two instances of <a href="ol.Feature.html"><code>ol.Feature</code></a> 
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 503
+            src/ol/typedefs.js, line 505
         </div>
         
         
@@ -17718,7 +17691,7 @@ or <code>false</code> otherwise.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 603
+            src/ol/typedefs.js, line 605
         </div>
         
         
@@ -17797,7 +17770,7 @@ or an array of them. This way e.g. a vector layer can be styled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 613
+            src/ol/typedefs.js, line 615
         </div>
         
         
@@ -17926,7 +17899,7 @@ grid. The order is <code>z</code>, <code>x</code>, and <code>y</code>. <code>z</
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 640
+            src/ol/typedefs.js, line 642
         </div>
         
         
@@ -18004,7 +17977,7 @@ the url as arguments.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 672
+            src/ol/typedefs.js, line 674
         </div>
         
         
@@ -18087,7 +18060,7 @@ coordinate.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 683
+            src/ol/typedefs.js, line 685
         </div>
         
         

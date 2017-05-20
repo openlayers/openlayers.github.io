@@ -1714,39 +1714,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="ol.VectorImageTile">
-            <span class="title">
-                <a href="ol.VectorImageTile.html">ol.VectorImageTile</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="ol.VectorImageTile#getImage" class="">
-                    <a href="ol.VectorImageTile.html#getImage">getImage</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#getTileCoord" class="">
-                    <a href="ol.VectorImageTile.html#getTileCoord">getTileCoord</a>
-                </li>
-            
-                <li data-name="ol.VectorImageTile#load" class="">
-                    <a href="ol.VectorImageTile.html#load">load</a>
-                </li>
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="ol.VectorTile">
             <span class="title">
                 <a href="ol.VectorTile.html">ol.VectorTile</a>
@@ -1762,8 +1729,16 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="ol.VectorTile#getFeatures" class="">
+                    <a href="ol.VectorTile.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="ol.VectorTile#getFormat" class="">
                     <a href="ol.VectorTile.html#getFormat">getFormat</a>
+                </li>
+            
+                <li data-name="ol.VectorTile#getProjection" class="">
+                    <a href="ol.VectorTile.html#getProjection">getProjection</a>
                 </li>
             
                 <li data-name="ol.VectorTile#getTileCoord" class="">
@@ -15796,7 +15771,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/topojson.js, line 26
+            src/ol/format/topojson.js, line 25
         </div>
         
         
@@ -15887,6 +15862,81 @@
 
                 
                 <p>Default data projection. Default is <code>EPSG:4326</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>layerName</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Set the name of the TopoJSON topology <code>objects</code>'s children as feature
+property with the specified name. This means that when set to <code>'layer'</code>, a
+topology like</p>
+<pre class="prettyprint source"><code>{
+  &quot;type&quot;: &quot;Topology&quot;,
+  &quot;objects&quot;: {
+    &quot;example&quot;: {
+      &quot;type&quot;: &quot;GeometryCollection&quot;,
+      &quot;geometries&quot;: []
+    }
+  }
+}</code></pre><p>will result in features that have a property <code>'layer'</code> set to <code>'example'</code>.
+When not set, no property will be added to features.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>layers</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Names of the TopoJSON topology's <code>objects</code>'s children to read features from.
+If not provided, features will be read from all children.</p></td>
         </tr>
 	
 	
@@ -16037,7 +16087,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/topojson.js, line 264
+            src/ol/format/topojson.js, line 288
         </div>
         
         

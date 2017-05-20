@@ -73,18 +73,30 @@
     var geometry &#x3D; value.geometry;
 
     if (rawType &#x3D;&#x3D;&#x3D; 1) {
-      type &#x3D; geometry.length &#x3D;&#x3D;&#x3D; 1 ? &#x27;Point&#x27; : &#x27;MultiPoint&#x27;;
+      type &#x3D; &#x27;MultiPoint&#x27;;
+      if (geometry.length &#x3D;&#x3D; 1) {
+        type &#x3D; &#x27;Point&#x27;;
+        geometry &#x3D; geometry[0];
+      }
     } else if (rawType &#x3D;&#x3D;&#x3D; 2) {
-      type &#x3D; geometry.length &#x3D;&#x3D;&#x3D; 1 ? &#x27;LineString&#x27; : &#x27;MultiLineString&#x27;;
+      type &#x3D; &#x27;MultiLineString&#x27;;
+      if (geometry.length &#x3D;&#x3D; 1) {
+        type &#x3D; &#x27;LineString&#x27;;
+        geometry &#x3D; geometry[0];
+      }
     } else if (rawType &#x3D;&#x3D;&#x3D; 3) {
-      type &#x3D; geometry.length &#x3D;&#x3D;&#x3D; 1 ? &#x27;Polygon&#x27; : &#x27;MultiPolygon&#x27;;
+      type &#x3D; &#x27;Polygon&#x27;;
+      if (geometry.length &gt; 1) {
+        type &#x3D; &#x27;MultiPolygon&#x27;;
+        geometry &#x3D; [geometry];
+      }
     }
 
     return {
       &#x27;type&#x27;: &#x27;Feature&#x27;,
       &#x27;geometry&#x27;: {
         &#x27;type&#x27;: type,
-        &#x27;coordinates&#x27;: geometry.length &#x3D;&#x3D; 1 ? geometry : [geometry]
+        &#x27;coordinates&#x27;: geometry
       },
       &#x27;properties&#x27;: value.tags
     };
@@ -172,18 +184,30 @@ fetch(url).then(function(response) {
           var geometry &#x3D; value.geometry;
 
           if (rawType &#x3D;&#x3D;&#x3D; 1) {
-            type &#x3D; geometry.length &#x3D;&#x3D;&#x3D; 1 ? &#x27;Point&#x27; : &#x27;MultiPoint&#x27;;
+            type &#x3D; &#x27;MultiPoint&#x27;;
+            if (geometry.length &#x3D;&#x3D; 1) {
+              type &#x3D; &#x27;Point&#x27;;
+              geometry &#x3D; geometry[0];
+            }
           } else if (rawType &#x3D;&#x3D;&#x3D; 2) {
-            type &#x3D; geometry.length &#x3D;&#x3D;&#x3D; 1 ? &#x27;LineString&#x27; : &#x27;MultiLineString&#x27;;
+            type &#x3D; &#x27;MultiLineString&#x27;;
+            if (geometry.length &#x3D;&#x3D; 1) {
+              type &#x3D; &#x27;LineString&#x27;;
+              geometry &#x3D; geometry[0];
+            }
           } else if (rawType &#x3D;&#x3D;&#x3D; 3) {
-            type &#x3D; geometry.length &#x3D;&#x3D;&#x3D; 1 ? &#x27;Polygon&#x27; : &#x27;MultiPolygon&#x27;;
+            type &#x3D; &#x27;Polygon&#x27;;
+            if (geometry.length &gt; 1) {
+              type &#x3D; &#x27;MultiPolygon&#x27;;
+              geometry &#x3D; [geometry];
+            }
           }
 
           return {
             &#x27;type&#x27;: &#x27;Feature&#x27;,
             &#x27;geometry&#x27;: {
               &#x27;type&#x27;: type,
-              &#x27;coordinates&#x27;: geometry.length &#x3D;&#x3D; 1 ? geometry : [geometry]
+              &#x27;coordinates&#x27;: geometry
             },
             &#x27;properties&#x27;: value.tags
           };

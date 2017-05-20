@@ -102,31 +102,31 @@ var dragBox &#x3D; new ol.interaction.DragBox({
 
 map.addInteraction(dragBox);
 
-var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
-
 dragBox.on(&#x27;boxend&#x27;, function() {
   // features that intersect the box are added to the collection of
-  // selected features, and their names are displayed in the &quot;info&quot;
-  // div
-  var info &#x3D; [];
+  // selected features
   var extent &#x3D; dragBox.getGeometry().getExtent();
   vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
     selectedFeatures.push(feature);
-    info.push(feature.get(&#x27;name&#x27;));
   });
-  if (info.length &gt; 0) {
-    infoBox.innerHTML &#x3D; info.join(&#x27;, &#x27;);
-  }
 });
 
 // clear selection when drawing a new box and when clicking on the map
 dragBox.on(&#x27;boxstart&#x27;, function() {
   selectedFeatures.clear();
-  infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
 });
-map.on(&#x27;click&#x27;, function() {
-  selectedFeatures.clear();
-  infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
+
+var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
+
+selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
+  var names &#x3D; selectedFeatures.getArray().map(function(feature) {
+    return feature.get(&#x27;name&#x27;);
+  });
+  if (names.length &gt; 0) {
+    infoBox.innerHTML &#x3D; names.join(&#x27;, &#x27;);
+  } else {
+    infoBox.innerHTML &#x3D; &#x27;No countries selected&#x27;;
+  }
 });
 </textarea>
           <textarea class="hidden" name="css">.ol-dragbox {
@@ -194,31 +194,31 @@ map.on(&#x27;click&#x27;, function() {
 
       map.addInteraction(dragBox);
 
-      var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
-
       dragBox.on(&#x27;boxend&#x27;, function() {
         // features that intersect the box are added to the collection of
-        // selected features, and their names are displayed in the &quot;info&quot;
-        // div
-        var info &#x3D; [];
+        // selected features
         var extent &#x3D; dragBox.getGeometry().getExtent();
         vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
           selectedFeatures.push(feature);
-          info.push(feature.get(&#x27;name&#x27;));
         });
-        if (info.length &gt; 0) {
-          infoBox.innerHTML &#x3D; info.join(&#x27;, &#x27;);
-        }
       });
 
       // clear selection when drawing a new box and when clicking on the map
       dragBox.on(&#x27;boxstart&#x27;, function() {
         selectedFeatures.clear();
-        infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
       });
-      map.on(&#x27;click&#x27;, function() {
-        selectedFeatures.clear();
-        infoBox.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
+
+      var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
+
+      selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
+        var names &#x3D; selectedFeatures.getArray().map(function(feature) {
+          return feature.get(&#x27;name&#x27;);
+        });
+        if (names.length &gt; 0) {
+          infoBox.innerHTML &#x3D; names.join(&#x27;, &#x27;);
+        } else {
+          infoBox.innerHTML &#x3D; &#x27;No countries selected&#x27;;
+        }
       });
     &lt;/script&gt;
   &lt;/body&gt;
