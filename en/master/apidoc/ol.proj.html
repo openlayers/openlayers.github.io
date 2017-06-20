@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.1.1 API - Namespace: proj</title>
+    <title>OpenLayers v4.2.0 API - Namespace: proj</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1223,6 +1223,10 @@
                     <a href="ol.MapEvent.html#event:moveend">moveend</a>
                 </li>
             
+                <li data-name="ol.MapEvent#event:movestart" class="">
+                    <a href="ol.MapEvent.html#event:movestart">movestart</a>
+                </li>
+            
                 <li data-name="ol.MapBrowserEvent#event:pointerdrag" class="">
                     <a href="ol.MapBrowserEvent.html#event:pointerdrag">pointerdrag</a>
                 </li>
@@ -1868,6 +1872,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutionForExtent" class="">
+                    <a href="ol.View.html#getResolutionForExtent">getResolutionForExtent</a>
                 </li>
             
                 <li data-name="ol.View#getResolutions" class="">
@@ -3353,6 +3361,10 @@
             
                 <li data-name="ol.extent.extend" class="">
                     <a href="ol.extent.html#.extend">extend</a>
+                </li>
+            
+                <li data-name="ol.extent.getArea" class="">
+                    <a href="ol.extent.html#.getArea">getArea</a>
                 </li>
             
                 <li data-name="ol.extent.getBottomLeft" class="">
@@ -15735,7 +15747,7 @@
         <h1 class="page-title" data-filename="ol.proj.html">Namespace: proj</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -15929,7 +15941,7 @@ this.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 202
+            src/ol/proj.js, line 205
         </div>
         
         
@@ -16138,7 +16150,7 @@ extents and coordinate arrays.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 99
+            src/ol/proj.js, line 105
         </div>
         
         
@@ -16263,7 +16275,7 @@ to transform between projections with equal meaning.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 141
+            src/ol/proj.js, line 147
         </div>
         
         
@@ -16388,7 +16400,7 @@ looked up by their code.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 314
+            src/ol/proj.js, line 317
         </div>
         
         
@@ -16548,7 +16560,7 @@ Equivalent.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 254
+            src/ol/proj.js, line 257
         </div>
         
         
@@ -16708,7 +16720,7 @@ Coordinate projected to the target projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 284
+            src/ol/proj.js, line 287
         </div>
         
         
@@ -16843,7 +16855,7 @@ Projection object, or null if not in list.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 56
+            src/ol/proj.js, line 61
         </div>
         
         
@@ -16857,9 +16869,14 @@ Projection object, or null if not in list.
         <p>Get the resolution of the point in degrees or distance units.
 For projections with degrees as the unit this will simply return the
 provided resolution. For other projections the point resolution is
-estimated by transforming the 'point' pixel to EPSG:4326,
+by default estimated by transforming the 'point' pixel to EPSG:4326,
 measuring its width and height on the normal sphere,
-and taking the average of the width and height.</p>
+and taking the average of the width and height.
+A custom function can be provided for a specific projection, either
+by setting the <code>getPointResolution</code> option in the
+<a href="ol.proj.Projection.html"><code>ol.proj.Projection</code></a> constructor or by using
+<a href="ol.proj.Projection.html#setGetPointResolution"><code>ol.proj.Projection#setGetPointResolution</code></a> to change an existing
+projection object.</p>
     </div>
     
 
@@ -16898,7 +16915,7 @@ and taking the average of the width and height.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.proj.Projection.html">ol.proj.Projection</a></span>
+<span class="param-type"><a href="ol.html#.ProjectionLike">ol.ProjectionLike</a></span>
 
 
             
@@ -17031,7 +17048,7 @@ Point resolution at point in projection units.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 339
+            src/ol/proj.js, line 342
         </div>
         
         
@@ -17320,7 +17337,7 @@ ol.proj.setProj4(proj4);</code></pre>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 269
+            src/ol/proj.js, line 272
         </div>
         
         
@@ -17480,7 +17497,7 @@ Coordinate as longitude and latitude, i.e. an array
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 437
+            src/ol/proj.js, line 440
         </div>
         
         
@@ -17667,7 +17684,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 453
+            src/ol/proj.js, line 456
         </div>
         
         

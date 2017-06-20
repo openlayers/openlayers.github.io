@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>4.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -64,6 +64,7 @@
       <option value="Point">Point</option>
       <option value="LineString">LineString</option>
       <option value="Polygon">Polygon</option>
+      <option value="Circle">Circle</option>
     </select>
   </div>
 </form>
@@ -156,6 +157,8 @@ var Draw &#x3D; {
     this.LineString.setActive(false);
     map.addInteraction(this.Polygon);
     this.Polygon.setActive(false);
+    map.addInteraction(this.Circle);
+    this.Circle.setActive(false);
   },
   Point: new ol.interaction.Draw({
     source: vector.getSource(),
@@ -168,6 +171,10 @@ var Draw &#x3D; {
   Polygon: new ol.interaction.Draw({
     source: vector.getSource(),
     type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
+  }),
+  Circle: new ol.interaction.Draw({
+    source: vector.getSource(),
+    type: /** @type {ol.geom.GeometryType} */ (&#x27;Circle&#x27;)
   }),
   getActive: function() {
     return this.activeType ? this[this.activeType].getActive() : false;
@@ -239,21 +246,22 @@ map.addInteraction(snap);
       &lt;option value&#x3D;&quot;Point&quot;&gt;Point&lt;/option&gt;
       &lt;option value&#x3D;&quot;LineString&quot;&gt;LineString&lt;/option&gt;
       &lt;option value&#x3D;&quot;Polygon&quot;&gt;Polygon&lt;/option&gt;
+      &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
     &lt;/select&gt;
   &lt;/div&gt;
 &lt;/form&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.1.1/css/ol.css,https://openlayers.org/en/v4.1.1/build/ol.js">
+          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.2.0/css/ol.css,https://openlayers.org/en/v4.2.0/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Snap Interaction&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.1.1/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.1.1/build/ol.js"&gt;&lt;/script&gt;
+    &lt;script src="https://openlayers.org/en/v4.2.0/build/ol.js"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -276,6 +284,7 @@ map.addInteraction(snap);
           &lt;option value&#x3D;&quot;Point&quot;&gt;Point&lt;/option&gt;
           &lt;option value&#x3D;&quot;LineString&quot;&gt;LineString&lt;/option&gt;
           &lt;option value&#x3D;&quot;Polygon&quot;&gt;Polygon&lt;/option&gt;
+          &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
         &lt;/select&gt;
       &lt;/div&gt;
     &lt;/form&gt;
@@ -348,6 +357,8 @@ map.addInteraction(snap);
           this.LineString.setActive(false);
           map.addInteraction(this.Polygon);
           this.Polygon.setActive(false);
+          map.addInteraction(this.Circle);
+          this.Circle.setActive(false);
         },
         Point: new ol.interaction.Draw({
           source: vector.getSource(),
@@ -360,6 +371,10 @@ map.addInteraction(snap);
         Polygon: new ol.interaction.Draw({
           source: vector.getSource(),
           type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
+        }),
+        Circle: new ol.interaction.Draw({
+          source: vector.getSource(),
+          type: /** @type {ol.geom.GeometryType} */ (&#x27;Circle&#x27;)
         }),
         getActive: function() {
           return this.activeType ? this[this.activeType].getActive() : false;
@@ -430,7 +445,7 @@ map.addInteraction(snap);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.1.1' != latestVersion) {
+    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.1.1 API - Namespace: ol</title>
+    <title>OpenLayers v4.2.0 API - Namespace: ol</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1223,6 +1223,10 @@
                     <a href="ol.MapEvent.html#event:moveend">moveend</a>
                 </li>
             
+                <li data-name="ol.MapEvent#event:movestart" class="">
+                    <a href="ol.MapEvent.html#event:movestart">movestart</a>
+                </li>
+            
                 <li data-name="ol.MapBrowserEvent#event:pointerdrag" class="">
                     <a href="ol.MapBrowserEvent.html#event:pointerdrag">pointerdrag</a>
                 </li>
@@ -1868,6 +1872,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutionForExtent" class="">
+                    <a href="ol.View.html#getResolutionForExtent">getResolutionForExtent</a>
                 </li>
             
                 <li data-name="ol.View#getResolutions" class="">
@@ -3353,6 +3361,10 @@
             
                 <li data-name="ol.extent.extend" class="">
                     <a href="ol.extent.html#.extend">extend</a>
+                </li>
+            
+                <li data-name="ol.extent.getArea" class="">
+                    <a href="ol.extent.html#.getArea">getArea</a>
                 </li>
             
                 <li data-name="ol.extent.getBottomLeft" class="">
@@ -15735,7 +15747,7 @@
         <h1 class="page-title" data-filename="ol.html">Namespace: ol</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -16418,7 +16430,7 @@ being filled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 146
+            src/ol/typedefs.js, line 156
         </div>
         
         
@@ -16496,7 +16508,7 @@ being filled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 155
+            src/ol/typedefs.js, line 165
         </div>
         
         
@@ -16575,7 +16587,7 @@ true should be returned.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 166
+            src/ol/typedefs.js, line 176
         </div>
         
         
@@ -16655,7 +16667,7 @@ argument.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 175
+            src/ol/typedefs.js, line 185
         </div>
         
         
@@ -16833,7 +16845,7 @@ argument.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 228
+            src/ol/typedefs.js, line 238
         </div>
         
         
@@ -16917,7 +16929,7 @@ source.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 239
+            src/ol/typedefs.js, line 249
         </div>
         
         
@@ -16996,7 +17008,7 @@ resolution. The <code>this</code> keyword inside the function references the
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 252
+            src/ol/typedefs.js, line 262
         </div>
         
         
@@ -17078,7 +17090,7 @@ a <code>{number}</code> representing the resolution (map units per pixel) and an
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 291
+            src/ol/typedefs.js, line 301
         </div>
         
         
@@ -17163,7 +17175,7 @@ image element would be set to a data URI when the content is loaded.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 344
+            src/ol/typedefs.js, line 354
         </div>
         
         
@@ -17396,7 +17408,7 @@ undefined.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 437
+            src/ol/typedefs.js, line 447
         </div>
         
         
@@ -17483,7 +17495,7 @@ data object is accessible from raster events, where it can be initialized in
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 462
+            src/ol/typedefs.js, line 472
         </div>
         
         
@@ -17562,7 +17574,7 @@ returns a <code>{number}</code>.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 505
+            src/ol/typedefs.js, line 515
         </div>
         
         
@@ -17691,7 +17703,7 @@ or <code>false</code> otherwise.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 605
+            src/ol/typedefs.js, line 615
         </div>
         
         
@@ -17770,7 +17782,7 @@ or an array of them. This way e.g. a vector layer can be styled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 615
+            src/ol/typedefs.js, line 625
         </div>
         
         
@@ -17899,7 +17911,7 @@ grid. The order is <code>z</code>, <code>x</code>, and <code>y</code>. <code>z</
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 642
+            src/ol/typedefs.js, line 652
         </div>
         
         
@@ -17977,7 +17989,7 @@ the url as arguments.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 674
+            src/ol/typedefs.js, line 684
         </div>
         
         
@@ -18060,7 +18072,7 @@ coordinate.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 685
+            src/ol/typedefs.js, line 695
         </div>
         
         

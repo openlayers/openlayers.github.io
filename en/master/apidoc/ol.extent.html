@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.1.1 API - Namespace: extent</title>
+    <title>OpenLayers v4.2.0 API - Namespace: extent</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1223,6 +1223,10 @@
                     <a href="ol.MapEvent.html#event:moveend">moveend</a>
                 </li>
             
+                <li data-name="ol.MapEvent#event:movestart" class="">
+                    <a href="ol.MapEvent.html#event:movestart">movestart</a>
+                </li>
+            
                 <li data-name="ol.MapBrowserEvent#event:pointerdrag" class="">
                     <a href="ol.MapBrowserEvent.html#event:pointerdrag">pointerdrag</a>
                 </li>
@@ -1868,6 +1872,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutionForExtent" class="">
+                    <a href="ol.View.html#getResolutionForExtent">getResolutionForExtent</a>
                 </li>
             
                 <li data-name="ol.View#getResolutions" class="">
@@ -3353,6 +3361,10 @@
             
                 <li data-name="ol.extent.extend" class="">
                     <a href="ol.extent.html#.extend">extend</a>
+                </li>
+            
+                <li data-name="ol.extent.getArea" class="">
+                    <a href="ol.extent.html#.getArea">getArea</a>
                 </li>
             
                 <li data-name="ol.extent.getBottomLeft" class="">
@@ -15735,7 +15747,7 @@
         <h1 class="page-title" data-filename="ol.extent.html">Namespace: extent</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -15821,7 +15833,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 779
+            src/ol/extent.js, line 781
         </div>
         
         
@@ -17215,6 +17227,139 @@ A reference to the first (extended) extent.
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id=".getArea">
+        </div>
+        <h4 class="name">
+            ol.extent.getArea<span class="signature">(extent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/extent.js, line 434
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get the size of an extent.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Extent">ol.Extent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Extent.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Area.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id=".getBottomLeft">
         </div>
         <h4 class="name">
@@ -17225,7 +17370,7 @@ A reference to the first (extended) extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 447
+            src/ol/extent.js, line 449
         </div>
         
         
@@ -17358,7 +17503,7 @@ Bottom left coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 458
+            src/ol/extent.js, line 460
         </div>
         
         
@@ -17491,7 +17636,7 @@ Bottom right coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 469
+            src/ol/extent.js, line 471
         </div>
         
         
@@ -17624,7 +17769,7 @@ Center.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 551
+            src/ol/extent.js, line 553
         </div>
         
         
@@ -17757,7 +17902,7 @@ Height.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 575
+            src/ol/extent.js, line 577
         </div>
         
         
@@ -17940,7 +18085,7 @@ Intersecting extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 618
+            src/ol/extent.js, line 620
         </div>
         
         
@@ -18073,7 +18218,7 @@ The extent size.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 629
+            src/ol/extent.js, line 631
         </div>
         
         
@@ -18206,7 +18351,7 @@ Top left coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 640
+            src/ol/extent.js, line 642
         </div>
         
         
@@ -18339,7 +18484,7 @@ Top right coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 651
+            src/ol/extent.js, line 653
         </div>
         
         
@@ -18472,7 +18617,7 @@ Width.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 663
+            src/ol/extent.js, line 665
         </div>
         
         
@@ -18630,7 +18775,7 @@ The two extents intersect.
         </h4>
         
         <div class="tag-source">
-            src/ol/extent.js, line 677
+            src/ol/extent.js, line 679
         </div>
         
         

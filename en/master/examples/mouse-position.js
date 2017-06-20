@@ -28,7 +28,7 @@ var map = new ol.Map({
 
 var projectionSelect = document.getElementById('projection');
 projectionSelect.addEventListener('change', function(event) {
-  mousePositionControl.setProjection(ol.proj.get(event.target.value));
+  mousePositionControl.setProjection(event.target.value);
 });
 
 var precisionInput = document.getElementById('precision');

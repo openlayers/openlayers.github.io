@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.1.1 API - Class: View</title>
+    <title>OpenLayers v4.2.0 API - Class: View</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1223,6 +1223,10 @@
                     <a href="ol.MapEvent.html#event:moveend">moveend</a>
                 </li>
             
+                <li data-name="ol.MapEvent#event:movestart" class="">
+                    <a href="ol.MapEvent.html#event:movestart">movestart</a>
+                </li>
+            
                 <li data-name="ol.MapBrowserEvent#event:pointerdrag" class="">
                     <a href="ol.MapBrowserEvent.html#event:pointerdrag">pointerdrag</a>
                 </li>
@@ -1868,6 +1872,10 @@
             
                 <li data-name="ol.View#getResolution" class="">
                     <a href="ol.View.html#getResolution">getResolution</a>
+                </li>
+            
+                <li data-name="ol.View#getResolutionForExtent" class="">
+                    <a href="ol.View.html#getResolutionForExtent">getResolutionForExtent</a>
                 </li>
             
                 <li data-name="ol.View#getResolutions" class="">
@@ -3353,6 +3361,10 @@
             
                 <li data-name="ol.extent.extend" class="">
                     <a href="ol.extent.html#.extend">extend</a>
+                </li>
+            
+                <li data-name="ol.extent.getArea" class="">
+                    <a href="ol.extent.html#.getArea">getArea</a>
                 </li>
             
                 <li data-name="ol.extent.getBottomLeft" class="">
@@ -15735,7 +15747,7 @@
         <h1 class="page-title" data-filename="ol.View.html">Class: View</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -15805,7 +15817,7 @@ default the center is not constrained at all.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 81
+            src/ol/view.js, line 80
         </div>
         
         
@@ -16567,7 +16579,7 @@ the <code>ol.View#constrainResolution</code> method.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 254
+            src/ol/view.js, line 256
         </div>
         
         
@@ -16943,7 +16955,7 @@ between 0 and 1 representing the progress toward the destination state.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 556
+            src/ol/view.js, line 566
         </div>
         
         
@@ -17080,7 +17092,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 334
+            src/ol/view.js, line 336
         </div>
         
         
@@ -17157,7 +17169,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 909
+            src/ol/view.js, line 921
         </div>
         
         
@@ -17410,7 +17422,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 485
+            src/ol/view.js, line 487
         </div>
         
         
@@ -17546,7 +17558,7 @@ Constrained center.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 498
+            src/ol/view.js, line 500
         </div>
         
         
@@ -17732,7 +17744,7 @@ Constrained resolution.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 513
+            src/ol/view.js, line 515
         </div>
         
         
@@ -18027,7 +18039,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 806
+            src/ol/view.js, line 818
         </div>
         
         
@@ -18618,7 +18630,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 315
+            src/ol/view.js, line 317
         </div>
         
         
@@ -18704,7 +18716,7 @@ The view is being animated.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 525
+            src/ol/view.js, line 527
         </div>
         
         
@@ -18790,7 +18802,7 @@ The center of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 325
+            src/ol/view.js, line 327
         </div>
         
         
@@ -18964,7 +18976,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 574
+            src/ol/view.js, line 584
         </div>
         
         
@@ -19050,7 +19062,7 @@ The maximum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 594
+            src/ol/view.js, line 604
         </div>
         
         
@@ -19136,7 +19148,7 @@ The maximum zoom level.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 584
+            src/ol/view.js, line 594
         </div>
         
         
@@ -19222,7 +19234,7 @@ The minimum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 614
+            src/ol/view.js, line 624
         </div>
         
         
@@ -19308,7 +19320,7 @@ The minimum zoom level.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 634
+            src/ol/view.js, line 644
         </div>
         
         
@@ -19482,7 +19494,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 645
+            src/ol/view.js, line 655
         </div>
         
         
@@ -19558,6 +19570,165 @@ The resolution of the view.
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="getResolutionForExtent">
+        </div>
+        <h4 class="name">
+            getResolutionForExtent<span class="signature">(extent, <span class="optional">opt_size</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/view.js, line 680
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get the resolution for a provided extent (in map units) and size (in pixels).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Extent">ol.Extent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Extent.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Size">ol.Size</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Box pixel size.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The resolution at which the provided extent will render at
+    the given size.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="getResolutions">
         </div>
         <h4 class="name">
@@ -19568,7 +19739,7 @@ The resolution of the view.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 657
+            src/ol/view.js, line 667
         </div>
         
         
@@ -19744,7 +19915,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 705
+            src/ol/view.js, line 717
         </div>
         
         
@@ -19830,7 +20001,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 757
+            src/ol/view.js, line 769
         </div>
         
         
@@ -19917,7 +20088,7 @@ Zoom.
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 773
+            src/ol/view.js, line 785
         </div>
         
         
@@ -20430,7 +20601,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 943
+            src/ol/view.js, line 955
         </div>
         
         
@@ -20755,7 +20926,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 958
+            src/ol/view.js, line 970
         </div>
         
         
@@ -20882,7 +21053,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 604
+            src/ol/view.js, line 614
         </div>
         
         
@@ -21006,7 +21177,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 624
+            src/ol/view.js, line 634
         </div>
         
         
@@ -21282,7 +21453,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 984
+            src/ol/view.js, line 996
         </div>
         
         
@@ -21409,7 +21580,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 998
+            src/ol/view.js, line 1010
         </div>
         
         
@@ -21533,7 +21704,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/view.js, line 1011
+            src/ol/view.js, line 1023
         </div>
         
         
