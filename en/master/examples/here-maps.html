@@ -152,11 +152,11 @@ var map &#x3D; new ol.Map({
 
 function createUrl(tpl, layerDesc) {
   return tpl
-    .replace(&#x27;{base}&#x27;, layerDesc.base)
-    .replace(&#x27;{type}&#x27;, layerDesc.type)
-    .replace(&#x27;{scheme}&#x27;, layerDesc.scheme)
-    .replace(&#x27;{app_id}&#x27;, layerDesc.app_id)
-    .replace(&#x27;{app_code}&#x27;, layerDesc.app_code);
+      .replace(&#x27;{base}&#x27;, layerDesc.base)
+      .replace(&#x27;{type}&#x27;, layerDesc.type)
+      .replace(&#x27;{scheme}&#x27;, layerDesc.scheme)
+      .replace(&#x27;{app_id}&#x27;, layerDesc.app_id)
+      .replace(&#x27;{app_code}&#x27;, layerDesc.app_code);
 }
 
 var select &#x3D; document.getElementById(&#x27;layer-select&#x27;);
@@ -281,11 +281,11 @@ onChange();
 
       function createUrl(tpl, layerDesc) {
         return tpl
-          .replace(&#x27;{base}&#x27;, layerDesc.base)
-          .replace(&#x27;{type}&#x27;, layerDesc.type)
-          .replace(&#x27;{scheme}&#x27;, layerDesc.scheme)
-          .replace(&#x27;{app_id}&#x27;, layerDesc.app_id)
-          .replace(&#x27;{app_code}&#x27;, layerDesc.app_code);
+            .replace(&#x27;{base}&#x27;, layerDesc.base)
+            .replace(&#x27;{type}&#x27;, layerDesc.type)
+            .replace(&#x27;{scheme}&#x27;, layerDesc.scheme)
+            .replace(&#x27;{app_id}&#x27;, layerDesc.app_id)
+            .replace(&#x27;{app_code}&#x27;, layerDesc.app_code);
       }
 
       var select &#x3D; document.getElementById(&#x27;layer-select&#x27;);

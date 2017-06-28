@@ -256,7 +256,7 @@ function stopAnimation(ended) {
   // if animation cancelled set the marker at the beginning
   var coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
   /** @type {ol.geom.Point} */ (geoMarker.getGeometry())
-    .setCoordinates(coord);
+      .setCoordinates(coord);
   //remove listener
   map.un(&#x27;postcompose&#x27;, moveFeature);
 }
@@ -476,7 +476,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         // if animation cancelled set the marker at the beginning
         var coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
         /** @type {ol.geom.Point} */ (geoMarker.getGeometry())
-          .setCoordinates(coord);
+            .setCoordinates(coord);
         //remove listener
         map.un(&#x27;postcompose&#x27;, moveFeature);
       }

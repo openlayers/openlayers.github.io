@@ -141,10 +141,10 @@ fetch(url).then(function(response) {
       var data &#x3D; tileIndex.getTile(tileCoord[0], tileCoord[1], -tileCoord[2] - 1);
 
       var features &#x3D; format.readFeatures(
-        JSON.stringify({
-          type: &#x27;FeatureCollection&#x27;,
-          features: data ? data.features : []
-        }, replacer));
+          JSON.stringify({
+            type: &#x27;FeatureCollection&#x27;,
+            features: data ? data.features : []
+          }, replacer));
       tile.setLoader(function() {
         tile.setFeatures(features);
         tile.setProjection(tilePixels);
@@ -252,10 +252,10 @@ fetch(url).then(function(response) {
             var data &#x3D; tileIndex.getTile(tileCoord[0], tileCoord[1], -tileCoord[2] - 1);
 
             var features &#x3D; format.readFeatures(
-              JSON.stringify({
-                type: &#x27;FeatureCollection&#x27;,
-                features: data ? data.features : []
-              }, replacer));
+                JSON.stringify({
+                  type: &#x27;FeatureCollection&#x27;,
+                  features: data ? data.features : []
+                }, replacer));
             tile.setLoader(function() {
               tile.setFeatures(features);
               tile.setProjection(tilePixels);

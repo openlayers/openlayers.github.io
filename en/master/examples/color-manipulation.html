@@ -174,7 +174,7 @@ function rgb2xyz(x) {
 
 function xyz2rgb(x) {
   return 255 * (x &lt;&#x3D; 0.0031308 ?
-      12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+    12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
 }
 
 var raster &#x3D; new ol.source.Raster({
@@ -405,7 +405,7 @@ controlIds.forEach(function(id) {
 
       function xyz2rgb(x) {
         return 255 * (x &lt;&#x3D; 0.0031308 ?
-            12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+          12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
       }
 
       var raster &#x3D; new ol.source.Raster({

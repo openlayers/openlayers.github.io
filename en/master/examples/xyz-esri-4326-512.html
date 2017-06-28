@@ -89,8 +89,8 @@ var map &#x3D; new ol.Map({
         tileSize: tileSize,
         tileUrlFunction: function(tileCoord) {
           return urlTemplate.replace(&#x27;{z}&#x27;, (tileCoord[0] - 1).toString())
-                            .replace(&#x27;{x}&#x27;, tileCoord[1].toString())
-                            .replace(&#x27;{y}&#x27;, (-tileCoord[2] - 1).toString());
+              .replace(&#x27;{x}&#x27;, tileCoord[1].toString())
+              .replace(&#x27;{y}&#x27;, (-tileCoord[2] - 1).toString());
         },
         wrapX: true
       })
@@ -145,8 +145,8 @@ var map &#x3D; new ol.Map({
               tileSize: tileSize,
               tileUrlFunction: function(tileCoord) {
                 return urlTemplate.replace(&#x27;{z}&#x27;, (tileCoord[0] - 1).toString())
-                                  .replace(&#x27;{x}&#x27;, tileCoord[1].toString())
-                                  .replace(&#x27;{y}&#x27;, (-tileCoord[2] - 1).toString());
+                    .replace(&#x27;{x}&#x27;, tileCoord[1].toString())
+                    .replace(&#x27;{y}&#x27;, (-tileCoord[2] - 1).toString());
               },
               wrapX: true
             })

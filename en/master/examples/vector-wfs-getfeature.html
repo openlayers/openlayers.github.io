@@ -102,8 +102,8 @@ var featureRequest &#x3D; new ol.format.WFS().writeGetFeature({
   featureTypes: [&#x27;water_areas&#x27;],
   outputFormat: &#x27;application/json&#x27;,
   filter: ol.format.filter.and(
-    ol.format.filter.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
-    ol.format.filter.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
+      ol.format.filter.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
+      ol.format.filter.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
   )
 });
 
@@ -173,8 +173,8 @@ fetch(&#x27;https://ahocevar.com/geoserver/wfs&#x27;, {
         featureTypes: [&#x27;water_areas&#x27;],
         outputFormat: &#x27;application/json&#x27;,
         filter: ol.format.filter.and(
-          ol.format.filter.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
-          ol.format.filter.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
+            ol.format.filter.like(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
+            ol.format.filter.equalTo(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
         )
       });
 

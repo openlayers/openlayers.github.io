@@ -148,7 +148,7 @@ positionFeature.setStyle(new ol.style.Style({
 geolocation.on(&#x27;change:position&#x27;, function() {
   var coordinates &#x3D; geolocation.getPosition();
   positionFeature.setGeometry(coordinates ?
-      new ol.geom.Point(coordinates) : null);
+    new ol.geom.Point(coordinates) : null);
 });
 
 new ol.layer.Vector({
@@ -270,7 +270,7 @@ new ol.layer.Vector({
       geolocation.on(&#x27;change:position&#x27;, function() {
         var coordinates &#x3D; geolocation.getPosition();
         positionFeature.setGeometry(coordinates ?
-            new ol.geom.Point(coordinates) : null);
+          new ol.geom.Point(coordinates) : null);
       });
 
       new ol.layer.Vector({

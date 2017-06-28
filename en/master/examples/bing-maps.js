@@ -1,5 +1,6 @@
 var styles = [
   'Road',
+  'RoadOnDemand',
   'Aerial',
   'AerialWithLabels',
   'collinsBart',

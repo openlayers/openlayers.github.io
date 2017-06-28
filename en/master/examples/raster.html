@@ -238,13 +238,13 @@ function plot(resolution, counts, threshold) {
     var value &#x3D; counts.min + (index * counts.delta);
     return &#x27;bar&#x27; + (value &gt;&#x3D; threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
   })
-  .attr(&#x27;width&#x27;, barWidth - 2);
+      .attr(&#x27;width&#x27;, barWidth - 2);
 
   bar.transition().attr(&#x27;transform&#x27;, function(value, index) {
     return &#x27;translate(&#x27; + (index * barWidth) + &#x27;, &#x27; +
         (plotHeight - yScale(value)) + &#x27;)&#x27;;
   })
-  .attr(&#x27;height&#x27;, yScale);
+      .attr(&#x27;height&#x27;, yScale);
 
   bar.on(&#x27;mousemove&#x27;, function(count, index) {
     var threshold &#x3D; counts.min + (index * counts.delta);
@@ -526,13 +526,13 @@ function message(value, area) {
           var value &#x3D; counts.min + (index * counts.delta);
           return &#x27;bar&#x27; + (value &gt;&#x3D; threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
         })
-        .attr(&#x27;width&#x27;, barWidth - 2);
+            .attr(&#x27;width&#x27;, barWidth - 2);
 
         bar.transition().attr(&#x27;transform&#x27;, function(value, index) {
           return &#x27;translate(&#x27; + (index * barWidth) + &#x27;, &#x27; +
               (plotHeight - yScale(value)) + &#x27;)&#x27;;
         })
-        .attr(&#x27;height&#x27;, yScale);
+            .attr(&#x27;height&#x27;, yScale);
 
         bar.on(&#x27;mousemove&#x27;, function(count, index) {
           var threshold &#x3D; counts.min + (index * counts.delta);
