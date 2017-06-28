@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-55-g4c9c9fa
+// Version: v4.2.0-59-gc0e4da6
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -16856,6 +16856,7 @@ goog.require('ol.extent');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.Polygon');
 goog.require('ol.geom.SimpleGeometry');
+goog.require('ol.math');
 goog.require('ol.obj');
 goog.require('ol.proj');
 goog.require('ol.proj.Units');
@@ -17136,7 +17137,10 @@ ol.View.prototype.animate = function(var_args) {
 
     if (options.rotation !== undefined) {
       animation.sourceRotation = rotation;
-      animation.targetRotation = options.rotation;
+      var delta =
+          ol.math.modulo(options.rotation - rotation + Math.PI, 2 * Math.PI) -
+          Math.PI;
+      animation.targetRotation = rotation + delta;
       rotation = animation.targetRotation;
     }
 
@@ -17647,6 +17651,18 @@ ol.View.prototype.getZoomForResolution = function(resolution) {
 
 
 /**
+ * Get the resolution for a zoom level.
+ * @param {number} zoom Zoom level.
+ * @return {number} The view resolution for the provided zoom level.
+ * @api
+ */
+ol.View.prototype.getResolutionForZoom = function(zoom) {
+  return /** @type {number} */ (this.constrainResolution(
+      this.maxResolution_, zoom - this.minZoom_, 0));
+};
+
+
+/**
  * Fit the given geometry or extent based on the given map size and border.
  * The size is pixel dimensions of the box to fit the extent into.
  * In most cases you will want to use the map size, that is `map.getSize()`.
@@ -17862,9 +17878,7 @@ ol.View.prototype.setRotation = function(rotation) {
  * @api
  */
 ol.View.prototype.setZoom = function(zoom) {
-  var resolution = this.constrainResolution(
-      this.maxResolution_, zoom - this.minZoom_, 0);
-  this.setResolution(resolution);
+  this.setResolution(this.getResolutionForZoom(zoom));
 };
 
 
@@ -80967,6 +80981,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.View.prototype,
+    'getResolutionForZoom',
+    ol.View.prototype.getResolutionForZoom);
+
+goog.exportProperty(
+    ol.View.prototype,
     'fit',
     ol.View.prototype.fit);
 
@@ -93084,7 +93103,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-55-g4c9c9fa';
+ol.VERSION = 'v4.2.0-59-gc0e4da6';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

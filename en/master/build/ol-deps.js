@@ -333,7 +333,7 @@ goog.addDependency('../../../ol/ol/uri.js', ['ol.uri'], [], false);
 goog.addDependency('../../../ol/ol/vec/mat4.js', ['ol.vec.Mat4'], [], false);
 goog.addDependency('../../../ol/ol/vectorimagetile.js', ['ol.VectorImageTile'], ['ol', 'ol.Tile', 'ol.TileState', 'ol.array', 'ol.dom', 'ol.events', 'ol.events.EventType', 'ol.extent', 'ol.featureloader'], false);
 goog.addDependency('../../../ol/ol/vectortile.js', ['ol.VectorTile'], ['ol', 'ol.Tile', 'ol.TileState'], false);
-goog.addDependency('../../../ol/ol/view.js', ['ol.View'], ['ol', 'ol.CenterConstraint', 'ol.Object', 'ol.ResolutionConstraint', 'ol.RotationConstraint', 'ol.ViewHint', 'ol.ViewProperty', 'ol.array', 'ol.asserts', 'ol.coordinate', 'ol.easing', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.Polygon', 'ol.geom.SimpleGeometry', 'ol.obj', 'ol.proj', 'ol.proj.Units'], false);
+goog.addDependency('../../../ol/ol/view.js', ['ol.View'], ['ol', 'ol.CenterConstraint', 'ol.Object', 'ol.ResolutionConstraint', 'ol.RotationConstraint', 'ol.ViewHint', 'ol.ViewProperty', 'ol.array', 'ol.asserts', 'ol.coordinate', 'ol.easing', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.Polygon', 'ol.geom.SimpleGeometry', 'ol.math', 'ol.obj', 'ol.proj', 'ol.proj.Units'], false);
 goog.addDependency('../../../ol/ol/viewhint.js', ['ol.ViewHint'], [], false);
 goog.addDependency('../../../ol/ol/viewproperty.js', ['ol.ViewProperty'], [], false);
 goog.addDependency('../../../ol/ol/webgl.js', ['ol.webgl'], ['ol'], false);
