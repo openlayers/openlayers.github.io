@@ -67,9 +67,16 @@ onClick('rotate-right', function() {
 });
 
 onClick('rotate-around-rome', function() {
+  // Rotation animation takes the shortest arc, so animate in two parts
+  var rotation = view.getRotation();
   view.animate({
-    rotation: view.getRotation() + 2 * Math.PI,
-    anchor: rome
+    rotation: rotation + Math.PI,
+    anchor: rome,
+    easing: ol.easing.easeIn
+  }, {
+    rotation: rotation + 2 * Math.PI,
+    anchor: rome,
+    easing: ol.easing.easeOut
   });
 });
 
@@ -97,10 +104,19 @@ onClick('bounce-to-istanbul', function() {
 });
 
 onClick('spin-to-rome', function() {
+  // Rotation animation takes the shortest arc, so animate in two parts
+  var center = view.getCenter();
   view.animate({
+    center: [
+      center[0] + (rome[0] - center[0]) / 2,
+      center[1] + (rome[1] - center[1]) / 2
+    ],
+    rotation: Math.PI,
+    easing: ol.easing.easeIn
+  }, {
     center: rome,
     rotation: 2 * Math.PI,
-    duration: 2000
+    easing: ol.easing.easeOut
   });
 });
 

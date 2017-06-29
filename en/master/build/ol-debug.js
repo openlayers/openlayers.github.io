@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-59-gc0e4da6
+// Version: v4.2.0-69-gf88d8b8
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -17137,9 +17137,7 @@ ol.View.prototype.animate = function(var_args) {
 
     if (options.rotation !== undefined) {
       animation.sourceRotation = rotation;
-      var delta =
-          ol.math.modulo(options.rotation - rotation + Math.PI, 2 * Math.PI) -
-          Math.PI;
+      var delta = ol.math.modulo(options.rotation - rotation + Math.PI, 2 * Math.PI) - Math.PI;
       animation.targetRotation = rotation + delta;
       rotation = animation.targetRotation;
     }
@@ -17240,7 +17238,7 @@ ol.View.prototype.updateAnimations_ = function() {
       }
       if (animation.sourceRotation !== undefined && animation.targetRotation !== undefined) {
         var rotation = progress === 1 ?
-          animation.targetRotation :
+          ol.math.modulo(animation.targetRotation + Math.PI, 2 * Math.PI) - Math.PI :
           animation.sourceRotation + progress * (animation.targetRotation - animation.sourceRotation);
         if (animation.anchor) {
           this.set(ol.ViewProperty.CENTER,
@@ -71346,9 +71344,14 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
   for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
     for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
       tile = tileSource.getTile(z, x, y, pixelRatio, projection);
-      // When useInterimTilesOnError is false, we consider the error tile as loaded.
-      if (tile.getState() == ol.TileState.ERROR && !this.getLayer().getUseInterimTilesOnError()) {
-        tile.setState(ol.TileState.LOADED);
+      if (tile.getState() == ol.TileState.ERROR) {
+        if (!tileLayer.getUseInterimTilesOnError()) {
+          // When useInterimTilesOnError is false, we consider the error tile as loaded.
+          tile.setState(ol.TileState.LOADED);
+        } else if (tileLayer.getPreload() > 0) {
+          // Preloaded tiles for lower resolutions might have finished loading.
+          newTiles = true;
+        }
       }
       if (!this.isDrawableTile_(tile)) {
         tile = tile.getInterimTile();
@@ -78431,17 +78434,18 @@ ol.VectorImageTile.prototype.load = function() {
  */
 ol.VectorImageTile.prototype.finishLoading_ = function() {
   var errors = false;
-  var tile;
-  for (var i = this.tileKeys.length - 1; i >= 0; --i) {
-    tile = this.getTile(this.tileKeys[i]);
-    if (tile.getState() == ol.TileState.ERROR) {
-      errors = true;
-    }
-    if (tile.getState() != ol.TileState.LOADED) {
-      this.tileKeys.splice(i, 1);
+  var loaded = this.tileKeys.length;
+  var state;
+  for (var i = loaded - 1; i >= 0; --i) {
+    state = this.getTile(this.tileKeys[i]).getState();
+    if (state != ol.TileState.LOADED) {
+      if (state == ol.TileState.ERROR) {
+        errors = true;
+      }
+      --loaded;
     }
   }
-  this.setState(this.tileKeys.length > 0 ?
+  this.setState(loaded > 0 ?
     ol.TileState.LOADED :
     (errors ? ol.TileState.ERROR : ol.TileState.EMPTY));
 };
@@ -93103,7 +93107,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-59-gc0e4da6';
+ol.VERSION = 'v4.2.0-69-gf88d8b8';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
