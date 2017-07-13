@@ -62,6 +62,8 @@ function testFormat_validFormatString() {
   assertValidFormat(goog.string.Const.from('/path?x'));
   // Mixed case.
   assertValidFormat(goog.string.Const.from('httpS://www.google.cOm/pAth'));
+  assertValidFormat(goog.string.Const.from('about:blank'));
+  assertValidFormat(goog.string.Const.from('about:blank#x'));
 }
 
 
@@ -128,6 +130,7 @@ function testFormat_invalidFormatString() {
   assertInvalidFormat(goog.string.Const.from('/\\'));
   // Relative path.
   assertInvalidFormat(goog.string.Const.from('abc'));
+  assertInvalidFormat(goog.string.Const.from('about:blankX'));
 }
 
 
@@ -155,6 +158,17 @@ function testFromConstants() {
         goog.string.Const.from('foo'),
         goog.string.Const.from('bar')
       ])));
+}
+
+
+function testFormatWithParams() {
+  var url = goog.html.TrustedResourceUrl.formatWithParams(
+      goog.string.Const.from('https://example.com/'), {}, {'a': 'x'});
+  assertEquals('https://example.com/?a=x', url.getTypedStringValue());
+  url = goog.html.TrustedResourceUrl.formatWithParams(
+      goog.string.Const.from('https://example.com/%{file}'), {'file': 'abc'},
+      {'b': 1, 'c': null, 'd': undefined});
+  assertEquals('https://example.com/abc?b=1', url.getTypedStringValue());
 }
 
 

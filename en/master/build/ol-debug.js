@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-69-gf88d8b8
+// Version: v4.2.0-107-gbc0bc3f
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -30,22 +30,19 @@ this.CLOSURE_NO_DEPS = true;
 /**
  * @fileoverview Bootstrap for the Google JS Library (Closure).
  *
- * In uncompiled mode base.js will write out Closure's deps file, unless the
- * global <code>CLOSURE_NO_DEPS</code> is set to true.  This allows projects to
- * include their own deps file(s) from different locations.
+ * In uncompiled mode base.js will attempt to load Closure's deps file, unless
+ * the global <code>CLOSURE_NO_DEPS</code> is set to true.  This allows projects
+ * to include their own deps file(s) from different locations.
  *
  * Avoid including base.js more than once. This is strictly discouraged and not
  * supported. goog.require(...) won't work properly in that case.
- *
- * @author arv@google.com (Erik Arvidsson)
  *
  * @provideGoog
  */
 
 
 /**
- * @define {boolean} Overridden to true by the compiler when
- *     --process_closure_primitives is specified.
+ * @define {boolean} Overridden to true by the compiler.
  */
 var COMPILED = false;
 
@@ -108,8 +105,6 @@ goog.global.CLOSURE_DEFINES;
 
 /**
  * Returns true if the specified value is not undefined.
- * WARNING: Do not use this to test if an object has a property. Use the in
- * operator instead.
  *
  * @param {?} val Variable to test.
  * @return {boolean} Whether variable is defined.
@@ -118,6 +113,35 @@ goog.isDef = function(val) {
   // void 0 always evaluates to undefined and hence we do not need to depend on
   // the definition of the global variable named 'undefined'.
   return val !== void 0;
+};
+
+/**
+ * Returns true if the specified value is a string.
+ * @param {?} val Variable to test.
+ * @return {boolean} Whether variable is a string.
+ */
+goog.isString = function(val) {
+  return typeof val == 'string';
+};
+
+
+/**
+ * Returns true if the specified value is a boolean.
+ * @param {?} val Variable to test.
+ * @return {boolean} Whether variable is boolean.
+ */
+goog.isBoolean = function(val) {
+  return typeof val == 'boolean';
+};
+
+
+/**
+ * Returns true if the specified value is a number.
+ * @param {?} val Variable to test.
+ * @return {boolean} Whether variable is a number.
+ */
+goog.isNumber = function(val) {
+  return typeof val == 'number';
 };
 
 
@@ -129,7 +153,7 @@ goog.isDef = function(val) {
  * @param {string} name name of the object that this file defines.
  * @param {*=} opt_object the object to expose at the end of the path.
  * @param {Object=} opt_objectToExportTo The object to add the path to; default
- *     is |goog.global|.
+ *     is `goog.global`.
  * @private
  */
 goog.exportPath_ = function(name, opt_object, opt_objectToExportTo) {
@@ -143,12 +167,6 @@ goog.exportPath_ = function(name, opt_object, opt_objectToExportTo) {
     cur.execScript('var ' + parts[0]);
   }
 
-  // Certain browsers cannot parse code in the form for((a in b); c;);
-  // This pattern is produced by the JSCompiler when it collapses the
-  // statement above into the conditional loop below. To prevent this from
-  // happening, use a for-loop and reserve the init logic as below.
-
-  // Parentheses added to eliminate strict JS warning in Firefox.
   for (var part; parts.length && (part = parts.shift());) {
     if (!parts.length && goog.isDef(opt_object)) {
       // last part and we have an object; use it
@@ -176,11 +194,16 @@ goog.define = function(name, defaultValue) {
   var value = defaultValue;
   if (!COMPILED) {
     if (goog.global.CLOSURE_UNCOMPILED_DEFINES &&
+        // Anti DOM-clobbering runtime check (b/37736576).
+        /** @type {?} */ (goog.global.CLOSURE_UNCOMPILED_DEFINES).nodeType ===
+            undefined &&
         Object.prototype.hasOwnProperty.call(
             goog.global.CLOSURE_UNCOMPILED_DEFINES, name)) {
       value = goog.global.CLOSURE_UNCOMPILED_DEFINES[name];
     } else if (
         goog.global.CLOSURE_DEFINES &&
+        // Anti DOM-clobbering runtime check (b/37736576).
+        /** @type {?} */ (goog.global.CLOSURE_DEFINES).nodeType === undefined &&
         Object.prototype.hasOwnProperty.call(
             goog.global.CLOSURE_DEFINES, name)) {
       value = goog.global.CLOSURE_DEFINES[name];
@@ -192,11 +215,12 @@ goog.define = function(name, defaultValue) {
 
 /**
  * @define {boolean} DEBUG is provided as a convenience so that debugging code
- * that should not be included in a production js_binary can be easily stripped
- * by specifying --define goog.DEBUG=false to the JSCompiler. For example, most
- * toString() methods should be declared inside an "if (goog.DEBUG)" conditional
- * because they are generally used for debugging purposes and it is difficult
- * for the JSCompiler to statically determine whether they are used.
+ * that should not be included in a production. It can be easily stripped
+ * by specifying --define goog.DEBUG=false to the Closure Compiler aka
+ * JSCompiler. For example, most toString() methods should be declared inside an
+ * "if (goog.DEBUG)" conditional because they are generally used for debugging
+ * purposes and it is difficult for the JSCompiler to statically determine
+ * whether they are used.
  */
 goog.define('goog.DEBUG', true);
 
@@ -204,7 +228,7 @@ goog.define('goog.DEBUG', true);
 /**
  * @define {string} LOCALE defines the locale being used for compilation. It is
  * used to select locale specific data to be compiled in js binary. BUILD rule
- * can specify this value by "--define goog.LOCALE=<locale_name>" as JSCompiler
+ * can specify this value by "--define goog.LOCALE=<locale_name>" as a compiler
  * option.
  *
  * Take into account that the locale code format is important. You should use
@@ -218,7 +242,8 @@ goog.define('goog.DEBUG', true);
  * For language codes you should use values defined by ISO 693-1. See it here
  * http://www.w3.org/WAI/ER/IG/ert/iso639.htm. There is only one exception from
  * this rule: the Hebrew language. For legacy reasons the old code (iw) should
- * be used instead of the new code (he), see http://wiki/Main/IIISynonyms.
+ * be used instead of the new code (he).
+ *
  */
 goog.define('goog.LOCALE', 'en');  // default to en
 
@@ -232,7 +257,7 @@ goog.define('goog.LOCALE', 'en');  // default to en
  *
  * If your JavaScript can be loaded by a third party site and you are wary about
  * relying on non-standard implementations, specify
- * "--define goog.TRUSTED_SITE=false" to the JSCompiler.
+ * "--define goog.TRUSTED_SITE=false" to the compiler.
  */
 goog.define('goog.TRUSTED_SITE', true);
 
@@ -672,8 +697,7 @@ goog.logToConsole_ = function(msg) {
 /**
  * Implements a system for the dynamic resolution of dependencies that works in
  * parallel with the BUILD system. Note that all calls to goog.require will be
- * stripped by the JSCompiler when the --process_closure_primitives option is
- * used.
+ * stripped by the compiler.
  * @see goog.provide
  * @param {string} name Namespace to include (as was given in goog.provide()) in
  *     the form "goog.package.part".
@@ -681,7 +705,7 @@ goog.logToConsole_ = function(msg) {
  *     module otherwise null.
  */
 goog.require = function(name) {
-  // If the object already exists we do not need do do anything.
+  // If the object already exists we do not need to do anything.
   if (!COMPILED) {
     if (goog.ENABLE_DEBUG_LOADER && goog.IS_OLD_IE_) {
       goog.maybeProcessDeferredDep_(name);
@@ -723,7 +747,8 @@ goog.global.CLOSURE_BASE_PATH;
 
 
 /**
- * Whether to write out Closure's deps file. By default, the deps are written.
+ * Whether to attempt to load Closure's deps file. By default, when uncompiled,
+ * deps files will attempt to be loaded.
  * @type {boolean|undefined}
  */
 goog.global.CLOSURE_NO_DEPS;
@@ -755,9 +780,6 @@ goog.nullFunction = function() {};
  *
  * Now if a subclass of Foo fails to override bar(), an error will be thrown
  * when bar() is invoked.
- *
- * Note: This does not take the name of the function to override as an argument
- * because that would make it more difficult to obfuscate our JavaScript code.
  *
  * @type {!Function}
  * @throws {Error} when invoked to indicate the method should be overridden.
@@ -899,7 +921,9 @@ if (goog.DEPENDENCIES_ENABLED) {
    * @private
    */
   goog.findBasePath_ = function() {
-    if (goog.isDef(goog.global.CLOSURE_BASE_PATH)) {
+    if (goog.isDef(goog.global.CLOSURE_BASE_PATH) &&
+        // Anti DOM-clobbering runtime check (b/37736576).
+        goog.isString(goog.global.CLOSURE_BASE_PATH)) {
       goog.basePath = goog.global.CLOSURE_BASE_PATH;
       return;
     } else if (!goog.inHtmlDocument_()) {
@@ -907,7 +931,13 @@ if (goog.DEPENDENCIES_ENABLED) {
     }
     /** @type {Document} */
     var doc = goog.global.document;
-    var scripts = doc.getElementsByTagName('SCRIPT');
+    // If we have a currentScript available, use it exclusively.
+    var currentScript = doc.currentScript;
+    if (currentScript) {
+      var scripts = [currentScript];
+    } else {
+      var scripts = doc.getElementsByTagName('SCRIPT');
+    }
     // Search backwards since the current script is in almost all cases the one
     // that has base.js.
     for (var i = scripts.length - 1; i >= 0; --i) {
@@ -1289,7 +1319,7 @@ if (goog.DEPENDENCIES_ENABLED) {
 
   /**
    * A readystatechange handler for legacy IE
-   * @param {!HTMLScriptElement} script
+   * @param {?} script
    * @param {number} scriptIndex
    * @return {boolean}
    * @private
@@ -1838,36 +1868,6 @@ goog.isArrayLike = function(val) {
  */
 goog.isDateLike = function(val) {
   return goog.isObject(val) && typeof val.getFullYear == 'function';
-};
-
-
-/**
- * Returns true if the specified value is a string.
- * @param {?} val Variable to test.
- * @return {boolean} Whether variable is a string.
- */
-goog.isString = function(val) {
-  return typeof val == 'string';
-};
-
-
-/**
- * Returns true if the specified value is a boolean.
- * @param {?} val Variable to test.
- * @return {boolean} Whether variable is boolean.
- */
-goog.isBoolean = function(val) {
-  return typeof val == 'boolean';
-};
-
-
-/**
- * Returns true if the specified value is a number.
- * @param {?} val Variable to test.
- * @return {boolean} Whether variable is a number.
- */
-goog.isNumber = function(val) {
-  return typeof val == 'number';
 };
 
 
@@ -2556,6 +2556,9 @@ goog.inherits = function(childCtor, parentCtor) {
  * @return {*} The return value of the superclass method.
  * @suppress {es5Strict} This method can not be used in strict mode, but
  *     all Closure Library consumers must depend on this file.
+ * @deprecated goog.base is not strict mode compatible.  Prefer the static
+ *     "base" method added to the constructor by goog.inherits
+ *     or ES6 classes and the "super" keyword.
  */
 goog.base = function(me, opt_methodName, var_args) {
   var caller = arguments.callee.caller;
@@ -4905,21 +4908,7 @@ ol.Sphere.prototype.offset = function(c1, distance, bearing) {
   return [ol.math.toDegrees(lon), ol.math.toDegrees(lat)];
 };
 
-goog.provide('ol.sphere.NORMAL');
-
-goog.require('ol.Sphere');
-
-
-/**
- * The normal sphere.
- * @const
- * @type {ol.Sphere}
- */
-ol.sphere.NORMAL = new ol.Sphere(6370997);
-
 goog.provide('ol.proj.Units');
-
-goog.require('ol.sphere.NORMAL');
 
 
 /**
@@ -4944,8 +4933,9 @@ ol.proj.Units = {
  * @api
  */
 ol.proj.Units.METERS_PER_UNIT = {};
+// use the radius of the Normal sphere
 ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.DEGREES] =
-    2 * Math.PI * ol.sphere.NORMAL.radius / 360;
+    2 * Math.PI * 6370997 / 360;
 ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.FEET] = 0.3048;
 ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.METERS] = 1;
 ol.proj.Units.METERS_PER_UNIT[ol.proj.Units.USFEET] = 1200 / 3937;
@@ -5285,6 +5275,8 @@ ol.inherits(ol.proj.EPSG3857.Projection_, ol.proj.Projection);
 
 
 /**
+ * Radius of WGS84 sphere
+ *
  * @const
  * @type {number}
  */
@@ -5406,24 +5398,11 @@ ol.proj.EPSG3857.toEPSG4326 = function(input, opt_output, opt_dimension) {
   return output;
 };
 
-goog.provide('ol.sphere.WGS84');
-
-goog.require('ol.Sphere');
-
-
-/**
- * A sphere with radius equal to the semi-major axis of the WGS84 ellipsoid.
- * @const
- * @type {ol.Sphere}
- */
-ol.sphere.WGS84 = new ol.Sphere(6378137);
-
 goog.provide('ol.proj.EPSG4326');
 
 goog.require('ol');
 goog.require('ol.proj.Projection');
 goog.require('ol.proj.Units');
-goog.require('ol.sphere.WGS84');
 
 
 /**
@@ -5455,6 +5434,15 @@ ol.inherits(ol.proj.EPSG4326.Projection_, ol.proj.Projection);
 
 
 /**
+ * Radius of WGS84 sphere
+ *
+ * @const
+ * @type {number}
+ */
+ol.proj.EPSG4326.RADIUS = 6378137;
+
+
+/**
  * Extent of the EPSG:4326 projection which is the whole world.
  *
  * @const
@@ -5467,7 +5455,7 @@ ol.proj.EPSG4326.EXTENT = [-180, -90, 180, 90];
  * @const
  * @type {number}
  */
-ol.proj.EPSG4326.METERS_PER_UNIT = Math.PI * ol.sphere.WGS84.radius / 180;
+ol.proj.EPSG4326.METERS_PER_UNIT = Math.PI * ol.proj.EPSG4326.RADIUS / 180;
 
 
 /**
@@ -5605,6 +5593,7 @@ ol.proj.transforms.get = function(sourceCode, destinationCode) {
 goog.provide('ol.proj');
 
 goog.require('ol');
+goog.require('ol.Sphere');
 goog.require('ol.extent');
 goog.require('ol.proj.EPSG3857');
 goog.require('ol.proj.EPSG4326');
@@ -5613,7 +5602,6 @@ goog.require('ol.proj.Units');
 goog.require('ol.proj.proj4');
 goog.require('ol.proj.projections');
 goog.require('ol.proj.transforms');
-goog.require('ol.sphere.NORMAL');
 
 
 /**
@@ -5623,6 +5611,14 @@ goog.require('ol.sphere.NORMAL');
  * @api
  */
 ol.proj.METERS_PER_UNIT = ol.proj.Units.METERS_PER_UNIT;
+
+
+/**
+ * A place to store the radius of the Clarke 1866 Authalic Sphere.
+ * @private
+ * @type {ol.Sphere}
+ */
+ol.proj.AUTHALIC_SPHERE_ = new ol.Sphere(6370997);
 
 
 if (ol.ENABLE_PROJ4JS) {
@@ -5684,9 +5680,9 @@ ol.proj.getPointResolution = function(projection, resolution, point) {
         point[0], point[1] + resolution / 2
       ];
       vertices = toEPSG4326(vertices, vertices, 2);
-      var width = ol.sphere.NORMAL.haversineDistance(
+      var width = ol.proj.AUTHALIC_SPHERE_.haversineDistance(
           vertices.slice(0, 2), vertices.slice(2, 4));
-      var height = ol.sphere.NORMAL.haversineDistance(
+      var height = ol.proj.AUTHALIC_SPHERE_.haversineDistance(
           vertices.slice(4, 6), vertices.slice(6, 8));
       pointResolution = (width + height) / 2;
       var metersPerUnit = projection.getMetersPerUnit();
@@ -56888,15 +56884,16 @@ ol.GeolocationProperty = {
 goog.provide('ol.Geolocation');
 
 goog.require('ol');
-goog.require('ol.Object');
 goog.require('ol.GeolocationProperty');
+goog.require('ol.Object');
+goog.require('ol.Sphere');
 goog.require('ol.events');
 goog.require('ol.events.EventType');
 goog.require('ol.geom.Polygon');
 goog.require('ol.has');
 goog.require('ol.math');
 goog.require('ol.proj');
-goog.require('ol.sphere.WGS84');
+goog.require('ol.proj.EPSG4326');
 
 
 /**
@@ -56943,6 +56940,12 @@ ol.Geolocation = function(opt_options) {
    * @type {ol.TransformFunction}
    */
   this.transform_ = ol.proj.identityTransform;
+
+  /**
+   * @private
+   * @type {ol.Sphere}
+   */
+  this.sphere_ = new ol.Sphere(ol.proj.EPSG4326.RADIUS);
 
   /**
    * @private
@@ -57039,7 +57042,7 @@ ol.Geolocation.prototype.positionChange_ = function(position) {
   this.set(ol.GeolocationProperty.SPEED,
       coords.speed === null ? undefined : coords.speed);
   var geometry = ol.geom.Polygon.circular(
-      ol.sphere.WGS84, this.position_, coords.accuracy);
+      this.sphere_, this.position_, coords.accuracy);
   geometry.applyTransform(this.transform_);
   this.set(ol.GeolocationProperty.ACCURACY_GEOMETRY, geometry);
   this.changed();
@@ -61856,8 +61859,10 @@ ol.renderer.Layer.prototype.scheduleExpireCache = function(frameState, tileSourc
      */
     var postRenderFunction = function(tileSource, map, frameState) {
       var tileSourceKey = ol.getUid(tileSource).toString();
-      tileSource.expireCache(frameState.viewState.projection,
-          frameState.usedTiles[tileSourceKey]);
+      if (tileSourceKey in frameState.usedTiles) {
+        tileSource.expireCache(frameState.viewState.projection,
+            frameState.usedTiles[tileSourceKey]);
+      }
     }.bind(null, tileSource);
 
     frameState.postRenderFunctions.push(
@@ -62596,7 +62601,9 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
     var drawOffsetX = 0;
     var drawOffsetY = 0;
     var replayContext;
-    if (layer.hasListener(ol.render.EventType.RENDER)) {
+    var transparentLayer = layerState.opacity !== 1;
+    var hasRenderListeners = layer.hasListener(ol.render.EventType.RENDER);
+    if (transparentLayer || hasRenderListeners) {
       var drawWidth = context.canvas.width;
       var drawHeight = context.canvas.height;
       if (rotation) {
@@ -62612,11 +62619,15 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
     } else {
       replayContext = context;
     }
-    // for performance reasons, context.save / context.restore is not used
-    // to save and restore the transformation matrix and the opacity.
-    // see http://jsperf.com/context-save-restore-versus-variable
+
     var alpha = replayContext.globalAlpha;
-    replayContext.globalAlpha = layerState.opacity;
+    if (!transparentLayer) {
+      // for performance reasons, context.save / context.restore is not used
+      // to save and restore the transformation matrix and the opacity.
+      // see http://jsperf.com/context-save-restore-versus-variable
+      replayContext.globalAlpha = layerState.opacity;
+    }
+
     if (replayContext != context) {
       replayContext.translate(drawOffsetX, drawOffsetY);
     }
@@ -62658,11 +62669,23 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
         width / 2, height / 2);
 
     if (replayContext != context) {
-      this.dispatchRenderEvent(replayContext, frameState, transform);
-      context.drawImage(replayContext.canvas, -drawOffsetX, -drawOffsetY);
+      if (hasRenderListeners) {
+        this.dispatchRenderEvent(replayContext, frameState, transform);
+      }
+      if (transparentLayer) {
+        var mainContextAlpha = context.globalAlpha;
+        context.globalAlpha = layerState.opacity;
+        context.drawImage(replayContext.canvas, -drawOffsetX, -drawOffsetY);
+        context.globalAlpha = mainContextAlpha;
+      } else {
+        context.drawImage(replayContext.canvas, -drawOffsetX, -drawOffsetY);
+      }
       replayContext.translate(-drawOffsetX, -drawOffsetY);
     }
-    replayContext.globalAlpha = alpha;
+
+    if (!transparentLayer) {
+      replayContext.globalAlpha = alpha;
+    }
   }
 
   if (clipped) {
@@ -62776,10 +62799,9 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
 
   this.dirty_ = false;
 
-  var replayGroup =
-      new ol.render.canvas.ReplayGroup(
-          ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-          resolution, vectorSource.getOverlaps(), vectorLayer.getRenderBuffer());
+  var replayGroup = new ol.render.canvas.ReplayGroup(
+      ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
+      resolution, vectorSource.getOverlaps(), vectorLayer.getRenderBuffer());
   vectorSource.loadFeatures(extent, resolution, projection);
   /**
    * @param {ol.Feature} feature Feature.
@@ -71474,7 +71496,7 @@ ol.renderer.canvas.TileLayer.prototype.drawTileImage = function(tile, frameState
   if (!this.getLayer().getSource().getOpaque(frameState.viewState.projection)) {
     this.context.clearRect(x, y, w, h);
   }
-  var image = tile.getImage();
+  var image = tile.getImage(this.getLayer());
   if (image) {
     this.context.drawImage(image, gutter, gutter,
         image.width - 2 * gutter, image.height - 2 * gutter, x, y, w, h);
@@ -72254,7 +72276,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
   var renderOrder = /** @type {ol.RenderOrderFunction} */
       (layer.getRenderOrder()) || null;
 
-  var replayState = tile.getReplayState();
+  var replayState = tile.getReplayState(layer);
   if (!replayState.dirty && replayState.renderedRevision == revision &&
       replayState.renderedRenderOrder == renderOrder) {
     return;
@@ -72262,7 +72284,6 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
 
   for (var t = 0, tt = tile.tileKeys.length; t < tt; ++t) {
     var sourceTile = tile.getTile(tile.tileKeys[t]);
-    sourceTile.replayGroup = null;
     replayState.dirty = false;
 
     var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
@@ -72338,7 +72359,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
       renderFeature.call(this, feature);
     }
     replayGroup.finish();
-    sourceTile.setReplayGroup(tile.tileCoord.toString(), replayGroup);
+    sourceTile.setReplayGroup(layer, tile.tileCoord.toString(), replayGroup);
   }
   replayState.renderedRevision = revision;
   replayState.renderedRenderOrder = renderOrder;
@@ -72403,7 +72424,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
       } else {
         tileSpaceCoordinate = coordinate;
       }
-      replayGroup = sourceTile.getReplayGroup(tile.tileCoord);
+      replayGroup = sourceTile.getReplayGroup(layer, tile.tileCoord.toString());
       found = found || replayGroup.forEachFeatureAtCoordinate(
           tileSpaceCoordinate, resolution, rotation, hitTolerance, {},
           /**
@@ -72502,7 +72523,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, fra
         var sourceResolution = sourceTileGrid.getResolution(currentZ);
         var transform = this.getReplayTransform_(sourceTile, frameState);
         ol.transform.translate(transform, worldOffset * tilePixelRatio / sourceResolution, 0);
-        var replayGroup = sourceTile.getReplayGroup(tileCoord.toString());
+        var replayGroup = sourceTile.getReplayGroup(layer, tileCoord.toString());
         var currentClip = replayGroup.getClipCoords(transform);
         context.save();
         context.globalAlpha = layerState.opacity;
@@ -72574,7 +72595,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderFeature = function(feature, s
 ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
     tile, frameState, layerState) {
   var layer = this.getLayer();
-  var replayState = tile.getReplayState();
+  var replayState = tile.getReplayState(layer);
   var revision = layer.getRevision();
   var replays = ol.renderer.canvas.VectorTileLayer.IMAGE_REPLAYS[layer.getRenderMode()];
   if (replays && replayState.renderedTileRevision !== revision) {
@@ -72587,7 +72608,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
     var tileGrid = source.getTileGridForProjection(frameState.viewState.projection);
     var resolution = tileGrid.getResolution(z);
     var tilePixelRatio = source.getTilePixelRatio();
-    var context = tile.getContext();
+    var context = tile.getContext(layer);
     var size = source.getTilePixelSize(z, pixelRatio, frameState.viewState.projection);
     context.canvas.width = size[0];
     context.canvas.height = size[1];
@@ -72609,7 +72630,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
         ol.transform.scale(transform, pixelScale, -pixelScale);
         ol.transform.translate(transform, -tileExtent[0], -tileExtent[3]);
       }
-      var replayGroup = sourceTile.getReplayGroup(tile.tileCoord.toString());
+      var replayGroup = sourceTile.getReplayGroup(layer, tile.tileCoord.toString());
       replayGroup.replay(context, pixelRatio, transform, 0, {}, replays);
     }
   }
@@ -74153,6 +74174,7 @@ ol.source.TileImage.prototype.getTile = function(z, x, y, pixelRatio, projection
 
       if (tile) {
         newTile.interimTile = tile;
+        newTile.refreshInterimChain();
         cache.replace(tileCoordKey, newTile);
       } else {
         cache.set(tileCoordKey, newTile);
@@ -74341,7 +74363,7 @@ ol.inherits(ol.source.BingMaps, ol.source.TileImage);
  */
 ol.source.BingMaps.TOS_ATTRIBUTION = new ol.Attribution({
   html: '<a class="ol-attribution-bing-tos" ' +
-      'href="http://www.microsoft.com/maps/product/terms.html">' +
+      'href="https://www.microsoft.com/maps/product/terms.html">' +
       'Terms of Use</a>'
 });
 
@@ -76768,8 +76790,8 @@ ol.inherits(ol.source.Stamen, ol.source.XYZ);
  */
 ol.source.Stamen.ATTRIBUTIONS = [
   new ol.Attribution({
-    html: 'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, ' +
-        'under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY' +
+    html: 'Map tiles by <a href="https://stamen.com/">Stamen Design</a>, ' +
+        'under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY' +
         ' 3.0</a>.'
   }),
   ol.source.OSM.ATTRIBUTION
@@ -78230,9 +78252,9 @@ ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
 
   /**
    * @private
-   * @type {CanvasRenderingContext2D}
+   * @type {Object.<string, CanvasRenderingContext2D>}
    */
-  this.context_ = null;
+  this.context_ = {};
 
   /**
    * @private
@@ -78242,14 +78264,9 @@ ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
 
   /**
    * @private
-   * @type {ol.TileReplayState}
+   * @type {Object.<string, ol.TileReplayState>}
    */
-  this.replayState_ = {
-    dirty: false,
-    renderedRenderOrder: null,
-    renderedRevision: -1,
-    renderedTileRevision: -1
-  };
+  this.replayState_ = {};
 
   /**
    * @private
@@ -78345,31 +78362,44 @@ ol.VectorImageTile.prototype.disposeInternal = function() {
 
 
 /**
+ * @param {ol.layer.Layer} layer Layer.
  * @return {CanvasRenderingContext2D} The rendering context.
  */
-ol.VectorImageTile.prototype.getContext = function() {
-  if (!this.context_) {
-    this.context_ = ol.dom.createCanvasContext2D();
+ol.VectorImageTile.prototype.getContext = function(layer) {
+  var key = ol.getUid(layer).toString();
+  if (!(key in this.context_)) {
+    this.context_[key] = ol.dom.createCanvasContext2D();
   }
-  return this.context_;
+  return this.context_[key];
 };
 
 
 /**
  * Get the Canvas for this tile.
+ * @param {ol.layer.Layer} layer Layer.
  * @return {HTMLCanvasElement} Canvas.
  */
-ol.VectorImageTile.prototype.getImage = function() {
-  return this.replayState_.renderedTileRevision == -1 ?
-    null : this.context_.canvas;
+ol.VectorImageTile.prototype.getImage = function(layer) {
+  return this.getReplayState(layer).renderedTileRevision == -1 ?
+    null : this.getContext(layer).canvas;
 };
 
 
 /**
+ * @param {ol.layer.Layer} layer Layer.
  * @return {ol.TileReplayState} The replay state.
  */
-ol.VectorImageTile.prototype.getReplayState = function() {
-  return this.replayState_;
+ol.VectorImageTile.prototype.getReplayState = function(layer) {
+  var key = ol.getUid(layer).toString();
+  if (!(key in this.replayState_)) {
+    this.replayState_[key] = {
+      dirty: false,
+      renderedRenderOrder: null,
+      renderedRevision: -1,
+      renderedTileRevision: -1
+    };
+  }
+  return this.replayState_[key];
 };
 
 
@@ -78513,6 +78543,10 @@ ol.VectorTile = function(tileCoord, state, src, format, tileLoadFunction) {
    */
   this.projection_;
 
+  /**
+   * @private
+   * @type {Object.<string, ol.render.ReplayGroup>}
+   */
   this.replayGroups_ = {};
 
   /**
@@ -78582,8 +78616,13 @@ ol.VectorTile.prototype.getProjection = function() {
 };
 
 
-ol.VectorTile.prototype.getReplayGroup = function(key) {
-  return this.replayGroups_[key];
+/**
+ * @param {ol.layer.Layer} layer Layer.
+ * @param {string} key Key.
+ * @return {ol.render.ReplayGroup} Replay group.
+ */
+ol.VectorTile.prototype.getReplayGroup = function(layer, key) {
+  return this.replayGroups_[ol.getUid(layer) + ',' + key];
 };
 
 
@@ -78638,8 +78677,13 @@ ol.VectorTile.prototype.setProjection = function(projection) {
 };
 
 
-ol.VectorTile.prototype.setReplayGroup = function(key, replayGroup) {
-  this.replayGroups_[key] = replayGroup;
+/**
+ * @param {ol.layer.Layer} layer Layer.
+ * @param {string} key Key.
+ * @param {ol.render.ReplayGroup} replayGroup Replay group.
+ */
+ol.VectorTile.prototype.setReplayGroup = function(layer, key, replayGroup) {
+  this.replayGroups_[ol.getUid(layer) + ',' + key] = replayGroup;
 };
 
 
@@ -93107,7 +93151,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-69-gf88d8b8';
+ol.VERSION = 'v4.2.0-107-gbc0bc3f';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

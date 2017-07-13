@@ -85,8 +85,31 @@ goog.testing.TestRunner = function() {
    * @private {boolean}
    */
   this.strict_ = true;
+
+  /**
+   * An id unique to this runner. Checked by the server during polling to
+   * verify that the page was not reloaded.
+   * @private {!string}
+   */
+  this.uniqueId_ = Math.random() + '';
 };
 
+/**
+ * The uuid is embedded in the URL search. This function allows us to mock
+ * the search in the test.
+ * @return {string}
+ */
+goog.testing.TestRunner.prototype.getSearchString = function() {
+  return window.location.search;
+};
+
+/**
+ * Returns the unique id for this test page.
+ * @return {!string}
+ */
+goog.testing.TestRunner.prototype.getUniqueId = function() {
+  return this.uniqueId_;
+};
 
 /**
  * Initializes the test runner.
@@ -432,8 +455,9 @@ goog.testing.TestRunner.prototype.log = function(s) {
 // TODO(nnaze): Properly handle serving test results when multiple test cases
 // are run.
 /**
- * @return {Object<string, !Array<string>>} A map of test names to a list of
- * test failures (if any) to provide formatted data for the test runner.
+ * @return {Object<string, !Array<!goog.testing.TestCase.IResult>>} A map of
+ * test names to a list of test failures (if any) to provide formatted data
+ * for the test runner.
  */
 goog.testing.TestRunner.prototype.getTestResults = function() {
   if (this.testCase) {

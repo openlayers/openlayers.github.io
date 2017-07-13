@@ -35,7 +35,6 @@ goog.require('goog.labs.net.webChannel.Wire');
 goog.require('goog.labs.net.webChannel.WireV8');
 goog.require('goog.labs.net.webChannel.netUtils');
 goog.require('goog.labs.net.webChannel.requestStats');
-goog.require('goog.labs.net.webChannel.requestStats.Stat');
 goog.require('goog.log');
 goog.require('goog.net.WebChannel');
 goog.require('goog.net.XhrIo');
@@ -377,7 +376,16 @@ goog.labs.net.webChannel.WebChannelBase = function(
    * @private {boolean}
    */
   this.backgroundChannelTest_ =
-      (opt_options && opt_options.backgroundChannelTest) || false;
+      opt_options && goog.isDef(opt_options.backgroundChannelTest) ?
+      opt_options.backgroundChannelTest :
+      true;
+
+  /**
+   * Whether to turn on the fast handshake behavior.
+   *
+   * @private {boolean}
+   */
+  this.fastHandshake_ = (opt_options && opt_options.fastHandshake) || false;
 };
 
 var WebChannelBase = goog.labs.net.webChannel.WebChannelBase;
@@ -1087,7 +1095,9 @@ WebChannelBase.prototype.maybeRetryForwardChannel_ = function(request) {
     return false;
   }
 
-  if (this.state_ == WebChannelBase.State.INIT ||  // no retry open_()
+  // No retry for open_() and fail-fast
+  if (this.state_ == WebChannelBase.State.INIT ||
+      this.state_ == WebChannelBase.State.OPENING ||
       (this.forwardChannelRetryCount_ >= this.getForwardChannelMaxRetries())) {
     return false;
   }

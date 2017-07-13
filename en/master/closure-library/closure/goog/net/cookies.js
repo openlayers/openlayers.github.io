@@ -352,14 +352,23 @@ goog.net.Cookies.prototype.getKeyValues_ = function() {
 };
 
 
-// TODO(b/23687502): This should be a singleton getter instead of a static
+// TODO(closure-team): This should be a singleton getter instead of a static
 // instance.
 /**
  * A static default instance.
- * @type {goog.net.Cookies}
+ * @const {!goog.net.Cookies}
  */
 goog.net.cookies =
     new goog.net.Cookies(typeof document == 'undefined' ? null : document);
+
+
+/**
+ * Getter for the static instance of goog.net.Cookies.
+ * @return {!goog.net.Cookies}
+ */
+goog.net.Cookies.getInstance = function() {
+  return goog.net.cookies;
+};
 
 
 /**

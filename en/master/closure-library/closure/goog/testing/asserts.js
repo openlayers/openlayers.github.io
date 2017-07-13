@@ -27,6 +27,7 @@ var JSUNIT_UNDEFINED_VALUE = void 0;
 var TO_STRING_EQUALITY_PREDICATE = function(var1, var2) {
   return var1.toString() === var2.toString();
 };
+var OUTPUT_NEW_LINE_THRESHOLD = 40;
 
 
 /** @typedef {function(?, ?):boolean} */
@@ -177,11 +178,27 @@ var _validateArguments = function(expectedNumberOfNonCommentArgs, args) {
   _assert(null, valid, 'Incorrect arguments passed to assert function');
 };
 
+/**
+ * @return {?} goog.testing.TestCase or null
+ * We suppress the lint error and we explicitly do not goog.require()
+ * goog.testing.TestCase to avoid a build time dependency cycle.
+ * @suppress {missingRequire|undefinedNames|undefinedVars|missingProperties}
+ * @private
+ */
 var _getCurrentTestCase = function() {
-  // We can't call goog.testing.TestCase.getActiveTestCase because there would
-  // be a dependency cycle; this effectively does the same thing.
-  var testRunner = goog.global['G_testRunner'];
-  return testRunner ? testRunner.testCase : null;
+  // Some users of goog.testing.asserts do not use goog.testing.TestRunner and
+  // they do not include goog.testing.TestCase. Exceptions will not be
+  // completely correct for these users.
+  if (!goog.testing.TestCase) {
+    if (goog.global.console) {
+      goog.global.console.error(
+          'Missing goog.testing.TestCase, ' +
+          'add /* @suppress {extraRequire} */' +
+          'goog.require(\'goog.testing.TestCase\'');
+    }
+    return null;
+  }
+  return goog.testing.TestCase.getActiveTestCase();
 };
 
 var _assert = function(comment, booleanValue, failureMessage) {
@@ -198,8 +215,15 @@ var _assert = function(comment, booleanValue, failureMessage) {
  * @private
  */
 goog.testing.asserts.getDefaultErrorMsg_ = function(expected, actual) {
-  var msg = 'Expected ' + _displayStringForValue(expected) + ' but was ' +
-      _displayStringForValue(actual);
+  var expectedDisplayString = _displayStringForValue(expected);
+  var actualDisplayString = _displayStringForValue(actual);
+  var shouldUseNewLines =
+      expectedDisplayString.length > OUTPUT_NEW_LINE_THRESHOLD ||
+      actualDisplayString.length > OUTPUT_NEW_LINE_THRESHOLD;
+  var msg = [
+    'Expected', expectedDisplayString, 'but was', actualDisplayString
+  ].join(shouldUseNewLines ? '\n' : ' ');
+
   if ((typeof expected == 'string') && (typeof actual == 'string')) {
     // Try to find a human-readable difference.
     var limit = Math.min(expected.length, actual.length);
@@ -229,8 +253,15 @@ goog.testing.asserts.getDefaultErrorMsg_ = function(expected, actual) {
             (endIndex < str.length ? '...' : '');
       };
 
-      msg += '\nDifference was at position ' + commonPrefix + '. Expected [' +
-          printString(expected) + '] vs. actual [' + printString(actual) + ']';
+      var expectedPrinted = printString(expected);
+      var expectedActual = printString(actual);
+      var shouldUseNewLinesInDiff =
+          expectedPrinted.length > OUTPUT_NEW_LINE_THRESHOLD ||
+          expectedActual.length > OUTPUT_NEW_LINE_THRESHOLD;
+      msg += '\nDifference was at position ' + commonPrefix + '. ' + [
+        'Expected', '[' + expectedPrinted + ']', 'vs. actual',
+        '[' + expectedActual + ']'
+      ].join(shouldUseNewLinesInDiff ? '\n' : ' ');
     }
   }
   return msg;
