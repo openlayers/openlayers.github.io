@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-151-g007d8c2
+// Version: v4.2.0-153-gd9c4909
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
