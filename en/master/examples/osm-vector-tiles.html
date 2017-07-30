@@ -126,7 +126,7 @@ var map &#x3D; new ol.Map({
           layerName: &#x27;layer&#x27;,
           layers: [&#x27;water&#x27;, &#x27;roads&#x27;, &#x27;buildings&#x27;]
         }),
-        tileGrid: ol.tilegrid.createXYZ({maxZoom: 19}),
+        tileGrid: ol.tilegrid.createXYZ({tileSize: 512, maxZoom: 19}),
         url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
       }),
       style: function(feature, resolution) {
@@ -233,7 +233,7 @@ var map &#x3D; new ol.Map({
                 layerName: &#x27;layer&#x27;,
                 layers: [&#x27;water&#x27;, &#x27;roads&#x27;, &#x27;buildings&#x27;]
               }),
-              tileGrid: ol.tilegrid.createXYZ({maxZoom: 19}),
+              tileGrid: ol.tilegrid.createXYZ({tileSize: 512, maxZoom: 19}),
               url: &#x27;https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; + key
             }),
             style: function(feature, resolution) {

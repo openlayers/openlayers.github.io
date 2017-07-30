@@ -193,7 +193,7 @@ var map &#x3D; new ol.Map({
   layers: [raster, vector],
   interactions: ol.interaction.defaults().extend([new ol.interaction.Select({
     condition: function(evt) {
-      return evt.originalEvent.type &#x3D;&#x3D; &#x27;mousemove&#x27; ||
+      return  evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
           evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
     },
     style: selectStyleFunction
@@ -388,7 +388,7 @@ var map &#x3D; new ol.Map({
         layers: [raster, vector],
         interactions: ol.interaction.defaults().extend([new ol.interaction.Select({
           condition: function(evt) {
-            return evt.originalEvent.type &#x3D;&#x3D; &#x27;mousemove&#x27; ||
+            return  evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
                 evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
           },
           style: selectStyleFunction

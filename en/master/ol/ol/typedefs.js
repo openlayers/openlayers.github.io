@@ -79,6 +79,7 @@ ol.CanvasFunctionType;
 /**
  * @typedef {{lineCap: string,
  *            lineDash: Array.<number>,
+ *            lineDashOffset: number,
  *            lineJoin: string,
  *            lineWidth: number,
  *            miterLimit: number,
@@ -623,6 +624,19 @@ ol.StyleFunction;
  *     (ol.geom.Geometry|ol.render.Feature|undefined)}
  */
 ol.StyleGeometryFunction;
+
+
+/**
+ * Custom renderer function. Takes 4 arguments:
+ *
+ * 1. The pixel coordinates of the geometry in GeoJSON notation.
+ * 2. The original {@link ol.geom.SimpleGeometry}.
+ * 3. The underlying {@link ol.Feature} or {@link ol.render.Feature}.
+ * 4. The {@link olx.render.State} of the layer renderer.
+ *
+ * @typedef {function(Array,ol.geom.SimpleGeometry,(ol.Feature|ol.render.Feature),olx.render.State)}
+ */
+ol.StyleRenderFunction;
 
 
 /**

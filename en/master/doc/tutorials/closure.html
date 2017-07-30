@@ -39,10 +39,12 @@
 
 <div class='container'>
 <h1 id="compiling-application-with-closure-compiler">Compiling Application with Closure Compiler</h1>
+<p><strong>Note</strong>: When building an application with dependencies that are available as <a href="https://npmjs.com/">npm</a> packages, it will probably be easier to use the <a href="https://npmjs.com/package/ol">ol</a> package and follow the instructions there.</p>
 <p>The OpenLayers code uses the Closure Library, and it is compiled with the
 Closure Compiler. Using OpenLayers in an application does not require using
 Closure. But using Closure in an OpenLayers application is possible. And this
 is what this tutorial is about.</p>
+<p>When you want to include OpenLayers as separate script without bundling with your application, follow the <a href="./custom-builds.html">Creating custom builds</a> tutorial instead.</p>
 <p>This tutorial will teach you how to set up an OpenLayers application based on
 the <a href="https://github.com/openlayers/closure-util"><code>closure-util</code></a> node package,
 which provides utilities for working with Closure. Using <code>closure-util</code> is one

@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-107-gbc0bc3f
+// Version: v4.2.0-151-g007d8c2
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -5308,30 +5308,20 @@ ol.proj.EPSG3857.WORLD_EXTENT = [-180, -85, 180, 85];
 
 
 /**
- * Lists several projection codes with the same meaning as EPSG:3857.
- *
- * @type {Array.<string>}
- */
-ol.proj.EPSG3857.CODES = [
-  'EPSG:3857',
-  'EPSG:102100',
-  'EPSG:102113',
-  'EPSG:900913',
-  'urn:ogc:def:crs:EPSG:6.18:3:3857',
-  'urn:ogc:def:crs:EPSG::3857',
-  'http://www.opengis.net/gml/srs/epsg.xml#3857'
-];
-
-
-/**
  * Projections equal to EPSG:3857.
  *
  * @const
  * @type {Array.<ol.proj.Projection>}
  */
-ol.proj.EPSG3857.PROJECTIONS = ol.proj.EPSG3857.CODES.map(function(code) {
-  return new ol.proj.EPSG3857.Projection_(code);
-});
+ol.proj.EPSG3857.PROJECTIONS = [
+  new ol.proj.EPSG3857.Projection_('EPSG:3857'),
+  new ol.proj.EPSG3857.Projection_('EPSG:102100'),
+  new ol.proj.EPSG3857.Projection_('EPSG:102113'),
+  new ol.proj.EPSG3857.Projection_('EPSG:900913'),
+  new ol.proj.EPSG3857.Projection_('urn:ogc:def:crs:EPSG:6.18:3:3857'),
+  new ol.proj.EPSG3857.Projection_('urn:ogc:def:crs:EPSG::3857'),
+  new ol.proj.EPSG3857.Projection_('http://www.opengis.net/gml/srs/epsg.xml#3857')
+];
 
 
 /**
@@ -14356,6 +14346,12 @@ ol.geom.SimpleGeometry = function() {
    */
   this.flatCoordinates = null;
 
+  /**
+   * @private
+   * @type {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
+   */
+  this.renderCoordinates_ = null;
+
 };
 ol.inherits(ol.geom.SimpleGeometry, ol.geom.Geometry);
 
@@ -14453,6 +14449,18 @@ ol.geom.SimpleGeometry.prototype.getLastCoordinate = function() {
  */
 ol.geom.SimpleGeometry.prototype.getLayout = function() {
   return this.layout;
+};
+
+
+/**
+ * @return {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
+ *     Render coordinates.
+ */
+ol.geom.SimpleGeometry.prototype.getRenderCoordinates = function() {
+  if (!this.renderCoordinates_) {
+    this.renderCoordinates_ = [];
+  }
+  return this.renderCoordinates_;
 };
 
 
@@ -22186,6 +22194,16 @@ ol.render.VectorContext = function() {
 
 
 /**
+ * Render a geometry with a custom renderer.
+ *
+ * @param {ol.geom.SimpleGeometry} geometry Geometry.
+ * @param {ol.Feature|ol.render.Feature} feature Feature.
+ * @param {Function} renderer Renderer.
+ */
+ol.render.VectorContext.prototype.drawCustom = function(geometry, feature, renderer) {};
+
+
+/**
  * Render a geometry.
  *
  * @param {ol.geom.Geometry} geometry The geometry to render.
@@ -23035,6 +23053,7 @@ ol.render.canvas.Immediate.prototype.setContextStrokeState_ = function(strokeSta
     context.lineCap = strokeState.lineCap;
     if (ol.has.CANVAS_LINE_DASH) {
       context.setLineDash(strokeState.lineDash);
+      context.lineDashOffset = strokeState.lineDashOffset;
     }
     context.lineJoin = strokeState.lineJoin;
     context.lineWidth = strokeState.lineWidth;
@@ -23043,6 +23062,7 @@ ol.render.canvas.Immediate.prototype.setContextStrokeState_ = function(strokeSta
     this.contextStrokeState_ = {
       lineCap: strokeState.lineCap,
       lineDash: strokeState.lineDash,
+      lineDashOffset: strokeState.lineDashOffset,
       lineJoin: strokeState.lineJoin,
       lineWidth: strokeState.lineWidth,
       miterLimit: strokeState.miterLimit,
@@ -23056,6 +23076,10 @@ ol.render.canvas.Immediate.prototype.setContextStrokeState_ = function(strokeSta
       if (!ol.array.equals(
           contextStrokeState.lineDash, strokeState.lineDash)) {
         context.setLineDash(contextStrokeState.lineDash = strokeState.lineDash);
+      }
+      if (contextStrokeState.lineDashOffset != strokeState.lineDashOffset) {
+        contextStrokeState.lineDashOffset = context.lineDashOffset =
+            strokeState.lineDashOffset;
       }
     }
     if (contextStrokeState.lineJoin != strokeState.lineJoin) {
@@ -23180,7 +23204,7 @@ ol.render.canvas.Immediate.prototype.setImageStyle = function(imageStyle) {
     this.imageOriginY_ = imageOrigin[1];
     this.imageRotateWithView_ = imageStyle.getRotateWithView();
     this.imageRotation_ = imageStyle.getRotation();
-    this.imageScale_ = imageStyle.getScale();
+    this.imageScale_ = imageStyle.getScale() * this.pixelRatio_;
     this.imageSnapToPixel_ = imageStyle.getSnapToPixel();
     this.imageWidth_ = imageSize[0];
   }
@@ -23489,6 +23513,7 @@ goog.provide('ol.render.ReplayType');
  */
 ol.render.ReplayType = {
   CIRCLE: 'Circle',
+  DEFAULT: 'Default',
   IMAGE: 'Image',
   LINE_STRING: 'LineString',
   POLYGON: 'Polygon',
@@ -23509,7 +23534,8 @@ ol.render.replay.ORDER = [
   ol.render.ReplayType.CIRCLE,
   ol.render.ReplayType.LINE_STRING,
   ol.render.ReplayType.IMAGE,
-  ol.render.ReplayType.TEXT
+  ol.render.ReplayType.TEXT,
+  ol.render.ReplayType.DEFAULT
 ];
 
 goog.provide('ol.render.ReplayGroup');
@@ -35769,6 +35795,7 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
   var lineJoin = '';
   var miterLimit = 0;
   var lineDash = null;
+  var lineDashOffset = 0;
   var strokeStyle;
   var strokeWidth = 0;
 
@@ -35783,8 +35810,10 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
       strokeWidth = ol.render.canvas.defaultLineWidth;
     }
     lineDash = this.stroke_.getLineDash();
+    lineDashOffset = this.stroke_.getLineDashOffset();
     if (!ol.has.CANVAS_LINE_DASH) {
       lineDash = null;
+      lineDashOffset = 0;
     }
     lineJoin = this.stroke_.getLineJoin();
     if (lineJoin === undefined) {
@@ -35809,6 +35838,7 @@ ol.style.RegularShape.prototype.render_ = function(atlasManager) {
     size: size,
     lineCap: lineCap,
     lineDash: lineDash,
+    lineDashOffset: lineDashOffset,
     lineJoin: lineJoin,
     miterLimit: miterLimit
   };
@@ -35912,6 +35942,7 @@ ol.style.RegularShape.prototype.draw_ = function(renderOptions, context, x, y) {
     context.lineWidth = renderOptions.strokeWidth;
     if (renderOptions.lineDash) {
       context.setLineDash(renderOptions.lineDash);
+      context.lineDashOffset = renderOptions.lineDashOffset;
     }
     context.lineCap = renderOptions.lineCap;
     context.lineJoin = renderOptions.lineJoin;
@@ -35985,6 +36016,7 @@ ol.style.RegularShape.prototype.drawHitDetectionCanvas_ = function(renderOptions
     context.lineWidth = renderOptions.strokeWidth;
     if (renderOptions.lineDash) {
       context.setLineDash(renderOptions.lineDash);
+      context.lineDashOffset = renderOptions.lineDashOffset;
     }
     context.stroke();
   }
@@ -36225,6 +36257,12 @@ ol.style.Style = function(opt_options) {
 
   /**
    * @private
+   * @type {ol.StyleRenderFunction|null}
+   */
+  this.renderer_ = options.renderer !== undefined ? options.renderer : null;
+
+  /**
+   * @private
    * @type {ol.style.Stroke}
    */
   this.stroke_ = options.stroke !== undefined ? options.stroke : null;
@@ -36262,6 +36300,28 @@ ol.style.Style.prototype.clone = function() {
     text: this.getText() ? this.getText().clone() : undefined,
     zIndex: this.getZIndex()
   });
+};
+
+
+/**
+ * Get the custom renderer function that was configured with
+ * {@link #setRenderer} or the `renderer` constructor option.
+ * @return {ol.StyleRenderFunction|null} Custom renderer function.
+ * @api
+ */
+ol.style.Style.prototype.getRenderer = function() {
+  return this.renderer_;
+};
+
+
+/**
+ * Sets a custom renderer function for this style. When set, `fill`, `stroke`
+ * and `image` options of the style will be ignored.
+ * @param {ol.StyleRenderFunction|null} renderer Custom renderer function.
+ * @api
+ */
+ol.style.Style.prototype.setRenderer = function(renderer) {
+  this.renderer_ = renderer;
 };
 
 
@@ -39634,9 +39694,9 @@ ol.format.EsriJSON.getHasZM_ = function(geometry) {
   var layout = geometry.getLayout();
   return {
     hasZ: (layout === ol.geom.GeometryLayout.XYZ ||
-        layout === ol.geom.GeometryLayout.XYZM),
+      layout === ol.geom.GeometryLayout.XYZM),
     hasM: (layout === ol.geom.GeometryLayout.XYM ||
-        layout === ol.geom.GeometryLayout.XYZM)
+      layout === ol.geom.GeometryLayout.XYZM)
   };
 };
 
@@ -39648,7 +39708,7 @@ ol.format.EsriJSON.getHasZM_ = function(geometry) {
  * @return {EsriJSONPolyline} EsriJSON geometry.
  */
 ol.format.EsriJSON.writeLineStringGeometry_ = function(geometry, opt_options) {
-  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.LineString} */ (geometry));
+  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.LineString} */(geometry));
   return /** @type {EsriJSONPolyline} */ ({
     hasZ: hasZM.hasZ,
     hasM: hasZM.hasM,
@@ -39667,7 +39727,7 @@ ol.format.EsriJSON.writeLineStringGeometry_ = function(geometry, opt_options) {
  */
 ol.format.EsriJSON.writePolygonGeometry_ = function(geometry, opt_options) {
   // Esri geometries use the left-hand rule
-  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.Polygon} */ (geometry));
+  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.Polygon} */(geometry));
   return /** @type {EsriJSONPolygon} */ ({
     hasZ: hasZM.hasZ,
     hasM: hasZM.hasM,
@@ -39683,7 +39743,7 @@ ol.format.EsriJSON.writePolygonGeometry_ = function(geometry, opt_options) {
  * @return {EsriJSONPolyline} EsriJSON geometry.
  */
 ol.format.EsriJSON.writeMultiLineStringGeometry_ = function(geometry, opt_options) {
-  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.MultiLineString} */ (geometry));
+  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.MultiLineString} */(geometry));
   return /** @type {EsriJSONPolyline} */ ({
     hasZ: hasZM.hasZ,
     hasM: hasZM.hasM,
@@ -39699,7 +39759,7 @@ ol.format.EsriJSON.writeMultiLineStringGeometry_ = function(geometry, opt_option
  * @return {EsriJSONMultipoint} EsriJSON geometry.
  */
 ol.format.EsriJSON.writeMultiPointGeometry_ = function(geometry, opt_options) {
-  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.MultiPoint} */ (geometry));
+  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.MultiPoint} */(geometry));
   return /** @type {EsriJSONMultipoint} */ ({
     hasZ: hasZM.hasZ,
     hasM: hasZM.hasM,
@@ -39716,7 +39776,7 @@ ol.format.EsriJSON.writeMultiPointGeometry_ = function(geometry, opt_options) {
  */
 ol.format.EsriJSON.writeMultiPolygonGeometry_ = function(geometry,
     opt_options) {
-  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.MultiPolygon} */ (geometry));
+  var hasZM = ol.format.EsriJSON.getHasZM_(/** @type {ol.geom.MultiPolygon} */(geometry));
   var coordinates = /** @type {ol.geom.MultiPolygon} */ (geometry).getCoordinates(false);
   var output = [];
   for (var i = 0; i < coordinates.length; i++) {
@@ -39739,17 +39799,17 @@ ol.format.EsriJSON.writeMultiPolygonGeometry_ = function(geometry,
  */
 ol.format.EsriJSON.GEOMETRY_READERS_ = {};
 ol.format.EsriJSON.GEOMETRY_READERS_[ol.geom.GeometryType.POINT] =
-    ol.format.EsriJSON.readPointGeometry_;
+  ol.format.EsriJSON.readPointGeometry_;
 ol.format.EsriJSON.GEOMETRY_READERS_[ol.geom.GeometryType.LINE_STRING] =
-    ol.format.EsriJSON.readLineStringGeometry_;
+  ol.format.EsriJSON.readLineStringGeometry_;
 ol.format.EsriJSON.GEOMETRY_READERS_[ol.geom.GeometryType.POLYGON] =
-    ol.format.EsriJSON.readPolygonGeometry_;
+  ol.format.EsriJSON.readPolygonGeometry_;
 ol.format.EsriJSON.GEOMETRY_READERS_[ol.geom.GeometryType.MULTI_POINT] =
-    ol.format.EsriJSON.readMultiPointGeometry_;
+  ol.format.EsriJSON.readMultiPointGeometry_;
 ol.format.EsriJSON.GEOMETRY_READERS_[ol.geom.GeometryType.MULTI_LINE_STRING] =
-    ol.format.EsriJSON.readMultiLineStringGeometry_;
+  ol.format.EsriJSON.readMultiLineStringGeometry_;
 ol.format.EsriJSON.GEOMETRY_READERS_[ol.geom.GeometryType.MULTI_POLYGON] =
-    ol.format.EsriJSON.readMultiPolygonGeometry_;
+  ol.format.EsriJSON.readMultiPolygonGeometry_;
 
 
 /**
@@ -39759,17 +39819,17 @@ ol.format.EsriJSON.GEOMETRY_READERS_[ol.geom.GeometryType.MULTI_POLYGON] =
  */
 ol.format.EsriJSON.GEOMETRY_WRITERS_ = {};
 ol.format.EsriJSON.GEOMETRY_WRITERS_[ol.geom.GeometryType.POINT] =
-    ol.format.EsriJSON.writePointGeometry_;
+  ol.format.EsriJSON.writePointGeometry_;
 ol.format.EsriJSON.GEOMETRY_WRITERS_[ol.geom.GeometryType.LINE_STRING] =
-    ol.format.EsriJSON.writeLineStringGeometry_;
+  ol.format.EsriJSON.writeLineStringGeometry_;
 ol.format.EsriJSON.GEOMETRY_WRITERS_[ol.geom.GeometryType.POLYGON] =
-    ol.format.EsriJSON.writePolygonGeometry_;
+  ol.format.EsriJSON.writePolygonGeometry_;
 ol.format.EsriJSON.GEOMETRY_WRITERS_[ol.geom.GeometryType.MULTI_POINT] =
-    ol.format.EsriJSON.writeMultiPointGeometry_;
+  ol.format.EsriJSON.writeMultiPointGeometry_;
 ol.format.EsriJSON.GEOMETRY_WRITERS_[ol.geom.GeometryType.MULTI_LINE_STRING] =
-    ol.format.EsriJSON.writeMultiLineStringGeometry_;
+  ol.format.EsriJSON.writeMultiLineStringGeometry_;
 ol.format.EsriJSON.GEOMETRY_WRITERS_[ol.geom.GeometryType.MULTI_POLYGON] =
-    ol.format.EsriJSON.writeMultiPolygonGeometry_;
+  ol.format.EsriJSON.writeMultiPolygonGeometry_;
 
 
 /**
@@ -39812,7 +39872,7 @@ ol.format.EsriJSON.prototype.readFeatureFromObject = function(
   }
   feature.setGeometry(geometry);
   if (opt_options && opt_options.idField &&
-      esriJSONFeature.attributes[opt_options.idField]) {
+    esriJSONFeature.attributes[opt_options.idField]) {
     feature.setId(/** @type {number} */(
       esriJSONFeature.attributes[opt_options.idField]));
   }
@@ -39832,7 +39892,7 @@ ol.format.EsriJSON.prototype.readFeaturesFromObject = function(
   var options = opt_options ? opt_options : {};
   if (esriJSONObject.features) {
     var esriJSONFeatureCollection = /** @type {EsriJSONFeatureCollection} */
-        (object);
+      (object);
     /** @type {Array.<ol.Feature>} */
     var features = [];
     var esriJSONFeatures = esriJSONFeatureCollection.features;
@@ -39867,7 +39927,7 @@ ol.format.EsriJSON.prototype.readGeometry;
 ol.format.EsriJSON.prototype.readGeometryFromObject = function(
     object, opt_options) {
   return ol.format.EsriJSON.readGeometry_(
-      /** @type {EsriJSONGeometry} */ (object), opt_options);
+      /** @type {EsriJSONGeometry} */(object), opt_options);
 };
 
 
@@ -39904,7 +39964,7 @@ ol.format.EsriJSON.prototype.readProjectionFromObject = function(object) {
  */
 ol.format.EsriJSON.writeGeometry_ = function(geometry, opt_options) {
   var geometryWriter = ol.format.EsriJSON.GEOMETRY_WRITERS_[geometry.getType()];
-  return geometryWriter(/** @type {ol.geom.Geometry} */ (
+  return geometryWriter(/** @type {ol.geom.Geometry} */(
     ol.format.Feature.transformWithOptions(geometry, true, opt_options)),
   opt_options);
 };
@@ -39966,7 +40026,13 @@ ol.format.EsriJSON.prototype.writeFeatureObject = function(
   var geometry = feature.getGeometry();
   if (geometry) {
     object['geometry'] =
-        ol.format.EsriJSON.writeGeometry_(geometry, opt_options);
+      ol.format.EsriJSON.writeGeometry_(geometry, opt_options);
+    if (opt_options && opt_options.featureProjection) {
+      object['geometry']['spatialReference'] = /** @type {EsriJSONCRS} */({
+        wkid: ol.proj.get(
+            opt_options.featureProjection).getCode().split(':').pop()
+      });
+    }
   }
   var properties = feature.getProperties();
   delete properties[feature.getGeometryName()];
@@ -39974,12 +40040,6 @@ ol.format.EsriJSON.prototype.writeFeatureObject = function(
     object['attributes'] = properties;
   } else {
     object['attributes'] = {};
-  }
-  if (opt_options && opt_options.featureProjection) {
-    object['spatialReference'] = /** @type {EsriJSONCRS} */({
-      wkid: ol.proj.get(
-          opt_options.featureProjection).getCode().split(':').pop()
-    });
   }
   return object;
 };
@@ -51402,6 +51462,12 @@ ol.render.Feature = function(type, flatCoordinates, ends, properties, id) {
 
   /**
    * @private
+   * @type {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
+   */
+  this.renderCoordinates_ = null;
+
+  /**
+   * @private
    * @type {Array.<number>|Array.<Array.<number>>}
    */
   this.ends_ = ends;
@@ -51465,6 +51531,18 @@ ol.render.Feature.prototype.getId = function() {
  */
 ol.render.Feature.prototype.getOrientedFlatCoordinates = function() {
   return this.flatCoordinates_;
+};
+
+
+/**
+ * @return {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
+ *     Render coordinates.
+ */
+ol.render.Feature.prototype.getRenderCoordinates = function() {
+  if (!this.renderCoordinates_) {
+    this.renderCoordinates_ = [];
+  }
+  return this.renderCoordinates_;
 };
 
 
@@ -58188,7 +58266,7 @@ ol.Graticule.prototype.getMeridians = function() {
 ol.Graticule.prototype.getParallel_ = function(lat, minLon, maxLon,
     squaredTolerance, index) {
   var flatCoordinates = ol.geom.flat.geodesic.parallel(lat,
-      this.minLon_, this.maxLon_, this.projection_, squaredTolerance);
+      minLon, maxLon, this.projection_, squaredTolerance);
   var lineString = this.parallels_[index] !== undefined ?
     this.parallels_[index] : new ol.geom.LineString(null);
   lineString.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates);
@@ -59491,15 +59569,16 @@ ol.render.canvas.Instruction = {
   BEGIN_PATH: 1,
   CIRCLE: 2,
   CLOSE_PATH: 3,
-  DRAW_IMAGE: 4,
-  DRAW_TEXT: 5,
-  END_GEOMETRY: 6,
-  FILL: 7,
-  MOVE_TO_LINE_TO: 8,
-  SET_FILL_STYLE: 9,
-  SET_STROKE_STYLE: 10,
-  SET_TEXT_STYLE: 11,
-  STROKE: 12
+  CUSTOM: 4,
+  DRAW_IMAGE: 5,
+  DRAW_TEXT: 6,
+  END_GEOMETRY: 7,
+  FILL: 8,
+  MOVE_TO_LINE_TO: 9,
+  SET_FILL_STYLE: 10,
+  SET_STROKE_STYLE: 11,
+  SET_TEXT_STYLE: 12,
+  STROKE: 13
 };
 
 goog.provide('ol.render.canvas.Replay');
@@ -59508,6 +59587,8 @@ goog.require('ol');
 goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.extent.Relationship');
+goog.require('ol.geom.GeometryType');
+goog.require('ol.geom.flat.inflate');
 goog.require('ol.geom.flat.transform');
 goog.require('ol.has');
 goog.require('ol.obj');
@@ -59679,6 +59760,75 @@ ol.render.canvas.Replay.prototype.appendFlatCoordinates = function(flatCoordinat
 
 
 /**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {Array.<number>} ends Ends.
+ * @param {number} stride Stride.
+ * @param {Array.<number>} replayEnds Replay ends.
+ * @return {number} Offset.
+ */
+ol.render.canvas.Replay.prototype.drawCustomCoordinates_ = function(flatCoordinates, offset, ends, stride, replayEnds) {
+  for (var i = 0, ii = ends.length; i < ii; ++i) {
+    var end = ends[i];
+    var replayEnd = this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false, false);
+    replayEnds.push(replayEnd);
+    offset = end;
+  }
+  return offset;
+};
+
+
+/**
+ * @inheritDoc.
+ */
+ol.render.canvas.Replay.prototype.drawCustom = function(geometry, feature, renderer) {
+  this.beginGeometry(geometry, feature);
+  var type = geometry.getType();
+  var stride = geometry.getStride();
+  var replayBegin = this.coordinates.length;
+  var flatCoordinates, replayEnd, replayEnds, replayEndss;
+  var offset;
+  if (type == ol.geom.GeometryType.MULTI_POLYGON) {
+    geometry = /** @type {ol.geom.MultiPolygon} */ (geometry);
+    flatCoordinates = geometry.getOrientedFlatCoordinates();
+    replayEndss = [];
+    var endss = geometry.getEndss();
+    offset = 0;
+    for (var i = 0, ii = endss.length; i < ii; ++i) {
+      var myEnds = [];
+      offset = this.drawCustomCoordinates_(flatCoordinates, offset, endss[i], stride, myEnds);
+      replayEndss.push(myEnds);
+    }
+    this.instructions.push([ol.render.canvas.Instruction.CUSTOM,
+      replayBegin, replayEndss, geometry, renderer, ol.geom.flat.inflate.coordinatesss]);
+  } else if (type == ol.geom.GeometryType.POLYGON || type == ol.geom.GeometryType.MULTI_LINE_STRING) {
+    replayEnds = [];
+    flatCoordinates = (type == ol.geom.GeometryType.POLYGON) ?
+      /** @type {ol.geom.Polygon} */ (geometry).getOrientedFlatCoordinates() :
+      geometry.getFlatCoordinates();
+    offset = this.drawCustomCoordinates_(flatCoordinates, 0,
+        /** @type {ol.geom.Polygon|ol.geom.MultiLineString} */ (geometry).getEnds(),
+        stride, replayEnds);
+    this.instructions.push([ol.render.canvas.Instruction.CUSTOM,
+      replayBegin, replayEnds, geometry, renderer, ol.geom.flat.inflate.coordinatess]);
+  } else if (type == ol.geom.GeometryType.LINE_STRING || type == ol.geom.GeometryType.MULTI_POINT) {
+    flatCoordinates = geometry.getFlatCoordinates();
+    replayEnd = this.appendFlatCoordinates(
+        flatCoordinates, 0, flatCoordinates.length, stride, false, false);
+    this.instructions.push([ol.render.canvas.Instruction.CUSTOM,
+      replayBegin, replayEnd, geometry, renderer, ol.geom.flat.inflate.coordinates]);
+  } else if (type == ol.geom.GeometryType.POINT) {
+    flatCoordinates = geometry.getFlatCoordinates();
+    this.coordinates.push(flatCoordinates[0], flatCoordinates[1]);
+    replayEnd = this.coordinates.length;
+    this.instructions.push([ol.render.canvas.Instruction.CUSTOM,
+      replayBegin, replayEnd, geometry, renderer]);
+  }
+  this.endGeometry(geometry, feature);
+};
+
+
+/**
  * @protected
  * @param {ol.geom.Geometry|ol.render.Feature} geometry Geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
@@ -59753,6 +59903,17 @@ ol.render.canvas.Replay.prototype.replay_ = function(
   var prevX, prevY, roundX, roundY;
   var pendingFill = 0;
   var pendingStroke = 0;
+
+  /**
+   * @type {olx.render.State}
+   */
+  var state = {
+    context: context,
+    pixelRatio: pixelRatio,
+    resolution: this.resolution,
+    rotation: viewRotation
+  };
+
   // When the batch size gets too big, performance decreases. 200 is a good
   // balance between batch size and number of fill/stroke instructions.
   var batchSize =
@@ -59805,6 +59966,21 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         break;
       case ol.render.canvas.Instruction.CLOSE_PATH:
         context.closePath();
+        ++i;
+        break;
+      case ol.render.canvas.Instruction.CUSTOM:
+        d = /** @type {number} */ (instruction[1]);
+        dd = instruction[2];
+        var geometry = /** @type {ol.geom.SimpleGeometry} */ (instruction[3]);
+        var renderer = instruction[4];
+        var coords;
+        if (instruction.length == 6) {
+          var fn = instruction[5];
+          coords = fn(pixelCoordinates, d, dd, 2, geometry.getRenderCoordinates());
+        } else {
+          coords = pixelCoordinates.slice(d, dd);
+        }
+        renderer(coords, geometry, feature, state);
         ++i;
         break;
       case ol.render.canvas.Instruction.DRAW_IMAGE:
@@ -59918,8 +60094,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         break;
       case ol.render.canvas.Instruction.END_GEOMETRY:
         if (featureCallback !== undefined) {
-          feature =
-              /** @type {ol.Feature|ol.render.Feature} */ (instruction[1]);
+          feature = /** @type {ol.Feature|ol.render.Feature} */ (instruction[1]);
           var result = featureCallback(feature);
           if (result) {
             return result;
@@ -60398,7 +60573,7 @@ ol.render.canvas.LineStringReplay = function(tolerance, maxExtent, resolution, o
    *         currentLineJoin: (string|undefined),
    *         currentLineWidth: (number|undefined),
    *         currentMiterLimit: (number|undefined),
-   *         lastStroke: number,
+   *         lastStroke: (number|undefined),
    *         strokeStyle: (ol.ColorLike|undefined),
    *         lineCap: (string|undefined),
    *         lineDash: Array.<number>,
@@ -60415,7 +60590,7 @@ ol.render.canvas.LineStringReplay = function(tolerance, maxExtent, resolution, o
     currentLineJoin: undefined,
     currentLineWidth: undefined,
     currentMiterLimit: undefined,
-    lastStroke: 0,
+    lastStroke: undefined,
     strokeStyle: undefined,
     lineCap: undefined,
     lineDash: null,
@@ -60483,10 +60658,11 @@ ol.render.canvas.LineStringReplay.prototype.setStrokeStyle_ = function() {
       state.currentLineJoin != lineJoin ||
       state.currentLineWidth != lineWidth ||
       state.currentMiterLimit != miterLimit) {
-    if (state.lastStroke != this.coordinates.length) {
+    if (state.lastStroke != undefined && state.lastStroke != this.coordinates.length) {
       this.instructions.push([ol.render.canvas.Instruction.STROKE]);
       state.lastStroke = this.coordinates.length;
     }
+    state.lastStroke = 0;
     this.instructions.push([
       ol.render.canvas.Instruction.SET_STROKE_STYLE,
       strokeStyle, lineWidth, lineCap, lineJoin, miterLimit, lineDash, lineDashOffset, true, 1
@@ -60569,7 +60745,7 @@ ol.render.canvas.LineStringReplay.prototype.drawMultiLineString = function(multi
  */
 ol.render.canvas.LineStringReplay.prototype.finish = function() {
   var state = this.state_;
-  if (state.lastStroke != this.coordinates.length) {
+  if (state.lastStroke != undefined && state.lastStroke != this.coordinates.length) {
     this.instructions.push([ol.render.canvas.Instruction.STROKE]);
   }
   this.reverseHitDetectionInstructions();
@@ -61319,6 +61495,7 @@ goog.require('ol.extent');
 goog.require('ol.geom.flat.transform');
 goog.require('ol.obj');
 goog.require('ol.render.ReplayGroup');
+goog.require('ol.render.canvas.Replay');
 goog.require('ol.render.canvas.ImageReplay');
 goog.require('ol.render.canvas.LineStringReplay');
 goog.require('ol.render.canvas.PolygonReplay');
@@ -61472,6 +61649,24 @@ ol.render.canvas.ReplayGroup.getCircleArray_ = function(radius) {
   ol.render.canvas.ReplayGroup.circleArrayCache_[radius] = arr;
   return arr;
 };
+
+
+/**
+ * @param {Array.<ol.render.ReplayType>} replays Replays.
+ * @return {boolean} Has replays of the provided types.
+ */
+ol.render.canvas.ReplayGroup.prototype.hasReplays = function(replays) {
+  for (var zIndex in this.replaysByZIndex_) {
+    var candidates = this.replaysByZIndex_[zIndex];
+    for (var i = 0, ii = replays.length; i < ii; ++i) {
+      if (replays[i] in candidates) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 
 /**
  * FIXME empty description for jsdoc
@@ -61699,6 +61894,7 @@ ol.render.canvas.ReplayGroup.prototype.replayHitDetection_ = function(
  */
 ol.render.canvas.ReplayGroup.BATCH_CONSTRUCTORS_ = {
   'Circle': ol.render.canvas.PolygonReplay,
+  'Default': ol.render.canvas.Replay,
   'Image': ol.render.canvas.ImageReplay,
   'LineString': ol.render.canvas.LineStringReplay,
   'Polygon': ol.render.canvas.PolygonReplay,
@@ -62185,6 +62381,7 @@ goog.provide('ol.renderer.vector');
 
 goog.require('ol');
 goog.require('ol.ImageState');
+goog.require('ol.geom.GeometryType');
 goog.require('ol.render.ReplayType');
 
 
@@ -62294,9 +62491,34 @@ ol.renderer.vector.renderFeature_ = function(
     return;
   }
   var simplifiedGeometry = geometry.getSimplifiedGeometry(squaredTolerance);
-  var geometryRenderer =
-      ol.renderer.vector.GEOMETRY_RENDERERS_[simplifiedGeometry.getType()];
-  geometryRenderer(replayGroup, simplifiedGeometry, style, feature);
+  var renderer = style.getRenderer();
+  if (renderer) {
+    ol.renderer.vector.renderGeometry_(replayGroup, simplifiedGeometry, style, feature);
+  } else {
+    var geometryRenderer =
+        ol.renderer.vector.GEOMETRY_RENDERERS_[simplifiedGeometry.getType()];
+    geometryRenderer(replayGroup, simplifiedGeometry, style, feature);
+  }
+};
+
+
+/**
+ * @param {ol.render.ReplayGroup} replayGroup Replay group.
+ * @param {ol.geom.Geometry} geometry Geometry.
+ * @param {ol.style.Style} style Style.
+ * @param {ol.Feature|ol.render.Feature} feature Feature.
+ * @private
+ */
+ol.renderer.vector.renderGeometry_ = function(replayGroup, geometry, style, feature) {
+  if (geometry.getType() == ol.geom.GeometryType.GEOMETRY_COLLECTION) {
+    var geometries = /** @type {ol.geom.GeometryCollection} */ (geometry).getGeometries();
+    for (var i = 0, ii = geometries.length; i < ii; ++i) {
+      ol.renderer.vector.renderGeometry_(replayGroup, geometries[i], style, feature);
+    }
+    return;
+  }
+  var replay = replayGroup.getReplay(style.getZIndex(), ol.render.ReplayType.DEFAULT);
+  replay.drawCustom(/** @type {ol.geom.SimpleGeometry} */ (geometry), feature, style.getRenderer());
 };
 
 
@@ -65908,10 +66130,6 @@ ol.interaction.Extent = function(opt_options) {
     opt_options = {};
   }
 
-  if (opt_options.extent) {
-    this.setExtent(opt_options.extent);
-  }
-
   /* Inherit ol.interaction.Pointer */
   ol.interaction.Pointer.call(this, {
     handleDownEvent: ol.interaction.Extent.handleDownEvent_,
@@ -65949,6 +66167,10 @@ ol.interaction.Extent = function(opt_options) {
     updateWhileAnimating: true,
     updateWhileInteracting: true
   });
+
+  if (opt_options.extent) {
+    this.setExtent(opt_options.extent);
+  }
 };
 
 ol.inherits(ol.interaction.Extent, ol.interaction.Pointer);
@@ -72226,7 +72448,8 @@ ol.inherits(ol.renderer.canvas.VectorTileLayer, ol.renderer.canvas.TileLayer);
  * @type {!Object.<string, Array.<ol.render.ReplayType>>}
  */
 ol.renderer.canvas.VectorTileLayer.IMAGE_REPLAYS = {
-  'image': ol.render.replay.ORDER,
+  'image': [ol.render.ReplayType.POLYGON, ol.render.ReplayType.CIRCLE,
+    ol.render.ReplayType.LINE_STRING, ol.render.ReplayType.IMAGE, ol.render.ReplayType.TEXT],
   'hybrid': [ol.render.ReplayType.POLYGON, ol.render.ReplayType.LINE_STRING]
 };
 
@@ -72236,7 +72459,8 @@ ol.renderer.canvas.VectorTileLayer.IMAGE_REPLAYS = {
  * @type {!Object.<string, Array.<ol.render.ReplayType>>}
  */
 ol.renderer.canvas.VectorTileLayer.VECTOR_REPLAYS = {
-  'hybrid': [ol.render.ReplayType.IMAGE, ol.render.ReplayType.TEXT],
+  'image': [ol.render.ReplayType.DEFAULT],
+  'hybrid': [ol.render.ReplayType.IMAGE, ol.render.ReplayType.TEXT, ol.render.ReplayType.DEFAULT],
   'vector': ol.render.replay.ORDER
 };
 
@@ -72305,7 +72529,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
           0,
           -sourceTileExtent[0], -sourceTileExtent[3]);
       extent = (ol.transform.apply(transform, [sharedExtent[0], sharedExtent[3]])
-        .concat(ol.transform.apply(transform, [sharedExtent[2], sharedExtent[1]])));
+          .concat(ol.transform.apply(transform, [sharedExtent[2], sharedExtent[1]])));
     } else {
       tileResolution = resolution;
       extent = sharedExtent;
@@ -72497,61 +72721,62 @@ ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, fra
   var source = layer.getSource();
   var renderMode = layer.getRenderMode();
   var replays = ol.renderer.canvas.VectorTileLayer.VECTOR_REPLAYS[renderMode];
-  if (replays) {
-    var pixelRatio = frameState.pixelRatio;
-    var rotation = frameState.viewState.rotation;
-    var size = frameState.size;
-    var offsetX = Math.round(pixelRatio * size[0] / 2);
-    var offsetY = Math.round(pixelRatio * size[1] / 2);
-    var tiles = this.renderedTiles;
-    var tilePixelRatio = layer.getSource().getTilePixelRatio();
-    var sourceTileGrid = source.getTileGrid();
-    var tileGrid = source.getTileGridForProjection(frameState.viewState.projection);
-    var clips = [];
-    var zs = [];
-    for (var i = tiles.length - 1; i >= 0; --i) {
-      var tile = /** @type {ol.VectorImageTile} */ (tiles[i]);
-      if (tile.getState() == ol.TileState.ABORT) {
+  var pixelRatio = frameState.pixelRatio;
+  var rotation = frameState.viewState.rotation;
+  var size = frameState.size;
+  var offsetX = Math.round(pixelRatio * size[0] / 2);
+  var offsetY = Math.round(pixelRatio * size[1] / 2);
+  var tiles = this.renderedTiles;
+  var tilePixelRatio = layer.getSource().getTilePixelRatio();
+  var sourceTileGrid = source.getTileGrid();
+  var tileGrid = source.getTileGridForProjection(frameState.viewState.projection);
+  var clips = [];
+  var zs = [];
+  for (var i = tiles.length - 1; i >= 0; --i) {
+    var tile = /** @type {ol.VectorImageTile} */ (tiles[i]);
+    if (tile.getState() == ol.TileState.ABORT) {
+      continue;
+    }
+    var tileCoord = tile.tileCoord;
+    var worldOffset = tileGrid.getTileCoordExtent(tileCoord)[0] -
+        tileGrid.getTileCoordExtent(tile.wrappedTileCoord)[0];
+    for (var t = 0, tt = tile.tileKeys.length; t < tt; ++t) {
+      var sourceTile = tile.getTile(tile.tileKeys[t]);
+      var replayGroup = sourceTile.getReplayGroup(layer, tileCoord.toString());
+      if (renderMode != ol.layer.VectorTileRenderType.VECTOR && !replayGroup.hasReplays(replays)) {
         continue;
       }
-      var tileCoord = tile.tileCoord;
-      var worldOffset = tileGrid.getTileCoordExtent(tileCoord)[0] -
-          tileGrid.getTileCoordExtent(tile.wrappedTileCoord)[0];
-      for (var t = 0, tt = tile.tileKeys.length; t < tt; ++t) {
-        var sourceTile = tile.getTile(tile.tileKeys[t]);
-        var currentZ = sourceTile.tileCoord[0];
-        var sourceResolution = sourceTileGrid.getResolution(currentZ);
-        var transform = this.getReplayTransform_(sourceTile, frameState);
-        ol.transform.translate(transform, worldOffset * tilePixelRatio / sourceResolution, 0);
-        var replayGroup = sourceTile.getReplayGroup(layer, tileCoord.toString());
-        var currentClip = replayGroup.getClipCoords(transform);
-        context.save();
-        context.globalAlpha = layerState.opacity;
-        ol.render.canvas.rotateAtOffset(context, -rotation, offsetX, offsetY);
-        // Create a clip mask for regions in this low resolution tile that are
-        // already filled by a higher resolution tile
-        for (var j = 0, jj = clips.length; j < jj; ++j) {
-          var clip = clips[j];
-          if (currentZ < zs[j]) {
-            context.beginPath();
-            // counter-clockwise (outer ring) for current tile
-            context.moveTo(currentClip[0], currentClip[1]);
-            context.lineTo(currentClip[2], currentClip[3]);
-            context.lineTo(currentClip[4], currentClip[5]);
-            context.lineTo(currentClip[6], currentClip[7]);
-            // clockwise (inner ring) for higher resolution tile
-            context.moveTo(clip[6], clip[7]);
-            context.lineTo(clip[4], clip[5]);
-            context.lineTo(clip[2], clip[3]);
-            context.lineTo(clip[0], clip[1]);
-            context.clip();
-          }
+      var currentZ = sourceTile.tileCoord[0];
+      var sourceResolution = sourceTileGrid.getResolution(currentZ);
+      var transform = this.getReplayTransform_(sourceTile, frameState);
+      ol.transform.translate(transform, worldOffset * tilePixelRatio / sourceResolution, 0);
+      var currentClip = replayGroup.getClipCoords(transform);
+      context.save();
+      context.globalAlpha = layerState.opacity;
+      ol.render.canvas.rotateAtOffset(context, -rotation, offsetX, offsetY);
+      // Create a clip mask for regions in this low resolution tile that are
+      // already filled by a higher resolution tile
+      for (var j = 0, jj = clips.length; j < jj; ++j) {
+        var clip = clips[j];
+        if (currentZ < zs[j]) {
+          context.beginPath();
+          // counter-clockwise (outer ring) for current tile
+          context.moveTo(currentClip[0], currentClip[1]);
+          context.lineTo(currentClip[2], currentClip[3]);
+          context.lineTo(currentClip[4], currentClip[5]);
+          context.lineTo(currentClip[6], currentClip[7]);
+          // clockwise (inner ring) for higher resolution tile
+          context.moveTo(clip[6], clip[7]);
+          context.lineTo(clip[4], clip[5]);
+          context.lineTo(clip[2], clip[3]);
+          context.lineTo(clip[0], clip[1]);
+          context.clip();
         }
-        replayGroup.replay(context, pixelRatio, transform, rotation, {}, replays);
-        context.restore();
-        clips.push(currentClip);
-        zs.push(currentZ);
       }
+      replayGroup.replay(context, pixelRatio, transform, rotation, {}, replays);
+      context.restore();
+      clips.push(currentClip);
+      zs.push(currentZ);
     }
   }
   ol.renderer.canvas.TileLayer.prototype.postCompose.apply(this, arguments);
@@ -72631,7 +72856,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
         ol.transform.translate(transform, -tileExtent[0], -tileExtent[3]);
       }
       var replayGroup = sourceTile.getReplayGroup(layer, tile.tileCoord.toString());
-      replayGroup.replay(context, pixelRatio, transform, 0, {}, replays);
+      replayGroup.replay(context, pixelRatio, transform, 0, {}, replays, true);
     }
   }
 };
@@ -75646,8 +75871,7 @@ ol.source.ImageWMS = function(opt_options) {
    * @private
    * @type {ol.source.WMSServerType|undefined}
    */
-  this.serverType_ =
-      /** @type {ol.source.WMSServerType|undefined} */ (options.serverType);
+  this.serverType_ = /** @type {ol.source.WMSServerType|undefined} */ (options.serverType);
 
   /**
    * @private
@@ -77871,6 +78095,7 @@ ol.source.TileWMS = function(opt_options) {
     opaque: !transparent,
     projection: options.projection,
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+    tileClass: options.tileClass,
     tileGrid: options.tileGrid,
     tileLoadFunction: options.tileLoadFunction,
     url: options.url,
@@ -77900,8 +78125,7 @@ ol.source.TileWMS = function(opt_options) {
    * @private
    * @type {ol.source.WMSServerType|undefined}
    */
-  this.serverType_ =
-      /** @type {ol.source.WMSServerType|undefined} */ (options.serverType);
+  this.serverType_ = /** @type {ol.source.WMSServerType|undefined} */ (options.serverType);
 
   /**
    * @private
@@ -81436,6 +81660,16 @@ goog.exportProperty(
     ol.style.Style.prototype,
     'clone',
     ol.style.Style.prototype.clone);
+
+goog.exportProperty(
+    ol.style.Style.prototype,
+    'getRenderer',
+    ol.style.Style.prototype.getRenderer);
+
+goog.exportProperty(
+    ol.style.Style.prototype,
+    'setRenderer',
+    ol.style.Style.prototype.setRenderer);
 
 goog.exportProperty(
     ol.style.Style.prototype,
@@ -93151,7 +93385,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-107-gbc0bc3f';
+ol.VERSION = 'v4.2.0-151-g007d8c2';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
