@@ -1757,6 +1757,10 @@
                     <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
+                <li data-name="ol.VectorTile#setExtent" class="">
+                    <a href="ol.VectorTile.html#setExtent">setExtent</a>
+                </li>
+            
                 <li data-name="ol.VectorTile#setFeatures" class="">
                     <a href="ol.VectorTile.html#setFeatures">setFeatures</a>
                 </li>
@@ -3902,6 +3906,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#getLastExtent" class="">
+                    <a href="ol.format.MVT.html#getLastExtent">getLastExtent</a>
+                </li>
             
                 <li data-name="ol.format.MVT#readFeatures" class="">
                     <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
@@ -7539,16 +7547,16 @@
             
             <span class="subtitle">Fires</span>
             
-                <li data-name="ol.interaction.Extent.event:Event" class="">
-                    <a href="ol.interaction.Extent.html#.event:Event">Event</a>
-                </li>
-            
                 <li data-name="ol.events.Event#event:change" class="">
                     <a href="ol.events.Event.html#event:change">change</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:change:active" class="">
                     change:active
+                </li>
+            
+                <li data-name="ol.interaction.Extent.Event#event:extentchanged" class="">
+                    <a href="ol.interaction.Extent.Event.html#event:extentchanged">extentchanged</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:propertychange" class="">
@@ -7567,7 +7575,7 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="ol.interaction.Extent.Event#extent_"><a href="ol.interaction.Extent.Event.html#extent_">extent_</a></li>
+                <li data-name="ol.interaction.Extent.Event#extent"><a href="ol.interaction.Extent.Event.html#extent">extent</a></li>
             
                 <li data-name="ol.interaction.Extent.Event#target"><a href="ol.interaction.Extent.Event.html#target">target</a></li>
             
@@ -15801,7 +15809,7 @@ This interaction is only supported for mouse devices.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/extent.js, line 31
+            src/ol/interaction/extent.js, line 32
         </div>
         
         
@@ -16047,17 +16055,6 @@ Only affects visuals, not functionality. Defaults to false.</p></td>
     <h5>Fires:</h5>
     <ul>
         <li class="">
-            <code><a href="ol.interaction.Extent.html#.event:Event">Event</a></code>
-            
-            
-            
-
-             -
-            Triggered after the extent is changed
-            
-        </li>
-    
-        <li class="">
             <code><a href="ol.events.Event.html#event:change">change</a></code>
             
                 (<a href="ol.events.Event.html">ol.events.Event</a>)
@@ -16078,6 +16075,19 @@ Only affects visuals, not functionality. Defaults to false.</p></td>
             
             
 
+            
+        </li>
+    
+        <li class="">
+            <code><a href="ol.interaction.Extent.Event.html#event:extentchanged">extentchanged</a></code>
+            
+                (<a href="ol.interaction.Extent.Event.html">ol.interaction.Extent.Event</a>)
+              
+            
+            
+
+             -
+            Triggered after the extent is changed
             
         </li>
     
@@ -16630,7 +16640,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/extent.js, line 424
+            src/ol/interaction/extent.js, line 425
         </div>
         
         
@@ -17751,7 +17761,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/extent.js, line 434
+            src/ol/interaction/extent.js, line 435
         </div>
         
         
@@ -18348,87 +18358,6 @@ properties and adds new ones (it does not remove any existing properties).</p>
     
     
     
-    
-        <h3 class="subsection-title">Events</h3>
-        
-        <dl>
-            
-<dt class="">
-    <div class="nameContainer">
-        
-        <div class="anchor" id=".event:Event">
-        </div>
-        <h4 class="name">
-            ol.interaction.Extent.event:Event
-            
-            
-
-        </h4>
-        
-        <div class="tag-source">
-            src/ol/interaction/extent.js, line 469
-        </div>
-        
-        
-    </div>
-    
-</dt>
-<dd class="">
-
-    
-    <div class="description">
-        <p>Triggered after the extent is changed</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        </dl>
     
 </article>
 

@@ -1757,6 +1757,10 @@
                     <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
+                <li data-name="ol.VectorTile#setExtent" class="">
+                    <a href="ol.VectorTile.html#setExtent">setExtent</a>
+                </li>
+            
                 <li data-name="ol.VectorTile#setFeatures" class="">
                     <a href="ol.VectorTile.html#setFeatures">setFeatures</a>
                 </li>
@@ -3902,6 +3906,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#getLastExtent" class="">
+                    <a href="ol.format.MVT.html#getLastExtent">getLastExtent</a>
+                </li>
             
                 <li data-name="ol.format.MVT#readFeatures" class="">
                     <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
@@ -7539,16 +7547,16 @@
             
             <span class="subtitle">Fires</span>
             
-                <li data-name="ol.interaction.Extent.event:Event" class="">
-                    <a href="ol.interaction.Extent.html#.event:Event">Event</a>
-                </li>
-            
                 <li data-name="ol.events.Event#event:change" class="">
                     <a href="ol.events.Event.html#event:change">change</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:change:active" class="">
                     change:active
+                </li>
+            
+                <li data-name="ol.interaction.Extent.Event#event:extentchanged" class="">
+                    <a href="ol.interaction.Extent.Event.html#event:extentchanged">extentchanged</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:propertychange" class="">
@@ -7567,7 +7575,7 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="ol.interaction.Extent.Event#extent_"><a href="ol.interaction.Extent.Event.html#extent_">extent_</a></li>
+                <li data-name="ol.interaction.Extent.Event#extent"><a href="ol.interaction.Extent.Event.html#extent">extent</a></li>
             
                 <li data-name="ol.interaction.Extent.Event#target"><a href="ol.interaction.Extent.Event.html#target">target</a></li>
             
@@ -16188,42 +16196,10 @@ stroke operations.</p></td>
     var format = tile.getFormat();
     tile.setFeatures(format.readFeatures(data));
     tile.setProjection(format.readProjection(data));
+    // uncomment the line below for ol.format.MVT only
+    //tile.setExtent(format.getLastExtent());
   };
 });</code></pre></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>tilePixelRatio</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">undefined</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            <td  class="description last">
-                
-                    
-
-                
-                <p>The pixel ratio used by the tile service. For example, if the tile
-service advertizes 256px by 256px tiles but actually sends 512px
-by 512px tiles (for retina/hidpi devices) then <code>tilePixelRatio</code>
-should be set to <code>2</code>. Default is <code>1</code>.</p></td>
         </tr>
 	
 	

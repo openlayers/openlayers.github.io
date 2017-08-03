@@ -79,7 +79,6 @@ var map &#x3D; new ol.Map({
           &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;,
         format: new ol.format.MVT(),
         tileGrid: ol.tilegrid.createXYZ({tileSize: 512, maxZoom: 22}),
-        tilePixelRatio: 8,
         url: &#x27;https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/&#x27; +
             &#x27;{z}/{x}/{y}.vector.pbf?access_token&#x3D;&#x27; + key
       }),
@@ -136,7 +135,6 @@ var map &#x3D; new ol.Map({
                 &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;,
               format: new ol.format.MVT(),
               tileGrid: ol.tilegrid.createXYZ({tileSize: 512, maxZoom: 22}),
-              tilePixelRatio: 8,
               url: &#x27;https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/&#x27; +
                   &#x27;{z}/{x}/{y}.vector.pbf?access_token&#x3D;&#x27; + key
             }),

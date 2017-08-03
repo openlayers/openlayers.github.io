@@ -1757,6 +1757,10 @@
                     <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
+                <li data-name="ol.VectorTile#setExtent" class="">
+                    <a href="ol.VectorTile.html#setExtent">setExtent</a>
+                </li>
+            
                 <li data-name="ol.VectorTile#setFeatures" class="">
                     <a href="ol.VectorTile.html#setFeatures">setFeatures</a>
                 </li>
@@ -3902,6 +3906,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#getLastExtent" class="">
+                    <a href="ol.format.MVT.html#getLastExtent">getLastExtent</a>
+                </li>
             
                 <li data-name="ol.format.MVT#readFeatures" class="">
                     <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
@@ -7539,16 +7547,16 @@
             
             <span class="subtitle">Fires</span>
             
-                <li data-name="ol.interaction.Extent.event:Event" class="">
-                    <a href="ol.interaction.Extent.html#.event:Event">Event</a>
-                </li>
-            
                 <li data-name="ol.events.Event#event:change" class="">
                     <a href="ol.events.Event.html#event:change">change</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:change:active" class="">
                     change:active
+                </li>
+            
+                <li data-name="ol.interaction.Extent.Event#event:extentchanged" class="">
+                    <a href="ol.interaction.Extent.Event.html#event:extentchanged">extentchanged</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:propertychange" class="">
@@ -7567,7 +7575,7 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="ol.interaction.Extent.Event#extent_"><a href="ol.interaction.Extent.Event.html#extent_">extent_</a></li>
+                <li data-name="ol.interaction.Extent.Event#extent"><a href="ol.interaction.Extent.Event.html#extent">extent</a></li>
             
                 <li data-name="ol.interaction.Extent.Event#target"><a href="ol.interaction.Extent.Event.html#target">target</a></li>
             
@@ -15882,7 +15890,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 101
+            src/ol/vectortile.js, line 116
         </div>
         
         
@@ -15969,7 +15977,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 90
+            src/ol/vectortile.js, line 105
         </div>
         
         
@@ -16055,7 +16063,7 @@ Feature format.
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 119
+            src/ol/vectortile.js, line 134
         </div>
         
         
@@ -16300,6 +16308,135 @@ only needed for preloading or for reloading in case of an error.</p>
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="setExtent">
+        </div>
+        <h4 class="name">
+            setExtent<span class="signature">(extent)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/vectortile.js, line 192
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Sets the extent of the vector tile. For tiles in projections with
+<code>tile-pixels</code> as units, this should be set to
+<code>[0, 0, tilePixelSize, tilePixelSize]</code> by the source's <code>tileLoadFunction</code>.
+<code>tilePixelSize</code> is calculated by multiplying the tile size with the tile
+pixel ratio. When using <code>ol.format.MVT</code>, the format's <code>getLastExtent()</code>
+method returns the correct extent. The default is <code>[0, 0, 4096, 4096]</code>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Extent">ol.Extent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>The extent.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="setFeatures">
         </div>
         <h4 class="name">
@@ -16310,7 +16447,7 @@ only needed for preloading or for reloading in case of an error.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 169
+            src/ol/vectortile.js, line 201
         </div>
         
         
@@ -16430,7 +16567,7 @@ only needed for preloading or for reloading in case of an error.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 200
+            src/ol/vectortile.js, line 232
         </div>
         
         
@@ -16554,7 +16691,7 @@ only needed for preloading or for reloading in case of an error.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 180
+            src/ol/vectortile.js, line 212
         </div>
         
         

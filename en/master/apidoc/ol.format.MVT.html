@@ -1757,6 +1757,10 @@
                     <a href="ol.VectorTile.html#load">load</a>
                 </li>
             
+                <li data-name="ol.VectorTile#setExtent" class="">
+                    <a href="ol.VectorTile.html#setExtent">setExtent</a>
+                </li>
+            
                 <li data-name="ol.VectorTile#setFeatures" class="">
                     <a href="ol.VectorTile.html#setFeatures">setFeatures</a>
                 </li>
@@ -3902,6 +3906,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.format.MVT#getLastExtent" class="">
+                    <a href="ol.format.MVT.html#getLastExtent">getLastExtent</a>
+                </li>
             
                 <li data-name="ol.format.MVT#readFeatures" class="">
                     <a href="ol.format.MVT.html#readFeatures">readFeatures</a>
@@ -7539,16 +7547,16 @@
             
             <span class="subtitle">Fires</span>
             
-                <li data-name="ol.interaction.Extent.event:Event" class="">
-                    <a href="ol.interaction.Extent.html#.event:Event">Event</a>
-                </li>
-            
                 <li data-name="ol.events.Event#event:change" class="">
                     <a href="ol.events.Event.html#event:change">change</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:change:active" class="">
                     change:active
+                </li>
+            
+                <li data-name="ol.interaction.Extent.Event#event:extentchanged" class="">
+                    <a href="ol.interaction.Extent.Event.html#event:extentchanged">extentchanged</a>
                 </li>
             
                 <li data-name="ol.Object.Event#event:propertychange" class="">
@@ -7567,7 +7575,7 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="ol.interaction.Extent.Event#extent_"><a href="ol.interaction.Extent.Event.html#extent_">extent_</a></li>
+                <li data-name="ol.interaction.Extent.Event#extent"><a href="ol.interaction.Extent.Event.html#extent">extent</a></li>
             
                 <li data-name="ol.interaction.Extent.Event#target"><a href="ol.interaction.Extent.Event.html#target">target</a></li>
             
@@ -16079,6 +16087,92 @@ layers.</p></td>
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="getLastExtent">
+        </div>
+        <h4 class="name">
+            getLastExtent<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.html#.Extent">ol.Extent</a>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/format/mvt.js, line 86
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get the extent from the source of the last <code>readFeatures</code> call.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Tile extent.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="readFeatures">
         </div>
         <h4 class="name">
@@ -16089,7 +16183,7 @@ layers.</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/mvt.js, line 150
+            src/ol/format/mvt.js, line 165
         </div>
         
         
@@ -16331,7 +16425,7 @@ Features.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/mvt.js, line 182
+            src/ol/format/mvt.js, line 200
         </div>
         
         
@@ -16473,7 +16567,7 @@ Projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/format/mvt.js, line 192
+            src/ol/format/mvt.js, line 210
         </div>
         
         

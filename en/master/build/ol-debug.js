@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-153-gd9c4909
+// Version: v4.2.0-164-g83c3575
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -37482,7 +37482,7 @@ goog.require('ol.xml');
 /**
  * @param {string|ol.FeatureUrlFunction} url Feature URL service.
  * @param {ol.format.Feature} format Feature format.
- * @param {function(this:ol.VectorTile, Array.<ol.Feature>, ol.proj.Projection)|function(this:ol.source.Vector, Array.<ol.Feature>)} success
+ * @param {function(this:ol.VectorTile, Array.<ol.Feature>, ol.proj.Projection, ol.Extent)|function(this:ol.source.Vector, Array.<ol.Feature>)} success
  *     Function called with the loaded features and optionally with the data
  *     projection. Called with the vector tile or source as `this`.
  * @param {function(this:ol.VectorTile)|function(this:ol.source.Vector)} failure
@@ -37530,7 +37530,7 @@ ol.featureloader.loadFeaturesXhr = function(url, format, success, failure) {
           if (source) {
             success.call(this, format.readFeatures(source,
                 {featureProjection: projection}),
-            format.readProjection(source));
+            format.readProjection(source), format.getLastExtent());
           } else {
             failure.call(this);
           }
@@ -37641,6 +37641,15 @@ ol.format.Feature.prototype.adaptOptions = function(options) {
     dataProjection: this.defaultDataProjection,
     featureProjection: this.defaultFeatureProjection
   }, options);
+};
+
+
+/**
+ * Get the extent from the source of the last {@link readFeatures} call.
+ * @return {ol.Extent} Tile extent.
+ */
+ol.format.Feature.prototype.getLastExtent = function() {
+  return null;
 };
 
 
@@ -49610,7 +49619,7 @@ ol.format.KML.writeIconStyle_ = function(node, style, objectStack) {
       iconProperties['y'] = iconImageSize[1] - (origin[1] + size[1]);
     }
 
-    if (anchor && anchor[0] !== 0 && anchor[1] !== size[1]) {
+    if (anchor && (anchor[0] !== size[0] / 2 || anchor[1] !== size[1] / 2)) {
       var /** @type {ol.KMLVec2_} */ hotSpot = {
         x: anchor[0],
         xunits: ol.style.IconAnchorUnits.PIXELS,
@@ -51676,8 +51685,23 @@ ol.format.MVT = function(opt_options) {
    */
   this.layers_ = options.layers ? options.layers : null;
 
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.extent_ = null;
+
 };
 ol.inherits(ol.format.MVT, ol.format.Feature);
+
+
+/**
+ * @inheritDoc
+ * @api
+ */
+ol.format.MVT.prototype.getLastExtent = function() {
+  return this.extent_;
+};
 
 
 /**
@@ -51768,14 +51792,17 @@ ol.format.MVT.prototype.readFeatures = function(source, opt_options) {
     }
     layer = tile.layers[name];
 
+    var rawFeature;
     for (var i = 0, ii = layer.length; i < ii; ++i) {
+      rawFeature = layer.feature(i);
       if (featureClass === ol.render.Feature) {
-        feature = this.readRenderFeature_(layer.feature(i), name);
+        feature = this.readRenderFeature_(rawFeature, name);
       } else {
-        feature = this.readFeature_(layer.feature(i), name, opt_options);
+        feature = this.readFeature_(rawFeature, name, opt_options);
       }
       features.push(feature);
     }
+    this.extent_ = layer ? [0, 0, layer.extent, layer.extent] : null;
   }
 
   return features;
@@ -66052,6 +66079,21 @@ ol.interaction.Draw.Event = function(type, feature) {
 };
 ol.inherits(ol.interaction.Draw.Event, ol.events.Event);
 
+goog.provide('ol.interaction.ExtentEventType');
+
+
+/**
+ * @enum {string}
+ */
+ol.interaction.ExtentEventType = {
+  /**
+   * Triggered after the extent is changed
+   * @event ol.interaction.Extent.Event#extentchanged
+   * @api
+   */
+  EXTENTCHANGED: 'extentchanged'
+};
+
 goog.provide('ol.interaction.Extent');
 
 goog.require('ol');
@@ -66064,6 +66106,7 @@ goog.require('ol.extent');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.Point');
 goog.require('ol.geom.Polygon');
+goog.require('ol.interaction.ExtentEventType');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
@@ -66499,34 +66542,22 @@ ol.interaction.Extent.prototype.setExtent = function(extent) {
  * this type.
  *
  * @constructor
+ * @implements {oli.ExtentEvent}
  * @param {ol.Extent} extent the new extent
  * @extends {ol.events.Event}
  */
 ol.interaction.Extent.Event = function(extent) {
-  ol.events.Event.call(this, ol.interaction.Extent.EventType_.EXTENTCHANGED);
+  ol.events.Event.call(this, ol.interaction.ExtentEventType.EXTENTCHANGED);
 
   /**
    * The current extent.
    * @type {ol.Extent}
    * @api
    */
-  this.extent_ = extent;
+  this.extent = extent;
+
 };
 ol.inherits(ol.interaction.Extent.Event, ol.events.Event);
-
-
-/**
- * @enum {string}
- * @private
- */
-ol.interaction.Extent.EventType_ = {
-  /**
-   * Triggered after the extent is changed
-   * @event ol.interaction.Extent.Event
-   * @api
-   */
-  EXTENTCHANGED: 'extentchanged'
-};
 
 goog.provide('ol.interaction.ModifyEventType');
 
@@ -72400,6 +72431,7 @@ goog.require('ol.render.canvas.ReplayGroup');
 goog.require('ol.render.replay');
 goog.require('ol.renderer.canvas.TileLayer');
 goog.require('ol.renderer.vector');
+goog.require('ol.size');
 goog.require('ol.transform');
 
 
@@ -72506,23 +72538,24 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
     return;
   }
 
+  var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
+  var sourceTileGrid = source.getTileGrid();
+  var tileGrid = source.getTileGridForProjection(projection);
+  var resolution = tileGrid.getResolution(tile.tileCoord[0]);
+  var tileExtent = tileGrid.getTileCoordExtent(tile.wrappedTileCoord);
+
   for (var t = 0, tt = tile.tileKeys.length; t < tt; ++t) {
     var sourceTile = tile.getTile(tile.tileKeys[t]);
     replayState.dirty = false;
 
-    var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
-    var sourceTileGrid = source.getTileGrid();
     var sourceTileCoord = sourceTile.tileCoord;
     var tileProjection = sourceTile.getProjection();
-    var tileGrid = source.getTileGridForProjection(projection);
-    var resolution = tileGrid.getResolution(tile.tileCoord[0]);
     var sourceTileResolution = sourceTileGrid.getResolution(sourceTile.tileCoord[0]);
-    var tileExtent = tileGrid.getTileCoordExtent(tile.wrappedTileCoord);
     var sourceTileExtent = sourceTileGrid.getTileCoordExtent(sourceTileCoord);
     var sharedExtent = ol.extent.getIntersection(tileExtent, sourceTileExtent);
     var extent, reproject, tileResolution;
     if (tileProjection.getUnits() == ol.proj.Units.TILE_PIXELS) {
-      var tilePixelRatio = tileResolution = source.getTilePixelRatio();
+      var tilePixelRatio = tileResolution = this.getTilePixelRatio_(source, sourceTile);
       var transform = ol.transform.compose(this.tmpTransform_,
           0, 0,
           1 / sourceTileResolution * tilePixelRatio, -1 / sourceTileResolution * tilePixelRatio,
@@ -72638,7 +72671,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
         var sourceTileCoord = sourceTile.tileCoord;
         var sourceTileExtent = sourceTileGrid.getTileCoordExtent(sourceTileCoord, this.tmpExtent);
         origin = ol.extent.getTopLeft(sourceTileExtent);
-        tilePixelRatio = source.getTilePixelRatio();
+        tilePixelRatio = this.getTilePixelRatio_(source, sourceTile);
         tileResolution = sourceTileGrid.getResolution(sourceTileCoord[0]) / tilePixelRatio;
         tileSpaceCoordinate = [
           (coordinate[0] - origin[0]) / tileResolution,
@@ -72681,7 +72714,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.getReplayTransform_ = function(tile
     var tileGrid = source.getTileGrid();
     var tileCoord = tile.tileCoord;
     var tileResolution =
-        tileGrid.getResolution(tileCoord[0]) / source.getTilePixelRatio();
+        tileGrid.getResolution(tileCoord[0]) / this.getTilePixelRatio_(source, tile);
     var viewState = frameState.viewState;
     var pixelRatio = frameState.pixelRatio;
     var renderResolution = viewState.resolution / pixelRatio;
@@ -72704,6 +72737,18 @@ ol.renderer.canvas.VectorTileLayer.prototype.getReplayTransform_ = function(tile
 
 
 /**
+ * @private
+ * @param {ol.source.VectorTile} source Source.
+ * @param {ol.VectorTile} tile Tile.
+ * @return {number} The tile's pixel ratio.
+ */
+ol.renderer.canvas.VectorTileLayer.prototype.getTilePixelRatio_ = function(source, tile) {
+  return ol.extent.getWidth(tile.getExtent()) /
+        ol.size.toSize(source.getTileGrid().getTileSize(tile.tileCoord[0]))[0];
+};
+
+
+/**
  * Handle changes in image style state.
  * @param {ol.events.Event} event Image style change event.
  * @private
@@ -72718,7 +72763,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.handleStyleImageChange_ = function(
  */
 ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, frameState, layerState) {
   var layer = this.getLayer();
-  var source = layer.getSource();
+  var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
   var renderMode = layer.getRenderMode();
   var replays = ol.renderer.canvas.VectorTileLayer.VECTOR_REPLAYS[renderMode];
   var pixelRatio = frameState.pixelRatio;
@@ -72727,7 +72772,6 @@ ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, fra
   var offsetX = Math.round(pixelRatio * size[0] / 2);
   var offsetY = Math.round(pixelRatio * size[1] / 2);
   var tiles = this.renderedTiles;
-  var tilePixelRatio = layer.getSource().getTilePixelRatio();
   var sourceTileGrid = source.getTileGrid();
   var tileGrid = source.getTileGridForProjection(frameState.viewState.projection);
   var clips = [];
@@ -72742,6 +72786,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, fra
         tileGrid.getTileCoordExtent(tile.wrappedTileCoord)[0];
     for (var t = 0, tt = tile.tileKeys.length; t < tt; ++t) {
       var sourceTile = tile.getTile(tile.tileKeys[t]);
+      var tilePixelRatio = this.getTilePixelRatio_(source, sourceTile);
       var replayGroup = sourceTile.getReplayGroup(layer, tileCoord.toString());
       if (renderMode != ol.layer.VectorTileRenderType.VECTOR && !replayGroup.hasReplays(replays)) {
         continue;
@@ -72828,11 +72873,10 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
     var tileCoord = tile.wrappedTileCoord;
     var z = tileCoord[0];
     var pixelRatio = frameState.pixelRatio;
-    var source = layer.getSource();
+    var source = /** @type {ol.source.VectorTile} */ (layer.getSource());
     var sourceTileGrid = source.getTileGrid();
     var tileGrid = source.getTileGridForProjection(frameState.viewState.projection);
     var resolution = tileGrid.getResolution(z);
-    var tilePixelRatio = source.getTilePixelRatio();
     var context = tile.getContext(layer);
     var size = source.getTilePixelSize(z, pixelRatio, frameState.viewState.projection);
     context.canvas.width = size[0];
@@ -72840,6 +72884,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.renderTileImage_ = function(
     var tileExtent = tileGrid.getTileCoordExtent(tileCoord);
     for (var i = 0, ii = tile.tileKeys.length; i < ii; ++i) {
       var sourceTile = tile.getTile(tile.tileKeys[i]);
+      var tilePixelRatio = this.getTilePixelRatio_(source, sourceTile);
       var sourceTileCoord = sourceTile.tileCoord;
       var pixelScale = pixelRatio / resolution;
       var transform = ol.transform.reset(this.tmpTransform_);
@@ -73810,12 +73855,11 @@ ol.source.Tile.prototype.getTileCacheForProjection = function(projection) {
 /**
  * Get the tile pixel ratio for this source. Subclasses may override this
  * method, which is meant to return a supported pixel ratio that matches the
- * provided `opt_pixelRatio` as close as possible. When no `opt_pixelRatio` is
- * provided, it is meant to return `this.tilePixelRatio_`.
- * @param {number=} opt_pixelRatio Pixel ratio.
+ * provided `pixelRatio` as close as possible.
+ * @param {number} pixelRatio Pixel ratio.
  * @return {number} Tile pixel ratio.
  */
-ol.source.Tile.prototype.getTilePixelRatio = function(opt_pixelRatio) {
+ol.source.Tile.prototype.getTilePixelRatio = function(pixelRatio) {
   return this.tilePixelRatio_;
 };
 
@@ -74644,7 +74688,7 @@ ol.source.BingMaps.prototype.handleImageryMetadataResponse = function(response) 
     extent: extent,
     minZoom: resource.zoomMin,
     maxZoom: maxZoom,
-    tileSize: tileSize / this.getTilePixelRatio()
+    tileSize: tileSize / (this.hidpi_ ? 2 : 1)
   });
   this.tileGrid = tileGrid;
 
@@ -78712,7 +78756,7 @@ ol.VectorImageTile.prototype.finishLoading_ = function() {
  */
 ol.VectorImageTile.defaultLoadFunction = function(tile, url) {
   var loader = ol.featureloader.loadFeaturesXhr(
-      url, tile.getFormat(), tile.onLoad_.bind(tile), tile.onError_.bind(tile));
+      url, tile.getFormat(), tile.onLoad.bind(tile), tile.onError.bind(tile));
 
   tile.setLoader(loader);
 };
@@ -78741,6 +78785,12 @@ ol.VectorTile = function(tileCoord, state, src, format, tileLoadFunction) {
    * @type {number}
    */
   this.consumers = 0;
+
+  /**
+   * @private
+   * @type {ol.Extent}
+   */
+  this.extent_ = null;
 
   /**
    * @private
@@ -78798,6 +78848,15 @@ ol.VectorTile.prototype.disposeInternal = function() {
   this.state = ol.TileState.ABORT;
   this.changed();
   ol.Tile.prototype.disposeInternal.call(this);
+};
+
+
+/**
+ * Gets the extent of the vector tile.
+ * @return {ol.Extent} The extent.
+ */
+ol.VectorTile.prototype.getExtent = function() {
+  return this.extent_ || ol.VectorTile.DEFAULT_EXTENT;
 };
 
 
@@ -78866,18 +78925,35 @@ ol.VectorTile.prototype.load = function() {
  * Handler for successful tile load.
  * @param {Array.<ol.Feature>} features The loaded features.
  * @param {ol.proj.Projection} dataProjection Data projection.
+ * @param {ol.Extent} extent Extent.
  */
-ol.VectorTile.prototype.onLoad_ = function(features, dataProjection) {
+ol.VectorTile.prototype.onLoad = function(features, dataProjection, extent) {
   this.setProjection(dataProjection);
   this.setFeatures(features);
+  this.setExtent(extent);
 };
 
 
 /**
  * Handler for tile load errors.
  */
-ol.VectorTile.prototype.onError_ = function() {
+ol.VectorTile.prototype.onError = function() {
   this.setState(ol.TileState.ERROR);
+};
+
+
+/**
+ * Sets the extent of the vector tile. For tiles in projections with
+ * `tile-pixels` as units, this should be set to
+ * `[0, 0, tilePixelSize, tilePixelSize]` by the source's `tileLoadFunction`.
+ * `tilePixelSize` is calculated by multiplying the tile size with the tile
+ * pixel ratio. When using `ol.format.MVT`, the format's `getLastExtent()`
+ * method returns the correct extent. The default is `[0, 0, 4096, 4096]`.
+ * @param {ol.Extent} extent The extent.
+ * @api
+ */
+ol.VectorTile.prototype.setExtent = function(extent) {
+  this.extent_ = extent;
 };
 
 
@@ -78919,6 +78995,13 @@ ol.VectorTile.prototype.setReplayGroup = function(layer, key, replayGroup) {
 ol.VectorTile.prototype.setLoader = function(loader) {
   this.loader_ = loader;
 };
+
+
+/**
+ * @const
+ * @type {ol.Extent}
+ */
+ol.VectorTile.DEFAULT_EXTENT = [0, 0, 4096, 4096];
 
 goog.provide('ol.source.VectorTile');
 
@@ -78962,7 +79045,6 @@ ol.source.VectorTile = function(options) {
     tileLoadFunction: options.tileLoadFunction ?
       options.tileLoadFunction : ol.VectorImageTile.defaultLoadFunction,
     tileUrlFunction: options.tileUrlFunction,
-    tilePixelRatio: options.tilePixelRatio,
     url: options.url,
     urls: options.urls,
     wrapX: options.wrapX === undefined ? true : options.wrapX
@@ -79063,10 +79145,8 @@ ol.source.VectorTile.prototype.getTileGridForProjection = function(projection) {
 /**
  * @inheritDoc
  */
-ol.source.VectorTile.prototype.getTilePixelRatio = function(opt_pixelRatio) {
-  return opt_pixelRatio == undefined ?
-    ol.source.UrlTile.prototype.getTilePixelRatio.call(this, opt_pixelRatio) :
-    opt_pixelRatio;
+ol.source.VectorTile.prototype.getTilePixelRatio = function(pixelRatio) {
+  return pixelRatio;
 };
 
 
@@ -81123,6 +81203,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.VectorTile.prototype,
+    'setExtent',
+    ol.VectorTile.prototype.setExtent);
+
+goog.exportProperty(
+    ol.VectorTile.prototype,
     'setFeatures',
     ol.VectorTile.prototype.setFeatures);
 
@@ -82928,8 +83013,8 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.interaction.Extent.Event.prototype,
-    'extent_',
-    ol.interaction.Extent.Event.prototype.extent_);
+    'extent',
+    ol.interaction.Extent.Event.prototype.extent);
 
 goog.exportSymbol(
     'ol.interaction.Interaction',
@@ -83965,6 +84050,11 @@ goog.exportSymbol(
     'ol.format.MVT',
     ol.format.MVT,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.format.MVT.prototype,
+    'getLastExtent',
+    ol.format.MVT.prototype.getLastExtent);
 
 goog.exportProperty(
     ol.format.MVT.prototype,
@@ -93385,7 +93475,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-153-gd9c4909';
+ol.VERSION = 'v4.2.0-164-g83c3575';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
