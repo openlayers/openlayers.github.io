@@ -15902,7 +15902,7 @@
     
     <div class="description">
         <p>Get the features for this tile. Geometries will be in the projection returned
-by <code>#getProjection</code>.</p>
+by <a href="ol.VectorTile.html#getProjection"><code>ol.VectorTile#getProjection</code></a>.</p>
     </div>
     
 
@@ -16063,7 +16063,7 @@ Feature format.
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 134
+            src/ol/vectortile.js, line 135
         </div>
         
         
@@ -16074,7 +16074,8 @@ Feature format.
 
     
     <div class="description">
-        <p>Get the feature projection of features returned by <code>#getFeatures</code>.</p>
+        <p>Get the feature projection of features returned by
+<a href="ol.VectorTile.html#getFeatures"><code>ol.VectorTile#getFeatures</code></a>.</p>
     </div>
     
 
@@ -16318,7 +16319,7 @@ only needed for preloading or for reloading in case of an error.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 192
+            src/ol/vectortile.js, line 195
         </div>
         
         
@@ -16329,12 +16330,14 @@ only needed for preloading or for reloading in case of an error.</p>
 
     
     <div class="description">
-        <p>Sets the extent of the vector tile. For tiles in projections with
-<code>tile-pixels</code> as units, this should be set to
-<code>[0, 0, tilePixelSize, tilePixelSize]</code> by the source's <code>tileLoadFunction</code>.
-<code>tilePixelSize</code> is calculated by multiplying the tile size with the tile
-pixel ratio. When using <code>ol.format.MVT</code>, the format's <code>getLastExtent()</code>
-method returns the correct extent. The default is <code>[0, 0, 4096, 4096]</code>.</p>
+        <p>Function for use in an <a href="ol.source.VectorTile.html"><code>ol.source.VectorTile</code></a>'s <code>tileLoadFunction</code>.
+Sets the extent of the vector tile. This is only required for tiles in
+projections with <code>tile-pixels</code> as units. The extent should be set to
+<code>[0, 0, tilePixelSize, tilePixelSize]</code>, where <code>tilePixelSize</code> is calculated
+by multiplying the tile size with the tile pixel ratio. For sources using
+<a href="ol.format.MVT.html"><code>ol.format.MVT</code></a> as feature format, the
+<a href="ol.format.MVT.html#getLastExtent"><code>ol.format.MVT#getLastExtent</code></a> method will return the correct extent.
+The default is <code>[0, 0, 4096, 4096]</code>.</p>
     </div>
     
 
@@ -16447,7 +16450,7 @@ method returns the correct extent. The default is <code>[0, 0, 4096, 4096]</code
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 201
+            src/ol/vectortile.js, line 206
         </div>
         
         
@@ -16456,6 +16459,11 @@ method returns the correct extent. The default is <code>[0, 0, 4096, 4096]</code
 </dt>
 <dd class="">
 
+    
+    <div class="description">
+        <p>Function for use in an <a href="ol.source.VectorTile.html"><code>ol.source.VectorTile</code></a>'s <code>tileLoadFunction</code>.
+Sets the features for the tile.</p>
+    </div>
     
 
     
@@ -16567,7 +16575,7 @@ method returns the correct extent. The default is <code>[0, 0, 4096, 4096]</code
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 232
+            src/ol/vectortile.js, line 239
         </div>
         
         
@@ -16691,7 +16699,7 @@ method returns the correct extent. The default is <code>[0, 0, 4096, 4096]</code
         </h4>
         
         <div class="tag-source">
-            src/ol/vectortile.js, line 212
+            src/ol/vectortile.js, line 219
         </div>
         
         
@@ -16702,7 +16710,9 @@ method returns the correct extent. The default is <code>[0, 0, 4096, 4096]</code
 
     
     <div class="description">
-        <p>Set the projection of the features that were added with <code>#setFeatures</code>.</p>
+        <p>Function for use in an <a href="ol.source.VectorTile.html"><code>ol.source.VectorTile</code></a>'s <code>tileLoadFunction</code>.
+Sets the projection of the features that were added with
+<a href="ol.VectorTile.html#setFeatures"><code>ol.VectorTile#setFeatures</code></a>.</p>
     </div>
     
 
