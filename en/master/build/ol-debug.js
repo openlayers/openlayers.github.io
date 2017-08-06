@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-166-gee7795e
+// Version: v4.2.0-178-g4b4d711
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -14346,12 +14346,6 @@ ol.geom.SimpleGeometry = function() {
    */
   this.flatCoordinates = null;
 
-  /**
-   * @private
-   * @type {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
-   */
-  this.renderCoordinates_ = null;
-
 };
 ol.inherits(ol.geom.SimpleGeometry, ol.geom.Geometry);
 
@@ -14449,18 +14443,6 @@ ol.geom.SimpleGeometry.prototype.getLastCoordinate = function() {
  */
 ol.geom.SimpleGeometry.prototype.getLayout = function() {
   return this.layout;
-};
-
-
-/**
- * @return {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
- *     Render coordinates.
- */
-ol.geom.SimpleGeometry.prototype.getRenderCoordinates = function() {
-  if (!this.renderCoordinates_) {
-    this.renderCoordinates_ = [];
-  }
-  return this.renderCoordinates_;
 };
 
 
@@ -20959,9 +20941,7 @@ ol.layer.Group.prototype.createRenderer = function(mapRenderer) {};
  * @private
  */
 ol.layer.Group.prototype.handleLayerChange_ = function() {
-  if (this.getVisible()) {
-    this.changed();
-  }
+  this.changed();
 };
 
 
@@ -51471,12 +51451,6 @@ ol.render.Feature = function(type, flatCoordinates, ends, properties, id) {
 
   /**
    * @private
-   * @type {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
-   */
-  this.renderCoordinates_ = null;
-
-  /**
-   * @private
    * @type {Array.<number>|Array.<Array.<number>>}
    */
   this.ends_ = ends;
@@ -51540,18 +51514,6 @@ ol.render.Feature.prototype.getId = function() {
  */
 ol.render.Feature.prototype.getOrientedFlatCoordinates = function() {
   return this.flatCoordinates_;
-};
-
-
-/**
- * @return {Array.<number>|Array.<Array.<number>>|Array.<Array.<Array.<number>>>}
- *     Render coordinates.
- */
-ol.render.Feature.prototype.getRenderCoordinates = function() {
-  if (!this.renderCoordinates_) {
-    this.renderCoordinates_ = [];
-  }
-  return this.renderCoordinates_;
 };
 
 
@@ -59700,6 +59662,12 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution, overlaps) {
 
   /**
    * @private
+   * @type {Object.<number,ol.Coordinate|Array.<ol.Coordinate>|Array.<Array.<ol.Coordinate>>>}
+   */
+  this.coordinateCache_ = {};
+
+  /**
+   * @private
    * @type {!ol.Transform}
    */
   this.renderedTransform_ = ol.transform.create();
@@ -59930,16 +59898,14 @@ ol.render.canvas.Replay.prototype.replay_ = function(
   var prevX, prevY, roundX, roundY;
   var pendingFill = 0;
   var pendingStroke = 0;
+  var coordinateCache = this.coordinateCache_;
 
-  /**
-   * @type {olx.render.State}
-   */
-  var state = {
+  var state = /** @type {olx.render.State} */ ({
     context: context,
     pixelRatio: pixelRatio,
     resolution: this.resolution,
     rotation: viewRotation
-  };
+  });
 
   // When the batch size gets too big, performance decreases. 200 is a good
   // balance between batch size and number of fill/stroke instructions.
@@ -59948,7 +59914,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
   while (i < ii) {
     var instruction = instructions[i];
     var type = /** @type {ol.render.canvas.Instruction} */ (instruction[0]);
-    var feature, fill, stroke, text, x, y;
+    var /** @type {ol.Feature|ol.render.Feature} */ feature, fill, stroke, text, x, y;
     switch (type) {
       case ol.render.canvas.Instruction.BEGIN_GEOMETRY:
         feature = /** @type {ol.Feature|ol.render.Feature} */ (instruction[1]);
@@ -60000,14 +59966,21 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         dd = instruction[2];
         var geometry = /** @type {ol.geom.SimpleGeometry} */ (instruction[3]);
         var renderer = instruction[4];
-        var coords;
-        if (instruction.length == 6) {
-          var fn = instruction[5];
-          coords = fn(pixelCoordinates, d, dd, 2, geometry.getRenderCoordinates());
-        } else {
-          coords = pixelCoordinates.slice(d, dd);
+        var fn = instruction.length == 6 ? instruction[5] : undefined;
+        state.geometry = geometry;
+        state.feature = feature;
+        if (!(i in coordinateCache)) {
+          coordinateCache[i] = [];
         }
-        renderer(coords, geometry, feature, state);
+        var coords = coordinateCache[i];
+        if (fn) {
+          fn(pixelCoordinates, d, dd, 2, coords);
+        } else {
+          coords[0] = pixelCoordinates[d];
+          coords[1] = pixelCoordinates[d + 1];
+          coords.length = 2;
+        }
+        renderer(coords, state);
         ++i;
         break;
       case ol.render.canvas.Instruction.DRAW_IMAGE:
@@ -73025,6 +72998,15 @@ ol.layer.VectorTile.prototype.setUseInterimTilesOnError = function(useInterimTil
       ol.layer.TileProperty.USE_INTERIM_TILES_ON_ERROR, useInterimTilesOnError);
 };
 
+
+/**
+ * Return the associated {@link ol.source.VectorTile vectortilesource} of the layer.
+ * @function
+ * @return {ol.source.VectorTile} Source.
+ * @api
+ */
+ol.layer.VectorTile.prototype.getSource;
+
 goog.provide('ol.net');
 
 goog.require('ol');
@@ -82888,6 +82870,11 @@ goog.exportProperty(
     'setUseInterimTilesOnError',
     ol.layer.VectorTile.prototype.setUseInterimTilesOnError);
 
+goog.exportProperty(
+    ol.layer.VectorTile.prototype,
+    'getSource',
+    ol.layer.VectorTile.prototype.getSource);
+
 goog.exportSymbol(
     'ol.interaction.DoubleClickZoom',
     ol.interaction.DoubleClickZoom,
@@ -89830,11 +89817,6 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.layer.VectorTile.prototype,
-    'getSource',
-    ol.layer.VectorTile.prototype.getSource);
-
-goog.exportProperty(
-    ol.layer.VectorTile.prototype,
     'getStyle',
     ol.layer.VectorTile.prototype.getStyle);
 
@@ -93482,7 +93464,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-166-gee7795e';
+ol.VERSION = 'v4.2.0-178-g4b4d711';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

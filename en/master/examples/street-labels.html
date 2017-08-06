@@ -86,22 +86,21 @@ function collectDrawData(letter, x, y, angle) {
 }
 
 var style &#x3D; new ol.style.Style({
-  renderer: function(coords, geometry, feature) {
+  renderer: function(coords, context) {
+    var feature &#x3D; context.feature;
     var text &#x3D; feature.get(&#x27;name&#x27;);
-    if (text) {
-      // Only create label when geometry has a long and straight segment
-      var path &#x3D; labelSegment(coords, Math.PI / 8, measureText(text));
-      if (path) {
-        extent &#x3D; ol.extent.createEmpty();
-        letters &#x3D; [];
-        textPath(text, path, measureText, collectDrawData);
-        ol.extent.buffer(extent, 5 * pixelRatio, extent);
-        var bounds &#x3D; {
-          bottomLeft: ol.extent.getBottomLeft(extent),
-          topRight: ol.extent.getTopRight(extent)
-        };
-        labelEngine.ingestLabel(bounds, feature.getId(), 1, letters, text, false);
-      }
+    // Only create label when geometry has a long and straight segment
+    var path &#x3D; labelSegment(coords, Math.PI / 8, measureText(text));
+    if (path) {
+      extent &#x3D; ol.extent.createEmpty();
+      letters &#x3D; [];
+      textPath(text, path, measureText, collectDrawData);
+      ol.extent.buffer(extent, 5 * pixelRatio, extent);
+      var bounds &#x3D; {
+        bottomLeft: ol.extent.getBottomLeft(extent),
+        topRight: ol.extent.getTopRight(extent)
+      };
+      labelEngine.ingestLabel(bounds, feature.getId(), 1, letters, text, false);
     }
   }
 });
@@ -130,7 +129,7 @@ fetch(&#x27;https://overpass-api.de/api/interpreter&#x27;, {
 var vectorLayer &#x3D; new ol.layer.Vector({
   source: source,
   style: function(feature) {
-    if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27;) {
+    if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27; &amp;&amp; feature.get(&#x27;text&#x27;)) {
       return style;
     }
   }
@@ -215,22 +214,21 @@ vectorLayer.on(&#x27;postcompose&#x27;, function(e) {
       }
 
       var style &#x3D; new ol.style.Style({
-        renderer: function(coords, geometry, feature) {
+        renderer: function(coords, context) {
+          var feature &#x3D; context.feature;
           var text &#x3D; feature.get(&#x27;name&#x27;);
-          if (text) {
-            // Only create label when geometry has a long and straight segment
-            var path &#x3D; labelSegment(coords, Math.PI / 8, measureText(text));
-            if (path) {
-              extent &#x3D; ol.extent.createEmpty();
-              letters &#x3D; [];
-              textPath(text, path, measureText, collectDrawData);
-              ol.extent.buffer(extent, 5 * pixelRatio, extent);
-              var bounds &#x3D; {
-                bottomLeft: ol.extent.getBottomLeft(extent),
-                topRight: ol.extent.getTopRight(extent)
-              };
-              labelEngine.ingestLabel(bounds, feature.getId(), 1, letters, text, false);
-            }
+          // Only create label when geometry has a long and straight segment
+          var path &#x3D; labelSegment(coords, Math.PI / 8, measureText(text));
+          if (path) {
+            extent &#x3D; ol.extent.createEmpty();
+            letters &#x3D; [];
+            textPath(text, path, measureText, collectDrawData);
+            ol.extent.buffer(extent, 5 * pixelRatio, extent);
+            var bounds &#x3D; {
+              bottomLeft: ol.extent.getBottomLeft(extent),
+              topRight: ol.extent.getTopRight(extent)
+            };
+            labelEngine.ingestLabel(bounds, feature.getId(), 1, letters, text, false);
           }
         }
       });
@@ -259,7 +257,7 @@ vectorLayer.on(&#x27;postcompose&#x27;, function(e) {
       var vectorLayer &#x3D; new ol.layer.Vector({
         source: source,
         style: function(feature) {
-          if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27;) {
+          if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27; &amp;&amp; feature.get(&#x27;text&#x27;)) {
             return style;
           }
         }
