@@ -129,7 +129,7 @@ fetch(&#x27;https://overpass-api.de/api/interpreter&#x27;, {
 var vectorLayer &#x3D; new ol.layer.Vector({
   source: source,
   style: function(feature) {
-    if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27; &amp;&amp; feature.get(&#x27;text&#x27;)) {
+    if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27; &amp;&amp; feature.get(&#x27;name&#x27;)) {
       return style;
     }
   }
@@ -257,7 +257,7 @@ vectorLayer.on(&#x27;postcompose&#x27;, function(e) {
       var vectorLayer &#x3D; new ol.layer.Vector({
         source: source,
         style: function(feature) {
-          if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27; &amp;&amp; feature.get(&#x27;text&#x27;)) {
+          if (feature.getGeometry().getType() &#x3D;&#x3D; &#x27;LineString&#x27; &amp;&amp; feature.get(&#x27;name&#x27;)) {
             return style;
           }
         }

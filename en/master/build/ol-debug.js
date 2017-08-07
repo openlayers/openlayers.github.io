@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-178-g4b4d711
+// Version: v4.2.0-182-gac13dbc
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -93464,7 +93464,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-178-g4b4d711';
+ol.VERSION = 'v4.2.0-182-gac13dbc';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
