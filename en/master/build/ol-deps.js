@@ -149,7 +149,7 @@ goog.addDependency('../../../ol/ol/interaction/extenteventtype.js', ['ol.interac
 goog.addDependency('../../../ol/ol/interaction/interaction.js', ['ol.interaction.Interaction'], ['ol', 'ol.Object', 'ol.easing', 'ol.interaction.Property'], false);
 goog.addDependency('../../../ol/ol/interaction/keyboardpan.js', ['ol.interaction.KeyboardPan'], ['ol', 'ol.coordinate', 'ol.events.EventType', 'ol.events.KeyCode', 'ol.events.condition', 'ol.interaction.Interaction'], false);
 goog.addDependency('../../../ol/ol/interaction/keyboardzoom.js', ['ol.interaction.KeyboardZoom'], ['ol', 'ol.events.EventType', 'ol.events.condition', 'ol.interaction.Interaction'], false);
-goog.addDependency('../../../ol/ol/interaction/modify.js', ['ol.interaction.Modify'], ['ol', 'ol.CollectionEventType', 'ol.Feature', 'ol.MapBrowserEventType', 'ol.MapBrowserPointerEvent', 'ol.ViewHint', 'ol.array', 'ol.coordinate', 'ol.events', 'ol.events.Event', 'ol.events.EventType', 'ol.events.condition', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.Point', 'ol.interaction.ModifyEventType', 'ol.interaction.Pointer', 'ol.layer.Vector', 'ol.source.Vector', 'ol.structs.RBush', 'ol.style.Style'], false);
+goog.addDependency('../../../ol/ol/interaction/modify.js', ['ol.interaction.Modify'], ['ol', 'ol.Collection', 'ol.CollectionEventType', 'ol.Feature', 'ol.MapBrowserEventType', 'ol.MapBrowserPointerEvent', 'ol.ViewHint', 'ol.array', 'ol.coordinate', 'ol.events', 'ol.events.Event', 'ol.events.EventType', 'ol.events.condition', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.Point', 'ol.interaction.ModifyEventType', 'ol.interaction.Pointer', 'ol.layer.Vector', 'ol.source.Vector', 'ol.source.VectorEventType', 'ol.structs.RBush', 'ol.style.Style'], false);
 goog.addDependency('../../../ol/ol/interaction/modifyeventtype.js', ['ol.interaction.ModifyEventType'], [], false);
 goog.addDependency('../../../ol/ol/interaction/mousewheelzoom.js', ['ol.interaction.MouseWheelZoom'], ['ol', 'ol.ViewHint', 'ol.easing', 'ol.events.EventType', 'ol.has', 'ol.interaction.Interaction', 'ol.math'], false);
 goog.addDependency('../../../ol/ol/interaction/pinchrotate.js', ['ol.interaction.PinchRotate'], ['ol', 'ol.RotationConstraint', 'ol.ViewHint', 'ol.functions', 'ol.interaction.Interaction', 'ol.interaction.Pointer'], false);
@@ -296,7 +296,7 @@ goog.addDependency('../../../ol/ol/source/wmts.js', ['ol.source.WMTS'], ['ol', '
 goog.addDependency('../../../ol/ol/source/wmtsrequestencoding.js', ['ol.source.WMTSRequestEncoding'], [], false);
 goog.addDependency('../../../ol/ol/source/xyz.js', ['ol.source.XYZ'], ['ol', 'ol.source.TileImage', 'ol.tilegrid'], false);
 goog.addDependency('../../../ol/ol/source/zoomify.js', ['ol.source.Zoomify'], ['ol', 'ol.ImageTile', 'ol.TileState', 'ol.TileUrlFunction', 'ol.asserts', 'ol.dom', 'ol.extent', 'ol.source.TileImage', 'ol.tilegrid.TileGrid'], false);
-goog.addDependency('../../../ol/ol/sphere.js', ['ol.Sphere'], ['ol.math'], false);
+goog.addDependency('../../../ol/ol/sphere.js', ['ol.Sphere'], ['ol.geom.GeometryType', 'ol.math'], false);
 goog.addDependency('../../../ol/ol/string.js', ['ol.string'], [], false);
 goog.addDependency('../../../ol/ol/structs/linkedlist.js', ['ol.structs.LinkedList'], [], false);
 goog.addDependency('../../../ol/ol/structs/lrucache.js', ['ol.structs.LRUCache'], ['ol.asserts'], false);

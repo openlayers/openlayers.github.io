@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-182-gac13dbc
+// Version: v4.2.0-218-g7c5a208
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -4798,6 +4798,27 @@ ol.obj.isEmpty = function(object) {
   return !property;
 };
 
+goog.provide('ol.geom.GeometryType');
+
+
+/**
+ * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
+ * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
+ * `'GeometryCollection'`, `'Circle'`.
+ * @enum {string}
+ */
+ol.geom.GeometryType = {
+  POINT: 'Point',
+  LINE_STRING: 'LineString',
+  LINEAR_RING: 'LinearRing',
+  POLYGON: 'Polygon',
+  MULTI_POINT: 'MultiPoint',
+  MULTI_LINE_STRING: 'MultiLineString',
+  MULTI_POLYGON: 'MultiPolygon',
+  GEOMETRY_COLLECTION: 'GeometryCollection',
+  CIRCLE: 'Circle'
+};
+
 /**
  * @license
  * Latitude/longitude spherical geodesy formulae taken from
@@ -4808,6 +4829,7 @@ ol.obj.isEmpty = function(object) {
 goog.provide('ol.Sphere');
 
 goog.require('ol.math');
+goog.require('ol.geom.GeometryType');
 
 
 /**
@@ -4851,18 +4873,7 @@ ol.Sphere = function(radius) {
  * @api
  */
 ol.Sphere.prototype.geodesicArea = function(coordinates) {
-  var area = 0, len = coordinates.length;
-  var x1 = coordinates[len - 1][0];
-  var y1 = coordinates[len - 1][1];
-  for (var i = 0; i < len; i++) {
-    var x2 = coordinates[i][0], y2 = coordinates[i][1];
-    area += ol.math.toRadians(x2 - x1) *
-        (2 + Math.sin(ol.math.toRadians(y1)) +
-        Math.sin(ol.math.toRadians(y2)));
-    x1 = x2;
-    y1 = y2;
-  }
-  return area * this.radius * this.radius / 2.0;
+  return ol.Sphere.getArea_(coordinates, this.radius);
 };
 
 
@@ -4875,14 +4886,7 @@ ol.Sphere.prototype.geodesicArea = function(coordinates) {
  * @api
  */
 ol.Sphere.prototype.haversineDistance = function(c1, c2) {
-  var lat1 = ol.math.toRadians(c1[1]);
-  var lat2 = ol.math.toRadians(c2[1]);
-  var deltaLatBy2 = (lat2 - lat1) / 2;
-  var deltaLonBy2 = ol.math.toRadians(c2[0] - c1[0]) / 2;
-  var a = Math.sin(deltaLatBy2) * Math.sin(deltaLatBy2) +
-      Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) *
-      Math.cos(lat1) * Math.cos(lat2);
-  return 2 * this.radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return ol.Sphere.getDistance_(c1, c2, this.radius);
 };
 
 
@@ -4906,6 +4910,200 @@ ol.Sphere.prototype.offset = function(c1, distance, bearing) {
       Math.sin(bearing) * Math.sin(dByR) * Math.cos(lat1),
       Math.cos(dByR) - Math.sin(lat1) * Math.sin(lat));
   return [ol.math.toDegrees(lon), ol.math.toDegrees(lat)];
+};
+
+
+/**
+ * The mean Earth radius (1/3 * (2a + b)) for the WGS84 ellipsoid.
+ * https://en.wikipedia.org/wiki/Earth_radius#Mean_radius
+ * @type {number}
+ */
+ol.Sphere.DEFAULT_RADIUS = 6371008.8;
+
+
+/**
+ * Get the spherical length of a geometry.  This length is the sum of the
+ * great circle distances between coordinates.  For polygons, the length is
+ * the sum of all rings.  For points, the length is zero.  For multi-part
+ * geometries, the length is the sum of the length of each part.
+ * @param {ol.geom.Geometry} geometry A geometry.
+ * @param {olx.SphereMetricOptions=} opt_options Options for the length
+ *     calculation.  By default, geometries are assumed to be in 'EPSG:3857'.
+ *     You can change this by providing a `projection` option.
+ * @return {number} The spherical length (in meters).
+ */
+ol.Sphere.getLength = function(geometry, opt_options) {
+  var options = opt_options || {};
+  var radius = options.radius || ol.Sphere.DEFAULT_RADIUS;
+  var projection = options.projection || 'EPSG:3857';
+  geometry = geometry.clone().transform(projection, 'EPSG:4326');
+  var type = geometry.getType();
+  var length = 0;
+  var coordinates, coords, i, ii, j, jj;
+  switch (type) {
+    case ol.geom.GeometryType.POINT:
+    case ol.geom.GeometryType.MULTI_POINT: {
+      break;
+    }
+    case ol.geom.GeometryType.LINE_STRING:
+    case ol.geom.GeometryType.LINEAR_RING: {
+      coordinates = /** @type {ol.geom.SimpleGeometry} */ (geometry).getCoordinates();
+      length = ol.Sphere.getLength_(coordinates, radius);
+      break;
+    }
+    case ol.geom.GeometryType.MULTI_LINE_STRING:
+    case ol.geom.GeometryType.POLYGON: {
+      coordinates = /** @type {ol.geom.SimpleGeometry} */ (geometry).getCoordinates();
+      for (i = 0, ii = coordinates.length; i < ii; ++i) {
+        length += ol.Sphere.getLength_(coordinates[i], radius);
+      }
+      break;
+    }
+    case ol.geom.GeometryType.MULTI_POLYGON: {
+      coordinates = /** @type {ol.geom.SimpleGeometry} */ (geometry).getCoordinates();
+      for (i = 0, ii = coordinates.length; i < ii; ++i) {
+        coords = coordinates[i];
+        for (j = 0, jj = coords.length; j < jj; ++j) {
+          length += ol.Sphere.getLength_(coords[j], radius);
+        }
+      }
+      break;
+    }
+    case ol.geom.GeometryType.GEOMETRY_COLLECTION: {
+      var geometries = /** @type {ol.geom.GeometryCollection} */ (geometry).getGeometries();
+      for (i = 0, ii = geometries.length; i < ii; ++i) {
+        length += ol.Sphere.getLength(geometries[i], opt_options);
+      }
+      break;
+    }
+    default: {
+      throw new Error('Unsupported geometry type: ' + type);
+    }
+  }
+  return length;
+};
+
+
+/**
+ * Get the cumulative great circle length of linestring coordinates (geographic).
+ * @param {Array} coordinates Linestring coordinates.
+ * @param {number} radius The sphere radius to use.
+ * @return {number} The length (in meters).
+ */
+ol.Sphere.getLength_ = function(coordinates, radius) {
+  var length = 0;
+  for (var i = 0, ii = coordinates.length; i < ii - 1; ++i) {
+    length += ol.Sphere.getDistance_(coordinates[i], coordinates[i + 1], radius);
+  }
+  return length;
+};
+
+
+/**
+ * Get the great circle distance between two geographic coordinates.
+ * @param {Array} c1 Starting coordinate.
+ * @param {Array} c2 Ending coordinate.
+ * @param {number} radius The sphere radius to use.
+ * @return {number} The great circle distance between the points (in meters).
+ */
+ol.Sphere.getDistance_ = function(c1, c2, radius) {
+  var lat1 = ol.math.toRadians(c1[1]);
+  var lat2 = ol.math.toRadians(c2[1]);
+  var deltaLatBy2 = (lat2 - lat1) / 2;
+  var deltaLonBy2 = ol.math.toRadians(c2[0] - c1[0]) / 2;
+  var a = Math.sin(deltaLatBy2) * Math.sin(deltaLatBy2) +
+      Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) *
+      Math.cos(lat1) * Math.cos(lat2);
+  return 2 * radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+
+/**
+ * Get the spherical area of a geometry.  This is the area (in meters) assuming
+ * that polygon edges are segments of great circles on a sphere.
+ * @param {ol.geom.Geometry} geometry A geometry.
+ * @param {olx.SphereMetricOptions=} opt_options Options for the area
+ *     calculation.  By default, geometries are assumed to be in 'EPSG:3857'.
+ *     You can change this by providing a `projection` option.
+ * @return {number} The spherical area (in square meters).
+ */
+ol.Sphere.getArea = function(geometry, opt_options) {
+  var options = opt_options || {};
+  var radius = options.radius || ol.Sphere.DEFAULT_RADIUS;
+  var projection = options.projection || 'EPSG:3857';
+  geometry = geometry.clone().transform(projection, 'EPSG:4326');
+  var type = geometry.getType();
+  var area = 0;
+  var coordinates, coords, i, ii, j, jj;
+  switch (type) {
+    case ol.geom.GeometryType.POINT:
+    case ol.geom.GeometryType.MULTI_POINT:
+    case ol.geom.GeometryType.LINE_STRING:
+    case ol.geom.GeometryType.MULTI_LINE_STRING:
+    case ol.geom.GeometryType.LINEAR_RING: {
+      break;
+    }
+    case ol.geom.GeometryType.POLYGON: {
+      coordinates = /** @type {ol.geom.Polygon} */ (geometry).getCoordinates();
+      area = Math.abs(ol.Sphere.getArea_(coordinates[0], radius));
+      for (i = 1, ii = coordinates.length; i < ii; ++i) {
+        area -= Math.abs(ol.Sphere.getArea_(coordinates[i], radius));
+      }
+      break;
+    }
+    case ol.geom.GeometryType.MULTI_POLYGON: {
+      coordinates = /** @type {ol.geom.SimpleGeometry} */ (geometry).getCoordinates();
+      for (i = 0, ii = coordinates.length; i < ii; ++i) {
+        coords = coordinates[i];
+        area += Math.abs(ol.Sphere.getArea_(coords[0], radius));
+        for (j = 1, jj = coords.length; j < jj; ++j) {
+          area -= Math.abs(ol.Sphere.getArea_(coords[j], radius));
+        }
+      }
+      break;
+    }
+    case ol.geom.GeometryType.GEOMETRY_COLLECTION: {
+      var geometries = /** @type {ol.geom.GeometryCollection} */ (geometry).getGeometries();
+      for (i = 0, ii = geometries.length; i < ii; ++i) {
+        area += ol.Sphere.getArea(geometries[i], opt_options);
+      }
+      break;
+    }
+    default: {
+      throw new Error('Unsupported geometry type: ' + type);
+    }
+  }
+  return area;
+};
+
+
+/**
+ * Returns the spherical area for a list of coordinates.
+ *
+ * [Reference](https://trs-new.jpl.nasa.gov/handle/2014/40409)
+ * Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for
+ * Polygons on a Sphere", JPL Publication 07-03, Jet Propulsion
+ * Laboratory, Pasadena, CA, June 2007
+ *
+ * @param {Array.<ol.Coordinate>} coordinates List of coordinates of a linear
+ * ring. If the ring is oriented clockwise, the area will be positive,
+ * otherwise it will be negative.
+ * @param {number} radius The sphere radius.
+ * @return {number} Area (in square meters).
+ */
+ol.Sphere.getArea_ = function(coordinates, radius) {
+  var area = 0, len = coordinates.length;
+  var x1 = coordinates[len - 1][0];
+  var y1 = coordinates[len - 1][1];
+  for (var i = 0; i < len; i++) {
+    var x2 = coordinates[i][0], y2 = coordinates[i][1];
+    area += ol.math.toRadians(x2 - x1) *
+        (2 + Math.sin(ol.math.toRadians(y1)) +
+        Math.sin(ol.math.toRadians(y2)));
+    x1 = x2;
+    y1 = y2;
+  }
+  return area * radius * radius / 2.0;
 };
 
 goog.provide('ol.proj.Units');
@@ -5604,11 +5802,11 @@ ol.proj.METERS_PER_UNIT = ol.proj.Units.METERS_PER_UNIT;
 
 
 /**
- * A place to store the radius of the Clarke 1866 Authalic Sphere.
+ * A place to store the mean radius of the Earth.
  * @private
  * @type {ol.Sphere}
  */
-ol.proj.AUTHALIC_SPHERE_ = new ol.Sphere(6370997);
+ol.proj.SPHERE_ = new ol.Sphere(ol.Sphere.DEFAULT_RADIUS);
 
 
 if (ol.ENABLE_PROJ4JS) {
@@ -5645,10 +5843,12 @@ if (ol.ENABLE_PROJ4JS) {
  * @param {ol.ProjectionLike} projection The projection.
  * @param {number} resolution Nominal resolution in projection units.
  * @param {ol.Coordinate} point Point to find adjusted resolution at.
- * @return {number} Point resolution at point in projection units.
+ * @param {ol.proj.Units=} opt_units Units to get the point resolution in.
+ * Default is the projection's units.
+ * @return {number} Point resolution.
  * @api
  */
-ol.proj.getPointResolution = function(projection, resolution, point) {
+ol.proj.getPointResolution = function(projection, resolution, point, opt_units) {
   projection = ol.proj.get(projection);
   var pointResolution;
   var getter = projection.getPointResolutionFunc();
@@ -5656,7 +5856,7 @@ ol.proj.getPointResolution = function(projection, resolution, point) {
     pointResolution = getter(resolution, point);
   } else {
     var units = projection.getUnits();
-    if (units == ol.proj.Units.DEGREES) {
+    if (units == ol.proj.Units.DEGREES && !opt_units || opt_units == ol.proj.Units.DEGREES) {
       pointResolution = resolution;
     } else {
       // Estimate point resolution by transforming the center pixel to EPSG:4326,
@@ -5670,12 +5870,14 @@ ol.proj.getPointResolution = function(projection, resolution, point) {
         point[0], point[1] + resolution / 2
       ];
       vertices = toEPSG4326(vertices, vertices, 2);
-      var width = ol.proj.AUTHALIC_SPHERE_.haversineDistance(
+      var width = ol.proj.SPHERE_.haversineDistance(
           vertices.slice(0, 2), vertices.slice(2, 4));
-      var height = ol.proj.AUTHALIC_SPHERE_.haversineDistance(
+      var height = ol.proj.SPHERE_.haversineDistance(
           vertices.slice(4, 6), vertices.slice(6, 8));
       pointResolution = (width + height) / 2;
-      var metersPerUnit = projection.getMetersPerUnit();
+      var metersPerUnit = opt_units ?
+        ol.proj.Units.METERS_PER_UNIT[opt_units] :
+        projection.getMetersPerUnit();
       if (metersPerUnit !== undefined) {
         pointResolution /= metersPerUnit;
       }
@@ -7937,7 +8139,7 @@ goog.require('ol.events.Event');
  * @constructor
  * @extends {ol.Object}
  * @fires ol.Collection.Event
- * @param {!Array.<T>=} opt_array Array.
+ * @param {Array.<T>=} opt_array Array.
  * @param {olx.CollectionOptions=} opt_options Collection options.
  * @template T
  * @api
@@ -8009,7 +8211,11 @@ ol.Collection.prototype.extend = function(arr) {
  * @api
  */
 ol.Collection.prototype.forEach = function(f, opt_this) {
-  this.array_.forEach(f, opt_this);
+  var fn = (opt_this) ? f.bind(opt_this) : f;
+  var array = this.array_;
+  for (var i = 0, ii = array.length; i < ii; ++i) {
+    fn(array[i], i, array);
+  }
 };
 
 
@@ -13874,27 +14080,6 @@ ol.coordinate.toStringHDMS = function(coordinate, opt_fractionDigits) {
  */
 ol.coordinate.toStringXY = function(coordinate, opt_fractionDigits) {
   return ol.coordinate.format(coordinate, '{x}, {y}', opt_fractionDigits);
-};
-
-goog.provide('ol.geom.GeometryType');
-
-
-/**
- * The geometry type. One of `'Point'`, `'LineString'`, `'LinearRing'`,
- * `'Polygon'`, `'MultiPoint'`, `'MultiLineString'`, `'MultiPolygon'`,
- * `'GeometryCollection'`, `'Circle'`.
- * @enum {string}
- */
-ol.geom.GeometryType = {
-  POINT: 'Point',
-  LINE_STRING: 'LineString',
-  LINEAR_RING: 'LinearRing',
-  POLYGON: 'Polygon',
-  MULTI_POINT: 'MultiPoint',
-  MULTI_LINE_STRING: 'MultiLineString',
-  MULTI_POLYGON: 'MultiPolygon',
-  GEOMETRY_COLLECTION: 'GeometryCollection',
-  CIRCLE: 'Circle'
 };
 
 goog.provide('ol.geom.GeometryLayout');
@@ -32147,7 +32332,7 @@ ol.Map.prototype.disposeInternal = function() {
 /**
  * Detect features that intersect a pixel on the viewport, and execute a
  * callback with each intersecting feature. Layers included in the detection can
- * be configured through `opt_layerFilter`.
+ * be configured through the `layerFilter` option in `opt_options`.
  * @param {ol.Pixel} pixel Pixel.
  * @param {function(this: S, (ol.Feature|ol.render.Feature),
  *     ol.layer.Layer): T} callback Feature callback. The callback will be
@@ -32178,6 +32363,25 @@ ol.Map.prototype.forEachFeatureAtPixel = function(pixel, callback, opt_options) 
       layerFilter, null);
 };
 
+
+/**
+ * Get all features that intersect a pixel on the viewport.
+ * @param {ol.Pixel} pixel Pixel.
+ * @param {olx.AtPixelOptions=} opt_options Optional options.
+ * @return {Array.<ol.Feature|ol.render.Feature>} The detected features or
+ * `null` if none were found.
+ * @api
+ */
+ol.Map.prototype.getFeaturesAtPixel = function(pixel, opt_options) {
+  var features = null;
+  this.forEachFeatureAtPixel(pixel, function(feature) {
+    if (!features) {
+      features = [];
+    }
+    features.push(feature);
+  }, opt_options);
+  return features;
+};
 
 /**
  * Detect layers that have a color value at a pixel on the viewport, and
@@ -33617,7 +33821,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
     if (this.rendered_.left_ !== '') {
       this.rendered_.left_ = style.left = '';
     }
-    var right = Math.round(mapSize[0] - pixel[0] - offsetX) + 'px';
+    var right = (mapSize[0] - pixel[0] - offsetX) + 'px';
     if (this.rendered_.right_ != right) {
       this.rendered_.right_ = style.right = right;
     }
@@ -33630,7 +33834,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
         positioning == ol.OverlayPositioning.TOP_CENTER) {
       offsetX -= this.element_.offsetWidth / 2;
     }
-    var left = Math.round(pixel[0] + offsetX) + 'px';
+    var left = (pixel[0] + offsetX) + 'px';
     if (this.rendered_.left_ != left) {
       this.rendered_.left_ = style.left = left;
     }
@@ -33641,7 +33845,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
     if (this.rendered_.top_ !== '') {
       this.rendered_.top_ = style.top = '';
     }
-    var bottom = Math.round(mapSize[1] - pixel[1] - offsetY) + 'px';
+    var bottom = (mapSize[1] - pixel[1] - offsetY) + 'px';
     if (this.rendered_.bottom_ != bottom) {
       this.rendered_.bottom_ = style.bottom = bottom;
     }
@@ -33654,7 +33858,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
         positioning == ol.OverlayPositioning.CENTER_RIGHT) {
       offsetY -= this.element_.offsetHeight / 2;
     }
-    var top = Math.round(pixel[1] + offsetY) + 'px';
+    var top = (pixel[1] + offsetY) + 'px';
     if (this.rendered_.top_ != top) {
       this.rendered_.top_ = style.top = top;
     }
@@ -34419,17 +34623,22 @@ ol.control.ScaleLine.prototype.updateElement_ = function() {
 
   var center = viewState.center;
   var projection = viewState.projection;
-  var metersPerUnit = projection.getMetersPerUnit();
+  var units = this.getUnits();
+  var pointResolutionUnits = units == ol.control.ScaleLineUnits.DEGREES ?
+    ol.proj.Units.DEGREES :
+    ol.proj.Units.METERS;
   var pointResolution =
-      ol.proj.getPointResolution(projection, viewState.resolution, center) *
-      metersPerUnit;
+      ol.proj.getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
 
   var nominalCount = this.minWidth_ * pointResolution;
   var suffix = '';
-  var units = this.getUnits();
   if (units == ol.control.ScaleLineUnits.DEGREES) {
     var metersPerDegree = ol.proj.METERS_PER_UNIT[ol.proj.Units.DEGREES];
-    pointResolution /= metersPerDegree;
+    if (projection.getUnits() == ol.proj.Units.DEGREES) {
+      nominalCount *= metersPerDegree;
+    } else {
+      pointResolution /= metersPerDegree;
+    }
     if (nominalCount < metersPerDegree / 60) {
       suffix = '\u2033'; // seconds
       pointResolution *= 3600;
@@ -42935,6 +43144,13 @@ ol.format.GML3 = function(opt_options) {
   this.schemaLocation = options.schemaLocation ?
     options.schemaLocation : ol.format.GML3.schemaLocation_;
 
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.hasZ = options.hasZ !== undefined ?
+    options.hasZ : false;
+
 };
 ol.inherits(ol.format.GML3, ol.format.GMLBase);
 
@@ -48404,18 +48620,24 @@ ol.format.KML.setCommonGeometryProperties_ = function(multiGeometry,
     geometries) {
   var ii = geometries.length;
   var extrudes = new Array(geometries.length);
+  var tessellates = new Array(geometries.length);
   var altitudeModes = new Array(geometries.length);
-  var geometry, i, hasExtrude, hasAltitudeMode;
-  hasExtrude = hasAltitudeMode = false;
+  var geometry, i, hasExtrude, hasTessellate, hasAltitudeMode;
+  hasExtrude = hasTessellate = hasAltitudeMode = false;
   for (i = 0; i < ii; ++i) {
     geometry = geometries[i];
     extrudes[i] = geometry.get('extrude');
+    tessellates[i] = geometry.get('tessellate');
     altitudeModes[i] = geometry.get('altitudeMode');
     hasExtrude = hasExtrude || extrudes[i] !== undefined;
+    hasTessellate = hasTessellate || tessellates[i] !== undefined;
     hasAltitudeMode = hasAltitudeMode || altitudeModes[i];
   }
   if (hasExtrude) {
     multiGeometry.set('extrude', extrudes);
+  }
+  if (hasTessellate) {
+    multiGeometry.set('tessellate', tessellates);
   }
   if (hasAltitudeMode) {
     multiGeometry.set('altitudeMode', altitudeModes);
@@ -48710,6 +48932,7 @@ ol.format.KML.LOD_PARSERS_ = ol.xml.makeStructureNS(
 ol.format.KML.EXTRUDE_AND_ALTITUDE_MODE_PARSERS_ = ol.xml.makeStructureNS(
     ol.format.KML.NAMESPACE_URIS_, {
       'extrude': ol.xml.makeObjectPropertySetter(ol.format.XSD.readBoolean),
+      'tessellate': ol.xml.makeObjectPropertySetter(ol.format.XSD.readBoolean),
       'altitudeMode': ol.xml.makeObjectPropertySetter(ol.format.XSD.readString)
     });
 
@@ -49807,10 +50030,16 @@ ol.format.KML.writePrimitiveGeometry_ = function(node, geometry, objectStack) {
   var /** @type {ol.XmlNodeStackItem} */ context = {node: node};
   context['layout'] = geometry.getLayout();
   context['stride'] = geometry.getStride();
-  ol.xml.pushSerializeAndPop(context,
-      ol.format.KML.PRIMITIVE_GEOMETRY_SERIALIZERS_,
-      ol.format.KML.COORDINATES_NODE_FACTORY_,
-      [flatCoordinates], objectStack);
+
+  // serialize properties (properties unknown to KML are not serialized)
+  var properties = geometry.getProperties();
+  properties.coordinates = flatCoordinates;
+
+  var parentNode = objectStack[objectStack.length - 1].node;
+  var orderedKeys = ol.format.KML.PRIMITIVE_GEOMETRY_SEQUENCE_[parentNode.namespaceURI];
+  var values = ol.xml.makeSequence(properties, orderedKeys);
+  ol.xml.pushSerializeAndPop(context, ol.format.KML.PRIMITIVE_GEOMETRY_SERIALIZERS_,
+      ol.xml.OBJECT_PROPERTY_NODE_FACTORY, values, objectStack, orderedKeys);
 };
 
 
@@ -49970,7 +50199,6 @@ ol.format.KML.GEOMETRY_TYPE_TO_NODENAME_ = {
   'MultiPolygon': 'MultiGeometry',
   'GeometryCollection': 'MultiGeometry'
 };
-
 
 /**
  * @const
@@ -50149,11 +50377,25 @@ ol.format.KML.PLACEMARK_SERIALIZERS_ = ol.xml.makeStructureNS(
 
 /**
  * @const
+ * @type {Object.<string, Array.<string>>}
+ * @private
+ */
+ol.format.KML.PRIMITIVE_GEOMETRY_SEQUENCE_ = ol.xml.makeStructureNS(
+    ol.format.KML.NAMESPACE_URIS_, [
+      'extrude', 'tessellate', 'altitudeMode', 'coordinates'
+    ]);
+
+
+/**
+ * @const
  * @type {Object.<string, Object.<string, ol.XmlSerializer>>}
  * @private
  */
 ol.format.KML.PRIMITIVE_GEOMETRY_SERIALIZERS_ = ol.xml.makeStructureNS(
     ol.format.KML.NAMESPACE_URIS_, {
+      'extrude': ol.xml.makeChildAppender(ol.format.XSD.writeBooleanTextNode),
+      'tessellate': ol.xml.makeChildAppender(ol.format.XSD.writeBooleanTextNode),
+      'altitudeMode': ol.xml.makeChildAppender(ol.format.XSD.writeStringTextNode),
       'coordinates': ol.xml.makeChildAppender(
           ol.format.KML.writeCoordinatesTextNode_)
     });
@@ -50263,16 +50505,6 @@ ol.format.KML.GEOMETRY_NODE_FACTORY_ = function(value, objectStack,
  * @private
  */
 ol.format.KML.COLOR_NODE_FACTORY_ = ol.xml.makeSimpleNodeFactory('color');
-
-
-/**
- * A factory for creating coordinates nodes.
- * @const
- * @type {function(*, Array.<*>, string=): (Node|undefined)}
- * @private
- */
-ol.format.KML.COORDINATES_NODE_FACTORY_ =
-    ol.xml.makeSimpleNodeFactory('coordinates');
 
 
 /**
@@ -54195,12 +54427,14 @@ ol.format.WFS.writeDuringFilter_ = function(node, filter, objectStack) {
 ol.format.WFS.writeLogicalFilter_ = function(node, filter, objectStack) {
   /** @type {ol.XmlNodeStackItem} */
   var item = {node: node};
-  filter.conditions.forEach(function(condition) {
+  var conditions = filter.conditions;
+  for (var i = 0, ii = conditions.length; i < ii; ++i) {
+    var condition = conditions[i];
     ol.xml.pushSerializeAndPop(item,
         ol.format.WFS.GETFEATURE_SERIALIZERS_,
         ol.xml.makeSimpleNodeFactory(condition.getTagName()),
         [condition], objectStack);
-  });
+  }
 };
 
 
@@ -59161,6 +59395,12 @@ ol.interaction.DragAndDrop = function(opt_options) {
 
   /**
    * @private
+   * @type {ol.source.Vector}
+   */
+  this.source_ = options.source || null;
+
+  /**
+   * @private
    * @type {Element}
    */
   this.target = options.target ? options.target : null;
@@ -59231,6 +59471,10 @@ ol.interaction.DragAndDrop.prototype.handleResult_ = function(file, event) {
     if (features && features.length > 0) {
       break;
     }
+  }
+  if (this.source_) {
+    this.source_.clear();
+    this.source_.addFeatures(features);
   }
   this.dispatchEvent(
       new ol.interaction.DragAndDrop.Event(
@@ -63045,7 +63289,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
           feature, resolution, pixelRatio, styles, replayGroup);
       this.dirty_ = this.dirty_ || dirty;
     }
-  };
+  }.bind(this);
   if (vectorLayerRenderOrder) {
     /** @type {Array.<ol.Feature>} */
     var features = [];
@@ -63057,7 +63301,9 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
           features.push(feature);
         }, this);
     features.sort(vectorLayerRenderOrder);
-    features.forEach(renderFeature, this);
+    for (var i = 0, ii = features.length; i < ii; ++i) {
+      renderFeature(features[i]);
+    }
   } else {
     vectorSource.forEachFeatureInExtent(extent, renderFeature, this);
   }
@@ -66556,6 +66802,7 @@ ol.interaction.ModifyEventType = {
 goog.provide('ol.interaction.Modify');
 
 goog.require('ol');
+goog.require('ol.Collection');
 goog.require('ol.CollectionEventType');
 goog.require('ol.Feature');
 goog.require('ol.MapBrowserEventType');
@@ -66574,13 +66821,22 @@ goog.require('ol.interaction.ModifyEventType');
 goog.require('ol.interaction.Pointer');
 goog.require('ol.layer.Vector');
 goog.require('ol.source.Vector');
+goog.require('ol.source.VectorEventType');
 goog.require('ol.structs.RBush');
 goog.require('ol.style.Style');
 
-
 /**
  * @classdesc
- * Interaction for modifying feature geometries.
+ * Interaction for modifying feature geometries.  To modify features that have
+ * been added to an existing source, construct the modify interaction with the
+ * `source` option.  If you want to modify features in a collection (for example,
+ * the collection used by a select interaction), construct the interaction with
+ * the `features` option.  The interaction must be constructed with either a
+ * `source` or `features` option.
+ *
+ * By default, the interaction will allow deletion of vertices when the `alt`
+ * key is pressed.  To configure the interaction with a different condition
+ * for deletion, use the `deleteCondition` option.
  *
  * @constructor
  * @extends {ol.interaction.Pointer}
@@ -66611,7 +66867,7 @@ ol.interaction.Modify = function(options) {
    * @return {boolean} Combined condition result.
    */
   this.defaultDeleteCondition_ = function(mapBrowserEvent) {
-    return ol.events.condition.noModifierKeys(mapBrowserEvent) &&
+    return ol.events.condition.altKeyOnly(mapBrowserEvent) &&
       ol.events.condition.singleClick(mapBrowserEvent);
   };
 
@@ -66730,11 +66986,33 @@ ol.interaction.Modify = function(options) {
     'GeometryCollection': this.writeGeometryCollectionGeometry_
   };
 
+
+  /**
+   * @type {ol.source.Vector}
+   * @private
+   */
+  this.source_ = null;
+
+  var features;
+  if (options.source) {
+    this.source_ = options.source;
+    features = new ol.Collection(this.source_.getFeatures());
+    ol.events.listen(this.source_, ol.source.VectorEventType.ADDFEATURE,
+        this.handleSourceAdd_, this);
+    ol.events.listen(this.source_, ol.source.VectorEventType.REMOVEFEATURE,
+        this.handleSourceRemove_, this);
+  } else {
+    features = options.features;
+  }
+  if (!features) {
+    throw new Error('The modify interaction requires features or a source');
+  }
+
   /**
    * @type {ol.Collection.<ol.Feature>}
    * @private
    */
-  this.features_ = options.features;
+  this.features_ = features;
 
   this.features_.forEach(this.addFeature_, this);
   ol.events.listen(this.features_, ol.CollectionEventType.ADD,
@@ -66853,6 +67131,28 @@ ol.interaction.Modify.prototype.setActive = function(active) {
 ol.interaction.Modify.prototype.setMap = function(map) {
   this.overlay_.setMap(map);
   ol.interaction.Pointer.prototype.setMap.call(this, map);
+};
+
+
+/**
+ * @param {ol.source.Vector.Event} event Event.
+ * @private
+ */
+ol.interaction.Modify.prototype.handleSourceAdd_ = function(event) {
+  if (event.feature) {
+    this.features_.push(event.feature);
+  }
+};
+
+
+/**
+ * @param {ol.source.Vector.Event} event Event.
+ * @private
+ */
+ol.interaction.Modify.prototype.handleSourceRemove_ = function(event) {
+  if (event.feature) {
+    this.features_.remove(event.feature);
+  }
 };
 
 
@@ -80757,6 +81057,11 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.Map.prototype,
+    'getFeaturesAtPixel',
+    ol.Map.prototype.getFeaturesAtPixel);
+
+goog.exportProperty(
+    ol.Map.prototype,
     'forEachLayerAtPixel',
     ol.Map.prototype.forEachLayerAtPixel);
 
@@ -93464,7 +93769,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-182-gac13dbc';
+ol.VERSION = 'v4.2.0-218-g7c5a208';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

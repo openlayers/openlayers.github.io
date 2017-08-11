@@ -1062,6 +1062,10 @@
                     <a href="ol.Map.html#getEventPixel">getEventPixel</a>
                 </li>
             
+                <li data-name="ol.Map#getFeaturesAtPixel" class="">
+                    <a href="ol.Map.html#getFeaturesAtPixel">getFeaturesAtPixel</a>
+                </li>
+            
                 <li data-name="ol.Map#getInteractions" class="">
                     <a href="ol.Map.html#getInteractions">getInteractions</a>
                 </li>
@@ -16526,6 +16530,44 @@ pinch gesture ends. Default is <code>false</code>.</p></td>
 	
         <tr>
             
+                <td class="name"><code>source</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.source.Vector.html">ol.source.Vector</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Optional vector source where features will be added.  If a source is provided
+all existing features will be removed and new features will be added when
+they are dropped on the target.  If you want to add features to a vector
+source without removing the existing features (append only), instead of
+providing the source option listen for the &quot;addfeatures&quot; event.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>projection</code></td>
             
             
@@ -19016,13 +19058,16 @@ style is used (see <a href="ol.style.html"><code>ol.style</code></a>).</p></td>
 	
         <tr>
             
-                <td class="name"><code>features</code></td>
+                <td class="name"><code>source</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
+<span class="param-type"><a href="ol.source.Vector.html">ol.source.Vector</a></span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -19031,6 +19076,8 @@ style is used (see <a href="ol.style.html"><code>ol.style</code></a>).</p></td>
             
                 <td class="attributes">
                 
+                    &lt;optional><br>
+                
                     
                 
                 </td>
@@ -19038,7 +19085,43 @@ style is used (see <a href="ol.style.html"><code>ol.style</code></a>).</p></td>
             
             
             
-            <td class="description last"><p>The features the interaction works on. <span class="required-option">Required.</span></p></td>
+            <td class="description last"><p>The vector source with features to modify.  If a vector source is not
+provided, a feature collection must be provided with the features option.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>features</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>The features the interaction works on.  If a feature collection is not
+provided, a vector source must be provided with the source option.</p></td>
         </tr>
 	
 	

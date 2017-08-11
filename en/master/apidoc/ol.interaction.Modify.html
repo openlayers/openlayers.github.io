@@ -1062,6 +1062,10 @@
                     <a href="ol.Map.html#getEventPixel">getEventPixel</a>
                 </li>
             
+                <li data-name="ol.Map#getFeaturesAtPixel" class="">
+                    <a href="ol.Map.html#getFeaturesAtPixel">getFeaturesAtPixel</a>
+                </li>
+            
                 <li data-name="ol.Map#getInteractions" class="">
                     <a href="ol.Map.html#getInteractions">getInteractions</a>
                 </li>
@@ -15784,7 +15788,15 @@
         <span class="ancestors"><a href="ol.html">ol</a><a href="ol.interaction.html">.interaction</a>.</span>Modify
     </h2>
     
-        <div class="class-description"><p>Interaction for modifying feature geometries.</p></div>
+        <div class="class-description"><p>Interaction for modifying feature geometries.  To modify features that have
+been added to an existing source, construct the modify interaction with the
+<code>source</code> option.  If you want to modify features in a collection (for example,
+the collection used by a select interaction), construct the interaction with
+the <code>features</code> option.  The interaction must be constructed with either a
+<code>source</code> or <code>features</code> option.</p>
+<p>By default, the interaction will allow deletion of vertices when the <code>alt</code>
+key is pressed.  To configure the interaction with a different condition
+for deletion, use the <code>deleteCondition</code> option.</p></div>
     
 </header>  
 
@@ -15807,7 +15819,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/modify.js, line 36
+            src/ol/interaction/modify.js, line 46
         </div>
         
         
@@ -16047,14 +16059,17 @@ style is used (see <a href="ol.style.html"><code>ol.style</code></a>).</p></td>
 	
         <tr class="">
             
-                <td class="name"><code>features</code></td>
+                <td class="name"><code>source</code></td>
             
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
+<span class="param-type"><a href="ol.source.Vector.html">ol.source.Vector</a></span>
+|
+
+<span class="param-type">undefined</span>
 
 
             
@@ -16068,7 +16083,40 @@ style is used (see <a href="ol.style.html"><code>ol.style</code></a>).</p></td>
                     
 
                 
-                <p>The features the interaction works on. <span class="required-option">Required.</span></p></td>
+                <p>The vector source with features to modify.  If a vector source is not
+provided, a feature collection must be provided with the features option.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>features</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.Collection.html">ol.Collection</a>.&lt;<a href="ol.Feature.html">ol.Feature</a>></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>The features the interaction works on.  If a feature collection is not
+provided, a vector source must be provided with the source option.</p></td>
         </tr>
 	
 	
@@ -16306,7 +16354,7 @@ style is used (see <a href="ol.style.html"><code>ol.style</code></a>).</p></td>
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/modify.js, line 746
+            src/ol/interaction/modify.js, line 800
         </div>
         
         
@@ -17612,7 +17660,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/interaction/modify.js, line 974
+            src/ol/interaction/modify.js, line 1028
         </div>
         
         

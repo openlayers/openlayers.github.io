@@ -1062,6 +1062,10 @@
                     <a href="ol.Map.html#getEventPixel">getEventPixel</a>
                 </li>
             
+                <li data-name="ol.Map#getFeaturesAtPixel" class="">
+                    <a href="ol.Map.html#getFeaturesAtPixel">getFeaturesAtPixel</a>
+                </li>
+            
                 <li data-name="ol.Map#getInteractions" class="">
                     <a href="ol.Map.html#getInteractions">getInteractions</a>
                 </li>
@@ -19077,6 +19081,139 @@ the meters per unit from the <a href="ol.proj.html#.METERS_PER_UNIT"><code>ol.pr
 <code>{number}</code> view resolution and an <code>{ol.Coordinate}</code> as arguments, and returns
 the <code>{number}</code> resolution at the passed coordinate. If this is <code>undefined</code>,
 the default <code>ol.proj#getPointResolution</code> function will be used.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id=".SphereMetricOptions">
+        </div>
+        <h4 class="name">
+            olx.SphereMetricOptions<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Object literal with options for the <code>ol.Sphere.getLength</code> or
+<code>ol.Sphere.getArea</code> functions.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>projection</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.ProjectionLike">ol.ProjectionLike</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Projection of the geometry.  By default, the geometry is assumed to be in
+EPSG:3857 (Web Mercator).</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Sphere radius.  By default, the radius of the earth is used (Clarke 1866
+Authalic Sphere).</p></td>
         </tr>
 	
 	

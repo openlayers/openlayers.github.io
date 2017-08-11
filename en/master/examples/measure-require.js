@@ -8,7 +8,6 @@ goog.require('ol.geom.Polygon');
 goog.require('ol.interaction.Draw');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
-goog.require('ol.proj');
 goog.require('ol.source.OSM');
 goog.require('ol.source.Vector');
 goog.require('ol.style.Circle');

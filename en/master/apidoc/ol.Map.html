@@ -1062,6 +1062,10 @@
                     <a href="ol.Map.html#getEventPixel">getEventPixel</a>
                 </li>
             
+                <li data-name="ol.Map#getFeaturesAtPixel" class="">
+                    <a href="ol.Map.html#getFeaturesAtPixel">getFeaturesAtPixel</a>
+                </li>
+            
                 <li data-name="ol.Map#getInteractions" class="">
                     <a href="ol.Map.html#getInteractions">getInteractions</a>
                 </li>
@@ -17483,7 +17487,7 @@ Object with a <code>type</code> property.</p>
     <div class="description">
         <p>Detect features that intersect a pixel on the viewport, and execute a
 callback with each intersecting feature. Layers included in the detection can
-be configured through <code>opt_layerFilter</code>.</p>
+be configured through the <code>layerFilter</code> option in <code>opt_options</code>.</p>
     </div>
     
 
@@ -17740,7 +17744,7 @@ callback execution, or the first truthy callback return value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 600
+            src/ol/map.js, line 619
         </div>
         
         
@@ -18120,7 +18124,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 722
+            src/ol/map.js, line 741
         </div>
         
         
@@ -18207,7 +18211,7 @@ Controls.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 706
+            src/ol/map.js, line 725
         </div>
         
         
@@ -18341,7 +18345,7 @@ The coordinate for the pixel position.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 644
+            src/ol/map.js, line 663
         </div>
         
         
@@ -18474,7 +18478,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 655
+            src/ol/map.js, line 674
         </div>
         
         
@@ -18597,6 +18601,243 @@ Pixel.
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="getFeaturesAtPixel">
+        </div>
+        <h4 class="name">
+            getFeaturesAtPixel<span class="signature">(pixel, <span class="optional">opt_options</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Array.&lt;(<a href="ol.Feature.html">ol.Feature</a>|<a href="ol.render.Feature.html">ol.render.Feature</a>)>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/map.js, line 584
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get all features that intersect a pixel on the viewport.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>pixel</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.html#.Pixel">ol.Pixel</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Pixel.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            
+            
+            <td colspan=2 class="description last">
+                
+                <p>Optional options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>layerFilter</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Layer filter function. The filter function will receive one argument, the
+<a href="ol.layer.Layer.html"><code>layer-candidate</code></a> and it should return a boolean value.
+Only layers which are visible and for which this function returns <code>true</code>
+will be tested for features. By default, all visible layers will be tested.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>hitTolerance</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Hit-detection tolerance in pixels. Pixels inside the radius around the given position
+will be checked for features. This only works for the canvas renderer and
+not for WebGL. Default is <code>0</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The detected features or
+<code>null</code> if none were found.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="getInteractions">
         </div>
         <h4 class="name">
@@ -18607,7 +18848,7 @@ Pixel.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 760
+            src/ol/map.js, line 779
         </div>
         
         
@@ -18783,7 +19024,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 771
+            src/ol/map.js, line 790
         </div>
         
         
@@ -18869,7 +19110,7 @@ A layer group containing the layers in this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 781
+            src/ol/map.js, line 800
         </div>
         
         
@@ -18955,7 +19196,7 @@ Layers.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 746
+            src/ol/map.js, line 765
         </div>
         
         
@@ -19093,7 +19334,7 @@ Overlay.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 733
+            src/ol/map.js, line 752
         </div>
         
         
@@ -19180,7 +19421,7 @@ Overlays.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 794
+            src/ol/map.js, line 813
         </div>
         
         
@@ -19491,7 +19732,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 820
+            src/ol/map.js, line 839
         </div>
         
         
@@ -19577,7 +19818,7 @@ The size in pixels of the map in the DOM.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 674
+            src/ol/map.js, line 693
         </div>
         
         
@@ -19666,7 +19907,7 @@ The Element or id of the Element that the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 687
+            src/ol/map.js, line 706
         </div>
         
         
@@ -19754,7 +19995,7 @@ The element that the map is rendered in.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 832
+            src/ol/map.js, line 851
         </div>
         
         
@@ -19841,7 +20082,7 @@ The view that controls this map.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 842
+            src/ol/map.js, line 861
         </div>
         
         
@@ -19927,7 +20168,7 @@ Viewport.
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 623
+            src/ol/map.js, line 642
         </div>
         
         
@@ -20544,7 +20785,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1151
+            src/ol/map.js, line 1170
         </div>
         
         
@@ -20678,7 +20919,7 @@ The removed control (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1163
+            src/ol/map.js, line 1182
         </div>
         
         
@@ -20812,7 +21053,7 @@ The removed interaction (or
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1175
+            src/ol/map.js, line 1194
         </div>
         
         
@@ -20946,7 +21187,7 @@ The removed layer (or undefined if the
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1188
+            src/ol/map.js, line 1207
         </div>
         
         
@@ -21080,7 +21321,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1136
+            src/ol/map.js, line 1155
         </div>
         
         
@@ -21157,7 +21398,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1124
+            src/ol/map.js, line 1143
         </div>
         
         
@@ -21410,7 +21651,7 @@ The removed overlay (or undefined
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1291
+            src/ol/map.js, line 1310
         </div>
         
         
@@ -21687,7 +21928,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1302
+            src/ol/map.js, line 1321
         </div>
         
         
@@ -21814,7 +22055,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1314
+            src/ol/map.js, line 1333
         </div>
         
         
@@ -21945,7 +22186,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1325
+            src/ol/map.js, line 1344
         </div>
         
         
@@ -22400,7 +22641,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/map.js, line 1345
+            src/ol/map.js, line 1364
         </div>
         
         

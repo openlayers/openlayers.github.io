@@ -1062,6 +1062,10 @@
                     <a href="ol.Map.html#getEventPixel">getEventPixel</a>
                 </li>
             
+                <li data-name="ol.Map#getFeaturesAtPixel" class="">
+                    <a href="ol.Map.html#getFeaturesAtPixel">getFeaturesAtPixel</a>
+                </li>
+            
                 <li data-name="ol.Map#getInteractions" class="">
                     <a href="ol.Map.html#getInteractions">getInteractions</a>
                 </li>
@@ -15965,7 +15969,7 @@ this.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 213
+            src/ol/proj.js, line 217
         </div>
         
         
@@ -16174,7 +16178,7 @@ extents and coordinate arrays.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 113
+            src/ol/proj.js, line 117
         </div>
         
         
@@ -16299,7 +16303,7 @@ to transform between projections with equal meaning.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 155
+            src/ol/proj.js, line 159
         </div>
         
         
@@ -16424,7 +16428,7 @@ looked up by their code.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 325
+            src/ol/proj.js, line 329
         </div>
         
         
@@ -16584,7 +16588,7 @@ Equivalent.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 265
+            src/ol/proj.js, line 269
         </div>
         
         
@@ -16744,7 +16748,7 @@ Coordinate projected to the target projection.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 295
+            src/ol/proj.js, line 299
         </div>
         
         
@@ -16872,14 +16876,14 @@ Projection object, or null if not in list.
         <div class="anchor" id=".getPointResolution">
         </div>
         <h4 class="name">
-            ol.proj.getPointResolution<span class="signature">(projection, resolution, point)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            ol.proj.getPointResolution<span class="signature">(projection, resolution, point, <span class="optional">opt_units</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 69
+            src/ol/proj.js, line 71
         </div>
         
         
@@ -17004,6 +17008,32 @@ projection object.</p>
         </tr>
 	
 	
+	
+        <tr class="">
+            
+                <td class="name"><code>units</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.proj.html#.Units">ol.proj.Units</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Units to get the point resolution in.
+Default is the projection's units.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -17049,7 +17079,7 @@ projection object.</p>
 
 
 <h5>Returns:</h5>
-Point resolution at point in projection units.
+Point resolution.
 <br />
 
     
@@ -17072,7 +17102,7 @@ Point resolution at point in projection units.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 350
+            src/ol/proj.js, line 354
         </div>
         
         
@@ -17361,7 +17391,7 @@ ol.proj.setProj4(proj4);</code></pre>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 280
+            src/ol/proj.js, line 284
         </div>
         
         
@@ -17521,7 +17551,7 @@ Coordinate as longitude and latitude, i.e. an array
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 448
+            src/ol/proj.js, line 452
         </div>
         
         
@@ -17708,7 +17738,7 @@ Coordinate.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj.js, line 464
+            src/ol/proj.js, line 468
         </div>
         
         
