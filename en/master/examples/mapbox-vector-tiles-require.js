@@ -8,4 +8,3 @@ goog.require('ol.style.Icon');
 goog.require('ol.style.Stroke');
 goog.require('ol.style.Style');
 goog.require('ol.style.Text');
-goog.require('ol.tilegrid');

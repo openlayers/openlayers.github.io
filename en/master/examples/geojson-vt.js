@@ -65,7 +65,6 @@ fetch(url).then(function(response) {
   });
   var vectorSource = new ol.source.VectorTile({
     format: new ol.format.GeoJSON(),
-    tileGrid: ol.tilegrid.createXYZ(),
     tileLoadFunction: function(tile) {
       var format = tile.getFormat();
       var tileCoord = tile.getTileCoord();

@@ -5,5 +5,4 @@ goog.require('ol.source.OSM');
 goog.require('ol.source.VectorTile');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.VectorTile');
-goog.require('ol.tilegrid');
 goog.require('ol.proj.Projection');

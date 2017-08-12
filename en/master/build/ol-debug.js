@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.2.0-218-g7c5a208
+// Version: v4.3.0
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -58530,23 +58530,6 @@ ol.Graticule.prototype.handlePostCompose_ = function(e) {
     this.updateProjectionInfo_(projection);
   }
 
-  //Fix the extent if wrapped.
-  //(note: this is the same extent as vectorContext.extent_)
-  var offsetX = 0;
-  if (projection.canWrapX()) {
-    var projectionExtent = projection.getExtent();
-    var worldWidth = ol.extent.getWidth(projectionExtent);
-    var x = frameState.focus[0];
-    if (x < projectionExtent[0] || x > projectionExtent[2]) {
-      var worldsAway = Math.ceil((projectionExtent[0] - x) / worldWidth);
-      offsetX = worldWidth * worldsAway;
-      extent = [
-        extent[0] + offsetX, extent[1],
-        extent[2] + offsetX, extent[3]
-      ];
-    }
-  }
-
   this.createGraticule_(extent, center, resolution, squaredTolerance);
 
   // Draw the lines
@@ -79321,16 +79304,26 @@ goog.require('ol.source.UrlTile');
  * @api
  */
 ol.source.VectorTile = function(options) {
+  var projection = options.projection || 'EPSG:3857';
+
+  var extent = options.extent || ol.tilegrid.extentFromProjection(projection);
+
+  var tileGrid = options.tileGrid || ol.tilegrid.createXYZ({
+    extent: extent,
+    maxZoom: options.maxZoom || 22,
+    minZoom: options.minZoom,
+    tileSize: options.tileSize || 512
+  });
 
   ol.source.UrlTile.call(this, {
     attributions: options.attributions,
     cacheSize: options.cacheSize !== undefined ? options.cacheSize : 128,
-    extent: options.extent,
+    extent: extent,
     logo: options.logo,
     opaque: false,
-    projection: options.projection,
+    projection: projection,
     state: options.state,
-    tileGrid: options.tileGrid,
+    tileGrid: tileGrid,
     tileLoadFunction: options.tileLoadFunction ?
       options.tileLoadFunction : ol.VectorImageTile.defaultLoadFunction,
     tileUrlFunction: options.tileUrlFunction,
@@ -93769,7 +93762,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.2.0-218-g7c5a208';
+ol.VERSION = 'v4.3.0';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

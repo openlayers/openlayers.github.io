@@ -8,7 +8,6 @@ var map = new ol.Map({
           '© <a href="https://www.openstreetmap.org/copyright">' +
           'OpenStreetMap contributors</a>',
         format: new ol.format.MVT(),
-        tileGrid: ol.tilegrid.createXYZ({tileSize: 512, maxZoom: 22}),
         url: 'https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/' +
             '{z}/{x}/{y}.vector.pbf?access_token=' + key
       }),
