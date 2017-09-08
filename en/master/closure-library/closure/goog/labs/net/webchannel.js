@@ -125,7 +125,11 @@ goog.net.WebChannel = function() {};
  *
  * fastHandshake: experimental feature to speed up the initial handshake, e.g.
  * leveraging QUIC 0-RTT, in-band version negotiation. This option defaults
- * to false.
+ * to false. To set this option to true, backgroundChannelTest needs be set
+ * to true too. Note it is allowed to send messages before the Open event is
+ * received after a channel has been connected. In order to enable 0-RTT,
+ * messages may be encoded as part of URL and therefore there will be a size
+ * limit for those immediate messages (e.g. 4KB).
  *
  * @typedef {{
  *   messageHeaders: (!Object<string, string>|undefined),
@@ -154,7 +158,7 @@ goog.net.WebChannel.Options;
  * Unicode strings (sent by the server) may or may not need be escaped, as
  * decided by the server.
  *
- * @typedef {(ArrayBuffer|Blob|Object<string, string>|Array)}
+ * @typedef {(ArrayBuffer|Blob|Object<string, Object|string>|Array)}
  */
 goog.net.WebChannel.MessageData;
 

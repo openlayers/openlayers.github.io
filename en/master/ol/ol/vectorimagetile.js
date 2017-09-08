@@ -3,7 +3,6 @@ goog.provide('ol.VectorImageTile');
 goog.require('ol');
 goog.require('ol.Tile');
 goog.require('ol.TileState');
-goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.events');
 goog.require('ol.extent');
@@ -95,6 +94,10 @@ ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
     sourceTileGrid.forEachTileCoord(extent, sourceZ, function(sourceTileCoord) {
       var sharedExtent = ol.extent.getIntersection(extent,
           sourceTileGrid.getTileCoordExtent(sourceTileCoord));
+      var sourceExtent = sourceTileGrid.getExtent();
+      if (sourceExtent) {
+        sharedExtent = ol.extent.getIntersection(sharedExtent, sourceExtent);
+      }
       if (ol.extent.getWidth(sharedExtent) / resolution >= 0.5 &&
           ol.extent.getHeight(sharedExtent) / resolution >= 0.5) {
         // only include source tile if overlap is at least 1 pixel
@@ -134,10 +137,8 @@ ol.VectorImageTile.prototype.disposeInternal = function() {
   }
   this.tileKeys.length = 0;
   this.sourceTiles_ = null;
-  if (this.state == ol.TileState.LOADING) {
-    this.loadListenerKeys_.forEach(ol.events.unlistenByKey);
-    this.loadListenerKeys_.length = 0;
-  }
+  this.loadListenerKeys_.forEach(ol.events.unlistenByKey);
+  this.loadListenerKeys_.length = 0;
   if (this.interimTile) {
     this.interimTile.dispose();
   }
@@ -212,7 +213,13 @@ ol.VectorImageTile.prototype.getTile = function(tileKey) {
  * @inheritDoc
  */
 ol.VectorImageTile.prototype.load = function() {
+  // Source tiles with LOADED state - we just count them because once they are
+  // loaded, we're no longer listening to state changes.
   var leftToLoad = 0;
+  // Source tiles with ERROR state - we track them because they can still have
+  // an ERROR state after another load attempt.
+  var errorSourceTiles = {};
+
   if (this.state == ol.TileState.IDLE) {
     this.setState(ol.TileState.LOADING);
   }
@@ -228,10 +235,14 @@ ol.VectorImageTile.prototype.load = function() {
           var state = sourceTile.getState();
           if (state == ol.TileState.LOADED ||
               state == ol.TileState.ERROR) {
-            --leftToLoad;
-            ol.events.unlistenByKey(key);
-            ol.array.remove(this.loadListenerKeys_, key);
-            if (leftToLoad == 0) {
+            var uid = ol.getUid(sourceTile);
+            if (state == ol.TileState.ERROR) {
+              errorSourceTiles[uid] = true;
+            } else {
+              --leftToLoad;
+              delete errorSourceTiles[uid];
+            }
+            if (leftToLoad - Object.keys(errorSourceTiles).length == 0) {
               this.finishLoading_();
             }
           }
@@ -241,7 +252,7 @@ ol.VectorImageTile.prototype.load = function() {
       }
     }.bind(this));
   }
-  if (leftToLoad == 0) {
+  if (leftToLoad - Object.keys(errorSourceTiles).length == 0) {
     setTimeout(this.finishLoading_.bind(this), 0);
   }
 };
@@ -251,21 +262,18 @@ ol.VectorImageTile.prototype.load = function() {
  * @private
  */
 ol.VectorImageTile.prototype.finishLoading_ = function() {
-  var errors = false;
   var loaded = this.tileKeys.length;
-  var state;
   for (var i = loaded - 1; i >= 0; --i) {
-    state = this.getTile(this.tileKeys[i]).getState();
+    var state = this.getTile(this.tileKeys[i]).getState();
     if (state != ol.TileState.LOADED) {
-      if (state == ol.TileState.ERROR) {
-        errors = true;
-      }
       --loaded;
     }
   }
-  this.setState(loaded > 0 ?
-    ol.TileState.LOADED :
-    (errors ? ol.TileState.ERROR : ol.TileState.EMPTY));
+  if (loaded == this.tileKeys.length) {
+    this.loadListenerKeys_.forEach(ol.events.unlistenByKey);
+    this.loadListenerKeys_.length = 0;
+  }
+  this.setState(loaded > 0 ? ol.TileState.LOADED : ol.TileState.EMPTY);
 };
 
 

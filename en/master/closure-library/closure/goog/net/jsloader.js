@@ -90,23 +90,6 @@ goog.net.jsloader.scriptLoadingDeferred_;
 
 
 /**
- * This is deprecated, please use safeLoadMany.
- *
- * @param {Array<string>} uris The URIs to load.
- * @param {goog.net.jsloader.Options=} opt_options Optional parameters. See
- *     goog.net.jsloader.options documentation for details.
- * @return {!goog.async.Deferred} The deferred result, that may be used to add
- *     callbacks
- * @deprecated
- */
-goog.net.jsloader.loadMany = function(uris, opt_options) {
-  var trustedUris = goog.array.map(
-      uris, goog.html.legacyconversions.trustedResourceUrlFromString);
-  return goog.net.jsloader.safeLoadMany(trustedUris, opt_options);
-};
-
-
-/**
  * Loads and evaluates the JavaScript files at the specified URIs, guaranteeing
  * the order of script loads.
  *
@@ -253,30 +236,6 @@ goog.net.jsloader.safeLoad = function(trustedUri, opt_options) {
   scriptParent.appendChild(script);
 
   return deferred;
-};
-
-
-/**
- * This function is deprecated, please use safeLoadAndVerify instead.
- *
- * @param {string} uri The URI of the JavaScript.
- * @param {string} verificationObjName The name of the verification object that
- *     the loaded script should set.
- * @param {goog.net.jsloader.Options} options Optional parameters. See
- *     goog.net.jsloader.Options documentation for details.
- * @return {!goog.async.Deferred} The deferred result, that may be used to add
- *     callbacks and/or cancel the transmission.
- *     The success callback will be called with a single parameter containing
- *     the value of the verification object.
- *     The error callback will be called with a single goog.net.jsloader.Error
- *     parameter.
- * @deprecated
- */
-goog.net.jsloader.loadAndVerify = function(uri, verificationObjName, options) {
-  var trustedUri =
-      goog.html.legacyconversions.trustedResourceUrlFromString(uri);
-  return goog.net.jsloader.safeLoadAndVerify(
-      trustedUri, verificationObjName, options);
 };
 
 

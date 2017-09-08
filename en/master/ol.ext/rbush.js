@@ -11,6 +11,7 @@ ol.ext.rbush = function() {};
 (function() {(function (exports) {
 'use strict';
 
+'use strict';
 var index$2 = partialSort;
 function partialSort(arr, k, left, right, compare) {
     left = left || 0;
@@ -57,6 +58,7 @@ function defaultCompare(a, b) {
     return a < b ? -1 : a > b ? 1 : 0;
 }
 
+'use strict';
 var index = rbush;
 function rbush(maxEntries, format) {
     if (!(this instanceof rbush)) return new rbush(maxEntries, format);

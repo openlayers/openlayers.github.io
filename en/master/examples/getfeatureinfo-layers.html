@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>4.3.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -81,7 +81,7 @@
           <textarea class="hidden" name="title">WMS GetFeatureInfo (Layers)</textarea>
           <textarea class="hidden" name="description">Shows how to fetch features per layer name in a single WMS GetFeatureInfo request
 </textarea>
-          <textarea class="hidden" name="js">fetch(&#x27;https://openlayers.org/en/v4.3.0/examples/data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
+          <textarea class="hidden" name="js">fetch(&#x27;https://openlayers.org/en/v4.3.2/examples/data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
   return response.text();
 }).then(function(response) {
 
@@ -119,17 +119,17 @@
   &lt;/tr&gt;
 &lt;/table&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.3.0/css/ol.css,https://openlayers.org/en/v4.3.0/build/ol.js">
+          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.3.2/css/ol.css,https://openlayers.org/en/v4.3.2/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;WMS GetFeatureInfo (Layers)&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.3.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.3.2/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.3.0/build/ol.js"&gt;&lt;/script&gt;
+    &lt;script src="https://openlayers.org/en/v4.3.2/build/ol.js"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;table id&#x3D;&quot;info&quot;&gt;
@@ -147,7 +147,7 @@
       &lt;/tr&gt;
     &lt;/table&gt;
     &lt;script&gt;
-      fetch(&#x27;https://openlayers.org/en/v4.3.0/examples/data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
+      fetch(&#x27;https://openlayers.org/en/v4.3.2/examples/data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
         return response.text();
       }).then(function(response) {
 
@@ -189,7 +189,7 @@
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.3.0' != latestVersion) {
+    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.3.2' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

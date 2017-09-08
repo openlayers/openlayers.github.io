@@ -13,8 +13,8 @@ function collectDrawData(letter, x, y, angle) {
 }
 
 var style = new ol.style.Style({
-  renderer: function(coords, context) {
-    var feature = context.feature;
+  renderer: function(coords, state) {
+    var feature = state.feature;
     var text = feature.get('name');
     // Only create label when geometry has a long and straight segment
     var path = labelSegment(coords, Math.PI / 8, measureText(text));
@@ -39,22 +39,11 @@ var rasterLayer = new ol.layer.Tile({
   })
 });
 
-var source = new ol.source.Vector();
-// Request streets from OSM, using the Overpass API
-fetch('https://overpass-api.de/api/interpreter', {
-  method: 'POST',
-  body: '(way["highway"](48.19642,16.32580,48.22050,16.41986));(._;>;);out meta;'
-}).then(function(response) {
-  return response.text();
-}).then(function(responseText) {
-  var features = new ol.format.OSMXML().readFeatures(responseText, {
-    featureProjection: 'EPSG:3857'
-  });
-  source.addFeatures(features);
-});
-
 var vectorLayer = new ol.layer.Vector({
-  source: source,
+  source: new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: 'data/geojson/vienna-streets.geojson'
+  }),
   style: function(feature) {
     if (feature.getGeometry().getType() == 'LineString' && feature.get('name')) {
       return style;

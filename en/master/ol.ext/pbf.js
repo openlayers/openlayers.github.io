@@ -89,6 +89,7 @@ var index$2 = {
 	write: write
 };
 
+'use strict';
 var index = Pbf;
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView && ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);

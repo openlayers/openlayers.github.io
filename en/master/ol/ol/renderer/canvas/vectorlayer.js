@@ -1,12 +1,14 @@
 goog.provide('ol.renderer.canvas.VectorLayer');
 
 goog.require('ol');
+goog.require('ol.LayerType');
 goog.require('ol.ViewHint');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.render.EventType');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.ReplayGroup');
+goog.require('ol.renderer.Type');
 goog.require('ol.renderer.canvas.Layer');
 goog.require('ol.renderer.vector');
 
@@ -15,6 +17,7 @@ goog.require('ol.renderer.vector');
  * @constructor
  * @extends {ol.renderer.canvas.Layer}
  * @param {ol.layer.Vector} vectorLayer Vector layer.
+ * @api
  */
 ol.renderer.canvas.VectorLayer = function(vectorLayer) {
 
@@ -64,6 +67,28 @@ ol.renderer.canvas.VectorLayer = function(vectorLayer) {
 
 };
 ol.inherits(ol.renderer.canvas.VectorLayer, ol.renderer.canvas.Layer);
+
+
+/**
+ * Determine if this renderer handles the provided layer.
+ * @param {ol.renderer.Type} type The renderer type.
+ * @param {ol.layer.Layer} layer The candidate layer.
+ * @return {boolean} The renderer can render the layer.
+ */
+ol.renderer.canvas.VectorLayer['handles'] = function(type, layer) {
+  return type === ol.renderer.Type.CANVAS && layer.getType() === ol.LayerType.VECTOR;
+};
+
+
+/**
+ * Create a layer renderer.
+ * @param {ol.renderer.Map} mapRenderer The map renderer.
+ * @param {ol.layer.Layer} layer The layer to be rendererd.
+ * @return {ol.renderer.canvas.VectorLayer} The layer renderer.
+ */
+ol.renderer.canvas.VectorLayer['create'] = function(mapRenderer, layer) {
+  return new ol.renderer.canvas.VectorLayer(/** @type {ol.layer.Vector} */ (layer));
+};
 
 
 /**
@@ -132,8 +157,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
     var height = frameState.size[1] * pixelRatio;
     ol.render.canvas.rotateAtOffset(replayContext, -rotation,
         width / 2, height / 2);
-    replayGroup.replay(replayContext, pixelRatio, transform, rotation,
-        skippedFeatureUids);
+    replayGroup.replay(replayContext, transform, rotation, skippedFeatureUids);
     if (vectorSource.getWrapX() && projection.canWrapX() &&
         !ol.extent.containsExtent(projectionExtent, extent)) {
       var startX = extent[0];
@@ -144,8 +168,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
         --world;
         offsetX = worldWidth * world;
         transform = this.getTransform(frameState, offsetX);
-        replayGroup.replay(replayContext, pixelRatio, transform, rotation,
-            skippedFeatureUids);
+        replayGroup.replay(replayContext, transform, rotation, skippedFeatureUids);
         startX += worldWidth;
       }
       world = 0;
@@ -154,8 +177,7 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
         ++world;
         offsetX = worldWidth * world;
         transform = this.getTransform(frameState, offsetX);
-        replayGroup.replay(replayContext, pixelRatio, transform, rotation,
-            skippedFeatureUids);
+        replayGroup.replay(replayContext, transform, rotation, skippedFeatureUids);
         startX -= worldWidth;
       }
       // restore original transform for render and compose events
@@ -296,8 +318,8 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
   this.dirty_ = false;
 
   var replayGroup = new ol.render.canvas.ReplayGroup(
-      ol.renderer.vector.getTolerance(resolution, pixelRatio), extent,
-      resolution, vectorSource.getOverlaps(), vectorLayer.getRenderBuffer());
+      ol.renderer.vector.getTolerance(resolution, pixelRatio), extent, resolution,
+      pixelRatio, vectorSource.getOverlaps(), vectorLayer.getRenderBuffer());
   vectorSource.loadFeatures(extent, resolution, projection);
   /**
    * @param {ol.Feature} feature Feature.

@@ -11,7 +11,7 @@ var map = new ol.Map({
         url: 'https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/' +
             '{z}/{x}/{y}.vector.pbf?access_token=' + key
       }),
-      style: createMapboxStreetsV6Style()
+      style: createMapboxStreetsV6Style(ol.style.Style, ol.style.Fill, ol.style.Stroke, ol.style.Icon, ol.style.Text)
     })
   ],
   target: 'map',
@@ -20,6 +20,3 @@ var map = new ol.Map({
     zoom: 2
   })
 });
-
-// ol.style.Fill, ol.style.Icon, ol.style.Stroke, ol.style.Style and
-// ol.style.Text are required for createMapboxStreetsV6Style()
