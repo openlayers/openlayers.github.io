@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.3.2-188-gb03bb2c
+// Version: v4.3.2-214-gb920b78
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -23026,14 +23026,10 @@ ol.render.VectorContext.prototype.drawPolygon = function(polygonGeometry, featur
 
 
 /**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
  * @param {ol.geom.Geometry|ol.render.Feature} geometry Geometry.
  * @param {ol.Feature|ol.render.Feature} feature Feature.
  */
-ol.render.VectorContext.prototype.drawText = function(flatCoordinates, offset, end, stride, geometry, feature) {};
+ol.render.VectorContext.prototype.drawText = function(geometry, feature) {};
 
 
 /**
@@ -23845,21 +23841,23 @@ ol.render.canvas.Immediate.prototype.setContextStrokeState_ = function(strokeSta
 ol.render.canvas.Immediate.prototype.setContextTextState_ = function(textState) {
   var context = this.context_;
   var contextTextState = this.contextTextState_;
+  var textAlign = textState.textAlign ?
+    textState.textAlign : ol.render.canvas.defaultTextAlign;
   if (!contextTextState) {
     context.font = textState.font;
-    context.textAlign = textState.textAlign;
+    context.textAlign = textAlign;
     context.textBaseline = textState.textBaseline;
     this.contextTextState_ = {
       font: textState.font,
-      textAlign: textState.textAlign,
+      textAlign: textAlign,
       textBaseline: textState.textBaseline
     };
   } else {
     if (contextTextState.font != textState.font) {
       contextTextState.font = context.font = textState.font;
     }
-    if (contextTextState.textAlign != textState.textAlign) {
-      contextTextState.textAlign = context.textAlign = textState.textAlign;
+    if (contextTextState.textAlign != textAlign) {
+      contextTextState.textAlign = textAlign;
     }
     if (contextTextState.textBaseline != textState.textBaseline) {
       contextTextState.textBaseline = context.textBaseline =
@@ -26055,6 +26053,124 @@ ol.render.ReplayGroup.prototype.getReplay = function(zIndex, replayType) {};
  */
 ol.render.ReplayGroup.prototype.isEmpty = function() {};
 
+goog.provide('ol.geom.flat.length');
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @return {number} Length.
+ */
+ol.geom.flat.length.lineString = function(flatCoordinates, offset, end, stride) {
+  var x1 = flatCoordinates[offset];
+  var y1 = flatCoordinates[offset + 1];
+  var length = 0;
+  var i;
+  for (i = offset + stride; i < end; i += stride) {
+    var x2 = flatCoordinates[i];
+    var y2 = flatCoordinates[i + 1];
+    length += Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    x1 = x2;
+    y1 = y2;
+  }
+  return length;
+};
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @return {number} Perimeter.
+ */
+ol.geom.flat.length.linearRing = function(flatCoordinates, offset, end, stride) {
+  var perimeter =
+      ol.geom.flat.length.lineString(flatCoordinates, offset, end, stride);
+  var dx = flatCoordinates[end - stride] - flatCoordinates[offset];
+  var dy = flatCoordinates[end - stride + 1] - flatCoordinates[offset + 1];
+  perimeter += Math.sqrt(dx * dx + dy * dy);
+  return perimeter;
+};
+
+goog.provide('ol.geom.flat.textpath');
+
+goog.require('ol.math');
+
+
+/**
+ * @param {Array.<number>} flatCoordinates Path to put text on.
+ * @param {number} offset Start offset of the `flatCoordinates`.
+ * @param {number} end End offset of the `flatCoordinates`.
+ * @param {number} stride Stride.
+ * @param {string} text Text to place on the path.
+ * @param {function(string):number} measure Measure function returning the
+ * width of the character passed as 1st argument.
+ * @param {number} startM m along the path where the text starts.
+ * @param {number} maxAngle Max angle between adjacent chars in radians.
+ * @param {Array.<Array.<number>>=} opt_result Array that will be populated with the
+ * result. Each entry consists of an array of x, y and z of the char to draw.
+ * If provided, this array will not be truncated to the number of characters of
+ * the `text`.
+ * @return {Array.<Array.<number>>} The result array of null if `maxAngle` was
+ * exceeded.
+ */
+ol.geom.flat.textpath.lineString = function(
+    flatCoordinates, offset, end, stride, text, measure, startM, maxAngle, opt_result) {
+  var result = opt_result ? opt_result : [];
+
+  // Keep text upright
+  var reverse = flatCoordinates[offset] > flatCoordinates[end - stride];
+
+  var numChars = text.length;
+
+  var x1 = flatCoordinates[offset];
+  var y1 = flatCoordinates[offset + 1];
+  offset += stride;
+  var x2 = flatCoordinates[offset];
+  var y2 = flatCoordinates[offset + 1];
+  var segmentM = 0;
+  var segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+  var index, previousAngle;
+  for (var i = 0; i < numChars; ++i) {
+    index = reverse ? numChars - i - 1 : i;
+    var char = text[index];
+    var charLength = measure(char);
+    var charM = startM + charLength / 2;
+    while (offset < end - stride && segmentM + segmentLength < charM) {
+      x1 = x2;
+      y1 = y2;
+      offset += stride;
+      x2 = flatCoordinates[offset];
+      y2 = flatCoordinates[offset + 1];
+      segmentM += segmentLength;
+      segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+    var segmentPos = charM - segmentM;
+    var angle = Math.atan2(y2 - y1, x2 - x1);
+    if (reverse) {
+      angle += angle > 0 ? -Math.PI : Math.PI;
+    }
+    if (previousAngle !== undefined) {
+      var delta = angle - previousAngle;
+      delta += (delta > Math.PI) ? -2 * Math.PI : (delta < -Math.PI) ? 2 * Math.PI : 0;
+      if (Math.abs(delta) > maxAngle) {
+        return null;
+      }
+    }
+    previousAngle = angle;
+    var interpolate = segmentPos / segmentLength;
+    var x = ol.math.lerp(x1, x2, interpolate);
+    var y = ol.math.lerp(y1, y2, interpolate);
+    result[index] = [x, y, angle];
+    startM += charLength;
+  }
+  return result;
+};
+
 goog.provide('ol.render.canvas.Instruction');
 
 /**
@@ -26066,13 +26182,14 @@ ol.render.canvas.Instruction = {
   CIRCLE: 2,
   CLOSE_PATH: 3,
   CUSTOM: 4,
-  DRAW_IMAGE: 5,
-  END_GEOMETRY: 6,
-  FILL: 7,
-  MOVE_TO_LINE_TO: 8,
-  SET_FILL_STYLE: 9,
-  SET_STROKE_STYLE: 10,
-  STROKE: 11
+  DRAW_CHARS: 5,
+  DRAW_IMAGE: 6,
+  END_GEOMETRY: 7,
+  FILL: 8,
+  MOVE_TO_LINE_TO: 9,
+  SET_FILL_STYLE: 10,
+  SET_STROKE_STYLE: 11,
+  STROKE: 12
 };
 
 goog.provide('ol.render.canvas.Replay');
@@ -26083,6 +26200,8 @@ goog.require('ol.extent');
 goog.require('ol.extent.Relationship');
 goog.require('ol.geom.GeometryType');
 goog.require('ol.geom.flat.inflate');
+goog.require('ol.geom.flat.length');
+goog.require('ol.geom.flat.textpath');
 goog.require('ol.geom.flat.transform');
 goog.require('ol.has');
 goog.require('ol.obj');
@@ -26207,8 +26326,67 @@ ol.render.canvas.Replay = function(tolerance, maxExtent, resolution, pixelRatio,
    * @type {!ol.Transform}
    */
   this.resetTransform_ = ol.transform.create();
+
+  /**
+   * @private
+   * @type {Array.<Array.<number>>}
+   */
+  this.chars_ = [];
 };
 ol.inherits(ol.render.canvas.Replay, ol.render.VectorContext);
+
+
+/**
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @param {HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} image Image.
+ * @param {number} anchorX Anchor X.
+ * @param {number} anchorY Anchor Y.
+ * @param {number} height Height.
+ * @param {number} opacity Opacity.
+ * @param {number} originX Origin X.
+ * @param {number} originY Origin Y.
+ * @param {number} rotation Rotation.
+ * @param {number} scale Scale.
+ * @param {boolean} snapToPixel Snap to pixel.
+ * @param {number} width Width.
+ */
+ol.render.canvas.Replay.prototype.replayImage_ = function(context, x, y, image, anchorX, anchorY,
+    height, opacity, originX, originY, rotation, scale, snapToPixel, width) {
+  var localTransform = this.tmpLocalTransform_;
+  anchorX *= scale;
+  anchorY *= scale;
+  x -= anchorX;
+  y -= anchorY;
+  if (snapToPixel) {
+    x = Math.round(x);
+    y = Math.round(y);
+  }
+  if (rotation !== 0) {
+    var centerX = x + anchorX;
+    var centerY = y + anchorY;
+    ol.transform.compose(localTransform,
+        centerX, centerY, 1, 1, rotation, -centerX, -centerY);
+    context.setTransform.apply(context, localTransform);
+  }
+  var alpha = context.globalAlpha;
+  if (opacity != 1) {
+    context.globalAlpha = alpha * opacity;
+  }
+
+  var w = (width + originX > image.width) ? image.width - originX : width;
+  var h = (height + originY > image.height) ? image.height - originY : height;
+
+  context.drawImage(image, originX, originY, w, h, x, y, w * scale, h * scale);
+
+  if (opacity != 1) {
+    context.globalAlpha = alpha;
+  }
+  if (rotation !== 0) {
+    context.setTransform.apply(context, this.resetTransform_);
+  }
+};
 
 
 /**
@@ -26417,9 +26595,7 @@ ol.render.canvas.Replay.prototype.replay_ = function(
   var ii = instructions.length; // end of instructions
   var d = 0; // data index
   var dd; // end of per-instruction data
-  var localTransform = this.tmpLocalTransform_;
-  var resetTransform = this.resetTransform_;
-  var prevX, prevY, roundX, roundY;
+  var anchorX, anchorY, prevX, prevY, roundX, roundY;
   var pendingFill = 0;
   var pendingStroke = 0;
   var coordinateCache = this.coordinateCache_;
@@ -26512,53 +26688,63 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         dd = /** @type {number} */ (instruction[2]);
         var image =  /** @type {HTMLCanvasElement|HTMLVideoElement|Image} */
             (instruction[3]);
-        var scale = /** @type {number} */ (instruction[12]);
         // Remaining arguments in DRAW_IMAGE are in alphabetical order
-        var anchorX = /** @type {number} */ (instruction[4]) * scale;
-        var anchorY = /** @type {number} */ (instruction[5]) * scale;
+        anchorX = /** @type {number} */ (instruction[4]);
+        anchorY = /** @type {number} */ (instruction[5]);
         var height = /** @type {number} */ (instruction[6]);
         var opacity = /** @type {number} */ (instruction[7]);
         var originX = /** @type {number} */ (instruction[8]);
         var originY = /** @type {number} */ (instruction[9]);
         var rotateWithView = /** @type {boolean} */ (instruction[10]);
         var rotation = /** @type {number} */ (instruction[11]);
+        var scale = /** @type {number} */ (instruction[12]);
         var snapToPixel = /** @type {boolean} */ (instruction[13]);
         var width = /** @type {number} */ (instruction[14]);
+
         if (rotateWithView) {
           rotation += viewRotation;
         }
         for (; d < dd; d += 2) {
-          x = pixelCoordinates[d] - anchorX;
-          y = pixelCoordinates[d + 1] - anchorY;
-          if (snapToPixel) {
-            x = Math.round(x);
-            y = Math.round(y);
-          }
-          if (rotation !== 0) {
-            var centerX = x + anchorX;
-            var centerY = y + anchorY;
-            ol.transform.compose(localTransform,
-                centerX, centerY, 1, 1, rotation, -centerX, -centerY);
-            context.setTransform.apply(context, localTransform);
-          }
-          var alpha = context.globalAlpha;
-          if (opacity != 1) {
-            context.globalAlpha = alpha * opacity;
-          }
+          this.replayImage_(context, pixelCoordinates[d], pixelCoordinates[d + 1],
+              image, anchorX, anchorY, height, opacity, originX, originY,
+              rotation, scale, snapToPixel, width);
+        }
+        ++i;
+        break;
+      case ol.render.canvas.Instruction.DRAW_CHARS:
+        var begin = /** @type {number} */ (instruction[1]);
+        var end = /** @type {number} */ (instruction[2]);
+        var images =  /** @type {Array.<HTMLCanvasElement>} */ (instruction[3]);
+        // Remaining arguments in DRAW_CHARS are in alphabetical order
+        var baseline = /** @type {number} */ (instruction[4]);
+        var exceedLength = /** @type {number} */ (instruction[5]);
+        var maxAngle = /** @type {number} */ (instruction[6]);
+        var measure = /** @type {function(string):number} */ (instruction[7]);
+        var offsetY = /** @type {number} */ (instruction[8]);
+        var strokeWidth = /** @type {number} */ (instruction[9]);
+        var text = /** @type {string} */ (instruction[10]);
+        var align = /** @type {number} */ (instruction[11]);
+        var textScale = /** @type {number} */ (instruction[12]);
 
-          var w = (width + originX > image.width) ? image.width - originX : width;
-          var h = (height + originY > image.height) ? image.height - originY : height;
-
-          context.drawImage(image, originX, originY, w, h,
-              x, y, w * scale, h * scale);
-
-          if (opacity != 1) {
-            context.globalAlpha = alpha;
-          }
-          if (rotation !== 0) {
-            context.setTransform.apply(context, resetTransform);
+        var pathLength = ol.geom.flat.length.lineString(pixelCoordinates, begin, end, 2);
+        var textLength = measure(text);
+        if (exceedLength || textLength <= pathLength) {
+          var startM = (pathLength - textLength) * align;
+          var chars = ol.geom.flat.textpath.lineString(
+              pixelCoordinates, begin, end, 2, text, measure, startM, maxAngle, this.chars_);
+          var numChars = text.length;
+          if (chars) {
+            for (var c = 0, cc = images.length; c < cc; ++c) {
+              var char = chars[c % numChars]; // x, y, rotation
+              var label = images[c];
+              anchorX = label.width / 2;
+              anchorY = baseline * label.height + 2 * (0.5 - baseline) * strokeWidth - offsetY;
+              this.replayImage_(context, char[0], char[1], label, anchorX, anchorY,
+                  label.height, 1, 0, 0, char[2], textScale, false, label.width);
+            }
           }
         }
+
         ++i;
         break;
       case ol.render.canvas.Instruction.END_GEOMETRY:
@@ -26919,7 +27105,7 @@ ol.render.canvas.ImageReplay.prototype.drawMultiPoint = function(multiPointGeome
   this.instructions.push([
     ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.image_,
     // Remaining arguments to DRAW_IMAGE are in alphabetical order
-    this.anchorX_, this.anchorY_, this.height_, this.opacity_,
+    this.anchorX_, this.anchorY_, this.height_, undefined, this.opacity_,
     this.originX_, this.originY_, this.rotateWithView_, this.rotation_,
     this.scale_, this.snapToPixel_, this.width_
   ]);
@@ -26927,7 +27113,7 @@ ol.render.canvas.ImageReplay.prototype.drawMultiPoint = function(multiPointGeome
     ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd,
     this.hitDetectionImage_,
     // Remaining arguments to DRAW_IMAGE are in alphabetical order
-    this.anchorX_, this.anchorY_, this.height_, this.opacity_,
+    this.anchorX_, this.anchorY_, this.height_, undefined, this.opacity_,
     this.originX_, this.originY_, this.rotateWithView_, this.rotation_,
     this.scale_, this.snapToPixel_, this.width_
   ]);
@@ -27604,6 +27790,56 @@ ol.render.canvas.PolygonReplay.prototype.setFillStrokeStyles_ = function(geometr
   }
 };
 
+goog.provide('ol.geom.flat.straightchunk');
+
+
+/**
+ * @param {number} maxAngle Maximum acceptable angle delta between segments.
+ * @param {Array.<number>} flatCoordinates Flat coordinates.
+ * @param {number} offset Offset.
+ * @param {number} end End.
+ * @param {number} stride Stride.
+ * @return {Array.<number>} Start and end of the first suitable chunk of the
+ * given `flatCoordinates`.
+ */
+ol.geom.flat.straightchunk.lineString = function(maxAngle, flatCoordinates, offset, end, stride) {
+  var chunkStart = offset;
+  var chunkEnd = offset;
+  var chunkM = 0;
+  var m = 0;
+  var start = offset;
+  var acos, i, m12, m23, x1, y1, x12, y12, x23, y23;
+  for (i = offset; i < end; i += stride) {
+    var x2 = flatCoordinates[i];
+    var y2 = flatCoordinates[i + 1];
+    if (x1 !== undefined) {
+      x23 = x2 - x1;
+      y23 = y2 - y1;
+      m23 = Math.sqrt(x23 * x23 + y23 * y23);
+      if (x12 !== undefined) {
+        m += m12;
+        acos = Math.acos((x12 * x23 + y12 * y23) / (m12 * m23));
+        if (acos > maxAngle) {
+          if (m > chunkM) {
+            chunkM = m;
+            chunkStart = start;
+            chunkEnd = i;
+          }
+          m = 0;
+          start = i - stride;
+        }
+      }
+      m12 = m23;
+      x12 = x23;
+      y12 = y23;
+    }
+    x1 = x2;
+    y1 = y2;
+  }
+  m += m23;
+  return m > chunkM ? [start, i] : [chunkStart, chunkEnd];
+};
+
 goog.provide('ol.render.ReplayType');
 
 
@@ -27875,16 +28111,35 @@ ol.structs.LRUCache.prototype.set = function(key, value) {
   ++this.count_;
 };
 
+goog.provide('ol.style.TextPlacement');
+
+
+/**
+ * Text placement. One of `'point'`, `'line'`. Default is `'point'`. Note that
+ * `'line'` requires the underlying geometry to be a {@link ol.geom.LineString},
+ * {@link ol.geom.Polygon}, {@link ol.geom.MultiLineString} or
+ * {@link ol.geom.MultiPolygon}.
+ * @enum {string}
+ */
+ol.style.TextPlacement = {
+  POINT: 'point',
+  LINE: 'line'
+};
+
 goog.provide('ol.render.canvas.TextReplay');
 
 goog.require('ol');
 goog.require('ol.colorlike');
+goog.require('ol.dom');
+goog.require('ol.geom.flat.straightchunk');
+goog.require('ol.geom.GeometryType');
 goog.require('ol.has');
 goog.require('ol.render.canvas');
 goog.require('ol.render.canvas.Instruction');
 goog.require('ol.render.canvas.Replay');
 goog.require('ol.render.replay');
 goog.require('ol.structs.LRUCache');
+goog.require('ol.style.TextPlacement');
 
 
 /**
@@ -27900,6 +28155,12 @@ goog.require('ol.structs.LRUCache');
 ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution, pixelRatio, overlaps) {
 
   ol.render.canvas.Replay.call(this, tolerance, maxExtent, resolution, pixelRatio, overlaps);
+
+  /**
+   * @private
+   * @type {Array.<HTMLCanvasElement>}
+   */
+  this.labels_ = null;
 
   /**
    * @private
@@ -27955,6 +28216,24 @@ ol.render.canvas.TextReplay = function(tolerance, maxExtent, resolution, pixelRa
    */
   this.textState_ = null;
 
+  /**
+   * @private
+   * @type {string}
+   */
+  this.textKey_ = '';
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.fillKey_ = '';
+
+  /**
+   * @private
+   * @type {string}
+   */
+  this.strokeKey_ = '';
+
   while (ol.render.canvas.TextReplay.labelCache_.canExpireCache()) {
     ol.render.canvas.TextReplay.labelCache_.pop();
   }
@@ -27972,33 +28251,65 @@ ol.render.canvas.TextReplay.labelCache_ = new ol.structs.LRUCache();
 
 /**
  * @param {string} font Font to use for measuring.
- * @param {Array.<string>} lines Lines to measure.
- * @param {Array.<number>} widths Array will be populated with the widths of
- * each line.
- * @return {ol.Size} Measuremnt.
+ * @return {ol.Size} Measurement.
  */
-ol.render.canvas.TextReplay.measureText = (function() {
+ol.render.canvas.TextReplay.measureTextHeight = (function() {
   var textContainer;
   return function(font, lines, widths) {
     if (!textContainer) {
       textContainer = document.createElement('span');
+      textContainer.textContent = 'M';
       textContainer.style.visibility = 'hidden';
       textContainer.style.whiteSpace = 'nowrap';
     }
     textContainer.style.font = font;
     document.body.appendChild(textContainer);
+    var height = textContainer.offsetHeight;
+    document.body.removeChild(textContainer);
+    return height;
+  };
+})();
+
+
+/**
+ * @this {Object}
+ * @param {CanvasRenderingContext2D} context Context.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {string} text Text.
+ * @return {number} Width.
+ */
+ol.render.canvas.TextReplay.getTextWidth = function(context, pixelRatio, text) {
+  var width = this[text];
+  if (!width) {
+    this[text] = width = context.measureText(text).width;
+  }
+  return width * pixelRatio;
+};
+
+
+/**
+ * @param {string} font Font to use for measuring.
+ * @param {Array.<string>} lines Lines to measure.
+ * @param {Array.<number>} widths Array will be populated with the widths of
+ * each line.
+ * @return {number} Width of the whole text.
+ */
+ol.render.canvas.TextReplay.measureTextWidths = (function() {
+  var context;
+  return function(font, lines, widths) {
+    if (!context) {
+      context = ol.dom.createCanvasContext2D(1, 1);
+    }
+    context.font = font;
     var numLines = lines.length;
     var width = 0;
     var currentWidth, i;
     for (i = 0; i < numLines; ++i) {
-      textContainer.textContent = lines[i];
-      currentWidth = textContainer.offsetWidth;
+      currentWidth = context.measureText(lines[i]).width;
       width = Math.max(width, currentWidth);
       widths.push(currentWidth);
     }
-    var measurement = [width, textContainer.offsetHeight * numLines];
-    document.body.removeChild(textContainer);
-    return measurement;
+    return width;
   };
 })();
 
@@ -28006,51 +28317,122 @@ ol.render.canvas.TextReplay.measureText = (function() {
 /**
  * @inheritDoc
  */
-ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offset, end, stride, geometry, feature) {
+ol.render.canvas.TextReplay.prototype.drawText = function(geometry, feature) {
   var fillState = this.textFillState_;
   var strokeState = this.textStrokeState_;
   var textState = this.textState_;
   if (this.text_ === '' || !textState || (!fillState && !strokeState)) {
     return;
   }
+
   this.beginGeometry(geometry, feature);
+  var begin = this.coordinates.length;
 
-  var myBegin = this.coordinates.length;
-  var myEnd =
-      this.appendFlatCoordinates(flatCoordinates, offset, end, stride, false, false);
-  var fill = !!fillState;
-  var stroke = !!strokeState;
-  var pixelRatio = this.pixelRatio;
-  var textAlign = textState.textAlign;
-  var align = ol.render.replay.TEXT_ALIGN[textAlign];
-  var textBaseline = textState.textBaseline;
-  var baseline = ol.render.replay.TEXT_ALIGN[textBaseline];
-  var strokeWidth = stroke && strokeState.lineWidth ? strokeState.lineWidth : 0;
+  var geometryType = geometry.getType();
+  var flatCoordinates = null;
+  var end = 2;
+  var stride = 2;
 
+  if (this.textState_.placement === ol.style.TextPlacement.LINE) {
+    var ends;
+    flatCoordinates = geometry.getFlatCoordinates();
+    stride = geometry.getStride();
+    if (geometryType == ol.geom.GeometryType.LINE_STRING) {
+      ends = [flatCoordinates.length];
+    } else if (geometryType == ol.geom.GeometryType.MULTI_LINE_STRING) {
+      ends = geometry.getEnds();
+    } else if (geometryType == ol.geom.GeometryType.POLYGON) {
+      ends = geometry.getEnds().slice(0, 1);
+    } else if (geometryType == ol.geom.GeometryType.MULTI_POLYGON) {
+      var endss = geometry.getEndss();
+      ends = [];
+      for (var i = 0, ii = endss.length; i < ii; ++i) {
+        ends.push(endss[i][0]);
+      }
+    }
+    var textAlign = textState.textAlign;
+    var flatOffset = 0;
+    var flatEnd;
+    for (var o = 0, oo = ends.length; o < oo; ++o) {
+      if (textAlign == undefined) {
+        var range = ol.geom.flat.straightchunk.lineString(
+            textState.maxAngle, flatCoordinates, flatOffset, ends[o], stride);
+        flatOffset = range[0];
+        flatEnd = range[1];
+      } else {
+        flatEnd = ends[o];
+      }
+      end = this.appendFlatCoordinates(flatCoordinates, flatOffset, flatEnd, stride, false, false);
+      flatOffset = ends[o];
+      this.drawChars_(begin, end);
+      begin = end;
+    }
+
+  } else {
+    switch (geometryType) {
+      case ol.geom.GeometryType.POINT:
+      case ol.geom.GeometryType.MULTI_POINT:
+        flatCoordinates = geometry.getFlatCoordinates();
+        end = flatCoordinates.length;
+        break;
+      case ol.geom.GeometryType.LINE_STRING:
+        flatCoordinates = /** @type {ol.geom.LineString} */ (geometry).getFlatMidpoint();
+        break;
+      case ol.geom.GeometryType.CIRCLE:
+        flatCoordinates = /** @type {ol.geom.Circle} */ (geometry).getCenter();
+        break;
+      case ol.geom.GeometryType.MULTI_LINE_STRING:
+        flatCoordinates = /** @type {ol.geom.MultiLineString} */ (geometry).getFlatMidpoints();
+        end = flatCoordinates.length;
+        break;
+      case ol.geom.GeometryType.POLYGON:
+        flatCoordinates = /** @type {ol.geom.Polygon} */ (geometry).getFlatInteriorPoint();
+        break;
+      case ol.geom.GeometryType.MULTI_POLYGON:
+        flatCoordinates = /** @type {ol.geom.MultiPolygon} */ (geometry).getFlatInteriorPoints();
+        end = flatCoordinates.length;
+        break;
+      default:
+    }
+    end = this.appendFlatCoordinates(flatCoordinates, 0, end, stride, false, false);
+    this.drawTextImage_(begin, end);
+  }
+
+  this.endGeometry(geometry, feature);
+};
+
+
+/**
+ * @private
+ * @param {string} text Text.
+ * @param {boolean} fill Fill.
+ * @param {boolean} stroke Stroke.
+ * @return {HTMLCanvasElement} Image.
+ */
+ol.render.canvas.TextReplay.prototype.getImage_ = function(text, fill, stroke) {
   var label;
-  var text = this.text_;
-  var key =
-    (stroke ?
-      (typeof strokeState.strokeStyle == 'string' ? strokeState.strokeStyle : ol.getUid(strokeState.strokeStyle)) +
-      strokeState.lineCap + strokeState.lineDashOffset + '|' + strokeWidth +
-      strokeState.lineJoin + strokeState.miterLimit +
-      '[' + strokeState.lineDash.join() + ']' : '') +
-    textState.font + textAlign + text +
-    (fill ?
-      (typeof fillState.fillStyle == 'string' ? fillState.fillStyle : ('|' + ol.getUid(fillState.fillStyle))) : '');
+  var key = (stroke ? this.strokeKey_ : '') + this.textKey_ + text + (fill ? this.fillKey_ : '');
 
   var lines = text.split('\n');
   var numLines = lines.length;
-
   if (!ol.render.canvas.TextReplay.labelCache_.containsKey(key)) {
-    label = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
-    ol.render.canvas.TextReplay.labelCache_.set(key, label);
-    var context = label.getContext('2d');
+    var strokeState = this.textStrokeState_;
+    var fillState = this.textFillState_;
+    var textState = this.textState_;
+    var pixelRatio = this.pixelRatio;
+    var align =  ol.render.replay.TEXT_ALIGN[textState.textAlign || ol.render.canvas.defaultTextAlign];
+    var strokeWidth = stroke && strokeState.lineWidth ? strokeState.lineWidth : 0;
+
     var widths = [];
-    var metrics = ol.render.canvas.TextReplay.measureText(textState.font, lines, widths);
-    var lineHeight = metrics[1] / numLines;
-    label.width = Math.ceil(metrics[0] + 2 * strokeWidth) * pixelRatio;
-    label.height = Math.ceil(metrics[1] + 2 * strokeWidth) * pixelRatio;
+    var width = ol.render.canvas.TextReplay.measureTextWidths(textState.font, lines, widths);
+    var lineHeight = ol.render.canvas.TextReplay.measureTextHeight(textState.font);
+    var height = lineHeight * numLines;
+    var renderWidth = (width + 2 * strokeWidth);
+    var context = ol.dom.createCanvasContext2D(
+        Math.ceil(renderWidth * pixelRatio),
+        Math.ceil((height + 2 * strokeWidth) * pixelRatio));
+    label = context.canvas;
+    ol.render.canvas.TextReplay.labelCache_.set(key, label);
     context.scale(pixelRatio, pixelRatio);
     context.font = textState.font;
     if (stroke) {
@@ -28068,39 +28450,101 @@ ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offse
       context.fillStyle = fillState.fillStyle;
     }
     context.textBaseline = 'top';
-    context.textAlign = 'left';
-    var x = align * label.width / pixelRatio + 2 * (0.5 - align) * strokeWidth;
+    context.textAlign = 'center';
+    var leftRight = (0.5 - align);
+    var x = align * label.width / pixelRatio + leftRight * 2 * strokeWidth;
     var i;
     if (stroke) {
       for (i = 0; i < numLines; ++i) {
-        context.strokeText(lines[i], x - align * widths[i], strokeWidth + i * lineHeight);
+        context.strokeText(lines[i], x + leftRight * widths[i], strokeWidth + i * lineHeight);
       }
     }
     if (fill) {
       for (i = 0; i < numLines; ++i) {
-        context.fillText(lines[i], x - align * widths[i], strokeWidth + i * lineHeight);
+        context.fillText(lines[i], x + leftRight * widths[i], strokeWidth + i * lineHeight);
       }
     }
   }
-  label = ol.render.canvas.TextReplay.labelCache_.get(key);
+  return ol.render.canvas.TextReplay.labelCache_.get(key);
+};
+
+
+/**
+ * @private
+ * @param {number} begin Begin.
+ * @param {number} end End.
+ */
+ol.render.canvas.TextReplay.prototype.drawTextImage_ = function(begin, end) {
+  var textState = this.textState_;
+  var strokeState = this.textStrokeState_;
+  var pixelRatio = this.pixelRatio;
+  var align = ol.render.replay.TEXT_ALIGN[textState.textAlign || ol.render.canvas.defaultTextAlign];
+  var baseline = ol.render.replay.TEXT_ALIGN[textState.textBaseline];
+  var strokeWidth = strokeState && strokeState.lineWidth ? strokeState.lineWidth : 0;
+
+  var label = this.getImage_(this.text_, !!this.textFillState_, !!this.textStrokeState_);
 
   var anchorX = align * label.width / pixelRatio + 2 * (0.5 - align) * strokeWidth;
   var anchorY = baseline * label.height / pixelRatio + 2 * (0.5 - baseline) * strokeWidth;
-
-  this.instructions.push([
-    ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, label,
-    (anchorX - this.textOffsetX_) * pixelRatio, (anchorY - this.textOffsetY_) * pixelRatio,
+  this.instructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, begin, end,
+    label, (anchorX - this.textOffsetX_) * pixelRatio, (anchorY - this.textOffsetY_) * pixelRatio,
     label.height, 1, 0, 0, this.textRotateWithView_, this.textRotation_,
     this.textScale_, true, label.width
   ]);
-  this.hitDetectionInstructions.push([
-    ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, label,
-    (anchorX - this.textOffsetX_) * pixelRatio, (anchorY - this.textOffsetY_) * pixelRatio,
+  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.DRAW_IMAGE, begin, end,
+    label, (anchorX - this.textOffsetX_) * pixelRatio, (anchorY - this.textOffsetY_) * pixelRatio,
     label.height, 1, 0, 0, this.textRotateWithView_, this.textRotation_,
     this.textScale_ / pixelRatio, true, label.width
   ]);
+};
 
-  this.endGeometry(geometry, feature);
+
+/**
+ * @private
+ * @param {number} begin Begin.
+ * @param {number} end End.
+ */
+ol.render.canvas.TextReplay.prototype.drawChars_ = function(begin, end) {
+  var pixelRatio = this.pixelRatio;
+  var strokeState = this.textStrokeState_;
+  var fill = !!this.textFillState_;
+  var stroke = !!strokeState;
+  var textState = this.textState_;
+  var baseline = ol.render.replay.TEXT_ALIGN[textState.textBaseline];
+  var strokeWidth = stroke && strokeState.lineWidth ? strokeState.lineWidth * pixelRatio : 0;
+
+  var labels = [];
+  var text = this.text_;
+  var numChars = this.text_.length;
+  var i;
+
+  if (stroke) {
+    for (i = 0; i < numChars; ++i) {
+      labels.push(this.getImage_(text.charAt(i), false, stroke));
+    }
+  }
+  if (fill) {
+    for (i = 0; i < numChars; ++i) {
+      labels.push(this.getImage_(text.charAt(i), fill, false));
+    }
+  }
+
+  var context = labels[0].getContext('2d');
+  var offsetY = this.textOffsetY_ * pixelRatio;
+  var align = ol.render.replay.TEXT_ALIGN[textState.textAlign || ol.render.canvas.defaultTextAlign];
+  var widths = {};
+  this.instructions.push([ol.render.canvas.Instruction.DRAW_CHARS,
+    begin, end, labels, baseline,
+    textState.exceedLength, textState.maxAngle,
+    ol.render.canvas.TextReplay.getTextWidth.bind(widths, context, pixelRatio),
+    offsetY, strokeWidth, this.text_, align, this.textScale_
+  ]);
+  this.hitDetectionInstructions.push([ol.render.canvas.Instruction.DRAW_CHARS,
+    begin, end, labels, baseline,
+    textState.exceedLength, textState.maxAngle,
+    ol.render.canvas.TextReplay.getTextWidth.bind(widths, context, 1),
+    offsetY, strokeWidth, this.text_, align, this.textScale_ / pixelRatio
+  ]);
 };
 
 
@@ -28108,28 +28552,26 @@ ol.render.canvas.TextReplay.prototype.drawText = function(flatCoordinates, offse
  * @inheritDoc
  */
 ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
+  var textState, fillState, strokeState;
   if (!textStyle) {
     this.text_ = '';
   } else {
     var textFillStyle = textStyle.getFill();
     if (!textFillStyle) {
-      this.textFillState_ = null;
+      fillState = this.textFillState_ = null;
     } else {
       var textFillStyleColor = textFillStyle.getColor();
       var fillStyle = ol.colorlike.asColorLike(textFillStyleColor ?
         textFillStyleColor : ol.render.canvas.defaultFillStyle);
-      if (!this.textFillState_) {
-        this.textFillState_ = {
-          fillStyle: fillStyle
-        };
-      } else {
-        var textFillState = this.textFillState_;
-        textFillState.fillStyle = fillStyle;
+      fillState = this.textFillState_;
+      if (!fillState) {
+        fillState = this.textFillState_ = /** @type {ol.CanvasFillState} */ ({});
       }
+      fillState.fillStyle = fillStyle;
     }
     var textStrokeStyle = textStyle.getStroke();
     if (!textStrokeStyle) {
-      this.textStrokeState_ = null;
+      strokeState = this.textStrokeState_ = null;
     } else {
       var textStrokeStyleColor = textStrokeStyle.getColor();
       var textStrokeStyleLineCap = textStrokeStyle.getLineCap();
@@ -28152,26 +28594,17 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
         textStrokeStyleMiterLimit : ol.render.canvas.defaultMiterLimit;
       var strokeStyle = ol.colorlike.asColorLike(textStrokeStyleColor ?
         textStrokeStyleColor : ol.render.canvas.defaultStrokeStyle);
-      if (!this.textStrokeState_) {
-        this.textStrokeState_ = {
-          lineCap: lineCap,
-          lineDash: lineDash,
-          lineDashOffset: lineDashOffset,
-          lineJoin: lineJoin,
-          lineWidth: lineWidth,
-          miterLimit: miterLimit,
-          strokeStyle: strokeStyle
-        };
-      } else {
-        var textStrokeState = this.textStrokeState_;
-        textStrokeState.lineCap = lineCap;
-        textStrokeState.lineDash = lineDash;
-        textStrokeState.lineDashOffset = lineDashOffset;
-        textStrokeState.lineJoin = lineJoin;
-        textStrokeState.lineWidth = lineWidth;
-        textStrokeState.miterLimit = miterLimit;
-        textStrokeState.strokeStyle = strokeStyle;
+      strokeState = this.textStrokeState_;
+      if (!strokeState) {
+        strokeState = this.textStrokeState_ = /** @type {ol.CanvasStrokeState} */ ({});
       }
+      strokeState.lineCap = lineCap;
+      strokeState.lineDash = lineDash;
+      strokeState.lineDashOffset = lineDashOffset;
+      strokeState.lineJoin = lineJoin;
+      strokeState.lineWidth = lineWidth;
+      strokeState.miterLimit = miterLimit;
+      strokeState.strokeStyle = strokeStyle;
     }
     var textFont = textStyle.getFont();
     var textOffsetX = textStyle.getOffsetX();
@@ -28184,28 +28617,36 @@ ol.render.canvas.TextReplay.prototype.setTextStyle = function(textStyle) {
     var textTextBaseline = textStyle.getTextBaseline();
     var font = textFont !== undefined ?
       textFont : ol.render.canvas.defaultFont;
-    var textAlign = textTextAlign !== undefined ?
-      textTextAlign : ol.render.canvas.defaultTextAlign;
+    var textAlign = textTextAlign;
     var textBaseline = textTextBaseline !== undefined ?
       textTextBaseline : ol.render.canvas.defaultTextBaseline;
-    if (!this.textState_) {
-      this.textState_ = {
-        font: font,
-        textAlign: textAlign,
-        textBaseline: textBaseline
-      };
-    } else {
-      var textState = this.textState_;
-      textState.font = font;
-      textState.textAlign = textAlign;
-      textState.textBaseline = textBaseline;
+    textState = this.textState_;
+    if (!textState) {
+      textState = this.textState_ = /** @type {ol.CanvasTextState} */ ({});
     }
+    textState.exceedLength = textStyle.getExceedLength();
+    textState.font = font;
+    textState.maxAngle = textStyle.getMaxAngle();
+    textState.placement = textStyle.getPlacement();
+    textState.textAlign = textAlign;
+    textState.textBaseline = textBaseline;
+
     this.text_ = textText !== undefined ? textText : '';
     this.textOffsetX_ = textOffsetX !== undefined ? textOffsetX : 0;
     this.textOffsetY_ = textOffsetY !== undefined ? textOffsetY : 0;
     this.textRotateWithView_ = textRotateWithView !== undefined ? textRotateWithView : false;
     this.textRotation_ = textRotation !== undefined ? textRotation : 0;
     this.textScale_ = textScale !== undefined ? textScale : 1;
+
+    this.strokeKey_ = strokeState ?
+      (typeof strokeState.strokeStyle == 'string' ? strokeState.strokeStyle : ol.getUid(strokeState.strokeStyle)) +
+      strokeState.lineCap + strokeState.lineDashOffset + '|' + strokeState.lineWidth +
+      strokeState.lineJoin + strokeState.miterLimit + '[' + strokeState.lineDash.join() + ']' :
+      '';
+    this.textKey_ = textState.font + textState.textAlign;
+    this.fillKey_ = fillState ?
+      (typeof fillState.fillStyle == 'string' ? fillState.fillStyle : ('|' + ol.getUid(fillState.fillStyle))) :
+      '';
   }
 };
 
@@ -28689,7 +29130,7 @@ ol.renderer.vector.renderCircleGeometry_ = function(replayGroup, geometry, style
     var textReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.TEXT);
     textReplay.setTextStyle(textStyle);
-    textReplay.drawText(geometry.getCenter(), 0, 2, 2, geometry, feature);
+    textReplay.drawText(geometry, feature);
   }
 };
 
@@ -28812,7 +29253,7 @@ ol.renderer.vector.renderLineStringGeometry_ = function(replayGroup, geometry, s
     var textReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.TEXT);
     textReplay.setTextStyle(textStyle);
-    textReplay.drawText(geometry.getFlatMidpoint(), 0, 2, 2, geometry, feature);
+    textReplay.drawText(geometry, feature);
   }
 };
 
@@ -28837,9 +29278,7 @@ ol.renderer.vector.renderMultiLineStringGeometry_ = function(replayGroup, geomet
     var textReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.TEXT);
     textReplay.setTextStyle(textStyle);
-    var flatMidpointCoordinates = geometry.getFlatMidpoints();
-    textReplay.drawText(flatMidpointCoordinates, 0,
-        flatMidpointCoordinates.length, 2, geometry, feature);
+    textReplay.drawText(geometry, feature);
   }
 };
 
@@ -28865,9 +29304,7 @@ ol.renderer.vector.renderMultiPolygonGeometry_ = function(replayGroup, geometry,
     var textReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.TEXT);
     textReplay.setTextStyle(textStyle);
-    var flatInteriorPointCoordinates = geometry.getFlatInteriorPoints();
-    textReplay.drawText(flatInteriorPointCoordinates, 0,
-        flatInteriorPointCoordinates.length, 2, geometry, feature);
+    textReplay.drawText(geometry, feature);
   }
 };
 
@@ -28895,8 +29332,7 @@ ol.renderer.vector.renderPointGeometry_ = function(replayGroup, geometry, style,
     var textReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.TEXT);
     textReplay.setTextStyle(textStyle);
-    textReplay.drawText(geometry.getFlatCoordinates(), 0, 2, 2, geometry,
-        feature);
+    textReplay.drawText(geometry, feature);
   }
 };
 
@@ -28924,9 +29360,7 @@ ol.renderer.vector.renderMultiPointGeometry_ = function(replayGroup, geometry, s
     var textReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.TEXT);
     textReplay.setTextStyle(textStyle);
-    var flatCoordinates = geometry.getFlatCoordinates();
-    textReplay.drawText(flatCoordinates, 0, flatCoordinates.length,
-        geometry.getStride(), geometry, feature);
+    textReplay.drawText(geometry, feature);
   }
 };
 
@@ -28952,8 +29386,7 @@ ol.renderer.vector.renderPolygonGeometry_ = function(replayGroup, geometry, styl
     var textReplay = replayGroup.getReplay(
         style.getZIndex(), ol.render.ReplayType.TEXT);
     textReplay.setTextStyle(textStyle);
-    textReplay.drawText(
-        geometry.getFlatInteriorPoint(), 0, 2, 2, geometry, feature);
+    textReplay.drawText(geometry, feature);
   }
 };
 
@@ -35739,48 +36172,6 @@ ol.geom.flat.interpolate.lineStringsCoordinateAtM = function(
     offset = end;
   }
   return null;
-};
-
-goog.provide('ol.geom.flat.length');
-
-
-/**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
- * @return {number} Length.
- */
-ol.geom.flat.length.lineString = function(flatCoordinates, offset, end, stride) {
-  var x1 = flatCoordinates[offset];
-  var y1 = flatCoordinates[offset + 1];
-  var length = 0;
-  var i;
-  for (i = offset + stride; i < end; i += stride) {
-    var x2 = flatCoordinates[i];
-    var y2 = flatCoordinates[i + 1];
-    length += Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-    x1 = x2;
-    y1 = y2;
-  }
-  return length;
-};
-
-
-/**
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
- * @return {number} Perimeter.
- */
-ol.geom.flat.length.linearRing = function(flatCoordinates, offset, end, stride) {
-  var perimeter =
-      ol.geom.flat.length.lineString(flatCoordinates, offset, end, stride);
-  var dx = flatCoordinates[end - stride] - flatCoordinates[offset];
-  var dy = flatCoordinates[end - stride + 1] - flatCoordinates[offset + 1];
-  perimeter += Math.sqrt(dx * dx + dy * dy);
-  return perimeter;
 };
 
 goog.provide('ol.geom.LineString');
@@ -44412,24 +44803,11 @@ ol.inherits(ol.style.Icon, ol.style.Image);
 
 
 /**
- * Clones the style.
+ * Clones the style. The underlying Image/HTMLCanvasElement is not cloned.
  * @return {ol.style.Icon} The cloned style.
  * @api
  */
 ol.style.Icon.prototype.clone = function() {
-  var oldImage = this.getImage(1);
-  var newImage;
-  if (this.iconImage_.getImageState() === ol.ImageState.LOADED) {
-    if (oldImage.tagName.toUpperCase() === 'IMG') {
-      newImage = /** @type {Image} */ (oldImage.cloneNode(true));
-    } else {
-      newImage = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
-      var context = newImage.getContext('2d');
-      newImage.width = oldImage.width;
-      newImage.height = oldImage.height;
-      context.drawImage(oldImage, 0, 0);
-    }
-  }
   return new ol.style.Icon({
     anchor: this.anchor_.slice(),
     anchorOrigin: this.anchorOrigin_,
@@ -44437,9 +44815,7 @@ ol.style.Icon.prototype.clone = function() {
     anchorYUnits: this.anchorYUnits_,
     crossOrigin: this.crossOrigin_,
     color: (this.color_ && this.color_.slice) ? this.color_.slice() : this.color_ || undefined,
-    img: newImage ? newImage : undefined,
-    imgSize: newImage ? this.iconImage_.getSize().slice() : undefined,
-    src: newImage ? undefined : this.getSrc(),
+    src: this.getSrc(),
     offset: this.offset_.slice(),
     offsetOrigin: this.offsetOrigin_,
     size: this.size_ !== null ? this.size_.slice() : undefined,
@@ -44635,6 +45011,7 @@ goog.provide('ol.style.Text');
 
 
 goog.require('ol.style.Fill');
+goog.require('ol.style.TextPlacement');
 
 
 /**
@@ -44700,6 +45077,24 @@ ol.style.Text = function(opt_options) {
 
   /**
    * @private
+   * @type {number}
+   */
+  this.maxAngle_ = options.maxAngle !== undefined ? options.maxAngle : Math.PI / 4;
+
+  /**
+   * @private
+   * @type {ol.style.TextPlacement|string}
+   */
+  this.placement_ = options.placement !== undefined ? options.placement : ol.style.TextPlacement.POINT;
+
+  /**
+   * @private
+   * @type {boolean}
+   */
+  this.exceedLength_ = options.exceedLength !== undefined ? options.exceedLength : false;
+
+  /**
+   * @private
    * @type {ol.style.Stroke}
    */
   this.stroke_ = options.stroke !== undefined ? options.stroke : null;
@@ -44736,6 +45131,9 @@ ol.style.Text.DEFAULT_FILL_COLOR_ = '#333';
 ol.style.Text.prototype.clone = function() {
   return new ol.style.Text({
     font: this.getFont(),
+    placement: this.getPlacement(),
+    maxAngle: this.getMaxAngle(),
+    exceedLength: this.getExceedLength(),
     rotation: this.getRotation(),
     rotateWithView: this.getRotateWithView(),
     scale: this.getScale(),
@@ -44751,12 +45149,42 @@ ol.style.Text.prototype.clone = function() {
 
 
 /**
+ * Get the `exceedLength` configuration.
+ * @return {boolean} Let text exceed the length of the path they follow.
+ * @api
+ */
+ol.style.Text.prototype.getExceedLength = function() {
+  return this.exceedLength_;
+};
+
+
+/**
  * Get the font name.
  * @return {string|undefined} Font.
  * @api
  */
 ol.style.Text.prototype.getFont = function() {
   return this.font_;
+};
+
+
+/**
+ * Get the maximum angle between adjacent characters.
+ * @return {number} Angle in radians.
+ * @api
+ */
+ol.style.Text.prototype.getMaxAngle = function() {
+  return this.maxAngle_;
+};
+
+
+/**
+ * Get the label placement.
+ * @return {ol.style.TextPlacement|string} Text placement.
+ * @api
+ */
+ol.style.Text.prototype.getPlacement = function() {
+  return this.placement_;
 };
 
 
@@ -44861,6 +45289,17 @@ ol.style.Text.prototype.getTextBaseline = function() {
 
 
 /**
+ * Set the `exceedLength` property.
+ *
+ * @param {boolean} exceedLength Let text exceed the path that it follows.
+ * @api
+ */
+ol.style.Text.prototype.setExceedLength = function(exceedLength) {
+  this.exceedLength_ = exceedLength;
+};
+
+
+/**
  * Set the font.
  *
  * @param {string|undefined} font Font.
@@ -44868,6 +45307,17 @@ ol.style.Text.prototype.getTextBaseline = function() {
  */
 ol.style.Text.prototype.setFont = function(font) {
   this.font_ = font;
+};
+
+
+/**
+ * Set the maximum angle between adjacent characters.
+ *
+ * @param {number} maxAngle Angle in radians.
+ * @api
+ */
+ol.style.Text.prototype.setMaxAngle = function(maxAngle) {
+  this.maxAngle_ = maxAngle;
 };
 
 
@@ -44890,6 +45340,17 @@ ol.style.Text.prototype.setOffsetX = function(offsetX) {
  */
 ol.style.Text.prototype.setOffsetY = function(offsetY) {
   this.offsetY_ = offsetY;
+};
+
+
+/**
+ * Set the text placement.
+ *
+ * @param {ol.style.TextPlacement|string} placement Placement.
+ * @api
+ */
+ol.style.Text.prototype.setPlacement = function(placement) {
+  this.placement_ = placement;
 };
 
 
@@ -68445,6 +68906,7 @@ goog.provide('ol.render.webgl.TextReplay');
 goog.require('ol');
 goog.require('ol.colorlike');
 goog.require('ol.dom');
+goog.require('ol.geom.GeometryType');
 goog.require('ol.has');
 goog.require('ol.render.replay');
 goog.require('ol.render.webgl');
@@ -68560,9 +69022,38 @@ ol.inherits(ol.render.webgl.TextReplay, ol.render.webgl.TextureReplay);
 /**
  * @inheritDoc
  */
-ol.render.webgl.TextReplay.prototype.drawText = function(flatCoordinates, offset,
-    end, stride, geometry, feature) {
+ol.render.webgl.TextReplay.prototype.drawText = function(geometry, feature) {
   if (this.text_) {
+    var flatCoordinates = null;
+    var offset = 0;
+    var end = 2;
+    var stride = 2;
+    switch (geometry.getType()) {
+      case ol.geom.GeometryType.POINT:
+      case ol.geom.GeometryType.MULTI_POINT:
+        flatCoordinates = geometry.getFlatCoordinates();
+        end = flatCoordinates.length;
+        stride = geometry.getStride();
+        break;
+      case ol.geom.GeometryType.CIRCLE:
+        flatCoordinates = /** @type {ol.geom.Circle} */ (geometry).getCenter();
+        break;
+      case ol.geom.GeometryType.LINE_STRING:
+        flatCoordinates = /** @type {ol.geom.LineString} */ (geometry).getFlatMidpoint();
+        break;
+      case ol.geom.GeometryType.MULTI_LINE_STRING:
+        flatCoordinates = /** @type {ol.geom.MultiLineString} */ (geometry).getFlatMidpoints();
+        end = flatCoordinates.length;
+        break;
+      case ol.geom.GeometryType.POLYGON:
+        flatCoordinates = /** @type {ol.geom.Polygon} */ (geometry).getFlatInteriorPoint();
+        break;
+      case ol.geom.GeometryType.MULTI_POLYGON:
+        flatCoordinates = /** @type {ol.geom.MultiPolygon} */ (geometry).getFlatInteriorPoints();
+        end = flatCoordinates.length;
+        break;
+      default:
+    }
     this.startIndices.push(this.indices.length);
     this.startIndicesFeature.push(feature);
 
@@ -69286,19 +69777,15 @@ ol.inherits(ol.render.webgl.Immediate, ol.render.VectorContext);
 
 /**
  * @param {ol.render.webgl.ReplayGroup} replayGroup Replay group.
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {number} offset Offset.
- * @param {number} end End.
- * @param {number} stride Stride.
+ * @param {ol.geom.Geometry|ol.render.Feature} geometry Geometry.
  * @private
  */
-ol.render.webgl.Immediate.prototype.drawText_ = function(replayGroup,
-    flatCoordinates, offset, end, stride) {
+ol.render.webgl.Immediate.prototype.drawText_ = function(replayGroup, geometry) {
   var context = this.context_;
   var replay = /** @type {ol.render.webgl.TextReplay} */ (
     replayGroup.getReplay(0, ol.render.ReplayType.TEXT));
   replay.setTextStyle(this.textStyle_);
-  replay.drawText(flatCoordinates, offset, end, stride, null, null);
+  replay.drawText(geometry, null);
   replay.finish(context);
   // default colors
   var opacity = 1;
@@ -69417,9 +69904,7 @@ ol.render.webgl.Immediate.prototype.drawPoint = function(geometry, data) {
   replay.getDeleteResourcesFunction(context)();
 
   if (this.textStyle_) {
-    var flatCoordinates = geometry.getFlatCoordinates();
-    var stride = geometry.getStride();
-    this.drawText_(replayGroup, flatCoordinates, 0, flatCoordinates.length, stride);
+    this.drawText_(replayGroup, geometry);
   }
 };
 
@@ -69445,9 +69930,7 @@ ol.render.webgl.Immediate.prototype.drawMultiPoint = function(geometry, data) {
   replay.getDeleteResourcesFunction(context)();
 
   if (this.textStyle_) {
-    var flatCoordinates = geometry.getFlatCoordinates();
-    var stride = geometry.getStride();
-    this.drawText_(replayGroup, flatCoordinates, 0, flatCoordinates.length, stride);
+    this.drawText_(replayGroup, geometry);
   }
 };
 
@@ -69473,8 +69956,7 @@ ol.render.webgl.Immediate.prototype.drawLineString = function(geometry, data) {
   replay.getDeleteResourcesFunction(context)();
 
   if (this.textStyle_) {
-    var flatMidpoint = geometry.getFlatMidpoint();
-    this.drawText_(replayGroup, flatMidpoint, 0, 2, 2);
+    this.drawText_(replayGroup, geometry);
   }
 };
 
@@ -69500,8 +69982,7 @@ ol.render.webgl.Immediate.prototype.drawMultiLineString = function(geometry, dat
   replay.getDeleteResourcesFunction(context)();
 
   if (this.textStyle_) {
-    var flatMidpoints = geometry.getFlatMidpoints();
-    this.drawText_(replayGroup, flatMidpoints, 0, flatMidpoints.length, 2);
+    this.drawText_(replayGroup, geometry);
   }
 };
 
@@ -69527,8 +70008,7 @@ ol.render.webgl.Immediate.prototype.drawPolygon = function(geometry, data) {
   replay.getDeleteResourcesFunction(context)();
 
   if (this.textStyle_) {
-    var flatInteriorPoint = geometry.getFlatInteriorPoint();
-    this.drawText_(replayGroup, flatInteriorPoint, 0, 2, 2);
+    this.drawText_(replayGroup, geometry);
   }
 };
 
@@ -69554,8 +70034,7 @@ ol.render.webgl.Immediate.prototype.drawMultiPolygon = function(geometry, data) 
   replay.getDeleteResourcesFunction(context)();
 
   if (this.textStyle_) {
-    var flatInteriorPoints = geometry.getFlatInteriorPoints();
-    this.drawText_(replayGroup, flatInteriorPoints, 0, flatInteriorPoints.length, 2);
+    this.drawText_(replayGroup, geometry);
   }
 };
 
@@ -69581,7 +70060,7 @@ ol.render.webgl.Immediate.prototype.drawCircle = function(geometry, data) {
   replay.getDeleteResourcesFunction(context)();
 
   if (this.textStyle_) {
-    this.drawText_(replayGroup, geometry.getCenter(), 0, 2, 2);
+    this.drawText_(replayGroup, geometry);
   }
 };
 
@@ -78887,17 +79366,23 @@ ol.VectorImageTile.prototype.load = function() {
  */
 ol.VectorImageTile.prototype.finishLoading_ = function() {
   var loaded = this.tileKeys.length;
+  var empty = 0;
   for (var i = loaded - 1; i >= 0; --i) {
     var state = this.getTile(this.tileKeys[i]).getState();
     if (state != ol.TileState.LOADED) {
       --loaded;
     }
+    if (state == ol.TileState.EMPTY) {
+      ++empty;
+    }
   }
   if (loaded == this.tileKeys.length) {
     this.loadListenerKeys_.forEach(ol.events.unlistenByKey);
     this.loadListenerKeys_.length = 0;
+    this.setState(ol.TileState.LOADED);
+  } else {
+    this.setState(empty == this.tileKeys.length ? ol.TileState.EMPTY : ol.TileState.ERROR);
   }
-  this.setState(loaded > 0 ? ol.TileState.LOADED : ol.TileState.EMPTY);
 };
 
 
@@ -82435,8 +82920,23 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.style.Text.prototype,
+    'getExceedLength',
+    ol.style.Text.prototype.getExceedLength);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
     'getFont',
     ol.style.Text.prototype.getFont);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
+    'getMaxAngle',
+    ol.style.Text.prototype.getMaxAngle);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
+    'getPlacement',
+    ol.style.Text.prototype.getPlacement);
 
 goog.exportProperty(
     ol.style.Text.prototype,
@@ -82490,8 +82990,18 @@ goog.exportProperty(
 
 goog.exportProperty(
     ol.style.Text.prototype,
+    'setExceedLength',
+    ol.style.Text.prototype.setExceedLength);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
     'setFont',
     ol.style.Text.prototype.setFont);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
+    'setMaxAngle',
+    ol.style.Text.prototype.setMaxAngle);
 
 goog.exportProperty(
     ol.style.Text.prototype,
@@ -82502,6 +83012,11 @@ goog.exportProperty(
     ol.style.Text.prototype,
     'setOffsetY',
     ol.style.Text.prototype.setOffsetY);
+
+goog.exportProperty(
+    ol.style.Text.prototype,
+    'setPlacement',
+    ol.style.Text.prototype.setPlacement);
 
 goog.exportProperty(
     ol.style.Text.prototype,
@@ -94587,7 +95102,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.3.2-188-gb03bb2c';
+ol.VERSION = 'v4.3.2-214-gb920b78';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

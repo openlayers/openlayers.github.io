@@ -113,6 +113,8 @@ goog.addDependency('../../../ol/ol/geom/flat/orient.js', ['ol.geom.flat.orient']
 goog.addDependency('../../../ol/ol/geom/flat/reverse.js', ['ol.geom.flat.reverse'], [], false);
 goog.addDependency('../../../ol/ol/geom/flat/segments.js', ['ol.geom.flat.segments'], [], false);
 goog.addDependency('../../../ol/ol/geom/flat/simplify.js', ['ol.geom.flat.simplify'], ['ol.math'], false);
+goog.addDependency('../../../ol/ol/geom/flat/straightchunk.js', ['ol.geom.flat.straightchunk'], [], false);
+goog.addDependency('../../../ol/ol/geom/flat/textpath.js', ['ol.geom.flat.textpath'], ['ol.math'], false);
 goog.addDependency('../../../ol/ol/geom/flat/topology.js', ['ol.geom.flat.topology'], ['ol.geom.flat.area'], false);
 goog.addDependency('../../../ol/ol/geom/flat/transform.js', ['ol.geom.flat.transform'], [], false);
 goog.addDependency('../../../ol/ol/geom/geometry.js', ['ol.geom.Geometry'], ['ol', 'ol.Object', 'ol.extent', 'ol.functions', 'ol.geom.flat.transform', 'ol.proj', 'ol.proj.Units', 'ol.transform'], false);
@@ -219,9 +221,9 @@ goog.addDependency('../../../ol/ol/render/canvas/immediate.js', ['ol.render.canv
 goog.addDependency('../../../ol/ol/render/canvas/instruction.js', ['ol.render.canvas.Instruction'], [], false);
 goog.addDependency('../../../ol/ol/render/canvas/linestringreplay.js', ['ol.render.canvas.LineStringReplay'], ['ol', 'ol.array', 'ol.colorlike', 'ol.extent', 'ol.render.canvas', 'ol.render.canvas.Instruction', 'ol.render.canvas.Replay'], false);
 goog.addDependency('../../../ol/ol/render/canvas/polygonreplay.js', ['ol.render.canvas.PolygonReplay'], ['ol', 'ol.array', 'ol.color', 'ol.colorlike', 'ol.extent', 'ol.geom.flat.simplify', 'ol.render.canvas', 'ol.render.canvas.Instruction', 'ol.render.canvas.Replay'], false);
-goog.addDependency('../../../ol/ol/render/canvas/replay.js', ['ol.render.canvas.Replay'], ['ol', 'ol.array', 'ol.extent', 'ol.extent.Relationship', 'ol.geom.GeometryType', 'ol.geom.flat.inflate', 'ol.geom.flat.transform', 'ol.has', 'ol.obj', 'ol.render.VectorContext', 'ol.render.canvas.Instruction', 'ol.transform'], false);
+goog.addDependency('../../../ol/ol/render/canvas/replay.js', ['ol.render.canvas.Replay'], ['ol', 'ol.array', 'ol.extent', 'ol.extent.Relationship', 'ol.geom.GeometryType', 'ol.geom.flat.inflate', 'ol.geom.flat.length', 'ol.geom.flat.textpath', 'ol.geom.flat.transform', 'ol.has', 'ol.obj', 'ol.render.VectorContext', 'ol.render.canvas.Instruction', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/render/canvas/replaygroup.js', ['ol.render.canvas.ReplayGroup'], ['ol', 'ol.array', 'ol.dom', 'ol.extent', 'ol.geom.flat.transform', 'ol.obj', 'ol.render.ReplayGroup', 'ol.render.canvas.ImageReplay', 'ol.render.canvas.LineStringReplay', 'ol.render.canvas.PolygonReplay', 'ol.render.canvas.Replay', 'ol.render.canvas.TextReplay', 'ol.render.replay', 'ol.transform'], false);
-goog.addDependency('../../../ol/ol/render/canvas/textreplay.js', ['ol.render.canvas.TextReplay'], ['ol', 'ol.colorlike', 'ol.has', 'ol.render.canvas', 'ol.render.canvas.Instruction', 'ol.render.canvas.Replay', 'ol.render.replay', 'ol.structs.LRUCache'], false);
+goog.addDependency('../../../ol/ol/render/canvas/textreplay.js', ['ol.render.canvas.TextReplay'], ['ol', 'ol.colorlike', 'ol.dom', 'ol.geom.GeometryType', 'ol.geom.flat.straightchunk', 'ol.has', 'ol.render.canvas', 'ol.render.canvas.Instruction', 'ol.render.canvas.Replay', 'ol.render.replay', 'ol.structs.LRUCache', 'ol.style.TextPlacement'], false);
 goog.addDependency('../../../ol/ol/render/event.js', ['ol.render.Event'], ['ol', 'ol.events.Event'], false);
 goog.addDependency('../../../ol/ol/render/eventtype.js', ['ol.render.EventType'], [], false);
 goog.addDependency('../../../ol/ol/render/feature.js', ['ol.render.Feature'], ['ol', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.flat.transform', 'ol.transform'], false);
@@ -243,7 +245,7 @@ goog.addDependency('../../../ol/ol/render/webgl/polygonreplay/defaultshader.js',
 goog.addDependency('../../../ol/ol/render/webgl/polygonreplay/defaultshader/locations.js', ['ol.render.webgl.polygonreplay.defaultshader.Locations'], ['ol'], false);
 goog.addDependency('../../../ol/ol/render/webgl/replay.js', ['ol.render.webgl.Replay'], ['ol', 'ol.extent', 'ol.render.VectorContext', 'ol.transform', 'ol.vec.Mat4', 'ol.webgl'], false);
 goog.addDependency('../../../ol/ol/render/webgl/replaygroup.js', ['ol.render.webgl.ReplayGroup'], ['ol', 'ol.array', 'ol.extent', 'ol.obj', 'ol.render.ReplayGroup', 'ol.render.replay', 'ol.render.webgl.CircleReplay', 'ol.render.webgl.ImageReplay', 'ol.render.webgl.LineStringReplay', 'ol.render.webgl.PolygonReplay', 'ol.render.webgl.TextReplay'], false);
-goog.addDependency('../../../ol/ol/render/webgl/textreplay.js', ['ol.render.webgl.TextReplay'], ['ol', 'ol.colorlike', 'ol.dom', 'ol.has', 'ol.render.replay', 'ol.render.webgl', 'ol.render.webgl.TextureReplay', 'ol.style.AtlasManager', 'ol.webgl.Buffer'], false);
+goog.addDependency('../../../ol/ol/render/webgl/textreplay.js', ['ol.render.webgl.TextReplay'], ['ol', 'ol.colorlike', 'ol.dom', 'ol.geom.GeometryType', 'ol.has', 'ol.render.replay', 'ol.render.webgl', 'ol.render.webgl.TextureReplay', 'ol.style.AtlasManager', 'ol.webgl.Buffer'], false);
 goog.addDependency('../../../ol/ol/render/webgl/texturereplay.js', ['ol.render.webgl.TextureReplay'], ['ol', 'ol.extent', 'ol.obj', 'ol.render.webgl.Replay', 'ol.render.webgl.texturereplay.defaultshader', 'ol.render.webgl.texturereplay.defaultshader.Locations', 'ol.webgl', 'ol.webgl.Context'], false);
 goog.addDependency('../../../ol/ol/render/webgl/texturereplay/defaultshader.js', ['ol.render.webgl.texturereplay.defaultshader'], ['ol', 'ol.webgl.Fragment', 'ol.webgl.Vertex'], false);
 goog.addDependency('../../../ol/ol/render/webgl/texturereplay/defaultshader/locations.js', ['ol.render.webgl.texturereplay.defaultshader.Locations'], ['ol'], false);
@@ -327,7 +329,8 @@ goog.addDependency('../../../ol/ol/style/image.js', ['ol.style.Image'], [], fals
 goog.addDependency('../../../ol/ol/style/regularshape.js', ['ol.style.RegularShape'], ['ol', 'ol.ImageState', 'ol.colorlike', 'ol.dom', 'ol.has', 'ol.render.canvas', 'ol.style.Image'], false);
 goog.addDependency('../../../ol/ol/style/stroke.js', ['ol.style.Stroke'], ['ol'], false);
 goog.addDependency('../../../ol/ol/style/style.js', ['ol.style.Style'], ['ol.asserts', 'ol.geom.GeometryType', 'ol.style.Circle', 'ol.style.Fill', 'ol.style.Stroke'], false);
-goog.addDependency('../../../ol/ol/style/text.js', ['ol.style.Text'], ['ol.style.Fill'], false);
+goog.addDependency('../../../ol/ol/style/text.js', ['ol.style.Text'], ['ol.style.Fill', 'ol.style.TextPlacement'], false);
+goog.addDependency('../../../ol/ol/style/textplacement.js', ['ol.style.TextPlacement'], [], false);
 goog.addDependency('../../../ol/ol/tile.js', ['ol.Tile'], ['ol', 'ol.TileState', 'ol.events.EventTarget', 'ol.events.EventType'], false);
 goog.addDependency('../../../ol/ol/tilecache.js', ['ol.TileCache'], ['ol', 'ol.structs.LRUCache'], false);
 goog.addDependency('../../../ol/ol/tilecoord.js', ['ol.tilecoord'], [], false);

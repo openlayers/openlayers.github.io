@@ -115,6 +115,25 @@
       <option value="normal" selected="selected">Normal</option>
     </select>
     <br />
+    <label>Placement: </label>
+    <select disabled id="points-placement">
+      <option value="line">Line</option>
+      <option value="point" selected="selected">Point</option>
+    </select>
+    <br />
+    <label>Max Angle: </label>
+    <select disabled id="points-maxangle">
+      <option value="0.7853981633974483" selected="selected">45°</option>
+      <option value="2.0943951023931953">120°</option>
+      <option value="6.283185307179586">360°</option>
+    </select>
+    <br />
+    <label>Exceed Len: </label>
+    <select disabled id="points-exceedlength">
+      <option value="true">True</option>
+      <option value="false" selected="selected">False</option>
+    </select>
+    <br />
     <label>Size: </label>
     <input type="text" value="12px" id="points-size" />
     <br />
@@ -166,7 +185,8 @@
     <br />
     <label>Align: </label>
     <select id="lines-align">
-      <option value="center" selected="selected">Center</option>
+      <option value="" selected="selected"></option>
+      <option value="center">Center</option>
       <option value="end">End</option>
       <option value="left">Left</option>
       <option value="right">Right</option>
@@ -202,6 +222,25 @@
     <select id="lines-weight">
       <option value="bold" selected="selected">Bold</option>
       <option value="normal">Normal</option>
+    </select>
+    <br />
+    <label>Placement: </label>
+    <select id="lines-placement">
+      <option value="line">Line</option>
+      <option value="point" selected="selected">Point</option>
+    </select>
+    <br />
+    <label>Max Angle: </label>
+    <select id="lines-maxangle">
+      <option value="0.7853981633974483" selected="selected">45°</option>
+      <option value="2.0943951023931953">120°</option>
+      <option value="6.283185307179586">360°</option>
+    </select>
+    <br />
+    <label>Exceed Len: </label>
+    <select id="lines-exceedlength">
+      <option value="true">True</option>
+      <option value="false" selected="selected">False</option>
     </select>
     <br />
     <label>Size: </label>
@@ -255,7 +294,8 @@
     <br />
     <label>Align: </label>
     <select id="polygons-align">
-      <option value="center" selected="selected">Center</option>
+      <option value="" selected="selected"></option>
+      <option value="center">Center</option>
       <option value="end">End</option>
       <option value="left">Left</option>
       <option value="right">Right</option>
@@ -291,6 +331,25 @@
     <select id="polygons-weight">
       <option value="bold" selected="selected">Bold</option>
       <option value="normal">Normal</option>
+    </select>
+    <br />
+    <label>Placement: </label>
+    <select id="polygons-placement">
+      <option value="line">Line</option>
+      <option value="point" selected="selected">Point</option>
+    </select>
+    <br />
+    <label>Max Angle: </label>
+    <select id="polygons-maxangle">
+      <option value="0.7853981633974483" selected="selected">45°</option>
+      <option value="2.0943951023931953">120°</option>
+      <option value="6.283185307179586">360°</option>
+    </select>
+    <br />
+    <label>Exceed Len: </label>
+    <select id="polygons-exceedlength">
+      <option value="true">True</option>
+      <option value="false" selected="selected">False</option>
     </select>
     <br />
     <label>Size: </label>
@@ -357,6 +416,9 @@
     rotation: document.getElementById(&#x27;lines-rotation&#x27;),
     font: document.getElementById(&#x27;lines-font&#x27;),
     weight: document.getElementById(&#x27;lines-weight&#x27;),
+    placement: document.getElementById(&#x27;lines-placement&#x27;),
+    maxangle: document.getElementById(&#x27;lines-maxangle&#x27;),
+    exceedlength: document.getElementById(&#x27;lines-exceedlength&#x27;),
     size: document.getElementById(&#x27;lines-size&#x27;),
     offsetX: document.getElementById(&#x27;lines-offset-x&#x27;),
     offsetY: document.getElementById(&#x27;lines-offset-y&#x27;),
@@ -372,6 +434,9 @@
     rotation: document.getElementById(&#x27;polygons-rotation&#x27;),
     font: document.getElementById(&#x27;polygons-font&#x27;),
     weight: document.getElementById(&#x27;polygons-weight&#x27;),
+    placement: document.getElementById(&#x27;polygons-placement&#x27;),
+    maxangle: document.getElementById(&#x27;polygons-maxangle&#x27;),
+    exceedlength: document.getElementById(&#x27;polygons-exceedlength&#x27;),
     size: document.getElementById(&#x27;polygons-size&#x27;),
     offsetX: document.getElementById(&#x27;polygons-offset-x&#x27;),
     offsetY: document.getElementById(&#x27;polygons-offset-y&#x27;),
@@ -408,6 +473,9 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
   var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
   var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
   var weight &#x3D; dom.weight.value;
+  var placement &#x3D; dom.placement ? dom.placement.value : undefined;
+  var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+  var exceedLength &#x3D; dom.exceedlength ? (dom.exceedlength.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
   var rotation &#x3D; parseFloat(dom.rotation.value);
   var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
   var fillColor &#x3D; dom.color.value;
@@ -415,7 +483,7 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
   var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
 
   return new ol.style.Text({
-    textAlign: align,
+    textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
     textBaseline: baseline,
     font: font,
     text: getText(feature, resolution, dom),
@@ -423,6 +491,9 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
     stroke: new ol.style.Stroke({color: outlineColor, width: outlineWidth}),
     offsetX: offsetX,
     offsetY: offsetY,
+    placement: placement,
+    maxAngle: maxAngle,
+    exceedLength: exceedLength,
     rotation: rotation
   });
 };
@@ -671,6 +742,25 @@ function stringDivider(str, width, spaceReplacer) {
       &lt;option value&#x3D;&quot;normal&quot; selected&#x3D;&quot;selected&quot;&gt;Normal&lt;/option&gt;
     &lt;/select&gt;
     &lt;br /&gt;
+    &lt;label&gt;Placement: &lt;/label&gt;
+    &lt;select disabled id&#x3D;&quot;points-placement&quot;&gt;
+      &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
+      &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Max Angle: &lt;/label&gt;
+    &lt;select disabled id&#x3D;&quot;points-maxangle&quot;&gt;
+      &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
+      &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
+      &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Exceed Len: &lt;/label&gt;
+    &lt;select disabled id&#x3D;&quot;points-exceedlength&quot;&gt;
+      &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
+      &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
     &lt;label&gt;Size: &lt;/label&gt;
     &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;12px&quot; id&#x3D;&quot;points-size&quot; /&gt;
     &lt;br /&gt;
@@ -722,7 +812,8 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;br /&gt;
     &lt;label&gt;Align: &lt;/label&gt;
     &lt;select id&#x3D;&quot;lines-align&quot;&gt;
-      &lt;option value&#x3D;&quot;center&quot; selected&#x3D;&quot;selected&quot;&gt;Center&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&quot; selected&#x3D;&quot;selected&quot;&gt;&lt;/option&gt;
+      &lt;option value&#x3D;&quot;center&quot;&gt;Center&lt;/option&gt;
       &lt;option value&#x3D;&quot;end&quot;&gt;End&lt;/option&gt;
       &lt;option value&#x3D;&quot;left&quot;&gt;Left&lt;/option&gt;
       &lt;option value&#x3D;&quot;right&quot;&gt;Right&lt;/option&gt;
@@ -758,6 +849,25 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;select id&#x3D;&quot;lines-weight&quot;&gt;
       &lt;option value&#x3D;&quot;bold&quot; selected&#x3D;&quot;selected&quot;&gt;Bold&lt;/option&gt;
       &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Placement: &lt;/label&gt;
+    &lt;select id&#x3D;&quot;lines-placement&quot;&gt;
+      &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
+      &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Max Angle: &lt;/label&gt;
+    &lt;select id&#x3D;&quot;lines-maxangle&quot;&gt;
+      &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
+      &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
+      &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Exceed Len: &lt;/label&gt;
+    &lt;select id&#x3D;&quot;lines-exceedlength&quot;&gt;
+      &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
+      &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
     &lt;/select&gt;
     &lt;br /&gt;
     &lt;label&gt;Size: &lt;/label&gt;
@@ -811,7 +921,8 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;br /&gt;
     &lt;label&gt;Align: &lt;/label&gt;
     &lt;select id&#x3D;&quot;polygons-align&quot;&gt;
-      &lt;option value&#x3D;&quot;center&quot; selected&#x3D;&quot;selected&quot;&gt;Center&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&quot; selected&#x3D;&quot;selected&quot;&gt;&lt;/option&gt;
+      &lt;option value&#x3D;&quot;center&quot;&gt;Center&lt;/option&gt;
       &lt;option value&#x3D;&quot;end&quot;&gt;End&lt;/option&gt;
       &lt;option value&#x3D;&quot;left&quot;&gt;Left&lt;/option&gt;
       &lt;option value&#x3D;&quot;right&quot;&gt;Right&lt;/option&gt;
@@ -847,6 +958,25 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;select id&#x3D;&quot;polygons-weight&quot;&gt;
       &lt;option value&#x3D;&quot;bold&quot; selected&#x3D;&quot;selected&quot;&gt;Bold&lt;/option&gt;
       &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Placement: &lt;/label&gt;
+    &lt;select id&#x3D;&quot;polygons-placement&quot;&gt;
+      &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
+      &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Max Angle: &lt;/label&gt;
+    &lt;select id&#x3D;&quot;polygons-maxangle&quot;&gt;
+      &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
+      &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
+      &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;br /&gt;
+    &lt;label&gt;Exceed Len: &lt;/label&gt;
+    &lt;select id&#x3D;&quot;polygons-exceedlength&quot;&gt;
+      &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
+      &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
     &lt;/select&gt;
     &lt;br /&gt;
     &lt;label&gt;Size: &lt;/label&gt;
@@ -1001,6 +1131,25 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;normal&quot; selected&#x3D;&quot;selected&quot;&gt;Normal&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
+        &lt;label&gt;Placement: &lt;/label&gt;
+        &lt;select disabled id&#x3D;&quot;points-placement&quot;&gt;
+          &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
+          &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Max Angle: &lt;/label&gt;
+        &lt;select disabled id&#x3D;&quot;points-maxangle&quot;&gt;
+          &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
+          &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
+          &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Exceed Len: &lt;/label&gt;
+        &lt;select disabled id&#x3D;&quot;points-exceedlength&quot;&gt;
+          &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
+          &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
         &lt;label&gt;Size: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;12px&quot; id&#x3D;&quot;points-size&quot; /&gt;
         &lt;br /&gt;
@@ -1052,7 +1201,8 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;br /&gt;
         &lt;label&gt;Align: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-align&quot;&gt;
-          &lt;option value&#x3D;&quot;center&quot; selected&#x3D;&quot;selected&quot;&gt;Center&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&quot; selected&#x3D;&quot;selected&quot;&gt;&lt;/option&gt;
+          &lt;option value&#x3D;&quot;center&quot;&gt;Center&lt;/option&gt;
           &lt;option value&#x3D;&quot;end&quot;&gt;End&lt;/option&gt;
           &lt;option value&#x3D;&quot;left&quot;&gt;Left&lt;/option&gt;
           &lt;option value&#x3D;&quot;right&quot;&gt;Right&lt;/option&gt;
@@ -1088,6 +1238,25 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;select id&#x3D;&quot;lines-weight&quot;&gt;
           &lt;option value&#x3D;&quot;bold&quot; selected&#x3D;&quot;selected&quot;&gt;Bold&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Placement: &lt;/label&gt;
+        &lt;select id&#x3D;&quot;lines-placement&quot;&gt;
+          &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
+          &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Max Angle: &lt;/label&gt;
+        &lt;select id&#x3D;&quot;lines-maxangle&quot;&gt;
+          &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
+          &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
+          &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Exceed Len: &lt;/label&gt;
+        &lt;select id&#x3D;&quot;lines-exceedlength&quot;&gt;
+          &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
+          &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
         &lt;label&gt;Size: &lt;/label&gt;
@@ -1141,7 +1310,8 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;br /&gt;
         &lt;label&gt;Align: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-align&quot;&gt;
-          &lt;option value&#x3D;&quot;center&quot; selected&#x3D;&quot;selected&quot;&gt;Center&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&quot; selected&#x3D;&quot;selected&quot;&gt;&lt;/option&gt;
+          &lt;option value&#x3D;&quot;center&quot;&gt;Center&lt;/option&gt;
           &lt;option value&#x3D;&quot;end&quot;&gt;End&lt;/option&gt;
           &lt;option value&#x3D;&quot;left&quot;&gt;Left&lt;/option&gt;
           &lt;option value&#x3D;&quot;right&quot;&gt;Right&lt;/option&gt;
@@ -1177,6 +1347,25 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;select id&#x3D;&quot;polygons-weight&quot;&gt;
           &lt;option value&#x3D;&quot;bold&quot; selected&#x3D;&quot;selected&quot;&gt;Bold&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Placement: &lt;/label&gt;
+        &lt;select id&#x3D;&quot;polygons-placement&quot;&gt;
+          &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
+          &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Max Angle: &lt;/label&gt;
+        &lt;select id&#x3D;&quot;polygons-maxangle&quot;&gt;
+          &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
+          &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
+          &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Exceed Len: &lt;/label&gt;
+        &lt;select id&#x3D;&quot;polygons-exceedlength&quot;&gt;
+          &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
+          &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
         &lt;label&gt;Size: &lt;/label&gt;
@@ -1223,6 +1412,9 @@ function stringDivider(str, width, spaceReplacer) {
           rotation: document.getElementById(&#x27;lines-rotation&#x27;),
           font: document.getElementById(&#x27;lines-font&#x27;),
           weight: document.getElementById(&#x27;lines-weight&#x27;),
+          placement: document.getElementById(&#x27;lines-placement&#x27;),
+          maxangle: document.getElementById(&#x27;lines-maxangle&#x27;),
+          exceedlength: document.getElementById(&#x27;lines-exceedlength&#x27;),
           size: document.getElementById(&#x27;lines-size&#x27;),
           offsetX: document.getElementById(&#x27;lines-offset-x&#x27;),
           offsetY: document.getElementById(&#x27;lines-offset-y&#x27;),
@@ -1238,6 +1430,9 @@ function stringDivider(str, width, spaceReplacer) {
           rotation: document.getElementById(&#x27;polygons-rotation&#x27;),
           font: document.getElementById(&#x27;polygons-font&#x27;),
           weight: document.getElementById(&#x27;polygons-weight&#x27;),
+          placement: document.getElementById(&#x27;polygons-placement&#x27;),
+          maxangle: document.getElementById(&#x27;polygons-maxangle&#x27;),
+          exceedlength: document.getElementById(&#x27;polygons-exceedlength&#x27;),
           size: document.getElementById(&#x27;polygons-size&#x27;),
           offsetX: document.getElementById(&#x27;polygons-offset-x&#x27;),
           offsetY: document.getElementById(&#x27;polygons-offset-y&#x27;),
@@ -1274,6 +1469,9 @@ function stringDivider(str, width, spaceReplacer) {
         var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
         var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
         var weight &#x3D; dom.weight.value;
+        var placement &#x3D; dom.placement ? dom.placement.value : undefined;
+        var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+        var exceedLength &#x3D; dom.exceedlength ? (dom.exceedlength.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
         var rotation &#x3D; parseFloat(dom.rotation.value);
         var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
         var fillColor &#x3D; dom.color.value;
@@ -1281,7 +1479,7 @@ function stringDivider(str, width, spaceReplacer) {
         var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
 
         return new ol.style.Text({
-          textAlign: align,
+          textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
           textBaseline: baseline,
           font: font,
           text: getText(feature, resolution, dom),
@@ -1289,6 +1487,9 @@ function stringDivider(str, width, spaceReplacer) {
           stroke: new ol.style.Stroke({color: outlineColor, width: outlineWidth}),
           offsetX: offsetX,
           offsetY: offsetY,
+          placement: placement,
+          maxAngle: maxAngle,
+          exceedLength: exceedLength,
           rotation: rotation
         });
       };
