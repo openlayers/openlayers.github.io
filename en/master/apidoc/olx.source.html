@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.3.2 API - Namespace: source</title>
+    <title>OpenLayers v4.3.4 API - Namespace: source</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -12530,6 +12530,10 @@
                     <a href="ol.source.Cluster.html#setDistance">setDistance</a>
                 </li>
             
+                <li data-name="ol.source.Cluster#setLoader" class="">
+                    <a href="ol.source.Cluster.html#setLoader">setLoader</a>
+                </li>
+            
                 <li data-name="ol.source.Cluster#setProperties" class="">
                     <a href="ol.source.Cluster.html#setProperties">setProperties</a>
                 </li>
@@ -15321,6 +15325,10 @@
                     <a href="ol.source.Vector.html#setAttributions">setAttributions</a>
                 </li>
             
+                <li data-name="ol.source.Vector#setLoader" class="">
+                    <a href="ol.source.Vector.html#setLoader">setLoader</a>
+                </li>
+            
                 <li data-name="ol.source.Vector#setProperties" class="">
                     <a href="ol.source.Vector.html#setProperties">setProperties</a>
                 </li>
@@ -16975,7 +16983,7 @@
         <h1 class="page-title" data-filename="olx.source.html">Namespace: source</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.3.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.3.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -17396,6 +17404,41 @@ Higher values can increase reprojection performance, but decrease precision.</p>
             
             
             <td class="description last"><p>Whether to wrap the world horizontally. Default is <code>true</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
         </tr>
 	
 	
@@ -22258,6 +22301,41 @@ url should include /MapServer or /ImageServer.</p></td>
 	
         <tr>
             
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>urls</code></td>
             
             
@@ -23100,6 +23178,41 @@ world only, but they will be wrapped horizontally to render multiple worlds.</p>
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table></dl>
         
@@ -23494,6 +23607,41 @@ configured.</p></td>
             
             
             <td class="description last"><p>Whether to wrap the world horizontally. Default is <code>true</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
         </tr>
 	
 	
@@ -24360,6 +24508,41 @@ urls for GetMap requests.</p></td>
 will be rendered. When <code>true</code>, tiles will be requested for one world only,
 but they will be wrapped horizontally to render multiple worlds. The default
 is <code>true</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
         </tr>
 	
 	
@@ -25392,6 +25575,41 @@ render multiple worlds. Default is <code>true</code>.</p></td>
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table></dl>
         
@@ -26147,6 +26365,41 @@ each one separately in the <code>urls</code> option.</p></td>
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table></dl>
         
@@ -26819,6 +27072,41 @@ used instead of defining each one separately in the <code>urls</code> option.</p
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table></dl>
         
@@ -27208,6 +27496,41 @@ used instead of defining each one separately in the <code>urls</code> option. <s
             
             
             <td class="description last"><p>Size of the image. <span class="required-option">Required.</span></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Duration of the opacity transition for rendering.  To disable the opacity
+transition, pass <code>transition: 0</code>.</p></td>
         </tr>
 	
 	

@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.3.2-214-gb920b78
+// Version: v4.3.4-286-gc54a1f5
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -14698,7 +14698,8 @@ goog.require('ol.geom.flat.contains');
  * @param {Array.<number>} flatCenters Flat centers.
  * @param {number} flatCentersOffset Flat center offset.
  * @param {Array.<number>=} opt_dest Destination.
- * @return {Array.<number>} Destination.
+ * @return {Array.<number>} Destination point as XYM coordinate, where M is the
+ * length of the horizontal intersection that the point belongs to.
  */
 ol.geom.flat.interiorpoint.linearRings = function(flatCoordinates, offset,
     ends, stride, flatCenters, flatCentersOffset, opt_dest) {
@@ -14745,10 +14746,10 @@ ol.geom.flat.interiorpoint.linearRings = function(flatCoordinates, offset,
     pointX = flatCenters[flatCentersOffset];
   }
   if (opt_dest) {
-    opt_dest.push(pointX, y);
+    opt_dest.push(pointX, y, maxSegmentLength);
     return opt_dest;
   } else {
-    return [pointX, y];
+    return [pointX, y, maxSegmentLength];
   }
 };
 
@@ -14759,7 +14760,8 @@ ol.geom.flat.interiorpoint.linearRings = function(flatCoordinates, offset,
  * @param {Array.<Array.<number>>} endss Endss.
  * @param {number} stride Stride.
  * @param {Array.<number>} flatCenters Flat centers.
- * @return {Array.<number>} Interior points.
+ * @return {Array.<number>} Interior points as XYM coordinates, where M is the
+ * length of the horizontal intersection that the point belongs to.
  */
 ol.geom.flat.interiorpoint.linearRingss = function(flatCoordinates, offset, endss, stride, flatCenters) {
   var interiorPoints = [];
@@ -15332,11 +15334,12 @@ ol.geom.Polygon.prototype.getFlatInteriorPoint = function() {
 
 /**
  * Return an interior point of the polygon.
- * @return {ol.geom.Point} Interior point.
+ * @return {ol.geom.Point} Interior point as XYM coordinate, where M is the
+ * length of the horizontal intersection that the point belongs to.
  * @api
  */
 ol.geom.Polygon.prototype.getInteriorPoint = function() {
-  return new ol.geom.Point(this.getFlatInteriorPoint());
+  return new ol.geom.Point(this.getFlatInteriorPoint(), ol.geom.GeometryLayout.XYM);
 };
 
 
@@ -20631,7 +20634,7 @@ ol.interaction.Pointer = function(opt_options) {
   this.handlingDownUpSequence = false;
 
   /**
-   * @type {Object.<number, ol.pointer.PointerEvent>}
+   * @type {Object.<string, ol.pointer.PointerEvent>}
    * @private
    */
   this.trackedPointers_ = {};
@@ -20685,14 +20688,15 @@ ol.interaction.Pointer.prototype.updateTrackedPointers_ = function(mapBrowserEve
   if (this.isPointerDraggingEvent_(mapBrowserEvent)) {
     var event = mapBrowserEvent.pointerEvent;
 
+    var id = event.pointerId.toString();
     if (mapBrowserEvent.type == ol.MapBrowserEventType.POINTERUP) {
-      delete this.trackedPointers_[event.pointerId];
+      delete this.trackedPointers_[id];
     } else if (mapBrowserEvent.type ==
         ol.MapBrowserEventType.POINTERDOWN) {
-      this.trackedPointers_[event.pointerId] = event;
-    } else if (event.pointerId in this.trackedPointers_) {
+      this.trackedPointers_[id] = event;
+    } else if (id in this.trackedPointers_) {
       // update only when there was a pointerdown event for this pointer
-      this.trackedPointers_[event.pointerId] = event;
+      this.trackedPointers_[id] = event;
     }
     this.targetPointers = ol.obj.getValues(this.trackedPointers_);
   }
@@ -25696,8 +25700,6 @@ ol.renderer.canvas.Map.prototype.forEachLayerAtPixel = function(pixel, frameStat
   return undefined;
 };
 
-// FIXME find correct globalCompositeOperation
-
 goog.provide('ol.renderer.canvas.TileLayer');
 
 goog.require('ol');
@@ -25705,7 +25707,6 @@ goog.require('ol.LayerType');
 goog.require('ol.TileRange');
 goog.require('ol.TileState');
 goog.require('ol.ViewHint');
-goog.require('ol.array');
 goog.require('ol.dom');
 goog.require('ol.extent');
 goog.require('ol.renderer.Type');
@@ -25879,23 +25880,29 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
         tile = tile.getInterimTile();
       }
       if (this.isDrawableTile_(tile)) {
+        var uid = ol.getUid(this);
         if (tile.getState() == ol.TileState.LOADED) {
           tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
-          if (!newTiles && this.renderedTiles.indexOf(tile) == -1) {
+          var inTransition = tile.inTransition(uid);
+          if (!newTiles && (inTransition || this.renderedTiles.indexOf(tile) === -1)) {
             newTiles = true;
           }
         }
-        continue;
+        if (tile.getAlpha(uid, frameState.time) === 1) {
+          // don't look for alt tiles if alpha is 1
+          continue;
+        }
       }
 
-      var fullyLoaded = tileGrid.forEachTileCoordParentTileRange(
-          tile.tileCoord, findLoadedTiles, null, tmpTileRange, tmpExtent);
-      if (!fullyLoaded) {
-        var childTileRange = tileGrid.getTileCoordChildTileRange(
-            tile.tileCoord, tmpTileRange, tmpExtent);
-        if (childTileRange) {
-          findLoadedTiles(z + 1, childTileRange);
-        }
+      var childTileRange = tileGrid.getTileCoordChildTileRange(
+          tile.tileCoord, tmpTileRange, tmpExtent);
+      var covered = false;
+      if (childTileRange) {
+        covered = findLoadedTiles(z + 1, childTileRange);
+      }
+      if (!covered) {
+        tileGrid.forEachTileCoordParentTileRange(
+            tile.tileCoord, findLoadedTiles, null, tmpTileRange, tmpExtent);
       }
 
     }
@@ -25931,7 +25938,15 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
     this.renderedTiles.length = 0;
     /** @type {Array.<number>} */
     var zs = Object.keys(tilesToDrawByZ).map(Number);
-    zs.sort(ol.array.numberSafeCompareFunction);
+    zs.sort(function(a, b) {
+      if (a === z) {
+        return 1;
+      } else if (b === z) {
+        return -1;
+      } else {
+        return a > b ? 1 : a < b ? -1 : 0;
+      }
+    });
     var currentResolution, currentScale, currentTilePixelSize, currentZ, i, ii;
     var tileExtent, tileGutter, tilesToDraw, w, h;
     for (i = 0, ii = zs.length; i < ii; ++i) {
@@ -25948,7 +25963,7 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
         y = (imageExtent[3] - tileExtent[3]) / tileResolution * tilePixelRatio / oversampling;
         w = currentTilePixelSize[0] * currentScale / oversampling;
         h = currentTilePixelSize[1] * currentScale / oversampling;
-        this.drawTileImage(tile, frameState, layerState, x, y, w, h, tileGutter);
+        this.drawTileImage(tile, frameState, layerState, x, y, w, h, tileGutter, z === currentZ);
         this.renderedTiles.push(tile);
       }
     }
@@ -25991,15 +26006,33 @@ ol.renderer.canvas.TileLayer.prototype.prepareFrame = function(frameState, layer
  * @param {number} w Width of the tile.
  * @param {number} h Height of the tile.
  * @param {number} gutter Tile gutter.
+ * @param {boolean} transition Apply an alpha transition.
  */
-ol.renderer.canvas.TileLayer.prototype.drawTileImage = function(tile, frameState, layerState, x, y, w, h, gutter) {
-  if (!this.getLayer().getSource().getOpaque(frameState.viewState.projection)) {
+ol.renderer.canvas.TileLayer.prototype.drawTileImage = function(tile, frameState, layerState, x, y, w, h, gutter, transition) {
+  var image = tile.getImage(this.getLayer());
+  if (!image) {
+    return;
+  }
+  var uid = ol.getUid(this);
+  var alpha = transition ? tile.getAlpha(uid, frameState.time) : 1;
+  if (alpha === 1 && !this.getLayer().getSource().getOpaque(frameState.viewState.projection)) {
     this.context.clearRect(x, y, w, h);
   }
-  var image = tile.getImage(this.getLayer());
-  if (image) {
-    this.context.drawImage(image, gutter, gutter,
-        image.width - 2 * gutter, image.height - 2 * gutter, x, y, w, h);
+  var alphaChanged = alpha !== this.context.globalAlpha;
+  if (alphaChanged) {
+    this.context.save();
+    this.context.globalAlpha = alpha;
+  }
+  this.context.drawImage(image, gutter, gutter,
+      image.width - 2 * gutter, image.height - 2 * gutter, x, y, w, h);
+
+  if (alphaChanged) {
+    this.context.restore();
+  }
+  if (alpha !== 1) {
+    frameState.animate = true;
+  } else if (transition) {
+    tile.endTransition(uid);
   }
 };
 
@@ -26721,10 +26754,9 @@ ol.render.canvas.Replay.prototype.replay_ = function(
         var maxAngle = /** @type {number} */ (instruction[6]);
         var measure = /** @type {function(string):number} */ (instruction[7]);
         var offsetY = /** @type {number} */ (instruction[8]);
-        var strokeWidth = /** @type {number} */ (instruction[9]);
-        var text = /** @type {string} */ (instruction[10]);
-        var align = /** @type {number} */ (instruction[11]);
-        var textScale = /** @type {number} */ (instruction[12]);
+        var text = /** @type {string} */ (instruction[9]);
+        var align = /** @type {number} */ (instruction[10]);
+        var textScale = /** @type {number} */ (instruction[11]);
 
         var pathLength = ol.geom.flat.length.lineString(pixelCoordinates, begin, end, 2);
         var textLength = measure(text);
@@ -26734,11 +26766,12 @@ ol.render.canvas.Replay.prototype.replay_ = function(
               pixelCoordinates, begin, end, 2, text, measure, startM, maxAngle, this.chars_);
           var numChars = text.length;
           if (chars) {
+            var fillHeight = images[images.length - 1].height;
             for (var c = 0, cc = images.length; c < cc; ++c) {
               var char = chars[c % numChars]; // x, y, rotation
               var label = images[c];
               anchorX = label.width / 2;
-              anchorY = baseline * label.height + 2 * (0.5 - baseline) * strokeWidth - offsetY;
+              anchorY = baseline * label.height + (0.5 - baseline) * (label.height - fillHeight) - offsetY;
               this.replayImage_(context, char[0], char[1], label, anchorX, anchorY,
                   label.height, 1, 0, 0, char[2], textScale, false, label.width);
             }
@@ -27105,15 +27138,15 @@ ol.render.canvas.ImageReplay.prototype.drawMultiPoint = function(multiPointGeome
   this.instructions.push([
     ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd, this.image_,
     // Remaining arguments to DRAW_IMAGE are in alphabetical order
-    this.anchorX_, this.anchorY_, this.height_, undefined, this.opacity_,
+    this.anchorX_, this.anchorY_, this.height_, this.opacity_,
     this.originX_, this.originY_, this.rotateWithView_, this.rotation_,
-    this.scale_, this.snapToPixel_, this.width_
+    this.scale_ * this.pixelRatio, this.snapToPixel_, this.width_
   ]);
   this.hitDetectionInstructions.push([
     ol.render.canvas.Instruction.DRAW_IMAGE, myBegin, myEnd,
     this.hitDetectionImage_,
     // Remaining arguments to DRAW_IMAGE are in alphabetical order
-    this.anchorX_, this.anchorY_, this.height_, undefined, this.opacity_,
+    this.anchorX_, this.anchorY_, this.height_, this.opacity_,
     this.originX_, this.originY_, this.rotateWithView_, this.rotation_,
     this.scale_, this.snapToPixel_, this.width_
   ]);
@@ -28325,13 +28358,13 @@ ol.render.canvas.TextReplay.prototype.drawText = function(geometry, feature) {
     return;
   }
 
-  this.beginGeometry(geometry, feature);
   var begin = this.coordinates.length;
 
   var geometryType = geometry.getType();
   var flatCoordinates = null;
   var end = 2;
   var stride = 2;
+  var i, ii;
 
   if (this.textState_.placement === ol.style.TextPlacement.LINE) {
     var ends;
@@ -28346,10 +28379,11 @@ ol.render.canvas.TextReplay.prototype.drawText = function(geometry, feature) {
     } else if (geometryType == ol.geom.GeometryType.MULTI_POLYGON) {
       var endss = geometry.getEndss();
       ends = [];
-      for (var i = 0, ii = endss.length; i < ii; ++i) {
+      for (i = 0, ii = endss.length; i < ii; ++i) {
         ends.push(endss[i][0]);
       }
     }
+    this.beginGeometry(geometry, feature);
     var textAlign = textState.textAlign;
     var flatOffset = 0;
     var flatEnd;
@@ -28367,8 +28401,11 @@ ol.render.canvas.TextReplay.prototype.drawText = function(geometry, feature) {
       this.drawChars_(begin, end);
       begin = end;
     }
+    this.endGeometry(geometry, feature);
 
   } else {
+    var label = this.getImage_(this.text_, !!this.textFillState_, !!this.textStrokeState_);
+    var width = label.width / this.pixelRatio;
     switch (geometryType) {
       case ol.geom.GeometryType.POINT:
       case ol.geom.GeometryType.MULTI_POINT:
@@ -28387,18 +28424,31 @@ ol.render.canvas.TextReplay.prototype.drawText = function(geometry, feature) {
         break;
       case ol.geom.GeometryType.POLYGON:
         flatCoordinates = /** @type {ol.geom.Polygon} */ (geometry).getFlatInteriorPoint();
+        if (!textState.exceedLength && flatCoordinates[2] / this.resolution < width) {
+          return;
+        }
+        stride = 3;
         break;
       case ol.geom.GeometryType.MULTI_POLYGON:
-        flatCoordinates = /** @type {ol.geom.MultiPolygon} */ (geometry).getFlatInteriorPoints();
+        var interiorPoints = /** @type {ol.geom.MultiPolygon} */ (geometry).getFlatInteriorPoints();
+        flatCoordinates = [];
+        for (i = 0, ii = interiorPoints.length; i < ii; i += 3) {
+          if (textState.exceedLength || interiorPoints[i + 2] / this.resolution >= width) {
+            flatCoordinates.push(interiorPoints[i], interiorPoints[i + 1]);
+          }
+        }
         end = flatCoordinates.length;
+        if (end == 0) {
+          return;
+        }
         break;
       default:
     }
     end = this.appendFlatCoordinates(flatCoordinates, 0, end, stride, false, false);
-    this.drawTextImage_(begin, end);
+    this.beginGeometry(geometry, feature);
+    this.drawTextImage_(label, begin, end);
+    this.endGeometry(geometry, feature);
   }
-
-  this.endGeometry(geometry, feature);
 };
 
 
@@ -28471,18 +28521,17 @@ ol.render.canvas.TextReplay.prototype.getImage_ = function(text, fill, stroke) {
 
 /**
  * @private
+ * @param {HTMLCanvasElement} label Label.
  * @param {number} begin Begin.
  * @param {number} end End.
  */
-ol.render.canvas.TextReplay.prototype.drawTextImage_ = function(begin, end) {
+ol.render.canvas.TextReplay.prototype.drawTextImage_ = function(label, begin, end) {
   var textState = this.textState_;
   var strokeState = this.textStrokeState_;
   var pixelRatio = this.pixelRatio;
   var align = ol.render.replay.TEXT_ALIGN[textState.textAlign || ol.render.canvas.defaultTextAlign];
   var baseline = ol.render.replay.TEXT_ALIGN[textState.textBaseline];
   var strokeWidth = strokeState && strokeState.lineWidth ? strokeState.lineWidth : 0;
-
-  var label = this.getImage_(this.text_, !!this.textFillState_, !!this.textStrokeState_);
 
   var anchorX = align * label.width / pixelRatio + 2 * (0.5 - align) * strokeWidth;
   var anchorY = baseline * label.height / pixelRatio + 2 * (0.5 - baseline) * strokeWidth;
@@ -28511,7 +28560,6 @@ ol.render.canvas.TextReplay.prototype.drawChars_ = function(begin, end) {
   var stroke = !!strokeState;
   var textState = this.textState_;
   var baseline = ol.render.replay.TEXT_ALIGN[textState.textBaseline];
-  var strokeWidth = stroke && strokeState.lineWidth ? strokeState.lineWidth * pixelRatio : 0;
 
   var labels = [];
   var text = this.text_;
@@ -28537,13 +28585,13 @@ ol.render.canvas.TextReplay.prototype.drawChars_ = function(begin, end) {
     begin, end, labels, baseline,
     textState.exceedLength, textState.maxAngle,
     ol.render.canvas.TextReplay.getTextWidth.bind(widths, context, pixelRatio),
-    offsetY, strokeWidth, this.text_, align, this.textScale_
+    offsetY, this.text_, align, this.textScale_
   ]);
   this.hitDetectionInstructions.push([ol.render.canvas.Instruction.DRAW_CHARS,
     begin, end, labels, baseline,
     textState.exceedLength, textState.maxAngle,
     ol.render.canvas.TextReplay.getTextWidth.bind(widths, context, 1),
-    offsetY, strokeWidth, this.text_, align, this.textScale_ / pixelRatio
+    offsetY, this.text_, align, this.textScale_ / pixelRatio
   ]);
 };
 
@@ -30059,7 +30107,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
  * @inheritDoc
  */
 ol.renderer.canvas.VectorTileLayer.prototype.drawTileImage = function(
-    tile, frameState, layerState, x, y, w, h, gutter) {
+    tile, frameState, layerState, x, y, w, h, gutter, transition) {
   var vectorImageTile = /** @type {ol.VectorImageTile} */ (tile);
   this.createReplayGroup_(vectorImageTile, frameState);
   if (this.context) {
@@ -31390,7 +31438,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
     if (this.rendered_.left_ !== '') {
       this.rendered_.left_ = style.left = '';
     }
-    var right = (mapSize[0] - pixel[0] - offsetX) + 'px';
+    var right = Math.round(mapSize[0] - pixel[0] - offsetX) + 'px';
     if (this.rendered_.right_ != right) {
       this.rendered_.right_ = style.right = right;
     }
@@ -31403,7 +31451,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
         positioning == ol.OverlayPositioning.TOP_CENTER) {
       offsetX -= this.element_.offsetWidth / 2;
     }
-    var left = (pixel[0] + offsetX) + 'px';
+    var left = Math.round(pixel[0] + offsetX) + 'px';
     if (this.rendered_.left_ != left) {
       this.rendered_.left_ = style.left = left;
     }
@@ -31414,7 +31462,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
     if (this.rendered_.top_ !== '') {
       this.rendered_.top_ = style.top = '';
     }
-    var bottom = (mapSize[1] - pixel[1] - offsetY) + 'px';
+    var bottom = Math.round(mapSize[1] - pixel[1] - offsetY) + 'px';
     if (this.rendered_.bottom_ != bottom) {
       this.rendered_.bottom_ = style.bottom = bottom;
     }
@@ -31427,7 +31475,7 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
         positioning == ol.OverlayPositioning.CENTER_RIGHT) {
       offsetY -= this.element_.offsetHeight / 2;
     }
-    var top = (pixel[1] + offsetY) + 'px';
+    var top = Math.round(pixel[1] + offsetY) + 'px';
     if (this.rendered_.top_ != top) {
       this.rendered_.top_ = style.top = top;
     }
@@ -37203,12 +37251,13 @@ ol.geom.MultiPolygon.prototype.getFlatInteriorPoints = function() {
 
 /**
  * Return the interior points as {@link ol.geom.MultiPoint multipoint}.
- * @return {ol.geom.MultiPoint} Interior points.
+ * @return {ol.geom.MultiPoint} Interior points as XYM coordinates, where M is
+ * the length of the horizontal intersection that the point belongs to.
  * @api
  */
 ol.geom.MultiPolygon.prototype.getInteriorPoints = function() {
   var interiorPoints = new ol.geom.MultiPoint(null);
-  interiorPoints.setFlatCoordinates(ol.geom.GeometryLayout.XY,
+  interiorPoints.setFlatCoordinates(ol.geom.GeometryLayout.XYM,
       this.getFlatInteriorPoints().slice());
   return interiorPoints;
 };
@@ -38083,7 +38132,10 @@ goog.provide('ol.format.filter.Filter');
  * Abstract class; normally only used for creating subclasses and not instantiated in apps.
  * Base class for WFS GetFeature filters.
  *
+ * deprecated: This class will no longer be exported starting from the next major version.
+ *
  * @constructor
+ * @abstract
  * @param {!string} tagName The XML tag name for this filter.
  * @struct
  * @api
@@ -38118,6 +38170,7 @@ goog.require('ol.format.filter.Filter');
  * Base class for WFS GetFeature n-ary logical filters.
  *
  * @constructor
+ * @abstract
  * @param {!string} tagName The XML tag name for this filter.
  * @param {...ol.format.filter.Filter} conditions Conditions.
  * @extends {ol.format.filter.Filter}
@@ -38144,7 +38197,10 @@ goog.require('ol.format.filter.LogicalNary');
  * @classdesc
  * Represents a logical `<And>` operator between two or more filter conditions.
  *
+ * deprecated: This class will no longer be exported starting from the next major version.
+ *
  * @constructor
+ * @abstract
  * @param {...ol.format.filter.Filter} conditions Conditions.
  * @extends {ol.format.filter.LogicalNary}
  * @api
@@ -38209,7 +38265,10 @@ goog.require('ol.format.filter.Filter');
  * Abstract class; normally only used for creating subclasses and not instantiated in apps.
  * Base class for WFS GetFeature property comparison filters.
  *
+ * deprecated: This class will no longer be exported starting from the next major version.
+ *
  * @constructor
+ * @abstract
  * @param {!string} tagName The XML tag name for this filter.
  * @param {!string} propertyName Name of the context property to compare.
  * @extends {ol.format.filter.Filter}
@@ -38272,7 +38331,10 @@ goog.require('ol.format.filter.Comparison');
  * Abstract class; normally only used for creating subclasses and not instantiated in apps.
  * Base class for WFS GetFeature property binary comparison filters.
  *
+ * deprecated: This class will no longer be exported starting from the next major version.
+ *
  * @constructor
+ * @abstract
  * @param {!string} tagName The XML tag name for this filter.
  * @param {!string} propertyName Name of the context property to compare.
  * @param {!(string|number)} expression The value to compare.
@@ -38371,10 +38433,14 @@ goog.require('ol.format.filter.Filter');
 
 /**
  * @classdesc
+ * Abstract class; normally only used for creating subclasses and not instantiated in apps.
  * Represents a spatial operator to test whether a geometry-valued property
  * relates to a given geometry.
  *
+ * deprecated: This class will no longer be exported starting from the next major version.
+ *
  * @constructor
+ * @abstract
  * @param {!string} tagName The XML tag name for this filter.
  * @param {!string} geometryName Geometry name to use.
  * @param {!ol.geom.Geometry} geometry Geometry.
@@ -49841,34 +49907,14 @@ ol.format.OSMXML.readNode_ = function(node, objectStack) {
  * @private
  */
 ol.format.OSMXML.readWay_ = function(node, objectStack) {
-  var options = /** @type {olx.format.ReadOptions} */ (objectStack[0]);
   var id = node.getAttribute('id');
   var values = ol.xml.pushParseAndPop({
+    id: id,
     ndrefs: [],
     tags: {}
   }, ol.format.OSMXML.WAY_PARSERS_, node, objectStack);
   var state = /** @type {Object} */ (objectStack[objectStack.length - 1]);
-  /** @type {Array.<number>} */
-  var flatCoordinates = [];
-  for (var i = 0, ii = values.ndrefs.length; i < ii; i++) {
-    var point = state.nodes[values.ndrefs[i]];
-    ol.array.extend(flatCoordinates, point);
-  }
-  var geometry;
-  if (values.ndrefs[0] == values.ndrefs[values.ndrefs.length - 1]) {
-    // closed way
-    geometry = new ol.geom.Polygon(null);
-    geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates,
-        [flatCoordinates.length]);
-  } else {
-    geometry = new ol.geom.LineString(null);
-    geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates);
-  }
-  ol.format.Feature.transformWithOptions(geometry, false, options);
-  var feature = new ol.Feature(geometry);
-  feature.setId(id);
-  feature.setProperties(values.tags);
-  state.features.push(feature);
+  state.ways.push(values);
 };
 
 
@@ -49959,8 +50005,34 @@ ol.format.OSMXML.prototype.readFeaturesFromNode = function(node, opt_options) {
   if (node.localName == 'osm') {
     var state = ol.xml.pushParseAndPop({
       nodes: {},
+      ways: [],
       features: []
     }, ol.format.OSMXML.PARSERS_, node, [options]);
+    // parse nodes in ways
+    for (var j = 0; j < state.ways.length; j++) {
+      var values = /** @type {Object} */ (state.ways[j]);
+      /** @type {Array.<number>} */
+      var flatCoordinates = [];
+      for (var i = 0, ii = values.ndrefs.length; i < ii; i++) {
+        var point = state.nodes[values.ndrefs[i]];
+        ol.array.extend(flatCoordinates, point);
+      }
+      var geometry;
+      if (values.ndrefs[0] == values.ndrefs[values.ndrefs.length - 1]) {
+        // closed way
+        geometry = new ol.geom.Polygon(null);
+        geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates,
+            [flatCoordinates.length]);
+      } else {
+        geometry = new ol.geom.LineString(null);
+        geometry.setFlatCoordinates(ol.geom.GeometryLayout.XY, flatCoordinates);
+      }
+      ol.format.Feature.transformWithOptions(geometry, false, options);
+      var feature = new ol.Feature(geometry);
+      feature.setId(values.id);
+      feature.setProperties(values.tags);
+      state.features.push(feature);
+    }
     if (state.features) {
       return state.features;
     }
@@ -52858,6 +52930,7 @@ ol.format.WKT.prototype.writeFeaturesText = function(features, opt_options) {
  *
  * @function
  * @param {ol.geom.Geometry} geometry Geometry.
+ * @param {olx.format.WriteOptions=} opt_options Write options.
  * @return {string} WKT string.
  * @api
  */
@@ -56658,6 +56731,7 @@ goog.provide('ol.Tile');
 
 goog.require('ol');
 goog.require('ol.TileState');
+goog.require('ol.easing');
 goog.require('ol.events.EventTarget');
 goog.require('ol.events.EventType');
 
@@ -56671,10 +56745,12 @@ goog.require('ol.events.EventType');
  * @extends {ol.events.EventTarget}
  * @param {ol.TileCoord} tileCoord Tile coordinate.
  * @param {ol.TileState} state State.
+ * @param {olx.TileOptions=} opt_options Tile options.
  */
-ol.Tile = function(tileCoord, state) {
-
+ol.Tile = function(tileCoord, state, opt_options) {
   ol.events.EventTarget.call(this);
+
+  var options = opt_options ? opt_options : {};
 
   /**
    * @type {ol.TileCoord}
@@ -56702,6 +56778,20 @@ ol.Tile = function(tileCoord, state) {
    * @type {string}
    */
   this.key = '';
+
+  /**
+   * The duration for the opacity transition.
+   * @type {number}
+   */
+  this.transition_ = options.transition === undefined ?
+    250 : options.transition;
+
+  /**
+   * Lookup of start times for rendering transitions.  If the start time is
+   * equal to -1, the transition is complete.
+   * @type {Object.<number, number>}
+   */
+  this.transitionStarts_ = {};
 
 };
 ol.inherits(ol.Tile, ol.events.EventTarget);
@@ -56818,6 +56908,56 @@ ol.Tile.prototype.setState = function(state) {
  */
 ol.Tile.prototype.load = function() {};
 
+/**
+ * Get the alpha value for rendering.
+ * @param {number} id An id for the renderer.
+ * @param {number} time The render frame time.
+ * @return {number} A number between 0 and 1.
+ */
+ol.Tile.prototype.getAlpha = function(id, time) {
+  if (!this.transition_) {
+    return 1;
+  }
+
+  var start = this.transitionStarts_[id];
+  if (!start) {
+    start = time;
+    this.transitionStarts_[id] = start;
+  } else if (start === -1) {
+    return 1;
+  }
+
+  var delta = time - start + (1000 / 60); // avoid rendering at 0
+  if (delta >= this.transition_) {
+    return 1;
+  }
+  return ol.easing.easeIn(delta / this.transition_);
+};
+
+/**
+ * Determine if a tile is in an alpha transition.  A tile is considered in
+ * transition if tile.getAlpha() has not yet been called or has been called
+ * and returned 1.
+ * @param {number} id An id for the renderer.
+ * @return {boolean} The tile is in transition.
+ */
+ol.Tile.prototype.inTransition = function(id) {
+  if (!this.transition_) {
+    return false;
+  }
+  return this.transitionStarts_[id] !== -1;
+};
+
+/**
+ * Mark a transition as complete.
+ * @param {number} id An id for the renderer.
+ */
+ol.Tile.prototype.endTransition = function(id) {
+  if (this.transition_) {
+    this.transitionStarts_[id] = -1;
+  }
+};
+
 goog.provide('ol.ImageTile');
 
 goog.require('ol');
@@ -56836,10 +56976,11 @@ goog.require('ol.events.EventType');
  * @param {string} src Image source URI.
  * @param {?string} crossOrigin Cross origin.
  * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
+ * @param {olx.TileOptions=} opt_options Tile options.
  */
-ol.ImageTile = function(tileCoord, state, src, crossOrigin, tileLoadFunction) {
+ol.ImageTile = function(tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options) {
 
-  ol.Tile.call(this, tileCoord, state);
+  ol.Tile.call(this, tileCoord, state, opt_options);
 
   /**
    * Image URI
@@ -59413,6 +59554,17 @@ ol.source.Vector.prototype.removeFromIdIndex_ = function(feature) {
     }
   }
   return removed;
+};
+
+
+/**
+ * Set the new loader of the source. The next loadFeatures call will use the
+ * new loader.
+ * @param {ol.FeatureLoader} loader The loader to set.
+ * @api
+ */
+ol.source.Vector.prototype.setLoader = function(loader) {
+  this.loader_ = loader;
 };
 
 
@@ -73789,8 +73941,7 @@ goog.require('ol.reproj.Triangulation');
 ol.reproj.Tile = function(sourceProj, sourceTileGrid,
     targetProj, targetTileGrid, tileCoord, wrappedTileCoord,
     pixelRatio, gutter, getTileFunction,
-    opt_errorThreshold,
-    opt_renderEdges) {
+    opt_errorThreshold, opt_renderEdges) {
   ol.Tile.call(this, tileCoord, ol.TileState.IDLE);
 
   /**
@@ -74299,6 +74450,12 @@ ol.source.Tile = function(options) {
    */
   this.key_ = '';
 
+  /**
+   * @protected
+   * @type {olx.TileOptions}
+   */
+  this.tileOptions = {transition: options.transition};
+
 };
 ol.inherits(ol.source.Tile, ol.source.Source);
 
@@ -74625,7 +74782,8 @@ ol.source.UrlTile = function(options) {
     state: options.state,
     tileGrid: options.tileGrid,
     tilePixelRatio: options.tilePixelRatio,
-    wrapX: options.wrapX
+    wrapX: options.wrapX,
+    transition: options.transition
   });
 
   /**
@@ -74836,7 +74994,8 @@ ol.source.TileImage = function(options) {
     tileUrlFunction: options.tileUrlFunction,
     url: options.url,
     urls: options.urls,
-    wrapX: options.wrapX
+    wrapX: options.wrapX,
+    transition: options.transition
   });
 
   /**
@@ -74849,7 +75008,7 @@ ol.source.TileImage = function(options) {
   /**
    * @protected
    * @type {function(new: ol.ImageTile, ol.TileCoord, ol.TileState, string,
-   *        ?string, ol.TileLoadFunctionType)}
+   *        ?string, ol.TileLoadFunctionType, olx.TileOptions=)}
    */
   this.tileClass = options.tileClass !== undefined ?
     options.tileClass : ol.ImageTile;
@@ -75019,7 +75178,8 @@ ol.source.TileImage.prototype.createTile_ = function(z, x, y, pixelRatio, projec
       tileUrl !== undefined ? ol.TileState.IDLE : ol.TileState.EMPTY,
       tileUrl !== undefined ? tileUrl : '',
       this.crossOrigin,
-      this.tileLoadFunction);
+      this.tileLoadFunction,
+      this.tileOptions);
   tile.key = key;
   ol.events.listen(tile, ol.events.EventType.CHANGE,
       this.handleTileChange, this);
@@ -75208,7 +75368,8 @@ ol.source.BingMaps = function(options) {
     state: ol.source.State.LOADING,
     tileLoadFunction: options.tileLoadFunction,
     tilePixelRatio: this.hidpi_ ? 2 : 1,
-    wrapX: options.wrapX !== undefined ? options.wrapX : true
+    wrapX: options.wrapX !== undefined ? options.wrapX : true,
+    transition: options.transition
   });
 
   /**
@@ -75438,7 +75599,8 @@ ol.source.XYZ = function(opt_options) {
     tileUrlFunction: options.tileUrlFunction,
     url: options.url,
     urls: options.urls,
-    wrapX: options.wrapX !== undefined ? options.wrapX : true
+    wrapX: options.wrapX !== undefined ? options.wrapX : true,
+    transition: options.transition
   });
 
 };
@@ -77797,7 +77959,8 @@ ol.source.TileArcGISRest = function(opt_options) {
     tileLoadFunction: options.tileLoadFunction,
     url: options.url,
     urls: options.urls,
-    wrapX: options.wrapX !== undefined ? options.wrapX : true
+    wrapX: options.wrapX !== undefined ? options.wrapX : true,
+    transition: options.transition
   });
 
   /**
@@ -78106,7 +78269,8 @@ ol.source.TileJSON = function(options) {
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     state: ol.source.State.LOADING,
     tileLoadFunction: options.tileLoadFunction,
-    wrapX: options.wrapX !== undefined ? options.wrapX : true
+    wrapX: options.wrapX !== undefined ? options.wrapX : true,
+    transition: options.transition
   });
 
   if (options.url) {
@@ -78767,7 +78931,8 @@ ol.source.TileWMS = function(opt_options) {
     tileLoadFunction: options.tileLoadFunction,
     url: options.url,
     urls: options.urls,
-    wrapX: options.wrapX !== undefined ? options.wrapX : true
+    wrapX: options.wrapX !== undefined ? options.wrapX : true,
+    transition: options.transition
   });
 
   /**
@@ -79133,12 +79298,13 @@ goog.require('ol.featureloader');
  *     instantiate for source tiles.
  * @param {function(this: ol.source.VectorTile, ol.events.Event)} handleTileChange
  *     Function to call when a source tile's state changes.
+ * @param {olx.TileOptions=} opt_options Tile options.
  */
 ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
     urlTileCoord, tileUrlFunction, sourceTileGrid, tileGrid, sourceTiles,
-    pixelRatio, projection, tileClass, handleTileChange) {
+    pixelRatio, projection, tileClass, handleTileChange, opt_options) {
 
-  ol.Tile.call(this, tileCoord, state);
+  ol.Tile.call(this, tileCoord, state, opt_options);
 
   /**
    * @private
@@ -79413,10 +79579,11 @@ goog.require('ol.TileState');
  * @param {string} src Data source url.
  * @param {ol.format.Feature} format Feature format.
  * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
+ * @param {olx.TileOptions=} opt_options Tile options.
  */
-ol.VectorTile = function(tileCoord, state, src, format, tileLoadFunction) {
+ol.VectorTile = function(tileCoord, state, src, format, tileLoadFunction, opt_options) {
 
-  ol.Tile.call(this, tileCoord, state);
+  ol.Tile.call(this, tileCoord, state, opt_options);
 
   /**
    * @type {number}
@@ -79700,7 +79867,8 @@ ol.source.VectorTile = function(options) {
     tileUrlFunction: options.tileUrlFunction,
     url: options.url,
     urls: options.urls,
-    wrapX: options.wrapX === undefined ? true : options.wrapX
+    wrapX: options.wrapX === undefined ? true : options.wrapX,
+    transition: options.transition
   });
 
   /**
@@ -79774,7 +79942,8 @@ ol.source.VectorTile.prototype.getTile = function(z, x, y, pixelRatio, projectio
         this.format_, this.tileLoadFunction, urlTileCoord, this.tileUrlFunction,
         this.tileGrid, this.getTileGridForProjection(projection),
         this.sourceTiles_, pixelRatio, projection, this.tileClass,
-        this.handleTileChange.bind(this));
+        this.handleTileChange.bind(this),
+        this.tileOptions);
 
     this.tileCache.set(tileCoordKey, tile);
     return tile;
@@ -80142,7 +80311,8 @@ ol.source.WMTS = function(options) {
     tilePixelRatio: options.tilePixelRatio,
     tileUrlFunction: tileUrlFunction,
     urls: urls,
-    wrapX: options.wrapX !== undefined ? options.wrapX : false
+    wrapX: options.wrapX !== undefined ? options.wrapX : false,
+    transition: options.transition
   });
 
   this.setKey(this.getKeyForDimensions_());
@@ -80570,7 +80740,8 @@ ol.source.Zoomify = function(opt_options) {
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileClass: ol.source.Zoomify.Tile_,
     tileGrid: tileGrid,
-    tileUrlFunction: tileUrlFunction
+    tileUrlFunction: tileUrlFunction,
+    transition: options.transition
   });
 
 };
@@ -80585,12 +80756,13 @@ ol.inherits(ol.source.Zoomify, ol.source.TileImage);
  * @param {string} src Image source URI.
  * @param {?string} crossOrigin Cross origin.
  * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
+ * @param {olx.TileOptions=} opt_options Tile options.
  * @private
  */
 ol.source.Zoomify.Tile_ = function(
-    tileCoord, state, src, crossOrigin, tileLoadFunction) {
+    tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options) {
 
-  ol.ImageTile.call(this, tileCoord, state, src, crossOrigin, tileLoadFunction);
+  ol.ImageTile.call(this, tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options);
 
   /**
    * @private
@@ -83547,6 +83719,11 @@ goog.exportProperty(
     ol.source.Vector.prototype,
     'removeFeature',
     ol.source.Vector.prototype.removeFeature);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'setLoader',
+    ol.source.Vector.prototype.setLoader);
 
 goog.exportProperty(
     ol.source.Vector.Event.prototype,
@@ -88042,6 +88219,11 @@ goog.exportProperty(
     ol.source.Cluster.prototype,
     'removeFeature',
     ol.source.Cluster.prototype.removeFeature);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'setLoader',
+    ol.source.Cluster.prototype.setLoader);
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
@@ -95102,7 +95284,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.3.2-214-gb920b78';
+ol.VERSION = 'v4.3.4-286-gc54a1f5';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
