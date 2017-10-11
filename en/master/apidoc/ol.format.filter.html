@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.3.4 API - Namespace: filter</title>
+    <title>OpenLayers v4.4.1 API - Namespace: filter</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -4852,6 +4852,10 @@
                     <a href="ol.format.filter.html#.between">between</a>
                 </li>
             
+                <li data-name="ol.format.filter.contains" class="">
+                    <a href="ol.format.filter.html#.contains">contains</a>
+                </li>
+            
                 <li data-name="ol.format.filter.during" class="">
                     <a href="ol.format.filter.html#.during">during</a>
                 </li>
@@ -4970,6 +4974,25 @@
         <li class="item" data-name="ol.format.filter.ComparisonBinary">
             <span class="title">
                 <a href="ol.format.filter.ComparisonBinary.html">ol.format.filter.ComparisonBinary</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.filter.Contains">
+            <span class="title">
+                <a href="ol.format.filter.Contains.html">ol.format.filter.Contains</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -16983,7 +17006,7 @@
         <h1 class="page-title" data-filename="ol.format.filter.html">Namespace: filter</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.3.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.4.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -17085,6 +17108,9 @@
             <dt><a href="ol.format.filter.ComparisonBinary.html">ComparisonBinary</a></dt>
             <dd></dd>
         
+            <dt><a href="ol.format.filter.Contains.html">Contains</a></dt>
+            <dd></dd>
+        
             <dt><a href="ol.format.filter.During.html">During</a></dt>
             <dd></dd>
         
@@ -17162,7 +17188,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 28
+            src/ol/format/filter.js, line 29
         </div>
         
         
@@ -17295,7 +17321,7 @@
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 70
+            src/ol/format/filter.js, line 71
         </div>
         
         
@@ -17480,7 +17506,7 @@ intersects a fixed bounding box</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 208
+            src/ol/format/filter.js, line 224
         </div>
         
         
@@ -17654,6 +17680,191 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id=".contains">
+        </div>
+        <h4 class="name">
+            ol.format.filter.contains<span class="signature">(geometryName, geometry, <span class="optional">opt_srsName</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="ol.format.filter.Contains.html">ol.format.filter.Contains</a>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/format/filter.js, line 86
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Create a <code>&lt;Contains&gt;</code> operator to test whether a geometry-valued property
+contains a given geometry.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>geometryName</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Geometry name to use.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>geometry</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.geom.Geometry.html">ol.geom.Geometry</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Geometry.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>srsName</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>SRS name. No srsName attribute will be
+   set on geometries when this is not provided.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+<code>&lt;Contains&gt;</code> operator.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id=".during">
         </div>
         <h4 class="name">
@@ -17664,7 +17875,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 245
+            src/ol/format/filter.js, line 261
         </div>
         
         
@@ -17847,7 +18058,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 114
+            src/ol/format/filter.js, line 130
         </div>
         
         
@@ -18033,7 +18244,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 167
+            src/ol/format/filter.js, line 183
         </div>
         
         
@@ -18191,7 +18402,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 180
+            src/ol/format/filter.js, line 196
         </div>
         
         
@@ -18349,7 +18560,7 @@ value lies within a range given by a lower and upper bound (inclusive).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 85
+            src/ol/format/filter.js, line 101
         </div>
         
         
@@ -18534,7 +18745,7 @@ intersects a given geometry.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 193
+            src/ol/format/filter.js, line 209
         </div>
         
         
@@ -18668,7 +18879,7 @@ is null.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 141
+            src/ol/format/filter.js, line 157
         </div>
         
         
@@ -18826,7 +19037,7 @@ is null.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 154
+            src/ol/format/filter.js, line 170
         </div>
         
         
@@ -18984,7 +19195,7 @@ is null.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 229
+            src/ol/format/filter.js, line 245
         </div>
         
         
@@ -19246,7 +19457,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 54
+            src/ol/format/filter.js, line 55
         </div>
         
         
@@ -19379,7 +19590,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 128
+            src/ol/format/filter.js, line 144
         </div>
         
         
@@ -19565,7 +19776,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 41
+            src/ol/format/filter.js, line 42
         </div>
         
         
@@ -19698,7 +19909,7 @@ value against a text pattern.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/format/filter.js, line 100
+            src/ol/format/filter.js, line 116
         </div>
         
         

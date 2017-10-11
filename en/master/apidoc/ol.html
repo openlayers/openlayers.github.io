@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.3.4 API - Namespace: ol</title>
+    <title>OpenLayers v4.4.1 API - Namespace: ol</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -4852,6 +4852,10 @@
                     <a href="ol.format.filter.html#.between">between</a>
                 </li>
             
+                <li data-name="ol.format.filter.contains" class="">
+                    <a href="ol.format.filter.html#.contains">contains</a>
+                </li>
+            
                 <li data-name="ol.format.filter.during" class="">
                     <a href="ol.format.filter.html#.during">during</a>
                 </li>
@@ -4970,6 +4974,25 @@
         <li class="item" data-name="ol.format.filter.ComparisonBinary">
             <span class="title">
                 <a href="ol.format.filter.ComparisonBinary.html">ol.format.filter.ComparisonBinary</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.filter.Contains">
+            <span class="title">
+                <a href="ol.format.filter.Contains.html">ol.format.filter.Contains</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -16983,7 +17006,7 @@
         <h1 class="page-title" data-filename="ol.html">Namespace: ol</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.3.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.4.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -17371,7 +17394,7 @@ child.foo(); // This works.</code></pre>
         <div class="anchor" id=".AttributionLike">
         </div>
         <h4 class="name">
-            ol.AttributionLike<span class="type-signature type string">{string}</span> <span class="type-signature type array.<string>">{Array.&lt;string>}</span> <span class="type-signature type ol.attribution">{<a href="ol.Attribution.html">ol.Attribution</a>}</span> <span class="type-signature type array.<ol.attribution>">{Array.&lt;<a href="ol.Attribution.html">ol.Attribution</a>>}</span> 
+            ol.AttributionLike<span class="type-signature type string">{string}</span> <span class="type-signature type array.<string>">{Array.&lt;string>}</span> <span class="type-signature type ol.attribution2">{ol.Attribution2}</span> <span class="type-signature type ol.attribution">{<a href="ol.Attribution.html">ol.Attribution</a>}</span> <span class="type-signature type array.<ol.attribution>">{Array.&lt;<a href="ol.Attribution.html">ol.Attribution</a>>}</span> 
             
 
         </h4>
@@ -17384,11 +17407,11 @@ child.foo(); // This works.</code></pre>
         <p>A type that can be used to provide attribution information for data sources.</p>
 <p>It represents either</p>
 <ul>
-<li>a simple string (e.g. <code>'© Acme Inc.'</code>),</li>
-<li>an array of simple strings (e.g. <code>['© Acme Inc.', '© Bacme Inc.']</code>),</li>
-<li>an instance of <code><a href="ol.Attribution.html"><code>ol.Attribution</code></a></code>,</li>
-<li>or an array with multiple <code><a href="ol.Attribution.html"><code>ol.Attribution</code></a></code> instances.</li>
+<li>a simple string (e.g. <code>'© Acme Inc.'</code>)</li>
+<li>an array of simple strings (e.g. <code>['© Acme Inc.', '© Bacme Inc.']</code>)</li>
+<li>a function that returns a string or array of strings (<code><code>ol.Attribution2</code></code>)</li>
 </ul>
+<p>Note that the <code><a href="ol.Attribution.html"><code>ol.Attribution</code></a></code> constructor is deprecated.</p>
     </div>
     
     
@@ -17436,7 +17459,7 @@ child.foo(); // This works.</code></pre>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 76
+            src/ol/typedefs.js, line 86
         </div>
         
         
@@ -17676,7 +17699,7 @@ being filled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 157
+            src/ol/typedefs.js, line 167
         </div>
         
         
@@ -17754,7 +17777,7 @@ being filled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 166
+            src/ol/typedefs.js, line 176
         </div>
         
         
@@ -17833,7 +17856,7 @@ true should be returned.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 177
+            src/ol/typedefs.js, line 187
         </div>
         
         
@@ -17913,7 +17936,7 @@ argument.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 186
+            src/ol/typedefs.js, line 196
         </div>
         
         
@@ -18091,7 +18114,7 @@ argument.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 239
+            src/ol/typedefs.js, line 249
         </div>
         
         
@@ -18175,7 +18198,7 @@ source.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 250
+            src/ol/typedefs.js, line 260
         </div>
         
         
@@ -18254,7 +18277,7 @@ resolution. The <code>this</code> keyword inside the function references the
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 263
+            src/ol/typedefs.js, line 273
         </div>
         
         
@@ -18336,7 +18359,7 @@ a <code>{number}</code> representing the resolution (map units per pixel) and an
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 302
+            src/ol/typedefs.js, line 312
         </div>
         
         
@@ -18421,7 +18444,7 @@ image element would be set to a data URI when the content is loaded.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 355
+            src/ol/typedefs.js, line 365
         </div>
         
         
@@ -18654,7 +18677,7 @@ undefined.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 447
+            src/ol/typedefs.js, line 457
         </div>
         
         
@@ -18741,7 +18764,7 @@ data object is accessible from raster events, where it can be initialized in
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 472
+            src/ol/typedefs.js, line 482
         </div>
         
         
@@ -18820,7 +18843,7 @@ returns a <code>{number}</code>.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 515
+            src/ol/typedefs.js, line 525
         </div>
         
         
@@ -18949,7 +18972,7 @@ or <code>false</code> otherwise.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 617
+            src/ol/typedefs.js, line 627
         </div>
         
         
@@ -19028,7 +19051,7 @@ or an array of them. This way e.g. a vector layer can be styled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 627
+            src/ol/typedefs.js, line 637
         </div>
         
         
@@ -19106,7 +19129,7 @@ or an array of them. This way e.g. a vector layer can be styled.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 638
+            src/ol/typedefs.js, line 648
         </div>
         
         
@@ -19238,7 +19261,7 @@ grid. The order is <code>z</code>, <code>x</code>, and <code>y</code>. <code>z</
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 665
+            src/ol/typedefs.js, line 675
         </div>
         
         
@@ -19316,7 +19339,7 @@ the url as arguments.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 697
+            src/ol/typedefs.js, line 707
         </div>
         
         
@@ -19399,7 +19422,7 @@ coordinate.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/typedefs.js, line 708
+            src/ol/typedefs.js, line 718
         </div>
         
         

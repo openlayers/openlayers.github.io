@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>OpenLayers v4.3.4 API - Class: VectorTile</title>
+    <title>OpenLayers v4.4.1 API - Class: VectorTile</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -4852,6 +4852,10 @@
                     <a href="ol.format.filter.html#.between">between</a>
                 </li>
             
+                <li data-name="ol.format.filter.contains" class="">
+                    <a href="ol.format.filter.html#.contains">contains</a>
+                </li>
+            
                 <li data-name="ol.format.filter.during" class="">
                     <a href="ol.format.filter.html#.during">during</a>
                 </li>
@@ -4970,6 +4974,25 @@
         <li class="item" data-name="ol.format.filter.ComparisonBinary">
             <span class="title">
                 <a href="ol.format.filter.ComparisonBinary.html">ol.format.filter.ComparisonBinary</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ol.format.filter.Contains">
+            <span class="title">
+                <a href="ol.format.filter.Contains.html">ol.format.filter.Contains</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -16983,7 +17006,7 @@
         <h1 class="page-title" data-filename="ol.source.VectorTile.html">Class: VectorTile</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">4.3.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">4.4.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -17029,7 +17052,7 @@ editing.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectortile.js, line 28
+            src/ol/source/vectortile.js, line 29
         </div>
         
         
@@ -17821,7 +17844,7 @@ or when loading was aborted because the tile is no longer needed.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/vectortile.js, line 104
+            src/ol/source/vectortile.js, line 105
         </div>
         
         
@@ -18169,7 +18192,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 113
+            src/ol/source/source.js, line 144
         </div>
         
         
@@ -18345,7 +18368,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 123
+            src/ol/source/source.js, line 163
         </div>
         
         
@@ -18433,7 +18456,7 @@ Logo.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 133
+            src/ol/source/source.js, line 173
         </div>
         
         
@@ -18698,7 +18721,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 150
+            src/ol/source/source.js, line 190
         </div>
         
         
@@ -18786,7 +18809,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/tile.js, line 217
+            src/ol/source/tile.js, line 207
         </div>
         
         
@@ -18874,7 +18897,7 @@ Tile grid.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltile.js, line 86
+            src/ol/source/urltile.js, line 87
         </div>
         
         
@@ -18962,7 +18985,7 @@ TileLoadFunction
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltile.js, line 96
+            src/ol/source/urltile.js, line 97
         </div>
         
         
@@ -19050,7 +19073,7 @@ TileUrlFunction
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltile.js, line 108
+            src/ol/source/urltile.js, line 109
         </div>
         
         
@@ -19520,7 +19543,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 167
+            src/ol/source/source.js, line 207
         </div>
         
         
@@ -19775,7 +19798,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            src/ol/source/source.js, line 179
+            src/ol/source/source.js, line 219
         </div>
         
         
@@ -19840,8 +19863,8 @@ Unique key for the listener. If
             <td  class="description last">
                 
                 <p>Attributions.
-    Can be passed as <code>string</code>, <code>Array&lt;string&gt;</code>, <code><a href="ol.Attribution.html"><code>ol.Attribution</code></a></code>,
-    <code>Array&lt;<a href="ol.Attribution.html"><code>ol.Attribution</code></a>&gt;</code> or <code>undefined</code>.</p></td>
+    Can be passed as <code>string</code>, <code>Array&lt;string&gt;</code>, <code><code>ol.Attribution2</code></code>,
+    or <code>undefined</code>.</p></td>
         </tr>
 	
 	
@@ -20058,7 +20081,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltile.js, line 143
+            src/ol/source/urltile.js, line 144
         </div>
         
         
@@ -20184,7 +20207,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltile.js, line 156
+            src/ol/source/urltile.js, line 157
         </div>
         
         
@@ -20335,7 +20358,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltile.js, line 171
+            src/ol/source/urltile.js, line 173
         </div>
         
         
@@ -20461,7 +20484,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/urltile.js, line 184
+            src/ol/source/urltile.js, line 186
         </div>
         
         

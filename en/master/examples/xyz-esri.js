@@ -1,14 +1,10 @@
-var attribution = new ol.Attribution({
-  html: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/' +
-      'rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
-});
-
 var map = new ol.Map({
   target: 'map',
   layers: [
     new ol.layer.Tile({
       source: new ol.source.XYZ({
-        attributions: [attribution],
+        attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/' +
+            'rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
         url: 'https://server.arcgisonline.com/ArcGIS/rest/services/' +
             'World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
       })
