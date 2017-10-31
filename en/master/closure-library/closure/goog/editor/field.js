@@ -2444,8 +2444,8 @@ goog.editor.Field.prototype.restoreSavedRange = function(opt_range) {
 /**
  * Makes a field editable.
  *
- * @param {!goog.html.TrustedResourceUrl|string=} opt_iframeSrc URL to set the
- *     iframe src to if necessary.
+ * @param {!goog.html.TrustedResourceUrl=} opt_iframeSrc URL to set the iframe
+ *     src to if necessary.
  */
 goog.editor.Field.prototype.makeEditable = function(opt_iframeSrc) {
   this.loadState_ = goog.editor.Field.LoadState_.LOADING;
@@ -2461,15 +2461,7 @@ goog.editor.Field.prototype.makeEditable = function(opt_iframeSrc) {
 
   goog.dom.classlist.add(field, 'editable');
 
-  var iframeSrc;
-  if (goog.isString(opt_iframeSrc)) {
-    iframeSrc =
-        goog.html.legacyconversions.trustedResourceUrlFromString(opt_iframeSrc);
-  } else {
-    iframeSrc = opt_iframeSrc;
-  }
-
-  this.makeEditableInternal(iframeSrc);
+  this.makeEditableInternal(opt_iframeSrc);
 };
 
 
@@ -2527,7 +2519,7 @@ goog.editor.Field.prototype.handleFieldLoad = function() {
  */
 goog.editor.Field.prototype.makeUneditable = function(opt_skipRestore) {
   if (this.isUneditable()) {
-    throw Error('makeUneditable: Field is already uneditable');
+    throw new Error('makeUneditable: Field is already uneditable');
   }
 
   // Fire any events waiting on a timeout.

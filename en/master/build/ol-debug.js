@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.4.1-43-gd74bef9
+// Version: v4.4.2-94-g1a1d45f
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -311,13 +311,13 @@ goog.define('goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING', false);
  */
 goog.provide = function(name) {
   if (goog.isInModuleLoader_()) {
-    throw Error('goog.provide can not be used within a goog.module.');
+    throw new Error('goog.provide can not be used within a goog.module.');
   }
   if (!COMPILED) {
     // Ensure that the same namespace isn't provided twice.
     // A goog.module/goog.provide maps a goog.require to a specific file
     if (goog.isProvided_(name)) {
-      throw Error('Namespace "' + name + '" already declared.');
+      throw new Error('Namespace "' + name + '" already declared.');
     }
   }
 
@@ -393,10 +393,10 @@ goog.VALID_MODULE_RE_ = /^[a-zA-Z_$][a-zA-Z0-9._$]*$/;
 goog.module = function(name) {
   if (!goog.isString(name) || !name ||
       name.search(goog.VALID_MODULE_RE_) == -1) {
-    throw Error('Invalid module identifier');
+    throw new Error('Invalid module identifier');
   }
   if (!goog.isInModuleLoader_()) {
-    throw Error(
+    throw new Error(
         'Module ' + name + ' has been loaded incorrectly. Note, ' +
         'modules cannot be loaded as normal scripts. They require some kind of ' +
         'pre-processing step. You\'re likely trying to load a module via a ' +
@@ -405,7 +405,7 @@ goog.module = function(name) {
         'https://github.com/google/closure-library/wiki/goog.module:-an-ES6-module-like-alternative-to-goog.provide.');
   }
   if (goog.moduleLoaderState_.moduleName) {
-    throw Error('goog.module may only be called once per module.');
+    throw new Error('goog.module may only be called once per module.');
   }
 
   // Store the module name for the loader.
@@ -414,7 +414,7 @@ goog.module = function(name) {
     // Ensure that the same namespace isn't provided twice.
     // A goog.module/goog.provide maps a goog.require to a specific file
     if (goog.isProvided_(name)) {
-      throw Error('Namespace "' + name + '" already declared.');
+      throw new Error('Namespace "' + name + '" already declared.');
     }
     delete goog.implicitNamespaces_[name];
   }
@@ -482,7 +482,7 @@ goog.module.declareLegacyNamespace = function() {
         'within a goog.module');
   }
   if (!COMPILED && !goog.moduleLoaderState_.moduleName) {
-    throw Error(
+    throw new Error(
         'goog.module must be called prior to ' +
         'goog.module.declareLegacyNamespace.');
   }
@@ -504,7 +504,7 @@ goog.module.declareLegacyNamespace = function() {
 goog.setTestOnly = function(opt_message) {
   if (goog.DISALLOW_TEST_ONLY_CODE) {
     opt_message = opt_message || '';
-    throw Error(
+    throw new Error(
         'Importing test-only code into non-debug environment' +
         (opt_message ? ': ' + opt_message : '.'));
   }
@@ -588,10 +588,9 @@ if (!COMPILED) {
 goog.getObjectByName = function(name, opt_obj) {
   var parts = name.split('.');
   var cur = opt_obj || goog.global;
-  for (var part; part = parts.shift();) {
-    if (goog.isDefAndNotNull(cur[part])) {
-      cur = cur[part];
-    } else {
+  for (var i = 0; i < parts.length; i++) {
+    cur = cur[parts[i]];
+    if (!goog.isDefAndNotNull(cur)) {
       return null;
     }
   }
@@ -723,7 +722,7 @@ goog.require = function(name) {
         var errorMessage = 'goog.require could not find: ' + name;
         goog.logToConsole_(errorMessage);
 
-        throw Error(errorMessage);
+        throw new Error(errorMessage);
       }
     }
 
@@ -785,7 +784,7 @@ goog.nullFunction = function() {};
  * @throws {Error} when invoked to indicate the method should be overridden.
  */
 goog.abstractMethod = function() {
-  throw Error('unimplemented abstract method');
+  throw new Error('unimplemented abstract method');
 };
 
 
@@ -1244,7 +1243,7 @@ if (goog.DEPENDENCIES_ENABLED) {
         if (isDeps) {
           return false;
         } else {
-          throw Error('Cannot write "' + src + '" after document load');
+          throw new Error('Cannot write "' + src + '" after document load');
         }
       }
 
@@ -1369,7 +1368,7 @@ if (goog.DEPENDENCIES_ENABLED) {
             if (requireName in deps.nameToPath) {
               visitNode(deps.nameToPath[requireName]);
             } else {
-              throw Error('Undefined nameToPath for ' + requireName);
+              throw new Error('Undefined nameToPath for ' + requireName);
             }
           }
         }
@@ -1410,7 +1409,7 @@ if (goog.DEPENDENCIES_ENABLED) {
         }
       } else {
         goog.moduleLoaderState_ = moduleState;
-        throw Error('Undefined script input');
+        throw new Error('Undefined script input');
       }
     }
 
@@ -1510,12 +1509,12 @@ goog.loadModule = function(moduleDef) {
 
       exports = goog.loadModuleFromSource_.call(undefined, moduleDef);
     } else {
-      throw Error('Invalid module definition');
+      throw new Error('Invalid module definition');
     }
 
     var moduleName = goog.moduleLoaderState_.moduleName;
     if (!goog.isString(moduleName) || !moduleName) {
-      throw Error('Invalid module name \"' + moduleName + '\"');
+      throw new Error('Invalid module name \"' + moduleName + '\"');
     }
 
     // Don't seal legacy namespaces as they may be uses as a parent of
@@ -2211,7 +2210,7 @@ goog.globalEval = function(script) {
       doc.body.removeChild(scriptElt);
     }
   } else {
-    throw Error('goog.globalEval not available');
+    throw new Error('goog.globalEval not available');
   }
 };
 
@@ -2564,7 +2563,7 @@ goog.base = function(me, opt_methodName, var_args) {
   var caller = arguments.callee.caller;
 
   if (goog.STRICT_MODE_COMPATIBLE || (goog.DEBUG && !caller)) {
-    throw Error(
+    throw new Error(
         'arguments.caller not defined.  goog.base() cannot be used ' +
         'with strict mode code. See ' +
         'http://www.ecma-international.org/ecma-262/5.1/#sec-C');
@@ -2604,7 +2603,7 @@ goog.base = function(me, opt_methodName, var_args) {
   if (me[opt_methodName] === caller) {
     return me.constructor.prototype[opt_methodName].apply(me, args);
   } else {
-    throw Error(
+    throw new Error(
         'goog.base called from a method of one name ' +
         'to a method of a different name');
   }
@@ -2624,7 +2623,7 @@ goog.base = function(me, opt_methodName, var_args) {
  */
 goog.scope = function(fn) {
   if (goog.isInModuleLoader_()) {
-    throw Error('goog.scope is not supported within a goog.module.');
+    throw new Error('goog.scope is not supported within a goog.module.');
   }
   fn.call(goog.global);
 };
@@ -2678,7 +2677,8 @@ goog.defineClass = function(superClass, def) {
   // Wrap the constructor prior to setting up the prototype and static methods.
   if (!constructor || constructor == Object.prototype.constructor) {
     constructor = function() {
-      throw Error('cannot instantiate an interface (no constructor defined).');
+      throw new Error(
+          'cannot instantiate an interface (no constructor defined).');
     };
   }
 
@@ -28494,10 +28494,10 @@ ol.render.canvas.TextReplay.prototype.getImage_ = function(text, fill, stroke) {
     var width = ol.render.canvas.TextReplay.measureTextWidths(textState.font, lines, widths);
     var lineHeight = ol.render.canvas.TextReplay.measureTextHeight(textState.font);
     var height = lineHeight * numLines;
-    var renderWidth = (width + 2 * strokeWidth);
+    var renderWidth = (width + strokeWidth);
     var context = ol.dom.createCanvasContext2D(
         Math.ceil(renderWidth * scale),
-        Math.ceil((height + 2 * strokeWidth) * scale));
+        Math.ceil((height + strokeWidth) * scale));
     label = context.canvas;
     ol.render.canvas.TextReplay.labelCache_.set(key, label);
     context.scale(scale, scale);
@@ -28519,16 +28519,16 @@ ol.render.canvas.TextReplay.prototype.getImage_ = function(text, fill, stroke) {
     context.textBaseline = 'top';
     context.textAlign = 'center';
     var leftRight = (0.5 - align);
-    var x = align * label.width / scale + leftRight * 2 * strokeWidth;
+    var x = align * label.width / scale + leftRight * strokeWidth;
     var i;
     if (stroke) {
       for (i = 0; i < numLines; ++i) {
-        context.strokeText(lines[i], x + leftRight * widths[i], strokeWidth + i * lineHeight);
+        context.strokeText(lines[i], x + leftRight * widths[i], 0.5 * strokeWidth + i * lineHeight);
       }
     }
     if (fill) {
       for (i = 0; i < numLines; ++i) {
-        context.fillText(lines[i], x + leftRight * widths[i], strokeWidth + i * lineHeight);
+        context.fillText(lines[i], x + leftRight * widths[i], 0.5 * strokeWidth + i * lineHeight);
       }
     }
   }
@@ -31014,31 +31014,38 @@ ol.Overlay = function(options) {
   ol.Object.call(this);
 
   /**
-   * @private
-   * @type {number|string|undefined}
+   * @protected
+   * @type {olx.OverlayOptions}
    */
-  this.id_ = options.id;
+  this.options = options;
 
   /**
-   * @private
+   * @protected
+   * @type {number|string|undefined}
+   */
+  this.id = options.id;
+
+  /**
+   * @protected
    * @type {boolean}
    */
-  this.insertFirst_ = options.insertFirst !== undefined ?
+  this.insertFirst = options.insertFirst !== undefined ?
     options.insertFirst : true;
 
   /**
-   * @private
+   * @protected
    * @type {boolean}
    */
-  this.stopEvent_ = options.stopEvent !== undefined ? options.stopEvent : true;
+  this.stopEvent = options.stopEvent !== undefined ? options.stopEvent : true;
 
   /**
-   * @private
+   * @protected
    * @type {Element}
    */
-  this.element_ = document.createElement('DIV');
-  this.element_.className = 'ol-overlay-container ' + ol.css.CLASS_SELECTABLE;
-  this.element_.style.position = 'absolute';
+  this.element = document.createElement('DIV');
+  this.element.className = options.className !== undefined ?
+    options.className : 'ol-overlay-container ' + ol.css.CLASS_SELECTABLE;
+  this.element.style.position = 'absolute';
 
   /**
    * @protected
@@ -31047,28 +31054,28 @@ ol.Overlay = function(options) {
   this.autoPan = options.autoPan !== undefined ? options.autoPan : false;
 
   /**
-   * @private
+   * @protected
    * @type {olx.OverlayPanOptions}
    */
-  this.autoPanAnimation_ = options.autoPanAnimation ||
+  this.autoPanAnimation = options.autoPanAnimation ||
     /** @type {olx.OverlayPanOptions} */ ({});
 
   /**
-   * @private
+   * @protected
    * @type {number}
    */
-  this.autoPanMargin_ = options.autoPanMargin !== undefined ?
+  this.autoPanMargin = options.autoPanMargin !== undefined ?
     options.autoPanMargin : 20;
 
   /**
-   * @private
+   * @protected
    * @type {{bottom_: string,
    *         left_: string,
    *         right_: string,
    *         top_: string,
    *         visible: boolean}}
    */
-  this.rendered_ = {
+  this.rendered = {
     bottom_: '',
     left_: '',
     right_: '',
@@ -31077,29 +31084,29 @@ ol.Overlay = function(options) {
   };
 
   /**
-   * @private
+   * @protected
    * @type {?ol.EventsKey}
    */
-  this.mapPostrenderListenerKey_ = null;
+  this.mapPostrenderListenerKey = null;
 
   ol.events.listen(
-      this, ol.Object.getChangeEventType(ol.Overlay.Property_.ELEMENT),
+      this, ol.Object.getChangeEventType(ol.Overlay.Property.ELEMENT),
       this.handleElementChanged, this);
 
   ol.events.listen(
-      this, ol.Object.getChangeEventType(ol.Overlay.Property_.MAP),
+      this, ol.Object.getChangeEventType(ol.Overlay.Property.MAP),
       this.handleMapChanged, this);
 
   ol.events.listen(
-      this, ol.Object.getChangeEventType(ol.Overlay.Property_.OFFSET),
+      this, ol.Object.getChangeEventType(ol.Overlay.Property.OFFSET),
       this.handleOffsetChanged, this);
 
   ol.events.listen(
-      this, ol.Object.getChangeEventType(ol.Overlay.Property_.POSITION),
+      this, ol.Object.getChangeEventType(ol.Overlay.Property.POSITION),
       this.handlePositionChanged, this);
 
   ol.events.listen(
-      this, ol.Object.getChangeEventType(ol.Overlay.Property_.POSITIONING),
+      this, ol.Object.getChangeEventType(ol.Overlay.Property.POSITIONING),
       this.handlePositioningChanged, this);
 
   if (options.element !== undefined) {
@@ -31128,7 +31135,7 @@ ol.inherits(ol.Overlay, ol.Object);
  */
 ol.Overlay.prototype.getElement = function() {
   return /** @type {Element|undefined} */ (
-    this.get(ol.Overlay.Property_.ELEMENT));
+    this.get(ol.Overlay.Property.ELEMENT));
 };
 
 
@@ -31138,7 +31145,7 @@ ol.Overlay.prototype.getElement = function() {
  * @api
  */
 ol.Overlay.prototype.getId = function() {
-  return this.id_;
+  return this.id;
 };
 
 
@@ -31150,7 +31157,7 @@ ol.Overlay.prototype.getId = function() {
  */
 ol.Overlay.prototype.getMap = function() {
   return /** @type {ol.PluggableMap|undefined} */ (
-    this.get(ol.Overlay.Property_.MAP));
+    this.get(ol.Overlay.Property.MAP));
 };
 
 
@@ -31162,7 +31169,7 @@ ol.Overlay.prototype.getMap = function() {
  */
 ol.Overlay.prototype.getOffset = function() {
   return /** @type {Array.<number>} */ (
-    this.get(ol.Overlay.Property_.OFFSET));
+    this.get(ol.Overlay.Property.OFFSET));
 };
 
 
@@ -31175,7 +31182,7 @@ ol.Overlay.prototype.getOffset = function() {
  */
 ol.Overlay.prototype.getPosition = function() {
   return /** @type {ol.Coordinate|undefined} */ (
-    this.get(ol.Overlay.Property_.POSITION));
+    this.get(ol.Overlay.Property.POSITION));
 };
 
 
@@ -31188,7 +31195,7 @@ ol.Overlay.prototype.getPosition = function() {
  */
 ol.Overlay.prototype.getPositioning = function() {
   return /** @type {ol.OverlayPositioning} */ (
-    this.get(ol.Overlay.Property_.POSITIONING));
+    this.get(ol.Overlay.Property.POSITIONING));
 };
 
 
@@ -31196,10 +31203,10 @@ ol.Overlay.prototype.getPositioning = function() {
  * @protected
  */
 ol.Overlay.prototype.handleElementChanged = function() {
-  ol.dom.removeChildren(this.element_);
+  ol.dom.removeChildren(this.element);
   var element = this.getElement();
   if (element) {
-    this.element_.appendChild(element);
+    this.element.appendChild(element);
   }
 };
 
@@ -31208,22 +31215,22 @@ ol.Overlay.prototype.handleElementChanged = function() {
  * @protected
  */
 ol.Overlay.prototype.handleMapChanged = function() {
-  if (this.mapPostrenderListenerKey_) {
-    ol.dom.removeNode(this.element_);
-    ol.events.unlistenByKey(this.mapPostrenderListenerKey_);
-    this.mapPostrenderListenerKey_ = null;
+  if (this.mapPostrenderListenerKey) {
+    ol.dom.removeNode(this.element);
+    ol.events.unlistenByKey(this.mapPostrenderListenerKey);
+    this.mapPostrenderListenerKey = null;
   }
   var map = this.getMap();
   if (map) {
-    this.mapPostrenderListenerKey_ = ol.events.listen(map,
+    this.mapPostrenderListenerKey = ol.events.listen(map,
         ol.MapEventType.POSTRENDER, this.render, this);
     this.updatePixelPosition();
-    var container = this.stopEvent_ ?
+    var container = this.stopEvent ?
       map.getOverlayContainerStopEvent() : map.getOverlayContainer();
-    if (this.insertFirst_) {
-      container.insertBefore(this.element_, container.childNodes[0] || null);
+    if (this.insertFirst) {
+      container.insertBefore(this.element, container.childNodes[0] || null);
     } else {
-      container.appendChild(this.element_);
+      container.appendChild(this.element);
     }
   }
 };
@@ -31250,8 +31257,8 @@ ol.Overlay.prototype.handleOffsetChanged = function() {
  */
 ol.Overlay.prototype.handlePositionChanged = function() {
   this.updatePixelPosition();
-  if (this.get(ol.Overlay.Property_.POSITION) && this.autoPan) {
-    this.panIntoView_();
+  if (this.get(ol.Overlay.Property.POSITION) && this.autoPan) {
+    this.panIntoView();
   }
 };
 
@@ -31271,7 +31278,7 @@ ol.Overlay.prototype.handlePositioningChanged = function() {
  * @api
  */
 ol.Overlay.prototype.setElement = function(element) {
-  this.set(ol.Overlay.Property_.ELEMENT, element);
+  this.set(ol.Overlay.Property.ELEMENT, element);
 };
 
 
@@ -31282,7 +31289,7 @@ ol.Overlay.prototype.setElement = function(element) {
  * @api
  */
 ol.Overlay.prototype.setMap = function(map) {
-  this.set(ol.Overlay.Property_.MAP, map);
+  this.set(ol.Overlay.Property.MAP, map);
 };
 
 
@@ -31293,7 +31300,7 @@ ol.Overlay.prototype.setMap = function(map) {
  * @api
  */
 ol.Overlay.prototype.setOffset = function(offset) {
-  this.set(ol.Overlay.Property_.OFFSET, offset);
+  this.set(ol.Overlay.Property.OFFSET, offset);
 };
 
 
@@ -31306,28 +31313,28 @@ ol.Overlay.prototype.setOffset = function(offset) {
  * @api
  */
 ol.Overlay.prototype.setPosition = function(position) {
-  this.set(ol.Overlay.Property_.POSITION, position);
+  this.set(ol.Overlay.Property.POSITION, position);
 };
 
 
 /**
  * Pan the map so that the overlay is entirely visible in the current viewport
  * (if necessary).
- * @private
+ * @protected
  */
-ol.Overlay.prototype.panIntoView_ = function() {
+ol.Overlay.prototype.panIntoView = function() {
   var map = this.getMap();
 
   if (!map || !map.getTargetElement()) {
     return;
   }
 
-  var mapRect = this.getRect_(map.getTargetElement(), map.getSize());
+  var mapRect = this.getRect(map.getTargetElement(), map.getSize());
   var element = /** @type {!Element} */ (this.getElement());
-  var overlayRect = this.getRect_(element,
+  var overlayRect = this.getRect(element,
       [ol.dom.outerWidth(element), ol.dom.outerHeight(element)]);
 
-  var margin = this.autoPanMargin_;
+  var margin = this.autoPanMargin;
   if (!ol.extent.containsExtent(mapRect, overlayRect)) {
     // the overlay is not completely inside the viewport, so pan the map
     var offsetLeft = overlayRect[0] - mapRect[0];
@@ -31361,8 +31368,8 @@ ol.Overlay.prototype.panIntoView_ = function() {
 
       map.getView().animate({
         center: map.getCoordinateFromPixel(newCenterPx),
-        duration: this.autoPanAnimation_.duration,
-        easing: this.autoPanAnimation_.easing
+        duration: this.autoPanAnimation.duration,
+        easing: this.autoPanAnimation.easing
       });
     }
   }
@@ -31374,9 +31381,9 @@ ol.Overlay.prototype.panIntoView_ = function() {
  * @param {Element|undefined} element The element.
  * @param {ol.Size|undefined} size The size of the element.
  * @return {ol.Extent} The extent.
- * @private
+ * @protected
  */
-ol.Overlay.prototype.getRect_ = function(element, size) {
+ol.Overlay.prototype.getRect = function(element, size) {
   var box = element.getBoundingClientRect();
   var offsetX = box.left + window.pageXOffset;
   var offsetY = box.top + window.pageYOffset;
@@ -31397,7 +31404,7 @@ ol.Overlay.prototype.getRect_ = function(element, size) {
  * @api
  */
 ol.Overlay.prototype.setPositioning = function(positioning) {
-  this.set(ol.Overlay.Property_.POSITIONING, positioning);
+  this.set(ol.Overlay.Property.POSITIONING, positioning);
 };
 
 
@@ -31407,9 +31414,9 @@ ol.Overlay.prototype.setPositioning = function(positioning) {
  * @protected
  */
 ol.Overlay.prototype.setVisible = function(visible) {
-  if (this.rendered_.visible !== visible) {
-    this.element_.style.display = visible ? '' : 'none';
-    this.rendered_.visible = visible;
+  if (this.rendered.visible !== visible) {
+    this.element.style.display = visible ? '' : 'none';
+    this.rendered.visible = visible;
   }
 };
 
@@ -31438,7 +31445,7 @@ ol.Overlay.prototype.updatePixelPosition = function() {
  * @protected
  */
 ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
-  var style = this.element_.style;
+  var style = this.element.style;
   var offset = this.getOffset();
 
   var positioning = this.getPositioning();
@@ -31450,59 +31457,69 @@ ol.Overlay.prototype.updateRenderedPosition = function(pixel, mapSize) {
   if (positioning == ol.OverlayPositioning.BOTTOM_RIGHT ||
       positioning == ol.OverlayPositioning.CENTER_RIGHT ||
       positioning == ol.OverlayPositioning.TOP_RIGHT) {
-    if (this.rendered_.left_ !== '') {
-      this.rendered_.left_ = style.left = '';
+    if (this.rendered.left_ !== '') {
+      this.rendered.left_ = style.left = '';
     }
     var right = Math.round(mapSize[0] - pixel[0] - offsetX) + 'px';
-    if (this.rendered_.right_ != right) {
-      this.rendered_.right_ = style.right = right;
+    if (this.rendered.right_ != right) {
+      this.rendered.right_ = style.right = right;
     }
   } else {
-    if (this.rendered_.right_ !== '') {
-      this.rendered_.right_ = style.right = '';
+    if (this.rendered.right_ !== '') {
+      this.rendered.right_ = style.right = '';
     }
     if (positioning == ol.OverlayPositioning.BOTTOM_CENTER ||
         positioning == ol.OverlayPositioning.CENTER_CENTER ||
         positioning == ol.OverlayPositioning.TOP_CENTER) {
-      offsetX -= this.element_.offsetWidth / 2;
+      offsetX -= this.element.offsetWidth / 2;
     }
     var left = Math.round(pixel[0] + offsetX) + 'px';
-    if (this.rendered_.left_ != left) {
-      this.rendered_.left_ = style.left = left;
+    if (this.rendered.left_ != left) {
+      this.rendered.left_ = style.left = left;
     }
   }
   if (positioning == ol.OverlayPositioning.BOTTOM_LEFT ||
       positioning == ol.OverlayPositioning.BOTTOM_CENTER ||
       positioning == ol.OverlayPositioning.BOTTOM_RIGHT) {
-    if (this.rendered_.top_ !== '') {
-      this.rendered_.top_ = style.top = '';
+    if (this.rendered.top_ !== '') {
+      this.rendered.top_ = style.top = '';
     }
     var bottom = Math.round(mapSize[1] - pixel[1] - offsetY) + 'px';
-    if (this.rendered_.bottom_ != bottom) {
-      this.rendered_.bottom_ = style.bottom = bottom;
+    if (this.rendered.bottom_ != bottom) {
+      this.rendered.bottom_ = style.bottom = bottom;
     }
   } else {
-    if (this.rendered_.bottom_ !== '') {
-      this.rendered_.bottom_ = style.bottom = '';
+    if (this.rendered.bottom_ !== '') {
+      this.rendered.bottom_ = style.bottom = '';
     }
     if (positioning == ol.OverlayPositioning.CENTER_LEFT ||
         positioning == ol.OverlayPositioning.CENTER_CENTER ||
         positioning == ol.OverlayPositioning.CENTER_RIGHT) {
-      offsetY -= this.element_.offsetHeight / 2;
+      offsetY -= this.element.offsetHeight / 2;
     }
     var top = Math.round(pixel[1] + offsetY) + 'px';
-    if (this.rendered_.top_ != top) {
-      this.rendered_.top_ = style.top = top;
+    if (this.rendered.top_ != top) {
+      this.rendered.top_ = style.top = top;
     }
   }
 };
 
 
 /**
- * @enum {string}
- * @private
+ * returns the options this Overlay has been created with
+ * @public
+ * @return {olx.OverlayOptions} overlay options
  */
-ol.Overlay.Property_ = {
+ol.Overlay.prototype.getOptions = function() {
+  return this.options;
+};
+
+
+/**
+ * @enum {string}
+ * @protected
+ */
+ol.Overlay.Property = {
   ELEMENT: 'element',
   MAP: 'map',
   OFFSET: 'offset',
@@ -39840,12 +39857,6 @@ ol.format.GeoJSON.prototype.readProjectionFromObject = function(object) {
   if (crs) {
     if (crs.type == 'name') {
       projection = ol.proj.get(crs.properties.name);
-    } else if (crs.type == 'EPSG') {
-      // 'EPSG' is not part of the GeoJSON specification, but is generated by
-      // GeoServer.
-      // TODO: remove this when http://jira.codehaus.org/browse/GEOS-5996
-      // is fixed and widely deployed.
-      projection = ol.proj.get('EPSG:' + crs.properties.code);
     } else {
       ol.asserts.assert(false, 36); // Unknown SRS type
     }
@@ -50602,6 +50613,9 @@ ol.format.OWS.SERVICE_CONTACT_PARSERS_ =
 ol.format.OWS.SERVICE_IDENTIFICATION_PARSERS_ =
     ol.xml.makeStructureNS(
         ol.format.OWS.NAMESPACE_URIS_, {
+          'Abstract': ol.xml.makeObjectPropertySetter(ol.format.XSD.readString),
+          'AccessConstraints': ol.xml.makeObjectPropertySetter(ol.format.XSD.readString),
+          'Fees': ol.xml.makeObjectPropertySetter(ol.format.XSD.readString),
           'Title': ol.xml.makeObjectPropertySetter(ol.format.XSD.readString),
           'ServiceTypeVersion': ol.xml.makeObjectPropertySetter(
               ol.format.XSD.readString),
@@ -60620,6 +60634,8 @@ goog.require('ol.style.Style');
  */
 ol.interaction.Extent = function(opt_options) {
 
+  var options = opt_options || {};
+
   /**
    * Extent of the drawn box
    * @type {ol.Extent}
@@ -60639,7 +60655,8 @@ ol.interaction.Extent = function(opt_options) {
    * @type {number}
    * @private
    */
-  this.pixelTolerance_ = 10;
+  this.pixelTolerance_ = options.pixelTolerance !== undefined ?
+    options.pixelTolerance : 10;
 
   /**
    * Is the pointer snapped to an extent vertex
@@ -75499,7 +75516,8 @@ ol.source.BingMaps = function(options) {
 
   var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/' +
       this.imagerySet_ +
-      '?uriScheme=https&include=ImageryProviders&key=' + this.apiKey_;
+      '?uriScheme=https&include=ImageryProviders&key=' + this.apiKey_ +
+      '&c=' + this.culture_;
 
   ol.net.jsonp(url, this.handleImageryMetadataResponse.bind(this), undefined,
       'jsonp');
@@ -76735,6 +76753,7 @@ goog.require('ol.events.EventType');
 goog.require('ol.extent');
 goog.require('ol.obj');
 goog.require('ol.proj');
+goog.require('ol.reproj');
 goog.require('ol.source.Image');
 goog.require('ol.source.WMSServerType');
 goog.require('ol.string');
@@ -76861,6 +76880,13 @@ ol.source.ImageWMS.prototype.getGetFeatureInfoUrl = function(coordinate, resolut
   if (this.url_ === undefined) {
     return undefined;
   }
+  var projectionObj = ol.proj.get(projection);
+  var sourceProjectionObj = this.getProjection();
+
+  if (sourceProjectionObj && sourceProjectionObj !== projectionObj) {
+    resolution = ol.reproj.calculateSourceResolution(sourceProjectionObj, projectionObj, coordinate, resolution);
+    coordinate = ol.proj.transform(coordinate, projectionObj, sourceProjectionObj);
+  }
 
   var extent = ol.extent.getForViewAndSize(
       coordinate, resolution, 0,
@@ -76883,7 +76909,7 @@ ol.source.ImageWMS.prototype.getGetFeatureInfoUrl = function(coordinate, resolut
 
   return this.getRequestUrl_(
       extent, ol.source.ImageWMS.GETFEATUREINFO_IMAGE_SIZE_,
-      1, ol.proj.get(projection), baseParams);
+      1, sourceProjectionObj || projectionObj, baseParams);
 };
 
 
@@ -77431,8 +77457,8 @@ goog.require('ol.transform');
 
 /**
  * @classdesc
- * A source that transforms data from any number of input sources using an array
- * of {@link ol.RasterOperation} functions to transform input pixel values into
+ * A source that transforms data from any number of input sources using an
+ * {@link ol.RasterOperation} function to transform input pixel values into
  * output pixel values.
  *
  * @constructor
@@ -78980,6 +79006,7 @@ goog.require('ol.extent');
 goog.require('ol.obj');
 goog.require('ol.math');
 goog.require('ol.proj');
+goog.require('ol.reproj');
 goog.require('ol.size');
 goog.require('ol.source.TileImage');
 goog.require('ol.source.WMSServerType');
@@ -79080,14 +79107,14 @@ ol.inherits(ol.source.TileWMS, ol.source.TileImage);
  */
 ol.source.TileWMS.prototype.getGetFeatureInfoUrl = function(coordinate, resolution, projection, params) {
   var projectionObj = ol.proj.get(projection);
+  var sourceProjectionObj = this.getProjection();
 
   var tileGrid = this.getTileGrid();
   if (!tileGrid) {
     tileGrid = this.getTileGridForProjection(projectionObj);
   }
 
-  var tileCoord = tileGrid.getTileCoordForCoordAndResolution(
-      coordinate, resolution);
+  var tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, resolution);
 
   if (tileGrid.getResolutions().length <= tileCoord[0]) {
     return undefined;
@@ -79095,14 +79122,19 @@ ol.source.TileWMS.prototype.getGetFeatureInfoUrl = function(coordinate, resoluti
 
   var tileResolution = tileGrid.getResolution(tileCoord[0]);
   var tileExtent = tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
-  var tileSize = ol.size.toSize(
-      tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+  var tileSize = ol.size.toSize(tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+
 
   var gutter = this.gutter_;
   if (gutter !== 0) {
     tileSize = ol.size.buffer(tileSize, gutter, this.tmpSize);
-    tileExtent = ol.extent.buffer(tileExtent,
-        tileResolution * gutter, tileExtent);
+    tileExtent = ol.extent.buffer(tileExtent, tileResolution * gutter, tileExtent);
+  }
+
+  if (sourceProjectionObj && sourceProjectionObj !== projectionObj) {
+    tileResolution = ol.reproj.calculateSourceResolution(sourceProjectionObj, projectionObj, coordinate, tileResolution);
+    tileExtent = ol.proj.transformExtent(tileExtent, projectionObj, sourceProjectionObj);
+    coordinate = ol.proj.transform(coordinate, projectionObj, sourceProjectionObj);
   }
 
   var baseParams = {
@@ -79122,7 +79154,7 @@ ol.source.TileWMS.prototype.getGetFeatureInfoUrl = function(coordinate, resoluti
   baseParams[this.v13_ ? 'J' : 'Y'] = y;
 
   return this.getRequestUrl_(tileCoord, tileSize, tileExtent,
-      1, projectionObj, baseParams);
+      1, sourceProjectionObj || projectionObj, baseParams);
 };
 
 
@@ -79326,7 +79358,7 @@ goog.require('ol.featureloader');
  * @extends {ol.Tile}
  * @param {ol.TileCoord} tileCoord Tile coordinate.
  * @param {ol.TileState} state State.
- * @param {string} src Data source url.
+ * @param {number} sourceRevision Source revision.
  * @param {ol.format.Feature} format Feature format.
  * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
  * @param {ol.TileCoord} urlTileCoord Wrapped tile coordinate for source urls.
@@ -79343,9 +79375,9 @@ goog.require('ol.featureloader');
  *     Function to call when a source tile's state changes.
  * @param {olx.TileOptions=} opt_options Tile options.
  */
-ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
-    urlTileCoord, tileUrlFunction, sourceTileGrid, tileGrid, sourceTiles,
-    pixelRatio, projection, tileClass, handleTileChange, opt_options) {
+ol.VectorImageTile = function(tileCoord, state, sourceRevision, format,
+    tileLoadFunction, urlTileCoord, tileUrlFunction, sourceTileGrid, tileGrid,
+    sourceTiles, pixelRatio, projection, tileClass, handleTileChange, opt_options) {
 
   ol.Tile.call(this, tileCoord, state, opt_options);
 
@@ -79380,9 +79412,9 @@ ol.VectorImageTile = function(tileCoord, state, src, format, tileLoadFunction,
   this.tileKeys = [];
 
   /**
-   * @type {string}
+   * @type {number}
    */
-  this.src_ = src;
+  this.sourceRevision_ = sourceRevision;
 
   /**
    * @type {ol.TileCoord}
@@ -79508,7 +79540,7 @@ ol.VectorImageTile.prototype.getReplayState = function(layer) {
  * @inheritDoc
  */
 ol.VectorImageTile.prototype.getKey = function() {
-  return this.tileKeys.join('/') + '/' + this.src_;
+  return this.tileKeys.join('/') + '-' + this.sourceRevision_;
 };
 
 
@@ -79701,6 +79733,7 @@ ol.VectorTile.prototype.disposeInternal = function() {
 /**
  * Gets the extent of the vector tile.
  * @return {ol.Extent} The extent.
+ * @api
  */
 ol.VectorTile.prototype.getExtent = function() {
   return this.extent_ || ol.VectorTile.DEFAULT_EXTENT;
@@ -79977,12 +80010,10 @@ ol.source.VectorTile.prototype.getTile = function(z, x, y, pixelRatio, projectio
     var tileCoord = [z, x, y];
     var urlTileCoord = this.getTileCoordForTileUrlFunction(
         tileCoord, projection);
-    var tileUrl = urlTileCoord ?
-      this.tileUrlFunction(urlTileCoord, pixelRatio, projection) : undefined;
     var tile = new ol.VectorImageTile(
         tileCoord,
-        tileUrl !== undefined ? ol.TileState.IDLE : ol.TileState.EMPTY,
-        tileUrl !== undefined ? tileUrl : '',
+        urlTileCoord !== null ? ol.TileState.IDLE : ol.TileState.EMPTY,
+        this.getRevision(),
         this.format_, this.tileLoadFunction, urlTileCoord, this.tileUrlFunction,
         this.tileGrid, this.getTileGridForProjection(projection),
         this.sourceTiles_, pixelRatio, projection, this.tileClass,
@@ -80652,6 +80683,7 @@ goog.require('ol.TileUrlFunction');
 goog.require('ol.asserts');
 goog.require('ol.dom');
 goog.require('ol.extent');
+goog.require('ol.size');
 goog.require('ol.source.TileImage');
 goog.require('ol.tilegrid.TileGrid');
 
@@ -80678,25 +80710,26 @@ ol.source.Zoomify = function(opt_options) {
   var imageWidth = size[0];
   var imageHeight = size[1];
   var tierSizeInTiles = [];
-  var tileSize = ol.DEFAULT_TILE_SIZE;
+  var tileSize = options.tileSize || ol.DEFAULT_TILE_SIZE;
+  var tileSizeForTierSizeCalculation = tileSize;
 
   switch (tierSizeCalculation) {
     case ol.source.Zoomify.TierSizeCalculation_.DEFAULT:
-      while (imageWidth > tileSize || imageHeight > tileSize) {
+      while (imageWidth > tileSizeForTierSizeCalculation || imageHeight > tileSizeForTierSizeCalculation) {
         tierSizeInTiles.push([
-          Math.ceil(imageWidth / tileSize),
-          Math.ceil(imageHeight / tileSize)
+          Math.ceil(imageWidth / tileSizeForTierSizeCalculation),
+          Math.ceil(imageHeight / tileSizeForTierSizeCalculation)
         ]);
-        tileSize += tileSize;
+        tileSizeForTierSizeCalculation += tileSizeForTierSizeCalculation;
       }
       break;
     case ol.source.Zoomify.TierSizeCalculation_.TRUNCATED:
       var width = imageWidth;
       var height = imageHeight;
-      while (width > tileSize || height > tileSize) {
+      while (width > tileSizeForTierSizeCalculation || height > tileSizeForTierSizeCalculation) {
         tierSizeInTiles.push([
-          Math.ceil(width / tileSize),
-          Math.ceil(height / tileSize)
+          Math.ceil(width / tileSizeForTierSizeCalculation),
+          Math.ceil(height / tileSizeForTierSizeCalculation)
         ]);
         width >>= 1;
         height >>= 1;
@@ -80724,6 +80757,7 @@ ol.source.Zoomify = function(opt_options) {
 
   var extent = [0, -size[1], size[0], 0];
   var tileGrid = new ol.tilegrid.TileGrid({
+    tileSize: tileSize,
     extent: extent,
     origin: ol.extent.getTopLeft(extent),
     resolutions: resolutions
@@ -80758,7 +80792,8 @@ ol.source.Zoomify = function(opt_options) {
           var tileIndex =
               tileCoordX +
               tileCoordY * tierSizeInTiles[tileCoordZ][0];
-          var tileGroup = ((tileIndex + tileCountUpToTier[tileCoordZ]) / ol.DEFAULT_TILE_SIZE) | 0;
+          var tileSize = tileGrid.getTileSize(tileCoordZ);
+          var tileGroup = ((tileIndex + tileCountUpToTier[tileCoordZ]) / tileSize) | 0;
           var localContext = {
             'z': tileCoordZ,
             'x': tileCoordX,
@@ -80775,6 +80810,8 @@ ol.source.Zoomify = function(opt_options) {
 
   var tileUrlFunction = ol.TileUrlFunction.createFromTileUrlFunctions(urls.map(createFromTemplate));
 
+  var ZoomifyTileClass = ol.source.Zoomify.Tile_.bind(null, tileGrid);
+
   ol.source.TileImage.call(this, {
     attributions: options.attributions,
     cacheSize: options.cacheSize,
@@ -80782,7 +80819,7 @@ ol.source.Zoomify = function(opt_options) {
     logo: options.logo,
     projection: options.projection,
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-    tileClass: ol.source.Zoomify.Tile_,
+    tileClass: ZoomifyTileClass,
     tileGrid: tileGrid,
     tileUrlFunction: tileUrlFunction,
     transition: options.transition
@@ -80791,10 +80828,10 @@ ol.source.Zoomify = function(opt_options) {
 };
 ol.inherits(ol.source.Zoomify, ol.source.TileImage);
 
-
 /**
  * @constructor
  * @extends {ol.ImageTile}
+ * @param {ol.tilegrid.TileGrid} tileGrid TileGrid that the tile belongs to.
  * @param {ol.TileCoord} tileCoord Tile coordinate.
  * @param {ol.TileState} state State.
  * @param {string} src Image source URI.
@@ -80804,7 +80841,7 @@ ol.inherits(ol.source.Zoomify, ol.source.TileImage);
  * @private
  */
 ol.source.Zoomify.Tile_ = function(
-    tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options) {
+    tileGrid, tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options) {
 
   ol.ImageTile.call(this, tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options);
 
@@ -80814,6 +80851,11 @@ ol.source.Zoomify.Tile_ = function(
    */
   this.zoomifyImage_ = null;
 
+  /**
+   * @private
+   * @type {ol.Size}
+   */
+  this.tileSize_ = ol.size.toSize(tileGrid.getTileSize(tileCoord[0]));
 };
 ol.inherits(ol.source.Zoomify.Tile_, ol.ImageTile);
 
@@ -80825,14 +80867,14 @@ ol.source.Zoomify.Tile_.prototype.getImage = function() {
   if (this.zoomifyImage_) {
     return this.zoomifyImage_;
   }
-  var tileSize = ol.DEFAULT_TILE_SIZE;
   var image = ol.ImageTile.prototype.getImage.call(this);
   if (this.state == ol.TileState.LOADED) {
-    if (image.width == tileSize && image.height == tileSize) {
+    var tileSize = this.tileSize_;
+    if (image.width == tileSize[0] && image.height == tileSize[1]) {
       this.zoomifyImage_ = image;
       return image;
     } else {
-      var context = ol.dom.createCanvasContext2D(tileSize, tileSize);
+      var context = ol.dom.createCanvasContext2D(tileSize[0], tileSize[1]);
       context.drawImage(image, 0, 0);
       this.zoomifyImage_ = context.canvas;
       return context.canvas;
@@ -80841,7 +80883,6 @@ ol.source.Zoomify.Tile_.prototype.getImage = function() {
     return image;
   }
 };
-
 
 /**
  * @enum {string}
@@ -82489,6 +82530,11 @@ goog.exportSymbol(
     'ol.tilegrid.createXYZ',
     ol.tilegrid.createXYZ,
     OPENLAYERS);
+
+goog.exportProperty(
+    ol.VectorTile.prototype,
+    'getExtent',
+    ol.VectorTile.prototype.getExtent);
 
 goog.exportProperty(
     ol.VectorTile.prototype,
@@ -95339,7 +95385,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.4.1-43-gd74bef9';
+ol.VERSION = 'v4.4.2-94-g1a1d45f';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

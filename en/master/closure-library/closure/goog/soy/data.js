@@ -120,7 +120,7 @@ goog.soy.data.SanitizedContentKind = {
  * @constructor
  */
 goog.soy.data.SanitizedContent = function() {
-  throw Error('Do not instantiate directly');
+  throw new Error('Do not instantiate directly');
 };
 
 
@@ -172,7 +172,7 @@ goog.soy.data.SanitizedContent.prototype.toSafeHtml = function() {
     return goog.html.SafeHtml.htmlEscape(this.toString());
   }
   if (this.contentKind !== goog.soy.data.SanitizedContentKind.HTML) {
-    throw Error('Sanitized content was not of kind TEXT or HTML.');
+    throw new Error('Sanitized content was not of kind TEXT or HTML.');
   }
   return goog.html.uncheckedconversions
       .safeHtmlFromStringKnownToSatisfyTypeContract(
@@ -190,7 +190,7 @@ goog.soy.data.SanitizedContent.prototype.toSafeHtml = function() {
  */
 goog.soy.data.SanitizedContent.prototype.toSafeUrl = function() {
   if (this.contentKind !== goog.soy.data.SanitizedContentKind.URI) {
-    throw Error('Sanitized content was not of kind URI.');
+    throw new Error('Sanitized content was not of kind URI.');
   }
   return goog.html.uncheckedconversions
       .safeUrlFromStringKnownToSatisfyTypeContract(
@@ -361,6 +361,20 @@ goog.soy.data.SanitizedTrustedResourceUri.prototype.contentKind =
 /** @override */
 goog.soy.data.SanitizedTrustedResourceUri.prototype.contentDir =
     goog.i18n.bidi.Dir.LTR;
+
+/**
+ * Converts sanitized content into TrustedResourceUrl without modification.
+ * @return {!goog.html.TrustedResourceUrl}
+ */
+goog.soy.data.SanitizedTrustedResourceUri.prototype.toTrustedResourceUrl =
+    function() {
+  return goog.html.uncheckedconversions
+      .trustedResourceUrlFromStringKnownToSatisfyTypeContract(
+          goog.string.Const.from(
+              'Soy SanitizedContent of kind TRUSTED_RESOURCE_URI produces ' +
+              'TrustedResourceUrl-contract-compliant value.'),
+          this.toString());
+};
 
 /**
  * Checks if the value could be used as the Soy type {trusted_resource_uri}.

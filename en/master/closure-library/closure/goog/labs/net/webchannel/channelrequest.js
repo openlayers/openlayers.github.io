@@ -32,8 +32,6 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.labs.net.webChannel.Channel');
 goog.require('goog.labs.net.webChannel.WebChannelDebug');
 goog.require('goog.labs.net.webChannel.requestStats');
-goog.require('goog.labs.net.webChannel.requestStats.ServerReachability');
-goog.require('goog.labs.net.webChannel.requestStats.Stat');
 goog.require('goog.net.ErrorCode');
 goog.require('goog.net.EventType');
 goog.require('goog.net.XmlHttp');
@@ -200,12 +198,6 @@ goog.labs.net.webChannel.ChannelRequest = function(
    * @private {number}
    */
   this.lastStatusCode_ = -1;
-
-  /**
-   * Whether to send the Connection:close header as part of the request.
-   * @private {boolean}
-   */
-  this.sendClose_ = true;
 
   /**
    * Whether the request has been cancelled due to a call to cancel.
@@ -438,18 +430,12 @@ ChannelRequest.prototype.xmlHttpPost = function(uri, postData, decodeChunks) {
  * @param {?string} hostPrefix  The host prefix, if we might be using a
  *     secondary domain.  Note that it should also be in the URL, adding this
  *     won't cause it to be added to the URL.
- * @param {boolean=} opt_noClose   Whether to request that the tcp/ip connection
- *     should be closed.
  */
-ChannelRequest.prototype.xmlHttpGet = function(
-    uri, decodeChunks, hostPrefix, opt_noClose) {
+ChannelRequest.prototype.xmlHttpGet = function(uri, decodeChunks, hostPrefix) {
   this.type_ = ChannelRequest.Type_.XML_HTTP;
   this.baseUri_ = uri.clone().makeUnique();
   this.postData_ = null;
   this.decodeChunks_ = decodeChunks;
-  if (opt_noClose) {
-    this.sendClose_ = false;
-  }
 
   this.sendXmlHttp_(hostPrefix);
 };
@@ -497,13 +483,6 @@ ChannelRequest.prototype.sendXmlHttp_ = function(hostPrefix) {
     this.xmlHttp_.send(this.requestUri_, this.verb_, this.postData_, headers);
   } else {
     this.verb_ = 'GET';
-
-    // If the user agent is webkit, we cannot send the close header since it is
-    // disallowed by the browser.  If we attempt to set the "Connection: close"
-    // header in WEBKIT browser, it will actually causes an error message.
-    if (this.sendClose_ && !goog.userAgent.WEBKIT) {
-      headers['Connection'] = 'close';
-    }
     this.xmlHttp_.send(this.requestUri_, this.verb_, null, headers);
   }
   requestStats.notifyServerReachabilityEvent(
@@ -861,7 +840,7 @@ ChannelRequest.prototype.ensureWatchDogTimer_ = function() {
 ChannelRequest.prototype.startWatchDogTimer_ = function(time) {
   if (this.watchDogTimerId_ != null) {
     // assertion
-    throw Error('WatchDog timer not null');
+    throw new Error('WatchDog timer not null');
   }
   this.watchDogTimerId_ =
       requestStats.setTimeout(goog.bind(this.onWatchDogTimeout_, this), time);

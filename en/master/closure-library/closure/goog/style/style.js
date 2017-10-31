@@ -32,7 +32,6 @@ goog.require('goog.dom.NodeType');
 goog.require('goog.dom.TagName');
 goog.require('goog.dom.vendor');
 goog.require('goog.html.SafeStyleSheet');
-goog.require('goog.html.legacyconversions');
 goog.require('goog.math.Box');
 goog.require('goog.math.Coordinate');
 goog.require('goog.math.Rect');
@@ -916,7 +915,7 @@ goog.style.setSize = function(element, w, opt_h) {
     w = w.width;
   } else {
     if (opt_h == undefined) {
-      throw Error('missing height argument');
+      throw new Error('missing height argument');
     }
     h = opt_h;
   }
@@ -1275,22 +1274,6 @@ goog.style.isElementShown = function(el) {
 
 
 /**
- * Installs the styles string into the window that contains opt_node.  If
- * opt_node is null, the main window is used.
- * @param {string} stylesString The style string to install.
- * @param {Node=} opt_node Node whose parent document should have the
- *     styles installed.
- * @return {!Element|!StyleSheet} The style element created.
- * @deprecated Use {@link #installSafeStyleSheet} instead.
- */
-goog.style.installStyles = function(stylesString, opt_node) {
-  return goog.style.installSafeStyleSheet(
-      goog.html.legacyconversions.safeStyleSheetFromString(stylesString),
-      opt_node);
-};
-
-
-/**
  * Installs the style sheet into the window that contains opt_node.  If
  * opt_node is null, the main window is used.
  * @param {!goog.html.SafeStyleSheet} safeStyleSheet The style sheet to install.
@@ -1339,21 +1322,6 @@ goog.style.uninstallStyles = function(styleSheet) {
   var node = styleSheet.ownerNode || styleSheet.owningElement ||
       /** @type {Element} */ (styleSheet);
   goog.dom.removeNode(node);
-};
-
-
-/**
- * Sets the content of a style element.  The style element can be any valid
- * style element.  This element will have its content completely replaced by
- * the stylesString.
- * @param {Element|StyleSheet} element A stylesheet element as returned by
- *     installStyles.
- * @param {string} stylesString The new content of the stylesheet.
- * @deprecated Use {@link #setSafeStyleSheet} instead.
- */
-goog.style.setStyles = function(element, stylesString) {
-  goog.style.setSafeStyleSheet(/** @type {!Element|!StyleSheet} */ (element),
-      goog.html.legacyconversions.safeStyleSheetFromString(stylesString));
 };
 
 

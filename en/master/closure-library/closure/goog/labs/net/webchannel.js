@@ -179,6 +179,15 @@ goog.net.WebChannel.prototype.close = goog.abstractMethod;
  * Sends a message to the server that maintains the other end point of
  * the WebChannel.
  *
+ * O-RTT behavior:
+ * 1. messages sent before open() is called will always be delivered as
+ *    part of the handshake, i.e. with 0-RTT
+ * 2. messages sent after open() is called but before the OPEN event
+ *    is received will be delivered as part of the handshake if
+ *    send() is called from the same execution context as open().
+ * 3. otherwise, those messages will be buffered till the handshake
+ *    is completed (which will fire the OPEN event).
+ *
  * @param {!goog.net.WebChannel.MessageData} message The message to send.
  */
 goog.net.WebChannel.prototype.send = goog.abstractMethod;
@@ -345,6 +354,16 @@ goog.net.WebChannel.RuntimeProperties.prototype.getConcurrentRequestLimit =
  * the channel is created.
  */
 goog.net.WebChannel.RuntimeProperties.prototype.isSpdyEnabled =
+    goog.abstractMethod;
+
+
+/**
+ * @return {number} The number of requests (for sending messages to the server)
+ * that are pending. If this number is approaching the value of
+ * getConcurrentRequestLimit(), client-to-server message delivery may experience
+ * a higher latency.
+ */
+goog.net.WebChannel.RuntimeProperties.prototype.getPendingRequestCount =
     goog.abstractMethod;
 
 
