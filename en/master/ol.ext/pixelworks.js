@@ -237,11 +237,11 @@ Processor.prototype._resolveJob = function() {
 var processor = Processor;
 
 var Processor_1 = processor;
-var index = {
+var lib = {
 	Processor: Processor_1
 };
 
-exports['default'] = index;
+exports['default'] = lib;
 exports.Processor = Processor_1;
 
 }((this.pixelworks = this.pixelworks || {})));}).call(ol.ext);

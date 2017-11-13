@@ -11,8 +11,7 @@ ol.ext.rbush = function() {};
 (function() {(function (exports) {
 'use strict';
 
-'use strict';
-var index$2 = partialSort;
+var quickselect = partialSort;
 function partialSort(arr, k, left, right, compare) {
     left = left || 0;
     right = right || (arr.length - 1);
@@ -58,8 +57,7 @@ function defaultCompare(a, b) {
     return a < b ? -1 : a > b ? 1 : 0;
 }
 
-'use strict';
-var index = rbush;
+var rbush_1 = rbush;
 function rbush(maxEntries, format) {
     if (!(this instanceof rbush)) return new rbush(maxEntries, format);
     this._maxEntries = Math.max(4, maxEntries || 9);
@@ -438,12 +436,12 @@ function multiSelect(arr, left, right, n, compare) {
         left = stack.pop();
         if (right - left <= n) continue;
         mid = left + Math.ceil((right - left) / n / 2) * n;
-        index$2(arr, mid, left, right, compare);
+        quickselect(arr, mid, left, right, compare);
         stack.push(left, mid, mid, right);
     }
 }
 
-exports['default'] = index;
+exports['default'] = rbush_1;
 
 }((this.rbush = this.rbush || {})));}).call(ol.ext);
 ol.ext.rbush = ol.ext.rbush.default;

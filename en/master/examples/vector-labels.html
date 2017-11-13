@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.4.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>4.5.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -104,8 +104,8 @@
     <label>Font: </label>
     <select id="points-font">
       <option value="Arial" selected="selected">Arial</option>
-      <option value="Courier New">Courier New</option>
-      <option value="Quattrocento Sans">Quattrocento</option>
+      <option value="'Courier New'">Courier New</option>
+      <option value="'Open Sans'">Open Sans</option>
       <option value="Verdana">Verdana</option>
     </select>
     <br />
@@ -213,8 +213,8 @@
     <label>Font: </label>
     <select id="lines-font">
       <option value="Arial">Arial</option>
-      <option value="Courier New" selected="selected">Courier New</option>
-      <option value="Quattrocento Sans">Quattrocento</option>
+      <option value="'Courier New'" selected="selected">Courier New</option>
+      <option value="'Open Sans'">Open Sans</option>
       <option value="Verdana">Verdana</option>
     </select>
     <br />
@@ -322,8 +322,8 @@
     <label>Font: </label>
     <select id="polygons-font">
       <option value="Arial">Arial</option>
-      <option value="Courier New">Courier New</option>
-      <option value="Quattrocento Sans">Quattrocento</option>
+      <option value="'Courier New'">Courier New</option>
+      <option value="'Open Sans'">Open Sans</option>
       <option value="Verdana" selected="selected">Verdana</option>
     </select>
     <br />
@@ -379,7 +379,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of GeoJSON features with labels.</p>
-          <div id="docs"><p>This example showcases a number of options that can be set on text styles. When &quot;Text/Wrap&quot; is chosen (for example for the line features), the label is wrapped by inserting the character <code>\n</code>, which will create a multi-line label.</p>
+          <div id="docs"><p>This example showcases a number of options that can be set on text styles. When &quot;Text/Wrap&quot; is chosen (for example for the line features), the label is wrapped by inserting the character <code>\n</code>, which will create a multi-line label. The &quot;Open Sans&quot; web font will be loaded on demand, to show dynamic font loading.</p>
 </div>
           <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.GeoJSON.html" title="API documentation for ol.format.GeoJSON">ol.format.GeoJSON</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Circle.html" title="API documentation for ol.style.Circle">ol.style.Circle</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.style.Text.html" title="API documentation for ol.style.Text">ol.style.Text</a></li></ul></div>
         </div>
@@ -393,7 +393,9 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Vector Labels</textarea>
           <textarea class="hidden" name="description">Example of GeoJSON features with labels.</textarea>
-          <textarea class="hidden" name="js">var myDom &#x3D; {
+          <textarea class="hidden" name="js">var openSansAdded &#x3D; false;
+
+var myDom &#x3D; {
   points: {
     text: document.getElementById(&#x27;points-text&#x27;),
     align: document.getElementById(&#x27;points-align&#x27;),
@@ -458,7 +460,7 @@ var getText &#x3D; function(feature, resolution, dom) {
     text &#x3D; &#x27;&#x27;;
   } else if (type &#x3D;&#x3D; &#x27;shorten&#x27;) {
     text &#x3D; text.trunc(12);
-  } else if (type &#x3D;&#x3D; &#x27;wrap&#x27;) {
+  } else if (type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp; dom.placement.value !&#x3D; &#x27;line&#x27;) {
     text &#x3D; stringDivider(text, 16, &#x27;\n&#x27;);
   }
 
@@ -477,6 +479,13 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
   var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
   var exceedLength &#x3D; dom.exceedlength ? (dom.exceedlength.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
   var rotation &#x3D; parseFloat(dom.rotation.value);
+  if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
+    var openSans &#x3D; document.createElement(&#x27;link&#x27;);
+    openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
+    openSans.rel &#x3D; &#x27;stylesheet&#x27;;
+    document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
+    openSansAdded &#x3D; true;
+  }
   var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
   var fillColor &#x3D; dom.color.value;
   var outlineColor &#x3D; dom.outline.value;
@@ -515,7 +524,7 @@ function polygonStyleFunction(feature, resolution) {
 
 var vectorPolygons &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.4.2/examples/data/geojson/polygon-samples.geojson&#x27;,
+    url: &#x27;https://openlayers.org/en/v4.5.0/examples/data/geojson/polygon-samples.geojson&#x27;,
     format: new ol.format.GeoJSON()
   }),
   style: polygonStyleFunction
@@ -535,7 +544,7 @@ function lineStyleFunction(feature, resolution) {
 
 var vectorLines &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.4.2/examples/data/geojson/line-samples.geojson&#x27;,
+    url: &#x27;https://openlayers.org/en/v4.5.0/examples/data/geojson/line-samples.geojson&#x27;,
     format: new ol.format.GeoJSON()
   }),
   style: lineStyleFunction
@@ -556,7 +565,7 @@ function pointStyleFunction(feature, resolution) {
 
 var vectorPoints &#x3D; new ol.layer.Vector({
   source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.4.2/examples/data/geojson/point-samples.geojson&#x27;,
+    url: &#x27;https://openlayers.org/en/v4.5.0/examples/data/geojson/point-samples.geojson&#x27;,
     format: new ol.format.GeoJSON()
   }),
   style: pointStyleFunction
@@ -731,8 +740,8 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;label&gt;Font: &lt;/label&gt;
     &lt;select id&#x3D;&quot;points-font&quot;&gt;
       &lt;option value&#x3D;&quot;Arial&quot; selected&#x3D;&quot;selected&quot;&gt;Arial&lt;/option&gt;
-      &lt;option value&#x3D;&quot;Courier New&quot;&gt;Courier New&lt;/option&gt;
-      &lt;option value&#x3D;&quot;Quattrocento Sans&quot;&gt;Quattrocento&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot;&gt;Courier New&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&#x27;Open Sans&#x27;&quot;&gt;Open Sans&lt;/option&gt;
       &lt;option value&#x3D;&quot;Verdana&quot;&gt;Verdana&lt;/option&gt;
     &lt;/select&gt;
     &lt;br /&gt;
@@ -840,8 +849,8 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;label&gt;Font: &lt;/label&gt;
     &lt;select id&#x3D;&quot;lines-font&quot;&gt;
       &lt;option value&#x3D;&quot;Arial&quot;&gt;Arial&lt;/option&gt;
-      &lt;option value&#x3D;&quot;Courier New&quot; selected&#x3D;&quot;selected&quot;&gt;Courier New&lt;/option&gt;
-      &lt;option value&#x3D;&quot;Quattrocento Sans&quot;&gt;Quattrocento&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot; selected&#x3D;&quot;selected&quot;&gt;Courier New&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&#x27;Open Sans&#x27;&quot;&gt;Open Sans&lt;/option&gt;
       &lt;option value&#x3D;&quot;Verdana&quot;&gt;Verdana&lt;/option&gt;
     &lt;/select&gt;
     &lt;br /&gt;
@@ -949,8 +958,8 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;label&gt;Font: &lt;/label&gt;
     &lt;select id&#x3D;&quot;polygons-font&quot;&gt;
       &lt;option value&#x3D;&quot;Arial&quot;&gt;Arial&lt;/option&gt;
-      &lt;option value&#x3D;&quot;Courier New&quot;&gt;Courier New&lt;/option&gt;
-      &lt;option value&#x3D;&quot;Quattrocento Sans&quot;&gt;Quattrocento&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot;&gt;Courier New&lt;/option&gt;
+      &lt;option value&#x3D;&quot;&#x27;Open Sans&#x27;&quot;&gt;Open Sans&lt;/option&gt;
       &lt;option value&#x3D;&quot;Verdana&quot; selected&#x3D;&quot;selected&quot;&gt;Verdana&lt;/option&gt;
     &lt;/select&gt;
     &lt;br /&gt;
@@ -1000,17 +1009,17 @@ function stringDivider(str, width, spaceReplacer) {
 &lt;/div&gt;
 &lt;div class&#x3D;&quot;clearall&quot;&gt;&lt;/div&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.4.2/css/ol.css,https://openlayers.org/en/v4.4.2/build/ol.js">
+          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.5.0/css/ol.css,https://openlayers.org/en/v4.5.0/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Vector Labels&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.4.2/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.5.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.4.2/build/ol.js"&gt;&lt;/script&gt;
+    &lt;script src="https://openlayers.org/en/v4.5.0/build/ol.js"&gt;&lt;/script&gt;
     &lt;style&gt;
       h2 {
         font-size: 1.5em;
@@ -1120,8 +1129,8 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;label&gt;Font: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-font&quot;&gt;
           &lt;option value&#x3D;&quot;Arial&quot; selected&#x3D;&quot;selected&quot;&gt;Arial&lt;/option&gt;
-          &lt;option value&#x3D;&quot;Courier New&quot;&gt;Courier New&lt;/option&gt;
-          &lt;option value&#x3D;&quot;Quattrocento Sans&quot;&gt;Quattrocento&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot;&gt;Courier New&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&#x27;Open Sans&#x27;&quot;&gt;Open Sans&lt;/option&gt;
           &lt;option value&#x3D;&quot;Verdana&quot;&gt;Verdana&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
@@ -1229,8 +1238,8 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;label&gt;Font: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-font&quot;&gt;
           &lt;option value&#x3D;&quot;Arial&quot;&gt;Arial&lt;/option&gt;
-          &lt;option value&#x3D;&quot;Courier New&quot; selected&#x3D;&quot;selected&quot;&gt;Courier New&lt;/option&gt;
-          &lt;option value&#x3D;&quot;Quattrocento Sans&quot;&gt;Quattrocento&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot; selected&#x3D;&quot;selected&quot;&gt;Courier New&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&#x27;Open Sans&#x27;&quot;&gt;Open Sans&lt;/option&gt;
           &lt;option value&#x3D;&quot;Verdana&quot;&gt;Verdana&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
@@ -1338,8 +1347,8 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;label&gt;Font: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-font&quot;&gt;
           &lt;option value&#x3D;&quot;Arial&quot;&gt;Arial&lt;/option&gt;
-          &lt;option value&#x3D;&quot;Courier New&quot;&gt;Courier New&lt;/option&gt;
-          &lt;option value&#x3D;&quot;Quattrocento Sans&quot;&gt;Quattrocento&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot;&gt;Courier New&lt;/option&gt;
+          &lt;option value&#x3D;&quot;&#x27;Open Sans&#x27;&quot;&gt;Open Sans&lt;/option&gt;
           &lt;option value&#x3D;&quot;Verdana&quot; selected&#x3D;&quot;selected&quot;&gt;Verdana&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
@@ -1389,6 +1398,8 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;/div&gt;
     &lt;div class&#x3D;&quot;clearall&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
+      var openSansAdded &#x3D; false;
+
       var myDom &#x3D; {
         points: {
           text: document.getElementById(&#x27;points-text&#x27;),
@@ -1454,7 +1465,7 @@ function stringDivider(str, width, spaceReplacer) {
           text &#x3D; &#x27;&#x27;;
         } else if (type &#x3D;&#x3D; &#x27;shorten&#x27;) {
           text &#x3D; text.trunc(12);
-        } else if (type &#x3D;&#x3D; &#x27;wrap&#x27;) {
+        } else if (type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp; dom.placement.value !&#x3D; &#x27;line&#x27;) {
           text &#x3D; stringDivider(text, 16, &#x27;\n&#x27;);
         }
 
@@ -1473,6 +1484,13 @@ function stringDivider(str, width, spaceReplacer) {
         var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
         var exceedLength &#x3D; dom.exceedlength ? (dom.exceedlength.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
         var rotation &#x3D; parseFloat(dom.rotation.value);
+        if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
+          var openSans &#x3D; document.createElement(&#x27;link&#x27;);
+          openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
+          openSans.rel &#x3D; &#x27;stylesheet&#x27;;
+          document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
+          openSansAdded &#x3D; true;
+        }
         var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
         var fillColor &#x3D; dom.color.value;
         var outlineColor &#x3D; dom.outline.value;
@@ -1511,7 +1529,7 @@ function stringDivider(str, width, spaceReplacer) {
 
       var vectorPolygons &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.4.2/examples/data/geojson/polygon-samples.geojson&#x27;,
+          url: &#x27;https://openlayers.org/en/v4.5.0/examples/data/geojson/polygon-samples.geojson&#x27;,
           format: new ol.format.GeoJSON()
         }),
         style: polygonStyleFunction
@@ -1531,7 +1549,7 @@ function stringDivider(str, width, spaceReplacer) {
 
       var vectorLines &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.4.2/examples/data/geojson/line-samples.geojson&#x27;,
+          url: &#x27;https://openlayers.org/en/v4.5.0/examples/data/geojson/line-samples.geojson&#x27;,
           format: new ol.format.GeoJSON()
         }),
         style: lineStyleFunction
@@ -1552,7 +1570,7 @@ function stringDivider(str, width, spaceReplacer) {
 
       var vectorPoints &#x3D; new ol.layer.Vector({
         source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.4.2/examples/data/geojson/point-samples.geojson&#x27;,
+          url: &#x27;https://openlayers.org/en/v4.5.0/examples/data/geojson/point-samples.geojson&#x27;,
           format: new ol.format.GeoJSON()
         }),
         style: pointStyleFunction
@@ -1641,7 +1659,7 @@ function stringDivider(str, width, spaceReplacer) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.4.2' != latestVersion) {
+    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.5.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

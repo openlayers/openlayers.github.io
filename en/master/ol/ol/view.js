@@ -341,7 +341,7 @@ ol.View.prototype.animate = function(var_args) {
  * @api
  */
 ol.View.prototype.getAnimating = function() {
-  return this.getHints()[ol.ViewHint.ANIMATING] > 0;
+  return this.hints_[ol.ViewHint.ANIMATING] > 0;
 };
 
 
@@ -351,7 +351,7 @@ ol.View.prototype.getAnimating = function() {
  * @api
  */
 ol.View.prototype.getInteracting = function() {
-  return this.getHints()[ol.ViewHint.INTERACTING] > 0;
+  return this.hints_[ol.ViewHint.INTERACTING] > 0;
 };
 
 
@@ -360,7 +360,7 @@ ol.View.prototype.getInteracting = function() {
  * @api
  */
 ol.View.prototype.cancelAnimations = function() {
-  this.setHint(ol.ViewHint.ANIMATING, -this.getHints()[ol.ViewHint.ANIMATING]);
+  this.setHint(ol.ViewHint.ANIMATING, -this.hints_[ol.ViewHint.ANIMATING]);
   for (var i = 0, ii = this.animations_.length; i < ii; ++i) {
     var series = this.animations_[i];
     if (series[0].callback) {
@@ -788,8 +788,9 @@ ol.View.prototype.getState = function() {
 
 
 /**
- * Get the current zoom level. Return undefined if the current
- * resolution is undefined or not within the "resolution constraints".
+ * Get the current zoom level.  If you configured your view with a resolutions
+ * array (this is rare), this method may return non-integer zoom levels (so
+ * the zoom level is not safe to use as an index into a resolutions array).
  * @return {number|undefined} Zoom.
  * @api
  */
@@ -810,25 +811,22 @@ ol.View.prototype.getZoom = function() {
  * @api
  */
 ol.View.prototype.getZoomForResolution = function(resolution) {
-  var zoom;
-  if (resolution >= this.minResolution_ && resolution <= this.maxResolution_) {
-    var offset = this.minZoom_ || 0;
-    var max, zoomFactor;
-    if (this.resolutions_) {
-      var nearest = ol.array.linearFindNearest(this.resolutions_, resolution, 1);
-      offset += nearest;
-      if (nearest == this.resolutions_.length - 1) {
-        return offset;
-      }
-      max = this.resolutions_[nearest];
-      zoomFactor = max / this.resolutions_[nearest + 1];
+  var offset = this.minZoom_ || 0;
+  var max, zoomFactor;
+  if (this.resolutions_) {
+    var nearest = ol.array.linearFindNearest(this.resolutions_, resolution, 1);
+    offset += nearest;
+    max = this.resolutions_[nearest];
+    if (nearest == this.resolutions_.length - 1) {
+      zoomFactor = 2;
     } else {
-      max = this.maxResolution_;
-      zoomFactor = this.zoomFactor_;
+      zoomFactor = max / this.resolutions_[nearest + 1];
     }
-    zoom = offset + Math.log(max / resolution) / Math.log(zoomFactor);
+  } else {
+    max = this.maxResolution_;
+    zoomFactor = this.zoomFactor_;
   }
-  return zoom;
+  return offset + Math.log(max / resolution) / Math.log(zoomFactor);
 };
 
 

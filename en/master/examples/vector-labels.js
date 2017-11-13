@@ -1,3 +1,5 @@
+var openSansAdded = false;
+
 var myDom = {
   points: {
     text: document.getElementById('points-text'),
@@ -63,7 +65,7 @@ var getText = function(feature, resolution, dom) {
     text = '';
   } else if (type == 'shorten') {
     text = text.trunc(12);
-  } else if (type == 'wrap') {
+  } else if (type == 'wrap' && dom.placement.value != 'line') {
     text = stringDivider(text, 16, '\n');
   }
 
@@ -82,6 +84,13 @@ var createTextStyle = function(feature, resolution, dom) {
   var maxAngle = dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
   var exceedLength = dom.exceedlength ? (dom.exceedlength.value == 'true') : undefined;
   var rotation = parseFloat(dom.rotation.value);
+  if (dom.font.value == '\'Open Sans\'' && !openSansAdded) {
+    var openSans = document.createElement('link');
+    openSans.href = 'https://fonts.googleapis.com/css?family=Open+Sans';
+    openSans.rel = 'stylesheet';
+    document.getElementsByTagName('head')[0].appendChild(openSans);
+    openSansAdded = true;
+  }
   var font = weight + ' ' + size + ' ' + dom.font.value;
   var fillColor = dom.color.value;
   var outlineColor = dom.outline.value;

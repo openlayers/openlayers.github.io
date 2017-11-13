@@ -84,13 +84,12 @@ var write = function (buffer, value, offset, isLE, mLen, nBytes) {
   for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
   buffer[offset + i - d] |= s * 128;
 };
-var index$2 = {
+var ieee754 = {
 	read: read,
 	write: write
 };
 
-'use strict';
-var index = Pbf;
+var pbf = Pbf;
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView && ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
     this.pos = 0;
@@ -143,12 +142,12 @@ Pbf.prototype = {
         return val;
     },
     readFloat: function() {
-        var val = index$2.read(this.buf, this.pos, true, 23, 4);
+        var val = ieee754.read(this.buf, this.pos, true, 23, 4);
         this.pos += 4;
         return val;
     },
     readDouble: function() {
-        var val = index$2.read(this.buf, this.pos, true, 52, 8);
+        var val = ieee754.read(this.buf, this.pos, true, 52, 8);
         this.pos += 8;
         return val;
     },
@@ -318,12 +317,12 @@ Pbf.prototype = {
     },
     writeFloat: function(val) {
         this.realloc(4);
-        index$2.write(this.buf, val, this.pos, true, 23, 4);
+        ieee754.write(this.buf, val, this.pos, true, 23, 4);
         this.pos += 4;
     },
     writeDouble: function(val) {
         this.realloc(8);
-        index$2.write(this.buf, val, this.pos, true, 52, 8);
+        ieee754.write(this.buf, val, this.pos, true, 52, 8);
         this.pos += 8;
     },
     writeBytes: function(buffer) {
@@ -601,7 +600,7 @@ function writeUtf8(buf, str, pos) {
     return pos;
 }
 
-exports['default'] = index;
+exports['default'] = pbf;
 
 }((this.PBF = this.PBF || {})));}).call(ol.ext);
 ol.ext.PBF = ol.ext.PBF.default;

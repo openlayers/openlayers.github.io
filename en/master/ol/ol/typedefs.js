@@ -87,6 +87,28 @@ ol.CanvasFunctionType;
 
 
 /**
+ * @typedef {{currentFillStyle: (ol.ColorLike|undefined),
+ *            currentStrokeStyle: (ol.ColorLike|undefined),
+ *            currentLineCap: (string|undefined),
+ *            currentLineDash: Array.<number>,
+ *            currentLineDashOffset: (number|undefined),
+ *            currentLineJoin: (string|undefined),
+ *            currentLineWidth: (number|undefined),
+ *            currentMiterLimit: (number|undefined),
+ *            lastStroke: (number|undefined),
+ *            fillStyle: (ol.ColorLike|undefined),
+ *            strokeStyle: (ol.ColorLike|undefined),
+ *            lineCap: (string|undefined),
+ *            lineDash: Array.<number>,
+ *            lineDashOffset: (number|undefined),
+ *            lineJoin: (string|undefined),
+ *            lineWidth: (number|undefined),
+ *            miterLimit: (number|undefined)}|null}
+ */
+ol.CanvasFillStrokeState;
+
+
+/**
  * @typedef {{lineCap: string,
  *            lineDash: Array.<number>,
  *            lineDashOffset: number,
@@ -165,6 +187,20 @@ ol.Coordinate;
  * @typedef {function((ol.Coordinate|undefined)): string}
  */
 ol.CoordinateFormatType;
+
+
+/**
+ * Container for decluttered replay instructions that need to be rendered or
+ * omitted together, i.e. when styles render both an image and text, or for the
+ * characters that form text along lines. The basic elements of this array are
+ * `[minX, minY, maxX, maxY, count]`, where the first four entries are the
+ * rendered extent of the group in pixel space. `count` is the number of styles
+ * in the group, i.e. 2 when an image and a text are grouped, or 1 otherwise.
+ * In addition to these four elements, declutter instruction arrays (i.e. the
+ * arguments to @{link ol.render.canvas.drawImage} are appended to the array.
+ * @typedef {Array.<*>}
+ */
+ol.DeclutterGroup;
 
 
 /**
