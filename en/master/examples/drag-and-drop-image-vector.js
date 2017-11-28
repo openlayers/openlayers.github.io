@@ -95,11 +95,10 @@ dragAndDropInteraction.on('addfeatures', function(event) {
   var vectorSource = new ol.source.Vector({
     features: event.features
   });
-  map.addLayer(new ol.layer.Image({
-    source: new ol.source.ImageVector({
-      source: vectorSource,
-      style: styleFunction
-    })
+  map.addLayer(new ol.layer.Vector({
+    renderMode: 'image',
+    source: vectorSource,
+    style: styleFunction
   }));
   map.getView().fit(vectorSource.getExtent());
 });

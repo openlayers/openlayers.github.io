@@ -9453,6 +9453,10 @@
             
             <span class="subtitle">Typedefs</span>
             
+                <li data-name="ol.layer.VectorRenderType" class="">
+                    <a href="ol.layer.html#.VectorRenderType">VectorRenderType</a>
+                </li>
+            
                 <li data-name="ol.layer.VectorTileRenderType" class="">
                     <a href="ol.layer.html#.VectorTileRenderType">VectorTileRenderType</a>
                 </li>
@@ -11102,6 +11106,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.proj.Projection#getAxisOrientation" class="">
+                    <a href="ol.proj.Projection.html#getAxisOrientation">getAxisOrientation</a>
+                </li>
             
                 <li data-name="ol.proj.Projection#getCode" class="">
                     <a href="ol.proj.Projection.html#getCode">getCode</a>
@@ -16696,8 +16704,12 @@
                     <a href="ol.style.Text.html#clone">clone</a>
                 </li>
             
-                <li data-name="ol.style.Text#getExceedLength" class="">
-                    <a href="ol.style.Text.html#getExceedLength">getExceedLength</a>
+                <li data-name="ol.style.Text#getBackgroundFill" class="">
+                    <a href="ol.style.Text.html#getBackgroundFill">getBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#getBackgroundStroke">getBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#getFill" class="">
@@ -16718,6 +16730,14 @@
             
                 <li data-name="ol.style.Text#getOffsetY" class="">
                     <a href="ol.style.Text.html#getOffsetY">getOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getOverflow" class="">
+                    <a href="ol.style.Text.html#getOverflow">getOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getPadding" class="">
+                    <a href="ol.style.Text.html#getPadding">getPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#getPlacement" class="">
@@ -16752,8 +16772,12 @@
                     <a href="ol.style.Text.html#getTextBaseline">getTextBaseline</a>
                 </li>
             
-                <li data-name="ol.style.Text#setExceedLength" class="">
-                    <a href="ol.style.Text.html#setExceedLength">setExceedLength</a>
+                <li data-name="ol.style.Text#setBackgroundFill" class="">
+                    <a href="ol.style.Text.html#setBackgroundFill">setBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#setBackgroundStroke">setBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#setFill" class="">
@@ -16774,6 +16798,14 @@
             
                 <li data-name="ol.style.Text#setOffsetY" class="">
                     <a href="ol.style.Text.html#setOffsetY">setOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setOverflow" class="">
+                    <a href="ol.style.Text.html#setOverflow">setOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setPadding" class="">
+                    <a href="ol.style.Text.html#setPadding">setPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#setPlacement" class="">
@@ -17465,6 +17497,98 @@ the default <code>ol.proj#getPointResolution</code> function will be used.</p></
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="getAxisOrientation">
+        </div>
+        <h4 class="name">
+            getAxisOrientation<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            src/ol/proj/projection.js, line 202
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Get the axis orientation of this projection.
+Example values are:
+enu - the default easting, northing, elevation.
+neu - northing, easting, up - useful for &quot;lat/long&quot; geographic coordinates,
+    or south orientated transverse mercator.
+wnu - westing, northing, up - some planetary coordinate systems have
+    &quot;west positive&quot; coordinate systems</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Axis orientation.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="getCode">
         </div>
         <h4 class="name">
@@ -17907,7 +18031,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/projection.js, line 211
+            src/ol/proj/projection.js, line 212
         </div>
         
         
@@ -17993,7 +18117,7 @@ Whether the projection is global.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/projection.js, line 248
+            src/ol/proj/projection.js, line 249
         </div>
         
         
@@ -18117,7 +18241,7 @@ Whether the projection is global.
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/projection.js, line 271
+            src/ol/proj/projection.js, line 272
         </div>
         
         
@@ -18242,7 +18366,7 @@ for this projection.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/projection.js, line 221
+            src/ol/proj/projection.js, line 222
         </div>
         
         
@@ -18366,7 +18490,7 @@ for this projection.</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/proj/projection.js, line 260
+            src/ol/proj/projection.js, line 261
         </div>
         
         

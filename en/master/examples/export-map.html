@@ -82,9 +82,9 @@ var map &#x3D; new ol.Map({
   ],
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   view: new ol.View({
     center: [0, 0],
@@ -142,9 +142,9 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
         ],
         target: &#x27;map&#x27;,
         controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          attributionOptions: {
             collapsible: false
-          })
+          }
         }),
         view: new ol.View({
           center: [0, 0],

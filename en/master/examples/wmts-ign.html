@@ -69,9 +69,9 @@
           <textarea class="hidden" name="js">var map &#x3D; new ol.Map({
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   view: new ol.View({
     zoom: 5,
@@ -139,9 +139,9 @@ map.addLayer(ign);
       var map &#x3D; new ol.Map({
         target: &#x27;map&#x27;,
         controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          attributionOptions: {
             collapsible: false
-          })
+          }
         }),
         view: new ol.View({
           zoom: 5,

@@ -86,9 +86,9 @@
     renderer: /** @type {Array&lt;ol.renderer.Type&gt;} */ ([&#x27;webgl&#x27;, &#x27;canvas&#x27;]),
     target: &#x27;map&#x27;,
     controls: ol.control.defaults({
-      attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      attributionOptions: {
         collapsible: false
-      })
+      }
     }),
     view: new ol.View({
       center: [0, 0],
@@ -212,9 +212,9 @@
           renderer: /** @type {Array&lt;ol.renderer.Type&gt;} */ ([&#x27;webgl&#x27;, &#x27;canvas&#x27;]),
           target: &#x27;map&#x27;,
           controls: ol.control.defaults({
-            attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+            attributionOptions: {
               collapsible: false
-            })
+            }
           }),
           view: new ol.View({
             center: [0, 0],

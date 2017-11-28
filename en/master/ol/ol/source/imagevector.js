@@ -14,7 +14,11 @@ goog.require('ol.transform');
 
 
 /**
+ * @deprecated
  * @classdesc
+ * **Deprecated**. Use an `ol.layer.Vector` with `renderMode: 'image'` and an
+ * `ol.source.Vector` instead.
+ *
  * An image source whose images are canvas elements into which vector features
  * read from a vector source (`ol.source.Vector`) are drawn. An
  * `ol.source.ImageVector` object is to be used as the `source` of an image
@@ -148,12 +152,13 @@ ol.source.ImageVector.prototype.canvasFunctionInternal_ = function(extent, resol
     this.canvasContext_.clearRect(0, 0, size[0], size[1]);
   }
 
+  this.declutterTree_.clear();
+
   var transform = this.getTransform_(ol.extent.getCenter(extent),
       resolution, pixelRatio, size);
   replayGroup.replay(this.canvasContext_, transform, 0, {});
 
   this.replayGroup_ = replayGroup;
-  this.declutterTree_.clear();
 
   return this.canvasContext_.canvas;
 };
@@ -182,7 +187,6 @@ ol.source.ImageVector.prototype.forEachFeatureAtCoordinate = function(
             return callback(feature);
           }
         }, null);
-    this.declutterTree_.clear();
     return result;
   }
 };

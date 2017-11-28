@@ -9453,6 +9453,10 @@
             
             <span class="subtitle">Typedefs</span>
             
+                <li data-name="ol.layer.VectorRenderType" class="">
+                    <a href="ol.layer.html#.VectorRenderType">VectorRenderType</a>
+                </li>
+            
                 <li data-name="ol.layer.VectorTileRenderType" class="">
                     <a href="ol.layer.html#.VectorTileRenderType">VectorTileRenderType</a>
                 </li>
@@ -11102,6 +11106,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.proj.Projection#getAxisOrientation" class="">
+                    <a href="ol.proj.Projection.html#getAxisOrientation">getAxisOrientation</a>
+                </li>
             
                 <li data-name="ol.proj.Projection#getCode" class="">
                     <a href="ol.proj.Projection.html#getCode">getCode</a>
@@ -16696,8 +16704,12 @@
                     <a href="ol.style.Text.html#clone">clone</a>
                 </li>
             
-                <li data-name="ol.style.Text#getExceedLength" class="">
-                    <a href="ol.style.Text.html#getExceedLength">getExceedLength</a>
+                <li data-name="ol.style.Text#getBackgroundFill" class="">
+                    <a href="ol.style.Text.html#getBackgroundFill">getBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#getBackgroundStroke">getBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#getFill" class="">
@@ -16718,6 +16730,14 @@
             
                 <li data-name="ol.style.Text#getOffsetY" class="">
                     <a href="ol.style.Text.html#getOffsetY">getOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getOverflow" class="">
+                    <a href="ol.style.Text.html#getOverflow">getOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getPadding" class="">
+                    <a href="ol.style.Text.html#getPadding">getPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#getPlacement" class="">
@@ -16752,8 +16772,12 @@
                     <a href="ol.style.Text.html#getTextBaseline">getTextBaseline</a>
                 </li>
             
-                <li data-name="ol.style.Text#setExceedLength" class="">
-                    <a href="ol.style.Text.html#setExceedLength">setExceedLength</a>
+                <li data-name="ol.style.Text#setBackgroundFill" class="">
+                    <a href="ol.style.Text.html#setBackgroundFill">setBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#setBackgroundStroke">setBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#setFill" class="">
@@ -16774,6 +16798,14 @@
             
                 <li data-name="ol.style.Text#setOffsetY" class="">
                     <a href="ol.style.Text.html#setOffsetY">setOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setOverflow" class="">
+                    <a href="ol.style.Text.html#setOverflow">setOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setPadding" class="">
+                    <a href="ol.style.Text.html#setPadding">setPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#setPlacement" class="">
@@ -19503,8 +19535,9 @@ each geometry.</p></td>
             
             
             
-            <td class="description last"><p>For polygon labels or when <code>placement</code> is set to <code>'line'</code>, allow text to
-exceed the width of the polygon at the the label position or the length of
+            <td class="description last"><p><strong>Deprecated</strong>. Use the <code>overflow</code> option instead.</p>
+<p>For polygon labels or when <code>placement</code> is set to <code>'line'</code>, allow text to
+exceed the width of the polygon at the label position or the length of
 the path that it follows. Default is <code>false</code>.</p></td>
         </tr>
 	
@@ -19648,6 +19681,42 @@ Default is <code>0</code>.</p></td>
             
             <td class="description last"><p>Vertical text offset in pixels. A positive will shift the text down. Default
 is <code>0</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>overflow</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>For polygon labels or when <code>placement</code> is set to <code>'line'</code>, allow text to
+exceed the width of the polygon at the label position or the length of
+the path that it follows. Default is <code>false</code>.</p></td>
         </tr>
 	
 	
@@ -19958,6 +20027,112 @@ exceeded.</p></td>
             
             
             <td class="description last"><p>Stroke style.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>backgroundFill</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Fill.html">ol.style.Fill</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Fill style for the text background when <code>placement</code> is <code>'point'</code>. Default is
+no fill.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>backgroundStroke</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.style.Stroke.html">ol.style.Stroke</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Stroke style for the text background  when <code>placement</code> is <code>'point'</code>. Default
+is no stroke.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>padding</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>Padding in pixels around the text for decluttering and background. The order
+of values in the array is <code>[top, right, bottom, left]</code>. Default is
+<code>[0, 0, 0, 0]</code>.</p></td>
         </tr>
 	
 	

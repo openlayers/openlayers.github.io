@@ -1,8 +1,8 @@
 var map = new ol.Map({
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }).extend([
     new ol.control.ZoomToExtent({
       extent: [

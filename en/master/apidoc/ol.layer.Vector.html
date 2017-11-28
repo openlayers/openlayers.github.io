@@ -9453,6 +9453,10 @@
             
             <span class="subtitle">Typedefs</span>
             
+                <li data-name="ol.layer.VectorRenderType" class="">
+                    <a href="ol.layer.html#.VectorRenderType">VectorRenderType</a>
+                </li>
+            
                 <li data-name="ol.layer.VectorTileRenderType" class="">
                     <a href="ol.layer.html#.VectorTileRenderType">VectorTileRenderType</a>
                 </li>
@@ -11102,6 +11106,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.proj.Projection#getAxisOrientation" class="">
+                    <a href="ol.proj.Projection.html#getAxisOrientation">getAxisOrientation</a>
+                </li>
             
                 <li data-name="ol.proj.Projection#getCode" class="">
                     <a href="ol.proj.Projection.html#getCode">getCode</a>
@@ -16696,8 +16704,12 @@
                     <a href="ol.style.Text.html#clone">clone</a>
                 </li>
             
-                <li data-name="ol.style.Text#getExceedLength" class="">
-                    <a href="ol.style.Text.html#getExceedLength">getExceedLength</a>
+                <li data-name="ol.style.Text#getBackgroundFill" class="">
+                    <a href="ol.style.Text.html#getBackgroundFill">getBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#getBackgroundStroke">getBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#getFill" class="">
@@ -16718,6 +16730,14 @@
             
                 <li data-name="ol.style.Text#getOffsetY" class="">
                     <a href="ol.style.Text.html#getOffsetY">getOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getOverflow" class="">
+                    <a href="ol.style.Text.html#getOverflow">getOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getPadding" class="">
+                    <a href="ol.style.Text.html#getPadding">getPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#getPlacement" class="">
@@ -16752,8 +16772,12 @@
                     <a href="ol.style.Text.html#getTextBaseline">getTextBaseline</a>
                 </li>
             
-                <li data-name="ol.style.Text#setExceedLength" class="">
-                    <a href="ol.style.Text.html#setExceedLength">setExceedLength</a>
+                <li data-name="ol.style.Text#setBackgroundFill" class="">
+                    <a href="ol.style.Text.html#setBackgroundFill">setBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#setBackgroundStroke">setBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#setFill" class="">
@@ -16774,6 +16798,14 @@
             
                 <li data-name="ol.style.Text#setOffsetY" class="">
                     <a href="ol.style.Text.html#setOffsetY">setOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setOverflow" class="">
+                    <a href="ol.style.Text.html#setOverflow">setOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setPadding" class="">
+                    <a href="ol.style.Text.html#setPadding">setPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#setPlacement" class="">
@@ -17053,7 +17085,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vector.js, line 23
+            src/ol/layer/vector.js, line 24
         </div>
         
         
@@ -17118,6 +17150,48 @@ options means that <code>title</code> is observable, and has get/set accessors.<
 	</thead>
 	
 	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>renderMode</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ol.layer.html#.VectorRenderType">ol.layer.VectorRenderType</a></span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                    
+
+                
+                <p>Render mode for vector layers:</p>
+<ul>
+<li><code>'image'</code>: Vector layers are rendered as images. Great performance, but
+point symbols and texts are always rotated with the view and pixels are
+scaled during zoom animations.</li>
+<li><code>'vector'</code>: Vector layers are rendered as vectors. Most accurate rendering
+even during animations, but slower performance.
+Default is <code>vector</code>.</li>
+</ul></td>
+        </tr>
+	
 	
 	
         <tr class="">
@@ -18921,7 +18995,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vector.js, line 129
+            src/ol/layer/vector.js, line 136
         </div>
         
         
@@ -19007,7 +19081,7 @@ Source.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vector.js, line 139
+            src/ol/layer/vector.js, line 146
         </div>
         
         
@@ -19094,7 +19168,7 @@ Layer style.
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vector.js, line 149
+            src/ol/layer/vector.js, line 156
         </div>
         
         
@@ -20831,7 +20905,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/layer/vector.js, line 192
+            src/ol/layer/vector.js, line 199
         </div>
         
         

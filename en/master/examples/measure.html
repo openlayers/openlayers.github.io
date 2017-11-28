@@ -236,7 +236,7 @@ function addInteraction() {
   var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
   draw &#x3D; new ol.interaction.Draw({
     source: source,
-    type: /** @type {ol.geom.GeometryType} */ (type),
+    type: type,
     style: new ol.style.Style({
       fill: new ol.style.Fill({
         color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
@@ -605,7 +605,7 @@ addInteraction();
         var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
         draw &#x3D; new ol.interaction.Draw({
           source: source,
-          type: /** @type {ol.geom.GeometryType} */ (type),
+          type: type,
           style: new ol.style.Style({
             fill: new ol.style.Fill({
               color: &#x27;rgba(255, 255, 255, 0.2)&#x27;

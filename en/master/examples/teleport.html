@@ -75,9 +75,9 @@
     })
   ],
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   view: new ol.View({
     center: [0, 0],
@@ -123,9 +123,9 @@ teleportButton.addEventListener(&#x27;click&#x27;, function() {
           })
         ],
         controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          attributionOptions: {
             collapsible: false
-          })
+          }
         }),
         view: new ol.View({
           center: [0, 0],

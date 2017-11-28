@@ -75,9 +75,9 @@
     })
   ],
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   target: &#x27;map&#x27;,
   view: new ol.View({
@@ -174,9 +174,9 @@ window.setInterval(addRandomFeature, 1000);
           })
         ],
         controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          attributionOptions: {
             collapsible: false
-          })
+          }
         }),
         target: &#x27;map&#x27;,
         view: new ol.View({

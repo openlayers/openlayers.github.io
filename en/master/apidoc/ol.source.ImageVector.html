@@ -9453,6 +9453,10 @@
             
             <span class="subtitle">Typedefs</span>
             
+                <li data-name="ol.layer.VectorRenderType" class="">
+                    <a href="ol.layer.html#.VectorRenderType">VectorRenderType</a>
+                </li>
+            
                 <li data-name="ol.layer.VectorTileRenderType" class="">
                     <a href="ol.layer.html#.VectorTileRenderType">VectorTileRenderType</a>
                 </li>
@@ -11102,6 +11106,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="ol.proj.Projection#getAxisOrientation" class="">
+                    <a href="ol.proj.Projection.html#getAxisOrientation">getAxisOrientation</a>
+                </li>
             
                 <li data-name="ol.proj.Projection#getCode" class="">
                     <a href="ol.proj.Projection.html#getCode">getCode</a>
@@ -16696,8 +16704,12 @@
                     <a href="ol.style.Text.html#clone">clone</a>
                 </li>
             
-                <li data-name="ol.style.Text#getExceedLength" class="">
-                    <a href="ol.style.Text.html#getExceedLength">getExceedLength</a>
+                <li data-name="ol.style.Text#getBackgroundFill" class="">
+                    <a href="ol.style.Text.html#getBackgroundFill">getBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#getBackgroundStroke">getBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#getFill" class="">
@@ -16718,6 +16730,14 @@
             
                 <li data-name="ol.style.Text#getOffsetY" class="">
                     <a href="ol.style.Text.html#getOffsetY">getOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getOverflow" class="">
+                    <a href="ol.style.Text.html#getOverflow">getOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#getPadding" class="">
+                    <a href="ol.style.Text.html#getPadding">getPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#getPlacement" class="">
@@ -16752,8 +16772,12 @@
                     <a href="ol.style.Text.html#getTextBaseline">getTextBaseline</a>
                 </li>
             
-                <li data-name="ol.style.Text#setExceedLength" class="">
-                    <a href="ol.style.Text.html#setExceedLength">setExceedLength</a>
+                <li data-name="ol.style.Text#setBackgroundFill" class="">
+                    <a href="ol.style.Text.html#setBackgroundFill">setBackgroundFill</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setBackgroundStroke" class="">
+                    <a href="ol.style.Text.html#setBackgroundStroke">setBackgroundStroke</a>
                 </li>
             
                 <li data-name="ol.style.Text#setFill" class="">
@@ -16774,6 +16798,14 @@
             
                 <li data-name="ol.style.Text#setOffsetY" class="">
                     <a href="ol.style.Text.html#setOffsetY">setOffsetY</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setOverflow" class="">
+                    <a href="ol.style.Text.html#setOverflow">setOverflow</a>
+                </li>
+            
+                <li data-name="ol.style.Text#setPadding" class="">
+                    <a href="ol.style.Text.html#setPadding">setPadding</a>
                 </li>
             
                 <li data-name="ol.style.Text#setPlacement" class="">
@@ -17027,7 +17059,9 @@
     <pre class="prettyprint source"><code>import ImageVector from '<a href="ol.html">ol</a>/<a href="ol.source.html">source</a>/imagevector';</code></pre>
     
     
-        <div class="class-description"><p>An image source whose images are canvas elements into which vector features
+        <div class="class-description"><p><strong>Deprecated</strong>. Use an <code>ol.layer.Vector</code> with <code>renderMode: 'image'</code> and an
+<code>ol.source.Vector</code> instead.</p>
+<p>An image source whose images are canvas elements into which vector features
 read from a vector source (<code>ol.source.Vector</code>) are drawn. An
 <code>ol.source.ImageVector</code> object is to be used as the <code>source</code> of an image
 layer (<code>ol.layer.Image</code>). Image layers are rotated, scaled, and translated,
@@ -17058,7 +17092,7 @@ interactions.</p></div>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/imagevector.js, line 33
+            src/ol/source/imagevector.js, line 37
         </div>
         
         
@@ -17401,6 +17435,8 @@ read. <span class="required-option">Required.</span></p></td>
     
     
 
+    
+        <dt class="important tag-deprecated">Deprecated</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>
     
     
     
@@ -18381,7 +18417,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/imagevector.js, line 196
+            src/ol/source/imagevector.js, line 200
         </div>
         
         
@@ -18555,7 +18591,7 @@ State.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/imagevector.js, line 208
+            src/ol/source/imagevector.js, line 212
         </div>
         
         
@@ -18642,7 +18678,7 @@ Layer style.
         </h4>
         
         <div class="tag-source">
-            src/ol/source/imagevector.js, line 218
+            src/ol/source/imagevector.js, line 222
         </div>
         
         
@@ -19646,7 +19682,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            src/ol/source/imagevector.js, line 307
+            src/ol/source/imagevector.js, line 311
         </div>
         
         

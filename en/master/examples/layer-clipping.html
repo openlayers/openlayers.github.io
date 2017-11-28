@@ -74,9 +74,9 @@ var map &#x3D; new ol.Map({
   layers: [osm],
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   view: new ol.View({
     center: [0, 0],
@@ -145,9 +145,9 @@ osm.on(&#x27;postcompose&#x27;, function(event) {
         layers: [osm],
         target: &#x27;map&#x27;,
         controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          attributionOptions: {
             collapsible: false
-          })
+          }
         }),
         view: new ol.View({
           center: [0, 0],

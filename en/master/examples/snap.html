@@ -162,19 +162,19 @@ var Draw &#x3D; {
   },
   Point: new ol.interaction.Draw({
     source: vector.getSource(),
-    type: /** @type {ol.geom.GeometryType} */ (&#x27;Point&#x27;)
+    type: &#x27;Point&#x27;
   }),
   LineString: new ol.interaction.Draw({
     source: vector.getSource(),
-    type: /** @type {ol.geom.GeometryType} */ (&#x27;LineString&#x27;)
+    type: &#x27;LineString&#x27;
   }),
   Polygon: new ol.interaction.Draw({
     source: vector.getSource(),
-    type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
+    type: &#x27;Polygon&#x27;
   }),
   Circle: new ol.interaction.Draw({
     source: vector.getSource(),
-    type: /** @type {ol.geom.GeometryType} */ (&#x27;Circle&#x27;)
+    type: &#x27;Circle&#x27;
   }),
   getActive: function() {
     return this.activeType ? this[this.activeType].getActive() : false;
@@ -362,19 +362,19 @@ map.addInteraction(snap);
         },
         Point: new ol.interaction.Draw({
           source: vector.getSource(),
-          type: /** @type {ol.geom.GeometryType} */ (&#x27;Point&#x27;)
+          type: &#x27;Point&#x27;
         }),
         LineString: new ol.interaction.Draw({
           source: vector.getSource(),
-          type: /** @type {ol.geom.GeometryType} */ (&#x27;LineString&#x27;)
+          type: &#x27;LineString&#x27;
         }),
         Polygon: new ol.interaction.Draw({
           source: vector.getSource(),
-          type: /** @type {ol.geom.GeometryType} */ (&#x27;Polygon&#x27;)
+          type: &#x27;Polygon&#x27;
         }),
         Circle: new ol.interaction.Draw({
           source: vector.getSource(),
-          type: /** @type {ol.geom.GeometryType} */ (&#x27;Circle&#x27;)
+          type: &#x27;Circle&#x27;
         }),
         getActive: function() {
           return this.activeType ? this[this.activeType].getActive() : false;

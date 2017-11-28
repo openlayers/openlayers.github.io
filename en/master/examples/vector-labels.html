@@ -129,7 +129,7 @@
     </select>
     <br />
     <label>Exceed Len: </label>
-    <select disabled id="points-exceedlength">
+    <select disabled id="points-overflow">
       <option value="true">True</option>
       <option value="false" selected="selected">False</option>
     </select>
@@ -238,7 +238,7 @@
     </select>
     <br />
     <label>Exceed Len: </label>
-    <select id="lines-exceedlength">
+    <select id="lines-overflow">
       <option value="true">True</option>
       <option value="false" selected="selected">False</option>
     </select>
@@ -347,7 +347,7 @@
     </select>
     <br />
     <label>Exceed Len: </label>
-    <select id="polygons-exceedlength">
+    <select id="polygons-overflow">
       <option value="true">True</option>
       <option value="false" selected="selected">False</option>
     </select>
@@ -420,7 +420,7 @@ var myDom &#x3D; {
     weight: document.getElementById(&#x27;lines-weight&#x27;),
     placement: document.getElementById(&#x27;lines-placement&#x27;),
     maxangle: document.getElementById(&#x27;lines-maxangle&#x27;),
-    exceedlength: document.getElementById(&#x27;lines-exceedlength&#x27;),
+    overflow: document.getElementById(&#x27;lines-overflow&#x27;),
     size: document.getElementById(&#x27;lines-size&#x27;),
     offsetX: document.getElementById(&#x27;lines-offset-x&#x27;),
     offsetY: document.getElementById(&#x27;lines-offset-y&#x27;),
@@ -438,7 +438,7 @@ var myDom &#x3D; {
     weight: document.getElementById(&#x27;polygons-weight&#x27;),
     placement: document.getElementById(&#x27;polygons-placement&#x27;),
     maxangle: document.getElementById(&#x27;polygons-maxangle&#x27;),
-    exceedlength: document.getElementById(&#x27;polygons-exceedlength&#x27;),
+    overflow: document.getElementById(&#x27;polygons-overflow&#x27;),
     size: document.getElementById(&#x27;polygons-size&#x27;),
     offsetX: document.getElementById(&#x27;polygons-offset-x&#x27;),
     offsetY: document.getElementById(&#x27;polygons-offset-y&#x27;),
@@ -477,7 +477,7 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
   var weight &#x3D; dom.weight.value;
   var placement &#x3D; dom.placement ? dom.placement.value : undefined;
   var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-  var exceedLength &#x3D; dom.exceedlength ? (dom.exceedlength.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
+  var overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
   var rotation &#x3D; parseFloat(dom.rotation.value);
   if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
     var openSans &#x3D; document.createElement(&#x27;link&#x27;);
@@ -502,7 +502,7 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
     offsetY: offsetY,
     placement: placement,
     maxAngle: maxAngle,
-    exceedLength: exceedLength,
+    overflow: overflow,
     rotation: rotation
   });
 };
@@ -765,7 +765,7 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;/select&gt;
     &lt;br /&gt;
     &lt;label&gt;Exceed Len: &lt;/label&gt;
-    &lt;select disabled id&#x3D;&quot;points-exceedlength&quot;&gt;
+    &lt;select disabled id&#x3D;&quot;points-overflow&quot;&gt;
       &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
       &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
     &lt;/select&gt;
@@ -874,7 +874,7 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;/select&gt;
     &lt;br /&gt;
     &lt;label&gt;Exceed Len: &lt;/label&gt;
-    &lt;select id&#x3D;&quot;lines-exceedlength&quot;&gt;
+    &lt;select id&#x3D;&quot;lines-overflow&quot;&gt;
       &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
       &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
     &lt;/select&gt;
@@ -983,7 +983,7 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;/select&gt;
     &lt;br /&gt;
     &lt;label&gt;Exceed Len: &lt;/label&gt;
-    &lt;select id&#x3D;&quot;polygons-exceedlength&quot;&gt;
+    &lt;select id&#x3D;&quot;polygons-overflow&quot;&gt;
       &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
       &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
     &lt;/select&gt;
@@ -1154,7 +1154,7 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;/select&gt;
         &lt;br /&gt;
         &lt;label&gt;Exceed Len: &lt;/label&gt;
-        &lt;select disabled id&#x3D;&quot;points-exceedlength&quot;&gt;
+        &lt;select disabled id&#x3D;&quot;points-overflow&quot;&gt;
           &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
           &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
@@ -1263,7 +1263,7 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;/select&gt;
         &lt;br /&gt;
         &lt;label&gt;Exceed Len: &lt;/label&gt;
-        &lt;select id&#x3D;&quot;lines-exceedlength&quot;&gt;
+        &lt;select id&#x3D;&quot;lines-overflow&quot;&gt;
           &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
           &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
@@ -1372,7 +1372,7 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;/select&gt;
         &lt;br /&gt;
         &lt;label&gt;Exceed Len: &lt;/label&gt;
-        &lt;select id&#x3D;&quot;polygons-exceedlength&quot;&gt;
+        &lt;select id&#x3D;&quot;polygons-overflow&quot;&gt;
           &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
           &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
@@ -1425,7 +1425,7 @@ function stringDivider(str, width, spaceReplacer) {
           weight: document.getElementById(&#x27;lines-weight&#x27;),
           placement: document.getElementById(&#x27;lines-placement&#x27;),
           maxangle: document.getElementById(&#x27;lines-maxangle&#x27;),
-          exceedlength: document.getElementById(&#x27;lines-exceedlength&#x27;),
+          overflow: document.getElementById(&#x27;lines-overflow&#x27;),
           size: document.getElementById(&#x27;lines-size&#x27;),
           offsetX: document.getElementById(&#x27;lines-offset-x&#x27;),
           offsetY: document.getElementById(&#x27;lines-offset-y&#x27;),
@@ -1443,7 +1443,7 @@ function stringDivider(str, width, spaceReplacer) {
           weight: document.getElementById(&#x27;polygons-weight&#x27;),
           placement: document.getElementById(&#x27;polygons-placement&#x27;),
           maxangle: document.getElementById(&#x27;polygons-maxangle&#x27;),
-          exceedlength: document.getElementById(&#x27;polygons-exceedlength&#x27;),
+          overflow: document.getElementById(&#x27;polygons-overflow&#x27;),
           size: document.getElementById(&#x27;polygons-size&#x27;),
           offsetX: document.getElementById(&#x27;polygons-offset-x&#x27;),
           offsetY: document.getElementById(&#x27;polygons-offset-y&#x27;),
@@ -1482,7 +1482,7 @@ function stringDivider(str, width, spaceReplacer) {
         var weight &#x3D; dom.weight.value;
         var placement &#x3D; dom.placement ? dom.placement.value : undefined;
         var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-        var exceedLength &#x3D; dom.exceedlength ? (dom.exceedlength.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
+        var overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
         var rotation &#x3D; parseFloat(dom.rotation.value);
         if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
           var openSans &#x3D; document.createElement(&#x27;link&#x27;);
@@ -1507,7 +1507,7 @@ function stringDivider(str, width, spaceReplacer) {
           offsetY: offsetY,
           placement: placement,
           maxAngle: maxAngle,
-          exceedLength: exceedLength,
+          overflow: overflow,
           rotation: rotation
         });
       };

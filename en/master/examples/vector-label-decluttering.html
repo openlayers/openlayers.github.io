@@ -52,7 +52,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Label decluttering with a custom renderer.</p>
-          <div id="docs"><p>Decluttering is used to avoid overlapping labels with <code>exceedLength: true</code> set on the text style. For MultiPolygon geometries, only the widest polygon is selected in a custom <code>geometry</code> function.</p>
+          <div id="docs"><p>Decluttering is used to avoid overlapping labels with <code>overflow: true</code> set on the text style. For MultiPolygon geometries, only the widest polygon is selected in a custom <code>geometry</code> function.</p>
 </div>
           <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.extent.html" title="API documentation for ol.extent">ol.extent</a></li>,<li><a href="../apidoc/ol.format.GeoJSON.html" title="API documentation for ol.format.GeoJSON">ol.format.GeoJSON</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.style.Text.html" title="API documentation for ol.style.Text">ol.style.Text</a></li></ul></div>
         </div>
@@ -94,7 +94,7 @@ var labelStyle &#x3D; new ol.style.Style({
   },
   text: new ol.style.Text({
     font: &#x27;12px Calibri,sans-serif&#x27;,
-    exceedLength: true,
+    overflow: true,
     fill: new ol.style.Fill({
       color: &#x27;#000&#x27;
     }),
@@ -176,7 +176,7 @@ map.addLayer(vectorLayer);
         },
         text: new ol.style.Text({
           font: &#x27;12px Calibri,sans-serif&#x27;,
-          exceedLength: true,
+          overflow: true,
           fill: new ol.style.Fill({
             color: &#x27;#000&#x27;
           }),

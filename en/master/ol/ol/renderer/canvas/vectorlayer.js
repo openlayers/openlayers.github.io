@@ -70,10 +70,9 @@ ol.renderer.canvas.VectorLayer = function(vectorLayer) {
   this.replayGroup_ = null;
 
   /**
-   * @private
    * @type {CanvasRenderingContext2D}
    */
-  this.context_ = ol.dom.createCanvasContext2D();
+  this.context = ol.dom.createCanvasContext2D();
 
   ol.events.listen(ol.render.canvas.labelCache, ol.events.EventType.CLEAR, this.handleFontsChanged_, this);
 
@@ -139,7 +138,10 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
   }
   var replayGroup = this.replayGroup_;
   if (replayGroup && !replayGroup.isEmpty()) {
-    var layer = this.getLayer();
+    if (this.declutterTree_) {
+      this.declutterTree_.clear();
+    }
+    var layer = /** @type {ol.layer.Vector} */ (this.getLayer());
     var drawOffsetX = 0;
     var drawOffsetY = 0;
     var replayContext;
@@ -155,9 +157,9 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
         drawWidth = drawHeight = drawSize;
       }
       // resize and clear
-      this.context_.canvas.width = drawWidth;
-      this.context_.canvas.height = drawHeight;
-      replayContext = this.context_;
+      this.context.canvas.width = drawWidth;
+      this.context.canvas.height = drawHeight;
+      replayContext = this.context;
     } else {
       replayContext = context;
     }
@@ -230,9 +232,6 @@ ol.renderer.canvas.VectorLayer.prototype.composeFrame = function(frameState, lay
   if (clipped) {
     context.restore();
   }
-  if (this.declutterTree_) {
-    this.declutterTree_.clear();
-  }
   this.postCompose(context, frameState, layerState, transform);
 
 };
@@ -250,7 +249,6 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate = function(c
     var layer = /** @type {ol.layer.Vector} */ (this.getLayer());
     /** @type {Object.<string, boolean>} */
     var features = {};
-    var declutterReplays = layer.getDeclutter() ? {} : null;
     var result = this.replayGroup_.forEachFeatureAtCoordinate(coordinate, resolution,
         rotation, hitTolerance, {},
         /**
@@ -263,10 +261,7 @@ ol.renderer.canvas.VectorLayer.prototype.forEachFeatureAtCoordinate = function(c
             features[key] = true;
             return callback.call(thisArg, feature, layer);
           }
-        }, declutterReplays);
-    if (this.declutterTree_) {
-      this.declutterTree_.clear();
-    }
+        }, null);
     return result;
   }
 };

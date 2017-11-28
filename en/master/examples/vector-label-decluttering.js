@@ -26,7 +26,7 @@ var labelStyle = new ol.style.Style({
   },
   text: new ol.style.Text({
     font: '12px Calibri,sans-serif',
-    exceedLength: true,
+    overflow: true,
     fill: new ol.style.Fill({
       color: '#000'
     }),

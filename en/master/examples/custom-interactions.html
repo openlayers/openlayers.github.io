@@ -141,8 +141,7 @@ app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
   var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
   var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
-  var geometry &#x3D; /** @type {ol.geom.SimpleGeometry} */
-      (this.feature_.getGeometry());
+  var geometry &#x3D; this.feature_.getGeometry();
   geometry.translate(deltaX, deltaY);
 
   this.coordinate_[0] &#x3D; evt.coordinate[0];
@@ -324,8 +323,7 @@ var map &#x3D; new ol.Map({
         var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
         var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
-        var geometry &#x3D; /** @type {ol.geom.SimpleGeometry} */
-            (this.feature_.getGeometry());
+        var geometry &#x3D; this.feature_.getGeometry();
         geometry.translate(deltaX, deltaY);
 
         this.coordinate_[0] &#x3D; evt.coordinate[0];

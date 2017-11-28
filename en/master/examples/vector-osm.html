@@ -180,9 +180,9 @@ map &#x3D; new ol.Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   view: new ol.View({
     center: [739218, 5906096],
@@ -323,9 +323,9 @@ map &#x3D; new ol.Map({
         layers: [raster, vector],
         target: document.getElementById(&#x27;map&#x27;),
         controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          attributionOptions: {
             collapsible: false
-          })
+          }
         }),
         view: new ol.View({
           center: [739218, 5906096],

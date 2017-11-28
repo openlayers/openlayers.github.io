@@ -75,7 +75,9 @@
     source: new ol.source.TileWMS({
       url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
       params: {&#x27;LAYERS&#x27;: &#x27;topp:states&#x27;, &#x27;TILED&#x27;: true},
-      serverType: &#x27;geoserver&#x27;
+      serverType: &#x27;geoserver&#x27;,
+      // Countries have transparency, so do not fade tiles:
+      transition: 0
     })
   })
 ];
@@ -115,7 +117,9 @@ var map &#x3D; new ol.Map({
           source: new ol.source.TileWMS({
             url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
             params: {&#x27;LAYERS&#x27;: &#x27;topp:states&#x27;, &#x27;TILED&#x27;: true},
-            serverType: &#x27;geoserver&#x27;
+            serverType: &#x27;geoserver&#x27;,
+            // Countries have transparency, so do not fade tiles:
+            transition: 0
           })
         })
       ];

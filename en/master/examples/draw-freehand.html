@@ -102,7 +102,7 @@ function addInteraction() {
   if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
     draw &#x3D; new ol.interaction.Draw({
       source: source,
-      type: /** @type {ol.geom.GeometryType} */ (typeSelect.value),
+      type: typeSelect.value,
       freehand: true
     });
     map.addInteraction(draw);
@@ -183,7 +183,7 @@ addInteraction();
         if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
           draw &#x3D; new ol.interaction.Draw({
             source: source,
-            type: /** @type {ol.geom.GeometryType} */ (typeSelect.value),
+            type: typeSelect.value,
             freehand: true
           });
           map.addInteraction(draw);

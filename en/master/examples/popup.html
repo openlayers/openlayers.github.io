@@ -83,13 +83,13 @@ var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 /**
  * Create an overlay to anchor the popup to the map.
  */
-var overlay &#x3D; new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+var overlay &#x3D; new ol.Overlay({
   element: container,
   autoPan: true,
   autoPanAnimation: {
     duration: 250
   }
-}));
+});
 
 
 /**
@@ -260,13 +260,13 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
       /**
        * Create an overlay to anchor the popup to the map.
        */
-      var overlay &#x3D; new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+      var overlay &#x3D; new ol.Overlay({
         element: container,
         autoPan: true,
         autoPanAnimation: {
           duration: 250
         }
-      }));
+      });
 
 
       /**

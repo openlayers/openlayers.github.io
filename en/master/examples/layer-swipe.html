@@ -81,9 +81,9 @@ var map &#x3D; new ol.Map({
   layers: [osm, bing],
   target: &#x27;map&#x27;,
   controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   view: new ol.View({
     center: [0, 0],
@@ -146,9 +146,9 @@ swipe.addEventListener(&#x27;input&#x27;, function() {
         layers: [osm, bing],
         target: &#x27;map&#x27;,
         controls: ol.control.defaults({
-          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          attributionOptions: {
             collapsible: false
-          })
+          }
         }),
         view: new ol.View({
           center: [0, 0],

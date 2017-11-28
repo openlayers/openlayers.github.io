@@ -233,7 +233,7 @@ ol.renderer.canvas.VectorTileLayer.prototype.createReplayGroup_ = function(
         }
         feature.getGeometry().transform(tileProjection, projection);
       }
-      if (!bufferedExtent || ol.extent.intersects(bufferedExtent, feature.getExtent())) {
+      if (!bufferedExtent || ol.extent.intersects(bufferedExtent, feature.getGeometry().getExtent())) {
         renderFeature.call(this, feature);
       }
     }
@@ -270,7 +270,6 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
   var rotation = frameState.viewState.rotation;
   hitTolerance = hitTolerance == undefined ? 0 : hitTolerance;
   var layer = this.getLayer();
-  var declutterReplays = layer.getDeclutter() ? {} : null;
   /** @type {Object.<string, boolean>} */
   var features = {};
 
@@ -308,11 +307,8 @@ ol.renderer.canvas.VectorTileLayer.prototype.forEachFeatureAtCoordinate = functi
               features[key] = true;
               return callback.call(thisArg, feature, layer);
             }
-          }, declutterReplays);
+          }, null);
     }
-  }
-  if (this.declutterTree_) {
-    this.declutterTree_.clear();
   }
   return found;
 };
@@ -381,9 +377,15 @@ ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, fra
   var pixelRatio = frameState.pixelRatio;
   var rotation = frameState.viewState.rotation;
   var size = frameState.size;
-  var offsetX = Math.round(pixelRatio * size[0] / 2);
-  var offsetY = Math.round(pixelRatio * size[1] / 2);
-  ol.render.canvas.rotateAtOffset(context, -rotation, offsetX, offsetY);
+  var offsetX, offsetY;
+  if (rotation) {
+    offsetX = Math.round(pixelRatio * size[0] / 2);
+    offsetY = Math.round(pixelRatio * size[1] / 2);
+    ol.render.canvas.rotateAtOffset(context, -rotation, offsetX, offsetY);
+  }
+  if (declutterReplays) {
+    this.declutterTree_.clear();
+  }
   var tiles = this.renderedTiles;
   var tileGrid = source.getTileGridForProjection(frameState.viewState.projection);
   var clips = [];
@@ -440,7 +442,10 @@ ol.renderer.canvas.VectorTileLayer.prototype.postCompose = function(context, fra
   }
   if (declutterReplays) {
     ol.render.canvas.ReplayGroup.replayDeclutter(declutterReplays, context, rotation);
-    this.declutterTree_.clear();
+  }
+  if (rotation) {
+    ol.render.canvas.rotateAtOffset(context, rotation,
+        /** @type {number} */ (offsetX), /** @type {number} */ (offsetY));
   }
   ol.renderer.canvas.TileLayer.prototype.postCompose.apply(this, arguments);
 };

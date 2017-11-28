@@ -117,7 +117,7 @@ var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 function addInteractions() {
   draw &#x3D; new ol.interaction.Draw({
     source: source,
-    type: /** @type {ol.geom.GeometryType} */ (typeSelect.value)
+    type: typeSelect.value
   });
   map.addInteraction(draw);
   snap &#x3D; new ol.interaction.Snap({source: source});
@@ -214,7 +214,7 @@ addInteractions();
       function addInteractions() {
         draw &#x3D; new ol.interaction.Draw({
           source: source,
-          type: /** @type {ol.geom.GeometryType} */ (typeSelect.value)
+          type: typeSelect.value
         });
         map.addInteraction(draw);
         snap &#x3D; new ol.interaction.Snap({source: source});
