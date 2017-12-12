@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.5.0-56-g5ed2f3262
+// Version: v4.6.4-41-g46fd03047
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -11134,7 +11134,9 @@ ol.MapBrowserEventHandler.prototype.handlePointerUp_ = function(pointerEvent) {
   // contact. isMouseActionButton returns true in these cases (evt.button is set
   // to 0).
   // See http://www.w3.org/TR/pointerevents/#button-states
-  if (!this.dragging_ && this.isMouseActionButton_(pointerEvent)) {
+  // We only fire click, singleclick, and doubleclick if nobody has called
+  // event.stopPropagation() or event.preventDefault().
+  if (!newEvent.propagationStopped && !this.dragging_ && this.isMouseActionButton_(pointerEvent)) {
     this.emulateClick_(this.down_);
   }
 
@@ -14737,18 +14739,20 @@ ol.geom.flat.interiorpoint.linearRings = function(flatCoordinates, offset,
   /** @type {Array.<number>} */
   var intersections = [];
   // Calculate intersections with the horizontal line
-  var end = ends[0];
-  x1 = flatCoordinates[end - stride];
-  y1 = flatCoordinates[end - stride + 1];
-  for (i = offset; i < end; i += stride) {
-    x2 = flatCoordinates[i];
-    y2 = flatCoordinates[i + 1];
-    if ((y <= y1 && y2 <= y) || (y1 <= y && y <= y2)) {
-      x = (y - y1) / (y2 - y1) * (x2 - x1) + x1;
-      intersections.push(x);
+  for (var r = 0, rr = ends.length; r < rr; ++r) {
+    var end = ends[r];
+    x1 = flatCoordinates[end - stride];
+    y1 = flatCoordinates[end - stride + 1];
+    for (i = offset; i < end; i += stride) {
+      x2 = flatCoordinates[i];
+      y2 = flatCoordinates[i + 1];
+      if ((y <= y1 && y2 <= y) || (y1 <= y && y <= y2)) {
+        x = (y - y1) / (y2 - y1) * (x2 - x1) + x1;
+        intersections.push(x);
+      }
+      x1 = x2;
+      y1 = y2;
     }
-    x1 = x2;
-    y1 = y2;
   }
   // Find the longest segment of the horizontal line that has its center point
   // inside the linear ring.
@@ -15802,6 +15806,12 @@ ol.View.prototype.applyOptions_ = function(options) {
   } else if (options.zoom !== undefined) {
     properties[ol.ViewProperty.RESOLUTION] = this.constrainResolution(
         this.maxResolution_, options.zoom - this.minZoom_);
+
+    if (this.resolutions_) { // in case map zoom is out of min/max zoom range
+      properties[ol.ViewProperty.RESOLUTION] = ol.math.clamp(
+          Number(this.getResolution() || properties[ol.ViewProperty.RESOLUTION]),
+          this.minResolution_, this.maxResolution_);
+    }
   }
   properties[ol.ViewProperty.ROTATION] =
       options.rotation !== undefined ? options.rotation : 0;
@@ -16437,7 +16447,7 @@ ol.View.prototype.getZoomForResolution = function(resolution) {
   var max, zoomFactor;
   if (this.resolutions_) {
     var nearest = ol.array.linearFindNearest(this.resolutions_, resolution, 1);
-    offset += nearest;
+    offset = nearest;
     max = this.resolutions_[nearest];
     if (nearest == this.resolutions_.length - 1) {
       zoomFactor = 2;
@@ -16725,8 +16735,9 @@ ol.View.createResolutionConstraint_ = function(options) {
 
   if (options.resolutions !== undefined) {
     var resolutions = options.resolutions;
-    maxResolution = resolutions[0];
-    minResolution = resolutions[resolutions.length - 1];
+    maxResolution = resolutions[minZoom];
+    minResolution = resolutions[maxZoom] !== undefined ?
+      resolutions[maxZoom] : resolutions[resolutions.length - 1];
     resolutionConstraint = ol.ResolutionConstraint.createSnapToResolutions(
         resolutions);
   } else {
@@ -18662,11 +18673,15 @@ ol.PluggableMap.prototype.renderFrame_ = function(time) {
       layerStates[ol.getUid(layerStatesArray[i].layer)] = layerStatesArray[i];
     }
     viewState = view.getState();
+    var center = viewState.center;
+    var pixelResolution = viewState.resolution / this.pixelRatio_;
+    center[0] = Math.round(center[0] / pixelResolution) * pixelResolution;
+    center[1] = Math.round(center[1] / pixelResolution) * pixelResolution;
     frameState = /** @type {olx.FrameState} */ ({
       animate: false,
       coordinateToPixelTransform: this.coordinateToPixelTransform_,
       extent: extent,
-      focus: !this.focus_ ? viewState.center : this.focus_,
+      focus: !this.focus_ ? center : this.focus_,
       index: this.frameIndex_++,
       layerStates: layerStates,
       layerStatesArray: layerStatesArray,
@@ -20301,6 +20316,7 @@ goog.require('ol');
 goog.require('ol.Object');
 goog.require('ol.easing');
 goog.require('ol.interaction.Property');
+goog.require('ol.math');
 
 
 /**
@@ -20475,6 +20491,14 @@ ol.interaction.Interaction.zoom = function(view, resolution, opt_anchor, opt_dur
 ol.interaction.Interaction.zoomByDelta = function(view, delta, opt_anchor, opt_duration) {
   var currentResolution = view.getResolution();
   var resolution = view.constrainResolution(currentResolution, delta, 0);
+
+  if (resolution !== undefined) {
+    var resolutions = view.getResolutions();
+    resolution = ol.math.clamp(
+        resolution,
+        view.getMinResolution() || resolutions[resolutions.length - 1],
+        view.getMaxResolution() || resolutions[0]);
+  }
 
   // If we have a constraint on center, we need to change the anchor so that the
   // new center is within the extent. We first calculate the new center, apply
@@ -25585,6 +25609,7 @@ goog.require('ol');
 goog.require('ol.ImageCanvas');
 goog.require('ol.LayerType');
 goog.require('ol.ViewHint');
+goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.layer.VectorRenderType');
 goog.require('ol.obj');
@@ -25615,6 +25640,11 @@ ol.renderer.canvas.ImageLayer = function(imageLayer) {
    * @type {ol.Transform}
    */
   this.imageTransform_ = ol.transform.create();
+
+  /**
+   * @type {!Array.<string>}
+   */
+  this.skippedFeatures_ = [];
 
   /**
    * @private
@@ -25708,8 +25738,9 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
         projection = sourceProjection;
       }
     }
-    if (this.vectorRenderer_) {
-      var context = this.vectorRenderer_.context;
+    var vectorRenderer = this.vectorRenderer_;
+    if (vectorRenderer) {
+      var context = vectorRenderer.context;
       var imageFrameState = /** @type {olx.FrameState} */ (ol.obj.assign({}, frameState, {
         size: [
           ol.extent.getWidth(renderedExtent) / viewResolution,
@@ -25719,12 +25750,16 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
           rotation: 0
         }))
       }));
-      if (this.vectorRenderer_.prepareFrame(imageFrameState, layerState)) {
+      var skippedFeatures = Object.keys(imageFrameState.skippedFeatureUids).sort();
+      if (vectorRenderer.prepareFrame(imageFrameState, layerState) &&
+          (vectorRenderer.replayGroupChanged ||
+          !ol.array.equals(skippedFeatures, this.skippedFeatures_))) {
         context.canvas.width = imageFrameState.size[0] * pixelRatio;
         context.canvas.height = imageFrameState.size[1] * pixelRatio;
-        this.vectorRenderer_.composeFrame(imageFrameState, layerState, context);
+        vectorRenderer.composeFrame(imageFrameState, layerState, context);
+        this.image_ = new ol.ImageCanvas(renderedExtent, viewResolution, pixelRatio, context.canvas);
+        this.skippedFeatures_ = skippedFeatures;
       }
-      this.image_ = new ol.ImageCanvas(renderedExtent, viewResolution, pixelRatio, context.canvas);
     } else {
       image = imageSource.getImage(
           renderedExtent, viewResolution, pixelRatio, projection);
@@ -25789,6 +25824,7 @@ goog.require('ol.color');
 
 
 /**
+ * Singleton class. Available through {@link ol.style.iconImageCache}.
  * @constructor
  */
 ol.style.IconImageCache = function() {
@@ -25806,7 +25842,6 @@ ol.style.IconImageCache = function() {
   this.cacheSize_ = 0;
 
   /**
-   * @const
    * @type {number}
    * @private
    */
@@ -25877,10 +25912,27 @@ ol.style.IconImageCache.prototype.set = function(src, crossOrigin, color, iconIm
   ++this.cacheSize_;
 };
 
+
+/**
+ * Set the cache size of the icon cache. Default is `32`. Change this value when
+ * your map uses more than 32 different icon images and you are not caching icon
+ * styles on the application level.
+ * @param {number} maxCacheSize Cache max size.
+ * @api
+ */
+ol.style.IconImageCache.prototype.setSize = function(maxCacheSize) {
+  this.maxCacheSize_ = maxCacheSize;
+  this.expire();
+};
+
 goog.provide('ol.style');
 
 goog.require('ol.style.IconImageCache');
 
+/**
+ * The {@link ol.style.IconImageCache} for {@link ol.style.Icon} images.
+ * @api
+ */
 ol.style.iconImageCache = new ol.style.IconImageCache();
 
 goog.provide('ol.renderer.Map');
@@ -27739,10 +27791,6 @@ ol.render.canvas.Replay.prototype.replayImage_ = function(context, x, y, image,
   anchorY *= scale;
   x -= anchorX;
   y -= anchorY;
-  if (snapToPixel) {
-    x = Math.round(x);
-    y = Math.round(y);
-  }
 
   var w = (width + originX > image.width) ? image.width - originX : width;
   var h = (height + originY > image.height) ? image.height - originY : height;
@@ -27784,6 +27832,12 @@ ol.render.canvas.Replay.prototype.replayImage_ = function(context, x, y, image,
   }
   var canvas = context.canvas;
   var intersects = box[0] <= canvas.width && box[2] >= 0 && box[1] <= canvas.height && box[3] >= 0;
+
+  if (snapToPixel) {
+    x = Math.round(x);
+    y = Math.round(y);
+  }
+
   if (declutterGroup) {
     if (!intersects && declutterGroup[4] == 1) {
       return;
@@ -29519,7 +29573,7 @@ ol.render.canvas.TextReplay.prototype.drawText = function(geometry, feature) {
  */
 ol.render.canvas.TextReplay.prototype.getImage = function(text, textKey, fillKey, strokeKey) {
   var label;
-  var key = strokeKey + textKey + text + fillKey;
+  var key = strokeKey + textKey + text + fillKey + this.pixelRatio;
 
   var labelCache = ol.render.canvas.labelCache;
   if (!labelCache.containsKey(key)) {
@@ -29561,19 +29615,19 @@ ol.render.canvas.TextReplay.prototype.getImage = function(text, textKey, fillKey
     if (fillKey) {
       context.fillStyle = fillState.fillStyle;
     }
-    context.textBaseline = 'top';
+    context.textBaseline = 'middle';
     context.textAlign = 'center';
     var leftRight = (0.5 - align);
     var x = align * label.width / scale + leftRight * strokeWidth;
     var i;
     if (strokeKey) {
       for (i = 0; i < numLines; ++i) {
-        context.strokeText(lines[i], x + leftRight * widths[i], 0.5 * strokeWidth + i * lineHeight);
+        context.strokeText(lines[i], x + leftRight * widths[i], 0.5 * (strokeWidth + lineHeight) + i * lineHeight);
       }
     }
     if (fillKey) {
       for (i = 0; i < numLines; ++i) {
-        context.fillText(lines[i], x + leftRight * widths[i], 0.5 * strokeWidth + i * lineHeight);
+        context.fillText(lines[i], x + leftRight * widths[i], 0.5 * (strokeWidth + lineHeight) + i * lineHeight);
       }
     }
   }
@@ -30721,6 +30775,12 @@ ol.renderer.canvas.VectorLayer = function(vectorLayer) {
   this.replayGroup_ = null;
 
   /**
+   * A new replay group had to be created by `prepareFrame()`
+   * @type {boolean}
+   */
+  this.replayGroupChanged = true;
+
+  /**
    * @type {CanvasRenderingContext2D}
    */
   this.context = ol.dom.createCanvasContext2D();
@@ -30994,6 +31054,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
       this.renderedRevision_ == vectorLayerRevision &&
       this.renderedRenderOrder_ == vectorLayerRenderOrder &&
       ol.extent.containsExtent(this.renderedExtent_, extent)) {
+    this.replayGroupChanged = false;
     return true;
   }
 
@@ -31051,6 +31112,7 @@ ol.renderer.canvas.VectorLayer.prototype.prepareFrame = function(frameState, lay
   this.renderedExtent_ = extent;
   this.replayGroup_ = replayGroup;
 
+  this.replayGroupChanged = true;
   return true;
 };
 
@@ -46499,11 +46561,14 @@ ol.style.Text = function(opt_options) {
    */
   this.placement_ = options.placement !== undefined ? options.placement : ol.style.TextPlacement.POINT;
 
+  //TODO Use options.overflow directly after removing @deprecated exceedLength
+  var overflow = options.overflow === undefined ? options.exceedLength : options.overflow;
+
   /**
    * @private
    * @type {boolean}
    */
-  this.overflow_ = options.overflow !== undefined ? options.overflow : false;
+  this.overflow_ = overflow !== undefined ? overflow : false;
 
   /**
    * @private
@@ -50945,7 +51010,7 @@ ol.format.MVT = function(opt_options) {
    * @type {ol.proj.Projection}
    */
   this.defaultDataProjection = new ol.proj.Projection({
-    code: 'EPSG:3857',
+    code: '',
     units: ol.proj.Units.TILE_PIXELS
   });
 
@@ -60478,6 +60543,26 @@ ol.source.Vector.prototype.loadFeatures = function(
 
 
 /**
+ * Remove an extent from the list of loaded extents.
+ * @param {ol.Extent} extent Extent.
+ * @api
+ */
+ol.source.Vector.prototype.removeLoadedExtent = function(extent) {
+  var loadedExtentsRtree = this.loadedExtentsRtree_;
+  var obj;
+  loadedExtentsRtree.forEachInExtent(extent, function(object) {
+    if (ol.extent.equals(object.extent, extent)) {
+      obj = object;
+      return true;
+    }
+  });
+  if (obj) {
+    loadedExtentsRtree.remove(obj);
+  }
+};
+
+
+/**
  * Remove a single feature from the source.  If you want to remove all features
  * at once, use the {@link ol.source.Vector#clear source.clear()} method
  * instead.
@@ -60674,6 +60759,14 @@ ol.interaction.Draw = function(options) {
   this.mode_ = ol.interaction.Draw.getMode_(this.type_);
 
   /**
+   * Stop click, singleclick, and doubleclick events from firing during drawing.
+   * Default is `false`.
+   * @type {boolean}
+   * @private
+   */
+  this.stopClick_ = !!options.stopClick;
+
+  /**
    * The number of points that must be drawn before a polygon ring or line
    * string can be finished.  The default is 3 for polygon rings and 2 for
    * line strings.
@@ -60736,7 +60829,12 @@ ol.interaction.Draw = function(options) {
         var geometry = opt_geometry;
         if (geometry) {
           if (mode === ol.interaction.Draw.Mode_.POLYGON) {
-            geometry.setCoordinates([coordinates[0].concat([coordinates[0][0]])]);
+            if (coordinates[0].length) {
+              // Add a closing coordinate to match the first
+              geometry.setCoordinates([coordinates[0].concat([coordinates[0][0]])]);
+            } else {
+              geometry.setCoordinates([]);
+            }
           } else {
             geometry.setCoordinates(coordinates);
           }
@@ -60959,6 +61057,9 @@ ol.interaction.Draw.handleUpEvent_ = function(event) {
   } else if (this.freehand_) {
     this.finishCoordinate_ = null;
     this.abortDrawing_();
+  }
+  if (!pass && this.stopClick_) {
+    event.stopPropagation();
   }
   return pass;
 };
@@ -81046,9 +81147,9 @@ ol.tilegrid.WMTS.createFromCapabilitiesMatrixSet = function(matrixSet, opt_exten
   var tileWidthPropName = 'TileWidth';
   var tileHeightPropName = 'TileHeight';
 
-  var projection;
-  projection = ol.proj.get(matrixSet[supportedCRSPropName].replace(
-      /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'));
+  var code = matrixSet[supportedCRSPropName];
+  var projection = ol.proj.get(code.replace(/urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3')) ||
+      ol.proj.get(code);
   var metersPerUnit = projection.getMetersPerUnit();
   // swap origin x and y coordinates if axis orientation is lat/long
   var switchOriginXY = projection.getAxisOrientation().substr(0, 2) == 'ne';
@@ -81207,8 +81308,9 @@ ol.source.WMTS = function(options) {
   /**
    * @param {string} template Template.
    * @return {ol.TileUrlFunctionType} Tile URL function.
+   * @private
    */
-  function createFromWMTSTemplate(template) {
+  this.createFromWMTSTemplate_ = function(template) {
 
     // TODO: we may want to create our own appendParams function so that params
     // order conforms to wmts spec guidance, and so that we can avoid to escape
@@ -81248,11 +81350,11 @@ ol.source.WMTS = function(options) {
           return url;
         }
       });
-  }
+  };
 
   var tileUrlFunction = (urls && urls.length > 0) ?
     ol.TileUrlFunction.createFromTileUrlFunctions(
-        urls.map(createFromWMTSTemplate)) :
+        urls.map(this.createFromWMTSTemplate_)) :
     ol.TileUrlFunction.nullTileUrlFunction;
 
   ol.source.TileImage.call(this, {
@@ -81277,6 +81379,18 @@ ol.source.WMTS = function(options) {
 };
 ol.inherits(ol.source.WMTS, ol.source.TileImage);
 
+/**
+ * Set the URLs to use for requests.
+ * URLs may contain OCG conform URL Template Variables: {TileMatrix}, {TileRow}, {TileCol}.
+ * @override
+ */
+ol.source.WMTS.prototype.setUrls = function(urls) {
+  this.urls = urls;
+  var key = urls.join('\n');
+  this.setTileUrlFunction(this.fixedTileUrlFunction ?
+    this.fixedTileUrlFunction.bind(this) :
+    ol.TileUrlFunction.createFromTileUrlFunctions(urls.map(this.createFromWMTSTemplate_.bind(this))), key);
+};
 
 /**
  * Get the dimensions, i.e. those passed to the constructor through the
@@ -81416,8 +81530,9 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
             var tileMatrixSet = ol.array.find(tileMatrixSets, function(el) {
               return el['Identifier'] == elt['TileMatrixSet'];
             });
-            var supportedCRS = tileMatrixSet['SupportedCRS'].replace(/urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3');
-            var proj1 = ol.proj.get(supportedCRS);
+            var supportedCRS = tileMatrixSet['SupportedCRS'];
+            var proj1 = ol.proj.get(supportedCRS.replace(/urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3')) ||
+                ol.proj.get(supportedCRS);
             var proj2 = ol.proj.get(config['projection']);
             if (proj1 && proj2) {
               return ol.proj.equivalent(proj1, proj2);
@@ -81476,11 +81591,18 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
   });
 
   var projection;
+  var code = matrixSetObj['SupportedCRS'];
+  if (code) {
+    projection = ol.proj.get(code.replace(/urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3')) ||
+        ol.proj.get(code);
+  }
   if ('projection' in config) {
-    projection = ol.proj.get(config['projection']);
-  } else {
-    projection = ol.proj.get(matrixSetObj['SupportedCRS'].replace(
-        /urn:ogc:def:crs:(\w+):(.*:)?(\w+)$/, '$1:$3'));
+    var projConfig = ol.proj.get(config['projection']);
+    if (projConfig) {
+      if (!projection || ol.proj.equivalent(projConfig, projection)) {
+        projection = projConfig;
+      }
+    }
   }
 
   var wgs84BoundingBox = l['WGS84BoundingBox'];
@@ -81513,21 +81635,26 @@ ol.source.WMTS.optionsFromCapabilities = function(wmtsCap, config) {
     var gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
 
     for (var i = 0, ii = gets.length; i < ii; ++i) {
-      var constraint = ol.array.find(gets[i]['Constraint'], function(element) {
-        return element['name'] == 'GetEncoding';
-      });
-      var encodings = constraint['AllowedValues']['Value'];
+      if (gets[i]['Constraint']) {
+        var constraint = ol.array.find(gets[i]['Constraint'], function(element) {
+          return element['name'] == 'GetEncoding';
+        });
+        var encodings = constraint['AllowedValues']['Value'];
 
-      if (requestEncoding === '') {
-        // requestEncoding not provided, use the first encoding from the list
-        requestEncoding = encodings[0];
-      }
-      if (requestEncoding === ol.source.WMTSRequestEncoding.KVP) {
-        if (ol.array.includes(encodings, ol.source.WMTSRequestEncoding.KVP)) {
-          urls.push(/** @type {string} */ (gets[i]['href']));
+        if (requestEncoding === '') {
+          // requestEncoding not provided, use the first encoding from the list
+          requestEncoding = encodings[0];
         }
-      } else {
-        break;
+        if (requestEncoding === ol.source.WMTSRequestEncoding.KVP) {
+          if (ol.array.includes(encodings, ol.source.WMTSRequestEncoding.KVP)) {
+            urls.push(/** @type {string} */ (gets[i]['href']));
+          }
+        } else {
+          break;
+        }
+      } else if (gets[i]['href']) {
+        requestEncoding = ol.source.WMTSRequestEncoding.KVP;
+        urls.push(/** @type {string} */ (gets[i]['href']));
       }
     }
   }
@@ -82391,10 +82518,12 @@ goog.require('ol.source.VectorTile');
 goog.require('ol.source.WMTS');
 goog.require('ol.source.XYZ');
 goog.require('ol.source.Zoomify');
+goog.require('ol.style');
 goog.require('ol.style.AtlasManager');
 goog.require('ol.style.Circle');
 goog.require('ol.style.Fill');
 goog.require('ol.style.Icon');
+goog.require('ol.style.IconImageCache');
 goog.require('ol.style.Image');
 goog.require('ol.style.RegularShape');
 goog.require('ol.style.Stroke');
@@ -83398,6 +83527,11 @@ goog.exportSymbol(
     ol.Sphere.getArea,
     OPENLAYERS);
 
+goog.exportSymbol(
+    'ol.style.iconImageCache',
+    ol.style.iconImageCache,
+    OPENLAYERS);
+
 goog.exportProperty(
     ol.Tile.prototype,
     'getTileCoord',
@@ -83782,6 +83916,11 @@ goog.exportProperty(
     ol.style.Icon.prototype,
     'load',
     ol.style.Icon.prototype.load);
+
+goog.exportProperty(
+    ol.style.IconImageCache.prototype,
+    'setSize',
+    ol.style.IconImageCache.prototype.setSize);
 
 goog.exportSymbol(
     'ol.style.Image',
@@ -84717,6 +84856,11 @@ goog.exportProperty(
     ol.source.Vector.prototype,
     'getUrl',
     ol.source.Vector.prototype.getUrl);
+
+goog.exportProperty(
+    ol.source.Vector.prototype,
+    'removeLoadedExtent',
+    ol.source.Vector.prototype.removeLoadedExtent);
 
 goog.exportProperty(
     ol.source.Vector.prototype,
@@ -89232,6 +89376,11 @@ goog.exportProperty(
     ol.source.Cluster.prototype,
     'getUrl',
     ol.source.Cluster.prototype.getUrl);
+
+goog.exportProperty(
+    ol.source.Cluster.prototype,
+    'removeLoadedExtent',
+    ol.source.Cluster.prototype.removeLoadedExtent);
 
 goog.exportProperty(
     ol.source.Cluster.prototype,
@@ -96302,7 +96451,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.5.0-56-g5ed2f3262';
+ol.VERSION = 'v4.6.4-41-g46fd03047';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;

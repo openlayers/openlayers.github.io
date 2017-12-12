@@ -4,6 +4,7 @@ goog.require('ol');
 goog.require('ol.ImageCanvas');
 goog.require('ol.LayerType');
 goog.require('ol.ViewHint');
+goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.layer.VectorRenderType');
 goog.require('ol.obj');
@@ -34,6 +35,11 @@ ol.renderer.canvas.ImageLayer = function(imageLayer) {
    * @type {ol.Transform}
    */
   this.imageTransform_ = ol.transform.create();
+
+  /**
+   * @type {!Array.<string>}
+   */
+  this.skippedFeatures_ = [];
 
   /**
    * @private
@@ -127,8 +133,9 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
         projection = sourceProjection;
       }
     }
-    if (this.vectorRenderer_) {
-      var context = this.vectorRenderer_.context;
+    var vectorRenderer = this.vectorRenderer_;
+    if (vectorRenderer) {
+      var context = vectorRenderer.context;
       var imageFrameState = /** @type {olx.FrameState} */ (ol.obj.assign({}, frameState, {
         size: [
           ol.extent.getWidth(renderedExtent) / viewResolution,
@@ -138,12 +145,16 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
           rotation: 0
         }))
       }));
-      if (this.vectorRenderer_.prepareFrame(imageFrameState, layerState)) {
+      var skippedFeatures = Object.keys(imageFrameState.skippedFeatureUids).sort();
+      if (vectorRenderer.prepareFrame(imageFrameState, layerState) &&
+          (vectorRenderer.replayGroupChanged ||
+          !ol.array.equals(skippedFeatures, this.skippedFeatures_))) {
         context.canvas.width = imageFrameState.size[0] * pixelRatio;
         context.canvas.height = imageFrameState.size[1] * pixelRatio;
-        this.vectorRenderer_.composeFrame(imageFrameState, layerState, context);
+        vectorRenderer.composeFrame(imageFrameState, layerState, context);
+        this.image_ = new ol.ImageCanvas(renderedExtent, viewResolution, pixelRatio, context.canvas);
+        this.skippedFeatures_ = skippedFeatures;
       }
-      this.image_ = new ol.ImageCanvas(renderedExtent, viewResolution, pixelRatio, context.canvas);
     } else {
       image = imageSource.getImage(
           renderedExtent, viewResolution, pixelRatio, projection);

@@ -150,7 +150,7 @@ goog.addDependency('../../../ol/ol/interaction/draw.js', ['ol.interaction.Draw']
 goog.addDependency('../../../ol/ol/interaction/draweventtype.js', ['ol.interaction.DrawEventType'], [], false);
 goog.addDependency('../../../ol/ol/interaction/extent.js', ['ol.interaction.Extent'], ['ol', 'ol.Feature', 'ol.MapBrowserEventType', 'ol.MapBrowserPointerEvent', 'ol.coordinate', 'ol.events.Event', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.Point', 'ol.geom.Polygon', 'ol.interaction.ExtentEventType', 'ol.interaction.Pointer', 'ol.layer.Vector', 'ol.source.Vector', 'ol.style.Style'], false);
 goog.addDependency('../../../ol/ol/interaction/extenteventtype.js', ['ol.interaction.ExtentEventType'], [], false);
-goog.addDependency('../../../ol/ol/interaction/interaction.js', ['ol.interaction.Interaction'], ['ol', 'ol.Object', 'ol.easing', 'ol.interaction.Property'], false);
+goog.addDependency('../../../ol/ol/interaction/interaction.js', ['ol.interaction.Interaction'], ['ol', 'ol.Object', 'ol.easing', 'ol.interaction.Property', 'ol.math'], false);
 goog.addDependency('../../../ol/ol/interaction/keyboardpan.js', ['ol.interaction.KeyboardPan'], ['ol', 'ol.coordinate', 'ol.events.EventType', 'ol.events.KeyCode', 'ol.events.condition', 'ol.interaction.Interaction'], false);
 goog.addDependency('../../../ol/ol/interaction/keyboardzoom.js', ['ol.interaction.KeyboardZoom'], ['ol', 'ol.events.EventType', 'ol.events.condition', 'ol.interaction.Interaction'], false);
 goog.addDependency('../../../ol/ol/interaction/modify.js', ['ol.interaction.Modify'], ['ol', 'ol.Collection', 'ol.CollectionEventType', 'ol.Feature', 'ol.MapBrowserEventType', 'ol.MapBrowserPointerEvent', 'ol.array', 'ol.coordinate', 'ol.events', 'ol.events.Event', 'ol.events.EventType', 'ol.events.condition', 'ol.extent', 'ol.geom.GeometryType', 'ol.geom.Point', 'ol.interaction.ModifyEventType', 'ol.interaction.Pointer', 'ol.layer.Vector', 'ol.source.Vector', 'ol.source.VectorEventType', 'ol.structs.RBush', 'ol.style.Style'], false);
@@ -165,7 +165,6 @@ goog.addDependency('../../../ol/ol/interaction/snap.js', ['ol.interaction.Snap']
 goog.addDependency('../../../ol/ol/interaction/translate.js', ['ol.interaction.Translate'], ['ol', 'ol.Collection', 'ol.Object', 'ol.array', 'ol.events', 'ol.events.Event', 'ol.functions', 'ol.interaction.Pointer', 'ol.interaction.Property', 'ol.interaction.TranslateEventType'], false);
 goog.addDependency('../../../ol/ol/interaction/translateeventtype.js', ['ol.interaction.TranslateEventType'], [], false);
 goog.addDependency('../../../ol/ol/kinetic.js', ['ol.Kinetic'], [], false);
-goog.addDependency('../../../ol/ol/layer/VectorRenderType.js', ['ol.layer.VectorRenderType'], [], false);
 goog.addDependency('../../../ol/ol/layer/base.js', ['ol.layer.Base'], ['ol', 'ol.Object', 'ol.layer.Property', 'ol.math', 'ol.obj'], false);
 goog.addDependency('../../../ol/ol/layer/group.js', ['ol.layer.Group'], ['ol', 'ol.Collection', 'ol.CollectionEventType', 'ol.Object', 'ol.ObjectEventType', 'ol.asserts', 'ol.events', 'ol.events.EventType', 'ol.extent', 'ol.layer.Base', 'ol.obj', 'ol.source.State'], false);
 goog.addDependency('../../../ol/ol/layer/heatmap.js', ['ol.layer.Heatmap'], ['ol', 'ol.Object', 'ol.dom', 'ol.events', 'ol.layer.Vector', 'ol.math', 'ol.obj', 'ol.render.EventType', 'ol.style.Icon', 'ol.style.Style'], false);
@@ -175,6 +174,7 @@ goog.addDependency('../../../ol/ol/layer/property.js', ['ol.layer.Property'], []
 goog.addDependency('../../../ol/ol/layer/tile.js', ['ol.layer.Tile'], ['ol', 'ol.LayerType', 'ol.layer.Layer', 'ol.layer.TileProperty', 'ol.obj'], false);
 goog.addDependency('../../../ol/ol/layer/tileproperty.js', ['ol.layer.TileProperty'], [], false);
 goog.addDependency('../../../ol/ol/layer/vector.js', ['ol.layer.Vector'], ['ol', 'ol.LayerType', 'ol.layer.Layer', 'ol.layer.VectorRenderType', 'ol.obj', 'ol.style.Style'], false);
+goog.addDependency('../../../ol/ol/layer/vectorrendertype.js', ['ol.layer.VectorRenderType'], [], false);
 goog.addDependency('../../../ol/ol/layer/vectortile.js', ['ol.layer.VectorTile'], ['ol', 'ol.LayerType', 'ol.asserts', 'ol.layer.TileProperty', 'ol.layer.Vector', 'ol.layer.VectorTileRenderType', 'ol.obj'], false);
 goog.addDependency('../../../ol/ol/layer/vectortilerendertype.js', ['ol.layer.VectorTileRenderType'], [], false);
 goog.addDependency('../../../ol/ol/layertype.js', ['ol.LayerType'], [], false);
@@ -251,7 +251,7 @@ goog.addDependency('../../../ol/ol/render/webgl/textreplay.js', ['ol.render.webg
 goog.addDependency('../../../ol/ol/render/webgl/texturereplay.js', ['ol.render.webgl.TextureReplay'], ['ol', 'ol.extent', 'ol.obj', 'ol.render.webgl.Replay', 'ol.render.webgl.texturereplay.defaultshader', 'ol.render.webgl.texturereplay.defaultshader.Locations', 'ol.webgl', 'ol.webgl.Context'], false);
 goog.addDependency('../../../ol/ol/render/webgl/texturereplay/defaultshader.js', ['ol.render.webgl.texturereplay.defaultshader'], ['ol', 'ol.webgl.Fragment', 'ol.webgl.Vertex'], false);
 goog.addDependency('../../../ol/ol/render/webgl/texturereplay/defaultshader/locations.js', ['ol.render.webgl.texturereplay.defaultshader.Locations'], ['ol'], false);
-goog.addDependency('../../../ol/ol/renderer/canvas/imagelayer.js', ['ol.renderer.canvas.ImageLayer'], ['ol', 'ol.ImageCanvas', 'ol.LayerType', 'ol.ViewHint', 'ol.extent', 'ol.layer.VectorRenderType', 'ol.obj', 'ol.plugins', 'ol.renderer.Type', 'ol.renderer.canvas.IntermediateCanvas', 'ol.transform'], false);
+goog.addDependency('../../../ol/ol/renderer/canvas/imagelayer.js', ['ol.renderer.canvas.ImageLayer'], ['ol', 'ol.ImageCanvas', 'ol.LayerType', 'ol.ViewHint', 'ol.array', 'ol.extent', 'ol.layer.VectorRenderType', 'ol.obj', 'ol.plugins', 'ol.renderer.Type', 'ol.renderer.canvas.IntermediateCanvas', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/renderer/canvas/intermediatecanvas.js', ['ol.renderer.canvas.IntermediateCanvas'], ['ol', 'ol.coordinate', 'ol.dom', 'ol.extent', 'ol.renderer.canvas.Layer', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/renderer/canvas/layer.js', ['ol.renderer.canvas.Layer'], ['ol', 'ol.extent', 'ol.functions', 'ol.render.Event', 'ol.render.EventType', 'ol.render.canvas', 'ol.render.canvas.Immediate', 'ol.renderer.Layer', 'ol.transform'], false);
 goog.addDependency('../../../ol/ol/renderer/canvas/map.js', ['ol.renderer.canvas.Map'], ['ol', 'ol.array', 'ol.css', 'ol.dom', 'ol.layer.Layer', 'ol.render.Event', 'ol.render.EventType', 'ol.render.canvas', 'ol.render.canvas.Immediate', 'ol.renderer.Map', 'ol.renderer.Type', 'ol.source.State', 'ol.transform'], false);

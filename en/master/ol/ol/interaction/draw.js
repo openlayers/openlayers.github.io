@@ -98,6 +98,14 @@ ol.interaction.Draw = function(options) {
   this.mode_ = ol.interaction.Draw.getMode_(this.type_);
 
   /**
+   * Stop click, singleclick, and doubleclick events from firing during drawing.
+   * Default is `false`.
+   * @type {boolean}
+   * @private
+   */
+  this.stopClick_ = !!options.stopClick;
+
+  /**
    * The number of points that must be drawn before a polygon ring or line
    * string can be finished.  The default is 3 for polygon rings and 2 for
    * line strings.
@@ -160,7 +168,12 @@ ol.interaction.Draw = function(options) {
         var geometry = opt_geometry;
         if (geometry) {
           if (mode === ol.interaction.Draw.Mode_.POLYGON) {
-            geometry.setCoordinates([coordinates[0].concat([coordinates[0][0]])]);
+            if (coordinates[0].length) {
+              // Add a closing coordinate to match the first
+              geometry.setCoordinates([coordinates[0].concat([coordinates[0][0]])]);
+            } else {
+              geometry.setCoordinates([]);
+            }
           } else {
             geometry.setCoordinates(coordinates);
           }
@@ -383,6 +396,9 @@ ol.interaction.Draw.handleUpEvent_ = function(event) {
   } else if (this.freehand_) {
     this.finishCoordinate_ = null;
     this.abortDrawing_();
+  }
+  if (!pass && this.stopClick_) {
+    event.stopPropagation();
   }
   return pass;
 };
