@@ -1,0 +1,1 @@
+webpackJsonp([81],{474:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(2),e=c(1),f=c(34),g=c(38),h=c(5),i=c(7);new d.a({interactions:Object(f.l)({mouseWheelZoom:!1}).extend([new f.f({constrainResolution:!0,condition:g.e})]),layers:[new h.a({source:new i.b})],target:"map",view:new e.a({center:[0,0],zoom:2})})}},[474]);

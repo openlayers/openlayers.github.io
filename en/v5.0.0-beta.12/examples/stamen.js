@@ -1,0 +1,1 @@
+webpackJsonp([49],{563:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(2),e=c(1),f=c(5),g=c(4),h=c(70);new d.a({layers:[new f.a({source:new h.a({layer:"watercolor"})}),new f.a({source:new h.a({layer:"terrain-labels"})})],target:"map",view:new e.a({center:Object(g.g)([-122.416667,37.783333]),zoom:12})})}},[563]);

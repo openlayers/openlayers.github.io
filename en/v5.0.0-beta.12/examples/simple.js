@@ -1,0 +1,1 @@
+webpackJsonp([52],{560:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(2),e=c(1),f=c(5),g=c(7);new d.a({layers:[new f.a({source:new g.b})],target:"map",view:new e.a({center:[0,0],zoom:2})})}},[560]);
