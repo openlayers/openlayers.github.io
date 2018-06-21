@@ -1,23 +1,2 @@
-var layers = [
-  new ol.layer.Tile({
-    source: new ol.source.OSM()
-  }),
-  new ol.layer.Tile({
-    extent: [-13884991, 2870341, -7455066, 6338219],
-    source: new ol.source.TileWMS({
-      url: 'https://ahocevar.com/geoserver/wms',
-      params: {'LAYERS': 'topp:states', 'TILED': true},
-      serverType: 'geoserver',
-      // Countries have transparency, so do not fade tiles:
-      transition: 0
-    })
-  })
-];
-var map = new ol.Map({
-  layers: layers,
-  target: 'map',
-  view: new ol.View({
-    center: [-10997148, 4569099],
-    zoom: 4
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[15],{246:function(e,r,s){"use strict";s.r(r);var a=s(5),n=s(4),o=s(11),t=s(18),w=s(73);const p=[new o.a({source:new t.b}),new o.a({extent:[-13884991,2870341,-7455066,6338219],source:new w.a({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states",TILED:!0},serverType:"geoserver",transition:0})})];new a.a({layers:p,target:"map",view:new n.a({center:[-10997148,4569099],zoom:4})})}},[[246,0]]]);
+//# sourceMappingURL=wms-tiled.js.map

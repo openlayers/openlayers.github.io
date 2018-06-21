@@ -1,25 +1,2 @@
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  controls: ol.control.defaults({
-    attributionOptions: {
-      collapsible: false
-    }
-  }),
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
-
-map.setTarget('map1');
-
-var teleportButton = document.getElementById('teleport');
-
-teleportButton.addEventListener('click', function() {
-  var target = map.getTarget() === 'map1' ? 'map2' : 'map1';
-  map.setTarget(target);
-}, false);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[43],{273:function(e,t,n){"use strict";n.r(t);var o=n(5),a=n(4),c=n(24),s=n(11),r=n(18);const i=new o.a({layers:[new s.a({source:new r.b})],controls:Object(c.h)({attributionOptions:{collapsible:!1}}),view:new a.a({center:[0,0],zoom:2})});i.setTarget("map1"),document.getElementById("teleport").addEventListener("click",function(){const e="map1"===i.getTarget()?"map2":"map1";i.setTarget(e)},!1)}},[[273,0]]]);
+//# sourceMappingURL=teleport.js.map

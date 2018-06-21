@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     <link rel="stylesheet" href="measure.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Measure</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -59,39 +59,50 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Using a draw interaction to measure lengths and areas.</p>
-          <div id="docs"><p>The <code>ol.Sphere.getLength()</code> and <code>ol.Sphere.getArea()</code> functions calculate spherical lengths and areas for geometries.  Lengths are calculated by assuming great circle segments between geometry coordinates. Areas are calculated as if edges of polygons were great circle segments.</p> <p>Note that the <code>geometry.getLength()</code> and <code>geometry.getArea()</code> methods return measures of projected (planar) geometries.  These can be very different than on-the-ground measures in certain situations — in northern and southern latitudes using Web Mercator for example.  For better results, use the functions on <code>ol.Sphere</code>.</p>
+          <div id="docs"><p>The <code>getLength()</code> and <code>getArea()</code> functions calculate spherical lengths and areas for geometries.  Lengths are calculated by assuming great circle segments between geometry coordinates. Areas are calculated as if edges of polygons were great circle segments.</p> <p>Note that the <code>geometry.getLength()</code> and <code>geometry.getArea()</code> methods return measures of projected (planar) geometries.  These can be very different than on-the-ground measures in certain situations — in northern and southern latitudes using Web Mercator for example.  For better results, use the functions in the <code>ol/sphere</code> module.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.Observable.html" title="API documentation for ol.Observable">ol.Observable</a></li>,<li><a href="../apidoc/ol.Overlay.html" title="API documentation for ol.Overlay">ol.Overlay</a></li>,<li><a href="../apidoc/ol.Sphere.html" title="API documentation for ol.Sphere">ol.Sphere</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.geom.LineString.html" title="API documentation for ol.geom.LineString">ol.geom.LineString</a></li>,<li><a href="../apidoc/ol.geom.Polygon.html" title="API documentation for ol.geom.Polygon">ol.geom.Polygon</a></li>,<li><a href="../apidoc/ol.interaction.Draw.html" title="API documentation for ol.interaction.Draw">ol.interaction.Draw</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Circle.html" title="API documentation for ol.style.Circle">ol.style.Circle</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Measure</textarea>
           <textarea class="hidden" name="description">Using a draw interaction to measure lengths and areas.</textarea>
-          <textarea class="hidden" name="js">var raster &#x3D; new ol.layer.Tile({
-  source: new ol.source.OSM()
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import {unByKey} from &#x27;ol/Observable.js&#x27;;
+import Overlay from &#x27;ol/Overlay.js&#x27;;
+import {getArea, getLength} from &#x27;ol/sphere.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import {LineString, Polygon} from &#x27;ol/geom.js&#x27;;
+import Draw from &#x27;ol/interaction/Draw.js&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+
+
+const raster &#x3D; new TileLayer({
+  source: new OSM()
 });
 
-var source &#x3D; new ol.source.Vector();
+const source &#x3D; new VectorSource();
 
-var vector &#x3D; new ol.layer.Vector({
+const vector &#x3D; new VectorLayer({
   source: source,
-  style: new ol.style.Style({
-    fill: new ol.style.Fill({
+  style: new Style({
+    fill: new Fill({
       color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
     }),
-    stroke: new ol.style.Stroke({
+    stroke: new Stroke({
       color: &#x27;#ffcc33&#x27;,
       width: 2
     }),
-    image: new ol.style.Circle({
+    image: new CircleStyle({
       radius: 7,
-      fill: new ol.style.Fill({
+      fill: new Fill({
         color: &#x27;#ffcc33&#x27;
       })
     })
@@ -101,69 +112,69 @@ var vector &#x3D; new ol.layer.Vector({
 
 /**
  * Currently drawn feature.
- * @type {ol.Feature}
+ * @type {module:ol/Feature~Feature}
  */
-var sketch;
+let sketch;
 
 
 /**
  * The help tooltip element.
  * @type {Element}
  */
-var helpTooltipElement;
+let helpTooltipElement;
 
 
 /**
  * Overlay to show the help messages.
- * @type {ol.Overlay}
+ * @type {module:ol/Overlay}
  */
-var helpTooltip;
+let helpTooltip;
 
 
 /**
  * The measure tooltip element.
  * @type {Element}
  */
-var measureTooltipElement;
+let measureTooltipElement;
 
 
 /**
  * Overlay to show the measurement.
- * @type {ol.Overlay}
+ * @type {module:ol/Overlay}
  */
-var measureTooltip;
+let measureTooltip;
 
 
 /**
  * Message to show when the user is drawing a polygon.
  * @type {string}
  */
-var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
+const continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
 
 
 /**
  * Message to show when the user is drawing a line.
  * @type {string}
  */
-var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
+const continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 
 /**
  * Handle pointer move.
- * @param {ol.MapBrowserEvent} evt The event.
+ * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt The event.
  */
-var pointerMoveHandler &#x3D; function(evt) {
+const pointerMoveHandler &#x3D; function(evt) {
   if (evt.dragging) {
     return;
   }
   /** @type {string} */
-  var helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
+  let helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
   if (sketch) {
-    var geom &#x3D; (sketch.getGeometry());
-    if (geom instanceof ol.geom.Polygon) {
+    const geom &#x3D; (sketch.getGeometry());
+    if (geom instanceof Polygon) {
       helpMsg &#x3D; continuePolygonMsg;
-    } else if (geom instanceof ol.geom.LineString) {
+    } else if (geom instanceof LineString) {
       helpMsg &#x3D; continueLineMsg;
     }
   }
@@ -175,10 +186,10 @@ var pointerMoveHandler &#x3D; function(evt) {
 };
 
 
-var map &#x3D; new ol.Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
-  view: new ol.View({
+  view: new View({
     center: [-11000000, 4600000],
     zoom: 15
   })
@@ -190,19 +201,19 @@ map.getViewport().addEventListener(&#x27;mouseout&#x27;, function() {
   helpTooltipElement.classList.add(&#x27;hidden&#x27;);
 });
 
-var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
-var draw; // global so we can remove it later
+let draw; // global so we can remove it later
 
 
 /**
  * Format length output.
- * @param {ol.geom.LineString} line The line.
+ * @param {module:ol/geom/LineString~LineString} line The line.
  * @return {string} The formatted length.
  */
-var formatLength &#x3D; function(line) {
-  var length &#x3D; ol.Sphere.getLength(line);
-  var output;
+const formatLength &#x3D; function(line) {
+  const length &#x3D; getLength(line);
+  let output;
   if (length &gt; 100) {
     output &#x3D; (Math.round(length / 1000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&#x27;;
@@ -216,12 +227,12 @@ var formatLength &#x3D; function(line) {
 
 /**
  * Format area output.
- * @param {ol.geom.Polygon} polygon The polygon.
+ * @param {module:ol/geom/Polygon~Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
-var formatArea &#x3D; function(polygon) {
-  var area &#x3D; ol.Sphere.getArea(polygon);
-  var output;
+const formatArea &#x3D; function(polygon) {
+  const area &#x3D; getArea(polygon);
+  let output;
   if (area &gt; 10000) {
     output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
@@ -233,25 +244,25 @@ var formatArea &#x3D; function(polygon) {
 };
 
 function addInteraction() {
-  var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
-  draw &#x3D; new ol.interaction.Draw({
+  const type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
+  draw &#x3D; new Draw({
     source: source,
     type: type,
-    style: new ol.style.Style({
-      fill: new ol.style.Fill({
+    style: new Style({
+      fill: new Fill({
         color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
       }),
-      stroke: new ol.style.Stroke({
+      stroke: new Stroke({
         color: &#x27;rgba(0, 0, 0, 0.5)&#x27;,
         lineDash: [10, 10],
         width: 2
       }),
-      image: new ol.style.Circle({
+      image: new CircleStyle({
         radius: 5,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: &#x27;rgba(0, 0, 0, 0.7)&#x27;
         }),
-        fill: new ol.style.Fill({
+        fill: new Fill({
           color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
         })
       })
@@ -262,41 +273,41 @@ function addInteraction() {
   createMeasureTooltip();
   createHelpTooltip();
 
-  var listener;
+  let listener;
   draw.on(&#x27;drawstart&#x27;,
-      function(evt) {
-        // set sketch
-        sketch &#x3D; evt.feature;
+    function(evt) {
+      // set sketch
+      sketch &#x3D; evt.feature;
 
-        /** @type {ol.Coordinate|undefined} */
-        var tooltipCoord &#x3D; evt.coordinate;
+      /** @type {module:ol/coordinate~Coordinate|undefined} */
+      let tooltipCoord &#x3D; evt.coordinate;
 
-        listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
-          var geom &#x3D; evt.target;
-          var output;
-          if (geom instanceof ol.geom.Polygon) {
-            output &#x3D; formatArea(geom);
-            tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
-          } else if (geom instanceof ol.geom.LineString) {
-            output &#x3D; formatLength(geom);
-            tooltipCoord &#x3D; geom.getLastCoordinate();
-          }
-          measureTooltipElement.innerHTML &#x3D; output;
-          measureTooltip.setPosition(tooltipCoord);
-        });
-      }, this);
+      listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
+        const geom &#x3D; evt.target;
+        let output;
+        if (geom instanceof Polygon) {
+          output &#x3D; formatArea(geom);
+          tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
+        } else if (geom instanceof LineString) {
+          output &#x3D; formatLength(geom);
+          tooltipCoord &#x3D; geom.getLastCoordinate();
+        }
+        measureTooltipElement.innerHTML &#x3D; output;
+        measureTooltip.setPosition(tooltipCoord);
+      });
+    }, this);
 
   draw.on(&#x27;drawend&#x27;,
-      function() {
-        measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
-        measureTooltip.setOffset([0, -7]);
-        // unset sketch
-        sketch &#x3D; null;
-        // unset tooltip so that a new one can be created
-        measureTooltipElement &#x3D; null;
-        createMeasureTooltip();
-        ol.Observable.unByKey(listener);
-      }, this);
+    function() {
+      measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
+      measureTooltip.setOffset([0, -7]);
+      // unset sketch
+      sketch &#x3D; null;
+      // unset tooltip so that a new one can be created
+      measureTooltipElement &#x3D; null;
+      createMeasureTooltip();
+      unByKey(listener);
+    }, this);
 }
 
 
@@ -309,7 +320,7 @@ function createHelpTooltip() {
   }
   helpTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
   helpTooltipElement.className &#x3D; &#x27;tooltip hidden&#x27;;
-  helpTooltip &#x3D; new ol.Overlay({
+  helpTooltip &#x3D; new Overlay({
     element: helpTooltipElement,
     offset: [15, 0],
     positioning: &#x27;center-left&#x27;
@@ -327,7 +338,7 @@ function createMeasureTooltip() {
   }
   measureTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
   measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-measure&#x27;;
-  measureTooltip &#x3D; new ol.Overlay({
+  measureTooltip &#x3D; new Overlay({
     element: measureTooltipElement,
     offset: [0, -15],
     positioning: &#x27;bottom-center&#x27;
@@ -387,17 +398,16 @@ addInteraction();
   &lt;/select&gt;
 &lt;/form&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Measure&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
+
     &lt;style&gt;
       .tooltip {
         position: relative;
@@ -442,25 +452,37 @@ addInteraction();
       &lt;/select&gt;
     &lt;/form&gt;
     &lt;script&gt;
-      var raster &#x3D; new ol.layer.Tile({
-        source: new ol.source.OSM()
+      import Map from &#x27;ol/Map.js&#x27;;
+      import {unByKey} from &#x27;ol/Observable.js&#x27;;
+      import Overlay from &#x27;ol/Overlay.js&#x27;;
+      import {getArea, getLength} from &#x27;ol/sphere.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import {LineString, Polygon} from &#x27;ol/geom.js&#x27;;
+      import Draw from &#x27;ol/interaction/Draw.js&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+      import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+      import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+
+
+      const raster &#x3D; new TileLayer({
+        source: new OSM()
       });
 
-      var source &#x3D; new ol.source.Vector();
+      const source &#x3D; new VectorSource();
 
-      var vector &#x3D; new ol.layer.Vector({
+      const vector &#x3D; new VectorLayer({
         source: source,
-        style: new ol.style.Style({
-          fill: new ol.style.Fill({
+        style: new Style({
+          fill: new Fill({
             color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
           }),
-          stroke: new ol.style.Stroke({
+          stroke: new Stroke({
             color: &#x27;#ffcc33&#x27;,
             width: 2
           }),
-          image: new ol.style.Circle({
+          image: new CircleStyle({
             radius: 7,
-            fill: new ol.style.Fill({
+            fill: new Fill({
               color: &#x27;#ffcc33&#x27;
             })
           })
@@ -470,69 +492,69 @@ addInteraction();
 
       /**
        * Currently drawn feature.
-       * @type {ol.Feature}
+       * @type {module:ol/Feature~Feature}
        */
-      var sketch;
+      let sketch;
 
 
       /**
        * The help tooltip element.
        * @type {Element}
        */
-      var helpTooltipElement;
+      let helpTooltipElement;
 
 
       /**
        * Overlay to show the help messages.
-       * @type {ol.Overlay}
+       * @type {module:ol/Overlay}
        */
-      var helpTooltip;
+      let helpTooltip;
 
 
       /**
        * The measure tooltip element.
        * @type {Element}
        */
-      var measureTooltipElement;
+      let measureTooltipElement;
 
 
       /**
        * Overlay to show the measurement.
-       * @type {ol.Overlay}
+       * @type {module:ol/Overlay}
        */
-      var measureTooltip;
+      let measureTooltip;
 
 
       /**
        * Message to show when the user is drawing a polygon.
        * @type {string}
        */
-      var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
+      const continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
 
 
       /**
        * Message to show when the user is drawing a line.
        * @type {string}
        */
-      var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
+      const continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 
       /**
        * Handle pointer move.
-       * @param {ol.MapBrowserEvent} evt The event.
+       * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt The event.
        */
-      var pointerMoveHandler &#x3D; function(evt) {
+      const pointerMoveHandler &#x3D; function(evt) {
         if (evt.dragging) {
           return;
         }
         /** @type {string} */
-        var helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
+        let helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
         if (sketch) {
-          var geom &#x3D; (sketch.getGeometry());
-          if (geom instanceof ol.geom.Polygon) {
+          const geom &#x3D; (sketch.getGeometry());
+          if (geom instanceof Polygon) {
             helpMsg &#x3D; continuePolygonMsg;
-          } else if (geom instanceof ol.geom.LineString) {
+          } else if (geom instanceof LineString) {
             helpMsg &#x3D; continueLineMsg;
           }
         }
@@ -544,10 +566,10 @@ addInteraction();
       };
 
 
-      var map &#x3D; new ol.Map({
+      const map &#x3D; new Map({
         layers: [raster, vector],
         target: &#x27;map&#x27;,
-        view: new ol.View({
+        view: new View({
           center: [-11000000, 4600000],
           zoom: 15
         })
@@ -559,19 +581,19 @@ addInteraction();
         helpTooltipElement.classList.add(&#x27;hidden&#x27;);
       });
 
-      var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+      const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
-      var draw; // global so we can remove it later
+      let draw; // global so we can remove it later
 
 
       /**
        * Format length output.
-       * @param {ol.geom.LineString} line The line.
+       * @param {module:ol/geom/LineString~LineString} line The line.
        * @return {string} The formatted length.
        */
-      var formatLength &#x3D; function(line) {
-        var length &#x3D; ol.Sphere.getLength(line);
-        var output;
+      const formatLength &#x3D; function(line) {
+        const length &#x3D; getLength(line);
+        let output;
         if (length &gt; 100) {
           output &#x3D; (Math.round(length / 1000 * 100) / 100) +
               &#x27; &#x27; + &#x27;km&#x27;;
@@ -585,12 +607,12 @@ addInteraction();
 
       /**
        * Format area output.
-       * @param {ol.geom.Polygon} polygon The polygon.
+       * @param {module:ol/geom/Polygon~Polygon} polygon The polygon.
        * @return {string} Formatted area.
        */
-      var formatArea &#x3D; function(polygon) {
-        var area &#x3D; ol.Sphere.getArea(polygon);
-        var output;
+      const formatArea &#x3D; function(polygon) {
+        const area &#x3D; getArea(polygon);
+        let output;
         if (area &gt; 10000) {
           output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
               &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
@@ -602,25 +624,25 @@ addInteraction();
       };
 
       function addInteraction() {
-        var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
-        draw &#x3D; new ol.interaction.Draw({
+        const type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
+        draw &#x3D; new Draw({
           source: source,
           type: type,
-          style: new ol.style.Style({
-            fill: new ol.style.Fill({
+          style: new Style({
+            fill: new Fill({
               color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
             }),
-            stroke: new ol.style.Stroke({
+            stroke: new Stroke({
               color: &#x27;rgba(0, 0, 0, 0.5)&#x27;,
               lineDash: [10, 10],
               width: 2
             }),
-            image: new ol.style.Circle({
+            image: new CircleStyle({
               radius: 5,
-              stroke: new ol.style.Stroke({
+              stroke: new Stroke({
                 color: &#x27;rgba(0, 0, 0, 0.7)&#x27;
               }),
-              fill: new ol.style.Fill({
+              fill: new Fill({
                 color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
               })
             })
@@ -631,41 +653,41 @@ addInteraction();
         createMeasureTooltip();
         createHelpTooltip();
 
-        var listener;
+        let listener;
         draw.on(&#x27;drawstart&#x27;,
-            function(evt) {
-              // set sketch
-              sketch &#x3D; evt.feature;
+          function(evt) {
+            // set sketch
+            sketch &#x3D; evt.feature;
 
-              /** @type {ol.Coordinate|undefined} */
-              var tooltipCoord &#x3D; evt.coordinate;
+            /** @type {module:ol/coordinate~Coordinate|undefined} */
+            let tooltipCoord &#x3D; evt.coordinate;
 
-              listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
-                var geom &#x3D; evt.target;
-                var output;
-                if (geom instanceof ol.geom.Polygon) {
-                  output &#x3D; formatArea(geom);
-                  tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
-                } else if (geom instanceof ol.geom.LineString) {
-                  output &#x3D; formatLength(geom);
-                  tooltipCoord &#x3D; geom.getLastCoordinate();
-                }
-                measureTooltipElement.innerHTML &#x3D; output;
-                measureTooltip.setPosition(tooltipCoord);
-              });
-            }, this);
+            listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
+              const geom &#x3D; evt.target;
+              let output;
+              if (geom instanceof Polygon) {
+                output &#x3D; formatArea(geom);
+                tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
+              } else if (geom instanceof LineString) {
+                output &#x3D; formatLength(geom);
+                tooltipCoord &#x3D; geom.getLastCoordinate();
+              }
+              measureTooltipElement.innerHTML &#x3D; output;
+              measureTooltip.setPosition(tooltipCoord);
+            });
+          }, this);
 
         draw.on(&#x27;drawend&#x27;,
-            function() {
-              measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
-              measureTooltip.setOffset([0, -7]);
-              // unset sketch
-              sketch &#x3D; null;
-              // unset tooltip so that a new one can be created
-              measureTooltipElement &#x3D; null;
-              createMeasureTooltip();
-              ol.Observable.unByKey(listener);
-            }, this);
+          function() {
+            measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-static&#x27;;
+            measureTooltip.setOffset([0, -7]);
+            // unset sketch
+            sketch &#x3D; null;
+            // unset tooltip so that a new one can be created
+            measureTooltipElement &#x3D; null;
+            createMeasureTooltip();
+            unByKey(listener);
+          }, this);
       }
 
 
@@ -678,7 +700,7 @@ addInteraction();
         }
         helpTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
         helpTooltipElement.className &#x3D; &#x27;tooltip hidden&#x27;;
-        helpTooltip &#x3D; new ol.Overlay({
+        helpTooltip &#x3D; new Overlay({
           element: helpTooltipElement,
           offset: [15, 0],
           positioning: &#x27;center-left&#x27;
@@ -696,7 +718,7 @@ addInteraction();
         }
         measureTooltipElement &#x3D; document.createElement(&#x27;div&#x27;);
         measureTooltipElement.className &#x3D; &#x27;tooltip tooltip-measure&#x27;;
-        measureTooltip &#x3D; new ol.Overlay({
+        measureTooltip &#x3D; new Overlay({
           element: measureTooltipElement,
           offset: [0, -15],
           positioning: &#x27;bottom-center&#x27;
@@ -722,7 +744,7 @@ addInteraction();
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=measure"></script>
+    <script src="common.js"></script><script src="measure.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -735,7 +757,7 @@ addInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

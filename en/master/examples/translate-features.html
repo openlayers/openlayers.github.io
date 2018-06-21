@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Translate Features</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -54,40 +54,48 @@
           <p id="shortdesc">Example of a translate features interaction.</p>
           <div id="docs"><p>This example demonstrates how the translate and select interactions can be used together.  Zoom in to an area of interest and click to select a feature.  Then drag the feature around to move it elsewhere on the map.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.GeoJSON.html" title="API documentation for ol.format.GeoJSON">ol.format.GeoJSON</a></li>,<li><a href="../apidoc/ol.interaction.html" title="API documentation for ol.interaction">ol.interaction</a></li>,<li><a href="../apidoc/ol.interaction.Select.html" title="API documentation for ol.interaction.Select">ol.interaction.Select</a></li>,<li><a href="../apidoc/ol.interaction.Translate.html" title="API documentation for ol.interaction.Translate">ol.interaction.Translate</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Translate Features</textarea>
           <textarea class="hidden" name="description">Example of a translate features interaction.</textarea>
-          <textarea class="hidden" name="js">var raster &#x3D; new ol.layer.Tile({
-  source: new ol.source.OSM()
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+import {defaults as defaultInteractions, Select, Translate} from &#x27;ol/interaction.js&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+
+
+const raster &#x3D; new TileLayer({
+  source: new OSM()
 });
 
-var vector &#x3D; new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/countries.geojson&#x27;,
-    format: new ol.format.GeoJSON()
+const vector &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/countries.geojson&#x27;,
+    format: new GeoJSON()
   })
 });
 
-var select &#x3D; new ol.interaction.Select();
+const select &#x3D; new Select();
 
-var translate &#x3D; new ol.interaction.Translate({
+const translate &#x3D; new Translate({
   features: select.getFeatures()
 });
 
-var map &#x3D; new ol.Map({
-  interactions: ol.interaction.defaults().extend([select, translate]),
+const map &#x3D; new Map({
+  interactions: defaultInteractions().extend([select, translate]),
   layers: [raster, vector],
   target: &#x27;map&#x27;,
-  view: new ol.View({
+  view: new View({
     center: [0, 0],
     zoom: 2
   })
@@ -96,43 +104,51 @@ var map &#x3D; new ol.Map({
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Translate Features&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
+
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      var raster &#x3D; new ol.layer.Tile({
-        source: new ol.source.OSM()
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+      import {defaults as defaultInteractions, Select, Translate} from &#x27;ol/interaction.js&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+      import OSM from &#x27;ol/source/OSM.js&#x27;;
+      import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+
+
+      const raster &#x3D; new TileLayer({
+        source: new OSM()
       });
 
-      var vector &#x3D; new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/countries.geojson&#x27;,
-          format: new ol.format.GeoJSON()
+      const vector &#x3D; new VectorLayer({
+        source: new VectorSource({
+          url: &#x27;data/geojson/countries.geojson&#x27;,
+          format: new GeoJSON()
         })
       });
 
-      var select &#x3D; new ol.interaction.Select();
+      const select &#x3D; new Select();
 
-      var translate &#x3D; new ol.interaction.Translate({
+      const translate &#x3D; new Translate({
         features: select.getFeatures()
       });
 
-      var map &#x3D; new ol.Map({
-        interactions: ol.interaction.defaults().extend([select, translate]),
+      const map &#x3D; new Map({
+        interactions: defaultInteractions().extend([select, translate]),
         layers: [raster, vector],
         target: &#x27;map&#x27;,
-        view: new ol.View({
+        view: new View({
           center: [0, 0],
           zoom: 2
         })
@@ -145,7 +161,7 @@ var map &#x3D; new ol.Map({
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=translate-features"></script>
+    <script src="common.js"></script><script src="translate-features.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -158,7 +174,7 @@ var map &#x3D; new ol.Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

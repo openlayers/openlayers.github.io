@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Editable ArcGIS REST Feature Service</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -61,27 +61,38 @@
           <p id="shortdesc">Example of using an ArcGIS REST Feature Service in an editing application.</p>
           <div id="docs"><p>This example loads features from ArcGIS REST Feature Service and allows to add new features or update existing features.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.EsriJSON.html" title="API documentation for ol.format.EsriJSON">ol.format.EsriJSON</a></li>,<li><a href="../apidoc/ol.interaction.html" title="API documentation for ol.interaction">ol.interaction</a></li>,<li><a href="../apidoc/ol.interaction.Draw.html" title="API documentation for ol.interaction.Draw">ol.interaction.Draw</a></li>,<li><a href="../apidoc/ol.interaction.Modify.html" title="API documentation for ol.interaction.Modify">ol.interaction.Modify</a></li>,<li><a href="../apidoc/ol.interaction.Select.html" title="API documentation for ol.interaction.Select">ol.interaction.Select</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.loadingstrategy.html" title="API documentation for ol.loadingstrategy">ol.loadingstrategy</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.source.XYZ.html" title="API documentation for ol.source.XYZ">ol.source.XYZ</a></li>,<li><a href="../apidoc/ol.tilegrid.html" title="API documentation for ol.tilegrid">ol.tilegrid</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Editable ArcGIS REST Feature Service</textarea>
           <textarea class="hidden" name="description">Example of using an ArcGIS REST Feature Service in an editing application.</textarea>
-          <textarea class="hidden" name="js">var serviceUrl &#x3D; &#x27;https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import EsriJSON from &#x27;ol/format/EsriJSON.js&#x27;;
+import {defaults as defaultInteractions, Draw, Modify, Select} from &#x27;ol/interaction.js&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {tile as tileStrategy} from &#x27;ol/loadingstrategy.js&#x27;;
+import {fromLonLat} from &#x27;ol/proj.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+import XYZ from &#x27;ol/source/XYZ.js&#x27;;
+import {createXYZ} from &#x27;ol/tilegrid.js&#x27;;
+
+
+const serviceUrl &#x3D; &#x27;https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
     &#x27;services/PDX_Pedestrian_Districts/FeatureServer/&#x27;;
-var layer &#x3D; &#x27;0&#x27;;
+const layer &#x3D; &#x27;0&#x27;;
 
-var esrijsonFormat &#x3D; new ol.format.EsriJSON();
+const esrijsonFormat &#x3D; new EsriJSON();
 
-var vectorSource &#x3D; new ol.source.Vector({
+const vectorSource &#x3D; new VectorSource({
   loader: function(extent, resolution, projection) {
-    var url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
+    const url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
         &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
         encodeURIComponent(&#x27;{&quot;xmin&quot;:&#x27; + extent[0] + &#x27;,&quot;ymin&quot;:&#x27; +
             extent[1] + &#x27;,&quot;xmax&quot;:&#x27; + extent[2] + &#x27;,&quot;ymax&quot;:&#x27; + extent[3] +
@@ -94,7 +105,7 @@ var vectorSource &#x3D; new ol.source.Vector({
             response.error.details.join(&#x27;\n&#x27;));
       } else {
         // dataProjection will be read from document
-        var features &#x3D; esrijsonFormat.readFeatures(response, {
+        const features &#x3D; esrijsonFormat.readFeatures(response, {
           featureProjection: projection
         });
         if (features.length &gt; 0) {
@@ -103,17 +114,17 @@ var vectorSource &#x3D; new ol.source.Vector({
       }
     }});
   },
-  strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
+  strategy: tileStrategy(createXYZ({
     tileSize: 512
   }))
 });
 
-var vector &#x3D; new ol.layer.Vector({
+const vector &#x3D; new VectorLayer({
   source: vectorSource
 });
 
-var raster &#x3D; new ol.layer.Tile({
-  source: new ol.source.XYZ({
+const raster &#x3D; new TileLayer({
+  source: new XYZ({
     attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
         &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
     url: &#x27;https://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
@@ -121,31 +132,31 @@ var raster &#x3D; new ol.layer.Tile({
   })
 });
 
-var draw &#x3D; new ol.interaction.Draw({
+const draw &#x3D; new Draw({
   source: vectorSource,
   type: &#x27;Polygon&#x27;
 });
 
-var select &#x3D; new ol.interaction.Select();
+const select &#x3D; new Select();
 select.setActive(false);
-var selected &#x3D; select.getFeatures();
+const selected &#x3D; select.getFeatures();
 
-var modify &#x3D; new ol.interaction.Modify({
+const modify &#x3D; new Modify({
   features: selected
 });
 modify.setActive(false);
 
-var map &#x3D; new ol.Map({
-  interactions: ol.interaction.defaults().extend([draw, select, modify]),
+const map &#x3D; new Map({
+  interactions: defaultInteractions().extend([draw, select, modify]),
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
-  view: new ol.View({
-    center: ol.proj.transform([-122.619, 45.512], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
+  view: new View({
+    center: fromLonLat([-122.619, 45.512]),
     zoom: 12
   })
 });
 
-var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 
 /**
@@ -157,28 +168,28 @@ typeSelect.onchange &#x3D; function() {
   modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
 };
 
-var dirty &#x3D; {};
+const dirty &#x3D; {};
 
 selected.on(&#x27;add&#x27;, function(evt) {
-  var feature &#x3D; evt.element;
+  const feature &#x3D; evt.element;
   feature.on(&#x27;change&#x27;, function(evt) {
     dirty[evt.target.getId()] &#x3D; true;
   });
 });
 
 selected.on(&#x27;remove&#x27;, function(evt) {
-  var feature &#x3D; evt.element;
-  var fid &#x3D; feature.getId();
+  const feature &#x3D; evt.element;
+  const fid &#x3D; feature.getId();
   if (dirty[fid] &#x3D;&#x3D;&#x3D; true) {
-    var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+    const payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
       featureProjection: map.getView().getProjection()
     }) + &#x27;]&#x27;;
-    var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
+    const url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
     $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
-      var result &#x3D; JSON.parse(data);
+      const result &#x3D; JSON.parse(data);
       if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
         if (result.updateResults[0].success !&#x3D;&#x3D; true) {
-          var error &#x3D; result.updateResults[0].error;
+          const error &#x3D; result.updateResults[0].error;
           alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
         } else {
           delete dirty[fid];
@@ -189,19 +200,19 @@ selected.on(&#x27;remove&#x27;, function(evt) {
 });
 
 draw.on(&#x27;drawend&#x27;, function(evt) {
-  var feature &#x3D; evt.feature;
-  var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+  const feature &#x3D; evt.feature;
+  const payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
     featureProjection: map.getView().getProjection()
   }) + &#x27;]&#x27;;
-  var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
+  const url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
   $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
-    var result &#x3D; JSON.parse(data);
+    const result &#x3D; JSON.parse(data);
     if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
       if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
         feature.setId(result.addResults[0][&#x27;objectId&#x27;]);
         vectorSource.clear();
       } else {
-        var error &#x3D; result.addResults[0].error;
+        const error &#x3D; result.addResults[0].error;
         alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
       }
     }
@@ -218,17 +229,15 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
   &lt;/select&gt;
 &lt;/form&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js,https://code.jquery.com/jquery-2.2.3.min.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Editable ArcGIS REST Feature Service&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-2.2.3.min.js&quot;&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -241,15 +250,27 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
       &lt;/select&gt;
     &lt;/form&gt;
     &lt;script&gt;
-      var serviceUrl &#x3D; &#x27;https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import EsriJSON from &#x27;ol/format/EsriJSON.js&#x27;;
+      import {defaults as defaultInteractions, Draw, Modify, Select} from &#x27;ol/interaction.js&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+      import {tile as tileStrategy} from &#x27;ol/loadingstrategy.js&#x27;;
+      import {fromLonLat} from &#x27;ol/proj.js&#x27;;
+      import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+      import XYZ from &#x27;ol/source/XYZ.js&#x27;;
+      import {createXYZ} from &#x27;ol/tilegrid.js&#x27;;
+
+
+      const serviceUrl &#x3D; &#x27;https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
           &#x27;services/PDX_Pedestrian_Districts/FeatureServer/&#x27;;
-      var layer &#x3D; &#x27;0&#x27;;
+      const layer &#x3D; &#x27;0&#x27;;
 
-      var esrijsonFormat &#x3D; new ol.format.EsriJSON();
+      const esrijsonFormat &#x3D; new EsriJSON();
 
-      var vectorSource &#x3D; new ol.source.Vector({
+      const vectorSource &#x3D; new VectorSource({
         loader: function(extent, resolution, projection) {
-          var url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
+          const url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
               &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
               encodeURIComponent(&#x27;{&quot;xmin&quot;:&#x27; + extent[0] + &#x27;,&quot;ymin&quot;:&#x27; +
                   extent[1] + &#x27;,&quot;xmax&quot;:&#x27; + extent[2] + &#x27;,&quot;ymax&quot;:&#x27; + extent[3] +
@@ -262,7 +283,7 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
                   response.error.details.join(&#x27;\n&#x27;));
             } else {
               // dataProjection will be read from document
-              var features &#x3D; esrijsonFormat.readFeatures(response, {
+              const features &#x3D; esrijsonFormat.readFeatures(response, {
                 featureProjection: projection
               });
               if (features.length &gt; 0) {
@@ -271,17 +292,17 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
             }
           }});
         },
-        strategy: ol.loadingstrategy.tile(ol.tilegrid.createXYZ({
+        strategy: tileStrategy(createXYZ({
           tileSize: 512
         }))
       });
 
-      var vector &#x3D; new ol.layer.Vector({
+      const vector &#x3D; new VectorLayer({
         source: vectorSource
       });
 
-      var raster &#x3D; new ol.layer.Tile({
-        source: new ol.source.XYZ({
+      const raster &#x3D; new TileLayer({
+        source: new XYZ({
           attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
               &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
           url: &#x27;https://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
@@ -289,31 +310,31 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
         })
       });
 
-      var draw &#x3D; new ol.interaction.Draw({
+      const draw &#x3D; new Draw({
         source: vectorSource,
         type: &#x27;Polygon&#x27;
       });
 
-      var select &#x3D; new ol.interaction.Select();
+      const select &#x3D; new Select();
       select.setActive(false);
-      var selected &#x3D; select.getFeatures();
+      const selected &#x3D; select.getFeatures();
 
-      var modify &#x3D; new ol.interaction.Modify({
+      const modify &#x3D; new Modify({
         features: selected
       });
       modify.setActive(false);
 
-      var map &#x3D; new ol.Map({
-        interactions: ol.interaction.defaults().extend([draw, select, modify]),
+      const map &#x3D; new Map({
+        interactions: defaultInteractions().extend([draw, select, modify]),
         layers: [raster, vector],
         target: document.getElementById(&#x27;map&#x27;),
-        view: new ol.View({
-          center: ol.proj.transform([-122.619, 45.512], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;),
+        view: new View({
+          center: fromLonLat([-122.619, 45.512]),
           zoom: 12
         })
       });
 
-      var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+      const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 
       /**
@@ -325,28 +346,28 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
         modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
       };
 
-      var dirty &#x3D; {};
+      const dirty &#x3D; {};
 
       selected.on(&#x27;add&#x27;, function(evt) {
-        var feature &#x3D; evt.element;
+        const feature &#x3D; evt.element;
         feature.on(&#x27;change&#x27;, function(evt) {
           dirty[evt.target.getId()] &#x3D; true;
         });
       });
 
       selected.on(&#x27;remove&#x27;, function(evt) {
-        var feature &#x3D; evt.element;
-        var fid &#x3D; feature.getId();
+        const feature &#x3D; evt.element;
+        const fid &#x3D; feature.getId();
         if (dirty[fid] &#x3D;&#x3D;&#x3D; true) {
-          var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+          const payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
             featureProjection: map.getView().getProjection()
           }) + &#x27;]&#x27;;
-          var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
+          const url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
           $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
-            var result &#x3D; JSON.parse(data);
+            const result &#x3D; JSON.parse(data);
             if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
               if (result.updateResults[0].success !&#x3D;&#x3D; true) {
-                var error &#x3D; result.updateResults[0].error;
+                const error &#x3D; result.updateResults[0].error;
                 alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
               } else {
                 delete dirty[fid];
@@ -357,19 +378,19 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
       });
 
       draw.on(&#x27;drawend&#x27;, function(evt) {
-        var feature &#x3D; evt.feature;
-        var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
+        const feature &#x3D; evt.feature;
+        const payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
           featureProjection: map.getView().getProjection()
         }) + &#x27;]&#x27;;
-        var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
+        const url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
         $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
-          var result &#x3D; JSON.parse(data);
+          const result &#x3D; JSON.parse(data);
           if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
             if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
               feature.setId(result.addResults[0][&#x27;objectId&#x27;]);
               vectorSource.clear();
             } else {
-              var error &#x3D; result.addResults[0].error;
+              const error &#x3D; result.addResults[0].error;
               alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
             }
           }
@@ -383,7 +404,7 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=vector-esri-edit"></script>
+    <script src="common.js"></script><script src="vector-esri-edit.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -396,7 +417,7 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

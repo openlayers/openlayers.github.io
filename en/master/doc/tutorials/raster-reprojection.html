@@ -109,11 +109,8 @@ The error can be minimized by increasing the number of triangles used.</p>
 <p><img src="raster-reprojection-resources/iterative-triangulation.png" alt="Iterative triangulation" width="600" /></p>
 <p>For debugging, rendering of the reprojection edges can be enabled by <code>ol.source.TileImage#setRenderReprojectionEdges(true)</code>.</p>
 <h1 id="advanced">Advanced</h1>
-<h3 id="disabling-reprojection">Disabling reprojection</h3>
-<p>In case you are creating a custom build of OpenLayers and do not need the reprojection code, you can reduce the build size by setting <code>ol.ENABLE_RASTER_REPROJECTION</code> to <code>false</code>, which completely disables the reprojection support.
-See <a href="custom-builds.html#defines">Custom builds</a> tutorial on how to do this.</p>
 <h3 id="triangulation-precision-threshold">Triangulation precision threshold</h3>
-<p>The default <a href="#dynamic-triangulation">triangulation error threshold</a> in pixels is given by <code>ol.DEFAULT_RASTER_REPROJECTION_ERROR_THRESHOLD</code> (0.5 pixel).
+<p>The default <a href="#dynamic-triangulation">triangulation error threshold</a> in pixels is given by <code>ERROR_THRESHOLD</code> (0.5 pixel).
 In case a different threshold needs to be defined for different sources, the <code>reprojectionErrorThreshold</code> option can be passed when constructing the tile image source.</p>
 <h3 id="limiting-visibility-of-reprojected-map-by-extent">Limiting visibility of reprojected map by extent</h3>
 <p>The reprojection algorithm uses inverse transformation (from <em>view projection</em> to <em>data projection</em>).

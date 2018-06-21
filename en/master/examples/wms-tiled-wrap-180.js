@@ -1,20 +1,2 @@
-var layers = [
-  new ol.layer.Tile({
-    source: new ol.source.OSM()
-  }),
-  new ol.layer.Tile({
-    source: new ol.source.TileWMS({
-      url: 'https://ahocevar.com/geoserver/ne/wms',
-      params: {'LAYERS': 'ne:ne_10m_admin_0_countries', 'TILED': true},
-      serverType: 'geoserver'
-    })
-  })
-];
-var map = new ol.Map({
-  layers: layers,
-  target: 'map',
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 1
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[16],{247:function(e,n,r){"use strict";r.r(n);var a=r(5),s=r(4),o=r(11),w=r(18),c=r(73);const t=[new o.a({source:new w.b}),new o.a({source:new c.a({url:"https://ahocevar.com/geoserver/ne/wms",params:{LAYERS:"ne:ne_10m_admin_0_countries",TILED:!0},serverType:"geoserver"})})];new a.a({layers:t,target:"map",view:new s.a({center:[0,0],zoom:1})})}},[[247,0]]]);
+//# sourceMappingURL=wms-tiled-wrap-180.js.map

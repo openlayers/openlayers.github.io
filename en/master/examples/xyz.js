@@ -1,15 +1,2 @@
-var map = new ol.Map({
-  target: 'map',
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.XYZ({
-        url: 'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png' +
-            '?apikey=0e6fc415256d4fbb9b5166a718591d71'
-      })
-    })
-  ],
-  view: new ol.View({
-    center: [-472202, 7530279],
-    zoom: 12
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{235:function(e,a,n){"use strict";n.r(a);var c=n(5),t=n(4),w=n(11),o=n(53);new c.a({target:"map",layers:[new w.a({source:new o.a({url:"https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71"})})],view:new t.a({center:[-472202,7530279],zoom:12})})}},[[235,0]]]);
+//# sourceMappingURL=xyz.js.map

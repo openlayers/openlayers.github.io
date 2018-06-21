@@ -1,15 +1,2 @@
-var map = new ol.Map({
-  interactions: ol.interaction.defaults().extend([
-    new ol.interaction.DragRotateAndZoom()
-  ]),
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  target: 'map',
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[145],{375:function(e,n,w){"use strict";w.r(n);var a=w(5),t=w(4),c=w(31),o=w(11),r=w(18);new a.a({interactions:Object(c.l)().extend([new c.c]),layers:[new o.a({source:new r.b})],target:"map",view:new t.a({center:[0,0],zoom:2})})}},[[375,0]]]);
+//# sourceMappingURL=drag-rotate-and-zoom.js.map

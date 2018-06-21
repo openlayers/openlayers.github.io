@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     <link rel="stylesheet" href="vector-labels.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Vector Labels</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -381,21 +381,27 @@
           <p id="shortdesc">Example of GeoJSON features with labels.</p>
           <div id="docs"><p>This example showcases a number of options that can be set on text styles. When &quot;Text/Wrap&quot; is chosen (for example for the line features), the label is wrapped by inserting the character <code>\n</code>, which will create a multi-line label. The &quot;Open Sans&quot; web font will be loaded on demand, to show dynamic font loading.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.format.GeoJSON.html" title="API documentation for ol.format.GeoJSON">ol.format.GeoJSON</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Circle.html" title="API documentation for ol.style.Circle">ol.style.Circle</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li>,<li><a href="../apidoc/ol.style.Text.html" title="API documentation for ol.style.Text">ol.style.Text</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Vector Labels</textarea>
           <textarea class="hidden" name="description">Example of GeoJSON features with labels.</textarea>
-          <textarea class="hidden" name="js">var openSansAdded &#x3D; false;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import {Circle as CircleStyle, Fill, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
-var myDom &#x3D; {
+let openSansAdded &#x3D; false;
+
+const myDom &#x3D; {
   points: {
     text: document.getElementById(&#x27;points-text&#x27;),
     align: document.getElementById(&#x27;points-align&#x27;),
@@ -449,10 +455,10 @@ var myDom &#x3D; {
   }
 };
 
-var getText &#x3D; function(feature, resolution, dom) {
-  var type &#x3D; dom.text.value;
-  var maxResolution &#x3D; dom.maxreso.value;
-  var text &#x3D; feature.get(&#x27;name&#x27;);
+const getText &#x3D; function(feature, resolution, dom) {
+  const type &#x3D; dom.text.value;
+  const maxResolution &#x3D; dom.maxreso.value;
+  let text &#x3D; feature.get(&#x27;name&#x27;);
 
   if (resolution &gt; maxResolution) {
     text &#x3D; &#x27;&#x27;;
@@ -460,7 +466,7 @@ var getText &#x3D; function(feature, resolution, dom) {
     text &#x3D; &#x27;&#x27;;
   } else if (type &#x3D;&#x3D; &#x27;shorten&#x27;) {
     text &#x3D; text.trunc(12);
-  } else if (type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp; dom.placement.value !&#x3D; &#x27;line&#x27;) {
+  } else if (type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp; (!dom.placement || dom.placement.value !&#x3D; &#x27;line&#x27;)) {
     text &#x3D; stringDivider(text, 16, &#x27;\n&#x27;);
   }
 
@@ -468,36 +474,36 @@ var getText &#x3D; function(feature, resolution, dom) {
 };
 
 
-var createTextStyle &#x3D; function(feature, resolution, dom) {
-  var align &#x3D; dom.align.value;
-  var baseline &#x3D; dom.baseline.value;
-  var size &#x3D; dom.size.value;
-  var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
-  var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
-  var weight &#x3D; dom.weight.value;
-  var placement &#x3D; dom.placement ? dom.placement.value : undefined;
-  var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-  var overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
-  var rotation &#x3D; parseFloat(dom.rotation.value);
+const createTextStyle &#x3D; function(feature, resolution, dom) {
+  const align &#x3D; dom.align.value;
+  const baseline &#x3D; dom.baseline.value;
+  const size &#x3D; dom.size.value;
+  const offsetX &#x3D; parseInt(dom.offsetX.value, 10);
+  const offsetY &#x3D; parseInt(dom.offsetY.value, 10);
+  const weight &#x3D; dom.weight.value;
+  const placement &#x3D; dom.placement ? dom.placement.value : undefined;
+  const maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+  const overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
+  const rotation &#x3D; parseFloat(dom.rotation.value);
   if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
-    var openSans &#x3D; document.createElement(&#x27;link&#x27;);
+    const openSans &#x3D; document.createElement(&#x27;link&#x27;);
     openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
     openSans.rel &#x3D; &#x27;stylesheet&#x27;;
     document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
     openSansAdded &#x3D; true;
   }
-  var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
-  var fillColor &#x3D; dom.color.value;
-  var outlineColor &#x3D; dom.outline.value;
-  var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
+  const font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
+  const fillColor &#x3D; dom.color.value;
+  const outlineColor &#x3D; dom.outline.value;
+  const outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
 
-  return new ol.style.Text({
+  return new Text({
     textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
     textBaseline: baseline,
     font: font,
     text: getText(feature, resolution, dom),
-    fill: new ol.style.Fill({color: fillColor}),
-    stroke: new ol.style.Stroke({color: outlineColor, width: outlineWidth}),
+    fill: new Fill({color: fillColor}),
+    stroke: new Stroke({color: outlineColor, width: outlineWidth}),
     offsetX: offsetX,
     offsetY: offsetY,
     placement: placement,
@@ -510,22 +516,22 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
 
 // Polygons
 function polygonStyleFunction(feature, resolution) {
-  return new ol.style.Style({
-    stroke: new ol.style.Stroke({
+  return new Style({
+    stroke: new Stroke({
       color: &#x27;blue&#x27;,
       width: 1
     }),
-    fill: new ol.style.Fill({
+    fill: new Fill({
       color: &#x27;rgba(0, 0, 255, 0.1)&#x27;
     }),
     text: createTextStyle(feature, resolution, myDom.polygons)
   });
 }
 
-var vectorPolygons &#x3D; new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/polygon-samples.geojson&#x27;,
-    format: new ol.format.GeoJSON()
+const vectorPolygons &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
+    format: new GeoJSON()
   }),
   style: polygonStyleFunction
 });
@@ -533,8 +539,8 @@ var vectorPolygons &#x3D; new ol.layer.Vector({
 
 // Lines
 function lineStyleFunction(feature, resolution) {
-  return new ol.style.Style({
-    stroke: new ol.style.Stroke({
+  return new Style({
+    stroke: new Stroke({
       color: &#x27;green&#x27;,
       width: 2
     }),
@@ -542,10 +548,10 @@ function lineStyleFunction(feature, resolution) {
   });
 }
 
-var vectorLines &#x3D; new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/line-samples.geojson&#x27;,
-    format: new ol.format.GeoJSON()
+const vectorLines &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/line-samples.geojson&#x27;,
+    format: new GeoJSON()
   }),
   style: lineStyleFunction
 });
@@ -553,54 +559,54 @@ var vectorLines &#x3D; new ol.layer.Vector({
 
 // Points
 function pointStyleFunction(feature, resolution) {
-  return new ol.style.Style({
-    image: new ol.style.Circle({
+  return new Style({
+    image: new CircleStyle({
       radius: 10,
-      fill: new ol.style.Fill({color: &#x27;rgba(255, 0, 0, 0.1)&#x27;}),
-      stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
+      fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.1)&#x27;}),
+      stroke: new Stroke({color: &#x27;red&#x27;, width: 1})
     }),
     text: createTextStyle(feature, resolution, myDom.points)
   });
 }
 
-var vectorPoints &#x3D; new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/point-samples.geojson&#x27;,
-    format: new ol.format.GeoJSON()
+const vectorPoints &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/point-samples.geojson&#x27;,
+    format: new GeoJSON()
   }),
   style: pointStyleFunction
 });
 
-var map &#x3D; new ol.Map({
+const map &#x3D; new Map({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new TileLayer({
+      source: new OSM()
     }),
     vectorPolygons,
     vectorLines,
     vectorPoints
   ],
   target: &#x27;map&#x27;,
-  view: new ol.View({
+  view: new View({
     center: [-8161939, 6095025],
     zoom: 8
   })
 });
 
 document.getElementById(&#x27;refresh-points&#x27;)
-    .addEventListener(&#x27;click&#x27;, function() {
-      vectorPoints.setStyle(pointStyleFunction);
-    });
+  .addEventListener(&#x27;click&#x27;, function() {
+    vectorPoints.setStyle(pointStyleFunction);
+  });
 
 document.getElementById(&#x27;refresh-lines&#x27;)
-    .addEventListener(&#x27;click&#x27;, function() {
-      vectorLines.setStyle(lineStyleFunction);
-    });
+  .addEventListener(&#x27;click&#x27;, function() {
+    vectorLines.setStyle(lineStyleFunction);
+  });
 
 document.getElementById(&#x27;refresh-polygons&#x27;)
-    .addEventListener(&#x27;click&#x27;, function() {
-      vectorPolygons.setStyle(polygonStyleFunction);
-    });
+  .addEventListener(&#x27;click&#x27;, function() {
+    vectorPolygons.setStyle(polygonStyleFunction);
+  });
 
 
 /**
@@ -616,18 +622,18 @@ String.prototype.trunc &#x3D; String.prototype.trunc ||
 // http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
 function stringDivider(str, width, spaceReplacer) {
   if (str.length &gt; width) {
-    var p &#x3D; width;
+    let p &#x3D; width;
     while (p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;)) {
       p--;
     }
     if (p &gt; 0) {
-      var left;
+      let left;
       if (str.substring(p, p + 1) &#x3D;&#x3D; &#x27;-&#x27;) {
         left &#x3D; str.substring(0, p + 1);
       } else {
         left &#x3D; str.substring(0, p);
       }
-      var right &#x3D; str.substring(p + 1);
+      const right &#x3D; str.substring(p + 1);
       return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
     }
   }
@@ -1009,17 +1015,16 @@ function stringDivider(str, width, spaceReplacer) {
 &lt;/div&gt;
 &lt;div class&#x3D;&quot;clearall&quot;&gt;&lt;/div&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Vector Labels&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
+
     &lt;style&gt;
       h2 {
         font-size: 1.5em;
@@ -1398,9 +1403,16 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;/div&gt;
     &lt;div class&#x3D;&quot;clearall&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      var openSansAdded &#x3D; false;
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+      import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+      import {Circle as CircleStyle, Fill, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
-      var myDom &#x3D; {
+      let openSansAdded &#x3D; false;
+
+      const myDom &#x3D; {
         points: {
           text: document.getElementById(&#x27;points-text&#x27;),
           align: document.getElementById(&#x27;points-align&#x27;),
@@ -1454,10 +1466,10 @@ function stringDivider(str, width, spaceReplacer) {
         }
       };
 
-      var getText &#x3D; function(feature, resolution, dom) {
-        var type &#x3D; dom.text.value;
-        var maxResolution &#x3D; dom.maxreso.value;
-        var text &#x3D; feature.get(&#x27;name&#x27;);
+      const getText &#x3D; function(feature, resolution, dom) {
+        const type &#x3D; dom.text.value;
+        const maxResolution &#x3D; dom.maxreso.value;
+        let text &#x3D; feature.get(&#x27;name&#x27;);
 
         if (resolution &gt; maxResolution) {
           text &#x3D; &#x27;&#x27;;
@@ -1465,7 +1477,7 @@ function stringDivider(str, width, spaceReplacer) {
           text &#x3D; &#x27;&#x27;;
         } else if (type &#x3D;&#x3D; &#x27;shorten&#x27;) {
           text &#x3D; text.trunc(12);
-        } else if (type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp; dom.placement.value !&#x3D; &#x27;line&#x27;) {
+        } else if (type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp; (!dom.placement || dom.placement.value !&#x3D; &#x27;line&#x27;)) {
           text &#x3D; stringDivider(text, 16, &#x27;\n&#x27;);
         }
 
@@ -1473,36 +1485,36 @@ function stringDivider(str, width, spaceReplacer) {
       };
 
 
-      var createTextStyle &#x3D; function(feature, resolution, dom) {
-        var align &#x3D; dom.align.value;
-        var baseline &#x3D; dom.baseline.value;
-        var size &#x3D; dom.size.value;
-        var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
-        var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
-        var weight &#x3D; dom.weight.value;
-        var placement &#x3D; dom.placement ? dom.placement.value : undefined;
-        var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-        var overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
-        var rotation &#x3D; parseFloat(dom.rotation.value);
+      const createTextStyle &#x3D; function(feature, resolution, dom) {
+        const align &#x3D; dom.align.value;
+        const baseline &#x3D; dom.baseline.value;
+        const size &#x3D; dom.size.value;
+        const offsetX &#x3D; parseInt(dom.offsetX.value, 10);
+        const offsetY &#x3D; parseInt(dom.offsetY.value, 10);
+        const weight &#x3D; dom.weight.value;
+        const placement &#x3D; dom.placement ? dom.placement.value : undefined;
+        const maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+        const overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
+        const rotation &#x3D; parseFloat(dom.rotation.value);
         if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
-          var openSans &#x3D; document.createElement(&#x27;link&#x27;);
+          const openSans &#x3D; document.createElement(&#x27;link&#x27;);
           openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
           openSans.rel &#x3D; &#x27;stylesheet&#x27;;
           document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
           openSansAdded &#x3D; true;
         }
-        var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
-        var fillColor &#x3D; dom.color.value;
-        var outlineColor &#x3D; dom.outline.value;
-        var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
+        const font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
+        const fillColor &#x3D; dom.color.value;
+        const outlineColor &#x3D; dom.outline.value;
+        const outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
 
-        return new ol.style.Text({
+        return new Text({
           textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
           textBaseline: baseline,
           font: font,
           text: getText(feature, resolution, dom),
-          fill: new ol.style.Fill({color: fillColor}),
-          stroke: new ol.style.Stroke({color: outlineColor, width: outlineWidth}),
+          fill: new Fill({color: fillColor}),
+          stroke: new Stroke({color: outlineColor, width: outlineWidth}),
           offsetX: offsetX,
           offsetY: offsetY,
           placement: placement,
@@ -1515,22 +1527,22 @@ function stringDivider(str, width, spaceReplacer) {
 
       // Polygons
       function polygonStyleFunction(feature, resolution) {
-        return new ol.style.Style({
-          stroke: new ol.style.Stroke({
+        return new Style({
+          stroke: new Stroke({
             color: &#x27;blue&#x27;,
             width: 1
           }),
-          fill: new ol.style.Fill({
+          fill: new Fill({
             color: &#x27;rgba(0, 0, 255, 0.1)&#x27;
           }),
           text: createTextStyle(feature, resolution, myDom.polygons)
         });
       }
 
-      var vectorPolygons &#x3D; new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/polygon-samples.geojson&#x27;,
-          format: new ol.format.GeoJSON()
+      const vectorPolygons &#x3D; new VectorLayer({
+        source: new VectorSource({
+          url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
+          format: new GeoJSON()
         }),
         style: polygonStyleFunction
       });
@@ -1538,8 +1550,8 @@ function stringDivider(str, width, spaceReplacer) {
 
       // Lines
       function lineStyleFunction(feature, resolution) {
-        return new ol.style.Style({
-          stroke: new ol.style.Stroke({
+        return new Style({
+          stroke: new Stroke({
             color: &#x27;green&#x27;,
             width: 2
           }),
@@ -1547,10 +1559,10 @@ function stringDivider(str, width, spaceReplacer) {
         });
       }
 
-      var vectorLines &#x3D; new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/line-samples.geojson&#x27;,
-          format: new ol.format.GeoJSON()
+      const vectorLines &#x3D; new VectorLayer({
+        source: new VectorSource({
+          url: &#x27;data/geojson/line-samples.geojson&#x27;,
+          format: new GeoJSON()
         }),
         style: lineStyleFunction
       });
@@ -1558,54 +1570,54 @@ function stringDivider(str, width, spaceReplacer) {
 
       // Points
       function pointStyleFunction(feature, resolution) {
-        return new ol.style.Style({
-          image: new ol.style.Circle({
+        return new Style({
+          image: new CircleStyle({
             radius: 10,
-            fill: new ol.style.Fill({color: &#x27;rgba(255, 0, 0, 0.1)&#x27;}),
-            stroke: new ol.style.Stroke({color: &#x27;red&#x27;, width: 1})
+            fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.1)&#x27;}),
+            stroke: new Stroke({color: &#x27;red&#x27;, width: 1})
           }),
           text: createTextStyle(feature, resolution, myDom.points)
         });
       }
 
-      var vectorPoints &#x3D; new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/point-samples.geojson&#x27;,
-          format: new ol.format.GeoJSON()
+      const vectorPoints &#x3D; new VectorLayer({
+        source: new VectorSource({
+          url: &#x27;data/geojson/point-samples.geojson&#x27;,
+          format: new GeoJSON()
         }),
         style: pointStyleFunction
       });
 
-      var map &#x3D; new ol.Map({
+      const map &#x3D; new Map({
         layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
+          new TileLayer({
+            source: new OSM()
           }),
           vectorPolygons,
           vectorLines,
           vectorPoints
         ],
         target: &#x27;map&#x27;,
-        view: new ol.View({
+        view: new View({
           center: [-8161939, 6095025],
           zoom: 8
         })
       });
 
       document.getElementById(&#x27;refresh-points&#x27;)
-          .addEventListener(&#x27;click&#x27;, function() {
-            vectorPoints.setStyle(pointStyleFunction);
-          });
+        .addEventListener(&#x27;click&#x27;, function() {
+          vectorPoints.setStyle(pointStyleFunction);
+        });
 
       document.getElementById(&#x27;refresh-lines&#x27;)
-          .addEventListener(&#x27;click&#x27;, function() {
-            vectorLines.setStyle(lineStyleFunction);
-          });
+        .addEventListener(&#x27;click&#x27;, function() {
+          vectorLines.setStyle(lineStyleFunction);
+        });
 
       document.getElementById(&#x27;refresh-polygons&#x27;)
-          .addEventListener(&#x27;click&#x27;, function() {
-            vectorPolygons.setStyle(polygonStyleFunction);
-          });
+        .addEventListener(&#x27;click&#x27;, function() {
+          vectorPolygons.setStyle(polygonStyleFunction);
+        });
 
 
       /**
@@ -1621,18 +1633,18 @@ function stringDivider(str, width, spaceReplacer) {
       // http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
       function stringDivider(str, width, spaceReplacer) {
         if (str.length &gt; width) {
-          var p &#x3D; width;
+          let p &#x3D; width;
           while (p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;)) {
             p--;
           }
           if (p &gt; 0) {
-            var left;
+            let left;
             if (str.substring(p, p + 1) &#x3D;&#x3D; &#x27;-&#x27;) {
               left &#x3D; str.substring(0, p + 1);
             } else {
               left &#x3D; str.substring(0, p);
             }
-            var right &#x3D; str.substring(p + 1);
+            const right &#x3D; str.substring(p + 1);
             return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
           }
         }
@@ -1646,7 +1658,7 @@ function stringDivider(str, width, spaceReplacer) {
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=vector-labels"></script>
+    <script src="common.js"></script><script src="vector-labels.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -1659,7 +1671,7 @@ function stringDivider(str, width, spaceReplacer) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

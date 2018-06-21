@@ -1,23 +1,2 @@
-var url = 'https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/' +
-    'Specialty/ESRI_StateCityHighway_USA/MapServer';
-
-var layers = [
-  new ol.layer.Tile({
-    source: new ol.source.OSM()
-  }),
-  new ol.layer.Image({
-    source: new ol.source.ImageArcGISRest({
-      ratio: 1,
-      params: {},
-      url: url
-    })
-  })
-];
-var map = new ol.Map({
-  layers: layers,
-  target: 'map',
-  view: new ol.View({
-    center: [-10997148, 4569099],
-    zoom: 4
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[165],{399:function(e,r,a){"use strict";a.r(r);var s=a(5),n=a(4),t=a(10),c=a(15);const w=[new t.d({source:new c.f}),new t.c({source:new c.d({ratio:1,params:{},url:"https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StateCityHighway_USA/MapServer"})})];new s.a({layers:w,target:"map",view:new n.a({center:[-10997148,4569099],zoom:4})})}},[[399,0]]]);
+//# sourceMappingURL=arcgis-image.js.map

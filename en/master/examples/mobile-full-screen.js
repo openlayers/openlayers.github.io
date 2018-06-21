@@ -1,26 +1,2 @@
-var view = new ol.View({
-  center: [0, 0],
-  zoom: 2
-});
-
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.BingMaps({
-        key: 'As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5',
-        imagerySet: 'Road'
-      })
-    })
-  ],
-  target: 'map',
-  view: view
-});
-
-var geolocation = new ol.Geolocation({
-  projection: view.getProjection(),
-  tracking: true
-});
-geolocation.once('change:position', function() {
-  view.setCenter(geolocation.getPosition());
-  view.setResolution(2.388657133911758);
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[85],{315:function(e,n,o){"use strict";o.r(n);var t=o(179),a=o(5),i=o(4),c=o(11),s=o(46);const r=new i.a({center:[0,0],zoom:2}),w=(new a.a({layers:[new c.a({source:new s.a({key:"As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5",imagerySet:"Road"})})],target:"map",view:r}),new t.a({projection:r.getProjection(),tracking:!0}));w.once("change:position",function(){r.setCenter(w.getPosition()),r.setResolution(2.388657133911758)})}},[[315,0]]]);
+//# sourceMappingURL=mobile-full-screen.js.map

@@ -1,13 +1,2 @@
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  target: 'map',
-  view: new ol.View({
-    projection: 'EPSG:4326',
-    center: [0, 0],
-    zoom: 2
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[63],{293:function(e,n,w){"use strict";w.r(n);var o=w(5),a=w(4),r=w(11),c=w(18);new o.a({layers:[new r.a({source:new c.b})],target:"map",view:new a.a({projection:"EPSG:4326",center:[0,0],zoom:2})})}},[[293,0]]]);
+//# sourceMappingURL=reprojection-wgs84.js.map

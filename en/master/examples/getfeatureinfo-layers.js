@@ -1,21 +1,2 @@
-fetch('data/wmsgetfeatureinfo/osm-restaurant-hotel.xml').then(function(response) {
-  return response.text();
-}).then(function(response) {
-
-  // this is the standard way to read the features
-  var allFeatures = new ol.format.WMSGetFeatureInfo().readFeatures(response);
-  document.getElementById('all').innerText = allFeatures.length.toString();
-
-  // when specifying the 'layers' options, only the features of those
-  // layers are returned by the format
-  var hotelFeatures = new ol.format.WMSGetFeatureInfo({
-    layers: ['hotel']
-  }).readFeatures(response);
-  document.getElementById('hotel').innerText = hotelFeatures.length.toString();
-
-  var restaurantFeatures = new ol.format.WMSGetFeatureInfo({
-    layers: ['restaurant']
-  }).readFeatures(response);
-  document.getElementById('restaurant').innerText = restaurantFeatures.length.toString();
-
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[121],{351:function(e,t,n){"use strict";n.r(t);var r=n(180);fetch("data/wmsgetfeatureinfo/osm-restaurant-hotel.xml").then(function(e){return e.text()}).then(function(e){const t=(new r.a).readFeatures(e);document.getElementById("all").innerText=t.length.toString();const n=new r.a({layers:["hotel"]}).readFeatures(e);document.getElementById("hotel").innerText=n.length.toString();const a=new r.a({layers:["restaurant"]}).readFeatures(e);document.getElementById("restaurant").innerText=a.length.toString()})}},[[351,0]]]);
+//# sourceMappingURL=getfeatureinfo-layers.js.map

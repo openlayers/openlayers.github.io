@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://cdn.rawgit.com/dorukeker/gyronorm.js/v2.0.6/dist/gyronorm.complete.min.js"></script>
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Device Orientation</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -59,33 +59,36 @@
           <p id="shortdesc">Listen to DeviceOrientation events.</p>
           <div id="docs"><p>This example shows how to track changes in device orientation. <a href="https://github.com/dorukeker/gyronorm.js">gyronorm.js</a> library is used to access and normalize the events from the browser.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.math.html" title="API documentation for ol.math">ol.math</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Device Orientation</textarea>
           <textarea class="hidden" name="description">Listen to DeviceOrientation events.</textarea>
-          <textarea class="hidden" name="js">var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
-var view &#x3D; new ol.View({
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import {toRadians} from &#x27;ol/math.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
+
+const view &#x3D; new View({
   center: [0, 0],
-  projection: projection,
-  extent: projection.getExtent(),
   zoom: 2
 });
-var map &#x3D; new ol.Map({
+const map &#x3D; new Map({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new TileLayer({
+      source: new OSM()
     })
   ],
   target: &#x27;map&#x27;,
-  controls: ol.control.defaults({
+  controls: defaultControls({
     attributionOptions: {
       collapsible: false
     }
@@ -98,15 +101,15 @@ function el(id) {
 }
 
 
-var gn &#x3D; new GyroNorm();
+const gn &#x3D; new GyroNorm();
 
 gn.init().then(function() {
   gn.start(function(event) {
-    var center &#x3D; view.getCenter();
-    var resolution &#x3D; view.getResolution();
-    var alpha &#x3D; ol.math.toRadians(event.do.beta);
-    var beta &#x3D; ol.math.toRadians(event.do.beta);
-    var gamma &#x3D; ol.math.toRadians(event.do.gamma);
+    const center &#x3D; view.getCenter();
+    const resolution &#x3D; view.getResolution();
+    const alpha &#x3D; toRadians(event.do.beta);
+    const beta &#x3D; toRadians(event.do.beta);
+    const gamma &#x3D; toRadians(event.do.gamma);
 
     el(&#x27;alpha&#x27;).innerText &#x3D; alpha + &#x27; [rad]&#x27;;
     el(&#x27;beta&#x27;).innerText &#x3D; beta + &#x27; [rad]&#x27;;
@@ -127,17 +130,15 @@ gn.init().then(function() {
   &lt;div&gt;γ : &lt;code id&#x3D;&quot;gamma&quot;&gt;&lt;/code&gt;&lt;/div&gt;
 &lt;/p&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js,https://cdn.rawgit.com/dorukeker/gyronorm.js/v2.0.6/dist/gyronorm.complete.min.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Device Orientation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://cdn.rawgit.com/dorukeker/gyronorm.js/v2.0.6/dist/gyronorm.complete.min.js&quot;&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -148,21 +149,25 @@ gn.init().then(function() {
       &lt;div&gt;γ : &lt;code id&#x3D;&quot;gamma&quot;&gt;&lt;/code&gt;&lt;/div&gt;
     &lt;/p&gt;
     &lt;script&gt;
-      var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
-      var view &#x3D; new ol.View({
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
+      import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+      import {toRadians} from &#x27;ol/math.js&#x27;;
+      import OSM from &#x27;ol/source/OSM.js&#x27;;
+
+      const view &#x3D; new View({
         center: [0, 0],
-        projection: projection,
-        extent: projection.getExtent(),
         zoom: 2
       });
-      var map &#x3D; new ol.Map({
+      const map &#x3D; new Map({
         layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
+          new TileLayer({
+            source: new OSM()
           })
         ],
         target: &#x27;map&#x27;,
-        controls: ol.control.defaults({
+        controls: defaultControls({
           attributionOptions: {
             collapsible: false
           }
@@ -175,15 +180,15 @@ gn.init().then(function() {
       }
 
 
-      var gn &#x3D; new GyroNorm();
+      const gn &#x3D; new GyroNorm();
 
       gn.init().then(function() {
         gn.start(function(event) {
-          var center &#x3D; view.getCenter();
-          var resolution &#x3D; view.getResolution();
-          var alpha &#x3D; ol.math.toRadians(event.do.beta);
-          var beta &#x3D; ol.math.toRadians(event.do.beta);
-          var gamma &#x3D; ol.math.toRadians(event.do.gamma);
+          const center &#x3D; view.getCenter();
+          const resolution &#x3D; view.getResolution();
+          const alpha &#x3D; toRadians(event.do.beta);
+          const beta &#x3D; toRadians(event.do.beta);
+          const gamma &#x3D; toRadians(event.do.gamma);
 
           el(&#x27;alpha&#x27;).innerText &#x3D; alpha + &#x27; [rad]&#x27;;
           el(&#x27;beta&#x27;).innerText &#x3D; beta + &#x27; [rad]&#x27;;
@@ -203,7 +208,7 @@ gn.init().then(function() {
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=device-orientation"></script>
+    <script src="common.js"></script><script src="device-orientation.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -216,7 +221,7 @@ gn.init().then(function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

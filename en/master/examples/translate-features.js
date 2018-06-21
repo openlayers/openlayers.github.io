@@ -1,26 +1,2 @@
-var raster = new ol.layer.Tile({
-  source: new ol.source.OSM()
-});
-
-var vector = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: 'data/geojson/countries.geojson',
-    format: new ol.format.GeoJSON()
-  })
-});
-
-var select = new ol.interaction.Select();
-
-var translate = new ol.interaction.Translate({
-  features: select.getFeatures()
-});
-
-var map = new ol.Map({
-  interactions: ol.interaction.defaults().extend([select, translate]),
-  layers: [raster, vector],
-  target: 'map',
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[36],{266:function(e,n,o){"use strict";o.r(n);var t=o(5),w=o(4),a=o(44),s=o(31),r=o(10),c=o(18),i=o(22);const u=new r.d({source:new c.b}),p=new r.e({source:new i.b({url:"data/geojson/countries.geojson",format:new a.a})}),b=new s.i,d=new s.k({features:b.getFeatures()});new t.a({interactions:Object(s.l)().extend([b,d]),layers:[u,p],target:"map",view:new w.a({center:[0,0],zoom:2})})}},[[266,0]]]);
+//# sourceMappingURL=translate-features.js.map

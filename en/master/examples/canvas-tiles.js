@@ -1,25 +1,2 @@
-var osmSource = new ol.source.OSM();
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: osmSource
-    }),
-    new ol.layer.Tile({
-      source: new ol.source.TileDebug({
-        projection: 'EPSG:3857',
-        tileGrid: osmSource.getTileGrid()
-      })
-    })
-  ],
-  target: 'map',
-  controls: ol.control.defaults({
-    attributionOptions: {
-      collapsible: false
-    }
-  }),
-  view: new ol.View({
-    center: ol.proj.transform(
-        [-0.1275, 51.507222], 'EPSG:4326', 'EPSG:3857'),
-    zoom: 10
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[157],{389:function(e,n,o){"use strict";o.r(n);var t=o(5),i=o(4),c=o(24),r=o(11),w=o(7),a=o(15);const s=new a.f;new t.a({layers:[new r.a({source:s}),new r.a({source:new a.j({projection:"EPSG:3857",tileGrid:s.getTileGrid()})})],target:"map",controls:Object(c.h)({attributionOptions:{collapsible:!1}}),view:new i.a({center:Object(w.g)([-.1275,51.507222]),zoom:10})})}},[[389,0]]]);
+//# sourceMappingURL=canvas-tiles.js.map

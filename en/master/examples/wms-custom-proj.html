@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Custom Tiled WMS</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -52,57 +52,65 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of using custom coordinate transform functions.</p>
-          <div id="docs"><p>With <code>ol.proj.addCoordinateTransforms()</code>, custom coordinate transform functions can be added to configured projections.</p>
+          <div id="docs"><p>With <code>addCoordinateTransforms()</code>, custom coordinate transform functions can be added to configured projections.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.control.html" title="API documentation for ol.control">ol.control</a></li>,<li><a href="../apidoc/ol.control.ScaleLine.html" title="API documentation for ol.control.ScaleLine">ol.control.ScaleLine</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.proj.Projection.html" title="API documentation for ol.proj.Projection">ol.proj.Projection</a></li>,<li><a href="../apidoc/ol.source.TileWMS.html" title="API documentation for ol.source.TileWMS">ol.source.TileWMS</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Custom Tiled WMS</textarea>
           <textarea class="hidden" name="description">Example of using custom coordinate transform functions.</textarea>
-          <textarea class="hidden" name="js">// By default OpenLayers does not know about the EPSG:21781 (Swiss) projection.
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import {defaults as defaultControls, ScaleLine} from &#x27;ol/control.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import {addProjection, addCoordinateTransforms, transform} from &#x27;ol/proj.js&#x27;;
+import Projection from &#x27;ol/proj/Projection.js&#x27;;
+import TileWMS from &#x27;ol/source/TileWMS.js&#x27;;
+
+
+// By default OpenLayers does not know about the EPSG:21781 (Swiss) projection.
 // So we create a projection instance for EPSG:21781 and pass it to
-// ol.proj.addProjection to make it available to the library for lookup by its
+// ol/proj~addProjection to make it available to the library for lookup by its
 // code.
 
-var projection &#x3D; new ol.proj.Projection({
+const projection &#x3D; new Projection({
   code: &#x27;EPSG:21781&#x27;,
   // The extent is used to determine zoom level 0. Recommended values for a
   // projection&#x27;s validity extent can be found at https://epsg.io/.
   extent: [485869.5728, 76443.1884, 837076.5648, 299941.7864],
   units: &#x27;m&#x27;
 });
-ol.proj.addProjection(projection);
+addProjection(projection);
 
 // We also declare EPSG:21781/EPSG:4326 transform functions. These functions
-// are necessary for the ScaleLine control and when calling ol.proj.transform
+// are necessary for the ScaleLine control and when calling ol/proj~transform
 // for setting the view&#x27;s initial center (see below).
 
-ol.proj.addCoordinateTransforms(&#x27;EPSG:4326&#x27;, projection,
-    function(coordinate) {
-      return [
-        WGStoCHy(coordinate[1], coordinate[0]),
-        WGStoCHx(coordinate[1], coordinate[0])
-      ];
-    },
-    function(coordinate) {
-      return [
-        CHtoWGSlng(coordinate[0], coordinate[1]),
-        CHtoWGSlat(coordinate[0], coordinate[1])
-      ];
-    });
+addCoordinateTransforms(&#x27;EPSG:4326&#x27;, projection,
+  function(coordinate) {
+    return [
+      WGStoCHy(coordinate[1], coordinate[0]),
+      WGStoCHx(coordinate[1], coordinate[0])
+    ];
+  },
+  function(coordinate) {
+    return [
+      CHtoWGSlng(coordinate[0], coordinate[1]),
+      CHtoWGSlat(coordinate[0], coordinate[1])
+    ];
+  });
 
-var extent &#x3D; [420000, 30000, 900000, 350000];
-var layers &#x3D; [
-  new ol.layer.Tile({
+const extent &#x3D; [420000, 30000, 900000, 350000];
+const layers &#x3D; [
+  new TileLayer({
     extent: extent,
-    source: new ol.source.TileWMS({
+    source: new TileWMS({
       url: &#x27;https://wms.geo.admin.ch/&#x27;,
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: &#x27;© &lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
@@ -114,9 +122,9 @@ var layers &#x3D; [
       serverType: &#x27;mapserver&#x27;
     })
   }),
-  new ol.layer.Tile({
+  new TileLayer({
     extent: extent,
-    source: new ol.source.TileWMS({
+    source: new TileWMS({
       url: &#x27;https://wms.geo.admin.ch/&#x27;,
       crossOrigin: &#x27;anonymous&#x27;,
       attributions: &#x27;© &lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
@@ -127,17 +135,17 @@ var layers &#x3D; [
   })
 ];
 
-var map &#x3D; new ol.Map({
-  controls: ol.control.defaults().extend([
-    new ol.control.ScaleLine({
+const map &#x3D; new Map({
+  controls: defaultControls().extend([
+    new ScaleLine({
       units: &#x27;metric&#x27;
     })
   ]),
   layers: layers,
   target: &#x27;map&#x27;,
-  view: new ol.View({
+  view: new View({
     projection: projection,
-    center: ol.proj.transform([8.23, 46.86], &#x27;EPSG:4326&#x27;, &#x27;EPSG:21781&#x27;),
+    center: transform([8.23, 46.86], &#x27;EPSG:4326&#x27;, &#x27;EPSG:21781&#x27;),
     extent: extent,
     zoom: 2
   })
@@ -161,11 +169,11 @@ function WGStoCHy(lat, lng) {
   lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  var lat_aux &#x3D; (lat - 169028.66) / 10000;
-  var lng_aux &#x3D; (lng - 26782.5) / 10000;
+  const lat_aux &#x3D; (lat - 169028.66) / 10000;
+  const lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process Y
-  var y &#x3D; 600072.37 +
+  const y &#x3D; 600072.37 +
       211455.93 * lng_aux -
       10938.51 * lng_aux * lat_aux -
       0.36 * lng_aux * Math.pow(lat_aux, 2) -
@@ -186,11 +194,11 @@ function WGStoCHx(lat, lng) {
   lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  var lat_aux &#x3D; (lat - 169028.66) / 10000;
-  var lng_aux &#x3D; (lng - 26782.5) / 10000;
+  const lat_aux &#x3D; (lat - 169028.66) / 10000;
+  const lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process X
-  var x &#x3D; 200147.07 +
+  const x &#x3D; 200147.07 +
       308807.95 * lat_aux +
       3745.25 * Math.pow(lng_aux, 2) +
       76.63 * Math.pow(lat_aux, 2) -
@@ -207,11 +215,11 @@ function CHtoWGSlat(y, x) {
 
   // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  var y_aux &#x3D; (y - 600000) / 1000000;
-  var x_aux &#x3D; (x - 200000) / 1000000;
+  const y_aux &#x3D; (y - 600000) / 1000000;
+  const x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process lat
-  var lat &#x3D; 16.9023892 +
+  let lat &#x3D; 16.9023892 +
       3.238272 * x_aux -
       0.270978 * Math.pow(y_aux, 2) -
       0.002528 * Math.pow(x_aux, 2) -
@@ -230,11 +238,11 @@ function CHtoWGSlng(y, x) {
 
   // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  var y_aux &#x3D; (y - 600000) / 1000000;
-  var x_aux &#x3D; (x - 200000) / 1000000;
+  const y_aux &#x3D; (y - 600000) / 1000000;
+  const x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process long
-  var lng &#x3D; 2.6779094 +
+  let lng &#x3D; 2.6779094 +
       4.728982 * y_aux +
       0.791484 * y_aux * x_aux +
       0.1306 * y_aux * Math.pow(x_aux, 2) -
@@ -252,9 +260,9 @@ function CHtoWGSlng(y, x) {
 function DECtoSEX(angle) {
 
   // Extract DMS
-  var deg &#x3D; parseInt(angle, 10);
-  var min &#x3D; parseInt((angle - deg) * 60, 10);
-  var sec &#x3D; (((angle - deg) * 60) - min) * 60;
+  const deg &#x3D; parseInt(angle, 10);
+  const min &#x3D; parseInt((angle - deg) * 60, 10);
+  const sec &#x3D; (((angle - deg) * 60) - min) * 60;
 
   // Result in degrees sex (dd.mmss)
   return deg + min / 100 + sec / 10000;
@@ -265,12 +273,12 @@ function DECtoSEX(angle) {
 function DEGtoSEC(angle) {
 
   // Extract DMS
-  var deg &#x3D; parseInt(angle, 10);
-  var min &#x3D; parseInt((angle - deg) * 100, 10);
-  var sec &#x3D; (((angle - deg) * 100) - min) * 100;
+  const deg &#x3D; parseInt(angle, 10);
+  let min &#x3D; parseInt((angle - deg) * 100, 10);
+  let sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
   // Avoid rounding problems with seconds&#x3D;0
-  var parts &#x3D; String(angle).split(&#x27;.&#x27;);
+  const parts &#x3D; String(angle).split(&#x27;.&#x27;);
   if (parts.length &#x3D;&#x3D; 2 &amp;&amp; parts[1].length &#x3D;&#x3D; 2) {
     min &#x3D; Number(parts[1]);
     sec &#x3D; 0;
@@ -284,58 +292,66 @@ function DEGtoSEC(angle) {
           <textarea class="hidden" name="css"></textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Custom Tiled WMS&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
+
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import {defaults as defaultControls, ScaleLine} from &#x27;ol/control.js&#x27;;
+      import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+      import {addProjection, addCoordinateTransforms, transform} from &#x27;ol/proj.js&#x27;;
+      import Projection from &#x27;ol/proj/Projection.js&#x27;;
+      import TileWMS from &#x27;ol/source/TileWMS.js&#x27;;
+
+
       // By default OpenLayers does not know about the EPSG:21781 (Swiss) projection.
       // So we create a projection instance for EPSG:21781 and pass it to
-      // ol.proj.addProjection to make it available to the library for lookup by its
+      // ol/proj~addProjection to make it available to the library for lookup by its
       // code.
 
-      var projection &#x3D; new ol.proj.Projection({
+      const projection &#x3D; new Projection({
         code: &#x27;EPSG:21781&#x27;,
         // The extent is used to determine zoom level 0. Recommended values for a
         // projection&#x27;s validity extent can be found at https://epsg.io/.
         extent: [485869.5728, 76443.1884, 837076.5648, 299941.7864],
         units: &#x27;m&#x27;
       });
-      ol.proj.addProjection(projection);
+      addProjection(projection);
 
       // We also declare EPSG:21781/EPSG:4326 transform functions. These functions
-      // are necessary for the ScaleLine control and when calling ol.proj.transform
+      // are necessary for the ScaleLine control and when calling ol/proj~transform
       // for setting the view&#x27;s initial center (see below).
 
-      ol.proj.addCoordinateTransforms(&#x27;EPSG:4326&#x27;, projection,
-          function(coordinate) {
-            return [
-              WGStoCHy(coordinate[1], coordinate[0]),
-              WGStoCHx(coordinate[1], coordinate[0])
-            ];
-          },
-          function(coordinate) {
-            return [
-              CHtoWGSlng(coordinate[0], coordinate[1]),
-              CHtoWGSlat(coordinate[0], coordinate[1])
-            ];
-          });
+      addCoordinateTransforms(&#x27;EPSG:4326&#x27;, projection,
+        function(coordinate) {
+          return [
+            WGStoCHy(coordinate[1], coordinate[0]),
+            WGStoCHx(coordinate[1], coordinate[0])
+          ];
+        },
+        function(coordinate) {
+          return [
+            CHtoWGSlng(coordinate[0], coordinate[1]),
+            CHtoWGSlat(coordinate[0], coordinate[1])
+          ];
+        });
 
-      var extent &#x3D; [420000, 30000, 900000, 350000];
-      var layers &#x3D; [
-        new ol.layer.Tile({
+      const extent &#x3D; [420000, 30000, 900000, 350000];
+      const layers &#x3D; [
+        new TileLayer({
           extent: extent,
-          source: new ol.source.TileWMS({
+          source: new TileWMS({
             url: &#x27;https://wms.geo.admin.ch/&#x27;,
             crossOrigin: &#x27;anonymous&#x27;,
             attributions: &#x27;© &lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
@@ -347,9 +363,9 @@ function DEGtoSEC(angle) {
             serverType: &#x27;mapserver&#x27;
           })
         }),
-        new ol.layer.Tile({
+        new TileLayer({
           extent: extent,
-          source: new ol.source.TileWMS({
+          source: new TileWMS({
             url: &#x27;https://wms.geo.admin.ch/&#x27;,
             crossOrigin: &#x27;anonymous&#x27;,
             attributions: &#x27;© &lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
@@ -360,17 +376,17 @@ function DEGtoSEC(angle) {
         })
       ];
 
-      var map &#x3D; new ol.Map({
-        controls: ol.control.defaults().extend([
-          new ol.control.ScaleLine({
+      const map &#x3D; new Map({
+        controls: defaultControls().extend([
+          new ScaleLine({
             units: &#x27;metric&#x27;
           })
         ]),
         layers: layers,
         target: &#x27;map&#x27;,
-        view: new ol.View({
+        view: new View({
           projection: projection,
-          center: ol.proj.transform([8.23, 46.86], &#x27;EPSG:4326&#x27;, &#x27;EPSG:21781&#x27;),
+          center: transform([8.23, 46.86], &#x27;EPSG:4326&#x27;, &#x27;EPSG:21781&#x27;),
           extent: extent,
           zoom: 2
         })
@@ -394,11 +410,11 @@ function DEGtoSEC(angle) {
         lng &#x3D; DEGtoSEC(lng);
 
         // Axiliary values (% Bern)
-        var lat_aux &#x3D; (lat - 169028.66) / 10000;
-        var lng_aux &#x3D; (lng - 26782.5) / 10000;
+        const lat_aux &#x3D; (lat - 169028.66) / 10000;
+        const lng_aux &#x3D; (lng - 26782.5) / 10000;
 
         // Process Y
-        var y &#x3D; 600072.37 +
+        const y &#x3D; 600072.37 +
             211455.93 * lng_aux -
             10938.51 * lng_aux * lat_aux -
             0.36 * lng_aux * Math.pow(lat_aux, 2) -
@@ -419,11 +435,11 @@ function DEGtoSEC(angle) {
         lng &#x3D; DEGtoSEC(lng);
 
         // Axiliary values (% Bern)
-        var lat_aux &#x3D; (lat - 169028.66) / 10000;
-        var lng_aux &#x3D; (lng - 26782.5) / 10000;
+        const lat_aux &#x3D; (lat - 169028.66) / 10000;
+        const lng_aux &#x3D; (lng - 26782.5) / 10000;
 
         // Process X
-        var x &#x3D; 200147.07 +
+        const x &#x3D; 200147.07 +
             308807.95 * lat_aux +
             3745.25 * Math.pow(lng_aux, 2) +
             76.63 * Math.pow(lat_aux, 2) -
@@ -440,11 +456,11 @@ function DEGtoSEC(angle) {
 
         // Converts militar to civil and  to unit &#x3D; 1000km
         // Axiliary values (% Bern)
-        var y_aux &#x3D; (y - 600000) / 1000000;
-        var x_aux &#x3D; (x - 200000) / 1000000;
+        const y_aux &#x3D; (y - 600000) / 1000000;
+        const x_aux &#x3D; (x - 200000) / 1000000;
 
         // Process lat
-        var lat &#x3D; 16.9023892 +
+        let lat &#x3D; 16.9023892 +
             3.238272 * x_aux -
             0.270978 * Math.pow(y_aux, 2) -
             0.002528 * Math.pow(x_aux, 2) -
@@ -463,11 +479,11 @@ function DEGtoSEC(angle) {
 
         // Converts militar to civil and  to unit &#x3D; 1000km
         // Axiliary values (% Bern)
-        var y_aux &#x3D; (y - 600000) / 1000000;
-        var x_aux &#x3D; (x - 200000) / 1000000;
+        const y_aux &#x3D; (y - 600000) / 1000000;
+        const x_aux &#x3D; (x - 200000) / 1000000;
 
         // Process long
-        var lng &#x3D; 2.6779094 +
+        let lng &#x3D; 2.6779094 +
             4.728982 * y_aux +
             0.791484 * y_aux * x_aux +
             0.1306 * y_aux * Math.pow(x_aux, 2) -
@@ -485,9 +501,9 @@ function DEGtoSEC(angle) {
       function DECtoSEX(angle) {
 
         // Extract DMS
-        var deg &#x3D; parseInt(angle, 10);
-        var min &#x3D; parseInt((angle - deg) * 60, 10);
-        var sec &#x3D; (((angle - deg) * 60) - min) * 60;
+        const deg &#x3D; parseInt(angle, 10);
+        const min &#x3D; parseInt((angle - deg) * 60, 10);
+        const sec &#x3D; (((angle - deg) * 60) - min) * 60;
 
         // Result in degrees sex (dd.mmss)
         return deg + min / 100 + sec / 10000;
@@ -498,12 +514,12 @@ function DEGtoSEC(angle) {
       function DEGtoSEC(angle) {
 
         // Extract DMS
-        var deg &#x3D; parseInt(angle, 10);
-        var min &#x3D; parseInt((angle - deg) * 100, 10);
-        var sec &#x3D; (((angle - deg) * 100) - min) * 100;
+        const deg &#x3D; parseInt(angle, 10);
+        let min &#x3D; parseInt((angle - deg) * 100, 10);
+        let sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
         // Avoid rounding problems with seconds&#x3D;0
-        var parts &#x3D; String(angle).split(&#x27;.&#x27;);
+        const parts &#x3D; String(angle).split(&#x27;.&#x27;);
         if (parts.length &#x3D;&#x3D; 2 &amp;&amp; parts[1].length &#x3D;&#x3D; 2) {
           min &#x3D; Number(parts[1]);
           sec &#x3D; 0;
@@ -521,7 +537,7 @@ function DEGtoSEC(angle) {
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=wms-custom-proj"></script>
+    <script src="common.js"></script><script src="wms-custom-proj.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -534,7 +550,7 @@ function DEGtoSEC(angle) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

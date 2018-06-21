@@ -1,22 +1,2 @@
-var layers = [
-  new ol.layer.Tile({
-    source: new ol.source.OSM()
-  }),
-  new ol.layer.Image({
-    extent: [-13884991, 2870341, -7455066, 6338219],
-    source: new ol.source.ImageWMS({
-      url: 'https://ahocevar.com/geoserver/wms',
-      params: {'LAYERS': 'topp:states'},
-      ratio: 1,
-      serverType: 'geoserver'
-    })
-  })
-];
-var map = new ol.Map({
-  layers: layers,
-  target: 'map',
-  view: new ol.View({
-    center: [-10997148, 4569099],
-    zoom: 4
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[18],{249:function(e,r,s){"use strict";s.r(r);var o=s(5),a=s(4),n=s(10),t=s(113),w=s(18);const c=[new n.d({source:new w.b}),new n.c({extent:[-13884991,2870341,-7455066,6338219],source:new t.a({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states"},ratio:1,serverType:"geoserver"})})];new o.a({layers:c,target:"map",view:new a.a({center:[-10997148,4569099],zoom:4})})}},[[249,0]]]);
+//# sourceMappingURL=wms-image.js.map

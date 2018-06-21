@@ -1,12 +1,2 @@
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  target: 'map',
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[52],{282:function(e,n,w){"use strict";w.r(n);var a=w(5),o=w(4),r=w(11),s=w(18);new a.a({layers:[new r.a({source:new s.b})],target:"map",view:new o.a({center:[0,0],zoom:2})})}},[[282,0]]]);
+//# sourceMappingURL=simple.js.map

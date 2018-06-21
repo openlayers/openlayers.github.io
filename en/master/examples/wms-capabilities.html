@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     <link rel="stylesheet" href="wms-capabilities.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>WMS Capabilities Parsing</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -54,24 +54,25 @@
           <p id="shortdesc">Example of parsing a WMS GetCapabilities response.</p>
           <div id="docs"><p>This example shows the contents of the result object from parsing a WMS capabilities response.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.format.WMSCapabilities.html" title="API documentation for ol.format.WMSCapabilities">ol.format.WMSCapabilities</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">WMS Capabilities Parsing</textarea>
           <textarea class="hidden" name="description">Example of parsing a WMS GetCapabilities response.</textarea>
-          <textarea class="hidden" name="js">var parser &#x3D; new ol.format.WMSCapabilities();
+          <textarea class="hidden" name="js">import WMSCapabilities from &#x27;ol/format/WMSCapabilities.js&#x27;;
 
-fetch(&#x27;https://openlayers.org/en/v4.6.4/examples/data/ogcsample.xml&#x27;).then(function(response) {
+const parser &#x3D; new WMSCapabilities();
+
+fetch(&#x27;data/ogcsample.xml&#x27;).then(function(response) {
   return response.text();
 }).then(function(text) {
-  var result &#x3D; parser.read(text);
+  const result &#x3D; parser.read(text);
   document.getElementById(&#x27;log&#x27;).innerText &#x3D; JSON.stringify(result, null, 2);
 });
 </textarea>
@@ -82,17 +83,16 @@ fetch(&#x27;https://openlayers.org/en/v4.6.4/examples/data/ogcsample.xml&#x27;).
 </textarea>
           <textarea class="hidden" name="html">&lt;pre class&#x3D;&quot;log-container&quot;&gt;&lt;code id&#x3D;&quot;log&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;WMS Capabilities Parsing&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
+
     &lt;style&gt;
       .log-container {
         height: 400px;
@@ -103,12 +103,14 @@ fetch(&#x27;https://openlayers.org/en/v4.6.4/examples/data/ogcsample.xml&#x27;).
   &lt;body&gt;
     &lt;pre class&#x3D;&quot;log-container&quot;&gt;&lt;code id&#x3D;&quot;log&quot;&gt;&lt;/code&gt;&lt;/pre&gt;
     &lt;script&gt;
-      var parser &#x3D; new ol.format.WMSCapabilities();
+      import WMSCapabilities from &#x27;ol/format/WMSCapabilities.js&#x27;;
 
-      fetch(&#x27;https://openlayers.org/en/v4.6.4/examples/data/ogcsample.xml&#x27;).then(function(response) {
+      const parser &#x3D; new WMSCapabilities();
+
+      fetch(&#x27;data/ogcsample.xml&#x27;).then(function(response) {
         return response.text();
       }).then(function(text) {
-        var result &#x3D; parser.read(text);
+        const result &#x3D; parser.read(text);
         document.getElementById(&#x27;log&#x27;).innerText &#x3D; JSON.stringify(result, null, 2);
       });
     &lt;/script&gt;
@@ -119,7 +121,7 @@ fetch(&#x27;https://openlayers.org/en/v4.6.4/examples/data/ogcsample.xml&#x27;).
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=wms-capabilities"></script>
+    <script src="common.js"></script><script src="wms-capabilities.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -132,7 +134,7 @@ fetch(&#x27;https://openlayers.org/en/v4.6.4/examples/data/ogcsample.xml&#x27;).
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

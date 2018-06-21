@@ -1,20 +1,2 @@
-var source = new ol.source.OSM();
-
-var layer = new ol.layer.Tile();
-
-var map = new ol.Map({
-  layers: [layer],
-  target: 'map',
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
-
-document.getElementById('set-source').onclick = function() {
-  layer.setSource(source);
-};
-
-document.getElementById('unset-source').onclick = function() {
-  layer.setSource(null);
-};
+(window.webpackJsonp=window.webpackJsonp||[]).push([[95],{325:function(e,n,t){"use strict";t.r(n);var c=t(5),o=t(4),s=t(11);const u=new(t(18).b),w=new s.a;new c.a({layers:[w],target:"map",view:new o.a({center:[0,0],zoom:2})});document.getElementById("set-source").onclick=function(){w.setSource(u)},document.getElementById("unset-source").onclick=function(){w.setSource(null)}}},[[325,0]]]);
+//# sourceMappingURL=lazy-source.js.map

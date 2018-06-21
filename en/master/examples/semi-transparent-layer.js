@@ -1,18 +1,2 @@
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    }),
-    new ol.layer.Tile({
-      source: new ol.source.TileJSON({
-        url: 'https://api.tiles.mapbox.com/v3/mapbox.va-quake-aug.json?secure',
-        crossOrigin: 'anonymous'
-      })
-    })
-  ],
-  target: 'map',
-  view: new ol.View({
-    center: ol.proj.fromLonLat([-77.93255, 37.9555]),
-    zoom: 7
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[55],{285:function(e,a,n){"use strict";n.r(a);var o=n(5),s=n(4),r=n(11),w=n(7),t=n(18),c=n(63);new o.a({layers:[new r.a({source:new t.b}),new r.a({source:new c.a({url:"https://api.tiles.mapbox.com/v3/mapbox.va-quake-aug.json?secure",crossOrigin:"anonymous",transition:0})})],target:"map",view:new s.a({center:Object(w.g)([-77.93255,37.9555]),zoom:7})})}},[[285,0]]]);
+//# sourceMappingURL=semi-transparent-layer.js.map

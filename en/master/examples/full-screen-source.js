@@ -1,19 +1,2 @@
-var view = new ol.View({
-  center: [-9101767, 2822912],
-  zoom: 14
-});
-
-var map = new ol.Map({
-  controls: ol.control.defaults().extend([
-    new ol.control.FullScreen({
-      source: 'fullscreen'
-    })
-  ]),
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  target: 'map',
-  view: view
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[128],{358:function(e,n,c){"use strict";c.r(n);var o=c(5),w=c(4),s=c(24),r=c(11),t=c(18);const a=new w.a({center:[-9101767,2822912],zoom:14});new o.a({controls:Object(s.h)().extend([new s.c({source:"fullscreen"})]),layers:[new r.a({source:new t.b})],target:"map",view:a})}},[[358,0]]]);
+//# sourceMappingURL=full-screen-source.js.map

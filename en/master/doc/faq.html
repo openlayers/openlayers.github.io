@@ -53,9 +53,6 @@ free to ping us or to send a pull request enhancing this document.</p>
 <li><a href="#why-aren-t-there-any-features-in-my-source-">Why aren&#39;t there any features in my source?</a></li>
 <li><a href="#how-do-i-force-a-re-render-of-the-map-">How do I force a re-render of the map?</a></li>
 <li><a href="#why-are-my-features-not-found-">Why are my features not found?</a></li>
-<li><a href="#how-do-i-create-a-custom-build-of-openlayers-">How do I create a custom build of OpenLayers?</a></li>
-<li><a href="#do-i-need-to-write-my-own-code-using-closure-library-">Do I need to write my own code using Closure library?</a></li>
-<li><a href="#do-i-need-to-compress-my-code-with-closure-compiler-">Do I need to compress my code with Closure compiler?</a></li>
 </ul>
 <h2 id="what-projection-is-openlayers-using-">What projection is OpenLayers using?</h2>
 <p>Every map that you&#39;ll create with OpenLayers will have a view, and every view
@@ -282,27 +279,6 @@ value is 100px):</p>
   renderBuffer: <span class="number">200</span>
 });</code></pre>
 <p>The recommended value is the size of the largest symbol, line width or label.</p>
-<h2 id="how-do-i-create-a-custom-build-of-openlayers-">How do I create a custom build of OpenLayers?</h2>
-<p>Please refer to the <a href="tutorials/custom-builds.html">official create custom builds tutorial</a>
-which explains how to create a custom build of OpenLayers with just those parts
-included that you want.</p>
-<h2 id="do-i-need-to-write-my-own-code-using-closure-library-">Do I need to write my own code using Closure library?</h2>
-<p>OpenLayers is built on top of the <a href="https://developers.google.com/closure/library/">Google Closure JavaScript
-library</a>, but this
-does not mean that you must use that library in your application code.</p>
-<p>OpenLayers should play well with all sorts of JavaScript libraries out there,
-and you are in no way forced to use a specific one. Choose one that looks
-right for you.</p>
-<h2 id="do-i-need-to-compress-my-code-with-closure-compiler-">Do I need to compress my code with Closure compiler?</h2>
-<p>No, you don&#39;t need to do compress your code with the <a href="https://developers.google.com/closure/compiler/">Google Closure
-compiler</a>.</p>
-<p>It may be a good choice though, because when your application code and the
-OpenLayers source code is compiled together using closure compiler, the
-resulting build will most probably be the smallest in terms of byte-size. For
-more details refer to the
-<a href="tutorials/closure.html">compile application and OpenLayers together tutorial</a>.</p>
-<p>If you don&#39;t want to use the closure compiler, or you can&#39;t, you are not at all
-forced to use it.</p>
 
 </div>
 

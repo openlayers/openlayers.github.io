@@ -1,25 +1,2 @@
-var attribution = new ol.control.Attribution({
-  collapsible: false
-});
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  controls: ol.control.defaults({attribution: false}).extend([attribution]),
-  target: 'map',
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
-
-function checkSize() {
-  var small = map.getSize()[0] < 600;
-  attribution.setCollapsible(small);
-  attribution.setCollapsed(small);
-}
-
-window.addEventListener('resize', checkSize);
-checkSize();
+(window.webpackJsonp=window.webpackJsonp||[]).push([[163],{395:function(e,n,t){"use strict";t.r(n);var o=t(5),s=t(4),a=t(24),i=t(11),w=t(18);const c=new a.a({collapsible:!1}),r=new o.a({layers:[new i.a({source:new w.b})],controls:Object(a.h)({attribution:!1}).extend([c]),target:"map",view:new s.a({center:[0,0],zoom:2})});function l(){const e=r.getSize()[0]<600;c.setCollapsible(e),c.setCollapsed(e)}window.addEventListener("resize",l),l()}},[[395,0]]]);
+//# sourceMappingURL=attributions.js.map

@@ -1,8 +1,2 @@
-var parser = new ol.format.WMSCapabilities();
-
-fetch('data/ogcsample.xml').then(function(response) {
-  return response.text();
-}).then(function(text) {
-  var result = parser.read(text);
-  document.getElementById('log').innerText = JSON.stringify(result, null, 2);
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[22],{253:function(n,t,e){"use strict";e.r(t);const o=new(e(201).a);fetch("data/ogcsample.xml").then(function(n){return n.text()}).then(function(n){const t=o.read(n);document.getElementById("log").innerText=JSON.stringify(t,null,2)})}},[[253,0]]]);
+//# sourceMappingURL=wms-capabilities.js.map

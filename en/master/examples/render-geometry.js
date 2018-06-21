@@ -1,19 +1,2 @@
-var canvas = document.getElementById('canvas');
-var vectorContext = ol.render.toContext(canvas.getContext('2d'), {size: [100, 100]});
-
-var fill = new ol.style.Fill({color: 'blue'});
-var stroke = new ol.style.Stroke({color: 'black'});
-var style = new ol.style.Style({
-  fill: fill,
-  stroke: stroke,
-  image: new ol.style.Circle({
-    radius: 10,
-    fill: fill,
-    stroke: stroke
-  })
-});
-vectorContext.setStyle(style);
-
-vectorContext.drawGeometry(new ol.geom.LineString([[10, 10], [90, 90]]));
-vectorContext.drawGeometry(new ol.geom.Polygon([[[2, 2], [98, 2], [2, 98], [2, 2]]]));
-vectorContext.drawGeometry(new ol.geom.Point([88, 88]));
+(window.webpackJsonp=window.webpackJsonp||[]).push([[66],{296:function(e,n,t){"use strict";t.r(n);var o=t(49),w=t(216),r=t(2);const a=document.getElementById("canvas"),c=Object(w.a)(a.getContext("2d"),{size:[100,100]}),s=new r.c({color:"blue"}),l=new r.f({color:"black"}),d=new r.g({fill:s,stroke:l,image:new r.b({radius:10,fill:s,stroke:l})});c.setStyle(d),c.drawGeometry(new o.a([[10,10],[90,90]])),c.drawGeometry(new o.f([[[2,2],[98,2],[2,98],[2,2]]])),c.drawGeometry(new o.e([88,88]))}},[[296,0]]]);
+//# sourceMappingURL=render-geometry.js.map

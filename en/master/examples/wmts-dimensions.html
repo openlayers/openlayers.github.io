@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>WMTS Tile Transitions</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -59,37 +59,46 @@
           <p id="shortdesc">Example of smooth tile transitions when changing the dimension of a WMTS layer.</p>
           <div id="docs"><p>Demonstrates smooth reloading of layers when changing a dimension continuously. The demonstration layer is a global sea-level computation (flooding computation from <a href="http://scalgo.com">SCALGO</a>, underlying data from <a href="http://www.cgiar-csi.org/data/srtm-90m-digital-elevation-database-v4-1">CGIAR-CSI SRTM</a>) where cells that are flooded if the sea-level rises to more than <em>x</em> m are colored blue. The user selects the sea-level dimension using a slider.</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.extent.html" title="API documentation for ol.extent">ol.extent</a></li>,<li><a href="../apidoc/ol.layer.Tile.html" title="API documentation for ol.layer.Tile">ol.layer.Tile</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.OSM.html" title="API documentation for ol.source.OSM">ol.source.OSM</a></li>,<li><a href="../apidoc/ol.source.WMTS.html" title="API documentation for ol.source.WMTS">ol.source.WMTS</a></li>,<li><a href="../apidoc/ol.tilegrid.WMTS.html" title="API documentation for ol.tilegrid.WMTS">ol.tilegrid.WMTS</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">WMTS Tile Transitions</textarea>
           <textarea class="hidden" name="description">Example of smooth tile transitions when changing the dimension of a WMTS layer.</textarea>
-          <textarea class="hidden" name="js">// create the WMTS tile grid in the google projection
-var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
-var tileSizePixels &#x3D; 256;
-var tileSizeMtrs &#x3D; ol.extent.getWidth(projection.getExtent()) / tileSizePixels;
-var matrixIds &#x3D; [];
-var resolutions &#x3D; [];
-for (var i &#x3D; 0; i &lt;&#x3D; 14; i++) {
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import {getWidth, getTopLeft} from &#x27;ol/extent.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import {get as getProjection} from &#x27;ol/proj.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
+import WMTS from &#x27;ol/source/WMTS.js&#x27;;
+import WMTSTileGrid from &#x27;ol/tilegrid/WMTS.js&#x27;;
+
+
+// create the WMTS tile grid in the google projection
+const projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
+const tileSizePixels &#x3D; 256;
+const tileSizeMtrs &#x3D; getWidth(projection.getExtent()) / tileSizePixels;
+const matrixIds &#x3D; [];
+const resolutions &#x3D; [];
+for (let i &#x3D; 0; i &lt;&#x3D; 14; i++) {
   matrixIds[i] &#x3D; i;
   resolutions[i] &#x3D; tileSizeMtrs / Math.pow(2, i);
 }
-var tileGrid &#x3D; new ol.tilegrid.WMTS({
-  origin: ol.extent.getTopLeft(projection.getExtent()),
+const tileGrid &#x3D; new WMTSTileGrid({
+  origin: getTopLeft(projection.getExtent()),
   resolutions: resolutions,
   matrixIds: matrixIds
 });
 
-var scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
+const scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
 
-var wmtsSource &#x3D; new ol.source.WMTS({
+const wmtsSource &#x3D; new WMTS({
   url: &#x27;http://ts2.scalgo.com/olpatch/wmts?token&#x3D;&#x27; + scalgoToken,
   layer: &#x27;SRTM_4_1:SRTM_4_1_flooded_sealevels&#x27;,
   format: &#x27;image/png&#x27;,
@@ -106,25 +115,25 @@ var wmtsSource &#x3D; new ol.source.WMTS({
   }
 });
 
-var map &#x3D; new ol.Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
-  view: new ol.View({
+  view: new View({
     projection: projection,
     center: [-9871995, 3566245],
     zoom: 6
   }),
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new TileLayer({
+      source: new OSM()
     }),
-    new ol.layer.Tile({
+    new TileLayer({
       opacity: 0.5,
       source: wmtsSource
     })
   ]
 });
 
-var updateSourceDimension &#x3D; function(source, sliderVal) {
+const updateSourceDimension &#x3D; function(source, sliderVal) {
   source.updateDimensions({&#x27;threshold&#x27;: sliderVal});
   document.getElementById(&#x27;theinfo&#x27;).innerHTML &#x3D; sliderVal + &#x27; meters&#x27;;
 };
@@ -143,17 +152,16 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
 &lt;/label&gt;
 &lt;span id&#x3D;&quot;theinfo&quot;&gt;&lt;/span&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;WMTS Tile Transitions&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
+
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -163,25 +171,35 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
     &lt;/label&gt;
     &lt;span id&#x3D;&quot;theinfo&quot;&gt;&lt;/span&gt;
     &lt;script&gt;
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import {getWidth, getTopLeft} from &#x27;ol/extent.js&#x27;;
+      import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+      import {get as getProjection} from &#x27;ol/proj.js&#x27;;
+      import OSM from &#x27;ol/source/OSM.js&#x27;;
+      import WMTS from &#x27;ol/source/WMTS.js&#x27;;
+      import WMTSTileGrid from &#x27;ol/tilegrid/WMTS.js&#x27;;
+
+
       // create the WMTS tile grid in the google projection
-      var projection &#x3D; ol.proj.get(&#x27;EPSG:3857&#x27;);
-      var tileSizePixels &#x3D; 256;
-      var tileSizeMtrs &#x3D; ol.extent.getWidth(projection.getExtent()) / tileSizePixels;
-      var matrixIds &#x3D; [];
-      var resolutions &#x3D; [];
-      for (var i &#x3D; 0; i &lt;&#x3D; 14; i++) {
+      const projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
+      const tileSizePixels &#x3D; 256;
+      const tileSizeMtrs &#x3D; getWidth(projection.getExtent()) / tileSizePixels;
+      const matrixIds &#x3D; [];
+      const resolutions &#x3D; [];
+      for (let i &#x3D; 0; i &lt;&#x3D; 14; i++) {
         matrixIds[i] &#x3D; i;
         resolutions[i] &#x3D; tileSizeMtrs / Math.pow(2, i);
       }
-      var tileGrid &#x3D; new ol.tilegrid.WMTS({
-        origin: ol.extent.getTopLeft(projection.getExtent()),
+      const tileGrid &#x3D; new WMTSTileGrid({
+        origin: getTopLeft(projection.getExtent()),
         resolutions: resolutions,
         matrixIds: matrixIds
       });
 
-      var scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
+      const scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
 
-      var wmtsSource &#x3D; new ol.source.WMTS({
+      const wmtsSource &#x3D; new WMTS({
         url: &#x27;http://ts2.scalgo.com/olpatch/wmts?token&#x3D;&#x27; + scalgoToken,
         layer: &#x27;SRTM_4_1:SRTM_4_1_flooded_sealevels&#x27;,
         format: &#x27;image/png&#x27;,
@@ -198,25 +216,25 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
         }
       });
 
-      var map &#x3D; new ol.Map({
+      const map &#x3D; new Map({
         target: &#x27;map&#x27;,
-        view: new ol.View({
+        view: new View({
           projection: projection,
           center: [-9871995, 3566245],
           zoom: 6
         }),
         layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
+          new TileLayer({
+            source: new OSM()
           }),
-          new ol.layer.Tile({
+          new TileLayer({
             opacity: 0.5,
             source: wmtsSource
           })
         ]
       });
 
-      var updateSourceDimension &#x3D; function(source, sliderVal) {
+      const updateSourceDimension &#x3D; function(source, sliderVal) {
         source.updateDimensions({&#x27;threshold&#x27;: sliderVal});
         document.getElementById(&#x27;theinfo&#x27;).innerHTML &#x3D; sliderVal + &#x27; meters&#x27;;
       };
@@ -234,7 +252,7 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=wmts-dimensions"></script>
+    <script src="common.js"></script><script src="wmts-dimensions.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -247,7 +265,7 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

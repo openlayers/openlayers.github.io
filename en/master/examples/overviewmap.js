@@ -1,15 +1,2 @@
-var map = new ol.Map({
-  controls: ol.control.defaults().extend([
-    new ol.control.OverviewMap()
-  ]),
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  target: 'map',
-  view: new ol.View({
-    center: [500000, 6000000],
-    zoom: 7
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[75],{305:function(e,n,w){"use strict";w.r(n);var o=w(5),a=w(4),t=w(24),c=w(11),r=w(18);new o.a({controls:Object(t.h)().extend([new t.d]),layers:[new c.a({source:new r.b})],target:"map",view:new a.a({center:[5e5,6e6],zoom:7})})}},[[305,0]]]);
+//# sourceMappingURL=overviewmap.js.map

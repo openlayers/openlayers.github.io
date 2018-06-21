@@ -1,23 +1,2 @@
-var key = 'pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiRk1kMWZaSSJ9.E5BkluenyWQMsBLsuByrmg';
-
-var map = new ol.Map({
-  layers: [
-    new ol.layer.VectorTile({
-      declutter: true,
-      source: new ol.source.VectorTile({
-        attributions: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +
-          '© <a href="https://www.openstreetmap.org/copyright">' +
-          'OpenStreetMap contributors</a>',
-        format: new ol.format.MVT(),
-        url: 'https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/' +
-            '{z}/{x}/{y}.vector.pbf?access_token=' + key
-      }),
-      style: createMapboxStreetsV6Style(ol.style.Style, ol.style.Fill, ol.style.Stroke, ol.style.Icon, ol.style.Text)
-    })
-  ],
-  target: 'map',
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
+(window.webpackJsonp=window.webpackJsonp||[]).push([[90],{320:function(e,t,a){"use strict";a.r(t);var o=a(5),r=a(4),p=a(131),s=a(117),n=a(118),w=a(2);new o.a({layers:[new s.a({declutter:!0,source:new n.a({attributions:'© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',format:new p.a,url:"https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiRk1kMWZaSSJ9.E5BkluenyWQMsBLsuByrmg"}),style:createMapboxStreetsV6Style(w.g,w.c,w.f,w.d,w.h)})],target:"map",view:new r.a({center:[0,0],zoom:2})})}},[[320,0]]]);
+//# sourceMappingURL=mapbox-vector-tiles.js.map

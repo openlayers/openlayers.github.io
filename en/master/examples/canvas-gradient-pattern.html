@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
-    <link rel="stylesheet" href="../css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
     <link rel="stylesheet" href="canvas-gradient-pattern.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./resources/zeroclipboard/ZeroClipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Styling feature with CanvasGradient or CanvasPattern</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>4.6.4</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -52,36 +52,38 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example showing the countries vector layer styled with patterns and gradients.</p>
-          <div id="docs"><p>First this example creates a reusable <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern"><code>CanvasPattern</code></a> and a <a href="https://developer.mozilla.org/en/docs/Web/API/CanvasGradient"><code>CanvasGradient</code></a>. The countries are loaded from a GeoJSON file. A style function determines for each country whether to use a fill with the pregenerated CanvasGradient (rainbow colors) or a CanvasPattern (repeating stacked circles).</p>
+          <div id="docs"><p>This example creates a <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern"><code>CanvasPattern</code></a> and a <a href="https://developer.mozilla.org/en/docs/Web/API/CanvasGradient"><code>CanvasGradient</code></a>. The countries are loaded from a GeoJSON file. A style function determines for each country whether to use a fill with the CanvasGradient (rainbow colors) or a CanvasPattern (repeating stacked circles). <strong>Note</strong>: For seamless repeat patterns, image width and height of the pattern image must be a factor of two (2, 4, 8, ..., 512).</p>
 </div>
-          <div id="api-links">Related API documentation: <ul class="inline"><li><a href="../apidoc/ol.Map.html" title="API documentation for ol.Map">ol.Map</a></li>,<li><a href="../apidoc/ol.View.html" title="API documentation for ol.View">ol.View</a></li>,<li><a href="../apidoc/ol.extent.html" title="API documentation for ol.extent">ol.extent</a></li>,<li><a href="../apidoc/ol.format.GeoJSON.html" title="API documentation for ol.format.GeoJSON">ol.format.GeoJSON</a></li>,<li><a href="../apidoc/ol.has.html" title="API documentation for ol.has">ol.has</a></li>,<li><a href="../apidoc/ol.layer.Vector.html" title="API documentation for ol.layer.Vector">ol.layer.Vector</a></li>,<li><a href="../apidoc/ol.proj.html" title="API documentation for ol.proj">ol.proj</a></li>,<li><a href="../apidoc/ol.source.Vector.html" title="API documentation for ol.source.Vector">ol.source.Vector</a></li>,<li><a href="../apidoc/ol.style.Fill.html" title="API documentation for ol.style.Fill">ol.style.Fill</a></li>,<li><a href="../apidoc/ol.style.Stroke.html" title="API documentation for ol.style.Stroke">ol.style.Stroke</a></li>,<li><a href="../apidoc/ol.style.Style.html" title="API documentation for ol.style.Style">ol.style.Style</a></li></ul></div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div id="source-controls">
-          <a id="copy-button"><i class="fa fa-clipboard"></i> Copy</a>
-          <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a>
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Styling feature with CanvasGradient or CanvasPattern</textarea>
           <textarea class="hidden" name="description">Example showing the countries vector layer styled with patterns and gradients.</textarea>
-          <textarea class="hidden" name="js">var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+import {DEVICE_PIXEL_RATIO} from &#x27;ol/has.js&#x27;;
+import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
+import {fromLonLat} from &#x27;ol/proj.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+import {Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+
+const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
 
 // Gradient and pattern are in canvas pixel space, so we adjust for the
 // renderer&#x27;s pixel ratio
-var pixelRatio &#x3D; ol.has.DEVICE_PIXEL_RATIO;
+const pixelRatio &#x3D; DEVICE_PIXEL_RATIO;
 
 // Generate a rainbow gradient
-function gradient(feature, resolution) {
-  var extent &#x3D; feature.getGeometry().getExtent();
-  // Gradient starts on the left edge of each feature, and ends on the right.
-  // Coordinate origin is the top-left corner of the extent of the geometry, so
-  // we just divide the geometry&#x27;s extent width by resolution and multiply with
-  // pixelRatio to match the renderer&#x27;s pixel coordinate system.
-  var grad &#x3D; context.createLinearGradient(0, 0,
-      ol.extent.getWidth(extent) / resolution * pixelRatio, 0);
+const gradient &#x3D; (function() {
+  const grad &#x3D; context.createLinearGradient(0, 0, 512 * pixelRatio, 0);
   grad.addColorStop(0, &#x27;red&#x27;);
   grad.addColorStop(1 / 6, &#x27;orange&#x27;);
   grad.addColorStop(2 / 6, &#x27;yellow&#x27;);
@@ -90,33 +92,33 @@ function gradient(feature, resolution) {
   grad.addColorStop(5 / 6, &#x27;blue&#x27;);
   grad.addColorStop(1, &#x27;purple&#x27;);
   return grad;
-}
+})();
 
 // Generate a canvasPattern with two circles on white background
-var pattern &#x3D; (function() {
-  canvas.width &#x3D; 11 * pixelRatio;
-  canvas.height &#x3D; 11 * pixelRatio;
+const pattern &#x3D; (function() {
+  canvas.width &#x3D; 8 * pixelRatio;
+  canvas.height &#x3D; 8 * pixelRatio;
   // white background
   context.fillStyle &#x3D; &#x27;white&#x27;;
   context.fillRect(0, 0, canvas.width, canvas.height);
   // outer circle
   context.fillStyle &#x3D; &#x27;rgba(102, 0, 102, 0.5)&#x27;;
   context.beginPath();
-  context.arc(5 * pixelRatio, 5 * pixelRatio, 4 * pixelRatio, 0, 2 * Math.PI);
+  context.arc(4 * pixelRatio, 4 * pixelRatio, 3 * pixelRatio, 0, 2 * Math.PI);
   context.fill();
   // inner circle
   context.fillStyle &#x3D; &#x27;rgb(55, 0, 170)&#x27;;
   context.beginPath();
-  context.arc(5 * pixelRatio, 5 * pixelRatio, 2 * pixelRatio, 0, 2 * Math.PI);
+  context.arc(4 * pixelRatio, 4 * pixelRatio, 1.5 * pixelRatio, 0, 2 * Math.PI);
   context.fill();
   return context.createPattern(canvas, &#x27;repeat&#x27;);
 }());
 
 // Generate style for gradient or pattern fill
-var fill &#x3D; new ol.style.Fill();
-var style &#x3D; new ol.style.Style({
+const fill &#x3D; new Fill();
+const style &#x3D; new Style({
   fill: fill,
-  stroke: new ol.style.Stroke({
+  stroke: new Stroke({
     color: &#x27;#333&#x27;,
     width: 2
   })
@@ -126,33 +128,32 @@ var style &#x3D; new ol.style.Style({
  * The styling function for the vector layer, will return an array of styles
  * which either contains the aboove gradient or pattern.
  *
- * @param {ol.Feature} feature The feature to style.
- * @param {number} resolution Resolution.
- * @return {ol.style.Style} The style to use for the feature.
+ * @param {module:ol/Feature~Feature} feature The feature to style.
+ * @return {module:ol/style/Style} The style to use for the feature.
  */
-var getStackedStyle &#x3D; function(feature, resolution) {
-  var id &#x3D; feature.getId();
-  fill.setColor(id &gt; &#x27;J&#x27; ? gradient(feature, resolution) : pattern);
+const getStackedStyle &#x3D; function(feature) {
+  const id &#x3D; feature.getId();
+  fill.setColor(id &gt; &#x27;J&#x27; ? gradient : pattern);
   return style;
 };
 
 // Create a vector layer that makes use of the style function above…
-var vectorLayer &#x3D; new ol.layer.Vector({
-  source: new ol.source.Vector({
-    url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/countries.geojson&#x27;,
-    format: new ol.format.GeoJSON()
+const vectorLayer &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/countries.geojson&#x27;,
+    format: new GeoJSON()
   }),
   style: getStackedStyle
 });
 
 // … finally create a map with that layer.
-var map &#x3D; new ol.Map({
+const map &#x3D; new Map({
   layers: [
     vectorLayer
   ],
   target: &#x27;map&#x27;,
-  view: new ol.View({
-    center: ol.proj.fromLonLat([7, 52]),
+  view: new View({
+    center: fromLonLat([16, 48]),
     zoom: 3
   })
 });
@@ -165,17 +166,16 @@ var map &#x3D; new ol.Map({
 </textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
 </textarea>
-          <input type="hidden" name="resources" value="https://openlayers.org/en/v4.6.4/css/ol.css,https://openlayers.org/en/v4.6.4/build/ol.js">
           <input type="hidden" name="data">
         </form>
         <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Styling feature with CanvasGradient or CanvasPattern&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v4.6.4/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src="https://openlayers.org/en/v4.6.4/build/ol.js"&gt;&lt;/script&gt;
+
     &lt;style&gt;
       #map {
         /* Image craeted by tatyana, from https://sftextures.com/2014/10/22/blue-sky-with-blurred-white-clouds-seamless-textures/ */
@@ -187,22 +187,25 @@ var map &#x3D; new ol.Map({
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-      var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+      import {DEVICE_PIXEL_RATIO} from &#x27;ol/has.js&#x27;;
+      import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
+      import {fromLonLat} from &#x27;ol/proj.js&#x27;;
+      import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+      import {Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+
+      const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+      const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
 
       // Gradient and pattern are in canvas pixel space, so we adjust for the
       // renderer&#x27;s pixel ratio
-      var pixelRatio &#x3D; ol.has.DEVICE_PIXEL_RATIO;
+      const pixelRatio &#x3D; DEVICE_PIXEL_RATIO;
 
       // Generate a rainbow gradient
-      function gradient(feature, resolution) {
-        var extent &#x3D; feature.getGeometry().getExtent();
-        // Gradient starts on the left edge of each feature, and ends on the right.
-        // Coordinate origin is the top-left corner of the extent of the geometry, so
-        // we just divide the geometry&#x27;s extent width by resolution and multiply with
-        // pixelRatio to match the renderer&#x27;s pixel coordinate system.
-        var grad &#x3D; context.createLinearGradient(0, 0,
-            ol.extent.getWidth(extent) / resolution * pixelRatio, 0);
+      const gradient &#x3D; (function() {
+        const grad &#x3D; context.createLinearGradient(0, 0, 512 * pixelRatio, 0);
         grad.addColorStop(0, &#x27;red&#x27;);
         grad.addColorStop(1 / 6, &#x27;orange&#x27;);
         grad.addColorStop(2 / 6, &#x27;yellow&#x27;);
@@ -211,33 +214,33 @@ var map &#x3D; new ol.Map({
         grad.addColorStop(5 / 6, &#x27;blue&#x27;);
         grad.addColorStop(1, &#x27;purple&#x27;);
         return grad;
-      }
+      })();
 
       // Generate a canvasPattern with two circles on white background
-      var pattern &#x3D; (function() {
-        canvas.width &#x3D; 11 * pixelRatio;
-        canvas.height &#x3D; 11 * pixelRatio;
+      const pattern &#x3D; (function() {
+        canvas.width &#x3D; 8 * pixelRatio;
+        canvas.height &#x3D; 8 * pixelRatio;
         // white background
         context.fillStyle &#x3D; &#x27;white&#x27;;
         context.fillRect(0, 0, canvas.width, canvas.height);
         // outer circle
         context.fillStyle &#x3D; &#x27;rgba(102, 0, 102, 0.5)&#x27;;
         context.beginPath();
-        context.arc(5 * pixelRatio, 5 * pixelRatio, 4 * pixelRatio, 0, 2 * Math.PI);
+        context.arc(4 * pixelRatio, 4 * pixelRatio, 3 * pixelRatio, 0, 2 * Math.PI);
         context.fill();
         // inner circle
         context.fillStyle &#x3D; &#x27;rgb(55, 0, 170)&#x27;;
         context.beginPath();
-        context.arc(5 * pixelRatio, 5 * pixelRatio, 2 * pixelRatio, 0, 2 * Math.PI);
+        context.arc(4 * pixelRatio, 4 * pixelRatio, 1.5 * pixelRatio, 0, 2 * Math.PI);
         context.fill();
         return context.createPattern(canvas, &#x27;repeat&#x27;);
       }());
 
       // Generate style for gradient or pattern fill
-      var fill &#x3D; new ol.style.Fill();
-      var style &#x3D; new ol.style.Style({
+      const fill &#x3D; new Fill();
+      const style &#x3D; new Style({
         fill: fill,
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: &#x27;#333&#x27;,
           width: 2
         })
@@ -247,33 +250,32 @@ var map &#x3D; new ol.Map({
        * The styling function for the vector layer, will return an array of styles
        * which either contains the aboove gradient or pattern.
        *
-       * @param {ol.Feature} feature The feature to style.
-       * @param {number} resolution Resolution.
-       * @return {ol.style.Style} The style to use for the feature.
+       * @param {module:ol/Feature~Feature} feature The feature to style.
+       * @return {module:ol/style/Style} The style to use for the feature.
        */
-      var getStackedStyle &#x3D; function(feature, resolution) {
-        var id &#x3D; feature.getId();
-        fill.setColor(id &gt; &#x27;J&#x27; ? gradient(feature, resolution) : pattern);
+      const getStackedStyle &#x3D; function(feature) {
+        const id &#x3D; feature.getId();
+        fill.setColor(id &gt; &#x27;J&#x27; ? gradient : pattern);
         return style;
       };
 
       // Create a vector layer that makes use of the style function above…
-      var vectorLayer &#x3D; new ol.layer.Vector({
-        source: new ol.source.Vector({
-          url: &#x27;https://openlayers.org/en/v4.6.4/examples/data/geojson/countries.geojson&#x27;,
-          format: new ol.format.GeoJSON()
+      const vectorLayer &#x3D; new VectorLayer({
+        source: new VectorSource({
+          url: &#x27;data/geojson/countries.geojson&#x27;,
+          format: new GeoJSON()
         }),
         style: getStackedStyle
       });
 
       // … finally create a map with that layer.
-      var map &#x3D; new ol.Map({
+      const map &#x3D; new Map({
         layers: [
           vectorLayer
         ],
         target: &#x27;map&#x27;,
-        view: new ol.View({
-          center: ol.proj.fromLonLat([7, 52]),
+        view: new View({
+          center: fromLonLat([16, 48]),
           zoom: 3
         })
       });
@@ -285,7 +287,7 @@ var map &#x3D; new ol.Map({
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="loader.js?id=canvas-gradient-pattern"></script>
+    <script src="common.js"></script><script src="canvas-gradient-pattern.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -298,7 +300,7 @@ var map &#x3D; new ol.Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (!dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '4.6.4' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
