@@ -40,13 +40,16 @@ module.exports = function(grunt) {
         dir: repo
       }
     },
-    make: {
+    run: {
       options: {cwd: repo},
       apidoc: {
-        args: ['apidoc']
+        exec: 'npm run apidoc'
       },
       examples: {
-        args: ['host-examples']
+        exec: 'npm run build-examples'
+      },
+      ol: {
+        exec: 'npm run build'
       }
     },
     clean: {
@@ -56,32 +59,25 @@ module.exports = function(grunt) {
     },
     move: {
       apidoc: {
-        src: repo + '/build/hosted/HEAD/apidoc',
+        src: repo + '/build/apidoc',
         dest: dist + '/en/' + branch + '/apidoc'
       },
-      build: {
-        src: repo + '/build/hosted/HEAD/build',
-        dest: dist + '/en/' + branch + '/build'
-      },
-      closure: {
-        src: repo + '/build/hosted/HEAD/closure-library',
-        dest: dist + '/en/' + branch + '/closure-library'
-      },
-      ol: {
-        src: repo + '/build/hosted/HEAD/ol',
-        dest: dist + '/en/' + branch + '/ol'
-      },
-      'ol.ext': {
-        src: repo + '/build/hosted/HEAD/ol.ext',
-        dest: dist + '/en/' + branch + '/ol.ext'
-      },
       examples: {
-        src: repo + '/build/hosted/HEAD/examples',
+        src: repo + '/build/examples',
         dest: dist + '/en/' + branch + '/examples'
       },
+      ol: {
+        src: [
+          repo + '/build/ol.js*',
+          repo + '/build/ol.js.map'
+        ],
+        dest: dist + '/en/' + branch + '/build/'
+      },
       css: {
-        src: repo + '/build/hosted/HEAD/css',
-        dest: dist + '/en/' + branch + '/css'
+        src: [
+          repo + '/build/ol.css*'
+        ],
+        dest: dist + '/en/' + branch + '/css/'
       }
     },
     less: {
@@ -226,7 +222,6 @@ module.exports = function(grunt) {
       dist: {
         src: [
           dist + '/en/' + branch + '/build/ol.js',
-          dist + '/en/' + branch + '/build/ol-debug.js',
           dist + '/en/' + branch + '/css/ol.css',
         ],
         router: function(filepath) {
@@ -238,6 +233,8 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadTasks('tasks');
+
   grunt.loadNpmTasks('assemble');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -246,9 +243,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-move');
+  grunt.loadNpmTasks('grunt-run');
   grunt.loadNpmTasks('grunt-zip');
-
-  grunt.loadTasks('tasks');
 
   grunt.registerTask('copyLatest', 'copy:latest');
 
@@ -259,7 +256,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', 'Build the website', [
-    'checkout', 'install', 'make:examples', 'make:apidoc', 'clean:dist',
+    'checkout', 'install', 'run', 'clean:dist',
     'move', 'less', 'copy:all', 'copy:doc', 'assemble', 'maybeCopyLatest']);
 
 
