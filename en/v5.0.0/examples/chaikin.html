@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
+    
+    
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <title>Smoothing lines using Chaikins algorithm</title>
+  </head>
+  <body>
+
+    <header class="navbar" role="navigation">
+      <div class="container">
+        <div class="display-table pull-left" id="navbar-logo-container">
+          <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers Examples</a>
+        </div>
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="../doc">Docs</a></li>
+            <li><a class="active" href="index.html">Examples</a></li>
+            <li><a href="../apidoc">API</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+
+      <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses OpenLayers v<span>5.0.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12">
+          <h4 id="title">Smoothing lines using Chaikins algorithm</h4>
+          <div id="map" class="map"></div>
+<form class="form-inline">
+  <label for="shall-smoothen">Smooth drawn geometry?</label>
+  <input id="shall-smoothen" type="checkbox" checked><br>
+  <label for="iterations">Number of smoothings</label>
+  <input style="width: 250px;" type="range" id="iterations" min="2" max="10" step="1" value="5">
+</form>
+
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12">
+          <p id="shortdesc">This uses Chaikins algorithm to smooth drawn lines.</p>
+          <div id="docs"><p>This example uses the npm package <a href="https://www.npmjs.com/package/chaikin-smooth"><code>chaikin-smooth</code></a> which implements <a href="http://graphics.cs.ucdavis.edu/education/CAGDNotes/Chaikins-Algorithm/Chaikins-Algorithm.html">Chaikins algorithm</a> to smooth drawn lines.
+Start by drawing on the map. Once you finish a drawing, the feature&#39;s geometry will be smoothed as configured via the form elements.</p>
+</div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div id="source-controls">
+          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
+        </div>
+        <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
+          <textarea class="hidden" name="title">Smoothing lines using Chaikins algorithm</textarea>
+          <textarea class="hidden" name="description">This uses Chaikins algorithm to smooth drawn lines.</textarea>
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import Draw from &#x27;ol/interaction/Draw.js&#x27;;
+
+import smooth from &#x27;chaikin-smooth&#x27;;
+
+function makeSmooth(path, numIterations) {
+  numIterations &#x3D; Math.min(Math.max(numIterations, 1), 10);
+  while (numIterations &gt; 0) {
+    path &#x3D; smooth(path);
+    numIterations--;
+  }
+  return path;
+}
+
+const vectorSource &#x3D; new VectorSource({});
+
+const map &#x3D; new Map({
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+      opacity: 0.5
+    }),
+    new VectorLayer({
+      source: vectorSource
+    })
+  ],
+  target: &#x27;map&#x27;,
+  view: new View({
+    center: [1078373.5950, 6871994.5910],
+    zoom: 5
+  })
+});
+
+const shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
+const numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
+
+const draw &#x3D; new Draw({
+  source: vectorSource,
+  type: &#x27;LineString&#x27;
+});
+map.addInteraction(draw);
+draw.on(&#x27;drawend&#x27;, function(event) {
+  if (!shallSmoothen.checked) {
+    return;
+  }
+  const feat &#x3D; event.feature;
+  const geometry &#x3D; feat.getGeometry();
+  const coords &#x3D; geometry.getCoordinates();
+  const smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
+  geometry.setCoordinates(smoothened);
+});
+</textarea>
+          <textarea class="hidden" name="css"></textarea>
+          <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+&lt;form class&#x3D;&quot;form-inline&quot;&gt;
+  &lt;label for&#x3D;&quot;shall-smoothen&quot;&gt;Smooth drawn geometry?&lt;/label&gt;
+  &lt;input id&#x3D;&quot;shall-smoothen&quot; type&#x3D;&quot;checkbox&quot; checked&gt;&lt;br&gt;
+  &lt;label for&#x3D;&quot;iterations&quot;&gt;Number of smoothings&lt;/label&gt;
+  &lt;input style&#x3D;&quot;width: 250px;&quot; type&#x3D;&quot;range&quot; id&#x3D;&quot;iterations&quot; min&#x3D;&quot;2&quot; max&#x3D;&quot;10&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;5&quot;&gt;
+&lt;/form&gt;
+</textarea>
+          <input type="hidden" name="data">
+        </form>
+        <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Smoothing lines using Chaikins algorithm&lt;/title&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0/css/ol.css" type="text/css"&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+      &lt;label for&#x3D;&quot;shall-smoothen&quot;&gt;Smooth drawn geometry?&lt;/label&gt;
+      &lt;input id&#x3D;&quot;shall-smoothen&quot; type&#x3D;&quot;checkbox&quot; checked&gt;&lt;br&gt;
+      &lt;label for&#x3D;&quot;iterations&quot;&gt;Number of smoothings&lt;/label&gt;
+      &lt;input style&#x3D;&quot;width: 250px;&quot; type&#x3D;&quot;range&quot; id&#x3D;&quot;iterations&quot; min&#x3D;&quot;2&quot; max&#x3D;&quot;10&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;5&quot;&gt;
+    &lt;/form&gt;
+    &lt;script&gt;
+      import Map from &#x27;ol/Map.js&#x27;;
+      import View from &#x27;ol/View.js&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+      import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+      import Draw from &#x27;ol/interaction/Draw.js&#x27;;
+
+      import smooth from &#x27;chaikin-smooth&#x27;;
+
+      function makeSmooth(path, numIterations) {
+        numIterations &#x3D; Math.min(Math.max(numIterations, 1), 10);
+        while (numIterations &gt; 0) {
+          path &#x3D; smooth(path);
+          numIterations--;
+        }
+        return path;
+      }
+
+      const vectorSource &#x3D; new VectorSource({});
+
+      const map &#x3D; new Map({
+        layers: [
+          new TileLayer({
+            source: new OSM(),
+            opacity: 0.5
+          }),
+          new VectorLayer({
+            source: vectorSource
+          })
+        ],
+        target: &#x27;map&#x27;,
+        view: new View({
+          center: [1078373.5950, 6871994.5910],
+          zoom: 5
+        })
+      });
+
+      const shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
+      const numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
+
+      const draw &#x3D; new Draw({
+        source: vectorSource,
+        type: &#x27;LineString&#x27;
+      });
+      map.addInteraction(draw);
+      draw.on(&#x27;drawend&#x27;, function(event) {
+        if (!shallSmoothen.checked) {
+          return;
+        }
+        const feat &#x3D; event.feature;
+        const geometry &#x3D; feat.getGeometry();
+        const coords &#x3D; geometry.getCoordinates();
+        const smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
+        geometry.setCoordinates(smoothened);
+      });
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </div>
+
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
+    <script src="common.js"></script><script src="chaikin.js"></script>
+  </body>
+  <script>
+  var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
+  fetch(packageUrl).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    var latestVersion = json.version;
+    document.getElementById('latest-version').innerHTML = latestVersion;
+    var url = window.location.href;
+    var branchSearch = url.match(/\/([^\/]*)\/examples\//);
+    var cookieText = 'dismissed=-' + latestVersion + '-';
+    var dismissed = document.cookie.indexOf(cookieText) != -1;
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0' != latestVersion) {
+      var link = url.replace(branchSearch[0], '/latest/examples/');
+      fetch(link, {method: 'head'}).then(function(response) {
+        var a = document.getElementById('latest-link');
+        a.href = response.status == 200 ? link : '../../latest/examples/';
+      });
+      var latestCheck = document.getElementById('latest-check');
+      latestCheck.style.display = '';
+      document.getElementById('latest-dismiss').onclick = function() {
+        latestCheck.style.display = 'none';
+        document.cookie = cookieText;
+      }
+    }
+  });
+  </script>
+</html>
