@@ -1,6 +1,6 @@
 {
   "name": "openlayers-website",
-  "version": "4.6.5",
+  "version": "5.0.0",
   "description": "Website for OpenLayers",
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
     "grunt-contrib-connect": "0.11.2",
     "grunt-contrib-copy": "0.5.0",
     "grunt-contrib-less": "0.11.0",
+    "grunt-contrib-symlink": "^1.0.0",
     "grunt-contrib-uglify": "0.4.0",
     "grunt-contrib-watch": "0.6.1",
     "grunt-gh-pages": "0.9.1",
