@@ -19,7 +19,10 @@ layout: main.hbs
     <h3 class="col-sm-12">Hosted builds for development</h3>
     <div class="col-sm-12">
       <p>
-        If you want to try out OpenLayers without downloading anything, a full build of each release which can be used in a script tag is available from <a href="https://cdnjs.com/libraries/openlayers">cdnjs</a>. You will need both the JS build and the CSS files; see the examples or the Quickstart tutorial for usage.  Note that you should not use a full build in production, instead you are encouraged to use the <code>ol</code> package described above.
+        If you want to try out OpenLayers without downloading anything (<b>not recommended for production</b>), include the following in the head of your html page:
+<pre><code>&lt;script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/{{ latest }}/build/ol.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/{{ latest }}/css/ol.css"&gt;
+</code></pre>
       </p>
     </div>
   </div>
@@ -35,7 +38,7 @@ layout: main.hbs
           <tr><th>Archive</th><th>Description</th></tr>
           <tr>
             <td><a href="https://github.com/openlayers/openlayers/releases/download/{{ latest }}/{{ latest }}-dist.zip">{{ latest }}-dist.zip</a></td>
-            <td>Includes a full build of the library, a debug build, and library CSS.</td>
+            <td>Includes a full build of the library (<code>ol.js</code>), a source map (<code>ol.js.map</code>), and library CSS (<code>ol.css</code> with source map <code>ol.css.map</code>).</td>
           </tr>
           <tr>
             <td><a href="https://github.com/openlayers/openlayers/releases/download/{{ latest }}/{{ latest }}.zip">{{ latest }}.zip</a></td>
