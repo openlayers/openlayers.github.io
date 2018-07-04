@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[23],{265:function(e,a,n){"use strict";n.r(a);var o=n(3),r=n(2),w=n(202),t=n(4),c=n(29),s=n(5),u=n(13);const i=new t.a({source:new s.b}),p=(new w.a).readFeature("POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))",{dataProjection:"EPSG:4326",featureProjection:"EPSG:3857"}),P=new c.a({source:new u.b({features:[p]})});new o.a({layers:[i,P],target:"map",view:new r.a({center:[2952104.0199,-3277504.823],zoom:4})})}},[[265,0]]]);
+//# sourceMappingURL=wkt.js.map

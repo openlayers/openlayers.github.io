@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[81],{319:function(e,n,o){"use strict";o.r(n);var a=o(3),t=o(2),w=o(50),i=o(185),s=o(35),c=o(4),r=o(5);new a.a({interactions:Object(w.a)({mouseWheelZoom:!1}).extend([new i.a({constrainResolution:!0,condition:s.e})]),layers:[new c.a({source:new r.b})],target:"map",view:new t.a({center:[0,0],zoom:2})})}},[[319,0]]]);
+//# sourceMappingURL=mousewheel-zoom.js.map

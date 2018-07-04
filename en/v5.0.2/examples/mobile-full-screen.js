@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[85],{323:function(e,n,o){"use strict";o.r(n);var t=o(173),a=o(3),i=o(2),c=o(4),s=o(43);const r=new i.a({center:[0,0],zoom:2}),w=(new a.a({layers:[new c.a({source:new s.a({key:"As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5",imagerySet:"Road"})})],target:"map",view:r}),new t.a({projection:r.getProjection(),tracking:!0}));w.once("change:position",function(){r.setCenter(w.getPosition()),r.setResolution(2.388657133911758)})}},[[323,0]]]);
+//# sourceMappingURL=mobile-full-screen.js.map

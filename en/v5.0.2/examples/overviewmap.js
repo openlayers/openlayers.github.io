@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[75],{314:function(e,n,w){"use strict";w.r(n);var a=w(3),o=w(2),t=w(243),c=w(228),r=w(4),s=w(5);new a.a({controls:Object(t.a)().extend([new c.a]),layers:[new r.a({source:new s.b})],target:"map",view:new o.a({center:[5e5,6e6],zoom:7})})}},[[314,0]]]);
+//# sourceMappingURL=overviewmap.js.map
