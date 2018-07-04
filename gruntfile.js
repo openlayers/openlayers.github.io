@@ -222,7 +222,9 @@ module.exports = function(grunt) {
       dist: {
         src: [
           dist + '/en/' + branch + '/build/ol.js',
+          dist + '/en/' + branch + '/build/ol.js.map',
           dist + '/en/' + branch + '/css/ol.css',
+          dist + '/en/' + branch + '/css/ol.css.map',
         ],
         router: function(filepath) {
           return branch + '-dist/' + path.basename(filepath);
