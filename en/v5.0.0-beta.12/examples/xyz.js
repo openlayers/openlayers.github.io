@@ -1,1 +1,0 @@
-webpackJsonp([5],{609:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(2),e=c(1),f=c(5),g=c(42);new d.a({target:"map",layers:[new f.a({source:new g.a({url:"https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71"})})],view:new e.a({center:[-472202,7530279],zoom:12})})}},[609]);

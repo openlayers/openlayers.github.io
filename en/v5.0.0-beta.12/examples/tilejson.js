@@ -1,1 +1,0 @@
-webpackJsonp([40],{572:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(2),e=c(1),f=c(5),g=c(50);new d.a({layers:[new f.a({source:new g.a({url:"https://api.tiles.mapbox.com/v3/mapbox.geography-class.json?secure",crossOrigin:"anonymous"})})],target:"map",view:new e.a({center:[0,0],zoom:2})})}},[572]);

@@ -1,1 +1,0 @@
-webpackJsonp([4],{610:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(2),e=c(1),f=c(5),g=c(31);new d.a({target:"map",layers:[new f.a({source:new g.a({key:"As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5",imagerySet:"Aerial"})})],view:new e.a({center:[-13553864,5918250],zoom:11,minZoom:9,maxZoom:13})})}},[610]);

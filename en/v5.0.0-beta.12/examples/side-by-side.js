@@ -1,1 +1,0 @@
-webpackJsonp([53],{559:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(2),e=c(142),f=c(1),g=c(5),h=c(7);const i=new g.a({source:new h.b}),j=new f.a({center:[0,0],zoom:1}),k=new d.a({target:"canvasMap",layers:[i],view:j}),l=new e.a({target:"webglMap",layers:[i],view:j})}},[559]);

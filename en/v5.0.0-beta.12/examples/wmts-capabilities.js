@@ -1,1 +1,0 @@
-webpackJsonp([14],{600:function(a,b,c){"use strict";Object.defineProperty(b,"__esModule",{value:!0});var d=c(123);const e=new d.a;fetch("data/WMTSCapabilities.xml").then(function(a){return a.text()}).then(function(a){const b=e.read(a);document.getElementById("log").innerText=JSON.stringify(b,null,2)})}},[600]);
