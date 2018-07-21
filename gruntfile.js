@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         exec: 'npm run build-examples'
       },
       ol: {
-        exec: 'npm run build'
+        exec: 'npm run build-legacy'
       }
     },
     clean: {
