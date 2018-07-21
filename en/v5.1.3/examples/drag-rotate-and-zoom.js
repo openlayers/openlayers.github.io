@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[23],{251:function(e,n,a){"use strict";a.r(n);var w=a(3),t=a(2),o=a(47),c=a(182),r=a(4),s=a(7);new w.a({interactions:Object(o.a)().extend([new c.a]),layers:[new r.a({source:new s.b})],target:"map",view:new t.a({center:[0,0],zoom:2})})}},[[251,0]]]);
+//# sourceMappingURL=drag-rotate-and-zoom.js.map

@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[26],{254:function(e,n,a){"use strict";a.r(n);var o,t=a(3),c=a(2),w=a(65),r=a(4),u=a(29),i=a(7),p=a(13),s=new r.a({source:new i.b}),d=new p.b({wrapX:!1}),m=new u.a({source:d}),v=new t.a({layers:[s,m],target:"map",view:new c.a({center:[-11e6,46e5],zoom:4})}),b=document.getElementById("type");function f(){"None"!==b.value&&(o=new w.c({source:d,type:b.value,freehand:!0}),v.addInteraction(o))}b.onchange=function(){v.removeInteraction(o),f()},f()}},[[254,0]]]);
+//# sourceMappingURL=draw-freehand.js.map
