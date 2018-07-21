@@ -42,15 +42,15 @@ module.exports = function(grunt) {
     },
     run: {
       options: {cwd: repo},
+      ol: {
+        exec: 'npm run build-legacy'
+      },
       apidoc: {
         exec: 'npm run apidoc'
       },
       examples: {
         exec: 'npm run build-examples'
       },
-      ol: {
-        exec: 'npm run build-legacy'
-      }
     },
     clean: {
       dist: dist,
@@ -258,7 +258,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', 'Build the website', [
-    'checkout', 'install', 'run', 'clean:dist',
+    'checkout', 'install', 'run:ol', 'run:apidoc', 'run:examples', 'clean:dist',
     'move', 'less', 'copy:all', 'copy:doc', 'assemble', 'maybeCopyLatest']);
 
 
